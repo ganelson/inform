@@ -26,9 +26,10 @@ ones being initially zero.
 
 =
 void I6TargetCode::declare_function(code_generator *cgt, code_generation *gen,
-	inter_symbol *fn, inter_tree_node *D, vanilla_function *fcf) {
+	vanilla_function *vf) {
 	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
-	text_stream *fn_name = Inter::Symbols::name(fn);
+	if (vf == NULL) internal_error("no vg");
+	text_stream *fn_name = vf->identifier;
 	text_stream *OUT = CodeGen::current(gen);
 	@<Open the function@>;
 
@@ -38,7 +39,7 @@ void I6TargetCode::declare_function(code_generator *cgt, code_generation *gen,
 	if (Str::eq(fn_name, I"DebugProperty"))        @<Inject code at the top of DebugProperty@>;
 	if (Str::eq(fn_name, I"FINAL_CODE_STARTUP_R")) @<Inject code at the top of FINAL_CODE_STARTUP_R@>;
 
-	Vanilla::node(gen, D); /* This compiles the body of the function */
+	Vanilla::node(gen, vf->function_body); /* This compiles the body of the function */
 
 	@<Close the function@>;
 	CodeGen::deselect(gen, saved);
@@ -46,20 +47,10 @@ void I6TargetCode::declare_function(code_generator *cgt, code_generation *gen,
 
 @<Open the function@> =
 	WRITE("[ %S", fn_name);
-	I6TargetCode::seek_locals(gen, D);
+	text_stream *var_name;
+	LOOP_OVER_LINKED_LIST(var_name, text_stream, vf->locals)
+		WRITE(" %S", var_name);
 	WRITE(";");
-
-@ =
-void I6TargetCode::seek_locals(code_generation *gen, inter_tree_node *P) {
-	if (P->W.data[ID_IFLD] == LOCAL_IST) {
-		inter_package *pack = Inter::Packages::container(P);
-		inter_symbol *var_name =
-			InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
-		text_stream *OUT = CodeGen::current(gen);
-		WRITE(" %S", var_name->symbol_name);
-	}
-	LOOP_THROUGH_INTER_CHILDREN(F, P) I6TargetCode::seek_locals(gen, F);
-}
 
 @<Close the function@> =
 	WRITE("];\n");
@@ -182,10 +173,9 @@ it would be for C.
 
 =
 void I6TargetCode::invoke_function(code_generator *cgt, code_generation *gen,
-	inter_symbol *fn, inter_tree_node *P, vanilla_function *fcf, int void_context) {
-	text_stream *fn_name = Inter::Symbols::name(fn);
+	inter_tree_node *P, vanilla_function *vf, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("%S(", fn_name);
+	WRITE("%S(", vf->identifier);
 	int c = 0;
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		if (c++ > 0) WRITE(", ");

@@ -2,67 +2,66 @@
 
 How the vanilla code generation strategy declares functions.
 
-@
+@ The following traverses the Inter tree to discover all of the functions
+defined within it, and does two important things for each:
+
+(a) Assigns it a //vanilla_function// of metadata, and then
+(b) Calls //Generators::predeclare_function// to let the generator know that
+the function exists. Not all target languages require functions to be predeclared,
+so generators can if they choose ignore this.
+
+=
+void VanillaFunctions::predeclare_functions(code_generation *gen) {
+	InterTree::traverse(gen->from, VanillaFunctions::predeclare_this, gen, NULL, CONSTANT_IST);
+}
+
+@ =
+void VanillaFunctions::predeclare_this(inter_tree *I, inter_tree_node *P, void *state) {
+	code_generation *gen = (code_generation *) state;
+	inter_symbol *constant_s =
+		InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+	if (Inter::Constant::is_routine(constant_s)) {
+		vanilla_function *vf = VanillaFunctions::new(gen, constant_s);
+		Generators::predeclare_function(gen, vf);
+	}
+}
+
+@ Each function has metadata as follows. Note that:
+
+(a) Phrase syntax will only exist for functions which originated in Inform 7
+source text; so for functions coming from kits, |phrase_syntax| will be empty
+and |formal_arity| will be 0.
+(b) For I7 functions, |formal_arity| will be the number of arguments in the
+phrase preamble.
+(c) For all functions, |max_arity| is the total number of local variables in
+the function, and that is by definition the largest number of arguments which
+could possibly be passed to this function by a call. Note that it will always
+be true that |max_arity >= formal_arity|.
+(d) Calling conventions for Inter functions are not entirely simple: see
+//C Function Model// for discussion of how they differ from regular C functions.
+In particular, any function with a local variable called |_vararg_count| is
+called with a variable number of arguments, placed on the stack before the call,
+rather than with arguments placed into local variables in the usual way.
 
 =
 typedef struct vanilla_function {
-	struct text_stream *identifier_as_constant;
-	struct text_stream *syntax_md;
-	struct linked_list *locals; /* of |text_stream| */
-	int uses_vararg_model;
+	struct text_stream *identifier;
+	struct text_stream *phrase_syntax;
+	struct linked_list *locals; /* of |text_stream|, the names only */
+	struct inter_tree_node *function_body;
+	int takes_variable_arguments;
 	int max_arity;
 	int formal_arity;
 	CLASS_DEFINITION
 } vanilla_function;
 
-vanilla_function *VanillaFunctions::new_vf(text_stream *unmangled_name) {
-	vanilla_function *fcf = CREATE(vanilla_function);
-	fcf->max_arity = 0;
-	fcf->formal_arity = -1;
-	fcf->uses_vararg_model = FALSE;
-	fcf->identifier_as_constant = Str::duplicate(unmangled_name);
-	fcf->syntax_md = NULL;
-	fcf->locals = NEW_LINKED_LIST(text_stream);
-	return fcf;
-}
+@ This produces a synopsis of the phrase syntax which can be used in an identifier.
+For example, for "To award (N - number) points to (P - person)", the following
+writes |award_X_points_to_X|:
 
-vanilla_function *VanillaFunctions::new_from_definition(code_generation *gen,
-	inter_symbol *fn) {
-	inter_package *P = Inter::Packages::container(fn->definition);
-	inter_package *PP = Inter::Packages::parent(P);
-	text_stream *fn_name = Inter::Symbols::name(fn);
-	text_stream *md = Metadata::read_optional_textual(PP, I"^phrase_syntax");
-	vanilla_function *fcf = VanillaFunctions::new_vf(fn_name);
-	fcf->syntax_md = Str::duplicate(md);
-	fn->translation_data = STORE_POINTER_vanilla_function(fcf);
-	inter_package *code_block = Inter::Constant::code_block(fn);
-	inter_tree_node *D = Inter::Packages::definition(code_block);
-	VanillaFunctions::seek_locals(gen, D, fcf->locals);
-	text_stream *local_name;
-	LOOP_OVER_LINKED_LIST(local_name, text_stream, fcf->locals) {
-		if (Str::eq(local_name, I"local__vararg_count"))
-			fcf->uses_vararg_model = TRUE;
-		fcf->max_arity++;
-	}
-	fcf->formal_arity = 0;
-	LOOP_THROUGH_TEXT(pos, fcf->syntax_md)
-		if (Str::get(pos) == '(')
-			fcf->formal_arity++;			
-	return fcf;
-}
-
-void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P, linked_list *L) {
-	if (P->W.data[ID_IFLD] == LOCAL_IST) {
-		inter_package *pack = Inter::Packages::container(P);
-		inter_symbol *var_name =
-			InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
-		ADD_TO_LINKED_LIST(Inter::Symbols::name(var_name), text_stream, L);
-	}
-	LOOP_THROUGH_INTER_CHILDREN(F, P) VanillaFunctions::seek_locals(gen, F, L);
-}
-
-void VanillaFunctions::syntax_synopsis(OUTPUT_STREAM, vanilla_function *fcf) {
-	text_stream *md = fcf->syntax_md;
+=
+void VanillaFunctions::syntax_synopsis(OUTPUT_STREAM, vanilla_function *vf) {
+	text_stream *md = vf->phrase_syntax;
 	for (int i=3, bracketed = FALSE; i<Str::len(md); i++) {
 		wchar_t c = Str::get_at(md, i);
 		if (bracketed) {
@@ -78,52 +77,83 @@ void VanillaFunctions::syntax_synopsis(OUTPUT_STREAM, vanilla_function *fcf) {
 	}
 }
 
-@ The following calls //Generators::predeclare_function// on every function in
-the tree. Not all target languages require functions to be predeclared (Inform 6
-does not, for example), so generators can choose simply to ignore this.
+@ And on the same example, this would return 2:
 
 =
-void VanillaFunctions::predeclare_functions(code_generation *gen) {
-	InterTree::traverse(gen->from, VanillaFunctions::predeclare_this, gen, NULL, CONSTANT_IST);
+int VanillaFunctions::formal_arity(vanilla_function *vf) {
+	int A = 0;
+	LOOP_THROUGH_TEXT(pos, vf->phrase_syntax)
+		if (Str::get(pos) == '(')
+			A++;			
+	return A;
 }
 
-@ =
-void VanillaFunctions::predeclare_this(inter_tree *I, inter_tree_node *P, void *state) {
-	code_generation *gen = (code_generation *) state;
-	inter_symbol *constant_s =
-		InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
-	if (Inter::Constant::is_routine(constant_s)) {
-		vanilla_function *fcf = VanillaFunctions::new_from_definition(gen, constant_s);
-		Generators::predeclare_function(gen, fcf);
+@ So, then:
+
+=
+vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s) {
+	inter_package *P = Inter::Packages::container(fn_s->definition);
+	inter_package *PP = Inter::Packages::parent(P);
+	text_stream *i7_syntax = Metadata::read_optional_textual(PP, I"^phrase_syntax");
+	vanilla_function *vf = CREATE(vanilla_function);
+	vf->takes_variable_arguments = FALSE;
+	vf->identifier = Str::duplicate(Inter::Symbols::name(fn_s));
+	vf->locals = NEW_LINKED_LIST(text_stream);
+	vf->phrase_syntax = Str::duplicate(i7_syntax);
+	inter_package *code_block = Inter::Constant::code_block(fn_s);
+	vf->function_body = Inter::Packages::definition(code_block);
+	fn_s->translation_data = STORE_POINTER_vanilla_function(vf);
+	VanillaFunctions::seek_locals(gen, vf->function_body, vf);
+	vf->max_arity = LinkedLists::len(vf->locals);
+	vf->formal_arity = VanillaFunctions::formal_arity(vf);		
+	return vf;
+}
+
+@ This performs a local traverse of the body of the function to look for local
+variable declarations.
+
+Note that we look at |local_s->symbol_name| not |Inter::Symbols::name(local_s)|
+when checking for |_vararg_count| because the translated name may have been mangled
+in some way by the generator. (As indeed the C generator does, mangling this to
+|local__vararg_count|.)
+
+=
+void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
+	vanilla_function *vf) {
+	if (P->W.data[ID_IFLD] == LOCAL_IST) {
+		inter_package *pack = Inter::Packages::container(P);
+		inter_symbol *local_s =
+			InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
+		ADD_TO_LINKED_LIST(Inter::Symbols::name(local_s), text_stream, vf->locals);
+		if (Str::eq(local_s->symbol_name, I"_vararg_count"))
+			vf->takes_variable_arguments = TRUE;
 	}
+	LOOP_THROUGH_INTER_CHILDREN(F, P) VanillaFunctions::seek_locals(gen, F, vf);
+}
+
+@ Note that a pointer to |vf| is cached with each function name symbol for speed:
+
+=
+void VanillaFunctions::declare_function(code_generation *gen, inter_symbol *fn_s) {
+	vanilla_function *vf = RETRIEVE_POINTER_vanilla_function(fn_s->translation_data);
+	Generators::declare_function(gen, vf);
 }
 
 @ =
-void VanillaFunctions::declare_function(code_generation *gen, inter_symbol *con_name) {
-	inter_package *code_block = Inter::Constant::code_block(con_name);
-	inter_tree_node *D = Inter::Packages::definition(code_block);
-	vanilla_function *fcf = RETRIEVE_POINTER_vanilla_function(con_name->translation_data);
-	Generators::declare_function(gen, con_name, D, fcf);
-}
-
-@ =
-void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *function_s, inter_tree_node *P, int void_context) {
-	inter_tree_node *D = function_s->definition;
+void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
+	inter_tree_node *P, int void_context) {
+	inter_tree_node *D = fn_s->definition;
 	if ((D) && (D->W.data[ID_IFLD] == CONSTANT_IST) &&
 		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
 		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
 		inter_ti val2 = D->W.data[DATA_CONST_IFLD + 1];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-			inter_symbol *aliased =
-				InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(D));
-			if (aliased) function_s = aliased;
+			inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_table(
+				val1, val2, Inter::Packages::scope_of(D));
+			if (S) fn_s = S;
 		}
 	}
-
-	vanilla_function *vf = NULL;
-	if (GENERAL_POINTER_IS_NULL(function_s->translation_data))
-		internal_error("no translation data");
-	vf = RETRIEVE_POINTER_vanilla_function(function_s->translation_data);
+	vanilla_function *vf = RETRIEVE_POINTER_vanilla_function(fn_s->translation_data);
 	if (vf == NULL) internal_error("no translation data");
-	Generators::invoke_function(gen, function_s, P, vf, void_context);
+	Generators::invoke_function(gen, P, vf, void_context);
 }

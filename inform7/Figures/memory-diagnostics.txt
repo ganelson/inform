@@ -1,4 +1,4 @@
-Total memory consumption was 399940K = 391 MB
+Total memory consumption was 399939K = 391 MB
 
 61.0% was used for 2018882 objects, in 379614 frames in 305 x 800K = 244000K = 238 MB:
 
@@ -40,7 +40,7 @@ Total memory consumption was 399940K = 391 MB
      ----  noun                                     2380 objects, 285600 bytes
      ----  compilation_subtask                      3346 objects, 267680 bytes
      ----  inference_subject                        665 objects, 260680 bytes
-     ----  vanilla_function                         3678 objects, 205968 bytes
+     ----  vanilla_function                         3678 objects, 235392 bytes
      ----  inter_annotation_array                   1 x 8192 objects, 196640 bytes
      ----  hierarchy_location                       1117 objects, 169784 bytes
      ----  binary_predicate                         321 objects, 169488 bytes
@@ -180,7 +180,7 @@ Total memory consumption was 399940K = 391 MB
      ----  I6T_intervention                         8 objects, 640 bytes
      ----  relation_guard                           5 objects, 640 bytes
      ----  inter_warehouse_room                     10 objects, 640 bytes
-     ----  code_generation                          1 object, 608 bytes
+     ----  code_generation                          1 object, 616 bytes
      ----  inbuild_search_result                    15 objects, 600 bytes
      ----  rulebook_outcome                         17 objects, 544 bytes
      ----  small_word_set                           11 objects, 528 bytes
@@ -238,7 +238,7 @@ Total memory consumption was 399940K = 391 MB
 
 38.9% was used for memory not allocated for objects:
 
-    20.4%  text stream storage                      83672740 bytes in 543413 claims
+    20.4%  text stream storage                      83672424 bytes in 543411 claims
      4.4%  dictionary storage                       18323456 bytes in 33302 claims
      ----  sorting                                  736 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims
@@ -256,5 +256,5 @@ Total memory consumption was 399940K = 391 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-18.7% was overhead - 76713592 bytes = 74915K = 73 MB
+18.7% was overhead - 76684160 bytes = 74886K = 73 MB
 

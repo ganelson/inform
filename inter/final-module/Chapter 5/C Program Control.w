@@ -19,6 +19,7 @@ void CProgramControl::invoke_primitive(code_generator *cgt, code_generation *gen
 	int r = CReferences::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CArithmetic::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CMemoryModel::invoke_primitive(gen, bip, P);
+	if (r == NOT_APPLICABLE) r = CFunctionModel::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CObjectModel::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CInputOutputModel::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CConditions::invoke_primitive(gen, bip, P);
@@ -60,29 +61,6 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 		case SWITCH_BIP:          @<Generate primitive for switch@>; break;
 		case CASE_BIP:            @<Generate primitive for case@>; break;
 		case DEFAULT_BIP:         @<Generate primitive for default@>; break;
-
-		case INDIRECT0_BIP: case INDIRECT0V_BIP:
-			WRITE("i7_call_0(proc, "); VNODE_1C; WRITE(")"); break;
-		case INDIRECT1_BIP: case INDIRECT1V_BIP:
-			WRITE("i7_call_1(proc, "); VNODE_1C; WRITE(", ");
-			VNODE_2C; WRITE(")"); break;
-		case INDIRECT2_BIP: case INDIRECT2V_BIP:
-			WRITE("i7_call_2(proc, "); VNODE_1C; WRITE(", ");
-			VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
-		case INDIRECT3_BIP: case INDIRECT3V_BIP:
-			WRITE("i7_call_3(proc, "); VNODE_1C; WRITE(", ");
-			VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", "); VNODE_4C; WRITE(")"); break;
-		case INDIRECT4_BIP: case INDIRECT4V_BIP:
-			WRITE("i7_call_4(proc, "); VNODE_1C; WRITE(", ");
-			VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", ");
-			VNODE_5C; WRITE(")"); break;
-		case INDIRECT5_BIP: case INDIRECT5V_BIP:
-			WRITE("i7_call_5(proc, "); VNODE_1C; WRITE(", ");
-			VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", ");
-			VNODE_5C; WRITE(", "); VNODE_6C; WRITE(")"); break;
-		case EXTERNALCALL_BIP:
-			@<Generate primitive for externalcall@>; break;
-
 		case ALTERNATIVECASE_BIP: internal_error("misplaced !alternativecase"); break;
 		default: internal_error("unimplemented prim");
 	}
@@ -210,15 +188,3 @@ void CProgramControl::caser(code_generation *gen, inter_tree_node *X) {
 @<Generate primitive for default@> =
 	WRITE("default:\n"); INDENT; VNODE_1C; WRITE(";\n"); WRITE("break;\n"); OUTDENT;
 	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for externalcall@> =
-	inter_tree_node *N = InterTree::first_child(P);
-	if ((N) && (N->W.data[ID_IFLD] == VAL_IST) &&
-		(N->W.data[VAL1_VAL_IFLD] == LITERAL_TEXT_IVAL)) {
-		text_stream *glob_text = Inter::Warehouse::get_text(
-			InterTree::warehouse(I), N->W.data[VAL1_VAL_IFLD + 1]);
-		WRITE("%S(proc, ", CFunctionModel::external_function(gen, glob_text));
-		VNODE_2C; WRITE(")");
-	} else {
-		internal_error("unimplemented form of !externalcall");
-	}

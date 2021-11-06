@@ -736,13 +736,6 @@ int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 	switch (bip) {
 		case PROPERTYARRAY_BIP: WRITE("i7_prop_addr(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
 		case PROPERTYLENGTH_BIP: WRITE("i7_prop_len(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", "); VNODE_3C; WRITE(")"); break;
-		case MESSAGE0_BIP: 		WRITE("i7_mcall_0(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
-		case MESSAGE1_BIP: 		WRITE("i7_mcall_1(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
-								VNODE_3C; WRITE(")"); break;
-		case MESSAGE2_BIP: 		WRITE("i7_mcall_2(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
-								VNODE_3C; WRITE(", "); VNODE_4C; WRITE(")"); break;
-		case MESSAGE3_BIP: 		WRITE("i7_mcall_3(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(", ");
-								VNODE_3C; WRITE(", "); VNODE_4C; WRITE(", "); VNODE_5C; WRITE(")"); break;
 		case MOVE_BIP:          WRITE("i7_move(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")"); break;
 		case REMOVE_BIP:        WRITE("i7_move(proc, "); VNODE_1C; WRITE(", 0)"); break;
 		case CHILD_BIP:         WRITE("fn_i7_mgl_child(proc, "); VNODE_1C; WRITE(")"); break;

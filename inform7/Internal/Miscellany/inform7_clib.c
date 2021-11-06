@@ -1027,25 +1027,46 @@ void i7_write_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t 
         (i7_change_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form));
     }
 }
-i7word_t i7_call_0(i7process_t *proc, i7word_t fn_ref) {
+i7word_t i7_call_0(i7process_t *proc, i7word_t id) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	return i7_gen_call(proc, fn_ref, args, 0);
+	return i7_gen_call(proc, id, args, 0);
 }
-
+i7word_t i7_call_1(i7process_t *proc, i7word_t id, i7word_t v) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v;
+	return i7_gen_call(proc, id, args, 1);
+}
+i7word_t i7_call_2(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2;
+	return i7_gen_call(proc, id, args, 2);
+}
+i7word_t i7_call_3(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2,
+	i7word_t v3) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2; args[2] = v3;
+	return i7_gen_call(proc, id, args, 3);
+}
+i7word_t i7_call_4(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2,
+	i7word_t v3, i7word_t v4) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4;
+	return i7_gen_call(proc, id, args, 4);
+}
+i7word_t i7_call_5(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2,
+	i7word_t v3, i7word_t v4, i7word_t v5) {
+	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
+	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4; args[4] = v5;
+	return i7_gen_call(proc, id, args, 5);
+}
 i7word_t i7_mcall_0(i7process_t *proc, i7word_t to, i7word_t prop) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	i7word_t saved = proc->state.variables[i7_var_self];
 	proc->state.variables[i7_var_self] = to;
-	i7word_t fn_ref = i7_read_prop_value(proc, to, prop);
-	i7word_t rv = i7_gen_call(proc, fn_ref, args, 0);
+	i7word_t id = i7_read_prop_value(proc, to, prop);
+	i7word_t rv = i7_gen_call(proc, id, args, 0);
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
-}
-
-i7word_t i7_call_1(i7process_t *proc, i7word_t fn_ref, i7word_t v) {
-	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v;
-	return i7_gen_call(proc, fn_ref, args, 1);
 }
 
 i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v) {
@@ -1053,58 +1074,35 @@ i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v) {
 	args[0] = v;
 	i7word_t saved = proc->state.variables[i7_var_self];
 	proc->state.variables[i7_var_self] = to;
-	i7word_t fn_ref = i7_read_prop_value(proc, to, prop);
-	i7word_t rv = i7_gen_call(proc, fn_ref, args, 1);
+	i7word_t id = i7_read_prop_value(proc, to, prop);
+	i7word_t rv = i7_gen_call(proc, id, args, 1);
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
-i7word_t i7_call_2(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2) {
-	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2;
-	return i7_gen_call(proc, fn_ref, args, 2);
-}
-
-i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2) {
+i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
+	i7word_t v2) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2;
 	i7word_t saved = proc->state.variables[i7_var_self];
 	proc->state.variables[i7_var_self] = to;
-	i7word_t fn_ref = i7_read_prop_value(proc, to, prop);
-	i7word_t rv = i7_gen_call(proc, fn_ref, args, 2);
+	i7word_t id = i7_read_prop_value(proc, to, prop);
+	i7word_t rv = i7_gen_call(proc, id, args, 2);
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
 
-i7word_t i7_call_3(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3) {
-	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2; args[2] = v3;
-	return i7_gen_call(proc, fn_ref, args, 3);
-}
-
-i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2, i7word_t v3) {
+i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
+	i7word_t v2, i7word_t v3) {
 	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
 	args[0] = v; args[1] = v2; args[2] = v3;
 	i7word_t saved = proc->state.variables[i7_var_self];
 	proc->state.variables[i7_var_self] = to;
-	i7word_t fn_ref = i7_read_prop_value(proc, to, prop);
-	i7word_t rv = i7_gen_call(proc, fn_ref, args, 3);
+	i7word_t id = i7_read_prop_value(proc, to, prop);
+	i7word_t rv = i7_gen_call(proc, id, args, 3);
 	proc->state.variables[i7_var_self] = saved;
 	return rv;
 }
-
-i7word_t i7_call_4(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3, i7word_t v4) {
-	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4;
-	return i7_gen_call(proc, fn_ref, args, 4);
-}
-
-i7word_t i7_call_5(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3, i7word_t v4, i7word_t v5) {
-	i7word_t args[10]; for (int i=0; i<10; i++) args[i] = 0;
-	args[0] = v; args[1] = v2; args[2] = v3; args[3] = v4; args[4] = v5;
-	return i7_gen_call(proc, fn_ref, args, 5);
-}
-
 #define I7_MAX_STREAMS 128
 
 i7_stream i7_memory_streams[I7_MAX_STREAMS];

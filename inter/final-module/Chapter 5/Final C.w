@@ -31,6 +31,7 @@ code can interface with it. Both are divided into segments. The main file thus:
 
 @e c_header_inclusion_I7CGS
 @e c_ids_and_maxima_I7CGS
+@e c_function_predeclarations_I7CGS
 @e c_library_inclusion_I7CGS
 @e c_predeclarations_I7CGS
 @e c_actions_I7CGS
@@ -42,10 +43,10 @@ code can interface with it. Both are divided into segments. The main file thus:
 @e c_summations_at_eof_I7CGS
 @e c_arrays_I7CGS
 @e c_main_matter_I7CGS
-@e c_functions_at_eof_I7CGS
+@e c_function_declarations_I7CGS
 @e c_code_at_eof_I7CGS
 @e c_verb_arrays_I7CGS
-@e c_stubs_at_eof_I7CGS
+@e c_function_callers_I7CGS
 @e c_property_offset_creator_I7CGS
 @e c_mem_I7CGS
 @e c_globals_array_I7CGS
@@ -55,6 +56,7 @@ code can interface with it. Both are divided into segments. The main file thus:
 int C_target_segments[] = {
 	c_header_inclusion_I7CGS,
 	c_ids_and_maxima_I7CGS,
+	c_function_predeclarations_I7CGS,
 	c_library_inclusion_I7CGS,
 	c_predeclarations_I7CGS,
 	c_actions_I7CGS,
@@ -66,10 +68,10 @@ int C_target_segments[] = {
 	c_summations_at_eof_I7CGS,
 	c_arrays_I7CGS,
 	c_main_matter_I7CGS,
-	c_functions_at_eof_I7CGS,
+	c_function_declarations_I7CGS,
 	c_code_at_eof_I7CGS,
 	c_verb_arrays_I7CGS,
-	c_stubs_at_eof_I7CGS,
+	c_function_callers_I7CGS,
 	c_property_offset_creator_I7CGS,
 	c_mem_I7CGS,
 	c_globals_array_I7CGS,

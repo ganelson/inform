@@ -203,17 +203,21 @@ void i7_read_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
 void i7_write_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t val, i7word_t form,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-i7word_t i7_call_0(i7process_t *proc, i7word_t fn_ref);
-i7word_t i7_call_1(i7process_t *proc, i7word_t fn_ref, i7word_t v);
-i7word_t i7_call_2(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2);
-i7word_t i7_call_3(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3);
-i7word_t i7_call_4(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3, i7word_t v4);
-i7word_t i7_call_5(i7process_t *proc, i7word_t fn_ref, i7word_t v, i7word_t v2, i7word_t v3, i7word_t v4, i7word_t v5);
+i7word_t i7_gen_call(i7process_t *proc, i7word_t id, i7word_t *args, int argc);
+i7word_t i7_call_0(i7process_t *proc, i7word_t id);
+i7word_t i7_call_1(i7process_t *proc, i7word_t id, i7word_t v);
+i7word_t i7_call_2(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2);
+i7word_t i7_call_3(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2, i7word_t v3);
+i7word_t i7_call_4(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2, i7word_t v3,
+	i7word_t v4);
+i7word_t i7_call_5(i7process_t *proc, i7word_t id, i7word_t v, i7word_t v2, i7word_t v3,
+	i7word_t v4, i7word_t v5);
 i7word_t i7_mcall_0(i7process_t *proc, i7word_t to, i7word_t prop);
 i7word_t i7_mcall_1(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v);
-i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2);
-i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v, i7word_t v2, i7word_t v3);
-i7word_t i7_gen_call(i7process_t *proc, i7word_t fn_ref, i7word_t *args, int argc);
+i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
+	i7word_t v2);
+i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
+	i7word_t v2, i7word_t v3);
 #define I7_BODY_TEXT_ID    201
 #define I7_STATUS_TEXT_ID  202
 #define I7_BOX_TEXT_ID     203
