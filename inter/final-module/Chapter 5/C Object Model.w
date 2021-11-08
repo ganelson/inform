@@ -56,6 +56,7 @@ void CObjectModel::end(code_generation *gen) {
 	CObjectModel::write_i7_initialise_object_tree(gen);
 	CObjectModel::define_object_value_regions(gen);
 	CObjectModel::compile_ofclass_array(gen);
+	CObjectModel::compile_gprop_functions(gen);
 	segmentation_pos saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define i7_max_objects I7VAL_STRINGS_BASE\n");
@@ -795,16 +796,30 @@ int CObjectModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tre
 	return FALSE;
 }
 
-@ Let's start with property array (for inline properties) and property length.
+@ Let's start with property address and property length; while actual property
+values live inside process memory, the addresses showing where they are in that
+memory, and how many bytes they take up, are held in (static) arrays. Note that
+although multiple processes running the same I7 story would have multiple values
+for these properties, which likely differ at any given time, they would be at
+the same address and of the same length in each. 
 
 = (text to inform7_clib.h)
+#define I7_MAX_PROPERTY_IDS 1000
+typedef struct i7_property_set {
+	i7word_t address[I7_MAX_PROPERTY_IDS];
+	i7word_t len[I7_MAX_PROPERTY_IDS];
+} i7_property_set;
+i7_property_set i7_properties[];
+
 i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
 i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
 =
 
-Note that lengths are returned in bytes, not words, hence the multiplication by 4.
+Lengths are returned in bytes, not words, hence the multiplication by 4.
 
 = (text to inform7_clib.c)
+i7_property_set i7_properties[i7_max_objects];
+
 i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr_array) {
 	i7word_t pr = i7_read_word(proc, pr_array, 1);
 	if ((obj <= 0) || (obj >= i7_max_objects) ||
@@ -818,6 +833,26 @@ i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr_a
 		(pr < 0) || (pr >= i7_no_property_ids)) return 0;
 	return i7_properties[(int) obj].address[(int) pr];
 }
+
+@ The address array can be used to determine whether a runtime object or class
+provides a given property: if the address is nonzero then it does.
+
+= (text to inform7_clib.h)
+int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
+=
+
+= (text to inform7_clib.c)
+int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
+	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
+	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
+		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
+	while (owner_id != 1) {
+		if (i7_properties[(int) owner_id].address[(int) prop_id] != 0) return 1;
+		owner_id = i7_class_of[owner_id];
+	}
+	return 0;
+}
+=
 
 @ Now |i7_move|, which moves |obj| in the object tree so that it becomes the
 eldest child of |to|, unless |to| is zero, in which case it is removed from
@@ -886,26 +921,42 @@ i7word_t i7_sibling(i7process_t *proc, i7word_t id) {
 }
 =
 
-@h Reading and writing properties.
-So here is the run-time storage for property values, and simple code to read
-and write them.
+@ And the implementation of "is |obj1| directly a child of |obj2|?"
 
 = (text to inform7_clib.h)
-i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
-void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val);
-i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array);
-i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t to, int way);
-void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val);
-#define I7_MAX_PROPERTY_IDS 1000
-typedef struct i7_property_set {
-	i7word_t address[I7_MAX_PROPERTY_IDS];
-	i7word_t len[I7_MAX_PROPERTY_IDS];
-} i7_property_set;
-i7_property_set i7_properties[];
+int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);
 =
 
 = (text to inform7_clib.c)
-i7_property_set i7_properties[i7_max_objects];
+int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2) {
+	if (i7_metaclass(proc, obj1) != i7_mgl_Object) return 0;
+	if (obj2 == 0) return 0;
+	if (proc->state.object_tree_parent[obj1] == obj2) return 1;
+	return 0;
+}
+=
+
+@h Reading, writing and changing object properties.
+
+= (text to inform7_clib.h)
+i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array);
+void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val);
+i7word_t i7_change_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id,
+	i7word_t val, int way);
+=
+
+= (text to inform7_clib.c)
+i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
+	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
+	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
+		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
+	while (i7_properties[(int) owner_id].address[(int) prop_id] == 0) {
+		owner_id = i7_class_of[owner_id];
+		if (owner_id == i7_mgl_Class) return 0;
+	}
+	i7word_t address = i7_properties[(int) owner_id].address[(int) prop_id];
+	return i7_read_word(proc, address, 0);
+}
 
 void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array, i7word_t val) {
 	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
@@ -921,164 +972,151 @@ void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array
 		i7_fatal_exit(proc);
 	}
 }
-=
 
-@ And here sre the functions called by the above primitives:
-
-= (text to inform7_clib.c)
-i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
-	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
-	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
-		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
-	while (i7_properties[(int) owner_id].address[(int) prop_id] == 0) {
-		owner_id = i7_class_of[owner_id];
-		if (owner_id == i7_mgl_Class) return 0;
-	}
-	i7word_t address = i7_properties[(int) owner_id].address[(int) prop_id];
-	return i7_read_word(proc, address, 0);
-}
-
-i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t to, int way) {
+i7word_t i7_change_prop_value(i7process_t *proc, i7word_t obj, i7word_t pr,
+	i7word_t to, int way) {
 	i7word_t val = i7_read_prop_value(proc, obj, pr), new_val = val;
 	switch (way) {
-		case i7_lvalue_SET:      i7_write_prop_value(proc, obj, pr, to); new_val = to; break;
-		case i7_lvalue_PREDEC:   new_val = val-1; i7_write_prop_value(proc, obj, pr, val-1); break;
-		case i7_lvalue_POSTDEC:  new_val = val; i7_write_prop_value(proc, obj, pr, val-1); break;
-		case i7_lvalue_PREINC:   new_val = val+1; i7_write_prop_value(proc, obj, pr, val+1); break;
-		case i7_lvalue_POSTINC:  new_val = val; i7_write_prop_value(proc, obj, pr, val+1); break;
-		case i7_lvalue_SETBIT:   new_val = val | new_val; i7_write_prop_value(proc, obj, pr, new_val); break;
-		case i7_lvalue_CLEARBIT: new_val = val &(~new_val); i7_write_prop_value(proc, obj, pr, new_val); break;
+		case i7_lvalue_SET:
+			i7_write_prop_value(proc, obj, pr, to); new_val = to; break;
+		case i7_lvalue_PREDEC:
+			new_val = val-1; i7_write_prop_value(proc, obj, pr, val-1); break;
+		case i7_lvalue_POSTDEC:
+			new_val = val; i7_write_prop_value(proc, obj, pr, val-1); break;
+		case i7_lvalue_PREINC:
+			new_val = val+1; i7_write_prop_value(proc, obj, pr, val+1); break;
+		case i7_lvalue_POSTINC:
+			new_val = val; i7_write_prop_value(proc, obj, pr, val+1); break;
+		case i7_lvalue_SETBIT:
+			new_val = val | new_val; i7_write_prop_value(proc, obj, pr, new_val); break;
+		case i7_lvalue_CLEARBIT:
+			new_val = val &(~new_val); i7_write_prop_value(proc, obj, pr, new_val); break;
 	}
 	return new_val;
 }
-
-void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val) {
-	i7_write_prop_value(proc, owner, prop, val);
-}
-
 =
 
-@
+@h Reading, writing and changing general properties.
+And these are the exactly analogous functions which more generally read, write
+or change properties which can be held by either objects or enumerated instances --
+in other words, all properties. The additional kind argument |K| is then needed
+to distinguish these cases (since the |obj| values for different kinds may well
+coincide).
+
+The functions themselves are simple enough, but there is a complication, which
+is that they need to use addresses which vary from one compilation to another;
+so they cannot be written straightforwardly into our C library, which has to
+be the same for all compilations. We get around this by compiling wrapper
+functions in our story-file C which supply the necessary information and then
+call clumsy but static functions in the C library; but this is all transparent
+to the user, who should call only these:
 
 = (text to inform7_clib.h)
-int i7_has(i7process_t *proc, i7word_t obj, i7word_t either_or);
-int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
-int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);
+int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p);
+i7word_t i7_read_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
+void i7_write_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
+	i7word_t val);
+void i7_change_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
+	i7word_t val, i7word_t form);
+=
+
+@ So here are the dynamic wrappers.
+
+=
+void CObjectModel::compile_gprop_functions(code_generation *gen) {
+	segmentation_pos saved = CodeGen::select(gen, c_function_declarations_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p) {\n");
+	WRITE("    return i7_provides_gprop_inner(proc, K, obj, p, i7_mgl_OBJECT_TY,\n");
+	WRITE("         i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_COL_HSIZE);\n");
+	WRITE("}\n");
+	WRITE("i7word_t i7_read_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p) {\n");
+	WRITE("    return i7_read_gprop_value_inner(proc, K, obj, p, i7_mgl_OBJECT_TY,\n");
+	WRITE("         i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_COL_HSIZE);\n");
+	WRITE("}\n");
+	WRITE("void i7_write_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj,\n");
+	WRITE("    i7word_t p, i7word_t val) {\n");
+	WRITE("    i7_write_gprop_value_inner(proc, K, obj, p, val, i7_mgl_OBJECT_TY,\n");
+	WRITE("         i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_COL_HSIZE);\n");
+	WRITE("}\n");
+	WRITE("void i7_change_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj,\n");
+	WRITE("    i7word_t p, i7word_t val, i7word_t form) {\n");
+	WRITE("    i7_change_gprop_value_inner(proc, K, obj, p, val, form, i7_mgl_OBJECT_TY,\n");
+	WRITE("         i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_COL_HSIZE);\n");
+	WRITE("}\n");
+	CodeGen::deselect(gen, saved);
+}
+
+@ And these are the static functions in the C library which they call: 
+
+= (text to inform7_clib.h)
+int i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
+	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE);
+i7word_t i7_read_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
+	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE);
+void i7_write_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
+	i7word_t val, i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
+	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE);
+void i7_change_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
+	i7word_t val, i7word_t form, i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
+	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE);
 =
 
 = (text to inform7_clib.c)
-int i7_has(i7process_t *proc, i7word_t obj, i7word_t either_or) {
-	if (i7_read_prop_value(proc, obj, either_or)) return 1;
-	return 0;
-}
-
-int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t pr_array) {
-	i7word_t prop_id = i7_read_word(proc, pr_array, 1);
-	if ((owner_id <= 0) || (owner_id >= i7_max_objects) ||
-		(prop_id < 0) || (prop_id >= i7_no_property_ids)) return 0;
-	while (owner_id != 1) {
-		if (i7_properties[(int) owner_id].address[(int) prop_id] != 0)
-			return 1;
-		owner_id = i7_class_of[owner_id];
-	}
-	return 0;
-}
-
-int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2) {
-	if (i7_metaclass(proc, obj1) != i7_mgl_Object) return 0;
-	if (obj2 == 0) return 0;
-	if (proc->state.object_tree_parent[obj1] == obj2) return 1;
-	return 0;
-}
-
-
-=
-
-= (text to inform7_clib.h)
-void i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-void i7_read_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-void i7_write_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t val, i7word_t form,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
-=
-
-= (text to inform7_clib.c)
-void i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+int i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
+	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE) {
 	if (K == i7_mgl_OBJECT_TY) {
-		if (((obj) && ((i7_metaclass(proc, obj) == i7_mgl_Object)))) {
-			if (((i7_read_word(proc, pr, 0) == 2) || (i7_provides(proc, obj, pr)))) {
-				if (val) *val = 1;
-			} else {
-				if (val) *val = 0;
-			}
-		} else {
-			if (val) *val = 0;
-		}
+		if ((((obj) && ((i7_metaclass(proc, obj) == i7_mgl_Object)))) &&
+			(((i7_read_word(proc, pr, 0) == 2) || (i7_provides(proc, obj, pr)))))
+			return 1;
 	} else {
 		if ((((obj >= 1)) && ((obj <= i7_read_word(proc, i7_mgl_value_ranges, K))))) {
 			i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
-			if (((holder) && ((i7_provides(proc, holder, pr))))) {
-				if (val) *val = 1;
-			} else {
-				if (val) *val = 0;
-			}
-		} else {
-			if (val) *val = 0;
+			if (((holder) && ((i7_provides(proc, holder, pr))))) return 1;
 		}
 	}
+	return 0;
 }
 
-int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+i7word_t i7_read_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
+	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE) {
 	i7word_t val = 0;
-	i7_provides_gprop_inner(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
+    if ((K == i7_mgl_OBJECT_TY)) {
+    	return (i7word_t) i7_read_prop_value(proc, obj, pr);
+    } else {
+        i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
+        return (i7word_t) i7_read_word(proc,
+        	i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE));
+    }
 	return val;
 }
 
-void i7_read_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t *val,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+void i7_write_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
+	i7word_t val, i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
+	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE) {
     if ((K == i7_mgl_OBJECT_TY)) {
-        if ((i7_read_word(proc, pr, 0) == 2)) {
-            if ((i7_has(proc, obj, pr))) {
-                if (val) *val =  1;
-            } else {
-            	if (val) *val =  0;
-            }
-        } else {
-		    if (val) *val = (i7word_t) i7_read_prop_value(proc, obj, pr);
-		}
+        i7_write_prop_value(proc, obj, pr, val);
     } else {
         i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
-        if (val) *val = (i7word_t) i7_read_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE));
+        i7_write_word(proc,
+        	i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val);
     }
 }
 
-i7word_t i7_read_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
-	i7word_t val = 0;
-	i7_read_gprop_inner(proc, K, obj, pr, &val, i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_A_door_to, i7_mgl_COL_HSIZE);
-	return val;
-}
-
-void i7_write_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t val, i7word_t form,
-	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE) {
+void i7_change_gprop_value_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr,
+	i7word_t val, i7word_t form,
+	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges,
+	i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_COL_HSIZE) {
     if ((K == i7_mgl_OBJECT_TY)) {
-        if ((i7_read_word(proc, pr, 0) == 2)) {
-            if (val) {
-                i7_change_prop_value(proc, K, obj, pr, 1, form);
-            } else {
-                i7_change_prop_value(proc, K, obj, pr, 0, form);
-            }
-        } else {
-            (i7_change_prop_value(proc, K, obj, pr, val, form));
-        }
+        i7_change_prop_value(proc, obj, pr, val, form);
     } else {
         i7word_t holder = i7_read_word(proc, i7_mgl_value_property_holders, K);
-        (i7_change_word(proc, i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form));
+        i7_change_word(proc,
+        	i7_read_prop_value(proc, holder, pr), (obj + i7_mgl_COL_HSIZE), val, form);
     }
 }
 =

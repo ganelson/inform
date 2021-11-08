@@ -32,9 +32,7 @@ int CConditions::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree
 			C_GEN_DATA(objdata.value_ranges_needed) = TRUE;
 			C_GEN_DATA(objdata.value_property_holders_needed) = TRUE;
 			WRITE("(i7_provides_gprop(proc, "); VNODE_1C; WRITE(", ");
-			VNODE_2C; WRITE(", "); VNODE_3C; WRITE(", ");
-			WRITE("i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, ");
-			WRITE("i7_mgl_A_door_to, i7_mgl_COL_HSIZE))");
+			VNODE_2C; WRITE(", "); VNODE_3C; WRITE("))");
 			break;
 		case EQ_BIP: case NE_BIP: case GT_BIP: case GE_BIP: case LT_BIP: case LE_BIP:
 		case OFCLASS_BIP: case IN_BIP: case NOTIN_BIP:
@@ -113,13 +111,11 @@ void CConditions::comparison_r(code_generation *gen,
 	}
 
 	if (bip == PROPERTYVALUE_BIP) {
-		WRITE("(i7_read_gprop(proc, ", test_fn);
+		WRITE("(i7_read_gprop_value(proc, ", test_fn);
 		Vanilla::node(gen, K); WRITE(", ");
 		@<Compile first comparand@>;
 		WRITE(", ");
 		@<Compile second comparand@>;
-		WRITE(", i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, ");
-		WRITE("i7_mgl_A_door_to, i7_mgl_COL_HSIZE");
 		WRITE("))");
 	} else if (Str::len(test_fn) > 0) {
 		WRITE("(%S(proc, ", test_fn);

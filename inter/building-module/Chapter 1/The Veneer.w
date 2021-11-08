@@ -24,7 +24,6 @@
 @e ASM_NEG_RFALSE_VSYMB
 
 @e RESPONSETEXTS_VSYMB
-@e CREATEPROPERTYOFFSETS_VSYMB
 @e KINDHIERARCHY_VSYMB
 @e NO_RESPONSES_VSYMB
 
@@ -50,7 +49,6 @@ void Veneer::create_indexes(inter_tree *I) {
 	Veneer::index(I, ASM_NEG_RFALSE_VSYMB, I"__assembly_negated_rfalse_label", I"?~rfalse");
 
 	Veneer::index(I, RESPONSETEXTS_VSYMB, I"ResponseTexts", NULL);
-	Veneer::index(I, CREATEPROPERTYOFFSETS_VSYMB, I"CreatePropertyOffsets", NULL);
 	Veneer::index(I, KINDHIERARCHY_VSYMB, I"KindHierarchy", NULL);
 	Veneer::index(I, NO_RESPONSES_VSYMB, I"NO_RESPONSES", NULL);
 }

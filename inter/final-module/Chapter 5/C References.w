@@ -98,14 +98,12 @@ calling functions.
 
 @<This is a reference to a property value@> =
 	WRITE("(");
-	WRITE("i7_write_gprop_inner(proc, ");
+	WRITE("i7_change_gprop_value(proc, ");
 		Vanilla::node(gen, InterTree::first_child(storage_ref)); WRITE(", ");
 		Vanilla::node(gen, InterTree::second_child(storage_ref)); WRITE(", ");
 		Vanilla::node(gen, InterTree::third_child(storage_ref)); WRITE(", ");
 	if (val_supplied) { VNODE_2C; } else { WRITE("0"); }
 	WRITE(", %S", store_form);
-	WRITE(", i7_mgl_OBJECT_TY, i7_mgl_value_ranges, i7_mgl_value_property_holders, ");
-	WRITE("i7_mgl_A_door_to, i7_mgl_COL_HSIZE");
 	WRITE("))");
 
 @<This is a reference to something else@> =

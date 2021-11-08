@@ -42,7 +42,6 @@ before it is known how they will be used.
 	#ifdef TARGET_GLULX; VM_PreInitialise(); #Endif;
 	#Ifdef LanguageInitialise; LanguageInitialise(); #Endif;
 
-!	CreatePropertyOffsets();
 	HeapInitialise(); ! Create a completely unused memory allocation heap
 	StackFramingInitialise(); ! Create an empty stack
 	CreateDynamicRelations(); ! Create relation structures on the heap
