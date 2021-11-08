@@ -101,15 +101,24 @@ void CGlobals::declare_variables(code_generator *cgt, code_generation *gen, link
 	CodeGen::deselect(gen, saved);
 
 @<Define a more legible constant for self to the header target@> =
-	CObjectModel::define_header_constant_for_variable(gen, I"self", 0);
+	CGlobals::define_header_constant_for_variable(gen, I"self", 0);
 
 @<Define a more legible constant for the header target@> =
 	text_stream *name = Metadata::read_optional_textual(
 		Inter::Packages::container(var_name->definition), I"^name");
 	if (name)
-		CObjectModel::define_header_constant_for_variable(gen, name, N);
+		CGlobals::define_header_constant_for_variable(gen, name, N);
 	else 
-		CObjectModel::define_header_constant_for_variable(gen, identifier, N);
+		CGlobals::define_header_constant_for_variable(gen, identifier, N);
+
+@ =
+void CGlobals::define_header_constant_for_variable(code_generation *gen, text_stream *var_name,
+	int id) {
+	segmentation_pos saved = CodeGen::select(gen, c_variable_symbols_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define %S %d\n", CTarget::symbols_header_identifier(gen, I"V", var_name), id);
+	CodeGen::deselect(gen, saved);
+}
 
 @ Within a process |proc|, the current value of variable |i| is |proc->state.variables[i]|.
 

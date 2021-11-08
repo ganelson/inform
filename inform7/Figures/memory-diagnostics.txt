@@ -1,6 +1,6 @@
 Total memory consumption was 399939K = 391 MB
 
-61.0% was used for 2018882 objects, in 379614 frames in 305 x 800K = 244000K = 238 MB:
+61.0% was used for 2018880 objects, in 379612 frames in 305 x 800K = 244000K = 238 MB:
 
     10.2%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
      7.2%  text_stream_array                        5254 x 100 = 525400 objects, 29590528 bytes
@@ -98,7 +98,7 @@ Total memory consumption was 399939K = 391 MB
      ----  nonlocal_variable                        93 objects, 20088 bytes
      ----  property                                 146 objects, 19856 bytes
      ----  timed_rules_rfd_data                     400 objects, 19200 bytes
-     ----  method                                   376 objects, 18048 bytes
+     ----  method                                   374 objects, 17952 bytes
      ----  pcalc_prop_deferral                      86 objects, 17888 bytes
      ----  instance                                 167 objects, 17368 bytes
      ----  parse_node_tree                          20 objects, 17280 bytes
@@ -256,5 +256,5 @@ Total memory consumption was 399939K = 391 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-18.7% was overhead - 76684160 bytes = 74886K = 73 MB
+18.7% was overhead - 76684256 bytes = 74886K = 73 MB
 

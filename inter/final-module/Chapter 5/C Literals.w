@@ -219,8 +219,12 @@ from 4096. These are defined just as constants, with mangled names:
 =
 void CLiteralsModel::new_action(code_generator *cgt, code_generation *gen,
 	text_stream *name, int true_action, int N) {
-	if (true_action)
-		CObjectModel::define_header_constant_for_action(gen, name, name, N);
+	if (true_action) {
+		segmentation_pos saved = CodeGen::select(gen, c_actions_symbols_I7CGS);
+		text_stream *OUT = CodeGen::current(gen);
+		WRITE("#define %S %d\n", CTarget::symbols_header_identifier(gen, I"A", name), N);
+		CodeGen::deselect(gen, saved);
+	}
 	TEMPORARY_TEXT(O)
 	TEMPORARY_TEXT(M)
 	WRITE_TO(O, "##%S", name);

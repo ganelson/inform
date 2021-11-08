@@ -62,7 +62,8 @@ void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
 int i7_run_process(i7process_t *proc);
 void i7_benign_exit(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
-void i7_initializer(i7process_t *proc); /* part of the compiled story, not inform_clib.c */
+void i7_initialiser(i7process_t *proc); /* part of the compiled story, not inform_clib.c */
+void i7_initialise_object_tree(i7process_t *proc); /* ditto */
 #define i7_lvalue_SET 1
 #define i7_lvalue_PREDEC 2
 #define i7_lvalue_POSTDEC 3
@@ -176,22 +177,28 @@ char *i7_text_to_C_string(i7word_t str);
 void i7_print_dword(i7process_t *proc, i7word_t at);
 i7word_t i7_metaclass(i7process_t *proc, i7word_t id);
 int i7_ofclass(i7process_t *proc, i7word_t id, i7word_t cl_id);
+void i7_empty_object_tree(i7process_t *proc);
+i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
+i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
+void i7_move(i7process_t *proc, i7word_t obj, i7word_t to);
+i7word_t i7_parent(i7process_t *proc, i7word_t id);
+i7word_t i7_child(i7process_t *proc, i7word_t id);
+i7word_t i7_children(i7process_t *proc, i7word_t id);
+i7word_t i7_sibling(i7process_t *proc, i7word_t id);
 i7word_t fn_i7_mgl_CreatePropertyOffsets(i7process_t *proc);
 void i7_write_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t prop_id, i7word_t val);
 i7word_t i7_read_prop_value(i7process_t *proc, i7word_t owner_id, i7word_t pr_array);
 i7word_t i7_change_prop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr, i7word_t to, int way);
 void i7_give(i7process_t *proc, i7word_t owner, i7word_t prop, i7word_t val);
-i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
-i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
-void i7_initialise_object_tree(i7process_t *proc);
-int i7_has(i7process_t *proc, i7word_t obj, i7word_t attr);
+#define I7_MAX_PROPERTY_IDS 1000
+typedef struct i7_property_set {
+	i7word_t address[I7_MAX_PROPERTY_IDS];
+	i7word_t len[I7_MAX_PROPERTY_IDS];
+} i7_property_set;
+i7_property_set i7_properties[];
+int i7_has(i7process_t *proc, i7word_t obj, i7word_t either_or);
 int i7_provides(i7process_t *proc, i7word_t owner_id, i7word_t prop_id);
 int i7_in(i7process_t *proc, i7word_t obj1, i7word_t obj2);
-i7word_t i7_parent(i7process_t *proc, i7word_t id);
-i7word_t i7_child(i7process_t *proc, i7word_t id);
-i7word_t i7_children(i7process_t *proc, i7word_t id);
-i7word_t i7_sibling(i7process_t *proc, i7word_t id);
-void i7_move(i7process_t *proc, i7word_t obj, i7word_t to);
 void i7_provides_gprop_inner(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p, i7word_t *val,
 	i7word_t i7_mgl_OBJECT_TY, i7word_t i7_mgl_value_ranges, i7word_t i7_mgl_value_property_holders, i7word_t i7_mgl_A_door_to, i7word_t i7_mgl_COL_HSIZE);
 int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p,

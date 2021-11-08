@@ -109,6 +109,7 @@ int C_symbols_header_segments[] = {
 typedef struct C_generation_data {
 	int compile_main;
 	int compile_symbols;
+	struct dictionary *symbols_header_identifiers;
 	struct C_generation_assembly_data asmdata;
 	struct C_generation_memory_model_data memdata;
 	struct C_generation_function_model_data fndata;
@@ -121,6 +122,7 @@ typedef struct C_generation_data {
 void CTarget::initialise_data(code_generation *gen) {
 	C_GEN_DATA(compile_main) = TRUE;
 	C_GEN_DATA(compile_symbols) = FALSE;
+	C_GEN_DATA(symbols_header_identifiers) = Dictionaries::new(1024, TRUE);
 	CMemoryModel::initialise_data(gen);
 	CFunctionModel::initialise_data(gen);
 	CObjectModel::initialise_data(gen);
@@ -249,6 +251,37 @@ int CTarget::end_generation(code_generator *cgt, code_generation *gen) {
 	WRITE_TO(&HF, "\n/* (7) Function IDs */\n\n");
 	CodeGen::write_segment(&HF, gen->segmentation.segments[c_function_symbols_I7CGS]);
 	STREAM_CLOSE(&HF);
+
+@ When defining constants to be defined in the symbols header, the following
+function is a convenience, automatically ensuring that names never clash:
+
+=
+text_stream *CTarget::symbols_header_identifier(code_generation *gen,
+	text_stream *prefix, text_stream *raw) {
+	dictionary *D = C_GEN_DATA(symbols_header_identifiers);
+	text_stream *key = Str::new();
+	WRITE_TO(key, "i7_%S_", prefix);
+	LOOP_THROUGH_TEXT(pos, raw)
+		if (Characters::isalnum(Str::get(pos)))
+			PUT_TO(key, Str::get(pos));
+		else
+			PUT_TO(key, '_');
+	text_stream *dv = Dictionaries::get_text(D, key);
+	if (dv) {
+		TEMPORARY_TEXT(keyx)
+		int n = 2;
+		while (TRUE) {
+			Str::clear(keyx);
+			WRITE_TO(keyx, "%S_%d", key, n);
+			if (Dictionaries::get_text(D, keyx) == NULL) break;
+			n++;
+		}
+		DISCARD_TEXT(keyx)
+		WRITE_TO(key, "_%d", n);
+	}
+	Dictionaries::create_text(D, key);
+	return key;
+}
 
 @h Static supporting code.
 The C code generated here would not compile as a stand-alone file. It needs
@@ -519,14 +552,15 @@ will use it with due caution. It is essential that the underlying |jmp_buf| data
 not move in memory for any reason between the setting and the jumping. (This is
 why there is no mechanism to copy or fork an |i7_process_t|.)
 
-Note that the |i7_initializer| function is compiled and is not pre-written
+Note that the |i7_initialiser| function is compiled and is not pre-written
 like these other functions: see //C Object Model// for what it does.
 
 = (text to inform7_clib.h)
 int i7_run_process(i7process_t *proc);
 void i7_benign_exit(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
-void i7_initializer(i7process_t *proc); /* part of the compiled story, not inform_clib.c */
+void i7_initialiser(i7process_t *proc); /* part of the compiled story, not inform_clib.c */
+void i7_initialise_object_tree(i7process_t *proc); /* ditto */
 =
 
 = (text to inform7_clib.c)
@@ -539,8 +573,9 @@ int i7_run_process(i7process_t *proc) {
     } else {
 		i7_initialise_memory_and_stack(proc);
 		i7_initialise_variables(proc);
+		i7_empty_object_tree(proc);
+		i7_initialiser(proc);
 		i7_initialise_object_tree(proc);
-		i7_initializer(proc);
 		i7_initialise_streams(proc);
 		fn_i7_mgl_Main(proc);
 		proc->termination_code = 0; /* terminated because the program completed */

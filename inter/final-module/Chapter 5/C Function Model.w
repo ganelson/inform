@@ -500,7 +500,10 @@ for the wrapper.
 	VanillaFunctions::syntax_synopsis(synopsis, vf);
 	TEMPORARY_TEXT(val)
 	CFunctionModel::inward_C_function_identifier(gen, val, vf);
-	CObjectModel::define_header_constant_for_function(gen, synopsis, val);
+	segmentation_pos saved = CodeGen::select(gen, c_function_symbols_I7CGS);
+	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#define %S %S\n", CTarget::symbols_header_identifier(gen, I"F", synopsis), val);
+	CodeGen::deselect(gen, saved);
 	DISCARD_TEXT(val)
 	DISCARD_TEXT(synopsis)
 
