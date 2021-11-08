@@ -304,8 +304,8 @@ in I6 the only legal uses of |style| are |style bold| and so on: there is no
 legal way for |style| to be followed by an arbitrary value, as it is here. But
 Inform 6 will not be compiling this: Inform will convert |style V;| directly to
 the Inter statement |!style V|, which will then be translated to C as the function
-call |i7_style(proc, V)| -- and that function, in our library of C code supporting
-Inform, can handle any textual value of |V|.
+call |i7_styling(proc, 2, V)| -- and that function, in our library of C code
+supporting Inform, can handle any textual value of |V|.
 
 With that bit of fancy footwork out of the way, we can make a pair of text
 substitutions |[style NAME]| and |[end style]|, with the possible range of

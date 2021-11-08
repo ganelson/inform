@@ -426,8 +426,8 @@ in I6 the only legal uses of <span class="extract"><span class="extract-syntax">
 legal way for <span class="extract"><span class="extract-syntax">style</span></span> to be followed by an arbitrary value, as it is here. But
 Inform 6 will not be compiling this: Inform will convert <span class="extract"><span class="extract-syntax">style V;</span></span> directly to
 the Inter statement <span class="extract"><span class="extract-syntax">!style V</span></span>, which will then be translated to C as the function
-call <span class="extract"><span class="extract-syntax">i7_style(proc, V)</span></span> &mdash; and that function, in our library of C code supporting
-Inform, can handle any textual value of <span class="extract"><span class="extract-syntax">V</span></span>.
+call <span class="extract"><span class="extract-syntax">i7_styling(proc, 2, V)</span></span> &mdash; and that function, in our library of C code
+supporting Inform, can handle any textual value of <span class="extract"><span class="extract-syntax">V</span></span>.
 </p>
 
 <p class="commentary">With that bit of fancy footwork out of the way, we can make a pair of text

@@ -416,7 +416,10 @@ typedef struct i7process_t {
 	void (*receiver)(int id, wchar_t c, char *style);
 	int send_count;
 	char *(*sender)(int count);
-	i7word_t (*communicator)(struct i7process_t *proc, char *id, int argc, i7word_t *args);
+	void (*stylist)(struct i7process_t *proc, i7word_t which, i7word_t what);
+	void (*glk_implementation)(struct i7process_t *proc, i7word_t glk_api_selector,
+		i7word_t varargc, i7word_t *z);
+	struct miniglk_data *miniglk;
 	int use_UTF8;
 } i7process_t;
 =
@@ -457,7 +460,10 @@ i7process_t i7_new_process(void) {
 	proc.receiver = i7_default_receiver;
 	proc.send_count = 0;
 	proc.sender = i7_default_sender;
+	proc.stylist = i7_default_stylist;
+	proc.glk_implementation = i7_default_glk;
 	proc.use_UTF8 = 1;
+	i7_initialise_miniglk_data(&proc);
 	return proc;
 }
 =
@@ -468,7 +474,6 @@ a new process, so we must define those:
 = (text to inform7_clib.h)
 char *i7_default_sender(int count);
 void i7_default_receiver(int id, wchar_t c, char *style);
-i7word_t i7_default_communicator(i7process_t *proc, char *id, int argc, i7word_t *args);
 =
 
 The receiver and sender functions allow our textual I/O to be managed by external
@@ -538,6 +543,29 @@ void i7_set_process_receiver(i7process_t *proc,
 }
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count)) {
 	proc->sender = sender;
+}
+=
+
+Similarly, ambitious projects which want their own complete I/O systems can
+set the following:
+
+= (text to inform7_clib.h)
+void i7_set_process_stylist(i7process_t *proc,
+	void (*stylist)(struct i7process_t *proc, i7word_t which, i7word_t what));
+void i7_set_process_glk_implementation(i7process_t *proc,
+	void (*glk_implementation)(struct i7process_t *proc, i7word_t glk_api_selector,
+		i7word_t varargc, i7word_t *z));
+=
+
+= (text to inform7_clib.c)
+void i7_set_process_stylist(i7process_t *proc,
+	void (*stylist)(struct i7process_t *proc, i7word_t which, i7word_t what)) {
+	proc->stylist = stylist;
+}
+void i7_set_process_glk_implementation(i7process_t *proc,
+	void (*glk_implementation)(struct i7process_t *proc, i7word_t glk_api_selector,
+		i7word_t varargc, i7word_t *z)) {
+	proc->glk_implementation = glk_implementation;
 }
 =
 

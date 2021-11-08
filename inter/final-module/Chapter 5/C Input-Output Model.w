@@ -17,470 +17,59 @@ void CInputOutputModel::begin(code_generation *gen) {
 void CInputOutputModel::end(code_generation *gen) {
 }
 
-@
+@ By input/output, we mean printing text, receiving textual commands, or reading
+or writing files. Inter can do this in one of two ways: either
+
+(a) With one of the following primitives, or
+(b) With an assembly-language opcode, and in particular |@glk|.
 
 =
 int CInputOutputModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	switch (bip) {
-		case SPACES_BIP:		 WRITE("for (int j = "); VNODE_1C; WRITE("; j > 0; j--) i7_print_char(proc, 32);"); break;
-		case FONT_BIP:           WRITE("i7_font(proc, "); VNODE_1C; WRITE(")"); break;
-		case STYLE_BIP:    		 WRITE("i7_style(proc, "); VNODE_1C; WRITE(")"); break;
-		case PRINT_BIP:          WRITE("i7_print_C_string(proc, "); CodeGen::lt_mode(gen, PRINTING_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); WRITE(")"); break;
-		case PRINTCHAR_BIP:      WRITE("i7_print_char(proc, "); VNODE_1C; WRITE(")"); break;
-		case PRINTNL_BIP:        WRITE("i7_print_char(proc, '\\n')"); break;
-		case PRINTOBJ_BIP:       WRITE("i7_print_object(proc, "); VNODE_1C; WRITE(")"); break;
-		case PRINTNUMBER_BIP:    WRITE("i7_print_decimal(proc, "); VNODE_1C; WRITE(")"); break;
-		case PRINTSTRING_BIP:    WRITE("i7_print_C_string(proc, i7_text_to_C_string("); VNODE_1C; WRITE("))"); break;
-		case PRINTDWORD_BIP:     WRITE("i7_print_dword(proc, "); VNODE_1C; WRITE(")"); break;
-		case BOX_BIP:            WRITE("i7_print_box(proc, "); CodeGen::lt_mode(gen, BOX_LTM); VNODE_1C; CodeGen::lt_mode(gen, REGULAR_LTM); WRITE(")"); break;
-		default: 				 return NOT_APPLICABLE;
+		case SPACES_BIP:
+			WRITE("for (int j = "); VNODE_1C;
+			WRITE("; j > 0; j--) i7_print_char(proc, 32);"); break;
+		case FONT_BIP:
+			WRITE("i7_styling(proc, 1, "); VNODE_1C; WRITE(")"); break;
+		case STYLE_BIP:
+			WRITE("i7_styling(proc, 2, "); VNODE_1C; WRITE(")"); break;
+		case PRINT_BIP:
+			WRITE("i7_print_C_string(proc, ");
+			CodeGen::lt_mode(gen, PRINTING_LTM); VNODE_1C;
+			CodeGen::lt_mode(gen, REGULAR_LTM); WRITE(")"); break;
+		case PRINTCHAR_BIP:
+			WRITE("i7_print_char(proc, "); VNODE_1C; WRITE(")"); break;
+		case PRINTNL_BIP:
+			WRITE("i7_print_char(proc, '\\n')"); break;
+		case PRINTOBJ_BIP:
+			WRITE("i7_print_object(proc, "); VNODE_1C; WRITE(")"); break;
+		case PRINTNUMBER_BIP:
+			WRITE("i7_print_decimal(proc, "); VNODE_1C; WRITE(")"); break;
+		case PRINTSTRING_BIP:
+			WRITE("i7_print_C_string(proc, i7_text_to_C_string("); VNODE_1C;
+			WRITE("))"); break;
+		case PRINTDWORD_BIP:
+			WRITE("i7_print_dword(proc, "); VNODE_1C; WRITE(")"); break;
+		case BOX_BIP:
+			WRITE("i7_print_box(proc, "); CodeGen::lt_mode(gen, BOX_LTM); VNODE_1C;
+			CodeGen::lt_mode(gen, REGULAR_LTM); WRITE(")"); break;
+		default: return NOT_APPLICABLE;
 	}
 	return FALSE;
 }
 
-@
+@ See //C Literals// for the implementation of |i7_print_dword|: it funnels
+through to |i7_print_char|, and so do all of these:
 
 = (text to inform7_clib.h)
-#define I7_BODY_TEXT_ID    201
-#define I7_STATUS_TEXT_ID  202
-#define I7_BOX_TEXT_ID     203
-
-void i7_style(i7process_t *proc, i7word_t what);
-void i7_font(i7process_t *proc, int what);
-
-#define fileusage_Data (0x00)
-#define fileusage_SavedGame (0x01)
-#define fileusage_Transcript (0x02)
-#define fileusage_InputRecord (0x03)
-#define fileusage_TypeMask (0x0f)
-
-#define fileusage_TextMode   (0x100)
-#define fileusage_BinaryMode (0x000)
-
-#define filemode_Write (0x01)
-#define filemode_Read (0x02)
-#define filemode_ReadWrite (0x03)
-#define filemode_WriteAppend (0x05)
-
-typedef struct i7_fileref {
-	i7word_t usage;
-	i7word_t name;
-	i7word_t rock;
-	char leafname[128];
-	FILE *handle;
-} i7_fileref;
-
-i7word_t i7_do_glk_fileref_create_by_name(i7process_t *proc, i7word_t usage, i7word_t name, i7word_t rock);
-int i7_fseek(i7process_t *proc, int id, int pos, int origin);
-int i7_ftell(i7process_t *proc, int id);
-int i7_fopen(i7process_t *proc, int id, int mode);
-void i7_fclose(i7process_t *proc, int id);
-i7word_t i7_do_glk_fileref_does_file_exist(i7process_t *proc, i7word_t id);
-void i7_fputc(i7process_t *proc, int c, int id);
-int i7_fgetc(i7process_t *proc, int id);
-typedef struct i7_stream {
-	FILE *to_file;
-	i7word_t to_file_id;
-	wchar_t *to_memory;
-	size_t memory_used;
-	size_t memory_capacity;
-	i7word_t previous_id;
-	i7word_t write_here_on_closure;
-	size_t write_limit;
-	int active;
-	int encode_UTF8;
-	int char_size;
-	int chars_read;
-	int read_position;
-	int end_position;
-	int owned_by_window_id;
-	int fixed_pitch;
-	char style[128];
-	char composite_style[300];
-} i7_stream;
-i7word_t i7_do_glk_stream_get_current(i7process_t *proc);
-i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id);
-=
-
-= (text to inform7_clib.c)
-#define I7_MAX_STREAMS 128
-
-i7_stream i7_memory_streams[I7_MAX_STREAMS];
-
-i7word_t fn_i7_mgl_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt, i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dsize, i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp, i7word_t i7_mgl_local_r);
-i7word_t fn_i7_mgl_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from, i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect, i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes, i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags, i7word_t i7_mgl_local_entry_size_in_bytes, i7word_t i7_mgl_local_seek_byte_position);
-void i7_style(i7process_t *proc, i7word_t what_v) {
-	i7_stream *S = &(i7_memory_streams[proc->state.current_output_stream_ID]);
-	S->style[0] = 0;
-	switch (what_v) {
-		case 0: break;
-		case 1: sprintf(S->style, "bold"); break;
-		case 2: sprintf(S->style, "italic"); break;
-		case 3: sprintf(S->style, "reverse"); break;
-		default: {
-			int L = fn_i7_mgl_TEXT_TY_CharacterLength(proc, what_v, 0, 0, 0, 0, 0, 0);
-			if (L > 127) L = 127;
-			for (int i=0; i<L; i++) S->style[i] = fn_i7_mgl_BlkValueRead(proc, what_v, i, 0, 0, 0, 0, 0, 0, 0);
-			S->style[L] = 0;
-		}
-	}
-	sprintf(S->composite_style, "%s", S->style);
-	if (S->fixed_pitch) {
-		if (strlen(S->style) > 0) sprintf(S->composite_style + strlen(S->composite_style), ",");
-		sprintf(S->composite_style + strlen(S->composite_style), "fixedpitch");
-	}
-}
-
-void i7_font(i7process_t *proc, int what) {
-	i7_stream *S = &(i7_memory_streams[proc->state.current_output_stream_ID]);
-	S->fixed_pitch = what;
-	sprintf(S->composite_style, "%s", S->style);
-	if (S->fixed_pitch) {
-		if (strlen(S->style) > 0) sprintf(S->composite_style + strlen(S->composite_style), ",");
-		sprintf(S->composite_style + strlen(S->composite_style), "fixedpitch");
-	}
-}
-
-i7_fileref filerefs[128 + 32];
-int i7_no_filerefs = 0;
-
-i7word_t i7_do_glk_fileref_create_by_name(i7process_t *proc, i7word_t usage, i7word_t name, i7word_t rock) {
-	if (i7_no_filerefs >= 128) {
-		fprintf(stderr, "Out of streams\n"); i7_fatal_exit(proc);
-	}
-	int id = i7_no_filerefs++;
-	filerefs[id].usage = usage;
-	filerefs[id].name = name;
-	filerefs[id].rock = rock;
-	filerefs[id].handle = NULL;
-	for (int i=0; i<128; i++) {
-		i7byte_t c = i7_read_byte(proc, name+1+i);
-		filerefs[id].leafname[i] = c;
-		if (c == 0) break;
-	}
-	filerefs[id].leafname[127] = 0;
-	sprintf(filerefs[id].leafname + strlen(filerefs[id].leafname), ".glkdata");
-	return id;
-}
-
-int i7_fseek(i7process_t *proc, int id, int pos, int origin) {
-	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(proc); }
-	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(proc); }
-	return fseek(filerefs[id].handle, pos, origin);
-}
-
-int i7_ftell(i7process_t *proc, int id) {
-	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(proc); }
-	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(proc); }
-	int t = ftell(filerefs[id].handle);
-	return t;
-}
-
-int i7_fopen(i7process_t *proc, int id, int mode) {
-	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(proc); }
-	if (filerefs[id].handle) { fprintf(stderr, "File already open\n"); i7_fatal_exit(proc); }
-	char *c_mode = "r";
-	switch (mode) {
-		case filemode_Write: c_mode = "w"; break;
-		case filemode_Read: c_mode = "r"; break;
-		case filemode_ReadWrite: c_mode = "r+"; break;
-		case filemode_WriteAppend: c_mode = "r+"; break;
-	}
-	FILE *h = fopen(filerefs[id].leafname, c_mode);
-	if (h == NULL) return 0;
-	filerefs[id].handle = h;
-	if (mode == filemode_WriteAppend) i7_fseek(proc, id, 0, SEEK_END);
-	return 1;
-}
-
-void i7_fclose(i7process_t *proc, int id) {
-	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(proc); }
-	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(proc); }
-	fclose(filerefs[id].handle);
-	filerefs[id].handle = NULL;
-}
-
-
-i7word_t i7_do_glk_fileref_does_file_exist(i7process_t *proc, i7word_t id) {
-	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(proc); }
-	if (filerefs[id].handle) return 1;
-	if (i7_fopen(proc, id, filemode_Read)) {
-		i7_fclose(proc, id); return 1;
-	}
-	return 0;
-}
-
-void i7_fputc(i7process_t *proc, int c, int id) {
-	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(proc); }
-	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(proc); }
-	fputc(c, filerefs[id].handle);
-}
-
-int i7_fgetc(i7process_t *proc, int id) {
-	if ((id < 0) || (id >= 128)) { fprintf(stderr, "Too many files\n"); i7_fatal_exit(proc); }
-	if (filerefs[id].handle == NULL) { fprintf(stderr, "File not open\n"); i7_fatal_exit(proc); }
-	int c = fgetc(filerefs[id].handle);
-	return c;
-}
-
-i7word_t i7_stdout_id = 0, i7_stderr_id = 1;
-
-i7word_t i7_do_glk_stream_get_current(i7process_t *proc) {
-	return proc->state.current_output_stream_ID;
-}
-
-void i7_do_glk_stream_set_current(i7process_t *proc, i7word_t id) {
-	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(proc); }
-	proc->state.current_output_stream_ID = id;
-}
-
-i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id) {
-	i7_stream S;
-	S.to_file = F;
-	S.to_file_id = -1;
-	S.to_memory = NULL;
-	S.memory_used = 0;
-	S.memory_capacity = 0;
-	S.write_here_on_closure = 0;
-	S.write_limit = 0;
-	S.previous_id = 0;
-	S.active = 0;
-	S.encode_UTF8 = 0;
-	S.char_size = 4;
-	S.chars_read = 0;
-	S.read_position = 0;
-	S.end_position = 0;
-	S.owned_by_window_id = win_id;
-	S.style[0] = 0;
-	S.fixed_pitch = 0;
-	S.composite_style[0] = 0;
-	return S;
-}
-=
-
-@
-
-= (text to inform7_clib.h)
-void i7_initialise_streams(i7process_t *proc);
-i7word_t i7_open_stream(i7process_t *proc, FILE *F, int win_id);
-i7word_t i7_do_glk_stream_open_memory(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock);
-i7word_t i7_do_glk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock);
-i7word_t i7_do_glk_stream_open_file(i7process_t *proc, i7word_t fileref, i7word_t usage, i7word_t rock);
-#define seekmode_Start (0)
-#define seekmode_Current (1)
-#define seekmode_End (2)
-void i7_do_glk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos, i7word_t seekmode);
-i7word_t i7_do_glk_stream_get_position(i7process_t *proc, i7word_t id);
-void i7_do_glk_stream_close(i7process_t *proc, i7word_t id, i7word_t result);
-typedef struct i7_winref {
-	i7word_t type;
-	i7word_t stream_id;
-	i7word_t rock;
-} i7_winref;
-i7word_t i7_do_glk_window_open(i7process_t *proc, i7word_t split, i7word_t method, i7word_t size, i7word_t wintype, i7word_t rock);
-i7word_t i7_stream_of_window(i7process_t *proc, i7word_t id);
-i7word_t i7_rock_of_window(i7process_t *proc, i7word_t id);
-void i7_to_receiver(i7process_t *proc, i7word_t rock, wchar_t c);
-void i7_do_glk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t x);
-i7word_t i7_do_glk_get_char_stream(i7process_t *proc, i7word_t stream_id);
-void i7_print_char(i7process_t *proc, i7word_t x);
 void i7_print_C_string(i7process_t *proc, char *c_string);
 void i7_print_decimal(i7process_t *proc, i7word_t x);
-
+void i7_print_object(i7process_t *proc, i7word_t x);
+void i7_print_box(i7process_t *proc, i7word_t x);
 =
 
 = (text to inform7_clib.c)
-void i7_initialise_streams(i7process_t *proc) {
-	for (int i=0; i<I7_MAX_STREAMS; i++) i7_memory_streams[i] = i7_new_stream(proc, NULL, 0);
-	i7_memory_streams[i7_stdout_id] = i7_new_stream(proc, stdout, 0);
-	i7_memory_streams[i7_stdout_id].active = 1;
-	i7_memory_streams[i7_stdout_id].encode_UTF8 = 1;
-	i7_memory_streams[i7_stderr_id] = i7_new_stream(proc, stderr, 0);
-	i7_memory_streams[i7_stderr_id].active = 1;
-	i7_memory_streams[i7_stderr_id].encode_UTF8 = 1;
-	i7_do_glk_stream_set_current(proc, i7_stdout_id);
-}
-
-i7word_t i7_open_stream(i7process_t *proc, FILE *F, int win_id) {
-	for (int i=0; i<I7_MAX_STREAMS; i++)
-		if (i7_memory_streams[i].active == 0) {
-			i7_memory_streams[i] = i7_new_stream(proc, F, win_id);
-			i7_memory_streams[i].active = 1;
-			i7_memory_streams[i].previous_id = proc->state.current_output_stream_ID;
-			return i;
-		}
-	fprintf(stderr, "Out of streams\n"); i7_fatal_exit(proc);
-	return 0;
-}
-
-i7word_t i7_do_glk_stream_open_memory(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock) {
-	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); i7_fatal_exit(proc); }
-	i7word_t id = i7_open_stream(proc, NULL, 0);
-	i7_memory_streams[id].write_here_on_closure = buffer;
-	i7_memory_streams[id].write_limit = (size_t) len;
-	i7_memory_streams[id].char_size = 1;
-	proc->state.current_output_stream_ID = id;
-	return id;
-}
-
-i7word_t i7_do_glk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock) {
-	if (fmode != 1) { fprintf(stderr, "Only file mode 1 supported, not %d\n", fmode); i7_fatal_exit(proc); }
-	i7word_t id = i7_open_stream(proc, NULL, 0);
-	i7_memory_streams[id].write_here_on_closure = buffer;
-	i7_memory_streams[id].write_limit = (size_t) len;
-	i7_memory_streams[id].char_size = 4;
-	proc->state.current_output_stream_ID = id;
-	return id;
-}
-
-i7word_t i7_do_glk_stream_open_file(i7process_t *proc, i7word_t fileref, i7word_t usage, i7word_t rock) {
-	i7word_t id = i7_open_stream(proc, NULL, 0);
-	i7_memory_streams[id].to_file_id = fileref;
-	if (i7_fopen(proc, fileref, usage) == 0) return 0;
-	return id;
-}
-
-void i7_do_glk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos, i7word_t seekmode) {
-	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(proc); }
-	i7_stream *S = &(i7_memory_streams[id]);
-	if (S->to_file_id >= 0) {
-		int origin;
-		switch (seekmode) {
-			case seekmode_Start: origin = SEEK_SET; break;
-			case seekmode_Current: origin = SEEK_CUR; break;
-			case seekmode_End: origin = SEEK_END; break;
-			default: fprintf(stderr, "Unknown seekmode\n"); i7_fatal_exit(proc);
-		}
-		i7_fseek(proc, S->to_file_id, pos, origin);
-	} else {
-		fprintf(stderr, "glk_stream_set_position supported only for file streams\n"); i7_fatal_exit(proc);
-	}
-}
-
-i7word_t i7_do_glk_stream_get_position(i7process_t *proc, i7word_t id) {
-	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(proc); }
-	i7_stream *S = &(i7_memory_streams[id]);
-	if (S->to_file_id >= 0) {
-		return (i7word_t) i7_ftell(proc, S->to_file_id);
-	}
-	return (i7word_t) S->memory_used;
-}
-
-void i7_do_glk_stream_close(i7process_t *proc, i7word_t id, i7word_t result) {
-	if ((id < 0) || (id >= I7_MAX_STREAMS)) { fprintf(stderr, "Stream ID %d out of range\n", id); i7_fatal_exit(proc); }
-	if (id == 0) { fprintf(stderr, "Cannot close stdout\n"); i7_fatal_exit(proc); }
-	if (id == 1) { fprintf(stderr, "Cannot close stderr\n"); i7_fatal_exit(proc); }
-	i7_stream *S = &(i7_memory_streams[id]);
-	if (S->active == 0) { fprintf(stderr, "Stream %d already closed\n", id); i7_fatal_exit(proc); }
-	if (proc->state.current_output_stream_ID == id) proc->state.current_output_stream_ID = S->previous_id;
-	if (S->write_here_on_closure != 0) {
-		if (S->char_size == 4) {
-			for (size_t i = 0; i < S->write_limit; i++)
-				if (i < S->memory_used)
-					i7_write_word(proc, S->write_here_on_closure, i, S->to_memory[i]);
-				else
-					i7_write_word(proc, S->write_here_on_closure, i, 0);
-		} else {
-			for (size_t i = 0; i < S->write_limit; i++)
-				if (i < S->memory_used)
-					i7_write_byte(proc, S->write_here_on_closure + i, S->to_memory[i]);
-				else
-					i7_write_byte(proc, S->write_here_on_closure + i, 0);
-		}
-	}
-	if (result == -1) {
-		i7_push(proc, S->chars_read);
-		i7_push(proc, S->memory_used);
-	} else if (result != 0) {
-		i7_write_word(proc, result, 0, S->chars_read);
-		i7_write_word(proc, result, 1, S->memory_used);
-	}
-	if (S->to_file_id >= 0) i7_fclose(proc, S->to_file_id);
-	S->active = 0;
-	S->memory_used = 0;
-}
-
-i7_winref winrefs[128];
-int i7_no_winrefs = 1;
-
-i7word_t i7_do_glk_window_open(i7process_t *proc, i7word_t split, i7word_t method, i7word_t size, i7word_t wintype, i7word_t rock) {
-	if (i7_no_winrefs >= 128) {
-		fprintf(stderr, "Out of windows\n"); i7_fatal_exit(proc);
-	}
-	int id = i7_no_winrefs++;
-	winrefs[id].type = wintype;
-	winrefs[id].stream_id = i7_open_stream(proc, stdout, id);
-	winrefs[id].rock = rock;
-	return id;
-}
-
-i7word_t i7_stream_of_window(i7process_t *proc, i7word_t id) {
-	if ((id < 0) || (id >= i7_no_winrefs)) { fprintf(stderr, "Window ID %d out of range\n", id); i7_fatal_exit(proc); }
-	return winrefs[id].stream_id;
-}
-
-i7word_t i7_rock_of_window(i7process_t *proc, i7word_t id) {
-	if ((id < 0) || (id >= i7_no_winrefs)) { fprintf(stderr, "Window ID %d out of range\n", id); i7_fatal_exit(proc); }
-	return winrefs[id].rock;
-}
-
-void i7_to_receiver(i7process_t *proc, i7word_t rock, wchar_t c) {
-	i7_stream *S = &(i7_memory_streams[proc->state.current_output_stream_ID]);
-	if (proc->receiver == NULL) fputc(c, stdout);
-	(proc->receiver)(rock, c, S->composite_style);
-}
-
-void i7_do_glk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t x) {
-	i7_stream *S = &(i7_memory_streams[stream_id]);
-	if (S->to_file) {
-		int win_id = S->owned_by_window_id;
-		int rock = -1;
-		if (win_id >= 1) rock = i7_rock_of_window(proc, win_id);
-		unsigned int c = (unsigned int) x;
-		if (proc->use_UTF8) {
-			if (c >= 0x800) {
-				i7_to_receiver(proc, rock, 0xE0 + (c >> 12));
-				i7_to_receiver(proc, rock, 0x80 + ((c >> 6) & 0x3f));
-				i7_to_receiver(proc, rock, 0x80 + (c & 0x3f));
-			} else if (c >= 0x80) {
-				i7_to_receiver(proc, rock, 0xC0 + (c >> 6));
-				i7_to_receiver(proc, rock, 0x80 + (c & 0x3f));
-			} else i7_to_receiver(proc, rock, (int) c);
-		} else {
-			i7_to_receiver(proc, rock, (int) c);
-		}
-	} else if (S->to_file_id >= 0) {
-		i7_fputc(proc, (int) x, S->to_file_id);
-		S->end_position++;
-	} else {
-		if (S->memory_used >= S->memory_capacity) {
-			size_t needed = 4*S->memory_capacity;
-			if (needed == 0) needed = 1024;
-			wchar_t *new_data = (wchar_t *) calloc(needed, sizeof(wchar_t));
-			if (new_data == NULL) { fprintf(stderr, "Out of memory\n"); i7_fatal_exit(proc); }
-			for (size_t i=0; i<S->memory_used; i++) new_data[i] = S->to_memory[i];
-			free(S->to_memory);
-			S->to_memory = new_data;
-		}
-		S->to_memory[S->memory_used++] = (wchar_t) x;
-	}
-}
-
-i7word_t i7_do_glk_get_char_stream(i7process_t *proc, i7word_t stream_id) {
-	i7_stream *S = &(i7_memory_streams[stream_id]);
-	if (S->to_file_id >= 0) {
-		S->chars_read++;
-		return i7_fgetc(proc, S->to_file_id);
-	}
-	return 0;
-}
-
-void i7_print_char(i7process_t *proc, i7word_t x) {
-	if (x == 13) x = 10;
-	i7_do_glk_put_char_stream(proc, proc->state.current_output_stream_ID, x);
-}
-
 void i7_print_C_string(i7process_t *proc, char *c_string) {
 	if (c_string)
 		for (int i=0; c_string[i]; i++)
@@ -492,30 +81,68 @@ void i7_print_decimal(i7process_t *proc, i7word_t x) {
 	sprintf(room, "%d", (int) x);
 	i7_print_C_string(proc, room);
 }
+
+void i7_print_object(i7process_t *proc, i7word_t x) {
+	i7_print_decimal(proc, x);
+}
+
+void i7_print_box(i7process_t *proc, i7word_t x) {
+	printf("Unimplemented: i7_print_box.\n");
+	i7_fatal_exit(proc);
+}
 =
 
-= (text to inform7_clib.h)
-#define evtype_None (0)
-#define evtype_Timer (1)
-#define evtype_CharInput (2)
-#define evtype_LineInput (3)
-#define evtype_MouseInput (4)
-#define evtype_Arrange (5)
-#define evtype_Redraw (6)
-#define evtype_SoundNotify (7)
-#define evtype_Hyperlink (8)
-#define evtype_VolumeNotify (9)
+@ Which in turn uses the |@glk| opcode:
 
-typedef struct i7_glk_event {
-	i7word_t type;
-	i7word_t win_id;
-	i7word_t val1;
-	i7word_t val2;
-} i7_glk_event;
-i7_glk_event *i7_next_event(i7process_t *proc);
-void i7_make_event(i7process_t *proc, i7_glk_event e);
-i7word_t i7_do_glk_select(i7process_t *proc, i7word_t structure);
-i7word_t i7_do_glk_request_line_event(i7process_t *proc, i7word_t window_id, i7word_t buffer, i7word_t max_len, i7word_t init_len);
+= (text to inform7_clib.h)
+void i7_print_char(i7process_t *proc, i7word_t x);
+=
+
+= (text to inform7_clib.c)
+void i7_print_char(i7process_t *proc, i7word_t x) {
+	if (x == 13) x = 10;
+	i7_push(proc, x);
+	i7word_t current = 0;
+	i7_opcode_glk(proc, i7_glk_stream_get_current, 0, &current);
+	i7_push(proc, current);
+	i7_opcode_glk(proc, i7_glk_put_char_stream, 2, NULL);
+}
+=
+
+@ At this point, then, all of our I/O needs will be handled if we can just
+define two functions: |i7_styling|, for setting the font style, and |i7_opcode_glk|.
+So we're nearly done, right? Right?
+
+But in fact we route both of these functions through hooks which the user can
+provide, so that the user can change the entire I/O model (if she is willing to
+code up an alternative):
+
+= (text to inform7_clib.h)
+void i7_styling(i7process_t *proc, i7word_t which, i7word_t what);
+void i7_default_stylist(i7process_t *proc, i7word_t which, i7word_t what);
+void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc,
+	i7word_t *z);
+void i7_default_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc,
+	i7word_t *z);
+=
+
+= (text to inform7_clib.c)
+void i7_styling(i7process_t *proc, i7word_t which, i7word_t what) {
+	(proc->stylist)(proc, which, what);
+}
+void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc,
+	i7word_t *z) {
+	(proc->glk_implementation)(proc, glk_api_selector, varargc, z);
+}
+=
+
+@ What makes this more burdensome is that |@glk| is not so much a single opcode
+as an entire instruction set: it is an compendium of over 120 disparate operations.
+Indeed, the |glk_api_selector| argument to |i7_opcode_glk| chooses which one is
+being used. For convenience, we define a set of names for them all -- which does
+not imply any commitment to implement them all.
+
+= (text to inform7_clib.h)
 #define i7_glk_exit 0x0001
 #define i7_glk_set_interrupt_handler 0x0002
 #define i7_glk_tick 0x0003
@@ -639,181 +266,58 @@ i7word_t i7_do_glk_request_line_event(i7process_t *proc, i7word_t window_id, i7w
 #define i7_glk_date_to_time_local 0x016D
 #define i7_glk_date_to_simple_time_utc 0x016E
 #define i7_glk_date_to_simple_time_local 0x016F
-void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i7word_t *z);
-i7word_t fn_i7_mgl_IndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-i7word_t fn_i7_mgl_DefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-i7word_t fn_i7_mgl_CIndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-i7word_t fn_i7_mgl_CDefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-i7word_t fn_i7_mgl_PrintShortName(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-void i7_print_name(i7process_t *proc, i7word_t x);
-void i7_print_object(i7process_t *proc, i7word_t x);
-void i7_print_box(i7process_t *proc, i7word_t x);
-void i7_read(i7process_t *proc, i7word_t x);
 =
 
-= (text to inform7_clib.c)
-i7_glk_event i7_events_ring_buffer[32];
-int i7_rb_back = 0, i7_rb_front = 0;
+A few other constants will also be useful. These are the window IDs for the
+three Glk windows used by the standard Inform 7 kits: |I7_BODY_TEXT_ID| is
+where text is regularly printed; |I7_STATUS_TEXT_ID| is for the "status line"
+at the top of a traditional interactive fiction display, but can simply be
+ignored for non-IF purposes; and |I7_BOX_TEXT_ID| is where box quotations
+would be displayed over the top of text, though C projects probably should
+not use this, and the default Glk implementation here ignores it.
 
-i7_glk_event *i7_next_event(i7process_t *proc) {
-	if (i7_rb_front == i7_rb_back) return NULL;
-	i7_glk_event *e = &(i7_events_ring_buffer[i7_rb_back]);
-	i7_rb_back++; if (i7_rb_back == 32) i7_rb_back = 0;
-	return e;
-}
+= (text to inform7_clib.h)
+#define I7_BODY_TEXT_ID          201
+#define I7_STATUS_TEXT_ID        202
+#define I7_BOX_TEXT_ID           203
+=
 
-void i7_make_event(i7process_t *proc, i7_glk_event e) {
-	i7_events_ring_buffer[i7_rb_front] = e;
-	i7_rb_front++; if (i7_rb_front == 32) i7_rb_front = 0;
-}
+These are needed for different forms of file I/O:
 
-i7word_t i7_do_glk_select(i7process_t *proc, i7word_t structure) {
-	i7_glk_event *e = i7_next_event(proc);
-	if (e == NULL) {
-		fprintf(stderr, "No events available to select\n"); i7_fatal_exit(proc);
-	}
-	if (structure == -1) {
-		i7_push(proc, e->type);
-		i7_push(proc, e->win_id);
-		i7_push(proc, e->val1);
-		i7_push(proc, e->val2);
-	} else {
-		if (structure) {
-			i7_write_word(proc, structure, 0, e->type);
-			i7_write_word(proc, structure, 1, e->win_id);
-			i7_write_word(proc, structure, 2, e->val1);
-			i7_write_word(proc, structure, 3, e->val2);
-		}
-	}
-	return 0;
-}
+= (text to inform7_clib.h)
+#define i7_fileusage_Data        0x00
+#define i7_fileusage_SavedGame   0x01
+#define i7_fileusage_Transcript  0x02
+#define i7_fileusage_InputRecord 0x03
+#define i7_fileusage_TypeMask    0x0f
+#define i7_fileusage_TextMode    0x100
+#define i7_fileusage_BinaryMode  0x000
 
-int i7_no_lr = 0;
-i7word_t i7_do_glk_request_line_event(i7process_t *proc, i7word_t window_id, i7word_t buffer, i7word_t max_len, i7word_t init_len) {
-	i7_glk_event e;
-	e.type = evtype_LineInput;
-	e.win_id = window_id;
-	e.val1 = 1;
-	e.val2 = 0;
-	wchar_t c; int pos = init_len;
-	if (proc->sender == NULL) i7_benign_exit(proc);
-	char *s = (proc->sender)(proc->send_count++);
-	int i = 0;
-	while (1) {
-		c = s[i++];
-		if ((c == EOF) || (c == 0) || (c == '\n') || (c == '\r')) break;
-		if (pos < max_len) i7_write_byte(proc, buffer + pos++, c);
-	}
-	if (pos < max_len) i7_write_byte(proc, buffer + pos, 0); else i7_write_byte(proc, buffer + max_len-1, 0);
-	e.val1 = pos;
-	i7_make_event(proc, e);
-	if (i7_no_lr++ == 1000) {
-		fprintf(stdout, "[Too many line events: terminating to prevent hang]\n"); exit(0);
-	}
-	return 0;
-}
+#define i7_filemode_Write        0x01
+#define i7_filemode_Read         0x02
+#define i7_filemode_ReadWrite    0x03
+#define i7_filemode_WriteAppend  0x05
+=
 
+And these are modes for seeking a position in a file:
 
-void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i7word_t *z) {
-	i7_debug_stack("i7_opcode_glk");
-	i7word_t args[5] = { 0, 0, 0, 0, 0 }, argc = 0;
-	while (varargc > 0) {
-		i7word_t v = i7_pull(proc);
-		if (argc < 5) args[argc++] = v;
-		varargc--;
-	}
-	
-	int rv = 0;
-	switch (glk_api_selector) {
-		case i7_glk_gestalt:
-			rv = 1; break;
-		case i7_glk_window_iterate:
-			rv = 0; break;
-		case i7_glk_window_open:
-			rv = i7_do_glk_window_open(proc, args[0], args[1], args[2], args[3], args[4]); break;
-		case i7_glk_set_window:
-			i7_do_glk_stream_set_current(proc, i7_stream_of_window(proc, args[0])); break;
-		case i7_glk_stream_iterate:
-			rv = 0; break;
-		case i7_glk_fileref_iterate:
-			rv = 0; break;
-		case i7_glk_stylehint_set:
-			rv = 0; break;
-		case i7_glk_schannel_iterate:
-			rv = 0; break;
-		case i7_glk_schannel_create:
-			rv = 0; break;
-		case i7_glk_set_style:
-			rv = 0; break;
-		case i7_glk_window_move_cursor:
-			rv = 0; break;
-		case i7_glk_stream_get_position:
-			rv = i7_do_glk_stream_get_position(proc, args[0]); break;
-		case i7_glk_window_get_size:
-			if (args[0]) i7_write_word(proc, args[0], 0, 80);
-			if (args[1]) i7_write_word(proc, args[1], 0, 8);
-			rv = 0; break;
-		case i7_glk_request_line_event:
-			rv = i7_do_glk_request_line_event(proc, args[0], args[1], args[2], args[3]); break;
-		case i7_glk_select:
-			rv = i7_do_glk_select(proc, args[0]); break;
-		case i7_glk_stream_close:
-			i7_do_glk_stream_close(proc, args[0], args[1]); break;
-		case i7_glk_stream_set_current:
-			i7_do_glk_stream_set_current(proc, args[0]); break;
-		case i7_glk_stream_get_current:
-			rv = i7_do_glk_stream_get_current(proc); break;
-		case i7_glk_stream_open_memory:
-			rv = i7_do_glk_stream_open_memory(proc, args[0], args[1], args[2], args[3]); break;
-		case i7_glk_stream_open_memory_uni:
-			rv = i7_do_glk_stream_open_memory_uni(proc, args[0], args[1], args[2], args[3]); break;
-		case i7_glk_fileref_create_by_name:
-			rv = i7_do_glk_fileref_create_by_name(proc, args[0], args[1], args[2]); break;
-		case i7_glk_fileref_does_file_exist:
-			rv = i7_do_glk_fileref_does_file_exist(proc, args[0]); break;
-		case i7_glk_stream_open_file:
-			rv = i7_do_glk_stream_open_file(proc, args[0], args[1], args[2]); break;
-		case i7_glk_fileref_destroy:
-			rv = 0; break;
-		case i7_glk_char_to_lower:
-			rv = args[0];
-			if (((rv >= 0x41) && (rv <= 0x5A)) ||
-				((rv >= 0xC0) && (rv <= 0xD6)) ||
-				((rv >= 0xD8) && (rv <= 0xDE))) rv += 32;
-			break;
-		case i7_glk_char_to_upper:
-			rv = args[0];
-			if (((rv >= 0x61) && (rv <= 0x7A)) ||
-				((rv >= 0xE0) && (rv <= 0xF6)) ||
-				((rv >= 0xF8) && (rv <= 0xFE))) rv -= 32;
-			break;
-		case i7_glk_stream_set_position:
-			i7_do_glk_stream_set_position(proc, args[0], args[1], args[2]); break;
-		case i7_glk_put_char_stream:
-			i7_do_glk_put_char_stream(proc, args[0], args[1]); break;
-		case i7_glk_get_char_stream:
-			rv = i7_do_glk_get_char_stream(proc, args[0]); break;
-		default:
-			printf("Unimplemented: i7_opcode_glk %d.\n", glk_api_selector); i7_fatal_exit(proc);
-			break;
-	}
-	if (z) *z = rv;
-}
+= (text to inform7_clib.h)
+#define seekmode_Start (0)
+#define seekmode_Current (1)
+#define seekmode_End (2)
+=
 
-void i7_print_name(i7process_t *proc, i7word_t x) {
-	fn_i7_mgl_PrintShortName(proc, x, 0);
-}
+And these are "event types":
 
-void i7_print_object(i7process_t *proc, i7word_t x) {
-	i7_print_decimal(proc, x);
-}
-
-void i7_print_box(i7process_t *proc, i7word_t x) {
-	printf("Unimplemented: i7_print_box.\n");
-	i7_fatal_exit(proc);
-}
-
-i7word_t fn_i7_mgl_pending_boxed_quotation(i7process_t *proc) {
-	return 0;
-}
+= (text to inform7_clib.h)
+#define i7_evtype_None           0
+#define i7_evtype_Timer          1
+#define i7_evtype_CharInput      2
+#define i7_evtype_LineInput      3
+#define i7_evtype_MouseInput     4
+#define i7_evtype_Arrange        5
+#define i7_evtype_Redraw         6
+#define i7_evtype_SoundNotify    7
+#define i7_evtype_Hyperlink      8
+#define i7_evtype_VolumeNotify   9
 =

@@ -43,4 +43,5 @@ Chapter 5: C
 	C Object Model
 	C Function Model
 	C Input-Output Model
+	C Miniglk
 	C Utility Functions

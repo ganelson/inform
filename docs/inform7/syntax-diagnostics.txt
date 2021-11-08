@@ -269,6 +269,9 @@ ROOT_NT
                     SENTENCE_NT'use max_static_data of 500000' {unit: 0} {classified}
                         VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                         UNPARSED_NOUN_NT'max_static_data of 500000'
+                    SENTENCE_NT'use max_num_static_strings of 500000' {unit: 0} {classified}
+                        VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
+                        UNPARSED_NOUN_NT'max_num_static_strings of 500000'
                     SENTENCE_NT'use max_prop_table_size of 200000' {unit: 0} {classified}
                         VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                         UNPARSED_NOUN_NT'max_prop_table_size of 200000'
@@ -4490,21 +4493,21 @@ ROOT_NT
                                 VERB_NT'is never' {certainty:impossible} {verb 'be' 3p s act IS_TENSE +ve}
                                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
                                 ADJECTIVE_NT'pushable between rooms' {refined} {predicate: pushable between rooms} {creation: << pushable between rooms(x) ^ pushable between rooms(x) >>}
-                            SENTENCE_NT'a door has an object called other side' {unit: 2} {classified} {interpretation of subject: infs'door'}
+                            SENTENCE_NT'a door has an object called leading-through destination' {unit: 2} {classified} {interpretation of subject: infs'door'}
                                 VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}
                                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
                                 ALLOWED_NT {refined}
                                     PROPERTYCALLED_NT'called'
                                         UNPARSED_NOUN_NT'object' {indefinite 'an' n/m/f nom/acc s}
-                                        UNPARSED_NOUN_NT'other side'
-                            SENTENCE_NT'the other side property translates into inter as door_to' {unit: 2} {classified}
+                                        UNPARSED_NOUN_NT'leading-through destination'
+                            SENTENCE_NT'the leading-through destination property translates into int' {unit: 2} {classified}
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {prep1: into} {prep2: as} {special meaning: translates-into-i6} {category: -1}
-                                UNPARSED_NOUN_NT'other side property' {definite 'the' n/m/f s/p nom/acc}
+                                UNPARSED_NOUN_NT'leading-through destination property' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'door_to'
-                            SENTENCE_NT'leading-through relates one room ( called the other side ) t' {unit: 2} {classified}
+                            SENTENCE_NT'leading-through relates one room ( called the leading-throug' {unit: 2} {classified}
                                 VERB_NT'relates' {verb 'relate' 3p s act IS_TENSE +ve} {special meaning: new-relation}
                                 UNPARSED_NOUN_NT'leading-through' {new relation: leading-through}
-                                UNPARSED_NOUN_NT'one room ( called the other side )'
+                                UNPARSED_NOUN_NT'one room ( called the leading-through destination )'
                                 UNPARSED_NOUN_NT'various doors'
                             SENTENCE_NT'the verb to be through means the leading-through relation' {unit: 2} {classified}
                                 VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
@@ -16116,106 +16119,109 @@ ROOT_NT
                             IMPERATIVE_NT'to decide which door is door ( d - direction ) from/of ( r1 ' {unit: 2} {imperative definition: 737}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  DoorFrom({R1},{D}) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is the other side of ( d - door ) fro' {unit: 2} {imperative definition: 738}
+                            IMPERATIVE_NT'to decide which object is the other side of ( d - door ) ( d' {unit: 2} {imperative definition: 738}
+                                CODE_BLOCK_NT
+                                    INVOCATION_LIST_NT'(-  OtherSideOfDoor({D}, location) ' {unit: 2}
+                            IMPERATIVE_NT'to decide which object is the other side of ( d - door ) fro' {unit: 2} {imperative definition: 739}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  OtherSideOfDoor({D},{R1}) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is the direction of ( d - door ) from' {unit: 2} {imperative definition: 739}
+                            IMPERATIVE_NT'to decide which object is the direction of ( d - door ) from' {unit: 2} {imperative definition: 740}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  DirectionDoorLeadsIn({D},{R1}) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is room-or-door ( d - direction ) fro' {unit: 2} {imperative definition: 740}
+                            IMPERATIVE_NT'to decide which object is room-or-door ( d - direction ) fro' {unit: 2} {imperative definition: 741}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  RoomOrDoorFrom({R1},{D}) ' {unit: 2}
-                            IMPERATIVE_NT'to change ( d - direction ) exit of ( r1 - room ) to ( r2 - ' {unit: 2} {imperative definition: 741}
+                            IMPERATIVE_NT'to change ( d - direction ) exit of ( r1 - room ) to ( r2 - ' {unit: 2} {imperative definition: 742}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  AssertMapConnection({R1},{D},{R2}); ' {unit: 2}
-                            IMPERATIVE_NT'to change ( d - direction ) exit of ( r1 - room ) to nothing' {unit: 2} {imperative definition: 742}
+                            IMPERATIVE_NT'to change ( d - direction ) exit of ( r1 - room ) to nothing' {unit: 2} {imperative definition: 743}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  AssertMapConnection({R1},{D},nothing); ' {unit: 2}
-                            IMPERATIVE_NT'to decide which room is the front side of ( d - object ) ( d' {unit: 2} {imperative definition: 743}
+                            IMPERATIVE_NT'to decide which room is the front side of ( d - object ) ( d' {unit: 2} {imperative definition: 744}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  FrontSideOfDoor({D}) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which room is the back side of ( d - object ) ( do' {unit: 2} {imperative definition: 744}
+                            IMPERATIVE_NT'to decide which room is the back side of ( d - object ) ( do' {unit: 2} {imperative definition: 745}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  BackSideOfDoor({D}) ' {unit: 2}
                         HEADING_NT'section 10 - route-finding' {heading 5} {under: H5'section 10 - route-finding'} {unit: 2}
-                            IMPERATIVE_NT'to decide which object is best route from ( r1 - object ) to' {unit: 2} {imperative definition: 745}
+                            IMPERATIVE_NT'to decide which object is best route from ( r1 - object ) to' {unit: 2} {imperative definition: 746}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  MapRouteTo({R1},{R2},0,{phrase options}) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which number is number of moves from ( r1 - object' {unit: 2} {imperative definition: 746}
+                            IMPERATIVE_NT'to decide which number is number of moves from ( r1 - object' {unit: 2} {imperative definition: 747}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  MapRouteTo({R1},{R2},0,{phrase options},true) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is best route from ( r1 - object ) to' {unit: 2} {imperative definition: 747}
+                            IMPERATIVE_NT'to decide which object is best route from ( r1 - object ) to' {unit: 2} {imperative definition: 748}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  MapRouteTo({R1},{R2},{RS},{phrase options}) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which number is number of moves from ( r1 - object' {unit: 2} {imperative definition: 748}
+                            IMPERATIVE_NT'to decide which number is number of moves from ( r1 - object' {unit: 2} {imperative definition: 749}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  MapRouteTo({R1},{R2},{RS},{phrase options},true) ' {unit: 2}
                         HEADING_NT'section 11 - the object tree' {heading 5} {under: H5'section 11 - the object tree'} {unit: 2}
-                            IMPERATIVE_NT'to decide which object is holder of ( something - object ) (' {unit: 2} {imperative definition: 749}
+                            IMPERATIVE_NT'to decide which object is holder of ( something - object ) (' {unit: 2} {imperative definition: 750}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (HolderOf({something})) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is next thing held after ( something ' {unit: 2} {imperative definition: 750}
+                            IMPERATIVE_NT'to decide which object is next thing held after ( something ' {unit: 2} {imperative definition: 751}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (sibling({something})) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is first thing held by ( something - ' {unit: 2} {imperative definition: 751}
+                            IMPERATIVE_NT'to decide which object is first thing held by ( something - ' {unit: 2} {imperative definition: 752}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (child({something})) ' {unit: 2}
                     HEADING_NT'chapter 5 - understanding' {heading 4} {under: H4'chapter 5 - understanding'} {unit: 2}
                         HEADING_NT'section 1 - asking yes/no questions' {heading 5} {under: H5'section 1 - asking yes/no questions'} {unit: 2}
-                            IMPERATIVE_NT'to decide whether player consents ( documented at ph_consent' {unit: 2} {imperative definition: 752}
+                            IMPERATIVE_NT'to decide whether player consents ( documented at ph_consent' {unit: 2} {imperative definition: 753}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  YesOrNo() ' {unit: 2}
                         HEADING_NT'section 2 - the player's command' {heading 5} {under: H5'section 2 - the player's command'} {unit: 2}
-                            IMPERATIVE_NT'to decide if ( s - a snippet ) matches ( t - a topic ) ( doc' {unit: 2} {imperative definition: 753}
+                            IMPERATIVE_NT'to decide if ( s - a snippet ) matches ( t - a topic ) ( doc' {unit: 2} {imperative definition: 754}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (SnippetMatches({S}, {T})) ' {unit: 2}
-                            IMPERATIVE_NT'to decide if ( s - a snippet ) does not match ( t - a topic ' {unit: 2} {imperative definition: 754}
+                            IMPERATIVE_NT'to decide if ( s - a snippet ) does not match ( t - a topic ' {unit: 2} {imperative definition: 755}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (SnippetMatches({S}, {T}) == false) ' {unit: 2}
-                            IMPERATIVE_NT'to decide if ( s - a snippet ) includes ( t - a topic ) ( do' {unit: 2} {imperative definition: 755}
+                            IMPERATIVE_NT'to decide if ( s - a snippet ) includes ( t - a topic ) ( do' {unit: 2} {imperative definition: 756}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (matched_text=SnippetIncludes({T},{S})) ' {unit: 2}
-                            IMPERATIVE_NT'to decide if ( s - a snippet ) does not include ( t - a topi' {unit: 2} {imperative definition: 756}
+                            IMPERATIVE_NT'to decide if ( s - a snippet ) does not include ( t - a topi' {unit: 2} {imperative definition: 757}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (SnippetIncludes({T},{S})==0) ' {unit: 2}
                         HEADING_NT'section 3 - changing the player's command' {heading 5} {under: H5'section 3 - changing the player's command'} {unit: 2}
-                            IMPERATIVE_NT'to change the text of the player's command to ( t - text ) (' {unit: 2} {imperative definition: 757}
+                            IMPERATIVE_NT'to change the text of the player's command to ( t - text ) (' {unit: 2} {imperative definition: 758}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  SetPlayersCommand({-by-reference:T}); ' {unit: 2}
-                            IMPERATIVE_NT'to replace ( s - a snippet ) with ( t - text ) ( documented ' {unit: 2} {imperative definition: 758}
+                            IMPERATIVE_NT'to replace ( s - a snippet ) with ( t - text ) ( documented ' {unit: 2} {imperative definition: 759}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  SpliceSnippet({S}, {-by-reference:T}); ' {unit: 2}
-                            IMPERATIVE_NT'to cut ( s - a snippet ) ( documented at ph_cutsnippet )' {unit: 2} {imperative definition: 759}
+                            IMPERATIVE_NT'to cut ( s - a snippet ) ( documented at ph_cutsnippet )' {unit: 2} {imperative definition: 760}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  SpliceSnippet({S}, 0); ' {unit: 2}
-                            IMPERATIVE_NT'to reject the player's command ( documented at ph_rejectcomm' {unit: 2} {imperative definition: 760}
+                            IMPERATIVE_NT'to reject the player's command ( documented at ph_rejectcomm' {unit: 2} {imperative definition: 761}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  RulebookFails(); rtrue;  - in to only' {unit: 2}
                         HEADING_NT'section 4 - scope and pronouns' {heading 5} {under: H5'section 4 - scope and pronouns'} {unit: 2}
-                            IMPERATIVE_NT'to place ( o - an object ) in scope , but not its contents (' {unit: 2} {imperative definition: 761}
+                            IMPERATIVE_NT'to place ( o - an object ) in scope , but not its contents (' {unit: 2} {imperative definition: 762}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  PlaceInScope({O}, {phrase options}); ' {unit: 2}
-                            IMPERATIVE_NT'to place the/-- contents of ( o - an object ) in scope ( doc' {unit: 2} {imperative definition: 762}
+                            IMPERATIVE_NT'to place the/-- contents of ( o - an object ) in scope ( doc' {unit: 2} {imperative definition: 763}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  ScopeWithin({O}); ' {unit: 2}
-                            IMPERATIVE_NT'to set pronouns from ( o - an object ) ( documented at ph_se' {unit: 2} {imperative definition: 763}
+                            IMPERATIVE_NT'to set pronouns from ( o - an object ) ( documented at ph_se' {unit: 2} {imperative definition: 764}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  PronounNotice({O}); ' {unit: 2}
                         HEADING_NT'section 5 - the multiple object list' {heading 5} {under: H5'section 5 - the multiple object list'} {unit: 2}
-                            IMPERATIVE_NT'to decide what list of objects is the multiple object list (' {unit: 2} {imperative definition: 764}
+                            IMPERATIVE_NT'to decide what list of objects is the multiple object list (' {unit: 2} {imperative definition: 765}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  LIST_OF_TY_Mol({-new:list of objects}) ' {unit: 2}
-                            IMPERATIVE_NT'to alter the multiple object list to ( l - list of objects )' {unit: 2} {imperative definition: 765}
+                            IMPERATIVE_NT'to alter the multiple object list to ( l - list of objects )' {unit: 2} {imperative definition: 766}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  LIST_OF_TY_Set_Mol({-by-reference:L}); ' {unit: 2}
                         HEADING_NT'section sr5/8/1 - message support - issuance - unindexed' {heading 5} {under: H5'section sr5/8/1 - message support - issuance - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to issue score notification message' {unit: 2} {imperative definition: 766}
+                            IMPERATIVE_NT'to issue score notification message' {unit: 2} {imperative definition: 767}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  NotifyTheScore(); ' {unit: 2}
-                            IMPERATIVE_NT'to say pronoun dictionary word' {unit: 2} {imperative definition: 767}
+                            IMPERATIVE_NT'to say pronoun dictionary word' {unit: 2} {imperative definition: 768}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  print (address) pronoun_word; ' {unit: 2}
-                            IMPERATIVE_NT'to say recap of command' {unit: 2} {imperative definition: 768}
+                            IMPERATIVE_NT'to say recap of command' {unit: 2} {imperative definition: 769}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  PrintCommand(); ' {unit: 2}
                             SENTENCE_NT'the pronoun reference object is an object that varies' {unit: 2} {classified}
@@ -16226,104 +16232,104 @@ ROOT_NT
                                 VERB_NT'translates into' {verb 'translate' 3p s act IS_TENSE +ve} {prep1: into} {prep2: as} {special meaning: translates-into-i6} {category: 3}
                                 UNPARSED_NOUN_NT'pronoun reference object variable' {definite 'the' n/m/f s/p nom/acc}
                                 UNPARSED_NOUN_NT'pronoun_obj'
-                            IMPERATIVE_NT'to say pronoun i6 dictionary word' {unit: 2} {imperative definition: 769}
+                            IMPERATIVE_NT'to say pronoun i6 dictionary word' {unit: 2} {imperative definition: 770}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  print (address) pronoun_word; ' {unit: 2}
-                            IMPERATIVE_NT'to say parser command so far' {unit: 2} {imperative definition: 770}
+                            IMPERATIVE_NT'to say parser command so far' {unit: 2} {imperative definition: 771}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  PrintCommand(); ' {unit: 2}
                     HEADING_NT'chapter 6 - deprecated or private phrases - unindexed' {heading 4} {under: H4'chapter 6 - deprecated or private phrases - unindexed'} {unit: 2}
                         HEADING_NT'section 1 - spatial modelling - unindexed' {heading 5} {under: H5'section 1 - spatial modelling - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to decide which object is the component parts core of ( x - ' {unit: 2} {imperative definition: 771}
+                            IMPERATIVE_NT'to decide which object is the component parts core of ( x - ' {unit: 2} {imperative definition: 772}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  CoreOf({X}) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is the common ancestor of ( o - an ob' {unit: 2} {imperative definition: 772}
+                            IMPERATIVE_NT'to decide which object is the common ancestor of ( o - an ob' {unit: 2} {imperative definition: 773}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (CommonAncestor({O}, {P})) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is the not-counting-parts holder of (' {unit: 2} {imperative definition: 773}
+                            IMPERATIVE_NT'to decide which object is the not-counting-parts holder of (' {unit: 2} {imperative definition: 774}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (CoreOfParentOfCoreOf({O})) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is the visibility-holder of ( o - obj' {unit: 2} {imperative definition: 774}
+                            IMPERATIVE_NT'to decide which object is the visibility-holder of ( o - obj' {unit: 2} {imperative definition: 775}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  VisibilityParent({O}) ' {unit: 2}
-                            IMPERATIVE_NT'to calculate visibility ceiling at low level' {unit: 2} {imperative definition: 775}
+                            IMPERATIVE_NT'to calculate visibility ceiling at low level' {unit: 2} {imperative definition: 776}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  FindVisibilityLevels(); ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is the touchability ceiling of ( o - ' {unit: 2} {imperative definition: 776}
+                            IMPERATIVE_NT'to decide which object is the touchability ceiling of ( o - ' {unit: 2} {imperative definition: 777}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  TouchabilityCeiling({O}) ' {unit: 2}
-                            IMPERATIVE_NT'to decide which number is the visibility ceiling count calcu' {unit: 2} {imperative definition: 777}
+                            IMPERATIVE_NT'to decide which number is the visibility ceiling count calcu' {unit: 2} {imperative definition: 778}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  visibility_levels ' {unit: 2}
-                            IMPERATIVE_NT'to decide which object is the visibility ceiling calculated' {unit: 2} {imperative definition: 778}
+                            IMPERATIVE_NT'to decide which object is the visibility ceiling calculated' {unit: 2} {imperative definition: 779}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  visibility_ceiling ' {unit: 2}
                         HEADING_NT'section 2 - room descriptions - unindexed' {heading 5} {under: H5'section 2 - room descriptions - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to produce a room description with going spacing conventions' {unit: 2} {imperative definition: 779}
+                            IMPERATIVE_NT'to produce a room description with going spacing conventions' {unit: 2} {imperative definition: 780}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  LookAfterGoing(); ' {unit: 2}
-                            IMPERATIVE_NT'to print the location's description' {unit: 2} {imperative definition: 780}
+                            IMPERATIVE_NT'to print the location's description' {unit: 2} {imperative definition: 781}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  PrintOrRun(location, description); ' {unit: 2}
-                            IMPERATIVE_NT'to decide if set to sometimes abbreviated room descriptions' {unit: 2} {imperative definition: 781}
+                            IMPERATIVE_NT'to decide if set to sometimes abbreviated room descriptions' {unit: 2} {imperative definition: 782}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (lookmode == 1) ' {unit: 2}
-                            IMPERATIVE_NT'to decide if set to unabbreviated room descriptions' {unit: 2} {imperative definition: 782}
+                            IMPERATIVE_NT'to decide if set to unabbreviated room descriptions' {unit: 2} {imperative definition: 783}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (lookmode == 2) ' {unit: 2}
-                            IMPERATIVE_NT'to decide if set to abbreviated room descriptions' {unit: 2} {imperative definition: 783}
+                            IMPERATIVE_NT'to decide if set to abbreviated room descriptions' {unit: 2} {imperative definition: 784}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (lookmode == 3) ' {unit: 2}
                         HEADING_NT'section 3 - action conversion - unindexed' {heading 5} {under: H5'section 3 - action conversion - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to convert to ( an - an action name ) on ( o - an object )' {unit: 2} {imperative definition: 784}
+                            IMPERATIVE_NT'to convert to ( an - an action name ) on ( o - an object )' {unit: 2} {imperative definition: 785}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  return GVS_Convert({AN},{O},0);  - in to only' {unit: 2}
-                            IMPERATIVE_NT'to convert to request of ( x - object ) to perform ( an - ac' {unit: 2} {imperative definition: 785}
+                            IMPERATIVE_NT'to convert to request of ( x - object ) to perform ( an - ac' {unit: 2} {imperative definition: 786}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  return ConvertToRequest({X}, {AN}, {Y}, {Z}); ' {unit: 2}
-                            IMPERATIVE_NT'to convert to special going-with-push action' {unit: 2} {imperative definition: 786}
+                            IMPERATIVE_NT'to convert to special going-with-push action' {unit: 2} {imperative definition: 787}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  return ConvertToGoingWithPush(); ' {unit: 2}
                         HEADING_NT'section 4 - surreptitious violation of invariants - unindexe' {heading 5} {under: H5'section 4 - surreptitious violation of invariants - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to surreptitiously move ( something - object ) to ( somethin' {unit: 2} {imperative definition: 787}
-                                CODE_BLOCK_NT
-                                    INVOCATION_LIST_NT'(-  move {something} to {something else}; ' {unit: 2}
                             IMPERATIVE_NT'to surreptitiously move ( something - object ) to ( somethin' {unit: 2} {imperative definition: 788}
                                 CODE_BLOCK_NT
+                                    INVOCATION_LIST_NT'(-  move {something} to {something else}; ' {unit: 2}
+                            IMPERATIVE_NT'to surreptitiously move ( something - object ) to ( somethin' {unit: 2} {imperative definition: 789}
+                                CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  MoveDuringGoing({something}, {something else}); ' {unit: 2}
-                            IMPERATIVE_NT'to surreptitiously reckon darkness' {unit: 2} {imperative definition: 789}
+                            IMPERATIVE_NT'to surreptitiously reckon darkness' {unit: 2} {imperative definition: 790}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  SilentlyConsiderLight(); ' {unit: 2}
                         HEADING_NT'section 5 - capitalised list-writing - unindexed' {heading 5} {under: H5'section 5 - capitalised list-writing - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to say list-writer list of marked objects' {unit: 2} {imperative definition: 790}
+                            IMPERATIVE_NT'to say list-writer list of marked objects' {unit: 2} {imperative definition: 791}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(- 
                                     	 	WriteListOfMarkedObjects(ENGLISH_BIT);
                                     	' {unit: 2}
-                            IMPERATIVE_NT'to say list-writer articled list of marked objects' {unit: 2} {imperative definition: 791}
+                            IMPERATIVE_NT'to say list-writer articled list of marked objects' {unit: 2} {imperative definition: 792}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(- 
                                     	 	WriteListOfMarkedObjects(ENGLISH_BIT+DEFART_BIT+CFIRS' {unit: 2}
                         HEADING_NT'section 6 - printing names - unindexed' {heading 5} {under: H5'section 6 - printing names - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to decide if expanding text for comparison purposes' {unit: 2} {imperative definition: 792}
+                            IMPERATIVE_NT'to decide if expanding text for comparison purposes' {unit: 2} {imperative definition: 793}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  say__comp ' {unit: 2}
                         HEADING_NT'section 7 - command parsing - unindexed' {heading 5} {under: H5'section 7 - command parsing - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to decide whether the i6 parser is running multiple actions' {unit: 2} {imperative definition: 793}
+                            IMPERATIVE_NT'to decide whether the i6 parser is running multiple actions' {unit: 2} {imperative definition: 794}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (multiflag==1) ' {unit: 2}
                         HEADING_NT'section 8 - deprecated inform - unindexed' {heading 5} {under: H5'section 8 - deprecated inform - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to yes ( documented at ph_yes )' {unit: 2} {imperative definition: 794}
+                            IMPERATIVE_NT'to yes ( documented at ph_yes )' {unit: 2} {imperative definition: 795}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  rtrue;  - in to decide if only' {unit: 2}
-                            IMPERATIVE_NT'to no ( documented at ph_no )' {unit: 2} {imperative definition: 795}
+                            IMPERATIVE_NT'to no ( documented at ph_no )' {unit: 2} {imperative definition: 796}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  rfalse;  - in to decide if only' {unit: 2}
                         HEADING_NT'section 9 - debugging inform - unindexed' {heading 5} {under: H5'section 9 - debugging inform - unindexed'} {unit: 2}
-                            IMPERATIVE_NT'to ***' {unit: 2} {imperative definition: 796}
+                            IMPERATIVE_NT'to ***' {unit: 2} {imperative definition: 797}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  {-primitive-definition:verbose-checking} ' {unit: 2}
-                            IMPERATIVE_NT'to *** ( t - text )' {unit: 2} {imperative definition: 797}
+                            IMPERATIVE_NT'to *** ( t - text )' {unit: 2} {imperative definition: 798}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  {-primitive-definition:verbose-checking} ' {unit: 2}
                             ENDHERE_NT'the standard rules' {unit: 2}
@@ -16342,14 +16348,14 @@ ROOT_NT
             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
             UNPARSED_NOUN_NT'asking for information'
             UNPARSED_NOUN_NT'out of world'
-        IMPERATIVE_NT'carry out asking for information' {unit: 4} {imperative definition: 798}
+        IMPERATIVE_NT'carry out asking for information' {unit: 4} {imperative definition: 799}
             CODE_BLOCK_NT
                 CODE_BLOCK_NT'say "An implementation of the following creative brief:Peo' {control structure: SAY}
                     INVOCATION_LIST_SAY_NT'"An implementation of the following creative brief:People '
                         INVOCATION_NT'"An implementation of the following creative brief:People ' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                             RVALUE_CONTEXT_NT'"An implementation of the following creative brief:People ' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                 CONSTANT_NT'"An implementation of the following creative brief:People ' {kind: text}
-        IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 799}
+        IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 800}
             CODE_BLOCK_NT
                 CODE_BLOCK_NT'say "Gelato's Syndrome. It's struck, and it's struck hard. I' {control structure: SAY}
                     INVOCATION_LIST_SAY_NT'"Gelato's Syndrome. It's struck, and it's struck hard. In th'
@@ -16367,7 +16373,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'current owner' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}} {created here}
                 COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=people variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 800}
+            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 801}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if player is active' {unit: 4} {colon_block_command}
@@ -16379,7 +16385,7 @@ ROOT_NT
                                 INVOCATION_NT'follow the character movement rules' {phrase invoked: <no-inter-name>}
                                     RVALUE_CONTEXT_NT'character movement rules' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                         CONSTANT_NT'character movement rules' {kind: rulebook} {rulebook: character movement}{meaning: {character movement rules = RULEBOOK_MC}}
-            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 801}
+            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 802}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the last person named is the player' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the last person named is the player'
@@ -16402,7 +16408,7 @@ ROOT_NT
                 VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}
                 PROPER_NOUN_NT'character movement rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: character movement}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'the first character movement rule' {unit: 4} {imperative definition: 802}
+            IMPERATIVE_NT'the first character movement rule' {unit: 4} {imperative definition: 803}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now group size is 1' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'group size is 1'
@@ -16412,7 +16418,7 @@ ROOT_NT
                         CONDITION_CONTEXT_NT'the last thing named is the player'
                     INVOCATION_LIST_NT'now the player is passive' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the player is passive'
-            IMPERATIVE_NT'a character movement rule' {unit: 4} {imperative definition: 803}
+            IMPERATIVE_NT'a character movement rule' {unit: 4} {imperative definition: 804}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: RPT}
                         INVOCATION_LIST_NT'repeat with mover running through innocent people' {colon_block_command} {unit: 4} {indent: 1}
@@ -16434,7 +16440,7 @@ ROOT_NT
                         INVOCATION_NT'follow the movement reporting rule' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'movement reporting rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                 CONSTANT_NT'movement reporting rule' {kind: rule} {rule: movement reporting rule}{meaning: {movement reporting rule = MISCELLANEOUS_MC}}
-            IMPERATIVE_NT'a character movement rule' {unit: 4} {imperative definition: 804}
+            IMPERATIVE_NT'a character movement rule' {unit: 4} {imperative definition: 805}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: RPT}
                         INVOCATION_LIST_NT'repeat with next mover running through mercantile people' {colon_block_command} {unit: 4} {indent: 1}
@@ -16456,7 +16462,7 @@ ROOT_NT
                         INVOCATION_NT'follow the infection rule' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'infection rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                 CONSTANT_NT'infection rule' {kind: rule} {rule: infection rule}{meaning: {infection rule = MISCELLANEOUS_MC}}
-            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 4} {imperative definition: 805}
+            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 4} {imperative definition: 806}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the player is passive' {unit: 4} {colon_block_command}
@@ -16468,13 +16474,13 @@ ROOT_NT
                                 INVOCATION_NT'no' {phrase invoked: <no-inter-name>}
                     INVOCATION_LIST_NT'yes' {unit: 4}
                         INVOCATION_NT'yes' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 806}
             IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 807}
+            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 808}
             SENTENCE_NT'the shopowner rules is a rulebook' {unit: 4} {classified} {clears pronouns}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopowner rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopowner}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'a shopowner rule' {unit: 4} {imperative definition: 808}
+            IMPERATIVE_NT'a shopowner rule' {unit: 4} {imperative definition: 809}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let the shop be a random room owned by the current owner' {unit: 4}
                         INVOCATION_NT'let the shop be a random room owned by the current owner' {phrase invoked: <no-inter-name>}
@@ -16499,7 +16505,7 @@ ROOT_NT
                                     RVALUE_CONTEXT_NT'current owner closing the escape' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                         CONSTANT_NT'current owner closing the escape' {kind: action} {explicit action: <action-based: closing * actor: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}{meaning: {current owner = VARIABLE_MC}} noun: LOCAL_VARIABLE_NT'the escape' {local: LV"escape"-door door}>}
                             CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 4} {imperative definition: 809}
+            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 4} {imperative definition: 810}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[The person asked], muttering darkly about air-conditio' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'the person asked'
@@ -16519,7 +16525,7 @@ ROOT_NT
                                 RVALUE_CONTEXT_NT'"."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'"."' {kind: text}
                     CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 4} {imperative definition: 810}
+            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 4} {imperative definition: 811}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if vanessa is visible' {unit: 4} {colon_block_command}
@@ -16540,7 +16546,7 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'"The metal door slides heavily back into place."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"The metal door slides heavily back into place."' {kind: text}
                             CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'a shopowner rule' {unit: 4} {imperative definition: 811}
+            IMPERATIVE_NT'a shopowner rule' {unit: 4} {imperative definition: 812}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the location of the current owner encloses a submitted ar' {colon_block_command} {unit: 4} {indent: 1}
@@ -16556,14 +16562,14 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'filing'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 4} {imperative definition: 812}
+            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 4} {imperative definition: 813}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'try the person asked taking the noun' {unit: 4}
                         INVOCATION_NT'try the person asked taking the noun' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'person asked taking the noun' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                 CONSTANT_NT'person asked taking the noun' {kind: action} {explicit action: <action-based: taking * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                     CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'carry out someone filing' {unit: 4} {imperative definition: 813}
+            IMPERATIVE_NT'carry out someone filing' {unit: 4} {imperative definition: 814}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the person asked does not carry the noun and the person a' {unit: 4} {colon_block_command}
@@ -16593,7 +16599,7 @@ ROOT_NT
                             CODE_BLOCK_NT {control structure: INS}
                     INVOCATION_LIST_NT'now the noun is nowhere' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the noun is nowhere'
-            IMPERATIVE_NT'report someone filing' {unit: 4} {imperative definition: 814}
+            IMPERATIVE_NT'report someone filing' {unit: 4} {imperative definition: 815}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[The person asked] registers [the noun] and files it aw' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'the person asked'
@@ -16616,7 +16622,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'shopper rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopper}} {created here}
                 COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: << kind=rulebook(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'a shopper rule' {unit: 4} {imperative definition: 815}
+            IMPERATIVE_NT'a shopper rule' {unit: 4} {imperative definition: 816}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the current actor carries something ( called the problem ' {unit: 4} {colon_block_command}
@@ -16629,7 +16635,7 @@ ROOT_NT
                                     RVALUE_CONTEXT_NT'current actor resolving the problem' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                         CONSTANT_NT'current actor resolving the problem' {kind: action} {explicit action: <action-based: resolving * actor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}} noun: LOCAL_VARIABLE_NT'the problem' {local: LV"problem"-thing thing}>}
                             CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'a shopper rule' {unit: 4} {imperative definition: 816}
+            IMPERATIVE_NT'a shopper rule' {unit: 4} {imperative definition: 817}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the current actor is not in the pool hall and the air con' {colon_block_command} {unit: 4} {indent: 1}
@@ -16658,7 +16664,7 @@ ROOT_NT
                                 INVOCATION_NT'try the current actor going the way' {phrase invoked: <no-inter-name>}
                                     RVALUE_CONTEXT_NT'current actor going the way' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                         CONSTANT_NT'current actor going the way' {kind: action} {explicit action: <action-based: going * actor: NONLOCAL_VARIABLE_NT'current actor' {nonlocal: 'current actor'(var)person}{meaning: {current actor = VARIABLE_MC}} noun: LOCAL_VARIABLE_NT'the way' {local: LV<unallocated> nothing}>}
-            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 817}
+            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 818}
             DEFN_CONT_NT'a room is air-conditioned' {unit: 4}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
@@ -16716,12 +16722,12 @@ ROOT_NT
                 COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s} {refined} {creation: << kind=artwork(x) >>} {refers: infs'artwork'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of an artwork' {unit: 4} {imperative definition: 818}
+            IMPERATIVE_NT'before printing the name of an artwork' {unit: 4} {imperative definition: 819}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say italic type' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'italic type'
                             INVOCATION_NT'italic type' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'after printing the name of an artwork' {unit: 4} {imperative definition: 819}
+            IMPERATIVE_NT'after printing the name of an artwork' {unit: 4} {imperative definition: 820}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say roman type' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'roman type'
@@ -16738,14 +16744,14 @@ ROOT_NT
                 COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=book(x) >>} {refers: infs'book'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}
                     COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 4} {imperative definition: 820}
+            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 4} {imperative definition: 821}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'try the person asked approaching the public library' {unit: 4}
                         INVOCATION_NT'try the person asked approaching the public library' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'person asked approaching the public library' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                 CONSTANT_NT'person asked approaching the public library' {kind: action} {explicit action: <action-based: approaching * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: I110'public library'>}
                     CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'carry out someone resolving a book' {unit: 4} {imperative definition: 821}
+            IMPERATIVE_NT'carry out someone resolving a book' {unit: 4} {imperative definition: 822}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'move the noun to the public library' {unit: 4}
                         INVOCATION_NT'move the noun to the public library' {phrase invoked: <no-inter-name>}
@@ -16755,7 +16761,7 @@ ROOT_NT
                                 CONSTANT_NT'public library' {kind: room} {instance: I110'public library'} {enumeration: 0}
                     INVOCATION_LIST_NT'now the noun is submitted' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the noun is submitted'
-            IMPERATIVE_NT'report someone resolving a book' {unit: 4} {imperative definition: 822}
+            IMPERATIVE_NT'report someone resolving a book' {unit: 4} {imperative definition: 823}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[The person asked] turns in [the noun]."' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'the person asked'
@@ -16774,13 +16780,13 @@ ROOT_NT
                             INVOCATION_NT'"."' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                 RVALUE_CONTEXT_NT'"."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'"."' {kind: text}
-            IMPERATIVE_NT'before listing contents' {unit: 4} {imperative definition: 823}
+            IMPERATIVE_NT'before listing contents' {unit: 4} {imperative definition: 824}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'group books together' {unit: 4}
                         INVOCATION_NT'group books together' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'books' {token to be parsed against: TEST_VALUE_NT'description of objects'} {required: description of objects}
                                 CONSTANT_NT'books' {kind: description of books} {proposition: << kind=book(x) >>}
-            IMPERATIVE_NT'before grouping together books' {unit: 4} {imperative definition: 824}
+            IMPERATIVE_NT'before grouping together books' {unit: 4} {imperative definition: 825}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "books entitled "' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"books entitled "'
@@ -16792,18 +16798,18 @@ ROOT_NT
                 COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=stamped envelope(x) >>} {refers: infs'stamped envelope'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 4} {imperative definition: 825}
+            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 4} {imperative definition: 826}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'try the person asked approaching the post office' {unit: 4}
                         INVOCATION_NT'try the person asked approaching the post office' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'person asked approaching the post office' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                 CONSTANT_NT'person asked approaching the post office' {kind: action} {explicit action: <action-based: approaching * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: I96'post office'>}
                     CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 4} {imperative definition: 826}
+            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 4} {imperative definition: 827}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the noun is nowhere' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the noun is nowhere'
-            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 4} {imperative definition: 827}
+            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 4} {imperative definition: 828}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[The person asked] slips [a noun] into the outgoing mai' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'the person asked'
@@ -16822,7 +16828,7 @@ ROOT_NT
                             INVOCATION_NT'" into the outgoing mail slot."' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                 RVALUE_CONTEXT_NT'" into the outgoing mail slot."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'" into the outgoing mail slot."' {kind: text}
-            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 4} {imperative definition: 828}
+            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 4} {imperative definition: 829}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the person asked is visible' {unit: 4} {indent: 1} {colon_block_command}
@@ -16862,14 +16868,14 @@ ROOT_NT
                 COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=dvd(x) >>} {refers: infs'dvd'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}
                     COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: << kind=artwork(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 4} {imperative definition: 829}
+            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 4} {imperative definition: 830}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'try the person asked approaching the rental store' {unit: 4}
                         INVOCATION_NT'try the person asked approaching the rental store' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'person asked approaching the rental store' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                 CONSTANT_NT'person asked approaching the rental store' {kind: action} {explicit action: <action-based: approaching * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: I104'movie rental store'>}
                     CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 4} {imperative definition: 830}
+            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 4} {imperative definition: 831}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the noun is submitted' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the noun is submitted'
@@ -16879,7 +16885,7 @@ ROOT_NT
                                 NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}
                             RVALUE_CONTEXT_NT'movie rental store' {token to be parsed against: TEST_VALUE_NT'object'} {required: object}
                                 CONSTANT_NT'movie rental store' {kind: room} {instance: I104'movie rental store'} {enumeration: 0}
-            IMPERATIVE_NT'report someone resolving a dvd' {unit: 4} {imperative definition: 831}
+            IMPERATIVE_NT'report someone resolving a dvd' {unit: 4} {imperative definition: 832}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[The person asked] returns [the noun]."' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'the person asked'
@@ -16898,7 +16904,7 @@ ROOT_NT
                             INVOCATION_NT'"."' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                 RVALUE_CONTEXT_NT'"."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'"."' {kind: text}
-            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 4} {imperative definition: 832}
+            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 4} {imperative definition: 833}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the person asked is visible' {unit: 4} {colon_block_command}
@@ -16927,13 +16933,13 @@ ROOT_NT
                         CONDITION_CONTEXT_NT'every dvd carried by the person asked is submitted'
                     INVOCATION_LIST_NT'now every dvd carried by the person asked is in the location' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'every dvd carried by the person asked is in the location of '
-            IMPERATIVE_NT'before listing contents' {unit: 4} {imperative definition: 833}
+            IMPERATIVE_NT'before listing contents' {unit: 4} {imperative definition: 834}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'group dvds together' {unit: 4}
                         INVOCATION_NT'group dvds together' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'dvds' {token to be parsed against: TEST_VALUE_NT'description of objects'} {required: description of objects}
                                 CONSTANT_NT'dvds' {kind: description of dvds} {proposition: << kind=dvd(x) >>}
-            IMPERATIVE_NT'before grouping together dvds' {unit: 4} {imperative definition: 834}
+            IMPERATIVE_NT'before grouping together dvds' {unit: 4} {imperative definition: 835}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "DVDs of "' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"DVDs of "'
@@ -16944,7 +16950,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'approaching'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'carry out someone approaching' {unit: 4} {imperative definition: 835}
+            IMPERATIVE_NT'carry out someone approaching' {unit: 4} {imperative definition: 836}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let the way be the best route from the location of the perso' {unit: 4}
                         INVOCATION_NT'let the way be the best route from the location of the perso' {phrase invoked: <no-inter-name>}
@@ -16980,7 +16986,7 @@ ROOT_NT
                 COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=coupon(x) >>} {refers: infs'coupon'} {eval: TEST_VALUE_NT} {created here}
                 KIND_NT'kind of thing' {refined} {refers: infs'thing'}
                     COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: << kind=thing(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 4} {imperative definition: 836}
+            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 4} {imperative definition: 837}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'try the person asked giving the noun to vanessa' {unit: 4}
                         INVOCATION_NT'try the person asked giving the noun to vanessa' {phrase invoked: <no-inter-name>}
@@ -16990,20 +16996,20 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: negative} {special meaning: rule-listed-in}
                 UNPARSED_NOUN_NT'the block giving rule'
                 UNPARSED_NOUN_NT'in any rulebook'
-            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 4} {imperative definition: 837}
+            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 4} {imperative definition: 838}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'abide by the block giving rule' {unit: 4}
                         INVOCATION_NT'abide by the block giving rule' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'block giving rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
                                 CONSTANT_NT'block giving rule' {kind: rule} {rule: block giving rule}{meaning: {block giving rule = MISCELLANEOUS_MC}}
-            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 4} {imperative definition: 838}
+            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 4} {imperative definition: 839}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'try the person asked approaching cold comfort' {unit: 4}
                         INVOCATION_NT'try the person asked approaching cold comfort' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'person asked approaching cold comfort' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                 CONSTANT_NT'person asked approaching cold comfort' {kind: action} {explicit action: <action-based: approaching * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: I100'cold comfort ice cream'>}
                     CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 4} {imperative definition: 839}
+            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 4} {imperative definition: 840}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let the reward be a random ice cream cone' {unit: 4}
                         INVOCATION_NT'let the reward be a random ice cream cone' {phrase invoked: <no-inter-name>}
@@ -17125,7 +17131,7 @@ ROOT_NT
                                                                                                                 AND_NT',' {refined}
                                                                                                                     PROPER_NOUN_NT'saffron silk' {refined} {refers: infs'saffron silk'} {eval: CONSTANT_NT'saffron silk' {kind: infection color} {instance: I86'saffron silk'[infection color]} {enumeration: 25}} {created here}
                                                                                                                     PROPER_NOUN_NT'cookie dough cream' {refined} {refers: infs'cookie dough cream'} {eval: CONSTANT_NT'cookie dough cream' {kind: infection color} {instance: I87'cookie dough cream'[infection color]} {enumeration: 26}} {created here}
-            IMPERATIVE_NT'to say list of flavors' {unit: 4} {imperative definition: 840}
+            IMPERATIVE_NT'to say list of flavors' {unit: 4} {imperative definition: 841}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let current color be french vanilla' {unit: 4} {indent: 1}
                         INVOCATION_NT'let current color be french vanilla' {phrase invoked: <no-inter-name>}
@@ -17171,7 +17177,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'buying the flavor'
                 UNPARSED_NOUN_NT'applying to one infection color'
-            IMPERATIVE_NT'check buying the flavor' {unit: 4} {imperative definition: 841}
+            IMPERATIVE_NT'check buying the flavor' {unit: 4} {imperative definition: 842}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'unless the player can see vanessa' {colon_block_command} {unit: 4} {indent: 1}
@@ -17185,7 +17191,7 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'"It would help if you were in the presence of an ice cream s' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"It would help if you were in the presence of an ice cream s' {kind: text}
                             CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'carry out buying the flavor' {unit: 4} {imperative definition: 842}
+            IMPERATIVE_NT'carry out buying the flavor' {unit: 4} {imperative definition: 843}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "'Do you have a coupon?' Vanessa demands. You admit you ' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"'Do you have a coupon?' Vanessa demands. You admit you do n'
@@ -17233,14 +17239,14 @@ ROOT_NT
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'the infection color property'
                 UNPARSED_NOUN_NT'referring to an ice cream cone'
-            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 4} {imperative definition: 843}
+            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 4} {imperative definition: 844}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'try the person asked eating the noun' {unit: 4}
                         INVOCATION_NT'try the person asked eating the noun' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'person asked eating the noun' {token to be parsed against: TEST_VALUE_NT'action'} {required: action}
                                 CONSTANT_NT'person asked eating the noun' {kind: action} {explicit action: <action-based: eating * actor: NONLOCAL_VARIABLE_NT'person asked' {nonlocal: 'person asked'(var)object}{meaning: {person asked = VARIABLE_MC}} noun: NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}>}
                     CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 4} {imperative definition: 844}
+            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 4} {imperative definition: 845}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the noun is half-eaten' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the noun is half-eaten'
@@ -17267,7 +17273,7 @@ ROOT_NT
                                     INVOCATION_NT'"."' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                         RVALUE_CONTEXT_NT'"."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"."' {kind: text}
-            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 4} {imperative definition: 845}
+            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 4} {imperative definition: 846}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[The person asked] pops the end of [the noun] into [if ' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'the person asked'
@@ -17307,7 +17313,7 @@ ROOT_NT
                                 RVALUE_CONTEXT_NT'" mouth and swallows."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'" mouth and swallows."' {kind: text}
                     CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 4} {imperative definition: 846}
+            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 4} {imperative definition: 847}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[if half-eaten]half-eaten [end if][infection color] "' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'if half-eaten'
@@ -17331,7 +17337,7 @@ ROOT_NT
                                 RVALUE_CONTEXT_NT'" "' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'" "' {kind: text}
         HEADING_NT'section 2 - infection rules' {heading 5} {under: H5'section 2 - infection rules'} {unit: 4}
-            IMPERATIVE_NT'this is the infection rule' {unit: 4} {imperative definition: 847}
+            IMPERATIVE_NT'this is the infection rule' {unit: 4} {imperative definition: 848}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if an infected person ( called typhoid mary ) can see a clea' {colon_block_command} {unit: 4} {indent: 1}
@@ -17364,7 +17370,7 @@ ROOT_NT
                 COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                 ALLOWED_NT'has' {refined}
                     UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s} {refined}
-            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 848}
+            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 849}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the player is infected' {unit: 4} {colon_block_command}
@@ -17377,13 +17383,13 @@ ROOT_NT
                                     INVOCATION_NT'"You feel itchy."' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                         RVALUE_CONTEXT_NT'"You feel itchy."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"You feel itchy."' {kind: text}
-            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 849}
             IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 850}
-            IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 851}
+            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 851}
+            IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 852}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now right hand status line is "Sick: [number of infected peo' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'right hand status line is "Sick: [number of infected people]'
-            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 852}
+            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 853}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if every person is infected' {unit: 4} {colon_block_command}
@@ -17413,7 +17419,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'sneezing on'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'check sneezing on' {unit: 4} {imperative definition: 853}
+            IMPERATIVE_NT'check sneezing on' {unit: 4} {imperative definition: 854}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the player is clean' {unit: 4} {colon_block_command}
@@ -17455,19 +17461,19 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'" cannot be infected."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'" cannot be infected."' {kind: text}
                             CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'carry out sneezing on' {unit: 4} {imperative definition: 854}
+            IMPERATIVE_NT'carry out sneezing on' {unit: 4} {imperative definition: 855}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the noun is infected' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the noun is infected'
                     INVOCATION_LIST_NT'now the infection color of the noun is a random infection co' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the infection color of the noun is a random infection color'
-            IMPERATIVE_NT'carry out someone sneezing on' {unit: 4} {imperative definition: 855}
+            IMPERATIVE_NT'carry out someone sneezing on' {unit: 4} {imperative definition: 856}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the noun is infected' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the noun is infected'
                     INVOCATION_LIST_NT'now the infection color of the noun is a random infection co' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the infection color of the noun is a random infection color'
-            IMPERATIVE_NT'report sneezing on' {unit: 4} {imperative definition: 856}
+            IMPERATIVE_NT'report sneezing on' {unit: 4} {imperative definition: 857}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "Unable to control yourself, you sneeze on [noun]."' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"Unable to control yourself, you sneeze on "'
@@ -17482,7 +17488,7 @@ ROOT_NT
                             INVOCATION_NT'"."' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                 RVALUE_CONTEXT_NT'"."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'"."' {kind: text}
-            IMPERATIVE_NT'report someone sneezing on' {unit: 4} {imperative definition: 857}
+            IMPERATIVE_NT'report someone sneezing on' {unit: 4} {imperative definition: 858}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[The person asked] sneezes on [if the noun is the playe' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'the person asked'
@@ -17533,7 +17539,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'injecting it with'
                 UNPARSED_NOUN_NT'applying to two things'
-            IMPERATIVE_NT'check injecting it with' {unit: 4} {imperative definition: 858}
+            IMPERATIVE_NT'check injecting it with' {unit: 4} {imperative definition: 859}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the second noun is not the syringe' {unit: 4} {indent: 1} {colon_block_command}
@@ -17579,18 +17585,18 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'" is not infected, and the syringe contains a cure, not a va' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'" is not infected, and the syringe contains a cure, not a va' {kind: text}
                             CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'carry out injecting it with' {unit: 4} {imperative definition: 859}
+            IMPERATIVE_NT'carry out injecting it with' {unit: 4} {imperative definition: 860}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the noun is clean' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the noun is clean'
-            IMPERATIVE_NT'after injecting the player with something' {unit: 4} {imperative definition: 860}
+            IMPERATIVE_NT'after injecting the player with something' {unit: 4} {imperative definition: 861}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "You inject yourself, wincing at the sting. But the itch' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"You inject yourself, wincing at the sting. But the itching '
                             INVOCATION_NT'"You inject yourself, wincing at the sting. But the itching ' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                 RVALUE_CONTEXT_NT'"You inject yourself, wincing at the sting. But the itching ' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'"You inject yourself, wincing at the sting. But the itching ' {kind: text}
-            IMPERATIVE_NT'report injecting it with' {unit: 4} {imperative definition: 861}
+            IMPERATIVE_NT'report injecting it with' {unit: 4} {imperative definition: 862}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "You inject [the noun], who is now cured (but could easi' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"You inject "'
@@ -17633,7 +17639,7 @@ ROOT_NT
                             VERB_NT'translates as' {verb 'translate' 3p s act IS_TENSE +ve} {prep1: as} {special meaning: use-translates}
                             UNPARSED_NOUN_NT'sequential action'
                             UNPARSED_NOUN_NT'(-  Constant SEQUENTIAL_ACTION; '
-                        IMPERATIVE_NT'before going through a closed door ( called the blocking doo' {unit: 3} {imperative definition: 862}
+                        IMPERATIVE_NT'before going through a closed door ( called the blocking doo' {unit: 3} {imperative definition: 863}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
@@ -17663,7 +17669,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before locking an open thing ( called the door ajar ) with s' {unit: 3} {imperative definition: 863}
+                        IMPERATIVE_NT'before locking an open thing ( called the door ajar ) with s' {unit: 3} {imperative definition: 864}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
@@ -17693,7 +17699,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before locking keylessly an open thing ( called the door aja' {unit: 3} {imperative definition: 864}
+                        IMPERATIVE_NT'before locking keylessly an open thing ( called the door aja' {unit: 3} {imperative definition: 865}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
@@ -17723,7 +17729,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before opening a locked thing ( called the sealed chest ) ( ' {unit: 3} {imperative definition: 865}
+                        IMPERATIVE_NT'before opening a locked thing ( called the sealed chest ) ( ' {unit: 3} {imperative definition: 866}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
@@ -17753,7 +17759,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 2}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before someone trying going through a closed door ( called t' {unit: 3} {imperative definition: 866}
+                        IMPERATIVE_NT'before someone trying going through a closed door ( called t' {unit: 3} {imperative definition: 867}
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'try the person asked trying opening the blocking door' {unit: 3}
                                     INVOCATION_NT'try the person asked trying opening the blocking door' {phrase invoked: <no-inter-name>}
@@ -17767,7 +17773,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before someone trying locking an open thing ( called the doo' {unit: 3} {imperative definition: 867}
+                        IMPERATIVE_NT'before someone trying locking an open thing ( called the doo' {unit: 3} {imperative definition: 868}
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'try the person asked trying closing the door ajar' {unit: 3}
                                     INVOCATION_NT'try the person asked trying closing the door ajar' {phrase invoked: <no-inter-name>}
@@ -17781,7 +17787,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before someone trying locking keylessly an open thing ( call' {unit: 3} {imperative definition: 868}
+                        IMPERATIVE_NT'before someone trying locking keylessly an open thing ( call' {unit: 3} {imperative definition: 869}
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'try the person asked trying closing the door ajar' {unit: 3}
                                     INVOCATION_NT'try the person asked trying closing the door ajar' {phrase invoked: <no-inter-name>}
@@ -17795,7 +17801,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'stop the action' {unit: 3} {results_from_splitting} {indent: 1}
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'before someone trying opening a locked thing ( called the se' {unit: 3} {imperative definition: 869}
+                        IMPERATIVE_NT'before someone trying opening a locked thing ( called the se' {unit: 3} {imperative definition: 870}
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'try the person asked trying unlocking keylessly the sealed c' {unit: 3}
                                     INVOCATION_NT'try the person asked trying unlocking keylessly the sealed c' {phrase invoked: <no-inter-name>}
@@ -17811,7 +17817,7 @@ ROOT_NT
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
                     HEADING_NT'volume 2 - default locking and unlocking' {heading 1} {under: H1'volume 2 - default locking and unlocking'} {unit: 3}
                         HEADING_NT'part 1 - the matching key rule' {heading 3} {under: H3'part 1 - the matching key rule'} {unit: 3}
-                            IMPERATIVE_NT'this is the need a matching key rule' {unit: 3} {imperative definition: 870}
+                            IMPERATIVE_NT'this is the need a matching key rule' {unit: 3} {imperative definition: 871}
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT {control structure: IF}
                                         INVOCATION_LIST_NT'if the person asked encloses something ( called item ) which' {colon_block_command} {unit: 3} {indent: 1}
@@ -17852,7 +17858,7 @@ ROOT_NT
                                                                             NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}
                                                     INVOCATION_LIST_NT'stop the action' {unit: 3} {indent: 2}
                                                         INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-                            IMPERATIVE_NT'to say key-refusal for ( locked-thing - an object )' {unit: 3} {imperative definition: 871}
+                            IMPERATIVE_NT'to say key-refusal for ( locked-thing - an object )' {unit: 3} {imperative definition: 872}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'carry out the refusing keys activity with the locked-thing' {unit: 3}
                                         INVOCATION_NT'carry out the refusing keys activity with the locked-thing' {phrase invoked: <no-inter-name>} {kind variable declarations: K=object}
@@ -17864,14 +17870,14 @@ ROOT_NT
                                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-activity}
                                 UNPARSED_NOUN_NT'refusing keys of something'
                                 UNPARSED_NOUN_NT'an activity'
-                            IMPERATIVE_NT'rule for refusing keys of something ( called locked-thing ) ' {unit: 3} {imperative definition: 872}
+                            IMPERATIVE_NT'rule for refusing keys of something ( called locked-thing ) ' {unit: 3} {imperative definition: 873}
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT'say "[We] [lack] a key that fits [the locked-thing]." ( a )' {control structure: SAY}
                                         INVOCATION_LIST_SAY_NT'"[We] [lack] a key that fits [the locked-thing]." ( a )'
                                             INVOCATION_NT'"[We] [lack] a key that fits [the locked-thing]." ( a )' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                 RVALUE_CONTEXT_NT'"[We] [lack] a key that fits [the locked-thing]." ( a )' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                     CONSTANT_NT'"[We] [lack] a key that fits [the locked-thing]." ( a )' {kind: text}
-                            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 873}
+                            IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 874}
                             DEFN_CONT_NT'a thing is key-accessible' {unit: 3}
                                 CODE_BLOCK_NT
                                     CODE_BLOCK_NT {control structure: IF}
@@ -17934,7 +17940,7 @@ ROOT_NT
                                     VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                                     UNPARSED_NOUN_NT'"open [a lockable thing] with [something]"'
                                     UNPARSED_NOUN_NT'unlocking it with'
-                                IMPERATIVE_NT'check unlocking it with ( this is the must be able to reach ' {unit: 3} {imperative definition: 874}
+                                IMPERATIVE_NT'check unlocking it with ( this is the must be able to reach ' {unit: 3} {imperative definition: 875}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3}
                                             INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
@@ -17944,7 +17950,7 @@ ROOT_NT
                                     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: positive} {special meaning: rule-listed-in}
                                     UNPARSED_NOUN_NT'the right second rule'
                                     UNPARSED_NOUN_NT'instead of the can't unlock without the correct key rule in '
-                                IMPERATIVE_NT'this is the right second rule' {unit: 3} {imperative definition: 875}
+                                IMPERATIVE_NT'this is the right second rule' {unit: 3} {imperative definition: 876}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if the second noun does not unlock the noun' {colon_block_command} {unit: 3} {indent: 1}
@@ -17986,7 +17992,7 @@ ROOT_NT
                                         PROPERTYCALLED_NT'called'
                                             UNPARSED_NOUN_NT'object' {indefinite 'an' n/m/f nom/acc s}
                                             UNPARSED_NOUN_NT'key unlocked with' {definite 'the' n/m/f s/p nom/acc}
-                                IMPERATIVE_NT'check an actor unlocking keylessly ( this is the check keyle' {unit: 3} {imperative definition: 876}
+                                IMPERATIVE_NT'check an actor unlocking keylessly ( this is the check keyle' {unit: 3} {imperative definition: 877}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'abide by the can't unlock without a lock rule' {unit: 3}
                                             INVOCATION_NT'abide by the can't unlock without a lock rule' {phrase invoked: <no-inter-name>}
@@ -18002,7 +18008,7 @@ ROOT_NT
                                                     CONSTANT_NT'need a matching key rule' {kind: rule} {rule: need a matching key rule}{meaning: {need a matching key rule = MISCELLANEOUS_MC}}
                                         INVOCATION_LIST_NT'now the key unlocked with is the second noun' {unit: 3} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the key unlocked with is the second noun'
-                                IMPERATIVE_NT'carry out an actor unlocking keylessly ( this is the standar' {unit: 3} {imperative definition: 877}
+                                IMPERATIVE_NT'carry out an actor unlocking keylessly ( this is the standar' {unit: 3} {imperative definition: 878}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
@@ -18052,7 +18058,7 @@ ROOT_NT
                                     UNPARSED_NOUN_NT'"lock [a lockable
                                     thing] with [something]"'
                                     UNPARSED_NOUN_NT'locking it with'
-                                IMPERATIVE_NT'check locking it with' {unit: 3} {imperative definition: 878}
+                                IMPERATIVE_NT'check locking it with' {unit: 3} {imperative definition: 879}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3}
                                             INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
@@ -18090,7 +18096,7 @@ ROOT_NT
                                         PROPERTYCALLED_NT'called'
                                             UNPARSED_NOUN_NT'object' {indefinite 'an' n/m/f nom/acc s}
                                             UNPARSED_NOUN_NT'key locked with' {definite 'the' n/m/f s/p nom/acc}
-                                IMPERATIVE_NT'check an actor locking keylessly ( this is the check keyless' {unit: 3} {imperative definition: 879}
+                                IMPERATIVE_NT'check an actor locking keylessly ( this is the check keyless' {unit: 3} {imperative definition: 880}
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'abide by the can't lock without a lock rule' {unit: 3}
                                             INVOCATION_NT'abide by the can't lock without a lock rule' {phrase invoked: <no-inter-name>}
@@ -18110,7 +18116,7 @@ ROOT_NT
                                                     CONSTANT_NT'need a matching key rule' {kind: rule} {rule: need a matching key rule}{meaning: {need a matching key rule = MISCELLANEOUS_MC}}
                                         INVOCATION_LIST_NT'now the key locked with is the second noun' {unit: 3} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the key locked with is the second noun'
-                                IMPERATIVE_NT'carry out an actor locking keylessly ( this is the standard ' {unit: 3} {imperative definition: 880}
+                                IMPERATIVE_NT'carry out an actor locking keylessly ( this is the standard ' {unit: 3} {imperative definition: 881}
                                     CODE_BLOCK_NT
                                         CODE_BLOCK_NT {control structure: IF}
                                             INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
@@ -18151,7 +18157,7 @@ ROOT_NT
                             PROPER_NOUN_NT'A kind of key
                             whose inventory listing changes to reflect the' {refined} {eval: CONSTANT_NT'A kind of key
                             whose inventory listing changes to reflect the' {kind: text}}
-                        IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 881}
+                        IMPERATIVE_NT'definition' {unit: 3} {imperative definition: 882}
                         SENTENCE_NT'unbolting relates one passkey to various things' {unit: 3} {classified}
                             VERB_NT'relates' {verb 'relate' 3p s act IS_TENSE +ve} {special meaning: new-relation}
                             UNPARSED_NOUN_NT'unbolting' {new relation: unbolting}
@@ -18161,7 +18167,7 @@ ROOT_NT
                             VERB_NT'means' {verb 'mean' 3p s act IS_TENSE +ve} {special meaning: verb-means}
                             UNPARSED_NOUN_NT'to unbolt'
                             UNPARSED_NOUN_NT'unbolting relation' {definite 'the' n/m/f s/p nom/acc}
-                        IMPERATIVE_NT'after printing the name of an identified passkey ( called th' {unit: 3} {imperative definition: 882}
+                        IMPERATIVE_NT'after printing the name of an identified passkey ( called th' {unit: 3} {imperative definition: 883}
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'now the prior named object is the item' {unit: 3} {control structure: NOW}
                                     CONDITION_CONTEXT_NT'the prior named object is the item'
@@ -18170,14 +18176,14 @@ ROOT_NT
                                         INVOCATION_NT'" (which [open] [the list of things unbolted by the item])" ' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                             RVALUE_CONTEXT_NT'" (which [open] [the list of things unbolted by the item])" ' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                 CONSTANT_NT'" (which [open] [the list of things unbolted by the item])" ' {kind: text}
-                        IMPERATIVE_NT'after examining an identified passkey ( this is the passkey ' {unit: 3} {imperative definition: 883}
+                        IMPERATIVE_NT'after examining an identified passkey ( this is the passkey ' {unit: 3} {imperative definition: 884}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT'say "[The noun] [unlock] [the list of things unbolted by the' {control structure: SAY}
                                     INVOCATION_LIST_SAY_NT'"[The noun] [unlock] [the list of things unbolted by the nou'
                                         INVOCATION_NT'"[The noun] [unlock] [the list of things unbolted by the nou' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                             RVALUE_CONTEXT_NT'"[The noun] [unlock] [the list of things unbolted by the nou' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                 CONSTANT_NT'"[The noun] [unlock] [the list of things unbolted by the nou' {kind: text}
-                        IMPERATIVE_NT'carry out unlocking something with a passkey ( this is the s' {unit: 3} {imperative definition: 884}
+                        IMPERATIVE_NT'carry out unlocking something with a passkey ( this is the s' {unit: 3} {imperative definition: 885}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the second noun unlocks the noun' {unit: 3} {colon_block_command}
@@ -18187,11 +18193,11 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 3} {results_from_splitting} {indent: 1} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the second noun unbolts the noun'
-                        IMPERATIVE_NT'report someone trying unlocking something with a passkey ( t' {unit: 3} {imperative definition: 885}
+                        IMPERATIVE_NT'report someone trying unlocking something with a passkey ( t' {unit: 3} {imperative definition: 886}
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 3} {control structure: NOW}
                                     CONDITION_CONTEXT_NT'the second noun unbolts the noun'
-                        IMPERATIVE_NT'carry out locking something with a passkey ( this is the sta' {unit: 3} {imperative definition: 886}
+                        IMPERATIVE_NT'carry out locking something with a passkey ( this is the sta' {unit: 3} {imperative definition: 887}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the second noun unlocks the noun' {unit: 3} {colon_block_command}
@@ -18201,7 +18207,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 3} {results_from_splitting} {indent: 1} {control structure: NOW}
                                             CONDITION_CONTEXT_NT'the second noun unbolts the noun'
-                        IMPERATIVE_NT'report someone trying locking something with a passkey ( thi' {unit: 3} {imperative definition: 887}
+                        IMPERATIVE_NT'report someone trying locking something with a passkey ( thi' {unit: 3} {imperative definition: 888}
                             CODE_BLOCK_NT
                                 INVOCATION_LIST_NT'now the second noun unbolts the noun' {unit: 3} {control structure: NOW}
                                     CONDITION_CONTEXT_NT'the second noun unbolts the noun'
@@ -18219,7 +18225,7 @@ ROOT_NT
                                 COMMON_NOUN_NT'keychain' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'keychain'} {creation: << kind=keychain(x) >>} {eval: TEST_VALUE_NT}
                                 PROPER_NOUN_NT'specification' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'specification'=text}}
                             PROPER_NOUN_NT'A keychain which can hold the player's keys without forcing ' {refined} {eval: CONSTANT_NT'A keychain which can hold the player's keys without forcing ' {kind: text}}
-                        IMPERATIVE_NT'instead of putting something which is not a passkey on a key' {unit: 3} {imperative definition: 888}
+                        IMPERATIVE_NT'instead of putting something which is not a passkey on a key' {unit: 3} {imperative definition: 889}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT'say "[The noun] [are] not a key." ( a )' {control structure: SAY}
                                     INVOCATION_LIST_SAY_NT'"[The noun] [are] not a key." ( a )'
@@ -18230,7 +18236,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: positive} {special meaning: rule-listed-in}
                             UNPARSED_NOUN_NT'the keychain-aware carrying requirements rule'
                             UNPARSED_NOUN_NT'instead of the carrying requirements rule in the action-proc'
-                        IMPERATIVE_NT'this is the keychain-aware carrying requirements rule' {unit: 3} {imperative definition: 889}
+                        IMPERATIVE_NT'this is the keychain-aware carrying requirements rule' {unit: 3} {imperative definition: 890}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if locking or unlocking something with something which is on' {colon_block_command} {unit: 3} {indent: 1}
@@ -18252,7 +18258,7 @@ ROOT_NT
                             VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                             UNPARSED_NOUN_NT'"put [passkey] on [keychain]"'
                             UNPARSED_NOUN_NT'putting it on'
-                        IMPERATIVE_NT'rule for deciding whether all includes passkeys which are on' {unit: 3} {imperative definition: 890}
+                        IMPERATIVE_NT'rule for deciding whether all includes passkeys which are on' {unit: 3} {imperative definition: 891}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the second noun is not a keychain' {unit: 3} {colon_block_command}
@@ -18262,7 +18268,7 @@ ROOT_NT
                                     CODE_BLOCK_NT
                                         INVOCATION_LIST_NT'it does not' {unit: 3} {results_from_splitting} {indent: 1}
                     HEADING_NT'volume 5 - support materials' {heading 1} {under: H1'volume 5 - support materials'} {unit: 3}
-                        IMPERATIVE_NT'this is the noun autotaking rule' {unit: 3} {imperative definition: 891}
+                        IMPERATIVE_NT'this is the noun autotaking rule' {unit: 3} {imperative definition: 892}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
@@ -18292,7 +18298,7 @@ ROOT_NT
                                                     CONSTANT_NT'implicitly taking' {kind: activity on objects} {activity: implicitly taking}{meaning: {implicitly taking = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'noun' {token to be parsed against: TEST_VALUE_NT} {required: value}
                                                     NONLOCAL_VARIABLE_NT'noun' {nonlocal: 'noun'(var)object}{meaning: {noun = VARIABLE_MC}}
-                        IMPERATIVE_NT'this is the second noun autotaking rule' {unit: 3} {imperative definition: 892}
+                        IMPERATIVE_NT'this is the second noun autotaking rule' {unit: 3} {imperative definition: 893}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if sequential action option is active' {colon_block_command} {unit: 3} {indent: 1}
@@ -18322,7 +18328,7 @@ ROOT_NT
                                                     CONSTANT_NT'implicitly taking' {kind: activity on objects} {activity: implicitly taking}{meaning: {implicitly taking = ACTIVITY_MC}}
                                                 RVALUE_CONTEXT_NT'second noun' {token to be parsed against: TEST_VALUE_NT} {required: value}
                                                     NONLOCAL_VARIABLE_NT'second noun' {nonlocal: 'second noun'(var)object}{meaning: {second noun = VARIABLE_MC}}
-                        IMPERATIVE_NT'this is the must hold the noun rule' {unit: 3} {imperative definition: 893}
+                        IMPERATIVE_NT'this is the must hold the noun rule' {unit: 3} {imperative definition: 894}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the person asked does not have the noun' {unit: 3} {colon_block_command}
@@ -18344,7 +18350,7 @@ ROOT_NT
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
                                 INVOCATION_LIST_NT'make no decision' {unit: 3}
                                     INVOCATION_NT'make no decision' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'this is the must hold the second noun rule' {unit: 3} {imperative definition: 894}
+                        IMPERATIVE_NT'this is the must hold the second noun rule' {unit: 3} {imperative definition: 895}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the person asked does not have the second noun' {unit: 3} {colon_block_command}
@@ -18366,7 +18372,7 @@ ROOT_NT
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
                                 INVOCATION_LIST_NT'make no decision' {unit: 3}
                                     INVOCATION_NT'make no decision' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'this is the must have accessible the noun rule' {unit: 3} {imperative definition: 895}
+                        IMPERATIVE_NT'this is the must have accessible the noun rule' {unit: 3} {imperative definition: 896}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the noun is not key-accessible' {colon_block_command} {unit: 3} {indent: 1}
@@ -18407,7 +18413,7 @@ ROOT_NT
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
                                 INVOCATION_LIST_NT'make no decision' {unit: 3} {indent: 1}
                                     INVOCATION_NT'make no decision' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'this is the must have accessible the second noun rule' {unit: 3} {imperative definition: 896}
+                        IMPERATIVE_NT'this is the must have accessible the second noun rule' {unit: 3} {imperative definition: 897}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the second noun is not key-accessible' {colon_block_command} {unit: 3} {indent: 1}
@@ -18465,7 +18471,7 @@ ROOT_NT
                             VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                             UNPARSED_NOUN_NT'universal unlocking'
                             UNPARSED_NOUN_NT'applying to nothing'
-                        IMPERATIVE_NT'carry out universal unlocking ( this is the lock debugging r' {unit: 3} {imperative definition: 897}
+                        IMPERATIVE_NT'carry out universal unlocking ( this is the lock debugging r' {unit: 3} {imperative definition: 898}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: RPT}
                                     INVOCATION_LIST_NT'repeat with item running through locked things' {colon_block_command} {unit: 3} {indent: 1}
@@ -18482,7 +18488,7 @@ ROOT_NT
                                                 INVOCATION_NT'"Unlocking [the item]." ( a )' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                     RVALUE_CONTEXT_NT'"Unlocking [the item]." ( a )' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                         CONSTANT_NT'"Unlocking [the item]." ( a )' {kind: text}
-                        IMPERATIVE_NT'report universal unlocking ( this is the report universal un' {unit: 3} {imperative definition: 898}
+                        IMPERATIVE_NT'report universal unlocking ( this is the report universal un' {unit: 3} {imperative definition: 899}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT'say "A loud stereophonic click assures you that everything i' {control structure: SAY}
                                     INVOCATION_LIST_SAY_NT'"A loud stereophonic click assures you that everything in th'
@@ -18509,7 +18515,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'going toward'
                 UNPARSED_NOUN_NT'applying to one thing'
-            IMPERATIVE_NT'check going toward' {unit: 4} {imperative definition: 899}
+            IMPERATIVE_NT'check going toward' {unit: 4} {imperative definition: 900}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the noun is the location' {unit: 4} {colon_block_command}
@@ -18531,7 +18537,7 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'"."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"."' {kind: text}
                             CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'carry out going toward' {unit: 4} {imperative definition: 900}
+            IMPERATIVE_NT'carry out going toward' {unit: 4} {imperative definition: 901}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the destination of the player is the noun' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the destination of the player is the noun'
@@ -18571,7 +18577,7 @@ ROOT_NT
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'now the destination of the player is blank' {unit: 4} {results_from_splitting} {indent: 1} {control structure: NOW}
                                 CONDITION_CONTEXT_NT'the destination of the player is blank'
-            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 4} {imperative definition: 901}
+            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 4} {imperative definition: 902}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the destination of the player is the location' {colon_block_command} {unit: 4} {indent: 1}
@@ -18602,18 +18608,18 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'stopping'
                 UNPARSED_NOUN_NT'applying to nothing'
-            IMPERATIVE_NT'carry out stopping' {unit: 4} {imperative definition: 902}
+            IMPERATIVE_NT'carry out stopping' {unit: 4} {imperative definition: 903}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the destination of the player is blank' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the destination of the player is blank'
-            IMPERATIVE_NT'report stopping' {unit: 4} {imperative definition: 903}
+            IMPERATIVE_NT'report stopping' {unit: 4} {imperative definition: 904}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "You stop in your tracks."' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"You stop in your tracks."'
                             INVOCATION_NT'"You stop in your tracks."' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                 RVALUE_CONTEXT_NT'"You stop in your tracks."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'"You stop in your tracks."' {kind: text}
-            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 4} {imperative definition: 904}
+            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 4} {imperative definition: 905}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "You step into the mercifully air-conditioned surroundin' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"You step into the mercifully air-conditioned surroundings o'
@@ -18622,7 +18628,7 @@ ROOT_NT
                                     CONSTANT_NT'"You step into the mercifully air-conditioned surroundings o' {kind: text}
                     INVOCATION_LIST_NT'continue the action' {unit: 4}
                         INVOCATION_NT'continue the action' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 4} {imperative definition: 905}
+            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 4} {imperative definition: 906}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "You emerge from the air-conditioning into heat like a w' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"You emerge from the air-conditioning into heat like a wall.'
@@ -18631,7 +18637,7 @@ ROOT_NT
                                     CONSTANT_NT'"You emerge from the air-conditioning into heat like a wall.' {kind: text}
                     INVOCATION_LIST_NT'continue the action' {unit: 4}
                         INVOCATION_NT'continue the action' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 4} {imperative definition: 906}
+            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 4} {imperative definition: 907}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "The air-conditioning hums softly."' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"The air-conditioning hums softly."'
@@ -18679,7 +18685,7 @@ ROOT_NT
                     PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I90'felt door'} {enumeration: 0}}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"It has a prominent lock, designed for an old-fashioned key.' {refined} {eval: CONSTANT_NT'"It has a prominent lock, designed for an old-fashioned key.' {kind: text}}
-            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 4} {imperative definition: 907}
+            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 4} {imperative definition: 908}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[The audience] looks a little non-plussed when you lock' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'the audience'
@@ -18759,11 +18765,11 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'slot'} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'} {enumeration: 0}}
                 COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'container'} {creation: << kind=container(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 4} {imperative definition: 908}
+            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 4} {imperative definition: 909}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the noun is nowhere' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the noun is nowhere'
-            IMPERATIVE_NT'report inserting something into the slot' {unit: 4} {imperative definition: 909}
+            IMPERATIVE_NT'report inserting something into the slot' {unit: 4} {imperative definition: 910}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[The noun] falls out of sight, and you know you will ne' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'the noun'
@@ -18797,7 +18803,7 @@ ROOT_NT
                 AND_NT'and' {refined}
                     ADJECTIVE_NT'lockable' {refined} {predicate: lockable} {creation: << lockable(x) ^ lockable(x) >>}
                     ADJECTIVE_NT'unlocked' {refined} {predicate: unlocked} {creation: << unlocked(x) ^ unlocked(x) >>}
-            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 4} {imperative definition: 910}
+            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 4} {imperative definition: 911}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the person asked is the player' {colon_block_command} {unit: 4} {indent: 1}
@@ -18945,7 +18951,7 @@ ROOT_NT
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}
                 UNPARSED_NOUN_NT'"glass"'
                 UNPARSED_NOUN_NT'the box'
-            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 4} {imperative definition: 911}
+            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 4} {imperative definition: 912}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "You hit the emergency box, which shatters open."' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"You hit the emergency box, which shatters open."'
@@ -18954,7 +18960,7 @@ ROOT_NT
                                     CONSTANT_NT'"You hit the emergency box, which shatters open."' {kind: text}
                     INVOCATION_LIST_NT'now the emergency box is open' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the emergency box is open'
-            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 4} {imperative definition: 912}
+            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 4} {imperative definition: 913}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "The glass has already been thoroughly broken."' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'"The glass has already been thoroughly broken."'
@@ -19063,7 +19069,7 @@ ROOT_NT
             SENTENCE_NT'use full-length room descriptions' {unit: 4} {classified}
                 VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
                 UNPARSED_NOUN_NT'full-length room descriptions'
-            IMPERATIVE_NT'after looking in an outdoors room' {unit: 4} {imperative definition: 913}
+            IMPERATIVE_NT'after looking in an outdoors room' {unit: 4} {imperative definition: 914}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let started printing be false' {unit: 4} {indent: 1}
                         INVOCATION_NT'let started printing be false' {phrase invoked: <no-inter-name>}
@@ -19249,7 +19255,7 @@ ROOT_NT
                                     CODE_BLOCK_NT'say paragraph break' {control structure: SAY}
                                         INVOCATION_LIST_SAY_NT'paragraph break'
                                             INVOCATION_NT'paragraph break' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 914}
+            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 915}
             DEFN_CONT_NT'a door is proximate' {unit: 4}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
@@ -19270,7 +19276,7 @@ ROOT_NT
                                 INVOCATION_NT'yes' {phrase invoked: <no-inter-name>}
                     INVOCATION_LIST_NT'no' {unit: 4}
                         INVOCATION_NT'no' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 4} {imperative definition: 915}
+            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 4} {imperative definition: 916}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the player can see a door ( called nearest exit )' {unit: 4} {indent: 1} {colon_block_command}
@@ -19539,7 +19545,7 @@ ROOT_NT
                 PROPER_NOUN_NT'ned' {refined} {refers: infs'ned'} {eval: CONSTANT_NT'ned' {kind: man} {instance: I166'ned'} {enumeration: 0}}
                 RELATIONSHIP_NT'owns' {meaning: ownership-r} {refined}
                     PROPER_NOUN_NT'movie rental' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I104'movie rental store'} {enumeration: 0}}
-            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 4} {imperative definition: 916}
+            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 4} {imperative definition: 917}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the target owns the location of the target' {unit: 4} {colon_block_command}
@@ -19558,7 +19564,7 @@ ROOT_NT
                     COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                     PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}
                 PROPER_NOUN_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {refined} {eval: CONSTANT_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {kind: text}}
-            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 4} {imperative definition: 917}
+            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 4} {imperative definition: 918}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT'say "[if the noun is female]She[otherwise]He[end if] is carr' {control structure: SAY}
                         INVOCATION_LIST_SAY_NT'if the noun is female'
@@ -19589,7 +19595,7 @@ ROOT_NT
                             INVOCATION_NT'"."' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                 RVALUE_CONTEXT_NT'"."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                     CONSTANT_NT'"."' {kind: text}
-            IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 918}
+            IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 919}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let patient zero be a random other person' {unit: 4}
                         INVOCATION_NT'let patient zero be a random other person' {phrase invoked: <no-inter-name>}
@@ -19611,7 +19617,7 @@ ROOT_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'table name' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'conversation'
-            IMPERATIVE_NT'instead of asking someone about something' {unit: 4} {imperative definition: 919}
+            IMPERATIVE_NT'instead of asking someone about something' {unit: 4} {imperative definition: 920}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let the source be the conversation of the noun' {unit: 4} {indent: 1}
                         INVOCATION_NT'let the source be the conversation of the noun' {phrase invoked: <no-inter-name>}
@@ -19676,7 +19682,7 @@ ROOT_NT
                                     INVOCATION_NT'" stares at you blankly."' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                         RVALUE_CONTEXT_NT'" stares at you blankly."' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'" stares at you blankly."' {kind: text}
-            IMPERATIVE_NT'instead of telling someone about something' {unit: 4} {imperative definition: 920}
+            IMPERATIVE_NT'instead of telling someone about something' {unit: 4} {imperative definition: 921}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'try asking the noun about it' {unit: 4}
                         INVOCATION_NT'try asking the noun about it' {phrase invoked: <no-inter-name>}
@@ -19690,7 +19696,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}
                 UNPARSED_NOUN_NT'recalling conversations'
                 UNPARSED_NOUN_NT'applying to nothing'
-            IMPERATIVE_NT'carry out recalling conversations' {unit: 4} {imperative definition: 921}
+            IMPERATIVE_NT'carry out recalling conversations' {unit: 4} {imperative definition: 922}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: RPT}
                         INVOCATION_LIST_NT'repeat with speaker running through other people' {colon_block_command} {unit: 4} {indent: 1}
@@ -19799,7 +19805,7 @@ ROOT_NT
                     PROPER_NOUN_NT'conversation' {refined} {eval: CONSTANT_NT {kind: table names valued property} {property: 'conversation'=table name}}
                 PROPER_NOUN_NT'table of vanessa chatter' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'table of vanessa chatter' {kind: table name} {table: table_data}{meaning: {table of vanessa chatter = TABLE_MC}}}
             TABLE_NT'table of vanessa chatter topic reply summary turn stamp char' {unit: 4}
-            IMPERATIVE_NT'after reading a command' {unit: 4} {imperative definition: 922}
+            IMPERATIVE_NT'after reading a command' {unit: 4} {imperative definition: 923}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: WHI}
                         INVOCATION_LIST_NT'while player's command includes "the"' {colon_block_command} {unit: 4} {indent: 1}
@@ -19864,7 +19870,7 @@ ROOT_NT
                 PROPER_NOUN_NT'"sashay"' {refined} {eval: CONSTANT_NT'"sashay"' {kind: text}}
             TABLE_NT'table of visible exits character second third heading chosen' {unit: 4}
             TABLE_NT'table of visible entrances character second third heading ch' {unit: 4}
-            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 4} {imperative definition: 923}
+            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 4} {imperative definition: 924}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: RPT}
                         INVOCATION_LIST_NT'repeat through current table' {colon_block_command} {unit: 4} {indent: 1}
@@ -19874,7 +19880,7 @@ ROOT_NT
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'blank out the whole row' {unit: 4} {indent: 2}
                                 INVOCATION_NT'blank out the whole row' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 4} {imperative definition: 924}
+            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 4} {imperative definition: 925}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let next direction be up' {unit: 4} {indent: 1}
                         INVOCATION_NT'let next direction be up' {phrase invoked: <no-inter-name>}
@@ -19960,7 +19966,7 @@ ROOT_NT
                     PROPERTYCALLED_NT'called'
                         UNPARSED_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}
                         UNPARSED_NOUN_NT'last opener'
-            IMPERATIVE_NT'report someone opening a door' {unit: 4} {imperative definition: 925}
+            IMPERATIVE_NT'report someone opening a door' {unit: 4} {imperative definition: 926}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now group size is 1' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'group size is 1'
@@ -20005,7 +20011,7 @@ ROOT_NT
                                 INVOCATION_LIST_SAY_NT'run paragraph on'
                                     INVOCATION_NT'run paragraph on' {phrase invoked: <no-inter-name>}
                             CODE_BLOCK_NT {control structure: INS}
-            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 4} {imperative definition: 926}
+            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 4} {imperative definition: 927}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the person asked is not the last opener of the route' {unit: 4} {colon_block_command}
@@ -20083,11 +20089,11 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last thing named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last thing named' {nonlocal: 'last thing named'(var)thing}} {created here}
                 COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=things variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 4} {imperative definition: 927}
+            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 4} {imperative definition: 928}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the last thing named is the target' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the last thing named is the target'
-            IMPERATIVE_NT'report someone going a direction' {unit: 4} {imperative definition: 928}
+            IMPERATIVE_NT'report someone going a direction' {unit: 4} {imperative definition: 929}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the person asked is in the location' {unit: 4} {colon_block_command}
@@ -20121,7 +20127,7 @@ ROOT_NT
                                 CONDITION_CONTEXT_NT'heading chosen entry is the noun'
                     INVOCATION_LIST_NT'stop the action' {unit: 4}
                         INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'this is the movement reporting rule' {unit: 4} {imperative definition: 929}
+            IMPERATIVE_NT'this is the movement reporting rule' {unit: 4} {imperative definition: 930}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'sort the table of visible entrances in heading chosen order' {unit: 4}
                         INVOCATION_NT'sort the table of visible entrances in heading chosen order' {phrase invoked: <no-inter-name>}
@@ -20187,7 +20193,7 @@ ROOT_NT
                         INVOCATION_NT'clear the table of visible exits' {phrase invoked: <no-inter-name>}
                             RVALUE_CONTEXT_NT'table of visible exits' {token to be parsed against: TEST_VALUE_NT'a table name'} {required: table name}
                                 CONSTANT_NT'table of visible exits' {kind: table name} {table: table_data}{meaning: {table of visible exits = TABLE_MC}}
-            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 4} {imperative definition: 930}
+            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 4} {imperative definition: 931}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let count be the number of filled rows in the current table' {unit: 4} {indent: 1}
                         INVOCATION_NT'let count be the number of filled rows in the current table' {phrase invoked: <no-inter-name>}
@@ -20626,7 +20632,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'last person named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last person named' {nonlocal: 'last person named'(var)person}} {created here}
                 COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=people variable-pointer(x) >>} {eval: TEST_VALUE_NT}
-            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 4} {imperative definition: 931}
+            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 4} {imperative definition: 932}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'now the last person named is the target' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'the last person named is the target'
@@ -20638,7 +20644,7 @@ ROOT_NT
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}{meaning: {group size = VARIABLE_MC}}}
                 PROPER_NOUN_NT'1' {refined} {eval: CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}}
-            IMPERATIVE_NT'to clear marked people' {unit: 4} {imperative definition: 932}
+            IMPERATIVE_NT'to clear marked people' {unit: 4} {imperative definition: 933}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: RPT}
                         INVOCATION_LIST_NT'repeat with named party running through people' {colon_block_command} {unit: 4} {indent: 1}
@@ -20650,7 +20656,7 @@ ROOT_NT
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'now the named party is not marked for listing' {unit: 4} {indent: 2} {control structure: NOW}
                                 CONDITION_CONTEXT_NT'the named party is not marked for listing'
-            IMPERATIVE_NT'before listing nondescript items' {unit: 4} {imperative definition: 933}
+            IMPERATIVE_NT'before listing nondescript items' {unit: 4} {imperative definition: 934}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the number of people who are marked for listing is 0' {unit: 4} {colon_block_command}
@@ -20679,7 +20685,7 @@ ROOT_NT
                         INVOCATION_NT'describe patients' {phrase invoked: <no-inter-name>}
                     INVOCATION_LIST_NT'now every marked for listing person is not marked for listin' {unit: 4} {control structure: NOW}
                         CONDITION_CONTEXT_NT'every marked for listing person is not marked for listing'
-            IMPERATIVE_NT'to describe patients' {unit: 4} {imperative definition: 934}
+            IMPERATIVE_NT'to describe patients' {unit: 4} {imperative definition: 935}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if every marked for listing person is infected and at least ' {colon_block_command} {unit: 4} {indent: 1}
@@ -20838,7 +20844,7 @@ ROOT_NT
                                         LOCAL_VARIABLE_NT'count' {local: LV"count"-number number}
                     INVOCATION_LIST_NT'clear marked people' {unit: 4} {indent: 1}
                         INVOCATION_NT'clear marked people' {phrase invoked: <no-inter-name>}
-            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 4} {imperative definition: 935}
+            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 4} {imperative definition: 936}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if group size is 1' {unit: 4} {colon_block_command}
@@ -20873,7 +20879,7 @@ ROOT_NT
                                     INVOCATION_NT'"The last"' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                         RVALUE_CONTEXT_NT'"The last"' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"The last"' {kind: text}
-            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 4} {imperative definition: 936}
+            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 4} {imperative definition: 937}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if group size is 1' {unit: 4} {colon_block_command}
@@ -20908,7 +20914,7 @@ ROOT_NT
                                     INVOCATION_NT'"The last"' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                         RVALUE_CONTEXT_NT'"The last"' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"The last"' {kind: text}
-            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 4} {imperative definition: 937}
+            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 4} {imperative definition: 938}
                 CODE_BLOCK_NT
                     INVOCATION_LIST_NT'let divider be the number of filled rows in the table of dip' {unit: 4}
                         INVOCATION_NT'let divider be the number of filled rows in the table of dip' {phrase invoked: <no-inter-name>}
@@ -20955,7 +20961,7 @@ ROOT_NT
                 VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                 COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: << kind=door(x) >>} {eval: TEST_VALUE_NT}
                 ADJECTIVE_NT'scenery' {refined} {predicate: scenery} {creation: << scenery(x) ^ scenery(x) >>}
-            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 4} {imperative definition: 938}
+            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 4} {imperative definition: 939}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if index is 0' {colon_block_command} {unit: 4} {indent: 1}
@@ -21014,7 +21020,7 @@ ROOT_NT
                                             INVOCATION_NT'", "' {phrase invoked: <no-inter-name>} {kind variable declarations: K=text}
                                                 RVALUE_CONTEXT_NT'", "' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                                     CONSTANT_NT'", "' {kind: text}
-            IMPERATIVE_NT'to say optional comma' {unit: 4} {imperative definition: 939}
+            IMPERATIVE_NT'to say optional comma' {unit: 4} {imperative definition: 940}
                 CODE_BLOCK_NT
                     CODE_BLOCK_NT {control structure: IF}
                         INVOCATION_LIST_NT'if the serial comma option is active' {colon_block_command} {unit: 4} {indent: 1}

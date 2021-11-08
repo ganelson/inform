@@ -46,7 +46,10 @@ typedef struct i7process_t {
 	void (*receiver)(int id, wchar_t c, char *style);
 	int send_count;
 	char *(*sender)(int count);
-	i7word_t (*communicator)(struct i7process_t *proc, char *id, int argc, i7word_t *args);
+	void (*stylist)(struct i7process_t *proc, i7word_t which, i7word_t what);
+	void (*glk_implementation)(struct i7process_t *proc, i7word_t glk_api_selector,
+		i7word_t varargc, i7word_t *z);
+	struct miniglk_data *miniglk;
 	int use_UTF8;
 } i7process_t;
 i7state_t i7_new_state(void);
@@ -54,11 +57,15 @@ i7snapshot_t i7_new_snapshot(void);
 i7process_t i7_new_process(void);
 char *i7_default_sender(int count);
 void i7_default_receiver(int id, wchar_t c, char *style);
-i7word_t i7_default_communicator(i7process_t *proc, char *id, int argc, i7word_t *args);
 int i7_default_main(int argc, char **argv);
 void i7_set_process_receiver(i7process_t *proc,
 	void (*receiver)(int id, wchar_t c, char *style), int UTF8);
 void i7_set_process_sender(i7process_t *proc, char *(*sender)(int count));
+void i7_set_process_stylist(i7process_t *proc,
+	void (*stylist)(struct i7process_t *proc, i7word_t which, i7word_t what));
+void i7_set_process_glk_implementation(i7process_t *proc,
+	void (*glk_implementation)(struct i7process_t *proc, i7word_t glk_api_selector,
+		i7word_t varargc, i7word_t *z));
 int i7_run_process(i7process_t *proc);
 void i7_benign_exit(i7process_t *proc);
 void i7_fatal_exit(i7process_t *proc);
@@ -231,112 +238,17 @@ i7word_t i7_mcall_2(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
 	i7word_t v2);
 i7word_t i7_mcall_3(i7process_t *proc, i7word_t to, i7word_t prop, i7word_t v,
 	i7word_t v2, i7word_t v3);
-#define I7_BODY_TEXT_ID    201
-#define I7_STATUS_TEXT_ID  202
-#define I7_BOX_TEXT_ID     203
-
-void i7_style(i7process_t *proc, i7word_t what);
-void i7_font(i7process_t *proc, int what);
-
-#define fileusage_Data (0x00)
-#define fileusage_SavedGame (0x01)
-#define fileusage_Transcript (0x02)
-#define fileusage_InputRecord (0x03)
-#define fileusage_TypeMask (0x0f)
-
-#define fileusage_TextMode   (0x100)
-#define fileusage_BinaryMode (0x000)
-
-#define filemode_Write (0x01)
-#define filemode_Read (0x02)
-#define filemode_ReadWrite (0x03)
-#define filemode_WriteAppend (0x05)
-
-typedef struct i7_fileref {
-	i7word_t usage;
-	i7word_t name;
-	i7word_t rock;
-	char leafname[128];
-	FILE *handle;
-} i7_fileref;
-
-i7word_t i7_do_glk_fileref_create_by_name(i7process_t *proc, i7word_t usage, i7word_t name, i7word_t rock);
-int i7_fseek(i7process_t *proc, int id, int pos, int origin);
-int i7_ftell(i7process_t *proc, int id);
-int i7_fopen(i7process_t *proc, int id, int mode);
-void i7_fclose(i7process_t *proc, int id);
-i7word_t i7_do_glk_fileref_does_file_exist(i7process_t *proc, i7word_t id);
-void i7_fputc(i7process_t *proc, int c, int id);
-int i7_fgetc(i7process_t *proc, int id);
-typedef struct i7_stream {
-	FILE *to_file;
-	i7word_t to_file_id;
-	wchar_t *to_memory;
-	size_t memory_used;
-	size_t memory_capacity;
-	i7word_t previous_id;
-	i7word_t write_here_on_closure;
-	size_t write_limit;
-	int active;
-	int encode_UTF8;
-	int char_size;
-	int chars_read;
-	int read_position;
-	int end_position;
-	int owned_by_window_id;
-	int fixed_pitch;
-	char style[128];
-	char composite_style[300];
-} i7_stream;
-i7word_t i7_do_glk_stream_get_current(i7process_t *proc);
-i7_stream i7_new_stream(i7process_t *proc, FILE *F, int win_id);
-void i7_initialise_streams(i7process_t *proc);
-i7word_t i7_open_stream(i7process_t *proc, FILE *F, int win_id);
-i7word_t i7_do_glk_stream_open_memory(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock);
-i7word_t i7_do_glk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock);
-i7word_t i7_do_glk_stream_open_file(i7process_t *proc, i7word_t fileref, i7word_t usage, i7word_t rock);
-#define seekmode_Start (0)
-#define seekmode_Current (1)
-#define seekmode_End (2)
-void i7_do_glk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos, i7word_t seekmode);
-i7word_t i7_do_glk_stream_get_position(i7process_t *proc, i7word_t id);
-void i7_do_glk_stream_close(i7process_t *proc, i7word_t id, i7word_t result);
-typedef struct i7_winref {
-	i7word_t type;
-	i7word_t stream_id;
-	i7word_t rock;
-} i7_winref;
-i7word_t i7_do_glk_window_open(i7process_t *proc, i7word_t split, i7word_t method, i7word_t size, i7word_t wintype, i7word_t rock);
-i7word_t i7_stream_of_window(i7process_t *proc, i7word_t id);
-i7word_t i7_rock_of_window(i7process_t *proc, i7word_t id);
-void i7_to_receiver(i7process_t *proc, i7word_t rock, wchar_t c);
-void i7_do_glk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t x);
-i7word_t i7_do_glk_get_char_stream(i7process_t *proc, i7word_t stream_id);
-void i7_print_char(i7process_t *proc, i7word_t x);
 void i7_print_C_string(i7process_t *proc, char *c_string);
 void i7_print_decimal(i7process_t *proc, i7word_t x);
-
-#define evtype_None (0)
-#define evtype_Timer (1)
-#define evtype_CharInput (2)
-#define evtype_LineInput (3)
-#define evtype_MouseInput (4)
-#define evtype_Arrange (5)
-#define evtype_Redraw (6)
-#define evtype_SoundNotify (7)
-#define evtype_Hyperlink (8)
-#define evtype_VolumeNotify (9)
-
-typedef struct i7_glk_event {
-	i7word_t type;
-	i7word_t win_id;
-	i7word_t val1;
-	i7word_t val2;
-} i7_glk_event;
-i7_glk_event *i7_next_event(i7process_t *proc);
-void i7_make_event(i7process_t *proc, i7_glk_event e);
-i7word_t i7_do_glk_select(i7process_t *proc, i7word_t structure);
-i7word_t i7_do_glk_request_line_event(i7process_t *proc, i7word_t window_id, i7word_t buffer, i7word_t max_len, i7word_t init_len);
+void i7_print_object(i7process_t *proc, i7word_t x);
+void i7_print_box(i7process_t *proc, i7word_t x);
+void i7_print_char(i7process_t *proc, i7word_t x);
+void i7_styling(i7process_t *proc, i7word_t which, i7word_t what);
+void i7_default_stylist(i7process_t *proc, i7word_t which, i7word_t what);
+void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc,
+	i7word_t *z);
+void i7_default_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc,
+	i7word_t *z);
 #define i7_glk_exit 0x0001
 #define i7_glk_set_interrupt_handler 0x0002
 #define i7_glk_tick 0x0003
@@ -460,15 +372,132 @@ i7word_t i7_do_glk_request_line_event(i7process_t *proc, i7word_t window_id, i7w
 #define i7_glk_date_to_time_local 0x016D
 #define i7_glk_date_to_simple_time_utc 0x016E
 #define i7_glk_date_to_simple_time_local 0x016F
-void i7_opcode_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varargc, i7word_t *z);
+#define I7_BODY_TEXT_ID          201
+#define I7_STATUS_TEXT_ID        202
+#define I7_BOX_TEXT_ID           203
+#define i7_fileusage_Data        0x00
+#define i7_fileusage_SavedGame   0x01
+#define i7_fileusage_Transcript  0x02
+#define i7_fileusage_InputRecord 0x03
+#define i7_fileusage_TypeMask    0x0f
+#define i7_fileusage_TextMode    0x100
+#define i7_fileusage_BinaryMode  0x000
+
+#define i7_filemode_Write        0x01
+#define i7_filemode_Read         0x02
+#define i7_filemode_ReadWrite    0x03
+#define i7_filemode_WriteAppend  0x05
+#define seekmode_Start (0)
+#define seekmode_Current (1)
+#define seekmode_End (2)
+#define i7_evtype_None           0
+#define i7_evtype_Timer          1
+#define i7_evtype_CharInput      2
+#define i7_evtype_LineInput      3
+#define i7_evtype_MouseInput     4
+#define i7_evtype_Arrange        5
+#define i7_evtype_Redraw         6
+#define i7_evtype_SoundNotify    7
+#define i7_evtype_Hyperlink      8
+#define i7_evtype_VolumeNotify   9
+typedef struct i7_mg_file_t {
+	i7word_t usage;
+	i7word_t name;
+	i7word_t rock;
+	char leafname[128];
+	FILE *handle;
+} i7_mg_file_t;
+
+typedef struct i7_mg_stream_t {
+	FILE *to_file;
+	i7word_t to_file_id;
+	wchar_t *to_memory;
+	size_t memory_used;
+	size_t memory_capacity;
+	i7word_t previous_id;
+	i7word_t write_here_on_closure;
+	size_t write_limit;
+	int active;
+	int encode_UTF8;
+	int char_size;
+	int chars_read;
+	int read_position;
+	int end_position;
+	int owned_by_window_id;
+	int fixed_pitch;
+	char style[128];
+	char composite_style[300];
+} i7_mg_stream_t;
+
+typedef struct i7_mg_window_t {
+	i7word_t type;
+	i7word_t stream_id;
+	i7word_t rock;
+} i7_mg_window_t;
+
+typedef struct i7_mg_event_t {
+	i7word_t type;
+	i7word_t win_id;
+	i7word_t val1;
+	i7word_t val2;
+} i7_mg_event_t;
+
+#define I7_MINIGLK_MAX_STREAMS 128
+#define I7_MINIGLK_MAX_WINDOWS 128
+#define I7_MINIGLK_RING_BUFFER_SIZE 32
+
+typedef struct miniglk_data {
+	/* streams */
+	i7_mg_stream_t memory_streams[I7_MINIGLK_MAX_STREAMS];
+	i7word_t stdout_stream_id, stderr_stream_id;
+	/* files */
+	i7_mg_file_t files[128 + 32];
+	int no_files;
+	/* windows */
+	i7_mg_window_t windows[I7_MINIGLK_MAX_WINDOWS];
+	int no_windows;
+	/* events */
+	i7_mg_event_t events_ring_buffer[I7_MINIGLK_RING_BUFFER_SIZE];
+	int rb_back, rb_front;
+	int no_lr;
+} miniglk_data;
+
+void i7_initialise_miniglk_data(i7process_t *proc);
+i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage, i7word_t name, i7word_t rock);
+int i7_fseek(i7process_t *proc, int id, int pos, int origin);
+int i7_ftell(i7process_t *proc, int id);
+int i7_fopen(i7process_t *proc, int id, int mode);
+void i7_fclose(i7process_t *proc, int id);
+i7word_t i7_miniglk_fileref_does_file_exist(i7process_t *proc, i7word_t id);
+void i7_fputc(i7process_t *proc, int c, int id);
+int i7_fgetc(i7process_t *proc, int id);
+i7word_t i7_miniglk_stream_get_current(i7process_t *proc);
+i7_mg_stream_t i7_new_stream(i7process_t *proc, FILE *F, int win_id);
+void i7_initialise_streams(i7process_t *proc);
+i7word_t i7_open_stream(i7process_t *proc, FILE *F, int win_id);
+i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock);
+i7word_t i7_miniglk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock);
+i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref, i7word_t usage, i7word_t rock);
+void i7_miniglk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos, i7word_t seekmode);
+i7word_t i7_miniglk_stream_get_position(i7process_t *proc, i7word_t id);
+void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result);
+i7word_t i7_miniglk_window_open(i7process_t *proc, i7word_t split, i7word_t method, i7word_t size, i7word_t wintype, i7word_t rock);
+i7word_t i7_stream_of_window(i7process_t *proc, i7word_t id);
+i7word_t i7_rock_of_window(i7process_t *proc, i7word_t id);
+void i7_to_receiver(i7process_t *proc, i7word_t rock, wchar_t c);
+void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t x);
+i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id);
+
+i7_mg_event_t *i7_next_event(i7process_t *proc);
+void i7_make_event(i7process_t *proc, i7_mg_event_t e);
+i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure);
+i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id, i7word_t buffer, i7word_t max_len, i7word_t init_len);
 i7word_t fn_i7_mgl_IndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
 i7word_t fn_i7_mgl_DefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
 i7word_t fn_i7_mgl_CIndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
 i7word_t fn_i7_mgl_CDefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
 i7word_t fn_i7_mgl_PrintShortName(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
 void i7_print_name(i7process_t *proc, i7word_t x);
-void i7_print_object(i7process_t *proc, i7word_t x);
-void i7_print_box(i7process_t *proc, i7word_t x);
 void i7_read(i7process_t *proc, i7word_t x);
 i7word_t i7_encode_float(i7float_t val);
 i7float_t i7_decode_float(i7word_t val);
