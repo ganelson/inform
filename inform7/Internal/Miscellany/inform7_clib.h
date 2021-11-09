@@ -400,11 +400,15 @@ void i7_default_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varar
 #define i7_evtype_SoundNotify    7
 #define i7_evtype_Hyperlink      8
 #define i7_evtype_VolumeNotify   9
+i7word_t i7_miniglk_char_to_lower(i7process_t *proc, i7word_t c);
+i7word_t i7_miniglk_char_to_upper(i7process_t *proc, i7word_t c);
+#define I7_MINIGLK_LEAFNAME_LENGTH 128
+
 typedef struct i7_mg_file_t {
 	i7word_t usage;
 	i7word_t name;
 	i7word_t rock;
-	char leafname[128];
+	char leafname[I7_MINIGLK_LEAFNAME_LENGTH + 32];
 	FILE *handle;
 } i7_mg_file_t;
 
@@ -442,6 +446,7 @@ typedef struct i7_mg_event_t {
 	i7word_t val2;
 } i7_mg_event_t;
 
+#define I7_MINIGLK_MAX_FILES 128
 #define I7_MINIGLK_MAX_STREAMS 128
 #define I7_MINIGLK_MAX_WINDOWS 128
 #define I7_MINIGLK_RING_BUFFER_SIZE 32
@@ -451,7 +456,7 @@ typedef struct miniglk_data {
 	i7_mg_stream_t memory_streams[I7_MINIGLK_MAX_STREAMS];
 	i7word_t stdout_stream_id, stderr_stream_id;
 	/* files */
-	i7_mg_file_t files[128 + 32];
+	i7_mg_file_t files[I7_MINIGLK_MAX_FILES + 32];
 	int no_files;
 	/* windows */
 	i7_mg_window_t windows[I7_MINIGLK_MAX_WINDOWS];
@@ -463,16 +468,14 @@ typedef struct miniglk_data {
 } miniglk_data;
 
 void i7_initialise_miniglk_data(i7process_t *proc);
-i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage, i7word_t name, i7word_t rock);
 int i7_fseek(i7process_t *proc, int id, int pos, int origin);
 int i7_ftell(i7process_t *proc, int id);
 int i7_fopen(i7process_t *proc, int id, int mode);
 void i7_fclose(i7process_t *proc, int id);
-i7word_t i7_miniglk_fileref_does_file_exist(i7process_t *proc, i7word_t id);
 void i7_fputc(i7process_t *proc, int c, int id);
 int i7_fgetc(i7process_t *proc, int id);
-i7word_t i7_miniglk_stream_get_current(i7process_t *proc);
-i7_mg_stream_t i7_new_stream(i7process_t *proc, FILE *F, int win_id);
+i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage, i7word_t name, i7word_t rock);
+i7word_t i7_miniglk_fileref_does_file_exist(i7process_t *proc, i7word_t id);
 void i7_initialise_streams(i7process_t *proc);
 i7word_t i7_open_stream(i7process_t *proc, FILE *F, int win_id);
 i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock);
@@ -487,7 +490,9 @@ i7word_t i7_rock_of_window(i7process_t *proc, i7word_t id);
 void i7_to_receiver(i7process_t *proc, i7word_t rock, wchar_t c);
 void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t x);
 i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id);
-
+i7word_t i7_miniglk_stream_get_current(i7process_t *proc);
+i7_mg_stream_t i7_new_stream(i7process_t *proc, FILE *F, int win_id);
+void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id);
 i7_mg_event_t *i7_next_event(i7process_t *proc);
 void i7_make_event(i7process_t *proc, i7_mg_event_t e);
 i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure);
