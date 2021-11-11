@@ -108,8 +108,10 @@ void Generators::offer_pragma(code_generation *gen, inter_tree_node *P, text_str
 @e PREDECLARE_FUNCTION_MTID
 
 =
-VOID_METHOD_TYPE(PREDECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen, vanilla_function *vf)
-VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generator *generator, int pass, code_generation *gen, inter_symbol *fn)
+VOID_METHOD_TYPE(PREDECLARE_FUNCTION_MTID, code_generator *generator, code_generation *gen,
+	vanilla_function *vf)
+VOID_METHOD_TYPE(END_FUNCTION_MTID, code_generator *generator, int pass, code_generation *gen,
+	inter_symbol *fn)
 void Generators::predeclare_function(code_generation *gen, vanilla_function *vf) {
 	VOID_METHOD_CALL(gen->generator, PREDECLARE_FUNCTION_MTID, gen, vf);
 }
@@ -119,7 +121,8 @@ void Generators::predeclare_function(code_generation *gen, vanilla_function *vf)
 @e NEW_ACTION_MTID
 
 =
-VOID_METHOD_TYPE(NEW_ACTION_MTID, code_generator *generator, code_generation *gen, text_stream *name, int true_action, int N)
+VOID_METHOD_TYPE(NEW_ACTION_MTID, code_generator *generator, code_generation *gen,
+	text_stream *name, int true_action, int N)
 void Generators::new_action(code_generation *gen, text_stream *name, int true_action, int N) {
 	VOID_METHOD_CALL(gen->generator, NEW_ACTION_MTID, gen, name, true_action, N);
 }
@@ -129,7 +132,8 @@ void Generators::new_action(code_generation *gen, text_stream *name, int true_ac
 @e PSEUDO_OBJECT_MTID
 
 =
-VOID_METHOD_TYPE(PSEUDO_OBJECT_MTID, code_generator *generator, code_generation *gen, text_stream *obj_name)
+VOID_METHOD_TYPE(PSEUDO_OBJECT_MTID, code_generator *generator, code_generation *gen,
+	text_stream *obj_name)
 void Generators::pseudo_object(code_generation *gen, text_stream *obj_name) {
 	VOID_METHOD_CALL(gen->generator, PSEUDO_OBJECT_MTID, gen, obj_name);
 }
@@ -158,13 +162,20 @@ void Generators::declare_function(code_generation *gen, vanilla_function *vf) {
 @d BUFFER_ARRAY_FORMAT 4
 
 =
-INT_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generator *generator, code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format, segmentation_pos *saved)
-VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generator *generator, code_generation *gen, text_stream *entry, int format)
-VOID_METHOD_TYPE(ARRAY_ENTRIES_MTID, code_generator *generator, code_generation *gen, int how_many, int format)
-VOID_METHOD_TYPE(END_ARRAY_MTID, code_generator *generator, code_generation *gen, int format, segmentation_pos *saved)
-int Generators::begin_array(code_generation *gen, text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format, segmentation_pos *saved) {
+INT_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generator *generator, code_generation *gen,
+	text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format,
+	segmentation_pos *saved)
+VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generator *generator, code_generation *gen,
+	text_stream *entry, int format)
+VOID_METHOD_TYPE(ARRAY_ENTRIES_MTID, code_generator *generator, code_generation *gen,
+	int how_many, int format)
+VOID_METHOD_TYPE(END_ARRAY_MTID, code_generator *generator, code_generation *gen,
+	int format, segmentation_pos *saved)
+int Generators::begin_array(code_generation *gen, text_stream *const_name,
+	inter_symbol *array_s, inter_tree_node *P, int format, segmentation_pos *saved) {
 	int rv = FALSE;
-	INT_METHOD_CALL(rv, gen->generator, BEGIN_ARRAY_MTID, gen, const_name, array_s, P, format, saved);
+	INT_METHOD_CALL(rv, gen->generator, BEGIN_ARRAY_MTID, gen, const_name, array_s,
+		P, format, saved);
 	return rv;
 }
 void Generators::array_entry(code_generation *gen, text_stream *entry, int format) {
@@ -212,7 +223,8 @@ void Generators::declare_constant(code_generation *gen, inter_symbol *const_s, i
 =
 VOID_METHOD_TYPE(WORD_TO_BYTE_MTID, code_generator *generator, code_generation *gen,
 	text_stream *to_write, text_stream *val, int b)
-void Generators::word_to_byte(code_generation *gen, text_stream *to_write, text_stream *val, int b) {
+void Generators::word_to_byte(code_generation *gen, text_stream *to_write,
+	text_stream *val, int b) {
 	VOID_METHOD_CALL(gen->generator, WORD_TO_BYTE_MTID, gen, to_write, val, b);
 }
 
@@ -267,7 +279,8 @@ void Generators::invoke_opcode(code_generation *gen, text_stream *opcode, int op
 @e MANGLE_IDENTIFIER_MTID
 
 =
-VOID_METHOD_TYPE(MANGLE_IDENTIFIER_MTID, code_generator *generator, text_stream *OUT, text_stream *identifier)
+VOID_METHOD_TYPE(MANGLE_IDENTIFIER_MTID, code_generator *generator, text_stream *OUT,
+	text_stream *identifier)
 void Generators::mangle(code_generation *gen, text_stream *OUT, text_stream *identifier) {
 	VOID_METHOD_CALL(gen->generator, MANGLE_IDENTIFIER_MTID, OUT, identifier);
 }
@@ -277,8 +290,10 @@ void Generators::mangle(code_generation *gen, text_stream *OUT, text_stream *ide
 @e DECLARE_PROPERTY_MTID
 
 =
-VOID_METHOD_TYPE(DECLARE_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, linked_list *all_forms)
-void Generators::declare_property(code_generation *gen, inter_symbol *prop_name, linked_list *all_forms) {
+VOID_METHOD_TYPE(DECLARE_PROPERTY_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *prop_name, linked_list *all_forms)
+void Generators::declare_property(code_generation *gen, inter_symbol *prop_name,
+	linked_list *all_forms) {
 	VOID_METHOD_CALL(gen->generator, DECLARE_PROPERTY_MTID, gen, prop_name, all_forms);
 }
 
@@ -290,17 +305,24 @@ void Generators::declare_property(code_generation *gen, inter_symbol *prop_name,
 @e EVALUATE_VARIABLE_MTID
 
 =
-INT_METHOD_TYPE(PREPARE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k)
-INT_METHOD_TYPE(DECLARE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of)
-VOID_METHOD_TYPE(DECLARE_VARIABLES_MTID, code_generator *generator, code_generation *gen, linked_list *L)
-VOID_METHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
-VOID_METHOD_TYPE(EVALUATE_VARIABLE_MTID, code_generator *generator, code_generation *gen, inter_symbol *var_name, int as_reference)
-int Generators::prepare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k) {
+INT_METHOD_TYPE(PREPARE_VARIABLE_MTID, code_generator *generator, code_generation *gen,
+	inter_tree_node *P, inter_symbol *var_name, int k)
+INT_METHOD_TYPE(DECLARE_VARIABLE_MTID, code_generator *generator, code_generation *gen,
+	inter_tree_node *P, inter_symbol *var_name, int k, int of)
+VOID_METHOD_TYPE(DECLARE_VARIABLES_MTID, code_generator *generator, code_generation *gen,
+	linked_list *L)
+VOID_METHOD_TYPE(DECLARE_LOCAL_VARIABLE_MTID, code_generator *generator,
+	code_generation *gen, inter_tree_node *P, inter_symbol *var_name)
+VOID_METHOD_TYPE(EVALUATE_VARIABLE_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *var_name, int as_reference)
+int Generators::prepare_variable(code_generation *gen, inter_tree_node *P,
+	inter_symbol *var_name, int k) {
 	int rv = 0;
 	INT_METHOD_CALL(rv, gen->generator, PREPARE_VARIABLE_MTID, gen, P, var_name, k);
 	return rv;
 }
-int Generators::declare_variable(code_generation *gen, inter_tree_node *P, inter_symbol *var_name, int k, int of) {
+int Generators::declare_variable(code_generation *gen, inter_tree_node *P,
+	inter_symbol *var_name, int k, int of) {
 	int rv = 0;
 	INT_METHOD_CALL(rv, gen->generator, DECLARE_VARIABLE_MTID, gen, P, var_name, k, of);
 	return rv;
@@ -308,7 +330,8 @@ int Generators::declare_variable(code_generation *gen, inter_tree_node *P, inter
 void Generators::declare_variables(code_generation *gen, linked_list *L) {
 	VOID_METHOD_CALL(gen->generator, DECLARE_VARIABLES_MTID, gen, L);
 }
-void Generators::evaluate_variable(code_generation *gen, inter_symbol *var_name, int as_reference) {
+void Generators::evaluate_variable(code_generation *gen, inter_symbol *var_name,
+	int as_reference) {
 	VOID_METHOD_CALL(gen->generator, EVALUATE_VARIABLE_MTID, gen, var_name, as_reference);
 }
 
@@ -322,30 +345,41 @@ void Generators::evaluate_variable(code_generation *gen, inter_symbol *var_name,
 @e ASSIGN_PROPERTIES_MTID
 
 =
-VOID_METHOD_TYPE(DECLARE_KIND_MTID, code_generator *generator, code_generation *gen, inter_symbol *kind_s, segmentation_pos *saved)
-VOID_METHOD_TYPE(END_KIND_MTID, code_generator *generator, code_generation *gen, inter_symbol *kind_s, segmentation_pos saved)
-void Generators::declare_kind(code_generation *gen, inter_symbol *kind_s, segmentation_pos *saved) {
+VOID_METHOD_TYPE(DECLARE_KIND_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *kind_s, segmentation_pos *saved)
+VOID_METHOD_TYPE(END_KIND_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *kind_s, segmentation_pos saved)
+void Generators::declare_kind(code_generation *gen, inter_symbol *kind_s,
+	segmentation_pos *saved) {
 	VOID_METHOD_CALL(gen->generator, DECLARE_KIND_MTID, gen, kind_s, saved);
 }
 void Generators::end_kind(code_generation *gen, inter_symbol *kind_s, segmentation_pos saved) {
 	VOID_METHOD_CALL(gen->generator, END_KIND_MTID, gen, kind_s, saved);
 }
 
-VOID_METHOD_TYPE(DECLARE_INSTANCE_MTID, code_generator *generator, code_generation *gen, inter_symbol *inst_s, inter_symbol *kind_s, int enumeration, segmentation_pos *saved)
-VOID_METHOD_TYPE(END_INSTANCE_MTID, code_generator *generator, code_generation *gen, inter_symbol *inst_s, inter_symbol *kind_s, segmentation_pos saved)
-void Generators::declare_instance(code_generation *gen, inter_symbol *inst_s, inter_symbol *kind_s, int enumeration, segmentation_pos *saved) {
+VOID_METHOD_TYPE(DECLARE_INSTANCE_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *inst_s, inter_symbol *kind_s, int enumeration, segmentation_pos *saved)
+VOID_METHOD_TYPE(END_INSTANCE_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *inst_s, inter_symbol *kind_s, segmentation_pos saved)
+void Generators::declare_instance(code_generation *gen, inter_symbol *inst_s,
+	inter_symbol *kind_s, int enumeration, segmentation_pos *saved) {
 	VOID_METHOD_CALL(gen->generator, DECLARE_INSTANCE_MTID, gen, inst_s, kind_s, enumeration, saved);
 }
-void Generators::end_instance(code_generation *gen, inter_symbol *inst_s, inter_symbol *kind_s, segmentation_pos saved) {
+void Generators::end_instance(code_generation *gen, inter_symbol *inst_s,
+	inter_symbol *kind_s, segmentation_pos saved) {
 	VOID_METHOD_CALL(gen->generator, END_INSTANCE_MTID, gen, inst_s, kind_s, saved);
 }
 
-VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generator *generator, code_generation *gen, inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X)
-VOID_METHOD_TYPE(ASSIGN_PROPERTIES_MTID, code_generator *generator, code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array)
-void Generators::assign_property(code_generation *gen, inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X) {
+VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X)
+VOID_METHOD_TYPE(ASSIGN_PROPERTIES_MTID, code_generator *generator, code_generation *gen,
+	inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array)
+void Generators::assign_property(code_generation *gen, inter_symbol *prop_name,
+	inter_ti val1, inter_ti val2, inter_tree_node *X) {
 	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTY_MTID, gen, prop_name, val1, val2, X);
 }
-void Generators::assign_properties(code_generation *gen, inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
+void Generators::assign_properties(code_generation *gen, inter_symbol *kind_name,
+	inter_symbol *prop_name, text_stream *array) {
 	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTIES_MTID, gen, kind_name, prop_name, array);
 }
 
@@ -358,11 +392,16 @@ void Generators::assign_properties(code_generation *gen, inter_symbol *kind_name
 @e COMPILE_LITERAL_TEXT_MTID
 
 =
-VOID_METHOD_TYPE(COMPILE_LITERAL_NUMBER_MTID, code_generator *generator, code_generation *gen, inter_ti val, int hex_mode)
-VOID_METHOD_TYPE(COMPILE_LITERAL_REAL_MTID, code_generator *generator, code_generation *gen, text_stream *textual)
-VOID_METHOD_TYPE(COMPILE_LITERAL_SYMBOL_MTID, code_generator *generator, code_generation *gen, inter_symbol *aliased)
-VOID_METHOD_TYPE(COMPILE_LITERAL_TEXT_MTID, code_generator *generator, code_generation *gen, text_stream *S, int escape_mode)
-VOID_METHOD_TYPE(COMPILE_DICTIONARY_WORD_MTID, code_generator *generator, code_generation *gen, text_stream *S, int pluralise)
+VOID_METHOD_TYPE(COMPILE_LITERAL_NUMBER_MTID, code_generator *generator,
+	code_generation *gen, inter_ti val, int hex_mode)
+VOID_METHOD_TYPE(COMPILE_LITERAL_REAL_MTID, code_generator *generator,
+	code_generation *gen, text_stream *textual)
+VOID_METHOD_TYPE(COMPILE_LITERAL_SYMBOL_MTID, code_generator *generator,
+	code_generation *gen, inter_symbol *aliased)
+VOID_METHOD_TYPE(COMPILE_LITERAL_TEXT_MTID, code_generator *generator,
+	code_generation *gen, text_stream *S, int escape_mode)
+VOID_METHOD_TYPE(COMPILE_DICTIONARY_WORD_MTID, code_generator *generator,
+	code_generation *gen, text_stream *S, int pluralise)
 
 void Generators::compile_literal_number(code_generation *gen, inter_ti val, int hex_mode) {
 	VOID_METHOD_CALL(gen->generator, COMPILE_LITERAL_NUMBER_MTID, gen, val, hex_mode);

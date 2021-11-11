@@ -5,12 +5,12 @@ Translating functions into C, and the calling conventions needed for them.
 @h Introduction.
 
 =
-void CFunctionModel::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, PREDECLARE_FUNCTION_MTID, CFunctionModel::predeclare_function);
-	METHOD_ADD(cgt, DECLARE_FUNCTION_MTID, CFunctionModel::declare_function);
-	METHOD_ADD(cgt, PLACE_LABEL_MTID, CFunctionModel::place_label);
-	METHOD_ADD(cgt, EVALUATE_LABEL_MTID, CFunctionModel::evaluate_label);
-	METHOD_ADD(cgt, INVOKE_FUNCTION_MTID, CFunctionModel::invoke_function);
+void CFunctionModel::initialise(code_generator *gtr) {
+	METHOD_ADD(gtr, PREDECLARE_FUNCTION_MTID, CFunctionModel::predeclare_function);
+	METHOD_ADD(gtr, DECLARE_FUNCTION_MTID, CFunctionModel::declare_function);
+	METHOD_ADD(gtr, PLACE_LABEL_MTID, CFunctionModel::place_label);
+	METHOD_ADD(gtr, EVALUATE_LABEL_MTID, CFunctionModel::evaluate_label);
+	METHOD_ADD(gtr, INVOKE_FUNCTION_MTID, CFunctionModel::invoke_function);
 }
 
 typedef struct C_generation_function_model_data {
@@ -38,7 +38,7 @@ following places a predeclaration of that function high up in our C code, so
 that we then don't need to worry about code-ordering when compiling calls to it:
 
 =
-void CFunctionModel::predeclare_function(code_generator *cgt, code_generation *gen,
+void CFunctionModel::predeclare_function(code_generator *gtr, code_generation *gen,
 	vanilla_function *vf) {
 	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -132,7 +132,7 @@ First, the straightforward and most common case: calling a function whose identi
 is known at run-time, and is passed to us as |vf|.
 
 =
-void CFunctionModel::invoke_function(code_generator *cgt, code_generation *gen,
+void CFunctionModel::invoke_function(code_generator *gtr, code_generation *gen,
 	inter_tree_node *P, vanilla_function *vf, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
 	CFunctionModel::C_function_identifier(gen, OUT, vf);
@@ -307,7 +307,7 @@ void CFunctionModel::unsafe_C_function_prototype(code_generation *gen, OUTPUT_ST
 }
 
 @ =
-void CFunctionModel::declare_function(code_generator *cgt, code_generation *gen,
+void CFunctionModel::declare_function(code_generator *gtr, code_generation *gen,
 	vanilla_function *vf) {
 	text_stream *fn_name = vf->identifier;
 	segmentation_pos saved = CodeGen::select(gen, c_function_declarations_I7CGS);
@@ -368,7 +368,7 @@ And in case that is what we need here, we always place an empty statement after
 a label.
 
 =
-void CFunctionModel::place_label(code_generator *cgt, code_generation *gen,
+void CFunctionModel::place_label(code_generator *gtr, code_generation *gen,
 	text_stream *label_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	LOOP_THROUGH_TEXT(pos, label_name)
@@ -386,7 +386,7 @@ occur, are unmangled. This is safe because label names have their own namespace
 in C, so they cannot clash with other identifiers.
 
 =
-void CFunctionModel::evaluate_label(code_generator *cgt, code_generation *gen,
+void CFunctionModel::evaluate_label(code_generator *gtr, code_generation *gen,
 	text_stream *label_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	LOOP_THROUGH_TEXT(pos, label_name)

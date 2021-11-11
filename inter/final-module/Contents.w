@@ -4,6 +4,9 @@ Purpose: Final code generation from fully-processed Inter.
 Language: InC
 Licence: Artistic License 2.0
 
+Preliminaries
+	What This Module Does
+
 Chapter 1: Setting Up
 	Final Module
 

@@ -3,9 +3,9 @@
 To declare global variables, using a mixture of I6 Globals and array entries.
 
 @ =
-void I6TargetVariables::create_generator(code_generator *cgt) {
-	METHOD_ADD(cgt, DECLARE_VARIABLES_MTID, I6TargetVariables::declare_variables);
-	METHOD_ADD(cgt, EVALUATE_VARIABLE_MTID, I6TargetVariables::evaluate_variable);
+void I6TargetVariables::create_generator(code_generator *gtr) {
+	METHOD_ADD(gtr, DECLARE_VARIABLES_MTID, I6TargetVariables::declare_variables);
+	METHOD_ADD(gtr, EVALUATE_VARIABLE_MTID, I6TargetVariables::evaluate_variable);
 }
 
 @ In an ideal world we would implement all Inter global variables using |Global|,
@@ -16,7 +16,7 @@ and have all of the rest use entries in an array called |Global_Vars|, at the co
 of a lookup whenever we read or write them.
 
 =
-void I6TargetVariables::declare_variables(code_generator *cgt, code_generation *gen,
+void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *gen,
 	linked_list *L) {
 	int k = 1;
 	inter_symbol *var_name;
@@ -68,7 +68,7 @@ void I6TargetVariables::declare_variables(code_generator *cgt, code_generation *
 the variable (lvalue in the case of |as_reference| being set).
 
 =
-void I6TargetVariables::evaluate_variable(code_generator *cgt, code_generation *gen,
+void I6TargetVariables::evaluate_variable(code_generator *gtr, code_generation *gen,
 	inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
 	int k = Inter::Symbols::read_annotation(var_name, I6_GLOBAL_OFFSET_IANN);

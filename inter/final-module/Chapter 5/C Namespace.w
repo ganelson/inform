@@ -3,9 +3,9 @@
 How identifiers are used in the C code we generate.
 
 @ =
-void CNamespace::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, MANGLE_IDENTIFIER_MTID, CNamespace::mangle);
-	METHOD_ADD(cgt, DECLARE_CONSTANT_MTID, CNamespace::declare_constant);
+void CNamespace::initialise(code_generator *gtr) {
+	METHOD_ADD(gtr, MANGLE_IDENTIFIER_MTID, CNamespace::mangle);
+	METHOD_ADD(gtr, DECLARE_CONSTANT_MTID, CNamespace::declare_constant);
 }
 
 @ A fundamental decision we have to make here is what namespace of identifiers
@@ -32,7 +32,7 @@ to the same result, |i7_ss_aa|. But |#| and |$| characters are used extremely
 sparingly in Inter, and these can never arise.
 
 =
-void CNamespace::mangle(code_generator *cgt, OUTPUT_STREAM, text_stream *identifier) {
+void CNamespace::mangle(code_generator *gtr, OUTPUT_STREAM, text_stream *identifier) {
 	if (Str::get_first_char(identifier) == '#') {
 		WRITE("i7_ss_");
 		LOOP_THROUGH_TEXT(pos, identifier)
@@ -124,7 +124,7 @@ For the reason why |Serial| and |Release| are placed higher-up in the file, see
 //C Memory Model//.
 
 =
-void CNamespace::declare_constant(code_generator *cgt, code_generation *gen,
+void CNamespace::declare_constant(code_generator *gtr, code_generation *gen,
 	inter_symbol *const_s, int form, text_stream *val) {
 	text_stream *name = Inter::Symbols::name(const_s);
 	int seg = c_constants_I7CGS;
@@ -134,7 +134,7 @@ void CNamespace::declare_constant(code_generator *cgt, code_generation *gen,
 		Inter::Constant::constant_depth(const_s));
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");
-	CNamespace::mangle(cgt, OUT, name);
+	CNamespace::mangle(gtr, OUT, name);
 	WRITE(" ");
 	VanillaConstants::definition_value(gen, form, const_s, val);
 	WRITE("\n");

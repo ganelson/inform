@@ -7,8 +7,8 @@ This section does just one thing: compiles invocations of assembly-language
 opcodes.
 
 =
-void CAssembly::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, INVOKE_OPCODE_MTID, CAssembly::invoke_opcode);
+void CAssembly::initialise(code_generator *gtr) {
+	METHOD_ADD(gtr, INVOKE_OPCODE_MTID, CAssembly::invoke_opcode);
 }
 
 typedef struct C_generation_assembly_data {
@@ -240,7 +240,7 @@ predeclare this:
 instruction found in our Inter.
 
 =
-void CAssembly::invoke_opcode(code_generator *cgt, code_generation *gen,
+void CAssembly::invoke_opcode(code_generator *gtr, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
 	inter_tree_node *label, int label_sense) {
 	C_supported_opcode *opc = CAssembly::find_opcode(gen, opcode, operand_count);

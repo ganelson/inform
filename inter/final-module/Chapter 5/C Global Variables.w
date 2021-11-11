@@ -3,9 +3,9 @@
 Global variables translated to C.
 
 @ =
-void CGlobals::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, DECLARE_VARIABLES_MTID, CGlobals::declare_variables);
-	METHOD_ADD(cgt, EVALUATE_VARIABLE_MTID, CGlobals::evaluate_variable);
+void CGlobals::initialise(code_generator *gtr) {
+	METHOD_ADD(gtr, DECLARE_VARIABLES_MTID, CGlobals::declare_variables);
+	METHOD_ADD(gtr, EVALUATE_VARIABLE_MTID, CGlobals::evaluate_variable);
 }
 
 typedef struct C_generation_variables_data {
@@ -41,7 +41,7 @@ the special variable |self| given index 0. Note that |self| always exists,
 but has no Inter declaration node.
 
 =
-void CGlobals::declare_variables(code_generator *cgt, code_generation *gen, linked_list *L) {
+void CGlobals::declare_variables(code_generator *gtr, code_generation *gen, linked_list *L) {
 	segmentation_pos saved = CodeGen::select(gen, c_globals_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("i7word_t i7_initial_variable_values[i7_no_variables] = {\n");
@@ -123,7 +123,7 @@ void CGlobals::define_header_constant_for_variable(code_generation *gen, text_st
 @ Within a process |proc|, the current value of variable |i| is |proc->state.variables[i]|.
 
 =
-void CGlobals::evaluate_variable(code_generator *cgt, code_generation *gen,
+void CGlobals::evaluate_variable(code_generator *gtr, code_generation *gen,
 	inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("proc->state.variables[");

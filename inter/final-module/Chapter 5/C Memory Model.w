@@ -21,12 +21,12 @@ of 2 or 4.
 (g) Data may be written in byte form and read back in word form, or vice versa.
 
 =
-void CMemoryModel::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, WORD_TO_BYTE_MTID, CMemoryModel::word_to_byte);
-	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, CMemoryModel::begin_array);
-	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, CMemoryModel::array_entry);
-	METHOD_ADD(cgt, ARRAY_ENTRIES_MTID, CMemoryModel::array_entries);
-	METHOD_ADD(cgt, END_ARRAY_MTID, CMemoryModel::end_array);
+void CMemoryModel::initialise(code_generator *gtr) {
+	METHOD_ADD(gtr, WORD_TO_BYTE_MTID, CMemoryModel::word_to_byte);
+	METHOD_ADD(gtr, BEGIN_ARRAY_MTID, CMemoryModel::begin_array);
+	METHOD_ADD(gtr, ARRAY_ENTRY_MTID, CMemoryModel::array_entry);
+	METHOD_ADD(gtr, ARRAY_ENTRIES_MTID, CMemoryModel::array_entries);
+	METHOD_ADD(gtr, END_ARRAY_MTID, CMemoryModel::end_array);
 }
 
 typedef struct C_generation_memory_model_data {
@@ -51,7 +51,7 @@ here, and instead blank them out to all 0s.
 
 =
 void CMemoryModel::begin(code_generation *gen) {
-	segmentation_pos saved = CodeGen::select(gen, c_mem_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_memory_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("i7byte_t i7_initial_memory[] = {\n");
 	for (int i=0; i<64; i++) WRITE("0, "); WRITE("/* header */\n");
@@ -63,7 +63,7 @@ void CMemoryModel::begin(code_generation *gen) {
 
 =
 void CMemoryModel::end(code_generation *gen) {
-	segmentation_pos saved = CodeGen::select(gen, c_mem_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_memory_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("};\n");
 	CodeGen::deselect(gen, saved);
@@ -79,7 +79,7 @@ such arrays, which are declared one at a time. See //Vanilla Constants//.
 
 
 =
-int CMemoryModel::begin_array(code_generator *cgt, code_generation *gen,
+int CMemoryModel::begin_array(code_generator *gtr, code_generation *gen,
 	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format,
 	segmentation_pos *saved) {
 	Str::clear(C_GEN_DATA(memdata.array_name));
@@ -96,7 +96,7 @@ which tells Vanilla not to call us again about this array.
 
 @<Short-circuit the usual Vanilla algorithm by compiling the whole array now@> =
 	if (saved) *saved = CodeGen::select(gen, c_verb_arrays_I7CGS);
-	VanillaIF::verb_grammar(cgt, gen, array_s, P);
+	VanillaIF::verb_grammar(gtr, gen, array_s, P);
 	return FALSE;
 
 @<Declare this array in concert with the usual Vanilla algorithm@> =
@@ -128,7 +128,7 @@ because they too are defined constants, equal to their IDs: see //C Object Model
 	segmentation_pos saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");
-	CNamespace::mangle(cgt, OUT, array_name);
+	CNamespace::mangle(gtr, OUT, array_name);
 	WRITE(" %d /* = position in memory of %S array %S */\n",
 		C_GEN_DATA(memdata.himem), format_name, array_name);
 	if (array_s)
@@ -142,17 +142,17 @@ which we will retrospectively predefine when the array ends.
 
 @<Place the extent entry N at index 0@> =
 	TEMPORARY_TEXT(extname)
-	CNamespace::mangle(cgt, extname, array_name);
+	CNamespace::mangle(gtr, extname, array_name);
 	WRITE_TO(extname, "__xt");
-	CMemoryModel::array_entry(cgt, gen, extname, format);
+	CMemoryModel::array_entry(gtr, gen, extname, format);
 	DISCARD_TEXT(extname)
 
 @ The call to //CMemoryModel::begin_array// is then followed by a series of calls to:
 
 =
-void CMemoryModel::array_entry(code_generator *cgt, code_generation *gen,
+void CMemoryModel::array_entry(code_generator *gtr, code_generation *gen,
 	text_stream *entry, int format) {
-	segmentation_pos saved = CodeGen::select(gen, c_mem_I7CGS);
+	segmentation_pos saved = CodeGen::select(gen, c_memory_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	if ((format == TABLE_ARRAY_FORMAT) || (format == WORD_ARRAY_FORMAT))
 		@<This is a word entry@>
@@ -180,21 +180,21 @@ and therefore if |X| is a valid constant-context expression in C then so is
 then be initialised to 0.
 
 =
-void CMemoryModel::array_entries(code_generator *cgt, code_generation *gen,
+void CMemoryModel::array_entries(code_generator *gtr, code_generation *gen,
 	int how_many, int format) {
-	for (int i=0; i<how_many; i++) CMemoryModel::array_entry(cgt, gen, I"0", format);
+	for (int i=0; i<how_many; i++) CMemoryModel::array_entry(gtr, gen, I"0", format);
 }
 
 @ When all the entries have been placed, the following is called. It does nothing
 except to predeclare the extent constant.
 
 =
-void CMemoryModel::end_array(code_generator *cgt, code_generation *gen, int format,
+void CMemoryModel::end_array(code_generator *gtr, code_generation *gen, int format,
 	segmentation_pos *saved) {
 	segmentation_pos x_saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");
-	CNamespace::mangle(cgt, OUT, C_GEN_DATA(memdata.array_name));
+	CNamespace::mangle(gtr, OUT, C_GEN_DATA(memdata.array_name));
 	WRITE("__xt %d\n", C_GEN_DATA(memdata.entry_count)-1);
 	CodeGen::deselect(gen, x_saved);
 	if (saved) CodeGen::deselect(gen, *saved);
@@ -370,7 +370,7 @@ void i7_write_word(i7process_t *proc, i7word_t address, i7word_t array_index,
 =
 
 @ =
-void CMemoryModel::word_to_byte(code_generator *cgt, code_generation *gen,
+void CMemoryModel::word_to_byte(code_generator *gtr, code_generation *gen,
 	OUTPUT_STREAM, text_stream *val, int b) {
 	WRITE("I7BYTE_%d(%S)", b, val);
 }

@@ -180,8 +180,8 @@ Total memory consumption was 399937K = 391 MB
      ----  I6T_intervention                         8 objects, 640 bytes
      ----  relation_guard                           5 objects, 640 bytes
      ----  inter_warehouse_room                     10 objects, 640 bytes
-     ----  code_generation                          1 object, 616 bytes
      ----  inbuild_search_result                    15 objects, 600 bytes
+     ----  code_generation                          1 object, 568 bytes
      ----  rulebook_outcome                         17 objects, 544 bytes
      ----  small_word_set                           11 objects, 528 bytes
      ----  inform_kit                               5 objects, 520 bytes
@@ -256,5 +256,5 @@ Total memory consumption was 399937K = 391 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-18.7% was overhead - 76687488 bytes = 74890K = 73 MB
+18.7% was overhead - 76687536 bytes = 74890K = 73 MB
 

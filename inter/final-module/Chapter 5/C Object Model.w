@@ -5,14 +5,14 @@ How objects, classes and properties are compiled to C.
 @h Introduction.
 
 =
-void CObjectModel::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, PSEUDO_OBJECT_MTID, CObjectModel::pseudo_object);
-	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, CObjectModel::declare_instance);
-	METHOD_ADD(cgt, DECLARE_KIND_MTID, CObjectModel::declare_kind);
+void CObjectModel::initialise(code_generator *gtr) {
+	METHOD_ADD(gtr, PSEUDO_OBJECT_MTID, CObjectModel::pseudo_object);
+	METHOD_ADD(gtr, DECLARE_INSTANCE_MTID, CObjectModel::declare_instance);
+	METHOD_ADD(gtr, DECLARE_KIND_MTID, CObjectModel::declare_kind);
 
-	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
-	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, CObjectModel::assign_property);
-	METHOD_ADD(cgt, ASSIGN_PROPERTIES_MTID, CObjectModel::assign_properties);
+	METHOD_ADD(gtr, DECLARE_PROPERTY_MTID, CObjectModel::declare_property);
+	METHOD_ADD(gtr, ASSIGN_PROPERTY_MTID, CObjectModel::assign_property);
+	METHOD_ADD(gtr, ASSIGN_PROPERTIES_MTID, CObjectModel::assign_properties);
 }
 
 @
@@ -299,7 +299,7 @@ void CObjectModel::declare_metaclasses(code_generation *gen) {
 @ And here is (ii):
 
 =
-void CObjectModel::declare_kind(code_generator *cgt, code_generation *gen, 
+void CObjectModel::declare_kind(code_generator *gtr, code_generation *gen, 
 	inter_symbol *kind_s, segmentation_pos *saved) {
 	if ((kind_s == object_kind_symbol) || (VanillaObjects::is_kind_of_object(kind_s)))
 		@<Declare a kind of object@>
@@ -348,8 +348,8 @@ Here is (i). After a typical IF run through Inform 7, this produces only
 two pseudo-objects, |Compass| and |thedark|.
 
 =
-void CObjectModel::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
-	C_property_owner *obj = CObjectModel::new_runtime_object(cgt, gen, I"Object", obj_name, -1, FALSE);
+void CObjectModel::pseudo_object(code_generator *gtr, code_generation *gen, text_stream *obj_name) {
+	C_property_owner *obj = CObjectModel::new_runtime_object(gtr, gen, I"Object", obj_name, -1, FALSE);
 	if (Str::eq(obj_name, I"Compass")) C_GEN_DATA(objdata.compass_instance) = obj;
 }
 
@@ -367,7 +367,7 @@ void CObjectModel::vph_object(code_generation *gen, inter_symbol *kind_s) {
 @ And here is (iii).
 
 =
-void CObjectModel::declare_instance(code_generator *cgt, code_generation *gen,
+void CObjectModel::declare_instance(code_generator *gtr, code_generation *gen,
 	inter_symbol *inst_s, inter_symbol *kind_s, int enumeration, segmentation_pos *ignored_saved) {
 	text_stream *printed_name = Metadata::read_optional_textual(
 		Inter::Packages::container(inst_s->definition), I"^printed_name");
@@ -390,7 +390,7 @@ void CObjectModel::declare_instance(code_generator *cgt, code_generation *gen,
 	int c = Inter::Symbols::read_annotation(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
 	int is_dir = Inter::Kind::is_a(kind_s, direction_kind_symbol);
-	C_property_owner *owner = CObjectModel::new_runtime_object(cgt, gen,
+	C_property_owner *owner = CObjectModel::new_runtime_object(gtr, gen,
 		Inter::Symbols::name(kind_s), Inter::Symbols::name(inst_s), c, is_dir);
 	enumeration = owner->id;
 
@@ -402,7 +402,7 @@ made here in a hierarchical depth-first traverse of the containment tree.)
 All direction objects have to be placed in the |Compass| pseudo-object.
 
 =
-C_property_owner *CObjectModel::new_runtime_object(code_generator *cgt, code_generation *gen,
+C_property_owner *CObjectModel::new_runtime_object(code_generator *gtr, code_generation *gen,
 	text_stream *class_name, text_stream *instance_name, int acount, int is_dir) {
 	int id = C_GEN_DATA(objdata.owner_id_count)++;
 	segmentation_pos saved = CodeGen::select(gen, c_ids_and_maxima_I7CGS);
@@ -481,7 +481,7 @@ C_property *CObjectModel::existing_property_by_name(code_generation *gen,
 @h Declaring properties.
 
 =
-void CObjectModel::declare_property(code_generator *cgt, code_generation *gen,
+void CObjectModel::declare_property(code_generator *gtr, code_generation *gen,
 	inter_symbol *prop_name, linked_list *all_forms) {
 	text_stream *name = Inter::Symbols::name(prop_name);
 	int either_or = FALSE;
@@ -537,7 +537,7 @@ But the second entry is the inner property, as with Inform 6.
 Vabilla calls this to assign a property to a single owner:
 
 =
-void CObjectModel::assign_property(code_generator *cgt, code_generation *gen,
+void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
 	inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X) {
 
 	int inline_this = FALSE;
@@ -562,7 +562,7 @@ void CObjectModel::assign_property(code_generator *cgt, code_generation *gen,
 instances of a single enumerated kind:
 
 =
-void CObjectModel::assign_properties(code_generator *cgt, code_generation *gen,
+void CObjectModel::assign_properties(code_generator *gtr, code_generation *gen,
 	inter_symbol *kind_s, inter_symbol *prop_name, text_stream *array) {
 	TEMPORARY_TEXT(mgl)
 	Generators::mangle(gen, mgl, array);

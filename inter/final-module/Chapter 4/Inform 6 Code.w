@@ -3,13 +3,13 @@
 To generate I6 routines of imperative code.
 
 @ =
-void I6TargetCode::create_generator(code_generator *cgt) {
-	METHOD_ADD(cgt, DECLARE_FUNCTION_MTID, I6TargetCode::declare_function);
-	METHOD_ADD(cgt, PLACE_LABEL_MTID, I6TargetCode::place_label);
-	METHOD_ADD(cgt, EVALUATE_LABEL_MTID, I6TargetCode::evaluate_label);
-	METHOD_ADD(cgt, INVOKE_PRIMITIVE_MTID, I6TargetCode::invoke_primitive);
-	METHOD_ADD(cgt, INVOKE_FUNCTION_MTID, I6TargetCode::invoke_function);
-	METHOD_ADD(cgt, INVOKE_OPCODE_MTID, I6TargetCode::invoke_opcode);
+void I6TargetCode::create_generator(code_generator *gtr) {
+	METHOD_ADD(gtr, DECLARE_FUNCTION_MTID, I6TargetCode::declare_function);
+	METHOD_ADD(gtr, PLACE_LABEL_MTID, I6TargetCode::place_label);
+	METHOD_ADD(gtr, EVALUATE_LABEL_MTID, I6TargetCode::evaluate_label);
+	METHOD_ADD(gtr, INVOKE_PRIMITIVE_MTID, I6TargetCode::invoke_primitive);
+	METHOD_ADD(gtr, INVOKE_FUNCTION_MTID, I6TargetCode::invoke_function);
+	METHOD_ADD(gtr, INVOKE_OPCODE_MTID, I6TargetCode::invoke_opcode);
 }
 
 @h Functions.
@@ -25,7 +25,7 @@ from the function; the earliest will be used as call parameters, all subsequent
 ones being initially zero.
 
 =
-void I6TargetCode::declare_function(code_generator *cgt, code_generation *gen,
+void I6TargetCode::declare_function(code_generator *gtr, code_generation *gen,
 	vanilla_function *vf) {
 	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
 	if (vf == NULL) internal_error("no vg");
@@ -154,12 +154,12 @@ A full stop indicates where they are positioned:
 Inter identifiers for labels also start with full stops. So:
 
 =
-void I6TargetCode::place_label(code_generator *cgt, code_generation *gen,
+void I6TargetCode::place_label(code_generator *gtr, code_generation *gen,
 	text_stream *label_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S;\n", label_name);
 }
-void I6TargetCode::evaluate_label(code_generator *cgt, code_generation *gen,
+void I6TargetCode::evaluate_label(code_generator *gtr, code_generation *gen,
 	text_stream *label_name) {
 	text_stream *OUT = CodeGen::current(gen);
 	LOOP_THROUGH_TEXT(pos, label_name)
@@ -172,7 +172,7 @@ Or in other words, function calls. These are easy: the syntax is exactly what
 it would be for C.
 
 =
-void I6TargetCode::invoke_function(code_generator *cgt, code_generation *gen,
+void I6TargetCode::invoke_function(code_generator *gtr, code_generation *gen,
 	inter_tree_node *P, vanilla_function *vf, int void_context) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S(", vf->identifier);
@@ -199,7 +199,7 @@ unless we want to save the result. (See the Z-Machine Standards Document.)
 As a dodge, we use the Inform 6 statement |read X Y| instead.
 
 =
-void I6TargetCode::invoke_opcode(code_generator *cgt, code_generation *gen,
+void I6TargetCode::invoke_opcode(code_generator *gtr, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
 	inter_tree_node *label, int label_sense) {
 	text_stream *OUT = CodeGen::current(gen);
@@ -220,7 +220,7 @@ void I6TargetCode::invoke_opcode(code_generator *cgt, code_generation *gen,
 @h Primitives.
 
 =
-void I6TargetCode::invoke_primitive(code_generator *cgt, code_generation *gen,
+void I6TargetCode::invoke_primitive(code_generator *gtr, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P, int void_context) {
 	inter_tree *I = gen->from;
 	text_stream *OUT = CodeGen::current(gen);
@@ -805,7 +805,7 @@ array for the property. In genuine Inform 6, |O.P| expects |P| to be the actual
 VM-property. The following functions need the latter interpretation in order to work.
 
 =
-void I6TargetCode::end_generation(code_generator *cgt, code_generation *gen) {
+void I6TargetCode::end_generation(code_generator *gtr, code_generation *gen) {
 	segmentation_pos saved = CodeGen::select(gen, functions_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	@<Most general implementation of !propertyvalue@>;

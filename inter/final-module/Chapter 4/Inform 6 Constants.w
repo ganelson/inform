@@ -3,18 +3,18 @@
 To declare I6 constants and arrays.
 
 @ =
-void I6TargetConstants::create_generator(code_generator *cgt) {
-	METHOD_ADD(cgt, DECLARE_CONSTANT_MTID, I6TargetConstants::declare_constant);
-	METHOD_ADD(cgt, BEGIN_ARRAY_MTID, I6TargetConstants::begin_array);
-	METHOD_ADD(cgt, ARRAY_ENTRY_MTID, I6TargetConstants::array_entry);
-	METHOD_ADD(cgt, ARRAY_ENTRIES_MTID, I6TargetConstants::array_entries);
-	METHOD_ADD(cgt, END_ARRAY_MTID, I6TargetConstants::end_array);
-	METHOD_ADD(cgt, NEW_ACTION_MTID, I6TargetConstants::new_action);
-	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, I6TargetConstants::compile_dictionary_word);
-	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, I6TargetConstants::compile_literal_number);
-	METHOD_ADD(cgt, COMPILE_LITERAL_REAL_MTID, I6TargetConstants::compile_literal_real);
-	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, I6TargetConstants::compile_literal_text);
-	METHOD_ADD(cgt, COMPILE_LITERAL_SYMBOL_MTID, I6TargetConstants::compile_literal_symbol);
+void I6TargetConstants::create_generator(code_generator *gtr) {
+	METHOD_ADD(gtr, DECLARE_CONSTANT_MTID, I6TargetConstants::declare_constant);
+	METHOD_ADD(gtr, BEGIN_ARRAY_MTID, I6TargetConstants::begin_array);
+	METHOD_ADD(gtr, ARRAY_ENTRY_MTID, I6TargetConstants::array_entry);
+	METHOD_ADD(gtr, ARRAY_ENTRIES_MTID, I6TargetConstants::array_entries);
+	METHOD_ADD(gtr, END_ARRAY_MTID, I6TargetConstants::end_array);
+	METHOD_ADD(gtr, NEW_ACTION_MTID, I6TargetConstants::new_action);
+	METHOD_ADD(gtr, COMPILE_DICTIONARY_WORD_MTID, I6TargetConstants::compile_dictionary_word);
+	METHOD_ADD(gtr, COMPILE_LITERAL_NUMBER_MTID, I6TargetConstants::compile_literal_number);
+	METHOD_ADD(gtr, COMPILE_LITERAL_REAL_MTID, I6TargetConstants::compile_literal_real);
+	METHOD_ADD(gtr, COMPILE_LITERAL_TEXT_MTID, I6TargetConstants::compile_literal_text);
+	METHOD_ADD(gtr, COMPILE_LITERAL_SYMBOL_MTID, I6TargetConstants::compile_literal_symbol);
 }
 
 @h Constant values.
@@ -23,7 +23,7 @@ on that for |Y| then the declaration for |Y| will always be placed earlier in th
 code than that for |X|. See //Code Generation// for how this is done.
 
 =
-void I6TargetConstants::declare_constant(code_generator *cgt, code_generation *gen,
+void I6TargetConstants::declare_constant(code_generator *gtr, code_generation *gen,
 	inter_symbol *const_s, int form, text_stream *val) {
 	text_stream *const_name = Inter::Symbols::name(const_s);
     @<Leave undeclared any array used as a value of a property@>;
@@ -120,7 +120,7 @@ been declared, so it need do nothing further; |TRUE| in the more typical |Array|
 case, whereupon Vanilla will lead us through the rest of the declaration.
 
 =
-int I6TargetConstants::begin_array(code_generator *cgt, code_generation *gen,
+int I6TargetConstants::begin_array(code_generator *gtr, code_generation *gen,
 	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format,
 	segmentation_pos *saved) {
 	if ((array_s) && (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1)) {
@@ -168,7 +168,7 @@ they were any other arrays. Here goes:
 			else if (A == verb_directive_topic_symbol)       WRITE("topic");
 			else if (A == verb_directive_multiexcept_symbol) WRITE("multiexcept");
 			else if (Str::begins_with_wide_string(S, L"##")) @<Write without sharps@>
-			else I6TargetConstants::compile_literal_symbol(cgt, gen, A);
+			else I6TargetConstants::compile_literal_symbol(gtr, gen, A);
 		} else {
 			CodeGen::pair(gen, P, val1, val2);
 		}
@@ -225,13 +225,13 @@ arrays because those are the only ones where we ever make singletons in Inter.
 		case TABLE_ARRAY_FORMAT: WRITE("table"); break;
 		case BUFFER_ARRAY_FORMAT: WRITE("buffer"); break;
 	}
-	if (convert) I6TargetConstants::array_entry(cgt, gen, I"1", format);
+	if (convert) I6TargetConstants::array_entry(gtr, gen, I"1", format);
 
 @ If an array is actually intended to contain some number of 0 entries, then
 we can use this same unfortunate syntax to achieve our goal:
 
 =
-void I6TargetConstants::array_entries(code_generator *cgt, code_generation *gen,
+void I6TargetConstants::array_entries(code_generator *gtr, code_generation *gen,
 	int how_many, int format) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(" (%d)", how_many);
@@ -259,13 +259,13 @@ This cannot be confused with function calling because I6 doesn't allow function
 calls in a constant context.
 
 =
-void I6TargetConstants::array_entry(code_generator *cgt, code_generation *gen,
+void I6TargetConstants::array_entry(code_generator *gtr, code_generation *gen,
 	text_stream *entry, int format) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(" (%S)", entry);
 }
 
-void I6TargetConstants::end_array(code_generator *cgt, code_generation *gen, int format,
+void I6TargetConstants::end_array(code_generator *gtr, code_generation *gen, int format,
 	segmentation_pos *saved) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE(";\n");
@@ -281,7 +281,7 @@ in principle but which never occur in any command grammar. It follows that these
 must be explicitly declared, which we do with the I6 |Fake_Action| directive:
 
 =
-void I6TargetConstants::new_action(code_generator *cgt, code_generation *gen,
+void I6TargetConstants::new_action(code_generator *gtr, code_generation *gen,
 	text_stream *name, int true_action, int N) {
 	if (true_action == FALSE) {
 		segmentation_pos saved = CodeGen::select(gen, fake_actions_I7CGS);
@@ -298,14 +298,14 @@ a real-number notation including a decimal point. The same notation is used
 by Inter, so we need do nothing to modify it here.
 
 =
-void I6TargetConstants::compile_literal_number(code_generator *cgt,
+void I6TargetConstants::compile_literal_number(code_generator *gtr,
 	code_generation *gen, inter_ti val, int hex_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (hex_mode) WRITE("$%x", val);
 	else WRITE("%d", val);
 }
 
-void I6TargetConstants::compile_literal_real(code_generator *cgt,
+void I6TargetConstants::compile_literal_real(code_generator *gtr,
 	code_generation *gen, text_stream *textual) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("$%S", textual);
@@ -319,7 +319,7 @@ there, but distinguishes this from the character constant |'z'|, which evaluates
 to the ZSCII code for lower-case Z.
 
 =
-void I6TargetConstants::compile_dictionary_word(code_generator *cgt, code_generation *gen,
+void I6TargetConstants::compile_dictionary_word(code_generator *gtr, code_generation *gen,
 	text_stream *S, int pluralise) {
 	text_stream *OUT = CodeGen::current(gen);
 	int n = 0;
@@ -354,7 +354,7 @@ If you think it surprising that the escape characters would need to use
 different syntaxes in these three cases, I won't argue.
 
 =
-void I6TargetConstants::compile_literal_text(code_generator *cgt, code_generation *gen,
+void I6TargetConstants::compile_literal_text(code_generator *gtr, code_generation *gen,
 	text_stream *S, int escape_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("\"");
@@ -439,7 +439,7 @@ hexadecimal.
 @ Finally, names of constants are compiled just as themselves:
 
 =
-void I6TargetConstants::compile_literal_symbol(code_generator *cgt, code_generation *gen,
+void I6TargetConstants::compile_literal_symbol(code_generator *gtr, code_generation *gen,
 	inter_symbol *A) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("%S", Inter::Symbols::name(A));

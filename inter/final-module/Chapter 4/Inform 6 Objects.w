@@ -3,15 +3,15 @@
 To declare I6 objects, classes, attributes and properties.
 
 @ =
-void I6TargetObjects::create_generator(code_generator *cgt) {
-	METHOD_ADD(cgt, DECLARE_PROPERTY_MTID, I6TargetObjects::declare_property);
-	METHOD_ADD(cgt, DECLARE_KIND_MTID, I6TargetObjects::declare_kind);
-	METHOD_ADD(cgt, END_KIND_MTID, I6TargetObjects::end_kind);
-	METHOD_ADD(cgt, DECLARE_INSTANCE_MTID, I6TargetObjects::declare_instance);
-	METHOD_ADD(cgt, END_INSTANCE_MTID, I6TargetObjects::end_instance);
-	METHOD_ADD(cgt, ASSIGN_PROPERTY_MTID, I6TargetObjects::assign_property);
-	METHOD_ADD(cgt, ASSIGN_PROPERTIES_MTID, I6TargetObjects::assign_properties);
-	METHOD_ADD(cgt, PSEUDO_OBJECT_MTID, I6TargetObjects::pseudo_object);
+void I6TargetObjects::create_generator(code_generator *gtr) {
+	METHOD_ADD(gtr, DECLARE_PROPERTY_MTID, I6TargetObjects::declare_property);
+	METHOD_ADD(gtr, DECLARE_KIND_MTID, I6TargetObjects::declare_kind);
+	METHOD_ADD(gtr, END_KIND_MTID, I6TargetObjects::end_kind);
+	METHOD_ADD(gtr, DECLARE_INSTANCE_MTID, I6TargetObjects::declare_instance);
+	METHOD_ADD(gtr, END_INSTANCE_MTID, I6TargetObjects::end_instance);
+	METHOD_ADD(gtr, ASSIGN_PROPERTY_MTID, I6TargetObjects::assign_property);
+	METHOD_ADD(gtr, ASSIGN_PROPERTIES_MTID, I6TargetObjects::assign_properties);
+	METHOD_ADD(gtr, PSEUDO_OBJECT_MTID, I6TargetObjects::pseudo_object);
 }
 
 @h A disclaimer.
@@ -71,7 +71,7 @@ VM-property number or a VM-attribute number. Indeed, |potency| might compile
 to the same number as |edible|. So word 0 is certainly necessary.
 
 =
-void I6TargetObjects::declare_property(code_generator *cgt, code_generation *gen,
+void I6TargetObjects::declare_property(code_generator *gtr, code_generation *gen,
 	inter_symbol *prop_name, linked_list *all_forms) {
 	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
 
@@ -240,7 +240,7 @@ The following is called for all kinds which can have properties. We divide
 them in two:
 
 =
-void I6TargetObjects::declare_kind(code_generator *cgt, code_generation *gen, 
+void I6TargetObjects::declare_kind(code_generator *gtr, code_generation *gen, 
 	inter_symbol *kind_s, segmentation_pos *saved) {
 	if ((kind_s == object_kind_symbol) ||
 		(VanillaObjects::is_kind_of_object(kind_s)))
@@ -275,7 +275,7 @@ to the VPH VM-object.
 	DISCARD_TEXT(instance_name)
 
 @ =
-void I6TargetObjects::end_kind(code_generator *cgt, code_generation *gen,
+void I6TargetObjects::end_kind(code_generator *gtr, code_generation *gen,
 	inter_symbol *kind_s, segmentation_pos saved) {
 	if ((kind_s == object_kind_symbol) ||
 		(VanillaObjects::is_kind_of_object(kind_s))) {
@@ -290,7 +290,7 @@ void I6TargetObjects::end_kind(code_generator *cgt, code_generation *gen,
 @ Instances next:
 
 =
-void I6TargetObjects::declare_instance(code_generator *cgt,
+void I6TargetObjects::declare_instance(code_generator *gtr,
 	code_generation *gen, inter_symbol *inst_s, inter_symbol *kind_s, int enumeration,
 	segmentation_pos *saved) {
 	if ((kind_s == object_kind_symbol) || (VanillaObjects::is_kind_of_object(kind_s)))
@@ -323,7 +323,7 @@ enumerated these colours as 1, 2, 3.
 	DISCARD_TEXT(val)
 
 @ =
-void I6TargetObjects::end_instance(code_generator *cgt, code_generation *gen,
+void I6TargetObjects::end_instance(code_generator *gtr, code_generation *gen,
 	inter_symbol *inst_s, inter_symbol *kind_s, segmentation_pos saved) {
 	if ((kind_s == object_kind_symbol) ||
 		(VanillaObjects::is_kind_of_object(kind_s)))
@@ -379,7 +379,7 @@ other one used by the standard kits supplied with Inform is |thedark|. I urge
 people to create no further pseudo-objects.
 
 =
-void I6TargetObjects::pseudo_object(code_generator *cgt, code_generation *gen, text_stream *obj_name) {
+void I6TargetObjects::pseudo_object(code_generator *gtr, code_generation *gen, text_stream *obj_name) {
 	segmentation_pos saved;
 	I6TargetObjects::VM_object_header(gen, I"Object", obj_name, NULL, 0, FALSE, &saved);
 	text_stream *OUT = CodeGen::current(gen);
@@ -400,7 +400,7 @@ address of the address of the array, not the address of the array itself. So
 we must use the pecualiar I6 syntax here to get the right outcome.
 
 =
-void I6TargetObjects::assign_property(code_generator *cgt, code_generation *gen,
+void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X) {
 	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, val);
@@ -427,7 +427,7 @@ void I6TargetObjects::assign_property(code_generator *cgt, code_generation *gen,
 of a value kind. (An array which is not inline.)
 
 =
-void I6TargetObjects::assign_properties(code_generator *cgt, code_generation *gen,
+void I6TargetObjects::assign_properties(code_generator *gtr, code_generation *gen,
 	inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
 	I6TargetObjects::VM_property(gen, prop_name, array);
 }
@@ -435,7 +435,7 @@ void I6TargetObjects::assign_properties(code_generator *cgt, code_generation *ge
 @h A few resources.
 
 =
-void I6TargetObjects::end_generation(code_generator *cgt, code_generation *gen) {
+void I6TargetObjects::end_generation(code_generator *gtr, code_generation *gen) {
 	if (I6_GEN_DATA(DebugAttribute_seen) == FALSE) /* hardly ever happens */
 		@<Compile a DebugAttribute function@>;
 	if (I6_GEN_DATA(value_ranges_needed)) /* almost always happens */

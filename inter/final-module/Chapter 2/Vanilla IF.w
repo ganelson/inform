@@ -199,7 +199,7 @@ This limit is much, much larger than we need:
 @d MAX_LINES_IN_VANILLA_GRAMMAR 256
 
 =
-void VanillaIF::verb_grammar(code_generator *cgt, code_generation *gen,
+void VanillaIF::verb_grammar(code_generator *gtr, code_generation *gen,
 	inter_symbol *array_s, inter_tree_node *P) {
 	inter_tree *I = gen->from;
 	

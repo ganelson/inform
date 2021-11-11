@@ -5,7 +5,7 @@ How C programs print text out, really.
 @h Setting up the model.
 
 =
-void CInputOutputModel::initialise(code_generator *cgt) {
+void CInputOutputModel::initialise(code_generator *gtr) {
 }
 
 void CInputOutputModel::initialise_data(code_generation *gen) {
@@ -302,9 +302,9 @@ These are needed for different forms of file I/O:
 And these are modes for seeking a position in a file:
 
 = (text to inform7_clib.h)
-#define seekmode_Start (0)
-#define seekmode_Current (1)
-#define seekmode_End (2)
+#define i7_seekmode_Start (0)
+#define i7_seekmode_Current (1)
+#define i7_seekmode_End (2)
 =
 
 And these are "event types":
@@ -321,3 +321,35 @@ And these are "event types":
 #define i7_evtype_Hyperlink      8
 #define i7_evtype_VolumeNotify   9
 =
+
+Finally, these are the gestalt values: that is, the selection of bells and
+whistles which a Glk implementation can offer --
+
+= (text to inform7_clib.h)
+#define i7_gestalt_Version						0
+#define i7_gestalt_CharInput					1
+#define i7_gestalt_LineInput					2
+#define i7_gestalt_CharOutput					3
+  #define i7_gestalt_CharOutput_ApproxPrint		1
+  #define i7_gestalt_CharOutput_CannotPrint		0
+  #define i7_gestalt_CharOutput_ExactPrint		2
+#define i7_gestalt_MouseInput					4
+#define i7_gestalt_Timer						5
+#define i7_gestalt_Graphics						6
+#define i7_gestalt_DrawImage					7
+#define i7_gestalt_Sound						8
+#define i7_gestalt_SoundVolume					9
+#define i7_gestalt_SoundNotify					10
+#define i7_gestalt_Hyperlinks					11
+#define i7_gestalt_HyperlinkInput				12
+#define i7_gestalt_SoundMusic					13
+#define i7_gestalt_GraphicsTransparency			14
+#define i7_gestalt_Unicode						15
+#define i7_gestalt_UnicodeNorm					16
+#define i7_gestalt_LineInputEcho				17
+#define i7_gestalt_LineTerminators				18
+#define i7_gestalt_LineTerminatorKey			19
+#define i7_gestalt_DateTime						20
+#define i7_gestalt_Sound2						21
+#define i7_gestalt_ResourceStream				22
+#define i7_gestalt_GraphicsCharInput			23

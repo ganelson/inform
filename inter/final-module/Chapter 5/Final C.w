@@ -6,22 +6,21 @@ To generate ANSI C-99 code from intermediate code.
 This generator produces C source code, using the Vanilla algorithm.
 
 =
-code_generator *c_target = NULL;
 void CTarget::create_generator(void) {
-	c_target = Generators::new(I"c");
+	code_generator *C_generator = Generators::new(I"c");
 
-	METHOD_ADD(c_target, BEGIN_GENERATION_MTID, CTarget::begin_generation);
-	METHOD_ADD(c_target, END_GENERATION_MTID, CTarget::end_generation);
+	METHOD_ADD(C_generator, BEGIN_GENERATION_MTID, CTarget::begin_generation);
+	METHOD_ADD(C_generator, END_GENERATION_MTID, CTarget::end_generation);
 
-	CProgramControl::initialise(c_target);
-	CNamespace::initialise(c_target);
-	CMemoryModel::initialise(c_target);
-	CFunctionModel::initialise(c_target);
-	CObjectModel::initialise(c_target);
-	CLiteralsModel::initialise(c_target);
-	CGlobals::initialise(c_target);
-	CAssembly::initialise(c_target);
-	CInputOutputModel::initialise(c_target);
+	CProgramControl::initialise(C_generator);
+	CNamespace::initialise(C_generator);
+	CMemoryModel::initialise(C_generator);
+	CFunctionModel::initialise(C_generator);
+	CObjectModel::initialise(C_generator);
+	CLiteralsModel::initialise(C_generator);
+	CGlobals::initialise(C_generator);
+	CAssembly::initialise(C_generator);
+	CInputOutputModel::initialise(C_generator);
 }
 
 @h Segmentation.
@@ -36,19 +35,13 @@ code can interface with it. Both are divided into segments. The main file thus:
 @e c_predeclarations_I7CGS
 @e c_actions_I7CGS
 @e c_quoted_text_I7CGS
-@e c_very_early_matter_I7CGS
 @e c_constants_I7CGS
-@e c_early_matter_I7CGS
 @e c_text_literals_code_I7CGS
-@e c_summations_at_eof_I7CGS
 @e c_arrays_I7CGS
-@e c_main_matter_I7CGS
 @e c_function_declarations_I7CGS
-@e c_code_at_eof_I7CGS
 @e c_verb_arrays_I7CGS
 @e c_function_callers_I7CGS
-@e c_property_offset_creator_I7CGS
-@e c_mem_I7CGS
+@e c_memory_array_I7CGS
 @e c_globals_array_I7CGS
 @e c_initialiser_I7CGS
 
@@ -61,19 +54,13 @@ int C_target_segments[] = {
 	c_predeclarations_I7CGS,
 	c_actions_I7CGS,
 	c_quoted_text_I7CGS,
-	c_very_early_matter_I7CGS,
 	c_constants_I7CGS,
-	c_early_matter_I7CGS,
 	c_text_literals_code_I7CGS,
-	c_summations_at_eof_I7CGS,
 	c_arrays_I7CGS,
-	c_main_matter_I7CGS,
 	c_function_declarations_I7CGS,
-	c_code_at_eof_I7CGS,
 	c_verb_arrays_I7CGS,
 	c_function_callers_I7CGS,
-	c_property_offset_creator_I7CGS,
-	c_mem_I7CGS,
+	c_memory_array_I7CGS,
 	c_globals_array_I7CGS,
 	c_initialiser_I7CGS,
 	-1
@@ -137,7 +124,7 @@ We return |FALSE| here to signal that we want the Vanilla algorithm to
 manage the process.
 
 =
-int CTarget::begin_generation(code_generator *cgt, code_generation *gen) {
+int CTarget::begin_generation(code_generator *gtr, code_generation *gen) {
 	CodeGen::create_segments(gen, CREATE(C_generation_data), C_target_segments);
 	CodeGen::additional_segments(gen, C_symbols_header_segments);
 	CTarget::initialise_data(gen);
@@ -200,7 +187,7 @@ tables, but other compilers do not, of course, so generators for other languages
 (such as this one) must ask Vanilla to make those tables for it.
 
 =
-int CTarget::end_generation(code_generator *cgt, code_generation *gen) {
+int CTarget::end_generation(code_generator *gtr, code_generation *gen) {
 	VanillaIF::compile_dictionary_table(gen);
 	VanillaIF::compile_verb_table(gen);
 	VanillaIF::compile_actions_table(gen);
@@ -604,7 +591,7 @@ int i7_run_process(i7process_t *proc) {
 		i7_empty_object_tree(proc);
 		i7_initialiser(proc);
 		i7_initialise_object_tree(proc);
-		i7_initialise_streams(proc);
+		i7_initialise_miniglk(proc);
 		fn_i7_mgl_Main(proc);
 		proc->termination_code = 0; /* terminated because the program completed */
     }

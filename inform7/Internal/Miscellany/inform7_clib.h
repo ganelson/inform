@@ -387,9 +387,9 @@ void i7_default_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varar
 #define i7_filemode_Read         0x02
 #define i7_filemode_ReadWrite    0x03
 #define i7_filemode_WriteAppend  0x05
-#define seekmode_Start (0)
-#define seekmode_Current (1)
-#define seekmode_End (2)
+#define i7_seekmode_Start (0)
+#define i7_seekmode_Current (1)
+#define i7_seekmode_End (2)
 #define i7_evtype_None           0
 #define i7_evtype_Timer          1
 #define i7_evtype_CharInput      2
@@ -400,6 +400,35 @@ void i7_default_glk(i7process_t *proc, i7word_t glk_api_selector, i7word_t varar
 #define i7_evtype_SoundNotify    7
 #define i7_evtype_Hyperlink      8
 #define i7_evtype_VolumeNotify   9
+#define i7_gestalt_Version						0
+#define i7_gestalt_CharInput					1
+#define i7_gestalt_LineInput					2
+#define i7_gestalt_CharOutput					3
+  #define i7_gestalt_CharOutput_ApproxPrint		1
+  #define i7_gestalt_CharOutput_CannotPrint		0
+  #define i7_gestalt_CharOutput_ExactPrint		2
+#define i7_gestalt_MouseInput					4
+#define i7_gestalt_Timer						5
+#define i7_gestalt_Graphics						6
+#define i7_gestalt_DrawImage					7
+#define i7_gestalt_Sound						8
+#define i7_gestalt_SoundVolume					9
+#define i7_gestalt_SoundNotify					10
+#define i7_gestalt_Hyperlinks					11
+#define i7_gestalt_HyperlinkInput				12
+#define i7_gestalt_SoundMusic					13
+#define i7_gestalt_GraphicsTransparency			14
+#define i7_gestalt_Unicode						15
+#define i7_gestalt_UnicodeNorm					16
+#define i7_gestalt_LineInputEcho				17
+#define i7_gestalt_LineTerminators				18
+#define i7_gestalt_LineTerminatorKey			19
+#define i7_gestalt_DateTime						20
+#define i7_gestalt_Sound2						21
+#define i7_gestalt_ResourceStream				22
+#define i7_gestalt_GraphicsCharInput			23
+
+i7word_t i7_miniglk_gestalt(i7process_t *proc, i7word_t g);
 i7word_t i7_miniglk_char_to_lower(i7process_t *proc, i7word_t c);
 i7word_t i7_miniglk_char_to_upper(i7process_t *proc, i7word_t c);
 #define I7_MINIGLK_LEAFNAME_LENGTH 128
@@ -464,46 +493,49 @@ typedef struct miniglk_data {
 	/* events */
 	i7_mg_event_t events_ring_buffer[I7_MINIGLK_RING_BUFFER_SIZE];
 	int rb_back, rb_front;
-	int no_lr;
+	int no_line_events;
 } miniglk_data;
 
 void i7_initialise_miniglk_data(i7process_t *proc);
-int i7_fseek(i7process_t *proc, int id, int pos, int origin);
-int i7_ftell(i7process_t *proc, int id);
-int i7_fopen(i7process_t *proc, int id, int mode);
-void i7_fclose(i7process_t *proc, int id);
-void i7_fputc(i7process_t *proc, int c, int id);
-int i7_fgetc(i7process_t *proc, int id);
-i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage, i7word_t name, i7word_t rock);
+void i7_initialise_miniglk(i7process_t *proc);
+int i7_mg_new_file(i7process_t *proc);
+int i7_mg_fseek(i7process_t *proc, int id, int pos, int origin);
+int i7_mg_ftell(i7process_t *proc, int id);
+int i7_mg_fopen(i7process_t *proc, int id, int mode);
+void i7_mg_fclose(i7process_t *proc, int id);
+void i7_mg_fputc(i7process_t *proc, int c, int id);
+int i7_mg_fgetc(i7process_t *proc, int id);
+i7word_t i7_miniglk_fileref_create_by_name(i7process_t *proc, i7word_t usage,
+	i7word_t name, i7word_t rock);
 i7word_t i7_miniglk_fileref_does_file_exist(i7process_t *proc, i7word_t id);
-void i7_initialise_streams(i7process_t *proc);
-i7word_t i7_open_stream(i7process_t *proc, FILE *F, int win_id);
-i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock);
-i7word_t i7_miniglk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer, i7word_t len, i7word_t fmode, i7word_t rock);
-i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref, i7word_t usage, i7word_t rock);
-void i7_miniglk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos, i7word_t seekmode);
+i7_mg_stream_t i7_mg_new_stream(i7process_t *proc, FILE *F, int win_id);
+i7word_t i7_mg_open_stream(i7process_t *proc, FILE *F, int win_id);
+i7word_t i7_miniglk_stream_open_memory(i7process_t *proc, i7word_t buffer,
+	i7word_t len, i7word_t fmode, i7word_t rock);
+i7word_t i7_miniglk_stream_open_memory_uni(i7process_t *proc, i7word_t buffer,
+	i7word_t len, i7word_t fmode, i7word_t rock);
+i7word_t i7_miniglk_stream_open_file(i7process_t *proc, i7word_t fileref,
+	i7word_t usage, i7word_t rock);
+void i7_miniglk_stream_set_position(i7process_t *proc, i7word_t id, i7word_t pos,
+	i7word_t seekmode);
 i7word_t i7_miniglk_stream_get_position(i7process_t *proc, i7word_t id);
-void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result);
-i7word_t i7_miniglk_window_open(i7process_t *proc, i7word_t split, i7word_t method, i7word_t size, i7word_t wintype, i7word_t rock);
-i7word_t i7_stream_of_window(i7process_t *proc, i7word_t id);
-i7word_t i7_rock_of_window(i7process_t *proc, i7word_t id);
-void i7_to_receiver(i7process_t *proc, i7word_t rock, wchar_t c);
+i7word_t i7_miniglk_stream_get_current(i7process_t *proc);
+void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id);
+void i7_mg_put_to_stream(i7process_t *proc, i7word_t rock, wchar_t c);
 void i7_miniglk_put_char_stream(i7process_t *proc, i7word_t stream_id, i7word_t x);
 i7word_t i7_miniglk_get_char_stream(i7process_t *proc, i7word_t stream_id);
-i7word_t i7_miniglk_stream_get_current(i7process_t *proc);
-i7_mg_stream_t i7_new_stream(i7process_t *proc, FILE *F, int win_id);
-void i7_miniglk_stream_set_current(i7process_t *proc, i7word_t id);
-i7_mg_event_t *i7_next_event(i7process_t *proc);
-void i7_make_event(i7process_t *proc, i7_mg_event_t e);
+void i7_miniglk_stream_close(i7process_t *proc, i7word_t id, i7word_t result);
+i7word_t i7_miniglk_window_open(i7process_t *proc, i7word_t split, i7word_t method,
+	i7word_t size, i7word_t wintype, i7word_t rock);
+i7word_t i7_miniglk_set_window(i7process_t *proc, i7word_t id);
+i7word_t i7_mg_get_window_rock(i7process_t *proc, i7word_t id);
+i7word_t i7_miniglk_window_get_size(i7process_t *proc, i7word_t id, i7word_t a1,
+	i7word_t a2);
+void i7_mg_add_event_to_buffer(i7process_t *proc, i7_mg_event_t e);
+i7_mg_event_t *i7_mg_get_event_from_buffer(i7process_t *proc);
 i7word_t i7_miniglk_select(i7process_t *proc, i7word_t structure);
-i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id, i7word_t buffer, i7word_t max_len, i7word_t init_len);
-i7word_t fn_i7_mgl_IndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-i7word_t fn_i7_mgl_DefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-i7word_t fn_i7_mgl_CIndefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-i7word_t fn_i7_mgl_CDefArt(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-i7word_t fn_i7_mgl_PrintShortName(i7process_t *proc, i7word_t i7_mgl_local_obj, i7word_t i7_mgl_local_i);
-void i7_print_name(i7process_t *proc, i7word_t x);
-void i7_read(i7process_t *proc, i7word_t x);
+i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id,
+	i7word_t buffer, i7word_t max_len, i7word_t init_len);
 i7word_t i7_encode_float(i7float_t val);
 i7float_t i7_decode_float(i7word_t val);
 i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id);

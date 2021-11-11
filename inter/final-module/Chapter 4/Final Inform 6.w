@@ -6,19 +6,18 @@ To generate I6 code from intermediate code.
 This generator produces Inform 6 source code, using the Vanilla algorithm.
 
 =
-code_generator *inform6_target = NULL;
 void I6Target::create_generator(void) {
-	inform6_target = Generators::new(I"inform6");
+	code_generator *inform6_generator = Generators::new(I"inform6");
 
-	METHOD_ADD(inform6_target, BEGIN_GENERATION_MTID, I6Target::begin_generation);
-	METHOD_ADD(inform6_target, MANGLE_IDENTIFIER_MTID, I6Target::mangle);
-	METHOD_ADD(inform6_target, OFFER_PRAGMA_MTID, I6Target::offer_pragma)
-	METHOD_ADD(inform6_target, END_GENERATION_MTID, I6Target::end_generation);
+	METHOD_ADD(inform6_generator, BEGIN_GENERATION_MTID, I6Target::begin_generation);
+	METHOD_ADD(inform6_generator, MANGLE_IDENTIFIER_MTID, I6Target::mangle);
+	METHOD_ADD(inform6_generator, OFFER_PRAGMA_MTID, I6Target::offer_pragma)
+	METHOD_ADD(inform6_generator, END_GENERATION_MTID, I6Target::end_generation);
 
-	I6TargetCode::create_generator(inform6_target);
-	I6TargetObjects::create_generator(inform6_target);
-	I6TargetConstants::create_generator(inform6_target);
-	I6TargetVariables::create_generator(inform6_target);
+	I6TargetCode::create_generator(inform6_generator);
+	I6TargetObjects::create_generator(inform6_generator);
+	I6TargetConstants::create_generator(inform6_generator);
+	I6TargetVariables::create_generator(inform6_generator);
 }
 
 @ We will write a single output file of I6 source code, but segmented as follows:
@@ -85,7 +84,7 @@ I6_generation_data *I6Target::new_data(void) {
 manage the process.
 
 =
-int I6Target::begin_generation(code_generator *cgt, code_generation *gen) {
+int I6Target::begin_generation(code_generator *gtr, code_generation *gen) {
 	CodeGen::create_segments(gen, I6Target::new_data(), I6_target_segments);
 	@<Compile some I6 oddities@>;
 	@<Compile some veneer replacement code@>;
@@ -201,7 +200,7 @@ tweaked. These go at the top of the source code and typically look like this:
 =
 
 =
-void I6Target::offer_pragma(code_generator *cgt, code_generation *gen,
+void I6Target::offer_pragma(code_generator *gtr, code_generation *gen,
 	inter_tree_node *P, text_stream *tag, text_stream *content) {
 	if (Str::eq(tag, I"Inform6")) {
 		segmentation_pos saved = CodeGen::select(gen, ICL_directives_I7CGS);
@@ -214,15 +213,15 @@ void I6Target::offer_pragma(code_generator *cgt, code_generation *gen,
 @ Names are not mangled: all Inter identifiers are used as-is.
 
 =
-void I6Target::mangle(code_generator *cgt, OUTPUT_STREAM, text_stream *identifier) {
+void I6Target::mangle(code_generator *gtr, OUTPUT_STREAM, text_stream *identifier) {
 	WRITE("%S", identifier);
 }
 
 @ The end:
 
 =
-int I6Target::end_generation(code_generator *cgt, code_generation *gen) {
-	I6TargetObjects::end_generation(cgt, gen);
-	I6TargetCode::end_generation(cgt, gen);
+int I6Target::end_generation(code_generator *gtr, code_generation *gen) {
+	I6TargetObjects::end_generation(gtr, gen);
+	I6TargetCode::end_generation(gtr, gen);
 	return FALSE;
 }

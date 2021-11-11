@@ -24,7 +24,8 @@ i7float_t i7_decode_float(i7word_t val) {
 }
 =
 
-@
+@ These two functioms allow external C code to read to, or write from, an
+Inform 7 variable inside a currently running process.
 
 = (text to inform7_clib.h)
 i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id);
@@ -40,20 +41,33 @@ void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val) {
 }
 =
 
-@
+@ Text values extracted from such variables would be difficult to interpret
+from the outside because of the complex way in which text is stored within an
+Inform 7 process, so the following functions allow text inside the process
+to be converted to or from null-terminated C strings.
 
 = (text to inform7_clib.h)
 char *i7_read_string(i7process_t *proc, i7word_t S);
 void i7_write_string(i7process_t *proc, i7word_t S, char *A);
-i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N);
-void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L);
 =
 
 = (text to inform7_clib.c)
 i7word_t fn_i7_mgl_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt);
-i7word_t fn_i7_mgl_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from, i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect, i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes, i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags, i7word_t i7_mgl_local_entry_size_in_bytes, i7word_t i7_mgl_local_seek_byte_position);
-i7word_t fn_i7_mgl_BlkValueWrite(i7process_t *proc, i7word_t i7_mgl_local_to, i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_val, i7word_t i7_mgl_local_do_not_indirect, i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes, i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags, i7word_t i7_mgl_local_entry_size_in_bytes, i7word_t i7_mgl_local_seek_byte_position);
-i7word_t fn_i7_mgl_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt, i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dsize, i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp, i7word_t i7_mgl_local_r);
+i7word_t fn_i7_mgl_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
+	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect,
+	i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes,
+	i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags,
+	i7word_t i7_mgl_local_entry_size_in_bytes, i7word_t i7_mgl_local_seek_byte_position);
+i7word_t fn_i7_mgl_BlkValueWrite(i7process_t *proc, i7word_t i7_mgl_local_to,
+	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_val,
+	i7word_t i7_mgl_local_do_not_indirect, i7word_t i7_mgl_local_long_block,
+	i7word_t i7_mgl_local_chunk_size_in_bytes, i7word_t i7_mgl_local_header_size_in_bytes,
+	i7word_t i7_mgl_local_flags, i7word_t i7_mgl_local_entry_size_in_bytes,
+	i7word_t i7_mgl_local_seek_byte_position);
+i7word_t fn_i7_mgl_TEXT_TY_CharacterLength(i7process_t *proc,
+	i7word_t i7_mgl_local_txt, i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i,
+	i7word_t i7_mgl_local_dsize, i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp,
+	i7word_t i7_mgl_local_r);
 
 char *i7_read_string(i7process_t *proc, i7word_t S) {
 	fn_i7_mgl_TEXT_TY_Transmute(proc, S);
@@ -62,7 +76,8 @@ char *i7_read_string(i7process_t *proc, i7word_t S) {
 	if (A == NULL) {
 		fprintf(stderr, "Out of memory\n"); i7_fatal_exit(proc);
 	}
-	for (int i=0; i<L; i++) A[i] = fn_i7_mgl_BlkValueRead(proc, S, i, 0, 0, 0, 0, 0, 0, 0);
+	for (int i=0; i<L; i++)
+		A[i] = fn_i7_mgl_BlkValueRead(proc, S, i, 0, 0, 0, 0, 0, 0, 0);
 	A[L] = 0;
 	return A;
 }
@@ -72,14 +87,30 @@ void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
 	fn_i7_mgl_BlkValueWrite(proc, S, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	if (A) {
 		int L = strlen(A);
-		for (int i=0; i<L; i++) fn_i7_mgl_BlkValueWrite(proc, S, i, A[i], 0, 0, 0, 0, 0, 0, 0);
+		for (int i=0; i<L; i++)
+			fn_i7_mgl_BlkValueWrite(proc, S, i, A[i], 0, 0, 0, 0, 0, 0, 0);
 	}
 }
+=
 
+@ And similarly for list values, which we convert to and from C arrays.
+
+= (text to inform7_clib.h)
+i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N);
+void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L);
+=
+
+= (text to inform7_clib.c)
 i7word_t fn_i7_mgl_LIST_OF_TY_GetLength(i7process_t *proc, i7word_t i7_mgl_local_list);
-i7word_t fn_i7_mgl_LIST_OF_TY_SetLength(i7process_t *proc, i7word_t i7_mgl_local_list, i7word_t i7_mgl_local_newsize, i7word_t i7_mgl_local_this_way_only, i7word_t i7_mgl_local_truncation_end, i7word_t i7_mgl_local_no_items, i7word_t i7_mgl_local_ex, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dv);
-i7word_t fn_i7_mgl_LIST_OF_TY_GetItem(i7process_t *proc, i7word_t i7_mgl_local_list, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_forgive, i7word_t i7_mgl_local_no_items);
-i7word_t fn_i7_mgl_LIST_OF_TY_PutItem(i7process_t *proc, i7word_t i7_mgl_local_list, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_v, i7word_t i7_mgl_local_no_items, i7word_t i7_mgl_local_nv);
+i7word_t fn_i7_mgl_LIST_OF_TY_SetLength(i7process_t *proc, i7word_t i7_mgl_local_list,
+	i7word_t i7_mgl_local_newsize, i7word_t i7_mgl_local_this_way_only,
+	i7word_t i7_mgl_local_truncation_end, i7word_t i7_mgl_local_no_items,
+	i7word_t i7_mgl_local_ex, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dv);
+i7word_t fn_i7_mgl_LIST_OF_TY_GetItem(i7process_t *proc, i7word_t i7_mgl_local_list,
+	i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_forgive, i7word_t i7_mgl_local_no_items);
+i7word_t fn_i7_mgl_LIST_OF_TY_PutItem(i7process_t *proc, i7word_t i7_mgl_local_list,
+	i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_v, i7word_t i7_mgl_local_no_items,
+	i7word_t i7_mgl_local_nv);
 
 i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N) {
 	int L = fn_i7_mgl_LIST_OF_TY_GetLength(proc, S);
@@ -102,7 +133,9 @@ void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L) {
 }
 =
 
-@
+@ Lastly, this function allows an action to be tried -- something which is only
+meaningful in an Inform project which uses WorldModelKit: it will fail in a
+Basic Inform only project.
 
 = (text to inform7_clib.h)
 i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
@@ -110,14 +143,20 @@ i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s);
 
 = (text to inform7_clib.c)
 #ifdef i7_mgl_TryAction
-i7word_t fn_i7_mgl_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req, i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n, i7word_t i7_mgl_local_s, i7word_t i7_mgl_local_stora, i7word_t i7_mgl_local_smeta, i7word_t i7_mgl_local_tbits, i7word_t i7_mgl_local_saved_command, i7word_t i7_mgl_local_text_of_command);
+i7word_t fn_i7_mgl_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req,
+	i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n,
+	i7word_t i7_mgl_local_s, i7word_t i7_mgl_local_stora, i7word_t i7_mgl_local_smeta,
+	i7word_t i7_mgl_local_tbits, i7word_t i7_mgl_local_saved_command,
+	i7word_t i7_mgl_local_text_of_command);
 i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
 	return fn_i7_mgl_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
 }
 #endif
 =
 
-@
+@ Because the C library file and its header are both wrapped inside conditional
+compilations to guard against errors if they are included more than once, those
+conditionals both need to be ended. So this is the bottom of both files: finis.
 
 = (text to inform7_clib.h)
 #endif

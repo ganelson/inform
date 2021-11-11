@@ -12,7 +12,7 @@ void BinaryTarget::create_generator(void) {
 	METHOD_ADD(binary_inter_cgt, BEGIN_GENERATION_MTID, BinaryTarget::text);
 }
 
-int BinaryTarget::text(code_generator *cgt, code_generation *gen) {
+int BinaryTarget::text(code_generator *gtr, code_generation *gen) {
 	if (gen->to_file) Inter::Binary::write(gen->to_file, gen->from);
 	return TRUE;
 }

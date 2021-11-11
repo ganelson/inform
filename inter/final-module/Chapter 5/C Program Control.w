@@ -7,11 +7,11 @@ invocations of primitives. There are a lot of primitives, so the actual work is
 distributed throughout this chapter.
 
 =
-void CProgramControl::initialise(code_generator *cgt) {
-	METHOD_ADD(c_target, INVOKE_PRIMITIVE_MTID, CProgramControl::invoke_primitive);
+void CProgramControl::initialise(code_generator *gtr) {
+	METHOD_ADD(gtr, INVOKE_PRIMITIVE_MTID, CProgramControl::invoke_primitive);
 }
 
-void CProgramControl::invoke_primitive(code_generator *cgt, code_generation *gen,
+void CProgramControl::invoke_primitive(code_generator *gtr, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P, int void_context) {
 	inter_tree *I = gen->from;
 	inter_ti bip = Primitives::to_bip(I, prim_name);

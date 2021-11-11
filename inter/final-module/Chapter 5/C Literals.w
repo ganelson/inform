@@ -8,13 +8,13 @@ under this heading a variety of ingredients of expressions which can legally be
 used as constants.
 
 =
-void CLiteralsModel::initialise(code_generator *cgt) {
-	METHOD_ADD(cgt, COMPILE_DICTIONARY_WORD_MTID, CLiteralsModel::compile_dictionary_word);
-	METHOD_ADD(cgt, COMPILE_LITERAL_NUMBER_MTID, CLiteralsModel::compile_literal_number);
-	METHOD_ADD(cgt, COMPILE_LITERAL_REAL_MTID, CLiteralsModel::compile_literal_real);
-	METHOD_ADD(cgt, COMPILE_LITERAL_TEXT_MTID, CLiteralsModel::compile_literal_text);
-	METHOD_ADD(cgt, COMPILE_LITERAL_SYMBOL_MTID, CLiteralsModel::compile_literal_symbol);
-	METHOD_ADD(cgt, NEW_ACTION_MTID, CLiteralsModel::new_action);
+void CLiteralsModel::initialise(code_generator *gtr) {
+	METHOD_ADD(gtr, COMPILE_DICTIONARY_WORD_MTID, CLiteralsModel::compile_dictionary_word);
+	METHOD_ADD(gtr, COMPILE_LITERAL_NUMBER_MTID, CLiteralsModel::compile_literal_number);
+	METHOD_ADD(gtr, COMPILE_LITERAL_REAL_MTID, CLiteralsModel::compile_literal_real);
+	METHOD_ADD(gtr, COMPILE_LITERAL_TEXT_MTID, CLiteralsModel::compile_literal_text);
+	METHOD_ADD(gtr, COMPILE_LITERAL_SYMBOL_MTID, CLiteralsModel::compile_literal_symbol);
+	METHOD_ADD(gtr, NEW_ACTION_MTID, CLiteralsModel::new_action);
 }
 
 typedef struct C_generation_literals_model_data {
@@ -42,7 +42,7 @@ just by naming it. That seems too obvious to need a function, but one can imagin
 languages where it is not true.
 
 =
-void CLiteralsModel::compile_literal_symbol(code_generator *cgt, code_generation *gen,
+void CLiteralsModel::compile_literal_symbol(code_generator *gtr, code_generation *gen,
 	inter_symbol *aliased) {
 	text_stream *OUT = CodeGen::current(gen);
 	text_stream *S = Inter::Symbols::name(aliased);
@@ -55,7 +55,7 @@ and show the number in hex in the code it generates; functionally, decimal would
 be just as good. But since we can easily do so, why not.
 
 =
-void CLiteralsModel::compile_literal_number(code_generator *cgt,
+void CLiteralsModel::compile_literal_number(code_generator *gtr,
 	code_generation *gen, inter_ti val, int hex_mode) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (hex_mode) WRITE("0x%x", val);
@@ -67,7 +67,7 @@ This is not at all simple, but the helpful //VanillaConstants::textual_real_to_u
 does all the work for us.
 
 =
-void CLiteralsModel::compile_literal_real(code_generator *cgt,
+void CLiteralsModel::compile_literal_real(code_generator *gtr,
 	code_generation *gen, text_stream *textual) {
 	uint32_t n = VanillaConstants::textual_real_to_uint32(textual);
 	text_stream *OUT = CodeGen::current(gen);
@@ -110,7 +110,7 @@ started here:
 void CLiteralsModel::begin_text(code_generation *gen) {
 }
 
-void CLiteralsModel::compile_literal_text(code_generator *cgt, code_generation *gen,
+void CLiteralsModel::compile_literal_text(code_generator *gtr, code_generation *gen,
 	text_stream *S, int no_special_characters) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (gen->literal_text_mode == REGULAR_LTM) {
@@ -217,7 +217,7 @@ True actions count upwards from 0; fake actions independently count upwards
 from 4096. These are defined just as constants, with mangled names:
 
 =
-void CLiteralsModel::new_action(code_generator *cgt, code_generation *gen,
+void CLiteralsModel::new_action(code_generator *gtr, code_generation *gen,
 	text_stream *name, int true_action, int N) {
 	if (true_action) {
 		segmentation_pos saved = CodeGen::select(gen, c_actions_symbols_I7CGS);
@@ -228,7 +228,7 @@ void CLiteralsModel::new_action(code_generator *cgt, code_generation *gen,
 	TEMPORARY_TEXT(O)
 	TEMPORARY_TEXT(M)
 	WRITE_TO(O, "##%S", name);
-	CNamespace::mangle(cgt, M, O);
+	CNamespace::mangle(gtr, M, O);
 
 	segmentation_pos saved = CodeGen::select(gen, c_actions_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
@@ -275,9 +275,9 @@ void i7_print_dword(i7process_t *proc, i7word_t at) {
 so there is very little to do:
 
 =
-void CLiteralsModel::compile_dictionary_word(code_generator *cgt, code_generation *gen,
+void CLiteralsModel::compile_dictionary_word(code_generator *gtr, code_generation *gen,
 	text_stream *S, int pluralise) {
 	text_stream *OUT = CodeGen::current(gen);
 	vanilla_dword *dw = VanillaIF::text_to_noun_dword(gen, S, pluralise);
-	CNamespace::mangle(cgt, OUT, dw->identifier);
+	CNamespace::mangle(gtr, OUT, dw->identifier);
 }

@@ -12,7 +12,7 @@ void TextualTarget::create_generator(void) {
 	METHOD_ADD(textual_inter_cgt, BEGIN_GENERATION_MTID, TextualTarget::text);
 }
 
-int TextualTarget::text(code_generator *cgt, code_generation *gen) {
+int TextualTarget::text(code_generator *gtr, code_generation *gen) {
 	if (gen->to_stream) Inter::Textual::write(gen->to_stream, gen->from, NULL, 1);
 	return TRUE;
 }

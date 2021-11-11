@@ -12,7 +12,7 @@ void InvTarget::create_generator(void) {
 	METHOD_ADD(inv_cgt, BEGIN_GENERATION_MTID, InvTarget::inv);
 }
 
-int InvTarget::inv(code_generator *cgt, code_generation *gen) {
+int InvTarget::inv(code_generator *gtr, code_generation *gen) {
 	if (gen->to_stream)
 		InterTree::traverse(gen->from, InvTarget::visitor,
 			gen->to_stream, gen->just_this_package, PACKAGE_IST);
