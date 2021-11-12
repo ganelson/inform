@@ -41,6 +41,11 @@ void CNamespace::mangle(code_generator *gtr, OUTPUT_STREAM, text_stream *identif
 	} else WRITE("i7_mgl_%S", identifier);
 }
 
+void CNamespace::mangle_with(code_generator *gtr, OUTPUT_STREAM, text_stream *identifier,
+	text_stream *modifier) {
+	WRITE("i7_%S_%S", modifier, identifier);
+}
+
 @ Opcode names are also mangled. Each assembly language opcode will use a
 corresponding C function, whose name is mangled from that of the opcode. For
 example:

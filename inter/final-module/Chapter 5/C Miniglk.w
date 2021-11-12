@@ -881,10 +881,10 @@ it is 2, we're emulation |style|, though an enhanced version capable of more tha
 the three built-in styles |bold|, |italic| and |reverse|.
 
 = (text to inform7_clib.c)
-i7word_t fn_i7_mgl_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt,
+i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt,
 	i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dsize,
 	i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp, i7word_t i7_mgl_local_r);
-i7word_t fn_i7_mgl_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
+i7word_t i7_fn_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
 	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect,
 	i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes,
 	i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags,
@@ -903,10 +903,10 @@ void i7_default_stylist(i7process_t *proc, i7word_t which, i7word_t what) {
 			case 3: sprintf(S->style, "reverse"); break;
 			default: {
 				int L =
-					fn_i7_mgl_TEXT_TY_CharacterLength(proc, what, 0, 0, 0, 0, 0, 0);
+					i7_fn_TEXT_TY_CharacterLength(proc, what, 0, 0, 0, 0, 0, 0);
 				if (L > 127) L = 127;
 				for (int i=0; i<L; i++) S->style[i] =
-					fn_i7_mgl_BlkValueRead(proc, what, i, 0, 0, 0, 0, 0, 0, 0);
+					i7_fn_BlkValueRead(proc, what, i, 0, 0, 0, 0, 0, 0, 0);
 				S->style[L] = 0;
 			}
 		}

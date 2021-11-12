@@ -508,7 +508,7 @@ void i7_opcode_discardundo(i7process_t *proc);
 
 = (text to inform7_clib.c)
 #ifdef i7_mgl_DealWithUndo
-i7word_t fn_i7_mgl_DealWithUndo(i7process_t *proc);
+i7word_t i7_fn_DealWithUndo(i7process_t *proc);
 #endif
 
 void i7_opcode_restoreundo(i7process_t *proc, i7word_t *x) {
@@ -516,7 +516,7 @@ void i7_opcode_restoreundo(i7process_t *proc, i7word_t *x) {
 		i7_restore_snapshot(proc);
 		if (x) *x = 0;
 		#ifdef i7_mgl_DealWithUndo
-		fn_i7_mgl_DealWithUndo(proc);
+		i7_fn_DealWithUndo(proc);
 		#endif
 	} else {
 		if (x) *x = 1;

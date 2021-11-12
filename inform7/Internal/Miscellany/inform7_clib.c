@@ -76,7 +76,7 @@ void i7_set_process_glk_implementation(i7process_t *proc,
 		i7word_t varargc, i7word_t *z)) {
 	proc->glk_implementation = glk_implementation;
 }
-i7word_t fn_i7_mgl_Main(i7process_t *proc);
+i7word_t i7_fn_Main(i7process_t *proc);
 int i7_run_process(i7process_t *proc) {
 	int tc = setjmp(proc->execution_env);
 	if (tc) {
@@ -89,7 +89,7 @@ int i7_run_process(i7process_t *proc) {
 		i7_initialiser(proc);
 		i7_initialise_object_tree(proc);
 		i7_initialise_miniglk(proc);
-		fn_i7_mgl_Main(proc);
+		i7_fn_Main(proc);
 		proc->termination_code = 0; /* terminated because the program completed */
     }
     return proc->termination_code;
@@ -373,7 +373,7 @@ void i7_opcode_verify(i7process_t *proc, i7word_t *z) {
 	if (z) *z = 0;
 }
 #ifdef i7_mgl_DealWithUndo
-i7word_t fn_i7_mgl_DealWithUndo(i7process_t *proc);
+i7word_t i7_fn_DealWithUndo(i7process_t *proc);
 #endif
 
 void i7_opcode_restoreundo(i7process_t *proc, i7word_t *x) {
@@ -381,7 +381,7 @@ void i7_opcode_restoreundo(i7process_t *proc, i7word_t *x) {
 		i7_restore_snapshot(proc);
 		if (x) *x = 0;
 		#ifdef i7_mgl_DealWithUndo
-		fn_i7_mgl_DealWithUndo(proc);
+		i7_fn_DealWithUndo(proc);
 		#endif
 	} else {
 		if (x) *x = 1;
@@ -1694,10 +1694,10 @@ i7word_t i7_miniglk_request_line_event(i7process_t *proc, i7word_t window_id,
 	return 0;
 }
 
-i7word_t fn_i7_mgl_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt,
+i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc, i7word_t i7_mgl_local_txt,
 	i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dsize,
 	i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp, i7word_t i7_mgl_local_r);
-i7word_t fn_i7_mgl_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
+i7word_t i7_fn_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
 	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect,
 	i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes,
 	i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags,
@@ -1716,10 +1716,10 @@ void i7_default_stylist(i7process_t *proc, i7word_t which, i7word_t what) {
 			case 3: sprintf(S->style, "reverse"); break;
 			default: {
 				int L =
-					fn_i7_mgl_TEXT_TY_CharacterLength(proc, what, 0, 0, 0, 0, 0, 0);
+					i7_fn_TEXT_TY_CharacterLength(proc, what, 0, 0, 0, 0, 0, 0);
 				if (L > 127) L = 127;
 				for (int i=0; i<L; i++) S->style[i] =
-					fn_i7_mgl_BlkValueRead(proc, what, i, 0, 0, 0, 0, 0, 0, 0);
+					i7_fn_BlkValueRead(proc, what, i, 0, 0, 0, 0, 0, 0, 0);
 				S->style[L] = 0;
 			}
 		}
@@ -1748,83 +1748,83 @@ i7word_t i7_read_variable(i7process_t *proc, i7word_t var_id) {
 void i7_write_variable(i7process_t *proc, i7word_t var_id, i7word_t val) {
 	proc->state.variables[var_id] = val;
 }
-i7word_t fn_i7_mgl_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt);
-i7word_t fn_i7_mgl_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
+i7word_t i7_fn_TEXT_TY_Transmute(i7process_t *proc, i7word_t i7_mgl_local_txt);
+i7word_t i7_fn_BlkValueRead(i7process_t *proc, i7word_t i7_mgl_local_from,
 	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_do_not_indirect,
 	i7word_t i7_mgl_local_long_block, i7word_t i7_mgl_local_chunk_size_in_bytes,
 	i7word_t i7_mgl_local_header_size_in_bytes, i7word_t i7_mgl_local_flags,
 	i7word_t i7_mgl_local_entry_size_in_bytes, i7word_t i7_mgl_local_seek_byte_position);
-i7word_t fn_i7_mgl_BlkValueWrite(i7process_t *proc, i7word_t i7_mgl_local_to,
+i7word_t i7_fn_BlkValueWrite(i7process_t *proc, i7word_t i7_mgl_local_to,
 	i7word_t i7_mgl_local_pos, i7word_t i7_mgl_local_val,
 	i7word_t i7_mgl_local_do_not_indirect, i7word_t i7_mgl_local_long_block,
 	i7word_t i7_mgl_local_chunk_size_in_bytes, i7word_t i7_mgl_local_header_size_in_bytes,
 	i7word_t i7_mgl_local_flags, i7word_t i7_mgl_local_entry_size_in_bytes,
 	i7word_t i7_mgl_local_seek_byte_position);
-i7word_t fn_i7_mgl_TEXT_TY_CharacterLength(i7process_t *proc,
+i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc,
 	i7word_t i7_mgl_local_txt, i7word_t i7_mgl_local_ch, i7word_t i7_mgl_local_i,
 	i7word_t i7_mgl_local_dsize, i7word_t i7_mgl_local_p, i7word_t i7_mgl_local_cp,
 	i7word_t i7_mgl_local_r);
 
 char *i7_read_string(i7process_t *proc, i7word_t S) {
-	fn_i7_mgl_TEXT_TY_Transmute(proc, S);
-	int L = fn_i7_mgl_TEXT_TY_CharacterLength(proc, S, 0, 0, 0, 0, 0, 0);
+	i7_fn_TEXT_TY_Transmute(proc, S);
+	int L = i7_fn_TEXT_TY_CharacterLength(proc, S, 0, 0, 0, 0, 0, 0);
 	char *A = malloc(L + 1);
 	if (A == NULL) {
 		fprintf(stderr, "Out of memory\n"); i7_fatal_exit(proc);
 	}
 	for (int i=0; i<L; i++)
-		A[i] = fn_i7_mgl_BlkValueRead(proc, S, i, 0, 0, 0, 0, 0, 0, 0);
+		A[i] = i7_fn_BlkValueRead(proc, S, i, 0, 0, 0, 0, 0, 0, 0);
 	A[L] = 0;
 	return A;
 }
 
 void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
-	fn_i7_mgl_TEXT_TY_Transmute(proc, S);
-	fn_i7_mgl_BlkValueWrite(proc, S, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+	i7_fn_TEXT_TY_Transmute(proc, S);
+	i7_fn_BlkValueWrite(proc, S, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	if (A) {
 		int L = strlen(A);
 		for (int i=0; i<L; i++)
-			fn_i7_mgl_BlkValueWrite(proc, S, i, A[i], 0, 0, 0, 0, 0, 0, 0);
+			i7_fn_BlkValueWrite(proc, S, i, A[i], 0, 0, 0, 0, 0, 0, 0);
 	}
 }
-i7word_t fn_i7_mgl_LIST_OF_TY_GetLength(i7process_t *proc, i7word_t i7_mgl_local_list);
-i7word_t fn_i7_mgl_LIST_OF_TY_SetLength(i7process_t *proc, i7word_t i7_mgl_local_list,
+i7word_t i7_fn_LIST_OF_TY_GetLength(i7process_t *proc, i7word_t i7_mgl_local_list);
+i7word_t i7_fn_LIST_OF_TY_SetLength(i7process_t *proc, i7word_t i7_mgl_local_list,
 	i7word_t i7_mgl_local_newsize, i7word_t i7_mgl_local_this_way_only,
 	i7word_t i7_mgl_local_truncation_end, i7word_t i7_mgl_local_no_items,
 	i7word_t i7_mgl_local_ex, i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_dv);
-i7word_t fn_i7_mgl_LIST_OF_TY_GetItem(i7process_t *proc, i7word_t i7_mgl_local_list,
+i7word_t i7_fn_LIST_OF_TY_GetItem(i7process_t *proc, i7word_t i7_mgl_local_list,
 	i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_forgive, i7word_t i7_mgl_local_no_items);
-i7word_t fn_i7_mgl_LIST_OF_TY_PutItem(i7process_t *proc, i7word_t i7_mgl_local_list,
+i7word_t i7_fn_LIST_OF_TY_PutItem(i7process_t *proc, i7word_t i7_mgl_local_list,
 	i7word_t i7_mgl_local_i, i7word_t i7_mgl_local_v, i7word_t i7_mgl_local_no_items,
 	i7word_t i7_mgl_local_nv);
 
 i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N) {
-	int L = fn_i7_mgl_LIST_OF_TY_GetLength(proc, S);
+	int L = i7_fn_LIST_OF_TY_GetLength(proc, S);
 	i7word_t *A = calloc(L + 1, sizeof(i7word_t));
 	if (A == NULL) {
 		fprintf(stderr, "Out of memory\n"); i7_fatal_exit(proc);
 	}
-	for (int i=0; i<L; i++) A[i] = fn_i7_mgl_LIST_OF_TY_GetItem(proc, S, i+1, 0, 0);
+	for (int i=0; i<L; i++) A[i] = i7_fn_LIST_OF_TY_GetItem(proc, S, i+1, 0, 0);
 	A[L] = 0;
 	if (N) *N = L;
 	return A;
 }
 
 void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L) {
-	fn_i7_mgl_LIST_OF_TY_SetLength(proc, S, L, 0, 0, 0, 0, 0, 0);
+	i7_fn_LIST_OF_TY_SetLength(proc, S, L, 0, 0, 0, 0, 0, 0);
 	if (A) {
 		for (int i=0; i<L; i++)
-			fn_i7_mgl_LIST_OF_TY_PutItem(proc, S, i+1, A[i], 0, 0);
+			i7_fn_LIST_OF_TY_PutItem(proc, S, i+1, A[i], 0, 0);
 	}
 }
 #ifdef i7_mgl_TryAction
-i7word_t fn_i7_mgl_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req,
+i7word_t i7_fn_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req,
 	i7word_t i7_mgl_local_by, i7word_t i7_mgl_local_ac, i7word_t i7_mgl_local_n,
 	i7word_t i7_mgl_local_s, i7word_t i7_mgl_local_stora, i7word_t i7_mgl_local_smeta,
 	i7word_t i7_mgl_local_tbits, i7word_t i7_mgl_local_saved_command,
 	i7word_t i7_mgl_local_text_of_command);
 i7word_t i7_try(i7process_t *proc, i7word_t action_id, i7word_t n, i7word_t s) {
-	return fn_i7_mgl_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
+	return i7_fn_TryAction(proc, 0, 0, action_id, n, s, 0, 0, 0, 0, 0);
 }
 #endif
 #endif

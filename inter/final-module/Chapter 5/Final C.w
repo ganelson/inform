@@ -579,7 +579,7 @@ void i7_initialise_object_tree(i7process_t *proc); /* ditto */
 =
 
 = (text to inform7_clib.c)
-i7word_t fn_i7_mgl_Main(i7process_t *proc);
+i7word_t i7_fn_Main(i7process_t *proc);
 int i7_run_process(i7process_t *proc) {
 	int tc = setjmp(proc->execution_env);
 	if (tc) {
@@ -592,7 +592,7 @@ int i7_run_process(i7process_t *proc) {
 		i7_initialiser(proc);
 		i7_initialise_object_tree(proc);
 		i7_initialise_miniglk(proc);
-		fn_i7_mgl_Main(proc);
+		i7_fn_Main(proc);
 		proc->termination_code = 0; /* terminated because the program completed */
     }
     return proc->termination_code;

@@ -67,13 +67,13 @@ arguments. Now, of course, C does have a crude mechanism for this (used for |pri
 and similar), but it's nowhere near flexible enough to handle what we need.
 Instead we declare our C function like so:
 = (text as Inform 6)
-	i7word_t fn_i7_mgl_HelloThere(i7process_t *proc, i7word_t i7_mgl_local_greeting,
+	i7word_t i7_fn_HelloThere(i7process_t *proc, i7word_t i7_mgl_local_greeting,
 		i7word_t i7_mgl_local_x, 7word_t i7_mgl_local_y) {
 		...
 	}
 =
-And we then make calls like |fn_i7_mgl_HelloThere(proc, X, 0, 0)| or
-|fn_i7_mgl_HelloThere(proc, X, Y, 0)| to simulate calling this with one or two
+And we then make calls like |i7_fn_HelloThere(proc, X, 0, 0)| or
+|i7_fn_HelloThere(proc, X, Y, 0)| to simulate calling this with one or two
 arguments respectively. Because unsupplied arguments are filled in as 0, we achieve
 the Inter convention that any local variables not used as call arguments are set
 to 0 at the start of a function. While this generates C code which does not look
@@ -86,8 +86,7 @@ and is then thrown away.
 =
 void CFunctionModel::C_function_identifier(code_generation *gen, OUTPUT_STREAM,
 	vanilla_function *vf) {
-	WRITE("fn_");
-	Generators::mangle(gen, OUT, vf->identifier);
+	CNamespace::mangle_with(NULL, OUT, vf->identifier, I"fn");
 }
 
 void CFunctionModel::C_function_prototype(code_generation *gen, OUTPUT_STREAM,
@@ -289,8 +288,7 @@ look much like //CFunctionModel::C_function_identifier// and
 =
 void CFunctionModel::unsafe_C_function_identifier(code_generation *gen, OUTPUT_STREAM,
 	vanilla_function *vf) {
-	WRITE("ifn_");
-	Generators::mangle(gen, OUT, vf->identifier);
+	CNamespace::mangle_with(NULL, OUT, vf->identifier, I"ifn");
 }
 
 void CFunctionModel::unsafe_C_function_prototype(code_generation *gen, OUTPUT_STREAM,
@@ -443,8 +441,7 @@ function, filling in all the bogus arguments as 0.
 =
 void CFunctionModel::inward_C_function_identifier(code_generation *gen, OUTPUT_STREAM,
 	vanilla_function *vf) {
-	WRITE("xfn_");
-	Generators::mangle(gen, OUT, vf->identifier);
+	CNamespace::mangle_with(NULL, OUT, vf->identifier, I"xfn");
 }
 
 void CFunctionModel::inward_C_function_prototype(code_generation *gen, OUTPUT_STREAM,
