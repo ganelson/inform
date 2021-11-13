@@ -218,7 +218,7 @@ Total memory consumption was 399937K = 391 MB
      ----  inter_architecture                       4 objects, 160 bytes
      ----  imperative_defn_family                   4 objects, 160 bytes
      ----  inference_subject_family                 5 objects, 160 bytes
-     ----  codegen_pipeline                         1 object, 128 bytes
+     ----  inter_pipeline                           1 object, 136 bytes
      ----  element_activation                       4 objects, 128 bytes
      ----  inbuild_nest                             3 objects, 120 bytes
      ----  local_block_value                        2 objects, 112 bytes
@@ -256,5 +256,5 @@ Total memory consumption was 399937K = 391 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-18.7% was overhead - 76684304 bytes = 74887K = 73 MB
+18.7% was overhead - 76684296 bytes = 74887K = 73 MB
 

@@ -11,7 +11,7 @@ which use this module:
 @ This module defines the following classes:
 
 @e I6T_intervention_CLASS
-@e codegen_pipeline_CLASS
+@e inter_pipeline_CLASS
 @e pipeline_step_CLASS
 @e uniqueness_count_CLASS
 @e text_literal_holder_CLASS
@@ -23,7 +23,7 @@ which use this module:
 
 =
 DECLARE_CLASS(I6T_intervention)
-DECLARE_CLASS(codegen_pipeline)
+DECLARE_CLASS(inter_pipeline)
 DECLARE_CLASS(pipeline_step)
 DECLARE_CLASS(uniqueness_count)
 DECLARE_CLASS(text_literal_holder)

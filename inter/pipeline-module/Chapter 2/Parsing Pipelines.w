@@ -1,0 +1,338 @@
+[ParsingPipelines::] Parsing Pipelines.
+
+To parse pipelines from text files.
+
+@h How pipelines are stored.
+An //inter_pipeline// is a linked list of //pipeline_step//s, together with
+some associated storage used when it runs: this is for storing variables and
+pointers to trees being worked on.
+
+=
+typedef struct inter_pipeline {
+	struct linked_list *steps; /* of |pipeline_step| */
+	struct dictionary *variables;
+	int erroneous; /* a syntax error occurred when parsing this */
+	struct pipeline_ephemera ephemera; /* temporary storage when running */
+	CLASS_DEFINITION
+} inter_pipeline;
+
+inter_pipeline *ParsingPipelines::new_pipeline(dictionary *D) {
+	inter_pipeline *S = CREATE(inter_pipeline);
+	S->variables = D;
+	S->steps = NEW_LINKED_LIST(pipeline_step);
+	S->erroneous = FALSE;
+	RunningPipelines::clean_pipeline(S);
+	return S;
+}
+
+@ A //pipeline_step// is really only a choice of //pipeline_stage//, but comes
+along with a wide variety of options and parameter settings, so that it looks
+much more complicated than it actually is.
+
+=
+typedef struct pipeline_step {
+	struct pipeline_stage *step_stage;
+	struct text_stream *step_argument;
+	struct code_generator *generator_argument;
+	int take_generator_argument_from_VM;
+	struct text_stream *package_URL_argument;
+	struct inter_package *package_argument;
+	int repository_argument;
+	struct pipeline_step_ephemera ephemera; /* temporary storage when running */
+	CLASS_DEFINITION
+} pipeline_step;
+
+pipeline_step *ParsingPipelines::new_step(void) {
+	pipeline_step *step = CREATE(pipeline_step);
+	step->step_stage = NULL;
+	step->step_argument = NULL;
+	step->package_URL_argument = NULL;
+	step->package_argument = NULL;
+	step->repository_argument = 0;
+	step->generator_argument = NULL;
+	step->take_generator_argument_from_VM = FALSE;
+	RunningPipelines::clean_step(step);
+	return step;
+}
+
+@ And a //pipeline_stage// is simply a choice of what to do. For example,
+|eliminate-redundant-labels| is a pipeline stage. This would need to be
+combined with details of what tree to apply to in order to become a step.
+
+@e NO_STAGE_ARG from 1
+@e GENERAL_STAGE_ARG
+@e FILE_STAGE_ARG
+@e TEXT_OUT_STAGE_ARG
+@e OPTIONAL_TEXT_OUT_STAGE_ARG
+@e EXT_FILE_STAGE_ARG
+@e EXT_TEXT_OUT_STAGE_ARG
+@e TEMPLATE_FILE_STAGE_ARG
+
+=
+typedef struct pipeline_stage {
+	struct text_stream *stage_name;
+	int (*execute)(void *);
+	int stage_arg; /* one of the |*_ARG| values above */
+	int takes_repository;
+	CLASS_DEFINITION
+} pipeline_stage;
+
+pipeline_stage *ParsingPipelines::new_stage(text_stream *name,
+	int (*X)(struct pipeline_step *), int arg, int tr) {
+	pipeline_stage *stage = CREATE(pipeline_stage);
+	stage->stage_name = Str::duplicate(name);
+	stage->execute = (int (*)(void *)) X;
+	stage->stage_arg = arg;
+	stage->takes_repository = tr;
+	return stage;
+}
+
+@h Parsing.
+All pipelines originate as textual descriptions, either from a text file or
+supplied on the command line. Here, we turn such a description -- in effect
+a program for a very simple programming language -- into an //inter_pipeline//.
+
+=
+inter_pipeline *ParsingPipelines::from_file(filename *F, dictionary *D) {
+	inter_pipeline *S = ParsingPipelines::new_pipeline(D);
+	TextFiles::read(F, FALSE, "can't open inter pipeline file",
+		TRUE, ParsingPipelines::scan_line, NULL, (void *) S);
+	if (S->erroneous) return NULL;
+	return S;
+}
+
+void ParsingPipelines::scan_line(text_stream *line, text_file_position *tfp, void *X) {
+	inter_pipeline *S = (inter_pipeline *) X;
+	ParsingPipelines::parse_line(S, line, tfp);
+}
+
+inter_pipeline *ParsingPipelines::from_text(text_stream *instructions, dictionary *D) {
+	inter_pipeline *S = ParsingPipelines::new_pipeline(D);
+	ParsingPipelines::parse_line(S, instructions, NULL);
+	if (S->erroneous) return NULL;
+	return S;
+}
+
+@ Either way, then, a sequence of 1 or more textual lines of description is
+passed to the following. It breaks down the line into 1 or more steps, divided
+by commas.
+
+=
+void ParsingPipelines::parse_line(inter_pipeline *S, text_stream *instructions,
+	text_file_position *tfp) {
+	TEMPORARY_TEXT(T)
+	LOOP_THROUGH_TEXT(P, instructions)
+		if (Characters::is_babel_whitespace(Str::get(P)))
+			PUT_TO(T, ' ');
+		else
+			PUT_TO(T, Str::get(P));
+	match_results mr = Regexp::create_mr();
+	while (Regexp::match(&mr, T, L" *(%c+?) *,+ *(%c*?) *")) {
+		pipeline_step *ST = ParsingPipelines::parse_step(mr.exp[0], S->variables, tfp);
+		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
+		else S->erroneous = TRUE;
+		Str::copy(T, mr.exp[1]);
+	}
+	if (Regexp::match(&mr, T, L" *(%c+?) *")) {
+		pipeline_step *ST = ParsingPipelines::parse_step(mr.exp[0], S->variables, tfp);
+		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
+		else S->erroneous = TRUE;
+	}
+	Regexp::dispose_of(&mr);
+	DISCARD_TEXT(T)
+}
+
+@ Finally, an individual textual description |S| of a dtep is turned into a
+//pipeline_step//.
+
+For documentation on the syntax here, see //inter: Pipelines and Stages//.
+
+=
+pipeline_step *ParsingPipelines::parse_step(text_stream *S, dictionary *D,
+	text_file_position *tfp) {
+	pipeline_step *step = ParsingPipelines::new_step();
+	match_results mr = Regexp::create_mr();
+
+	int allow_unknown = FALSE;
+	if (Regexp::match(&mr, S, L"optionally-%c+")) allow_unknown = TRUE;
+
+	int left_arrow_used = FALSE;
+	if (Regexp::match(&mr, S,      L"(%c+?) *<- *(%c*)"))       @<Left arrow notation@>
+	else if (Regexp::match(&mr, S, L"(%c+?) (%C+) *-> *(%c*)")) @<Right arrow notation with generator@>
+	else if (Regexp::match(&mr, S, L"(%c+?) *-> *(%c*)"))       @<Right arrow notation without generator@>;
+
+	if (Regexp::match(&mr, S,      L"(%C+?) (%d)"))             @<Repository number as argument@>
+	else if (Regexp::match(&mr, S, L"(%C+?) (%d):(%c*)"))       @<Repository number and package as arguments@>
+	else if (Regexp::match(&mr, S, L"(%C+?) (%c+)"))            @<Package as argument@>;
+
+	step->step_stage = ParsingPipelines::parse_stage(S);
+	@<Make consistency checks@>;
+	
+	Regexp::dispose_of(&mr);
+	return step;
+}
+
+@<Left arrow notation@> =
+	if (Str::len(mr.exp[1]) > 0) {
+		step->step_argument = ParsingPipelines::text_arg(mr.exp[1], D, tfp, allow_unknown);
+		if (step->step_argument == NULL) return NULL;
+	} else {
+		Errors::in_text_file_S(I"no source to right of arrow", tfp);
+		return NULL;
+	}
+	Str::copy(S, mr.exp[0]);
+	left_arrow_used = TRUE;
+
+@<Right arrow notation with generator@> =
+	code_generator *cgt = Generators::find(mr.exp[1]);
+	if (cgt == NULL) {
+		TEMPORARY_TEXT(ERR)
+		WRITE_TO(ERR, "no such code generation format as '%S'\n", mr.exp[1]);
+		Errors::in_text_file_S(ERR, tfp);
+		DISCARD_TEXT(ERR)
+		return NULL;
+	} else {
+		step->generator_argument = cgt;
+	}
+	step->step_argument = ParsingPipelines::text_arg(mr.exp[2], D, tfp, allow_unknown);
+	if (step->step_argument == NULL) return NULL;
+	Str::copy(S, mr.exp[0]);
+
+@<Right arrow notation without generator@> =
+	step->generator_argument = NULL;
+	step->take_generator_argument_from_VM = TRUE;
+	step->step_argument = ParsingPipelines::text_arg(mr.exp[1], D, tfp, allow_unknown);
+	if (step->step_argument == NULL) return NULL;
+	Str::copy(S, mr.exp[0]);
+
+@<Repository number as argument@> =
+	step->repository_argument = Str::atoi(mr.exp[1], 0);
+	Str::copy(S, mr.exp[0]);
+
+@<Repository number and package as arguments@> =
+	step->repository_argument = Str::atoi(mr.exp[1], 0);
+	if (Str::len(mr.exp[2]) > 0) {
+		step->package_URL_argument = ParsingPipelines::text_arg(mr.exp[2], D, tfp, allow_unknown);
+		if (step->package_URL_argument == NULL) return NULL;
+	}
+	Str::copy(S, mr.exp[0]);
+
+@<Package as argument@> =
+	step->package_URL_argument = ParsingPipelines::text_arg(mr.exp[1], D, tfp, allow_unknown);
+	if (step->package_URL_argument == NULL) return NULL;
+	Str::copy(S, mr.exp[0]);
+
+@<Make consistency checks@> =
+	if (step->step_stage == NULL) {
+		TEMPORARY_TEXT(ERR)
+		WRITE_TO(ERR, "no such stage as '%S'\n", S);
+		Errors::in_text_file_S(ERR, tfp);
+		DISCARD_TEXT(ERR)
+		return NULL;
+	}
+	if (step->step_stage->takes_repository) {
+		if (left_arrow_used == FALSE) {
+			Errors::in_text_file_S(
+				I"this stage should take a left arrow and a source", tfp);
+			return NULL;
+		}
+	} else {
+		if (left_arrow_used) {
+			Errors::in_text_file_S(
+				I"this stage should not take a left arrow and a source", tfp);
+			return NULL;
+		}
+	}
+
+@ A textual argument beginning with an asterisk means "expand to the value of
+this variable", which is required to exist unless |allow_unknown| is set.
+If it is, then an empty text results as the argument.
+
+=
+text_stream *ParsingPipelines::text_arg(text_stream *from, dictionary *D,
+	text_file_position *tfp, int allow_unknown) {
+	if (Str::get_first_char(from) == '*') {
+		text_stream *find = Dictionaries::get_text(D, from);
+		if (find) return Str::duplicate(find);
+		if (allow_unknown == FALSE) {
+			TEMPORARY_TEXT(ERR)
+			WRITE_TO(ERR, "no such pipeline variable as '%S'\n", from);
+			Errors::in_text_file_S(ERR, tfp);
+			DISCARD_TEXT(ERR)
+		} else {
+			return I"";
+		}
+	}
+	return Str::duplicate(from);
+}
+
+@h Stages.
+Stages are a fixed set within this compiler: there's no way for a pipeline
+file to specify a new one.
+
+=
+pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
+	static int stages_made = FALSE;
+	if (stages_made == FALSE) {
+		stages_made = TRUE;
+		SimpleStages::create_pipeline_stages();
+		CodeGen::create_pipeline_stage();
+		CodeGen::Architecture::create_pipeline_stage();
+		CodeGen::LinkInstructions::create_pipeline_stage();
+		CodeGen::Assimilate::create_pipeline_stage();
+		DetectIndirectCalls::create_pipeline_stage();
+		CodeGen::Eliminate::create_pipeline_stage();
+		CodeGen::Externals::create_pipeline_stage();
+		CodeGen::Inspection::create_pipeline_stage();
+		CodeGen::Labels::create_pipeline_stage();
+		CodeGen::Operations::create_pipeline_stage();
+		Synoptic::create_pipeline_stage();
+		CodeGen::MergeTemplate::create_pipeline_stage();
+		CodeGen::PLM::create_pipeline_stage();
+		CodeGen::RCC::create_pipeline_stage();
+		CodeGen::ReconcileVerbs::create_pipeline_stage();
+		CodeGen::Uniqueness::create_pipeline_stage();
+	}	
+	pipeline_stage *stage;
+	LOOP_OVER(stage, pipeline_stage)
+		if (Str::eq(from, stage->stage_name))
+			return stage;
+	return NULL;
+}
+
+@h Starting a variables dictionary.
+Note that the above ways to create a pipeline all expect a dictionary of variable
+names and their values to exist. These dictionaries are typically very small,
+and by convention the main variable is |*out|, the leafname to write output to.
+So the following utility is convenient for getting started.
+
+=
+dictionary *ParsingPipelines::basic_dictionary(text_stream *leafname) {
+	dictionary *D = Dictionaries::new(16, TRUE);
+	if (Str::len(leafname) > 0) Str::copy(Dictionaries::create_text(D, I"*out"), leafname);
+	Str::copy(Dictionaries::create_text(D, I"*log"), I"*log");
+	return D;
+}
+
+@h Back to text.
+Here we write a textual description to a string, which is useful for logging:
+
+=
+void ParsingPipelines::write_step(OUTPUT_STREAM, pipeline_step *step) {
+	WRITE("%S", step->step_stage->stage_name);
+	if (step->step_stage->stage_arg != NO_STAGE_ARG) {
+		if (step->repository_argument > 0) {
+			WRITE(" %d", step->repository_argument);
+			if (Str::len(step->package_URL_argument) > 0)
+				WRITE(":%S", step->package_URL_argument);
+		} else {
+			if (Str::len(step->package_URL_argument) > 0)
+				WRITE(" %S", step->package_URL_argument);
+		}
+		if (step->step_stage->takes_repository)
+			WRITE(" <- %S", step->step_argument);
+		if (step->generator_argument)
+			WRITE(" %S -> %S",
+				step->generator_argument->generator_name, step->step_argument);
+	}
+}

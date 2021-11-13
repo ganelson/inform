@@ -55,7 +55,7 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 	if (A == NULL) internal_error("no architecture given");
 
 	pathname *kit_path = S->associated_copy->location_if_path;
-	dictionary *pipeline_vars = CodeGen::Pipeline::basic_dictionary(NULL);
+	dictionary *pipeline_vars = ParsingPipelines::basic_dictionary(NULL);
 	inbuild_requirement *req =
 		Requirements::any_version_of(
 			Works::new(pipeline_genre, I"assimilate.interpipeline", NULL));
@@ -81,11 +81,11 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 
 	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
 	ADD_TO_LINKED_LIST(S->associated_copy->location_if_path, pathname, inter_paths);
-	codegen_pipeline *SS =
-		CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
+	inter_pipeline *SS =
+		ParsingPipelines::from_file(pipeline_as_file, pipeline_vars);
 	if (SS) {
 		linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
-		CodeGen::Pipeline::run(NULL, SS, inter_paths, requirements_list, S->for_vm);
+		RunningPipelines::run(NULL, SS, NULL, inter_paths, requirements_list, S->for_vm);
 		return TRUE;
 	} else {
 		Errors::nowhere("assimilate pipeline could not be parsed");
@@ -111,7 +111,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	if (project == NULL) internal_error("no project");
 	#ifdef PIPELINE_MODULE
 	clock_t back_end = clock();
-	CodeGen::Architecture::set(
+	RunningPipelines::set_architecture(
 		Architectures::to_codename(
 			TargetVMs::get_architecture(S->for_vm)));
 	Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");
@@ -131,14 +131,13 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 		}
 		F = R->copy->location_if_file;
 	}
-	codegen_pipeline *SS = CodeGen::Pipeline::parse_from_file(F, pipeline_vars);
-	if (SS == NULL) {
+	inter_pipeline *pipeline = ParsingPipelines::from_file(F, pipeline_vars);
+	if (pipeline == NULL) {
 		Errors::nowhere("inter pipeline file could not be parsed");
 		return FALSE;
 	}
-	CodeGen::Pipeline::set_repository(SS, Emit::tree());
-	CodeGen::Pipeline::run(Filenames::up(S->vertex->as_file),
-		SS, Kits::inter_paths(Projects::nest_list(project)),
+	RunningPipelines::run(Filenames::up(S->vertex->as_file),
+		pipeline, Emit::tree(), Kits::inter_paths(Projects::nest_list(project)),
 		Projects::list_of_link_instructions(project), S->for_vm);
 	LOG("Back end elapsed time: %dcs\n",
 		((int) (clock() - back_end)) / (CLOCKS_PER_SEC/100));

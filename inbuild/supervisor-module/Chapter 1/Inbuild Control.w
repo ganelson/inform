@@ -189,7 +189,7 @@ int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 void Supervisor::set_defaults(void) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	#ifdef PIPELINE_MODULE
-	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.ulx");
+	pipeline_vars = ParsingPipelines::basic_dictionary(I"output.ulx");
 	#endif
 	Supervisor::set_inter_pipeline(I"compile");
 }

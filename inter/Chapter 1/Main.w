@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
 
 @<Begin with an empty file list and variables dictionary@> =
 	inter_file_list = NEW_LINKED_LIST(filename);
-	pipeline_vars = CodeGen::Pipeline::basic_dictionary(I"output.i6");
+	pipeline_vars = ParsingPipelines::basic_dictionary(I"output.i6");
 	internal_path = Pathnames::from_text(I"inform7/Internal");
 
 @ This pipeline is supplied built in to the installation of |inter|. In fact,
@@ -73,7 +73,7 @@ is used. But at times in the past it has been useful to debug with the text
 form, which would be written to |*outt|.
 
 @<Set up a pipeline for assimilation@> =
-	inter_architecture *A = CodeGen::Architecture::current();
+	inter_architecture *A = RunningPipelines::get_architecture();
 	if (A == NULL) Errors::fatal("no -architecture given");
 
 	pathname *path_to_pipelines = Pathnames::down(path_to_inter, I"Pipelines");
@@ -94,13 +94,13 @@ form, which would be written to |*outt|.
 		Errors::fatal("-pipeline-text and -pipeline-file are mutually exclusive");
 	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
 	if (kit_to_assimilate) ADD_TO_LINKED_LIST(kit_to_assimilate, pathname, inter_paths);
-	codegen_pipeline *SS;
+	inter_pipeline *SS;
 	if (pipeline_as_file)
-		SS = CodeGen::Pipeline::parse_from_file(pipeline_as_file, pipeline_vars);
+		SS = ParsingPipelines::from_file(pipeline_as_file, pipeline_vars);
 	else
-		SS = CodeGen::Pipeline::parse(pipeline_as_text, pipeline_vars);
+		SS = ParsingPipelines::from_text(pipeline_as_text, pipeline_vars);
 	linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
-	if (SS) CodeGen::Pipeline::run(domain_path, SS, inter_paths, requirements_list, NULL);
+	if (SS) RunningPipelines::run(domain_path, SS, NULL, inter_paths, requirements_list, NULL);
 	else Errors::fatal("pipeline could not be parsed");
 
 @<Read the list of inter files, and perhaps transcode them@> =
@@ -185,7 +185,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case ASSIMILATE_CLSW: kit_to_assimilate = Pathnames::from_text(arg); break;
 		case INTERNAL_CLSW: internal_path = Pathnames::from_text(arg); break;
 		case ARCHITECTURE_CLSW:
-			if (CodeGen::Architecture::set(arg) == FALSE)
+			if (RunningPipelines::set_architecture(arg) == FALSE)
 				Errors::fatal("no such -architecture");
 			break;
 	}

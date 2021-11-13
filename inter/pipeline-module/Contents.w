@@ -4,14 +4,20 @@ Purpose: The code generation pipeline.
 Language: InC
 Licence: Artistic License 2.0
 
+Preliminaries
+	What This Module Does
+
 Chapter 1: Setting Up
 	Pipeline Module
-	Stages
-	Architecture
-	Link Instructions
-	Pipelines
 
-Chapter 2: Miscellaneous Pipeline Stages
+Chapter 2: Pipelines
+	Parsing Pipelines
+	Running Pipelines
+	Read, Move, Wipe, Stop
+
+Chapter 3: Linking
+	Link
+	Prepare
 	Merge Template
 	Template Reader
 	Parse Linked Matter
@@ -22,11 +28,8 @@ Chapter 2: Miscellaneous Pipeline Stages
 	Detect Indirect Calls
 	Uniqueness
 	Reconcile Verbs
-	Eliminate Redundant Matter
-	Eliminate Redundant Labels
-	Eliminate Redundant Operations
 
-Chapter 3: Synoptic Module
+Chapter 4: Synoptic Module
 	Synoptic Hierarchy
 	Synoptic Utilities
 	Extensions
@@ -46,3 +49,8 @@ Chapter 3: Synoptic Module
 	Use Options
 	Verbs
 	Tests
+
+Chapter 5: Optimising
+	Eliminate Redundant Matter
+	Eliminate Redundant Labels
+	Eliminate Redundant Operations

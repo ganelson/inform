@@ -12,17 +12,17 @@ the same function.
 
 =
 void CodeGen::create_pipeline_stage(void) {
-	CodeGen::Stage::new(I"generate", CodeGen::run_pipeline_stage,
+	ParsingPipelines::new_stage(I"generate", CodeGen::run_pipeline_stage,
 		TEXT_OUT_STAGE_ARG, FALSE);
-	CodeGen::Stage::new(I"optionally-generate", CodeGen::run_pipeline_stage, 
+	ParsingPipelines::new_stage(I"optionally-generate", CodeGen::run_pipeline_stage, 
 		OPTIONAL_TEXT_OUT_STAGE_ARG, FALSE);
 }
 
 int CodeGen::run_pipeline_stage(pipeline_step *step) {
 	if (step->generator_argument) {
-		code_generation *gen = CodeGen::new_generation(step->parsed_filename,
-			step->to_stream, step->repository, step->package_argument,
-			step->generator_argument, step->for_VM, FALSE);
+		code_generation *gen = CodeGen::new_generation(step->ephemera.parsed_filename,
+			step->ephemera.to_stream, step->ephemera.repository, step->package_argument,
+			step->generator_argument, step->ephemera.for_VM, FALSE);
 		Generators::go(gen);
 	}
 	return TRUE;

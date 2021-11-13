@@ -64,6 +64,17 @@
 		<div class="contentspage">
 			<ul class="chapterlist">
 				<li>
+					<p class="chapterentry"><a name="P"></a>
+						<span class="chaptertitle">Preliminaries</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="P-wtmd.html">
+								<spon class="sectiontitle">What This Module Does</span></a> -
+							<span class="sectionpurpose">An overview of the pipeline module's role and abilities.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
 					<p class="chapterentry"><a name="1"></a>
 						<span class="chaptertitle">Chapter 1: Setting Up</span></p>
 					<ul class="sectionlist">
@@ -72,197 +83,214 @@
 								<spon class="sectiontitle">Pipeline Module</span></a> -
 							<span class="sectionpurpose">Setting up the use of this module.</span></p>
 						</li>
-						<li>
-							<p class="sectionentry"><a href="1-stg.html">
-								<spon class="sectiontitle">Stages</span></a> -
-							<span class="sectionpurpose">To create the stages through which code generation proceeds.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="1-arc.html">
-								<spon class="sectiontitle">Architecture</span></a> -
-							<span class="sectionpurpose">To deal with multiple inter architectures.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="1-li.html">
-								<spon class="sectiontitle">Link Instructions</span></a> -
-							<span class="sectionpurpose">Inter often needs to assimilate or otherwise deal with architecture-neutral kits of linkable material, and this is where such requirements are noted.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="1-ppl.html">
-								<spon class="sectiontitle">Pipelines</span></a> -
-							<span class="sectionpurpose">To build and run through pipelines of code generation stages.</span></p>
-						</li>
 					</ul>
 				</li>
 				<li>
 					<p class="chapterentry"><a name="2"></a>
-						<span class="chaptertitle">Chapter 2: Miscellaneous Pipeline Stages</span></p>
+						<span class="chaptertitle">Chapter 2: Pipelines</span></p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="2-mt.html">
-								<spon class="sectiontitle">Linker</span></a> -
-							<span class="sectionpurpose">To link inter from I7 with template code.</span></p>
+							<p class="sectionentry"><a href="2-pp.html">
+								<spon class="sectiontitle">Parsing Pipelines</span></a> -
+							<span class="sectionpurpose">To parse pipelines from text files.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-tr.html">
-								<spon class="sectiontitle">I6 Template Reader</span></a> -
-							<span class="sectionpurpose">Inform 6 meta-language is the language used by template files (with extension |.i6t|); we need tp be able to read it here in order to assimilate template code.</span></p>
+							<p class="sectionentry"><a href="2-rp.html">
+								<spon class="sectiontitle">Running Pipelines</span></a> -
+							<span class="sectionpurpose">To run through pipelines of code generation stages.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="2-plm.html">
-								<spon class="sectiontitle">Parse Linked Matter</span></a> -
-							<span class="sectionpurpose">To generate the initial state of storage for variables.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-rcc.html">
-								<spon class="sectiontitle">Resolving Conditional Compilation</span></a> -
-							<span class="sectionpurpose">To generate the initial state of storage for variables.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-ass.html">
-								<spon class="sectiontitle">Assimilate Linked Matter</span></a> -
-							<span class="sectionpurpose">To assimilate the material in parsed non-code splats.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-res.html">
-								<spon class="sectiontitle">Resolve External Symbols</span></a> -
-							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-ip.html">
-								<spon class="sectiontitle">Inspect Plugs</span></a> -
-							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-dic.html">
-								<spon class="sectiontitle">Detect Indirect Calls</span></a> -
-							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-unq.html">
-								<spon class="sectiontitle">Uniqueness</span></a> -
-							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-rv.html">
-								<spon class="sectiontitle">Reconcile Verbs</span></a> -
-							<span class="sectionpurpose">To reconcile clashes between assimilated and originally generated verbs.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-erm.html">
-								<spon class="sectiontitle">Eliminate Redundant Matter</span></a> -
-							<span class="sectionpurpose">To remove (for example) functions which we can prove will never be called or referred to as values.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-erl.html">
-								<spon class="sectiontitle">Eliminate Redundant Labels</span></a> -
-							<span class="sectionpurpose">To remove labels which are defined but never jumped to.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="2-ero.html">
-								<spon class="sectiontitle">Eliminate Redundant Operations</span></a> -
-							<span class="sectionpurpose">To remove logical or arithmetic operations which do nothing.</span></p>
+							<p class="sectionentry"><a href="2-rmws.html">
+								<spon class="sectiontitle">Read, Move, Wipe, Stop</span></a> -
+							<span class="sectionpurpose">Four simple pipeline stages.</span></p>
 						</li>
 					</ul>
 				</li>
 				<li>
 					<p class="chapterentry"><a name="3"></a>
-						<span class="chaptertitle">Chapter 3: Synoptic Module</span></p>
+						<span class="chaptertitle">Chapter 3: Linking</span></p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="3-sh.html">
+							<p class="sectionentry"><a href="3-lnk.html">
+								<spon class="sectiontitle">Link</span></a> -
+							<span class="sectionpurpose">Inter often needs to assimilate or otherwise deal with architecture-neutral kits of linkable material, and this is where such requirements are noted.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-prp.html">
+								<spon class="sectiontitle">Prepare</span></a> -
+							<span class="sectionpurpose">The Inter stage prepare.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-mt.html">
+								<spon class="sectiontitle">Linker</span></a> -
+							<span class="sectionpurpose">To link inter from I7 with template code.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-tr.html">
+								<spon class="sectiontitle">I6 Template Reader</span></a> -
+							<span class="sectionpurpose">Inform 6 meta-language is the language used by template files (with extension |.i6t|); we need tp be able to read it here in order to assimilate template code.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-plm.html">
+								<spon class="sectiontitle">Parse Linked Matter</span></a> -
+							<span class="sectionpurpose">To generate the initial state of storage for variables.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-rcc.html">
+								<spon class="sectiontitle">Resolving Conditional Compilation</span></a> -
+							<span class="sectionpurpose">To generate the initial state of storage for variables.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-ass.html">
+								<spon class="sectiontitle">Assimilate Linked Matter</span></a> -
+							<span class="sectionpurpose">To assimilate the material in parsed non-code splats.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-res.html">
+								<spon class="sectiontitle">Resolve External Symbols</span></a> -
+							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-ip.html">
+								<spon class="sectiontitle">Inspect Plugs</span></a> -
+							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-dic.html">
+								<spon class="sectiontitle">Detect Indirect Calls</span></a> -
+							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-unq.html">
+								<spon class="sectiontitle">Uniqueness</span></a> -
+							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="3-rv.html">
+								<spon class="sectiontitle">Reconcile Verbs</span></a> -
+							<span class="sectionpurpose">To reconcile clashes between assimilated and originally generated verbs.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="4"></a>
+						<span class="chaptertitle">Chapter 4: Synoptic Module</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="4-sh.html">
 								<spon class="sectiontitle">Synoptic Hierarchy</span></a> -
 							<span class="sectionpurpose">The layout and naming conventions for the contents of the main/synoptic module.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-su.html">
+							<p class="sectionentry"><a href="4-su.html">
 								<spon class="sectiontitle">Synoptic Utilities</span></a> -
 							<span class="sectionpurpose">Managing the generation of code and arrays in the synoptic module, which is put together from resources all over the Inter tree.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-ext.html">
+							<p class="sectionentry"><a href="4-ext.html">
 								<spon class="sectiontitle">Extensions</span></a> -
 							<span class="sectionpurpose">To renumber the extensions and construct suitable functions and arrays.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-lt.html">
+							<p class="sectionentry"><a href="4-lt.html">
 								<spon class="sectiontitle">Literal Text</span></a> -
 							<span class="sectionpurpose">To alphabetise literal texts, deduplicate them, and stote a canonical set in the main/texts linkage.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-rsp.html">
+							<p class="sectionentry"><a href="4-rsp.html">
 								<spon class="sectiontitle">Responses</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/responses submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-rls.html">
+							<p class="sectionentry"><a href="4-rls.html">
 								<spon class="sectiontitle">Rules</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/rules and main/synoptic/rulebooks submodules.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-act.html">
+							<p class="sectionentry"><a href="4-act.html">
 								<spon class="sectiontitle">Activities</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/activities submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-act2.html">
+							<p class="sectionentry"><a href="4-act2.html">
 								<spon class="sectiontitle">Actions</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/actions submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-ins.html">
+							<p class="sectionentry"><a href="4-ins.html">
 								<spon class="sectiontitle">Instances</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/instances submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-knd.html">
+							<p class="sectionentry"><a href="4-knd.html">
 								<spon class="sectiontitle">Kinds</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/kinds submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-prp.html">
+							<p class="sectionentry"><a href="4-prp.html">
 								<spon class="sectiontitle">Properties</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/properties submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-rlt.html">
+							<p class="sectionentry"><a href="4-rlt.html">
 								<spon class="sectiontitle">Relations</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/relations submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-tbl.html">
+							<p class="sectionentry"><a href="4-tbl.html">
 								<spon class="sectiontitle">Tables</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/tables submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-chr.html">
+							<p class="sectionentry"><a href="4-chr.html">
 								<spon class="sectiontitle">Chronology</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/chronology submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-scn.html">
+							<p class="sectionentry"><a href="4-scn.html">
 								<spon class="sectiontitle">Scenes</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/scenes submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-mlt.html">
+							<p class="sectionentry"><a href="4-mlt.html">
 								<spon class="sectiontitle">Multimedia</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/multimedia submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-uo.html">
+							<p class="sectionentry"><a href="4-uo.html">
 								<spon class="sectiontitle">Use Options</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/use_options submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-vrb.html">
+							<p class="sectionentry"><a href="4-vrb.html">
 								<spon class="sectiontitle">Verbs</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/verbs submodule.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="3-tst.html">
+							<p class="sectionentry"><a href="4-tst.html">
 								<spon class="sectiontitle">Tests</span></a> -
 							<span class="sectionpurpose">To compile the main/synoptic/tests submodule.</span></p>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<p class="chapterentry"><a name="5"></a>
+						<span class="chaptertitle">Chapter 5: Optimising</span></p>
+					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="5-erm.html">
+								<spon class="sectiontitle">Eliminate Redundant Matter</span></a> -
+							<span class="sectionpurpose">To remove (for example) functions which we can prove will never be called or referred to as values.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-erl.html">
+								<spon class="sectiontitle">Eliminate Redundant Labels</span></a> -
+							<span class="sectionpurpose">To remove labels which are defined but never jumped to.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="5-ero.html">
+								<spon class="sectiontitle">Eliminate Redundant Operations</span></a> -
+							<span class="sectionpurpose">To remove logical or arithmetic operations which do nothing.</span></p>
 						</li>
 					</ul>
 				</li>
