@@ -6,7 +6,7 @@ To compile the main/synoptic/tests submodule.
 of type |_test|.
 
 =
-void SynopticTests::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticTests::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->test_nodes) > 0) {
 		TreeLists::sort(inv->test_nodes, Synoptic::module_order);
 	}
@@ -77,4 +77,4 @@ void SynopticTests::compile(inter_tree *I, tree_inventory *inv) {
 			Produce::up(I);
 		Produce::up(I);
 	}
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);

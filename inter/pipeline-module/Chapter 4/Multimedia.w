@@ -9,7 +9,7 @@ As this is called, //Synoptic Utilities// has already formed lists of |sound_nod
 of instances having the kind |K_sound_name|, and so on.
 
 =
-void SynopticMultimedia::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->figure_nodes) > 0) {
 		TreeLists::sort(inv->figure_nodes, Synoptic::module_order);
 	}
@@ -27,7 +27,7 @@ void SynopticMultimedia::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define RESOURCEIDSOFFIGURES array@> =
 	inter_name *iname = HierarchyLocations::find(I, RESOURCEIDSOFFIGURES_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<TreeLists::len(inv->figure_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->figure_nodes->list[i].node);
@@ -39,7 +39,7 @@ void SynopticMultimedia::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define RESOURCEIDSOFSOUNDS array@> =
 	inter_name *iname = HierarchyLocations::find(I, RESOURCEIDSOFSOUNDS_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<TreeLists::len(inv->sound_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->sound_nodes->list[i].node);
@@ -55,7 +55,7 @@ void SynopticMultimedia::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define TABLEOFEXTERNALFILES array@> =
 	inter_name *iname = HierarchyLocations::find(I, TABLEOFEXTERNALFILES_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<TreeLists::len(inv->file_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->file_nodes->list[i].node);

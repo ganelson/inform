@@ -10,7 +10,7 @@ of packages of type |_instance|.
 This section is a placeholder for now.
 
 =
-void SynopticInstances::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticInstances::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->instance_nodes) > 0) {
 		TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
 	}
@@ -43,4 +43,4 @@ void SynopticInstances::compile(inter_tree *I, tree_inventory *inv) {
 	Produce::down(I);		
 		Produce::val_symbol(I, K_value, na_s);
 	Produce::up(I);		
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);

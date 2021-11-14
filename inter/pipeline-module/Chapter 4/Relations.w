@@ -9,7 +9,7 @@ As this is called, //Synoptic Utilities// has already formed a list |relation_no
 of packages of type |_relation|.
 
 =
-void SynopticRelations::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticRelations::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->relation_nodes) > 0) {
 		TreeLists::sort(inv->relation_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
@@ -36,7 +36,7 @@ void SynopticRelations::compile(inter_tree *I, tree_inventory *inv) {
 		inter_symbol *creator_s = Metadata::read_optional_symbol(pack, I"^creator");
 		if (creator_s) Produce::inv_call(I, creator_s);
 	}
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Define ITERATERELATIONS function@> =
 	inter_name *iname = HierarchyLocations::find(I, ITERATERELATIONS_HL);
@@ -53,7 +53,7 @@ void SynopticRelations::compile(inter_tree *I, tree_inventory *inv) {
 			Produce::up(I);
 		}
 	}
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Define RPROPERTY function@> =
 	inter_name *iname = HierarchyLocations::find(I, RPROPERTY_HL);
@@ -86,4 +86,4 @@ void SynopticRelations::compile(inter_tree *I, tree_inventory *inv) {
 	Produce::down(I);
 		Produce::val(I, K_value, LITERAL_IVAL, 0);
 	Produce::up(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);

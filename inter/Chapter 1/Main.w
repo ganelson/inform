@@ -73,7 +73,7 @@ is used. But at times in the past it has been useful to debug with the text
 form, which would be written to |*outt|.
 
 @<Set up a pipeline for assimilation@> =
-	inter_architecture *A = RunningPipelines::get_architecture();
+	inter_architecture *A = PipelineModule::get_architecture();
 	if (A == NULL) Errors::fatal("no -architecture given");
 
 	pathname *path_to_pipelines = Pathnames::down(path_to_inter, I"Pipelines");
@@ -185,7 +185,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case ASSIMILATE_CLSW: kit_to_assimilate = Pathnames::from_text(arg); break;
 		case INTERNAL_CLSW: internal_path = Pathnames::from_text(arg); break;
 		case ARCHITECTURE_CLSW:
-			if (RunningPipelines::set_architecture(arg) == FALSE)
+			if (PipelineModule::set_architecture(arg) == FALSE)
 				Errors::fatal("no such -architecture");
 			break;
 	}

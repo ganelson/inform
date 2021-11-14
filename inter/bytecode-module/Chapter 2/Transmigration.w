@@ -236,7 +236,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		InterSymbolsTables::symbol_to_url_name(URL, target);
 		equivalent = InterSymbolsTables::url_name_to_symbol(ipct->destination->package_head->tree, NULL, URL);
 		if ((equivalent == NULL) && (Inter::Kind::is(target)))
-			equivalent = Inter::Packages::search_resources_exhaustively(ipct->destination->package_head->tree, target->symbol_name);
+			equivalent = Inter::Packages::search_resources(ipct->destination->package_head->tree, target->symbol_name);
 		if (equivalent == NULL)
 			equivalent = Inter::Connectors::plug(ipct->destination_tree, URL);
 		DISCARD_TEXT(URL)

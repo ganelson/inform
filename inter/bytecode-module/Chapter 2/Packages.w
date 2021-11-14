@@ -176,7 +176,7 @@ inter_symbol *Inter::Packages::search_main_exhaustively(inter_tree *I, text_stre
 	return Inter::Packages::search_exhaustively(Site::main_package(I), S);
 }
 
-inter_symbol *Inter::Packages::search_resources_exhaustively(inter_tree *I, text_stream *S) {
+inter_symbol *Inter::Packages::search_resources(inter_tree *I, text_stream *S) {
 	inter_package *main_package = Site::main_package_if_it_exists(I);
 	if (main_package) {
 		inter_tree_node *D = Inter::Packages::definition(main_package);

@@ -29,7 +29,7 @@ void CodeGen::LinkInstructions::create_pipeline_stage(void) {
 int CodeGen::LinkInstructions::run_link_stage(pipeline_step *step) {
 	link_instruction *req;
 	LOOP_OVER_LINKED_LIST(req, link_instruction, step->ephemera.requirements_list) {
-		inter_architecture *A = RunningPipelines::get_architecture();
+		inter_architecture *A = PipelineModule::get_architecture();
 		if (A == NULL) Errors::fatal("no -architecture given");
 		filename *arch_file = Architectures::canonical_binary(req->location, A);
 		if (TextFiles::exists(arch_file) == FALSE) internal_error("no arch file for requirement");

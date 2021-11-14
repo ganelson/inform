@@ -9,7 +9,7 @@ As this is called, //Synoptic Utilities// has already formed a list |property_no
 of packages of type |_activity|.
 
 =
-void SynopticProperties::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticProperties::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->property_nodes) > 0) {
 		TreeLists::sort(inv->property_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(inv->property_nodes); i++) {

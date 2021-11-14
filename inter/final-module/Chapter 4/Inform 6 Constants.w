@@ -153,20 +153,20 @@ they were any other arrays. Here goes:
 			if (Inter::Symbols::read_annotation(A, SCOPE_FILTER_IANN) == 1) WRITE("scope=");
 			if (Inter::Symbols::read_annotation(A, NOUN_FILTER_IANN) == 1)  WRITE("noun=");
 			text_stream *S = Inter::Symbols::name(A);
-			     if (A == verb_directive_divider_symbol)     WRITE("\n\t*");
-			else if (A == verb_directive_reverse_symbol)     WRITE("reverse");
-			else if (A == verb_directive_slash_symbol)       WRITE("/");
-			else if (A == verb_directive_result_symbol)      WRITE("->");
-			else if (A == verb_directive_special_symbol)     WRITE("special");
-			else if (A == verb_directive_number_symbol)      WRITE("number");
-			else if (A == verb_directive_noun_symbol)        WRITE("noun");
-			else if (A == verb_directive_multi_symbol)       WRITE("multi");
-			else if (A == verb_directive_multiinside_symbol) WRITE("multiinside");
-			else if (A == verb_directive_multiheld_symbol)   WRITE("multiheld");
-			else if (A == verb_directive_held_symbol)        WRITE("held");
-			else if (A == verb_directive_creature_symbol)    WRITE("creature");
-			else if (A == verb_directive_topic_symbol)       WRITE("topic");
-			else if (A == verb_directive_multiexcept_symbol) WRITE("multiexcept");
+			     if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_divider_RPSYM))     WRITE("\n\t*");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_reverse_RPSYM))     WRITE("reverse");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_slash_RPSYM))       WRITE("/");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_result_RPSYM))      WRITE("->");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_special_RPSYM))     WRITE("special");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_number_RPSYM))      WRITE("number");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_noun_RPSYM))        WRITE("noun");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_multi_RPSYM))       WRITE("multi");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_multiinside_RPSYM)) WRITE("multiinside");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_multiheld_RPSYM))   WRITE("multiheld");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_held_RPSYM))        WRITE("held");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_creature_RPSYM))    WRITE("creature");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_topic_RPSYM))       WRITE("topic");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_multiexcept_RPSYM)) WRITE("multiexcept");
 			else if (Str::begins_with_wide_string(S, L"##")) @<Write without sharps@>
 			else I6TargetConstants::compile_literal_symbol(gtr, gen, A);
 		} else {

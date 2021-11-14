@@ -547,7 +547,8 @@ inter_symbol *Produce::kind_to_symbol(kind *K) {
 	#endif
 	#ifndef CORE_MODULE
 	#ifdef PIPELINE_MODULE
-	return RunningPipelines::uks();
+	return RunningPipelines::get_symbol(
+		RunningPipelines::current_step(), unchecked_kind_RPSYM);
 	#endif
 	#ifndef PIPELINE_MODULE
 	return NULL;

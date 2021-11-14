@@ -9,7 +9,7 @@ As this is called, //Synoptic Utilities// has already formed a list |extension_n
 of packages of type |_module| which derive from extensions.
 
 =
-void SynopticExtensions::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticExtensions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->extension_nodes) > 0) {
 		TreeLists::sort(inv->extension_nodes, Synoptic::category_order);
 		for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
@@ -56,7 +56,7 @@ would violate the CC license.
 			Produce::up(I);
 		}
 	}
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @ This fuller version does not allow the exemptions.
 
@@ -72,7 +72,7 @@ would violate the CC license.
 			Produce::val_text(I, credit);
 		Produce::up(I);
 	}
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @ This prints the name of a single extension, identified by a value which
 is its extension ID.
@@ -100,4 +100,4 @@ is its extension ID.
 			Produce::up(I);
 		Produce::up(I);
 	}
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);

@@ -19,8 +19,8 @@ void CodeGen::Eliminate::create_pipeline_stage(void) {
 
 int CodeGen::Eliminate::run_pipeline_stage(pipeline_step *step) {
 	inter_tree *I = step->ephemera.repository;
-	InterTree::traverse(I, CodeGen::Eliminate::package_preserver, NULL, NULL, PACKAGE_IST);
-	InterTree::traverse(I, CodeGen::Eliminate::package_destroyer, NULL, NULL, PACKAGE_IST);
+	InterTree::traverse(I, CodeGen::Eliminate::package_preserver, step, NULL, PACKAGE_IST);
+	InterTree::traverse(I, CodeGen::Eliminate::package_destroyer, step, NULL, PACKAGE_IST);
 	return TRUE;
 }
 
@@ -37,32 +37,34 @@ be included.
 
 =
 void CodeGen::Eliminate::package_preserver(inter_tree *I, inter_tree_node *P, void *state) {
+	pipeline_step *step = (pipeline_step *) state;
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	inter_symbol *ptype = Inter::Packages::type(pack);
-	if (ptype == command_ptype_symbol)
-		CodeGen::Eliminate::require(pack, NULL, I"it's a _command package");
-	else if (ptype == property_ptype_symbol) {
+	if (ptype == RunningPipelines::get_symbol(step, command_ptype_RPSYM))
+		CodeGen::Eliminate::require(pack, step, NULL, I"it's a _command package");
+	else if (ptype == RunningPipelines::get_symbol(step, property_ptype_RPSYM)) {
 		text_stream *N = Inter::Packages::name(pack);
 		if (Str::eq(N, I"workflag_prop"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's workflag");
+			CodeGen::Eliminate::require(pack, step, NULL, I"it's workflag");
 		if (Str::eq(N, I"pluralname_prop"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's pluralname");
+			CodeGen::Eliminate::require(pack, step, NULL, I"it's pluralname");
 		if (Str::eq(N, I"ambigpluralname_prop"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's ambigpluralname");
+			CodeGen::Eliminate::require(pack, step, NULL, I"it's ambigpluralname");
 		if (Str::eq(N, I"proper_prop"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's proper");
+			CodeGen::Eliminate::require(pack, step, NULL, I"it's proper");
 	}
-	else if (ptype == function_ptype_symbol) {
+	else if (ptype == RunningPipelines::get_symbol(step, function_ptype_RPSYM)) {
 		text_stream *N = Inter::Packages::name(pack);
 		if (Str::eq(N, I"Main_fn"))
-			CodeGen::Eliminate::require(pack, NULL, I"it's Main");
+			CodeGen::Eliminate::require(pack, step, NULL, I"it's Main");
 	}
 }
 
 @ Once you need a package, what else do you need?
 
 =
-void CodeGen::Eliminate::require(inter_package *pack, inter_package *witness, text_stream *reason) {
+void CodeGen::Eliminate::require(inter_package *pack, pipeline_step *step,
+	inter_package *witness, text_stream *reason) {
 	if ((pack->package_flags) & USED_PACKAGE_FLAG) return;
 	pack->package_flags |= USED_PACKAGE_FLAG;
 	if (witness) {
@@ -77,7 +79,7 @@ void CodeGen::Eliminate::require(inter_package *pack, inter_package *witness, te
 
 @<If you need a package, you need its parent@> =
 	inter_package *parent = Inter::Packages::parent(pack);
-	if (parent) CodeGen::Eliminate::require(parent, pack, I"it's the parent");
+	if (parent) CodeGen::Eliminate::require(parent, step, pack, I"it's the parent");
 
 @<If you need a package, you need its external dependencies@> =
 	inter_symbols_table *tab = Inter::Packages::scope(pack);
@@ -87,21 +89,21 @@ void CodeGen::Eliminate::require(inter_package *pack, inter_package *witness, te
 			inter_symbol *to = symb;
 			while ((to) && (to->equated_to)) to = to->equated_to;
 			inter_package *needed = to->owning_table->owning_package;
-			CodeGen::Eliminate::require(needed, pack, I"it's an external symbol");
+			CodeGen::Eliminate::require(needed, step, pack, I"it's an external symbol");
 		}
 	}
 
 @<If you need a function or action, you need its internal resources@> =
 	text_stream *rationale = NULL;
 	inter_symbol *ptype = Inter::Packages::type(pack);
-	if (ptype == function_ptype_symbol) rationale = I"it's a _function block";
-	if (ptype == action_ptype_symbol) rationale = I"it's an _action subpackage";
+	if (ptype == RunningPipelines::get_symbol(step, function_ptype_RPSYM)) rationale = I"it's a _function block";
+	if (ptype == RunningPipelines::get_symbol(step, action_ptype_RPSYM)) rationale = I"it's an _action subpackage";
 	if (rationale) {
 		inter_tree_node *D = Inter::Packages::definition(pack);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
 			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 				inter_package *P = Inter::Package::defined_by_frame(C);
-				CodeGen::Eliminate::require(P, pack, rationale);
+				CodeGen::Eliminate::require(P, step, pack, rationale);
 			}
 		}
 	}

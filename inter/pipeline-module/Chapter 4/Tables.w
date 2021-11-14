@@ -15,7 +15,7 @@ these can't simply be addresses of the data because two uses of columns called
 by index within the current table: see //assertions: Tables//.)
 
 =
-void SynopticTables::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->table_nodes) > 0) {
 		TreeLists::sort(inv->table_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
@@ -55,7 +55,7 @@ void SynopticTables::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define TABLEOFTABLES array@> =
 	inter_name *iname = HierarchyLocations::find(I, TABLEOFTABLES_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	Synoptic::symbol_entry(InterNames::to_symbol(HierarchyLocations::find(I, THEEMPTYTABLE_HL)));
 	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->table_nodes->list[i].node);
@@ -119,7 +119,7 @@ void SynopticTables::compile(inter_tree *I, tree_inventory *inv) {
 			Produce::up(I);
 		Produce::up(I);
 	Produce::up(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Define TC_KOV function@> =
 	inter_name *iname = HierarchyLocations::find(I, TC_KOV_HL);
@@ -154,12 +154,12 @@ void SynopticTables::compile(inter_tree *I, tree_inventory *inv) {
 	Produce::down(I);
 		Produce::val_symbol(I, K_value, unk_s);
 	Produce::up(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Define TB_BLANKS array@> =
 	inter_name *iname = HierarchyLocations::find(I, TB_BLANKS_HL);
 	Produce::annotate_iname_i(iname, BYTEARRAY_IANN, 1);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	inter_ti hwm = 0;
 	for (int i=0; i<TreeLists::len(inv->table_column_usage_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->table_column_usage_nodes->list[i].node);

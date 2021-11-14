@@ -24,7 +24,7 @@ As this is called, //Synoptic Utilities// has already formed a list |text_nodes|
 of constants marked with the |TEXT_LITERAL_IANN| annotation. We take it from there:
 
 =
-void SynopticText::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticText::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->text_nodes) > 0) {
 		TreeLists::sort(inv->text_nodes, SynopticText::cmp);
 		inter_package *texts_pack = Site::ensure_texts_package(I);
@@ -57,7 +57,7 @@ this will be executed on the first |"apple"|, on |"banana"| and the first
 	WRITE_TO(A, "alphabetised_text_%d", j++);
 	inter_symbol *alpha_s = Synoptic::new_symbol(texts_pack, A);
 	DISCARD_TEXT(A)
-	Synoptic::def_textual_constant(I, alpha_s, S, &IBM);
+	Synoptic::def_textual_constant(I, step, alpha_s, S, &IBM);
 	latest_s = alpha_s;
 	latest_text = S;
 

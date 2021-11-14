@@ -9,7 +9,7 @@ Before this runs, past tense action and condition packages are scattered all
 over the Inter tree. Each needs its own set of unique IDs.
 
 =
-void SynopticChronology::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticChronology::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->action_history_condition_nodes) > 0) {
 		TreeLists::sort(inv->action_history_condition_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(inv->action_history_condition_nodes); i++) {
@@ -48,7 +48,7 @@ void SynopticChronology::compile(inter_tree *I, tree_inventory *inv) {
 @<Define TIMEDEVENTSTABLE@> =
 	inter_name *iname = HierarchyLocations::find(I, TIMEDEVENTSTABLE_HL);
 	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	int when_count = 0;
 	for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->rule_nodes->list[i].node);
@@ -68,7 +68,7 @@ void SynopticChronology::compile(inter_tree *I, tree_inventory *inv) {
 @<Define TIMEDEVENTTIMESTABLE@> =
 	inter_name *iname = HierarchyLocations::find(I, TIMEDEVENTTIMESTABLE_HL);
 	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	int when_count = 0;
 	for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->rule_nodes->list[i].node);
@@ -87,7 +87,7 @@ void SynopticChronology::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define PASTACTIONSI6ROUTINES@> =
 	inter_name *iname = HierarchyLocations::find(I, PASTACTIONSI6ROUTINES_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_history_condition_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->action_history_condition_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");
@@ -133,7 +133,7 @@ void SynopticChronology::compile(inter_tree *I, tree_inventory *inv) {
 		Produce::rfalse(I);
 	}
 
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Unpack the past@> =
 	Produce::inv_primitive(I, STORE_BIP);

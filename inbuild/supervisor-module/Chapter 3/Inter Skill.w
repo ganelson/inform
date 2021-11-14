@@ -111,7 +111,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	if (project == NULL) internal_error("no project");
 	#ifdef PIPELINE_MODULE
 	clock_t back_end = clock();
-	RunningPipelines::set_architecture(
+	PipelineModule::set_architecture(
 		Architectures::to_codename(
 			TargetVMs::get_architecture(S->for_vm)));
 	Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");

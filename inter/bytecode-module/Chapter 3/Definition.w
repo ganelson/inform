@@ -330,3 +330,24 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 	if (E) Inter::Errors::backtrace(STDERR, P);
 	return E;
 }
+
+void Inter::Defn::lint(inter_tree *I) {
+	InterTree::traverse(I, Inter::Defn::lint_visitor, NULL, NULL, -PACKAGE_IST);
+}
+
+void Inter::Defn::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	inter_ti c = Inode::get_package(P)->index_n;
+	inter_ti a = Inode::get_package_alt(P);
+	if (c != a) {
+		LOG("Frame gives package as $6, but its location is in package $6\n",
+			Inode::ID_to_package(P, c),
+			Inode::ID_to_package(P, a));
+		WRITE_TO(STDERR, "Frame gives package as %d, but its location is in package %d\n",
+			Inode::ID_to_package(P, c)->index_n,
+			Inode::ID_to_package(P, a)->index_n);
+		internal_error("misplaced package");
+	}
+
+	Produce::guard(Inter::Defn::verify_children_inner(P));
+}
+

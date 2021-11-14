@@ -8,7 +8,7 @@ As this is called, //Synoptic Utilities// has already formed lists of |verb_form
 of instances having the kind |K_verb|.
 
 =
-void SynopticVerbs::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticVerbs::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->verb_form_nodes) > 0) {
 		TreeLists::sort(inv->verb_form_nodes, SynopticVerbs::form_order);
 	}
@@ -39,7 +39,7 @@ int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 
 @<Define TABLEOFVERBS array@> =
 	inter_name *iname = HierarchyLocations::find(I, TABLEOFVERBS_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->verb_form_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->verb_form_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^verb_value");

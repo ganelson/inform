@@ -22,50 +22,47 @@ int CodeGen::Assimilate::run_pipeline_stage(pipeline_step *step) {
 	no_assimilated_actions = 0;
 	no_assimilated_commands = 0;
 	no_assimilated_arrays = 0;
-	Site::ensure_assimilation_package(I, plain_ptype_symbol);
+	Site::ensure_assimilation_package(I, RunningPipelines::get_symbol(step, plain_ptype_RPSYM));
 		
-	CodeGen::Assimilate::ensure(I, &verb_directive_reverse_symbol, I"VERB_DIRECTIVE_REVERSE");
-	CodeGen::Assimilate::ensure(I, &verb_directive_slash_symbol, I"VERB_DIRECTIVE_SLASH");
-	CodeGen::Assimilate::ensure(I, &verb_directive_divider_symbol, I"VERB_DIRECTIVE_DIVIDER");
-	CodeGen::Assimilate::ensure(I, &verb_directive_result_symbol, I"VERB_DIRECTIVE_RESULT");
-	CodeGen::Assimilate::ensure(I, &verb_directive_special_symbol, I"VERB_DIRECTIVE_SPECIAL");
-	CodeGen::Assimilate::ensure(I, &verb_directive_number_symbol, I"VERB_DIRECTIVE_NUMBER");
-	CodeGen::Assimilate::ensure(I, &verb_directive_noun_symbol, I"VERB_DIRECTIVE_NOUN");
-	CodeGen::Assimilate::ensure(I, &verb_directive_multi_symbol, I"VERB_DIRECTIVE_MULTI");
-	CodeGen::Assimilate::ensure(I, &verb_directive_multiinside_symbol, I"VERB_DIRECTIVE_MULTIINSIDE");
-	CodeGen::Assimilate::ensure(I, &verb_directive_multiheld_symbol, I"VERB_DIRECTIVE_MULTIHELD");
-	CodeGen::Assimilate::ensure(I, &verb_directive_held_symbol, I"VERB_DIRECTIVE_HELD");
-	CodeGen::Assimilate::ensure(I, &verb_directive_creature_symbol, I"VERB_DIRECTIVE_CREATURE");
-	CodeGen::Assimilate::ensure(I, &verb_directive_topic_symbol, I"VERB_DIRECTIVE_TOPIC");
-	CodeGen::Assimilate::ensure(I, &verb_directive_multiexcept_symbol, I"VERB_DIRECTIVE_MULTIEXCEPT");
+	RunningPipelines::ensure(step, verb_directive_reverse_RPSYM, I"VERB_DIRECTIVE_REVERSE");
+	RunningPipelines::ensure(step, verb_directive_slash_RPSYM, I"VERB_DIRECTIVE_SLASH");
+	RunningPipelines::ensure(step, verb_directive_divider_RPSYM, I"VERB_DIRECTIVE_DIVIDER");
+	RunningPipelines::ensure(step, verb_directive_result_RPSYM, I"VERB_DIRECTIVE_RESULT");
+	RunningPipelines::ensure(step, verb_directive_special_RPSYM, I"VERB_DIRECTIVE_SPECIAL");
+	RunningPipelines::ensure(step, verb_directive_number_RPSYM, I"VERB_DIRECTIVE_NUMBER");
+	RunningPipelines::ensure(step, verb_directive_noun_RPSYM, I"VERB_DIRECTIVE_NOUN");
+	RunningPipelines::ensure(step, verb_directive_multi_RPSYM, I"VERB_DIRECTIVE_MULTI");
+	RunningPipelines::ensure(step, verb_directive_multiinside_RPSYM, I"VERB_DIRECTIVE_MULTIINSIDE");
+	RunningPipelines::ensure(step, verb_directive_multiheld_RPSYM, I"VERB_DIRECTIVE_MULTIHELD");
+	RunningPipelines::ensure(step, verb_directive_held_RPSYM, I"VERB_DIRECTIVE_HELD");
+	RunningPipelines::ensure(step, verb_directive_creature_RPSYM, I"VERB_DIRECTIVE_CREATURE");
+	RunningPipelines::ensure(step, verb_directive_topic_RPSYM, I"VERB_DIRECTIVE_TOPIC");
+	RunningPipelines::ensure(step, verb_directive_multiexcept_RPSYM, I"VERB_DIRECTIVE_MULTIEXCEPT");
 
 	if (Inter::Connectors::find_socket(I, I"self") == NULL) {
-		inter_symbol *ss = Veneer::find_by_index(I, SELF_VSYMB, unchecked_kind_symbol);
+		inter_symbol *ss = Veneer::find_by_index(I, SELF_VSYMB, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 		if (ss == NULL) internal_error("stuck");
 		Inter::Connectors::socket(I, I"self", ss);
 	}
 
-	InterTree::traverse(I, CodeGen::Assimilate::visitor1, NULL, NULL, SPLAT_IST);
-	InterTree::traverse(I, CodeGen::Assimilate::visitor2, NULL, NULL, SPLAT_IST);
+	InterTree::traverse(I, CodeGen::Assimilate::visitor1, step, NULL, SPLAT_IST);
+	InterTree::traverse(I, CodeGen::Assimilate::visitor2, step, NULL, SPLAT_IST);
 	CodeGen::Assimilate::function_bodies(I);
-	InterTree::traverse(I, CodeGen::Assimilate::visitor3, NULL, NULL, SPLAT_IST);
+	InterTree::traverse(I, CodeGen::Assimilate::visitor3, step, NULL, SPLAT_IST);
 	return TRUE;
-}
-
-void CodeGen::Assimilate::ensure(inter_tree *I, inter_symbol **S, text_stream *identifier) {
-	if (*S == NULL) *S = Inter::Connectors::plug(I, identifier);
 }
 
 @h Parsing.
 
 =
-inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, text_stream *name, inter_tree_node *P) {
-	if (submodule_ptype_symbol) {
-		inter_package *template_package = Site::ensure_assimilation_package(I, plain_ptype_symbol);
+inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, pipeline_step *step,
+	text_stream *name, inter_tree_node *P) {
+	if (RunningPipelines::get_symbol(step, submodule_ptype_RPSYM)) {
+		inter_package *template_package = Site::ensure_assimilation_package(I, RunningPipelines::get_symbol(step, plain_ptype_RPSYM));
 		inter_package *t_p = Inter::Packages::by_name(template_package, name);
 		if (t_p == NULL) {
 			inter_bookmark IBM = Inter::Bookmarks::after_this_node(I, P);
-			t_p = CodeGen::Assimilate::new_package_named(&IBM, name, submodule_ptype_symbol);
+			t_p = CodeGen::Assimilate::new_package_named(&IBM, name, RunningPipelines::get_symbol(step, submodule_ptype_RPSYM));
 		}
 		if (t_p == NULL) internal_error("failed to define");
 		return Inter::Bookmarks::at_end_of_this_package(t_p);
@@ -74,40 +71,43 @@ inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, text_strea
 }
 
 void CodeGen::Assimilate::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
+	pipeline_step *step = (pipeline_step *) state;
 	switch (P->W.data[PLM_SPLAT_IFLD]) {
 		case PROPERTY_PLM:
-			if (unchecked_kind_symbol) @<Assimilate definition@>;
+			if (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)) @<Assimilate definition@>;
 			break;
 		case ATTRIBUTE_PLM:
-			if (truth_state_kind_symbol) @<Assimilate definition@>;
+			if (RunningPipelines::get_symbol(step, truth_state_kind_RPSYM)) @<Assimilate definition@>;
 			break;
 		case ROUTINE_PLM:
 		case STUB_PLM:
-			if ((unchecked_kind_symbol) && (unchecked_function_symbol))
+			if ((RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)) && (RunningPipelines::get_symbol(step, unchecked_function_RPSYM)))
 				@<Assimilate routine@>;
 			break;
 	}
 }
 
 void CodeGen::Assimilate::visitor2(inter_tree *I, inter_tree_node *P, void *state) {
+	pipeline_step *step = (pipeline_step *) state;
 	switch (P->W.data[PLM_SPLAT_IFLD]) {
 		case DEFAULT_PLM:
 		case CONSTANT_PLM:
 		case FAKEACTION_PLM:
 		case OBJECT_PLM:
 		case VERB_PLM:
-			if (unchecked_kind_symbol) @<Assimilate definition@>;
+			if (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)) @<Assimilate definition@>;
 			break;
 		case ARRAY_PLM:
-			if (list_of_unchecked_kind_symbol) @<Assimilate definition@>;
+			if (RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)) @<Assimilate definition@>;
 			break;
 	}
 }
 
 void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *state) {
+	pipeline_step *step = (pipeline_step *) state;
 	switch (P->W.data[PLM_SPLAT_IFLD]) {
 		case GLOBAL_PLM:
-			if (unchecked_kind_symbol) @<Assimilate definition@>;
+			if (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)) @<Assimilate definition@>;
 			break;
 	}
 }
@@ -124,7 +124,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	int proceed = FALSE;
 
 	@<Parse text of splat for identifier and value@>;
-	if ((proceed) && (unchecked_kind_symbol)) {
+	if ((proceed) && (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM))) {
 		if ((plm == DEFAULT_PLM) && (Inter::Connectors::find_socket(I, identifier) == NULL))
 			plm = CONSTANT_PLM;
 		if (plm != DEFAULT_PLM) @<Act on parsed constant definition@>;
@@ -165,11 +165,11 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	text_stream *submodule_name = NULL;
 	text_stream *suffix = NULL;
-	inter_symbol *subpackage_type = plain_ptype_symbol;
+	inter_symbol *subpackage_type = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
 
 	switch (plm) {
 		case VERB_PLM:
-			if (command_ptype_symbol) subpackage_type = command_ptype_symbol;
+			if (RunningPipelines::get_symbol(step, command_ptype_RPSYM)) subpackage_type = RunningPipelines::get_symbol(step, command_ptype_RPSYM);
 			submodule_name = I"commands"; suffix = NULL; break;
 		case ARRAY_PLM:
 			submodule_name = I"arrays"; suffix = I"arr"; break;
@@ -181,12 +181,12 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			submodule_name = I"variables"; suffix = I"var"; break;
 		case ATTRIBUTE_PLM:
 		case PROPERTY_PLM:
-			if (property_ptype_symbol) subpackage_type = property_ptype_symbol;
+			if (RunningPipelines::get_symbol(step, property_ptype_RPSYM)) subpackage_type = RunningPipelines::get_symbol(step, property_ptype_RPSYM);
 			submodule_name = I"properties"; suffix = I"prop"; break;
 	}
 
 	if (submodule_name) {
-		IBM_d = CodeGen::Assimilate::template_submodule(I, submodule_name, P);
+		IBM_d = CodeGen::Assimilate::template_submodule(I, step, submodule_name, P);
 
 		TEMPORARY_TEXT(subpackage_name)
 		if (suffix) {
@@ -217,7 +217,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		Inter::Symbols::set_flag(id_s, MAKE_NAME_UNIQUE);
 		Produce::guard(Inter::Constant::new_numerical(IBM,
 			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), id_s),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 			LITERAL_IVAL, 0,
 			(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 	}
@@ -237,7 +237,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			@<Assimilate a value@>;
 			Produce::guard(Inter::Constant::new_numerical(IBM,
 				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
+				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), v1, v2,
 				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
@@ -246,7 +246,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			@<Assimilate a value@>;
 			Produce::guard(Inter::Variable::new(IBM,
 				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol), v1, v2,
+				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), v1, v2,
 				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
@@ -260,7 +260,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				if (attr_symbol == NULL) attr_symbol = con_name;
 				Produce::guard(Inter::Property::new(IBM,
 					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), attr_symbol),
-					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), truth_state_kind_symbol),
+					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, truth_state_kind_RPSYM)),
 					(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 				Inter::Symbols::annotate_i(attr_symbol, EITHER_OR_IANN, 1);
 				Inter::Symbols::set_translate(attr_symbol, con_name->symbol_name);
@@ -286,7 +286,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		case PROPERTY_PLM: {
 			Produce::guard(Inter::Property::new(IBM,
 				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
+				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			if (Str::eq(identifier, I"absent"))
@@ -323,8 +323,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				TEMPORARY_TEXT(value)
 				if (next_is_action) WRITE_TO(value, "##");
 				@<Extract a token@>;
-				if ((next_is_action) && (action_kind_symbol)) {
-					CodeGen::Assimilate::ensure_action(I, P, value);
+				if ((next_is_action) && (RunningPipelines::get_symbol(step, action_kind_RPSYM))) {
+					CodeGen::Assimilate::ensure_action(I, step, P, value);
 				}
 				next_is_action = FALSE;
 				if (plm == ARRAY_PLM) {
@@ -346,8 +346,8 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 					v1_pile[no_assimilated_array_entries] = v1;
 					v2_pile[no_assimilated_array_entries] = v2;
 					no_assimilated_array_entries++;
-					if ((plm == VERB_PLM) && (verb_directive_result_symbol) &&
-						(InterSymbolsTables::symbol_from_data_pair_and_table(v1, v2, Inter::Bookmarks::scope(IBM)) == verb_directive_result_symbol))
+					if ((plm == VERB_PLM) && (RunningPipelines::get_symbol(step, verb_directive_result_RPSYM)) &&
+						(InterSymbolsTables::symbol_from_data_pair_and_table(v1, v2, Inter::Bookmarks::scope(IBM)) == RunningPipelines::get_symbol(step, verb_directive_result_RPSYM)))
 						next_is_action = TRUE;
 				}
 				DISCARD_TEXT(value)
@@ -356,7 +356,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			inter_tree_node *array_in_progress =
 				Inode::fill_3(IBM, CONSTANT_IST,
 					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), list_of_unchecked_kind_symbol),
+					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)),
 					CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 			int pos = array_in_progress->W.extent;
 			if (Inode::extend(array_in_progress, (unsigned int) (2*no_assimilated_array_entries)) == FALSE)
@@ -393,7 +393,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 @<Assimilate a value@> =
 	if (Str::len(value) > 0) {
-		CodeGen::Assimilate::value(I, Inter::Bookmarks::package(IBM), IBM, value, &v1, &v2,
+		CodeGen::Assimilate::value(I, step, Inter::Bookmarks::package(IBM), IBM, value, &v1, &v2,
 			(plm == VERB_PLM)?TRUE:FALSE);
 	} else {
 		v1 = LITERAL_IVAL; v2 = 0;
@@ -427,11 +427,11 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	}
 
 @<Act on parsed header@> =
-	inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, I"functions", P);
+	inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, step, I"functions", P);
 	inter_bookmark *IBM = &IBM_d;
 
-	inter_symbol *fnt = function_ptype_symbol;
-	if (fnt == NULL) fnt = plain_ptype_symbol;
+	inter_symbol *fnt = RunningPipelines::get_symbol(step, function_ptype_RPSYM);
+	if (fnt == NULL) fnt = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
 
 	TEMPORARY_TEXT(fname)
 	WRITE_TO(fname, "%S_fn", identifier);
@@ -443,7 +443,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	TEMPORARY_TEXT(bname)
 	WRITE_TO(bname, "%S_B", identifier);
-	inter_package *IP = CodeGen::Assimilate::new_package_named(IBM, bname, code_ptype_symbol);
+	inter_package *IP = CodeGen::Assimilate::new_package_named(IBM, bname, RunningPipelines::get_symbol(step, code_ptype_RPSYM));
 	DISCARD_TEXT(bname)
 
 	inter_bookmark inner_save = Inter::Bookmarks::snapshot(IBM);
@@ -458,7 +458,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			if (Str::len(value) == 0) break;
 			inter_symbol *loc_name = InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(IP), value);
 			Inter::Symbols::local(loc_name);
-			Produce::guard(Inter::Local::new(IBM, loc_name, unchecked_kind_symbol, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+			Produce::guard(Inter::Local::new(IBM, loc_name, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM), 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			DISCARD_TEXT(value)
 		}
 	}
@@ -478,7 +478,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	Inter::Symbols::annotate_i(rsymb, ASSIMILATED_IANN, 1);
 	Produce::guard(Inter::Constant::new_function(IBM,
 		InterSymbolsTables::id_from_symbol(I, FP, rsymb),
-		InterSymbolsTables::id_from_symbol(I, FP, unchecked_function_symbol),
+		InterSymbolsTables::id_from_symbol(I, FP, RunningPipelines::get_symbol(step, unchecked_function_RPSYM)),
 		IP,
 		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 
@@ -507,12 +507,12 @@ inter_symbol *CodeGen::Assimilate::make_socketed_symbol(inter_tree *I, text_stre
 }
 
 @ =
-void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_stream *value) {
+void CodeGen::Assimilate::ensure_action(inter_tree *I, pipeline_step *step, inter_tree_node *P, text_stream *value) {
 	if (Inter::Connectors::find_socket(I, value) == NULL) {
-		inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, I"actions", P);
+		inter_bookmark IBM_d = CodeGen::Assimilate::template_submodule(I, step, I"actions", P);
 		inter_bookmark *IBM = &IBM_d;
-		inter_symbol *ptype = action_ptype_symbol;
-		if (ptype == NULL) ptype = plain_ptype_symbol;
+		inter_symbol *ptype = RunningPipelines::get_symbol(step, action_ptype_RPSYM);
+		if (ptype == NULL) ptype = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
 		TEMPORARY_TEXT(an)
 		WRITE_TO(an, "assim_action_%d", ++no_assimilated_actions);
 		Inter::Bookmarks::set_current_package(IBM, CodeGen::Assimilate::new_package_named(IBM, an, ptype));
@@ -520,7 +520,7 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 		inter_symbol *aid_s = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), I"action_id");
 		Produce::guard(Inter::Constant::new_numerical(IBM,
 			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), aid_s),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 			LITERAL_IVAL, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 		Inter::Symbols::set_flag(aid_s, MAKE_NAME_UNIQUE);
 		inter_symbol *asymb = CodeGen::Assimilate::make_socketed_symbol(I, value, Inter::Bookmarks::scope(IBM));
@@ -534,14 +534,14 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, inter_tree_node *P, text_
 		DISCARD_TEXT(unsharped)
 		Produce::guard(Inter::Constant::new_numerical(IBM,
 			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), action_kind_symbol),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, action_kind_RPSYM)),
 			LITERAL_IVAL, 10000, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 		Inter::Symbols::annotate_i(asymb, ACTION_IANN, 1);
 	}
 }
 
 @ =
-void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookmark *IBM, text_stream *S, inter_ti *val1, inter_ti *val2, int Verbal) {
+void CodeGen::Assimilate::value(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, text_stream *S, inter_ti *val1, inter_ti *val2, int Verbal) {
 	int sign = 1, base = 10, from = 0, to = Str::len(S)-1, bad = FALSE;
 	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\'')) {
 		from++;
@@ -612,23 +612,23 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 	}
 
 	if (Verbal) {
-		if ((Str::eq(S, I"*")) && (verb_directive_divider_symbol)) {
-			Inter::Symbols::to_data(I, pack, verb_directive_divider_symbol, val1, val2); return;
+		if ((Str::eq(S, I"*")) && (RunningPipelines::get_symbol(step, verb_directive_divider_RPSYM))) {
+			Inter::Symbols::to_data(I, pack, RunningPipelines::get_symbol(step, verb_directive_divider_RPSYM), val1, val2); return;
 		}
-		if ((Str::eq(S, I"->")) && (verb_directive_result_symbol)) {
-			Inter::Symbols::to_data(I, pack, verb_directive_result_symbol, val1, val2); return;
+		if ((Str::eq(S, I"->")) && (RunningPipelines::get_symbol(step, verb_directive_result_RPSYM))) {
+			Inter::Symbols::to_data(I, pack, RunningPipelines::get_symbol(step, verb_directive_result_RPSYM), val1, val2); return;
 		}
-		if ((Str::eq(S, I"reverse")) && (verb_directive_reverse_symbol)) {
-			Inter::Symbols::to_data(I, pack, verb_directive_reverse_symbol, val1, val2); return;
+		if ((Str::eq(S, I"reverse")) && (RunningPipelines::get_symbol(step, verb_directive_reverse_RPSYM))) {
+			Inter::Symbols::to_data(I, pack, RunningPipelines::get_symbol(step, verb_directive_reverse_RPSYM), val1, val2); return;
 		}
-		if ((Str::eq(S, I"/")) && (verb_directive_slash_symbol)) {
-			Inter::Symbols::to_data(I, pack, verb_directive_slash_symbol, val1, val2); return;
+		if ((Str::eq(S, I"/")) && (RunningPipelines::get_symbol(step, verb_directive_slash_RPSYM))) {
+			Inter::Symbols::to_data(I, pack, RunningPipelines::get_symbol(step, verb_directive_slash_RPSYM), val1, val2); return;
 		}
-		if ((Str::eq(S, I"special")) && (verb_directive_special_symbol)) {
-			Inter::Symbols::to_data(I, pack, verb_directive_special_symbol, val1, val2); return;
+		if ((Str::eq(S, I"special")) && (RunningPipelines::get_symbol(step, verb_directive_special_RPSYM))) {
+			Inter::Symbols::to_data(I, pack, RunningPipelines::get_symbol(step, verb_directive_special_RPSYM), val1, val2); return;
 		}
-		if ((Str::eq(S, I"number")) && (verb_directive_number_symbol)) {
-			Inter::Symbols::to_data(I, pack, verb_directive_number_symbol, val1, val2); return;
+		if ((Str::eq(S, I"number")) && (RunningPipelines::get_symbol(step, verb_directive_number_RPSYM))) {
+			Inter::Symbols::to_data(I, pack, RunningPipelines::get_symbol(step, verb_directive_number_RPSYM), val1, val2); return;
 		}
 		match_results mr = Regexp::create_mr();
 		if (Regexp::match(&mr, S, L"scope=(%i+)")) {
@@ -657,13 +657,13 @@ void CodeGen::Assimilate::value(inter_tree *I, inter_package *pack, inter_bookma
 	}
 
 	inter_schema *sch = InterSchemas::from_text(S, FALSE, 0, NULL);
-	inter_symbol *mcc_name = CodeGen::Assimilate::compute_constant(I, pack, IBM, sch);
+	inter_symbol *mcc_name = CodeGen::Assimilate::compute_constant(I, step, pack, IBM, sch);
 	Inter::Symbols::to_data(I, pack, mcc_name, val1, val2);
 }
 
-inter_symbol *CodeGen::Assimilate::compute_constant(inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_schema *sch) {
+inter_symbol *CodeGen::Assimilate::compute_constant(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_schema *sch) {
 
-	inter_symbol *try = CodeGen::Assimilate::compute_constant_r(I, pack, IBM, sch->node_tree);
+	inter_symbol *try = CodeGen::Assimilate::compute_constant_r(I, step, pack, IBM, sch->node_tree);
 	if (try) return try;
 
 	InterSchemas::log(DL, sch);
@@ -678,15 +678,15 @@ inter_symbol *CodeGen::Assimilate::compute_constant(inter_tree *I, inter_package
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTables::id_from_symbol(I, pack, mcc_name),
-		InterSymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), GLOB_IVAL, ID,
+		InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), GLOB_IVAL, ID,
 		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 
 	return mcc_name;
 }
 
-inter_symbol *CodeGen::Assimilate::compute_constant_r(inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_schema_node *isn) {
+inter_symbol *CodeGen::Assimilate::compute_constant_r(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_schema_node *isn) {
 	if (isn->isn_type == SUBEXPRESSION_ISNT) 
-		return CodeGen::Assimilate::compute_constant_r(I, pack, IBM, isn->child_node);
+		return CodeGen::Assimilate::compute_constant_r(I, step, pack, IBM, isn->child_node);
 	if (isn->isn_type == OPERATION_ISNT) {
 		inter_ti op = 0;
 		if (isn->isn_clarifier == PLUS_BIP) op = CONSTANT_SUM_LIST;
@@ -694,28 +694,28 @@ inter_symbol *CodeGen::Assimilate::compute_constant_r(inter_tree *I, inter_packa
 		else if (isn->isn_clarifier == MINUS_BIP) op = CONSTANT_DIFFERENCE_LIST;
 		else if (isn->isn_clarifier == DIVIDE_BIP) op = CONSTANT_QUOTIENT_LIST;
 		else if (isn->isn_clarifier == UNARYMINUS_BIP)
-			return CodeGen::Assimilate::compute_constant_unary_operation(I, pack, IBM, isn->child_node);
+			return CodeGen::Assimilate::compute_constant_unary_operation(I, step, pack, IBM, isn->child_node);
 		else return NULL;
-		inter_symbol *i1 = CodeGen::Assimilate::compute_constant_r(I, pack, IBM, isn->child_node);
-		inter_symbol *i2 = CodeGen::Assimilate::compute_constant_r(I, pack, IBM, isn->child_node->next_node);
+		inter_symbol *i1 = CodeGen::Assimilate::compute_constant_r(I, step, pack, IBM, isn->child_node);
+		inter_symbol *i2 = CodeGen::Assimilate::compute_constant_r(I, step, pack, IBM, isn->child_node->next_node);
 		if ((i1 == NULL) || (i2 == NULL)) return NULL;
-		return CodeGen::Assimilate::compute_constant_binary_operation(op, I, pack, IBM, i1, i2);
+		return CodeGen::Assimilate::compute_constant_binary_operation(op, I, step, pack, IBM, i1, i2);
 	}
 	if (isn->isn_type == EXPRESSION_ISNT) {
 		inter_schema_token *t = isn->expression_tokens;
 		if (t->next) {
 			if (t->next->next) return NULL;
-			inter_symbol *i1 = CodeGen::Assimilate::compute_constant_eval(I, pack, IBM, t);
-			inter_symbol *i2 = CodeGen::Assimilate::compute_constant_eval(I, pack, IBM, t->next);
+			inter_symbol *i1 = CodeGen::Assimilate::compute_constant_eval(I, step, pack, IBM, t);
+			inter_symbol *i2 = CodeGen::Assimilate::compute_constant_eval(I, step, pack, IBM, t->next);
 			if ((i1 == NULL) || (i2 == NULL)) return NULL;
-			return CodeGen::Assimilate::compute_constant_binary_operation(CONSTANT_SUM_LIST, I, pack, IBM, i1, i2);
+			return CodeGen::Assimilate::compute_constant_binary_operation(CONSTANT_SUM_LIST, I, step, pack, IBM, i1, i2);
 		}
-		return CodeGen::Assimilate::compute_constant_eval(I, pack, IBM, t);
+		return CodeGen::Assimilate::compute_constant_eval(I, step, pack, IBM, t);
 	}
 	return NULL;
 }
 
-inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_schema_token *t) {
+inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_schema_token *t) {
 	inter_ti v1 = UNDEF_IVAL, v2 = 0;
 	switch (t->ist_type) {
 		case IDENTIFIER_ISTT: {
@@ -735,17 +735,17 @@ inter_symbol *CodeGen::Assimilate::compute_constant_eval(inter_tree *I, inter_pa
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTables::id_from_symbol(I, pack, mcc_name),
-		InterSymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), v1, v2,
+		InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), v1, v2,
 		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 	return mcc_name;
 }
 
-inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_schema_node *operand1) {
-	inter_symbol *i1 = CodeGen::Assimilate::compute_constant_r(I, pack, IBM, operand1);
+inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_schema_node *operand1) {
+	inter_symbol *i1 = CodeGen::Assimilate::compute_constant_r(I, step, pack, IBM, operand1);
 	if (i1 == NULL) return NULL;
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), InterSymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), CONSTANT_DIFFERENCE_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), CONSTANT_DIFFERENCE_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
@@ -756,10 +756,10 @@ inter_symbol *CodeGen::Assimilate::compute_constant_unary_operation(inter_tree *
 	return mcc_name;
 }
 
-inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_ti op, inter_tree *I, inter_package *pack, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
+inter_symbol *CodeGen::Assimilate::compute_constant_binary_operation(inter_ti op, inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
 	inter_symbol *mcc_name = CodeGen::Assimilate::computed_constant_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), InterSymbolsTables::id_from_symbol(I, pack, unchecked_kind_symbol), op, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), op, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");

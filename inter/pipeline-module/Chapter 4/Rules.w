@@ -9,7 +9,7 @@ As this is called, //Synoptic Utilities// has already formed a list |rulebook_no
 of packages of type |_rulebook|; and similarly for |rule_nodes|.
 
 =
-void SynopticRules::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticRules::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->rulebook_nodes) > 0) {
 		TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
@@ -37,7 +37,7 @@ void SynopticRules::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define RulebookNames array@> =
 	inter_name *iname = HierarchyLocations::find(I, RULEBOOKNAMES_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	if (economy) {
 		Synoptic::numeric_entry(0);
 		Synoptic::numeric_entry(0);
@@ -52,7 +52,7 @@ void SynopticRules::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define rulebook_var_creators array@> =
 	inter_name *iname = HierarchyLocations::find(I, RULEBOOK_VAR_CREATORS_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
@@ -63,7 +63,7 @@ void SynopticRules::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define rulebooks_array array@> =
 	inter_name *iname = HierarchyLocations::find(I, RULEBOOKS_ARRAY_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^run_fn");
@@ -105,7 +105,7 @@ void SynopticRules::compile(inter_tree *I, tree_inventory *inv) {
 	Produce::down(I);
 		Produce::val(I, K_value, LITERAL_IVAL, 0);
 	Produce::up(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Define RULEPRINTINGRULE function@> =
 	inter_name *iname = HierarchyLocations::find(I, RULEPRINTINGRULE_HL);
@@ -136,7 +136,7 @@ void SynopticRules::compile(inter_tree *I, tree_inventory *inv) {
 			@<Print a rule name@>;
 		Produce::up(I);
 	Produce::up(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Print a rulebook name@> =
 	if (economy) {

@@ -16,7 +16,7 @@ of packages of type |_action|.
 @d REQUIRES_POSSESSION 4 /* actor must be carrying this object */
 
 =
-void SynopticActions::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticActions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->action_nodes) > 0) {
 		TreeLists::sort(inv->action_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
@@ -47,7 +47,7 @@ void SynopticActions::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define ACTIONHAPPENED array@> =
 	inter_name *iname = HierarchyLocations::find(I, ACTIONHAPPENED_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<=(TreeLists::len(inv->action_nodes)/16); i++)
 		Synoptic::numeric_entry(0);
 	Synoptic::numeric_entry(0);
@@ -55,7 +55,7 @@ void SynopticActions::compile(inter_tree *I, tree_inventory *inv) {
 
 @<Define ACTIONCODING array@> =
 	inter_name *iname = HierarchyLocations::find(I, ACTIONCODING_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
@@ -69,7 +69,7 @@ void SynopticActions::compile(inter_tree *I, tree_inventory *inv) {
 @<Define ACTIONDATA array@> =
 	inter_name *iname = HierarchyLocations::find(I, ACTIONDATA_HL);
 	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
@@ -147,4 +147,4 @@ void SynopticActions::compile(inter_tree *I, tree_inventory *inv) {
 
 		Produce::up(I);
 	Produce::up(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);

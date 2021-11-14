@@ -163,23 +163,23 @@ tree_inventory *Synoptic::inv(inter_tree *I) {
 int Synoptic::go(pipeline_step *step) {
 	tree_inventory *inv = Synoptic::inv(step->ephemera.repository);
 
-	SynopticText::compile(step->ephemera.repository, inv);
-	SynopticActions::compile(step->ephemera.repository, inv);
-	SynopticActivities::compile(step->ephemera.repository, inv);
-	SynopticChronology::compile(step->ephemera.repository, inv);
-	SynopticExtensions::compile(step->ephemera.repository, inv);
-	SynopticInstances::compile(step->ephemera.repository, inv);
-	SynopticKinds::compile(step->ephemera.repository, inv);
-	SynopticMultimedia::compile(step->ephemera.repository, inv);
-	SynopticProperties::compile(step->ephemera.repository, inv);
-	SynopticRelations::compile(step->ephemera.repository, inv);
-	SynopticResponses::compile(step->ephemera.repository, inv);
-	SynopticRules::compile(step->ephemera.repository, inv);
-	SynopticScenes::compile(step->ephemera.repository, inv);
-	SynopticTables::compile(step->ephemera.repository, inv);
-	SynopticUseOptions::compile(step->ephemera.repository, inv);
-	SynopticVerbs::compile(step->ephemera.repository, inv);
-	SynopticTests::compile(step->ephemera.repository, inv);
+	SynopticText::compile(step->ephemera.repository, step, inv);
+	SynopticActions::compile(step->ephemera.repository, step, inv);
+	SynopticActivities::compile(step->ephemera.repository, step, inv);
+	SynopticChronology::compile(step->ephemera.repository, step, inv);
+	SynopticExtensions::compile(step->ephemera.repository, step, inv);
+	SynopticInstances::compile(step->ephemera.repository, step, inv);
+	SynopticKinds::compile(step->ephemera.repository, step, inv);
+	SynopticMultimedia::compile(step->ephemera.repository, step, inv);
+	SynopticProperties::compile(step->ephemera.repository, step, inv);
+	SynopticRelations::compile(step->ephemera.repository, step, inv);
+	SynopticResponses::compile(step->ephemera.repository, step, inv);
+	SynopticRules::compile(step->ephemera.repository, step, inv);
+	SynopticScenes::compile(step->ephemera.repository, step, inv);
+	SynopticTables::compile(step->ephemera.repository, step, inv);
+	SynopticUseOptions::compile(step->ephemera.repository, step, inv);
+	SynopticVerbs::compile(step->ephemera.repository, step, inv);
+	SynopticTests::compile(step->ephemera.repository, step, inv);
 	return TRUE;
 }
 
@@ -232,14 +232,16 @@ inter_symbol *Synoptic::get_symbol(inter_package *pack, text_stream *name) {
 @
 
 =
-void Synoptic::def_textual_constant(inter_tree *I, inter_symbol *con_s, text_stream *S, inter_bookmark *IBM) {
+void Synoptic::def_textual_constant(inter_tree *I, pipeline_step *step,
+	inter_symbol *con_s, text_stream *S, inter_bookmark *IBM) {
 	Inter::Symbols::annotate_i(con_s, TEXT_LITERAL_IANN, 1);
 	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I),
 		Inter::Bookmarks::package(IBM));
 	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), S);
 	Produce::guard(Inter::Constant::new_textual(IBM,
 		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_s),
-		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), unchecked_kind_symbol),
+		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
+			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 		ID, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 }
 
@@ -251,17 +253,17 @@ packaging_state synoptic_fn_ps;
 void Synoptic::begin_function(inter_tree *I, inter_name *iname) {
 	synoptic_fn_package = Produce::block(I, &synoptic_fn_ps, iname);
 }
-void Synoptic::end_function(inter_tree *I, inter_name *iname) {
+void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	Produce::end_block(I);
-	Synoptic::function(I, iname, synoptic_fn_package);
+	Synoptic::function(I, step, iname, synoptic_fn_package);
 	Produce::end_main_block(I, synoptic_fn_ps);
 }
 
-void Synoptic::function(inter_tree *I, inter_name *fn_iname, inter_package *block) {
+void Synoptic::function(inter_tree *I, pipeline_step *step, inter_name *fn_iname, inter_package *block) {
 	inter_symbol *fn_s = Produce::define_symbol(fn_iname);
 	Produce::guard(Inter::Constant::new_function(Packaging::at(I),
 		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(Packaging::at(I)), fn_s),
-		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(Packaging::at(I)), unchecked_kind_symbol),
+		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(Packaging::at(I)), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 		block,
 		Produce::baseline(Packaging::at(I)), NULL));
 }
@@ -272,12 +274,12 @@ inter_symbol *Synoptic::local(inter_tree *I, text_stream *name,
 
 inter_tree_node *synoptic_array_node = NULL;
 packaging_state synoptic_array_ps;
-void Synoptic::begin_array(inter_tree *I, inter_name *iname) {
+void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	synoptic_array_ps = Packaging::enter_home_of(iname);
 	inter_symbol *con_s = Produce::define_symbol(iname);
 	synoptic_array_node = Inode::fill_3(Packaging::at(I), CONSTANT_IST,
 		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), con_s),
-		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), list_of_unchecked_kind_symbol),
+		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)),
 		 CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(Packaging::at(I)) + 1);
 }
 void Synoptic::end_array(inter_tree *I) {

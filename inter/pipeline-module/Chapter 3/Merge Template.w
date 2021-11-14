@@ -14,11 +14,11 @@ int CodeGen::MergeTemplate::run_pipeline_stage(pipeline_step *step) {
 	inter_bookmark IBM;
 	if (main_package) IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
 	else IBM = Inter::Bookmarks::at_start_of_this_repository(step->ephemera.repository);
-	CodeGen::MergeTemplate::link(&IBM, step->step_argument, step->ephemera.the_PP, NULL);
+	CodeGen::MergeTemplate::link(&IBM, step, step->step_argument, step->ephemera.the_PP, NULL);
 	return TRUE;
 }
 
-void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_file, linked_list *PP, inter_package *owner) {
+void CodeGen::MergeTemplate::link(inter_bookmark *IBM, pipeline_step *step, text_stream *template_file, linked_list *PP, inter_package *owner) {
 	if (IBM == NULL) internal_error("no inter to link with");
 	inter_tree *I = Inter::Bookmarks::tree(IBM);
 	if (Str::eq(template_file, I"none"))
@@ -26,7 +26,7 @@ void CodeGen::MergeTemplate::link(inter_bookmark *IBM, text_stream *template_fil
 	else
 		InterTree::traverse(I, CodeGen::MergeTemplate::visitor, NULL, NULL, 0);
 
-	inter_package *template_package = Site::ensure_assimilation_package(I, plain_ptype_symbol);	
+	inter_package *template_package = Site::ensure_assimilation_package(I, RunningPipelines::get_symbol(step, plain_ptype_RPSYM));	
 	
 	inter_bookmark link_bookmark =
 		Inter::Bookmarks::at_end_of_this_package(template_package);

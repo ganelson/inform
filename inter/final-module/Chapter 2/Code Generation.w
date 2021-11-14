@@ -20,8 +20,8 @@ void CodeGen::create_pipeline_stage(void) {
 
 int CodeGen::run_pipeline_stage(pipeline_step *step) {
 	if (step->generator_argument) {
-		code_generation *gen = CodeGen::new_generation(step->ephemera.parsed_filename,
-			step->ephemera.to_stream, step->ephemera.repository, step->package_argument,
+		code_generation *gen = CodeGen::new_generation(step, step->ephemera.parsed_filename,
+			step->ephemera.to_stream, step->ephemera.repository, step->ephemera.package_argument,
 			step->generator_argument, step->ephemera.for_VM, FALSE);
 		Generators::go(gen);
 	}
@@ -35,6 +35,7 @@ object.
 =
 typedef struct code_generation {
 	struct code_generator *generator;
+	struct pipeline_step *from_step;
 	struct target_vm *for_VM;
 	void *generator_private_data; /* depending on the target generated to */
 
@@ -69,9 +70,11 @@ typedef struct code_generation {
 	CLASS_DEFINITION
 } code_generation;
 
-code_generation *CodeGen::new_generation(filename *F, text_stream *T, inter_tree *I,
-	inter_package *just, code_generator *generator, target_vm *VM, int temp) {
+code_generation *CodeGen::new_generation(pipeline_step *step, filename *F, 
+	text_stream *T, inter_tree *I, inter_package *just, code_generator *generator,
+	target_vm *VM, int temp) {
 	code_generation *gen = CREATE(code_generation);
+	gen->from_step = step;
 	gen->to_file = F;
 	gen->to_stream = T;
 	if ((VM == NULL) && (generator == NULL)) internal_error("no way to determine format");
@@ -207,7 +210,7 @@ void CodeGen::val_to_text(OUTPUT_STREAM, inter_bookmark *IBM,
 		code_generator *generator = Generators::find_for(VM);
 		if (generator == NULL) internal_error("VM family with no generator");
 		ad_hoc_generation =
-			CodeGen::new_generation(NULL, NULL, Inter::Bookmarks::tree(IBM),
+			CodeGen::new_generation(NULL, NULL, NULL, Inter::Bookmarks::tree(IBM),
 				NULL, generator, VM, TRUE);
 	}
 	code_generator *generator = Generators::find_for(VM);

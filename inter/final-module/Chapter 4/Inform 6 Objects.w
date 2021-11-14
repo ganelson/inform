@@ -242,8 +242,8 @@ them in two:
 =
 void I6TargetObjects::declare_kind(code_generator *gtr, code_generation *gen, 
 	inter_symbol *kind_s, segmentation_pos *saved) {
-	if ((kind_s == object_kind_symbol) ||
-		(VanillaObjects::is_kind_of_object(kind_s)))
+	if ((kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) ||
+		(VanillaObjects::is_kind_of_object(gen, kind_s)))
 		@<A kind of object, including the kind object itself@>
 	else if (VanillaObjects::value_kind_with_properties(gen, kind_s))
 		@<A property-holding enumeration kind@>;
@@ -277,8 +277,8 @@ to the VPH VM-object.
 @ =
 void I6TargetObjects::end_kind(code_generator *gtr, code_generation *gen,
 	inter_symbol *kind_s, segmentation_pos saved) {
-	if ((kind_s == object_kind_symbol) ||
-		(VanillaObjects::is_kind_of_object(kind_s))) {
+	if ((kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) ||
+		(VanillaObjects::is_kind_of_object(gen, kind_s))) {
 		text_stream *OUT = CodeGen::current(gen);
 		WRITE(";\n");
 		CodeGen::deselect(gen, saved);
@@ -293,7 +293,8 @@ void I6TargetObjects::end_kind(code_generator *gtr, code_generation *gen,
 void I6TargetObjects::declare_instance(code_generator *gtr,
 	code_generation *gen, inter_symbol *inst_s, inter_symbol *kind_s, int enumeration,
 	segmentation_pos *saved) {
-	if ((kind_s == object_kind_symbol) || (VanillaObjects::is_kind_of_object(kind_s)))
+	if ((kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) ||
+		(VanillaObjects::is_kind_of_object(gen, kind_s)))
 		@<An object instance@>
 	else
 		@<A value instance@>;
@@ -304,7 +305,7 @@ void I6TargetObjects::declare_instance(code_generator *gtr,
 @<An object instance@> =
 	int c = Inter::Symbols::read_annotation(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
-	int is_dir = Inter::Kind::is_a(kind_s, direction_kind_symbol);
+	int is_dir = Inter::Kind::is_a(kind_s, RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
 	I6TargetObjects::VM_object_header(gen, Inter::Symbols::name(kind_s),
 		Inter::Symbols::name(inst_s), NULL, c, is_dir, saved);
 
@@ -325,8 +326,8 @@ enumerated these colours as 1, 2, 3.
 @ =
 void I6TargetObjects::end_instance(code_generator *gtr, code_generation *gen,
 	inter_symbol *inst_s, inter_symbol *kind_s, segmentation_pos saved) {
-	if ((kind_s == object_kind_symbol) ||
-		(VanillaObjects::is_kind_of_object(kind_s)))
+	if ((kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) ||
+		(VanillaObjects::is_kind_of_object(gen, kind_s)))
 		I6TargetObjects::VM_object_footer(gen, saved);
 }
 

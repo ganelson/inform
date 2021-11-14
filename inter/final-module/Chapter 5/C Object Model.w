@@ -301,7 +301,8 @@ void CObjectModel::declare_metaclasses(code_generation *gen) {
 =
 void CObjectModel::declare_kind(code_generator *gtr, code_generation *gen, 
 	inter_symbol *kind_s, segmentation_pos *saved) {
-	if ((kind_s == object_kind_symbol) || (VanillaObjects::is_kind_of_object(kind_s)))
+	if ((kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) ||
+		(VanillaObjects::is_kind_of_object(gen, kind_s)))
 		@<Declare a kind of object@>
 	else if (VanillaObjects::value_kind_with_properties(gen, kind_s))
 		CObjectModel::vph_object(gen, kind_s);
@@ -372,7 +373,8 @@ void CObjectModel::declare_instance(code_generator *gtr, code_generation *gen,
 	text_stream *printed_name = Metadata::read_optional_textual(
 		Inter::Packages::container(inst_s->definition), I"^printed_name");
 	int is_enumerative = FALSE;
-	if ((kind_s == object_kind_symbol) || (VanillaObjects::is_kind_of_object(kind_s))) {
+	if ((kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) ||
+		(VanillaObjects::is_kind_of_object(gen, kind_s))) {
 		@<Declare an object instance@>
 	} else {
 		is_enumerative = TRUE;
@@ -389,7 +391,8 @@ void CObjectModel::declare_instance(code_generator *gtr, code_generation *gen,
 @<Declare an object instance@> =
 	int c = Inter::Symbols::read_annotation(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
-	int is_dir = Inter::Kind::is_a(kind_s, direction_kind_symbol);
+	int is_dir = Inter::Kind::is_a(kind_s,
+		RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
 	C_property_owner *owner = CObjectModel::new_runtime_object(gtr, gen,
 		Inter::Symbols::name(kind_s), Inter::Symbols::name(inst_s), c, is_dir);
 	enumeration = owner->id;

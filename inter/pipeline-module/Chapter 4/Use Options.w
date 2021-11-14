@@ -6,7 +6,7 @@ To compile the main/synoptic/use_options submodule.
 of packages of type |_use_option|.
 
 =
-void SynopticUseOptions::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticUseOptions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->use_option_nodes) > 0) {
 		TreeLists::sort(inv->use_option_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
@@ -53,7 +53,7 @@ name of a given use option.
 		}
 	}
 	Produce::rfalse(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Define PRINT_USE_OPTION function@> =
 	inter_name *iname = HierarchyLocations::find(I, PRINT_USE_OPTION_HL);
@@ -81,4 +81,4 @@ name of a given use option.
 			}
 		Produce::up(I);
 	Produce::up(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);

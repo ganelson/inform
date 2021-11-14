@@ -10,15 +10,16 @@ void DetectIndirectCalls::create_pipeline_stage(void) {
 }
 
 int DetectIndirectCalls::run_pipeline_stage(pipeline_step *step) {
-	InterTree::traverse(step->ephemera.repository, DetectIndirectCalls::visitor, NULL, NULL, PACKAGE_IST);
+	InterTree::traverse(step->ephemera.repository, DetectIndirectCalls::visitor, step, NULL, PACKAGE_IST);
 	return TRUE;
 }
 
 void DetectIndirectCalls::visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	pipeline_step *step = (pipeline_step *) state;
 	inter_package *pack = Inter::Package::defined_by_frame(P);
 	if (Inter::Packages::is_codelike(pack)) {
 		inter_tree_node *D = Inter::Packages::definition(pack);
-		DetectIndirectCalls::traverse_code_tree(D);
+		DetectIndirectCalls::traverse_code_tree(D, step);
 	}
 }
 
@@ -26,9 +27,9 @@ void DetectIndirectCalls::visitor(inter_tree *I, inter_tree_node *P, void *state
 operations:
 
 =
-void DetectIndirectCalls::traverse_code_tree(inter_tree_node *P) {
+void DetectIndirectCalls::traverse_code_tree(inter_tree_node *P, pipeline_step *step) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P) {
-		DetectIndirectCalls::traverse_code_tree(F);
+		DetectIndirectCalls::traverse_code_tree(F, step);
 	}
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		if ((F->W.data[ID_IFLD] == INV_IST) &&
@@ -47,7 +48,7 @@ void DetectIndirectCalls::traverse_code_tree(inter_tree_node *P) {
 				inter_bookmark IBM = Inter::Bookmarks::first_child_of_this_node(I, F);
 				inter_ti val1 = 0, val2 = 0;
 				Inter::Symbols::to_data(Inter::Bookmarks::tree(&IBM), Inter::Bookmarks::package(&IBM), routine, &val1, &val2);
-				Inter::Val::new(&IBM, unchecked_kind_symbol, (int) F->W.data[LEVEL_IFLD] + 1, val1, val2, NULL); 
+				Inter::Val::new(&IBM, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM), (int) F->W.data[LEVEL_IFLD] + 1, val1, val2, NULL); 
 			}
 		}
 	}

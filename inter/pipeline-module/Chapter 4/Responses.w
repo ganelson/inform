@@ -18,7 +18,7 @@ of packages of type |_response|. Each of these contains a constant called
 correct ID.
 
 =
-void SynopticResponses::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticResponses::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->response_nodes) > 0) {
 		for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->response_nodes->list[i].node);
@@ -41,7 +41,7 @@ of the text of that response.
 
 @<Define ResponseTexts array@> =
 	inter_name *iname = HierarchyLocations::find(I, RESPONSETEXTS_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->response_nodes->list[i].node);
 		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
@@ -64,7 +64,7 @@ The triple |(0, 0, 0)| ends the array.
 
 @<Define ResponseDivisions array@> =
 	inter_name *iname = HierarchyLocations::find(I, RESPONSEDIVISIONS_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	text_stream *current_group = NULL; int start_pos = -1;
 	for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->response_nodes->list[i].node);
@@ -139,4 +139,4 @@ code is less limited.
 			Produce::up(I);
 		Produce::up(I);
 	}
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);

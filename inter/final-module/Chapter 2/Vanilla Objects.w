@@ -216,7 +216,7 @@ assimilated properties never do have.
 @<List any kind of object with an explicit permission@> =
 	inter_symbol *kind_s;
 	LOOP_OVER_LINKED_LIST(kind_s, inter_symbol, gen->kinds_in_declaration_order)
-		if (VanillaObjects::is_kind_of_object(kind_s)) {
+		if (VanillaObjects::is_kind_of_object(gen, kind_s)) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
 				inter_symbol *owner_s =
@@ -232,7 +232,7 @@ can be given properties, even when other objects of the same kind may lack them.
 @<List any individual instance with an explicit permission@> =
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order)
-		if (VanillaObjects::is_kind_of_object(Inter::Instance::kind_of(inst_s))) {
+		if (VanillaObjects::is_kind_of_object(gen, Inter::Instance::kind_of(inst_s))) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
 				inter_symbol *owner_s =
@@ -253,11 +253,11 @@ not as wasteful as it looks.)
 	LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
 		inter_symbol *owner_s =
 			InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-		if (owner_s == object_kind_symbol) {
+		if (owner_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) {
 			Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 			inter_symbol *kind_s;
 			LOOP_OVER_LINKED_LIST(kind_s, inter_symbol, gen->kinds_in_declaration_order) {
-				if (Inter::Kind::super(kind_s) == object_kind_symbol) {
+				if (Inter::Kind::super(kind_s) == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) {
 					Generators::symbol_array_entry(gen, kind_s, WORD_ARRAY_FORMAT);
 				}
 			}
@@ -424,8 +424,8 @@ property value, and then //Generators::end_kind//.
 @<Declare kinds of object@> =
 	inter_symbol *kind_s;
 	LOOP_OVER_LINKED_LIST(kind_s, inter_symbol, gen->kinds_in_declaration_order) {
-		if ((kind_s == object_kind_symbol) ||
-			(VanillaObjects::is_kind_of_object(kind_s))) {
+		if ((kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) ||
+			(VanillaObjects::is_kind_of_object(gen, kind_s))) {
 			segmentation_pos saved;
 			Generators::declare_kind(gen, kind_s, &saved);
 			VanillaObjects::append(gen, kind_s);
@@ -448,11 +448,11 @@ was all taken care of with the sticks of property values already declared.
 		inter_tree_node *P = Inter::Symbols::definition(inst_s);
 		inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 		int N = -1;
-		if (Inter::Kind::is_a(inst_kind, object_kind_symbol) == FALSE)
+		if (Inter::Kind::is_a(inst_kind, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) == FALSE)
 			N = (int) (P->W.data[VAL2_INST_IFLD]);
 		segmentation_pos saved;
 		Generators::declare_instance(gen, inst_s, inst_kind, N, &saved);
-		if (Inter::Kind::is_a(inst_kind, object_kind_symbol)) {
+		if (Inter::Kind::is_a(inst_kind, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM))) {
 			VanillaObjects::append(gen, inst_s);
 			inter_node_list *FL =
 				Inode::ID_to_frame_list(P,
@@ -512,11 +512,11 @@ int VanillaObjects::weak_id(inter_symbol *kind_s) {
 @ |TRUE| for something like "thing" or "room", but |FALSE| for "object" itself.
 
 =
-int VanillaObjects::is_kind_of_object(inter_symbol *kind_s) {
-	if (kind_s == object_kind_symbol) return FALSE;
+int VanillaObjects::is_kind_of_object(code_generation *gen, inter_symbol *kind_s) {
+	if (kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) return FALSE;
 	inter_data_type *idt = Inter::Kind::data_type(kind_s);
 	if (idt == unchecked_idt) return FALSE;
-	if (Inter::Kind::is_a(kind_s, object_kind_symbol)) return TRUE;
+	if (Inter::Kind::is_a(kind_s, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM))) return TRUE;
 	return FALSE;
 }
 
@@ -525,9 +525,9 @@ int VanillaObjects::is_kind_of_object(inter_symbol *kind_s) {
 =
 int VanillaObjects::value_kind_with_properties(code_generation *gen, inter_symbol *kind_s) {
 	inter_tree *I = gen->from;
-	if (VanillaObjects::is_kind_of_object(kind_s)) return FALSE;
-	if (kind_s == object_kind_symbol) return FALSE;
-	if (kind_s == unchecked_kind_symbol) return FALSE;
+	if (VanillaObjects::is_kind_of_object(gen, kind_s)) return FALSE;
+	if (kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) return FALSE;
+	if (kind_s == RunningPipelines::get_symbol(gen->from_step, unchecked_kind_RPSYM)) return FALSE;
 	inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
 		Inter::Kind::permissions_list(kind_s));
 	if (FL->first_in_inl) return TRUE;
@@ -565,7 +565,7 @@ int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *pr
 		} else {
 			owner_kind_s = owner_s;
 		}
-		if (VanillaObjects::is_kind_of_object(owner_kind_s) == FALSE)
+		if (VanillaObjects::is_kind_of_object(gen, owner_kind_s) == FALSE)
 			return TRUE;
 	}
 	return FALSE;

@@ -28,6 +28,9 @@ typedef struct pipeline_step_ephemera {
 	struct inter_tree *repository;
 	struct inter_pipeline *pipeline;
 	struct target_vm *for_VM;
+	struct inter_symbol *cached_symbols[MAX_RPSYM];
+	struct inter_package *package_argument;
+	int cached_symbols_fetched[MAX_RPSYM];
 } pipeline_step_ephemera;
 
 void RunningPipelines::clean_step(pipeline_step *step) {
@@ -40,12 +43,19 @@ void RunningPipelines::clean_step(pipeline_step *step) {
 	step->ephemera.pipeline = NULL;
 	step->ephemera.requirements_list = NEW_LINKED_LIST(inter_library);
 	step->ephemera.for_VM = NULL;
+	step->ephemera.package_argument = NULL;
+	for (int i=0; i<MAX_RPSYM; i++) {
+		step->ephemera.cached_symbols_fetched[i] = FALSE;
+		step->ephemera.cached_symbols[i] = NULL;
+	}
 }
 
 @ This outer layer is all just instrumentation, really: we run through the
 steps in turn, timing how long each one took us.
 
 =
+pipeline_step *currently_running_pipeline_step = NULL;
+
 void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	linked_list *PP, linked_list *requirements_list, target_vm *VM) {
 	if (S == NULL) return;
@@ -57,40 +67,51 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	stopwatch_timer *pipeline_timer =
 		Time::start_stopwatch(within, I"running Inter pipeline");
 	int step_count = 0, step_total = LinkedLists::len(S->steps);
-	int active = TRUE;
+	int active = TRUE; inter_tree *last_linted = NULL;
 	stopwatch_timer *prep_timer = NULL;
 	pipeline_step *step;
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps)
-		if (active) {
-			if (prep_timer == NULL)
-				prep_timer = Time::start_stopwatch(pipeline_timer, I"step preparation");
-			else
-				Time::resume_stopwatch(prep_timer);
-			@<Prepare this step@>;
-			Time::stop_stopwatch(prep_timer);
-			TEMPORARY_TEXT(STAGE_NAME)
-			WRITE_TO(STAGE_NAME, "inter step %d/%d: ", ++step_count, step_total);
-			ParsingPipelines::write_step(STAGE_NAME, step);
-			Log::new_stage(STAGE_NAME);
-			stopwatch_timer *step_timer =
-				Time::start_stopwatch(pipeline_timer, STAGE_NAME);
-			DISCARD_TEXT(STAGE_NAME)
-			@<Run this step@>;
-			Time::stop_stopwatch(step_timer);
-		}
+		if (active)
+			@<Run this step, timing and logging it@>;
 	Time::stop_stopwatch(pipeline_timer);
 }
 
-@<Prepare this step@> =
+@<Run this step, timing and logging it@> =
+	currently_running_pipeline_step = step;
+	if (prep_timer == NULL)
+		prep_timer = Time::start_stopwatch(pipeline_timer, I"step preparation");
+	else
+		Time::resume_stopwatch(prep_timer);
+	@<Prepare ephemeral data for this step@>;
+	Time::stop_stopwatch(prep_timer);
+	TEMPORARY_TEXT(STAGE_NAME)
+	WRITE_TO(STAGE_NAME, "inter step %d/%d: ", ++step_count, step_total);
+	ParsingPipelines::write_step(STAGE_NAME, step);
+	Log::new_stage(STAGE_NAME);
+	stopwatch_timer *step_timer =
+		Time::start_stopwatch(pipeline_timer, STAGE_NAME);
+	DISCARD_TEXT(STAGE_NAME)
+	if (active) @<Run this step@>;
+	Time::stop_stopwatch(step_timer);
+	currently_running_pipeline_step = NULL;
+
+@ Performing a full lint on each new tree of Inter code is a necessary
+precaution even though it takes a little time: note that it verifies some
+Inter constructs which might otherwise not have been verified. Still, we
+avoid repeatedly linting the same tree, since that really would be slow.
+
+@<Prepare ephemeral data for this step@> =
+	RunningPipelines::clean_step(step);
+	step->ephemera.the_PP = PP;
 	if (S->ephemera.repositories[step->repository_argument] == NULL)
 		S->ephemera.repositories[step->repository_argument] = InterTree::new();
 	inter_tree *I = S->ephemera.repositories[step->repository_argument];
-	if (I == NULL) internal_error("no repository");
-	RunningPipelines::prepare_to_run(I);
-	RunningPipelines::lint(I);
-
-	RunningPipelines::clean_step(step);
-	step->ephemera.the_PP = PP;
+	if (I == NULL) {
+		RunningPipelines::error("no Inter tree to apply this step to");
+		active = FALSE;
+	} else {
+		if (I != last_linted) { Inter::Defn::lint(I); last_linted = I; }
+	}
 	step->ephemera.repository = I;
 	step->ephemera.pipeline = S;
 	step->ephemera.requirements_list = requirements_list;
@@ -98,189 +119,255 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	if ((VM) && (step->take_generator_argument_from_VM)) {
 		step->generator_argument = Generators::find_for(VM);
 		if (step->generator_argument == NULL) {
-			#ifdef PROBLEMS_MODULE
-			Problems::fatal("Unable to guess target format");
-			#endif
-			#ifndef PROBLEMS_MODULE
-			Errors::fatal("Unable to guess target format");
-			exit(1);
-			#endif
+			RunningPipelines::error("unable to guess a suitable code-generator");
+			active = FALSE;
 		}
 	}
-	
-	step->package_argument = NULL;
+	step->ephemera.package_argument = NULL;
 	if (Str::len(step->package_URL_argument) > 0) {
-		step->package_argument =
+		step->ephemera.package_argument =
 			Inter::Packages::by_url(step->ephemera.repository, step->package_URL_argument);
-		if (step->package_argument == NULL) {
-			RunningPipelines::error_with("no such package as '%S'", step->package_URL_argument);
-			continue;
+		if (step->ephemera.package_argument == NULL) {
+			RunningPipelines::error_with(
+				"pipeline step applied to package which does not exist: '%S'",
+				step->package_URL_argument);
+			active = FALSE;
 		}
 	}
 	
 @<Run this step@> =
-	int skip_step = FALSE;
-
-	if ((step->step_stage->stage_arg == FILE_STAGE_ARG) ||
-		(step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
-		(step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) ||
-		(step->step_stage->stage_arg == EXT_FILE_STAGE_ARG) ||
-		(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
+	if (ParsingPipelines::will_write_a_file(step)) {
 		if (Str::len(step->step_argument) == 0) {
-			if (step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) {
-				skip_step = TRUE;
-			} else {
-				#ifdef PROBLEMS_MODULE
-				Problems::fatal("No filename given in pipeline step");
-				#endif
-				#ifndef PROBLEMS_MODULE
-				Errors::fatal("No filename given in pipeline step");
-				exit(1);
-				#endif
+			if (step->step_stage->stage_arg != OPTIONAL_TEXT_OUT_STAGE_ARG) {
+				RunningPipelines::error("no filename given in pipeline step");
+				active = FALSE;
 			}
 		} else {
 			if (Str::eq(step->step_argument, I"*log")) {
-				step->ephemera.to_debugging_log = TRUE;
-			} else if (Str::eq(step->step_argument, I"*memory")) {
-				S->ephemera.repositories[step->repository_argument] = S->ephemera.memory_repository;
-				skip_step = TRUE;
+				step->ephemera.to_stream = DL;
+				@<Call the stage execution function@>;
 			} else {
-				int slashes = FALSE;
-				LOOP_THROUGH_TEXT(pos, step->step_argument)
-					if (Str::get(pos) == '/')
-						slashes = TRUE;
-				if (slashes) step->ephemera.parsed_filename = Filenames::from_text(step->step_argument);
-				else step->ephemera.parsed_filename = Filenames::in(P, step->step_argument);
+				@<Work out the filename@>;
+				text_stream text_output_struct;
+				text_stream *T = &text_output_struct;
+				if (STREAM_OPEN_TO_FILE(T, step->ephemera.parsed_filename, ISO_ENC) == FALSE) {
+					RunningPipelines::error("unable to open file named in pipeline step");
+					active = FALSE;
+				} else {
+					step->ephemera.to_stream = T;
+					@<Call the stage execution function@>;
+					STREAM_CLOSE(T);
+				}
 			}
 		}
-	}
-
-	text_stream text_output_struct; /* For any text file we might write */
-	text_stream *T = &text_output_struct;
-	if (step->ephemera.to_debugging_log) {
-		step->ephemera.to_stream = DL;
-	} else if ((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
-		(step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) ||
-		(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) {
-		if ((step->ephemera.parsed_filename) &&
-			(STREAM_OPEN_TO_FILE(T, step->ephemera.parsed_filename, ISO_ENC) == FALSE)) {
-			#ifdef PROBLEMS_MODULE
-			Problems::fatal_on_file("Can't open output file", step->ephemera.parsed_filename);
-			#endif
-			#ifndef PROBLEMS_MODULE
-			Errors::fatal_with_file("Can't open output file", step->ephemera.parsed_filename);
-			exit(1);
-			#endif
+	} else if (ParsingPipelines::will_read_a_file(step)) {
+		if (Str::len(step->step_argument) == 0) {
+			RunningPipelines::error("no filename given in pipeline step");
+			active = FALSE;
+		} else if (Str::eq(step->step_argument, I"*memory")) {
+			if (Str::eq(step->step_stage->stage_name, I"read") == FALSE) {
+				RunningPipelines::error("'*memory' can be used only on reads");
+				active = FALSE;
+			} else {
+				S->ephemera.repositories[step->repository_argument] =
+					S->ephemera.memory_repository;
+				/* and do not call the executor function: that does the read */
+			}
+		} else {
+			@<Work out the filename@>;
+			@<Call the stage execution function@>;
 		}
-		step->ephemera.to_stream = T;
+	} else {
+		@<Call the stage execution function@>;
 	}
 
-	if (skip_step == FALSE)
-		active = (*(step->step_stage->execute))(step);
+@<Work out the filename@> =
+	int contains_slash = FALSE;
+	LOOP_THROUGH_TEXT(pos, step->step_argument)
+		if (Str::get(pos) == '/')
+			contains_slash = TRUE;
+	if (contains_slash) step->ephemera.parsed_filename =
+		Filenames::from_text(step->step_argument);
+	else step->ephemera.parsed_filename =
+		Filenames::in(P, step->step_argument);
 
-	if (((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
-		(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) &&
-		(step->ephemera.to_debugging_log == FALSE)) {
-		STREAM_CLOSE(T);
-	}
+@ The pipeline stops running (becomes inactive) as soon as one of the stage
+functions returns |FALSE|, or as soon as a pipeline processing error occurs, 
+whichever comes first.
 
-@h Following.
+@<Call the stage execution function@> =
+	active = (*(step->step_stage->execute))(step);
+
+@ In an ideal world, we would not track this in a global variable, but it is
+not simple to remove the need for this (though, at the same time, it is needed
+very little in practice, and never when this code runs in Inform 7).
 
 =
-inter_symbol *unchecked_kind_symbol = NULL;
-inter_symbol *unchecked_function_symbol = NULL;
-inter_symbol *typeless_int_symbol = NULL;
-inter_symbol *list_of_unchecked_kind_symbol = NULL;
-inter_symbol *object_kind_symbol = NULL;
-inter_symbol *action_kind_symbol = NULL;
-inter_symbol *truth_state_kind_symbol = NULL;
-inter_symbol *direction_kind_symbol = NULL;
-
-inter_symbol *verb_directive_reverse_symbol = NULL;
-inter_symbol *verb_directive_slash_symbol = NULL;
-inter_symbol *verb_directive_divider_symbol = NULL;
-inter_symbol *verb_directive_result_symbol = NULL;
-inter_symbol *verb_directive_special_symbol = NULL;
-inter_symbol *verb_directive_number_symbol = NULL;
-inter_symbol *verb_directive_noun_symbol = NULL;
-inter_symbol *verb_directive_multi_symbol = NULL;
-inter_symbol *verb_directive_multiinside_symbol = NULL;
-inter_symbol *verb_directive_multiheld_symbol = NULL;
-inter_symbol *verb_directive_held_symbol = NULL;
-inter_symbol *verb_directive_creature_symbol = NULL;
-inter_symbol *verb_directive_topic_symbol = NULL;
-inter_symbol *verb_directive_multiexcept_symbol = NULL;
-
-inter_symbol *code_ptype_symbol = NULL;
-inter_symbol *plain_ptype_symbol = NULL;
-inter_symbol *submodule_ptype_symbol = NULL;
-inter_symbol *function_ptype_symbol = NULL;
-inter_symbol *action_ptype_symbol = NULL;
-inter_symbol *command_ptype_symbol = NULL;
-inter_symbol *property_ptype_symbol = NULL;
-inter_symbol *to_phrase_ptype_symbol = NULL;
-
-void RunningPipelines::prepare_to_run(inter_tree *I) {
-
-	code_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_code");
-	plain_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_plain");
-	submodule_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_submodule");
-	function_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_function");
-	action_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_action");
-	command_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_command");
-	property_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_property");
-	to_phrase_ptype_symbol = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_to_phrase");
-
-	unchecked_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked");
-	unchecked_function_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_unchecked_function");
-	typeless_int_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_typeless_int");
-	list_of_unchecked_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_list_of_values");
-	object_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_object");
-	action_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_action_name");
-	truth_state_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K_truth_state");
-	direction_kind_symbol = Inter::Packages::search_resources_exhaustively(I, I"K3_direction");
-
-	verb_directive_reverse_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_REVERSE");
-	verb_directive_slash_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_SLASH");
-	verb_directive_divider_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_DIVIDER");
-	verb_directive_result_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_RESULT");
-	verb_directive_special_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_SPECIAL");
-	verb_directive_number_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_NUMBER");
-	verb_directive_noun_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_NOUN");
-	verb_directive_multi_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_MULTI");
-	verb_directive_multiinside_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_MULTIINSIDE");
-	verb_directive_multiheld_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_MULTIHELD");
-	verb_directive_held_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_HELD");
-	verb_directive_creature_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_CREATURE");
-	verb_directive_topic_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_TOPIC");
-	verb_directive_multiexcept_symbol = Inter::Packages::search_resources_exhaustively(I, I"VERB_DIRECTIVE_MULTIEXCEPT");
+pipeline_step *RunningPipelines::current_step(void) {
+	return currently_running_pipeline_step;
 }
 
-void RunningPipelines::lint(inter_tree *I) {
-	InterTree::traverse(I, RunningPipelines::lint_visitor, NULL, NULL, -PACKAGE_IST);
-}
+@h Popular symbols cache.
+While working on a repository, the execution functions will frequently need
+its most popular symbols -- searching for these is not too slow, but even so,
+once is enough. But we cache them on each step, wiping the cache at the end
+of the step, since running a step changes the Inter tree and could conceivably
+move, add or remove some of these symbols.
 
-void RunningPipelines::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_ti c = Inode::get_package(P)->index_n;
-	inter_ti a = Inode::get_package_alt(P);
-	if (c != a) {
-		LOG("Frame gives package as $6, but its location is in package $6\n",
-			Inode::ID_to_package(P, c),
-			Inode::ID_to_package(P, a));
-		WRITE_TO(STDERR, "Frame gives package as %d, but its location is in package %d\n",
-			Inode::ID_to_package(P, c)->index_n,
-			Inode::ID_to_package(P, a)->index_n);
-		internal_error("misplaced package");
+=
+@e unchecked_kind_RPSYM from 0
+@e unchecked_function_RPSYM
+@e list_of_unchecked_kind_RPSYM
+@e object_kind_RPSYM
+@e action_kind_RPSYM
+@e truth_state_kind_RPSYM
+@e direction_kind_RPSYM
+
+@e verb_directive_reverse_RPSYM
+@e verb_directive_slash_RPSYM
+@e verb_directive_divider_RPSYM
+@e verb_directive_result_RPSYM
+@e verb_directive_special_RPSYM
+@e verb_directive_number_RPSYM
+@e verb_directive_noun_RPSYM
+@e verb_directive_multi_RPSYM
+@e verb_directive_multiinside_RPSYM
+@e verb_directive_multiheld_RPSYM
+@e verb_directive_held_RPSYM
+@e verb_directive_creature_RPSYM
+@e verb_directive_topic_RPSYM
+@e verb_directive_multiexcept_RPSYM
+
+@e code_ptype_RPSYM
+@e plain_ptype_RPSYM
+@e submodule_ptype_RPSYM
+@e function_ptype_RPSYM
+@e action_ptype_RPSYM
+@e command_ptype_RPSYM
+@e property_ptype_RPSYM
+@e to_phrase_ptype_RPSYM
+
+@d MAX_RPSYM 100
+
+=
+inter_symbol *RunningPipelines::get_symbol(pipeline_step *step, int id) {
+	if ((id < 0) || (id >= MAX_RPSYM)) internal_error("bad ID");
+	if (step == NULL) internal_error("no step");
+	inter_tree *I = step->ephemera.repository;
+	if (step->ephemera.cached_symbols_fetched[id] == FALSE) {
+		step->ephemera.cached_symbols_fetched[id] = TRUE;
+		switch (id) {
+			case code_ptype_RPSYM:
+				step->ephemera.cached_symbols[code_ptype_RPSYM] =
+				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_code"); break;
+			case plain_ptype_RPSYM:
+				step->ephemera.cached_symbols[plain_ptype_RPSYM] =
+				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_plain"); break;
+			case submodule_ptype_RPSYM:
+				step->ephemera.cached_symbols[submodule_ptype_RPSYM] =
+				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_submodule"); break;
+			case function_ptype_RPSYM:
+				step->ephemera.cached_symbols[function_ptype_RPSYM] =
+				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_function"); break;
+			case action_ptype_RPSYM:
+				step->ephemera.cached_symbols[action_ptype_RPSYM] =
+				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_action"); break;
+			case command_ptype_RPSYM:
+				step->ephemera.cached_symbols[command_ptype_RPSYM] =
+				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_command"); break;
+			case property_ptype_RPSYM:
+				step->ephemera.cached_symbols[property_ptype_RPSYM] =
+				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_property"); break;
+			case to_phrase_ptype_RPSYM:
+				step->ephemera.cached_symbols[to_phrase_ptype_RPSYM] =
+				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_to_phrase"); break;
+
+			case unchecked_kind_RPSYM:
+				step->ephemera.cached_symbols[unchecked_kind_RPSYM] =
+				Inter::Packages::search_resources(I, I"K_unchecked"); break;
+			case unchecked_function_RPSYM:
+				step->ephemera.cached_symbols[unchecked_function_RPSYM] =
+				Inter::Packages::search_resources(I, I"K_unchecked_function"); break;
+			case list_of_unchecked_kind_RPSYM:
+				step->ephemera.cached_symbols[list_of_unchecked_kind_RPSYM] =
+				Inter::Packages::search_resources(I, I"K_list_of_values"); break;
+			case object_kind_RPSYM:
+				step->ephemera.cached_symbols[object_kind_RPSYM] =
+				Inter::Packages::search_resources(I, I"K_object"); break;
+			case action_kind_RPSYM:
+				step->ephemera.cached_symbols[action_kind_RPSYM] =
+				Inter::Packages::search_resources(I, I"K_action_name"); break;
+			case truth_state_kind_RPSYM:
+				step->ephemera.cached_symbols[truth_state_kind_RPSYM] =
+				Inter::Packages::search_resources(I, I"K_truth_state"); break;
+			case direction_kind_RPSYM:
+				step->ephemera.cached_symbols[direction_kind_RPSYM] =
+				Inter::Packages::search_resources(I, I"K3_direction"); break;
+
+			case verb_directive_reverse_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_reverse_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_REVERSE"); break;
+			case verb_directive_slash_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_slash_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_SLASH"); break;
+			case verb_directive_divider_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_divider_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_DIVIDER"); break;
+			case verb_directive_result_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_result_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_RESULT"); break;
+			case verb_directive_special_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_special_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_SPECIAL"); break;
+			case verb_directive_number_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_number_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_NUMBER"); break;
+			case verb_directive_noun_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_noun_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_NOUN"); break;
+			case verb_directive_multi_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_multi_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_MULTI"); break;
+			case verb_directive_multiinside_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_multiinside_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_MULTIINSIDE"); break;
+			case verb_directive_multiheld_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_multiheld_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_MULTIHELD"); break;
+			case verb_directive_held_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_held_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_HELD"); break;
+			case verb_directive_creature_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_creature_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_CREATURE"); break;
+			case verb_directive_topic_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_topic_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_TOPIC"); break;
+			case verb_directive_multiexcept_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_multiexcept_RPSYM] =
+				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_MULTIEXCEPT"); break;
+		}
 	}
-
-	Produce::guard(Inter::Defn::verify_children_inner(P));
+	return step->ephemera.cached_symbols[id];
 }
 
-inter_symbol *RunningPipelines::uks(void) {
-	if (unchecked_kind_symbol == NULL) internal_error("no unchecked kind symbol");
-	return unchecked_kind_symbol;
+@ This variant is more interesting: it tries to find the symbol in the tree,
+but if it can't, it makes one and creates a plug for it, expecting the true
+definition (and thus a socket) to come later from some other material not yet
+linked in.
+
+=
+void RunningPipelines::ensure(pipeline_step *step, int id, text_stream *identifier) {
+	inter_tree *I = step->ephemera.repository;
+	if (RunningPipelines::get_symbol(step, id) == NULL)
+		step->ephemera.cached_symbols[id] = Inter::Connectors::plug(I, identifier);
 }
 
+@h Error handling.
+The moment there is something wrong with the pipeline itself, we come to a
+complete halt. It's the kindest way.
+
+=
 void RunningPipelines::error(char *erm) {
 	#ifdef PROBLEMS_MODULE
 	TEMPORARY_TEXT(full)
@@ -315,18 +402,4 @@ void RunningPipelines::error_with(char *erm, text_stream *quoted) {
 	Errors::fatal_with_text(erm, quoted);
 	exit(1);
 	#endif
-}
-
-@h Current architecture.
-
-=
-inter_architecture *current_architecture = NULL;
-int RunningPipelines::set_architecture(text_stream *name) {
-	current_architecture = Architectures::from_codename(name);
-	if (current_architecture) return TRUE;
-	return FALSE;
-}
-
-inter_architecture *RunningPipelines::get_architecture(void) {
-	return current_architecture;
 }

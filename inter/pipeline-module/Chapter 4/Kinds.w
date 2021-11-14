@@ -9,7 +9,7 @@ As this is called, //Synoptic Utilities// has already formed a list |kind_nodes|
 of packages of type |_kind|, and similarly for |derived_kind_nodes|.
 
 =
-void SynopticKinds::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->kind_nodes) > 0) {
 		TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
 		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
@@ -66,7 +66,7 @@ void SynopticKinds::compile(inter_tree *I, tree_inventory *inv) {
 		}
 	}
 	Produce::rfalse(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @ |DefaultValueOfKOV(K)| returns the default value for kind |K|: it's needed,
 for instance, when increasing the size of a list of $K$ to include new entries,
@@ -114,7 +114,7 @@ which have to be given some type-safe value to start out at.
 		Produce::up(I);
 	Produce::up(I);
 	Produce::rfalse(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @ |PrintKindValuePair(K, V)| prints out the value |V|, declaring its kind to be |K|.
 
@@ -168,7 +168,7 @@ which have to be given some type-safe value to start out at.
 			Produce::up(I);
 		Produce::up(I);
 	Produce::up(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @ |KOVComparisonFunction(K)| returns either the address of a function to
 perform a comparison between two values, or else 0 to signal that no
@@ -216,7 +216,7 @@ unless the two values are genuinely equal.
 		Produce::up(I);
 	Produce::up(I);
 	Produce::rfalse(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Define KOVDOMAINSIZE function@> =
 	inter_name *iname = HierarchyLocations::find(I, KOVDOMAINSIZE_HL);
@@ -256,7 +256,7 @@ unless the two values are genuinely equal.
 		Produce::up(I);
 	Produce::up(I);
 	Produce::rfalse(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @ |KOVIsBlockValue(k)| is true if and only if |k| is the (strong or weak) ID of
 a kind storing pointers to blocks of data.
@@ -297,7 +297,7 @@ a kind storing pointers to blocks of data.
 		Produce::up(I);
 	Produce::up(I);
 	Produce::rfalse(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Define I7_KIND_NAME function@> =
 	inter_name *iname = HierarchyLocations::find(I, I7_KIND_NAME_HL);
@@ -325,7 +325,7 @@ a kind storing pointers to blocks of data.
 			Produce::up(I);
 		}
 	}
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @ |KOVSupportFunction(K)| returns the address of the specific support function
 for a pointer-value kind |K|, or returns 0 if |K| is not such a kind. For what
@@ -385,7 +385,7 @@ such a function does, see "BlockValues.i6t".
 	Produce::up(I);
 
 	Produce::rfalse(I);
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @<Define SHOWMEKINDDETAILS function@> =
 	inter_name *iname = HierarchyLocations::find(I, SHOWMEKINDDETAILS_HL);
@@ -415,7 +415,7 @@ such a function does, see "BlockValues.i6t".
 	Produce::down(I);		
 		Produce::val_symbol(I, K_value, na_s);
 	Produce::up(I);		
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @ This goes right back to a curious feature of Inform 1, in 1993. To enable
 the use of player's holdalls, we must declare a constant |RUCKSACK_CLASS| to
@@ -466,16 +466,16 @@ a kind of thing.
 		Inter::Symbols::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN, (inter_ti) i++);
 
 	inter_name *iname = HierarchyLocations::find(I, KINDHIERARCHY_HL);
-	Synoptic::begin_array(I, iname);
+	Synoptic::begin_array(I, step, iname);
 	if (LinkedLists::len(L) > 0) {
-		Synoptic::symbol_entry(object_kind_symbol);
+		Synoptic::symbol_entry(RunningPipelines::get_symbol(step, object_kind_RPSYM));
 		Synoptic::numeric_entry(0);
 		inter_symbol *kind_name;
 		LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L) {
 			Synoptic::symbol_entry(kind_name);
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
-			if ((super_name) && (super_name != object_kind_symbol)) {
-				Synoptic::numeric_entry(SynopticKinds::kind_of_object_count(super_name));
+			if ((super_name) && (super_name != RunningPipelines::get_symbol(step, object_kind_RPSYM))) {
+				Synoptic::numeric_entry(SynopticKinds::kind_of_object_count(step, super_name));
 			} else {
 				Synoptic::numeric_entry(0);
 			}
@@ -489,8 +489,8 @@ a kind of thing.
 @
 
 =
-inter_ti SynopticKinds::kind_of_object_count(inter_symbol *kind_name) {
-	if ((kind_name == NULL) || (kind_name == object_kind_symbol)) return 0;
+inter_ti SynopticKinds::kind_of_object_count(pipeline_step *step, inter_symbol *kind_name) {
+	if ((kind_name == NULL) || (kind_name == RunningPipelines::get_symbol(step, object_kind_RPSYM))) return 0;
 	int N = Inter::Symbols::read_annotation(kind_name, OBJECT_KIND_COUNTER_IANN);
 	if (N >= 0) return (inter_ti) N;
 	return 0;

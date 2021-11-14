@@ -8,7 +8,7 @@ As this is called, //Synoptic Utilities// has already formed a list |scene_nodes
 of instances having the kind |K_scene|.
 
 =
-void SynopticScenes::compile(inter_tree *I, tree_inventory *inv) {
+void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->scene_nodes) > 0) {
 		TreeLists::sort(inv->scene_nodes, Synoptic::module_order);
 	}
@@ -24,7 +24,7 @@ void SynopticScenes::compile(inter_tree *I, tree_inventory *inv) {
 		inter_symbol *ssf_s = Metadata::read_symbol(pack, I"^scene_status_fn");
 		Produce::inv_call(I, ssf_s);
 	}
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);
 
 @ There is one argument, |chs|: the number of iterations so far. Iterations
 occur because each set of scene changes could change the circumstances in such
@@ -86,4 +86,4 @@ whether any change in status has or has not occurred.
 	Produce::down(I);
 		Produce::lab(I, Again_l);
 	Produce::up(I);				
-	Synoptic::end_function(I, iname);
+	Synoptic::end_function(I, step, iname);

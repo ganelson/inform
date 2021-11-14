@@ -31,23 +31,23 @@ much more complicated than it actually is.
 
 =
 typedef struct pipeline_step {
+	struct inter_pipeline *pipeline;
 	struct pipeline_stage *step_stage;
 	struct text_stream *step_argument;
 	struct code_generator *generator_argument;
 	int take_generator_argument_from_VM;
 	struct text_stream *package_URL_argument;
-	struct inter_package *package_argument;
 	int repository_argument;
 	struct pipeline_step_ephemera ephemera; /* temporary storage when running */
 	CLASS_DEFINITION
 } pipeline_step;
 
-pipeline_step *ParsingPipelines::new_step(void) {
+pipeline_step *ParsingPipelines::new_step(inter_pipeline *pipeline) {
 	pipeline_step *step = CREATE(pipeline_step);
+	step->pipeline = pipeline;
 	step->step_stage = NULL;
 	step->step_argument = NULL;
 	step->package_URL_argument = NULL;
-	step->package_argument = NULL;
 	step->repository_argument = 0;
 	step->generator_argument = NULL;
 	step->take_generator_argument_from_VM = FALSE;
@@ -87,6 +87,22 @@ pipeline_stage *ParsingPipelines::new_stage(text_stream *name,
 	return stage;
 }
 
+@ Lumping some of those argument types together:
+
+=
+int ParsingPipelines::will_read_a_file(pipeline_step *step) {
+	if ((step->step_stage->stage_arg == FILE_STAGE_ARG) ||
+		(step->step_stage->stage_arg == EXT_FILE_STAGE_ARG)) return TRUE;
+	return FALSE;
+}
+
+int ParsingPipelines::will_write_a_file(pipeline_step *step) {
+	if ((step->step_stage->stage_arg == TEXT_OUT_STAGE_ARG) ||
+		(step->step_stage->stage_arg == OPTIONAL_TEXT_OUT_STAGE_ARG) ||
+		(step->step_stage->stage_arg == EXT_TEXT_OUT_STAGE_ARG)) return TRUE;
+	return FALSE;
+}
+
 @h Parsing.
 All pipelines originate as textual descriptions, either from a text file or
 supplied on the command line. Here, we turn such a description -- in effect
@@ -118,7 +134,7 @@ passed to the following. It breaks down the line into 1 or more steps, divided
 by commas.
 
 =
-void ParsingPipelines::parse_line(inter_pipeline *S, text_stream *instructions,
+void ParsingPipelines::parse_line(inter_pipeline *pipeline, text_stream *instructions,
 	text_file_position *tfp) {
 	TEMPORARY_TEXT(T)
 	LOOP_THROUGH_TEXT(P, instructions)
@@ -128,15 +144,15 @@ void ParsingPipelines::parse_line(inter_pipeline *S, text_stream *instructions,
 			PUT_TO(T, Str::get(P));
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, T, L" *(%c+?) *,+ *(%c*?) *")) {
-		pipeline_step *ST = ParsingPipelines::parse_step(mr.exp[0], S->variables, tfp);
-		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
-		else S->erroneous = TRUE;
+		pipeline_step *ST = ParsingPipelines::parse_step(pipeline, mr.exp[0], tfp);
+		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, pipeline->steps);
+		else pipeline->erroneous = TRUE;
 		Str::copy(T, mr.exp[1]);
 	}
 	if (Regexp::match(&mr, T, L" *(%c+?) *")) {
-		pipeline_step *ST = ParsingPipelines::parse_step(mr.exp[0], S->variables, tfp);
-		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, S->steps);
-		else S->erroneous = TRUE;
+		pipeline_step *ST = ParsingPipelines::parse_step(pipeline, mr.exp[0], tfp);
+		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, pipeline->steps);
+		else pipeline->erroneous = TRUE;
 	}
 	Regexp::dispose_of(&mr);
 	DISCARD_TEXT(T)
@@ -148,9 +164,10 @@ void ParsingPipelines::parse_line(inter_pipeline *S, text_stream *instructions,
 For documentation on the syntax here, see //inter: Pipelines and Stages//.
 
 =
-pipeline_step *ParsingPipelines::parse_step(text_stream *S, dictionary *D,
+pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_stream *S,
 	text_file_position *tfp) {
-	pipeline_step *step = ParsingPipelines::new_step();
+	dictionary *D = pipeline->variables;
+	pipeline_step *step = ParsingPipelines::new_step(pipeline);
 	match_results mr = Regexp::create_mr();
 
 	int allow_unknown = FALSE;
