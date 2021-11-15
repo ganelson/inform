@@ -99,7 +99,7 @@ form, which would be written to |*outt|.
 		SS = ParsingPipelines::from_file(pipeline_as_file, pipeline_vars);
 	else
 		SS = ParsingPipelines::from_text(pipeline_as_text, pipeline_vars);
-	linked_list *requirements_list = NEW_LINKED_LIST(inter_library);
+	linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);
 	if (SS) RunningPipelines::run(domain_path, SS, NULL, inter_paths, requirements_list, NULL);
 	else Errors::fatal("pipeline could not be parsed");
 

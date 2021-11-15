@@ -1056,7 +1056,6 @@ and those marked as "arithmetic operations".
 
 @<Step (4I.a) Take care of arithmetic phrases@> =
 	LOG_DASH("(4I.a)");
-LOGIF(MATCHING, "outcome = %d\n", outcome);
 	if (IDTypeData::arithmetic_operation(idb) == TOTAL_OPERATION)
 		@<Step (4I.a.1) "Total P of O" has kind the kind of P@>
 	else if (IDTypeData::is_arithmetic_phrase(idb)) @<Step (4I.a.2) Dimension-check arithmetic phrases@>;
@@ -1790,7 +1789,6 @@ to level 5.
 
 @<Step (4S) Verify anything else@> =
 	LOG_DASH("(4S.a)");
-LOGIF(MATCHING, "outcome = %d\n", outcome);
 	LOG_INDENT;
 
 	outcome = Dash::typecheck_single_node(p, kind_needed, condition_context);
@@ -1798,12 +1796,10 @@ LOGIF(MATCHING, "outcome = %d\n", outcome);
 	@<Allow listed-in table references only where these are expected@>;
 
 	LOG_DASH("(4S.b)");
-LOGIF(MATCHING, "outcome was %d\n", outcome);
 	for (parse_node *arg = p->down; arg; arg = arg->next)
 		outcome =
 			Dash::worst_case(outcome,
 				Dash::typecheck_recursive(arg, p, TRUE));
-LOGIF(MATCHING, "outcome is %d\n", outcome);
 	if ((outcome != NEVER_MATCH) && (p->down)) {
 		if (Node::is(p, LIST_ENTRY_NT))
 			@<Step (4S.c) Check arguments of a list entry@>;

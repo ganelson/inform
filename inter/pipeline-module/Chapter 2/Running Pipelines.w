@@ -24,7 +24,7 @@ typedef struct pipeline_step_ephemera {
 	int to_debugging_log;
 	int from_memory;
 	struct text_stream *to_stream;
-	struct linked_list *requirements_list; /* of |inter_library| */
+	struct linked_list *requirements_list; /* of |attachment_instruction| */
 	struct inter_tree *repository;
 	struct inter_pipeline *pipeline;
 	struct target_vm *for_VM;
@@ -41,7 +41,7 @@ void RunningPipelines::clean_step(pipeline_step *step) {
 	step->ephemera.the_PP = NULL;
 	step->ephemera.repository = NULL;
 	step->ephemera.pipeline = NULL;
-	step->ephemera.requirements_list = NEW_LINKED_LIST(inter_library);
+	step->ephemera.requirements_list = NEW_LINKED_LIST(attachment_instruction);
 	step->ephemera.for_VM = NULL;
 	step->ephemera.package_argument = NULL;
 	for (int i=0; i<MAX_RPSYM; i++) {
@@ -107,7 +107,7 @@ avoid repeatedly linting the same tree, since that really would be slow.
 		S->ephemera.repositories[step->repository_argument] = InterTree::new();
 	inter_tree *I = S->ephemera.repositories[step->repository_argument];
 	if (I == NULL) {
-		RunningPipelines::error("no Inter tree to apply this step to");
+		RunningPipelines::error(step, "no Inter tree to apply this step to");
 		active = FALSE;
 	} else {
 		if (I != last_linted) { Inter::Defn::lint(I); last_linted = I; }
@@ -119,7 +119,7 @@ avoid repeatedly linting the same tree, since that really would be slow.
 	if ((VM) && (step->take_generator_argument_from_VM)) {
 		step->generator_argument = Generators::find_for(VM);
 		if (step->generator_argument == NULL) {
-			RunningPipelines::error("unable to guess a suitable code-generator");
+			RunningPipelines::error(step, "unable to guess a suitable code-generator");
 			active = FALSE;
 		}
 	}
@@ -128,7 +128,7 @@ avoid repeatedly linting the same tree, since that really would be slow.
 		step->ephemera.package_argument =
 			Inter::Packages::by_url(step->ephemera.repository, step->package_URL_argument);
 		if (step->ephemera.package_argument == NULL) {
-			RunningPipelines::error_with(
+			RunningPipelines::error_with(step,
 				"pipeline step applied to package which does not exist: '%S'",
 				step->package_URL_argument);
 			active = FALSE;
@@ -139,7 +139,7 @@ avoid repeatedly linting the same tree, since that really would be slow.
 	if (ParsingPipelines::will_write_a_file(step)) {
 		if (Str::len(step->step_argument) == 0) {
 			if (step->step_stage->stage_arg != OPTIONAL_TEXT_OUT_STAGE_ARG) {
-				RunningPipelines::error("no filename given in pipeline step");
+				RunningPipelines::error(step, "no filename given in pipeline step");
 				active = FALSE;
 			}
 		} else {
@@ -151,7 +151,7 @@ avoid repeatedly linting the same tree, since that really would be slow.
 				text_stream text_output_struct;
 				text_stream *T = &text_output_struct;
 				if (STREAM_OPEN_TO_FILE(T, step->ephemera.parsed_filename, ISO_ENC) == FALSE) {
-					RunningPipelines::error("unable to open file named in pipeline step");
+					RunningPipelines::error(step, "unable to open file named in pipeline step");
 					active = FALSE;
 				} else {
 					step->ephemera.to_stream = T;
@@ -162,11 +162,11 @@ avoid repeatedly linting the same tree, since that really would be slow.
 		}
 	} else if (ParsingPipelines::will_read_a_file(step)) {
 		if (Str::len(step->step_argument) == 0) {
-			RunningPipelines::error("no filename given in pipeline step");
+			RunningPipelines::error(step, "no filename given in pipeline step");
 			active = FALSE;
 		} else if (Str::eq(step->step_argument, I"*memory")) {
 			if (Str::eq(step->step_stage->stage_name, I"read") == FALSE) {
-				RunningPipelines::error("'*memory' can be used only on reads");
+				RunningPipelines::error(step, "'*memory' can be used only on reads");
 				active = FALSE;
 			} else {
 				S->ephemera.repositories[step->repository_argument] =
@@ -368,38 +368,73 @@ The moment there is something wrong with the pipeline itself, we come to a
 complete halt. It's the kindest way.
 
 =
-void RunningPipelines::error(char *erm) {
-	#ifdef PROBLEMS_MODULE
+void RunningPipelines::error(pipeline_step *step, char *erm) {
+	#ifdef CORE_MODULE
+	@<Begin problem message using the module of the same name@>;
 	TEMPORARY_TEXT(full)
 	WRITE_TO(full, "%s", erm);
-	do_not_locate_problems = TRUE;
 	Problems::quote_stream(1, full);
-	Problems::issue_problem_begin(NULL, erm);
-	Problems::issue_problem_segment("I was unable to perform final code-generation: %1");
-	Problems::issue_problem_end();
-	do_not_locate_problems = FALSE;
 	DISCARD_TEXT(full)
+	@<End problem message using the module of the same name@>;
 	#endif
-	#ifndef PROBLEMS_MODULE
+	#ifndef CORE_MODULE
 	Errors::fatal(erm);
 	exit(1);
 	#endif
 }
 
-void RunningPipelines::error_with(char *erm, text_stream *quoted) {
-	#ifdef PROBLEMS_MODULE
+void RunningPipelines::error_with(pipeline_step *step, char *erm, text_stream *quoted) {
+	#ifdef CORE_MODULE
+	@<Begin problem message using the module of the same name@>;
 	TEMPORARY_TEXT(full)
 	WRITE_TO(full, erm, quoted);
-	do_not_locate_problems = TRUE;
 	Problems::quote_stream(1, full);
-	Problems::issue_problem_begin(NULL, erm);
-	Problems::issue_problem_segment("I was unable to perform final code-generation: %1");
-	Problems::issue_problem_end();
-	do_not_locate_problems = FALSE;
+	@<End problem message using the module of the same name@>;
 	DISCARD_TEXT(full)
 	#endif
-	#ifndef PROBLEMS_MODULE
+	#ifndef CORE_MODULE
 	Errors::fatal_with_text(erm, quoted);
 	exit(1);
 	#endif
 }
+
+@<Begin problem message using the module of the same name@> =
+	do_not_locate_problems = TRUE;
+	Problems::issue_problem_begin(NULL, erm);
+	Problems::issue_problem_segment(
+		"Something went wrong late in compilation, when working through the "
+		"'pipeline' of code-generation steps. (This should not normally happen "
+		"unless your source text is making use of '(-' and '-)' and getting "
+		"that wrong, or unless you are experimenting with non-standard pipelines.) "
+		"The pipeline looks like so:");
+	Problems::issue_problem_end();
+
+@<End problem message using the module of the same name@> =
+	if (step) {
+		inter_pipeline *pipeline = step->pipeline;
+		pipeline_step *some_step;
+		int N = 1;
+		LOOP_OVER_LINKED_LIST(some_step, pipeline_step, pipeline->steps) {
+			TEMPORARY_TEXT(description)
+			ParsingPipelines::write_step(description, some_step);
+			Problems::issue_problem_begin(Task::syntax_tree(), "****");
+			Problems::quote_number(1, &N);
+			if (some_step == step) {
+				Problems::quote_stream_tinted_red(2, description);
+				Problems::issue_problem_segment("%1. %2");
+			} else {
+				Problems::quote_stream_tinted_green(2, description);
+				Problems::issue_problem_segment("%1. %2");
+			}
+			DISCARD_TEXT(description)
+			Problems::issue_problem_end();
+			if (some_step == step) {
+				Problems::issue_problem_begin(Task::syntax_tree(), "****");
+				Problems::quote_stream(1, full);
+				Problems::issue_problem_segment("Problem: %1");
+				Problems::issue_problem_end();
+			}
+			N++;
+		}
+	}
+	do_not_locate_problems = FALSE;

@@ -90,7 +90,7 @@ which use this module:
 <span class="definition-keyword">enum</span> <span class="constant-syntax">text_literal_holder_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">routine_body_request_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">pipeline_stage_CLASS</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">link_instruction_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">attachment_instruction_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">tree_inventory_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">tree_inventory_item_CLASS</span>
 </pre>
@@ -102,7 +102,7 @@ which use this module:
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_literal_holder</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">routine_body_request</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">pipeline_stage</span><span class="plain-syntax">)</span>
-<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">link_instruction</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">tree_inventory</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">tree_inventory_item</span><span class="plain-syntax">)</span>
 </pre>
@@ -174,12 +174,12 @@ is where:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="identifier-syntax">inter_architecture</span><span class="plain-syntax"> *</span><span class="function-syntax">PipelineModule::get_architecture</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PipelineModule::get_architecture</span></span>:<br/>Link - <a href="3-lnk.html#SP2">&#167;2</a><br/>Prepare - <a href="3-prp.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="identifier-syntax">inter_architecture</span><span class="plain-syntax"> *</span><span class="function-syntax">PipelineModule::get_architecture</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PipelineModule::get_architecture</span></span>:<br/>Attach Stage - <a href="3-as.html#SP1">&#167;1</a><br/>Prepare - <a href="3-prp.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">architecture_set_at_command_line</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">pm</li><li class="progresschapter"><a href="2-pp.html">2</a></li><li class="progresschapter"><a href="3-lnk.html">3</a></li><li class="progresschapter"><a href="4-sh.html">4</a></li><li class="progresschapter"><a href="5-erm.html">5</a></li><li class="progressnext"><a href="2-pp.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">pm</li><li class="progresschapter"><a href="2-pp.html">2</a></li><li class="progresschapter"><a href="3-as.html">3</a></li><li class="progresschapter"><a href="4-sh.html">4</a></li><li class="progresschapter"><a href="5-erm.html">5</a></li><li class="progressnext"><a href="2-pp.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

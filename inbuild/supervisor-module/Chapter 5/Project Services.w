@@ -491,14 +491,14 @@ details instead.
 
 =
 #ifdef PIPELINE_MODULE
-linked_list *Projects::list_of_link_instructions(inform_project *project) {
-	linked_list *requirements_list = NEW_LINKED_LIST(link_instruction);
+linked_list *Projects::list_of_attachment_instructions(inform_project *project) {
+	linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include) {
 		inform_kit *K = kd->kit;
-		link_instruction *link = CodeGen::LinkInstructions::new(
+		attachment_instruction *link = AttachStage::new(
 			K->as_copy->location_if_path, K->attachment_point);
-		ADD_TO_LINKED_LIST(link, link_instruction, requirements_list);
+		ADD_TO_LINKED_LIST(link, attachment_instruction, requirements_list);
 	}
 	return requirements_list;
 }

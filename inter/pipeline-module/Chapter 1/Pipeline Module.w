@@ -17,7 +17,7 @@ which use this module:
 @e text_literal_holder_CLASS
 @e routine_body_request_CLASS
 @e pipeline_stage_CLASS
-@e link_instruction_CLASS
+@e attachment_instruction_CLASS
 @e tree_inventory_CLASS
 @e tree_inventory_item_CLASS
 
@@ -29,7 +29,7 @@ DECLARE_CLASS(uniqueness_count)
 DECLARE_CLASS(text_literal_holder)
 DECLARE_CLASS(routine_body_request)
 DECLARE_CLASS(pipeline_stage)
-DECLARE_CLASS(link_instruction)
+DECLARE_CLASS(attachment_instruction)
 DECLARE_CLASS(tree_inventory)
 DECLARE_CLASS(tree_inventory_item)
 

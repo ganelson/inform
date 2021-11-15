@@ -214,7 +214,7 @@ Total memory consumption was 399937K = 391 MB
      ----  inform_pipeline                          3 objects, 192 bytes
      ----  kit_dependency                           4 objects, 192 bytes
      ----  plural_dictionary_entry                  4 objects, 192 bytes
-     ----  link_instruction                         4 objects, 160 bytes
+     ----  attachment_instruction                   4 objects, 160 bytes
      ----  inter_architecture                       4 objects, 160 bytes
      ----  imperative_defn_family                   4 objects, 160 bytes
      ----  inference_subject_family                 5 objects, 160 bytes
@@ -238,7 +238,7 @@ Total memory consumption was 399937K = 391 MB
 
 38.9% was used for memory not allocated for objects:
 
-    20.4%  text stream storage                      83670108 bytes in 543395 claims
+    20.4%  text stream storage                      83670308 bytes in 543397 claims
      4.4%  dictionary storage                       18323456 bytes in 33302 claims
      ----  sorting                                  736 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims

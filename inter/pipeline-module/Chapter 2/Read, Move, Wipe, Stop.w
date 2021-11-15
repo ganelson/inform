@@ -28,15 +28,23 @@ int SimpleStages::run_move_stage(pipeline_step *step) {
 	inter_package *pack = NULL;
 	if (Regexp::match(&mr, step->step_argument, L"(%d):(%c+)")) {
 		int from_rep = Str::atoi(mr.exp[0], 0);
-		if (step->ephemera.pipeline->ephemera.repositories[from_rep] == NULL)
-			internal_error("no such repository");
+		if (step->ephemera.pipeline->ephemera.repositories[from_rep] == NULL) {
+			RunningPipelines::error_with(step, "there is no Inter tree in slot %S", mr.exp[0]);
+			return FALSE;
+		}
 		pack = Inter::Packages::by_url(
 			step->ephemera.pipeline->ephemera.repositories[from_rep], mr.exp[1]);
+		if (pack == NULL) {
+			RunningPipelines::error_with(step, "that tree has no such package as '%S'", mr.exp[1]);
+			return FALSE;
+		}
+	} else {
+		RunningPipelines::error_with(step,
+			"destination should take the form 'N:URL', not '%S'", mr.exp[1]);
+		return FALSE;
 	}
 	Regexp::dispose_of(&mr);
-	if (pack == NULL) internal_error("not a package");
 	Inter::Transmigration::move(pack, Site::main_package(step->ephemera.repository), FALSE);
-
 	return TRUE;
 }
 

@@ -1,5 +1,5 @@
 read <- *in
-link
+attach
 merge-template <- none
 parse-linked-matter
 resolve-conditional-compilation

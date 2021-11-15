@@ -159,6 +159,15 @@ void Problems::problem_quote(int t, void *v, void (*f)(text_stream *, void *)) {
 	problem_quotations[t].text_quoted = EMPTY_WORDING;
 }
 
+void Problems::problem_quote_tinted(int t, void *v, void (*f)(text_stream *, void *), char type) {
+	if ((t<0) || (t > 10)) internal_error("problem quotation number out of range");
+	problem_quotations[t].structure_quoted = v;
+	problem_quotations[t].expander = f;
+	problem_quotations[t].quotation_type = type;
+	problem_quotations[t].wording_based = FALSE;
+	problem_quotations[t].text_quoted = EMPTY_WORDING;
+}
+
 void Problems::problem_quote_textual(int t, char type, wording W) {
 	if ((t<0) || (t > 10)) internal_error("problem quotation number out of range");
 	problem_quotations[t].structure_quoted = NULL;
@@ -205,6 +214,12 @@ void Problems::expand_wide_text(OUTPUT_STREAM, void *p) {
 }
 void Problems::quote_stream(int t, text_stream *p) {
 	Problems::problem_quote(t, (void *) p, Problems::expand_stream);
+}
+void Problems::quote_stream_tinted_green(int t, text_stream *p) {
+	Problems::problem_quote_tinted(t, (void *) p, Problems::expand_stream, 'g');
+}
+void Problems::quote_stream_tinted_red(int t, text_stream *p) {
+	Problems::problem_quote_tinted(t, (void *) p, Problems::expand_stream, 'r');
 }
 void Problems::expand_stream(OUTPUT_STREAM, void *p) {
 	WRITE("%S", (text_stream *) p);
@@ -429,7 +444,11 @@ ourselves, and must delegate to:
 @<Expand structure-based escape@> =
 	Problems::append_source(EMPTY_WORDING);
 	TEMPORARY_TEXT(OUT)
+	if (problem_quotations[t].quotation_type == 'r') HTML::begin_colour(OUT, I"800000");
+	if (problem_quotations[t].quotation_type == 'g') HTML::begin_colour(OUT, I"008000");
 	(problem_quotations[t].expander)(OUT, problem_quotations[t].structure_quoted);
+	if (problem_quotations[t].quotation_type == 'r') HTML::end_colour(OUT);
+	if (problem_quotations[t].quotation_type == 'g') HTML::end_colour(OUT);
 	@<Spool temporary stream text to the problem buffer@>;
 	DISCARD_TEXT(OUT)
 	Problems::transcribe_appended_source();

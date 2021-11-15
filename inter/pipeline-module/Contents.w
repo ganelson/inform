@@ -16,7 +16,7 @@ Chapter 2: Pipelines
 	Read, Move, Wipe, Stop
 
 Chapter 3: Linking
-	Link
+	Attach Stage
 	Prepare
 	Merge Template
 	Template Reader
