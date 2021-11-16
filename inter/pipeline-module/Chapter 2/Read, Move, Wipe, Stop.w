@@ -29,17 +29,17 @@ int SimpleStages::run_move_stage(pipeline_step *step) {
 	if (Regexp::match(&mr, step->step_argument, L"(%d):(%c+)")) {
 		int from_rep = Str::atoi(mr.exp[0], 0);
 		if (step->ephemera.pipeline->ephemera.repositories[from_rep] == NULL) {
-			RunningPipelines::error_with(step, "there is no Inter tree in slot %S", mr.exp[0]);
+			PipelineErrors::error_with(step, "there is no Inter tree in slot %S", mr.exp[0]);
 			return FALSE;
 		}
 		pack = Inter::Packages::by_url(
 			step->ephemera.pipeline->ephemera.repositories[from_rep], mr.exp[1]);
 		if (pack == NULL) {
-			RunningPipelines::error_with(step, "that tree has no such package as '%S'", mr.exp[1]);
+			PipelineErrors::error_with(step, "that tree has no such package as '%S'", mr.exp[1]);
 			return FALSE;
 		}
 	} else {
-		RunningPipelines::error_with(step,
+		PipelineErrors::error_with(step,
 			"destination should take the form 'N:URL', not '%S'", mr.exp[1]);
 		return FALSE;
 	}

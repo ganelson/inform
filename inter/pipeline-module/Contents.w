@@ -13,6 +13,7 @@ Chapter 1: Setting Up
 Chapter 2: Pipelines
 	Parsing Pipelines
 	Running Pipelines
+	Pipeline Errors
 	Read, Move, Wipe, Stop
 
 Chapter 3: Linking

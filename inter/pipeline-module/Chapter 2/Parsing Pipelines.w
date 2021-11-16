@@ -168,6 +168,7 @@ pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_strea
 	text_file_position *tfp) {
 	dictionary *D = pipeline->variables;
 	pipeline_step *step = ParsingPipelines::new_step(pipeline);
+	text_stream *syntax = Str::duplicate(S);
 	match_results mr = Regexp::create_mr();
 
 	int allow_unknown = FALSE;
@@ -191,10 +192,10 @@ pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_strea
 
 @<Left arrow notation@> =
 	if (Str::len(mr.exp[1]) > 0) {
-		step->step_argument = ParsingPipelines::text_arg(mr.exp[1], D, tfp, allow_unknown);
+		step->step_argument = ParsingPipelines::text_arg(mr.exp[1], D, tfp, syntax, allow_unknown);
 		if (step->step_argument == NULL) return NULL;
 	} else {
-		Errors::in_text_file_S(I"no source to right of arrow", tfp);
+		PipelineErrors::syntax(tfp, syntax, "no source to right of arrow");
 		return NULL;
 	}
 	Str::copy(S, mr.exp[0]);
@@ -203,22 +204,20 @@ pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_strea
 @<Right arrow notation with generator@> =
 	code_generator *cgt = Generators::find(mr.exp[1]);
 	if (cgt == NULL) {
-		TEMPORARY_TEXT(ERR)
-		WRITE_TO(ERR, "no such code generation format as '%S'\n", mr.exp[1]);
-		Errors::in_text_file_S(ERR, tfp);
-		DISCARD_TEXT(ERR)
+		PipelineErrors::syntax_with(tfp, syntax,
+			"no such code generation format as '%S'", mr.exp[1]);
 		return NULL;
 	} else {
 		step->generator_argument = cgt;
 	}
-	step->step_argument = ParsingPipelines::text_arg(mr.exp[2], D, tfp, allow_unknown);
+	step->step_argument = ParsingPipelines::text_arg(mr.exp[2], D, tfp, syntax, allow_unknown);
 	if (step->step_argument == NULL) return NULL;
 	Str::copy(S, mr.exp[0]);
 
 @<Right arrow notation without generator@> =
 	step->generator_argument = NULL;
 	step->take_generator_argument_from_VM = TRUE;
-	step->step_argument = ParsingPipelines::text_arg(mr.exp[1], D, tfp, allow_unknown);
+	step->step_argument = ParsingPipelines::text_arg(mr.exp[1], D, tfp, syntax, allow_unknown);
 	if (step->step_argument == NULL) return NULL;
 	Str::copy(S, mr.exp[0]);
 
@@ -229,34 +228,33 @@ pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_strea
 @<Repository number and package as arguments@> =
 	step->repository_argument = Str::atoi(mr.exp[1], 0);
 	if (Str::len(mr.exp[2]) > 0) {
-		step->package_URL_argument = ParsingPipelines::text_arg(mr.exp[2], D, tfp, allow_unknown);
+		step->package_URL_argument =
+			ParsingPipelines::text_arg(mr.exp[2], D, tfp, syntax, allow_unknown);
 		if (step->package_URL_argument == NULL) return NULL;
 	}
 	Str::copy(S, mr.exp[0]);
 
 @<Package as argument@> =
-	step->package_URL_argument = ParsingPipelines::text_arg(mr.exp[1], D, tfp, allow_unknown);
+	step->package_URL_argument =
+		ParsingPipelines::text_arg(mr.exp[1], D, tfp, syntax, allow_unknown);
 	if (step->package_URL_argument == NULL) return NULL;
 	Str::copy(S, mr.exp[0]);
 
 @<Make consistency checks@> =
 	if (step->step_stage == NULL) {
-		TEMPORARY_TEXT(ERR)
-		WRITE_TO(ERR, "no such stage as '%S'\n", S);
-		Errors::in_text_file_S(ERR, tfp);
-		DISCARD_TEXT(ERR)
+		PipelineErrors::syntax_with(tfp, syntax, "no such stage as '%S'", S);
 		return NULL;
 	}
 	if (step->step_stage->takes_repository) {
 		if (left_arrow_used == FALSE) {
-			Errors::in_text_file_S(
-				I"this stage should take a left arrow and a source", tfp);
+			PipelineErrors::syntax(tfp, syntax,
+				"this stage should take a left arrow and a source");
 			return NULL;
 		}
 	} else {
 		if (left_arrow_used) {
-			Errors::in_text_file_S(
-				I"this stage should not take a left arrow and a source", tfp);
+			PipelineErrors::syntax(tfp, syntax,
+				"this stage should not take a left arrow and a source");
 			return NULL;
 		}
 	}
@@ -267,15 +265,13 @@ If it is, then an empty text results as the argument.
 
 =
 text_stream *ParsingPipelines::text_arg(text_stream *from, dictionary *D,
-	text_file_position *tfp, int allow_unknown) {
+	text_file_position *tfp, text_stream *syntax, int allow_unknown) {
 	if (Str::get_first_char(from) == '*') {
 		text_stream *find = Dictionaries::get_text(D, from);
 		if (find) return Str::duplicate(find);
 		if (allow_unknown == FALSE) {
-			TEMPORARY_TEXT(ERR)
-			WRITE_TO(ERR, "no such pipeline variable as '%S'\n", from);
-			Errors::in_text_file_S(ERR, tfp);
-			DISCARD_TEXT(ERR)
+			PipelineErrors::syntax_with(tfp, syntax,
+				"no such pipeline variable as '%S'", from);
 		} else {
 			return I"";
 		}
