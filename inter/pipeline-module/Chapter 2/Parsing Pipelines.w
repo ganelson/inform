@@ -290,7 +290,7 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 		stages_made = TRUE;
 		SimpleStages::create_pipeline_stages();
 		CodeGen::create_pipeline_stage();
-		CodeGen::Architecture::create_pipeline_stage();
+		NewStage::create_pipeline_stage();
 		AttachStage::create_pipeline_stage();
 		CodeGen::Assimilate::create_pipeline_stage();
 		DetectIndirectCalls::create_pipeline_stage();
@@ -300,7 +300,7 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 		CodeGen::Labels::create_pipeline_stage();
 		CodeGen::Operations::create_pipeline_stage();
 		Synoptic::create_pipeline_stage();
-		CodeGen::MergeTemplate::create_pipeline_stage();
+		ParsingStages::create_pipeline_stage();
 		CodeGen::PLM::create_pipeline_stage();
 		CodeGen::RCC::create_pipeline_stage();
 		CodeGen::ReconcileVerbs::create_pipeline_stage();

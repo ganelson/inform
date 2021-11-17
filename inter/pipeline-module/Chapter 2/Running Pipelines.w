@@ -67,7 +67,7 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	stopwatch_timer *pipeline_timer =
 		Time::start_stopwatch(within, I"running Inter pipeline");
 	int step_count = 0, step_total = LinkedLists::len(S->steps);
-	int active = TRUE; inter_tree *last_linted = NULL;
+	int active = TRUE;
 	stopwatch_timer *prep_timer = NULL;
 	pipeline_step *step;
 	LOOP_OVER_LINKED_LIST(step, pipeline_step, S->steps)
@@ -95,11 +95,6 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	Time::stop_stopwatch(step_timer);
 	currently_running_pipeline_step = NULL;
 
-@ Performing a full lint on each new tree of Inter code is a necessary
-precaution even though it takes a little time: note that it verifies some
-Inter constructs which might otherwise not have been verified. Still, we
-avoid repeatedly linting the same tree, since that really would be slow.
-
 @<Prepare ephemeral data for this step@> =
 	RunningPipelines::clean_step(step);
 	step->ephemera.the_PP = PP;
@@ -110,7 +105,7 @@ avoid repeatedly linting the same tree, since that really would be slow.
 		PipelineErrors::error(step, "no Inter tree to apply this step to");
 		active = FALSE;
 	} else {
-		if (I != last_linted) { Inter::Defn::lint(I); last_linted = I; }
+		Inter::Defn::lint(I);
 	}
 	step->ephemera.repository = I;
 	step->ephemera.pipeline = S;

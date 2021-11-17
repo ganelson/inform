@@ -305,7 +305,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				else if (Regexp::match(&mr2, value, L" *buffer *(%c*?) *")) { conts = mr2.exp[0]; annot = BUFFERARRAY_IANN; }
 				else {
 					LOG("Identifier = <%S>, Value = <%S>", identifier, value);
-					TemplateReader::error("invalid Inform 6 array declaration in the template", NULL);
+					PipelineErrors::kit_error("invalid Inform 6 array declaration in the template", NULL);
 				}
 			} else {
 				conts = value; annot = VERBARRAY_IANN;
@@ -328,10 +328,10 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				}
 				next_is_action = FALSE;
 				if (plm == ARRAY_PLM) {
-					if (Str::eq(value, I"+")) TemplateReader::error("Inform 6 array declaration in the template using operator '+'", NULL);
-					if (Str::eq(value, I"-")) TemplateReader::error("Inform 6 array declaration in the template using operator '-'", NULL);
-					if (Str::eq(value, I"*")) TemplateReader::error("Inform 6 array declaration in the template using operator '*'", NULL);
-					if (Str::eq(value, I"/")) TemplateReader::error("Inform 6 array declaration in the template using operator '/'", NULL);
+					if (Str::eq(value, I"+")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '+'", NULL);
+					if (Str::eq(value, I"-")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '-'", NULL);
+					if (Str::eq(value, I"*")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '*'", NULL);
+					if (Str::eq(value, I"/")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '/'", NULL);
 				}
 				if ((NT == 0) && (plm == VERB_PLM) && (Str::eq(value, I"meta"))) {
 					Inter::Symbols::annotate_i(con_name, METAVERB_IANN, 1);
@@ -340,7 +340,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 					if (Str::len(value) == 0) break;
 					NT++;
 					if (no_assimilated_array_entries >= MAX_ASSIMILATED_ARRAY_ENTRIES) {
-						TemplateReader::error("excessively long Inform 6 array in the template", NULL);
+						PipelineErrors::kit_error("excessively long Inform 6 array in the template", NULL);
 						break;
 					}
 					v1_pile[no_assimilated_array_entries] = v1;
@@ -413,7 +413,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {
 			identifier = mr.exp[0]; chain = mr.exp[1]; body = mr.exp[2];
 		} else {
-			TemplateReader::error("invalid Inform 6 routine declaration in the template", NULL);
+			PipelineErrors::kit_error("invalid Inform 6 routine declaration in the template", NULL);
 		}
 	} else {
 		if (Regexp::match(&mr, S, L" *%C+ *(%i+) (%d+);%c*")) {
@@ -423,7 +423,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			if ((N<0) || (N>15)) N = 1;
 			for (int i=1; i<=N; i++) WRITE_TO(chain, "x%d ", i);
 			body = Str::duplicate(I"rfalse; ];");
-		} else TemplateReader::error("invalid Inform 6 Stub declaration in the template", NULL);
+		} else PipelineErrors::kit_error("invalid Inform 6 Stub declaration in the template", NULL);
 	}
 
 @<Act on parsed header@> =

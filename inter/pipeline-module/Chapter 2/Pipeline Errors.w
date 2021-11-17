@@ -128,3 +128,31 @@ void PipelineErrors::error_with(pipeline_step *step, char *erm, text_stream *quo
 		}
 	}
 	do_not_locate_problems = FALSE;
+
+@h Errors in kit source.
+Errors like this used to be basically failed assertions, but inevitably people
+reported that as a bug (0001596). It was never intended that Inform 6-syntax
+hacking should be part of the outside-facing Inform language; but if you leave
+power tools just lying around, people will eventually pick them up and wonder
+what the red button marked "danger" does.
+
+=
+void PipelineErrors::kit_error(char *message, text_stream *quote) {
+	#ifdef PROBLEMS_MODULE
+	TEMPORARY_TEXT(M)
+	WRITE_TO(M, message, quote);
+	Problems::quote_stream(1, M);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+	Problems::issue_problem_segment(
+		"I ran into a mistake in the source code for a kit: %1. The Inform 6 "
+		"syntax source files for kits are a very low-level part of Inform, "
+		"and errors like this will only occur if the standard installation "
+		"has been amended or damaged, or if you are doing something quite "
+		"unusual.");
+	Problems::issue_problem_end();
+	DISCARD_TEXT(M)
+	#endif
+	#ifndef PROBLEMS_MODULE
+	Errors::with_text(message, quote);
+	#endif
+}

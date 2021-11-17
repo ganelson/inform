@@ -1,23 +1,20 @@
-[CodeGen::Architecture::] Prepare.
+[NewStage::] New Stage.
 
 The Inter stage prepare.
 
 @
 
 =
-void CodeGen::Architecture::create_pipeline_stage(void) {
-	ParsingPipelines::new_stage(I"prepare", CodeGen::Architecture::run_prepare_stage, GENERAL_STAGE_ARG, TRUE);
+void NewStage::create_pipeline_stage(void) {
+	ParsingPipelines::new_stage(I"new", NewStage::run, NO_STAGE_ARG, FALSE);
 }
 
-int CodeGen::Architecture::run_prepare_stage(pipeline_step *step) {
+int NewStage::run(pipeline_step *step) {
 	inter_architecture *current_architecture = PipelineModule::get_architecture();
 	if (current_architecture == NULL) internal_error("no architecture set");
-	return CodeGen::Architecture::run_prepare_stage_inner(step,
-		Architectures::is_16_bit(current_architecture),
-		Architectures::debug_enabled(current_architecture));
-}
+	int Z = Architectures::is_16_bit(current_architecture);
+	int D = Architectures::debug_enabled(current_architecture);
 
-int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, int D) {
 	inter_tree *I = step->ephemera.repository;
 	Packaging::outside_all_packages(I);
 	PackageTypes::get(I, I"_plain");
@@ -81,12 +78,6 @@ int CodeGen::Architecture::run_prepare_stage_inner(pipeline_step *step, int Z, i
 		0,
 		LIST_ICON, 1, operands,
 		(inter_ti) Inter::Bookmarks::baseline(&in_generic) + 1, NULL);
-	
-	if (Str::ne(step->step_argument, I"none")) {
-		inter_package *template_p = NULL;
-		Inter::Package::new_package_named(&in_main, step->step_argument, FALSE, module_name, 1, NULL, &template_p);
-		Site::set_assimilation_package(I, template_p);
-	}
 
 	inter_bookmark *in_veneer = Site::veneer_booknark(I);
 	inter_package *veneer_p = Inter::Packages::veneer(I);

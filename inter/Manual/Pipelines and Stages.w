@@ -198,7 +198,7 @@ turn this merged repository into Inform 6 code. (Routines in the template,
 therefore, are converted out of Inform 6 and then back into it again. This
 sounds inefficient but is surprisingly fast, and enables many optimisations.)
 
-@ |merge-template <- T| reads in the I6T template file |T|, converts it to
+@ |parse-kit <- T| reads in the kit |T| from I6-format source, converts it to
 inter in a very basic way (creating many splats), and merges it with the
 repository. Splats are the unhappiest of inter statements, simply including
 verbatim snippets of Inform 6 code.

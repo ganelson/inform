@@ -103,7 +103,7 @@ void TemplateReader::report_unacted_upon_interventions(void) {
 				"available at the Inform website, may help.)");
 			#endif
 			#ifndef PROBLEMS_MODULE
-			TemplateReader::error("was asked to intervene on this segment, but never saw it: '%S'", i6ti->segment_name);
+			PipelineErrors::kit_error("was asked to intervene on this segment, but never saw it: '%S'", i6ti->segment_name);
 			#endif
 		} else if ((i6ti->part_found == FALSE) && (i6ti->part_name) &&
 			(Str::eq_wide_string(i6ti->segment_name, L"Main.i6t") == FALSE)) {
@@ -122,7 +122,7 @@ void TemplateReader::report_unacted_upon_interventions(void) {
 				"the Inform website, may help.)");
 			#endif
 			#ifndef PROBLEMS_MODULE
-			TemplateReader::error("was asked to intervene on this part, but never saw it: '%S'", i6ti->part_name);
+			PipelineErrors::kit_error("was asked to intervene on this part, but never saw it: '%S'", i6ti->part_name);
 			#endif
 		}
 	}
@@ -266,7 +266,7 @@ part of the I6T kit.
 			Input_File = Filenames::fopen(
 				Filenames::in(kit->i6t_files[area], segment_name), "r");
 	if (Input_File == NULL)
-		TemplateReader::error("unable to open the template segment '%S'", segment_name);
+		PipelineErrors::kit_error("unable to open the template segment '%S'", segment_name);
 
 @ 
 
@@ -354,7 +354,7 @@ heading markers, in order to accommodate both old and new Inweb syntaxes.
 						"the opcode(s) to keep them clear of the left margin.)");
 					#endif
 					#ifndef PROBLEMS_MODULE
-					TemplateReader::error(
+					PipelineErrors::kit_error(
 						"unknown '@...' marker at column 0 in template matter: '%S'", I6T_buffer);
 					#endif
 				}
@@ -391,7 +391,7 @@ heading markers, in order to accommodate both old and new Inweb syntaxes.
 			"raw Inform 6 template material, of a kind not allowed.");
 		#endif
 		#ifndef PROBLEMS_MODULE
-		TemplateReader::error(
+		PipelineErrors::kit_error(
 			"unsupported '= (...)' marker at column 0 in template matter", NULL);
 		#endif
 	} else {
@@ -415,7 +415,7 @@ a full-fledged tangler.
 				((c == ' ') || (c == '\t') || (c == '.')))
 				Str::delete_last_character(heading_name);
 			if (Str::len(heading_name) == 0)
-				TemplateReader::error("Empty heading name in I6 template file", NULL);
+				PipelineErrors::kit_error("Empty heading name in I6 template file", NULL);
 			extract = FALSE; 
 			comment = TRUE; skip_part = FALSE;
 			if (Str::len(segment_name) > 0) {
@@ -508,7 +508,7 @@ within I6:
 	}
 	LOG("SPONG: %S\n", i7_exp);
 	DISCARD_TEXT(i7_exp)
-		TemplateReader::error("use of (+ ... +) in the template has been withdrawn: '%S'", i7_exp);
+		PipelineErrors::kit_error("use of (+ ... +) in the template has been withdrawn: '%S'", i7_exp);
 
 @h Acting on I6T commands.
 
@@ -547,32 +547,4 @@ void TemplateReader::read_contents(text_stream *text, text_file_position *tfp, v
 		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, CSS->sects);
 	}
 	Regexp::dispose_of(&mr);
-}
-
-@h Template errors.
-Errors here used to be basically failed assertions, but inevitably people
-reported that as a bug (0001596). It was never intended that I6T coding
-be part of the outside-facing language, but for a handful of people
-using template-hacking there are a handful of cases that can't be avoided, so...
-
-=
-void TemplateReader::error(char *message, text_stream *quote) {
-	#ifdef PROBLEMS_MODULE
-	TEMPORARY_TEXT(M)
-	WRITE_TO(M, message, quote);
-	Problems::quote_stream(1, M);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
-	Problems::issue_problem_segment(
-		"I ran into a mistake in a template file: %1. The I6 "
-		"template files (or .i6t files) are a very low-level part of Inform, "
-		"and errors like this will only occur if the standard installation "
-		"has been amended or damaged. One possibility is that you're using "
-		"an extension which does some 'template hacking', as it's called, "
-		"but made a mistake doing so.");
-	Problems::issue_problem_end();
-	DISCARD_TEXT(M)
-	#endif
-	#ifndef PROBLEMS_MODULE
-	Errors::with_text(message, quote);
-	#endif
 }

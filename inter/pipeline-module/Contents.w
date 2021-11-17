@@ -16,10 +16,10 @@ Chapter 2: Pipelines
 	Pipeline Errors
 	Read, Move, Wipe, Stop
 
-Chapter 3: Linking
+Chapter 3: Linking Stages
+	New Stage
 	Attach Stage
-	Prepare
-	Merge Template
+	Parsing Stages
 	Template Reader
 	Parse Linked Matter
 	Resolving Conditional Compilation
@@ -51,7 +51,7 @@ Chapter 4: Synoptic Module
 	Verbs
 	Tests
 
-Chapter 5: Optimising
+Chapter 5: Optimisation Stages
 	Eliminate Redundant Matter
 	Eliminate Redundant Labels
 	Eliminate Redundant Operations

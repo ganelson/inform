@@ -1,5 +1,5 @@
-prepare <- *kit
-merge-template <- all
+new
+parse-kit <- *kit
 parse-linked-matter
 resolve-conditional-compilation
 assimilate

@@ -31,7 +31,7 @@ void CodeGen::RCC::resolve(inter_tree *I) {
 	state.cc_sp = 0;
 	InterTree::traverse(I, CodeGen::RCC::visitor, &state, NULL, 0);
 	if (state.cc_sp != 0)
-		TemplateReader::error("conditional compilation is wrongly structured in the template: not enough #endif", NULL);
+		PipelineErrors::kit_error("conditional compilation is wrongly structured in the template: not enough #endif", NULL);
 }
 
 void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
@@ -148,7 +148,7 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 		}
 	}
 	if (result == NOT_APPLICABLE) {
-		TemplateReader::error("conditional compilation is too difficult in the template: #iftrue on %S", cond);
+		PipelineErrors::kit_error("conditional compilation is too difficult in the template: #iftrue on %S", cond);
 		result = FALSE;
 	}
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "Must decide if %S: ", cond);
@@ -160,14 +160,14 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 
 @<Stack up the result@> =
 	if (state->cc_sp >= MAX_CC_STACK_SIZE) {
-		state->cc_sp = MAX_CC_STACK_SIZE; TemplateReader::error("conditional compilation is wrongly structured in the template: too many nested #ifdef or #iftrue", NULL);
+		state->cc_sp = MAX_CC_STACK_SIZE; PipelineErrors::kit_error("conditional compilation is wrongly structured in the template: too many nested #ifdef or #iftrue", NULL);
 	} else {
 		state->cc_stack[state->cc_sp++] = result;
 	}
 
 @<Deal with an IFNOT@> =
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "ifnot\n");
-	if (state->cc_sp == 0) TemplateReader::error("conditional compilation is wrongly structured in the template: #ifnot at top level", NULL);
+	if (state->cc_sp == 0) PipelineErrors::kit_error("conditional compilation is wrongly structured in the template: #ifnot at top level", NULL);
 	else state->cc_stack[state->cc_sp-1] = (state->cc_stack[state->cc_sp-1])?FALSE:TRUE;
 	allow = FALSE;
 
@@ -175,5 +175,5 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	if (Log::aspect_switched_on(RESOLVING_CONDITIONAL_COMPILATION_DA)) LOG_OUTDENT;
 	LOGIF(RESOLVING_CONDITIONAL_COMPILATION, "endif\n");
 	state->cc_sp--;
-	if (state->cc_sp < 0) { state->cc_sp = 0; TemplateReader::error("conditional compilation is wrongly structured in the template: too many #endif", NULL); }
+	if (state->cc_sp < 0) { state->cc_sp = 0; PipelineErrors::kit_error("conditional compilation is wrongly structured in the template: too many #endif", NULL); }
 	allow = FALSE;

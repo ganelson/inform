@@ -73,7 +73,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">pipeline</a></li><li><a href="index.html#2">Chapter 2: Pipelines</a></li><li><b>Pipeline Errors</b></li></ul></div>
 <p class="purpose">To issue problem messages when parsing or running erroneous pipelines.</p>
 
-<ul class="toc"><li><a href="2-pe.html#SP1">&#167;1. Syntax errors</a></li><li><a href="2-pe.html#SP2">&#167;2. Execution errors</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-pe.html#SP1">&#167;1. Syntax errors</a></li><li><a href="2-pe.html#SP2">&#167;2. Execution errors</a></li><li><a href="2-pe.html#SP3">&#167;3. Errors in kit source</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Syntax errors. </b></p>
 
@@ -218,8 +218,36 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    </span><span class="identifier-syntax">do_not_locate_problems</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pe.html#SP2">&#167;2</a> (twice).</li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Errors in kit source. </b>Errors like this used to be basically failed assertions, but inevitably people
+reported that as a bug (0001596). It was never intended that Inform 6-syntax
+hacking should be part of the outside-facing Inform language; but if you leave
+power tools just lying around, people will eventually pick them up and wonder
+what the red button marked "danger" does.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PipelineErrors::kit_error</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">PipelineErrors::kit_error</span></span>:<br/>Parsing Stages - <a href="3-ps.html#SP2">&#167;2</a><br/>I6 Template Reader - <a href="3-tr.html#SP4">&#167;4</a>, <a href="3-tr.html#SP10_1">&#167;10.1</a>, <a href="3-tr.html#SP10_2_2">&#167;10.2.2</a>, <a href="3-tr.html#SP10_2_3">&#167;10.2.3</a>, <a href="3-tr.html#SP10_2_4">&#167;10.2.4</a>, <a href="3-tr.html#SP10_2_5_2">&#167;10.2.5.2</a><br/>Resolving Conditional Compilation - <a href="3-rcc.html#SP2">&#167;2</a>, <a href="3-rcc.html#SP2_4">&#167;2.4</a>, <a href="3-rcc.html#SP2_2_2">&#167;2.2.2</a>, <a href="3-rcc.html#SP2_5">&#167;2.5</a>, <a href="3-rcc.html#SP2_6">&#167;2.6</a><br/>Assimilate Linked Matter - <a href="3-ass.html#SP2_1_2">&#167;2.1.2</a>, <a href="3-ass.html#SP2_2_1">&#167;2.2.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">quote</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PROBLEMS_MODULE</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">, </span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="identifier-syntax">quote</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_stream</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">M</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"I ran into a mistake in the source code for a kit: %1. The Inform 6 "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"syntax source files for kits are a very low-level part of Inform, "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"and errors like this will only occur if the standard installation "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"has been amended or damaged, or if you are doing something quite "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"unusual."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">M</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">PROBLEMS_MODULE</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Errors::with_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">message</span><span class="plain-syntax">, </span><span class="identifier-syntax">quote</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-rp.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-pm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-pp.html">pp</a></li><li class="progresssection"><a href="2-rp.html">rp</a></li><li class="progresscurrent">pe</li><li class="progresssection"><a href="2-rmws.html">rmws</a></li><li class="progresschapter"><a href="3-as.html">3</a></li><li class="progresschapter"><a href="4-sh.html">4</a></li><li class="progresschapter"><a href="5-erm.html">5</a></li><li class="progressnext"><a href="2-rmws.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-rp.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-pm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-pp.html">pp</a></li><li class="progresssection"><a href="2-rp.html">rp</a></li><li class="progresscurrent">pe</li><li class="progresssection"><a href="2-rmws.html">rmws</a></li><li class="progresschapter"><a href="3-ns.html">3</a></li><li class="progresschapter"><a href="4-sh.html">4</a></li><li class="progresschapter"><a href="5-erm.html">5</a></li><li class="progressnext"><a href="2-rmws.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>
