@@ -2,74 +2,74 @@
 <p><a name=LCARD></a><table border="0" cellspacing="3" cellpadding="3"  style="background-image:url('inform:/bg_images/indexcard.png');">
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#803030"><span class="typewritten">Story title</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#803030'><span class="typewritten">Story title</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style="color:#803030"><span class="typewritten"><b>Untitled</b></span></span>
+            <span style='color:#803030'><span class="typewritten"><b>Untitled</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#303030"><span class="typewritten">Story author</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#303030'><span class="typewritten">Story author</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style="color:#303030"><span class="typewritten"><b>Anonymous</b></span></span>
+            <span style='color:#303030'><span class="typewritten"><b>Anonymous</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#303030"><span class="typewritten">Story headline</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#303030'><span class="typewritten">Story headline</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style="color:#303030"><span class="typewritten"><b>An Interactive Fiction</b></span></span>
+            <span style='color:#303030'><span class="typewritten"><b>An Interactive Fiction</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#303030"><span class="typewritten">Story genre</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#303030'><span class="typewritten">Story genre</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style="color:#303030"><span class="typewritten"><b>Fiction</b></span></span>
+            <span style='color:#303030'><span class="typewritten"><b>Fiction</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#303030"><span class="typewritten">Release number</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#303030'><span class="typewritten">Release number</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style="color:#303030"><span class="typewritten"><b>1</b></span></span>
+            <span style='color:#303030'><span class="typewritten"><b>1</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#303030"><span class="typewritten">Story creation year</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#303030'><span class="typewritten">Story creation year</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style="color:#303030"><span class="typewritten"><b>(This year)</b></span></span>
+            <span style='color:#303030'><span class="typewritten"><b>(This year)</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#303030"><span class="typewritten">Language of play</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#303030'><span class="typewritten">Language of play</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style="color:#303030"><span class="typewritten"><b>English</b></span></span>
+            <span style='color:#303030'><span class="typewritten"><b>English</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#303030"><span class="typewritten">IFID number</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#303030'><span class="typewritten">IFID number</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style="color:#303030"><span class="typewritten"><b>0B00B00D-3307-4688-B2D8-95DB962781B4</b></span></span>
+            <span style='color:#303030'><span class="typewritten"><b>0B00B00D-3307-4688-B2D8-95DB962781B4</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style="color:#303030"><span class="typewritten">Story description</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#303030'><span class="typewritten">Story description</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style="color:#303030"><span class="typewritten"><b>None</b></span></span>
+            <span style='color:#303030'><span class="typewritten"><b>None</b></span></span>
         </td>
     </tr>
 </table>

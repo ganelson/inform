@@ -124,7 +124,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>2</i></center></span>
                                 </td>
                             </tr>
 
@@ -251,7 +251,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Astrological Observatory">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_19 style="text-decoration: none"><span style="color:#000000">AO</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_19 style="text-decoration: none"><span style='color:#000000'>AO</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -286,7 +286,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>2</i></center></span>
                                 </td>
                             </tr>
 
@@ -488,7 +488,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>3</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>3</i></center></span>
                                 </td>
                             </tr>
 
@@ -568,7 +568,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Isle">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_16 style="text-decoration: none"><span style="color:#000000">Is</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_16 style="text-decoration: none"><span style='color:#000000'>Is</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -650,7 +650,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>3</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>3</i></center></span>
                                 </td>
                             </tr>
 
@@ -799,7 +799,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>2</i></center></span>
                                 </td>
                             </tr>
 
@@ -832,7 +832,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Deutsche Universitat Bucherei">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_14 style="text-decoration: none"><span style="color:#000000">DU</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_14 style="text-decoration: none"><span style='color:#000000'>DU</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -887,7 +887,7 @@
                                     <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Chateau Bibliotheque">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_13 style="text-decoration: none"><span style="color:#000000"><b>CB</b></span></a></span>
+                                                <span style='color:#000000'><a href=#wo_13 style="text-decoration: none"><span style='color:#000000'><b>CB</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -942,7 +942,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alphabet Soup">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_17 style="text-decoration: none"><span style="color:#000000">AS</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_17 style="text-decoration: none"><span style='color:#000000'>AS</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -977,7 +977,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>2</i></center></span>
                                 </td>
                             </tr>
 
@@ -1126,7 +1126,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>1</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>1</i></center></span>
                                 </td>
                             </tr>
 
@@ -1206,7 +1206,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Miscellany Manana">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_15 style="text-decoration: none"><span style="color:#000000">MM</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_15 style="text-decoration: none"><span style='color:#000000'>MM</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1261,7 +1261,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gaming Lounge">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_18 style="text-decoration: none"><span style="color:#000000">GL</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_18 style="text-decoration: none"><span style='color:#000000'>GL</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1296,7 +1296,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>1</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>1</i></center></span>
                                 </td>
                             </tr>
 
@@ -1498,7 +1498,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>2</i></center></span>
                                 </td>
                             </tr>
 
@@ -1625,7 +1625,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Danger Zone">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_20 style="text-decoration: none"><span style="color:#000000">DZ</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_20 style="text-decoration: none"><span style='color:#000000'>DZ</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1660,7 +1660,7 @@
                                 <table border="0" cellspacing="0" cellpadding="0" width="53" height="27">
                             <tr>
                                 <td>
-                                    <span style="color:#c0c0c0"><center><i>2</i></center></span>
+                                    <span style='color:#c0c0c0'><center><i>2</i></center></span>
                                 </td>
                             </tr>
 
@@ -1838,7 +1838,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Chateau Bibliotheque">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">CB</span>
+                                                <span style='color:#000000'>CB</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1913,7 +1913,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Chateau Bibliotheque</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Chateau Bibliotheque"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Chateau Bibliotheque"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Isle&nbsp;<a href="source:story.ni#line12"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Miscellany Manana&nbsp;<a href="source:story.ni#line13"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Alphabet Soup&nbsp;<a href="source:story.ni#line14"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -1959,8 +1959,8 @@
                         <td>
                             <p class="tightin1">thing &gt; person &gt; <b>yourself</b></p>
                             <p class="hangingin1">proper-named; undescribed</p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"yourself"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">description: <span style="color:#000080">"As good-looking as ever."</span></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"yourself"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">description: <span style='color:#000080'>"As good-looking as ever."</span></p>
                             <p class="tightin1"><i>initial location</i>: in Chateau Bibliotheque &nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
                         </td>
@@ -2038,7 +2038,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Deutsche Universitat Bucherei">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">DU</span>
+                                                <span style='color:#000000'>DU</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2113,7 +2113,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Deutsche Universitat Bucherei</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Deutsche Universitat Bucherei"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Deutsche Universitat Bucherei"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
@@ -2192,7 +2192,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Miscellany Manana">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">MM</span>
+                                                <span style='color:#000000'>MM</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2267,7 +2267,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Miscellany Manana</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Miscellany Manana"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Miscellany Manana"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
@@ -2346,7 +2346,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Isle">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">Is</span>
+                                                <span style='color:#000000'>Is</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2421,7 +2421,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Isle</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Isle"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Isle"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
@@ -2500,7 +2500,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alphabet Soup">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">AS</span>
+                                                <span style='color:#000000'>AS</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2575,7 +2575,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Alphabet Soup</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Alphabet Soup"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Alphabet Soup"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Gaming Lounge&nbsp;<a href="source:story.ni#line19"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line20"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;up to Astrological Observatory&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -2657,7 +2657,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gaming Lounge">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">GL</span>
+                                                <span style='color:#000000'>GL</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2732,7 +2732,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Gaming Lounge</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Gaming Lounge"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Gaming Lounge"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Alphabet Soup&nbsp;<a href="source:story.ni#line23"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
@@ -2811,7 +2811,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Astrological Observatory">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">AO</span>
+                                                <span style='color:#000000'>AO</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -2886,7 +2886,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line10"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Astrological Observatory</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line10"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Astrological Observatory"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Astrological Observatory"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;down to Alphabet Soup&nbsp;<a href="source:story.ni#line24"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Inside from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
@@ -2965,7 +2965,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Danger Zone">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">DZ</span>
+                                                <span style='color:#000000'>DZ</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -3040,7 +3040,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Danger Zone</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Danger Zone"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Danger Zone"</span>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;up to Alphabet Soup&nbsp;<a href="source:story.ni#line25"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Down from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 

@@ -118,7 +118,7 @@
                                     <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alpha">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_13 style="text-decoration: none"><span style="color:#000000"><b>Al</b></span></a></span>
+                                                <span style='color:#000000'><a href=#wo_13 style="text-decoration: none"><span style='color:#000000'><b>Al</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -220,7 +220,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Beta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_14 style="text-decoration: none"><span style="color:#000000">Bt</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_14 style="text-decoration: none"><span style='color:#000000'>Bt</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -406,7 +406,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Epsilon">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_17 style="text-decoration: none"><span style="color:#000000">Ep</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_17 style="text-decoration: none"><span style='color:#000000'>Ep</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -592,7 +592,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gamma">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_15 style="text-decoration: none"><span style="color:#000000">Gm</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_15 style="text-decoration: none"><span style='color:#000000'>Gm</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -694,7 +694,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Delta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000"><a href=#wo_16 style="text-decoration: none"><span style="color:#000000">Dl</span></a></span>
+                                                <span style='color:#000000'><a href=#wo_16 style="text-decoration: none"><span style='color:#000000'>Dl</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -868,7 +868,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alpha">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">Al</span>
+                                                <span style='color:#000000'>Al</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -943,7 +943,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Alpha</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Alpha"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Alpha"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Gamma&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Beta&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Alpha is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
@@ -987,8 +987,8 @@
                         <td>
                             <p class="tightin1">thing &gt; person &gt; <b>yourself</b></p>
                             <p class="hangingin1">proper-named; undescribed</p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"yourself"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">description: <span style="color:#000080">"As good-looking as ever."</span></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"yourself"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">description: <span style='color:#000080'>"As good-looking as ever."</span></p>
                             <p class="tightin1"></p>
 
                         </td>
@@ -1066,7 +1066,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Beta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">Bt</span>
+                                                <span style='color:#000000'>Bt</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1141,7 +1141,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Beta</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Beta"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Beta"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Delta&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Alpha&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('Up from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Beta is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
@@ -1221,7 +1221,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gamma">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">Gm</span>
+                                                <span style='color:#000000'>Gm</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1296,7 +1296,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Gamma</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Gamma"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Gamma"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Alpha&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Delta&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Gamma is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
@@ -1376,7 +1376,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Delta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">Dl</span>
+                                                <span style='color:#000000'>Dl</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1451,7 +1451,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Delta</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Delta"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Delta"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Beta&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;northwest to Epsilon&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Gamma&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -1532,7 +1532,7 @@
                                     <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Epsilon">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style="color:#000000">Ep</span>
+                                                <span style='color:#000000'>Ep</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1607,7 +1607,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Epsilon</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style="color:#000080">"Epsilon"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span style='color:#000080'>"Epsilon"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;southeast to Delta&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southwest from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Epsilon is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 

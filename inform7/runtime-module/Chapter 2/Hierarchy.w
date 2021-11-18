@@ -1104,8 +1104,10 @@ void Hierarchy::establish(void) {
 
 @e K_UNCHECKED_HL
 @e K_UNCHECKED_FUNCTION_HL
-@e K_TYPELESS_INT_HL
-@e K_TYPELESS_STRING_HL
+@e K_UNCHECKED_LIST_HL
+@e K_INT32_HL
+@e K_INT2_HL
+@e K_STRING_HL
 
 @e KIND_HAP
 @e KIND_NAME_MD_HL
@@ -1206,8 +1208,10 @@ void Hierarchy::establish(void) {
 	H_BEGIN(HierarchyLocations::generic_submodule(I, kinds))
 		H_C_T(K_UNCHECKED_HL,                 I"K_unchecked")
 		H_C_T(K_UNCHECKED_FUNCTION_HL,        I"K_unchecked_function")
-		H_C_T(K_TYPELESS_INT_HL,              I"K_typeless_int")
-		H_C_T(K_TYPELESS_STRING_HL,           I"K_typeless_string")
+		H_C_T(K_UNCHECKED_LIST_HL,            I"K_unchecked_list")
+		H_C_T(K_INT32_HL,                     I"K_int32")
+		H_C_T(K_INT2_HL,                      I"K_int2")
+		H_C_T(K_STRING_HL,                    I"K_string")
 	H_END
 
 	H_BEGIN(HierarchyLocations::local_submodule(kinds))

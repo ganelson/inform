@@ -215,11 +215,11 @@ Annotations are written on the line where the symbol is created, not where
 it is declared in the symbols table. For example, here is a creation of
 a symbol for a constant:
 = (text as Inter)
-	constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000
+	constant WORD_NEXTTOHIGHBIT K_int32 = 0x4000
 =
 And here it is with an annotation:
 = (text as Inter)
-	constant WORD_NEXTTOHIGHBIT K_typeless_int = 0x4000 __hex
+	constant WORD_NEXTTOHIGHBIT K_int32 = 0x4000 __hex
 =
 The annotation, |__hex|, simply means that the natural way to print the
 value of this constant would be hexadecimal; it doesn't change the meaning
@@ -235,7 +235,7 @@ or text literal:
 There is no built-in set of annotations, and their use does not need to be
 predeclared anywhere: simply writing
 = (text as Inter)
-	constant MY_CONSTANT K_typeless_int = 27 __plugh
+	constant MY_CONSTANT K_int32 = 27 __plugh
 =
 would create the annotation |__plugh| as a possibility, if it didn't already
 exist. However, Inform has a conventional set of annotations which it uses

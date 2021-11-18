@@ -323,9 +323,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				TEMPORARY_TEXT(value)
 				if (next_is_action) WRITE_TO(value, "##");
 				@<Extract a token@>;
-				if ((next_is_action) && (RunningPipelines::get_symbol(step, action_kind_RPSYM))) {
-					CodeGen::Assimilate::ensure_action(I, step, P, value);
-				}
+				if (next_is_action) CodeGen::Assimilate::ensure_action(I, step, P, value);
 				next_is_action = FALSE;
 				if (plm == ARRAY_PLM) {
 					if (Str::eq(value, I"+")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '+'", NULL);
@@ -534,7 +532,7 @@ void CodeGen::Assimilate::ensure_action(inter_tree *I, pipeline_step *step, inte
 		DISCARD_TEXT(unsharped)
 		Produce::guard(Inter::Constant::new_numerical(IBM,
 			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, action_kind_RPSYM)),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 			LITERAL_IVAL, 10000, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 		Inter::Symbols::annotate_i(asymb, ACTION_IANN, 1);
 	}

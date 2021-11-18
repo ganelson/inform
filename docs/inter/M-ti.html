@@ -330,13 +330,13 @@ a symbol for a constant:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> WORD_NEXTTOHIGHBIT </span><span class="identifier-syntax">K_typeless_int</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">x4000</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> WORD_NEXTTOHIGHBIT </span><span class="identifier-syntax">K_int32</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">x4000</span>
 </pre>
 <p class="commentary">And here it is with an annotation:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> WORD_NEXTTOHIGHBIT </span><span class="identifier-syntax">K_typeless_int</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">x4000 </span><span class="identifier-syntax">__hex</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> WORD_NEXTTOHIGHBIT </span><span class="identifier-syntax">K_int32</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">x4000 </span><span class="identifier-syntax">__hex</span>
 </pre>
 <p class="commentary">The annotation, <span class="extract"><span class="extract-syntax">__hex</span></span>, simply means that the natural way to print the
 value of this constant would be hexadecimal; it doesn't change the meaning
@@ -357,7 +357,7 @@ predeclared anywhere: simply writing
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> MY_CONSTANT </span><span class="identifier-syntax">K_typeless_int</span><span class="plain-syntax"> = </span><span class="constant-syntax">27</span><span class="plain-syntax"> </span><span class="identifier-syntax">__plugh</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> MY_CONSTANT </span><span class="identifier-syntax">K_int32</span><span class="plain-syntax"> = </span><span class="constant-syntax">27</span><span class="plain-syntax"> </span><span class="identifier-syntax">__plugh</span>
 </pre>
 <p class="commentary">would create the annotation <span class="extract"><span class="extract-syntax">__plugh</span></span> as a possibility, if it didn't already
 exist. However, Inform has a conventional set of annotations which it uses

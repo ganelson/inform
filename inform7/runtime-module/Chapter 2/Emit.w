@@ -106,7 +106,9 @@ void Emit::stvp_inner(inter_symbol *S, inter_ti *v1, inter_ti *v2,
 
 @h Kinds.
 Inter has a very simple, and non-binding, system of "kinds" -- a much simpler
-one than Inform. We need symbols to refer to some basic Inter kinds, and here they are.
+one than Inform. We need symbols to refer to some basic Inter kinds, and here
+they are. (See also //pipeline: New Stage//, where a matching set is made for
+other Inter business: we want to keep this minimum set matching.)
 
 The way these are created is typical. First we ask //Hierarchy// for the
 Inter tree position of what we're intending to make. Then call |Packaging::enter_home_of|
@@ -117,7 +119,9 @@ again to return to where we were.
 =
 inter_symbol *unchecked_interk = NULL;
 inter_symbol *unchecked_function_interk = NULL;
+inter_symbol *unchecked_list_interk = NULL;
 inter_symbol *int_interk = NULL;
+inter_symbol *boolean_interk = NULL;
 inter_symbol *string_interk = NULL;
 
 void Emit::rudimentary_kinds(void) {
@@ -138,13 +142,27 @@ void Emit::rudimentary_kinds(void) {
 		FUNCTION_ICON, 2, operands);
 	Packaging::exit(Emit::tree(), save);
 
-	inter_name *KTI = Hierarchy::find(K_TYPELESS_INT_HL);
+	inter_name *KLF = Hierarchy::find(K_UNCHECKED_LIST_HL);
+	save = Packaging::enter_home_of(KLF);
+	unchecked_list_interk = InterNames::to_symbol(KLF);
+	operands[0] = Emit::symbol_id(unchecked_interk);
+	Emit::kind_inner(Emit::symbol_id(unchecked_list_interk), LIST_IDT, 0,
+		LIST_ICON, 1, operands);
+	Packaging::exit(Emit::tree(), save);
+
+	inter_name *KTI = Hierarchy::find(K_INT32_HL);
 	save = Packaging::enter_home_of(KTI);
 	int_interk = InterNames::to_symbol(KTI);
 	Emit::kind_inner(Emit::symbol_id(int_interk), INT32_IDT, 0, BASE_ICON, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 
-	inter_name *KTS = Hierarchy::find(K_TYPELESS_STRING_HL);
+	inter_name *KTB = Hierarchy::find(K_INT2_HL);
+	save = Packaging::enter_home_of(KTB);
+	boolean_interk = InterNames::to_symbol(KTB);
+	Emit::kind_inner(Emit::symbol_id(boolean_interk), INT2_IDT, 0, BASE_ICON, 0, NULL);
+	Packaging::exit(Emit::tree(), save);
+
+	inter_name *KTS = Hierarchy::find(K_STRING_HL);
 	save = Packaging::enter_home_of(KTS);
 	string_interk = InterNames::to_symbol(KTS);
 	Emit::kind_inner(Emit::symbol_id(string_interk), TEXT_IDT, 0, BASE_ICON, 0, NULL);
