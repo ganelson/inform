@@ -82,7 +82,7 @@ inter_symbol *Veneer::find(inter_tree *I, text_stream *S, inter_symbol *unchecke
 inter_symbol *Veneer::make(inter_tree *I, inter_symbol **slot, text_stream *S, text_stream *T, inter_symbol *unchecked_kind_symbol) {
 	if (*slot == NULL) {
 		inter_package *veneer_package = Packaging::incarnate(Site::veneer_request(I));
-		inter_bookmark *IBM = Site::veneer_booknark(I);
+		inter_bookmark *IBM = Site::veneer_bookmark(I);
 		inter_symbols_table *tab = Inter::Packages::scope(veneer_package);
 		*slot = InterSymbolsTables::symbol_from_name_creating(tab, S);
 		if (Str::len(T) > 0) Inter::Symbols::set_translate(*slot, T);

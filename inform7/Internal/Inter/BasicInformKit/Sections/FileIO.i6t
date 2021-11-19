@@ -2,13 +2,6 @@ FileIO Template.
 
 Reading and writing external files, in the Glulx virtual machine only.
 
-@h Language.
-This whole template contains material used only if the "Glulx external files"
-element is part of Inform's current definition, so:
-
-=
-#IFDEF FILES_PLUGIN;
-
 @h Structure.
 The I7 kind of value "auxiliary-file" is an |-->| array, holding a memory
 structure containing information about external files. The following
@@ -404,10 +397,3 @@ run-time problem when there is no alternative.
 [ FileIO_PrintContents extf; FileIO_PutTable(extf); ];
 [ FileIO_PutContents extf; FileIO_PutTable(extf); ];
 #ENDIF; ! TARGET_GLULX
-
-@h Back To Core.
-
-=
-#IFNOT; ! FILES_PLUGIN
-[ FileIO_GetC extf; return -1; ];
-#ENDIF; ! FILES_PLUGIN

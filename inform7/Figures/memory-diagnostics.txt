@@ -1,4 +1,4 @@
-Total memory consumption was 399446K = 390 MB
+Total memory consumption was 399444K = 390 MB
 
 61.0% was used for 2020300 objects, in 379646 frames in 305 x 800K = 244000K = 238 MB:
 
@@ -238,7 +238,7 @@ Total memory consumption was 399446K = 390 MB
 
 38.9% was used for memory not allocated for objects:
 
-    20.3%  text stream storage                      83163944 bytes in 543402 claims
+    20.3%  text stream storage                      83162236 bytes in 543391 claims
      4.4%  dictionary storage                       18326016 bytes in 33307 claims
      ----  sorting                                  736 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims
@@ -247,7 +247,7 @@ Total memory consumption was 399446K = 390 MB
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
      1.0%  inter symbols storage                    4172240 bytes in 27675 claims
-     4.1%  inter bytecode storage                   16802764 bytes in 14 claims
+     4.1%  inter bytecode storage                   16802748 bytes in 14 claims
      3.9%  inter links storage                      16174208 bytes in 266 claims
      ----  inter tree location list storage         191232 bytes in 32 claims
      0.4%  instance-of-kind counting                1695204 bytes in 1 claim

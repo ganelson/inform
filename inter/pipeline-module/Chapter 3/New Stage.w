@@ -4,9 +4,7 @@ This stage takes an empty (or wiped) repository and equips it with just the
 absolute basics, so that it is ready to have substantive material added
 at a later stage.
 
-@
-
-=
+@ =
 void NewStage::create_pipeline_stage(void) {
 	ParsingPipelines::new_stage(I"new", NewStage::run, NO_STAGE_ARG, FALSE);
 }
@@ -39,7 +37,7 @@ int NewStage::run(pipeline_step *step) {
 	@<Create the boolean kind@>;
 	@<Create the string kind@>;
 
-	@<Create some veneer resources@>;
+	@<Define some architecture constants@>;
 	return TRUE;
 }
 
@@ -142,36 +140,44 @@ end up being basically the same thing.)
 		TEXT_IDT, 0, BASE_ICON, 0, NULL,
 		(inter_ti) Inter::Bookmarks::baseline(&in_generic_kinds) + 1, NULL);
 
-@<Create some veneer resources@> =
-	inter_bookmark *in_veneer = Site::veneer_booknark(I);
+@ Lastly, we define the constants |WORDSIZE|, |DEBUG| (if applicable) and
+either |TARGET_ZCODE| or |TARGET_GLULX|, as appropriate. These really now mean
+"target 16-bit" or "target 32-bit", and their names are a hangover from when
+Inform 7 could only work with Inform 6. The reason we need to define these
+is so that if a kit is parsed from source and added to this tree, we will then
+be able to resolve conditional compilation matter placed inside, e.g.,
+|#ifdef TARGET_ZCODE;| ... |#endif;| directives.
+
+For now, at least, these live in the package |main/veneer|.
+
+@<Define some architecture constants@> =
+	inter_bookmark *in_veneer = Site::veneer_bookmark(I);
 	inter_package *veneer_p = Inter::Packages::veneer(I);
-	inter_symbol *vi_unchecked = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"K_unchecked");
+	inter_symbol *vi_unchecked =
+		InterSymbolsTables::create_with_unique_name(
+			Inter::Bookmarks::scope(in_veneer), I"K_unchecked");
 	InterSymbolsTables::equate(vi_unchecked, unchecked_kind_symbol);
-	inter_symbol *con_name = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"WORDSIZE");
+
+	inter_symbol *con_name = InterSymbolsTables::create_with_unique_name(
+		Inter::Bookmarks::scope(in_veneer), I"WORDSIZE");
 	Inter::Constant::new_numerical(in_veneer,
 		InterSymbolsTables::id_from_symbol(I, veneer_p, con_name),
 		InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 		LITERAL_IVAL, (Z)?2:4,
 		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
-	inter_symbol *target_name;
-	if (Z) target_name = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"TARGET_ZCODE");
-	else target_name = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"TARGET_GLULX");
+	inter_symbol *target_name = InterSymbolsTables::create_with_unique_name(
+		Inter::Bookmarks::scope(in_veneer), (Z)?I"TARGET_ZCODE":I"TARGET_GLULX");
 	Inter::Constant::new_numerical(in_veneer,
 		InterSymbolsTables::id_from_symbol(I, veneer_p, target_name),
 		InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 		LITERAL_IVAL, 1,
 		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	if (D) {
-		inter_symbol *D_name = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"DEBUG");
+		inter_symbol *D_name = InterSymbolsTables::create_with_unique_name(
+			Inter::Bookmarks::scope(in_veneer), I"DEBUG");
 		Inter::Constant::new_numerical(in_veneer,
 			InterSymbolsTables::id_from_symbol(I, veneer_p, D_name),
 			InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
 			LITERAL_IVAL, 1,
 			(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
 	}
-	inter_symbol *P_name = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(in_veneer), I"FILES_PLUGIN");
-	Inter::Constant::new_numerical(in_veneer,
-		InterSymbolsTables::id_from_symbol(I, veneer_p, P_name),
-		InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
-		LITERAL_IVAL, 1,
-		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);

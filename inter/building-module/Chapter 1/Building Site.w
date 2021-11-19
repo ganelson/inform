@@ -270,7 +270,7 @@ package_request *Site::veneer_request(inter_tree *I) {
 	}
 	return I->site.veneer_pr;
 }
-inter_bookmark *Site::veneer_booknark(inter_tree *I) {
+inter_bookmark *Site::veneer_bookmark(inter_tree *I) {
 	Site::veneer_request(I);
 	return &(I->site.veneer_bookmark);
 }
