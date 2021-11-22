@@ -18,7 +18,7 @@ Chapter 2: Pipelines
 
 Chapter 3: Linking Stages
 	New Stage
-	Attach Stage
+	Load Binary Kits Stage
 	Parsing Stages
 	Template Reader
 	Parse Linked Matter

@@ -56,17 +56,12 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 
 	pathname *kit_path = S->associated_copy->location_if_path;
 	dictionary *pipeline_vars = ParsingPipelines::basic_dictionary(NULL);
-	inbuild_requirement *req =
-		Requirements::any_version_of(
-			Works::new(pipeline_genre, I"assimilate.interpipeline", NULL));
-	inbuild_search_result *R =
-		Nests::search_for_best(req, search_list);
-	if (R == NULL) {
+	filename *pipeline_as_file = InterSkill::filename_of_pipeline(I"assimilate", search_list);
+	if (pipeline_as_file == NULL) {
 		Errors::nowhere("assimilate pipeline could not be found");
 		return FALSE;
 	}
-	filename *pipeline_as_file = R->copy->location_if_file;
-
+	
 	filename *assim = Architectures::canonical_binary(kit_path, A);
 	filename *assim_t = Architectures::canonical_textual(kit_path, A);
 	TEMPORARY_TEXT(fullname)
@@ -79,11 +74,11 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 	Str::copy(Dictionaries::create_text(pipeline_vars, I"*kit"),
 		Pathnames::directory_name(kit_path));
 
-	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
-	ADD_TO_LINKED_LIST(S->associated_copy->location_if_path, pathname, inter_paths);
 	inter_pipeline *SS =
-		ParsingPipelines::from_file(pipeline_as_file, pipeline_vars);
+		ParsingPipelines::from_file(pipeline_as_file, pipeline_vars, search_list);
 	if (SS) {
+		linked_list *inter_paths = NEW_LINKED_LIST(pathname);
+		ADD_TO_LINKED_LIST(S->associated_copy->location_if_path, pathname, inter_paths);
 		linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);
 		RunningPipelines::run(NULL, SS, NULL, inter_paths, requirements_list, S->for_vm);
 		return TRUE;
@@ -93,6 +88,15 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 	}
 	#endif
 	return FALSE;
+}
+
+filename *InterSkill::filename_of_pipeline(text_stream *name, linked_list *search_list) {
+	inbuild_requirement *req =
+		Requirements::any_version_of(
+			Works::new(pipeline_genre, name, NULL));
+	inbuild_search_result *R = Nests::search_for_best(req, search_list);
+	if (R == NULL) return NULL;
+	return R->copy->location_if_file;
 }
 
 @h Code generation.
@@ -131,7 +135,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 		}
 		F = R->copy->location_if_file;
 	}
-	inter_pipeline *pipeline = ParsingPipelines::from_file(F, pipeline_vars);
+	inter_pipeline *pipeline = ParsingPipelines::from_file(F, pipeline_vars, search_list);
 	if (pipeline == NULL) {
 		Errors::nowhere("inter pipeline file could not be parsed");
 		return FALSE;

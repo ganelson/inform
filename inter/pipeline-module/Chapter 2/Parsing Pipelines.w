@@ -13,14 +13,18 @@ typedef struct inter_pipeline {
 	struct dictionary *variables;
 	int erroneous; /* a syntax error occurred when parsing this */
 	struct pipeline_ephemera ephemera; /* temporary storage when running */
+	struct linked_list *search_list; /* used when parsing only */
+	struct pathname *local;
 	CLASS_DEFINITION
 } inter_pipeline;
 
-inter_pipeline *ParsingPipelines::new_pipeline(dictionary *D) {
+inter_pipeline *ParsingPipelines::new_pipeline(dictionary *D, linked_list *L, pathname *local) {
 	inter_pipeline *S = CREATE(inter_pipeline);
 	S->variables = D;
 	S->steps = NEW_LINKED_LIST(pipeline_step);
 	S->erroneous = FALSE;
+	S->search_list = L;
+	S->local = local;
 	RunningPipelines::clean_pipeline(S);
 	return S;
 }
@@ -109,8 +113,9 @@ supplied on the command line. Here, we turn such a description -- in effect
 a program for a very simple programming language -- into an //inter_pipeline//.
 
 =
-inter_pipeline *ParsingPipelines::from_file(filename *F, dictionary *D) {
-	inter_pipeline *S = ParsingPipelines::new_pipeline(D);
+inter_pipeline *ParsingPipelines::from_file(filename *F, dictionary *D,
+	linked_list *search_list) {
+	inter_pipeline *S = ParsingPipelines::new_pipeline(D, search_list, Filenames::up(F));
 	TextFiles::read(F, FALSE, "can't open inter pipeline file",
 		TRUE, ParsingPipelines::scan_line, NULL, (void *) S);
 	if (S->erroneous) return NULL;
@@ -123,15 +128,15 @@ void ParsingPipelines::scan_line(text_stream *line, text_file_position *tfp, voi
 }
 
 inter_pipeline *ParsingPipelines::from_text(text_stream *instructions, dictionary *D) {
-	inter_pipeline *S = ParsingPipelines::new_pipeline(D);
+	inter_pipeline *S = ParsingPipelines::new_pipeline(D, NULL, NULL);
 	ParsingPipelines::parse_line(S, instructions, NULL);
 	if (S->erroneous) return NULL;
 	return S;
 }
 
 @ Either way, then, a sequence of 1 or more textual lines of description is
-passed to the following. It breaks down the line into 1 or more steps, divided
-by commas.
+passed to the following. It breaks down the line into 1 or more instructions,
+divided by commas.
 
 =
 void ParsingPipelines::parse_line(inter_pipeline *pipeline, text_stream *instructions,
@@ -144,21 +149,46 @@ void ParsingPipelines::parse_line(inter_pipeline *pipeline, text_stream *instruc
 			PUT_TO(T, Str::get(P));
 	match_results mr = Regexp::create_mr();
 	while (Regexp::match(&mr, T, L" *(%c+?) *,+ *(%c*?) *")) {
-		pipeline_step *ST = ParsingPipelines::parse_step(pipeline, mr.exp[0], tfp);
-		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, pipeline->steps);
-		else pipeline->erroneous = TRUE;
+		ParsingPipelines::parse_instruction(pipeline, mr.exp[0], tfp);
 		Str::copy(T, mr.exp[1]);
 	}
-	if (Regexp::match(&mr, T, L" *(%c+?) *")) {
-		pipeline_step *ST = ParsingPipelines::parse_step(pipeline, mr.exp[0], tfp);
-		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, pipeline->steps);
-		else pipeline->erroneous = TRUE;
-	}
+	if (Regexp::match(&mr, T, L" *(%c+?) *"))
+		ParsingPipelines::parse_instruction(pipeline, mr.exp[0], tfp);
 	Regexp::dispose_of(&mr);
 	DISCARD_TEXT(T)
 }
 
-@ Finally, an individual textual description |S| of a dtep is turned into a
+@ Instructions are mostly steps, but...
+
+=
+void ParsingPipelines::parse_instruction(inter_pipeline *pipeline, text_stream *T,
+	text_file_position *tfp) {
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, T, L"!%c*")) {
+		;
+	} else if (Regexp::match(&mr, T, L"run pipeline (%c*)")) {
+		#ifdef SUPERVISOR_MODULE
+		filename *F = InterSkill::filename_of_pipeline(mr.exp[0], pipeline->search_list);
+		#endif
+		#ifndef SUPERVISOR_MODULE
+		filename *F = Filenames::in(pipeline->local, mr.exp[0]);
+		#endif
+		if (F == NULL) {
+			PipelineErrors::syntax_with(tfp, T,
+				"unable to find the pipeline '%S'", mr.exp[0]);
+			pipeline->erroneous = TRUE;
+		} else
+			TextFiles::read(F, FALSE, "can't open inter pipeline file",
+				TRUE, ParsingPipelines::scan_line, NULL, (void *) pipeline);
+	} else {
+		pipeline_step *ST = ParsingPipelines::parse_step(pipeline, T, tfp);
+		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, pipeline->steps);
+		else pipeline->erroneous = TRUE;
+	}
+	Regexp::dispose_of(&mr);
+}
+
+@ Finally, an individual textual description |S| of a step is turned into a
 //pipeline_step//.
 
 For documentation on the syntax here, see //inter: Pipelines and Stages//.
@@ -291,7 +321,7 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 		SimpleStages::create_pipeline_stages();
 		CodeGen::create_pipeline_stage();
 		NewStage::create_pipeline_stage();
-		AttachStage::create_pipeline_stage();
+		LoadBinaryKitsStage::create_pipeline_stage();
 		CodeGen::Assimilate::create_pipeline_stage();
 		DetectIndirectCalls::create_pipeline_stage();
 		CodeGen::Eliminate::create_pipeline_stage();

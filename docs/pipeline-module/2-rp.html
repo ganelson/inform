@@ -126,7 +126,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure pipeline_step_ephemera is accessed in 2/pp, 2/pe, 2/rmws, 3/ns, 3/as, 3/ps, 3/plm, 3/rcc, 3/ass, 3/res, 3/ip, 3/dic, 3/unq, 3/rv, 4/su, 5/erm, 5/erl, 5/ero and here.</li></ul>
+<ul class="endnotetexts"><li>The structure pipeline_step_ephemera is accessed in 2/pp, 2/pe, 2/rmws, 3/ns, 3/lbks, 3/ps, 3/plm, 3/rcc, 3/ass, 3/res, 3/ip, 3/dic, 3/unq, 3/rv, 4/su, 5/erm, 5/erl, 5/ero and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>This outer layer is all just instrumentation, really: we run through the
 steps in turn, timing how long each one took us.
 </p>
@@ -167,7 +167,7 @@ steps in turn, timing how long each one took us.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Time::stop_stopwatch</span><span class="plain-syntax">(</span><span class="identifier-syntax">prep_timer</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">STAGE_NAME</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">STAGE_NAME</span><span class="plain-syntax">, </span><span class="string-syntax">"inter step %d/%d: "</span><span class="plain-syntax">, ++</span><span class="identifier-syntax">step_count</span><span class="plain-syntax">, </span><span class="identifier-syntax">step_total</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="2-pp.html#SP11" class="function-link"><span class="function-syntax">ParsingPipelines::write_step</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">STAGE_NAME</span><span class="plain-syntax">, </span><span class="identifier-syntax">step</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="2-pp.html#SP12" class="function-link"><span class="function-syntax">ParsingPipelines::write_step</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">STAGE_NAME</span><span class="plain-syntax">, </span><span class="identifier-syntax">step</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Log::new_stage</span><span class="plain-syntax">(</span><span class="identifier-syntax">STAGE_NAME</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">step_timer</span><span class="plain-syntax"> =</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">Time::start_stopwatch</span><span class="plain-syntax">(</span><span class="identifier-syntax">pipeline_timer</span><span class="plain-syntax">, </span><span class="identifier-syntax">STAGE_NAME</span><span class="plain-syntax">);</span>

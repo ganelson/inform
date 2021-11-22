@@ -96,7 +96,7 @@ form, which would be written to |*outt|.
 	if (kit_to_assimilate) ADD_TO_LINKED_LIST(kit_to_assimilate, pathname, inter_paths);
 	inter_pipeline *SS;
 	if (pipeline_as_file)
-		SS = ParsingPipelines::from_file(pipeline_as_file, pipeline_vars);
+		SS = ParsingPipelines::from_file(pipeline_as_file, pipeline_vars, NULL);
 	else
 		SS = ParsingPipelines::from_text(pipeline_as_text, pipeline_vars);
 	linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);

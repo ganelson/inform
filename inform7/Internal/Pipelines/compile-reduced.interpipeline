@@ -1,5 +1,5 @@
 read <- *in
-attach
+load-binary-kits
 parse-insertions
 parse-linked-matter
 resolve-conditional-compilation
