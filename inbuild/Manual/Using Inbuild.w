@@ -242,8 +242,8 @@ file, including everything needed to use the things needed to build it, and
 so on; and then will build Example itself. As with the Unix utility |make|,
 this is an incremental process, and looks at the timestamps of files to see
 which steps are needed and which are not. If all the kits needed by Example
-are up to date, then the kits will not be re-assimilated, and so on. If the
-same project is built twice in a row, and nothing about it has changed since
+are up to date, then the kits will not be rebuilt, and so on. If the same
+project is built twice in a row, and nothing about it has changed since
 the first time, the second |-build| does nothing.
 
 Inbuild uses the graph to work out what needs to be done, and then issues

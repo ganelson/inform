@@ -1,6 +1,6 @@
 [InterSkill::] Inter Skill.
 
-The skills of kit assimilation and of code generation from Inter.
+The skills of kit building and of code generation from Inter.
 
 @h Creation.
 Note that code generation can only be done internally, and only in fact within
@@ -8,16 +8,16 @@ the |inform7| compiler: this is because the Inter code which it generates from
 is being held in memory by |inform7|.
 
 =
-build_skill *assimilate_using_inter_skill = NULL;
+build_skill *build_kit_using_inter_skill = NULL;
 build_skill *code_generate_using_inter_skill = NULL;
 
 void InterSkill::create(void) {
-	assimilate_using_inter_skill =
-		BuildSteps::new_skill(I"assimilate using inter");
-	METHOD_ADD(assimilate_using_inter_skill, BUILD_SKILL_COMMAND_MTID,
-		InterSkill::assimilate_via_shell);
-	METHOD_ADD(assimilate_using_inter_skill, BUILD_SKILL_INTERNAL_MTID,
-		InterSkill::assimilate_internally);
+	build_kit_using_inter_skill =
+		BuildSteps::new_skill(I"build kit using inter");
+	METHOD_ADD(build_kit_using_inter_skill, BUILD_SKILL_COMMAND_MTID,
+		InterSkill::build_kit_via_shell);
+	METHOD_ADD(build_kit_using_inter_skill, BUILD_SKILL_INTERNAL_MTID,
+		InterSkill::build_kit_internally);
 
 	code_generate_using_inter_skill =
 		BuildSteps::new_skill(I"code generate using inter");
@@ -28,27 +28,27 @@ void InterSkill::create(void) {
 @h Assimilation.
 
 =
-int InterSkill::assimilate_via_shell(build_skill *skill, build_step *S,
+int InterSkill::build_kit_via_shell(build_skill *skill, build_step *S,
 	text_stream *command, build_methodology *BM, linked_list *search_list) {
 	inter_architecture *A = S->for_arch;
 	if (A == NULL) internal_error("no architecture given");
 	pathname *kit_path = S->associated_copy->location_if_path;
 	Shell::quote_file(command, BM->to_inter);
 	WRITE_TO(command, "-architecture %S ", Architectures::to_codename(A));
-	WRITE_TO(command, "-assimilate ");
+	WRITE_TO(command, "-build-kit ");
 	Shell::quote_path(command, kit_path);
 	return TRUE;
 }
 
 @ Something to watch out for here is that, when running internally as part of
-|inform7|, we use the copy of the |assimilate| pipeline inside the installation
-of |inform7| (it will be in the internal nest). When we perform assimilation
-from the command line using the |inter| tool, we use the |assimilate| pipeline
-supplied in the |inter| installation. But those two files are in fact the same,
-or should be, so the effect is the same.
+|inform7|, we use the copy of the |build-kit| pipeline inside the installation
+of |inform7| (it will be in the internal nest). When we build kits from the
+command line using the |inter| tool, we use the |build-kit| pipeline supplied
+in the |inter| installation. But those two files are in fact the same, or
+should be, so the effect is the same.
 
 =
-int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
+int InterSkill::build_kit_internally(build_skill *skill, build_step *S,
 	build_methodology *BM, linked_list *search_list) {
 	#ifdef PIPELINE_MODULE
 	inter_architecture *A = S->for_arch;
@@ -56,9 +56,10 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 
 	pathname *kit_path = S->associated_copy->location_if_path;
 	dictionary *pipeline_vars = ParsingPipelines::basic_dictionary(NULL);
-	filename *pipeline_as_file = InterSkill::filename_of_pipeline(I"assimilate", search_list);
+	filename *pipeline_as_file =
+		InterSkill::filename_of_pipeline(I"build-kit", search_list);
 	if (pipeline_as_file == NULL) {
-		Errors::nowhere("assimilate pipeline could not be found");
+		Errors::nowhere("build-kit pipeline could not be found");
 		return FALSE;
 	}
 	
@@ -83,7 +84,7 @@ int InterSkill::assimilate_internally(build_skill *skill, build_step *S,
 		RunningPipelines::run(NULL, SS, NULL, inter_paths, requirements_list, S->for_vm);
 		return TRUE;
 	} else {
-		Errors::nowhere("assimilate pipeline could not be parsed");
+		Errors::nowhere("build-kit pipeline could not be parsed");
 		return FALSE;
 	}
 	#endif

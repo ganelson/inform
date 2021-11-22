@@ -42,8 +42,7 @@ void Architectures::create(void) {
 }
 
 @h Canonical filenames.
-When a kit is assimilated, its Inter code is stored in files with these
-leafnames:
+When a kit is built, its Inter code is stored in files with these leafnames:
 
 =
 filename *Architectures::canonical_binary(pathname *P, inter_architecture *A) {

@@ -1,8 +1,4 @@
-new
-parse-kit <- *kit
+parse-insertions
 parse-linked-matter
 resolve-conditional-compilation
 assimilate
-resolve-external-symbols
-detect-indirect-calls
-generate binary -> *out

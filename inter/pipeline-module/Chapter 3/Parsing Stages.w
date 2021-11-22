@@ -8,11 +8,11 @@ source code for a kit.
 
 =
 void ParsingStages::create_pipeline_stage(void) {
-	ParsingPipelines::new_stage(I"parse-kit", ParsingStages::run_parse_kit, TEMPLATE_FILE_STAGE_ARG, TRUE);	
+	ParsingPipelines::new_stage(I"load-kit-source", ParsingStages::run_load_kit_source, TEMPLATE_FILE_STAGE_ARG, TRUE);	
 	ParsingPipelines::new_stage(I"parse-insertions", ParsingStages::run_parse_insertions, NO_STAGE_ARG, FALSE);
 }
 
-int ParsingStages::run_parse_kit(pipeline_step *step) {
+int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	inter_package *main_package = Site::main_package_if_it_exists(step->ephemera.repository);
 	inter_bookmark IBM;
 	if (main_package) {

@@ -83,18 +83,18 @@ and therefore assimilation is really a cross-compilation from I6 to Inter.
 
 Kits are like so-called "fat binaries", in that they contain binary Inter
 for each different architecture with which they are compatible. Inter can
-assimilate for only one architecture at a time, so a command must specify
+build kits for only one architecture at a time, so a command must specify
 which is wanted. For example:
 = (text as ConsoleText)
-	$ inter/Tangled/inter -architecture 16 -assimilate K
-	$ inter/Tangled/inter -architecture 32d -assimilate K
+	$ inter/Tangled/inter -architecture 16 -build-kit K
+	$ inter/Tangled/inter -architecture 32d -build-kit K
 =
-Incrementally assimilating kits as needed could be done with something like
+Incrementally building kits as needed could be done with something like
 the Unix tool |make|, but in fact Inbuild has this ability: the command
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -build K
 =
-looks at the kit, works out which architectures need re-assimilation, and
+looks at the kit, works out which architectures need rebuilding, and
 then issues commands like the above to instruct |inter| to do so. Indeed,
 multiple kits can be managed with a single command:
 = (text as ConsoleText)

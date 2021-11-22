@@ -29,7 +29,7 @@ void CAssembly::end(code_generation *gen) {
 @ Inter is for the most part fully specified and cross-platform, but assembly
 language is the big hole in that. It is legal for Inter code to contain almost
 anything which purports to be assembly language. For example, the following
-code will successfully assimilate as part of an Inter kit:
+code will successfully build as part of an Inter kit:
 = (text as Inform 6)
 	[ Peculiar x;
 	    @bandersnatch x;

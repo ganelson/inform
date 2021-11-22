@@ -15,6 +15,7 @@ typedef struct inter_pipeline {
 	struct pipeline_ephemera ephemera; /* temporary storage when running */
 	struct linked_list *search_list; /* used when parsing only */
 	struct pathname *local;
+	int run_depth;
 	CLASS_DEFINITION
 } inter_pipeline;
 
@@ -25,6 +26,7 @@ inter_pipeline *ParsingPipelines::new_pipeline(dictionary *D, linked_list *L, pa
 	S->erroneous = FALSE;
 	S->search_list = L;
 	S->local = local;
+	S->run_depth = 0;
 	RunningPipelines::clean_pipeline(S);
 	return S;
 }
@@ -158,7 +160,10 @@ void ParsingPipelines::parse_line(inter_pipeline *pipeline, text_stream *instruc
 	DISCARD_TEXT(T)
 }
 
-@ Instructions are mostly steps, but...
+@ Instructions are mostly steps, but:
+
+(a) A line beginning with an |!| is a comment,
+(b) |run pipeline X| means to incorporate pipeline |X| here.
 
 =
 void ParsingPipelines::parse_instruction(inter_pipeline *pipeline, text_stream *T,
@@ -167,19 +172,30 @@ void ParsingPipelines::parse_instruction(inter_pipeline *pipeline, text_stream *
 	if (Regexp::match(&mr, T, L"!%c*")) {
 		;
 	} else if (Regexp::match(&mr, T, L"run pipeline (%c*)")) {
+		filename *F = NULL;
 		#ifdef SUPERVISOR_MODULE
-		filename *F = InterSkill::filename_of_pipeline(mr.exp[0], pipeline->search_list);
+		F = InterSkill::filename_of_pipeline(mr.exp[0], pipeline->search_list);
 		#endif
-		#ifndef SUPERVISOR_MODULE
-		filename *F = Filenames::in(pipeline->local, mr.exp[0]);
-		#endif
+		if (F == NULL) {
+			text_stream *leafname = Str::new();
+			WRITE_TO(leafname, "%S.interpipeline", mr.exp[0]);
+			F = Filenames::in(pipeline->local, leafname);
+		}
 		if (F == NULL) {
 			PipelineErrors::syntax_with(tfp, T,
 				"unable to find the pipeline '%S'", mr.exp[0]);
 			pipeline->erroneous = TRUE;
-		} else
-			TextFiles::read(F, FALSE, "can't open inter pipeline file",
-				TRUE, ParsingPipelines::scan_line, NULL, (void *) pipeline);
+		} else {
+			if (pipeline->run_depth++ > 100) {
+				PipelineErrors::syntax_with(tfp, T,
+					"pipeline seems to have become circular: '%S'", mr.exp[0]);
+				pipeline->erroneous = TRUE;
+			} else {
+				TextFiles::read(F, FALSE, "can't open inter pipeline file",
+					TRUE, ParsingPipelines::scan_line, NULL, (void *) pipeline);
+			}
+			pipeline->run_depth--;
+		}
 	} else {
 		pipeline_step *ST = ParsingPipelines::parse_step(pipeline, T, tfp);
 		if (ST) ADD_TO_LINKED_LIST(ST, pipeline_step, pipeline->steps);

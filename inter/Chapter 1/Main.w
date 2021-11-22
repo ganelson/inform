@@ -9,7 +9,7 @@ The following will be set at the command line.
 =
 pathname *path_to_inter = NULL;
 
-pathname *kit_to_assimilate = NULL;
+pathname *kit_to_build = NULL;
 pathname *domain_path = NULL;
 linked_list *inter_file_list = NULL; /* of |filename| */
 filename *output_textually = NULL;
@@ -33,9 +33,9 @@ void Main::add_pipeline_variable_from_filename(text_stream *name, filename *F) {
 When Inter is called at the command line, it begins at |main|, like all C
 programs.
 
-Inter can do three different things: assimilate a kit, run a pipeline of
+Inter can do three different things: build a kit, run a pipeline of
 code generation stages, and verify/transcode files of Inter code. In fact,
-though, that's really only two different things, because assimilation is
+though, that's really only two different things, because kit-building is
 also done with a pipeline.
 
 =
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
     @<Start up the modules@>;
 	@<Begin with an empty file list and variables dictionary@>;
 	@<Read the command line@>;
-	if (kit_to_assimilate) @<Set up a pipeline for assimilation@>;
+	if (kit_to_build) @<Set up a pipeline for kit-building@>;
 	if ((pipeline_as_file) || (pipeline_as_text))
 		@<Run the pipeline@>
 	else
@@ -72,20 +72,20 @@ it only ever writes the binary form of the code it produces, so only |*out|
 is used. But at times in the past it has been useful to debug with the text
 form, which would be written to |*outt|.
 
-@<Set up a pipeline for assimilation@> =
+@<Set up a pipeline for kit-building@> =
 	inter_architecture *A = PipelineModule::get_architecture();
 	if (A == NULL) Errors::fatal("no -architecture given");
 
 	pathname *path_to_pipelines = Pathnames::down(path_to_inter, I"Pipelines");
-	pipeline_as_file = Filenames::in(path_to_pipelines, I"assimilate.interpipeline");
+	pipeline_as_file = Filenames::in(path_to_pipelines, I"build-kit.interpipeline");
 	pipeline_as_text = NULL; 
 
 	Main::add_pipeline_variable(I"*kit",
-		Pathnames::directory_name(kit_to_assimilate));
+		Pathnames::directory_name(kit_to_build));
 	Main::add_pipeline_variable_from_filename(I"*out",
-		Architectures::canonical_binary(kit_to_assimilate, A));
+		Architectures::canonical_binary(kit_to_build, A));
 	Main::add_pipeline_variable_from_filename(I"*outt",
-		Architectures::canonical_textual(kit_to_assimilate, A));
+		Architectures::canonical_textual(kit_to_build, A));
 
 @<Run the pipeline@> =
 	if (LinkedLists::len(inter_file_list) > 0)
@@ -93,7 +93,7 @@ form, which would be written to |*outt|.
 	if ((pipeline_as_file) && (pipeline_as_text))
 		Errors::fatal("-pipeline-text and -pipeline-file are mutually exclusive");
 	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
-	if (kit_to_assimilate) ADD_TO_LINKED_LIST(kit_to_assimilate, pathname, inter_paths);
+	if (kit_to_build) ADD_TO_LINKED_LIST(kit_to_build, pathname, inter_paths);
 	inter_pipeline *SS;
 	if (pipeline_as_file)
 		SS = ParsingPipelines::from_file(pipeline_as_file, pipeline_vars, NULL);
@@ -142,7 +142,7 @@ form, which would be written to |*outt|.
 @e PIPELINE_VARIABLE_CLSW
 @e DOMAIN_CLSW
 @e ARCHITECTURE_CLSW
-@e ASSIMILATE_CLSW
+@e BUILD_KIT_CLSW
 @e INTERNAL_CLSW
 
 @<Read the command line@> =
@@ -166,8 +166,8 @@ form, which would be written to |*outt|.
 		L"specify folder of internal Inform resources");
 	CommandLine::declare_switch(ARCHITECTURE_CLSW, L"architecture", 2,
 		L"generate Inter with architecture X");
-	CommandLine::declare_switch(ASSIMILATE_CLSW, L"assimilate", 2,
-		L"assimilate (i.e., build) Inter kit X for the current architecture");
+	CommandLine::declare_switch(BUILD_KIT_CLSW, L"build-kit", 2,
+		L"build Inter kit X for the current architecture");
 		
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::add_file);
 
@@ -182,7 +182,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case PIPELINE_FILE_CLSW: pipeline_as_file = Filenames::from_text(arg); break;
 		case PIPELINE_VARIABLE_CLSW: @<Add a pipeline variable to the dictionary@>; break;
 		case DOMAIN_CLSW: domain_path = Pathnames::from_text(arg); break;
-		case ASSIMILATE_CLSW: kit_to_assimilate = Pathnames::from_text(arg); break;
+		case BUILD_KIT_CLSW: kit_to_build = Pathnames::from_text(arg); break;
 		case INTERNAL_CLSW: internal_path = Pathnames::from_text(arg); break;
 		case ARCHITECTURE_CLSW:
 			if (PipelineModule::set_architecture(arg) == FALSE)

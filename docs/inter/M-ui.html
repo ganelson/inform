@@ -169,22 +169,22 @@ and therefore assimilation is really a cross-compilation from I6 to Inter.
 
 <p class="commentary">Kits are like so-called "fat binaries", in that they contain binary Inter
 for each different architecture with which they are compatible. Inter can
-assimilate for only one architecture at a time, so a command must specify
+build kits for only one architecture at a time, so a command must specify
 which is wanted. For example:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 16</span><span class="ConsoleText-identifier-syntax"> -assimilate</span><span class="ConsoleText-plain-syntax"> K</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 32d</span><span class="ConsoleText-identifier-syntax"> -assimilate</span><span class="ConsoleText-plain-syntax"> K</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 16</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> K</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 32d</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> K</span>
 </pre>
-<p class="commentary">Incrementally assimilating kits as needed could be done with something like
+<p class="commentary">Incrementally building kits as needed could be done with something like
 the Unix tool <span class="extract"><span class="ConsoleText-extract-syntax">make</span></span>, but in fact Inbuild has this ability: the command
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -build</span><span class="ConsoleText-plain-syntax"> K</span>
 </pre>
-<p class="commentary">looks at the kit, works out which architectures need re-assimilation, and
+<p class="commentary">looks at the kit, works out which architectures need rebuilding, and
 then issues commands like the above to instruct <span class="extract"><span class="ConsoleText-extract-syntax">inter</span></span> to do so. Indeed,
 multiple kits can be managed with a single command:
 </p>

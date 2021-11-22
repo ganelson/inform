@@ -1,6 +1,6 @@
 read <- *in
 
-run pipeline normalise
+run pipeline assimilate
 
 load-binary-kits
 
