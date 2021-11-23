@@ -26,7 +26,7 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 			Site::set_assimilation_package(I, template_p);
 		}
 	} else IBM = Inter::Bookmarks::at_start_of_this_repository(step->ephemera.repository);
-	ParsingStages::link(&IBM, step, I"all", step->ephemera.the_PP, NULL);
+	ParsingStages::link_all(&IBM, step, step->ephemera.the_PP);
 	return TRUE;
 }
 
@@ -35,58 +35,45 @@ int ParsingStages::run_parse_insertions(pipeline_step *step) {
 	inter_bookmark IBM;
 	if (main_package) IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
 	else IBM = Inter::Bookmarks::at_start_of_this_repository(step->ephemera.repository);
-	ParsingStages::link(&IBM, step, I"none", step->ephemera.the_PP, NULL);
+	ParsingStages::link(&IBM, step, I"none", step->ephemera.the_PP);
 	return TRUE;
 }
 
-void ParsingStages::link(inter_bookmark *IBM, pipeline_step *step, text_stream *template_file, linked_list *PP, inter_package *owner) {
+void ParsingStages::link_all(inter_bookmark *IBM, pipeline_step *step, linked_list *PP) {
 	if (IBM == NULL) internal_error("no inter to link with");
-	inter_tree *I = Inter::Bookmarks::tree(IBM);
-	if (Str::eq(template_file, I"none"))
-		InterTree::traverse(I, ParsingStages::catch_all_visitor, NULL, NULL, 0);
-	else
-		InterTree::traverse(I, ParsingStages::visitor, NULL, NULL, 0);
-
-	inter_package *template_package = Site::ensure_assimilation_package(I, RunningPipelines::get_symbol(step, plain_ptype_RPSYM));	
-	
-	inter_bookmark link_bookmark =
-		Inter::Bookmarks::at_end_of_this_package(template_package);
-
-	I6T_kit kit = TemplateReader::kit_out(&link_bookmark, &(ParsingStages::receive_raw),  &(ParsingStages::receive_command), NULL);
-	kit.no_i6t_file_areas = LinkedLists::len(PP);
-	pathname *P;
-	int i=0;
-	LOOP_OVER_LINKED_LIST(P, pathname, PP)
-		kit.i6t_files[i] = Pathnames::down(P, I"Sections");
-	int stage = EARLY_LINK_STAGE;
-	if (Str::eq(template_file, I"none")) stage = CATCH_ALL_LINK_STAGE;
-	TEMPORARY_TEXT(T)
-	TemplateReader::I6T_file_intervene(T, stage, NULL, NULL, &kit);
-	ParsingStages::receive_raw(T, &kit);
-	DISCARD_TEXT(T)
-	if (Str::ne(template_file, I"none"))
-		TemplateReader::extract(template_file, &kit);
+	I6T_kit kit;
+	@<Make a suitable I6T kit@>;
+	TemplateReader::extract(I"all", &kit);
 }
 
-void ParsingStages::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	if (P->W.data[ID_IFLD] == LINK_IST) {
-		text_stream *S1 = Inode::ID_to_text(P, P->W.data[SEGMENT_LINK_IFLD]);
-		text_stream *S2 = Inode::ID_to_text(P, P->W.data[PART_LINK_IFLD]);
-		text_stream *S3 = Inode::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
-		text_stream *S4 = Inode::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
-		void *ref = Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
-		TemplateReader::new_intervention((int) P->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
-	}
+void ParsingStages::link(inter_bookmark *IBM, pipeline_step *step, text_stream *template_file, linked_list *PP) {
+	if (IBM == NULL) internal_error("no inter to link with");
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	I6T_kit kit;
+	@<Make a suitable I6T kit@>;
+	InterTree::traverse(I, ParsingStages::catch_all_visitor, &kit, NULL, 0);
+	TEMPORARY_TEXT(T)
+	TemplateReader::I6T_file_intervene(T, CATCH_ALL_LINK_STAGE, NULL, NULL, &kit);
+	ParsingStages::receive_raw(T, &kit);
+	DISCARD_TEXT(T)
 }
 
 void ParsingStages::catch_all_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	if (P->W.data[ID_IFLD] == LINK_IST) {
-		text_stream *S1 = NULL;
-		text_stream *S2 = NULL;
+//		text_stream *S1 = NULL;
+//		text_stream *S2 = NULL;
 		text_stream *S3 = Inode::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
-		text_stream *S4 = Inode::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
-		void *ref = Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
-		TemplateReader::new_intervention((int) P->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
+//		text_stream *S4 = Inode::ID_to_text(P, P->W.data[TO_SEGMENT_LINK_IFLD]);
+		#ifdef CORE_MODULE
+		current_sentence = (parse_node *) Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
+		#endif
+//		void *ref = Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
+//		TemplateReader::new_intervention((int) P->W.data[STAGE_LINK_IFLD], S1, S2, S3, S4, ref);
+		TEMPORARY_TEXT(T)
+		I6T_kit *kit = (I6T_kit *) state;
+		TemplateReader::interpret(T, S3, NULL, -1, kit, NULL);
+		ParsingStages::receive_raw(T, kit);
+		DISCARD_TEXT(T)
 	}
 }
 
@@ -96,6 +83,20 @@ void ParsingStages::entire_splat(inter_bookmark *IBM, text_stream *origin, text_
 	Str::copy(glob_storage, content);
 	Produce::guard(Inter::Splat::new(IBM, SID, 0, level, 0, NULL));
 }
+
+@<Make a suitable I6T kit@> =
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_package *template_package = Site::ensure_assimilation_package(I, RunningPipelines::get_symbol(step, plain_ptype_RPSYM));	
+	
+	inter_bookmark link_bookmark =
+		Inter::Bookmarks::at_end_of_this_package(template_package);
+
+	kit = TemplateReader::kit_out(&link_bookmark, &(ParsingStages::receive_raw),  &(ParsingStages::receive_command), NULL);
+	kit.no_i6t_file_areas = LinkedLists::len(PP);
+	pathname *P;
+	int i=0;
+	LOOP_OVER_LINKED_LIST(P, pathname, PP)
+		kit.i6t_files[i++] = Pathnames::down(P, I"Sections");
 
 @
 
