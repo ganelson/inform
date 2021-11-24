@@ -182,30 +182,27 @@ compilation.
 they can be rather lengthy.
 
 @<Post mortem logging@> =
-	if (problem_count == 0) {
-		TemplateReader::report_unacted_upon_interventions();
-		if (diagnostics_path) {
-			Main::write_diagnostics(
-				I"timings-diagnostics.txt", &Task::log_stopwatch);
-			Main::write_diagnostics(
-				I"memory-diagnostics.txt", &Memory::log_statistics);
-			Main::write_diagnostics(
-				I"syntax-diagnostics.txt", &Main::log_task_syntax_tree);
-			Main::write_diagnostics(
-				I"syntax-summary.txt", &Main::log_task_syntax_summary);
-			Main::write_diagnostics(
-				I"preform-diagnostics.txt", &Instrumentation::log);
-			Main::write_diagnostics(
-				I"preform-summary.txt", &Main::log_preform_summary);
-			Main::write_diagnostics(
-				I"documentation-diagnostics.txt", &DocReferences::log_statistics);
-			Main::write_diagnostics(
-				I"verbs-diagnostics.txt", &VerbUsages::log_all);
-			Main::write_diagnostics(
-				I"excerpts-diagnostics.txt", &FromLexicon::statistics);
-			Main::write_diagnostics(
-				I"stock-diagnostics.txt", &Stock::log_all);
-		}
+	if ((problem_count == 0) && (diagnostics_path)) {
+		Main::write_diagnostics(
+			I"timings-diagnostics.txt", &Task::log_stopwatch);
+		Main::write_diagnostics(
+			I"memory-diagnostics.txt", &Memory::log_statistics);
+		Main::write_diagnostics(
+			I"syntax-diagnostics.txt", &Main::log_task_syntax_tree);
+		Main::write_diagnostics(
+			I"syntax-summary.txt", &Main::log_task_syntax_summary);
+		Main::write_diagnostics(
+			I"preform-diagnostics.txt", &Instrumentation::log);
+		Main::write_diagnostics(
+			I"preform-summary.txt", &Main::log_preform_summary);
+		Main::write_diagnostics(
+			I"documentation-diagnostics.txt", &DocReferences::log_statistics);
+		Main::write_diagnostics(
+			I"verbs-diagnostics.txt", &VerbUsages::log_all);
+		Main::write_diagnostics(
+			I"excerpts-diagnostics.txt", &FromLexicon::statistics);
+		Main::write_diagnostics(
+			I"stock-diagnostics.txt", &Stock::log_all);
 	}
 
 @<Shutdown and rennab@> =

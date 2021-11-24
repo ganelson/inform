@@ -1,27 +1,27 @@
 100.0% in inform7 run
-     55.4% in compilation to Inter
-         40.0% in //Sequence::undertake_queued_tasks//
+     55.6% in compilation to Inter
+         40.1% in //Sequence::undertake_queued_tasks//
           3.5% in //MajorNodes::pre_pass//
-          2.6% in //MajorNodes::pass_1//
+          2.4% in //MajorNodes::pass_1//
           2.1% in //RTPhrasebook::compile_entries//
           1.3% in //ImperativeDefinitions::assess_all//
-          1.0% in //RTKindConstructors::compile//
+          1.2% in //RTKindConstructors::compile//
           0.4% in //MajorNodes::pass_2//
+          0.4% in //Sequence::undertake_queued_tasks//
           0.4% in //World::stage_V//
           0.3% in //ImperativeDefinitions::compile_first_block//
-          0.3% in //Sequence::undertake_queued_tasks//
           0.3% in //Sequence::undertake_queued_tasks//
           0.1% in //CompletionModule::compile//
           0.1% in //InferenceSubjects::emit_all//
           0.1% in //RTKindConstructors::compile_permissions//
           0.1% in //Task::make_built_in_kind_constructors//
-          2.1% not specifically accounted for
-     42.5% in running Inter pipeline
-         12.1% in step preparation
-          9.8% in inter step 7/16: consolidate-text
-          8.0% in inter step 6/16: load-binary-kits
-          7.0% in inter step 16/16: generate inform6 -> auto.inf
-          1.6% in inter step 11/16: make-identifiers-unique
+          2.0% not specifically accounted for
+     42.3% in running Inter pipeline
+         11.9% in step preparation
+          9.7% in inter step 7/16: consolidate-text
+          8.2% in inter step 6/16: load-binary-kits
+          6.9% in inter step 16/16: generate inform6 -> auto.inf
+          1.5% in inter step 11/16: make-identifiers-unique
           0.4% in inter step 12/16: reconcile-verbs
           0.3% in inter step 14/16: eliminate-redundant-operations
           0.3% in inter step 5/16: assimilate
@@ -31,6 +31,6 @@
           0.1% in inter step 3/16: parse-linked-matter
           0.1% in inter step 4/16: resolve-conditional-compilation
           0.1% in inter step 9/16: inspect-plugs
-          1.6% not specifically accounted for
-      1.6% in supervisor
+          1.7% not specifically accounted for
+      1.7% in supervisor
       0.4% not specifically accounted for

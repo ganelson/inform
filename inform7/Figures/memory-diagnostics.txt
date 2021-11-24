@@ -225,19 +225,19 @@ Total memory consumption was 400127K = 391 MB
      ----  article                                  2 objects, 80 bytes
      ----  compile_task_data                        1 object, 80 bytes
      ----  group_together_function                  2 objects, 80 bytes
-     ----  build_methodology                        1 object, 56 bytes
      ----  figures_data                             1 object, 56 bytes
      ----  inter_warehouse                          1 object, 56 bytes
+     ----  build_methodology                        1 object, 56 bytes
      ----  HTML_file_state                          1 object, 48 bytes
      ----  star_invention                           1 object, 48 bytes
-     ----  kind_template_definition                 1 object, 40 bytes
-     ----  by_function_bp_data                      1 object, 40 bytes
-     ----  I6_generation_data                       1 object, 40 bytes
      ----  loop_over_scope                          1 object, 40 bytes
+     ----  I6_generation_data                       1 object, 40 bytes
+     ----  by_function_bp_data                      1 object, 40 bytes
+     ----  kind_template_definition                 1 object, 40 bytes
 
 39.0% was used for memory not allocated for objects:
 
-    20.4%  text stream storage                      83603140 bytes in 548181 claims
+    20.4%  text stream storage                      83602988 bytes in 548180 claims
      4.5%  dictionary storage                       18457088 bytes in 33308 claims
      ----  sorting                                  736 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims

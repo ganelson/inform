@@ -10,7 +10,6 @@ which use this module:
 
 @ This module defines the following classes:
 
-@e I6T_intervention_CLASS
 @e inter_pipeline_CLASS
 @e pipeline_step_CLASS
 @e uniqueness_count_CLASS
@@ -22,7 +21,6 @@ which use this module:
 @e tree_inventory_item_CLASS
 
 =
-DECLARE_CLASS(I6T_intervention)
 DECLARE_CLASS(inter_pipeline)
 DECLARE_CLASS(pipeline_step)
 DECLARE_CLASS(uniqueness_count)
