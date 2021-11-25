@@ -5,6 +5,14 @@ imsertions made using Inform 7's low-level features, or after reading the
 source code for a kit.
 
 @h The two stages.
+These stages have more in common than they first appear. Both convert I6T-syntax
+source code into a series of |SPLAT_IST| nodes in the Inter tree, with one
+such node for each different directive in the I6T source.
+
+The T in "I6T" stands for "template", which in the 2010s was a mechanism for
+providing I6 code to I7. That's not the arrangement any more, but the syntax
+(mostly) lives on, and so does the name I6T. Still, it's really just the same
+thing as Inform 6 code in an Inweb-style literate programming notation.
 
 =
 void ParsingStages::create_pipeline_stage(void) {
@@ -15,9 +23,8 @@ void ParsingStages::create_pipeline_stage(void) {
 }
 
 @ The stage |load-kit-source K| takes the kit |K|, looks for its source code
-(which will be Inform 6-syntax source code written in a literate programming
-notation) and reads this in to the current Inter tree, as a new top-level
-module.
+(text files written in I6T syntax) and reads this in to the current Inter tree,
+placing the resulting nodes in a new top-level module.
 
 =
 int ParsingStages::run_load_kit_source(pipeline_step *step) {
@@ -26,13 +33,13 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	if (main_package) @<Create a module to hold the Inter read in from this kit@>;
 	I6T_kit kit;
 	@<Make a suitable I6T kit@>;
-	ParsingStages::capture(&kit, NULL, I"all");
+	ParsingStages::I6T_reader(&kit, NULL, I"all");
 	return TRUE;
 }
 
 @ So for example if we are reading the source for WorldModelKit, then the
 following creates the package |/main/WorldModelKit|, with package type |_module|.
-It's into this module that all the code will be read.
+It's into this module that the resulting |SPLAT_IST| nodes will be put.
 
 @<Create a module to hold the Inter read in from this kit@> =
 	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
@@ -42,117 +49,78 @@ It's into this module that all the code will be read.
 		module_name, 1, NULL, &template_p);
 	Site::set_assimilation_package(I, template_p);
 
-@ =
+@ The stage |parse-insertions| does the same thing, but on a much smaller scale,
+and reading raw I6T source code from |LINK_IST| nodes in the Inter tree rather
+than from an external file. There will only be a few of these, and with not much
+code in them, when the tree has been compiled by Inform: they arise from
+features such as
+= (text as Inform 7)
+Include (-
+	[ CuriousFunction;
+		print "Curious!";
+	];
+-).
+=
+The //inform7// code does not contain a compiler from I6T down to Inter, so
+it can only leave us these unparsed fragments as |LINK_IST| nodes. We take
+it from there.
+
+=
 int ParsingStages::run_parse_insertions(pipeline_step *step) {
 	inter_tree *I = step->ephemera.repository;
 	I6T_kit kit;
 	@<Make a suitable I6T kit@>;
-	InterTree::traverse(I, ParsingStages::catch_all_visitor, &kit, NULL, 0);
+	InterTree::traverse(I, ParsingStages::visit_insertions, &kit, NULL, LINK_IST);
 	return TRUE;
 }
 
-void ParsingStages::catch_all_visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	if (P->W.data[ID_IFLD] == LINK_IST) {
-		text_stream *insertion = Inode::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
-		#ifdef CORE_MODULE
-		current_sentence = (parse_node *) Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
-		#endif
-		I6T_kit *kit = (I6T_kit *) state;
-		ParsingStages::capture(kit, insertion, NULL);
-	}
+void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *state) {
+	text_stream *insertion = Inode::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
+	#ifdef CORE_MODULE
+	current_sentence = (parse_node *) Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
+	#endif
+	I6T_kit *kit = (I6T_kit *) state;
+	ParsingStages::I6T_reader(kit, insertion, NULL);
 }
+
+@ So, then, both of those stages rely on (i) making something called an I6T kit,
+then (ii) calling //ParsingStages::I6T_reader//.
+
+Here's where we make the kit, which is really just a collection of settings for
+the I6T-reader. That comes down to:
+
+(a) the place to put any nodes generated,
+(b) what to do with I6 source code, or with commands embedded in it, and
+(c) which file-system paths to look inside when reading from files rather
+than raw text in memory.
+
+For (c), note that if a kit is in directory |K| then its source files are
+in |K/Sections|.
 
 @<Make a suitable I6T kit@> =
-	linked_list *PP = step->ephemera.the_PP;
-	inter_package *template_package = Site::ensure_assimilation_package(I, RunningPipelines::get_symbol(step, plain_ptype_RPSYM));	
-	
-	inter_bookmark link_bookmark =
-		Inter::Bookmarks::at_end_of_this_package(template_package);
-
-	kit = ParsingStages::kit_out(&link_bookmark, &(ParsingStages::receive_raw),  &(ParsingStages::receive_command), NULL);
-	kit.no_i6t_file_areas = LinkedLists::len(PP);
+	inter_package *assimilation_package = Site::ensure_assimilation_package(I,
+		RunningPipelines::get_symbol(step, plain_ptype_RPSYM));
+	inter_bookmark assimilation_point =
+		Inter::Bookmarks::at_end_of_this_package(assimilation_package);
+	linked_list *L = NEW_LINKED_LIST(pathname);
 	pathname *P;
-	int i=0;
-	LOOP_OVER_LINKED_LIST(P, pathname, PP)
-		kit.i6t_files[i++] = Pathnames::down(P, I"Sections");
+	LOOP_OVER_LINKED_LIST(P, pathname, step->ephemera.the_PP)
+		ADD_TO_LINKED_LIST(Pathnames::down(P, I"Sections"), pathname, L);
+	kit = ParsingStages::kit_out(&assimilation_point,
+		&(ParsingStages::receive_raw), &(ParsingStages::receive_command), L, NULL);
 
-@
+@ Once the I6T reader has unpacked the literate-programming notation, it will
+reduce the I6T code to pure Inform 6 source together with (perhaps) a handful of
+commands in braces. Our kit must say what to do with each of these outputs.
 
-@d IGNORE_WS_FILTER_BIT 1
-@d DQUOTED_FILTER_BIT 2
-@d SQUOTED_FILTER_BIT 4
-@d COMMENTED_FILTER_BIT 8
-@d ROUTINED_FILTER_BIT 16
-@d CONTENT_ON_LINE_FILTER_BIT 32
-
-@d SUBORDINATE_FILTER_BITS (COMMENTED_FILTER_BIT + SQUOTED_FILTER_BIT + DQUOTED_FILTER_BIT + ROUTINED_FILTER_BIT)
+The easy part: what to do when we find a command in I6T source. In pre-Inter
+versions of Inform, when I6T was just a way of expressing Inform 6 code but
+with some braced commands mixed in, there were lots of legal if enigmatic
+syntaxes in use. Now those have all gone, so in all cases we issue an error:
 
 =
-void ParsingStages::receive_raw(text_stream *S, I6T_kit *kit) {
-	text_stream *R = Str::new();
-	int mode = IGNORE_WS_FILTER_BIT;
-	LOOP_THROUGH_TEXT(pos, S) {
-		wchar_t c = Str::get(pos);
-		if ((c == 10) || (c == 13)) c = '\n';
-		if (mode & IGNORE_WS_FILTER_BIT) {
-			if ((c == '\n') || (Characters::is_whitespace(c))) continue;
-			mode -= IGNORE_WS_FILTER_BIT;
-		}
-		if ((c == '!') && (!(mode & (DQUOTED_FILTER_BIT + SQUOTED_FILTER_BIT)))) {
-			mode = mode | COMMENTED_FILTER_BIT;
-		}
-		if (mode & COMMENTED_FILTER_BIT) {
-			if (c == '\n') {
-				mode -= COMMENTED_FILTER_BIT;
-				if (!(mode & CONTENT_ON_LINE_FILTER_BIT)) continue;
-			}
-			else continue;
-		}
-		if ((c == '[') && (!(mode & SUBORDINATE_FILTER_BITS))) {
-			mode = mode | ROUTINED_FILTER_BIT;
-		}
-		if (mode & ROUTINED_FILTER_BIT) {
-			if ((c == ']') && (!(mode & (DQUOTED_FILTER_BIT + SQUOTED_FILTER_BIT + COMMENTED_FILTER_BIT)))) mode -= ROUTINED_FILTER_BIT;
-		}
-		if ((c == '\'') && (!(mode & (DQUOTED_FILTER_BIT + COMMENTED_FILTER_BIT)))) {
-			if (mode & SQUOTED_FILTER_BIT) mode -= SQUOTED_FILTER_BIT;
-			else mode = mode | SQUOTED_FILTER_BIT;
-		}
-		if ((c == '\"') && (!(mode & (SQUOTED_FILTER_BIT + COMMENTED_FILTER_BIT)))) {
-			if (mode & DQUOTED_FILTER_BIT) mode -= DQUOTED_FILTER_BIT;
-			else mode = mode | DQUOTED_FILTER_BIT;
-		}
-		if (c != '\n') {
-			if (Characters::is_whitespace(c) == FALSE) mode = mode | CONTENT_ON_LINE_FILTER_BIT;
-		} else {
-			if (mode & CONTENT_ON_LINE_FILTER_BIT) mode = mode - CONTENT_ON_LINE_FILTER_BIT;
-			else if (!(mode & SUBORDINATE_FILTER_BITS)) continue;
-		}
-		PUT_TO(R, c);
-		if ((c == ';') && (!(mode & SUBORDINATE_FILTER_BITS))) {
-			ParsingStages::chunked_raw(R, kit);
-			mode = IGNORE_WS_FILTER_BIT;
-		}
-	}
-	ParsingStages::chunked_raw(R, kit);
-	Str::clear(S);
-}
-
-void ParsingStages::chunked_raw(text_stream *S, I6T_kit *kit) {
-	if (Str::len(S) == 0) return;
-	PUT_TO(S, '\n');
-	ParsingStages::entire_splat(kit->IBM, I"template", S, (inter_ti) (Inter::Bookmarks::baseline(kit->IBM) + 1));
-	Str::clear(S);
-}
-
-void ParsingStages::entire_splat(inter_bookmark *IBM, text_stream *origin, text_stream *content, inter_ti level) {
-	inter_ti SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SID);
-	Str::copy(glob_storage, content);
-	Produce::guard(Inter::Splat::new(IBM, SID, 0, level, 0, NULL));
-}
-
-void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command, text_stream *argument, I6T_kit *kit) {
+void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command,
+	text_stream *argument, I6T_kit *kit) {
 	if ((Str::eq_wide_string(command, L"plugin")) ||
 		(Str::eq_wide_string(command, L"type")) ||
 		(Str::eq_wide_string(command, L"open-file")) ||
@@ -177,54 +145,175 @@ void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command, text_st
 		(Str::eq_wide_string(command, L"testing-routine")) ||
 		(Str::eq_wide_string(command, L"testing-command"))) {
 		LOG("command: <%S> argument: <%S>\n", command, argument);
-		PipelineErrors::kit_error("the template command '{-%S}' has been withdrawn in this version of Inform", command);
+		PipelineErrors::kit_error(
+			"the template command '{-%S}' has been withdrawn in this version of Inform",
+			command);
 	} else {
 		LOG("command: <%S> argument: <%S>\n", command, argument);
 		PipelineErrors::kit_error("no such {-command} as '%S'", command);
 	}
 }
 
-@h I6T kits.
-These are used to abstract calls to the I6T reader, so that customers of
-varying dispositions can do different things with the code parsed.
+@ We very much do not ignore the raw I6 code read in, though. When the reader
+gives us a chunk of this, we parse through it with a simple finite-state machine.
+This can be summarised as "divide the code up at |;| boundaries, sending each
+piece in turn to //ParsingStages::splat//". But of course we do not want to
+react to semicolons in quoted text or comments, and in fact we also do not
+want to react to semicolons used as statement dividers inside I6 routines (i.e.,
+functions). So for example
+= (text as Inform 6)
+Global aspic = "this; and that";
+! Don't react to this; I'm only a comment
+[ Hello; print "Hello; goodbye.^"; ];
+=
+would be divided into just two splats,
+= (text as Inform 6)
+Global aspic = "this; and that";
+=
+and
+= (text as Inform 6)
+[ Hello; print "Hello; goodbye.^"; ];
+=
+(And the comment would be stripped out entirely.)
 
-@ =
+@d IGNORE_WS_I6TBIT 1
+@d DQUOTED_I6TBIT 2
+@d SQUOTED_I6TBIT 4
+@d COMMENTED_I6TBIT 8
+@d ROUTINED_I6TBIT 16
+@d CONTENT_ON_LINE_I6TBIT 32
+
+@d SUBORDINATE_I6TBITS
+	(COMMENTED_I6TBIT + SQUOTED_I6TBIT + DQUOTED_I6TBIT + ROUTINED_I6TBIT)
+
+=
+void ParsingStages::receive_raw(text_stream *S, I6T_kit *kit) {
+	text_stream *R = Str::new();
+	int mode = IGNORE_WS_I6TBIT;
+	LOOP_THROUGH_TEXT(pos, S) {
+		wchar_t c = Str::get(pos);
+		if ((c == 10) || (c == 13)) c = '\n';
+		if (mode & IGNORE_WS_I6TBIT) {
+			if ((c == '\n') || (Characters::is_whitespace(c))) continue;
+			mode -= IGNORE_WS_I6TBIT;
+		}
+		if ((c == '!') && (!(mode & (DQUOTED_I6TBIT + SQUOTED_I6TBIT)))) {
+			mode = mode | COMMENTED_I6TBIT;
+		}
+		if (mode & COMMENTED_I6TBIT) {
+			if (c == '\n') {
+				mode -= COMMENTED_I6TBIT;
+				if (!(mode & CONTENT_ON_LINE_I6TBIT)) continue;
+			}
+			else continue;
+		}
+		if ((c == '[') && (!(mode & SUBORDINATE_I6TBITS))) {
+			mode = mode | ROUTINED_I6TBIT;
+		}
+		if (mode & ROUTINED_I6TBIT) {
+			if ((c == ']') && (!(mode & (DQUOTED_I6TBIT + SQUOTED_I6TBIT + COMMENTED_I6TBIT))))
+				mode -= ROUTINED_I6TBIT;
+		}
+		if ((c == '\'') && (!(mode & (DQUOTED_I6TBIT + COMMENTED_I6TBIT)))) {
+			if (mode & SQUOTED_I6TBIT) mode -= SQUOTED_I6TBIT;
+			else mode = mode | SQUOTED_I6TBIT;
+		}
+		if ((c == '\"') && (!(mode & (SQUOTED_I6TBIT + COMMENTED_I6TBIT)))) {
+			if (mode & DQUOTED_I6TBIT) mode -= DQUOTED_I6TBIT;
+			else mode = mode | DQUOTED_I6TBIT;
+		}
+		if (c != '\n') {
+			if (Characters::is_whitespace(c) == FALSE)
+				mode = mode | CONTENT_ON_LINE_I6TBIT;
+		} else {
+			if (mode & CONTENT_ON_LINE_I6TBIT) mode = mode - CONTENT_ON_LINE_I6TBIT;
+			else if (!(mode & SUBORDINATE_I6TBITS)) continue;
+		}
+		PUT_TO(R, c);
+		if ((c == ';') && (!(mode & SUBORDINATE_I6TBITS))) {
+			ParsingStages::splat(R, kit);
+			mode = IGNORE_WS_I6TBIT;
+		}
+	}
+	ParsingStages::splat(R, kit);
+	Str::clear(S);
+}
+
+@ Each of those "splats" becomes a |SPLAT_IST| node in the tree at the
+current insertion point recorded in the kit.
+
+Note that this function empties the splat buffer |R| before exiting.
+
+=
+void ParsingStages::splat(text_stream *R, I6T_kit *kit) {
+	if (Str::len(R) > 0) {
+		PUT_TO(R, '\n');
+		inter_ti SID = Inter::Warehouse::create_text(
+			Inter::Bookmarks::warehouse(kit->IBM), Inter::Bookmarks::package(kit->IBM));
+		text_stream *textual_storage =
+			Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(kit->IBM), SID);
+		Str::copy(textual_storage, R);
+		Produce::guard(Inter::Splat::new(kit->IBM, SID, 0,
+			(inter_ti) (Inter::Bookmarks::baseline(kit->IBM) + 1), 0, NULL));
+		Str::clear(R);
+	}
+}
+
+@ And that's it: the result of these stages is just to break the I6T source they
+found up into individual directives, and put them into the tree as |SPLAT_IST| nodes.
+No effort has been made yet to see what directives they are. Subsequent stages
+will handle that.
+
+@h The I6T Reader.
+The rest of this section, then, is a general-purpose reader of I6T-syntax code.
+Although it is only used for one purpose in the Inform code base, it once had
+multiple uses, and so it's written quite flexibly. There seems no reason to
+get rid of that flexibility: perhaps we'll use it again some day.
+
+So, then, this is the parcel of settings for controlling the I6T reader:
+
+=
 typedef struct I6T_kit {
 	struct inter_bookmark *IBM;
-	int no_i6t_file_areas;
-	struct pathname *i6t_files[16];
 	void (*raw_callback)(struct text_stream *, struct I6T_kit *);
-	void (*command_callback)(struct text_stream *, struct text_stream *, struct text_stream *, struct I6T_kit *);
+	void (*command_callback)(struct text_stream *, struct text_stream *,
+		struct text_stream *, struct I6T_kit *);
 	void *I6T_state;
+	struct linked_list *search_paths; /* of |pathname| */
 } I6T_kit;
 
-@ =
-I6T_kit ParsingStages::kit_out(inter_bookmark *IBM, void (*A)(struct text_stream *, struct I6T_kit *),
-	void (*B)(struct text_stream *, struct text_stream *, struct text_stream *, struct I6T_kit *),
-	void *C) {
+@ We actually don't use this facility, but a kit contains a |state| which is
+shared across the calls to the callback functions. When a kit is created, the
+initial state must be supplied; after that, it's updated only by the callback
+functions supplied.
+
+=
+I6T_kit ParsingStages::kit_out(inter_bookmark *IBM,
+	void (*A)(struct text_stream *, struct I6T_kit *),
+	void (*B)(struct text_stream *, struct text_stream *,
+		struct text_stream *, struct I6T_kit *),
+	linked_list *search_list, void *initial_state) {
 	I6T_kit kit;
 	kit.IBM = IBM;
 	kit.raw_callback = A;
 	kit.command_callback = B;
-	kit.I6T_state = C;
-	kit.no_i6t_file_areas = 0;
+	kit.I6T_state = initial_state;
+	kit.search_paths = search_list;
 	return kit;
 }
 
-@h Syntax of I6T files.
-The syntax of these files has been designed so that a valid I6T file is
-also a valid Inweb section file. (Inweb now has two formats, an old and a
-new one: here we can read either, though the I6T sources in the main Inform
-distribution have been modernised to the new syntax.) Many Inweb syntaxes
-are, however, not allowed in I6T: really, you should use only |@h| headings
-and the |=| sign to divide commentary from text. Macros and definitions, in
-particular, are not permitted. This means that no real tangling is required
-to make the I6T files.
+@ I6T files use a literate programming notation which is, in effect, a much
+simplified version of Inweb's. (Note that Inweb can therefore read kits as
+if they were webs, and we use that to weave them for the source website.)
+
+Many Inweb syntaxes are, however, not allowed in I6T: really, you should use
+only |@h| headings and the |=| sign to divide commentary from text. Macros and
+definitions, in particular, are not permitted; I6T is not really tangled as such.
 
 The entire range of possibilities is shown here:
 = (text as Inweb)
 	Circuses.
-	 
+	
 	This hypothetical I6T file provides support for holding circuses.
 	 
 	@h Start.
@@ -259,7 +348,7 @@ typedef struct contents_section_state {
 	int active;
 } contents_section_state;
 
-void ParsingStages::capture(I6T_kit *kit, text_stream *insertion, text_stream *segment) {
+void ParsingStages::I6T_reader(I6T_kit *kit, text_stream *insertion, text_stream *segment) {
 	TEMPORARY_TEXT(T)
 	ParsingStages::interpret(T, insertion, segment, -1, kit, NULL);
 	(*(kit->raw_callback))(T, kit);
@@ -269,8 +358,9 @@ void ParsingStages::capture(I6T_kit *kit, text_stream *insertion, text_stream *s
 void ParsingStages::interpret(OUTPUT_STREAM, text_stream *sf,
 	text_stream *segment_name, int N_escape, I6T_kit *kit, filename *Input_Filename) {
 	if (Str::eq(segment_name, I"all")) {
-		for (int area=0; area<kit->no_i6t_file_areas; area++) {
-			pathname *P = Pathnames::up(kit->i6t_files[area]);
+		pathname *K;
+		LOOP_OVER_LINKED_LIST(K, pathname, kit->search_paths) {
+			pathname *P = Pathnames::up(K);
 			web_md *Wm = WebMetadata::get(P, NULL, V2_SYNTAX, NULL, FALSE, TRUE, NULL);
 			chapter_md *Cm;
 			LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {
@@ -306,10 +396,11 @@ part of the I6T kit.
 @<Open the I6 template file@> =
 	if (Input_Filename)
 		Input_File = Filenames::fopen(Input_Filename, "r");
-	for (int area=0; area<kit->no_i6t_file_areas; area++)
+	pathname *P;
+	LOOP_OVER_LINKED_LIST(P, pathname, kit->search_paths)
 		if (Input_File == NULL)
 			Input_File = Filenames::fopen(
-				Filenames::in(kit->i6t_files[area], segment_name), "r");
+				Filenames::in(P, segment_name), "r");
 	if (Input_File == NULL)
 		PipelineErrors::kit_error("unable to open the template segment '%S'", segment_name);
 
