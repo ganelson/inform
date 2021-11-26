@@ -31,9 +31,9 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	inter_tree *I = step->ephemera.repository;
 	inter_package *main_package = Site::main_package_if_it_exists(I);
 	if (main_package) @<Create a module to hold the Inter read in from this kit@>;
-	I6T_kit kit;
-	@<Make a suitable I6T kit@>;
-	ParsingStages::I6T_reader(&kit, NULL, I"all");
+	simple_tangle_docket docket;
+	@<Make a suitable simple tangler docket@>;
+	SimpleTangler::tangle(&docket, NULL, I"all");
 	return TRUE;
 }
 
@@ -68,9 +68,9 @@ it from there.
 =
 int ParsingStages::run_parse_insertions(pipeline_step *step) {
 	inter_tree *I = step->ephemera.repository;
-	I6T_kit kit;
-	@<Make a suitable I6T kit@>;
-	InterTree::traverse(I, ParsingStages::visit_insertions, &kit, NULL, LINK_IST);
+	simple_tangle_docket docket;
+	@<Make a suitable simple tangler docket@>;
+	InterTree::traverse(I, ParsingStages::visit_insertions, &docket, NULL, LINK_IST);
 	return TRUE;
 }
 
@@ -79,25 +79,26 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	#ifdef CORE_MODULE
 	current_sentence = (parse_node *) Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
 	#endif
-	I6T_kit *kit = (I6T_kit *) state;
-	ParsingStages::I6T_reader(kit, insertion, NULL);
+	simple_tangle_docket *docket = (simple_tangle_docket *) state;
+	SimpleTangler::tangle(docket, insertion, NULL);
 }
 
-@ So, then, both of those stages rely on (i) making something called an I6T kit,
-then (ii) calling //ParsingStages::I6T_reader//.
+@ So, then, both of those stages rely on (i) making something called an simple tangler docket,
+then (ii) calling //SimpleTangler::tangle//.
 
-Here's where we make the kit, which is really just a collection of settings for
-the I6T-reader. That comes down to:
+Here's where we make the docket, which is really just a collection of settings for
+the simple tangler. That comes down to:
 
 (a) the place to put any nodes generated,
-(b) what to do with I6 source code, or with commands embedded in it, and
+(b) what to do with I6 source code, or with commands embedded in it, or errors
+thrown by bad syntax in it, and
 (c) which file-system paths to look inside when reading from files rather
 than raw text in memory.
 
 For (c), note that if a kit is in directory |K| then its source files are
 in |K/Sections|.
 
-@<Make a suitable I6T kit@> =
+@<Make a suitable simple tangler docket@> =
 	inter_package *assimilation_package = Site::ensure_assimilation_package(I,
 		RunningPipelines::get_symbol(step, plain_ptype_RPSYM));
 	inter_bookmark assimilation_point =
@@ -106,12 +107,15 @@ in |K/Sections|.
 	pathname *P;
 	LOOP_OVER_LINKED_LIST(P, pathname, step->ephemera.the_PP)
 		ADD_TO_LINKED_LIST(Pathnames::down(P, I"Sections"), pathname, L);
-	kit = ParsingStages::kit_out(&assimilation_point,
-		&(ParsingStages::receive_raw), &(ParsingStages::receive_command), L, NULL);
+	docket = SimpleTangler::new_docket(
+		&(ParsingStages::receive_raw),
+		&(ParsingStages::receive_command),
+		&(PipelineErrors::kit_error),
+		L, &assimilation_point);
 
 @ Once the I6T reader has unpacked the literate-programming notation, it will
 reduce the I6T code to pure Inform 6 source together with (perhaps) a handful of
-commands in braces. Our kit must say what to do with each of these outputs.
+commands in braces. Our docket must say what to do with each of these outputs.
 
 The easy part: what to do when we find a command in I6T source. In pre-Inter
 versions of Inform, when I6T was just a way of expressing Inform 6 code but
@@ -120,7 +124,7 @@ syntaxes in use. Now those have all gone, so in all cases we issue an error:
 
 =
 void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command,
-	text_stream *argument, I6T_kit *kit) {
+	text_stream *argument, simple_tangle_docket *docket) {
 	if ((Str::eq_wide_string(command, L"plugin")) ||
 		(Str::eq_wide_string(command, L"type")) ||
 		(Str::eq_wide_string(command, L"open-file")) ||
@@ -145,12 +149,12 @@ void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command,
 		(Str::eq_wide_string(command, L"testing-routine")) ||
 		(Str::eq_wide_string(command, L"testing-command"))) {
 		LOG("command: <%S> argument: <%S>\n", command, argument);
-		PipelineErrors::kit_error(
+		(*(docket->error_callback))(
 			"the template command '{-%S}' has been withdrawn in this version of Inform",
 			command);
 	} else {
 		LOG("command: <%S> argument: <%S>\n", command, argument);
-		PipelineErrors::kit_error("no such {-command} as '%S'", command);
+		(*(docket->error_callback))("no such {-command} as '%S'", command);
 	}
 }
 
@@ -187,7 +191,7 @@ and
 	(COMMENTED_I6TBIT + SQUOTED_I6TBIT + DQUOTED_I6TBIT + ROUTINED_I6TBIT)
 
 =
-void ParsingStages::receive_raw(text_stream *S, I6T_kit *kit) {
+void ParsingStages::receive_raw(text_stream *S, simple_tangle_docket *docket) {
 	text_stream *R = Str::new();
 	int mode = IGNORE_WS_I6TBIT;
 	LOOP_THROUGH_TEXT(pos, S) {
@@ -231,30 +235,31 @@ void ParsingStages::receive_raw(text_stream *S, I6T_kit *kit) {
 		}
 		PUT_TO(R, c);
 		if ((c == ';') && (!(mode & SUBORDINATE_I6TBITS))) {
-			ParsingStages::splat(R, kit);
+			ParsingStages::splat(R, docket);
 			mode = IGNORE_WS_I6TBIT;
 		}
 	}
-	ParsingStages::splat(R, kit);
+	ParsingStages::splat(R, docket);
 	Str::clear(S);
 }
 
 @ Each of those "splats" becomes a |SPLAT_IST| node in the tree at the
-current insertion point recorded in the kit.
+current insertion point recorded in the state being carried in the docket.
 
 Note that this function empties the splat buffer |R| before exiting.
 
 =
-void ParsingStages::splat(text_stream *R, I6T_kit *kit) {
+void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 	if (Str::len(R) > 0) {
+		inter_bookmark *IBM = (inter_bookmark *) docket->state;
 		PUT_TO(R, '\n');
 		inter_ti SID = Inter::Warehouse::create_text(
-			Inter::Bookmarks::warehouse(kit->IBM), Inter::Bookmarks::package(kit->IBM));
+			Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
 		text_stream *textual_storage =
-			Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(kit->IBM), SID);
+			Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SID);
 		Str::copy(textual_storage, R);
-		Produce::guard(Inter::Splat::new(kit->IBM, SID, 0,
-			(inter_ti) (Inter::Bookmarks::baseline(kit->IBM) + 1), 0, NULL));
+		Produce::guard(Inter::Splat::new(IBM, SID, 0,
+			(inter_ti) (Inter::Bookmarks::baseline(IBM) + 1), 0, NULL));
 		Str::clear(R);
 	}
 }
@@ -263,416 +268,3 @@ void ParsingStages::splat(text_stream *R, I6T_kit *kit) {
 found up into individual directives, and put them into the tree as |SPLAT_IST| nodes.
 No effort has been made yet to see what directives they are. Subsequent stages
 will handle that.
-
-@h The I6T Reader.
-The rest of this section, then, is a general-purpose reader of I6T-syntax code.
-Although it is only used for one purpose in the Inform code base, it once had
-multiple uses, and so it's written quite flexibly. There seems no reason to
-get rid of that flexibility: perhaps we'll use it again some day.
-
-So, then, this is the parcel of settings for controlling the I6T reader:
-
-=
-typedef struct I6T_kit {
-	struct inter_bookmark *IBM;
-	void (*raw_callback)(struct text_stream *, struct I6T_kit *);
-	void (*command_callback)(struct text_stream *, struct text_stream *,
-		struct text_stream *, struct I6T_kit *);
-	void *I6T_state;
-	struct linked_list *search_paths; /* of |pathname| */
-} I6T_kit;
-
-@ We actually don't use this facility, but a kit contains a |state| which is
-shared across the calls to the callback functions. When a kit is created, the
-initial state must be supplied; after that, it's updated only by the callback
-functions supplied.
-
-=
-I6T_kit ParsingStages::kit_out(inter_bookmark *IBM,
-	void (*A)(struct text_stream *, struct I6T_kit *),
-	void (*B)(struct text_stream *, struct text_stream *,
-		struct text_stream *, struct I6T_kit *),
-	linked_list *search_list, void *initial_state) {
-	I6T_kit kit;
-	kit.IBM = IBM;
-	kit.raw_callback = A;
-	kit.command_callback = B;
-	kit.I6T_state = initial_state;
-	kit.search_paths = search_list;
-	return kit;
-}
-
-@ I6T files use a literate programming notation which is, in effect, a much
-simplified version of Inweb's. (Note that Inweb can therefore read kits as
-if they were webs, and we use that to weave them for the source website.)
-
-Many Inweb syntaxes are, however, not allowed in I6T: really, you should use
-only |@h| headings and the |=| sign to divide commentary from text. Macros and
-definitions, in particular, are not permitted; I6T is not really tangled as such.
-
-The entire range of possibilities is shown here:
-= (text as Inweb)
-	Circuses.
-	
-	This hypothetical I6T file provides support for holding circuses.
-	 
-	@h Start.
-	This routine is called when a big top must be raised. Note that the
-	elephants must first be watered (see Livestock.i6t).
-	
-	=
-	[ RaiseBT c;
-	...
-	];
-=
-...and so on. As with Inweb, the commentary is removed when we read this
-code. While this doesn't allow for full-on literate programming, it does
-permit a generous amount of annotation.
-
-@ One restriction. It actually doesn't matter if a template file contains
-lines longer than this, so long as they do not occur inside |{-lines:...}| and
-|{-endlines}|, and so long as no individual braced command |{-...}| exceeds
-this length.
-
-@d MAX_I6T_LINE_LENGTH 1024
-
-@ The I6T interpreter is then a single routine to implement the description
-above, though note that it can act on interventions as well. (But in modern
-Inform usage, often there won't be any, because templates for the Standard
-Rules and so forth are assimilated in stand-alone runs of the code generator,
-and therefore no interventions will have happened.)
-
-=
-typedef struct contents_section_state {
-	struct linked_list *sects; /* of |text_stream| */
-	int active;
-} contents_section_state;
-
-void ParsingStages::I6T_reader(I6T_kit *kit, text_stream *insertion, text_stream *segment) {
-	TEMPORARY_TEXT(T)
-	ParsingStages::interpret(T, insertion, segment, -1, kit, NULL);
-	(*(kit->raw_callback))(T, kit);
-	DISCARD_TEXT(T)
-}
-
-void ParsingStages::interpret(OUTPUT_STREAM, text_stream *sf,
-	text_stream *segment_name, int N_escape, I6T_kit *kit, filename *Input_Filename) {
-	if (Str::eq(segment_name, I"all")) {
-		pathname *K;
-		LOOP_OVER_LINKED_LIST(K, pathname, kit->search_paths) {
-			pathname *P = Pathnames::up(K);
-			web_md *Wm = WebMetadata::get(P, NULL, V2_SYNTAX, NULL, FALSE, TRUE, NULL);
-			chapter_md *Cm;
-			LOOP_OVER_LINKED_LIST(Cm, chapter_md, Wm->chapters_md) {
-				section_md *Sm;
-				LOOP_OVER_LINKED_LIST(Sm, section_md, Cm->sections_md) {
-					filename *SF = Sm->source_file_for_section;
-					ParsingStages::interpret(OUT, sf, Sm->sect_title, N_escape, kit, SF);
-				}
-			}
-		}
-		return;
-	}
-	TEMPORARY_TEXT(heading_name)
-	int skip_part = FALSE, comment = TRUE, extract = FALSE;
-	int col = 1, cr, sfp = 0;
-
-	FILE *Input_File = NULL;
-	if ((Str::len(segment_name) > 0) || (Input_Filename)) {
-		@<Open the I6 template file@>;
-		comment = TRUE;
-	} else comment = FALSE;
-
-	@<Interpret the I6T file@>;
-
-	if (Input_File) { if (DL) STREAM_FLUSH(DL); fclose(Input_File); }
-
-	DISCARD_TEXT(heading_name)
-}
-
-@ We look for the |.i6t| files in a list of possible locations supplied as
-part of the I6T kit.
-
-@<Open the I6 template file@> =
-	if (Input_Filename)
-		Input_File = Filenames::fopen(Input_Filename, "r");
-	pathname *P;
-	LOOP_OVER_LINKED_LIST(P, pathname, kit->search_paths)
-		if (Input_File == NULL)
-			Input_File = Filenames::fopen(
-				Filenames::in(P, segment_name), "r");
-	if (Input_File == NULL)
-		PipelineErrors::kit_error("unable to open the template segment '%S'", segment_name);
-
-@ 
-
-@<Interpret the I6T file@> =
-	TEMPORARY_TEXT(command)
-	TEMPORARY_TEXT(argument)
-	do {
-		Str::clear(command);
-		Str::clear(argument);
-		@<Read next character from I6T stream@>;
-		NewCharacter: if (cr == EOF) break;
-		if (((cr == '@') || (cr == '=')) && (col == 1)) {
-			int inweb_syntax = -1;
-			if (cr == '=') @<Read the rest of line as an equals-heading@>
-			else @<Read the rest of line as an at-heading@>;
-			@<Act on the heading, going in or out of comment mode as appropriate@>;
-			continue;
-		}
-		if (comment == FALSE) @<Deal with material which isn't commentary@>;
-	} while (cr != EOF);
-	DISCARD_TEXT(command)
-	DISCARD_TEXT(argument)
-
-
-@ I6 template files are encoded as ISO Latin-1, not as Unicode UTF-8, so
-ordinary |fgetc| is used, and no BOM marker is parsed. Lines are assumed
-to be terminated with either |0x0a| or |0x0d|. (Since blank lines are
-harmless, we take no trouble over |0a0d| or |0d0a| combinations.) The
-built-in template files, almost always the only ones used, are line
-terminated |0x0a| in Unix fashion.
-
-@<Read next character from I6T stream@> =
-	if (Input_File) cr = fgetc(Input_File);
-	else if (sf) {
-		cr = Str::get_at(sf, sfp); if (cr == 0) cr = EOF; else sfp++;
-	} else cr = EOF;
-	col++; if ((cr == 10) || (cr == 13)) col = 0;
-
-@ Anything following an at-character in the first column is looked at to see if
-it's a heading, that is, an Inweb syntax. We recognise both |@h| and |@p| as
-heading markers, in order to accommodate both old and new Inweb syntaxes.
-
-@d INWEB_PARAGRAPH_SYNTAX 1
-@d INWEB_CODE_SYNTAX 2
-@d INWEB_DASH_SYNTAX 3
-@d INWEB_PURPOSE_SYNTAX 4
-@d INWEB_FIGURE_SYNTAX 5
-@d INWEB_EQUALS_SYNTAX 6
-@d INWEB_EXTRACT_SYNTAX 7
-
-@<Read the rest of line as an at-heading@> =
-	TEMPORARY_TEXT(I6T_buffer)
-	int i = 0, committed = FALSE, unacceptable_character = FALSE;
-	while (i<MAX_I6T_LINE_LENGTH) {
-		@<Read next character from I6T stream@>;
-		if ((committed == FALSE) && ((cr == 10) || (cr == 13) || (cr == ' '))) {
-			if (Str::eq_wide_string(I6T_buffer, L"p"))
-				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
-			else if (Str::eq_wide_string(I6T_buffer, L"h"))
-				inweb_syntax = INWEB_PARAGRAPH_SYNTAX;
-			else if (Str::eq_wide_string(I6T_buffer, L"c"))
-				inweb_syntax = INWEB_CODE_SYNTAX;
-			else if (Str::get_first_char(I6T_buffer) == '-')
-				inweb_syntax = INWEB_DASH_SYNTAX;
-			else if (Str::begins_with_wide_string(I6T_buffer, L"Purpose:"))
-				inweb_syntax = INWEB_PURPOSE_SYNTAX;
-			committed = TRUE;
-			if (inweb_syntax == -1) {
-				if (unacceptable_character == FALSE) {
-					PUT_TO(OUT, '@');
-					WRITE_TO(OUT, "%S", I6T_buffer);
-					PUT_TO(OUT, cr);
-					break;
-				} else {
-					LOG("heading begins: <%S>\n", I6T_buffer);
-					#ifdef PROBLEMS_MODULE
-					Problems::quote_stream(1, I6T_buffer);
-					StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(...),
-						"An unknown '@...' marker has been found at column 0 in "
-						"raw Inform 6 template material: specifically, '@%1'. ('@' "
-						"has a special meaning in this first column, and this "
-						"might clash with its use to introduce an assembly-language "
-						"opcode in Inform 6: if that's a problem, you can avoid it "
-						"simply by putting one or more spaces or tabs in front of "
-						"the opcode(s) to keep them clear of the left margin.)");
-					#endif
-					#ifndef PROBLEMS_MODULE
-					PipelineErrors::kit_error(
-						"unknown '@...' marker at column 0 in template matter: '%S'", I6T_buffer);
-					#endif
-				}
-			}
-		}
-		if (!(((cr >= 'A') && (cr <= 'Z')) || ((cr >= 'a') && (cr <= 'z'))
-			|| ((cr >= '0') && (cr <= '9'))
-			|| (cr == '-') || (cr == '>') || (cr == ':') || (cr == '_')))
-			unacceptable_character = TRUE;
-		if ((cr == 10) || (cr == 13)) break;
-		PUT_TO(I6T_buffer, cr);
-	}
-	Str::copy(command, I6T_buffer);
-	DISCARD_TEXT(I6T_buffer)
-
-@<Read the rest of line as an equals-heading@> =
-	TEMPORARY_TEXT(I6T_buffer)
-	int i = 0;
-	while (i<MAX_I6T_LINE_LENGTH) {
-		@<Read next character from I6T stream@>;
-		if ((cr == 10) || (cr == 13)) break;
-		PUT_TO(I6T_buffer, cr);
-	}
-	DISCARD_TEXT(I6T_buffer)
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, I6T_buffer, L" %(text%c*%) *")) {
-		inweb_syntax = INWEB_EXTRACT_SYNTAX;
-	} else if (Regexp::match(&mr, I6T_buffer, L" %(figure%c*%) *")) {
-		inweb_syntax = INWEB_FIGURE_SYNTAX;
-	} else if (Regexp::match(&mr, I6T_buffer, L" %(%c*%) *")) {
-		#ifdef PROBLEMS_MODULE
-		StandardProblems::unlocated_problem(Task::syntax_tree(), _p_(...),
-			"An '= (...)' marker has been found at column 0 in "
-			"raw Inform 6 template material, of a kind not allowed.");
-		#endif
-		#ifndef PROBLEMS_MODULE
-		PipelineErrors::kit_error(
-			"unsupported '= (...)' marker at column 0 in template matter", NULL);
-		#endif
-	} else {
-		inweb_syntax = INWEB_EQUALS_SYNTAX;
-	}
-	Regexp::dispose_of(&mr);
-
-@ As can be seen, only a small minority of Inweb syntaxes are allowed:
-in particular, no definitions| or angle-bracketed macros. This reader is not
-a full-fledged tangler.
-
-@<Act on the heading, going in or out of comment mode as appropriate@> =
-	switch (inweb_syntax) {
-		case INWEB_PARAGRAPH_SYNTAX: {
-			Str::copy_tail(heading_name, command, 2);
-			int c;
-			while (((c = Str::get_last_char(heading_name)) != 0) &&
-				((c == ' ') || (c == '\t') || (c == '.')))
-				Str::delete_last_character(heading_name);
-			if (Str::len(heading_name) == 0)
-				PipelineErrors::kit_error("Empty heading name in I6 template file", NULL);
-			extract = FALSE; 
-			comment = TRUE; skip_part = FALSE;
-			break;
-		}
-		case INWEB_CODE_SYNTAX:
-			extract = FALSE; 
-			if (skip_part == FALSE) comment = FALSE;
-			break;
-		case INWEB_EQUALS_SYNTAX:
-			if (extract) {
-				comment = TRUE; extract = FALSE;
-			} else {
-				if (skip_part == FALSE) comment = FALSE;
-			}
-			break;
-		case INWEB_EXTRACT_SYNTAX:
-			comment = TRUE; extract = TRUE;
-			break;
-		case INWEB_DASH_SYNTAX: break;
-		case INWEB_PURPOSE_SYNTAX: break;
-		case INWEB_FIGURE_SYNTAX: break;
-	}
-
-@<Deal with material which isn't commentary@> =
-	if (cr == '{') {
-		@<Read next character from I6T stream@>;
-		if (cr == '-') {
-			@<Read up to the next close brace as an I6T command and argument@>;
-			if (Str::get_first_char(command) == '!') continue;
-			@<Act on I6T command and argument@>;
-			continue;
-		} else if ((cr == 'N') && (N_escape >= 0)) {
-			@<Read next character from I6T stream@>;
-			if (cr == '}') {
-				WRITE("%d", N_escape);
-				continue;
-			}
-			WRITE("{N");
-			goto NewCharacter;
-		} else { /* otherwise the open brace was a literal */
-			PUT_TO(OUT, '{');
-			goto NewCharacter;
-		}
-	}
-	if (cr == '(') {
-		@<Read next character from I6T stream@>;
-		if (cr == '+') {
-			@<Read up to the next plus close-bracket as an I7 expression@>;
-			continue;
-		} else { /* otherwise the open bracket was a literal */
-			PUT_TO(OUT, '(');
-			goto NewCharacter;
-		}
-	}
-	PUT_TO(OUT, cr);
-
-@ And here we read a normal command. The command name must not include |}|
-or |:|. If there is no |:| then the argument is left unset (so that it will
-be the empty string: see above). The argument must not include |}|.
-
-@<Read up to the next close brace as an I6T command and argument@> =
-	Str::clear(command);
-	Str::clear(argument);
-	int com_mode = TRUE;
-	while (TRUE) {
-		@<Read next character from I6T stream@>;
-		if ((cr == '}') || (cr == EOF)) break;
-		if ((cr == ':') && (com_mode)) { com_mode = FALSE; continue; }
-		if (com_mode) PUT_TO(command, cr);
-		else PUT_TO(argument, cr);
-	}
-
-@ And similarly, for the |(+| ... |+)| notation used to mark I7 material
-within I6:
-
-@<Read up to the next plus close-bracket as an I7 expression@> =
-	TEMPORARY_TEXT(i7_exp)
-	while (TRUE) {
-		@<Read next character from I6T stream@>;
-		if (cr == EOF) break;
-		if ((cr == ')') && (Str::get_last_char(i7_exp) == '+')) {
-			Str::delete_last_character(i7_exp); break; }
-		PUT_TO(i7_exp, cr);
-	}
-	LOG("SPONG: %S\n", i7_exp);
-	DISCARD_TEXT(i7_exp)
-		PipelineErrors::kit_error("use of (+ ... +) in the template has been withdrawn: '%S'", i7_exp);
-
-@h Acting on I6T commands.
-
-=
-@<Act on I6T command and argument@> =
-	@<Act on the I6T segment command@>;
-	(*(kit->command_callback))(OUT, command, argument, kit);
-
-@ The |{-segment:...}| command recursively calls the I6T interpreter on the
-supplied I6T filename, which means it acts rather like |#include| in C.
-Note that because we pass the current output file handle |of| through to
-this new invocation, it will have the file open if we do, and closed if
-we do. It won't run in indexing mode, so |{-segment:...}| can't be used
-safely between |{-open-index}| and |{-close-index}|.
-
-@<Act on the I6T segment command@> =
-	if (Str::eq_wide_string(command, L"segment")) {
-internal_error("neurotica!");
-		(*(kit->raw_callback))(OUT, kit);
-		Str::clear(OUT);
-		ParsingStages::interpret(OUT, NULL, argument, -1, kit, NULL);
-		(*(kit->raw_callback))(OUT, kit);
-		Str::clear(OUT);
-		continue;
-	}
-
-@h Contents section.
-
-=
-void ParsingStages::read_contents(text_stream *text, text_file_position *tfp, void *state) {
-	contents_section_state *CSS = (contents_section_state *) state;
-	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, text, L"Sections"))
-		CSS->active = TRUE;
-	if ((Regexp::match(&mr, text, L" (%c+)")) && (CSS->active)) {
-		WRITE_TO(mr.exp[0], ".i6t");
-		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, CSS->sects);
-	}
-	Regexp::dispose_of(&mr);
-}

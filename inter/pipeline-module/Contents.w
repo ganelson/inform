@@ -21,6 +21,7 @@ Chapter 3: Linking Stages
 	Load Binary Kits Stage
 	Parsing Stages
 	Parse Linked Matter
+	Simple Tangler
 	Resolving Conditional Compilation
 	Assimilate
 	Resolve External Symbols
