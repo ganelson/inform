@@ -4,8 +4,7 @@ Two stages which accept raw I6-syntax material in the parse tree, either from
 imsertions made using Inform 7's low-level features, or after reading the
 source code for a kit.
 
-@h The two stages.
-These stages have more in common than they first appear. Both convert I6T-syntax
+@ These stages have more in common than first appears. Both convert I6T-syntax
 source code into a series of |SPLAT_IST| nodes in the Inter tree, with one
 such node for each different directive in the I6T source.
 
@@ -33,7 +32,7 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	if (main_package) @<Create a module to hold the Inter read in from this kit@>;
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
-	SimpleTangler::tangle(&docket, NULL, I"all");
+	SimpleTangler::tangle_web(&docket);
 	return TRUE;
 }
 
@@ -80,14 +79,12 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	current_sentence = (parse_node *) Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
 	#endif
 	simple_tangle_docket *docket = (simple_tangle_docket *) state;
-	SimpleTangler::tangle(docket, insertion, NULL);
+	SimpleTangler::tangle_text(docket, insertion);
 }
 
-@ So, then, both of those stages rely on (i) making something called an simple tangler docket,
-then (ii) calling //SimpleTangler::tangle//.
-
-Here's where we make the docket, which is really just a collection of settings for
-the simple tangler. That comes down to:
+@ So, then, both of those stages rely on making something called an simple
+tangler docket, which is really just a collection of settings for the
+simple tangler. That comes down to:
 
 (a) the place to put any nodes generated,
 (b) what to do with I6 source code, or with commands embedded in it, or errors
@@ -103,15 +100,12 @@ in |K/Sections|.
 		RunningPipelines::get_symbol(step, plain_ptype_RPSYM));
 	inter_bookmark assimilation_point =
 		Inter::Bookmarks::at_end_of_this_package(assimilation_package);
-	linked_list *L = NEW_LINKED_LIST(pathname);
-	pathname *P;
-	LOOP_OVER_LINKED_LIST(P, pathname, step->ephemera.the_PP)
-		ADD_TO_LINKED_LIST(Pathnames::down(P, I"Sections"), pathname, L);
 	docket = SimpleTangler::new_docket(
 		&(ParsingStages::receive_raw),
 		&(ParsingStages::receive_command),
+		&(ParsingStages::receive_bplus),
 		&(PipelineErrors::kit_error),
-		L, &assimilation_point);
+		step->ephemera.the_kit, &assimilation_point);
 
 @ Once the I6T reader has unpacked the literate-programming notation, it will
 reduce the I6T code to pure Inform 6 source together with (perhaps) a handful of
@@ -156,6 +150,15 @@ void ParsingStages::receive_command(OUTPUT_STREAM, text_stream *command,
 		LOG("command: <%S> argument: <%S>\n", command, argument);
 		(*(docket->error_callback))("no such {-command} as '%S'", command);
 	}
+}
+
+@ We have similarly withdrawn the ability to write |(+| ... |+)| material
+in kit files:
+
+=
+void ParsingStages::receive_bplus(text_stream *material, simple_tangle_docket *docket) {
+	(*(docket->error_callback))(
+		"use of (+ ... +) in kit source has been withdrawn: '%S'", material);
 }
 
 @ We very much do not ignore the raw I6 code read in, though. When the reader

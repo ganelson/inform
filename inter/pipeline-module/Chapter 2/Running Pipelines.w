@@ -20,7 +20,7 @@ void RunningPipelines::clean_pipeline(inter_pipeline *pl) {
 @ =
 typedef struct pipeline_step_ephemera {
 	struct filename *parsed_filename;
-	struct linked_list *the_PP; /* of |pathname| */
+	struct pathname *the_kit; /* if one is involved */
 	int to_debugging_log;
 	int from_memory;
 	struct text_stream *to_stream;
@@ -38,7 +38,7 @@ void RunningPipelines::clean_step(pipeline_step *step) {
 	step->ephemera.to_stream = NULL;
 	step->ephemera.to_debugging_log = FALSE;
 	step->ephemera.from_memory = FALSE;
-	step->ephemera.the_PP = NULL;
+	step->ephemera.the_kit = NULL;
 	step->ephemera.repository = NULL;
 	step->ephemera.pipeline = NULL;
 	step->ephemera.requirements_list = NEW_LINKED_LIST(attachment_instruction);
@@ -57,7 +57,7 @@ steps in turn, timing how long each one took us.
 pipeline_step *currently_running_pipeline_step = NULL;
 
 void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
-	linked_list *PP, linked_list *requirements_list, target_vm *VM) {
+	pathname *the_kit, linked_list *requirements_list, target_vm *VM) {
 	if (S == NULL) return;
 	if (I) S->ephemera.memory_repository = I;
 	stopwatch_timer *within = NULL;
@@ -97,7 +97,7 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 
 @<Prepare ephemeral data for this step@> =
 	RunningPipelines::clean_step(step);
-	step->ephemera.the_PP = PP;
+	step->ephemera.the_kit = the_kit;
 	if (S->ephemera.repositories[step->repository_argument] == NULL)
 		S->ephemera.repositories[step->repository_argument] = InterTree::new();
 	inter_tree *I = S->ephemera.repositories[step->repository_argument];

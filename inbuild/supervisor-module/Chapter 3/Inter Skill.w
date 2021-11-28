@@ -78,10 +78,9 @@ int InterSkill::build_kit_internally(build_skill *skill, build_step *S,
 	inter_pipeline *SS =
 		ParsingPipelines::from_file(pipeline_as_file, pipeline_vars, search_list);
 	if (SS) {
-		linked_list *inter_paths = NEW_LINKED_LIST(pathname);
-		ADD_TO_LINKED_LIST(S->associated_copy->location_if_path, pathname, inter_paths);
 		linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);
-		RunningPipelines::run(NULL, SS, NULL, inter_paths, requirements_list, S->for_vm);
+		RunningPipelines::run(NULL, SS, NULL, S->associated_copy->location_if_path,
+			requirements_list, S->for_vm);
 		return TRUE;
 	} else {
 		Errors::nowhere("build-kit pipeline could not be parsed");
@@ -141,8 +140,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 		Errors::nowhere("inter pipeline file could not be parsed");
 		return FALSE;
 	}
-	RunningPipelines::run(Filenames::up(S->vertex->as_file),
-		pipeline, Emit::tree(), Kits::inter_paths(Projects::nest_list(project)),
+	RunningPipelines::run(Filenames::up(S->vertex->as_file), pipeline, Emit::tree(), NULL,
 		Projects::list_of_attachment_instructions(project), S->for_vm);
 	LOG("Back end elapsed time: %dcs\n",
 		((int) (clock() - back_end)) / (CLOCKS_PER_SEC/100));

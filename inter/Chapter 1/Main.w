@@ -92,15 +92,13 @@ form, which would be written to |*outt|.
 		Errors::fatal("-pipeline-text and -pipeline-file cannot be combined with inter files");
 	if ((pipeline_as_file) && (pipeline_as_text))
 		Errors::fatal("-pipeline-text and -pipeline-file are mutually exclusive");
-	linked_list *inter_paths = NEW_LINKED_LIST(pathname);
-	if (kit_to_build) ADD_TO_LINKED_LIST(kit_to_build, pathname, inter_paths);
 	inter_pipeline *SS;
 	if (pipeline_as_file)
 		SS = ParsingPipelines::from_file(pipeline_as_file, pipeline_vars, NULL);
 	else
 		SS = ParsingPipelines::from_text(pipeline_as_text, pipeline_vars);
 	linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);
-	if (SS) RunningPipelines::run(domain_path, SS, NULL, inter_paths, requirements_list, NULL);
+	if (SS) RunningPipelines::run(domain_path, SS, NULL, kit_to_build, requirements_list, NULL);
 	else Errors::fatal("pipeline could not be parsed");
 
 @<Read the list of inter files, and perhaps transcode them@> =
