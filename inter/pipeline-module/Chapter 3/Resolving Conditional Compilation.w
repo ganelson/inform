@@ -43,19 +43,19 @@ void CodeGen::RCC::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 		if (P->W.data[ID_IFLD] == SPLAT_IST) {
 			text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 			switch (P->W.data[PLM_SPLAT_IFLD]) {
-				case CONSTANT_PLM:
-				case GLOBAL_PLM:
-				case ARRAY_PLM:
-				case ROUTINE_PLM:
-				case DEFAULT_PLM:
-				case STUB_PLM:
+				case CONSTANT_I6DIR:
+				case GLOBAL_I6DIR:
+				case ARRAY_I6DIR:
+				case ROUTINE_I6DIR:
+				case DEFAULT_I6DIR:
+				case STUB_I6DIR:
 					if (allow) @<Symbol definition@>;
 					break;
-				case IFDEF_PLM: @<Deal with an IFDEF@>; break;
-				case IFNDEF_PLM: @<Deal with an IFNDEF@>; break;
-				case IFTRUE_PLM: @<Deal with an IFTRUE@>; break;
-				case IFNOT_PLM: @<Deal with an IFNOT@>; break;
-				case ENDIF_PLM: @<Deal with an ENDIF@>; break;
+				case IFDEF_I6DIR: @<Deal with an IFDEF@>; break;
+				case IFNDEF_I6DIR: @<Deal with an IFNDEF@>; break;
+				case IFTRUE_I6DIR: @<Deal with an IFTRUE@>; break;
+				case IFNOT_I6DIR: @<Deal with an IFNOT@>; break;
+				case ENDIF_I6DIR: @<Deal with an ENDIF@>; break;
 			}
 		}
 	}

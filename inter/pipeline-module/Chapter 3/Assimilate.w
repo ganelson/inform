@@ -73,14 +73,14 @@ inter_bookmark CodeGen::Assimilate::template_submodule(inter_tree *I, pipeline_s
 void CodeGen::Assimilate::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
 	pipeline_step *step = (pipeline_step *) state;
 	switch (P->W.data[PLM_SPLAT_IFLD]) {
-		case PROPERTY_PLM:
+		case PROPERTY_I6DIR:
 			if (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)) @<Assimilate definition@>;
 			break;
-		case ATTRIBUTE_PLM:
+		case ATTRIBUTE_I6DIR:
 			if (RunningPipelines::get_symbol(step, truth_state_kind_RPSYM)) @<Assimilate definition@>;
 			break;
-		case ROUTINE_PLM:
-		case STUB_PLM:
+		case ROUTINE_I6DIR:
+		case STUB_I6DIR:
 			if ((RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)) && (RunningPipelines::get_symbol(step, unchecked_function_RPSYM)))
 				@<Assimilate routine@>;
 			break;
@@ -90,14 +90,14 @@ void CodeGen::Assimilate::visitor1(inter_tree *I, inter_tree_node *P, void *stat
 void CodeGen::Assimilate::visitor2(inter_tree *I, inter_tree_node *P, void *state) {
 	pipeline_step *step = (pipeline_step *) state;
 	switch (P->W.data[PLM_SPLAT_IFLD]) {
-		case DEFAULT_PLM:
-		case CONSTANT_PLM:
-		case FAKEACTION_PLM:
-		case OBJECT_PLM:
-		case VERB_PLM:
+		case DEFAULT_I6DIR:
+		case CONSTANT_I6DIR:
+		case FAKEACTION_I6DIR:
+		case OBJECT_I6DIR:
+		case VERB_I6DIR:
 			if (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)) @<Assimilate definition@>;
 			break;
-		case ARRAY_PLM:
+		case ARRAY_I6DIR:
 			if (RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)) @<Assimilate definition@>;
 			break;
 	}
@@ -106,7 +106,7 @@ void CodeGen::Assimilate::visitor2(inter_tree *I, inter_tree_node *P, void *stat
 void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *state) {
 	pipeline_step *step = (pipeline_step *) state;
 	switch (P->W.data[PLM_SPLAT_IFLD]) {
-		case GLOBAL_PLM:
+		case GLOBAL_I6DIR:
 			if (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)) @<Assimilate definition@>;
 			break;
 	}
@@ -125,16 +125,16 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	@<Parse text of splat for identifier and value@>;
 	if ((proceed) && (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM))) {
-		if ((plm == DEFAULT_PLM) && (Inter::Connectors::find_socket(I, identifier) == NULL))
-			plm = CONSTANT_PLM;
-		if (plm != DEFAULT_PLM) @<Act on parsed constant definition@>;
+		if ((plm == DEFAULT_I6DIR) && (Inter::Connectors::find_socket(I, identifier) == NULL))
+			plm = CONSTANT_I6DIR;
+		if (plm != DEFAULT_I6DIR) @<Act on parsed constant definition@>;
 		InterTree::remove_node(P);
 	}
 	Regexp::dispose_of(&mr);
 
 @<Parse text of splat for identifier and value@> =
 	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
-	if (plm == VERB_PLM) {
+	if (plm == VERB_I6DIR) {
 		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *;%c*")) {
 			identifier = I"assim_gv"; value = mr.exp[0]; proceed = TRUE;
 		} else LOG("Stuck on this! %S\n", S);
@@ -152,12 +152,12 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 		} else LOG("Stuck on this! %S\n", S);
 	}
 	if (identifier) Str::trim_all_white_space_at_end(identifier);
-	if (plm == FAKEACTION_PLM) {
+	if (plm == FAKEACTION_I6DIR) {
 		text_stream *old = identifier;
 		identifier = Str::new();
 		WRITE_TO(identifier, "##%S", old);
 	}
-	if (plm == OBJECT_PLM) value = NULL;
+	if (plm == OBJECT_I6DIR) value = NULL;
 
 @<Act on parsed constant definition@> =
 	inter_bookmark IBM_d = Inter::Bookmarks::after_this_node(I, P);
@@ -168,19 +168,19 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	inter_symbol *subpackage_type = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
 
 	switch (plm) {
-		case VERB_PLM:
+		case VERB_I6DIR:
 			if (RunningPipelines::get_symbol(step, command_ptype_RPSYM)) subpackage_type = RunningPipelines::get_symbol(step, command_ptype_RPSYM);
 			submodule_name = I"commands"; suffix = NULL; break;
-		case ARRAY_PLM:
+		case ARRAY_I6DIR:
 			submodule_name = I"arrays"; suffix = I"arr"; break;
-		case CONSTANT_PLM:
-		case FAKEACTION_PLM:
-		case OBJECT_PLM:
+		case CONSTANT_I6DIR:
+		case FAKEACTION_I6DIR:
+		case OBJECT_I6DIR:
 			submodule_name = I"constants"; suffix = I"con"; break;
-		case GLOBAL_PLM:
+		case GLOBAL_I6DIR:
 			submodule_name = I"variables"; suffix = I"var"; break;
-		case ATTRIBUTE_PLM:
-		case PROPERTY_PLM:
+		case ATTRIBUTE_I6DIR:
+		case PROPERTY_I6DIR:
 			if (RunningPipelines::get_symbol(step, property_ptype_RPSYM)) subpackage_type = RunningPipelines::get_symbol(step, property_ptype_RPSYM);
 			submodule_name = I"properties"; suffix = I"prop"; break;
 	}
@@ -202,15 +202,15 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 	inter_symbol *con_name = CodeGen::Assimilate::make_socketed_symbol(I, identifier, Inter::Bookmarks::scope(IBM));
 	Inter::Symbols::annotate_i(con_name, ASSIMILATED_IANN, 1);
-	if (plm == VERB_PLM)
+	if (plm == VERB_I6DIR)
 		Inter::Symbols::set_flag(con_name, MAKE_NAME_UNIQUE);
-	if (plm == FAKEACTION_PLM)
+	if (plm == FAKEACTION_I6DIR)
 		Inter::Symbols::annotate_i(con_name, FAKE_ACTION_IANN, 1);
-	if (plm == OBJECT_PLM)
+	if (plm == OBJECT_I6DIR)
 		Inter::Symbols::annotate_i(con_name, OBJECT_IANN, 1);
 
 	inter_symbol *id_s = NULL;
-	if ((plm == ATTRIBUTE_PLM) || (plm == PROPERTY_PLM)) {
+	if ((plm == ATTRIBUTE_I6DIR) || (plm == PROPERTY_I6DIR)) {
 		id_s = CodeGen::Assimilate::make_socketed_symbol(I, I"property_id", Inter::Bookmarks::scope(IBM));	
 	}
 	if (id_s) {
@@ -231,9 +231,9 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 	inter_ti v1 = 0, v2 = 0;
 
 	switch (plm) {
-		case CONSTANT_PLM:
-		case FAKEACTION_PLM:
-		case OBJECT_PLM: {
+		case CONSTANT_I6DIR:
+		case FAKEACTION_I6DIR:
+		case OBJECT_I6DIR: {
 			@<Assimilate a value@>;
 			Produce::guard(Inter::Constant::new_numerical(IBM,
 				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
@@ -242,7 +242,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
 		}
-		case GLOBAL_PLM:
+		case GLOBAL_I6DIR:
 			@<Assimilate a value@>;
 			Produce::guard(Inter::Variable::new(IBM,
 				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
@@ -250,7 +250,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 			CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			break;
-		case ATTRIBUTE_PLM: {
+		case ATTRIBUTE_I6DIR: {
 
 			TEMPORARY_TEXT(A)
 			WRITE_TO(A, "P_%S", con_name->symbol_name);
@@ -283,7 +283,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 			break;
 		}
-		case PROPERTY_PLM: {
+		case PROPERTY_I6DIR: {
 			Produce::guard(Inter::Property::new(IBM,
 				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
 				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
@@ -293,12 +293,12 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				CodeGen::Assimilate::install_socket(I, con_name, I"P_absent");
 			break;
 		}
-		case VERB_PLM:
-		case ARRAY_PLM: {
+		case VERB_I6DIR:
+		case ARRAY_I6DIR: {
 			inter_ti annot = 0;
 			match_results mr2 = Regexp::create_mr();
 			text_stream *conts = NULL;
-			if (plm == ARRAY_PLM) {
+			if (plm == ARRAY_I6DIR) {
 				if (Regexp::match(&mr2, value, L" *--> *(%c*?) *")) conts = mr2.exp[0];
 				else if (Regexp::match(&mr2, value, L" *-> *(%c*?) *")) { conts = mr2.exp[0]; annot = BYTEARRAY_IANN; }
 				else if (Regexp::match(&mr2, value, L" *table *(%c*?) *")) { conts = mr2.exp[0]; annot = TABLEARRAY_IANN; }
@@ -325,13 +325,13 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 				@<Extract a token@>;
 				if (next_is_action) CodeGen::Assimilate::ensure_action(I, step, P, value);
 				next_is_action = FALSE;
-				if (plm == ARRAY_PLM) {
+				if (plm == ARRAY_I6DIR) {
 					if (Str::eq(value, I"+")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '+'", NULL);
 					if (Str::eq(value, I"-")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '-'", NULL);
 					if (Str::eq(value, I"*")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '*'", NULL);
 					if (Str::eq(value, I"/")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '/'", NULL);
 				}
-				if ((NT == 0) && (plm == VERB_PLM) && (Str::eq(value, I"meta"))) {
+				if ((NT == 0) && (plm == VERB_I6DIR) && (Str::eq(value, I"meta"))) {
 					Inter::Symbols::annotate_i(con_name, METAVERB_IANN, 1);
 				} else {
 					@<Assimilate a value@>;
@@ -344,7 +344,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 					v1_pile[no_assimilated_array_entries] = v1;
 					v2_pile[no_assimilated_array_entries] = v2;
 					no_assimilated_array_entries++;
-					if ((plm == VERB_PLM) && (RunningPipelines::get_symbol(step, verb_directive_result_RPSYM)) &&
+					if ((plm == VERB_I6DIR) && (RunningPipelines::get_symbol(step, verb_directive_result_RPSYM)) &&
 						(InterSymbolsTables::symbol_from_data_pair_and_table(v1, v2, Inter::Bookmarks::scope(IBM)) == RunningPipelines::get_symbol(step, verb_directive_result_RPSYM)))
 						next_is_action = TRUE;
 				}
@@ -366,7 +366,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 			Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
 			Inter::Bookmarks::insert(IBM, array_in_progress);
 			
-			if (plm == ARRAY_PLM) {
+			if (plm == ARRAY_I6DIR) {
 				CodeGen::Assimilate::install_socket(I, con_name, identifier);
 			}
 			
@@ -392,7 +392,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 @<Assimilate a value@> =
 	if (Str::len(value) > 0) {
 		CodeGen::Assimilate::value(I, step, Inter::Bookmarks::package(IBM), IBM, value, &v1, &v2,
-			(plm == VERB_PLM)?TRUE:FALSE);
+			(plm == VERB_I6DIR)?TRUE:FALSE);
 	} else {
 		v1 = LITERAL_IVAL; v2 = 0;
 	}
@@ -405,7 +405,7 @@ void CodeGen::Assimilate::visitor3(inter_tree *I, inter_tree_node *P, void *stat
 
 @<Parse the routine or stub header@> =
 	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
-	if (P->W.data[PLM_SPLAT_IFLD] == ROUTINE_PLM) {
+	if (P->W.data[PLM_SPLAT_IFLD] == ROUTINE_I6DIR) {
 		if (Regexp::match(&mr, S, L" *%[ *(%i+) *; *(%c*)")) {
 			identifier = mr.exp[0]; body = mr.exp[1];
 		} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {

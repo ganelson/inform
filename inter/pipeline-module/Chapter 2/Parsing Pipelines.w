@@ -347,7 +347,6 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 		CodeGen::Operations::create_pipeline_stage();
 		Synoptic::create_pipeline_stage();
 		ParsingStages::create_pipeline_stage();
-		CodeGen::PLM::create_pipeline_stage();
 		CodeGen::RCC::create_pipeline_stage();
 		CodeGen::ReconcileVerbs::create_pipeline_stage();
 		CodeGen::Uniqueness::create_pipeline_stage();

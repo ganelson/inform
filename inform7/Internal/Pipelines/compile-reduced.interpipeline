@@ -1,7 +1,6 @@
 read <- *in
 load-binary-kits
 parse-insertions
-parse-linked-matter
 resolve-conditional-compilation
 assimilate
 consolidate-text

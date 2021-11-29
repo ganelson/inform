@@ -20,7 +20,6 @@ Chapter 3: Linking Stages
 	New Stage
 	Load Binary Kits Stage
 	Parsing Stages
-	Parse Linked Matter
 	Resolving Conditional Compilation
 	Assimilate
 	Resolve External Symbols
