@@ -82,7 +82,7 @@ such node for each different directive in the I6T source.
 providing I6 code to I7. That's not the arrangement any more, but the syntax
 </p>
 
-<ul class="items"><li>(mostly) lives on, and so does the name I6T. Still, it's really just the same
+<ul class="items"><li>(partly) lives on, and so does the name I6T. Still, it's really just the same
 thing as Inform 6 code in an Inweb-style literate programming notation.
 </li></ul>
 <pre class="displayed-code all-displayed-code code-font">
@@ -95,7 +95,9 @@ thing as Inform 6 code in an Inweb-style literate programming notation.
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The stage <span class="extract"><span class="extract-syntax">load-kit-source K</span></span> takes the kit <span class="extract"><span class="extract-syntax">K</span></span>, looks for its source code
 (text files written in I6T syntax) and reads this in to the current Inter tree,
-placing the resulting nodes in a new top-level module.
+placing the resulting nodes in a new top-level module. A typical kit may
+turn into anywhere from 50 to 2000 such nodes. Speed is not very important
+here, since this is not part of the Inform 7 compilation pipeline.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -128,9 +130,9 @@ It's into this module that the resulting <span class="extract"><span class="extr
 <ul class="endnotetexts"><li>This code is used in <a href="3-ps.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>The stage <span class="extract"><span class="extract-syntax">parse-insertions</span></span> does the same thing, but on a much smaller scale,
 and reading raw I6T source code from <span class="extract"><span class="extract-syntax">LINK_IST</span></span> nodes in the Inter tree rather
-than from an external file. There will only be a few of these, and with not much
-code in them, when the tree has been compiled by Inform: they arise from
-features such as
+than from an external file. Speed is not important here either, but only because
+there will only be a few <span class="extract"><span class="extract-syntax">LINK_IST</span></span> nodes to deal with, and with not much code
+in them. They arise from low-level Inform 7 features such as
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

@@ -10,7 +10,7 @@ such node for each different directive in the I6T source.
 
 The T in "I6T" stands for "template", which in the 2010s was a mechanism for
 providing I6 code to I7. That's not the arrangement any more, but the syntax
-(mostly) lives on, and so does the name I6T. Still, it's really just the same
+(partly) lives on, and so does the name I6T. Still, it's really just the same
 thing as Inform 6 code in an Inweb-style literate programming notation.
 
 =
@@ -23,7 +23,9 @@ void ParsingStages::create_pipeline_stage(void) {
 
 @ The stage |load-kit-source K| takes the kit |K|, looks for its source code
 (text files written in I6T syntax) and reads this in to the current Inter tree,
-placing the resulting nodes in a new top-level module.
+placing the resulting nodes in a new top-level module. A typical kit may
+turn into anywhere from 50 to 2000 such nodes. Speed is not very important
+here, since this is not part of the Inform 7 compilation pipeline.
 
 =
 int ParsingStages::run_load_kit_source(pipeline_step *step) {
@@ -50,9 +52,9 @@ It's into this module that the resulting |SPLAT_IST| nodes will be put.
 
 @ The stage |parse-insertions| does the same thing, but on a much smaller scale,
 and reading raw I6T source code from |LINK_IST| nodes in the Inter tree rather
-than from an external file. There will only be a few of these, and with not much
-code in them, when the tree has been compiled by Inform: they arise from
-features such as
+than from an external file. Speed is not important here either, but only because
+there will only be a few |LINK_IST| nodes to deal with, and with not much code
+in them. They arise from low-level Inform 7 features such as
 = (text as Inform 7)
 Include (-
 	[ CuriousFunction;
