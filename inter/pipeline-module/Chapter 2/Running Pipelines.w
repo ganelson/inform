@@ -348,8 +348,11 @@ definition (and thus a socket) to come later from some other material not yet
 linked in.
 
 =
-void RunningPipelines::ensure(pipeline_step *step, int id, text_stream *identifier) {
+inter_symbol *RunningPipelines::ensure_symbol(pipeline_step *step, int id,
+	text_stream *identifier) {
 	inter_tree *I = step->ephemera.repository;
-	if (RunningPipelines::get_symbol(step, id) == NULL)
-		step->ephemera.cached_symbols[id] = Inter::Connectors::plug(I, identifier);
+	inter_symbol *S = RunningPipelines::get_symbol(step, id);
+	if (S) return S;
+	step->ephemera.cached_symbols[id] = Inter::Connectors::plug(I, identifier);
+	return step->ephemera.cached_symbols[id];
 }

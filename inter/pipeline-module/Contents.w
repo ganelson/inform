@@ -14,21 +14,23 @@ Chapter 2: Pipelines
 	Parsing Pipelines
 	Running Pipelines
 	Pipeline Errors
-	Read, Move, Wipe, Stop
-
-Chapter 3: Linking Stages
 	New Stage
-	Load Binary Kits Stage
+	Read, Move, Wipe, Stop Stages
+
+Chapter 3: Assimilation Stages
 	Parsing Stages
-	Resolving Conditional Compilation
-	Assimilate
+	Resolve Conditional Compilation Stage
+	Compile Splats Stage
+
+Chapter 4: Linking Stages
+	Load Binary Kits Stage
 	Resolve External Symbols
 	Inspect Plugs
 	Detect Indirect Calls
 	Uniqueness
 	Reconcile Verbs
 
-Chapter 4: Synoptic Module
+Chapter 5: Synoptic Module
 	Synoptic Hierarchy
 	Synoptic Utilities
 	Extensions
@@ -49,7 +51,7 @@ Chapter 4: Synoptic Module
 	Verbs
 	Tests
 
-Chapter 5: Optimisation Stages
+Chapter 6: Optimisation Stages
 	Eliminate Redundant Matter
 	Eliminate Redundant Labels
 	Eliminate Redundant Operations

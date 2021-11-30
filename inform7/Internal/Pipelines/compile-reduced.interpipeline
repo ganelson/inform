@@ -2,7 +2,7 @@ read <- *in
 load-binary-kits
 parse-insertions
 resolve-conditional-compilation
-assimilate
+compile-splats
 consolidate-text
 resolve-external-symbols
 inspect-plugs

@@ -1,3 +1,4 @@
+load-binary-kits
 consolidate-text
 resolve-external-symbols
 inspect-plugs

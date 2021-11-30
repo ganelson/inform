@@ -338,7 +338,7 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 		CodeGen::create_pipeline_stage();
 		NewStage::create_pipeline_stage();
 		LoadBinaryKitsStage::create_pipeline_stage();
-		CodeGen::Assimilate::create_pipeline_stage();
+		CompileSplatsStage::create_pipeline_stage();
 		DetectIndirectCalls::create_pipeline_stage();
 		CodeGen::Eliminate::create_pipeline_stage();
 		CodeGen::Externals::create_pipeline_stage();
@@ -347,7 +347,7 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 		CodeGen::Operations::create_pipeline_stage();
 		Synoptic::create_pipeline_stage();
 		ParsingStages::create_pipeline_stage();
-		CodeGen::RCC::create_pipeline_stage();
+		ResolveConditionalsStage::create_pipeline_stage();
 		CodeGen::ReconcileVerbs::create_pipeline_stage();
 		CodeGen::Uniqueness::create_pipeline_stage();
 	}	
