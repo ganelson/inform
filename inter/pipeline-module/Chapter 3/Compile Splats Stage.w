@@ -31,6 +31,14 @@ void CompileSplatsStage::create_pipeline_stage(void) {
 =
 int compile_splats_stage_run_count = 0;
 int CompileSplatsStage::run(pipeline_step *step) {
+	if ((RunningPipelines::get_symbol(step, unchecked_kind_RPSYM) == NULL) ||
+		(RunningPipelines::get_symbol(step, unchecked_function_RPSYM) == NULL) ||
+		(RunningPipelines::get_symbol(step, truth_state_kind_RPSYM) == NULL) ||
+		(RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM) == NULL)) {
+	PipelineErrors::kit_error(
+			"compile-splats cannot be used because essential kinds are missing", NULL);
+		return FALSE;
+	}
 	compile_splats_state css;
 	@<Initialise the CS state@>;
 	inter_tree *I = step->ephemera.repository;
@@ -48,14 +56,14 @@ typedef struct compile_splats_state {
 	struct pipeline_step *from_step;
 	int unique_run_ID;
 	int no_assimilated_actions;
-	int no_assimilated_commands;
+	int no_assimilated_directives;
 } compile_splats_state;
 
 @<Initialise the CS state@> =
 	css.from_step = step;
 	css.unique_run_ID = ++compile_splats_stage_run_count;
 	css.no_assimilated_actions = 0;
-	css.no_assimilated_commands = 0;
+	css.no_assimilated_directives = 0;
 
 @ The three traverse functions share a great deal of their code, in fact. Note
 that we always expect the kinds here to exist: see //New Stage//. Checking
@@ -68,18 +76,12 @@ void CompileSplatsStage::visitor1(inter_tree *I, inter_tree_node *P, void *state
 	inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
 	switch (directive) {
 		case PROPERTY_I6DIR:
-			if (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM))
-				@<Assimilate definition@>;
-			break;
 		case ATTRIBUTE_I6DIR:
-			if (RunningPipelines::get_symbol(step, truth_state_kind_RPSYM))
-				@<Assimilate definition@>;
+			@<Assimilate definition@>;
 			break;
 		case ROUTINE_I6DIR:
 		case STUB_I6DIR:
-			if ((RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)) &&
-				(RunningPipelines::get_symbol(step, unchecked_function_RPSYM)))
-				@<Assimilate routine@>;
+			@<Assimilate routine@>;
 			break;
 	}
 }
@@ -89,17 +91,13 @@ void CompileSplatsStage::visitor2(inter_tree *I, inter_tree_node *P, void *state
 	pipeline_step *step = css->from_step;
 	inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
 	switch (directive) {
+		case ARRAY_I6DIR:
 		case DEFAULT_I6DIR:
 		case CONSTANT_I6DIR:
 		case FAKEACTION_I6DIR:
 		case OBJECT_I6DIR:
 		case VERB_I6DIR:
-			if (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM))
-				@<Assimilate definition@>;
-			break;
-		case ARRAY_I6DIR:
-			if (RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM))
-				@<Assimilate definition@>;
+			@<Assimilate definition@>;
 			break;
 	}
 }
@@ -110,70 +108,140 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 	inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
 	switch (directive) {
 		case GLOBAL_I6DIR:
-			if (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM))
-				@<Assimilate definition@>;
+			@<Assimilate definition@>;
 			break;
 	}
 }
 
 @h How definitions are assimilated.
 
-@d MAX_ASSIMILATED_ARRAY_ENTRIES 10000
-
 @<Assimilate definition@> =
 	match_results mr = Regexp::create_mr();
-	text_stream *identifier = NULL;
-	text_stream *value = NULL;
-	int proceed = FALSE;
-
+	text_stream *identifier = NULL, *value = NULL;
+	int proceed = TRUE;
 	@<Parse text of splat for identifier and value@>;
-	if ((proceed) && (RunningPipelines::get_symbol(step, unchecked_kind_RPSYM))) {
-		if ((directive == DEFAULT_I6DIR) && (Inter::Connectors::find_socket(I, identifier) == NULL))
-			directive = CONSTANT_I6DIR;
-		if (directive != DEFAULT_I6DIR) @<Act on parsed constant definition@>;
+	if (proceed) {
+		@<Insert sharps in front of fake action identifiers@>;
+		@<Perhaps compile something from this splat@>;
 		InterTree::remove_node(P);
 	}
 	Regexp::dispose_of(&mr);
+
+@ This code is used for a range of different Inform 6 syntaxes which create
+something with a given identifier name, and sometimes supply a value. For example,
+= (text as Inform 6)
+	Constant Italian_Meringue_Temperature = 121;
+	Fake_Action Bake;
+	Attribute split;
+	Object Compass "compass";
+=
+The following finds the identifier as the second token, i.e., after the directive
+keyword |Constant| or similar. Note that an |Object| declaration does not
+meaningfully have a value, even though a third token is present.
 
 @<Parse text of splat for identifier and value@> =
 	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 	if (directive == VERB_I6DIR) {
 		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *;%c*")) {
-			identifier = I"assim_gv"; value = mr.exp[0]; proceed = TRUE;
-		} else LOG("Stuck on this! %S\n", S);
+			identifier = I"assim_gv"; value = mr.exp[0];
+		} else {
+			LOG("Unable to parse start of VERB_I6DIR: '%S'\n", S); proceed = FALSE;
+		}
 	} else {
 		if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(--> *%c*?) *;%c*")) {
-			identifier = mr.exp[0]; value = mr.exp[1]; proceed = TRUE;
+			identifier = mr.exp[0]; value = mr.exp[1];
 		} else if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(-> *%c*?) *;%c*")) {
-			identifier = mr.exp[0]; value = mr.exp[1]; proceed = TRUE;
+			identifier = mr.exp[0]; value = mr.exp[1];
 		} else if (Regexp::match(&mr, S, L" *%C+ (%C*?) *;%c*")) {
-			identifier = mr.exp[0]; proceed = TRUE;
+			identifier = mr.exp[0];
 		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) *= *(%c*?) *;%c*")) {
-			identifier = mr.exp[0]; value = mr.exp[1]; proceed = TRUE;
+			identifier = mr.exp[0]; value = mr.exp[1];
 		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) (%c*?) *;%c*")) {
-			identifier = mr.exp[0]; value = mr.exp[1]; proceed = TRUE;
-		} else LOG("Stuck on this! %S\n", S);
+			identifier = mr.exp[0]; value = mr.exp[1];
+		} else {
+			LOG("Unable to parse start of constant: '%S'\n", S); proceed = FALSE;
+		}
+		if (directive == OBJECT_I6DIR) value = NULL;
 	}
-	if (identifier) Str::trim_all_white_space_at_end(identifier);
+	Str::trim_all_white_space_at_end(identifier);
+
+@ An eccentricity of Inform 6 syntax is that fake action names ought to be given
+in the form |Fake_Action ##Bake|, but are not. The constant created by |Fake_Action Bake|
+is nevertheless |##Bake|, so we take care of that here.
+
+@<Insert sharps in front of fake action identifiers@> =
 	if (directive == FAKEACTION_I6DIR) {
 		text_stream *old = identifier;
 		identifier = Str::new();
 		WRITE_TO(identifier, "##%S", old);
 	}
-	if (directive == OBJECT_I6DIR) value = NULL;
 
-@<Act on parsed constant definition@> =
-	inter_bookmark IBM_d = Inter::Bookmarks::after_this_node(I, P);
-	inter_bookmark *IBM = &IBM_d;
+@ The Inform 6 directive
+= (text as Inform 6)
+	Default Vanilla_Pod 1;
+=
+is essentially equivalent to
+= (text as Inform 6)
+	#Ifndef Vanilla_Pod;
+	Constant Vanilla_Pod = 1;
+	#Endif;
+=
+So this is a piece of conditional compilation in disguise, and should perhaps
+have been removed from the tree by the |resolve-conditional-compilation| stage. 
+But in fact it's easier to handle it here.
 
+@<Perhaps compile something from this splat@> =
+	if (directive == DEFAULT_I6DIR) {
+		if (Inter::Connectors::find_socket(I, identifier) == NULL) {
+			directive = CONSTANT_I6DIR;
+			@<Definitely compile something from this splat@>;
+		}
+	} else {
+		@<Definitely compile something from this splat@>;
+	}
+
+@ So if we're here, we have reduced the possibilities to:
+= (text)
+ARRAY_I6DIR         ATTRIBUTE_I6DIR     CONSTANT_I6DIR      FAKEACTION_I6DIR
+GLOBAL_I6DIR        OBJECT_I6DIR        PROPERTY_I6DIR		VERB_I6DIR
+=
+We basically do the same thing in all of these cases: decide where to put
+the result, declare a symbol for it, and then define that symbol.
+
+@<Definitely compile something from this splat@> =
+	inter_bookmark content_at;
+	@<Work out where in the Inter tree to put the material we are making@>;
+
+	inter_symbol *made_s;
+	@<Declare the Inter symbol for what we will shortly make@>;
+	if ((directive == ATTRIBUTE_I6DIR) || (directive == PROPERTY_I6DIR))
+	    @<Declare a property ID symbol to go with it@>;
+	
+	@<Make a definition for made_s@>;
+
+@ So, for example, |Constant Vanilla_Pod = 1;| might result in the symbol
+|Vanilla_Pod| being created and defined with a |CONSTANT_IST| Inter node,
+all inside the package |/main/HypotheticalKit/constants/Vanilla_Pod_con|.
+
+Which frankly looks over-engineered for a simple constant, but some of these
+definitions are not so simple.
+
+@<Work out where in the Inter tree to put the material we are making@> =
 	text_stream *submodule_name = NULL;
 	text_stream *suffix = NULL;
-	inter_symbol *subpackage_type = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
+	inter_symbol *subpackage_type = NULL;
+	@<Work out what submodule to put this new material into@>;
+	if (Str::len(submodule_name) > 0) {
+		content_at = CompileSplatsStage::template_submodule(I, step, submodule_name, P);
+		@<Create a little package within that submodule to hold the content@>
+	} else {
+		content_at = Inter::Bookmarks::after_this_node(I, P);
+	}
 
+@<Work out what submodule to put this new material into@> =
 	switch (directive) {
 		case VERB_I6DIR:
-			if (RunningPipelines::get_symbol(step, command_ptype_RPSYM))
-				subpackage_type = RunningPipelines::get_symbol(step, command_ptype_RPSYM);
+			subpackage_type = RunningPipelines::get_symbol(step, command_ptype_RPSYM);
 			submodule_name = I"commands"; suffix = NULL; break;
 		case ARRAY_I6DIR:
 			submodule_name = I"arrays"; suffix = I"arr"; break;
@@ -185,198 +253,222 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 			submodule_name = I"variables"; suffix = I"var"; break;
 		case ATTRIBUTE_I6DIR:
 		case PROPERTY_I6DIR:
-			if (RunningPipelines::get_symbol(step, property_ptype_RPSYM))
-				subpackage_type = RunningPipelines::get_symbol(step, property_ptype_RPSYM);
+			subpackage_type = RunningPipelines::get_symbol(step, property_ptype_RPSYM);
 			submodule_name = I"properties"; suffix = I"prop"; break;
 	}
+	if ((Str::len(submodule_name) > 0) && (subpackage_type == NULL))
+		subpackage_type = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
 
-	if (submodule_name) {
-		IBM_d = CompileSplatsStage::template_submodule(I, step, submodule_name, P);
+@ The practical effect of this is to create all the packages needed which are
+not already there.
 
-		TEMPORARY_TEXT(subpackage_name)
-		if (suffix) {
-			WRITE_TO(subpackage_name, "%S_%S", identifier, suffix);
-		} else {
-			WRITE_TO(subpackage_name, "assim_command_%d", ++css->no_assimilated_commands);
-		}
-		Inter::Bookmarks::set_current_package(IBM,
-			CompileSplatsStage::new_package_named(IBM, subpackage_name, subpackage_type));
-		DISCARD_TEXT(subpackage_name)
-
+@<Create a little package within that submodule to hold the content@> =
+	TEMPORARY_TEXT(subpackage_name)
+	if (suffix) {
+		WRITE_TO(subpackage_name, "%S_%S", identifier, suffix);
+	} else {
+		WRITE_TO(subpackage_name, "assimilated_directive_%d",
+			++css->no_assimilated_directives);
 	}
+	inter_package *subpackage =
+		CompileSplatsStage::new_package_named(&content_at, subpackage_name, subpackage_type);
+	Inter::Bookmarks::set_current_package(&content_at, subpackage);
+	DISCARD_TEXT(subpackage_name)
 
-	inter_symbol *con_name = CompileSplatsStage::make_socketed_symbol(I, identifier, Inter::Bookmarks::scope(IBM));
-	Inter::Symbols::annotate_i(con_name, ASSIMILATED_IANN, 1);
-	if (directive == VERB_I6DIR)
-		Inter::Symbols::set_flag(con_name, MAKE_NAME_UNIQUE);
-	if (directive == FAKEACTION_I6DIR)
-		Inter::Symbols::annotate_i(con_name, FAKE_ACTION_IANN, 1);
-	if (directive == OBJECT_I6DIR)
-		Inter::Symbols::annotate_i(con_name, OBJECT_IANN, 1);
+@ Now we declare |made_s| as a symbol inside this package.
 
-	inter_symbol *id_s = NULL;
-	if ((directive == ATTRIBUTE_I6DIR) || (directive == PROPERTY_I6DIR)) {
-		id_s = CompileSplatsStage::make_socketed_symbol(I, I"property_id", Inter::Bookmarks::scope(IBM));	
+@<Declare the Inter symbol for what we will shortly make@> =	
+	made_s = CompileSplatsStage::make_socketed_symbol(&content_at, identifier);
+	if (made_s->equated_to) {
+		inter_symbol *external_name = made_s->equated_to;
+		external_name->equated_to = made_s;
+		made_s->equated_to = NULL;
 	}
-	if (id_s) {
-		Inter::Symbols::set_flag(id_s, MAKE_NAME_UNIQUE);
-		Produce::guard(Inter::Constant::new_numerical(IBM,
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), id_s),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
-			LITERAL_IVAL, 0,
-			(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-	}
-	
-	if (con_name->equated_to) {
-		inter_symbol *external_name = con_name->equated_to;
-		external_name->equated_to = con_name;
-		con_name->equated_to = NULL;
-	}
+	Inter::Symbols::annotate_i(made_s, ASSIMILATED_IANN, 1);
+	if (directive == FAKEACTION_I6DIR) Inter::Symbols::annotate_i(made_s, FAKE_ACTION_IANN, 1);
+	if (directive == OBJECT_I6DIR) Inter::Symbols::annotate_i(made_s, OBJECT_IANN, 1);
+	if (directive == VERB_I6DIR) Inter::Symbols::set_flag(made_s, MAKE_NAME_UNIQUE);
 
-	inter_ti v1 = 0, v2 = 0;
+@<Declare a property ID symbol to go with it@> =
+	inter_bookmark *IBM = &content_at;
+	inter_symbol *id_s = CompileSplatsStage::make_socketed_symbol(IBM, I"property_id");	
+	Inter::Symbols::set_flag(id_s, MAKE_NAME_UNIQUE);
+	Produce::guard(Inter::Constant::new_numerical(IBM,
+		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), id_s),
+		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
+			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
+			LITERAL_IVAL, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 
+@<Make a definition for made_s@> =
+	inter_bookmark *IBM = &content_at;
 	switch (directive) {
 		case CONSTANT_I6DIR:
 		case FAKEACTION_I6DIR:
-		case OBJECT_I6DIR: {
-			@<Assimilate a value@>;
-			Produce::guard(Inter::Constant::new_numerical(IBM,
-				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), v1, v2,
-				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-			CompileSplatsStage::install_socket(I, con_name, identifier);
+		case OBJECT_I6DIR:
+			@<Make a scalar constant in Inter@>;
 			break;
-		}
 		case GLOBAL_I6DIR:
-			@<Assimilate a value@>;
-			Produce::guard(Inter::Variable::new(IBM,
-				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), v1, v2,
-				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-			CompileSplatsStage::install_socket(I, con_name, identifier);
+			@<Make a global variable in Inter@>;
 			break;
-		case ATTRIBUTE_I6DIR: {
-
-			TEMPORARY_TEXT(A)
-			WRITE_TO(A, "P_%S", con_name->symbol_name);
-			inter_symbol *attr_symbol = InterSymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), A);
-			
-			if ((attr_symbol == NULL) || (!Inter::Symbols::is_defined(attr_symbol))) {
-				if (attr_symbol == NULL) attr_symbol = con_name;
-				Produce::guard(Inter::Property::new(IBM,
-					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), attr_symbol),
-					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, truth_state_kind_RPSYM)),
-					(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-				Inter::Symbols::annotate_i(attr_symbol, EITHER_OR_IANN, 1);
-				Inter::Symbols::set_translate(attr_symbol, con_name->symbol_name);
-				if (Str::ne(attr_symbol->symbol_name, con_name->symbol_name)) {
-					inter_symbol *alias_symbol = InterSymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), con_name->symbol_name);
-					InterSymbolsTables::equate(alias_symbol, attr_symbol);
-				}
-			} else {
-				Inter::Symbols::annotate_i(attr_symbol, ASSIMILATED_IANN, 1);
-				if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol))) {
-					inter_symbol *alias_symbol = InterSymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), Inter::Symbols::get_translate(attr_symbol));
-					InterSymbolsTables::equate(alias_symbol, attr_symbol);
-				}
-			}
-			CompileSplatsStage::install_socket(I, attr_symbol, A);
-			CompileSplatsStage::install_socket(I, attr_symbol, con_name->symbol_name);
-			if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol)))
-				CompileSplatsStage::install_socket(I, attr_symbol, Inter::Symbols::get_translate(attr_symbol));
-			DISCARD_TEXT(A)
-
+		case ATTRIBUTE_I6DIR:
+			@<Make an either-or property in Inter@>;
 			break;
-		}
-		case PROPERTY_I6DIR: {
-			Produce::guard(Inter::Property::new(IBM,
-				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-				InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
-				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-			CompileSplatsStage::install_socket(I, con_name, identifier);
-			if (Str::eq(identifier, I"absent"))
-				CompileSplatsStage::install_socket(I, con_name, I"P_absent");
+		case PROPERTY_I6DIR:
+			@<Make a general property in Inter@>;
 			break;
-		}
 		case VERB_I6DIR:
-		case ARRAY_I6DIR: {
-			inter_ti annot = 0;
-			match_results mr2 = Regexp::create_mr();
-			text_stream *conts = NULL;
-			if (directive == ARRAY_I6DIR) {
-				if (Regexp::match(&mr2, value, L" *--> *(%c*?) *")) conts = mr2.exp[0];
-				else if (Regexp::match(&mr2, value, L" *-> *(%c*?) *")) { conts = mr2.exp[0]; annot = BYTEARRAY_IANN; }
-				else if (Regexp::match(&mr2, value, L" *table *(%c*?) *")) { conts = mr2.exp[0]; annot = TABLEARRAY_IANN; }
-				else if (Regexp::match(&mr2, value, L" *buffer *(%c*?) *")) { conts = mr2.exp[0]; annot = BUFFERARRAY_IANN; }
-				else {
-					LOG("Identifier = <%S>, Value = <%S>", identifier, value);
-					PipelineErrors::kit_error("invalid Inform 6 array declaration in the template", NULL);
-				}
-			} else {
-				conts = value; annot = VERBARRAY_IANN;
-			}
-
-			if (annot != 0) Inter::Symbols::annotate_i(con_name, annot, 1);
-
-			inter_ti v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
-			inter_ti v2_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
-			int no_assimilated_array_entries = 0;
-
-			string_position spos = Str::start(conts);
-			int NT = 0, next_is_action = FALSE;
-			while (TRUE) {
-				TEMPORARY_TEXT(value)
-				if (next_is_action) WRITE_TO(value, "##");
-				@<Extract a token@>;
-				if (next_is_action) CompileSplatsStage::ensure_action(css, I, step, P, value);
-				next_is_action = FALSE;
-				if (directive == ARRAY_I6DIR) {
-					if (Str::eq(value, I"+")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '+'", NULL);
-					if (Str::eq(value, I"-")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '-'", NULL);
-					if (Str::eq(value, I"*")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '*'", NULL);
-					if (Str::eq(value, I"/")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '/'", NULL);
-				}
-				if ((NT == 0) && (directive == VERB_I6DIR) && (Str::eq(value, I"meta"))) {
-					Inter::Symbols::annotate_i(con_name, METAVERB_IANN, 1);
-				} else {
-					@<Assimilate a value@>;
-					if (Str::len(value) == 0) break;
-					NT++;
-					if (no_assimilated_array_entries >= MAX_ASSIMILATED_ARRAY_ENTRIES) {
-						PipelineErrors::kit_error("excessively long Inform 6 array in the template", NULL);
-						break;
-					}
-					v1_pile[no_assimilated_array_entries] = v1;
-					v2_pile[no_assimilated_array_entries] = v2;
-					no_assimilated_array_entries++;
-					if ((directive == VERB_I6DIR) &&
-						(InterSymbolsTables::symbol_from_data_pair_and_table(v1, v2, Inter::Bookmarks::scope(IBM)) == RunningPipelines::ensure_symbol(step, verb_directive_result_RPSYM, I"VERB_DIRECTIVE_RESULT")))
-						next_is_action = TRUE;
-				}
-				DISCARD_TEXT(value)
-			}
-
-			inter_tree_node *array_in_progress =
-				Inode::fill_3(IBM, CONSTANT_IST,
-					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_name),
-					InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)),
-					CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
-			int pos = array_in_progress->W.extent;
-			if (Inode::extend(array_in_progress, (unsigned int) (2*no_assimilated_array_entries)) == FALSE)
-				internal_error("can't extend frame");
-			for (int i=0; i<no_assimilated_array_entries; i++) {
-				array_in_progress->W.data[pos++] = v1_pile[i];
-				array_in_progress->W.data[pos++] = v2_pile[i];
-			}
-			Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-			Inter::Bookmarks::insert(IBM, array_in_progress);
-			
-			if (directive == ARRAY_I6DIR) {
-				CompileSplatsStage::install_socket(I, con_name, identifier);
-			}
-			
+		case ARRAY_I6DIR:
+		    @<Make a list constant in Inter@>;
 			break;
+	}
+
+@<Make a scalar constant in Inter@> =
+	inter_ti MID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
+		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	inter_ti v1 = 0, v2 = 0;
+	@<Assimilate a value@>;
+	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, v1, v2, B, NULL));
+//	CompileSplatsStage::install_socket(I, made_s, identifier);
+
+@<Make a global variable in Inter@> =
+	inter_ti MID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
+		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	inter_ti v1 = 0, v2 = 0;
+	@<Assimilate a value@>;
+	Produce::guard(Inter::Variable::new(IBM, MID, KID, v1, v2, B, NULL));
+//	CompileSplatsStage::install_socket(I, made_s, identifier);
+
+@<Make an either-or property in Inter@> =
+	TEMPORARY_TEXT(A)
+	WRITE_TO(A, "P_%S", made_s->symbol_name);
+	inter_symbol *attr_symbol = InterSymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), A);
+	
+	if ((attr_symbol == NULL) || (!Inter::Symbols::is_defined(attr_symbol))) {
+		if (attr_symbol == NULL) attr_symbol = made_s;
+		Produce::guard(Inter::Property::new(IBM,
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), attr_symbol),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
+				RunningPipelines::get_symbol(step, truth_state_kind_RPSYM)),
+			(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+		Inter::Symbols::annotate_i(attr_symbol, EITHER_OR_IANN, 1);
+		Inter::Symbols::set_translate(attr_symbol, made_s->symbol_name);
+		if (Str::ne(attr_symbol->symbol_name, made_s->symbol_name)) {
+			inter_symbol *alias_symbol = InterSymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), made_s->symbol_name);
+			InterSymbolsTables::equate(alias_symbol, attr_symbol);
 		}
+	} else {
+		Inter::Symbols::annotate_i(attr_symbol, ASSIMILATED_IANN, 1);
+		if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol))) {
+			inter_symbol *alias_symbol = InterSymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), Inter::Symbols::get_translate(attr_symbol));
+			InterSymbolsTables::equate(alias_symbol, attr_symbol);
+		}
+	}
+	CompileSplatsStage::install_socket(I, attr_symbol, A);
+	CompileSplatsStage::install_socket(I, attr_symbol, made_s->symbol_name);
+	if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol)))
+		CompileSplatsStage::install_socket(I, attr_symbol, Inter::Symbols::get_translate(attr_symbol));
+	DISCARD_TEXT(A)
+
+@<Make a general property in Inter@> =
+	Produce::guard(Inter::Property::new(IBM,
+		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s),
+		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
+		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+	CompileSplatsStage::install_socket(I, made_s, identifier);
+	if (Str::eq(identifier, I"absent"))
+		CompileSplatsStage::install_socket(I, made_s, I"P_absent");
+
+@
+
+@d MAX_ASSIMILATED_ARRAY_ENTRIES 10000
+
+@<Make a list constant in Inter@> =
+	inter_ti v1 = 0, v2 = 0;
+	inter_ti annot = 0;
+	match_results mr2 = Regexp::create_mr();
+	text_stream *conts = NULL;
+	if (directive == ARRAY_I6DIR) {
+		if (Regexp::match(&mr2, value, L" *--> *(%c*?) *")) conts = mr2.exp[0];
+		else if (Regexp::match(&mr2, value, L" *-> *(%c*?) *")) { conts = mr2.exp[0]; annot = BYTEARRAY_IANN; }
+		else if (Regexp::match(&mr2, value, L" *table *(%c*?) *")) { conts = mr2.exp[0]; annot = TABLEARRAY_IANN; }
+		else if (Regexp::match(&mr2, value, L" *buffer *(%c*?) *")) { conts = mr2.exp[0]; annot = BUFFERARRAY_IANN; }
+		else {
+			LOG("Identifier = <%S>, Value = <%S>", identifier, value);
+			PipelineErrors::kit_error("invalid Inform 6 array declaration in the template", NULL);
+		}
+	} else {
+		conts = value; annot = VERBARRAY_IANN;
+	}
+
+	if (annot != 0) Inter::Symbols::annotate_i(made_s, annot, 1);
+
+	inter_ti v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
+	inter_ti v2_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
+	int no_assimilated_array_entries = 0;
+
+	string_position spos = Str::start(conts);
+	int NT = 0, next_is_action = FALSE;
+	while (TRUE) {
+		TEMPORARY_TEXT(value)
+		if (next_is_action) WRITE_TO(value, "##");
+		@<Extract a token@>;
+		if (next_is_action) CompileSplatsStage::ensure_action(css, I, step, P, value);
+		next_is_action = FALSE;
+		if (directive == ARRAY_I6DIR) {
+			if (Str::eq(value, I"+")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '+'", NULL);
+			if (Str::eq(value, I"-")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '-'", NULL);
+			if (Str::eq(value, I"*")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '*'", NULL);
+			if (Str::eq(value, I"/")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '/'", NULL);
+		}
+		if ((NT == 0) && (directive == VERB_I6DIR) && (Str::eq(value, I"meta"))) {
+			Inter::Symbols::annotate_i(made_s, METAVERB_IANN, 1);
+		} else {
+			@<Assimilate a value@>;
+			if (Str::len(value) == 0) break;
+			NT++;
+			if (no_assimilated_array_entries >= MAX_ASSIMILATED_ARRAY_ENTRIES) {
+				PipelineErrors::kit_error("excessively long Inform 6 array in the template", NULL);
+				break;
+			}
+			v1_pile[no_assimilated_array_entries] = v1;
+			v2_pile[no_assimilated_array_entries] = v2;
+			no_assimilated_array_entries++;
+			if ((directive == VERB_I6DIR) &&
+				(InterSymbolsTables::symbol_from_data_pair_and_table(v1, v2, Inter::Bookmarks::scope(IBM)) == RunningPipelines::ensure_symbol(step, verb_directive_result_RPSYM, I"VERB_DIRECTIVE_RESULT")))
+				next_is_action = TRUE;
+		}
+		DISCARD_TEXT(value)
+	}
+
+	inter_tree_node *array_in_progress =
+		Inode::fill_3(IBM, CONSTANT_IST,
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)),
+			CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
+	int pos = array_in_progress->W.extent;
+	if (Inode::extend(array_in_progress, (unsigned int) (2*no_assimilated_array_entries)) == FALSE)
+		internal_error("can't extend frame");
+	for (int i=0; i<no_assimilated_array_entries; i++) {
+		array_in_progress->W.data[pos++] = v1_pile[i];
+		array_in_progress->W.data[pos++] = v2_pile[i];
+	}
+	Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
+	Inter::Bookmarks::insert(IBM, array_in_progress);
+	
+	if (directive == ARRAY_I6DIR) {
+		CompileSplatsStage::install_socket(I, made_s, identifier);
+	}
+			
+@<Assimilate a value@> =
+	if (Str::len(value) > 0) {
+		CompileSplatsStage::value(I, step, Inter::Bookmarks::package(IBM), IBM, value, &v1, &v2,
+			(directive == VERB_I6DIR)?TRUE:FALSE);
+	} else {
+		v1 = LITERAL_IVAL; v2 = 0;
 	}
 
 @<Extract a token@> =
@@ -392,14 +484,6 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 		if ((c == ')') && (dquoted == FALSE) && (squoted == FALSE)) bracketed--;
 		PUT_TO(value, c);
 		spos = Str::forward(spos);
-	}
-
-@<Assimilate a value@> =
-	if (Str::len(value) > 0) {
-		CompileSplatsStage::value(I, step, Inter::Bookmarks::package(IBM), IBM, value, &v1, &v2,
-			(directive == VERB_I6DIR)?TRUE:FALSE);
-	} else {
-		v1 = LITERAL_IVAL; v2 = 0;
 	}
 
 @h How functions are assimilated.
@@ -432,8 +516,8 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 	}
 
 @<Act on parsed header@> =
-	inter_bookmark IBM_d = CompileSplatsStage::template_submodule(I, step, I"functions", P);
-	inter_bookmark *IBM = &IBM_d;
+	inter_bookmark content_at = CompileSplatsStage::template_submodule(I, step, I"functions", P);
+	inter_bookmark *IBM = &content_at;
 
 	inter_symbol *fnt = RunningPipelines::get_symbol(step, function_ptype_RPSYM);
 	if (fnt == NULL) fnt = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
@@ -479,7 +563,7 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 
 	*IBM = inner_save;
 
-	inter_symbol *rsymb = CompileSplatsStage::make_socketed_symbol(I, identifier, Inter::Bookmarks::scope(IBM));
+	inter_symbol *rsymb = CompileSplatsStage::make_socketed_symbol(IBM, identifier);
 	Inter::Symbols::annotate_i(rsymb, ASSIMILATED_IANN, 1);
 	Produce::guard(Inter::Constant::new_function(IBM,
 		InterSymbolsTables::id_from_symbol(I, FP, rsymb),
@@ -505,9 +589,9 @@ void CompileSplatsStage::install_socket(inter_tree *I, inter_symbol *con_name, t
 	if (socket == NULL) Inter::Connectors::socket(I, aka_text, con_name);
 }
 
-inter_symbol *CompileSplatsStage::make_socketed_symbol(inter_tree *I, text_stream *identifier, inter_symbols_table *into_scope) {
-	inter_symbol *new_symbol = InterSymbolsTables::create_with_unique_name(into_scope, identifier);
-	CompileSplatsStage::install_socket(I, new_symbol, identifier);
+inter_symbol *CompileSplatsStage::make_socketed_symbol(inter_bookmark *IBM, text_stream *identifier) {
+	inter_symbol *new_symbol = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), identifier);
+	CompileSplatsStage::install_socket(Inter::Bookmarks::tree(IBM), new_symbol, identifier);
 	return new_symbol;
 }
 
@@ -528,7 +612,7 @@ void CompileSplatsStage::ensure_action(compile_splats_state *css, inter_tree *I,
 			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 			LITERAL_IVAL, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 		Inter::Symbols::set_flag(aid_s, MAKE_NAME_UNIQUE);
-		inter_symbol *asymb = CompileSplatsStage::make_socketed_symbol(I, value, Inter::Bookmarks::scope(IBM));
+		inter_symbol *asymb = CompileSplatsStage::make_socketed_symbol(IBM, value);
 		TEMPORARY_TEXT(unsharped)
 		WRITE_TO(unsharped, "%SSub", value);
 		Str::delete_first_character(unsharped);
