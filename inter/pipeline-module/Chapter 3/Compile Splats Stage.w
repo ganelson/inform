@@ -287,6 +287,7 @@ not already there.
 	Inter::Symbols::annotate_i(made_s, ASSIMILATED_IANN, 1);
 	if (directive == FAKEACTION_I6DIR) Inter::Symbols::annotate_i(made_s, FAKE_ACTION_IANN, 1);
 	if (directive == OBJECT_I6DIR) Inter::Symbols::annotate_i(made_s, OBJECT_IANN, 1);
+	if (directive == ATTRIBUTE_I6DIR) Inter::Symbols::annotate_i(made_s, EITHER_OR_IANN, 1);
 	if (directive == VERB_I6DIR) Inter::Symbols::set_flag(made_s, MAKE_NAME_UNIQUE);
 
 @<Declare a property ID symbol to go with it@> =
@@ -310,11 +311,11 @@ not already there.
 		case GLOBAL_I6DIR:
 			@<Make a global variable in Inter@>;
 			break;
-		case ATTRIBUTE_I6DIR:
-			@<Make an either-or property in Inter@>;
-			break;
 		case PROPERTY_I6DIR:
 			@<Make a general property in Inter@>;
+			break;
+		case ATTRIBUTE_I6DIR:
+			@<Make an either-or property in Inter@>;
 			break;
 		case VERB_I6DIR:
 		case ARRAY_I6DIR:
@@ -330,7 +331,6 @@ not already there.
 	inter_ti v1 = 0, v2 = 0;
 	@<Assimilate a value@>;
 	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, v1, v2, B, NULL));
-//	CompileSplatsStage::install_socket(I, made_s, identifier);
 
 @<Make a global variable in Inter@> =
 	inter_ti MID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s);
@@ -340,47 +340,20 @@ not already there.
 	inter_ti v1 = 0, v2 = 0;
 	@<Assimilate a value@>;
 	Produce::guard(Inter::Variable::new(IBM, MID, KID, v1, v2, B, NULL));
-//	CompileSplatsStage::install_socket(I, made_s, identifier);
-
-@<Make an either-or property in Inter@> =
-	TEMPORARY_TEXT(A)
-	WRITE_TO(A, "P_%S", made_s->symbol_name);
-	inter_symbol *attr_symbol = InterSymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), A);
-	
-	if ((attr_symbol == NULL) || (!Inter::Symbols::is_defined(attr_symbol))) {
-		if (attr_symbol == NULL) attr_symbol = made_s;
-		Produce::guard(Inter::Property::new(IBM,
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), attr_symbol),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
-				RunningPipelines::get_symbol(step, truth_state_kind_RPSYM)),
-			(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-		Inter::Symbols::annotate_i(attr_symbol, EITHER_OR_IANN, 1);
-		Inter::Symbols::set_translate(attr_symbol, made_s->symbol_name);
-		if (Str::ne(attr_symbol->symbol_name, made_s->symbol_name)) {
-			inter_symbol *alias_symbol = InterSymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), made_s->symbol_name);
-			InterSymbolsTables::equate(alias_symbol, attr_symbol);
-		}
-	} else {
-		Inter::Symbols::annotate_i(attr_symbol, ASSIMILATED_IANN, 1);
-		if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol))) {
-			inter_symbol *alias_symbol = InterSymbolsTables::symbol_from_name_creating(Inter::Bookmarks::scope(IBM), Inter::Symbols::get_translate(attr_symbol));
-			InterSymbolsTables::equate(alias_symbol, attr_symbol);
-		}
-	}
-	CompileSplatsStage::install_socket(I, attr_symbol, A);
-	CompileSplatsStage::install_socket(I, attr_symbol, made_s->symbol_name);
-	if (Str::ne(attr_symbol->symbol_name, Inter::Symbols::get_translate(attr_symbol)))
-		CompileSplatsStage::install_socket(I, attr_symbol, Inter::Symbols::get_translate(attr_symbol));
-	DISCARD_TEXT(A)
 
 @<Make a general property in Inter@> =
-	Produce::guard(Inter::Property::new(IBM,
-		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s),
-		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
-		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-	CompileSplatsStage::install_socket(I, made_s, identifier);
-	if (Str::eq(identifier, I"absent"))
-		CompileSplatsStage::install_socket(I, made_s, I"P_absent");
+	inter_ti MID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
+		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	Produce::guard(Inter::Property::new(IBM, MID, KID, B, NULL));
+
+@<Make an either-or property in Inter@> =
+	inter_ti MID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
+		RunningPipelines::get_symbol(step, truth_state_kind_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	Produce::guard(Inter::Property::new(IBM, MID, KID, B, NULL));
 
 @
 
@@ -398,7 +371,7 @@ not already there.
 		else if (Regexp::match(&mr2, value, L" *buffer *(%c*?) *")) { conts = mr2.exp[0]; annot = BUFFERARRAY_IANN; }
 		else {
 			LOG("Identifier = <%S>, Value = <%S>", identifier, value);
-			PipelineErrors::kit_error("invalid Inform 6 array declaration in the template", NULL);
+			PipelineErrors::kit_error("invalid Inform 6 array declaration", NULL);
 		}
 	} else {
 		conts = value; annot = VERBARRAY_IANN;
@@ -419,10 +392,10 @@ not already there.
 		if (next_is_action) CompileSplatsStage::ensure_action(css, I, step, P, value);
 		next_is_action = FALSE;
 		if (directive == ARRAY_I6DIR) {
-			if (Str::eq(value, I"+")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '+'", NULL);
-			if (Str::eq(value, I"-")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '-'", NULL);
-			if (Str::eq(value, I"*")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '*'", NULL);
-			if (Str::eq(value, I"/")) PipelineErrors::kit_error("Inform 6 array declaration in the template using operator '/'", NULL);
+			if (Str::eq(value, I"+")) PipelineErrors::kit_error("Inform 6 array declaration using operator '+'", NULL);
+			if (Str::eq(value, I"-")) PipelineErrors::kit_error("Inform 6 array declaration using operator '-'", NULL);
+			if (Str::eq(value, I"*")) PipelineErrors::kit_error("Inform 6 array declaration using operator '*'", NULL);
+			if (Str::eq(value, I"/")) PipelineErrors::kit_error("Inform 6 array declaration using operator '/'", NULL);
 		}
 		if ((NT == 0) && (directive == VERB_I6DIR) && (Str::eq(value, I"meta"))) {
 			Inter::Symbols::annotate_i(made_s, METAVERB_IANN, 1);
@@ -431,7 +404,7 @@ not already there.
 			if (Str::len(value) == 0) break;
 			NT++;
 			if (no_assimilated_array_entries >= MAX_ASSIMILATED_ARRAY_ENTRIES) {
-				PipelineErrors::kit_error("excessively long Inform 6 array in the template", NULL);
+				PipelineErrors::kit_error("excessively long Inform 6 array", NULL);
 				break;
 			}
 			v1_pile[no_assimilated_array_entries] = v1;
@@ -458,10 +431,6 @@ not already there.
 	}
 	Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
 	Inter::Bookmarks::insert(IBM, array_in_progress);
-	
-	if (directive == ARRAY_I6DIR) {
-		CompileSplatsStage::install_socket(I, made_s, identifier);
-	}
 			
 @<Assimilate a value@> =
 	if (Str::len(value) > 0) {
@@ -502,7 +471,7 @@ not already there.
 		} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {
 			identifier = mr.exp[0]; chain = mr.exp[1]; body = mr.exp[2];
 		} else {
-			PipelineErrors::kit_error("invalid Inform 6 routine declaration in the template", NULL);
+			PipelineErrors::kit_error("invalid Inform 6 routine declaration", NULL);
 		}
 	} else {
 		if (Regexp::match(&mr, S, L" *%C+ *(%i+) (%d+);%c*")) {
@@ -512,7 +481,7 @@ not already there.
 			if ((N<0) || (N>15)) N = 1;
 			for (int i=1; i<=N; i++) WRITE_TO(chain, "x%d ", i);
 			body = Str::duplicate(I"rfalse; ];");
-		} else PipelineErrors::kit_error("invalid Inform 6 Stub declaration in the template", NULL);
+		} else PipelineErrors::kit_error("invalid Inform 6 Stub declaration", NULL);
 	}
 
 @<Act on parsed header@> =
