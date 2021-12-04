@@ -258,6 +258,21 @@ inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_ti
 	return NULL;
 }
 
+inter_error_message *Inter::Constant::new_list(inter_bookmark *IBM, inter_ti SID, inter_ti KID,
+	int no_pairs, inter_ti *v1_pile, inter_ti *v2_pile, inter_ti level, inter_error_location *eloc) {
+	inter_tree_node *AP = Inode::fill_3(IBM, CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_LIST, eloc, level);
+	int pos = AP->W.extent;
+	if (Inode::extend(AP, (unsigned int) (2*no_pairs)) == FALSE)
+		internal_error("can't extend array node to make room for entries");
+	for (int i=0; i<no_pairs; i++) {
+		AP->W.data[pos++] = v1_pile[i];
+		AP->W.data[pos++] = v2_pile[i];
+	}
+	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), AP); if (E) return E;
+	Inter::Bookmarks::insert(IBM, AP);
+	return NULL;
+}
+
 int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM, inter_symbol *conts_kind, inter_tree_node *P, text_stream *S, inter_error_message **E) {
 	*E = NULL;
 	inter_ti con_val1 = 0;

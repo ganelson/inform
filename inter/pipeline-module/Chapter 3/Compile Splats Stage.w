@@ -355,21 +355,50 @@ not already there.
 	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
 	Produce::guard(Inter::Property::new(IBM, MID, KID, B, NULL));
 
-@
+@ A typical Inform 6 array declaration looks like this:
+= (text as Inform 6)
+	Array Example table 2 (-56) 17 "hey, I am typeless" ' ';
+=
 
 @d MAX_ASSIMILATED_ARRAY_ENTRIES 10000
 
 @<Make a list constant in Inter@> =
-	inter_ti v1 = 0, v2 = 0;
-	inter_ti annot = 0;
-	match_results mr2 = Regexp::create_mr();
+	match_results mr = Regexp::create_mr();
 	text_stream *conts = NULL;
+	inter_ti annot = 0;
+	@<Work out the format of the array and the string of contents@>;
+	if (annot != 0) Inter::Symbols::annotate_i(made_s, annot, 1);
+
+	inter_ti v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES], v2_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
+	int no_assimilated_array_entries = 0;
+	if (directive == ARRAY_I6DIR)
+		@<Compile the string of array contents into the pile of v1 and v2 values@>
+	else
+		@<Compile the string of command grammar contents into the pile of v1 and v2 values@>;
+
+	inter_ti MID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
+		RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	Produce::guard(Inter::Constant::new_list(IBM, MID, KID, no_assimilated_array_entries,
+		v1_pile, v2_pile, B, NULL));
+	Regexp::dispose_of(&mr);
+
+@ At this point |value| is |table 2 (-56) 17 "hey, I am typeless" ' '|. We want
+first to work out which of the several array formats this is (|TABLEARRAY_IANN|
+in this instance), then the contents |2 (-56) 17 "hey, I am typeless" ' '|.
+
+@<Work out the format of the array and the string of contents@> =
 	if (directive == ARRAY_I6DIR) {
-		if (Regexp::match(&mr2, value, L" *--> *(%c*?) *")) conts = mr2.exp[0];
-		else if (Regexp::match(&mr2, value, L" *-> *(%c*?) *")) { conts = mr2.exp[0]; annot = BYTEARRAY_IANN; }
-		else if (Regexp::match(&mr2, value, L" *table *(%c*?) *")) { conts = mr2.exp[0]; annot = TABLEARRAY_IANN; }
-		else if (Regexp::match(&mr2, value, L" *buffer *(%c*?) *")) { conts = mr2.exp[0]; annot = BUFFERARRAY_IANN; }
-		else {
+		if (Regexp::match(&mr, value, L" *--> *(%c*?) *")) {
+			conts = mr.exp[0]; annot = 0;
+		} else if (Regexp::match(&mr, value, L" *-> *(%c*?) *")) {
+			conts = mr.exp[0]; annot = BYTEARRAY_IANN;
+		} else if (Regexp::match(&mr, value, L" *table *(%c*?) *")) {
+			conts = mr.exp[0]; annot = TABLEARRAY_IANN;
+		} else if (Regexp::match(&mr, value, L" *buffer *(%c*?) *")) {
+			conts = mr.exp[0]; annot = BUFFERARRAY_IANN;
+		} else {
 			LOG("Identifier = <%S>, Value = <%S>", identifier, value);
 			PipelineErrors::kit_error("invalid Inform 6 array declaration", NULL);
 		}
@@ -377,61 +406,70 @@ not already there.
 		conts = value; annot = VERBARRAY_IANN;
 	}
 
-	if (annot != 0) Inter::Symbols::annotate_i(made_s, annot, 1);
+@ The contents text is now tokenised, and each token produces an array entry.
 
-	inter_ti v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
-	inter_ti v2_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
-	int no_assimilated_array_entries = 0;
+Although it is legal in Inform 6 to write arrays like, say.
+= (text as Inform 6)
+	Array Example --> 'a' + 2 (24);
+=
+where the entries are specified in a way using arithmetic operators, we won't
+support that here: the standard Inform kits do not need it, and it's hard to
+see why other kits would, either.
 
+@<Compile the string of array contents into the pile of v1 and v2 values@> =
 	string_position spos = Str::start(conts);
-	int NT = 0, next_is_action = FALSE;
-	while (TRUE) {
+	int finished = FALSE;
+	while (finished == FALSE) {
+		TEMPORARY_TEXT(value)
+		@<Extract a token@>;
+		if (Str::eq(value, I"+"))
+			PipelineErrors::kit_error("Inform 6 array declaration using operator '+'", NULL);
+		if (Str::eq(value, I"-"))
+			PipelineErrors::kit_error("Inform 6 array declaration using operator '-'", NULL);
+		if (Str::eq(value, I"*"))
+			PipelineErrors::kit_error("Inform 6 array declaration using operator '*'", NULL);
+		if (Str::eq(value, I"/"))
+			PipelineErrors::kit_error("Inform 6 array declaration using operator '/'", NULL);
+
+		if (Str::len(value) > 0) {
+			inter_ti v1 = 0, v2 = 0;
+			@<Assimilate a value@>;
+			@<Add value to the entry pile@>;
+		} else finished = TRUE;
+		DISCARD_TEXT(value)
+	}
+
+@ In command grammar introduced by |Verb|, the tokens |*| and |/| can occur
+without having any arithmetic meaning, so they must not be rejected. That's
+really why we treat this case as different, though we also treat keywords
+occurring after |->| markers as being action names, and introduce |##|s to
+their names. Thus in:
+= (text as Inform 6)
+	Verb 'do' * 'something' -> Do;
+=
+the action name |Do| is converted automatically to |##Do|, the actual identifier
+for the action.
+
+@<Compile the string of command grammar contents into the pile of v1 and v2 values@> =
+	string_position spos = Str::start(conts);
+	int NT = 0, next_is_action = FALSE, finished = FALSE;
+	while (finished == FALSE) {
 		TEMPORARY_TEXT(value)
 		if (next_is_action) WRITE_TO(value, "##");
 		@<Extract a token@>;
 		if (next_is_action) CompileSplatsStage::ensure_action(css, I, step, P, value);
 		next_is_action = FALSE;
-		if (directive == ARRAY_I6DIR) {
-			if (Str::eq(value, I"+")) PipelineErrors::kit_error("Inform 6 array declaration using operator '+'", NULL);
-			if (Str::eq(value, I"-")) PipelineErrors::kit_error("Inform 6 array declaration using operator '-'", NULL);
-			if (Str::eq(value, I"*")) PipelineErrors::kit_error("Inform 6 array declaration using operator '*'", NULL);
-			if (Str::eq(value, I"/")) PipelineErrors::kit_error("Inform 6 array declaration using operator '/'", NULL);
-		}
-		if ((NT == 0) && (directive == VERB_I6DIR) && (Str::eq(value, I"meta"))) {
+		if ((NT++ == 0) && (Str::eq(value, I"meta"))) {
 			Inter::Symbols::annotate_i(made_s, METAVERB_IANN, 1);
-		} else {
+		} else if (Str::len(value) > 0) {
+			inter_ti v1 = 0, v2 = 0;
 			@<Assimilate a value@>;
-			if (Str::len(value) == 0) break;
-			NT++;
-			if (no_assimilated_array_entries >= MAX_ASSIMILATED_ARRAY_ENTRIES) {
-				PipelineErrors::kit_error("excessively long Inform 6 array", NULL);
-				break;
-			}
-			v1_pile[no_assimilated_array_entries] = v1;
-			v2_pile[no_assimilated_array_entries] = v2;
-			no_assimilated_array_entries++;
-			if ((directive == VERB_I6DIR) &&
-				(InterSymbolsTables::symbol_from_data_pair_and_table(v1, v2, Inter::Bookmarks::scope(IBM)) == RunningPipelines::ensure_symbol(step, verb_directive_result_RPSYM, I"VERB_DIRECTIVE_RESULT")))
-				next_is_action = TRUE;
-		}
+			@<Add value to the entry pile@>;
+			if (Str::eq(value, I"->")) next_is_action = TRUE;
+		} else finished = TRUE;
 		DISCARD_TEXT(value)
 	}
 
-	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST,
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), made_s),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)),
-			CONSTANT_INDIRECT_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
-	int pos = array_in_progress->W.extent;
-	if (Inode::extend(array_in_progress, (unsigned int) (2*no_assimilated_array_entries)) == FALSE)
-		internal_error("can't extend frame");
-	for (int i=0; i<no_assimilated_array_entries; i++) {
-		array_in_progress->W.data[pos++] = v1_pile[i];
-		array_in_progress->W.data[pos++] = v2_pile[i];
-	}
-	Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-	Inter::Bookmarks::insert(IBM, array_in_progress);
-			
 @<Assimilate a value@> =
 	if (Str::len(value) > 0) {
 		CompileSplatsStage::value(I, step, Inter::Bookmarks::package(IBM), IBM, value, &v1, &v2,
@@ -440,13 +478,23 @@ not already there.
 		v1 = LITERAL_IVAL; v2 = 0;
 	}
 
+@<Add value to the entry pile@> =
+	if (no_assimilated_array_entries >= MAX_ASSIMILATED_ARRAY_ENTRIES) {
+		PipelineErrors::kit_error("excessively long Verb or Extend", NULL);
+		break;
+	}
+	v1_pile[no_assimilated_array_entries] = v1;
+	v2_pile[no_assimilated_array_entries] = v2;
+	no_assimilated_array_entries++;
+
 @<Extract a token@> =
 	int squoted = FALSE, dquoted = FALSE, bracketed = 0;
 	while ((Str::in_range(spos)) && (Characters::is_whitespace(Str::get(spos))))
 		spos = Str::forward(spos);
 	while (Str::in_range(spos)) {
 		wchar_t c = Str::get(spos);
-		if ((Characters::is_whitespace(c)) && (squoted == FALSE) && (dquoted == FALSE) && (bracketed == 0)) break;
+		if ((Characters::is_whitespace(c)) && (squoted == FALSE) &&
+			(dquoted == FALSE) && (bracketed == 0)) break;
 		if ((c == '\'') && (dquoted == FALSE)) squoted = (squoted)?FALSE:TRUE;
 		if ((c == '\"') && (squoted == FALSE)) dquoted = (dquoted)?FALSE:TRUE;
 		if ((c == '(') && (dquoted == FALSE) && (squoted == FALSE)) bracketed++;
@@ -456,33 +504,62 @@ not already there.
 	}
 
 @h How functions are assimilated.
+Functions in Inform 6 are usually called "routines", and have a syntax like so:
+= (text as Inform 6)
+	[ Example x y tmp;
+	   tmp = x*y;
+	   print "Product seems to be ", tmp, ".^";
+	];
+=
+We are concerned more with the surround than with the contents of the function
+in this section.
 
 @<Assimilate routine@> =
 	text_stream *identifier = NULL, *chain = NULL, *body = NULL;
 	match_results mr = Regexp::create_mr();
-	@<Parse the routine or stub header@>;
+	if (P->W.data[PLM_SPLAT_IFLD] == ROUTINE_I6DIR) @<Parse the routine header@>;
+	if (P->W.data[PLM_SPLAT_IFLD] == STUB_I6DIR) @<Parse the stub directive@>;
 	if (identifier) @<Act on parsed header@>;
 
-@<Parse the routine or stub header@> =
+@<Parse the routine header@> =
 	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
-	if (P->W.data[PLM_SPLAT_IFLD] == ROUTINE_I6DIR) {
-		if (Regexp::match(&mr, S, L" *%[ *(%i+) *; *(%c*)")) {
-			identifier = mr.exp[0]; body = mr.exp[1];
-		} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {
-			identifier = mr.exp[0]; chain = mr.exp[1]; body = mr.exp[2];
-		} else {
-			PipelineErrors::kit_error("invalid Inform 6 routine declaration", NULL);
-		}
+	if (Regexp::match(&mr, S, L" *%[ *(%i+) *; *(%c*)")) {
+		identifier = mr.exp[0]; body = mr.exp[1];
+	} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {
+		identifier = mr.exp[0]; chain = mr.exp[1]; body = mr.exp[2];
 	} else {
-		if (Regexp::match(&mr, S, L" *%C+ *(%i+) (%d+);%c*")) {
-			identifier = mr.exp[0];
-			chain = Str::new();
-			int N = Str::atoi(mr.exp[1], 0);
-			if ((N<0) || (N>15)) N = 1;
-			for (int i=1; i<=N; i++) WRITE_TO(chain, "x%d ", i);
-			body = Str::duplicate(I"rfalse; ];");
-		} else PipelineErrors::kit_error("invalid Inform 6 Stub declaration", NULL);
+		PipelineErrors::kit_error("invalid Inform 6 routine declaration", NULL);
 	}
+
+@ Another of Inform 6's shabby notations for conditional compilation in disguise
+is the |Stub| directive, which looks like so:
+= (text as Inform 6)
+	Stub Example 2;
+=
+This means "if no |Example| routine exists, create one now, and give it two
+local variables". Such a stub routine contains no code, so it doesn't matter
+what these variables are called, of course. We rewrite so that it's as if the
+kit code had written:
+= (text as Inform 6)
+	[ Example x1 x2;
+		rfalse;
+	];
+=
+Note that here the compilation is unconditional. Because kits are precompiled,
+there's no sensible way to provide these only if they are not elsewhere
+provided. So this is no longer a useful directive, and it continues to be
+supported only to avoid throwing errors.
+
+@<Parse the stub directive@> =
+	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+	if (Regexp::match(&mr, S, L" *%C+ *(%i+) (%d+);%c*")) {
+		identifier = mr.exp[0];
+		chain = Str::new();
+		int N = Str::atoi(mr.exp[1], 0);
+		if ((N<0) || (N>15)) N = 1;
+		for (int i=1; i<=N; i++) WRITE_TO(chain, "x%d ", i);
+		body = Str::duplicate(I"rfalse; ];");
+	} else PipelineErrors::kit_error("invalid Inform 6 Stub declaration", NULL);
 
 @<Act on parsed header@> =
 	inter_bookmark content_at = CompileSplatsStage::template_submodule(I, step, I"functions", P);
