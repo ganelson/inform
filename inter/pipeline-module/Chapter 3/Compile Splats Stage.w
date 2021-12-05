@@ -232,7 +232,7 @@ definitions are not so simple.
 	inter_symbol *subpackage_type = NULL;
 	@<Work out what submodule to put this new material into@>;
 	if (Str::len(submodule_name) > 0) {
-		content_at = CompileSplatsStage::template_submodule(I, step, submodule_name, P);
+		content_at = CompileSplatsStage::make_submodule(I, step, submodule_name, P);
 		@<Create a little package within that submodule to hold the content@>
 	} else {
 		content_at = Inter::Bookmarks::after_this_node(I, P);
@@ -472,7 +472,7 @@ for the action.
 
 @<Assimilate a value@> =
 	if (Str::len(value) > 0) {
-		CompileSplatsStage::value(I, step, Inter::Bookmarks::package(IBM), IBM, value, &v1, &v2,
+		CompileSplatsStage::value(step, IBM, value, &v1, &v2,
 			(directive == VERB_I6DIR)?TRUE:FALSE);
 	} else {
 		v1 = LITERAL_IVAL; v2 = 0;
@@ -515,18 +515,21 @@ We are concerned more with the surround than with the contents of the function
 in this section.
 
 @<Assimilate routine@> =
-	text_stream *identifier = NULL, *chain = NULL, *body = NULL;
+	text_stream *identifier = NULL, *local_var_names = NULL, *body = NULL;
 	match_results mr = Regexp::create_mr();
 	if (P->W.data[PLM_SPLAT_IFLD] == ROUTINE_I6DIR) @<Parse the routine header@>;
 	if (P->W.data[PLM_SPLAT_IFLD] == STUB_I6DIR) @<Parse the stub directive@>;
-	if (identifier) @<Act on parsed header@>;
+	if (identifier) {
+		@<Turn this into a function package@>;
+		InterTree::remove_node(P);
+	}
 
 @<Parse the routine header@> =
 	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 	if (Regexp::match(&mr, S, L" *%[ *(%i+) *; *(%c*)")) {
 		identifier = mr.exp[0]; body = mr.exp[1];
 	} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {
-		identifier = mr.exp[0]; chain = mr.exp[1]; body = mr.exp[2];
+		identifier = mr.exp[0]; local_var_names = mr.exp[1]; body = mr.exp[2];
 	} else {
 		PipelineErrors::kit_error("invalid Inform 6 routine declaration", NULL);
 	}
@@ -554,164 +557,212 @@ supported only to avoid throwing errors.
 	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
 	if (Regexp::match(&mr, S, L" *%C+ *(%i+) (%d+);%c*")) {
 		identifier = mr.exp[0];
-		chain = Str::new();
+		local_var_names = Str::new();
 		int N = Str::atoi(mr.exp[1], 0);
 		if ((N<0) || (N>15)) N = 1;
-		for (int i=1; i<=N; i++) WRITE_TO(chain, "x%d ", i);
+		for (int i=1; i<=N; i++) WRITE_TO(local_var_names, "x%d ", i);
 		body = Str::duplicate(I"rfalse; ];");
 	} else PipelineErrors::kit_error("invalid Inform 6 Stub declaration", NULL);
 
-@<Act on parsed header@> =
-	inter_bookmark content_at = CompileSplatsStage::template_submodule(I, step, I"functions", P);
-	inter_bookmark *IBM = &content_at;
+@ Function packages have a standardised shape in Inter, and though this is a
+matter of convention rather than a requirement, we will follow it here. So
+our |Example| function would be called at |/main/HypotheticalKit/functions/Example_fn/call|.
+The following makes two packages:
 
+(a) The "outer package", |/main/HypotheticalKit/functions/Example_fn|, which
+holds all resources other than code needed by the function; and within it
+
+(b) The "inner package", |/main/HypotheticalKit/functions/Example_fn/Example_B|,
+which contains the actual code.
+
+These have package types |_function| and |_code| respectively.
+
+@<Turn this into a function package@> =
+	inter_bookmark content_at = CompileSplatsStage::make_submodule(I, step, I"functions", P);
+	inter_bookmark *IBM = &content_at;
+	inter_package *OP, *IP; /* outer and inner packages */
+	@<Create the outer function package@>;
+	@<Create an inner package for the code@>;
+	@<Create a symbol for calling the function@>;
+
+@<Create the outer function package@> =
 	inter_symbol *fnt = RunningPipelines::get_symbol(step, function_ptype_RPSYM);
 	if (fnt == NULL) fnt = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
-
 	TEMPORARY_TEXT(fname)
 	WRITE_TO(fname, "%S_fn", identifier);
-	inter_package *FP = CompileSplatsStage::new_package_named(IBM, fname, fnt);
+	OP = CompileSplatsStage::new_package_named(IBM, fname, fnt);
 	DISCARD_TEXT(fname)
 
-	inter_bookmark outer_save = Inter::Bookmarks::snapshot(IBM);
-	Inter::Bookmarks::set_current_package(IBM, FP);
-
+@<Create an inner package for the code@> =
+	Inter::Bookmarks::set_current_package(IBM, OP);
 	TEMPORARY_TEXT(bname)
 	WRITE_TO(bname, "%S_B", identifier);
-	inter_package *IP = CompileSplatsStage::new_package_named(IBM, bname, RunningPipelines::get_symbol(step, code_ptype_RPSYM));
+	IP = CompileSplatsStage::new_package_named(IBM, bname,
+		RunningPipelines::get_symbol(step, code_ptype_RPSYM));
 	DISCARD_TEXT(bname)
-
 	inter_bookmark inner_save = Inter::Bookmarks::snapshot(IBM);
 	Inter::Bookmarks::set_current_package(IBM, IP);
 	inter_bookmark block_bookmark = Inter::Bookmarks::snapshot(IBM);
-
-	if (chain) {
-		string_position spos = Str::start(chain);
-		while (TRUE) {
-			TEMPORARY_TEXT(value)
-			@<Extract a token@>;
-			if (Str::len(value) == 0) break;
-			inter_symbol *loc_name = InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(IP), value);
-			Inter::Symbols::local(loc_name);
-			Produce::guard(Inter::Local::new(IBM, loc_name, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM), 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-			DISCARD_TEXT(value)
-		}
-	}
-
-	Produce::guard(Inter::Code::new(IBM, (int) (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-	if (Str::len(body) > 0) {
-		int L = Str::len(body) - 1;
-		while ((L>0) && (Str::get_at(body, L) != ']')) L--;
-		while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
-		Str::truncate(body, L);
-		CompileSplatsStage::routine_body(css, IBM, IP, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, body, block_bookmark);
-	}
-
+	if (local_var_names) @<Create local variables within the inner package@>;
+	@<Create the outermost code block inside the inner package@>;
+	if (Str::len(body) > 0) @<Compile actual code into this code block@>;
 	*IBM = inner_save;
 
-	inter_symbol *rsymb = CompileSplatsStage::make_socketed_symbol(IBM, identifier);
-	Inter::Symbols::annotate_i(rsymb, ASSIMILATED_IANN, 1);
-	Produce::guard(Inter::Constant::new_function(IBM,
-		InterSymbolsTables::id_from_symbol(I, FP, rsymb),
-		InterSymbolsTables::id_from_symbol(I, FP, RunningPipelines::get_symbol(step, unchecked_function_RPSYM)),
-		IP,
-		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+@<Create local variables within the inner package@> =
+	string_position spos = Str::start(local_var_names);
+	while (TRUE) {
+		TEMPORARY_TEXT(value)
+		@<Extract a token@>;
+		if (Str::len(value) == 0) break;
+		inter_symbol *loc_name =
+			InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(IP), value);
+		Inter::Symbols::local(loc_name);
+		inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+		Produce::guard(Inter::Local::new(IBM, loc_name,
+			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM), 0, B, NULL));
+		DISCARD_TEXT(value)
+	}
 
-	*IBM = outer_save;
+@<Create the outermost code block inside the inner package@> =
+	Produce::guard(Inter::Code::new(IBM,
+		(int) (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 
-	CompileSplatsStage::install_socket(I, rsymb, rsymb->symbol_name);
-	InterTree::remove_node(P);
+@<Compile actual code into this code block@> =
+	int L = Str::len(body) - 1;
+	while ((L>0) && (Str::get_at(body, L) != ']')) L--;
+	while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
+	Str::truncate(body, L);
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	CompileSplatsStage::routine_body(css, IBM, IP, B, body, block_bookmark);
 
-@ =
-inter_package *CompileSplatsStage::new_package_named(inter_bookmark *IBM, text_stream *name, inter_symbol *ptype) {
+@<Create a symbol for calling the function@> =
+	inter_symbol *function_name_s =
+		CompileSplatsStage::make_socketed_symbol(IBM, identifier);
+	Inter::Symbols::annotate_i(function_name_s, ASSIMILATED_IANN, 1);
+	inter_ti MID = InterSymbolsTables::id_from_symbol(I, OP, function_name_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, OP,
+		RunningPipelines::get_symbol(step, unchecked_function_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	Produce::guard(Inter::Constant::new_function(IBM, MID, KID, IP, B, NULL));
+
+@h Plumbing.
+Some convenient Inter utilities. First, we make a new package and return it:
+
+=
+inter_package *CompileSplatsStage::new_package_named(inter_bookmark *IBM,
+	text_stream *name, inter_symbol *ptype) {
 	inter_package *P = NULL;
 	Produce::guard(Inter::Package::new_package_named(IBM, name, TRUE,
 		ptype, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL, &P));
 	return P;
 }
 
-void CompileSplatsStage::install_socket(inter_tree *I, inter_symbol *con_name, text_stream *aka_text) {
-	inter_symbol *socket = Inter::Connectors::find_socket(I, aka_text);
-	if (socket == NULL) Inter::Connectors::socket(I, aka_text, con_name);
-}
+@ Second, we make a symbol, and also install a socket to it. This essentially
+means that it will be visible to code outside of the current kit, making it a
+function, variable or constant which can be called or accessed from other
+kits or from the main program. (Compare C, where a function declared as |static|
+is visible only inside the current compilation unit; one declared without that
+keyword can be linked to.)
 
-inter_symbol *CompileSplatsStage::make_socketed_symbol(inter_bookmark *IBM, text_stream *identifier) {
-	inter_symbol *new_symbol = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), identifier);
-	CompileSplatsStage::install_socket(Inter::Bookmarks::tree(IBM), new_symbol, identifier);
+Note that if there is already a socket of the same name, we do not attempt to
+install another one. This will not in practice lead to problems, because the
+identifiers supplied to this function all come from identifiers in Inter kits,
+which have a single global namespace for functoons and variables anyway.
+
+=
+inter_symbol *CompileSplatsStage::make_socketed_symbol(inter_bookmark *IBM,
+	text_stream *identifier) {
+	inter_symbol *new_symbol = InterSymbolsTables::create_with_unique_name(
+		Inter::Bookmarks::scope(IBM), identifier);
+	if (Inter::Connectors::find_socket(Inter::Bookmarks::tree(IBM), identifier) == NULL)
+		Inter::Connectors::socket(Inter::Bookmarks::tree(IBM), identifier, new_symbol);
 	return new_symbol;
 }
 
-@ =
-void CompileSplatsStage::ensure_action(compile_splats_state *css, inter_tree *I, pipeline_step *step, inter_tree_node *P, text_stream *value) {
-	if (Inter::Connectors::find_socket(I, value) == NULL) {
-		inter_bookmark IBM_d = CompileSplatsStage::template_submodule(I, step, I"actions", P);
-		inter_bookmark *IBM = &IBM_d;
-		inter_symbol *ptype = RunningPipelines::get_symbol(step, action_ptype_RPSYM);
-		if (ptype == NULL) ptype = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
-		TEMPORARY_TEXT(an)
-		WRITE_TO(an, "assim_action_%d", ++css->no_assimilated_actions);
-		Inter::Bookmarks::set_current_package(IBM, CompileSplatsStage::new_package_named(IBM, an, ptype));
-		DISCARD_TEXT(an)
-		inter_symbol *aid_s = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), I"action_id");
-		Produce::guard(Inter::Constant::new_numerical(IBM,
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), aid_s),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
-			LITERAL_IVAL, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-		Inter::Symbols::set_flag(aid_s, MAKE_NAME_UNIQUE);
-		inter_symbol *asymb = CompileSplatsStage::make_socketed_symbol(IBM, value);
-		TEMPORARY_TEXT(unsharped)
-		WRITE_TO(unsharped, "%SSub", value);
-		Str::delete_first_character(unsharped);
-		Str::delete_first_character(unsharped);
-		inter_symbol *txsymb = Inter::Connectors::find_socket(I, unsharped);
-		inter_symbol *xsymb = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), unsharped);
-		if (txsymb) InterSymbolsTables::equate(xsymb, txsymb);
-		DISCARD_TEXT(unsharped)
-		Produce::guard(Inter::Constant::new_numerical(IBM,
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
-			LITERAL_IVAL, 10000, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-		Inter::Symbols::annotate_i(asymb, ACTION_IANN, 1);
+@ Syppose we are assimilating |HypotheticalKit|, and we want to make sure that
+the package |/main/HypotheticalKit/whatevers| exists. Here |/main/HypotheticalKit|
+is a package of type |_module|, and |/main/HypotheticalKit/whatevers| should be
+a |_submodule|. Then we call this function, with |name| set to "whatevers".
+The return value is a bookmark to where we can write new code in the submodule.
+
+Note that if the submodule already exists, there is nothing to create, and so
+we simply return a bookmark at the end of the existing submodule.
+
+The function tries to fail safe in the remote contingency that the package type
+|_submodule| does not exist in the current tree. But if the tree has been
+properly initialised with the |new| stage, then it will.
+
+=
+inter_bookmark CompileSplatsStage::make_submodule(inter_tree *I, pipeline_step *step,
+	text_stream *name, inter_tree_node *P) {
+	if (RunningPipelines::get_symbol(step, submodule_ptype_RPSYM)) {
+		inter_package *module_package =
+			Site::ensure_assimilation_package(I,
+				RunningPipelines::get_symbol(step, plain_ptype_RPSYM));
+		inter_package *submodule_package = Inter::Packages::by_name(module_package, name);
+		if (submodule_package == NULL) {
+			inter_bookmark IBM = Inter::Bookmarks::after_this_node(I, P);
+			submodule_package = CompileSplatsStage::new_package_named(&IBM, name,
+				RunningPipelines::get_symbol(step, submodule_ptype_RPSYM));
+			if (submodule_package == NULL) internal_error("could not create submodule");
+		}
+		return Inter::Bookmarks::at_end_of_this_package(submodule_package);
 	}
+	return Inter::Bookmarks::after_this_node(I, P);
 }
 
-@ =
-void CompileSplatsStage::value(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, text_stream *S, inter_ti *val1, inter_ti *val2, int Verbal) {
-	int sign = 1, base = 10, from = 0, to = Str::len(S)-1, bad = FALSE;
-	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\'')) {
-		from++;
-		to--;
-		TEMPORARY_TEXT(dw)
-		LOOP_THROUGH_TEXT(pos, S) {
-			if (pos.index < from) continue;
-			if (pos.index > to) continue;
-			int c = Str::get(pos);
-			PUT_TO(dw, c);
-		}
-		inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
-		Str::copy(glob_storage, dw);
-		*val1 = DWORD_IVAL; *val2 = ID;
-		DISCARD_TEXT(dw)
-		return;
-	}
-	if ((Str::get_at(S, from) == '"') && (Str::get_at(S, to) == '"')) {
-		from++;
-		to--;
-		TEMPORARY_TEXT(dw)
-		LOOP_THROUGH_TEXT(pos, S) {
-			if (pos.index < from) continue;
-			if (pos.index > to) continue;
-			int c = Str::get(pos);
-			PUT_TO(dw, c);
-		}
-		inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
-		Str::copy(glob_storage, dw);
-		*val1 = LITERAL_TEXT_IVAL; *val2 = ID;
-		DISCARD_TEXT(dw)
-		return;
-	}
+@h Inform 6 expressions in constant context.
+The following takes the text of a constant written in Inform 6 syntax, and
+stored in |S|, and compiles it to a pair of Inter bytecode value words,
+|val1| and |val2|. The meaning of these depends on the package they will
+end up living in, so that must be supplied as |pack|.
+
+The flag |Verbal| is set if the expression came from a |Verb| directive, i.e.,
+from command parser grammar: slightly different syntax applies there.
+
+=
+void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_stream *S,
+	inter_ti *val1, inter_ti *val2, int Verbal) {
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	int from = 0, to = Str::len(S)-1;
+	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\''))
+		@<Parse this as a single-quoted command grammar word@>;
+	if ((Str::get_at(S, from) == '"') && (Str::get_at(S, to) == '"'))
+		@<Parse this as a double-quoted string literal@>;
+	@<Attempt to parse this as a hex, binary or decimal literal@>;
+	@<Attempt to parse this as a boolean literal@>;
+	if (Verbal) @<Attempt to parse this as a command grammar token@>;
+    @<Attempt to parse this as an identifier name for something already defined by this kit@>;
+	@<Parse this as a possibly computed value@>;
+}
+
+@<Parse this as a single-quoted command grammar word@> =
+	TEMPORARY_TEXT(dw)
+	LOOP_THROUGH_TEXT(pos, S)
+		if ((pos.index > from) && (pos.index < to))
+			PUT_TO(dw, Str::get(pos));
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
+	Str::copy(glob_storage, dw);
+	*val1 = DWORD_IVAL; *val2 = ID;
+	DISCARD_TEXT(dw)
+	return;
+
+@<Parse this as a double-quoted string literal@> =
+	TEMPORARY_TEXT(dw)
+	LOOP_THROUGH_TEXT(pos, S)
+		if ((pos.index > from) && (pos.index < to))
+			PUT_TO(dw, Str::get(pos));
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
+	Str::copy(glob_storage, dw);
+	*val1 = LITERAL_TEXT_IVAL; *val2 = ID;
+	DISCARD_TEXT(dw)
+	return;
+
+@<Attempt to parse this as a hex, binary or decimal literal@> =
+	int sign = 1, base = 10, bad = FALSE;
 	if ((Str::get_at(S, from) == '(') && (Str::get_at(S, to) == ')')) { from++; to--; }
 	while (Characters::is_whitespace(Str::get_at(S, from))) from++;
 	while (Characters::is_whitespace(Str::get_at(S, to))) to--;
@@ -739,6 +790,8 @@ void CompileSplatsStage::value(inter_tree *I, pipeline_step *step, inter_package
 		N = sign*N;
 		*val1 = LITERAL_IVAL; *val2 = (inter_ti) N; return;
 	}
+
+@<Attempt to parse this as a boolean literal@> =
 	if (Str::eq(S, I"true")) {
 		*val1 = LITERAL_IVAL; *val2 = 1; return;
 	}
@@ -746,103 +799,97 @@ void CompileSplatsStage::value(inter_tree *I, pipeline_step *step, inter_package
 		*val1 = LITERAL_IVAL; *val2 = 0; return;
 	}
 
-	if (Verbal) {
-		if (Str::eq(S, I"*")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_divider_RPSYM, I"VERB_DIRECTIVE_DIVIDER"), val1, val2); return;
+@<Attempt to parse this as a command grammar token@> =
+	if (Str::eq(S, I"*")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_divider_RPSYM, I"VERB_DIRECTIVE_DIVIDER"), val1, val2); return;
+	}
+	if (Str::eq(S, I"->")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_result_RPSYM, I"VERB_DIRECTIVE_RESULT"), val1, val2); return;
+	}
+	if (Str::eq(S, I"reverse")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_reverse_RPSYM, I"VERB_DIRECTIVE_REVERSE"), val1, val2); return;
+	}
+	if (Str::eq(S, I"/")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_slash_RPSYM, I"VERB_DIRECTIVE_SLASH"), val1, val2); return;
+	}
+	if (Str::eq(S, I"special")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_special_RPSYM, I"VERB_DIRECTIVE_SPECIAL"), val1, val2); return;
+	}
+	if (Str::eq(S, I"number")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_number_RPSYM, I"VERB_DIRECTIVE_NUMBER"), val1, val2); return;
+	}
+	if (Str::eq(S, I"noun")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_noun_RPSYM, I"VERB_DIRECTIVE_NOUN"), val1, val2); return;
+	}
+	if (Str::eq(S, I"multi")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_multi_RPSYM, I"VERB_DIRECTIVE_MULTI"), val1, val2); return;
+	}
+	if (Str::eq(S, I"multiinside")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_multiinside_RPSYM, I"VERB_DIRECTIVE_MULTIINSIDE"), val1, val2); return;
+	}
+	if (Str::eq(S, I"multiheld")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_multiheld_RPSYM, I"VERB_DIRECTIVE_MULTIHELD"), val1, val2); return;
+	}
+	if (Str::eq(S, I"held")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_held_RPSYM, I"VERB_DIRECTIVE_HELD"), val1, val2); return;
+	}
+	if (Str::eq(S, I"creature")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_creature_RPSYM, I"VERB_DIRECTIVE_CREATURE"), val1, val2); return;
+	}
+	if (Str::eq(S, I"topic")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_topic_RPSYM, I"VERB_DIRECTIVE_TOPIC"), val1, val2); return;
+	}
+	if (Str::eq(S, I"multiexcept")) {
+		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+			verb_directive_multiexcept_RPSYM, I"VERB_DIRECTIVE_MULTIEXCEPT"), val1, val2); return;
+	}
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, S, L"scope=(%i+)")) {
+		inter_symbol *symb = Inter::Connectors::find_socket(I, mr.exp[0]);
+		while ((symb) && (symb->equated_to)) symb = symb->equated_to;
+		if (symb) {
+			if (Inter::Symbols::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
+				Inter::Symbols::annotate_i(symb, SCOPE_FILTER_IANN, 1);
+			Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 		}
-		if (Str::eq(S, I"->")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_result_RPSYM, I"VERB_DIRECTIVE_RESULT"), val1, val2); return;
-		}
-		if (Str::eq(S, I"reverse")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_reverse_RPSYM, I"VERB_DIRECTIVE_REVERSE"), val1, val2); return;
-		}
-		if (Str::eq(S, I"/")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_slash_RPSYM, I"VERB_DIRECTIVE_SLASH"), val1, val2); return;
-		}
-		if (Str::eq(S, I"special")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_special_RPSYM, I"VERB_DIRECTIVE_SPECIAL"), val1, val2); return;
-		}
-		if (Str::eq(S, I"number")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_number_RPSYM, I"VERB_DIRECTIVE_NUMBER"), val1, val2); return;
-		}
-		if (Str::eq(S, I"noun")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_noun_RPSYM, I"VERB_DIRECTIVE_NOUN"), val1, val2); return;
-		}
-		if (Str::eq(S, I"multi")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_multi_RPSYM, I"VERB_DIRECTIVE_MULTI"), val1, val2); return;
-		}
-		if (Str::eq(S, I"multiinside")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_multiinside_RPSYM, I"VERB_DIRECTIVE_MULTIINSIDE"), val1, val2); return;
-		}
-		if (Str::eq(S, I"multiheld")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_multiheld_RPSYM, I"VERB_DIRECTIVE_MULTIHELD"), val1, val2); return;
-		}
-		if (Str::eq(S, I"held")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_held_RPSYM, I"VERB_DIRECTIVE_HELD"), val1, val2); return;
-		}
-		if (Str::eq(S, I"creature")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_creature_RPSYM, I"VERB_DIRECTIVE_CREATURE"), val1, val2); return;
-		}
-		if (Str::eq(S, I"topic")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_topic_RPSYM, I"VERB_DIRECTIVE_TOPIC"), val1, val2); return;
-		}
-		if (Str::eq(S, I"multiexcept")) {
-			Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step, verb_directive_multiexcept_RPSYM, I"VERB_DIRECTIVE_MULTIEXCEPT"), val1, val2); return;
-		}
-		match_results mr = Regexp::create_mr();
-		if (Regexp::match(&mr, S, L"scope=(%i+)")) {
-			inter_symbol *symb = Inter::Connectors::find_socket(I, mr.exp[0]);
-			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
-			if (symb) {
-				if (Inter::Symbols::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
-					Inter::Symbols::annotate_i(symb, SCOPE_FILTER_IANN, 1);
-				Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
-			}
-		}
-		if (Regexp::match(&mr, S, L"noun=(%i+)")) {
-			inter_symbol *symb = Inter::Connectors::find_socket(I, mr.exp[0]);
-			while ((symb) && (symb->equated_to)) symb = symb->equated_to;
-			if (symb) {
-				if (Inter::Symbols::read_annotation(symb, NOUN_FILTER_IANN) != 1)
-					Inter::Symbols::annotate_i(symb, NOUN_FILTER_IANN, 1);
-				Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
-			}
+	}
+	if (Regexp::match(&mr, S, L"noun=(%i+)")) {
+		inter_symbol *symb = Inter::Connectors::find_socket(I, mr.exp[0]);
+		while ((symb) && (symb->equated_to)) symb = symb->equated_to;
+		if (symb) {
+			if (Inter::Symbols::read_annotation(symb, NOUN_FILTER_IANN) != 1)
+				Inter::Symbols::annotate_i(symb, NOUN_FILTER_IANN, 1);
+			Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 		}
 	}
 
+@<Attempt to parse this as an identifier name for something already defined by this kit@> =
 	inter_symbol *symb = Inter::Connectors::find_socket(I, S);
 	if (symb) {
+		WRITE_TO(STDERR, "Hello! %S\n", S);
 		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 	}
 
+@<Parse this as a possibly computed value@> =
 	inter_schema *sch = InterSchemas::from_text(S, FALSE, 0, NULL);
-	inter_symbol *mcc_name = CompileSplatsStage::compute_constant(I, step, pack, IBM, sch);
+	inter_symbol *mcc_name = CompileSplatsStage::compute_constant_r(I, step, pack, IBM, sch->node_tree);
+	if (mcc_name == NULL) PipelineErrors::kit_error("Inform 6 constant in kit too complex", S);
 	Inter::Symbols::to_data(I, pack, mcc_name, val1, val2);
-}
 
-inter_symbol *CompileSplatsStage::compute_constant(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_schema *sch) {
-
-	inter_symbol *try = CompileSplatsStage::compute_constant_r(I, step, pack, IBM, sch->node_tree);
-	if (try) return try;
-
-	InterSchemas::log(DL, sch);
-	LOG("Forced to glob: %S\n", sch->converted_from);
-	WRITE_TO(STDERR, "Forced to glob: %S\n", sch->converted_from);
-	internal_error("Reduced to glob in assimilation");
-
-	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
-	Str::copy(glob_storage, sch->converted_from);
-
-	inter_symbol *mcc_name = CompileSplatsStage::computed_constant_symbol(pack);
-	Produce::guard(Inter::Constant::new_numerical(IBM,
-		InterSymbolsTables::id_from_symbol(I, pack, mcc_name),
-		InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), GLOB_IVAL, ID,
-		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-
-	return mcc_name;
-}
-
+@ =
 inter_symbol *CompileSplatsStage::compute_constant_r(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_schema_node *isn) {
 	if (isn->isn_type == SUBEXPRESSION_ISNT) 
 		return CompileSplatsStage::compute_constant_r(I, step, pack, IBM, isn->child_node);
@@ -939,6 +986,40 @@ inter_symbol *CompileSplatsStage::computed_constant_symbol(inter_package *pack) 
 	return mcc_name;
 }
 
+@ =
+void CompileSplatsStage::ensure_action(compile_splats_state *css, inter_tree *I, pipeline_step *step, inter_tree_node *P, text_stream *value) {
+	if (Inter::Connectors::find_socket(I, value) == NULL) {
+		inter_bookmark IBM_d = CompileSplatsStage::make_submodule(I, step, I"actions", P);
+		inter_bookmark *IBM = &IBM_d;
+		inter_symbol *ptype = RunningPipelines::get_symbol(step, action_ptype_RPSYM);
+		if (ptype == NULL) ptype = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
+		TEMPORARY_TEXT(an)
+		WRITE_TO(an, "assim_action_%d", ++css->no_assimilated_actions);
+		Inter::Bookmarks::set_current_package(IBM, CompileSplatsStage::new_package_named(IBM, an, ptype));
+		DISCARD_TEXT(an)
+		inter_symbol *aid_s = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), I"action_id");
+		Produce::guard(Inter::Constant::new_numerical(IBM,
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), aid_s),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
+			LITERAL_IVAL, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+		Inter::Symbols::set_flag(aid_s, MAKE_NAME_UNIQUE);
+		inter_symbol *asymb = CompileSplatsStage::make_socketed_symbol(IBM, value);
+		TEMPORARY_TEXT(unsharped)
+		WRITE_TO(unsharped, "%SSub", value);
+		Str::delete_first_character(unsharped);
+		Str::delete_first_character(unsharped);
+		inter_symbol *txsymb = Inter::Connectors::find_socket(I, unsharped);
+		inter_symbol *xsymb = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), unsharped);
+		if (txsymb) InterSymbolsTables::equate(xsymb, txsymb);
+		DISCARD_TEXT(unsharped)
+		Produce::guard(Inter::Constant::new_numerical(IBM,
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
+			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
+			LITERAL_IVAL, 10000, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+		Inter::Symbols::annotate_i(asymb, ACTION_IANN, 1);
+	}
+}
+
 typedef struct routine_body_request {
 	int assimilation_pass;
 	struct inter_bookmark position;
@@ -985,25 +1066,10 @@ void CompileSplatsStage::function_bodies(compile_splats_state *css, inter_tree *
 			Produce::push_code_position(I, Produce::new_cip(I, &(req->position)), Inter::Bookmarks::snapshot(Packaging::at(I)));
 			value_holster VH = Holsters::new(INTER_VOID_VHMODE);
 			inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
-			inter_package *template_package = Site::assimilation_package(I);
-			inter_symbols_table *scope2 = Inter::Packages::scope(template_package);
+			inter_package *module_package = Site::assimilation_package(I);
+			inter_symbols_table *scope2 = Inter::Packages::scope(module_package);
 			EmitInterSchemas::emit(I, &VH, sch, NULL, scope1, scope2, NULL, NULL);
 			Produce::pop_code_position(I);
 			Site::set_cir(I, NULL);
 		}
-}
-
-inter_bookmark CompileSplatsStage::template_submodule(inter_tree *I, pipeline_step *step,
-	text_stream *name, inter_tree_node *P) {
-	if (RunningPipelines::get_symbol(step, submodule_ptype_RPSYM)) {
-		inter_package *template_package = Site::ensure_assimilation_package(I, RunningPipelines::get_symbol(step, plain_ptype_RPSYM));
-		inter_package *t_p = Inter::Packages::by_name(template_package, name);
-		if (t_p == NULL) {
-			inter_bookmark IBM = Inter::Bookmarks::after_this_node(I, P);
-			t_p = CompileSplatsStage::new_package_named(&IBM, name, RunningPipelines::get_symbol(step, submodule_ptype_RPSYM));
-		}
-		if (t_p == NULL) internal_error("failed to define");
-		return Inter::Bookmarks::at_end_of_this_package(t_p);
-	}
-	return Inter::Bookmarks::after_this_node(I, P);
 }
