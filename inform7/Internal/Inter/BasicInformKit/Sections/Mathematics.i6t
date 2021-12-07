@@ -36,7 +36,6 @@ number which cannot be negated in 32-bit twos complement arithmetic.
 	for (one = WORD_NEXTTOHIGHBIT: one > op: one = one/4) ;
 
 	while (one ~= 0) {
-		! print "Round: op = ", op, " res = ", res, ", res**2 = ", res*res, " one = ", one, " nthb = ", WORD_NEXTTOHIGHBIT, "^";
 		if (op >= res + one) {
 			op = op - res - one;
 			res = res/2 + one;
@@ -45,7 +44,6 @@ number which cannot be negated in 32-bit twos complement arithmetic.
 		}
 		one = one/4;
 	}
-	! print "Res is ", res, "^";
 	return res;
 ];
 

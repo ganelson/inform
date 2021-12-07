@@ -93,7 +93,6 @@ number which cannot be negated in 32-bit twos complement arithmetic.
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">one</span><span class="plain-syntax"> = </span><span class="identifier-syntax">WORD_NEXTTOHIGHBIT</span><span class="plain-syntax">: </span><span class="identifier-syntax">one</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">op</span><span class="plain-syntax">: </span><span class="identifier-syntax">one</span><span class="plain-syntax"> = </span><span class="identifier-syntax">one</span><span class="plain-syntax">/4) ;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">one</span><span class="plain-syntax"> ~= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="comment-syntax">print "Round: op = ", op, " res = ", res, ", res**2 = ", res*res, " one = ", one, " nthb = ", WORD_NEXTTOHIGHBIT, "^";</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">op</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">res</span><span class="plain-syntax"> + </span><span class="identifier-syntax">one</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">op</span><span class="plain-syntax"> = </span><span class="identifier-syntax">op</span><span class="plain-syntax"> - </span><span class="identifier-syntax">res</span><span class="plain-syntax"> - </span><span class="identifier-syntax">one</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">res</span><span class="plain-syntax"> = </span><span class="identifier-syntax">res</span><span class="plain-syntax">/2 + </span><span class="identifier-syntax">one</span><span class="plain-syntax">;</span>
@@ -102,7 +101,6 @@ number which cannot be negated in 32-bit twos complement arithmetic.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">one</span><span class="plain-syntax"> = </span><span class="identifier-syntax">one</span><span class="plain-syntax">/4;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="comment-syntax">print "Res is ", res, "^";</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">res</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>

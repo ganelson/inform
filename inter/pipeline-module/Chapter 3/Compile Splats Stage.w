@@ -726,10 +726,19 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 	inter_tree *I = Inter::Bookmarks::tree(IBM);
 	inter_package *pack = Inter::Bookmarks::package(IBM);
 	int from = 0, to = Str::len(S)-1;
-	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\''))
-		@<Parse this as a single-quoted command grammar word@>;
+	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\'')) {
+		if (to - from == 2)
+			@<Parse this as a literal character@>
+		else if (Str::eq(S, I"'\\''"))
+			@<Parse this as a literal single quotation mark@>
+		else
+			@<Parse this as a single-quoted command grammar word@>;
+	}
 	if ((Str::get_at(S, from) == '"') && (Str::get_at(S, to) == '"'))
 		@<Parse this as a double-quoted string literal@>;
+	if (((Str::get_at(S, from) == '$') && (Str::get_at(S, from+1) == '+')) ||
+		((Str::get_at(S, from) == '$') && (Str::get_at(S, from+1) == '-')))
+		@<Parse this as a real literal@>;
 	@<Attempt to parse this as a hex, binary or decimal literal@>;
 	@<Attempt to parse this as a boolean literal@>;
 	if (Verbal) @<Attempt to parse this as a command grammar token@>;
@@ -737,15 +746,32 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 	@<Parse this as a possibly computed value@>;
 }
 
+@<Parse this as a literal character@> =
+	wchar_t c = Str::get_at(S, from + 1);
+	*val1 = LITERAL_IVAL; *val2 = (inter_ti) c;
+	return;
+
+@<Parse this as a literal single quotation mark@> =
+	*val1 = LITERAL_IVAL; *val2 = (inter_ti) '\'';
+	return;
+
 @<Parse this as a single-quoted command grammar word@> =
+	inter_ti as_numbered = DWORD_IVAL; int before_slashes = TRUE;
 	TEMPORARY_TEXT(dw)
 	LOOP_THROUGH_TEXT(pos, S)
-		if ((pos.index > from) && (pos.index < to))
-			PUT_TO(dw, Str::get(pos));
+		if ((pos.index > from) && (pos.index < to)) {
+			if ((Str::get(pos) == '/') && (Str::get(Str::forward(pos)) == '/'))
+				before_slashes = FALSE;
+			if (before_slashes) {
+				PUT_TO(dw, Str::get(pos));
+			} else {
+				if (Str::get(pos) == 'p') as_numbered = PDWORD_IVAL;
+			}
+		}
 	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
 	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
 	Str::copy(glob_storage, dw);
-	*val1 = DWORD_IVAL; *val2 = ID;
+	*val1 = as_numbered; *val2 = ID;
 	DISCARD_TEXT(dw)
 	return;
 
@@ -759,6 +785,15 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 	Str::copy(glob_storage, dw);
 	*val1 = LITERAL_TEXT_IVAL; *val2 = ID;
 	DISCARD_TEXT(dw)
+	return;
+
+@<Parse this as a real literal@> =
+	TEMPORARY_TEXT(rw)
+	LOOP_THROUGH_TEXT(pos, S)
+		if ((pos.index > from + 1) && (pos.index <= to))
+			PUT_TO(rw, Str::get(pos));
+	Produce::real_value_from_text(I, val1, val2, rw);
+	DISCARD_TEXT(rw)
 	return;
 
 @<Attempt to parse this as a hex, binary or decimal literal@> =
@@ -879,20 +914,43 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 @<Attempt to parse this as an identifier name for something already defined by this kit@> =
 	inter_symbol *symb = Inter::Connectors::find_socket(I, S);
 	if (symb) {
-		WRITE_TO(STDERR, "Hello! %S\n", S);
 		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 	}
 
+@ At this point, maybe the reason we haven't yet recognised the constant |S| is
+that it's a computation like |6 + MAX_WEEBLES*4|. This is quite legal in Inform 6,
+and the compiler performs constant-folding to evaluate them: so that's what we will
+emulate now. In practice, we are only going to understand fairly simple computations,
+but that will be enough for the kits normally used with Inform.
+
+We do this by parsing |S| into a schema, whose tree will look roughly like this:
+= (text)
+	PLUS_BIP
+		6
+		TIMES_BIP
+			MAX_WEEBLES
+			4
+=
+We then recurse down through this tree, constructing an Inter symbol for a
+constant which evaluates to the result of each operation. Here, then, we
+first define |Computed_Constant_Value_1| as the multiplication, then define
+|Computed_Constant_Value_2| as the addition, and that is what we use as our
+answer. Since we recurse depth-first, the subsidiary results are always made
+before they are needed.
+
 @<Parse this as a possibly computed value@> =
 	inter_schema *sch = InterSchemas::from_text(S, FALSE, 0, NULL);
-	inter_symbol *mcc_name = CompileSplatsStage::compute_constant_r(I, step, pack, IBM, sch->node_tree);
-	if (mcc_name == NULL) PipelineErrors::kit_error("Inform 6 constant in kit too complex", S);
-	Inter::Symbols::to_data(I, pack, mcc_name, val1, val2);
+	inter_symbol *result_s =
+		CompileSplatsStage::compute_r(step, IBM, sch->node_tree);
+	if (result_s == NULL)
+		PipelineErrors::kit_error("Inform 6 constant in kit too complex", S);
+	Inter::Symbols::to_data(I, pack, result_s, val1, val2);
 
 @ =
-inter_symbol *CompileSplatsStage::compute_constant_r(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_schema_node *isn) {
+inter_symbol *CompileSplatsStage::compute_r(pipeline_step *step,
+	inter_bookmark *IBM, inter_schema_node *isn) {
 	if (isn->isn_type == SUBEXPRESSION_ISNT) 
-		return CompileSplatsStage::compute_constant_r(I, step, pack, IBM, isn->child_node);
+		return CompileSplatsStage::compute_r(step, IBM, isn->child_node);
 	if (isn->isn_type == OPERATION_ISNT) {
 		inter_ti op = 0;
 		if (isn->isn_clarifier == PLUS_BIP) op = CONSTANT_SUM_LIST;
@@ -900,28 +958,31 @@ inter_symbol *CompileSplatsStage::compute_constant_r(inter_tree *I, pipeline_ste
 		else if (isn->isn_clarifier == MINUS_BIP) op = CONSTANT_DIFFERENCE_LIST;
 		else if (isn->isn_clarifier == DIVIDE_BIP) op = CONSTANT_QUOTIENT_LIST;
 		else if (isn->isn_clarifier == UNARYMINUS_BIP)
-			return CompileSplatsStage::compute_constant_unary_operation(I, step, pack, IBM, isn->child_node);
+			return CompileSplatsStage::compute_unary_op(step, IBM, isn->child_node);
 		else return NULL;
-		inter_symbol *i1 = CompileSplatsStage::compute_constant_r(I, step, pack, IBM, isn->child_node);
-		inter_symbol *i2 = CompileSplatsStage::compute_constant_r(I, step, pack, IBM, isn->child_node->next_node);
+		inter_symbol *i1 = CompileSplatsStage::compute_r(step, IBM, isn->child_node);
+		inter_symbol *i2 = CompileSplatsStage::compute_r(step, IBM, isn->child_node->next_node);
 		if ((i1 == NULL) || (i2 == NULL)) return NULL;
-		return CompileSplatsStage::compute_constant_binary_operation(op, I, step, pack, IBM, i1, i2);
+		return CompileSplatsStage::compute_binary_op(op, step, IBM, i1, i2);
 	}
 	if (isn->isn_type == EXPRESSION_ISNT) {
 		inter_schema_token *t = isn->expression_tokens;
 		if (t->next) {
 			if (t->next->next) return NULL;
-			inter_symbol *i1 = CompileSplatsStage::compute_constant_eval(I, step, pack, IBM, t);
-			inter_symbol *i2 = CompileSplatsStage::compute_constant_eval(I, step, pack, IBM, t->next);
+			inter_symbol *i1 = CompileSplatsStage::compute_eval(step, IBM, t);
+			inter_symbol *i2 = CompileSplatsStage::compute_eval(step, IBM, t->next);
 			if ((i1 == NULL) || (i2 == NULL)) return NULL;
-			return CompileSplatsStage::compute_constant_binary_operation(CONSTANT_SUM_LIST, I, step, pack, IBM, i1, i2);
+			return CompileSplatsStage::compute_binary_op(CONSTANT_SUM_LIST, step, IBM, i1, i2);
 		}
-		return CompileSplatsStage::compute_constant_eval(I, step, pack, IBM, t);
+		return CompileSplatsStage::compute_eval(step, IBM, t);
 	}
 	return NULL;
 }
 
-inter_symbol *CompileSplatsStage::compute_constant_eval(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_schema_token *t) {
+inter_symbol *CompileSplatsStage::compute_eval(pipeline_step *step,
+	inter_bookmark *IBM, inter_schema_token *t) {
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_package *pack = Inter::Bookmarks::package(IBM);
 	inter_ti v1 = UNDEF_IVAL, v2 = 0;
 	switch (t->ist_type) {
 		case IDENTIFIER_ISTT: {
@@ -938,20 +999,22 @@ inter_symbol *CompileSplatsStage::compute_constant_eval(inter_tree *I, pipeline_
 			break;
 	}
 	if (v1 == UNDEF_IVAL) return NULL;
-	inter_symbol *mcc_name = CompileSplatsStage::computed_constant_symbol(pack);
+	inter_symbol *result_s = CompileSplatsStage::compute_symbol(pack);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
-		InterSymbolsTables::id_from_symbol(I, pack, mcc_name),
+		InterSymbolsTables::id_from_symbol(I, pack, result_s),
 		InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), v1, v2,
 		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-	return mcc_name;
+	return result_s;
 }
 
-inter_symbol *CompileSplatsStage::compute_constant_unary_operation(inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_schema_node *operand1) {
-	inter_symbol *i1 = CompileSplatsStage::compute_constant_r(I, step, pack, IBM, operand1);
+inter_symbol *CompileSplatsStage::compute_unary_op(pipeline_step *step, inter_bookmark *IBM, inter_schema_node *operand1) {
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	inter_symbol *i1 = CompileSplatsStage::compute_r(step, IBM, operand1);
 	if (i1 == NULL) return NULL;
-	inter_symbol *mcc_name = CompileSplatsStage::computed_constant_symbol(pack);
+	inter_symbol *result_s = CompileSplatsStage::compute_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), CONSTANT_DIFFERENCE_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, result_s), InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), CONSTANT_DIFFERENCE_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
@@ -959,13 +1022,15 @@ inter_symbol *CompileSplatsStage::compute_constant_unary_operation(inter_tree *I
 	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));
 	Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
 	Inter::Bookmarks::insert(IBM, array_in_progress);
-	return mcc_name;
+	return result_s;
 }
 
-inter_symbol *CompileSplatsStage::compute_constant_binary_operation(inter_ti op, inter_tree *I, pipeline_step *step, inter_package *pack, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
-	inter_symbol *mcc_name = CompileSplatsStage::computed_constant_symbol(pack);
+inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *step, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	inter_symbol *result_s = CompileSplatsStage::compute_symbol(pack);
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, mcc_name), InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), op, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
+		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, result_s), InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), op, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, 4) == FALSE)
 		internal_error("can't extend frame");
@@ -973,17 +1038,17 @@ inter_symbol *CompileSplatsStage::compute_constant_binary_operation(inter_ti op,
 	Inter::Symbols::to_data(I, pack, i2, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));
 	Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
 	Inter::Bookmarks::insert(IBM, array_in_progress);
-	return mcc_name;
+	return result_s;
 }
 
 int ccs_count = 0;
-inter_symbol *CompileSplatsStage::computed_constant_symbol(inter_package *pack) {
+inter_symbol *CompileSplatsStage::compute_symbol(inter_package *pack) {
 	TEMPORARY_TEXT(NN)
 	WRITE_TO(NN, "Computed_Constant_Value_%d", ccs_count++);
-	inter_symbol *mcc_name = InterSymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
-	Inter::Symbols::set_flag(mcc_name, MAKE_NAME_UNIQUE);
+	inter_symbol *result_s = InterSymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
+	Inter::Symbols::set_flag(result_s, MAKE_NAME_UNIQUE);
 	DISCARD_TEXT(NN)
-	return mcc_name;
+	return result_s;
 }
 
 @ =
