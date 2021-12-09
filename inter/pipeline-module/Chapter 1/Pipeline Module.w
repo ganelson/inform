@@ -14,7 +14,7 @@ which use this module:
 @e pipeline_step_CLASS
 @e uniqueness_count_CLASS
 @e text_literal_holder_CLASS
-@e routine_body_request_CLASS
+@e function_body_request_CLASS
 @e pipeline_stage_CLASS
 @e attachment_instruction_CLASS
 @e tree_inventory_CLASS
@@ -25,7 +25,7 @@ DECLARE_CLASS(inter_pipeline)
 DECLARE_CLASS(pipeline_step)
 DECLARE_CLASS(uniqueness_count)
 DECLARE_CLASS(text_literal_holder)
-DECLARE_CLASS(routine_body_request)
+DECLARE_CLASS(function_body_request)
 DECLARE_CLASS(pipeline_stage)
 DECLARE_CLASS(attachment_instruction)
 DECLARE_CLASS(tree_inventory)

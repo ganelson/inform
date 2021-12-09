@@ -29,7 +29,6 @@ void CompileSplatsStage::create_pipeline_stage(void) {
 (3) |GLOBAL_I6DIR|.
 
 =
-int compile_splats_stage_run_count = 0;
 int CompileSplatsStage::run(pipeline_step *step) {
 	if ((RunningPipelines::get_symbol(step, unchecked_kind_RPSYM) == NULL) ||
 		(RunningPipelines::get_symbol(step, unchecked_function_RPSYM) == NULL) ||
@@ -54,16 +53,16 @@ int CompileSplatsStage::run(pipeline_step *step) {
 =
 typedef struct compile_splats_state {
 	struct pipeline_step *from_step;
-	int unique_run_ID;
 	int no_assimilated_actions;
 	int no_assimilated_directives;
+	struct linked_list *function_bodies_to_compile; /* of |function_body_request| */
 } compile_splats_state;
 
 @<Initialise the CS state@> =
 	css.from_step = step;
-	css.unique_run_ID = ++compile_splats_stage_run_count;
 	css.no_assimilated_actions = 0;
 	css.no_assimilated_directives = 0;
+	css.function_bodies_to_compile = NEW_LINKED_LIST(function_body_request);
 
 @ The three traverse functions share a great deal of their code, in fact. Note
 that we always expect the kinds here to exist: see //New Stage//. Checking
@@ -457,7 +456,7 @@ for the action.
 		TEMPORARY_TEXT(value)
 		if (next_is_action) WRITE_TO(value, "##");
 		@<Extract a token@>;
-		if (next_is_action) CompileSplatsStage::ensure_action(css, I, step, P, value);
+		if (next_is_action) @<Ensure that a socket exists for this action name@>;
 		next_is_action = FALSE;
 		if ((NT++ == 0) && (Str::eq(value, I"meta"))) {
 			Inter::Symbols::annotate_i(made_s, METAVERB_IANN, 1);
@@ -469,6 +468,81 @@ for the action.
 		} else finished = TRUE;
 		DISCARD_TEXT(value)
 	}
+
+@ So here |value| is something like |##ScriptOn|, an action name. Maybe that has
+already been defined in the kit currently being compiked, in which case a socket
+for it already exists; but maybe not, in which case we have to create the
+action. This will be a package at, say, |/main/HypotheticalKit/actions/assim_action_1|
+with three things in it:
+
+(a) an ID, |action_id|;
+(b) the action name, |##ScriptOn|;
+(c) the function to carry out the action, |ScriptOnSub|.
+
+@<Ensure that a socket exists for this action name@> =
+	if (Inter::Connectors::find_socket(I, value) == NULL) {
+		inter_bookmark IBM_d = CompileSplatsStage::make_submodule(I, step, I"actions", P);
+		inter_bookmark *IBM = &IBM_d;
+		
+		inter_package *action_package;
+		@<Make a package for the new action, inside the actions submodule@>;
+		Inter::Bookmarks::set_current_package(IBM, action_package);
+
+		@<Make an action_id symbol in the action package@>;
+		@<Make the actual double-sharped action symbol@>;
+		@<Make a symbol equated to the function carrying out the action@>;
+	}
+
+@<Make a package for the new action, inside the actions submodule@> =		
+	inter_symbol *ptype = RunningPipelines::get_symbol(step, action_ptype_RPSYM);
+	if (ptype == NULL) ptype = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
+	TEMPORARY_TEXT(an)
+	WRITE_TO(an, "assim_action_%d", ++css->no_assimilated_actions);
+	action_package = CompileSplatsStage::new_package_named(IBM, an, ptype);
+	DISCARD_TEXT(an)
+
+@ Each action package has to contain an |action_id| symbol, which will eventually
+be defined as a unique ID for the action. But those unique IDs can only be
+assigned at link time -- at this stage we cannot know what other actions exist
+in other compilation units. So we create |action_id| equal just to 0 for now.
+
+@<Make an action_id symbol in the action package@> =
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	inter_symbol *action_id_s = InterSymbolsTables::create_with_unique_name(
+		Inter::Bookmarks::scope(IBM), I"action_id");
+	inter_ti MID = InterSymbolsTables::id_from_symbol(I, pack, action_id_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, pack,
+		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, LITERAL_IVAL, 0, B, NULL));
+	Inter::Symbols::set_flag(action_id_s, MAKE_NAME_UNIQUE);
+
+@<Make the actual double-sharped action symbol@> =
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	inter_symbol *action_s = CompileSplatsStage::make_socketed_symbol(IBM, value);
+	inter_ti MID = InterSymbolsTables::id_from_symbol(I, pack, action_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, pack,
+		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, LITERAL_IVAL, 10000, B, NULL));
+	Inter::Symbols::annotate_i(action_s, ACTION_IANN, 1);
+
+@ The Inter convention is that an action package should contain a function
+to carry it out; for |##ScriptOn|, this would be called |ScriptOnSub|. In fact
+we don't actually define it here! We assume it has already been compiled, and
+that we can therefore simply create the function name |ScriptOnSub| here,
+equating it to a function definition elsewhere.
+
+@<Make a symbol equated to the function carrying out the action@> =
+	TEMPORARY_TEXT(fn_name)
+	WRITE_TO(fn_name, "%SSub", value);
+	Str::delete_first_character(fn_name);
+	Str::delete_first_character(fn_name);
+	inter_symbol *fn_s =
+		InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), fn_name);
+	inter_symbol *existing_fn_s = Inter::Connectors::find_socket(I, fn_name);
+	if (existing_fn_s) InterSymbolsTables::equate(fn_s, existing_fn_s);
+	DISCARD_TEXT(fn_name)
 
 @<Assimilate a value@> =
 	if (Str::len(value) > 0) {
@@ -633,7 +707,7 @@ These have package types |_function| and |_code| respectively.
 	while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 	Str::truncate(body, L);
 	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
-	CompileSplatsStage::routine_body(css, IBM, IP, B, body, block_bookmark);
+	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark);
 
 @<Create a symbol for calling the function@> =
 	inter_symbol *function_name_s =
@@ -946,7 +1020,10 @@ before they are needed.
 		PipelineErrors::kit_error("Inform 6 constant in kit too complex", S);
 	Inter::Symbols::to_data(I, pack, result_s, val1, val2);
 
-@ =
+@ So this is the recursion. Note that we calculate $-x$ as $0 - x$, thus
+reducing unary subtraction to a case of binary subtraction.
+
+=
 inter_symbol *CompileSplatsStage::compute_r(pipeline_step *step,
 	inter_bookmark *IBM, inter_schema_node *isn) {
 	if (isn->isn_type == SUBEXPRESSION_ISNT) 
@@ -957,136 +1034,146 @@ inter_symbol *CompileSplatsStage::compute_r(pipeline_step *step,
 		else if (isn->isn_clarifier == TIMES_BIP) op = CONSTANT_PRODUCT_LIST;
 		else if (isn->isn_clarifier == MINUS_BIP) op = CONSTANT_DIFFERENCE_LIST;
 		else if (isn->isn_clarifier == DIVIDE_BIP) op = CONSTANT_QUOTIENT_LIST;
-		else if (isn->isn_clarifier == UNARYMINUS_BIP)
-			return CompileSplatsStage::compute_unary_op(step, IBM, isn->child_node);
+		else if (isn->isn_clarifier == UNARYMINUS_BIP) @<Calculate unary minus@>
 		else return NULL;
-		inter_symbol *i1 = CompileSplatsStage::compute_r(step, IBM, isn->child_node);
-		inter_symbol *i2 = CompileSplatsStage::compute_r(step, IBM, isn->child_node->next_node);
-		if ((i1 == NULL) || (i2 == NULL)) return NULL;
-		return CompileSplatsStage::compute_binary_op(op, step, IBM, i1, i2);
+		@<Calculate binary operation@>;
 	}
 	if (isn->isn_type == EXPRESSION_ISNT) {
 		inter_schema_token *t = isn->expression_tokens;
-		if (t->next) {
-			if (t->next->next) return NULL;
-			inter_symbol *i1 = CompileSplatsStage::compute_eval(step, IBM, t);
-			inter_symbol *i2 = CompileSplatsStage::compute_eval(step, IBM, t->next);
-			if ((i1 == NULL) || (i2 == NULL)) return NULL;
-			return CompileSplatsStage::compute_binary_op(CONSTANT_SUM_LIST, step, IBM, i1, i2);
-		}
+		if ((t == NULL) || (t->next)) internal_error("malformed EXPRESSION_ISNT");
 		return CompileSplatsStage::compute_eval(step, IBM, t);
 	}
 	return NULL;
 }
 
+@<Calculate binary operation@> =
+	inter_symbol *i1 = CompileSplatsStage::compute_r(step, IBM, isn->child_node);
+	inter_symbol *i2 = CompileSplatsStage::compute_r(step, IBM, isn->child_node->next_node);
+	if ((i1 == NULL) || (i2 == NULL)) return NULL;
+	return CompileSplatsStage::compute_binary_op(op, step, IBM, i1, i2);
+
+@<Calculate unary minus@> =
+	inter_symbol *i2 = CompileSplatsStage::compute_r(step, IBM, isn->child_node);
+	if (i2 == NULL) return NULL;
+	return CompileSplatsStage::compute_binary_op(CONSTANT_DIFFERENCE_LIST, step, IBM, NULL, i2);
+
+@ The binary operation $x + y$ is "calculated" by forming a constant list with
+two entries, $x$ and $y$, and marking this list in Inter as a list whose meaning
+is the sum of the entries. (And similarly for the other three operations.) This
+is a sort of lazy evaluation: it means that the actual calculation will be done
+in whatever context Inter is being compiled for -- for example, if all of this
+Inter is compiled to ANSI C, then it will eventually be a C compiler which
+actually works out the numerical value of $x + y$.
+
+Why do we do this? Why not simply calculate now, and get an explicit answer?
+The trouble is that one of $x$ or $y$ might be some symbol whose value is itself
+created by the downstream compiler, such as the address |INDIV_PROP_START|.
+The meaning of this is the same on all platforms: the value is not.
+
+There would be a case for optimising the following function to fold constants
+in cases where we can confidently do so (being careful of overflows and
+mindful of the word size), i.e., when $x$ and $y$ are literal numbers or
+symbols defined as literal numbers. That would produce more elegant Inter.
+But not really more efficient Inter.
+
+=
+inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *step,
+	inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
+	inter_tree *I = Inter::Bookmarks::tree(IBM);
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	inter_symbol *result_s = CompileSplatsStage::new_ccv_symbol(pack);
+	inter_ti MID = InterSymbolsTables::id_from_IRS_and_symbol(IBM, result_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, pack,
+		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	inter_tree_node *pair_list = Inode::fill_3(IBM, CONSTANT_IST, MID, KID, op, NULL, B);
+	int pos = pair_list->W.extent;
+	if (Inode::extend(pair_list, 4) == FALSE) internal_error("can't extend frame");
+	if (i1) {
+		Inter::Symbols::to_data(I, pack, i1,
+			&(pair_list->W.data[pos]), &(pair_list->W.data[pos+1]));
+	} else {
+		pair_list->W.data[pos] = LITERAL_IVAL; pair_list->W.data[pos+1] = 0;
+	}
+	if (i2) {
+		Inter::Symbols::to_data(I, pack, i2,
+			&(pair_list->W.data[pos+2]), &(pair_list->W.data[pos+3]));
+	} else {
+		pair_list->W.data[pos+2] = LITERAL_IVAL; pair_list->W.data[pos+3] = 0;
+	}
+	Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), pair_list));
+	Inter::Bookmarks::insert(IBM, pair_list);
+	return result_s;
+}
+
+@ So much for recursing down through the nodes of the Inter schema. Here are
+the leaves:
+
+=
 inter_symbol *CompileSplatsStage::compute_eval(pipeline_step *step,
 	inter_bookmark *IBM, inter_schema_token *t) {
 	inter_tree *I = Inter::Bookmarks::tree(IBM);
-	inter_package *pack = Inter::Bookmarks::package(IBM);
-	inter_ti v1 = UNDEF_IVAL, v2 = 0;
 	switch (t->ist_type) {
-		case IDENTIFIER_ISTT: {
-			inter_symbol *symb = Inter::Connectors::find_socket(I, t->material);
-			if (symb) return symb;
-			return Inter::Connectors::plug(I, t->material);
-		}
 		case NUMBER_ISTT:
 		case BIN_NUMBER_ISTT:
-		case HEX_NUMBER_ISTT:
-			if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number; }
-			else if (Inter::Types::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE)
-				internal_error("bad number");
-			break;
+		case HEX_NUMBER_ISTT: @<This leaf is a literal number of some kind@>;
+		case IDENTIFIER_ISTT: @<This leaf is a symbol name@>;
+	}
+	return NULL;
+}
+
+@<This leaf is a literal number of some kind@> =
+	inter_package *pack = Inter::Bookmarks::package(IBM);
+	inter_ti v1 = UNDEF_IVAL, v2 = 0;
+	if (t->constant_number >= 0) {
+		v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number;
+	} else if (Inter::Types::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE) {
+		return NULL;
 	}
 	if (v1 == UNDEF_IVAL) return NULL;
-	inter_symbol *result_s = CompileSplatsStage::compute_symbol(pack);
-	Produce::guard(Inter::Constant::new_numerical(IBM,
-		InterSymbolsTables::id_from_symbol(I, pack, result_s),
-		InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), v1, v2,
-		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+	inter_symbol *result_s = CompileSplatsStage::new_ccv_symbol(pack);
+	inter_ti MID = InterSymbolsTables::id_from_IRS_and_symbol(IBM, result_s);
+	inter_ti KID = InterSymbolsTables::id_from_symbol(I, pack,
+		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
+	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
+	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, v1, v2, B, NULL));
 	return result_s;
-}
 
-inter_symbol *CompileSplatsStage::compute_unary_op(pipeline_step *step, inter_bookmark *IBM, inter_schema_node *operand1) {
-	inter_tree *I = Inter::Bookmarks::tree(IBM);
-	inter_package *pack = Inter::Bookmarks::package(IBM);
-	inter_symbol *i1 = CompileSplatsStage::compute_r(step, IBM, operand1);
-	if (i1 == NULL) return NULL;
-	inter_symbol *result_s = CompileSplatsStage::compute_symbol(pack);
-	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, result_s), InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), CONSTANT_DIFFERENCE_LIST, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
-	int pos = array_in_progress->W.extent;
-	if (Inode::extend(array_in_progress, 4) == FALSE)
-		internal_error("can't extend frame");
-	array_in_progress->W.data[pos] = LITERAL_IVAL; array_in_progress->W.data[pos+1] = 0;
-	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));
-	Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-	Inter::Bookmarks::insert(IBM, array_in_progress);
-	return result_s;
-}
+@ This is the harder case by far, despite the brevity of the following code.
+Here we run into, say, |MAX_ELEPHANTS|, some identifier which clearly refers
+to something defined elsewhere. If it has already been defined in the kit
+being compiled, then there's a socket of that name already, and we can use
+that as the answer. Otherwise we must assume it will be declared either later
+or in another compilation unit, so we create a plug called |MAX_ELEPHANTS|
+and let the linker stage worry about what it means later on.
 
-inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *step, inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
-	inter_tree *I = Inter::Bookmarks::tree(IBM);
-	inter_package *pack = Inter::Bookmarks::package(IBM);
-	inter_symbol *result_s = CompileSplatsStage::compute_symbol(pack);
-	inter_tree_node *array_in_progress =
-		Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, result_s), InterSymbolsTables::id_from_symbol(I, pack, RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)), op, NULL, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1);
-	int pos = array_in_progress->W.extent;
-	if (Inode::extend(array_in_progress, 4) == FALSE)
-		internal_error("can't extend frame");
-	Inter::Symbols::to_data(I, pack, i1, &(array_in_progress->W.data[pos]), &(array_in_progress->W.data[pos+1]));
-	Inter::Symbols::to_data(I, pack, i2, &(array_in_progress->W.data[pos+2]), &(array_in_progress->W.data[pos+3]));
-	Produce::guard(Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), array_in_progress));
-	Inter::Bookmarks::insert(IBM, array_in_progress);
-	return result_s;
-}
+@<This leaf is a symbol name@> =
+	inter_symbol *result_s = Inter::Connectors::find_socket(I, t->material);
+	if (result_s) return result_s;
+	return Inter::Connectors::plug(I, t->material);
 
+@ The above algorithm needs a lot of names for partial results of expressions,
+all of which have to become Inter symbols. It really doesn't matter what these
+are called.
+
+=
 int ccs_count = 0;
-inter_symbol *CompileSplatsStage::compute_symbol(inter_package *pack) {
+inter_symbol *CompileSplatsStage::new_ccv_symbol(inter_package *pack) {
 	TEMPORARY_TEXT(NN)
 	WRITE_TO(NN, "Computed_Constant_Value_%d", ccs_count++);
-	inter_symbol *result_s = InterSymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
+	inter_symbol *result_s =
+		InterSymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
 	Inter::Symbols::set_flag(result_s, MAKE_NAME_UNIQUE);
 	DISCARD_TEXT(NN)
 	return result_s;
 }
 
-@ =
-void CompileSplatsStage::ensure_action(compile_splats_state *css, inter_tree *I, pipeline_step *step, inter_tree_node *P, text_stream *value) {
-	if (Inter::Connectors::find_socket(I, value) == NULL) {
-		inter_bookmark IBM_d = CompileSplatsStage::make_submodule(I, step, I"actions", P);
-		inter_bookmark *IBM = &IBM_d;
-		inter_symbol *ptype = RunningPipelines::get_symbol(step, action_ptype_RPSYM);
-		if (ptype == NULL) ptype = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
-		TEMPORARY_TEXT(an)
-		WRITE_TO(an, "assim_action_%d", ++css->no_assimilated_actions);
-		Inter::Bookmarks::set_current_package(IBM, CompileSplatsStage::new_package_named(IBM, an, ptype));
-		DISCARD_TEXT(an)
-		inter_symbol *aid_s = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), I"action_id");
-		Produce::guard(Inter::Constant::new_numerical(IBM,
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), aid_s),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
-			LITERAL_IVAL, 0, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-		Inter::Symbols::set_flag(aid_s, MAKE_NAME_UNIQUE);
-		inter_symbol *asymb = CompileSplatsStage::make_socketed_symbol(IBM, value);
-		TEMPORARY_TEXT(unsharped)
-		WRITE_TO(unsharped, "%SSub", value);
-		Str::delete_first_character(unsharped);
-		Str::delete_first_character(unsharped);
-		inter_symbol *txsymb = Inter::Connectors::find_socket(I, unsharped);
-		inter_symbol *xsymb = InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), unsharped);
-		if (txsymb) InterSymbolsTables::equate(xsymb, txsymb);
-		DISCARD_TEXT(unsharped)
-		Produce::guard(Inter::Constant::new_numerical(IBM,
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), asymb),
-			InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
-			LITERAL_IVAL, 10000, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
-		Inter::Symbols::annotate_i(asymb, ACTION_IANN, 1);
-	}
-}
+@h Delegating the work of compiling function bodies.
+Function bodies are by far the hardest things to compile. We delegate this first
+by storing up a list of requests to do the work:
 
-typedef struct routine_body_request {
-	int assimilation_pass;
+=
+typedef struct function_body_request {
 	struct inter_bookmark position;
 	struct inter_bookmark block_bookmark;
 	struct package_request *enclosure;
@@ -1094,47 +1181,49 @@ typedef struct routine_body_request {
 	int pass2_offset;
 	struct text_stream *body;
 	CLASS_DEFINITION
-} routine_body_request;
+} function_body_request;
 
-int rb_splat_count = 1;
-int CompileSplatsStage::routine_body(compile_splats_state *css,
-	inter_bookmark *IBM, inter_package *block_package, inter_ti offset, text_stream *body, inter_bookmark bb) {
+int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark *IBM,
+	inter_package *block_package, inter_ti offset, text_stream *body, inter_bookmark bb) {
 	if (Str::is_whitespace(body)) return FALSE;
-	routine_body_request *req = CREATE(routine_body_request);
-	req->assimilation_pass = css->unique_run_ID;
+	function_body_request *req = CREATE(function_body_request);
 	req->block_bookmark = bb;
 	req->enclosure = Packaging::enclosure(Inter::Bookmarks::tree(IBM));
 	req->position = Packaging::bubble_at(IBM);
 	req->block_package = block_package;
 	req->pass2_offset = (int) offset - 2;
 	req->body = Str::duplicate(body);
+	ADD_TO_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile);
 	return TRUE;
 }
 
+@ ...Playing back through those requests here. Note that we turn the entire
+contents of the function -- which can be very large, for example in the Inform
+kit |CommandParserKit| -- as a single gigantic Inter schema |sch|.
+
+=
 void CompileSplatsStage::function_bodies(compile_splats_state *css, inter_tree *I) {
-	routine_body_request *req;
-	LOOP_OVER(req, routine_body_request)
-		if (req->assimilation_pass == css->unique_run_ID) {
-			LOGIF(SCHEMA_COMPILATION, "=======\n\nRoutine (%S) len %d: '%S'\n\n", Inter::Packages::name(req->block_package), Str::len(req->body), req->body);
-			inter_schema *sch = InterSchemas::from_text(req->body, FALSE, 0, NULL);
-		
-			if (Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) {
-				if (sch == NULL) LOG("NULL SCH\n");
-				else if (sch->node_tree == NULL) {
-					LOG("Lint fail: Non-empty text but empty scheme\n");
-					internal_error("inter schema empty");
-				} else InterSchemas::log(DL, sch);
-			}
-		
-			Site::set_cir(I, req->block_package);
-			Packaging::set_state(I, &(req->position), req->enclosure);
-			Produce::push_code_position(I, Produce::new_cip(I, &(req->position)), Inter::Bookmarks::snapshot(Packaging::at(I)));
-			value_holster VH = Holsters::new(INTER_VOID_VHMODE);
-			inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
-			inter_package *module_package = Site::assimilation_package(I);
-			inter_symbols_table *scope2 = Inter::Packages::scope(module_package);
-			EmitInterSchemas::emit(I, &VH, sch, NULL, scope1, scope2, NULL, NULL);
-			Produce::pop_code_position(I);
-			Site::set_cir(I, NULL);
-		}
+	function_body_request *req;
+	LOOP_OVER_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile) {
+		LOGIF(SCHEMA_COMPILATION, "=======\n\nFunction (%S) len %d: '%S'\n\n",
+			Inter::Packages::name(req->block_package), Str::len(req->body), req->body);
+		inter_schema *sch = InterSchemas::from_text(req->body, FALSE, 0, NULL);
+		if (Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) InterSchemas::log(DL, sch);
+		@<Compile this function body@>;
+	}
 }
+
+@ And then we emit Inter code equivalent to |sch|:
+
+@<Compile this function body@> =
+	Site::set_cir(I, req->block_package);
+	Packaging::set_state(I, &(req->position), req->enclosure);
+	Produce::push_code_position(I,
+		Produce::new_cip(I, &(req->position)), Inter::Bookmarks::snapshot(Packaging::at(I)));
+	value_holster VH = Holsters::new(INTER_VOID_VHMODE);
+	inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
+	inter_package *module_package = Site::assimilation_package(I);
+	inter_symbols_table *scope2 = Inter::Packages::scope(module_package);
+	EmitInterSchemas::emit(I, &VH, sch, NULL, scope1, scope2, NULL, NULL);
+	Produce::pop_code_position(I);
+	Site::set_cir(I, NULL);
