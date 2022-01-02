@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <script>
 function togglePopup(material_id) {
   var popup = document.getElementById(material_id);
@@ -73,52 +78,24 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">pipeline</a></li><li><a href="index.html#4">Chapter 4: Linking Stages</a></li><li><b>Load Binary Kits Stage</b></li></ul></div>
 <p class="purpose">Reading other Inter trees as binary files, and attaching them at given points in the main Inter tree.</p>
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Linking is not a symmetrical process: one Inter tree remains the primary one &mdash;
-usually this will be the tree still in memory which was compiled by Inform 7
-from source text. That needs to be linked to Inter from, for example, kits
-such as <span class="extract"><span class="extract-syntax">WorldModelKit</span></span>. This is a non-trivial process, but begins easily
-enough, with each of those secondary Inter trees in turn being read in from
-a binary Inter file, and then attached to (i.e., made part of) the primary tree.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Inform 7 compiles source text to a single "main" Inter tree. That tree must
+then be joined with other Inter trees for kits such as BasicInformKit, a
+process called "linking", for want of a better word.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
 </p>
 
-<p class="commentary">The primary tree cannot "know", of itself, where these secondary trees will
-live in the file system, so the <span class="extract"><span class="extract-syntax">load-binary-kits</span></span> stage needs to be given instructions
-on the side. This is done with the "requirements list" of the step.
+<p class="commentary">Only the <a href="../supervisor-module/index.html" class="internal">supervisor</a> module knows which kits need to be linked in; the main
+Inter tree doesn't contain this information.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup>
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LoadBinaryKitsStage::create_pipeline_stage</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">LoadBinaryKitsStage::create_pipeline_stage</span></span>:<br/>Parsing Pipelines - <a href="2-pp.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="2-pp.html#SP3" class="function-link"><span class="function-syntax">ParsingPipelines::new_stage</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"load-binary-kits"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><a href="4-lbks.html#SP1" class="function-link"><span class="function-syntax">LoadBinaryKitsStage::run</span></a><span class="plain-syntax">, </span><span class="constant-syntax">NO_STAGE_ARG</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">LoadBinaryKitsStage::run</span><span class="plain-syntax">(</span><span class="reserved-syntax">pipeline_step</span><span class="plain-syntax"> *</span><span class="identifier-syntax">step</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax">, </span><span class="identifier-syntax">step</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ephemera</span><span class="plain-syntax">.</span><span class="element-syntax">requirements_list</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_architecture</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><a href="1-pm.html#SP4" class="function-link"><span class="function-syntax">PipelineModule::get_architecture</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">Errors::fatal</span><span class="plain-syntax">(</span><span class="string-syntax">"no -architecture given"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arch_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Architectures::canonical_binary</span><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">location</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TextFiles::exists</span><span class="plain-syntax">(</span><span class="identifier-syntax">arch_file</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no arch file for requirement"</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sidecar</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterTree::new</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Binary::test_file</span><span class="plain-syntax">(</span><span class="identifier-syntax">arch_file</span><span class="plain-syntax">)) </span><span class="identifier-syntax">Inter::Binary::read</span><span class="plain-syntax">(</span><span class="identifier-syntax">sidecar</span><span class="plain-syntax">, </span><span class="identifier-syntax">arch_file</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter::Textual::read</span><span class="plain-syntax">(</span><span class="identifier-syntax">sidecar</span><span class="plain-syntax">, </span><span class="identifier-syntax">arch_file</span><span class="plain-syntax">);</span>
-
-<span class="plain-syntax">        </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pack</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Packages::by_url</span><span class="plain-syntax">(</span><span class="identifier-syntax">sidecar</span><span class="plain-syntax">, </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">attachment_point</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pack</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">STDERR</span><span class="plain-syntax">, </span><span class="string-syntax">"sought attachment material at: %S in %f\n"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">attachment_point</span><span class="plain-syntax">, </span><span class="identifier-syntax">arch_file</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unable to find attachment point package"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Transmigration::move</span><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Site::main_package</span><span class="plain-syntax">(</span><span class="identifier-syntax">step</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ephemera</span><span class="plain-syntax">.</span><span class="element-syntax">repository</span><span class="plain-syntax">), </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>And this function is useful when building a requirements list, which is just
-a linked list of //attachment_instruction//s.
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Unlike the C linking process, it is not symmetrical. One Inter tree is
+made by <a href="../inter/index.html" class="internal">inter</a>, and the others by <a href="../inter/index.html" class="internal">inter</a>, for one thing.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Just as a C-compiled binary may be made by linking <span class="extract"><span class="extract-syntax">alpha.o</span></span>, <span class="extract"><span class="extract-syntax">beta.o</span></span> and
+<span class="extract"><span class="extract-syntax">gamma.o</span></span> together, but the fact that these are the three <span class="extract"><span class="extract-syntax">*.o</span></span> files needed
+to make the finished article is recorded only in the makefile for the program.
+It's a matter for the build process and not for the compiler.
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The list of Inter trees to link with is worked out by the <a href="../supervisor-module/index.html" class="internal">supervisor</a>,
+which calls the following function to obtain a way to record each "requirement":
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -128,7 +105,7 @@ a linked list of //attachment_instruction//s.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax"> *</span><span class="function-syntax">LoadBinaryKitsStage::new</span><span class="plain-syntax">(</span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">attach</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax"> *</span><span class="function-syntax">LoadBinaryKitsStage::new_requirement</span><span class="plain-syntax">(</span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">attach</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax"> *</span><span class="identifier-syntax">link</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">link</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">location</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">link</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">attachment_point</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">attach</span><span class="plain-syntax">);</span>
@@ -136,8 +113,66 @@ a linked list of //attachment_instruction//s.
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure attachment_instruction is private to this section.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Linking begins with the following stage. Note that the list of requirements
+made by <a href="../supervisor-module/index.html" class="internal">supervisor</a> is now stored in <span class="extract"><span class="extract-syntax">step-&gt;ephemera.requirements_list</span></span>.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">LoadBinaryKitsStage::create_pipeline_stage</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">LoadBinaryKitsStage::create_pipeline_stage</span></span>:<br/>Parsing Pipelines - <a href="2-pp.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><a href="2-pp.html#SP3" class="function-link"><span class="function-syntax">ParsingPipelines::new_stage</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="string-syntax">"load-binary-kits"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><a href="4-lbks.html#SP3" class="function-link"><span class="function-syntax">LoadBinaryKitsStage::run</span></a><span class="plain-syntax">, </span><span class="constant-syntax">NO_STAGE_ARG</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">LoadBinaryKitsStage::run</span><span class="plain-syntax">(</span><span class="reserved-syntax">pipeline_step</span><span class="plain-syntax"> *</span><span class="identifier-syntax">step</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax"> *</span><span class="identifier-syntax">req</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">, </span><span class="reserved-syntax">attachment_instruction</span><span class="plain-syntax">, </span><span class="identifier-syntax">step</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ephemera</span><span class="plain-syntax">.</span><span class="element-syntax">requirements_list</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sidecar</span><span class="plain-syntax"> = </span><span class="identifier-syntax">InterTree::new</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-lbks.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Load the Inter for the kit into the sidecar</span><span class="named-paragraph-number">3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="4-lbks.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Migrate the bulk of the code from the sidecar to the main tree</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b>A kit will, if properly prepared, contain a binary Inter file for each possible
+architecture which may be needed. For testing purposes, the following actually
+allows a textual Inter file to be used instead, but this isn't intended for
+regular users: it would be quite slow to read in.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Load the Inter for the kit into the sidecar</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_architecture</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A</span><span class="plain-syntax"> = </span><a href="1-pm.html#SP4" class="function-link"><span class="function-syntax">PipelineModule::get_architecture</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">A</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">Errors::fatal</span><span class="plain-syntax">(</span><span class="string-syntax">"no -architecture given"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arch_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Architectures::canonical_binary</span><span class="plain-syntax">(</span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">location</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TextFiles::exists</span><span class="plain-syntax">(</span><span class="identifier-syntax">arch_file</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"no arch file for requirement"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Binary::test_file</span><span class="plain-syntax">(</span><span class="identifier-syntax">arch_file</span><span class="plain-syntax">)) </span><span class="identifier-syntax">Inter::Binary::read</span><span class="plain-syntax">(</span><span class="identifier-syntax">sidecar</span><span class="plain-syntax">, </span><span class="identifier-syntax">arch_file</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">Inter::Textual::read</span><span class="plain-syntax">(</span><span class="identifier-syntax">sidecar</span><span class="plain-syntax">, </span><span class="identifier-syntax">arch_file</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="4-lbks.html#SP3">&#167;3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b>The "attachment point" for the kit will be something like <span class="extract"><span class="extract-syntax">/main/BasicInformKit</span></span>.
+(This point will be different for each different kit in the requirements list:
+others might include <span class="extract"><span class="extract-syntax">/main/CommandParserKit</span></span>, and so on.) We take that package out
+of the sidecar and put it into the main tree.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Migrate the bulk of the code from the sidecar to the main tree</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pack</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Packages::by_url</span><span class="plain-syntax">(</span><span class="identifier-syntax">sidecar</span><span class="plain-syntax">, </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">attachment_point</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pack</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">STDERR</span><span class="plain-syntax">, </span><span class="string-syntax">"sought attachment material at: %S\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">req</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">attachment_point</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unable to find attachment point package"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Inter::Transmigration::move</span><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Site::main_package</span><span class="plain-syntax">(</span><span class="identifier-syntax">step</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">ephemera</span><span class="plain-syntax">.</span><span class="element-syntax">repository</span><span class="plain-syntax">), </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="4-lbks.html#SP3">&#167;3</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="3-css.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-pm.html">1</a></li><li class="progresschapter"><a href="2-pp.html">2</a></li><li class="progresschapter"><a href="3-ps.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">lbks</li><li class="progresssection"><a href="4-res.html">res</a></li><li class="progresssection"><a href="4-ip.html">ip</a></li><li class="progresssection"><a href="4-dic.html">dic</a></li><li class="progresssection"><a href="4-unq.html">unq</a></li><li class="progresssection"><a href="4-rv.html">rv</a></li><li class="progresschapter"><a href="5-sh.html">5</a></li><li class="progresschapter"><a href="6-erm.html">6</a></li><li class="progressnext"><a href="4-res.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="3-css.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-pm.html">1</a></li><li class="progresschapter"><a href="2-pp.html">2</a></li><li class="progresschapter"><a href="3-ps.html">3</a></li><li class="progresscurrentchapter">4</li><li class="progresscurrent">lbks</li><li class="progresssection"><a href="4-cps.html">cps</a></li><li class="progresssection"><a href="4-dics.html">dics</a></li><li class="progresssection"><a href="4-mius.html">mius</a></li><li class="progresssection"><a href="4-rvs.html">rvs</a></li><li class="progresschapter"><a href="5-msms.html">5</a></li><li class="progresschapter"><a href="6-erms.html">6</a></li><li class="progressnext"><a href="4-cps.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

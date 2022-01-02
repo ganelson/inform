@@ -1,7 +1,7 @@
 load-binary-kits
-consolidate-text
-resolve-external-symbols
-inspect-plugs
+optionally-generate text -> *tout
+make-synoptic-module
+connect-plugs
 detect-indirect-calls
 make-identifiers-unique
 reconcile-verbs

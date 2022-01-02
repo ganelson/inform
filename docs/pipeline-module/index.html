@@ -147,28 +147,23 @@
 							<span class="sectionpurpose">Reading other Inter trees as binary files, and attaching them at given points in the main Inter tree.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-res.html">
-								<spon class="sectiontitle">Resolve External Symbols</span></a> -
+							<p class="sectionentry"><a href="4-cps.html">
+								<spon class="sectiontitle">Connect Plugs Stage</span></a> -
+							<span class="sectionpurpose">To reconcile symbol references made across compilation unit boundaries.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-dics.html">
+								<spon class="sectiontitle">Detect Indirect Calls Stage</span></a> -
+							<span class="sectionpurpose">To handle function calls made to functions identified by symbols which turn out, during linking, to be variables rather than constants.</span></p>
+						</li>
+						<li>
+							<p class="sectionentry"><a href="4-mius.html">
+								<spon class="sectiontitle">Make Identifiers Unique Stage</span></a> -
 							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="4-ip.html">
-								<spon class="sectiontitle">Inspect Plugs</span></a> -
-							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="4-dic.html">
-								<spon class="sectiontitle">Detect Indirect Calls</span></a> -
-							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="4-unq.html">
-								<spon class="sectiontitle">Uniqueness</span></a> -
-							<span class="sectionpurpose">To make sure certain symbol names translate into globally unique target symbols.</span></p>
-						</li>
-						<li>
-							<p class="sectionentry"><a href="4-rv.html">
-								<spon class="sectiontitle">Reconcile Verbs</span></a> -
+							<p class="sectionentry"><a href="4-rvs.html">
+								<spon class="sectiontitle">Reconcile Verbs Stage</span></a> -
 							<span class="sectionpurpose">To reconcile clashes between assimilated and originally generated verbs.</span></p>
 						</li>
 					</ul>
@@ -177,6 +172,11 @@
 					<p class="chapterentry"><a name="5"></a>
 						<span class="chaptertitle">Chapter 5: Synoptic Module</span></p>
 					<ul class="sectionlist">
+						<li>
+							<p class="sectionentry"><a href="5-msms.html">
+								<spon class="sectiontitle">Make Synoptic Module Stage</span></a> -
+							<span class="sectionpurpose">Creating a top-level module of synoptic resources.</span></p>
+						</li>
 						<li>
 							<p class="sectionentry"><a href="5-sh.html">
 								<spon class="sectiontitle">Synoptic Hierarchy</span></a> -
@@ -279,19 +279,19 @@
 						<span class="chaptertitle">Chapter 6: Optimisation Stages</span></p>
 					<ul class="sectionlist">
 						<li>
-							<p class="sectionentry"><a href="6-erm.html">
-								<spon class="sectiontitle">Eliminate Redundant Matter</span></a> -
-							<span class="sectionpurpose">To remove (for example) functions which we can prove will never be called or referred to as values.</span></p>
+							<p class="sectionentry"><a href="6-erms.html">
+								<spon class="sectiontitle">Eliminate Redundant Matter Stage</span></a> -
+							<span class="sectionpurpose">To remove definitions which are never used: for example, functions which are never called or referred to.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-erl.html">
-								<spon class="sectiontitle">Eliminate Redundant Labels</span></a> -
+							<p class="sectionentry"><a href="6-erls.html">
+								<spon class="sectiontitle">Eliminate Redundant Labels Stage</span></a> -
 							<span class="sectionpurpose">To remove labels which are defined but never jumped to.</span></p>
 						</li>
 						<li>
-							<p class="sectionentry"><a href="6-ero.html">
-								<spon class="sectiontitle">Eliminate Redundant Operations</span></a> -
-							<span class="sectionpurpose">To remove logical or arithmetic operations which do nothing.</span></p>
+							<p class="sectionentry"><a href="6-eros.html">
+								<spon class="sectiontitle">Eliminate Redundant Operations Stage</span></a> -
+							<span class="sectionpurpose">To remove logical or arithmetic operations which neither do anything, nor have side-effects.</span></p>
 						</li>
 					</ul>
 				</li>

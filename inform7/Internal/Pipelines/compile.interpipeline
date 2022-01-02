@@ -6,6 +6,6 @@ run pipeline optimise
 
 ! The following does nothing if the variable *tout does not exist and it
 ! will exist only when debugging:
-optionally-generate text -> *tout
+! optionally-generate text -> *tout
 
 generate -> *out

@@ -32,6 +32,7 @@ before it is known how they will be used.
 ];
 
 [ Main;
+	self = COL_HSIZE; ! To ensure this definition is not optimised out
 	VM_Initialise();
 	INITIALISE_MEMORY_R();
 	SEED_RANDOM_NUMBER_GENERATOR_R();

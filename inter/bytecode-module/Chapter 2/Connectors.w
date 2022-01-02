@@ -60,20 +60,26 @@ void Inter::Connectors::wire_plug(inter_symbol *plug, inter_symbol *to) {
 	if (plug == NULL) internal_error("no plug");
 	LOGIF(INTER_CONNECTORS, "Plug $3 wired to $3\n", plug, to);
 	InterSymbolsTables::equate(plug, to);
+	plug->equated_name = NULL;
 }
 
-void Inter::Connectors::stecker(inter_tree *I) {
- 	inter_package *Q = Site::connectors_package(I);
- 	if (Q == NULL) return;
-	inter_symbols_table *ST = Inter::Packages::scope(Q);
-	for (int i=0; i<ST->size; i++) {
-		inter_symbol *plug = ST->symbol_array[i];
-		if ((plug) && (Inter::Symbols::get_scope(plug) == PLUG_ISYMS) && (plug->equated_to == NULL)) {
-			inter_symbol *socket = Inter::Connectors::find_socket(I, plug->equated_name);
-			if (socket) {
-				Inter::Connectors::wire_plug(plug, socket);
-				plug->equated_name = NULL;
-			}
-		}
-	}
+int Inter::Connectors::is_plug(inter_symbol *S) {
+	if ((S) && (Inter::Symbols::get_scope(S) == PLUG_ISYMS)) return TRUE;
+	return FALSE;
+}
+
+int Inter::Connectors::is_socket(inter_symbol *S) {
+	if ((S) && (Inter::Symbols::get_scope(S) == SOCKET_ISYMS)) return TRUE;
+	return FALSE;
+}
+
+int Inter::Connectors::is_loose_plug(inter_symbol *S) {
+	if ((S) && (Inter::Symbols::get_scope(S) == PLUG_ISYMS) && (S->equated_to == NULL))
+		return TRUE;
+	return FALSE;
+}
+
+text_stream *Inter::Connectors::plug_name(inter_symbol *S) {
+	if (Inter::Connectors::is_loose_plug(S)) return S->equated_name;
+	return NULL;
 }

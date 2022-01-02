@@ -263,7 +263,7 @@ void SynopticHierarchy::establish(inter_tree *I) {
 
 @<Establish tests@> =
 	SYN_SUBMD(I"tests")
-		SYN_FUNCT(TESTSCRIPTSUB_HL,               I"test_fn", I"TestScriptSub")
+		SYN_FUNCT(TESTSCRIPTSUB_HL,               I"TestScriptSub_fn", I"TestScriptSub")
 
 @h Use options.
 

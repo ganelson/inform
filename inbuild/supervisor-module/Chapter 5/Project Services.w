@@ -496,7 +496,7 @@ linked_list *Projects::list_of_attachment_instructions(inform_project *project) 
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include) {
 		inform_kit *K = kd->kit;
-		attachment_instruction *link = LoadBinaryKitsStage::new(
+		attachment_instruction *link = LoadBinaryKitsStage::new_requirement(
 			K->as_copy->location_if_path, K->attachment_point);
 		ADD_TO_LINKED_LIST(link, attachment_instruction, requirements_list);
 	}

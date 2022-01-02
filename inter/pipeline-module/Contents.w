@@ -24,13 +24,13 @@ Chapter 3: Assimilation Stages
 
 Chapter 4: Linking Stages
 	Load Binary Kits Stage
-	Resolve External Symbols
-	Inspect Plugs
-	Detect Indirect Calls
-	Uniqueness
-	Reconcile Verbs
+	Connect Plugs Stage
+	Detect Indirect Calls Stage
+	Make Identifiers Unique Stage
+	Reconcile Verbs Stage
 
 Chapter 5: Synoptic Module
+	Make Synoptic Module Stage
 	Synoptic Hierarchy
 	Synoptic Utilities
 	Extensions
@@ -52,6 +52,6 @@ Chapter 5: Synoptic Module
 	Tests
 
 Chapter 6: Optimisation Stages
-	Eliminate Redundant Matter
-	Eliminate Redundant Labels
-	Eliminate Redundant Operations
+	Eliminate Redundant Matter Stage
+	Eliminate Redundant Labels Stage
+	Eliminate Redundant Operations Stage

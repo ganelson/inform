@@ -339,17 +339,16 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 		NewStage::create_pipeline_stage();
 		LoadBinaryKitsStage::create_pipeline_stage();
 		CompileSplatsStage::create_pipeline_stage();
-		DetectIndirectCalls::create_pipeline_stage();
-		CodeGen::Eliminate::create_pipeline_stage();
-		CodeGen::Externals::create_pipeline_stage();
-		CodeGen::Inspection::create_pipeline_stage();
-		CodeGen::Labels::create_pipeline_stage();
-		CodeGen::Operations::create_pipeline_stage();
-		Synoptic::create_pipeline_stage();
+		DetectIndirectCallsStage::create_pipeline_stage();
+		EliminateRedundantMatterStage::create_pipeline_stage();
+		ConnectPlugsStage::create_pipeline_stage();
+		EliminateRedundantLabelsStage::create_pipeline_stage();
+		EliminateRedundantOperationsStage::create_pipeline_stage();
+		MakeSynopticModuleStage::create_pipeline_stage();
 		ParsingStages::create_pipeline_stage();
 		ResolveConditionalsStage::create_pipeline_stage();
-		CodeGen::ReconcileVerbs::create_pipeline_stage();
-		CodeGen::Uniqueness::create_pipeline_stage();
+		ReconcileVerbsStage::create_pipeline_stage();
+		MakeIdentifiersUniqueStage::create_pipeline_stage();
 	}	
 	pipeline_stage *stage;
 	LOOP_OVER(stage, pipeline_stage)

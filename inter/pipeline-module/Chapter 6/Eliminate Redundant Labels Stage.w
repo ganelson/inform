@@ -1,44 +1,38 @@
-[CodeGen::Labels::] Eliminate Redundant Labels.
+[EliminateRedundantLabelsStage::] Eliminate Redundant Labels Stage.
 
 To remove labels which are defined but never jumped to.
 
-@h Pipeline stage.
-I7 tends to produce a lot of labels when compiling complicated text
-substitutions, but many (around 2000 in a typical run) are never branched to,
+@ //inform7// tends to produce a lot of labels when compiling complicated text
+substitutions, but many -- around 2000 in a typical run -- are never branched to,
 either by a jump invocation or by assembly language.
 
 These spurious labels cause no real problem except untidiness, but removing
 them provides a simple example of how peephole optimisation can be performed
-on the Inter functions in a repository.
+on an Inter tree.
 
 =
-void CodeGen::Labels::create_pipeline_stage(void) {
-	ParsingPipelines::new_stage(I"eliminate-redundant-labels", CodeGen::Labels::run_pipeline_stage, NO_STAGE_ARG, FALSE);
+void EliminateRedundantLabelsStage::create_pipeline_stage(void) {
+	ParsingPipelines::new_stage(I"eliminate-redundant-labels",
+		EliminateRedundantLabelsStage::run, NO_STAGE_ARG, FALSE);
 }
 
 int redundant_labels_removed = 0;
-int CodeGen::Labels::run_pipeline_stage(pipeline_step *step) {
+int EliminateRedundantLabelsStage::run(pipeline_step *step) {
 	redundant_labels_removed = 0;
-	InterTree::traverse(step->ephemera.repository, CodeGen::Labels::visitor, NULL, NULL, 0);
+	InterTree::traverse(step->ephemera.repository,
+		EliminateRedundantLabelsStage::visitor, NULL, NULL, PACKAGE_IST);
 	if (redundant_labels_removed > 0)
 		LOG("%d redundant label(s) removed\n", redundant_labels_removed);
 	return TRUE;
 }
 
-void CodeGen::Labels::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = Inter::Package::defined_by_frame(P);
-		if (Inter::Packages::is_codelike(pack)) @<Perform peephole optimisation on this block@>;
-	}
+void EliminateRedundantLabelsStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	inter_package *pack = Inter::Package::defined_by_frame(P);
+	if (Inter::Packages::is_codelike(pack))
+		@<Perform peephole optimisation on this function body@>;
 }
 
-@h Peephole optimisation.
-We can now forget about the larger package structure, and just look through
-the peephole at a single function in Inter. It has its own symbols table, for
-local variables and label names, and also has a tree of code to define what
-it does.
-
-@<Perform peephole optimisation on this block@> =
+@<Perform peephole optimisation on this function body@> =
 	inter_symbols_table *local_symbols = Inter::Packages::scope(pack);
 	@<Mark all the labels for this function as being unused@>;
 	@<Look through the function for mentions of labels, marking those as used@>;
@@ -54,7 +48,7 @@ any given symbol is undefined when we begin. We'll clear it for all labels.
 
 @<Look through the function for mentions of labels, marking those as used@> =
 	inter_tree_node *D = Inter::Packages::definition(pack);
-	CodeGen::Labels::traverse_code_tree(D);
+	EliminateRedundantLabelsStage::traverse_code_tree(D);
 
 @ Anything not marked used must be unused, so we can get rid of it. We do this
 by striking its definition; the definition of a label symbol is the line
@@ -77,10 +71,10 @@ anywhere) we may as well remove it.
 it would be written out in a listing.
 
 =
-void CodeGen::Labels::traverse_code_tree(inter_tree_node *P) {
+void EliminateRedundantLabelsStage::traverse_code_tree(inter_tree_node *P) {
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		@<Examine a line of code in the function@>;
-		CodeGen::Labels::traverse_code_tree(F);
+		EliminateRedundantLabelsStage::traverse_code_tree(F);
 	}
 }
 

@@ -1,12 +1,13 @@
-[CodeGen::Operations::] Eliminate Redundant Operations.
+[EliminateRedundantOperationsStage::] Eliminate Redundant Operations Stage.
 
-To remove logical or arithmetic operations which do nothing.
+To remove logical or arithmetic operations which neither do anything, nor
+have side-effects.
 
-@h Pipeline stage.
-This stage removes redundant operations, replacing each of the following
-with just |x|. This is useful mainly because the //imperative: Compile Conditions//
-has a tendency to make redundant |OR_BIP| operations like these; the other
-cases occur much more rarely.
+@ This stage removes redundant operations, replacing each of the following
+with just |x|. This is useful mainly for the first of these cases, because
+//imperative: Compile Conditions// has a tendency to make redundant |OR_BIP|
+operations. The other cases occur much more rarely, but we might as well
+handle them too.
 = (text)
 	x || false
 	x && true
@@ -26,26 +27,27 @@ We do not replace |x * 0| with |0|, nor |x && false| with |false|, because then
 any intended side-effects of evaluating |x| would be lost.
 
 =
-void CodeGen::Operations::create_pipeline_stage(void) {
+void EliminateRedundantOperationsStage::create_pipeline_stage(void) {
 	ParsingPipelines::new_stage(I"eliminate-redundant-operations",
-		CodeGen::Operations::run_pipeline_stage, NO_STAGE_ARG, FALSE);
+		EliminateRedundantOperationsStage::run, NO_STAGE_ARG, FALSE);
 }
 
 int redundant_operations_removed = 0;
-int CodeGen::Operations::run_pipeline_stage(pipeline_step *step) {
+int EliminateRedundantOperationsStage::run(pipeline_step *step) {
 	redundant_operations_removed = 0;
-	InterTree::traverse(step->ephemera.repository, CodeGen::Operations::visitor, NULL, NULL, 0);
+	InterTree::traverse(step->ephemera.repository,
+		EliminateRedundantOperationsStage::visitor, NULL, NULL, 0);
 	if (redundant_operations_removed > 0)
 		LOG("%d redundant operation(s) removed\n", redundant_operations_removed);
 	return TRUE;
 }
 
-void CodeGen::Operations::visitor(inter_tree *I, inter_tree_node *P, void *state) {
+void EliminateRedundantOperationsStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		if (Inter::Packages::is_codelike(pack)) {
 			inter_tree_node *D = Inter::Packages::definition(pack);
-			CodeGen::Operations::traverse_code_tree(D);
+			EliminateRedundantOperationsStage::traverse_code_tree(D);
 		}
 	}
 }
@@ -54,9 +56,9 @@ void CodeGen::Operations::visitor(inter_tree *I, inter_tree_node *P, void *state
 operations:
 
 =
-void CodeGen::Operations::traverse_code_tree(inter_tree_node *P) {
+void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P) {
-		CodeGen::Operations::traverse_code_tree(F);
+		EliminateRedundantOperationsStage::traverse_code_tree(F);
 	}
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		int iden[2] = { -1, -1 };

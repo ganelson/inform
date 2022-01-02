@@ -7,11 +7,6 @@ together from resources all over the Inter tree.
 This stage...
 
 =
-void Synoptic::create_pipeline_stage(void) {
-	ParsingPipelines::new_stage(I"consolidate-text",
-		Synoptic::go, NO_STAGE_ARG, FALSE);
-}
-
 typedef struct tree_inventory {
 	struct inter_tree *of_tree;
 	struct linked_list *items; /* of |tree_inventory_item| */
@@ -158,29 +153,6 @@ tree_inventory *Synoptic::inv(inter_tree *I) {
 	cached_inventory = Synoptic::new_inventory(I);
 	Synoptic::perform_inventory(cached_inventory);
 	return cached_inventory;
-}
-
-int Synoptic::go(pipeline_step *step) {
-	tree_inventory *inv = Synoptic::inv(step->ephemera.repository);
-
-	SynopticText::compile(step->ephemera.repository, step, inv);
-	SynopticActions::compile(step->ephemera.repository, step, inv);
-	SynopticActivities::compile(step->ephemera.repository, step, inv);
-	SynopticChronology::compile(step->ephemera.repository, step, inv);
-	SynopticExtensions::compile(step->ephemera.repository, step, inv);
-	SynopticInstances::compile(step->ephemera.repository, step, inv);
-	SynopticKinds::compile(step->ephemera.repository, step, inv);
-	SynopticMultimedia::compile(step->ephemera.repository, step, inv);
-	SynopticProperties::compile(step->ephemera.repository, step, inv);
-	SynopticRelations::compile(step->ephemera.repository, step, inv);
-	SynopticResponses::compile(step->ephemera.repository, step, inv);
-	SynopticRules::compile(step->ephemera.repository, step, inv);
-	SynopticScenes::compile(step->ephemera.repository, step, inv);
-	SynopticTables::compile(step->ephemera.repository, step, inv);
-	SynopticUseOptions::compile(step->ephemera.repository, step, inv);
-	SynopticVerbs::compile(step->ephemera.repository, step, inv);
-	SynopticTests::compile(step->ephemera.repository, step, inv);
-	return TRUE;
 }
 
 @

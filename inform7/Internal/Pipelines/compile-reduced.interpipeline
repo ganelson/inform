@@ -4,8 +4,7 @@ parse-insertions
 resolve-conditional-compilation
 compile-splats
 consolidate-text
-resolve-external-symbols
-inspect-plugs
+connect-plugs
 detect-indirect-calls
 make-identifiers-unique
 reconcile-verbs
