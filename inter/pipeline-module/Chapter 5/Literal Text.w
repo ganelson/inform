@@ -75,7 +75,7 @@ in |texts|.
 @<Change the value in P from a literal text to an alias for the latest text@> =
 	inter_symbol *ref_s = Synoptic::new_symbol(pack, I"ref_to_text");
 
-	InterSymbolsTables::equate(ref_s, latest_s);
+	Wiring::wire_to(ref_s, latest_s);
 	inter_ti val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(I, Inter::Packages::container(P), ref_s, &val1, &val2);
 	P->W.data[FORMAT_CONST_IFLD] = CONSTANT_DIRECT;

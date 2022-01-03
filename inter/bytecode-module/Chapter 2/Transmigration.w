@@ -32,27 +32,25 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *symb = T->symbol_array[i];
 			if ((symb) && (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)) {
-				inter_symbol *target = symb->equated_to;
-				while (target->equated_to) target = target->equated_to;
+				inter_symbol *target = Wiring::cable_end(symb);
 				inter_package *target_package = target->owning_table->owning_package;
 				while ((target_package) && (target_package != migrant)) {
 					target_package = Inter::Packages::parent(target_package);
 				}
 				if (target_package == migrant) {
 					LOGIF(INTER_CONNECTORS, "Origin offers socket inside migrant: $3 == $3\n", symb, target);
-					inter_symbol *equivalent = Inter::Connectors::find_socket(destination_tree, symb->symbol_name);
+					inter_symbol *equivalent = Wiring::find_socket(destination_tree, symb->symbol_name);
 					if (equivalent) {
-						inter_symbol *e_target = equivalent->equated_to;
-						while (e_target->equated_to) e_target = e_target->equated_to;
+						inter_symbol *e_target = Wiring::cable_end(equivalent);
 						if (!Inter::Symbols::is_defined(e_target)) {
-							LOGIF(INTER_CONNECTORS, "Able to match with $3 == $3\n", equivalent, equivalent->equated_to);
-							equivalent->equated_to = target;
-							e_target->equated_to = target;
+							LOGIF(INTER_CONNECTORS, "Able to match with $3 ~~> $3\n", equivalent, Wiring::cable_end(equivalent));
+							Wiring::wire_to(equivalent, target);
+							Wiring::wire_to(e_target, target);
 						} else {
 							LOGIF(INTER_CONNECTORS, "Clash of sockets\n");
 						}
 					} else {
-						Inter::Connectors::socket(destination_tree, symb->symbol_name, symb);
+						Wiring::socket(destination_tree, symb->symbol_name, symb);
 					}
 				}
 			}
@@ -152,20 +150,21 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		if (T == NULL) internal_error("package with no symbols");
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *symb = T->symbol_array[i];
-			if ((symb) && (symb->equated_to)) {
-				inter_symbol *target = symb->equated_to;
-				while (target->equated_to) target = target->equated_to;
+			if (Wiring::is_wired(symb)) {
+				inter_symbol *target = Wiring::cable_end(symb);
 				if (Inter::Symbols::read_annotation(target, VENEER_IANN) > 0) {
-					symb->equated_to = Veneer::find(ipct->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL));
+					Wiring::wire_to(symb,
+						Veneer::find(ipct->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL)));
 				} else if (Inter::Symbols::get_scope(target) == PLUG_ISYMS) {
 					inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
 					if (equivalent == NULL) {
-						equivalent = Inter::Connectors::find_plug(ipct->destination->package_head->tree, target->equated_name);
+						text_stream *N = Wiring::wired_to_name(target);
+						equivalent = Wiring::find_plug(ipct->destination->package_head->tree, N);
 						if (equivalent == NULL)
-							equivalent = Inter::Connectors::plug(ipct->destination->package_head->tree, target->equated_name);
+							equivalent = Wiring::plug(ipct->destination->package_head->tree, N);
 						Inter::Transmigration::cache(target, equivalent);
 					}
-					symb->equated_to = equivalent;					
+					Wiring::wire_to(symb, equivalent);					
 				} else {
 					inter_package *target_package = target->owning_table->owning_package;
 					while ((target_package) && (target_package != ipct->migrant)) {
@@ -238,11 +237,11 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		if ((equivalent == NULL) && (Inter::Kind::is(target)))
 			equivalent = Inter::Packages::search_resources(ipct->destination->package_head->tree, target->symbol_name);
 		if (equivalent == NULL)
-			equivalent = Inter::Connectors::plug(ipct->destination_tree, URL);
+			equivalent = Wiring::plug(ipct->destination_tree, URL);
 		DISCARD_TEXT(URL)
 		Inter::Transmigration::cache(target, equivalent);
 	}
-	symb->equated_to = equivalent;
+	Wiring::wire_to(symb, equivalent);
 
 @<Correct any references from the origin to the migrant@> =
 	ipct_state ipct;
@@ -261,9 +260,8 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 		if (T == NULL) internal_error("package with no symbols");
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *symb = T->symbol_array[i];
-			if ((symb) && (symb->equated_to)) {
-				inter_symbol *target = symb->equated_to;
-				while (target->equated_to) target = target->equated_to;
+			if (Wiring::is_wired(symb)) {
+				inter_symbol *target = Wiring::cable_end(symb);
 				inter_package *target_package = target->owning_table->owning_package;
 				while ((target_package) && (target_package != ipct->migrant)) {
 					target_package = Inter::Packages::parent(target_package);
@@ -280,8 +278,8 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 	if (equivalent == NULL) {
 		TEMPORARY_TEXT(URL)
 		InterSymbolsTables::symbol_to_url_name(URL, target);
-		equivalent = Inter::Connectors::plug(ipct->origin_tree, URL);
+		equivalent = Wiring::plug(ipct->origin_tree, URL);
 		DISCARD_TEXT(URL)
 		Inter::Transmigration::cache(target, equivalent);
 	}
-	symb->equated_to = equivalent;
+	Wiring::wire_to(symb, equivalent);

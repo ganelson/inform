@@ -17783,7 +17783,7 @@ Moreover, the Standard Rules use a number of syntaxes which are not documented i
 
 The phrases described in this documentation, such as "end the story", are all defined in the Standard Rules, and are for the most part defined not in terms of other I7 phrases but instead reduced to equivalents in I6. For instance:
 
-	To end the story (- deadflag=3; story_complete=false; -).
+	To end the story: (- deadflag=3; story_complete=false; -).
 
 The notation "(-" and "-)" indicates that what comes in between is I6 code. The minus sign is supposed to be a mnemonic for the decrease from 7 to 6: later we shall use "(+" and "+)" to go back up the other way, from 6 to 7.
 

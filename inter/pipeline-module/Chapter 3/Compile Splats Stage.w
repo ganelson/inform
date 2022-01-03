@@ -191,7 +191,7 @@ But in fact it's easier to handle it here.
 
 @<Perhaps compile something from this splat@> =
 	if (directive == DEFAULT_I6DIR) {
-		if (Inter::Connectors::find_socket(I, identifier) == NULL) {
+		if (Wiring::find_socket(I, identifier) == NULL) {
 			directive = CONSTANT_I6DIR;
 			@<Definitely compile something from this splat@>;
 		}
@@ -278,10 +278,10 @@ not already there.
 
 @<Declare the Inter symbol for what we will shortly make@> =	
 	made_s = CompileSplatsStage::make_socketed_symbol(&content_at, identifier);
-	if (made_s->equated_to) {
-		inter_symbol *external_name = made_s->equated_to;
-		external_name->equated_to = made_s;
-		made_s->equated_to = NULL;
+	if (Wiring::is_wired(made_s)) {
+		inter_symbol *external_name = Wiring::wired_to(made_s);
+		Wiring::wire_to(external_name, made_s);
+		Wiring::wire_to(made_s, NULL);
 	}
 	Inter::Symbols::annotate_i(made_s, ASSIMILATED_IANN, 1);
 	if (directive == FAKEACTION_I6DIR) Inter::Symbols::annotate_i(made_s, FAKE_ACTION_IANN, 1);
@@ -480,7 +480,7 @@ with three things in it:
 (c) the function to carry out the action, |ScriptOnSub|.
 
 @<Ensure that a socket exists for this action name@> =
-	if (Inter::Connectors::find_socket(I, value) == NULL) {
+	if (Wiring::find_socket(I, value) == NULL) {
 		inter_bookmark IBM_d = CompileSplatsStage::make_submodule(I, step, I"actions", P);
 		inter_bookmark *IBM = &IBM_d;
 		
@@ -540,8 +540,8 @@ equating it to a function definition elsewhere.
 	Str::delete_first_character(fn_name);
 	inter_symbol *fn_s =
 		InterSymbolsTables::create_with_unique_name(Inter::Bookmarks::scope(IBM), fn_name);
-	inter_symbol *existing_fn_s = Inter::Connectors::find_socket(I, fn_name);
-	if (existing_fn_s) InterSymbolsTables::equate(fn_s, existing_fn_s);
+	inter_symbol *existing_fn_s = Wiring::find_socket(I, fn_name);
+	if (existing_fn_s) Wiring::wire_to(fn_s, existing_fn_s);
 	DISCARD_TEXT(fn_name)
 
 @<Assimilate a value@> =
@@ -748,8 +748,8 @@ inter_symbol *CompileSplatsStage::make_socketed_symbol(inter_bookmark *IBM,
 	text_stream *identifier) {
 	inter_symbol *new_symbol = InterSymbolsTables::create_with_unique_name(
 		Inter::Bookmarks::scope(IBM), identifier);
-	if (Inter::Connectors::find_socket(Inter::Bookmarks::tree(IBM), identifier) == NULL)
-		Inter::Connectors::socket(Inter::Bookmarks::tree(IBM), identifier, new_symbol);
+	if (Wiring::find_socket(Inter::Bookmarks::tree(IBM), identifier) == NULL)
+		Wiring::socket(Inter::Bookmarks::tree(IBM), identifier, new_symbol);
 	return new_symbol;
 }
 
@@ -967,8 +967,7 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 	}
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, S, L"scope=(%i+)")) {
-		inter_symbol *symb = Inter::Connectors::find_socket(I, mr.exp[0]);
-		while ((symb) && (symb->equated_to)) symb = symb->equated_to;
+		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
 			if (Inter::Symbols::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
 				Inter::Symbols::annotate_i(symb, SCOPE_FILTER_IANN, 1);
@@ -976,8 +975,7 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 		}
 	}
 	if (Regexp::match(&mr, S, L"noun=(%i+)")) {
-		inter_symbol *symb = Inter::Connectors::find_socket(I, mr.exp[0]);
-		while ((symb) && (symb->equated_to)) symb = symb->equated_to;
+		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
 			if (Inter::Symbols::read_annotation(symb, NOUN_FILTER_IANN) != 1)
 				Inter::Symbols::annotate_i(symb, NOUN_FILTER_IANN, 1);
@@ -986,7 +984,7 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 	}
 
 @<Attempt to parse this as an identifier name for something already defined by this kit@> =
-	inter_symbol *symb = Inter::Connectors::find_socket(I, S);
+	inter_symbol *symb = Wiring::find_socket(I, S);
 	if (symb) {
 		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
 	}
@@ -1148,9 +1146,9 @@ or in another compilation unit, so we create a plug called |MAX_ELEPHANTS|
 and let the linker stage worry about what it means later on.
 
 @<This leaf is a symbol name@> =
-	inter_symbol *result_s = Inter::Connectors::find_socket(I, t->material);
+	inter_symbol *result_s = Wiring::find_socket(I, t->material);
 	if (result_s) return result_s;
-	return Inter::Connectors::plug(I, t->material);
+	return Wiring::plug(I, t->material);
 
 @ The above algorithm needs a lot of names for partial results of expressions,
 all of which have to become Inter symbols. It really doesn't matter what these

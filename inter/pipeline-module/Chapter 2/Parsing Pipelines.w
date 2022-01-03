@@ -341,7 +341,7 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 		CompileSplatsStage::create_pipeline_stage();
 		DetectIndirectCallsStage::create_pipeline_stage();
 		EliminateRedundantMatterStage::create_pipeline_stage();
-		ConnectPlugsStage::create_pipeline_stage();
+		ShortenWiringStage::create_pipeline_stage();
 		EliminateRedundantLabelsStage::create_pipeline_stage();
 		EliminateRedundantOperationsStage::create_pipeline_stage();
 		MakeSynopticModuleStage::create_pipeline_stage();

@@ -36,13 +36,13 @@ void SynopticHierarchy::establish(inter_tree *I) {
 		HierarchyLocations::ctr(I, id, n,    Translation::same(),      req);
 		inter_name *iname = HierarchyLocations::find(I, id);
 		inter_symbol *S = InterNames::to_symbol(iname);
-		Inter::Connectors::socket(I, InterNames::to_text(iname), S);
+		Wiring::socket(I, InterNames::to_text(iname), S);
 	}
 @d SYN_FUNCT(id, n, t) {
 		HierarchyLocations::fun(I, id, n,    Translation::to(t),       req);
 		inter_name *iname = HierarchyLocations::find(I, id);
 		inter_symbol *S = InterNames::to_symbol(iname);
-		Inter::Connectors::socket(I, Produce::get_translation(iname), S);
+		Wiring::socket(I, Produce::get_translation(iname), S);
 	}
 @d KIT_PROVIDED(id, n)
 		HierarchyLocations::ctr(I, id, n,    Translation::same(),      req);

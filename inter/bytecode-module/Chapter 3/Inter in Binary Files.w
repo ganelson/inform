@@ -271,14 +271,16 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			Inter::Symbols::annotate(S, IA);
 		}
 		if (Inter::Symbols::get_scope(S) == PLUG_ISYMS) {
-			S->equated_name = Str::new();
+			TEMPORARY_TEXT(N)
 			while (TRUE) {
 				unsigned int c;
 				if (BinaryFiles::read_int32(fh, &c) == FALSE)
 					Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 				if (c == 0) break;
-				PUT_TO(S->equated_name, (wchar_t) c);
+				PUT_TO(N, (wchar_t) c);
 			}
+			Wiring::wire_to_name(S, N);
+			DISCARD_TEXT(N)
 		}
 
 		LOGIF(INTER_BINARY, "Read symbol $3\n", S);
@@ -307,7 +309,8 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 					BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
 				Inter::Annotations::set_to_bytecode(fh, &(symb->ann_set));
 				if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) {
-					LOOP_THROUGH_TEXT(pos, symb->equated_name)
+					text_stream *N = Wiring::wired_to_name(symb);
+					LOOP_THROUGH_TEXT(pos, N)
 						BinaryFiles::write_int32(fh, (unsigned int) Str::get(pos));
 					BinaryFiles::write_int32(fh, 0);
 				}
@@ -398,7 +401,7 @@ enough that the slot exists for the eventual list to be stored in.
 			if (from_S == NULL) internal_error("no from_S");
 			inter_symbol *to_S = InterSymbolsTables::symbol_from_id(to_T, to_ID);
 			if (to_S == NULL) internal_error("no to_S");
-			InterSymbolsTables::equate(from_S, to_S);
+			Wiring::wire_to(from_S, to_S);
 		}
 	}
 
@@ -412,11 +415,13 @@ enough that the slot exists for the eventual list to be stored in.
 			BinaryFiles::write_int32(fh, (unsigned int) n);
 			for (int i=0; i<from_T->size; i++) {
 				inter_symbol *symb = from_T->symbol_array[i];
-				if ((symb) && (symb->equated_to)) {
+				if (Wiring::is_wired(symb)) {
+					inter_symbol *W = Wiring::wired_to(symb);
 					BinaryFiles::write_int32(fh, symb->symbol_ID);
-					BinaryFiles::write_int32(fh, (unsigned int) symb->equated_to->owning_table->n_index);
-	if (trace_bin) WRITE_TO(STDOUT, "Write eqn %d -> %d\n", n, symb->equated_to->owning_table->n_index);
-					BinaryFiles::write_int32(fh, symb->equated_to->symbol_ID);
+					BinaryFiles::write_int32(fh, (unsigned int) W->owning_table->n_index);
+					if (trace_bin)
+						WRITE_TO(STDOUT, "Write eqn %d -> %d\n", n, W->owning_table->n_index);
+					BinaryFiles::write_int32(fh, W->symbol_ID);
 				}
 			}
 			BinaryFiles::write_int32(fh, 0);

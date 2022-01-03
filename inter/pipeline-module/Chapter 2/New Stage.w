@@ -156,7 +156,7 @@ For now, at least, these live in the package |main/veneer|.
 	inter_symbol *vi_unchecked =
 		InterSymbolsTables::create_with_unique_name(
 			Inter::Bookmarks::scope(in_veneer), I"K_unchecked");
-	InterSymbolsTables::equate(vi_unchecked, unchecked_kind_symbol);
+	Wiring::wire_to(vi_unchecked, unchecked_kind_symbol);
 
 	inter_symbol *con_name = InterSymbolsTables::create_with_unique_name(
 		Inter::Bookmarks::scope(in_veneer), I"WORDSIZE");

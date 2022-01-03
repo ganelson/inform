@@ -339,7 +339,7 @@ int RTVariables::compile(inference_subject_family *f, int ignored) {
 				if (nlv->compilation_data.lvalue_nve.iname_form) {
 					inter_symbol *S = InterNames::to_symbol(iname);
 					inter_symbol *H = InterNames::to_symbol(nlv->compilation_data.lvalue_nve.iname_form);
-					InterSymbolsTables::equate(S, H);
+					Wiring::wire_to(S, H);
 					Hierarchy::apply_metadata_from_iname(pack, VARIABLE_COUNTERPART_MD_HL,
 						nlv->compilation_data.lvalue_nve.iname_form);
 				}

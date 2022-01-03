@@ -31,5 +31,7 @@ int MakeSynopticModuleStage::run(pipeline_step *step) {
 	SynopticUseOptions::compile(I, step, inv);
 	SynopticVerbs::compile(I, step, inv);
 	SynopticTests::compile(I, step, inv);
+	
+	Wiring::connect_plugs_to_sockets(I);
 	return TRUE;
 }

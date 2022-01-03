@@ -72,7 +72,7 @@ void MakeIdentifiersUniqueStage::visitor(inter_tree *I, inter_tree_node *P, void
 		inter_symbols_table *ST = Inter::Packages::scope(Q);
 		for (int i=0; i<ST->size; i++) {
 			inter_symbol *S = ST->symbol_array[i];
-			if ((S) && (S->equated_to == NULL) &&
+			if ((S) && (Wiring::is_wired(S) == FALSE) &&
 				(Inter::Symbols::get_flag(S, MAKE_NAME_UNIQUE))) {
 				@<Give this symbol a unique translation@>;
 				Inter::Symbols::clear_flag(S, MAKE_NAME_UNIQUE);

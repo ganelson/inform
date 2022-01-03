@@ -10,8 +10,7 @@ typedef struct inter_symbol {
 	struct inter_symbols_table *owning_table;
 	struct text_stream *symbol_name;
 	struct inter_tree_node *definition;
-	struct inter_symbol *equated_to;
-	struct text_stream *equated_name;
+	struct wiring_data wiring;
 	int symbol_status;
 	struct inter_annotation_set ann_set;
 	struct text_stream *translate_text;
@@ -34,8 +33,7 @@ inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, int
 	symb->symbol_name = Str::duplicate(name);
 	Inter::Symbols::undefine(symb);
 	symb->ann_set = Inter::Annotations::new_set();
-	symb->equated_to = NULL;
-	symb->equated_name = NULL;
+	symb->wiring = Wiring::new_wiring_data(symb);
 	symb->translate_text = NULL;
 	symb->link_time = 0;
 	symb->linked_to = NULL;
@@ -114,16 +112,15 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 	}
 	WRITE(" %S", mark->symbol_name);
 	if (Inter::Symbols::get_flag(mark, MAKE_NAME_UNIQUE)) WRITE("*");
-	if (Str::len(mark->equated_name) > 0) {
-		WRITE(" --? %S", mark->equated_name);
+	if (Wiring::is_wired_to_name(mark)) {
+		WRITE(" --? %S", Wiring::wired_to_name(mark));
 	}
 	text_stream *trans_name = Inter::Symbols::get_translate(mark);
 	if (Str::len(trans_name) > 0)
 		WRITE(" `%S`", trans_name);
-	inter_symbol *eq = mark->equated_to;
-	if (eq) {
+	if (Wiring::is_wired(mark)) {
 		WRITE(" --> ");
-		InterSymbolsTables::symbol_to_url_name(OUT, eq);
+		InterSymbolsTables::symbol_to_url_name(OUT, Wiring::wired_to(mark));
 	}
 }
 
@@ -195,6 +192,7 @@ void Inter::Symbols::strike_definition(inter_symbol *S) {
 
 void Inter::Symbols::remove_from_table(inter_symbol *S) {
 	int index = (int) S->symbol_ID - (int) SYMBOL_BASE_VAL;
+	Wiring::wire_to(S, NULL);
 	S->owning_table->symbol_array[index] = NULL;
 }
 

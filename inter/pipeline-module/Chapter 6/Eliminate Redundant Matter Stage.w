@@ -91,10 +91,9 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 	inter_symbols_table *tab = Inter::Packages::scope(pack);
 	for (int i=0; i<tab->size; i++) {
 		inter_symbol *symb = tab->symbol_array[i];
-		if ((symb) && (symb->equated_to)) {
-			inter_symbol *to = symb;
-			while ((to) && (to->equated_to)) to = to->equated_to;
-			inter_package *needed = to->owning_table->owning_package;
+		if (Wiring::is_wired(symb)) {
+			inter_symbol *E = Wiring::cable_end(symb);
+			inter_package *needed = E->owning_table->owning_package;
 			EliminateRedundantMatterStage::preserve(needed, step, pack, I"it's an external symbol");
 		}
 	}

@@ -8,9 +8,10 @@ inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *
 	if (T == NULL) T = Inode::globals(P);
 	inter_symbol *S = InterSymbolsTables::unequated_symbol_from_id(T, P->W.data[index]);
 	if (S == NULL) return Inode::error(P, I"no symbol for ID (case 1)", NULL);
-	if (S->equated_to) {
-		LOG("This is $6 but $3 equates to $3 in $6\n",
-			Inter::Packages::container(P), S, S->equated_to, Inter::Packages::container(S->equated_to->definition));
+	if (Wiring::is_wired(S)) {
+		inter_symbol *E = Wiring::cable_end(S);
+		LOG("This is $6 but $3 is wired to $3 in $6\n",
+			Inter::Packages::container(P), S, E, Inter::Packages::container(E->definition));
 		return Inode::error(P, I"symbol defined outside its native scope", S->symbol_name);
 	}
 	inter_tree_node *D = Inter::Symbols::definition(S);

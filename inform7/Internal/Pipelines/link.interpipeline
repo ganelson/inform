@@ -1,7 +1,7 @@
 load-binary-kits
-optionally-generate text -> *tout
 make-synoptic-module
-connect-plugs
+shorten-wiring
+optionally-generate text -> *tout
 detect-indirect-calls
 make-identifiers-unique
 reconcile-verbs

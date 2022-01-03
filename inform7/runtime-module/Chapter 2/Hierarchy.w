@@ -2122,7 +2122,7 @@ void Hierarchy::make_available(inter_name *iname) {
 	if (Str::len(ma_as) == 0) ma_as = InterNames::to_text(iname);
 	PackageTypes::get(Emit::tree(), I"_linkage");
 	inter_symbol *S = InterNames::to_symbol(iname);
-	Inter::Connectors::socket(Emit::tree(), ma_as, S);
+	Wiring::socket(Emit::tree(), ma_as, S);
 }
 
 @h Adding packages at attachment points.

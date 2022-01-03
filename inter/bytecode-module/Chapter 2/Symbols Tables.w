@@ -82,9 +82,7 @@ inter_symbol *InterSymbolsTables::search_inner(inter_symbols_table *T, text_stre
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *A = T->symbol_array[i];
 			if ((A) && (Str::eq(S, A->symbol_name))) {
-				if (equating) {
-					while (A->equated_to) A = A->equated_to;
-				}
+				if (equating) A = Wiring::cable_end(A);
 				return A;
 			}
 		}
@@ -93,9 +91,7 @@ inter_symbol *InterSymbolsTables::search_inner(inter_symbols_table *T, text_stre
 		if (de) {
 			inter_symbol *A = (inter_symbol *) Dictionaries::read_value(T->symbols_lookup, S);
 			if (A) {
-				if (equating) {
-					while (A->equated_to) A = A->equated_to;
-				}
+				if (equating) A = Wiring::cable_end(A);
 				return A;
 			}
 		}
@@ -226,8 +222,7 @@ inter_symbol *InterSymbolsTables::unequated_symbol_from_id(inter_symbols_table *
 
 inter_symbol *InterSymbolsTables::symbol_from_id(inter_symbols_table *T, inter_ti ID) {
 	inter_symbol *S = InterSymbolsTables::unequated_symbol_from_id(T, ID);
-	while ((S) && (S->equated_to)) S = S->equated_to;
-	return S;
+	return Wiring::cable_end(S);
 }
 
 @ It's convenient to have some abbreviations for common ways to access the above.
@@ -300,16 +295,16 @@ inter_ti InterSymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter_
 			internal_error("attempted to equate to global");
 		}
 		for (int i=0; i<T->size; i++)
-			if ((T->symbol_array[i]) && (T->symbol_array[i]->equated_to == S))
+			if (Wiring::wired_to(T->symbol_array[i]) == S)
 				return (inter_ti) T->symbol_array[i]->symbol_ID;
 		text_stream *N = InterSymbolsTables::render_identifier_unique(T, S->symbol_name);
 		inter_symbol *X = InterSymbolsTables::search_inner(T, N, TRUE, 0, FALSE);
-		if (X->equated_to == NULL) {
-			InterSymbolsTables::equate(X, S);
+		if (Wiring::is_wired(X) == FALSE) {
+			Wiring::wire_to(X, S);
 			LOGIF(INTER_SYMBOLS, "Equating $3 to new $3\n", S, X);
 		}
-		if (X->equated_to != S) {
-			LOG("Want ID for $3 but there's already $3 locally which equates to $3\n", S, X, X->equated_to);
+		if (Wiring::wired_to(X) != S) {
+			LOG("Want ID for $3 but there's already $3 locally which is wired to $3\n", S, X, Wiring::wired_to(X));
 			internal_error("external symbol clash");
 		}
 		return X->symbol_ID;
@@ -332,47 +327,6 @@ inter_ti InterSymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_s
 @h Equations.
 
 =
-void InterSymbolsTables::equate(inter_symbol *S_from, inter_symbol *S_to) {
-	if ((S_from == NULL) || (S_to == NULL))
-		internal_error("bad symbol equation");
-	if ((S_from->metadata_key) || (S_to->metadata_key))
-		internal_error("metadata keys cannot equate");
-	S_from->equated_to = S_to;
-	if ((Inter::Symbols::get_scope(S_from) != SOCKET_ISYMS) &&
-		(Inter::Symbols::get_scope(S_from) != PLUG_ISYMS))
-		Inter::Symbols::set_scope(S_from, EXTERNAL_ISYMS);
-	LOGIF(INTER_SYMBOLS, "Equate $3 to $3\n", S_from, S_to);
-	int c = 0;
-	for (inter_symbol *S = S_from; S; S = S->equated_to, c++)
-		if (c == 20) {
-			c = 0;
-			for (inter_symbol *S = S_from; c < 20; S = S->equated_to, c++)
-				LOG("%d. %S\n", c, S->symbol_name);
-			internal_error("probably circular symbol equation");
-		}
-}
-
-void InterSymbolsTables::equate_textual(inter_symbol *S_from, text_stream *name) {
-	if ((S_from == NULL) || (name == NULL)) internal_error("bad symbol equation");
-	S_from->equated_to = NULL;
-	S_from->equated_name = Str::duplicate(name);
-	Inter::Symbols::set_scope(S_from, EXTERNAL_ISYMS);
-}
-
-void InterSymbolsTables::make_plug(inter_symbol *S_from, text_stream *wanted) {
-	if ((S_from == NULL) || (wanted == NULL)) internal_error("bad link equation");
-	S_from->equated_to = NULL;
-	S_from->equated_name = Str::duplicate(wanted);
-	Inter::Symbols::set_scope(S_from, PLUG_ISYMS);
-	Inter::Symbols::set_type(S_from, MISC_ISYMT);
-}
-
-void InterSymbolsTables::make_socket(inter_symbol *S_from, inter_symbol *wired_from) {
-	if (S_from == NULL) internal_error("bad link equation");
-	S_from->equated_to = wired_from;
-	Inter::Symbols::set_scope(S_from, SOCKET_ISYMS);
-}
-
 void InterSymbolsTables::resolve_forward_references(inter_tree *I, inter_error_location *eloc) {
 	InterTree::traverse(I, InterSymbolsTables::rfr_visitor, eloc, NULL, PACKAGE_IST);
 }
@@ -385,14 +339,14 @@ void InterSymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *st
 	if (T == NULL) internal_error("package with no symbols");
 	for (int i=0; i<T->size; i++) {
 		inter_symbol *symb = T->symbol_array[i];
-		if ((symb) && (symb->equated_name)) {
+		if (Wiring::is_wired_to_name(symb)) {
+			text_stream *N = Wiring::wired_to_name(symb);
 			if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) continue;
-			inter_symbol *S_to = InterSymbolsTables::url_name_to_symbol(Inter::Packages::tree(pack), T, symb->equated_name);
-			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", symb->equated_name, eloc));
+			inter_symbol *S_to = InterSymbolsTables::url_name_to_symbol(Inter::Packages::tree(pack), T, N);
+			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", N, eloc));
 			else if (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)
-				InterSymbolsTables::make_socket(symb, S_to);
-			else InterSymbolsTables::equate(symb, S_to);
-			symb->equated_name = NULL;
+				Wiring::convert_to_socket(symb, S_to);
+			else Wiring::wire_to(symb, S_to);
 		}
 	}
 }

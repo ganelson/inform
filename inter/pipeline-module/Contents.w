@@ -24,7 +24,7 @@ Chapter 3: Assimilation Stages
 
 Chapter 4: Linking Stages
 	Load Binary Kits Stage
-	Connect Plugs Stage
+	Shorten Wiring Stage
 	Detect Indirect Calls Stage
 	Make Identifiers Unique Stage
 	Reconcile Verbs Stage

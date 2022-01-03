@@ -51,6 +51,8 @@ int LoadBinaryKitsStage::run(pipeline_step *step) {
 		@<Load the Inter for the kit into the sidecar@>;
 		@<Migrate the bulk of the code from the sidecar to the main tree@>;
 	}
+	inter_tree *I = step->ephemera.repository;
+	Wiring::connect_plugs_to_sockets(I);
 	return TRUE;
 }
 

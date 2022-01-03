@@ -353,6 +353,6 @@ inter_symbol *RunningPipelines::ensure_symbol(pipeline_step *step, int id,
 	inter_tree *I = step->ephemera.repository;
 	inter_symbol *S = RunningPipelines::get_symbol(step, id);
 	if (S) return S;
-	step->ephemera.cached_symbols[id] = Inter::Connectors::plug(I, identifier);
+	step->ephemera.cached_symbols[id] = Wiring::plug(I, identifier);
 	return step->ephemera.cached_symbols[id];
 }

@@ -1,13 +1,13 @@
-Total memory consumption was 400875K = 391 MB
+Total memory consumption was 403231K = 394 MB
 
-61.0% was used for 2026336 objects, in 380039 frames in 306 x 800K = 244800K = 239 MB:
+61.3% was used for 2026336 objects, in 380039 frames in 309 x 800K = 247200K = 241 MB:
 
     10.1%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
      7.2%  text_stream_array                        5299 x 100 = 529900 objects, 29843968 bytes
      4.7%  linked_list                              34785 objects, 19479600 bytes
-     3.9%  inter_symbol_array                       140 x 1024 = 143360 objects, 16060800 bytes
+     4.1%  inter_symbol_array                       140 x 1024 = 143360 objects, 17207680 bytes
      2.5%  parse_node                               129462 objects, 10356960 bytes
-     1.8%  verb_conjugation                         160 objects, 7425280 bytes
+     1.7%  verb_conjugation                         160 objects, 7425280 bytes
      1.3%  parse_node_annotation_array              345 x 500 = 172500 objects, 5531040 bytes
      0.8%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes
      0.8%  inter_name_array                         69 x 1000 = 69000 objects, 3314208 bytes
@@ -235,9 +235,9 @@ Total memory consumption was 400875K = 391 MB
      ----  by_function_bp_data                      1 object, 40 bytes
      ----  kind_template_definition                 1 object, 40 bytes
 
-38.9% was used for memory not allocated for objects:
+38.6% was used for memory not allocated for objects:
 
-    20.3%  text stream storage                      83581616 bytes in 547918 claims
+    20.2%  text stream storage                      83536636 bytes in 547918 claims
      4.4%  dictionary storage                       18457600 bytes in 33309 claims
      ----  sorting                                  736 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims
@@ -255,5 +255,5 @@ Total memory consumption was 400875K = 391 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-18.7% was overhead - 77002168 bytes = 75197K = 73 MB
+18.9% was overhead - 78312888 bytes = 76477K = 74 MB
 
