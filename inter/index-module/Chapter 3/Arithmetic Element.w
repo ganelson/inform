@@ -9,8 +9,8 @@ so we do little more than tabulate that data here.
 void ArithmeticElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
-	TreeLists::sort(inv->multiplication_rule_nodes, Synoptic::module_order);
+	TreeLists::sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
+	TreeLists::sort(inv->multiplication_rule_nodes, MakeSynopticModuleStage::module_order);
 	HTML_TAG("hr");
 	@<Index the rubric about quasinumerical kinds@>;
 	@<Index the table of quasinumerical kinds@>;

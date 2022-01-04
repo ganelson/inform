@@ -57,7 +57,7 @@ this will be executed on the first |"apple"|, on |"banana"| and the first
 	WRITE_TO(A, "alphabetised_text_%d", j++);
 	inter_symbol *alpha_s = Synoptic::new_symbol(texts_pack, A);
 	DISCARD_TEXT(A)
-	Synoptic::def_textual_constant(I, step, alpha_s, S, &IBM);
+	Synoptic::textual_constant(I, step, alpha_s, S, &IBM);
 	latest_s = alpha_s;
 	latest_text = S;
 

@@ -17,7 +17,7 @@ by index within the current table: see //assertions: Tables//.)
 =
 void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->table_nodes) > 0) {
-		TreeLists::sort(inv->table_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->table_nodes, MakeSynopticModuleStage::module_order);
 		for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->table_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"table_id");
@@ -25,7 +25,7 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 		}
 	}
 	if (TreeLists::len(inv->table_column_nodes) > 0) {
-		TreeLists::sort(inv->table_column_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->table_column_nodes, MakeSynopticModuleStage::module_order);
 		for (int i=0; i<TreeLists::len(inv->table_column_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->table_column_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"table_column_id");
@@ -33,7 +33,7 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 		}
 	}
 	if (TreeLists::len(inv->table_column_usage_nodes) > 0) {
-		TreeLists::sort(inv->table_column_usage_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->table_column_usage_nodes, MakeSynopticModuleStage::module_order);
 		for (int i=0; i<TreeLists::len(inv->table_column_usage_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->table_column_usage_nodes->list[i].node);
 			inter_tree_node *ID = Synoptic::get_definition(pack, I"column_identity");

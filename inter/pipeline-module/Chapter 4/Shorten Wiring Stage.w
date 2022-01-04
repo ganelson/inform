@@ -23,6 +23,13 @@ typedef struct plug_inspection_state {
 
 int ShortenWiringStage::run(pipeline_step *step) {
 	inter_tree *I = step->ephemera.repository;
+	@<Shorten the wiring and report loose plugs@>;
+ 	inter_package *connectors = Site::connectors_package(I);
+ 	if (connectors) @<Remove the now unnecessary plugs and sockets@>;
+	return TRUE;
+}
+
+@<Shorten the wiring and report loose plugs@> =
 	plug_inspection_state state;
 	state.bad_plugs = Dictionaries::new(16, FALSE);
 	state.bad_plug_names = NEW_LINKED_LIST(text_stream);
@@ -39,31 +46,6 @@ int ShortenWiringStage::run(pipeline_step *step) {
 		DISCARD_TEXT(NS)
 		return FALSE;
 	}
- 	inter_package *connectors = Site::connectors_package(I);
- 	if (connectors) {
- 		inter_symbols_table *ST = Inter::Packages::scope(connectors);
-		for (int i=0; i<ST->size; i++) {
-			inter_symbol *S = ST->symbol_array[i];
-			if ((Wiring::is_plug(S)) && (Wiring::has_no_incoming_connections(S)))
-				Inter::Symbols::remove_from_table(S);
-		}
-		for (int i=0; i<ST->size; i++) {
-			inter_symbol *S = ST->symbol_array[i];
-			if ((Wiring::is_socket(S)) && (Wiring::has_no_incoming_connections(S)))
-				Inter::Symbols::remove_from_table(S);
-		}
-		int errors = 0;
-		for (int i=0; i<ST->size; i++) {
-			inter_symbol *S = ST->symbol_array[i];
-			if (S) {
-				LOG("Connector not deleted: %3\n", S);
-				errors++;
-			}
-		}
-		if (errors > 0) internal_error("plugs and sockets mismanaged");
-	}
-	return TRUE;
-}
 
 @ Note that it is not necessarily an error to have a loose plug, that is, a plug
 which does not connect to any socket. It is only an error if a symbol is trying
@@ -95,3 +77,42 @@ void ShortenWiringStage::visitor(inter_tree *I, inter_tree_node *P, void *v_stat
 		Dictionaries::create(state->bad_plugs, N);
 		ADD_TO_LINKED_LIST(N, text_stream, state->bad_plug_names);
 	}
+
+@ At this point there will be plugs with no incoming connections, but which
+are each wired to sockets. Removing the plugs first then leaves the sockets
+with no incoming connections either, and so the sockets can go too.
+
+The result should be a completely empty |connectors| module.
+
+@<Remove the now unnecessary plugs and sockets@> =
+	inter_symbols_table *ST = Inter::Packages::scope(connectors);
+	@<Remove plugs with no incoming connections@>;
+	@<Remove sockets with no incoming connections@>;
+	@<Report any remaining symbols in this table as errors@>;
+
+@<Remove plugs with no incoming connections@> =
+	for (int i=0; i<ST->size; i++) {
+		inter_symbol *S = ST->symbol_array[i];
+		if ((Wiring::is_plug(S)) && (Wiring::has_no_incoming_connections(S)))
+			Inter::Symbols::remove_from_table(S);
+	}
+
+@<Remove sockets with no incoming connections@> =
+	for (int i=0; i<ST->size; i++) {
+		inter_symbol *S = ST->symbol_array[i];
+		if ((Wiring::is_socket(S)) && (Wiring::has_no_incoming_connections(S)))
+			Inter::Symbols::remove_from_table(S);
+	}
+
+@ This should never happen:
+
+@<Report any remaining symbols in this table as errors@> =
+	int errors = 0;
+	for (int i=0; i<ST->size; i++) {
+		inter_symbol *S = ST->symbol_array[i];
+		if (S) {
+			LOG("Connector not deleted: %3\n", S);
+			errors++;
+		}
+	}
+	if (errors > 0) internal_error("plugs and sockets mismanaged");

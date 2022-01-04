@@ -11,7 +11,7 @@ of packages of type |_kind|, and similarly for |derived_kind_nodes|.
 =
 void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->kind_nodes) > 0) {
-		TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
 		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
 			inter_symbol *id_s = Metadata::read_optional_symbol(pack, I"^strong_id");
@@ -19,7 +19,7 @@ void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 		}
 	}
 	if (TreeLists::len(inv->derived_kind_nodes) > 0) {
-		TreeLists::sort(inv->derived_kind_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->derived_kind_nodes, MakeSynopticModuleStage::module_order);
 	}
 	@<Define BASE_KIND_HWM@>;	
 	@<Define DEFAULTVALUEFINDER function@>;

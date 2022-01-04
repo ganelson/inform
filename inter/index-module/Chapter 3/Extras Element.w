@@ -10,8 +10,8 @@ void ExtrasElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
-	TreeLists::sort(inv->activity_nodes, Synoptic::module_order);
+	TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
+	TreeLists::sort(inv->activity_nodes, MakeSynopticModuleStage::module_order);
 
 	inter_package *E;
 	LOOP_OVER_INVENTORY_PACKAGES(E, i, inv->module_nodes)
@@ -26,7 +26,7 @@ void ExtrasElement::render(OUTPUT_STREAM, index_session *session) {
 	int c = 0;
 	inter_package *rb_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(rb_pack, i, inv->rulebook_nodes)
-		if (Synoptic::module_containing(rb_pack->package_head) == E) {
+		if (MakeSynopticModuleStage::module_containing(rb_pack->package_head) == E) {
 			if (Metadata::read_optional_numeric(rb_pack, I"^automatically_generated"))
 				continue;
 			if (c++ == 0) @<Heading for these@>;
@@ -36,7 +36,7 @@ void ExtrasElement::render(OUTPUT_STREAM, index_session *session) {
 		}
 	inter_package *av_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(av_pack, i, inv->activity_nodes)
-		if (Synoptic::module_containing(av_pack->package_head) == E) {
+		if (MakeSynopticModuleStage::module_containing(av_pack->package_head) == E) {
 			if (c++ == 0) @<Heading for these@>;
 			IndexRules::activity_box(OUT, I, av_pack, 1, session);
 		}

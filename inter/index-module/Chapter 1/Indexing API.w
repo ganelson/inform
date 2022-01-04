@@ -118,7 +118,7 @@ index_session *Indexing::new_session(inter_tree *I) {
 	if (I == NULL) internal_error("no tree to index");
 	index_session *session = CREATE(index_session);
 	session->tree = I;
-	session->inv = Synoptic::inv(I);
+	session->inv = MakeSynopticModuleStage::take_inventory(I);
 	session->lexicon = NULL;
 	session->set_of_instances = NULL;
 	session->list_of_scenes = NULL;

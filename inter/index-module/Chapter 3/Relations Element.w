@@ -8,7 +8,7 @@ To write the Relations element (Rl) in the index.
 void RelationsElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->relation_nodes, Synoptic::module_order);
+	TreeLists::sort(inv->relation_nodes, MakeSynopticModuleStage::module_order);
 
 	HTML_OPEN("p");
 	HTML::begin_plain_html_table(OUT);

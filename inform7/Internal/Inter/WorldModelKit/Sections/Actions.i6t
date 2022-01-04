@@ -46,6 +46,25 @@ This segment of the template is divided into two: first, the I6 code needed
 for (i) to (vii), the alternative ways for actions to begin; and secondly
 the common machinery into which all actions eventually pass.
 
+@h Fake Actions.
+Though sometimes useful for I6 coding tricks, fake actions -- action numbers
+not corresponding to any action, but different from those of valid actions,
+and useable with a number of action syntaxes -- are not conceptually present
+in I7 source text. They can only really exist at the I6 level because I6 is
+typeless; in I7 terms, there is no convenient kind of value which could
+represent both actions and fake actions while protecting each from confusion
+with the other.
+
+The following fake actions from the I6 library have been dropped here:
+|##LetGo|, |##Receive|, |##ThrownAt|, |##Prompt|, |##Places|, |##Objects|,
+|##Order|, |##NotUnderstood|.
+
+=
+Fake_Action ListMiscellany;
+Fake_Action Miscellany;
+Fake_Action PluralFound;
+Fake_Action TheSame;
+
 @h Action Data.
 This is perhaps a good place to document the |ActionData| array, a convenient
 table of metadata about the actions. Since this is compiled by Inform, the

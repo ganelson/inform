@@ -5,12 +5,16 @@ within these trees.
 
 @
 
+@d SYNOPTIC_HIERARCHY_MADE_ITHBIT 1
+@d KIT_HIERARCHY_MADE_ITHBIT 2
+
 =
 typedef struct inter_tree {
 	struct inter_warehouse *housed;
 	struct inter_tree_node *root_node;
 	struct inter_package *root_package;
 	struct building_site site;
+	int history_bits;
 	CLASS_DEFINITION
 } inter_tree;
 
@@ -29,6 +33,7 @@ inter_tree *InterTree::new(void) {
 	I->root_node->package = I->root_package;
 	Inter::Warehouse::attribute_resource(I->housed, N, I->root_package);
 	Site::clear(I);
+	I->history_bits = 0;
 	return I;
 }
 

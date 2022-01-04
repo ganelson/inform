@@ -10,7 +10,7 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->use_option_nodes, Synoptic::module_order);
+	TreeLists::sort(inv->use_option_nodes, MakeSynopticModuleStage::module_order);
 
 	@<Show the virtual machine compiled for@>;
 	@<Show the use options@>;

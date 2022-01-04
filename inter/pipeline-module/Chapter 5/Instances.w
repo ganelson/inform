@@ -12,7 +12,7 @@ This section is a placeholder for now.
 =
 void SynopticInstances::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->instance_nodes) > 0) {
-		TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->instance_nodes, MakeSynopticModuleStage::module_order);
 	}
 	@<Define SHOWMEINSTANCEDETAILS function@>
 }

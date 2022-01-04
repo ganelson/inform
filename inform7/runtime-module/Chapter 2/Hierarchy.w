@@ -155,15 +155,13 @@ definitions, and also
 (2) material added later in linking, for example from kits like //WorldModelKit//.
 
 The following catalogue contains location and naming conventions for everything
-in category (1), and for some of the names in category (2) which the main 
-compiler needs to refer to. For example, the Inform compiler generates calls
-to an Inter function called |BlkValueCopy|. This is a function in the kit
-//BasicInformKit//, but it has a hierarchy location ID, |BLKVALUECOPY_HL|, so
-that the compiler can refer to it.
+in category (1). Names in category (2) are set up in //pipeline: Synoptic Hierarchy//
+and //pipeline: The Standard Kits//, but by very similar methods.
 
 =
 void Hierarchy::establish(void) {
 	SynopticHierarchy::establish(Emit::tree());
+	KitHierarchy::establish(Emit::tree());
 	H_BEGIN_DECLARATIONS
 	@<Establish locations for material created by the compiler@>;
 	@<Establish locations for material expected to be added by linking@>;

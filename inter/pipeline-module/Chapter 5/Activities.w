@@ -11,7 +11,7 @@ of packages of type |_activity|.
 =
 void SynopticActivities::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->activity_nodes) > 0) {
-		TreeLists::sort(inv->activity_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->activity_nodes, MakeSynopticModuleStage::module_order);
 		for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"activity_id");

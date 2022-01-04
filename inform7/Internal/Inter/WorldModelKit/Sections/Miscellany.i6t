@@ -145,7 +145,6 @@ Global multiple_object_item; ! item currently being processed in multiple-object
 Global noun; ! = I7 "noun"
 Global second; ! = I7 "second noun"
 Global keep_silent; ! true if current action is being tried silently
-Global etype; ! parser error number if command not recognised
 Global trace_actions = 0;
 
 Global untouchable_object;

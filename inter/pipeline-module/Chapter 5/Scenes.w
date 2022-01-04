@@ -10,7 +10,7 @@ of instances having the kind |K_scene|.
 =
 void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->scene_nodes) > 0) {
-		TreeLists::sort(inv->scene_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->scene_nodes, MakeSynopticModuleStage::module_order);
 	}
 	@<Define SHOWSCENESTATUS function@>;
 	@<Define DETECTSCENECHANGE function@>;

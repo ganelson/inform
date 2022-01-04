@@ -17,17 +17,18 @@ Chapter 2: Pipelines
 	New Stage
 	Read, Move, Wipe, Stop Stages
 
-Chapter 3: Assimilation Stages
+Chapter 3: Assimilation
 	Parsing Stages
 	Resolve Conditional Compilation Stage
 	Compile Splats Stage
 
-Chapter 4: Linking Stages
+Chapter 4: Linking
 	Load Binary Kits Stage
 	Shorten Wiring Stage
 	Detect Indirect Calls Stage
 	Make Identifiers Unique Stage
 	Reconcile Verbs Stage
+	The Standard Kits
 
 Chapter 5: Synoptic Module
 	Make Synoptic Module Stage
@@ -51,7 +52,7 @@ Chapter 5: Synoptic Module
 	Verbs
 	Tests
 
-Chapter 6: Optimisation Stages
+Chapter 6: Optimisation
 	Eliminate Redundant Matter Stage
 	Eliminate Redundant Labels Stage
 	Eliminate Redundant Operations Stage

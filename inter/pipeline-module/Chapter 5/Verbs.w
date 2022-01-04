@@ -22,8 +22,8 @@ int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;
-	inter_package *mod1 = Synoptic::module_containing(P1);
-	inter_package *mod2 = Synoptic::module_containing(P2);
+	inter_package *mod1 = MakeSynopticModuleStage::module_containing(P1);
+	inter_package *mod2 = MakeSynopticModuleStage::module_containing(P2);
 	inter_ti C1 = Metadata::read_optional_numeric(mod1, I"^category");
 	inter_ti C2 = Metadata::read_optional_numeric(mod2, I"^category");
 	int d = ((int) C2) - ((int) C1); /* larger values sort earlier */

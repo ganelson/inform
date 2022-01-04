@@ -11,13 +11,13 @@ of instances having the kind |K_sound_name|, and so on.
 =
 void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->figure_nodes) > 0) {
-		TreeLists::sort(inv->figure_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->figure_nodes, MakeSynopticModuleStage::module_order);
 	}
 	if (TreeLists::len(inv->sound_nodes) > 0) {
-		TreeLists::sort(inv->sound_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->sound_nodes, MakeSynopticModuleStage::module_order);
 	}
 	if (TreeLists::len(inv->file_nodes) > 0) {
-		TreeLists::sort(inv->file_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->file_nodes, MakeSynopticModuleStage::module_order);
 	}
 	@<Define RESOURCEIDSOFFIGURES array@>;
 	@<Define RESOURCEIDSOFSOUNDS array@>;

@@ -11,7 +11,7 @@ over the Inter tree. Each needs its own set of unique IDs.
 =
 void SynopticChronology::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->action_history_condition_nodes) > 0) {
-		TreeLists::sort(inv->action_history_condition_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->action_history_condition_nodes, MakeSynopticModuleStage::module_order);
 		for (int i=0; i<TreeLists::len(inv->action_history_condition_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->action_history_condition_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"ahc_id");
@@ -19,7 +19,7 @@ void SynopticChronology::compile(inter_tree *I, pipeline_step *step, tree_invent
 		}
 	}
 	if (TreeLists::len(inv->past_tense_condition_nodes) > 0) {
-		TreeLists::sort(inv->past_tense_condition_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->past_tense_condition_nodes, MakeSynopticModuleStage::module_order);
 		for (int i=0; i<TreeLists::len(inv->past_tense_condition_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->past_tense_condition_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"ptc_id");

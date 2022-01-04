@@ -5,27 +5,31 @@ To renumber the extensions and construct suitable functions and arrays.
 @ Before this runs, there are one or more modules in the Inter tree which
 contain the material compiled from extensions. We must allocate each one a unique ID.
 
-As this is called, //Synoptic Utilities// has already formed a list |extension_nodes|
-of packages of type |_module| which derive from extensions.
+Our inventory |inv| already contains a list |inv->extension_nodes| of packages
+with the type |_module| which derive from extensions.
 
 =
 void SynopticExtensions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->extension_nodes) > 0) {
-		TreeLists::sort(inv->extension_nodes, Synoptic::category_order);
-		for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"extension_id");
-			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
-		}
-	}
+	if (TreeLists::len(inv->extension_nodes) > 0) @<Assign unique extension ID numbers@>;
 	@<Define SHOWEXTENSIONVERSIONS function@>;
 	@<Define SHOWFULLEXTENSIONVERSIONS function@>;
 	@<Define SHOWONEEXTENSION function@>;
 }
 
-@ Extensions have an obvious effect at runtime -- they include extra material.
-But there are also just three functions which deal with extensions as if
-they were values; all of them simply print credits out.
+@ Each extension module contains a numeric constant with the symbol name |extension_id|.
+We want to ensure that these ID numbers are contiguous from 1 and never duplicated,
+so we change the values of these constants accordingly.
+
+@<Assign unique extension ID numbers@> =
+	TreeLists::sort(inv->extension_nodes, MakeSynopticModuleStage::category_order);
+	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
+		inter_tree_node *D = Synoptic::get_definition(pack, I"extension_id");
+		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
+	}
+
+@ Now we compile three functions, each of which simply prints credits out.
 
 This is more important than it may sound because many extensions are published
 under a Creative Commons attribution license which requires users to give credit
@@ -45,7 +49,8 @@ would violate the CC license.
 	inter_name *iname = HierarchyLocations::find(I, SHOWEXTENSIONVERSIONS_HL);
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
 		inter_ti modesty = Metadata::read_numeric(pack, I"^modesty");
 		if (modesty == 0) {
 			text_stream *credit = Str::duplicate(Metadata::read_textual(pack, I"^credit"));
@@ -75,7 +80,8 @@ would violate the CC license.
 	Synoptic::end_function(I, step, iname);
 
 @ This prints the name of a single extension, identified by a value which
-is its extension ID.
+is its extension ID. Speed of execution here is quite unimportant, so it's
+just a run of |if (id == 1) ...|, then |if (id == 2) ...|, and so on.
 
 @<Define SHOWONEEXTENSION function@> =
 	inter_name *iname = HierarchyLocations::find(I, SHOWONEEXTENSION_HL);

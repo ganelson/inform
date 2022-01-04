@@ -9,8 +9,8 @@ their contents in logical order.
 void StandardsElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
-	TreeLists::sort(inv->activity_nodes, Synoptic::module_order);
+	TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
+	TreeLists::sort(inv->activity_nodes, MakeSynopticModuleStage::module_order);
 
 	@<Index the segment for the main action rulebooks@>;
 	@<Index the segment for the sequence of play rulebooks@>;

@@ -181,7 +181,7 @@ void FauxInstances::make_faux(index_session *session) {
 	session->set_of_instances = faux_set;
 
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
+	TreeLists::sort(inv->instance_nodes, MakeSynopticModuleStage::module_order);
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->instance_nodes)
 		if (Metadata::read_optional_numeric(pack,  I"^is_object"))

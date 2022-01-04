@@ -11,7 +11,7 @@ of packages of type |_rulebook|; and similarly for |rule_nodes|.
 =
 void SynopticRules::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->rulebook_nodes) > 0) {
-		TreeLists::sort(inv->rulebook_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
 		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
 			inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"rulebook_id");

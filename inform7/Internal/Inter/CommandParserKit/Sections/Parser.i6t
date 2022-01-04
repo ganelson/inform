@@ -3,6 +3,37 @@ Parser Template.
 The parser for turning the text of the typed command into a proposed
 action by the player.
 
+@h Parser Error Numbers.
+The traditional ways in which the I6 library's parser, which we adopt here
+more or less intact, can give up on a player's command.
+
+=
+Constant STUCK_PE         = 1;
+Constant UPTO_PE          = 2;
+Constant NUMBER_PE        = 3;
+Constant ANIMA_PE         = 4;
+Constant CANTSEE_PE       = 5;
+Constant TOOLIT_PE        = 6;
+Constant NOTHELD_PE       = 7;
+Constant MULTI_PE         = 8;
+Constant MMULTI_PE        = 9;
+Constant VAGUE_PE         = 10;
+Constant EXCEPT_PE        = 11;
+Constant VERB_PE          = 12;
+Constant SCENERY_PE       = 13;
+Constant ITGONE_PE        = 14;
+Constant JUNKAFTER_PE     = 15;
+Constant TOOFEW_PE        = 16;
+Constant NOTHING_PE       = 17;
+Constant ASKSCOPE_PE      = 18;
+Constant NOTINCONTEXT_PE  = 19;
+Constant BLANKLINE_PE     = 20; ! Not formally a parser error, but used by I7 as if
+Constant ANIMAAGAIN_PE    = 21;
+Constant COMMABEGIN_PE    = 22;
+Constant MISSINGPERSON_PE = 23;
+Constant ANIMALISTEN_PE   = 24;
+Constant TOTALK_PE        = 25;
+
 @h Grammar Line Variables.
 This is the I6 library parser in mostly untouched form: reformatted for template
 file use, and with paragraph divisions, but otherwise hardly changed at all.
@@ -24,6 +55,7 @@ in "Output.i6t" are for general access, while the ones below should only
 be read or written by the parser.
 
 =
+Global etype;                       ! parser error number if command not recognised
 Global best_etype;                  ! Preferred error number so far
 Global nextbest_etype;              ! Preferred one, if ASKSCOPE_PE disallowed
 

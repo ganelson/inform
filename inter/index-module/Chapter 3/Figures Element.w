@@ -9,9 +9,9 @@ void FiguresElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->figure_nodes, Synoptic::module_order);
-	TreeLists::sort(inv->sound_nodes, Synoptic::module_order);
-	TreeLists::sort(inv->file_nodes, Synoptic::module_order);
+	TreeLists::sort(inv->figure_nodes, MakeSynopticModuleStage::module_order);
+	TreeLists::sort(inv->sound_nodes, MakeSynopticModuleStage::module_order);
+	TreeLists::sort(inv->file_nodes, MakeSynopticModuleStage::module_order);
 	@<Index the figures@>;
 	@<Index the sounds@>;
 	@<Index the files@>;

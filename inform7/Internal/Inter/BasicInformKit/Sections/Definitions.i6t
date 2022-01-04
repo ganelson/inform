@@ -391,42 +391,6 @@ Constant REPORT_RB                       = 33;
 Constant DOES_THE_PLAYER_MEAN_RB		 = 34;
 Constant MULTIPLE_ACTION_PROCESSING_RB   = 35;
 
-@h Kind IDs.
-These are filled in automatically by Inform, and have the same names as are used
-in the Inform source (and in the Load-.i6t sections): for instance |NUMBER_TY|.
-
-@h Parser Error Numbers.
-The traditional ways in which the I6 library's parser, which we adopt here
-more or less intact, can give up on a player's command. See the {\it Inform
-Designer's Manual}, 4th edition, for details.
-
-=
-Constant STUCK_PE         = 1;
-Constant UPTO_PE          = 2;
-Constant NUMBER_PE        = 3;
-Constant ANIMA_PE         = 4;
-Constant CANTSEE_PE       = 5;
-Constant TOOLIT_PE        = 6;
-Constant NOTHELD_PE       = 7;
-Constant MULTI_PE         = 8;
-Constant MMULTI_PE        = 9;
-Constant VAGUE_PE         = 10;
-Constant EXCEPT_PE        = 11;
-Constant VERB_PE          = 12;
-Constant SCENERY_PE       = 13;
-Constant ITGONE_PE        = 14;
-Constant JUNKAFTER_PE     = 15;
-Constant TOOFEW_PE        = 16;
-Constant NOTHING_PE       = 17;
-Constant ASKSCOPE_PE      = 18;
-Constant NOTINCONTEXT_PE  = 19;
-Constant BLANKLINE_PE     = 20; ! Not formally a parser error, but used by I7 as if
-Constant ANIMAAGAIN_PE    = 21;
-Constant COMMABEGIN_PE    = 22;
-Constant MISSINGPERSON_PE = 23;
-Constant ANIMALISTEN_PE   = 24;
-Constant TOTALK_PE        = 25;
-
 @h Scope Searching Reasons.
 The parser makes use of a mechanism for searching through the objects currently
 "in scope", which basically means visible to the actor who would perform the
@@ -682,28 +646,6 @@ Property articles; ! not used by I7, but an interesting hook in the parser
 Property grammar; ! not used by I7, but an interesting hook in the parser
 Property inside_description; ! not used by I7, but an interesting hook in the locale code
 Property short_name_indef 0; ! not used by I7, but an interesting hook in the listmaker
-
-@h Fake Actions.
-Though sometimes useful for I6 coding tricks, fake actions -- action numbers
-not corresponding to any action, but different from those of valid actions,
-and useable with a number of action syntaxes -- are not conceptually present
-in I7 source text. They can only really exist at the I6 level because I6 is
-typeless; in I7 terms, there is no convenient kind of value which could
-represent both actions and fake actions while protecting each from confusion
-with the other.
-
-See the {\it Inform Designer's Manual}, 4th edition, for what these are
-used for.
-
-The following fake actions from the I6 library have been dropped here:
-|##LetGo|, |##Receive|, |##ThrownAt|, |##Prompt|, |##Places|, |##Objects|,
-|##Order|, |##NotUnderstood|.
-
-=
-Fake_Action ListMiscellany;
-Fake_Action Miscellany;
-Fake_Action PluralFound;
-Fake_Action TheSame;
 
 @h Formal Parameters.
 These are needed for efficient run-time ambiguity resolution.

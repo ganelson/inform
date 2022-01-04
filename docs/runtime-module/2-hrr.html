@@ -247,16 +247,14 @@ definitions, and also
 </li><li>(2) material added later in linking, for example from kits like <a href="../WorldModelKit/index.html" class="internal">WorldModelKit</a>.
 </li></ul>
 <p class="commentary">The following catalogue contains location and naming conventions for everything
-in category (1), and for some of the names in category (2) which the main
-compiler needs to refer to. For example, the Inform compiler generates calls
-to an Inter function called <span class="extract"><span class="extract-syntax">BlkValueCopy</span></span>. This is a function in the kit
-<a href="../BasicInformKit/index.html" class="internal">BasicInformKit</a>, but it has a hierarchy location ID, <span class="extract"><span class="extract-syntax">BLKVALUECOPY_HL</span></span>, so
-that the compiler can refer to it.
+in category (1). Names in category (2) are set up in <a href="../pipeline-module/5-sh.html" class="internal">Synoptic Hierarchy (in pipeline)</a>
+and <a href="../pipeline-module/4-tsk.html" class="internal">The Standard Kits (in pipeline)</a>, but by very similar methods.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Hierarchy::establish</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">SynopticHierarchy::establish</span><span class="plain-syntax">(</span><a href="2-emt.html#SP1" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">KitHierarchy::establish</span><span class="plain-syntax">(</span><a href="2-emt.html#SP1" class="function-link"><span class="function-syntax">Emit::tree</span></a><span class="plain-syntax">());</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">H_BEGIN_DECLARATIONS</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-hrr.html#SP8_1" class="named-paragraph-link"><span class="named-paragraph">Establish locations for material created by the compiler</span><span class="named-paragraph-number">8.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-hrr.html#SP8_2" class="named-paragraph-link"><span class="named-paragraph">Establish locations for material expected to be added by linking</span><span class="named-paragraph-number">8.2</span></a></span><span class="plain-syntax">;</span>

@@ -9,8 +9,8 @@ and it is quite dense with information.
 void ChartElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *D = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->kind_nodes, Synoptic::module_order);
-	TreeLists::sort(inv->instance_nodes, Synoptic::module_order);
+	TreeLists::sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
+	TreeLists::sort(inv->instance_nodes, MakeSynopticModuleStage::module_order);
 	HTML::begin_wide_html_table(OUT);
 	int pass = 1;
 	@<Add a dotty row to the chart of kinds@>;

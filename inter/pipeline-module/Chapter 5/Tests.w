@@ -8,7 +8,7 @@ of type |_test|.
 =
 void SynopticTests::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->test_nodes) > 0) {
-		TreeLists::sort(inv->test_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->test_nodes, MakeSynopticModuleStage::module_order);
 	}
 
 	@<Define TESTSCRIPTSUB function@>;

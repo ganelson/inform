@@ -17,7 +17,7 @@ void BehaviourElement::render(OUTPUT_STREAM, index_session *session) {
 		Localisation::roman(OUT, LD, I"Index.Elements.Bh.None");
 		HTML_CLOSE("p");
 	} else {
-		TreeLists::sort(inv->named_action_pattern_nodes, Synoptic::module_order);
+		TreeLists::sort(inv->named_action_pattern_nodes, MakeSynopticModuleStage::module_order);
 		inter_package *pack;
 		LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->named_action_pattern_nodes) {
 			text_stream *name = Metadata::read_optional_textual(pack, I"^name");

@@ -10,14 +10,14 @@ main source text, all the tables in the Standard Rules, and so on.
 void TablesElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->table_nodes, Synoptic::category_order);
+	TreeLists::sort(inv->table_nodes, MakeSynopticModuleStage::category_order);
 
 	inter_package *current_mod = NULL; int mc = 0, first_ext = TRUE;
 	inter_ti cat = 1, open_cat = 0;
 	for (inter_ti with_cat = 1; with_cat <= 3; with_cat++) {
 		inter_package *table_pack;
 		LOOP_OVER_INVENTORY_PACKAGES(table_pack, i, inv->table_nodes) {
-			inter_package *mod = Synoptic::module_containing(table_pack->package_head);
+			inter_package *mod = MakeSynopticModuleStage::module_containing(table_pack->package_head);
 			if (mod) {
 				cat = Metadata::read_optional_numeric(mod, I"^category");
 				if (cat == with_cat) {
