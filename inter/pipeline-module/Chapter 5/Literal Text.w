@@ -1,11 +1,12 @@
 [SynopticText::] Literal Text.
 
-To alphabetise literal texts, deduplicate them, and stote a canonical set in
-the main/texts linkage.
+To alphabetise literal texts, deduplicate them, and store a canonical set in
+the synoptic/texts submodule.
 
 @ Before this runs, literal text constants are scattered all over the Inter tree.
-At the end, they are all moved into a package called |texts|, of type |_linkage|,
-and are presented in alphabetical order (case sensitively) without duplicates.
+At the end, they are all moved into a submodule of the synoptic module called
+|texts|, and are presented in alphabetical order (case sensitively) without
+duplicates.
 
 This is not done to save memory, though it does that too, but because we want
 runtime code to be able to compare literal texts by performing an unsigned
@@ -16,20 +17,24 @@ comparison on their addresses. The following works:
 		say "Q is still Q, so you can relax."
 =
 because the two instances of |"Rhayader"| compile to the same data in memory.
+Dynamic texts must of course be compared more expensively.
+
 This cannot be arranged in the main body of the Inform compiler because these
 two instances might be much further apart than in this example -- one might be
-in a kit, and the other in an unrelated extension, for example.
+in a kit, and the other in an unrelated extension, say.
 
-As this is called, //Synoptic Utilities// has already formed a list |text_nodes|
-of constants marked with the |TEXT_LITERAL_IANN| annotation. We take it from there:
+Our inventory |inv| already contains a list |inv->text_nodes| of constant
+definitions whose value is a literal text.
 
 =
 void SynopticText::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (TreeLists::len(inv->text_nodes) > 0) {
 		TreeLists::sort(inv->text_nodes, SynopticText::cmp);
-		inter_package *texts_pack = Site::ensure_texts_package(I);
+		inter_package *texts_pack =
+			Packaging::incarnate(
+				Packaging::synoptic_submodule(I,
+					Packaging::register_submodule(I"text")));
 		inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(texts_pack);
-
 		text_stream *latest_text = NULL;
 		inter_symbol *latest_s = NULL;
 		for (int i=0, j=0; i<TreeLists::len(inv->text_nodes); i++) {
