@@ -2,35 +2,37 @@
 
 To compile the main/synoptic/responses submodule.
 
-@ Before this runs, response packages are scattered all over the Inter tree.
-We must allocate each one a unique ID in the range 1, 2, 3, ...; these will
-be the enumerated values of the kind |K_response|.
+@ Response packages are scattered all over the Inter tree. Each one contains
+these metadata constants:
 
-Response packages contain four metadata constants:
 (*) |^group|, textual, which describes the origin.
 (*) |^marker|, numeric, from 0 to 25: whether this is (A), (B), ..., (Z);
 (*) |^rule|, symbol, the rule to which this is a response.
 (*) |^value|, symbol, the text for the response at start of play.
 
-As this is called, //Synoptic Utilities// has already formed a list |response_nodes|
-of packages of type |_response|. Each of these contains a constant called
-|response_id|, which the Inform compiler created as just 0; we substitute the
-correct ID.
+Our inventory |inv| already contains a list |inv->response_nodes| of all packages
+in the tree with type |_response|.
 
 =
 void SynopticResponses::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->response_nodes) > 0) {
-		for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->response_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"response_id");
-			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i+1;
-		}
-	}
+	if (TreeLists::len(inv->response_nodes) > 0) @<Assign unique response ID numbers@>;
 	@<Define NO_RESPONSES@>;
 	@<Define ResponseTexts array@>;
 	@<Define ResponseDivisions array@>;
 	@<Define PrintResponse function@>;
 }
+
+@ Each response package contains a numeric constant with the symbol name |response_id|.
+We want to ensure that these ID numbers are contiguous from 1 and never duplicated,
+so we change the values of these constants accordingly. These will be the enumerated
+values at runtime of the kind |K_response|.
+
+@<Assign unique response ID numbers@> =
+	for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->response_nodes->list[i].node);
+		inter_tree_node *D = Synoptic::get_definition(pack, I"response_id");
+		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i+1;
+	}
 
 @<Define NO_RESPONSES@> =
 	inter_name *iname = HierarchyLocations::find(I, NO_RESPONSES_HL);
@@ -51,15 +53,14 @@ of the text of that response.
 	Synoptic::numeric_entry(0);
 	Synoptic::end_array(I);
 
-@ The following array is used only by the testing command RESPONSES, and
-enables the Inter template to print out all known responses at run-time,
-divided up by the extensions containing the rules which produce them.
-(The main compiler created only an empty array.)
+@ The following array is used only by the testing command RESPONSES, which
+prints out all known responses, divided up by the extensions containing the
+rules which produce them.
 
 The format is triples |(group, from, to)| where |group| is a textual
 description of the origin of the set (e.g., an extension name), and |from|
-and |to| are an inclusive range of response ID numbers. (This means they
-are higher by 1 than the corresponding indices in the |response_nodes| list.)
+and |to| are an inclusive range of response ID numbers.
+
 The triple |(0, 0, 0)| ends the array.
 
 @<Define ResponseDivisions array@> =

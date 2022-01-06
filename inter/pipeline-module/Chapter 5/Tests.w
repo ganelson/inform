@@ -2,17 +2,18 @@
 
 To compile the main/synoptic/tests submodule.
 
-@ As this is called, //Synoptic Utilities// has already formed a list of packages
-of type |_test|.
+@ Our inventory |inv| already contains a list |inv->test_nodes| of all packages
+in the tree with type |_test|.
 
 =
 void SynopticTests::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->test_nodes) > 0) {
+	if (TreeLists::len(inv->test_nodes) > 0)
 		TreeLists::sort(inv->test_nodes, MakeSynopticModuleStage::module_order);
-	}
-
 	@<Define TESTSCRIPTSUB function@>;
 }
+
+@ This is the function run when the command TEST is typed into the command parser
+at runtime.
 
 @<Define TESTSCRIPTSUB function@> =
 	inter_name *iname = HierarchyLocations::find(I, TESTSCRIPTSUB_HL);

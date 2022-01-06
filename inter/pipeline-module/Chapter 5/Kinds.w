@@ -2,25 +2,15 @@
 
 To compile the main/synoptic/kinds submodule.
 
-@ Before this runs, kind packages are scattered all over the Inter tree.
-We must allocate each one a unique ID.
-
-As this is called, //Synoptic Utilities// has already formed a list |kind_nodes|
-of packages of type |_kind|, and similarly for |derived_kind_nodes|.
+@ Our inventory |inv| already contains a list |inv->kind_nodes| of all packages
+in the tree with type |_kind|; here is one for each base kind. Similarly for
+the list |inv->derived_kind_nodes|.
 
 =
 void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->kind_nodes) > 0) {
-		TreeLists::sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
-		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
-			inter_symbol *id_s = Metadata::read_optional_symbol(pack, I"^strong_id");
-			if (id_s) Inter::Symbols::set_int(id_s, i+2);
-		}
-	}
-	if (TreeLists::len(inv->derived_kind_nodes) > 0) {
+	if (TreeLists::len(inv->kind_nodes) > 0) @<Assign unique strong ID numbers@>;
+	if (TreeLists::len(inv->derived_kind_nodes) > 0)
 		TreeLists::sort(inv->derived_kind_nodes, MakeSynopticModuleStage::module_order);
-	}
 	@<Define BASE_KIND_HWM@>;	
 	@<Define DEFAULTVALUEFINDER function@>;
 	@<Define DEFAULTVALUEOFKOV function@>;
@@ -35,16 +25,37 @@ void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 	@<Define KINDHIERARCHY array@>;
 }
 
+@ Each base kind package contains a numeric constant with the symbol name |strong_id|.
+We want to ensure that these ID numbers are contiguous from 2 and never duplicated,
+so we change the values of these constants accordingly. (From 2 because we want to
+avoid 0, and we want 1 always to mean "kind unknown".)
+
+Note that derived kinds are not enumerated in this way; their strong ID constants
+are addresses of small arrays.
+
+@<Assign unique strong ID numbers@> =
+	TreeLists::sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->kind_nodes->list[i].node);
+		inter_symbol *id_s = Metadata::read_optional_symbol(pack, I"^strong_id");
+		if (id_s) Inter::Symbols::set_int(id_s, i+2);
+	}
+
+@ The "high water mark" of strong IDs for base kinds. Any strong ID this high
+or higher is therefore that of a derived kind.
+
 @<Define BASE_KIND_HWM@> =
 	inter_name *iname = HierarchyLocations::find(I, BASE_KIND_HWM_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->kind_nodes) + 2));
+	Produce::numeric_constant(I, iname, K_value,
+		(inter_ti) (TreeLists::len(inv->kind_nodes) + 2));
 
 @<Define DEFAULTVALUEFINDER function@> =
 	inter_name *iname = HierarchyLocations::find(I, DEFAULTVALUEFINDER_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	for (int i=0; i<TreeLists::len(inv->derived_kind_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->derived_kind_nodes->list[i].node);
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->derived_kind_nodes->list[i].node);
 		if (Metadata::read_numeric(pack, I"^default_value_needed")) {
 			inter_symbol *rks_s = Synoptic::get_symbol(pack, I"strong_id");
 			inter_symbol *dv_s = Synoptic::get_symbol(pack, I"default_value");
@@ -443,9 +454,8 @@ name), with other actors oblivious.
 the kinds of object: there are just two words per kind -- the class, then
 the instance count for its own kind. For instance, "door" is usually
 kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
-8 will be |K4_door|, the Inform 6 class for doors, and word 9 will be the
-number 2, meaning kind number 2, "thing". This tells us that a door is
-a kind of thing.
+8 will be |K4_door|, and word 9 will be the number 2, meaning kind number 2,
+"thing". This tells us that a door is a kind of thing.
 
 @<Define KINDHIERARCHY array@> =
 	linked_list *L = NEW_LINKED_LIST(inter_symbol);
@@ -474,7 +484,8 @@ a kind of thing.
 		LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L) {
 			Synoptic::symbol_entry(kind_name);
 			inter_symbol *super_name = Inter::Kind::super(kind_name);
-			if ((super_name) && (super_name != RunningPipelines::get_symbol(step, object_kind_RPSYM))) {
+			if ((super_name) &&
+				(super_name != RunningPipelines::get_symbol(step, object_kind_RPSYM))) {
 				Synoptic::numeric_entry(SynopticKinds::kind_of_object_count(step, super_name));
 			} else {
 				Synoptic::numeric_entry(0);
@@ -490,7 +501,8 @@ a kind of thing.
 
 =
 inter_ti SynopticKinds::kind_of_object_count(pipeline_step *step, inter_symbol *kind_name) {
-	if ((kind_name == NULL) || (kind_name == RunningPipelines::get_symbol(step, object_kind_RPSYM))) return 0;
+	if ((kind_name == NULL) ||
+		(kind_name == RunningPipelines::get_symbol(step, object_kind_RPSYM))) return 0;
 	int N = Inter::Symbols::read_annotation(kind_name, OBJECT_KIND_COUNTER_IANN);
 	if (N >= 0) return (inter_ti) N;
 	return 0;

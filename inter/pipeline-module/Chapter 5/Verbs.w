@@ -2,20 +2,21 @@
 
 To compile the main/synoptic/verbs submodule.
 
-@ Before this runs, instances of these are scattered all over the Inter tree.
-
-As this is called, //Synoptic Utilities// has already formed lists of |verb_form_nodes|
-of instances having the kind |K_verb|.
+@ Our inventory |inv| already contains a list |inv->verb_form_nodes| of all packages
+in the tree with type |_verb_form|.
 
 =
 void SynopticVerbs::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->verb_form_nodes) > 0) {
-		TreeLists::sort(inv->verb_form_nodes, SynopticVerbs::form_order);
-	}
-	
+	if (TreeLists::len(inv->verb_form_nodes) > 0)
+		TreeLists::sort(inv->verb_form_nodes, SynopticVerbs::form_order);	
 	@<Define TABLEOFVERBS array@>;
 }
 
+@ Note that we sort these in a special order: by source category first (i.e., source
+text, then built-in extensions, then other extensions) and then in order of creation
+within the compiler. This doesn't vastly matter, though.
+
+=
 int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 	itl_entry *E1 = (itl_entry *) ent1;
 	itl_entry *E2 = (itl_entry *) ent2;

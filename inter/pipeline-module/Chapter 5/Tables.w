@@ -2,36 +2,13 @@
 
 To compile the main/synoptic/tables submodule.
 
-@ Before this runs, table packages are scattered all over the Inter tree.
-We must allocate each one a unique ID.
-
-As this is called, //Synoptic Utilities// has already formed a list |table_nodes|
-of packages of type |_table|.
-
-The runtime code uses a range of unique ID numbers to represent table columns;
-these can't simply be addresses of the data because two uses of columns called
-"population" in different tables need to have the same ID in each context.
-(They need to run from 100 upward because numbers 0 to 99 refer to columns
-by index within the current table: see //assertions: Tables//.)
+@ Our inventory |inv| already contains a list |inv->table_nodes| of all packages
+in the tree with type |_table|.
 
 =
 void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->table_nodes) > 0) {
-		TreeLists::sort(inv->table_nodes, MakeSynopticModuleStage::module_order);
-		for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->table_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"table_id");
-			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
-		}
-	}
-	if (TreeLists::len(inv->table_column_nodes) > 0) {
-		TreeLists::sort(inv->table_column_nodes, MakeSynopticModuleStage::module_order);
-		for (int i=0; i<TreeLists::len(inv->table_column_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->table_column_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"table_column_id");
-			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 100);
-		}
-	}
+	if (TreeLists::len(inv->table_nodes) > 0) @<Assign unique table ID numbers@>;
+	if (TreeLists::len(inv->table_column_nodes) > 0) @<Assign unique table column ID numbers@>;
 	if (TreeLists::len(inv->table_column_usage_nodes) > 0) {
 		TreeLists::sort(inv->table_column_usage_nodes, MakeSynopticModuleStage::module_order);
 		for (int i=0; i<TreeLists::len(inv->table_column_usage_nodes); i++) {
@@ -53,10 +30,37 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 	@<Define RANKING_TABLE constant@>;
 }
 
+@ Each table package contains a numeric constant with the symbol name |table_id|.
+We want to ensure that these ID numbers are contiguous from 1 and never duplicated,
+so we change the values of these constants accordingly.
+
+@<Assign unique table ID numbers@> =
+	TreeLists::sort(inv->table_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->table_nodes->list[i].node);
+		inter_tree_node *D = Synoptic::get_definition(pack, I"table_id");
+		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
+	}
+
+@ And similarly for columns. The runtime code uses a range of unique ID numbers
+to represent table columns; these can't simply be addresses of the data because
+two uses of columns called "population" in different tables need to have the
+same ID in each context. (They need to run from 100 upward because numbers 0 to
+99 refer to columns by index within the current table: see //assertions: Tables//.)
+
+@<Assign unique table column ID numbers@> =
+	TreeLists::sort(inv->table_column_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<TreeLists::len(inv->table_column_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->table_column_nodes->list[i].node);
+		inter_tree_node *D = Synoptic::get_definition(pack, I"table_column_id");
+		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 100);
+	}
+
 @<Define TABLEOFTABLES array@> =
 	inter_name *iname = HierarchyLocations::find(I, TABLEOFTABLES_HL);
 	Synoptic::begin_array(I, step, iname);
-	Synoptic::symbol_entry(InterNames::to_symbol(HierarchyLocations::find(I, THEEMPTYTABLE_HL)));
+	Synoptic::symbol_entry(InterNames::to_symbol(
+		HierarchyLocations::find(I, THEEMPTYTABLE_HL)));
 	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->table_nodes->list[i].node);
 		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
@@ -77,7 +81,8 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 		Produce::down(I);
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
-				Produce::val_iname(I, K_value, HierarchyLocations::find(I, THEEMPTYTABLE_HL));
+				Produce::val_iname(I, K_value,
+					HierarchyLocations::find(I, THEEMPTYTABLE_HL));
 				Produce::code(I);
 				Produce::down(I);
 					Produce::inv_primitive(I, PRINT_BIP);
@@ -133,7 +138,8 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 		Produce::down(I);
 
 	for (int i=0; i<TreeLists::len(inv->table_column_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->table_column_nodes->list[i].node);
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->table_column_nodes->list[i].node);
 		inter_symbol *tc_kind = Metadata::read_symbol(pack, I"^column_kind");
 		Produce::inv_primitive(I, CASE_BIP);
 		Produce::down(I);
@@ -162,7 +168,8 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 	Synoptic::begin_array(I, step, iname);
 	inter_ti hwm = 0;
 	for (int i=0; i<TreeLists::len(inv->table_column_usage_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->table_column_usage_nodes->list[i].node);
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->table_column_usage_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_optional_definition(pack, I"column_blanks");
 		if (D) {
 			D->W.data[DATA_CONST_IFLD+1] = hwm;

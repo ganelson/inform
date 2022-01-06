@@ -60,9 +60,9 @@ void EliminateRedundantMatterStage::preserver(inter_tree *I, inter_tree_node *P,
 		if (Str::eq(N, I"Main_fn"))
 			EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's Main");
 		if (Str::eq(N, I"MistakeActionSub_fn"))
-			EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's Main");
+			EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's MistakeActionSub");
 		if (Str::eq(N, I"TestScriptSub_fn"))
-			EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's Main");
+			EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's TestScriptSub");
 	}
 }
 
@@ -85,7 +85,8 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 
 @<If you need a package, you need its parent@> =
 	inter_package *parent = Inter::Packages::parent(pack);
-	if (parent) EliminateRedundantMatterStage::preserve(parent, step, pack, I"it's the parent");
+	if (parent) EliminateRedundantMatterStage::preserve(parent, step, pack,
+		I"it's the parent");
 
 @<If you need a package, you need its external dependencies@> =
 	inter_symbols_table *tab = Inter::Packages::scope(pack);
@@ -94,15 +95,18 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 		if (Wiring::is_wired(symb)) {
 			inter_symbol *E = Wiring::cable_end(symb);
 			inter_package *needed = E->owning_table->owning_package;
-			EliminateRedundantMatterStage::preserve(needed, step, pack, I"it's an external symbol");
+			EliminateRedundantMatterStage::preserve(needed, step, pack,
+				I"it's an external symbol");
 		}
 	}
 
 @<If you need a function or action, you need its internal resources@> =
 	text_stream *rationale = NULL;
 	inter_symbol *ptype = Inter::Packages::type(pack);
-	if (ptype == RunningPipelines::get_symbol(step, function_ptype_RPSYM)) rationale = I"it's a _function block";
-	if (ptype == RunningPipelines::get_symbol(step, action_ptype_RPSYM)) rationale = I"it's an _action subpackage";
+	if (ptype == RunningPipelines::get_symbol(step, function_ptype_RPSYM)) 
+		rationale = I"it's a _function block";
+	if (ptype == RunningPipelines::get_symbol(step, action_ptype_RPSYM))
+		rationale = I"it's an _action subpackage";
 	if (rationale) {
 		inter_tree_node *D = Inter::Packages::definition(pack);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {

@@ -2,28 +2,34 @@
 
 To compile the main/synoptic/use_options submodule.
 
-@ As this is called, //Synoptic Utilities// has already formed a list |use_option_nodes|
-of packages of type |_use_option|.
+@ Our inventory |inv| already contains a list |inv->use_option_nodes| of all packages
+in the tree with type |_use_option|.
 
 =
 void SynopticUseOptions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->use_option_nodes) > 0) {
-		TreeLists::sort(inv->use_option_nodes, MakeSynopticModuleStage::module_order);
-		for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->use_option_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"use_option_id");
-			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
-		}
-	}
-
+	if (TreeLists::len(inv->use_option_nodes) > 0) @<Assign unique use option ID numbers@>;
 	@<Define NO_USE_OPTIONS@>;
 	@<Define TESTUSEOPTION function@>;
 	@<Define PRINT_USE_OPTION function@>;
 }
 
+@ Each use option package contains a numeric constant with the symbol name
+|use_option_id|. We want to ensure that these ID numbers are contiguous from 0
+and never duplicated, so we change the values of these constants accordingly.
+
+@<Assign unique use option ID numbers@> =
+	TreeLists::sort(inv->use_option_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->use_option_nodes->list[i].node);
+		inter_tree_node *D = Synoptic::get_definition(pack, I"use_option_id");
+		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+	}
+
 @<Define NO_USE_OPTIONS@> =
 	inter_name *iname = HierarchyLocations::find(I, NO_USE_OPTIONS_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->use_option_nodes)));
+	Produce::numeric_constant(I, iname, K_value,
+		(inter_ti) (TreeLists::len(inv->use_option_nodes)));
 
 @ A relatively late addition to the design of use options was to make them
 values at runtime, of the kind "use option". We need to provide two functions:
@@ -35,7 +41,8 @@ name of a given use option.
 	Synoptic::begin_function(I, iname);
 	inter_symbol *UO_s = Synoptic::local(I, I"UO", NULL);
 	for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->use_option_nodes->list[i].node);
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->use_option_nodes->list[i].node);
 		inter_ti set = Metadata::read_numeric(pack, I"^active");
 		if (set) {
 			Produce::inv_primitive(I, IF_BIP);
@@ -65,7 +72,8 @@ name of a given use option.
 		Produce::code(I);
 		Produce::down(I);
 			for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
-				inter_package *pack = Inter::Package::defined_by_frame(inv->use_option_nodes->list[i].node);
+				inter_package *pack =
+					Inter::Package::defined_by_frame(inv->use_option_nodes->list[i].node);
 				text_stream *printed_name = Metadata::read_textual(pack, I"^printed_name");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);

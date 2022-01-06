@@ -2,27 +2,29 @@
 
 To compile the main/synoptic/relations submodule.
 
-@ Before this runs, relation packages are scattered all over the Inter tree.
-We must allocate each one a unique ID.
-
-As this is called, //Synoptic Utilities// has already formed a list |relation_nodes|
-of packages of type |_relation|.
+@ Our inventory |inv| already contains a list |inv->relation_nodes| of all packages
+in the tree with type |_relation|.
 
 =
 void SynopticRelations::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->relation_nodes) > 0) {
-		TreeLists::sort(inv->relation_nodes, MakeSynopticModuleStage::module_order);
-		for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"relation_id");
-			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
-		}
-	}
+	if (TreeLists::len(inv->relation_nodes) > 0) @<Assign unique relation ID numbers@>;
 	@<Define CCOUNT_BINARY_PREDICATE@>;
 	@<Define CREATEDYNAMICRELATIONS function@>;
 	@<Define ITERATERELATIONS function@>;
 	@<Define RPROPERTY function@>;
 }
+
+@ Each relation package contains a numeric constant with the symbol name |relation_id|.
+We want to ensure that these ID numbers are contiguous from 0 and never duplicated,
+so we change the values of these constants accordingly.
+
+@<Assign unique relation ID numbers@> =
+	TreeLists::sort(inv->relation_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
+		inter_tree_node *D = Synoptic::get_definition(pack, I"relation_id");
+		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+	}
 
 @<Define CCOUNT_BINARY_PREDICATE@> =
 	inter_name *iname = HierarchyLocations::find(I, CCOUNT_BINARY_PREDICATE_HL);
@@ -74,7 +76,8 @@ void SynopticRelations::compile(inter_tree *I, pipeline_step *step, tree_invento
 			Produce::down(I);
 				Produce::inv_primitive(I, PROPERTYVALUE_BIP);
 				Produce::down(I);
-					inter_symbol *OBJECT_TY_s = EmitInterSchemas::find_identifier_text(I, I"OBJECT_TY", NULL, NULL);
+					inter_symbol *OBJECT_TY_s =
+						EmitInterSchemas::find_identifier_text(I, I"OBJECT_TY", NULL, NULL);
 					Produce::val_symbol(I, K_value, OBJECT_TY_s);
 					Produce::val_symbol(I, K_value, obj_s);
 					Produce::val_symbol(I, K_value, pr_s);

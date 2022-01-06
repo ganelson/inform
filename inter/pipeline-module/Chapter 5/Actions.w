@@ -2,31 +2,12 @@
 
 To compile the main/synoptic/actions submodule.
 
-@ Before this runs, action packages are scattered all over the Inter tree.
-We must allocate each one a unique ID.
-
-As this is called, //Synoptic Utilities// has already formed a list |action_nodes|
-of packages of type |_action|.
-
-@ The access possibilities for the noun and second are as follows:
-
-@d UNRESTRICTED_ACCESS 1 /* question not meaningful, e.g. for a number */
-@d DOESNT_REQUIRE_ACCESS 2 /* actor need not be able to touch this object */
-@d REQUIRES_ACCESS 3 /* actor must be able to touch this object */
-@d REQUIRES_POSSESSION 4 /* actor must be carrying this object */
+@ Our inventory |inv| already contains a list |inv->action_nodes| of all packages
+in the tree with type |_action|.
 
 =
 void SynopticActions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->action_nodes) > 0) {
-		TreeLists::sort(inv->action_nodes, MakeSynopticModuleStage::module_order);
-		for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"action_id");
-			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
-			D = Synoptic::get_optional_definition(pack, I"var_id");
-			if (D) D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (20000 + i);
-		}
-	}
+	if (TreeLists::len(inv->action_nodes) > 0) @<Assign unique action ID numbers@>;
 	@<Define CCOUNT_ACTION_NAME@>;
 	@<Define AD_RECORDS@>;
 	if (TreeLists::len(inv->action_nodes) > 0) {
@@ -36,6 +17,25 @@ void SynopticActions::compile(inter_tree *I, pipeline_step *step, tree_inventory
 	}
 	@<Define DB_ACTION_DETAILS function@>;
 }
+
+@ Each action package contains a numeric constant with the symbol name |action_id|.
+We want to ensure that these ID numbers are contiguous from 0 and never duplicated,
+so we change the values of these constants accordingly.
+
+In addition, each action has an ID used to identify itself as the owner of a slate
+of variables, and we set this to the action ID plus 20000. (This scheme assumes
+there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
+
+@<Assign unique action ID numbers@> =
+	TreeLists::sort(inv->action_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
+		inter_tree_node *D = Synoptic::get_definition(pack, I"action_id");
+		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+		D = Synoptic::get_optional_definition(pack, I"var_id");
+		if (D) D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (20000 + i);
+	}
 
 @<Define CCOUNT_ACTION_NAME@> =
 	inter_name *iname = HierarchyLocations::find(I, CCOUNT_ACTION_NAME_HL);
@@ -65,6 +65,13 @@ void SynopticActions::compile(inter_tree *I, pipeline_step *step, tree_inventory
 	}
 	Synoptic::numeric_entry(0);
 	Synoptic::end_array(I);
+
+@ The access possibilities for the noun and second are as follows:
+
+@d UNRESTRICTED_ACCESS 1 /* question not meaningful, e.g. for a number */
+@d DOESNT_REQUIRE_ACCESS 2 /* actor need not be able to touch this object */
+@d REQUIRES_ACCESS 3 /* actor must be able to touch this object */
+@d REQUIRES_POSSESSION 4 /* actor must be carrying this object */
 
 @<Define ACTIONDATA array@> =
 	inter_name *iname = HierarchyLocations::find(I, ACTIONDATA_HL);

@@ -2,27 +2,23 @@
 
 To compile the main/synoptic/rules and main/synoptic/rulebooks submodules.
 
-@ Before this runs, rulebook packages are scattered all over the Inter tree.
-We must allocate each one a unique ID.
+@ Our inventory |inv| already contains a list |inv->rulebook_nodes| of all packages
+in the tree with type |_rulebook|, and similarly for |inv->rule_nodes|.
 
-As this is called, //Synoptic Utilities// has already formed a list |rulebook_nodes|
-of packages of type |_rulebook|; and similarly for |rule_nodes|.
+For reasons going back to the very cramped memory of the Z-machine VM, once
+Inform's main compilation target, the following code can run in "memory economy"
+mode, which diverts functionality from arrays to functions (giving up execution
+speed for reduced array memory usage). This is specified by the presence of the
+|^memory_economy| metadata symbol, left in the Inter tree by the //inform7//
+compiler.
 
 =
 void SynopticRules::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->rulebook_nodes) > 0) {
-		TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
-		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"rulebook_id");
-			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
-		}
-	}
+	if (TreeLists::len(inv->rulebook_nodes) > 0) @<Assign unique rulebook ID numbers@>;
 	int economy = FALSE;
 	inter_symbol *me_s = InterSymbolsTables::url_name_to_symbol(I, NULL,
 		I"/main/completion/basics/^memory_economy");
 	if (me_s) economy = Inter::Symbols::evaluate_to_int(me_s);
-	else internal_error("no me_s");
 	@<Define NUMBER_RULEBOOKS_CREATED@>;
 	@<Define RulebookNames array@>;
 	if (economy) @<Define SlowLookup function@>
@@ -31,9 +27,23 @@ void SynopticRules::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 	@<Define RULEPRINTINGRULE function@>;
 }
 
+@ Each rulebook package contains a numeric constant with the symbol name |rulebook_id|.
+We want to ensure that these ID numbers are contiguous from 0 and never duplicated,
+so we change the values of these constants accordingly.
+
+@<Assign unique rulebook ID numbers@> =
+	TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
+		inter_tree_node *D = Synoptic::get_definition(pack, I"rulebook_id");
+		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+	}
+
 @<Define NUMBER_RULEBOOKS_CREATED@> =
 	inter_name *iname = HierarchyLocations::find(I, NUMBER_RULEBOOKS_CREATED_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->rulebook_nodes)));
+	Produce::numeric_constant(I, iname, K_value,
+		(inter_ti) (TreeLists::len(inv->rulebook_nodes)));
 
 @<Define RulebookNames array@> =
 	inter_name *iname = HierarchyLocations::find(I, RULEBOOKNAMES_HL);
@@ -43,7 +53,8 @@ void SynopticRules::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 		Synoptic::numeric_entry(0);
 	} else {
 		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
+			inter_package *pack =
+				Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
 			text_stream *name = Metadata::read_textual(pack, I"^printed_name");
 			Synoptic::textual_entry(name);
 		}

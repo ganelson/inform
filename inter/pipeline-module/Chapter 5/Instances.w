@@ -2,19 +2,18 @@
 
 To compile the main/synoptic/instances submodule.
 
-@ Before this runs, instance packages are scattered all over the Inter tree.
+@ Our inventory |inv| already contains a list |inv->instance_nodes| of all packages
+in the tree with type |_instance|.
 
-As this is called, //Synoptic Utilities// has already formed a list |instance_nodes|
-of packages of type |_instance|.
-
-This section is a placeholder for now.
+For the moment, at least, it seems too ambitious to dynamically renumber instances
+in the linking stage. Until then, this section is something of a placeholder,
+making only a debugging function.
 
 =
 void SynopticInstances::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->instance_nodes) > 0) {
+	if (TreeLists::len(inv->instance_nodes) > 0)
 		TreeLists::sort(inv->instance_nodes, MakeSynopticModuleStage::module_order);
-	}
-	@<Define SHOWMEINSTANCEDETAILS function@>
+	@<Define SHOWMEINSTANCEDETAILS function@>;
 }
 
 @<Define SHOWMEINSTANCEDETAILS function@> =

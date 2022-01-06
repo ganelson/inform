@@ -2,10 +2,7 @@
 
 To renumber the extensions and construct suitable functions and arrays.
 
-@ Before this runs, there are one or more modules in the Inter tree which
-contain the material compiled from extensions. We must allocate each one a unique ID.
-
-Our inventory |inv| already contains a list |inv->extension_nodes| of packages
+@ Our inventory |inv| already contains a list |inv->extension_nodes| of packages
 with the type |_module| which derive from extensions.
 
 =

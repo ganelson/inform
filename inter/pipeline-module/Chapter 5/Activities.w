@@ -2,30 +2,36 @@
 
 To compile the main/synoptic/activities submodule.
 
-@ Before this runs, activity packages are scattered all over the Inter tree.
-We must allocate each one a unique ID.
-
-As this is called, //Synoptic Utilities// has already formed a list |activity_nodes|
-of packages of type |_activity|.
+@ Our inventory |inv| already contains a list |inv->activity_nodes| of all packages
+in the tree with type |_activity|.
 
 =
 void SynopticActivities::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->activity_nodes) > 0) {
-		TreeLists::sort(inv->activity_nodes, MakeSynopticModuleStage::module_order);
-		for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
-			inter_tree_node *D = Synoptic::get_definition(pack, I"activity_id");
-			D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
-			D = Synoptic::get_optional_definition(pack, I"var_id");
-			if (D) D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (10000 + i);
-		}
-	}
+	if (TreeLists::len(inv->activity_nodes) > 0) @<Assign unique activity ID numbers@>;
 	@<Define ACTIVITY_AFTER_RULEBOOKS array@>;
 	@<Define ACTIVITY_ATB_RULEBOOKS array@>;
 	@<Define ACTIVITY_BEFORE_RULEBOOKS array@>;
 	@<Define ACTIVITY_FOR_RULEBOOKS array@>;
 	@<Define ACTIVITY_VAR_CREATORS array@>;
 }
+
+@ Each activity package contains a numeric constant with the symbol name |activity_id|.
+We want to ensure that these ID numbers are contiguous from 0 and never duplicated,
+so we change the values of these constants accordingly.
+
+In addition, each activity has an ID used to identify itself as the owner of a slate
+of variables, and we set this to the activity ID plus 10000. (This scheme assumes
+there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
+
+@<Assign unique activity ID numbers@> =
+	TreeLists::sort(inv->activity_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
+		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
+		inter_tree_node *D = Synoptic::get_definition(pack, I"activity_id");
+		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+		D = Synoptic::get_optional_definition(pack, I"var_id");
+		if (D) D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (10000 + i);
+	}
 
 @<Define ACTIVITY_AFTER_RULEBOOKS array@> =
 	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_AFTER_RULEBOOKS_HL);

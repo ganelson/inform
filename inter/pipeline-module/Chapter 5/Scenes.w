@@ -2,16 +2,15 @@
 
 To compile the main/synoptic/scenes submodule.
 
-@ Before this runs, instances of scenes are scattered all over the Inter tree.
-
-As this is called, //Synoptic Utilities// has already formed a list |scene_nodes|
-of instances having the kind |K_scene|.
+@ Our inventory |inv| already contains a list |inv->scene_nodes| of all packages
+in the tree with type |_instance| which are of the kind |K_scene|. (These do not
+have ID numbers here because they already have |instance_id| values by virtue
+of being instances.)
 
 =
 void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->scene_nodes) > 0) {
+	if (TreeLists::len(inv->scene_nodes) > 0)
 		TreeLists::sort(inv->scene_nodes, MakeSynopticModuleStage::module_order);
-	}
 	@<Define SHOWSCENESTATUS function@>;
 	@<Define DETECTSCENECHANGE function@>;
 }
@@ -20,7 +19,8 @@ void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 	inter_name *iname = HierarchyLocations::find(I, SHOWSCENESTATUS_HL);
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(inv->scene_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->scene_nodes->list[i].node);
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->scene_nodes->list[i].node);
 		inter_symbol *ssf_s = Metadata::read_symbol(pack, I"^scene_status_fn");
 		Produce::inv_call(I, ssf_s);
 	}
@@ -30,9 +30,8 @@ void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 occur because each set of scene changes could change the circumstances in such
 a way that other scene changes are now required (through external conditions,
 not through anchors); we don't want this to lock up, so we will cap recursion.
-Within the routine, a second local variable, |ch|, is a flag indicating
+Within the function, a second local variable, |ch|, is a flag indicating
 whether any change in status has or has not occurred.
-
 
 @d MAX_SCENE_CHANGE_ITERATION 20
 
@@ -44,7 +43,8 @@ whether any change in status has or has not occurred.
 	inter_symbol *CScene_l = Produce::reserve_label(I, I".CScene");
 	Produce::place_label(I, Again_l);
 	for (int i=0; i<TreeLists::len(inv->scene_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->scene_nodes->list[i].node);
+		inter_package *pack =
+			Inter::Package::defined_by_frame(inv->scene_nodes->list[i].node);
 		inter_symbol *scf_s = Metadata::read_symbol(pack, I"^scene_change_fn");
 		Produce::inv_primitive(I, IF_BIP);
 		Produce::down(I);
