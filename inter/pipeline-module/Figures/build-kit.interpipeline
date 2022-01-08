@@ -1,0 +1,4 @@
+new
+load-kit-source <- *kit
+run pipeline assimilate
+generate binary -> *out

@@ -21,7 +21,7 @@ void CodeGen::create_pipeline_stage(void) {
 int CodeGen::run_pipeline_stage(pipeline_step *step) {
 	if (step->generator_argument) {
 		code_generation *gen = CodeGen::new_generation(step, step->ephemera.parsed_filename,
-			step->ephemera.to_stream, step->ephemera.repository, step->ephemera.package_argument,
+			step->ephemera.to_stream, step->ephemera.tree, step->ephemera.package_argument,
 			step->generator_argument, step->ephemera.for_VM, FALSE);
 		Generators::go(gen);
 	}

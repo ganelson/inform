@@ -25,7 +25,7 @@ typedef struct pipeline_step_ephemera {
 	int from_memory;
 	struct text_stream *to_stream;
 	struct linked_list *requirements_list; /* of |attachment_instruction| */
-	struct inter_tree *repository;
+	struct inter_tree *tree;
 	struct inter_pipeline *pipeline;
 	struct target_vm *for_VM;
 	struct inter_symbol *cached_symbols[MAX_RPSYM];
@@ -39,7 +39,7 @@ void RunningPipelines::clean_step(pipeline_step *step) {
 	step->ephemera.to_debugging_log = FALSE;
 	step->ephemera.from_memory = FALSE;
 	step->ephemera.the_kit = NULL;
-	step->ephemera.repository = NULL;
+	step->ephemera.tree = NULL;
 	step->ephemera.pipeline = NULL;
 	step->ephemera.requirements_list = NEW_LINKED_LIST(attachment_instruction);
 	step->ephemera.for_VM = NULL;
@@ -98,16 +98,16 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 @<Prepare ephemeral data for this step@> =
 	RunningPipelines::clean_step(step);
 	step->ephemera.the_kit = the_kit;
-	if (S->ephemera.repositories[step->repository_argument] == NULL)
-		S->ephemera.repositories[step->repository_argument] = InterTree::new();
-	inter_tree *I = S->ephemera.repositories[step->repository_argument];
+	if (S->ephemera.repositories[step->tree_argument] == NULL)
+		S->ephemera.repositories[step->tree_argument] = InterTree::new();
+	inter_tree *I = S->ephemera.repositories[step->tree_argument];
 	if (I == NULL) {
 		PipelineErrors::error(step, "no Inter tree to apply this step to");
 		active = FALSE;
 	} else {
 		Inter::Defn::lint(I);
 	}
-	step->ephemera.repository = I;
+	step->ephemera.tree = I;
 	step->ephemera.pipeline = S;
 	step->ephemera.requirements_list = requirements_list;
 	step->ephemera.for_VM = VM;
@@ -121,7 +121,7 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	step->ephemera.package_argument = NULL;
 	if (Str::len(step->package_URL_argument) > 0) {
 		step->ephemera.package_argument =
-			Inter::Packages::by_url(step->ephemera.repository, step->package_URL_argument);
+			Inter::Packages::by_url(step->ephemera.tree, step->package_URL_argument);
 		if (step->ephemera.package_argument == NULL) {
 			PipelineErrors::error_with(step,
 				"pipeline step applied to package which does not exist: '%S'",
@@ -164,7 +164,7 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 				PipelineErrors::error(step, "'*memory' can be used only on reads");
 				active = FALSE;
 			} else {
-				S->ephemera.repositories[step->repository_argument] =
+				S->ephemera.repositories[step->tree_argument] =
 					S->ephemera.memory_repository;
 				/* and do not call the executor function: that does the read */
 			}
@@ -203,7 +203,7 @@ pipeline_step *RunningPipelines::current_step(void) {
 }
 
 @h Popular symbols cache.
-While working on a repository, the execution functions will frequently need
+While working on a tree, the execution functions will frequently need
 its most popular symbols -- searching for these is not too slow, but even so,
 once is enough. But we cache them on each step, wiping the cache at the end
 of the step, since running a step changes the Inter tree and could conceivably
@@ -247,7 +247,7 @@ move, add or remove some of these symbols.
 inter_symbol *RunningPipelines::get_symbol(pipeline_step *step, int id) {
 	if ((id < 0) || (id >= MAX_RPSYM)) internal_error("bad ID");
 	if (step == NULL) internal_error("no step");
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	if (step->ephemera.cached_symbols_fetched[id] == FALSE) {
 		step->ephemera.cached_symbols_fetched[id] = TRUE;
 		switch (id) {
@@ -350,7 +350,7 @@ linked in.
 =
 inter_symbol *RunningPipelines::ensure_symbol(pipeline_step *step, int id,
 	text_stream *identifier) {
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	inter_symbol *S = RunningPipelines::get_symbol(step, id);
 	if (S) return S;
 	step->ephemera.cached_symbols[id] = Wiring::plug(I, identifier);

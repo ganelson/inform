@@ -43,7 +43,7 @@ typedef struct pipeline_step {
 	struct code_generator *generator_argument;
 	int take_generator_argument_from_VM;
 	struct text_stream *package_URL_argument;
-	int repository_argument;
+	int tree_argument;
 	struct pipeline_step_ephemera ephemera; /* temporary storage when running */
 	CLASS_DEFINITION
 } pipeline_step;
@@ -54,7 +54,7 @@ pipeline_step *ParsingPipelines::new_step(inter_pipeline *pipeline) {
 	step->step_stage = NULL;
 	step->step_argument = NULL;
 	step->package_URL_argument = NULL;
-	step->repository_argument = 0;
+	step->tree_argument = 0;
 	step->generator_argument = NULL;
 	step->take_generator_argument_from_VM = FALSE;
 	RunningPipelines::clean_step(step);
@@ -72,14 +72,14 @@ combined with details of what tree to apply to in order to become a step.
 @e OPTIONAL_TEXT_OUT_STAGE_ARG
 @e EXT_FILE_STAGE_ARG
 @e EXT_TEXT_OUT_STAGE_ARG
-@e TEMPLATE_FILE_STAGE_ARG
+@e KIT_STAGE_ARG
 
 =
 typedef struct pipeline_stage {
 	struct text_stream *stage_name;
 	int (*execute)(void *);
 	int stage_arg; /* one of the |*_ARG| values above */
-	int takes_repository;
+	int takes_tree;
 	CLASS_DEFINITION
 } pipeline_stage;
 
@@ -89,7 +89,7 @@ pipeline_stage *ParsingPipelines::new_stage(text_stream *name,
 	stage->stage_name = Str::duplicate(name);
 	stage->execute = (int (*)(void *)) X;
 	stage->stage_arg = arg;
-	stage->takes_repository = tr;
+	stage->takes_tree = tr;
 	return stage;
 }
 
@@ -225,8 +225,8 @@ pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_strea
 	else if (Regexp::match(&mr, S, L"(%c+?) (%C+) *-> *(%c*)")) @<Right arrow notation with generator@>
 	else if (Regexp::match(&mr, S, L"(%c+?) *-> *(%c*)"))       @<Right arrow notation without generator@>;
 
-	if (Regexp::match(&mr, S,      L"(%C+?) (%d)"))             @<Repository number as argument@>
-	else if (Regexp::match(&mr, S, L"(%C+?) (%d):(%c*)"))       @<Repository number and package as arguments@>
+	if (Regexp::match(&mr, S,      L"(%C+?) (%d)"))             @<Tree number as argument@>
+	else if (Regexp::match(&mr, S, L"(%C+?) (%d):(%c*)"))       @<Tree number and package as arguments@>
 	else if (Regexp::match(&mr, S, L"(%C+?) (%c+)"))            @<Package as argument@>;
 
 	step->step_stage = ParsingPipelines::parse_stage(S);
@@ -267,12 +267,12 @@ pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_strea
 	if (step->step_argument == NULL) return NULL;
 	Str::copy(S, mr.exp[0]);
 
-@<Repository number as argument@> =
-	step->repository_argument = Str::atoi(mr.exp[1], 0);
+@<Tree number as argument@> =
+	step->tree_argument = Str::atoi(mr.exp[1], 0);
 	Str::copy(S, mr.exp[0]);
 
-@<Repository number and package as arguments@> =
-	step->repository_argument = Str::atoi(mr.exp[1], 0);
+@<Tree number and package as arguments@> =
+	step->tree_argument = Str::atoi(mr.exp[1], 0);
 	if (Str::len(mr.exp[2]) > 0) {
 		step->package_URL_argument =
 			ParsingPipelines::text_arg(mr.exp[2], D, tfp, syntax, allow_unknown);
@@ -291,7 +291,7 @@ pipeline_step *ParsingPipelines::parse_step(inter_pipeline *pipeline, text_strea
 		PipelineErrors::syntax_with(tfp, syntax, "no such stage as '%S'", S);
 		return NULL;
 	}
-	if (step->step_stage->takes_repository) {
+	if (step->step_stage->takes_tree) {
 		if (left_arrow_used == FALSE) {
 			PipelineErrors::syntax(tfp, syntax,
 				"this stage should take a left arrow and a source");
@@ -378,15 +378,15 @@ Here we write a textual description to a string, which is useful for logging:
 void ParsingPipelines::write_step(OUTPUT_STREAM, pipeline_step *step) {
 	WRITE("%S", step->step_stage->stage_name);
 	if (step->step_stage->stage_arg != NO_STAGE_ARG) {
-		if (step->repository_argument > 0) {
-			WRITE(" %d", step->repository_argument);
+		if (step->tree_argument > 0) {
+			WRITE(" %d", step->tree_argument);
 			if (Str::len(step->package_URL_argument) > 0)
 				WRITE(":%S", step->package_URL_argument);
 		} else {
 			if (Str::len(step->package_URL_argument) > 0)
 				WRITE(" %S", step->package_URL_argument);
 		}
-		if (step->step_stage->takes_repository)
+		if (step->step_stage->takes_tree)
 			WRITE(" <- %S", step->step_argument);
 		if (step->generator_argument)
 			WRITE(" %S -> %S",

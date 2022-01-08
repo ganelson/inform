@@ -21,7 +21,7 @@ void EliminateRedundantMatterStage::create_pipeline_stage(void) {
 }
 
 int EliminateRedundantMatterStage::run(pipeline_step *step) {
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	InterTree::traverse(I, EliminateRedundantMatterStage::preserver, step, NULL, PACKAGE_IST);
 	InterTree::traverse(I, EliminateRedundantMatterStage::destroyer, step, NULL, PACKAGE_IST);
 	return TRUE;

@@ -35,7 +35,7 @@ void EliminateRedundantOperationsStage::create_pipeline_stage(void) {
 int redundant_operations_removed = 0;
 int EliminateRedundantOperationsStage::run(pipeline_step *step) {
 	redundant_operations_removed = 0;
-	InterTree::traverse(step->ephemera.repository,
+	InterTree::traverse(step->ephemera.tree,
 		EliminateRedundantOperationsStage::visitor, NULL, NULL, 0);
 	if (redundant_operations_removed > 0)
 		LOG("%d redundant operation(s) removed\n", redundant_operations_removed);

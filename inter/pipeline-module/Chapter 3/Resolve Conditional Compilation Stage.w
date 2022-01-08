@@ -45,7 +45,7 @@ void ResolveConditionalsStage::create_pipeline_stage(void) {
 }
 
 int ResolveConditionalsStage::run(pipeline_step *step) {
-	ResolveConditionalsStage::resolve(step->ephemera.repository);
+	ResolveConditionalsStage::resolve(step->ephemera.tree);
 	return TRUE;
 }
 

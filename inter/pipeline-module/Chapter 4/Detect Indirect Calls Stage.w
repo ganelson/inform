@@ -35,7 +35,7 @@ void DetectIndirectCallsStage::create_pipeline_stage(void) {
 }
 
 int DetectIndirectCallsStage::run(pipeline_step *step) {
-	InterTree::traverse(step->ephemera.repository,
+	InterTree::traverse(step->ephemera.tree,
 		DetectIndirectCallsStage::visitor, step, NULL, PACKAGE_IST);
 	return TRUE;
 }

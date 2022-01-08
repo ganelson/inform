@@ -81,8 +81,148 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Pipelines. </b>This module provides a mechanism for working on trees of Inter code, by applying
-sequences of "stages" identified by name; and it then defines a number of stages.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Pipelines. </b>This module manages the process of working on trees of Inter code by running
+them through a "pipeline" of "steps", each performed in turn. Each step makes
+use of an algorithm called a "stage" which transforms the tree in some way:
+perhaps adding, removing or rearranging material, or perhaps just looking for
+problems with it. <a href="../inter/index.html" class="internal">inter</a> currently has about 20 different stages, though
+no single pipeline is ever likely to need all 20.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Command-line users of the Inform tool chain are free to define their
+own pipelines, perhaps to experiment with adding new optimisation stages, or
+to do other things with Inter code. To help with this, pipelines are specified
+as text files, written in their own definition language. A brief guide to this
+language can be found in <a href="../inter/M-pas.html" class="internal">Pipelines and Stages (in inter)</a>.
+</p>
+
+<p class="commentary">See <a href="2-pp.html" class="internal">Parsing Pipelines</a> for how such files are turned into <a href="2-pp.html#SP1" class="internal">inter_pipeline</a>
+objects, each made up of <a href="2-pp.html#SP2" class="internal">pipeline_step</a> objects.
+</p>
+
+<p class="commentary">The mechanics of running through a pipeline can be found in <a href="2-rp.html" class="internal">Running Pipelines</a>.
+</p>
+
+<p class="commentary">Pipelines can go wrong in two different ways: either by failing to be properly
+defined because of syntax errors in their definitions, or by failing to run
+properly. For example, if we compile this Basic Inform project:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">begin</span><span class="plain-syntax">: </span><span class="identifier-syntax">go</span><span class="plain-syntax"> </span><span class="identifier-syntax">awry</span><span class="plain-syntax">.</span>
+
+<span class="identifier-syntax">To</span><span class="plain-syntax"> </span><span class="identifier-syntax">go</span><span class="plain-syntax"> </span><span class="identifier-syntax">awry</span><span class="plain-syntax">: (- </span><span class="identifier-syntax">Cryptid</span><span class="plain-syntax">(); -).</span>
+</pre>
+<p class="commentary">...then the <a href="../inform7/index.html" class="internal">inform7</a> compiler happily makes an Inter tree, on the
+assumption that an Inter function called <span class="extract"><span class="extract-syntax">Cryptid</span></span> will be defined in one
+of the kits to be loaded in later. But when later comes, the <span class="extract"><span class="extract-syntax">compile</span></span> pipeline
+has to halt when it fails to find <span class="extract"><span class="extract-syntax">Cryptid</span></span> anywhere. The process has to halt
+with error messages at the command line, or a legible problem message for users
+of the GUI application.
+</p>
+
+<p class="commentary">Both sorts of pipeline error are dealt with by <a href="2-pe.html" class="internal">Pipeline Errors</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>For purposes of Inform, two pipelines are important:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">build-kit</span></span> reads in the source code for a kit written in Inform 6
+(broadly C-like) syntax, compiles that to Inter code, and then saves this
+as a binary Inter file.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">compile</span></span> works on an Inter tree produced by <a href="../inform7/index.html" class="internal">inform7</a> from natural
+language source text, links in one or more binary Inter files from kits,
+optimises the result, and then generates final code.
+</li></ul>
+<p class="commentary">The <a href="../supervisor-module/index.html" class="internal">supervisor</a> module decides when these are to be "run", and sets them
+up with configuration details &mdash; what Inter architecture to use, where to
+put the resultant files, when a kit needs to be rebuilt, and so on. None of
+that is our problem here. Roughly speaking, though, <span class="extract"><span class="extract-syntax">build-kit</span></span> is run only
+occasionally, when the source code for a kit is modified &mdash; for most Inform
+users, that will be never &mdash; whereas <span class="extract"><span class="extract-syntax">compile</span></span> is run every time the user of
+an Inform GUI app clicks the "Go" button.
+</p>
+
+<p class="commentary">Speed is therefore unimportant for stages used in <span class="extract"><span class="extract-syntax">build-kit</span></span>, but very
+important for stages used in <span class="extract"><span class="extract-syntax">compile</span></span>. As a rule of thumb, if the user waits
+10 seconds for the result after clicking "Go" then the first 6 seconds are spent
+in <a href="../inform7/index.html" class="internal">inform7</a>, the next 3 seconds running the <span class="extract"><span class="extract-syntax">compile</span></span> pipeline, and the final
+second in whatever compiler turns the final code into an executable &mdash; usually
+Inform 6.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>The <span class="extract"><span class="extract-syntax">compile</span></span> pipeline is as follows. Here the <a href="../supervisor-module/index.html" class="internal">supervisor</a> module has
+already set the variables <span class="extract"><span class="extract-syntax">*in</span></span> and <span class="extract"><span class="extract-syntax">*out</span></span> respectively to the source of
+Inter (in fact, it will be in memory, not in a file), and to the filename
+for where the final code is to be written. By default <span class="extract"><span class="extract-syntax">*tout</span></span> is not set
+when the Inform 7 GUI app is being used, but it's sometimes set when testing
+at the command line. If it is set, then the final state of the Inter tree
+will be written out in a readable text format.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">read </span><span class="reserved-syntax">&lt;-</span><span class="plain-syntax"> </span><span class="identifier-syntax">*in</span>
+
+<span class="plain-syntax">run pipeline assimilate</span>
+<span class="plain-syntax">run pipeline link</span>
+<span class="plain-syntax">run pipeline optimise</span>
+
+<span class="comment-syntax">The following does nothing if the variable *tout does not exist and it</span>
+<span class="comment-syntax">will exist only when debugging:</span>
+<span class="plain-syntax">optionally-generate text </span><span class="reserved-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*tout</span>
+
+<span class="plain-syntax">generate </span><span class="reserved-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*out</span>
+</pre>
+<p class="commentary">Similarly, here is <span class="extract"><span class="extract-syntax">build-kit</span></span>:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">new</span>
+<span class="plain-syntax">load-kit-source </span><span class="reserved-syntax">&lt;-</span><span class="plain-syntax"> </span><span class="identifier-syntax">*kit</span>
+<span class="plain-syntax">run pipeline assimilate</span>
+<span class="plain-syntax">generate binary </span><span class="reserved-syntax">-&gt;</span><span class="plain-syntax"> </span><span class="identifier-syntax">*out</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>These of course use three subsidiary pipelines. The <span class="extract"><span class="extract-syntax">assimilate</span></span> pipeline
+turns raw Inform 6-syntax source code into Inter material: so it does a great
+deal of work when <span class="extract"><span class="extract-syntax">build-kit</span></span> is running, but only a very little for <span class="extract"><span class="extract-syntax">compile</span></span>,
+when all it needs to worry about will be a few scraps of I6 code compiled
+by <a href="../inform7/index.html" class="internal">inform7</a> from uses of the low-level <span class="extract"><span class="extract-syntax">Include (-</span></span> ... <span class="extract"><span class="extract-syntax">-)</span></span> feature.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">parse-insertions</span>
+<span class="plain-syntax">resolve-conditional-compilation</span>
+<span class="plain-syntax">compile-splats</span>
+</pre>
+<p class="commentary">The <span class="extract"><span class="extract-syntax">link</span></span> pipeline sorts out cross-references between Inter code made by
+<a href="../inform7/index.html" class="internal">inform7</a>, and Inter code loaded in from kits. Each side may need to call
+functions or access variables in the other. This process is more active
+and less symmetrical than linking would be for a C-like language, but "linking"
+is probably still the nearest word for it.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">load-binary-kits</span>
+<span class="plain-syntax">make-synoptic-module</span>
+<span class="plain-syntax">shorten-wiring</span>
+<span class="plain-syntax">detect-indirect-calls</span>
+<span class="plain-syntax">make-identifiers-unique</span>
+<span class="plain-syntax">reconcile-verbs</span>
+</pre>
+<p class="commentary">Finally, the <span class="extract"><span class="extract-syntax">optimisation</span></span> pipeline is a chance to simplify the Inter tree
+without changing its meaning, so that equivalent but faster or smaller final
+code is generated. At present this does relatively little, but it's a start.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">eliminate-redundant-labels</span>
+<span class="comment-syntax">eliminate-redundant-matter</span>
+<span class="plain-syntax">eliminate-redundant-operations</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>To create a new stage, you may want to copy a simple existing one &mdash; say,
+the <a href="6-erls.html" class="internal">Eliminate Redundant Labels Stage</a> &mdash; as a model. Note that a stage
+must be "created", and your function to create it should be called from the
+function <a href="2-pp.html#SP10" class="internal">ParsingPipelines::parse_stage</a>.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

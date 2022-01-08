@@ -20,7 +20,7 @@ void ReconcileVerbsStage::create_pipeline_stage(void) {
 }
 
 int ReconcileVerbsStage::run(pipeline_step *step) {
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	dictionary *observed_verbs = Dictionaries::new(1024, TRUE);
 	linked_list *VL = NEW_LINKED_LIST(inter_tree_node);
 	InterTree::traverse(I, ReconcileVerbsStage::visitor, VL, NULL, CONSTANT_IST);

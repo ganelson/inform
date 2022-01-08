@@ -3,11 +3,11 @@ Pipelines and Stages.
 Sequences of named code-generation stages are called pipelines.
 
 @h Stages and descriptions.
-A processing stage is a step in code generation which acts on a repository
+A processing stage is a step in code generation which acts on a tree
 of inter in memory. Some stages change, add to or edit down that code, while
 others leave it untouched but output a file based on it.
 
-Each stage can see an entire repository of inter code at a time, and is
+Each stage can see an entire tree of inter code at a time, and is
 not restricted to working through it in sequence.
 
 Stages are named, which are written without spaces, and conventionally use
@@ -65,17 +65,17 @@ For example,
 
 @h Pipelines run by Inform.
 As the above implies, Inter pipelines normally begin with a clean slate:
-no repositories, no variables. 
+no trees, no variables. 
 
 When a pipeline is being run by the main Inform 7 compiler, however,
-two variables are created in advance. |*in| is set to the inter code
+two variables are created in advance. |*in| is set to the Inter code
 which Inform has generated on the current run, and |*out| is set to the
-filename to which final I6 code needs to be written. The practical
+filename to which final code needs to be generated. The practical
 effect is that any useful pipeline for Inform will begin and end thus:
 = (text as Inter Pipeline)
 	read <- *in
 	...
-	generate inform6 -> *out
+	generate -> *out
 =
 In addition, the "domain" is set to the directory containing the |*out|
 file.
@@ -85,7 +85,7 @@ like extensions or kits. So, for example, the standard distribution includes
 = (text)
 	inform7/Internal/Pipelines/compile.interpipeline
 =
-which is the one used for standard compilation runs. A projects Materials
+which is the one used for standard compilation runs. A project's Materials
 folder is free to provide a replacement:
 = (text)
 	Strange.materials/Pipelines/compile.interpipeline
@@ -125,102 +125,241 @@ Or, if you want to name a file explicitly, not have it looked for by name:
 Note that Inbuild and Inform 7 respond to all three of |-pipeline|,
 |-pipeline-file| and |-pipeline-text|, whereas Inter responds only to the
 last two. (It can't find pipelines by name because it doesn't contain the
-complex code for sorting out resources.)
+supervisor module for sorting out resources.)
 
-@h Stage descriptions.
+@h Syntax of pipeline descriptions.
+Pipelines are, roughly speaking, just lists of steps. Each step occupies
+a single line: blank lines are ignored, and so are lines whose first non-white-space
+character is a |!|, which are considered comments.
+
+A step description is often as simple as being the name of a stage, but
+sometimes that name is accompanied by parameters.
+
+The difference between a step and a stage is illustrated by this example:
+= (text as Inter Pipeline)
+	! This is a comment
+
+	read <- *in
+
+	generate text -> *tout
+	generate binary -> *bout
+=
+Here there are three steps. The first uses the |read| stage; the second and
+third use the |generate| stage, but with different parameters.
+
 There are three sorts of stage description: those involving material coming
 in, denoted by a left arrow, those involving some external file being written
 out, denoted by a right arrow, and those which just process what we have.
 These take the following forms:
 = (text as Inter Pipeline)
-	STAGENAME [LOCATION] <- SOURCE
-	STAGENAME [LOCATION] FORMAT -> DESTINATION
-	STAGENAME [LOCATION]
+	STAGENAME [TREE] <- SOURCE
+	STAGENAME [TREE] [FORMAT] -> DESTINATION
+	STAGENAME [TREE]
 =
-In each case the |LOCATION| is optional. For example:
+The |STAGENAME| never contains white space; hyphens are used instead. So, for
+example, |eliminate-redundant-labels| is a valid |STAGENAME|.
+
+The |[TREE]| is optional. For example:
 = (text as Inter Pipeline)
 	read 2 <- *in
-	generate binary -> *out
-	eliminate-redundant-labels /main/template
+	generate 3 -> *out
 =
-In the first line the location is |2|. Pipeline descriptios allow us to manage
-up to 10 different repositories, and these are called |0| to |9|. These are
-all initially empty. Any stage which doesn't specify a repository is considered
-to apply to |0|; plenty of pipelines never mention the digits |0| to |9| at
-all because they do everything inside |0|.
+Pipeline descriptios allow us to manage up to 10 different Inter trees, and
+these are called |0| to |9|. These are all initially empty. Any stage which
+doesn't specify a tree is considered to apply to |0|; so pipelines often never
+mention the digits |0| to |9| at all because they always work inside |0|.
 
-In the second line, there's no location given, so the location is presumed
-to be |0|.
-
-The third line demonstrates that a location can be more specific than just
-a repository: it can be a specific package in a repository. Here, it's
-|/main/template| in repository |0|, but we could also write |7:/main/template|
-to mean |/main/template| in |7|, for example. Not all stages allow the
-location to be narrowed down to a single package (which by definition
-includes all its subpackages): see below.
-
-@h Reading and generating.
-The |read| stage reads Inter from a file into a repository in memory.
-(Its previous contents, if any, are discarded.) This then becomes the
-repository to which subsequent stages apply. The format is:
+Another optional feature, not currently made use of by any stages, is that
+the description can specify an exact package in a tree, giving its name in URL
+form. Thus:
 = (text as Inter Pipeline)
-	read REPOSITORY <- FILE
+	hypothetical-stage /main/whatever
+	hypothetical-stage 6:/main/whatever
 =
-where |REPOSITORY| is |0| to |9|, and is |0| if not supplied. Note that
-this fills an entire repository: it's not meaningful to specify a
-named package as the location.
+The stages currently built in to //inter// do not work on individual packages,
+but they did at one time in the past, and the infrastructure for it remains
+in case useful in future.
 
-The |FILE| can contain either binary or textual Inter, and this is
-automatically detected.
-= (text as Inter Pipeline)
-	generate FORMAT -> FILE
-=
-writes the repository out into the given |FILE|. There are several possible
-formats: |binary| and |text| mean a binary or textual Inter file, |inventory|
-means a textual summary of the contents, and |inform6| means an Inform 6
-program. At present, only |inventory| can be generated on specific
-packages in a repository.
+SOURCE and DESTINATION specify, usually, files to read or write, but they are
+often in fact given as variables, whose names start with an asterisk |*|.
+Variables have to be set in advance, either at the command line (see above)
+or by the tool calling for the pipeline to be run, e.g., the //supervisor//
+module inside Inform 7.
 
-The |generate| stage leaves the repository unchanged, so it's possible
-to generate multiple representations of the same repository into different
-files.
+@h Dictionary of stages.
+The following gives a brief guide to the available stages, in alphabetical
+order. See also //pipeline: What This Module Does// for how (some of) these
+stages are used when building kits or projects.
 
-@h The code-generation stages.
-The following are all experimental, and have probably not yet reached their
-final form or names.
+@ |compile-splats|.
+A "splat" node holds a single Inform 6-written statement or directive, and
+thus represents not-yet-compiled material. This stage converts all remaining
+splat nodes to Inter code. Note that |resolve-conditional-compilation| must
+already have run for this to handle |#ifdef| and the like properly.
 
-Although one thinks of code generation as a process of turning inter into
-Inform 6, in fact it goes both ways, because we also have to read in
-the "template" of standing Inform 6 code. The early code generation stages
-convert the template from Inform 6 into inter, merging it with the inter
-already produced by the front end of the compiler. The later stages then
-turn this merged repository into Inform 6 code. (Routines in the template,
-therefore, are converted out of Inform 6 and then back into it again. This
-sounds inefficient but is surprisingly fast, and enables many optimisations.)
+For the implementation, see //pipeline: Compile Splats Stage//.
 
-@ |parse-kit <- T| reads in the kit |T| from I6-format source, converts it to
-inter in a very basic way (creating many splats), and merges it with the
-repository. Splats are the unhappiest of inter statements, simply including
-verbatim snippets of Inform 6 code.
+@ |detect-indirect-calls|.
+Handles an edge case in linking where a function call in one compilation unit,
+e.g., |X(1)|, turned out more complicated because |X|, defined in another
+compilation unit, was a variable holding the address of a function, and not
+as expected the name of a specific function.
 
-@ |parse-linked-matter| examines the splats produced by merging and annotates
-them by what they seem to want to do. For example,
+For the implementation, see //pipeline: Detect Indirect Calls Stage//.
+
+@ |eliminate-redundant-labels|.
+Performs peephole optimisation on functions to remove all labels which are
+declared but can never be jumped to. At the end of this stage, all labels
+inside functions are targets of some branch, either by |inv !jump| or in
+assembly language.
+
+For the implementation, see //pipeline: Eliminate Redundant Labels Stage//.
+
+@ |eliminate-redundant-matter|.
+Works through the dependency graph of the Inter tree to find packages which
+are never needed (such as functions never called), and remove them, thus
+making the final executable smaller.
+
+Note that this is experimental, does not yet properly work, and is not used
+in the built-in |compile| pipeline.
+
+For the implementation, see //pipeline: Eliminate Redundant Matter Stage//.
+
+@ |eliminate-redundant-operations|.
+Performs peephole optimisation on functions to remove arithmetic or logical
+operations which can be proved to have neither a direct effect nor any
+side-effect: for example, performing |x + 0| rather than just evaluating |x|.
+
+For the implementation, see //pipeline: Eliminate Redundant Operations Stage//.
+
+@ |generate [FORMAT] -> [DESTINATION]|.
+Produces "final code" in some format, writing it to an external file specified
+as the destination. If not given, the format will be the one chosen by the
+//supervisor// module. 
+
+Note that the special destination |*log| writes to the debugging log rather
+than to some other external file.
+
+The current list of valid formats is: |inform6|, |c|, |binary|, |text|, |inventory|.
+Of these |binary| and |text| are faithful, direct representations of Inter trees;
+|inventory| is a human-readable summary of the contents; but the others are
+genuine conversions to code which can be run through other compilers to
+make executable programs.
+
+For the implementation, see //final: Code Generation//.
+
+@ |load-binary-kits|.
+Kits are libraries of Inter code which support the operation of Inform programs
+at runtime. When "built" (using //inter// with the |build-kit| pipeline), a
+kit provides a binary Inter file of code for each possible architecture. This
+stage gathers up all needed kits, and loads them into the current tree, thus
+considerably expanding it.
+
+Note that the list of "needed" kits has to be specified in advance of the pipeline
+being run. For Inform compilations, this is handled automatically by the
+//supervisor// module, but it can also be done via the command line.
+
+For the implementation, see //pipeline: Load Binary Kits Stage//.
+
+@ |load-kit-source <- [SOURCE]|.
+Reads a file of Inform 6-syntax source code and adds the resulting material to
+the Inter tree in the form of a series of "splat" nodes, one for each statement
+or directive. Those won't be much use as they stand, but see |compile-splats|.
+
+For the implementation, see //pipeline: Parsing Stages//.
+
+@ |make-identifiers-unique|.
+Ensures that symbols marked as needing to be unique will be translated, during
+any use of |generate|, to identifiers which are all different from each other
+across the entire tree. (In effect, this stage is needed because Inter has
+private namespaces within packages, whereas the languages we are transpiling to --
+to some extent C, but certainly Inform 6 -- have a single global namespace,
+where collisions of identifiers would be very unfortunate.)
+
+At the end of this stage, no symbol still has the |MAKE_NAME_UNIQUE| flag.
+
+For the implementation, see //pipeline: Make Identifiers Unique Stage//.
+
+@ |make-synoptic-module|.
+The synoptic module is a top-level section of material in the Inter tree which
+contains functions and arrays which index or otherwise gather up material
+ranging across all other modules. For example, each module originally presents
+itself with its own pieces of literal text, but the synoptic module then
+collates all of those together, sorted and de-duplicated.
+
+For the implementation, see //pipeline: Make Synoptic Module Stage//.
+
+@ |move <- LOCATION|.
+This moves a branch of one Inter tree to a position in another one, reconciling
+the necessary symbol dependencies. For example, |move 1 <- 3:/main/my_fn|
+moves the package |/main/my_fn| in tree 3 to the same position in tree 1.
+Note that this is a move, not a copy, and is as fast an operation as we can
+make it.
+
+This stage is not used in the regular Inform pipelines, but exists to assist
+testing of the so-called "transmigration" process, which powers |load-binary-kits|
+(see above).
+
+For the implementation, see //pipeline: Read, Move, Wipe, Stop Stages//.
+
+@ |new|.
+A completely empty Inter tree is not very useful. |new| adds the very basic
+definitions needed, and gives it a |/main| package.
+
+For the implementation, see //pipeline: New Stage//.
+
+@ |optionally-generate [FORMAT] -> DESTINATION|.
+This is identical to |generate| except that if the DESTINATION is given as
+a variable which does not exist then no error is produced, and nothing is done.
+
+For the implementation, see //final: Code Generation//.
+
+@ |parse-insertions|.
+This looks for |LINK_IST| nodes in the tree, a small number of which may have
+been created by the //inform7// compiler in response to uses of |Include (- ... -)|.
+These can hold arbitrarily long runs of Inform 6-syntax source code, and what
+|parse-insertions| does is to break then up into splats, one for each statement
+or directive. Those won't be much use as they stand, but see |compile-splats|.
+
+When this completes, no |LINK_IST| nodes remain in the tree.
+
+For the implementation, see //pipeline: Parsing Stages//.
+
+@ |read <- SOURCE|.
+Copies the contents of the SOURCE file to be the new contents of the tree.
+The file must be an Inter file, but can be in either binary or textual format.
+
+The special source |*memory| can be used if we already have a tree set up in
+slot 0; this is a device used by the //supervisor// when managing an Inform
+compilation, because //inform7// will already have made an Inter tree in
+memory, and it would be inefficient to save this out to the file system and
+then read it in again.
+
+For the implementation, see //pipeline: Read, Move, Wipe, Stop Stages//.
+
+@ |reconcile-verbs|.
+Looks for clashes between any verbs (i.e., command parser imperatives like
+PURLOIN or LOOK) which are created in different compilation units. For example,
+if the main source text creates a verb called ABSTRACT, which clashes with the
+completely different command ABSTRACT defined in |CommandParserKit| for debugging
+purposes, then how is the player to differentiate these? The |reconcile-verbs|
+stage inserts |!| characters in the kit definitions where such clashes occur;
+thus ABSTRACT would be the source-text-defined command, and !ABSTRACT the
+kit-defined one.
+
+At the end of this stage, all command parser verbs have distinct textual forms.
+
+For the implementation, see //pipeline: Reconcile Verbs Stage//.
+
+@ |resolve-conditional-compilation|.
+Looks for splats arising from Inform 6-syntax conditional compilation directives
+such as |#ifdef|, |#ifndef|, |#endif|; it then detects whether the relevant
+symbols are defined, or looks at their values, and deletes sections of code not
+to be compiled. At the end of this stage, there are no conditional compilation
+splats left in the tree. For example:
 = (text as Inter)
-	splat &"Global nitwit = 2;\n"
-=
-is recognised as an Inform 6 variable declaration, and annotated thus:
-= (text as Inter)
-	splat GLOBAL &"Global nitwit = 2;\n"
-=
-@ |resolve-conditional-compilation| looks for splats arising from Inform 6
-conditional compilation directives such as |#ifdef|, |#ifndef|, |#endif|;
-it then detects whether the relevant symbols are defined, or looks at their
-values, and deletes sections of code not to be compiled. At the end of this
-stage, there are no conditional compilation splats left in the repository.
-For example:
-= (text as Inter)
-	constant MAGIC K_number = 16339
-	splat IFTRUE &"#iftrue MAGIC == 16339;\n"
+	constant MAGIC K_number = 12345
+	splat IFTRUE &"#iftrue MAGIC == 12345;\n"
 	constant WIZARD K_number = 5
 	splat IFNOT &"#ifnot;\n"
 	constant MUGGLE K_number = 0
@@ -228,65 +367,31 @@ For example:
 =
 is resolved to:
 = (text as Inter)
-	constant MAGIC K_number = 16339
+	constant MAGIC K_number = 12345
 	constant WIZARD K_number = 5
 =
-@ |assimilate| aims to convert all remaining splats in the repository into
-higher-level inter statements. For example,
-= (text as Inter)
-	splat STUB &"#Stub Peach 0;\n"
-	splat ATTRIBUTE &"Attribute marmorial;\n"
-=
-becomes:
-= (text as Inter)
-	constant Peach K_unchecked_function = Peach_B __assimilated=1
-	property marmorial K_truth_state __assimilated=1 __attribute=1 __either_or=1
-=
-At the end of this stage, there should be no splats left in the repository,
-and the linking process is complete.
-=
-@ |make-identifiers-unique| looks for symbols marked with the |MAKE_NAME_UNIQUE|
-flag (represented in textual form by an asterisk after its name), This flag
-means that Inform wants the symbol name to be globally unique in the repository.
-For example, if Inform generates the symbol name |fruit*|, it's really telling
-the code generator that it eventually wants this to have a name which won't
-collide with anything else.
 
-What |make-identifiers-unique| does is to append |_U1|, |_U2|, ... to such
-names across the repository. Thus |fruit*| might become |fruit_U176|, and it
-is guaranteed that no other symbol has the same name.
+For the implementation, see //pipeline: Resolve Conditional Compilation Stage//.
 
-This stage is needed because whereas the inter language has namespces, so
-that the same name can mean different things in different parts of the
-program, Inform 6 (mostly) does not. There cannot be two functions with the
-same name in any I6 program, for example.
+@ |shorten-wiring|.
+Wiring is the process by which symbols in one package can refer to definitions
+in another one; we say S is wired to T if S in one package refers to the meaning
+defined by T is another one. The linking process can result in extended chains
+of wiring, with A wired to B which is wired to C which... and so on; the
+|shorten-wiring| stage cuts out those intermediate links so that if a symbol
+S is wired to T then T is not wired to anything else.
 
-At the end of this stage, no symbol still has the |MAKE_NAME_UNIQUE| flag.
+For the implementation, see //pipeline: Shorten Wiring Stage//.
 
-@ |reconcile-verbs| is a short stage looking for clashes between any verbs (in
-the parser interactive fiction sense) which have been assimilated from the
-template, and verbs which have been defined in the main source text. For
-example, suppose the source creates the command verb "abstract": this would
-collide with the command meta-verb "abstract", intended for debugging, which
-appears in the template. What this stage does is to detect such problems,
-and if it finds one, to prefix the template verb with |!|. Thus we would end
-up with two command verbs: |abstract|, with its source text meaning, and
-|!abstract|, with its template meaning.
-
-At the end of this stage, all parser verbs have distinct textual forms.
-
-@ |eliminate-redundant-code| deletes all packages which Inter can prove
-will not be used in the final code generated from the repository. For
-example, functions never called, or arrays never referred to, are deleted.
-
-@ |eliminate-redundant-labels| performs peephole optimisation on all of
-the functions in the repository to remove all labels which are declared
-but can never be jumped to.
-
-At the end of this stage, all labels inside functions are targets of some
-branch, either by |inv !jump| or in assembly language.
-
-@ The special stage |stop| halts processing of the pipeline midway. At present
+@ |stop|.
+The special stage |stop| halts processing of the pipeline midway. At present
 this is only useful for making experimental edits to pipeline descriptions
 to see what just the first half does, without deleting the second half of
 the description.
+
+For the implementation, see //pipeline: Read, Move, Wipe, Stop Stages//.
+
+@ |wipe|.
+Empties a tree slot, freeing it up to be used again.
+
+For the implementation, see //pipeline: Read, Move, Wipe, Stop Stages//.

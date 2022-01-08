@@ -16,7 +16,7 @@ thing as Inform 6 code in an Inweb-style literate programming notation.
 =
 void ParsingStages::create_pipeline_stage(void) {
 	ParsingPipelines::new_stage(I"load-kit-source", ParsingStages::run_load_kit_source,
-		TEMPLATE_FILE_STAGE_ARG, TRUE);	
+		KIT_STAGE_ARG, TRUE);	
 	ParsingPipelines::new_stage(I"parse-insertions", ParsingStages::run_parse_insertions,
 		NO_STAGE_ARG, FALSE);
 }
@@ -29,7 +29,7 @@ here, since this is not part of the Inform 7 compilation pipeline.
 
 =
 int ParsingStages::run_load_kit_source(pipeline_step *step) {
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	inter_package *main_package = Site::main_package_if_it_exists(I);
 	if (main_package) @<Create a module to hold the Inter read in from this kit@>;
 	simple_tangle_docket docket;
@@ -68,7 +68,7 @@ it from there.
 
 =
 int ParsingStages::run_parse_insertions(pipeline_step *step) {
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
 	InterTree::traverse(I, ParsingStages::visit_insertions, &docket, NULL, LINK_IST);

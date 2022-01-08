@@ -15,8 +15,8 @@ void SimpleStages::create_pipeline_stages(void) {
 =
 int SimpleStages::run_read_stage(pipeline_step *step) {
 	filename *F = step->ephemera.parsed_filename;
-	if (Inter::Binary::test_file(F)) Inter::Binary::read(step->ephemera.repository, F);
-	else Inter::Textual::read(step->ephemera.repository, F);
+	if (Inter::Binary::test_file(F)) Inter::Binary::read(step->ephemera.tree, F);
+	else Inter::Textual::read(step->ephemera.tree, F);
 	return TRUE;
 }
 
@@ -44,7 +44,7 @@ int SimpleStages::run_move_stage(pipeline_step *step) {
 		return FALSE;
 	}
 	Regexp::dispose_of(&mr);
-	Inter::Transmigration::move(pack, Site::main_package(step->ephemera.repository), FALSE);
+	Inter::Transmigration::move(pack, Site::main_package(step->ephemera.tree), FALSE);
 	return TRUE;
 }
 

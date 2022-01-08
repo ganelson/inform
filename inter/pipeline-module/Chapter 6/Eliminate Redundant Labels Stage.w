@@ -19,7 +19,7 @@ void EliminateRedundantLabelsStage::create_pipeline_stage(void) {
 int redundant_labels_removed = 0;
 int EliminateRedundantLabelsStage::run(pipeline_step *step) {
 	redundant_labels_removed = 0;
-	InterTree::traverse(step->ephemera.repository,
+	InterTree::traverse(step->ephemera.tree,
 		EliminateRedundantLabelsStage::visitor, NULL, NULL, PACKAGE_IST);
 	if (redundant_labels_removed > 0)
 		LOG("%d redundant label(s) removed\n", redundant_labels_removed);

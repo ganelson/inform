@@ -51,7 +51,7 @@ int LoadBinaryKitsStage::run(pipeline_step *step) {
 		@<Load the Inter for the kit into the sidecar@>;
 		@<Migrate the bulk of the code from the sidecar to the main tree@>;
 	}
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	Wiring::connect_plugs_to_sockets(I);
 	return TRUE;
 }
@@ -82,4 +82,4 @@ of the sidecar and put it into the main tree.
 		internal_error("unable to find attachment point package");
 	}
 	Inter::Transmigration::move(pack,
-		Site::main_package(step->ephemera.repository), FALSE);	
+		Site::main_package(step->ephemera.tree), FALSE);	

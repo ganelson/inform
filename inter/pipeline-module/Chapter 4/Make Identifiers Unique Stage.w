@@ -42,7 +42,7 @@ void MakeIdentifiersUniqueStage::create_pipeline_stage(void) {
 }
 
 int MakeIdentifiersUniqueStage::run_pipeline_stage(pipeline_step *step) {
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	dictionary *D = Dictionaries::new(INITIAL_INTER_SYMBOLS_ID_RANGE, FALSE);
 	InterTree::traverse(I, MakeIdentifiersUniqueStage::visitor, D, NULL, 0);
 	return TRUE;

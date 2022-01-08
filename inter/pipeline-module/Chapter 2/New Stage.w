@@ -1,6 +1,6 @@
 [NewStage::] New Stage.
 
-This stage takes an empty (or wiped) repository and equips it with just the
+This stage takes an empty (or wiped) tree and equips it with just the
 absolute basics, so that it is ready to have substantive material added
 at a later stage.
 
@@ -15,7 +15,7 @@ int NewStage::run(pipeline_step *step) {
 	int Z = Architectures::is_16_bit(current_architecture);
 	int D = Architectures::debug_enabled(current_architecture);
 
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	@<Make the main package@>;
 	@<Add another few package types which we will need when linking@>;
 

@@ -22,7 +22,7 @@ typedef struct plug_inspection_state {
 } plug_inspection_state;
 
 int ShortenWiringStage::run(pipeline_step *step) {
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	@<Shorten the wiring and report loose plugs@>;
  	inter_package *connectors = Site::connectors_package(I);
  	if (connectors) @<Remove the now unnecessary plugs and sockets@>;

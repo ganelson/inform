@@ -16,7 +16,7 @@ void MakeSynopticModuleStage::create_pipeline_stage(void) {
 }
 
 int MakeSynopticModuleStage::run(pipeline_step *step) {
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	tree_inventory *inv = MakeSynopticModuleStage::take_inventory_cached(I);
 
 	SynopticHierarchy::establish(I); /* in case this has not already been done */

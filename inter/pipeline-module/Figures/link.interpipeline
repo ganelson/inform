@@ -1,0 +1,6 @@
+load-binary-kits
+make-synoptic-module
+shorten-wiring
+detect-indirect-calls
+make-identifiers-unique
+reconcile-verbs

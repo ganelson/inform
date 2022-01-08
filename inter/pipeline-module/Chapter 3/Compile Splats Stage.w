@@ -40,7 +40,7 @@ int CompileSplatsStage::run(pipeline_step *step) {
 	}
 	compile_splats_state css;
 	@<Initialise the CS state@>;
-	inter_tree *I = step->ephemera.repository;
+	inter_tree *I = step->ephemera.tree;
 	InterTree::traverse(I, CompileSplatsStage::visitor1, &css, NULL, SPLAT_IST);
 	InterTree::traverse(I, CompileSplatsStage::visitor2, &css, NULL, SPLAT_IST);
 	CompileSplatsStage::function_bodies(&css, I);
