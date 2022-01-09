@@ -3,11 +3,6 @@
 
 @
 
-The maximum here is beyond plenty: it's not the maximum hierarchical depth
-of the Inter output, it's the maximum number of times that Inform interrupts
-itself during compilation.
-
-@d MAX_PACKAGING_ENTRY_DEPTH 128
 
 @d MAX_CIP_STACK_SIZE 2
 
@@ -16,38 +11,23 @@ typedef struct building_site {
 	struct inter_package *main_package;
 	struct inter_package *connectors_package;
 	struct inter_package *assimilation_package;
-	struct inter_symbol *opcodes_set[MAX_BIPS];
 	struct inter_bookmark pragmas_bookmark;
 	struct inter_bookmark package_types_bookmark;
-	struct inter_bookmark holdings_bookmark;
 	struct inter_bookmark veneer_bookmark;
 	struct inter_bookmark begin_bookmark;
 	struct inter_bookmark locals_bookmark;
 	struct inter_bookmark code_bookmark;
-	struct dictionary *modules_indexed_by_name;
 	struct package_request *main_pr;
 	struct package_request *connectors_pr;
-	struct package_request *texts_pr;
 	struct package_request *veneer_pr;
 	struct inter_package *current_inter_routine;
-	struct packaging_state current_state;
 	struct code_insertion_point cip_stack[MAX_CIP_STACK_SIZE];
 	int cip_sp;
-	struct inter_bookmark packaging_entry_stack[MAX_PACKAGING_ENTRY_DEPTH];
-	int packaging_entry_sp;
-	struct dictionary *hls_indexed_by_name;
-	#ifndef NO_DEFINED_HL_VALUES
-	#define NO_DEFINED_HL_VALUES 1
-	#endif
-	struct hierarchy_location *hls_indexed_by_id[NO_DEFINED_HL_VALUES];
-	#ifndef NO_DEFINED_HAP_VALUES
-	#define NO_DEFINED_HAP_VALUES 1
-	#endif
-	struct hierarchy_attachment_point *haps_indexed_by_id[NO_DEFINED_HAP_VALUES];
-	#ifndef NO_DEFINED_HMD_VALUES
-	#define NO_DEFINED_HMD_VALUES 1
-	#endif
-	struct hierarchy_metadatum *hmds_indexed_by_id[NO_DEFINED_HMD_VALUES];
+
+	struct site_packaging_data spdata;
+
+	struct inter_symbol *opcodes_set[MAX_BIPS];
+
 	struct inter_symbol *veneer_symbols[MAX_VSYMBS];
 	struct text_stream *veneer_symbol_names[MAX_VSYMBS];
 	struct text_stream *veneer_symbol_translations[MAX_VSYMBS];
@@ -63,29 +43,21 @@ void Site::clear(inter_tree *I) {
 	for (int i=0; i<MAX_BIPS; i++) B->opcodes_set[i] = NULL;
 	B->pragmas_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->package_types_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
-	B->holdings_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->veneer_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->begin_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->locals_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->code_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
-	B->modules_indexed_by_name = NULL;
 	B->main_pr = NULL;
 	B->connectors_pr = NULL;
 	B->veneer_pr = NULL;
 	B->current_inter_routine = NULL;
-	B->current_state = Packaging::stateless();
 	B->cip_sp = 0;
-	B->packaging_entry_sp = 0;
-	for (int i=0; i<NO_DEFINED_HL_VALUES; i++) B->hls_indexed_by_id[i] = NULL;
-	B->hls_indexed_by_name = Dictionaries::new(512, FALSE);
-	for (int i=0; i<NO_DEFINED_HAP_VALUES; i++) B->haps_indexed_by_id[i] = NULL;
-	for (int i=0; i<NO_DEFINED_HMD_VALUES; i++) B->hmds_indexed_by_id[i] = NULL;
 	B->veneer_symbols_indexed_by_name = Dictionaries::new(512, FALSE);
 	for (int i=0; i<MAX_VSYMBS; i++) B->veneer_symbols[i] = NULL;
 	for (int i=0; i<MAX_VSYMBS; i++) B->veneer_symbol_names[i] = NULL;
 	for (int i=0; i<MAX_VSYMBS; i++) B->veneer_symbol_translations[i] = NULL;
 	Veneer::create_indexes(I);
-	Packaging::initialise_state(I);
+	Packaging::clear_pdata(I);
 }
 
 inter_bookmark *Site::pragmas(inter_tree *I) {
@@ -99,12 +71,6 @@ inter_bookmark *Site::package_types(inter_tree *I) {
 }
 void Site::set_package_types(inter_tree *I, inter_bookmark IBM) {
 	I->site.package_types_bookmark = IBM;
-}
-inter_bookmark *Site::holdings(inter_tree *I) {
-	return &(I->site.holdings_bookmark);
-}
-void Site::set_holdings(inter_tree *I, inter_bookmark IBM) {
-	I->site.holdings_bookmark = IBM;
 }
 inter_bookmark *Site::begin(inter_tree *I) {
 	return &(I->site.begin_bookmark);
@@ -158,6 +124,17 @@ inter_package *Site::connectors_package(inter_tree *I) {
 	return NULL;
 }
 
+inter_package *Site::ensure_connectors_package(inter_tree *I) {
+	if (I == NULL) internal_error("no tree for connectors");
+	inter_package *connectors = Site::connectors_package(I);
+	if (connectors == NULL) {
+		connectors = Site::make_linkage_package(I, I"connectors");
+		Site::set_connectors_package(I, connectors);
+		Inter::Packages::make_linklike(connectors);
+	}
+	return connectors;
+}
+
 inter_package *Site::make_linkage_package(inter_tree *I, text_stream *name) {
 	inter_package *P = Inter::Packages::by_name(Site::main_package(I), name);
 	if (P == NULL) {
@@ -205,13 +182,6 @@ inter_package *Site::ensure_assimilation_package(inter_tree *I, inter_symbol *pl
 void Site::set_assimilation_package(inter_tree *I, inter_package *M) {
 	if (I == NULL) internal_error("no tree"); 
 	I->site.assimilation_package = M;
-}
-
-dictionary *Site::modules_dictionary(inter_tree *I) {
-	if (I->site.modules_indexed_by_name == NULL) {
-		I->site.modules_indexed_by_name = Dictionaries::new(512, FALSE);
-	}
-	return I->site.modules_indexed_by_name;
 }
 
 package_request *Site::main_request(inter_tree *I) {

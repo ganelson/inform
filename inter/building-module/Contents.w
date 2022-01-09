@@ -4,6 +4,9 @@ Purpose: An intermediate layer for building code in Inter.
 Language: InC
 Licence: Artistic License 2.0
 
+Preliminaries
+	What This Module Does
+
 Chapter 1: Architecture
 	Building Module
 	Building Site

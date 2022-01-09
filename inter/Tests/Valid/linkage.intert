@@ -10,7 +10,7 @@ package main _plain
 	package connectors _linkage
 		symbol plug misc faraway --? /main/template/timbuktu
 		symbol plug misc distant --? /main/template/ultima/thule
-		symbol socket misc gamma --> /main/sub/subsub/C_gamma
+		symbol external misc gamma --> /main/sub/subsub/C_gamma
 	package sub _plain
 		symbol public misc C_beta
 		symbol external misc C_gamma --> /main/sub/subsub/C_gamma

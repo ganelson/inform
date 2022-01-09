@@ -1,7 +1,6 @@
 read <- *in
-parse-linked-matter
+parse-insertions
 resolve-conditional-compilation
-assimilate
-resolve-external-symbols
+compile-splats
 detect-indirect-calls
 generate inform6 -> *out

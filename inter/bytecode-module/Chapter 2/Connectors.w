@@ -97,7 +97,7 @@ void Wiring::convert_to_socket(inter_symbol *S, inter_symbol *to) {
 
 int unique_plug_number = 1;
 inter_symbol *Wiring::plug(inter_tree *I, text_stream *wanted) {
-	inter_package *connectors = Wiring::connectors_package(I);
+	inter_package *connectors = Site::ensure_connectors_package(I);
 	TEMPORARY_TEXT(PN)
 	WRITE_TO(PN, "plug_%05d", unique_plug_number++);
 	inter_symbol *plug = InterSymbolsTables::create_with_unique_name(
@@ -109,23 +109,12 @@ inter_symbol *Wiring::plug(inter_tree *I, text_stream *wanted) {
 }
 
 inter_symbol *Wiring::socket(inter_tree *I, text_stream *socket_name, inter_symbol *to) {
-	inter_package *connectors = Wiring::connectors_package(I);
+	inter_package *connectors = Site::ensure_connectors_package(I);
 	inter_symbol *socket = InterSymbolsTables::create_with_unique_name(
 		Inter::Packages::scope(connectors), socket_name);
 	Wiring::convert_to_socket(socket, to);
 	LOGIF(INTER_CONNECTORS, "Socket I%d: $3 wired to $3\n", I->allocation_id, socket, to);
 	return socket;
-}
-
-inter_package *Wiring::connectors_package(inter_tree *I) {
-	if (I == NULL) internal_error("no tree for connectors");
-	inter_package *connectors = Site::connectors_package(I);
-	if (connectors == NULL) {
-		connectors = Site::make_linkage_package(I, I"connectors");
-		Site::set_connectors_package(I, connectors);
-		Inter::Packages::make_linklike(connectors);
-	}
-	return connectors;
 }
 
 inter_symbol *Wiring::find_socket(inter_tree *I, text_stream *identifier) {

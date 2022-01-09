@@ -65,7 +65,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">building</a></li><li><a href="index.html#1">Chapter 1: Architecture</a></li><li><b>Building Module</b></li></ul></div>
 <p class="purpose">Setting up the use of this module.</p>
 
-<ul class="toc"><li><a href="1-bm.html#SP1">&#167;1. Introduction</a></li><li><a href="1-bm.html#SP2">&#167;2. Setting up the memory manager</a></li><li><a href="1-bm.html#SP4">&#167;4. The beginning</a></li><li><a href="1-bm.html#SP5">&#167;5. The end</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="1-bm.html#SP1">&#167;1. Introduction</a></li><li><a href="1-bm.html#SP2">&#167;2. Setting up the memory manager</a></li><li><a href="1-bm.html#SP3">&#167;3. The beginning</a></li><li><a href="1-bm.html#SP4">&#167;4. The end</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b></p>
 
@@ -86,9 +86,6 @@
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inter_schema_node_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inter_schema_token_CLASS</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>With allocation functions:
-</p>
-
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">hierarchy_location</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">hierarchy_attachment_point</span><span class="plain-syntax">)</span>
@@ -107,71 +104,54 @@
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">explicit_iname</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_name</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">#</span><span class="identifier-syntax">endif</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The beginning. </b>(The client doesn't need to call the start and end routines, because the
-foundation module does that automatically.)
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BuildingModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Register this module's memory allocation reasons</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Register this module's stream writers</span><span class="named-paragraph-number">4.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log aspects</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP4_5" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log writers</span><span class="named-paragraph-number">4.5</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP4_6" class="named-paragraph-link"><span class="named-paragraph">Register this module's command line switches</span><span class="named-paragraph-number">4.6</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP4_1" class="paragraph-anchor"></a><b>&#167;4.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's memory allocation reasons</span><span class="named-paragraph-number">4.1</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's stream writers</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'n'</span><span class="plain-syntax">, &amp;</span><a href="1-in.html#SP3" class="function-link"><span class="function-syntax">InterNames::writer</span></a><span class="plain-syntax">);</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. The beginning. </b></p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">SCHEMA_COMPILATION_DA</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">SCHEMA_COMPILATION_DETAILS_DA</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">PACKAGING_DA</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log aspects</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BuildingModule::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Register this module's stream writers</span><span class="named-paragraph-number">3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP3_2" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP3_3" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log writers</span><span class="named-paragraph-number">3.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's stream writers</span><span class="named-paragraph-number">3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">SCHEMA_COMPILATION_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"schema compilation"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">SCHEMA_COMPILATION_DETAILS_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"schema compilation details"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">PACKAGING_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"packaging"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'n'</span><span class="plain-syntax">, &amp;</span><a href="1-in.html#SP3" class="function-link"><span class="function-syntax">InterNames::writer</span></a><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_5" class="paragraph-anchor"></a><b>&#167;4.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log writers</span><span class="named-paragraph-number">4.5</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP3">&#167;3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">SCHEMA_COMPILATION_DA</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"schema compilation"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">SCHEMA_COMPILATION_DETAILS_DA</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"schema compilation details"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Log::declare_aspect</span><span class="plain-syntax">(</span><span class="constant-syntax">PACKAGING_DA</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"packaging"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP3">&#167;3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP3_3" class="paragraph-anchor"></a><b>&#167;3.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log writers</span><span class="named-paragraph-number">3.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'1'</span><span class="plain-syntax">, </span><a href="2-is.html#SP16" class="function-link"><span class="function-syntax">InterSchemas::log</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'X'</span><span class="plain-syntax">, </span><a href="1-pck.html#SP3" class="function-link"><span class="function-syntax">Packaging::log</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'X'</span><span class="plain-syntax">, </span><a href="1-pck.html#SP4" class="function-link"><span class="function-syntax">Packaging::log</span></a><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_6" class="paragraph-anchor"></a><b>&#167;4.6.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's command line switches</span><span class="named-paragraph-number">4.6</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ;</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. The end. </b></p>
+<ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP3">&#167;3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. The end. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BuildingModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">1</li><li class="progresscurrent">bm</li><li class="progresssection"><a href="1-bs.html">bs</a></li><li class="progresssection"><a href="1-ip.html">ip</a></li><li class="progresssection"><a href="1-tv.html">tv</a></li><li class="progresssection"><a href="1-hl.html">hl</a></li><li class="progresssection"><a href="1-trn.html">trn</a></li><li class="progresssection"><a href="1-pck.html">pck</a></li><li class="progresssection"><a href="1-pt.html">pt</a></li><li class="progresssection"><a href="1-in.html">in</a></li><li class="progresschapter"><a href="2-is.html">2</a></li><li class="progresschapter"><a href="3-prd.html">3</a></li><li class="progressnext"><a href="1-bs.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="P-wtmd.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresscurrent">bm</li><li class="progresssection"><a href="1-bs.html">bs</a></li><li class="progresssection"><a href="1-ip.html">ip</a></li><li class="progresssection"><a href="1-tv.html">tv</a></li><li class="progresssection"><a href="1-hl.html">hl</a></li><li class="progresssection"><a href="1-trn.html">trn</a></li><li class="progresssection"><a href="1-pck.html">pck</a></li><li class="progresssection"><a href="1-pt.html">pt</a></li><li class="progresssection"><a href="1-in.html">in</a></li><li class="progresschapter"><a href="2-is.html">2</a></li><li class="progresschapter"><a href="3-prd.html">3</a></li><li class="progressnext"><a href="1-bs.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

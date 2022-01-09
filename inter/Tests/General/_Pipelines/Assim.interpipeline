@@ -1,5 +1,5 @@
 read <- *in
-parse-linked-matter
-assimilate
-resolve-external-symbols
+parse-insertions
+resolve-conditional-compilation
+compile-splats
 generate text -> *out

@@ -51,7 +51,7 @@ Total memory consumption was 404027K = 395 MB
      ----  documentation_ref                        1273 objects, 112024 bytes
      ----  inference                                1703 objects, 108992 bytes
      ----  imperative_defn                          1377 objects, 99144 bytes
-     ----  inter_tree                               6 objects, 98496 bytes
+     ----  inter_tree                               6 objects, 98304 bytes
      ----  noun_usage                               2402 objects, 96080 bytes
      ----  anl_entry_array                          2 x 1000 = 2000 objects, 96064 bytes
      ----  preposition                              273 objects, 87360 bytes
@@ -237,7 +237,7 @@ Total memory consumption was 404027K = 395 MB
 
 38.6% was used for memory not allocated for objects:
 
-    20.1%  text stream storage                      83531288 bytes in 547828 claims
+    20.1%  text stream storage                      83531372 bytes in 547828 claims
      4.4%  dictionary storage                       18458624 bytes in 33310 claims
      ----  sorting                                  736 bytes in 3 claims
      1.7%  source text                              7200000 bytes in 3 claims
@@ -255,5 +255,5 @@ Total memory consumption was 404027K = 395 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-19.1% was overhead - 79137560 bytes = 77282K = 75 MB
+19.1% was overhead - 79137752 bytes = 77282K = 75 MB
 

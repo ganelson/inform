@@ -1,4 +1,5 @@
 read <- *in
-parse-linked-matter
+parse-insertions
 resolve-conditional-compilation
+compile-splats
 generate text -> *out

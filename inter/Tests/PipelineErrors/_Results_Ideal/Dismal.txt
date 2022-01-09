@@ -1,10 +1,8 @@
 inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 1: no such stage as 'watch-veronica-mars'
-
 inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 2: no source to right of arrow
 inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 3: no such code generation format as 'lineara'
-
 inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 4: this stage should take a left arrow and a source
 inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 5: this stage should not take a left arrow and a source
 inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 6: no such pipeline variable as '*this'
-
+inter: inter/Tests/PipelineErrors/Dismal.interpipeline, line 6: no such stage as 'assimilate'
 inter: fatal error: pipeline could not be parsed

@@ -184,25 +184,25 @@ hierarchy_location *HierarchyLocations::dat(inter_tree *I, int id, text_stream *
 }
 
 void HierarchyLocations::index(inter_tree *I, hierarchy_location *hl) {
-	if (hl->access_number >= 0) I->site.hls_indexed_by_id[hl->access_number] = hl;
+	if (hl->access_number >= 0) I->site.spdata.hls_indexed_by_id[hl->access_number] = hl;
 	if (hl->requirements.any_package_of_this_type == NULL) {
-		Dictionaries::create(I->site.hls_indexed_by_name, hl->access_name);
-		Dictionaries::write_value(I->site.hls_indexed_by_name, hl->access_name, (void *) hl);
+		Dictionaries::create(I->site.spdata.hls_indexed_by_name, hl->access_name);
+		Dictionaries::write_value(I->site.spdata.hls_indexed_by_name, hl->access_name, (void *) hl);
 	}
 }
 
 inter_name *HierarchyLocations::find(inter_tree *I, int id) {
-	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.hls_indexed_by_id[id] == NULL))
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.spdata.hls_indexed_by_id[id] == NULL))
 		internal_error("bad hl ID");
-	return HierarchyLocations::hl_to_iname(I, I->site.hls_indexed_by_id[id]);
+	return HierarchyLocations::hl_to_iname(I, I->site.spdata.hls_indexed_by_id[id]);
 }
 
 inter_name *HierarchyLocations::find_by_name(inter_tree *I, text_stream *name) {
 	if (Str::len(name) == 0) internal_error("bad hl name");
-	if (Dictionaries::find(I->site.hls_indexed_by_name, name))
+	if (Dictionaries::find(I->site.spdata.hls_indexed_by_name, name))
 		return HierarchyLocations::hl_to_iname(I, 
 			(hierarchy_location *)
-				Dictionaries::read_value(I->site.hls_indexed_by_name, name));
+				Dictionaries::read_value(I->site.spdata.hls_indexed_by_name, name));
 	return NULL;
 }
 
@@ -248,9 +248,9 @@ inter_name *HierarchyLocations::hl_to_iname(inter_tree *I, hierarchy_location *h
 }
 
 inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_request *P, wording W, inter_name *derive_from, int fix, text_stream *imposed_name) {
-	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.hls_indexed_by_id[id] == NULL))
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.spdata.hls_indexed_by_id[id] == NULL))
 		internal_error("bad hl ID");
-	hierarchy_location *hl = I->site.hls_indexed_by_id[id];
+	hierarchy_location *hl = I->site.spdata.hls_indexed_by_id[id];
 	if ((hl->requirements.any_package_of_this_type == NULL) &&
 		(hl->requirements.any_enclosure == FALSE)) internal_error("NRL accessed inappropriately");
 	if (hl->requirements.any_enclosure) {
@@ -305,9 +305,9 @@ inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_r
 
 @ =
 package_request *HierarchyLocations::package_in_package(inter_tree *I, int id, package_request *P) {
-	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.hls_indexed_by_id[id] == NULL))
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.spdata.hls_indexed_by_id[id] == NULL))
 		internal_error("bad hl ID");
-	hierarchy_location *hl = I->site.hls_indexed_by_id[id];
+	hierarchy_location *hl = I->site.spdata.hls_indexed_by_id[id];
 
 	if (P == NULL) internal_error("no superpackage");
 	if (hl->package_type == NULL) internal_error("package_in_package used wrongly");
@@ -334,7 +334,7 @@ typedef struct hierarchy_attachment_point {
 } hierarchy_attachment_point;
 
 void HierarchyLocations::index_ap(inter_tree *I, hierarchy_attachment_point *hap) {
-	if (hap->hap_id >= 0) I->site.haps_indexed_by_id[hap->hap_id] = hap;
+	if (hap->hap_id >= 0) I->site.spdata.haps_indexed_by_id[hap->hap_id] = hap;
 }
 
 hierarchy_attachment_point *HierarchyLocations::att(inter_tree *I, int hap_id, text_stream *iterated_text, text_stream *ptype_name, location_requirement req) {
@@ -349,9 +349,9 @@ hierarchy_attachment_point *HierarchyLocations::att(inter_tree *I, int hap_id, t
 
 #ifdef CORE_MODULE
 package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilation_unit *C, package_request *R, int hap_id) {
-	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES) || (I->site.haps_indexed_by_id[hap_id] == NULL))
+	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES) || (I->site.spdata.haps_indexed_by_id[hap_id] == NULL))
 		internal_error("invalid HAP request");
-	hierarchy_attachment_point *hap = I->site.haps_indexed_by_id[hap_id];
+	hierarchy_attachment_point *hap = I->site.spdata.haps_indexed_by_id[hap_id];
 	if (hap->requirements.must_be_main_source_text) {
 		R = hap->requirements.this_exact_package;
 	} else if (hap->requirements.any_submodule_package_of_this_identity) {

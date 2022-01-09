@@ -3,6 +3,40 @@
 To manage requests to build Inter packages, and then to generate inames within
 them; and to create modules and submodules.
 
+@ The maximum here is beyond plenty: it's not the maximum hierarchical depth
+of the Inter output, it's the maximum number of times that Inform interrupts
+itself during compilation.
+
+@d MAX_PACKAGING_ENTRY_DEPTH 128
+
+=
+typedef struct site_packaging_data {
+	struct packaging_state current_state;
+	struct inter_bookmark packaging_entry_stack[MAX_PACKAGING_ENTRY_DEPTH];
+	int packaging_entry_sp;
+	struct dictionary *hls_indexed_by_name;
+	#ifndef NO_DEFINED_HL_VALUES
+	#define NO_DEFINED_HL_VALUES 1
+	#endif
+	struct hierarchy_location *hls_indexed_by_id[NO_DEFINED_HL_VALUES];
+	#ifndef NO_DEFINED_HAP_VALUES
+	#define NO_DEFINED_HAP_VALUES 1
+	#endif
+	struct hierarchy_attachment_point *haps_indexed_by_id[NO_DEFINED_HAP_VALUES];
+	struct dictionary *modules_indexed_by_name;
+} site_packaging_data;
+
+void Packaging::clear_pdata(inter_tree *I) {
+	building_site *B = &(I->site);
+	B->spdata.current_state = Packaging::stateless();
+	B->spdata.packaging_entry_sp = 0;
+	for (int i=0; i<NO_DEFINED_HL_VALUES; i++) B->spdata.hls_indexed_by_id[i] = NULL;
+	B->spdata.hls_indexed_by_name = Dictionaries::new(512, FALSE);
+	for (int i=0; i<NO_DEFINED_HAP_VALUES; i++) B->spdata.haps_indexed_by_id[i] = NULL;
+	B->spdata.modules_indexed_by_name = NULL;
+	Packaging::initialise_state(I);
+}
+
 @h Package requests.
 In the same way that inames are created as shadows of eventual inter symbols,
 and omly converted into the real thing on demand, "package requests" are
@@ -105,11 +139,11 @@ packaging_state Packaging::stateless(void) {
 
 =
 inter_bookmark *Packaging::at(inter_tree *I) {
-	return I->site.current_state.saved_IRS;
+	return I->site.spdata.current_state.saved_IRS;
 }
 
 package_request *Packaging::enclosure(inter_tree *I) {
-	return I->site.current_state.saved_enclosure;
+	return I->site.spdata.current_state.saved_enclosure;
 }
 
 @ States are intentionally very lightweight, and in particular they contain
@@ -119,15 +153,15 @@ IBM structures.
 
 =
 inter_bookmark *Packaging::push_IRS(inter_tree *I, inter_bookmark IBM) {
-	if (I->site.packaging_entry_sp >= MAX_PACKAGING_ENTRY_DEPTH)
+	if (I->site.spdata.packaging_entry_sp >= MAX_PACKAGING_ENTRY_DEPTH)
 		internal_error("packaging entry too deep");
-	I->site.packaging_entry_stack[I->site.packaging_entry_sp] = IBM;
-	return &(I->site.packaging_entry_stack[I->site.packaging_entry_sp++]);
+	I->site.spdata.packaging_entry_stack[I->site.spdata.packaging_entry_sp] = IBM;
+	return &(I->site.spdata.packaging_entry_stack[I->site.spdata.packaging_entry_sp++]);
 }
 
 void Packaging::pop_IRS(inter_tree *I) {
-	if (I->site.packaging_entry_sp <= 0) internal_error("package stack underflow");
-	I->site.packaging_entry_sp--;
+	if (I->site.spdata.packaging_entry_sp <= 0) internal_error("package stack underflow");
+	I->site.spdata.packaging_entry_sp--;
 }
 
 @ The current state has the following invariant: the IBM part always points to
@@ -138,17 +172,17 @@ very early on, the enclosure is always an enclosing package.)
 
 =
 void Packaging::initialise_state(inter_tree *I) {
-	I->site.current_state.saved_IRS =
+	I->site.spdata.current_state.saved_IRS =
 		Packaging::push_IRS(I, Inter::Bookmarks::at_start_of_this_repository(I));
-	I->site.current_state.saved_enclosure = NULL;
+	I->site.spdata.current_state.saved_enclosure = NULL;
 }
 
 void Packaging::set_state(inter_tree *I, inter_bookmark *to, package_request *PR) {
-	I->site.current_state.saved_IRS = to;
+	I->site.spdata.current_state.saved_IRS = to;
 	while ((PR) && (PR->parent_request) &&
 		(Inter::Symbols::read_annotation(PR->eventual_type, ENCLOSING_IANN) != 1))
 		PR = PR->parent_request;
-	I->site.current_state.saved_enclosure = PR;
+	I->site.spdata.current_state.saved_enclosure = PR;
 }
 
 @h Bubbles.
@@ -202,7 +236,7 @@ void Packaging::outside_all_packages(inter_tree *I) {
 	PackageTypes::get(I, I"_linkage"); // And this the third
 
 	Packaging::enter(Site::main_request(I)); // Which we never exit
-	Site::set_holdings(I, Packaging::bubble(I));
+//	Site::set_holdings(I, Packaging::bubble(I));
 }
 
 @h Entry and exit.
@@ -224,19 +258,19 @@ packaging_state Packaging::enter_home_of(inter_name *N) {
 
 packaging_state Packaging::enter(package_request *R) {
 	LOGIF(PACKAGING, "Entering $X\n", R);
-	packaging_state save = R->for_tree->site.current_state;
+	packaging_state save = R->for_tree->site.spdata.current_state;
 	Packaging::incarnate(R);
 	Packaging::set_state(R->for_tree, &(R->write_position), Packaging::enclosure(R->for_tree));
 	inter_bookmark *bubble = Packaging::push_IRS(R->for_tree, Packaging::bubble(R->for_tree));
 	Packaging::set_state(R->for_tree, bubble, R);
-	LOGIF(PACKAGING, "[%d] Current enclosure is $X\n", R->for_tree->site.packaging_entry_sp, Packaging::enclosure(R->for_tree));
+	LOGIF(PACKAGING, "[%d] Current enclosure is $X\n", R->for_tree->site.spdata.packaging_entry_sp, Packaging::enclosure(R->for_tree));
 	return save;
 }
 
 void Packaging::exit(inter_tree *I, packaging_state save) {
 	Packaging::set_state(I, save.saved_IRS, save.saved_enclosure);
 	Packaging::pop_IRS(I);
-	LOGIF(PACKAGING, "[%d] Back to $X\n", I->site.packaging_entry_sp, Packaging::enclosure(I));
+	LOGIF(PACKAGING, "[%d] Back to $X\n", I->site.spdata.packaging_entry_sp, Packaging::enclosure(I));
 }
 
 @h Incarnation.
@@ -293,17 +327,20 @@ typedef struct module_package {
 } module_package;
 
 module_package *Packaging::get_unit(inter_tree *I, text_stream *name, text_stream *unit_type) {
-	if (Dictionaries::find(Site::modules_dictionary(I), name))
-		return (module_package *) Dictionaries::read_value(Site::modules_dictionary(I), name);
-	
+	if (I->site.spdata.modules_indexed_by_name == NULL) {
+		I->site.spdata.modules_indexed_by_name = Dictionaries::new(512, FALSE);
+	}
+	dictionary *D = I->site.spdata.modules_indexed_by_name;
+	if (Dictionaries::find(D, name))
+		return (module_package *) Dictionaries::read_value(D, name);
 	module_package *new_module = CREATE(module_package);
 	new_module->the_package =
 		Packaging::request(I,
 			InterNames::explicitly_named(name, Site::main_request(I)),
 			PackageTypes::get(I, unit_type));
 	new_module->submodules = NEW_LINKED_LIST(submodule_request);
-	Dictionaries::create(Site::modules_dictionary(I), name);
-	Dictionaries::write_value(Site::modules_dictionary(I), name, (void *) new_module);
+	Dictionaries::create(D, name);
+	Dictionaries::write_value(D, name, (void *) new_module);
 	return new_module;
 }
 
