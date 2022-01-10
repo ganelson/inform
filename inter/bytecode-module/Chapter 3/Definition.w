@@ -100,6 +100,7 @@ void Inter::Defn::create_language(void) {
 	Inter::Ref::define();
 	Inter::Val::define();
 	Inter::Lab::define();
+	Inter::Assembly::define();
 	Inter::Code::define();
 	Inter::Evaluation::define();
 	Inter::Reference::define();

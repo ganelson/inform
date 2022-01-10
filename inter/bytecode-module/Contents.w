@@ -62,6 +62,7 @@ Chapter 5: Code Constructs
 	The Ref Construct
 	The Val Construct
 	The Lab Construct
+	The Assembly Construct
 	The Code Construct
 	The Evaluation Construct
 	The Reference Construct

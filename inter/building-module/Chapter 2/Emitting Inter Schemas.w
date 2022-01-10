@@ -466,7 +466,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 			Produce::val_iname(I, K_value, RTKindDeclarations::iname(K_object));
 			#endif
 			#ifndef CORE_MODULE
-			Produce::val_symbol(I, K_value, Site::veneer_symbol(I, OBJECT_VSYMB));
+			Produce::val_symbol(I, K_value, Veneer::find(I, I"Object", Produce::kind_to_symbol(NULL)));
 			#endif
 		} else internal_error("objectloop without visible variable");
 	}
@@ -506,26 +506,26 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 				break;
 			}
 			case ASM_ARROW_ISTT:
-				Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_ARROW_VSYMB));
+				Produce::assembly_marker(I, ASM_ARROW_ASMMARKER);
 				break;
 			case ASM_SP_ISTT:
-				Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_SP_VSYMB));
+				Produce::assembly_marker(I, ASM_SP_ASMMARKER);
 				break;
 			case ASM_NEGATED_LABEL_ISTT:
 				if (Str::eq(t->material, I"rtrue")) 
-					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_NEG_RTRUE_VSYMB));
+					Produce::assembly_marker(I, ASM_NEG_RTRUE_ASMMARKER);
 				else if (Str::eq(t->material, I"rfalse")) 
-					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_NEG_RFALSE_VSYMB));
+					Produce::assembly_marker(I, ASM_NEG_RFALSE_ASMMARKER);
 				else {
-					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_NEG_VSYMB));
+					Produce::assembly_marker(I, ASM_NEG_ASMMARKER);
 					Produce::lab(I, Produce::reserve_label(I, t->material));
 				}
 				break;
 			case ASM_LABEL_ISTT:
 				if (Str::eq(t->material, I"rtrue")) 
-					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_RTRUE_VSYMB));
+					Produce::assembly_marker(I, ASM_RTRUE_ASMMARKER);
 				else if (Str::eq(t->material, I"rfalse")) 
-					Produce::val_symbol(I, K_value, Site::veneer_symbol(I, ASM_RFALSE_VSYMB));
+					Produce::assembly_marker(I, ASM_RFALSE_ASMMARKER);
 				else Produce::lab(I, Produce::reserve_label(I, t->material));
 				break;
 			case NUMBER_ISTT:

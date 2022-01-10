@@ -14,19 +14,18 @@ typedef struct building_site {
 	struct inter_bookmark pragmas_bookmark;
 	struct inter_bookmark package_types_bookmark;
 	struct inter_bookmark veneer_bookmark;
-	struct inter_bookmark begin_bookmark;
 	struct inter_bookmark locals_bookmark;
 	struct inter_bookmark code_bookmark;
 	struct package_request *main_pr;
 	struct package_request *connectors_pr;
 	struct package_request *veneer_pr;
 	struct inter_package *current_inter_routine;
-	struct code_insertion_point cip_stack[MAX_CIP_STACK_SIZE];
-	int cip_sp;
 
 	struct site_packaging_data spdata;
 
 	struct inter_symbol *opcodes_set[MAX_BIPS];
+
+	struct site_production_data sprdata;
 
 	struct inter_symbol *veneer_symbols[MAX_VSYMBS];
 	struct text_stream *veneer_symbol_names[MAX_VSYMBS];
@@ -44,14 +43,13 @@ void Site::clear(inter_tree *I) {
 	B->pragmas_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->package_types_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->veneer_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
-	B->begin_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	Produce::clear_prdata(I);
 	B->locals_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->code_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->main_pr = NULL;
 	B->connectors_pr = NULL;
 	B->veneer_pr = NULL;
 	B->current_inter_routine = NULL;
-	B->cip_sp = 0;
 	B->veneer_symbols_indexed_by_name = Dictionaries::new(512, FALSE);
 	for (int i=0; i<MAX_VSYMBS; i++) B->veneer_symbols[i] = NULL;
 	for (int i=0; i<MAX_VSYMBS; i++) B->veneer_symbol_names[i] = NULL;
@@ -71,12 +69,6 @@ inter_bookmark *Site::package_types(inter_tree *I) {
 }
 void Site::set_package_types(inter_tree *I, inter_bookmark IBM) {
 	I->site.package_types_bookmark = IBM;
-}
-inter_bookmark *Site::begin(inter_tree *I) {
-	return &(I->site.begin_bookmark);
-}
-void Site::set_begin(inter_tree *I, inter_bookmark IBM) {
-	I->site.begin_bookmark = IBM;
 }
 inter_bookmark *Site::locals(inter_tree *I) {
 	return &(I->site.locals_bookmark);
@@ -212,10 +204,6 @@ package_request *Site::veneer_request(inter_tree *I) {
 inter_bookmark *Site::veneer_bookmark(inter_tree *I) {
 	Site::veneer_request(I);
 	return &(I->site.veneer_bookmark);
-}
-inter_symbol *Site::veneer_symbol(inter_tree *I, int ix) {
-	inter_symbol *symb = Veneer::find_by_index(I, ix, Produce::kind_to_symbol(NULL));
-	return symb;
 }
 
 inter_package *Site::get_cir(inter_tree *I) {

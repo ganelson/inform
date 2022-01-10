@@ -88,7 +88,7 @@ need to.
 
 @<Scan the operands@> =
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
-		if (F->W.data[ID_IFLD] == VAL_IST) {
+/*		if (F->W.data[ID_IFLD] == VAL_IST) {
 			inter_ti val1 = F->W.data[VAL1_VAL_IFLD];
 			inter_ti val2 = F->W.data[VAL2_VAL_IFLD];
 			if (Inter::Symbols::is_stored_in_data(val1, val2)) {
@@ -98,6 +98,14 @@ need to.
 					label_sense = FALSE;
 					continue;
 				}
+
+			}
+		}
+*/
+		if (F->W.data[ID_IFLD] == ASSEMBLY_IST) {
+			if (Inter::Assembly::which_marker(F) == ASM_NEG_ASMMARKER) {
+				label_sense = FALSE;
+				continue;
 			}
 		}
 		if (F->W.data[ID_IFLD] == LAB_IST) {
@@ -158,4 +166,13 @@ void VanillaCode::lab(code_generation *gen, inter_tree_node *P) {
 		InterSymbolsTables::local_symbol_from_id(pack, P->W.data[LABEL_LAB_IFLD]);
 	if (label_s == NULL) internal_error("unknown label in lab in Inter tree");
 	Generators::evaluate_label(gen, label_s->symbol_name);
+}
+
+@ An |assembly| specifies one of a fixed number of special assembly-language
+punctuation marks:
+
+=
+void VanillaCode::assembly(code_generation *gen, inter_tree_node *P) {
+	inter_ti which = Inter::Assembly::which_marker(P);
+	Generators::assembly_marker(gen, which);
 }

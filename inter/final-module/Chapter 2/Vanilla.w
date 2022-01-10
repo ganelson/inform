@@ -96,6 +96,7 @@ void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 		case CAST_IST:          VanillaCode::cast(gen, P); break;
 		case VAL_IST:           VanillaCode::val_or_ref(gen, P, FALSE); break;
 		case REF_IST:           VanillaCode::val_or_ref(gen, P, TRUE); break;
+		case ASSEMBLY_IST:      VanillaCode::assembly(gen, P); break;
 		case LAB_IST:           VanillaCode::lab(gen, P); break;
 
 		case SPLAT_IST:         Vanilla::splat(gen, P); break;

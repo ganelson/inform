@@ -57,10 +57,6 @@ packaging_state Emit::new_packaging_state(void) {
 	return Packaging::stateless();
 }
 
-inter_symbol *Emit::get_veneer_symbol(int id) {
-	return Site::veneer_symbol(Emit::tree(), id);
-}
-
 @h Data as pairs of Inter bytes.
 A single data value is stored in Inter bytecode as two consecutive words:
 see //bytecode// for more on this. This means we sometimes deal with a doublet

@@ -74,7 +74,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">final</a></li><li><a href="index.html#5">Chapter 5: C</a></li><li><b>C Assembly</b></li></ul></div>
 <p class="purpose">The problem of assembly language.</p>
 
-<ul class="toc"><li><a href="5-cas.html#SP1">&#167;1. General implementation</a></li><li><a href="5-cas.html#SP7">&#167;7. call</a></li><li><a href="5-cas.html#SP8">&#167;8. copy</a></li><li><a href="5-cas.html#SP9">&#167;9. aload, aloads, aloadb</a></li><li><a href="5-cas.html#SP10">&#167;10. ushiftr, shiftl</a></li><li><a href="5-cas.html#SP11">&#167;11. jeq, jleu, jnz, jz</a></li><li><a href="5-cas.html#SP12">&#167;12. nop, quit, verify</a></li><li><a href="5-cas.html#SP13">&#167;13. restoreundo, saveundo, hasundo, discardundo</a></li><li><a href="5-cas.html#SP14">&#167;14. restart, restore, save</a></li><li><a href="5-cas.html#SP15">&#167;15. streamchar, streamnum, streamunichar</a></li><li><a href="5-cas.html#SP16">&#167;16. binarysearch</a></li><li><a href="5-cas.html#SP17">&#167;17. mcopy, mzero, malloc, mfree</a></li><li><a href="5-cas.html#SP18">&#167;18. random, setrandom</a></li><li><a href="5-cas.html#SP19">&#167;19. setiosys</a></li><li><a href="5-cas.html#SP20">&#167;20. gestalt</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-cas.html#SP1">&#167;1. General implementation</a></li><li><a href="5-cas.html#SP8">&#167;8. call</a></li><li><a href="5-cas.html#SP9">&#167;9. copy</a></li><li><a href="5-cas.html#SP10">&#167;10. aload, aloads, aloadb</a></li><li><a href="5-cas.html#SP11">&#167;11. ushiftr, shiftl</a></li><li><a href="5-cas.html#SP12">&#167;12. jeq, jleu, jnz, jz</a></li><li><a href="5-cas.html#SP13">&#167;13. nop, quit, verify</a></li><li><a href="5-cas.html#SP14">&#167;14. restoreundo, saveundo, hasundo, discardundo</a></li><li><a href="5-cas.html#SP15">&#167;15. restart, restore, save</a></li><li><a href="5-cas.html#SP16">&#167;16. streamchar, streamnum, streamunichar</a></li><li><a href="5-cas.html#SP17">&#167;17. binarysearch</a></li><li><a href="5-cas.html#SP18">&#167;18. mcopy, mzero, malloc, mfree</a></li><li><a href="5-cas.html#SP19">&#167;19. random, setrandom</a></li><li><a href="5-cas.html#SP20">&#167;20. setiosys</a></li><li><a href="5-cas.html#SP21">&#167;21. gestalt</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. General implementation. </b>This section does just one thing: compiles invocations of assembly-language
 opcodes.
@@ -83,6 +83,7 @@ opcodes.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CAssembly::initialise</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">CAssembly::initialise</span></span>:<br/>Final C - <a href="5-fnc.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gtr</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">gtr</span><span class="plain-syntax">, </span><span class="constant-syntax">INVOKE_OPCODE_MTID</span><span class="plain-syntax">, </span><a href="5-cas.html#SP6" class="function-link"><span class="function-syntax">CAssembly::invoke_opcode</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">gtr</span><span class="plain-syntax">, </span><span class="constant-syntax">ASSEMBLY_MARKER_MTID</span><span class="plain-syntax">, </span><a href="5-cas.html#SP7" class="function-link"><span class="function-syntax">CAssembly::assembly_marker</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">C_generation_assembly_data</span><span class="plain-syntax"> {</span>
@@ -427,7 +428,7 @@ returns an <span class="extract"><span class="extract-syntax">i7word_t</span></s
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">O</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"i7_mgl_sp"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">O</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"sp"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"i7_pull(proc)"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"%S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">O</span><span class="plain-syntax">);</span>
@@ -453,7 +454,7 @@ by attempting to write <span class="extract"><span class="extract-syntax">0</spa
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">O</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"i7_mgl_sp"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">O</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"sp"</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&amp;(proc-&gt;state.tmp[%d])"</span><span class="plain-syntax">, </span><span class="identifier-syntax">operand</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">push_store</span><span class="plain-syntax">[</span><span class="identifier-syntax">operand</span><span class="plain-syntax">] = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">O</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"0"</span><span class="plain-syntax">)) {</span>
@@ -475,7 +476,21 @@ by attempting to write <span class="extract"><span class="extract-syntax">0</spa
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"; i7_push(proc, proc-&gt;state.tmp[%d])"</span><span class="plain-syntax">, </span><span class="identifier-syntax">operand</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cas.html#SP6">&#167;6</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. call. </b>That does everything except to implement the standard set of opcodes, which
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>And where does the special operand <span class="extract"><span class="extract-syntax">sp</span></span> come from? From here:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">CAssembly::assembly_marker</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">CAssembly::assembly_marker</span></span>:<br/><a href="5-cas.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">code_generator</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gtr</span><span class="plain-syntax">, </span><span class="reserved-syntax">code_generation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">gen</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">marker</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax"> = </span><a href="2-cg.html#SP12" class="function-link"><span class="function-syntax">CodeGen::current</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">gen</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">marker</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ASM_SP_ASMMARKER:</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"sp"</span><span class="plain-syntax">); </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">default:</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">STDERR</span><span class="plain-syntax">, </span><span class="string-syntax">"Unsupported assembly marker is '%d'\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">marker</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unsupported assembly marker in C"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. call. </b>That does everything except to implement the standard set of opcodes, which
 must be done with about 60 functions in the C library.
 </p>
 
@@ -505,7 +520,7 @@ address:
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. copy. </b>Though it doesn't look it, this is one of the main ways Glulx assembly language
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. copy. </b>Though it doesn't look it, this is one of the main ways Glulx assembly language
 programs push or pull to the stack &mdash; <span class="extract"><span class="Extracts-extract-syntax">@copy sp x</span></span> pulls the stack to <span class="extract"><span class="Extracts-extract-syntax">x</span></span>;
 <span class="extract"><span class="Extracts-extract-syntax">@copy sp 0</span></span> pops the stack; <span class="extract"><span class="Extracts-extract-syntax">@copy x sp</span></span> pushes <span class="extract"><span class="Extracts-extract-syntax">x</span></span> to the stack. But all of
 that is handled by the general mechanism above.
@@ -521,7 +536,7 @@ that is handled by the general mechanism above.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. aload, aloads, aloadb. </b></p>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. aload, aloads, aloadb. </b></p>
 
 <pre class="Extracts-displayed-code all-displayed-code code-font">
 <span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_aload</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax">);</span>
@@ -543,7 +558,7 @@ that is handled by the general mechanism above.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. ushiftr, shiftl. </b></p>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. ushiftr, shiftl. </b></p>
 
 <pre class="Extracts-displayed-code all-displayed-code code-font">
 <span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_shiftl</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">y</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">z</span><span class="Extracts-plain-syntax">);</span>
@@ -564,7 +579,7 @@ that is handled by the general mechanism above.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. jeq, jleu, jnz, jz. </b>These are branch opcodes and return an <span class="extract"><span class="Extracts-extract-syntax">int</span></span>.
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. jeq, jleu, jnz, jz. </b>These are branch opcodes and return an <span class="extract"><span class="Extracts-extract-syntax">int</span></span>.
 </p>
 
 <p class="commentary">The implementation of <span class="extract"><span class="Extracts-extract-syntax">@jleu</span></span> here is modelled on the one from <span class="extract"><span class="Extracts-extract-syntax">dumb-glulxe</span></span>.
@@ -603,7 +618,7 @@ C as your programming language, but it works.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. nop, quit, verify. </b>There is no real meaning for <span class="extract"><span class="Extracts-extract-syntax">@verify</span></span> in this situation: it's supposed to
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. nop, quit, verify. </b>There is no real meaning for <span class="extract"><span class="Extracts-extract-syntax">@verify</span></span> in this situation: it's supposed to
 check the checksum for the contents of a virtual machine, to protect against
 the (entirely likely) scenario of a floppy disk sector going bad in 1983.
 So we unconditionally store the "okay" result.
@@ -628,7 +643,7 @@ So we unconditionally store the "okay" result.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. restoreundo, saveundo, hasundo, discardundo. </b>This all works, but we do something pretty inelegant to support <span class="extract"><span class="Extracts-extract-syntax">@restoreundo</span></span>:
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. restoreundo, saveundo, hasundo, discardundo. </b>This all works, but we do something pretty inelegant to support <span class="extract"><span class="Extracts-extract-syntax">@restoreundo</span></span>:
 we insert a call to a (presumably kit-based) function called <span class="extract"><span class="Extracts-extract-syntax">DealWithUndo</span></span>,
 provided this exists. This is done because we are unable safely to follow the
 proper Glulx specification. In principle, after a <span class="extract"><span class="Extracts-extract-syntax">@restoreundo</span></span> succeeds,
@@ -682,7 +697,7 @@ from a successful <span class="extract"><span class="Extracts-extract-syntax">@r
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. restart, restore, save. </b>For the moment, at least, we intentionally do not implement these. It seems
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. restart, restore, save. </b>For the moment, at least, we intentionally do not implement these. It seems
 likely that anyone using C to run interactive fiction is doing so in a wider
 framework where saved states will work differently from the traditional model
 of asking the user for a filename and then saving data out to a binary file
@@ -716,7 +731,7 @@ but not so simple to restart execution as if from a clean process start.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. streamchar, streamnum, streamunichar. </b></p>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. streamchar, streamnum, streamunichar. </b></p>
 
 <pre class="Extracts-displayed-code all-displayed-code code-font">
 <span class="Extracts-identifier-syntax">void</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7_opcode_streamnum</span><span class="Extracts-plain-syntax">(</span><span class="Extracts-identifier-syntax">i7process_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">proc</span><span class="Extracts-plain-syntax">, </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">x</span><span class="Extracts-plain-syntax">);</span>
@@ -738,7 +753,7 @@ but not so simple to restart execution as if from a clean process start.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. binarysearch. </b>This is a Grand Imperial Hotel among Glulx opcodes, with 8 operands, only the
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. binarysearch. </b>This is a Grand Imperial Hotel among Glulx opcodes, with 8 operands, only the
 last of which is a store. It performs a binary search on a block of structures
 known to be sorted already. It has a nice general-purpose look but was devised so
 that command verbs could be looked up quickly in dictionary tables when interactive
@@ -828,7 +843,7 @@ But we may as well have the full functionality here.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. mcopy, mzero, malloc, mfree. </b>A Glulx assembly opcode is provided for fast memory copies, which we must
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. mcopy, mzero, malloc, mfree. </b>A Glulx assembly opcode is provided for fast memory copies, which we must
 implement. We're choosing not to implement the Glulx <span class="extract"><span class="Extracts-extract-syntax">@malloc</span></span> or <span class="extract"><span class="Extracts-extract-syntax">@mfree</span></span>
 opcodes for now, but that will surely need to change in due course. (When that
 does change, we will need also to change <span class="extract"><span class="Extracts-extract-syntax">@gestalt</span></span>.)
@@ -866,7 +881,7 @@ does change, we will need also to change <span class="extract"><span class="Extr
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. random, setrandom. </b>Note that the <span class="extract"><span class="Extracts-extract-syntax">random(...)</span></span> function built in to Inform is just a name for the
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. random, setrandom. </b>Note that the <span class="extract"><span class="Extracts-extract-syntax">random(...)</span></span> function built in to Inform is just a name for the
 <span class="extract"><span class="Extracts-extract-syntax">@random</span></span> opcode, so we define that here too.
 </p>
 
@@ -900,7 +915,7 @@ does change, we will need also to change <span class="extract"><span class="Extr
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. setiosys. </b>This opcode in principle allows a story file to select the input-output system
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. setiosys. </b>This opcode in principle allows a story file to select the input-output system
 it will use. But the Inform kits only use system 2, called Glk, and this is the
 only system we support, so we will simply ignore this.
 </p>
@@ -914,7 +929,7 @@ only system we support, so we will simply ignore this.
 <span class="Extracts-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.c.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. gestalt. </b>This opcode allows a story file to ask the Glulx interpreter running it whether
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. gestalt. </b>This opcode allows a story file to ask the Glulx interpreter running it whether
 or not the interpreter can perform certain tasks.
 </p>
 

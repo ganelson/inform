@@ -10,6 +10,7 @@ void I6TargetCode::create_generator(code_generator *gtr) {
 	METHOD_ADD(gtr, INVOKE_PRIMITIVE_MTID, I6TargetCode::invoke_primitive);
 	METHOD_ADD(gtr, INVOKE_FUNCTION_MTID, I6TargetCode::invoke_function);
 	METHOD_ADD(gtr, INVOKE_OPCODE_MTID, I6TargetCode::invoke_opcode);
+	METHOD_ADD(gtr, ASSEMBLY_MARKER_MTID, I6TargetCode::assembly_marker);
 }
 
 @h Functions.
@@ -215,6 +216,22 @@ void I6TargetCode::invoke_opcode(code_generator *gtr, code_generation *gen,
 		Vanilla::node(gen, label);
 	}
 	WRITE(";\n");
+}
+
+void I6TargetCode::assembly_marker(code_generator *gtr, code_generation *gen, inter_ti marker) {
+	text_stream *OUT = CodeGen::current(gen);
+	switch (marker) {
+		case ASM_ARROW_ASMMARKER: WRITE("->"); break;
+		case ASM_SP_ASMMARKER: WRITE("sp"); break;
+		case ASM_RTRUE_ASMMARKER: WRITE("?rtrue"); break;
+		case ASM_RFALSE_ASMMARKER: WRITE("?rfalse"); break;
+		case ASM_NEG_ASMMARKER: WRITE("~"); break;
+		case ASM_NEG_RTRUE_ASMMARKER: WRITE("?~rtrue"); break;
+		case ASM_NEG_RFALSE_ASMMARKER: WRITE("?~rfalse"); break;
+		default:
+			WRITE_TO(STDERR, "Unimplemented assembly marker is '%d'\n", marker);
+			internal_error("unimplemented assembly marker");
+	}
 }
 
 @h Primitives.

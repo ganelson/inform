@@ -246,11 +246,12 @@ void Generators::evaluate_label(code_generation *gen, text_stream *label_name) {
 	VOID_METHOD_CALL(gen->generator, EVALUATE_LABEL_MTID, gen, label_name);
 }
 
-@ The three ways to invoke:
+@ The three ways to invoke (and a doohickey for assembly opcodes):
 
 @e INVOKE_PRIMITIVE_MTID
 @e INVOKE_FUNCTION_MTID
 @e INVOKE_OPCODE_MTID
+@e ASSEMBLY_MARKER_MTID
 
 =
 VOID_METHOD_TYPE(INVOKE_PRIMITIVE_MTID, code_generator *generator, code_generation *gen,
@@ -260,6 +261,8 @@ VOID_METHOD_TYPE(INVOKE_FUNCTION_MTID, code_generator *generator, code_generatio
 VOID_METHOD_TYPE(INVOKE_OPCODE_MTID, code_generator *generator, code_generation *gen,
 	text_stream *opcode, int operand_count, inter_tree_node **operands,
 	inter_tree_node *label, int label_sense)
+VOID_METHOD_TYPE(ASSEMBLY_MARKER_MTID, code_generator *generator, code_generation *gen,
+	inter_ti marker)
 void Generators::invoke_primitive(code_generation *gen, inter_symbol *prim_name,
 	inter_tree_node *P, int void_context) {
 	VOID_METHOD_CALL(gen->generator, INVOKE_PRIMITIVE_MTID, gen, prim_name, P, void_context);
@@ -272,6 +275,9 @@ void Generators::invoke_opcode(code_generation *gen, text_stream *opcode, int op
 	inter_tree_node **operands, inter_tree_node *label, int label_sense) {
 	VOID_METHOD_CALL(gen->generator, INVOKE_OPCODE_MTID, gen, opcode, operand_count,
 		operands, label, label_sense);
+}
+void Generators::assembly_marker(code_generation *gen, inter_ti marker) {
+	VOID_METHOD_CALL(gen->generator, ASSEMBLY_MARKER_MTID, gen, marker);
 }
 
 @

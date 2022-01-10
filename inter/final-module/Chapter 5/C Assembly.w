@@ -9,6 +9,7 @@ opcodes.
 =
 void CAssembly::initialise(code_generator *gtr) {
 	METHOD_ADD(gtr, INVOKE_OPCODE_MTID, CAssembly::invoke_opcode);
+	METHOD_ADD(gtr, ASSEMBLY_MARKER_MTID, CAssembly::assembly_marker);
 }
 
 typedef struct C_generation_assembly_data {
@@ -301,7 +302,7 @@ stack", so if we see that then we compile that to a pull: note that |i7_pull|
 returns an |i7word_t|.
 
 @<Generate a regular operand@> =
-	if (Str::eq(O, I"i7_mgl_sp")) {
+	if (Str::eq(O, I"sp")) {
 		WRITE("i7_pull(proc)");
 	} else {
 		WRITE("%S", O);
@@ -320,7 +321,7 @@ this means "throw the value away". We don't want to incur a C compiler warning
 by attempting to write |0| in a pointer context, so we pass it as |NULL| instead.
 
 @<Generate a store operand@> =
-	if (Str::eq(O, I"i7_mgl_sp")) { 
+	if (Str::eq(O, I"sp")) { 
 		WRITE("&(proc->state.tmp[%d])", operand);
 		push_store[operand] = TRUE;
 	} else if (Str::eq(O, I"0")) {
@@ -335,6 +336,19 @@ by attempting to write |0| in a pointer context, so we pass it as |NULL| instead
 	for (int operand = 1; operand <= operand_count; operand++)
 		if (push_store[operand])
 			WRITE("; i7_push(proc, proc->state.tmp[%d])", operand);
+
+@ And where does the special operand |sp| come from? From here:
+
+=
+void CAssembly::assembly_marker(code_generator *gtr, code_generation *gen, inter_ti marker) {
+	text_stream *OUT = CodeGen::current(gen);
+	switch (marker) {
+		case ASM_SP_ASMMARKER: WRITE("sp"); break;
+		default:
+			WRITE_TO(STDERR, "Unsupported assembly marker is '%d'\n", marker);
+			internal_error("unsupported assembly marker in C");
+	}
+}
 
 @h call.
 That does everything except to implement the standard set of opcodes, which

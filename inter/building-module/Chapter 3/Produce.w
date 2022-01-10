@@ -5,6 +5,18 @@
 @
 
 =
+typedef struct site_production_data {
+	struct inter_bookmark begin_bookmark;
+	struct code_insertion_point cip_stack[MAX_CIP_STACK_SIZE];
+	int cip_sp;
+} site_production_data;
+
+void Produce::clear_prdata(inter_tree *I) {
+	building_site *B = &(I->site);
+	B->sprdata.begin_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	B->sprdata.cip_sp = 0;
+}
+
 void Produce::guard(inter_error_message *ERR) {
 	if ((ERR) && (problem_count == 0)) { Inter::Errors::issue(ERR); internal_error("inter error"); }
 }
@@ -183,10 +195,10 @@ inter_package *Produce::block(inter_tree *I, packaging_state *save, inter_name *
 	Produce::guard(Inter::Code::new(Packaging::at(I),
 		(int) Produce::baseline(Packaging::at(I)) + 1, NULL));
 
-	Site::set_begin(I, Inter::Bookmarks::snapshot(Packaging::at(I)));
-	Inter::Bookmarks::set_placement(Site::begin(I), IMMEDIATELY_AFTER_ICPLACEMENT);
+	I->site.sprdata.begin_bookmark = Inter::Bookmarks::snapshot(Packaging::at(I));
+	Inter::Bookmarks::set_placement(&(I->site.sprdata.begin_bookmark), IMMEDIATELY_AFTER_ICPLACEMENT);
 
-	Site::set_locals(I, *Site::begin(I));
+	Site::set_locals(I, *(&(I->site.sprdata.begin_bookmark)));
 	Inter::Bookmarks::set_placement(Site::locals(I), BEFORE_ICPLACEMENT);
 
 	Site::set_code(I, Inter::Bookmarks::snapshot(Packaging::at(I)));
@@ -219,25 +231,25 @@ int Produce::emitting_routine(inter_tree *I) {
 }
 
 code_insertion_point Produce::begin_position(inter_tree *I) {
-	code_insertion_point cip = Produce::new_cip(I, Site::begin(I));
+	code_insertion_point cip = Produce::new_cip(I, &(I->site.sprdata.begin_bookmark));
 	return cip;
 }
 
 void Produce::push_code_position(inter_tree *I, code_insertion_point cip, inter_bookmark save_ib) {
-	if (I->site.cip_sp >= MAX_CIP_STACK_SIZE) internal_error("CIP overflow");
+	if (I->site.sprdata.cip_sp >= MAX_CIP_STACK_SIZE) internal_error("CIP overflow");
 	cip.saved_bm = save_ib;
-	I->site.cip_stack[I->site.cip_sp++] = cip;
+	I->site.sprdata.cip_stack[I->site.sprdata.cip_sp++] = cip;
 }
 
 int Produce::level(inter_tree *I) {
-	if (I->site.cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	code_insertion_point *cip = &(I->site.cip_stack[I->site.cip_sp-1]);
+	if (I->site.sprdata.cip_sp <= 0) internal_error("CIP level accessed outside routine");
+	code_insertion_point *cip = &(I->site.sprdata.cip_stack[I->site.sprdata.cip_sp-1]);
 	return cip->inter_level;
 }
 
 void Produce::set_level(inter_tree *I, int N) {
-	if (I->site.cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	code_insertion_point *cip = &(I->site.cip_stack[I->site.cip_sp-1]);
+	if (I->site.sprdata.cip_sp <= 0) internal_error("CIP level accessed outside routine");
+	code_insertion_point *cip = &(I->site.sprdata.cip_stack[I->site.sprdata.cip_sp-1]);
 	if (N < 2) {
 		if (problem_count == 0) cip->error_flag = TRUE;
 		N = 2;
@@ -250,15 +262,15 @@ void Produce::set_level(inter_tree *I, int N) {
 }
 
 void Produce::note_level(inter_tree *I, inter_symbol *from) {
-	if (I->site.cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	code_insertion_point *cip = &(I->site.cip_stack[I->site.cip_sp-1]);
+	if (I->site.sprdata.cip_sp <= 0) internal_error("CIP level accessed outside routine");
+	code_insertion_point *cip = &(I->site.sprdata.cip_stack[I->site.sprdata.cip_sp-1]);
 	if (cip->noted_sp >= MAX_NESTED_NOTEWORTHY_LEVELS) return;
 	cip->noted_levels[cip->noted_sp++] = Produce::level(I);
 }
 
 void Produce::to_last_level(inter_tree *I, int delta) {
-	if (I->site.cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	code_insertion_point *cip = &(I->site.cip_stack[I->site.cip_sp-1]);
+	if (I->site.sprdata.cip_sp <= 0) internal_error("CIP level accessed outside routine");
+	code_insertion_point *cip = &(I->site.sprdata.cip_stack[I->site.sprdata.cip_sp-1]);
 	if (cip->noted_sp <= 0) {
 		if (problem_count == 0) cip->error_flag = TRUE;
 	} else {
@@ -267,8 +279,8 @@ void Produce::to_last_level(inter_tree *I, int delta) {
 }
 
 inter_bookmark *Produce::at(inter_tree *I) {
-	if (I->site.cip_sp <= 0) internal_error("CIP level accessed outside routine");
-	return I->site.cip_stack[I->site.cip_sp-1].insertion_bm;
+	if (I->site.sprdata.cip_sp <= 0) internal_error("CIP level accessed outside routine");
+	return I->site.sprdata.cip_stack[I->site.sprdata.cip_sp-1].insertion_bm;
 }
 
 void Produce::down(inter_tree *I) {
@@ -280,12 +292,12 @@ void Produce::up(inter_tree *I) {
 }
 
 void Produce::pop_code_position(inter_tree *I) {
-	if (I->site.cip_sp <= 0) internal_error("CIP underflow");
-	if (I->site.cip_stack[I->site.cip_sp-1].error_flag) {
+	if (I->site.sprdata.cip_sp <= 0) internal_error("CIP underflow");
+	if (I->site.sprdata.cip_stack[I->site.sprdata.cip_sp-1].error_flag) {
 		internal_error("bad inter hierarchy");
 	}
-	*(Packaging::at(I)) = I->site.cip_stack[I->site.cip_sp-1].saved_bm;
-	I->site.cip_sp--;
+	*(Packaging::at(I)) = I->site.sprdata.cip_stack[I->site.sprdata.cip_sp-1].saved_bm;
+	I->site.sprdata.cip_sp--;
 }
 
 void Produce::inv_assembly(inter_tree *I, text_stream *opcode) {
@@ -533,6 +545,10 @@ void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_bookmark *IBM = Packaging::at(I);
 	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), s, &val1, &val2);
 	Produce::ref(I, K, val1, val2);
+}
+
+void Produce::assembly_marker(inter_tree *I, inter_ti which) {
+	Produce::guard(Inter::Assembly::new(Produce::at(I), which, (inter_ti) Produce::level(I), NULL));
 }
 
 inter_symbol *Produce::new_local_symbol(inter_package *rpack, text_stream *name) {

@@ -159,8 +159,9 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_
 		if (C->W.data[0] == SPLAT_IST) continue;
 		if ((C->W.data[0] != INV_IST) && (C->W.data[0] != REF_IST) && (C->W.data[0] != LAB_IST) &&
 			(C->W.data[0] != CODE_IST) && (C->W.data[0] != VAL_IST) && (C->W.data[0] != EVALUATION_IST) &&
-			(C->W.data[0] != REFERENCE_IST) && (C->W.data[0] != CAST_IST) && (C->W.data[0] != SPLAT_IST) && (C->W.data[0] != COMMENT_IST)) {
-			*E = Inode::error(P, I"only inv, ref, cast, splat, lab, code, concatenate and val can be under an inv", NULL);
+			(C->W.data[0] != REFERENCE_IST) && (C->W.data[0] != CAST_IST) && (C->W.data[0] != SPLAT_IST) &&
+			(C->W.data[0] != COMMENT_IST) && (C->W.data[0] != ASSEMBLY_IST)) {
+			*E = Inode::error(P, I"only inv, ref, cast, splat, lab, assembly, code, concatenate and val can be under an inv", NULL);
 			return;
 		}
 		inter_ti cat_as_invoked = Inter::Inv::evaluated_category(C);
@@ -209,6 +210,7 @@ inter_ti Inter::Inv::evaluated_category(inter_tree_node *P) {
 	if (P->W.data[0] == CAST_IST) return VAL_PRIM_CAT;
 	if (P->W.data[0] == LAB_IST) return LAB_PRIM_CAT;
 	if (P->W.data[0] == CODE_IST) return CODE_PRIM_CAT;
+	if (P->W.data[0] == ASSEMBLY_IST) return VAL_PRIM_CAT;
 	if (P->W.data[0] == INV_IST) {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
 		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)
@@ -226,6 +228,7 @@ inter_ti Inter::Inv::operand_category(inter_tree_node *P, int i) {
 	if (P->W.data[0] == REFERENCE_IST) return REF_PRIM_CAT;
 	if (P->W.data[0] == CAST_IST) return VAL_PRIM_CAT;
 	if (P->W.data[0] == LAB_IST) return LAB_PRIM_CAT;
+	if (P->W.data[0] == ASSEMBLY_IST) return VAL_PRIM_CAT;
 	if (P->W.data[0] == INV_IST) {
 		inter_symbol *invokee = Inter::Inv::invokee(P);
 		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)

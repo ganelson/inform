@@ -102,9 +102,23 @@ void Inter::Errors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
 			inter_tree_node *Y = InterTree::parent(X);
 			if (Y == NULL) break;
 			if (m == i) {
-				WRITE("%2d. ", (n-i));
-				if (i == 0) WRITE("** "); else WRITE("   ");
-				Inter::Defn::write_construct_text_allowing_nop(OUT, X);
+				if (i == 0) {
+					inter_tree_node *prev = InterTree::previous(X);
+					if (prev) {
+						WRITE("%2d. -1 ", n);
+						Inter::Defn::write_construct_text_allowing_nop(OUT, prev);
+					}
+					WRITE("%2d. ** ", n);
+					Inter::Defn::write_construct_text_allowing_nop(OUT, X);
+					inter_tree_node *next = InterTree::previous(X);
+					if (next) {
+						WRITE("%2d. +1 ", n);
+						Inter::Defn::write_construct_text_allowing_nop(OUT, next);
+					}
+				} else {
+					WRITE("%2d.    ", (n-i));
+					Inter::Defn::write_construct_text_allowing_nop(OUT, X);
+				}
 				break;
 			}
 			X = Y;

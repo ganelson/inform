@@ -14,19 +14,6 @@
 @e CLASS_VSYMB
 @e OBJECT_VSYMB
 
-@e ASM_ARROW_VSYMB
-@e ASM_SP_VSYMB
-@e ASM_LABEL_VSYMB
-@e ASM_RTRUE_VSYMB
-@e ASM_RFALSE_VSYMB
-@e ASM_NEG_VSYMB
-@e ASM_NEG_RTRUE_VSYMB
-@e ASM_NEG_RFALSE_VSYMB
-
-@e RESPONSETEXTS_VSYMB
-@e KINDHIERARCHY_VSYMB
-@e NO_RESPONSES_VSYMB
-
 =
 void Veneer::create_indexes(inter_tree *I) {
 	Veneer::index(I, DICTIONARY_TABLE_VSYMB, I"#dictionary_table", NULL);
@@ -38,19 +25,6 @@ void Veneer::create_indexes(inter_tree *I) {
 	Veneer::index(I, STRING_VSYMB, I"String", NULL);
 	Veneer::index(I, CLASS_VSYMB, I"Class", NULL);
 	Veneer::index(I, OBJECT_VSYMB, I"Object", NULL);
-
-	Veneer::index(I, ASM_ARROW_VSYMB, I"__assembly_arrow", I"->");
-	Veneer::index(I, ASM_SP_VSYMB, I"__assembly_sp", I"sp");
-	Veneer::index(I, ASM_LABEL_VSYMB, I"__assembly_label", I"?");
-	Veneer::index(I, ASM_RTRUE_VSYMB, I"__assembly_rtrue_label", I"?rtrue");
-	Veneer::index(I, ASM_RFALSE_VSYMB, I"__assembly_rfalse_label", I"?rfalse");
-	Veneer::index(I, ASM_NEG_VSYMB, I"__assembly_negated_label", I"~");
-	Veneer::index(I, ASM_NEG_RTRUE_VSYMB, I"__assembly_negated_rtrue_label", I"?~rtrue");
-	Veneer::index(I, ASM_NEG_RFALSE_VSYMB, I"__assembly_negated_rfalse_label", I"?~rfalse");
-
-	Veneer::index(I, RESPONSETEXTS_VSYMB, I"ResponseTexts", NULL);
-	Veneer::index(I, KINDHIERARCHY_VSYMB, I"KindHierarchy", NULL);
-	Veneer::index(I, NO_RESPONSES_VSYMB, I"NO_RESPONSES", NULL);
 }
 
 void Veneer::index(inter_tree *I, int ix, text_stream *S, text_stream *T) {
@@ -59,11 +33,6 @@ void Veneer::index(inter_tree *I, int ix, text_stream *S, text_stream *T) {
 		(void *) &(I->site.veneer_symbols[ix]));
 	I->site.veneer_symbol_names[ix] = Str::duplicate(S);
 	I->site.veneer_symbol_translations[ix] = Str::duplicate(T);
-}
-
-inter_symbol *Veneer::find_by_index(inter_tree *I, int ix, inter_symbol *unchecked_kind_symbol) {
-	inter_symbol **slot = &(I->site.veneer_symbols[ix]);
-	return Veneer::make(I, slot, I->site.veneer_symbol_names[ix], I->site.veneer_symbol_translations[ix], unchecked_kind_symbol);
 }
 
 inter_symbol *Veneer::find(inter_tree *I, text_stream *S, inter_symbol *unchecked_kind_symbol) {
@@ -79,8 +48,11 @@ inter_symbol *Veneer::find(inter_tree *I, text_stream *S, inter_symbol *unchecke
 	return NULL;
 }
 
-inter_symbol *Veneer::make(inter_tree *I, inter_symbol **slot, text_stream *S, text_stream *T, inter_symbol *unchecked_kind_symbol) {
+inter_symbol *Veneer::find_by_index(inter_tree *I, int ix, inter_symbol *unchecked_kind_symbol) {
+	inter_symbol **slot = &(I->site.veneer_symbols[ix]);
 	if (*slot == NULL) {
+		text_stream *S = I->site.veneer_symbol_names[ix];
+		text_stream *T = I->site.veneer_symbol_translations[ix];
 		inter_package *veneer_package = Packaging::incarnate(Site::veneer_request(I));
 		inter_bookmark *IBM = Site::veneer_bookmark(I);
 		inter_symbols_table *tab = Inter::Packages::scope(veneer_package);
