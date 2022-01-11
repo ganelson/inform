@@ -84,7 +84,7 @@ int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *isn
 		else if (Str::eq(symbol_to_check, I"STRICT_MODE")) { def = TRUE; }
 		else {
 			inter_symbol *symb = EmitInterSchemas::find_identifier_text(I, symbol_to_check,
-				Inter::Packages::scope(Packaging::incarnate(Site::veneer_request(I))),
+				Inter::Packages::scope(Site::architecture_package(I)),
 				second_call);
 			symb = Wiring::cable_end(symb);
 			LOGIF(SCHEMA_COMPILATION, "Symb is $3\n", symb);
@@ -466,7 +466,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 			Produce::val_iname(I, K_value, RTKindDeclarations::iname(K_object));
 			#endif
 			#ifndef CORE_MODULE
-			Produce::val_symbol(I, K_value, Veneer::find(I, I"Object", Produce::kind_to_symbol(NULL)));
+			Produce::val_symbol(I, K_value, Site::find_architectural_symbol(I, I"Object", Produce::kind_to_symbol(NULL)));
 			#endif
 		} else internal_error("objectloop without visible variable");
 	}
@@ -603,7 +603,7 @@ inter_symbol *EmitInterSchemas::find_identifier_text(inter_tree *I, text_stream 
 		inter_symbol *S = Produce::seek_symbol(second_call, name);
 		if (S) return S;
 	}
-	inter_symbol *S = Veneer::find(I, name, Produce::kind_to_symbol(NULL));
+	inter_symbol *S = Site::find_architectural_symbol(I, name, Produce::kind_to_symbol(NULL));
 	if (S) return S;
 	S = Produce::seek_symbol(Produce::connectors_scope(I), name);
 	if (S) return S;

@@ -25,7 +25,7 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	@<Physically move the subtree to its new home@>;
 	@<Correct any references from the migrant to the origin@>;
 	if (tidy_origin) @<Correct any references from the origin to the migrant@>;
-	inter_package *connectors = Site::connectors_package(origin_tree);
+	inter_package *connectors = Site::connectors_package_if_it_exists(origin_tree);
 	if (connectors) {
 		inter_symbols_table *T = Inter::Packages::scope(connectors);
 		if (T == NULL) internal_error("package with no symbols");
@@ -60,7 +60,7 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 
 @<Log sockets in origin tree@> =
 	LOG("\n\n\nList of sockets in origin tree:\n");
-	inter_package *connectors = Site::connectors_package(origin_tree);
+	inter_package *connectors = Site::connectors_package_if_it_exists(origin_tree);
 	if (connectors) {
 		inter_symbols_table *T = Inter::Packages::scope(connectors);
 		if (T == NULL) internal_error("package with no symbols");
@@ -154,7 +154,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 				inter_symbol *target = Wiring::cable_end(symb);
 				if (Inter::Symbols::read_annotation(target, VENEER_IANN) > 0) {
 					Wiring::wire_to(symb,
-						Veneer::find(ipct->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL)));
+						Site::find_architectural_symbol(ipct->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL)));
 				} else if (Inter::Symbols::get_scope(target) == PLUG_ISYMS) {
 					inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
 					if (equivalent == NULL) {
@@ -237,7 +237,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		if ((equivalent == NULL) && (Inter::Kind::is(target)))
 			equivalent = Inter::Packages::search_resources(ipct->destination->package_head->tree, target->symbol_name);
 		if (equivalent == NULL)
-			equivalent = Wiring::plug(ipct->destination_tree, URL);
+			equivalent = Wiring::plug(ipct->destination_tree, target->symbol_name);
 		DISCARD_TEXT(URL)
 		Inter::Transmigration::cache(target, equivalent);
 	}

@@ -4,9 +4,13 @@
 
 @
 
+@d MAX_CIP_STACK_SIZE 2
+
 =
 typedef struct site_production_data {
 	struct inter_bookmark begin_bookmark;
+	struct inter_bookmark locals_bookmark;
+	struct inter_bookmark code_bookmark;
 	struct code_insertion_point cip_stack[MAX_CIP_STACK_SIZE];
 	int cip_sp;
 } site_production_data;
@@ -14,6 +18,8 @@ typedef struct site_production_data {
 void Produce::clear_prdata(inter_tree *I) {
 	building_site *B = &(I->site);
 	B->sprdata.begin_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	B->sprdata.locals_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	B->sprdata.code_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->sprdata.cip_sp = 0;
 }
 
@@ -40,7 +46,7 @@ inter_symbols_table *Produce::main_scope(inter_tree *I) {
 }
 
 inter_symbols_table *Produce::connectors_scope(inter_tree *I) {
-	return Inter::Packages::scope(Site::connectors_package(I));
+	return Inter::Packages::scope(Site::connectors_package_if_it_exists(I));
 }
 
 inter_symbol *Produce::opcode(inter_tree *I, inter_ti bip) {
@@ -171,7 +177,7 @@ code_insertion_point Produce::new_cip(inter_tree *I, inter_bookmark *IBM) {
 }
 
 inter_bookmark *Produce::locals_bookmark(inter_tree *I) {
-	return Site::locals(I);
+	return &(I->site.sprdata.locals_bookmark);
 }
 
 inter_package *Produce::block(inter_tree *I, packaging_state *save, inter_name *iname) {
@@ -198,11 +204,11 @@ inter_package *Produce::block(inter_tree *I, packaging_state *save, inter_name *
 	I->site.sprdata.begin_bookmark = Inter::Bookmarks::snapshot(Packaging::at(I));
 	Inter::Bookmarks::set_placement(&(I->site.sprdata.begin_bookmark), IMMEDIATELY_AFTER_ICPLACEMENT);
 
-	Site::set_locals(I, *(&(I->site.sprdata.begin_bookmark)));
-	Inter::Bookmarks::set_placement(Site::locals(I), BEFORE_ICPLACEMENT);
+	I->site.sprdata.locals_bookmark = I->site.sprdata.begin_bookmark;
+	Inter::Bookmarks::set_placement(&(I->site.sprdata.locals_bookmark), BEFORE_ICPLACEMENT);
 
-	Site::set_code(I, Inter::Bookmarks::snapshot(Packaging::at(I)));
-	code_insertion_point cip = Produce::new_cip(I, Site::code(I));
+	I->site.sprdata.code_bookmark = Inter::Bookmarks::snapshot(Packaging::at(I));
+	code_insertion_point cip = Produce::new_cip(I, &(I->site.sprdata.code_bookmark));
 	Produce::push_code_position(I, cip, save_ib);
 	return Site::get_cir(I);
 }

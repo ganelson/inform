@@ -141,7 +141,7 @@
 
 		pass: 'passed'
 	else
-		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform -variable $PIPELINE -crash-all
+		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -crash-all
 		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE >$I7CONSOLE 2>&1
 		or: 'failed with Problem message(s)' $I7CONSOLE
 		show: $I7CONSOLE

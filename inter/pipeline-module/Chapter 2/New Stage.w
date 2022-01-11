@@ -10,11 +10,6 @@ void NewStage::create_pipeline_stage(void) {
 }
 
 int NewStage::run(pipeline_step *step) {
-	inter_architecture *current_architecture = PipelineModule::get_architecture();
-	if (current_architecture == NULL) internal_error("no architecture set");
-	int Z = Architectures::is_16_bit(current_architecture);
-	int D = Architectures::debug_enabled(current_architecture);
-
 	inter_tree *I = step->ephemera.tree;
 	@<Make the main package@>;
 	@<Add another few package types which we will need when linking@>;
@@ -37,7 +32,8 @@ int NewStage::run(pipeline_step *step) {
 	@<Create the boolean kind@>;
 	@<Create the string kind@>;
 
-	@<Define some architecture constants@>;
+	Site::make_architectural_definitions(I, PipelineModule::get_architecture(),
+		unchecked_kind_symbol);
 	return TRUE;
 }
 
@@ -151,8 +147,8 @@ be able to resolve conditional compilation matter placed inside, e.g.,
 For now, at least, these live in the package |main/veneer|.
 
 @<Define some architecture constants@> =
-	inter_bookmark *in_veneer = Site::veneer_bookmark(I);
-	inter_package *veneer_p = Inter::Packages::veneer(I);
+	inter_package *veneer_p = Site::architecture_package(I);
+	inter_bookmark *in_veneer = Site::architecture_bookmark(I);
 	inter_symbol *vi_unchecked =
 		InterSymbolsTables::create_with_unique_name(
 			Inter::Bookmarks::scope(in_veneer), I"K_unchecked");

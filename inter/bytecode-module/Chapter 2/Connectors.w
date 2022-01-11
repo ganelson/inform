@@ -65,6 +65,7 @@ void Wiring::wire_to_name(inter_symbol *S, text_stream *T) {
 	if (S == NULL) internal_error("null symbol cannot be wired");
 	if (S->metadata_key) internal_error("metadata keys cannot be wired");
 	if (Str::len(T) == 0) internal_error("symbols cannot be wired to the empty name");
+	if (Str::get_at(T, 0) == '/') internal_error("symbols cannot be wired to URLs");
 	Wiring::wire_to(S, NULL);
 	S->wiring.wants_to_connect_to = Str::duplicate(T);
 }
@@ -118,20 +119,20 @@ inter_symbol *Wiring::socket(inter_tree *I, text_stream *socket_name, inter_symb
 }
 
 inter_symbol *Wiring::find_socket(inter_tree *I, text_stream *identifier) {
-	inter_package *connectors = Site::connectors_package(I);
+	inter_package *connectors = Site::connectors_package_if_it_exists(I);
 	if (connectors) {
 		inter_symbol *S = InterSymbolsTables::symbol_from_name_not_equating(
-			Inter::Packages::scope(Site::connectors_package(I)), identifier);
+			Inter::Packages::scope(Site::connectors_package_if_it_exists(I)), identifier);
 		if ((S) && (Inter::Symbols::get_scope(S) == SOCKET_ISYMS)) return S;
 	}
 	return NULL;
 }
 
 inter_symbol *Wiring::find_plug(inter_tree *I, text_stream *identifier) {
-	inter_package *connectors = Site::connectors_package(I);
+	inter_package *connectors = Site::connectors_package_if_it_exists(I);
 	if (connectors) {
 		inter_symbol *S = InterSymbolsTables::symbol_from_name_not_equating(
-			Inter::Packages::scope(Site::connectors_package(I)), identifier);
+			Inter::Packages::scope(Site::connectors_package_if_it_exists(I)), identifier);
 		if ((S) && (Inter::Symbols::get_scope(S) == PLUG_ISYMS)) return S;
 	}
 	return NULL;
@@ -183,7 +184,7 @@ the actual definition, and all will be well.
 
 =
 void Wiring::connect_plugs_to_sockets(inter_tree *I) {
- 	inter_package *connectors = Site::connectors_package(I);
+ 	inter_package *connectors = Site::connectors_package_if_it_exists(I);
  	if (connectors) {
  		inter_symbols_table *ST = Inter::Packages::scope(connectors);
 		for (int i=0; i<ST->size; i++) {

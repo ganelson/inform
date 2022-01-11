@@ -186,15 +186,6 @@ void MakeSynopticModuleStage::visitor(inter_tree *I, inter_tree_node *P, void *s
 	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		inter_symbol *ptype = Inter::Packages::type(pack);
-		if (ptype == PackageTypes::get(I, I"_kind")) {
-			LOG("Inside $6:\n", pack);
-			inter_symbols_table *ST = Inter::Packages::scope(pack);
-			for (int i=0; i<ST->size; i++) {
-				inter_symbol *S = ST->symbol_array[i];
-				if ((S) && (S->wiring.no_connections > 0))
-					LOG("I observe $3 (%d)\n", S, S->wiring.no_connections);
-			}
-		}
 		tree_inventory_item *item;
 		LOOP_OVER_LINKED_LIST(item, tree_inventory_item, inv->items)
 			if (ptype == item->required_ptype) {

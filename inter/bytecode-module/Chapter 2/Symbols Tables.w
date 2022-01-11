@@ -160,13 +160,7 @@ inter_symbol *InterSymbolsTables::symbol_from_name_in_basics(inter_tree *I, text
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_name_in_veneer(inter_tree *I, text_stream *S) {
-	inter_package *P = Inter::Packages::veneer(I);
-	if (P == NULL) return NULL;
-	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
-}
-
-inter_symbol *InterSymbolsTables::symbol_from_name_in_template(inter_tree *I, text_stream *S) {
-	inter_package *P = Inter::Packages::template(I);
+	inter_package *P = Site::architecture_package_if_it_exists(I);
 	if (P == NULL) return NULL;
 	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }

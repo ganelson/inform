@@ -236,7 +236,6 @@ void Packaging::outside_all_packages(inter_tree *I) {
 	PackageTypes::get(I, I"_linkage"); // And this the third
 
 	Packaging::enter(Site::main_request(I)); // Which we never exit
-//	Site::set_holdings(I, Packaging::bubble(I));
 }
 
 @h Entry and exit.

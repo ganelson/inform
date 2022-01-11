@@ -11,7 +11,6 @@ Chapter 1: Architecture
 	Building Module
 	Building Site
 	Inter Primitives
-	The Veneer
 	Hierarchy Locations
 	Translation
 	Packaging

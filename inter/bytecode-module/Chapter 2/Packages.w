@@ -114,10 +114,10 @@ void Inter::Packages::set_name(inter_package *Q, inter_package *P, text_stream *
 	if (P == NULL) internal_error("null package");
 	if (N == NULL) internal_error("null package name");
 	P->package_name_t = Str::duplicate(N);
-	if ((N) && (Str::eq(P->package_name_t, I"main")))
-		Site::set_main_package(Inter::Packages::tree(P), P);
-
-	if (Str::len(N) > 0) Inter::Packages::add_subpackage_name(Q, P);
+	if (Str::len(N) > 0) {
+		Site::note_package_name(Inter::Packages::tree(P), P, N);
+		Inter::Packages::add_subpackage_name(Q, P);
+	}
 }
 
 void Inter::Packages::add_subpackage_name(inter_package *Q, inter_package *P) {
@@ -148,14 +148,6 @@ void Inter::Packages::log(OUTPUT_STREAM, void *vp) {
 
 inter_package *Inter::Packages::basics(inter_tree *I) {
 	return Inter::Packages::by_url(I, I"/main/generic/basics");
-}
-
-inter_package *Inter::Packages::veneer(inter_tree *I) {
-	return Inter::Packages::by_url(I, I"/main/veneer");
-}
-
-inter_package *Inter::Packages::template(inter_tree *I) {
-	return Inter::Packages::by_url(I, I"/main/template");
 }
 
 inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream *S) {

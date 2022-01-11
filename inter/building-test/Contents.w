@@ -7,6 +7,7 @@ Licence: Artistic License 2.0
 Import: foundation
 Import: ../building
 Import: ../bytecode
+Import: ../../services/arch
 Import: ../../services/words
 
 Chapter 1: Scaffolding

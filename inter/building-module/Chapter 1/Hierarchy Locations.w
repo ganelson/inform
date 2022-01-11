@@ -72,7 +72,7 @@ location_requirement HierarchyLocations::any_enclosure(void) {
 }
 
 location_requirement HierarchyLocations::the_veneer(inter_tree *I) {
-	return HierarchyLocations::this_package(Site::veneer_request(I));
+	return HierarchyLocations::this_package(Site::architecture_request(I));
 }
 
 location_requirement HierarchyLocations::this_package(package_request *P) {
