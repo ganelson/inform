@@ -1141,12 +1141,16 @@ inter_symbol *CompileSplatsStage::compute_eval(pipeline_step *step,
 Here we run into, say, |MAX_ELEPHANTS|, some identifier which clearly refers
 to something defined elsewhere. If it has already been defined in the kit
 being compiled, then there's a socket of that name already, and we can use
-that as the answer. Otherwise we must assume it will be declared either later
-or in another compilation unit, so we create a plug called |MAX_ELEPHANTS|
-and let the linker stage worry about what it means later on.
+that as the answer; similarly if it's an architectural constant such as |WORDSIZE|.
+Otherwise we must assume it will be declared either later or in another
+compilation unit, so we create a plug called |MAX_ELEPHANTS| and let the
+linker stage worry about what it means later on.
 
 @<This leaf is a symbol name@> =
-	inter_symbol *result_s = Wiring::find_socket(I, t->material);
+	inter_symbol *result_s = Site::find_architectural_symbol(I, t->material,
+		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
+	if (result_s) return result_s;
+	result_s = Wiring::find_socket(I, t->material);
 	if (result_s) return result_s;
 	return Wiring::plug(I, t->material);
 

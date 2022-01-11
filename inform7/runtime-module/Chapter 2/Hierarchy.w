@@ -165,7 +165,7 @@ void Hierarchy::establish(void) {
 	H_BEGIN_DECLARATIONS
 	@<Establish locations for material created by the compiler@>;
 	@<Establish locations for material expected to be added by linking@>;
-	InterNames::to_symbol(Hierarchy::find(SELF_HL));
+	@<Prevent arcbitectural symbols from being doubly defined@>;
 	H_END_DECLARATIONS
 }
 
@@ -198,19 +198,12 @@ void Hierarchy::establish(void) {
 	@<The rest@>;
 
 @<Establish locations for material expected to be added by linking@> =
-	@<Establish veneer resources@>;
+	@<Establish architecturak resources@>;
 
 @h Basics.
 
 @e BOGUS_HAP from 0
 
-@e NULL_HL
-@e WORD_HIGHBIT_HL
-@e WORD_NEXTTOHIGHBIT_HL
-@e IMPROBABLE_VALUE_HL
-@e REPARSE_CODE_HL
-@e MAX_POSITIVE_NUMBER_HL
-@e MIN_NEGATIVE_NUMBER_HL
 @e I7_VERSION_NUMBER_HL
 @e I7_FULL_VERSION_NUMBER_HL
 @e VM_MD_HL
@@ -225,12 +218,6 @@ void Hierarchy::establish(void) {
 @e KIT_CONFIGURATION_LOOKMODE_HL
 @e LOCALPARKING_HL
 @e RNG_SEED_AT_START_OF_PLAY_HL
-@e DEBUG_HL
-@e TARGET_ZCODE_HL
-@e TARGET_GLULX_HL
-@e DICT_WORD_SIZE_HL
-@e WORDSIZE_HL
-@e INDIV_PROP_START_HL
 @e MAX_FRAME_SIZE_NEEDED_HL
 @e SUBMAIN_HL
 @e HEADINGS_HAP
@@ -252,22 +239,6 @@ void Hierarchy::establish(void) {
 
 @<Establish basics@> =
 	submodule_identity *basics = Packaging::register_submodule(I"basics");
-
-	H_BEGIN(HierarchyLocations::generic_submodule(I, basics))
-		H_C_T(NULL_HL,                        I"NULL")
-		H_C_T(WORD_HIGHBIT_HL,                I"WORD_HIGHBIT")
-		H_C_T(WORD_NEXTTOHIGHBIT_HL,          I"WORD_NEXTTOHIGHBIT")
-		H_C_T(IMPROBABLE_VALUE_HL,            I"IMPROBABLE_VALUE")
-		H_C_T(REPARSE_CODE_HL,                I"REPARSE_CODE")
-		H_C_T(MAX_POSITIVE_NUMBER_HL,         I"MAX_POSITIVE_NUMBER")
-		H_C_T(MIN_NEGATIVE_NUMBER_HL,         I"MIN_NEGATIVE_NUMBER")
-		H_C_T(DEBUG_HL,                       I"DEBUG")
-		H_C_T(TARGET_ZCODE_HL,                I"TARGET_ZCODE")
-		H_C_T(TARGET_GLULX_HL,                I"TARGET_GLULX")
-		H_C_T(DICT_WORD_SIZE_HL,              I"DICT_WORD_SIZE")
-		H_C_T(WORDSIZE_HL,                    I"WORDSIZE")
-		H_C_T(INDIV_PROP_START_HL,            I"INDIV_PROP_START")
-	H_END
 
 	H_BEGIN(HierarchyLocations::completion_submodule(I, basics))
 		H_C_T(I7_VERSION_NUMBER_HL,           I"I7_VERSION_NUMBER")
@@ -751,6 +722,8 @@ void Hierarchy::establish(void) {
 @e SLASH_TOKENS_HAP
 @e SLASH_FN_HL
 
+@e REPARSE_CODE_HL
+@e DICT_WORD_SIZE_HL
 @e VERB_DIRECTIVE_CREATURE_HL
 @e VERB_DIRECTIVE_DIVIDER_HL
 @e VERB_DIRECTIVE_HELD_HL
@@ -802,6 +775,8 @@ void Hierarchy::establish(void) {
 	submodule_identity *grammar = Packaging::register_submodule(I"grammar");
 
 	H_BEGIN(HierarchyLocations::generic_submodule(I, grammar))
+		H_C_T(REPARSE_CODE_HL,                I"REPARSE_CODE")
+		H_C_T(DICT_WORD_SIZE_HL,              I"DICT_WORD_SIZE")
 		H_C_T(VERB_DIRECTIVE_CREATURE_HL,     I"VERB_DIRECTIVE_CREATURE")
 		H_C_T(VERB_DIRECTIVE_DIVIDER_HL,      I"VERB_DIRECTIVE_DIVIDER")
 		H_C_T(VERB_DIRECTIVE_HELD_HL,         I"VERB_DIRECTIVE_HELD")
@@ -1946,18 +1921,36 @@ void Hierarchy::establish(void) {
 		H_F_T(PRINT_SCENE_HL,                 I"print_fn", I"PrintSceneName")
 	H_END
 
-@h Veneer-defined symbols.
-The "veneer" in the Inform 6 compiler consists of a few constants and functions
-automatically created by the compiler itself, and which therefore have no source
-code producing them. See the Inform 6 Technical Manual. Of these, the most
-important is the pseudo-variable |self|.
+@h Architectural symbols.
+These are built-in constants (and one built-in variable, |self|) which come
+from the platform we are compiling to. See //building: Building Site//.
+
+There are other architectural symbols besides these, but these are the only
+ones which the //inform7//-compiled code needs to refer to.
 
 @e SELF_HL
+@e NULL_HL
+@e MAX_POSITIVE_NUMBER_HL
+@e MIN_NEGATIVE_NUMBER_HL
 
-@<Establish veneer resources@> =
+@<Establish architecturak resources@> =
 	H_BEGIN(HierarchyLocations::the_veneer(I))
 		H_C_T(SELF_HL,                        I"self")
+		H_C_T(NULL_HL,                        I"NULL")
+		H_C_T(MAX_POSITIVE_NUMBER_HL,         I"MAX_POSITIVE_NUMBER")
+		H_C_T(MIN_NEGATIVE_NUMBER_HL,         I"MIN_NEGATIVE_NUMBER")
 	H_END
+
+@ Note that because these are automatically created by the building machinery
+anyway, we need to make sure that a call to |Hierarchy::find| does not
+create a duplicate with a name like |NULL_1|. This is a race condition, and
+the easiest way to avoid it is to force the issue now:
+
+@<Prevent arcbitectural symbols from being doubly defined@> =
+	InterNames::to_symbol(Hierarchy::find(SELF_HL));
+	InterNames::to_symbol(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
+	InterNames::to_symbol(Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
+	InterNames::to_symbol(Hierarchy::find(NULL_HL));
 
 @ Heaven knows, that all seems like plenty, but there's one final case. Neptune
 files inside kits -- which define built-in kinds like "number" -- need to make

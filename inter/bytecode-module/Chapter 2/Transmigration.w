@@ -152,7 +152,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 			inter_symbol *symb = T->symbol_array[i];
 			if (Wiring::is_wired(symb)) {
 				inter_symbol *target = Wiring::cable_end(symb);
-				if (Inter::Symbols::read_annotation(target, VENEER_IANN) > 0) {
+				if (Inter::Symbols::read_annotation(target, ARCHITECTURAL_IANN) > 0) {
 					Wiring::wire_to(symb,
 						Site::find_architectural_symbol(ipct->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL)));
 				} else if (Inter::Symbols::get_scope(target) == PLUG_ISYMS) {

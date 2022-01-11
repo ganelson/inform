@@ -3,9 +3,20 @@
 Runtime support for CGs.
 
 @h Generic constants.
+Here, |REPARSE_CODE| is a magic value used in //CommandParserKit// to
+signal that some code which ought to have been parsing a command has in
+fact rewritten it, so that the whole command must be re-parsed afresh.
 
 =
 void RTCommandGrammars::compile_generic_constants(void) {
+	target_vm *VM = Task::vm();
+	if (TargetVMs::is_16_bit(VM)) {
+		RTCommandGrammars::grammar_constant(REPARSE_CODE_HL, 10000);
+		RTCommandGrammars::grammar_constant(DICT_WORD_SIZE_HL, 6);
+	} else {
+		RTCommandGrammars::grammar_constant(REPARSE_CODE_HL, 0x40000000);
+		RTCommandGrammars::grammar_constant(DICT_WORD_SIZE_HL, 9);
+	}
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_REVERSE_HL, 1);
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_SLASH_HL, 1);
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_DIVIDER_HL, 1);
@@ -22,6 +33,9 @@ void RTCommandGrammars::compile_generic_constants(void) {
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_HL, 12);
 }
 
+@
+
+=
 inter_name *RTCommandGrammars::iname_for_I6_parser_token(cg_token *cgt) {
 	switch (cgt->grammar_token_code) {
 		case NOUN_TOKEN_GTC:        return Hierarchy::find(VERB_DIRECTIVE_NOUN_HL);
@@ -39,7 +53,7 @@ inter_name *RTCommandGrammars::iname_for_I6_parser_token(cg_token *cgt) {
 
 inter_name *RTCommandGrammars::grammar_constant(int N, int V) {
 	inter_name *iname = Hierarchy::find(N);
-	Emit::numeric_constant(iname, 1);
+	Emit::numeric_constant(iname, (inter_ti) V);
 	Hierarchy::make_available(iname);
 	return iname;
 }

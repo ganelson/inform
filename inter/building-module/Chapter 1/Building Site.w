@@ -154,7 +154,7 @@ inter_bookmark *Site::architecture_bookmark(inter_tree *I) {
 dictionary *create_these_architectural_symbols_on_demand = NULL;
 
 inter_symbol *Site::find_architectural_symbol(inter_tree *I, text_stream *N,
-	inter_symbol *unchecked_kind_symbol) {
+	inter_symbol *uks) {
 	inter_package *arch = Site::architecture_package(I);
 	inter_symbols_table *tab = Inter::Packages::scope(arch);
 	inter_symbol *S = InterSymbolsTables::symbol_from_name(tab, N);
@@ -171,19 +171,51 @@ inter_symbol *Site::find_architectural_symbol(inter_tree *I, text_stream *N,
 			Dictionaries::create(create_these_architectural_symbols_on_demand, I"Object");
 		}
 		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N)) {
-			S = InterSymbolsTables::symbol_from_name_creating(tab, N);
+			S = Site::arch_constant(I, N, uks, 0);			
 			Inter::Symbols::annotate_i(S, VENEER_IANN, 1);
-
-			inter_bookmark *IBM = Site::architecture_bookmark(I);
-			Produce::guard(Inter::Constant::new_numerical(IBM,
-				InterSymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), arch, S),
-				InterSymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), arch, unchecked_kind_symbol),
-				LITERAL_IVAL, 0,
-				(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
 		}	
 	}	
 	return S;
 }
+
+inter_symbol *Site::arch_constant(inter_tree *I, text_stream *N,
+	inter_symbol *uks, inter_ti val) {
+	inter_package *arch = Site::architecture_package(I);
+	inter_symbols_table *tab = Inter::Packages::scope(arch);
+	inter_symbol *S = InterSymbolsTables::symbol_from_name_creating(tab, N);
+	Inter::Symbols::annotate_i(S, ARCHITECTURAL_IANN, 1);
+	inter_bookmark *IBM = Site::architecture_bookmark(I);
+	Produce::guard(Inter::Constant::new_numerical(IBM,
+		InterSymbolsTables::id_from_symbol(I, arch, S),
+		InterSymbolsTables::id_from_symbol(I, arch, uks),
+		LITERAL_IVAL, val,
+		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+	return S;
+}
+
+inter_symbol *Site::arch_constant_hex(inter_tree *I, text_stream *N,
+	inter_symbol *uks, inter_ti val) {
+	inter_symbol *S = Site::arch_constant(I, N, uks, val);
+	Inter::Symbols::annotate_i(S, HEX_IANN, 1);
+	return S;
+}
+
+inter_symbol *Site::arch_constant_signed(inter_tree *I, text_stream *N,
+	inter_symbol *uks, int val) {
+	inter_symbol *S = Site::arch_constant(I, N, uks, (inter_ti) val);
+	Inter::Symbols::annotate_i(S, SIGNED_IANN, 1);
+	return S;
+}
+
+@ These constants mostly have obvious meanings, but a few notes:
+
+(1) |NULL|, in our runtime, is -1, and not 0 as it would be in C. This is
+emitted as "unchecked" to avoid the value being rejected as being too large,
+as it would be if it were viewed as a signed rather than unsigned integer.
+
+(2) |IMPROBABLE_VALUE| is one which is unlikely even if possible to be a
+genuine I7 value. The efficiency of runtime code handling tables depends on
+how well chosen this is: it would ran badly if we chose 1, for instance.
 
 @ Lastly, we define the constants |WORDSIZE|, |DEBUG| (if applicable) and
 either |TARGET_ZCODE| or |TARGET_GLULX|, as appropriate. These really now mean
@@ -197,41 +229,33 @@ For now, at least, these live in the package |main/veneer|.
 
 =
 void Site::make_architectural_definitions(inter_tree *I,
-	inter_architecture *current_architecture, inter_symbol *unchecked_kind_symbol) {
+	inter_architecture *current_architecture, inter_symbol *uks) {
 	if (current_architecture == NULL) internal_error("no architecture set");
 	int Z = Architectures::is_16_bit(current_architecture);
 	int D = Architectures::debug_enabled(current_architecture);
 
-	inter_package *veneer_p = Site::architecture_package(I);
-	inter_bookmark *in_veneer = Site::architecture_bookmark(I);
-	inter_symbol *vi_unchecked =
-		InterSymbolsTables::create_with_unique_name(
-			Inter::Bookmarks::scope(in_veneer), I"K_unchecked");
-	Wiring::wire_to(vi_unchecked, unchecked_kind_symbol);
-
-	inter_symbol *con_name = InterSymbolsTables::create_with_unique_name(
-		Inter::Bookmarks::scope(in_veneer), I"WORDSIZE");
-	Inter::Constant::new_numerical(in_veneer,
-		InterSymbolsTables::id_from_symbol(I, veneer_p, con_name),
-		InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
-		LITERAL_IVAL, (Z)?2:4,
-		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
-	inter_symbol *target_name = InterSymbolsTables::create_with_unique_name(
-		Inter::Bookmarks::scope(in_veneer), (Z)?I"TARGET_ZCODE":I"TARGET_GLULX");
-	Inter::Constant::new_numerical(in_veneer,
-		InterSymbolsTables::id_from_symbol(I, veneer_p, target_name),
-		InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
-		LITERAL_IVAL, 1,
-		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
-	if (D) {
-		inter_symbol *D_name = InterSymbolsTables::create_with_unique_name(
-			Inter::Bookmarks::scope(in_veneer), I"DEBUG");
-		Inter::Constant::new_numerical(in_veneer,
-			InterSymbolsTables::id_from_symbol(I, veneer_p, D_name),
-			InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
-			LITERAL_IVAL, 1,
-			(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
+	if (Z) {
+		Site::arch_constant(I, I"WORDSIZE", uks,                        2);
+		Site::arch_constant_hex(I, I"NULL", uks,                   0xffff);
+		Site::arch_constant_hex(I, I"WORD_HIGHBIT", uks,           0x8000);
+		Site::arch_constant_hex(I, I"WORD_NEXTTOHIGHBIT", uks,     0x4000);
+		Site::arch_constant_hex(I, I"IMPROBABLE_VALUE", uks,       0x7fe3);
+		Site::arch_constant(I, I"MAX_POSITIVE_NUMBER", uks,         32767);
+		Site::arch_constant_signed(I, I"MIN_NEGATIVE_NUMBER", uks, -32768);
+		Site::arch_constant(I, I"TARGET_ZCODE", uks,                    1);
+	} else {
+		Site::arch_constant(I, I"WORDSIZE", uks,                             4);
+		Site::arch_constant_hex(I, I"NULL", uks,                    0xffffffff);
+		Site::arch_constant_hex(I, I"WORD_HIGHBIT", uks,            0x80000000);
+		Site::arch_constant_hex(I, I"WORD_NEXTTOHIGHBIT", uks,      0x40000000);
+		Site::arch_constant_hex(I, I"IMPROBABLE_VALUE", uks,        0xdeadce11);
+		Site::arch_constant(I, I"MAX_POSITIVE_NUMBER", uks,         2147483647);
+		Site::arch_constant_signed(I, I"MIN_NEGATIVE_NUMBER", uks, -2147483648);
+		Site::arch_constant(I, I"INDIV_PROP_START", uks,                     0);
+		Site::arch_constant(I, I"TARGET_GLULX", uks,                         1);
 	}
+
+	if (D) Site::arch_constant(I, I"DEBUG", uks, 1);
 }
 
 inter_package *Site::make_linkage_package(inter_tree *I, text_stream *name) {

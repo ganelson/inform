@@ -35,6 +35,7 @@ Defining the one true set of Inter annotation codes.
 @e VERBARRAY_IANN
 @e EXPLICIT_VARIABLE_IANN
 @e TEXT_LITERAL_IANN
+@e ARCHITECTURAL_IANN
 @e VENEER_IANN
 @e SYNOPTIC_IANN
 @e I6_GLOBAL_OFFSET_IANN
@@ -96,6 +97,7 @@ void Inter::Canon::declare(void) {
 	Inter::Annotations::form(VERBARRAY_IANN, I"__verb", FALSE);
 	Inter::Annotations::form(EXPLICIT_VARIABLE_IANN, I"__explicit_variable", FALSE);
 	Inter::Annotations::form(TEXT_LITERAL_IANN, I"__text_literal", FALSE);
+	Inter::Annotations::form(ARCHITECTURAL_IANN, I"__architectural", FALSE);
 	Inter::Annotations::form(VENEER_IANN, I"__veneer", FALSE);
 	Inter::Annotations::form(SYNOPTIC_IANN, I"__synoptic", FALSE);
 	Inter::Annotations::form(I6_GLOBAL_OFFSET_IANN, I"__global_offset", FALSE);
