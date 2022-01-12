@@ -6,43 +6,44 @@
 =
 typedef struct building_site {
 	struct inter_package *main_package;
-	struct package_request *main_pr;
+	struct package_request *main_request;
 
 	struct inter_package *connectors_package;
-	struct package_request *connectors_pr;
+	struct package_request *connectors_request;
 
 	struct inter_package *architecture_package;
-	struct inter_bookmark architecture_bookmark;
 	struct package_request *architecture_request;
+	struct inter_bookmark architecture_bookmark;
 
-	struct inter_package *assimilation_package;
 	struct inter_bookmark pragmas_bookmark;
 	struct inter_bookmark package_types_bookmark;
-	struct inter_package *current_inter_routine;
+
+	struct inter_symbol *primitives_by_BIP[MAX_BIPS];
 
 	struct site_packaging_data spdata;
-
-	struct inter_symbol *opcodes_set[MAX_BIPS];
-
 	struct site_production_data sprdata;
 } building_site;
 
 @ =
 void Site::clear(inter_tree *I) {
 	building_site *B = &(I->site);
+
 	B->main_package = NULL;
+	B->main_request = NULL;
+
 	B->connectors_package = NULL;
+	B->connectors_request = NULL;
+
 	B->architecture_package = NULL;
-	B->assimilation_package = NULL;
-	for (int i=0; i<MAX_BIPS; i++) B->opcodes_set[i] = NULL;
+	B->architecture_request = NULL;
+	B->architecture_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+
 	B->pragmas_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->package_types_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
-	B->architecture_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+
+	for (int i=0; i<MAX_BIPS; i++) B->primitives_by_BIP[i] = NULL;
+
 	Produce::clear_prdata(I);
-	B->main_pr = NULL;
-	B->connectors_pr = NULL;
-	B->architecture_request = NULL;
-	B->current_inter_routine = NULL;
 	Packaging::clear_pdata(I);
 }
 
@@ -60,11 +61,11 @@ void Site::set_package_types(inter_tree *I, inter_bookmark IBM) {
 }
 
 inter_symbol *Site::get_opcode(inter_tree *I, inter_ti bip) {
-	return I->site.opcodes_set[bip];
+	return I->site.primitives_by_BIP[bip];
 }
 
 void Site::set_opcode(inter_tree *I, inter_ti bip, inter_symbol *S) {
-	I->site.opcodes_set[bip] = S;
+	I->site.primitives_by_BIP[bip] = S;
 }
 
 void Site::note_package_name(inter_tree *I, inter_package *pack, text_stream *N) {
@@ -88,12 +89,12 @@ inter_package *Site::main_package_if_it_exists(inter_tree *I) {
 }
 
 package_request *Site::main_request(inter_tree *I) {
-	if (I->site.main_pr == NULL)
-		I->site.main_pr =
+	if (I->site.main_request == NULL)
+		I->site.main_request =
 			Packaging::request(I,
 				InterNames::explicitly_named(I"main", NULL),
 				PackageTypes::get(I, I"_plain"));
-	return I->site.main_pr;
+	return I->site.main_request;
 }
 
 inter_package *Site::connectors_package_if_it_exists(inter_tree *I) {
@@ -113,11 +114,11 @@ inter_package *Site::ensure_connectors_package(inter_tree *I) {
 }
 
 package_request *Site::connectors_request(inter_tree *I) {
-	if (I->site.connectors_pr == NULL) {
+	if (I->site.connectors_request == NULL) {
 		module_package *T = Packaging::get_unit(I, I"connectors", I"_linkage");
-		I->site.connectors_pr = T->the_package;
+		I->site.connectors_request = T->the_package;
 	}
-	return I->site.connectors_pr;
+	return I->site.connectors_request;
 }
 
 package_request *Site::architecture_request(inter_tree *I) {
@@ -257,51 +258,3 @@ void Site::make_architectural_definitions(inter_tree *I,
 
 	if (D) Site::arch_constant(I, I"DEBUG", uks, 1);
 }
-
-inter_package *Site::make_linkage_package(inter_tree *I, text_stream *name) {
-	inter_package *P = Inter::Packages::by_name(Site::main_package(I), name);
-	if (P == NULL) {
-		inter_symbol *linkage = InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_linkage");
-		if (linkage == NULL) internal_error("no linkage ptype");
-		inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(Site::main_package(I));
-		Inter::Package::new_package(&IBM, name, linkage,
-			(inter_ti) Inter::Bookmarks::baseline(&IBM)+1, NULL, &P);
-	}
-	if (P == NULL) internal_error("unable to create package");
-	return P;
-}
-
-inter_package *Site::assimilation_package(inter_tree *I) {
-	if (I == NULL) internal_error("no tree"); 
-	return I->site.assimilation_package;
-}
-
-inter_package *Site::ensure_assimilation_package(inter_tree *I, inter_symbol *plain_ptype_symbol) {
-	if (I == NULL) internal_error("no tree"); 
-	if (I->site.assimilation_package == NULL) {
-		inter_package *main_package = Site::main_package(I);
-		inter_package *t_p = Inter::Packages::by_name(main_package, I"template");
-		#ifdef PIPELINE_MODULE
-		if (t_p == NULL) {
-			inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_package);
-			t_p = CompileSplatsStage::new_package_named(&in_main, I"template", plain_ptype_symbol);
-		}
-		#endif
-		I->site.assimilation_package = t_p;
-	}
-	return I->site.assimilation_package;
-}
-
-void Site::set_assimilation_package(inter_tree *I, inter_package *M) {
-	if (I == NULL) internal_error("no tree"); 
-	I->site.assimilation_package = M;
-}
-
-inter_package *Site::get_cir(inter_tree *I) {
-	return I->site.current_inter_routine;
-}
-
-void Site::set_cir(inter_tree *I, inter_package *P) {
-	I->site.current_inter_routine = P;
-}
-

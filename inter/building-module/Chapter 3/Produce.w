@@ -13,6 +13,7 @@ typedef struct site_production_data {
 	struct inter_bookmark code_bookmark;
 	struct code_insertion_point cip_stack[MAX_CIP_STACK_SIZE];
 	int cip_sp;
+	struct inter_package *current_inter_routine;
 } site_production_data;
 
 void Produce::clear_prdata(inter_tree *I) {
@@ -21,6 +22,11 @@ void Produce::clear_prdata(inter_tree *I) {
 	B->sprdata.locals_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->sprdata.code_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->sprdata.cip_sp = 0;
+	B->sprdata.current_inter_routine = NULL;
+}
+
+void Produce::set_function(inter_tree *I, inter_package *P) {
+	I->site.sprdata.current_inter_routine = P;
 }
 
 void Produce::guard(inter_error_message *ERR) {
@@ -196,7 +202,7 @@ inter_package *Produce::block(inter_tree *I, packaging_state *save, inter_name *
 		block_iname = Packaging::make_iname_within(InterNames::location(iname), I"block");
 	else internal_error("routine outside function package");
 	inter_bookmark save_ib = Inter::Bookmarks::snapshot(Packaging::at(I));
-	Site::set_cir(I, Produce::package(I, block_iname, PackageTypes::get(I, I"_code")));
+	Produce::set_function(I, Produce::package(I, block_iname, PackageTypes::get(I, I"_code")));
 
 	Produce::guard(Inter::Code::new(Packaging::at(I),
 		(int) Produce::baseline(Packaging::at(I)) + 1, NULL));
@@ -210,7 +216,7 @@ inter_package *Produce::block(inter_tree *I, packaging_state *save, inter_name *
 	I->site.sprdata.code_bookmark = Inter::Bookmarks::snapshot(Packaging::at(I));
 	code_insertion_point cip = Produce::new_cip(I, &(I->site.sprdata.code_bookmark));
 	Produce::push_code_position(I, cip, save_ib);
-	return Site::get_cir(I);
+	return I->site.sprdata.current_inter_routine;
 }
 
 inter_name *Produce::kernel(inter_tree *I, inter_name *public_name) {
@@ -227,12 +233,12 @@ void Produce::end_main_block(inter_tree *I, packaging_state save) {
 }
 
 void Produce::end_block(inter_tree *I) {
-	Site::set_cir(I, NULL);
+	Produce::set_function(I, NULL);
 	Produce::pop_code_position(I);
 }
 
 int Produce::emitting_routine(inter_tree *I) {
-	if (Site::get_cir(I)) return TRUE;
+	if (I->site.sprdata.current_inter_routine) return TRUE;
 	return FALSE;
 }
 
@@ -407,7 +413,7 @@ inter_symbol *Produce::reserve_label(inter_tree *I, text_stream *lname) {
 	}
 	inter_symbol *lab_name = Produce::local_exists(I, lname);
 	if (lab_name) return lab_name;
-	lab_name = Produce::new_local_symbol(Site::get_cir(I), lname);
+	lab_name = Produce::new_local_symbol(I->site.sprdata.current_inter_routine, lname);
 	Inter::Symbols::label(lab_name);
 	return lab_name;
 }
@@ -423,10 +429,10 @@ API in //imperative: Local Variables//.
 =
 inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 	inter_ti annot, text_stream *comm) {
-	if (Site::get_cir(I) == NULL)
+	if (I->site.sprdata.current_inter_routine == NULL)
 		internal_error("local variable emitted outside function");
 	if (K == NULL) K = K_value;
-	inter_symbol *local_s = Produce::new_local_symbol(Site::get_cir(I), lname);
+	inter_symbol *local_s = Produce::new_local_symbol(I->site.sprdata.current_inter_routine, lname);
 	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	inter_ti ID = 0;
 	if ((comm) && (Str::len(comm) > 0)) {
@@ -442,7 +448,7 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 }
 
 inter_symbol *Produce::local_exists(inter_tree *I, text_stream *lname) {
-	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(Site::get_cir(I)), lname);
+	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(I->site.sprdata.current_inter_routine), lname);
 }
 
 inter_symbol *Produce::seek_symbol(inter_symbols_table *T, text_stream *name) {
@@ -612,4 +618,15 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 		v1, v2, Produce::baseline(Packaging::at(I)), NULL));
 	Packaging::exit(I, save);
 	return con_iname;
+}
+
+@ We make a new package and return it:
+
+=
+inter_package *Produce::new_package_named(inter_bookmark *IBM,
+	text_stream *name, inter_symbol *ptype) {
+	inter_package *P = NULL;
+	Produce::guard(Inter::Package::new_package_named(IBM, name, TRUE,
+		ptype, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL, &P));
+	return P;
 }

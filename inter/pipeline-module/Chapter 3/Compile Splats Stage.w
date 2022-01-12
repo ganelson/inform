@@ -42,8 +42,8 @@ int CompileSplatsStage::run(pipeline_step *step) {
 	@<Initialise the CS state@>;
 	inter_tree *I = step->ephemera.tree;
 	InterTree::traverse(I, CompileSplatsStage::visitor1, &css, NULL, SPLAT_IST);
-	InterTree::traverse(I, CompileSplatsStage::visitor2, &css, NULL, SPLAT_IST);
-	CompileSplatsStage::function_bodies(&css, I);
+	InterTree::traverse(I, CompileSplatsStage::visitor2, &css, NULL, 0);
+	CompileSplatsStage::function_bodies(step, &css, I);
 	InterTree::traverse(I, CompileSplatsStage::visitor3, &css, NULL, SPLAT_IST);
 	return TRUE;
 }
@@ -65,50 +65,74 @@ typedef struct compile_splats_state {
 	css.function_bodies_to_compile = NEW_LINKED_LIST(function_body_request);
 
 @ The three traverse functions share a great deal of their code, in fact. Note
-that we always expect the kinds here to exist: see //New Stage//. Checking
-that they do is probably redundant, in fact, but is fast and does no harm.
+that we set the assimilation package to be the module containing whatever splat
+is being compiled.
 
 =
 void CompileSplatsStage::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
-	inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
-	switch (directive) {
-		case PROPERTY_I6DIR:
-		case ATTRIBUTE_I6DIR:
-			@<Assimilate definition@>;
-			break;
-		case ROUTINE_I6DIR:
-		case STUB_I6DIR:
-			@<Assimilate routine@>;
-			break;
+	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+		inter_package *pack = Inter::Package::defined_by_frame(P);
+		inter_symbol *ptype = Inter::Packages::type(pack);
+		if (Str::eq(ptype->symbol_name, I"_module"))
+			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
+	}
+	if (P->W.data[ID_IFLD] == SPLAT_IST) {
+		inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
+		switch (directive) {
+			case PROPERTY_I6DIR:
+			case ATTRIBUTE_I6DIR:
+				@<Assimilate definition@>;
+				break;
+			case ROUTINE_I6DIR:
+			case STUB_I6DIR:
+				@<Assimilate routine@>;
+				break;
+		}
 	}
 }
 
 void CompileSplatsStage::visitor2(inter_tree *I, inter_tree_node *P, void *state) {
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
-	inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
-	switch (directive) {
-		case ARRAY_I6DIR:
-		case DEFAULT_I6DIR:
-		case CONSTANT_I6DIR:
-		case FAKEACTION_I6DIR:
-		case OBJECT_I6DIR:
-		case VERB_I6DIR:
-			@<Assimilate definition@>;
-			break;
+	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+		inter_package *pack = Inter::Package::defined_by_frame(P);
+		inter_symbol *ptype = Inter::Packages::type(pack);
+		if (Str::eq(ptype->symbol_name, I"_module"))
+			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
+	}
+	if (P->W.data[ID_IFLD] == SPLAT_IST) {
+		inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
+		switch (directive) {
+			case ARRAY_I6DIR:
+			case DEFAULT_I6DIR:
+			case CONSTANT_I6DIR:
+			case FAKEACTION_I6DIR:
+			case OBJECT_I6DIR:
+			case VERB_I6DIR:
+				@<Assimilate definition@>;
+				break;
+		}
 	}
 }
 
 void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state) {
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
-	inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
-	switch (directive) {
-		case GLOBAL_I6DIR:
-			@<Assimilate definition@>;
-			break;
+	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+		inter_package *pack = Inter::Package::defined_by_frame(P);
+		inter_symbol *ptype = Inter::Packages::type(pack);
+		if (Str::eq(ptype->symbol_name, I"_module"))
+			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
+	}
+	if (P->W.data[ID_IFLD] == SPLAT_IST) {
+		inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
+		switch (directive) {
+			case GLOBAL_I6DIR:
+				@<Assimilate definition@>;
+				break;
+		}
 	}
 }
 
@@ -270,7 +294,7 @@ not already there.
 			++css->no_assimilated_directives);
 	}
 	inter_package *subpackage =
-		CompileSplatsStage::new_package_named(&content_at, subpackage_name, subpackage_type);
+		Produce::new_package_named(&content_at, subpackage_name, subpackage_type);
 	Inter::Bookmarks::set_current_package(&content_at, subpackage);
 	DISCARD_TEXT(subpackage_name)
 
@@ -498,7 +522,7 @@ with three things in it:
 	if (ptype == NULL) ptype = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
 	TEMPORARY_TEXT(an)
 	WRITE_TO(an, "assim_action_%d", ++css->no_assimilated_actions);
-	action_package = CompileSplatsStage::new_package_named(IBM, an, ptype);
+	action_package = Produce::new_package_named(IBM, an, ptype);
 	DISCARD_TEXT(an)
 
 @ Each action package has to contain an |action_id| symbol, which will eventually
@@ -664,14 +688,14 @@ These have package types |_function| and |_code| respectively.
 	if (fnt == NULL) fnt = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
 	TEMPORARY_TEXT(fname)
 	WRITE_TO(fname, "%S_fn", identifier);
-	OP = CompileSplatsStage::new_package_named(IBM, fname, fnt);
+	OP = Produce::new_package_named(IBM, fname, fnt);
 	DISCARD_TEXT(fname)
 
 @<Create an inner package for the code@> =
 	Inter::Bookmarks::set_current_package(IBM, OP);
 	TEMPORARY_TEXT(bname)
 	WRITE_TO(bname, "%S_B", identifier);
-	IP = CompileSplatsStage::new_package_named(IBM, bname,
+	IP = Produce::new_package_named(IBM, bname,
 		RunningPipelines::get_symbol(step, code_ptype_RPSYM));
 	DISCARD_TEXT(bname)
 	inter_bookmark inner_save = Inter::Bookmarks::snapshot(IBM);
@@ -720,18 +744,9 @@ These have package types |_function| and |_code| respectively.
 	Produce::guard(Inter::Constant::new_function(IBM, MID, KID, IP, B, NULL));
 
 @h Plumbing.
-Some convenient Inter utilities. First, we make a new package and return it:
+Some convenient Inter utilities.
 
-=
-inter_package *CompileSplatsStage::new_package_named(inter_bookmark *IBM,
-	text_stream *name, inter_symbol *ptype) {
-	inter_package *P = NULL;
-	Produce::guard(Inter::Package::new_package_named(IBM, name, TRUE,
-		ptype, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL, &P));
-	return P;
-}
-
-@ Second, we make a symbol, and also install a socket to it. This essentially
+First, we make a symbol, and also install a socket to it. This essentially
 means that it will be visible to code outside of the current kit, making it a
 function, variable or constant which can be called or accessed from other
 kits or from the main program. (Compare C, where a function declared as |static|
@@ -764,23 +779,26 @@ we simply return a bookmark at the end of the existing submodule.
 
 The function tries to fail safe in the remote contingency that the package type
 |_submodule| does not exist in the current tree. But if the tree has been
-properly initialised with the |new| stage, then it will.
+properly initialised with the |new| stage, then it will. Similarly, it will
+fail safe if an assimilation package has not been set -- but this is very
+unlikely to happen: see above.
 
 =
 inter_bookmark CompileSplatsStage::make_submodule(inter_tree *I, pipeline_step *step,
 	text_stream *name, inter_tree_node *P) {
 	if (RunningPipelines::get_symbol(step, submodule_ptype_RPSYM)) {
 		inter_package *module_package =
-			Site::ensure_assimilation_package(I,
-				RunningPipelines::get_symbol(step, plain_ptype_RPSYM));
-		inter_package *submodule_package = Inter::Packages::by_name(module_package, name);
-		if (submodule_package == NULL) {
-			inter_bookmark IBM = Inter::Bookmarks::after_this_node(I, P);
-			submodule_package = CompileSplatsStage::new_package_named(&IBM, name,
-				RunningPipelines::get_symbol(step, submodule_ptype_RPSYM));
-			if (submodule_package == NULL) internal_error("could not create submodule");
+			step->pipeline->ephemera.assimilation_modules[step->tree_argument];
+		if (module_package) {
+			inter_package *submodule_package = Inter::Packages::by_name(module_package, name);
+			if (submodule_package == NULL) {
+				inter_bookmark IBM = Inter::Bookmarks::after_this_node(I, P);
+				submodule_package = Produce::new_package_named(&IBM, name,
+					RunningPipelines::get_symbol(step, submodule_ptype_RPSYM));
+				if (submodule_package == NULL) internal_error("could not create submodule");
+			}
+			return Inter::Bookmarks::at_end_of_this_package(submodule_package);
 		}
-		return Inter::Bookmarks::at_end_of_this_package(submodule_package);
 	}
 	return Inter::Bookmarks::after_this_node(I, P);
 }
@@ -1204,7 +1222,8 @@ contents of the function -- which can be very large, for example in the Inform
 kit |CommandParserKit| -- as a single gigantic Inter schema |sch|.
 
 =
-void CompileSplatsStage::function_bodies(compile_splats_state *css, inter_tree *I) {
+void CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_state *css,
+	inter_tree *I) {
 	function_body_request *req;
 	LOOP_OVER_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile) {
 		LOGIF(SCHEMA_COMPILATION, "=======\n\nFunction (%S) len %d: '%S'\n\n",
@@ -1218,14 +1237,15 @@ void CompileSplatsStage::function_bodies(compile_splats_state *css, inter_tree *
 @ And then we emit Inter code equivalent to |sch|:
 
 @<Compile this function body@> =
-	Site::set_cir(I, req->block_package);
+	Produce::set_function(I, req->block_package);
 	Packaging::set_state(I, &(req->position), req->enclosure);
 	Produce::push_code_position(I,
 		Produce::new_cip(I, &(req->position)), Inter::Bookmarks::snapshot(Packaging::at(I)));
 	value_holster VH = Holsters::new(INTER_VOID_VHMODE);
 	inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
-	inter_package *module_package = Site::assimilation_package(I);
+	inter_package *module_package =
+		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
 	inter_symbols_table *scope2 = Inter::Packages::scope(module_package);
 	EmitInterSchemas::emit(I, &VH, sch, NULL, scope1, scope2, NULL, NULL);
 	Produce::pop_code_position(I);
-	Site::set_cir(I, NULL);
+	Produce::set_function(I, NULL);

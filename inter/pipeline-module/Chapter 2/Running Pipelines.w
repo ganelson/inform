@@ -9,12 +9,16 @@ This is temporary data meaningful only while a pipeline is running; it is
 =
 typedef struct pipeline_ephemera {
 	struct inter_tree *memory_repository;
-	struct inter_tree *repositories[10];
+	struct inter_tree *trees[10];
+	struct inter_package *assimilation_modules[10];
 } pipeline_ephemera;
 
 void RunningPipelines::clean_pipeline(inter_pipeline *pl) {
 	pl->ephemera.memory_repository = NULL;
-	for (int i=0; i<10; i++) pl->ephemera.repositories[i] = NULL;
+	for (int i=0; i<10; i++) {
+		pl->ephemera.trees[i] = NULL;
+		pl->ephemera.assimilation_modules[i] = NULL;
+	}
 }
 
 @ =
@@ -98,9 +102,11 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 @<Prepare ephemeral data for this step@> =
 	RunningPipelines::clean_step(step);
 	step->ephemera.the_kit = the_kit;
-	if (S->ephemera.repositories[step->tree_argument] == NULL)
-		S->ephemera.repositories[step->tree_argument] = InterTree::new();
-	inter_tree *I = S->ephemera.repositories[step->tree_argument];
+	if (S->ephemera.trees[step->tree_argument] == NULL) {
+		S->ephemera.trees[step->tree_argument] = InterTree::new();
+		S->ephemera.assimilation_modules[step->tree_argument] = NULL;
+	}
+	inter_tree *I = S->ephemera.trees[step->tree_argument];
 	if (I == NULL) {
 		PipelineErrors::error(step, "no Inter tree to apply this step to");
 		active = FALSE;
@@ -164,7 +170,7 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 				PipelineErrors::error(step, "'*memory' can be used only on reads");
 				active = FALSE;
 			} else {
-				S->ephemera.repositories[step->tree_argument] =
+				S->ephemera.trees[step->tree_argument] =
 					S->ephemera.memory_repository;
 				/* and do not call the executor function: that does the read */
 			}

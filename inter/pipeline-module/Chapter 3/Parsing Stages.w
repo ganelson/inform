@@ -30,8 +30,8 @@ here, since this is not part of the Inform 7 compilation pipeline.
 =
 int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
-	inter_package *main_package = Site::main_package_if_it_exists(I);
-	if (main_package) @<Create a module to hold the Inter read in from this kit@>;
+	inter_package *main_package = Site::main_package(I);
+	@<Create a module to hold the Inter read in from this kit@>;
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
 	SimpleTangler::tangle_web(&docket);
@@ -45,10 +45,10 @@ It's into this module that the resulting |SPLAT_IST| nodes will be put.
 @<Create a module to hold the Inter read in from this kit@> =
 	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
 	inter_symbol *module_name = PackageTypes::get(I, I"_module");
-	inter_package *template_p = NULL;
+	inter_package *module_pack = NULL;
 	Inter::Package::new_package_named(&IBM, step->step_argument, FALSE,
-		module_name, 1, NULL, &template_p);
-	Site::set_assimilation_package(I, template_p);
+		module_name, 1, NULL, &module_pack);
+	step->pipeline->ephemera.assimilation_modules[step->tree_argument] = module_pack;
 
 @ The stage |parse-insertions| does the same thing, but on a much smaller scale,
 and reading raw I6T source code from |LINK_IST| nodes in the Inter tree rather
@@ -81,6 +81,8 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	current_sentence = (parse_node *) Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
 	#endif
 	simple_tangle_docket *docket = (simple_tangle_docket *) state;
+	inter_bookmark here = Inter::Bookmarks::after_this_node(I, P);
+	docket->state = (void *) &here;
 	SimpleTangler::tangle_text(docket, insertion);
 }
 
@@ -98,8 +100,9 @@ For (c), note that if a kit is in directory |K| then its source files are
 in |K/Sections|.
 
 @<Make a suitable simple tangler docket@> =
-	inter_package *assimilation_package = Site::ensure_assimilation_package(I,
-		RunningPipelines::get_symbol(step, plain_ptype_RPSYM));
+	inter_package *assimilation_package =
+		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
+	if (assimilation_package == NULL) assimilation_package = Site::main_package(I);
 	inter_bookmark assimilation_point =
 		Inter::Bookmarks::at_end_of_this_package(assimilation_package);
 	docket = SimpleTangler::new_docket(
