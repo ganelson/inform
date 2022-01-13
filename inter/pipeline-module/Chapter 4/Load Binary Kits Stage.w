@@ -82,4 +82,4 @@ of the sidecar and put it into the main tree.
 		internal_error("unable to find attachment point package");
 	}
 	Inter::Transmigration::move(pack,
-		Site::main_package(step->ephemera.tree), FALSE);	
+		LargeScale::main_package(step->ephemera.tree), FALSE);	

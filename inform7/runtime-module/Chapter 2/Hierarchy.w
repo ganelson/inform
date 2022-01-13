@@ -58,7 +58,7 @@ as their package type.
 
 For example, this:
 = (text as InC)
-	submodule_identity *activities = Packaging::register_submodule(I"activities");
+	submodule_identity *activities = LargeScale::register_submodule_identity(I"activities");
 	H_BEGIN(HierarchyLocations::local_submodule(activities))
 		H_BEGIN_AP(ACTIVITIES_HAP,            I"activity", I"_activity")
 			...
@@ -160,6 +160,7 @@ and //pipeline: The Standard Kits//, but by very similar methods.
 
 =
 void Hierarchy::establish(void) {
+	Packaging::incarnate(LargeScale::module_request(Emit::tree(), I"generic")->where_found);
 	SynopticHierarchy::establish(Emit::tree());
 	KitHierarchy::establish(Emit::tree());
 	H_BEGIN_DECLARATIONS
@@ -238,7 +239,7 @@ void Hierarchy::establish(void) {
 @e DEBUGGING_ASPECT_USED_MD_HL
 
 @<Establish basics@> =
-	submodule_identity *basics = Packaging::register_submodule(I"basics");
+	submodule_identity *basics = LargeScale::register_submodule_identity(I"basics");
 
 	H_BEGIN(HierarchyLocations::completion_submodule(I, basics))
 		H_C_T(I7_VERSION_NUMBER_HL,           I"I7_VERSION_NUMBER")
@@ -365,7 +366,7 @@ void Hierarchy::establish(void) {
 @e NAPE_AT_MD_HL
 
 @<Establish actions@> =
-	submodule_identity *actions = Packaging::register_submodule(I"actions");
+	submodule_identity *actions = LargeScale::register_submodule_identity(I"actions");
 
 	H_BEGIN(HierarchyLocations::local_submodule(actions))
 		H_BEGIN_AP(ACTIONS_HAP,               I"action", I"_action")
@@ -416,7 +417,7 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	submodule_identity *naps = Packaging::register_submodule(I"named_action_patterns");
+	submodule_identity *naps = LargeScale::register_submodule_identity(I"named_action_patterns");
 
 	H_BEGIN(HierarchyLocations::local_submodule(naps))
 		H_BEGIN_AP(NAMED_ACTION_PATTERNS_HAP, I"named_action_pattern", I"_named_action_pattern")
@@ -457,7 +458,7 @@ void Hierarchy::establish(void) {
 @e ACTIVITY_VARC_FN_HL
 
 @<Establish activities@> =
-	submodule_identity *activities = Packaging::register_submodule(I"activities");
+	submodule_identity *activities = LargeScale::register_submodule_identity(I"activities");
 
 	H_BEGIN(HierarchyLocations::local_submodule(activities))
 		H_BEGIN_AP(ACTIVITIES_HAP,            I"activity", I"_activity")
@@ -500,7 +501,7 @@ void Hierarchy::establish(void) {
 @e TASK_FN_HL
 
 @<Establish adjectives@> =
-	submodule_identity *adjectives = Packaging::register_submodule(I"adjectives");
+	submodule_identity *adjectives = LargeScale::register_submodule_identity(I"adjectives");
 
 	H_BEGIN(HierarchyLocations::local_submodule(adjectives))
 		H_BEGIN_AP(ADJECTIVES_HAP,            I"adjective", I"_adjective")
@@ -542,7 +543,7 @@ void Hierarchy::establish(void) {
 @e YEAR_MD_HL
 
 @<Establish bibliographic@> =
-	submodule_identity *bibliographic = Packaging::register_submodule(I"bibliographic");
+	submodule_identity *bibliographic = LargeScale::register_submodule_identity(I"bibliographic");
 
 	H_BEGIN(HierarchyLocations::completion_submodule(I, bibliographic))
 		H_C_T(UUID_ARRAY_HL,                  I"UUID_ARRAY")
@@ -578,7 +579,7 @@ void Hierarchy::establish(void) {
 @e AHC_FN_HL
 
 @<Establish chronology@> =
-	submodule_identity *chronology = Packaging::register_submodule(I"chronology");
+	submodule_identity *chronology = LargeScale::register_submodule_identity(I"chronology");
 
 	H_BEGIN(HierarchyLocations::local_submodule(chronology))
 		H_BEGIN_AP(PAST_TENSE_CONDS_HAP, I"past_condition", I"_past_condition")
@@ -626,7 +627,7 @@ void Hierarchy::establish(void) {
 @e PREPOSITION_AT_MD_HL
 
 @<Establish conjugations@> =
-	submodule_identity *conjugations = Packaging::register_submodule(I"conjugations");
+	submodule_identity *conjugations = LargeScale::register_submodule_identity(I"conjugations");
 
 	H_BEGIN(HierarchyLocations::generic_submodule(I, conjugations))
 		H_C_T(CV_MEANING_HL,                  I"CV_MEANING")
@@ -674,7 +675,7 @@ void Hierarchy::establish(void) {
 @e EQUATION_AT_MD_HL
 
 @<Establish equations@> =
-	submodule_identity *equations = Packaging::register_submodule(I"equations");
+	submodule_identity *equations = LargeScale::register_submodule_identity(I"equations");
 
 	H_BEGIN(HierarchyLocations::local_submodule(equations))
 		H_BEGIN_AP(EQUATIONS_HAP,             I"equation", I"_equation")
@@ -692,7 +693,7 @@ void Hierarchy::establish(void) {
 @e IFID_HL
 
 @<Establish external files@> =
-	submodule_identity *external_files = Packaging::register_submodule(I"external_files");
+	submodule_identity *external_files = LargeScale::register_submodule_identity(I"external_files");
 
 	H_BEGIN(HierarchyLocations::local_submodule(external_files))
 		H_BEGIN_AP(EXTERNAL_FILES_HAP,        I"external_file", I"_external_file")
@@ -772,7 +773,7 @@ void Hierarchy::establish(void) {
 @e CG_TRUE_VERB_MD_HL
 
 @<Establish grammar@> =
-	submodule_identity *grammar = Packaging::register_submodule(I"grammar");
+	submodule_identity *grammar = LargeScale::register_submodule_identity(I"grammar");
 
 	H_BEGIN(HierarchyLocations::generic_submodule(I, grammar))
 		H_C_T(REPARSE_CODE_HL,                I"REPARSE_CODE")
@@ -948,7 +949,7 @@ void Hierarchy::establish(void) {
 @e DIRECTION_HL
 
 @<Establish instances@> =
-	submodule_identity *instances = Packaging::register_submodule(I"instances");
+	submodule_identity *instances = LargeScale::register_submodule_identity(I"instances");
 
 	H_BEGIN(HierarchyLocations::local_submodule(instances))
 		H_BEGIN_AP(INSTANCES_HAP,             I"instance", I"_instance")
@@ -1057,7 +1058,7 @@ void Hierarchy::establish(void) {
 @e INITIALSITUATION_HL
 
 @<Establish int-fiction@> =
-	submodule_identity *interactive_fiction = Packaging::register_submodule(I"interactive_fiction");
+	submodule_identity *interactive_fiction = LargeScale::register_submodule_identity(I"interactive_fiction");
 
 	H_BEGIN(HierarchyLocations::generic_submodule(I, interactive_fiction))
 		H_C_T(PLAYER_OBJECT_INIS_HL,          I"PLAYER_OBJECT_INIS")
@@ -1176,7 +1177,7 @@ void Hierarchy::establish(void) {
 @e RESULT_BM_MD_HL
 
 @<Establish kinds@> =
-	submodule_identity *kinds = Packaging::register_submodule(I"kinds");
+	submodule_identity *kinds = LargeScale::register_submodule_identity(I"kinds");
 
 	H_BEGIN(HierarchyLocations::generic_submodule(I, kinds))
 		H_C_T(K_UNCHECKED_HL,                 I"K_unchecked")
@@ -1295,7 +1296,7 @@ void Hierarchy::establish(void) {
 @e LP_PARSE_FN_HL
 
 @<Establish literal patterns@> =
-	submodule_identity *literals = Packaging::register_submodule(I"literal_patterns");
+	submodule_identity *literals = LargeScale::register_submodule_identity(I"literal_patterns");
 
 	H_BEGIN(HierarchyLocations::local_submodule(literals))
 		H_BEGIN_AP(LITERAL_PATTERNS_HAP,      I"literal_pattern", I"_literal_pattern")
@@ -1324,7 +1325,7 @@ void Hierarchy::establish(void) {
 @e MH_OFFSET_FROM_HL
 
 @<Establish mapping hints@> =
-	submodule_identity *hints = Packaging::register_submodule(I"mapping_hints");
+	submodule_identity *hints = LargeScale::register_submodule_identity(I"mapping_hints");
 
 	H_BEGIN(HierarchyLocations::completion_submodule(I, hints))
 		H_BEGIN_AP(MAPPING_HINTS_HAP,      I"mapping_hint", I"_mapping_hint")
@@ -1364,7 +1365,7 @@ void Hierarchy::establish(void) {
 @e PHRASEBOOK_ENTRY_TEXT_MD_HL
 
 @<Establish phrases@> =
-	submodule_identity *phrases = Packaging::register_submodule(I"phrases");
+	submodule_identity *phrases = LargeScale::register_submodule_identity(I"phrases");
 
 	H_BEGIN(HierarchyLocations::local_submodule(phrases))
 		H_BEGIN_AP(PHRASES_HAP,               I"phrase", I"_to_phrase")
@@ -1404,7 +1405,7 @@ void Hierarchy::establish(void) {
 @e PROPERTY_HL
 
 @<Establish properties@> =
-	submodule_identity *properties = Packaging::register_submodule(I"properties");
+	submodule_identity *properties = LargeScale::register_submodule_identity(I"properties");
 
 	H_BEGIN(HierarchyLocations::local_submodule(properties))
 		H_BEGIN_AP(PROPERTIES_HAP,            I"property", I"_property")
@@ -1458,7 +1459,7 @@ void Hierarchy::establish(void) {
 @e RELATION_CREATOR_FN_HL
 
 @<Establish relations@> =
-	submodule_identity *relations = Packaging::register_submodule(I"relations");
+	submodule_identity *relations = LargeScale::register_submodule_identity(I"relations");
 
 	H_BEGIN(HierarchyLocations::generic_submodule(I, relations))
 		H_C_T(RELS_ASSERT_FALSE_HL,           I"RELS_ASSERT_FALSE")
@@ -1554,7 +1555,7 @@ void Hierarchy::establish(void) {
 @e OUTCOME_IS_DEFAULT_MD_HL
 
 @<Establish rulebooks@> =
-	submodule_identity *rulebooks = Packaging::register_submodule(I"rulebooks");
+	submodule_identity *rulebooks = LargeScale::register_submodule_identity(I"rulebooks");
 
 	H_BEGIN(HierarchyLocations::local_submodule(rulebooks))
 		H_BEGIN_AP(OUTCOMES_HAP,              I"rulebook_outcome", I"_outcome")
@@ -1639,7 +1640,7 @@ void Hierarchy::establish(void) {
 @e AC_AT_MD_HL
 
 @<Establish rules@> =
-	submodule_identity *rules = Packaging::register_submodule(I"rules");
+	submodule_identity *rules = LargeScale::register_submodule_identity(I"rules");
 
 	H_BEGIN(HierarchyLocations::local_submodule(rules))
 		H_BEGIN_AP(RULES_HAP,                 I"rule", I"_rule")
@@ -1706,7 +1707,7 @@ void Hierarchy::establish(void) {
 @e TABLE_COLUMN_KIND_MD_HL
 
 @<Establish tables@> =
-	submodule_identity *tables = Packaging::register_submodule(I"tables");
+	submodule_identity *tables = LargeScale::register_submodule_identity(I"tables");
 
 	H_BEGIN(HierarchyLocations::local_submodule(tables))
 		H_BEGIN_AP(TABLES_HAP,                I"table", I"_table")
@@ -1735,7 +1736,7 @@ void Hierarchy::establish(void) {
 		H_END
 	H_END
 
-	submodule_identity *table_columns = Packaging::register_submodule(I"table_columns");
+	submodule_identity *table_columns = LargeScale::register_submodule_identity(I"table_columns");
 	H_BEGIN(HierarchyLocations::local_submodule(table_columns))
 		H_BEGIN_AP(TABLE_COLUMNS_HAP,         I"table_column", I"_table_column")
 			H_C_U(TABLE_COLUMN_ID_HL,         I"table_column_id")
@@ -1760,7 +1761,7 @@ void Hierarchy::establish(void) {
 @e USE_OPTION_ID_HL
 
 @<Establish use options@> =
-	submodule_identity *use_options = Packaging::register_submodule(I"use_options");
+	submodule_identity *use_options = LargeScale::register_submodule_identity(I"use_options");
 
 	H_BEGIN(HierarchyLocations::local_submodule(use_options))
 		H_BEGIN_AP(USE_OPTIONS_HAP,           I"use_option", I"_use_option")
@@ -1793,7 +1794,7 @@ void Hierarchy::establish(void) {
 @e INITIAL_MAX_SCORE_HL
 
 @<Establish variables@> =
-	submodule_identity *variables = Packaging::register_submodule(I"variables");
+	submodule_identity *variables = LargeScale::register_submodule_identity(I"variables");
 
 	H_BEGIN(HierarchyLocations::local_submodule(variables))
 		H_BEGIN_AP(VARIABLES_HAP,             I"variable", I"_variable")
@@ -1923,7 +1924,7 @@ void Hierarchy::establish(void) {
 
 @h Architectural symbols.
 These are built-in constants (and one built-in variable, |self|) which come
-from the platform we are compiling to. See //building: Building Site//.
+from the platform we are compiling to. See //building: Large-Scale Structure//.
 
 There are other architectural symbols besides these, but these are the only
 ones which the //inform7//-compiled code needs to refer to.

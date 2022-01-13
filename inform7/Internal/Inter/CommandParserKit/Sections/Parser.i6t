@@ -4107,15 +4107,16 @@ is a room in its own right, which is not really true. Note that it is not
 permitted to have properties other than the three named here: all other
 properties are redirected to the current location's object.
 
-Properties with numbers under |INDIV_PROP_START| are "common properties".
-These come along with a table of default values, so that it is meaningful
-(in I6, anyway) to read them even when they are not provided (so that the
-address, returned by the |.&| operator, is zero).
+At one time this function correctly handled the case of a common property
+whose default value was itself a function which could be run; but this is
+now awkward to compile (since it needed the magic compiler-defimed constant
+INDIV_PROP_START, existing on Inform 6 for Glulx but not on other platforms),
+and in the Inform 7 world it was a facility never used.
 
 =
 [ RunRoutines obj prop;
     if (obj == thedark) obj = real_location;
-    if ((obj.&prop == 0) && (prop-->1 >= INDIV_PROP_START)) rfalse;
+    if (obj.&prop == 0) rfalse;
     return obj.prop();
 ];
 

@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -65,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">building</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the building module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Services for builders</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Services for builders</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Structural conventions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The building module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -81,12 +86,93 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Services for builders. </b>This module is essentially middleware. It does none of the proactive business
-of compiling, but instead acts as a bridge to the low-level functions in
-the <a href="../bytecode-module/index.html" class="internal">bytecode</a> module, allowing them to be used with much greater ease.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Services for builders. </b>This module is essentially middleware. It acts as a bridge to the low-level
+functions in the <a href="../bytecode-module/index.html" class="internal">bytecode</a> module, allowing them to be used with much
+greater ease and consistency.
 </p>
 
-<p class="commentary">In particular, Inter code is fundamentally a mass of <span class="extract"><span class="extract-syntax">inter_package</span></span>s, which
+<p class="commentary">In particular, the functions here enforce a number of conventions about how an
+Inter tree is laid out. Indiscriminate use of <a href="../bytecode-module/index.html" class="internal">bytecode</a> functions would allow
+other layouts to be made, but we want to be systematic.
+</p>
+
+<p class="commentary">This module needs plenty of working data, and stashes that data inside the
+<span class="extract"><span class="extract-syntax">inter_tree</span></span> structure it is working on: in a compoment of that structure called
+a <a href="1-bm.html#SP4" class="internal">building_site</a>. Whereas the main data ih an <span class="extract"><span class="extract-syntax">inter_tree</span></span> affects the meaning
+of the tree, i.e., makes a difference as to what program the tree represents,
+the contents of the <a href="1-bm.html#SP4" class="internal">building_site</a> component are only used to make it, and
+are ignored by the <a href="../final-module/index.html" class="internal">final</a> code-generator.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Structural conventions. </b>An inter tree is fundamentally a set of resources stored in a nested set of
+<span class="extract"><span class="extract-syntax">inter_package</span></span> boxes.
+</p>
+
+<ul class="items"><li>&#9679; The following resources are stored at the root level (i.e., not inside of
+any package) and nowhere else:
+<ul class="items"><li>&#9679; Package type declarations. Inter can support a nearly arbitrary set of
+different package types, and the <a href="../bytecode-module/index.html" class="internal">bytecode</a> functions make no assumptions.
+In <a href="1-pt.html" class="internal">Package Types</a>, however, we //present a single standard set of package
+types used by Inform code.
+</li><li>&#9679; Primitive declarations. See <a href="1-ip.html" class="internal">Inter Primitives</a>. Again, Inter can in
+principle support a variety of different "instruction sets", but this module
+presents a single standardised instruction set.
+</li><li>&#9679; Compiler pragmas. These are marginal tweaks on a platform-by-platform basis
+and use of them is minimal, but see <a href="1-ip.html#SP4" class="internal">Primitives::emit_pragma</a>.
+</li></ul>
+<li>&#9679; Everything else is inside a single top-level package called <span class="extract"><span class="extract-syntax">main</span></span>, which
+has package type <span class="extract"><span class="extract-syntax">_plain</span></span>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">main</span></span> contains only packages, and of only two types:
+<ul class="items"><li>&#9679; "Modules", which are packages of type <span class="extract"><span class="extract-syntax">_module</span></span>. These occur nowhere else
+in the tree.
+</li><li>&#9679; "Linkages", which are packages of type <span class="extract"><span class="extract-syntax">_linkage</span></span>. These occur nowhere else
+in the tree.
+</li></ul>
+<li>&#9679; <a href="../inform7/index.html" class="internal">inform7</a> compiles the material in each compilation unit to a module
+named for that unit. That is:
+<ul class="items"><li>&#9679; The module <span class="extract"><span class="extract-syntax">source_text</span></span> contains material from the main source text.
+</li><li>&#9679; Each extension included produces a module, named, for example,
+<span class="extract"><span class="extract-syntax">locksmith_by_emily_short</span></span>.
+</li></ul>
+<li>&#9679; Each kit produces a module, named after it. Any Inter tree produced by
+<a href="../inform7/index.html" class="internal">inform7</a> will always contain the module <span class="extract"><span class="extract-syntax">BasicInformKit</span></span>, for example.
+</li><li>&#9679; <a href="../inform7/index.html" class="internal">inform7</a> generates an additional module called <span class="extract"><span class="extract-syntax">generic</span></span>, holding
+generic definitions &mdash; material which is the same regardless of what is
+being compiled.
+</li><li>&#9679; <a href="../inform7/index.html" class="internal">inform7</a> generates an additional module called <span class="extract"><span class="extract-syntax">completion</span></span>, holding
+resources put together from across different compilation units.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+</li><li>&#9679; <a href="../inter/index.html" class="internal">inter</a> generates an additional module called <span class="extract"><span class="extract-syntax">synoptic</span></span>, made during
+linking, which contains resources collated from or cross-referencing
+everything else.
+</li><li>&#9679; Modules contain only further packages, called "submodules" and with the
+package type <span class="extract"><span class="extract-syntax">_submodule</span></span>. The Inform tools use a standard set of names for
+such submodules: for example, in any module the resources defining its
+global variables are in a submodule called <span class="extract"><span class="extract-syntax">variables</span></span>. (If it defines no
+variables, the submodule will not be present.)
+</li><li>&#9679; There are just two different linkages &mdash; packages with special contents
+and which the linking steps of <a href="../pipeline-module/index.html" class="internal">pipeline</a> treat differently from modules.
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">architecture</span></span> has no subpackages, and contains only constant definitions,
+drawn from a fixed and limited set. These definitions depend on, and indeed
+express, the target architecture: for example, <span class="extract"><span class="extract-syntax">WORDSIZE</span></span>, the number of
+bytes per word, is defined here. Symbols here behave uniquely in linking:
+when two trees are linked together, they will each have an <span class="extract"><span class="extract-syntax">architecture</span></span>
+package, and symbols in them will simply be identified with each other.
+Thus the <span class="extract"><span class="extract-syntax">WORDSIZE</span></span> defined in the main Inform 7 tree will be considered
+the same symbol as the <span class="extract"><span class="extract-syntax">WORDSIZE</span></span> defined in the tree for BasicInformKit.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">connectors</span></span> has no subpackages and no resources other than symbols.
+It holds plugs and sockets enabling the Inter tree to be linked with other
+Inter trees; during linking, these are removed when their purposes has been
+served, so that after a successful link, <span class="extract"><span class="extract-syntax">connectors</span></span> will always be empty.
+</li></ul>
+</li></ul>
+<p class="commentary">See <a href="1-ls.html" class="internal">Large-Scale Structure</a> for the code which builds all of the above
+packages (though not their contents).
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Ideally <span class="extract"><span class="extract-syntax">completion</span></span> would not exist, and everything in it would be made
+as part of <span class="extract"><span class="extract-syntax">synoptic</span></span> during linking, but at present this is too difficult.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In particular, Inter code is fundamentally a mass of <span class="extract"><span class="extract-syntax">inter_package</span></span>s, which
 cross-reference each other using <span class="extract"><span class="extract-syntax">inter_symbol</span></span>s. But of course it cannot all
 be made simultaneously. What we need is a more flexible way to describe things
 in the Inter tree: both those which have already been made, and also those
@@ -107,9 +193,9 @@ ceases to be virtual and comes into being: this is called "incarnation".
 to call a <span class="extract"><span class="extract-syntax">symbol_request</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Since what is built by the code in this module is Inter code, which forms up
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Since what is built by the code in this module is Inter code, which forms up
 into trees, the metaphor should perhaps be "garden", but in fact we call a
-context for making Inter a <a href="1-bs.html#SP1" class="internal">building_site</a>.
+context for making Inter a <a href="1-bm.html#SP4" class="internal">building_site</a>.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

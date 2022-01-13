@@ -7,16 +7,10 @@ layer.
 @h Z-Machine Definitions.
 The Z-machine contains certain special constants and variables at fixed
 position in its "header"; the addresses of these are given below. See
-{\it The Z-Machine Standards Document}, version 1.0, for details.
-
-|INDIV_PROP_START| is the lowest number of any "individual property",
-an I6 internal quantity defined by the compiler when the target is Glulx
-but not for Z.
+The Z-Machine Standards Document, version 1.0, for details.
 
 =
 #Ifdef TARGET_ZCODE;
-
-Constant INDIV_PROP_START 64;
 
 ! Offsets into Z-machine header:
 

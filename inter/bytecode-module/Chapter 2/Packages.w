@@ -115,7 +115,7 @@ void Inter::Packages::set_name(inter_package *Q, inter_package *P, text_stream *
 	if (N == NULL) internal_error("null package name");
 	P->package_name_t = Str::duplicate(N);
 	if (Str::len(N) > 0) {
-		Site::note_package_name(Inter::Packages::tree(P), P, N);
+		LargeScale::note_package_name(Inter::Packages::tree(P), P, N);
 		Inter::Packages::add_subpackage_name(Q, P);
 	}
 }
@@ -165,11 +165,11 @@ inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream
 }
 
 inter_symbol *Inter::Packages::search_main_exhaustively(inter_tree *I, text_stream *S) {
-	return Inter::Packages::search_exhaustively(Site::main_package(I), S);
+	return Inter::Packages::search_exhaustively(LargeScale::main_package(I), S);
 }
 
 inter_symbol *Inter::Packages::search_resources(inter_tree *I, text_stream *S) {
-	inter_package *main_package = Site::main_package_if_it_exists(I);
+	inter_package *main_package = LargeScale::main_package_if_it_exists(I);
 	if (main_package) {
 		inter_tree_node *D = Inter::Packages::definition(main_package);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {

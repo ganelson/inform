@@ -22,7 +22,7 @@ inter_symbol *PackageTypes::get(inter_tree *I, text_stream *name) {
 		@<Decide if this package type is to be enclosing@>;
 		ptype = Produce::new_symbol(scope, name);
 		Produce::guard(Inter::PackageType::new_packagetype(
-			Site::package_types(I), ptype,
+			Packaging::package_types(I), ptype,
 			0, NULL));
 		if (enclose) Produce::annotate_symbol_i(ptype, ENCLOSING_IANN, 1);
 	}

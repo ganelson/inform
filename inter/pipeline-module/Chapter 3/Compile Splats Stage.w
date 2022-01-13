@@ -787,10 +787,10 @@ unlikely to happen: see above.
 inter_bookmark CompileSplatsStage::make_submodule(inter_tree *I, pipeline_step *step,
 	text_stream *name, inter_tree_node *P) {
 	if (RunningPipelines::get_symbol(step, submodule_ptype_RPSYM)) {
-		inter_package *module_package =
+		inter_package *module_pack =
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument];
-		if (module_package) {
-			inter_package *submodule_package = Inter::Packages::by_name(module_package, name);
+		if (module_pack) {
+			inter_package *submodule_package = Inter::Packages::by_name(module_pack, name);
 			if (submodule_package == NULL) {
 				inter_bookmark IBM = Inter::Bookmarks::after_this_node(I, P);
 				submodule_package = Produce::new_package_named(&IBM, name,
@@ -1083,8 +1083,8 @@ actually works out the numerical value of $x + y$.
 
 Why do we do this? Why not simply calculate now, and get an explicit answer?
 The trouble is that one of $x$ or $y$ might be some symbol whose value is itself
-created by the downstream compiler, such as the address |INDIV_PROP_START|.
-The meaning of this is the same on all platforms: the value is not.
+created by the downstream compiler. The meaning of this is the same on all
+platforms: the value is not.
 
 There would be a case for optimising the following function to fold constants
 in cases where we can confidently do so (being careful of overflows and
@@ -1165,7 +1165,7 @@ compilation unit, so we create a plug called |MAX_ELEPHANTS| and let the
 linker stage worry about what it means later on.
 
 @<This leaf is a symbol name@> =
-	inter_symbol *result_s = Site::find_architectural_symbol(I, t->material,
+	inter_symbol *result_s = LargeScale::find_architectural_symbol(I, t->material,
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	if (result_s) return result_s;
 	result_s = Wiring::find_socket(I, t->material);
@@ -1243,9 +1243,9 @@ void CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_sta
 		Produce::new_cip(I, &(req->position)), Inter::Bookmarks::snapshot(Packaging::at(I)));
 	value_holster VH = Holsters::new(INTER_VOID_VHMODE);
 	inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
-	inter_package *module_package =
+	inter_package *module_pack =
 		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
-	inter_symbols_table *scope2 = Inter::Packages::scope(module_package);
+	inter_symbols_table *scope2 = Inter::Packages::scope(module_pack);
 	EmitInterSchemas::emit(I, &VH, sch, NULL, scope1, scope2, NULL, NULL);
 	Produce::pop_code_position(I);
 	Produce::set_function(I, NULL);

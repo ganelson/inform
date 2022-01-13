@@ -3,6 +3,39 @@
 @
 
 =
+typedef struct site_primitives_data {
+	struct inter_symbol *primitives_by_BIP[MAX_BIPS];
+} site_primitives_data;
+
+void Primitives::clear_pdata(inter_tree *I) {
+	building_site *B = &(I->site);
+	for (int i=0; i<MAX_BIPS; i++) B->spridata.primitives_by_BIP[i] = NULL;
+}
+
+inter_symbol *Primitives::from_BIP(inter_tree *I, inter_ti bip) {
+	return I->site.spridata.primitives_by_BIP[bip];
+}
+
+void Primitives::index(inter_tree *I, inter_ti bip, inter_symbol *S) {
+	I->site.spridata.primitives_by_BIP[bip] = S;
+}
+
+@
+
+=
+typedef struct inform7_primitive {
+	int BIP;
+	char *name;
+	char *signature;
+} inform7_primitive;
+
+inform7_primitive standard_inform7_primitives[] = {
+	{ 0, "!example", "val -> void" },
+};
+
+@
+
+=
 void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::emit_one(I, IBM, I"!font", I"val -> void");
 	Primitives::emit_one(I, IBM, I"!style", I"val -> void");
@@ -103,7 +136,7 @@ void Primitives::emit(inter_tree *I, inter_bookmark *IBM) {
 inter_symbol *Primitives::get(inter_tree *I, inter_ti bip) {
 	if (I == NULL) internal_error("no tree");
 	if ((bip < 1) || (bip >= MAX_BIPS)) internal_error("bip out of range");
-	return Site::get_opcode(I, bip);
+	return Primitives::from_BIP(I, bip);
 }
 
 void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim, text_stream *category) {
@@ -115,7 +148,7 @@ void Primitives::emit_one(inter_tree *I, inter_bookmark *IBM, text_stream *prim,
 	inter_ti bip = Primitives::to_bip(I, S);
 	if (bip == 0) internal_error("missing bip");
 	if (bip >= MAX_BIPS) internal_error("unsafely high bip");
-	Site::set_opcode(I, bip, S);
+	Primitives::index(I, bip, S);
 	Produce::guard(E);
 	DISCARD_TEXT(prim_command)
 }
@@ -375,7 +408,7 @@ void Primitives::scan_tree(inter_tree *I) {
 void Primitives::scan_visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	inter_symbol *prim_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
 	inter_ti bip = Primitives::to_bip(I, prim_name);
-	if (bip) Site::set_opcode(I, bip, prim_name);
+	if (bip) Primitives::index(I, bip, prim_name);
 }
 
 inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
@@ -483,4 +516,12 @@ inter_ti Primitives::to_bip(inter_tree *I, inter_symbol *symb) {
 		return bip;
 	}
 	return 0;
+}
+
+void Primitives::emit_pragma(inter_tree *I, text_stream *target, text_stream *content) {
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), InterTree::root_package(I));
+	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), content);
+	inter_symbol *target_name =
+		InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(I), target);
+	Produce::guard(Inter::Pragma::new(Packaging::pragmas(I), target_name, ID, 0, NULL));
 }

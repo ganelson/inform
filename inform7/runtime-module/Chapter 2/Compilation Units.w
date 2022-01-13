@@ -7,11 +7,11 @@ to is similarly divided up.
 The source text is divided up into "compilation units". Each extension is its
 own compilation unit, and so is the main source text. This demarcation is also
 reflected in the Inter hierarchy, where each different compilation unit has its
-own sub-hierarchy, a |module_package|.
+own sub-hierarchy, a |module_request|.
 
 =
 typedef struct compilation_unit {
-	struct module_package *to_module;
+	struct module_request *to_module;
 	struct parse_node *head_node;
 	struct inter_name *extension_id;
 	struct inform_extension *extension;
@@ -23,7 +23,7 @@ void CompilationUnits::log(compilation_unit *cu) {
 	else LOG("unit'%W'", Node::get_text(cu->head_node));
 }
 
-module_package *CompilationUnits::to_module_package(compilation_unit *C) {
+module_request *CompilationUnits::to_module_package(compilation_unit *C) {
 	if (C == NULL) internal_error("no unit");
 	return C->to_module;
 }
@@ -54,7 +54,7 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 
 	TEMPORARY_TEXT(pname)
 	@<Compose a name for the unit package this will lead to@>;
-	module_package *M = Packaging::get_unit(Emit::tree(), pname, I"_module");
+	module_request *M = LargeScale::module_request(Emit::tree(), pname);
 	inter_name *id_iname = NULL;
 	@<Give M a category@>;
 	if (ext) @<Give M metadata indicating the source extension@>;
@@ -71,22 +71,22 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	inter_ti cat = 1;
 	if (ext) cat = 2;
 	if (Extensions::is_standard(ext)) cat = 3;
-	Hierarchy::apply_metadata_from_number(M->the_package, EXT_CATEGORY_MD_HL, cat);
+	Hierarchy::apply_metadata_from_number(M->where_found, EXT_CATEGORY_MD_HL, cat);
 
 @ The extension credit consists of a single line, with name, version number
 and author; together with any "extra credit" asked for by the extension.
 
 @<Give M metadata indicating the source extension@> =
-	Hierarchy::apply_metadata(M->the_package, EXT_AUTHOR_MD_HL,
+	Hierarchy::apply_metadata(M->where_found, EXT_AUTHOR_MD_HL,
 		ext->as_copy->edition->work->raw_author_name);
-	Hierarchy::apply_metadata(M->the_package, EXT_TITLE_MD_HL,
+	Hierarchy::apply_metadata(M->where_found, EXT_TITLE_MD_HL,
 		ext->as_copy->edition->work->raw_title);
 	TEMPORARY_TEXT(V)
 	semantic_version_number N = ext->as_copy->edition->version;
 	WRITE_TO(V, "%v", &N);
-	Hierarchy::apply_metadata(M->the_package, EXT_VERSION_MD_HL, V);
+	Hierarchy::apply_metadata(M->where_found, EXT_VERSION_MD_HL, V);
 	DISCARD_TEXT(V)
-	id_iname = Hierarchy::make_iname_in(EXTENSION_ID_HL, M->the_package);
+	id_iname = Hierarchy::make_iname_in(EXTENSION_ID_HL, M->where_found);
 	Emit::numeric_constant(id_iname, 0);
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "%S", ext->as_copy->edition->work->raw_title);
@@ -94,10 +94,10 @@ and author; together with any "extra credit" asked for by the extension.
 	WRITE_TO(C, " by %S", ext->as_copy->edition->work->raw_author_name);
 	if (Str::len(ext->extra_credit_as_lexed) > 0)
 		WRITE_TO(C, " (%S)", ext->extra_credit_as_lexed);
-	Hierarchy::apply_metadata(M->the_package, EXT_CREDIT_MD_HL, C);
+	Hierarchy::apply_metadata(M->where_found, EXT_CREDIT_MD_HL, C);
 	DISCARD_TEXT(C)
 	if (Str::len(ext->extra_credit_as_lexed) > 0)
-		Hierarchy::apply_metadata(M->the_package, EXT_EXTRA_CREDIT_MD_HL,
+		Hierarchy::apply_metadata(M->where_found, EXT_EXTRA_CREDIT_MD_HL,
 			ext->extra_credit_as_lexed);
 	TEMPORARY_TEXT(the_author_name)
 	WRITE_TO(the_author_name, "%S", ext->as_copy->edition->work->author_name);
@@ -108,8 +108,8 @@ and author; together with any "extra credit" asked for by the extension.
 		((general_authorial_modesty == FALSE) || /* and (2a) author doesn't ask to be modest, or */
 			(self_penned == FALSE)))             /*     (2b) didn't write this extension */
 		modesty = 0;
-	Hierarchy::apply_metadata_from_number(M->the_package, EXT_MODESTY_MD_HL, modesty);
-	Hierarchy::apply_metadata_from_number(M->the_package, EXT_WORD_COUNT_MD_HL,
+	Hierarchy::apply_metadata_from_number(M->where_found, EXT_MODESTY_MD_HL, modesty);
+	Hierarchy::apply_metadata_from_number(M->where_found, EXT_WORD_COUNT_MD_HL,
 		(inter_ti) TextFromFiles::total_word_count(ext->read_into_file));
 	DISCARD_TEXT(the_author_name)
 
@@ -139,7 +139,7 @@ void CompilationUnits::complete_metadata(void) {
 	LOOP_OVER(C, compilation_unit) {
 		inform_extension *ext = C->extension;
 		if (ext) {
-			package_request *pack = C->to_module->the_package;
+			package_request *pack = C->to_module->where_found;
 			Hierarchy::apply_metadata_from_number(pack, EXT_AT_MD_HL,
 				(inter_ti) Wordings::first_wn(ext->body_text));
 			parse_node *inc = Extensions::get_inclusion_sentence(ext);

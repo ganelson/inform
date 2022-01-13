@@ -1,0 +1,373 @@
+[LargeScale::] Large-Scale Structure.
+
+To manage the main, connectors and architecture packages of an Inter tree,
+together with its major building blocks: modules and their submodules.
+
+@h Structure data.
+See //What This Module Does// for a description of the conventions set
+by the functions below. Our task in this section is basically to make
+|/main|, |/main/connectors| and |/main/architecture|, together with
+modules such as |/main/BasicInformKit|, and their submodules, such as
+|/main/BasicInformKit/activities|.
+
+=
+typedef struct site_structure_data {
+	struct inter_package *main_package;
+	struct package_request *main_request;
+
+	struct inter_package *connectors_package;
+	struct package_request *connectors_request;
+
+	struct inter_package *architecture_package;
+	struct package_request *architecture_request;
+	struct inter_bookmark architecture_bookmark;
+
+	struct dictionary *modules_indexed_by_name; /* of |module_request| */
+} site_structure_data;
+
+@ =
+void LargeScale::clear_data(inter_tree *I) {
+	building_site *B = &(I->site);
+
+	B->strdata.main_package = NULL;
+	B->strdata.main_request = NULL;
+
+	B->strdata.connectors_package = NULL;
+	B->strdata.connectors_request = NULL;
+
+	B->strdata.architecture_package = NULL;
+	B->strdata.architecture_request = NULL;
+	B->strdata.architecture_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+
+	B->strdata.modules_indexed_by_name = Dictionaries::new(32, FALSE);
+}
+
+@ The three special packages |main|, |connectors| and |architectural| will be
+created as needed. But we do not set the |main_package|, |connectors_package|
+or |architecture_package| fields when they are created: instead we set these
+fields whenever we detect that a package now exists with the relevant names.
+This is so that the fields are correctly set even when an Inter tree is being
+redd in from an external file, rather than only when created anew in memory.
+
+It follows that |main|, |connectors| and |architectural| are reserved package
+names, which cannot be used anywhere else in the tree.
+
+=
+void LargeScale::note_package_name(inter_tree *I, inter_package *pack, text_stream *N) {
+	if (Str::eq(N, I"main")) I->site.strdata.main_package = pack;
+	if (Str::eq(N, I"connectors")) I->site.strdata.connectors_package = pack;
+	if (Str::eq(N, I"architectural")) I->site.strdata.architecture_package = pack;
+}
+
+@h main.
+Here are functions to read |main|, possibly creating if necessary:
+
+=
+inter_package *LargeScale::main_package_if_it_exists(inter_tree *I) {
+	if (I) return I->site.strdata.main_package;
+	return NULL;
+}
+
+inter_package *LargeScale::main_package(inter_tree *I) {
+	if (I) {
+		if (I->site.strdata.main_package == NULL)
+			Packaging::incarnate(LargeScale::main_request(I));
+		return I->site.strdata.main_package;
+	}
+	return NULL;
+}
+
+package_request *LargeScale::main_request(inter_tree *I) {
+	if (I->site.strdata.main_request == NULL)
+		I->site.strdata.main_request =
+			Packaging::request(I,
+				InterNames::explicitly_named(I"main", NULL),
+				PackageTypes::get(I, I"_plain"));
+	return I->site.strdata.main_request;
+}
+
+@h connectors.
+
+=
+inter_package *LargeScale::connectors_package_if_it_exists(inter_tree *I) {
+	if (I) return I->site.strdata.connectors_package;
+	return NULL;
+}
+
+inter_package *LargeScale::ensure_connectors_package(inter_tree *I) {
+	if (I) {
+		if (I->site.strdata.connectors_package == NULL) {
+			Packaging::incarnate(LargeScale::connectors_request(I));
+//			Inter::Packages::make_linklike(I->site.strdata.connectors_package);
+		}
+		return I->site.strdata.connectors_package;
+	}
+	return NULL;
+}
+
+package_request *LargeScale::connectors_request(inter_tree *I) {
+	if (I->site.strdata.connectors_request == NULL)
+		I->site.strdata.connectors_request = 
+			Packaging::request(I,
+				InterNames::explicitly_named(I"connectors", LargeScale::main_request(I)),
+				PackageTypes::get(I, I"_linkage"));
+	return I->site.strdata.connectors_request;
+}
+
+@h architectural.
+This is the only one of the big three which we put any material into in this
+section of code; so we need a bookmark for where that material goes.
+
+=
+inter_package *LargeScale::architecture_package_if_it_exists(inter_tree *I) {
+	if (I) return I->site.strdata.architecture_package;
+	return NULL;
+}
+
+inter_package *LargeScale::architecture_package(inter_tree *I) {
+	if (I) {
+		if (I->site.strdata.architecture_package == NULL)
+			Packaging::incarnate(LargeScale::architecture_request(I));
+		return I->site.strdata.architecture_package;
+	}
+	return NULL;
+}
+
+package_request *LargeScale::architecture_request(inter_tree *I) {
+	if (I->site.strdata.architecture_request == NULL) {
+		I->site.strdata.architecture_request =
+			Packaging::request(I,
+				InterNames::explicitly_named(I"architectural", LargeScale::main_request(I)),
+				PackageTypes::get(I, I"_linkage"));
+		packaging_state save = Packaging::enter(I->site.strdata.architecture_request);
+		I->site.strdata.architecture_bookmark = Packaging::bubble(I);
+		Packaging::exit(I, save);
+	}
+	return I->site.strdata.architecture_request;
+}
+
+@ There are two sorts of constant in |architectural|. One set is created only
+on demand: if you look for |#grammar_table| you will find it, but if you never
+look then it will never exist. These are used only for a handful of values
+which are redefined by the //final// code-generator anyway: here we define
+them as 0 -- meaninglessly, but they have to be set to something. They are
+not, in fact, all constants -- |self| is a variable at runtime -- but again,
+it's for the code-generator to define them as it would like, on a platform
+by platform basis.
+
+Such symbols are the only ones given the |VENEER_IANN| annotation; the term
+veneer alludes to Inform 6's practice of creating a few built-in definitions
+which form the "veneer" of the story file it is generating.
+
+For speed, the names of the permitted veneer symbols are stored in a dictionary.
+(This may not in fact be worth the overhead any longer: at one time there were
+many more of these.)
+
+=
+dictionary *create_these_architectural_symbols_on_demand = NULL;
+
+inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *N,
+	inter_symbol *uks) {
+	inter_package *arch = LargeScale::architecture_package(I);
+	inter_symbols_table *tab = Inter::Packages::scope(arch);
+	inter_symbol *S = InterSymbolsTables::symbol_from_name(tab, N);
+	if (S == NULL) {
+		if (create_these_architectural_symbols_on_demand == NULL) {
+			create_these_architectural_symbols_on_demand = Dictionaries::new(16, TRUE);
+			Dictionaries::create(create_these_architectural_symbols_on_demand, I"#dictionary_table");
+			Dictionaries::create(create_these_architectural_symbols_on_demand, I"#actions_table");
+			Dictionaries::create(create_these_architectural_symbols_on_demand, I"#grammar_table");
+			Dictionaries::create(create_these_architectural_symbols_on_demand, I"self");
+			Dictionaries::create(create_these_architectural_symbols_on_demand, I"Routine");
+			Dictionaries::create(create_these_architectural_symbols_on_demand, I"String");
+			Dictionaries::create(create_these_architectural_symbols_on_demand, I"Class");
+			Dictionaries::create(create_these_architectural_symbols_on_demand, I"Object");
+		}
+		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N)) {
+			S = LargeScale::arch_constant(I, N, uks, 0);			
+			Inter::Symbols::annotate_i(S, VENEER_IANN, 1);
+		}	
+	}	
+	return S;
+}
+
+@ The other architectural constants are the ones depending on the architecture
+being compiled to. These always exist, and their values are known at compile time.
+
+They mostly have obvious meanings, but a few notes:
+
+(1) |WORDSIZE| is the number of bytes in a word.
+
+(2) |NULL|, in our runtime, is -1, and not 0 as it would be in C.
+
+(3) |IMPROBABLE_VALUE| is one which is unlikely even if possible to be a
+genuine I7 value. The efficiency of runtime code handling tables depends on
+how well chosen this is: it would ran badly if we chose 1, for instance.
+
+(4) Exactly one of the symbols |TARGET_ZCODE| or |TARGET_GLULX| is defined,
+and given the notional value 1, though its only purpose is to enable conditional
+compilation to work (see //pipeline: Resolve Conditional Compilation Stage//);
+so its importance is whether or not it is defined, not what value it has. Note
+that these names are now a little anachronistic, and they should perhaps be
+renamed |TARGET_16BIT| and |TARGET_32BIT| respectively. For example, C code
+can happily be generated from an Inter tree containing |TARGET_GLULX|, even
+though that code will never produce a program running on the Glulx VM.
+
+(5) And similarly for |DEBUG|, which again exists to enable conditional
+compilation when building kits.
+
+=
+void LargeScale::make_architectural_definitions(inter_tree *I,
+	inter_architecture *current_architecture, inter_symbol *uks) {
+	if (current_architecture == NULL) internal_error("no architecture set");
+
+	if (Architectures::is_16_bit(current_architecture)) {
+		LargeScale::arch_constant(I,        I"WORDSIZE", uks,                      2);
+		LargeScale::arch_constant_hex(I,    I"NULL", uks,                     0xffff);
+		LargeScale::arch_constant_hex(I,    I"WORD_HIGHBIT", uks,             0x8000);
+		LargeScale::arch_constant_hex(I,    I"WORD_NEXTTOHIGHBIT", uks,       0x4000);
+		LargeScale::arch_constant_hex(I,    I"IMPROBABLE_VALUE", uks,         0x7fe3);
+		LargeScale::arch_constant(I,        I"MAX_POSITIVE_NUMBER", uks,       32767);
+		LargeScale::arch_constant_signed(I, I"MIN_NEGATIVE_NUMBER", uks,      -32768);
+		LargeScale::arch_constant(I,        I"TARGET_ZCODE", uks,                  1);
+	} else {
+		LargeScale::arch_constant(I,        I"WORDSIZE", uks,                      4);
+		LargeScale::arch_constant_hex(I,    I"NULL", uks,                 0xffffffff);
+		LargeScale::arch_constant_hex(I,    I"WORD_HIGHBIT", uks,         0x80000000);
+		LargeScale::arch_constant_hex(I,    I"WORD_NEXTTOHIGHBIT", uks,   0x40000000);
+		LargeScale::arch_constant_hex(I,    I"IMPROBABLE_VALUE", uks,     0xdeadce11);
+		LargeScale::arch_constant(I,        I"MAX_POSITIVE_NUMBER", uks,  2147483647);
+		LargeScale::arch_constant_signed(I, I"MIN_NEGATIVE_NUMBER", uks, -2147483648);
+		LargeScale::arch_constant(I,        I"TARGET_GLULX", uks,                  1);
+	}
+
+	if (Architectures::debug_enabled(current_architecture))
+		LargeScale::arch_constant(I, I"DEBUG", uks, 1);
+}
+
+@ The functions above use the following tiny API to create architectural constants:
+
+=
+inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
+	inter_symbol *uks, inter_ti val) {
+	inter_package *arch = LargeScale::architecture_package(I);
+	inter_symbols_table *tab = Inter::Packages::scope(arch);
+	inter_symbol *S = InterSymbolsTables::symbol_from_name_creating(tab, N);
+	Inter::Symbols::annotate_i(S, ARCHITECTURAL_IANN, 1);
+	inter_bookmark *IBM = &(I->site.strdata.architecture_bookmark);
+	Produce::guard(Inter::Constant::new_numerical(IBM,
+		InterSymbolsTables::id_from_symbol(I, arch, S),
+		InterSymbolsTables::id_from_symbol(I, arch, uks),
+		LITERAL_IVAL, val,
+		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+	return S;
+}
+
+inter_symbol *LargeScale::arch_constant_hex(inter_tree *I, text_stream *N,
+	inter_symbol *uks, inter_ti val) {
+	inter_symbol *S = LargeScale::arch_constant(I, N, uks, val);
+	Inter::Symbols::annotate_i(S, HEX_IANN, 1);
+	return S;
+}
+
+inter_symbol *LargeScale::arch_constant_signed(inter_tree *I, text_stream *N,
+	inter_symbol *uks, int val) {
+	inter_symbol *S = LargeScale::arch_constant(I, N, uks, (inter_ti) val);
+	Inter::Symbols::annotate_i(S, SIGNED_IANN, 1);
+	return S;
+}
+
+@h Modules.
+Modules are identified by name, and each one produces an instance of the
+following.
+
+=
+typedef struct module_request {
+	struct package_request *where_found;
+	struct linked_list *submodules; /* of |submodule_request| */
+	CLASS_DEFINITION
+} module_request;
+
+@ The tree's module dictionary is used to ensure that repeated calls with the
+same module name return the same |module_request|.
+
+=
+module_request *LargeScale::module_request(inter_tree *I, text_stream *name) {
+	dictionary *D = I->site.strdata.modules_indexed_by_name;
+	if (Dictionaries::find(D, name))
+		return (module_request *) Dictionaries::read_value(D, name);
+	module_request *new_module = CREATE(module_request);
+	new_module->where_found =
+		Packaging::request(I,
+			InterNames::explicitly_named(name, LargeScale::main_request(I)),
+			PackageTypes::get(I, I"_module"));
+	new_module->submodules = NEW_LINKED_LIST(submodule_request);
+	Dictionaries::create(D, name);
+	Dictionaries::write_value(D, name, (void *) new_module);
+	return new_module;
+}
+
+@h Submodules.
+The idea here is that each module could define, say, some variables, placing
+them in a submodule for that purpose. As a result, there will be a "variables only"
+submodule found in several modules. Such flavours of submodule are preset --
+we allow only a few of these: see //runtime: Hierarchy// for the set used by
+//inform7// -- and they must be specified in advance of use, with the following.
+
+For the moment, at least, |submodule_identity| is really just a textual name
+like |variables| but in a fancy wrapper.
+
+=
+typedef struct submodule_identity {
+	struct text_stream *submodule_name;
+	CLASS_DEFINITION
+} submodule_identity;
+
+submodule_identity *LargeScale::register_submodule_identity(text_stream *name) {
+	submodule_identity *sid;
+	LOOP_OVER(sid, submodule_identity)
+		if (Str::eq(sid->submodule_name, name))
+			return sid;
+	sid = CREATE(submodule_identity);
+	sid->submodule_name = Str::duplicate(name);
+	return sid;
+}
+
+@ Armed with such an identity, the following can be called to return the relevant
+submodule of a given module, creating it if it does not already exist.
+
+=
+package_request *LargeScale::generic_submodule(inter_tree *I, submodule_identity *sid) {
+	return LargeScale::request_submodule_of(I, LargeScale::module_request(I, I"generic"), sid);
+}
+
+package_request *LargeScale::synoptic_submodule(inter_tree *I, submodule_identity *sid) {
+	return LargeScale::request_submodule_of(I, LargeScale::module_request(I, I"synoptic"), sid);
+}
+
+package_request *LargeScale::completion_submodule(inter_tree *I, submodule_identity *sid) {
+	return LargeScale::request_submodule_of(I, LargeScale::module_request(I, I"completion"), sid);
+}
+
+@ Those in turn all make use of this back-end function:
+
+=
+typedef struct submodule_request {
+	struct package_request *where_found;
+	struct submodule_identity *which_submodule;
+	CLASS_DEFINITION
+} submodule_request;
+
+package_request *LargeScale::request_submodule_of(inter_tree *I, module_request *M,
+	submodule_identity *sid) {
+	submodule_request *sr;
+	LOOP_OVER_LINKED_LIST(sr, submodule_request, M->submodules)
+		if (sid == sr->which_submodule)
+			return sr->where_found;
+	inter_name *iname = InterNames::explicitly_named(sid->submodule_name, M->where_found);
+	sr = CREATE(submodule_request);
+	sr->which_submodule = sid;
+	sr->where_found = Packaging::request(I, iname, PackageTypes::get(I, I"_submodule"));
+	ADD_TO_LINKED_LIST(sr, submodule_request, M->submodules);
+	return sr->where_found;
+}

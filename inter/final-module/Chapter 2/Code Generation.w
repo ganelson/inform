@@ -83,7 +83,7 @@ code_generation *CodeGen::new_generation(pipeline_step *step, filename *F,
 	gen->from = I;
 	gen->generator = generator;
 	if (just) gen->just_this_package = just;
-	else gen->just_this_package = Site::main_package(I);
+	else gen->just_this_package = LargeScale::main_package(I);
 	gen->segmentation = CodeGen::new_segmentation_data();
 	gen->void_level = -1;
 	gen->literal_text_mode = REGULAR_LTM;

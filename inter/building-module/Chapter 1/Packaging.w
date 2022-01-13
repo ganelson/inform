@@ -23,7 +23,8 @@ typedef struct site_packaging_data {
 	#define NO_DEFINED_HAP_VALUES 1
 	#endif
 	struct hierarchy_attachment_point *haps_indexed_by_id[NO_DEFINED_HAP_VALUES];
-	struct dictionary *modules_indexed_by_name;
+	struct inter_bookmark pragmas_bookmark;
+	struct inter_bookmark package_types_bookmark;
 } site_packaging_data;
 
 void Packaging::clear_pdata(inter_tree *I) {
@@ -33,8 +34,23 @@ void Packaging::clear_pdata(inter_tree *I) {
 	for (int i=0; i<NO_DEFINED_HL_VALUES; i++) B->spdata.hls_indexed_by_id[i] = NULL;
 	B->spdata.hls_indexed_by_name = Dictionaries::new(512, FALSE);
 	for (int i=0; i<NO_DEFINED_HAP_VALUES; i++) B->spdata.haps_indexed_by_id[i] = NULL;
-	B->spdata.modules_indexed_by_name = NULL;
 	Packaging::initialise_state(I);
+
+	B->spdata.pragmas_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	B->spdata.package_types_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+}
+
+inter_bookmark *Packaging::pragmas(inter_tree *I) {
+	return &(I->site.spdata.pragmas_bookmark);
+}
+void Packaging::set_pragmas(inter_tree *I, inter_bookmark IBM) {
+	I->site.spdata.pragmas_bookmark = IBM;
+}
+inter_bookmark *Packaging::package_types(inter_tree *I) {
+	return &(I->site.spdata.package_types_bookmark);
+}
+void Packaging::set_package_types(inter_tree *I, inter_bookmark IBM) {
+	I->site.spdata.package_types_bookmark = IBM;
 }
 
 @h Package requests.
@@ -223,10 +239,10 @@ void Packaging::outside_all_packages(inter_tree *I) {
 	Produce::version(I, 1);
 
 	Produce::comment(I, I"Package types:");
-	Site::set_package_types(I, Packaging::bubble(I));
+	Packaging::set_package_types(I, Packaging::bubble(I));
 
 	Produce::comment(I, I"Pragmas:");
-	Site::set_pragmas(I, Packaging::bubble(I));
+	Packaging::set_pragmas(I, Packaging::bubble(I));
 
 	Produce::comment(I, I"Primitives:");
 	Primitives::emit(I, Packaging::at(I));
@@ -235,7 +251,7 @@ void Packaging::outside_all_packages(inter_tree *I) {
 	PackageTypes::get(I, I"_code"); // And this the second
 	PackageTypes::get(I, I"_linkage"); // And this the third
 
-	Packaging::enter(Site::main_request(I)); // Which we never exit
+	Packaging::enter(LargeScale::main_request(I)); // Which we never exit
 }
 
 @h Entry and exit.
@@ -307,111 +323,6 @@ inter_package *Packaging::incarnate(package_request *R) {
 		LOGIF(PACKAGING, "Made incarnate $X bookmark $5\n", R, &(R->write_position));
 	}
 	return R->actual_package;
-}
-
-@h Modules.
-With the code above, then, we can get the Inter hierarchy of packages set up
-as far as creating |main|. After that the Hierarchy code takes over, but it
-calls the routines below to assist. It will want to create a number of "modules"
-and, within them, "submodules".
-
-Modules are identified by name: |generic|, |Standard_Rules|, and so on. The
-following creates modules on demand.
-
-=
-typedef struct module_package {
-	struct package_request *the_package;
-	struct linked_list *submodules; /* of |submodule_request| */
-	CLASS_DEFINITION
-} module_package;
-
-module_package *Packaging::get_unit(inter_tree *I, text_stream *name, text_stream *unit_type) {
-	if (I->site.spdata.modules_indexed_by_name == NULL) {
-		I->site.spdata.modules_indexed_by_name = Dictionaries::new(512, FALSE);
-	}
-	dictionary *D = I->site.spdata.modules_indexed_by_name;
-	if (Dictionaries::find(D, name))
-		return (module_package *) Dictionaries::read_value(D, name);
-	module_package *new_module = CREATE(module_package);
-	new_module->the_package =
-		Packaging::request(I,
-			InterNames::explicitly_named(name, Site::main_request(I)),
-			PackageTypes::get(I, unit_type));
-	new_module->submodules = NEW_LINKED_LIST(submodule_request);
-	Dictionaries::create(D, name);
-	Dictionaries::write_value(D, name, (void *) new_module);
-	return new_module;
-}
-
-@h Submodules.
-Submodules have names such as |properties|, and the idea is that the same submodule
-(or rather, submodules with the same name) can be found in multiple modules. The
-different sorts of submodule are identified by |submodule_identity| pointers, though
-as it turns out, this is presently just a wrapper for a name.
-
-=
-typedef struct submodule_identity {
-	struct text_stream *submodule_name;
-	CLASS_DEFINITION
-} submodule_identity;
-
-submodule_identity *Packaging::register_submodule(text_stream *name) {
-	submodule_identity *sid;
-	LOOP_OVER(sid, submodule_identity)
-		if (Str::eq(sid->submodule_name, name))
-			return sid;
-	sid = CREATE(submodule_identity);
-	sid->submodule_name = Str::duplicate(name);
-	return sid;
-}
-
-@ Once the Hierarchy code has registered a submodule, it can request an existing
-module to have this submodule. It should call one of the following four functions:
-
-=
-#ifdef CORE_MODULE
-package_request *Packaging::request_submodule(inter_tree *I, compilation_unit *C, submodule_identity *sid) {
-	if (C == NULL) return Packaging::generic_submodule(I, sid);
-	return Packaging::new_submodule_inner(I, CompilationUnits::to_module_package(C), sid);
-}
-
-package_request *Packaging::local_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::request_submodule(I, CompilationUnits::find(current_sentence), sid);
-}
-#endif
-
-package_request *Packaging::generic_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"generic", I"_module"), sid);
-}
-
-package_request *Packaging::synoptic_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"synoptic", I"_module"), sid);
-}
-
-package_request *Packaging::completion_submodule(inter_tree *I, submodule_identity *sid) {
-	return Packaging::new_submodule_inner(I, Packaging::get_unit(I, I"completion", I"_module"), sid);
-}
-
-@ Those in turn all make use of this back-end function:
-
-=
-typedef struct submodule_request {
-	struct submodule_identity *which_submodule;
-	struct package_request *where_found;
-	CLASS_DEFINITION
-} submodule_request;
-
-package_request *Packaging::new_submodule_inner(inter_tree *I, module_package *M, submodule_identity *sid) {
-	submodule_request *sr;
-	LOOP_OVER_LINKED_LIST(sr, submodule_request, M->submodules)
-		if (sid == sr->which_submodule)
-			return sr->where_found;
-	inter_name *iname = InterNames::explicitly_named(sid->submodule_name, M->the_package);
-	sr = CREATE(submodule_request);
-	sr->which_submodule = sid;
-	sr->where_found = Packaging::request(I, iname, PackageTypes::get(I, I"_submodule"));
-	ADD_TO_LINKED_LIST(sr, submodule_request, M->submodules);
-	return sr->where_found;
 }
 
 @h Functions.

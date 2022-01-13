@@ -150,7 +150,7 @@ inter_symbol *InterSymbolsTables::symbol_from_name_creating_at_ID(inter_symbols_
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_name_in_main(inter_tree *I, text_stream *S) {
-	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(Site::main_package_if_it_exists(I)), S);
+	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(LargeScale::main_package_if_it_exists(I)), S);
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_name_in_basics(inter_tree *I, text_stream *S) {
@@ -160,7 +160,7 @@ inter_symbol *InterSymbolsTables::symbol_from_name_in_basics(inter_tree *I, text
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_name_in_veneer(inter_tree *I, text_stream *S) {
-	inter_package *P = Site::architecture_package_if_it_exists(I);
+	inter_package *P = LargeScale::architecture_package_if_it_exists(I);
 	if (P == NULL) return NULL;
 	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
 }

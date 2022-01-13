@@ -32,7 +32,7 @@ inter_tree *InterTree::new(void) {
 	Inter::Packages::set_scope(I->root_package, globals);
 	I->root_node->package = I->root_package;
 	Inter::Warehouse::attribute_resource(I->housed, N, I->root_package);
-	Site::clear(I);
+	BuildingModule::clear_data(I);
 	I->history_bits = 0;
 	return I;
 }
@@ -277,7 +277,7 @@ void InterTree::traverse_root_only(inter_tree *from, void (*visitor)(inter_tree 
 }
 
 void InterTree::traverse(inter_tree *from, void (*visitor)(inter_tree *, inter_tree_node *, void *), void *state, inter_package *mp, int filter) {
-	if (mp == NULL) mp = Site::main_package_if_it_exists(from);
+	if (mp == NULL) mp = LargeScale::main_package_if_it_exists(from);
 	if (mp) {
 		inter_tree_node *D = Inter::Packages::definition(mp);
 		if ((filter == 0) ||

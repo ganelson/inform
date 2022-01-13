@@ -192,12 +192,13 @@ Document for a specification.
 	WRITE("#Endif;\n");
 	CodeGen::deselect(gen, saved);
 
-@ Pragmas are interpreted as ICL directives -- ICL being the Inform Configuration
-Language part of Inform 6, which basically allows maxima in the compiler to be
-tweaked. These go at the top of the source code and typically look like this:
-= (text as Inform 6)
-!% $MAX_NUM_STATIC_STRINGS=500000
-=
+@ Pragmas are interpreted as ICL directives -- ICL being the Inform
+Configuration Language part of Inform 6, a mini-language for controlling the I6
+compiler, able to set command-line switches, memory settings and so on. I6
+ordinarily discards lines beginning with exclamation marks as comments, but at
+the very top of the file, lines beginning |!%| are read as ICL commands: as soon
+as any line (including a blank line) doesn't have this signature, I6 exits ICL
+mode.
 
 =
 void I6Target::offer_pragma(code_generator *gtr, code_generation *gen,

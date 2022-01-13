@@ -30,7 +30,7 @@ here, since this is not part of the Inform 7 compilation pipeline.
 =
 int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
-	inter_package *main_package = Site::main_package(I);
+	inter_package *main_package = LargeScale::main_package(I);
 	@<Create a module to hold the Inter read in from this kit@>;
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
@@ -102,7 +102,7 @@ in |K/Sections|.
 @<Make a suitable simple tangler docket@> =
 	inter_package *assimilation_package =
 		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
-	if (assimilation_package == NULL) assimilation_package = Site::main_package(I);
+	if (assimilation_package == NULL) assimilation_package = LargeScale::main_package(I);
 	inter_bookmark assimilation_point =
 		Inter::Bookmarks::at_end_of_this_package(assimilation_package);
 	docket = SimpleTangler::new_docket(

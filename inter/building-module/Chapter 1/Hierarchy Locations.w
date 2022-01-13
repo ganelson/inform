@@ -42,20 +42,20 @@ location_requirement HierarchyLocations::local_submodule(submodule_identity *sid
 
 location_requirement HierarchyLocations::completion_submodule(inter_tree *I, submodule_identity *sid) {
 	location_requirement req = HierarchyLocations::blank();
-	req.this_exact_package = Packaging::completion_submodule(I, sid);
+	req.this_exact_package = LargeScale::completion_submodule(I, sid);
 	req.must_be_main_source_text = TRUE;
 	return req;
 }
 
 location_requirement HierarchyLocations::generic_submodule(inter_tree *I, submodule_identity *sid) {
 	location_requirement req = HierarchyLocations::blank();
-	req.this_exact_package = Packaging::generic_submodule(I, sid);
+	req.this_exact_package = LargeScale::generic_submodule(I, sid);
 	return req;
 }
 
 location_requirement HierarchyLocations::synoptic_submodule(inter_tree *I, submodule_identity *sid) {
 	location_requirement req = HierarchyLocations::blank();
-	req.this_exact_package = Packaging::synoptic_submodule(I, sid);
+	req.this_exact_package = LargeScale::synoptic_submodule(I, sid);
 	return req;
 }
 
@@ -72,7 +72,7 @@ location_requirement HierarchyLocations::any_enclosure(void) {
 }
 
 location_requirement HierarchyLocations::the_veneer(inter_tree *I) {
-	return HierarchyLocations::this_package(Site::architecture_request(I));
+	return HierarchyLocations::this_package(LargeScale::architecture_request(I));
 }
 
 location_requirement HierarchyLocations::this_package(package_request *P) {
@@ -355,7 +355,8 @@ package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilati
 	if (hap->requirements.must_be_main_source_text) {
 		R = hap->requirements.this_exact_package;
 	} else if (hap->requirements.any_submodule_package_of_this_identity) {
-		R = Packaging::request_submodule(I, C, hap->requirements.any_submodule_package_of_this_identity);
+		if (C == NULL) R = LargeScale::generic_submodule(I, hap->requirements.any_submodule_package_of_this_identity);
+		else R = LargeScale::request_submodule_of(I, CompilationUnits::to_module_package(C), hap->requirements.any_submodule_package_of_this_identity);
 	} else if (hap->requirements.this_exact_package) {
 		R = hap->requirements.this_exact_package;
 	} else if (hap->requirements.this_exact_package_not_yet_created >= 0) {

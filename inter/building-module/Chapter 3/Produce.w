@@ -48,11 +48,11 @@ inter_symbol *Produce::define_symbol(inter_name *iname) {
 }
 
 inter_symbols_table *Produce::main_scope(inter_tree *I) {
-	return Inter::Packages::scope(Site::main_package_if_it_exists(I));
+	return Inter::Packages::scope(LargeScale::main_package_if_it_exists(I));
 }
 
 inter_symbols_table *Produce::connectors_scope(inter_tree *I) {
-	return Inter::Packages::scope(Site::connectors_package_if_it_exists(I));
+	return Inter::Packages::scope(LargeScale::connectors_package_if_it_exists(I));
 }
 
 inter_symbol *Produce::opcode(inter_tree *I, inter_ti bip) {
@@ -191,7 +191,7 @@ inter_package *Produce::block(inter_tree *I, packaging_state *save, inter_name *
 	if (save) {
 		*save = Packaging::enter_home_of(iname);
 		package_request *R = InterNames::location(iname);
-		if ((R == NULL) || (R == Site::main_request(I))) {
+		if ((R == NULL) || (R == LargeScale::main_request(I))) {
 			LOG("Routine outside of package: %n\n", iname);
 			internal_error("routine outside of package");
 		}

@@ -14,7 +14,7 @@ int NewStage::run(pipeline_step *step) {
 	@<Make the main package@>;
 	@<Add another few package types which we will need when linking@>;
 
-	inter_package *main_p = Site::main_package(I);
+	inter_package *main_p = LargeScale::main_package(I);
 	inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_p);
 	inter_package *generic_p = NULL, *generic_kinds_p = NULL;
 	Inter::Package::new_package_named(&in_main, I"generic", FALSE,
@@ -32,7 +32,7 @@ int NewStage::run(pipeline_step *step) {
 	@<Create the boolean kind@>;
 	@<Create the string kind@>;
 
-	Site::make_architectural_definitions(I, PipelineModule::get_architecture(),
+	LargeScale::make_architectural_definitions(I, PipelineModule::get_architecture(),
 		unchecked_kind_symbol);
 	return TRUE;
 }
@@ -135,45 +135,3 @@ end up being basically the same thing.)
 		InterSymbolsTables::id_from_symbol(I, generic_kinds_p, string_kind_symbol),
 		TEXT_IDT, 0, BASE_ICON, 0, NULL,
 		(inter_ti) Inter::Bookmarks::baseline(&in_generic_kinds) + 1, NULL);
-
-@ Lastly, we define the constants |WORDSIZE|, |DEBUG| (if applicable) and
-either |TARGET_ZCODE| or |TARGET_GLULX|, as appropriate. These really now mean
-"target 16-bit" or "target 32-bit", and their names are a hangover from when
-Inform 7 could only work with Inform 6. The reason we need to define these
-is so that if a kit is parsed from source and added to this tree, we will then
-be able to resolve conditional compilation matter placed inside, e.g.,
-|#ifdef TARGET_ZCODE;| ... |#endif;| directives.
-
-For now, at least, these live in the package |main/veneer|.
-
-@<Define some architecture constants@> =
-	inter_package *veneer_p = Site::architecture_package(I);
-	inter_bookmark *in_veneer = Site::architecture_bookmark(I);
-	inter_symbol *vi_unchecked =
-		InterSymbolsTables::create_with_unique_name(
-			Inter::Bookmarks::scope(in_veneer), I"K_unchecked");
-	Wiring::wire_to(vi_unchecked, unchecked_kind_symbol);
-
-	inter_symbol *con_name = InterSymbolsTables::create_with_unique_name(
-		Inter::Bookmarks::scope(in_veneer), I"WORDSIZE");
-	Inter::Constant::new_numerical(in_veneer,
-		InterSymbolsTables::id_from_symbol(I, veneer_p, con_name),
-		InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
-		LITERAL_IVAL, (Z)?2:4,
-		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
-	inter_symbol *target_name = InterSymbolsTables::create_with_unique_name(
-		Inter::Bookmarks::scope(in_veneer), (Z)?I"TARGET_ZCODE":I"TARGET_GLULX");
-	Inter::Constant::new_numerical(in_veneer,
-		InterSymbolsTables::id_from_symbol(I, veneer_p, target_name),
-		InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
-		LITERAL_IVAL, 1,
-		(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
-	if (D) {
-		inter_symbol *D_name = InterSymbolsTables::create_with_unique_name(
-			Inter::Bookmarks::scope(in_veneer), I"DEBUG");
-		Inter::Constant::new_numerical(in_veneer,
-			InterSymbolsTables::id_from_symbol(I, veneer_p, D_name),
-			InterSymbolsTables::id_from_symbol(I, veneer_p, vi_unchecked),
-			LITERAL_IVAL, 1,
-			(inter_ti) Inter::Bookmarks::baseline(in_veneer) + 1, NULL);
-	}

@@ -23,9 +23,6 @@ typedef struct inter_symbol {
 @ =
 inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, inter_ti ID) {
 	if (Str::len(name) == 0) internal_error("symbol cannot have empty text as identifier");
-
-if (Str::eq(name, I"MAX_POSITIVE_NUMBER_1")) internal_error("MPN1");
-
 	inter_symbol *symb = CREATE(inter_symbol);
 	symb->owning_table = T;
 	symb->symbol_ID = ID;

@@ -14,7 +14,7 @@ We need to itemise the structures we'll want to allocate:
 @e package_request_CLASS
 @e hierarchy_location_CLASS
 @e hierarchy_attachment_point_CLASS
-@e module_package_CLASS
+@e module_request_CLASS
 @e submodule_identity_CLASS
 @e submodule_request_CLASS
 @e inter_schema_CLASS
@@ -25,7 +25,7 @@ We need to itemise the structures we'll want to allocate:
 DECLARE_CLASS(hierarchy_location)
 DECLARE_CLASS(hierarchy_attachment_point)
 DECLARE_CLASS(package_request)
-DECLARE_CLASS(module_package)
+DECLARE_CLASS(module_request)
 DECLARE_CLASS(submodule_identity)
 DECLARE_CLASS(submodule_request)
 DECLARE_CLASS(inter_schema)
@@ -66,6 +66,27 @@ void BuildingModule::start(void) {
 @<Register this module's debugging log writers@> =
 	Writers::register_logger('1', InterSchemas::log);
 	Writers::register_logger('X', Packaging::log);
+
+@h Initialising.
+The following is a component part of the |inter_tree| structure, and is comprised
+of four subcomponents of its own. That makes a lot of working data, but none of
+it changes the meaning of an Inter tree: it exists as workspace needed by the
+functions in this module for constructing trees.
+
+=
+typedef struct building_site {
+	struct site_structure_data strdata;
+	struct site_packaging_data spdata;
+	struct site_production_data sprdata;
+	struct site_primitives_data spridata;
+} building_site;
+
+void BuildingModule::clear_data(inter_tree *I) {
+	LargeScale::clear_data(I);
+	Produce::clear_prdata(I);
+	Packaging::clear_pdata(I);
+	Primitives::clear_pdata(I);
+}
 
 @h The end.
 

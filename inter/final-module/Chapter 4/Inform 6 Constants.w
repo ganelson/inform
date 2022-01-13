@@ -87,7 +87,6 @@ for example.
 @<Certain constants should be declared only if I6 has not already declared them@> =
 	if ((Str::eq(const_name, I"WORDSIZE")) ||
 		(Str::eq(const_name, I"TARGET_ZCODE")) ||
-		(Str::eq(const_name, I"INDIV_PROP_START")) ||
 		(Str::eq(const_name, I"TARGET_GLULX")) ||
 		(Str::eq(const_name, I"DICT_WORD_SIZE")) ||
 		(Str::eq(const_name, I"DEBUG")) ||

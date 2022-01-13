@@ -32,8 +32,8 @@ void SynopticText::compile(inter_tree *I, pipeline_step *step, tree_inventory *i
 		TreeLists::sort(inv->text_nodes, SynopticText::cmp);
 		inter_package *texts_pack =
 			Packaging::incarnate(
-				Packaging::synoptic_submodule(I,
-					Packaging::register_submodule(I"text")));
+				LargeScale::synoptic_submodule(I,
+					LargeScale::register_submodule_identity(I"text")));
 		inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(texts_pack);
 		text_stream *latest_text = NULL;
 		inter_symbol *latest_s = NULL;

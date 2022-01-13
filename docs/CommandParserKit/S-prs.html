@@ -4208,16 +4208,17 @@ permitted to have properties other than the three named here: all other
 properties are redirected to the current location's object.
 </p>
 
-<p class="commentary">Properties with numbers under <span class="extract"><span class="extract-syntax">INDIV_PROP_START</span></span> are "common properties".
-These come along with a table of default values, so that it is meaningful
-(in I6, anyway) to read them even when they are not provided (so that the
-address, returned by the <span class="extract"><span class="extract-syntax">.&amp;</span></span> operator, is zero).
+<p class="commentary">At one time this function correctly handled the case of a common property
+whose default value was itself a function which could be run; but this is
+now awkward to compile (since it needed the magic compiler-defimed constant
+INDIV_PROP_START, existing on Inform 6 for Glulx but not on other platforms),
+and in the Inform 7 world it was a facility never used.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">RunRoutines</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="identifier-syntax">prop</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">obj</span><span class="plain-syntax"> == </span><span class="identifier-syntax">thedark</span><span class="plain-syntax">) </span><span class="identifier-syntax">obj</span><span class="plain-syntax"> = </span><span class="identifier-syntax">real_location</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.&amp;</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">prop</span><span class="plain-syntax">--&gt;1 &gt;= </span><span class="identifier-syntax">INDIV_PROP_START</span><span class="plain-syntax">)) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.&amp;</span><span class="identifier-syntax">prop</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">.</span><span class="identifier-syntax">prop</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">];</span>
 </pre>

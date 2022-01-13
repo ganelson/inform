@@ -9,7 +9,7 @@ Preliminaries
 
 Chapter 1: Architecture
 	Building Module
-	Building Site
+	Large-Scale Structure
 	Inter Primitives
 	Hierarchy Locations
 	Translation

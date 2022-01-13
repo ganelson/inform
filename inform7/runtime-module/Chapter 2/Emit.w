@@ -11,9 +11,6 @@ on just one single tree.
 
 Calling |Packaging::outside_all_packages| makes a minimum of package types,
 creates the |main| package, and so on, but leaves the tree basically still empty.
-We then give it three top-level modules to start off with: |veneer|, |generic|
-and |synoptic|. These are needed early because //Hierarchy// uses them as
-reference points. But as newly-created packages they are initially empty.
 
 =
 inter_tree *main_emission_tree = NULL;
@@ -21,8 +18,6 @@ inter_tree *main_emission_tree = NULL;
 inter_tree *Emit::create_emission_tree(void) {
 	main_emission_tree = InterTree::new();
 	Packaging::outside_all_packages(main_emission_tree);
-	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"generic", I"_module")->the_package);
-	Packaging::incarnate(Packaging::get_unit(main_emission_tree, I"synoptic", I"_module")->the_package);
 	return main_emission_tree;
 }
 inter_tree *Emit::tree(void) {
@@ -237,25 +232,10 @@ through. These are specific to the target of compilation, and can be ignored
 by all other targets. Here we generate only I6-target pragmas, which are commands
 in I6's "Inform Control Language".
 
-This is a mini-language for controlling the I6 compiler, able to set
-command-line switches, memory settings and so on. I6 ordinarily discards lines
-beginning with exclamation marks as comments, but at the very top of the file,
-lines beginning |!%| are read as ICL commands: as soon as any line (including
-a blank line) doesn't have this signature, I6 exits ICL mode.
-
-Pragmas occupy a fixed position in the global material at the root of the Inter
-tree, so there's no need to ask //Hierarchy// where these live.
-
 =
 void Emit::pragma(text_stream *text) {
 	inter_tree *I = Emit::tree();
-	inter_ti ID = Inter::Warehouse::create_text(Emit::warehouse(),
-		InterTree::root_package(I));
-	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID), text);
-	inter_symbol *target_name =
-		InterSymbolsTables::symbol_from_name_creating(
-			InterTree::global_scope(I), I"Inform6");
-	Produce::guard(Inter::Pragma::new(Site::pragmas(I), target_name, ID, 0, NULL));
+	Primitives::emit_pragma(I, I"Inform6", text);
 }
 
 @h Constants.
