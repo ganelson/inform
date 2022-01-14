@@ -77,8 +77,8 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 	F->W.data[METHOD_INV_IFLD] = INVOKED_PRIMITIVE;
 	int arity = 0;
 	LOOP_THROUGH_INTER_CHILDREN(X, F) arity++;
-	inter_ti prim = Primitives::indirect_interp(arity);
-	inter_symbol *prim_s = Primitives::get(I, prim);
+	inter_ti prim = Primitives::BIP_for_indirect_call_returning_value(arity);
+	inter_symbol *prim_s = Primitives::from_BIP(I, prim);
 	F->W.data[INVOKEE_INV_IFLD] =
 		InterSymbolsTables::id_from_symbol_F(F, NULL, prim_s);
 

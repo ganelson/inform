@@ -371,3 +371,15 @@ package_request *LargeScale::request_submodule_of(inter_tree *I, module_request 
 	ADD_TO_LINKED_LIST(sr, submodule_request, M->submodules);
 	return sr->where_found;
 }
+
+@h Pragmas.
+There's very little to say here:
+
+=
+void LargeScale::emit_pragma(inter_tree *I, text_stream *target, text_stream *content) {
+	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), InterTree::root_package(I));
+	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), content);
+	inter_symbol *target_name =
+		InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(I), target);
+	Produce::guard(Inter::Pragma::new(Packaging::pragmas(I), target_name, ID, 0, NULL));
+}

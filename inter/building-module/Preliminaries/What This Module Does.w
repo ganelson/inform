@@ -45,7 +45,7 @@ types used by Inform code.
 principle support a variety of different "instruction sets", but this module
 presents a single standardised instruction set.
 (-*) Compiler pragmas. These are marginal tweaks on a platform-by-platform basis
-and use of them is minimal, but see //Primitives::emit_pragma//.
+and use of them is minimal, but see //LargeScale::emit_pragma//.
 
 (*) Everything else is inside a single top-level package called |main|, which
 has package type |_plain|.

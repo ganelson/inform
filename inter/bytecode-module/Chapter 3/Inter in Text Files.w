@@ -17,7 +17,7 @@ void Inter::Textual::read(inter_tree *I, filename *F) {
 	InterSymbolsTables::resolve_forward_references(I, &eloc);
 	default_ptree = NULL;
 	InterTree::traverse(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
-	Primitives::scan_tree(I);
+	Primitives::index_primitives_in_tree(I);
 }
 
 void Inter::Textual::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {

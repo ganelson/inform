@@ -14,7 +14,7 @@ void CProgramControl::initialise(code_generator *gtr) {
 void CProgramControl::invoke_primitive(code_generator *gtr, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P, int void_context) {
 	inter_tree *I = gen->from;
-	inter_ti bip = Primitives::to_bip(I, prim_name);
+	inter_ti bip = Primitives::to_BIP(I, prim_name);
 
 	int r = CReferences::invoke_primitive(gen, bip, P);
 	if (r == NOT_APPLICABLE) r = CArithmetic::invoke_primitive(gen, bip, P);
@@ -57,7 +57,6 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 		case FOR_BIP:             @<Generate primitive for for@>; break;
 		case OBJECTLOOP_BIP:      @<Generate primitive for objectloop@>; break;
 		case OBJECTLOOPX_BIP:     @<Generate primitive for objectloopx@>; break;
-		case LOOP_BIP:            @<Generate primitive for loop@>; break;
 		case SWITCH_BIP:          @<Generate primitive for switch@>; break;
 		case CASE_BIP:            @<Generate primitive for case@>; break;
 		case DEFAULT_BIP:         @<Generate primitive for default@>; break;
@@ -113,7 +112,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	if ((U->W.data[ID_IFLD] == INV_IST) &&
 		(U->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *prim = Inter::Inv::invokee(U);
-		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;
+		if ((prim) && (Primitives::to_BIP(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 
 	WRITE("for (i7word_t "); VNODE_1C;
@@ -137,10 +136,6 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	WRITE("if (i7_ofclass(proc, "); VNODE_1C; WRITE(", "); VNODE_2C; WRITE(")) ");
 	WRITE(" {\n"); INDENT; VNODE_3C;
 	OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for loop@> =
-	WRITE("{\n"); INDENT; VNODE_1C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for switch@> =
@@ -171,7 +166,7 @@ void CProgramControl::caser(code_generation *gen, inter_tree_node *X) {
 	if (X->W.data[ID_IFLD] == INV_IST) {
 		if (X->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
 			inter_symbol *prim = Inter::Inv::invokee(X);
-			inter_ti xbip = Primitives::to_bip(gen->from, prim);
+			inter_ti xbip = Primitives::to_BIP(gen->from, prim);
 			if (xbip == ALTERNATIVECASE_BIP) {
 				CProgramControl::caser(gen, InterTree::first_child(X));
 				CProgramControl::caser(gen, InterTree::second_child(X));

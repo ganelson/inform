@@ -436,10 +436,10 @@ void InterSchemas::log_just(inter_schema_node *isn, int depth) {
 	for (int d = 0; d < depth; d++) LOG("    ");
 	switch (isn->isn_type) {
 		case STATEMENT_ISNT:
-			LOG("* (statement) %S\n", Primitives::name(isn->isn_clarifier));
+			LOG("* (statement) %S\n", Primitives::BIP_to_name(isn->isn_clarifier));
 			break;
 		case OPERATION_ISNT:
-			LOG("* (operation) %S\n", Primitives::name(isn->isn_clarifier));
+			LOG("* (operation) %S\n", Primitives::BIP_to_name(isn->isn_clarifier));
 			break;
 		case CODE_ISNT:
 			LOG("* (code)");
@@ -2621,7 +2621,7 @@ int InterSchemas::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 						if (has_operand_after) a++;
 						if (a != InterSchemas::arity(isn->isn_clarifier)) {
 							LOG("Seem to have arity %d with isn %S which needs %d\n",
-								a, Primitives::name(isn->isn_clarifier),
+								a, Primitives::BIP_to_name(isn->isn_clarifier),
 								InterSchemas::arity(isn->isn_clarifier));
 							LOG("$1\n", isn->parent_schema);
 							internal_error("bad arity");

@@ -136,11 +136,11 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_
 		(Inter::Inv::arity(P) != arity_as_invoked)) {
 		inter_tree *I = P->tree;
 		inter_symbol *invokee = Inter::Inv::invokee(P);
-		if (Primitives::is_indirect_interp(Primitives::to_bip(I, invokee))) {
-			inter_symbol *better = Primitives::get(I, Primitives::indirect_interp(arity_as_invoked - 1));
+		if (Primitives::is_BIP_for_indirect_call_returning_value(Primitives::to_BIP(I, invokee))) {
+			inter_symbol *better = Primitives::from_BIP(I, Primitives::BIP_for_indirect_call_returning_value(arity_as_invoked - 1));
 			P->W.data[INVOKEE_INV_IFLD] = InterSymbolsTables::id_from_symbol_F(P, NULL, better);
-		} else if (Primitives::is_indirectv_interp(Primitives::to_bip(I, invokee))) {
-			inter_symbol *better = Primitives::get(I, Primitives::indirectv_interp(arity_as_invoked - 1));
+		} else if (Primitives::is_BIP_for_void_indirect_call(Primitives::to_BIP(I, invokee))) {
+			inter_symbol *better = Primitives::from_BIP(I, Primitives::BIP_for_void_indirect_call(arity_as_invoked - 1));
 			P->W.data[INVOKEE_INV_IFLD] = InterSymbolsTables::id_from_symbol_F(P, NULL, better);
 		}
 	}

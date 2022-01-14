@@ -241,7 +241,7 @@ void I6TargetCode::invoke_primitive(code_generator *gtr, code_generation *gen,
 	inter_symbol *prim_name, inter_tree_node *P, int void_context) {
 	inter_tree *I = gen->from;
 	text_stream *OUT = CodeGen::current(gen);
-	inter_ti bip = Primitives::to_bip(I, prim_name);
+	inter_ti bip = Primitives::to_BIP(I, prim_name);
 	
 	int suppress_terminal_semicolon = (void_context)?FALSE:TRUE;
 	switch (bip) {
@@ -496,7 +496,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	if (Y->W.data[ID_IFLD] == INV_IST) {
 		if (Y->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
 			inter_symbol *prim = Inter::Inv::invokee(Y);
-			inter_ti ybip = Primitives::to_bip(gen->from, prim);
+			inter_ti ybip = Primitives::to_BIP(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
 				if (depth == 0) { WRITE("((or_tmp_var = "); Vanilla::node(gen, X); WRITE(") && (("); }
 				I6TargetCode::eval_property_list(gen, K, NULL, InterTree::first_child(Y), depth+1);
@@ -545,7 +545,6 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	case FOR_BIP:           @<Generate primitive for for@>; break;
 	case OBJECTLOOP_BIP:    @<Generate primitive for objectloop@>; break;
 	case OBJECTLOOPX_BIP:   @<Generate primitive for objectloopx@>; break;
-	case LOOP_BIP:          @<Generate primitive for loop@>; break;
 	case SWITCH_BIP:        @<Generate primitive for switch@>; break;
 	case CASE_BIP:          @<Generate primitive for case@>; break;
 	case ALTERNATIVECASE_BIP: VNODE_1C; WRITE(", "); VNODE_2C; break;
@@ -613,7 +612,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	inter_tree_node *U = InterTree::third_child(P);
 	if ((U->W.data[ID_IFLD] == INV_IST) && (U->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *prim = Inter::Inv::invokee(U);
-		if ((prim) && (Primitives::to_bip(I, prim) == IN_BIP)) in_flag = TRUE;
+		if ((prim) && (Primitives::to_BIP(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 
 	WRITE("objectloop ");
@@ -631,10 +630,6 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 @<Generate primitive for objectloopx@> =
 	WRITE("objectloop ("); VNODE_1C; WRITE(" ofclass "); VNODE_2C;
 	WRITE(") {\n"); INDENT; VNODE_3C; OUTDENT; WRITE("}\n");
-	suppress_terminal_semicolon = TRUE;
-
-@<Generate primitive for loop@> =
-	WRITE("{\n"); INDENT; VNODE_1C; OUTDENT; WRITE("}\n");
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for switch@> =

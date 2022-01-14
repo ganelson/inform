@@ -56,7 +56,7 @@ inter_symbols_table *Produce::connectors_scope(inter_tree *I) {
 }
 
 inter_symbol *Produce::opcode(inter_tree *I, inter_ti bip) {
-	return Primitives::get(I, bip);
+	return Primitives::from_BIP(I, bip);
 }
 
 inter_ti Produce::baseline(inter_bookmark *IBM) {
@@ -320,7 +320,7 @@ void Produce::inv_assembly(inter_tree *I, text_stream *opcode) {
 }
 
 void Produce::inv_primitive(inter_tree *I, inter_ti bip) {
-	inter_symbol *prim_symb = Primitives::get(I, bip);
+	inter_symbol *prim_symb = Primitives::from_BIP(I, bip);
 	if (prim_symb == NULL) {
 		WRITE_TO(STDERR, "BIP = %d\n", bip);
 		internal_error("undefined primitive");

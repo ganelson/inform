@@ -8,7 +8,7 @@ How we shall test it.
 void Unit::run(filename *F) {
 	inter_tree *dummy = InterTree::new();
 	inter_bookmark IBM = Inter::Bookmarks::at_start_of_this_repository(dummy);
-	Primitives::emit(dummy, &IBM);
+	Primitives::declare_standard_set(dummy, &IBM);
 	Streams::enable_debugging(STDOUT);
 	text_stream *FORMER_DL = DL;
 	DL = STDOUT;

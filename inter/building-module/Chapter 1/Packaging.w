@@ -245,7 +245,7 @@ void Packaging::outside_all_packages(inter_tree *I) {
 	Packaging::set_pragmas(I, Packaging::bubble(I));
 
 	Produce::comment(I, I"Primitives:");
-	Primitives::emit(I, Packaging::at(I));
+	Primitives::declare_standard_set(I, Packaging::at(I));
 
 	PackageTypes::get(I, I"_plain"); // To ensure this is the first emitted ptype
 	PackageTypes::get(I, I"_code"); // And this the second

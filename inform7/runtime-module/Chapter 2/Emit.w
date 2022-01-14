@@ -235,7 +235,7 @@ in I6's "Inform Control Language".
 =
 void Emit::pragma(text_stream *text) {
 	inter_tree *I = Emit::tree();
-	Primitives::emit_pragma(I, I"Inform6", text);
+	LargeScale::emit_pragma(I, I"Inform6", text);
 }
 
 @h Constants.

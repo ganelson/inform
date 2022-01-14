@@ -65,12 +65,12 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 		if ((F->W.data[ID_IFLD] == INV_IST) &&
 			(F->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 			inter_symbol *prim = Inter::Inv::invokee(F);
-			if (Primitives::to_bip(P->tree, prim) == OR_BIP)     { iden[1] = 0; }
-			if (Primitives::to_bip(P->tree, prim) == AND_BIP)    { iden[1] = 1; }
-			if (Primitives::to_bip(P->tree, prim) == PLUS_BIP)   { iden[0] = 0; iden[1] = 0; }
-			if (Primitives::to_bip(P->tree, prim) == MINUS_BIP)  { iden[1] = 0; }
-			if (Primitives::to_bip(P->tree, prim) == TIMES_BIP)  { iden[0] = 1; iden[1] = 1; }
-			if (Primitives::to_bip(P->tree, prim) == DIVIDE_BIP) { iden[1] = 1; }
+			if (Primitives::to_BIP(P->tree, prim) == OR_BIP)     { iden[1] = 0; }
+			if (Primitives::to_BIP(P->tree, prim) == AND_BIP)    { iden[1] = 1; }
+			if (Primitives::to_BIP(P->tree, prim) == PLUS_BIP)   { iden[0] = 0; iden[1] = 0; }
+			if (Primitives::to_BIP(P->tree, prim) == MINUS_BIP)  { iden[1] = 0; }
+			if (Primitives::to_BIP(P->tree, prim) == TIMES_BIP)  { iden[0] = 1; iden[1] = 1; }
+			if (Primitives::to_BIP(P->tree, prim) == DIVIDE_BIP) { iden[1] = 1; }
 		}
 		if ((iden[0] >= 0) || (iden[1] >= 0)) @<An elimination candidate@>;
 	}
