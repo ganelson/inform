@@ -29,10 +29,10 @@ void KitHierarchy::establish(inter_tree *I) {
 the //inform7// and //inter// tools need to refer to. (It's not any kind of
 comprehensive list of what is there.)
 
-@d KIT_PROVIDED(id, n) HierarchyLocations::ctr(I, id, n, Translation::same(), req);
+@d KIT_PROVIDED(id, n) HierarchyLocations::con(I, id, n, req);
 
 @<Establish kit-defined resources@> =
-	location_requirement req = HierarchyLocations::plug();
+	location_requirement req = LocationRequirements::plug();
 	@<Establish resources offered by BasicInformKit@>;
 	@<Establish resources offered by WorldModelKit@>;
 	@<Establish resources offered by CommandParserKit@>;

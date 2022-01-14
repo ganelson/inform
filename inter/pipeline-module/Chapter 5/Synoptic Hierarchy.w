@@ -37,9 +37,9 @@ void SynopticHierarchy::establish(inter_tree *I) {
 fuller explanation.
 
 @d SYN_SUBMD(r)
-	req = HierarchyLocations::synoptic_submodule(I, LargeScale::register_submodule_identity(r));
+	req = LocationRequirements::synoptic_submodule(I, LargeScale::register_submodule_identity(r));
 @d SYN_CONST(id, n) {
-		HierarchyLocations::ctr(I, id, n, Translation::same(), req);
+		HierarchyLocations::con(I, id, n, req);
 		inter_name *iname = HierarchyLocations::find(I, id);
 		inter_symbol *S = InterNames::to_symbol(iname);
 		Wiring::socket(I, InterNames::to_text(iname), S);

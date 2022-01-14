@@ -31,7 +31,7 @@ void BehaviourElement::render(OUTPUT_STREAM, index_session *session) {
 				if (C->W.data[ID_IFLD] == PACKAGE_IST) {
 					inter_package *entry = Inter::Package::defined_by_frame(C);
 					if (Inter::Packages::type(entry) ==
-						PackageTypes::get(I, I"_named_action_pattern_entry")) {
+						LargeScale::package_type(I, I"_named_action_pattern_entry")) {
 						text_stream *text = Metadata::read_optional_textual(entry, I"^text");
 						HTML_TAG("br");
 						WRITE("&nbsp;&nbsp;&nbsp;&nbsp;%S", text);

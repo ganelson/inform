@@ -1,99 +1,20 @@
 [HierarchyLocations::] Hierarchy Locations.
 
-@h Requirements.
-Inform's code for compiling resources to different positions in the Inter hierarchy
-is quite defensively written, in order to keep everything to a fairly tightly
-specified schema.
-
-The following is really a union: a requirement should have exactly one of the
-following fields set.
-
-=
-typedef struct location_requirement {
-	struct submodule_identity *any_submodule_package_of_this_identity;
-	struct package_request *this_exact_package;
-	int this_exact_package_not_yet_created;
-	struct text_stream *any_package_of_this_type;
-	int any_enclosure;
-	int must_be_plug;
-	int must_be_main_source_text;
-} location_requirement;
-
-location_requirement HierarchyLocations::blank(void) {
-	location_requirement req;
-	req.any_submodule_package_of_this_identity = NULL;
-	req.this_exact_package = NULL;
-	req.this_exact_package_not_yet_created = -1;
-	req.any_package_of_this_type = NULL;
-	req.any_enclosure = FALSE;
-	req.must_be_plug = FALSE;
-	req.must_be_main_source_text = FALSE;
-	return req;
-}
-
-@ Here are the functions to create requirements:
-
-=
-location_requirement HierarchyLocations::local_submodule(submodule_identity *sid) {
-	location_requirement req = HierarchyLocations::blank();
-	req.any_submodule_package_of_this_identity = sid;
-	return req;
-}
-
-location_requirement HierarchyLocations::completion_submodule(inter_tree *I, submodule_identity *sid) {
-	location_requirement req = HierarchyLocations::blank();
-	req.this_exact_package = LargeScale::completion_submodule(I, sid);
-	req.must_be_main_source_text = TRUE;
-	return req;
-}
-
-location_requirement HierarchyLocations::generic_submodule(inter_tree *I, submodule_identity *sid) {
-	location_requirement req = HierarchyLocations::blank();
-	req.this_exact_package = LargeScale::generic_submodule(I, sid);
-	return req;
-}
-
-location_requirement HierarchyLocations::synoptic_submodule(inter_tree *I, submodule_identity *sid) {
-	location_requirement req = HierarchyLocations::blank();
-	req.this_exact_package = LargeScale::synoptic_submodule(I, sid);
-	return req;
-}
-
-location_requirement HierarchyLocations::any_package_of_type(text_stream *ptype_name) {
-	location_requirement req = HierarchyLocations::blank();
-	req.any_package_of_this_type = Str::duplicate(ptype_name);
-	return req;
-}
-
-location_requirement HierarchyLocations::any_enclosure(void) {
-	location_requirement req = HierarchyLocations::blank();
-	req.any_enclosure = TRUE;
-	return req;
-}
-
-location_requirement HierarchyLocations::the_veneer(inter_tree *I) {
-	return HierarchyLocations::this_package(LargeScale::architecture_request(I));
-}
-
-location_requirement HierarchyLocations::this_package(package_request *P) {
-	location_requirement req = HierarchyLocations::blank();
-	req.this_exact_package = P;
-	return req;
-}
-
-location_requirement HierarchyLocations::this_exotic_package(int N) {
-	location_requirement req = HierarchyLocations::blank();
-	req.this_exact_package_not_yet_created = N;
-	return req;
-}
-
-location_requirement HierarchyLocations::plug(void) {
-	location_requirement req = HierarchyLocations::blank();
-	req.must_be_plug = TRUE;
-	return req;
-}
-
 @h Hierarchy locations.
+A //hierarchy_location// is an abstract way to refer to a resource in an
+Inter tree; note that it can describe a position which does not yet exist,
+or indeed a resource which will never be created.
+
+Each different HL has a unique ID, its |access_number|. The idea is that a
+compiler such as //inform7// can look up, say, the ID |JINXED_WIZARDS_HL|,
+and quickly determine that this resource should -- if and when created --
+be called |JinxedWizards_fn|, and be in the package |/synoptic/kinds|,
+and so forth. This is obviously useful when creating resources -- it's a
+set of instructions, in effect, for what to call them and where to put them.
+
+But it is also useful when cross-referencing those: for example, when
+compiling a function call to |JinxedWizards_fn|. It enables such a call to
+be compiled even when the function itself has not yet been created.
 
 =
 typedef struct hierarchy_location {
@@ -108,22 +29,30 @@ typedef struct hierarchy_location {
 	CLASS_DEFINITION
 } hierarchy_location;
 
-hierarchy_location *HierarchyLocations::new(void) {
+hierarchy_location *HierarchyLocations::new(int id) {
 	hierarchy_location *hl = CREATE(hierarchy_location);
-	hl->access_number = -1;
+	hl->access_number = id;
 	hl->access_name = NULL;
 	hl->function_package_name = NULL;
 	hl->datum_package_name = NULL;
 	hl->equates_to_iname = NULL;
 	hl->package_type = NULL;
 	hl->trans = Translation::same();
-	hl->requirements = HierarchyLocations::blank();
+	hl->requirements = LocationRequirements::blank();
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::ctr(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
-	hierarchy_location *hl = HierarchyLocations::new();
-	hl->access_number = id;
+@ We provide an API of five creator functions for HLs. First, for a resource
+like a constant[1] (possibly translated in some way: see //Translation//), and
+which must be located at position |req|.
+
+[1] Or a variable, or really anything self-contained under a single simple name
+which is not a package of some kind.
+
+=
+hierarchy_location *HierarchyLocations::ctr(inter_tree *I, int id, text_stream *name,
+	name_translation nt, location_requirement req) {
+	hierarchy_location *hl = HierarchyLocations::new(id);
 	hl->access_name = Str::duplicate(name);
 	hl->requirements = req;
 	hl->trans = nt;
@@ -131,39 +60,20 @@ hierarchy_location *HierarchyLocations::ctr(inter_tree *I, int id, text_stream *
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::con(inter_tree *I, int id, text_stream *name, location_requirement req) {
-	hierarchy_location *hl = HierarchyLocations::new();
-	hl->access_number = id;
-	hl->access_name = Str::duplicate(name);
-	hl->requirements = req;
-	hl->trans = Translation::same();
-	HierarchyLocations::index(I, hl);
-	return hl;
+@ Second, the same thing but with no translation needed:
+
+=
+hierarchy_location *HierarchyLocations::con(inter_tree *I, int id, text_stream *name,
+	location_requirement req) {
+	return HierarchyLocations::ctr(I, id, name, Translation::same(), req);
 }
 
-hierarchy_location *HierarchyLocations::pkg(inter_tree *I, int id, text_stream *name, text_stream *ptype_name, location_requirement req) {
-	hierarchy_location *hl = HierarchyLocations::new();
-	hl->access_number = id;
-	hl->access_name = Str::duplicate(name);
-	hl->requirements = req;
-	hl->package_type = Str::duplicate(ptype_name);
-	HierarchyLocations::index(I, hl);
-	return hl;
-}
+@ Third, for a function, possibly translated in some way, again at |req|:
 
-hierarchy_location *HierarchyLocations::make_as(inter_tree *I, int id, text_stream *name, inter_name *iname) {
-	hierarchy_location *hl = HierarchyLocations::new();
-	hl->access_number = id;
-	hl->access_name = Str::duplicate(name);
-	hl->requirements = HierarchyLocations::this_package(InterNames::location(iname));
-	hl->equates_to_iname = iname;
-	HierarchyLocations::index(I, hl);
-	return hl;
-}
-
-hierarchy_location *HierarchyLocations::fun(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
-	hierarchy_location *hl = CREATE(hierarchy_location);
-	hl->access_number = id;
+=
+hierarchy_location *HierarchyLocations::fun(inter_tree *I, int id, text_stream *name,
+	name_translation nt, location_requirement req) {
+	hierarchy_location *hl = HierarchyLocations::new(id);
 	hl->access_name = Str::duplicate(nt.translate_to);
 	hl->function_package_name = Str::duplicate(name);
 	hl->requirements = req;
@@ -172,9 +82,25 @@ hierarchy_location *HierarchyLocations::fun(inter_tree *I, int id, text_stream *
 	return hl;
 }
 
-hierarchy_location *HierarchyLocations::dat(inter_tree *I, int id, text_stream *name, name_translation nt, location_requirement req) {
-	hierarchy_location *hl = CREATE(hierarchy_location);
-	hl->access_number = id;
+@ Fourth, for a package of a given type, which must live at |req|:
+
+=
+hierarchy_location *HierarchyLocations::pkg(inter_tree *I, int id, text_stream *name,
+	text_stream *ptype_name, location_requirement req) {
+	hierarchy_location *hl = HierarchyLocations::new(id);
+	hl->access_name = Str::duplicate(name);
+	hl->requirements = req;
+	hl->package_type = Str::duplicate(ptype_name);
+	HierarchyLocations::index(I, hl);
+	return hl;
+}
+
+@ Finally, for a datum package:
+
+=
+hierarchy_location *HierarchyLocations::dat(inter_tree *I, int id, text_stream *name,
+	name_translation nt, location_requirement req) {
+	hierarchy_location *hl = HierarchyLocations::new(id);
 	hl->access_name = Str::duplicate(nt.translate_to);
 	hl->datum_package_name = Str::duplicate(name);
 	hl->requirements = req;
@@ -183,6 +109,9 @@ hierarchy_location *HierarchyLocations::dat(inter_tree *I, int id, text_stream *
 	return hl;
 }
 
+@h Dealing with HLs.
+
+=
 void HierarchyLocations::index(inter_tree *I, hierarchy_location *hl) {
 	if (hl->access_number >= 0) I->site.spdata.hls_indexed_by_id[hl->access_number] = hl;
 	if (hl->requirements.any_package_of_this_type == NULL) {
@@ -204,12 +133,6 @@ inter_name *HierarchyLocations::find_by_name(inter_tree *I, text_stream *name) {
 			(hierarchy_location *)
 				Dictionaries::read_value(I->site.spdata.hls_indexed_by_name, name));
 	return NULL;
-}
-
-inter_name *HierarchyLocations::function(inter_tree *I, package_request *R, text_stream *name, text_stream *trans) {
-	inter_name *iname = Packaging::function(I, InterNames::explicitly_named(name, R), NULL);
-	if (trans) Produce::change_translation(iname, trans);
-	return iname;
 }
 
 inter_name *HierarchyLocations::hl_to_iname(inter_tree *I, hierarchy_location *hl) {
@@ -258,7 +181,7 @@ inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_r
 			internal_error("subpackage not in enclosing superpackage");
 	} else if (P == NULL) {
 		internal_error("constant in null package");
-	} else if (P->eventual_type != PackageTypes::get(I, hl->requirements.any_package_of_this_type)) {
+	} else if (P->eventual_type != LargeScale::package_type(I, hl->requirements.any_package_of_this_type)) {
 		LOG("AN: %S, FPN: %S\n", hl->access_name, hl->function_package_name);
 		LOG("Have type: $3, required: %S\n", P->eventual_type, hl->requirements.any_package_of_this_type);
 		internal_error("constant in wrong superpackage");
@@ -312,14 +235,14 @@ package_request *HierarchyLocations::package_in_package(inter_tree *I, int id, p
 	if (P == NULL) internal_error("no superpackage");
 	if (hl->package_type == NULL) internal_error("package_in_package used wrongly");
 	if (hl->requirements.any_package_of_this_type) {
-		if (P->eventual_type != PackageTypes::get(I, hl->requirements.any_package_of_this_type))
+		if (P->eventual_type != LargeScale::package_type(I, hl->requirements.any_package_of_this_type))
 			internal_error("subpackage in wrong superpackage");
 	} else if (hl->requirements.any_enclosure) {
 		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
 			internal_error("subpackage not in enclosing superpackage");
 	} else internal_error("NRL accessed inappropriately");
 
-	return Packaging::request(I, InterNames::explicitly_named(hl->access_name, P), PackageTypes::get(I, hl->package_type));
+	return Packaging::request(I, InterNames::explicitly_named(hl->access_name, P), LargeScale::package_type(I, hl->package_type));
 }
 
 @h Hierarchy locations.
@@ -362,10 +285,10 @@ package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilati
 	} else if (hap->requirements.this_exact_package_not_yet_created >= 0) {
 		R = Hierarchy::exotic_package(hap->requirements.this_exact_package_not_yet_created);
 	} else if (hap->requirements.any_package_of_this_type) {
-		if ((R == NULL) || (R->eventual_type != PackageTypes::get(I, hap->requirements.any_package_of_this_type)))
+		if ((R == NULL) || (R->eventual_type != LargeScale::package_type(I, hap->requirements.any_package_of_this_type)))
 			internal_error("subpackage in wrong superpackage");
 	}
 	
-	return Packaging::request(I, Packaging::make_iname_within(R, hap->name_stem), PackageTypes::get(I, hap->type));
+	return Packaging::request(I, Packaging::make_iname_within(R, hap->name_stem), LargeScale::package_type(I, hap->type));
 }
 #endif

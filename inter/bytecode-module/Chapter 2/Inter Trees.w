@@ -300,7 +300,7 @@ void InterTree::traverse_r(inter_tree *from, inter_tree_node *P, void (*visitor)
 @
 
 @d LOOP_THROUGH_SUBPACKAGES(entry, pack, ptype)
-	inter_symbol *pack##wanted = (pack)?(PackageTypes::get(pack->package_head->tree, ptype)):NULL;
+	inter_symbol *pack##wanted = (pack)?(LargeScale::package_type(pack->package_head->tree, ptype)):NULL;
 	if (pack)
 		LOOP_THROUGH_INTER_CHILDREN(C, Inter::Packages::definition(pack))
 			if ((C->W.data[ID_IFLD] == PACKAGE_IST) &&

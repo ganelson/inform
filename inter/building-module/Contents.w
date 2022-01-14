@@ -12,9 +12,9 @@ Chapter 1: Architecture
 	Large-Scale Structure
 	Inter Primitives
 	Hierarchy Locations
+	Location Requirements
 	Translation
 	Packaging
-	Package Types
 	Inter Namespace
 
 Chapter 2: Blueprints

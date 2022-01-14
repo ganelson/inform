@@ -247,9 +247,9 @@ void Packaging::outside_all_packages(inter_tree *I) {
 	Produce::comment(I, I"Primitives:");
 	Primitives::declare_standard_set(I, Packaging::at(I));
 
-	PackageTypes::get(I, I"_plain"); // To ensure this is the first emitted ptype
-	PackageTypes::get(I, I"_code"); // And this the second
-	PackageTypes::get(I, I"_linkage"); // And this the third
+	LargeScale::package_type(I, I"_plain"); // To ensure this is the first emitted ptype
+	LargeScale::package_type(I, I"_code"); // And this the second
+	LargeScale::package_type(I, I"_linkage"); // And this the third
 
 	Packaging::enter(LargeScale::main_request(I)); // Which we never exit
 }
@@ -332,7 +332,7 @@ functions are produced by the following routines:
 
 =
 inter_name *Packaging::function(inter_tree *I, inter_name *function_iname, inter_name *temp_iname) {
-	package_request *P = Packaging::request(I, function_iname, PackageTypes::function(I));
+	package_request *P = Packaging::request(I, function_iname, LargeScale::package_type(I, I"_function"));
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (temp_iname) {
 		TEMPORARY_TEXT(T)
@@ -344,7 +344,7 @@ inter_name *Packaging::function(inter_tree *I, inter_name *function_iname, inter
 }
 
 inter_name *Packaging::function_text(inter_tree *I, inter_name *function_iname, text_stream *translation) {
-	package_request *P = Packaging::request(I, function_iname, PackageTypes::function(I));
+	package_request *P = Packaging::request(I, function_iname, LargeScale::package_type(I, I"_function"));
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
 	if (translation)
 		Produce::change_translation(iname, translation);
@@ -355,7 +355,7 @@ int Packaging::housed_in_function(inter_tree *I, inter_name *iname) {
 	if (iname == NULL) return FALSE;
 	package_request *P = InterNames::location(iname);
 	if (P == NULL) return FALSE;
-	if (P->eventual_type == PackageTypes::function(I)) return TRUE;
+	if (P->eventual_type == LargeScale::package_type(I, I"_function")) return TRUE;
 	return FALSE;
 }
 
@@ -363,7 +363,7 @@ int Packaging::housed_in_function(inter_tree *I, inter_name *iname) {
 
 =
 inter_name *Packaging::datum_text(inter_tree *I, inter_name *function_iname, text_stream *translation) {
-	package_request *P = Packaging::request(I, function_iname, PackageTypes::get(I, I"_data"));
+	package_request *P = Packaging::request(I, function_iname, LargeScale::package_type(I, I"_data"));
 	inter_name *iname = InterNames::explicitly_named(translation, P);
 	return iname;
 }

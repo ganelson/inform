@@ -202,7 +202,7 @@ inter_package *Produce::block(inter_tree *I, packaging_state *save, inter_name *
 		block_iname = Packaging::make_iname_within(InterNames::location(iname), I"block");
 	else internal_error("routine outside function package");
 	inter_bookmark save_ib = Inter::Bookmarks::snapshot(Packaging::at(I));
-	Produce::set_function(I, Produce::package(I, block_iname, PackageTypes::get(I, I"_code")));
+	Produce::set_function(I, Produce::package(I, block_iname, LargeScale::package_type(I, I"_code")));
 
 	Produce::guard(Inter::Code::new(Packaging::at(I),
 		(int) Produce::baseline(Packaging::at(I)) + 1, NULL));
@@ -588,7 +588,7 @@ inter_name *Produce::find_by_name(inter_tree *I, text_stream *name) {
 	if (Str::len(name) == 0) internal_error("empty extern");
 	inter_name *try = HierarchyLocations::find_by_name(I, name);
 	if (try == NULL) {
-		HierarchyLocations::ctr(I, -1, name, Translation::same(), HierarchyLocations::plug());
+		HierarchyLocations::con(I, -1, name, LocationRequirements::plug());
 		try = HierarchyLocations::find_by_name(I, name);
 	}
 	return try;

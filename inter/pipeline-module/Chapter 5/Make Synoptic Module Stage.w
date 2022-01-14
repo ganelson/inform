@@ -144,7 +144,7 @@ tree_inventory *MakeSynopticModuleStage::new_inventory(inter_tree *I) {
 inter_tree_location_list *MakeSynopticModuleStage::needs(tree_inventory *inv, text_stream *pt) {
 	tree_inventory_item *item = CREATE(tree_inventory_item);
 	item->node_list = TreeLists::new();
-	item->required_ptype = PackageTypes::get(inv->of_tree, pt);
+	item->required_ptype = LargeScale::package_type(inv->of_tree, pt);
 	ADD_TO_LINKED_LIST(item, tree_inventory_item, inv->items);
 	return item->node_list;
 }
@@ -246,7 +246,7 @@ inter_package *MakeSynopticModuleStage::module_containing(inter_tree_node *P) {
 	inter_tree *I = Inter::Packages::tree(pack);
 	while (pack) {
 		inter_symbol *ptype = Inter::Packages::type(pack);
-		if (ptype == PackageTypes::get(I, I"_module")) return pack;
+		if (ptype == LargeScale::package_type(I, I"_module")) return pack;
 		pack = Inter::Packages::parent(pack);
 	}
 	return NULL;

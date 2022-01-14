@@ -82,7 +82,7 @@ package_request *LargeScale::main_request(inter_tree *I) {
 		I->site.strdata.main_request =
 			Packaging::request(I,
 				InterNames::explicitly_named(I"main", NULL),
-				PackageTypes::get(I, I"_plain"));
+				LargeScale::package_type(I, I"_plain"));
 	return I->site.strdata.main_request;
 }
 
@@ -96,10 +96,8 @@ inter_package *LargeScale::connectors_package_if_it_exists(inter_tree *I) {
 
 inter_package *LargeScale::ensure_connectors_package(inter_tree *I) {
 	if (I) {
-		if (I->site.strdata.connectors_package == NULL) {
+		if (I->site.strdata.connectors_package == NULL)
 			Packaging::incarnate(LargeScale::connectors_request(I));
-//			Inter::Packages::make_linklike(I->site.strdata.connectors_package);
-		}
 		return I->site.strdata.connectors_package;
 	}
 	return NULL;
@@ -110,7 +108,7 @@ package_request *LargeScale::connectors_request(inter_tree *I) {
 		I->site.strdata.connectors_request = 
 			Packaging::request(I,
 				InterNames::explicitly_named(I"connectors", LargeScale::main_request(I)),
-				PackageTypes::get(I, I"_linkage"));
+				LargeScale::package_type(I, I"_linkage"));
 	return I->site.strdata.connectors_request;
 }
 
@@ -138,7 +136,7 @@ package_request *LargeScale::architecture_request(inter_tree *I) {
 		I->site.strdata.architecture_request =
 			Packaging::request(I,
 				InterNames::explicitly_named(I"architectural", LargeScale::main_request(I)),
-				PackageTypes::get(I, I"_linkage"));
+				LargeScale::package_type(I, I"_linkage"));
 		packaging_state save = Packaging::enter(I->site.strdata.architecture_request);
 		I->site.strdata.architecture_bookmark = Packaging::bubble(I);
 		Packaging::exit(I, save);
@@ -300,7 +298,7 @@ module_request *LargeScale::module_request(inter_tree *I, text_stream *name) {
 	new_module->where_found =
 		Packaging::request(I,
 			InterNames::explicitly_named(name, LargeScale::main_request(I)),
-			PackageTypes::get(I, I"_module"));
+			LargeScale::package_type(I, I"_module"));
 	new_module->submodules = NEW_LINKED_LIST(submodule_request);
 	Dictionaries::create(D, name);
 	Dictionaries::write_value(D, name, (void *) new_module);
@@ -367,7 +365,7 @@ package_request *LargeScale::request_submodule_of(inter_tree *I, module_request 
 	inter_name *iname = InterNames::explicitly_named(sid->submodule_name, M->where_found);
 	sr = CREATE(submodule_request);
 	sr->which_submodule = sid;
-	sr->where_found = Packaging::request(I, iname, PackageTypes::get(I, I"_submodule"));
+	sr->where_found = Packaging::request(I, iname, LargeScale::package_type(I, I"_submodule"));
 	ADD_TO_LINKED_LIST(sr, submodule_request, M->submodules);
 	return sr->where_found;
 }
@@ -382,4 +380,35 @@ void LargeScale::emit_pragma(inter_tree *I, text_stream *target, text_stream *co
 	inter_symbol *target_name =
 		InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(I), target);
 	Produce::guard(Inter::Pragma::new(Packaging::pragmas(I), target_name, ID, 0, NULL));
+}
+
+@h Package types.
+Or indeed here. Package types are created on request; looking for |_octopus|
+would create it if it didn't already exist. So although the Inform tools do
+use a conventional set of package types, they are not itemised here.
+
+However, note the lines relating to enclosure. An "enclosing" package is
+one where the compiler keeps all resources needed by the contents of the
+package, within that package. For example, if a function in an enclosing
+package refers to a literal piece of text, then the necessary Inter array
+holding that text must also be somewhere in the package.
+
+It seems tidy to make all packages enclosing, and in fact (after much
+experiment) Inform nearly does that. But |_code| packages have to be an
+exception, because the Inter specification doesn't allow constants (and
+therefore arrays) to be defined inside |_code| packages. This is where that
+exception is made.
+
+=
+inter_symbol *LargeScale::package_type(inter_tree *I, text_stream *name) {
+	inter_symbols_table *scope = InterTree::global_scope(I);
+	inter_symbol *ptype = InterSymbolsTables::symbol_from_name(scope, name);
+	if (ptype == NULL) {
+		ptype = Produce::new_symbol(scope, name);
+		Produce::guard(Inter::PackageType::new_packagetype(
+			Packaging::package_types(I), ptype, 0, NULL));
+		if (Str::ne(name, I"_code"))
+			Produce::annotate_symbol_i(ptype, ENCLOSING_IANN, 1);
+	}
+	return ptype;
 }

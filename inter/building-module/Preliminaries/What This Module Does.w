@@ -37,10 +37,7 @@ An inter tree is fundamentally a set of resources stored in a nested set of
 
 (*) The following resources are stored at the root level (i.e., not inside of
 any package) and nowhere else:
-(-*) Package type declarations. Inter can support a nearly arbitrary set of
-different package types, and the //bytecode// functions make no assumptions.
-In //Package Types//, however, we //present a single standard set of package
-types used by Inform code.
+(-*) Package type declarations. See //LargeScale::package_type//.
 (-*) Primitive declarations. See //Inter Primitives//. Again, Inter can in
 principle support a variety of different "instruction sets", but this module
 presents a single standardised instruction set.

@@ -18,10 +18,10 @@ int NewStage::run(pipeline_step *step) {
 	inter_bookmark in_main = Inter::Bookmarks::at_end_of_this_package(main_p);
 	inter_package *generic_p = NULL, *generic_kinds_p = NULL;
 	Inter::Package::new_package_named(&in_main, I"generic", FALSE,
-		PackageTypes::get(I, I"_module"), 1, NULL, &generic_p);
+		LargeScale::package_type(I, I"_module"), 1, NULL, &generic_p);
 	inter_bookmark in_generic = Inter::Bookmarks::at_end_of_this_package(generic_p);
 	Inter::Package::new_package_named(&in_generic, I"kinds", FALSE,
-		PackageTypes::get(I, I"_submodule"), 1, NULL, &generic_kinds_p);
+		LargeScale::package_type(I, I"_submodule"), 1, NULL, &generic_kinds_p);
 	inter_bookmark in_generic_kinds = Inter::Bookmarks::at_end_of_this_package(generic_kinds_p);
 
 	inter_symbol *unchecked_kind_symbol = NULL;
@@ -48,14 +48,14 @@ function.
 as far as //building// is concerned, but which this //pipeline// module relies on.
 
 @<Add another few package types which we will need when linking@> =
-	PackageTypes::get(I, I"_module");
-	PackageTypes::get(I, I"_submodule");
-	PackageTypes::get(I, I"_function");
-	PackageTypes::get(I, I"_action");
-	PackageTypes::get(I, I"_command");
-	PackageTypes::get(I, I"_property");
-	PackageTypes::get(I, I"_to_phrase");
-	PackageTypes::get(I, I"_response");
+	LargeScale::package_type(I, I"_module");
+	LargeScale::package_type(I, I"_submodule");
+	LargeScale::package_type(I, I"_function");
+	LargeScale::package_type(I, I"_action");
+	LargeScale::package_type(I, I"_command");
+	LargeScale::package_type(I, I"_property");
+	LargeScale::package_type(I, I"_to_phrase");
+	LargeScale::package_type(I, I"_response");
 
 @ The package |main/generic/kinds| contains some rudimentary Inter kinds of data.
 (See also //runtime: Emit//, where a matching set is made by the Inform 7 compiler

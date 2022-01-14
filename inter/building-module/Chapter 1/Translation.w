@@ -3,8 +3,20 @@
 A way to express rules for how to translate names from the Inter namespace into the
 target language's namespace.
 
-@ This section of code is pleasingly simple: it has no functionality, and exists as
-a stand-alone section just to give these functions legible names.
+@ The //final// code-generator produces output code in a high-level language
+which itself has identifier names. Clearly it is free to choose those names
+however it would like; the process of going from an Inter name to a name in
+the output is called "translation".
+
+Each //hierarchy_location// comes with a //name_translation//, which specifies
+how translation is to be done on the resource at this location. This might,
+for example, express the idea "when code-generating, give this resource an
+identifier name which is made by suffixing |_X| after the name of an
+associated resource". Or more commonly, just "give this resource the same
+identifier name as its Inter symbol name".
+
+A variety of stipulations can be made, and with memory consumption unimportant
+here, the following is really a union: almost all the fields will be left blank.
 
 =
 typedef struct name_translation {
