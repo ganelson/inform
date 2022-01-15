@@ -16,7 +16,7 @@ void SynopticTests::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 at runtime.
 
 @<Define TESTSCRIPTSUB function@> =
-	inter_name *iname = HierarchyLocations::find(I, TESTSCRIPTSUB_HL);
+	inter_name *iname = HierarchyLocations::iname(I, TESTSCRIPTSUB_HL);
 	Synoptic::begin_function(I, iname);
 	if (TreeLists::len(inv->test_nodes) == 0) {
 		Produce::inv_primitive(I, PRINT_BIP);
@@ -26,7 +26,7 @@ at runtime.
 	} else {
 		Produce::inv_primitive(I, SWITCH_BIP);
 		Produce::down(I);
-			Produce::val_iname(I, K_value, HierarchyLocations::find(I, SPECIAL_WORD_HL));
+			Produce::val_iname(I, K_value, HierarchyLocations::iname(I, SPECIAL_WORD_HL));
 			Produce::code(I);
 			Produce::down(I);
 				for (int i=0; i<TreeLists::len(inv->test_nodes); i++) {
@@ -40,7 +40,7 @@ at runtime.
 						Produce::val_dword(I, name);
 						Produce::code(I);
 						Produce::down(I);
-							Produce::inv_call_iname(I, HierarchyLocations::find(I, TESTSTART_HL));
+							Produce::inv_call_iname(I, HierarchyLocations::iname(I, TESTSTART_HL));
 							Produce::down(I);
 								Produce::val_symbol(I, K_value, text_s);
 								Produce::val_symbol(I, K_value, req_s);

@@ -1,20 +1,25 @@
 [HierarchyLocations::] Hierarchy Locations.
 
 @h Hierarchy locations.
-A //hierarchy_location// is an abstract way to refer to a resource in an
-Inter tree; note that it can describe a position which does not yet exist,
-or indeed a resource which will never be created.
+A compiler such as //inform7// needs to create many different resources --
+arrays, functions and so on -- and each one needs to be placed somewhere
+in the hierarchy of an Inter tree, and given a name.
 
-Each different HL has a unique ID, its |access_number|. The idea is that a
-compiler such as //inform7// can look up, say, the ID |JINXED_WIZARDS_HL|,
-and quickly determine that this resource should -- if and when created --
-be called |JinxedWizards_fn|, and be in the package |/synoptic/kinds|,
-and so forth. This is obviously useful when creating resources -- it's a
-set of instructions, in effect, for what to call them and where to put them.
+A //hierarchy_location// is an abstract way to specify the rules for doing
+that. The compiler creates a mass of these objects, and they are then indexed
+by unique IDs, their |access_number|s. The compiler can then, with essentially
+no overhead, ask to create the resource with ID |JINXED_WIZARDS_HL| (say),
+and the machinery below will work out where it is to go, and what it is to
+be called -- |/synoptic/pangrams/jinxed_wizards_fn|, say.
 
-But it is also useful when cross-referencing those: for example, when
-compiling a function call to |JinxedWizards_fn|. It enables such a call to
-be compiled even when the function itself has not yet been created.
+This leads to greater consistency, less duplication of book-keeping code,
+and the ability to have a sort of registry of where everything will go:
+see //runtime: Hierarchy// for an example.
+
+But it's also helpful when trying to use these resources. If the compiler needs
+to make a function call to our hypothetical jinxed-wizards function, it can
+simply use |HierarchyLocations::iname(JINXED_WIZARDS_HL)| to obtain an //inter_name//
+for where that function is (if it already exists) or will be (if not).
 
 =
 typedef struct hierarchy_location {
@@ -109,83 +114,211 @@ hierarchy_location *HierarchyLocations::dat(inter_tree *I, int id, text_stream *
 	return hl;
 }
 
-@h Dealing with HLs.
+@h Finding HLs by ID or name.
+As noted above, HLs are identified with ID numbers for speed, and this means
+that an array must be maintained so that the //hierarchy_location// for a
+given ID can be found quickly. We also sometimes want to look them up by name,
+which is slower, but the hashing used by a |dictionary| makes even that tolerable.
+
+Both of these forms of lookup need an index to be kept, so HLs must be registered
+for use with any tree which will need them, using the following.
+
+Note that HLs for plugs all have the ID -1, so those are indexed only by name.
 
 =
 void HierarchyLocations::index(inter_tree *I, hierarchy_location *hl) {
-	if (hl->access_number >= 0) I->site.spdata.hls_indexed_by_id[hl->access_number] = hl;
+	int id = hl->access_number;
+	if ((id >= 0) && (id < NO_DEFINED_HL_VALUES))
+		I->site.spdata.hls_indexed_by_id[id] = hl;
 	if (hl->requirements.any_package_of_this_type == NULL) {
 		Dictionaries::create(I->site.spdata.hls_indexed_by_name, hl->access_name);
-		Dictionaries::write_value(I->site.spdata.hls_indexed_by_name, hl->access_name, (void *) hl);
+		Dictionaries::write_value(I->site.spdata.hls_indexed_by_name,
+			hl->access_name, (void *) hl);
 	}
 }
 
-inter_name *HierarchyLocations::find(inter_tree *I, int id) {
-	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.spdata.hls_indexed_by_id[id] == NULL))
-		internal_error("bad hl ID");
-	return HierarchyLocations::hl_to_iname(I, I->site.spdata.hls_indexed_by_id[id]);
+hierarchy_location *HierarchyLocations::id_to_HL(inter_tree *I, int id) {
+	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES)) internal_error("HL ID out of range");
+	if (I->site.spdata.hls_indexed_by_id[id] == NULL) internal_error("undeclared HL ID");
+	return I->site.spdata.hls_indexed_by_id[id];
 }
 
-inter_name *HierarchyLocations::find_by_name(inter_tree *I, text_stream *name) {
-	if (Str::len(name) == 0) internal_error("bad hl name");
-	if (Dictionaries::find(I->site.spdata.hls_indexed_by_name, name))
-		return HierarchyLocations::hl_to_iname(I, 
-			(hierarchy_location *)
-				Dictionaries::read_value(I->site.spdata.hls_indexed_by_name, name));
-	return NULL;
+hierarchy_location *HierarchyLocations::name_to_HL(inter_tree *I, text_stream *name) {
+	if (Str::len(name) == 0) internal_error("empty HL name");
+	if (Dictionaries::find(I->site.spdata.hls_indexed_by_name, name) == NULL)
+		return NULL;
+	return (hierarchy_location *)
+		Dictionaries::read_value(I->site.spdata.hls_indexed_by_name, name);
 }
 
-inter_name *HierarchyLocations::hl_to_iname(inter_tree *I, hierarchy_location *hl) {
-	if (hl->requirements.any_package_of_this_type) internal_error("NRL accessed inappropriately");
-	if (hl->equates_to_iname == NULL) {
-		if (hl->requirements.must_be_plug) {
-			hl->equates_to_iname = InterNames::explicitly_named_in_template(I, hl->access_name);
-		} else {
-			if (hl->requirements.this_exact_package == NULL) {
-				if (hl->requirements.this_exact_package_not_yet_created >= 0) {
-					#ifdef CORE_MODULE
-					hl->requirements.this_exact_package = Hierarchy::exotic_package(hl->requirements.this_exact_package_not_yet_created);
-					#endif
-					#ifndef CORE_MODULE
-					internal_error("feature not available in inter");
-					#endif
-				} else internal_error("package can't be found");
-			}
-			if (Str::len(hl->function_package_name) > 0) {
-				hl->equates_to_iname = Packaging::function_text(I,
-					InterNames::explicitly_named(hl->function_package_name, hl->requirements.this_exact_package),
-					hl->access_name);
-			} else if (Str::len(hl->datum_package_name) > 0) {
-				hl->equates_to_iname = Packaging::datum_text(I,
-					InterNames::explicitly_named(hl->datum_package_name, hl->requirements.this_exact_package),
-					hl->access_name);
-			} else if ((hl->requirements.this_exact_package) && (hl->equates_to_iname == NULL)) {
-				hl->equates_to_iname = InterNames::explicitly_named(hl->access_name, hl->requirements.this_exact_package);
-			}
-		}
-		hl->requirements.this_exact_package = InterNames::location(hl->equates_to_iname);
-		
-		if (hl->trans.translate_to) Produce::change_translation(hl->equates_to_iname, hl->trans.translate_to);
-	}
+@h Finding HLs representing one-off global resources.
+The two functions here allow the client to get an iname for a resource which
+occurs just once in the whole repository.
+
+For example, |HierarchyLocations::iname(I, UN_BUILDING_HL)| might return the
+iname |/main/generic/UN_building|. The package location, here |/main/generic|,
+and the name, here |UN_building|, would both be specified explicitly in the HL.
+So this is the simplest case.
+
+In response to these requests, we actually never return the //hierarchy_location//
+itself; our users don't care about that. We return the //inter_name// for the
+resource in question.
+
+=
+inter_name *HierarchyLocations::iname(inter_tree *I, int id) {
+	hierarchy_location *hl = HierarchyLocations::id_to_HL(I, id);
+	@<Work out the iname for this HL@>;
+}
+
+inter_name *HierarchyLocations::name_to_iname(inter_tree *I, text_stream *name) {
+	hierarchy_location *hl = HierarchyLocations::name_to_HL(I, name);
+	if (hl == NULL) return NULL;
+	@<Work out the iname for this HL@>;
+}
+
+@ The result of the following is cached in |hl->equates_to_iname|, so that
+it only needs to be worked out once.
+
+@<Work out the iname for this HL@> =
+	if (hl->requirements.any_package_of_this_type)
+		internal_error("this must be found with HierarchyLocations::iip");
+
+	if (hl->equates_to_iname) return hl->equates_to_iname;
+
+	if (hl->requirements.must_be_plug) @<Then make it a plug@>;
+	
+	package_request *pack;
+	@<Work out and request the package to make this in@>;
+	@<Make the iname inside this package@>;
+
+@<Then make it a plug@> =
+	hl->equates_to_iname = InterNames::explicitly_named_plug(I, hl->access_name);
 	return hl->equates_to_iname;
+
+@<Work out and request the package to make this in@> =
+	pack = hl->requirements.this_exact_package;
+	if (hl->requirements.this_exact_package_not_yet_created >= 0)
+		@<Choose an exotic package instead@>;
+	if (pack == NULL) internal_error("package can't be found");
+
+@<Choose an exotic package instead@> =
+	#ifdef CORE_MODULE
+	pack = Hierarchy::exotic_package(hl->requirements.this_exact_package_not_yet_created);
+	if (pack == NULL) internal_error("unable to determine package and therefore iname");
+	#endif
+	#ifndef CORE_MODULE
+	internal_error("exotic packages are not available in inter");
+	#endif
+
+@<Make the iname inside this package@> =
+	if (Str::len(hl->function_package_name) > 0) {
+		hl->equates_to_iname = Packaging::function_text(I,
+			InterNames::explicitly_named(hl->function_package_name, pack),
+			hl->access_name);
+	} else if (Str::len(hl->datum_package_name) > 0) {
+		hl->equates_to_iname = Packaging::datum_text(I,
+			InterNames::explicitly_named(hl->datum_package_name, pack),
+			hl->access_name);
+	} else {
+		hl->equates_to_iname = InterNames::explicitly_named(hl->access_name, pack);
+	}
+	
+	if (hl->trans.translate_to)
+		Produce::change_translation(hl->equates_to_iname, hl->trans.translate_to);
+
+	return hl->equates_to_iname;
+
+@h Finding HLs representing resources in families of packages.
+Suppose we want to have packages representing, say, South American countries, and
+the compiler wants to create a constant |capital_city| in each of these packages.
+
+There will be a single HL supplying the rules to do this, but multiple inames
+will be produced as the compiler makes multiple calls:
+= (text as InC)
+	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, uruguay_package) ...
+	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, peru_package) ...
+	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, chile_package) ...
+=
+
+=
+inter_name *HierarchyLocations::make_iname_in(inter_tree *I, int id, package_request *P) {
+	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, NULL, -1, NULL);
 }
 
-inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_request *P, wording W, inter_name *derive_from, int fix, text_stream *imposed_name) {
-	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.spdata.hls_indexed_by_id[id] == NULL))
-		internal_error("bad hl ID");
-	hierarchy_location *hl = I->site.spdata.hls_indexed_by_id[id];
-	if ((hl->requirements.any_package_of_this_type == NULL) &&
-		(hl->requirements.any_enclosure == FALSE)) internal_error("NRL accessed inappropriately");
-	if (hl->requirements.any_enclosure) {
-		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
-			internal_error("subpackage not in enclosing superpackage");
-	} else if (P == NULL) {
-		internal_error("constant in null package");
-	} else if (P->eventual_type != LargeScale::package_type(I, hl->requirements.any_package_of_this_type)) {
-		LOG("AN: %S, FPN: %S\n", hl->access_name, hl->function_package_name);
-		LOG("Have type: $3, required: %S\n", P->eventual_type, hl->requirements.any_package_of_this_type);
-		internal_error("constant in wrong superpackage");
-	}
+@ That might, say, produce constants with the Inter symbols like so:
+= (text as InC)
+	/main/south_america/uruguay/capital_city
+	/main/south_america/peru/capital_city
+	/main/south_america/chile/capital_city
+=
+When final code is generated from these, the constants will probably end up
+with bland identifiers like |capital_city_U1|, |capital_city_U2|, and so on.
+If we don't want that, we can make an exception like so:
+= (text as InC)
+	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, uruguay_package) ...
+	... HierarchyLocations::make_iname_with_specific_translation(I, CAPITAL_CITY_HL,
+		I"Lima", peru_package) ...
+	... HierarchyLocations::make_iname_in(I, CAPITAL_CITY_HL, chile_package) ...
+=
+Our three capitals would then translate to |capital_city_U1|, |Lima|, and
+|capital_city_U2|.
+
+=
+inter_name *HierarchyLocations::make_iname_with_specific_translation(inter_tree *I, int id,
+	text_stream *translation, package_request *P) {
+	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, NULL, -1, translation);
+}
+
+@ Sometimes we want the name itself to be more meaningful, or at least, more
+legible when Inter code is printed out. We can do that by attaching a "memo"
+of wording to its name. For example, if |W| is the wording "Uruguay", then
+calling:
+= (text as InC)
+	HierarchyLocations::make_iname_with_memo(I, COUNTRY_HL, uruguay_package, W)
+=
+might produce the iname |/main/south_america/uruguay/C3_uruguay|; a subsequent
+call in a different package, with a different wording, might then produce
+|/main/south_america/uruguay/C4_trinidad_and_tobago|, and so on. (The choice of
+|C| as the prefix would be made in the HL, which specifies naming conventions.)
+
+=
+inter_name *HierarchyLocations::make_iname_with_memo(inter_tree *I, int id,
+	package_request *P, wording W) {
+	return HierarchyLocations::iip(I, id, P, W, NULL, -1, NULL);
+}
+
+@ Note that the HL, in this example |COUNTRY_HL|, keeps track of how many of
+these inames it has made, so that it can increment the index number -- in those
+two cases, 3 and then 4. If we need to override this with a specific number |x|
+for some reason, we can use this variant:
+
+=
+inter_name *HierarchyLocations::make_iname_with_memo_and_value(inter_tree *I,
+	int id, package_request *P, wording W, int x) {
+	return HierarchyLocations::iip(I, id, P, W, NULL, x, NULL);
+}
+
+@ Finally, it's often useful to "derive" a name: to say that a resource in a
+given package |P| should have a name based on the name of an existing iname.
+For example, the HL |POPULATION_HL| might have the rule that names are made
+by suffixing |_POP| to an existing iname. Calling //HierarchyLocations::derive_iname_in//
+might then produce a name like |C3_uruguay_POP|, derived from the existing iname
+|C3_uruguay|.
+
+=
+inter_name *HierarchyLocations::derive_iname_in(inter_tree *I, int id, inter_name *from, 
+	package_request *P) {
+	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, from, -1, NULL);
+}
+
+@ All of the above use this comman back-end:
+
+=
+inter_name *HierarchyLocations::iip(inter_tree *I, int id, package_request *P,
+	wording W, inter_name *derive_from, int fix, text_stream *imposed_name) {
+	hierarchy_location *hl = HierarchyLocations::id_to_HL(I, id);
+
+	@<Verify that the proposed package P meets requirements@>;
 	
 	inter_name *iname = NULL;
 	if (hl->trans.translate_to)  {
@@ -196,12 +329,9 @@ inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_r
 		@<Make the actual iname@>;
 	} else if (hl->trans.name_generator) {
 		TEMPORARY_TEXT(T)
-		inter_name *temp_iname = NULL;
-		if (derive_from) {
-			temp_iname = InterNames::derived(hl->trans.name_generator, derive_from, W);
-		} else {
-			temp_iname = InterNames::generated(hl->trans.name_generator, fix, W);
-		}
+		inter_name *temp_iname =
+			(derive_from) ? InterNames::derived(hl->trans.name_generator, derive_from, W)
+			              : InterNames::generated(hl->trans.name_generator, fix, W);
 		W = EMPTY_WORDING;
 		WRITE_TO(T, "%n", temp_iname);
 		@<Make the actual iname@>;
@@ -215,37 +345,68 @@ inter_name *HierarchyLocations::find_in_package(inter_tree *I, int id, package_r
 	return iname;
 }
 
+@ We do nothing to change matters here. But an HL can specify that it may only
+be used to generate inames in, say, a package of type |_country|: and an
+internal error is thrown if this is violated. So compliance is not automatic,
+but it is at least policed.
+
+@<Verify that the proposed package P meets requirements@> =
+	if ((hl->requirements.any_package_of_this_type == NULL) &&
+		(hl->requirements.any_enclosure == FALSE))
+		internal_error("this must be found with HierarchyLocations::iname");
+
+	if (hl->requirements.any_enclosure) {
+		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
+			internal_error("subpackage not in enclosing superpackage");
+	} else if (P == NULL) {
+		internal_error("iname in null package");
+	} else if (P->eventual_type !=
+		LargeScale::package_type(I, hl->requirements.any_package_of_this_type)) {
+		LOG("Access name: %S, function: %S\n",
+			hl->access_name, hl->function_package_name);
+		LOG("Have type: $3, required: %S\n",
+			P->eventual_type, hl->requirements.any_package_of_this_type);
+		internal_error("iname in superpackage of the wrong type");
+	}
+
 @<Make the actual iname@> =
 	if (Str::len(hl->function_package_name) > 0) {
 		iname = Packaging::function(I,
 			InterNames::explicitly_named(hl->function_package_name, P), NULL);
+	} else if (hl->trans.by_imposition) {
+		iname = InterNames::explicitly_named_with_memo(imposed_name, P, W);
+	} else if (Str::len(hl->access_name) == 0) {
+		iname = InterNames::explicitly_named_with_memo(T, P, W);
 	} else {
-		if (hl->trans.by_imposition) iname = InterNames::explicitly_named_with_memo(imposed_name, P, W);
-		else if (Str::len(hl->access_name) == 0) iname = InterNames::explicitly_named_with_memo(T, P, W);
-		else iname = InterNames::explicitly_named_with_memo(hl->access_name, P, W);
+		iname = InterNames::explicitly_named_with_memo(hl->access_name, P, W);
 	}
 	if ((Str::len(T) > 0) && (hl->access_name)) Produce::change_translation(iname, T);
 
-@ =
-package_request *HierarchyLocations::package_in_package(inter_tree *I, int id, package_request *P) {
-	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES) || (I->site.spdata.hls_indexed_by_id[id] == NULL))
-		internal_error("bad hl ID");
-	hierarchy_location *hl = I->site.spdata.hls_indexed_by_id[id];
+@h Making one-off subpackages.
+This is used very little. (In //inform7//, currently only for making the packages
+holding built-in activity or action rulebooks.)
+
+=
+package_request *HierarchyLocations::subpackage(inter_tree *I, int id, package_request *P) {
+	hierarchy_location *hl = HierarchyLocations::id_to_HL(I, id);
 
 	if (P == NULL) internal_error("no superpackage");
 	if (hl->package_type == NULL) internal_error("package_in_package used wrongly");
 	if (hl->requirements.any_package_of_this_type) {
-		if (P->eventual_type != LargeScale::package_type(I, hl->requirements.any_package_of_this_type))
+		if (P->eventual_type !=
+			LargeScale::package_type(I, hl->requirements.any_package_of_this_type))
 			internal_error("subpackage in wrong superpackage");
 	} else if (hl->requirements.any_enclosure) {
 		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
 			internal_error("subpackage not in enclosing superpackage");
 	} else internal_error("NRL accessed inappropriately");
 
-	return Packaging::request(I, InterNames::explicitly_named(hl->access_name, P), LargeScale::package_type(I, hl->package_type));
+	return Packaging::request(I,
+		InterNames::explicitly_named(hl->access_name, P),
+		LargeScale::package_type(I, hl->package_type));
 }
 
-@h Hierarchy locations.
+@h Making packages systematically at attachment points.
 
 =
 typedef struct hierarchy_attachment_point {
@@ -256,39 +417,47 @@ typedef struct hierarchy_attachment_point {
 	CLASS_DEFINITION
 } hierarchy_attachment_point;
 
-void HierarchyLocations::index_ap(inter_tree *I, hierarchy_attachment_point *hap) {
-	if (hap->hap_id >= 0) I->site.spdata.haps_indexed_by_id[hap->hap_id] = hap;
-}
-
-hierarchy_attachment_point *HierarchyLocations::att(inter_tree *I, int hap_id, text_stream *iterated_text, text_stream *ptype_name, location_requirement req) {
+hierarchy_attachment_point *HierarchyLocations::att(inter_tree *I, int hap_id,
+	text_stream *iterated_text, text_stream *ptype_name, location_requirement req) {
+	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES)) internal_error("HAP ID out of range");
 	hierarchy_attachment_point *hap = CREATE(hierarchy_attachment_point);
 	hap->hap_id = hap_id;
 	hap->requirements = req;
 	hap->name_stem = Str::duplicate(iterated_text);
 	hap->type = Str::duplicate(ptype_name);
-	HierarchyLocations::index_ap(I, hap);
+	I->site.spdata.haps_indexed_by_id[hap->hap_id] = hap;
 	return hap;
 }
 
-#ifdef CORE_MODULE
-package_request *HierarchyLocations::attach_new_package(inter_tree *I, compilation_unit *C, package_request *R, int hap_id) {
-	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES) || (I->site.spdata.haps_indexed_by_id[hap_id] == NULL))
-		internal_error("invalid HAP request");
-	hierarchy_attachment_point *hap = I->site.spdata.haps_indexed_by_id[hap_id];
+hierarchy_attachment_point *HierarchyLocations::id_to_HAP(inter_tree *I, int id) {
+	if ((id < 0) || (id >= NO_DEFINED_HAP_VALUES)) internal_error("HAP ID out of range");
+	if (I->site.spdata.haps_indexed_by_id[id] == NULL) internal_error("undeclared HAP ID");
+	return I->site.spdata.haps_indexed_by_id[id];
+}
+
+package_request *HierarchyLocations::attach_new_package(inter_tree *I,
+	module_request *M, package_request *R, int hap_id) {
+	hierarchy_attachment_point *hap = HierarchyLocations::id_to_HAP(I, hap_id);
 	if (hap->requirements.must_be_main_source_text) {
 		R = hap->requirements.this_exact_package;
 	} else if (hap->requirements.any_submodule_package_of_this_identity) {
-		if (C == NULL) R = LargeScale::generic_submodule(I, hap->requirements.any_submodule_package_of_this_identity);
-		else R = LargeScale::request_submodule_of(I, CompilationUnits::to_module_package(C), hap->requirements.any_submodule_package_of_this_identity);
+		if (M == NULL) R = LargeScale::generic_submodule(I, hap->requirements.any_submodule_package_of_this_identity);
+		else R = LargeScale::request_submodule_of(I, M, hap->requirements.any_submodule_package_of_this_identity);
 	} else if (hap->requirements.this_exact_package) {
 		R = hap->requirements.this_exact_package;
 	} else if (hap->requirements.this_exact_package_not_yet_created >= 0) {
+		#ifdef CORE_MODULE
 		R = Hierarchy::exotic_package(hap->requirements.this_exact_package_not_yet_created);
+		#endif
+		#ifndef CORE_MODULE
+		internal_error("exotic packages are not available in inter");
+		#endif
 	} else if (hap->requirements.any_package_of_this_type) {
 		if ((R == NULL) || (R->eventual_type != LargeScale::package_type(I, hap->requirements.any_package_of_this_type)))
 			internal_error("subpackage in wrong superpackage");
 	}
 	
-	return Packaging::request(I, Packaging::make_iname_within(R, hap->name_stem), LargeScale::package_type(I, hap->type));
+	return Packaging::request(I,
+		Packaging::make_iname_within(R, hap->name_stem),
+		LargeScale::package_type(I, hap->type));
 }
-#endif

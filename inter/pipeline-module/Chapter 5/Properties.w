@@ -24,5 +24,5 @@ so we change the values of these constants accordingly.
 	}
 
 @<Define CCOUNT_PROPERTY@> =
-	inter_name *iname = HierarchyLocations::find(I, CCOUNT_PROPERTY_HL);
+	inter_name *iname = HierarchyLocations::iname(I, CCOUNT_PROPERTY_HL);
 	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->property_nodes)));

@@ -35,14 +35,14 @@ values at runtime of the kind |K_response|.
 	}
 
 @<Define NO_RESPONSES@> =
-	inter_name *iname = HierarchyLocations::find(I, NO_RESPONSES_HL);
+	inter_name *iname = HierarchyLocations::iname(I, NO_RESPONSES_HL);
 	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->response_nodes)));
 
 @ This is the critical array which connects a response ID to the current value
 of the text of that response.
 
 @<Define ResponseTexts array@> =
-	inter_name *iname = HierarchyLocations::find(I, RESPONSETEXTS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RESPONSETEXTS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->response_nodes->list[i].node);
@@ -64,7 +64,7 @@ and |to| are an inclusive range of response ID numbers.
 The triple |(0, 0, 0)| ends the array.
 
 @<Define ResponseDivisions array@> =
-	inter_name *iname = HierarchyLocations::find(I, RESPONSEDIVISIONS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RESPONSEDIVISIONS_HL);
 	Synoptic::begin_array(I, step, iname);
 	text_stream *current_group = NULL; int start_pos = -1;
 	for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
@@ -104,7 +104,7 @@ the Z-machine, where such an array could consume over 1K, but where memory for
 code is less limited.
 
 @<Define PrintResponse function@> =
-	inter_name *iname = HierarchyLocations::find(I, PRINT_RESPONSE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, PRINT_RESPONSE_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *R_s = Synoptic::local(I, I"R", NULL);
 
@@ -121,7 +121,7 @@ code is less limited.
 			Produce::up(I);
 			Produce::code(I);
 			Produce::down(I);
-				Produce::inv_call_iname(I, HierarchyLocations::find(I, RULEPRINTINGRULE_HL));
+				Produce::inv_call_iname(I, HierarchyLocations::iname(I, RULEPRINTINGRULE_HL));
 				Produce::down(I);
 					Produce::val_symbol(I, K_value, rule_s);
 				Produce::up(I);

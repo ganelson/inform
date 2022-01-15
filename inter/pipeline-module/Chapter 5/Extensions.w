@@ -43,7 +43,7 @@ of a different author writing an extension which did not ask for modesty. That
 would violate the CC license.
 
 @<Define SHOWEXTENSIONVERSIONS function@> =
-	inter_name *iname = HierarchyLocations::find(I, SHOWEXTENSIONVERSIONS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, SHOWEXTENSIONVERSIONS_HL);
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
 		inter_package *pack =
@@ -63,7 +63,7 @@ would violate the CC license.
 @ This fuller version does not allow the exemptions.
 
 @<Define SHOWFULLEXTENSIONVERSIONS function@> =
-	inter_name *iname = HierarchyLocations::find(I, SHOWFULLEXTENSIONVERSIONS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, SHOWFULLEXTENSIONVERSIONS_HL);
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
@@ -81,7 +81,7 @@ is its extension ID. Speed of execution here is quite unimportant, so it's
 just a run of |if (id == 1) ...|, then |if (id == 2) ...|, and so on.
 
 @<Define SHOWONEEXTENSION function@> =
-	inter_name *iname = HierarchyLocations::find(I, SHOWONEEXTENSION_HL);
+	inter_name *iname = HierarchyLocations::iname(I, SHOWONEEXTENSION_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *id_s = Synoptic::local(I, I"id", NULL);
 	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {

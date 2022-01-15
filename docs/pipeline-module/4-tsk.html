@@ -82,13 +82,13 @@ which is in <a href="../BasicInformKit/index.html" class="internal">BasicInformK
 tree you're trying to build: so how do you describe them?
 </p>
 
-<p class="commentary">The answer is that you call <span class="extract"><span class="extract-syntax">HierarchyLocations::find(I, BLKVALUECREATE_HL)</span></span>,
+<p class="commentary">The answer is that you call <span class="extract"><span class="extract-syntax">HierarchyLocations::iname(I, BLKVALUECREATE_HL)</span></span>,
 say, and it will return an <span class="extract"><span class="extract-syntax">inter_name</span></span> which is exactly what you need. This is
 all done with plugs and sockets, but you don't care about that.
 </p>
 
 <p class="commentary">The one thing you do need to do is to ensure that the following initialisation
-function has been called: if not, <span class="extract"><span class="extract-syntax">HierarchyLocations::find</span></span> won't find these
+function has been called: if not, <span class="extract"><span class="extract-syntax">HierarchyLocations::iname</span></span> won't find these
 resources.
 </p>
 

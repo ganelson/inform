@@ -48,17 +48,17 @@ are independent and can overlap.
 	}
 
 @<Define NO_PAST_TENSE_CONDS@> =
-	inter_name *iname = HierarchyLocations::find(I, NO_PAST_TENSE_CONDS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, NO_PAST_TENSE_CONDS_HL);
 	Produce::numeric_constant(I, iname, K_value,
 		(inter_ti) TreeLists::len(inv->past_tense_condition_nodes));
 
 @<Define NO_PAST_TENSE_ACTIONS@> =
-	inter_name *iname = HierarchyLocations::find(I, NO_PAST_TENSE_ACTIONS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, NO_PAST_TENSE_ACTIONS_HL);
 	Produce::numeric_constant(I, iname, K_value,
 		(inter_ti) TreeLists::len(inv->action_history_condition_nodes));
 
 @<Define TIMEDEVENTSTABLE@> =
-	inter_name *iname = HierarchyLocations::find(I, TIMEDEVENTSTABLE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, TIMEDEVENTSTABLE_HL);
 	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	int when_count = 0;
@@ -78,7 +78,7 @@ are independent and can overlap.
 	Synoptic::end_array(I);
 
 @<Define TIMEDEVENTTIMESTABLE@> =
-	inter_name *iname = HierarchyLocations::find(I, TIMEDEVENTTIMESTABLE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, TIMEDEVENTTIMESTABLE_HL);
 	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	int when_count = 0;
@@ -99,7 +99,7 @@ are independent and can overlap.
 	Synoptic::end_array(I);
 
 @<Define PASTACTIONSI6ROUTINES@> =
-	inter_name *iname = HierarchyLocations::find(I, PASTACTIONSI6ROUTINES_HL);
+	inter_name *iname = HierarchyLocations::iname(I, PASTACTIONSI6ROUTINES_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_history_condition_nodes); i++) {
 		inter_package *pack =
@@ -113,7 +113,7 @@ are independent and can overlap.
 	Synoptic::end_array(I);
 
 @<Define TESTSINGLEPASTSTATE@> =
-	inter_name *iname = HierarchyLocations::find(I, TESTSINGLEPASTSTATE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, TESTSINGLEPASTSTATE_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *past_flag_s = Synoptic::local(I, I"past_flag", NULL);
 	inter_symbol *pt_s = Synoptic::local(I, I"pt", NULL);
@@ -126,9 +126,9 @@ are independent and can overlap.
 
 	if (TreeLists::len(inv->past_tense_condition_nodes) > 0) {
 		inter_symbol *prcr_s =
-			InterNames::to_symbol(HierarchyLocations::find(I, PRESENT_CHRONOLOGICAL_RECORD_HL));
+			InterNames::to_symbol(HierarchyLocations::iname(I, PRESENT_CHRONOLOGICAL_RECORD_HL));
 		inter_symbol *pacr_s =
-			InterNames::to_symbol(HierarchyLocations::find(I, PAST_CHRONOLOGICAL_RECORD_HL));
+			InterNames::to_symbol(HierarchyLocations::iname(I, PAST_CHRONOLOGICAL_RECORD_HL));
 
 		Produce::inv_primitive(I, IFELSE_BIP);
 		Produce::down(I);

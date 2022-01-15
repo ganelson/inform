@@ -45,12 +45,12 @@ are addresses of small arrays.
 or higher is therefore that of a derived kind.
 
 @<Define BASE_KIND_HWM@> =
-	inter_name *iname = HierarchyLocations::find(I, BASE_KIND_HWM_HL);
+	inter_name *iname = HierarchyLocations::iname(I, BASE_KIND_HWM_HL);
 	Produce::numeric_constant(I, iname, K_value,
 		(inter_ti) (TreeLists::len(inv->kind_nodes) + 2));
 
 @<Define DEFAULTVALUEFINDER function@> =
-	inter_name *iname = HierarchyLocations::find(I, DEFAULTVALUEFINDER_HL);
+	inter_name *iname = HierarchyLocations::iname(I, DEFAULTVALUEFINDER_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	for (int i=0; i<TreeLists::len(inv->derived_kind_nodes); i++) {
@@ -84,14 +84,14 @@ for instance, when increasing the size of a list of $K$ to include new entries,
 which have to be given some type-safe value to start out at.
 
 @<Define DEFAULTVALUEOFKOV function@> =
-	inter_name *iname = HierarchyLocations::find(I, DEFAULTVALUEOFKOV_HL);
+	inter_name *iname = HierarchyLocations::iname(I, DEFAULTVALUEOFKOV_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *sk_s = Synoptic::local(I, I"sk", NULL);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
+		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, sk_s);
 		Produce::up(I);
@@ -130,14 +130,14 @@ which have to be given some type-safe value to start out at.
 @ |PrintKindValuePair(K, V)| prints out the value |V|, declaring its kind to be |K|.
 
 @<Define PRINTKINDVALUEPAIR function@> =
-	inter_name *iname = HierarchyLocations::find(I, PRINTKINDVALUEPAIR_HL);
+	inter_name *iname = HierarchyLocations::iname(I, PRINTKINDVALUEPAIR_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	inter_symbol *v_s = Synoptic::local(I, I"v", NULL);
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
+		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -190,13 +190,13 @@ so it must have no side-effects. |F(x,y)| should return 1 if $x>y$,
 unless the two values are genuinely equal.
 
 @<Define KOVCOMPARISONFUNCTION function@> =
-	inter_name *iname = HierarchyLocations::find(I, KOVCOMPARISONFUNCTION_HL);
+	inter_name *iname = HierarchyLocations::iname(I, KOVCOMPARISONFUNCTION_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
+		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -230,13 +230,13 @@ unless the two values are genuinely equal.
 	Synoptic::end_function(I, step, iname);
 
 @<Define KOVDOMAINSIZE function@> =
-	inter_name *iname = HierarchyLocations::find(I, KOVDOMAINSIZE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, KOVDOMAINSIZE_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
+		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -273,14 +273,14 @@ unless the two values are genuinely equal.
 a kind storing pointers to blocks of data.
 
 @<Define KOVISBLOCKVALUE function@> =
-	inter_name *iname = HierarchyLocations::find(I, KOVISBLOCKVALUE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, KOVISBLOCKVALUE_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
+		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -311,7 +311,7 @@ a kind storing pointers to blocks of data.
 	Synoptic::end_function(I, step, iname);
 
 @<Define I7_KIND_NAME function@> =
-	inter_name *iname = HierarchyLocations::find(I, I7_KIND_NAME_HL);
+	inter_name *iname = HierarchyLocations::iname(I, I7_KIND_NAME_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
@@ -343,7 +343,7 @@ for a pointer-value kind |K|, or returns 0 if |K| is not such a kind. For what
 such a function does, see "BlockValues.i6t".
 
 @<Define KOVSUPPORTFUNCTION function@> =
-	inter_name *iname = HierarchyLocations::find(I, KOVSUPPORTFUNCTION_HL);
+	inter_name *iname = HierarchyLocations::iname(I, KOVSUPPORTFUNCTION_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	inter_symbol *fail_s = Synoptic::local(I, I"fail", NULL);
@@ -351,7 +351,7 @@ such a function does, see "BlockValues.i6t".
 	Produce::inv_primitive(I, STORE_BIP);
 	Produce::down(I);
 		Produce::ref_symbol(I, K_value, k_s);
-		Produce::inv_call_iname(I, HierarchyLocations::find(I, KINDATOMIC_HL));
+		Produce::inv_call_iname(I, HierarchyLocations::iname(I, KINDATOMIC_HL));
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, k_s);
 		Produce::up(I);
@@ -388,7 +388,7 @@ such a function does, see "BlockValues.i6t".
 		Produce::val_symbol(I, K_value, fail_s);
 		Produce::code(I);
 		Produce::down(I);
-			Produce::inv_call_iname(I, HierarchyLocations::find(I, BLKVALUEERROR_HL));
+			Produce::inv_call_iname(I, HierarchyLocations::iname(I, BLKVALUEERROR_HL));
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, fail_s);
 			Produce::up(I);
@@ -399,7 +399,7 @@ such a function does, see "BlockValues.i6t".
 	Synoptic::end_function(I, step, iname);
 
 @<Define SHOWMEKINDDETAILS function@> =
-	inter_name *iname = HierarchyLocations::find(I, SHOWMEKINDDETAILS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, SHOWMEKINDDETAILS_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *which_s = Synoptic::local(I, I"which", NULL);
 	inter_symbol *na_s = Synoptic::local(I, I"na", NULL);
@@ -436,7 +436,7 @@ general: only the player has the benefit of a "player's holdall" (hence the
 name), with other actors oblivious.
 
 @<Define RUCKSACK_CLASS constant@> =
-	inter_name *iname = HierarchyLocations::find(I, RUCKSACK_CLASS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RUCKSACK_CLASS_HL);
 	int found = FALSE;
 	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
 		inter_package *pack =
@@ -475,7 +475,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L)
 		Inter::Symbols::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN, (inter_ti) i++);
 
-	inter_name *iname = HierarchyLocations::find(I, KINDHIERARCHY_HL);
+	inter_name *iname = HierarchyLocations::iname(I, KINDHIERARCHY_HL);
 	Synoptic::begin_array(I, step, iname);
 	if (LinkedLists::len(L) > 0) {
 		Synoptic::symbol_entry(RunningPipelines::get_symbol(step, object_kind_RPSYM));

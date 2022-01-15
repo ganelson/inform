@@ -57,10 +57,10 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	}
 
 @<Define TABLEOFTABLES array@> =
-	inter_name *iname = HierarchyLocations::find(I, TABLEOFTABLES_HL);
+	inter_name *iname = HierarchyLocations::iname(I, TABLEOFTABLES_HL);
 	Synoptic::begin_array(I, step, iname);
 	Synoptic::symbol_entry(InterNames::to_symbol(
-		HierarchyLocations::find(I, THEEMPTYTABLE_HL)));
+		HierarchyLocations::iname(I, THEEMPTYTABLE_HL)));
 	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->table_nodes->list[i].node);
 		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
@@ -71,7 +71,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	Synoptic::end_array(I);
 
 @<Define PRINT_TABLE function@> =
-	inter_name *iname = HierarchyLocations::find(I, PRINT_TABLE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, PRINT_TABLE_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *T_s = Synoptic::local(I, I"T", NULL);
 	Produce::inv_primitive(I, SWITCH_BIP);
@@ -82,7 +82,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
 				Produce::val_iname(I, K_value,
-					HierarchyLocations::find(I, THEEMPTYTABLE_HL));
+					HierarchyLocations::iname(I, THEEMPTYTABLE_HL));
 				Produce::code(I);
 				Produce::down(I);
 					Produce::inv_primitive(I, PRINT_BIP);
@@ -127,7 +127,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	Synoptic::end_function(I, step, iname);
 
 @<Define TC_KOV function@> =
-	inter_name *iname = HierarchyLocations::find(I, TC_KOV_HL);
+	inter_name *iname = HierarchyLocations::iname(I, TC_KOV_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *tc_s = Synoptic::local(I, I"tc", NULL);
 	inter_symbol *unk_s = Synoptic::local(I, I"unk", NULL);
@@ -163,7 +163,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	Synoptic::end_function(I, step, iname);
 
 @<Define TB_BLANKS array@> =
-	inter_name *iname = HierarchyLocations::find(I, TB_BLANKS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, TB_BLANKS_HL);
 	Produce::annotate_iname_i(iname, BYTEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	inter_ti hwm = 0;
@@ -185,7 +185,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	Synoptic::end_array(I);
 
 @<Define RANKING_TABLE constant@> =
-	inter_name *iname = HierarchyLocations::find(I, RANKING_TABLE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RANKING_TABLE_HL);
 	int found = FALSE;
 	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
 		inter_package *pack =

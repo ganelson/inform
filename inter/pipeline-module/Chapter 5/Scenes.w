@@ -16,7 +16,7 @@ void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 }
 
 @<Define SHOWSCENESTATUS function@> =
-	inter_name *iname = HierarchyLocations::find(I, SHOWSCENESTATUS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, SHOWSCENESTATUS_HL);
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(inv->scene_nodes); i++) {
 		inter_package *pack =
@@ -36,7 +36,7 @@ whether any change in status has or has not occurred.
 @d MAX_SCENE_CHANGE_ITERATION 20
 
 @<Define DETECTSCENECHANGE function@> =
-	inter_name *iname = HierarchyLocations::find(I, DETECTSCENECHANGE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, DETECTSCENECHANGE_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *chs_s = Synoptic::local(I, I"chs", NULL);
 	inter_symbol *Again_l = Produce::reserve_label(I, I".Again");

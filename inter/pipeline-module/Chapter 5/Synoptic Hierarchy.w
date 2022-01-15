@@ -40,13 +40,13 @@ fuller explanation.
 	req = LocationRequirements::synoptic_submodule(I, LargeScale::register_submodule_identity(r));
 @d SYN_CONST(id, n) {
 		HierarchyLocations::con(I, id, n, req);
-		inter_name *iname = HierarchyLocations::find(I, id);
+		inter_name *iname = HierarchyLocations::iname(I, id);
 		inter_symbol *S = InterNames::to_symbol(iname);
 		Wiring::socket(I, InterNames::to_text(iname), S);
 	}
 @d SYN_FUNCT(id, n, t) {
 		HierarchyLocations::fun(I, id, n, Translation::to(t), req);
-		inter_name *iname = HierarchyLocations::find(I, id);
+		inter_name *iname = HierarchyLocations::iname(I, id);
 		inter_symbol *S = InterNames::to_symbol(iname);
 		Wiring::socket(I, Produce::get_translation(iname), S);
 	}

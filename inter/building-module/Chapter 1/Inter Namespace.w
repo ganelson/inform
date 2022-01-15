@@ -148,7 +148,7 @@ inter_name *InterNames::explicitly_named(text_stream *name, package_request *R) 
 	return InterNames::explicitly_named_with_memo(name, R, EMPTY_WORDING);
 }
 
-inter_name *InterNames::explicitly_named_in_template(inter_tree *I, text_stream *name) {
+inter_name *InterNames::explicitly_named_plug(inter_tree *I, text_stream *name) {
 	inter_name *iname = InterNames::explicitly_named(name, LargeScale::connectors_request(I));
 	inter_symbol *plug = Wiring::find_plug(I, name);
 	if (plug == NULL) plug = Wiring::plug(I, name);

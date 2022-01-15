@@ -10,12 +10,12 @@ which is defined in //WorldModelKit// -- or call the function |BlkValueCreate| -
 which is in //BasicInformKit//. These have not yet been linked in to the Inter
 tree you're trying to build: so how do you describe them?
 
-The answer is that you call |HierarchyLocations::find(I, BLKVALUECREATE_HL)|,
+The answer is that you call |HierarchyLocations::iname(I, BLKVALUECREATE_HL)|,
 say, and it will return an |inter_name| which is exactly what you need. This is
 all done with plugs and sockets, but you don't care about that.
 
 The one thing you do need to do is to ensure that the following initialisation
-function has been called: if not, |HierarchyLocations::find| won't find these
+function has been called: if not, |HierarchyLocations::iname| won't find these
 resources.
 
 =

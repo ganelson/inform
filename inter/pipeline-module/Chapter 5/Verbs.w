@@ -39,7 +39,7 @@ int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 }
 
 @<Define TABLEOFVERBS array@> =
-	inter_name *iname = HierarchyLocations::find(I, TABLEOFVERBS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, TABLEOFVERBS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->verb_form_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->verb_form_nodes->list[i].node);

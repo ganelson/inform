@@ -2033,7 +2033,7 @@ at which this array should be placed, by calling, e.g., //EmitArrays::begin_word
 
 =
 inter_name *Hierarchy::find(int id) {
-	return HierarchyLocations::find(Emit::tree(), id);
+	return HierarchyLocations::iname(Emit::tree(), id);
 }
 
 @ That's fine for one-off inames. But now suppose we have this:
@@ -2052,8 +2052,7 @@ If this is called where |P| is some other package -- i.e., not of package type
 
 =
 inter_name *Hierarchy::make_iname_in(int id, package_request *P) {
-	return HierarchyLocations::find_in_package(Emit::tree(), id, P, EMPTY_WORDING,
-		NULL, -1, NULL);
+	return HierarchyLocations::make_iname_in(Emit::tree(), id, P);
 }
 
 @ There are then some variations on this function. This version adds the wording |W|
@@ -2065,7 +2064,7 @@ the reader's convenience.
 
 =
 inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording W) {
-	return HierarchyLocations::find_in_package(Emit::tree(), id, P, W, NULL, -1, NULL);
+	return HierarchyLocations::make_iname_with_memo(Emit::tree(), id, P, W);
 }
 
 @ And this further elaboration supplies the number to use, in place of the |1|.
@@ -2076,8 +2075,8 @@ class inheritance tree order.
 =
 inter_name *Hierarchy::make_iname_with_memo_and_value(int id, package_request *P,
 	wording W, int x) {
-	inter_name *iname = HierarchyLocations::find_in_package(Emit::tree(), id, P, W,
-		NULL, x, NULL);
+	inter_name *iname =
+		HierarchyLocations::make_iname_with_memo_and_value(Emit::tree(), id, P, W, x);
 	Hierarchy::make_available(iname);
 	return iname;
 }
@@ -2087,8 +2086,7 @@ it (e.g. by adding a prefix or suffix), the following should be used:
 
 =
 inter_name *Hierarchy::derive_iname_in(int id, inter_name *from, package_request *P) {
-	return HierarchyLocations::find_in_package(Emit::tree(), id, P, EMPTY_WORDING,
-		from, -1, NULL);
+	return HierarchyLocations::derive_iname_in(Emit::tree(), id, from, P);
 }
 
 @ For the handful of names with "imposed translation", where the caller has to
@@ -2097,8 +2095,8 @@ supply the translated name, the following should be used:
 =
 inter_name *Hierarchy::make_iname_with_specific_translation(int id, text_stream *name,
 	package_request *P) {
-	return HierarchyLocations::find_in_package(Emit::tree(), id, P, EMPTY_WORDING,
-		NULL, -1, name);
+	return HierarchyLocations::make_iname_with_specific_translation(Emit::tree(),
+		id, name, P);
 }
 
 @h Availability.
@@ -2139,10 +2137,11 @@ such |_kind| package inside C. For example, it might return a new package
 
 =
 package_request *Hierarchy::package(compilation_unit *C, int hap_id) {
-	return HierarchyLocations::attach_new_package(Emit::tree(), C, NULL, hap_id);
+	module_request *M = (C) ? (CompilationUnits::to_module_package(C)) : NULL;
+	return HierarchyLocations::attach_new_package(Emit::tree(), M, NULL, hap_id);
 }
 
-@ If we just want the compilation unit in which the current sentence lies:
+@ If we just want the compilation unit in which a given sentence lies:
 
 =
 package_request *Hierarchy::local_package(int hap_id) {
@@ -2150,8 +2149,7 @@ package_request *Hierarchy::local_package(int hap_id) {
 }
 
 package_request *Hierarchy::local_package_to(int hap_id, parse_node *at) {
-	return HierarchyLocations::attach_new_package(Emit::tree(),
-		CompilationUnits::find(at), NULL, hap_id);
+	return Hierarchy::package(CompilationUnits::find(at), hap_id);
 }
 
 @ There is just one package called |synoptic|, so there's no issue of what
@@ -2192,7 +2190,7 @@ point system, and for those:
 
 =
 package_request *Hierarchy::make_package_in(int id, package_request *P) {
-	return HierarchyLocations::package_in_package(Emit::tree(), id, P);
+	return HierarchyLocations::subpackage(Emit::tree(), id, P);
 }
 
 @h Metadata.

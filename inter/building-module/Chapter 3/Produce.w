@@ -586,10 +586,10 @@ inter_symbol *Produce::kind_to_symbol(kind *K) {
 
 inter_name *Produce::find_by_name(inter_tree *I, text_stream *name) {
 	if (Str::len(name) == 0) internal_error("empty extern");
-	inter_name *try = HierarchyLocations::find_by_name(I, name);
+	inter_name *try = HierarchyLocations::name_to_iname(I, name);
 	if (try == NULL) {
 		HierarchyLocations::con(I, -1, name, LocationRequirements::plug());
-		try = HierarchyLocations::find_by_name(I, name);
+		try = HierarchyLocations::name_to_iname(I, name);
 	}
 	return try;
 }

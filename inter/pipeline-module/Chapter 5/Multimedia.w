@@ -24,7 +24,7 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 }
 
 @<Define RESOURCEIDSOFFIGURES array@> =
-	inter_name *iname = HierarchyLocations::find(I, RESOURCEIDSOFFIGURES_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RESOURCEIDSOFFIGURES_HL);
 	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<TreeLists::len(inv->figure_nodes); i++) {
@@ -37,7 +37,7 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 	Synoptic::end_array(I);
 
 @<Define RESOURCEIDSOFSOUNDS array@> =
-	inter_name *iname = HierarchyLocations::find(I, RESOURCEIDSOFSOUNDS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RESOURCEIDSOFSOUNDS_HL);
 	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<TreeLists::len(inv->sound_nodes); i++) {
@@ -50,12 +50,12 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 	Synoptic::end_array(I);
 
 @<Define NO_EXTERNAL_FILES@> =
-	inter_name *iname = HierarchyLocations::find(I, NO_EXTERNAL_FILES_HL);
+	inter_name *iname = HierarchyLocations::iname(I, NO_EXTERNAL_FILES_HL);
 	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(inv->file_nodes));
 
 @<Define TABLEOFEXTERNALFILES array@> =
 	inter_name *iname =
-		HierarchyLocations::find(I, TABLEOFEXTERNALFILES_HL);
+		HierarchyLocations::iname(I, TABLEOFEXTERNALFILES_HL);
 	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<TreeLists::len(inv->file_nodes); i++) {

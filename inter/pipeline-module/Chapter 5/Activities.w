@@ -34,7 +34,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	}
 
 @<Define ACTIVITY_AFTER_RULEBOOKS array@> =
-	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_AFTER_RULEBOOKS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_AFTER_RULEBOOKS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
@@ -44,7 +44,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::end_array(I);
 
 @<Define ACTIVITY_ATB_RULEBOOKS array@> =
-	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_ATB_RULEBOOKS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_ATB_RULEBOOKS_HL);
 	Produce::annotate_iname_i(iname, BYTEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
@@ -55,7 +55,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::end_array(I);
 
 @<Define ACTIVITY_BEFORE_RULEBOOKS array@> =
-	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_BEFORE_RULEBOOKS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_BEFORE_RULEBOOKS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
@@ -65,7 +65,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::end_array(I);
 
 @<Define ACTIVITY_FOR_RULEBOOKS array@> =
-	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_FOR_RULEBOOKS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_FOR_RULEBOOKS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
@@ -75,7 +75,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::end_array(I);
 
 @<Define ACTIVITY_VAR_CREATORS array@> =
-	inter_name *iname = HierarchyLocations::find(I, ACTIVITY_VAR_CREATORS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_VAR_CREATORS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);

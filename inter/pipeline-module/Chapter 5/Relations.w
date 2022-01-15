@@ -27,11 +27,11 @@ so we change the values of these constants accordingly.
 	}
 
 @<Define CCOUNT_BINARY_PREDICATE@> =
-	inter_name *iname = HierarchyLocations::find(I, CCOUNT_BINARY_PREDICATE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, CCOUNT_BINARY_PREDICATE_HL);
 	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->relation_nodes)));
 
 @<Define CREATEDYNAMICRELATIONS function@> =
-	inter_name *iname = HierarchyLocations::find(I, CREATEDYNAMICRELATIONS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, CREATEDYNAMICRELATIONS_HL);
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
@@ -41,7 +41,7 @@ so we change the values of these constants accordingly.
 	Synoptic::end_function(I, step, iname);
 
 @<Define ITERATERELATIONS function@> =
-	inter_name *iname = HierarchyLocations::find(I, ITERATERELATIONS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, ITERATERELATIONS_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *callback_s = Synoptic::local(I, I"callback", NULL);
 	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
@@ -58,7 +58,7 @@ so we change the values of these constants accordingly.
 	Synoptic::end_function(I, step, iname);
 
 @<Define RPROPERTY function@> =
-	inter_name *iname = HierarchyLocations::find(I, RPROPERTY_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RPROPERTY_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *obj_s = Synoptic::local(I, I"obj", NULL);
 	inter_symbol *cl_s = Synoptic::local(I, I"cl", NULL);

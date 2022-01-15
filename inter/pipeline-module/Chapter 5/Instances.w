@@ -17,7 +17,7 @@ void SynopticInstances::compile(inter_tree *I, pipeline_step *step, tree_invento
 }
 
 @<Define SHOWMEINSTANCEDETAILS function@> =
-	inter_name *iname = HierarchyLocations::find(I, SHOWMEINSTANCEDETAILS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, SHOWMEINSTANCEDETAILS_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *which_s = Synoptic::local(I, I"which", NULL);
 	inter_symbol *na_s = Synoptic::local(I, I"na", NULL);

@@ -41,12 +41,12 @@ so we change the values of these constants accordingly.
 	}
 
 @<Define NUMBER_RULEBOOKS_CREATED@> =
-	inter_name *iname = HierarchyLocations::find(I, NUMBER_RULEBOOKS_CREATED_HL);
+	inter_name *iname = HierarchyLocations::iname(I, NUMBER_RULEBOOKS_CREATED_HL);
 	Produce::numeric_constant(I, iname, K_value,
 		(inter_ti) (TreeLists::len(inv->rulebook_nodes)));
 
 @<Define RulebookNames array@> =
-	inter_name *iname = HierarchyLocations::find(I, RULEBOOKNAMES_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RULEBOOKNAMES_HL);
 	Synoptic::begin_array(I, step, iname);
 	if (economy) {
 		Synoptic::numeric_entry(0);
@@ -62,7 +62,7 @@ so we change the values of these constants accordingly.
 	Synoptic::end_array(I);
 
 @<Define rulebook_var_creators array@> =
-	inter_name *iname = HierarchyLocations::find(I, RULEBOOK_VAR_CREATORS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RULEBOOK_VAR_CREATORS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
@@ -73,7 +73,7 @@ so we change the values of these constants accordingly.
 	Synoptic::end_array(I);
 
 @<Define rulebooks_array array@> =
-	inter_name *iname = HierarchyLocations::find(I, RULEBOOKS_ARRAY_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RULEBOOKS_ARRAY_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
@@ -84,7 +84,7 @@ so we change the values of these constants accordingly.
 	Synoptic::end_array(I);
 
 @<Define SlowLookup function@> =
-	inter_name *iname = HierarchyLocations::find(I, SLOW_LOOKUP_HL);
+	inter_name *iname = HierarchyLocations::iname(I, SLOW_LOOKUP_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *rb_s = Synoptic::local(I, I"rb", NULL);
 
@@ -119,7 +119,7 @@ so we change the values of these constants accordingly.
 	Synoptic::end_function(I, step, iname);
 
 @<Define RULEPRINTINGRULE function@> =
-	inter_name *iname = HierarchyLocations::find(I, RULEPRINTINGRULE_HL);
+	inter_name *iname = HierarchyLocations::iname(I, RULEPRINTINGRULE_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *R_s = Synoptic::local(I, I"R", NULL);
 
@@ -168,7 +168,7 @@ so we change the values of these constants accordingly.
 		Produce::down(I);
 			Produce::inv_primitive(I, LOOKUP_BIP);
 			Produce::down(I);
-				Produce::val_iname(I, K_value, HierarchyLocations::find(I, RULEBOOKNAMES_HL));
+				Produce::val_iname(I, K_value, HierarchyLocations::iname(I, RULEBOOKNAMES_HL));
 				Produce::val_symbol(I, K_value, R_s);
 			Produce::up(I);
 		Produce::up(I);

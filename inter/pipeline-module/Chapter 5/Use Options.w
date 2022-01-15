@@ -27,7 +27,7 @@ and never duplicated, so we change the values of these constants accordingly.
 	}
 
 @<Define NO_USE_OPTIONS@> =
-	inter_name *iname = HierarchyLocations::find(I, NO_USE_OPTIONS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, NO_USE_OPTIONS_HL);
 	Produce::numeric_constant(I, iname, K_value,
 		(inter_ti) (TreeLists::len(inv->use_option_nodes)));
 
@@ -37,7 +37,7 @@ one to test whether a given use option is currently set, one to print the
 name of a given use option.
 
 @<Define TESTUSEOPTION function@> =
-	inter_name *iname = HierarchyLocations::find(I, TESTUSEOPTION_HL);
+	inter_name *iname = HierarchyLocations::iname(I, TESTUSEOPTION_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *UO_s = Synoptic::local(I, I"UO", NULL);
 	for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
@@ -63,7 +63,7 @@ name of a given use option.
 	Synoptic::end_function(I, step, iname);
 
 @<Define PRINT_USE_OPTION function@> =
-	inter_name *iname = HierarchyLocations::find(I, PRINT_USE_OPTION_HL);
+	inter_name *iname = HierarchyLocations::iname(I, PRINT_USE_OPTION_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *UO_s = Synoptic::local(I, I"UO", NULL);
 	Produce::inv_primitive(I, SWITCH_BIP);

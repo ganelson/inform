@@ -38,15 +38,15 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	}
 
 @<Define CCOUNT_ACTION_NAME@> =
-	inter_name *iname = HierarchyLocations::find(I, CCOUNT_ACTION_NAME_HL);
+	inter_name *iname = HierarchyLocations::iname(I, CCOUNT_ACTION_NAME_HL);
 	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(inv->action_nodes));
 
 @<Define AD_RECORDS@> =
-	inter_name *iname = HierarchyLocations::find(I, AD_RECORDS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, AD_RECORDS_HL);
 	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(inv->action_nodes));
 
 @<Define ACTIONHAPPENED array@> =
-	inter_name *iname = HierarchyLocations::find(I, ACTIONHAPPENED_HL);
+	inter_name *iname = HierarchyLocations::iname(I, ACTIONHAPPENED_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<=(TreeLists::len(inv->action_nodes)/16); i++)
 		Synoptic::numeric_entry(0);
@@ -54,7 +54,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::end_array(I);
 
 @<Define ACTIONCODING array@> =
-	inter_name *iname = HierarchyLocations::find(I, ACTIONCODING_HL);
+	inter_name *iname = HierarchyLocations::iname(I, ACTIONCODING_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
@@ -74,7 +74,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 @d REQUIRES_POSSESSION 4 /* actor must be carrying this object */
 
 @<Define ACTIONDATA array@> =
-	inter_name *iname = HierarchyLocations::find(I, ACTIONDATA_HL);
+	inter_name *iname = HierarchyLocations::iname(I, ACTIONDATA_HL);
 	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
@@ -119,7 +119,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::end_array(I);
 
 @<Define DB_ACTION_DETAILS function@> =
-	inter_name *iname = HierarchyLocations::find(I, DB_ACTION_DETAILS_HL);
+	inter_name *iname = HierarchyLocations::iname(I, DB_ACTION_DETAILS_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *act_s = Synoptic::local(I, I"act", NULL);
 	inter_symbol *n_s = Synoptic::local(I, I"n", NULL);
