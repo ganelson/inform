@@ -1,5 +1,8 @@
 [Primitives::] Inter Primitives.
 
+The standard set of primitive invocations available in Inter code as generated
+by the Inform tool-chain.
+
 @h The standard Inform 7 instruction set.
 Metadata on the primitives used by Inter in the Inform tool-set is stored as
 an array |standard_inform7_primitives| of the following records:
@@ -357,7 +360,7 @@ typedef struct site_primitives_data {
 	struct inter_symbol *primitives_by_BIP[MAX_BIPS];
 } site_primitives_data;
 
-void Primitives::clear_pdata(inter_tree *I) {
+void Primitives::clear_site_data(inter_tree *I) {
 	building_site *B = &(I->site);
 	for (int i=0; i<MAX_BIPS; i++) B->spridata.primitives_by_BIP[i] = NULL;
 }

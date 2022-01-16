@@ -107,8 +107,8 @@ in the Inter tree: both those which have already been made, and also those
 which are yet to be made. So:
 = (text)
 				DEFINITELY MADE		PERHAPS NOT YET MADE
-	PACKAGE		inter_package		package_request
-	SYMBOL		inter_symbol		inter_name
+	PACKAGE		inter_package		//package_request//
+	SYMBOL		inter_symbol		//inter_name//
 =
 So, for example, a //package_request// can represent |/main/synoptic/kinds|
 either before or after that package has been built. At some point the package
@@ -116,8 +116,3 @@ ceases to be virtual and comes into being: this is called "incarnation".
 
 And similarly for //inter_name//, which it would perhaps be more consistent
 to call a |symbol_request|.
-
-@ Since what is built by the code in this module is Inter code, which forms up
-into trees, the metaphor should perhaps be "garden", but in fact we call a
-context for making Inter a //building_site//.
-

@@ -1,8 +1,19 @@
 [InterNames::] Inter Namespace.
 
-To manage identifiers, which have names and positions in the Inter hierarchy.
+To manage references to Inter symbols which may or may not yet exist.
 
-@h Families.
+@h Introduction.
+See //What This Module Does// for a fuller explanation, but briefly, an
+//inter_name// or "iname" represents a symbol which will eventually exist,
+but which may not exist at the moment -- indeed, may be placed inside a
+package which also does not yet exist.
+
+//inform7// and other code-generation tools can make many such inames, living
+in equally shadowy //package_request//s, before any actual Inter is made at all.
+Eventually, though, such tools usually make good on their promises and "incarnate"
+their inames into actual |inter_symbol|s within actual |inter_package|s.
+
+@h Generators.
 Each inter name comes from a "generator". Some are one-shot, and produce just
 one name before being discarded; others produce a numbered sequence of names
 in a given pattern, counting upwards from 1 (|example_1|, |example_2|, ...);
@@ -30,7 +41,8 @@ inter_name_generator *InterNames::single_use_generator(text_stream *name) {
 	return F;
 }
 
-inter_name_generator *InterNames::multiple_use_generator(text_stream *prefix, text_stream *stem, text_stream *suffix) {
+inter_name_generator *InterNames::multiple_use_generator(text_stream *prefix,
+	text_stream *stem, text_stream *suffix) {
 	inter_name_generator *gen = InterNames::single_use_generator(stem);
 	if (Str::len(prefix) > 0) {
 		gen->ingen = DERIVED_INGEN;
@@ -140,7 +152,8 @@ where the caller wants a single name with fixed wording (but possibly with
 a memo to attach):
 
 =
-inter_name *InterNames::explicitly_named_with_memo(text_stream *name, package_request *R, wording W) {
+inter_name *InterNames::explicitly_named_with_memo(text_stream *name, package_request *R,
+	wording W) {
 	return InterNames::new(InterNames::single_use_generator(name), R, W);
 }
 
@@ -167,7 +180,8 @@ inter_name *InterNames::multiple(inter_name_generator *G, package_request *R, wo
 	return iname;
 }
 
-inter_name *InterNames::generated_in(inter_name_generator *G, int fix, wording W, package_request *R) {
+inter_name *InterNames::generated_in(inter_name_generator *G, int fix, wording W,
+	package_request *R) {
 	inter_name *iname = InterNames::multiple(G, R, W);
 	if (fix != -1) iname->unique_number = fix;
 	return iname;
@@ -196,30 +210,22 @@ inter_symbols_table *InterNames::scope(inter_name *iname) {
 	if (iname == NULL) internal_error("can't determine scope of null name");
 	package_request *P = InterNames::location(iname);
 	if (P == NULL) internal_error("can't determine scope of unlocated name");
-		// return InterTree::global_scope(InterNames::tree(iname));
 	return Inter::Packages::scope(Packaging::incarnate(P));
 }
 
-@h Conversion of inames to symbols.
-The purpose of inames is not quite to represent identifier names occurring in
-given packages inside the Inter hierarchy: it would be more accurate to say
-that they represent potential identifiers, which may or may not be used.
-At some point they will probably (but not certainly) undergo "conversion",
-when they are matched up with actual symbols in the symbols tables of the
-given packages. An exception to this is that inames pointing to externally
-defined resources in the template are never converted: see above.
-
-Conversion is done on-demand, and thus left as late as possible. It happens
-automatically here:
+@h Incarnation of inames to symbols.
+Incarnation matches up an //inter_name// with its corresponding |inter_symbol|,
+and is performed on demand. This leaves it as late as possible, and means that
+inames which are never needed are never incarnated.
 
 =
 inter_symbol *InterNames::to_symbol(inter_name *iname) {
 	if (iname->symbol == NULL) {
-		TEMPORARY_TEXT(NBUFF)
-		WRITE_TO(NBUFF, "%n", iname);
+		TEMPORARY_TEXT(identifier)
+		WRITE_TO(identifier, "%n", iname);
 		inter_symbols_table *T = InterNames::scope(iname);
-		iname->symbol = Produce::new_symbol(T, NBUFF);
-		DISCARD_TEXT(NBUFF)
+		iname->symbol = Produce::new_symbol(T, identifier);
+		DISCARD_TEXT(identifier)
 	}
 	return iname->symbol;
 }
@@ -229,6 +235,11 @@ text_stream *InterNames::to_text(inter_name *iname) {
 	return InterNames::to_symbol(iname)->symbol_name;
 }
 
+@ An iname is defined if its symbol has a definition. (Note that incarnating
+an iname creates a symbol which is initially undefined, so this test is not the
+same as testing whether the iname has been incarnated.)
+
+=
 int InterNames::is_defined(inter_name *iname) {
 	if (iname == NULL) return FALSE;
 	inter_symbol *S = InterNames::to_symbol(iname);

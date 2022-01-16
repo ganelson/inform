@@ -8,6 +8,8 @@
 
 =
 typedef struct site_production_data {
+	struct inter_bookmark pragmas_bookmark;
+	struct inter_bookmark package_types_bookmark;
 	struct inter_bookmark begin_bookmark;
 	struct inter_bookmark locals_bookmark;
 	struct inter_bookmark code_bookmark;
@@ -16,13 +18,49 @@ typedef struct site_production_data {
 	struct inter_package *current_inter_routine;
 } site_production_data;
 
-void Produce::clear_prdata(inter_tree *I) {
+void Produce::clear_site_data(inter_tree *I) {
 	building_site *B = &(I->site);
+	B->sprdata.pragmas_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	B->sprdata.package_types_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->sprdata.begin_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->sprdata.locals_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->sprdata.code_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 	B->sprdata.cip_sp = 0;
 	B->sprdata.current_inter_routine = NULL;
+}
+
+@h Outside the packages.
+The Inter specification calls for just a handful of resources to be placed
+at the top level, outside even the |main| package. Using bubbles, we leave
+room to insert those resources, then incarnate |main| and enter it.
+
+=
+void Produce::begin_new_tree(inter_tree *I) {
+	Packaging::initialise_state(I);
+	Produce::version(I, 1);
+
+	Produce::comment(I, I"Package types:");
+	I->site.sprdata.package_types_bookmark = Packaging::bubble(I);
+
+	Produce::comment(I, I"Pragmas:");
+	I->site.sprdata.pragmas_bookmark = Packaging::bubble(I);
+
+	Produce::comment(I, I"Primitives:");
+	Primitives::declare_standard_set(I, Packaging::at(I));
+
+	LargeScale::package_type(I, I"_plain");   // To ensure this is the first emitted ptype
+	LargeScale::package_type(I, I"_code");    // And this the second
+	LargeScale::package_type(I, I"_linkage"); // And this the third
+
+	Packaging::enter(LargeScale::main_request(I)); // Which we never exit
+}
+
+inter_bookmark *Produce::pragmas_bookmark(inter_tree *I) {
+	return &(I->site.sprdata.pragmas_bookmark);
+}
+
+inter_bookmark *Produce::package_types_bookmark(inter_tree *I) {
+	return &(I->site.sprdata.package_types_bookmark);
 }
 
 void Produce::set_function(inter_tree *I, inter_package *P) {

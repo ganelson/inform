@@ -121,7 +121,7 @@
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'n'</span><span class="plain-syntax">, &amp;</span><a href="1-in.html#SP3" class="function-link"><span class="function-syntax">InterNames::writer</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'n'</span><span class="plain-syntax">, &amp;</span><a href="1-in.html#SP4" class="function-link"><span class="function-syntax">InterNames::writer</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP3">&#167;3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_2" class="paragraph-anchor"></a><b>&#167;3.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.2</span></span><span class="comment-syntax"> =</span>
@@ -141,7 +141,7 @@
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'1'</span><span class="plain-syntax">, </span><a href="2-is.html#SP16" class="function-link"><span class="function-syntax">InterSchemas::log</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'X'</span><span class="plain-syntax">, </span><a href="1-pck.html#SP4" class="function-link"><span class="function-syntax">Packaging::log</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_logger</span><span class="plain-syntax">(</span><span class="character-syntax">'X'</span><span class="plain-syntax">, </span><a href="1-pck.html#SP3" class="function-link"><span class="function-syntax">Packaging::log</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP3">&#167;3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Initialising. </b>The following is a component part of the <span class="extract"><span class="extract-syntax">inter_tree</span></span> structure, and is comprised
@@ -153,16 +153,18 @@ functions in this module for constructing trees.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">building_site</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">site_structure_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">strdata</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">site_hierarchy_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">shdata</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">site_packaging_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">spdata</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">site_production_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">sprdata</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">site_primitives_data</span><span class="plain-syntax"> </span><span class="identifier-syntax">spridata</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">building_site</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BuildingModule::clear_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="1-ls.html#SP2" class="function-link"><span class="function-syntax">LargeScale::clear_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="3-prd.html#SP2" class="function-link"><span class="function-syntax">Produce::clear_prdata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="1-pck.html#SP1" class="function-link"><span class="function-syntax">Packaging::clear_pdata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="1-ip.html#SP8" class="function-link"><span class="function-syntax">Primitives::clear_pdata</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="1-ls.html#SP2" class="function-link"><span class="function-syntax">LargeScale::clear_site_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="1-hl.html#SP19" class="function-link"><span class="function-syntax">HierarchyLocations::clear_site_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-prd.html#SP2" class="function-link"><span class="function-syntax">Produce::clear_site_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="1-pck.html#SP17" class="function-link"><span class="function-syntax">Packaging::clear_site_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="1-ip.html#SP8" class="function-link"><span class="function-syntax">Primitives::clear_site_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure building_site is accessed in 1/ls, 1/ip, 1/hl, 1/pck, 3/prd.</li></ul>

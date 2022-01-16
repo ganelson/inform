@@ -43,7 +43,7 @@ Total memory consumption was 403885K = 394 MB
      ----  vanilla_function                         3678 objects, 235392 bytes
      ----  inter_annotation_array                   1 x 8192 objects, 196640 bytes
      ----  binary_predicate                         321 objects, 169488 bytes
-     ----  hierarchy_location                       1111 objects, 168872 bytes
+     ----  hierarchy_location                       1111 objects, 159984 bytes
      ----  linguistic_stock_item                    3316 objects, 159168 bytes
      ----  rule_family_data                         400 objects, 147200 bytes
      ----  nonterminal                              760 objects, 139840 bytes
@@ -105,8 +105,8 @@ Total memory consumption was 403885K = 394 MB
      ----  parse_node_tree                          20 objects, 17280 bytes
      ----  understanding_reference_array            2 x 100 = 200 objects, 16064 bytes
      ----  to_phrase_request                        59 objects, 16048 bytes
-     ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
+     ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
      ----  adjective                                137 objects, 15344 bytes
      ----  generated_segment                        14 objects, 14784 bytes
      ----  booking_list                             407 objects, 13024 bytes
@@ -116,11 +116,11 @@ Total memory consumption was 403885K = 394 MB
      ----  filename                                 246 objects, 9840 bytes
      ----  stopwatch_timer                          111 objects, 8880 bytes
      ----  equation_node                            68 objects, 7616 bytes
-     ----  hierarchy_attachment_point               77 objects, 7392 bytes
      ----  understanding_item_array                 3 x 100 = 300 objects, 7296 bytes
      ----  shared_variable_array                    1 x 100 objects, 7232 bytes
      ----  determiner                               22 objects, 7216 bytes
      ----  build_vertex                             60 objects, 7200 bytes
+     ----  hierarchy_attachment_point               77 objects, 6776 bytes
      ----  inbuild_work                             101 objects, 6464 bytes
      ----  text_literal_holder                      161 objects, 6440 bytes
      ----  verb                                     108 objects, 6048 bytes
@@ -131,8 +131,8 @@ Total memory consumption was 403885K = 394 MB
      ----  value_property_data                      84 objects, 4704 bytes
      ----  parsing_pp_data                          96 objects, 4608 bytes
      ----  compatibility_specification              86 objects, 4128 bytes
-     ----  command_line_switch                      49 objects, 3920 bytes
      ----  activity                                 35 objects, 3920 bytes
+     ----  command_line_switch                      49 objects, 3920 bytes
      ----  submodule_request                        94 objects, 3760 bytes
      ----  parse_node_annotation_type               114 objects, 3648 bytes
      ----  property_setting_bp_data                 84 objects, 3360 bytes
@@ -255,5 +255,5 @@ Total memory consumption was 403885K = 394 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-19.1% was overhead - 79312744 bytes = 77453K = 75 MB
+19.1% was overhead - 79322248 bytes = 77463K = 75 MB
 

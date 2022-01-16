@@ -1,7 +1,7 @@
 [Translation::] Translation.
 
-A way to express rules for how to translate names from the Inter namespace into the
-target language's namespace.
+A way to express rules for how to translate names from the Inter namespace into
+the target language's namespace.
 
 @ The //final// code-generator produces output code in a high-level language
 which itself has identifier names. Clearly it is free to choose those names
@@ -27,6 +27,9 @@ typedef struct name_translation {
 	int by_imposition;
 } name_translation;
 
+@ "Make the translated name the same as the Inter identifier".
+
+=
 name_translation Translation::same(void) {
 	name_translation nt;
 	nt.translate_to = NULL;
@@ -37,24 +40,40 @@ name_translation Translation::same(void) {
 	return nt;
 }
 
+@ "Make the translated name the same as the Inter identifier, but then add
+some numbers to ensure that the same identifier doesn't occur twice".
+
+=
 name_translation Translation::uniqued(void) {
 	name_translation nt = Translation::same();
 	nt.then_make_unique = TRUE;
 	return nt;
 }
 
+@ "Make the translated name something specific which I will impose later,
+and never mind the original Inter identifier".
+
+=
 name_translation Translation::imposed(void) {
 	name_translation nt = Translation::same();
 	nt.by_imposition = TRUE;
 	return nt;
 }
 
+@ "Make the translated name this text I am supplying now, and never mind the
+original Inter identifier".
+
+=
 name_translation Translation::to(text_stream *S) {
 	name_translation nt = Translation::same();
 	nt.translate_to = S;
 	return nt;
 }
 
+@ "Make the translated name this text I am supplying now, but then add
+some numbers to ensure that the same identifier doesn't occur twice".
+
+=
 name_translation Translation::to_uniqued(text_stream *S) {
 	name_translation nt = Translation::same();
 	nt.translate_to = S;
@@ -62,6 +81,9 @@ name_translation Translation::to_uniqued(text_stream *S) {
 	return nt;
 }
 
+@ "Start with the original identifier, but then add |S| as a prefix."
+
+=
 name_translation Translation::prefix(text_stream *S) {
 	name_translation nt = Translation::same();
 	nt.name_generator = InterNames::multiple_use_generator(S, NULL, NULL);
@@ -69,6 +91,9 @@ name_translation Translation::prefix(text_stream *S) {
 	return nt;
 }
 
+@ "Start with the original identifier, but then add |S| as a suffix."
+
+=
 name_translation Translation::suffix(text_stream *S) {
 	name_translation nt = Translation::same();
 	nt.name_generator = InterNames::multiple_use_generator(NULL, NULL, S);
@@ -76,6 +101,10 @@ name_translation Translation::suffix(text_stream *S) {
 	return nt;
 }
 
+@ "Generate a series of translated names from |S| by adding sequence numbers,
+and never mind the original Inter identifier".
+
+=
 name_translation Translation::generate(text_stream *S) {
 	name_translation nt = Translation::same();
 	nt.name_generator = InterNames::multiple_use_generator(NULL, S, NULL);

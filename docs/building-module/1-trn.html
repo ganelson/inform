@@ -99,8 +99,13 @@ here, the following is really a union: almost all the fields will be left blank.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">derive</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">by_imposition</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>The structure name_translation is accessed in 1/hl and here.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>"Make the translated name the same as the Inter identifier".
+</p>
 
-<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::same</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Translation::same</span></span>:<br/>Hierarchy Locations - <a href="1-hl.html#SP1">&#167;1</a>, <a href="1-hl.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::same</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Translation::same</span></span>:<br/><a href="1-trn.html#SP3">&#167;3</a>, <a href="1-trn.html#SP4">&#167;4</a>, <a href="1-trn.html#SP5">&#167;5</a>, <a href="1-trn.html#SP6">&#167;6</a>, <a href="1-trn.html#SP7">&#167;7</a>, <a href="1-trn.html#SP8">&#167;8</a>, <a href="1-trn.html#SP9">&#167;9</a><br/>Hierarchy Locations - <a href="1-hl.html#SP1">&#167;1</a>, <a href="1-hl.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">translate_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">then_make_unique</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -109,53 +114,85 @@ here, the following is really a union: almost all the fields will be left blank.
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">by_imposition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>"Make the translated name the same as the Inter identifier, but then add
+some numbers to ensure that the same identifier doesn't occur twice".
+</p>
 
+<pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::uniqued</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP1" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP2" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">then_make_unique</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::imposed</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP1" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">by_imposition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::to</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP1" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">translate_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::to_uniqued</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP1" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">translate_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">then_make_unique</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::prefix</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP1" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">name_generator</span><span class="plain-syntax"> = </span><a href="1-in.html#SP1" class="function-link"><span class="function-syntax">InterNames::multiple_use_generator</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">derive</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::suffix</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP1" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">name_generator</span><span class="plain-syntax"> = </span><a href="1-in.html#SP1" class="function-link"><span class="function-syntax">InterNames::multiple_use_generator</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">derive</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-
-<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::generate</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP1" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">name_generator</span><span class="plain-syntax"> = </span><a href="1-in.html#SP1" class="function-link"><span class="function-syntax">InterNames::multiple_use_generator</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure name_translation is accessed in 1/hl and here.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>"Make the translated name something specific which I will impose later,
+and never mind the original Inter identifier".
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::imposed</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP2" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">by_imposition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>"Make the translated name this text I am supplying now, and never mind the
+original Inter identifier".
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::to</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP2" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">translate_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>"Make the translated name this text I am supplying now, but then add
+some numbers to ensure that the same identifier doesn't occur twice".
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::to_uniqued</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP2" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">translate_to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">S</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">then_make_unique</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>"Start with the original identifier, but then add <span class="extract"><span class="extract-syntax">S</span></span> as a prefix."
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::prefix</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP2" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">name_generator</span><span class="plain-syntax"> = </span><a href="1-in.html#SP2" class="function-link"><span class="function-syntax">InterNames::multiple_use_generator</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">derive</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>"Start with the original identifier, but then add <span class="extract"><span class="extract-syntax">S</span></span> as a suffix."
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::suffix</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP2" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">name_generator</span><span class="plain-syntax"> = </span><a href="1-in.html#SP2" class="function-link"><span class="function-syntax">InterNames::multiple_use_generator</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">derive</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>"Generate a series of translated names from <span class="extract"><span class="extract-syntax">S</span></span> by adding sequence numbers,
+and never mind the original Inter identifier".
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="function-syntax">Translation::generate</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">S</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">name_translation</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax"> = </span><a href="1-trn.html#SP2" class="function-link"><span class="function-syntax">Translation::same</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">nt</span><span class="plain-syntax">.</span><span class="element-syntax">name_generator</span><span class="plain-syntax"> = </span><a href="1-in.html#SP2" class="function-link"><span class="function-syntax">InterNames::multiple_use_generator</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="1-lr.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresscurrentchapter">1</li><li class="progresssection"><a href="1-bm.html">bm</a></li><li class="progresssection"><a href="1-ls.html">ls</a></li><li class="progresssection"><a href="1-ip.html">ip</a></li><li class="progresssection"><a href="1-hl.html">hl</a></li><li class="progresssection"><a href="1-lr.html">lr</a></li><li class="progresscurrent">trn</li><li class="progresssection"><a href="1-pck.html">pck</a></li><li class="progresssection"><a href="1-in.html">in</a></li><li class="progresschapter"><a href="2-is.html">2</a></li><li class="progresschapter"><a href="3-prd.html">3</a></li><li class="progressnext"><a href="1-pck.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

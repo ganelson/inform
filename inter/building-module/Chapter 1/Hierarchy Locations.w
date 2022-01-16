@@ -1,5 +1,7 @@
 [HierarchyLocations::] Hierarchy Locations.
 
+Location and naming rules for resources to be compiled in an Inter hierarchy.
+
 @h Hierarchy locations.
 A compiler such as //inform7// needs to create many different resources --
 arrays, functions and so on -- and each one needs to be placed somewhere
@@ -34,7 +36,7 @@ typedef struct hierarchy_location {
 	CLASS_DEFINITION
 } hierarchy_location;
 
-hierarchy_location *HierarchyLocations::new(int id) {
+hierarchy_location *HierarchyLocations::new(int id, location_requirement req) {
 	hierarchy_location *hl = CREATE(hierarchy_location);
 	hl->access_number = id;
 	hl->access_name = NULL;
@@ -43,7 +45,7 @@ hierarchy_location *HierarchyLocations::new(int id) {
 	hl->equates_to_iname = NULL;
 	hl->package_type = NULL;
 	hl->trans = Translation::same();
-	hl->requirements = LocationRequirements::blank();
+	hl->requirements = req;
 	return hl;
 }
 
@@ -57,9 +59,8 @@ which is not a package of some kind.
 =
 hierarchy_location *HierarchyLocations::ctr(inter_tree *I, int id, text_stream *name,
 	name_translation nt, location_requirement req) {
-	hierarchy_location *hl = HierarchyLocations::new(id);
+	hierarchy_location *hl = HierarchyLocations::new(id, req);
 	hl->access_name = Str::duplicate(name);
-	hl->requirements = req;
 	hl->trans = nt;
 	HierarchyLocations::index(I, hl);
 	return hl;
@@ -78,10 +79,9 @@ hierarchy_location *HierarchyLocations::con(inter_tree *I, int id, text_stream *
 =
 hierarchy_location *HierarchyLocations::fun(inter_tree *I, int id, text_stream *name,
 	name_translation nt, location_requirement req) {
-	hierarchy_location *hl = HierarchyLocations::new(id);
+	hierarchy_location *hl = HierarchyLocations::new(id, req);
 	hl->access_name = Str::duplicate(nt.translate_to);
 	hl->function_package_name = Str::duplicate(name);
-	hl->requirements = req;
 	hl->trans = nt;
 	HierarchyLocations::index(I, hl);
 	return hl;
@@ -92,9 +92,8 @@ hierarchy_location *HierarchyLocations::fun(inter_tree *I, int id, text_stream *
 =
 hierarchy_location *HierarchyLocations::pkg(inter_tree *I, int id, text_stream *name,
 	text_stream *ptype_name, location_requirement req) {
-	hierarchy_location *hl = HierarchyLocations::new(id);
+	hierarchy_location *hl = HierarchyLocations::new(id, req);
 	hl->access_name = Str::duplicate(name);
-	hl->requirements = req;
 	hl->package_type = Str::duplicate(ptype_name);
 	HierarchyLocations::index(I, hl);
 	return hl;
@@ -105,10 +104,9 @@ hierarchy_location *HierarchyLocations::pkg(inter_tree *I, int id, text_stream *
 =
 hierarchy_location *HierarchyLocations::dat(inter_tree *I, int id, text_stream *name,
 	name_translation nt, location_requirement req) {
-	hierarchy_location *hl = HierarchyLocations::new(id);
+	hierarchy_location *hl = HierarchyLocations::new(id, req);
 	hl->access_name = Str::duplicate(nt.translate_to);
 	hl->datum_package_name = Str::duplicate(name);
-	hl->requirements = req;
 	hl->trans = nt;
 	HierarchyLocations::index(I, hl);
 	return hl;
@@ -129,26 +127,26 @@ Note that HLs for plugs all have the ID -1, so those are indexed only by name.
 void HierarchyLocations::index(inter_tree *I, hierarchy_location *hl) {
 	int id = hl->access_number;
 	if ((id >= 0) && (id < NO_DEFINED_HL_VALUES))
-		I->site.spdata.hls_indexed_by_id[id] = hl;
+		I->site.shdata.HLs_indexed_by_id[id] = hl;
 	if (hl->requirements.any_package_of_this_type == NULL) {
-		Dictionaries::create(I->site.spdata.hls_indexed_by_name, hl->access_name);
-		Dictionaries::write_value(I->site.spdata.hls_indexed_by_name,
+		Dictionaries::create(I->site.shdata.HLs_indexed_by_name, hl->access_name);
+		Dictionaries::write_value(I->site.shdata.HLs_indexed_by_name,
 			hl->access_name, (void *) hl);
 	}
 }
 
 hierarchy_location *HierarchyLocations::id_to_HL(inter_tree *I, int id) {
 	if ((id < 0) || (id >= NO_DEFINED_HL_VALUES)) internal_error("HL ID out of range");
-	if (I->site.spdata.hls_indexed_by_id[id] == NULL) internal_error("undeclared HL ID");
-	return I->site.spdata.hls_indexed_by_id[id];
+	if (I->site.shdata.HLs_indexed_by_id[id] == NULL) internal_error("undeclared HL ID");
+	return I->site.shdata.HLs_indexed_by_id[id];
 }
 
 hierarchy_location *HierarchyLocations::name_to_HL(inter_tree *I, text_stream *name) {
 	if (Str::len(name) == 0) internal_error("empty HL name");
-	if (Dictionaries::find(I->site.spdata.hls_indexed_by_name, name) == NULL)
+	if (Dictionaries::find(I->site.shdata.HLs_indexed_by_name, name) == NULL)
 		return NULL;
 	return (hierarchy_location *)
-		Dictionaries::read_value(I->site.spdata.hls_indexed_by_name, name);
+		Dictionaries::read_value(I->site.shdata.HLs_indexed_by_name, name);
 }
 
 @h Finding HLs representing one-off global resources.
@@ -212,7 +210,7 @@ it only needs to be worked out once.
 
 @<Make the iname inside this package@> =
 	if (Str::len(hl->function_package_name) > 0) {
-		hl->equates_to_iname = Packaging::function_text(I,
+		hl->equates_to_iname = Packaging::function(I,
 			InterNames::explicitly_named(hl->function_package_name, pack),
 			hl->access_name);
 	} else if (Str::len(hl->datum_package_name) > 0) {
@@ -391,15 +389,15 @@ package_request *HierarchyLocations::subpackage(inter_tree *I, int id, package_r
 	hierarchy_location *hl = HierarchyLocations::id_to_HL(I, id);
 
 	if (P == NULL) internal_error("no superpackage");
-	if (hl->package_type == NULL) internal_error("package_in_package used wrongly");
+	if (hl->package_type == NULL) internal_error("HL does not specify a type");
 	if (hl->requirements.any_package_of_this_type) {
 		if (P->eventual_type !=
 			LargeScale::package_type(I, hl->requirements.any_package_of_this_type))
-			internal_error("subpackage in wrong superpackage");
+			internal_error("subpackage in superpackage of wrong type");
 	} else if (hl->requirements.any_enclosure) {
 		if (Inter::Symbols::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
 			internal_error("subpackage not in enclosing superpackage");
-	} else internal_error("NRL accessed inappropriately");
+	} else internal_error("HL does not call for a package");
 
 	return Packaging::request(I,
 		InterNames::explicitly_named(hl->access_name, P),
@@ -407,6 +405,14 @@ package_request *HierarchyLocations::subpackage(inter_tree *I, int id, package_r
 }
 
 @h Making packages systematically at attachment points.
+This is used a great deal. Instead of making a single iname, or a single package,
+we want to make a family of packages, sequentially numbered in some way, at a
+given position in the hierarchy. Such families are created at "hierarchy
+attachment points", and the process of adding another package to the family
+is called "attachment".
+
+Like HLs, HAPs are identified by number, but this is a different and independent
+numbering system.
 
 =
 typedef struct hierarchy_attachment_point {
@@ -417,32 +423,49 @@ typedef struct hierarchy_attachment_point {
 	CLASS_DEFINITION
 } hierarchy_attachment_point;
 
-hierarchy_attachment_point *HierarchyLocations::att(inter_tree *I, int hap_id,
-	text_stream *iterated_text, text_stream *ptype_name, location_requirement req) {
-	if ((hap_id < 0) || (hap_id >= NO_DEFINED_HAP_VALUES)) internal_error("HAP ID out of range");
+@ Once again, these are indexed for speedy retrieval by ID number:
+
+=
+hierarchy_attachment_point *HierarchyLocations::att(inter_tree *I, int id,
+	text_stream *stem, text_stream *ptype_name, location_requirement req) {
+	if ((id < 0) || (id >= NO_DEFINED_HAP_VALUES)) internal_error("HAP ID out of range");
 	hierarchy_attachment_point *hap = CREATE(hierarchy_attachment_point);
-	hap->hap_id = hap_id;
+	hap->hap_id = id;
 	hap->requirements = req;
-	hap->name_stem = Str::duplicate(iterated_text);
+	hap->name_stem = Str::duplicate(stem);
 	hap->type = Str::duplicate(ptype_name);
-	I->site.spdata.haps_indexed_by_id[hap->hap_id] = hap;
+	I->site.shdata.HAPs_indexed_by_id[hap->hap_id] = hap;
 	return hap;
 }
 
 hierarchy_attachment_point *HierarchyLocations::id_to_HAP(inter_tree *I, int id) {
 	if ((id < 0) || (id >= NO_DEFINED_HAP_VALUES)) internal_error("HAP ID out of range");
-	if (I->site.spdata.haps_indexed_by_id[id] == NULL) internal_error("undeclared HAP ID");
-	return I->site.spdata.haps_indexed_by_id[id];
+	if (I->site.shdata.HAPs_indexed_by_id[id] == NULL) internal_error("undeclared HAP ID");
+	return I->site.shdata.HAPs_indexed_by_id[id];
 }
 
+@ The API is now very simple. |HierarchyLocations::attach_new_package(I, M, R, id)|
+attaches another package. R and M need only be specified if the location requirements
+of the HAL do not imply a definite position already; M is meaningful only if the
+requirements are to put everything in a submodule of a given module, and then M
+is that module. For example:
+= (text as InC)
+	vf_req = Hierarchy::package_within(I, NULL, R, VERB_FORMS_HAP);
+=
+attaches a new verb form package inside |R|. |VERB_FORMS_HAP| has already been
+declared with //HierarchyLocations::att//, and has stem |"form"| and type |"_verb_form"|.
+So the outcome might be a package called, say, |form_16| of type |_verb_form|
+inside of |R|; and then on the next call |form_17|, and so on.
+
+=
 package_request *HierarchyLocations::attach_new_package(inter_tree *I,
 	module_request *M, package_request *R, int hap_id) {
 	hierarchy_attachment_point *hap = HierarchyLocations::id_to_HAP(I, hap_id);
-	if (hap->requirements.must_be_main_source_text) {
-		R = hap->requirements.this_exact_package;
-	} else if (hap->requirements.any_submodule_package_of_this_identity) {
-		if (M == NULL) R = LargeScale::generic_submodule(I, hap->requirements.any_submodule_package_of_this_identity);
-		else R = LargeScale::request_submodule_of(I, M, hap->requirements.any_submodule_package_of_this_identity);
+	if (hap->requirements.any_submodule_package_of_this_identity) {
+		if (M) R = LargeScale::request_submodule_of(I, M,
+					   hap->requirements.any_submodule_package_of_this_identity);
+		else   R = LargeScale::generic_submodule(I,
+					   hap->requirements.any_submodule_package_of_this_identity);
 	} else if (hap->requirements.this_exact_package) {
 		R = hap->requirements.this_exact_package;
 	} else if (hap->requirements.this_exact_package_not_yet_created >= 0) {
@@ -453,11 +476,37 @@ package_request *HierarchyLocations::attach_new_package(inter_tree *I,
 		internal_error("exotic packages are not available in inter");
 		#endif
 	} else if (hap->requirements.any_package_of_this_type) {
-		if ((R == NULL) || (R->eventual_type != LargeScale::package_type(I, hap->requirements.any_package_of_this_type)))
+		if ((R == NULL) ||
+			(R->eventual_type != LargeScale::package_type(I,
+				hap->requirements.any_package_of_this_type)))
 			internal_error("subpackage in wrong superpackage");
 	}
 	
 	return Packaging::request(I,
 		Packaging::make_iname_within(R, hap->name_stem),
 		LargeScale::package_type(I, hap->type));
+}
+
+@h Bookkeeping.
+The following is a little clumsily defined to allow for the possibility that
+this code is being compiled within a tool which defines no HLs or HAPs.
+
+=
+typedef struct site_hierarchy_data {
+	struct dictionary *HLs_indexed_by_name;
+	#ifndef NO_DEFINED_HL_VALUES
+	#define NO_DEFINED_HL_VALUES 1
+	#endif
+	struct hierarchy_location *HLs_indexed_by_id[NO_DEFINED_HL_VALUES];
+	#ifndef NO_DEFINED_HAP_VALUES
+	#define NO_DEFINED_HAP_VALUES 1
+	#endif
+	struct hierarchy_attachment_point *HAPs_indexed_by_id[NO_DEFINED_HAP_VALUES];
+} site_hierarchy_data;
+
+void HierarchyLocations::clear_site_data(inter_tree *I) {
+	building_site *B = &(I->site);
+	B->shdata.HLs_indexed_by_name = Dictionaries::new(512, FALSE);
+	for (int i=0; i<NO_DEFINED_HL_VALUES; i++) B->shdata.HLs_indexed_by_id[i] = NULL;
+	for (int i=0; i<NO_DEFINED_HAP_VALUES; i++) B->shdata.HAPs_indexed_by_id[i] = NULL;
 }

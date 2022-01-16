@@ -9,7 +9,7 @@ in memory, so that most calls to //bytecode// or //building// take an |inter_tre
 pointer as their first function argument. But //runtime// and //imperative// work
 on just one single tree.
 
-Calling |Packaging::outside_all_packages| makes a minimum of package types,
+Calling |Produce::begin_new_tree| makes a minimum of package types,
 creates the |main| package, and so on, but leaves the tree basically still empty.
 
 =
@@ -17,7 +17,7 @@ inter_tree *main_emission_tree = NULL;
 
 inter_tree *Emit::create_emission_tree(void) {
 	main_emission_tree = InterTree::new();
-	Packaging::outside_all_packages(main_emission_tree);
+	Produce::begin_new_tree(main_emission_tree);
 	return main_emission_tree;
 }
 inter_tree *Emit::tree(void) {

@@ -26,7 +26,7 @@ typedef struct site_structure_data {
 } site_structure_data;
 
 @ =
-void LargeScale::clear_data(inter_tree *I) {
+void LargeScale::clear_site_data(inter_tree *I) {
 	building_site *B = &(I->site);
 
 	B->strdata.main_package = NULL;
@@ -379,7 +379,7 @@ void LargeScale::emit_pragma(inter_tree *I, text_stream *target, text_stream *co
 	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), content);
 	inter_symbol *target_name =
 		InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(I), target);
-	Produce::guard(Inter::Pragma::new(Packaging::pragmas(I), target_name, ID, 0, NULL));
+	Produce::guard(Inter::Pragma::new(Produce::pragmas_bookmark(I), target_name, ID, 0, NULL));
 }
 
 @h Package types.
@@ -406,7 +406,7 @@ inter_symbol *LargeScale::package_type(inter_tree *I, text_stream *name) {
 	if (ptype == NULL) {
 		ptype = Produce::new_symbol(scope, name);
 		Produce::guard(Inter::PackageType::new_packagetype(
-			Packaging::package_types(I), ptype, 0, NULL));
+			Produce::package_types_bookmark(I), ptype, 0, NULL));
 		if (Str::ne(name, I"_code"))
 			Produce::annotate_symbol_i(ptype, ENCLOSING_IANN, 1);
 	}

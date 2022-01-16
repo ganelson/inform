@@ -76,16 +76,18 @@ functions in this module for constructing trees.
 =
 typedef struct building_site {
 	struct site_structure_data strdata;
+	struct site_hierarchy_data shdata;
 	struct site_packaging_data spdata;
 	struct site_production_data sprdata;
 	struct site_primitives_data spridata;
 } building_site;
 
 void BuildingModule::clear_data(inter_tree *I) {
-	LargeScale::clear_data(I);
-	Produce::clear_prdata(I);
-	Packaging::clear_pdata(I);
-	Primitives::clear_pdata(I);
+	LargeScale::clear_site_data(I);
+	HierarchyLocations::clear_site_data(I);
+	Produce::clear_site_data(I);
+	Packaging::clear_site_data(I);
+	Primitives::clear_site_data(I);
 }
 
 @h The end.
