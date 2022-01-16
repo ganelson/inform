@@ -247,7 +247,8 @@ multiple sessions happening at once:
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Now for the second operand of the <span class="extract"><span class="extract-syntax">OR_BIP</span></span>. If there weren't any callings,
 we just compile <span class="extract"><span class="extract-syntax">false</span></span>. (It looks wasteful to have compiled "if (... or false)",
 but in that event the use of <span class="extract"><span class="extract-syntax">OP_BIP</span></span> will be optimised out later: see
-<a href="../pipeline-module/2-ero.html" class="internal">Eliminate Redundant Operations (in pipeline)</a>.) If there were callings, we default them.
+<a href="../pipeline-module/6-eros.html" class="internal">Eliminate Redundant Operations Stage (in pipeline)</a>.) If there were callings,
+we default them.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

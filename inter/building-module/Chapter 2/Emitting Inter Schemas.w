@@ -384,11 +384,11 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 		Produce::val_symbol(I, K_value, OBJECT_TY_s);
 	}
 	int pc = VAL_PRIM_CAT;
-	if (InterSchemas::first_operand_ref(isn->isn_clarifier)) pc = REF_PRIM_CAT;
+	if (BIPMetadata::first_operand_ref(isn->isn_clarifier)) pc = REF_PRIM_CAT;
 	EmitInterSchemas::emit_inner(I, isn->child_node,
 		VH, sch, opaque_state, pc, first_call, second_call,
 		inline_command_handler, i7_source_handler);
-	if (InterSchemas::arity(isn->isn_clarifier) == 2)
+	if (BIPMetadata::arity(isn->isn_clarifier) == 2)
 		EmitInterSchemas::emit_inner(I, isn->child_node->next_node,
 			VH, sch, opaque_state, VAL_PRIM_CAT,
 			first_call, second_call,
@@ -419,7 +419,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 	if (isn->isn_clarifier == CASE_BIP) Produce::to_last_level(I, 2);
 	if (isn->isn_clarifier == READ_XBIP) Produce::inv_assembly(I, I"@aread");
 	else Produce::inv_primitive(I, isn->isn_clarifier);
-	int arity = InterSchemas::ip_arity(isn->isn_clarifier);
+	int arity = BIPMetadata::ip_arity(isn->isn_clarifier);
 	if (arity > 0) {
 		Produce::down(I);
 		if (isn->isn_clarifier == OBJECTLOOP_BIP)
@@ -430,7 +430,7 @@ void EmitInterSchemas::emit_inner(inter_tree *I, inter_schema_node *isn, value_h
 		for (int i = 0; ((at) && (i<arity)); i++) {
 			actual_arity++;
 			EmitInterSchemas::emit_inner(I, at, VH, sch, opaque_state,
-				InterSchemas::ip_prim_cat(isn->isn_clarifier, i),
+				BIPMetadata::ip_prim_cat(isn->isn_clarifier, i),
 				first_call, second_call, inline_command_handler, i7_source_handler);
 			last = at;
 			at = at->next_node;

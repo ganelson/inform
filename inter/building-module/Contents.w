@@ -19,6 +19,10 @@ Chapter 1: Architecture
 
 Chapter 2: Blueprints
 	Inter Schemas
+	Parsing Inter Schemas
+	Tokenisation
+	Ramification
+	Metadata on Primitives
 	Emitting Inter Schemas
 
 Chapter 3: Masonry

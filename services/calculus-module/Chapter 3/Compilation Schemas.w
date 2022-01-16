@@ -101,7 +101,7 @@ i6_schema *Calculus::Schemas::new(char *fmt, ...) {
 	@<Process the varargs into schema prototype text@>;
 	va_end(ap); /* macro to end variable argument processing */
 	#ifdef CORE_MODULE
-	sch->compiled = InterSchemas::from_i6s(&(sch->prototype),
+	sch->compiled = ParsingSchemas::from_i6s(&(sch->prototype),
 		sch->no_quoted_inames, (void **) sch->quoted_inames);
 	#endif
 	return sch;
@@ -118,7 +118,7 @@ void Calculus::Schemas::modify(i6_schema *sch, char *fmt, ...) {
 	@<Process the varargs into schema prototype text@>;
 	va_end(ap); /* macro to end variable argument processing */
 	#ifdef CORE_MODULE
-	sch->compiled = InterSchemas::from_i6s(&(sch->prototype),
+	sch->compiled = ParsingSchemas::from_i6s(&(sch->prototype),
 		sch->no_quoted_inames, (void **) sch->quoted_inames);
 	#endif
 }
@@ -132,7 +132,7 @@ void Calculus::Schemas::append(i6_schema *sch, char *fmt, ...) {
 	@<Process the varargs into schema prototype text@>;
 	va_end(ap); /* macro to end variable argument processing */
 	#ifdef CORE_MODULE
-	sch->compiled = InterSchemas::from_i6s(&(sch->prototype),
+	sch->compiled = ParsingSchemas::from_i6s(&(sch->prototype),
 		sch->no_quoted_inames, (void **) sch->quoted_inames);
 	#endif
 }

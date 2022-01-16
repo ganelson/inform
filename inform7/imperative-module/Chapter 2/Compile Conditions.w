@@ -137,7 +137,8 @@ void CompileConditions::add_calling(local_variable *lvar) {
 @ Now for the second operand of the |OR_BIP|. If there weren't any callings,
 we just compile |false|. (It looks wasteful to have compiled "if (... or false)",
 but in that event the use of |OP_BIP| will be optimised out later: see
-//pipeline: Eliminate Redundant Operations//.) If there were callings, we default them.
+//pipeline: Eliminate Redundant Operations Stage//.) If there were callings,
+we default them.
 
 =
 void CompileConditions::end(void) {

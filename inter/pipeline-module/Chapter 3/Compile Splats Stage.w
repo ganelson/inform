@@ -1029,7 +1029,7 @@ answer. Since we recurse depth-first, the subsidiary results are always made
 before they are needed.
 
 @<Parse this as a possibly computed value@> =
-	inter_schema *sch = InterSchemas::from_text(S, FALSE, 0, NULL);
+	inter_schema *sch = ParsingSchemas::from_text(S);
 	inter_symbol *result_s =
 		CompileSplatsStage::compute_r(step, IBM, sch->node_tree);
 	if (result_s == NULL)
@@ -1228,7 +1228,7 @@ void CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_sta
 	LOOP_OVER_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile) {
 		LOGIF(SCHEMA_COMPILATION, "=======\n\nFunction (%S) len %d: '%S'\n\n",
 			Inter::Packages::name(req->block_package), Str::len(req->body), req->body);
-		inter_schema *sch = InterSchemas::from_text(req->body, FALSE, 0, NULL);
+		inter_schema *sch = ParsingSchemas::from_text(req->body);
 		if (Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) InterSchemas::log(DL, sch);
 		@<Compile this function body@>;
 	}

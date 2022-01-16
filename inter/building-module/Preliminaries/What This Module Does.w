@@ -100,11 +100,24 @@ packages (though not their contents).
 [1] Ideally |completion| would not exist, and everything in it would be made
 as part of |synoptic| during linking, but at present this is too difficult.
 
-@ In particular, Inter code is fundamentally a mass of |inter_package|s, which
-cross-reference each other using |inter_symbol|s. But of course it cannot all
-be made simultaneously. What we need is a more flexible way to describe things
-in the Inter tree: both those which have already been made, and also those
-which are yet to be made. So:
+@h Dealing with partly-built Inter.
+Inter code is a nested tree of boxes, |inter_package|s, which contain Inter
+code defining various resources, cross-referenced by |inter_symbol|s.
+
+But this tree cannot be magically made all at once. For much of the run of
+a tool like //inform7//, a partly-built tree will exist, and this introduces
+many potential race conditions -- where, for example, a call to function F
+cannot be made until F itself has been made, and so on.
+
+We also want to avoid bugs where one part of the compiler thinks that F will
+live in one place, and another part thinks it is somewhere else.
+
+To that end, we use a flexible way to describe naming and positioning
+conventions for Inter resources (such as our hypothetical F). In this system,
+a //package_request// stands for a package which may or may not already exist;
+and an //inter_name//, similarly, is a symbol which may or may not exist yet.
+This enables tools like //inform7// to build up elaborate if shadowy worlds
+of references to tree positions which will be filled in later.
 = (text)
 				DEFINITELY MADE		PERHAPS NOT YET MADE
 	PACKAGE		inter_package		//package_request//
@@ -112,7 +125,83 @@ which are yet to be made. So:
 =
 So, for example, a //package_request// can represent |/main/synoptic/kinds|
 either before or after that package has been built. At some point the package
-ceases to be virtual and comes into being: this is called "incarnation".
+ceases to be virtual and comes into being: this is called "incarnation". But
+code in //inform7// using package requests never needs to know when this takes
+place, and will function equally well before or after -- so, no race conditions.
 
 And similarly for //inter_name//, which it would perhaps be more consistent
-to call a |symbol_request|.
+to call a |symbol_request|. But "iname" is now a term used almost ubiquitously
+across //inform7// and //inter//, and it doesn't seem worth renaming it now.
+
+@h Code and schemas.
+The above systems make nested packages and symbols within them, but not the
+actual content of these boxes, or the definitions which the symbols refer to.
+In short, the actual Inter code.
+
+The straightforward way to compile some Inter code is to make calls to functions
+in //Producing Inter//, which provide a straightforward if low-level API. For example:
+= (text as InC)
+	inter_name *iname = HierarchyLocations::iname(I, CCOUNT_PROPERTY_HL);
+	Produce::numeric_constant(I, iname, K_value, x);
+=
+Note that we do not need to say where this code will go. //Producing Inter//
+looks at the iname, works out what package request it should go into, incarnates
+that into a real |inter_package| if necessary, then incarnates the iname into
+a real |inter_symbol| if necessary; and finally emits a |CONSTANT_IST| in the
+relevant package, an instruction which defines the symbol.
+
+And similarly for emitting code inside a function body, though then it is
+necessary first to say what function (which can be done by calling //Produce::block//
+with the iname for that function). For example:
+= (text as InC)
+	Produce::inv_primitive(I, RETURN_BIP);
+	Produce::down(I);
+		Produce::val(I, K_value, LITERAL_IVAL, 1);
+	Produce::up(I);
+=
+
+@ But that is a laborious sort of notation for what, in a C-like language, would
+be written just as |return 1|. It would be very painful to have to implement
+kits such as BasicInformKit that way. Instead, we write them in a notation which
+is very close indeed[1] to Inform 6 syntax.
+
+This means we need to provide what amounts to a pocket Inform-6-to-Inter compiler,
+and we do that in this module, using a data structure called an //inter_schema// --
+in effect, an annotated syntax tree -- to represent the results of parsing Inform 6
+notation. For example, this:
+= (text as InC)
+	inter_schema *sch = ParsingSchemas::from_text(I"return true;");
+	EmitInterSchemas::emit(I, ..., sch, ...);
+=
+generates Inter code equivalent to the example above.[2] But the real power of
+the system comes from:
+
+(a) The ability to handle much larger passages of I6 notation - for example, a
+function body 10K long -- in an acceptably speed-efficient way; and
+
+(b) The ability to subsctitute values in for placeholders.
+
+As an example of (b), an //inter_schema// is how //inform7// compiles so-called
+inline phrase definitions such as:
+= (text as Inform 7)
+	To say (L - a list of values) in brace notation:
+		(- LIST_OF_TY_Say({-by-reference:L}, 1); -).
+=
+Here, the text |LIST_OF_TY_Say({-by-reference:L}, 1);| is passed through to
+//ParsingSchemas::from_text// to make a schema. When the phrase is invoked,
+//EmitInterSchemas::emit// is used to generate Inter code from it; and a
+reference to the list passed to the invocation as the token |L| is substituted
+for the braced clause |{-by-reference:L}|.[3] Schemas are also used as convenient
+shorthand in the compiler to express how to, for example, post-increment a
+property value.
+
+[1] Some antique syntaxes, such as |for| loops broken with semicolons not colons,
+are missing; so are some hardly-used directives; and the superclass |::| operator;
+and built-in compiler symbols relevant only to particular virtual machines, such
+as |#g$self|, are not there. But really, you will never notice they are gone.
+
+[2] Skipping over some of the arguments to the emission function, which basically
+tell us how to resolve identifier names into variables, arrays, and so on.
+
+[3] These braced placeholders are, of course, not Inform 6 notation, and
+represent an extension of the I6 syntax.

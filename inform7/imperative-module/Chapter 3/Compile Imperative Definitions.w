@@ -212,7 +212,7 @@ inter_schema *CompileImperativeDefn::get_back_schema(id_body *idb) {
 @<Construct the schemas from the inline text if this has not yet been done@> =
 	if (idb->compilation_data.inter_defn_converted == FALSE) {
 		if (idb->compilation_data.inline_wn >= 0) {
-			InterSchemas::from_inline_phrase_definition(
+			ParsingSchemas::from_inline_phrase_definition(
 				CompileImperativeDefn::get_inline_definition(idb),
 				&(idb->compilation_data.inline_front_schema),
 				&(idb->compilation_data.inline_back_schema));
