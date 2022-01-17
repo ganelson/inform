@@ -143,7 +143,11 @@ inter_schema *ParsingSchemas::back_end(text_stream *from, int abbreviated,
 		(Log::aspect_switched_on(SCHEMA_COMPILATION_DETAILS_DA)))
 		LOG("\n\n------------\nCompiling inter schema from: <%S>\n", from);
 
-	Tokenisation::go(sch, from, abbreviated, no_quoted_inames, quoted_inames);
+	int pos = 0;
+	if ((abbreviated) && (Str::begins_with_wide_string(from, L"*=-"))) {
+		sch->dereference_mode = TRUE; pos = 3;
+	}
+	Tokenisation::go(sch, from, pos, abbreviated, no_quoted_inames, quoted_inames);
 	Ramification::go(sch);
 	InterSchemas::lint(sch);
 

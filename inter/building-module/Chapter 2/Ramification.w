@@ -2,11 +2,21 @@
 
 Turning textual code written in Inform 6 syntax into an inter schema.
 
-@h Stage 2.
-In the second half of the process, we apply a series of transformations to
-the schema tree, gradually shaking out the (sometimes ambiguous) syntactic
-markers such as |COMMA_ISTT| and replacing them with semantically clear
-subtrees.
+@h Introduction.
+Once //Tokenisation// has been done, we have an inter schema which is not
+really a tree, but a linked list in all but name --
+= (text)
+	EXPRESSION_ISNT
+		T1
+		T2
+		T3
+		T4
+		...
+=
+So, there is no internal structure yet. "Ramification" performs a series of
+transformations on this tree, gradually shaking out the (sometimes ambiguous)
+syntactic markers such as |COMMA_ISTT| and replacing them with semantically
+clear subtrees.
 
 =
 void Ramification::go(inter_schema *sch) {
@@ -16,11 +26,10 @@ void Ramification::go(inter_schema *sch) {
 	REPEATEDLY_APPLY(Ramification::undivide_schema);
 	REPEATEDLY_APPLY(Ramification::resolve_halfopen_blocks);
 	REPEATEDLY_APPLY(Ramification::break_early_bracings);
-	REPEATEDLY_APPLY(Ramification::strip_spacing);
-	REPEATEDLY_APPLY(Ramification::splitprints);
-	REPEATEDLY_APPLY(Ramification::splitcases);
-	REPEATEDLY_APPLY(Ramification::strip_spacing);
-	REPEATEDLY_APPLY(Ramification::splitprints);
+	REPEATEDLY_APPLY(Ramification::strip_leading_white_space);
+	REPEATEDLY_APPLY(Ramification::split_switches_into_cases);
+	REPEATEDLY_APPLY(Ramification::strip_leading_white_space);
+	REPEATEDLY_APPLY(Ramification::split_print_statements);
 	REPEATEDLY_APPLY(Ramification::identify_constructs);
 	REPEATEDLY_APPLY(Ramification::treat_constructs);
 	REPEATEDLY_APPLY(Ramification::add_missing_bodies);
@@ -29,7 +38,7 @@ void Ramification::go(inter_schema *sch) {
 	REPEATEDLY_APPLY(Ramification::top_level_commas);
 	REPEATEDLY_APPLY(Ramification::alternatecases);
 	REPEATEDLY_APPLY(Ramification::outer_subexpressions);
-	REPEATEDLY_APPLY(Ramification::strip_all_spacing);
+	REPEATEDLY_APPLY(Ramification::strip_all_white_space);
 	REPEATEDLY_APPLY(Ramification::debracket);
 	REPEATEDLY_APPLY(Ramification::implied_return_values);
 	REPEATEDLY_APPLY(Ramification::message_calls);
@@ -64,7 +73,21 @@ void Ramification::unmark(inter_schema_node *isn) {
 	}
 }
 
-@ =
+@h The implied braces ramification.
+In common with most C-like languages, though unlike Perl, Inform 6 makes braces
+optional around code blocks which contain only a single statement. Thus:
+= (text as Inform 6)
+	if (x == 1) print "x is 1.^";
+=
+is understood as if it were
+= (text as Inform 6)
+	if (x == 1) { print "x is 1.^"; }
+=
+But we will find future ramifications much easier to code up if braces are
+always used. So this one looks for cases where braces have been omitted,
+and inserts them around the single statements in question.
+
+=
 int Ramification::implied_braces(inter_schema_node *par, inter_schema_node *at) {
 	for (inter_schema_node *isn = at; isn; isn=isn->next_node) {
 		for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
@@ -102,7 +125,8 @@ int Ramification::implied_braces(inter_schema_node *par, inter_schema_node *at) 
 	while (changed) {
 		changed = FALSE; rounds++;
 		for (inter_schema_node *isn = at; isn; isn=isn->next_node) {
-			for (inter_schema_token *t = isn->expression_tokens, *prev = NULL; t; prev = t, t=t->next) {
+			for (inter_schema_token *t = isn->expression_tokens, *prev = NULL;
+				t; prev = t, t=t->next) {
 				if ((prev) && (t->preinsert > 0)) {
 					t->preinsert--;
 					inter_schema_token *open_b =
@@ -140,7 +164,8 @@ int Ramification::implied_braces(inter_schema_node *par, inter_schema_node *at) 
 				((upped) && (n->ist_type == CLOSE_BRACE_ISTT)))) {
 			inter_schema_token *m = n->next;
 			while ((m) && (m->ist_type == WHITE_SPACE_ISTT)) m = m->next;
-			if ((found_if == FALSE) || (m == NULL) || (m->ist_type != RESERVED_ISTT) || (m->reserved_word != ELSE_I6RW)) {
+			if ((found_if == FALSE) || (m == NULL) || (m->ist_type != RESERVED_ISTT) ||
+				(m->reserved_word != ELSE_I6RW)) {
 				n->postinsert++; posted = TRUE;
 				break;
 			}
@@ -152,17 +177,45 @@ int Ramification::implied_braces(inter_schema_node *par, inter_schema_node *at) 
 		last_n->postinsert++;
 	}
 
-@ =
+@h The unbrace schema ramification.
+We now remove braces used to delimit code blocks and replace them with |CODE_ISNT|
+subtrees. So for example
+= (text)
+	EXPRESSION_ISNT
+		T1
+		OPEN_BRACE_ISTT
+		T2
+		T3
+		CLOSE_BRACE_ISTT
+		T4
+=
+becomes
+= (text)
+	EXPRESSION_ISNT
+		T1
+	CODE_ISNT
+		EXPRESSION_ISNT
+			T2
+			T3
+	EXPRESSION_ISNT
+		T4
+=
+In this way, all matching pairs of |OPEN_BRACE_ISTT| and |CLOSE_BRACE_ISTT| tokens
+are removed.
+
+=
 int Ramification::unbrace_schema(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		for (inter_schema_token *t = isn->expression_tokens, *prev = NULL; t; prev = t, t=t->next) {
 			if ((prev) && (t->ist_type == OPEN_BRACE_ISTT)) {
 				prev->next = NULL;
-				inter_schema_node *code_isn = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+				inter_schema_node *code_isn =
+					InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
 				isn->child_node = code_isn;
 				code_isn->parent_node = isn;
 
-				inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+				inter_schema_node *new_isn =
+					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 				code_isn->child_node = new_isn;
 				new_isn->parent_node = code_isn;
 
@@ -188,9 +241,11 @@ int Ramification::unbrace_schema(inter_schema_node *par, inter_schema_node *isn)
 				if (n) {
 					inter_schema_token *resumed = n->next;
 					n->next = NULL;
-					while ((resumed) && (resumed->ist_type == WHITE_SPACE_ISTT)) resumed = resumed->next;
+					while ((resumed) && (resumed->ist_type == WHITE_SPACE_ISTT))
+						resumed = resumed->next;
 					if (resumed) {
-						inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+						inter_schema_node *new_isn =
+							InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 						new_isn->expression_tokens = resumed;
 						new_isn->parent_node = isn->parent_node;
 						for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
@@ -209,6 +264,32 @@ int Ramification::unbrace_schema(inter_schema_node *par, inter_schema_node *isn)
 	return FALSE;
 }
 
+@h The divide schema ramification.
+A |DIVIDER_ISTT| token represents a semicolon used to divide I6 statements.
+We want to represent them, however, by independent subtrees. So:
+= (text)
+	EXPRESSION_ISNT
+		T1
+		T2
+		DIVIDER_ISTT
+		T3
+		T4
+		DIVIDER_ISTT
+=
+becomes
+= (text)
+	EXPRESSION_ISNT
+		T1
+		T2
+		DIVIDER_ISTT
+	EXPRESSION_ISNT
+		T3
+		T4
+		DIVIDER_ISTT
+=
+After this stage, therefore, each statement occupies its own |EXPRESSION_ISNT|.
+
+=
 int Ramification::divide_schema(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		int bl = 0;
@@ -239,6 +320,31 @@ int Ramification::divide_schema(inter_schema_node *par, inter_schema_node *isn) 
 	return FALSE;
 }
 
+@h The undivide schema ramification.
+The expression nodes for statements now tend to end with |DIVIDER_ISTT| tokens
+which no longer have any useful meaning. We remove them. For example:
+= (text)
+	EXPRESSION_ISNT
+		T1
+		T2
+		DIVIDER_ISTT
+	EXPRESSION_ISNT
+		T3
+		T4
+		DIVIDER_ISTT
+=
+becomes
+= (text)
+	EXPRESSION_ISNT
+		T1
+		T2
+	EXPRESSION_ISNT
+		T3
+		T4
+=
+After this, then, there are no further |DIVIDER_ISTT| tokens in the tree.
+
+=
 int Ramification::undivide_schema(inter_schema_node *par, inter_schema_node *isn) {
 	int rv = FALSE;
 	for (; isn; isn=isn->next_node) {
@@ -249,7 +355,9 @@ int Ramification::undivide_schema(inter_schema_node *par, inter_schema_node *isn
 			rv = TRUE;
 		} else {
 			while ((t) && (t->next)) {
-				if (t->next->ist_type == DIVIDER_ISTT) { t->next = NULL; isn->semicolon_terminated = TRUE; rv = TRUE; break; }
+				if (t->next->ist_type == DIVIDER_ISTT) {
+					t->next = NULL; isn->semicolon_terminated = TRUE; rv = TRUE; break;
+				}
 				t = t->next;
 			}
 		}
@@ -258,6 +366,26 @@ int Ramification::undivide_schema(inter_schema_node *par, inter_schema_node *isn
 	return rv;
 }
 
+@h The resolve halfopen blocks ramification.
+At this point, all matching pairs of open and close braces have been removed.
+But that doesn't quite solve the problem of code blocks, because an inline
+phrase in Inform 7 can use the notations |{-open-brace}| or |{-close-brace}|
+to indicate that a code block must be opened or closed, in a way which does
+not pair up.
+
+There is clearly no way for a tree structure to encode a half-open subtree,
+so the schema itself has to have a special annotation made in this case, which
+is done by calling //InterSchemas::mark_unclosed// or //InterSchemas::mark_unopened//.
+It is inconvenient to delete the brace command node (we might end up with an
+empty |EXPRESSION_ISNT| list), so instead we convert it to a harmless piece
+of white space.
+
+At the end of this process, then, all code blocks are correctly handled, and
+all statements are held as single |EXPRESSION_ISNT| nodes. So the coarse
+structure of the code is correctly handled -- we have a clear tree structure
+of statements (or expressions), hierarchically arranged in code blocks.
+
+=
 int Ramification::resolve_halfopen_blocks(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		inter_schema_token *t = isn->expression_tokens;
@@ -296,12 +424,34 @@ int Ramification::resolve_halfopen_blocks(inter_schema_node *par, inter_schema_n
 	return FALSE;
 }
 
-int Ramification::permitted_early(inter_schema_token *n) {
-	if ((n) && (n->ist_type == INLINE_ISTT)) return TRUE;
-	if ((n) && (n->ist_type == WHITE_SPACE_ISTT)) return TRUE;
-	return FALSE;
-}
+@h The break early bracings ramification.
+If an expression list begins with one or more braced commands, perhaps with some
+white space, and then continues with some honest I6 material, we divide the
+early commands off from the subsequent matter. Thus:
+= (text)
+	EXPRESSION_ISNT
+		INLINE_ISTT
+		WHITE_SPACE_ISTT
+		INLINE_ISTT
+		WHITE_SPACE_ISTT
+		T1
+		T2
+		T3
+=
+becomes
+= (text)
+	EXPRESSION_ISNT
+		INLINE_ISTT
+		WHITE_SPACE_ISTT
+		INLINE_ISTT
+		WHITE_SPACE_ISTT
+	EXPRESSION_ISNT
+		T1
+		T2
+		T3
+=
 
+=
 int Ramification::break_early_bracings(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		inter_schema_token *n = isn->expression_tokens;
@@ -312,7 +462,8 @@ int Ramification::break_early_bracings(inter_schema_node *par, inter_schema_node
 				n = n->next;
 			}
 			if ((m) && (n) && (n->ist_type == RESERVED_ISTT)) {
-				inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+				inter_schema_node *new_isn =
+					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 				new_isn->expression_tokens = n;
 				new_isn->parent_node = isn->parent_node;
 				if (isn->child_node) {
@@ -334,42 +485,217 @@ int Ramification::break_early_bracings(inter_schema_node *par, inter_schema_node
 	}
 	return FALSE;
 }
+int Ramification::permitted_early(inter_schema_token *n) {
+	if ((n) && (n->ist_type == INLINE_ISTT)) return TRUE;
+	if ((n) && (n->ist_type == WHITE_SPACE_ISTT)) return TRUE;
+	return FALSE;
+}
 
-int Ramification::strip_spacing(inter_schema_node *par, inter_schema_node *isn) {
+@h The strip leading white space ramification.
+If an expression begins with white space, remove it. (This makes coding subsequent
+ramifications easier -- because we can assume the first token is substantive.)
+
+=
+int Ramification::strip_leading_white_space(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		inter_schema_token *t = isn->expression_tokens;
 		if ((t) && (t->ist_type == WHITE_SPACE_ISTT)) {
 			isn->expression_tokens = t->next;
 			return TRUE;
 		}
-		if (Ramification::strip_spacing(isn, isn->child_node)) return TRUE;
+		if (Ramification::strip_leading_white_space(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
 }
 
-int Ramification::strip_all_spacing(inter_schema_node *par, inter_schema_node *isn) {
+@h The split switches into cases ramification.
+Unlike most C-like languages, Inform 6 does not have a |case| reserved word to
+introduce cases in a |switch| statement. For example:
+= (text as Inform 6)
+	switch (x) {
+		1, 2, 3: print "Do one thing.";
+		4: print "Do a different thing.";
+		default: print "Otherwise, do this other thing.";
+	}
+=
+Here, the colons and the reserved word |default| are the important syntactic markers.
+We break this up as three code blocks:
+= (text)
+	STATEMENT_ISNT "case"
+		EXPRESSION_ISNT
+			1
+			COMMA_ISTT
+			WHITE_SPACE_ISTT
+			2
+			COMMA_ISTT
+			WHITE_SPACE_ISTT
+			3
+		CODE_ISNT
+			...
+	STATEMENT_ISNT "case"
+		EXPRESSION_ISNT
+			4
+		CODE_ISNT
+			...
+	STATEMENT_ISNT "default"
+		CODE_ISNT
+			...
+=
+
+=		
+int Ramification::split_switches_into_cases(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
-		if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == WHITE_SPACE_ISTT)) {
-			isn->expression_tokens = isn->expression_tokens->next;
-			return TRUE;
-		}
-		int d = 0;
-		inter_schema_token *prev = isn->expression_tokens;
-		if (prev) {
-			inter_schema_token *n = prev->next;
+		if (isn->expression_tokens) {
+			inter_schema_token *n = isn->expression_tokens, *prev = isn->expression_tokens;
+			int bl = 0;
 			while (n) {
-			 	if (n->ist_type == WHITE_SPACE_ISTT) { prev->next = n->next; d++; }
+				if (n->ist_type == OPEN_ROUND_ISTT) bl++;
+				if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
+				if ((n->ist_type == COLON_ISTT) && (bl == 0)) {
+					inter_schema_node *original_child = isn->child_node;
+
+					int defaulter = FALSE;
+					if ((isn->expression_tokens) &&
+						(isn->expression_tokens->ist_type == RESERVED_ISTT) &&
+						(isn->expression_tokens->reserved_word == DEFAULT_I6RW)) defaulter = TRUE;
+					
+					inter_schema_node *sw_val = NULL;
+					inter_schema_node *sw_code = NULL;
+					if (defaulter) {
+						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+						isn->child_node = sw_code;
+						sw_code->parent_node = isn;
+					} else {
+						sw_val = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
+						sw_val->next_node = sw_code;
+						sw_val->parent_node = isn; isn->child_node = sw_val;
+						sw_code->parent_node = isn;
+					}
+
+					int switch_begins = FALSE;
+					int switch_ends = FALSE;
+					inter_schema_node *pn = isn->parent_node;
+					while (pn) {
+						if ((pn->expression_tokens) &&
+							(pn->expression_tokens->ist_type == RESERVED_ISTT) &&
+							(pn->expression_tokens->reserved_word == SWITCH_I6RW)) {
+							switch_begins = TRUE;
+							inter_schema_node *pn2 = isn;
+							while (pn2) {
+								if (pn2->next_node) { switch_ends = TRUE; break; }
+								pn2 = pn2->parent_node;
+							}
+							break;
+						}
+						pn = pn->parent_node;
+					}
+					if (switch_ends == FALSE) InterSchemas::mark_unclosed(sw_code);
+					if (switch_begins == FALSE) InterSchemas::mark_case_closed(isn);
+					if (sw_val) sw_val->expression_tokens = isn->expression_tokens;
+					prev->next = NULL;
+					isn->expression_tokens = NULL;
+					isn->isn_type = STATEMENT_ISNT;
+					if (defaulter)
+						isn->isn_clarifier = DEFAULT_BIP;
+					else
+						isn->isn_clarifier = CASE_BIP;
+
+					inter_schema_node *sw_code_exp =
+						InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+					sw_code_exp->expression_tokens = n->next;
+
+					sw_code->child_node = sw_code_exp;
+					sw_code_exp->parent_node = sw_code;
+
+					if (sw_val)
+						for (inter_schema_token *t = sw_val->expression_tokens; t; t = t->next)
+							t->owner = sw_val;
+					for (inter_schema_token *t = sw_code_exp->expression_tokens; t; t = t->next)
+						t->owner = sw_code_exp;
+					
+					sw_code_exp->child_node = original_child;
+
+					inter_schema_node *at = isn->next_node;
+					inter_schema_node *attach = sw_code_exp;
+					while ((at) && (Ramification::casey(at) == FALSE)) {
+						inter_schema_node *next_at = at->next_node;
+						at->next_node = NULL;
+						at->parent_node = sw_code;
+						attach->next_node = at;
+						attach = at;
+						isn->next_node = next_at;
+						at = next_at;
+					}
+
+					return TRUE;
+				}
 				prev = n; n = n->next;
 			}
 		}
-		if (d > 0) return TRUE;
-		if (Ramification::strip_all_spacing(isn, isn->child_node)) return TRUE;
+		if (Ramification::split_switches_into_cases(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
 }
 
 @ =
-int Ramification::splitprints(inter_schema_node *par, inter_schema_node *isn) {
+int Ramification::casey(inter_schema_node *isn) {
+	if (isn == NULL) return FALSE;
+	if (isn->expression_tokens) {
+		inter_schema_token *n = isn->expression_tokens;
+		int bl = 0;
+		while (n) {
+			if (n->ist_type == OPEN_ROUND_ISTT) bl++;
+			if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
+			if ((n->ist_type == COLON_ISTT) && (bl == 0)) return TRUE;
+			n = n->next;
+		}
+	}
+	return FALSE;
+}
+
+@h The split print statements ramification.
+Inform 6 supports composite print statements, like so:
+= (text as Inform 6)
+	print_ret "X is ", x, ".";
+=
+This example currently looks like:
+= (text)
+	EXPRESSION_ISNT
+		RESERVED_ISTT "print_ret"
+		WHITE_SPACE_ISTT
+		DQUOTED_ISTT "X is "
+		COMMA_ISTT
+		WHITE_SPACE_ISTT
+		IDENTIFIER_ISTT "x"
+		COMMA_ISTT
+		WHITE_SPACE_ISTT
+		DQUOTED_ISTT "."
+=
+We break this up as three individual prints:
+= (text)
+	EXPRESSION_ISNT
+		RESERVED_ISTT "print"
+		WHITE_SPACE_ISTT
+		DQUOTED_ISTT "X is "
+	EXPRESSION_ISNT
+		RESERVED_ISTT "print"
+		WHITE_SPACE_ISTT
+		IDENTIFIER_ISTT "x"
+	EXPRESSION_ISNT
+		RESERVED_ISTT "print_ret"
+		WHITE_SPACE_ISTT
+		DQUOTED_ISTT "."
+=
+Note that, for obvious reasons, in the |print_ret| case only the third of the
+prints should perform a return.
+
+The point of this stage is to get rid of one source of |COMMA_ISTT| tokens;
+commas can mean a number of different things in Inform 6 syntax and it makes
+our work simpler to take one of those meanings out of the picture.
+
+=
+int Ramification::split_print_statements(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if (isn->expression_tokens) {
 			if ((isn->expression_tokens->ist_type == RESERVED_ISTT)
@@ -404,141 +730,14 @@ int Ramification::splitprints(inter_schema_node *par, inter_schema_node *isn) {
 				}
 			}
 		}
-		if (Ramification::splitprints(isn, isn->child_node)) return TRUE;
+		if (Ramification::split_print_statements(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
 }
 
-@ =
-int Ramification::casey(inter_schema_node *isn) {
-	if (isn == NULL) return FALSE;
-	if (isn->expression_tokens) {
-		inter_schema_token *n = isn->expression_tokens;
-		int bl = 0;
-		while (n) {
-			if (n->ist_type == OPEN_ROUND_ISTT) bl++;
-			if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
-			if ((n->ist_type == COLON_ISTT) && (bl == 0)) return TRUE;
-			n = n->next;
-		}
-	}
-	return FALSE;
-}
+@h The identify constructs ramification.
 
-int Ramification::splitcases(inter_schema_node *par, inter_schema_node *isn) {
-	for (; isn; isn=isn->next_node) {
-		if (isn->expression_tokens) {
-			inter_schema_token *n = isn->expression_tokens, *prev = isn->expression_tokens;
-			int bl = 0;
-			while (n) {
-				if (n->ist_type == OPEN_ROUND_ISTT) bl++;
-				if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
-				if ((n->ist_type == COLON_ISTT) && (bl == 0)) {
-					inter_schema_node *original_child = isn->child_node;
-
-					int defaulter = FALSE;
-					if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == RESERVED_ISTT) &&
-						(isn->expression_tokens->reserved_word == DEFAULT_I6RW)) defaulter = TRUE;
-					
-					inter_schema_node *sw_val = NULL;
-					inter_schema_node *sw_code = NULL;
-					if (defaulter) {
-						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
-						isn->child_node = sw_code;
-						sw_code->parent_node = isn;
-					} else {
-						sw_val = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-						sw_code = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
-						sw_val->next_node = sw_code;
-						sw_val->parent_node = isn; isn->child_node = sw_val;
-						sw_code->parent_node = isn;
-					}
-
-					int switch_begins = FALSE;
-					int switch_ends = FALSE;
-					inter_schema_node *pn = isn->parent_node;
-					while (pn) {
-						if ((pn->expression_tokens) && (pn->expression_tokens->ist_type == RESERVED_ISTT) &&
-							(pn->expression_tokens->reserved_word == SWITCH_I6RW)) {
-							switch_begins = TRUE;
-							inter_schema_node *pn2 = isn;
-							while (pn2) {
-								if (pn2->next_node) { switch_ends = TRUE; break; }
-								pn2 = pn2->parent_node;
-							}
-							break;
-						}
-						pn = pn->parent_node;
-					}
-					if (switch_ends == FALSE) InterSchemas::mark_unclosed(sw_code);
-					if (switch_begins == FALSE) InterSchemas::mark_case_closed(isn);
-					if (sw_val) sw_val->expression_tokens = isn->expression_tokens;
-					prev->next = NULL;
-					isn->expression_tokens = NULL;
-					isn->isn_type = STATEMENT_ISNT;
-					if (defaulter)
-						isn->isn_clarifier = DEFAULT_BIP;
-					else
-						isn->isn_clarifier = CASE_BIP;
-
-					inter_schema_node *sw_code_exp = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-					sw_code_exp->expression_tokens = n->next;
-
-					sw_code->child_node = sw_code_exp;
-					sw_code_exp->parent_node = sw_code;
-
-					if (sw_val)
-						for (inter_schema_token *t = sw_val->expression_tokens; t; t = t->next)
-							t->owner = sw_val;
-					for (inter_schema_token *t = sw_code_exp->expression_tokens; t; t = t->next)
-						t->owner = sw_code_exp;
-					
-					sw_code_exp->child_node = original_child;
-
-					inter_schema_node *at = isn->next_node;
-					inter_schema_node *attach = sw_code_exp;
-					while ((at) && (Ramification::casey(at) == FALSE)) {
-						inter_schema_node *next_at = at->next_node;
-						at->next_node = NULL;
-						at->parent_node = sw_code;
-						attach->next_node = at;
-						attach = at;
-						isn->next_node = next_at;
-						at = next_at;
-					}
-
-					return TRUE;
-				}
-				prev = n; n = n->next;
-			}
-		}
-		if (Ramification::splitcases(isn, isn->child_node)) return TRUE;
-	}
-	return FALSE;
-}
-
-@ =
-int Ramification::alternatecases(inter_schema_node *par, inter_schema_node *isn) {
-	for (; isn; isn=isn->next_node) {
-		if ((isn->isn_clarifier == CASE_BIP) && (isn->child_node)) {
-			inter_schema_node *A = isn->child_node;
-			inter_schema_node *B = isn->child_node->next_node;
-			if ((A) && (B) && (B->next_node)) {
-				inter_schema_node *C = InterSchemas::new_node(isn->parent_schema, OPERATION_ISNT);
-				C->isn_clarifier = ALTERNATIVECASE_BIP;
-				C->child_node = A;
-				A->parent_node = C; B->parent_node = C;
-				isn->child_node = C; C->next_node = B->next_node; B->next_node = NULL;
-				C->parent_node = isn;
-				return TRUE;
-			}				
-		}
-		if (Ramification::alternatecases(isn, isn->child_node)) return TRUE;
-	}
-	return FALSE;
-}
-
-@ =
+=
 int Ramification::identify_constructs(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if (isn->expression_tokens) {
@@ -925,6 +1124,61 @@ int Ramification::identify_constructs(inter_schema_node *par, inter_schema_node 
 			if (Ramification::identify_constructs(isn, isn->child_node)) return TRUE;
 	}
 
+	return FALSE;
+}
+
+
+
+
+
+
+
+@h The strip all white space ramification.
+White space has an important role to play earlier on in the process, but once
+our tree structure contains the information it carries, we can discard it.
+This simply deletes every token of type |WHITE_SPACE_ISTT|.
+
+=
+int Ramification::strip_all_white_space(inter_schema_node *par, inter_schema_node *isn) {
+	for (; isn; isn=isn->next_node) {
+		if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == WHITE_SPACE_ISTT)) {
+			isn->expression_tokens = isn->expression_tokens->next;
+			return TRUE;
+		}
+		int d = 0;
+		inter_schema_token *prev = isn->expression_tokens;
+		if (prev) {
+			inter_schema_token *n = prev->next;
+			while (n) {
+			 	if (n->ist_type == WHITE_SPACE_ISTT) { prev->next = n->next; d++; }
+				prev = n; n = n->next;
+			}
+		}
+		if (d > 0) return TRUE;
+		if (Ramification::strip_all_white_space(isn, isn->child_node)) return TRUE;
+	}
+	return FALSE;
+}
+
+
+@ =
+int Ramification::alternatecases(inter_schema_node *par, inter_schema_node *isn) {
+	for (; isn; isn=isn->next_node) {
+		if ((isn->isn_clarifier == CASE_BIP) && (isn->child_node)) {
+			inter_schema_node *A = isn->child_node;
+			inter_schema_node *B = isn->child_node->next_node;
+			if ((A) && (B) && (B->next_node)) {
+				inter_schema_node *C = InterSchemas::new_node(isn->parent_schema, OPERATION_ISNT);
+				C->isn_clarifier = ALTERNATIVECASE_BIP;
+				C->child_node = A;
+				A->parent_node = C; B->parent_node = C;
+				isn->child_node = C; C->next_node = B->next_node; B->next_node = NULL;
+				C->parent_node = isn;
+				return TRUE;
+			}				
+		}
+		if (Ramification::alternatecases(isn, isn->child_node)) return TRUE;
+	}
 	return FALSE;
 }
 

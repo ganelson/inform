@@ -2,28 +2,40 @@
 
 Turning textual code written in Inform 6 syntax into a linked list of tokens.
 
-@ Our method is to tokenise the source code as if it were Inform 6, but to look
-out for the two extra syntaxes allowed, |{-bracing}| and |(+ Inform 7 interpolation +)|.
+@ The following code was sketched out on a long night flight to Hong Kong, but
+there is otherwise nothing exotic about it. In as simple a way as possible, we
+take a text |from| and break it into Inform 6 tokens. What we return is not
+literally a linked list, but it amounts to the same thing: a single node
+holding an unstructured run of tokens --
+= (text)
+	EXPRESSION_ISNT
+		T1
+		T2
+		T3
+		...
+=
+We follow the syntax of Inform 6, except that we have to look for three extra
+syntaxes: |{-braced-commands}|, |(+ Inform 7 interpolation +)|, and, if the
+abbreviated syntax is allowed, also some cryptic notations such as |*1|.
+
+The following scanner is basically a finite state machine, and these are the
+states:
 
 @e NO_TOKSTATE from 1
-@e COMMENT_TOKSTATE			/* currently scanning an I6 comment |! ...| */
-@e DQUOTED_TOKSTATE
-@e SQUOTED_TOKSTATE
-@e WHITE_TOKSTATE
-@e TOK_TOKSTATE				/* an actual token */
+@e COMMENT_TOKSTATE  /* currently scanning... an I6 comment |! ...| */
+@e DQUOTED_TOKSTATE  /* ...double-quoted text */
+@e SQUOTED_TOKSTATE  /* ...single-quoted text */
+@e WHITE_TOKSTATE    /* ...whitespace */
+@e TOK_TOKSTATE      /* ...an actual token */
 
 =
-void Tokenisation::go(inter_schema *sch, text_stream *from, int abbreviated,
+void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbreviated,
 	int no_quoted_inames, void **quoted_inames) {
 	inter_schema_token *preceding_token = NULL;
 
 	int definition_length = Str::len(from);
 	text_stream *current_raw = Str::new();
 	int tokeniser_state = NO_TOKSTATE;
-	int pos = 0;
-	if ((abbreviated) && (Str::begins_with_wide_string(from, L"*=-"))) {
-		sch->dereference_mode = TRUE; pos = 3;
-	}
 	for (; pos<definition_length; pos++) {
 		int c = Str::get_at(from, pos);
 		if (Characters::is_whitespace(c)) {
@@ -94,14 +106,17 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int abbreviated,
 	if (Str::len(current_raw)) {
 		switch (tokeniser_state) {
 			case WHITE_TOKSTATE:
-				InterSchemas::add_token(sch, InterSchemas::new_token(WHITE_SPACE_ISTT, I" ", 0, 0, -1));
+				InterSchemas::add_token(sch,
+					InterSchemas::new_token(WHITE_SPACE_ISTT, I" ", 0, 0, -1));
 				break;
 			case DQUOTED_TOKSTATE:
 				Tokenisation::de_escape_text(current_raw);
-				InterSchemas::add_token(sch, InterSchemas::new_token(DQUOTED_ISTT, current_raw, 0, 0, -1));
+				InterSchemas::add_token(sch,
+					InterSchemas::new_token(DQUOTED_ISTT, current_raw, 0, 0, -1));
 				break;
 			case SQUOTED_TOKSTATE:
-				InterSchemas::add_token(sch, InterSchemas::new_token(SQUOTED_ISTT, current_raw, 0, 0, -1));
+				InterSchemas::add_token(sch,
+					InterSchemas::new_token(SQUOTED_ISTT, current_raw, 0, 0, -1));
 				break;
 			default:
 				@<Look for individual tokens@>;
@@ -130,11 +145,12 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int abbreviated,
 	} else { int c = '('; @<Absorb a raw character@>; pos = save_pos; }
 	DISCARD_TEXT(source_text_fragment)
 
-@ The empty I7 interpolation is legal, but produces no result.
+@ Note that the empty I7 interpolation is legal, but produces no token.
 
 @<Expand a fragment of Inform 7 text@> =
 	if (Str::len(source_text_fragment) > 0) {
-		InterSchemas::add_token(sch, InterSchemas::new_token(I7_ISTT, source_text_fragment, 0, 0, -1));
+		InterSchemas::add_token(sch,
+			InterSchemas::new_token(I7_ISTT, source_text_fragment, 0, 0, -1));
 	}
 
 @ Material in braces sometimes indicates an inline command, but not always,
@@ -171,67 +187,128 @@ a bracing.
 	t->operand2 = Str::new();
 	@<Decompose the bracing@>;
 	if (Str::len(t->command) > 0) {
+		int c = unknown_ISINC, sc = no_ISINSC;
 		if (Str::eq_wide_string(t->command, L"primitive-definition")) {
-			t->inline_command = primitive_definition_ISINC;
-			if (Str::eq_wide_string(t->operand, L"repeat-through")) t->inline_subcommand = repeat_through_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"repeat-through-list")) t->inline_subcommand = repeat_through_list_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"number-of")) t->inline_subcommand = number_of_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"random-of")) t->inline_subcommand = random_of_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"total-of")) t->inline_subcommand = total_of_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"extremal")) t->inline_subcommand = extremal_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"function-application")) t->inline_subcommand = function_application_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"description-application")) t->inline_subcommand = description_application_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"solve-equation")) t->inline_subcommand = solve_equation_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"switch")) t->inline_subcommand = switch_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"break")) t->inline_subcommand = break_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"verbose-checking")) t->inline_subcommand = verbose_checking_ISINSC;
-		} else if (Str::eq_wide_string(t->command, L"new")) t->inline_command = new_ISINC;
-		else if (Str::eq_wide_string(t->command, L"new-list-of")) t->inline_command = new_list_of_ISINC;
-		else if (Str::eq_wide_string(t->command, L"printing-routine")) t->inline_command = printing_routine_ISINC;
-		else if (Str::eq_wide_string(t->command, L"ranger-routine")) t->inline_command = ranger_routine_ISINC;
-		else if (Str::eq_wide_string(t->command, L"next-routine")) t->inline_command = next_routine_ISINC;
-		else if (Str::eq_wide_string(t->command, L"previous-routine")) t->inline_command = previous_routine_ISINC;
-		else if (Str::eq_wide_string(t->command, L"strong-kind")) t->inline_command = strong_kind_ISINC;
-		else if (Str::eq_wide_string(t->command, L"weak-kind")) t->inline_command = weak_kind_ISINC;
-		else if (Str::eq_wide_string(t->command, L"backspace")) t->inline_command = backspace_ISINC;
-		else if (Str::eq_wide_string(t->command, L"erase")) t->inline_command = erase_ISINC;
-		else if (Str::eq_wide_string(t->command, L"open-brace")) t->inline_command = open_brace_ISINC;
-		else if (Str::eq_wide_string(t->command, L"close-brace")) t->inline_command = close_brace_ISINC;
-		else if (Str::eq_wide_string(t->command, L"label")) t->inline_command = label_ISINC;
-		else if (Str::eq_wide_string(t->command, L"counter")) t->inline_command = counter_ISINC;
-		else if (Str::eq_wide_string(t->command, L"counter-storage")) t->inline_command = counter_storage_ISINC;
-		else if (Str::eq_wide_string(t->command, L"counter-up")) t->inline_command = counter_up_ISINC;
-		else if (Str::eq_wide_string(t->command, L"counter-down")) t->inline_command = counter_down_ISINC;
-		else if (Str::eq_wide_string(t->command, L"counter-makes-array")) t->inline_command = counter_makes_array_ISINC;
-		else if (Str::eq_wide_string(t->command, L"by-reference")) t->inline_command = by_reference_ISINC;
-		else if (Str::eq_wide_string(t->command, L"by-reference-blank-out")) t->inline_command = by_reference_blank_out_ISINC;
-		else if (Str::eq_wide_string(t->command, L"reference-exists")) t->inline_command = reference_exists_ISINC;
-		else if (Str::eq_wide_string(t->command, L"lvalue-by-reference")) t->inline_command = lvalue_by_reference_ISINC;
-		else if (Str::eq_wide_string(t->command, L"by-value")) t->inline_command = by_value_ISINC;
-		else if (Str::eq_wide_string(t->command, L"box-quotation-text")) t->inline_command = box_quotation_text_ISINC;
-		else if (Str::eq_wide_string(t->command, L"try-action")) t->inline_command = try_action_ISINC;
-		else if (Str::eq_wide_string(t->command, L"try-action-silently")) t->inline_command = try_action_silently_ISINC;
-		else if (Str::eq_wide_string(t->command, L"return-value")) t->inline_command = return_value_ISINC;
-		else if (Str::eq_wide_string(t->command, L"return-value-from-rule")) t->inline_command = return_value_from_rule_ISINC;
-		else if (Str::eq_wide_string(t->command, L"property-holds-block-value")) t->inline_command = property_holds_block_value_ISINC;
-		else if (Str::eq_wide_string(t->command, L"mark-event-used")) t->inline_command = mark_event_used_ISINC;
-		else if (Str::eq_wide_string(t->command, L"my")) t->inline_command = my_ISINC;
-		else if (Str::eq_wide_string(t->command, L"unprotect")) t->inline_command = unprotect_ISINC;
-		else if (Str::eq_wide_string(t->command, L"copy")) t->inline_command = copy_ISINC;
-		else if (Str::eq_wide_string(t->command, L"initialise")) t->inline_command = initialise_ISINC;
-		else if (Str::eq_wide_string(t->command, L"matches-description")) t->inline_command = matches_description_ISINC;
-		else if (Str::eq_wide_string(t->command, L"now-matches-description")) t->inline_command = now_matches_description_ISINC;
-		else if (Str::eq_wide_string(t->command, L"arithmetic-operation")) t->inline_command = arithmetic_operation_ISINC;
-		else if (Str::eq_wide_string(t->command, L"say")) t->inline_command = say_ISINC;
-		else if (Str::eq_wide_string(t->command, L"show-me")) t->inline_command = show_me_ISINC;
-		else if (Str::eq_wide_string(t->command, L"segment-count")) t->inline_command = segment_count_ISINC;
-		else if (Str::eq_wide_string(t->command, L"final-segment-marker")) t->inline_command = final_segment_marker_ISINC;
-		else if (Str::eq_wide_string(t->command, L"list-together")) {
-			t->inline_command = list_together_ISINC;
-			if (Str::eq_wide_string(t->operand, L"unarticled")) t->inline_subcommand = unarticled_ISINSC;
-			else if (Str::eq_wide_string(t->operand, L"articled")) t->inline_subcommand = articled_ISINSC;
-		} else if (Str::eq_wide_string(t->command, L"rescale")) t->inline_command = rescale_ISINC;
-		else t->inline_command = unknown_ISINC;
+			c = primitive_definition_ISINC;
+			if (Str::eq_wide_string(t->operand, L"repeat-through")) {
+				sc = repeat_through_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"repeat-through-list")) {
+				sc = repeat_through_list_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"number-of")) {
+				sc = number_of_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"random-of")) {
+				sc = random_of_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"total-of")) {
+				sc = total_of_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"extremal")) {
+				sc = extremal_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"function-application")) {
+				sc = function_application_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"description-application")) {
+				sc = description_application_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"solve-equation")) {
+				sc = solve_equation_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"switch")) {
+				sc = switch_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"break")) {
+				sc = break_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"verbose-checking")) {
+				sc = verbose_checking_ISINSC;
+			}
+		} else if (Str::eq_wide_string(t->command, L"new")) {
+			c = new_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"new-list-of")) {
+			c = new_list_of_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"printing-routine")) {
+			c = printing_routine_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"ranger-routine")) {
+			c = ranger_routine_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"next-routine")) {
+			c = next_routine_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"previous-routine")) {
+			c = previous_routine_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"strong-kind")) {
+			c = strong_kind_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"weak-kind")) {
+			c = weak_kind_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"backspace")) {
+			c = backspace_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"erase")) {
+			c = erase_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"open-brace")) {
+			c = open_brace_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"close-brace")) {
+			c = close_brace_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"label")) {
+			c = label_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"counter")) {
+			c = counter_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"counter-storage")) {
+			c = counter_storage_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"counter-up")) {
+			c = counter_up_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"counter-down")) {
+			c = counter_down_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"counter-makes-array")) {
+			c = counter_makes_array_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"by-reference")) {
+			c = by_reference_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"by-reference-blank-out")) {
+			c = by_reference_blank_out_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"reference-exists")) {
+			c = reference_exists_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"lvalue-by-reference")) {
+			c = lvalue_by_reference_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"by-value")) {
+			c = by_value_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"box-quotation-text")) {
+			c = box_quotation_text_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"try-action")) {
+			c = try_action_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"try-action-silently")) {
+			c = try_action_silently_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"return-value")) {
+			c = return_value_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"return-value-from-rule")) {
+			c = return_value_from_rule_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"property-holds-block-value")) {
+			c = property_holds_block_value_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"mark-event-used")) {
+			c = mark_event_used_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"my")) {
+			c = my_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"unprotect")) {
+			c = unprotect_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"copy")) {
+			c = copy_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"initialise")) {
+			c = initialise_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"matches-description")) {
+			c = matches_description_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"now-matches-description")) {
+			c = now_matches_description_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"arithmetic-operation")) {
+			c = arithmetic_operation_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"say")) {
+			c = say_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"show-me")) {
+			c = show_me_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"segment-count")) {
+			c = segment_count_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"final-segment-marker")) {
+			c = final_segment_marker_ISINC;
+		} else if (Str::eq_wide_string(t->command, L"list-together")) {
+			c = list_together_ISINC;
+			if (Str::eq_wide_string(t->operand, L"unarticled")) {
+				sc = unarticled_ISINSC;
+			} else if (Str::eq_wide_string(t->operand, L"articled")) {
+				sc = articled_ISINSC;
+			}
+		} else if (Str::eq_wide_string(t->command, L"rescale")) {
+			c = rescale_ISINC;
+		}
+		t->inline_command = c;
+		t->inline_subcommand = sc;
 	}
 
 	InterSchemas::add_token(sch, t);
@@ -266,8 +343,12 @@ optional, operand in |operand2|.
 				case 2:
 					if (c == ':') portion = 3;
 					#ifdef CORE_MODULE
-					else if (c == '<') { t->extremal_property_sign = MEASURE_T_OR_LESS; portion = 4; }
-					else if (c == '>') { t->extremal_property_sign = MEASURE_T_OR_MORE; portion = 4; }
+					else if (c == '<') {
+						t->extremal_property_sign = MEASURE_T_OR_LESS; portion = 4;
+					}
+					else if (c == '>') {
+						t->extremal_property_sign = MEASURE_T_OR_MORE; portion = 4;
+					}
 					#endif
 					else PUT_TO(t->operand, c);
 					break;
@@ -288,7 +369,7 @@ optional, operand in |operand2|.
 	DISCARD_TEXT(pname)
 
 @ In abbreviated prototypes, |*1| and |*2| are placeholders, but a number
-of modifiers are allowed. The full syntax follows:
+of modifiers are allowed. See //calculus: Compilation Schemas//.
 
 @d GIVE_KIND_ID_ISSBM					1
 @d GIVE_COMPARISON_ROUTINE_ISSBM		2
@@ -305,16 +386,26 @@ of modifiers are allowed. The full syntax follows:
 	int iss_bitmap = 0;
 	switch (c) {
 		case '!': internal_error("the '*!' schema notation has been abolished"); break;
-		case '%': iss_bitmap = iss_bitmap | LVALUE_CONTEXT_ISSBM; c = Str::get_at(from, ++at); break;
-		case '$': iss_bitmap = iss_bitmap | STORAGE_AS_FUNCTION_ISSBM; c = Str::get_at(from, ++at); break;
-		case '#': iss_bitmap = iss_bitmap | GIVE_KIND_ID_ISSBM; c = Str::get_at(from, ++at); break;
-		case '_': iss_bitmap = iss_bitmap | GIVE_COMPARISON_ROUTINE_ISSBM; c = Str::get_at(from, ++at); break;
-		case '+': iss_bitmap = iss_bitmap | DEREFERENCE_PROPERTY_ISSBM; c = Str::get_at(from, ++at); break;
-		case '|': iss_bitmap = iss_bitmap | (DEREFERENCE_PROPERTY_ISSBM + LVALUE_CONTEXT_ISSBM); c = Str::get_at(from, ++at); break;
-		case '?': iss_bitmap = iss_bitmap | ADOPT_LOCAL_STACK_FRAME_ISSBM; c = Str::get_at(from, ++at); break;
-		case '<': iss_bitmap = iss_bitmap | CAST_TO_KIND_OF_OTHER_TERM_ISSBM; c = Str::get_at(from, ++at); break;
-		case '^': iss_bitmap = iss_bitmap | (ADOPT_LOCAL_STACK_FRAME_ISSBM + BY_REFERENCE_ISSBM); c = Str::get_at(from, ++at); break;
-		case '>': iss_bitmap = iss_bitmap | BY_REFERENCE_ISSBM; c = Str::get_at(from, ++at); break;
+		case '%': iss_bitmap = iss_bitmap | LVALUE_CONTEXT_ISSBM;
+				  c = Str::get_at(from, ++at); break;
+		case '$': iss_bitmap = iss_bitmap | STORAGE_AS_FUNCTION_ISSBM;
+				  c = Str::get_at(from, ++at); break;
+		case '#': iss_bitmap = iss_bitmap | GIVE_KIND_ID_ISSBM;
+				  c = Str::get_at(from, ++at); break;
+		case '_': iss_bitmap = iss_bitmap | GIVE_COMPARISON_ROUTINE_ISSBM;
+				  c = Str::get_at(from, ++at); break;
+		case '+': iss_bitmap = iss_bitmap | DEREFERENCE_PROPERTY_ISSBM;
+				  c = Str::get_at(from, ++at); break;
+		case '|': iss_bitmap = iss_bitmap | (DEREFERENCE_PROPERTY_ISSBM + LVALUE_CONTEXT_ISSBM);
+				  c = Str::get_at(from, ++at); break;
+		case '?': iss_bitmap = iss_bitmap | ADOPT_LOCAL_STACK_FRAME_ISSBM;
+				  c = Str::get_at(from, ++at); break;
+		case '<': iss_bitmap = iss_bitmap | CAST_TO_KIND_OF_OTHER_TERM_ISSBM;
+				  c = Str::get_at(from, ++at); break;
+		case '^': iss_bitmap = iss_bitmap | (ADOPT_LOCAL_STACK_FRAME_ISSBM + BY_REFERENCE_ISSBM);
+				  c = Str::get_at(from, ++at); break;
+		case '>': iss_bitmap = iss_bitmap | BY_REFERENCE_ISSBM;
+				  c = Str::get_at(from, ++at); break;
 	}
 	if (Characters::isdigit(c)) {
 		@<Absorb raw material, if any@>;
@@ -354,12 +445,18 @@ bracings or I7 interpolations. That might look like, for instance,
 =
 (there is no reason to suppose that this stretch of code is complete or
 matches parentheses); we must tokenise it into
-
-|Frog| |W| |+| |W| |2| |*| |Toad| |(|
-
-where |W| indicates a white space token. What we do is scan through the
-text until we reach the start of a new token, and then break off what we
-scanned through since the last time.
+= (text)
+	Frog
+	WHITE SPACE
+	+
+	WHITE SPACE
+	2
+	*
+	Toad
+	(
+=
+We scan through the text until we reach the start of a new token, and then break
+off what we scanned through since the last time.
 
 @<Look for individual tokens@> =
 	int L = Str::len(current_raw);
@@ -370,7 +467,9 @@ scanned through since the last time.
 		if (p < L-2) c3 = Str::get_at(current_raw, p+2);
 
 		if (escaped == FALSE) {
-			if ((c1 == '$') && ((p == 0) || (Characters::isalpha(Str::get_at(current_raw, p-1)) == FALSE)))
+			if ((c1 == '$') &&
+				((p == 0) ||
+					(Characters::isalpha(Str::get_at(current_raw, p-1)) == FALSE)))
 				@<Break off here for real, binary or hexadecimal notation@>;
 			if (c1 == '-') @<Break off here for negative number@>;
 			@<Break off here for operators@>;
@@ -428,11 +527,14 @@ the character after the initial dollar determines which:
 not be a negative number: it may be the binary subtraction operator.
 For example, we need to tokenise |x-1| as
 = (text)
-|x| |-| |1|
+	x
+	-
+	1
 =
 and not as
 = (text)
-|x| |-1|
+	x
+	-1
 =
 This requires context, that is, remembering what the previous token was.
 
@@ -539,7 +641,9 @@ inclusive; we ignore an empty token.
 		DISCARD_TEXT(T)
 	}
 
-@ Finally, we identify what sort of token we're looking at.
+@ Finally, we identify what sort of token we're looking at. It would be elegant
+to reimplement this with a trie (e.g. using //foundation: Tries and Avinues//),
+but speed is not quite important enough to make it worthwhile.
 
 @e HAS_XBIP from 10000
 @e HASNT_XBIP
@@ -550,7 +654,8 @@ inclusive; we ignore an empty token.
 	if (Str::get_at(T, 0) == '@') is = OPCODE_ISTT;
 	if (Str::get_at(T, 0) == 0x00A7)
 		is = IDENTIFIER_ISTT;
-	if ((Str::get_at(T, 0) == '#') && (Str::get_at(T, 1) == '#') && (Characters::isalpha(Str::get_at(T, 2)))) {
+	if ((Str::get_at(T, 0) == '#') && (Str::get_at(T, 1) == '#') &&
+		(Characters::isalpha(Str::get_at(T, 2)))) {
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
 			wchar_t c = Str::get(P);
@@ -693,7 +798,8 @@ inclusive; we ignore an empty token.
 	if (Str::eq(T, I"->")) { is = OPERATOR_ISTT; which = LOOKUPBYTE_BIP; }
 	if (Str::eq(T, I"-->")) { is = OPERATOR_ISTT; which = LOOKUP_BIP; }
 
-@
+@ Anticlimactically: a function to deal with escape characters in Inform 6
+double-quoted text notation.
 
 =
 void Tokenisation::de_escape_text(text_stream *m) {
@@ -719,9 +825,7 @@ void Tokenisation::de_escape_text(text_stream *m) {
 		}
 	}
 	LOOP_THROUGH_TEXT(P, m) {
-		if (Str::get(P) == '^')
-			Str::put(P, '\n');
-		if (Str::get(P) == '~')
-			Str::put(P, '\"');
+		if (Str::get(P) == '^') Str::put(P, '\n');
+		if (Str::get(P) == '~') Str::put(P, '\"');
 	}
 }
