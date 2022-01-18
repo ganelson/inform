@@ -395,6 +395,15 @@ void InterSchemas::add_token_after(inter_schema_token *t, inter_schema_token *ex
 	t->owner = existing->owner;
 }
 
+@ When more drastic things happen, we need to fix all the ownership links:
+
+=
+void InterSchemas::changed_tokens_on(inter_schema_node *isn) {
+	if (isn)
+		for (inter_schema_token *l = isn->expression_tokens; l; l=l->next)
+			l->owner = isn;
+}
+
 @h Logging.
 It is invaluable to be able to see compiled schemas in the debugging log, so
 we go to some trouble here.

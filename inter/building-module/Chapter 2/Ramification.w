@@ -248,9 +248,7 @@ int Ramification::unbrace_schema(inter_schema_node *par, inter_schema_node *isn)
 							InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 						new_isn->expression_tokens = resumed;
 						new_isn->parent_node = isn->parent_node;
-						for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-							l->owner = new_isn;
-						}
+						InterSchemas::changed_tokens_on(new_isn);
 						inter_schema_node *saved = isn->next_node;
 						isn->next_node = new_isn;
 						new_isn->next_node = saved;
@@ -305,9 +303,7 @@ int Ramification::divide_schema(inter_schema_node *par, inter_schema_node *isn) 
 					new_isn->child_node->parent_node = new_isn;
 					isn->child_node = NULL;
 				}
-				for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-					l->owner = new_isn;
-				}
+				InterSchemas::changed_tokens_on(new_isn);
 				inter_schema_node *saved = isn->next_node;
 				isn->next_node = new_isn;
 				new_isn->next_node = saved;
@@ -409,9 +405,7 @@ int Ramification::resolve_halfopen_blocks(inter_schema_node *par, inter_schema_n
 					new_isn->child_node->parent_node = new_isn;
 					isn->child_node = NULL;
 				}
-				for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-					l->owner = new_isn;
-				}
+				InterSchemas::changed_tokens_on(new_isn);
 				inter_schema_node *saved = isn->next_node;
 				isn->next_node = new_isn;
 				new_isn->next_node = saved;
@@ -471,9 +465,7 @@ int Ramification::break_early_bracings(inter_schema_node *par, inter_schema_node
 					new_isn->child_node->parent_node = new_isn;
 					isn->child_node = NULL;
 				}
-				for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-					l->owner = new_isn;
-				}
+				InterSchemas::changed_tokens_on(new_isn);
 				inter_schema_node *saved = isn->next_node;
 				isn->next_node = new_isn;
 				new_isn->next_node = saved;
@@ -608,11 +600,8 @@ int Ramification::split_switches_into_cases(inter_schema_node *par, inter_schema
 					sw_code->child_node = sw_code_exp;
 					sw_code_exp->parent_node = sw_code;
 
-					if (sw_val)
-						for (inter_schema_token *t = sw_val->expression_tokens; t; t = t->next)
-							t->owner = sw_val;
-					for (inter_schema_token *t = sw_code_exp->expression_tokens; t; t = t->next)
-						t->owner = sw_code_exp;
+					InterSchemas::changed_tokens_on(sw_val);
+					InterSchemas::changed_tokens_on(sw_code_exp);
 					
 					sw_code_exp->child_node = original_child;
 
@@ -717,9 +706,7 @@ int Ramification::split_print_statements(inter_schema_node *par, inter_schema_no
 						inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 						new_isn->expression_tokens = n;
 						new_isn->parent_node = isn->parent_node;
-						for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-							l->owner = new_isn;
-						}
+						InterSchemas::changed_tokens_on(new_isn);
 						inter_schema_node *saved = isn->next_node;
 						isn->next_node = new_isn;
 						new_isn->next_node = saved;
@@ -736,388 +723,36 @@ int Ramification::split_print_statements(inter_schema_node *par, inter_schema_no
 }
 
 @h The identify constructs ramification.
+At this point each individual expression or statement is represented by the
+tokens under an |EXPRESSION_ISNT| node. It's legal to give an expression as
+a statement in Inform 6, i.e., in void context, just as it is in C. But we
+can tell the difference because statements are introduced by reserved words
+such as |while|; and this is where we do that.
 
 =
 int Ramification::identify_constructs(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if (isn->expression_tokens) {
-			inter_ti subordinate_to = 0, subordinate_store_val = 0;
-			inter_schema_token *operand1 = NULL, *operand2 = NULL;
-			inter_schema_node *operand2_node = NULL;
-			int dangle = NOT_APPLICABLE;
+			inter_ti which_statement = 0;
 			int dangle_number = -1;
 			text_stream *dangle_text = NULL;
-			if (isn->expression_tokens->ist_type == RESERVED_ISTT) {
-				switch (isn->expression_tokens->reserved_word) {
-					case PRINT_I6RW:
-					case PRINTRET_I6RW:
-						subordinate_to = PRINTNUMBER_BIP;
-						inter_schema_token *n = isn->expression_tokens->next;
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						if ((n) && (n->ist_type == OPEN_ROUND_ISTT)) {
-							n = n->next;
-							while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-							inter_schema_token *pr = n;
-							if (pr) {
-								n = n->next;
-								while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-								if ((n) && (n->ist_type == CLOSE_ROUND_ISTT)) {
-									n = n->next;
-									while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-									if (Str::eq(pr->material, I"address")) {
-										subordinate_to = PRINTDWORD_BIP;
-										operand1 = n;
-									} else if (Str::eq(pr->material, I"char")) {
-										subordinate_to = PRINTCHAR_BIP;
-										operand1 = n;
-									} else if (Str::eq(pr->material, I"string")) {
-										subordinate_to = PRINTSTRING_BIP;
-										operand1 = n;
-									} else if (Str::eq(pr->material, I"object")) {
-										subordinate_to = PRINTOBJ_BIP;
-										operand1 = n;
-									} else {
-										if (Str::eq(pr->material, I"the")) pr->material = I"DefArt";
-										if (Str::eq(pr->material, I"The")) pr->material = I"CDefArt";
-										if ((Str::eq(pr->material, I"a")) || (Str::eq(pr->material, I"an"))) pr->material = I"IndefArt";
-										if ((Str::eq(pr->material, I"A")) || (Str::eq(pr->material, I"An"))) pr->material = I"CIndefArt";
-										if (Str::eq(pr->material, I"number")) pr->material = I"LanguageNumber";
-										if (Str::eq(pr->material, I"name")) pr->material = I"PrintShortName";
-										if (Str::eq(pr->material, I"property")) pr->material = I"DebugProperty";
-										isn->expression_tokens = pr;
-										inter_schema_token *open_b =
-											InterSchemas::new_token(OPEN_ROUND_ISTT, I"(", 0, 0, -1);
-										InterSchemas::add_token_after(open_b, isn->expression_tokens);
-										open_b->next = n;
-										n = open_b;
-										while ((n) && (n->next)) n = n->next;
-										inter_schema_token *close_b =
-											InterSchemas::new_token(CLOSE_ROUND_ISTT, I")", 0, 0, -1);
-										InterSchemas::add_token_after(close_b, n);
-										subordinate_to = 0;
-										operand1 = NULL;
-									}
-								}
-							}
-						}
-						if (subordinate_to == PRINTNUMBER_BIP) {
-							inter_schema_token *n = isn->expression_tokens->next;
-							while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-							if ((n) && (n->ist_type == DQUOTED_ISTT)) {
-								subordinate_to = PRINT_BIP;
-								Tokenisation::de_escape_text(n->material);
-							}
-						}
-						if (isn->expression_tokens->reserved_word == PRINTRET_I6RW) {
-							inter_schema_node *save_next = isn->next_node;
-							isn->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
-							isn->next_node->parent_node = isn->parent_node;
-							isn->next_node->isn_clarifier = PRINT_BIP;
-							isn->next_node->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-							isn->next_node->child_node->parent_node = isn->next_node;
-							InterSchemas::add_token_to_node(isn->next_node->child_node, InterSchemas::new_token(DQUOTED_ISTT, I"\n", 0, 0, -1));
-							isn->next_node->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
-							isn->next_node->next_node->parent_node = isn->parent_node;
-							isn->next_node->next_node->isn_clarifier = RETURN_BIP;
-							isn->next_node->next_node->next_node = save_next;
-						}
-						break;
-					case STYLE_I6RW: {
-						inter_schema_token *n = isn->expression_tokens->next;
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						if ((n) && (Str::eq(n->material, I"roman"))) {
-							subordinate_to = STYLE_BIP;
-							dangle_number = 0;
-						} else if ((n) && (Str::eq(n->material, I"bold"))) {
-							subordinate_to = STYLE_BIP;
-							dangle_number = 1;
-						} else if ((n) && (Str::eq(n->material, I"underline"))) {
-							subordinate_to = STYLE_BIP;
-							dangle_number = 2;
-						} else if ((n) && (Str::eq(n->material, I"reverse"))) {
-							subordinate_to = STYLE_BIP;
-							dangle_number = 3;
-						} else {
-							subordinate_to = STYLE_BIP;
-						}
-						break;
-					}
-					case INVERSION_I6RW:
-						subordinate_to = PRINT_BIP;
-						dangle_text = I"v6";
-						break;
-					case FONT_I6RW: {
-						subordinate_to = FONT_BIP;
-						inter_schema_token *n = isn->expression_tokens->next;
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						if ((n) && (Str::eq(n->material, I"on"))) dangle = 1;
-						if ((n) && (Str::eq(n->material, I"off"))) dangle = 0;
-						break;
-					}
-					case OBJECTLOOP_I6RW:
-						subordinate_to = OBJECTLOOP_BIP;
-						break;
-					case SWITCH_I6RW:
-						subordinate_to = SWITCH_BIP;
-						break;
-					case IF_I6RW: {
-						subordinate_to = IF_BIP;
-						inter_schema_token *n = isn->expression_tokens->next;
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						operand1 = n;
-						inter_schema_node *next_isn = isn->next_node;
-						if ((next_isn) && (next_isn->expression_tokens) &&
-							(next_isn->expression_tokens->ist_type == RESERVED_ISTT) &&
-							(next_isn->expression_tokens->reserved_word == ELSE_I6RW) &&
-							(next_isn->child_node)) {
-							inter_schema_token *n = next_isn->child_node->child_node->expression_tokens;
-							while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-							operand2 = n;
-							if (n) {
-								subordinate_to = IFELSE_BIP;
-								operand2_node = next_isn->child_node;
-							}
-							isn->next_node = next_isn->next_node;
-						}
-						break;
-					}
-					case FOR_I6RW:
-						subordinate_to = FOR_BIP;
-						break;
-					case WHILE_I6RW:
-						subordinate_to = WHILE_BIP;
-						break;
-					case DO_I6RW:
-						subordinate_to = DO_BIP;
-						inter_schema_node *next_isn = isn->next_node;
-						if ((next_isn) && (next_isn->expression_tokens) &&
-							(next_isn->expression_tokens->ist_type == RESERVED_ISTT) &&
-							(next_isn->expression_tokens->reserved_word == UNTIL_I6RW)) {
-							isn->next_node = next_isn->next_node;
-							inter_schema_token *n = next_isn->expression_tokens->next;
-							while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-							operand1 = n;
-						} else {
-							internal_error("do without until");
-						}
-						break;
-					case JUMP_I6RW:
-						subordinate_to = JUMP_BIP;
-						break;
-					case RETURN_I6RW:
-						subordinate_to = RETURN_BIP;
-						break;
-					case RTRUE_I6RW:
-						subordinate_to = RETURN_BIP;
-						dangle = TRUE;
-						break;
-					case RFALSE_I6RW:
-						subordinate_to = RETURN_BIP;
-						dangle = FALSE;
-						break;
-					case BREAK_I6RW:
-						subordinate_to = BREAK_BIP;
-						break;
-					case CONTINUE_I6RW:
-						subordinate_to = CONTINUE_BIP;
-						break;
-					case QUIT_I6RW:
-						subordinate_to = QUIT_BIP;
-						break;
-					case RESTORE_I6RW:
-						subordinate_to = RESTORE_BIP;
-						break;
-					case SPACES_I6RW:
-						subordinate_to = SPACES_BIP;
-						break;
-					case NEWLINE_I6RW:
-						subordinate_to = PRINT_BIP;
-						dangle_text = I"\n";
-						break;
-					case MOVE_I6RW: {
-						inter_schema_token *n = isn->expression_tokens->next;
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						operand1 = n;
-						while (n) {
-							if (Str::eq(n->material, I"to")) {
-								n->ist_type = WHITE_SPACE_ISTT;
-								n->material = I" ";
-								operand2 = n->next;
-								n->next = NULL;
-								while ((operand2) && (operand2->ist_type == WHITE_SPACE_ISTT)) operand2 = operand2->next;
-								break;
-							}
-							n = n->next;
-						}
-						if ((operand1) && (operand2)) subordinate_to = MOVE_BIP;
-						break;
-					}
-					case READ_I6RW: {
-						inter_schema_token *n = isn->expression_tokens->next;
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						operand1 = n;
-						n = n->next;
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						operand2 = n;
-						operand1->next = NULL;
-						operand2->next = NULL;
-						if ((operand1) && (operand2)) subordinate_to = READ_XBIP;
-						break;
-					}
-					case REMOVE_I6RW:
-						subordinate_to = REMOVE_BIP;
-						break;
-					case GIVE_I6RW: {
-						inter_schema_token *n = isn->expression_tokens->next;
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						operand1 = n;
-						n = n->next;
-						operand1->next = NULL;
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						if ((n) && (n->ist_type == OPERATOR_ISTT) && (n->operation_primitive == BITWISENOT_BIP)) {
-							subordinate_to = STORE_BIP; subordinate_store_val = 0;
-							n = n->next;
-						} else {
-							subordinate_to = STORE_BIP; subordinate_store_val = 1;
-						}
-						while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-						operand2 = n;
-						break;
-					}
-				}
+			inter_schema_token *operand1 = NULL, *operand2 = NULL;
+			inter_schema_node *operand2_node = NULL;
+			switch (isn->expression_tokens->ist_type) {
+				case RESERVED_ISTT:
+					@<If this expression opens with a reserved word, it may be a statement@>;
+					break;
+				case DIRECTIVE_ISTT:
+					@<If this expression opens with a directive keyword, it is a directive@>;
+					break;
+				case OPCODE_ISTT:
+					@<If this expression opens with an opcode keyword, it is an assembly line@>;
+					break;
 			}
-			if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == DIRECTIVE_ISTT)) {
-				isn->isn_type = DIRECTIVE_ISNT;
-				isn->dir_clarifier = isn->expression_tokens->reserved_word;
-				if (isn->expression_tokens->next) {
-					inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-					isn->child_node = new_isn;
-					new_isn->parent_node = isn;
-					new_isn->expression_tokens = isn->expression_tokens->next;
-					for (inter_schema_token *n = new_isn->expression_tokens; n; n = n->next)
-						n->owner = new_isn;
-				}
-				isn->expression_tokens = NULL;
-				subordinate_to = 0;
-			}
-			if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == OPCODE_ISTT)) {
-				if (Str::eq(isn->expression_tokens->material, I"@push")) subordinate_to = PUSH_BIP;
-				else if (Str::eq(isn->expression_tokens->material, I"@pull")) subordinate_to = PULL_BIP;
-				else {
-					isn->isn_type = ASSEMBLY_ISNT;
-					inter_schema_node *prev_node = NULL;
-					for (inter_schema_token *l = isn->expression_tokens, *n = l?(l->next):NULL; l; l=n, n=n?(n->next):NULL) {
-						if (l->ist_type != WHITE_SPACE_ISTT) {
-							inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-							new_isn->expression_tokens = l; l->next = NULL; l->owner = new_isn;
-							if (l->operation_primitive) {
-								l->ist_type = IDENTIFIER_ISTT;
-								l->operation_primitive = 0;
-							}
-							if ((n) && (Str::eq(l->material, I"-"))) {
-								l->material = Str::new();
-								WRITE_TO(l->material, "-%S", n->material);
-								l->ist_type = NUMBER_ISTT;
-								n = n->next;
-							}
-							if (Str::eq(l->material, I"->")) l->ist_type = ASM_ARROW_ISTT;
-							if (Str::eq(l->material, I"sp")) l->ist_type = ASM_SP_ISTT;
-							if ((Str::eq(l->material, I"?")) && (n)) {
-								l->ist_type = ASM_LABEL_ISTT;
-								l->material = n->material;
-								n = n->next;
-								if (Str::eq(l->material, I"~")) {
-									l->ist_type = ASM_NEGATED_LABEL_ISTT;
-									l->material = n->material;
-									n = n->next;
-								}
-							}
-							if (isn->child_node == NULL) isn->child_node = new_isn;
-							else if (prev_node) prev_node->next_node = new_isn;
-							new_isn->parent_node = isn;
-							prev_node = new_isn;
-						}
-					}
-					isn->expression_tokens = NULL;
-				}
-			}
-			if (subordinate_to) {
-				inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-				if (operand1 == NULL) operand1 = isn->expression_tokens->next;
-				new_isn->expression_tokens = operand1;
-				if ((new_isn->expression_tokens) &&
-					(new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT))
-						new_isn->expression_tokens = new_isn->expression_tokens->next;
-				for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-					l->owner = new_isn;
-				}
-				isn->isn_clarifier = subordinate_to;
-				isn->isn_type = STATEMENT_ISNT;
-				isn->expression_tokens = NULL;
-				new_isn->next_node = isn->child_node;
-				isn->child_node = new_isn;
-				new_isn->parent_node = isn;
-				if (dangle != NOT_APPLICABLE) {
-					text_stream *T = Str::new();
-					WRITE_TO(T, "%d", dangle);
-					new_isn->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
-					new_isn->expression_tokens->owner = new_isn;
-				}
-				if (dangle_number >= 0) {
-					text_stream *T = Str::new();
-					WRITE_TO(T, "%d", dangle_number);
-					new_isn->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
-					new_isn->expression_tokens->owner = new_isn;
-				}
-				if (dangle_text) {
-					new_isn->expression_tokens = InterSchemas::new_token(DQUOTED_ISTT, dangle_text, 0, 0, -1);
-					new_isn->expression_tokens->owner = new_isn;
-					Tokenisation::de_escape_text(new_isn->expression_tokens->material);
-				}
-				if (operand2) {
-					inter_schema_node *new_new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-					if (subordinate_to == IFELSE_BIP) {
-						new_new_isn->semicolon_terminated = TRUE;
-						new_new_isn->next_node = new_isn->next_node->next_node;
-						new_isn->next_node->next_node = new_new_isn;
-					} else {
-						new_new_isn->next_node = new_isn->next_node;
-						new_isn->next_node = new_new_isn;
-					}
-					new_new_isn->parent_node = isn;
-					new_new_isn->expression_tokens = operand2;
-					if ((new_new_isn->expression_tokens) && (new_new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT))
-						new_new_isn->expression_tokens = new_new_isn->expression_tokens->next;
-					for (inter_schema_token *l = new_new_isn->expression_tokens; l; l=l->next) {
-						l->owner = new_new_isn;
-					}
-				}
-				if (operand2_node) {
-					operand2_node->next_node = NULL;
-					new_isn->next_node->next_node = operand2_node;
-					operand2_node->parent_node = isn;
-					for (inter_schema_token *l = operand2_node->child_node->expression_tokens; l; l=l->next) {
-						l->owner = operand2_node->child_node;
-					}
-				}
-				if (subordinate_to == STORE_BIP) {
-					isn->isn_clarifier = 0;
-					isn->isn_type = EXPRESSION_ISNT;
-					inter_schema_node *A = isn->child_node;
-					inter_schema_node *B = isn->child_node->next_node;
-					isn->child_node = NULL;
-					isn->expression_tokens = A->expression_tokens;
-					isn->expression_tokens->next =
-						InterSchemas::new_token(OPERATOR_ISTT, I".", PROPERTYVALUE_BIP, 0, -1);
-					isn->expression_tokens->next->next = B->expression_tokens;
-					isn->expression_tokens->next->next->next = InterSchemas::new_token(OPERATOR_ISTT, I"=", STORE_BIP, 0, -1);
-					text_stream *T = Str::new();
-					WRITE_TO(T, "%d", subordinate_store_val);
-					isn->expression_tokens->next->next->next->next = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
-					for (inter_schema_token *l = isn->expression_tokens; l; l=l->next)
-						l->owner = isn;
-				}
-				return 1;
+
+			if (which_statement) {
+				@<Make this a STATEMENT_ISNT node@>;
+				return TRUE;
 			}
 		}
 		if ((isn->isn_type != ASSEMBLY_ISNT) && (isn->isn_type != DIRECTIVE_ISNT))
@@ -1127,39 +762,349 @@ int Ramification::identify_constructs(inter_schema_node *par, inter_schema_node 
 	return FALSE;
 }
 
-
-
-
-
-
-
-@h The strip all white space ramification.
-White space has an important role to play earlier on in the process, but once
-our tree structure contains the information it carries, we can discard it.
-This simply deletes every token of type |WHITE_SPACE_ISTT|.
-
+@ To have the node converted from |EXPRESSION_ISNT| to |STATEMENT_ISNT|, we must
+set |which_statement| to the BIP of the Inter primitive which will implement it.
+If we set |dangle_number| to some non-negative value, then that will be added
+as an argument. Thus:
+= (text)
+	EXPRESSION_ISNT
+		rfalse
 =
-int Ramification::strip_all_white_space(inter_schema_node *par, inter_schema_node *isn) {
-	for (; isn; isn=isn->next_node) {
-		if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == WHITE_SPACE_ISTT)) {
-			isn->expression_tokens = isn->expression_tokens->next;
-			return TRUE;
+becomes:
+=
+	STATEMENT_ISNT - RETURN_BIP
+		EXPRESSION_ISNT
+			0
+=
+The |0| is an invention -- in that it never occurs in the original text -- and
+its expression dangles beneath the |STATEMENT_ISNT| node; and similarly for
+a |dangle_text|, of course.
+
+@<If this expression opens with a reserved word, it may be a statement@> =
+	switch (isn->expression_tokens->reserved_word) {
+		case BREAK_I6RW:      which_statement = BREAK_BIP; break;
+		case CONTINUE_I6RW:   which_statement = CONTINUE_BIP; break;
+		case DO_I6RW:         @<This is a do statement@>; break;
+		case FONT_I6RW:       @<This is a font statement@>; break;
+		case FOR_I6RW:        which_statement = FOR_BIP; break;
+		case GIVE_I6RW:       @<This is a give statement@>; break;
+		case IF_I6RW:         @<This is an if statement@>; break;
+		case INVERSION_I6RW:  which_statement = PRINT_BIP; dangle_text = I"v6"; break;
+		case JUMP_I6RW:       which_statement = JUMP_BIP; break;
+		case MOVE_I6RW:       @<This is a move statement@>; break;
+		case NEWLINE_I6RW:    which_statement = PRINT_BIP; dangle_text = I"\n"; break;
+		case OBJECTLOOP_I6RW: which_statement = OBJECTLOOP_BIP; break;
+		case PRINT_I6RW:
+		case PRINTRET_I6RW:   @<This is a print statement@>; break;
+		case QUIT_I6RW:       which_statement = QUIT_BIP; break;
+		case READ_I6RW:       @<This is a read statement@>; break;
+		case REMOVE_I6RW:     which_statement = REMOVE_BIP; break;
+		case RESTORE_I6RW:    which_statement = RESTORE_BIP; break;
+		case RETURN_I6RW:     which_statement = RETURN_BIP; break;
+		case RFALSE_I6RW:     which_statement = RETURN_BIP; dangle_number = 0; break;
+		case RTRUE_I6RW:      which_statement = RETURN_BIP; dangle_number = 1; break;
+		case SPACES_I6RW:     which_statement = SPACES_BIP; break;
+		case STYLE_I6RW:      @<This is a style statement@>; break;
+		case SWITCH_I6RW:     which_statement = SWITCH_BIP; break;
+		case WHILE_I6RW:      which_statement = WHILE_BIP; break;
+	}
+
+@<This is a do statement@> =
+	which_statement = DO_BIP;
+	inter_schema_node *next_isn = isn->next_node;
+	if ((next_isn) && (next_isn->expression_tokens) &&
+		(next_isn->expression_tokens->ist_type == RESERVED_ISTT) &&
+		(next_isn->expression_tokens->reserved_word == UNTIL_I6RW)) {
+		isn->next_node = next_isn->next_node;
+		inter_schema_token *n = next_isn->expression_tokens->next;
+		while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+		operand1 = n;
+	} else {
+		internal_error("do without until");
+	}
+
+@<This is a font statement@> =
+	which_statement = FONT_BIP;
+	inter_schema_token *n = isn->expression_tokens->next;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	if ((n) && (Str::eq(n->material, I"on"))) dangle_number = 1;
+	if ((n) && (Str::eq(n->material, I"off"))) dangle_number = 0;
+
+@<This is a give statement@> =
+	inter_schema_token *n = isn->expression_tokens->next;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	operand1 = n;
+	n = n->next;
+	operand1->next = NULL;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	if ((n) && (n->ist_type == OPERATOR_ISTT) &&
+		(n->operation_primitive == BITWISENOT_BIP)) {
+		which_statement = STORE_BIP; dangle_number = 0;
+		n = n->next;
+	} else {
+		which_statement = STORE_BIP; dangle_number = 1;
+	}
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	operand2 = n;
+
+@<This is an if statement@> =
+	which_statement = IF_BIP;
+	inter_schema_token *n = isn->expression_tokens->next;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	operand1 = n;
+	inter_schema_node *next_isn = isn->next_node;
+	if ((next_isn) && (next_isn->expression_tokens) &&
+		(next_isn->expression_tokens->ist_type == RESERVED_ISTT) &&
+		(next_isn->expression_tokens->reserved_word == ELSE_I6RW) &&
+		(next_isn->child_node)) {
+		inter_schema_token *n = next_isn->child_node->child_node->expression_tokens;
+		while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+		operand2 = n;
+		if (n) {
+			which_statement = IFELSE_BIP;
+			operand2_node = next_isn->child_node;
 		}
-		int d = 0;
-		inter_schema_token *prev = isn->expression_tokens;
-		if (prev) {
-			inter_schema_token *n = prev->next;
-			while (n) {
-			 	if (n->ist_type == WHITE_SPACE_ISTT) { prev->next = n->next; d++; }
-				prev = n; n = n->next;
+		isn->next_node = next_isn->next_node;
+	}
+
+@<This is a move statement@> =
+	inter_schema_token *n = isn->expression_tokens->next;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	operand1 = n;
+	while (n) {
+		if (Str::eq(n->material, I"to")) {
+			n->ist_type = WHITE_SPACE_ISTT;
+			n->material = I" ";
+			operand2 = n->next;
+			n->next = NULL;
+			while ((operand2) && (operand2->ist_type == WHITE_SPACE_ISTT)) operand2 = operand2->next;
+			break;
+		}
+		n = n->next;
+	}
+	if ((operand1) && (operand2)) which_statement = MOVE_BIP;
+
+@<This is a style statement@> =
+	inter_schema_token *n = isn->expression_tokens->next;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	if ((n) && (Str::eq(n->material, I"roman"))) {
+		which_statement = STYLE_BIP;
+		dangle_number = 0;
+	} else if ((n) && (Str::eq(n->material, I"bold"))) {
+		which_statement = STYLE_BIP;
+		dangle_number = 1;
+	} else if ((n) && (Str::eq(n->material, I"underline"))) {
+		which_statement = STYLE_BIP;
+		dangle_number = 2;
+	} else if ((n) && (Str::eq(n->material, I"reverse"))) {
+		which_statement = STYLE_BIP;
+		dangle_number = 3;
+	} else {
+		which_statement = STYLE_BIP;
+	}
+
+@<This is a print statement@> =
+	which_statement = PRINTNUMBER_BIP;
+	inter_schema_token *n = isn->expression_tokens->next;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	if ((n) && (n->ist_type == OPEN_ROUND_ISTT)) {
+		n = n->next;
+		while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+		inter_schema_token *pr = n;
+		if (pr) {
+			n = n->next;
+			while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+			if ((n) && (n->ist_type == CLOSE_ROUND_ISTT)) {
+				n = n->next;
+				while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+				if (Str::eq(pr->material, I"address")) {
+					which_statement = PRINTDWORD_BIP;
+					operand1 = n;
+				} else if (Str::eq(pr->material, I"char")) {
+					which_statement = PRINTCHAR_BIP;
+					operand1 = n;
+				} else if (Str::eq(pr->material, I"string")) {
+					which_statement = PRINTSTRING_BIP;
+					operand1 = n;
+				} else if (Str::eq(pr->material, I"object")) {
+					which_statement = PRINTOBJ_BIP;
+					operand1 = n;
+				} else {
+					if (Str::eq(pr->material, I"the")) pr->material = I"DefArt";
+					if (Str::eq(pr->material, I"The")) pr->material = I"CDefArt";
+					if ((Str::eq(pr->material, I"a")) || (Str::eq(pr->material, I"an"))) pr->material = I"IndefArt";
+					if ((Str::eq(pr->material, I"A")) || (Str::eq(pr->material, I"An"))) pr->material = I"CIndefArt";
+					if (Str::eq(pr->material, I"number")) pr->material = I"LanguageNumber";
+					if (Str::eq(pr->material, I"name")) pr->material = I"PrintShortName";
+					if (Str::eq(pr->material, I"property")) pr->material = I"DebugProperty";
+					isn->expression_tokens = pr;
+					inter_schema_token *open_b =
+						InterSchemas::new_token(OPEN_ROUND_ISTT, I"(", 0, 0, -1);
+					InterSchemas::add_token_after(open_b, isn->expression_tokens);
+					open_b->next = n;
+					n = open_b;
+					while ((n) && (n->next)) n = n->next;
+					inter_schema_token *close_b =
+						InterSchemas::new_token(CLOSE_ROUND_ISTT, I")", 0, 0, -1);
+					InterSchemas::add_token_after(close_b, n);
+					which_statement = 0;
+					operand1 = NULL;
+				}
 			}
 		}
-		if (d > 0) return TRUE;
-		if (Ramification::strip_all_white_space(isn, isn->child_node)) return TRUE;
 	}
-	return FALSE;
-}
+	if (which_statement == PRINTNUMBER_BIP) {
+		inter_schema_token *n = isn->expression_tokens->next;
+		while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+		if ((n) && (n->ist_type == DQUOTED_ISTT)) {
+			which_statement = PRINT_BIP;
+			Tokenisation::de_escape_text(n->material);
+		}
+	}
+	if (isn->expression_tokens->reserved_word == PRINTRET_I6RW) {
+		inter_schema_node *save_next = isn->next_node;
+		isn->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
+		isn->next_node->parent_node = isn->parent_node;
+		isn->next_node->isn_clarifier = PRINT_BIP;
+		isn->next_node->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+		isn->next_node->child_node->parent_node = isn->next_node;
+		InterSchemas::add_token_to_node(isn->next_node->child_node, InterSchemas::new_token(DQUOTED_ISTT, I"\n", 0, 0, -1));
+		isn->next_node->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
+		isn->next_node->next_node->parent_node = isn->parent_node;
+		isn->next_node->next_node->isn_clarifier = RETURN_BIP;
+		isn->next_node->next_node->next_node = save_next;
+	}
 
+@<This is a read statement@> =
+	inter_schema_token *n = isn->expression_tokens->next;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	operand1 = n;
+	n = n->next;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	operand2 = n;
+	operand1->next = NULL;
+	operand2->next = NULL;
+	if ((operand1) && (operand2)) which_statement = READ_XBIP;
+
+@<If this expression opens with a directive keyword, it is a directive@> =
+	isn->isn_type = DIRECTIVE_ISNT;
+	isn->dir_clarifier = isn->expression_tokens->reserved_word;
+	if (isn->expression_tokens->next) {
+		inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+		isn->child_node = new_isn;
+		new_isn->parent_node = isn;
+		new_isn->expression_tokens = isn->expression_tokens->next;
+		InterSchemas::changed_tokens_on(new_isn);
+	}
+	isn->expression_tokens = NULL;
+	which_statement = 0;
+
+@<If this expression opens with an opcode keyword, it is an assembly line@> =
+	if (Str::eq(isn->expression_tokens->material, I"@push")) which_statement = PUSH_BIP;
+	else if (Str::eq(isn->expression_tokens->material, I"@pull")) which_statement = PULL_BIP;
+	else {
+		isn->isn_type = ASSEMBLY_ISNT;
+		inter_schema_node *prev_node = NULL;
+		for (inter_schema_token *l = isn->expression_tokens, *n = l?(l->next):NULL; l; l=n, n=n?(n->next):NULL) {
+			if (l->ist_type != WHITE_SPACE_ISTT) {
+				inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+				new_isn->expression_tokens = l; l->next = NULL; l->owner = new_isn;
+				if (l->operation_primitive) {
+					l->ist_type = IDENTIFIER_ISTT;
+					l->operation_primitive = 0;
+				}
+				if ((n) && (Str::eq(l->material, I"-"))) {
+					l->material = Str::new();
+					WRITE_TO(l->material, "-%S", n->material);
+					l->ist_type = NUMBER_ISTT;
+					n = n->next;
+				}
+				if (Str::eq(l->material, I"->")) l->ist_type = ASM_ARROW_ISTT;
+				if (Str::eq(l->material, I"sp")) l->ist_type = ASM_SP_ISTT;
+				if ((Str::eq(l->material, I"?")) && (n)) {
+					l->ist_type = ASM_LABEL_ISTT;
+					l->material = n->material;
+					n = n->next;
+					if (Str::eq(l->material, I"~")) {
+						l->ist_type = ASM_NEGATED_LABEL_ISTT;
+						l->material = n->material;
+						n = n->next;
+					}
+				}
+				if (isn->child_node == NULL) isn->child_node = new_isn;
+				else if (prev_node) prev_node->next_node = new_isn;
+				new_isn->parent_node = isn;
+				prev_node = new_isn;
+			}
+		}
+		isn->expression_tokens = NULL;
+	}
+
+@<Make this a STATEMENT_ISNT node@> =
+	inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+	if (operand1 == NULL) operand1 = isn->expression_tokens->next;
+	new_isn->expression_tokens = operand1;
+	if ((new_isn->expression_tokens) &&
+		(new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT))
+			new_isn->expression_tokens = new_isn->expression_tokens->next;
+	InterSchemas::changed_tokens_on(new_isn);
+	isn->isn_clarifier = which_statement;
+	isn->isn_type = STATEMENT_ISNT;
+	isn->expression_tokens = NULL;
+	new_isn->next_node = isn->child_node;
+	isn->child_node = new_isn;
+	new_isn->parent_node = isn;
+
+	if ((which_statement != STORE_BIP) && (dangle_number >= 0)) {
+		text_stream *T = Str::new();
+		WRITE_TO(T, "%d", dangle_number);
+		new_isn->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
+		new_isn->expression_tokens->owner = new_isn;
+	}
+	if (Str::len(dangle_text) > 0) {
+		new_isn->expression_tokens = InterSchemas::new_token(DQUOTED_ISTT, dangle_text, 0, 0, -1);
+		new_isn->expression_tokens->owner = new_isn;
+		Tokenisation::de_escape_text(new_isn->expression_tokens->material);
+	}
+
+	if (operand2) {
+		inter_schema_node *new_new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+		if (which_statement == IFELSE_BIP) {
+			new_new_isn->semicolon_terminated = TRUE;
+			new_new_isn->next_node = new_isn->next_node->next_node;
+			new_isn->next_node->next_node = new_new_isn;
+		} else {
+			new_new_isn->next_node = new_isn->next_node;
+			new_isn->next_node = new_new_isn;
+		}
+		new_new_isn->parent_node = isn;
+		new_new_isn->expression_tokens = operand2;
+		if ((new_new_isn->expression_tokens) && (new_new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT))
+			new_new_isn->expression_tokens = new_new_isn->expression_tokens->next;
+		InterSchemas::changed_tokens_on(new_new_isn);
+	}
+	if (operand2_node) {
+		operand2_node->next_node = NULL;
+		new_isn->next_node->next_node = operand2_node;
+		operand2_node->parent_node = isn;
+		InterSchemas::changed_tokens_on( operand2_node->child_node);
+	}
+	if (which_statement == STORE_BIP) {
+		isn->isn_clarifier = 0;
+		isn->isn_type = EXPRESSION_ISNT;
+		inter_schema_node *A = isn->child_node;
+		inter_schema_node *B = isn->child_node->next_node;
+		isn->child_node = NULL;
+		isn->expression_tokens = A->expression_tokens;
+		isn->expression_tokens->next =
+			InterSchemas::new_token(OPERATOR_ISTT, I".", PROPERTYVALUE_BIP, 0, -1);
+		isn->expression_tokens->next->next = B->expression_tokens;
+		isn->expression_tokens->next->next->next = InterSchemas::new_token(OPERATOR_ISTT, I"=", STORE_BIP, 0, -1);
+		text_stream *T = Str::new();
+		WRITE_TO(T, "%d", dangle_number);
+		isn->expression_tokens->next->next->next->next = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
+		InterSchemas::changed_tokens_on(isn);
+	}
 
 @ =
 int Ramification::alternatecases(inter_schema_node *par, inter_schema_node *isn) {
@@ -1312,9 +1257,7 @@ int Ramification::top_level_commas(inter_schema_node *par, inter_schema_node *is
 					inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 					new_isn->expression_tokens = n;
 					new_isn->parent_node = isn->parent_node;
-					for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-						l->owner = new_isn;
-					}
+					InterSchemas::changed_tokens_on(new_isn);
 					inter_schema_node *saved = isn->next_node;
 					isn->next_node = new_isn;
 					new_isn->next_node = saved;
@@ -1328,6 +1271,34 @@ int Ramification::top_level_commas(inter_schema_node *par, inter_schema_node *is
 	}
 	return FALSE;
 }
+
+@h The strip all white space ramification.
+White space has an important role to play earlier on in the process, but once
+our tree structure contains the information it carries, we can discard it.
+This simply deletes every token of type |WHITE_SPACE_ISTT|.
+
+=
+int Ramification::strip_all_white_space(inter_schema_node *par, inter_schema_node *isn) {
+	for (; isn; isn=isn->next_node) {
+		if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == WHITE_SPACE_ISTT)) {
+			isn->expression_tokens = isn->expression_tokens->next;
+			return TRUE;
+		}
+		int d = 0;
+		inter_schema_token *prev = isn->expression_tokens;
+		if (prev) {
+			inter_schema_token *n = prev->next;
+			while (n) {
+			 	if (n->ist_type == WHITE_SPACE_ISTT) { prev->next = n->next; d++; }
+				prev = n; n = n->next;
+			}
+		}
+		if (d > 0) return TRUE;
+		if (Ramification::strip_all_white_space(isn, isn->child_node)) return TRUE;
+	}
+	return FALSE;
+}
+
 
 int Ramification::debracket(inter_schema_node *par, inter_schema_node *isn) {
 	if (Ramification::outer_subexpressions(par, isn)) return TRUE;
@@ -1358,10 +1329,10 @@ int Ramification::outer_subexpressions(inter_schema_node *par, inter_schema_node
 				if ((fails == FALSE) && (from) && (to) && (from != to)) {
 					inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 					new_isn->expression_tokens = from;
-					for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-						l->owner = new_isn;
-						if (l->next == to) l->next = NULL;
-					}
+					for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next)
+						if (l->next == to)
+							l->next = NULL;
+					InterSchemas::changed_tokens_on(new_isn);
 					isn->isn_type = SUBEXPRESSION_ISNT;
 					isn->expression_tokens = NULL;
 
@@ -1414,10 +1385,10 @@ int Ramification::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 				if ((from) && (from != to)) {
 					inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 					new_isn->expression_tokens = from;
-					for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-						l->owner = new_isn;
-						if (l->next == to) l->next = NULL;
-					}
+					for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next)
+						if (l->next == to)
+							l->next = NULL;
+					InterSchemas::changed_tokens_on(new_isn);
 					if (isn->child_node == NULL) {
 						isn->child_node = new_isn;
 					} else {
@@ -1439,10 +1410,10 @@ int Ramification::op_subexpressions(inter_schema_node *par, inter_schema_node *i
 					if ((from) && (from != to)) {
 						inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 						new_isn->expression_tokens = from;
-						for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-							l->owner = new_isn;
-							if (l->next == to) l->next = NULL;
-						}
+						for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next)
+							if (l->next == to)
+								l->next = NULL;
+						InterSchemas::changed_tokens_on(new_isn);
 						if (isn->child_node == NULL) {
 							isn->child_node = new_isn;
 						} else {
@@ -1559,10 +1530,10 @@ int Ramification::place_calls(inter_schema_node *par, inter_schema_node *isn) {
 	if ((from) && (to) && (from != to)) {
 		inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 		new_isn->expression_tokens = from;
-		for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next) {
-			l->owner = new_isn;
-			if (l->next == to) l->next = NULL;
-		}
+		for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next)
+			if (l->next == to)
+				l->next = NULL;
+		InterSchemas::changed_tokens_on(new_isn);
 		if (isn->child_node == NULL) {
 			isn->child_node = new_isn;
 		} else {

@@ -163,7 +163,7 @@ with the iname for that function). For example:
 @ But that is a laborious sort of notation for what, in a C-like language, would
 be written just as |return 1|. It would be very painful to have to implement
 kits such as BasicInformKit that way. Instead, we write them in a notation which
-is very close indeed[1] to Inform 6 syntax.
+is very close indeed[1] to Inform 6 syntax.[2]
 
 This means we need to provide what amounts to a pocket Inform-6-to-Inter compiler,
 and we do that in this module, using a data structure called an //inter_schema// --
@@ -173,7 +173,7 @@ notation. For example, this:
 	inter_schema *sch = ParsingSchemas::from_text(I"return true;");
 	EmitInterSchemas::emit(I, ..., sch, ...);
 =
-generates Inter code equivalent to the example above.[2] But the real power of
+generates Inter code equivalent to the example above.[3] But the real power of
 the system comes from:
 
 (a) The ability to handle much larger passages of I6 notation - for example, a
@@ -191,7 +191,7 @@ Here, the text |LIST_OF_TY_Say({-by-reference:L}, 1);| is passed through to
 //ParsingSchemas::from_text// to make a schema. When the phrase is invoked,
 //EmitInterSchemas::emit// is used to generate Inter code from it; and a
 reference to the list passed to the invocation as the token |L| is substituted
-for the braced clause |{-by-reference:L}|.[3] Schemas are also used as convenient
+for the braced clause |{-by-reference:L}|.[4] Schemas are also used as convenient
 shorthand in the compiler to express how to, for example, post-increment a
 property value.
 
@@ -200,8 +200,12 @@ are missing; so are some hardly-used directives; and the superclass |::| operato
 and built-in compiler symbols relevant only to particular virtual machines, such
 as |#g$self|, are not there. But really, you will never notice they are gone.
 
-[2] Skipping over some of the arguments to the emission function, which basically
+[2] Using Inform 6 notation was very convenient in the years 2004-17, when Inform
+generated only I6 code: it became more problematic in 2018, when Inter instructions
+were needed instead, and much of this module was written as a response.
+
+[3] Skipping over some of the arguments to the emission function, which basically
 tell us how to resolve identifier names into variables, arrays, and so on.
 
-[3] These braced placeholders are, of course, not Inform 6 notation, and
+[4] These braced placeholders are, of course, not Inform 6 notation, and
 represent an extension of the I6 syntax.
