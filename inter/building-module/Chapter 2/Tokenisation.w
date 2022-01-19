@@ -645,10 +645,14 @@ inclusive; we ignore an empty token.
 to reimplement this with a trie (e.g. using //foundation: Tries and Avinues//),
 but speed is not quite important enough to make it worthwhile.
 
+@d LOWEST_XBIP_VALUE HAS_XBIP
+
 @e HAS_XBIP from 10000
 @e HASNT_XBIP
 @e READ_XBIP
 @e OWNERKIND_XBIP
+
+@d HIGHEST_XBIP_VALUE OWNERKIND_XBIP
 
 @<Identify this new token@> =
 	if (Str::get_at(T, 0) == '@') is = OPCODE_ISTT;
@@ -756,47 +760,8 @@ but speed is not quite important enough to make it worthwhile.
 	if (Str::eq(T, I"}")) is = CLOSE_BRACE_ISTT;
 	if (Str::eq(T, I";")) is = DIVIDER_ISTT;
 
-	if (Str::eq(T, I".")) { is = OPERATOR_ISTT; which = PROPERTYVALUE_BIP; }
-	if (Str::eq(T, I".&")) { is = OPERATOR_ISTT; which = PROPERTYARRAY_BIP; }
-	if (Str::eq(T, I".#")) { is = OPERATOR_ISTT; which = PROPERTYLENGTH_BIP; }
-	if (Str::eq(T, I">>")) { is = OPERATOR_ISTT; which = OWNERKIND_XBIP; }
-
-	if (Str::eq(T, I"=")) { is = OPERATOR_ISTT; which = STORE_BIP; }
-
-	if (Str::eq(T, I"+")) { is = OPERATOR_ISTT; which = PLUS_BIP; }
-	if (Str::eq(T, I"-")) { is = OPERATOR_ISTT; which = MINUS_BIP; }
-	if (Str::eq(T, I"*")) { is = OPERATOR_ISTT; which = TIMES_BIP; }
-	if (Str::eq(T, I"/")) { is = OPERATOR_ISTT; which = DIVIDE_BIP; }
-	if (Str::eq(T, I"%")) { is = OPERATOR_ISTT; which = MODULO_BIP; }
-
-	if (Str::eq(T, I">")) { is = OPERATOR_ISTT; which = GT_BIP; }
-	if (Str::eq(T, I">=")) { is = OPERATOR_ISTT; which = GE_BIP; }
-	if (Str::eq(T, I"<")) { is = OPERATOR_ISTT; which = LT_BIP; }
-	if (Str::eq(T, I"<=")) { is = OPERATOR_ISTT; which = LE_BIP; }
-	if (Str::eq(T, I"==")) { is = OPERATOR_ISTT; which = EQ_BIP; }
-	if (Str::eq(T, I"~=")) { is = OPERATOR_ISTT; which = NE_BIP; }
-
-	if (Str::eq(T, I"~~")) { is = OPERATOR_ISTT; which = NOT_BIP; }
-	if (Str::eq(T, I"&&")) { is = OPERATOR_ISTT; which = AND_BIP; }
-	if (Str::eq(T, I"||")) { is = OPERATOR_ISTT; which = OR_BIP; }
-	if (Str::eq(T, I"or")) { is = OPERATOR_ISTT; which = ALTERNATIVE_BIP; }
-
-	if (Str::eq(T, I"ofclass")) { is = OPERATOR_ISTT; which = OFCLASS_BIP; }
-	if (Str::eq(T, I"has")) { is = OPERATOR_ISTT; which = HAS_XBIP; }
-	if (Str::eq(T, I"hasnt")) { is = OPERATOR_ISTT; which = HASNT_XBIP; }
-	if (Str::eq(T, I"provides")) { is = OPERATOR_ISTT; which = PROPERTYEXISTS_BIP; }
-	if (Str::eq(T, I"in")) { is = OPERATOR_ISTT; which = IN_BIP; }
-	if (Str::eq(T, I"notin")) { is = OPERATOR_ISTT; which = NOTIN_BIP; }
-
-	if (Str::eq(T, I"|")) { is = OPERATOR_ISTT; which = BITWISEOR_BIP; }
-	if (Str::eq(T, I"&")) { is = OPERATOR_ISTT; which = BITWISEAND_BIP; }
-	if (Str::eq(T, I"~")) { is = OPERATOR_ISTT; which = BITWISENOT_BIP; }
-
-	if (Str::eq(T, I"++")) { is = OPERATOR_ISTT; which = POSTINCREMENT_BIP; }
-	if (Str::eq(T, I"--")) { is = OPERATOR_ISTT; which = POSTDECREMENT_BIP; }
-
-	if (Str::eq(T, I"->")) { is = OPERATOR_ISTT; which = LOOKUPBYTE_BIP; }
-	if (Str::eq(T, I"-->")) { is = OPERATOR_ISTT; which = LOOKUP_BIP; }
+	inter_ti x = I6Operators::notation_to_BIP(T);
+	if (x > 0) { is = OPERATOR_ISTT; which = x; }
 
 @ Anticlimactically: a function to deal with escape characters in Inform 6
 double-quoted text notation.

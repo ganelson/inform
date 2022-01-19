@@ -190,11 +190,11 @@ cases used to check the floating-point extensions to Glulx.
 	return out;
 ];
 
-[ REAL_NUMBER_TY_Tanh in tmp out;
-	tmp = REAL_NUMBER_TY_Sinh(in);
-	in = REAL_NUMBER_TY_Cosh(in);
-	@fdiv tmp in out;
-	return out;
+[ REAL_NUMBER_TY_Tanh in s c t;
+	s = REAL_NUMBER_TY_Sinh(in);
+	c = REAL_NUMBER_TY_Cosh(in);
+	@fdiv s c t;
+	return t;
 ];
 
 [ REAL_NUMBER_TY_Reciprocal in out; @fdiv M_1 in out; return out; ];

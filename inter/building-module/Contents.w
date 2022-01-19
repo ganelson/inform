@@ -22,7 +22,7 @@ Chapter 2: Blueprints
 	Parsing Inter Schemas
 	Tokenisation
 	Ramification
-	Metadata on Primitives
+	Inform 6 Operators
 	Emitting Inter Schemas
 
 Chapter 3: Masonry

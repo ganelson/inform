@@ -37,7 +37,6 @@ void Ramification::go(inter_schema *sch) {
 	REPEATEDLY_APPLY(Ramification::outer_subexpressions);
 	REPEATEDLY_APPLY(Ramification::top_level_commas);
 	REPEATEDLY_APPLY(Ramification::multiple_case_values);
-//	REPEATEDLY_APPLY(Ramification::outer_subexpressions);
 	REPEATEDLY_APPLY(Ramification::strip_all_white_space);
 	REPEATEDLY_APPLY(Ramification::debracket);
 	REPEATEDLY_APPLY(Ramification::implied_return_values);
@@ -1577,7 +1576,8 @@ lowest precedence out of the two top-level operators here, the |+| and |*|.
 
 |in| is not a reserved word in Inform 6, though it probably should be. It can
 be used as an operator, as in the condition |if (x in y) ...|, but it can also
-be a variable name. So we will detect it only when it is used infix.
+be a variable name. So we will detect it only when it is used infix, and will
+otherwise convert it from an |OPERATOR_ISTT| to an |IDENTIFIER_ISTT|.
 
 @<Find the lowest-precedence top level operator, if any@> =
 	int bl = 0;
@@ -1586,11 +1586,16 @@ be a variable name. So we will detect it only when it is used infix.
 		if (n->ist_type == OPEN_ROUND_ISTT) bl++;
 		if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
 		if ((bl == 0) && (n->ist_type == OPERATOR_ISTT)) {
-			inter_ti this_operator = n->operation_primitive;
-			if ((this_operator != IN_BIP) || ((n != f) && (InterSchemas::next_dark_token(n))))
+			inter_ti this_operator = n->operation_primitive;			
+			if ((this_operator == IN_BIP) &&
+				((n == f) || (InterSchemas::next_dark_token(n) == NULL))) {
+				n->ist_type = IDENTIFIER_ISTT;
+				n->operation_primitive = 0;
+			} else {
 				if (Ramification::prefer_over(this_operator, final_operation)) {
 					final_op_token = n; final_operation = this_operator;
 				}
+			}
 		}
 	}
 	
@@ -1601,11 +1606,11 @@ level, as in the case of |x - y + z| or (horrifically) |x = y = z|.
 =
 int Ramification::prefer_over(inter_ti p, inter_ti existing) {
 	if (existing == 0) return TRUE;
-	if (BIPMetadata::precedence(p) < BIPMetadata::precedence(existing)) return TRUE;
-	if ((BIPMetadata::precedence(p) == BIPMetadata::precedence(existing)) &&
-		(BIPMetadata::right_associative(p)) &&
-		(BIPMetadata::arity(p) == 2) &&
-		(BIPMetadata::arity(existing) == 2)) return TRUE;
+	if (I6Operators::precedence(p) < I6Operators::precedence(existing)) return TRUE;
+	if ((I6Operators::precedence(p) == I6Operators::precedence(existing)) &&
+		(I6Operators::right_associative(p)) &&
+		(I6Operators::arity(p) == 2) &&
+		(I6Operators::arity(existing) == 2)) return TRUE;
 	return FALSE;
 }
 
@@ -1684,10 +1689,10 @@ operation |a.b|.
 		int a = 0;
 		if (has_left_operand) a++;
 		if (has_right_operand) a++;
-		if (a != BIPMetadata::arity(isn->isn_clarifier)) {
+		if (a != I6Operators::arity(isn->isn_clarifier)) {
 			LOG("Seem to have arity %d with isn %S which needs %d\n",
 				a, Primitives::BIP_to_name(isn->isn_clarifier),
-				BIPMetadata::arity(isn->isn_clarifier));
+				I6Operators::arity(isn->isn_clarifier));
 			LOG("$1\n", isn->parent_schema);
 			internal_error("bad arity");
 		}

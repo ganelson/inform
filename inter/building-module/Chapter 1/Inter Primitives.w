@@ -14,6 +14,8 @@ typedef struct inform7_primitive {
 	char *signature_c;
 	struct text_stream *name;
 	struct text_stream *signature;
+	int term_count;
+	int term_categories[8];
 } inform7_primitive;
 
 @ Each different primitive has a unique BIP number. (The origins of the term
@@ -138,111 +140,115 @@ It is essential that the sequence of rows below is the same as the sequence of
 enumerations above; but //Primitives::prepare_standard_set_array// checks this
 at runtime and throws an error if not.
 
+@d SIP_RECORD_END
+	NULL, NULL, 0,
+	{ VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT }
+
 =
 inform7_primitive standard_inform7_primitives[] = {
-	{ PLUS_BIP,              "!plus",              "val val -> val",                  NULL, NULL },
-	{ MINUS_BIP,             "!minus",             "val val -> val",                  NULL, NULL },
-	{ UNARYMINUS_BIP,        "!unaryminus",        "val -> val",                      NULL, NULL },
-	{ TIMES_BIP,             "!times",             "val val -> val",                  NULL, NULL },
-	{ DIVIDE_BIP,            "!divide",            "val val -> val",                  NULL, NULL },
-	{ MODULO_BIP,            "!modulo",            "val val -> val",                  NULL, NULL },
-	{ BITWISEAND_BIP,        "!bitwiseand",        "val val -> val",                  NULL, NULL },
-	{ BITWISEOR_BIP,         "!bitwiseor",         "val val -> val",                  NULL, NULL },
-	{ BITWISENOT_BIP,        "!bitwisenot",        "val -> val",                      NULL, NULL },
-	{ SEQUENTIAL_BIP,        "!sequential",        "val val -> val",                  NULL, NULL },
-	{ TERNARYSEQUENTIAL_BIP, "!ternarysequential", "val val val -> val",              NULL, NULL },
-	{ RANDOM_BIP,            "!random",            "val -> val",                      NULL, NULL },
+	{ PLUS_BIP,              "!plus",              "val val -> val",                  SIP_RECORD_END },
+	{ MINUS_BIP,             "!minus",             "val val -> val",                  SIP_RECORD_END },
+	{ UNARYMINUS_BIP,        "!unaryminus",        "val -> val",                      SIP_RECORD_END },
+	{ TIMES_BIP,             "!times",             "val val -> val",                  SIP_RECORD_END },
+	{ DIVIDE_BIP,            "!divide",            "val val -> val",                  SIP_RECORD_END },
+	{ MODULO_BIP,            "!modulo",            "val val -> val",                  SIP_RECORD_END },
+	{ BITWISEAND_BIP,        "!bitwiseand",        "val val -> val",                  SIP_RECORD_END },
+	{ BITWISEOR_BIP,         "!bitwiseor",         "val val -> val",                  SIP_RECORD_END },
+	{ BITWISENOT_BIP,        "!bitwisenot",        "val -> val",                      SIP_RECORD_END },
+	{ SEQUENTIAL_BIP,        "!sequential",        "val val -> val",                  SIP_RECORD_END },
+	{ TERNARYSEQUENTIAL_BIP, "!ternarysequential", "val val val -> val",              SIP_RECORD_END },
+	{ RANDOM_BIP,            "!random",            "val -> val",                      SIP_RECORD_END },
 
-	{ STORE_BIP,             "!store",             "ref val -> val",                  NULL, NULL },
-	{ PREINCREMENT_BIP,      "!preincrement",      "ref -> val",                      NULL, NULL },
-	{ POSTINCREMENT_BIP,     "!postincrement",     "ref -> val",                      NULL, NULL },
-	{ PREDECREMENT_BIP,      "!predecrement",      "ref -> val",                      NULL, NULL },
-	{ POSTDECREMENT_BIP,     "!postdecrement",     "ref -> val",                      NULL, NULL },
-	{ SETBIT_BIP,            "!setbit",            "ref val -> void",                 NULL, NULL },
-	{ CLEARBIT_BIP,          "!clearbit",          "ref val -> void",                 NULL, NULL },
+	{ STORE_BIP,             "!store",             "ref val -> val",                  SIP_RECORD_END },
+	{ PREINCREMENT_BIP,      "!preincrement",      "ref -> val",                      SIP_RECORD_END },
+	{ POSTINCREMENT_BIP,     "!postincrement",     "ref -> val",                      SIP_RECORD_END },
+	{ PREDECREMENT_BIP,      "!predecrement",      "ref -> val",                      SIP_RECORD_END },
+	{ POSTDECREMENT_BIP,     "!postdecrement",     "ref -> val",                      SIP_RECORD_END },
+	{ SETBIT_BIP,            "!setbit",            "ref val -> void",                 SIP_RECORD_END },
+	{ CLEARBIT_BIP,          "!clearbit",          "ref val -> void",                 SIP_RECORD_END },
 
-	{ PUSH_BIP,              "!push",              "val -> void",                     NULL, NULL },
-	{ PULL_BIP,              "!pull",              "ref -> void",                     NULL, NULL },
-	{ LOOKUP_BIP,            "!lookup",            "val val -> val",                  NULL, NULL },
-	{ LOOKUPBYTE_BIP,        "!lookupbyte",        "val val -> val",                  NULL, NULL },
-	{ PROPERTYARRAY_BIP,     "!propertyarray",     "val val val -> val",              NULL, NULL },
-	{ PROPERTYLENGTH_BIP,    "!propertylength",    "val val val -> val",              NULL, NULL },
-	{ PROPERTYEXISTS_BIP,    "!propertyexists",    "val val val -> val",              NULL, NULL },
-	{ PROPERTYVALUE_BIP,     "!propertyvalue",     "val val val -> val",              NULL, NULL },
+	{ PUSH_BIP,              "!push",              "val -> void",                     SIP_RECORD_END },
+	{ PULL_BIP,              "!pull",              "ref -> void",                     SIP_RECORD_END },
+	{ LOOKUP_BIP,            "!lookup",            "val val -> val",                  SIP_RECORD_END },
+	{ LOOKUPBYTE_BIP,        "!lookupbyte",        "val val -> val",                  SIP_RECORD_END },
+	{ PROPERTYARRAY_BIP,     "!propertyarray",     "val val val -> val",              SIP_RECORD_END },
+	{ PROPERTYLENGTH_BIP,    "!propertylength",    "val val val -> val",              SIP_RECORD_END },
+	{ PROPERTYEXISTS_BIP,    "!propertyexists",    "val val val -> val",              SIP_RECORD_END },
+	{ PROPERTYVALUE_BIP,     "!propertyvalue",     "val val val -> val",              SIP_RECORD_END },
 
-	{ MOVE_BIP,              "!move",              "val val -> void",                 NULL, NULL },
-	{ REMOVE_BIP,            "!remove",            "val -> void",                     NULL, NULL },
-	{ CHILD_BIP,             "!child",             "val -> val",                      NULL, NULL },
-	{ CHILDREN_BIP,          "!children",          "val -> val",                      NULL, NULL },
-	{ SIBLING_BIP,           "!sibling",           "val -> val",                      NULL, NULL },
-	{ PARENT_BIP,            "!parent",            "val -> val",                      NULL, NULL },
-	{ METACLASS_BIP,         "!metaclass",         "val -> val",                      NULL, NULL },
+	{ MOVE_BIP,              "!move",              "val val -> void",                 SIP_RECORD_END },
+	{ REMOVE_BIP,            "!remove",            "val -> void",                     SIP_RECORD_END },
+	{ CHILD_BIP,             "!child",             "val -> val",                      SIP_RECORD_END },
+	{ CHILDREN_BIP,          "!children",          "val -> val",                      SIP_RECORD_END },
+	{ SIBLING_BIP,           "!sibling",           "val -> val",                      SIP_RECORD_END },
+	{ PARENT_BIP,            "!parent",            "val -> val",                      SIP_RECORD_END },
+	{ METACLASS_BIP,         "!metaclass",         "val -> val",                      SIP_RECORD_END },
 
-	{ NOT_BIP,               "!not",               "val -> val",                      NULL, NULL },
-	{ AND_BIP,               "!and",               "val val -> val",                  NULL, NULL },
-	{ OR_BIP,                "!or",                "val val -> val",                  NULL, NULL },
-	{ EQ_BIP,                "!eq",                "val val -> val",                  NULL, NULL },
-	{ NE_BIP,                "!ne",                "val val -> val",                  NULL, NULL },
-	{ GT_BIP,                "!gt",                "val val -> val",                  NULL, NULL },
-	{ GE_BIP,                "!ge",                "val val -> val",                  NULL, NULL },
-	{ LT_BIP,                "!lt",                "val val -> val",                  NULL, NULL },
-	{ LE_BIP,                "!le",                "val val -> val",                  NULL, NULL },
-	{ OFCLASS_BIP,           "!ofclass",           "val val -> val",                  NULL, NULL },
-	{ IN_BIP,                "!in",                "val val -> val",                  NULL, NULL },
-	{ NOTIN_BIP,             "!notin",             "val val -> val",                  NULL, NULL },
-	{ ALTERNATIVE_BIP,       "!alternative",       "val val -> val",                  NULL, NULL },
+	{ NOT_BIP,               "!not",               "val -> val",                      SIP_RECORD_END },
+	{ AND_BIP,               "!and",               "val val -> val",                  SIP_RECORD_END },
+	{ OR_BIP,                "!or",                "val val -> val",                  SIP_RECORD_END },
+	{ EQ_BIP,                "!eq",                "val val -> val",                  SIP_RECORD_END },
+	{ NE_BIP,                "!ne",                "val val -> val",                  SIP_RECORD_END },
+	{ GT_BIP,                "!gt",                "val val -> val",                  SIP_RECORD_END },
+	{ GE_BIP,                "!ge",                "val val -> val",                  SIP_RECORD_END },
+	{ LT_BIP,                "!lt",                "val val -> val",                  SIP_RECORD_END },
+	{ LE_BIP,                "!le",                "val val -> val",                  SIP_RECORD_END },
+	{ OFCLASS_BIP,           "!ofclass",           "val val -> val",                  SIP_RECORD_END },
+	{ IN_BIP,                "!in",                "val val -> val",                  SIP_RECORD_END },
+	{ NOTIN_BIP,             "!notin",             "val val -> val",                  SIP_RECORD_END },
+	{ ALTERNATIVE_BIP,       "!alternative",       "val val -> val",                  SIP_RECORD_END },
 
-	{ FONT_BIP,              "!font",              "val -> void",                     NULL, NULL },
-	{ STYLE_BIP,             "!style",             "val -> void",                     NULL, NULL },
-	{ PRINT_BIP,             "!print",             "val -> void",                     NULL, NULL },
-	{ PRINTNL_BIP,           "!printnl",           "void -> void",                    NULL, NULL },
-	{ PRINTCHAR_BIP,         "!printchar",         "val -> void",                     NULL, NULL },
-	{ PRINTOBJ_BIP,          "!printobj",          "val -> void",                     NULL, NULL },
-	{ PRINTNUMBER_BIP,       "!printnumber",       "val -> void",                     NULL, NULL },
-	{ PRINTDWORD_BIP,        "!printdword",        "val -> void",                     NULL, NULL },
-	{ PRINTSTRING_BIP,       "!printstring",       "val -> void",                     NULL, NULL },
-	{ BOX_BIP,               "!box",               "val -> void",                     NULL, NULL },
-	{ SPACES_BIP,            "!spaces",            "val -> void",                     NULL, NULL },
+	{ FONT_BIP,              "!font",              "val -> void",                     SIP_RECORD_END },
+	{ STYLE_BIP,             "!style",             "val -> void",                     SIP_RECORD_END },
+	{ PRINT_BIP,             "!print",             "val -> void",                     SIP_RECORD_END },
+	{ PRINTNL_BIP,           "!printnl",           "void -> void",                    SIP_RECORD_END },
+	{ PRINTCHAR_BIP,         "!printchar",         "val -> void",                     SIP_RECORD_END },
+	{ PRINTOBJ_BIP,          "!printobj",          "val -> void",                     SIP_RECORD_END },
+	{ PRINTNUMBER_BIP,       "!printnumber",       "val -> void",                     SIP_RECORD_END },
+	{ PRINTDWORD_BIP,        "!printdword",        "val -> void",                     SIP_RECORD_END },
+	{ PRINTSTRING_BIP,       "!printstring",       "val -> void",                     SIP_RECORD_END },
+	{ BOX_BIP,               "!box",               "val -> void",                     SIP_RECORD_END },
+	{ SPACES_BIP,            "!spaces",            "val -> void",                     SIP_RECORD_END },
 
-	{ IF_BIP,                "!if",                "val code -> void",                NULL, NULL },
-	{ IFDEBUG_BIP,           "!ifdebug",           "code -> void",                    NULL, NULL },
-	{ IFSTRICT_BIP,          "!ifstrict",          "code -> void",                    NULL, NULL },
-	{ IFELSE_BIP,            "!ifelse",            "val code code -> void",           NULL, NULL },
-	{ WHILE_BIP,             "!while",             "val code -> void",                NULL, NULL },
-	{ DO_BIP,                "!do",                "val code -> void",                NULL, NULL },
-	{ FOR_BIP,               "!for",               "val val val code -> void",        NULL, NULL },
-	{ OBJECTLOOP_BIP,        "!objectloop",        "ref val val code -> void",        NULL, NULL },
-	{ OBJECTLOOPX_BIP,       "!objectloopx",       "ref val code -> void",            NULL, NULL },
-	{ BREAK_BIP,             "!break",             "void -> void",                    NULL, NULL },
-	{ CONTINUE_BIP,          "!continue",          "void -> void",                    NULL, NULL },
-	{ SWITCH_BIP,            "!switch",            "val code -> void",                NULL, NULL },
-	{ CASE_BIP,              "!case",              "val code -> void",                NULL, NULL },
-	{ ALTERNATIVECASE_BIP,   "!alternativecase",   "val val -> val",                  NULL, NULL },
-	{ DEFAULT_BIP,           "!default",           "code -> void",                    NULL, NULL },
-	{ RETURN_BIP,            "!return",            "val -> void",                     NULL, NULL },
-	{ JUMP_BIP,              "!jump",              "lab -> void",                     NULL, NULL },
-	{ QUIT_BIP,              "!quit",              "void -> void",                    NULL, NULL },
-	{ RESTORE_BIP,           "!restore",           "lab -> void",                     NULL, NULL },
+	{ IF_BIP,                "!if",                "val code -> void",                SIP_RECORD_END },
+	{ IFDEBUG_BIP,           "!ifdebug",           "code -> void",                    SIP_RECORD_END },
+	{ IFSTRICT_BIP,          "!ifstrict",          "code -> void",                    SIP_RECORD_END },
+	{ IFELSE_BIP,            "!ifelse",            "val code code -> void",           SIP_RECORD_END },
+	{ WHILE_BIP,             "!while",             "val code -> void",                SIP_RECORD_END },
+	{ DO_BIP,                "!do",                "val code -> void",                SIP_RECORD_END },
+	{ FOR_BIP,               "!for",               "val val val code -> void",        SIP_RECORD_END },
+	{ OBJECTLOOP_BIP,        "!objectloop",        "ref val val code -> void",        SIP_RECORD_END },
+	{ OBJECTLOOPX_BIP,       "!objectloopx",       "ref val code -> void",            SIP_RECORD_END },
+	{ BREAK_BIP,             "!break",             "void -> void",                    SIP_RECORD_END },
+	{ CONTINUE_BIP,          "!continue",          "void -> void",                    SIP_RECORD_END },
+	{ SWITCH_BIP,            "!switch",            "val code -> void",                SIP_RECORD_END },
+	{ CASE_BIP,              "!case",              "val code -> void",                SIP_RECORD_END },
+	{ ALTERNATIVECASE_BIP,   "!alternativecase",   "val val -> val",                  SIP_RECORD_END },
+	{ DEFAULT_BIP,           "!default",           "code -> void",                    SIP_RECORD_END },
+	{ RETURN_BIP,            "!return",            "val -> void",                     SIP_RECORD_END },
+	{ JUMP_BIP,              "!jump",              "lab -> void",                     SIP_RECORD_END },
+	{ QUIT_BIP,              "!quit",              "void -> void",                    SIP_RECORD_END },
+	{ RESTORE_BIP,           "!restore",           "lab -> void",                     SIP_RECORD_END },
 
-	{ INDIRECT0V_BIP,        "!indirect0v",        "val -> void",                     NULL, NULL },
-	{ INDIRECT1V_BIP,        "!indirect1v",        "val val -> void",                 NULL, NULL },
-	{ INDIRECT2V_BIP,        "!indirect2v",        "val val val -> void",             NULL, NULL },
-	{ INDIRECT3V_BIP,        "!indirect3v",        "val val val val -> void",         NULL, NULL },
-	{ INDIRECT4V_BIP,        "!indirect4v",        "val val val val val -> void",     NULL, NULL },
-	{ INDIRECT5V_BIP,        "!indirect5v",        "val val val val val val -> void", NULL, NULL },
-	{ INDIRECT0_BIP,         "!indirect0",         "val -> val",                      NULL, NULL },
-	{ INDIRECT1_BIP,         "!indirect1",         "val val -> val",                  NULL, NULL },
-	{ INDIRECT2_BIP,         "!indirect2",         "val val val -> val",              NULL, NULL },
-	{ INDIRECT3_BIP,         "!indirect3",         "val val val val -> val",          NULL, NULL },
-	{ INDIRECT4_BIP,         "!indirect4",         "val val val val val -> val",      NULL, NULL },
-	{ INDIRECT5_BIP,         "!indirect5",         "val val val val val val -> val",  NULL, NULL },
-	{ MESSAGE0_BIP,          "!message0",          "val val -> val",                  NULL, NULL },
-	{ MESSAGE1_BIP,          "!message1",          "val val val -> val",              NULL, NULL },
-	{ MESSAGE2_BIP,          "!message2",          "val val val val -> val",          NULL, NULL },
-	{ MESSAGE3_BIP,          "!message3",          "val val val val val -> val",      NULL, NULL },
-	{ EXTERNALCALL_BIP,      "!externalcall",      "val val -> val",                  NULL, NULL },
+	{ INDIRECT0V_BIP,        "!indirect0v",        "val -> void",                     SIP_RECORD_END },
+	{ INDIRECT1V_BIP,        "!indirect1v",        "val val -> void",                 SIP_RECORD_END },
+	{ INDIRECT2V_BIP,        "!indirect2v",        "val val val -> void",             SIP_RECORD_END },
+	{ INDIRECT3V_BIP,        "!indirect3v",        "val val val val -> void",         SIP_RECORD_END },
+	{ INDIRECT4V_BIP,        "!indirect4v",        "val val val val val -> void",     SIP_RECORD_END },
+	{ INDIRECT5V_BIP,        "!indirect5v",        "val val val val val val -> void", SIP_RECORD_END },
+	{ INDIRECT0_BIP,         "!indirect0",         "val -> val",                      SIP_RECORD_END },
+	{ INDIRECT1_BIP,         "!indirect1",         "val val -> val",                  SIP_RECORD_END },
+	{ INDIRECT2_BIP,         "!indirect2",         "val val val -> val",              SIP_RECORD_END },
+	{ INDIRECT3_BIP,         "!indirect3",         "val val val val -> val",          SIP_RECORD_END },
+	{ INDIRECT4_BIP,         "!indirect4",         "val val val val val -> val",      SIP_RECORD_END },
+	{ INDIRECT5_BIP,         "!indirect5",         "val val val val val val -> val",  SIP_RECORD_END },
+	{ MESSAGE0_BIP,          "!message0",          "val val -> val",                  SIP_RECORD_END },
+	{ MESSAGE1_BIP,          "!message1",          "val val val -> val",              SIP_RECORD_END },
+	{ MESSAGE2_BIP,          "!message2",          "val val val val -> val",          SIP_RECORD_END },
+	{ MESSAGE3_BIP,          "!message3",          "val val val val val -> val",      SIP_RECORD_END },
+	{ EXTERNALCALL_BIP,      "!externalcall",      "val val -> val",                  SIP_RECORD_END },
 
-	{ 0,                     "",                   "",                                NULL, NULL }
+	{ 0,                     "",                   "",                                SIP_RECORD_END }
 };
 
 @ The following must be called before the above array can be used. It checks
@@ -267,10 +273,58 @@ void Primitives::prepare_standard_set_array(void) {
 			standard_inform7_primitives[i].signature = Str::new();
 			WRITE_TO(standard_inform7_primitives[i].signature, "%s",
 				standard_inform7_primitives[i].signature_c);
+			@<Parse and sanity-check the signature text@>;
 			standard_inform7_primitives_extent++;
 		}
 	}
 }
+
+@ We only care here abput the part of the signature before the |->|, but we go
+ahead and perform a full sanity check on it anyway, just in case somebody some day
+amends the above table but gets it wrong. The time consumed by these checks
+is trivial, since this happens only once per run.
+
+@<Parse and sanity-check the signature text@> =
+	int p = 0, before_arrow = TRUE, pre_void = FALSE, inputs = 0, outputs = 0;
+	text_stream *S = standard_inform7_primitives[i].signature;
+	TEMPORARY_TEXT(term)
+	while (p <= Str::len(S)) {
+		wchar_t c = Str::get_at(S, p);
+		if ((Characters::is_whitespace(c)) || (c == 0)) {
+			if ((Str::eq(term, I"->")) && (before_arrow)) before_arrow = FALSE;
+			else {
+				int this = -1;
+				if (Str::eq(term, I"void")) {
+					this = -2;
+					if (before_arrow) pre_void = TRUE;
+				}
+				if (Str::eq(term, I"val"))  this = VAL_PRIM_CAT;
+				if (Str::eq(term, I"ref"))  this = REF_PRIM_CAT;
+				if (Str::eq(term, I"lab"))  this = LAB_PRIM_CAT;
+				if (Str::eq(term, I"code")) this = CODE_PRIM_CAT;
+				if (this == -1) internal_error("unknown term category in primitive");
+				if (before_arrow) {
+					if (this != -2) {
+						if (inputs >= 8) internal_error("too many terms in primitive");
+						standard_inform7_primitives[i].term_categories[inputs] = this;
+						inputs++;
+					}
+				} else {
+					if ((this != -2) && (this != VAL_PRIM_CAT))
+						internal_error("bad term after -> in primitive");
+					outputs++;
+				}	
+			}
+			Str::clear(term);
+		} else {
+			PUT_TO(term, c);
+		}
+		p++;
+	}
+	DISCARD_TEXT(term)
+	if ((outputs > 1) || ((pre_void) && (inputs > 0)))
+		internal_error("malformed signature in primitive");
+	standard_inform7_primitives[i].term_count = inputs;
 
 @ We can now convert between BIP and name. Note that //Primitives::name_to_BIP//
 is relatively slow: but this doesn't matter because we will always cache the
@@ -348,6 +402,31 @@ int Primitives::is_BIP_for_void_indirect_call(inter_ti s) {
 	if (s == INDIRECT4V_BIP) return TRUE;
 	if (s == INDIRECT5V_BIP) return TRUE;
 	return FALSE;
+}
+
+@h About the terms.
+For example, 0 for the signature |void -> val|, or 2 for |ref val -> val|.
+
+The |*_XBIP| operations are treated as if they had the signature |val val -> void|.
+
+=
+int Primitives::term_count(inter_ti BIP) {
+	Primitives::prepare_standard_set_array();
+	if (BIP >= LOWEST_XBIP_VALUE) return 2;
+	return standard_inform7_primitives[BIP - 1].term_count;
+}
+
+@ And this returns the primitive category for each term, counting from 0:
+this will be |VAL_PRIM_CAT|, |CODE_PRIM_CAT|, |REF_PRIM_CAT| or |LAB_PRIM_CAT|.
+
+Again, the |*_XBIP| operations are treated as if |val val -> void|.
+
+=
+int Primitives::term_category(inter_ti BIP, int i) {
+	Primitives::prepare_standard_set_array();
+	if ((i < 0) || (i >= 8)) internal_error("term out of range");
+	if (BIP >= LOWEST_XBIP_VALUE) return VAL_PRIM_CAT;
+	return standard_inform7_primitives[BIP - 1].term_categories[i];
 }
 
 @h Primitives within a specific tree.
