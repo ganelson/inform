@@ -404,6 +404,39 @@ void InterSchemas::changed_tokens_on(inter_schema_node *isn) {
 			l->owner = isn;
 }
 
+@ These are useful for scanning tokens:
+
+=
+int InterSchemas::opening_reserved_word(inter_schema_node *node) {
+	inter_schema_token *f = InterSchemas::first_dark_token(node);
+	if ((f) && (f->ist_type == RESERVED_ISTT)) return f->reserved_word;
+	return 0;
+}
+
+int InterSchemas::opening_directive_word(inter_schema_node *node) {
+	inter_schema_token *f = InterSchemas::first_dark_token(node);
+	if ((f) && (f->ist_type == DIRECTIVE_ISTT)) return f->reserved_word;
+	return 0;
+}
+
+inter_schema_token *InterSchemas::first_dark_token(inter_schema_node *node) {
+	if (node == NULL) return NULL;
+	inter_schema_token *n = node->expression_tokens;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	return n;
+}
+
+inter_schema_token *InterSchemas::next_dark_token(inter_schema_token *t) {
+	if (t == NULL) return NULL;
+	inter_schema_token *n = t->next;
+	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	return n;
+}
+
+inter_schema_token *InterSchemas::second_dark_token(inter_schema_node *node) {
+	return InterSchemas::next_dark_token(InterSchemas::first_dark_token(node));
+}
+
 @h Logging.
 It is invaluable to be able to see compiled schemas in the debugging log, so
 we go to some trouble here.
@@ -540,6 +573,7 @@ void InterSchemas::lint(inter_schema *sch) {
 		text_stream *err = InterSchemas::lint_isn(sch->node_tree, 0);
 		if (err) {
 			LOG("Lint fail: %S\n$1\n", err, sch);
+			WRITE_TO(STDERR, "Lint fail: %S\n%S\n", err, sch->converted_from);
 			internal_error("inter schema failed lint");
 		}
 	}

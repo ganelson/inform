@@ -31,13 +31,13 @@ void Ramification::go(inter_schema *sch) {
 	REPEATEDLY_APPLY(Ramification::strip_leading_white_space);
 	REPEATEDLY_APPLY(Ramification::split_print_statements);
 	REPEATEDLY_APPLY(Ramification::identify_constructs);
-	REPEATEDLY_APPLY(Ramification::treat_constructs);
+	REPEATEDLY_APPLY(Ramification::break_for_statements);
 	REPEATEDLY_APPLY(Ramification::add_missing_bodies);
 	REPEATEDLY_APPLY(Ramification::remove_empties);
 	REPEATEDLY_APPLY(Ramification::outer_subexpressions);
 	REPEATEDLY_APPLY(Ramification::top_level_commas);
-	REPEATEDLY_APPLY(Ramification::alternatecases);
-	REPEATEDLY_APPLY(Ramification::outer_subexpressions);
+	REPEATEDLY_APPLY(Ramification::multiple_case_values);
+//	REPEATEDLY_APPLY(Ramification::outer_subexpressions);
 	REPEATEDLY_APPLY(Ramification::strip_all_white_space);
 	REPEATEDLY_APPLY(Ramification::debracket);
 	REPEATEDLY_APPLY(Ramification::implied_return_values);
@@ -295,7 +295,8 @@ int Ramification::divide_schema(inter_schema_node *par, inter_schema_node *isn) 
 			if (t->ist_type == OPEN_ROUND_ISTT) bl++;
 			if (t->ist_type == CLOSE_ROUND_ISTT) bl--;
 			if ((bl == 0) && (t->ist_type == DIVIDER_ISTT) && (t->next)) {
-				inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+				inter_schema_node *new_isn =
+					InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 				new_isn->expression_tokens = t->next;
 				new_isn->parent_node = isn->parent_node;
 				if (isn->child_node) {
@@ -703,7 +704,8 @@ int Ramification::split_print_statements(inter_schema_node *par, inter_schema_no
 						isn->expression_tokens->material = I"print";
 						if (n->reserved_word == PRINT_I6RW) n->material = I"print";
 						else n->material = I"print_ret";
-						inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+						inter_schema_node *new_isn =
+							InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 						new_isn->expression_tokens = n;
 						new_isn->parent_node = isn->parent_node;
 						InterSchemas::changed_tokens_on(new_isn);
@@ -729,16 +731,19 @@ a statement in Inform 6, i.e., in void context, just as it is in C. But we
 can tell the difference because statements are introduced by reserved words
 such as |while|; and this is where we do that.
 
+Here |par| is the parent node, and |cons| the construct, presumably an |EXPRESSION_ISNT|.
+
 =
-int Ramification::identify_constructs(inter_schema_node *par, inter_schema_node *isn) {
-	for (; isn; isn=isn->next_node) {
-		if (isn->expression_tokens) {
+int Ramification::identify_constructs(inter_schema_node *par, inter_schema_node *cons) {
+	for (; cons; cons=cons->next_node) {
+		inter_schema_token *first = InterSchemas::first_dark_token(cons);
+		if (first) {
 			inter_ti which_statement = 0;
 			int dangle_number = -1;
 			text_stream *dangle_text = NULL;
 			inter_schema_token *operand1 = NULL, *operand2 = NULL;
 			inter_schema_node *operand2_node = NULL;
-			switch (isn->expression_tokens->ist_type) {
+			switch (first->ist_type) {
 				case RESERVED_ISTT:
 					@<If this expression opens with a reserved word, it may be a statement@>;
 					break;
@@ -755,8 +760,8 @@ int Ramification::identify_constructs(inter_schema_node *par, inter_schema_node 
 				return TRUE;
 			}
 		}
-		if ((isn->isn_type != ASSEMBLY_ISNT) && (isn->isn_type != DIRECTIVE_ISNT))
-			if (Ramification::identify_constructs(isn, isn->child_node)) return TRUE;
+		if ((cons->isn_type != ASSEMBLY_ISNT) && (cons->isn_type != DIRECTIVE_ISNT))
+			if (Ramification::identify_constructs(cons, cons->child_node)) return TRUE;
 	}
 
 	return FALSE;
@@ -771,7 +776,7 @@ as an argument. Thus:
 		rfalse
 =
 becomes:
-=
+= (text)
 	STATEMENT_ISNT - RETURN_BIP
 		EXPRESSION_ISNT
 			0
@@ -780,8 +785,11 @@ The |0| is an invention -- in that it never occurs in the original text -- and
 its expression dangles beneath the |STATEMENT_ISNT| node; and similarly for
 a |dangle_text|, of course.
 
+The set of Inform 6 statements is a mixed bag, to put it mildly, and some have
+oddball syntaxes. Here goes:
+
 @<If this expression opens with a reserved word, it may be a statement@> =
-	switch (isn->expression_tokens->reserved_word) {
+	switch (InterSchemas::opening_reserved_word(cons)) {
 		case BREAK_I6RW:      which_statement = BREAK_BIP; break;
 		case CONTINUE_I6RW:   which_statement = CONTINUE_BIP; break;
 		case DO_I6RW:         @<This is a do statement@>; break;
@@ -809,205 +817,254 @@ a |dangle_text|, of course.
 		case WHILE_I6RW:      which_statement = WHILE_BIP; break;
 	}
 
+@ The Inform 6 syntax |do ...; until ...;| currently appears as two consecutive
+nodes, which we want to fold into just one:
+
 @<This is a do statement@> =
-	which_statement = DO_BIP;
-	inter_schema_node *next_isn = isn->next_node;
-	if ((next_isn) && (next_isn->expression_tokens) &&
-		(next_isn->expression_tokens->ist_type == RESERVED_ISTT) &&
-		(next_isn->expression_tokens->reserved_word == UNTIL_I6RW)) {
-		isn->next_node = next_isn->next_node;
-		inter_schema_token *n = next_isn->expression_tokens->next;
-		while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-		operand1 = n;
+	inter_schema_node *until_node = cons->next_node;
+	if (InterSchemas::opening_reserved_word(until_node) == UNTIL_I6RW) {
+		which_statement = DO_BIP;
+		operand1 = InterSchemas::second_dark_token(until_node);
+		cons->next_node = until_node->next_node;
 	} else {
 		internal_error("do without until");
 	}
 
 @<This is a font statement@> =
 	which_statement = FONT_BIP;
-	inter_schema_token *n = isn->expression_tokens->next;
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	inter_schema_token *n = InterSchemas::second_dark_token(cons);
 	if ((n) && (Str::eq(n->material, I"on"))) dangle_number = 1;
-	if ((n) && (Str::eq(n->material, I"off"))) dangle_number = 0;
+	else if ((n) && (Str::eq(n->material, I"off"))) dangle_number = 0;
+	else internal_error("bad font statement");
+
+@ Here |give O P| sets attribute |P| for object |O|, and |give O ~P| takes
+it away again; this looks like a use of the bitwise-not operator but is not.
+
+There is actually no statement node corresponding to |STORE_BIP|; that's
+just a device to be picked up below.
 
 @<This is a give statement@> =
-	inter_schema_token *n = isn->expression_tokens->next;
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-	operand1 = n;
-	n = n->next;
-	operand1->next = NULL;
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	operand1 = InterSchemas::second_dark_token(cons);
+	inter_schema_token *n = InterSchemas::next_dark_token(operand1);
 	if ((n) && (n->ist_type == OPERATOR_ISTT) &&
 		(n->operation_primitive == BITWISENOT_BIP)) {
 		which_statement = STORE_BIP; dangle_number = 0;
-		n = n->next;
+		operand2 = InterSchemas::next_dark_token(n);
 	} else {
 		which_statement = STORE_BIP; dangle_number = 1;
+		operand2 = n;
 	}
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-	operand2 = n;
+
+@ Here Inform 6 might use |if ...; else ...;|, or might not have the |else|
+clause at all. We split these possibilities into two different statement nodes.
 
 @<This is an if statement@> =
 	which_statement = IF_BIP;
-	inter_schema_token *n = isn->expression_tokens->next;
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-	operand1 = n;
-	inter_schema_node *next_isn = isn->next_node;
-	if ((next_isn) && (next_isn->expression_tokens) &&
-		(next_isn->expression_tokens->ist_type == RESERVED_ISTT) &&
-		(next_isn->expression_tokens->reserved_word == ELSE_I6RW) &&
-		(next_isn->child_node)) {
-		inter_schema_token *n = next_isn->child_node->child_node->expression_tokens;
-		while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-		operand2 = n;
-		if (n) {
+	operand1 = InterSchemas::second_dark_token(cons);
+	inter_schema_node *else_node = cons->next_node;
+	if ((InterSchemas::opening_reserved_word(else_node) == ELSE_I6RW) &&
+		(else_node->child_node)) {
+		operand2 = InterSchemas::first_dark_token(else_node->child_node->child_node);
+		if (operand2) {
 			which_statement = IFELSE_BIP;
-			operand2_node = next_isn->child_node;
+			operand2_node = else_node->child_node;
 		}
-		isn->next_node = next_isn->next_node;
+		cons->next_node = else_node->next_node;
 	}
+
+@ The syntax here is |move ... to ...|, where the keyword |to| is compulsory.
 
 @<This is a move statement@> =
-	inter_schema_token *n = isn->expression_tokens->next;
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-	operand1 = n;
-	while (n) {
-		if (Str::eq(n->material, I"to")) {
-			n->ist_type = WHITE_SPACE_ISTT;
-			n->material = I" ";
-			operand2 = n->next;
-			n->next = NULL;
-			while ((operand2) && (operand2->ist_type == WHITE_SPACE_ISTT)) operand2 = operand2->next;
-			break;
-		}
-		n = n->next;
+	operand1 = InterSchemas::second_dark_token(cons);
+	inter_schema_token *to = operand1;
+	while (to) {
+		if (Str::eq(to->material, I"to")) break;
+		to = InterSchemas::next_dark_token(to);
 	}
+	if (to == NULL) internal_error("move without to");
+	operand2 = InterSchemas::next_dark_token(to);
+	to->ist_type = WHITE_SPACE_ISTT;
+	to->material = I" ";
+	to->next = NULL;
 	if ((operand1) && (operand2)) which_statement = MOVE_BIP;
 
+@ Inform 6 in fact only supports |style| followed by one of these four keywords,
+but we are extending it to allow for more interesting stylistics when away from
+the traditional IF virtual machines. So we will allow |style X|, where |X| is
+anything else, too.
+
 @<This is a style statement@> =
-	inter_schema_token *n = isn->expression_tokens->next;
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-	if ((n) && (Str::eq(n->material, I"roman"))) {
+	inter_schema_token *n = InterSchemas::second_dark_token(cons);
+	if (n) {
 		which_statement = STYLE_BIP;
-		dangle_number = 0;
-	} else if ((n) && (Str::eq(n->material, I"bold"))) {
-		which_statement = STYLE_BIP;
-		dangle_number = 1;
-	} else if ((n) && (Str::eq(n->material, I"underline"))) {
-		which_statement = STYLE_BIP;
-		dangle_number = 2;
-	} else if ((n) && (Str::eq(n->material, I"reverse"))) {
-		which_statement = STYLE_BIP;
-		dangle_number = 3;
-	} else {
-		which_statement = STYLE_BIP;
+		if (Str::eq(n->material, I"roman"))     dangle_number = 0;
+		if (Str::eq(n->material, I"bold"))      dangle_number = 1;
+		if (Str::eq(n->material, I"underline")) dangle_number = 2;
+		if (Str::eq(n->material, I"reverse"))   dangle_number = 3;
 	}
 
+@ Note that composite print statements have already been broken up, so that
+we only have three possibilities:
+= (text as Inform 6)
+	print some_number;
+	print "Some text";
+	print (some_rule) some_value;
+=
+(or the same but with |print_ret| instead of |print|). The first two cases
+are straightforward and become usages of |PRINTNUMBER_BIP| or |PRINT_BIP|
+respectively.
+
 @<This is a print statement@> =
+	int uses_printing_rule_in_brackets_notation = FALSE;
 	which_statement = PRINTNUMBER_BIP;
-	inter_schema_token *n = isn->expression_tokens->next;
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	inter_schema_token *n = InterSchemas::second_dark_token(cons);
 	if ((n) && (n->ist_type == OPEN_ROUND_ISTT)) {
-		n = n->next;
-		while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-		inter_schema_token *pr = n;
-		if (pr) {
-			n = n->next;
-			while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+		n = InterSchemas::next_dark_token(n);
+		inter_schema_token *printing_rule = n;
+		if (printing_rule) {
+			n = InterSchemas::next_dark_token(n);
 			if ((n) && (n->ist_type == CLOSE_ROUND_ISTT)) {
-				n = n->next;
-				while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-				if (Str::eq(pr->material, I"address")) {
-					which_statement = PRINTDWORD_BIP;
-					operand1 = n;
-				} else if (Str::eq(pr->material, I"char")) {
-					which_statement = PRINTCHAR_BIP;
-					operand1 = n;
-				} else if (Str::eq(pr->material, I"string")) {
-					which_statement = PRINTSTRING_BIP;
-					operand1 = n;
-				} else if (Str::eq(pr->material, I"object")) {
-					which_statement = PRINTOBJ_BIP;
-					operand1 = n;
-				} else {
-					if (Str::eq(pr->material, I"the")) pr->material = I"DefArt";
-					if (Str::eq(pr->material, I"The")) pr->material = I"CDefArt";
-					if ((Str::eq(pr->material, I"a")) || (Str::eq(pr->material, I"an"))) pr->material = I"IndefArt";
-					if ((Str::eq(pr->material, I"A")) || (Str::eq(pr->material, I"An"))) pr->material = I"CIndefArt";
-					if (Str::eq(pr->material, I"number")) pr->material = I"LanguageNumber";
-					if (Str::eq(pr->material, I"name")) pr->material = I"PrintShortName";
-					if (Str::eq(pr->material, I"property")) pr->material = I"DebugProperty";
-					isn->expression_tokens = pr;
-					inter_schema_token *open_b =
-						InterSchemas::new_token(OPEN_ROUND_ISTT, I"(", 0, 0, -1);
-					InterSchemas::add_token_after(open_b, isn->expression_tokens);
-					open_b->next = n;
-					n = open_b;
-					while ((n) && (n->next)) n = n->next;
-					inter_schema_token *close_b =
-						InterSchemas::new_token(CLOSE_ROUND_ISTT, I")", 0, 0, -1);
-					InterSchemas::add_token_after(close_b, n);
-					which_statement = 0;
-					operand1 = NULL;
-				}
+				n = InterSchemas::next_dark_token(n);
+				uses_printing_rule_in_brackets_notation = TRUE;
+				@<This uses the printing-rule-in-brackets notation@>;
 			}
 		}
 	}
-	if (which_statement == PRINTNUMBER_BIP) {
-		inter_schema_token *n = isn->expression_tokens->next;
-		while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
+	if (uses_printing_rule_in_brackets_notation == FALSE) {
+		inter_schema_token *n = InterSchemas::second_dark_token(cons);
 		if ((n) && (n->ist_type == DQUOTED_ISTT)) {
 			which_statement = PRINT_BIP;
 			Tokenisation::de_escape_text(n->material);
 		}
 	}
-	if (isn->expression_tokens->reserved_word == PRINTRET_I6RW) {
-		inter_schema_node *save_next = isn->next_node;
-		isn->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
-		isn->next_node->parent_node = isn->parent_node;
-		isn->next_node->isn_clarifier = PRINT_BIP;
-		isn->next_node->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-		isn->next_node->child_node->parent_node = isn->next_node;
-		InterSchemas::add_token_to_node(isn->next_node->child_node, InterSchemas::new_token(DQUOTED_ISTT, I"\n", 0, 0, -1));
-		isn->next_node->next_node = InterSchemas::new_node(isn->parent_schema, STATEMENT_ISNT);
-		isn->next_node->next_node->parent_node = isn->parent_node;
-		isn->next_node->next_node->isn_clarifier = RETURN_BIP;
-		isn->next_node->next_node->next_node = save_next;
+	if (InterSchemas::opening_reserved_word(cons) == PRINTRET_I6RW)
+		@<Add printing a newline and returning true to the schema@>;
+
+@ The printing rule given in brackets can be one of 13 special cases, or else
+can be the name of some function. All but 4 of these special cases will be
+turned into function calls too, leaving:
+
+@<This uses the printing-rule-in-brackets notation@> =
+	if (Str::eq(printing_rule->material, I"address")) {
+		which_statement = PRINTDWORD_BIP;
+		operand1 = n;
+	} else if (Str::eq(printing_rule->material, I"char")) {
+		which_statement = PRINTCHAR_BIP;
+		operand1 = n;
+	} else if (Str::eq(printing_rule->material, I"string")) {
+		which_statement = PRINTSTRING_BIP;
+		operand1 = n;
+	} else if (Str::eq(printing_rule->material, I"object")) {
+		which_statement = PRINTOBJ_BIP;
+		operand1 = n;
+	} else {
+		@<Convert this to a function call@>;
 	}
 
+@<Convert this to a function call@> =
+	text_stream *fn = printing_rule->material;
+	if (Str::eq(fn, I"the"))                         fn = I"DefArt";
+	if (Str::eq(fn, I"The"))                         fn = I"CDefArt";
+	if ((Str::eq(fn, I"a")) || (Str::eq(fn, I"an"))) fn = I"IndefArt";
+	if ((Str::eq(fn, I"A")) || (Str::eq(fn, I"An"))) fn = I"CIndefArt";
+	if (Str::eq(fn, I"number"))                      fn = I"LanguageNumber";
+	if (Str::eq(fn, I"name"))                        fn = I"PrintShortName";
+	if (Str::eq(fn, I"property"))                    fn = I"DebugProperty";
+	printing_rule->material = fn;
+
+	cons->expression_tokens = printing_rule;
+	inter_schema_token *open_b =
+		InterSchemas::new_token(OPEN_ROUND_ISTT, I"(", 0, 0, -1);
+	InterSchemas::add_token_after(open_b, cons->expression_tokens);
+	open_b->next = n;
+	n = open_b;
+	while ((n) && (n->next)) n = n->next;
+	inter_schema_token *close_b =
+		InterSchemas::new_token(CLOSE_ROUND_ISTT, I")", 0, 0, -1);
+	InterSchemas::add_token_after(close_b, n);
+	which_statement = 0;
+	operand1 = NULL;
+
+@ This is the difference between a |print| and a |print_ret|: the latter
+gets two additional statement nodes added after it, one to print a newline
+character, and one to return |true|.
+
+@<Add printing a newline and returning true to the schema@> =
+	inter_schema_node *save_next = cons->next_node;
+
+	cons->next_node =
+		InterSchemas::new_node(cons->parent_schema, STATEMENT_ISNT);
+	cons->next_node->parent_node = cons->parent_node;
+	cons->next_node->isn_clarifier = PRINT_BIP;
+	cons->next_node->child_node =
+		InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
+	cons->next_node->child_node->parent_node = cons->next_node;
+	InterSchemas::add_token_to_node(cons->next_node->child_node,
+		InterSchemas::new_token(DQUOTED_ISTT, I"\n", 0, 0, -1));
+
+	cons->next_node->next_node =
+		InterSchemas::new_node(cons->parent_schema, STATEMENT_ISNT);
+	cons->next_node->next_node->parent_node = cons->parent_node;
+	cons->next_node->next_node->isn_clarifier = RETURN_BIP;
+
+	cons->next_node->next_node->next_node = save_next;
+
+@ |read| is an awkward sod of a statement because of the way it is handled
+differently on 16-bit vs 32-bit platforms. |READ_XBIP| is a sort of placeholder
+for worrying about this only later; it means that this schema does not need
+to know about the difference.
+
 @<This is a read statement@> =
-	inter_schema_token *n = isn->expression_tokens->next;
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-	operand1 = n;
-	n = n->next;
-	while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-	operand2 = n;
+	operand1 = InterSchemas::second_dark_token(cons);
+	operand2 = InterSchemas::next_dark_token(operand1);
 	operand1->next = NULL;
 	operand2->next = NULL;
 	if ((operand1) && (operand2)) which_statement = READ_XBIP;
 
+@ Directives are much easier. For example,
+= (text)
+	EXPRESSION_ISNT
+		#ifdef
+		DEBUG
+=
+becomes
+= (text)
+	DIRECTIVE_ISNT = #IFDEF
+		EXPRESSION_ISNT
+			DEBUG
+=
+
 @<If this expression opens with a directive keyword, it is a directive@> =
-	isn->isn_type = DIRECTIVE_ISNT;
-	isn->dir_clarifier = isn->expression_tokens->reserved_word;
-	if (isn->expression_tokens->next) {
-		inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-		isn->child_node = new_isn;
-		new_isn->parent_node = isn;
-		new_isn->expression_tokens = isn->expression_tokens->next;
+	cons->isn_type = DIRECTIVE_ISNT;
+	cons->dir_clarifier = InterSchemas::opening_directive_word(cons);
+	if (InterSchemas::second_dark_token(cons)) {
+		inter_schema_node *new_isn =
+			InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
+		cons->child_node = new_isn;
+		new_isn->parent_node = cons;
+		new_isn->expression_tokens = InterSchemas::second_dark_token(cons);
 		InterSchemas::changed_tokens_on(new_isn);
 	}
-	isn->expression_tokens = NULL;
-	which_statement = 0;
+	cons->expression_tokens = NULL;
+
+@ Assembly language is basically simple, but with a couple of wrinkles:
+(a) |@push| and |@pull| are converted to Inter statement nodes;
+(b) we must be careful about unary minus signs, in |@hypothetical -1|,
+which would be tokenised as |@hypothetical - 1|;
+(c) the special notations |sp| (stack pointer), |->| and |?labelname| need
+to be recognised for what they are.
 
 @<If this expression opens with an opcode keyword, it is an assembly line@> =
-	if (Str::eq(isn->expression_tokens->material, I"@push")) which_statement = PUSH_BIP;
-	else if (Str::eq(isn->expression_tokens->material, I"@pull")) which_statement = PULL_BIP;
+	inter_schema_token *f = InterSchemas::first_dark_token(cons);
+	     if (Str::eq(f->material, I"@push")) which_statement = PUSH_BIP;
+	else if (Str::eq(f->material, I"@pull")) which_statement = PULL_BIP;
 	else {
-		isn->isn_type = ASSEMBLY_ISNT;
+		cons->isn_type = ASSEMBLY_ISNT;
 		inter_schema_node *prev_node = NULL;
-		for (inter_schema_token *l = isn->expression_tokens, *n = l?(l->next):NULL; l; l=n, n=n?(n->next):NULL) {
+		for (inter_schema_token *l = f, *n = l?(l->next):NULL; l; l=n, n=n?(n->next):NULL) {
 			if (l->ist_type != WHITE_SPACE_ISTT) {
-				inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+				inter_schema_node *new_isn =
+					InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
 				new_isn->expression_tokens = l; l->next = NULL; l->owner = new_isn;
 				if (l->operation_primitive) {
 					l->ist_type = IDENTIFIER_ISTT;
@@ -1031,104 +1088,138 @@ a |dangle_text|, of course.
 						n = n->next;
 					}
 				}
-				if (isn->child_node == NULL) isn->child_node = new_isn;
+				if (cons->child_node == NULL) cons->child_node = new_isn;
 				else if (prev_node) prev_node->next_node = new_isn;
-				new_isn->parent_node = isn;
+				new_isn->parent_node = cons;
 				prev_node = new_isn;
 			}
 		}
-		isn->expression_tokens = NULL;
+		cons->expression_tokens = NULL;
 	}
+
+@ Finally! In the case where we do want to make a |STATEMENT_ISNT| node --
+either through recognising an I6 statement word like |while|, or one of the
+assembly instructions |@push| or |@pull| -- we do the following.
 
 @<Make this a STATEMENT_ISNT node@> =
-	inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-	if (operand1 == NULL) operand1 = isn->expression_tokens->next;
-	new_isn->expression_tokens = operand1;
-	if ((new_isn->expression_tokens) &&
-		(new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT))
-			new_isn->expression_tokens = new_isn->expression_tokens->next;
-	InterSchemas::changed_tokens_on(new_isn);
-	isn->isn_clarifier = which_statement;
-	isn->isn_type = STATEMENT_ISNT;
-	isn->expression_tokens = NULL;
-	new_isn->next_node = isn->child_node;
-	isn->child_node = new_isn;
-	new_isn->parent_node = isn;
+	cons->isn_clarifier = which_statement;
+	cons->isn_type = STATEMENT_ISNT;
 
-	if ((which_statement != STORE_BIP) && (dangle_number >= 0)) {
+	inter_schema_node *first_child;
+	@<Make the first child@>;
+	if (which_statement != STORE_BIP) @<Dangle the number or text@>;
+	@<Make the second child@>;
+	if (which_statement == STORE_BIP) @<The special case of giving an attribute@>;
+
+@<Make the first child@> =
+	first_child = InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
+	if (operand1 == NULL) operand1 = InterSchemas::second_dark_token(cons);
+	first_child->expression_tokens = operand1;
+	InterSchemas::changed_tokens_on(first_child);
+	first_child->next_node = cons->child_node;
+	cons->child_node = first_child;
+	first_child->parent_node = cons;
+	cons->expression_tokens = NULL;
+
+@ Ordinarily, |operand1| provides the content for the first child expression,
+but in the case of a dangling number or text, we use that instead. (Note that
+they cannot both apply.)
+
+@<Dangle the number or text@> =
+	if (dangle_number >= 0) {
 		text_stream *T = Str::new();
 		WRITE_TO(T, "%d", dangle_number);
-		new_isn->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
-		new_isn->expression_tokens->owner = new_isn;
+		first_child->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
+		first_child->expression_tokens->owner = first_child;
 	}
 	if (Str::len(dangle_text) > 0) {
-		new_isn->expression_tokens = InterSchemas::new_token(DQUOTED_ISTT, dangle_text, 0, 0, -1);
-		new_isn->expression_tokens->owner = new_isn;
-		Tokenisation::de_escape_text(new_isn->expression_tokens->material);
+		first_child->expression_tokens = InterSchemas::new_token(DQUOTED_ISTT, dangle_text, 0, 0, -1);
+		first_child->expression_tokens->owner = first_child;
+		Tokenisation::de_escape_text(first_child->expression_tokens->material);
 	}
 
+@ There is often no second child. But when there is:
+
+@<Make the second child@> =
 	if (operand2) {
-		inter_schema_node *new_new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+		inter_schema_node *second_child =
+			InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);
 		if (which_statement == IFELSE_BIP) {
-			new_new_isn->semicolon_terminated = TRUE;
-			new_new_isn->next_node = new_isn->next_node->next_node;
-			new_isn->next_node->next_node = new_new_isn;
+			second_child->semicolon_terminated = TRUE;
+			second_child->next_node = first_child->next_node->next_node;
+			first_child->next_node->next_node = second_child;
 		} else {
-			new_new_isn->next_node = new_isn->next_node;
-			new_isn->next_node = new_new_isn;
+			second_child->next_node = first_child->next_node;
+			first_child->next_node = second_child;
 		}
-		new_new_isn->parent_node = isn;
-		new_new_isn->expression_tokens = operand2;
-		if ((new_new_isn->expression_tokens) && (new_new_isn->expression_tokens->ist_type == WHITE_SPACE_ISTT))
-			new_new_isn->expression_tokens = new_new_isn->expression_tokens->next;
-		InterSchemas::changed_tokens_on(new_new_isn);
+		second_child->parent_node = cons;
+		second_child->expression_tokens = operand2;
+		InterSchemas::changed_tokens_on(second_child);
 	}
 	if (operand2_node) {
 		operand2_node->next_node = NULL;
-		new_isn->next_node->next_node = operand2_node;
-		operand2_node->parent_node = isn;
+		first_child->next_node->next_node = operand2_node;
+		operand2_node->parent_node = cons;
 		InterSchemas::changed_tokens_on( operand2_node->child_node);
 	}
-	if (which_statement == STORE_BIP) {
-		isn->isn_clarifier = 0;
-		isn->isn_type = EXPRESSION_ISNT;
-		inter_schema_node *A = isn->child_node;
-		inter_schema_node *B = isn->child_node->next_node;
-		isn->child_node = NULL;
-		isn->expression_tokens = A->expression_tokens;
-		isn->expression_tokens->next =
-			InterSchemas::new_token(OPERATOR_ISTT, I".", PROPERTYVALUE_BIP, 0, -1);
-		isn->expression_tokens->next->next = B->expression_tokens;
-		isn->expression_tokens->next->next->next = InterSchemas::new_token(OPERATOR_ISTT, I"=", STORE_BIP, 0, -1);
-		text_stream *T = Str::new();
-		WRITE_TO(T, "%d", dangle_number);
-		isn->expression_tokens->next->next->next->next = InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
-		InterSchemas::changed_tokens_on(isn);
-	}
 
-@ =
-int Ramification::alternatecases(inter_schema_node *par, inter_schema_node *isn) {
-	for (; isn; isn=isn->next_node) {
-		if ((isn->isn_clarifier == CASE_BIP) && (isn->child_node)) {
-			inter_schema_node *A = isn->child_node;
-			inter_schema_node *B = isn->child_node->next_node;
-			if ((A) && (B) && (B->next_node)) {
-				inter_schema_node *C = InterSchemas::new_node(isn->parent_schema, OPERATION_ISNT);
-				C->isn_clarifier = ALTERNATIVECASE_BIP;
-				C->child_node = A;
-				A->parent_node = C; B->parent_node = C;
-				isn->child_node = C; C->next_node = B->next_node; B->next_node = NULL;
-				C->parent_node = isn;
-				return TRUE;
-			}				
-		}
-		if (Ramification::alternatecases(isn, isn->child_node)) return TRUE;
-	}
-	return FALSE;
-}
+@ It was noted above that the |STORE_BIP| value was being somewhat abused in
+the one special case of |give O P| or |give O ~P|. This won't be a statement
+at all -- instead we rewrite this as the setting of a property value either
+to 1 or 0 respectively. And that makes it an |EXPRESSION_ISNT| node after all.
 
-@ =
-int Ramification::treat_constructs(inter_schema_node *par, inter_schema_node *isn) {
+It would not have been legal in I6 to use |O.P = 1| as an alternative to |give O P|.
+But it is legal to do so in this schema, and that is what our expression node does.
+
+@<The special case of giving an attribute@> =
+	cons->isn_clarifier = 0;
+	cons->isn_type = EXPRESSION_ISNT;
+	inter_schema_node *A = cons->child_node;
+	inter_schema_node *B = cons->child_node->next_node;
+	cons->child_node = NULL;
+	cons->expression_tokens = A->expression_tokens;
+	cons->expression_tokens->next =
+		InterSchemas::new_token(OPERATOR_ISTT, I".", PROPERTYVALUE_BIP, 0, -1);
+	cons->expression_tokens->next->next = B->expression_tokens;
+	cons->expression_tokens->next->next->next =
+		InterSchemas::new_token(OPERATOR_ISTT, I"=", STORE_BIP, 0, -1);
+	text_stream *T = Str::new();
+	WRITE_TO(T, "%d", dangle_number);
+	cons->expression_tokens->next->next->next->next =
+		InterSchemas::new_token(NUMBER_ISTT, T, 0, 0, -1);
+	InterSchemas::changed_tokens_on(cons);
+
+@h The break for statements ramification.
+This is where we dismantle |for (X: Y: Z) ...| into its constituent parts,
+removing the colon and bracket tokens. Thus:
+= (text)
+	STATEMENT_ISNT = FOR_BIP
+		EXPRESSION_ISNT
+			(
+			X
+			:
+			Y
+			:
+			Z
+			)
+		EXPRESSION_ISNT
+			...
+=
+should become
+= (text)
+	STATEMENT_ISNT = FOR_BIP
+		EXPRESSION_ISNT
+			X
+		EXPRESSION_ISNT
+			Y
+		EXPRESSION_ISNT
+			Z
+		EXPRESSION_ISNT
+			...
+=
+
+=
+int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		if ((isn->isn_type == STATEMENT_ISNT) &&
 			(isn->isn_clarifier == FOR_BIP) &&
@@ -1156,7 +1247,10 @@ int Ramification::treat_constructs(inter_schema_node *par, inter_schema_node *is
 				}
 				n = n->next;
 			}
-			if (cw != 3) internal_error("malformed for prototype");
+			if (cw != 3) {
+				InterSchemas::log_just(isn, 2);
+				internal_error("malformed for prototype");
+			}
 			for (int i=0; i<3; i++) {
 				inter_schema_node *eval_isn = InterSchemas::new_node(isn->parent_schema, EVAL_ISNT);
 				if (i == 0) isn->child_node = eval_isn;
@@ -1186,18 +1280,26 @@ int Ramification::treat_constructs(inter_schema_node *par, inter_schema_node *is
 			isn->node_marked = TRUE;
 			return TRUE;
 		}
-		if (Ramification::treat_constructs(isn, isn->child_node)) return TRUE;
+		if (Ramification::break_for_statements(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
 }
 
 @<End a wodge@> =
+	if (cw >= 3) internal_error("too many colons");
 	if (from[cw] == NULL) to[cw] = NULL;
 	else to[cw] = n;
 	if (from[cw] == to[cw]) { from[cw] = NULL; to[cw] = NULL; }
 	cw++;
 
-@ =
+@h The add missing bodies ramification.
+You do this at your own peril, but it is legal in Inform 6 to write, say,
+|if (...) { ; }| or |while (...) ;|. In our schema, those statement nodes will
+have one fewer child node, because there will be nothing where the final child
+node ought to be. We add an empty code node if so, and this saves the schema
+from failing its lint test.
+
+=
 int Ramification::add_missing_bodies(inter_schema_node *par, inter_schema_node *isn) {
 	for (; isn; isn=isn->next_node) {
 		int req = 0;
@@ -1229,6 +1331,12 @@ int Ramification::add_missing_bodies(inter_schema_node *par, inter_schema_node *
 	return FALSE;
 }
 
+@h The remove empty expressions ramification.
+If an |EXPRESSION_ISNT| contains no tokens, remove it from the tree. (The
+parsing process has a tendency to leave these around, especially at the end of
+code blocks. They mean nothing, but it's tidy to remove them.)
+
+=
 int Ramification::remove_empties(inter_schema_node *par, inter_schema_node *isn) {
 	for (inter_schema_node *prev = NULL; isn; prev = isn, isn = isn->next_node) {
 		if ((isn->isn_type == EXPRESSION_ISNT) && (isn->expression_tokens == NULL)) {
@@ -1242,6 +1350,95 @@ int Ramification::remove_empties(inter_schema_node *par, inter_schema_node *isn)
 	return FALSE;
 }
 
+@h The outer subexpressions ramification.
+If an expression looks like |( ... )|, but not |( ... ) ... ( ... )| -- in
+other words, if the entire expression lies inside a matching pair of round
+brackets...
+
+=
+int Ramification::outer_subexpressions(inter_schema_node *par, inter_schema_node *isn) {
+	for ( ; isn; isn = isn->next_node) {
+		if (isn->isn_type == EXPRESSION_ISNT) {
+			inter_schema_token *n = InterSchemas::first_dark_token(isn);
+			if ((n) && (n->ist_type == OPEN_ROUND_ISTT)) {
+				int bl = 1, fails = FALSE;
+				n = InterSchemas::next_dark_token(n);
+				inter_schema_token *from = n, *to = NULL;
+				while (n) {
+					if (bl == 0) fails = TRUE;
+					if (n->ist_type == OPEN_ROUND_ISTT) bl++;
+					else if (n->ist_type == CLOSE_ROUND_ISTT) {
+						bl--;
+						if (bl == 0) to = n;
+					}
+					n = InterSchemas::next_dark_token(n);
+				}
+				if ((fails == FALSE) && (from) && (to) && (from != to)) {
+					@<This expression is entirely in a matching pair of round brackets@>;
+					return TRUE;
+				}
+			}
+		}
+		if (Ramification::outer_subexpressions(isn, isn->child_node)) return TRUE;
+	}
+	return FALSE;
+}
+
+@ ...then we move the bracketed content under a new subexpression node, so
+that |(x+1)| would now become:
+= (text)
+	SUBEXPRESSION_ISNT
+		EXPRESSION_ISNT
+			x
+			+
+			1
+=
+
+@<This expression is entirely in a matching pair of round brackets@> =
+	inter_schema_node *sub_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+	sub_node->expression_tokens = from;
+	for (inter_schema_token *l = sub_node->expression_tokens; l; l=l->next)
+		if (l->next == to)
+			l->next = NULL;
+	InterSchemas::changed_tokens_on(sub_node);
+	isn->isn_type = SUBEXPRESSION_ISNT;
+	isn->expression_tokens = NULL;
+
+	isn->child_node = sub_node;
+	sub_node->parent_node = isn;
+
+@h The top level commas ramification.
+Commas are now used in just two different ways: to divide up function arguments,
+and as the serial evaluation operator. Because we have already performed the outer
+subexpressions ramification, we can tell which meaning applies by seeing if a comma
+occurs at the top level or inside of brackets. Thus |a, b, c| must be serial
+evaluation -- evaluate |a|, then |b|, then |c| -- whereas |a + f(b, c)| cannot be.
+
+This changes
+= (text)
+	EXPRESSION_ISNT
+		a
+		,
+		(
+		b
+		,
+		c
+		)
+=
+to:
+= (text)
+	EXPRESSION_ISNT
+		a
+	EXPRESSION_ISNT
+		(
+		b
+		,
+		c
+		)
+=
+After this stage, then, the only commas left are those used for function arguments.
+
+=
 int Ramification::top_level_commas(inter_schema_node *par, inter_schema_node *isn) {
 	for ( ; isn; isn = isn->next_node) {
 		if (isn->isn_type == EXPRESSION_ISNT) {
@@ -1254,7 +1451,8 @@ int Ramification::top_level_commas(inter_schema_node *par, inter_schema_node *is
 					prev->next = NULL;
 					prev = n; n = n->next;
 					while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) { prev = n; n = n->next; }
-					inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+					inter_schema_node *new_isn =
+						InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 					new_isn->expression_tokens = n;
 					new_isn->parent_node = isn->parent_node;
 					InterSchemas::changed_tokens_on(new_isn);
@@ -1268,6 +1466,33 @@ int Ramification::top_level_commas(inter_schema_node *par, inter_schema_node *is
 			}
 		}
 		if (Ramification::top_level_commas(isn, isn->child_node)) return TRUE;
+	}
+	return FALSE;
+}
+
+@h The multiple case values ramification.
+In Inform 6, a case in a |switch| can contain multiple values, divided by commas.
+So the expression node underneath a case might for example have the tokens |1 , 2 , 6|,
+and the top level commas ramification will have made those into serial evaluations.
+We correct those to uses of the special |ALTERNATIVECASE_BIP| operator instead.
+
+=
+int Ramification::multiple_case_values(inter_schema_node *par, inter_schema_node *isn) {
+	for (; isn; isn=isn->next_node) {
+		if ((isn->isn_clarifier == CASE_BIP) && (isn->child_node)) {
+			inter_schema_node *A = isn->child_node;
+			inter_schema_node *B = isn->child_node->next_node;
+			if ((A) && (B) && (B->next_node)) {
+				inter_schema_node *C = InterSchemas::new_node(isn->parent_schema, OPERATION_ISNT);
+				C->isn_clarifier = ALTERNATIVECASE_BIP;
+				C->child_node = A;
+				A->parent_node = C; B->parent_node = C;
+				isn->child_node = C; C->next_node = B->next_node; B->next_node = NULL;
+				C->parent_node = isn;
+				return TRUE;
+			}				
+		}
+		if (Ramification::multiple_case_values(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
 }
@@ -1299,7 +1524,16 @@ int Ramification::strip_all_white_space(inter_schema_node *par, inter_schema_nod
 	return FALSE;
 }
 
+@h The debracket ramification.
+It's finally time to remove all round bracket tokens from the schema, and this
+means understanding which ones clarify the order of operations, as in |a * ( b + c)|,
+and which signal function calls, as in |f ( a , b )|. At each node:
 
+(*) we use //Ramification::outer_subexpressions// to dispose of the |( ... )| case;
+(*) then //Ramification::op_subexpressions// to look for the |a * ( b + c)| case;
+(*) and finally //Ramification::place_calls// to take care of |f ( a , b )|.
+
+=
 int Ramification::debracket(inter_schema_node *par, inter_schema_node *isn) {
 	if (Ramification::outer_subexpressions(par, isn)) return TRUE;
 	if (Ramification::op_subexpressions(par, isn)) return TRUE;
@@ -1307,47 +1541,64 @@ int Ramification::debracket(inter_schema_node *par, inter_schema_node *isn) {
 	return FALSE;
 }
 
-int Ramification::outer_subexpressions(inter_schema_node *par, inter_schema_node *isn) {
+@ So, then, operations. We detect these because they have an operator at the
+top level. Thus, |f(x*y) + 2| must be an operation because of the top-level |+|.
+We split this into a left and right operand: |f(x*y)| and |2| in this example.
+Those become the children of an |OPERATION_ISNT| node, which replaces the
+original |EXPRESSION_ISNT|.
+
+=
+int Ramification::op_subexpressions(inter_schema_node *par, inter_schema_node *isn) {
 	for ( ; isn; isn = isn->next_node) {
-		if (isn->isn_type == EXPRESSION_ISNT) {
+		if ((isn->node_marked == FALSE) && (isn->isn_type == EXPRESSION_ISNT)) {
+			isn->node_marked = TRUE;
 			inter_schema_token *n = isn->expression_tokens;
-			while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-			if ((n) && (n->ist_type == OPEN_ROUND_ISTT)) {
-				int bl = 1, fails = FALSE;
-				n = n->next;
-				while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-				inter_schema_token *from = n, *to = NULL;
-				while (n) {
-					if ((bl == 0) && (n->ist_type != WHITE_SPACE_ISTT)) fails = TRUE;
-					if (n->ist_type == OPEN_ROUND_ISTT) bl++;
-					else if (n->ist_type == CLOSE_ROUND_ISTT) {
-						bl--;
-						if (bl == 0) to = n;
-					}
-					n = n->next;
-				}
-				if ((fails == FALSE) && (from) && (to) && (from != to)) {
-					inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-					new_isn->expression_tokens = from;
-					for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next)
-						if (l->next == to)
-							l->next = NULL;
-					InterSchemas::changed_tokens_on(new_isn);
-					isn->isn_type = SUBEXPRESSION_ISNT;
-					isn->expression_tokens = NULL;
-
-					isn->child_node = new_isn;
-					new_isn->parent_node = isn;
-
-					return TRUE;
-				}
+			inter_ti final_operation = 0;
+			inter_schema_token *final_op_token = NULL;
+			@<Find the lowest-precedence top level operator, if any@>;
+			if (final_op_token) {
+				inter_schema_token *from = InterSchemas::first_dark_token(isn), *to = final_op_token;
+				int has_left_operand = FALSE, has_right_operand = FALSE;
+				if (from != to) @<Make the left operand expression@>;
+				from = InterSchemas::next_dark_token(final_op_token);
+				if (from) @<Make the right operand expression@>;
+				@<Work out which operation is implied by the operator@>;
+				return TRUE;
 			}
 		}
-		if (Ramification::outer_subexpressions(isn, isn->child_node)) return TRUE;
+		if (Ramification::op_subexpressions(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
 }
 
+@ For example, the final operator in |1 + 3 * ( x . y )| is the |+|, in that
+this is the operation which will be performed last. It's the one with the
+lowest precedence out of the two top-level operators here, the |+| and |*|.
+
+|in| is not a reserved word in Inform 6, though it probably should be. It can
+be used as an operator, as in the condition |if (x in y) ...|, but it can also
+be a variable name. So we will detect it only when it is used infix.
+
+@<Find the lowest-precedence top level operator, if any@> =
+	int bl = 0;
+	inter_schema_token *f = InterSchemas::first_dark_token(isn);
+	for (n = f; n; n = InterSchemas::next_dark_token(n)) {
+		if (n->ist_type == OPEN_ROUND_ISTT) bl++;
+		if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
+		if ((bl == 0) && (n->ist_type == OPERATOR_ISTT)) {
+			inter_ti this_operator = n->operation_primitive;
+			if ((this_operator != IN_BIP) || ((n != f) && (InterSchemas::next_dark_token(n))))
+				if (Ramification::prefer_over(this_operator, final_operation)) {
+					final_op_token = n; final_operation = this_operator;
+				}
+		}
+	}
+	
+@ Well... so actually we have to be a bit more careful about left vs right
+associativity if there are two least-precendence operators both at the top
+level, as in the case of |x - y + z| or (horrifically) |x = y = z|.
+
+=
 int Ramification::prefer_over(inter_ti p, inter_ti existing) {
 	if (existing == 0) return TRUE;
 	if (BIPMetadata::precedence(p) < BIPMetadata::precedence(existing)) return TRUE;
@@ -1358,152 +1609,152 @@ int Ramification::prefer_over(inter_ti p, inter_ti existing) {
 	return FALSE;
 }
 
-int Ramification::op_subexpressions(inter_schema_node *par, inter_schema_node *isn) {
-	for ( ; isn; isn = isn->next_node) {
-		if ((isn->node_marked == FALSE) && (isn->isn_type == EXPRESSION_ISNT)) {
-			isn->node_marked = TRUE;
-			inter_schema_token *n = isn->expression_tokens;
-			int bl = 0;
-			inter_ti best_operator = 0;
-			inter_schema_token *break_at = NULL;
-			while (n) {
-				if (n->ist_type == OPEN_ROUND_ISTT) bl++;
-				if (n->ist_type == CLOSE_ROUND_ISTT) bl--;
-				if ((bl == 0) && (n->ist_type == OPERATOR_ISTT)) {
-					inter_ti this_operator = n->operation_primitive;
-					if (Ramification::prefer_over(this_operator, best_operator)) {
-						break_at = n; best_operator = this_operator;
-					}
-				}
-				n = n->next;
-			}
-			if (break_at) {
-				inter_schema_token *n = isn->expression_tokens;
-				while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-				inter_schema_token *from = n, *to = break_at;
-				int has_operand_before = FALSE, has_operand_after = FALSE;
-				if ((from) && (from != to)) {
-					inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-					new_isn->expression_tokens = from;
-					for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next)
-						if (l->next == to)
-							l->next = NULL;
-					InterSchemas::changed_tokens_on(new_isn);
-					if (isn->child_node == NULL) {
-						isn->child_node = new_isn;
-					} else {
-						isn->child_node->next_node = new_isn;
-					}
-					new_isn->parent_node = isn;
-					has_operand_before = TRUE;
-				} else {
-					if (best_operator == IN_BIP) {
-						break_at->ist_type = IDENTIFIER_ISTT;
-						break_at->operation_primitive = 0;
-						break_at = NULL;
-					}
-				}
-				if (break_at) {
-					n = break_at->next;
-					while ((n) && (n->ist_type == WHITE_SPACE_ISTT)) n = n->next;
-					from = n; to = NULL;
-					if ((from) && (from != to)) {
-						inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-						new_isn->expression_tokens = from;
-						for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next)
-							if (l->next == to)
-								l->next = NULL;
-						InterSchemas::changed_tokens_on(new_isn);
-						if (isn->child_node == NULL) {
-							isn->child_node = new_isn;
-						} else {
-							isn->child_node->next_node = new_isn;
-						}
-						new_isn->parent_node = isn;
-						has_operand_after = TRUE;
-					}
+@ So the basic plan is to turn out example |x + y * z| into
+= (text)
+	OPERATION_ISNT = PLUS_BIP
+		EXPRESSION_ISNT
+			x
+		EXPRESSION_ISNT
+			y * z
+=
+Recursion of the above then turns this into
+= (text)
+	OPERATION_ISNT
+		EXPRESSION_ISNT = PLUS_BIP
+			x
+		OPERATION_ISNT = TIMES_BIP
+			EXPRESSION_ISNT
+				y
+				z
+=
+Here the final operator is the |+|, and there are both left and right operands.
 
-					isn->isn_type = OPERATION_ISNT;
-					isn->expression_tokens = NULL;
-					isn->isn_clarifier = break_at->operation_primitive;
-					if ((break_at->operation_primitive == MINUS_BIP) && (has_operand_before == FALSE))
-						isn->isn_clarifier = UNARYMINUS_BIP;
-					if ((break_at->operation_primitive == POSTINCREMENT_BIP) && (has_operand_before == FALSE))
-						isn->isn_clarifier = PREINCREMENT_BIP;
-					if ((break_at->operation_primitive == POSTDECREMENT_BIP) && (has_operand_before == FALSE))
-						isn->isn_clarifier = PREDECREMENT_BIP;
-					if ((break_at->operation_primitive == PROPERTYVALUE_BIP) && (has_operand_before == FALSE)) {
-						isn->isn_type = LABEL_ISNT;
-						isn->isn_clarifier = 0;
-					} else {
-						int a = 0;
-						if (has_operand_before) a++;
-						if (has_operand_after) a++;
-						if (a != BIPMetadata::arity(isn->isn_clarifier)) {
-							LOG("Seem to have arity %d with isn %S which needs %d\n",
-								a, Primitives::BIP_to_name(isn->isn_clarifier),
-								BIPMetadata::arity(isn->isn_clarifier));
-							LOG("$1\n", isn->parent_schema);
-							internal_error("bad arity");
-						}
-					}
-					return TRUE;
-				}
-			}
-		}
-		if (Ramification::op_subexpressions(isn, isn->child_node)) return TRUE;
+@<Make the left operand expression@> =
+	inter_schema_node *left_operand_node =
+		InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+	left_operand_node->expression_tokens = from;
+	for (inter_schema_token *l = left_operand_node->expression_tokens; l; l=l->next)
+		if (l->next == to)
+			l->next = NULL;
+	InterSchemas::changed_tokens_on(left_operand_node);
+	if (isn->child_node == NULL) {
+		isn->child_node = left_operand_node;
+	} else {
+		internal_error("Never happens");
+		isn->child_node->next_node = left_operand_node;
 	}
-	return FALSE;
-}
+	left_operand_node->parent_node = isn;
+	has_left_operand = TRUE;
 
+@<Make the right operand expression@> =
+	inter_schema_node *right_operand_node =
+		InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+	right_operand_node->expression_tokens = from;
+	InterSchemas::changed_tokens_on(right_operand_node);
+	if (isn->child_node == NULL) {
+		isn->child_node = right_operand_node;
+	} else {
+		isn->child_node->next_node = right_operand_node;
+	}
+	right_operand_node->parent_node = isn;
+	has_right_operand = TRUE;
+
+@ It's only now that we can clarify the meaning of |++|, for example, which
+is one operation used as a prefix, and another used as a suffix.
+
+Note that Inform 6 does allow labels to be used as a value, but only in |jump|
+statements or assembly language. Since labels begin with a |.|, as in |.Example|,
+we need to be careful not to misread that as a use of the property-value
+operation |a.b|.
+
+@<Work out which operation is implied by the operator@> =
+	isn->isn_type = OPERATION_ISNT;
+	isn->expression_tokens = NULL;
+	isn->isn_clarifier = final_operation;
+	if ((final_operation == MINUS_BIP) && (has_left_operand == FALSE))
+		isn->isn_clarifier = UNARYMINUS_BIP;
+	if ((final_operation == POSTINCREMENT_BIP) && (has_left_operand == FALSE))
+		isn->isn_clarifier = PREINCREMENT_BIP;
+	if ((final_operation == POSTDECREMENT_BIP) && (has_left_operand == FALSE))
+		isn->isn_clarifier = PREDECREMENT_BIP;
+	if ((final_operation == PROPERTYVALUE_BIP) && (has_left_operand == FALSE)) {
+		isn->isn_type = LABEL_ISNT;
+		isn->isn_clarifier = 0;
+	} else {
+		int a = 0;
+		if (has_left_operand) a++;
+		if (has_right_operand) a++;
+		if (a != BIPMetadata::arity(isn->isn_clarifier)) {
+			LOG("Seem to have arity %d with isn %S which needs %d\n",
+				a, Primitives::BIP_to_name(isn->isn_clarifier),
+				BIPMetadata::arity(isn->isn_clarifier));
+			LOG("$1\n", isn->parent_schema);
+			internal_error("bad arity");
+		}
+	}
+
+@ Now for function calls.
+
+=
 int Ramification::place_calls(inter_schema_node *par, inter_schema_node *isn) {
 	for ( ; isn; isn = isn->next_node) {
 		if (isn->isn_type == EXPRESSION_ISNT) {
-			if ((isn->expression_tokens) && (isn->expression_tokens->ist_type == OPEN_ROUND_ISTT)) {
-				int bl = 0, term_count = 0, tops = 0;
-				inter_schema_token *opener = NULL, *closer = NULL;
-				for (inter_schema_token *n = isn->expression_tokens; n; n = n->next) {
-					if (n->ist_type == OPEN_ROUND_ISTT) {
-						bl++;
-						if (bl == 1) { opener = n; closer = NULL; term_count++; }
-					} else if (n->ist_type == CLOSE_ROUND_ISTT) {
-						bl--;
-						if (bl == 0) { closer = n; }
-					} else if (bl == 0) tops++;
-				}
-				if ((term_count == 2) && (tops == 0) && (opener) && (closer)) {
-					@<Call brackets found@>;
-				}
-			}
-			inter_schema_token *n = isn->expression_tokens;
-			inter_schema_token *opener = NULL, *closer = NULL;
-			int pre_count = 0, pre_bracings = 0, post_count = 0, veto = FALSE, bl = 0;
-			while (n) {
-				if (n->ist_type == OPEN_ROUND_ISTT) {
-					bl++;
-					if (bl == 1) {
-						if (opener == NULL) opener = n;
-						else veto = TRUE;
-					}
-				} else if (n->ist_type == CLOSE_ROUND_ISTT) {
-					bl--;
-					if ((bl == 0) && (closer == NULL)) closer = n;
-				} else if ((bl == 0) && (n->ist_type != INLINE_ISTT)) {
-					if (opener == NULL) pre_count++;
-					if ((opener) && (closer)) post_count++;
-				} else if (bl == 0) {
-					if (opener == NULL) pre_bracings++;
-				}
-				n = n->next;
-			}
-			if (((pre_count == 1) || ((pre_count == 0) && (pre_bracings > 0))) &&
-				(post_count == 0) && (opener) && (closer) && (veto == FALSE))
-				@<Call brackets found@>;
+			if ((isn->expression_tokens) &&
+				(isn->expression_tokens->ist_type == OPEN_ROUND_ISTT))
+				@<Maybe the function is itself a bracketed term@>;
+			@<Or maybe the function is not bracketed@>;
 		}
 		if (Ramification::place_calls(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
 }
+
+@ This is to catch the super-annoying possibility |(array->2)(7)|, where an
+array lookup is performed to find the address of the function to call.
+
+@<Maybe the function is itself a bracketed term@> =
+	int bl = 0, term_count = 0, tops = 0;
+	inter_schema_token *opener = NULL, *closer = NULL;
+	for (inter_schema_token *n = isn->expression_tokens; n; n = n->next) {
+		if (n->ist_type == OPEN_ROUND_ISTT) {
+			bl++;
+			if (bl == 1) { opener = n; closer = NULL; term_count++; }
+		} else if (n->ist_type == CLOSE_ROUND_ISTT) {
+			bl--;
+			if (bl == 0) { closer = n; }
+		} else if (bl == 0) tops++;
+	}
+	if ((term_count == 2) && (tops == 0) && (opener) && (closer)) {
+		@<Call brackets found@>;
+	}
+
+@ But much more usually...
+
+@<Or maybe the function is not bracketed@> =
+	inter_schema_token *n = isn->expression_tokens;
+	inter_schema_token *opener = NULL, *closer = NULL;
+	int pre_count = 0, pre_bracings = 0, post_count = 0, veto = FALSE, bl = 0;
+	while (n) {
+		if (n->ist_type == OPEN_ROUND_ISTT) {
+			bl++;
+			if (bl == 1) {
+				if (opener == NULL) opener = n;
+				else veto = TRUE;
+			}
+		} else if (n->ist_type == CLOSE_ROUND_ISTT) {
+			bl--;
+			if ((bl == 0) && (closer == NULL)) closer = n;
+		} else if ((bl == 0) && (n->ist_type != INLINE_ISTT)) {
+			if (opener == NULL) pre_count++;
+			if ((opener) && (closer)) post_count++;
+		} else if (bl == 0) {
+			if (opener == NULL) pre_bracings++;
+		}
+		n = n->next;
+	}
+	if (((pre_count == 1) || ((pre_count == 0) && (pre_bracings > 0))) &&
+		(post_count == 0) && (opener) && (closer) && (veto == FALSE))
+		@<Call brackets found@>;
 
 @<Call brackets found@> =
 	inter_schema_token *from = isn->expression_tokens, *to = opener, *resume = opener->next;
@@ -1528,7 +1779,8 @@ int Ramification::place_calls(inter_schema_node *par, inter_schema_node *isn) {
 
 @<Relegate node@> =
 	if ((from) && (to) && (from != to)) {
-		inter_schema_node *new_isn = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+		inter_schema_node *new_isn =
+			InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
 		new_isn->expression_tokens = from;
 		for (inter_schema_token *l = new_isn->expression_tokens; l; l=l->next)
 			if (l->next == to)
@@ -1544,14 +1796,19 @@ int Ramification::place_calls(inter_schema_node *par, inter_schema_node *isn) {
 		new_isn->parent_node = isn;
 	}
 
-@ =
+@h The implied return values ramification.
+A bare |return;| statement in Inform 6 means "return true", i.e., the numerical value 1.
+
+=
 int Ramification::implied_return_values(inter_schema_node *par, inter_schema_node *isn) {
 	for (inter_schema_node *prev = NULL; isn; prev = isn, isn = isn->next_node) {
-		if ((isn->isn_type == STATEMENT_ISNT) && (isn->isn_clarifier == RETURN_BIP) && (isn->child_node == FALSE)) {
-			isn->child_node = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
-			isn->child_node->parent_node = isn;
-			isn->child_node->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, I"1", 0, 0, -1);
-			isn->child_node->expression_tokens->owner = isn->child_node;
+		if ((isn->isn_type == STATEMENT_ISNT) &&
+			(isn->isn_clarifier == RETURN_BIP) && (isn->child_node == FALSE)) {
+			inter_schema_node *one = InterSchemas::new_node(isn->parent_schema, EXPRESSION_ISNT);
+			one->expression_tokens = InterSchemas::new_token(NUMBER_ISTT, I"1", 0, 0, -1);
+			one->expression_tokens->owner = one;
+			isn->child_node = one;
+			one->parent_node = isn;
 			return TRUE;
 		}
 		if (Ramification::implied_return_values(isn, isn->child_node)) return TRUE;
@@ -1559,11 +1816,21 @@ int Ramification::implied_return_values(inter_schema_node *par, inter_schema_nod
 	return FALSE;
 }
 
-@ =
+@h The message calls ramification.
+Here we look for the configuration |x.y(z)|, which is a message call -- i.e. a
+function call to |x.y|, of a special kind -- rather than a lookup of the property
+|y(z)| on the object |x|. We clarify using |MESSAGE_ISNT.
+
+There is also the oddball syntax |f.call(y)|, which performs a function call too.
+This is almost useless, but we pick it up anyway.
+
+=
 int Ramification::message_calls(inter_schema_node *par, inter_schema_node *isn) {
 	for (inter_schema_node *prev = NULL; isn; prev = isn, isn = isn->next_node) {
-		if ((isn->isn_type == OPERATION_ISNT) && (isn->isn_clarifier == PROPERTYVALUE_BIP) &&
-			(isn->child_node) && (isn->child_node->next_node) && (isn->child_node->next_node->isn_type == CALL_ISNT)) {
+		if ((isn->isn_type == OPERATION_ISNT) &&
+			(isn->isn_clarifier == PROPERTYVALUE_BIP) &&
+			(isn->child_node) && (isn->child_node->next_node) &&
+			(isn->child_node->next_node->isn_type == CALL_ISNT)) {
 			inter_schema_node *obj = isn->child_node;
 			inter_schema_node *message = isn->child_node->next_node->child_node;
 			inter_schema_node *args = isn->child_node->next_node->child_node->next_node;

@@ -7,7 +7,9 @@ Test: parse schema from:
 Test: parse schema from:
 	print (number) say__n=({something}); 
 
-  * (statement) !printnlnumber
+  * (call)
+      * (expr)
+        IDENTIFIER  LanguageNumber
       * (operation) !store
           * (expr)
             IDENTIFIER  say__n
@@ -34,14 +36,18 @@ Test: parse schema from:
 Test: parse schema from:
 	print (a) {something}; 
 
-  * (statement) !printindef
+  * (call)
+      * (expr)
+        IDENTIFIER  IndefArt
       * (expr)
         INLINE      something
 =========
 Test: parse schema from:
 	print (a) {something}; 
 
-  * (statement) !printindef
+  * (call)
+      * (expr)
+        IDENTIFIER  IndefArt
       * (expr)
         INLINE      something
 =========
@@ -66,14 +72,18 @@ Test: parse schema from:
 Test: parse schema from:
 	print (the) {something}; 
 
-  * (statement) !printdef
+  * (call)
+      * (expr)
+        IDENTIFIER  DefArt
       * (expr)
         INLINE      something
 =========
 Test: parse schema from:
 	print (The) {something}; 
 
-  * (statement) !printcdef
+  * (call)
+      * (expr)
+        IDENTIFIER  CDefArt
       * (expr)
         INLINE      something
 =========
@@ -223,17 +233,23 @@ Test: parse schema from:
 Test: parse schema from:
 	style bold; 
 
-  * (statement) !stylebold
+  * (statement) !style
+      * (expr)
+        NUMBER      1
 =========
 Test: parse schema from:
 	style underline; 
 
-  * (statement) !styleunderline
+  * (statement) !style
+      * (expr)
+        NUMBER      2
 =========
 Test: parse schema from:
 	style roman; 
 
-  * (statement) !styleroman
+  * (statement) !style
+      * (expr)
+        NUMBER      0
 =========
 Test: parse schema from:
 	font off; 
@@ -3870,7 +3886,7 @@ Test: parse schema from:
 Test: parse schema from:
 	print (address) pronoun_word; 
 
-  * (statement) !printaddress
+  * (statement) !printdword
       * (expr)
         IDENTIFIER  pronoun_word
 =========
@@ -3884,7 +3900,7 @@ Test: parse schema from:
 Test: parse schema from:
 	print (address) pronoun_word; 
 
-  * (statement) !printaddress
+  * (statement) !printdword
       * (expr)
         IDENTIFIER  pronoun_word
 =========
