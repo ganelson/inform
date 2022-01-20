@@ -1246,6 +1246,6 @@ void CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_sta
 	inter_package *module_pack =
 		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
 	inter_symbols_table *scope2 = Inter::Packages::scope(module_pack);
-	EmitInterSchemas::emit(I, &VH, sch, NULL, scope1, scope2, NULL, NULL);
+	EmitInterSchemas::emit(I, &VH, sch, scope1, scope2, NULL, NULL, NULL);
 	Produce::pop_code_position(I);
 	Produce::set_function(I, NULL);

@@ -79,8 +79,8 @@ void CompileSchemas::sch_emit_inner(i6_schema *sch, pcalc_term *pt1, pcalc_term 
 	ems.by_ref = sch->compiled->dereference_mode;
 
 	value_holster VH = Holsters::new(void_context?INTER_VOID_VHMODE:INTER_VAL_VHMODE);
-	EmitInterSchemas::emit(Emit::tree(), &VH, sch->compiled, &ems, NULL, NULL,
-		&CompileSchemas::from_schema_token, NULL);
+	EmitInterSchemas::emit(Emit::tree(), &VH, sch->compiled, NULL, NULL,
+		&CompileSchemas::from_schema_token, NULL, &ems);
 }
 
 @ So, then, this is called on each token in turn from the original schema. Note

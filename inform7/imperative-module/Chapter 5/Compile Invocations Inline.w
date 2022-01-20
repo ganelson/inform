@@ -176,8 +176,8 @@ below can share some private state variables.
 
 =
 void CSIInline::from_schema(inter_schema *sch, csi_state *CSIS) {
-	EmitInterSchemas::emit(Emit::tree(), &(CSIS->VH), sch, CSIS, NULL, NULL,
-		&CSIInline::from_schema_token, &CSIInline::from_source_text);
+	EmitInterSchemas::emit(Emit::tree(), &(CSIS->VH), sch, NULL, NULL,
+		&CSIInline::from_schema_token, &CSIInline::from_source_text, CSIS);
 }
 
 @ So we now have to write the function compiling code to implement |ist|.
