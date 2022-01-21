@@ -1,5 +1,7 @@
 [EmitInterSchemas::] Emitting Inter Schemas.
 
+To compile Inter code following the model in an Inter schema tree.
+
 @ This section presents just one function to the rest of Inform: it compiles
 Inter code from a schema. Though there are many arguments, this is still fairly
 simple to use:
@@ -15,10 +17,7 @@ in a void one.
 that nodes made inaccessible by conditional compilation are marked as such.
 (*) If the schema mentions identifiers -- as for example |DoSomething(1, 2)|
 mentions the identifier |DoSomething| -- then these must somehow be matched up
-with |inter_symbol|s giving them a meaning. See //EmitInterSchemas::find_identifier//
-below for how this is done. Briefly, |first_call| and |second_call| are a sort of
-search path; if an identifier occurs in both, the |first_call| meaning will win.
-Either or both can be |NULL|.
+with |inter_symbol|s giving them a meaning. |finder| says how: see //Identifier Finders//.
 (*) As we have seen, schema notation is (almost) Inform 6 syntax, except for two
 big extensions: one is Inform 7 source text placed between |(+| and |+)| markers,
 and the other is braced commands like |{-by-reference: X}|. The code below cannot
@@ -32,14 +31,15 @@ no use of it; and it can of course be |NULL| if no state is needed.
 So the simplest valid usage of the function would be something like:
 = (text as InC)
 	value_holster VH = Holsters::new(INTER_VOID_VHMODE);
-	EmitInterSchemas::emit(I, &VH, sch, NULL, NULL, NULL, NULL, NULL);
+	identifier_finder finder = IdentifierFinders::common_names_only();
+	EmitInterSchemas::emit(I, &VH, sch, finder, NULL, NULL, NULL);
 =
 which roughly means "compile pure Inform 6 code to Inter in a void context, but
 do not recognise any identifiers as corresponding to local variables".
 
 =
 void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch,
-	inter_symbols_table *first_call, inter_symbols_table *second_call,
+	identifier_finder finder,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t,
 		void *opaque_state, int prim_cat),
 	void (*i7_source_handler)(value_holster *VH, text_stream *S,
@@ -80,18 +80,18 @@ same machine architecture each time.
 	while (again) {
 		again = FALSE;
 		for (inter_schema_node *node = sch->node_tree; node; node=node->next_node)
-			if (EmitInterSchemas::process_conditionals(I, node, first_call, second_call))
+			if (EmitInterSchemas::process_conditionals(I, node, finder))
 				again = TRUE;
 	}
 
 @ =
 int EmitInterSchemas::process_conditionals(inter_tree *I, inter_schema_node *dir_node,
-	inter_symbols_table *first_call, inter_symbols_table *second_call) {
+	identifier_finder finder) {
 	if (dir_node == NULL) return FALSE;
 	if (dir_node->blocked_by_conditional) return FALSE;
 	if (dir_node->isn_type == DIRECTIVE_ISNT) @<Directive@>;
 	for (dir_node=dir_node->child_node; dir_node; dir_node=dir_node->next_node)
-		if (EmitInterSchemas::process_conditionals(I, dir_node, first_call, second_call))
+		if (EmitInterSchemas::process_conditionals(I, dir_node, finder))
 			return TRUE;
 	return FALSE; /* signalling the function should not be called again */
 }
@@ -189,9 +189,11 @@ all conditionals are resolved.
 	if (Str::eq(symbol_to_check, I"#version_number")) { val = 8; def = TRUE; }
 	else if (Str::eq(symbol_to_check, I"STRICT_MODE")) { def = TRUE; }
 	else {
-		inter_symbol *symb = EmitInterSchemas::find_identifier_text(I, symbol_to_check,
-			Inter::Packages::scope(LargeScale::architecture_package(I)),
-			second_call);
+		identifier_finder global_finder = finder;
+		IdentifierFinders::next_priority(&global_finder,
+			Inter::Packages::scope(LargeScale::architecture_package(I)));
+		inter_symbol *symb = IdentifierFinders::find(I,
+			symbol_to_check, global_finder);
 		symb = Wiring::cable_end(symb);
 		LOGIF(SCHEMA_COMPILATION, "Symb is $3\n", symb);
 		if (Inter::Symbols::is_defined(symb)) {
@@ -256,7 +258,7 @@ begins in |CODE_PRIM_CAT| (i.e., void context), but by the time the node for
 
 @d EIS_RECURSE(node, prim_cat)
 	 EmitInterSchemas::emit_recursively(I, node, VH, sch, opaque_state, prim_cat,
-	 	first_call, second_call, inline_command_handler, i7_source_handler);
+	 	finder, inline_command_handler, i7_source_handler);
 
 @<Traverse the tree, compiling each node@> =
 	int prim_cat = CODE_PRIM_CAT;
@@ -276,7 +278,7 @@ compilation -- are ever visited.
 =
 void EmitInterSchemas::emit_recursively(inter_tree *I, inter_schema_node *node,
 	value_holster *VH, inter_schema *sch, void *opaque_state, int prim_cat,
-	inter_symbols_table *first_call, inter_symbols_table *second_call,
+	identifier_finder finder,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t,
 		void *opaque_state, int prim_cat),
 	void (*i7_source_handler)(value_holster *VH, text_stream *S,
@@ -405,7 +407,7 @@ changed back again very soon after.
 	} else if (Str::eq(tok->material, I"indirect")) { 
 		at = at->next_node;
 	} else {
-		to_call = EmitInterSchemas::find_identifier(I, tok, first_call, second_call);
+		to_call = IdentifierFinders::find_token(I, tok, finder);
 		if (Inter::Symbols::is_local(to_call)) to_call = NULL;
 		if (to_call) {
 			inter_tree_node *D = to_call->definition;
@@ -492,111 +494,132 @@ evaluated for their potential side-effects, but only the last produces a value.
 		while (d > 0) { Produce::up(I); d--; }
 	}
 
+@ Note that an expression consisting only of a double-quoted text, in void
+context, is a print-then-print-new-line-then-return-true statement in Inform 6.
+This is where we detect that. (Because its meaning depends on context -- i.e.,
+it doesn't mean that in value context -- we couldn't have decided this when
+parsing the schema.)
 
 @<Expression@> =
-	int cat_me = FALSE, lab_me = FALSE, print_ret_me = FALSE;
-	int tc = 0; for (inter_schema_token *t = node->expression_tokens; t; t=t->next) tc++;
-	if ((tc > 1) && (prim_cat == VAL_PRIM_CAT)) cat_me = TRUE;
+	int serial_evaluate_us = FALSE, reference_me = FALSE, print_ret_me = FALSE;
+	@<Decide whether exceptional expression modes apply@>;
 
-	if ((tc == 1) && (prim_cat == CODE_PRIM_CAT) && (node->expression_tokens->ist_type == DQUOTED_ISTT))
-		print_ret_me = TRUE;
-
-	if ((tc == 1) && (prim_cat == LAB_PRIM_CAT)) lab_me = TRUE;
-
-	if (cat_me) { Produce::evaluation(I); Produce::down(I); }
-	if (prim_cat == REF_PRIM_CAT) { Produce::reference(I); Produce::down(I); }
-
-	for (inter_schema_token *t = node->expression_tokens; t; t=t->next) {
-		switch (t->ist_type) {
-			case IDENTIFIER_ISTT: {
-				if (lab_me)
-					Produce::lab(I, Produce::reserve_label(I, t->material));
-				else {
-					#ifdef CORE_MODULE
-					local_variable *lvar = LocalVariables::by_identifier(t->material);
-					if (lvar) {
-						inter_symbol *lvar_s = LocalVariables::declare(lvar);
-						Produce::val_symbol(I, K_value, lvar_s);
-					} else {
-						Produce::val_symbol(I, K_value, EmitInterSchemas::find_identifier(I, t, first_call, second_call));
-					}
-					#endif
-					#ifndef CORE_MODULE
-						Produce::val_symbol(I, K_value, EmitInterSchemas::find_identifier(I, t, first_call, second_call));
-					#endif
-				}
-				break;
-			}
-			case ASM_ARROW_ISTT:
-				Produce::assembly_marker(I, ASM_ARROW_ASMMARKER);
-				break;
-			case ASM_SP_ISTT:
-				Produce::assembly_marker(I, ASM_SP_ASMMARKER);
-				break;
-			case ASM_NEGATED_LABEL_ISTT:
-				if (Str::eq(t->material, I"rtrue")) 
-					Produce::assembly_marker(I, ASM_NEG_RTRUE_ASMMARKER);
-				else if (Str::eq(t->material, I"rfalse")) 
-					Produce::assembly_marker(I, ASM_NEG_RFALSE_ASMMARKER);
-				else {
-					Produce::assembly_marker(I, ASM_NEG_ASMMARKER);
-					Produce::lab(I, Produce::reserve_label(I, t->material));
-				}
-				break;
-			case ASM_LABEL_ISTT:
-				if (Str::eq(t->material, I"rtrue")) 
-					Produce::assembly_marker(I, ASM_RTRUE_ASMMARKER);
-				else if (Str::eq(t->material, I"rfalse")) 
-					Produce::assembly_marker(I, ASM_RFALSE_ASMMARKER);
-				else Produce::lab(I, Produce::reserve_label(I, t->material));
-				break;
-			case NUMBER_ISTT:
-			case BIN_NUMBER_ISTT:
-			case HEX_NUMBER_ISTT: {
-				inter_ti v1 = 0, v2 = 0;
-				if (t->constant_number >= 0) { v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number; }
-				else if (Inter::Types::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE)
-					internal_error("bad number");
-				Produce::val(I, K_value, v1, v2);
-				break;
-			}
-			case REAL_NUMBER_ISTT:
-				Produce::val_real_from_text(I, t->material);
-				break;
-			case DQUOTED_ISTT:
-				if (print_ret_me) {
-					Produce::inv_primitive(I, PRINT_BIP);
-					Produce::down(I);
-				}
-				Produce::val_text(I, t->material);
-				if (print_ret_me) {
-					Produce::up(I);
-					Produce::inv_primitive(I, PRINTNL_BIP);
-					Produce::rtrue(I);					
-				}
-				break;
-			case SQUOTED_ISTT:
-				if (Str::len(t->material) == 1) {
-					Produce::val_char(I, Str::get_at(t->material, 0));
-				} else {
-					Produce::val_dword(I, t->material);
-				}
-				break;
-			case I7_ISTT:
-				if (i7_source_handler)
-					(*i7_source_handler)(VH, t->material, opaque_state, prim_cat);
-				break;
-			case INLINE_ISTT:
-				if (inline_command_handler)
-					(*inline_command_handler)(VH, t, opaque_state, prim_cat);
-				break;
-			default:
-				internal_error("bad expression token");
-		}
+	if (serial_evaluate_us) { Produce::evaluation(I); Produce::down(I); }
+	if (reference_me) { Produce::reference(I); Produce::down(I); }
+	if (print_ret_me) {
+		Produce::inv_primitive(I, PRINT_BIP);
+		Produce::down(I);
 	}
 
-	if (cat_me) { Produce::up(I); }
-	if (prim_cat == REF_PRIM_CAT) { Produce::up(I); }
+	for (inter_schema_token *t = node->expression_tokens; t; t=t->next)
+	    @<Evaluate this token@>;
+
+	if (print_ret_me) {
+		Produce::up(I);
+		Produce::inv_primitive(I, PRINTNL_BIP);
+		Produce::rtrue(I);					
+	}
+	if (reference_me) { Produce::up(I); }
+	if (serial_evaluate_us) { Produce::up(I); }
+
+@ Note that at most one of thexe exceptional cases can arise at a time.
+
+@<Decide whether exceptional expression modes apply@> =
+	int evaluations_to_perform = 0;
+	for (inter_schema_token *t = node->expression_tokens; t; t=t->next)
+		evaluations_to_perform++;
+
+	if (evaluations_to_perform > 1) {
+		if (prim_cat == VAL_PRIM_CAT) serial_evaluate_us = TRUE;
+	} else if (evaluations_to_perform == 1) {
+		if ((prim_cat == CODE_PRIM_CAT) &&
+			(node->expression_tokens->ist_type == DQUOTED_ISTT))
+			print_ret_me = TRUE;
+	}
+	
+	if (prim_cat == REF_PRIM_CAT) reference_me = TRUE;
+
+@<Evaluate this token@> =
+	switch (t->ist_type) {
+		case IDENTIFIER_ISTT:
+			if (prim_cat == LAB_PRIM_CAT) {
+				Produce::lab(I, Produce::reserve_label(I, t->material));
+			} else {
+				#ifdef CORE_MODULE
+				local_variable *lvar = LocalVariables::by_identifier(t->material);
+				if (lvar) {
+					inter_symbol *lvar_s = LocalVariables::declare(lvar);
+					Produce::val_symbol(I, K_value, lvar_s);
+				} else {
+					Produce::val_symbol(I, K_value, IdentifierFinders::find_token(I, t, finder));
+				}
+				#endif
+				#ifndef CORE_MODULE
+					Produce::val_symbol(I, K_value, IdentifierFinders::find_token(I, t, finder));
+				#endif
+			}
+			break;
+		case ASM_ARROW_ISTT:
+			Produce::assembly_marker(I, ASM_ARROW_ASMMARKER);
+			break;
+		case ASM_SP_ISTT:
+			Produce::assembly_marker(I, ASM_SP_ASMMARKER);
+			break;
+		case ASM_NEGATED_LABEL_ISTT:
+			if (Str::eq(t->material, I"rtrue")) 
+				Produce::assembly_marker(I, ASM_NEG_RTRUE_ASMMARKER);
+			else if (Str::eq(t->material, I"rfalse")) 
+				Produce::assembly_marker(I, ASM_NEG_RFALSE_ASMMARKER);
+			else {
+				Produce::assembly_marker(I, ASM_NEG_ASMMARKER);
+				Produce::lab(I, Produce::reserve_label(I, t->material));
+			}
+			break;
+		case ASM_LABEL_ISTT:
+			if (Str::eq(t->material, I"rtrue")) 
+				Produce::assembly_marker(I, ASM_RTRUE_ASMMARKER);
+			else if (Str::eq(t->material, I"rfalse")) 
+				Produce::assembly_marker(I, ASM_RFALSE_ASMMARKER);
+			else
+				Produce::lab(I, Produce::reserve_label(I, t->material));
+			break;
+		case NUMBER_ISTT:
+		case BIN_NUMBER_ISTT:
+		case HEX_NUMBER_ISTT: {
+			inter_ti v1 = 0, v2 = 0;
+			if (t->constant_number >= 0) {
+				v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number;
+			} else {
+				if (Inter::Types::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE)
+					internal_error("bad number");
+			}
+			Produce::val(I, K_value, v1, v2);
+			break;
+		}
+		case REAL_NUMBER_ISTT:
+			Produce::val_real_from_text(I, t->material);
+			break;
+		case DQUOTED_ISTT:
+			Produce::val_text(I, t->material);
+			break;
+		case SQUOTED_ISTT:
+			if (Str::len(t->material) == 1) {
+				Produce::val_char(I, Str::get_at(t->material, 0));
+			} else {
+				Produce::val_dword(I, t->material);
+			}
+			break;
+		case I7_ISTT:
+			if (i7_source_handler)
+				(*i7_source_handler)(VH, t->material, opaque_state, prim_cat);
+			break;
+		case INLINE_ISTT:
+			if (inline_command_handler)
+				(*inline_command_handler)(VH, t, opaque_state, prim_cat);
+			break;
+		default:
+			internal_error("bad expression token");
+	}
 
 @ A twig for a label, such as:
 = (text)
@@ -645,93 +668,141 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 	DISCARD_TEXT(L)
 
 @<Message@> =
-	if (node->child_node) {
-		inter_schema_node *at = node->child_node;
+	inter_schema_node *at = node->child_node;
+	if (at) {
 		int argc = 0;
-		for (inter_schema_node *n = node->child_node; n; n=n->next_node) argc++;
-		switch (argc) {
-			case 2: Produce::inv_primitive(I, MESSAGE0_BIP); break;
-			case 3: Produce::inv_primitive(I, MESSAGE1_BIP); break;
-			case 4: Produce::inv_primitive(I, MESSAGE2_BIP); break;
-			case 5: Produce::inv_primitive(I, MESSAGE3_BIP); break;
-			default: internal_error("too many args for message"); break;
-		}
+		for (inter_schema_node *n = at; n; n=n->next_node) argc++;
+		inter_ti BIP = Primitives::BIP_for_message_send(argc);
+		Produce::inv_primitive(I, BIP);
 		Produce::down(I);
-		for (; at; at=at->next_node)
-			EIS_RECURSE(at, VAL_PRIM_CAT);
+		for (; at; at=at->next_node) EIS_RECURSE(at, VAL_PRIM_CAT);
 		Produce::up(I);
 	}
 
+@ Note the three pseudo-operations here -- that is, operators which do not
+directly correspond to Inter primitives. They are:
+
+(*) |HAS_XBIP|, which is done by performing a property lookup;
+(*) |HASNT_XBIP|, which is done by negating the same;
+(*) |OWNERKIND_XBIP|, which is a way to finesse that |PROPERTYVALUE_BIP| is
+ternary at the Inter level, but only binary in Inform 6 source code. When
+the code writes |obj.prop|, this is treated here as if it had been
+|OBJECT_TY>>obj.prop|; so the value |OBJECT_TY| is dropped in. But if the
+author had written |K>>obj.prop| -- giving the full ternary form -- we
+suppress the |>>| operator and take |K|, |obj|, |prop| as the three arguments
+to the primitive |PROPERTYVALUE_BIP|. (|>>| has no other purpose or use, and
+is not present in standard Inform 6 syntax.)
+
 @<Operation@> =
-	if (prim_cat == REF_PRIM_CAT) { Produce::reference(I); Produce::down(I); }
-	int remember_to_up = FALSE;
 	inter_ti op = node->isn_clarifier;	
-	if (op == HASNT_XBIP) {
+	if ((op == HAS_XBIP) || (op == HASNT_XBIP)) op = PROPERTYVALUE_BIP;
+
+	int reference_me = FALSE, negate_me = FALSE, insert_OBJECT_TY = FALSE, nop_me = FALSE;
+	@<Decide whether exceptional operator modes apply@>;
+	
+	if (reference_me) {
+		Produce::reference(I);
+		Produce::down(I);
+	}
+	if (negate_me) {
 		Produce::inv_primitive(I, NOT_BIP);
 		Produce::down(I);
-		op = PROPERTYVALUE_BIP;
-		remember_to_up = TRUE;
 	}
-	if (node->isn_clarifier == HAS_XBIP) op = PROPERTYVALUE_BIP;
-	
-	int insert_OBJECT_TY = FALSE;
+	if (nop_me == FALSE) {
+		Produce::inv_primitive(I, op);
+		Produce::down(I);
+	}
+	@<Operands@>;
+	if (nop_me == FALSE) { Produce::up(I); }
+	if (negate_me) { Produce::up(I); }
+	if (reference_me) { Produce::up(I); }
+
+@<Decide whether exceptional operator modes apply@> =
+	if (prim_cat == REF_PRIM_CAT) reference_me = TRUE;
+	if (node->isn_clarifier == HASNT_XBIP) negate_me = TRUE;
 	if ((op == PROPERTYEXISTS_BIP) || (op == PROPERTYVALUE_BIP) ||
 		(op == PROPERTYARRAY_BIP) || (op == PROPERTYLENGTH_BIP)) {
 		if ((node->child_node->isn_type != OPERATION_ISNT) ||
 			(node->child_node->isn_clarifier != OWNERKIND_XBIP))
 			insert_OBJECT_TY = TRUE;
 	}
-	
-	if (op != OWNERKIND_XBIP) {
-		Produce::inv_primitive(I, op);
-		Produce::down(I);
-	}
+	if (op == OWNERKIND_XBIP) nop_me = TRUE;
+
+@<Operands@> =
 	if (insert_OBJECT_TY) {
-		inter_symbol *OBJECT_TY_s = EmitInterSchemas::find_identifier_text(I, I"OBJECT_TY", first_call, second_call);
+		inter_symbol *OBJECT_TY_s =
+			IdentifierFinders::find(I, I"OBJECT_TY", finder);
 		Produce::val_symbol(I, K_value, OBJECT_TY_s);
 	}
 	int pc = VAL_PRIM_CAT;
-	if (Primitives::term_category(node->isn_clarifier, 0) == REF_PRIM_CAT) pc = REF_PRIM_CAT;
-	if (node->isn_clarifier == OBJECTLOOP_BIP) pc = VAL_PRIM_CAT;
+	if (Primitives::term_category(node->isn_clarifier, 0) == REF_PRIM_CAT)
+		pc = REF_PRIM_CAT;
 	EIS_RECURSE(node->child_node, pc);
 	if (I6Operators::arity(node->isn_clarifier) == 2)
 		EIS_RECURSE(node->child_node->next_node, VAL_PRIM_CAT);
-	if (op != OWNERKIND_XBIP) {
-		Produce::up(I);
-	}
-	if (remember_to_up) { Produce::up(I); }
 
-	if (prim_cat == REF_PRIM_CAT) { Produce::up(I); }
+@ The pseudo-statement |READ_XBIP| is handled as the assembly language |@aread|.
+We don't want to regard keyboard input as being a core feature of the Inter
+instruction set, but rather as something available on some platforms and not
+on others.
 
 @<Statement@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("statement in expression");
 	if (node->isn_clarifier == CASE_BIP) Produce::to_last_level(I, 2);
 	if (node->isn_clarifier == READ_XBIP) Produce::inv_assembly(I, I"@aread");
 	else Produce::inv_primitive(I, node->isn_clarifier);
-	int arity = Primitives::term_count(node->isn_clarifier);
-	if (node->isn_clarifier == OBJECTLOOP_BIP) arity = 2;
-	if (arity > 0) {
-		Produce::down(I);
-		if (node->isn_clarifier == OBJECTLOOP_BIP)
-			@<Add the objectloop range tokens@>;
-		inter_schema_node *at = node->child_node;
-		inter_schema_node *last = NULL;
-		int actual_arity = 0;
-		for (int i = 0; ((at) && (i<arity)); i++) {
-			actual_arity++;
-			int cat = Primitives::term_category(node->isn_clarifier, i);
-			if ((node->isn_clarifier == OBJECTLOOP_BIP) && (i == 0)) cat = VAL_PRIM_CAT;
-			if ((node->isn_clarifier == OBJECTLOOP_BIP) && (i == 1)) cat = CODE_PRIM_CAT;
-			EIS_RECURSE(at, cat);
-			last = at;
-			at = at->next_node;
-		}
-		if (!((last) && (last->unclosed))) {
-			Produce::up(I);
+	if (node->isn_clarifier == OBJECTLOOP_BIP) {
+		@<Handle OBJECTLOOP as a special case@>;
+	} else {
+		int arity = Primitives::term_count(node->isn_clarifier);
+		if (arity > 0) {
+			Produce::down(I);
+			inter_schema_node *at = node->child_node;
+			inter_schema_node *last = NULL;
+			for (int i = 0; ((at) && (i<arity)); i++) {
+				EIS_RECURSE(at, Primitives::term_category(node->isn_clarifier, i));
+				last = at;
+				at = at->next_node;
+			}
+			if (!((last) && (last->unclosed))) Produce::up(I);
 		}
 	}
 
-@<Add the objectloop range tokens@> =
+@ As noted in //Inter Primitives//, the signature of |OBJECTLOOP_BIP| is
+|ref val val code -> void|, so it needs four operands:
+
+(1) The |ref| is the variable.
+(2) The first |val| is the object class it ranges over. If we are unable to
+narrow this down, we will simply make that |Object|, the result being a
+potentially slow loop over all objects.
+(3) The second |val| is condition which must apply to any given |x| for the
+code block to be executed.
+(4) The |code| is the code block.
+
+But it arrives here not with four child nodes, but just two, corresponding to
+the second |val| and the |code| respectively. We must find the first two as
+subexpressions of the first child, by directly probing its subtree. Consider
+these possibilities:
+= (text)
+	objectloop (x) { ... }
+	            |  \ code
+	            ref and second val; first val is "Object"
+
+	objectloop (x ofclass K1_thing) { ... }
+	            |            |         |
+	            ref       first val   code
+	           --------------------
+	                second val
+
+	objectloop ((x ofclass K1_thing) && (x has container)) { ... }
+	             |             |                              |
+	             ref       first val                         code
+	           -------------------------------------------
+	                           second val
+=
+
+@<Handle OBJECTLOOP as a special case@> =
+	Produce::down(I);
 	inter_schema_node *oc_node = node->child_node;
 	while ((oc_node) &&
 		((oc_node->isn_type != OPERATION_ISNT) ||
@@ -754,10 +825,21 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 			Produce::val_iname(I, K_value, RTKindDeclarations::iname(K_object));
 			#endif
 			#ifndef CORE_MODULE
-			Produce::val_symbol(I, K_value, LargeScale::find_architectural_symbol(I, I"Object", Produce::kind_to_symbol(NULL)));
+			Produce::val_symbol(I, K_value,
+				LargeScale::find_architectural_symbol(I, I"Object",
+					Produce::kind_to_symbol(NULL)));
 			#endif
 		} else internal_error("objectloop without visible variable");
 	}
+	inter_schema_node *at = node->child_node;
+	EIS_RECURSE(at, VAL_PRIM_CAT);
+	at = at->next_node;
+	EIS_RECURSE(at, CODE_PRIM_CAT);
+	if (at->unclosed == FALSE) Produce::up(I);
+
+@ Last and least: a subexpression node gives one or more nodes to be evaluated,
+and if there's more than one, we use the |SEQUENTIAL_BIP| operator (which is
+like the comma in C) to throw away the results of the non-final evaluations.
 
 @<Subexpression@> =
 	int d = 0;
@@ -770,40 +852,3 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 		EIS_RECURSE(at, prim_cat);
 	}
 	while (d > 0) { Produce::up(I); d--; }
-
-@ =
-inter_symbol *EmitInterSchemas::find_identifier(inter_tree *I, inter_schema_token *t, inter_symbols_table *first_call, inter_symbols_table *second_call) {
-	if (t->as_quoted) return InterNames::to_symbol(t->as_quoted);
-	return EmitInterSchemas::find_identifier_text(I, t->material, first_call, second_call);
-}
-
-inter_symbol *EmitInterSchemas::find_identifier_text(inter_tree *I, text_stream *name, inter_symbols_table *first_call, inter_symbols_table *second_call) {
-	if (Str::get_at(name, 0) == 0x00A7) {
-		TEMPORARY_TEXT(SR)
-		Str::copy(SR, name);
-		Str::delete_first_character(SR);
-		Str::delete_last_character(SR);
-		inter_symbol *S = InterSymbolsTables::url_name_to_symbol(I, NULL, SR);
-		DISCARD_TEXT(SR)
-		if (S) return S;
-	}
-	if (first_call) {
-		inter_symbol *S = Produce::seek_symbol(first_call, name);
-		if (S) return S;
-	}
-	if (second_call) {
-		inter_symbol *S = Produce::seek_symbol(second_call, name);
-		if (S) return S;
-	}
-	inter_symbol *S = LargeScale::find_architectural_symbol(I, name, Produce::kind_to_symbol(NULL));
-	if (S) return S;
-	S = Produce::seek_symbol(Produce::connectors_scope(I), name);
-	if (S) return S;
-	S = Produce::seek_symbol(Produce::main_scope(I), name);
-	if (S) return S;
-	S = InterNames::to_symbol(Produce::find_by_name(I, name));
-	if (S) return S;
-	LOG("Defeated on %S\n", name);
-	internal_error("unable to find identifier");
-	return NULL;
-}

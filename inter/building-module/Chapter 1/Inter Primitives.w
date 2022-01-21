@@ -381,6 +381,17 @@ inter_ti Primitives::BIP_for_void_indirect_call(int arity) {
 	return 0;
 }
 
+inter_ti Primitives::BIP_for_message_send(int arity) {
+	switch (arity) {
+		case 2: return MESSAGE0_BIP;
+		case 3: return MESSAGE1_BIP;
+		case 4: return MESSAGE2_BIP;
+		case 5: return MESSAGE3_BIP;
+		default: internal_error("message call must have arity 2 to 5");
+	}
+	return 0;
+}
+
 @ And these functions say whether or not a BIP belongs to the family:
 
 =

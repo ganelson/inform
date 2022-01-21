@@ -176,7 +176,8 @@ below can share some private state variables.
 
 =
 void CSIInline::from_schema(inter_schema *sch, csi_state *CSIS) {
-	EmitInterSchemas::emit(Emit::tree(), &(CSIS->VH), sch, NULL, NULL,
+	EmitInterSchemas::emit(Emit::tree(), &(CSIS->VH), sch,
+		IdentifierFinders::common_names_only(),
 		&CSIInline::from_schema_token, &CSIInline::from_source_text, CSIS);
 }
 
@@ -1331,7 +1332,8 @@ very special circumstances.
 		TEMPORARY_TEXT(T)
 		WRITE_TO(T, "%~W", Wordings::one_word(
 			Annotations::read_int(inv, ssp_closing_segment_wn_ANNOT)));
-		inter_symbol *T_s = EmitInterSchemas::find_identifier_text(Emit::tree(), T, NULL, NULL);
+		inter_symbol *T_s = IdentifierFinders::find(Emit::tree(), T,
+			IdentifierFinders::common_names_only());
 		EmitCode::val_symbol(K_value, T_s);
 		DISCARD_TEXT(T)
 	}

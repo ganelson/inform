@@ -24,6 +24,7 @@ Chapter 2: Blueprints
 	Ramification
 	Inform 6 Operators
 	Emitting Inter Schemas
+	Identifier Finders
 
 Chapter 3: Masonry
 	Produce

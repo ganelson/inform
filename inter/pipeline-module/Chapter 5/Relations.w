@@ -77,7 +77,8 @@ so we change the values of these constants accordingly.
 				Produce::inv_primitive(I, PROPERTYVALUE_BIP);
 				Produce::down(I);
 					inter_symbol *OBJECT_TY_s =
-						EmitInterSchemas::find_identifier_text(I, I"OBJECT_TY", NULL, NULL);
+						IdentifierFinders::find(I, I"OBJECT_TY",
+							IdentifierFinders::common_names_only());
 					Produce::val_symbol(I, K_value, OBJECT_TY_s);
 					Produce::val_symbol(I, K_value, obj_s);
 					Produce::val_symbol(I, K_value, pr_s);
