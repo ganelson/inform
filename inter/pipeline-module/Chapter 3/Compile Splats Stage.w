@@ -294,7 +294,7 @@ not already there.
 			++css->no_assimilated_directives);
 	}
 	inter_package *subpackage =
-		Produce::new_package_named(&content_at, subpackage_name, subpackage_type);
+		Produce::make_subpackage(&content_at, subpackage_name, subpackage_type);
 	Inter::Bookmarks::set_current_package(&content_at, subpackage);
 	DISCARD_TEXT(subpackage_name)
 
@@ -522,7 +522,7 @@ with three things in it:
 	if (ptype == NULL) ptype = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
 	TEMPORARY_TEXT(an)
 	WRITE_TO(an, "assim_action_%d", ++css->no_assimilated_actions);
-	action_package = Produce::new_package_named(IBM, an, ptype);
+	action_package = Produce::make_subpackage(IBM, an, ptype);
 	DISCARD_TEXT(an)
 
 @ Each action package has to contain an |action_id| symbol, which will eventually
@@ -688,14 +688,14 @@ These have package types |_function| and |_code| respectively.
 	if (fnt == NULL) fnt = RunningPipelines::get_symbol(step, plain_ptype_RPSYM);
 	TEMPORARY_TEXT(fname)
 	WRITE_TO(fname, "%S_fn", identifier);
-	OP = Produce::new_package_named(IBM, fname, fnt);
+	OP = Produce::make_subpackage(IBM, fname, fnt);
 	DISCARD_TEXT(fname)
 
 @<Create an inner package for the code@> =
 	Inter::Bookmarks::set_current_package(IBM, OP);
 	TEMPORARY_TEXT(bname)
 	WRITE_TO(bname, "%S_B", identifier);
-	IP = Produce::new_package_named(IBM, bname,
+	IP = Produce::make_subpackage(IBM, bname,
 		RunningPipelines::get_symbol(step, code_ptype_RPSYM));
 	DISCARD_TEXT(bname)
 	inter_bookmark inner_save = Inter::Bookmarks::snapshot(IBM);
@@ -793,7 +793,7 @@ inter_bookmark CompileSplatsStage::make_submodule(inter_tree *I, pipeline_step *
 			inter_package *submodule_package = Inter::Packages::by_name(module_pack, name);
 			if (submodule_package == NULL) {
 				inter_bookmark IBM = Inter::Bookmarks::after_this_node(I, P);
-				submodule_package = Produce::new_package_named(&IBM, name,
+				submodule_package = Produce::make_subpackage(&IBM, name,
 					RunningPipelines::get_symbol(step, submodule_ptype_RPSYM));
 				if (submodule_package == NULL) internal_error("could not create submodule");
 			}
@@ -884,7 +884,7 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 	LOOP_THROUGH_TEXT(pos, S)
 		if ((pos.index > from + 1) && (pos.index <= to))
 			PUT_TO(rw, Str::get(pos));
-	Produce::real_value_from_text(I, val1, val2, rw);
+	ProducePairs::from_real_text(I, val1, val2, rw);
 	DISCARD_TEXT(rw)
 	return;
 
@@ -1239,8 +1239,7 @@ void CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_sta
 @<Compile this function body@> =
 	Produce::set_function(I, req->block_package);
 	Packaging::set_state(I, &(req->position), req->enclosure);
-	Produce::push_code_position(I,
-		Produce::new_cip(I, &(req->position)), Inter::Bookmarks::snapshot(Packaging::at(I)));
+	Produce::push_new_code_position(I, &(req->position));
 	value_holster VH = Holsters::new(INTER_VOID_VHMODE);
 	inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
 	inter_package *module_pack =

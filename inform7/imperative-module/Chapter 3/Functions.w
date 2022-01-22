@@ -97,7 +97,7 @@ packaging_state Functions::begin_from_idb(inter_name *iname, stack_frame *frame,
 	}
 	current_function.function_stack_frame = frame;
 	packaging_state save = Emit::new_packaging_state();
-	current_function.into_package = Produce::block(Emit::tree(), &save, iname);
+	current_function.into_package = Produce::function_body(Emit::tree(), &save, iname);
 	current_function.currently_compiling_iname = iname;
 	current_function.from_idb = idb;
 	if (idb) {
@@ -170,7 +170,7 @@ void Functions::end(packaging_state save) {
 	inter_name *public_name = current_function.currently_compiling_iname;
 	if ((Frames::uses_local_block_values(frame)) ||
 		(frame->no_formal_parameters_needed > 0))
-		kernel_name = Produce::kernel(Emit::tree(), public_name);
+		kernel_name = Functions::function_kernel(Emit::tree(), public_name);
 	
 	kind *F_kind = Frames::deduced_function_kind(frame);
 
@@ -180,7 +180,7 @@ void Functions::end(packaging_state save) {
 		@<Issue a problem for too many locals@>;
 
 	LocalVariableSlates::declare_all(frame);
-	Produce::end_block(Emit::tree());
+	Produce::end_function_body(Emit::tree());
 
 	Emit::function(kernel_name?kernel_name:public_name, F_kind, current_function.into_package);
 
@@ -189,7 +189,7 @@ void Functions::end(packaging_state save) {
 	CodeBlocks::end_code_blocks();
 	if (current_function.currently_compiling_nnp) Frames::remove_nonphrase_stack_frame();
 	Frames::remove_current();
-	Produce::end_main_block(Emit::tree(), save);
+	Packaging::exit(Emit::tree(), save);
 	JumpLabels::compile_necessary_storage();
 
 	function_compilation_is_happening_now = FALSE;
@@ -204,14 +204,14 @@ void Functions::end(packaging_state save) {
 	int returns_block_value =
 		Kinds::Behaviour::uses_block_values(frame->kind_returned);
 
-	inter_package *block_package = Produce::block(Emit::tree(), NULL, public_name);
+	inter_package *block_package = Produce::function_body(Emit::tree(), NULL, public_name);
 	inter_symbol *rv_symbol = NULL;
 	@<Compile I6 locals for the outer shell@>;
 	@<Compile some setup code to make ready for the kernel@>;
 	@<Compile a call to the kernel@>;
 	@<Compile some teardown code now that the kernel has finished@>;
 	@<Compile a return from the outer shell@>;
-	Produce::end_block(Emit::tree());
+	Produce::end_function_body(Emit::tree());
 	Emit::function(public_name, F_kind, block_package);
 
 @ Suppose the function has to return a list. Then the function is compiled
@@ -288,3 +288,15 @@ after the call parameters, and is used only as a scratch variable.
 		"'repeat' (each 'repeat' loop claiming two such values) - not to mention "
 		"one or two values occasionally needed to work with Tables. Because of all "
 		"this, it's best to keep the complexity to a minimum within any single phrase.");
+
+@ Here is the name for a kernel, if it is needed:
+
+=
+inter_name *Functions::function_kernel(inter_tree *I, inter_name *public_name) {
+	if (Packaging::housed_in_function(I, public_name) == FALSE)
+		internal_error("routine not housed in function");
+	package_request *P = InterNames::location(public_name);
+	inter_name *kernel_name = Packaging::make_iname_within(P, I"kernel");
+	InterNames::set_flag(kernel_name, MAKE_NAME_UNIQUE);
+	return kernel_name;
+}

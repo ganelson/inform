@@ -16,6 +16,7 @@ typedef struct inform7_primitive {
 	struct text_stream *signature;
 	int term_count;
 	int term_categories[8];
+	int takes_code_blocks;
 } inform7_primitive;
 
 @ Each different primitive has a unique BIP number. (The origins of the term
@@ -142,7 +143,8 @@ at runtime and throws an error if not.
 
 @d SIP_RECORD_END
 	NULL, NULL, 0,
-	{ VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT }
+	{ VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT, VAL_PRIM_CAT },
+	FALSE
 
 =
 inform7_primitive standard_inform7_primitives[] = {
@@ -325,6 +327,10 @@ is trivial, since this happens only once per run.
 	if ((outputs > 1) || ((pre_void) && (inputs > 0)))
 		internal_error("malformed signature in primitive");
 	standard_inform7_primitives[i].term_count = inputs;
+	standard_inform7_primitives[i].takes_code_blocks = FALSE;
+	for (int t=0; t<inputs; t++)
+		if (standard_inform7_primitives[i].term_categories[t] == CODE_PRIM_CAT)
+			standard_inform7_primitives[i].takes_code_blocks = TRUE;
 
 @ We can now convert between BIP and name. Note that //Primitives::name_to_BIP//
 is relatively slow: but this doesn't matter because we will always cache the
@@ -440,6 +446,16 @@ int Primitives::term_category(inter_ti BIP, int i) {
 	return standard_inform7_primitives[BIP - 1].term_categories[i];
 }
 
+@ Returns |TRUE| if any of those categories is a |CODE_PRIM_CAT|; note that
+this is cached for speed.
+
+=
+int Primitives::takes_code_blocks(inter_ti BIP) {
+	Primitives::prepare_standard_set_array();
+	if (BIP >= LOWEST_XBIP_VALUE) return FALSE;
+	return standard_inform7_primitives[BIP - 1].takes_code_blocks;
+}
+
 @h Primitives within a specific tree.
 So much for discussing the instruction set in the abstract: now we need code
 to handle its declaration in each Inter tree we make. Note that, for speed,
@@ -506,7 +522,12 @@ symbols.
 inter_symbol *Primitives::from_BIP(inter_tree *I, inter_ti bip) {
 	if (I == NULL) internal_error("no tree");
 	if ((bip < 1) || (bip >= MAX_BIPS)) internal_error("bip out of range");
-	return I->site.spridata.primitives_by_BIP[bip];
+	inter_symbol *prim = I->site.spridata.primitives_by_BIP[bip];
+	if (prim == NULL) {
+		WRITE_TO(STDERR, "BIP = %d\n", bip);
+		internal_error("undefined primitive");
+	}
+	return prim;
 }
 
 inter_ti Primitives::to_BIP(inter_tree *I, inter_symbol *symb) {

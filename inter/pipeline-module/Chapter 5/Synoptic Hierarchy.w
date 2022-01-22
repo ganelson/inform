@@ -48,7 +48,7 @@ fuller explanation.
 		HierarchyLocations::fun(I, id, n, Translation::to(t), req);
 		inter_name *iname = HierarchyLocations::iname(I, id);
 		inter_symbol *S = InterNames::to_symbol(iname);
-		Wiring::socket(I, Produce::get_translation(iname), S);
+		Wiring::socket(I, InterNames::get_translation(iname), S);
 	}
 
 @h Actions.

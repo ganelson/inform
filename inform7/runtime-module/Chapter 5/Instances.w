@@ -272,14 +272,14 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 
 	Emit::instance(RTInstances::value_iname(I), Instances::to_kind(I), I->enumeration_index);
 	if (I->compilation_data.declaration_sequence_number >= 0)
-		Produce::annotate_i(RTInstances::value_iname(I), DECLARATION_ORDER_IANN,
+		InterNames::annotate_i(RTInstances::value_iname(I), DECLARATION_ORDER_IANN,
 			(inter_ti) I->compilation_data.declaration_sequence_number);
 	RTPropertyPermissions::compile_permissions_for_instance(I);
 	RTPropertyValues::compile_values_for_instance(I);
 
 	if (Kinds::Behaviour::is_object(Instances::to_kind(I))) {
 		int AC = Spatial::get_definition_depth(I);
-		if (AC > 0) Produce::annotate_i(RTInstances::value_iname(I), ARROW_COUNT_IANN,
+		if (AC > 0) InterNames::annotate_i(RTInstances::value_iname(I), ARROW_COUNT_IANN,
 			(inter_ti) AC);
 	}
 

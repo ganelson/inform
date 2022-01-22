@@ -53,7 +53,7 @@ we simply give in and throw a problem.
 	TEMPORARY_TEXT(identifier)
 	@<Extract an identifier from the inline definition@>;
 	if (Str::len(identifier) == 0) @<Issue PM_PhraseNamedI6Failed@>;
-	inter_name *symb = Produce::find_by_name(Emit::tree(), identifier);
+	inter_name *symb = HierarchyLocations::find_by_name(Emit::tree(), identifier);
 	DISCARD_TEXT(identifier)
 	return symb;
 

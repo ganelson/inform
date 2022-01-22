@@ -29,7 +29,7 @@ void SynopticInstances::compile(inter_tree *I, pipeline_step *step, tree_invento
 			Produce::inv_primitive(I, STORE_BIP);
 			Produce::down(I);
 				Produce::ref_symbol(I, K_value, na_s);
-				Produce::inv_call(I, showme_s);
+				Produce::inv_call_symbol(I, showme_s);
 				Produce::down(I);
 					Produce::val_symbol(I, K_value, which_s);
 					Produce::val_symbol(I, K_value, na_s);

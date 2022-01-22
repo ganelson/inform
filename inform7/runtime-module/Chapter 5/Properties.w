@@ -74,7 +74,7 @@ inter_name *RTProperties::iname(property *prn) {
 					PUT_TO(T, '_');
 			}
 			Str::truncate(T, 31);
-			Produce::change_translation(prn->compilation_data.prop_iname, T);
+			InterNames::set_translation(prn->compilation_data.prop_iname, T);
 			prn->compilation_data.translated = TRUE;
 			DISCARD_TEXT(T)
 		}
@@ -130,13 +130,13 @@ void RTProperties::store_in_negation(property *prn) {
 =
 void RTProperties::set_translation(property *prn, text_stream *T) {
 	inter_name *iname = RTProperties::iname(prn);
-	Produce::change_translation(iname, T);
+	InterNames::set_translation(iname, T);
 	prn->compilation_data.translated = TRUE;
 }
 
 void RTProperties::set_translation_and_make_available(property *prn, text_stream *T) {
 	inter_name *iname = RTProperties::iname(prn);
-	Produce::change_translation(iname, T);
+	InterNames::set_translation(iname, T);
 	Hierarchy::make_available(iname);
 	prn->compilation_data.translated = TRUE;
 }
@@ -147,7 +147,7 @@ int RTProperties::has_been_translated(property *prn) {
 
 text_stream *RTProperties::current_translation(property *prn) {
 	if (prn->compilation_data.translated == FALSE) return NULL;
-	return Produce::get_translation(RTProperties::iname(prn));
+	return InterNames::get_translation(RTProperties::iname(prn));
 }
 
 @ A property might be missed out of the Index pages for clarity's sake:
@@ -196,7 +196,7 @@ void RTProperties::compile(void) {
 	if (Wordings::nonempty(prn->name))
 		Hierarchy::apply_metadata_from_wording(pack, PROPERTY_NAME_MD_HL, prn->name);
 	else
-		Hierarchy::apply_metadata(pack, PROPERTY_NAME_MD_HL, Produce::get_translation(iname));
+		Hierarchy::apply_metadata(pack, PROPERTY_NAME_MD_HL, InterNames::get_translation(iname));
 
 @ A unique set of values is imposed here during linking.
 
@@ -208,11 +208,11 @@ void RTProperties::compile(void) {
 package metadata instead?
 
 @<Annotate the property iname@> =
-	Produce::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
+	InterNames::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
 	if (Properties::is_either_or(prn))
-		Produce::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 1);
+		InterNames::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 1);
 	if (Wordings::nonempty(prn->name))
-		Produce::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
+		InterNames::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
 
 @h Non-typesafe 0.
 When a property is used to store certain forms of relation, it then needs
@@ -238,7 +238,7 @@ int RTProperties::uses_non_typesafe_0(property *prn) {
 
 int RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {
 	if (RTProperties::uses_non_typesafe_0(prn)) {
-		if (Holsters::non_void_context(VH))
+		if (Holsters::value_pair_allowed(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		return TRUE;
 	}

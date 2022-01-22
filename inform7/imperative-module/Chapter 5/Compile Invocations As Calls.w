@@ -68,14 +68,8 @@ void CallingFunctions::indirect_function_call(tokens_packet *tokens,
 
 	int arity = tokens->tokens_count;
 	if (Kinds::Behaviour::uses_block_values(return_kind)) arity++;
-	switch (arity) {
-		case 0: EmitCode::inv(INDIRECT0_BIP); break;
-		case 1: EmitCode::inv(INDIRECT1_BIP); break;
-		case 2: EmitCode::inv(INDIRECT2_BIP); break;
-		case 3: EmitCode::inv(INDIRECT3_BIP); break;
-		case 4: EmitCode::inv(INDIRECT4_BIP); break;
-		default: internal_error("indirect function call with too many arguments");
-	}
+	inter_ti BIP = Primitives::BIP_for_indirect_call_returning_value(arity);
+	EmitCode::inv(BIP);
 	EmitCode::down();
 	if (lookup_flag) {
 		EmitCode::inv(LOOKUP_BIP);

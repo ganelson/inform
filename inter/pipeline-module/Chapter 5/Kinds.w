@@ -113,7 +113,7 @@ which have to be given some type-safe value to start out at.
 					Produce::down(I);
 						Produce::inv_primitive(I, RETURN_BIP);
 						Produce::down(I);
-							Produce::inv_call(I, mkdef_fn_s);
+							Produce::inv_call_symbol(I, mkdef_fn_s);
 							Produce::down(I);
 								Produce::val_symbol(I, K_value, sk_s);
 							Produce::up(I);
@@ -159,7 +159,7 @@ which have to be given some type-safe value to start out at.
 					Produce::val_symbol(I, K_value, id_s);
 					Produce::code(I);
 					Produce::down(I);
-						Produce::inv_call(I, print_fn_s);
+						Produce::inv_call_symbol(I, print_fn_s);
 						Produce::down(I);
 							Produce::val_symbol(I, K_value, v_s);
 						Produce::up(I);
@@ -412,7 +412,7 @@ such a function does, see "BlockValues.i6t".
 				Produce::inv_primitive(I, STORE_BIP);
 				Produce::down(I);
 					Produce::ref_symbol(I, K_value, na_s);
-					Produce::inv_call(I, showme_s);
+					Produce::inv_call_symbol(I, showme_s);
 					Produce::down(I);
 						Produce::val_symbol(I, K_value, which_s);
 						Produce::val_symbol(I, K_value, na_s);

@@ -91,7 +91,7 @@ inter_name *TextLiterals::to_value_inner(wording W, int unesc) {
 		return TextLiterals::default_text();
 
 	inter_name *content_iname = Enclosures::new_iname(LITERALS_HAP, TEXT_LITERAL_HL);
-	Produce::annotate_i(content_iname, TEXT_LITERAL_IANN, 1);
+	InterNames::annotate_i(content_iname, TEXT_LITERAL_IANN, 1);
 	if (Task::wraps_existing_storyfile()) {
 		Emit::text_constant(content_iname, I"--");
 	} else {

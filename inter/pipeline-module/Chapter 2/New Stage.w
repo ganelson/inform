@@ -42,7 +42,7 @@ int NewStage::run(pipeline_step *step) {
 function.
 
 @<Make the main package@> =
-	Produce::begin_new_tree(I);
+	LargeScale::begin_new_tree(I);
 
 @ There are then further package types whose use is a matter of convention,
 as far as //building// is concerned, but which this //pipeline// module relies on.

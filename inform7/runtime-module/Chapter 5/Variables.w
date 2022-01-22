@@ -120,7 +120,7 @@ void RTVariables::identifier_translates(nonlocal_variable *nlv, text_stream *nam
 	if (Str::eq(name, I"nothing")) {
 		RTVariables::set_NVE(nlv, RTVariables::nve_from_nothing());
 	} else {
-		inter_name *as_iname = Produce::find_by_name(Emit::tree(), name);
+		inter_name *as_iname = HierarchyLocations::find_by_name(Emit::tree(), name);
 		RTVariables::store_in_this_iname(nlv, as_iname);
 	}
 }
@@ -331,7 +331,7 @@ int RTVariables::compile(inference_subject_family *f, int ignored) {
 			(nlv->constant_at_run_time == FALSE)) {
 			inter_name *iname = RTVariables::iname(nlv);
 			if (nlv->compilation_data.nlv_name_translated == FALSE) {
-				Produce::annotate_i(iname, EXPLICIT_VARIABLE_IANN, 1);
+				InterNames::annotate_i(iname, EXPLICIT_VARIABLE_IANN, 1);
 				inter_ti v1 = 0, v2 = 0;
 				RTVariables::initial_value_as_pair(iname, &v1, &v2, nlv);
 				Emit::variable(iname, nlv->nlv_kind, v1, v2);
@@ -385,7 +385,7 @@ void RTVariables::initial_value_as_array_entry(nonlocal_variable *nlv) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	RTVariables::holster_initial_value(&VH, nlv);
 	inter_ti v1 = 0, v2 = 0;
-	Holsters::unholster_pair(&VH, &v1, &v2);
+	Holsters::unholster_to_pair(&VH, &v1, &v2);
 	EmitArrays::generic_entry(v1, v2);
 }
 
@@ -400,7 +400,7 @@ void RTVariables::initial_value_as_pair(inter_name *iname, inter_ti *v1,
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	packaging_state save = Packaging::enter_home_of(iname);
 	RTVariables::holster_initial_value(&VH, nlv);
-	Holsters::unholster_pair(&VH, v1, v2);
+	Holsters::unholster_to_pair(&VH, v1, v2);
 	Packaging::exit(Emit::tree(), save);
 }
 

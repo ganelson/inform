@@ -75,7 +75,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 
 @<Define ACTIONDATA array@> =
 	inter_name *iname = HierarchyLocations::iname(I, ACTIONDATA_HL);
-	Produce::annotate_iname_i(iname, TABLEARRAY_IANN, 1);
+	InterNames::annotate_i(iname, TABLEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
@@ -141,7 +141,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 				Produce::val_symbol(I, K_value, double_sharp_s);
 				Produce::code(I);
 				Produce::down(I);
-					Produce::inv_call(I, debug_fn_s);
+					Produce::inv_call_symbol(I, debug_fn_s);
 					Produce::down(I);
 						Produce::val_symbol(I, K_value, n_s);
 						Produce::val_symbol(I, K_value, s_s);

@@ -70,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">building</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the building module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Services for builders</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Structural conventions</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Dealing with partly-built Inter</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Code and schemas</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. Introduction</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Large-scale architecture</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Medium-scale blueprints</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Small-scale masonry</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The building module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -86,14 +86,9 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Services for builders. </b>This module is essentially middleware. It acts as a bridge to the low-level
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Introduction. </b>This module is essentially middleware. It acts as a bridge to the low-level
 functions in the <a href="../bytecode-module/index.html" class="internal">bytecode</a> module, allowing them to be used with much
 greater ease and consistency.
-</p>
-
-<p class="commentary">In particular, the functions here enforce a number of conventions about how an
-Inter tree is laid out. Indiscriminate use of <a href="../bytecode-module/index.html" class="internal">bytecode</a> functions would allow
-other layouts to be made, but we want to be systematic.
 </p>
 
 <p class="commentary">This module needs plenty of working data, and stashes that data inside the
@@ -104,7 +99,7 @@ the contents of the <a href="1-bm.html#SP4" class="internal">building_site</a> c
 are ignored by the <a href="../final-module/index.html" class="internal">final</a> code-generator.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Structural conventions. </b>An inter tree is fundamentally a set of resources stored in a nested set of
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Large-scale architecture. </b>An inter tree is fundamentally a set of resources stored in a nested set of
 <span class="extract"><span class="extract-syntax">inter_package</span></span> boxes.
 </p>
 
@@ -169,7 +164,7 @@ packages (though not their contents).
 <ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Ideally <span class="extract"><span class="extract-syntax">completion</span></span> would not exist, and everything in it would be made
 as part of <span class="extract"><span class="extract-syntax">synoptic</span></span> during linking, but at present this is too difficult.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Dealing with partly-built Inter. </b>Inter code is a nested tree of boxes, <span class="extract"><span class="extract-syntax">inter_package</span></span>s, which contain Inter
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Inter code is a nested tree of boxes, <span class="extract"><span class="extract-syntax">inter_package</span></span>s, which contain Inter
 code defining various resources, cross-referenced by <span class="extract"><span class="extract-syntax">inter_symbol</span></span>s.
 </p>
 
@@ -208,7 +203,7 @@ to call a <span class="extract"><span class="extract-syntax">symbol_request</spa
 across <a href="../inform7/index.html" class="internal">inform7</a> and <a href="../inter/index.html" class="internal">inter</a>, and it doesn't seem worth renaming it now.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Code and schemas. </b>The above systems make nested packages and symbols within them, but not the
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Medium-scale blueprints. </b>The above systems make nested packages and symbols within them, but not the
 actual content of these boxes, or the definitions which the symbols refer to.
 In short, the actual Inter code.
 </p>
@@ -229,7 +224,7 @@ relevant package, an instruction which defines the symbol.
 </p>
 
 <p class="commentary">And similarly for emitting code inside a function body, though then it is
-necessary first to say what function (which can be done by calling <a href="3-prd.html#SP4" class="internal">Produce::block</a>
+necessary first to say what function (which can be done by calling <a href="3-prd.html#SP12" class="internal">Produce::function_body</a>
 with the iname for that function). For example:
 </p>
 
@@ -292,6 +287,42 @@ tell us how to resolve identifier names into variables, arrays, and so on.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> These braced placeholders are, of course, not Inform 6 notation, and
 represent an extension of the I6 syntax.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Small-scale masonry. </b>Finally, there are also times when we want to compile explicit code, one
+Inter instruction at a time, and for this the Produce API is provided.
+</p>
+
+<p class="commentary">This API keeps track of the current write position inside each tree (using
+the <a href="3-prd.html#SP3" class="internal">code_insertion_point</a> system), and then provides functions which call
+down into <a href="../bytecode-module/index.html" class="internal">bytecode</a> for us, making use of that write position. So, for
+example, we can write:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="function-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">RETURN_BIP</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="function-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="function-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="function-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+</pre>
+<p class="commentary">to produce the Inter code:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!return</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_unchecked</span><span class="plain-syntax"> </span><span class="constant-syntax">17</span>
+</pre>
+<p class="commentary">Note the use of <a href="3-prd.html#SP9" class="internal">Produce::down</a> and <a href="3-prd.html#SP9" class="internal">Produce::up</a> to step up and down the
+hierarchy: these functions are always called in matching ways.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>The <a href="../pipeline-module/index.html" class="internal">pipeline</a> module makes heavy use of the Produce API. Surprising,
+<a href="../inform7/index.html" class="internal">inform7</a> calls it in only a few places &mdash; but in fact that it is because
+it provides still another middleware layer on top. See <a href="../runtime-module/2-emt.html" class="internal">Emit (in runtime)</a>.
+But it's really only a very thin layer, allowing the caller not to have to
+pass the <span class="extract"><span class="extract-syntax">I</span></span> argument to every call (because it will always be the Inter tree
+being compiled by <a href="../inform7/index.html" class="internal">inform7</a>). Despite appearances, then, Produce makes all
+of the Inter instructions generated inside either <a href="../inter/index.html" class="internal">inter</a> or <a href="../inform7/index.html" class="internal">inform7</a>.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-bm.html">1</a></li><li class="progresschapter"><a href="2-is.html">2</a></li><li class="progresschapter"><a href="3-prd.html">3</a></li><li class="progressnext"><a href="1-bm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

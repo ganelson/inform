@@ -28,21 +28,21 @@ packaging_state EmitArrays::begin_word(inter_name *name, kind *K) {
 packaging_state EmitArrays::begin_byte(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	EmitArrays::begin_inner(name, K, FALSE);
-	Produce::annotate_iname_i(name, BYTEARRAY_IANN, 1);
+	InterNames::annotate_i(name, BYTEARRAY_IANN, 1);
 	return save;
 }
 
 packaging_state EmitArrays::begin_table(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	EmitArrays::begin_inner(name, K, FALSE);
-	Produce::annotate_iname_i(name, TABLEARRAY_IANN, 1);
+	InterNames::annotate_i(name, TABLEARRAY_IANN, 1);
 	return save;
 }
 
 packaging_state EmitArrays::begin_verb(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	EmitArrays::begin_inner(name, K, FALSE);
-	Produce::annotate_iname_i(name, VERBARRAY_IANN, 1);
+	InterNames::annotate_i(name, VERBARRAY_IANN, 1);
 	return save;
 }
 
@@ -87,19 +87,19 @@ void EmitArrays::null_entry(void) {
 
 void EmitArrays::text_entry(text_stream *content) {
 	inter_ti v1 = 0, v2 = 0;
-	Produce::text_value(Emit::tree(), &v1, &v2, content);
+	ProducePairs::from_text(Emit::tree(), &v1, &v2, content);
 	EmitArrays::entry_inner(v1, v2);
 }
 
 void EmitArrays::dword_entry(text_stream *content) {
 	inter_ti v1 = 0, v2 = 0;
-	Produce::dword_value(Emit::tree(), &v1, &v2, content);
+	ProducePairs::from_singular_dword(Emit::tree(), &v1, &v2, content);
 	EmitArrays::entry_inner(v1, v2);
 }
 
 void EmitArrays::plural_dword_entry(text_stream *content) {
 	inter_ti v1 = 0, v2 = 0;
-	Produce::plural_dword_value(Emit::tree(), &v1, &v2, content);
+	ProducePairs::from_plural_dword(Emit::tree(), &v1, &v2, content);
 	EmitArrays::entry_inner(v1, v2);
 }
 
@@ -183,7 +183,7 @@ nascent_array *EmitArrays::pull(void) {
 
 =
 void EmitArrays::begin_inner(inter_name *N, kind *K, int const_sum) {
-	inter_symbol *symb = Produce::define_symbol(N);
+	inter_symbol *symb = InterNames::define(N);
 	nascent_array *current_A = EmitArrays::push_new();
 	current_A->entry_kind = K?K:K_value;
 	current_A->array_name_symbol = symb;

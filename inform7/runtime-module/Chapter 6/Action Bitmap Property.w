@@ -22,6 +22,6 @@ parse_node *RTActionBitmaps::compile_action_bitmap_property(inference_subject *s
 	packaging_state save = EmitArrays::begin_word(N, K_number);
 	for (int i=0; i<=((NUMBER_CREATED(action_name))/16); i++) EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);
-	Produce::annotate_i(N, INLINE_ARRAY_IANN, 1);
+	InterNames::annotate_i(N, INLINE_ARRAY_IANN, 1);
 	return Rvalues::from_iname(N);
 }

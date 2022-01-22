@@ -94,7 +94,7 @@ local_variable *LocalVariables::new_let_value(wording W, kind *K) {
 	if (frame == NULL) internal_error("tried to add let value without stack frame");
 	local_variable *lvar = LocalVariableSlates::allocate_I7_local(&(frame->local_variables),
 		LET_VALUE_LV, W, K, NULL, -1);
-	if (Produce::emitting_routine(Emit::tree()))
+	if (Produce::function_body_is_open(Emit::tree()))
 		LocalVariables::declare(lvar);
 	LOGIF(LOCAL_VARIABLES, "Let value $k allocated\n", lvar);
 	return lvar;

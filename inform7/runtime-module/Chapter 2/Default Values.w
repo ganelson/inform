@@ -18,7 +18,7 @@ int DefaultValues::array_entry(kind *K, wording W, char *storage_name) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	int rv = DefaultValues::to_holster(&VH, K, W, storage_name);
 	inter_ti v1 = 0, v2 = 0;
-	Holsters::unholster_pair(&VH, &v1, &v2);
+	Holsters::unholster_to_pair(&VH, &v1, &v2);
 	EmitArrays::generic_entry(v1, v2);
 	return rv;
 }
@@ -37,7 +37,7 @@ int DefaultValues::to_holster(value_holster *VH, kind *K,
 	inter_ti v1 = 0, v2 = 0;
 	DefaultValues::to_value_pair(&v1, &v2, K);
 	if (v1 != 0) {
-		if (Holsters::non_void_context(VH)) {
+		if (Holsters::value_pair_allowed(VH)) {
 			Holsters::holster_pair(VH, v1, v2);
 			return TRUE;
 		}

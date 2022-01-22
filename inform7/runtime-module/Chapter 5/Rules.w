@@ -92,7 +92,7 @@ inter_name *RTRules::local_iname(rule *R) {
 inter_name *RTRules::foreign_iname(rule *R) {
 	if ((R->compilation_data.foreign_iname == NULL) && (RTRules::is_foreign(R)))
 		R->compilation_data.foreign_iname =
-			Produce::find_by_name(Emit::tree(), R->defn_as_Inter_function);
+			HierarchyLocations::find_by_name(Emit::tree(), R->defn_as_Inter_function);
 	return R->compilation_data.foreign_iname;
 }
 

@@ -83,7 +83,7 @@ value the property will have, and compiles a clause as appropriate.
 		value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 		Properties::compile_inferred_value(&VH, subj, prn);
 		inter_ti v1 = LITERAL_IVAL, v2 = 0;
-		Holsters::unholster_pair(&VH, &v1, &v2);
+		Holsters::unholster_to_pair(&VH, &v1, &v2);
 		Emit::propertyvalue(prn, RTPropertyPermissions::owner(subj), v1, v2);
 		Packaging::exit(Emit::tree(), save);
 	}

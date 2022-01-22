@@ -36,7 +36,7 @@ a number: all that matters is that the correct integer value is compiled.
 
 @<Compile a literal-compilation-mode constant@> =
 	int N = Rvalues::to_int(value);
-	if (Holsters::non_void_context(VH))
+	if (Holsters::value_pair_allowed(VH))
 		Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) N);
 
 @ Whereas here, an instance is attached.
@@ -44,7 +44,7 @@ a number: all that matters is that the correct integer value is compiled.
 @<Compile a quantitative-compilation-mode constant@> =
 	instance *I = Node::get_constant_instance(value);
 	if (I) {
-		if (Holsters::non_void_context(VH)) {
+		if (Holsters::value_pair_allowed(VH)) {
 			inter_name *N = RTInstances::value_iname(I);
 			if (N) Emit::holster_iname(VH, N);
 			else internal_error("no iname for instance");
@@ -106,11 +106,11 @@ kinds of value:
 	}
 	if (Kinds::Behaviour::is_object(kind_of_constant)) {
 		if (Annotations::read_int(value, self_object_ANNOT)) {
-			if (Holsters::non_void_context(VH)) {
+			if (Holsters::value_pair_allowed(VH)) {
 				Emit::holster_iname(VH, Hierarchy::find(SELF_HL));
 			}
 		} else if (Annotations::read_int(value, nothing_object_ANNOT)) {
-			if (Holsters::non_void_context(VH))
+			if (Holsters::value_pair_allowed(VH))
 				Holsters::holster_pair(VH, LITERAL_IVAL, 0);
 		} else {
 			instance *I = Rvalues::to_instance(value);
@@ -155,7 +155,7 @@ kinds of value:
 	}
 	if (Kinds::get_construct(kind_of_constant) == CON_table_column) {
 		table_column *tc = Rvalues::to_table_column(value);
-		if (Holsters::non_void_context(VH))
+		if (Holsters::value_pair_allowed(VH))
 			Emit::holster_iname(VH, RTTableColumns::id_iname(tc));
 		return;
 	}
@@ -168,7 +168,7 @@ kinds of value:
 			internal_error("Text no longer available for CONSTANT/UNDERSTANDING");
 		inter_ti v1 = 0, v2 = 0;
 		CompileRvalues::compile_understanding(&v1, &v2, Node::get_text(value));
-		if (Holsters::non_void_context(VH)) {
+		if (Holsters::value_pair_allowed(VH)) {
 			Holsters::holster_pair(VH, v1, v2);
 		}
 		return;
@@ -221,7 +221,7 @@ contexts by using a tilde: |~attr|.
 			prn_to_eval = EitherOrProperties::get_negation(prn_to_eval);
 		}
 
-		if (Holsters::non_void_context(VH)) {
+		if (Holsters::value_pair_allowed(VH)) {
 			if (parity == 1) {
 				Emit::holster_iname(VH, RTProperties::iname(prn_to_eval));
 			} else {
@@ -233,7 +233,7 @@ contexts by using a tilde: |~attr|.
 			}
 		}
 	} else {
-		if (Holsters::non_void_context(VH)) {
+		if (Holsters::value_pair_allowed(VH)) {
 			Emit::holster_iname(VH, RTProperties::iname(prn));
 		}
 	}
@@ -243,7 +243,7 @@ if it is enabled.
 
 =
 int CompileRvalues::action_kinds(value_holster *VH, kind *K, parse_node *value) {
-	if (Holsters::non_void_context(VH) == FALSE) internal_error("action in void context");
+	if (Holsters::value_pair_allowed(VH) == FALSE) internal_error("action in void context");
 	if (Kinds::eq(K, K_action_name)) {
 		inter_name *N = RTActions::double_sharp(ARvalues::to_action_name(value));
 		Emit::holster_iname(VH, N);
@@ -275,7 +275,7 @@ so the penultimate word, if it's there, is the letter.
 
 =
 void CompileRvalues::text(value_holster *VH, parse_node *str) {
-	if (Holsters::non_void_context(VH) == FALSE) internal_error("text in void context");
+	if (Holsters::value_pair_allowed(VH) == FALSE) internal_error("text in void context");
 	if (Annotations::read_int(str, explicit_literal_ANNOT)) {
 		@<This is an explicit text@>;
 	} else {
@@ -303,12 +303,12 @@ compiler, rather than parsed from the source.)
 
 @<This is an explicit text@> =
 	if (Node::get_explicit_iname(str)) {
-		if (Holsters::non_void_context(VH)) {
+		if (Holsters::value_pair_allowed(VH)) {
 			Emit::holster_iname(VH, Node::get_explicit_iname(str));
 		} else internal_error("unvalued SCG");
 	} else {
 		int A = Annotations::read_int(str, constant_number_ANNOT);
-		if (Holsters::non_void_context(VH))
+		if (Holsters::value_pair_allowed(VH))
 			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) A);
 	}
 

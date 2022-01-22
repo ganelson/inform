@@ -9,7 +9,7 @@ in memory, so that most calls to //bytecode// or //building// take an |inter_tre
 pointer as their first function argument. But //runtime// and //imperative// work
 on just one single tree.
 
-Calling |Produce::begin_new_tree| makes a minimum of package types,
+Calling |LargeScale::begin_new_tree| makes a minimum of package types,
 creates the |main| package, and so on, but leaves the tree basically still empty.
 
 =
@@ -17,7 +17,7 @@ inter_tree *main_emission_tree = NULL;
 
 inter_tree *Emit::create_emission_tree(void) {
 	main_emission_tree = InterTree::new();
-	Produce::begin_new_tree(main_emission_tree);
+	LargeScale::begin_new_tree(main_emission_tree);
 	return main_emission_tree;
 }
 inter_tree *Emit::tree(void) {
@@ -59,7 +59,7 @@ of |inter_ti| variables:
 
 =
 void Emit::holster_iname(value_holster *VH, inter_name *iname) {
-	if (Holsters::non_void_context(VH)) {
+	if (Holsters::value_pair_allowed(VH)) {
 		if (iname == NULL) internal_error("no iname to holster");
 		inter_ti v1 = 0, v2 = 0;
 		Emit::to_value_pair(&v1, &v2, iname);
@@ -267,8 +267,8 @@ inter_name *Emit::unchecked_numeric_constant(inter_name *con_iname, inter_ti val
 inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
 	inter_symbol *kind_s, inter_ti annotation) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
-	inter_symbol *con_s = Produce::define_symbol(con_iname);
-	if (annotation != INVALID_IANN) Produce::annotate_symbol_i(con_s, annotation, 0);
+	inter_symbol *con_s = InterNames::define(con_iname);
+	if (annotation != INVALID_IANN) Inter::Symbols::annotate_i(con_s, annotation, 0);
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
 		Emit::symbol_id(kind_s), LITERAL_IVAL, val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
@@ -283,7 +283,7 @@ void Emit::text_constant(inter_name *con_iname, text_stream *contents) {
 	inter_ti ID = Inter::Warehouse::create_text(Emit::warehouse(),
 		Emit::package());
 	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID), contents);
-	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	inter_symbol *con_s = InterNames::define(con_iname);
 	Produce::guard(Inter::Constant::new_textual(Emit::at(), Emit::symbol_id(con_s),
 		Emit::symbol_id(string_interk), ID, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
@@ -294,7 +294,7 @@ void Emit::text_constant(inter_name *con_iname, text_stream *contents) {
 =
 inter_name *Emit::iname_constant(inter_name *con_iname, kind *K, inter_name *val_iname) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
-	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	inter_symbol *con_s = InterNames::define(con_iname);
 	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	inter_symbol *val_s = (val_iname)?InterNames::to_symbol(val_iname):NULL;
 	if (val_s == NULL) {
@@ -325,7 +325,7 @@ void Emit::text_constant_from_wide_string(inter_name *con_iname, wchar_t *str) {
 void Emit::serial_number(inter_name *con_iname, text_stream *serial) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_ti v1 = 0, v2 = 0;
-	Produce::text_value(Emit::tree(), &v1, &v2, serial);
+	ProducePairs::from_text(Emit::tree(), &v1, &v2, serial);
 	Emit::named_generic_constant(con_iname, v1, v2);
 	Packaging::exit(Emit::tree(), save);
 }
@@ -354,7 +354,7 @@ void Emit::initial_value_as_raw_text(inter_name *con_iname, nonlocal_variable *v
 =
 void Emit::named_generic_constant(inter_name *con_iname, inter_ti v1, inter_ti v2) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
-	inter_symbol *con_s = Produce::define_symbol(con_iname);
+	inter_symbol *con_s = InterNames::define(con_iname);
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
 		Emit::symbol_id(unchecked_interk), v1, v2, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
@@ -365,7 +365,7 @@ void Emit::named_generic_constant(inter_name *con_iname, inter_ti v1, inter_ti v
 =
 void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 	packaging_state save = Packaging::enter_home_of(inst_iname);
-	inter_symbol *inst_s = Produce::define_symbol(inst_iname);
+	inter_symbol *inst_s = InterNames::define(inst_iname);
 	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	if (kind_s == NULL) internal_error("no kind for val");
 	inter_ti v1 = LITERAL_IVAL, v2 = (inter_ti) v;
@@ -380,7 +380,7 @@ void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 =
 inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_ti v1, inter_ti v2) {
 	packaging_state save = Packaging::enter_home_of(var_iname);
-	inter_symbol *var_s = Produce::define_symbol(var_iname);
+	inter_symbol *var_s = InterNames::define(var_iname);
 	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Variable::new(Emit::at(),
 		Emit::symbol_id(var_s), Emit::symbol_id(kind_s), v1, v2, Emit::baseline(), NULL));
@@ -393,7 +393,7 @@ inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_ti v1, inter_
 =
 void Emit::property(inter_name *prop_iname, kind *K) {
 	packaging_state save = Packaging::enter_home_of(prop_iname);
-	inter_symbol *prop_s = Produce::define_symbol(prop_iname);
+	inter_symbol *prop_s = InterNames::define(prop_iname);
 	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Property::new(Emit::at(),
 		Emit::symbol_id(prop_s), Emit::symbol_id(kind_s), Emit::baseline(), NULL));
@@ -405,7 +405,7 @@ void Emit::permission(property *prn, inter_symbol *owner_name,
 	inter_name *storage_iname) {
 	inter_name *prop_iname = RTProperties::iname(prn);
 	inter_symbol *store_s = (storage_iname)?InterNames::to_symbol(storage_iname):NULL;
-	inter_symbol *prop_s = Produce::define_symbol(prop_iname);
+	inter_symbol *prop_s = InterNames::define(prop_iname);
 	inter_error_message *E = NULL;
 	TEMPORARY_TEXT(ident)
 	WRITE_TO(ident, "pp_i7_%d", ppi7_counter++);
@@ -436,7 +436,7 @@ the real API for starting and ending functions.
 =
 void Emit::function(inter_name *fn_iname, kind *K, inter_package *block) {
 	if (Emit::at() == NULL) internal_error("no inter repository");
-	inter_symbol *fn_s = Produce::define_symbol(fn_iname);
+	inter_symbol *fn_s = InterNames::define(fn_iname);
 	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Constant::new_function(Emit::at(),
 		Emit::symbol_id(fn_s), Emit::symbol_id(kind_s), block,

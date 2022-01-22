@@ -187,7 +187,7 @@ but roughly speaking each is either a command or a "bracing".
 
 =
 void CSIInline::from_schema_token(value_holster *VH,
-	inter_schema_token *ist, void *CSIS_s, int prim_cat) {
+	inter_schema_token *ist, void *CSIS_s, int prim_cat, text_stream *arg_L) {
 	csi_state *CSIS = (csi_state *) CSIS_s; /* recover the "opaque state" */
 
 	id_body *idb = CSIS->idb;
@@ -806,11 +806,15 @@ and so on. The point of this is that it guarantees we won't define two labels
 with identical names in the same Inform 6 routine, which would fail to compile.
 
 @<Inline command "label"@> =
-	TEMPORARY_TEXT(L)
-	WRITE_TO(L, ".");
-	JumpLabels::write(L, ist->operand);
-	EmitCode::lab(EmitCode::reserve_label(L));
-	DISCARD_TEXT(L)
+	if (arg_L != NULL) {
+		JumpLabels::write(arg_L, ist->operand);
+	} else {
+		TEMPORARY_TEXT(L)
+		WRITE_TO(L, ".");
+		JumpLabels::write(L, ist->operand);
+		EmitCode::lab(EmitCode::reserve_label(L));
+		DISCARD_TEXT(L)
+	}
 	return;
 
 @ We can also output just the numerical counter:

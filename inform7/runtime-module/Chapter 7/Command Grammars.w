@@ -118,7 +118,7 @@ inter_name *RTCommandGrammars::get_cg_token_iname(command_grammar *cg) {
 	if (cg->compilation_data.cg_token_iname == NULL) {
 		if (Str::len(cg->compilation_data.CG_IS_TOKEN_identifier) > 0)
 			cg->compilation_data.cg_token_iname =
-				Produce::find_by_name(Emit::tree(),
+				HierarchyLocations::find_by_name(Emit::tree(),
 					cg->compilation_data.CG_IS_TOKEN_identifier);
 		else
 			cg->compilation_data.cg_token_iname =

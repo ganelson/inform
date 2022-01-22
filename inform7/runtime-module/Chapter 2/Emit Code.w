@@ -186,7 +186,7 @@ int EmitCode::casting_call(kind *F, kind *T, int *down) {
 		WRITE_TO(N, "%S_to_%S",
 			Kinds::Behaviour::get_identifier(F),
 			Kinds::Behaviour::get_identifier(T));
-		inter_name *iname = Produce::find_by_name(Emit::tree(), N);
+		inter_name *iname = HierarchyLocations::find_by_name(Emit::tree(), N);
 		DISCARD_TEXT(N)
 		EmitCode::call(iname);
 		*down = TRUE;
@@ -222,7 +222,7 @@ void EmitCode::call(inter_name *fn_iname) {
 }
 
 void EmitCode::call_symbol(inter_symbol *S) {
-	Produce::inv_call(Emit::tree(), S);
+	Produce::inv_call_symbol(Emit::tree(), S);
 }
 
 @ These conveniences functions produce an invocation and argument all in one,

@@ -323,8 +323,8 @@ void NounFilterTokens::array_entry(noun_filter_token *nft) {
 			case VIA_SCOPE_FILTER_NFTIMP: annot = SCOPE_FILTER_IANN; break;
 			case VIA_NOUN_FILTER_NFTIMP: annot = NOUN_FILTER_IANN; break;
 		}
-		if ((annot) && (Produce::read_annotation(iname, annot) != 1))
-			Produce::annotate_i(iname, annot, 1);
+		if ((annot) && (InterNames::read_annotation(iname, annot) != 1))
+			InterNames::annotate_i(iname, annot, 1);
 		EmitArrays::iname_entry(iname);
 	}
 }

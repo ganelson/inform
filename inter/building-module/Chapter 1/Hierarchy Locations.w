@@ -222,7 +222,7 @@ it only needs to be worked out once.
 	}
 	
 	if (hl->trans.translate_to)
-		Produce::change_translation(hl->equates_to_iname, hl->trans.translate_to);
+		InterNames::set_translation(hl->equates_to_iname, hl->trans.translate_to);
 
 	return hl->equates_to_iname;
 
@@ -339,7 +339,7 @@ inter_name *HierarchyLocations::iip(inter_tree *I, int id, package_request *P,
 		@<Make the actual iname@>;
 	}
 	
-	if (hl->trans.then_make_unique) Produce::set_flag(iname, MAKE_NAME_UNIQUE);
+	if (hl->trans.then_make_unique) InterNames::set_flag(iname, MAKE_NAME_UNIQUE);
 	return iname;
 }
 
@@ -378,7 +378,7 @@ but it is at least policed.
 	} else {
 		iname = InterNames::explicitly_named_with_memo(hl->access_name, P, W);
 	}
-	if ((Str::len(T) > 0) && (hl->access_name)) Produce::change_translation(iname, T);
+	if ((Str::len(T) > 0) && (hl->access_name)) InterNames::set_translation(iname, T);
 
 @h Making one-off subpackages.
 This is used very little. (In //inform7//, currently only for making the packages
@@ -509,4 +509,17 @@ void HierarchyLocations::clear_site_data(inter_tree *I) {
 	B->shdata.HLs_indexed_by_name = Dictionaries::new(512, FALSE);
 	for (int i=0; i<NO_DEFINED_HL_VALUES; i++) B->shdata.HLs_indexed_by_id[i] = NULL;
 	for (int i=0; i<NO_DEFINED_HAP_VALUES; i++) B->shdata.HAPs_indexed_by_id[i] = NULL;
+}
+
+@h Finding inames by name.
+
+=
+inter_name *HierarchyLocations::find_by_name(inter_tree *I, text_stream *name) {
+	if (Str::len(name) == 0) internal_error("empty extern");
+	inter_name *try = HierarchyLocations::name_to_iname(I, name);
+	if (try == NULL) {
+		HierarchyLocations::con(I, -1, name, LocationRequirements::plug());
+		try = HierarchyLocations::name_to_iname(I, name);
+	}
+	return try;
 }

@@ -68,18 +68,18 @@ void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 inter_package *synoptic_fn_package = NULL;
 packaging_state synoptic_fn_ps;
 void Synoptic::begin_function(inter_tree *I, inter_name *iname) {
-	synoptic_fn_package = Produce::block(I, &synoptic_fn_ps, iname);
+	synoptic_fn_package = Produce::function_body(I, &synoptic_fn_ps, iname);
 }
 void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *iname) {
-	Produce::end_block(I);
-	inter_symbol *fn_s = Produce::define_symbol(iname);
+	Produce::end_function_body(I);
+	inter_symbol *fn_s = InterNames::define(iname);
 	Produce::guard(Inter::Constant::new_function(Packaging::at(I),
 		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(Packaging::at(I)), fn_s),
 		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(Packaging::at(I)),
 			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 		synoptic_fn_package,
 		Produce::baseline(Packaging::at(I)), NULL));
-	Produce::end_main_block(I, synoptic_fn_ps);
+	Packaging::exit(I, synoptic_fn_ps);
 }
 
 @ To give such a function a local:
@@ -97,7 +97,7 @@ packaging_state synoptic_array_ps;
 
 void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	synoptic_array_ps = Packaging::enter_home_of(iname);
-	inter_symbol *con_s = Produce::define_symbol(iname);
+	inter_symbol *con_s = InterNames::define(iname);
 	synoptic_array_node = Inode::fill_3(Packaging::at(I), CONSTANT_IST,
 		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), con_s),
 		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I),

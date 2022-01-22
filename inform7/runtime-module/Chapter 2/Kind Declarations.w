@@ -117,7 +117,7 @@ void RTKindDeclarations::declare_base_kinds(void) {
 		if (RTKindDeclarations::base_represented_in_Inter(K)) {
 			RTKindDeclarations::declare_base_kind(K);
 			inter_name *iname = RTKindDeclarations::iname(K);
-			Produce::annotate_i(iname, SOURCE_ORDER_IANN, c++);
+			InterNames::annotate_i(iname, SOURCE_ORDER_IANN, c++);
 		}
 }
 
@@ -144,7 +144,7 @@ void RTKindDeclarations::declare_base_kind(kind *K) {
 	Emit::kind(RTKindDeclarations::iname(K), dt, S?RTKindDeclarations::iname(S):NULL,
 		BASE_ICON, 0, NULL);
 	if (K == K_object) {
-		Produce::change_translation(RTKindDeclarations::iname(K), I"K0_kind");
+		InterNames::set_translation(RTKindDeclarations::iname(K), I"K0_kind");
 		Hierarchy::make_available(RTKindDeclarations::iname(K));
 	}
 }

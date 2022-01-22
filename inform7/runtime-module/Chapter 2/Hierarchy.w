@@ -2108,7 +2108,7 @@ available", using the following, which creates a socket. Again, see
 
 =
 void Hierarchy::make_available(inter_name *iname) {
-	text_stream *ma_as = Produce::get_translation(iname);
+	text_stream *ma_as = InterNames::get_translation(iname);
 	if (Str::len(ma_as) == 0) ma_as = InterNames::to_text(iname);
 	LargeScale::package_type(Emit::tree(), I"_linkage");
 	inter_symbol *S = InterNames::to_symbol(iname);

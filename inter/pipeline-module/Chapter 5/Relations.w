@@ -36,7 +36,7 @@ so we change the values of these constants accordingly.
 	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
 		inter_symbol *creator_s = Metadata::read_optional_symbol(pack, I"^creator");
-		if (creator_s) Produce::inv_call(I, creator_s);
+		if (creator_s) Produce::inv_call_symbol(I, creator_s);
 	}
 	Synoptic::end_function(I, step, iname);
 

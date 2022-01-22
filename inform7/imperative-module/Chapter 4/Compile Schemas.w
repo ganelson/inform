@@ -95,7 +95,7 @@ rule *rule_to_which_this_is_a_response = NULL; /* when a new response is being c
 int response_marker_within_that_rule = -1; /* when a new response is being compiled */
 
 void CompileSchemas::from_schema_token(value_holster *VH,
-	inter_schema_token *t, void *ems_s, int prim_cat) {
+	inter_schema_token *t, void *ems_s, int prim_cat, text_stream *arg_L) {
 	i6s_emission_state *ems = (i6s_emission_state *) ems_s;
 
 	int m = t->inline_modifiers;

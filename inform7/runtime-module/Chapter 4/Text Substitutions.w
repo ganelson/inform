@@ -302,8 +302,8 @@ But since we have already compiled most of the function, we have to go back to
 the start temporarily to insert this extra code.
 
 @<Insert code at start of function to retrieve parked values@> =
-	Produce::push_code_position(Emit::tree(),
-		Produce::begin_position(Emit::tree()), Inter::Bookmarks::snapshot(Emit::at()));
+	Produce::push_new_code_position(Emit::tree(),
+		Produce::function_body_start_bookmark(Emit::tree()));
 	LocalParking::retrieve(frame);
 	Produce::pop_code_position(Emit::tree());
 

@@ -121,6 +121,10 @@ inter_bookmark *Packaging::at(inter_tree *I) {
 	return I->site.spdata.current_state.saved_bookmark;
 }
 
+void Packaging::set_at(inter_tree *I, inter_bookmark to) {
+	*(I->site.spdata.current_state.saved_bookmark) = to;
+}
+
 package_request *Packaging::enclosure(inter_tree *I) {
 	return I->site.spdata.current_state.saved_enclosure;
 }
@@ -184,9 +188,9 @@ inter_bookmark Packaging::bubble(inter_tree *I) {
 
 =
 inter_bookmark Packaging::bubble_at(inter_bookmark *IBM) {
-	Produce::nop_at(IBM);
+	Produce::nop_at(IBM, 2);
 	inter_bookmark b = Inter::Bookmarks::snapshot(IBM);
-	Produce::nop_at(IBM);
+	Produce::nop_at(IBM, 2);
 	return b;
 }
 
@@ -204,7 +208,7 @@ package we wsnt to extend next.
 That switching is called "entering" a package. Every entry must be followed
 by a matching exit, which restores the write position to where it was before
 the entry. (The one exception is that the very first entry, into |main| --
-see //Produce::begin_new_tree// -- is never followed by an exit.)
+see //LargeScale::begin_new_tree// -- is never followed by an exit.)
 
 =
 packaging_state Packaging::enter_home_of(inter_name *N) {
@@ -249,7 +253,7 @@ inter_package *Packaging::incarnate(package_request *R) {
 			Packaging::set_state(I, &(R->parent_request->write_position), E);
 			inter_bookmark package_bubble = Packaging::bubble(I);
 			Packaging::set_state(I, &package_bubble, E);
-			R->actual_package = Produce::package(I, R->eventual_name, R->eventual_type);
+			R->actual_package = Produce::make_and_set_package(I, R->eventual_name, R->eventual_type);
 			R->write_position = Packaging::bubble(I);
 			Packaging::set_state(I, save_IRS, E);
 		} else {
@@ -257,7 +261,7 @@ inter_package *Packaging::incarnate(package_request *R) {
 			package_bubble = Packaging::bubble(I);
 			inter_bookmark *save_IRS = Packaging::at(I);
 			Packaging::set_state(I, &package_bubble, E);
-			R->actual_package = Produce::package(I, R->eventual_name, R->eventual_type);
+			R->actual_package = Produce::make_and_set_package(I, R->eventual_name, R->eventual_type);
 			R->write_position = Packaging::bubble(I);
 			Packaging::set_state(I, save_IRS, E);
 		}
@@ -277,7 +281,7 @@ inter_name *Packaging::function(inter_tree *I, inter_name *function_iname,
 	package_request *P = 
 		Packaging::request(I, function_iname, LargeScale::package_type(I, I"_function"));
 	inter_name *iname = InterNames::explicitly_named(I"call", P);
-	if (translation) Produce::change_translation(iname, translation);
+	if (translation) InterNames::set_translation(iname, translation);
 	return iname;
 }
 

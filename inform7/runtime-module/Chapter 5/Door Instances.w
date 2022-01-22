@@ -191,6 +191,6 @@ parse_node *RTDoors::found_in_for_2_sided(instance *I, instance *R1, instance *R
 	EmitArrays::iname_entry(RTInstances::value_iname(R1));
 	EmitArrays::iname_entry(RTInstances::value_iname(R2));
 	EmitArrays::end(save);
-	Produce::annotate_i(S, INLINE_ARRAY_IANN, 1);
+	InterNames::annotate_i(S, INLINE_ARRAY_IANN, 1);
 	return Rvalues::from_iname(S);
 }

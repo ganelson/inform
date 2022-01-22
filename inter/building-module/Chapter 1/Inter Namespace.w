@@ -224,7 +224,7 @@ inter_symbol *InterNames::to_symbol(inter_name *iname) {
 		TEMPORARY_TEXT(identifier)
 		WRITE_TO(identifier, "%n", iname);
 		inter_symbols_table *T = InterNames::scope(iname);
-		iname->symbol = Produce::new_symbol(T, identifier);
+		iname->symbol = InterSymbolsTables::create_with_unique_name(T, identifier);
 		DISCARD_TEXT(identifier)
 	}
 	return iname->symbol;
@@ -235,9 +235,10 @@ text_stream *InterNames::to_text(inter_name *iname) {
 	return InterNames::to_symbol(iname)->symbol_name;
 }
 
-@ An iname is defined if its symbol has a definition. (Note that incarnating
+@h Definition.
+An iname is defined if its symbol has a definition. Note that incarnating
 an iname creates a symbol which is initially undefined, so this test is not the
-same as testing whether the iname has been incarnated.)
+same as testing whether the iname has been incarnated.
 
 =
 int InterNames::is_defined(inter_name *iname) {
@@ -245,4 +246,48 @@ int InterNames::is_defined(inter_name *iname) {
 	inter_symbol *S = InterNames::to_symbol(iname);
 	if (Inter::Symbols::is_defined(S)) return TRUE;
 	return FALSE;
+}
+
+inter_symbol *InterNames::define(inter_name *iname) {
+	inter_symbol *S = InterNames::to_symbol(iname);
+	if ((S) && (Inter::Symbols::is_predeclared(S))) Inter::Symbols::undefine(S);
+	return S;
+}
+
+@h Annotation.
+Note that these functions all force an iname to be incarnated.
+
+=
+void InterNames::annotate_i(inter_name *iname, inter_ti annot_ID, inter_ti V) {
+	Inter::Symbols::annotate_i(InterNames::to_symbol(iname), annot_ID, V);
+}
+
+void InterNames::annotate_w(inter_name *iname, inter_ti annot_ID, wording W) {
+	inter_symbol *S = InterNames::to_symbol(iname);
+	TEMPORARY_TEXT(temp)
+	WRITE_TO(temp, "%W", W);
+	Inter::Symbols::annotate_t(Inter::Packages::tree(S->owning_table->owning_package),
+		S->owning_table->owning_package, S, annot_ID, temp);
+	DISCARD_TEXT(temp)
+}
+
+int InterNames::read_annotation(inter_name *iname, inter_ti annot) {
+	inter_symbol *S = InterNames::to_symbol(iname);
+	return Inter::Symbols::read_annotation(S, annot);
+}
+
+void InterNames::set_flag(inter_name *iname, int f) {
+	Inter::Symbols::set_flag(InterNames::to_symbol(iname), f);
+}
+
+void InterNames::clear_flag(inter_name *iname, int f) {
+	Inter::Symbols::clear_flag(InterNames::to_symbol(iname), f);
+}
+
+void InterNames::set_translation(inter_name *iname, text_stream *new_text) {
+	Inter::Symbols::set_translate(InterNames::to_symbol(iname), new_text);
+}
+
+text_stream *InterNames::get_translation(inter_name *iname) {
+	return Inter::Symbols::get_translate(InterNames::to_symbol(iname));
 }

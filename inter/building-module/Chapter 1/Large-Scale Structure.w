@@ -22,6 +22,9 @@ typedef struct site_structure_data {
 	struct package_request *architecture_request;
 	struct inter_bookmark architecture_bookmark;
 
+	struct inter_bookmark pragmas_bookmark;
+	struct inter_bookmark package_types_bookmark;
+
 	struct dictionary *modules_indexed_by_name; /* of |module_request| */
 } site_structure_data;
 
@@ -38,6 +41,9 @@ void LargeScale::clear_site_data(inter_tree *I) {
 	B->strdata.architecture_package = NULL;
 	B->strdata.architecture_request = NULL;
 	B->strdata.architecture_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+
+	B->strdata.pragmas_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	B->strdata.package_types_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
 
 	B->strdata.modules_indexed_by_name = Dictionaries::new(32, FALSE);
 }
@@ -86,6 +92,10 @@ package_request *LargeScale::main_request(inter_tree *I) {
 	return I->site.strdata.main_request;
 }
 
+inter_symbols_table *LargeScale::main_scope(inter_tree *I) {
+	return Inter::Packages::scope(LargeScale::main_package_if_it_exists(I));
+}
+
 @h connectors.
 
 =
@@ -110,6 +120,10 @@ package_request *LargeScale::connectors_request(inter_tree *I) {
 				InterNames::explicitly_named(I"connectors", LargeScale::main_request(I)),
 				LargeScale::package_type(I, I"_linkage"));
 	return I->site.strdata.connectors_request;
+}
+
+inter_symbols_table *LargeScale::connectors_scope(inter_tree *I) {
+	return Inter::Packages::scope(LargeScale::connectors_package_if_it_exists(I));
 }
 
 @h architectural.
@@ -379,7 +393,7 @@ void LargeScale::emit_pragma(inter_tree *I, text_stream *target, text_stream *co
 	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), content);
 	inter_symbol *target_name =
 		InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(I), target);
-	Produce::guard(Inter::Pragma::new(Produce::pragmas_bookmark(I), target_name, ID, 0, NULL));
+	Produce::guard(Inter::Pragma::new(&(I->site.strdata.pragmas_bookmark), target_name, ID, 0, NULL));
 }
 
 @h Package types.
@@ -404,11 +418,37 @@ inter_symbol *LargeScale::package_type(inter_tree *I, text_stream *name) {
 	inter_symbols_table *scope = InterTree::global_scope(I);
 	inter_symbol *ptype = InterSymbolsTables::symbol_from_name(scope, name);
 	if (ptype == NULL) {
-		ptype = Produce::new_symbol(scope, name);
+		ptype = InterSymbolsTables::create_with_unique_name(scope, name);
 		Produce::guard(Inter::PackageType::new_packagetype(
-			Produce::package_types_bookmark(I), ptype, 0, NULL));
+			&(I->site.strdata.package_types_bookmark), ptype, 0, NULL));
 		if (Str::ne(name, I"_code"))
-			Produce::annotate_symbol_i(ptype, ENCLOSING_IANN, 1);
+			Inter::Symbols::annotate_i(ptype, ENCLOSING_IANN, 1);
 	}
 	return ptype;
+}
+
+@h Outside the packages.
+The Inter specification calls for just a handful of resources to be placed
+at the top level, outside even the |main| package. Using bubbles, we leave
+room to insert those resources, then incarnate |main| and enter it.
+
+=
+void LargeScale::begin_new_tree(inter_tree *I) {
+	Packaging::initialise_state(I);
+	Produce::version(I, 1);
+
+	Produce::comment(I, I"Package types:");
+	I->site.strdata.package_types_bookmark = Packaging::bubble(I);
+
+	Produce::comment(I, I"Pragmas:");
+	I->site.strdata.pragmas_bookmark = Packaging::bubble(I);
+
+	Produce::comment(I, I"Primitives:");
+	Primitives::declare_standard_set(I, Packaging::at(I));
+
+	LargeScale::package_type(I, I"_plain");   // To ensure this is the first emitted ptype
+	LargeScale::package_type(I, I"_code");    // And this the second
+	LargeScale::package_type(I, I"_linkage"); // And this the third
+
+	Packaging::enter(LargeScale::main_request(I)); // Which we never exit
 }

@@ -15,14 +15,10 @@ and where functions have names like |Tags::add_by_name| rather than just |add_by
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
 
-@h Services for builders.
+@h Introduction.
 This module is essentially middleware. It acts as a bridge to the low-level
 functions in the //bytecode// module, allowing them to be used with much
 greater ease and consistency.
-
-In particular, the functions here enforce a number of conventions about how an
-Inter tree is laid out. Indiscriminate use of //bytecode// functions would allow
-other layouts to be made, but we want to be systematic. 
 
 This module needs plenty of working data, and stashes that data inside the
 |inter_tree| structure it is working on: in a compoment of that structure called
@@ -31,7 +27,7 @@ of the tree, i.e., makes a difference as to what program the tree represents,
 the contents of the //building_site// component are only used to make it, and
 are ignored by the //final// code-generator.
 
-@h Structural conventions.
+@h Large-scale architecture.
 An inter tree is fundamentally a set of resources stored in a nested set of
 |inter_package| boxes.
 
@@ -100,8 +96,7 @@ packages (though not their contents).
 [1] Ideally |completion| would not exist, and everything in it would be made
 as part of |synoptic| during linking, but at present this is too difficult.
 
-@h Dealing with partly-built Inter.
-Inter code is a nested tree of boxes, |inter_package|s, which contain Inter
+@ Inter code is a nested tree of boxes, |inter_package|s, which contain Inter
 code defining various resources, cross-referenced by |inter_symbol|s.
 
 But this tree cannot be magically made all at once. For much of the run of
@@ -133,7 +128,7 @@ And similarly for //inter_name//, which it would perhaps be more consistent
 to call a |symbol_request|. But "iname" is now a term used almost ubiquitously
 across //inform7// and //inter//, and it doesn't seem worth renaming it now.
 
-@h Code and schemas.
+@h Medium-scale blueprints.
 The above systems make nested packages and symbols within them, but not the
 actual content of these boxes, or the definitions which the symbols refer to.
 In short, the actual Inter code.
@@ -151,7 +146,7 @@ a real |inter_symbol| if necessary; and finally emits a |CONSTANT_IST| in the
 relevant package, an instruction which defines the symbol.
 
 And similarly for emitting code inside a function body, though then it is
-necessary first to say what function (which can be done by calling //Produce::block//
+necessary first to say what function (which can be done by calling //Produce::function_body//
 with the iname for that function). For example:
 = (text as InC)
 	Produce::inv_primitive(I, RETURN_BIP);
@@ -209,3 +204,33 @@ tell us how to resolve identifier names into variables, arrays, and so on.
 
 [4] These braced placeholders are, of course, not Inform 6 notation, and
 represent an extension of the I6 syntax.
+
+@h Small-scale masonry.
+Finally, there are also times when we want to compile explicit code, one
+Inter instruction at a time, and for this the Produce API is provided.
+
+This API keeps track of the current write position inside each tree (using
+the //code_insertion_point// system), and then provides functions which call
+down into //bytecode// for us, making use of that write position. So, for
+example, we can write:
+= (text as InC)
+	Produce::inv_primitive(I, RETURN_BIP);
+	Produce::down(I);
+		Produce::val(I, K_value, LITERAL_IVAL, 17);
+	Produce::up(I);
+=
+to produce the Inter code:
+= (text as Inter)
+	inv !return
+		val K_unchecked 17
+=
+Note the use of //Produce::down// and //Produce::up// to step up and down the
+hierarchy: these functions are always called in matching ways.
+
+@ The //pipeline// module makes heavy use of the Produce API. Surprising,
+//inform7// calls it in only a few places -- but in fact that it is because
+it provides still another middleware layer on top. See //runtime: Emit//.
+But it's really only a very thin layer, allowing the caller not to have to
+pass the |I| argument to every call (because it will always be the Inter tree
+being compiled by //inform7//). Despite appearances, then, Produce makes all
+of the Inter instructions generated inside either //inter// or //inform7//.

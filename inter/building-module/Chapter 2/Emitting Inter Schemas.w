@@ -41,7 +41,7 @@ do not recognise any identifiers as corresponding to local variables".
 void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch,
 	identifier_finder finder,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t,
-		void *opaque_state, int prim_cat),
+		void *opaque_state, int prim_cat, text_stream *L),
 	void (*i7_source_handler)(value_holster *VH, text_stream *S,
 		void *opaque_state, int prim_cat),
 	void *opaque_state) {
@@ -51,13 +51,12 @@ void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch,
 	@<Traverse the tree, compiling each node@>;
 }
 
-@ The following has to be one of the ugliest lines of code in Inform, but it
-allows a very edgy edge case: schemas which make case constructions making
+@ This allows a very edgy edge case: schemas which make case constructions making
 sense only within a switch statement, but where the schema does not itself
 include the |switch| head or tail.
 
 @<Reset tbe write position if we're in the middle of a switch statement@> =
-	if (sch->mid_case) Produce::to_last_level(I, 4);
+	if (sch->mid_case) Produce::set_level_to_current_code_block_plus(I, 4);
 
 @ The following looks for conditional compilations such as:
 = (text as Inform 6)
@@ -280,7 +279,7 @@ void EmitInterSchemas::emit_recursively(inter_tree *I, inter_schema_node *node,
 	value_holster *VH, inter_schema *sch, void *opaque_state, int prim_cat,
 	identifier_finder finder,
 	void (*inline_command_handler)(value_holster *VH, inter_schema_token *t,
-		void *opaque_state, int prim_cat),
+		void *opaque_state, int prim_cat, text_stream *L),
 	void (*i7_source_handler)(value_holster *VH, text_stream *S,
 		void *opaque_state, int prim_cat)) {
 	if ((node) && (node->blocked_by_conditional == FALSE))
@@ -419,7 +418,7 @@ changed back again very soon after.
 	if (bip_for_builtin_fn > 0) {
 		Produce::inv_primitive(I, bip_for_builtin_fn);		
 	} else if (to_call) {
-		Produce::inv_call(I, to_call);
+		Produce::inv_call_symbol(I, to_call);
 		at = at->next_node;
 	} else {
 		int argc = 0;
@@ -465,7 +464,7 @@ more natural |{ ... }|.
 	if (node->unclosed == FALSE) {
 		Produce::up(I);
 	}
-	if (node->unopened) Produce::to_last_level(I, 0);
+	if (node->unopened) Produce::set_level_to_current_code_block_plus(I, 0);
 
 @ Note that conditional directives have already been taken care of, and that
 other Inform 6 directives are not valid inside function bodies, which is the
@@ -542,22 +541,11 @@ parsing the schema.)
 @<Evaluate this token@> =
 	switch (t->ist_type) {
 		case IDENTIFIER_ISTT:
-			if (prim_cat == LAB_PRIM_CAT) {
+			if (prim_cat == LAB_PRIM_CAT)
 				Produce::lab(I, Produce::reserve_label(I, t->material));
-			} else {
-				#ifdef CORE_MODULE
-				local_variable *lvar = LocalVariables::by_identifier(t->material);
-				if (lvar) {
-					inter_symbol *lvar_s = LocalVariables::declare(lvar);
-					Produce::val_symbol(I, K_value, lvar_s);
-				} else {
-					Produce::val_symbol(I, K_value, IdentifierFinders::find_token(I, t, finder));
-				}
-				#endif
-				#ifndef CORE_MODULE
-					Produce::val_symbol(I, K_value, IdentifierFinders::find_token(I, t, finder));
-				#endif
-			}
+			else
+				Produce::val_symbol(I, K_value,
+					IdentifierFinders::find_token(I, t, finder));
 			break;
 		case ASM_ARROW_ISTT:
 			Produce::assembly_marker(I, ASM_ARROW_ASMMARKER);
@@ -615,7 +603,7 @@ parsing the schema.)
 			break;
 		case INLINE_ISTT:
 			if (inline_command_handler)
-				(*inline_command_handler)(VH, t, opaque_state, prim_cat);
+				(*inline_command_handler)(VH, t, opaque_state, prim_cat, NULL);
 			break;
 		default:
 			internal_error("bad expression token");
@@ -646,21 +634,15 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 	WRITE_TO(L, ".");
 	for (inter_schema_node *at = node->child_node; at; at=at->next_node) {
 		for (inter_schema_token *t = at->expression_tokens; t; t=t->next) {
-			if (t->ist_type == IDENTIFIER_ISTT)
+			if (t->ist_type == IDENTIFIER_ISTT) {
 				WRITE_TO(L, "%S", t->material);
-			else if ((t->ist_type == INLINE_ISTT) && (t->inline_command == label_ISINC)) {
-				#ifdef CORE_MODULE
-				JumpLabels::write(L, t->operand);
-				#endif
-				#ifndef CORE_MODULE
-				internal_error("label namespaces are unavailable in assimilation mode");
-				#endif
 			} else if ((t->ist_type == INLINE_ISTT) &&
-					((t->inline_command == counter_up_ISINC) ||
+					((t->inline_command == label_ISINC) ||
+					 (t->inline_command == counter_up_ISINC) ||
 					 (t->inline_command == counter_down_ISINC))) {
 				value_holster VN = Holsters::new(INTER_DATA_VHMODE);
 				if (inline_command_handler)
-					(*inline_command_handler)(&VN, t, opaque_state, VAL_PRIM_CAT);
+					(*inline_command_handler)(&VN, t, opaque_state, VAL_PRIM_CAT, L);
 			} else internal_error("bad label stuff");
 		}
 	}
@@ -748,7 +730,7 @@ on others.
 
 @<Statement@> =
 	if (prim_cat != CODE_PRIM_CAT) internal_error("statement in expression");
-	if (node->isn_clarifier == CASE_BIP) Produce::to_last_level(I, 2);
+	if (node->isn_clarifier == CASE_BIP) Produce::set_level_to_current_code_block_plus(I, 2);
 	if (node->isn_clarifier == READ_XBIP) Produce::inv_assembly(I, I"@aread");
 	else Produce::inv_primitive(I, node->isn_clarifier);
 	if (node->isn_clarifier == OBJECTLOOP_BIP) {
@@ -821,14 +803,7 @@ these possibilities:
 			var_node = var_node->child_node;
 		if (var_node) {
 			EIS_RECURSE(var_node, REF_PRIM_CAT);
-			#ifdef CORE_MODULE
-			Produce::val_iname(I, K_value, RTKindDeclarations::iname(K_object));
-			#endif
-			#ifndef CORE_MODULE
-			Produce::val_symbol(I, K_value,
-				LargeScale::find_architectural_symbol(I, I"Object",
-					Produce::kind_to_symbol(NULL)));
-			#endif
+			Produce::val_symbol(I, K_value, IdentifierFinders::find(I, I"Object", finder));
 		} else internal_error("objectloop without visible variable");
 	}
 	inter_schema_node *at = node->child_node;

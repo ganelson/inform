@@ -180,7 +180,7 @@ inter_name *RTKindConstructors::get_exp_kind_GPR_iname(kind *K) {
 	text_stream *GPR_fn_identifier = RTKindConstructors::get_explicit_I6_GPR(K);
 	LOG("Looking for %u: %S\n", K, GPR_fn_identifier);
 	if (Str::len(GPR_fn_identifier) > 0)
-		GPR = Produce::find_by_name(Emit::tree(), GPR_fn_identifier);
+		GPR = HierarchyLocations::find_by_name(Emit::tree(), GPR_fn_identifier);
 	else
 		GPR = RTKindConstructors::get_kind_GPR_iname(K);
 	return GPR;
@@ -274,11 +274,11 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 	if (R) {
 		if (external) {
 			K->construct->compilation_data.pr_iname = Hierarchy::make_iname_in(PRINT_FN_HL, R);
-			inter_name *actual_iname = Produce::find_by_name(Emit::tree(), X);
+			inter_name *actual_iname = HierarchyLocations::find_by_name(Emit::tree(), X);
 			Emit::iname_constant(K->construct->compilation_data.pr_iname, K_value, actual_iname);
 		} else internal_error("internal but unknown kind printing routine");
 	} else {
-		if (external) K->construct->compilation_data.pr_iname = Produce::find_by_name(Emit::tree(), X);
+		if (external) K->construct->compilation_data.pr_iname = HierarchyLocations::find_by_name(Emit::tree(), X);
 		else internal_error("internal but unpackaged kind printing routine");
 	}
 	return K->construct->compilation_data.pr_iname;
@@ -324,35 +324,35 @@ inter_name *RTKindConstructors::get_debug_print_fn_iname(kind *K) {
 
 	if (Str::len(K->construct->ACTIONS_identifier) > 0)
 		K->construct->compilation_data.debug_print_fn_iname = 
-			Produce::find_by_name(Emit::tree(), K->construct->ACTIONS_identifier);
+			HierarchyLocations::find_by_name(Emit::tree(), K->construct->ACTIONS_identifier);
 	else
 		K->construct->compilation_data.debug_print_fn_iname =
-			Produce::find_by_name(Emit::tree(), I"DA_Name");
+			HierarchyLocations::find_by_name(Emit::tree(), I"DA_Name");
 	return K->construct->compilation_data.debug_print_fn_iname;
 }
 
 inter_name *RTKindConstructors::get_explicit_I6_GPR_iname(kind *K) {
 	if (K == NULL) internal_error("RTKindConstructors::get_explicit_I6_GPR on null kind");
 	if (Str::len(K->construct->explicit_GPR_identifier) > 0)
-		return Produce::find_by_name(Emit::tree(), K->construct->explicit_GPR_identifier);
+		return HierarchyLocations::find_by_name(Emit::tree(), K->construct->explicit_GPR_identifier);
 	return NULL;
 }
 
 inter_name *RTKindConstructors::get_distinguisher_iname(kind *K) {
 	text_stream *N = Kinds::Behaviour::get_distinguisher(K);
 	if (N == NULL) return NULL;
-	return Produce::find_by_name(Emit::tree(), N);
+	return HierarchyLocations::find_by_name(Emit::tree(), N);
 }
 
 inter_name *RTKindConstructors::get_comparison_fn_iname(kind_constructor *kc) {
-	return Produce::find_by_name(Emit::tree(),
+	return HierarchyLocations::find_by_name(Emit::tree(),
 		KindConstructors::get_comparison_fn_identifier(kc));
 }
 
 inter_name *RTKindConstructors::get_support_fn_iname(kind_constructor *kc) {
 	TEMPORARY_TEXT(N)
 	WRITE_TO(N, "%S_Support", kc->explicit_identifier);
-	inter_name *iname = Produce::find_by_name(Emit::tree(), N);
+	inter_name *iname = HierarchyLocations::find_by_name(Emit::tree(), N);
 	DISCARD_TEXT(N)
 	return iname;
 }
@@ -412,7 +412,7 @@ text_stream *RTKindConstructors::get_recognition_only_GPR(kind *K) {
 inter_name *RTKindConstructors::get_recognition_only_GPR_as_iname(kind *K) {
 	text_stream *N = RTKindConstructors::get_recognition_only_GPR(K);
 	if (N == NULL) return NULL;
-	return Produce::find_by_name(Emit::tree(), N);
+	return HierarchyLocations::find_by_name(Emit::tree(), N);
 }
 
 @ The following is used only when the kind has named instances.
@@ -632,7 +632,7 @@ void RTKindConstructors::compile(void) {
 				Str::put(pos, Characters::toupper(Str::get(pos)));
 				if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
 			}
-			inter_name *iname = Hierarchy::make_iname_with_specific_translation(ICOUNT_HL, InterSymbolsTables::render_identifier_unique(Produce::main_scope(Emit::tree()), ICN), RTKindConstructors::kind_package(K));
+			inter_name *iname = Hierarchy::make_iname_with_specific_translation(ICOUNT_HL, InterSymbolsTables::render_identifier_unique(LargeScale::main_scope(Emit::tree()), ICN), RTKindConstructors::kind_package(K));
 			Hierarchy::make_available(iname);
 			DISCARD_TEXT(ICN)
 			Emit::numeric_constant(iname, (inter_ti) Instances::count(K));
@@ -661,7 +661,7 @@ void RTKindConstructors::compile(void) {
 		@<Compile data support functions@>;
 		
 		if (kc->compilation_data.declaration_sequence_number >= 0)
-			Produce::annotate_i(RTKindDeclarations::iname(K), DECLARATION_ORDER_IANN,
+			InterNames::annotate_i(RTKindDeclarations::iname(K), DECLARATION_ORDER_IANN,
 				(inter_ti) kc->compilation_data.declaration_sequence_number);
 
 		if ((Kinds::Behaviour::is_quasinumerical(K)) && (Kinds::is_intermediate(K) == FALSE)) {

@@ -164,7 +164,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 
 @<Define TB_BLANKS array@> =
 	inter_name *iname = HierarchyLocations::iname(I, TB_BLANKS_HL);
-	Produce::annotate_iname_i(iname, BYTEARRAY_IANN, 1);
+	InterNames::annotate_i(iname, BYTEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	inter_ti hwm = 0;
 	for (int i=0; i<TreeLists::len(inv->table_column_usage_nodes); i++) {
