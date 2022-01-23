@@ -16,6 +16,7 @@ typedef struct inter_schema {
 	struct inter_schema_node *node_tree; /* the structure */
 	int mid_case; /* does this seem to be used inside a switch case? */
 	int dereference_mode; /* emit from this in dereference-pointers mode */
+	struct linked_list *parsing_errors; /* of |schema_parsing_error| */
 	CLASS_DEFINITION
 } inter_schema;
 
@@ -26,6 +27,7 @@ inter_schema *InterSchemas::new(text_stream *source) {
 	sch->node_tree = NULL;
 	sch->mid_case = FALSE;
 	sch->dereference_mode = FALSE;
+	sch->parsing_errors = NULL;
 	return sch;
 }
 
@@ -569,7 +571,7 @@ where the check is done:
 
 =
 void InterSchemas::lint(inter_schema *sch) {
-	if (sch) {
+	if ((sch) && (sch->parsing_errors == NULL)) {
 		text_stream *err = InterSchemas::lint_isn(sch->node_tree, 0);
 		if (err) {
 			LOG("Lint fail: %S\n$1\n", err, sch);

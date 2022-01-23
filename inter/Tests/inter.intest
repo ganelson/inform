@@ -4,6 +4,7 @@
 -cases [Duplex] 'inter/Tests/Duplex'
 -cases [PipelineErrors] 'inter/Tests/PipelineErrors'
 -cases [Toy] 'inter/Tests/Toys'
+-cases [Kit] 'inter/Tests/Kits'
 
 -recipe [Valid]
 
@@ -112,6 +113,26 @@
 	mkdir: $PATH/_Results_Ideal
 
 	fail step: inter/Tangled/inter -variable *in=$O -pipeline-file $P >$A 2>&1
+	or: 'failed to produce errors' $A
+
+	show: $A
+
+	match platform text: $A $I
+	or: 'produced incorrect errors'
+
+-end
+
+-recipe [Kit]
+
+	set: $O = $PATH/$CASE.intert
+	set: $K = $PATH/_kits/$CASE
+	set: $A = $PATH/_Results_Actual/$CASE.txt
+	set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+
+	fail step: inter/Tangled/inter -architecture 16 -build-kit $K >$A 2>&1
 	or: 'failed to produce errors' $A
 
 	show: $A

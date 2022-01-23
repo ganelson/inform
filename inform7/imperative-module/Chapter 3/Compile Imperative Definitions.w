@@ -216,9 +216,42 @@ inter_schema *CompileImperativeDefn::get_back_schema(id_body *idb) {
 				CompileImperativeDefn::get_inline_definition(idb),
 				&(idb->compilation_data.inline_front_schema),
 				&(idb->compilation_data.inline_back_schema));
+			CompileImperativeDefn::issue_schema_errors(current_sentence,
+				idb->compilation_data.inline_front_schema,
+				idb->compilation_data.inline_back_schema);
 		}
 		idb->compilation_data.inter_defn_converted = TRUE;
 	}
+
+@ =
+void CompileImperativeDefn::issue_schema_errors(parse_node *from,
+	inter_schema *sch1, inter_schema *sch2) {
+	int E = LinkedLists::len(sch1->parsing_errors);
+	if (sch2) E += LinkedLists::len(sch2->parsing_errors);
+	if (E > 0) {
+		Problems::quote_source(1, from);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+		Problems::issue_problem_segment(
+			"In %1, syntax errors were found in the '(-' ... '-)' schema:");
+		schema_parsing_error *err;
+		int ec = 1;
+		if ((sch1) && (sch1->parsing_errors))
+			LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch1->parsing_errors) {
+				Problems::quote_number(2, &ec);
+				Problems::quote_stream(3, err->message);
+				Problems::issue_problem_segment("%P%2. %3");
+				ec++;
+			}
+		if ((sch2) && (sch2->parsing_errors))
+			LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch2->parsing_errors) {
+				Problems::quote_number(2, &ec);
+				Problems::quote_stream(3, err->message);
+				Problems::issue_problem_segment("%P%2. %3");
+				ec++;
+			}
+		Problems::issue_problem_end();
+	}
+}
 
 @ Non-inline compilation is sometimes the result of filling requests for
 instantiation. The different requested versions then appear in the requests

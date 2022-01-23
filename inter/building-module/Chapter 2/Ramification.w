@@ -41,6 +41,7 @@ void Ramification::go(inter_schema *sch) {
 	REPEATEDLY_APPLY(Ramification::debracket);
 	REPEATEDLY_APPLY(Ramification::implied_return_values);
 	REPEATEDLY_APPLY(Ramification::message_calls);
+	REPEATEDLY_APPLY(Ramification::sanity_check);
 }
 
 @ Each transformation will be applied until it returns |FALSE| to say that
@@ -52,7 +53,7 @@ these out at the start of each iteration.
 @d REPEATEDLY_APPLY(X)
 	{
 		Ramification::unmark(sch->node_tree);
-		while (TRUE) {
+		while ((TRUE) && (sch->parsing_errors == NULL)) {
 			int rv = X(NULL, sch->node_tree);
 			if (rv == FALSE) break;
 			LOGIF(SCHEMA_COMPILATION_DETAILS, "After round of " #X ":\n$1\n", sch);
@@ -826,7 +827,8 @@ nodes, which we want to fold into just one:
 		operand1 = InterSchemas::second_dark_token(until_node);
 		cons->next_node = until_node->next_node;
 	} else {
-		internal_error("do without until");
+		Ramification::throw_error(cons, I"do without until");
+		return FALSE;
 	}
 
 @<This is a font statement@> =
@@ -834,7 +836,14 @@ nodes, which we want to fold into just one:
 	inter_schema_token *n = InterSchemas::second_dark_token(cons);
 	if ((n) && (Str::eq(n->material, I"on"))) dangle_number = 1;
 	else if ((n) && (Str::eq(n->material, I"off"))) dangle_number = 0;
-	else internal_error("bad font statement");
+	else {
+		TEMPORARY_TEXT(msg)
+		WRITE_TO(msg, "expected 'on' or 'off' after 'font', not '%S'",
+			n->material);
+		Ramification::throw_error(cons, msg);
+		DISCARD_TEXT(msg)
+		return FALSE;
+	}
 
 @ Here |give O P| sets attribute |P| for object |O|, and |give O ~P| takes
 it away again; this looks like a use of the bitwise-not operator but is not.
@@ -880,7 +889,10 @@ clause at all. We split these possibilities into two different statement nodes.
 		if (Str::eq(to->material, I"to")) break;
 		to = InterSchemas::next_dark_token(to);
 	}
-	if (to == NULL) internal_error("move without to");
+	if (to == NULL) {
+		Ramification::throw_error(cons, I"move without to");
+		return FALSE;
+	}
 	operand2 = InterSchemas::next_dark_token(to);
 	to->ist_type = WHITE_SPACE_ISTT;
 	to->material = I" ";
@@ -1224,8 +1236,10 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 			(isn->isn_clarifier == FOR_BIP) &&
 			(isn->node_marked == FALSE)) {
 			inter_schema_node *predicates = isn->child_node;
-			if ((predicates == NULL) || (predicates->isn_type != EXPRESSION_ISNT))
-				internal_error("malformed proto-for");
+			if ((predicates == NULL) || (predicates->isn_type != EXPRESSION_ISNT)) {
+				Ramification::throw_error(isn, I"malformed 'for' loop");
+				return FALSE;
+			}
 			inter_schema_token *n = predicates->expression_tokens;
 			inter_schema_node *code_node = predicates->next_node;
 			int bl = 0, cw = 0;
@@ -1237,9 +1251,9 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 					bl++;
 				} else if (n->ist_type == CLOSE_ROUND_ISTT) {
 					bl--;
-					if (bl == 0) @<End a wodge@>;
+					if (bl == 0) @<End a for loop header clause@>;
 				} else if (bl == 1) {
-					if (n->ist_type == COLON_ISTT) @<End a wodge@>
+					if (n->ist_type == COLON_ISTT) @<End a for loop header clause@>
 					else {
 						if (from[cw] == NULL) from[cw] = n;
 					}
@@ -1247,8 +1261,8 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 				n = n->next;
 			}
 			if (cw != 3) {
-				InterSchemas::log_just(isn, 2);
-				internal_error("malformed for prototype");
+				Ramification::throw_error(isn, I"'for' header with too few clauses");
+				return FALSE;
 			}
 			for (int i=0; i<3; i++) {
 				inter_schema_node *eval_isn = InterSchemas::new_node(isn->parent_schema, EVAL_ISNT);
@@ -1284,8 +1298,11 @@ int Ramification::break_for_statements(inter_schema_node *par, inter_schema_node
 	return FALSE;
 }
 
-@<End a wodge@> =
-	if (cw >= 3) internal_error("too many colons");
+@<End a for loop header clause@> =
+	if (cw >= 3) {
+		Ramification::throw_error(isn, I"'for' header with too many clauses");
+		return FALSE;
+	}
 	if (from[cw] == NULL) to[cw] = NULL;
 	else to[cw] = n;
 	if (from[cw] == to[cw]) { from[cw] = NULL; to[cw] = NULL; }
@@ -1310,8 +1327,10 @@ int Ramification::add_missing_bodies(inter_schema_node *par, inter_schema_node *
 		if ((req > 0) && (isn->node_marked == FALSE)) {
 			int actual = 0;
 			for (inter_schema_node *ch = isn->child_node; ch; ch=ch->next_node) actual++;
-			if (actual < req-1) internal_error("far too few child nodes");
-			if (actual > req) internal_error("too many child nodes");
+			if ((actual < req-1) || (actual > req)) {
+				Ramification::throw_error(isn, I"malformed statement");
+				return FALSE;
+			}
 			if (actual == req-1) {
 				inter_schema_node *code_isn = InterSchemas::new_node(isn->parent_schema, CODE_ISNT);
 				code_isn->parent_node = isn;
@@ -1642,12 +1661,7 @@ Here the final operator is the |+|, and there are both left and right operands.
 		if (l->next == to)
 			l->next = NULL;
 	InterSchemas::changed_tokens_on(left_operand_node);
-	if (isn->child_node == NULL) {
-		isn->child_node = left_operand_node;
-	} else {
-		internal_error("Never happens");
-		isn->child_node->next_node = left_operand_node;
-	}
+	isn->child_node = left_operand_node;
 	left_operand_node->parent_node = isn;
 	has_left_operand = TRUE;
 
@@ -1690,11 +1704,13 @@ operation |a.b|.
 		if (has_left_operand) a++;
 		if (has_right_operand) a++;
 		if (a != I6Operators::arity(isn->isn_clarifier)) {
-			LOG("Seem to have arity %d with isn %S which needs %d\n",
-				a, Primitives::BIP_to_name(isn->isn_clarifier),
-				I6Operators::arity(isn->isn_clarifier));
-			LOG("$1\n", isn->parent_schema);
-			internal_error("bad arity");
+			TEMPORARY_TEXT(msg)
+			WRITE_TO(msg, "operator '%S' used with %d not %d operand(s)",
+				I6Operators::I6_notation_for(isn->isn_clarifier),
+				a, I6Operators::arity(isn->isn_clarifier));
+			Ramification::throw_error(isn, msg);
+			DISCARD_TEXT(msg)
+			return FALSE;
 		}
 	}
 
@@ -1853,4 +1869,64 @@ int Ramification::message_calls(inter_schema_node *par, inter_schema_node *isn) 
 		if (Ramification::message_calls(isn, isn->child_node)) return TRUE;
 	}
 	return FALSE;
+}
+
+@h The sanity check ramification.
+This does nothing except to catch some errors more politely than allowing them
+to cause trouble later. If no error is thrown, the schema is unchanged.
+
+=
+int Ramification::sanity_check(inter_schema_node *par, inter_schema_node *isn) {
+	for (; isn; isn=isn->next_node) {
+		if (isn->isn_type == EXPRESSION_ISNT) {
+			int asm = FALSE;
+			for (inter_schema_token *t = isn->expression_tokens; t; t=t->next) {
+				switch (t->ist_type) {
+					case OPCODE_ISTT:		asm = TRUE; break;
+					case RAW_ISTT:			Ramification::throw_error(isn, I"malformed expression"); break;
+					case OPEN_BRACE_ISTT:	Ramification::throw_error(isn, I"unexpected '{'"); break;
+					case CLOSE_BRACE_ISTT:	Ramification::throw_error(isn, I"unexpected '}'"); break;
+					case OPEN_ROUND_ISTT:	Ramification::throw_error(isn, I"unexpected '('"); break;
+					case CLOSE_ROUND_ISTT:	Ramification::throw_error(isn, I"unexpected ')'"); break;
+					case COMMA_ISTT:		Ramification::throw_error(isn, I"unexpected ','"); break;
+					case DIVIDER_ISTT:		Ramification::throw_error(isn, I"malformed expression"); break;
+					case RESERVED_ISTT: {
+						TEMPORARY_TEXT(msg)
+						WRITE_TO(msg, "unexpected use of reserved word '%S'", t->material);
+						Ramification::throw_error(isn, msg);
+						DISCARD_TEXT(msg)
+						break;
+					}
+					case COLON_ISTT:		Ramification::throw_error(isn, I"unexpected ':'"); break;
+					case OPERATOR_ISTT:		Ramification::throw_error(isn, I"unexpected operator"); break;
+				}
+				if ((t->ist_type == NUMBER_ISTT) && (t->next) &&
+					(t->next->ist_type == NUMBER_ISTT) && (asm == FALSE))
+					Ramification::throw_error(isn, I"two consecutive numbers");
+			}
+			if (isn->child_node) Ramification::throw_error(isn, I"malformed expression");
+		} else {
+			if (isn->expression_tokens) Ramification::throw_error(isn, I"syntax error");
+		}
+		Ramification::sanity_check(isn, isn->child_node);
+	}
+	return FALSE;
+}
+
+@h Errors.
+
+=
+typedef struct schema_parsing_error {
+	struct text_stream *message;
+	CLASS_DEFINITION
+} schema_parsing_error;
+
+void Ramification::throw_error(inter_schema_node *at, text_stream *message) {
+	if (at->parent_schema->parsing_errors == NULL)
+		at->parent_schema->parsing_errors = NEW_LINKED_LIST(schema_parsing_error);
+	schema_parsing_error *err = CREATE(schema_parsing_error);
+	err->message = Str::duplicate(message);
+	ADD_TO_LINKED_LIST(err, schema_parsing_error, at->parent_schema->parsing_errors);
+	LOG("Schema error: %S\n", message);
+	LOG("$1\n", at->parent_schema);
 }

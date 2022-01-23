@@ -71,7 +71,8 @@ int CSIInline::csi_inline(value_holster *VH, parse_node *inv, source_location *w
 	id_body *idb = Node::get_phrase_invoked(inv);
 	@<Initialise the CSI state@>;
 	@<Create any new local variables explicitly called for@>;
-	CSIInline::from_schema(CompileImperativeDefn::get_front_schema(idb), &CSIS);
+	CSIInline::from_schema(idb->head_of_defn->at,
+		CompileImperativeDefn::get_front_schema(idb), &CSIS);
 	if (IDTypeData::block_follows(idb))
 		CodeBlocks::attach_back_schema(CompileImperativeDefn::get_back_schema(idb), CSIS);
 	else
@@ -157,7 +158,7 @@ compiled.
 
 =
 void CSIInline::csi_inline_back(inter_schema *back, csi_state *CSIS) {
-	if (back) CSIInline::from_schema(back, CSIS);
+	if (back) CSIInline::from_schema(current_sentence, back, CSIS);
 }
 
 @h Single schemas.
@@ -175,10 +176,13 @@ passed through unchanged to our callbach functions, and means that the code
 below can share some private state variables.
 
 =
-void CSIInline::from_schema(inter_schema *sch, csi_state *CSIS) {
-	EmitInterSchemas::emit(Emit::tree(), &(CSIS->VH), sch,
-		IdentifierFinders::common_names_only(),
-		&CSIInline::from_schema_token, &CSIInline::from_source_text, CSIS);
+void CSIInline::from_schema(parse_node *from, inter_schema *sch, csi_state *CSIS) {
+	if (LinkedLists::len(sch->parsing_errors) == 0) {
+		EmitInterSchemas::emit(Emit::tree(), &(CSIS->VH), sch,
+			IdentifierFinders::common_names_only(),
+			&CSIInline::from_schema_token, &CSIInline::from_source_text, CSIS);
+		CompileImperativeDefn::issue_schema_errors(from, sch, NULL);
+	}
 }
 
 @ So we now have to write the function compiling code to implement |ist|.

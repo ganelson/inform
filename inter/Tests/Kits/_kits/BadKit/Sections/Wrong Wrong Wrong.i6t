@@ -1,0 +1,45 @@
+Wrong Wrong Wrong.
+
+This makes use of all sort of incorrect Inform 6 syntax, just to see what error
+messages inter will produce.
+
+@h First.
+
+=
+[ Okay; return 0; ];
+
+[ E1; return 1 + ; ];
+
+[ E2;
+	do {
+		print "Hello.";
+	}
+];
+
+[ E3; font whatever; ];
+
+[ E4 O P; move O P; ];
+
+[ E5 x; for (x = 1) print x; ];
+
+[ E6 x; for (x = 1: x<10: x++: x++) print x; ];
+
+[ E7; if; ];
+
+[ E8; if (1 == 1) { print "Wow"; } { print "Zap"; } ];
+
+[ E9; #ifdef DEBUG; print "Bananas."; ];
+
+[ E10; , ; ];
+
+[ E11; #iftrue xxx; print "Apples."; #endif; ];
+
+[ E12; print ( @something 1 ); ];
+
+[ E13; x.call(1, 2, 3); y.call(1, 2, 3, 4); ];
+
+[ E14; print $ffa0z; ];
+
+[ E15; x = return 6; ];
+
+[ E16; objectloop (1) { print "Hello."; } ];

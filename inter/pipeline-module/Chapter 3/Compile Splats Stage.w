@@ -43,7 +43,8 @@ int CompileSplatsStage::run(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
 	InterTree::traverse(I, CompileSplatsStage::visitor1, &css, NULL, SPLAT_IST);
 	InterTree::traverse(I, CompileSplatsStage::visitor2, &css, NULL, 0);
-	CompileSplatsStage::function_bodies(step, &css, I);
+	int errors_found = CompileSplatsStage::function_bodies(step, &css, I);
+	if (errors_found) return FALSE;
 	InterTree::traverse(I, CompileSplatsStage::visitor3, &css, NULL, SPLAT_IST);
 	return TRUE;
 }
@@ -1222,16 +1223,26 @@ contents of the function -- which can be very large, for example in the Inform
 kit |CommandParserKit| -- as a single gigantic Inter schema |sch|.
 
 =
-void CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_state *css,
+int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_state *css,
 	inter_tree *I) {
+	int errors_occurred = FALSE;
 	function_body_request *req;
 	LOOP_OVER_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile) {
 		LOGIF(SCHEMA_COMPILATION, "=======\n\nFunction (%S) len %d: '%S'\n\n",
 			Inter::Packages::name(req->block_package), Str::len(req->body), req->body);
 		inter_schema *sch = ParsingSchemas::from_text(req->body);
-		if (Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) InterSchemas::log(DL, sch);
-		@<Compile this function body@>;
+		if (LinkedLists::len(sch->parsing_errors) > 0) {
+			schema_parsing_error *err;
+			LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors) {
+				PipelineErrors::kit_error("kit source error: %S", err->message);
+			}
+		} else {
+			if (Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) InterSchemas::log(DL, sch);
+			@<Compile this function body@>;
+		}
+		if (LinkedLists::len(sch->parsing_errors) > 0) errors_occurred = TRUE;
 	}
+	return errors_occurred;
 }
 
 @ And then we emit Inter code equivalent to |sch|:
@@ -1249,5 +1260,11 @@ void CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_sta
 	IdentifierFinders::next_priority(&finder, scope1);
 	IdentifierFinders::next_priority(&finder, scope2);
 	EmitInterSchemas::emit(I, &VH, sch, finder, NULL, NULL, NULL);
+	if (LinkedLists::len(sch->parsing_errors) > 0) {
+		schema_parsing_error *err;
+		LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors) {
+			PipelineErrors::kit_error("kit source error: %S", err->message);
+		}
+	}
 	Produce::pop_code_position(I);
 	Produce::set_function(I, NULL);

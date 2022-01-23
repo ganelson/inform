@@ -20,6 +20,7 @@ We need to itemise the structures we'll want to allocate:
 @e inter_schema_CLASS
 @e inter_schema_node_CLASS
 @e inter_schema_token_CLASS
+@e schema_parsing_error_CLASS
 
 =
 DECLARE_CLASS(hierarchy_location)
@@ -31,6 +32,7 @@ DECLARE_CLASS(submodule_request)
 DECLARE_CLASS(inter_schema)
 DECLARE_CLASS(inter_schema_node)
 DECLARE_CLASS(inter_schema_token)
+DECLARE_CLASS(schema_parsing_error)
 
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_name, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_name_generator, 1000)

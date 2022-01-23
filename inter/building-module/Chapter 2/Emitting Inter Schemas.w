@@ -159,7 +159,10 @@ all conditionals are resolved.
 		}
 		at = at->next_node;
 	}
-	if (endif_node == NULL) internal_error("no matching #endif");
+	if (endif_node == NULL) {
+		Ramification::throw_error(dir_node, I"no matching '#endif'");
+		return FALSE;
+	}
 
 @ We are going to recognise only very simple conditions, such as:
 = (text as Inform 6)
@@ -175,8 +178,11 @@ all conditionals are resolved.
 		inter_schema_node *to_eval = dir_node->child_node;
 		while ((to_eval) && (to_eval->isn_type == SUBEXPRESSION_ISNT))
 			to_eval = to_eval->child_node;
-		if ((to_eval == NULL) || (to_eval->child_node->expression_tokens == NULL))
-			internal_error("bad iftrue");
+		if ((to_eval == NULL) || (to_eval->child_node == NULL) ||
+			(to_eval->child_node->expression_tokens == NULL)) {
+			Ramification::throw_error(dir_node, I"malformed '#if...'");
+			return FALSE;
+		}
 		symbol_to_check = to_eval->child_node->expression_tokens->material;
 		operation_to_check = to_eval->isn_clarifier;
 		value_to_check = to_eval->child_node->next_node->expression_tokens->material;
@@ -318,7 +324,10 @@ void EmitInterSchemas::emit_recursively(inter_tree *I, inter_schema_node *node,
 Note that recursion in |VAL_PRIM_CAT| mode evaluates |x|, |y| and |z|.
 
 @<Assembly@> =
-	if (prim_cat != CODE_PRIM_CAT) internal_error("assembly in expression");
+	if (prim_cat != CODE_PRIM_CAT) {
+		Ramification::throw_error(node, I"assembly language unexpected here");
+		return;
+	}
 	inter_schema_node *at = node->child_node;
 	if (at) {
 		text_stream *opcode_text = NULL;
@@ -327,7 +336,10 @@ Note that recursion in |VAL_PRIM_CAT| mode evaluates |x|, |y| and |z|.
 			if ((tok->ist_type == OPCODE_ISTT) && (tok->next == NULL))
 				opcode_text = tok->material;
 		}
-		if (opcode_text == NULL) internal_error("assembly malformed");
+		if (opcode_text == NULL) { /* should never in fact happen */
+			Ramification::throw_error(node, I"assembly language malformed here");
+			return;
+		}
 		Produce::inv_assembly(I, opcode_text);
 		Produce::down(I);
 		for (at = at->next_node; at; at=at->next_node)
@@ -440,7 +452,10 @@ somewhere (in fact, always in a property value).
 		inter_schema_node *at = node->child_node;
 		int argc = 0;
 		for (inter_schema_node *n = node->child_node; n; n=n->next_node) argc++;
-		if (argc > 4) internal_error("too many args for call-message");
+		if (argc > 4) {
+			Ramification::throw_error(node, I"too many arguments for call-message");
+			return;
+		}
 		inter_ti BIP = Primitives::BIP_for_indirect_call_returning_value(argc);
 		Produce::inv_primitive(I, BIP);
 		Produce::down(I);
@@ -454,7 +469,10 @@ following can generate the equivalent of |{ ...|  or |... }| as well as the
 more natural |{ ... }|.
 
 @<Code block@> =
-	if (prim_cat != CODE_PRIM_CAT) internal_error("code block in expression");
+	if (prim_cat != CODE_PRIM_CAT) {
+		Ramification::throw_error(node, I"unexpected '{ ... }' code block");
+		return;
+	}
 	if (node->unopened == FALSE) {
 		Produce::code(I);
 		Produce::down(I);
@@ -471,14 +489,17 @@ other Inform 6 directives are not valid inside function bodies, which is the
 omly part of I6 syntax covered by schemas. Therefore:
 
 @<Non-conditional directive@> =
-	internal_error("non-conditional directive in function body");
+	Ramification::throw_error(node, I"misplaced directive");
+	return;
 
 @ An |EVAL_ISNT| node can have any number of children, they are sequentially
 evaluated for their potential side-effects, but only the last produces a value.
 
 @<Eval block@> =
-	if ((prim_cat != CODE_PRIM_CAT) && (prim_cat != VAL_PRIM_CAT))
-		internal_error("eval block outside evaluation context");
+	if ((prim_cat != CODE_PRIM_CAT) && (prim_cat != VAL_PRIM_CAT)){
+		Ramification::throw_error(node, I"expression in unexpected place");
+		return;
+	}
 	if (node->child_node == NULL) Produce::val(I, K_value, LITERAL_IVAL, 1);
 	else {
 		int d = 0;
@@ -578,8 +599,13 @@ parsing the schema.)
 			if (t->constant_number >= 0) {
 				v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number;
 			} else {
-				if (Inter::Types::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE)
-					internal_error("bad number");
+				if (Inter::Types::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE) {
+					TEMPORARY_TEXT(msg)
+					WRITE_TO(msg, "malformed literal number '%S'", t->material);
+					Ramification::throw_error(node, msg);
+					DISCARD_TEXT(msg)
+					return;
+				}
 			}
 			Produce::val(I, K_value, v1, v2);
 			break;
@@ -605,8 +631,13 @@ parsing the schema.)
 			if (inline_command_handler)
 				(*inline_command_handler)(VH, t, opaque_state, prim_cat, NULL);
 			break;
-		default:
-			internal_error("bad expression token");
+		default: {
+			TEMPORARY_TEXT(msg)
+			WRITE_TO(msg, "'%S' was unexpected in expression context", t->material);
+			Ramification::throw_error(node, msg);
+			DISCARD_TEXT(msg)
+			break;
+		}
 	}
 
 @ A twig for a label, such as:
@@ -629,7 +660,10 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 =
 
 @<Label@> =
-	if (prim_cat != CODE_PRIM_CAT) internal_error("label outside code");
+	if (prim_cat != CODE_PRIM_CAT) {
+		Ramification::throw_error(node, I"label in unexpected place");
+		return;
+	}
 	TEMPORARY_TEXT(L)
 	WRITE_TO(L, ".");
 	for (inter_schema_node *at = node->child_node; at; at=at->next_node) {
@@ -643,7 +677,13 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 				value_holster VN = Holsters::new(INTER_DATA_VHMODE);
 				if (inline_command_handler)
 					(*inline_command_handler)(&VN, t, opaque_state, VAL_PRIM_CAT, L);
-			} else internal_error("bad label stuff");
+			} else {
+				TEMPORARY_TEXT(msg)
+				WRITE_TO(msg, "expected label name but found '%S'", t->material);
+				Ramification::throw_error(node, msg);
+				DISCARD_TEXT(msg)
+				return;
+			}
 		}
 	}
 	Produce::place_label(I, Produce::reserve_label(I, L));
@@ -729,7 +769,10 @@ instruction set, but rather as something available on some platforms and not
 on others.
 
 @<Statement@> =
-	if (prim_cat != CODE_PRIM_CAT) internal_error("statement in expression");
+	if (prim_cat != CODE_PRIM_CAT) {
+		Ramification::throw_error(node, I"statement in unexpected place");
+		return;
+	}
 	if (node->isn_clarifier == CASE_BIP) Produce::set_level_to_current_code_block_plus(I, 2);
 	if (node->isn_clarifier == READ_XBIP) Produce::inv_assembly(I, I"@aread");
 	else Produce::inv_primitive(I, node->isn_clarifier);
@@ -796,15 +839,23 @@ these possibilities:
 		if ((var_node) && (cl_node)) {
 			EIS_RECURSE(var_node, REF_PRIM_CAT);
 			EIS_RECURSE(cl_node, VAL_PRIM_CAT);
-		} else internal_error("malformed OC node");
+		} else {
+			Ramification::throw_error(node, I"malformed 'objectloop' header");
+			return;
+		}
 	} else {
 		inter_schema_node *var_node = node->child_node;
 		while ((var_node) && (var_node->isn_type != EXPRESSION_ISNT))
 			var_node = var_node->child_node;
-		if (var_node) {
+		if ((var_node) && (var_node->expression_tokens) &&
+			((var_node->expression_tokens->ist_type == IDENTIFIER_ISTT) ||
+				(var_node->expression_tokens->ist_type == INLINE_ISTT))) {
 			EIS_RECURSE(var_node, REF_PRIM_CAT);
 			Produce::val_symbol(I, K_value, IdentifierFinders::find(I, I"Object", finder));
-		} else internal_error("objectloop without visible variable");
+		} else {
+			Ramification::throw_error(node, I"'objectloop' without visible variable");
+			return;
+		}
 	}
 	inter_schema_node *at = node->child_node;
 	EIS_RECURSE(at, VAL_PRIM_CAT);

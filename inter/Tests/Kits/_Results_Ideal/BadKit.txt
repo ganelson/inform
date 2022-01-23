@@ -1,0 +1,21 @@
+inter: kit source error: operator '+' used with 1 not 2 operand(s)
+inter: kit source error: do without until
+inter: kit source error: expected 'on' or 'off' after 'font', not 'whatever'
+inter: kit source error: move without to
+inter: kit source error: 'for' header with too few clauses
+inter: kit source error: 'for' header with too many clauses
+inter: kit source error: unexpected '{ ... }' code block
+inter: kit source error: unexpected '{'
+inter: kit source error: unexpected use of reserved word 'print'
+inter: kit source error: unexpected '}'
+inter: kit source error: no matching '#endif'
+inter: kit source error: misplaced directive
+inter: kit source error: unexpected ','
+inter: kit source error: malformed '#if...'
+inter: kit source error: misplaced directive
+inter: kit source error: misplaced directive
+inter: kit source error: '@something' was unexpected in expression context
+inter: kit source error: too many arguments for call-message
+inter: kit source error: malformed literal number '$ffa0z'
+inter: kit source error: unexpected use of reserved word 'return'
+inter: kit source error: 'objectloop' without visible variable
