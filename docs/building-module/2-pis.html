@@ -78,6 +78,10 @@ function togglePopup(material_id) {
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Just plain code. </b>If all we need is a schema from some code in a text, we can call this.
 </p>
 
+<p class="commentary">If the text contains syntax errors, these are attached to the schema returned;
+so it's the caller's responsibility to check for those and act accordingly.
+</p>
+
 <p class="commentary">Note that the results can be tested independently of <a href="../inform7/index.html" class="internal">inform7</a> using the
 <a href="../building-test/index.html" class="internal">building-test</a> unit test tool, whose tests verify that a great many I6
 samples produce the correct schemas.
@@ -101,22 +105,28 @@ more than once, and we want to reply quickly, so we use a hashed dictionary
 to return any already-computed answer quickly.
 </p>
 
+<p class="commentary">If the text contains syntax errors, these throw an internal error. Erroneous
+I6S code can only come from within the compiler itself, and means a bug.
+</p>
+
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">dictionary</span><span class="plain-syntax"> *</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
-<span class="reserved-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="function-syntax">ParsingSchemas::from_i6s</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prototype</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="function-syntax">ParsingSchemas::from_i6s</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_quoted_inames</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> **</span><span class="identifier-syntax">quoted_inames</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Dictionaries::new</span><span class="plain-syntax">(512, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">dict_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">de</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Dictionaries::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax">, </span><span class="identifier-syntax">prototype</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">de</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="reserved-syntax">inter_schema</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">Dictionaries::read_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax">, </span><span class="identifier-syntax">prototype</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">dict_entry</span><span class="plain-syntax"> *</span><span class="identifier-syntax">de</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Dictionaries::find</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">de</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> (</span><span class="reserved-syntax">inter_schema</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">Dictionaries::read_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">result</span><span class="plain-syntax"> = </span><a href="2-pis.html#SP5" class="function-link"><span class="function-syntax">ParsingSchemas::back_end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">prototype</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">, </span><span class="identifier-syntax">no_quoted_inames</span><span class="plain-syntax">, </span><span class="identifier-syntax">quoted_inames</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">inter_schema</span><span class="plain-syntax"> *</span><span class="identifier-syntax">result</span><span class="plain-syntax"> = </span><a href="2-pis.html#SP5" class="function-link"><span class="function-syntax">ParsingSchemas::back_end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">no_quoted_inames</span><span class="plain-syntax">, </span><span class="identifier-syntax">quoted_inames</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><span class="identifier-syntax">Dictionaries::create</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax">, </span><span class="identifier-syntax">prototype</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Dictionaries::write_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax">, </span><span class="identifier-syntax">prototype</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">result</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Dictionaries::create</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Dictionaries::write_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6s_inter_schema_cache</span><span class="plain-syntax">, </span><span class="identifier-syntax">from</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">result</span><span class="plain-syntax">);</span>
 
+<span class="plain-syntax">    </span><a href="2-is.html#SP21" class="function-link"><span class="function-syntax">InterSchemas::internal_error_on_schema_errors</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">result</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">result</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -149,6 +159,10 @@ in general we may have to compile two schemas, not one.
 
 <p class="commentary">The text <span class="extract"><span class="extract-syntax">from</span></span> is in a wide C string because it's coming raw from the lexer,
 as the content of a <span class="extract"><span class="extract-syntax">(- ... -)</span></span> lexeme, but with the <span class="extract"><span class="extract-syntax">(-</span></span> and <span class="extract"><span class="extract-syntax">-)</span></span> removed.
+</p>
+
+<p class="commentary">If the text contains syntax errors, these are attached to the schema returned;
+so it's the caller's responsibility to check for those and act accordingly.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

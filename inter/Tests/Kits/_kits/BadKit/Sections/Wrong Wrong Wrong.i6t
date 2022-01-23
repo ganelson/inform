@@ -3,7 +3,7 @@ Wrong Wrong Wrong.
 This makes use of all sort of incorrect Inform 6 syntax, just to see what error
 messages inter will produce.
 
-@h First.
+@h Off we go.
 
 =
 [ Okay; return 0; ];

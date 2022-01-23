@@ -6,6 +6,9 @@ schema.
 @h Just plain code.
 If all we need is a schema from some code in a text, we can call this.
 
+If the text contains syntax errors, these are attached to the schema returned;
+so it's the caller's responsibility to check for those and act accordingly.
+
 Note that the results can be tested independently of //inform7// using the
 //building-test// unit test tool, whose tests verify that a great many I6
 samples produce the correct schemas.
@@ -27,22 +30,27 @@ Here, it's quite possible that the same piece of notation will be asked for
 more than once, and we want to reply quickly, so we use a hashed dictionary
 to return any already-computed answer quickly.
 
+If the text contains syntax errors, these throw an internal error. Erroneous
+I6S code can only come from within the compiler itself, and means a bug.
+
 =
 dictionary *i6s_inter_schema_cache = NULL;
 
-inter_schema *ParsingSchemas::from_i6s(text_stream *prototype,
+inter_schema *ParsingSchemas::from_i6s(text_stream *from,
 	int no_quoted_inames, void **quoted_inames) {
 	if (i6s_inter_schema_cache == NULL) {
 		i6s_inter_schema_cache = Dictionaries::new(512, FALSE);
 	}
-	dict_entry *de = Dictionaries::find(i6s_inter_schema_cache, prototype);
-	if (de) return (inter_schema *) Dictionaries::read_value(i6s_inter_schema_cache, prototype);
+	dict_entry *de = Dictionaries::find(i6s_inter_schema_cache, from);
+	if (de) return (inter_schema *) Dictionaries::read_value(i6s_inter_schema_cache, from);
 
-	inter_schema *result = ParsingSchemas::back_end(prototype, TRUE, no_quoted_inames, quoted_inames);
+	inter_schema *result = ParsingSchemas::back_end(from, TRUE,
+		no_quoted_inames, quoted_inames);
 
-	Dictionaries::create(i6s_inter_schema_cache, prototype);
-	Dictionaries::write_value(i6s_inter_schema_cache, prototype, (void *) result);
+	Dictionaries::create(i6s_inter_schema_cache, from);
+	Dictionaries::write_value(i6s_inter_schema_cache, from, (void *) result);
 
+	InterSchemas::internal_error_on_schema_errors(result);
 	return result;
 }
 
@@ -70,6 +78,9 @@ in general we may have to compile two schemas, not one.
 
 The text |from| is in a wide C string because it's coming raw from the lexer,
 as the content of a |(- ... -)| lexeme, but with the |(-| and |-)| removed.
+
+If the text contains syntax errors, these are attached to the schema returned;
+so it's the caller's responsibility to check for those and act accordingly.
 
 =
 void ParsingSchemas::from_inline_phrase_definition(wchar_t *from, inter_schema **head,

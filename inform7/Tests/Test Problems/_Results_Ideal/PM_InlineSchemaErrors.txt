@@ -1,0 +1,14 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 17 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
+Problem__ PM_InlineSchemaErrors
+  >--> In 'To splodge' (source text, line 3), syntax error(s) were found in the
+    '(-' ... '-)' schema 'objectloop (200) ;': (1). 'objectloop' without
+    visible variable
+Problem__ PM_InlineSchemaErrors
+  >--> In 'spludge' (source text, line 11), syntax error(s) were found in the
+    '(-' ... '-)' schema 'print 1 +;': (1). operator '+' used with 1 not 2
+    operand(s)
+Inform 7 has finished.

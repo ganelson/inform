@@ -732,7 +732,7 @@ These have package types |_function| and |_code| respectively.
 	while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 	Str::truncate(body, L);
 	inter_ti B = (inter_ti) Inter::Bookmarks::baseline(IBM) + 1;
-	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark);
+	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark, identifier);
 
 @<Create a symbol for calling the function@> =
 	inter_symbol *function_name_s =
@@ -1201,11 +1201,13 @@ typedef struct function_body_request {
 	struct inter_package *block_package;
 	int pass2_offset;
 	struct text_stream *body;
+	struct text_stream *identifier;
 	CLASS_DEFINITION
 } function_body_request;
 
 int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark *IBM,
-	inter_package *block_package, inter_ti offset, text_stream *body, inter_bookmark bb) {
+	inter_package *block_package, inter_ti offset, text_stream *body, inter_bookmark bb,
+	text_stream *identifier) {
 	if (Str::is_whitespace(body)) return FALSE;
 	function_body_request *req = CREATE(function_body_request);
 	req->block_bookmark = bb;
@@ -1214,6 +1216,7 @@ int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark 
 	req->block_package = block_package;
 	req->pass2_offset = (int) offset - 2;
 	req->body = Str::duplicate(body);
+	req->identifier = Str::duplicate(identifier);
 	ADD_TO_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile);
 	return TRUE;
 }
@@ -1232,10 +1235,7 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 			Inter::Packages::name(req->block_package), Str::len(req->body), req->body);
 		inter_schema *sch = ParsingSchemas::from_text(req->body);
 		if (LinkedLists::len(sch->parsing_errors) > 0) {
-			schema_parsing_error *err;
-			LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors) {
-				PipelineErrors::kit_error("kit source error: %S", err->message);
-			}
+			CompileSplatsStage::report_kit_errors(sch, req);
 		} else {
 			if (Log::aspect_switched_on(SCHEMA_COMPILATION_DA)) InterSchemas::log(DL, sch);
 			@<Compile this function body@>;
@@ -1260,11 +1260,21 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	IdentifierFinders::next_priority(&finder, scope1);
 	IdentifierFinders::next_priority(&finder, scope2);
 	EmitInterSchemas::emit(I, &VH, sch, finder, NULL, NULL, NULL);
+	CompileSplatsStage::report_kit_errors(sch, req);
+	Produce::pop_code_position(I);
+	Produce::set_function(I, NULL);
+
+@ Either parsing or emitting can throw errors, so at both stages:
+
+=
+void CompileSplatsStage::report_kit_errors(inter_schema *sch, function_body_request *req) {
 	if (LinkedLists::len(sch->parsing_errors) > 0) {
 		schema_parsing_error *err;
 		LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors) {
-			PipelineErrors::kit_error("kit source error: %S", err->message);
+			TEMPORARY_TEXT(msg)
+			WRITE_TO(msg, "in function '%S': %S", req->identifier, err->message);
+			PipelineErrors::kit_error("kit source error %S", msg);
+			DISCARD_TEXT(msg)
 		}
 	}
-	Produce::pop_code_position(I);
-	Produce::set_function(I, NULL);
+}

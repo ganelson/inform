@@ -385,7 +385,7 @@ of modifiers are allowed. See //calculus: Compilation Schemas//.
 	wchar_t c = Str::get_at(from, ++at);
 	int iss_bitmap = 0;
 	switch (c) {
-		case '!': Ramification::throw_error(sch->node_tree, 
+		case '!': InterSchemas::throw_error(sch->node_tree, 
 			I"the '*!' schema notation has been abolished"); break;
 		case '%': iss_bitmap = iss_bitmap | LVALUE_CONTEXT_ISSBM;
 				  c = Str::get_at(from, ++at); break;
@@ -430,7 +430,7 @@ of modifiers are allowed. See //calculus: Compilation Schemas//.
 		preceding_token = t;
 		pos = at;
 	} else if (c == '-') {
-		Ramification::throw_error(sch->node_tree, 
+		InterSchemas::throw_error(sch->node_tree, 
 			I"the '*-' schema notation has been abolished"); 
 	} else if (c == '*') {
 		int c = '*'; @<Absorb a raw character@>;

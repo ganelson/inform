@@ -230,23 +230,25 @@ void CompileImperativeDefn::issue_schema_errors(parse_node *from,
 	if (sch2) E += LinkedLists::len(sch2->parsing_errors);
 	if (E > 0) {
 		Problems::quote_source(1, from);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+		Problems::quote_stream(4, sch1->converted_from);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_InlineSchemaErrors));
 		Problems::issue_problem_segment(
-			"In %1, syntax errors were found in the '(-' ... '-)' schema:");
+			"In %1, syntax error(s) were found in the '(-' ... '-)' schema '%4':");
 		schema_parsing_error *err;
 		int ec = 1;
 		if ((sch1) && (sch1->parsing_errors))
 			LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch1->parsing_errors) {
 				Problems::quote_number(2, &ec);
 				Problems::quote_stream(3, err->message);
-				Problems::issue_problem_segment("%P%2. %3");
+				Problems::issue_problem_segment("%P (%2). %3");
 				ec++;
 			}
 		if ((sch2) && (sch2->parsing_errors))
 			LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch2->parsing_errors) {
 				Problems::quote_number(2, &ec);
 				Problems::quote_stream(3, err->message);
-				Problems::issue_problem_segment("%P%2. %3");
+				Problems::issue_problem_segment("%P (%2). %3");
 				ec++;
 			}
 		Problems::issue_problem_end();

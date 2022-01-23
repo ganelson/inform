@@ -624,3 +624,42 @@ text_stream *InterSchemas::lint_isn(inter_schema_node *isn, int depth) {
 	}
 	return NULL;
 }
+
+@h Errors.
+Errors can be detected both when parsing text into schemas, and also when emitting
+code from them. In either case, the following is used to attach error message(s)
+to the schema itself.
+
+Note that the |parsing_errors| field is null until the first error is detected --
+which, of course, it usually isn't.
+
+=
+typedef struct schema_parsing_error {
+	struct text_stream *message;
+	CLASS_DEFINITION
+} schema_parsing_error;
+
+@ =
+void InterSchemas::throw_error(inter_schema_node *at, text_stream *message) {
+	if (at->parent_schema->parsing_errors == NULL)
+		at->parent_schema->parsing_errors = NEW_LINKED_LIST(schema_parsing_error);
+	schema_parsing_error *err = CREATE(schema_parsing_error);
+	err->message = Str::duplicate(message);
+	ADD_TO_LINKED_LIST(err, schema_parsing_error, at->parent_schema->parsing_errors);
+	LOG("Schema error: %S\n", message);
+	LOG("$1\n", at->parent_schema);
+}
+
+@ And this is an especially drastic way to deal with such errors:
+
+=
+void InterSchemas::internal_error_on_schema_errors(inter_schema *sch) {
+	if (LinkedLists::len(sch->parsing_errors) > 0) {
+		WRITE_TO(STDERR, "Parsing error(s) in the internal schema '%S':\n",
+			sch->converted_from);
+		schema_parsing_error *err;
+		LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors)
+			WRITE_TO(STDERR, "- %S\n", err->message);
+		internal_error("malformed schema");
+	}
+}

@@ -1,0 +1,11 @@
+Laboratory is a room.
+
+To splodge:
+	(- objectloop (200) ; -).
+
+To spludge:
+	(- print 1 +; -).
+
+When play begins:
+	splodge;
+	spludge.

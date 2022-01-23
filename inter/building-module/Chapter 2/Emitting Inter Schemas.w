@@ -37,6 +37,10 @@ So the simplest valid usage of the function would be something like:
 which roughly means "compile pure Inform 6 code to Inter in a void context, but
 do not recognise any identifiers as corresponding to local variables".
 
+Note that emission can turn up syntax errors which went undetected earlier
+(because they depend more on context); if so, these are attached to the schema.
+It's the caller's responsibility to check for those and act accordingly.
+
 =
 void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch,
 	identifier_finder finder,
@@ -160,7 +164,7 @@ all conditionals are resolved.
 		at = at->next_node;
 	}
 	if (endif_node == NULL) {
-		Ramification::throw_error(dir_node, I"no matching '#endif'");
+		InterSchemas::throw_error(dir_node, I"no matching '#endif'");
 		return FALSE;
 	}
 
@@ -180,7 +184,7 @@ all conditionals are resolved.
 			to_eval = to_eval->child_node;
 		if ((to_eval == NULL) || (to_eval->child_node == NULL) ||
 			(to_eval->child_node->expression_tokens == NULL)) {
-			Ramification::throw_error(dir_node, I"malformed '#if...'");
+			InterSchemas::throw_error(dir_node, I"malformed '#if...'");
 			return FALSE;
 		}
 		symbol_to_check = to_eval->child_node->expression_tokens->material;
@@ -325,7 +329,7 @@ Note that recursion in |VAL_PRIM_CAT| mode evaluates |x|, |y| and |z|.
 
 @<Assembly@> =
 	if (prim_cat != CODE_PRIM_CAT) {
-		Ramification::throw_error(node, I"assembly language unexpected here");
+		InterSchemas::throw_error(node, I"assembly language unexpected here");
 		return;
 	}
 	inter_schema_node *at = node->child_node;
@@ -337,7 +341,7 @@ Note that recursion in |VAL_PRIM_CAT| mode evaluates |x|, |y| and |z|.
 				opcode_text = tok->material;
 		}
 		if (opcode_text == NULL) { /* should never in fact happen */
-			Ramification::throw_error(node, I"assembly language malformed here");
+			InterSchemas::throw_error(node, I"assembly language malformed here");
 			return;
 		}
 		Produce::inv_assembly(I, opcode_text);
@@ -453,7 +457,7 @@ somewhere (in fact, always in a property value).
 		int argc = 0;
 		for (inter_schema_node *n = node->child_node; n; n=n->next_node) argc++;
 		if (argc > 4) {
-			Ramification::throw_error(node, I"too many arguments for call-message");
+			InterSchemas::throw_error(node, I"too many arguments for call-message");
 			return;
 		}
 		inter_ti BIP = Primitives::BIP_for_indirect_call_returning_value(argc);
@@ -470,7 +474,7 @@ more natural |{ ... }|.
 
 @<Code block@> =
 	if (prim_cat != CODE_PRIM_CAT) {
-		Ramification::throw_error(node, I"unexpected '{ ... }' code block");
+		InterSchemas::throw_error(node, I"unexpected '{ ... }' code block");
 		return;
 	}
 	if (node->unopened == FALSE) {
@@ -489,7 +493,7 @@ other Inform 6 directives are not valid inside function bodies, which is the
 omly part of I6 syntax covered by schemas. Therefore:
 
 @<Non-conditional directive@> =
-	Ramification::throw_error(node, I"misplaced directive");
+	InterSchemas::throw_error(node, I"misplaced directive");
 	return;
 
 @ An |EVAL_ISNT| node can have any number of children, they are sequentially
@@ -497,7 +501,7 @@ evaluated for their potential side-effects, but only the last produces a value.
 
 @<Eval block@> =
 	if ((prim_cat != CODE_PRIM_CAT) && (prim_cat != VAL_PRIM_CAT)){
-		Ramification::throw_error(node, I"expression in unexpected place");
+		InterSchemas::throw_error(node, I"expression in unexpected place");
 		return;
 	}
 	if (node->child_node == NULL) Produce::val(I, K_value, LITERAL_IVAL, 1);
@@ -602,7 +606,7 @@ parsing the schema.)
 				if (Inter::Types::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE) {
 					TEMPORARY_TEXT(msg)
 					WRITE_TO(msg, "malformed literal number '%S'", t->material);
-					Ramification::throw_error(node, msg);
+					InterSchemas::throw_error(node, msg);
 					DISCARD_TEXT(msg)
 					return;
 				}
@@ -634,7 +638,7 @@ parsing the schema.)
 		default: {
 			TEMPORARY_TEXT(msg)
 			WRITE_TO(msg, "'%S' was unexpected in expression context", t->material);
-			Ramification::throw_error(node, msg);
+			InterSchemas::throw_error(node, msg);
 			DISCARD_TEXT(msg)
 			break;
 		}
@@ -661,7 +665,7 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 
 @<Label@> =
 	if (prim_cat != CODE_PRIM_CAT) {
-		Ramification::throw_error(node, I"label in unexpected place");
+		InterSchemas::throw_error(node, I"label in unexpected place");
 		return;
 	}
 	TEMPORARY_TEXT(L)
@@ -680,7 +684,7 @@ For example, the schema |.{-label:Say}{-counter-up:Say};| results in:
 			} else {
 				TEMPORARY_TEXT(msg)
 				WRITE_TO(msg, "expected label name but found '%S'", t->material);
-				Ramification::throw_error(node, msg);
+				InterSchemas::throw_error(node, msg);
 				DISCARD_TEXT(msg)
 				return;
 			}
@@ -770,7 +774,7 @@ on others.
 
 @<Statement@> =
 	if (prim_cat != CODE_PRIM_CAT) {
-		Ramification::throw_error(node, I"statement in unexpected place");
+		InterSchemas::throw_error(node, I"statement in unexpected place");
 		return;
 	}
 	if (node->isn_clarifier == CASE_BIP) Produce::set_level_to_current_code_block_plus(I, 2);
@@ -840,7 +844,7 @@ these possibilities:
 			EIS_RECURSE(var_node, REF_PRIM_CAT);
 			EIS_RECURSE(cl_node, VAL_PRIM_CAT);
 		} else {
-			Ramification::throw_error(node, I"malformed 'objectloop' header");
+			InterSchemas::throw_error(node, I"malformed 'objectloop' header");
 			return;
 		}
 	} else {
@@ -853,7 +857,7 @@ these possibilities:
 			EIS_RECURSE(var_node, REF_PRIM_CAT);
 			Produce::val_symbol(I, K_value, IdentifierFinders::find(I, I"Object", finder));
 		} else {
-			Ramification::throw_error(node, I"'objectloop' without visible variable");
+			InterSchemas::throw_error(node, I"'objectloop' without visible variable");
 			return;
 		}
 	}
