@@ -104,12 +104,9 @@ void Inter::Bookmarks::log(OUTPUT_STREAM, void *virs) {
 			case IMMEDIATELY_AFTER_NODEPLACEMENT: WRITE("immediately-after:"); break;
 			case AS_FIRST_CHILD_OF_NODEPLACEMENT: WRITE("first-child:"); break;
 			case AS_LAST_CHILD_OF_NODEPLACEMENT: WRITE("last-child:"); break;
-			case NOWHERE_NODEPLACEMENT: WRITE("nowhere"); break;
 			default: WRITE("?:"); break;
 		}
-		if (IBM->placement_wrt_R != NOWHERE_NODEPLACEMENT) {
-			if (IBM->R) WRITE("%d", IBM->R->W.index);
-		}
+		if (IBM->R) WRITE("%d", IBM->R->W.index);
 		LOG("(%d)>", Inter::Bookmarks::baseline(IBM));
 	}
 }
@@ -148,7 +145,6 @@ void Inter::Bookmarks::insert(inter_bookmark *IBM, inter_tree_node *F) {
 			Inter::Bookmarks::set_ref(IBM, F);
 		}
 	} else {
-		if (Inter::Bookmarks::get_placement(IBM) == NOWHERE_NODEPLACEMENT) internal_error("bad wrt");
 		if ((Inter::Bookmarks::get_placement(IBM) == AFTER_NODEPLACEMENT) ||
 			(Inter::Bookmarks::get_placement(IBM) == IMMEDIATELY_AFTER_NODEPLACEMENT)) {
 			while (F_level < Inter::Bookmarks::get_ref(IBM)->W.data[LEVEL_IFLD]) {

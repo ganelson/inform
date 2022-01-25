@@ -254,36 +254,33 @@ int InterTree::no_subpackages(inter_package *pack, text_stream *ptype) {
 	return N;
 }
 
-@h Tree surgery.
+@h Movement of nodes.
 All modifications of the links between nodes must be made with these functions.
+
 Each node contains pointers to its previous and next child of the same parent;
 to its parent node; and to its first child node. There are many implied
-invariants in that arrangement (e.g., that the child of the parent of X must
-always be X, except for the root node). It would be awfully easy to get these
-wrong if trying to change the pointers by hand.
+invariants in that arrangement (e.g., that if X has a child then the parent of
+that child is X), and these two functions guarantee that those invariants
+are preserved.
 
-|InterTree::move_node(C, placement, R)| moves |C| to a new position defined
-by |placement| with respect to an existing node |R|. In all cases except fpr
-|NOWHERE_NODEPLACEMENT|, |R| must be a non-null node actually in the tree.
+=
+void InterTree::remove_node(inter_tree_node *C) {
+	@<Extricate C from its current tree position@>;
+}
+
+@ |InterTree::move_node(C, how, R)| moves |C| to a new position defined
+by the placement |how| with respect to an existing node |R|.
 
 @e BEFORE_NODEPLACEMENT from 0
 @e AFTER_NODEPLACEMENT
 @e IMMEDIATELY_AFTER_NODEPLACEMENT
 @e AS_FIRST_CHILD_OF_NODEPLACEMENT
 @e AS_LAST_CHILD_OF_NODEPLACEMENT
-@e NOWHERE_NODEPLACEMENT
 
 =
-void InterTree::remove_node(inter_tree_node *C) {
-//	InterTree::move_node(P, NOWHERE_NODEPLACEMENT, NULL);
-	@<Extricate C from its current tree position@>;
-}
-
 void InterTree::move_node(inter_tree_node *C, int how, inter_tree_node *R) {
 	@<Extricate C from its current tree position@>;
 	switch (how) {
-		case NOWHERE_NODEPLACEMENT:
-			return;
 		case AS_FIRST_CHILD_OF_NODEPLACEMENT:
 			@<Make C the first child of R@>;
 			break;
@@ -377,7 +374,7 @@ void InterTree::move_node(inter_tree_node *C, int how, inter_tree_node *R) {
 	InterTree::set_previous_UNSAFE(R, C);
 
 @ The names of these functions are intended to discourage their use. They
-really should only be used by //InterTree::move_node//.
+should only be used by //InterTree::move_node//.
 
 =
 void InterTree::set_previous_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
@@ -401,7 +398,7 @@ void InterTree::set_parent_UNSAFE(inter_tree_node *F, inter_tree_node *V) {
 }
 
 @h History of a tree.
-In 1964, a Nevada geologist felled a bristlecone pine and was surprised to find
+In 1964, a Nevada geologist felled a bristlecone pine and was dismayed to find
 that it contained 4862 rings, and had therefore germinated in around 2900 BC.
 Inter trees also record their history, though can safely accommodate only 32
 different events, identified as flag bits 0 to 31.
