@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -65,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">bytecode</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the bytecode module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. About bytecode</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. WHat is intermediate about inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Packages</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Symbols</a></li><li><a href="P-wtmd.html#SP6">&#167;6. The warehouse and the building site</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The bytecode module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -81,10 +86,157 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. About bytecode. </b>This module defines the bytecode representation of the Inter intermediate
-language used by the back end of the Inform compiler.
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. WHat is intermediate about inter. </b>This module is concerned with managing the <a href="2-it.html#SP1" class="internal">inter_tree</a> data structure in
+memory, and with reading and writing it from and to the filing system.
 </p>
 
+<p class="commentary">An Inter tree is an expression of a single program. It's an intermediate state
+between the source code for that program &mdash; perhaps Inform 7 source text,
+perhaps Inform 6-syntax source for a kit &mdash; and the so-called "final" output,
+typically a C or I6 program.
+</p>
+
+<p class="commentary">In conventional compiler design, a high-level language such as Swift or C# is
+parsed first into an abstract syntax tree, or AST, which is essentially a tree
+representation of the syntax but is marked up with semantic information about
+what everything in it means. This AST is then compiled down to IR, intermediate
+code reducing the AST to a list of still-abstract operations to perform. The IR
+is then then further converted to actual code for a particular processor. So
+the flow might look like this:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">  Swift</span>
+<span class="plain-syntax">  source  ----&gt;   AST   ------------&gt;   IR  ----&gt;  Assembly language</span>
+</pre>
+<p class="commentary">In the Inform family of tools, two languages have to be compiled: natural
+language by Inform 7, and also kit source by Inter (the tool), which looks more
+like a conventional programming language. Having very different syntaxes, they
+have different ASTs:
+</p>
+
+<ul class="items"><li>&#9679; For I7, it's a <span class="extract"><span class="extract-syntax">parse_node_tree</span></span> structure: see the <a href="../syntax-module/index.html" class="internal">syntax</a> module.
+</li><li>&#9679; For Inter, it's an <span class="extract"><span class="extract-syntax">inter_schema</span></span> structure: see the <a href="../building-module/index.html" class="internal">building</a> module.
+</li></ul>
+<p class="commentary">But these two compiler flows share the same IR &mdash; an <a href="2-it.html#SP1" class="internal">inter_tree</a> provides the
+intermediate representation for both:<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                 "AST"                 "IR"</span>
+<span class="plain-syntax">+-----------------------+</span>
+<span class="plain-syntax">| source        syntax  |</span>
+<span class="plain-syntax">| text    ---&gt;   tree -------+</span>
+<span class="plain-syntax">|-----------------------+     \</span>
+<span class="plain-syntax"> INFORM7                       \</span>
+<span class="plain-syntax">                                ----&gt;  Inter  ----&gt;  C, I6, or others</span>
+<span class="plain-syntax">+-----------------------+      /</span>
+<span class="plain-syntax">| kit           inter   |     /</span>
+<span class="plain-syntax">| source  ---&gt;  schemas -----+</span>
+<span class="plain-syntax">+-----------------------+</span>
+<span class="plain-syntax"> INTER</span>
+</pre>
+<p class="commentary">Because we want to work with hybrid programs, part compiled by one flow and
+part by the other, Inter is not quite as low-level as most IRs.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> It still
+contains a great deal of semantic markup, making analysis and optimisation
+feasible. (Not very much of this is actually done at present, but see e.g.
+<a href="../pipeline-module/6-eros.html" class="internal">Eliminate Redundant Operations Stage (in pipeline)</a>.)
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> This diagram is a slight simplification, because <a href="../inform7/index.html" class="internal">inform7</a> also makes
+use of Inter schemas when generating code for certain low-level operations,
+such as storing values in properties. But the big picture is right.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Though IRs vary considerably. Microsoft's Common Intermediate Language (CIL),
+used as a back-end by C#, has quite low-level bytecode but stores it in a
+highly structured object-oriented way.
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Inter trees can be saved out as files in either binary or textual form;
+binary form being much faster to load back in, textual much easier to read
+and check over.
+</p>
+
+<p class="commentary">It is even possible to write Inter programs by hand, using a text editor. To
+get a sense of what that looks like, see the manual <a href="../inter/M-ti.html" class="internal">Textual Inter (in inter)</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Packages. </b>The main organising idea of Inter trees is the <a href="2-pck.html#SP1" class="internal">inter_package</a>. <a href="2-pck.html" class="internal">Packages</a> are
+like nested boxes: each one can hold either more packages, or Inter instructions
+providing code or data, or both.
+</p>
+
+<p class="commentary">Each package has a name, and its location can be identified by a "URL". For
+example, <span class="extract"><span class="extract-syntax">/main/BasicInformKit/properties</span></span> means "the package <span class="extract"><span class="extract-syntax">properties</span></span>
+inside the package <span class="extract"><span class="extract-syntax">BasicInformKit</span></span> inside the package <span class="extract"><span class="extract-syntax">main</span></span>".
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">....................................................</span>
+<span class="plain-syntax">.  top-level material                              .</span>
+<span class="plain-syntax">.  +--------------------------------------------+  .</span>
+<span class="plain-syntax">.  | /main                                      |  .</span>
+<span class="plain-syntax">.  |   +-------------------------------------+  |  .</span>
+<span class="plain-syntax">.  |   | /main/BasicInformKit                |  |  .</span>
+<span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
+<span class="plain-syntax">.  |   | | /main/BasicInformKit/variables  | |  |  .</span>
+<span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
+<span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
+<span class="plain-syntax">.  |   | | /main/BasicInformKit/properties | |  |  .</span>
+<span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
+<span class="plain-syntax">.  |   | ...                                 |  |  .</span>
+<span class="plain-syntax">.  |   +-------------------------------------+  |  .</span>
+<span class="plain-syntax">.  |   ...                                      |  .</span>
+<span class="plain-syntax">.  +--------------------------------------------+  .</span>
+<span class="plain-syntax">....................................................</span>
+</pre>
+<p class="commentary">Material at the root level is implemented as if it were in a special package
+called the "root package" (the dotted box around everything in the diagram),
+which has the empty name and thus the URL <span class="extract"><span class="extract-syntax">/</span></span>. But this is not really a
+package, and follows different rules from all others.
+</p>
+
+<p class="commentary">For the conventions on how the Inform tool-chain sets up this hierarchy of
+packages, see the <a href="../building-module/index.html" class="internal">building</a> module: that's not our concern here. We
+simply provide infrastructure allowing pretty general hierarchies to be made.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Symbols. </b>Packages provide <a href="2-st.html" class="internal">Symbols Tables</a>: in fact, each package has its own
+symbols table, which records identifier names and their meanings
+within that package. For example, if a package contains a definition of a
+constant called <span class="extract"><span class="extract-syntax">pi</span></span>, then the definition will occupy an Inter instruction
+inside the package, and the identifier name <span class="extract"><span class="extract-syntax">pi</span></span> will be an <a href="2-sym.html#SP1" class="internal">inter_symbol</a>
+recorded in its <a href="2-st.html#SP1" class="internal">inter_symbols_table</a>.
+</p>
+
+<p class="commentary">The symbols table for the root package is special, and represents global
+meanings accessible everywhere. But they are used only for concepts needed
+by Inter itself, such as the identities of primitives like <span class="extract"><span class="extract-syntax">!add</span></span> or
+<span class="extract"><span class="extract-syntax">!printnumber</span></span>. In some sense, they specify the kind of Inter tree we have,
+rather than anything about the program it represents. Material from that
+program &mdash; a variable, say, or a function &mdash; is not allowed at the root level.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. The warehouse and the building site. </b>There is a lot of memory to be managed here: Inter trees can be huge, though
+there are never more than one or two in memory at once.
+</p>
+
+<p class="commentary">In particular, each <a href="2-it.html#SP1" class="internal">inter_tree</a> structure contains two pools of data
+besides the actual tree:<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
+</p>
+
+<ul class="items"><li>(a) A "building site", which contains workspace data needed by the <a href="../building-module/index.html" class="internal">building</a>
+module. That module is essentially a piece of middleware sitting on top of
+this one, and making it easier for the compilers to use our facilities. We
+will ignore the building site completely here: it's not our problem.
+</li><li>(b) A "warehouse", which does belong to this module: see <a href="2-tw.html" class="internal">The Warehouse</a>.
+This provides storage for strings, symbols tables and the like, assigning each
+one an ID number. Resource number 178, for example, might be a <span class="extract"><span class="extract-syntax">text_stream</span></span>
+which is the content of some text literal in a function, while 179 might be
+an <a href="2-st.html#SP1" class="internal">inter_symbols_table</a> belonging to some package.
+</li></ul>
+<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> In real-life botany, trees do not have building sites or warehouses, but
+mixing some metaphors cannot really be helped. Trees in nature do not grow
+the way they do in computer science.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-bm.html">1</a></li><li class="progresschapter"><a href="2-it.html">2</a></li><li class="progresschapter"><a href="3-ca.html">3</a></li><li class="progresschapter"><a href="4-tnc.html">4</a></li><li class="progresschapter"><a href="5-tlc.html">5</a></li><li class="progressnext"><a href="1-bm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -208,11 +208,11 @@ inter_package *Produce::function_body(inter_tree *I, packaging_state *save, inte
 
 	I->site.sprdata.function_body_start_bookmark = Inter::Bookmarks::snapshot(Packaging::at(I));
 	Inter::Bookmarks::set_placement(&(I->site.sprdata.function_body_start_bookmark),
-		IMMEDIATELY_AFTER_ICPLACEMENT);
+		IMMEDIATELY_AFTER_NODEPLACEMENT);
 
 	I->site.sprdata.function_locals_bookmark = I->site.sprdata.function_body_start_bookmark;
 	Inter::Bookmarks::set_placement(&(I->site.sprdata.function_locals_bookmark),
-		BEFORE_ICPLACEMENT);
+		BEFORE_NODEPLACEMENT);
 
 	I->site.sprdata.function_body_code_bookmark = Inter::Bookmarks::snapshot(Packaging::at(I));
 	Produce::push_new_code_position_saving(I, &(I->site.sprdata.function_body_code_bookmark), save_ib);

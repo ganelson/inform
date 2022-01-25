@@ -8,7 +8,6 @@ Preliminaries
 	What This Module Does
 
 Chapter 1: Setting Up
-"Loading this module."
 	Bytecode Module
 
 Chapter 2: Interoperability

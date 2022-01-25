@@ -10,10 +10,12 @@ allow them to be referred to from kits linked in.
 Because the synoptic module exists only to provide resources, this section is
 in effect a specification for it.
 
+@e SYNOPTIC_HIERARCHY_MADE_ITHBIT
+
 =
 void SynopticHierarchy::establish(inter_tree *I) {
-	if (I->history_bits & SYNOPTIC_HIERARCHY_MADE_ITHBIT) return;
-	I->history_bits |= SYNOPTIC_HIERARCHY_MADE_ITHBIT;
+	if (InterTree::test_history(I, SYNOPTIC_HIERARCHY_MADE_ITHBIT)) return;
+	InterTree::set_history(I, SYNOPTIC_HIERARCHY_MADE_ITHBIT);
 	location_requirement req;
 	@<Resources for actions@>;
 	@<Resources for activities@>;

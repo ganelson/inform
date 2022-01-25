@@ -18,10 +18,12 @@ The one thing you do need to do is to ensure that the following initialisation
 function has been called: if not, |HierarchyLocations::iname| won't find these
 resources.
 
+@e KIT_HIERARCHY_MADE_ITHBIT
+
 =
 void KitHierarchy::establish(inter_tree *I) {
-	if (I->history_bits & KIT_HIERARCHY_MADE_ITHBIT) return;
-	I->history_bits |= KIT_HIERARCHY_MADE_ITHBIT;
+	if (InterTree::test_history(I, KIT_HIERARCHY_MADE_ITHBIT)) return;
+	InterTree::set_history(I, KIT_HIERARCHY_MADE_ITHBIT);
 	@<Establish kit-defined resources@>;
 }
 

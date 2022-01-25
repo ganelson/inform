@@ -99,7 +99,7 @@ int Inode::eq(inter_tree_node *F1, inter_tree_node *F2) {
 }
 
 @ =
-inter_tree_node *Inode::root_frame(inter_warehouse *warehouse, inter_tree *I) {
+inter_tree_node *Inode::new_root_node(inter_warehouse *warehouse, inter_tree *I) {
 	inter_tree_node *P = Inter::Warehouse::find_room(warehouse, I, 2, NULL, NULL);
 	P->W.data[ID_IFLD] = (inter_ti) NOP_IST;
 	P->W.data[LEVEL_IFLD] = 0;

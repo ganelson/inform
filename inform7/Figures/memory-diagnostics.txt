@@ -58,7 +58,7 @@ Total memory consumption was 403899K = 394 MB
      ----  lexical_cluster                          2517 objects, 80544 bytes
      ----  pcalc_term_array                         2 x 1000 = 2000 objects, 80064 bytes
      ----  kind_variable_declaration                1652 objects, 79296 bytes
-     ----  inter_tree                               6 objects, 78672 bytes
+     ----  inter_tree                               6 objects, 78720 bytes
      ----  label_namespace                          1468 objects, 70464 bytes
      ----  rulebook                                 407 objects, 68376 bytes
      ----  spatial_data                             670 objects, 64320 bytes
@@ -255,5 +255,5 @@ Total memory consumption was 403899K = 394 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-19.1% was overhead - 79304552 bytes = 77445K = 75 MB
+19.1% was overhead - 79304504 bytes = 77445K = 75 MB
 
