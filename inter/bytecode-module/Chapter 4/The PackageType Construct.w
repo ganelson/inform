@@ -31,7 +31,7 @@ void Inter::PackageType::read(inter_construct *IC, inter_bookmark *IBM, inter_li
 
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *ptype_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
+	inter_symbol *ptype_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	*E = Inter::PackageType::new_packagetype(IBM, ptype_name, (inter_ti) ilp->indent_level, eloc);
@@ -39,9 +39,9 @@ void Inter::PackageType::read(inter_construct *IC, inter_bookmark *IBM, inter_li
 
 inter_error_message *Inter::PackageType::new_packagetype(inter_bookmark *IBM, inter_symbol *ptype, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_1(IBM, PACKAGETYPE_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, ptype), eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

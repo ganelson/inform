@@ -34,14 +34,14 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		return;
 	}
 
-	inter_symbol *symbol = InterSymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), ilp->mr.exp[0]);
+	inter_symbol *symbol = InterSymbolsTables::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
 	if (symbol == NULL) {
 		*E = Inter::Errors::plain(I"no such symbol", eloc);
 		return;
 	}
 
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
-	*E = Inter::Constant::parse_text(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
+	inter_ti ID = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+	*E = Inter::Constant::parse_text(Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
 	*E = Inter::Append::new(IBM, symbol, ID, (inter_ti) ilp->indent_level, eloc);
@@ -49,8 +49,8 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 
 inter_error_message *Inter::Append::new(inter_bookmark *IBM, inter_symbol *symbol, inter_ti append_text, inter_ti level, struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_2(IBM, APPEND_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, symbol), append_text, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

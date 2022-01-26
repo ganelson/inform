@@ -17,7 +17,7 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	FILE *fh = BinaryFiles::open_for_reading(F);
 
 	inter_error_location eloc = Inter::Errors::interb_location(F, 0);
-	inter_bookmark at = Inter::Bookmarks::at_start_of_this_repository(I);
+	inter_bookmark at = InterBookmark::at_start_of_this_repository(I);
 
 	inter_warehouse *warehouse = InterTree::warehouse(I);
 	default_ptree = I;
@@ -464,7 +464,7 @@ enough that the slot exists for the eventual list to be stored in.
 		suppress_type_errors = FALSE;
 		if (E) { Inter::Errors::issue(E); exit(1); }
 	if (trace_bin) WRITE_TO(STDOUT, "Done\n");
-		Inter::Bookmarks::insert(&at, P);
+		NodePlacement::move_to_moving_bookmark(P, &at);
 	}
 
 @<Write the bytecode@> =

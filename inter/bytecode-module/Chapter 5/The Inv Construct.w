@@ -43,8 +43,8 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_package *routine = Inter::Defn::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
-	inter_symbol *invoked_name = InterSymbolsTables::symbol_from_name(InterTree::global_scope(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[0]);
-	if (invoked_name == NULL) invoked_name = InterSymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), ilp->mr.exp[0]);
+	inter_symbol *invoked_name = InterSymbolsTables::symbol_from_name(InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[0]);
+	if (invoked_name == NULL) invoked_name = InterSymbolsTables::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
 	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 
 	if ((Inter::Symbols::is_extern(invoked_name)) ||
@@ -67,27 +67,27 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, InterSymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, invoked_name),
+	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, InterSymbolsTables::id_from_symbol(InterBookmark::tree(IBM), NULL, invoked_name),
 		eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_ROUTINE, InterSymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_ti opcode_storage, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

@@ -53,8 +53,8 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	inter_ti SIDS[5];
 	SIDS[0] = stage;
 	for (int i=1; i<=4; i++) {
-		SIDS[i] = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
-		*E = Inter::Constant::parse_text(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
+		SIDS[i] = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+		*E = Inter::Constant::parse_text(Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
 		if (*E) return;
 	}
 
@@ -65,8 +65,8 @@ inter_error_message *Inter::Link::new(inter_bookmark *IBM,
 	inter_ti stage, inter_ti text1, inter_ti text2, inter_ti text3, inter_ti text4, inter_ti ref, inter_ti level,
 	struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_6(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

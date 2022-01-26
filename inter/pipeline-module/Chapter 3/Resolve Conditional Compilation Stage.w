@@ -103,7 +103,7 @@ void ResolveConditionalsStage::visitor(inter_tree *I, inter_tree_node *P, void *
 			case ENDIF_I6DIR: @<Deal with an ENDIF@>; break;
 		}
 	}
-	if (compile_this == FALSE) InterTree::remove_node(P);
+	if (compile_this == FALSE) NodePlacement::remove(P);
 }
 
 @ In order to answer whether or not a symbol is defined... we must look for it.

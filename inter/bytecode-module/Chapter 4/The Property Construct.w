@@ -31,9 +31,9 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = Inter::Defn::vet_level(IBM, PROPERTY_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *prop_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
+	inter_symbol *prop_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *prop_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *prop_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	Inter::Annotations::copy_set_to_symbol(&(ilp->set), prop_name);
@@ -42,13 +42,13 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID, inter_ti level, inter_error_location *eloc) {
-	inter_warehouse *warehouse = Inter::Bookmarks::warehouse(IBM);
+	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 	inter_ti L1 = Inter::Warehouse::create_frame_list(warehouse);
-	Inter::Warehouse::attribute_resource(warehouse, L1, Inter::Bookmarks::package(IBM));
+	Inter::Warehouse::attribute_resource(warehouse, L1, InterBookmark::package(IBM));
 	inter_tree_node *P = Inode::fill_3(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

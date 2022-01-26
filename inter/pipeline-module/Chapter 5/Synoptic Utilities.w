@@ -53,13 +53,13 @@ void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 	inter_symbol *con_s, text_stream *S, inter_bookmark *IBM) {
 	Inter::Symbols::annotate_i(con_s, TEXT_LITERAL_IANN, 1);
 	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I),
-		Inter::Bookmarks::package(IBM));
+		InterBookmark::package(IBM));
 	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), S);
 	Produce::guard(Inter::Constant::new_textual(IBM,
-		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM), con_s),
-		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(IBM),
+		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM), con_s),
+		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM),
 			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
-		ID, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+		ID, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 }
 
 @h Making functions.
@@ -74,8 +74,8 @@ void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *inam
 	Produce::end_function_body(I);
 	inter_symbol *fn_s = InterNames::define(iname);
 	Produce::guard(Inter::Constant::new_function(Packaging::at(I),
-		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(Packaging::at(I)), fn_s),
-		InterSymbolsTables::id_from_symbol(I, Inter::Bookmarks::package(Packaging::at(I)),
+		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(Packaging::at(I)), fn_s),
+		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(Packaging::at(I)),
 			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 		synoptic_fn_package,
 		Produce::baseline(Packaging::at(I)), NULL));
@@ -103,17 +103,17 @@ void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname
 		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I),
 		 	RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)),
 		 CONSTANT_INDIRECT_LIST, NULL, 
-		 (inter_ti) Inter::Bookmarks::baseline(Packaging::at(I)) + 1);
+		 (inter_ti) InterBookmark::baseline(Packaging::at(I)) + 1);
 }
 
 void Synoptic::end_array(inter_tree *I) {
 	inter_error_message *E = Inter::Defn::verify_construct(
-		Inter::Bookmarks::package(Packaging::at(I)), synoptic_array_node);
+		InterBookmark::package(Packaging::at(I)), synoptic_array_node);
 	if (E) {
 		Inter::Errors::issue(E);
 		internal_error("synoptic array failed verification");
 	}
-	Inter::Bookmarks::insert(Packaging::at(I), synoptic_array_node);
+	NodePlacement::move_to_moving_bookmark(synoptic_array_node, Packaging::at(I));
 	Packaging::exit(I, synoptic_array_ps);
 }
 

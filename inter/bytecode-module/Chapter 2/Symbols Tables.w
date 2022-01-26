@@ -264,7 +264,7 @@ inter_ti InterSymbolsTables::id_from_symbol_not_creating(inter_tree *I, inter_pa
 }
 
 inter_ti InterSymbolsTables::id_from_bookmark_and_symbol_not_creating(inter_bookmark *IBM, inter_symbol *S) {
-	return InterSymbolsTables::id_from_symbol_inner_not_creating(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), S);
+	return InterSymbolsTables::id_from_symbol_inner_not_creating(InterBookmark::tree(IBM), InterBookmark::package(IBM), S);
 }
 
 @ However, things become more interesting if we want an ID for a symbol in
@@ -315,7 +315,7 @@ inter_ti InterSymbolsTables::id_from_symbol_F(inter_tree_node *F, inter_package 
 }
 
 inter_ti InterSymbolsTables::id_from_IRS_and_symbol(inter_bookmark *IBM, inter_symbol *S) {
-	return InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(Inter::Bookmarks::tree(IBM)), Inter::Bookmarks::package(IBM), S);
+	return InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(InterBookmark::tree(IBM)), InterBookmark::package(IBM), S);
 }
 
 @h Equations.

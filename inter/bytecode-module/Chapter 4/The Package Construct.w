@@ -31,14 +31,14 @@ void Inter::Package::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	*E = Inter::Defn::vet_level(IBM, PACKAGE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *ptype_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, InterTree::global_scope(Inter::Bookmarks::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
+	inter_symbol *ptype_name = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
 	if (*E) return;
 
 	inter_package *pack = NULL;
 	*E = Inter::Package::new_package_named(IBM, ilp->mr.exp[0], FALSE, ptype_name, (inter_ti) ilp->indent_level, eloc, &pack);
 	if (*E) return;
 
-	Inter::Bookmarks::set_current_package(IBM, pack);
+	InterBookmark::move_into_package(IBM, pack);
 }
 
 inter_error_message *Inter::Package::new_package_named(inter_bookmark *IBM, text_stream *name, int uniquely,
@@ -48,7 +48,7 @@ inter_error_message *Inter::Package::new_package_named(inter_bookmark *IBM, text
 		WRITE_TO(mutable, "%S", name);
 		inter_package *pack;
 		int N = 1, A = 0;
-		while ((pack = Inter::Packages::by_name(Inter::Bookmarks::package(IBM), mutable)) != NULL) {
+		while ((pack = Inter::Packages::by_name(InterBookmark::package(IBM), mutable)) != NULL) {
 			TEMPORARY_TEXT(TAIL)
 			WRITE_TO(TAIL, "_%d", N++);
 			if (A > 0) Str::truncate(mutable, Str::len(mutable) - A);
@@ -65,22 +65,22 @@ inter_error_message *Inter::Package::new_package_named(inter_bookmark *IBM, text
 }
 
 inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, text_stream *name_text, inter_symbol *ptype_name, inter_ti level, inter_error_location *eloc, inter_package **created) {
-	inter_ti STID = Inter::Warehouse::create_symbols_table(Inter::Bookmarks::warehouse(IBM));
+	inter_ti STID = Inter::Warehouse::create_symbols_table(InterBookmark::warehouse(IBM));
 	inter_tree_node *P = Inode::fill_3(IBM,
 		PACKAGE_IST,
-		InterSymbolsTables::id_from_symbol(Inter::Bookmarks::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
-	inter_ti PID = Inter::Warehouse::create_package(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::tree(IBM));
-	inter_package *pack = Inter::Warehouse::get_package(Inter::Bookmarks::warehouse(IBM), PID);
+		InterSymbolsTables::id_from_symbol(InterBookmark::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
+	inter_ti PID = Inter::Warehouse::create_package(InterBookmark::warehouse(IBM), InterBookmark::tree(IBM));
+	inter_package *pack = Inter::Warehouse::get_package(InterBookmark::warehouse(IBM), PID);
 	pack->package_head = P;
 	P->W.data[PID_PACKAGE_IFLD] = PID;
-	Inter::Packages::set_scope(pack, Inter::Warehouse::get_symbols_table(Inter::Bookmarks::warehouse(IBM), STID));
-	Inter::Warehouse::attribute_resource(Inter::Bookmarks::warehouse(IBM), STID, pack);
+	Inter::Packages::set_scope(pack, Inter::Warehouse::get_symbols_table(InterBookmark::warehouse(IBM), STID));
+	Inter::Warehouse::attribute_resource(InterBookmark::warehouse(IBM), STID, pack);
 
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 
-	Inter::Packages::set_name(Inter::Bookmarks::package(IBM), pack, name_text);
+	Inter::Packages::set_name(InterBookmark::package(IBM), pack, name_text);
 	if (Str::eq(ptype_name->symbol_name, I"_code"))
 		Inter::Packages::make_codelike(pack);
 	if (Str::eq(ptype_name->symbol_name, I"_linkage"))

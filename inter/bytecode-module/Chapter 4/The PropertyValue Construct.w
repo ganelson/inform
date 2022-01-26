@@ -33,15 +33,15 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prop_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
+	inter_symbol *prop_name = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
-	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], E);
+	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
 	inter_ti plist_ID;
 	if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 	else plist_ID = Inter::Instance::properties_list(owner_name);
-	inter_node_list *FL = Inter::Warehouse::get_frame_list(Inter::Bookmarks::warehouse(IBM), plist_ID);
+	inter_node_list *FL = Inter::Warehouse::get_frame_list(InterBookmark::warehouse(IBM), plist_ID);
 	if (FL == NULL) internal_error("no properties list");
 
 	inter_tree_node *X;
@@ -54,7 +54,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	inter_symbol *val_kind = Inter::Property::kind_of(prop_name);
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), val_kind, ilp->mr.exp[2], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
+	*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), val_kind, ilp->mr.exp[2], &con_val1, &con_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::PropertyValue::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, owner_name),
@@ -94,8 +94,8 @@ inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_ti PID
 	inter_ti con_val1, inter_ti con_val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_4(IBM, PROPERTYVALUE_IST,
 		PID, OID, con_val1, con_val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

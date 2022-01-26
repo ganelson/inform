@@ -42,7 +42,7 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	if ((Inter::Symbols::get_scope(var_name) != PRIVATE_ISYMS) ||
 		(Inter::Symbols::get_type(var_name) != MISC_ISYMT)) { *E = Inter::Errors::plain(I"symbol of wrong S-type", eloc); return; }
 
-	inter_symbol *var_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *var_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	Inter::Annotations::copy_set_to_symbol(&(ilp->set), var_name);
@@ -53,8 +53,8 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *var_name, inter_symbol *var_kind, inter_ti ID, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_3(IBM, LOCAL_IST, 0, InterSymbolsTables::id_from_IRS_and_symbol(IBM, var_name), var_kind?(InterSymbolsTables::id_from_IRS_and_symbol(IBM, var_kind)):0, eloc, level);
 	Inode::attach_comment(P, ID);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

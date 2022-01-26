@@ -125,6 +125,6 @@ void EliminateRedundantMatterStage::destroyer(inter_tree *I, inter_tree_node *P,
 	if ((pack) && ((pack->package_flags & USED_PACKAGE_FLAG) == 0)) {
 		LOGIF(ELIMINATION, "Striking unused package $6 (type %S)\n",
 			pack, Inter::Packages::type(pack)->symbol_name);
-		InterTree::remove_node(P);
+		NodePlacement::remove(P);
 	}
 }

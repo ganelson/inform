@@ -30,12 +30,12 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 	*E = Inter::Defn::vet_level(IBM, DEFAULTVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *con_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *con_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), con_kind, ilp->mr.exp[1], &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
+	*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), con_kind, ilp->mr.exp[1], &con_val1, &con_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::DefaultValue::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
@@ -43,8 +43,8 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 
 inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_ti KID, inter_ti val1, inter_ti val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_3(IBM, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

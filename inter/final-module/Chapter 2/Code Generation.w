@@ -210,7 +210,7 @@ void CodeGen::val_to_text(OUTPUT_STREAM, inter_bookmark *IBM,
 		code_generator *generator = Generators::find_for(VM);
 		if (generator == NULL) internal_error("VM family with no generator");
 		ad_hoc_generation =
-			CodeGen::new_generation(NULL, NULL, NULL, Inter::Bookmarks::tree(IBM),
+			CodeGen::new_generation(NULL, NULL, NULL, InterBookmark::tree(IBM),
 				NULL, generator, VM, TRUE);
 	}
 	code_generator *generator = Generators::find_for(VM);
@@ -455,7 +455,7 @@ extracted from some Inter instruction.
 =
 void CodeGen::pair_at_bookmark(code_generation *gen, inter_bookmark *IBM,
 	inter_ti val1, inter_ti val2) {
-	inter_symbols_table *T = IBM?(Inter::Bookmarks::scope(IBM)):NULL;
+	inter_symbols_table *T = IBM?(InterBookmark::scope(IBM)):NULL;
 	@<Generate from a value pair@>;
 }
 

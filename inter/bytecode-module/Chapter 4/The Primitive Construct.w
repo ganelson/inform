@@ -37,7 +37,7 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
+	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	inter_tree_node *F = Inode::fill_1(IBM, PRIMITIVE_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, prim_name), eloc, (inter_ti) ilp->indent_level);
@@ -58,8 +58,8 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 	if (Inode::extend(F, (inter_ti) 1) == FALSE) internal_error("can't extend");
 	F->W.data[F->W.extent - 1] = rcat;
 
-	*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), F); if (*E) return;
-	Inter::Bookmarks::insert(IBM, F);
+	*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), F); if (*E) return;
+	NodePlacement::move_to_moving_bookmark(F, IBM);
 }
 
 inter_ti Inter::Primitive::category(inter_error_location *eloc, text_stream *T, inter_error_message **E) {

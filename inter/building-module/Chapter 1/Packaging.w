@@ -29,7 +29,7 @@ package_request *Packaging::request(inter_tree *I, inter_name *name, inter_symbo
 	R->eventual_name = name;
 	R->eventual_type = pt;
 	R->parent_request = InterNames::location(name);
-	R->write_position = Inter::Bookmarks::at_start_of_this_repository(I);
+	R->write_position = InterBookmark::at_start_of_this_repository(I);
 	R->iname_generators = NULL;
 	R->actual_package = NULL;
 	return R;
@@ -131,7 +131,7 @@ package_request *Packaging::enclosure(inter_tree *I) {
 
 void Packaging::initialise_state(inter_tree *I) {
 	I->site.spdata.current_state.saved_bookmark =
-		Packaging::push_state(I, Inter::Bookmarks::at_start_of_this_repository(I));
+		Packaging::push_state(I, InterBookmark::at_start_of_this_repository(I));
 	I->site.spdata.current_state.saved_enclosure = NULL;
 }
 
@@ -179,7 +179,7 @@ To insert a bubble at the current write-position:
 =
 inter_bookmark Packaging::bubble(inter_tree *I) {
 	Produce::nop(I);
-	inter_bookmark b = Inter::Bookmarks::snapshot(Packaging::at(I));
+	inter_bookmark b = InterBookmark::snapshot(Packaging::at(I));
 	Produce::nop(I);
 	return b;
 }
@@ -189,7 +189,7 @@ inter_bookmark Packaging::bubble(inter_tree *I) {
 =
 inter_bookmark Packaging::bubble_at(inter_bookmark *IBM) {
 	Produce::nop_at(IBM, 2);
-	inter_bookmark b = Inter::Bookmarks::snapshot(IBM);
+	inter_bookmark b = InterBookmark::snapshot(IBM);
 	Produce::nop_at(IBM, 2);
 	return b;
 }

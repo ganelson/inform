@@ -31,16 +31,16 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = Inter::Defn::vet_level(IBM, VARIABLE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *var_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
+	inter_symbol *var_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *var_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *var_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	Inter::Annotations::copy_set_to_symbol(&(ilp->set), var_name);
 
 	inter_ti var_val1 = 0;
 	inter_ti var_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), var_kind, ilp->mr.exp[2], &var_val1, &var_val2, Inter::Bookmarks::scope(IBM));
+	*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), var_kind, ilp->mr.exp[2], &var_val1, &var_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::Variable::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, var_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, var_kind), var_val1, var_val2, (inter_ti) ilp->indent_level, eloc);
@@ -48,9 +48,9 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, inter_ti KID, inter_ti var_val1, inter_ti var_val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_4(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

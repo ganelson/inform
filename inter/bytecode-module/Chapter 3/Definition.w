@@ -239,11 +239,11 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 		literal = FALSE;
 		if (c == '\\') literal = TRUE;
 		if ((c == '#') && ((P.index == 0) || (Str::get_at(ilp.line, P.index-1) != '#')) && (Str::get_at(ilp.line, P.index+1) != '#') && (quoted == FALSE)) {
-			ilp.terminal_comment = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
+			ilp.terminal_comment = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 			int at = Str::index(P);
 			P = Str::forward(P);
 			while (Str::get(P) == ' ') P = Str::forward(P);
-			Str::substr(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
+			Str::substr(Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
 			Str::truncate(ilp.line, at);
 			break;
 		}
@@ -253,14 +253,14 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 
 	if (ilp.indent_level == 0) latest_block_package = NULL;
 
-	while ((Inter::Bookmarks::package(IBM)) && (Inter::Packages::is_rootlike(Inter::Bookmarks::package(IBM)) == FALSE) && (ilp.indent_level <= Inter::Bookmarks::baseline(IBM))) {
-		Inter::Bookmarks::set_current_package(IBM, Inter::Packages::parent(Inter::Bookmarks::package(IBM)));
+	while ((InterBookmark::package(IBM)) && (Inter::Packages::is_rootlike(InterBookmark::package(IBM)) == FALSE) && (ilp.indent_level <= InterBookmark::baseline(IBM))) {
+		InterBookmark::move_into_package(IBM, Inter::Packages::parent(InterBookmark::package(IBM)));
 	}
 
 	while (Regexp::match(&ilp.mr, ilp.line, L"(%c+) (__%c+) *")) {
 		Str::copy(ilp.line, ilp.mr.exp[0]);
 		inter_error_message *E = NULL;
-		inter_annotation IA = Inter::Defn::read_annotation(Inter::Bookmarks::tree(IBM), ilp.mr.exp[1], eloc, &E);
+		inter_annotation IA = Inter::Defn::read_annotation(InterBookmark::tree(IBM), ilp.mr.exp[1], eloc, &E);
 		if (E) return E;
 		Inter::Annotations::add_to_set(&(ilp.set), IA);
 	}
@@ -285,9 +285,9 @@ inter_package *Inter::Defn::get_latest_block_package(void) {
 
 inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_ti cons, int level, inter_error_location *eloc) {
 	int actual = level;
-	if ((Inter::Bookmarks::package(IBM)) &&
-		(Inter::Packages::is_rootlike(Inter::Bookmarks::package(IBM)) == FALSE))	
-		actual = level - Inter::Bookmarks::baseline(IBM) - 1;
+	if ((InterBookmark::package(IBM)) &&
+		(Inter::Packages::is_rootlike(InterBookmark::package(IBM)) == FALSE))	
+		actual = level - InterBookmark::baseline(IBM) - 1;
 	inter_construct *proposed = NULL;
 	LOOP_OVER(proposed, inter_construct)
 		if (proposed->construct_ID == cons) {

@@ -40,12 +40,12 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = Inter::Defn::vet_level(IBM, CONSTANT_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *con_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
+	inter_symbol *con_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	Inter::Annotations::copy_set_to_symbol(&(ilp->set), con_name);
 
-	inter_symbol *con_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *con_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 	text_stream *S = ilp->mr.exp[2];
 
@@ -60,7 +60,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	if (op != 0) {
 		inter_tree_node *P =
 			Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), op, eloc, (inter_ti) ilp->indent_level);
-		*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+		*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
@@ -73,7 +73,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			if (Inter::Constant::append(ilp->line, eloc, IBM, con_kind, P, mr3.exp[0], E) == FALSE)
 				return;
 		}
-		Inter::Bookmarks::insert(IBM, P);
+		NodePlacement::move_to_moving_bookmark(P, IBM);
 		return;
 	}
 
@@ -90,7 +90,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			if (form != 0) {
 				inter_tree_node *P =
 					Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), form, eloc, (inter_ti) ilp->indent_level);
-				*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+				*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 				if (*E) return;
 				text_stream *conts = mr2.exp[0];
 				match_results mr3 = Regexp::create_mr();
@@ -103,7 +103,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 					if (Inter::Constant::append(ilp->line, eloc, IBM, conts_kind, P, mr3.exp[0], E) == FALSE)
 						return;
 				}
-				Inter::Bookmarks::insert(IBM, P);
+				NodePlacement::move_to_moving_bookmark(P, IBM);
 				return;
 			}
 		}
@@ -131,8 +131,8 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			}
 			if (counter != arity)
 				{ *E = Inter::Errors::quoted(I"wrong size", S, eloc); return; }
-			*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (*E) return;
-			Inter::Bookmarks::insert(IBM, P);
+			*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (*E) return;
+			NodePlacement::move_to_moving_bookmark(P, IBM);
 			return;
 		}
 	}
@@ -142,7 +142,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 			inter_tree_node *P =
 				Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_INDIRECT_LIST, eloc, (inter_ti) ilp->indent_level);
-			*E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+			*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 			if (*E) return;
 			text_stream *conts = mr2.exp[0];
 			match_results mr3 = Regexp::create_mr();
@@ -155,7 +155,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 				if (Inter::Constant::append(ilp->line, eloc, IBM, NULL, P, mr3.exp[0], E) == FALSE)
 					return;
 			}
-			Inter::Bookmarks::insert(IBM, P);
+			NodePlacement::move_to_moving_bookmark(P, IBM);
 			return;
 		}
 	}
@@ -166,8 +166,8 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			*E = Inter::Constant::parse_text(parsed_text, S, 1, Str::len(S)-2, eloc);
 			inter_ti ID = 0;
 			if (*E == NULL) {
-				ID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
-				Str::copy(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), ID), parsed_text);
+				ID = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+				Str::copy(Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), ID), parsed_text);
 			}
 			DISCARD_TEXT(parsed_text)
 			if (*E) return;
@@ -177,7 +177,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	}
 
 	if ((idt) && (idt->type_ID == ROUTINE_IDT)) {
-		inter_package *block = Inter::Packages::by_name(Inter::Bookmarks::package(IBM), S);
+		inter_package *block = Inter::Packages::by_name(InterBookmark::package(IBM), S);
 		if (block == NULL) {
 			*E = Inter::Errors::quoted(I"no such code block", S, eloc); return;
 		}
@@ -190,7 +190,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	if (Str::eq(S, I"0")) { con_val1 = LITERAL_IVAL; con_val2 = 0; }
 	else {
-		*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), con_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
+		*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), con_kind, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
 		if (*E) return;
 	}
 
@@ -236,16 +236,16 @@ void Inter::Constant::write_text(OUTPUT_STREAM, text_stream *S) {
 inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti val1, inter_ti val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_5(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_DIRECT, val1, val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti TID, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_4(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_TEXT, TID, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
@@ -253,8 +253,8 @@ inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_ti
 	inter_ti BID = block->index_n;
 	inter_tree_node *P = Inode::fill_4(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_ROUTINE, BID, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
@@ -268,8 +268,8 @@ inter_error_message *Inter::Constant::new_list(inter_bookmark *IBM, inter_ti SID
 		AP->W.data[pos++] = v1_pile[i];
 		AP->W.data[pos++] = v2_pile[i];
 	}
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), AP); if (E) return E;
-	Inter::Bookmarks::insert(IBM, AP);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), AP); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(AP, IBM);
 	return NULL;
 }
 
@@ -278,16 +278,16 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
 	if (conts_kind == NULL) {
-		inter_symbol *tc = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), S, CONSTANT_IST, E);
+		inter_symbol *tc = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), S, CONSTANT_IST, E);
 		if (*E) return FALSE;
 		if (Inter::Kind::constructor(Inter::Constant::kind_of(tc)) == COLUMN_ICON) {
-			Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), tc, &con_val1, &con_val2);
+			Inter::Symbols::to_data(InterBookmark::tree(IBM), InterBookmark::package(IBM), tc, &con_val1, &con_val2);
 		} else {
 			*E = Inter::Errors::quoted(I"not a table column constant", S, eloc);
 			return FALSE;
 		}
 	} else {
-		*E = Inter::Types::read(line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), conts_kind, S, &con_val1, &con_val2, Inter::Bookmarks::scope(IBM));
+		*E = Inter::Types::read(line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), conts_kind, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
 		if (*E) return FALSE;
 	}
 	if (Inode::extend(P, 2) == FALSE) { *E = Inter::Errors::quoted(I"list too long", S, eloc); return FALSE; }

@@ -60,8 +60,8 @@ void Inter::Assembly::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 inter_error_message *Inter::Assembly::new(inter_bookmark *IBM, inter_ti which, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_2(IBM, ASSEMBLY_IST, 0, which, eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

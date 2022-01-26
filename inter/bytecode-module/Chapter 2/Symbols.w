@@ -184,7 +184,7 @@ void Inter::Symbols::set_int(inter_symbol *S, int N) {
 void Inter::Symbols::strike_definition(inter_symbol *S) {
 	if (S) {
 		inter_tree_node *D = Inter::Symbols::definition(S);
-		if (D) InterTree::remove_node(D);
+		if (D) NodePlacement::remove(D);
 		Inter::Symbols::undefine(S);
 	}
 }

@@ -40,10 +40,10 @@ void LargeScale::clear_site_data(inter_tree *I) {
 
 	B->strdata.architecture_package = NULL;
 	B->strdata.architecture_request = NULL;
-	B->strdata.architecture_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	B->strdata.architecture_bookmark = InterBookmark::at_start_of_this_repository(I);
 
-	B->strdata.pragmas_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
-	B->strdata.package_types_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	B->strdata.pragmas_bookmark = InterBookmark::at_start_of_this_repository(I);
+	B->strdata.package_types_bookmark = InterBookmark::at_start_of_this_repository(I);
 
 	B->strdata.modules_indexed_by_name = Dictionaries::new(32, FALSE);
 }
@@ -271,7 +271,7 @@ inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 		InterSymbolsTables::id_from_symbol(I, arch, S),
 		InterSymbolsTables::id_from_symbol(I, arch, uks),
 		LITERAL_IVAL, val,
-		(inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL));
+		(inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 	return S;
 }
 

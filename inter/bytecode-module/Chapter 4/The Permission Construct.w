@@ -34,9 +34,9 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prop_name = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
+	inter_symbol *prop_name = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
-	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[1], E);
+	inter_symbol *owner_name = Inter::Textual::find_KOI(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
 	if (Inter::Kind::is(owner_name)) {
@@ -45,7 +45,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 		inter_node_list *FL =
 			Inter::Warehouse::get_frame_list(
-				Inter::Bookmarks::warehouse(IBM),
+				InterBookmark::warehouse(IBM),
 				Inter::Kind::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
@@ -58,7 +58,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	} else {
 		inter_node_list *FL =
 			Inter::Warehouse::get_frame_list(
-				Inter::Bookmarks::warehouse(IBM),
+				InterBookmark::warehouse(IBM),
 				Inter::Instance::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
@@ -72,13 +72,13 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 	TEMPORARY_TEXT(ident)
 	WRITE_TO(ident, "pp_auto_%d", pp_counter++);
-	inter_symbol *pp_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ident, E);
+	inter_symbol *pp_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ident, E);
 	DISCARD_TEXT(ident)
 	if (*E) return;
 
 	inter_symbol *store = NULL;
 	if (Str::len(ilp->mr.exp[2]) > 0) {
-		store = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[2], CONSTANT_IST, E);
+		store = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[2], CONSTANT_IST, E);
 		if (*E) return;
 	}
 
@@ -89,8 +89,8 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID,
 	inter_ti PPID, inter_ti SID, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_4(IBM, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

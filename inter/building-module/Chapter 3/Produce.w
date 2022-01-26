@@ -24,9 +24,9 @@ even though they will never be used in that state.
 =
 void Produce::clear_site_data(inter_tree *I) {
 	building_site *B = &(I->site);
-	B->sprdata.function_body_start_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
-	B->sprdata.function_locals_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
-	B->sprdata.function_body_code_bookmark = Inter::Bookmarks::at_start_of_this_repository(I);
+	B->sprdata.function_body_start_bookmark = InterBookmark::at_start_of_this_repository(I);
+	B->sprdata.function_locals_bookmark = InterBookmark::at_start_of_this_repository(I);
+	B->sprdata.function_body_code_bookmark = InterBookmark::at_start_of_this_repository(I);
 	B->sprdata.cip_sp = 0;
 	B->sprdata.current_inter_function = NULL;
 }
@@ -84,7 +84,7 @@ convenient:
 
 =
 void Produce::push_new_code_position(inter_tree *I, inter_bookmark *IBM) {
-	Produce::push_new_code_position_saving(I, IBM, Inter::Bookmarks::snapshot(Packaging::at(I)));
+	Produce::push_new_code_position_saving(I, IBM, InterBookmark::snapshot(Packaging::at(I)));
 }
 
 @ And this reverts to the previous position:
@@ -200,22 +200,24 @@ inter_package *Produce::function_body(inter_tree *I, packaging_state *save, inte
 	if (Packaging::housed_in_function(I, iname))
 		block_iname = Packaging::make_iname_within(InterNames::location(iname), I"block");
 	else internal_error("routine outside function package");
-	inter_bookmark save_ib = Inter::Bookmarks::snapshot(Packaging::at(I));
-	Produce::set_function(I, Produce::make_and_set_package(I, block_iname, LargeScale::package_type(I, I"_code")));
+	inter_bookmark save_ib = InterBookmark::snapshot(Packaging::at(I));
+	Produce::set_function(I,
+		Produce::make_and_set_package(I, block_iname, LargeScale::package_type(I, I"_code")));
 
 	Produce::guard(Inter::Code::new(Packaging::at(I),
 		(int) Produce::baseline(Packaging::at(I)) + 1, NULL));
 
-	I->site.sprdata.function_body_start_bookmark = Inter::Bookmarks::snapshot(Packaging::at(I));
-	Inter::Bookmarks::set_placement(&(I->site.sprdata.function_body_start_bookmark),
-		IMMEDIATELY_AFTER_NODEPLACEMENT);
+	I->site.sprdata.function_body_start_bookmark =
+		InterBookmark::shifted(Packaging::at(I), IMMEDIATELY_AFTER_NODEPLACEMENT);
 
-	I->site.sprdata.function_locals_bookmark = I->site.sprdata.function_body_start_bookmark;
-	Inter::Bookmarks::set_placement(&(I->site.sprdata.function_locals_bookmark),
-		BEFORE_NODEPLACEMENT);
+	I->site.sprdata.function_locals_bookmark =
+		InterBookmark::shifted(Packaging::at(I), BEFORE_NODEPLACEMENT);
 
-	I->site.sprdata.function_body_code_bookmark = Inter::Bookmarks::snapshot(Packaging::at(I));
-	Produce::push_new_code_position_saving(I, &(I->site.sprdata.function_body_code_bookmark), save_ib);
+	I->site.sprdata.function_body_code_bookmark =
+		InterBookmark::snapshot(Packaging::at(I));
+
+	Produce::push_new_code_position_saving(I,
+		&(I->site.sprdata.function_body_code_bookmark), save_ib);
 	return I->site.sprdata.current_inter_function;
 }
 
@@ -282,7 +284,7 @@ or the baseline of the current package plus 1, if we're in a package.
 =
 inter_ti Produce::baseline(inter_bookmark *IBM) {
 	if (IBM == NULL) return 0;
-	inter_package *pack = Inter::Bookmarks::package(IBM);
+	inter_package *pack = InterBookmark::package(IBM);
 	if (pack == NULL) return 0;
 	if (Inter::Packages::is_rootlike(pack)) return 0;
 	if (Inter::Packages::is_codelike(pack))
@@ -309,7 +311,7 @@ void Produce::nop_at(inter_bookmark *IBM, inter_ti delta) {
 void Produce::comment(inter_tree *I, text_stream *text) {
 	inter_bookmark *IBM = Packaging::at(I);
 	inter_ti ID = Inter::Warehouse::create_text(
-		InterTree::warehouse(I), Inter::Bookmarks::package(IBM));
+		InterTree::warehouse(I), InterBookmark::package(IBM));
 	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), text);
 	Produce::guard(Inter::Comment::new(IBM, Produce::baseline(IBM), NULL, ID));
 }
@@ -339,7 +341,7 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	inter_bookmark *IBM = Packaging::at(I);
 	inter_symbol *con_s = InterNames::define(con_iname);
 	inter_ti v1 = 0, v2 = 0;
-	inter_package *pack = Inter::Bookmarks::package(IBM);
+	inter_package *pack = InterBookmark::package(IBM);
 	Inter::Symbols::to_data(Inter::Packages::tree(pack), pack, val_s, &v1, &v2);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
@@ -361,7 +363,7 @@ inter_package *Produce::make_and_set_package(inter_tree *I, inter_name *iname,
 	Produce::guard(Inter::Package::new_package_named(Packaging::at(I), textual_name, TRUE,
 		ptype, Produce::baseline(Packaging::at(I)), NULL, &P));
 	DISCARD_TEXT(textual_name)
-	if (P) Inter::Bookmarks::set_current_package(Packaging::at(I), P);
+	if (P) InterBookmark::move_into_package(Packaging::at(I), P);
 	return P;
 }
 
@@ -373,7 +375,7 @@ inter_package *Produce::make_subpackage(inter_bookmark *IBM,
 	text_stream *name, inter_symbol *ptype) {
 	inter_package *P = NULL;
 	Produce::guard(Inter::Package::new_package_named(IBM, name, TRUE,
-		ptype, (inter_ti) Inter::Bookmarks::baseline(IBM) + 1, NULL, &P));
+		ptype, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL, &P));
 	return P;
 }
 
@@ -428,7 +430,7 @@ void Produce::pull(inter_tree *I, inter_name *iname) {
 void Produce::inv_assembly(inter_tree *I, text_stream *opcode) {
 	inter_bookmark *IBM = Produce::at(I);
 	inter_ti SID = Inter::Warehouse::create_text(InterTree::warehouse(I),
-		Inter::Bookmarks::package(IBM));
+		InterBookmark::package(IBM));
 	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), SID), opcode);
 	Produce::guard(Inter::Inv::new_assembly(IBM, SID, (inter_ti) Produce::level(I), NULL));
 }
@@ -490,8 +492,8 @@ void Produce::val_iname(inter_tree *I, kind *K, inter_name *iname) {
 void Produce::val_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
-	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM),
-		Inter::Bookmarks::package(IBM), s, &val1, &val2);
+	Inter::Symbols::to_data(InterBookmark::tree(IBM),
+		InterBookmark::package(IBM), s, &val1, &val2);
 	Produce::val(I, K, val1, val2);
 }
 
@@ -552,7 +554,7 @@ void Produce::ref_iname(inter_tree *I, kind *K, inter_name *iname) {
 void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
-	Inter::Symbols::to_data(Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM),
+	Inter::Symbols::to_data(InterBookmark::tree(IBM), InterBookmark::package(IBM),
 		s, &val1, &val2);
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	if (val_kind == NULL) internal_error("no kind for ref");
@@ -641,7 +643,7 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 	inter_ti ID = 0;
 	if ((comm) && (Str::len(comm) > 0)) {
 		ID = Inter::Warehouse::create_text(InterTree::warehouse(I),
-			Inter::Bookmarks::package(Packaging::at(I)));
+			InterBookmark::package(Packaging::at(I)));
 		Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), comm);
 	}
 	if (annot) Inter::Symbols::annotate_i(local_s, annot, 0);

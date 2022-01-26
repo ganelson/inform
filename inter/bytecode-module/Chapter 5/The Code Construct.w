@@ -42,8 +42,8 @@ void Inter::Code::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 
 inter_error_message *Inter::Code::new(inter_bookmark *IBM, int level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_1(IBM, CODE_IST, 0, eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

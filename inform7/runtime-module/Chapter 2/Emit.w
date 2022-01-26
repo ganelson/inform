@@ -41,7 +41,7 @@ inter_ti Emit::baseline(void) {
 }
 
 inter_package *Emit::package(void) {
-	return Inter::Bookmarks::package(Emit::at());
+	return InterBookmark::package(Emit::at());
 }
 
 package_request *Emit::current_enclosure(void) {
@@ -72,11 +72,11 @@ what package it belongs to, the "context" referred to below:
 
 =
 void Emit::symbol_to_value_pair(inter_ti *v1, inter_ti *v2, inter_symbol *S) {
-	Emit::stvp_inner(S, v1, v2, Inter::Bookmarks::package(Emit::at()));
+	Emit::stvp_inner(S, v1, v2, InterBookmark::package(Emit::at()));
 }
 
 void Emit::to_value_pair(inter_ti *v1, inter_ti *v2, inter_name *iname) {
-	Emit::stvp_inner(InterNames::to_symbol(iname), v1, v2, Inter::Bookmarks::package(Emit::at()));
+	Emit::stvp_inner(InterNames::to_symbol(iname), v1, v2, InterBookmark::package(Emit::at()));
 }
 
 void Emit::to_value_pair_in_context(inter_name *context, inter_ti *v1, inter_ti *v2,
@@ -410,7 +410,7 @@ void Emit::permission(property *prn, inter_symbol *owner_name,
 	TEMPORARY_TEXT(ident)
 	WRITE_TO(ident, "pp_i7_%d", ppi7_counter++);
 	inter_symbol *pp_s =
-		Inter::Textual::new_symbol(NULL, Inter::Bookmarks::scope(Emit::at()), ident, &E);
+		Inter::Textual::new_symbol(NULL, InterBookmark::scope(Emit::at()), ident, &E);
 	DISCARD_TEXT(ident)
 	Produce::guard(E);
 	Produce::guard(Inter::Permission::new(Emit::at(),

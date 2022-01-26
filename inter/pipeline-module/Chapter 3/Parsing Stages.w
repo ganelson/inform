@@ -43,7 +43,7 @@ following creates the package |/main/WorldModelKit|, with package type |_module|
 It's into this module that the resulting |SPLAT_IST| nodes will be put.
 
 @<Create a module to hold the Inter read in from this kit@> =
-	inter_bookmark IBM = Inter::Bookmarks::at_end_of_this_package(main_package);
+	inter_bookmark IBM = InterBookmark::at_end_of_this_package(main_package);
 	inter_symbol *module_name = LargeScale::package_type(I, I"_module");
 	inter_package *module_pack = NULL;
 	Inter::Package::new_package_named(&IBM, step->step_argument, FALSE,
@@ -81,7 +81,7 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	current_sentence = (parse_node *) Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
 	#endif
 	simple_tangle_docket *docket = (simple_tangle_docket *) state;
-	inter_bookmark here = Inter::Bookmarks::after_this_node(I, P);
+	inter_bookmark here = InterBookmark::after_this_node(P);
 	docket->state = (void *) &here;
 	SimpleTangler::tangle_text(docket, insertion);
 }
@@ -104,7 +104,7 @@ in |K/Sections|.
 		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
 	if (assimilation_package == NULL) assimilation_package = LargeScale::main_package(I);
 	inter_bookmark assimilation_point =
-		Inter::Bookmarks::at_end_of_this_package(assimilation_package);
+		InterBookmark::at_end_of_this_package(assimilation_package);
 	docket = SimpleTangler::new_docket(
 		&(ParsingStages::receive_raw),
 		&(ParsingStages::receive_command),
@@ -266,12 +266,12 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 			inter_bookmark *IBM = (inter_bookmark *) docket->state;
 			PUT_TO(R, '\n');
 			inter_ti SID = Inter::Warehouse::create_text(
-				Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
+				InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 			text_stream *textual_storage =
-				Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SID);
+				Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), SID);
 			Str::copy(textual_storage, R);
 			Produce::guard(Inter::Splat::new(IBM, SID, I6_dir,
-				(inter_ti) (Inter::Bookmarks::baseline(IBM) + 1), 0, NULL));
+				(inter_ti) (InterBookmark::baseline(IBM) + 1), 0, NULL));
 		}
 		Str::clear(R);
 	}

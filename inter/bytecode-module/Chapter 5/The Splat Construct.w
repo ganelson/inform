@@ -64,8 +64,8 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	inter_ti plm = Inter::Splat::parse_plm(ilp->mr.exp[0]);
 	if (plm == 1000000) { *E = Inter::Errors::plain(I"unknown PLM code before text matter", eloc); return; }
 
-	inter_ti SID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
-	text_stream *glob_storage = Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), SID);
+	inter_ti SID = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+	text_stream *glob_storage = Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), SID);
 	*E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
@@ -122,8 +122,8 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_ti plm) {
 inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_ti SID, inter_ti plm, inter_ti level, inter_ti ID, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_3(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
 	if (ID) Inode::attach_comment(P, ID);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

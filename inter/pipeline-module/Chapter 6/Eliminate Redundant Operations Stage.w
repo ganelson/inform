@@ -87,9 +87,9 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 				inter_ti val2 = operands[i]->W.data[VAL2_VAL_IFLD];
 				if ((val1 == LITERAL_IVAL) && (val2 == (inter_ti) iden[i])) {
 					redundant_operations_removed++;
-					InterTree::remove_node(operands[i]);
-					InterTree::move_node(operands[1-i], IMMEDIATELY_AFTER_NODEPLACEMENT, F);
-					InterTree::remove_node(F);
+					NodePlacement::remove(operands[i]);
+					NodePlacement::move_to(operands[1-i], InterBookmark::immediately_after(F));
+					NodePlacement::remove(F);
 					break;
 				}
 			}

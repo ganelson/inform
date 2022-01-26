@@ -41,12 +41,12 @@ void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbols_table *locals = Inter::Packages::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *ref_kind = Inter::Textual::find_symbol(Inter::Bookmarks::tree(IBM), eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *ref_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_ti var_val1 = 0;
 	inter_ti var_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, Inter::Bookmarks::tree(IBM), Inter::Bookmarks::package(IBM), ref_kind, ilp->mr.exp[1], &var_val1, &var_val2, locals);
+	*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), ref_kind, ilp->mr.exp[1], &var_val1, &var_val2, locals);
 	if (*E) return;
 
 	*E = Inter::Ref::new(IBM, ref_kind, ilp->indent_level, var_val1, var_val2, eloc);
@@ -54,8 +54,8 @@ void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 
 inter_error_message *Inter::Ref::new(inter_bookmark *IBM, inter_symbol *ref_kind, int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_4(IBM, REF_IST, 0, InterSymbolsTables::id_from_IRS_and_symbol(IBM, ref_kind), val1, val2, eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

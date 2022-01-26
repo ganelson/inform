@@ -17,9 +17,9 @@ void Inter::Nop::define(void) {
 
 inter_error_message *Inter::Nop::new(inter_bookmark *IBM, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_0(IBM, NOP_IST, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 

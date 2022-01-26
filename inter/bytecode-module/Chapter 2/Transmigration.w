@@ -74,38 +74,36 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	LOG("---\n\n");
 
 @<Create these bookmarks@> =
-	deletion_point =
-		Inter::Bookmarks::after_this_node(migrant->package_head->tree, migrant->package_head);
-	insertion_point =
-		Inter::Bookmarks::at_end_of_this_package(destination);
+	deletion_point = InterBookmark::after_this_node(migrant->package_head);
+	insertion_point = InterBookmark::at_end_of_this_package(destination);
 	inter_tree_node *prims = NULL;
 	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
 		if (F->W.data[ID_IFLD] == PRIMITIVE_IST)
 			prims = F;
 	if (prims == NULL) internal_error("dest has no prims");
-	primitives_point = Inter::Bookmarks::after_this_node(destination->package_head->tree, prims);
+	primitives_point = InterBookmark::after_this_node(prims);
 	inter_tree_node *ptypes = NULL;
 	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
 		if (F->W.data[ID_IFLD] == PACKAGETYPE_IST)
 			ptypes = F;
 	if (ptypes == NULL) internal_error("dest has no prims");
-	ptypes_point = Inter::Bookmarks::after_this_node(destination->package_head->tree, ptypes);
+	ptypes_point = InterBookmark::after_this_node(ptypes);
 
 @<Mark the insertion and deletion points with comments@> =
-	inter_ti C1 = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(&deletion_point), Inter::Bookmarks::package(&deletion_point));
-	WRITE_TO(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(&deletion_point), C1), 
+	inter_ti C1 = Inter::Warehouse::create_text(InterBookmark::warehouse(&deletion_point), InterBookmark::package(&deletion_point));
+	WRITE_TO(Inter::Warehouse::get_text(InterBookmark::warehouse(&deletion_point), C1), 
 		"Exported %S here", Inter::Packages::name(migrant));
 	Inter::Comment::new(&deletion_point, (inter_ti) Inter::Packages::baseline(migrant), NULL, C1);
 
-	inter_ti C2 = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(&insertion_point), Inter::Bookmarks::package(&insertion_point));
-	WRITE_TO(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(&insertion_point), C2), 
+	inter_ti C2 = Inter::Warehouse::create_text(InterBookmark::warehouse(&insertion_point), InterBookmark::package(&insertion_point));
+	WRITE_TO(Inter::Warehouse::get_text(InterBookmark::warehouse(&insertion_point), C2), 
 		"Imported %S here", Inter::Packages::name(migrant));
 	Inter::Comment::new(&insertion_point, (inter_ti) Inter::Packages::baseline(destination) + 1, NULL, C2);
 
 @<Physically move the subtree to its new home@> =
 	Inter::Packages::remove_subpackage_name(Inter::Packages::parent(migrant), migrant);
 	Inter::Packages::add_subpackage_name(destination, migrant);
-	Inter::Bookmarks::insert(&insertion_point, migrant->package_head);
+	NodePlacement::move_to_moving_bookmark(migrant->package_head, &insertion_point);
 
 @ =
 typedef struct ipct_state {
@@ -196,12 +194,12 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		if (Inode::extend(D, (inter_ti) 1) == FALSE) internal_error("can't extend");
 		D->W.data[i] = old_D->W.data[i];
 	}
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(ipct->primitives_point), D);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(ipct->primitives_point), D);
 	if (E) {
 		Inter::Errors::issue(E);
 		equivalent_primitive = NULL;
 	} else {
-		Inter::Bookmarks::insert(ipct->primitives_point, D);
+		NodePlacement::move_to_moving_bookmark(D, ipct->primitives_point);
 	}
 
 @<Correct the reference to this package type@> =
@@ -220,12 +218,12 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 @<Duplicate this package type@> =
 	equivalent_ptype = InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
 	inter_tree_node *D = Inode::fill_1(ipct->ptypes_point, PACKAGETYPE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_ptype), NULL, 0);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(ipct->ptypes_point), D);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(ipct->ptypes_point), D);
 	if (E) {
 		Inter::Errors::issue(E);
 		equivalent_ptype = NULL;
 	} else {
-		Inter::Bookmarks::insert(ipct->ptypes_point, D);
+		NodePlacement::move_to_moving_bookmark(D, ipct->ptypes_point);
 	}
 
 @<Correct the reference to this symbol@> =

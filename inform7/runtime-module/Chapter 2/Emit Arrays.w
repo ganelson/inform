@@ -244,5 +244,5 @@ void EmitArrays::end_inner(void) {
 		array_in_progress->W.data[pos++] = current_A->entry_storage[i];
 	Produce::guard(Inter::Defn::verify_construct(
 		Emit::package(), array_in_progress));
-	Inter::Bookmarks::insert(Emit::at(), array_in_progress);
+	NodePlacement::move_to_moving_bookmark(array_in_progress, Emit::at());
 }

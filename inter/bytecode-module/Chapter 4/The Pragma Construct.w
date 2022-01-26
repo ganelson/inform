@@ -33,13 +33,13 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *target_name = InterSymbolsTables::symbol_from_name(Inter::Bookmarks::scope(IBM), ilp->mr.exp[0]);
+	inter_symbol *target_name = InterSymbolsTables::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
 	if (target_name == NULL)
-		target_name = Inter::Textual::new_symbol(eloc, Inter::Bookmarks::scope(IBM), ilp->mr.exp[0], E);
+		target_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	text_stream *S = ilp->mr.exp[1];
-	inter_ti ID = Inter::Warehouse::create_text(Inter::Bookmarks::warehouse(IBM), Inter::Bookmarks::package(IBM));
+	inter_ti ID = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 	int literal_mode = FALSE;
 	LOOP_THROUGH_TEXT(pos, S) {
 		int c = (int) Str::get(pos);
@@ -55,7 +55,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 			}
 		}
 		if (Inter::Constant::char_acceptable(c) == FALSE) { *E = Inter::Errors::quoted(I"bad character in text", S, eloc); return; }
-		PUT_TO(Inter::Warehouse::get_text(Inter::Bookmarks::warehouse(IBM), ID), c);
+		PUT_TO(Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), ID), c);
 		literal_mode = FALSE;
 	}
 
@@ -64,8 +64,8 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 
 inter_error_message *Inter::Pragma::new(inter_bookmark *IBM, inter_symbol *target_name, inter_ti pragma_text, inter_ti level, struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::fill_2(IBM, PRAGMA_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, target_name), pragma_text, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(Inter::Bookmarks::package(IBM), P); if (E) return E;
-	Inter::Bookmarks::insert(IBM, P);
+	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
