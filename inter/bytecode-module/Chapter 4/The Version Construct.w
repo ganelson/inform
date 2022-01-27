@@ -35,7 +35,7 @@ void Inter::Version::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 }
 
 inter_error_message *Inter::Version::new(inter_bookmark *IBM, int V, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_1(IBM, VERSION_IST, (inter_ti) V, eloc, level);
+	inter_tree_node *P = Inode::new_with_1_data_field(IBM, VERSION_IST, (inter_ti) V, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

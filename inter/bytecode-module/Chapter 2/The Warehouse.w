@@ -73,8 +73,9 @@ inter_warehouse_room *Inter::Warehouse::new_room(inter_warehouse *owner, int cap
 	return IS;
 }
 
+
 typedef struct warehouse_floor_space {
-	struct inter_warehouse_room *repo_segment;
+	struct inter_warehouse_room *in_room;
 	int index;
 	inter_ti *data;
 	int extent;
@@ -96,7 +97,7 @@ warehouse_floor_space Inter::Warehouse::find_room_in_room(inter_warehouse_room *
 	IS->size += this_piece;
 
 	warehouse_floor_space W;
-	W.repo_segment = IS; W.index = at;
+	W.in_room = IS; W.index = at;
 	if ((IS) && (at >= 0) && (at < IS->size)) {
 		W.data = &(IS->bytecode[at + PREFRAME_SIZE]);
 		W.extent = ((int) IS->bytecode[at + PREFRAME_SKIP_AMOUNT]) - PREFRAME_SIZE;
@@ -113,14 +114,14 @@ int Inter::Warehouse::enlarge_size(int n, int at_least) {
 	return next_size;
 }
 
-inter_tree_node *Inter::Warehouse::find_room(inter_warehouse *warehouse, inter_tree *I,
+inter_tree_node *Inter::Warehouse::new_node(inter_warehouse *warehouse, inter_tree *I,
 	int n, inter_error_location *eloc, inter_package *owner) {
 	if (warehouse == NULL) internal_error("no warehouse");
 	if (I == NULL) internal_error("no tree supplied");
 	inter_warehouse_room *IS = warehouse->first_room;
 	while (IS->next_room) IS = IS->next_room;
 	warehouse_floor_space W = Inter::Warehouse::find_room_in_room(IS, n);
-	inter_tree_node *F = Inode::new(I, W);
+	inter_tree_node *F = Inode::new_node_structure(I, W);
 	Inode::set_metadata(F, PREFRAME_ORIGIN, Inter::Warehouse::store_origin(warehouse, eloc));
 	Inode::attach_package(F, owner);
 	return F;

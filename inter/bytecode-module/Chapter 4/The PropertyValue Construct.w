@@ -92,7 +92,7 @@ int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, int
 
 inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_ti PID, inter_ti OID,
 	inter_ti con_val1, inter_ti con_val2, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_4(IBM, PROPERTYVALUE_IST,
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, PROPERTYVALUE_IST,
 		PID, OID, con_val1, con_val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);

@@ -444,7 +444,7 @@ enough that the slot exists for the eventual list to be stored in.
 			if (PID) owner = Inter::Warehouse::get_package(warehouse, PID);
 	if (trace_bin) WRITE_TO(STDOUT, "Owner has ID %d, table %d\n", owner->index_n, owner->package_scope->n_index);
 		}
-		inter_tree_node *P = Inter::Warehouse::find_room(warehouse, I, extent-1, &eloc, owner);
+		inter_tree_node *P = Inter::Warehouse::new_node(warehouse, I, extent-1, &eloc, owner);
 
 		for (int i=0; i<extent-1; i++) {
 			unsigned int word = 0;

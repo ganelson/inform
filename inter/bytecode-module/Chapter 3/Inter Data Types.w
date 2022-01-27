@@ -2,7 +2,12 @@
 
 A primitive notion of data type, below the level of kinds.
 
-@ =
+@ 
+
+@d inter_ti unsigned int
+@d signed_inter_ti int
+
+=
 typedef struct inter_data_type {
 	inter_ti type_ID;
 	struct text_stream *reserved_word;

@@ -235,7 +235,7 @@ void EmitArrays::end_inner(void) {
 		CID = Emit::symbol_id(unchecked_interk);
 	}
 	inter_tree_node *array_in_progress =
-		Inode::fill_3(Emit::at(), CONSTANT_IST, Emit::symbol_id(con_s), CID,
+		Inode::new_with_3_data_fields(Emit::at(), CONSTANT_IST, Emit::symbol_id(con_s), CID,
 			current_A->array_form, NULL, Emit::baseline());
 	int pos = array_in_progress->W.extent;
 	if (Inode::extend(array_in_progress, (unsigned int) (current_A->space_used)) == FALSE)

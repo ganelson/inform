@@ -165,7 +165,7 @@ inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_ti SID, inter_t
 	inter_ti L2 = Inter::Warehouse::create_frame_list(warehouse);
 	Inter::Warehouse::attribute_resource(warehouse, L1, InterBookmark::package(IBM));
 	Inter::Warehouse::attribute_resource(warehouse, L2, InterBookmark::package(IBM));
-	inter_tree_node *P = Inode::fill_8(IBM,
+	inter_tree_node *P = Inode::new_with_8_data_fields(IBM,
 		KIND_IST, SID, TID, 0, 0, SUP, L1, L2,
 		(inter_ti) constructor, eloc, level);
 	if (arity > 0) {

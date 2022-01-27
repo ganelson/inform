@@ -48,7 +48,7 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 }
 
 inter_error_message *Inter::Append::new(inter_bookmark *IBM, inter_symbol *symbol, inter_ti append_text, inter_ti level, struct inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_2(IBM, APPEND_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, symbol), append_text, eloc, level);
+	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, APPEND_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, symbol), append_text, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

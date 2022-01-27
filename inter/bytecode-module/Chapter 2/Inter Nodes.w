@@ -3,10 +3,32 @@
 To create nodes of inter code, and manage everything about them except their
 tree locations.
 
-@h Bytecode definition.
-
-@d inter_ti unsigned int
-@d signed_inter_ti int
+@ It's essential to be able to walk an Inter tree quickly, while movements
+of nodes within the tree are relatively uncommon. So we provide every
+imaginatble link. Suppose the structure is:
+= (text)
+	A
+		B
+		C
+			D
+		E
+=
+Then the links are:
+= (text)
+				 |	of A	B		C		D		E
+	-------------+--------------------------------------
+	parent		 |	NULL	A		A		C		A
+	first_child	 |	B		NULL	D		NULL	NULL
+	last_child   |  E		NULL	D		NULL	NULL
+	previous     |  NULL	NULL	B		NULL	C
+	next         |  NULL	C		E		NULL	NULL
+=
+Each node also knows the tree and the package it belongs to. We really aren't
+concerned about memory consumption here. The Inter trees we deal with will be
+large (typically 400,000 nodes), so on a 64-bit processor we might be looking
+at 250 MB of memory here, and that can probably be doubled when the warehouse
+memory consumption is also considered. But this is no longer prohibitive: speed
+of access matters more.
 
 =
 typedef struct inter_tree_node {
@@ -20,7 +42,10 @@ typedef struct inter_tree_node {
 	struct warehouse_floor_space W;
 } inter_tree_node;
 
-inter_tree_node *Inode::new(inter_tree *I, warehouse_floor_space W) {
+@ Do not call this directly in order to create a node.
+
+=
+inter_tree_node *Inode::new_node_structure(inter_tree *I, warehouse_floor_space W) {
 	inter_tree_node *itn = CREATE(inter_tree_node);
 	itn->tree = I;
 	itn->package = NULL;
@@ -33,9 +58,172 @@ inter_tree_node *Inode::new(inter_tree *I, warehouse_floor_space W) {
 	return itn;
 }
 
-@h Chunks.
+@ Instead, call one of the following. This of course should be called once
+only per tree, and is called by //InterTree::new// anyway.
 
-@d IST_SIZE 100
+=
+inter_tree_node *Inode::new_root_node(inter_warehouse *warehouse, inter_tree *I) {
+	inter_tree_node *P = Inter::Warehouse::new_node(warehouse, I, 2, NULL, NULL);
+	P->W.data[ID_IFLD] = (inter_ti) NOP_IST;
+	P->W.data[LEVEL_IFLD] = 0;
+	return P;
+}
+
+@ More generally: the content of a node is an instruction stored as bytecode
+in memory. (Perhaps wordcode would be more accurate: it's a series of words.)
+Words 0 and 1 have the same meaning for all instructions; everything from 2
+onwards is data whose meaning differs between instructions. (Indeed, some
+instructions have no data at all, and thus occupy only 2 words.)
+
+The ID is an enumeration of |*_IST|: it marks which instruction this is.
+
+The level is the depth of this node in the tree, where the root node is 0,
+its children are level 1, their children level 2, and so on.
+
+@d ID_IFLD 0
+@d LEVEL_IFLD 1
+@d DATA_IFLD 2
+
+@ These functions should be called only by the creator functions for the
+Inter instructions. Code which is generating Inter to do something should not
+call those creator functions, not these.
+
+=
+inter_tree_node *Inode::new_with_0_data_fields(inter_bookmark *IBM, int S,
+	inter_error_location *eloc, inter_ti level) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_tree_node *P = Inter::Warehouse::new_node(InterTree::warehouse(I), I, 2,
+		eloc, InterBookmark::package(IBM));
+	P->W.data[ID_IFLD] = (inter_ti) S;
+	P->W.data[LEVEL_IFLD] = level;
+	return P;
+}
+
+inter_tree_node *Inode::new_with_1_data_field(inter_bookmark *IBM, int S,
+	inter_ti V, inter_error_location *eloc, inter_ti level) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_tree_node *P = Inter::Warehouse::new_node(InterTree::warehouse(I), I, 3,
+		eloc, InterBookmark::package(IBM));
+	P->W.data[ID_IFLD] = (inter_ti) S;
+	P->W.data[LEVEL_IFLD] = level;
+	P->W.data[DATA_IFLD] = V;
+	return P;
+}
+
+inter_tree_node *Inode::new_with_2_data_fields(inter_bookmark *IBM, int S,
+	inter_ti V1, inter_ti V2, inter_error_location *eloc, inter_ti level) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_tree_node *P = Inter::Warehouse::new_node(InterTree::warehouse(I), I, 4,
+		eloc, InterBookmark::package(IBM));
+	P->W.data[ID_IFLD] = (inter_ti) S;
+	P->W.data[LEVEL_IFLD] = level;
+	P->W.data[DATA_IFLD] = V1;
+	P->W.data[DATA_IFLD + 1] = V2;
+	return P;
+}
+
+inter_tree_node *Inode::new_with_3_data_fields(inter_bookmark *IBM, int S,
+	inter_ti V1, inter_ti V2, inter_ti V3, inter_error_location *eloc, inter_ti level) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_tree_node *P = Inter::Warehouse::new_node(InterTree::warehouse(I), I, 5,
+		eloc, InterBookmark::package(IBM));
+	P->W.data[ID_IFLD] = (inter_ti) S;
+	P->W.data[LEVEL_IFLD] = level;
+	P->W.data[DATA_IFLD] = V1;
+	P->W.data[DATA_IFLD + 1] = V2;
+	P->W.data[DATA_IFLD + 2] = V3;
+	return P;
+}
+
+inter_tree_node *Inode::new_with_4_data_fields(inter_bookmark *IBM, int S,
+	inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_error_location *eloc,
+	inter_ti level) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_tree_node *P = Inter::Warehouse::new_node(InterTree::warehouse(I), I, 6,
+		eloc, InterBookmark::package(IBM));
+	P->W.data[ID_IFLD] = (inter_ti) S;
+	P->W.data[LEVEL_IFLD] = level;
+	P->W.data[DATA_IFLD] = V1;
+	P->W.data[DATA_IFLD + 1] = V2;
+	P->W.data[DATA_IFLD + 2] = V3;
+	P->W.data[DATA_IFLD + 3] = V4;
+	return P;
+}
+
+inter_tree_node *Inode::new_with_5_data_fields(inter_bookmark *IBM, int S,
+	inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_ti V5,
+	inter_error_location *eloc, inter_ti level) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_tree_node *P = Inter::Warehouse::new_node(InterTree::warehouse(I), I, 7,
+		eloc, InterBookmark::package(IBM));
+	P->W.data[ID_IFLD] = (inter_ti) S;
+	P->W.data[LEVEL_IFLD] = level;
+	P->W.data[DATA_IFLD] = V1;
+	P->W.data[DATA_IFLD + 1] = V2;
+	P->W.data[DATA_IFLD + 2] = V3;
+	P->W.data[DATA_IFLD + 3] = V4;
+	P->W.data[DATA_IFLD + 4] = V5;
+	return P;
+}
+
+inter_tree_node *Inode::new_with_6_data_fields(inter_bookmark *IBM, int S,
+	inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_ti V5, inter_ti V6,
+	inter_error_location *eloc, inter_ti level) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_tree_node *P = Inter::Warehouse::new_node(InterTree::warehouse(I), I, 8,
+		eloc, InterBookmark::package(IBM));
+	P->W.data[ID_IFLD] = (inter_ti) S;
+	P->W.data[LEVEL_IFLD] = level;
+	P->W.data[DATA_IFLD] = V1;
+	P->W.data[DATA_IFLD + 1] = V2;
+	P->W.data[DATA_IFLD + 2] = V3;
+	P->W.data[DATA_IFLD + 3] = V4;
+	P->W.data[DATA_IFLD + 4] = V5;
+	P->W.data[DATA_IFLD + 5] = V6;
+	return P;
+}
+
+inter_tree_node *Inode::new_with_7_data_fields(inter_bookmark *IBM, int S,
+	inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_ti V5, inter_ti V6,
+	inter_ti V7, inter_error_location *eloc, inter_ti level) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_tree_node *P = Inter::Warehouse::new_node(InterTree::warehouse(I), I, 9,
+		eloc, InterBookmark::package(IBM));
+	P->W.data[ID_IFLD] = (inter_ti) S;
+	P->W.data[LEVEL_IFLD] = level;
+	P->W.data[DATA_IFLD] = V1;
+	P->W.data[DATA_IFLD + 1] = V2;
+	P->W.data[DATA_IFLD + 2] = V3;
+	P->W.data[DATA_IFLD + 3] = V4;
+	P->W.data[DATA_IFLD + 4] = V5;
+	P->W.data[DATA_IFLD + 5] = V6;
+	P->W.data[DATA_IFLD + 6] = V7;
+	return P;
+}
+
+inter_tree_node *Inode::new_with_8_data_fields(inter_bookmark *IBM, int S,
+	inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_ti V5, inter_ti V6,
+		inter_ti V7, inter_ti V8, inter_error_location *eloc, inter_ti level) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_tree_node *P = Inter::Warehouse::new_node(InterTree::warehouse(I), I, 10,
+		eloc, InterBookmark::package(IBM));
+	P->W.data[ID_IFLD] = (inter_ti) S;
+	P->W.data[LEVEL_IFLD] = level;
+	P->W.data[DATA_IFLD] = V1;
+	P->W.data[DATA_IFLD + 1] = V2;
+	P->W.data[DATA_IFLD + 2] = V3;
+	P->W.data[DATA_IFLD + 3] = V4;
+	P->W.data[DATA_IFLD + 4] = V5;
+	P->W.data[DATA_IFLD + 5] = V6;
+	P->W.data[DATA_IFLD + 6] = V7;
+	P->W.data[DATA_IFLD + 7] = V8;
+	return P;
+}
+
+@h Bytecode in memory.
+
+
+
 
 @d SYMBOL_BASE_VAL 0x40000000
 
@@ -50,16 +238,16 @@ inter_tree_node *Inode::new(inter_tree *I, warehouse_floor_space W) {
 =
 inter_ti Inode::get_metadata(inter_tree_node *F, int at) {
 	if (F == NULL) return 0;
-	return F->W.repo_segment->bytecode[F->W.index + at];
+	return F->W.in_room->bytecode[F->W.index + at];
 }
 
 void Inode::set_metadata(inter_tree_node *F, int at, inter_ti V) {
-	if (F) F->W.repo_segment->bytecode[F->W.index + at] = V;
+	if (F) F->W.in_room->bytecode[F->W.index + at] = V;
 }
 
 inter_warehouse *Inode::warehouse(inter_tree_node *F) {
 	if (F == NULL) return NULL;
-	return F->W.repo_segment->owning_warehouse;
+	return F->W.in_room->owning_warehouse;
 }
 
 inter_symbols_table *Inode::ID_to_symbols_table(inter_tree_node *F, inter_ti ID) {
@@ -93,157 +281,42 @@ int Inode::eq(inter_tree_node *F1, inter_tree_node *F2) {
 		if (F1 == F2) return TRUE;
 		return FALSE;
 	}
-	if (F1->W.repo_segment != F2->W.repo_segment) return FALSE;
+	if (F1->W.in_room != F2->W.in_room) return FALSE;
 	if (F1->W.index != F2->W.index) return FALSE;
 	return TRUE;
 }
 
-@ =
-inter_tree_node *Inode::new_root_node(inter_warehouse *warehouse, inter_tree *I) {
-	inter_tree_node *P = Inter::Warehouse::find_room(warehouse, I, 2, NULL, NULL);
-	P->W.data[ID_IFLD] = (inter_ti) NOP_IST;
-	P->W.data[LEVEL_IFLD] = 0;
-	return P;
-}
-
-inter_tree_node *Inode::fill_0(inter_bookmark *IBM, int S, inter_error_location *eloc, inter_ti level) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_tree_node *P = Inter::Warehouse::find_room(InterTree::warehouse(I), I, 2, eloc, InterBookmark::package(IBM));
-	P->W.data[ID_IFLD] = (inter_ti) S;
-	P->W.data[LEVEL_IFLD] = level;
-	return P;
-}
-
-inter_tree_node *Inode::fill_1(inter_bookmark *IBM, int S, inter_ti V, inter_error_location *eloc, inter_ti level) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_tree_node *P = Inter::Warehouse::find_room(InterTree::warehouse(I), I, 3, eloc, InterBookmark::package(IBM));
-	P->W.data[ID_IFLD] = (inter_ti) S;
-	P->W.data[LEVEL_IFLD] = level;
-	P->W.data[DATA_IFLD] = V;
-	return P;
-}
-
-inter_tree_node *Inode::fill_2(inter_bookmark *IBM, int S, inter_ti V1, inter_ti V2, inter_error_location *eloc, inter_ti level) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_tree_node *P = Inter::Warehouse::find_room(InterTree::warehouse(I), I, 4, eloc, InterBookmark::package(IBM));
-	P->W.data[ID_IFLD] = (inter_ti) S;
-	P->W.data[LEVEL_IFLD] = level;
-	P->W.data[DATA_IFLD] = V1;
-	P->W.data[DATA_IFLD + 1] = V2;
-	return P;
-}
-
-inter_tree_node *Inode::fill_3(inter_bookmark *IBM, int S, inter_ti V1, inter_ti V2, inter_ti V3, inter_error_location *eloc, inter_ti level) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_tree_node *P = Inter::Warehouse::find_room(InterTree::warehouse(I), I, 5, eloc, InterBookmark::package(IBM));
-	P->W.data[ID_IFLD] = (inter_ti) S;
-	P->W.data[LEVEL_IFLD] = level;
-	P->W.data[DATA_IFLD] = V1;
-	P->W.data[DATA_IFLD + 1] = V2;
-	P->W.data[DATA_IFLD + 2] = V3;
-	return P;
-}
-
-inter_tree_node *Inode::fill_4(inter_bookmark *IBM, int S, inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_error_location *eloc, inter_ti level) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_tree_node *P = Inter::Warehouse::find_room(InterTree::warehouse(I), I, 6, eloc, InterBookmark::package(IBM));
-	P->W.data[ID_IFLD] = (inter_ti) S;
-	P->W.data[LEVEL_IFLD] = level;
-	P->W.data[DATA_IFLD] = V1;
-	P->W.data[DATA_IFLD + 1] = V2;
-	P->W.data[DATA_IFLD + 2] = V3;
-	P->W.data[DATA_IFLD + 3] = V4;
-	return P;
-}
-
-inter_tree_node *Inode::fill_5(inter_bookmark *IBM, int S, inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_ti V5, inter_error_location *eloc, inter_ti level) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_tree_node *P = Inter::Warehouse::find_room(InterTree::warehouse(I), I, 7, eloc, InterBookmark::package(IBM));
-	P->W.data[ID_IFLD] = (inter_ti) S;
-	P->W.data[LEVEL_IFLD] = level;
-	P->W.data[DATA_IFLD] = V1;
-	P->W.data[DATA_IFLD + 1] = V2;
-	P->W.data[DATA_IFLD + 2] = V3;
-	P->W.data[DATA_IFLD + 3] = V4;
-	P->W.data[DATA_IFLD + 4] = V5;
-	return P;
-}
-
-inter_tree_node *Inode::fill_6(inter_bookmark *IBM, int S, inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_ti V5, inter_ti V6, inter_error_location *eloc, inter_ti level) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_tree_node *P = Inter::Warehouse::find_room(InterTree::warehouse(I), I, 8, eloc, InterBookmark::package(IBM));
-	P->W.data[ID_IFLD] = (inter_ti) S;
-	P->W.data[LEVEL_IFLD] = level;
-	P->W.data[DATA_IFLD] = V1;
-	P->W.data[DATA_IFLD + 1] = V2;
-	P->W.data[DATA_IFLD + 2] = V3;
-	P->W.data[DATA_IFLD + 3] = V4;
-	P->W.data[DATA_IFLD + 4] = V5;
-	P->W.data[DATA_IFLD + 5] = V6;
-	return P;
-}
-
-inter_tree_node *Inode::fill_7(inter_bookmark *IBM, int S, inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_ti V5, inter_ti V6, inter_ti V7, inter_error_location *eloc, inter_ti level) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_tree_node *P = Inter::Warehouse::find_room(InterTree::warehouse(I), I, 9, eloc, InterBookmark::package(IBM));
-	P->W.data[ID_IFLD] = (inter_ti) S;
-	P->W.data[LEVEL_IFLD] = level;
-	P->W.data[DATA_IFLD] = V1;
-	P->W.data[DATA_IFLD + 1] = V2;
-	P->W.data[DATA_IFLD + 2] = V3;
-	P->W.data[DATA_IFLD + 3] = V4;
-	P->W.data[DATA_IFLD + 4] = V5;
-	P->W.data[DATA_IFLD + 5] = V6;
-	P->W.data[DATA_IFLD + 6] = V7;
-	return P;
-}
-
-inter_tree_node *Inode::fill_8(inter_bookmark *IBM, int S, inter_ti V1, inter_ti V2, inter_ti V3, inter_ti V4, inter_ti V5, inter_ti V6, inter_ti V7, inter_ti V8, inter_error_location *eloc, inter_ti level) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_tree_node *P = Inter::Warehouse::find_room(InterTree::warehouse(I), I, 10, eloc, InterBookmark::package(IBM));
-	P->W.data[ID_IFLD] = (inter_ti) S;
-	P->W.data[LEVEL_IFLD] = level;
-	P->W.data[DATA_IFLD] = V1;
-	P->W.data[DATA_IFLD + 1] = V2;
-	P->W.data[DATA_IFLD + 2] = V3;
-	P->W.data[DATA_IFLD + 3] = V4;
-	P->W.data[DATA_IFLD + 4] = V5;
-	P->W.data[DATA_IFLD + 5] = V6;
-	P->W.data[DATA_IFLD + 6] = V7;
-	P->W.data[DATA_IFLD + 7] = V8;
-	return P;
-}
 
 @ =
 int Inode::extend(inter_tree_node *F, inter_ti by) {
 	if (by == 0) return TRUE;
-	if ((F->W.index + F->W.extent + PREFRAME_SIZE < F->W.repo_segment->size) ||
-		(F->W.repo_segment->next_room)) return FALSE;
+	if ((F->W.index + F->W.extent + PREFRAME_SIZE < F->W.in_room->size) ||
+		(F->W.in_room->next_room)) return FALSE;
 		
-	if (F->W.repo_segment->size + (int) by <= F->W.repo_segment->capacity) {	
+	if (F->W.in_room->size + (int) by <= F->W.in_room->capacity) {	
 		Inode::set_metadata(F, PREFRAME_SKIP_AMOUNT,
 			Inode::get_metadata(F, PREFRAME_SKIP_AMOUNT) + by);
-		F->W.repo_segment->size += by;
+		F->W.in_room->size += by;
 		F->W.extent += by;
 		return TRUE;
 	}
 
-	int next_size = Inter::Warehouse::enlarge_size(F->W.repo_segment->capacity, F->W.extent + PREFRAME_SIZE + (int) by);
+	int next_size = Inter::Warehouse::enlarge_size(F->W.in_room->capacity, F->W.extent + PREFRAME_SIZE + (int) by);
 
-	F->W.repo_segment->next_room = Inter::Warehouse::new_room(F->W.repo_segment->owning_warehouse,
-		next_size, F->W.repo_segment);
+	F->W.in_room->next_room = Inter::Warehouse::new_room(F->W.in_room->owning_warehouse,
+		next_size, F->W.in_room);
 
-	warehouse_floor_space W = Inter::Warehouse::find_room_in_room(F->W.repo_segment->next_room, F->W.extent + (int) by);
+	warehouse_floor_space W = Inter::Warehouse::find_room_in_room(F->W.in_room->next_room, F->W.extent + (int) by);
 
-	F->W.repo_segment->size = F->W.index;
-	F->W.repo_segment->capacity = F->W.index;
+	F->W.in_room->size = F->W.index;
+	F->W.in_room->capacity = F->W.index;
 
 	inter_ti a = Inode::get_metadata(F, PREFRAME_VERIFICATION_COUNT);
 	inter_ti b = Inode::get_metadata(F, PREFRAME_ORIGIN);
 	inter_ti c = Inode::get_metadata(F, PREFRAME_COMMENT);
 
 	F->W.index = W.index;
-	F->W.repo_segment = W.repo_segment;
+	F->W.in_room = W.in_room;
 	for (int i=0; i<W.extent; i++)
 		if (i < F->W.extent)
 			W.data[i] = F->W.data[i];
@@ -265,8 +338,8 @@ inter_ti Inode::vcount(inter_tree_node *F) {
 }
 
 inter_ti Inode::to_index(inter_tree_node *F) {
-	if ((F->W.repo_segment == NULL) || (F->W.index < 0)) internal_error("no index for null frame");
-	return (F->W.repo_segment->index_offset) + (inter_ti) (F->W.index);
+	if ((F->W.in_room == NULL) || (F->W.index < 0)) internal_error("no index for null frame");
+	return (F->W.in_room->index_offset) + (inter_ti) (F->W.index);
 }
 
 @

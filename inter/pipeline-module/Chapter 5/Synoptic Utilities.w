@@ -98,7 +98,7 @@ packaging_state synoptic_array_ps;
 void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	synoptic_array_ps = Packaging::enter_home_of(iname);
 	inter_symbol *con_s = InterNames::define(iname);
-	synoptic_array_node = Inode::fill_3(Packaging::at(I), CONSTANT_IST,
+	synoptic_array_node = Inode::new_with_3_data_fields(Packaging::at(I), CONSTANT_IST,
 		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), con_s),
 		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I),
 		 	RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)),

@@ -67,7 +67,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_PRIMITIVE, InterSymbolsTables::id_from_symbol(InterBookmark::tree(IBM), NULL, invoked_name),
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_PRIMITIVE, InterSymbolsTables::id_from_symbol(InterBookmark::tree(IBM), NULL, invoked_name),
 		eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
@@ -76,7 +76,7 @@ inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol
 }
 
 inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_ROUTINE, InterSymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_ROUTINE, InterSymbolsTables::id_from_IRS_and_symbol(IBM, invoked_name), eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -84,7 +84,7 @@ inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *inv
 }
 
 inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_ti opcode_storage, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_3(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);

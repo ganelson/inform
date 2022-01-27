@@ -59,7 +59,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) op = CONSTANT_QUOTIENT_LIST;
 	if (op != 0) {
 		inter_tree_node *P =
-			Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), op, eloc, (inter_ti) ilp->indent_level);
+			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), op, eloc, (inter_ti) ilp->indent_level);
 		*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
@@ -89,7 +89,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 			else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) form = CONSTANT_QUOTIENT_LIST;
 			if (form != 0) {
 				inter_tree_node *P =
-					Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), form, eloc, (inter_ti) ilp->indent_level);
+					Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), form, eloc, (inter_ti) ilp->indent_level);
 				*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 				if (*E) return;
 				text_stream *conts = mr2.exp[0];
@@ -113,7 +113,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		match_results mr2 = Regexp::create_mr();
 		if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 			inter_tree_node *P =
-				 Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_STRUCT, eloc, (inter_ti) ilp->indent_level);
+				 Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_STRUCT, eloc, (inter_ti) ilp->indent_level);
 			int arity = Inter::Kind::arity(con_kind);
 			int counter = 0;
 			text_stream *conts = mr2.exp[0];
@@ -141,7 +141,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		match_results mr2 = Regexp::create_mr();
 		if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 			inter_tree_node *P =
-				Inode::fill_3(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_INDIRECT_LIST, eloc, (inter_ti) ilp->indent_level);
+				Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_kind), CONSTANT_INDIRECT_LIST, eloc, (inter_ti) ilp->indent_level);
 			*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 			if (*E) return;
 			text_stream *conts = mr2.exp[0];
@@ -234,7 +234,7 @@ void Inter::Constant::write_text(OUTPUT_STREAM, text_stream *S) {
 }
 
 inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti val1, inter_ti val2, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_5(IBM,
+	inter_tree_node *P = Inode::new_with_5_data_fields(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_DIRECT, val1, val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -242,7 +242,7 @@ inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_t
 }
 
 inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti TID, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_4(IBM,
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_TEXT, TID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -251,7 +251,7 @@ inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_ti 
 
 inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_package *block, inter_ti level, inter_error_location *eloc) {
 	inter_ti BID = block->index_n;
-	inter_tree_node *P = Inode::fill_4(IBM,
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_ROUTINE, BID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -260,7 +260,7 @@ inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_ti
 
 inter_error_message *Inter::Constant::new_list(inter_bookmark *IBM, inter_ti SID, inter_ti KID,
 	int no_pairs, inter_ti *v1_pile, inter_ti *v2_pile, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *AP = Inode::fill_3(IBM, CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_LIST, eloc, level);
+	inter_tree_node *AP = Inode::new_with_3_data_fields(IBM, CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_LIST, eloc, level);
 	int pos = AP->W.extent;
 	if (Inode::extend(AP, (unsigned int) (2*no_pairs)) == FALSE)
 		internal_error("can't extend array node to make room for entries");

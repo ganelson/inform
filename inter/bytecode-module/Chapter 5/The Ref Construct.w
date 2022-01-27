@@ -53,7 +53,7 @@ void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Ref::new(inter_bookmark *IBM, inter_symbol *ref_kind, int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_4(IBM, REF_IST, 0, InterSymbolsTables::id_from_IRS_and_symbol(IBM, ref_kind), val1, val2, eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, REF_IST, 0, InterSymbolsTables::id_from_IRS_and_symbol(IBM, ref_kind), val1, val2, eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

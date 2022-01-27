@@ -66,7 +66,7 @@ inter_error_message *Inter::Package::new_package_named(inter_bookmark *IBM, text
 
 inter_error_message *Inter::Package::new_package(inter_bookmark *IBM, text_stream *name_text, inter_symbol *ptype_name, inter_ti level, inter_error_location *eloc, inter_package **created) {
 	inter_ti STID = Inter::Warehouse::create_symbols_table(InterBookmark::warehouse(IBM));
-	inter_tree_node *P = Inode::fill_3(IBM,
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM,
 		PACKAGE_IST,
 		InterSymbolsTables::id_from_symbol(InterBookmark::tree(IBM), NULL, ptype_name), STID, 0, eloc, level);
 	inter_ti PID = Inter::Warehouse::create_package(InterBookmark::warehouse(IBM), InterBookmark::tree(IBM));

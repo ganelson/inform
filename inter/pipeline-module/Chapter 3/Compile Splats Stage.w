@@ -1103,7 +1103,7 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	inter_ti KID = InterSymbolsTables::id_from_symbol(I, pack,
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	inter_tree_node *pair_list = Inode::fill_3(IBM, CONSTANT_IST, MID, KID, op, NULL, B);
+	inter_tree_node *pair_list = Inode::new_with_3_data_fields(IBM, CONSTANT_IST, MID, KID, op, NULL, B);
 	int pos = pair_list->W.extent;
 	if (Inode::extend(pair_list, 4) == FALSE) internal_error("can't extend frame");
 	if (i1) {

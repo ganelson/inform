@@ -47,7 +47,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, inter_ti KID, inter_ti var_val1, inter_ti var_val2, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_4(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);

@@ -45,7 +45,7 @@ inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, int
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 	inter_ti L1 = Inter::Warehouse::create_frame_list(warehouse);
 	Inter::Warehouse::attribute_resource(warehouse, L1, InterBookmark::package(IBM));
-	inter_tree_node *P = Inode::fill_3(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);

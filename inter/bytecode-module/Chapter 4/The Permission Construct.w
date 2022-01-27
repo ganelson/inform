@@ -88,7 +88,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID,
 	inter_ti PPID, inter_ti SID, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_4(IBM, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

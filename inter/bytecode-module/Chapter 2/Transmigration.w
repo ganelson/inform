@@ -188,7 +188,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 
 @<Duplicate this primitive@> =
 	equivalent_primitive = InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), primitive->symbol_name);
-	inter_tree_node *D = Inode::fill_1(ipct->primitives_point, PRIMITIVE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive), NULL, 0);
+	inter_tree_node *D = Inode::new_with_1_data_field(ipct->primitives_point, PRIMITIVE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive), NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
 	for (int i=CAT_PRIM_IFLD; i<old_D->W.extent; i++) {
 		if (Inode::extend(D, (inter_ti) 1) == FALSE) internal_error("can't extend");
@@ -217,7 +217,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 
 @<Duplicate this package type@> =
 	equivalent_ptype = InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
-	inter_tree_node *D = Inode::fill_1(ipct->ptypes_point, PACKAGETYPE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_ptype), NULL, 0);
+	inter_tree_node *D = Inode::new_with_1_data_field(ipct->ptypes_point, PACKAGETYPE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_ptype), NULL, 0);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(ipct->ptypes_point), D);
 	if (E) {
 		Inter::Errors::issue(E);

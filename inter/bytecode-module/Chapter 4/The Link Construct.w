@@ -64,7 +64,7 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 inter_error_message *Inter::Link::new(inter_bookmark *IBM,
 	inter_ti stage, inter_ti text1, inter_ti text2, inter_ti text3, inter_ti text4, inter_ti ref, inter_ti level,
 	struct inter_error_location *eloc) {
-	inter_tree_node *P = Inode::fill_6(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
+	inter_tree_node *P = Inode::new_with_6_data_fields(IBM, LINK_IST, stage, text1, text2, text3, text4, ref, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

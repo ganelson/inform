@@ -40,7 +40,7 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
-	inter_tree_node *F = Inode::fill_1(IBM, PRIMITIVE_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, prim_name), eloc, (inter_ti) ilp->indent_level);
+	inter_tree_node *F = Inode::new_with_1_data_field(IBM, PRIMITIVE_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, prim_name), eloc, (inter_ti) ilp->indent_level);
 
 	text_stream *in = ilp->mr.exp[1];
 	match_results mr2 = Regexp::create_mr();
