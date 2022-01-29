@@ -169,7 +169,7 @@ inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_ti SID, inter_t
 		KIND_IST, SID, TID, 0, 0, SUP, L1, L2,
 		(inter_ti) constructor, eloc, level);
 	if (arity > 0) {
-		if (Inode::extend(P, (inter_ti) arity) == FALSE)
+		if (Inode::add_data_fields(P, (inter_ti) arity) == FALSE)
 			return Inter::Errors::plain(I"can't extend", eloc);
 		for (int i=0; i<arity; i++) P->W.data[OPERANDS_KIND_IFLD+i] = operands[i];
 	}

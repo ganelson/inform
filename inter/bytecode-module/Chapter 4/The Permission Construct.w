@@ -95,7 +95,7 @@ inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_ti PID, i
 }
 
 void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	inter_ti vcount = Inode::vcount(P);
+	inter_ti vcount = Inode::bump_verification_count(P);
 
 	if (P->W.extent != EXTENT_PERM_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 

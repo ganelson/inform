@@ -12,9 +12,9 @@ Chapter 1: Setting Up
 
 Chapter 2: Interoperability
 	Inter Trees
+	Inter Nodes
 	Bookmarks
 	Node Placement
-	Inter Nodes
 	Tree Location Lists
 	The Warehouse
 	Inter Node Lists

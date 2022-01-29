@@ -65,10 +65,6 @@ VOID_METHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_tree_nod
 
 @e INVALID_IST from 0
 
-@d ID_IFLD 0
-@d LEVEL_IFLD 1
-@d DATA_IFLD 2
-
 =
 void Inter::Defn::create_language(void) {
 	for (int i=0; i<MAX_INTER_CONSTRUCTS; i++) IC_lookup[i] = NULL;
@@ -338,7 +334,7 @@ void Inter::Defn::lint(inter_tree *I) {
 
 void Inter::Defn::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_ti c = Inode::get_package(P)->index_n;
-	inter_ti a = Inode::get_package_alt(P);
+	inter_ti a = Inode::get_package_slowly_getting_same_answer(P);
 	if (c != a) {
 		LOG("Frame gives package as $6, but its location is in package $6\n",
 			Inode::ID_to_package(P, c),

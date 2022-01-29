@@ -91,7 +91,7 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	} else { *E = Inode::error(P, I"not a kind which has instances", NULL); return; }
 	*E = Inter::Verify::value(owner, P, VAL1_INST_IFLD, inst_kind); if (*E) return;
 
-	inter_ti vcount = Inode::vcount(P);
+	inter_ti vcount = Inode::bump_verification_count(P);
 	if (vcount == 0) {
 		Inter::Kind::new_instance(inst_kind, inst_name);
 	}

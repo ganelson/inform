@@ -3,7 +3,8 @@
 To create nodes of inter code, and manage everything about them except their
 tree locations.
 
-@ It's essential to be able to walk an Inter tree quickly, while movements
+@h Nodes.
+It's essential to be able to walk an Inter tree quickly, while movements
 of nodes within the tree are relatively uncommon. So we provide every
 imaginatble link. Suppose the structure is:
 = (text)
@@ -45,10 +46,11 @@ typedef struct inter_tree_node {
 @ Do not call this directly in order to create a node.
 
 =
-inter_tree_node *Inode::new_node_structure(inter_tree *I, warehouse_floor_space W) {
+inter_tree_node *Inode::new_node_structure(inter_tree *I, warehouse_floor_space W,
+	inter_package *owner) {
 	inter_tree_node *itn = CREATE(inter_tree_node);
 	itn->tree = I;
-	itn->package = NULL;
+	itn->package = owner;
 	itn->parent_itn = NULL;
 	itn->first_child_itn = NULL;
 	itn->last_child_itn = NULL;
@@ -220,29 +222,41 @@ inter_tree_node *Inode::new_with_8_data_fields(inter_bookmark *IBM, int S,
 	return P;
 }
 
-@h Bytecode in memory.
-
-
-
-
-@d SYMBOL_BASE_VAL 0x40000000
-
-@d PREFRAME_SKIP_AMOUNT 0
-@d PREFRAME_VERIFICATION_COUNT 1
-@d PREFRAME_ORIGIN 2
-@d PREFRAME_COMMENT 3
-@d PREFRAME_SIZE 4
-
-@h Frames.
+@h The package of a node.
+To find the package of a node, which needs to be fast, always call
+//Inode::get_package//. The field |F->package| really just caches a result
+we could determine algorithmically, but more slowly; the other function here
+does just that, but is used only by //Inter::Defn::lint_visitor// to verify
+that we haven't fumbled our invariants.
 
 =
-inter_ti Inode::get_metadata(inter_tree_node *F, int at) {
-	if (F == NULL) return 0;
-	return F->W.in_room->bytecode[F->W.index + at];
+inter_package *Inode::get_package(inter_tree_node *F) {
+	if (F) return F->package;
+	return NULL;
 }
 
-void Inode::set_metadata(inter_tree_node *F, int at, inter_ti V) {
-	if (F) F->W.in_room->bytecode[F->W.index + at] = V;
+inter_ti Inode::get_package_slowly_getting_same_answer(inter_tree_node *X) {
+	inter_tree_node *F = X;
+	while (TRUE) {
+		F = InterTree::parent(F);
+		if (F == NULL) break;
+		if (F->W.data[ID_IFLD] == PACKAGE_IST)
+			return F->W.data[PID_PACKAGE_IFLD];
+	}
+	return 0;
+}
+
+@ More straightforwardly:
+
+=
+inter_tree *Inode::tree(inter_tree_node *F) {
+	if (F) return F->tree;
+	return NULL;
+}
+
+inter_symbols_table *Inode::globals(inter_tree_node *F) {
+	if (F) return InterTree::global_scope(Inode::tree(F));
+	return NULL;
 }
 
 inter_warehouse *Inode::warehouse(inter_tree_node *F) {
@@ -250,6 +264,194 @@ inter_warehouse *Inode::warehouse(inter_tree_node *F) {
 	return F->W.in_room->owning_warehouse;
 }
 
+@h Bytecode storage.
+Each node represents one instruction, which is encoded with a contiguous
+block of bytecode. That bytecode is not stored in the //inter_tree_node//
+structure, but in warehouse memory. 
+= (text)
+......+------+----------+--------+---------+----+-------+-------------+........
+      | Skip | Verified | Origin | Comment | ID | Level | Data        |
+......+------+----------+--------+---------+----+-------+-------------+........
+       <----------------------------------> <------------------------>
+        Preframe                             Frame
+=
+This stretch of memory is divided into a "preframe" and a "frame": the frame
+holds the words of data described above, with position 0 being the ID, and
+so on. The frame is of variable size, depending on the instruction (and in
+some cases its particular content: a constant definition for a list can be
+almost any length). But the preframe is of fixed size:
+
+@d PREFRAME_SIZE 4
+
+@d PREFRAME_SKIP_AMOUNT 0
+@d PREFRAME_VERIFICATION_COUNT 1
+@d PREFRAME_ORIGIN 2
+@d PREFRAME_COMMENT 3
+
+@ In the preframe:
+
+(*) |PREFRAME_SKIP_AMOUNT| is the offset (in words) to the next instruction.
+Since the preframe has fixed length, this is both the offset from one preframe
+to the next and also from one frame to the next.
+
+@ |PREFRAME_VERIFICATION_COUNT| is the number of times the instruction has
+been "verified". This is not always a passive process of checking, which is why
+we need to track whether it has happened. See //Definition//.
+
+This function effectively performs |v++|, where |v| is the count.
+
+=
+inter_ti Inode::bump_verification_count(inter_tree_node *F) {
+	inter_ti v = Inode::get_preframe(F, PREFRAME_VERIFICATION_COUNT);
+	Inode::set_preframe(F, PREFRAME_VERIFICATION_COUNT, v + 1);
+	return v;
+}
+
+@ |PREFRAME_ORIGIN| allows the origin of the instruction, in source code,
+to be preserved: for example, to show that this came from line 14 of a file
+called |whatever.intert|. It is 0 if no origin is recorded; it is used only
+for better reporting of any errors which arise. For how the location is
+actually encoded in the word, see //The Warehouse//.
+
+=
+inter_error_location *Inode::get_error_location(inter_tree_node *F) {
+	if (F == NULL) return NULL;
+	inter_ti L = Inode::get_preframe(F, PREFRAME_ORIGIN);
+	return Inter::Warehouse::retrieve_origin(Inode::warehouse(F), L);
+}
+
+void Inode::attach_error_location(inter_tree_node *F, inter_error_location *eloc) {
+	Inode::set_preframe(F, PREFRAME_ORIGIN,
+		Inter::Warehouse::store_origin(Inode::warehouse(F), eloc));
+}
+
+@ |PREFRAME_COMMENT| allows a piece of text to be attached to the instruction
+as a comment. (Thus, when textual Inter is converted to binary and back again,
+comments survive.) It is 0 if no comment is attached, and otherwise is the ID
+of a |text_stream| stored in the warehouse; use //Inode::ID_to_text// to
+read the actual content.
+
+=
+inter_ti Inode::get_comment(inter_tree_node *F) {
+	if (F) return Inode::get_preframe(F, PREFRAME_COMMENT);
+	return 0;
+}
+
+void Inode::attach_comment(inter_tree_node *F, inter_ti ID) {
+	if (F) Inode::set_preframe(F, PREFRAME_COMMENT, ID);
+}
+
+@ The following gets and sets from the preframe:
+
+=
+inter_ti Inode::get_preframe(inter_tree_node *F, int at) {
+	if (F == NULL) return 0;
+	return F->W.in_room->bytecode[F->W.index + at];
+}
+
+void Inode::set_preframe(inter_tree_node *F, int at, inter_ti V) {
+	if (F) F->W.in_room->bytecode[F->W.index + at] = V;
+}
+
+@ As noted above, the size of the frame varies from instruction to instruction.
+For most instructions, it's determined as soon as the inode is created -- for
+example, a |PROPERTYVALUE_IST| is always of a fixed length, and it's created
+already being that length, so that it doesn't need to be extended.
+
+But just a few instructions are of variable length depending on what they are
+doing -- |CONSTANT_IST|, for example. Those are created at their minimum
+length and then extended as needed.
+
+Note that |by| is unsigned, so cannot be negative: the bytecode can extend
+but not contract. We return |TRUE| if the extension can be made; |FALSE| only
+if something absolutely catastrophic has run out -- e.g., there is no more memory.
+It is entirely okay to throw an internal error in this event.
+
+All of this extension happens only during the process of creating the
+instruction: once that's done, it never changes in length again. Because of
+this, we can only build one instruction at a time.
+
+=
+int Inode::add_data_fields(inter_tree_node *F, inter_ti by) {
+	/* Nothing to do? */
+	if (by == 0) return TRUE;
+
+	/* Existing room already too small? (this certainly should never happen) */
+	if (F->W.index + F->W.extent + PREFRAME_SIZE < F->W.in_room->size) return FALSE;
+
+	/* Have we already moved on to building further instructions? */
+	if (F->W.in_room->next_room) return FALSE;
+		
+	if (F->W.in_room->size + (int) by <= F->W.in_room->capacity)
+		@<The existing room already has sufficient capacity to accommodate the extra@>
+	else
+		@<The existing room is not big enough@>;
+
+	return TRUE;
+}
+
+@<The existing room already has sufficient capacity to accommodate the extra@> =
+	Inode::set_preframe(F, PREFRAME_SKIP_AMOUNT,
+		Inode::get_preframe(F, PREFRAME_SKIP_AMOUNT) + by);
+	F->W.in_room->size += by;
+	F->W.extent += by;
+
+@<The existing room is not big enough@> =
+	int next_size =
+		Inter::Warehouse::enlarge_size(
+			F->W.in_room->capacity, F->W.extent + PREFRAME_SIZE + (int) by);
+
+	F->W.in_room->next_room =
+		Inter::Warehouse::new_room(
+			F->W.in_room->owning_warehouse, next_size, F->W.in_room);
+
+	warehouse_floor_space new_W =
+		Inter::Warehouse::find_room_in_room(F->W.in_room->next_room, F->W.extent + (int) by);
+
+	F->W.in_room->size = F->W.index;
+	F->W.in_room->capacity = F->W.index;
+	@<Copy the bytecode for the preframe and frame to its new home@>;
+
+@ The following saves the preframe data from its location in the old W; then
+copies the frame data across from old to new; changes the node so that it points
+to the new W, and then puts the preframe data back again, writing to the
+preframe of the new W now because the node now points to that.
+
+@<Copy the bytecode for the preframe and frame to its new home@> =
+	inter_ti a = Inode::get_preframe(F, PREFRAME_VERIFICATION_COUNT);
+	inter_ti b = Inode::get_preframe(F, PREFRAME_ORIGIN);
+	inter_ti c = Inode::get_preframe(F, PREFRAME_COMMENT);
+
+	F->W.index = new_W.index;
+	F->W.in_room = new_W.in_room;
+	for (int i=0; i<new_W.extent; i++)
+		if (i < F->W.extent)
+			new_W.data[i] = F->W.data[i];
+		else
+			new_W.data[i] = 0;
+	F->W.data = new_W.data;
+	F->W.extent = new_W.extent;
+
+	Inode::set_preframe(F, PREFRAME_VERIFICATION_COUNT, a);
+	Inode::set_preframe(F, PREFRAME_ORIGIN, b);
+	Inode::set_preframe(F, PREFRAME_COMMENT, c);
+
+@h Interpreting values stored in bytecode.
+The data stored in the fields above may represent strings, symbols and the like,
+but it's just stored in what amounts to an array of unsigned integers: what is
+stored is just an ID representing one of those things. The conversion from an ID
+to the actual resource it represents depends on:
+
+(a) What it is meant to be (symbols table, text, package, ...) -- there is no
+indication in the bytecode as to which that is, so we need to know what we're
+looking for, e.g. that what is in position 3 is a text;
+
+(b) Which node the value came from -- because these depend on the warehouse
+where data is stored (and some nodes are in different warehouses than others),
+and sometimes also on the local symbols table (which depends on the package
+we are in, which in turn depends on the node).
+
+=
 inter_symbols_table *Inode::ID_to_symbols_table(inter_tree_node *F, inter_ti ID) {
 	return Inter::Warehouse::get_symbols_table(Inode::warehouse(F), ID);
 }
@@ -271,12 +473,15 @@ void *Inode::ID_to_ref(inter_tree_node *F, inter_ti N) {
 	return Inter::Warehouse::get_ref(Inode::warehouse(F), N);
 }
 
-inter_symbols_table *Inode::globals(inter_tree_node *F) {
-	if (F) return InterTree::global_scope(F->tree);
-	return NULL;
-}
+@h Equality.
+It can temporarily happen that two nodes exist which represent the
+same instruction, and the following tests for that. Note that the test is not
+that the nodes do the same thing as each other, but that they point to the
+same strip of bytecode as each other. Two identical instructions but at
+different points in the program would not pass this test.
 
-int Inode::eq(inter_tree_node *F1, inter_tree_node *F2) {
+=
+int Inode::same_instruction(inter_tree_node *F1, inter_tree_node *F2) {
 	if ((F1 == NULL) || (F2 == NULL)) {
 		if (F1 == F2) return TRUE;
 		return FALSE;
@@ -286,73 +491,14 @@ int Inode::eq(inter_tree_node *F1, inter_tree_node *F2) {
 	return TRUE;
 }
 
-
-@ =
-int Inode::extend(inter_tree_node *F, inter_ti by) {
-	if (by == 0) return TRUE;
-	if ((F->W.index + F->W.extent + PREFRAME_SIZE < F->W.in_room->size) ||
-		(F->W.in_room->next_room)) return FALSE;
-		
-	if (F->W.in_room->size + (int) by <= F->W.in_room->capacity) {	
-		Inode::set_metadata(F, PREFRAME_SKIP_AMOUNT,
-			Inode::get_metadata(F, PREFRAME_SKIP_AMOUNT) + by);
-		F->W.in_room->size += by;
-		F->W.extent += by;
-		return TRUE;
-	}
-
-	int next_size = Inter::Warehouse::enlarge_size(F->W.in_room->capacity, F->W.extent + PREFRAME_SIZE + (int) by);
-
-	F->W.in_room->next_room = Inter::Warehouse::new_room(F->W.in_room->owning_warehouse,
-		next_size, F->W.in_room);
-
-	warehouse_floor_space W = Inter::Warehouse::find_room_in_room(F->W.in_room->next_room, F->W.extent + (int) by);
-
-	F->W.in_room->size = F->W.index;
-	F->W.in_room->capacity = F->W.index;
-
-	inter_ti a = Inode::get_metadata(F, PREFRAME_VERIFICATION_COUNT);
-	inter_ti b = Inode::get_metadata(F, PREFRAME_ORIGIN);
-	inter_ti c = Inode::get_metadata(F, PREFRAME_COMMENT);
-
-	F->W.index = W.index;
-	F->W.in_room = W.in_room;
-	for (int i=0; i<W.extent; i++)
-		if (i < F->W.extent)
-			W.data[i] = F->W.data[i];
-		else
-			W.data[i] = 0;
-	F->W.data = W.data;
-	F->W.extent = W.extent;
-
-	Inode::set_metadata(F, PREFRAME_VERIFICATION_COUNT, a);
-	Inode::set_metadata(F, PREFRAME_ORIGIN, b);
-	Inode::set_metadata(F, PREFRAME_COMMENT, c);
-	return TRUE;
-}
-
-inter_ti Inode::vcount(inter_tree_node *F) {
-	inter_ti v = Inode::get_metadata(F, PREFRAME_VERIFICATION_COUNT);
-	Inode::set_metadata(F, PREFRAME_VERIFICATION_COUNT, v + 1);
-	return v;
-}
-
-inter_ti Inode::to_index(inter_tree_node *F) {
-	if ((F->W.in_room == NULL) || (F->W.index < 0)) internal_error("no index for null frame");
-	return (F->W.in_room->index_offset) + (inter_ti) (F->W.index);
-}
-
-@
+@h Errors.
+Suppose we want to generate an error message for malformed Inter code, and
+to identify it as occurring at a particular node. We can get one thus:
 
 =
-inter_error_location *Inode::retrieve_origin(inter_tree_node *F) {
-	if (F == NULL) return NULL;
-	return Inter::Warehouse::retrieve_origin(Inode::warehouse(F), Inode::get_metadata(F, PREFRAME_ORIGIN));
-}
-
 inter_error_message *Inode::error(inter_tree_node *F, text_stream *err, text_stream *quote) {
 	inter_error_message *iem = CREATE(inter_error_message);
-	inter_error_location *eloc = Inode::retrieve_origin(F);
+	inter_error_location *eloc = Inode::get_error_location(F);
 	if (eloc)
 		iem->error_at = *eloc;
 	else
@@ -361,33 +507,3 @@ inter_error_message *Inode::error(inter_tree_node *F, text_stream *err, text_str
 	iem->error_quote = quote;
 	return iem;
 }
-
-inter_ti Inode::get_comment(inter_tree_node *F) {
-	if (F) return Inode::get_metadata(F, PREFRAME_COMMENT);
-	return 0;
-}
-
-void Inode::attach_comment(inter_tree_node *F, inter_ti ID) {
-	if (F) Inode::set_metadata(F, PREFRAME_COMMENT, ID);
-}
-
-inter_package *Inode::get_package(inter_tree_node *F) {
-	if (F) return F->package;
-	return NULL;
-}
-
-inter_ti Inode::get_package_alt(inter_tree_node *X) {
-	inter_tree_node *F = X;
-	while (TRUE) {
-		F = InterTree::parent(F);
-		if (F == NULL) break;
-		if (F->W.data[ID_IFLD] == PACKAGE_IST)
-			return F->W.data[PID_PACKAGE_IFLD];
-	}
-	return 0;
-}
-
-void Inode::attach_package(inter_tree_node *F, inter_package *pack) {
-	if (F) F->package = pack;
-}
-

@@ -55,7 +55,7 @@ inter_error_message *Inter::Append::new(inter_bookmark *IBM, inter_symbol *symbo
 }
 
 void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	inter_ti vcount = Inode::vcount(P);
+	inter_ti vcount = Inode::bump_verification_count(P);
 
 	if (P->W.extent != EXTENT_APPEND_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *symbol = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[SYMBOL_APPEND_IFLD]);;

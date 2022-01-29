@@ -152,3 +152,60 @@ an //inter_symbols_table// belonging to some package.
 [1] In real-life botany, trees do not have building sites or warehouses, but
 mixing some metaphors cannot really be helped. Trees in nature do not grow
 the way they do in computer science.
+
+@h Nodes and instructions.
+Each node in an Inter tree represents a single Inter instruction,[1] details of
+which are stored as a stretch of bytecode in memory.
+
+This use of both a tree and also a mass of binary bytecode is an attempt to
+have our cake and eat it. The tree structure makes it quick and easy to splice,
+cut and reorder code; the binary bytecode storage is quick to load from a file.
+Still, the result is an unusual hybrid of a data structure.
+
+For example, the tree might start out like this:
+= (text)
+							...	102	103	104	105	106	107	108	109	...
+	node1  -----------------------> [.........]
+		node2  -------------------------------> [.....]
+		node3  ---------------------------------------> [.........]
+=
+Here |node1| represents an instruction, with the details stored at bytecode
+locations 103 to 105; |node2| points to bytecode at 106 to 107, and so on.
+But then we could decide, when optimising code, that we want instructions
+|node2| and |node3| performed the other way round. Simple amendments to
+the tree structure achieve this without needing to edit the bytecode:
+= (text)
+							...	102	103	104	105	106	107	108	109	...
+	node1  -----------------------> [.........]
+		node3  ---------------------------------------> [.........]
+		node2  -------------------------------> [.....]
+=
+Indeed, we could decide that the instruction at |node2| is redundant and cut it:
+= (text)
+							...	102	103	104	105	106	107	108	109	...
+	node1  -----------------------> [.........]
+		node3  ---------------------------------------> [.........]
+=
+It doesn't matter that the resulting bytecode storage is all mixed up in
+sequencing; the tree is what gives us the sequence of instructions, and the
+order of words in bytecode memory is only significant within a single
+instruction.
+
+[1] Well, except for the root node, which has no real meaning. But there is
+only one of those.
+
+@ As these diagrams suggest, we can generate Inter instructions quite flexibly,
+and are under no obligation to do so in sequence or all at once. (Indeed, we
+can add entirely new instructions in the linking process or when optimising
+code.)
+
+So it is very useful to have a way to keep "bookmarks" in the tree, as positions
+where we are currently writing code, and might want to return to. For this
+purpose, we have the //inter_bookmark// type, which can represent any feasible
+write position in the tree. (This is not the same thing as representing any
+existing node in the tree: see //Bookmarks// for more.)
+
+And this in turn allows for a simple API for //Node Placement//, allowing us
+to move or remove nodes in the tree, and to keep track of cursor-like moving
+bookmark positions when we generate a stream of new nodes and place them one
+after another.

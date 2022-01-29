@@ -48,14 +48,14 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 		inter_ti lcat = Inter::Primitive::category(eloc, mr2.exp[0], E);
 		if (*E) return;
 		if (lcat == 0) break;
-		if (Inode::extend(F, (inter_ti) 1) == FALSE) internal_error("can't extend");
+		if (Inode::add_data_fields(F, (inter_ti) 1) == FALSE) internal_error("can't extend");
 		F->W.data[F->W.extent - 1] = lcat;
 		Str::copy(in, mr2.exp[1]);
 	}
 
 	inter_ti rcat = Inter::Primitive::category(eloc, ilp->mr.exp[2], E);
 	if (*E) return;
-	if (Inode::extend(F, (inter_ti) 1) == FALSE) internal_error("can't extend");
+	if (Inode::add_data_fields(F, (inter_ti) 1) == FALSE) internal_error("can't extend");
 	F->W.data[F->W.extent - 1] = rcat;
 
 	*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), F); if (*E) return;

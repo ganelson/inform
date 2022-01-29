@@ -121,12 +121,12 @@ void Synoptic::end_array(inter_tree *I) {
 
 =
 void Synoptic::numeric_entry(inter_ti val2) {
-	if (Inode::extend(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
+	if (Inode::add_data_fields(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
 	synoptic_array_node->W.data[synoptic_array_node->W.extent-2] = LITERAL_IVAL;
 	synoptic_array_node->W.data[synoptic_array_node->W.extent-1] = val2;
 }
 void Synoptic::symbol_entry(inter_symbol *S) {
-	if (Inode::extend(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
+	if (Inode::add_data_fields(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
 	inter_package *pack = Inter::Packages::container(synoptic_array_node);
 	inter_symbol *local_S =
 		InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(pack), S->symbol_name);
@@ -137,7 +137,7 @@ void Synoptic::symbol_entry(inter_symbol *S) {
 	synoptic_array_node->W.data[synoptic_array_node->W.extent-1] = val2;
 }
 void Synoptic::textual_entry(text_stream *text) {
-	if (Inode::extend(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
+	if (Inode::add_data_fields(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
 	inter_package *pack = Inter::Packages::container(synoptic_array_node);
 	inter_tree *I = Inter::Packages::tree(pack);
 	inter_ti val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);

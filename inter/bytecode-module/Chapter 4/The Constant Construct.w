@@ -262,7 +262,7 @@ inter_error_message *Inter::Constant::new_list(inter_bookmark *IBM, inter_ti SID
 	int no_pairs, inter_ti *v1_pile, inter_ti *v2_pile, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *AP = Inode::new_with_3_data_fields(IBM, CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_LIST, eloc, level);
 	int pos = AP->W.extent;
-	if (Inode::extend(AP, (unsigned int) (2*no_pairs)) == FALSE)
+	if (Inode::add_data_fields(AP, (inter_ti) (2*no_pairs)) == FALSE)
 		internal_error("can't extend array node to make room for entries");
 	for (int i=0; i<no_pairs; i++) {
 		AP->W.data[pos++] = v1_pile[i];
@@ -290,7 +290,7 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 		*E = Inter::Types::read(line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), conts_kind, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
 		if (*E) return FALSE;
 	}
-	if (Inode::extend(P, 2) == FALSE) { *E = Inter::Errors::quoted(I"list too long", S, eloc); return FALSE; }
+	if (Inode::add_data_fields(P, 2) == FALSE) { *E = Inter::Errors::quoted(I"list too long", S, eloc); return FALSE; }
 	P->W.data[P->W.extent-2] = con_val1;
 	P->W.data[P->W.extent-1] = con_val2;
 	return TRUE;

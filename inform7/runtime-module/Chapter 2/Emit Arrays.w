@@ -238,7 +238,7 @@ void EmitArrays::end_inner(void) {
 		Inode::new_with_3_data_fields(Emit::at(), CONSTANT_IST, Emit::symbol_id(con_s), CID,
 			current_A->array_form, NULL, Emit::baseline());
 	int pos = array_in_progress->W.extent;
-	if (Inode::extend(array_in_progress, (unsigned int) (current_A->space_used)) == FALSE)
+	if (Inode::add_data_fields(array_in_progress, (unsigned int) (current_A->space_used)) == FALSE)
 		internal_error("can't extend frame");
 	for (int i=0; i<current_A->space_used; i++)
 		array_in_progress->W.data[pos++] = current_A->entry_storage[i];

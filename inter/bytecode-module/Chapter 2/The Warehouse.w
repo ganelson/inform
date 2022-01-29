@@ -121,9 +121,8 @@ inter_tree_node *Inter::Warehouse::new_node(inter_warehouse *warehouse, inter_tr
 	inter_warehouse_room *IS = warehouse->first_room;
 	while (IS->next_room) IS = IS->next_room;
 	warehouse_floor_space W = Inter::Warehouse::find_room_in_room(IS, n);
-	inter_tree_node *F = Inode::new_node_structure(I, W);
-	Inode::set_metadata(F, PREFRAME_ORIGIN, Inter::Warehouse::store_origin(warehouse, eloc));
-	Inode::attach_package(F, owner);
+	inter_tree_node *F = Inode::new_node_structure(I, W, owner);
+	if (eloc) Inode::attach_error_location(F, eloc);
 	return F;
 }
 

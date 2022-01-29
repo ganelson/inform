@@ -1105,7 +1105,7 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_tree_node *pair_list = Inode::new_with_3_data_fields(IBM, CONSTANT_IST, MID, KID, op, NULL, B);
 	int pos = pair_list->W.extent;
-	if (Inode::extend(pair_list, 4) == FALSE) internal_error("can't extend frame");
+	if (Inode::add_data_fields(pair_list, 4) == FALSE) internal_error("can't extend frame");
 	if (i1) {
 		Inter::Symbols::to_data(I, pack, i1,
 			&(pair_list->W.data[pos]), &(pair_list->W.data[pos+1]));

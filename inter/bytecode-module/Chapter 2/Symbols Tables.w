@@ -19,6 +19,8 @@ typedef struct inter_symbols_table {
 
 @d INITIAL_INTER_SYMBOLS_ID_RANGE 16
 @d SYMBOLS_THRESHOLD 5
+@d SYMBOL_BASE_VAL 0x40000000
+
 
 =
 inter_symbols_table *InterSymbolsTables::new(void) {

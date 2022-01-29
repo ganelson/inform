@@ -70,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">bytecode</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the bytecode module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. WHat is intermediate about inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Packages</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Symbols</a></li><li><a href="P-wtmd.html#SP6">&#167;6. The warehouse and the building site</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. WHat is intermediate about inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Packages</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Symbols</a></li><li><a href="P-wtmd.html#SP6">&#167;6. The warehouse and the building site</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Nodes and instructions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The bytecode module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -237,6 +237,74 @@ an <a href="2-st.html#SP1" class="internal">inter_symbols_table</a> belonging to
 mixing some metaphors cannot really be helped. Trees in nature do not grow
 the way they do in computer science.
 <a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Nodes and instructions. </b>Each node in an Inter tree represents a single Inter instruction,<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> details of
+which are stored as a stretch of bytecode in memory.
+</p>
+
+<p class="commentary">This use of both a tree and also a mass of binary bytecode is an attempt to
+have our cake and eat it. The tree structure makes it quick and easy to splice,
+cut and reorder code; the binary bytecode storage is quick to load from a file.
+Still, the result is an unusual hybrid of a data structure.
+</p>
+
+<p class="commentary">For example, the tree might start out like this:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                            ... 102 103 104 105 106 107 108 109 ...</span>
+<span class="plain-syntax">    node1  -----------------------&gt; [.........]</span>
+<span class="plain-syntax">        node2  -------------------------------&gt; [.....]</span>
+<span class="plain-syntax">        node3  ---------------------------------------&gt; [.........]</span>
+</pre>
+<p class="commentary">Here <span class="extract"><span class="extract-syntax">node1</span></span> represents an instruction, with the details stored at bytecode
+locations 103 to 105; <span class="extract"><span class="extract-syntax">node2</span></span> points to bytecode at 106 to 107, and so on.
+But then we could decide, when optimising code, that we want instructions
+<span class="extract"><span class="extract-syntax">node2</span></span> and <span class="extract"><span class="extract-syntax">node3</span></span> performed the other way round. Simple amendments to
+the tree structure achieve this without needing to edit the bytecode:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                            ... 102 103 104 105 106 107 108 109 ...</span>
+<span class="plain-syntax">    node1  -----------------------&gt; [.........]</span>
+<span class="plain-syntax">        node3  ---------------------------------------&gt; [.........]</span>
+<span class="plain-syntax">        node2  -------------------------------&gt; [.....]</span>
+</pre>
+<p class="commentary">Indeed, we could decide that the instruction at <span class="extract"><span class="extract-syntax">node2</span></span> is redundant and cut it:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                            ... 102 103 104 105 106 107 108 109 ...</span>
+<span class="plain-syntax">    node1  -----------------------&gt; [.........]</span>
+<span class="plain-syntax">        node3  ---------------------------------------&gt; [.........]</span>
+</pre>
+<p class="commentary">It doesn't matter that the resulting bytecode storage is all mixed up in
+sequencing; the tree is what gives us the sequence of instructions, and the
+order of words in bytecode memory is only significant within a single
+instruction.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> Well, except for the root node, which has no real meaning. But there is
+only one of those.
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>As these diagrams suggest, we can generate Inter instructions quite flexibly,
+and are under no obligation to do so in sequence or all at once. (Indeed, we
+can add entirely new instructions in the linking process or when optimising
+code.)
+</p>
+
+<p class="commentary">So it is very useful to have a way to keep "bookmarks" in the tree, as positions
+where we are currently writing code, and might want to return to. For this
+purpose, we have the <a href="2-bkm.html#SP1" class="internal">inter_bookmark</a> type, which can represent any feasible
+write position in the tree. (This is not the same thing as representing any
+existing node in the tree: see <a href="2-bkm.html" class="internal">Bookmarks</a> for more.)
+</p>
+
+<p class="commentary">And this in turn allows for a simple API for <a href="2-np.html" class="internal">Node Placement</a>, allowing us
+to move or remove nodes in the tree, and to keep track of cursor-like moving
+bookmark positions when we generate a stream of new nodes and place them one
+after another.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">P</li><li class="progresscurrent">wtmd</li><li class="progresschapter"><a href="1-bm.html">1</a></li><li class="progresschapter"><a href="2-it.html">2</a></li><li class="progresschapter"><a href="3-ca.html">3</a></li><li class="progresschapter"><a href="4-tnc.html">4</a></li><li class="progresschapter"><a href="5-tlc.html">5</a></li><li class="progressnext"><a href="1-bm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

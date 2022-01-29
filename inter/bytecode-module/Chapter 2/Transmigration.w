@@ -191,7 +191,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 	inter_tree_node *D = Inode::new_with_1_data_field(ipct->primitives_point, PRIMITIVE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive), NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
 	for (int i=CAT_PRIM_IFLD; i<old_D->W.extent; i++) {
-		if (Inode::extend(D, (inter_ti) 1) == FALSE) internal_error("can't extend");
+		if (Inode::add_data_fields(D, (inter_ti) 1) == FALSE) internal_error("can't extend");
 		D->W.data[i] = old_D->W.data[i];
 	}
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(ipct->primitives_point), D);

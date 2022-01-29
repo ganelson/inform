@@ -100,7 +100,7 @@ inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_ti PID
 }
 
 void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	inter_ti vcount = Inode::vcount(P);
+	inter_ti vcount = Inode::bump_verification_count(P);
 
 	if (P->W.extent != EXTENT_PVAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::symbol(owner, P, P->W.data[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;

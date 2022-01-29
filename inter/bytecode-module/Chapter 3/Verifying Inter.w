@@ -16,7 +16,7 @@ inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *
 	}
 	inter_tree_node *D = Inter::Symbols::definition(S);
 	if (D == NULL) Inter::Symbols::define(S, P);
-	else if (Inode::eq(D, P) == FALSE) {
+	else if (Inode::same_instruction(D, P) == FALSE) {
 		if (Inter::Symbols::is_predeclared(S)) {
 			Inter::Symbols::define(S, P);
 			return NULL;
