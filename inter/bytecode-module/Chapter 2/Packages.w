@@ -155,7 +155,7 @@ inter_symbol *Inter::Packages::search_exhaustively(inter_package *P, text_stream
 	if (found) return found;
 	inter_tree_node *D = Inter::Packages::definition(P);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.data[ID_IFLD] == PACKAGE_IST) {
+		if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
 			inter_package *Q = Inter::Package::defined_by_frame(C);
 			found = Inter::Packages::search_exhaustively(Q, S);
 			if (found) return found;
@@ -173,7 +173,7 @@ inter_symbol *Inter::Packages::search_resources(inter_tree *I, text_stream *S) {
 	if (main_package) {
 		inter_tree_node *D = Inter::Packages::definition(main_package);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
+			if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
 				inter_package *Q = Inter::Package::defined_by_frame(C);
 				inter_symbol *found = Inter::Packages::search_exhaustively(Q, S);
 				if (found) return found;

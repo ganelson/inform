@@ -57,7 +57,7 @@ void Inter::Evaluation::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_nod
 
 void Inter::Evaluation::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
-		if ((C->W.data[0] != INV_IST) && (C->W.data[0] != SPLAT_IST) && (C->W.data[0] != VAL_IST) && (C->W.data[0] != LABEL_IST) && (C->W.data[0] != EVALUATION_IST)) {
+		if ((C->W.instruction[0] != INV_IST) && (C->W.instruction[0] != SPLAT_IST) && (C->W.instruction[0] != VAL_IST) && (C->W.instruction[0] != LABEL_IST) && (C->W.instruction[0] != EVALUATION_IST)) {
 			*E = Inode::error(C, I"only an inv, a splat, a val, or a label can be below an evaluation", NULL);
 			return;
 		}

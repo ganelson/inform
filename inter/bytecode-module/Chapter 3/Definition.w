@@ -115,8 +115,8 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 				inter_error_message *EP =
 					Inter::Constant::parse_text(parsed_text, keyword, P.index+2, Str::len(keyword)-2, NULL);
 				inter_warehouse *warehouse = InterTree::warehouse(I);
-				val = Inter::Warehouse::create_text(warehouse, InterTree::root_package(I));
-				Str::copy(Inter::Warehouse::get_text(warehouse, val), parsed_text);
+				val = InterWarehouse::create_text(warehouse, InterTree::root_package(I));
+				Str::copy(InterWarehouse::get_text(warehouse, val), parsed_text);
 				DISCARD_TEXT(parsed_text)
 				if (EP) *E = EP;
 				textual = TRUE;
@@ -181,16 +181,16 @@ inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inte
 
 inter_error_message *Inter::Defn::get_construct(inter_tree_node *P, inter_construct **to) {
 	if (P == NULL) return Inode::error(P, I"invalid frame", NULL);
-	if ((P->W.data[ID_IFLD] == INVALID_IST) || (P->W.data[ID_IFLD] >= MAX_INTER_CONSTRUCTS))
+	if ((P->W.instruction[ID_IFLD] == INVALID_IST) || (P->W.instruction[ID_IFLD] >= MAX_INTER_CONSTRUCTS))
 		return Inode::error(P, I"no such construct", NULL);
-	inter_construct *IC = IC_lookup[P->W.data[ID_IFLD]];
+	inter_construct *IC = IC_lookup[P->W.instruction[ID_IFLD]];
 	if (IC == NULL) return Inode::error(P, I"bad construct", NULL);
 	if (to) *to = IC;
 	return NULL;
 }
 
 inter_error_message *Inter::Defn::write_construct_text(OUTPUT_STREAM, inter_tree_node *P) {
-	if (P->W.data[ID_IFLD] == NOP_IST) return NULL;
+	if (P->W.instruction[ID_IFLD] == NOP_IST) return NULL;
 	return Inter::Defn::write_construct_text_allowing_nop(OUT, P);
 }
 
@@ -198,15 +198,15 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	for (inter_ti L=0; L<P->W.data[LEVEL_IFLD]; L++) WRITE("\t");
+	for (inter_ti L=0; L<P->W.instruction[LEVEL_IFLD]; L++) WRITE("\t");
 	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
 	inter_ti ID = Inode::get_comment(P);
 	if (ID != 0) {
-		if (P->W.data[ID_IFLD] != COMMENT_IST) WRITE(" ");
+		if (P->W.instruction[ID_IFLD] != COMMENT_IST) WRITE(" ");
 		WRITE("# %S", Inode::ID_to_text(P, ID));
 	}
 	WRITE("\n");
-	if (P->W.data[ID_IFLD] == PACKAGE_IST) Inter::Package::write_symbols(OUT, P);
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) Inter::Package::write_symbols(OUT, P);
 	return E;
 }
 
@@ -235,11 +235,11 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 		literal = FALSE;
 		if (c == '\\') literal = TRUE;
 		if ((c == '#') && ((P.index == 0) || (Str::get_at(ilp.line, P.index-1) != '#')) && (Str::get_at(ilp.line, P.index+1) != '#') && (quoted == FALSE)) {
-			ilp.terminal_comment = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+			ilp.terminal_comment = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 			int at = Str::index(P);
 			P = Str::forward(P);
 			while (Str::get(P) == ' ') P = Str::forward(P);
-			Str::substr(Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
+			Str::substr(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
 			Str::truncate(ilp.line, at);
 			break;
 		}
@@ -299,7 +299,7 @@ int Inter::Defn::get_level(inter_tree_node *P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return 0;
-	return (int) P->W.data[LEVEL_IFLD];
+	return (int) P->W.instruction[LEVEL_IFLD];
 }
 
 inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
@@ -312,7 +312,7 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 	else if (Inter::Packages::is_codelike(pack)) need = INSIDE_CODE_PACKAGE;
 	if ((IC->usage_permissions & need) != need) {
 		text_stream *M = Str::new();
-		WRITE_TO(M, "construct (%d) '", P->W.data[LEVEL_IFLD]);
+		WRITE_TO(M, "construct (%d) '", P->W.instruction[LEVEL_IFLD]);
 		Inter::Defn::write_construct_text(M, P);
 		WRITE_TO(M, "' (%d) cannot be used ", IC->construct_ID);
 		switch (need) {

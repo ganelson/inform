@@ -65,7 +65,7 @@ calling functions.
 @<This does indeed modify a value by reference@> =
 	inter_tree_node *ref = InterTree::first_child(P);
 	inter_tree_node *storage_ref = InterTree::first_child(P);
-	if (storage_ref->W.data[0] == REFERENCE_IST)
+	if (storage_ref->W.instruction[0] == REFERENCE_IST)
 		storage_ref = InterTree::first_child(storage_ref);
 	int val_supplied = FALSE;
 	if ((bip == STORE_BIP) || (bip == SETBIT_BIP) || (bip == CLEARBIT_BIP)) val_supplied = TRUE;

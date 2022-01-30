@@ -113,8 +113,8 @@ difference to compiled code.
 
 =
 void EmitArrays::divider(text_stream *divider_text) {
-	inter_ti S = Inter::Warehouse::create_text(Emit::warehouse(), Emit::package());
-	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), S), divider_text);
+	inter_ti S = InterWarehouse::create_text(Emit::warehouse(), Emit::package());
+	Str::copy(InterWarehouse::get_text(Emit::warehouse(), S), divider_text);
 	EmitArrays::entry_inner(DIVIDER_IVAL, S);
 }
 
@@ -238,10 +238,9 @@ void EmitArrays::end_inner(void) {
 		Inode::new_with_3_data_fields(Emit::at(), CONSTANT_IST, Emit::symbol_id(con_s), CID,
 			current_A->array_form, NULL, Emit::baseline());
 	int pos = array_in_progress->W.extent;
-	if (Inode::add_data_fields(array_in_progress, (unsigned int) (current_A->space_used)) == FALSE)
-		internal_error("can't extend frame");
+	Inode::extend_instruction_by(array_in_progress, (unsigned int) (current_A->space_used));
 	for (int i=0; i<current_A->space_used; i++)
-		array_in_progress->W.data[pos++] = current_A->entry_storage[i];
+		array_in_progress->W.instruction[pos++] = current_A->entry_storage[i];
 	Produce::guard(Inter::Defn::verify_construct(
 		Emit::package(), array_in_progress));
 	NodePlacement::move_to_moving_bookmark(array_in_progress, Emit::at());

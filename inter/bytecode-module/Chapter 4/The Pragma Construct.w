@@ -39,7 +39,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	if (*E) return;
 
 	text_stream *S = ilp->mr.exp[1];
-	inter_ti ID = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+	inter_ti ID = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 	int literal_mode = FALSE;
 	LOOP_THROUGH_TEXT(pos, S) {
 		int c = (int) Str::get(pos);
@@ -55,7 +55,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 			}
 		}
 		if (Inter::Constant::char_acceptable(c) == FALSE) { *E = Inter::Errors::quoted(I"bad character in text", S, eloc); return; }
-		PUT_TO(Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), ID), c);
+		PUT_TO(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ID), c);
 		literal_mode = FALSE;
 	}
 
@@ -70,19 +70,19 @@ inter_error_message *Inter::Pragma::new(inter_bookmark *IBM, inter_symbol *targe
 }
 
 void Inter::Pragma::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	P->W.data[TEXT_PRAGMA_IFLD] = grid[P->W.data[TEXT_PRAGMA_IFLD]];
+	P->W.instruction[TEXT_PRAGMA_IFLD] = grid[P->W.instruction[TEXT_PRAGMA_IFLD]];
 }
 
 void Inter::Pragma::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_PRAGMA_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *target_name = InterSymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_name == NULL) { *E = Inode::error(P, I"no target name", NULL); return; }
-	if (P->W.data[TEXT_PRAGMA_IFLD] == 0) { *E = Inode::error(P, I"no pragma text", NULL); return; }
+	if (P->W.instruction[TEXT_PRAGMA_IFLD] == 0) { *E = Inode::error(P, I"no pragma text", NULL); return; }
 }
 
 void Inter::Pragma::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *target_name = InterSymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
-	inter_ti ID = P->W.data[TEXT_PRAGMA_IFLD];
+	inter_ti ID = P->W.instruction[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	WRITE("pragma %S \"%S\"", target_name->symbol_name, S);
 }

@@ -35,7 +35,7 @@ void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_symbol *target_s = InterSymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
 	if (target_s == NULL) internal_error("bad pragma");
-	inter_ti ID = P->W.data[TEXT_PRAGMA_IFLD];
+	inter_ti ID = P->W.instruction[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	Generators::offer_pragma(gen, P, target_s->symbol_name, S);
 }
@@ -52,7 +52,7 @@ void Vanilla::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_package *outer = Inter::Packages::container(P);
 	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
-		switch (P->W.data[ID_IFLD]) {
+		switch (P->W.instruction[ID_IFLD]) {
 			case CONSTANT_IST:
 			case VARIABLE_IST:
 			case SPLAT_IST:
@@ -85,7 +85,7 @@ It is so often used recursively that the following abbreviation macros are helpf
 
 =
 void Vanilla::node(code_generation *gen, inter_tree_node *P) {
-	switch (P->W.data[ID_IFLD]) {
+	switch (P->W.instruction[ID_IFLD]) {
 		case CONSTANT_IST:      VanillaConstants::constant(gen, P); break;
 
 		case LABEL_IST:         VanillaCode::label(gen, P); break;
@@ -132,7 +132,7 @@ void Vanilla::splat(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
 	text_stream *S =
-		Inter::Warehouse::get_text(InterTree::warehouse(I), P->W.data[MATTER_SPLAT_IFLD]);
+		InterWarehouse::get_text(InterTree::warehouse(I), P->W.instruction[MATTER_SPLAT_IFLD]);
 	Vanilla::splat_matter(OUT, I, S);
 }
 

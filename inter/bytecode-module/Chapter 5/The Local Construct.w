@@ -63,12 +63,12 @@ void Inter::Local::verify(inter_construct *IC, inter_tree_node *P, inter_package
 	inter_symbols_table *locals = Inter::Packages::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
 	*E = Inter::Verify::local_defn(P, DEFN_LOCAL_IFLD, locals); if (*E) return;
-	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_LOCAL_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_LOCAL_IFLD], KIND_IST); if (*E) return;
 }
 
 void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *var_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
+	inter_symbol *var_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 	inter_symbol *var_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_LOCAL_IFLD);
 	if (var_name) {
 		WRITE("local %S %S", var_name->symbol_name, var_kind->symbol_name);
@@ -80,6 +80,6 @@ inter_symbol *Inter::Local::kind_of(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
 	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
 	if (D == NULL) return NULL;
-	if (D->W.data[ID_IFLD] != LOCAL_IST) return NULL;
+	if (D->W.instruction[ID_IFLD] != LOCAL_IST) return NULL;
 	return InterSymbolsTables::symbol_from_frame_data(D, KIND_LOCAL_IFLD);
 }

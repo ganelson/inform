@@ -50,7 +50,7 @@ inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_ti KID,
 
 void Inter::DefaultValue::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_DEF_IFR) *E = Inode::error(P, I"extent wrong", NULL);
-	else *E = Inter::Verify::symbol(owner, P, P->W.data[KIND_DEF_IFLD], KIND_IST);
+	else *E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_DEF_IFLD], KIND_IST);
 }
 
 void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
@@ -58,7 +58,7 @@ void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	if (con_kind) {
 		WRITE("defaultvalue %S = ", con_kind->symbol_name);
 		Inter::Types::write(OUT, P, con_kind,
-			P->W.data[VAL1_DEF_IFLD], P->W.data[VAL1_DEF_IFLD+1], Inter::Packages::scope_of(P), FALSE);
+			P->W.instruction[VAL1_DEF_IFLD], P->W.instruction[VAL1_DEF_IFLD+1], Inter::Packages::scope_of(P), FALSE);
 	} else {
 		*E = Inode::error(P, I"defaultvalue can't be written", NULL);
 	}

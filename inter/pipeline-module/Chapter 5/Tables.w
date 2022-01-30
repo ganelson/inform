@@ -15,12 +15,12 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 			inter_package *pack = Inter::Package::defined_by_frame(inv->table_column_usage_nodes->list[i].node);
 			inter_tree_node *ID = Synoptic::get_definition(pack, I"column_identity");
 			inter_symbol *id_s = NULL;
-			if (ID->W.data[DATA_CONST_IFLD] == ALIAS_IVAL)
-				id_s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), ID->W.data[DATA_CONST_IFLD+1]);
+			if (ID->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)
+				id_s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), ID->W.instruction[DATA_CONST_IFLD+1]);
 			if (id_s == NULL) internal_error("column_identity not an ALIAS_IVAL");
 			ID = Inter::Symbols::definition(id_s);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"column_bits");
-			D->W.data[DATA_CONST_IFLD+1] += ID->W.data[DATA_CONST_IFLD+1];
+			D->W.instruction[DATA_CONST_IFLD+1] += ID->W.instruction[DATA_CONST_IFLD+1];
 		}
 	}
 	@<Define TABLEOFTABLES array@>;
@@ -39,7 +39,7 @@ so we change the values of these constants accordingly.
 	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->table_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"table_id");
-		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
+		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
 	}
 
 @ And similarly for columns. The runtime code uses a range of unique ID numbers
@@ -53,7 +53,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	for (int i=0; i<TreeLists::len(inv->table_column_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->table_column_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"table_column_id");
-		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) (i + 100);
+		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) (i + 100);
 	}
 
 @<Define TABLEOFTABLES array@> =
@@ -172,10 +172,10 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 			Inter::Package::defined_by_frame(inv->table_column_usage_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_optional_definition(pack, I"column_blanks");
 		if (D) {
-			D->W.data[DATA_CONST_IFLD+1] = hwm;
+			D->W.instruction[DATA_CONST_IFLD+1] = hwm;
 			inter_tree_node *B = Synoptic::get_definition(pack, I"^column_blank_data");
 			for (int i=DATA_CONST_IFLD; i<B->W.extent; i=i+2) {
-				Synoptic::numeric_entry(B->W.data[i+1]);
+				Synoptic::numeric_entry(B->W.instruction[i+1]);
 				hwm++;
 			}
 		}

@@ -144,7 +144,7 @@ they were any other arrays. Here goes:
 	if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) WRITE("meta ");
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		WRITE(" ");
-		inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
+		inter_ti val1 = P->W.instruction[i], val2 = P->W.instruction[i+1];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 			inter_symbol *A = InterSymbolsTables::symbol_from_data_pair_and_table(
 				val1, val2, Inter::Packages::scope_of(P));

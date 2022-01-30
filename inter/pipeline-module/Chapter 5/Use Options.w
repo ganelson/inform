@@ -23,7 +23,7 @@ and never duplicated, so we change the values of these constants accordingly.
 		inter_package *pack =
 			Inter::Package::defined_by_frame(inv->use_option_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"use_option_id");
-		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
 	}
 
 @<Define NO_USE_OPTIONS@> =

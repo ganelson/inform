@@ -225,11 +225,11 @@ inter_symbol *InterSymbolsTables::symbol_from_id(inter_symbols_table *T, inter_t
 
 =
 inter_symbol *InterSymbolsTables::symbol_from_frame_data(inter_tree_node *P, int x) {
-	return InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), P->W.data[x]);
+	return InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), P->W.instruction[x]);
 }
 
 inter_symbol *InterSymbolsTables::global_symbol_from_frame_data(inter_tree_node *P, int x) {
-	return InterSymbolsTables::symbol_from_id(Inode::globals(P), P->W.data[x]);
+	return InterSymbolsTables::symbol_from_id(Inode::globals(P), P->W.instruction[x]);
 }
 
 inter_symbol *InterSymbolsTables::local_symbol_from_id(inter_package *owner, inter_ti ID) {

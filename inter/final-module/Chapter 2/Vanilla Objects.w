@@ -136,7 +136,7 @@ altered.
 			(inter_symbol *) Dictionaries::read_value(first_with_name, name);
 		inner_name = I"<nameless>";
 		int N = Inter::Symbols::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
-		if (N > 0) inner_name = Inter::Warehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
+		if (N > 0) inner_name = InterWarehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
 		Inter::Symbols::set_translate(prop_name, Inter::Symbols::name(existing_prop_name));
 		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
@@ -179,7 +179,7 @@ because that will come from an I7 source text definition.
 	inter_tree *I = gen->from;
 	text_stream *pname = I"<nameless>";
 	int N = Inter::Symbols::read_annotation(last_prop_name, PROPERTY_NAME_IANN);
-	if (N > 0) pname = Inter::Warehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
+	if (N > 0) pname = InterWarehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
 	TEMPORARY_TEXT(entry)
 	CodeGen::select_temporary(gen, entry);
 	Generators::compile_literal_text(gen, pname, TRUE);
@@ -206,7 +206,7 @@ assimilated properties never do have.
 	inter_symbol *eprop_name;
 	LOOP_OVER_LINKED_LIST(eprop_name, inter_symbol, all_forms) {
 		inter_node_list *EVL =
-			Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
+			InterWarehouse::get_node_list(InterTree::warehouse(I),
 				Inter::Property::permissions_list(eprop_name));
 		@<List any kind of object with an explicit permission@>;
 		@<List any individual instance with an explicit permission@>;
@@ -270,7 +270,7 @@ not as wasteful as it looks.)
 text_stream *VanillaObjects::inner_property_name(code_generation *gen, inter_symbol *prop_name) {
 	text_stream *inner_name = I"<nameless>";
 	int N = Inter::Symbols::read_annotation(prop_name, INNER_PROPERTY_NAME_IANN);
-	if (N > 0) inner_name = Inter::Warehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
+	if (N > 0) inner_name = InterWarehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
 	return inner_name;
 }
 
@@ -317,7 +317,7 @@ so we use "marks" on those already done.
 	}
 
 @<Declare properties which every instance of this kind of value can have@> =
-	inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
+	inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 		Inter::Kind::permissions_list(kind_s));
 	@<Work through this frame list of permissions@>;
 
@@ -325,7 +325,7 @@ so we use "marks" on those already done.
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_s), kind_s)) {
-			inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
+			inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 				Inter::Instance::permissions_list(inst_s));
 			@<Work through this frame list of permissions@>;
 		}
@@ -360,7 +360,7 @@ by table, no sticks exist and we must compile them.
 
 @<Assign the property values for this property@> =
 	text_stream *ident = NULL;
-	if (X->W.data[STORAGE_PERM_IFLD]) {
+	if (X->W.instruction[STORAGE_PERM_IFLD]) {
 		inter_symbol *store = InterSymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
 		if (store == NULL) internal_error("bad PP in inter");
 		ident = Inter::Symbols::name(store);
@@ -403,11 +403,11 @@ number of instances, and is worth it for simplicity and speed.
 	inter_tree_node *Y;
 	LOOP_THROUGH_INTER_NODE_LIST(Y, PVL) {
 		inter_symbol *p_name = InterSymbolsTables::symbol_from_id(
-			Inter::Packages::scope_of(Y), Y->W.data[PROP_PVAL_IFLD]);
+			Inter::Packages::scope_of(Y), Y->W.instruction[PROP_PVAL_IFLD]);
 		if ((p_name == prop_name) && (found == 0)) {
 			found = 1;
-			inter_ti v1 = Y->W.data[DVAL1_PVAL_IFLD];
-			inter_ti v2 = Y->W.data[DVAL2_PVAL_IFLD];
+			inter_ti v1 = Y->W.instruction[DVAL1_PVAL_IFLD];
+			inter_ti v2 = Y->W.instruction[DVAL2_PVAL_IFLD];
 			TEMPORARY_TEXT(val)
 			CodeGen::select_temporary(gen, val);
 			CodeGen::pair(gen, Y, v1, v2);
@@ -429,7 +429,7 @@ property value, and then //Generators::end_kind//.
 			segmentation_pos saved;
 			Generators::declare_kind(gen, kind_s, &saved);
 			VanillaObjects::append(gen, kind_s);
-			inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
+			inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 				Inter::Kind::properties_list(kind_s));
 			@<Declare the properties of this kind or instance@>;
 			Generators::end_kind(gen, kind_s, saved);
@@ -449,7 +449,7 @@ was all taken care of with the sticks of property values already declared.
 		inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
 		int N = -1;
 		if (Inter::Kind::is_a(inst_kind, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) == FALSE)
-			N = (int) (P->W.data[VAL2_INST_IFLD]);
+			N = (int) (P->W.instruction[VAL2_INST_IFLD]);
 		segmentation_pos saved;
 		Generators::declare_instance(gen, inst_s, inst_kind, N, &saved);
 		if (Inter::Kind::is_a(inst_kind, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM))) {
@@ -471,7 +471,7 @@ function calls.
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL)
 		Generators::assign_property(gen,
 			InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD),
-			X->W.data[DVAL1_PVAL_IFLD], X->W.data[DVAL2_PVAL_IFLD], X);
+			X->W.instruction[DVAL1_PVAL_IFLD], X->W.instruction[DVAL2_PVAL_IFLD], X);
 
 @ That just leaves the following horrible function, which is called for each
 kind or instance of object, and passes raw splat matter down into the declaration
@@ -528,13 +528,13 @@ int VanillaObjects::value_kind_with_properties(code_generation *gen, inter_symbo
 	if (VanillaObjects::is_kind_of_object(gen, kind_s)) return FALSE;
 	if (kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) return FALSE;
 	if (kind_s == RunningPipelines::get_symbol(gen->from_step, unchecked_kind_RPSYM)) return FALSE;
-	inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
+	inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 		Inter::Kind::permissions_list(kind_s));
 	if (FL->first_in_inl) return TRUE;
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_s), kind_s)) {
-			inter_node_list *FL = Inter::Warehouse::get_frame_list(InterTree::warehouse(I),
+			inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 				Inter::Instance::permissions_list(inst_s));
 			if (FL->first_in_inl) return TRUE;
 		}
@@ -549,18 +549,18 @@ are not objects.
 int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *prop_s) {
 	inter_tree *I = gen->from;
 	inter_node_list *PL =
-		Inter::Warehouse::get_frame_list(
+		InterWarehouse::get_node_list(
 			InterTree::warehouse(I),
 			Inter::Property::permissions_list(prop_s));
 	if (PL == NULL) internal_error("no permissions list");
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, PL) {
 		inter_symbol *owner_s = InterSymbolsTables::symbol_from_id(
-			Inter::Packages::scope_of(X), X->W.data[OWNER_PERM_IFLD]);
+			Inter::Packages::scope_of(X), X->W.instruction[OWNER_PERM_IFLD]);
 		if (owner_s == NULL) internal_error("bad owner");
 		inter_symbol *owner_kind_s = NULL;
 		inter_tree_node *D = Inter::Symbols::definition(owner_s);
-		if ((D) && (D->W.data[ID_IFLD] == INSTANCE_IST)) {
+		if ((D) && (D->W.instruction[ID_IFLD] == INSTANCE_IST)) {
 			owner_kind_s = Inter::Instance::kind_of(owner_s);
 		} else {
 			owner_kind_s = owner_s;

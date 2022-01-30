@@ -102,11 +102,11 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 			if (idt == unchecked_idt) return NULL;
 
 			inter_symbol *ckind_symbol = NULL;
-			if (D->W.data[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
-			else if (D->W.data[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
-			else if (D->W.data[ID_IFLD] == LOCAL_IST) ckind_symbol = Inter::Local::kind_of(symb);
-			else if (D->W.data[ID_IFLD] == VARIABLE_IST) ckind_symbol = Inter::Variable::kind_of(symb);
-			else if (D->W.data[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
+			if (D->W.instruction[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
+			else if (D->W.instruction[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
+			else if (D->W.instruction[ID_IFLD] == LOCAL_IST) ckind_symbol = Inter::Local::kind_of(symb);
+			else if (D->W.instruction[ID_IFLD] == VARIABLE_IST) ckind_symbol = Inter::Variable::kind_of(symb);
+			else if (D->W.instruction[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
 			else return Inode::error(P, I"nonconstant symbol", symb->symbol_name);
 			if (Inter::Kind::is_a(ckind_symbol, kind_symbol) == FALSE) {
 				LOG("cks %S, ks %S\n", ckind_symbol->symbol_name, kind_symbol->symbol_name);
@@ -132,8 +132,8 @@ inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T
 		inter_tree_node *D = Inter::Symbols::definition(symb);
 		if (D == NULL) return NULL;
 		inter_symbol *ckind_symbol = NULL;
-		if (D->W.data[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
-		else if (D->W.data[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
+		if (D->W.instruction[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
+		else if (D->W.instruction[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
 		return ckind_symbol;
 	}
 	return NULL;
@@ -204,33 +204,33 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 		*val1 = UNDEF_IVAL; *val2 = 0; return NULL;
 	}
 	if ((Str::begins_with_wide_string(S, L"\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = LITERAL_TEXT_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
+		*val1 = LITERAL_TEXT_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 1, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"r\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = REAL_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
+		*val1 = REAL_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 2, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"&\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = GLOB_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
+		*val1 = GLOB_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 2, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"dw'")) && (Str::ends_with_wide_string(S, L"'"))) {
-		*val1 = DWORD_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
+		*val1 = DWORD_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 3, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"dwp'")) && (Str::ends_with_wide_string(S, L"'"))) {
-		*val1 = PDWORD_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
+		*val1 = PDWORD_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(glob_storage, S, 4, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"^\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = DIVIDER_IVAL; *val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *divider_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), *val2);
+		*val1 = DIVIDER_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *divider_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(divider_storage, S, 2, Str::len(S)-2, eloc);
 	}
 	inter_data_type *idt = int32_idt;
@@ -247,7 +247,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 			return NULL;
 		}
 		if (D == NULL) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
-		if (D->W.data[ID_IFLD] == LOCAL_IST) {
+		if (D->W.instruction[ID_IFLD] == LOCAL_IST) {
 			inter_symbol *kind_loc = Inter::Local::kind_of(symb);
 			if (Inter::Kind::is_a(kind_loc, kind_symbol) == FALSE) {
 				text_stream *err = Str::new();
@@ -259,7 +259,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 			Inter::Symbols::to_data(I, pack, symb, val1, val2);
 			return NULL;
 		}
-		if (D->W.data[ID_IFLD] == CONSTANT_IST) {
+		if (D->W.instruction[ID_IFLD] == CONSTANT_IST) {
 			inter_symbol *kind_const = Inter::Constant::kind_of(symb);
 			if (Inter::Kind::is_a(kind_const, kind_symbol) == FALSE) return Inter::Errors::quoted(I"symbol has the wrong kind", S, eloc);
 			Inter::Symbols::to_data(I, pack, symb, val1, val2);

@@ -52,9 +52,9 @@ inter_symbol *Synoptic::new_symbol(inter_package *pack, text_stream *name) {
 void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 	inter_symbol *con_s, text_stream *S, inter_bookmark *IBM) {
 	Inter::Symbols::annotate_i(con_s, TEXT_LITERAL_IANN, 1);
-	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I),
+	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
 		InterBookmark::package(IBM));
-	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), S);
+	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), S);
 	Produce::guard(Inter::Constant::new_textual(IBM,
 		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM), con_s),
 		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM),
@@ -121,28 +121,28 @@ void Synoptic::end_array(inter_tree *I) {
 
 =
 void Synoptic::numeric_entry(inter_ti val2) {
-	if (Inode::add_data_fields(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
-	synoptic_array_node->W.data[synoptic_array_node->W.extent-2] = LITERAL_IVAL;
-	synoptic_array_node->W.data[synoptic_array_node->W.extent-1] = val2;
+	Inode::extend_instruction_by(synoptic_array_node, 2);
+	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = LITERAL_IVAL;
+	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
 }
 void Synoptic::symbol_entry(inter_symbol *S) {
-	if (Inode::add_data_fields(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
+	Inode::extend_instruction_by(synoptic_array_node, 2);
 	inter_package *pack = Inter::Packages::container(synoptic_array_node);
 	inter_symbol *local_S =
 		InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(pack), S->symbol_name);
 	Wiring::wire_to(local_S, S);
 	inter_ti val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(Inter::Packages::tree(pack), pack, local_S, &val1, &val2);
-	synoptic_array_node->W.data[synoptic_array_node->W.extent-2] = ALIAS_IVAL;
-	synoptic_array_node->W.data[synoptic_array_node->W.extent-1] = val2;
+	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = ALIAS_IVAL;
+	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
 }
 void Synoptic::textual_entry(text_stream *text) {
-	if (Inode::add_data_fields(synoptic_array_node, 2) == FALSE) internal_error("cannot extend");
+	Inode::extend_instruction_by(synoptic_array_node, 2);
 	inter_package *pack = Inter::Packages::container(synoptic_array_node);
 	inter_tree *I = Inter::Packages::tree(pack);
-	inter_ti val2 = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+	inter_ti val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 	Str::copy(glob_storage, text);
-	synoptic_array_node->W.data[synoptic_array_node->W.extent-2] = LITERAL_TEXT_IVAL;
-	synoptic_array_node->W.data[synoptic_array_node->W.extent-1] = val2;
+	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = LITERAL_TEXT_IVAL;
+	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
 }

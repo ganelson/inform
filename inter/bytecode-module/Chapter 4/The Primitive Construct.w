@@ -48,15 +48,15 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 		inter_ti lcat = Inter::Primitive::category(eloc, mr2.exp[0], E);
 		if (*E) return;
 		if (lcat == 0) break;
-		if (Inode::add_data_fields(F, (inter_ti) 1) == FALSE) internal_error("can't extend");
-		F->W.data[F->W.extent - 1] = lcat;
+		Inode::extend_instruction_by(F, 1);
+		F->W.instruction[F->W.extent - 1] = lcat;
 		Str::copy(in, mr2.exp[1]);
 	}
 
 	inter_ti rcat = Inter::Primitive::category(eloc, ilp->mr.exp[2], E);
 	if (*E) return;
-	if (Inode::add_data_fields(F, (inter_ti) 1) == FALSE) internal_error("can't extend");
-	F->W.data[F->W.extent - 1] = rcat;
+	Inode::extend_instruction_by(F, 1);
+	F->W.instruction[F->W.extent - 1] = rcat;
 
 	*E = Inter::Defn::verify_construct(InterBookmark::package(IBM), F); if (*E) return;
 	NodePlacement::move_to_moving_bookmark(F, IBM);
@@ -87,12 +87,12 @@ void Inter::Primitive::write_category(OUTPUT_STREAM, inter_ti cat) {
 void Inter::Primitive::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent < MIN_EXTENT_PRIM_IFR) { *E = Inode::error(P, I"primitive extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_PRIM_IFLD); if (*E) return;
-	inter_symbol *prim_name = InterSymbolsTables::symbol_from_id(Inode::globals(P), P->W.data[DEFN_PRIM_IFLD]);
+	inter_symbol *prim_name = InterSymbolsTables::symbol_from_id(Inode::globals(P), P->W.instruction[DEFN_PRIM_IFLD]);
 	if ((prim_name == NULL) || (Str::get_first_char(prim_name->symbol_name) != '!'))
 		{ *E = Inode::error(P, I"primitive not beginning with '!'", NULL); return; }
 	int voids = 0, args = 0;
 	for (int i=CAT_PRIM_IFLD; i<P->W.extent-1; i++) {
-		if (P->W.data[i] == 0) voids++;
+		if (P->W.instruction[i] == 0) voids++;
 		args++;
 	}
 	if ((voids > 1) || ((voids == 1) && (args > 1)))
@@ -106,12 +106,12 @@ void Inter::Primitive::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 		int cats = 0;
 		for (int i=CAT_PRIM_IFLD; i<P->W.extent-1; i++) {
 			WRITE(" ");
-			Inter::Primitive::write_category(OUT, P->W.data[i]);
+			Inter::Primitive::write_category(OUT, P->W.instruction[i]);
 			cats++;
 		}
 		if (cats == 0) WRITE(" void");
 		WRITE(" -> ");
-		Inter::Primitive::write_category(OUT, P->W.data[P->W.extent-1]);
+		Inter::Primitive::write_category(OUT, P->W.instruction[P->W.extent-1]);
 	} else { *E = Inode::error(P, I"cannot write primitive", NULL); return; }
 }
 
@@ -126,12 +126,12 @@ inter_ti Inter::Primitive::operand_category(inter_symbol *prim, int i) {
 	if (prim == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(prim);
 	if (D == NULL) return 0;
-	return D->W.data[CAT_PRIM_IFLD + i];
+	return D->W.instruction[CAT_PRIM_IFLD + i];
 }
 
 inter_ti Inter::Primitive::result_category(inter_symbol *prim) {
 	if (prim == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(prim);
 	if (D == NULL) return 0;
-	return D->W.data[D->W.extent - 1];
+	return D->W.instruction[D->W.extent - 1];
 }

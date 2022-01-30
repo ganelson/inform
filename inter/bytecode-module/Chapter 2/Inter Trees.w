@@ -16,6 +16,7 @@ typedef struct inter_tree {
 	struct inter_warehouse *housed;
 	unsigned int history_bits;
 	struct building_site site;
+	struct filename *blame_errors_on_this_file;
 	CLASS_DEFINITION
 } inter_tree;
 
@@ -25,6 +26,7 @@ inter_tree *InterTree::new(void) {
 	@<Make the warehouse@>;
 	@<Make the root node and the root package@>;
 	I->history_bits = 0;
+	I->blame_errors_on_this_file = NULL;
 	InterTree::set_history(I, CREATED_ITHBIT);
 	BuildingModule::clear_data(I);
 	return I;
@@ -33,7 +35,7 @@ inter_tree *InterTree::new(void) {
 @ This must be done first, since we can't make symbols tables without it:
 
 @<Make the warehouse@> =
-	I->housed = Inter::Warehouse::new();
+	I->housed = InterWarehouse::new();
 
 @ Now a delicate little dance. The entire content of the tree is contained
 inside a special "root package". Packages are visible from the outside but
@@ -51,16 +53,16 @@ definition the head node for the root package of the tree.
 which is by definition the symbols table for the root package.
 
 @<Make the root node and the root package@> =
-	inter_ti N = Inter::Warehouse::create_symbols_table(I->housed);
-	inter_symbols_table *globals = Inter::Warehouse::get_symbols_table(I->housed, N);
-	inter_ti root_package_ID = Inter::Warehouse::create_package(I->housed, I);
-	I->root_package = Inter::Warehouse::get_package(I->housed, root_package_ID);
+	inter_ti N = InterWarehouse::create_symbols_table(I->housed);
+	inter_symbols_table *globals = InterWarehouse::get_symbols_table(I->housed, N);
+	inter_ti root_package_ID = InterWarehouse::create_package(I->housed, I);
+	I->root_package = InterWarehouse::get_package(I->housed, root_package_ID);
 	I->root_node = Inode::new_root_node(I->housed, I);
 	I->root_package->package_head = I->root_node;
 	Inter::Packages::make_rootlike(I->root_package);
 	Inter::Packages::set_scope(I->root_package, globals);
 	I->root_node->package = I->root_package;
-	Inter::Warehouse::attribute_resource(I->housed, N, I->root_package);
+	InterWarehouse::set_symbols_table_owner(I->housed, N, I->root_package);
 
 @ =
 inter_package *InterTree::root_package(inter_tree *I) {
@@ -191,8 +193,8 @@ void InterTree::traverse_root_only(inter_tree *from,
 	void *state, int filter) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(P, from->root_node) {
 		if ((filter == 0) ||
-			((filter > 0) && (P->W.data[ID_IFLD] == (inter_ti) filter)) ||
-			((filter < 0) && (P->W.data[ID_IFLD] != (inter_ti) -filter)))
+			((filter > 0) && (P->W.instruction[ID_IFLD] == (inter_ti) filter)) ||
+			((filter < 0) && (P->W.instruction[ID_IFLD] != (inter_ti) -filter)))
 			(*visitor)(from, P, state);
 	}
 }
@@ -212,8 +214,8 @@ void InterTree::traverse(inter_tree *from,
 	if (mp) {
 		inter_tree_node *D = Inter::Packages::definition(mp);
 		if ((filter == 0) ||
-			((filter > 0) && (D->W.data[ID_IFLD] == (inter_ti) filter)) ||
-			((filter < 0) && (D->W.data[ID_IFLD] != (inter_ti) -filter)))
+			((filter > 0) && (D->W.instruction[ID_IFLD] == (inter_ti) filter)) ||
+			((filter < 0) && (D->W.instruction[ID_IFLD] != (inter_ti) -filter)))
 			(*visitor)(from, D, state);
 		InterTree::traverse_r(from, D, visitor, state, filter);
 	}
@@ -223,8 +225,8 @@ void InterTree::traverse_r(inter_tree *from, inter_tree_node *P,
 	void *state, int filter) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((filter == 0) ||
-			((filter > 0) && (C->W.data[ID_IFLD] == (inter_ti) filter)) ||
-			((filter < 0) && (C->W.data[ID_IFLD] != (inter_ti) -filter)))
+			((filter > 0) && (C->W.instruction[ID_IFLD] == (inter_ti) filter)) ||
+			((filter < 0) && (C->W.instruction[ID_IFLD] != (inter_ti) -filter)))
 			(*visitor)(from, C, state);
 		InterTree::traverse_r(from, C, visitor, state, filter);
 	}
@@ -238,7 +240,7 @@ a package.
 		(pack)?(LargeScale::package_type(pack->package_head->tree, ptype)):NULL;
 	if (pack)
 		LOOP_THROUGH_INTER_CHILDREN(C, Inter::Packages::definition(pack))
-			if ((C->W.data[ID_IFLD] == PACKAGE_IST) &&
+			if ((C->W.instruction[ID_IFLD] == PACKAGE_IST) &&
 				(entry = Inter::Package::defined_by_frame(C)) &&
 				(Inter::Packages::type(entry) == pack##wanted))
 
@@ -275,4 +277,67 @@ void InterTree::set_history(inter_tree *I, int bit) {
 int InterTree::test_history(inter_tree *I, int bit) {
 	if (I->history_bits & (1 << bit)) return TRUE;
 	return FALSE;
+}
+
+@h The file to blame.
+The |blame_errors_on_this_file| field for a tree is meaningful only during the
+period when an instruction is being read in from a text or binary Inter file.
+Such a file is untrustworthy -- we didn't make it ourselves -- and so we
+check it in many ways, and need a way to throw error messages if it is corrupt.
+
+Since Inter instructions can come in either from a binary or a text file, we
+need a unified way to express positions in these, as an unsigned integer stored
+in the preframe for an instruction (see //Inter Nodes//).
+
+By convention, an origin value below |INTER_ERROR_ORIGIN_OFFSET| is a line
+number; an origin above that is a binary address within a file (plus
+|INTER_ERROR_ORIGIN_OFFSET|).
+
+@d INTER_ERROR_ORIGIN_OFFSET 0x10000000
+
+=
+inter_ti InterTree::eloc_to_origin_word(inter_tree *tree, inter_error_location *eloc) {
+	if (eloc) {
+		if (eloc->error_interb) {
+			tree->blame_errors_on_this_file = eloc->error_interb;
+			return (inter_ti) (INTER_ERROR_ORIGIN_OFFSET + eloc->error_offset);
+		}
+		if (eloc->error_tfp) {
+			tree->blame_errors_on_this_file = eloc->error_tfp->text_file_filename;
+			return (inter_ti) (eloc->error_tfp->line_count);
+		}
+	}
+	return 0;
+}
+
+@ Converting this back into an //inter_error_location// means allocating some
+memory, since an //inter_error_location// only holds pointers to the position
+data, not the position data itself. So:
+
+=
+typedef struct inter_error_stash {
+	struct inter_error_location stashed_eloc;
+	struct text_file_position stashed_tfp;
+	CLASS_DEFINITION
+} inter_error_stash;
+
+@ =
+inter_error_location *InterTree::origin_word_to_eloc(inter_tree *tree, inter_ti C) {
+	if ((tree) && (tree->blame_errors_on_this_file)) {
+		inter_error_stash *stash = CREATE(inter_error_stash);
+		stash->stashed_tfp = TextFiles::nowhere();
+		if (C < INTER_ERROR_ORIGIN_OFFSET) {
+			text_file_position *tfp = &(stash->stashed_tfp);
+			tfp->text_file_filename = tree->blame_errors_on_this_file;
+			tfp->line_count = (int) C;
+			stash->stashed_eloc =
+				Inter::Errors::file_location(NULL, tfp);
+		} else {
+			stash->stashed_eloc =
+				Inter::Errors::interb_location(tree->blame_errors_on_this_file,
+					(size_t) (C - INTER_ERROR_ORIGIN_OFFSET));
+		}
+		return &(stash->stashed_eloc);
+	}
+	return NULL;
 }

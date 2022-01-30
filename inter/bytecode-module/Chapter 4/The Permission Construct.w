@@ -44,7 +44,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 			{ *E = Inter::Errors::quoted(I"not a kind which can have property values", ilp->mr.exp[1], eloc); return; }
 
 		inter_node_list *FL =
-			Inter::Warehouse::get_frame_list(
+			InterWarehouse::get_node_list(
 				InterBookmark::warehouse(IBM),
 				Inter::Kind::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
@@ -57,7 +57,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 		}
 	} else {
 		inter_node_list *FL =
-			Inter::Warehouse::get_frame_list(
+			InterWarehouse::get_node_list(
 				InterBookmark::warehouse(IBM),
 				Inter::Instance::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
@@ -100,13 +100,13 @@ void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_pa
 	if (P->W.extent != EXTENT_PERM_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 
 	*E = Inter::Verify::defn(owner, P, DEFN_PERM_IFLD); if (*E) return;
-	*E = Inter::Verify::symbol(owner, P, P->W.data[PROP_PERM_IFLD], PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::symbol_KOI(owner, P, P->W.data[OWNER_PERM_IFLD]); if (*E) return;
-	if (P->W.data[STORAGE_PERM_IFLD]) {
-		*E = Inter::Verify::symbol(owner, P, P->W.data[STORAGE_PERM_IFLD], CONSTANT_IST); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P->W.instruction[PROP_PERM_IFLD], PROPERTY_IST); if (*E) return;
+	*E = Inter::Verify::symbol_KOI(owner, P, P->W.instruction[OWNER_PERM_IFLD]); if (*E) return;
+	if (P->W.instruction[STORAGE_PERM_IFLD]) {
+		*E = Inter::Verify::symbol(owner, P, P->W.instruction[STORAGE_PERM_IFLD], CONSTANT_IST); if (*E) return;
 	}
-	inter_symbol *prop_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[PROP_PERM_IFLD]);;
-	inter_symbol *owner_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[OWNER_PERM_IFLD]);;
+	inter_symbol *prop_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[PROP_PERM_IFLD]);;
+	inter_symbol *owner_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[OWNER_PERM_IFLD]);;
 
 	if (vcount == 0) {
 		inter_node_list *FL = NULL;
@@ -119,10 +119,10 @@ void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_pa
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
 				inter_symbol *prop_X = InterSymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
-				inter_symbol *prop_P = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[PROP_PERM_IFLD]);;
+				inter_symbol *prop_P = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[PROP_PERM_IFLD]);;
 				if (prop_X == prop_P) { *E = Inode::error(P, I"duplicate permission", prop_name->symbol_name); return; }
 				inter_symbol *owner_X = InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				inter_symbol *owner_P = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[OWNER_PERM_IFLD]);;
+				inter_symbol *owner_P = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[OWNER_PERM_IFLD]);;
 				if (owner_X != owner_P) { *E = Inode::error(P, I"kind permission list malformed", owner_name->symbol_name); return; }
 			}
 		} else {
@@ -131,10 +131,10 @@ void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_pa
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
 				inter_symbol *prop_X = InterSymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
-				inter_symbol *prop_P = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[PROP_PERM_IFLD]);;
+				inter_symbol *prop_P = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[PROP_PERM_IFLD]);;
 				if (prop_X == prop_P) { *E = Inode::error(P, I"duplicate permission", prop_name->symbol_name); return; }
 				inter_symbol *owner_X = InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
-				inter_symbol *owner_P = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[OWNER_PERM_IFLD]);;
+				inter_symbol *owner_P = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[OWNER_PERM_IFLD]);;
 				if (owner_X != owner_P) { *E = Inode::error(P, I"instance permission list malformed", owner_name->symbol_name); return; }
 			}
 		}
@@ -151,7 +151,7 @@ void Inter::Permission::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_nod
 	inter_symbol *owner_name = InterSymbolsTables::symbol_from_frame_data(P, OWNER_PERM_IFLD);
 	if ((prop_name) && (owner_name)) {
 		WRITE("permission %S %S", prop_name->symbol_name, owner_name->symbol_name);
-		if (P->W.data[STORAGE_PERM_IFLD]) {
+		if (P->W.instruction[STORAGE_PERM_IFLD]) {
 			inter_symbol *store = InterSymbolsTables::symbol_from_frame_data(P, STORAGE_PERM_IFLD);
 			WRITE(" %S", store->symbol_name);
 		}

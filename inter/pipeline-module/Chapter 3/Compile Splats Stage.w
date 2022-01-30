@@ -73,14 +73,14 @@ is being compiled.
 void CompileSplatsStage::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
-	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		inter_symbol *ptype = Inter::Packages::type(pack);
 		if (Str::eq(ptype->symbol_name, I"_module"))
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
-	if (P->W.data[ID_IFLD] == SPLAT_IST) {
-		inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
+	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
+		inter_ti directive = P->W.instruction[PLM_SPLAT_IFLD];
 		switch (directive) {
 			case PROPERTY_I6DIR:
 			case ATTRIBUTE_I6DIR:
@@ -97,14 +97,14 @@ void CompileSplatsStage::visitor1(inter_tree *I, inter_tree_node *P, void *state
 void CompileSplatsStage::visitor2(inter_tree *I, inter_tree_node *P, void *state) {
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
-	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		inter_symbol *ptype = Inter::Packages::type(pack);
 		if (Str::eq(ptype->symbol_name, I"_module"))
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
-	if (P->W.data[ID_IFLD] == SPLAT_IST) {
-		inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
+	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
+		inter_ti directive = P->W.instruction[PLM_SPLAT_IFLD];
 		switch (directive) {
 			case ARRAY_I6DIR:
 			case DEFAULT_I6DIR:
@@ -121,14 +121,14 @@ void CompileSplatsStage::visitor2(inter_tree *I, inter_tree_node *P, void *state
 void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state) {
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
-	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		inter_symbol *ptype = Inter::Packages::type(pack);
 		if (Str::eq(ptype->symbol_name, I"_module"))
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
-	if (P->W.data[ID_IFLD] == SPLAT_IST) {
-		inter_ti directive = P->W.data[PLM_SPLAT_IFLD];
+	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
+		inter_ti directive = P->W.instruction[PLM_SPLAT_IFLD];
 		switch (directive) {
 			case GLOBAL_I6DIR:
 				@<Assimilate definition@>;
@@ -164,7 +164,7 @@ keyword |Constant| or similar. Note that an |Object| declaration does not
 meaningfully have a value, even though a third token is present.
 
 @<Parse text of splat for identifier and value@> =
-	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+	text_stream *S = Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]);
 	if (directive == VERB_I6DIR) {
 		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *;%c*")) {
 			identifier = I"assim_gv"; value = mr.exp[0];
@@ -616,15 +616,15 @@ in this section.
 @<Assimilate routine@> =
 	text_stream *identifier = NULL, *local_var_names = NULL, *body = NULL;
 	match_results mr = Regexp::create_mr();
-	if (P->W.data[PLM_SPLAT_IFLD] == ROUTINE_I6DIR) @<Parse the routine header@>;
-	if (P->W.data[PLM_SPLAT_IFLD] == STUB_I6DIR) @<Parse the stub directive@>;
+	if (P->W.instruction[PLM_SPLAT_IFLD] == ROUTINE_I6DIR) @<Parse the routine header@>;
+	if (P->W.instruction[PLM_SPLAT_IFLD] == STUB_I6DIR) @<Parse the stub directive@>;
 	if (identifier) {
 		@<Turn this into a function package@>;
 		NodePlacement::remove(P);
 	}
 
 @<Parse the routine header@> =
-	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+	text_stream *S = Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]);
 	if (Regexp::match(&mr, S, L" *%[ *(%i+) *; *(%c*)")) {
 		identifier = mr.exp[0]; body = mr.exp[1];
 	} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {
@@ -653,7 +653,7 @@ provided. So this is no longer a useful directive, and it continues to be
 supported only to avoid throwing errors.
 
 @<Parse the stub directive@> =
-	text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
+	text_stream *S = Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]);
 	if (Regexp::match(&mr, S, L" *%C+ *(%i+) (%d+);%c*")) {
 		identifier = mr.exp[0];
 		local_var_names = Str::new();
@@ -861,8 +861,8 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 				if (Str::get(pos) == 'p') as_numbered = PDWORD_IVAL;
 			}
 		}
-	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
+	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), ID);
 	Str::copy(glob_storage, dw);
 	*val1 = as_numbered; *val2 = ID;
 	DISCARD_TEXT(dw)
@@ -873,8 +873,8 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 	LOOP_THROUGH_TEXT(pos, S)
 		if ((pos.index > from) && (pos.index < to))
 			PUT_TO(dw, Str::get(pos));
-	inter_ti ID = Inter::Warehouse::create_text(InterTree::warehouse(I), pack);
-	text_stream *glob_storage = Inter::Warehouse::get_text(InterTree::warehouse(I), ID);
+	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), ID);
 	Str::copy(glob_storage, dw);
 	*val1 = LITERAL_TEXT_IVAL; *val2 = ID;
 	DISCARD_TEXT(dw)
@@ -1105,18 +1105,18 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_tree_node *pair_list = Inode::new_with_3_data_fields(IBM, CONSTANT_IST, MID, KID, op, NULL, B);
 	int pos = pair_list->W.extent;
-	if (Inode::add_data_fields(pair_list, 4) == FALSE) internal_error("can't extend frame");
+	Inode::extend_instruction_by(pair_list, 4);
 	if (i1) {
 		Inter::Symbols::to_data(I, pack, i1,
-			&(pair_list->W.data[pos]), &(pair_list->W.data[pos+1]));
+			&(pair_list->W.instruction[pos]), &(pair_list->W.instruction[pos+1]));
 	} else {
-		pair_list->W.data[pos] = LITERAL_IVAL; pair_list->W.data[pos+1] = 0;
+		pair_list->W.instruction[pos] = LITERAL_IVAL; pair_list->W.instruction[pos+1] = 0;
 	}
 	if (i2) {
 		Inter::Symbols::to_data(I, pack, i2,
-			&(pair_list->W.data[pos+2]), &(pair_list->W.data[pos+3]));
+			&(pair_list->W.instruction[pos+2]), &(pair_list->W.instruction[pos+3]));
 	} else {
-		pair_list->W.data[pos+2] = LITERAL_IVAL; pair_list->W.data[pos+3] = 0;
+		pair_list->W.instruction[pos+2] = LITERAL_IVAL; pair_list->W.instruction[pos+3] = 0;
 	}
 	Produce::guard(Inter::Defn::verify_construct(InterBookmark::package(IBM), pair_list));
 	NodePlacement::move_to_moving_bookmark(pair_list, IBM);

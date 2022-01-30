@@ -47,7 +47,7 @@ inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *e
 	if (Inter::Symbols::is_extern(symb)) return symb;
 	if (Inter::Symbols::is_predeclared(symb)) return symb;
 	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
-	if ((D->W.data[ID_IFLD] != construct) && (Inter::Symbols::is_predeclared(symb) == FALSE)) {
+	if ((D->W.instruction[ID_IFLD] != construct) && (Inter::Symbols::is_predeclared(symb) == FALSE)) {
 		*E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL;
 	}
 	return symb;
@@ -75,8 +75,8 @@ inter_symbol *Inter::Textual::find_KOI(inter_error_location *eloc, inter_symbols
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	inter_tree_node *D = Inter::Symbols::definition(symb);
 	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
-	if ((D->W.data[ID_IFLD] != KIND_IST) &&
-		(D->W.data[ID_IFLD] != INSTANCE_IST)) { *E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL; }
+	if ((D->W.instruction[ID_IFLD] != KIND_IST) &&
+		(D->W.instruction[ID_IFLD] != INSTANCE_IST)) { *E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL; }
 	return symb;
 }
 

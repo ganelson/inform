@@ -15,7 +15,7 @@ Chapter 2: Pipelines
 	Running Pipelines
 	Pipeline Errors
 	New Stage
-	Read, Move, Wipe, Stop Stages
+	Read, Move, Stop Stages
 
 Chapter 3: Assimilation
 	Parsing Stages

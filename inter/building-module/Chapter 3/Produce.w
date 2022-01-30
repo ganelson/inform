@@ -310,9 +310,9 @@ void Produce::nop_at(inter_bookmark *IBM, inter_ti delta) {
 
 void Produce::comment(inter_tree *I, text_stream *text) {
 	inter_bookmark *IBM = Packaging::at(I);
-	inter_ti ID = Inter::Warehouse::create_text(
+	inter_ti ID = InterWarehouse::create_text(
 		InterTree::warehouse(I), InterBookmark::package(IBM));
-	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), text);
+	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), text);
 	Produce::guard(Inter::Comment::new(IBM, Produce::baseline(IBM), NULL, ID));
 }
 
@@ -429,9 +429,9 @@ void Produce::pull(inter_tree *I, inter_name *iname) {
 =
 void Produce::inv_assembly(inter_tree *I, text_stream *opcode) {
 	inter_bookmark *IBM = Produce::at(I);
-	inter_ti SID = Inter::Warehouse::create_text(InterTree::warehouse(I),
+	inter_ti SID = InterWarehouse::create_text(InterTree::warehouse(I),
 		InterBookmark::package(IBM));
-	Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), SID), opcode);
+	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), SID), opcode);
 	Produce::guard(Inter::Inv::new_assembly(IBM, SID, (inter_ti) Produce::level(I), NULL));
 }
 
@@ -642,9 +642,9 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	inter_ti ID = 0;
 	if ((comm) && (Str::len(comm) > 0)) {
-		ID = Inter::Warehouse::create_text(InterTree::warehouse(I),
+		ID = InterWarehouse::create_text(InterTree::warehouse(I),
 			InterBookmark::package(Packaging::at(I)));
-		Str::copy(Inter::Warehouse::get_text(InterTree::warehouse(I), ID), comm);
+		Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), comm);
 	}
 	if (annot) Inter::Symbols::annotate_i(local_s, annot, 0);
 	Inter::Symbols::local(local_s);

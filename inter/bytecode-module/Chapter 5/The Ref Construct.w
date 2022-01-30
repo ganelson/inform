@@ -63,8 +63,8 @@ void Inter::Ref::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 	if (P->W.extent != EXTENT_REF_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbols_table *locals = Inter::Packages::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
-	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_REF_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *ref_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[KIND_REF_IFLD]);;
+	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_REF_IFLD], KIND_IST); if (*E) return;
+	inter_symbol *ref_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[KIND_REF_IFLD]);;
 	*E = Inter::Verify::local_value(P, VAL1_REF_IFLD, ref_kind, locals); if (*E) return;
 }
 
@@ -75,6 +75,6 @@ void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	inter_symbol *ref_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_REF_IFLD);
 	if (ref_kind) {
 		WRITE("ref %S ", ref_kind->symbol_name);
-		Inter::Types::write(OUT, P, ref_kind, P->W.data[VAL1_REF_IFLD], P->W.data[VAL2_REF_IFLD], locals, FALSE);
+		Inter::Types::write(OUT, P, ref_kind, P->W.instruction[VAL1_REF_IFLD], P->W.instruction[VAL2_REF_IFLD], locals, FALSE);
 	} else { *E = Inode::error(P, I"cannot write ref", NULL); return; }
 }

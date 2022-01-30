@@ -41,7 +41,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	inter_ti plist_ID;
 	if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
 	else plist_ID = Inter::Instance::properties_list(owner_name);
-	inter_node_list *FL = Inter::Warehouse::get_frame_list(InterBookmark::warehouse(IBM), plist_ID);
+	inter_node_list *FL = InterWarehouse::get_node_list(InterBookmark::warehouse(IBM), plist_ID);
 	if (FL == NULL) internal_error("no properties list");
 
 	inter_tree_node *X;
@@ -103,12 +103,12 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 	inter_ti vcount = Inode::bump_verification_count(P);
 
 	if (P->W.extent != EXTENT_PVAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::symbol(owner, P, P->W.data[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::symbol_KOI(owner, P, P->W.data[OWNER_PVAL_IFLD]); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P->W.instruction[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
+	*E = Inter::Verify::symbol_KOI(owner, P, P->W.instruction[OWNER_PVAL_IFLD]); if (*E) return;
 
 	if (vcount == 0) {
-		inter_symbol *prop_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[PROP_PVAL_IFLD]);;
-		inter_symbol *owner_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[OWNER_PVAL_IFLD]);;
+		inter_symbol *prop_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[PROP_PVAL_IFLD]);;
+		inter_symbol *owner_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[OWNER_PVAL_IFLD]);;
 
 		if (Inter::PropertyValue::permitted(P, owner, owner_name, prop_name) == FALSE) {
 			text_stream *err = Str::new();
@@ -125,8 +125,8 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 
 		inter_tree_node *X;
 		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-			if (X->W.data[PROP_PVAL_IFLD] == P->W.data[PROP_PVAL_IFLD]) { *E = Inode::error(P, I"duplicate property value", NULL); return; }
-			if (X->W.data[OWNER_PVAL_IFLD] != P->W.data[OWNER_PVAL_IFLD]) { *E = Inode::error(P, I"instance property list malformed", NULL); return; }
+			if (X->W.instruction[PROP_PVAL_IFLD] == P->W.instruction[PROP_PVAL_IFLD]) { *E = Inode::error(P, I"duplicate property value", NULL); return; }
+			if (X->W.instruction[OWNER_PVAL_IFLD] != P->W.instruction[OWNER_PVAL_IFLD]) { *E = Inode::error(P, I"instance property list malformed", NULL); return; }
 		}
 
 		Inter::ListLiterals::add(FL, P);
@@ -139,6 +139,6 @@ void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_
 	if ((prop_name) && (owner_name)) {
 		inter_symbol *val_kind = Inter::Property::kind_of(InterSymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD));
 		WRITE("propertyvalue %S %S = ", prop_name->symbol_name, owner_name->symbol_name);
-		Inter::Types::write(OUT, P, val_kind, P->W.data[DVAL1_PVAL_IFLD], P->W.data[DVAL2_PVAL_IFLD], Inter::Packages::scope_of(P), FALSE);
+		Inter::Types::write(OUT, P, val_kind, P->W.instruction[DVAL1_PVAL_IFLD], P->W.instruction[DVAL2_PVAL_IFLD], Inter::Packages::scope_of(P), FALSE);
 	} else { *E = Inode::error(P, I"cannot write propertyvalue", NULL); return; }
 }

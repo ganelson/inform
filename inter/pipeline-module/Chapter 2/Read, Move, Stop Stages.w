@@ -1,11 +1,10 @@
-[SimpleStages::] Read, Move, Wipe, Stop Stages.
+[SimpleStages::] Read, Move, Stop Stages.
 
 Four simple pipeline stages.
 
 @ =
 void SimpleStages::create_pipeline_stages(void) {
 	ParsingPipelines::new_stage(I"stop", SimpleStages::run_stop_stage, NO_STAGE_ARG, FALSE);
-	ParsingPipelines::new_stage(I"wipe", SimpleStages::run_wipe_stage, NO_STAGE_ARG, FALSE);
 	ParsingPipelines::new_stage(I"read", SimpleStages::run_read_stage, FILE_STAGE_ARG, TRUE);
 	ParsingPipelines::new_stage(I"move", SimpleStages::run_move_stage, GENERAL_STAGE_ARG, TRUE);
 }
@@ -45,14 +44,6 @@ int SimpleStages::run_move_stage(pipeline_step *step) {
 	}
 	Regexp::dispose_of(&mr);
 	Inter::Transmigration::move(pack, LargeScale::main_package(step->ephemera.tree), FALSE);
-	return TRUE;
-}
-
-@h Wipe.
-
-=
-int SimpleStages::run_wipe_stage(pipeline_step *step) {
-	Inter::Warehouse::wipe();
 	return TRUE;
 }
 

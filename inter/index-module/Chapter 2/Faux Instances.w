@@ -222,14 +222,14 @@ void FauxInstances::make_faux(index_session *session) {
 		for (int i=0; i<MAX_DIRECTIONS; i++) {
 			int offset = DATA_CONST_IFLD + 4*i;
 			if (offset >= P->W.extent) break;
-			inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
+			inter_ti v1 = P->W.instruction[offset], v2 = P->W.instruction[offset+1];
 			if (v1 == ALIAS_IVAL) {
 				inter_symbol *S =
 					InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
 				if (S == NULL) internal_error("malformed map metadata");
 				I->fimd.exits[i] = FauxInstances::symbol_to_faux_instance(faux_set, S);
 			} else if ((v1 != LITERAL_IVAL) || (v2 != 0)) internal_error("malformed map metadata");
-			inter_ti v3 = P->W.data[offset+2], v4 = P->W.data[offset+3];
+			inter_ti v3 = P->W.instruction[offset+2], v4 = P->W.instruction[offset+3];
 			if (v3 != LITERAL_IVAL) internal_error("malformed map metadata");
 			if (v4) I->fimd.exits_set_at[i] = (int) v4;
 		}
@@ -240,7 +240,7 @@ void FauxInstances::make_faux(index_session *session) {
 	if (P) {
 		int offset = DATA_CONST_IFLD;
 		while (offset < P->W.extent) {
-			inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
+			inter_ti v1 = P->W.instruction[offset], v2 = P->W.instruction[offset+1];
 			if (v1 == ALIAS_IVAL) {
 				inter_symbol *S =
 					InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);

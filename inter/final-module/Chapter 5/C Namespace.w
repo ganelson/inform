@@ -115,7 +115,7 @@ void CNamespace::fix_locals(code_generation *gen) {
 void CNamespace::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *var_name =
-		InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
+		InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "local_%S", var_name->symbol_name);
 	Inter::Symbols::set_translate(var_name, T);

@@ -161,17 +161,14 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_ti SID, inter_ti TID, inter_ti SUP,
 	int constructor, int arity, inter_ti *operands, inter_ti level, inter_error_location *eloc) {
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
-	inter_ti L1 = Inter::Warehouse::create_frame_list(warehouse);
-	inter_ti L2 = Inter::Warehouse::create_frame_list(warehouse);
-	Inter::Warehouse::attribute_resource(warehouse, L1, InterBookmark::package(IBM));
-	Inter::Warehouse::attribute_resource(warehouse, L2, InterBookmark::package(IBM));
+	inter_ti L1 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
+	inter_ti L2 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
 	inter_tree_node *P = Inode::new_with_8_data_fields(IBM,
 		KIND_IST, SID, TID, 0, 0, SUP, L1, L2,
 		(inter_ti) constructor, eloc, level);
 	if (arity > 0) {
-		if (Inode::add_data_fields(P, (inter_ti) arity) == FALSE)
-			return Inter::Errors::plain(I"can't extend", eloc);
-		for (int i=0; i<arity; i++) P->W.data[OPERANDS_KIND_IFLD+i] = operands[i];
+		Inode::extend_instruction_by(P, (inter_ti) arity);
+		for (int i=0; i<arity; i++) P->W.instruction[OPERANDS_KIND_IFLD+i] = operands[i];
 	}
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -179,59 +176,59 @@ inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_ti SID, inter_t
 }
 
 void Inter::Kind::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	P->W.data[PERM_LIST_KIND_IFLD] = grid[P->W.data[PERM_LIST_KIND_IFLD]];
-	P->W.data[PLIST_KIND_IFLD] = grid[P->W.data[PLIST_KIND_IFLD]];
+	P->W.instruction[PERM_LIST_KIND_IFLD] = grid[P->W.instruction[PERM_LIST_KIND_IFLD]];
+	P->W.instruction[PLIST_KIND_IFLD] = grid[P->W.instruction[PLIST_KIND_IFLD]];
 }
 
 void Inter::Kind::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent < MIN_EXTENT_KIND_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_KIND_IFLD); if (*E) return;
 	*E = Inter::Verify::data_type(P, DATA_TYPE_KIND_IFLD); if (*E) return;
-	if (P->W.data[ENUM_RANGE_KIND_IFLD] != 0) {
-		inter_symbol *the_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[DEFN_KIND_IFLD]);
+	if (P->W.instruction[ENUM_RANGE_KIND_IFLD] != 0) {
+		inter_symbol *the_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[DEFN_KIND_IFLD]);
 		if ((the_kind == NULL) ||
-			(Inter::Types::is_enumerated(Inter::Types::find_by_ID(P->W.data[DATA_TYPE_KIND_IFLD])) == FALSE))
+			(Inter::Types::is_enumerated(Inter::Types::find_by_ID(P->W.instruction[DATA_TYPE_KIND_IFLD])) == FALSE))
 			{ *E = Inode::error(P, I"spurious extent in non-enumeration", NULL); return; }
 	}
-	if (P->W.data[SUPER_KIND_IFLD] != 0) {
-		*E = Inter::Verify::symbol(owner, P, P->W.data[SUPER_KIND_IFLD], KIND_IST); if (*E) return;
-		inter_symbol *super_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[SUPER_KIND_IFLD]);
+	if (P->W.instruction[SUPER_KIND_IFLD] != 0) {
+		*E = Inter::Verify::symbol(owner, P, P->W.instruction[SUPER_KIND_IFLD], KIND_IST); if (*E) return;
+		inter_symbol *super_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[SUPER_KIND_IFLD]);
 		if (Inter::Types::is_enumerated(Inter::Kind::data_type(super_kind)) == FALSE)
 			{ *E = Inode::error(P, I"subkind of nonenumerated kind", NULL); return; }
 	}
 	int arity = P->W.extent - MIN_EXTENT_KIND_IFR;
-	switch (P->W.data[CONSTRUCTOR_KIND_IFLD]) {
+	switch (P->W.instruction[CONSTRUCTOR_KIND_IFLD]) {
 		case BASE_ICON: if (arity != 0) { *E = Inode::error(P, I"spurious kc operand", NULL); return; }
 			break;
 		case LIST_ICON:
 		case RULEBOOK_ICON:
 			if (arity != 1) { *E = Inode::error(P, I"wrong list arity", NULL); return; }
-			if (P->W.data[OPERANDS_KIND_IFLD] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(owner, P, P->W.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
+			if (P->W.instruction[OPERANDS_KIND_IFLD] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(owner, P, P->W.instruction[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			break;
 		case COLUMN_ICON: if (arity != 1) { *E = Inode::error(P, I"wrong col arity", NULL); return; }
-			if (P->W.data[OPERANDS_KIND_IFLD] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(owner, P, P->W.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
+			if (P->W.instruction[OPERANDS_KIND_IFLD] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(owner, P, P->W.instruction[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			break;
 		case DESCRIPTION_ICON: if (arity != 1) { *E = Inode::error(P, I"wrong desc arity", NULL); return; }
-			if (P->W.data[OPERANDS_KIND_IFLD] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(owner, P, P->W.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
+			if (P->W.instruction[OPERANDS_KIND_IFLD] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(owner, P, P->W.instruction[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
 			break;
 		case RELATION_ICON: if (arity != 2) { *E = Inode::error(P, I"wrong relation arity", NULL); return; }
-			if (P->W.data[OPERANDS_KIND_IFLD] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(owner, P, P->W.data[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
-			if (P->W.data[OPERANDS_KIND_IFLD+1] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
-			*E = Inter::Verify::symbol(owner, P, P->W.data[OPERANDS_KIND_IFLD+1], KIND_IST); if (*E) return;
+			if (P->W.instruction[OPERANDS_KIND_IFLD] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(owner, P, P->W.instruction[OPERANDS_KIND_IFLD], KIND_IST); if (*E) return;
+			if (P->W.instruction[OPERANDS_KIND_IFLD+1] == 0) { *E = Inode::error(P, I"no listed kind", NULL); return; }
+			*E = Inter::Verify::symbol(owner, P, P->W.instruction[OPERANDS_KIND_IFLD+1], KIND_IST); if (*E) return;
 			break;
 		case FUNCTION_ICON:
 		case RULE_ICON:
 			if (arity < 2) { *E = Inode::error(P, I"function arity too low", NULL); return; }
 			for (int i=0; i<arity; i++) {
-				if (P->W.data[OPERANDS_KIND_IFLD + i] == 0) {
+				if (P->W.instruction[OPERANDS_KIND_IFLD + i] == 0) {
 					if (!(((i == 0) && (arity == 2)) || (i == arity - 1)))
 						{ *E = Inode::error(P, I"no listed kind", NULL); return; }
 				} else {
-					*E = Inter::Verify::symbol(owner, P, P->W.data[OPERANDS_KIND_IFLD + i], KIND_IST);
+					*E = Inter::Verify::symbol(owner, P, P->W.instruction[OPERANDS_KIND_IFLD + i], KIND_IST);
 					if (*E) return;
 				}
 			}
@@ -239,7 +236,7 @@ void Inter::Kind::verify(inter_construct *IC, inter_tree_node *P, inter_package 
 		case STRUCT_ICON:
 			if (arity == 0) { *E = Inode::error(P, I"struct arity too low", NULL); return; }
 			for (int i=0; i<arity; i++) {
-				*E = Inter::Verify::symbol(owner, P, P->W.data[OPERANDS_KIND_IFLD + i], KIND_IST);
+				*E = Inter::Verify::symbol(owner, P, P->W.instruction[OPERANDS_KIND_IFLD + i], KIND_IST);
 				if (*E) return;
 			}
 			break;
@@ -251,26 +248,26 @@ inter_ti Inter::Kind::permissions_list(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return 0;
-	return D->W.data[PERM_LIST_KIND_IFLD];
+	return D->W.instruction[PERM_LIST_KIND_IFLD];
 }
 
 inter_ti Inter::Kind::properties_list(inter_symbol *inst_name) {
 	if (inst_name == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(inst_name);
 	if (D == NULL) return 0;
-	return D->W.data[PLIST_KIND_IFLD];
+	return D->W.instruction[PLIST_KIND_IFLD];
 }
 
 void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *symb = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
-	inter_data_type *idt = Inter::Types::find_by_ID(P->W.data[DATA_TYPE_KIND_IFLD]);
+	inter_data_type *idt = Inter::Types::find_by_ID(P->W.instruction[DATA_TYPE_KIND_IFLD]);
 	if ((symb) && (idt)) {
 		WRITE("kind %S ", symb->symbol_name);
-		if (P->W.data[SUPER_KIND_IFLD]) {
+		if (P->W.instruction[SUPER_KIND_IFLD]) {
 			inter_symbol *super = InterSymbolsTables::symbol_from_frame_data(P, SUPER_KIND_IFLD);
 			WRITE("<= %S", super->symbol_name);
 		} else {
-			switch (P->W.data[CONSTRUCTOR_KIND_IFLD]) {
+			switch (P->W.instruction[CONSTRUCTOR_KIND_IFLD]) {
 				case BASE_ICON: WRITE("%S", idt->reserved_word); break;
 				case LIST_ICON: {
 					inter_symbol *conts_kind = InterSymbolsTables::symbol_from_frame_data(P, OPERANDS_KIND_IFLD);
@@ -300,7 +297,7 @@ void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 				}
 				case FUNCTION_ICON:
 				case RULE_ICON: {
-					if (P->W.data[CONSTRUCTOR_KIND_IFLD] == FUNCTION_ICON)
+					if (P->W.instruction[CONSTRUCTOR_KIND_IFLD] == FUNCTION_ICON)
 						WRITE("function");
 					else
 						WRITE("rule");
@@ -308,7 +305,7 @@ void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 					for (int i=0; i<arity; i++) {
 						WRITE(" ");
 						if (i == arity - 1) WRITE("-> ");
-						if (P->W.data[OPERANDS_KIND_IFLD + i] == 0) {
+						if (P->W.instruction[OPERANDS_KIND_IFLD + i] == 0) {
 							WRITE("void");
 						} else {
 							inter_symbol *K = InterSymbolsTables::symbol_from_frame_data(P, OPERANDS_KIND_IFLD + i);
@@ -338,7 +335,7 @@ void Inter::Kind::new_instance(inter_symbol *kind_symbol, inter_symbol *inst_nam
 	if (kind_symbol == NULL) return;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return;
-	D->W.data[NO_INSTANCES_KIND_IFLD]++;
+	D->W.instruction[NO_INSTANCES_KIND_IFLD]++;
 	inter_symbol *S = Inter::Kind::super(kind_symbol);
 	if (S) Inter::Kind::new_instance(S, inst_name);
 }
@@ -347,14 +344,14 @@ int Inter::Kind::instance_count(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return 0;
-	return (int) D->W.data[NO_INSTANCES_KIND_IFLD];
+	return (int) D->W.instruction[NO_INSTANCES_KIND_IFLD];
 }
 
 int Inter::Kind::constructor(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return 0;
-	return (int) D->W.data[CONSTRUCTOR_KIND_IFLD];
+	return (int) D->W.instruction[CONSTRUCTOR_KIND_IFLD];
 }
 
 int Inter::Kind::arity(inter_symbol *kind_symbol) {
@@ -369,7 +366,7 @@ inter_symbol *Inter::Kind::operand_symbol(inter_symbol *kind_symbol, int i) {
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return NULL;
 	if (i >= D->W.extent - MIN_EXTENT_KIND_IFR) return NULL;
-	inter_ti CID = D->W.data[OPERANDS_KIND_IFLD + i];
+	inter_ti CID = D->W.instruction[OPERANDS_KIND_IFLD + i];
 	inter_symbols_table *T = Inter::Packages::scope_of(D);
 	return InterSymbolsTables::symbol_from_id(T, CID);
 }
@@ -378,14 +375,14 @@ inter_data_type *Inter::Kind::data_type(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return NULL;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return NULL;
-	return Inter::Types::find_by_ID(D->W.data[DATA_TYPE_KIND_IFLD]);
+	return Inter::Types::find_by_ID(D->W.instruction[DATA_TYPE_KIND_IFLD]);
 }
 
 inter_ti Inter::Kind::next_enumerated_value(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return 0;
-	return ++(D->W.data[ENUM_RANGE_KIND_IFLD]);
+	return ++(D->W.instruction[ENUM_RANGE_KIND_IFLD]);
 }
 
 inter_symbol *Inter::Kind::super(inter_symbol *kind_symbol) {
@@ -399,7 +396,7 @@ int Inter::Kind::is(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return FALSE;
 	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
 	if (D == NULL) return FALSE;
-	if (D->W.data[ID_IFLD] == KIND_IST) return TRUE;
+	if (D->W.instruction[ID_IFLD] == KIND_IST) return TRUE;
 	return FALSE;
 }
 

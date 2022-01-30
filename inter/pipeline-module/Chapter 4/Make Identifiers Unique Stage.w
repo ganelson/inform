@@ -67,7 +67,7 @@ translation in that case.
 =
 void MakeIdentifiersUniqueStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	dictionary *D = (dictionary *) state;
-	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *Q = Inter::Package::defined_by_frame(P);
 		inter_symbols_table *ST = Inter::Packages::scope(Q);
 		for (int i=0; i<ST->size; i++) {

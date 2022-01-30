@@ -78,25 +78,25 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	insertion_point = InterBookmark::at_end_of_this_package(destination);
 	inter_tree_node *prims = NULL;
 	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
-		if (F->W.data[ID_IFLD] == PRIMITIVE_IST)
+		if (F->W.instruction[ID_IFLD] == PRIMITIVE_IST)
 			prims = F;
 	if (prims == NULL) internal_error("dest has no prims");
 	primitives_point = InterBookmark::after_this_node(prims);
 	inter_tree_node *ptypes = NULL;
 	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
-		if (F->W.data[ID_IFLD] == PACKAGETYPE_IST)
+		if (F->W.instruction[ID_IFLD] == PACKAGETYPE_IST)
 			ptypes = F;
 	if (ptypes == NULL) internal_error("dest has no prims");
 	ptypes_point = InterBookmark::after_this_node(ptypes);
 
 @<Mark the insertion and deletion points with comments@> =
-	inter_ti C1 = Inter::Warehouse::create_text(InterBookmark::warehouse(&deletion_point), InterBookmark::package(&deletion_point));
-	WRITE_TO(Inter::Warehouse::get_text(InterBookmark::warehouse(&deletion_point), C1), 
+	inter_ti C1 = InterWarehouse::create_text(InterBookmark::warehouse(&deletion_point), InterBookmark::package(&deletion_point));
+	WRITE_TO(InterWarehouse::get_text(InterBookmark::warehouse(&deletion_point), C1), 
 		"Exported %S here", Inter::Packages::name(migrant));
 	Inter::Comment::new(&deletion_point, (inter_ti) Inter::Packages::baseline(migrant), NULL, C1);
 
-	inter_ti C2 = Inter::Warehouse::create_text(InterBookmark::warehouse(&insertion_point), InterBookmark::package(&insertion_point));
-	WRITE_TO(Inter::Warehouse::get_text(InterBookmark::warehouse(&insertion_point), C2), 
+	inter_ti C2 = InterWarehouse::create_text(InterBookmark::warehouse(&insertion_point), InterBookmark::package(&insertion_point));
+	WRITE_TO(InterWarehouse::get_text(InterBookmark::warehouse(&insertion_point), C2), 
 		"Imported %S here", Inter::Packages::name(migrant));
 	Inter::Comment::new(&insertion_point, (inter_ti) Inter::Packages::baseline(destination) + 1, NULL, C2);
 
@@ -134,12 +134,12 @@ typedef struct ipct_state {
 void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, void *state) {
 	ipct_state *ipct = (ipct_state *) state;
 	P->tree = I;
-	if ((P->W.data[ID_IFLD] == INV_IST) && (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
+	if ((P->W.instruction[ID_IFLD] == INV_IST) && (P->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *primitive =
-			InterSymbolsTables::symbol_from_id(InterTree::global_scope(ipct->origin_tree), P->W.data[INVOKEE_INV_IFLD]);
+			InterSymbolsTables::symbol_from_id(InterTree::global_scope(ipct->origin_tree), P->W.instruction[INVOKEE_INV_IFLD]);
 		if (primitive) @<Correct the reference to this primitive@>;
 	}
-	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		if (pack == NULL) internal_error("no package defined here");
 		if (Inter::Packages::is_linklike(pack)) return;
@@ -184,15 +184,15 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		if (equivalent_primitive) Inter::Transmigration::cache(primitive, equivalent_primitive);
 	}
 	if (equivalent_primitive)
-		P->W.data[INVOKEE_INV_IFLD] = InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive);
+		P->W.instruction[INVOKEE_INV_IFLD] = InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive);
 
 @<Duplicate this primitive@> =
 	equivalent_primitive = InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), primitive->symbol_name);
 	inter_tree_node *D = Inode::new_with_1_data_field(ipct->primitives_point, PRIMITIVE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive), NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
 	for (int i=CAT_PRIM_IFLD; i<old_D->W.extent; i++) {
-		if (Inode::add_data_fields(D, (inter_ti) 1) == FALSE) internal_error("can't extend");
-		D->W.data[i] = old_D->W.data[i];
+		Inode::extend_instruction_by(D, 1);
+		D->W.instruction[i] = old_D->W.instruction[i];
 	}
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(ipct->primitives_point), D);
 	if (E) {
@@ -205,7 +205,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 @<Correct the reference to this package type@> =
 	inter_symbol *original_ptype =
 		InterSymbolsTables::symbol_from_id(
-			InterTree::global_scope(ipct->origin_tree), P->W.data[PTYPE_PACKAGE_IFLD]);
+			InterTree::global_scope(ipct->origin_tree), P->W.instruction[PTYPE_PACKAGE_IFLD]);
 	inter_symbol *equivalent_ptype = Inter::Transmigration::cached_equivalent(original_ptype);
 	if (equivalent_ptype == NULL) {
 		equivalent_ptype = InterSymbolsTables::symbol_from_name(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
@@ -213,7 +213,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		if (equivalent_ptype) Inter::Transmigration::cache(original_ptype, equivalent_ptype);
 	}
 	if (equivalent_ptype)
-		P->W.data[PTYPE_PACKAGE_IFLD] = InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_ptype);
+		P->W.instruction[PTYPE_PACKAGE_IFLD] = InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_ptype);
 
 @<Duplicate this package type@> =
 	equivalent_ptype = InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
@@ -250,7 +250,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 @ =
 void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, void *state) {
 	ipct_state *ipct = (ipct_state *) state;
-	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		if (pack == NULL) internal_error("no package defined here");
 		if (Inter::Packages::is_linklike(pack)) return;

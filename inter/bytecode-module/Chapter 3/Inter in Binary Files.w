@@ -134,7 +134,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 				switch (i) {
 					case 0: n = (inter_ti) InterTree::global_scope(I)->n_index; break;
 					case 1: n = (inter_ti) InterTree::root_package(I)->index_n; break;
-					default: n = Inter::Warehouse::create_resource(warehouse); break;
+					default: n = InterWarehouse::create_resource(warehouse); break;
 				}
 	if (trace_bin) WRITE_TO(STDOUT, "Reading resource %d <--- %d\n", n, from_N);
 				if (from_N >= grid_extent) {
@@ -158,76 +158,66 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 				from_N = grid_extent - 1;
 			}
 			inter_ti n = grid[from_N];
-			inter_resource_holder *res = &(warehouse->stored_resources[n]);
-			unsigned int X = NO_IRSRC;
+			unsigned int X = 0;
 			if (BinaryFiles::read_int32(fh, &X) == FALSE)
 				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	if (trace_bin) WRITE_TO(STDOUT, "Reading resource %d -> %d type %d\n", from_N, n, X);
 			switch (X) {
-				case STRING_IRSRC: @<Read a string resource@>; break;
+				case TEXT_IRSRC: @<Read a string resource@>; break;
 				case SYMBOLS_TABLE_IRSRC: @<Read a symbols table resource@>; break;
-				case FRAME_LIST_IRSRC: @<Read a frame list resource@>; break;
-				case PACKAGE_IRSRC: @<Read a package resource@>; break;
+				case NODE_LIST_IRSRC: @<Read a frame list resource@>; break;
+				case PACKAGE_REF_IRSRC: @<Read a package resource@>; break;
 			}
 		}
 	}
 
 @<Write the resources@> =
-	int max = -1, count = 0;
-	for (int n = 1; n < warehouse->size; n++) {
-		inter_package *owner = warehouse->stored_resources[n].owning_package;
-		if ((owner) && (Inter::Packages::tree(owner) != I)) continue;
+	inter_ti max = 0, count = 0;
+	LOOP_OVER_RESOURCE_IDS(n, I) {
 		count++;
 		if (n+1 > max) max = n+1;
 	}
 	BinaryFiles::write_int32(fh, (unsigned int) count);
-	if (count >= 0) {
-		BinaryFiles::write_int32(fh, (unsigned int) max);
-		for (int n = 1; n < warehouse->size; n++) {
-			inter_package *owner = warehouse->stored_resources[n].owning_package;
-			if ((owner) && (Inter::Packages::tree(owner) != I)) continue;
-			BinaryFiles::write_int32(fh, (unsigned int) n);
-		}
-		for (int n = 1; n < warehouse->size; n++) {
-			inter_package *owner = warehouse->stored_resources[n].owning_package;
-			if ((owner) && (Inter::Packages::tree(owner) != I)) continue;
-	if (trace_bin) WRITE_TO(STDOUT, "Writing resource %d type %d owner %s\n", n, warehouse->stored_resources[n].irsrc,
-		(owner)?"yes":"no");
-			BinaryFiles::write_int32(fh, (unsigned int) n);
-			inter_resource_holder *res = &(warehouse->stored_resources[n]);
-			if (res->stored_text_stream) {
-				BinaryFiles::write_int32(fh, STRING_IRSRC);
-				@<Write a string resource@>;
-			} else if (res->stored_symbols_table) {
-				BinaryFiles::write_int32(fh, SYMBOLS_TABLE_IRSRC);
-				@<Write a symbols table resource@>;
-			} else if (res->stored_package) {
-				BinaryFiles::write_int32(fh, PACKAGE_IRSRC);
-				@<Write a package resource@>;
-			} else {
-				BinaryFiles::write_int32(fh, FRAME_LIST_IRSRC);
-				@<Write a frame list resource@>;
-			}
+	BinaryFiles::write_int32(fh, (unsigned int) max);
+	LOOP_OVER_RESOURCE_IDS(n, I)
+		BinaryFiles::write_int32(fh, (unsigned int) n);
+	LOOP_OVER_RESOURCE_IDS(n, I) {
+		inter_ti RT = InterWarehouse::resource_type_code(warehouse, n);
+	if (trace_bin) WRITE_TO(STDOUT, "Writing resource %d type %d\n", n, RT);
+		BinaryFiles::write_int32(fh, (unsigned int) n);
+		BinaryFiles::write_int32(fh, RT);
+		switch (RT) {
+			case TEXT_IRSRC: @<Write a string resource@>; break;
+			case SYMBOLS_TABLE_IRSRC: @<Write a symbols table resource@>; break;
+			case PACKAGE_REF_IRSRC: @<Write a package resource@>; break;
+			case NODE_LIST_IRSRC: @<Write a frame list resource@>; break;
+			default: internal_error("unimplemented resource type");
 		}
 	}
 
 @<Read a string resource@> =
-	res->stored_text_stream = Str::new();
+	text_stream *txt = Str::new();
+	InterWarehouse::create_ref_at(warehouse, n, STORE_POINTER_text_stream(txt), NULL);
 	unsigned int L;
 	if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	for (unsigned int i=0; i<L; i++) {
 		unsigned int c;
 		if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
-		PUT_TO(res->stored_text_stream, (int) c);
+		PUT_TO(txt, (int) c);
 	}
 
 @<Write a string resource@> =
-	BinaryFiles::write_int32(fh, (unsigned int) Str::len(res->stored_text_stream));
-	LOOP_THROUGH_TEXT(P, res->stored_text_stream)
+	text_stream *txt = InterWarehouse::get_text(warehouse, n);
+	BinaryFiles::write_int32(fh, (unsigned int) Str::len(txt));
+	LOOP_THROUGH_TEXT(P, txt)
 		BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
 
 @<Read a symbols table resource@> =
-	if (res->stored_symbols_table == NULL) res->stored_symbols_table = InterSymbolsTables::new();
+	inter_symbols_table *tab = InterWarehouse::get_symbols_table(warehouse, n);
+	if (tab == NULL) {
+		tab = InterSymbolsTables::new();
+		InterWarehouse::create_ref_at(warehouse, n, STORE_POINTER_inter_symbols_table(tab), NULL);
+	}
 	while (BinaryFiles::read_int32(fh, &X)) {
 		if (X == 0) break;
 		unsigned int st;
@@ -253,7 +243,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			PUT_TO(trans, (int) c);
 		}
 
-		inter_symbol *S = InterSymbolsTables::symbol_from_name_creating_at_ID(res->stored_symbols_table, name, X);
+		inter_symbol *S = InterSymbolsTables::symbol_from_name_creating_at_ID(tab, name, X);
 		Inter::Symbols::set_type(S, (int) st);
 		Inter::Symbols::set_scope(S, (int) sc);
 		if (uniq == 1) Inter::Symbols::set_flag(S, MAKE_NAME_UNIQUE);
@@ -289,7 +279,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 	}
 
 @<Write a symbols table resource@> =
-	inter_symbols_table *T = res->stored_symbols_table;
+	inter_symbols_table *T = InterWarehouse::get_symbols_table(warehouse, n);
 	if (T) {
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *symb = T->symbol_array[i];
@@ -331,15 +321,17 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 	unsigned int sc;
 	if (BinaryFiles::read_int32(fh, &sc) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	inter_package *parent = NULL;
-	if (p != 0) parent = Inter::Warehouse::get_package(warehouse, grid[p]);
-	if (res->stored_package == NULL) {
-		res->stored_package = Inter::Packages::new(I, n);
+	if (p != 0) parent = InterWarehouse::get_package(warehouse, grid[p]);
+	inter_package *stored_package = InterWarehouse::get_package(warehouse, n);
+	if (stored_package == NULL) {
+		stored_package = Inter::Packages::new(I, n);
+		InterWarehouse::create_ref_at(warehouse, n, STORE_POINTER_inter_package(stored_package), stored_package);
 	}
-	if (cl) Inter::Packages::make_codelike(res->stored_package);
-	if (rl) Inter::Packages::make_rootlike(res->stored_package);
+	if (cl) Inter::Packages::make_codelike(stored_package);
+	if (rl) Inter::Packages::make_rootlike(stored_package);
 	if (sc != 0) {
 		if (grid) sc = grid[sc];
-		Inter::Packages::set_scope(res->stored_package, Inter::Warehouse::get_symbols_table(warehouse, sc));
+		Inter::Packages::set_scope(stored_package, InterWarehouse::get_symbols_table(warehouse, sc));
 	}
 	TEMPORARY_TEXT(N)
 	unsigned int L;
@@ -349,11 +341,11 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		PUT_TO(N, (int) c);
 	}
-	Inter::Packages::set_name((parent)?(parent):(I->root_package), res->stored_package, N);
+	Inter::Packages::set_name((parent)?(parent):(I->root_package), stored_package, N);
 	DISCARD_TEXT(N)
 
 @<Write a package resource@> =
-	inter_package *P = res->stored_package;
+	inter_package *P = InterWarehouse::get_package(warehouse, n);
 	if (P) {
 		inter_package *par = Inter::Packages::parent(P);
 		if (par == NULL) BinaryFiles::write_int32(fh, 0);
@@ -370,7 +362,8 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 enough that the slot exists for the eventual list to be stored in.
 
 @<Read a frame list resource@> =
-	if (res->stored_frame_list == NULL) res->stored_frame_list = Inter::ListLiterals::new();
+	if (InterWarehouse::get_node_list(warehouse, n) == 0)
+		InterWarehouse::create_ref_at(warehouse, n, STORE_POINTER_inter_node_list(Inter::ListLiterals::new()), NULL);
 
 @<Write a frame list resource@> =
 	;
@@ -379,7 +372,7 @@ enough that the slot exists for the eventual list to be stored in.
 	while (BinaryFiles::read_int32(fh, &X)) {
 		if (X == 0) break;
 		if (grid) X = grid[X];
-		inter_symbols_table *from_T = Inter::Warehouse::get_symbols_table(warehouse, X);
+		inter_symbols_table *from_T = InterWarehouse::get_symbols_table(warehouse, X);
 		if (from_T == NULL) {
 			WRITE_TO(STDERR, "It's %d\n", X);
 			internal_error("no from_T");
@@ -395,7 +388,7 @@ enough that the slot exists for the eventual list to be stored in.
 	if (trace_bin) WRITE_TO(STDOUT, "Read eqn %d -> %d\n", X, to_T_id);
 			if (BinaryFiles::read_int32(fh, &to_ID) == FALSE)
 				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
-			inter_symbols_table *to_T = Inter::Warehouse::get_symbols_table(warehouse, to_T_id);
+			inter_symbols_table *to_T = InterWarehouse::get_symbols_table(warehouse, to_T_id);
 			if (from_T == NULL) internal_error("no to_T");
 			inter_symbol *from_S = InterSymbolsTables::symbol_from_id(from_T, from_ID);
 			if (from_S == NULL) internal_error("no from_S");
@@ -406,12 +399,9 @@ enough that the slot exists for the eventual list to be stored in.
 	}
 
 @<Write the symbol equations@> =
-	for (int n = 1; n < warehouse->size; n++) {
-		inter_package *owner = warehouse->stored_resources[n].owning_package;
-		if ((owner) && (Inter::Packages::tree(owner) != I)) continue;
-		inter_resource_holder *res = &(warehouse->stored_resources[n]);
-		if (res->stored_symbols_table) {
-			inter_symbols_table *from_T = res->stored_symbols_table;
+	LOOP_OVER_RESOURCE_IDS(n, I) {
+		inter_symbols_table *from_T = InterWarehouse::get_symbols_table(warehouse, n);
+		if (from_T) {
 			BinaryFiles::write_int32(fh, (unsigned int) n);
 			for (int i=0; i<from_T->size; i++) {
 				inter_symbol *symb = from_T->symbol_array[i];
@@ -441,14 +431,14 @@ enough that the slot exists for the eventual list to be stored in.
 		if (BinaryFiles::read_int32(fh, &PID)) {
 			if (grid) PID = grid[PID];
 	if (trace_bin) WRITE_TO(STDOUT, "PID %d\n", PID);
-			if (PID) owner = Inter::Warehouse::get_package(warehouse, PID);
+			if (PID) owner = InterWarehouse::get_package(warehouse, PID);
 	if (trace_bin) WRITE_TO(STDOUT, "Owner has ID %d, table %d\n", owner->index_n, owner->package_scope->n_index);
 		}
-		inter_tree_node *P = Inter::Warehouse::new_node(warehouse, I, extent-1, &eloc, owner);
+		inter_tree_node *P = Inode::new_node(warehouse, I, extent-1, &eloc, owner);
 
 		for (int i=0; i<extent-1; i++) {
 			unsigned int word = 0;
-			if (BinaryFiles::read_int32(fh, &word)) P->W.data[i] = word;
+			if (BinaryFiles::read_int32(fh, &word)) P->W.instruction[i] = word;
 			else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		}
 		unsigned int comment = 0;
@@ -477,7 +467,7 @@ void Inter::Binary::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	BinaryFiles::write_int32(fh, (unsigned int) (P->W.extent + 1));
 	BinaryFiles::write_int32(fh, (unsigned int) (Inode::get_package(P)->index_n));
 	for (int i=0; i<P->W.extent; i++)
-		BinaryFiles::write_int32(fh, (unsigned int) (P->W.data[i]));
+		BinaryFiles::write_int32(fh, (unsigned int) (P->W.instruction[i]));
 	BinaryFiles::write_int32(fh, (unsigned int) (Inode::get_comment(P)));
 }
 

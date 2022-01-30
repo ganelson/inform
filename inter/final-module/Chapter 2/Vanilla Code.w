@@ -39,7 +39,7 @@ These we offer to the generator to deal with as it likes:
 void VanillaCode::label(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *lab_name =
-		InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LABEL_IFLD]);
+		InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LABEL_IFLD]);
 	Generators::place_label(gen, lab_name->symbol_name);
 }
 
@@ -52,7 +52,7 @@ language, can only in fact occur in void context, but we won't assume that here.
 void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 	int void_context = FALSE;
 	if (Inter::Defn::get_level(P) == gen->void_level) void_context = TRUE;
-	switch (P->W.data[METHOD_INV_IFLD]) {
+	switch (P->W.instruction[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE: @<Invoke a primitive@>; break;
 		case INVOKED_ROUTINE: @<Invoke a function@>; break;
 		case INVOKED_OPCODE: @<Invoke an assembly-language opcode@>; break;
@@ -71,7 +71,7 @@ void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 	VanillaFunctions::invoke_function(gen, function_s, P, void_context);
 
 @<Invoke an assembly-language opcode@> =
-	inter_ti ID = P->W.data[INVOKEE_INV_IFLD];
+	inter_ti ID = P->W.instruction[INVOKEE_INV_IFLD];
 	text_stream *opcode_name = Inode::ID_to_text(P, ID);
 	inter_tree_node *operands[MAX_OPERANDS_IN_INTER_ASSEMBLY], *label = NULL;
 	int operand_count = 0;
@@ -88,9 +88,9 @@ need to.
 
 @<Scan the operands@> =
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
-/*		if (F->W.data[ID_IFLD] == VAL_IST) {
-			inter_ti val1 = F->W.data[VAL1_VAL_IFLD];
-			inter_ti val2 = F->W.data[VAL2_VAL_IFLD];
+/*		if (F->W.instruction[ID_IFLD] == VAL_IST) {
+			inter_ti val1 = F->W.instruction[VAL1_VAL_IFLD];
+			inter_ti val2 = F->W.instruction[VAL2_VAL_IFLD];
 			if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 				inter_symbol *symb =
 					InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(F), val2);
@@ -102,13 +102,13 @@ need to.
 			}
 		}
 */
-		if (F->W.data[ID_IFLD] == ASSEMBLY_IST) {
+		if (F->W.instruction[ID_IFLD] == ASSEMBLY_IST) {
 			if (Inter::Assembly::which_marker(F) == ASM_NEG_ASMMARKER) {
 				label_sense = FALSE;
 				continue;
 			}
 		}
-		if (F->W.data[ID_IFLD] == LAB_IST) {
+		if (F->W.instruction[ID_IFLD] == LAB_IST) {
 			if (label_sense == NOT_APPLICABLE) label_sense = TRUE;
 			label = F; continue;
 		}
@@ -125,8 +125,8 @@ a variable here.
 
 =
 void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) {
-	inter_ti val1 = P->W.data[VAL1_VAL_IFLD];
-	inter_ti val2 = P->W.data[VAL2_VAL_IFLD];
+	inter_ti val1 = P->W.instruction[VAL1_VAL_IFLD];
+	inter_ti val2 = P->W.instruction[VAL2_VAL_IFLD];
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_package *pack = Inter::Packages::container(P);
 		inter_symbol *named_s =
@@ -136,7 +136,7 @@ void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) 
 		if (named_s == NULL) internal_error("unknown constant in val/ref in Inter tree");
 		if ((Str::eq(Inter::Symbols::name(named_s), I"self")) ||
 			((named_s->definition) &&
-				(named_s->definition->W.data[ID_IFLD] == VARIABLE_IST))) {
+				(named_s->definition->W.instruction[ID_IFLD] == VARIABLE_IST))) {
 			Generators::evaluate_variable(gen, named_s, ref);
 		} else {
 			Generators::compile_literal_symbol(gen, named_s);
@@ -163,7 +163,7 @@ function body.
 void VanillaCode::lab(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = Inter::Packages::container(P);
 	inter_symbol *label_s =
-		InterSymbolsTables::local_symbol_from_id(pack, P->W.data[LABEL_LAB_IFLD]);
+		InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[LABEL_LAB_IFLD]);
 	if (label_s == NULL) internal_error("unknown label in lab in Inter tree");
 	Generators::evaluate_label(gen, label_s->symbol_name);
 }

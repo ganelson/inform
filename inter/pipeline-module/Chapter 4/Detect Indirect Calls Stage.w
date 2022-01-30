@@ -57,13 +57,13 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P)
 		DetectIndirectCallsStage::traverse_code_tree(F, step);
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P)
-		if ((F->W.data[ID_IFLD] == INV_IST) &&
-			(F->W.data[METHOD_INV_IFLD] == INVOKED_ROUTINE)) {
+		if ((F->W.instruction[ID_IFLD] == INV_IST) &&
+			(F->W.instruction[METHOD_INV_IFLD] == INVOKED_ROUTINE)) {
 			inter_symbol *var =
 				InterSymbolsTables::symbol_from_frame_data(F, INVOKEE_INV_IFLD);
 			if (var == NULL) internal_error("bad invocation");
 			inter_tree_node *D = var->definition;
-			if ((D) && (D->W.data[ID_IFLD] == VARIABLE_IST))
+			if ((D) && (D->W.instruction[ID_IFLD] == VARIABLE_IST))
 				@<This is an invocation of a variable not a function@>;
 		}
 }
@@ -74,12 +74,12 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 	@<Insert the variable as the new first argument@>;
 
 @<Change to be an invocation of a primitive@> =
-	F->W.data[METHOD_INV_IFLD] = INVOKED_PRIMITIVE;
+	F->W.instruction[METHOD_INV_IFLD] = INVOKED_PRIMITIVE;
 	int arity = 0;
 	LOOP_THROUGH_INTER_CHILDREN(X, F) arity++;
 	inter_ti prim = Primitives::BIP_for_indirect_call_returning_value(arity);
 	inter_symbol *prim_s = Primitives::from_BIP(I, prim);
-	F->W.data[INVOKEE_INV_IFLD] =
+	F->W.instruction[INVOKEE_INV_IFLD] =
 		InterSymbolsTables::id_from_symbol_F(F, NULL, prim_s);
 
 @<Insert the variable as the new first argument@> =
@@ -89,4 +89,4 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 		InterBookmark::package(&IBM), var, &val1, &val2);
 	Inter::Val::new(&IBM,
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM),
-		(int) F->W.data[LEVEL_IFLD] + 1, val1, val2, NULL); 
+		(int) F->W.instruction[LEVEL_IFLD] + 1, val1, val2, NULL); 

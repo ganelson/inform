@@ -426,7 +426,7 @@ changed back again very soon after.
 		if (Inter::Symbols::is_local(to_call)) to_call = NULL;
 		if (to_call) {
 			inter_tree_node *D = to_call->definition;
-			if ((D) && (D->W.data[ID_IFLD] == VARIABLE_IST)) to_call = NULL;
+			if ((D) && (D->W.instruction[ID_IFLD] == VARIABLE_IST)) to_call = NULL;
 		}
 	}
 

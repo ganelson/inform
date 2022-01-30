@@ -23,7 +23,7 @@ so we change the values of these constants accordingly.
 	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
 		inter_package *pack = Inter::Package::defined_by_frame(inv->relation_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"relation_id");
-		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
 	}
 
 @<Define CCOUNT_BINARY_PREDICATE@> =

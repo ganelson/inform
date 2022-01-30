@@ -64,8 +64,8 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	inter_ti plm = Inter::Splat::parse_plm(ilp->mr.exp[0]);
 	if (plm == 1000000) { *E = Inter::Errors::plain(I"unknown PLM code before text matter", eloc); return; }
 
-	inter_ti SID = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
-	text_stream *glob_storage = Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), SID);
+	inter_ti SID = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+	text_stream *glob_storage = InterWarehouse::get_text(InterBookmark::warehouse(IBM), SID);
 	*E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
@@ -128,19 +128,19 @@ inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_ti SID, inter_
 }
 
 void Inter::Splat::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	P->W.data[MATTER_SPLAT_IFLD] = grid[P->W.data[MATTER_SPLAT_IFLD]];
+	P->W.instruction[MATTER_SPLAT_IFLD] = grid[P->W.instruction[MATTER_SPLAT_IFLD]];
 }
 
 void Inter::Splat::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_SPLAT_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	if (P->W.data[MATTER_SPLAT_IFLD] == 0) { *E = Inode::error(P, I"no matter text", NULL); return; }
-	if (P->W.data[PLM_SPLAT_IFLD] > MYSTERY_I6DIR) { *E = Inode::error(P, I"plm out of range", NULL); return; }
+	if (P->W.instruction[MATTER_SPLAT_IFLD] == 0) { *E = Inode::error(P, I"no matter text", NULL); return; }
+	if (P->W.instruction[PLM_SPLAT_IFLD] > MYSTERY_I6DIR) { *E = Inode::error(P, I"plm out of range", NULL); return; }
 }
 
 void Inter::Splat::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("splat ");
-	Inter::Splat::write_plm(OUT, P->W.data[PLM_SPLAT_IFLD]);
+	Inter::Splat::write_plm(OUT, P->W.instruction[PLM_SPLAT_IFLD]);
 	WRITE("&\"");
-	Inter::Constant::write_text(OUT, Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]));
+	Inter::Constant::write_text(OUT, Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]));
 	WRITE("\"");
 }

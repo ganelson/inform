@@ -32,7 +32,7 @@ void SynopticChronology::compile(inter_tree *I, pipeline_step *step, tree_invent
 		inter_package *pack =
 			Inter::Package::defined_by_frame(inv->action_history_condition_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"ahc_id");
-		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
 	}
 
 @ Similarly for past tense conditions, and note that the AHC and PTC numberings
@@ -44,7 +44,7 @@ are independent and can overlap.
 		inter_package *pack =
 			Inter::Package::defined_by_frame(inv->past_tense_condition_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"ptc_id");
-		D->W.data[DATA_CONST_IFLD+1] = (inter_ti) i;
+		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
 	}
 
 @<Define NO_PAST_TENSE_CONDS@> =

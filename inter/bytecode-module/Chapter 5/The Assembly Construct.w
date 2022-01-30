@@ -67,13 +67,13 @@ inter_error_message *Inter::Assembly::new(inter_bookmark *IBM, inter_ti which, i
 
 void Inter::Assembly::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_ASSEMBLY_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	inter_ti which = P->W.data[WHICH_ASSEMBLY_IFLD];
+	inter_ti which = P->W.instruction[WHICH_ASSEMBLY_IFLD];
 	if ((which == 0) || (which > ASM_NEG_RFALSE_ASMMARKER)) {
 		*E = Inode::error(P, I"bad assembly marker code", NULL); return; }
 }
 
 void Inter::Assembly::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_ti which = P->W.data[WHICH_ASSEMBLY_IFLD];
+	inter_ti which = P->W.instruction[WHICH_ASSEMBLY_IFLD];
 	switch (which) {
 		case ASM_ARROW_ASMMARKER: WRITE("assembly store_to"); break;
 		case ASM_SP_ASMMARKER: WRITE("assembly stack"); break;
@@ -87,7 +87,7 @@ void Inter::Assembly::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 }
 
 inter_ti Inter::Assembly::which_marker(inter_tree_node *P) {
-	inter_ti which = P->W.data[WHICH_ASSEMBLY_IFLD];
+	inter_ti which = P->W.instruction[WHICH_ASSEMBLY_IFLD];
 	if ((which == 0) || (which > ASM_NEG_RFALSE_ASMMARKER))
 		internal_error("bad assembly marker");
 	return which;

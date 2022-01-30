@@ -40,8 +40,8 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		return;
 	}
 
-	inter_ti ID = Inter::Warehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
-	*E = Inter::Constant::parse_text(Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
+	inter_ti ID = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+	*E = Inter::Constant::parse_text(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
 	*E = Inter::Append::new(IBM, symbol, ID, (inter_ti) ilp->indent_level, eloc);
@@ -58,12 +58,12 @@ void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_packag
 	inter_ti vcount = Inode::bump_verification_count(P);
 
 	if (P->W.extent != EXTENT_APPEND_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	inter_symbol *symbol = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[SYMBOL_APPEND_IFLD]);;
+	inter_symbol *symbol = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[SYMBOL_APPEND_IFLD]);;
 	if (symbol == NULL) { *E = Inode::error(P, I"no target name", NULL); return; }
-	if (P->W.data[TEXT_APPEND_IFLD] == 0) { *E = Inode::error(P, I"no translation text", NULL); return; }
+	if (P->W.instruction[TEXT_APPEND_IFLD] == 0) { *E = Inode::error(P, I"no translation text", NULL); return; }
 
 	if (vcount == 0) {
-		inter_ti ID = P->W.data[TEXT_APPEND_IFLD];
+		inter_ti ID = P->W.instruction[TEXT_APPEND_IFLD];
 		text_stream *S = Inode::ID_to_text(P, ID);
 		Inter::Symbols::annotate_t(P->tree, P->package, symbol, APPEND_IANN, S);
 	}
@@ -71,7 +71,7 @@ void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_packag
 
 void Inter::Append::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *symbol = InterSymbolsTables::symbol_from_frame_data(P, SYMBOL_APPEND_IFLD);
-	inter_ti ID = P->W.data[TEXT_APPEND_IFLD];
+	inter_ti ID = P->W.instruction[TEXT_APPEND_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	WRITE("append %S \"", symbol->symbol_name);
 	Inter::Constant::write_text(OUT, S);

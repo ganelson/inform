@@ -110,7 +110,7 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 	if (rationale) {
 		inter_tree_node *D = Inter::Packages::definition(pack);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.data[ID_IFLD] == PACKAGE_IST) {
+			if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
 				inter_package *P = Inter::Package::defined_by_frame(C);
 				EliminateRedundantMatterStage::preserve(P, step, pack, rationale);
 			}

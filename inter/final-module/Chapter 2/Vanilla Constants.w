@@ -24,7 +24,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 			@<Declare this constant as a function@>;
 		} else if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
 			@<Declare this constant as the special UUID string array@>;
-		} else switch (P->W.data[FORMAT_CONST_IFLD]) {
+		} else switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_INDIRECT_TEXT: @<Declare this as a textual constant@>; break;
 			case CONSTANT_INDIRECT_LIST: @<Declare this as a list constant@>; break;
 			case CONSTANT_SUM_LIST:
@@ -60,7 +60,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	VanillaFunctions::declare_function(gen, con_name);
 
 @<Declare this constant as the special UUID string array@> =
-	inter_ti ID = P->W.data[DATA_CONST_IFLD];
+	inter_ti ID = P->W.instruction[DATA_CONST_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	segmentation_pos saved;
 	TEMPORARY_TEXT(content)
@@ -84,7 +84,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	DISCARD_TEXT(content)
 
 @<Declare this as a textual constant@> =
-	inter_ti ID = P->W.data[DATA_CONST_IFLD];
+	inter_ti ID = P->W.instruction[DATA_CONST_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	VanillaConstants::defer_declaring_literal_text(gen, S, con_name);
 
@@ -114,12 +114,12 @@ than a literal, or may even be computed.
 
 	int entry_count = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
-		if (P->W.data[i] != DIVIDER_IVAL)
+		if (P->W.instruction[i] != DIVIDER_IVAL)
 			entry_count++;
 	int give_count = FALSE;
 	if ((entry_count == 1) &&
 		(Inter::Symbols::read_annotation(con_name, ASSIMILATED_IANN) >= 0)) {
-		inter_ti val1 = P->W.data[DATA_CONST_IFLD], val2 = P->W.data[DATA_CONST_IFLD+1];
+		inter_ti val1 = P->W.instruction[DATA_CONST_IFLD], val2 = P->W.instruction[DATA_CONST_IFLD+1];
 		entry_count = (int) Inter::Constant::evaluate(Inter::Packages::scope_of(P), val1, val2);
 		give_count = TRUE;
 	}
@@ -130,10 +130,10 @@ than a literal, or may even be computed.
 			Generators::array_entries(gen, entry_count, format);
 		} else {
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				if (P->W.data[i] != DIVIDER_IVAL) {
+				if (P->W.instruction[i] != DIVIDER_IVAL) {
 					TEMPORARY_TEXT(entry)
 					CodeGen::select_temporary(gen, entry);
-					CodeGen::pair(gen, P, P->W.data[i], P->W.data[i+1]);
+					CodeGen::pair(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
 					CodeGen::deselect_temporary(gen);
 					Generators::array_entry(gen, entry, format);
 					DISCARD_TEXT(entry)
@@ -179,8 +179,8 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 			}
 			break;
 		case DATA_GDCFORM: {
-			inter_ti val1 = P->W.data[DATA_CONST_IFLD];
-			inter_ti val2 = P->W.data[DATA_CONST_IFLD + 1];
+			inter_ti val1 = P->W.instruction[DATA_CONST_IFLD];
+			inter_ti val2 = P->W.instruction[DATA_CONST_IFLD + 1];
 			if ((val1 == LITERAL_IVAL) && (Inter::Symbols::read_annotation(con_name, HEX_IANN)))
 				Generators::compile_literal_number(gen, val2, TRUE);
 			else
@@ -191,16 +191,16 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 			WRITE("(");
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) {
-					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE(" + ");
-					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) WRITE(" * ");
-					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) WRITE(" - ");
-					if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE(" / ");
+					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE(" + ");
+					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) WRITE(" * ");
+					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) WRITE(" - ");
+					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE(" / ");
 				}
 				int bracket = TRUE;
-				if ((P->W.data[i] == LITERAL_IVAL) ||
-					(Inter::Symbols::is_stored_in_data(P->W.data[i], P->W.data[i+1]))) bracket = FALSE;
+				if ((P->W.instruction[i] == LITERAL_IVAL) ||
+					(Inter::Symbols::is_stored_in_data(P->W.instruction[i], P->W.instruction[i+1]))) bracket = FALSE;
 				if (bracket) WRITE("(");
-				CodeGen::pair(gen, P, P->W.data[i], P->W.data[i+1]);
+				CodeGen::pair(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
 				if (bracket) WRITE(")");
 			}
 			WRITE(")");

@@ -50,9 +50,9 @@ void ReconcileVerbsStage::visitor(inter_tree *I, inter_tree_node *P, void *v_VL)
 
 @<Attend to the verb@> =
 	if (P->W.extent > DATA_CONST_IFLD+1) {
-		inter_ti V1 = P->W.data[DATA_CONST_IFLD], V2 = P->W.data[DATA_CONST_IFLD+1];
+		inter_ti V1 = P->W.instruction[DATA_CONST_IFLD], V2 = P->W.instruction[DATA_CONST_IFLD+1];
 		if (V1 == DWORD_IVAL) {
-			text_stream *word_text = Inter::Warehouse::get_text(InterTree::warehouse(I), V2);
+			text_stream *word_text = InterWarehouse::get_text(InterTree::warehouse(I), V2);
 			if (Dictionaries::find(observed_verbs, word_text)) {
 				TEMPORARY_TEXT(nv)
 				WRITE_TO(nv, "!%S", word_text);

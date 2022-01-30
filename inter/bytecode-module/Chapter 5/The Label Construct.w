@@ -52,12 +52,12 @@ inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *lab_na
 
 void Inter::Label::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_LABEL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	inter_symbol *lab_name = InterSymbolsTables::local_symbol_from_id(owner, P->W.data[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = InterSymbolsTables::local_symbol_from_id(owner, P->W.instruction[DEFN_LABEL_IFLD]);
 	if (Inter::Symbols::is_label(lab_name) == FALSE) {
 		*E = Inode::error(P, I"not a label", (lab_name)?(lab_name->symbol_name):NULL);
 		return;
 	}
-	if (P->W.data[LEVEL_IFLD] < 1) { *E = Inode::error(P, I"label with bad level", NULL); return; }
+	if (P->W.instruction[LEVEL_IFLD] < 1) { *E = Inode::error(P, I"label with bad level", NULL); return; }
 	inter_symbols_table *locals = Inter::Packages::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
 	*E = Inter::Verify::local_defn(P, DEFN_LABEL_IFLD, locals);
@@ -65,7 +65,7 @@ void Inter::Label::verify(inter_construct *IC, inter_tree_node *P, inter_package
 
 void Inter::Label::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = Inter::Packages::container(P);
-	inter_symbol *lab_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LABEL_IFLD]);
 	if (lab_name) {
 		WRITE("%S", lab_name->symbol_name);
 	} else { *E = Inode::error(P, I"cannot write label", NULL); return; }

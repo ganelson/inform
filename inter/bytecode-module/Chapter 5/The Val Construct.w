@@ -68,15 +68,15 @@ inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_symbol *val_kind
 }
 
 void Inter::Val::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	P->W.data[VAL2_VAL_IFLD] = Inter::Types::transpose_value(P->W.data[VAL1_VAL_IFLD], P->W.data[VAL2_VAL_IFLD], grid, grid_extent, E);
+	P->W.instruction[VAL2_VAL_IFLD] = Inter::Types::transpose_value(P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], grid, grid_extent, E);
 }
 
 void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_VAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbols_table *locals = Inter::Packages::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
-	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_VAL_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *val_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.data[KIND_VAL_IFLD]);
+	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_VAL_IFLD], KIND_IST); if (*E) return;
+	inter_symbol *val_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[KIND_VAL_IFLD]);
 	*E = Inter::Verify::local_value(P, VAL1_VAL_IFLD, val_kind, locals); if (*E) return;
 }
 
@@ -86,6 +86,6 @@ void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	inter_symbol *val_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_VAL_IFLD);
 	if (val_kind) {
 		WRITE("val %S ", val_kind->symbol_name);
-		Inter::Types::write(OUT, P, val_kind, P->W.data[VAL1_VAL_IFLD], P->W.data[VAL2_VAL_IFLD], locals, FALSE);
+		Inter::Types::write(OUT, P, val_kind, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);
 	} else { *E = Inode::error(P, I"cannot write val", NULL); return; }
 }

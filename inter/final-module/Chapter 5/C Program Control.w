@@ -94,13 +94,13 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 @<Generate primitive for for@> =
 	WRITE("for (");
 	inter_tree_node *INIT = InterTree::first_child(P);
-	if (!((INIT->W.data[ID_IFLD] == VAL_IST) &&
-		(INIT->W.data[VAL1_VAL_IFLD] == LITERAL_IVAL) &&
-		(INIT->W.data[VAL2_VAL_IFLD] == 1))) VNODE_1C;
+	if (!((INIT->W.instruction[ID_IFLD] == VAL_IST) &&
+		(INIT->W.instruction[VAL1_VAL_IFLD] == LITERAL_IVAL) &&
+		(INIT->W.instruction[VAL2_VAL_IFLD] == 1))) VNODE_1C;
 	WRITE(";"); VNODE_2C;
 	WRITE(";");
 	inter_tree_node *U = InterTree::third_child(P);
-	if (U->W.data[ID_IFLD] != VAL_IST)
+	if (U->W.instruction[ID_IFLD] != VAL_IST)
 	Vanilla::node(gen, U);
 	WRITE(") {\n"); INDENT; VNODE_4C;
 	OUTDENT; WRITE("}\n");
@@ -109,8 +109,8 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 @<Generate primitive for objectloop@> =
 	int in_flag = FALSE;
 	inter_tree_node *U = InterTree::third_child(P);
-	if ((U->W.data[ID_IFLD] == INV_IST) &&
-		(U->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
+	if ((U->W.instruction[ID_IFLD] == INV_IST) &&
+		(U->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *prim = Inter::Inv::invokee(U);
 		if ((prim) && (Primitives::to_BIP(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
@@ -163,8 +163,8 @@ becomes |case 3: case 7:|.
 
 @ =
 void CProgramControl::caser(code_generation *gen, inter_tree_node *X) {
-	if (X->W.data[ID_IFLD] == INV_IST) {
-		if (X->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
+	if (X->W.instruction[ID_IFLD] == INV_IST) {
+		if (X->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
 			inter_symbol *prim = Inter::Inv::invokee(X);
 			inter_ti xbip = Primitives::to_BIP(gen->from, prim);
 			if (xbip == ALTERNATIVECASE_BIP) {

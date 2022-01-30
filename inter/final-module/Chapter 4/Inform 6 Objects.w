@@ -413,7 +413,7 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 			text_stream *OUT = CodeGen::current(gen);
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) WRITE(" ");
-				CodeGen::pair(gen, P, P->W.data[i], P->W.data[i+1]);
+				CodeGen::pair(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
 			}
 			inline_this = TRUE;
 		}

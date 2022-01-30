@@ -57,7 +57,7 @@ void Inter::Reference::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 
 void Inter::Reference::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
-		if ((C->W.data[0] != INV_IST) && (C->W.data[0] != REF_IST) && (C->W.data[0] != SPLAT_IST) && (C->W.data[0] != VAL_IST) && (C->W.data[0] != LABEL_IST)) {
+		if ((C->W.instruction[0] != INV_IST) && (C->W.instruction[0] != REF_IST) && (C->W.instruction[0] != SPLAT_IST) && (C->W.instruction[0] != VAL_IST) && (C->W.instruction[0] != LABEL_IST)) {
 			*E = Inode::error(C, I"only an inv, a ref, a splat, a val, or a label can be below a reference", NULL);
 			return;
 		}
@@ -66,12 +66,12 @@ void Inter::Reference::verify_children(inter_construct *IC, inter_tree_node *P, 
 
 int Inter::Reference::node_is_ref_to(inter_tree *I, inter_tree_node *P, inter_ti seek_bip) {
 	int reffed = FALSE;
-	while (P->W.data[ID_IFLD] == REFERENCE_IST) {
+	while (P->W.instruction[ID_IFLD] == REFERENCE_IST) {
 		P = InterTree::first_child(P);
 		reffed = TRUE;
 	}
-	if (P->W.data[ID_IFLD] == INV_IST) {
-		if (P->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
+	if (P->W.instruction[ID_IFLD] == INV_IST) {
+		if (P->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
 			inter_symbol *prim = Inter::Inv::invokee(P);
 			inter_ti bip = Primitives::to_BIP(I, prim);
 			if ((bip == seek_bip) && (reffed)) return TRUE;

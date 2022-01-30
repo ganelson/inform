@@ -76,10 +76,7 @@ int ParsingStages::run_parse_insertions(pipeline_step *step) {
 }
 
 void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *state) {
-	text_stream *insertion = Inode::ID_to_text(P, P->W.data[TO_RAW_LINK_IFLD]);
-	#ifdef CORE_MODULE
-	current_sentence = (parse_node *) Inode::ID_to_ref(P, P->W.data[REF_LINK_IFLD]);
-	#endif
+	text_stream *insertion = Inode::ID_to_text(P, P->W.instruction[TO_RAW_LINK_IFLD]);
 	simple_tangle_docket *docket = (simple_tangle_docket *) state;
 	inter_bookmark here = InterBookmark::after_this_node(P);
 	docket->state = (void *) &here;
@@ -265,10 +262,10 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 		if (I6_dir != WHITESPACE_I6DIR) {
 			inter_bookmark *IBM = (inter_bookmark *) docket->state;
 			PUT_TO(R, '\n');
-			inter_ti SID = Inter::Warehouse::create_text(
+			inter_ti SID = InterWarehouse::create_text(
 				InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 			text_stream *textual_storage =
-				Inter::Warehouse::get_text(InterBookmark::warehouse(IBM), SID);
+				InterWarehouse::get_text(InterBookmark::warehouse(IBM), SID);
 			Str::copy(textual_storage, R);
 			Produce::guard(Inter::Splat::new(IBM, SID, I6_dir,
 				(inter_ti) (InterBookmark::baseline(IBM) + 1), 0, NULL));

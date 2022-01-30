@@ -230,7 +230,7 @@ void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I, index_session *se
 	if (P) {
 		int offset = DATA_CONST_IFLD;
 		while (offset < P->W.extent) {
-			inter_ti v1 = P->W.data[offset], v2 = P->W.data[offset+1];
+			inter_ti v1 = P->W.instruction[offset], v2 = P->W.instruction[offset+1];
 			if (v1 == LITERAL_IVAL) {
 				k++;
 				if (k == 1) {

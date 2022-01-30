@@ -556,10 +556,10 @@ int CFunctionModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_t
 
 @<Generate primitive for externalcall@> =
 	inter_tree_node *N = InterTree::first_child(P);
-	if ((N) && (N->W.data[ID_IFLD] == VAL_IST) &&
-		(N->W.data[VAL1_VAL_IFLD] == LITERAL_TEXT_IVAL)) {
-		text_stream *glob_text = Inter::Warehouse::get_text(
-			InterTree::warehouse(gen->from), N->W.data[VAL1_VAL_IFLD + 1]);
+	if ((N) && (N->W.instruction[ID_IFLD] == VAL_IST) &&
+		(N->W.instruction[VAL1_VAL_IFLD] == LITERAL_TEXT_IVAL)) {
+		text_stream *glob_text = InterWarehouse::get_text(
+			InterTree::warehouse(gen->from), N->W.instruction[VAL1_VAL_IFLD + 1]);
 		WRITE("%S(proc, ",
 			CFunctionModel::ensure_external_function_predeclared(gen, glob_text));
 		VNODE_2C; WRITE(")");

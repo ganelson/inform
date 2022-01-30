@@ -118,7 +118,7 @@ code_generation *CodeGen::new_generation(pipeline_step *step, filename *F,
 @ =
 void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
-	switch (P->W.data[ID_IFLD]) {
+	switch (P->W.instruction[ID_IFLD]) {
 		case VARIABLE_IST: {
 			inter_symbol *var_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
 			ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);
@@ -475,21 +475,21 @@ void CodeGen::pair(code_generation *gen, inter_tree_node *P,
 		if (s == NULL) internal_error("bad symbol in Inter pair");
 		Generators::compile_literal_symbol(gen, s);
 	} else if (val1 == DIVIDER_IVAL) {
-		text_stream *divider_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		text_stream *divider_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE(" ! %S\n\t", divider_text);
 	} else if (val1 == REAL_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 		Generators::compile_literal_real(gen, glob_text);
 	} else if (val1 == DWORD_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 		Generators::compile_dictionary_word(gen, glob_text, FALSE);
 	} else if (val1 == PDWORD_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 		Generators::compile_dictionary_word(gen, glob_text, TRUE);
 	} else if (val1 == LITERAL_TEXT_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 		Generators::compile_literal_text(gen, glob_text, TRUE);
 	} else if (val1 == GLOB_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 		WRITE("%S", glob_text);
 	} else internal_error("unimplemented data pair");

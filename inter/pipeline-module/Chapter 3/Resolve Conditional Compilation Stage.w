@@ -85,9 +85,9 @@ void ResolveConditionalsStage::visitor(inter_tree *I, inter_tree_node *P, void *
 	rcc_state *state = (rcc_state *) v_state;
 	int compile_this = TRUE;
 	for (int i=0; i<state->cc_sp; i++) if (state->cc_stack[i] == FALSE) compile_this = FALSE;
-	if (P->W.data[ID_IFLD] == SPLAT_IST) {
-		text_stream *S = Inode::ID_to_text(P, P->W.data[MATTER_SPLAT_IFLD]);
-		switch (P->W.data[PLM_SPLAT_IFLD]) {
+	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
+		text_stream *S = Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]);
+		switch (P->W.instruction[PLM_SPLAT_IFLD]) {
 			case CONSTANT_I6DIR:
 			case GLOBAL_I6DIR:
 			case ARRAY_I6DIR:

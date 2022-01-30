@@ -222,7 +222,7 @@ its nouns exchanged.
 @<Find the resulting actions and reversal states for each grammar line@> =
 	int lines = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-		inter_symbol *S = VanillaIF::get_symbol(gen, P, P->W.data[i], P->W.data[i+1]);
+		inter_symbol *S = VanillaIF::get_symbol(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
 		if (S) {
 			if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
 				if (lines >= MAX_LINES_IN_VANILLA_GRAMMAR)
@@ -233,7 +233,7 @@ its nouns exchanged.
 			}
 			if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_RESULT")) {
 				line_actions[lines-1] =
-					VanillaIF::get_symbol(gen, P, P->W.data[i+2], P->W.data[i+3]);
+					VanillaIF::get_symbol(gen, P, P->W.instruction[i+2], P->W.instruction[i+3]);
 			}
 			if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_REVERSE"))
 				line_reverse[lines-1] = TRUE;
@@ -249,7 +249,7 @@ its nouns exchanged.
 	int reading_command_verbs = TRUE, synonyms = 0, line_started = FALSE;
 	int lines = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-		inter_ti val1 = P->W.data[i], val2 = P->W.data[i+1];
+		inter_ti val1 = P->W.instruction[i], val2 = P->W.instruction[i+1];
 		if (reading_command_verbs) @<Read this as a command verb@>
 		else @<Read this as part of a grammar line@>;
 	}
@@ -257,7 +257,7 @@ its nouns exchanged.
 
 @<Read this as a command verb@> =
 	if (val1 == DWORD_IVAL) {
-		text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 		vanilla_dword *dw = VanillaIF::text_to_verb_dword(gen, glob_text, verbnum);
 		if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) dw->meta = TRUE;
 		synonyms++;
@@ -287,12 +287,12 @@ like |'fish' / 'fowl' / 'chalk'|, where |'fish'| has a slash after but not befor
 
 @<Add the slash before and slash after bits to token_metadata@> =
 	if (i > DATA_CONST_IFLD) {
-		inter_symbol *S_before = VanillaIF::get_symbol(gen, P, P->W.data[i-2], P->W.data[i-1]);
+		inter_symbol *S_before = VanillaIF::get_symbol(gen, P, P->W.instruction[i-2], P->W.instruction[i-1]);
 		if ((S_before) && (Str::eq(S_before->symbol_name, I"VERB_DIRECTIVE_SLASH")))
 			token_metadata += 0x10;
 	}
 	if (i+2 < P->W.extent) {
-		inter_symbol *S_after = VanillaIF::get_symbol(gen, P, P->W.data[i+2], P->W.data[i+3]);
+		inter_symbol *S_after = VanillaIF::get_symbol(gen, P, P->W.instruction[i+2], P->W.instruction[i+3]);
 		if ((S_after) && (Str::eq(S_after->symbol_name, I"VERB_DIRECTIVE_SLASH")))
 			token_metadata += 0x20;
 	}
@@ -403,7 +403,7 @@ The opening byte gives some metadata bits, and then there's a word.
 	DISCARD_TEXT(MG)
 
 @<Read this dictionary word as part of a grammar line@> =
-	text_stream *glob_text = Inter::Warehouse::get_text(InterTree::warehouse(I), val2);
+	text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 	vanilla_dword *dw =
 		VanillaIF::text_to_prep_dword(gen, glob_text,
 			(val1 == PDWORD_IVAL)?TRUE:FALSE);

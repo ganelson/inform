@@ -83,9 +83,9 @@ in |texts|.
 	Wiring::wire_to(ref_s, latest_s);
 	inter_ti val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(I, Inter::Packages::container(P), ref_s, &val1, &val2);
-	P->W.data[FORMAT_CONST_IFLD] = CONSTANT_DIRECT;
-	P->W.data[DATA_CONST_IFLD] = val1;
-	P->W.data[DATA_CONST_IFLD+1] = val2;
+	P->W.instruction[FORMAT_CONST_IFLD] = CONSTANT_DIRECT;
+	P->W.instruction[DATA_CONST_IFLD] = val1;
+	P->W.instruction[DATA_CONST_IFLD+1] = val2;
 
 	inter_symbol *con_name =
 		InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
@@ -96,8 +96,8 @@ and use that to define a sorting function on nodes:
 
 =
 text_stream *SynopticText::text_quoted_here(inter_tree_node *P) {
-	if (P->W.data[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_TEXT) {
-		inter_ti val1 = P->W.data[DATA_CONST_IFLD];
+	if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_TEXT) {
+		inter_ti val1 = P->W.instruction[DATA_CONST_IFLD];
 		return Inode::ID_to_text(P, val1);
 	}
 	internal_error("not indirect");

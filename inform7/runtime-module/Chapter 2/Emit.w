@@ -280,9 +280,9 @@ inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
 =
 void Emit::text_constant(inter_name *con_iname, text_stream *contents) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
-	inter_ti ID = Inter::Warehouse::create_text(Emit::warehouse(),
+	inter_ti ID = InterWarehouse::create_text(Emit::warehouse(),
 		Emit::package());
-	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID), contents);
+	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID), contents);
 	inter_symbol *con_s = InterNames::define(con_iname);
 	Produce::guard(Inter::Constant::new_textual(Emit::at(), Emit::symbol_id(con_s),
 		Emit::symbol_id(string_interk), ID, Emit::baseline(), NULL));
@@ -453,25 +453,20 @@ assimilating during linking.
 void Emit::intervention(int stage, text_stream *segment, text_stream *part,
 	text_stream *i6, text_stream *seg) {
 	inter_warehouse *warehouse = Emit::warehouse();
-	inter_ti ID1 = Inter::Warehouse::create_text(warehouse, Emit::package());
-	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID1), segment);
+	inter_ti ID1 = InterWarehouse::create_text(warehouse, Emit::package());
+	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID1), segment);
 
-	inter_ti ID2 = Inter::Warehouse::create_text(warehouse, Emit::package());
-	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID2), part);
+	inter_ti ID2 = InterWarehouse::create_text(warehouse, Emit::package());
+	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID2), part);
 
-	inter_ti ID3 = Inter::Warehouse::create_text(warehouse, Emit::package());
-	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID3), i6);
+	inter_ti ID3 = InterWarehouse::create_text(warehouse, Emit::package());
+	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID3), i6);
 
-	inter_ti ID4 = Inter::Warehouse::create_text(warehouse, Emit::package());
-	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID4), seg);
-
-	inter_ti ref = Inter::Warehouse::create_ref(warehouse);
-	Inter::Warehouse::set_ref(warehouse, ref, (void *) current_sentence);
-
-	Inter::Warehouse::attribute_resource(warehouse, ref, Emit::package());
+	inter_ti ID4 = InterWarehouse::create_text(warehouse, Emit::package());
+	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID4), seg);
 
 	Produce::guard(Inter::Link::new(Emit::at(), (inter_ti) stage,
-		ID1, ID2, ID3, ID4, ref, Emit::baseline(), NULL));
+		ID1, ID2, ID3, ID4, Emit::baseline(), NULL));
 }
 
 @ And this is a similarly inelegant construction:
@@ -481,8 +476,8 @@ void Emit::append(inter_name *iname, text_stream *text) {
 	LOG("Append '%S'\n", text);
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symbol = InterNames::to_symbol(iname);
-	inter_ti ID = Inter::Warehouse::create_text(Emit::warehouse(), Emit::package());
-	Str::copy(Inter::Warehouse::get_text(Emit::warehouse(), ID), text);
+	inter_ti ID = InterWarehouse::create_text(Emit::warehouse(), Emit::package());
+	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID), text);
 	Produce::guard(Inter::Append::new(Emit::at(), symbol, ID, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }

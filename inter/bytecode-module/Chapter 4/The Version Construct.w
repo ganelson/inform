@@ -43,9 +43,9 @@ inter_error_message *Inter::Version::new(inter_bookmark *IBM, int V, inter_ti le
 
 void Inter::Version::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_VERSION_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	if (P->W.data[NUMBER_VERSION_IFLD] < 1) { *E = Inode::error(P, I"version out of range", NULL); return; }
+	if (P->W.instruction[NUMBER_VERSION_IFLD] < 1) { *E = Inode::error(P, I"version out of range", NULL); return; }
 }
 
 void Inter::Version::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	WRITE("version %d", P->W.data[NUMBER_VERSION_IFLD]);
+	WRITE("version %d", P->W.instruction[NUMBER_VERSION_IFLD]);
 }

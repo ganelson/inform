@@ -43,7 +43,7 @@ int EliminateRedundantOperationsStage::run(pipeline_step *step) {
 }
 
 void EliminateRedundantOperationsStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	if (P->W.data[ID_IFLD] == PACKAGE_IST) {
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = Inter::Package::defined_by_frame(P);
 		if (Inter::Packages::is_codelike(pack)) {
 			inter_tree_node *D = Inter::Packages::definition(pack);
@@ -62,8 +62,8 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 	}
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		int iden[2] = { -1, -1 };
-		if ((F->W.data[ID_IFLD] == INV_IST) &&
-			(F->W.data[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
+		if ((F->W.instruction[ID_IFLD] == INV_IST) &&
+			(F->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 			inter_symbol *prim = Inter::Inv::invokee(F);
 			if (Primitives::to_BIP(P->tree, prim) == OR_BIP)     { iden[1] = 0; }
 			if (Primitives::to_BIP(P->tree, prim) == AND_BIP)    { iden[1] = 1; }
@@ -82,9 +82,9 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 	operands[1] = InterTree::second_child(F);
 	if ((operands[0]) && (operands[1])) {
 		for (int i = 0; i < 2; i++) {
-			if ((iden[i] >= 0) && (operands[i]->W.data[ID_IFLD] == VAL_IST)) {
-				inter_ti val1 = operands[i]->W.data[VAL1_VAL_IFLD];
-				inter_ti val2 = operands[i]->W.data[VAL2_VAL_IFLD];
+			if ((iden[i] >= 0) && (operands[i]->W.instruction[ID_IFLD] == VAL_IST)) {
+				inter_ti val1 = operands[i]->W.instruction[VAL1_VAL_IFLD];
+				inter_ti val2 = operands[i]->W.instruction[VAL2_VAL_IFLD];
 				if ((val1 == LITERAL_IVAL) && (val2 == (inter_ti) iden[i])) {
 					redundant_operations_removed++;
 					NodePlacement::remove(operands[i]);

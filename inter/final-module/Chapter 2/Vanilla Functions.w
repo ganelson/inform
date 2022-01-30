@@ -120,10 +120,10 @@ in some way by the generator. (As indeed the C generator does, mangling this to
 =
 void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
 	vanilla_function *vf) {
-	if (P->W.data[ID_IFLD] == LOCAL_IST) {
+	if (P->W.instruction[ID_IFLD] == LOCAL_IST) {
 		inter_package *pack = Inter::Packages::container(P);
 		inter_symbol *local_s =
-			InterSymbolsTables::local_symbol_from_id(pack, P->W.data[DEFN_LOCAL_IFLD]);
+			InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 		ADD_TO_LINKED_LIST(Inter::Symbols::name(local_s), text_stream, vf->locals);
 		if (Str::eq(local_s->symbol_name, I"_vararg_count"))
 			vf->takes_variable_arguments = TRUE;
@@ -143,10 +143,10 @@ void VanillaFunctions::declare_function(code_generation *gen, inter_symbol *fn_s
 void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 	inter_tree_node *P, int void_context) {
 	inter_tree_node *D = fn_s->definition;
-	if ((D) && (D->W.data[ID_IFLD] == CONSTANT_IST) &&
-		(D->W.data[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
-		inter_ti val1 = D->W.data[DATA_CONST_IFLD];
-		inter_ti val2 = D->W.data[DATA_CONST_IFLD + 1];
+	if ((D) && (D->W.instruction[ID_IFLD] == CONSTANT_IST) &&
+		(D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
+		inter_ti val1 = D->W.instruction[DATA_CONST_IFLD];
+		inter_ti val2 = D->W.instruction[DATA_CONST_IFLD + 1];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 			inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_table(
 				val1, val2, Inter::Packages::scope_of(D));

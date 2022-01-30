@@ -43,8 +43,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID, inter_ti level, inter_error_location *eloc) {
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
-	inter_ti L1 = Inter::Warehouse::create_frame_list(warehouse);
-	Inter::Warehouse::attribute_resource(warehouse, L1, InterBookmark::package(IBM));
+	inter_ti L1 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
@@ -53,20 +52,20 @@ inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, int
 }
 
 void Inter::Property::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	P->W.data[PERM_LIST_PROP_IFLD] = grid[P->W.data[PERM_LIST_PROP_IFLD]];
+	P->W.instruction[PERM_LIST_PROP_IFLD] = grid[P->W.instruction[PERM_LIST_PROP_IFLD]];
 }
 
 void Inter::Property::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_PROP_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_PROP_IFLD); if (*E) return;
-	*E = Inter::Verify::symbol(owner, P, P->W.data[KIND_PROP_IFLD], KIND_IST);
+	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_PROP_IFLD], KIND_IST);
 }
 
 inter_ti Inter::Property::permissions_list(inter_symbol *prop_name) {
 	if (prop_name == NULL) return 0;
 	inter_tree_node *D = Inter::Symbols::definition(prop_name);
 	if (D == NULL) return 0;
-	return D->W.data[PERM_LIST_PROP_IFLD];
+	return D->W.instruction[PERM_LIST_PROP_IFLD];
 }
 
 void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
@@ -82,6 +81,6 @@ inter_symbol *Inter::Property::kind_of(inter_symbol *prop_symbol) {
 	if (prop_symbol == NULL) return NULL;
 	inter_tree_node *D = Inter::Symbols::definition(prop_symbol);
 	if (D == NULL) return NULL;
-	if (D->W.data[ID_IFLD] != PROPERTY_IST) return NULL;
+	if (D->W.instruction[ID_IFLD] != PROPERTY_IST) return NULL;
 	return InterSymbolsTables::symbol_from_frame_data(D, KIND_PROP_IFLD);
 }
