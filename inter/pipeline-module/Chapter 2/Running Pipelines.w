@@ -127,7 +127,7 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	step->ephemera.package_argument = NULL;
 	if (Str::len(step->package_URL_argument) > 0) {
 		step->ephemera.package_argument =
-			Inter::Packages::by_url(step->ephemera.tree, step->package_URL_argument);
+			InterPackage::by_url(step->ephemera.tree, step->package_URL_argument);
 		if (step->ephemera.package_argument == NULL) {
 			PipelineErrors::error_with(step,
 				"pipeline step applied to package which does not exist: '%S'",
@@ -284,65 +284,65 @@ inter_symbol *RunningPipelines::get_symbol(pipeline_step *step, int id) {
 
 			case unchecked_kind_RPSYM:
 				step->ephemera.cached_symbols[unchecked_kind_RPSYM] =
-				Inter::Packages::search_resources(I, I"K_unchecked"); break;
+				InterPackage::search_resources(I, I"K_unchecked"); break;
 			case unchecked_function_RPSYM:
 				step->ephemera.cached_symbols[unchecked_function_RPSYM] =
-				Inter::Packages::search_resources(I, I"K_unchecked_function"); break;
+				InterPackage::search_resources(I, I"K_unchecked_function"); break;
 			case list_of_unchecked_kind_RPSYM:
 				step->ephemera.cached_symbols[list_of_unchecked_kind_RPSYM] =
-				Inter::Packages::search_resources(I, I"K_unchecked_list"); break;
+				InterPackage::search_resources(I, I"K_unchecked_list"); break;
 			case object_kind_RPSYM:
 				step->ephemera.cached_symbols[object_kind_RPSYM] =
-				Inter::Packages::search_resources(I, I"K_object"); break;
+				InterPackage::search_resources(I, I"K_object"); break;
 			case truth_state_kind_RPSYM:
 				step->ephemera.cached_symbols[truth_state_kind_RPSYM] =
-				Inter::Packages::search_resources(I, I"K_int2"); break;
+				InterPackage::search_resources(I, I"K_int2"); break;
 			case direction_kind_RPSYM:
 				step->ephemera.cached_symbols[direction_kind_RPSYM] =
-				Inter::Packages::search_resources(I, I"K3_direction"); break;
+				InterPackage::search_resources(I, I"K3_direction"); break;
 
 			case verb_directive_reverse_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_reverse_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_REVERSE"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_REVERSE"); break;
 			case verb_directive_slash_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_slash_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_SLASH"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_SLASH"); break;
 			case verb_directive_divider_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_divider_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_DIVIDER"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_DIVIDER"); break;
 			case verb_directive_result_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_result_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_RESULT"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_RESULT"); break;
 			case verb_directive_special_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_special_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_SPECIAL"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_SPECIAL"); break;
 			case verb_directive_number_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_number_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_NUMBER"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_NUMBER"); break;
 			case verb_directive_noun_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_noun_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_NOUN"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_NOUN"); break;
 			case verb_directive_multi_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_multi_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_MULTI"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_MULTI"); break;
 			case verb_directive_multiinside_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_multiinside_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_MULTIINSIDE"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_MULTIINSIDE"); break;
 			case verb_directive_multiheld_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_multiheld_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_MULTIHELD"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_MULTIHELD"); break;
 			case verb_directive_held_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_held_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_HELD"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_HELD"); break;
 			case verb_directive_creature_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_creature_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_CREATURE"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_CREATURE"); break;
 			case verb_directive_topic_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_topic_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_TOPIC"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_TOPIC"); break;
 			case verb_directive_multiexcept_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_multiexcept_RPSYM] =
-				Inter::Packages::search_resources(I, I"VERB_DIRECTIVE_MULTIEXCEPT"); break;
+				InterPackage::search_resources(I, I"VERB_DIRECTIVE_MULTIEXCEPT"); break;
 		}
 	}
 	return step->ephemera.cached_symbols[id];

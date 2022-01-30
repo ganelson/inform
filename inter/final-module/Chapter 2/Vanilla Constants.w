@@ -120,7 +120,7 @@ than a literal, or may even be computed.
 	if ((entry_count == 1) &&
 		(Inter::Symbols::read_annotation(con_name, ASSIMILATED_IANN) >= 0)) {
 		inter_ti val1 = P->W.instruction[DATA_CONST_IFLD], val2 = P->W.instruction[DATA_CONST_IFLD+1];
-		entry_count = (int) Inter::Constant::evaluate(Inter::Packages::scope_of(P), val1, val2);
+		entry_count = (int) Inter::Constant::evaluate(InterPackage::scope_of(P), val1, val2);
 		give_count = TRUE;
 	}
 

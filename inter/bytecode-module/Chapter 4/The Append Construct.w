@@ -58,7 +58,7 @@ void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_packag
 	inter_ti vcount = Inode::bump_verification_count(P);
 
 	if (P->W.extent != EXTENT_APPEND_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	inter_symbol *symbol = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[SYMBOL_APPEND_IFLD]);;
+	inter_symbol *symbol = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[SYMBOL_APPEND_IFLD]);;
 	if (symbol == NULL) { *E = Inode::error(P, I"no target name", NULL); return; }
 	if (P->W.instruction[TEXT_APPEND_IFLD] == 0) { *E = Inode::error(P, I"no translation text", NULL); return; }
 

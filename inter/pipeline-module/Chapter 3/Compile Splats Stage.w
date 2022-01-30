@@ -74,8 +74,8 @@ void CompileSplatsStage::visitor1(inter_tree *I, inter_tree_node *P, void *state
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = Inter::Package::defined_by_frame(P);
-		inter_symbol *ptype = Inter::Packages::type(pack);
+		inter_package *pack = InterPackage::at_this_head(P);
+		inter_symbol *ptype = InterPackage::type(pack);
 		if (Str::eq(ptype->symbol_name, I"_module"))
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
@@ -98,8 +98,8 @@ void CompileSplatsStage::visitor2(inter_tree *I, inter_tree_node *P, void *state
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = Inter::Package::defined_by_frame(P);
-		inter_symbol *ptype = Inter::Packages::type(pack);
+		inter_package *pack = InterPackage::at_this_head(P);
+		inter_symbol *ptype = InterPackage::type(pack);
 		if (Str::eq(ptype->symbol_name, I"_module"))
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
@@ -122,8 +122,8 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = Inter::Package::defined_by_frame(P);
-		inter_symbol *ptype = Inter::Packages::type(pack);
+		inter_package *pack = InterPackage::at_this_head(P);
+		inter_symbol *ptype = InterPackage::type(pack);
 		if (Str::eq(ptype->symbol_name, I"_module"))
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
@@ -714,7 +714,7 @@ These have package types |_function| and |_code| respectively.
 		@<Extract a token@>;
 		if (Str::len(value) == 0) break;
 		inter_symbol *loc_name =
-			InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(IP), value);
+			InterSymbolsTables::create_with_unique_name(InterPackage::scope(IP), value);
 		Inter::Symbols::local(loc_name);
 		inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 		Produce::guard(Inter::Local::new(IBM, loc_name,
@@ -791,7 +791,7 @@ inter_bookmark CompileSplatsStage::make_submodule(inter_tree *I, pipeline_step *
 		inter_package *module_pack =
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument];
 		if (module_pack) {
-			inter_package *submodule_package = Inter::Packages::by_name(module_pack, name);
+			inter_package *submodule_package = InterPackage::by_name(module_pack, name);
 			if (submodule_package == NULL) {
 				inter_bookmark IBM = InterBookmark::after_this_node(P);
 				submodule_package = Produce::make_subpackage(&IBM, name,
@@ -1183,7 +1183,7 @@ inter_symbol *CompileSplatsStage::new_ccv_symbol(inter_package *pack) {
 	TEMPORARY_TEXT(NN)
 	WRITE_TO(NN, "Computed_Constant_Value_%d", ccs_count++);
 	inter_symbol *result_s =
-		InterSymbolsTables::symbol_from_name_creating(Inter::Packages::scope(pack), NN);
+		InterSymbolsTables::symbol_from_name_creating(InterPackage::scope(pack), NN);
 	Inter::Symbols::set_flag(result_s, MAKE_NAME_UNIQUE);
 	DISCARD_TEXT(NN)
 	return result_s;
@@ -1232,7 +1232,7 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	function_body_request *req;
 	LOOP_OVER_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile) {
 		LOGIF(SCHEMA_COMPILATION, "=======\n\nFunction (%S) len %d: '%S'\n\n",
-			Inter::Packages::name(req->block_package), Str::len(req->body), req->body);
+			InterPackage::name(req->block_package), Str::len(req->body), req->body);
 		inter_schema *sch = ParsingSchemas::from_text(req->body);
 		if (LinkedLists::len(sch->parsing_errors) > 0) {
 			CompileSplatsStage::report_kit_errors(sch, req);
@@ -1252,10 +1252,10 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	Packaging::set_state(I, &(req->position), req->enclosure);
 	Produce::push_new_code_position(I, &(req->position));
 	value_holster VH = Holsters::new(INTER_VOID_VHMODE);
-	inter_symbols_table *scope1 = Inter::Packages::scope(req->block_package);
+	inter_symbols_table *scope1 = InterPackage::scope(req->block_package);
 	inter_package *module_pack =
 		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
-	inter_symbols_table *scope2 = Inter::Packages::scope(module_pack);
+	inter_symbols_table *scope2 = InterPackage::scope(module_pack);
 	identifier_finder finder = IdentifierFinders::common_names_only();
 	IdentifierFinders::next_priority(&finder, scope1);
 	IdentifierFinders::next_priority(&finder, scope2);

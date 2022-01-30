@@ -30,8 +30,8 @@ int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 	int d = ((int) C2) - ((int) C1); /* larger values sort earlier */
 	if (d != 0) return d;
 	
-	inter_ti S1 = Metadata::read_optional_numeric(Inter::Packages::container(P1), I"^verb_sorting");
-	inter_ti S2 = Metadata::read_optional_numeric(Inter::Packages::container(P2), I"^verb_sorting");
+	inter_ti S1 = Metadata::read_optional_numeric(InterPackage::container(P1), I"^verb_sorting");
+	inter_ti S2 = Metadata::read_optional_numeric(InterPackage::container(P2), I"^verb_sorting");
 	d = ((int) S1) - ((int) S2); /* smaller values sort earlier */
 	if (d != 0) return d;
 		
@@ -42,7 +42,7 @@ int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 	inter_name *iname = HierarchyLocations::iname(I, TABLEOFVERBS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->verb_form_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->verb_form_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->verb_form_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^verb_value");
 		Synoptic::symbol_entry(vc_s);
 	}

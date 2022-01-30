@@ -1712,7 +1712,7 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	if (v1 == ALIAS_IVAL) {
 		PUT(URL_SYMBOL_CHAR);
 		inter_symbols_table *T =
-			Inter::Packages::scope(Emit::current_enclosure()->actual_package);
+			InterPackage::scope(Emit::current_enclosure()->actual_package);
 		inter_symbol *S = InterSymbolsTables::symbol_from_id(T, v2);
 		InterSymbolsTables::symbol_to_url_name(OUT, S);
 		PUT(URL_SYMBOL_CHAR);

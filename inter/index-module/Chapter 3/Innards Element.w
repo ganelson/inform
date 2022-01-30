@@ -33,7 +33,7 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML_OPEN("p");
 	Localisation::roman(OUT, LD, I"Index.Elements.In.Format");
 	WRITE(": ");
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/basics");
+	inter_package *pack = InterPackage::by_url(I, I"/main/completion/basics");
 	text_stream *VM = Metadata::read_optional_textual(pack, I"^virtual_machine");
 	text_stream *VM_icon = Metadata::read_optional_textual(pack, I"^virtual_machine_icon");
 	if (Str::len(VM_icon) > 0) {
@@ -86,7 +86,7 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	WRITE(":");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/basics");
+	inter_package *pack = InterPackage::by_url(I, I"/main/completion/basics");
 	text_stream *used = Metadata::read_optional_textual(pack, I"^language_elements_used");
 	text_stream *not_used = Metadata::read_optional_textual(pack, I"^language_elements_not_used");
 	if (Str::len(used) > 0) 
@@ -102,7 +102,7 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	WRITE(":");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/basics");
+	inter_package *pack = InterPackage::by_url(I, I"/main/completion/basics");
 	inter_package *aspect_pack;
 	LOOP_THROUGH_SUBPACKAGES(aspect_pack, pack, I"_debugging_aspect") {	
 		TEMPORARY_TEXT(is)
@@ -140,7 +140,7 @@ int InnardsElement::uo_set_from(inter_package *pack, int way, inter_package *E) 
 		case EXTENSION_UO_ORIGIN: {
 			inter_symbol *id = Metadata::read_optional_symbol(pack, I"^used_in_extension");
 			if (id) {
-				inter_package *used_in_E = Inter::Packages::container(id->definition);
+				inter_package *used_in_E = InterPackage::container(id->definition);
 				if ((used_in_E) && (used_in_E == E)) return TRUE;
 			}
 			break;

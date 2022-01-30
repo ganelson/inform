@@ -44,9 +44,9 @@ int EliminateRedundantOperationsStage::run(pipeline_step *step) {
 
 void EliminateRedundantOperationsStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = Inter::Package::defined_by_frame(P);
-		if (Inter::Packages::is_codelike(pack)) {
-			inter_tree_node *D = Inter::Packages::definition(pack);
+		inter_package *pack = InterPackage::at_this_head(P);
+		if (InterPackage::is_a_function_body(pack)) {
+			inter_tree_node *D = InterPackage::head(pack);
 			EliminateRedundantOperationsStage::traverse_code_tree(D);
 		}
 	}

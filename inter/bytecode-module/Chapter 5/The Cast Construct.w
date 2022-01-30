@@ -61,7 +61,7 @@ void Inter::Cast::verify(inter_construct *IC, inter_tree_node *P, inter_package 
 }
 
 void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbols_table *locals = Inter::Packages::scope_of(P);
+	inter_symbols_table *locals = InterPackage::scope_of(P);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	inter_symbol *from_kind = InterSymbolsTables::symbol_from_frame_data(P, FROM_KIND_CAST_IFLD);
 	inter_symbol *to_kind = InterSymbolsTables::symbol_from_frame_data(P, TO_KIND_CAST_IFLD);

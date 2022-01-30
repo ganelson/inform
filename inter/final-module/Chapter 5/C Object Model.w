@@ -311,7 +311,7 @@ void CObjectModel::declare_kind(code_generator *gtr, code_generation *gen,
 @<Declare a kind of object@> =
 	text_stream *class_name = Inter::Symbols::name(kind_s);
 	text_stream *printed_name = Metadata::read_optional_textual(
-		Inter::Packages::container(kind_s->definition), I"^printed_name");
+		InterPackage::container(kind_s->definition), I"^printed_name");
 	text_stream *super_class = NULL;
 	inter_symbol *super_name = Inter::Kind::super(kind_s);
 	if (super_name) super_class = Inter::Symbols::name(super_name);
@@ -371,7 +371,7 @@ void CObjectModel::vph_object(code_generation *gen, inter_symbol *kind_s) {
 void CObjectModel::declare_instance(code_generator *gtr, code_generation *gen,
 	inter_symbol *inst_s, inter_symbol *kind_s, int enumeration, segmentation_pos *ignored_saved) {
 	text_stream *printed_name = Metadata::read_optional_textual(
-		Inter::Packages::container(inst_s->definition), I"^printed_name");
+		InterPackage::container(inst_s->definition), I"^printed_name");
 	int is_enumerative = FALSE;
 	if ((kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) ||
 		(VanillaObjects::is_kind_of_object(gen, kind_s))) {
@@ -524,7 +524,7 @@ But the second entry is the inner property, as with Inform 6.
 
 @<Define the property name in the symbols header file too@> =
 	text_stream *pname = Metadata::read_optional_textual(
-		Inter::Packages::container(prop_name->definition), I"^name");
+		InterPackage::container(prop_name->definition), I"^name");
 	if (Str::len(pname) > 0) {
 		int A = Inter::Symbols::read_annotation(prop_name, C_ARRAY_ADDRESS_IANN);
 		if (A > 0) {

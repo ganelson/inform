@@ -133,7 +133,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 				inter_ti n;
 				switch (i) {
 					case 0: n = (inter_ti) InterTree::global_scope(I)->n_index; break;
-					case 1: n = (inter_ti) InterTree::root_package(I)->index_n; break;
+					case 1: n = (inter_ti) InterTree::root_package(I)->resource_ID; break;
 					default: n = InterWarehouse::create_resource(warehouse); break;
 				}
 	if (trace_bin) WRITE_TO(STDOUT, "Reading resource %d <--- %d\n", n, from_N);
@@ -324,14 +324,14 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 	if (p != 0) parent = InterWarehouse::get_package(warehouse, grid[p]);
 	inter_package *stored_package = InterWarehouse::get_package(warehouse, n);
 	if (stored_package == NULL) {
-		stored_package = Inter::Packages::new(I, n);
+		stored_package = InterPackage::new(I, n);
 		InterWarehouse::create_ref_at(warehouse, n, STORE_POINTER_inter_package(stored_package), stored_package);
 	}
-	if (cl) Inter::Packages::make_codelike(stored_package);
-	if (rl) Inter::Packages::make_rootlike(stored_package);
+	if (cl) InterPackage::mark_as_a_function_body(stored_package);
+	if (rl) InterPackage::mark_as_a_root_package(stored_package);
 	if (sc != 0) {
 		if (grid) sc = grid[sc];
-		Inter::Packages::set_scope(stored_package, InterWarehouse::get_symbols_table(warehouse, sc));
+		InterPackage::set_scope(stored_package, InterWarehouse::get_symbols_table(warehouse, sc));
 	}
 	TEMPORARY_TEXT(N)
 	unsigned int L;
@@ -341,17 +341,17 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		PUT_TO(N, (int) c);
 	}
-	Inter::Packages::set_name((parent)?(parent):(I->root_package), stored_package, N);
+	InterPackage::set_name((parent)?(parent):(I->root_package), stored_package, N);
 	DISCARD_TEXT(N)
 
 @<Write a package resource@> =
 	inter_package *P = InterWarehouse::get_package(warehouse, n);
 	if (P) {
-		inter_package *par = Inter::Packages::parent(P);
+		inter_package *par = InterPackage::parent(P);
 		if (par == NULL) BinaryFiles::write_int32(fh, 0);
-		else BinaryFiles::write_int32(fh, (unsigned int) par->index_n);
-		BinaryFiles::write_int32(fh, (unsigned int) Inter::Packages::is_codelike(P));
-		BinaryFiles::write_int32(fh, (unsigned int) Inter::Packages::is_rootlike(P));
+		else BinaryFiles::write_int32(fh, (unsigned int) par->resource_ID);
+		BinaryFiles::write_int32(fh, (unsigned int) InterPackage::is_a_function_body(P));
+		BinaryFiles::write_int32(fh, (unsigned int) InterPackage::is_a_root_package(P));
 		BinaryFiles::write_int32(fh, (unsigned int) P->package_scope->n_index);
 		BinaryFiles::write_int32(fh, (unsigned int) Str::len(P->package_name_t));
 		LOOP_THROUGH_TEXT(C, P->package_name_t)
@@ -432,7 +432,7 @@ enough that the slot exists for the eventual list to be stored in.
 			if (grid) PID = grid[PID];
 	if (trace_bin) WRITE_TO(STDOUT, "PID %d\n", PID);
 			if (PID) owner = InterWarehouse::get_package(warehouse, PID);
-	if (trace_bin) WRITE_TO(STDOUT, "Owner has ID %d, table %d\n", owner->index_n, owner->package_scope->n_index);
+	if (trace_bin) WRITE_TO(STDOUT, "Owner has ID %d, table %d\n", owner->resource_ID, owner->package_scope->n_index);
 		}
 		inter_tree_node *P = Inode::new_node(warehouse, I, extent-1, &eloc, owner);
 
@@ -465,7 +465,7 @@ enough that the slot exists for the eventual list to be stored in.
 void Inter::Binary::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	FILE *fh = (FILE *) state;
 	BinaryFiles::write_int32(fh, (unsigned int) (P->W.extent + 1));
-	BinaryFiles::write_int32(fh, (unsigned int) (Inode::get_package(P)->index_n));
+	BinaryFiles::write_int32(fh, (unsigned int) (Inode::get_package(P)->resource_ID));
 	for (int i=0; i<P->W.extent; i++)
 		BinaryFiles::write_int32(fh, (unsigned int) (P->W.instruction[i]));
 	BinaryFiles::write_int32(fh, (unsigned int) (Inode::get_comment(P)));

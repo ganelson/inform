@@ -157,12 +157,12 @@ tree_inventory *MakeSynopticModuleStage::take_inventory(inter_tree *I) {
 	tree_inventory *inv = MakeSynopticModuleStage::new_inventory(I);
 	InterTree::traverse(I, MakeSynopticModuleStage::visitor, inv, NULL, 0);
 	for (int i=0; i<TreeLists::len(inv->module_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->module_nodes->list[i].node);
-		if (InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), I"extension_id"))
+		inter_package *pack = InterPackage::at_this_head(inv->module_nodes->list[i].node);
+		if (InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), I"extension_id"))
 			TreeLists::add(inv->extension_nodes, inv->module_nodes->list[i].node);
 	}
 	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->instance_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_scene"))
 			TreeLists::add(inv->scene_nodes, inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_file"))
@@ -184,8 +184,8 @@ void MakeSynopticModuleStage::visitor(inter_tree *I, inter_tree_node *P, void *s
 			TreeLists::add(inv->text_nodes, P);
 	}
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = Inter::Package::defined_by_frame(P);
-		inter_symbol *ptype = Inter::Packages::type(pack);
+		inter_package *pack = InterPackage::at_this_head(P);
+		inter_symbol *ptype = InterPackage::type(pack);
 		tree_inventory_item *item;
 		LOOP_OVER_LINKED_LIST(item, tree_inventory_item, inv->items)
 			if (ptype == item->required_ptype) {
@@ -232,8 +232,8 @@ int MakeSynopticModuleStage::category_order(const void *ent1, const void *ent2) 
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;
-	inter_package *mod1 = Inter::Packages::container(P1);
-	inter_package *mod2 = Inter::Packages::container(P2);
+	inter_package *mod1 = InterPackage::container(P1);
+	inter_package *mod2 = InterPackage::container(P2);
 	inter_ti C1 = Metadata::read_optional_numeric(mod1, I"^category");
 	inter_ti C2 = Metadata::read_optional_numeric(mod2, I"^category");
 	int d = ((int) C2) - ((int) C1); /* larger values sort earlier */
@@ -242,12 +242,12 @@ int MakeSynopticModuleStage::category_order(const void *ent1, const void *ent2) 
 }
 
 inter_package *MakeSynopticModuleStage::module_containing(inter_tree_node *P) {
-	inter_package *pack = Inter::Packages::container(P);
-	inter_tree *I = Inter::Packages::tree(pack);
+	inter_package *pack = InterPackage::container(P);
+	inter_tree *I = InterPackage::tree(pack);
 	while (pack) {
-		inter_symbol *ptype = Inter::Packages::type(pack);
+		inter_symbol *ptype = InterPackage::type(pack);
 		if (ptype == LargeScale::package_type(I, I"_module")) return pack;
-		pack = Inter::Packages::parent(pack);
+		pack = InterPackage::parent(pack);
 	}
 	return NULL;
 }

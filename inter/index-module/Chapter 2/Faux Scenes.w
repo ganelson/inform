@@ -59,8 +59,8 @@ int FauxScenes::scene_order(const void *ent1, const void *ent2) {
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;
-	inter_package *sc1 = Inter::Package::defined_by_frame(P1);
-	inter_package *sc2 = Inter::Package::defined_by_frame(P2);
+	inter_package *sc1 = InterPackage::at_this_head(P1);
+	inter_package *sc2 = InterPackage::at_this_head(P2);
 	if (Metadata::read_optional_numeric(sc1, I"^is_entire_game")) return -1;
 	if (Metadata::read_optional_numeric(sc2, I"^is_entire_game")) return 1;
 	text_stream *SW1 = Metadata::read_textual(sc1, I"^name");
@@ -166,7 +166,7 @@ simplified_scene *FauxScenes::connects_to(simplified_connector *scon, index_sess
 	if (scon->connect_to) return scon->connect_to;
 	inter_symbol *sc_symbol = Metadata::read_optional_symbol(scon->con_pack, I"^to");
 	if (sc_symbol) {
-		inter_package *to_pack = Inter::Packages::container(sc_symbol->definition);
+		inter_package *to_pack = InterPackage::container(sc_symbol->definition);
 		linked_list *L = Indexing::get_list_of_scenes(session);
 		simplified_scene *ssc;
 		LOOP_OVER_LINKED_LIST(ssc, simplified_scene, L)

@@ -46,7 +46,7 @@ It's into this module that the resulting |SPLAT_IST| nodes will be put.
 	inter_bookmark IBM = InterBookmark::at_end_of_this_package(main_package);
 	inter_symbol *module_name = LargeScale::package_type(I, I"_module");
 	inter_package *module_pack = NULL;
-	Inter::Package::new_package_named(&IBM, step->step_argument, FALSE,
+	InterPackage::new_package_named(&IBM, step->step_argument, FALSE,
 		module_name, 1, NULL, &module_pack);
 	step->pipeline->ephemera.assimilation_modules[step->tree_argument] = module_pack;
 

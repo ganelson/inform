@@ -152,19 +152,19 @@ inter_symbol *InterSymbolsTables::symbol_from_name_creating_at_ID(inter_symbols_
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_name_in_main(inter_tree *I, text_stream *S) {
-	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(LargeScale::main_package_if_it_exists(I)), S);
+	return InterSymbolsTables::symbol_from_name(InterPackage::scope(LargeScale::main_package_if_it_exists(I)), S);
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_name_in_basics(inter_tree *I, text_stream *S) {
-	inter_package *P = Inter::Packages::basics(I);
+	inter_package *P = InterPackage::basics(I);
 	if (P == NULL) return NULL;
-	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
+	return InterSymbolsTables::symbol_from_name(InterPackage::scope(P), S);
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_name_in_veneer(inter_tree *I, text_stream *S) {
 	inter_package *P = LargeScale::architecture_package_if_it_exists(I);
 	if (P == NULL) return NULL;
-	return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(P), S);
+	return InterSymbolsTables::symbol_from_name(InterPackage::scope(P), S);
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_name_in_main_or_basics(inter_tree *I, text_stream *S) {
@@ -225,7 +225,7 @@ inter_symbol *InterSymbolsTables::symbol_from_id(inter_symbols_table *T, inter_t
 
 =
 inter_symbol *InterSymbolsTables::symbol_from_frame_data(inter_tree_node *P, int x) {
-	return InterSymbolsTables::symbol_from_id(Inter::Packages::scope_of(P), P->W.instruction[x]);
+	return InterSymbolsTables::symbol_from_id(InterPackage::scope_of(P), P->W.instruction[x]);
 }
 
 inter_symbol *InterSymbolsTables::global_symbol_from_frame_data(inter_tree_node *P, int x) {
@@ -233,7 +233,7 @@ inter_symbol *InterSymbolsTables::global_symbol_from_frame_data(inter_tree_node 
 }
 
 inter_symbol *InterSymbolsTables::local_symbol_from_id(inter_package *owner, inter_ti ID) {
-	return InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), ID);
+	return InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), ID);
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_data_pair_and_table(inter_ti val1, inter_ti val2, inter_symbols_table *T) {
@@ -242,7 +242,7 @@ inter_symbol *InterSymbolsTables::symbol_from_data_pair_and_table(inter_ti val1,
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_data_pair_and_frame(inter_ti val1, inter_ti val2, inter_tree_node *P) {
-	return InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, Inter::Packages::scope_of(P));
+	return InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, InterPackage::scope_of(P));
 }
 
 @h From ID to symbol.
@@ -252,7 +252,7 @@ symbols table, that's easy:
 =
 inter_ti InterSymbolsTables::id_from_symbol_inner_not_creating(inter_tree *I, inter_package *P, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
-	inter_symbols_table *T = Inter::Packages::scope(P);
+	inter_symbols_table *T = InterPackage::scope(P);
 	if (T == NULL) T = InterTree::global_scope(I);
 	if (T != S->owning_table) {
 		LOG("Symbol is $3, owned by $4, but we wanted ID from $4\n", S, S->owning_table, T);
@@ -282,7 +282,7 @@ a global symbol in any non-global context.
 =
 inter_ti InterSymbolsTables::id_from_symbol_inner(inter_symbols_table *G, inter_package *P, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
-	inter_symbols_table *T = Inter::Packages::scope(P);
+	inter_symbols_table *T = InterPackage::scope(P);
 	if (T == NULL) T = G;
 	if (T != S->owning_table) {
 		LOGIF(INTER_SYMBOLS, "Seek ID of $3 from $4, which is not its owner $4\n", S, T, S->owning_table);
@@ -329,16 +329,16 @@ void InterSymbolsTables::resolve_forward_references(inter_tree *I, inter_error_l
 
 void InterSymbolsTables::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_error_location *eloc = (inter_error_location *) state;
-	inter_package *pack = Inter::Package::defined_by_frame(P);
+	inter_package *pack = InterPackage::at_this_head(P);
 	if (pack == NULL) internal_error("no package defined here");
-	inter_symbols_table *T = Inter::Packages::scope(pack);
+	inter_symbols_table *T = InterPackage::scope(pack);
 	if (T == NULL) internal_error("package with no symbols");
 	for (int i=0; i<T->size; i++) {
 		inter_symbol *symb = T->symbol_array[i];
 		if (Wiring::is_wired_to_name(symb)) {
 			text_stream *N = Wiring::wired_to_name(symb);
 			if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) continue;
-			inter_symbol *S_to = InterSymbolsTables::url_name_to_symbol(Inter::Packages::tree(pack), T, N);
+			inter_symbol *S_to = InterSymbolsTables::url_name_to_symbol(InterPackage::tree(pack), T, N);
 			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", N, eloc));
 			else if (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)
 				Wiring::convert_to_socket(symb, S_to);
@@ -361,7 +361,7 @@ inter_symbol *InterSymbolsTables::url_name_to_symbol(inter_tree *I, inter_symbol
 			wchar_t c = Str::get(P);
 			if (c == '/') {
 				if (Str::len(C) > 0) {
-					at_P = Inter::Packages::by_name(at_P, C);
+					at_P = InterPackage::by_name(at_P, C);
 					if (at_P == NULL) return NULL;
 				}
 				Str::clear(C);
@@ -369,7 +369,7 @@ inter_symbol *InterSymbolsTables::url_name_to_symbol(inter_tree *I, inter_symbol
 				PUT_TO(C, c);
 			}
 		}
-		return InterSymbolsTables::symbol_from_name(Inter::Packages::scope(at_P), C);
+		return InterSymbolsTables::symbol_from_name(InterPackage::scope(at_P), C);
 	}
 	inter_symbol *try = InterSymbolsTables::symbol_from_name(at, S);
 	if (try) return try;
@@ -385,9 +385,9 @@ void InterSymbolsTables::symbol_to_url_name(OUTPUT_STREAM, inter_symbol *S) {
 	while (P) {
 		if (chain_length >= MAX_URL_SYMBOL_NAME_DEPTH) internal_error("package nesting too deep");
 		chain[chain_length++] = P;
-		P = Inter::Packages::parent(P);
+		P = InterPackage::parent(P);
 	}
-	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", Inter::Packages::name(chain[i]));
+	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", InterPackage::name(chain[i]));
 	WRITE("/%S", S->symbol_name);
 }
 

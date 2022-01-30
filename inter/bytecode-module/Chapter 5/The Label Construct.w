@@ -34,7 +34,7 @@ void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	if (*E) return;
 	inter_package *routine = Inter::Defn::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'label' used outside function", eloc); return; }
-	inter_symbols_table *locals = Inter::Packages::scope(routine);
+	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
 	inter_symbol *lab_name = InterSymbolsTables::symbol_from_name(locals, ilp->mr.exp[0]);
@@ -58,13 +58,13 @@ void Inter::Label::verify(inter_construct *IC, inter_tree_node *P, inter_package
 		return;
 	}
 	if (P->W.instruction[LEVEL_IFLD] < 1) { *E = Inode::error(P, I"label with bad level", NULL); return; }
-	inter_symbols_table *locals = Inter::Packages::scope(owner);
+	inter_symbols_table *locals = InterPackage::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
 	*E = Inter::Verify::local_defn(P, DEFN_LABEL_IFLD, locals);
 }
 
 void Inter::Label::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_package *pack = Inter::Packages::container(P);
+	inter_package *pack = InterPackage::container(P);
 	inter_symbol *lab_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LABEL_IFLD]);
 	if (lab_name) {
 		WRITE("%S", lab_name->symbol_name);

@@ -26,7 +26,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 @<Assign unique activity ID numbers@> =
 	TreeLists::sort(inv->activity_nodes, MakeSynopticModuleStage::module_order);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"activity_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
 		D = Synoptic::get_optional_definition(pack, I"var_id");
@@ -37,7 +37,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_AFTER_RULEBOOKS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^after_rulebook");
 		Synoptic::symbol_entry(vc_s);
 	}
@@ -48,7 +48,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	InterNames::annotate_i(iname, BYTEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
 		inter_ti ubf = Metadata::read_numeric(pack, I"^used_by_future");
 		Synoptic::numeric_entry(ubf);
 	}
@@ -58,7 +58,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_BEFORE_RULEBOOKS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^before_rulebook");
 		Synoptic::symbol_entry(vc_s);
 	}
@@ -68,7 +68,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_FOR_RULEBOOKS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^for_rulebook");
 		Synoptic::symbol_entry(vc_s);
 	}
@@ -78,7 +78,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_VAR_CREATORS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->activity_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->activity_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
 		if (vc_s) Synoptic::symbol_entry(vc_s);
 		else Synoptic::numeric_entry(0);

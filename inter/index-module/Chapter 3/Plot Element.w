@@ -182,7 +182,7 @@ fact, end.
 
 @<Index the rules which apply when this scene end occurs@> =
 	inter_symbol *rb = FauxScenes::end_rulebook(ssc->ends[end]);
-	inter_package *rb_pack = Inter::Packages::container(rb->definition);
+	inter_package *rb_pack = InterPackage::container(rb->definition);
 	if (IndexRules::is_empty(I, rb_pack) == FALSE) {
 		HTML::open_indented_p(OUT, 1, "hanging");
 		Localisation::italic(OUT, LD, I"Index.Elements.Pl.WhatHappens");

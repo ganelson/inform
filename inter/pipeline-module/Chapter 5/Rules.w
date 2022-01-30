@@ -35,7 +35,7 @@ so we change the values of these constants accordingly.
 	TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
 	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
+			InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"rulebook_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
 	}
@@ -54,7 +54,7 @@ so we change the values of these constants accordingly.
 	} else {
 		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
 			inter_package *pack =
-				Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
+				InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 			text_stream *name = Metadata::read_textual(pack, I"^printed_name");
 			Synoptic::textual_entry(name);
 		}
@@ -65,7 +65,7 @@ so we change the values of these constants accordingly.
 	inter_name *iname = HierarchyLocations::iname(I, RULEBOOK_VAR_CREATORS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
 		if (vc_s) Synoptic::symbol_entry(vc_s);
 		else Synoptic::numeric_entry(0);
@@ -76,7 +76,7 @@ so we change the values of these constants accordingly.
 	inter_name *iname = HierarchyLocations::iname(I, RULEBOOKS_ARRAY_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^run_fn");
 		Synoptic::symbol_entry(fn_s);
 	}
@@ -94,7 +94,7 @@ so we change the values of these constants accordingly.
 		Produce::code(I);
 		Produce::down(I);
 		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->rulebook_nodes->list[i].node);
+			inter_package *pack = InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 			inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
 			if (vc_s) {
 				Produce::inv_primitive(I, CASE_BIP);
@@ -190,7 +190,7 @@ so we change the values of these constants accordingly.
 		Produce::up(I);
 	} else {
 		for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
-			inter_package *pack = Inter::Package::defined_by_frame(inv->rule_nodes->list[i].node);
+			inter_package *pack = InterPackage::at_this_head(inv->rule_nodes->list[i].node);
 			text_stream *name = Metadata::read_textual(pack, I"^printed_name");
 			inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");
 			if (Str::len(name) == 0) continue;

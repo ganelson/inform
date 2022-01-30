@@ -9,7 +9,7 @@ simplified form of the iFiction record, without the XML overhead.
 =
 void CardElement::render(OUTPUT_STREAM, index_session *session) {
 	inter_tree *I = Indexing::get_tree(session);
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/bibliographic");
+	inter_package *pack = InterPackage::by_url(I, I"/main/completion/bibliographic");
 	
 	HTML_OPEN("p");
 	IndexUtilities::anchor(OUT, I"LCARD");

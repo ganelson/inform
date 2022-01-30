@@ -83,7 +83,7 @@ int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *rule_pack
 		inter_package *rel_pack;
 		LOOP_THROUGH_SUBPACKAGES(rel_pack, rule_pack, I"_relevant_action") {
 			inter_symbol *act_ds = Metadata::read_symbol(rel_pack, I"^action");
-			if (Inter::Packages::container(act_ds->definition) == rc.action_context)
+			if (InterPackage::container(act_ds->definition) == rc.action_context)
 				passes = TRUE;
 		}
 		if (passes == FALSE) return FALSE;
@@ -91,7 +91,7 @@ int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *rule_pack
 	if (rc.scene_context) {
 		inter_symbol *scene_symbol = Metadata::read_optional_symbol(rule_pack, I"^during");
 		if (scene_symbol == NULL) return FALSE;
-		if (Inter::Packages::container(scene_symbol->definition) !=
+		if (InterPackage::container(scene_symbol->definition) !=
 			rc.scene_context->pack) return FALSE;
 	}
 	return TRUE;
@@ -487,9 +487,9 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	inter_symbol *before_s = Metadata::read_symbol(av_pack, I"^before_rulebook");
 	inter_symbol *for_s = Metadata::read_symbol(av_pack, I"^for_rulebook");
 	inter_symbol *after_s = Metadata::read_symbol(av_pack, I"^after_rulebook");
-	inter_package *before_pack = Inter::Packages::container(before_s->definition);
-	inter_package *for_pack = Inter::Packages::container(for_s->definition);
-	inter_package *after_pack = Inter::Packages::container(after_s->definition);
+	inter_package *before_pack = InterPackage::container(before_s->definition);
+	inter_package *for_pack = InterPackage::container(for_s->definition);
+	inter_package *after_pack = InterPackage::container(after_s->definition);
 
 	int n = IndexRules::no_rules(before_pack) +
 			IndexRules::no_rules(for_pack) +

@@ -34,7 +34,7 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	if (*E) return;
 	inter_package *routine = Inter::Defn::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'local' used outside function", eloc); return; }
-	inter_symbols_table *locals = Inter::Packages::scope(routine);
+	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
 	inter_symbol *var_name = Inter::Textual::find_undefined_symbol(IBM, eloc, locals, ilp->mr.exp[0], E);
@@ -60,14 +60,14 @@ inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *var_na
 
 void Inter::Local::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_LOCAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	inter_symbols_table *locals = Inter::Packages::scope(owner);
+	inter_symbols_table *locals = InterPackage::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
 	*E = Inter::Verify::local_defn(P, DEFN_LOCAL_IFLD, locals); if (*E) return;
 	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_LOCAL_IFLD], KIND_IST); if (*E) return;
 }
 
 void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_package *pack = Inter::Packages::container(P);
+	inter_package *pack = InterPackage::container(P);
 	inter_symbol *var_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 	inter_symbol *var_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_LOCAL_IFLD);
 	if (var_name) {

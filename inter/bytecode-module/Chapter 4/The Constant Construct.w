@@ -177,7 +177,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	}
 
 	if ((idt) && (idt->type_ID == ROUTINE_IDT)) {
-		inter_package *block = Inter::Packages::by_name(InterBookmark::package(IBM), S);
+		inter_package *block = InterPackage::by_name(InterBookmark::package(IBM), S);
 		if (block == NULL) {
 			*E = Inter::Errors::quoted(I"no such code block", S, eloc); return;
 		}
@@ -250,7 +250,7 @@ inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_ti 
 }
 
 inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_package *block, inter_ti level, inter_error_location *eloc) {
-	inter_ti BID = block->index_n;
+	inter_ti BID = block->resource_ID;
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_ROUTINE, BID, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
@@ -322,7 +322,7 @@ void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	*E = Inter::Verify::defn(owner, P, DEFN_CONST_IFLD); if (*E) return;
 	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_CONST_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *con_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[KIND_CONST_IFLD]);
+	inter_symbol *con_kind = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[KIND_CONST_IFLD]);
 	switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 		case CONSTANT_DIRECT:
 			if (P->W.extent != DATA_CONST_IFLD + 2) { *E = Inode::error(P, I"extent wrong", NULL); return; }
@@ -350,7 +350,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					inter_ti V1 = P->W.instruction[i];
 					inter_ti V2 = P->W.instruction[i+1];
-					inter_symbol *K = Inter::Types::value_to_constant_symbol_kind(Inter::Packages::scope(owner), V1, V2);
+					inter_symbol *K = Inter::Types::value_to_constant_symbol_kind(InterPackage::scope(owner), V1, V2);
 					if (Inter::Kind::constructor(K) != COLUMN_ICON) { *E = Inode::error(P, I"not a table column constant", NULL); return; }
 				}
 			} else {
@@ -400,7 +400,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:
 				Inter::Types::write(OUT, P, con_kind,
-					P->W.instruction[DATA_CONST_IFLD], P->W.instruction[DATA_CONST_IFLD+1], Inter::Packages::scope_of(P), hex);
+					P->W.instruction[DATA_CONST_IFLD], P->W.instruction[DATA_CONST_IFLD+1], InterPackage::scope_of(P), hex);
 				break;
 			case CONSTANT_SUM_LIST:			
 			case CONSTANT_PRODUCT_LIST:
@@ -416,7 +416,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					Inter::Types::write(OUT, P, conts_kind, P->W.instruction[i], P->W.instruction[i+1], Inter::Packages::scope_of(P), hex);
+					Inter::Types::write(OUT, P, conts_kind, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;
@@ -427,7 +427,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
 					inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, counter++);
-					Inter::Types::write(OUT, P, conts_kind, P->W.instruction[i], P->W.instruction[i+1], Inter::Packages::scope_of(P), hex);
+					Inter::Types::write(OUT, P, conts_kind, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;
@@ -441,7 +441,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				break;
 			case CONSTANT_ROUTINE: {
 				inter_package *block = Inode::ID_to_package(P, P->W.instruction[DATA_CONST_IFLD]);
-				WRITE("%S", Inter::Packages::name(block));
+				WRITE("%S", InterPackage::name(block));
 				break;
 			}
 		}
@@ -479,7 +479,7 @@ int Inter::Constant::is_routine(inter_symbol *con_symbol) {
 }
 
 inter_symbols_table *Inter::Constant::local_symbols(inter_symbol *con_symbol) {
-	return Inter::Packages::scope(Inter::Constant::code_block(con_symbol));
+	return InterPackage::scope(Inter::Constant::code_block(con_symbol));
 }
 
 int Inter::Constant::char_acceptable(int c) {
@@ -504,7 +504,7 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 		if (val1 == ALIAS_IVAL) {
 			inter_symbol *alias =
 				InterSymbolsTables::symbol_from_data_pair_and_table(
-					val1, val2, Inter::Packages::scope(D->package));
+					val1, val2, InterPackage::scope(D->package));
 			return Inter::Constant::constant_depth(alias) + 1;
 		}
 		return 1;
@@ -520,7 +520,7 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 			if (val1 == ALIAS_IVAL) {
 				inter_symbol *alias =
 					InterSymbolsTables::symbol_from_data_pair_and_table(
-						val1, val2, Inter::Packages::scope(D->package));
+						val1, val2, InterPackage::scope(D->package));
 				total += Inter::Constant::constant_depth(alias);
 			} else total++;
 		}
@@ -540,7 +540,7 @@ inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_
 			case CONSTANT_DIRECT: {
 				inter_ti dval1 = D->W.instruction[DATA_CONST_IFLD];
 				inter_ti dval2 = D->W.instruction[DATA_CONST_IFLD + 1];
-				inter_ti e = Inter::Constant::evaluate(Inter::Packages::scope_of(D), dval1, dval2);
+				inter_ti e = Inter::Constant::evaluate(InterPackage::scope_of(D), dval1, dval2);
 				return e;
 			}
 			case CONSTANT_SUM_LIST:
@@ -549,7 +549,7 @@ inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_
 			case CONSTANT_QUOTIENT_LIST: {
 				inter_ti result = 0;
 				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
-					inter_ti extra = Inter::Constant::evaluate(Inter::Packages::scope_of(D), D->W.instruction[i], D->W.instruction[i+1]);
+					inter_ti extra = Inter::Constant::evaluate(InterPackage::scope_of(D), D->W.instruction[i], D->W.instruction[i+1]);
 					if (i == DATA_CONST_IFLD) result = extra;
 					else {
 						if (D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) result = result + extra;

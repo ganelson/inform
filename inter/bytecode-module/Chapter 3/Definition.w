@@ -88,7 +88,7 @@ void Inter::Defn::create_language(void) {
 	Inter::Permission::define();
 	Inter::PropertyValue::define();
 	Inter::Primitive::define();
-	Inter::Package::define();
+	InterPackage::define();
 	Inter::PackageType::define();
 	Inter::Label::define();
 	Inter::Local::define();
@@ -206,7 +206,7 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 		WRITE("# %S", Inode::ID_to_text(P, ID));
 	}
 	WRITE("\n");
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) Inter::Package::write_symbols(OUT, P);
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) InterPackage::write_symbols(OUT, P);
 	return E;
 }
 
@@ -249,8 +249,8 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 
 	if (ilp.indent_level == 0) latest_block_package = NULL;
 
-	while ((InterBookmark::package(IBM)) && (Inter::Packages::is_rootlike(InterBookmark::package(IBM)) == FALSE) && (ilp.indent_level <= InterBookmark::baseline(IBM))) {
-		InterBookmark::move_into_package(IBM, Inter::Packages::parent(InterBookmark::package(IBM)));
+	while ((InterBookmark::package(IBM)) && (InterPackage::is_a_root_package(InterBookmark::package(IBM)) == FALSE) && (ilp.indent_level <= InterBookmark::baseline(IBM))) {
+		InterBookmark::move_into_package(IBM, InterPackage::parent(InterBookmark::package(IBM)));
 	}
 
 	while (Regexp::match(&ilp.mr, ilp.line, L"(%c+) (__%c+) *")) {
@@ -282,7 +282,7 @@ inter_package *Inter::Defn::get_latest_block_package(void) {
 inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_ti cons, int level, inter_error_location *eloc) {
 	int actual = level;
 	if ((InterBookmark::package(IBM)) &&
-		(Inter::Packages::is_rootlike(InterBookmark::package(IBM)) == FALSE))	
+		(InterPackage::is_a_root_package(InterBookmark::package(IBM)) == FALSE))	
 		actual = level - InterBookmark::baseline(IBM) - 1;
 	inter_construct *proposed = NULL;
 	LOOP_OVER(proposed, inter_construct)
@@ -306,10 +306,10 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
 	if (E) return E;
-	inter_package *pack = Inter::Packages::container(P);
+	inter_package *pack = InterPackage::container(P);
 	int need = INSIDE_PLAIN_PACKAGE;
 	if (pack == NULL) need = OUTSIDE_OF_PACKAGES;
-	else if (Inter::Packages::is_codelike(pack)) need = INSIDE_CODE_PACKAGE;
+	else if (InterPackage::is_a_function_body(pack)) need = INSIDE_CODE_PACKAGE;
 	if ((IC->usage_permissions & need) != need) {
 		text_stream *M = Str::new();
 		WRITE_TO(M, "construct (%d) '", P->W.instruction[LEVEL_IFLD]);
@@ -317,8 +317,8 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 		WRITE_TO(M, "' (%d) cannot be used ", IC->construct_ID);
 		switch (need) {
 			case OUTSIDE_OF_PACKAGES: WRITE_TO(M, "outside packages"); break;
-			case INSIDE_PLAIN_PACKAGE: WRITE_TO(M, "inside non-code packages such as %S", Inter::Packages::name(pack)); break;
-			case INSIDE_CODE_PACKAGE: WRITE_TO(M, "inside code packages such as %S", Inter::Packages::name(pack)); break;
+			case INSIDE_PLAIN_PACKAGE: WRITE_TO(M, "inside non-code packages such as %S", InterPackage::name(pack)); break;
+			case INSIDE_CODE_PACKAGE: WRITE_TO(M, "inside code packages such as %S", InterPackage::name(pack)); break;
 		}
 		return Inode::error(P, M, NULL);
 	}
@@ -333,15 +333,15 @@ void Inter::Defn::lint(inter_tree *I) {
 }
 
 void Inter::Defn::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_ti c = Inode::get_package(P)->index_n;
+	inter_ti c = Inode::get_package(P)->resource_ID;
 	inter_ti a = Inode::get_package_slowly_getting_same_answer(P);
 	if (c != a) {
 		LOG("Frame gives package as $6, but its location is in package $6\n",
 			Inode::ID_to_package(P, c),
 			Inode::ID_to_package(P, a));
 		WRITE_TO(STDERR, "Frame gives package as %d, but its location is in package %d\n",
-			Inode::ID_to_package(P, c)->index_n,
-			Inode::ID_to_package(P, a)->index_n);
+			Inode::ID_to_package(P, c)->resource_ID,
+			Inode::ID_to_package(P, a)->resource_ID);
 		internal_error("misplaced package");
 	}
 

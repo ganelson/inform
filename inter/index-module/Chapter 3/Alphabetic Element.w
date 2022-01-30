@@ -54,7 +54,7 @@ void AlphabeticElement::render(OUTPUT_STREAM, index_session *session) {
 		if (noun_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
 		if (noun_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
 		WRITE("<b>");
-		IndexUtilities::kind_name(OUT, Inter::Packages::container(noun_kind->definition), FALSE, FALSE);
+		IndexUtilities::kind_name(OUT, InterPackage::container(noun_kind->definition), FALSE, FALSE);
 		WRITE("</b>");
 	}
 
@@ -65,7 +65,7 @@ void AlphabeticElement::render(OUTPUT_STREAM, index_session *session) {
 		if (second_access == REQUIRES_ACCESS) AlphabeticElement::note(OUT, I"Touchable", LD);
 		if (second_access == REQUIRES_POSSESSION) AlphabeticElement::note(OUT, I"Carried", LD);
 		WRITE("<b>");
-		IndexUtilities::kind_name(OUT, Inter::Packages::container(second_kind->definition), FALSE, FALSE);
+		IndexUtilities::kind_name(OUT, InterPackage::container(second_kind->definition), FALSE, FALSE);
 		WRITE("</b>");
 	}
 
@@ -95,8 +95,8 @@ int AlphabeticElement::alphabetical_order(const void *ent1, const void *ent2) {
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;
-	inter_package *an1_pack = Inter::Package::defined_by_frame(P1);
-	inter_package *an2_pack = Inter::Package::defined_by_frame(P2);
+	inter_package *an1_pack = InterPackage::at_this_head(P1);
+	inter_package *an2_pack = InterPackage::at_this_head(P2);
 	text_stream *an1_name = Metadata::read_optional_textual(an1_pack, I"^name");
 	text_stream *an2_name = Metadata::read_optional_textual(an2_pack, I"^name");
 	return Str::cmp(an1_name, an2_name);

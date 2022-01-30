@@ -20,7 +20,7 @@ void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(inv->scene_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->scene_nodes->list[i].node);
+			InterPackage::at_this_head(inv->scene_nodes->list[i].node);
 		inter_symbol *ssf_s = Metadata::read_symbol(pack, I"^scene_status_fn");
 		Produce::inv_call_symbol(I, ssf_s);
 	}
@@ -44,7 +44,7 @@ whether any change in status has or has not occurred.
 	Produce::place_label(I, Again_l);
 	for (int i=0; i<TreeLists::len(inv->scene_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->scene_nodes->list[i].node);
+			InterPackage::at_this_head(inv->scene_nodes->list[i].node);
 		inter_symbol *scf_s = Metadata::read_symbol(pack, I"^scene_change_fn");
 		Produce::inv_primitive(I, IF_BIP);
 		Produce::down(I);

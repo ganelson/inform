@@ -15,10 +15,10 @@ inter_symbol *Inter::Transmigration::cached_equivalent(inter_symbol *S) {
 }
 
 void Inter::Transmigration::move(inter_package *migrant, inter_package *destination, int tidy_origin) {
-	Inter::Packages::make_names_exist(migrant);
-	inter_tree *origin_tree = Inter::Packages::tree(migrant);
-	inter_tree *destination_tree = Inter::Packages::tree(destination);
-	inter_package *origin = Inter::Packages::parent(migrant);
+	InterPackage::make_names_exist(migrant);
+	inter_tree *origin_tree = InterPackage::tree(migrant);
+	inter_tree *destination_tree = InterPackage::tree(destination);
+	inter_package *origin = InterPackage::parent(migrant);
 	inter_bookmark deletion_point, insertion_point, primitives_point, ptypes_point;
 	@<Create these bookmarks@>;
 	@<Mark the insertion and deletion points with comments@>;
@@ -27,7 +27,7 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	if (tidy_origin) @<Correct any references from the origin to the migrant@>;
 	inter_package *connectors = LargeScale::connectors_package_if_it_exists(origin_tree);
 	if (connectors) {
-		inter_symbols_table *T = Inter::Packages::scope(connectors);
+		inter_symbols_table *T = InterPackage::scope(connectors);
 		if (T == NULL) internal_error("package with no symbols");
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *symb = T->symbol_array[i];
@@ -35,7 +35,7 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 				inter_symbol *target = Wiring::cable_end(symb);
 				inter_package *target_package = target->owning_table->owning_package;
 				while ((target_package) && (target_package != migrant)) {
-					target_package = Inter::Packages::parent(target_package);
+					target_package = InterPackage::parent(target_package);
 				}
 				if (target_package == migrant) {
 					LOGIF(INTER_CONNECTORS, "Origin offers socket inside migrant: $3 == $3\n", symb, target);
@@ -62,7 +62,7 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	LOG("\n\n\nList of sockets in origin tree:\n");
 	inter_package *connectors = LargeScale::connectors_package_if_it_exists(origin_tree);
 	if (connectors) {
-		inter_symbols_table *T = Inter::Packages::scope(connectors);
+		inter_symbols_table *T = InterPackage::scope(connectors);
 		if (T == NULL) internal_error("package with no symbols");
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *symb = T->symbol_array[i];
@@ -92,17 +92,17 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 @<Mark the insertion and deletion points with comments@> =
 	inter_ti C1 = InterWarehouse::create_text(InterBookmark::warehouse(&deletion_point), InterBookmark::package(&deletion_point));
 	WRITE_TO(InterWarehouse::get_text(InterBookmark::warehouse(&deletion_point), C1), 
-		"Exported %S here", Inter::Packages::name(migrant));
-	Inter::Comment::new(&deletion_point, (inter_ti) Inter::Packages::baseline(migrant), NULL, C1);
+		"Exported %S here", InterPackage::name(migrant));
+	Inter::Comment::new(&deletion_point, (inter_ti) InterPackage::baseline(migrant), NULL, C1);
 
 	inter_ti C2 = InterWarehouse::create_text(InterBookmark::warehouse(&insertion_point), InterBookmark::package(&insertion_point));
 	WRITE_TO(InterWarehouse::get_text(InterBookmark::warehouse(&insertion_point), C2), 
-		"Imported %S here", Inter::Packages::name(migrant));
-	Inter::Comment::new(&insertion_point, (inter_ti) Inter::Packages::baseline(destination) + 1, NULL, C2);
+		"Imported %S here", InterPackage::name(migrant));
+	Inter::Comment::new(&insertion_point, (inter_ti) InterPackage::baseline(destination) + 1, NULL, C2);
 
 @<Physically move the subtree to its new home@> =
-	Inter::Packages::remove_subpackage_name(Inter::Packages::parent(migrant), migrant);
-	Inter::Packages::add_subpackage_name(destination, migrant);
+	InterPackage::remove_subpackage_name(InterPackage::parent(migrant), migrant);
+	InterPackage::add_subpackage_name(destination, migrant);
 	NodePlacement::move_to_moving_bookmark(migrant->package_head, &insertion_point);
 
 @ =
@@ -140,11 +140,11 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		if (primitive) @<Correct the reference to this primitive@>;
 	}
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = Inter::Package::defined_by_frame(P);
+		inter_package *pack = InterPackage::at_this_head(P);
 		if (pack == NULL) internal_error("no package defined here");
-		if (Inter::Packages::is_linklike(pack)) return;
+		if (InterPackage::is_a_linkage_package(pack)) return;
 		@<Correct the reference to this package type@>;
-		inter_symbols_table *T = Inter::Packages::scope(pack);
+		inter_symbols_table *T = InterPackage::scope(pack);
 		if (T == NULL) internal_error("package with no symbols");
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *symb = T->symbol_array[i];
@@ -166,7 +166,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 				} else {
 					inter_package *target_package = target->owning_table->owning_package;
 					while ((target_package) && (target_package != ipct->migrant)) {
-						target_package = Inter::Packages::parent(target_package);
+						target_package = InterPackage::parent(target_package);
 					}
 					if (target_package != ipct->migrant)
 						@<Correct the reference to this symbol@>;
@@ -233,7 +233,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		InterSymbolsTables::symbol_to_url_name(URL, target);
 		equivalent = InterSymbolsTables::url_name_to_symbol(ipct->destination->package_head->tree, NULL, URL);
 		if ((equivalent == NULL) && (Inter::Kind::is(target)))
-			equivalent = Inter::Packages::search_resources(ipct->destination->package_head->tree, target->symbol_name);
+			equivalent = InterPackage::search_resources(ipct->destination->package_head->tree, target->symbol_name);
 		if (equivalent == NULL)
 			equivalent = Wiring::plug(ipct->destination_tree, target->symbol_name);
 		DISCARD_TEXT(URL)
@@ -251,10 +251,10 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, void *state) {
 	ipct_state *ipct = (ipct_state *) state;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = Inter::Package::defined_by_frame(P);
+		inter_package *pack = InterPackage::at_this_head(P);
 		if (pack == NULL) internal_error("no package defined here");
-		if (Inter::Packages::is_linklike(pack)) return;
-		inter_symbols_table *T = Inter::Packages::scope(pack);
+		if (InterPackage::is_a_linkage_package(pack)) return;
+		inter_symbols_table *T = InterPackage::scope(pack);
 		if (T == NULL) internal_error("package with no symbols");
 		for (int i=0; i<T->size; i++) {
 			inter_symbol *symb = T->symbol_array[i];
@@ -262,7 +262,7 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 				inter_symbol *target = Wiring::cable_end(symb);
 				inter_package *target_package = target->owning_table->owning_package;
 				while ((target_package) && (target_package != ipct->migrant)) {
-					target_package = Inter::Packages::parent(target_package);
+					target_package = InterPackage::parent(target_package);
 				}
 				if (target_package == ipct->migrant)
 					@<Correct the origin reference to this migrant symbol@>;

@@ -210,7 +210,7 @@ inter_symbols_table *InterNames::scope(inter_name *iname) {
 	if (iname == NULL) internal_error("can't determine scope of null name");
 	package_request *P = InterNames::location(iname);
 	if (P == NULL) internal_error("can't determine scope of unlocated name");
-	return Inter::Packages::scope(Packaging::incarnate(P));
+	return InterPackage::scope(Packaging::incarnate(P));
 }
 
 @h Incarnation of inames to symbols.
@@ -266,7 +266,7 @@ void InterNames::annotate_w(inter_name *iname, inter_ti annot_ID, wording W) {
 	inter_symbol *S = InterNames::to_symbol(iname);
 	TEMPORARY_TEXT(temp)
 	WRITE_TO(temp, "%W", W);
-	Inter::Symbols::annotate_t(Inter::Packages::tree(S->owning_table->owning_package),
+	Inter::Symbols::annotate_t(InterPackage::tree(S->owning_table->owning_package),
 		S->owning_table->owning_package, S, annot_ID, temp);
 	DISCARD_TEXT(temp)
 }

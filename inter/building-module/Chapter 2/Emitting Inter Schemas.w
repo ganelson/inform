@@ -200,7 +200,7 @@ all conditionals are resolved.
 	else {
 		identifier_finder global_finder = finder;
 		IdentifierFinders::next_priority(&global_finder,
-			Inter::Packages::scope(LargeScale::architecture_package(I)));
+			InterPackage::scope(LargeScale::architecture_package(I)));
 		inter_symbol *symb = IdentifierFinders::find(I,
 			symbol_to_check, global_finder);
 		symb = Wiring::cable_end(symb);

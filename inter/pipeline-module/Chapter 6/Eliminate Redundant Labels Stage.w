@@ -27,13 +27,13 @@ int EliminateRedundantLabelsStage::run(pipeline_step *step) {
 }
 
 void EliminateRedundantLabelsStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_package *pack = Inter::Package::defined_by_frame(P);
-	if (Inter::Packages::is_codelike(pack))
+	inter_package *pack = InterPackage::at_this_head(P);
+	if (InterPackage::is_a_function_body(pack))
 		@<Perform peephole optimisation on this function body@>;
 }
 
 @<Perform peephole optimisation on this function body@> =
-	inter_symbols_table *local_symbols = Inter::Packages::scope(pack);
+	inter_symbols_table *local_symbols = InterPackage::scope(pack);
 	@<Mark all the labels for this function as being unused@>;
 	@<Look through the function for mentions of labels, marking those as used@>;
 	@<Remove the label declarations for any that are still marked unused@>;
@@ -47,7 +47,7 @@ any given symbol is undefined when we begin. We'll clear it for all labels.
 			Inter::Symbols::clear_flag(S, USED_MARK_BIT);
 
 @<Look through the function for mentions of labels, marking those as used@> =
-	inter_tree_node *D = Inter::Packages::definition(pack);
+	inter_tree_node *D = InterPackage::head(pack);
 	EliminateRedundantLabelsStage::traverse_code_tree(D);
 
 @ Anything not marked used must be unused, so we can get rid of it. We do this

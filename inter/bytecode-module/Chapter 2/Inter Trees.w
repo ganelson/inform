@@ -42,7 +42,7 @@ inside a special "root package". Packages are visible from the outside but
 not the inside, so the root package is effectively invisible: nothing is
 outside it. This is why it has no name, and is never referred to by Inter
 code written out in textual form. In any case, special restrictions apply
-to it, and calling //Inter::Packages::make_rootlike// causes those to be
+to it, and calling //InterPackage::mark_as_a_root_package// causes those to be
 enforced.
 
 Every package has a "head node": the content of the package will be the
@@ -59,8 +59,8 @@ which is by definition the symbols table for the root package.
 	I->root_package = InterWarehouse::get_package(I->housed, root_package_ID);
 	I->root_node = Inode::new_root_node(I->housed, I);
 	I->root_package->package_head = I->root_node;
-	Inter::Packages::make_rootlike(I->root_package);
-	Inter::Packages::set_scope(I->root_package, globals);
+	InterPackage::mark_as_a_root_package(I->root_package);
+	InterPackage::set_scope(I->root_package, globals);
 	I->root_node->package = I->root_package;
 	InterWarehouse::set_symbols_table_owner(I->housed, N, I->root_package);
 
@@ -71,7 +71,7 @@ inter_package *InterTree::root_package(inter_tree *I) {
 }
 
 inter_symbols_table *InterTree::global_scope(inter_tree *I) {
-	return Inter::Packages::scope(I->root_package);
+	return InterPackage::scope(I->root_package);
 }
 
 inter_warehouse *InterTree::warehouse(inter_tree *I) {
@@ -212,7 +212,7 @@ void InterTree::traverse(inter_tree *from,
 	void *state, inter_package *mp, int filter) {
 	if (mp == NULL) mp = LargeScale::main_package_if_it_exists(from);
 	if (mp) {
-		inter_tree_node *D = Inter::Packages::definition(mp);
+		inter_tree_node *D = InterPackage::head(mp);
 		if ((filter == 0) ||
 			((filter > 0) && (D->W.instruction[ID_IFLD] == (inter_ti) filter)) ||
 			((filter < 0) && (D->W.instruction[ID_IFLD] != (inter_ti) -filter)))
@@ -239,10 +239,10 @@ a package.
 	inter_symbol *pack##wanted =
 		(pack)?(LargeScale::package_type(pack->package_head->tree, ptype)):NULL;
 	if (pack)
-		LOOP_THROUGH_INTER_CHILDREN(C, Inter::Packages::definition(pack))
+		LOOP_THROUGH_INTER_CHILDREN(C, InterPackage::head(pack))
 			if ((C->W.instruction[ID_IFLD] == PACKAGE_IST) &&
-				(entry = Inter::Package::defined_by_frame(C)) &&
-				(Inter::Packages::type(entry) == pack##wanted))
+				(entry = InterPackage::at_this_head(C)) &&
+				(InterPackage::type(entry) == pack##wanted))
 
 @ As a demonstration of this in action:
 

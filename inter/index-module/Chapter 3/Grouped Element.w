@@ -134,7 +134,7 @@ void GroupedElement::detail_pages(index_session *session) {
 	LOOP_THROUGH_SUBPACKAGES(line_pack, an_pack, I"_cg_line") {
 		inter_symbol *xref = Metadata::read_symbol(line_pack, I"^line");
 		CommandsElement::index_grammar_line(OUT,
-			Inter::Packages::container(xref->definition), NULL, LD);
+			InterPackage::container(xref->definition), NULL, LD);
 		producers++;
 	}
 	if (producers == 0) Localisation::bold(OUT, LD, I"Index.Elements.A1.NoCommands");
@@ -170,9 +170,9 @@ void GroupedElement::detail_pages(index_session *session) {
 	inter_symbol *check_s = Metadata::read_symbol(an_pack, I"^check_rulebook");
 	inter_symbol *carry_out_s = Metadata::read_symbol(an_pack, I"^carry_out_rulebook");
 	inter_symbol *report_s = Metadata::read_symbol(an_pack, I"^report_rulebook");
-	inter_package *check_pack = Inter::Packages::container(check_s->definition);
-	inter_package *carry_out_pack = Inter::Packages::container(carry_out_s->definition);
-	inter_package *report_pack = Inter::Packages::container(report_s->definition);
+	inter_package *check_pack = InterPackage::container(check_s->definition);
+	inter_package *carry_out_pack = InterPackage::container(carry_out_s->definition);
+	inter_package *report_pack = InterPackage::container(report_s->definition);
 
 	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, check_pack,
 		I"check", I"check", session);

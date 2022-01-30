@@ -49,7 +49,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	inter_symbol *name_name = NULL;
 	inter_ti level = 0;
 	if (routine) {
-		inter_symbols_table *locals = Inter::Packages::scope(routine);
+		inter_symbols_table *locals = InterPackage::scope(routine);
 		if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 		name_name = Inter::Textual::new_symbol(eloc, locals, symbol_name, E);
 		if (*E) return;
@@ -76,7 +76,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		*E = Inter::Errors::plain(I"a symbol cannot be both translated and equated", eloc); return;
 	}
 
-	if (Inter::Packages::is_linklike(InterBookmark::package(IBM))) {
+	if (InterPackage::is_a_linkage_package(InterBookmark::package(IBM))) {
 		if (Inter::Symbols::is_connector(name_name) == FALSE) {
 			*E = Inter::Errors::plain(I"in a _linkage package, all symbols must be plugs or sockets", eloc); return;
 		}

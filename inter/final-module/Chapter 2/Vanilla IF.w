@@ -427,7 +427,7 @@ inter_symbol *VanillaIF::get_symbol(code_generation *gen, inter_tree_node *P,
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_symbol *S =
 			InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2,
-				Inter::Packages::scope_of(P));
+				InterPackage::scope_of(P));
 		if (S == NULL) internal_error("bad symbol in grammar token data");
 		return S;
 	}

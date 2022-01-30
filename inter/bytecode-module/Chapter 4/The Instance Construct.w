@@ -77,9 +77,9 @@ void Inter::Instance::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_INST_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_INST_IFLD); if (*E) return;
-	inter_symbol *inst_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[DEFN_INST_IFLD]);
+	inter_symbol *inst_name = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[DEFN_INST_IFLD]);
 	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_INST_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *inst_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[KIND_INST_IFLD]);
+	inter_symbol *inst_kind = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[KIND_INST_IFLD]);
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 	if (Inter::Types::is_enumerated(idt)) {
 		if (P->W.instruction[VAL1_INST_IFLD] == UNDEF_IVAL) {
@@ -110,7 +110,7 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		if (idt) {
 			WRITE("instance %S %S = ", inst_name->symbol_name, inst_kind->symbol_name);
 			Inter::Types::write(OUT, P, NULL,
-				P->W.instruction[VAL1_INST_IFLD], P->W.instruction[VAL2_INST_IFLD], Inter::Packages::scope_of(P), FALSE);
+				P->W.instruction[VAL1_INST_IFLD], P->W.instruction[VAL2_INST_IFLD], InterPackage::scope_of(P), FALSE);
 		} else { *E = Inode::error(P, I"instance with bad data type", NULL); return; }
 	} else { *E = Inode::error(P, I"bad instance", NULL); return; }
 	Inter::Symbols::write_annotations(OUT, P, inst_name);

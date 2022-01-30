@@ -26,7 +26,7 @@ void TokensElement::render(OUTPUT_STREAM, index_session *session) {
 	TokensElement::token(OUT, I, "things inside", NULL, I"things_token", NULL, LD);
 	TokensElement::token(OUT, I, "things preferably held", NULL, I"things_token", NULL, LD);
 
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/grammar");
+	inter_package *pack = InterPackage::by_url(I, I"/main/completion/grammar");
 	inter_package *cg_pack;
 	LOOP_THROUGH_SUBPACKAGES(cg_pack, pack, I"_command_grammar") {
 		if (Metadata::read_optional_numeric(cg_pack, I"^is_token"))

@@ -68,8 +68,8 @@ translation in that case.
 void MakeIdentifiersUniqueStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	dictionary *D = (dictionary *) state;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *Q = Inter::Package::defined_by_frame(P);
-		inter_symbols_table *ST = Inter::Packages::scope(Q);
+		inter_package *Q = InterPackage::at_this_head(P);
+		inter_symbols_table *ST = InterPackage::scope(Q);
 		for (int i=0; i<ST->size; i++) {
 			inter_symbol *S = ST->symbol_array[i];
 			if ((S) && (Wiring::is_wired(S) == FALSE) &&

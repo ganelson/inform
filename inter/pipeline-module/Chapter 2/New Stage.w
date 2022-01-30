@@ -17,10 +17,10 @@ int NewStage::run(pipeline_step *step) {
 	inter_package *main_p = LargeScale::main_package(I);
 	inter_bookmark in_main = InterBookmark::at_end_of_this_package(main_p);
 	inter_package *generic_p = NULL, *generic_kinds_p = NULL;
-	Inter::Package::new_package_named(&in_main, I"generic", FALSE,
+	InterPackage::new_package_named(&in_main, I"generic", FALSE,
 		LargeScale::package_type(I, I"_module"), 1, NULL, &generic_p);
 	inter_bookmark in_generic = InterBookmark::at_end_of_this_package(generic_p);
-	Inter::Package::new_package_named(&in_generic, I"kinds", FALSE,
+	InterPackage::new_package_named(&in_generic, I"kinds", FALSE,
 		LargeScale::package_type(I, I"_submodule"), 1, NULL, &generic_kinds_p);
 	inter_bookmark in_generic_kinds = InterBookmark::at_end_of_this_package(generic_kinds_p);
 

@@ -58,7 +58,7 @@ void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	if (con_kind) {
 		WRITE("defaultvalue %S = ", con_kind->symbol_name);
 		Inter::Types::write(OUT, P, con_kind,
-			P->W.instruction[VAL1_DEF_IFLD], P->W.instruction[VAL1_DEF_IFLD+1], Inter::Packages::scope_of(P), FALSE);
+			P->W.instruction[VAL1_DEF_IFLD], P->W.instruction[VAL1_DEF_IFLD+1], InterPackage::scope_of(P), FALSE);
 	} else {
 		*E = Inode::error(P, I"defaultvalue can't be written", NULL);
 	}

@@ -21,7 +21,7 @@ so we change the values of these constants accordingly.
 	TreeLists::sort(inv->extension_nodes, MakeSynopticModuleStage::category_order);
 	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
+			InterPackage::at_this_head(inv->extension_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"extension_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
 	}
@@ -47,7 +47,7 @@ would violate the CC license.
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
+			InterPackage::at_this_head(inv->extension_nodes->list[i].node);
 		inter_ti modesty = Metadata::read_numeric(pack, I"^modesty");
 		if (modesty == 0) {
 			text_stream *credit = Str::duplicate(Metadata::read_textual(pack, I"^credit"));
@@ -66,7 +66,7 @@ would violate the CC license.
 	inter_name *iname = HierarchyLocations::iname(I, SHOWFULLEXTENSIONVERSIONS_HL);
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->extension_nodes->list[i].node);
 		text_stream *credit = Str::duplicate(Metadata::read_textual(pack, I"^credit"));
 		WRITE_TO(credit, "\n");
 		Produce::inv_primitive(I, PRINT_BIP);
@@ -85,7 +85,7 @@ just a run of |if (id == 1) ...|, then |if (id == 2) ...|, and so on.
 	Synoptic::begin_function(I, iname);
 	inter_symbol *id_s = Synoptic::local(I, I"id", NULL);
 	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->extension_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->extension_nodes->list[i].node);
 		text_stream *credit = Metadata::read_textual(pack, I"^credit");
 		Produce::inv_primitive(I, IF_BIP);
 		Produce::down(I);

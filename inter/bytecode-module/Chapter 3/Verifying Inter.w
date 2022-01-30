@@ -4,14 +4,14 @@ Verifying that a chunk of inter is correct and consistent.
 
 @ =
 inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *P, int index) {
-	inter_symbols_table *T = Inter::Packages::scope(owner);
+	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
 	inter_symbol *S = InterSymbolsTables::unequated_symbol_from_id(T, P->W.instruction[index]);
 	if (S == NULL) return Inode::error(P, I"no symbol for ID (case 1)", NULL);
 	if (Wiring::is_wired(S)) {
 		inter_symbol *E = Wiring::cable_end(S);
 		LOG("This is $6 but $3 is wired to $3 in $6\n",
-			Inter::Packages::container(P), S, E, Inter::Packages::container(E->definition));
+			InterPackage::container(P), S, E, InterPackage::container(E->definition));
 		return Inode::error(P, I"symbol defined outside its native scope", S->symbol_name);
 	}
 	inter_tree_node *D = Inter::Symbols::definition(S);
@@ -38,7 +38,7 @@ inter_error_message *Inter::Verify::local_defn(inter_tree_node *P, int index, in
 }
 
 inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_tree_node *P, inter_ti ID, inter_ti construct) {
-	inter_symbols_table *T = Inter::Packages::scope(owner);
+	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
 	inter_symbol *S = InterSymbolsTables::symbol_from_id(T, ID);
 	if (S == NULL) return Inode::error(P, I"no symbol for ID (case 3)", NULL);
@@ -85,7 +85,7 @@ inter_error_message *Inter::Verify::local_symbol(inter_tree_node *P, inter_ti ID
 }
 
 inter_error_message *Inter::Verify::symbol_KOI(inter_package *owner, inter_tree_node *P, inter_ti ID) {
-	inter_symbols_table *T = Inter::Packages::scope(owner);
+	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
 	inter_symbol *S = InterSymbolsTables::symbol_from_id(T, ID);
 	if (S == NULL) return Inode::error(P, I"5no symbol for ID", NULL);
@@ -108,7 +108,7 @@ inter_error_message *Inter::Verify::data_type(inter_tree_node *P, int index) {
 }
 
 inter_error_message *Inter::Verify::value(inter_package *owner, inter_tree_node *P, int index, inter_symbol *kind_symbol) {
-	inter_symbols_table *T = Inter::Packages::scope(owner);
+	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
 	if (kind_symbol == NULL) return Inode::error(P, I"unknown kind for value", NULL);
 	inter_ti V1 = P->W.instruction[index];

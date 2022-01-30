@@ -185,7 +185,7 @@ or as paragraph of text in pass 2:
 	inter_package *conf_pack;
 	LOOP_THROUGH_SUBPACKAGES(conf_pack, pack, I"_conformance") {
 		inter_symbol *xref = Metadata::read_optional_symbol(conf_pack, I"^conformed_to");
-		inter_package *other = Inter::Packages::container(xref->definition);
+		inter_package *other = InterPackage::container(xref->definition);
 		if (f) WRITE(", ");
 		IndexUtilities::kind_name(OUT, other, FALSE, TRUE);
 		f = TRUE;
@@ -302,7 +302,7 @@ void ChartElement::index_subkinds(OUTPUT_STREAM, tree_inventory *inv, inter_pack
 		if ((Metadata::read_optional_numeric(subkind_pack, I"^is_base")) &&
 			(Metadata::read_optional_numeric(subkind_pack, I"^is_subkind_of_object"))) {
 			inter_symbol *super_weak = Metadata::read_optional_symbol(subkind_pack, I"^superkind");
-			if ((super_weak) && (Inter::Packages::container(super_weak->definition) == pack))
+			if ((super_weak) && (InterPackage::container(super_weak->definition) == pack))
 				ChartElement::index_object_kind(OUT, inv, subkind_pack, depth, pass, session);
 		}
 }
@@ -397,7 +397,7 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 	inter_package *I_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(I_pack, i, inv->instance_nodes) {
 		inter_symbol *strong_kind_ID = Metadata::read_optional_symbol(I_pack, I"^kind_xref");
-		if ((strong_kind_ID) && (Inter::Packages::container(strong_kind_ID->definition) == pack)) {
+		if ((strong_kind_ID) && (InterPackage::container(strong_kind_ID->definition) == pack)) {
 			if (c > 0) WRITE(", "); c++;
 			HTML::begin_colour(OUT, I"808080");
 			WRITE("%S", Metadata::read_optional_textual(I_pack, I"^name"));

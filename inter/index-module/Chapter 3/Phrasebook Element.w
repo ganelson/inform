@@ -5,7 +5,7 @@ To write the Phrasebook element (Pb) in the index.
 @ =
 void PhrasebookElement::render(OUTPUT_STREAM, index_session *session) {
 	inter_tree *I = Indexing::get_tree(session);
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/phrases");
+	inter_package *pack = InterPackage::by_url(I, I"/main/completion/phrases");
 	for (int pass = 1; pass <= 2; pass++) {
 		int grand_c = 0;
 		inter_package *sh_pack;

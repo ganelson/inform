@@ -241,7 +241,7 @@ refer to local resources like these.
 =
 inter_symbol *Produce::new_local_symbol(inter_tree *I, text_stream *name) {
 	return InterSymbolsTables::create_with_unique_name(
-		Inter::Packages::scope(I->site.sprdata.current_inter_function), name);
+		InterPackage::scope(I->site.sprdata.current_inter_function), name);
 }
 
 @ When the caller has finished compiling the function body, she should call:
@@ -286,10 +286,10 @@ inter_ti Produce::baseline(inter_bookmark *IBM) {
 	if (IBM == NULL) return 0;
 	inter_package *pack = InterBookmark::package(IBM);
 	if (pack == NULL) return 0;
-	if (Inter::Packages::is_rootlike(pack)) return 0;
-	if (Inter::Packages::is_codelike(pack))
-		return (inter_ti) Inter::Packages::baseline(Inter::Packages::parent(pack)) + 1;
-	return (inter_ti) Inter::Packages::baseline(pack) + 1;
+	if (InterPackage::is_a_root_package(pack)) return 0;
+	if (InterPackage::is_a_function_body(pack))
+		return (inter_ti) InterPackage::baseline(InterPackage::parent(pack)) + 1;
+	return (inter_ti) InterPackage::baseline(pack) + 1;
 }
 
 @ Demonstrating both of these, some simple Inter instructions:
@@ -342,7 +342,7 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	inter_symbol *con_s = InterNames::define(con_iname);
 	inter_ti v1 = 0, v2 = 0;
 	inter_package *pack = InterBookmark::package(IBM);
-	Inter::Symbols::to_data(Inter::Packages::tree(pack), pack, val_s, &v1, &v2);
+	Inter::Symbols::to_data(InterPackage::tree(pack), pack, val_s, &v1, &v2);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
 		InterSymbolsTables::id_from_IRS_and_symbol(IBM, Produce::kind_to_symbol(K)),
@@ -360,7 +360,7 @@ inter_package *Produce::make_and_set_package(inter_tree *I, inter_name *iname,
 	inter_package *P = NULL;
 	TEMPORARY_TEXT(textual_name)
 	WRITE_TO(textual_name, "%n", iname);
-	Produce::guard(Inter::Package::new_package_named(Packaging::at(I), textual_name, TRUE,
+	Produce::guard(InterPackage::new_package_named(Packaging::at(I), textual_name, TRUE,
 		ptype, Produce::baseline(Packaging::at(I)), NULL, &P));
 	DISCARD_TEXT(textual_name)
 	if (P) InterBookmark::move_into_package(Packaging::at(I), P);
@@ -374,7 +374,7 @@ is created at the level below that in |IBM|.
 inter_package *Produce::make_subpackage(inter_bookmark *IBM,
 	text_stream *name, inter_symbol *ptype) {
 	inter_package *P = NULL;
-	Produce::guard(Inter::Package::new_package_named(IBM, name, TRUE,
+	Produce::guard(InterPackage::new_package_named(IBM, name, TRUE,
 		ptype, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL, &P));
 	return P;
 }
@@ -656,5 +656,5 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 
 inter_symbol *Produce::local_exists(inter_tree *I, text_stream *lname) {
 	return InterSymbolsTables::symbol_from_name(
-		Inter::Packages::scope(I->site.sprdata.current_inter_function), lname);
+		InterPackage::scope(I->site.sprdata.current_inter_function), lname);
 }

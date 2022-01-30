@@ -9,7 +9,7 @@ int Metadata::valid_key(text_stream *key) {
 }
 
 int Metadata::exists(inter_package *pack, text_stream *key) {
-	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), key);
 	if (md == NULL) return FALSE;
 	inter_tree_node *D = md->definition;
 	if (D == NULL) return FALSE;
@@ -17,7 +17,7 @@ int Metadata::exists(inter_package *pack, text_stream *key) {
 }
 
 inter_symbol *Metadata::read_symbol(inter_package *pack, text_stream *key) {
-	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), key);
 	if (md == NULL) {
 		LOG("unable to find metadata key %S in package $6\n", key, pack);
 		Metadata::err("not found", pack, key);
@@ -30,14 +30,14 @@ inter_symbol *Metadata::read_symbol(inter_package *pack, text_stream *key) {
 	}
 	if (D->W.instruction[DATA_CONST_IFLD] != ALIAS_IVAL) Metadata::err("not symbol", pack, key);
 
-	inter_symbol *s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack),
+	inter_symbol *s = InterSymbolsTables::symbol_from_id(InterPackage::scope(pack),
 		D->W.instruction[DATA_CONST_IFLD + 1]);
 	if (s == NULL) Metadata::err("no symbol", pack, key);
 	return s;
 }
 
 inter_symbol *Metadata::read_optional_symbol(inter_package *pack, text_stream *key) {
-	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), key);
 	if (md == NULL) return NULL;
 	inter_tree_node *D = md->definition;
 	if (D == NULL) Metadata::err("not defined", pack, key);
@@ -47,14 +47,14 @@ inter_symbol *Metadata::read_optional_symbol(inter_package *pack, text_stream *k
 	}
 	if (D->W.instruction[DATA_CONST_IFLD] != ALIAS_IVAL) Metadata::err("not symbol", pack, key);
 
-	inter_symbol *s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack),
+	inter_symbol *s = InterSymbolsTables::symbol_from_id(InterPackage::scope(pack),
 		D->W.instruction[DATA_CONST_IFLD + 1]);
 	if (s == NULL) Metadata::err("no symbol", pack, key);
 	return s;
 }
 
 inter_tree_node *Metadata::read_optional_list(inter_package *pack, text_stream *key) {
-	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), key);
 	if (md == NULL) return NULL;
 	inter_tree_node *D = md->definition;
 	if (D == NULL) Metadata::err("not defined", pack, key);
@@ -66,7 +66,7 @@ inter_tree_node *Metadata::read_optional_list(inter_package *pack, text_stream *
 }
 
 inter_ti Metadata::read_numeric(inter_package *pack, text_stream *key) {
-	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), key);
 	if (md == NULL) Metadata::err("not found", pack, key);
 	inter_tree_node *D = md->definition;
 	if (D == NULL) Metadata::err("not defined", pack, key);
@@ -76,7 +76,7 @@ inter_ti Metadata::read_numeric(inter_package *pack, text_stream *key) {
 }
 
 inter_ti Metadata::read_optional_numeric(inter_package *pack, text_stream *key) {
-	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), key);
 	if (md == NULL) return 0;
 	inter_tree_node *D = md->definition;
 	if (D == NULL) Metadata::err("not defined", pack, key);
@@ -86,7 +86,7 @@ inter_ti Metadata::read_optional_numeric(inter_package *pack, text_stream *key) 
 }
 
 text_stream *Metadata::read_textual(inter_package *pack, text_stream *key) {
-	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), key);
 	if (md == NULL) Metadata::err("not found", pack, key);
 	inter_tree_node *D = md->definition;
 	if (D == NULL) Metadata::err("not defined", pack, key);
@@ -98,7 +98,7 @@ text_stream *Metadata::read_textual(inter_package *pack, text_stream *key) {
 }
 
 text_stream *Metadata::read_optional_textual(inter_package *pack, text_stream *key) {
-	inter_symbol *md = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), key);
+	inter_symbol *md = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), key);
 	if (md == NULL) return NULL;
 	inter_tree_node *D = md->definition;
 	if (D == NULL) Metadata::err("not defined", pack, key);
@@ -112,7 +112,7 @@ text_stream *Metadata::read_optional_textual(inter_package *pack, text_stream *k
 void Metadata::err(char *err, inter_package *pack, text_stream *key) {
 	LOG("Error on metadata %S in $6\n", key, pack);
 	WRITE_TO(STDERR, "Error on metadata %S in ", key);
-	Inter::Packages::write_url_name(STDERR, pack);
+	InterPackage::write_url_name(STDERR, pack);
 	WRITE_TO(STDERR, "\n");
 	internal_error(err);
 }

@@ -107,8 +107,8 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 	*E = Inter::Verify::symbol_KOI(owner, P, P->W.instruction[OWNER_PVAL_IFLD]); if (*E) return;
 
 	if (vcount == 0) {
-		inter_symbol *prop_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[PROP_PVAL_IFLD]);;
-		inter_symbol *owner_name = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[OWNER_PVAL_IFLD]);;
+		inter_symbol *prop_name = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[PROP_PVAL_IFLD]);;
+		inter_symbol *owner_name = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[OWNER_PVAL_IFLD]);;
 
 		if (Inter::PropertyValue::permitted(P, owner, owner_name, prop_name) == FALSE) {
 			text_stream *err = Str::new();
@@ -139,6 +139,6 @@ void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_
 	if ((prop_name) && (owner_name)) {
 		inter_symbol *val_kind = Inter::Property::kind_of(InterSymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD));
 		WRITE("propertyvalue %S %S = ", prop_name->symbol_name, owner_name->symbol_name);
-		Inter::Types::write(OUT, P, val_kind, P->W.instruction[DVAL1_PVAL_IFLD], P->W.instruction[DVAL2_PVAL_IFLD], Inter::Packages::scope_of(P), FALSE);
+		Inter::Types::write(OUT, P, val_kind, P->W.instruction[DVAL1_PVAL_IFLD], P->W.instruction[DVAL2_PVAL_IFLD], InterPackage::scope_of(P), FALSE);
 	} else { *E = Inode::error(P, I"cannot write propertyvalue", NULL); return; }
 }

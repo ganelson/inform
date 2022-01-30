@@ -15,8 +15,8 @@ Chapter 2: Interoperability
 	Inter Nodes
 	Bookmarks
 	Node Placement
-	Tree Location Lists
 	The Warehouse
+	Tree Location Lists
 	Inter Node Lists
 	Symbols Tables
 	Packages

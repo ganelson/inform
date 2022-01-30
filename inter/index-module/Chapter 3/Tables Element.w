@@ -123,10 +123,10 @@ Rules, which of course are always present. So these are hidden by default.
 	inter_tree_node *ID = Synoptic::get_definition(usage_pack, I"column_identity");
 	inter_symbol *id_s = NULL;
 	if (ID->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)
-		id_s = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(usage_pack),
+		id_s = InterSymbolsTables::symbol_from_id(InterPackage::scope(usage_pack),
 			ID->W.instruction[DATA_CONST_IFLD+1]);
 	if (id_s == NULL) internal_error("column_identity not an ALIAS_IVAL");
-	inter_package *col_pack = Inter::Packages::container(id_s->definition);
+	inter_package *col_pack = InterPackage::container(id_s->definition);
 	HTML::first_html_column(OUT, 0);
 	WRITE("&nbsp;&nbsp;");
 	Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Col", col+1);

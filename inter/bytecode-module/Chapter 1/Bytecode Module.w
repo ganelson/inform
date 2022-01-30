@@ -100,4 +100,4 @@ void BytecodeModule::end(void) {
 	Writers::register_logger('3', Inter::Symbols::log);
 	Writers::register_logger('4', InterSymbolsTables::log);
 	Writers::register_logger('5', InterBookmark::log);
-	Writers::register_logger('6', Inter::Packages::log);
+	Writers::register_logger('6', InterPackage::log);

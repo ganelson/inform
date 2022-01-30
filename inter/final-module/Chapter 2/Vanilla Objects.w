@@ -403,7 +403,7 @@ number of instances, and is worth it for simplicity and speed.
 	inter_tree_node *Y;
 	LOOP_THROUGH_INTER_NODE_LIST(Y, PVL) {
 		inter_symbol *p_name = InterSymbolsTables::symbol_from_id(
-			Inter::Packages::scope_of(Y), Y->W.instruction[PROP_PVAL_IFLD]);
+			InterPackage::scope_of(Y), Y->W.instruction[PROP_PVAL_IFLD]);
 		if ((p_name == prop_name) && (found == 0)) {
 			found = 1;
 			inter_ti v1 = Y->W.instruction[DVAL1_PVAL_IFLD];
@@ -501,7 +501,7 @@ Returns the weak ID of a kind, which is a small integer known at compile time.
 
 =
 int VanillaObjects::weak_id(inter_symbol *kind_s) {
-	inter_package *pack = Inter::Packages::container(kind_s->definition);
+	inter_package *pack = InterPackage::container(kind_s->definition);
 	inter_symbol *weak_s = Metadata::read_optional_symbol(pack, I"^weak_id");
 	int alt_N = -1;
 	if (weak_s) alt_N = Inter::Symbols::evaluate_to_int(weak_s);
@@ -556,7 +556,7 @@ int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *pr
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, PL) {
 		inter_symbol *owner_s = InterSymbolsTables::symbol_from_id(
-			Inter::Packages::scope_of(X), X->W.instruction[OWNER_PERM_IFLD]);
+			InterPackage::scope_of(X), X->W.instruction[OWNER_PERM_IFLD]);
 		if (owner_s == NULL) internal_error("bad owner");
 		inter_symbol *owner_kind_s = NULL;
 		inter_tree_node *D = Inter::Symbols::definition(owner_s);

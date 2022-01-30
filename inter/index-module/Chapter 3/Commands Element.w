@@ -23,7 +23,7 @@ void CommandsElement::render(OUTPUT_STREAM, index_session *session) {
 }
 
 @<Create the entries for the command list@> =
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/grammar");
+	inter_package *pack = InterPackage::by_url(I, I"/main/completion/grammar");
 	inter_package *entry;
 	LOOP_THROUGH_SUBPACKAGES(entry, pack, I"_command_grammar")
 		if ((Metadata::read_optional_numeric(entry, I"^is_command")) &&
@@ -169,7 +169,7 @@ void CommandsElement::index_grammar_line(OUTPUT_STREAM, inter_package *cgl,
 	text_stream *headword, localisation_dictionary *LD) {
 	inter_symbol *an_s = Metadata::read_optional_symbol(cgl, I"^action");
 	if (an_s == NULL) return;
-	inter_package *an = Inter::Packages::container(an_s->definition);
+	inter_package *an = InterPackage::container(an_s->definition);
 	int oow = (int) Metadata::read_optional_numeric(an, I"^out_of_world");
 	if (Str::len(headword) > 0) IndexUtilities::anchor(OUT, headword);
 	if (oow) HTML::begin_colour(OUT, I"800000");

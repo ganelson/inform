@@ -185,14 +185,14 @@ void Inter::Kind::verify(inter_construct *IC, inter_tree_node *P, inter_package 
 	*E = Inter::Verify::defn(owner, P, DEFN_KIND_IFLD); if (*E) return;
 	*E = Inter::Verify::data_type(P, DATA_TYPE_KIND_IFLD); if (*E) return;
 	if (P->W.instruction[ENUM_RANGE_KIND_IFLD] != 0) {
-		inter_symbol *the_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[DEFN_KIND_IFLD]);
+		inter_symbol *the_kind = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[DEFN_KIND_IFLD]);
 		if ((the_kind == NULL) ||
 			(Inter::Types::is_enumerated(Inter::Types::find_by_ID(P->W.instruction[DATA_TYPE_KIND_IFLD])) == FALSE))
 			{ *E = Inode::error(P, I"spurious extent in non-enumeration", NULL); return; }
 	}
 	if (P->W.instruction[SUPER_KIND_IFLD] != 0) {
 		*E = Inter::Verify::symbol(owner, P, P->W.instruction[SUPER_KIND_IFLD], KIND_IST); if (*E) return;
-		inter_symbol *super_kind = InterSymbolsTables::symbol_from_id(Inter::Packages::scope(owner), P->W.instruction[SUPER_KIND_IFLD]);
+		inter_symbol *super_kind = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[SUPER_KIND_IFLD]);
 		if (Inter::Types::is_enumerated(Inter::Kind::data_type(super_kind)) == FALSE)
 			{ *E = Inode::error(P, I"subkind of nonenumerated kind", NULL); return; }
 	}
@@ -367,7 +367,7 @@ inter_symbol *Inter::Kind::operand_symbol(inter_symbol *kind_symbol, int i) {
 	if (D == NULL) return NULL;
 	if (i >= D->W.extent - MIN_EXTENT_KIND_IFR) return NULL;
 	inter_ti CID = D->W.instruction[OPERANDS_KIND_IFLD + i];
-	inter_symbols_table *T = Inter::Packages::scope_of(D);
+	inter_symbols_table *T = InterPackage::scope_of(D);
 	return InterSymbolsTables::symbol_from_id(T, CID);
 }
 

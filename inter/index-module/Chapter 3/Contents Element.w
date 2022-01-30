@@ -20,7 +20,7 @@ void ContentsElement::render(OUTPUT_STREAM, index_session *session) {
 @<Write a sort of half-title page@> =
 	HTML_OPEN("p");
 	WRITE("<b>");
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/bibliographic");
+	inter_package *pack = InterPackage::by_url(I, I"/main/completion/bibliographic");
 	text_stream *title = Metadata::read_optional_textual(pack, I"^title");
 	text_stream *author = Metadata::read_optional_textual(pack, I"^author");
 	if (Str::len(title) > 0) {
@@ -122,7 +122,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 				else if (auto_included == FALSE)
 					Localisation::roman(OUT, LD, I"Index.Elements.C.IncludedFromSource");
 				else {
-					inter_package *owner_pack = Inter::Packages::container(owner_id->definition);
+					inter_package *owner_pack = InterPackage::container(owner_id->definition);
 					Localisation::roman_t(OUT, LD, I"Index.Elements.C.IncludedBy",
 						Metadata::read_optional_textual(owner_pack, I"^title"));
 				}

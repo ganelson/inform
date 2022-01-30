@@ -50,8 +50,8 @@ functions, and calls //Vanilla::node// to recurse downwards through them.
 =
 void Vanilla::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
-	inter_package *outer = Inter::Packages::container(P);
-	if ((outer == NULL) || (Inter::Packages::is_codelike(outer) == FALSE)) {
+	inter_package *outer = InterPackage::container(P);
+	if ((outer == NULL) || (InterPackage::is_a_function_body(outer) == FALSE)) {
 		switch (P->W.instruction[ID_IFLD]) {
 			case CONSTANT_IST:
 			case VARIABLE_IST:

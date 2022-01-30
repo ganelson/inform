@@ -93,7 +93,7 @@ package_request *LargeScale::main_request(inter_tree *I) {
 }
 
 inter_symbols_table *LargeScale::main_scope(inter_tree *I) {
-	return Inter::Packages::scope(LargeScale::main_package_if_it_exists(I));
+	return InterPackage::scope(LargeScale::main_package_if_it_exists(I));
 }
 
 @h connectors.
@@ -123,7 +123,7 @@ package_request *LargeScale::connectors_request(inter_tree *I) {
 }
 
 inter_symbols_table *LargeScale::connectors_scope(inter_tree *I) {
-	return Inter::Packages::scope(LargeScale::connectors_package_if_it_exists(I));
+	return InterPackage::scope(LargeScale::connectors_package_if_it_exists(I));
 }
 
 @h architectural.
@@ -181,7 +181,7 @@ dictionary *create_these_architectural_symbols_on_demand = NULL;
 inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *N,
 	inter_symbol *uks) {
 	inter_package *arch = LargeScale::architecture_package(I);
-	inter_symbols_table *tab = Inter::Packages::scope(arch);
+	inter_symbols_table *tab = InterPackage::scope(arch);
 	inter_symbol *S = InterSymbolsTables::symbol_from_name(tab, N);
 	if (S == NULL) {
 		if (create_these_architectural_symbols_on_demand == NULL) {
@@ -263,7 +263,7 @@ void LargeScale::make_architectural_definitions(inter_tree *I,
 inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 	inter_symbol *uks, inter_ti val) {
 	inter_package *arch = LargeScale::architecture_package(I);
-	inter_symbols_table *tab = Inter::Packages::scope(arch);
+	inter_symbols_table *tab = InterPackage::scope(arch);
 	inter_symbol *S = InterSymbolsTables::symbol_from_name_creating(tab, N);
 	Inter::Symbols::annotate_i(S, ARCHITECTURAL_IANN, 1);
 	inter_bookmark *IBM = &(I->site.strdata.architecture_bookmark);

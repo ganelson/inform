@@ -40,12 +40,12 @@ be included.
 =
 void EliminateRedundantMatterStage::preserver(inter_tree *I, inter_tree_node *P, void *state) {
 	pipeline_step *step = (pipeline_step *) state;
-	inter_package *pack = Inter::Package::defined_by_frame(P);
-	inter_symbol *ptype = Inter::Packages::type(pack);
+	inter_package *pack = InterPackage::at_this_head(P);
+	inter_symbol *ptype = InterPackage::type(pack);
 	if (ptype == RunningPipelines::get_symbol(step, command_ptype_RPSYM))
 		EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's a _command package");
 	else if (ptype == RunningPipelines::get_symbol(step, property_ptype_RPSYM)) {
-		text_stream *N = Inter::Packages::name(pack);
+		text_stream *N = InterPackage::name(pack);
 		if (Str::eq(N, I"workflag_prop"))
 			EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's workflag");
 		if (Str::eq(N, I"pluralname_prop"))
@@ -56,7 +56,7 @@ void EliminateRedundantMatterStage::preserver(inter_tree *I, inter_tree_node *P,
 			EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's proper");
 	}
 	else if (ptype == RunningPipelines::get_symbol(step, function_ptype_RPSYM)) {
-		text_stream *N = Inter::Packages::name(pack);
+		text_stream *N = InterPackage::name(pack);
 		if (Str::eq(N, I"Main_fn"))
 			EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's Main");
 		if (Str::eq(N, I"MistakeActionSub_fn"))
@@ -84,12 +84,12 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 }
 
 @<If you need a package, you need its parent@> =
-	inter_package *parent = Inter::Packages::parent(pack);
+	inter_package *parent = InterPackage::parent(pack);
 	if (parent) EliminateRedundantMatterStage::preserve(parent, step, pack,
 		I"it's the parent");
 
 @<If you need a package, you need its external dependencies@> =
-	inter_symbols_table *tab = Inter::Packages::scope(pack);
+	inter_symbols_table *tab = InterPackage::scope(pack);
 	for (int i=0; i<tab->size; i++) {
 		inter_symbol *symb = tab->symbol_array[i];
 		if (Wiring::is_wired(symb)) {
@@ -102,16 +102,16 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 
 @<If you need a function or action, you need its internal resources@> =
 	text_stream *rationale = NULL;
-	inter_symbol *ptype = Inter::Packages::type(pack);
+	inter_symbol *ptype = InterPackage::type(pack);
 	if (ptype == RunningPipelines::get_symbol(step, function_ptype_RPSYM)) 
 		rationale = I"it's a _function block";
 	if (ptype == RunningPipelines::get_symbol(step, action_ptype_RPSYM))
 		rationale = I"it's an _action subpackage";
 	if (rationale) {
-		inter_tree_node *D = Inter::Packages::definition(pack);
+		inter_tree_node *D = InterPackage::head(pack);
 		LOOP_THROUGH_INTER_CHILDREN(C, D) {
 			if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
-				inter_package *P = Inter::Package::defined_by_frame(C);
+				inter_package *P = InterPackage::at_this_head(C);
 				EliminateRedundantMatterStage::preserve(P, step, pack, rationale);
 			}
 		}
@@ -121,10 +121,10 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 
 =
 void EliminateRedundantMatterStage::destroyer(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_package *pack = Inter::Package::defined_by_frame(P);
+	inter_package *pack = InterPackage::at_this_head(P);
 	if ((pack) && ((pack->package_flags & USED_PACKAGE_FLAG) == 0)) {
 		LOGIF(ELIMINATION, "Striking unused package $6 (type %S)\n",
-			pack, Inter::Packages::type(pack)->symbol_name);
+			pack, InterPackage::type(pack)->symbol_name);
 		NodePlacement::remove(P);
 	}
 }

@@ -8,13 +8,13 @@ We are going to need to read and write these: for reading --
 =
 inter_symbol *Synoptic::get_symbol(inter_package *pack, text_stream *name) {
 	inter_symbol *loc_s =
-		InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), name);
+		InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), name);
 	if (loc_s == NULL) Metadata::err("package symbol not found", pack, name);
 	return loc_s;
 }
 
 inter_tree_node *Synoptic::get_definition(inter_package *pack, text_stream *name) {
-	inter_symbol *def_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), name);
+	inter_symbol *def_s = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), name);
 	if (def_s == NULL) {
 		LOG("Unable to find symbol %S in $6\n", name, pack);
 		internal_error("no symbol");
@@ -32,7 +32,7 @@ does exist, it must have a definition, and we return that.
 
 =
 inter_tree_node *Synoptic::get_optional_definition(inter_package *pack, text_stream *name) {
-	inter_symbol *def_s = InterSymbolsTables::symbol_from_name(Inter::Packages::scope(pack), name);
+	inter_symbol *def_s = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), name);
 	if (def_s == NULL) return NULL;
 	inter_tree_node *D = def_s->definition;
 	if (D == NULL) internal_error("undefined symbol");
@@ -43,7 +43,7 @@ inter_tree_node *Synoptic::get_optional_definition(inter_package *pack, text_str
 
 =
 inter_symbol *Synoptic::new_symbol(inter_package *pack, text_stream *name) {
-	return InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(pack), name);
+	return InterSymbolsTables::create_with_unique_name(InterPackage::scope(pack), name);
 }
 
 @h Making textual constants.
@@ -127,19 +127,19 @@ void Synoptic::numeric_entry(inter_ti val2) {
 }
 void Synoptic::symbol_entry(inter_symbol *S) {
 	Inode::extend_instruction_by(synoptic_array_node, 2);
-	inter_package *pack = Inter::Packages::container(synoptic_array_node);
+	inter_package *pack = InterPackage::container(synoptic_array_node);
 	inter_symbol *local_S =
-		InterSymbolsTables::create_with_unique_name(Inter::Packages::scope(pack), S->symbol_name);
+		InterSymbolsTables::create_with_unique_name(InterPackage::scope(pack), S->symbol_name);
 	Wiring::wire_to(local_S, S);
 	inter_ti val1 = 0, val2 = 0;
-	Inter::Symbols::to_data(Inter::Packages::tree(pack), pack, local_S, &val1, &val2);
+	Inter::Symbols::to_data(InterPackage::tree(pack), pack, local_S, &val1, &val2);
 	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = ALIAS_IVAL;
 	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
 }
 void Synoptic::textual_entry(text_stream *text) {
 	Inode::extend_instruction_by(synoptic_array_node, 2);
-	inter_package *pack = Inter::Packages::container(synoptic_array_node);
-	inter_tree *I = Inter::Packages::tree(pack);
+	inter_package *pack = InterPackage::container(synoptic_array_node);
+	inter_tree *I = InterPackage::tree(pack);
 	inter_ti val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
 	text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 	Str::copy(glob_storage, text);

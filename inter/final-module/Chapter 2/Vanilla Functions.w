@@ -92,8 +92,8 @@ int VanillaFunctions::formal_arity(vanilla_function *vf) {
 
 =
 vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s) {
-	inter_package *P = Inter::Packages::container(fn_s->definition);
-	inter_package *PP = Inter::Packages::parent(P);
+	inter_package *P = InterPackage::container(fn_s->definition);
+	inter_package *PP = InterPackage::parent(P);
 	text_stream *i7_syntax = Metadata::read_optional_textual(PP, I"^phrase_syntax");
 	vanilla_function *vf = CREATE(vanilla_function);
 	vf->takes_variable_arguments = FALSE;
@@ -101,7 +101,7 @@ vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s
 	vf->locals = NEW_LINKED_LIST(text_stream);
 	vf->phrase_syntax = Str::duplicate(i7_syntax);
 	inter_package *code_block = Inter::Constant::code_block(fn_s);
-	vf->function_body = Inter::Packages::definition(code_block);
+	vf->function_body = InterPackage::head(code_block);
 	fn_s->translation_data = STORE_POINTER_vanilla_function(vf);
 	VanillaFunctions::seek_locals(gen, vf->function_body, vf);
 	vf->max_arity = LinkedLists::len(vf->locals);
@@ -121,7 +121,7 @@ in some way by the generator. (As indeed the C generator does, mangling this to
 void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
 	vanilla_function *vf) {
 	if (P->W.instruction[ID_IFLD] == LOCAL_IST) {
-		inter_package *pack = Inter::Packages::container(P);
+		inter_package *pack = InterPackage::container(P);
 		inter_symbol *local_s =
 			InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 		ADD_TO_LINKED_LIST(Inter::Symbols::name(local_s), text_stream, vf->locals);
@@ -149,7 +149,7 @@ void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 		inter_ti val2 = D->W.instruction[DATA_CONST_IFLD + 1];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 			inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_table(
-				val1, val2, Inter::Packages::scope_of(D));
+				val1, val2, InterPackage::scope_of(D));
 			if (S) fn_s = S;
 		}
 	}

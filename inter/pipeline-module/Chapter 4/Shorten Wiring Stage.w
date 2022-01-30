@@ -58,8 +58,8 @@ we simplify just to |S1 -> T3|.
 =
 void ShortenWiringStage::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	plug_inspection_state *state = (plug_inspection_state *) v_state;
-	inter_package *Q = Inter::Package::defined_by_frame(P);
-	inter_symbols_table *ST = Inter::Packages::scope(Q);
+	inter_package *Q = InterPackage::at_this_head(P);
+	inter_symbols_table *ST = InterPackage::scope(Q);
 	for (int i=0; i<ST->size; i++) {
 		inter_symbol *S = ST->symbol_array[i];
 		inter_symbol *E = Wiring::cable_end(S);
@@ -85,7 +85,7 @@ with no incoming connections either, and so the sockets can go too.
 The result should be a completely empty |connectors| module.
 
 @<Remove the now unnecessary plugs and sockets@> =
-	inter_symbols_table *ST = Inter::Packages::scope(connectors);
+	inter_symbols_table *ST = InterPackage::scope(connectors);
 	@<Remove plugs with no incoming connections@>;
 	@<Remove sockets with no incoming connections@>;
 	@<Report any remaining symbols in this table as errors@>;

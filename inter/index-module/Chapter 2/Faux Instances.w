@@ -225,7 +225,7 @@ void FauxInstances::make_faux(index_session *session) {
 			inter_ti v1 = P->W.instruction[offset], v2 = P->W.instruction[offset+1];
 			if (v1 == ALIAS_IVAL) {
 				inter_symbol *S =
-					InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
+					InterSymbolsTables::symbol_from_id(InterPackage::scope(pack), v2);
 				if (S == NULL) internal_error("malformed map metadata");
 				I->fimd.exits[i] = FauxInstances::symbol_to_faux_instance(faux_set, S);
 			} else if ((v1 != LITERAL_IVAL) || (v2 != 0)) internal_error("malformed map metadata");
@@ -243,7 +243,7 @@ void FauxInstances::make_faux(index_session *session) {
 			inter_ti v1 = P->W.instruction[offset], v2 = P->W.instruction[offset+1];
 			if (v1 == ALIAS_IVAL) {
 				inter_symbol *S =
-					InterSymbolsTables::symbol_from_id(Inter::Packages::scope(pack), v2);
+					InterSymbolsTables::symbol_from_id(InterPackage::scope(pack), v2);
 				if (S == NULL) internal_error("malformed map metadata");
 				faux_instance *FL = FauxInstances::symbol_to_faux_instance(faux_set, S);
 				ADD_TO_LINKED_LIST(I, faux_instance, FL->backdrop_presences);
@@ -278,7 +278,7 @@ faux_instance *FauxInstances::xref(faux_instance_set *faux_set, inter_package *p
 faux_instance *FauxInstances::symbol_to_faux_instance(faux_instance_set *faux_set,
 	inter_symbol *S) {
 	if (S == NULL) return NULL;
-	inter_package *want = Inter::Packages::container(S->definition);
+	inter_package *want = InterPackage::container(S->definition);
 	faux_instance *I;
 	LOOP_OVER_FAUX_INSTANCES(faux_set, I)
 		if (I->package == want)
@@ -299,7 +299,7 @@ and only if needed.
 void FauxInstances::decode_hints(index_session *session, int pass) {
 	faux_instance_set *faux_set = Indexing::get_set_of_instances(session);
 	inter_tree *I = Indexing::get_tree(session);
-	inter_package *pack = Inter::Packages::by_url(I, I"/main/completion/mapping_hints");
+	inter_package *pack = InterPackage::by_url(I, I"/main/completion/mapping_hints");
 	inter_package *hint_pack;
 	LOOP_THROUGH_SUBPACKAGES(hint_pack, pack, I"_mapping_hint") {
 		faux_instance *from = FauxInstances::xref(faux_set, hint_pack, I"^from");

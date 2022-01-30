@@ -69,4 +69,4 @@ definitions:
 
 @d LOOP_OVER_INVENTORY_PACKAGES(pack, i, node_list)
 	for (int i=0; i<TreeLists::len(node_list); i++)
-		if ((pack = Inter::Package::defined_by_frame(node_list->list[i].node)))
+		if ((pack = InterPackage::at_this_head(node_list->list[i].node)))

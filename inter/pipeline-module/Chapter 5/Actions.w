@@ -30,7 +30,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	TreeLists::sort(inv->action_nodes, MakeSynopticModuleStage::module_order);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
+			InterPackage::at_this_head(inv->action_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"action_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
 		D = Synoptic::get_optional_definition(pack, I"var_id");
@@ -57,7 +57,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	inter_name *iname = HierarchyLocations::iname(I, ACTIONCODING_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
 		inter_ti no = Metadata::read_optional_numeric(pack, I"^no_coding");
 		if ((no) || (double_sharp_s == NULL)) Synoptic::numeric_entry(0);
@@ -78,7 +78,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	InterNames::annotate_i(iname, TABLEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
 		if (double_sharp_s == NULL) {
 			Synoptic::numeric_entry(0);
@@ -132,7 +132,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 		Produce::down(I);
 
 	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->action_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
 		if (double_sharp_s) {
 			inter_symbol *debug_fn_s = Metadata::read_symbol(pack, I"^debug_fn");

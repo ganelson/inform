@@ -42,7 +42,7 @@ void ValuesElement::render(OUTPUT_STREAM, index_session *session) {
 	if (definition_area == NULL) continue;
 	if (definition_area != current_area) {
 		inter_package *heading_pack =
-			Inter::Packages::container(definition_area->definition);
+			InterPackage::container(definition_area->definition);
 		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		IndexUtilities::show_definition_area(OUT, heading_pack, FALSE);

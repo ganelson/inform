@@ -30,7 +30,7 @@ void SynopticChronology::compile(inter_tree *I, pipeline_step *step, tree_invent
 	TreeLists::sort(inv->action_history_condition_nodes, MakeSynopticModuleStage::module_order);
 	for (int i=0; i<TreeLists::len(inv->action_history_condition_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->action_history_condition_nodes->list[i].node);
+			InterPackage::at_this_head(inv->action_history_condition_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"ahc_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
 	}
@@ -42,7 +42,7 @@ are independent and can overlap.
 	TreeLists::sort(inv->past_tense_condition_nodes, MakeSynopticModuleStage::module_order);
 	for (int i=0; i<TreeLists::len(inv->past_tense_condition_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->past_tense_condition_nodes->list[i].node);
+			InterPackage::at_this_head(inv->past_tense_condition_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"ptc_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
 	}
@@ -63,7 +63,7 @@ are independent and can overlap.
 	Synoptic::begin_array(I, step, iname);
 	int when_count = 0;
 	for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
-		inter_package *pack = Inter::Package::defined_by_frame(inv->rule_nodes->list[i].node);
+		inter_package *pack = InterPackage::at_this_head(inv->rule_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^timed")) {
 			inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");
 			if (Metadata::exists(pack, I"^timed_for")) {
@@ -84,7 +84,7 @@ are independent and can overlap.
 	int when_count = 0;
 	for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->rule_nodes->list[i].node);
+			InterPackage::at_this_head(inv->rule_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^timed")) {
 			if (Metadata::exists(pack, I"^timed_for")) {
 				inter_ti t = Metadata::read_optional_numeric(pack, I"^timed_for");
@@ -103,7 +103,7 @@ are independent and can overlap.
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<TreeLists::len(inv->action_history_condition_nodes); i++) {
 		inter_package *pack =
-			Inter::Package::defined_by_frame(inv->action_history_condition_nodes->list[i].node);
+			InterPackage::at_this_head(inv->action_history_condition_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");
 		if (fn_s == NULL) internal_error("no pap_fn");
 		Synoptic::symbol_entry(fn_s);
@@ -287,7 +287,7 @@ are independent and can overlap.
 		Produce::down(I);
 			for (int i=0; i<TreeLists::len(inv->past_tense_condition_nodes); i++) {
 				inter_package *pack =
-					Inter::Package::defined_by_frame(inv->past_tense_condition_nodes->list[i].node);
+					InterPackage::at_this_head(inv->past_tense_condition_nodes->list[i].node);
 				inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");
 				if (fn_s == NULL) internal_error("no pcon_fn");
 				Produce::inv_primitive(I, CASE_BIP);

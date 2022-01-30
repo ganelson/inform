@@ -106,7 +106,7 @@ inter_ti InterWarehouse::create_resource(inter_warehouse *warehouse) {
 @ Every resource is tied to a package which owns it. This is only in fact used to
 determine the tree which owns it -- but we store the package, not the tree, because
 when material transmigrates from one tree to another, the owning package can then
-stay the same: it is just that //Inter::Packages::tree// will return a different
+stay the same: it is just that //InterPackage::tree// will return a different
 tree after the movement has taken place.
 
 The following conveniently loops through all valid resource IDs for a given tree:
@@ -114,7 +114,7 @@ The following conveniently loops through all valid resource IDs for a given tree
 @d LOOP_OVER_RESOURCE_IDS(n, I)
 	for (inter_ti n = 1; n < I->housed->next_free_resource_ID; n++)
 		if ((I->housed->stored_resources[n].resource_owner == NULL) ||
-			(Inter::Packages::tree(I->housed->stored_resources[n].resource_owner) == I))
+			(InterPackage::tree(I->housed->stored_resources[n].resource_owner) == I))
 
 @ So what can a resource be? The following types are supported, and can be
 deduced by looking at what class is stored in the general pointer |res|; this
@@ -188,7 +188,7 @@ pointed to is in the same tree as the bytecode instruction using the resource.
 =
 inter_ti InterWarehouse::create_package(inter_warehouse *warehouse, inter_tree *I) {
 	inter_ti n = InterWarehouse::create_resource(warehouse);
-	inter_package *new_pack = Inter::Packages::new(I, n);
+	inter_package *new_pack = InterPackage::new(I, n);
 	return InterWarehouse::create_ref_at(warehouse, n, STORE_POINTER_inter_package(new_pack),
 		new_pack);
 }

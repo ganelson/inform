@@ -147,7 +147,7 @@ they were any other arrays. Here goes:
 		inter_ti val1 = P->W.instruction[i], val2 = P->W.instruction[i+1];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 			inter_symbol *A = InterSymbolsTables::symbol_from_data_pair_and_table(
-				val1, val2, Inter::Packages::scope_of(P));
+				val1, val2, InterPackage::scope_of(P));
 			if (A == NULL) internal_error("bad aliased symbol");
 			if (Inter::Symbols::read_annotation(A, SCOPE_FILTER_IANN) == 1) WRITE("scope=");
 			if (Inter::Symbols::read_annotation(A, NOUN_FILTER_IANN) == 1)  WRITE("noun=");

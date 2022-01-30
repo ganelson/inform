@@ -89,7 +89,7 @@ void Emit::to_value_pair_in_context(inter_name *context, inter_ti *v1, inter_ti 
 void Emit::stvp_inner(inter_symbol *S, inter_ti *v1, inter_ti *v2,
 	inter_package *pack) {
 	if (S) {
-		Inter::Symbols::to_data(Inter::Packages::tree(pack), pack, S, v1, v2);
+		Inter::Symbols::to_data(InterPackage::tree(pack), pack, S, v1, v2);
 		return;
 	}
 	*v1 = LITERAL_IVAL; *v2 = 0;

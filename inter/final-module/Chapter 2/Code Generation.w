@@ -426,8 +426,8 @@ void CodeGen::clear_all_transients(inter_tree *I) {
 }
 
 void CodeGen::clear_transients(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_package *pack = Inter::Package::defined_by_frame(P);
-	inter_symbols_table *T = Inter::Packages::scope(pack);
+	inter_package *pack = InterPackage::at_this_head(P);
+	inter_symbols_table *T = InterPackage::scope(pack);
 	for (int i=0; i<T->size; i++)
 		if (T->symbol_array[i])
 			Inter::Symbols::clear_transient_flags(T->symbol_array[i]);
@@ -461,7 +461,7 @@ void CodeGen::pair_at_bookmark(code_generation *gen, inter_bookmark *IBM,
 
 void CodeGen::pair(code_generation *gen, inter_tree_node *P,
 	inter_ti val1, inter_ti val2) {
-	inter_symbols_table *T = P?(Inter::Packages::scope_of(P)):NULL;
+	inter_symbols_table *T = P?(InterPackage::scope_of(P)):NULL;
 	@<Generate from a value pair@>;
 }
 

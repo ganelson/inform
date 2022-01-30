@@ -39,7 +39,7 @@ void SynopticText::compile(inter_tree *I, pipeline_step *step, tree_inventory *i
 		inter_symbol *latest_s = NULL;
 		for (int i=0, j=0; i<TreeLists::len(inv->text_nodes); i++) {
 			inter_tree_node *P = inv->text_nodes->list[i].node;
-			inter_package *pack = Inter::Packages::container(P);
+			inter_package *pack = InterPackage::container(P);
 			text_stream *S = SynopticText::text_quoted_here(P);
 			if ((latest_text == NULL) || (Str::ne(S, latest_text)))
 				@<A new entry, not a duplicated one@>;
@@ -82,7 +82,7 @@ in |texts|.
 
 	Wiring::wire_to(ref_s, latest_s);
 	inter_ti val1 = 0, val2 = 0;
-	Inter::Symbols::to_data(I, Inter::Packages::container(P), ref_s, &val1, &val2);
+	Inter::Symbols::to_data(I, InterPackage::container(P), ref_s, &val1, &val2);
 	P->W.instruction[FORMAT_CONST_IFLD] = CONSTANT_DIRECT;
 	P->W.instruction[DATA_CONST_IFLD] = val1;
 	P->W.instruction[DATA_CONST_IFLD+1] = val2;

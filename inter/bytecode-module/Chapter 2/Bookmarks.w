@@ -72,7 +72,7 @@ inter_bookmark InterBookmark::at_end_of_root(inter_tree *I) {
 
 inter_bookmark InterBookmark::at_end_of_this_package(inter_package *pack) {
 	if (pack == NULL) internal_error("no package supplied"); 
-	return InterBookmark::last_child_of(Inter::Packages::definition(pack));
+	return InterBookmark::last_child_of(InterPackage::head(pack));
 }
 
 inter_bookmark InterBookmark::last_child_of(inter_tree_node *D) {
@@ -102,8 +102,8 @@ is (or was) marking.
 void InterBookmark::move_into_package(inter_bookmark *IBM, inter_package *P) {
 	if (IBM == NULL) internal_error("no bookmark supplied"); 
 	if (P == NULL) internal_error("invalid package supplied");
-	inter_tree_node *D = Inter::Packages::definition(P);
-	if (D == NULL) D = Inter::Packages::tree(P)->root_node;
+	inter_tree_node *D = InterPackage::head(P);
+	if (D == NULL) D = InterPackage::tree(P)->root_node;
 	if (InterTree::last_child(D)) {
 		IBM->R = InterTree::last_child(D);
 		IBM->placement_wrt_R = AFTER_NODEPLACEMENT;
@@ -124,7 +124,7 @@ inter_package *InterBookmark::package(inter_bookmark *IBM) {
 	inter_package *pack = IBM->R->package;
 	if ((IBM->placement_wrt_R == AS_FIRST_CHILD_OF_NODEPLACEMENT) ||
 		(IBM->placement_wrt_R == AS_LAST_CHILD_OF_NODEPLACEMENT)) {
-		inter_package *R_defined = Inter::Package::defined_by_frame(IBM->R);
+		inter_package *R_defined = InterPackage::at_this_head(IBM->R);
 		if (R_defined) pack = R_defined;
 	}
 	return pack;
@@ -144,13 +144,13 @@ inter_warehouse *InterBookmark::warehouse(inter_bookmark *IBM) {
 
 int InterBookmark::baseline(inter_bookmark *IBM) {
 	inter_package *pack = InterBookmark::package(IBM);
-	if (pack) return Inter::Packages::baseline(pack);
+	if (pack) return InterPackage::baseline(pack);
 	return 0;
 }
 
 inter_symbols_table *InterBookmark::scope(inter_bookmark *IBM) {
 	inter_package *pack = InterBookmark::package(IBM);
-	if (pack) return Inter::Packages::scope(pack);
+	if (pack) return InterPackage::scope(pack);
 	return InterTree::global_scope(InterBookmark::tree(IBM));
 }
 
