@@ -129,7 +129,7 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 			if (X->W.instruction[OWNER_PVAL_IFLD] != P->W.instruction[OWNER_PVAL_IFLD]) { *E = Inode::error(P, I"instance property list malformed", NULL); return; }
 		}
 
-		Inter::ListLiterals::add(FL, P);
+		InterNodeList::add(FL, P);
 	}
 }
 

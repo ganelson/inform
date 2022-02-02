@@ -9,9 +9,9 @@ void FiguresElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->figure_nodes, MakeSynopticModuleStage::module_order);
-	TreeLists::sort(inv->sound_nodes, MakeSynopticModuleStage::module_order);
-	TreeLists::sort(inv->file_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->figure_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->sound_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->file_nodes, MakeSynopticModuleStage::module_order);
 	@<Index the figures@>;
 	@<Index the sounds@>;
 	@<Index the files@>;
@@ -20,7 +20,7 @@ void FiguresElement::render(OUTPUT_STREAM, index_session *session) {
 @h Figures.
 
 @<Index the figures@> =
-	if (TreeLists::len(inv->figure_nodes) <= 1) { /* cover art always creates 1 */
+	if (InterNodeList::array_len(inv->figure_nodes) <= 1) { /* cover art always creates 1 */
 		HTML_OPEN("p");
 		Localisation::roman(OUT, LD, I"Index.Elements.Fi.NoFigures");
 		HTML_CLOSE("p");
@@ -128,7 +128,7 @@ to match this width, preserving the aspect ratio.
 @h Sounds.
 
 @<Index the sounds@> =
-	if (TreeLists::len(inv->sound_nodes) == 0) {
+	if (InterNodeList::array_len(inv->sound_nodes) == 0) {
 		HTML_OPEN("p");
 		Localisation::bold(OUT, LD, I"Index.Elements.Fi.ListOfSounds");
 		HTML_CLOSE("p");
@@ -274,7 +274,7 @@ to match this width, preserving the aspect ratio.
 This is more or less perfunctory, but still of some use, if only as a list.
 
 @<Index the files@> =
-	if (TreeLists::len(inv->file_nodes) == 0) {
+	if (InterNodeList::array_len(inv->file_nodes) == 0) {
 		HTML_OPEN("p");
 		Localisation::roman(OUT, LD, I"Index.Elements.Fi.NoFiles");
 		HTML_CLOSE("p");

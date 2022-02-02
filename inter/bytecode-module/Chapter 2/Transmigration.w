@@ -15,7 +15,7 @@ inter_symbol *Inter::Transmigration::cached_equivalent(inter_symbol *S) {
 }
 
 void Inter::Transmigration::move(inter_package *migrant, inter_package *destination, int tidy_origin) {
-	InterPackage::make_names_exist(migrant);
+	inter_package *P = migrant; while (P) P = InterPackage::parent(P); /* make names exist */
 	inter_tree *origin_tree = InterPackage::tree(migrant);
 	inter_tree *destination_tree = InterPackage::tree(destination);
 	inter_package *origin = InterPackage::parent(migrant);
@@ -233,7 +233,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		InterSymbolsTables::symbol_to_url_name(URL, target);
 		equivalent = InterSymbolsTables::url_name_to_symbol(ipct->destination->package_head->tree, NULL, URL);
 		if ((equivalent == NULL) && (Inter::Kind::is(target)))
-			equivalent = InterPackage::search_resources(ipct->destination->package_head->tree, target->symbol_name);
+			equivalent = LargeScale::find_symbol_in_tree(ipct->destination->package_head->tree, target->symbol_name);
 		if (equivalent == NULL)
 			equivalent = Wiring::plug(ipct->destination_tree, target->symbol_name);
 		DISCARD_TEXT(URL)

@@ -11,8 +11,8 @@ for |inv->past_tense_condition_nodes|.
 
 =
 void SynopticChronology::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->action_history_condition_nodes) > 0) @<Assign unique AHC ID numbers@>;
-	if (TreeLists::len(inv->past_tense_condition_nodes) > 0) @<Assign unique PTC ID numbers@>;
+	if (InterNodeList::array_len(inv->action_history_condition_nodes) > 0) @<Assign unique AHC ID numbers@>;
+	if (InterNodeList::array_len(inv->past_tense_condition_nodes) > 0) @<Assign unique PTC ID numbers@>;
 
 	@<Define NO_PAST_TENSE_CONDS@>;
 	@<Define NO_PAST_TENSE_ACTIONS@>;
@@ -27,8 +27,8 @@ void SynopticChronology::compile(inter_tree *I, pipeline_step *step, tree_invent
 @ Action history conditions must be numbered uniquely from 0 upwards:
 
 @<Assign unique AHC ID numbers@> =
-	TreeLists::sort(inv->action_history_condition_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->action_history_condition_nodes); i++) {
+	InterNodeList::array_sort(inv->action_history_condition_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->action_history_condition_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->action_history_condition_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"ahc_id");
@@ -39,8 +39,8 @@ void SynopticChronology::compile(inter_tree *I, pipeline_step *step, tree_invent
 are independent and can overlap.
 
 @<Assign unique PTC ID numbers@> =
-	TreeLists::sort(inv->past_tense_condition_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->past_tense_condition_nodes); i++) {
+	InterNodeList::array_sort(inv->past_tense_condition_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->past_tense_condition_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->past_tense_condition_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"ptc_id");
@@ -50,19 +50,19 @@ are independent and can overlap.
 @<Define NO_PAST_TENSE_CONDS@> =
 	inter_name *iname = HierarchyLocations::iname(I, NO_PAST_TENSE_CONDS_HL);
 	Produce::numeric_constant(I, iname, K_value,
-		(inter_ti) TreeLists::len(inv->past_tense_condition_nodes));
+		(inter_ti) InterNodeList::array_len(inv->past_tense_condition_nodes));
 
 @<Define NO_PAST_TENSE_ACTIONS@> =
 	inter_name *iname = HierarchyLocations::iname(I, NO_PAST_TENSE_ACTIONS_HL);
 	Produce::numeric_constant(I, iname, K_value,
-		(inter_ti) TreeLists::len(inv->action_history_condition_nodes));
+		(inter_ti) InterNodeList::array_len(inv->action_history_condition_nodes));
 
 @<Define TIMEDEVENTSTABLE@> =
 	inter_name *iname = HierarchyLocations::iname(I, TIMEDEVENTSTABLE_HL);
 	InterNames::annotate_i(iname, TABLEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	int when_count = 0;
-	for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->rule_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->rule_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^timed")) {
 			inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");
@@ -82,7 +82,7 @@ are independent and can overlap.
 	InterNames::annotate_i(iname, TABLEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	int when_count = 0;
-	for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->rule_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->rule_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^timed")) {
@@ -101,7 +101,7 @@ are independent and can overlap.
 @<Define PASTACTIONSI6ROUTINES@> =
 	inter_name *iname = HierarchyLocations::iname(I, PASTACTIONSI6ROUTINES_HL);
 	Synoptic::begin_array(I, step, iname);
-	for (int i=0; i<TreeLists::len(inv->action_history_condition_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->action_history_condition_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->action_history_condition_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");
@@ -124,7 +124,7 @@ are independent and can overlap.
 	inter_symbol *trips_s = Synoptic::local(I, I"trips", NULL);
 	inter_symbol *consecutives_s = Synoptic::local(I, I"consecutives", NULL);
 
-	if (TreeLists::len(inv->past_tense_condition_nodes) > 0) {
+	if (InterNodeList::array_len(inv->past_tense_condition_nodes) > 0) {
 		inter_symbol *prcr_s =
 			InterNames::to_symbol(HierarchyLocations::iname(I, PRESENT_CHRONOLOGICAL_RECORD_HL));
 		inter_symbol *pacr_s =
@@ -285,7 +285,7 @@ are independent and can overlap.
 		Produce::val_symbol(I, K_value, pt_s);
 		Produce::code(I);
 		Produce::down(I);
-			for (int i=0; i<TreeLists::len(inv->past_tense_condition_nodes); i++) {
+			for (int i=0; i<InterNodeList::array_len(inv->past_tense_condition_nodes); i++) {
 				inter_package *pack =
 					InterPackage::at_this_head(inv->past_tense_condition_nodes->list[i].node);
 				inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");

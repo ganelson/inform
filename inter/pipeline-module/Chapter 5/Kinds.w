@@ -8,9 +8,9 @@ the list |inv->derived_kind_nodes|.
 
 =
 void SynopticKinds::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->kind_nodes) > 0) @<Assign unique strong ID numbers@>;
-	if (TreeLists::len(inv->derived_kind_nodes) > 0)
-		TreeLists::sort(inv->derived_kind_nodes, MakeSynopticModuleStage::module_order);
+	if (InterNodeList::array_len(inv->kind_nodes) > 0) @<Assign unique strong ID numbers@>;
+	if (InterNodeList::array_len(inv->derived_kind_nodes) > 0)
+		InterNodeList::array_sort(inv->derived_kind_nodes, MakeSynopticModuleStage::module_order);
 	@<Define BASE_KIND_HWM@>;	
 	@<Define DEFAULTVALUEFINDER function@>;
 	@<Define DEFAULTVALUEOFKOV function@>;
@@ -34,8 +34,8 @@ Note that derived kinds are not enumerated in this way; their strong ID constant
 are addresses of small arrays.
 
 @<Assign unique strong ID numbers@> =
-	TreeLists::sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+	InterNodeList::array_sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 		inter_symbol *id_s = Metadata::read_optional_symbol(pack, I"^strong_id");
 		if (id_s) Inter::Symbols::set_int(id_s, i+2);
@@ -47,13 +47,13 @@ or higher is therefore that of a derived kind.
 @<Define BASE_KIND_HWM@> =
 	inter_name *iname = HierarchyLocations::iname(I, BASE_KIND_HWM_HL);
 	Produce::numeric_constant(I, iname, K_value,
-		(inter_ti) (TreeLists::len(inv->kind_nodes) + 2));
+		(inter_ti) (InterNodeList::array_len(inv->kind_nodes) + 2));
 
 @<Define DEFAULTVALUEFINDER function@> =
 	inter_name *iname = HierarchyLocations::iname(I, DEFAULTVALUEFINDER_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	for (int i=0; i<TreeLists::len(inv->derived_kind_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->derived_kind_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->derived_kind_nodes->list[i].node);
 		if (Metadata::read_numeric(pack, I"^default_value_needed")) {
@@ -101,7 +101,7 @@ which have to be given some type-safe value to start out at.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_symbol(pack, I"^mkdef_fn")) {
 				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
@@ -147,7 +147,7 @@ which have to be given some type-safe value to start out at.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 			if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
 				(Metadata::read_optional_symbol(pack, I"^print_fn")) &&
@@ -206,7 +206,7 @@ unless the two values are genuinely equal.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_symbol(pack, I"^cmp_fn")) {
 				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
@@ -246,7 +246,7 @@ unless the two values are genuinely equal.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^domain_size")) {
 				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
@@ -291,7 +291,7 @@ a kind storing pointers to blocks of data.
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
 				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
@@ -314,7 +314,7 @@ a kind storing pointers to blocks of data.
 	inter_name *iname = HierarchyLocations::iname(I, I7_KIND_NAME_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
-	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 		inter_symbol *class_s = Metadata::read_optional_symbol(pack, I"^object_class");
 		if (class_s) {
@@ -362,7 +362,7 @@ such a function does, see "BlockValues.i6t".
 		Produce::val_symbol(I, K_value, k_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
 				inter_symbol *id_s = Metadata::read_symbol(pack, I"^strong_id");
@@ -404,7 +404,7 @@ such a function does, see "BlockValues.i6t".
 	inter_symbol *which_s = Synoptic::local(I, I"which", NULL);
 	inter_symbol *na_s = Synoptic::local(I, I"na", NULL);
 	inter_symbol *t_0_s = Synoptic::local(I, I"t_0", NULL);
-	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_object")) {
 			inter_symbol *showme_s = Metadata::read_optional_symbol(pack, I"^showme_fn");
@@ -438,7 +438,7 @@ name), with other actors oblivious.
 @<Define RUCKSACK_CLASS constant@> =
 	inter_name *iname = HierarchyLocations::iname(I, RUCKSACK_CLASS_HL);
 	int found = FALSE;
-	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^rucksack_class")) {
@@ -459,7 +459,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 
 @<Define KINDHIERARCHY array@> =
 	linked_list *L = NEW_LINKED_LIST(inter_symbol);
-	for (int i=0; i<TreeLists::len(inv->kind_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_subkind_of_object")) {

@@ -10,8 +10,8 @@ void ExtrasElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
-	TreeLists::sort(inv->activity_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->activity_nodes, MakeSynopticModuleStage::module_order);
 
 	inter_package *E;
 	LOOP_OVER_INVENTORY_PACKAGES(E, i, inv->module_nodes)

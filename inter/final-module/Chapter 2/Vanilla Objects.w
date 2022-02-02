@@ -319,7 +319,7 @@ so we use "marks" on those already done.
 @<Declare properties which every instance of this kind of value can have@> =
 	inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 		Inter::Kind::permissions_list(kind_s));
-	@<Work through this frame list of permissions@>;
+	@<Work through this node list of permissions@>;
 
 @<Declare properties which only some instances of this kind of value can have@> =
 	inter_symbol *inst_s;
@@ -327,11 +327,11 @@ so we use "marks" on those already done.
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_s), kind_s)) {
 			inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 				Inter::Instance::permissions_list(inst_s));
-			@<Work through this frame list of permissions@>;
+			@<Work through this node list of permissions@>;
 		}
 	}
 
-@<Work through this frame list of permissions@> =
+@<Work through this node list of permissions@> =
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
 		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
@@ -390,16 +390,16 @@ number of instances, and is worth it for simplicity and speed.
 			inter_node_list *PVL =
 				Inode::ID_to_frame_list(X,
 					Inter::Instance::properties_list(inst_s));
-			@<Work through this frame list of values@>;
+			@<Work through this node list of values@>;
 			PVL = Inode::ID_to_frame_list(X,
 					Inter::Kind::properties_list(kind_s));
-			@<Work through this frame list of values@>;
+			@<Work through this node list of values@>;
 			if (found == 0) Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 		}
 	}
 	Generators::end_array(gen, TABLE_ARRAY_FORMAT, &saved);
 
-@<Work through this frame list of values@> =
+@<Work through this node list of values@> =
 	inter_tree_node *Y;
 	LOOP_THROUGH_INTER_NODE_LIST(Y, PVL) {
 		inter_symbol *p_name = InterSymbolsTables::symbol_from_id(
@@ -530,13 +530,13 @@ int VanillaObjects::value_kind_with_properties(code_generation *gen, inter_symbo
 	if (kind_s == RunningPipelines::get_symbol(gen->from_step, unchecked_kind_RPSYM)) return FALSE;
 	inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 		Inter::Kind::permissions_list(kind_s));
-	if (FL->first_in_inl) return TRUE;
+	if (InterNodeList::empty(FL) == FALSE) return TRUE;
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
 		if (Inter::Kind::is_a(Inter::Instance::kind_of(inst_s), kind_s)) {
 			inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 				Inter::Instance::permissions_list(inst_s));
-			if (FL->first_in_inl) return TRUE;
+			if (InterNodeList::empty(FL) == FALSE) return TRUE;
 		}
 	}
 	return FALSE;

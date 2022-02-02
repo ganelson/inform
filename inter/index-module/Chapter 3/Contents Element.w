@@ -9,8 +9,8 @@ void ContentsElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->extension_nodes, MakeSynopticModuleStage::category_order);
-	TreeLists::sort(inv->heading_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->extension_nodes, MakeSynopticModuleStage::category_order);
+	InterNodeList::array_sort(inv->heading_nodes, MakeSynopticModuleStage::module_order);
 
 	@<Write a sort of half-title page@>;
 	@<Index the headings@>;

@@ -10,14 +10,14 @@ void BehaviourElement::render(OUTPUT_STREAM, index_session *session) {
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
 
-	int num_naps = TreeLists::len(inv->named_action_pattern_nodes);
+	int num_naps = InterNodeList::array_len(inv->named_action_pattern_nodes);
 
 	if (num_naps == 0) {
 		HTML_OPEN("p");
 		Localisation::roman(OUT, LD, I"Index.Elements.Bh.None");
 		HTML_CLOSE("p");
 	} else {
-		TreeLists::sort(inv->named_action_pattern_nodes, MakeSynopticModuleStage::module_order);
+		InterNodeList::array_sort(inv->named_action_pattern_nodes, MakeSynopticModuleStage::module_order);
 		inter_package *pack;
 		LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->named_action_pattern_nodes) {
 			text_stream *name = Metadata::read_optional_textual(pack, I"^name");

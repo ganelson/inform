@@ -8,7 +8,7 @@ To write the Events element (Ev) in the index.
 void EventsElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->rule_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->rule_nodes, MakeSynopticModuleStage::module_order);
 
 	int when_count = 0, tt_count = 0;
 	@<Index events with no specific time@>;

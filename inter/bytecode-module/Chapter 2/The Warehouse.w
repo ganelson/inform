@@ -91,7 +91,7 @@ inter_ti InterWarehouse::create_resource(inter_warehouse *warehouse) {
 	inter_ti new_size = 128;
 	while (new_size < 2*warehouse->resources_capacity) new_size = 2*new_size;
 
-	LOGIF(INTER_MEMORY, "Giving warehouse %d frame list of size %d (up from %d)\n",
+	LOGIF(INTER_MEMORY, "Giving warehouse %d resource list of size %d (up from %d)\n",
 		warehouse->allocation_id, new_size, warehouse->resources_capacity);
 
 	inter_warehouse_resource *storage = (inter_warehouse_resource *)
@@ -204,7 +204,7 @@ inter_package *InterWarehouse::get_package(inter_warehouse *warehouse, inter_ti 
 =
 inter_ti InterWarehouse::create_node_list(inter_warehouse *warehouse, inter_package *owner) {
 	return InterWarehouse::create_ref(warehouse,
-		STORE_POINTER_inter_node_list(Inter::ListLiterals::new()), owner);
+		STORE_POINTER_inter_node_list(InterNodeList::new()), owner);
 }
 
 inter_node_list *InterWarehouse::get_node_list(inter_warehouse *warehouse, inter_ti n) {

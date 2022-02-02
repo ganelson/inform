@@ -284,65 +284,65 @@ inter_symbol *RunningPipelines::get_symbol(pipeline_step *step, int id) {
 
 			case unchecked_kind_RPSYM:
 				step->ephemera.cached_symbols[unchecked_kind_RPSYM] =
-				InterPackage::search_resources(I, I"K_unchecked"); break;
+				LargeScale::find_symbol_in_tree(I, I"K_unchecked"); break;
 			case unchecked_function_RPSYM:
 				step->ephemera.cached_symbols[unchecked_function_RPSYM] =
-				InterPackage::search_resources(I, I"K_unchecked_function"); break;
+				LargeScale::find_symbol_in_tree(I, I"K_unchecked_function"); break;
 			case list_of_unchecked_kind_RPSYM:
 				step->ephemera.cached_symbols[list_of_unchecked_kind_RPSYM] =
-				InterPackage::search_resources(I, I"K_unchecked_list"); break;
+				LargeScale::find_symbol_in_tree(I, I"K_unchecked_list"); break;
 			case object_kind_RPSYM:
 				step->ephemera.cached_symbols[object_kind_RPSYM] =
-				InterPackage::search_resources(I, I"K_object"); break;
+				LargeScale::find_symbol_in_tree(I, I"K_object"); break;
 			case truth_state_kind_RPSYM:
 				step->ephemera.cached_symbols[truth_state_kind_RPSYM] =
-				InterPackage::search_resources(I, I"K_int2"); break;
+				LargeScale::find_symbol_in_tree(I, I"K_int2"); break;
 			case direction_kind_RPSYM:
 				step->ephemera.cached_symbols[direction_kind_RPSYM] =
-				InterPackage::search_resources(I, I"K3_direction"); break;
+				LargeScale::find_symbol_in_tree(I, I"K3_direction"); break;
 
 			case verb_directive_reverse_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_reverse_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_REVERSE"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_REVERSE"); break;
 			case verb_directive_slash_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_slash_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_SLASH"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_SLASH"); break;
 			case verb_directive_divider_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_divider_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_DIVIDER"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_DIVIDER"); break;
 			case verb_directive_result_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_result_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_RESULT"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_RESULT"); break;
 			case verb_directive_special_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_special_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_SPECIAL"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_SPECIAL"); break;
 			case verb_directive_number_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_number_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_NUMBER"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_NUMBER"); break;
 			case verb_directive_noun_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_noun_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_NOUN"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_NOUN"); break;
 			case verb_directive_multi_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_multi_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_MULTI"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_MULTI"); break;
 			case verb_directive_multiinside_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_multiinside_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_MULTIINSIDE"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_MULTIINSIDE"); break;
 			case verb_directive_multiheld_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_multiheld_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_MULTIHELD"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_MULTIHELD"); break;
 			case verb_directive_held_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_held_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_HELD"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_HELD"); break;
 			case verb_directive_creature_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_creature_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_CREATURE"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_CREATURE"); break;
 			case verb_directive_topic_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_topic_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_TOPIC"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_TOPIC"); break;
 			case verb_directive_multiexcept_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_multiexcept_RPSYM] =
-				InterPackage::search_resources(I, I"VERB_DIRECTIVE_MULTIEXCEPT"); break;
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_MULTIEXCEPT"); break;
 		}
 	}
 	return step->ephemera.cached_symbols[id];

@@ -15,7 +15,7 @@ in the tree with type |_response|.
 
 =
 void SynopticResponses::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->response_nodes) > 0) @<Assign unique response ID numbers@>;
+	if (InterNodeList::array_len(inv->response_nodes) > 0) @<Assign unique response ID numbers@>;
 	@<Define NO_RESPONSES@>;
 	@<Define ResponseTexts array@>;
 	@<Define ResponseDivisions array@>;
@@ -28,7 +28,7 @@ so we change the values of these constants accordingly. These will be the enumer
 values at runtime of the kind |K_response|.
 
 @<Assign unique response ID numbers@> =
-	for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->response_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"response_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i+1;
@@ -36,7 +36,7 @@ values at runtime of the kind |K_response|.
 
 @<Define NO_RESPONSES@> =
 	inter_name *iname = HierarchyLocations::iname(I, NO_RESPONSES_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->response_nodes)));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (InterNodeList::array_len(inv->response_nodes)));
 
 @ This is the critical array which connects a response ID to the current value
 of the text of that response.
@@ -44,7 +44,7 @@ of the text of that response.
 @<Define ResponseTexts array@> =
 	inter_name *iname = HierarchyLocations::iname(I, RESPONSETEXTS_HL);
 	Synoptic::begin_array(I, step, iname);
-	for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->response_nodes->list[i].node);
 		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
 		Synoptic::symbol_entry(value_s);
@@ -67,7 +67,7 @@ The triple |(0, 0, 0)| ends the array.
 	inter_name *iname = HierarchyLocations::iname(I, RESPONSEDIVISIONS_HL);
 	Synoptic::begin_array(I, step, iname);
 	text_stream *current_group = NULL; int start_pos = -1;
-	for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->response_nodes->list[i].node);
 		text_stream *group = Metadata::read_textual(pack, I"^group");
 		if (Str::ne(group, current_group)) {
@@ -83,7 +83,7 @@ The triple |(0, 0, 0)| ends the array.
 	if (start_pos >= 0) {
 		Synoptic::textual_entry(current_group);
 		Synoptic::numeric_entry((inter_ti) start_pos + 1);
-		Synoptic::numeric_entry((inter_ti) TreeLists::len(inv->response_nodes));
+		Synoptic::numeric_entry((inter_ti) InterNodeList::array_len(inv->response_nodes));
 	}
 	Synoptic::numeric_entry(0);
 	Synoptic::numeric_entry(0);
@@ -108,7 +108,7 @@ code is less limited.
 	Synoptic::begin_function(I, iname);
 	inter_symbol *R_s = Synoptic::local(I, I"R", NULL);
 
-	for (int i=0; i<TreeLists::len(inv->response_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->response_nodes->list[i].node);
 		inter_ti m = Metadata::read_numeric(pack, I"^marker");
 		inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");

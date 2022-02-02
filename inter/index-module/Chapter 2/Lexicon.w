@@ -59,7 +59,7 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I, tree_inventory *inv) {
 }
 
 @<Add verb entries@> =
-	TreeLists::sort(inv->verb_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->verb_nodes, MakeSynopticModuleStage::module_order);
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->verb_nodes) {
 		index_lexicon_entry *lex;

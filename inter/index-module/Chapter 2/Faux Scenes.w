@@ -40,8 +40,8 @@ void FauxScenes::list_of_faux_scenes(index_session *session) {
 	session->list_of_scenes = L;
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->scene_nodes, FauxScenes::scene_order);
-	TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->scene_nodes, FauxScenes::scene_order);
+	InterNodeList::array_sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
 
 	inter_package *scene_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(scene_pack, i, inv->scene_nodes)
@@ -54,8 +54,8 @@ alphabetical order.
 
 =
 int FauxScenes::scene_order(const void *ent1, const void *ent2) {
-	itl_entry *E1 = (itl_entry *) ent1;
-	itl_entry *E2 = (itl_entry *) ent2;
+	ina_entry *E1 = (ina_entry *) ent1;
+	ina_entry *E2 = (ina_entry *) ent2;
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;

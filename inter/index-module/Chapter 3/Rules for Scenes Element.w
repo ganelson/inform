@@ -8,7 +8,7 @@ To write the Rules for Scenes element (RS) in the index.
 void RulesForScenesElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
 
 	HTML_OPEN("p");
 	Localisation::bold(OUT, LD, I"Index.Elements.RS.Machinery");

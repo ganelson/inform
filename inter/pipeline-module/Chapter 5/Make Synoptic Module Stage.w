@@ -51,45 +51,45 @@ types: for example, we can ask it to hold a list of |_activity| packages.
 typedef struct tree_inventory {
 	struct inter_tree *of_tree;
 	struct linked_list *items; /* of |tree_inventory_item| */
-	inter_tree_location_list *text_nodes;
-	inter_tree_location_list *module_nodes;
-	inter_tree_location_list *response_nodes;
-	inter_tree_location_list *rulebook_nodes;
-	inter_tree_location_list *rule_nodes;
-	inter_tree_location_list *activity_nodes;
-	inter_tree_location_list *action_nodes;
-	inter_tree_location_list *property_nodes;
-	inter_tree_location_list *extension_nodes;
-	inter_tree_location_list *relation_nodes;
-	inter_tree_location_list *table_nodes;
-	inter_tree_location_list *table_column_nodes;
-	inter_tree_location_list *table_column_usage_nodes;
-	inter_tree_location_list *action_history_condition_nodes;
-	inter_tree_location_list *past_tense_condition_nodes;
-	inter_tree_location_list *instance_nodes;
-	inter_tree_location_list *scene_nodes;
-	inter_tree_location_list *file_nodes;
-	inter_tree_location_list *figure_nodes;
-	inter_tree_location_list *sound_nodes;
-	inter_tree_location_list *use_option_nodes;
-	inter_tree_location_list *verb_nodes;
-	inter_tree_location_list *modal_verb_nodes;
-	inter_tree_location_list *verb_form_nodes;
-	inter_tree_location_list *preposition_nodes;
-	inter_tree_location_list *adjective_nodes;
-	inter_tree_location_list *derived_kind_nodes;
-	inter_tree_location_list *kind_nodes;
-	inter_tree_location_list *test_nodes;
-	inter_tree_location_list *named_action_pattern_nodes;
-	inter_tree_location_list *variable_nodes;
-	inter_tree_location_list *equation_nodes;
-	inter_tree_location_list *heading_nodes;
-	inter_tree_location_list *multiplication_rule_nodes;
+	inter_node_array *text_nodes;
+	inter_node_array *module_nodes;
+	inter_node_array *response_nodes;
+	inter_node_array *rulebook_nodes;
+	inter_node_array *rule_nodes;
+	inter_node_array *activity_nodes;
+	inter_node_array *action_nodes;
+	inter_node_array *property_nodes;
+	inter_node_array *extension_nodes;
+	inter_node_array *relation_nodes;
+	inter_node_array *table_nodes;
+	inter_node_array *table_column_nodes;
+	inter_node_array *table_column_usage_nodes;
+	inter_node_array *action_history_condition_nodes;
+	inter_node_array *past_tense_condition_nodes;
+	inter_node_array *instance_nodes;
+	inter_node_array *scene_nodes;
+	inter_node_array *file_nodes;
+	inter_node_array *figure_nodes;
+	inter_node_array *sound_nodes;
+	inter_node_array *use_option_nodes;
+	inter_node_array *verb_nodes;
+	inter_node_array *modal_verb_nodes;
+	inter_node_array *verb_form_nodes;
+	inter_node_array *preposition_nodes;
+	inter_node_array *adjective_nodes;
+	inter_node_array *derived_kind_nodes;
+	inter_node_array *kind_nodes;
+	inter_node_array *test_nodes;
+	inter_node_array *named_action_pattern_nodes;
+	inter_node_array *variable_nodes;
+	inter_node_array *equation_nodes;
+	inter_node_array *heading_nodes;
+	inter_node_array *multiplication_rule_nodes;
 	CLASS_DEFINITION
 } tree_inventory;
 
 typedef struct tree_inventory_item {
-	struct inter_tree_location_list *node_list;
+	struct inter_node_array *node_list;
 	struct inter_symbol *required_ptype;
 	CLASS_DEFINITION
 } tree_inventory_item;
@@ -102,7 +102,7 @@ tree_inventory *MakeSynopticModuleStage::new_inventory(inter_tree *I) {
 	tree_inventory *inv = CREATE(tree_inventory);
 	inv->of_tree = I;
 	inv->items = NEW_LINKED_LIST(tree_inventory_item);
-	inv->text_nodes = TreeLists::new();
+	inv->text_nodes = InterNodeList::new_array();
 
 	inv->response_nodes = MakeSynopticModuleStage::needs(inv, I"_response");
 	inv->rulebook_nodes = MakeSynopticModuleStage::needs(inv, I"_rulebook");
@@ -133,17 +133,17 @@ tree_inventory *MakeSynopticModuleStage::new_inventory(inter_tree *I) {
 	inv->heading_nodes = MakeSynopticModuleStage::needs(inv, I"_heading");
 	inv->multiplication_rule_nodes = MakeSynopticModuleStage::needs(inv, I"_multiplication_rule");
 
-	inv->extension_nodes = TreeLists::new();
-	inv->scene_nodes = TreeLists::new();
-	inv->file_nodes = TreeLists::new();
-	inv->figure_nodes = TreeLists::new();
-	inv->sound_nodes = TreeLists::new();
+	inv->extension_nodes = InterNodeList::new_array();
+	inv->scene_nodes = InterNodeList::new_array();
+	inv->file_nodes = InterNodeList::new_array();
+	inv->figure_nodes = InterNodeList::new_array();
+	inv->sound_nodes = InterNodeList::new_array();
 	return inv;
 }
 
-inter_tree_location_list *MakeSynopticModuleStage::needs(tree_inventory *inv, text_stream *pt) {
+inter_node_array *MakeSynopticModuleStage::needs(tree_inventory *inv, text_stream *pt) {
 	tree_inventory_item *item = CREATE(tree_inventory_item);
-	item->node_list = TreeLists::new();
+	item->node_list = InterNodeList::new_array();
 	item->required_ptype = LargeScale::package_type(inv->of_tree, pt);
 	ADD_TO_LINKED_LIST(item, tree_inventory_item, inv->items);
 	return item->node_list;
@@ -156,21 +156,21 @@ interesting packages to one of the lists.
 tree_inventory *MakeSynopticModuleStage::take_inventory(inter_tree *I) {
 	tree_inventory *inv = MakeSynopticModuleStage::new_inventory(I);
 	InterTree::traverse(I, MakeSynopticModuleStage::visitor, inv, NULL, 0);
-	for (int i=0; i<TreeLists::len(inv->module_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->module_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->module_nodes->list[i].node);
 		if (InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), I"extension_id"))
-			TreeLists::add(inv->extension_nodes, inv->module_nodes->list[i].node);
+			InterNodeList::array_add(inv->extension_nodes, inv->module_nodes->list[i].node);
 	}
-	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->instance_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_scene"))
-			TreeLists::add(inv->scene_nodes, inv->instance_nodes->list[i].node);
+			InterNodeList::array_add(inv->scene_nodes, inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_file"))
-			TreeLists::add(inv->file_nodes, inv->instance_nodes->list[i].node);
+			InterNodeList::array_add(inv->file_nodes, inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_figure"))
-			TreeLists::add(inv->figure_nodes, inv->instance_nodes->list[i].node);
+			InterNodeList::array_add(inv->figure_nodes, inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_sound"))
-			TreeLists::add(inv->sound_nodes, inv->instance_nodes->list[i].node);
+			InterNodeList::array_add(inv->sound_nodes, inv->instance_nodes->list[i].node);
 	}
 	return inv;
 }
@@ -181,7 +181,7 @@ void MakeSynopticModuleStage::visitor(inter_tree *I, inter_tree_node *P, void *s
 		inter_symbol *con_s =
 			InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
 		if (Inter::Symbols::read_annotation(con_s, TEXT_LITERAL_IANN) == 1)
-			TreeLists::add(inv->text_nodes, P);
+			InterNodeList::array_add(inv->text_nodes, P);
 	}
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = InterPackage::at_this_head(P);
@@ -189,7 +189,7 @@ void MakeSynopticModuleStage::visitor(inter_tree *I, inter_tree_node *P, void *s
 		tree_inventory_item *item;
 		LOOP_OVER_LINKED_LIST(item, tree_inventory_item, inv->items)
 			if (ptype == item->required_ptype) {
-				TreeLists::add(item->node_list, P);
+				InterNodeList::array_add(item->node_list, P);
 				break;
 			}
 	}
@@ -208,12 +208,19 @@ tree_inventory *MakeSynopticModuleStage::take_inventory_cached(inter_tree *I) {
 	return cached_inventory;
 }
 
+@ This macro conveniently loops through packages in the case when the node
+array contains package head nodes, as in the above inventories:
+
+@d LOOP_OVER_INVENTORY_PACKAGES(pack, i, node_list)
+	for (int i=0; i<InterNodeList::array_len(node_list); i++)
+		if ((pack = InterPackage::at_this_head(node_list->list[i].node)))
+
 @ The following are used for sorting.
 
 =
 int MakeSynopticModuleStage::module_order(const void *ent1, const void *ent2) {
-	itl_entry *E1 = (itl_entry *) ent1;
-	itl_entry *E2 = (itl_entry *) ent2;
+	ina_entry *E1 = (ina_entry *) ent1;
+	ina_entry *E2 = (ina_entry *) ent2;
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;
@@ -227,8 +234,8 @@ int MakeSynopticModuleStage::module_order(const void *ent1, const void *ent2) {
 }
 
 int MakeSynopticModuleStage::category_order(const void *ent1, const void *ent2) {
-	itl_entry *E1 = (itl_entry *) ent1;
-	itl_entry *E2 = (itl_entry *) ent2;
+	ina_entry *E1 = (ina_entry *) ent1;
+	ina_entry *E2 = (ina_entry *) ent2;
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;

@@ -7,8 +7,8 @@ in the tree with type |_test|.
 
 =
 void SynopticTests::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->test_nodes) > 0)
-		TreeLists::sort(inv->test_nodes, MakeSynopticModuleStage::module_order);
+	if (InterNodeList::array_len(inv->test_nodes) > 0)
+		InterNodeList::array_sort(inv->test_nodes, MakeSynopticModuleStage::module_order);
 	@<Define TESTSCRIPTSUB function@>;
 }
 
@@ -18,7 +18,7 @@ at runtime.
 @<Define TESTSCRIPTSUB function@> =
 	inter_name *iname = HierarchyLocations::iname(I, TESTSCRIPTSUB_HL);
 	Synoptic::begin_function(I, iname);
-	if (TreeLists::len(inv->test_nodes) == 0) {
+	if (InterNodeList::array_len(inv->test_nodes) == 0) {
 		Produce::inv_primitive(I, PRINT_BIP);
 		Produce::down(I);
 			Produce::val_text(I, I">--> No test scripts exist for this game.\n");
@@ -29,7 +29,7 @@ at runtime.
 			Produce::val_iname(I, K_value, HierarchyLocations::iname(I, SPECIAL_WORD_HL));
 			Produce::code(I);
 			Produce::down(I);
-				for (int i=0; i<TreeLists::len(inv->test_nodes); i++) {
+				for (int i=0; i<InterNodeList::array_len(inv->test_nodes); i++) {
 					inter_package *pack = InterPackage::at_this_head(inv->test_nodes->list[i].node);
 					text_stream *name = Metadata::read_textual(pack, I"^name");
 					inter_ti len = Metadata::read_numeric(pack, I"^length");
@@ -57,7 +57,7 @@ at runtime.
 						Produce::down(I);
 							Produce::val_text(I, I">--> The following tests are available:\n");
 						Produce::up(I);
-						for (int i=0; i<TreeLists::len(inv->test_nodes); i++) {
+						for (int i=0; i<InterNodeList::array_len(inv->test_nodes); i++) {
 							inter_package *pack =
 								InterPackage::at_this_head(inv->test_nodes->list[i].node);
 							text_stream *name = Metadata::read_textual(pack, I"^name");

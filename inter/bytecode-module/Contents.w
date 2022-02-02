@@ -16,10 +16,9 @@ Chapter 2: Interoperability
 	Bookmarks
 	Node Placement
 	The Warehouse
-	Tree Location Lists
+	Packages
 	Inter Node Lists
 	Symbols Tables
-	Packages
 	Symbols
 	Annotations
 	Connectors

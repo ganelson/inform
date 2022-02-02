@@ -10,7 +10,7 @@ main source text, all the tables in the Standard Rules, and so on.
 void TablesElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->table_nodes, MakeSynopticModuleStage::category_order);
+	InterNodeList::array_sort(inv->table_nodes, MakeSynopticModuleStage::category_order);
 
 	inter_package *current_mod = NULL; int mc = 0, first_ext = TRUE;
 	inter_ti cat = 1, open_cat = 0;

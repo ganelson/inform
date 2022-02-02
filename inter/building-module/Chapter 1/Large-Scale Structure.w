@@ -96,6 +96,17 @@ inter_symbols_table *LargeScale::main_scope(inter_tree *I) {
 	return InterPackage::scope(LargeScale::main_package_if_it_exists(I));
 }
 
+@ This finds a symbol by searching every package in a tree. It is used only
+to find a very few high-level resources defined at nearly the top of a tree; in
+a typical Inform run it is called only about 30 times, always successfully.
+
+=
+inter_symbol *LargeScale::find_symbol_in_tree(inter_tree *I, text_stream *S) {
+	inter_package *main_package = LargeScale::main_package_if_it_exists(I);
+	if (main_package) return InterPackage::find_symbol_slowly(main_package, S);
+	return NULL;
+}
+
 @h connectors.
 
 =

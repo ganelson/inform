@@ -80,7 +80,7 @@ inter_error_message *InterPackage::new_package(inter_bookmark *IBM, text_stream 
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 
-	InterPackage::set_name(InterBookmark::package(IBM), pack, name_text);
+	InterPackage::set_name(InterPackage::tree(InterBookmark::package(IBM)), InterBookmark::package(IBM), pack, name_text);
 	if (Str::eq(ptype_name->symbol_name, I"_code"))
 		InterPackage::mark_as_a_function_body(pack);
 	if (Str::eq(ptype_name->symbol_name, I"_linkage"))

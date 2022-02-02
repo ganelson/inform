@@ -22,13 +22,14 @@ example, suppose we have:
 =
 Here the Inter instructions C, D and E are the content of the package, which
 is called "gadgets" and has the type |_paraphernalia|. Instructions A, B, F,
-G , along with the |package| instruction, belong to the wider context. The
+G , along with the |package| instruction itself, belong to the wider context. The
 symbiol name |^is_electrical| is visible to C, D and E, but not to A, B, F,
 and G: it belongs to the "scope" of the |gadgets| package, and is recorded
 in its private symbols table.
 
-The name |gadgets| is also a symbol but belongs to the wider scope (the A, B, ...
-scope): it does not belong to the package's own symbols table, and in that
+Note that the package head node is outside the package. So although the name
+|gadgets| is also a symbol, it belongs to the wider scope (the A, B, ...
+scope): it does not appear in the package's own symbols table, and in that
 sense a package cannot see its own name.
 
 @ Clearly a package involves more data than can be recorded in the |PACKAGE_IST|
@@ -71,8 +72,8 @@ inter_package *InterPackage::new(inter_tree *I, inter_ti n) {
 to each other in a way which exactly matches, except for the root package.
 For all other packages, these two operations are inverse to each other: 
 
-(*) To get from a head node |H| to an |inter_package|, call //InterPackage::at_this_head//.
-(*) To get from an |inter_package| |P| to a head node, call //InterPackage::head//.
+(*) To get from a head node to its package, call //InterPackage::at_this_head//.
+(*) To get from a package to its head node, call //InterPackage::head//.
 
 The root package is a very special one-off case -- see //Inter Trees//: it
 does not originate from any package instruction because it represents the
@@ -85,6 +86,115 @@ inter_tree_node *InterPackage::head(inter_package *pack) {
 	return pack->package_head;
 }
 
+inter_tree *InterPackage::tree(inter_package *pack) {
+	if (pack == NULL) return NULL;
+	return pack->package_head->tree;
+}
+
+@ The following function relies on an important rule of the road: that the
+parent node of a package head node must be another package head node (except
+of course at the very top of the tree).
+
+It follows that we can get from a package to its next outermost package (its
+"parent") by taking its head node, taking the node-parent of that, and then
+finding the package with that head.
+
+=
+inter_package *InterPackage::parent(inter_package *pack) {
+	if (pack) {
+		if (InterPackage::is_a_root_package(pack)) return NULL;
+		inter_tree_node *D = InterPackage::head(pack);
+		inter_tree_node *P = InterTree::parent(D);
+		if (P == NULL) return NULL;
+		return InterPackage::at_this_head(P);
+	}
+	return NULL;
+}
+
+@ The baseline level for a package is the level in the hierarchy of its root
+node, or is 0 for the root package.
+
+=
+int InterPackage::baseline(inter_package *P) {
+	if (P == NULL) return 0;
+	if (InterPackage::is_a_root_package(P)) return 0;
+	return Inter::Defn::get_level(InterPackage::head(P));
+}
+
+@h Naming.
+It seems redundant to store the textual name of a package, but (a) there are
+timing issues involved when packages are loaded in binary form from a file,
+and (b) as noted above, the name symbol is not visible inside the package.
+
+=
+text_stream *InterPackage::name(inter_package *pack) {
+	if (pack == NULL) return NULL;
+	return pack->package_name_t;
+}
+
+void InterPackage::set_name(inter_tree *I, inter_package *Q, inter_package *P, text_stream *N) {
+	if (P == NULL) internal_error("null package");
+	if (N == NULL) internal_error("null package name");
+	P->package_name_t = Str::duplicate(N);
+	if (Str::len(N) > 0) {
+		LargeScale::note_package_name(I, P, N);
+		InterPackage::add_subpackage_name(Q, P);
+	}
+}
+
+@h Scope.
+The symbols table of local names within scope for the package.
+
+=
+void InterPackage::set_scope(inter_package *P, inter_symbols_table *T) {
+	if (P == NULL) internal_error("null package");
+	P->package_scope = T;
+	if (T) T->owning_package = P;
+}
+
+inter_symbols_table *InterPackage::scope(inter_package *pack) {
+	if (pack == NULL) return NULL;
+	return pack->package_scope;
+}
+
+@ The following searches recursively: i.e., not just the package's scope, but
+also the scope of all its subpackages. This is a slow operation, but there is
+no need for it to be fast: it is used only very sparingly.
+
+=
+inter_symbol *InterPackage::find_symbol_slowly(inter_package *P, text_stream *S) {
+	inter_symbol *found = InterSymbolsTables::symbol_from_name(InterPackage::scope(P), S);
+	if (found) return found;
+	inter_tree_node *D = InterPackage::head(P);
+	LOOP_THROUGH_INTER_CHILDREN(C, D) {
+		if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
+			inter_package *Q = InterPackage::at_this_head(C);
+			found = InterPackage::find_symbol_slowly(Q, S);
+			if (found) return found;
+		}
+	}
+	return NULL;
+}
+
+@h Packages as containers.
+For any node, the innermost package containing that node is called its
+"container"; but this is null at the root of the tree, i.e., it is never
+equal to the special root package.
+
+=
+inter_package *InterPackage::container(inter_tree_node *P) {
+	if (P == NULL) return NULL;
+	inter_package *pack = Inode::get_package(P);
+	if (InterPackage::is_a_root_package(pack)) return NULL;
+	return pack;
+}
+
+inter_symbols_table *InterPackage::scope_of(inter_tree_node *P) {
+	inter_package *pack = InterPackage::container(P);
+	if (pack) return pack->package_scope;
+	return Inode::globals(P);
+}
+
 @h Flags.
 Packages with special behaviour are marked with flags. (Flags can also be used
 as temporary markers when fooling with Inter code during pipeline processing.)
@@ -95,6 +205,22 @@ as temporary markers when fooling with Inter code during pipeline processing.)
 
 @d USED_PACKAGE_FLAG          256
 @d MARK_PACKAGE_FLAG          512
+
+=
+int InterPackage::get_flag(inter_package *P, int f) {
+	if (P == NULL) internal_error("no package");
+	return (P->package_flags & f)?TRUE:FALSE;
+}
+
+void InterPackage::set_flag(inter_package *P, int f) {
+	if (P == NULL) internal_error("no package");
+	P->package_flags = P->package_flags | f;
+}
+
+void InterPackage::clear_flag(inter_package *P, int f) {
+	if (P == NULL) internal_error("no package");
+	if (P->package_flags & f) P->package_flags = P->package_flags - f;
+}
 
 @ The |ROOT_PACKAGE_FLAG| is given only to the root package of a tree, so there
 will only ever be one of these in any given tree.
@@ -149,56 +275,35 @@ void InterPackage::unmark_all(void) {
 		InterPackage::clear_flag(pack, MARK_PACKAGE_FLAG);
 }
 
+@h Subpackages and URLs.
+A package is uniquely identifiable (within its tree) by its textual URL, in the
+form |/main/whatever/example1/this|. The following goes from an //inter_package//
+to its URL, which is particularly handy for the debugging log:
 
-
-
-
-
-
-
-
-
-
-inter_tree *default_ptree = NULL;
-
-inter_tree *InterPackage::tree(inter_package *pack) {
-	if (default_ptree) return default_ptree;
-	if (pack == NULL) return NULL;
-	return pack->package_head->tree;
-}
-
-text_stream *InterPackage::name(inter_package *pack) {
-	if (pack == NULL) return NULL;
-	return pack->package_name_t;
-}
-
-inter_package *InterPackage::parent(inter_package *pack) {
-	if (pack) {
-		if (InterPackage::is_a_root_package(pack)) return NULL;
-		inter_tree_node *D = InterPackage::head(pack);
-		inter_tree_node *P = InterTree::parent(D);
-		if (P == NULL) return NULL;
-		return InterPackage::at_this_head(P);
+=
+void InterPackage::write_url_name(OUTPUT_STREAM, inter_package *P) {
+	if (P == NULL) { WRITE("<none>"); return; }
+	inter_package *chain[MAX_URL_SYMBOL_NAME_DEPTH];
+	int chain_length = 0;
+	while (P) {
+		if (chain_length >= MAX_URL_SYMBOL_NAME_DEPTH)
+			internal_error("package nesting too deep");
+		chain[chain_length++] = P;
+		P = InterPackage::parent(P);
 	}
-	return NULL;
+	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", InterPackage::name(chain[i]));
 }
 
-void InterPackage::set_scope(inter_package *P, inter_symbols_table *T) {
-	if (P == NULL) internal_error("null package");
-	P->package_scope = T;
-	if (T) T->owning_package = P;
+void InterPackage::log(OUTPUT_STREAM, void *vp) {
+	inter_package *pack = (inter_package *) vp;
+	InterPackage::write_url_name(OUT, pack);
 }
 
-void InterPackage::set_name(inter_package *Q, inter_package *P, text_stream *N) {
-	if (P == NULL) internal_error("null package");
-	if (N == NULL) internal_error("null package name");
-	P->package_name_t = Str::duplicate(N);
-	if (Str::len(N) > 0) {
-		LargeScale::note_package_name(InterPackage::tree(P), P, N);
-		InterPackage::add_subpackage_name(Q, P);
-	}
-}
+@ The other direction, parsing a URL into its corresponding //inter_package//, is
+necessarily slower. But we do our best to speed this up by giving each package a
+dictionary (i.e., an associative hash) of names of its immediate subpackages.
 
+=
 void InterPackage::add_subpackage_name(inter_package *Q, inter_package *P) {
 	if (Q == NULL) internal_error("no parent supplied");
 	text_stream *N = P->package_name_t;
@@ -215,113 +320,13 @@ void InterPackage::remove_subpackage_name(inter_package *Q, inter_package *P) {
 	if (Q == NULL) internal_error("no parent supplied");
 	text_stream *N = P->package_name_t;
 	dict_entry *de = Dictionaries::find(Q->name_lookup, N);
-	if (de) {
-		Dictionaries::write_value(Q->name_lookup, N, NULL);
-	}
+	if (de) Dictionaries::write_value(Q->name_lookup, N, NULL);
 }
 
-void InterPackage::log(OUTPUT_STREAM, void *vp) {
-	inter_package *pack = (inter_package *) vp;
-	InterPackage::write_url_name(OUT, pack);
-}
+@ This makes rapid lookup possible. The following looks for a subpackage called
+|name| within the parent package |P|:
 
-inter_package *InterPackage::basics(inter_tree *I) {
-	return InterPackage::by_url(I, I"/main/generic/basics");
-}
-
-inter_symbol *InterPackage::search_exhaustively(inter_package *P, text_stream *S) {
-	inter_symbol *found = InterSymbolsTables::symbol_from_name(InterPackage::scope(P), S);
-	if (found) return found;
-	inter_tree_node *D = InterPackage::head(P);
-	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
-			inter_package *Q = InterPackage::at_this_head(C);
-			found = InterPackage::search_exhaustively(Q, S);
-			if (found) return found;
-		}
-	}
-	return NULL;
-}
-
-inter_symbol *InterPackage::search_main_exhaustively(inter_tree *I, text_stream *S) {
-	return InterPackage::search_exhaustively(LargeScale::main_package(I), S);
-}
-
-inter_symbol *InterPackage::search_resources(inter_tree *I, text_stream *S) {
-	inter_package *main_package = LargeScale::main_package_if_it_exists(I);
-	if (main_package) {
-		inter_tree_node *D = InterPackage::head(main_package);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
-				inter_package *Q = InterPackage::at_this_head(C);
-				inter_symbol *found = InterPackage::search_exhaustively(Q, S);
-				if (found) return found;
-			}
-		}
-	}
-	return NULL;
-}
-
-inter_ti InterPackage::to_PID(inter_package *P) {
-	if (P == NULL) return 0;
-	return P->resource_ID;
-}
-
-inter_package *InterPackage::container(inter_tree_node *P) {
-	if (P == NULL) return NULL;
-	inter_package *pack = Inode::get_package(P);
-	if (InterPackage::is_a_root_package(pack)) return NULL;
-	return pack;
-}
-
-inter_symbols_table *InterPackage::scope(inter_package *pack) {
-	if (pack == NULL) return NULL;
-	return pack->package_scope;
-}
-
-inter_symbols_table *InterPackage::scope_of(inter_tree_node *P) {
-	inter_package *pack = InterPackage::container(P);
-	if (pack) return pack->package_scope;
-	return Inode::globals(P);
-}
-
-int InterPackage::baseline(inter_package *P) {
-	if (P == NULL) return 0;
-	if (InterPackage::is_a_root_package(P)) return 0;
-	return Inter::Defn::get_level(InterPackage::head(P));
-}
-
-void InterPackage::make_names_exist(inter_package *P) {
-	while (P) P = InterPackage::parent(P);
-}
-
-void InterPackage::write_url_name(OUTPUT_STREAM, inter_package *P) {
-	if (P == NULL) { WRITE("<none>"); return; }
-	inter_package *chain[MAX_URL_SYMBOL_NAME_DEPTH];
-	int chain_length = 0;
-	while (P) {
-		if (chain_length >= MAX_URL_SYMBOL_NAME_DEPTH) internal_error("package nesting too deep");
-		chain[chain_length++] = P;
-		P = InterPackage::parent(P);
-	}
-	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", InterPackage::name(chain[i]));
-}
-
-int InterPackage::get_flag(inter_package *P, int f) {
-	if (P == NULL) internal_error("no package");
-	return (P->package_flags & f)?TRUE:FALSE;
-}
-
-void InterPackage::set_flag(inter_package *P, int f) {
-	if (P == NULL) internal_error("no package");
-	P->package_flags = P->package_flags | f;
-}
-
-void InterPackage::clear_flag(inter_package *P, int f) {
-	if (P == NULL) internal_error("no package");
-	if (P->package_flags & f) P->package_flags = P->package_flags - f;
-}
-
+=
 inter_package *InterPackage::by_name(inter_package *P, text_stream *name) {
 	if (P == NULL) return NULL;
 	dict_entry *de = Dictionaries::find(P->name_lookup, name);
@@ -329,6 +334,13 @@ inter_package *InterPackage::by_name(inter_package *P, text_stream *name) {
 	return NULL;
 }
 
+@ And that is the key tool needed for the following. Note that if there is an
+initial slash, the URL is absolute, with respect to the top of the tree; and
+otherwise it is construed as a single name. (So searching for |this/that|
+could never succeed: without the initial slash, this would have to be the name
+of a single package, and slashes can't be part of package names.)
+
+=
 inter_package *InterPackage::by_url(inter_tree *I, text_stream *S) {
 	if (Str::get_first_char(S) == '/') {
 		inter_package *at_P = I->root_package;

@@ -7,7 +7,7 @@ with the type |_module| which derive from extensions.
 
 =
 void SynopticExtensions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->extension_nodes) > 0) @<Assign unique extension ID numbers@>;
+	if (InterNodeList::array_len(inv->extension_nodes) > 0) @<Assign unique extension ID numbers@>;
 	@<Define SHOWEXTENSIONVERSIONS function@>;
 	@<Define SHOWFULLEXTENSIONVERSIONS function@>;
 	@<Define SHOWONEEXTENSION function@>;
@@ -18,8 +18,8 @@ We want to ensure that these ID numbers are contiguous from 1 and never duplicat
 so we change the values of these constants accordingly.
 
 @<Assign unique extension ID numbers@> =
-	TreeLists::sort(inv->extension_nodes, MakeSynopticModuleStage::category_order);
-	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
+	InterNodeList::array_sort(inv->extension_nodes, MakeSynopticModuleStage::category_order);
+	for (int i=0; i<InterNodeList::array_len(inv->extension_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->extension_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"extension_id");
@@ -45,7 +45,7 @@ would violate the CC license.
 @<Define SHOWEXTENSIONVERSIONS function@> =
 	inter_name *iname = HierarchyLocations::iname(I, SHOWEXTENSIONVERSIONS_HL);
 	Synoptic::begin_function(I, iname);
-	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->extension_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->extension_nodes->list[i].node);
 		inter_ti modesty = Metadata::read_numeric(pack, I"^modesty");
@@ -65,7 +65,7 @@ would violate the CC license.
 @<Define SHOWFULLEXTENSIONVERSIONS function@> =
 	inter_name *iname = HierarchyLocations::iname(I, SHOWFULLEXTENSIONVERSIONS_HL);
 	Synoptic::begin_function(I, iname);
-	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->extension_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->extension_nodes->list[i].node);
 		text_stream *credit = Str::duplicate(Metadata::read_textual(pack, I"^credit"));
 		WRITE_TO(credit, "\n");
@@ -84,7 +84,7 @@ just a run of |if (id == 1) ...|, then |if (id == 2) ...|, and so on.
 	inter_name *iname = HierarchyLocations::iname(I, SHOWONEEXTENSION_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *id_s = Synoptic::local(I, I"id", NULL);
-	for (int i=0; i<TreeLists::len(inv->extension_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->extension_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->extension_nodes->list[i].node);
 		text_stream *credit = Metadata::read_textual(pack, I"^credit");
 		Produce::inv_primitive(I, IF_BIP);

@@ -7,10 +7,10 @@ in the tree with type |_action|.
 
 =
 void SynopticActions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->action_nodes) > 0) @<Assign unique action ID numbers@>;
+	if (InterNodeList::array_len(inv->action_nodes) > 0) @<Assign unique action ID numbers@>;
 	@<Define CCOUNT_ACTION_NAME@>;
 	@<Define AD_RECORDS@>;
-	if (TreeLists::len(inv->action_nodes) > 0) {
+	if (InterNodeList::array_len(inv->action_nodes) > 0) {
 		@<Define ACTIONHAPPENED array@>;
 		@<Define ACTIONCODING array@>;
 		@<Define ACTIONDATA array@>;
@@ -27,8 +27,8 @@ of variables, and we set this to the action ID plus 20000. (This scheme assumes
 there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 
 @<Assign unique action ID numbers@> =
-	TreeLists::sort(inv->action_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
+	InterNodeList::array_sort(inv->action_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->action_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"action_id");
@@ -39,16 +39,16 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 
 @<Define CCOUNT_ACTION_NAME@> =
 	inter_name *iname = HierarchyLocations::iname(I, CCOUNT_ACTION_NAME_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(inv->action_nodes));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) InterNodeList::array_len(inv->action_nodes));
 
 @<Define AD_RECORDS@> =
 	inter_name *iname = HierarchyLocations::iname(I, AD_RECORDS_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(inv->action_nodes));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) InterNodeList::array_len(inv->action_nodes));
 
 @<Define ACTIONHAPPENED array@> =
 	inter_name *iname = HierarchyLocations::iname(I, ACTIONHAPPENED_HL);
 	Synoptic::begin_array(I, step, iname);
-	for (int i=0; i<=(TreeLists::len(inv->action_nodes)/16); i++)
+	for (int i=0; i<=(InterNodeList::array_len(inv->action_nodes)/16); i++)
 		Synoptic::numeric_entry(0);
 	Synoptic::numeric_entry(0);
 	Synoptic::end_array(I);
@@ -56,7 +56,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 @<Define ACTIONCODING array@> =
 	inter_name *iname = HierarchyLocations::iname(I, ACTIONCODING_HL);
 	Synoptic::begin_array(I, step, iname);
-	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
 		inter_ti no = Metadata::read_optional_numeric(pack, I"^no_coding");
@@ -77,7 +77,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	inter_name *iname = HierarchyLocations::iname(I, ACTIONDATA_HL);
 	InterNames::annotate_i(iname, TABLEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
-	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
 		if (double_sharp_s == NULL) {
@@ -131,7 +131,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 		Produce::code(I);
 		Produce::down(I);
 
-	for (int i=0; i<TreeLists::len(inv->action_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
 		if (double_sharp_s) {

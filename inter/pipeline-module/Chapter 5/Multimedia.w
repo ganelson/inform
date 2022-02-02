@@ -11,12 +11,12 @@ these are assigned by the //inform7// compiler, not here.)
 
 =
 void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->figure_nodes) > 0)
-		TreeLists::sort(inv->figure_nodes, MakeSynopticModuleStage::module_order);
-	if (TreeLists::len(inv->sound_nodes) > 0)
-		TreeLists::sort(inv->sound_nodes, MakeSynopticModuleStage::module_order);
-	if (TreeLists::len(inv->file_nodes) > 0)
-		TreeLists::sort(inv->file_nodes, MakeSynopticModuleStage::module_order);
+	if (InterNodeList::array_len(inv->figure_nodes) > 0)
+		InterNodeList::array_sort(inv->figure_nodes, MakeSynopticModuleStage::module_order);
+	if (InterNodeList::array_len(inv->sound_nodes) > 0)
+		InterNodeList::array_sort(inv->sound_nodes, MakeSynopticModuleStage::module_order);
+	if (InterNodeList::array_len(inv->file_nodes) > 0)
+		InterNodeList::array_sort(inv->file_nodes, MakeSynopticModuleStage::module_order);
 	@<Define RESOURCEIDSOFFIGURES array@>;
 	@<Define RESOURCEIDSOFSOUNDS array@>;
 	@<Define NO_EXTERNAL_FILES@>;
@@ -27,7 +27,7 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 	inter_name *iname = HierarchyLocations::iname(I, RESOURCEIDSOFFIGURES_HL);
 	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
-	for (int i=0; i<TreeLists::len(inv->figure_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->figure_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->figure_nodes->list[i].node);
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
@@ -40,7 +40,7 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 	inter_name *iname = HierarchyLocations::iname(I, RESOURCEIDSOFSOUNDS_HL);
 	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
-	for (int i=0; i<TreeLists::len(inv->sound_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->sound_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->sound_nodes->list[i].node);
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
@@ -51,14 +51,14 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 
 @<Define NO_EXTERNAL_FILES@> =
 	inter_name *iname = HierarchyLocations::iname(I, NO_EXTERNAL_FILES_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) TreeLists::len(inv->file_nodes));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) InterNodeList::array_len(inv->file_nodes));
 
 @<Define TABLEOFEXTERNALFILES array@> =
 	inter_name *iname =
 		HierarchyLocations::iname(I, TABLEOFEXTERNALFILES_HL);
 	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
-	for (int i=0; i<TreeLists::len(inv->file_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->file_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->file_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^file_value");
 		Synoptic::symbol_entry(vc_s);

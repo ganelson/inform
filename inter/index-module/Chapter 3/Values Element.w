@@ -9,9 +9,9 @@ quite different.
 void ValuesElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->variable_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->variable_nodes, MakeSynopticModuleStage::module_order);
 	@<Index the variables@>;
-	TreeLists::sort(inv->equation_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->equation_nodes, MakeSynopticModuleStage::module_order);
 	@<Index the equations@>;
 }
 

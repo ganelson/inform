@@ -9,8 +9,8 @@ of being instances.)
 
 =
 void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->scene_nodes) > 0)
-		TreeLists::sort(inv->scene_nodes, MakeSynopticModuleStage::module_order);
+	if (InterNodeList::array_len(inv->scene_nodes) > 0)
+		InterNodeList::array_sort(inv->scene_nodes, MakeSynopticModuleStage::module_order);
 	@<Define SHOWSCENESTATUS function@>;
 	@<Define DETECTSCENECHANGE function@>;
 }
@@ -18,7 +18,7 @@ void SynopticScenes::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 @<Define SHOWSCENESTATUS function@> =
 	inter_name *iname = HierarchyLocations::iname(I, SHOWSCENESTATUS_HL);
 	Synoptic::begin_function(I, iname);
-	for (int i=0; i<TreeLists::len(inv->scene_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->scene_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->scene_nodes->list[i].node);
 		inter_symbol *ssf_s = Metadata::read_symbol(pack, I"^scene_status_fn");
@@ -42,7 +42,7 @@ whether any change in status has or has not occurred.
 	inter_symbol *Again_l = Produce::reserve_label(I, I".Again");
 	inter_symbol *CScene_l = Produce::reserve_label(I, I".CScene");
 	Produce::place_label(I, Again_l);
-	for (int i=0; i<TreeLists::len(inv->scene_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->scene_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->scene_nodes->list[i].node);
 		inter_symbol *scf_s = Metadata::read_symbol(pack, I"^scene_change_fn");

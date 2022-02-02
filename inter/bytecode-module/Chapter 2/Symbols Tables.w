@@ -156,7 +156,7 @@ inter_symbol *InterSymbolsTables::symbol_from_name_in_main(inter_tree *I, text_s
 }
 
 inter_symbol *InterSymbolsTables::symbol_from_name_in_basics(inter_tree *I, text_stream *S) {
-	inter_package *P = InterPackage::basics(I);
+	inter_package *P = InterPackage::by_url(I, I"/main/generic/basics");
 	if (P == NULL) return NULL;
 	return InterSymbolsTables::symbol_from_name(InterPackage::scope(P), S);
 }

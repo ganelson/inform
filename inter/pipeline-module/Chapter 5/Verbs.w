@@ -7,8 +7,8 @@ in the tree with type |_verb_form|.
 
 =
 void SynopticVerbs::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->verb_form_nodes) > 0)
-		TreeLists::sort(inv->verb_form_nodes, SynopticVerbs::form_order);	
+	if (InterNodeList::array_len(inv->verb_form_nodes) > 0)
+		InterNodeList::array_sort(inv->verb_form_nodes, SynopticVerbs::form_order);	
 	@<Define TABLEOFVERBS array@>;
 }
 
@@ -18,8 +18,8 @@ within the compiler. This doesn't vastly matter, though.
 
 =
 int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
-	itl_entry *E1 = (itl_entry *) ent1;
-	itl_entry *E2 = (itl_entry *) ent2;
+	ina_entry *E1 = (ina_entry *) ent1;
+	ina_entry *E2 = (ina_entry *) ent2;
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;
@@ -41,7 +41,7 @@ int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 @<Define TABLEOFVERBS array@> =
 	inter_name *iname = HierarchyLocations::iname(I, TABLEOFVERBS_HL);
 	Synoptic::begin_array(I, step, iname);
-	for (int i=0; i<TreeLists::len(inv->verb_form_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->verb_form_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->verb_form_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^verb_value");
 		Synoptic::symbol_entry(vc_s);

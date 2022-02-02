@@ -7,7 +7,7 @@ in the tree with type |_property|.
 
 =
 void SynopticProperties::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->property_nodes) > 0) @<Assign unique property ID numbers@>;
+	if (InterNodeList::array_len(inv->property_nodes) > 0) @<Assign unique property ID numbers@>;
 	@<Define CCOUNT_PROPERTY@>;
 }
 
@@ -16,8 +16,8 @@ We want to ensure that these ID numbers are contiguous from 0 and never duplicat
 so we change the values of these constants accordingly.
 
 @<Assign unique property ID numbers@> =
-	TreeLists::sort(inv->property_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->property_nodes); i++) {
+	InterNodeList::array_sort(inv->property_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->property_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->property_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"property_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
@@ -25,4 +25,4 @@ so we change the values of these constants accordingly.
 
 @<Define CCOUNT_PROPERTY@> =
 	inter_name *iname = HierarchyLocations::iname(I, CCOUNT_PROPERTY_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->property_nodes)));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (InterNodeList::array_len(inv->property_nodes)));

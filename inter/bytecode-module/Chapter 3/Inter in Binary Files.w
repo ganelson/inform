@@ -20,7 +20,6 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	inter_bookmark at = InterBookmark::at_start_of_this_repository(I);
 
 	inter_warehouse *warehouse = InterTree::warehouse(I);
-	default_ptree = I;
 
 	inter_ti *grid = NULL;
 	inter_ti grid_extent = 0;
@@ -35,7 +34,6 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	Primitives::index_primitives_in_tree(I);
 
 	BinaryFiles::close(fh);
-	default_ptree = NULL;
 }
 
 @ Symmetrically:
@@ -165,7 +163,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			switch (X) {
 				case TEXT_IRSRC: @<Read a string resource@>; break;
 				case SYMBOLS_TABLE_IRSRC: @<Read a symbols table resource@>; break;
-				case NODE_LIST_IRSRC: @<Read a frame list resource@>; break;
+				case NODE_LIST_IRSRC: @<Read a node list resource@>; break;
 				case PACKAGE_REF_IRSRC: @<Read a package resource@>; break;
 			}
 		}
@@ -190,7 +188,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			case TEXT_IRSRC: @<Write a string resource@>; break;
 			case SYMBOLS_TABLE_IRSRC: @<Write a symbols table resource@>; break;
 			case PACKAGE_REF_IRSRC: @<Write a package resource@>; break;
-			case NODE_LIST_IRSRC: @<Write a frame list resource@>; break;
+			case NODE_LIST_IRSRC: @<Write a node list resource@>; break;
 			default: internal_error("unimplemented resource type");
 		}
 	}
@@ -341,7 +339,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		PUT_TO(N, (int) c);
 	}
-	InterPackage::set_name((parent)?(parent):(I->root_package), stored_package, N);
+	InterPackage::set_name(I, (parent)?(parent):(I->root_package), stored_package, N);
 	DISCARD_TEXT(N)
 
 @<Write a package resource@> =
@@ -361,11 +359,11 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 @ We do nothing here, because frame lists are built new on reading. It's
 enough that the slot exists for the eventual list to be stored in.
 
-@<Read a frame list resource@> =
+@<Read a node list resource@> =
 	if (InterWarehouse::get_node_list(warehouse, n) == 0)
-		InterWarehouse::create_ref_at(warehouse, n, STORE_POINTER_inter_node_list(Inter::ListLiterals::new()), NULL);
+		InterWarehouse::create_ref_at(warehouse, n, STORE_POINTER_inter_node_list(InterNodeList::new()), NULL);
 
-@<Write a frame list resource@> =
+@<Write a node list resource@> =
 	;
 
 @<Read the symbol equations@> =

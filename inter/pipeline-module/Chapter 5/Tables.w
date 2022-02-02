@@ -7,11 +7,11 @@ in the tree with type |_table|.
 
 =
 void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->table_nodes) > 0) @<Assign unique table ID numbers@>;
-	if (TreeLists::len(inv->table_column_nodes) > 0) @<Assign unique table column ID numbers@>;
-	if (TreeLists::len(inv->table_column_usage_nodes) > 0) {
-		TreeLists::sort(inv->table_column_usage_nodes, MakeSynopticModuleStage::module_order);
-		for (int i=0; i<TreeLists::len(inv->table_column_usage_nodes); i++) {
+	if (InterNodeList::array_len(inv->table_nodes) > 0) @<Assign unique table ID numbers@>;
+	if (InterNodeList::array_len(inv->table_column_nodes) > 0) @<Assign unique table column ID numbers@>;
+	if (InterNodeList::array_len(inv->table_column_usage_nodes) > 0) {
+		InterNodeList::array_sort(inv->table_column_usage_nodes, MakeSynopticModuleStage::module_order);
+		for (int i=0; i<InterNodeList::array_len(inv->table_column_usage_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->table_column_usage_nodes->list[i].node);
 			inter_tree_node *ID = Synoptic::get_definition(pack, I"column_identity");
 			inter_symbol *id_s = NULL;
@@ -35,8 +35,8 @@ We want to ensure that these ID numbers are contiguous from 1 and never duplicat
 so we change the values of these constants accordingly.
 
 @<Assign unique table ID numbers@> =
-	TreeLists::sort(inv->table_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
+	InterNodeList::array_sort(inv->table_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->table_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->table_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"table_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
@@ -49,8 +49,8 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 99 refer to columns by index within the current table: see //assertions: Tables//.)
 
 @<Assign unique table column ID numbers@> =
-	TreeLists::sort(inv->table_column_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->table_column_nodes); i++) {
+	InterNodeList::array_sort(inv->table_column_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->table_column_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->table_column_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"table_column_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) (i + 100);
@@ -61,7 +61,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	Synoptic::begin_array(I, step, iname);
 	Synoptic::symbol_entry(InterNames::to_symbol(
 		HierarchyLocations::iname(I, THEEMPTYTABLE_HL)));
-	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->table_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->table_nodes->list[i].node);
 		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
 		Synoptic::symbol_entry(value_s);
@@ -93,7 +93,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 				Produce::up(I);
 			Produce::up(I);
 
-		for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->table_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->table_nodes->list[i].node);
 			inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
 			text_stream *printed_name = Metadata::read_textual(pack, I"^printed_name");
@@ -137,7 +137,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 		Produce::code(I);
 		Produce::down(I);
 
-	for (int i=0; i<TreeLists::len(inv->table_column_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->table_column_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->table_column_nodes->list[i].node);
 		inter_symbol *tc_kind = Metadata::read_symbol(pack, I"^column_kind");
@@ -167,7 +167,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	InterNames::annotate_i(iname, BYTEARRAY_IANN, 1);
 	Synoptic::begin_array(I, step, iname);
 	inter_ti hwm = 0;
-	for (int i=0; i<TreeLists::len(inv->table_column_usage_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->table_column_usage_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->table_column_usage_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_optional_definition(pack, I"column_blanks");
@@ -187,7 +187,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 @<Define RANKING_TABLE constant@> =
 	inter_name *iname = HierarchyLocations::iname(I, RANKING_TABLE_HL);
 	int found = FALSE;
-	for (int i=0; i<TreeLists::len(inv->table_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->table_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->table_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^ranking_table")) {

@@ -25,8 +25,7 @@ which use this module:
 @e inter_error_stash_CLASS
 @e inter_package_CLASS
 @e inter_node_list_CLASS
-@e inter_node_list_entry_CLASS
-@e inter_tree_location_list_CLASS
+@e inter_node_array_CLASS
 
 =
 DECLARE_CLASS(inter_tree)
@@ -41,8 +40,7 @@ DECLARE_CLASS(inter_error_message)
 DECLARE_CLASS(inter_error_stash)
 DECLARE_CLASS(inter_package)
 DECLARE_CLASS(inter_node_list)
-DECLARE_CLASS(inter_node_list_entry)
-DECLARE_CLASS(inter_tree_location_list)
+DECLARE_CLASS(inter_node_array)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_symbol, 1024)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_tree_node, 8192)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_annotation, 8192)

@@ -8,7 +8,7 @@ To write the Alphabetic actions element (A2) in the index.
 void AlphabeticElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->action_nodes, AlphabeticElement::alphabetical_order);
+	InterNodeList::array_sort(inv->action_nodes, AlphabeticElement::alphabetical_order);
 
 	HTML::begin_html_table(OUT, NULL, FALSE, 0, 0, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
@@ -90,8 +90,8 @@ default the inventory would have them in declaration order.
 
 =
 int AlphabeticElement::alphabetical_order(const void *ent1, const void *ent2) {
-	itl_entry *E1 = (itl_entry *) ent1;
-	itl_entry *E2 = (itl_entry *) ent2;
+	ina_entry *E1 = (ina_entry *) ent1;
+	ina_entry *E2 = (ina_entry *) ent2;
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;

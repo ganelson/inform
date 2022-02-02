@@ -9,8 +9,8 @@ so we do little more than tabulate that data here.
 void ArithmeticElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
-	TreeLists::sort(inv->multiplication_rule_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->multiplication_rule_nodes, MakeSynopticModuleStage::module_order);
 	HTML_TAG("hr");
 	@<Index the rubric about quasinumerical kinds@>;
 	@<Index the table of quasinumerical kinds@>;
@@ -71,7 +71,7 @@ void ArithmeticElement::render(OUTPUT_STREAM, index_session *session) {
 text, sorted into kind order of left and then right operand.
 
 @<Index the table of multiplication rules@> =
-	if (TreeLists::len(inv->multiplication_rule_nodes) > 0) {
+	if (InterNodeList::array_len(inv->multiplication_rule_nodes) > 0) {
 		HTML_OPEN("p");
 		WRITE("This is how multiplication changes kinds:");
 		HTML_CLOSE("p");

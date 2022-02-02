@@ -11,8 +11,8 @@ making only a debugging function.
 
 =
 void SynopticInstances::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->instance_nodes) > 0)
-		TreeLists::sort(inv->instance_nodes, MakeSynopticModuleStage::module_order);
+	if (InterNodeList::array_len(inv->instance_nodes) > 0)
+		InterNodeList::array_sort(inv->instance_nodes, MakeSynopticModuleStage::module_order);
 	@<Define SHOWMEINSTANCEDETAILS function@>;
 }
 
@@ -22,7 +22,7 @@ void SynopticInstances::compile(inter_tree *I, pipeline_step *step, tree_invento
 	inter_symbol *which_s = Synoptic::local(I, I"which", NULL);
 	inter_symbol *na_s = Synoptic::local(I, I"na", NULL);
 	inter_symbol *t_0_s = Synoptic::local(I, I"t_0", NULL);
-	for (int i=0; i<TreeLists::len(inv->instance_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->instance_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->instance_nodes->list[i].node);
 		inter_symbol *showme_s = Metadata::read_optional_symbol(pack, I"^showme_fn");
 		if (showme_s) {

@@ -8,7 +8,7 @@ per-action pages linked from it.
 =
 void GroupedElement::render(OUTPUT_STREAM, index_session *session) {
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->action_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->action_nodes, MakeSynopticModuleStage::module_order);
 
 	int f = FALSE;
 	text_stream *current_area = I"___no_area___";
@@ -57,7 +57,7 @@ void GroupedElement::detail_pages(index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	inter_tree *I = Indexing::get_tree(session);
 	tree_inventory *inv = Indexing::get_inventory(session);
-	TreeLists::sort(inv->action_nodes, MakeSynopticModuleStage::module_order);
+	InterNodeList::array_sort(inv->action_nodes, MakeSynopticModuleStage::module_order);
 
 	inter_package *an_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
@@ -186,7 +186,7 @@ void GroupedElement::detail_pages(index_session *session) {
 	if (resp_count > 1) {
 		Localisation::roman(OUT, LD, I"Index.Elements.A1.ResponseIcons");
 		WRITE(":&nbsp;");
-		IndexUtilities::extra_all_link_with(OUT, TreeLists::len(inv->rule_nodes), "responses");
+		IndexUtilities::extra_all_link_with(OUT, InterNodeList::array_len(inv->rule_nodes), "responses");
 		WRITE("%d", resp_count);
 	}
 	HTML_CLOSE("p");

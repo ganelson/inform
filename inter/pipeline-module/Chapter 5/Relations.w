@@ -7,7 +7,7 @@ in the tree with type |_relation|.
 
 =
 void SynopticRelations::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->relation_nodes) > 0) @<Assign unique relation ID numbers@>;
+	if (InterNodeList::array_len(inv->relation_nodes) > 0) @<Assign unique relation ID numbers@>;
 	@<Define CCOUNT_BINARY_PREDICATE@>;
 	@<Define CREATEDYNAMICRELATIONS function@>;
 	@<Define ITERATERELATIONS function@>;
@@ -19,8 +19,8 @@ We want to ensure that these ID numbers are contiguous from 0 and never duplicat
 so we change the values of these constants accordingly.
 
 @<Assign unique relation ID numbers@> =
-	TreeLists::sort(inv->relation_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
+	InterNodeList::array_sort(inv->relation_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->relation_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->relation_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"relation_id");
 		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
@@ -28,12 +28,12 @@ so we change the values of these constants accordingly.
 
 @<Define CCOUNT_BINARY_PREDICATE@> =
 	inter_name *iname = HierarchyLocations::iname(I, CCOUNT_BINARY_PREDICATE_HL);
-	Produce::numeric_constant(I, iname, K_value, (inter_ti) (TreeLists::len(inv->relation_nodes)));
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) (InterNodeList::array_len(inv->relation_nodes)));
 
 @<Define CREATEDYNAMICRELATIONS function@> =
 	inter_name *iname = HierarchyLocations::iname(I, CREATEDYNAMICRELATIONS_HL);
 	Synoptic::begin_function(I, iname);
-	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->relation_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->relation_nodes->list[i].node);
 		inter_symbol *creator_s = Metadata::read_optional_symbol(pack, I"^creator");
 		if (creator_s) Produce::inv_call_symbol(I, creator_s);
@@ -44,7 +44,7 @@ so we change the values of these constants accordingly.
 	inter_name *iname = HierarchyLocations::iname(I, ITERATERELATIONS_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *callback_s = Synoptic::local(I, I"callback", NULL);
-	for (int i=0; i<TreeLists::len(inv->relation_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->relation_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->relation_nodes->list[i].node);
 		inter_symbol *rel_s = Metadata::read_optional_symbol(pack, I"^value");
 		if (rel_s) {

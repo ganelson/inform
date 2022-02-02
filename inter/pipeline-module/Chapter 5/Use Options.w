@@ -7,7 +7,7 @@ in the tree with type |_use_option|.
 
 =
 void SynopticUseOptions::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->use_option_nodes) > 0) @<Assign unique use option ID numbers@>;
+	if (InterNodeList::array_len(inv->use_option_nodes) > 0) @<Assign unique use option ID numbers@>;
 	@<Define NO_USE_OPTIONS@>;
 	@<Define TESTUSEOPTION function@>;
 	@<Define PRINT_USE_OPTION function@>;
@@ -18,8 +18,8 @@ void SynopticUseOptions::compile(inter_tree *I, pipeline_step *step, tree_invent
 and never duplicated, so we change the values of these constants accordingly.
 
 @<Assign unique use option ID numbers@> =
-	TreeLists::sort(inv->use_option_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
+	InterNodeList::array_sort(inv->use_option_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->use_option_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->use_option_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"use_option_id");
@@ -29,7 +29,7 @@ and never duplicated, so we change the values of these constants accordingly.
 @<Define NO_USE_OPTIONS@> =
 	inter_name *iname = HierarchyLocations::iname(I, NO_USE_OPTIONS_HL);
 	Produce::numeric_constant(I, iname, K_value,
-		(inter_ti) (TreeLists::len(inv->use_option_nodes)));
+		(inter_ti) (InterNodeList::array_len(inv->use_option_nodes)));
 
 @ A relatively late addition to the design of use options was to make them
 values at runtime, of the kind "use option". We need to provide two functions:
@@ -40,7 +40,7 @@ name of a given use option.
 	inter_name *iname = HierarchyLocations::iname(I, TESTUSEOPTION_HL);
 	Synoptic::begin_function(I, iname);
 	inter_symbol *UO_s = Synoptic::local(I, I"UO", NULL);
-	for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->use_option_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->use_option_nodes->list[i].node);
 		inter_ti set = Metadata::read_numeric(pack, I"^active");
@@ -71,7 +71,7 @@ name of a given use option.
 		Produce::val_symbol(I, K_value, UO_s);
 		Produce::code(I);
 		Produce::down(I);
-			for (int i=0; i<TreeLists::len(inv->use_option_nodes); i++) {
+			for (int i=0; i<InterNodeList::array_len(inv->use_option_nodes); i++) {
 				inter_package *pack =
 					InterPackage::at_this_head(inv->use_option_nodes->list[i].node);
 				text_stream *printed_name = Metadata::read_textual(pack, I"^printed_name");

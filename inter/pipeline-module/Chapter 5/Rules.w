@@ -14,7 +14,7 @@ compiler.
 
 =
 void SynopticRules::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->rulebook_nodes) > 0) @<Assign unique rulebook ID numbers@>;
+	if (InterNodeList::array_len(inv->rulebook_nodes) > 0) @<Assign unique rulebook ID numbers@>;
 	int economy = FALSE;
 	inter_symbol *me_s = InterSymbolsTables::url_name_to_symbol(I, NULL,
 		I"/main/completion/basics/^memory_economy");
@@ -32,8 +32,8 @@ We want to ensure that these ID numbers are contiguous from 0 and never duplicat
 so we change the values of these constants accordingly.
 
 @<Assign unique rulebook ID numbers@> =
-	TreeLists::sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
-	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+	InterNodeList::array_sort(inv->rulebook_nodes, MakeSynopticModuleStage::module_order);
+	for (int i=0; i<InterNodeList::array_len(inv->rulebook_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"rulebook_id");
@@ -43,7 +43,7 @@ so we change the values of these constants accordingly.
 @<Define NUMBER_RULEBOOKS_CREATED@> =
 	inter_name *iname = HierarchyLocations::iname(I, NUMBER_RULEBOOKS_CREATED_HL);
 	Produce::numeric_constant(I, iname, K_value,
-		(inter_ti) (TreeLists::len(inv->rulebook_nodes)));
+		(inter_ti) (InterNodeList::array_len(inv->rulebook_nodes)));
 
 @<Define RulebookNames array@> =
 	inter_name *iname = HierarchyLocations::iname(I, RULEBOOKNAMES_HL);
@@ -52,7 +52,7 @@ so we change the values of these constants accordingly.
 		Synoptic::numeric_entry(0);
 		Synoptic::numeric_entry(0);
 	} else {
-		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->rulebook_nodes); i++) {
 			inter_package *pack =
 				InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 			text_stream *name = Metadata::read_textual(pack, I"^printed_name");
@@ -64,7 +64,7 @@ so we change the values of these constants accordingly.
 @<Define rulebook_var_creators array@> =
 	inter_name *iname = HierarchyLocations::iname(I, RULEBOOK_VAR_CREATORS_HL);
 	Synoptic::begin_array(I, step, iname);
-	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->rulebook_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
 		if (vc_s) Synoptic::symbol_entry(vc_s);
@@ -75,7 +75,7 @@ so we change the values of these constants accordingly.
 @<Define rulebooks_array array@> =
 	inter_name *iname = HierarchyLocations::iname(I, RULEBOOKS_ARRAY_HL);
 	Synoptic::begin_array(I, step, iname);
-	for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+	for (int i=0; i<InterNodeList::array_len(inv->rulebook_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^run_fn");
 		Synoptic::symbol_entry(fn_s);
@@ -93,7 +93,7 @@ so we change the values of these constants accordingly.
 		Produce::val_symbol(I, K_value, rb_s);
 		Produce::code(I);
 		Produce::down(I);
-		for (int i=0; i<TreeLists::len(inv->rulebook_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->rulebook_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->rulebook_nodes->list[i].node);
 			inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
 			if (vc_s) {
@@ -135,7 +135,7 @@ so we change the values of these constants accordingly.
 			Produce::inv_primitive(I, LT_BIP);
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, R_s);
-				Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) TreeLists::len(inv->rulebook_nodes));
+				Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) InterNodeList::array_len(inv->rulebook_nodes));
 			Produce::up(I);
 		Produce::up(I);
 		Produce::code(I);
@@ -189,7 +189,7 @@ so we change the values of these constants accordingly.
 			Produce::val_text(I, I")");
 		Produce::up(I);
 	} else {
-		for (int i=0; i<TreeLists::len(inv->rule_nodes); i++) {
+		for (int i=0; i<InterNodeList::array_len(inv->rule_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->rule_nodes->list[i].node);
 			text_stream *name = Metadata::read_textual(pack, I"^printed_name");
 			inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");

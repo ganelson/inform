@@ -28,8 +28,8 @@ definitions whose value is a literal text.
 
 =
 void SynopticText::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
-	if (TreeLists::len(inv->text_nodes) > 0) {
-		TreeLists::sort(inv->text_nodes, SynopticText::cmp);
+	if (InterNodeList::array_len(inv->text_nodes) > 0) {
+		InterNodeList::array_sort(inv->text_nodes, SynopticText::cmp);
 		inter_package *texts_pack =
 			Packaging::incarnate(
 				LargeScale::synoptic_submodule(I,
@@ -37,7 +37,7 @@ void SynopticText::compile(inter_tree *I, pipeline_step *step, tree_inventory *i
 		inter_bookmark IBM = InterBookmark::at_end_of_this_package(texts_pack);
 		text_stream *latest_text = NULL;
 		inter_symbol *latest_s = NULL;
-		for (int i=0, j=0; i<TreeLists::len(inv->text_nodes); i++) {
+		for (int i=0, j=0; i<InterNodeList::array_len(inv->text_nodes); i++) {
 			inter_tree_node *P = inv->text_nodes->list[i].node;
 			inter_package *pack = InterPackage::container(P);
 			text_stream *S = SynopticText::text_quoted_here(P);
@@ -105,8 +105,8 @@ text_stream *SynopticText::text_quoted_here(inter_tree_node *P) {
 }
 
 int SynopticText::cmp(const void *ent1, const void *ent2) {
-	itl_entry *E1 = (itl_entry *) ent1;
-	itl_entry *E2 = (itl_entry *) ent2;
+	ina_entry *E1 = (ina_entry *) ent1;
+	ina_entry *E2 = (ina_entry *) ent2;
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;
