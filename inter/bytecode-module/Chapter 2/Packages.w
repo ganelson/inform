@@ -42,10 +42,10 @@ resource list of the tree's warehouse, and has a resource ID within it. See
 typedef struct inter_package {
 	struct inter_tree_node *package_head;
 	struct inter_symbols_table *package_scope;
-	inter_ti resource_ID;
 	struct text_stream *package_name_t;
 	int package_flags; /* a bitmap of the |*_PACKAGE_FLAG| bits */
 	struct dictionary *name_lookup;
+	inter_ti resource_ID; /* within the warehouse for the tree holding the package */
 	CLASS_DEFINITION
 } inter_package;
 
@@ -64,7 +64,7 @@ inter_package *InterPackage::new(inter_tree *I, inter_ti n) {
 	pack->package_flags = 0;
 	pack->package_name_t = NULL;
 	pack->resource_ID = n;
-	pack->name_lookup = Dictionaries::new(INITIAL_INTER_SYMBOLS_ID_RANGE, FALSE);
+	pack->name_lookup = Dictionaries::new(16, FALSE);
 	return pack;
 }
 
@@ -152,6 +152,9 @@ void InterPackage::set_scope(inter_package *P, inter_symbols_table *T) {
 	if (T) T->owning_package = P;
 }
 
+@ This function is the inverse of //InterSymbolsTable::package//:
+
+=
 inter_symbols_table *InterPackage::scope(inter_package *pack) {
 	if (pack == NULL) return NULL;
 	return pack->package_scope;
@@ -163,7 +166,7 @@ no need for it to be fast: it is used only very sparingly.
 
 =
 inter_symbol *InterPackage::find_symbol_slowly(inter_package *P, text_stream *S) {
-	inter_symbol *found = InterSymbolsTables::symbol_from_name(InterPackage::scope(P), S);
+	inter_symbol *found = InterSymbolsTable::symbol_from_name(InterPackage::scope(P), S);
 	if (found) return found;
 	inter_tree_node *D = InterPackage::head(P);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
@@ -281,7 +284,7 @@ form |/main/whatever/example1/this|. The following goes from an //inter_package/
 to its URL, which is particularly handy for the debugging log:
 
 =
-void InterPackage::write_url_name(OUTPUT_STREAM, inter_package *P) {
+void InterPackage::write_URL(OUTPUT_STREAM, inter_package *P) {
 	if (P == NULL) { WRITE("<none>"); return; }
 	inter_package *chain[MAX_URL_SYMBOL_NAME_DEPTH];
 	int chain_length = 0;
@@ -296,7 +299,7 @@ void InterPackage::write_url_name(OUTPUT_STREAM, inter_package *P) {
 
 void InterPackage::log(OUTPUT_STREAM, void *vp) {
 	inter_package *pack = (inter_package *) vp;
-	InterPackage::write_url_name(OUT, pack);
+	InterPackage::write_URL(OUT, pack);
 }
 
 @ The other direction, parsing a URL into its corresponding //inter_package//, is
@@ -327,7 +330,7 @@ void InterPackage::remove_subpackage_name(inter_package *Q, inter_package *P) {
 |name| within the parent package |P|:
 
 =
-inter_package *InterPackage::by_name(inter_package *P, text_stream *name) {
+inter_package *InterPackage::from_name(inter_package *P, text_stream *name) {
 	if (P == NULL) return NULL;
 	dict_entry *de = Dictionaries::find(P->name_lookup, name);
 	if (de) return (inter_package *) Dictionaries::read_value(P->name_lookup, name);
@@ -341,7 +344,7 @@ could never succeed: without the initial slash, this would have to be the name
 of a single package, and slashes can't be part of package names.)
 
 =
-inter_package *InterPackage::by_url(inter_tree *I, text_stream *S) {
+inter_package *InterPackage::from_URL(inter_tree *I, text_stream *S) {
 	if (Str::get_first_char(S) == '/') {
 		inter_package *at_P = I->root_package;
 		TEMPORARY_TEXT(C)
@@ -349,7 +352,7 @@ inter_package *InterPackage::by_url(inter_tree *I, text_stream *S) {
 			wchar_t c = Str::get(P);
 			if (c == '/') {
 				if (Str::len(C) > 0) {
-					at_P = InterPackage::by_name(at_P, C);
+					at_P = InterPackage::from_name(at_P, C);
 					if (at_P == NULL) return NULL;
 				}
 				Str::clear(C);
@@ -357,9 +360,9 @@ inter_package *InterPackage::by_url(inter_tree *I, text_stream *S) {
 				PUT_TO(C, c);
 			}
 		}
-		inter_package *pack = InterPackage::by_name(at_P, C);
+		inter_package *pack = InterPackage::from_name(at_P, C);
 		DISCARD_TEXT(C)
 		return pack;
 	}
-	return InterPackage::by_name(I->root_package, S);
+	return InterPackage::from_name(I->root_package, S);
 }

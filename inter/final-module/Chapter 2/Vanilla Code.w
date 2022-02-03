@@ -39,7 +39,7 @@ These we offer to the generator to deal with as it likes:
 void VanillaCode::label(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = InterPackage::container(P);
 	inter_symbol *lab_name =
-		InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LABEL_IFLD]);
+		InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LABEL_IFLD]);
 	Generators::place_label(gen, lab_name->symbol_name);
 }
 
@@ -93,7 +93,7 @@ need to.
 			inter_ti val2 = F->W.instruction[VAL2_VAL_IFLD];
 			if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 				inter_symbol *symb =
-					InterSymbolsTables::symbol_from_id(InterPackage::scope_of(F), val2);
+					InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(F), val2);
 				if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {
 					label_sense = FALSE;
 					continue;
@@ -130,9 +130,9 @@ void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) 
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
 		inter_package *pack = InterPackage::container(P);
 		inter_symbol *named_s =
-			InterSymbolsTables::local_symbol_from_id(pack, val2);
+			InterSymbolsTable::symbol_from_ID_in_package(pack, val2);
 		if (named_s == NULL) named_s =
-			InterSymbolsTables::symbol_from_id(InterPackage::scope_of(P), val2);
+			InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(P), val2);
 		if (named_s == NULL) internal_error("unknown constant in val/ref in Inter tree");
 		if ((Str::eq(Inter::Symbols::name(named_s), I"self")) ||
 			((named_s->definition) &&
@@ -163,7 +163,7 @@ function body.
 void VanillaCode::lab(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = InterPackage::container(P);
 	inter_symbol *label_s =
-		InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[LABEL_LAB_IFLD]);
+		InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[LABEL_LAB_IFLD]);
 	if (label_s == NULL) internal_error("unknown label in lab in Inter tree");
 	Generators::evaluate_label(gen, label_s->symbol_name);
 }

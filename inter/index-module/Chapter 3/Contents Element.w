@@ -20,7 +20,7 @@ void ContentsElement::render(OUTPUT_STREAM, index_session *session) {
 @<Write a sort of half-title page@> =
 	HTML_OPEN("p");
 	WRITE("<b>");
-	inter_package *pack = InterPackage::by_url(I, I"/main/completion/bibliographic");
+	inter_package *pack = InterPackage::from_URL(I, I"/main/completion/bibliographic");
 	text_stream *title = Metadata::read_optional_textual(pack, I"^title");
 	text_stream *author = Metadata::read_optional_textual(pack, I"^author");
 	if (Str::len(title) > 0) {

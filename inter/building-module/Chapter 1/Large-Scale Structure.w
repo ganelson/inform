@@ -193,7 +193,7 @@ inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *
 	inter_symbol *uks) {
 	inter_package *arch = LargeScale::architecture_package(I);
 	inter_symbols_table *tab = InterPackage::scope(arch);
-	inter_symbol *S = InterSymbolsTables::symbol_from_name(tab, N);
+	inter_symbol *S = InterSymbolsTable::symbol_from_name(tab, N);
 	if (S == NULL) {
 		if (create_these_architectural_symbols_on_demand == NULL) {
 			create_these_architectural_symbols_on_demand = Dictionaries::new(16, TRUE);
@@ -275,12 +275,12 @@ inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 	inter_symbol *uks, inter_ti val) {
 	inter_package *arch = LargeScale::architecture_package(I);
 	inter_symbols_table *tab = InterPackage::scope(arch);
-	inter_symbol *S = InterSymbolsTables::symbol_from_name_creating(tab, N);
+	inter_symbol *S = InterSymbolsTable::symbol_from_name_creating(tab, N);
 	Inter::Symbols::annotate_i(S, ARCHITECTURAL_IANN, 1);
 	inter_bookmark *IBM = &(I->site.strdata.architecture_bookmark);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
-		InterSymbolsTables::id_from_symbol(I, arch, S),
-		InterSymbolsTables::id_from_symbol(I, arch, uks),
+		InterSymbolsTable::id_from_symbol(I, arch, S),
+		InterSymbolsTable::id_from_symbol(I, arch, uks),
 		LITERAL_IVAL, val,
 		(inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 	return S;
@@ -298,6 +298,20 @@ inter_symbol *LargeScale::arch_constant_signed(inter_tree *I, text_stream *N,
 	inter_symbol *S = LargeScale::arch_constant(I, N, uks, (inter_ti) val);
 	Inter::Symbols::annotate_i(S, SIGNED_IANN, 1);
 	return S;
+}
+
+@ This falls back on the main package, but really, should be used only for
+things which ought to be in |architectural|:
+
+=
+inter_symbol *LargeScale::architectural_symbol(inter_tree *I, text_stream *name) {
+	inter_symbol *symbol = NULL;
+	inter_package *P = LargeScale::architecture_package_if_it_exists(I);
+	if (P) symbol = InterSymbolsTable::symbol_from_name(InterPackage::scope(P), name);
+	if (symbol) return symbol;
+	P = LargeScale::main_package_if_it_exists(I);
+	if (P) symbol = InterSymbolsTable::symbol_from_name(InterPackage::scope(P), name);
+	return symbol;
 }
 
 @h Modules.
@@ -403,7 +417,7 @@ void LargeScale::emit_pragma(inter_tree *I, text_stream *target, text_stream *co
 	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I), InterTree::root_package(I));
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), content);
 	inter_symbol *target_name =
-		InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(I), target);
+		InterSymbolsTable::symbol_from_name_creating(InterTree::global_scope(I), target);
 	Produce::guard(Inter::Pragma::new(&(I->site.strdata.pragmas_bookmark), target_name, ID, 0, NULL));
 }
 
@@ -427,9 +441,9 @@ exception is made.
 =
 inter_symbol *LargeScale::package_type(inter_tree *I, text_stream *name) {
 	inter_symbols_table *scope = InterTree::global_scope(I);
-	inter_symbol *ptype = InterSymbolsTables::symbol_from_name(scope, name);
+	inter_symbol *ptype = InterSymbolsTable::symbol_from_name(scope, name);
 	if (ptype == NULL) {
-		ptype = InterSymbolsTables::create_with_unique_name(scope, name);
+		ptype = InterSymbolsTable::create_with_unique_name(scope, name);
 		Produce::guard(Inter::PackageType::new_packagetype(
 			&(I->site.strdata.package_types_bookmark), ptype, 0, NULL));
 		if (Str::ne(name, I"_code"))

@@ -319,8 +319,8 @@ not already there.
 	inter_symbol *id_s = CompileSplatsStage::make_socketed_symbol(IBM, I"property_id");	
 	Inter::Symbols::set_flag(id_s, MAKE_NAME_UNIQUE);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
-		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM), id_s),
-		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM),
+		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), id_s),
+		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
 			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 			LITERAL_IVAL, 0, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 
@@ -348,8 +348,8 @@ not already there.
 	}
 
 @<Make a scalar constant in Inter@> =
-	inter_ti MID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM),
+	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_ti v1 = 0, v2 = 0;
@@ -357,8 +357,8 @@ not already there.
 	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, v1, v2, B, NULL));
 
 @<Make a global variable in Inter@> =
-	inter_ti MID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM),
+	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_ti v1 = 0, v2 = 0;
@@ -366,15 +366,15 @@ not already there.
 	Produce::guard(Inter::Variable::new(IBM, MID, KID, v1, v2, B, NULL));
 
 @<Make a general property in Inter@> =
-	inter_ti MID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM),
+	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Property::new(IBM, MID, KID, B, NULL));
 
 @<Make an either-or property in Inter@> =
-	inter_ti MID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM),
+	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
 		RunningPipelines::get_symbol(step, truth_state_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Property::new(IBM, MID, KID, B, NULL));
@@ -400,8 +400,8 @@ not already there.
 	else
 		@<Compile the string of command grammar contents into the pile of v1 and v2 values@>;
 
-	inter_ti MID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM),
+	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
 		RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Constant::new_list(IBM, MID, KID, no_assimilated_array_entries,
@@ -533,10 +533,10 @@ in other compilation units. So we create |action_id| equal just to 0 for now.
 
 @<Make an action_id symbol in the action package@> =
 	inter_package *pack = InterBookmark::package(IBM);
-	inter_symbol *action_id_s = InterSymbolsTables::create_with_unique_name(
+	inter_symbol *action_id_s = InterSymbolsTable::create_with_unique_name(
 		InterBookmark::scope(IBM), I"action_id");
-	inter_ti MID = InterSymbolsTables::id_from_symbol(I, pack, action_id_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, pack,
+	inter_ti MID = InterSymbolsTable::id_from_symbol(I, pack, action_id_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, pack,
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, LITERAL_IVAL, 0, B, NULL));
@@ -545,8 +545,8 @@ in other compilation units. So we create |action_id| equal just to 0 for now.
 @<Make the actual double-sharped action symbol@> =
 	inter_package *pack = InterBookmark::package(IBM);
 	inter_symbol *action_s = CompileSplatsStage::make_socketed_symbol(IBM, value);
-	inter_ti MID = InterSymbolsTables::id_from_symbol(I, pack, action_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, pack,
+	inter_ti MID = InterSymbolsTable::id_from_symbol(I, pack, action_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, pack,
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, LITERAL_IVAL, 10000, B, NULL));
@@ -564,7 +564,7 @@ equating it to a function definition elsewhere.
 	Str::delete_first_character(fn_name);
 	Str::delete_first_character(fn_name);
 	inter_symbol *fn_s =
-		InterSymbolsTables::create_with_unique_name(InterBookmark::scope(IBM), fn_name);
+		InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), fn_name);
 	inter_symbol *existing_fn_s = Wiring::find_socket(I, fn_name);
 	if (existing_fn_s) Wiring::wire_to(fn_s, existing_fn_s);
 	DISCARD_TEXT(fn_name)
@@ -714,7 +714,7 @@ These have package types |_function| and |_code| respectively.
 		@<Extract a token@>;
 		if (Str::len(value) == 0) break;
 		inter_symbol *loc_name =
-			InterSymbolsTables::create_with_unique_name(InterPackage::scope(IP), value);
+			InterSymbolsTable::create_with_unique_name(InterPackage::scope(IP), value);
 		Inter::Symbols::local(loc_name);
 		inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 		Produce::guard(Inter::Local::new(IBM, loc_name,
@@ -738,8 +738,8 @@ These have package types |_function| and |_code| respectively.
 	inter_symbol *function_name_s =
 		CompileSplatsStage::make_socketed_symbol(IBM, identifier);
 	Inter::Symbols::annotate_i(function_name_s, ASSIMILATED_IANN, 1);
-	inter_ti MID = InterSymbolsTables::id_from_symbol(I, OP, function_name_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, OP,
+	inter_ti MID = InterSymbolsTable::id_from_symbol(I, OP, function_name_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, OP,
 		RunningPipelines::get_symbol(step, unchecked_function_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Constant::new_function(IBM, MID, KID, IP, B, NULL));
@@ -762,7 +762,7 @@ which have a single global namespace for functoons and variables anyway.
 =
 inter_symbol *CompileSplatsStage::make_socketed_symbol(inter_bookmark *IBM,
 	text_stream *identifier) {
-	inter_symbol *new_symbol = InterSymbolsTables::create_with_unique_name(
+	inter_symbol *new_symbol = InterSymbolsTable::create_with_unique_name(
 		InterBookmark::scope(IBM), identifier);
 	if (Wiring::find_socket(InterBookmark::tree(IBM), identifier) == NULL)
 		Wiring::socket(InterBookmark::tree(IBM), identifier, new_symbol);
@@ -791,7 +791,7 @@ inter_bookmark CompileSplatsStage::make_submodule(inter_tree *I, pipeline_step *
 		inter_package *module_pack =
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument];
 		if (module_pack) {
-			inter_package *submodule_package = InterPackage::by_name(module_pack, name);
+			inter_package *submodule_package = InterPackage::from_name(module_pack, name);
 			if (submodule_package == NULL) {
 				inter_bookmark IBM = InterBookmark::after_this_node(P);
 				submodule_package = Produce::make_subpackage(&IBM, name,
@@ -1099,8 +1099,8 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	inter_tree *I = InterBookmark::tree(IBM);
 	inter_package *pack = InterBookmark::package(IBM);
 	inter_symbol *result_s = CompileSplatsStage::new_ccv_symbol(pack);
-	inter_ti MID = InterSymbolsTables::id_from_IRS_and_symbol(IBM, result_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, pack,
+	inter_ti MID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, result_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, pack,
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_tree_node *pair_list = Inode::new_with_3_data_fields(IBM, CONSTANT_IST, MID, KID, op, NULL, B);
@@ -1149,8 +1149,8 @@ inter_symbol *CompileSplatsStage::compute_eval(pipeline_step *step,
 	}
 	if (v1 == UNDEF_IVAL) return NULL;
 	inter_symbol *result_s = CompileSplatsStage::new_ccv_symbol(pack);
-	inter_ti MID = InterSymbolsTables::id_from_IRS_and_symbol(IBM, result_s);
-	inter_ti KID = InterSymbolsTables::id_from_symbol(I, pack,
+	inter_ti MID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, result_s);
+	inter_ti KID = InterSymbolsTable::id_from_symbol(I, pack,
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, v1, v2, B, NULL));
@@ -1183,7 +1183,7 @@ inter_symbol *CompileSplatsStage::new_ccv_symbol(inter_package *pack) {
 	TEMPORARY_TEXT(NN)
 	WRITE_TO(NN, "Computed_Constant_Value_%d", ccs_count++);
 	inter_symbol *result_s =
-		InterSymbolsTables::symbol_from_name_creating(InterPackage::scope(pack), NN);
+		InterSymbolsTable::symbol_from_name_creating(InterPackage::scope(pack), NN);
 	Inter::Symbols::set_flag(result_s, MAKE_NAME_UNIQUE);
 	DISCARD_TEXT(NN)
 	return result_s;

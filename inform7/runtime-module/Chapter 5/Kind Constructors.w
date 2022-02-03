@@ -632,7 +632,7 @@ void RTKindConstructors::compile(void) {
 				Str::put(pos, Characters::toupper(Str::get(pos)));
 				if (Characters::isalnum(Str::get(pos)) == FALSE) Str::put(pos, '_');
 			}
-			inter_name *iname = Hierarchy::make_iname_with_specific_translation(ICOUNT_HL, InterSymbolsTables::render_identifier_unique(LargeScale::main_scope(Emit::tree()), ICN), RTKindConstructors::kind_package(K));
+			inter_name *iname = Hierarchy::make_iname_with_specific_translation(ICOUNT_HL, InterSymbolsTable::render_identifier_unique(LargeScale::main_scope(Emit::tree()), ICN), RTKindConstructors::kind_package(K));
 			Hierarchy::make_available(iname);
 			DISCARD_TEXT(ICN)
 			Emit::numeric_constant(iname, (inter_ti) Instances::count(K));

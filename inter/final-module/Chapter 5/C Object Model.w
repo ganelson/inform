@@ -545,7 +545,7 @@ void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
 
 	int inline_this = FALSE;
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(val1, val2, X);
+		inter_symbol *S = InterSymbolsTable::symbol_from_data_pair_at_node(val1, val2, X);
 		if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1))
 			inline_this = TRUE;
 	}	
@@ -705,7 +705,7 @@ for an enumerated kind; or just 0 if the kind is not an enumeration.
 @<Make the value ranges@> =
 	CMemoryModel::begin_array(NULL, gen, I"value_ranges", NULL, NULL, WORD_ARRAY_FORMAT, NULL);
 	CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
-	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
+	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
 		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
@@ -737,7 +737,7 @@ enumeration.
 	CMemoryModel::begin_array(NULL, gen, I"value_property_holders",
 		NULL, NULL, WORD_ARRAY_FORMAT, NULL);
 	CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
-	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
+	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
 		int M = Inter::Symbols::evaluate_to_int(max_weak_id);

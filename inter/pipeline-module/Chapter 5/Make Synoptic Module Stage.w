@@ -158,7 +158,7 @@ tree_inventory *MakeSynopticModuleStage::take_inventory(inter_tree *I) {
 	InterTree::traverse(I, MakeSynopticModuleStage::visitor, inv, NULL, 0);
 	for (int i=0; i<InterNodeList::array_len(inv->module_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->module_nodes->list[i].node);
-		if (InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), I"extension_id"))
+		if (InterSymbolsTable::symbol_from_name(InterPackage::scope(pack), I"extension_id"))
 			InterNodeList::array_add(inv->extension_nodes, inv->module_nodes->list[i].node);
 	}
 	for (int i=0; i<InterNodeList::array_len(inv->instance_nodes); i++) {
@@ -179,7 +179,7 @@ void MakeSynopticModuleStage::visitor(inter_tree *I, inter_tree_node *P, void *s
 	tree_inventory *inv = (tree_inventory *) state;
 	if (P->W.instruction[ID_IFLD] == CONSTANT_IST) {
 		inter_symbol *con_s =
-			InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+			InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 		if (Inter::Symbols::read_annotation(con_s, TEXT_LITERAL_IANN) == 1)
 			InterNodeList::array_add(inv->text_nodes, P);
 	}

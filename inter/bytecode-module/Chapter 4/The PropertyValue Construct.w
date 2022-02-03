@@ -46,7 +46,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_X = InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD);
+		inter_symbol *prop_X = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PVAL_IFLD);
 		if (prop_X == prop_name)
 			{ *E = Inter::Errors::quoted(I"property already given", ilp->mr.exp[0], eloc); return; }
 	}
@@ -57,7 +57,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), val_kind, ilp->mr.exp[2], &con_val1, &con_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
-	*E = Inter::PropertyValue::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, owner_name),
+	*E = Inter::PropertyValue::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_name),
 		con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
 }
 
@@ -68,7 +68,7 @@ int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, int
 	inter_node_list *FL = Inode::ID_to_frame_list(F, plist_ID);
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_allowed = InterSymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
+		inter_symbol *prop_allowed = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PERM_IFLD);
 		if (prop_allowed == prop_name)
 			return TRUE;
 	}
@@ -81,7 +81,7 @@ int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, int
 		if (FL == NULL) internal_error("no permissions list");
 		inter_tree_node *X;
 		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-			inter_symbol *prop_allowed = InterSymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
+			inter_symbol *prop_allowed = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PERM_IFLD);
 			if (prop_allowed == prop_name)
 				return TRUE;
 		}
@@ -107,8 +107,8 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 	*E = Inter::Verify::symbol_KOI(owner, P, P->W.instruction[OWNER_PVAL_IFLD]); if (*E) return;
 
 	if (vcount == 0) {
-		inter_symbol *prop_name = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[PROP_PVAL_IFLD]);;
-		inter_symbol *owner_name = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[OWNER_PVAL_IFLD]);;
+		inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[PROP_PVAL_IFLD]);;
+		inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[OWNER_PVAL_IFLD]);;
 
 		if (Inter::PropertyValue::permitted(P, owner, owner_name, prop_name) == FALSE) {
 			text_stream *err = Str::new();
@@ -134,10 +134,10 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 }
 
 void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD);
-	inter_symbol *owner_name = InterSymbolsTables::symbol_from_frame_data(P, OWNER_PVAL_IFLD);
+	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, PROP_PVAL_IFLD);
+	inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID_at_node(P, OWNER_PVAL_IFLD);
 	if ((prop_name) && (owner_name)) {
-		inter_symbol *val_kind = Inter::Property::kind_of(InterSymbolsTables::symbol_from_frame_data(P, PROP_PVAL_IFLD));
+		inter_symbol *val_kind = Inter::Property::kind_of(InterSymbolsTable::symbol_from_ID_at_node(P, PROP_PVAL_IFLD));
 		WRITE("propertyvalue %S %S = ", prop_name->symbol_name, owner_name->symbol_name);
 		Inter::Types::write(OUT, P, val_kind, P->W.instruction[DVAL1_PVAL_IFLD], P->W.instruction[DVAL2_PVAL_IFLD], InterPackage::scope_of(P), FALSE);
 	} else { *E = Inode::error(P, I"cannot write propertyvalue", NULL); return; }

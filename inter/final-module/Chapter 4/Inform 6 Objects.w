@@ -407,7 +407,7 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	CodeGen::select_temporary(gen, val);
 	int inline_this = FALSE;
 	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-		inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_frame(val1, val2, X);
+		inter_symbol *S = InterSymbolsTable::symbol_from_data_pair_at_node(val1, val2, X);
 		if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
 			inter_tree_node *P = Inter::Symbols::definition(S);
 			text_stream *OUT = CodeGen::current(gen);
@@ -466,7 +466,7 @@ each enumerative kind, and is indexed by weak kind ID.
 	segmentation_pos saved = CodeGen::select(gen, arrays_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Array value_ranges --> 0");
-	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
+	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
 		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
@@ -494,7 +494,7 @@ the value property holders for each enumerative kind.
 	segmentation_pos saved = CodeGen::select(gen, arrays_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Array value_property_holders --> 0");
-	inter_symbol *max_weak_id = InterSymbolsTables::url_name_to_symbol(gen->from, NULL, 
+	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
 		int M = Inter::Symbols::evaluate_to_int(max_weak_id);

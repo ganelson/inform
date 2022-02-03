@@ -47,6 +47,11 @@ inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, int
 	return symb;
 }
 
+inter_package *Inter::Symbols::package(inter_symbol *S) {
+	if (S == NULL) return NULL;
+	return InterSymbolsTable::package(S->owning_table);
+}
+
 int Inter::Symbols::get_type(inter_symbol *S) {
 	return S->symbol_status & SYMBOL_TYPE_MASK_ISYMT;
 }
@@ -67,7 +72,7 @@ void Inter::Symbols::log(OUTPUT_STREAM, void *vs) {
 	inter_symbol *S = (inter_symbol *) vs;
 	if (S == NULL) WRITE("<no-symbol>");
 	else {
-		InterSymbolsTables::symbol_to_url_name(DL, S);
+		InterSymbolsTable::write_symbol_URL(DL, S);
 		WRITE("{%d}", S->symbol_ID - SYMBOL_BASE_VAL);
 		if (Str::len(S->translate_text) > 0) WRITE("'%S'", S->translate_text);
 	}
@@ -86,7 +91,7 @@ int Inter::Symbols::is_stored_in_data(inter_ti val1, inter_ti val2) {
 
 void Inter::Symbols::to_data(inter_tree *I, inter_package *pack, inter_symbol *S, inter_ti *val1, inter_ti *val2) {
 	if (S == NULL) internal_error("no symbol");
-	*val1 = ALIAS_IVAL; *val2 = InterSymbolsTables::id_from_symbol(I, pack, S);
+	*val1 = ALIAS_IVAL; *val2 = InterSymbolsTable::id_from_symbol(I, pack, S);
 }
 
 @ =
@@ -119,7 +124,7 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 		WRITE(" `%S`", trans_name);
 	if (Wiring::is_wired(mark)) {
 		WRITE(" --> ");
-		InterSymbolsTables::symbol_to_url_name(OUT, Wiring::wired_to(mark));
+		InterSymbolsTable::write_symbol_URL(OUT, Wiring::wired_to(mark));
 	}
 }
 
@@ -152,7 +157,7 @@ int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
 		(P->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)) {
 		inter_symbols_table *scope = S->owning_table;
-		inter_symbol *alias_to = InterSymbolsTables::symbol_from_id(scope, P->W.instruction[DATA_CONST_IFLD + 1]);
+		inter_symbol *alias_to = InterSymbolsTable::symbol_from_ID(scope, P->W.instruction[DATA_CONST_IFLD + 1]);
 		return Inter::Symbols::evaluate_to_int(alias_to);
 	}
 	return -1;
@@ -172,7 +177,7 @@ void Inter::Symbols::set_int(inter_symbol *S, int N) {
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
 		(P->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)) {
 		inter_symbols_table *scope = S->owning_table;
-		inter_symbol *alias_to = InterSymbolsTables::symbol_from_id(scope, P->W.instruction[DATA_CONST_IFLD + 1]);
+		inter_symbol *alias_to = InterSymbolsTable::symbol_from_ID(scope, P->W.instruction[DATA_CONST_IFLD + 1]);
 		Inter::Symbols::set_int(alias_to, N);
 		return;
 	}
@@ -187,12 +192,6 @@ void Inter::Symbols::strike_definition(inter_symbol *S) {
 		if (D) NodePlacement::remove(D);
 		Inter::Symbols::undefine(S);
 	}
-}
-
-void Inter::Symbols::remove_from_table(inter_symbol *S) {
-	int index = (int) S->symbol_ID - (int) SYMBOL_BASE_VAL;
-	Wiring::wire_to(S, NULL);
-	S->owning_table->symbol_array[index] = NULL;
 }
 
 void Inter::Symbols::undefine(inter_symbol *S) {

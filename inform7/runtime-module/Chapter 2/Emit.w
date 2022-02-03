@@ -25,7 +25,7 @@ inter_tree *Emit::tree(void) {
 }
 
 inter_ti Emit::symbol_id(inter_symbol *S) {
-	return InterSymbolsTables::id_from_IRS_and_symbol(Emit::at(), S);
+	return InterSymbolsTable::id_from_symbol_at_bookmark(Emit::at(), S);
 }
 
 inter_warehouse *Emit::warehouse(void) {

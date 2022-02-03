@@ -33,7 +33,7 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML_OPEN("p");
 	Localisation::roman(OUT, LD, I"Index.Elements.In.Format");
 	WRITE(": ");
-	inter_package *pack = InterPackage::by_url(I, I"/main/completion/basics");
+	inter_package *pack = InterPackage::from_URL(I, I"/main/completion/basics");
 	text_stream *VM = Metadata::read_optional_textual(pack, I"^virtual_machine");
 	text_stream *VM_icon = Metadata::read_optional_textual(pack, I"^virtual_machine_icon");
 	if (Str::len(VM_icon) > 0) {
@@ -86,7 +86,7 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	WRITE(":");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
-	inter_package *pack = InterPackage::by_url(I, I"/main/completion/basics");
+	inter_package *pack = InterPackage::from_URL(I, I"/main/completion/basics");
 	text_stream *used = Metadata::read_optional_textual(pack, I"^language_elements_used");
 	text_stream *not_used = Metadata::read_optional_textual(pack, I"^language_elements_not_used");
 	if (Str::len(used) > 0) 
@@ -102,7 +102,7 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	WRITE(":");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
-	inter_package *pack = InterPackage::by_url(I, I"/main/completion/basics");
+	inter_package *pack = InterPackage::from_URL(I, I"/main/completion/basics");
 	inter_package *aspect_pack;
 	LOOP_THROUGH_SUBPACKAGES(aspect_pack, pack, I"_debugging_aspect") {	
 		TEMPORARY_TEXT(is)

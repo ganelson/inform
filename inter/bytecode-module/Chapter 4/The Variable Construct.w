@@ -43,7 +43,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), var_kind, ilp->mr.exp[2], &var_val1, &var_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
-	*E = Inter::Variable::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, var_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, var_kind), var_val1, var_val2, (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::Variable::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_kind), var_val1, var_val2, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, inter_ti KID, inter_ti var_val1, inter_ti var_val2, inter_ti level, inter_error_location *eloc) {
@@ -61,8 +61,8 @@ void Inter::Variable::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 }
 
 void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *var_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
-	inter_symbol *var_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_VAR_IFLD);
+	inter_symbol *var_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_VAR_IFLD);
+	inter_symbol *var_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_VAR_IFLD);
 	if ((var_name) && (var_kind)) {
 		WRITE("variable %S %S = ", var_name->symbol_name, var_kind->symbol_name);
 		Inter::Types::write(OUT, P, var_kind, P->W.instruction[VAL1_VAR_IFLD], P->W.instruction[VAL2_VAR_IFLD], InterPackage::scope_of(P), FALSE);
@@ -75,5 +75,5 @@ inter_symbol *Inter::Variable::kind_of(inter_symbol *con_symbol) {
 	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != VARIABLE_IST) return NULL;
-	return InterSymbolsTables::symbol_from_frame_data(D, KIND_VAR_IFLD);
+	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_VAR_IFLD);
 }

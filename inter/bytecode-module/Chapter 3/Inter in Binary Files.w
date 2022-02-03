@@ -130,8 +130,8 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			if (BinaryFiles::read_int32(fh, &from_N)) {
 				inter_ti n;
 				switch (i) {
-					case 0: n = (inter_ti) InterTree::global_scope(I)->n_index; break;
-					case 1: n = (inter_ti) InterTree::root_package(I)->resource_ID; break;
+					case 0: n = InterTree::global_scope(I)->resource_ID; break;
+					case 1: n = InterTree::root_package(I)->resource_ID; break;
 					default: n = InterWarehouse::create_resource(warehouse); break;
 				}
 	if (trace_bin) WRITE_TO(STDOUT, "Reading resource %d <--- %d\n", n, from_N);
@@ -213,7 +213,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 @<Read a symbols table resource@> =
 	inter_symbols_table *tab = InterWarehouse::get_symbols_table(warehouse, n);
 	if (tab == NULL) {
-		tab = InterSymbolsTables::new();
+		tab = InterSymbolsTable::new(n);
 		InterWarehouse::create_ref_at(warehouse, n, STORE_POINTER_inter_symbols_table(tab), NULL);
 	}
 	while (BinaryFiles::read_int32(fh, &X)) {
@@ -241,7 +241,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			PUT_TO(trans, (int) c);
 		}
 
-		inter_symbol *S = InterSymbolsTables::symbol_from_name_creating_at_ID(tab, name, X);
+		inter_symbol *S = InterSymbolsTable::symbol_from_name_creating_at_ID(tab, name, X);
 		Inter::Symbols::set_type(S, (int) st);
 		Inter::Symbols::set_scope(S, (int) sc);
 		if (uniq == 1) Inter::Symbols::set_flag(S, MAKE_NAME_UNIQUE);
@@ -279,29 +279,26 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 @<Write a symbols table resource@> =
 	inter_symbols_table *T = InterWarehouse::get_symbols_table(warehouse, n);
 	if (T) {
-		for (int i=0; i<T->size; i++) {
-			inter_symbol *symb = T->symbol_array[i];
-			if (symb) {
-				BinaryFiles::write_int32(fh, symb->symbol_ID);
-				BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_type(symb));
-				BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_scope(symb));
-				if (Inter::Symbols::get_flag(symb, MAKE_NAME_UNIQUE))
-					BinaryFiles::write_int32(fh, 1);
-				else
-					BinaryFiles::write_int32(fh, 0);
-				BinaryFiles::write_int32(fh, (unsigned int) Str::len(symb->symbol_name));
-				LOOP_THROUGH_TEXT(P, symb->symbol_name)
-					BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
-				BinaryFiles::write_int32(fh, (unsigned int) Str::len(symb->translate_text));
-				LOOP_THROUGH_TEXT(P, symb->translate_text)
-					BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
-				Inter::Annotations::set_to_bytecode(fh, &(symb->ann_set));
-				if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) {
-					text_stream *N = Wiring::wired_to_name(symb);
-					LOOP_THROUGH_TEXT(pos, N)
-						BinaryFiles::write_int32(fh, (unsigned int) Str::get(pos));
-					BinaryFiles::write_int32(fh, 0);
-				}
+		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
+			BinaryFiles::write_int32(fh, symb->symbol_ID);
+			BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_type(symb));
+			BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_scope(symb));
+			if (Inter::Symbols::get_flag(symb, MAKE_NAME_UNIQUE))
+				BinaryFiles::write_int32(fh, 1);
+			else
+				BinaryFiles::write_int32(fh, 0);
+			BinaryFiles::write_int32(fh, (unsigned int) Str::len(symb->symbol_name));
+			LOOP_THROUGH_TEXT(P, symb->symbol_name)
+				BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
+			BinaryFiles::write_int32(fh, (unsigned int) Str::len(symb->translate_text));
+			LOOP_THROUGH_TEXT(P, symb->translate_text)
+				BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
+			Inter::Annotations::set_to_bytecode(fh, &(symb->ann_set));
+			if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) {
+				text_stream *N = Wiring::wired_to_name(symb);
+				LOOP_THROUGH_TEXT(pos, N)
+					BinaryFiles::write_int32(fh, (unsigned int) Str::get(pos));
+				BinaryFiles::write_int32(fh, 0);
 			}
 		}
 	}
@@ -350,7 +347,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		else BinaryFiles::write_int32(fh, (unsigned int) par->resource_ID);
 		BinaryFiles::write_int32(fh, (unsigned int) InterPackage::is_a_function_body(P));
 		BinaryFiles::write_int32(fh, (unsigned int) InterPackage::is_a_root_package(P));
-		BinaryFiles::write_int32(fh, (unsigned int) P->package_scope->n_index);
+		BinaryFiles::write_int32(fh, P->package_scope->resource_ID);
 		BinaryFiles::write_int32(fh, (unsigned int) Str::len(P->package_name_t));
 		LOOP_THROUGH_TEXT(C, P->package_name_t)
 			BinaryFiles::write_int32(fh, (unsigned int) Str::get(C));
@@ -388,9 +385,9 @@ enough that the slot exists for the eventual list to be stored in.
 				Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			inter_symbols_table *to_T = InterWarehouse::get_symbols_table(warehouse, to_T_id);
 			if (from_T == NULL) internal_error("no to_T");
-			inter_symbol *from_S = InterSymbolsTables::symbol_from_id(from_T, from_ID);
+			inter_symbol *from_S = InterSymbolsTable::symbol_from_ID(from_T, from_ID);
 			if (from_S == NULL) internal_error("no from_S");
-			inter_symbol *to_S = InterSymbolsTables::symbol_from_id(to_T, to_ID);
+			inter_symbol *to_S = InterSymbolsTable::symbol_from_ID(to_T, to_ID);
 			if (to_S == NULL) internal_error("no to_S");
 			Wiring::wire_to(from_S, to_S);
 		}
@@ -401,14 +398,13 @@ enough that the slot exists for the eventual list to be stored in.
 		inter_symbols_table *from_T = InterWarehouse::get_symbols_table(warehouse, n);
 		if (from_T) {
 			BinaryFiles::write_int32(fh, (unsigned int) n);
-			for (int i=0; i<from_T->size; i++) {
-				inter_symbol *symb = from_T->symbol_array[i];
+			LOOP_OVER_SYMBOLS_TABLE(symb, from_T) {
 				if (Wiring::is_wired(symb)) {
 					inter_symbol *W = Wiring::wired_to(symb);
 					BinaryFiles::write_int32(fh, symb->symbol_ID);
-					BinaryFiles::write_int32(fh, (unsigned int) W->owning_table->n_index);
+					BinaryFiles::write_int32(fh, W->owning_table->resource_ID);
 					if (trace_bin)
-						WRITE_TO(STDOUT, "Write eqn %d -> %d\n", n, W->owning_table->n_index);
+						WRITE_TO(STDOUT, "Write eqn %d -> %d\n", n, W->owning_table->resource_ID);
 					BinaryFiles::write_int32(fh, W->symbol_ID);
 				}
 			}
@@ -430,7 +426,7 @@ enough that the slot exists for the eventual list to be stored in.
 			if (grid) PID = grid[PID];
 	if (trace_bin) WRITE_TO(STDOUT, "PID %d\n", PID);
 			if (PID) owner = InterWarehouse::get_package(warehouse, PID);
-	if (trace_bin) WRITE_TO(STDOUT, "Owner has ID %d, table %d\n", owner->resource_ID, owner->package_scope->n_index);
+	if (trace_bin) WRITE_TO(STDOUT, "Owner has ID %d, table %d\n", owner->resource_ID, owner->package_scope->resource_ID);
 		}
 		inter_tree_node *P = Inode::new_node(warehouse, I, extent-1, &eloc, owner);
 

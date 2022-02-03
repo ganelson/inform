@@ -33,7 +33,7 @@ can act on them or ignore them as it pleases.
 @ =
 void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
-	inter_symbol *target_s = InterSymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
+	inter_symbol *target_s = InterSymbolsTable::symbol_from_ID_at_node(P, TARGET_PRAGMA_IFLD);
 	if (target_s == NULL) internal_error("bad pragma");
 	inter_ti ID = P->W.instruction[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
@@ -147,7 +147,7 @@ void Vanilla::splat_matter(OUTPUT_STREAM, inter_tree *I, text_stream *S) {
 				if (c == URL_SYMBOL_CHAR) break;
 				PUT_TO(T, c);
 			}
-			inter_symbol *symb = InterSymbolsTables::url_name_to_symbol(I, NULL, T);
+			inter_symbol *symb = InterSymbolsTable::URL_to_symbol(I, T);
 			WRITE("%S", Inter::Symbols::name(symb));
 			DISCARD_TEXT(T)
 		} else PUT(c);

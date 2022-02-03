@@ -224,7 +224,7 @@ inter_symbol *InterNames::to_symbol(inter_name *iname) {
 		TEMPORARY_TEXT(identifier)
 		WRITE_TO(identifier, "%n", iname);
 		inter_symbols_table *T = InterNames::scope(iname);
-		iname->symbol = InterSymbolsTables::create_with_unique_name(T, identifier);
+		iname->symbol = InterSymbolsTable::create_with_unique_name(T, identifier);
 		DISCARD_TEXT(identifier)
 	}
 	return iname->symbol;
@@ -266,8 +266,8 @@ void InterNames::annotate_w(inter_name *iname, inter_ti annot_ID, wording W) {
 	inter_symbol *S = InterNames::to_symbol(iname);
 	TEMPORARY_TEXT(temp)
 	WRITE_TO(temp, "%W", W);
-	Inter::Symbols::annotate_t(InterPackage::tree(S->owning_table->owning_package),
-		S->owning_table->owning_package, S, annot_ID, temp);
+	Inter::Symbols::annotate_t(InterPackage::tree(Inter::Symbols::package(S)),
+		Inter::Symbols::package(S), S, annot_ID, temp);
 	DISCARD_TEXT(temp)
 }
 

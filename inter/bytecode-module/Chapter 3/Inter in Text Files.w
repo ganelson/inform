@@ -13,7 +13,7 @@ void Inter::Textual::read(inter_tree *I, filename *F) {
 	inter_bookmark IBM = InterBookmark::at_start_of_this_repository(I);
 	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
 	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IBM);
-	InterSymbolsTables::resolve_forward_references(I, &eloc);
+	Inter::Textual::resolve_forward_references(I, &eloc);
 	InterTree::traverse(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
 	Primitives::index_primitives_in_tree(I);
 }
@@ -25,7 +25,7 @@ void Inter::Textual::lint_visitor(inter_tree *I, inter_tree_node *P, void *state
 
 inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
-	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb) {
 		if (Inter::Symbols::is_predeclared(symb)) {
 			Inter::Symbols::undefine(symb);
@@ -34,12 +34,12 @@ inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbo
 		*E = Inter::Errors::quoted(I"symbol already exists", name, eloc);
 		return NULL;
 	}
-	return InterSymbolsTables::symbol_from_name_creating(T, name);
+	return InterSymbolsTable::symbol_from_name_creating(T, name);
 }
 
 inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_ti construct, inter_error_message **E) {
 	*E = NULL;
-	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	inter_tree_node *D = Inter::Symbols::definition(symb);
 	if (Inter::Symbols::is_extern(symb)) return symb;
@@ -53,7 +53,7 @@ inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *e
 
 inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
-	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	if ((Inter::Symbols::is_defined(symb)) &&
 		(Inter::Symbols::is_predeclared(symb) == FALSE) &&
@@ -69,7 +69,7 @@ inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_e
 
 inter_symbol *Inter::Textual::find_KOI(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
-	inter_symbol *symb = InterSymbolsTables::symbol_from_name(T, name);
+	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	inter_tree_node *D = Inter::Symbols::definition(symb);
 	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
@@ -127,3 +127,32 @@ void Inter::Textual::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_error_message *E = Inter::Defn::write_construct_text(tws->to, P);
 	if (E) Inter::Errors::issue(E);
 }
+
+@h Forward references.
+
+=
+void Inter::Textual::resolve_forward_references(inter_tree *I, inter_error_location *eloc) {
+	InterTree::traverse(I, Inter::Textual::rfr_visitor, eloc, NULL, PACKAGE_IST);
+}
+
+void Inter::Textual::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	inter_error_location *eloc = (inter_error_location *) state;
+	inter_package *pack = InterPackage::at_this_head(P);
+	if (pack == NULL) internal_error("no package defined here");
+	inter_symbols_table *T = InterPackage::scope(pack);
+	if (T == NULL) internal_error("package with no symbols");
+	for (int i=0; i<T->symbol_array_size; i++) {
+		inter_symbol *symb = T->symbol_array[i];
+		if (Wiring::is_wired_to_name(symb)) {
+			text_stream *N = Wiring::wired_to_name(symb);
+			if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) continue;
+			inter_symbol *S_to = InterSymbolsTable::URL_to_symbol(InterPackage::tree(pack), N);
+			if (S_to == NULL) S_to = InterSymbolsTable::symbol_from_name(T, N);
+			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", N, eloc));
+			else if (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)
+				Wiring::convert_to_socket(symb, S_to);
+			else Wiring::wire_to(symb, S_to);
+		}
+	}
+}
+

@@ -84,7 +84,8 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 			if (Inter::Symbols::get_scope(name_name) == PLUG_ISYMS)
 				Wiring::convert_to_plug(name_name, equate_name);
 			else {
-				inter_symbol *eq = InterSymbolsTables::url_name_to_symbol(InterBookmark::tree(IBM), InterBookmark::scope(IBM), equate_name);
+				inter_symbol *eq = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), equate_name);
+				if (eq == NULL) eq = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), equate_name);
 				if (eq == NULL) {
 					Wiring::wire_to_name(name_name, equate_name);
 					Inter::Symbols::set_scope(name_name, EXTERNAL_ISYMS);
@@ -101,7 +102,8 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		}
 		if (trans_name) Inter::Symbols::set_translate(name_name, trans_name);
 		if (equate_name) {
-			inter_symbol *eq = InterSymbolsTables::url_name_to_symbol(InterBookmark::tree(IBM), InterBookmark::scope(IBM), equate_name);
+			inter_symbol *eq = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), equate_name);
+			if (eq == NULL) eq = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), equate_name);
 			if (eq == NULL) {
 				Wiring::wire_to_name(name_name, equate_name);
 				Inter::Symbols::set_scope(name_name, EXTERNAL_ISYMS);

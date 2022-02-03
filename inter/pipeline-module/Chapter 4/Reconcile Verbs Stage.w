@@ -30,7 +30,7 @@ int ReconcileVerbsStage::run(pipeline_step *step) {
 
 void ReconcileVerbsStage::visitor(inter_tree *I, inter_tree_node *P, void *v_VL) {
 	linked_list *VL = (linked_list *) v_VL;
-	inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	if (Inter::Symbols::read_annotation(con_name, VERBARRAY_IANN) == 1)
 		ADD_TO_LINKED_LIST(P, inter_tree_node, VL);
 }
@@ -38,12 +38,12 @@ void ReconcileVerbsStage::visitor(inter_tree *I, inter_tree_node *P, void *v_VL)
 @<Attend to the command verb definitions, non-meta ones first@> =
 	inter_tree_node *P;
 	LOOP_OVER_LINKED_LIST(P, inter_tree_node, VL) {
-		inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+		inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 		if (Inter::Symbols::read_annotation(con_name, METAVERB_IANN) != 1)
 			@<Attend to the verb@>;
 	}
 	LOOP_OVER_LINKED_LIST(P, inter_tree_node, VL) {
-		inter_symbol *con_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+		inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 		if (Inter::Symbols::read_annotation(con_name, METAVERB_IANN) == 1)
 			@<Attend to the verb@>;
 	}

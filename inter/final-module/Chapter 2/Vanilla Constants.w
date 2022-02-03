@@ -9,7 +9,7 @@ in the tree:
 =
 void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *con_name =
-		InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	if (con_name == NULL) internal_error("no constant");
 	if (con_name->metadata_key == FALSE) {
 		if (Inter::Symbols::read_annotation(con_name, ACTION_IANN) == 1)  {

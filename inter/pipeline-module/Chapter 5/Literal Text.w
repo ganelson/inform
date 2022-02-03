@@ -88,7 +88,7 @@ in |texts|.
 	P->W.instruction[DATA_CONST_IFLD+1] = val2;
 
 	inter_symbol *con_name =
-		InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	Inter::Symbols::unannotate(con_name, TEXT_LITERAL_IANN);
 
 @ Here we extract the actual text from a node defining a constant literal text,

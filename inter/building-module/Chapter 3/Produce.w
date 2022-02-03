@@ -240,7 +240,7 @@ refer to local resources like these.
 
 =
 inter_symbol *Produce::new_local_symbol(inter_tree *I, text_stream *name) {
-	return InterSymbolsTables::create_with_unique_name(
+	return InterSymbolsTable::create_with_unique_name(
 		InterPackage::scope(I->site.sprdata.current_inter_function), name);
 }
 
@@ -325,8 +325,8 @@ inter_name *Produce::numeric_constant(inter_tree *I, inter_name *con_iname, kind
 	inter_symbol *con_s = InterNames::define(con_iname);
 	inter_bookmark *IBM = Packaging::at(I);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
-		InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
-		InterSymbolsTables::id_from_IRS_and_symbol(IBM, Produce::kind_to_symbol(K)),
+		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
+		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, Produce::kind_to_symbol(K)),
 		LITERAL_IVAL, val, Produce::baseline(IBM), NULL));
 	Packaging::exit(I, save);
 	return con_iname;
@@ -344,8 +344,8 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	inter_package *pack = InterBookmark::package(IBM);
 	Inter::Symbols::to_data(InterPackage::tree(pack), pack, val_s, &v1, &v2);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
-		InterSymbolsTables::id_from_IRS_and_symbol(IBM, con_s),
-		InterSymbolsTables::id_from_IRS_and_symbol(IBM, Produce::kind_to_symbol(K)),
+		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
+		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, Produce::kind_to_symbol(K)),
 		v1, v2, Produce::baseline(IBM), NULL));
 	Packaging::exit(I, save);
 	return con_iname;
@@ -655,6 +655,6 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 }
 
 inter_symbol *Produce::local_exists(inter_tree *I, text_stream *lname) {
-	return InterSymbolsTables::symbol_from_name(
+	return InterSymbolsTable::symbol_from_name(
 		InterPackage::scope(I->site.sprdata.current_inter_function), lname);
 }

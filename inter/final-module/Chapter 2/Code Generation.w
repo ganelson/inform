@@ -120,12 +120,12 @@ void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	switch (P->W.instruction[ID_IFLD]) {
 		case VARIABLE_IST: {
-			inter_symbol *var_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_VAR_IFLD);
+			inter_symbol *var_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_VAR_IFLD);
 			ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);
 			break;
 		}
 		case PROPERTY_IST: {
-			inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
+			inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PROP_IFLD);
 			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1)
 				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties);
 			else
@@ -133,12 +133,12 @@ void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 			break;
 		}
 		case INSTANCE_IST: {
-			inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_KIND_IFLD);
+			inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_KIND_IFLD);
 			ADD_TO_LINKED_LIST(inst_name, inter_symbol, gen->instances);
 			break;
 		}
 		case KIND_IST: {
-			inter_symbol *kind_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
+			inter_symbol *kind_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
 			ADD_TO_LINKED_LIST(kind_name, inter_symbol, gen->kinds);
 			break;
 		}
@@ -428,9 +428,8 @@ void CodeGen::clear_all_transients(inter_tree *I) {
 void CodeGen::clear_transients(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_package *pack = InterPackage::at_this_head(P);
 	inter_symbols_table *T = InterPackage::scope(pack);
-	for (int i=0; i<T->size; i++)
-		if (T->symbol_array[i])
-			Inter::Symbols::clear_transient_flags(T->symbol_array[i]);
+	LOOP_OVER_SYMBOLS_TABLE(S, T)
+		Inter::Symbols::clear_transient_flags(S);
 }
 
 @ In particular the |TRAVERSE_MARK_BIT| flag is sometimes convenient to use.
@@ -471,7 +470,7 @@ void CodeGen::pair(code_generation *gen, inter_tree_node *P,
 	if (val1 == LITERAL_IVAL) {
 		Generators::compile_literal_number(gen, val2, FALSE);
 	} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-		inter_symbol *s = InterSymbolsTables::symbol_from_data_pair_and_table(val1, val2, T);
+		inter_symbol *s = InterSymbolsTable::symbol_from_data_pair(val1, val2, T);
 		if (s == NULL) internal_error("bad symbol in Inter pair");
 		Generators::compile_literal_symbol(gen, s);
 	} else if (val1 == DIVIDER_IVAL) {

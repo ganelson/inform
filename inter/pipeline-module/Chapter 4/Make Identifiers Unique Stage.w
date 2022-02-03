@@ -43,7 +43,7 @@ void MakeIdentifiersUniqueStage::create_pipeline_stage(void) {
 
 int MakeIdentifiersUniqueStage::run_pipeline_stage(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
-	dictionary *D = Dictionaries::new(INITIAL_INTER_SYMBOLS_ID_RANGE, FALSE);
+	dictionary *D = Dictionaries::new(16, FALSE);
 	InterTree::traverse(I, MakeIdentifiersUniqueStage::visitor, D, NULL, 0);
 	return TRUE;
 }
@@ -70,9 +70,8 @@ void MakeIdentifiersUniqueStage::visitor(inter_tree *I, inter_tree_node *P, void
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *Q = InterPackage::at_this_head(P);
 		inter_symbols_table *ST = InterPackage::scope(Q);
-		for (int i=0; i<ST->size; i++) {
-			inter_symbol *S = ST->symbol_array[i];
-			if ((S) && (Wiring::is_wired(S) == FALSE) &&
+		LOOP_OVER_SYMBOLS_TABLE(S, ST) {
+			if ((Wiring::is_wired(S) == FALSE) &&
 				(Inter::Symbols::get_flag(S, MAKE_NAME_UNIQUE))) {
 				@<Give this symbol a unique translation@>;
 				Inter::Symbols::clear_flag(S, MAKE_NAME_UNIQUE);

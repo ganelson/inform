@@ -51,7 +51,7 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 }
 
 inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *var_name, inter_symbol *var_kind, inter_ti ID, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, LOCAL_IST, 0, InterSymbolsTables::id_from_IRS_and_symbol(IBM, var_name), var_kind?(InterSymbolsTables::id_from_IRS_and_symbol(IBM, var_kind)):0, eloc, level);
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, LOCAL_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_name), var_kind?(InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_kind)):0, eloc, level);
 	Inode::attach_comment(P, ID);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -68,8 +68,8 @@ void Inter::Local::verify(inter_construct *IC, inter_tree_node *P, inter_package
 
 void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = InterPackage::container(P);
-	inter_symbol *var_name = InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
-	inter_symbol *var_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_LOCAL_IFLD);
+	inter_symbol *var_name = InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
+	inter_symbol *var_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_LOCAL_IFLD);
 	if (var_name) {
 		WRITE("local %S %S", var_name->symbol_name, var_kind->symbol_name);
 		Inter::Symbols::write_annotations(OUT, P, var_name);
@@ -81,5 +81,5 @@ inter_symbol *Inter::Local::kind_of(inter_symbol *con_symbol) {
 	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != LOCAL_IST) return NULL;
-	return InterSymbolsTables::symbol_from_frame_data(D, KIND_LOCAL_IFLD);
+	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_LOCAL_IFLD);
 }

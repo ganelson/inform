@@ -34,7 +34,7 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		return;
 	}
 
-	inter_symbol *symbol = InterSymbolsTables::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
+	inter_symbol *symbol = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
 	if (symbol == NULL) {
 		*E = Inter::Errors::plain(I"no such symbol", eloc);
 		return;
@@ -48,7 +48,7 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 }
 
 inter_error_message *Inter::Append::new(inter_bookmark *IBM, inter_symbol *symbol, inter_ti append_text, inter_ti level, struct inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, APPEND_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, symbol), append_text, eloc, level);
+	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, APPEND_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, symbol), append_text, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -58,7 +58,7 @@ void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_packag
 	inter_ti vcount = Inode::bump_verification_count(P);
 
 	if (P->W.extent != EXTENT_APPEND_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	inter_symbol *symbol = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[SYMBOL_APPEND_IFLD]);;
+	inter_symbol *symbol = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[SYMBOL_APPEND_IFLD]);;
 	if (symbol == NULL) { *E = Inode::error(P, I"no target name", NULL); return; }
 	if (P->W.instruction[TEXT_APPEND_IFLD] == 0) { *E = Inode::error(P, I"no translation text", NULL); return; }
 
@@ -70,7 +70,7 @@ void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_packag
 }
 
 void Inter::Append::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *symbol = InterSymbolsTables::symbol_from_frame_data(P, SYMBOL_APPEND_IFLD);
+	inter_symbol *symbol = InterSymbolsTable::symbol_from_ID_at_node(P, SYMBOL_APPEND_IFLD);
 	inter_ti ID = P->W.instruction[TEXT_APPEND_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	WRITE("append %S \"", symbol->symbol_name);

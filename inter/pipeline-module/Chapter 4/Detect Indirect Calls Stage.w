@@ -60,7 +60,7 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 		if ((F->W.instruction[ID_IFLD] == INV_IST) &&
 			(F->W.instruction[METHOD_INV_IFLD] == INVOKED_ROUTINE)) {
 			inter_symbol *var =
-				InterSymbolsTables::symbol_from_frame_data(F, INVOKEE_INV_IFLD);
+				InterSymbolsTable::symbol_from_ID_at_node(F, INVOKEE_INV_IFLD);
 			if (var == NULL) internal_error("bad invocation");
 			inter_tree_node *D = var->definition;
 			if ((D) && (D->W.instruction[ID_IFLD] == VARIABLE_IST))
@@ -80,7 +80,7 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 	inter_ti prim = Primitives::BIP_for_indirect_call_returning_value(arity);
 	inter_symbol *prim_s = Primitives::from_BIP(I, prim);
 	F->W.instruction[INVOKEE_INV_IFLD] =
-		InterSymbolsTables::id_from_symbol_F(F, NULL, prim_s);
+		InterSymbolsTable::id_from_global_symbol(Inode::tree(F), prim_s);
 
 @<Insert the variable as the new first argument@> =
 	inter_bookmark IBM = InterBookmark::first_child_of(F);

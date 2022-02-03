@@ -159,8 +159,7 @@ been created, using //InterWarehouse::set_symbols_table_owner//.
 =
 inter_ti InterWarehouse::create_symbols_table(inter_warehouse *warehouse) {
 	inter_ti n = InterWarehouse::create_resource(warehouse);
-	inter_symbols_table *new_table = InterSymbolsTables::new();
-	new_table->n_index = (int) n;
+	inter_symbols_table *new_table = InterSymbolsTable::new(n);
 	return InterWarehouse::create_ref_at(warehouse, n,
 		STORE_POINTER_inter_symbols_table(new_table), NULL);
 }

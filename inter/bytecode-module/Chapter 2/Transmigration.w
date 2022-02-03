@@ -29,11 +29,10 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	if (connectors) {
 		inter_symbols_table *T = InterPackage::scope(connectors);
 		if (T == NULL) internal_error("package with no symbols");
-		for (int i=0; i<T->size; i++) {
-			inter_symbol *symb = T->symbol_array[i];
-			if ((symb) && (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)) {
+		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
+			if (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS) {
 				inter_symbol *target = Wiring::cable_end(symb);
-				inter_package *target_package = target->owning_table->owning_package;
+				inter_package *target_package = Inter::Symbols::package(target);
 				while ((target_package) && (target_package != migrant)) {
 					target_package = InterPackage::parent(target_package);
 				}
@@ -64,9 +63,8 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 	if (connectors) {
 		inter_symbols_table *T = InterPackage::scope(connectors);
 		if (T == NULL) internal_error("package with no symbols");
-		for (int i=0; i<T->size; i++) {
-			inter_symbol *symb = T->symbol_array[i];
-			if ((symb) && (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS)) {
+		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
+			if (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS) {
 				LOG("$3\n", symb);
 			}
 		}
@@ -136,7 +134,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 	P->tree = I;
 	if ((P->W.instruction[ID_IFLD] == INV_IST) && (P->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
 		inter_symbol *primitive =
-			InterSymbolsTables::symbol_from_id(InterTree::global_scope(ipct->origin_tree), P->W.instruction[INVOKEE_INV_IFLD]);
+			InterSymbolsTable::symbol_from_ID(InterTree::global_scope(ipct->origin_tree), P->W.instruction[INVOKEE_INV_IFLD]);
 		if (primitive) @<Correct the reference to this primitive@>;
 	}
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
@@ -146,8 +144,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		@<Correct the reference to this package type@>;
 		inter_symbols_table *T = InterPackage::scope(pack);
 		if (T == NULL) internal_error("package with no symbols");
-		for (int i=0; i<T->size; i++) {
-			inter_symbol *symb = T->symbol_array[i];
+		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
 			if (Wiring::is_wired(symb)) {
 				inter_symbol *target = Wiring::cable_end(symb);
 				if (Inter::Symbols::read_annotation(target, ARCHITECTURAL_IANN) > 0) {
@@ -164,7 +161,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 					}
 					Wiring::wire_to(symb, equivalent);					
 				} else {
-					inter_package *target_package = target->owning_table->owning_package;
+					inter_package *target_package = Inter::Symbols::package(target);
 					while ((target_package) && (target_package != ipct->migrant)) {
 						target_package = InterPackage::parent(target_package);
 					}
@@ -179,16 +176,16 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 @<Correct the reference to this primitive@> =
 	inter_symbol *equivalent_primitive = Inter::Transmigration::cached_equivalent(primitive);
 	if (equivalent_primitive == NULL) {
-		equivalent_primitive = InterSymbolsTables::symbol_from_name(InterTree::global_scope(ipct->destination_tree), primitive->symbol_name);
+		equivalent_primitive = InterSymbolsTable::symbol_from_name(InterTree::global_scope(ipct->destination_tree), primitive->symbol_name);
 		if (equivalent_primitive == NULL) @<Duplicate this primitive@>;
 		if (equivalent_primitive) Inter::Transmigration::cache(primitive, equivalent_primitive);
 	}
 	if (equivalent_primitive)
-		P->W.instruction[INVOKEE_INV_IFLD] = InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive);
+		P->W.instruction[INVOKEE_INV_IFLD] = InterSymbolsTable::id_from_symbol(ipct->destination_tree, NULL, equivalent_primitive);
 
 @<Duplicate this primitive@> =
-	equivalent_primitive = InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), primitive->symbol_name);
-	inter_tree_node *D = Inode::new_with_1_data_field(ipct->primitives_point, PRIMITIVE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_primitive), NULL, 0);
+	equivalent_primitive = InterSymbolsTable::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), primitive->symbol_name);
+	inter_tree_node *D = Inode::new_with_1_data_field(ipct->primitives_point, PRIMITIVE_IST, InterSymbolsTable::id_from_symbol(ipct->destination_tree, NULL, equivalent_primitive), NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
 	for (int i=CAT_PRIM_IFLD; i<old_D->W.extent; i++) {
 		Inode::extend_instruction_by(D, 1);
@@ -204,20 +201,20 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 
 @<Correct the reference to this package type@> =
 	inter_symbol *original_ptype =
-		InterSymbolsTables::symbol_from_id(
+		InterSymbolsTable::symbol_from_ID(
 			InterTree::global_scope(ipct->origin_tree), P->W.instruction[PTYPE_PACKAGE_IFLD]);
 	inter_symbol *equivalent_ptype = Inter::Transmigration::cached_equivalent(original_ptype);
 	if (equivalent_ptype == NULL) {
-		equivalent_ptype = InterSymbolsTables::symbol_from_name(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
+		equivalent_ptype = InterSymbolsTable::symbol_from_name(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
 		if (equivalent_ptype == NULL) @<Duplicate this package type@>;
 		if (equivalent_ptype) Inter::Transmigration::cache(original_ptype, equivalent_ptype);
 	}
 	if (equivalent_ptype)
-		P->W.instruction[PTYPE_PACKAGE_IFLD] = InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_ptype);
+		P->W.instruction[PTYPE_PACKAGE_IFLD] = InterSymbolsTable::id_from_symbol(ipct->destination_tree, NULL, equivalent_ptype);
 
 @<Duplicate this package type@> =
-	equivalent_ptype = InterSymbolsTables::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
-	inter_tree_node *D = Inode::new_with_1_data_field(ipct->ptypes_point, PACKAGETYPE_IST, InterSymbolsTables::id_from_symbol_inner(InterTree::global_scope(ipct->destination_tree), NULL, equivalent_ptype), NULL, 0);
+	equivalent_ptype = InterSymbolsTable::symbol_from_name_creating(InterTree::global_scope(ipct->destination_tree), original_ptype->symbol_name);
+	inter_tree_node *D = Inode::new_with_1_data_field(ipct->ptypes_point, PACKAGETYPE_IST, InterSymbolsTable::id_from_symbol(ipct->destination_tree, NULL, equivalent_ptype), NULL, 0);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(ipct->ptypes_point), D);
 	if (E) {
 		Inter::Errors::issue(E);
@@ -230,8 +227,8 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 	inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
 	if (equivalent == NULL) {
 		TEMPORARY_TEXT(URL)
-		InterSymbolsTables::symbol_to_url_name(URL, target);
-		equivalent = InterSymbolsTables::url_name_to_symbol(ipct->destination->package_head->tree, NULL, URL);
+		InterSymbolsTable::write_symbol_URL(URL, target);
+		equivalent = InterSymbolsTable::URL_to_symbol(ipct->destination->package_head->tree, URL);
 		if ((equivalent == NULL) && (Inter::Kind::is(target)))
 			equivalent = LargeScale::find_symbol_in_tree(ipct->destination->package_head->tree, target->symbol_name);
 		if (equivalent == NULL)
@@ -256,11 +253,10 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 		if (InterPackage::is_a_linkage_package(pack)) return;
 		inter_symbols_table *T = InterPackage::scope(pack);
 		if (T == NULL) internal_error("package with no symbols");
-		for (int i=0; i<T->size; i++) {
-			inter_symbol *symb = T->symbol_array[i];
+		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
 			if (Wiring::is_wired(symb)) {
 				inter_symbol *target = Wiring::cable_end(symb);
-				inter_package *target_package = target->owning_table->owning_package;
+				inter_package *target_package = Inter::Symbols::package(target);
 				while ((target_package) && (target_package != ipct->migrant)) {
 					target_package = InterPackage::parent(target_package);
 				}
@@ -275,7 +271,7 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 	inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
 	if (equivalent == NULL) {
 		TEMPORARY_TEXT(URL)
-		InterSymbolsTables::symbol_to_url_name(URL, target);
+		InterSymbolsTable::write_symbol_URL(URL, target);
 		equivalent = Wiring::plug(ipct->origin_tree, URL);
 		DISCARD_TEXT(URL)
 		Inter::Transmigration::cache(target, equivalent);

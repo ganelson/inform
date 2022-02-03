@@ -741,7 +741,7 @@ text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *pro
 		inter_ti val2 = prop_node->W.instruction[VAL2_VAL_IFLD];
 		if (Inter::Symbols::is_stored_in_data(val1, val2))
 			prop_symbol =
-				InterSymbolsTables::symbol_from_id(InterPackage::scope_of(prop_node), val2);
+				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(prop_node), val2);
 	}
 	if ((prop_symbol) && (Inter::Symbols::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
 		return VanillaObjects::inner_property_name(gen, prop_symbol);
@@ -781,7 +781,7 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 		inter_ti val2 = kind_node->W.instruction[VAL2_VAL_IFLD];
 		if (Inter::Symbols::is_stored_in_data(val1, val2))
 			kind_symbol =
-				InterSymbolsTables::symbol_from_id(InterPackage::scope_of(kind_node), val2);
+				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(kind_node), val2);
 	}
 	if (Str::eq(Inter::Symbols::name(kind_symbol), I"OBJECT_TY") == FALSE)
 		return I6G_CANNOT_PROVE;
@@ -792,7 +792,7 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 		inter_ti val2 = prop_node->W.instruction[VAL2_VAL_IFLD];
 		if (Inter::Symbols::is_stored_in_data(val1, val2))
 			prop_symbol =
-				InterSymbolsTables::symbol_from_id(InterPackage::scope_of(prop_node), val2);
+				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(prop_node), val2);
 	}
 	if ((prop_symbol) && (Inter::Symbols::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
 		return I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE;

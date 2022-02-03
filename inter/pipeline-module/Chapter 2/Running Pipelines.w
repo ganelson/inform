@@ -127,7 +127,7 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	step->ephemera.package_argument = NULL;
 	if (Str::len(step->package_URL_argument) > 0) {
 		step->ephemera.package_argument =
-			InterPackage::by_url(step->ephemera.tree, step->package_URL_argument);
+			InterPackage::from_URL(step->ephemera.tree, step->package_URL_argument);
 		if (step->ephemera.package_argument == NULL) {
 			PipelineErrors::error_with(step,
 				"pipeline step applied to package which does not exist: '%S'",
@@ -259,28 +259,28 @@ inter_symbol *RunningPipelines::get_symbol(pipeline_step *step, int id) {
 		switch (id) {
 			case code_ptype_RPSYM:
 				step->ephemera.cached_symbols[code_ptype_RPSYM] =
-				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_code"); break;
+				InterSymbolsTable::URL_to_symbol(I, I"/_code"); break;
 			case plain_ptype_RPSYM:
 				step->ephemera.cached_symbols[plain_ptype_RPSYM] =
-				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_plain"); break;
+				InterSymbolsTable::URL_to_symbol(I, I"/_plain"); break;
 			case submodule_ptype_RPSYM:
 				step->ephemera.cached_symbols[submodule_ptype_RPSYM] =
-				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_submodule"); break;
+				InterSymbolsTable::URL_to_symbol(I, I"/_submodule"); break;
 			case function_ptype_RPSYM:
 				step->ephemera.cached_symbols[function_ptype_RPSYM] =
-				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_function"); break;
+				InterSymbolsTable::URL_to_symbol(I, I"/_function"); break;
 			case action_ptype_RPSYM:
 				step->ephemera.cached_symbols[action_ptype_RPSYM] =
-				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_action"); break;
+				InterSymbolsTable::URL_to_symbol(I, I"/_action"); break;
 			case command_ptype_RPSYM:
 				step->ephemera.cached_symbols[command_ptype_RPSYM] =
-				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_command"); break;
+				InterSymbolsTable::URL_to_symbol(I, I"/_command"); break;
 			case property_ptype_RPSYM:
 				step->ephemera.cached_symbols[property_ptype_RPSYM] =
-				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_property"); break;
+				InterSymbolsTable::URL_to_symbol(I, I"/_property"); break;
 			case to_phrase_ptype_RPSYM:
 				step->ephemera.cached_symbols[to_phrase_ptype_RPSYM] =
-				InterSymbolsTables::url_name_to_symbol(I, NULL, I"/_to_phrase"); break;
+				InterSymbolsTable::URL_to_symbol(I, I"/_to_phrase"); break;
 
 			case unchecked_kind_RPSYM:
 				step->ephemera.cached_symbols[unchecked_kind_RPSYM] =

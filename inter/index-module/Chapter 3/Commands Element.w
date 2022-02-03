@@ -23,7 +23,7 @@ void CommandsElement::render(OUTPUT_STREAM, index_session *session) {
 }
 
 @<Create the entries for the command list@> =
-	inter_package *pack = InterPackage::by_url(I, I"/main/completion/grammar");
+	inter_package *pack = InterPackage::from_URL(I, I"/main/completion/grammar");
 	inter_package *entry;
 	LOOP_THROUGH_SUBPACKAGES(entry, pack, I"_command_grammar")
 		if ((Metadata::read_optional_numeric(entry, I"^is_command")) &&

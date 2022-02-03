@@ -61,7 +61,7 @@ halt with an internal error: so this must be done speculatively.
 	Str::copy(SR, name);
 	Str::delete_first_character(SR);
 	Str::delete_last_character(SR);
-	inter_symbol *S = InterSymbolsTables::url_name_to_symbol(I, NULL, SR);
+	inter_symbol *S = InterSymbolsTable::URL_to_symbol(I, SR);
 	DISCARD_TEXT(SR)
 	if (S) return S;
 
@@ -71,15 +71,15 @@ So the above internal error cannot occur.
 
 @<Interpret this as an identifier@> =
 	for (int i = 0; i < finder.no_priorities; i++) {
-		inter_symbol *S = InterSymbolsTables::symbol_from_name(finder.priorities[i], name);
+		inter_symbol *S = InterSymbolsTable::symbol_from_name(finder.priorities[i], name);
 		if (S) return S;
 	}
 	inter_symbol *S = LargeScale::find_architectural_symbol(I, name,
 		Produce::kind_to_symbol(NULL));
 	if (S) return S;
-	S = InterSymbolsTables::symbol_from_name(LargeScale::connectors_scope(I), name);
+	S = InterSymbolsTable::symbol_from_name(LargeScale::connectors_scope(I), name);
 	if (S) return S;
-	S = InterSymbolsTables::symbol_from_name(LargeScale::main_scope(I), name);
+	S = InterSymbolsTable::symbol_from_name(LargeScale::main_scope(I), name);
 	if (S) return S;
 	S = InterNames::to_symbol(HierarchyLocations::find_by_name(I, name));
 	if (S) return S;

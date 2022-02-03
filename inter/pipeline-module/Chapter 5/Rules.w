@@ -16,7 +16,7 @@ compiler.
 void SynopticRules::compile(inter_tree *I, pipeline_step *step, tree_inventory *inv) {
 	if (InterNodeList::array_len(inv->rulebook_nodes) > 0) @<Assign unique rulebook ID numbers@>;
 	int economy = FALSE;
-	inter_symbol *me_s = InterSymbolsTables::url_name_to_symbol(I, NULL,
+	inter_symbol *me_s = InterSymbolsTable::URL_to_symbol(I,
 		I"/main/completion/basics/^memory_economy");
 	if (me_s) economy = Inter::Symbols::evaluate_to_int(me_s);
 	@<Define NUMBER_RULEBOOKS_CREATED@>;

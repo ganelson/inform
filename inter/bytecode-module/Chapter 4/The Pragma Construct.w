@@ -33,7 +33,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 
 	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *target_name = InterSymbolsTables::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
+	inter_symbol *target_name = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
 	if (target_name == NULL)
 		target_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
@@ -63,7 +63,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 }
 
 inter_error_message *Inter::Pragma::new(inter_bookmark *IBM, inter_symbol *target_name, inter_ti pragma_text, inter_ti level, struct inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, PRAGMA_IST, InterSymbolsTables::id_from_IRS_and_symbol(IBM, target_name), pragma_text, eloc, level);
+	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, PRAGMA_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, target_name), pragma_text, eloc, level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -75,13 +75,13 @@ void Inter::Pragma::transpose(inter_construct *IC, inter_tree_node *P, inter_ti 
 
 void Inter::Pragma::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_PRAGMA_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	inter_symbol *target_name = InterSymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
+	inter_symbol *target_name = InterSymbolsTable::symbol_from_ID_at_node(P, TARGET_PRAGMA_IFLD);
 	if (target_name == NULL) { *E = Inode::error(P, I"no target name", NULL); return; }
 	if (P->W.instruction[TEXT_PRAGMA_IFLD] == 0) { *E = Inode::error(P, I"no pragma text", NULL); return; }
 }
 
 void Inter::Pragma::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *target_name = InterSymbolsTables::symbol_from_frame_data(P, TARGET_PRAGMA_IFLD);
+	inter_symbol *target_name = InterSymbolsTable::symbol_from_ID_at_node(P, TARGET_PRAGMA_IFLD);
 	inter_ti ID = P->W.instruction[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	WRITE("pragma %S \"%S\"", target_name->symbol_name, S);

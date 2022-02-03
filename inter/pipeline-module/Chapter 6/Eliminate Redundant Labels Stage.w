@@ -63,7 +63,7 @@ anywhere) we may as well remove it.
 		if (Inter::Symbols::is_label(S))
 			if (Inter::Symbols::get_flag(S, USED_MARK_BIT) == FALSE) {
 				Inter::Symbols::strike_definition(S);
-				Inter::Symbols::remove_from_table(S);
+				InterSymbolsTable::remove_symbol(S);
 				redundant_labels_removed++;
 			}
 

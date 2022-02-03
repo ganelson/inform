@@ -55,7 +55,7 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), NULL, vtext, &v1, &v2, InterBookmark::scope(IBM));
 		if (*E) return;
 	}
-	*E = Inter::Instance::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, inst_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, inst_kind), v1, v2, (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::Instance::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_kind), v1, v2, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti V1, inter_ti V2, inter_ti level, inter_error_location *eloc) {
@@ -77,9 +77,9 @@ void Inter::Instance::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_INST_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_INST_IFLD); if (*E) return;
-	inter_symbol *inst_name = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[DEFN_INST_IFLD]);
+	inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[DEFN_INST_IFLD]);
 	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_INST_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *inst_kind = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[KIND_INST_IFLD]);
+	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_INST_IFLD]);
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 	if (Inter::Types::is_enumerated(idt)) {
 		if (P->W.instruction[VAL1_INST_IFLD] == UNDEF_IVAL) {
@@ -103,8 +103,8 @@ inter_ti Inter::Instance::permissions_list(inter_symbol *kind_symbol) {
 }
 
 void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *inst_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_INST_IFLD);
-	inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
+	inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
+	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_INST_IFLD);
 	if ((inst_name) && (inst_kind)) {
 		inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 		if (idt) {
@@ -128,5 +128,5 @@ inter_symbol *Inter::Instance::kind_of(inter_symbol *inst_name) {
 	inter_tree_node *D = Inter::Symbols::definition(inst_name);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != INSTANCE_IST) return NULL;
-	return InterSymbolsTables::symbol_from_frame_data(D, KIND_INST_IFLD);
+	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_INST_IFLD);
 }

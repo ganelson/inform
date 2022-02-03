@@ -123,7 +123,7 @@ Rules, which of course are always present. So these are hidden by default.
 	inter_tree_node *ID = Synoptic::get_definition(usage_pack, I"column_identity");
 	inter_symbol *id_s = NULL;
 	if (ID->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)
-		id_s = InterSymbolsTables::symbol_from_id(InterPackage::scope(usage_pack),
+		id_s = InterSymbolsTable::symbol_from_ID(InterPackage::scope(usage_pack),
 			ID->W.instruction[DATA_CONST_IFLD+1]);
 	if (id_s == NULL) internal_error("column_identity not an ALIAS_IVAL");
 	inter_package *col_pack = InterPackage::container(id_s->definition);

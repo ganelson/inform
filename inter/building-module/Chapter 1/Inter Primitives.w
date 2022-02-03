@@ -483,7 +483,7 @@ void Primitives::index_primitives_in_tree(inter_tree *I) {
 }
 
 void Primitives::scan_visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
-	inter_symbol *prim = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PRIM_IFLD);
+	inter_symbol *prim = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PRIM_IFLD);
 	inter_ti bip = Primitives::to_BIP(I, prim);
 	if (bip) I->site.spridata.primitives_by_BIP[bip] = prim;
 }

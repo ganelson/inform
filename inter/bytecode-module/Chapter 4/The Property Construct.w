@@ -38,7 +38,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	Inter::Annotations::copy_set_to_symbol(&(ilp->set), prop_name);
 
-	*E = Inter::Property::new(IBM, InterSymbolsTables::id_from_IRS_and_symbol(IBM, prop_name), InterSymbolsTables::id_from_IRS_and_symbol(IBM, prop_kind), (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::Property::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_kind), (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID, inter_ti level, inter_error_location *eloc) {
@@ -69,8 +69,8 @@ inter_ti Inter::Property::permissions_list(inter_symbol *prop_name) {
 }
 
 void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(P, DEFN_PROP_IFLD);
-	inter_symbol *prop_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_PROP_IFLD);
+	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PROP_IFLD);
+	inter_symbol *prop_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_PROP_IFLD);
 	if ((prop_name) && (prop_kind)) {
 		WRITE("property %S %S", prop_name->symbol_name, prop_kind->symbol_name);
 		Inter::Symbols::write_annotations(OUT, P, prop_name);
@@ -82,5 +82,5 @@ inter_symbol *Inter::Property::kind_of(inter_symbol *prop_symbol) {
 	inter_tree_node *D = Inter::Symbols::definition(prop_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != PROPERTY_IST) return NULL;
-	return InterSymbolsTables::symbol_from_frame_data(D, KIND_PROP_IFLD);
+	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_PROP_IFLD);
 }

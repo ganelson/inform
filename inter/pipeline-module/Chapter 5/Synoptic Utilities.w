@@ -8,13 +8,13 @@ We are going to need to read and write these: for reading --
 =
 inter_symbol *Synoptic::get_symbol(inter_package *pack, text_stream *name) {
 	inter_symbol *loc_s =
-		InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), name);
+		InterSymbolsTable::symbol_from_name(InterPackage::scope(pack), name);
 	if (loc_s == NULL) Metadata::err("package symbol not found", pack, name);
 	return loc_s;
 }
 
 inter_tree_node *Synoptic::get_definition(inter_package *pack, text_stream *name) {
-	inter_symbol *def_s = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), name);
+	inter_symbol *def_s = InterSymbolsTable::symbol_from_name(InterPackage::scope(pack), name);
 	if (def_s == NULL) {
 		LOG("Unable to find symbol %S in $6\n", name, pack);
 		internal_error("no symbol");
@@ -32,7 +32,7 @@ does exist, it must have a definition, and we return that.
 
 =
 inter_tree_node *Synoptic::get_optional_definition(inter_package *pack, text_stream *name) {
-	inter_symbol *def_s = InterSymbolsTables::symbol_from_name(InterPackage::scope(pack), name);
+	inter_symbol *def_s = InterSymbolsTable::symbol_from_name(InterPackage::scope(pack), name);
 	if (def_s == NULL) return NULL;
 	inter_tree_node *D = def_s->definition;
 	if (D == NULL) internal_error("undefined symbol");
@@ -43,7 +43,7 @@ inter_tree_node *Synoptic::get_optional_definition(inter_package *pack, text_str
 
 =
 inter_symbol *Synoptic::new_symbol(inter_package *pack, text_stream *name) {
-	return InterSymbolsTables::create_with_unique_name(InterPackage::scope(pack), name);
+	return InterSymbolsTable::create_with_unique_name(InterPackage::scope(pack), name);
 }
 
 @h Making textual constants.
@@ -56,8 +56,8 @@ void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 		InterBookmark::package(IBM));
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), S);
 	Produce::guard(Inter::Constant::new_textual(IBM,
-		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM), con_s),
-		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(IBM),
+		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), con_s),
+		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
 			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 		ID, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 }
@@ -74,8 +74,8 @@ void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *inam
 	Produce::end_function_body(I);
 	inter_symbol *fn_s = InterNames::define(iname);
 	Produce::guard(Inter::Constant::new_function(Packaging::at(I),
-		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(Packaging::at(I)), fn_s),
-		InterSymbolsTables::id_from_symbol(I, InterBookmark::package(Packaging::at(I)),
+		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(Packaging::at(I)), fn_s),
+		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(Packaging::at(I)),
 			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
 		synoptic_fn_package,
 		Produce::baseline(Packaging::at(I)), NULL));
@@ -99,8 +99,8 @@ void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname
 	synoptic_array_ps = Packaging::enter_home_of(iname);
 	inter_symbol *con_s = InterNames::define(iname);
 	synoptic_array_node = Inode::new_with_3_data_fields(Packaging::at(I), CONSTANT_IST,
-		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I), con_s),
-		 InterSymbolsTables::id_from_IRS_and_symbol(Packaging::at(I),
+		 InterSymbolsTable::id_from_symbol_at_bookmark(Packaging::at(I), con_s),
+		 InterSymbolsTable::id_from_symbol_at_bookmark(Packaging::at(I),
 		 	RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)),
 		 CONSTANT_INDIRECT_LIST, NULL, 
 		 (inter_ti) InterBookmark::baseline(Packaging::at(I)) + 1);
@@ -129,7 +129,7 @@ void Synoptic::symbol_entry(inter_symbol *S) {
 	Inode::extend_instruction_by(synoptic_array_node, 2);
 	inter_package *pack = InterPackage::container(synoptic_array_node);
 	inter_symbol *local_S =
-		InterSymbolsTables::create_with_unique_name(InterPackage::scope(pack), S->symbol_name);
+		InterSymbolsTable::create_with_unique_name(InterPackage::scope(pack), S->symbol_name);
 	Wiring::wire_to(local_S, S);
 	inter_ti val1 = 0, val2 = 0;
 	Inter::Symbols::to_data(InterPackage::tree(pack), pack, local_S, &val1, &val2);

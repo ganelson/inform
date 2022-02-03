@@ -155,7 +155,7 @@ But here it is not:
 
 @<Decide whether symbol defined@> =
 	inter_symbol *symbol =
-		InterSymbolsTables::symbol_from_name_in_main_or_basics(I, symbol_name);
+		LargeScale::architectural_symbol(I, symbol_name);
 	if (symbol) {
 		result = (Inter::Symbols::is_extern(symbol))?FALSE:TRUE;
 	} else {
@@ -178,7 +178,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	if (Regexp::match(&mr2, cond, L" *(%C+?) *== *(%d+) *")) {
 		text_stream *identifier = mr2.exp[0];
 		inter_symbol *symbol =
-			InterSymbolsTables::symbol_from_name_in_main_or_basics(I, identifier);
+			LargeScale::architectural_symbol(I, identifier);
 		if (symbol) {
 			int V = Inter::Symbols::evaluate_to_int(symbol);
 			int W = Str::atoi(mr2.exp[1], 0);

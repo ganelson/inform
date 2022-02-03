@@ -76,7 +76,7 @@ others might include |/main/CommandParserKit|, and so on.) We take that package 
 of the sidecar and put it into the main tree.
 
 @<Migrate the bulk of the code from the sidecar to the main tree@> =
-	inter_package *pack = InterPackage::by_url(sidecar, req->attachment_point);
+	inter_package *pack = InterPackage::from_URL(sidecar, req->attachment_point);
 	if (pack == NULL) {
 		WRITE_TO(STDERR, "sought attachment material at: %S\n", req->attachment_point);
 		internal_error("unable to find attachment point package");

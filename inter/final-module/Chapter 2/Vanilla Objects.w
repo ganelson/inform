@@ -124,7 +124,7 @@ altered.
 		inner_name = Str::duplicate(name);
 		Dictionaries::create(first_with_name, inner_name);
 		Dictionaries::write_value(first_with_name, inner_name, (void *) prop_name);
-		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
+		Inter::Symbols::annotate_t(gen->from, Inter::Symbols::package(prop_name),
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
 		@<Set the translation to a new metadata array@>;
 	} else {
@@ -138,7 +138,7 @@ altered.
 		int N = Inter::Symbols::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
 		if (N > 0) inner_name = InterWarehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
 		Inter::Symbols::set_translate(prop_name, Inter::Symbols::name(existing_prop_name));
-		Inter::Symbols::annotate_t(gen->from, prop_name->owning_table->owning_package,
+		Inter::Symbols::annotate_t(gen->from, Inter::Symbols::package(prop_name),
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
 	}
 	LOGIF(PROPERTY_ALLOCATION, "! Translation %S, inner name %S\n",
@@ -220,7 +220,7 @@ assimilated properties never do have.
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
 				inter_symbol *owner_s =
-					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+					InterSymbolsTable::symbol_from_ID_at_node(X, OWNER_PERM_IFLD);
 				if (owner_s == kind_s)
 					Generators::symbol_array_entry(gen, kind_s, WORD_ARRAY_FORMAT);
 			}
@@ -236,7 +236,7 @@ can be given properties, even when other objects of the same kind may lack them.
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
 				inter_symbol *owner_s =
-					InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+					InterSymbolsTable::symbol_from_ID_at_node(X, OWNER_PERM_IFLD);
 				if (owner_s == inst_s)
 					Generators::symbol_array_entry(gen, inst_s, WORD_ARRAY_FORMAT);
 			}
@@ -252,7 +252,7 @@ not as wasteful as it looks.)
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
 		inter_symbol *owner_s =
-			InterSymbolsTables::symbol_from_frame_data(X, OWNER_PERM_IFLD);
+			InterSymbolsTable::symbol_from_ID_at_node(X, OWNER_PERM_IFLD);
 		if (owner_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) {
 			Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 			inter_symbol *kind_s;
@@ -334,7 +334,7 @@ so we use "marks" on those already done.
 @<Work through this node list of permissions@> =
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_name = InterSymbolsTables::symbol_from_frame_data(X, PROP_PERM_IFLD);
+		inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PERM_IFLD);
 		if (prop_name == NULL) internal_error("no property");
 		if (CodeGen::marked(prop_name) == FALSE) {
 			CodeGen::mark(prop_name);
@@ -361,7 +361,7 @@ by table, no sticks exist and we must compile them.
 @<Assign the property values for this property@> =
 	text_stream *ident = NULL;
 	if (X->W.instruction[STORAGE_PERM_IFLD]) {
-		inter_symbol *store = InterSymbolsTables::symbol_from_frame_data(X, STORAGE_PERM_IFLD);
+		inter_symbol *store = InterSymbolsTable::symbol_from_ID_at_node(X, STORAGE_PERM_IFLD);
 		if (store == NULL) internal_error("bad PP in inter");
 		ident = Inter::Symbols::name(store);
 	} else {
@@ -402,7 +402,7 @@ number of instances, and is worth it for simplicity and speed.
 @<Work through this node list of values@> =
 	inter_tree_node *Y;
 	LOOP_THROUGH_INTER_NODE_LIST(Y, PVL) {
-		inter_symbol *p_name = InterSymbolsTables::symbol_from_id(
+		inter_symbol *p_name = InterSymbolsTable::symbol_from_ID(
 			InterPackage::scope_of(Y), Y->W.instruction[PROP_PVAL_IFLD]);
 		if ((p_name == prop_name) && (found == 0)) {
 			found = 1;
@@ -446,7 +446,7 @@ was all taken care of with the sticks of property values already declared.
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
 		inter_tree_node *P = Inter::Symbols::definition(inst_s);
-		inter_symbol *inst_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_INST_IFLD);
+		inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_INST_IFLD);
 		int N = -1;
 		if (Inter::Kind::is_a(inst_kind, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) == FALSE)
 			N = (int) (P->W.instruction[VAL2_INST_IFLD]);
@@ -470,7 +470,7 @@ function calls.
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL)
 		Generators::assign_property(gen,
-			InterSymbolsTables::symbol_from_frame_data(X, PROP_PVAL_IFLD),
+			InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PVAL_IFLD),
 			X->W.instruction[DVAL1_PVAL_IFLD], X->W.instruction[DVAL2_PVAL_IFLD], X);
 
 @ That just leaves the following horrible function, which is called for each
@@ -555,7 +555,7 @@ int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *pr
 	if (PL == NULL) internal_error("no permissions list");
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, PL) {
-		inter_symbol *owner_s = InterSymbolsTables::symbol_from_id(
+		inter_symbol *owner_s = InterSymbolsTable::symbol_from_ID(
 			InterPackage::scope_of(X), X->W.instruction[OWNER_PERM_IFLD]);
 		if (owner_s == NULL) internal_error("bad owner");
 		inter_symbol *owner_kind_s = NULL;

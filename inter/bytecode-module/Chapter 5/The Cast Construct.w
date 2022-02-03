@@ -48,7 +48,7 @@ void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 }
 
 inter_error_message *Inter::Cast::new(inter_bookmark *IBM, inter_symbol *from_kind, inter_symbol *to_kind, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, CAST_IST, 0, InterSymbolsTables::id_from_IRS_and_symbol(IBM, to_kind), InterSymbolsTables::id_from_IRS_and_symbol(IBM, from_kind), eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, CAST_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, to_kind), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, from_kind), eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -63,8 +63,8 @@ void Inter::Cast::verify(inter_construct *IC, inter_tree_node *P, inter_package 
 void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbols_table *locals = InterPackage::scope_of(P);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
-	inter_symbol *from_kind = InterSymbolsTables::symbol_from_frame_data(P, FROM_KIND_CAST_IFLD);
-	inter_symbol *to_kind = InterSymbolsTables::symbol_from_frame_data(P, TO_KIND_CAST_IFLD);
+	inter_symbol *from_kind = InterSymbolsTable::symbol_from_ID_at_node(P, FROM_KIND_CAST_IFLD);
+	inter_symbol *to_kind = InterSymbolsTable::symbol_from_ID_at_node(P, TO_KIND_CAST_IFLD);
 	if ((from_kind) && (to_kind)) {
 		WRITE("cast %S <- %S", to_kind->symbol_name, from_kind->symbol_name);
 	} else { *E = Inode::error(P, I"cannot write cast", NULL); return; }

@@ -31,7 +31,7 @@ int SimpleStages::run_move_stage(pipeline_step *step) {
 			PipelineErrors::error_with(step, "there is no Inter tree in slot %S", mr.exp[0]);
 			return FALSE;
 		}
-		pack = InterPackage::by_url(
+		pack = InterPackage::from_URL(
 			step->ephemera.pipeline->ephemera.trees[from_rep], mr.exp[1]);
 		if (pack == NULL) {
 			PipelineErrors::error_with(step, "that tree has no such package as '%S'", mr.exp[1]);

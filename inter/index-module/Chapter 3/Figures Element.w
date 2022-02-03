@@ -39,7 +39,7 @@ to match this width, preserving the aspect ratio.
 
 =
 @<Tabulate the figures@> =
-	inter_package *settings = InterPackage::by_url(I, I"/main/completion/basics");
+	inter_package *settings = InterPackage::from_URL(I, I"/main/completion/basics");
 	int MAX_INDEXED_FIGURES =
 		(int) Metadata::read_optional_numeric(settings, I"^max_indexed_figures");
 	HTML::begin_html_table(OUT, "#ffffff", TRUE, 0, 0, 0, 0, 0);

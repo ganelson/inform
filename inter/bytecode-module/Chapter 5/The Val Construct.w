@@ -61,7 +61,7 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_symbol *val_kind, int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, InterSymbolsTables::id_from_IRS_and_symbol(IBM, val_kind), val1, val2, eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, val_kind), val1, val2, eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -76,14 +76,14 @@ void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 	inter_symbols_table *locals = InterPackage::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_VAL_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *val_kind = InterSymbolsTables::symbol_from_id(InterPackage::scope(owner), P->W.instruction[KIND_VAL_IFLD]);
+	inter_symbol *val_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_VAL_IFLD]);
 	*E = Inter::Verify::local_value(P, VAL1_VAL_IFLD, val_kind, locals); if (*E) return;
 }
 
 void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbols_table *locals = InterPackage::scope_of(P);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
-	inter_symbol *val_kind = InterSymbolsTables::symbol_from_frame_data(P, KIND_VAL_IFLD);
+	inter_symbol *val_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_VAL_IFLD);
 	if (val_kind) {
 		WRITE("val %S ", val_kind->symbol_name);
 		Inter::Types::write(OUT, P, val_kind, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);

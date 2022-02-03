@@ -19,7 +19,7 @@ void VanillaFunctions::predeclare_functions(code_generation *gen) {
 void VanillaFunctions::predeclare_this(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_symbol *constant_s =
-		InterSymbolsTables::symbol_from_frame_data(P, DEFN_CONST_IFLD);
+		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	if (Inter::Constant::is_routine(constant_s)) {
 		vanilla_function *vf = VanillaFunctions::new(gen, constant_s);
 		Generators::predeclare_function(gen, vf);
@@ -123,7 +123,7 @@ void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
 	if (P->W.instruction[ID_IFLD] == LOCAL_IST) {
 		inter_package *pack = InterPackage::container(P);
 		inter_symbol *local_s =
-			InterSymbolsTables::local_symbol_from_id(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
+			InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 		ADD_TO_LINKED_LIST(Inter::Symbols::name(local_s), text_stream, vf->locals);
 		if (Str::eq(local_s->symbol_name, I"_vararg_count"))
 			vf->takes_variable_arguments = TRUE;
@@ -148,7 +148,7 @@ void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 		inter_ti val1 = D->W.instruction[DATA_CONST_IFLD];
 		inter_ti val2 = D->W.instruction[DATA_CONST_IFLD + 1];
 		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
-			inter_symbol *S = InterSymbolsTables::symbol_from_data_pair_and_table(
+			inter_symbol *S = InterSymbolsTable::symbol_from_data_pair(
 				val1, val2, InterPackage::scope_of(D));
 			if (S) fn_s = S;
 		}
