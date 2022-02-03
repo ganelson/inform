@@ -97,7 +97,7 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 
 inter_ti Inter::Instance::permissions_list(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return 0;
 	return D->W.instruction[PERM_LIST_INST_IFLD];
 }
@@ -113,19 +113,19 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				P->W.instruction[VAL1_INST_IFLD], P->W.instruction[VAL2_INST_IFLD], InterPackage::scope_of(P), FALSE);
 		} else { *E = Inode::error(P, I"instance with bad data type", NULL); return; }
 	} else { *E = Inode::error(P, I"bad instance", NULL); return; }
-	Inter::Symbols::write_annotations(OUT, P, inst_name);
+	InterSymbol::write_annotations(OUT, P, inst_name);
 }
 
 inter_ti Inter::Instance::properties_list(inter_symbol *inst_name) {
 	if (inst_name == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(inst_name);
+	inter_tree_node *D = InterSymbol::definition(inst_name);
 	if (D == NULL) return 0;
 	return D->W.instruction[PLIST_INST_IFLD];
 }
 
 inter_symbol *Inter::Instance::kind_of(inter_symbol *inst_name) {
 	if (inst_name == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(inst_name);
+	inter_tree_node *D = InterSymbol::definition(inst_name);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != INSTANCE_IST) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_INST_IFLD);

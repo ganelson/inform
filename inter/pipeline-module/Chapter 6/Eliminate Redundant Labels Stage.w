@@ -43,8 +43,8 @@ any given symbol is undefined when we begin. We'll clear it for all labels.
 
 @<Mark all the labels for this function as being unused@> =
 	LOOP_OVER_SYMBOLS_TABLE(S, local_symbols)
-		if (Inter::Symbols::is_label(S))
-			Inter::Symbols::clear_flag(S, USED_MARK_BIT);
+		if (InterSymbol::is_label(S))
+			InterSymbol::clear_flag(S, USED_MARK_BIT);
 
 @<Look through the function for mentions of labels, marking those as used@> =
 	inter_tree_node *D = InterPackage::head(pack);
@@ -60,9 +60,9 @@ anywhere) we may as well remove it.
 
 @<Remove the label declarations for any that are still marked unused@> =
 	LOOP_OVER_SYMBOLS_TABLE(S, local_symbols)
-		if (Inter::Symbols::is_label(S))
-			if (Inter::Symbols::get_flag(S, USED_MARK_BIT) == FALSE) {
-				Inter::Symbols::strike_definition(S);
+		if (InterSymbol::is_label(S))
+			if (InterSymbol::get_flag(S, USED_MARK_BIT) == FALSE) {
+				InterSymbol::strike_definition(S);
 				InterSymbolsTable::remove_symbol(S);
 				redundant_labels_removed++;
 			}
@@ -84,5 +84,5 @@ We look for such lines.
 @<Examine a line of code in the function@> =
 	if (F->W.instruction[ID_IFLD] == LAB_IST) {
 		inter_symbol *lab = Inter::Lab::label_symbol(F);
-		Inter::Symbols::set_flag(lab, USED_MARK_BIT);
+		InterSymbol::set_flag(lab, USED_MARK_BIT);
 	}

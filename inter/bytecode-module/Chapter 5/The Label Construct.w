@@ -38,7 +38,7 @@ void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
 	inter_symbol *lab_name = InterSymbolsTable::symbol_from_name(locals, ilp->mr.exp[0]);
-	if (Inter::Symbols::is_label(lab_name) == FALSE) { *E = Inter::Errors::plain(I"not a label", eloc); return; }
+	if (InterSymbol::is_label(lab_name) == FALSE) { *E = Inter::Errors::plain(I"not a label", eloc); return; }
 
 	*E = Inter::Label::new(IBM, lab_name, (inter_ti) ilp->indent_level, eloc);
 }
@@ -53,7 +53,7 @@ inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *lab_na
 void Inter::Label::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_LABEL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *lab_name = InterSymbolsTable::symbol_from_ID_in_package(owner, P->W.instruction[DEFN_LABEL_IFLD]);
-	if (Inter::Symbols::is_label(lab_name) == FALSE) {
+	if (InterSymbol::is_label(lab_name) == FALSE) {
 		*E = Inode::error(P, I"not a label", (lab_name)?(lab_name->symbol_name):NULL);
 		return;
 	}

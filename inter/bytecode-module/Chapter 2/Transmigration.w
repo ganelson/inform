@@ -30,9 +30,9 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 		inter_symbols_table *T = InterPackage::scope(connectors);
 		if (T == NULL) internal_error("package with no symbols");
 		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
-			if (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS) {
+			if (InterSymbol::get_scope(symb) == SOCKET_ISYMS) {
 				inter_symbol *target = Wiring::cable_end(symb);
-				inter_package *target_package = Inter::Symbols::package(target);
+				inter_package *target_package = InterSymbol::package(target);
 				while ((target_package) && (target_package != migrant)) {
 					target_package = InterPackage::parent(target_package);
 				}
@@ -41,7 +41,7 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 					inter_symbol *equivalent = Wiring::find_socket(destination_tree, symb->symbol_name);
 					if (equivalent) {
 						inter_symbol *e_target = Wiring::cable_end(equivalent);
-						if (!Inter::Symbols::is_defined(e_target)) {
+						if (!InterSymbol::is_defined(e_target)) {
 							LOGIF(INTER_CONNECTORS, "Able to match with $3 ~~> $3\n", equivalent, Wiring::cable_end(equivalent));
 							Wiring::wire_to(equivalent, target);
 							Wiring::wire_to(e_target, target);
@@ -64,7 +64,7 @@ void Inter::Transmigration::move(inter_package *migrant, inter_package *destinat
 		inter_symbols_table *T = InterPackage::scope(connectors);
 		if (T == NULL) internal_error("package with no symbols");
 		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
-			if (Inter::Symbols::get_scope(symb) == SOCKET_ISYMS) {
+			if (InterSymbol::get_scope(symb) == SOCKET_ISYMS) {
 				LOG("$3\n", symb);
 			}
 		}
@@ -147,10 +147,10 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
 			if (Wiring::is_wired(symb)) {
 				inter_symbol *target = Wiring::cable_end(symb);
-				if (Inter::Symbols::read_annotation(target, ARCHITECTURAL_IANN) > 0) {
+				if (InterSymbol::read_annotation(target, ARCHITECTURAL_IANN) > 0) {
 					Wiring::wire_to(symb,
 						LargeScale::find_architectural_symbol(ipct->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL)));
-				} else if (Inter::Symbols::get_scope(target) == PLUG_ISYMS) {
+				} else if (InterSymbol::get_scope(target) == PLUG_ISYMS) {
 					inter_symbol *equivalent = Inter::Transmigration::cached_equivalent(target);
 					if (equivalent == NULL) {
 						text_stream *N = Wiring::wired_to_name(target);
@@ -161,7 +161,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 					}
 					Wiring::wire_to(symb, equivalent);					
 				} else {
-					inter_package *target_package = Inter::Symbols::package(target);
+					inter_package *target_package = InterSymbol::package(target);
 					while ((target_package) && (target_package != ipct->migrant)) {
 						target_package = InterPackage::parent(target_package);
 					}
@@ -256,7 +256,7 @@ void Inter::Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, vo
 		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
 			if (Wiring::is_wired(symb)) {
 				inter_symbol *target = Wiring::cable_end(symb);
-				inter_package *target_package = Inter::Symbols::package(target);
+				inter_package *target_package = InterSymbol::package(target);
 				while ((target_package) && (target_package != ipct->migrant)) {
 					target_package = InterPackage::parent(target_package);
 				}

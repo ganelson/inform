@@ -157,7 +157,7 @@ But here it is not:
 	inter_symbol *symbol =
 		LargeScale::architectural_symbol(I, symbol_name);
 	if (symbol) {
-		result = (Inter::Symbols::is_extern(symbol))?FALSE:TRUE;
+		result = (InterSymbol::is_extern(symbol))?FALSE:TRUE;
 	} else {
 		if (Dictionaries::find(state->I6_level_symbols, symbol_name)) result = TRUE;
 	}
@@ -180,7 +180,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 		inter_symbol *symbol =
 			LargeScale::architectural_symbol(I, identifier);
 		if (symbol) {
-			int V = Inter::Symbols::evaluate_to_int(symbol);
+			int V = InterSymbol::evaluate_to_int(symbol);
 			int W = Str::atoi(mr2.exp[1], 0);
 			if ((V >= 0) && (V == W)) result = TRUE; else result = FALSE;
 		}

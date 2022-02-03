@@ -93,7 +93,7 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 	LOOP_OVER_SYMBOLS_TABLE(symb, tab) {
 		if (Wiring::is_wired(symb)) {
 			inter_symbol *E = Wiring::cable_end(symb);
-			inter_package *needed = Inter::Symbols::package(E);
+			inter_package *needed = InterSymbol::package(E);
 			EliminateRedundantMatterStage::preserve(needed, step, pack,
 				I"it's an external symbol");
 		}

@@ -25,7 +25,7 @@ code than that for |X|. See //Code Generation// for how this is done.
 =
 void I6TargetConstants::declare_constant(code_generator *gtr, code_generation *gen,
 	inter_symbol *const_s, int form, text_stream *val) {
-	text_stream *const_name = Inter::Symbols::name(const_s);
+	text_stream *const_name = InterSymbol::name(const_s);
     @<Leave undeclared any array used as a value of a property@>;
 	@<Leave undeclared any constant auto-declared by the I6 compiler@>;
 
@@ -56,7 +56,7 @@ directly into the body of the relevant object or class declaration. It therefore
 does not need to declre the name of this small array, and so --
 
 @<Leave undeclared any array used as a value of a property@> =
-	if ((const_s) && (Inter::Symbols::read_annotation(const_s, INLINE_ARRAY_IANN) == 1))
+	if ((const_s) && (InterSymbol::read_annotation(const_s, INLINE_ARRAY_IANN) == 1))
 		return;
 
 @ We cannot declare these constants because they exist automatically, and
@@ -122,7 +122,7 @@ case, whereupon Vanilla will lead us through the rest of the declaration.
 int I6TargetConstants::begin_array(code_generator *gtr, code_generation *gen,
 	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format,
 	segmentation_pos *saved) {
-	if ((array_s) && (Inter::Symbols::read_annotation(array_s, VERBARRAY_IANN) == 1)) {
+	if ((array_s) && (InterSymbol::read_annotation(array_s, VERBARRAY_IANN) == 1)) {
 		@<Write a complete I6 Verb directive@>;
 		return FALSE;
 	} else {
@@ -141,17 +141,17 @@ they were any other arrays. Here goes:
 	if (saved) *saved = CodeGen::select(gen, command_grammar_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Verb ");
-	if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) WRITE("meta ");
+	if (InterSymbol::read_annotation(array_s, METAVERB_IANN) == 1) WRITE("meta ");
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		WRITE(" ");
 		inter_ti val1 = P->W.instruction[i], val2 = P->W.instruction[i+1];
-		if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+		if (InterSymbol::is_stored_in_data(val1, val2)) {
 			inter_symbol *A = InterSymbolsTable::symbol_from_data_pair(
 				val1, val2, InterPackage::scope_of(P));
 			if (A == NULL) internal_error("bad aliased symbol");
-			if (Inter::Symbols::read_annotation(A, SCOPE_FILTER_IANN) == 1) WRITE("scope=");
-			if (Inter::Symbols::read_annotation(A, NOUN_FILTER_IANN) == 1)  WRITE("noun=");
-			text_stream *S = Inter::Symbols::name(A);
+			if (InterSymbol::read_annotation(A, SCOPE_FILTER_IANN) == 1) WRITE("scope=");
+			if (InterSymbol::read_annotation(A, NOUN_FILTER_IANN) == 1)  WRITE("noun=");
+			text_stream *S = InterSymbol::name(A);
 			     if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_divider_RPSYM))     WRITE("\n\t*");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_reverse_RPSYM))     WRITE("reverse");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_slash_RPSYM))       WRITE("/");
@@ -441,5 +441,5 @@ hexadecimal.
 void I6TargetConstants::compile_literal_symbol(code_generator *gtr, code_generation *gen,
 	inter_symbol *A) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("%S", Inter::Symbols::name(A));
+	WRITE("%S", InterSymbol::name(A));
 }

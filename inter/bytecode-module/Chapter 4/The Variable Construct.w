@@ -66,13 +66,13 @@ void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	if ((var_name) && (var_kind)) {
 		WRITE("variable %S %S = ", var_name->symbol_name, var_kind->symbol_name);
 		Inter::Types::write(OUT, P, var_kind, P->W.instruction[VAL1_VAR_IFLD], P->W.instruction[VAL2_VAR_IFLD], InterPackage::scope_of(P), FALSE);
-		Inter::Symbols::write_annotations(OUT, P, var_name);
+		InterSymbol::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write variable", NULL); return; }
 }
 
 inter_symbol *Inter::Variable::kind_of(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
+	inter_tree_node *D = InterSymbol::definition(con_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != VARIABLE_IST) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_VAR_IFLD);

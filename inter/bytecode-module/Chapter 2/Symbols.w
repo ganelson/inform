@@ -1,4 +1,4 @@
-[Inter::Symbols::] Symbols.
+[InterSymbol::] Symbols.
 
 To manage named symbols in inter code.
 
@@ -16,59 +16,61 @@ typedef struct inter_symbol {
 	struct text_stream *translate_text;
 	int link_time;
 	struct inter_symbol *linked_to;
-	int metadata_key;
 	struct general_pointer translation_data;
 } inter_symbol;
 
 @ =
-inter_symbol *Inter::Symbols::new(text_stream *name, inter_symbols_table *T, inter_ti ID) {
+inter_symbol *InterSymbol::new(text_stream *name, inter_symbols_table *T, inter_ti ID) {
 	if (Str::len(name) == 0) internal_error("symbol cannot have empty text as identifier");
 	inter_symbol *symb = CREATE(inter_symbol);
 	symb->owning_table = T;
 	symb->symbol_ID = ID;
 	symb->symbol_status = 0;
-	Inter::Symbols::set_type(symb, MISC_ISYMT);
-	Inter::Symbols::set_scope(symb, PUBLIC_ISYMS);
+	InterSymbol::set_type(symb, MISC_ISYMT);
+	InterSymbol::set_scope(symb, PUBLIC_ISYMS);
 	symb->symbol_name = Str::duplicate(name);
-	Inter::Symbols::undefine(symb);
+	InterSymbol::undefine(symb);
 	symb->ann_set = Inter::Annotations::new_set();
 	symb->wiring = Wiring::new_wiring_data(symb);
 	symb->translate_text = NULL;
 	symb->link_time = 0;
 	symb->linked_to = NULL;
-	symb->metadata_key = FALSE;
 	symb->translation_data = NULL_GENERAL_POINTER;
 	if (Metadata::valid_key(name)) {
-		symb->metadata_key = TRUE;
-		Inter::Symbols::set_scope(symb, PRIVATE_ISYMS);
+		InterSymbol::set_flag(symb, METADATA_KEY_BIT);
+		InterSymbol::set_scope(symb, PRIVATE_ISYMS);
 	}
 	LOGIF(INTER_SYMBOLS, "Created symbol $3 in $4\n", symb, T);
 
 	return symb;
 }
 
-inter_package *Inter::Symbols::package(inter_symbol *S) {
+inter_package *InterSymbol::package(inter_symbol *S) {
 	if (S == NULL) return NULL;
 	return InterSymbolsTable::package(S->owning_table);
 }
 
-int Inter::Symbols::get_type(inter_symbol *S) {
+int InterSymbol::is_metadata_key(inter_symbol *S) {
+	return InterSymbol::get_flag(S, METADATA_KEY_BIT);
+}
+
+int InterSymbol::get_type(inter_symbol *S) {
 	return S->symbol_status & SYMBOL_TYPE_MASK_ISYMT;
 }
 
-int Inter::Symbols::get_scope(inter_symbol *S) {
+int InterSymbol::get_scope(inter_symbol *S) {
 	return S->symbol_status & SYMBOL_SCOPE_MASK_ISYMT;
 }
 
-void Inter::Symbols::set_type(inter_symbol *S, int V) {
+void InterSymbol::set_type(inter_symbol *S, int V) {
 	S->symbol_status = S->symbol_status - (S->symbol_status & SYMBOL_TYPE_MASK_ISYMT) + V;
 }
 
-void Inter::Symbols::set_scope(inter_symbol *S, int V) {
+void InterSymbol::set_scope(inter_symbol *S, int V) {
 	S->symbol_status = S->symbol_status - (S->symbol_status & SYMBOL_SCOPE_MASK_ISYMT) + V;
 }
 
-void Inter::Symbols::log(OUTPUT_STREAM, void *vs) {
+void InterSymbol::log(OUTPUT_STREAM, void *vs) {
 	inter_symbol *S = (inter_symbol *) vs;
 	if (S == NULL) WRITE("<no-symbol>");
 	else {
@@ -78,27 +80,27 @@ void Inter::Symbols::log(OUTPUT_STREAM, void *vs) {
 	}
 }
 
-int Inter::Symbols::sort_number(const inter_symbol *S) {
+int InterSymbol::sort_number(const inter_symbol *S) {
 	if (S == NULL) return 0;
 	return 100000 * (S->owning_table->allocation_id) + (int) (S->symbol_ID);
 }
 
 @ =
-int Inter::Symbols::is_stored_in_data(inter_ti val1, inter_ti val2) {
+int InterSymbol::is_stored_in_data(inter_ti val1, inter_ti val2) {
 	if (val1 == ALIAS_IVAL) return TRUE;
 	return FALSE;
 }
 
-void Inter::Symbols::to_data(inter_tree *I, inter_package *pack, inter_symbol *S, inter_ti *val1, inter_ti *val2) {
+void InterSymbol::to_data(inter_tree *I, inter_package *pack, inter_symbol *S, inter_ti *val1, inter_ti *val2) {
 	if (S == NULL) internal_error("no symbol");
 	*val1 = ALIAS_IVAL; *val2 = InterSymbolsTable::id_from_symbol(I, pack, S);
 }
 
 @ =
-void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N) {
+void InterSymbol::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N) {
 	for (int L=0; L<N; L++) WRITE("\t");
 	WRITE("symbol ");
-	switch (Inter::Symbols::get_scope(mark)) {
+	switch (InterSymbol::get_scope(mark)) {
 		case PRIVATE_ISYMS: WRITE("private"); break;
 		case PUBLIC_ISYMS: WRITE("public"); break;
 		case EXTERNAL_ISYMS: WRITE("external"); break;
@@ -107,7 +109,7 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 		default: internal_error("unknown symbol type"); break;
 	}
 	WRITE(" ");
-	switch (Inter::Symbols::get_type(mark)) {
+	switch (InterSymbol::get_type(mark)) {
 		case LABEL_ISYMT: WRITE("label"); break;
 		case MISC_ISYMT: WRITE("misc"); break;
 		case PACKAGE_ISYMT: WRITE("package"); break;
@@ -115,11 +117,11 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 		default: internal_error("unknown symbol type"); break;
 	}
 	WRITE(" %S", mark->symbol_name);
-	if (Inter::Symbols::get_flag(mark, MAKE_NAME_UNIQUE)) WRITE("*");
+	if (InterSymbol::get_flag(mark, MAKE_NAME_UNIQUE)) WRITE("*");
 	if (Wiring::is_wired_to_name(mark)) {
 		WRITE(" --? %S", Wiring::wired_to_name(mark));
 	}
-	text_stream *trans_name = Inter::Symbols::get_translate(mark);
+	text_stream *trans_name = InterSymbol::get_translate(mark);
 	if (Str::len(trans_name) > 0)
 		WRITE(" `%S`", trans_name);
 	if (Wiring::is_wired(mark)) {
@@ -128,24 +130,24 @@ void Inter::Symbols::write_declaration(OUTPUT_STREAM, inter_symbol *mark, int N)
 	}
 }
 
-void Inter::Symbols::define(inter_symbol *S, inter_tree_node *P) {
+void InterSymbol::define(inter_symbol *S, inter_tree_node *P) {
 	if (S == NULL) internal_error("tried to define null symbol");
 	S->definition = P;
 }
 
-inter_tree_node *Inter::Symbols::definition(inter_symbol *S) {
+inter_tree_node *InterSymbol::definition(inter_symbol *S) {
 	if (S == NULL) internal_error("tried to find definition of null symbol");
 	return S->definition;
 }
 
-int Inter::Symbols::is_defined(inter_symbol *S) {
+int InterSymbol::is_defined(inter_symbol *S) {
 	if (S == NULL) return FALSE;
-	if (Inter::Symbols::definition(S)) return TRUE;
+	if (InterSymbol::definition(S)) return TRUE;
 	return FALSE;
 }
 
-int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
-	inter_tree_node *P = Inter::Symbols::definition(S);
+int InterSymbol::evaluate_to_int(inter_symbol *S) {
+	inter_tree_node *P = InterSymbol::definition(S);
 	if ((P) &&
 		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
@@ -158,13 +160,13 @@ int Inter::Symbols::evaluate_to_int(inter_symbol *S) {
 		(P->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)) {
 		inter_symbols_table *scope = S->owning_table;
 		inter_symbol *alias_to = InterSymbolsTable::symbol_from_ID(scope, P->W.instruction[DATA_CONST_IFLD + 1]);
-		return Inter::Symbols::evaluate_to_int(alias_to);
+		return InterSymbol::evaluate_to_int(alias_to);
 	}
 	return -1;
 }
 
-void Inter::Symbols::set_int(inter_symbol *S, int N) {
-	inter_tree_node *P = Inter::Symbols::definition(S);
+void InterSymbol::set_int(inter_symbol *S, int N) {
+	inter_tree_node *P = InterSymbol::definition(S);
 	if ((P) &&
 		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
@@ -178,7 +180,7 @@ void Inter::Symbols::set_int(inter_symbol *S, int N) {
 		(P->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)) {
 		inter_symbols_table *scope = S->owning_table;
 		inter_symbol *alias_to = InterSymbolsTable::symbol_from_ID(scope, P->W.instruction[DATA_CONST_IFLD + 1]);
-		Inter::Symbols::set_int(alias_to, N);
+		InterSymbol::set_int(alias_to, N);
 		return;
 	}
 	if (P == NULL) LOG("Synbol $3 is undefined\n", S);
@@ -186,166 +188,166 @@ void Inter::Symbols::set_int(inter_symbol *S, int N) {
 	internal_error("unable to set symbol");
 }
 
-void Inter::Symbols::strike_definition(inter_symbol *S) {
+void InterSymbol::strike_definition(inter_symbol *S) {
 	if (S) {
-		inter_tree_node *D = Inter::Symbols::definition(S);
+		inter_tree_node *D = InterSymbol::definition(S);
 		if (D) NodePlacement::remove(D);
-		Inter::Symbols::undefine(S);
+		InterSymbol::undefine(S);
 	}
 }
 
-void Inter::Symbols::undefine(inter_symbol *S) {
+void InterSymbol::undefine(inter_symbol *S) {
 	if (S == NULL) internal_error("tried to undefine null symbol");
 	S->definition = NULL;
 }
 
-void Inter::Symbols::clear_transient_flags(inter_symbol *symb) {
+void InterSymbol::clear_transient_flags(inter_symbol *symb) {
 	symb->symbol_status = (symb->symbol_status) & NONTRANSIENT_SYMBOL_BITS;
 }
 
-int Inter::Symbols::get_flag(inter_symbol *symb, int f) {
+int InterSymbol::get_flag(inter_symbol *symb, int f) {
 	if (symb == NULL) internal_error("no symbol");
 	return (symb->symbol_status & f)?TRUE:FALSE;
 }
 
-void Inter::Symbols::set_flag(inter_symbol *symb, int f) {
+void InterSymbol::set_flag(inter_symbol *symb, int f) {
 	if (symb == NULL) internal_error("no symbol");
 	symb->symbol_status = symb->symbol_status | f;
 }
 
-void Inter::Symbols::clear_flag(inter_symbol *symb, int f) {
+void InterSymbol::clear_flag(inter_symbol *symb, int f) {
 	if (symb == NULL) internal_error("no symbol");
 	if (symb->symbol_status & f) symb->symbol_status = symb->symbol_status - f;
 }
 
-void Inter::Symbols::set_translate(inter_symbol *symb, text_stream *S) {
+void InterSymbol::set_translate(inter_symbol *symb, text_stream *S) {
 	if (symb == NULL) internal_error("no symbol");
 	symb->translate_text = Str::duplicate(S);
 }
 
-text_stream *Inter::Symbols::get_translate(inter_symbol *symb) {
+text_stream *InterSymbol::get_translate(inter_symbol *symb) {
 	if (symb == NULL) internal_error("no symbol");
 	return symb->translate_text;
 }
 
-void Inter::Symbols::annotate(inter_symbol *symb, inter_annotation IA) {
+void InterSymbol::annotate(inter_symbol *symb, inter_annotation IA) {
 	if (symb == NULL) internal_error("annotated null symbol");
 	Inter::Annotations::add_to_set(&(symb->ann_set), IA);
 }
 
-void Inter::Symbols::unannotate(inter_symbol *symb, inter_ti annot_ID) {
+void InterSymbol::unannotate(inter_symbol *symb, inter_ti annot_ID) {
 	if (symb == NULL) internal_error("annotated null symbol");
 	Inter::Annotations::remove_from_set(&(symb->ann_set), annot_ID);
 }
 
-void Inter::Symbols::annotate_i(inter_symbol *symb, inter_ti annot_ID, inter_ti n) {
+void InterSymbol::annotate_i(inter_symbol *symb, inter_ti annot_ID, inter_ti n) {
 	inter_annotation IA = Inter::Annotations::from_bytecode(annot_ID, n);
-	Inter::Symbols::annotate(symb, IA);
+	InterSymbol::annotate(symb, IA);
 }
 
-int Inter::Symbols::read_annotation(const inter_symbol *symb, inter_ti ID) {
+int InterSymbol::read_annotation(const inter_symbol *symb, inter_ti ID) {
 	inter_annotation *IA = Inter::Annotations::find(&(symb->ann_set), ID);
 	if (IA) return (int) IA->annot_value;
 	return -1;
 }
 
-text_stream *Inter::Symbols::read_annotation_t(inter_symbol *symb, inter_tree *I, inter_ti ID) {
+text_stream *InterSymbol::read_annotation_t(inter_symbol *symb, inter_tree *I, inter_ti ID) {
 	inter_annotation *IA = Inter::Annotations::find(&(symb->ann_set), ID);
 	if (IA) return InterWarehouse::get_text(InterTree::warehouse(I), IA->annot_value);
 	return NULL;
 }
 
-void Inter::Symbols::annotate_t(inter_tree *I, inter_package *owner, inter_symbol *symb, inter_ti annot_ID, text_stream *S) {
+void InterSymbol::annotate_t(inter_tree *I, inter_package *owner, inter_symbol *symb, inter_ti annot_ID, text_stream *S) {
 	inter_ti n = InterWarehouse::create_text(InterTree::warehouse(I), owner);
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), n), S);
 	inter_annotation IA = Inter::Annotations::from_bytecode(annot_ID, n);
-	Inter::Symbols::annotate(symb, IA);
+	InterSymbol::annotate(symb, IA);
 }
 
-void Inter::Symbols::write_annotations(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *symb) {
+void InterSymbol::write_annotations(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *symb) {
 	if (symb) Inter::Annotations::write_set(OUT, &(symb->ann_set), F);
 }
 
-void Inter::Symbols::transpose_annotations(inter_symbol *symb, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
+void InterSymbol::transpose_annotations(inter_symbol *symb, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	if (symb) Inter::Annotations::transpose_set(&(symb->ann_set), grid, grid_extent, E);
 }
 
 @ =
-int Inter::Symbols::is_predeclared(inter_symbol *S) {
+int InterSymbol::is_predeclared(inter_symbol *S) {
 	if (S == NULL) return FALSE;
-	if (Inter::Symbols::get_scope(S) != PUBLIC_ISYMS) return FALSE;
-	if (Inter::Symbols::get_type(S) != MISC_ISYMT) return FALSE;
-	if (Inter::Symbols::is_defined(S)) return FALSE;
+	if (InterSymbol::get_scope(S) != PUBLIC_ISYMS) return FALSE;
+	if (InterSymbol::get_type(S) != MISC_ISYMT) return FALSE;
+	if (InterSymbol::is_defined(S)) return FALSE;
 	return TRUE;
 }
 
-int Inter::Symbols::is_predeclared_local(inter_symbol *S) {
+int InterSymbol::is_predeclared_local(inter_symbol *S) {
 	if (S == NULL) return FALSE;
-	if (Inter::Symbols::get_scope(S) != PRIVATE_ISYMS) return FALSE;
-	if (Inter::Symbols::get_type(S) != MISC_ISYMT) return FALSE;
-	if (Inter::Symbols::is_defined(S)) return FALSE;
+	if (InterSymbol::get_scope(S) != PRIVATE_ISYMS) return FALSE;
+	if (InterSymbol::get_type(S) != MISC_ISYMT) return FALSE;
+	if (InterSymbol::is_defined(S)) return FALSE;
 	return TRUE;
 }
 
-int Inter::Symbols::is_undefined_private(inter_symbol *S) {
+int InterSymbol::is_undefined_private(inter_symbol *S) {
 	if (S == NULL) return FALSE;
-	if (Inter::Symbols::get_scope(S) != PRIVATE_ISYMS) return FALSE;
-	if (Inter::Symbols::is_defined(S)) return FALSE;
+	if (InterSymbol::get_scope(S) != PRIVATE_ISYMS) return FALSE;
+	if (InterSymbol::is_defined(S)) return FALSE;
 	return TRUE;
 }
 
-int Inter::Symbols::is_extern(inter_symbol *S) {
+int InterSymbol::is_extern(inter_symbol *S) {
 	if (S == NULL) return FALSE;
-	if (Inter::Symbols::get_scope(S) == EXTERNAL_ISYMS) return TRUE;
-	if (Inter::Symbols::get_scope(S) == PLUG_ISYMS) return TRUE;
+	if (InterSymbol::get_scope(S) == EXTERNAL_ISYMS) return TRUE;
+	if (InterSymbol::get_scope(S) == PLUG_ISYMS) return TRUE;
 	return FALSE;
 }
 
-void Inter::Symbols::extern(inter_symbol *S) {
-	Inter::Symbols::set_scope(S, EXTERNAL_ISYMS);
-	Inter::Symbols::set_type(S, MISC_ISYMT);
+void InterSymbol::extern(inter_symbol *S) {
+	InterSymbol::set_scope(S, EXTERNAL_ISYMS);
+	InterSymbol::set_type(S, MISC_ISYMT);
 	S->definition = NULL;
 }
 
-int Inter::Symbols::is_label(inter_symbol *S) {
+int InterSymbol::is_label(inter_symbol *S) {
 	if (S == NULL) return FALSE;
-	if (Inter::Symbols::get_scope(S) != PRIVATE_ISYMS) return FALSE;
-	if (Inter::Symbols::get_type(S) != LABEL_ISYMT) return FALSE;
+	if (InterSymbol::get_scope(S) != PRIVATE_ISYMS) return FALSE;
+	if (InterSymbol::get_type(S) != LABEL_ISYMT) return FALSE;
 	return TRUE;
 }
 
-void Inter::Symbols::label(inter_symbol *S) {
+void InterSymbol::label(inter_symbol *S) {
 	if (Str::get_first_char(S->symbol_name) != '.') {
 		LOG("Name is %S\n", S->symbol_name);
 		internal_error("not a label name");
 	}
-	Inter::Symbols::set_scope(S, PRIVATE_ISYMS);
-	Inter::Symbols::set_type(S, LABEL_ISYMT);
+	InterSymbol::set_scope(S, PRIVATE_ISYMS);
+	InterSymbol::set_type(S, LABEL_ISYMT);
 	S->definition = NULL;
 }
 
-void Inter::Symbols::local(inter_symbol *S) {
-	Inter::Symbols::set_scope(S, PRIVATE_ISYMS);
-	Inter::Symbols::set_type(S, MISC_ISYMT);
+void InterSymbol::local(inter_symbol *S) {
+	InterSymbol::set_scope(S, PRIVATE_ISYMS);
+	InterSymbol::set_type(S, MISC_ISYMT);
 	S->definition = NULL;
 }
 
-int Inter::Symbols::is_local(inter_symbol *S) {
+int InterSymbol::is_local(inter_symbol *S) {
 	if (S == NULL) return FALSE;
-	if (Inter::Symbols::get_scope(S) != PRIVATE_ISYMS) return FALSE;
-	if (Inter::Symbols::get_type(S) != MISC_ISYMT) return FALSE;
+	if (InterSymbol::get_scope(S) != PRIVATE_ISYMS) return FALSE;
+	if (InterSymbol::get_type(S) != MISC_ISYMT) return FALSE;
 	return TRUE;
 }
 
-int Inter::Symbols::is_connector(inter_symbol *S) {
-	if ((S) && ((Inter::Symbols::get_scope(S) == PLUG_ISYMS) ||
-		(Inter::Symbols::get_scope(S) == SOCKET_ISYMS)))
+int InterSymbol::is_connector(inter_symbol *S) {
+	if ((S) && ((InterSymbol::get_scope(S) == PLUG_ISYMS) ||
+		(InterSymbol::get_scope(S) == SOCKET_ISYMS)))
 		return TRUE;
 	return FALSE;
 }
 
-text_stream *Inter::Symbols::name(inter_symbol *symb) {
+text_stream *InterSymbol::name(inter_symbol *symb) {
 	if (symb == NULL) return NULL;
-	if (Inter::Symbols::get_translate(symb)) return Inter::Symbols::get_translate(symb);
+	if (InterSymbol::get_translate(symb)) return InterSymbol::get_translate(symb);
 	return symb->symbol_name;
 }

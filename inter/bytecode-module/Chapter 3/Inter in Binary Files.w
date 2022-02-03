@@ -242,10 +242,10 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		}
 
 		inter_symbol *S = InterSymbolsTable::symbol_from_name_creating_at_ID(tab, name, X);
-		Inter::Symbols::set_type(S, (int) st);
-		Inter::Symbols::set_scope(S, (int) sc);
-		if (uniq == 1) Inter::Symbols::set_flag(S, MAKE_NAME_UNIQUE);
-		if (Str::len(trans) > 0) Inter::Symbols::set_translate(S, trans);
+		InterSymbol::set_type(S, (int) st);
+		InterSymbol::set_scope(S, (int) sc);
+		if (uniq == 1) InterSymbol::set_flag(S, MAKE_NAME_UNIQUE);
+		if (Str::len(trans) > 0) InterSymbol::set_translate(S, trans);
 
 		if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		for (unsigned int i=0; i<L; i++) {
@@ -256,9 +256,9 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			if (Inter::Annotations::is_invalid(IA))
 				Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
 			if (grid) Inter::Defn::transpose_annotation(&IA, grid, grid_extent, NULL);
-			Inter::Symbols::annotate(S, IA);
+			InterSymbol::annotate(S, IA);
 		}
-		if (Inter::Symbols::get_scope(S) == PLUG_ISYMS) {
+		if (InterSymbol::get_scope(S) == PLUG_ISYMS) {
 			TEMPORARY_TEXT(N)
 			while (TRUE) {
 				unsigned int c;
@@ -281,9 +281,9 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 	if (T) {
 		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
 			BinaryFiles::write_int32(fh, symb->symbol_ID);
-			BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_type(symb));
-			BinaryFiles::write_int32(fh, (unsigned int) Inter::Symbols::get_scope(symb));
-			if (Inter::Symbols::get_flag(symb, MAKE_NAME_UNIQUE))
+			BinaryFiles::write_int32(fh, (unsigned int) InterSymbol::get_type(symb));
+			BinaryFiles::write_int32(fh, (unsigned int) InterSymbol::get_scope(symb));
+			if (InterSymbol::get_flag(symb, MAKE_NAME_UNIQUE))
 				BinaryFiles::write_int32(fh, 1);
 			else
 				BinaryFiles::write_int32(fh, 0);
@@ -294,7 +294,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			LOOP_THROUGH_TEXT(P, symb->translate_text)
 				BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
 			Inter::Annotations::set_to_bytecode(fh, &(symb->ann_set));
-			if (Inter::Symbols::get_scope(symb) == PLUG_ISYMS) {
+			if (InterSymbol::get_scope(symb) == PLUG_ISYMS) {
 				text_stream *N = Wiring::wired_to_name(symb);
 				LOOP_THROUGH_TEXT(pos, N)
 					BinaryFiles::write_int32(fh, (unsigned int) Str::get(pos));

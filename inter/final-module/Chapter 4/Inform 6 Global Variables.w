@@ -23,7 +23,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	LOOP_OVER_LINKED_LIST(var_name, inter_symbol, L) {
 		inter_tree_node *P = var_name->definition;
 		inter_ti v1 = P->W.instruction[VAL1_VAR_IFLD], v2 = P->W.instruction[VAL2_VAR_IFLD];
-		if (Inter::Symbols::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
+		if (InterSymbol::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
 			if (k == 1) @<Begin the array@>;
 			@<Variables created by Inform 7 source text all go into the array@>;
 		} else {
@@ -40,13 +40,13 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	CodeGen::deselect(gen, saved);
 
 @<Variables created by Inform 7 source text all go into the array@> =
-	Inter::Symbols::annotate_i(var_name, I6_GLOBAL_OFFSET_IANN, (inter_ti) k);
+	InterSymbol::annotate_i(var_name, I6_GLOBAL_OFFSET_IANN, (inter_ti) k);
 	segmentation_pos saved = CodeGen::select(gen, global_variables_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("  (");
 	CodeGen::pair(gen, P, v1, v2);
 	WRITE(") ! -->%d = %S (%S)\n", k,
-		Inter::Symbols::name(var_name), var_name->symbol_name);
+		InterSymbol::name(var_name), var_name->symbol_name);
 	CodeGen::deselect(gen, saved);
 	k++;
 
@@ -59,7 +59,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 @<Variables created by kits all become Globals in I6@> =
 	segmentation_pos saved = CodeGen::select(gen, global_variables_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Global %S = ", Inter::Symbols::name(var_name));
+	WRITE("Global %S = ", InterSymbol::name(var_name));
 	CodeGen::pair(gen, P, v1, v2);
 	WRITE(";\n");
 	CodeGen::deselect(gen, saved);
@@ -71,7 +71,7 @@ the variable (lvalue in the case of |as_reference| being set).
 void I6TargetVariables::evaluate_variable(code_generator *gtr, code_generation *gen,
 	inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
-	int k = Inter::Symbols::read_annotation(var_name, I6_GLOBAL_OFFSET_IANN);
+	int k = InterSymbol::read_annotation(var_name, I6_GLOBAL_OFFSET_IANN);
 	if (k > 0) WRITE("(Global_Vars-->%d)", k);
-	else WRITE("%S", Inter::Symbols::name(var_name));
+	else WRITE("%S", InterSymbol::name(var_name));
 }

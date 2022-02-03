@@ -18,7 +18,7 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 			if (ID->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)
 				id_s = InterSymbolsTable::symbol_from_ID(InterPackage::scope(pack), ID->W.instruction[DATA_CONST_IFLD+1]);
 			if (id_s == NULL) internal_error("column_identity not an ALIAS_IVAL");
-			ID = Inter::Symbols::definition(id_s);
+			ID = InterSymbol::definition(id_s);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"column_bits");
 			D->W.instruction[DATA_CONST_IFLD+1] += ID->W.instruction[DATA_CONST_IFLD+1];
 		}

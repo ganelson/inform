@@ -38,7 +38,7 @@ are addresses of small arrays.
 	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
 		inter_symbol *id_s = Metadata::read_optional_symbol(pack, I"^strong_id");
-		if (id_s) Inter::Symbols::set_int(id_s, i+2);
+		if (id_s) InterSymbol::set_int(id_s, i+2);
 	}
 
 @ The "high water mark" of strong IDs for base kinds. Any strong ID this high
@@ -473,7 +473,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 	int i = 1;
 	inter_symbol *kind_name;
 	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L)
-		Inter::Symbols::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN, (inter_ti) i++);
+		InterSymbol::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN, (inter_ti) i++);
 
 	inter_name *iname = HierarchyLocations::iname(I, KINDHIERARCHY_HL);
 	Synoptic::begin_array(I, step, iname);
@@ -503,7 +503,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 inter_ti SynopticKinds::kind_of_object_count(pipeline_step *step, inter_symbol *kind_name) {
 	if ((kind_name == NULL) ||
 		(kind_name == RunningPipelines::get_symbol(step, object_kind_RPSYM))) return 0;
-	int N = Inter::Symbols::read_annotation(kind_name, OBJECT_KIND_COUNTER_IANN);
+	int N = InterSymbol::read_annotation(kind_name, OBJECT_KIND_COUNTER_IANN);
 	if (N >= 0) return (inter_ti) N;
 	return 0;
 }

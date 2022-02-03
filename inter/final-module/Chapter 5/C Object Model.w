@@ -309,12 +309,12 @@ void CObjectModel::declare_kind(code_generator *gtr, code_generation *gen,
 }
 
 @<Declare a kind of object@> =
-	text_stream *class_name = Inter::Symbols::name(kind_s);
+	text_stream *class_name = InterSymbol::name(kind_s);
 	text_stream *printed_name = Metadata::read_optional_textual(
 		InterPackage::container(kind_s->definition), I"^printed_name");
 	text_stream *super_class = NULL;
 	inter_symbol *super_name = Inter::Kind::super(kind_s);
-	if (super_name) super_class = Inter::Symbols::name(super_name);
+	if (super_name) super_class = InterSymbol::name(super_name);
 	if (Str::len(super_class) == 0) super_class = I"Class";
 	CObjectModel::new_runtime_class(gen, class_name, printed_name, super_class);
 
@@ -389,12 +389,12 @@ void CObjectModel::declare_instance(code_generator *gtr, code_generation *gen,
 }
 
 @<Declare an object instance@> =
-	int c = Inter::Symbols::read_annotation(inst_s, ARROW_COUNT_IANN);
+	int c = InterSymbol::read_annotation(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
 	int is_dir = Inter::Kind::is_a(kind_s,
 		RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
 	C_property_owner *owner = CObjectModel::new_runtime_object(gtr, gen,
-		Inter::Symbols::name(kind_s), Inter::Symbols::name(inst_s), c, is_dir);
+		InterSymbol::name(kind_s), InterSymbol::name(inst_s), c, is_dir);
 	enumeration = owner->id;
 
 @ Whether it's from case (i), (ii) or (iii), we always end up here. Note that
@@ -486,9 +486,9 @@ C_property *CObjectModel::existing_property_by_name(code_generation *gen,
 =
 void CObjectModel::declare_property(code_generator *gtr, code_generation *gen,
 	inter_symbol *prop_name, linked_list *all_forms) {
-	text_stream *name = Inter::Symbols::name(prop_name);
+	text_stream *name = InterSymbol::name(prop_name);
 	int either_or = FALSE;
-	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) == 1) either_or = TRUE;
+	if (InterSymbol::read_annotation(prop_name, EITHER_OR_IANN) == 1) either_or = TRUE;
 	C_property *cp = CObjectModel::property_by_name(gen, name, either_or);
 	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
 
@@ -526,7 +526,7 @@ But the second entry is the inner property, as with Inform 6.
 	text_stream *pname = Metadata::read_optional_textual(
 		InterPackage::container(prop_name->definition), I"^name");
 	if (Str::len(pname) > 0) {
-		int A = Inter::Symbols::read_annotation(prop_name, C_ARRAY_ADDRESS_IANN);
+		int A = InterSymbol::read_annotation(prop_name, C_ARRAY_ADDRESS_IANN);
 		if (A > 0) {
 			segmentation_pos saved = CodeGen::select(gen, c_property_symbols_I7CGS);
 			text_stream *OUT = CodeGen::current(gen);
@@ -544,9 +544,9 @@ void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
 	inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X) {
 
 	int inline_this = FALSE;
-	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+	if (InterSymbol::is_stored_in_data(val1, val2)) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_data_pair_at_node(val1, val2, X);
-		if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1))
+		if ((S) && (InterSymbol::read_annotation(S, INLINE_ARRAY_IANN) == 1))
 			inline_this = TRUE;
 	}	
 
@@ -556,7 +556,7 @@ void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
 	CodeGen::deselect_temporary(gen);
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
 	C_property *prop = CObjectModel::existing_property_by_name(gen,
-		Inter::Symbols::name(prop_name));
+		InterSymbol::name(prop_name));
 	CObjectModel::assign_one_prop(gen, owner, prop, val, inline_this);
 	DISCARD_TEXT(val)
 }
@@ -571,7 +571,7 @@ void CObjectModel::assign_properties(code_generator *gtr, code_generation *gen,
 	Generators::mangle(gen, mgl, array);
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
 	C_property *prop = CObjectModel::existing_property_by_name(gen,
-		Inter::Symbols::name(prop_name));
+		InterSymbol::name(prop_name));
 	CObjectModel::assign_one_prop(gen, owner, prop, mgl, FALSE);
 	DISCARD_TEXT(mgl)
 }
@@ -708,7 +708,7 @@ for an enumerated kind; or just 0 if the kind is not an enumeration.
 	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
-		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
+		int M = InterSymbol::evaluate_to_int(max_weak_id);
 		for (int w=1; w<M; w++) {
 			int written = FALSE;
 			inter_symbol *kind_s;
@@ -740,7 +740,7 @@ enumeration.
 	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
-		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
+		int M = InterSymbol::evaluate_to_int(max_weak_id);
 		for (int w=1; w<M; w++) {
 			int written = FALSE;
 			inter_symbol *kind_s;

@@ -95,7 +95,7 @@ void BytecodeModule::end(void) {
 	Log::declare_aspect(CONSTANT_DEPTH_CALCULATION_DA, L"constant depth calculation", FALSE, FALSE);
 
 @<Register this module's debugging log writers@> =
-	Writers::register_logger('3', Inter::Symbols::log);
+	Writers::register_logger('3', InterSymbol::log);
 	Writers::register_logger('4', InterSymbolsTable::log);
 	Writers::register_logger('5', InterBookmark::log);
 	Writers::register_logger('6', InterPackage::log);

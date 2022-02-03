@@ -280,7 +280,7 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 		inter_symbol *tc = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), S, CONSTANT_IST, E);
 		if (*E) return FALSE;
 		if (Inter::Kind::constructor(Inter::Constant::kind_of(tc)) == COLUMN_ICON) {
-			Inter::Symbols::to_data(InterBookmark::tree(IBM), InterBookmark::package(IBM), tc, &con_val1, &con_val2);
+			InterSymbol::to_data(InterBookmark::tree(IBM), InterBookmark::package(IBM), tc, &con_val1, &con_val2);
 		} else {
 			*E = Inter::Errors::quoted(I"not a table column constant", S, eloc);
 			return FALSE;
@@ -445,7 +445,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				break;
 			}
 		}
-		Inter::Symbols::write_annotations(OUT, P, con_name);
+		InterSymbol::write_annotations(OUT, P, con_name);
 	} else {
 		*E = Inode::error(P, I"constant can't be written", NULL);
 		return;
@@ -454,7 +454,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 
 inter_symbol *Inter::Constant::kind_of(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
+	inter_tree_node *D = InterSymbol::definition(con_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_CONST_IFLD);
@@ -462,7 +462,7 @@ inter_symbol *Inter::Constant::kind_of(inter_symbol *con_symbol) {
 
 inter_package *Inter::Constant::code_block(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
+	inter_tree_node *D = InterSymbol::definition(con_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return NULL;
 	if (D->W.instruction[FORMAT_CONST_IFLD] != CONSTANT_ROUTINE) return NULL;
@@ -471,7 +471,7 @@ inter_package *Inter::Constant::code_block(inter_symbol *con_symbol) {
 
 int Inter::Constant::is_routine(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return FALSE;
-	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
+	inter_tree_node *D = InterSymbol::definition(con_symbol);
 	if (D == NULL) return FALSE;
 	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return FALSE;
 	if (D->W.instruction[FORMAT_CONST_IFLD] != CONSTANT_ROUTINE) return FALSE;
@@ -496,7 +496,7 @@ int Inter::Constant::constant_depth(inter_symbol *con) {
 }
 int Inter::Constant::constant_depth_r(inter_symbol *con) {
 	if (con == NULL) return 1;
-	inter_tree_node *D = Inter::Symbols::definition(con);
+	inter_tree_node *D = InterSymbol::definition(con);
 	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return 1;
 	if (D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) {
 		inter_ti val1 = D->W.instruction[DATA_CONST_IFLD];
@@ -531,7 +531,7 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 
 inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_ti val2) {
 	if (val1 == LITERAL_IVAL) return val2;
-	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+	if (InterSymbol::is_stored_in_data(val1, val2)) {
 		inter_symbol *aliased = InterSymbolsTable::symbol_from_data_pair(val1, val2, T);
 		if (aliased == NULL) internal_error("bad aliased symbol");
 		inter_tree_node *D = aliased->definition;

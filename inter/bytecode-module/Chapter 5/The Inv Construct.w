@@ -47,12 +47,12 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	if (invoked_name == NULL) invoked_name = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
 	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 
-	if ((Inter::Symbols::is_extern(invoked_name)) ||
-		(Inter::Symbols::is_predeclared(invoked_name))) {
+	if ((InterSymbol::is_extern(invoked_name)) ||
+		(InterSymbol::is_predeclared(invoked_name))) {
 		*E = Inter::Inv::new_call(IBM, invoked_name, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}
-	switch (Inter::Symbols::definition(invoked_name)->W.instruction[ID_IFLD]) {
+	switch (InterSymbol::definition(invoked_name)->W.instruction[ID_IFLD]) {
 		case PRIMITIVE_IST:
 			*E = Inter::Inv::new_primitive(IBM, invoked_name, (inter_ti) ilp->indent_level, eloc);
 			return;

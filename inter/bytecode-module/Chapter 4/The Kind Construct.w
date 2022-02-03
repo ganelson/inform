@@ -246,14 +246,14 @@ void Inter::Kind::verify(inter_construct *IC, inter_tree_node *P, inter_package 
 
 inter_ti Inter::Kind::permissions_list(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return 0;
 	return D->W.instruction[PERM_LIST_KIND_IFLD];
 }
 
 inter_ti Inter::Kind::properties_list(inter_symbol *inst_name) {
 	if (inst_name == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(inst_name);
+	inter_tree_node *D = InterSymbol::definition(inst_name);
 	if (D == NULL) return 0;
 	return D->W.instruction[PLIST_KIND_IFLD];
 }
@@ -328,12 +328,12 @@ void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 			}
 		}
 	} else { *E = Inode::error(P, I"cannot write kind", NULL); return; }
-	Inter::Symbols::write_annotations(OUT, P, symb);
+	InterSymbol::write_annotations(OUT, P, symb);
 }
 
 void Inter::Kind::new_instance(inter_symbol *kind_symbol, inter_symbol *inst_name) {
 	if (kind_symbol == NULL) return;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return;
 	D->W.instruction[NO_INSTANCES_KIND_IFLD]++;
 	inter_symbol *S = Inter::Kind::super(kind_symbol);
@@ -342,28 +342,28 @@ void Inter::Kind::new_instance(inter_symbol *kind_symbol, inter_symbol *inst_nam
 
 int Inter::Kind::instance_count(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return 0;
 	return (int) D->W.instruction[NO_INSTANCES_KIND_IFLD];
 }
 
 int Inter::Kind::constructor(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return 0;
 	return (int) D->W.instruction[CONSTRUCTOR_KIND_IFLD];
 }
 
 int Inter::Kind::arity(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return 0;
 	return D->W.extent - MIN_EXTENT_KIND_IFR;
 }
 
 inter_symbol *Inter::Kind::operand_symbol(inter_symbol *kind_symbol, int i) {
 	if (kind_symbol == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return NULL;
 	if (i >= D->W.extent - MIN_EXTENT_KIND_IFR) return NULL;
 	inter_ti CID = D->W.instruction[OPERANDS_KIND_IFLD + i];
@@ -373,28 +373,28 @@ inter_symbol *Inter::Kind::operand_symbol(inter_symbol *kind_symbol, int i) {
 
 inter_data_type *Inter::Kind::data_type(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return NULL;
 	return Inter::Types::find_by_ID(D->W.instruction[DATA_TYPE_KIND_IFLD]);
 }
 
 inter_ti Inter::Kind::next_enumerated_value(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return 0;
 	return ++(D->W.instruction[ENUM_RANGE_KIND_IFLD]);
 }
 
 inter_symbol *Inter::Kind::super(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(D, SUPER_KIND_IFLD);
 }
 
 int Inter::Kind::is(inter_symbol *kind_symbol) {
 	if (kind_symbol == NULL) return FALSE;
-	inter_tree_node *D = Inter::Symbols::definition(kind_symbol);
+	inter_tree_node *D = InterSymbol::definition(kind_symbol);
 	if (D == NULL) return FALSE;
 	if (D->W.instruction[ID_IFLD] == KIND_IST) return TRUE;
 	return FALSE;

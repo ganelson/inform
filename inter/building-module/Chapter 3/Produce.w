@@ -342,7 +342,7 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	inter_symbol *con_s = InterNames::define(con_iname);
 	inter_ti v1 = 0, v2 = 0;
 	inter_package *pack = InterBookmark::package(IBM);
-	Inter::Symbols::to_data(InterPackage::tree(pack), pack, val_s, &v1, &v2);
+	InterSymbol::to_data(InterPackage::tree(pack), pack, val_s, &v1, &v2);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, Produce::kind_to_symbol(K)),
@@ -492,7 +492,7 @@ void Produce::val_iname(inter_tree *I, kind *K, inter_name *iname) {
 void Produce::val_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
-	Inter::Symbols::to_data(InterBookmark::tree(IBM),
+	InterSymbol::to_data(InterBookmark::tree(IBM),
 		InterBookmark::package(IBM), s, &val1, &val2);
 	Produce::val(I, K, val1, val2);
 }
@@ -554,7 +554,7 @@ void Produce::ref_iname(inter_tree *I, kind *K, inter_name *iname) {
 void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
-	Inter::Symbols::to_data(InterBookmark::tree(IBM), InterBookmark::package(IBM),
+	InterSymbol::to_data(InterBookmark::tree(IBM), InterBookmark::package(IBM),
 		s, &val1, &val2);
 	inter_symbol *val_kind = Produce::kind_to_symbol(K);
 	if (val_kind == NULL) internal_error("no kind for ref");
@@ -607,7 +607,7 @@ inter_symbol *Produce::reserve_label(inter_tree *I, text_stream *lname) {
 	inter_symbol *lab_name = Produce::local_exists(I, lname);
 	if (lab_name) return lab_name;
 	lab_name = Produce::new_local_symbol(I, lname);
-	Inter::Symbols::label(lab_name);
+	InterSymbol::label(lab_name);
 	return lab_name;
 }
 
@@ -646,8 +646,8 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 			InterBookmark::package(Packaging::at(I)));
 		Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), comm);
 	}
-	if (annot) Inter::Symbols::annotate_i(local_s, annot, 0);
-	Inter::Symbols::local(local_s);
+	if (annot) InterSymbol::annotate_i(local_s, annot, 0);
+	InterSymbol::local(local_s);
 	inter_bookmark *locals_at = &(I->site.sprdata.function_locals_bookmark);
 	Produce::guard(Inter::Local::new(locals_at, local_s, kind_s,
 		ID, Produce::baseline(locals_at) + 1, NULL));

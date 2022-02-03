@@ -63,7 +63,7 @@ void Inter::Property::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 
 inter_ti Inter::Property::permissions_list(inter_symbol *prop_name) {
 	if (prop_name == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(prop_name);
+	inter_tree_node *D = InterSymbol::definition(prop_name);
 	if (D == NULL) return 0;
 	return D->W.instruction[PERM_LIST_PROP_IFLD];
 }
@@ -73,13 +73,13 @@ void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *prop_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_PROP_IFLD);
 	if ((prop_name) && (prop_kind)) {
 		WRITE("property %S %S", prop_name->symbol_name, prop_kind->symbol_name);
-		Inter::Symbols::write_annotations(OUT, P, prop_name);
+		InterSymbol::write_annotations(OUT, P, prop_name);
 	} else { *E = Inode::error(P, I"cannot write property", NULL); return; }
 }
 
 inter_symbol *Inter::Property::kind_of(inter_symbol *prop_symbol) {
 	if (prop_symbol == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(prop_symbol);
+	inter_tree_node *D = InterSymbol::definition(prop_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != PROPERTY_IST) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_PROP_IFLD);

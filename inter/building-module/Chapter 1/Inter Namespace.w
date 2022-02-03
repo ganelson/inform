@@ -244,13 +244,13 @@ same as testing whether the iname has been incarnated.
 int InterNames::is_defined(inter_name *iname) {
 	if (iname == NULL) return FALSE;
 	inter_symbol *S = InterNames::to_symbol(iname);
-	if (Inter::Symbols::is_defined(S)) return TRUE;
+	if (InterSymbol::is_defined(S)) return TRUE;
 	return FALSE;
 }
 
 inter_symbol *InterNames::define(inter_name *iname) {
 	inter_symbol *S = InterNames::to_symbol(iname);
-	if ((S) && (Inter::Symbols::is_predeclared(S))) Inter::Symbols::undefine(S);
+	if ((S) && (InterSymbol::is_predeclared(S))) InterSymbol::undefine(S);
 	return S;
 }
 
@@ -259,35 +259,35 @@ Note that these functions all force an iname to be incarnated.
 
 =
 void InterNames::annotate_i(inter_name *iname, inter_ti annot_ID, inter_ti V) {
-	Inter::Symbols::annotate_i(InterNames::to_symbol(iname), annot_ID, V);
+	InterSymbol::annotate_i(InterNames::to_symbol(iname), annot_ID, V);
 }
 
 void InterNames::annotate_w(inter_name *iname, inter_ti annot_ID, wording W) {
 	inter_symbol *S = InterNames::to_symbol(iname);
 	TEMPORARY_TEXT(temp)
 	WRITE_TO(temp, "%W", W);
-	Inter::Symbols::annotate_t(InterPackage::tree(Inter::Symbols::package(S)),
-		Inter::Symbols::package(S), S, annot_ID, temp);
+	InterSymbol::annotate_t(InterPackage::tree(InterSymbol::package(S)),
+		InterSymbol::package(S), S, annot_ID, temp);
 	DISCARD_TEXT(temp)
 }
 
 int InterNames::read_annotation(inter_name *iname, inter_ti annot) {
 	inter_symbol *S = InterNames::to_symbol(iname);
-	return Inter::Symbols::read_annotation(S, annot);
+	return InterSymbol::read_annotation(S, annot);
 }
 
 void InterNames::set_flag(inter_name *iname, int f) {
-	Inter::Symbols::set_flag(InterNames::to_symbol(iname), f);
+	InterSymbol::set_flag(InterNames::to_symbol(iname), f);
 }
 
 void InterNames::clear_flag(inter_name *iname, int f) {
-	Inter::Symbols::clear_flag(InterNames::to_symbol(iname), f);
+	InterSymbol::clear_flag(InterNames::to_symbol(iname), f);
 }
 
 void InterNames::set_translation(inter_name *iname, text_stream *new_text) {
-	Inter::Symbols::set_translate(InterNames::to_symbol(iname), new_text);
+	InterSymbol::set_translate(InterNames::to_symbol(iname), new_text);
 }
 
 text_stream *InterNames::get_translation(inter_name *iname) {
-	return Inter::Symbols::get_translate(InterNames::to_symbol(iname));
+	return InterSymbol::get_translate(InterNames::to_symbol(iname));
 }

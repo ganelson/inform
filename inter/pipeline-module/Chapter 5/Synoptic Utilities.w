@@ -51,7 +51,7 @@ inter_symbol *Synoptic::new_symbol(inter_package *pack, text_stream *name) {
 =
 void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 	inter_symbol *con_s, text_stream *S, inter_bookmark *IBM) {
-	Inter::Symbols::annotate_i(con_s, TEXT_LITERAL_IANN, 1);
+	InterSymbol::annotate_i(con_s, TEXT_LITERAL_IANN, 1);
 	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
 		InterBookmark::package(IBM));
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), S);
@@ -132,7 +132,7 @@ void Synoptic::symbol_entry(inter_symbol *S) {
 		InterSymbolsTable::create_with_unique_name(InterPackage::scope(pack), S->symbol_name);
 	Wiring::wire_to(local_S, S);
 	inter_ti val1 = 0, val2 = 0;
-	Inter::Symbols::to_data(InterPackage::tree(pack), pack, local_S, &val1, &val2);
+	InterSymbol::to_data(InterPackage::tree(pack), pack, local_S, &val1, &val2);
 	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = ALIAS_IVAL;
 	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
 }

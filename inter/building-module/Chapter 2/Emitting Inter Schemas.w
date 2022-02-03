@@ -205,9 +205,9 @@ all conditionals are resolved.
 			symbol_to_check, global_finder);
 		symb = Wiring::cable_end(symb);
 		LOGIF(SCHEMA_COMPILATION, "Symb is $3\n", symb);
-		if (Inter::Symbols::is_defined(symb)) {
+		if (InterSymbol::is_defined(symb)) {
 			def = TRUE;
-			val = Inter::Symbols::evaluate_to_int(symb);
+			val = InterSymbol::evaluate_to_int(symb);
 		}			
 	}
 	LOGIF(SCHEMA_COMPILATION, "Defined: %d, value: %d\n", def, val);
@@ -423,7 +423,7 @@ changed back again very soon after.
 		at = at->next_node;
 	} else {
 		to_call = IdentifierFinders::find_token(I, tok, finder);
-		if (Inter::Symbols::is_local(to_call)) to_call = NULL;
+		if (InterSymbol::is_local(to_call)) to_call = NULL;
 		if (to_call) {
 			inter_tree_node *D = to_call->definition;
 			if ((D) && (D->W.instruction[ID_IFLD] == VARIABLE_IST)) to_call = NULL;

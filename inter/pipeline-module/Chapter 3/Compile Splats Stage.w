@@ -308,16 +308,16 @@ not already there.
 		Wiring::wire_to(external_name, made_s);
 		Wiring::wire_to(made_s, NULL);
 	}
-	Inter::Symbols::annotate_i(made_s, ASSIMILATED_IANN, 1);
-	if (directive == FAKEACTION_I6DIR) Inter::Symbols::annotate_i(made_s, FAKE_ACTION_IANN, 1);
-	if (directive == OBJECT_I6DIR) Inter::Symbols::annotate_i(made_s, OBJECT_IANN, 1);
-	if (directive == ATTRIBUTE_I6DIR) Inter::Symbols::annotate_i(made_s, EITHER_OR_IANN, 1);
-	if (directive == VERB_I6DIR) Inter::Symbols::set_flag(made_s, MAKE_NAME_UNIQUE);
+	InterSymbol::annotate_i(made_s, ASSIMILATED_IANN, 1);
+	if (directive == FAKEACTION_I6DIR) InterSymbol::annotate_i(made_s, FAKE_ACTION_IANN, 1);
+	if (directive == OBJECT_I6DIR) InterSymbol::annotate_i(made_s, OBJECT_IANN, 1);
+	if (directive == ATTRIBUTE_I6DIR) InterSymbol::annotate_i(made_s, EITHER_OR_IANN, 1);
+	if (directive == VERB_I6DIR) InterSymbol::set_flag(made_s, MAKE_NAME_UNIQUE);
 
 @<Declare a property ID symbol to go with it@> =
 	inter_bookmark *IBM = &content_at;
 	inter_symbol *id_s = CompileSplatsStage::make_socketed_symbol(IBM, I"property_id");	
-	Inter::Symbols::set_flag(id_s, MAKE_NAME_UNIQUE);
+	InterSymbol::set_flag(id_s, MAKE_NAME_UNIQUE);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), id_s),
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
@@ -391,7 +391,7 @@ not already there.
 	text_stream *conts = NULL;
 	inter_ti annot = 0;
 	@<Work out the format of the array and the string of contents@>;
-	if (annot != 0) Inter::Symbols::annotate_i(made_s, annot, 1);
+	if (annot != 0) InterSymbol::annotate_i(made_s, annot, 1);
 
 	inter_ti v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES], v2_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
 	int no_assimilated_array_entries = 0;
@@ -484,7 +484,7 @@ for the action.
 		if (next_is_action) @<Ensure that a socket exists for this action name@>;
 		next_is_action = FALSE;
 		if ((NT++ == 0) && (Str::eq(value, I"meta"))) {
-			Inter::Symbols::annotate_i(made_s, METAVERB_IANN, 1);
+			InterSymbol::annotate_i(made_s, METAVERB_IANN, 1);
 		} else if (Str::len(value) > 0) {
 			inter_ti v1 = 0, v2 = 0;
 			@<Assimilate a value@>;
@@ -540,7 +540,7 @@ in other compilation units. So we create |action_id| equal just to 0 for now.
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, LITERAL_IVAL, 0, B, NULL));
-	Inter::Symbols::set_flag(action_id_s, MAKE_NAME_UNIQUE);
+	InterSymbol::set_flag(action_id_s, MAKE_NAME_UNIQUE);
 
 @<Make the actual double-sharped action symbol@> =
 	inter_package *pack = InterBookmark::package(IBM);
@@ -550,7 +550,7 @@ in other compilation units. So we create |action_id| equal just to 0 for now.
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, LITERAL_IVAL, 10000, B, NULL));
-	Inter::Symbols::annotate_i(action_s, ACTION_IANN, 1);
+	InterSymbol::annotate_i(action_s, ACTION_IANN, 1);
 
 @ The Inter convention is that an action package should contain a function
 to carry it out; for |##ScriptOn|, this would be called |ScriptOnSub|. In fact
@@ -715,7 +715,7 @@ These have package types |_function| and |_code| respectively.
 		if (Str::len(value) == 0) break;
 		inter_symbol *loc_name =
 			InterSymbolsTable::create_with_unique_name(InterPackage::scope(IP), value);
-		Inter::Symbols::local(loc_name);
+		InterSymbol::local(loc_name);
 		inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 		Produce::guard(Inter::Local::new(IBM, loc_name,
 			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM), 0, B, NULL));
@@ -737,7 +737,7 @@ These have package types |_function| and |_code| respectively.
 @<Create a symbol for calling the function@> =
 	inter_symbol *function_name_s =
 		CompileSplatsStage::make_socketed_symbol(IBM, identifier);
-	Inter::Symbols::annotate_i(function_name_s, ASSIMILATED_IANN, 1);
+	InterSymbol::annotate_i(function_name_s, ASSIMILATED_IANN, 1);
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, OP, function_name_s);
 	inter_ti KID = InterSymbolsTable::id_from_symbol(I, OP,
 		RunningPipelines::get_symbol(step, unchecked_function_RPSYM));
@@ -929,83 +929,83 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 
 @<Attempt to parse this as a command grammar token@> =
 	if (Str::eq(S, I"*")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_divider_RPSYM, I"VERB_DIRECTIVE_DIVIDER"), val1, val2); return;
 	}
 	if (Str::eq(S, I"->")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_result_RPSYM, I"VERB_DIRECTIVE_RESULT"), val1, val2); return;
 	}
 	if (Str::eq(S, I"reverse")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_reverse_RPSYM, I"VERB_DIRECTIVE_REVERSE"), val1, val2); return;
 	}
 	if (Str::eq(S, I"/")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_slash_RPSYM, I"VERB_DIRECTIVE_SLASH"), val1, val2); return;
 	}
 	if (Str::eq(S, I"special")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_special_RPSYM, I"VERB_DIRECTIVE_SPECIAL"), val1, val2); return;
 	}
 	if (Str::eq(S, I"number")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_number_RPSYM, I"VERB_DIRECTIVE_NUMBER"), val1, val2); return;
 	}
 	if (Str::eq(S, I"noun")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_noun_RPSYM, I"VERB_DIRECTIVE_NOUN"), val1, val2); return;
 	}
 	if (Str::eq(S, I"multi")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_multi_RPSYM, I"VERB_DIRECTIVE_MULTI"), val1, val2); return;
 	}
 	if (Str::eq(S, I"multiinside")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiinside_RPSYM, I"VERB_DIRECTIVE_MULTIINSIDE"), val1, val2); return;
 	}
 	if (Str::eq(S, I"multiheld")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiheld_RPSYM, I"VERB_DIRECTIVE_MULTIHELD"), val1, val2); return;
 	}
 	if (Str::eq(S, I"held")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_held_RPSYM, I"VERB_DIRECTIVE_HELD"), val1, val2); return;
 	}
 	if (Str::eq(S, I"creature")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_creature_RPSYM, I"VERB_DIRECTIVE_CREATURE"), val1, val2); return;
 	}
 	if (Str::eq(S, I"topic")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_topic_RPSYM, I"VERB_DIRECTIVE_TOPIC"), val1, val2); return;
 	}
 	if (Str::eq(S, I"multiexcept")) {
-		Inter::Symbols::to_data(I, pack, RunningPipelines::ensure_symbol(step,
+		InterSymbol::to_data(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiexcept_RPSYM, I"VERB_DIRECTIVE_MULTIEXCEPT"), val1, val2); return;
 	}
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, S, L"scope=(%i+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
-			if (Inter::Symbols::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
-				Inter::Symbols::annotate_i(symb, SCOPE_FILTER_IANN, 1);
-			Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
+			if (InterSymbol::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
+				InterSymbol::annotate_i(symb, SCOPE_FILTER_IANN, 1);
+			InterSymbol::to_data(I, pack, symb, val1, val2); return;
 		}
 	}
 	if (Regexp::match(&mr, S, L"noun=(%i+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
-			if (Inter::Symbols::read_annotation(symb, NOUN_FILTER_IANN) != 1)
-				Inter::Symbols::annotate_i(symb, NOUN_FILTER_IANN, 1);
-			Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
+			if (InterSymbol::read_annotation(symb, NOUN_FILTER_IANN) != 1)
+				InterSymbol::annotate_i(symb, NOUN_FILTER_IANN, 1);
+			InterSymbol::to_data(I, pack, symb, val1, val2); return;
 		}
 	}
 
 @<Attempt to parse this as an identifier name for something already defined by this kit@> =
 	inter_symbol *symb = Wiring::find_socket(I, S);
 	if (symb) {
-		Inter::Symbols::to_data(I, pack, symb, val1, val2); return;
+		InterSymbol::to_data(I, pack, symb, val1, val2); return;
 	}
 
 @ At this point, maybe the reason we haven't yet recognised the constant |S| is
@@ -1035,7 +1035,7 @@ before they are needed.
 		CompileSplatsStage::compute_r(step, IBM, sch->node_tree);
 	if (result_s == NULL)
 		PipelineErrors::kit_error("Inform 6 constant in kit too complex", S);
-	Inter::Symbols::to_data(I, pack, result_s, val1, val2);
+	InterSymbol::to_data(I, pack, result_s, val1, val2);
 
 @ So this is the recursion. Note that we calculate $-x$ as $0 - x$, thus
 reducing unary subtraction to a case of binary subtraction.
@@ -1107,13 +1107,13 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	int pos = pair_list->W.extent;
 	Inode::extend_instruction_by(pair_list, 4);
 	if (i1) {
-		Inter::Symbols::to_data(I, pack, i1,
+		InterSymbol::to_data(I, pack, i1,
 			&(pair_list->W.instruction[pos]), &(pair_list->W.instruction[pos+1]));
 	} else {
 		pair_list->W.instruction[pos] = LITERAL_IVAL; pair_list->W.instruction[pos+1] = 0;
 	}
 	if (i2) {
-		Inter::Symbols::to_data(I, pack, i2,
+		InterSymbol::to_data(I, pack, i2,
 			&(pair_list->W.instruction[pos+2]), &(pair_list->W.instruction[pos+3]));
 	} else {
 		pair_list->W.instruction[pos+2] = LITERAL_IVAL; pair_list->W.instruction[pos+3] = 0;
@@ -1184,7 +1184,7 @@ inter_symbol *CompileSplatsStage::new_ccv_symbol(inter_package *pack) {
 	WRITE_TO(NN, "Computed_Constant_Value_%d", ccs_count++);
 	inter_symbol *result_s =
 		InterSymbolsTable::symbol_from_name_creating(InterPackage::scope(pack), NN);
-	Inter::Symbols::set_flag(result_s, MAKE_NAME_UNIQUE);
+	InterSymbol::set_flag(result_s, MAKE_NAME_UNIQUE);
 	DISCARD_TEXT(NN)
 	return result_s;
 }

@@ -39,16 +39,16 @@ int Wiring::is_wired(inter_symbol *S) {
 
 void Wiring::wire_to(inter_symbol *S, inter_symbol *T) {
 	if (S == NULL) internal_error("null symbol cannot be wired");
-	if ((S->metadata_key) || ((T) && (T->metadata_key)))
+	if ((InterSymbol::is_metadata_key(S)) || ((T) && (InterSymbol::is_metadata_key(T))))
 		internal_error("metadata keys cannot be wired");
 	if (S->wiring.connects_to == T) return;
 	if (S->wiring.connects_to) S->wiring.connects_to->wiring.no_connections--;
 	S->wiring.connects_to = T;
 	S->wiring.wants_to_connect_to = NULL;
 	if (T) T->wiring.no_connections++;
-	if ((Inter::Symbols::get_scope(S) != SOCKET_ISYMS) &&
-		(Inter::Symbols::get_scope(S) != PLUG_ISYMS))
-		Inter::Symbols::set_scope(S, EXTERNAL_ISYMS);
+	if ((InterSymbol::get_scope(S) != SOCKET_ISYMS) &&
+		(InterSymbol::get_scope(S) != PLUG_ISYMS))
+		InterSymbol::set_scope(S, EXTERNAL_ISYMS);
 	LOGIF(INTER_SYMBOLS, "Wired $3 to $3\n", S, T);
 	int c = 0;
 	for (inter_symbol *W = S; W; W = W->wiring.connects_to, c++)
@@ -63,7 +63,7 @@ void Wiring::wire_to(inter_symbol *S, inter_symbol *T) {
 
 void Wiring::wire_to_name(inter_symbol *S, text_stream *T) {
 	if (S == NULL) internal_error("null symbol cannot be wired");
-	if (S->metadata_key) internal_error("metadata keys cannot be wired");
+	if (InterSymbol::is_metadata_key(S)) internal_error("metadata keys cannot be wired");
 	if (Str::len(T) == 0) internal_error("symbols cannot be wired to the empty name");
 	if (Str::get_at(T, 0) == '/') internal_error("symbols cannot be wired to URLs");
 	Wiring::wire_to(S, NULL);
@@ -87,13 +87,13 @@ void Wiring::shorten_wiring(inter_symbol *S) {
 
 void Wiring::convert_to_plug(inter_symbol *S, text_stream *wanted) {
 	Wiring::wire_to_name(S, wanted);
-	Inter::Symbols::set_scope(S, PLUG_ISYMS);
-	Inter::Symbols::set_type(S, MISC_ISYMT);
+	InterSymbol::set_scope(S, PLUG_ISYMS);
+	InterSymbol::set_type(S, MISC_ISYMT);
 }
 
 void Wiring::convert_to_socket(inter_symbol *S, inter_symbol *to) {
 	Wiring::wire_to(S, to);
-	Inter::Symbols::set_scope(S, SOCKET_ISYMS);
+	InterSymbol::set_scope(S, SOCKET_ISYMS);
 }
 
 int unique_plug_number = 1;
@@ -123,7 +123,7 @@ inter_symbol *Wiring::find_socket(inter_tree *I, text_stream *identifier) {
 	if (connectors) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_name_not_equating(
 			InterPackage::scope(LargeScale::connectors_package_if_it_exists(I)), identifier);
-		if ((S) && (Inter::Symbols::get_scope(S) == SOCKET_ISYMS)) return S;
+		if ((S) && (InterSymbol::get_scope(S) == SOCKET_ISYMS)) return S;
 	}
 	return NULL;
 }
@@ -133,7 +133,7 @@ inter_symbol *Wiring::find_plug(inter_tree *I, text_stream *identifier) {
 	if (connectors) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_name_not_equating(
 			InterPackage::scope(LargeScale::connectors_package_if_it_exists(I)), identifier);
-		if ((S) && (Inter::Symbols::get_scope(S) == PLUG_ISYMS)) return S;
+		if ((S) && (InterSymbol::get_scope(S) == PLUG_ISYMS)) return S;
 	}
 	return NULL;
 }
@@ -145,7 +145,7 @@ void Wiring::wire_plug(inter_symbol *plug, inter_symbol *to) {
 }
 
 int Wiring::is_plug(inter_symbol *S) {
-	if ((S) && (Inter::Symbols::get_scope(S) == PLUG_ISYMS)) return TRUE;
+	if ((S) && (InterSymbol::get_scope(S) == PLUG_ISYMS)) return TRUE;
 	return FALSE;
 }
 
@@ -197,7 +197,7 @@ void Wiring::connect_plugs_to_sockets(inter_tree *I) {
 }
 
 int Wiring::is_socket(inter_symbol *S) {
-	if ((S) && (Inter::Symbols::get_scope(S) == SOCKET_ISYMS)) return TRUE;
+	if ((S) && (InterSymbol::get_scope(S) == SOCKET_ISYMS)) return TRUE;
 	return FALSE;
 }
 

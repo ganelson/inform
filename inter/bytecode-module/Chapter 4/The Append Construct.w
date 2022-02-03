@@ -65,7 +65,7 @@ void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_packag
 	if (vcount == 0) {
 		inter_ti ID = P->W.instruction[TEXT_APPEND_IFLD];
 		text_stream *S = Inode::ID_to_text(P, ID);
-		Inter::Symbols::annotate_t(P->tree, P->package, symbol, APPEND_IANN, S);
+		InterSymbol::annotate_t(P->tree, P->package, symbol, APPEND_IANN, S);
 	}
 }
 

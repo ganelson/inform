@@ -59,17 +59,17 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		if (*E) return;
 	}
 
-	if (Str::eq(ilp->mr.exp[0], I"private")) Inter::Symbols::set_scope(name_name, PRIVATE_ISYMS);
-	else if (Str::eq(ilp->mr.exp[0], I"public")) Inter::Symbols::set_scope(name_name, PUBLIC_ISYMS);
-	else if (Str::eq(ilp->mr.exp[0], I"external")) Inter::Symbols::set_scope(name_name, EXTERNAL_ISYMS);
-	else if (Str::eq(ilp->mr.exp[0], I"plug")) Inter::Symbols::set_scope(name_name, PLUG_ISYMS);
-	else if (Str::eq(ilp->mr.exp[0], I"socket")) Inter::Symbols::set_scope(name_name, SOCKET_ISYMS);
+	if (Str::eq(ilp->mr.exp[0], I"private")) InterSymbol::set_scope(name_name, PRIVATE_ISYMS);
+	else if (Str::eq(ilp->mr.exp[0], I"public")) InterSymbol::set_scope(name_name, PUBLIC_ISYMS);
+	else if (Str::eq(ilp->mr.exp[0], I"external")) InterSymbol::set_scope(name_name, EXTERNAL_ISYMS);
+	else if (Str::eq(ilp->mr.exp[0], I"plug")) InterSymbol::set_scope(name_name, PLUG_ISYMS);
+	else if (Str::eq(ilp->mr.exp[0], I"socket")) InterSymbol::set_scope(name_name, SOCKET_ISYMS);
 	else { *E = Inter::Errors::plain(I"unknown scope keyword", eloc); return; }
 
-	if (Str::eq(ilp->mr.exp[1], I"label")) Inter::Symbols::set_type(name_name, LABEL_ISYMT);
-	else if (Str::eq(ilp->mr.exp[1], I"misc")) Inter::Symbols::set_type(name_name, MISC_ISYMT);
-	else if (Str::eq(ilp->mr.exp[1], I"package")) Inter::Symbols::set_type(name_name, PACKAGE_ISYMT);
-	else if (Str::eq(ilp->mr.exp[1], I"packagetype")) Inter::Symbols::set_type(name_name, PTYPE_ISYMT);
+	if (Str::eq(ilp->mr.exp[1], I"label")) InterSymbol::set_type(name_name, LABEL_ISYMT);
+	else if (Str::eq(ilp->mr.exp[1], I"misc")) InterSymbol::set_type(name_name, MISC_ISYMT);
+	else if (Str::eq(ilp->mr.exp[1], I"package")) InterSymbol::set_type(name_name, PACKAGE_ISYMT);
+	else if (Str::eq(ilp->mr.exp[1], I"packagetype")) InterSymbol::set_type(name_name, PTYPE_ISYMT);
 	else { *E = Inter::Errors::plain(I"unknown symbol-type keyword", eloc); return; }
 
 	if ((trans_name) && (equate_name)) {
@@ -77,18 +77,18 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	}
 
 	if (InterPackage::is_a_linkage_package(InterBookmark::package(IBM))) {
-		if (Inter::Symbols::is_connector(name_name) == FALSE) {
+		if (InterSymbol::is_connector(name_name) == FALSE) {
 			*E = Inter::Errors::plain(I"in a _linkage package, all symbols must be plugs or sockets", eloc); return;
 		}
 		if (equate_name) {
-			if (Inter::Symbols::get_scope(name_name) == PLUG_ISYMS)
+			if (InterSymbol::get_scope(name_name) == PLUG_ISYMS)
 				Wiring::convert_to_plug(name_name, equate_name);
 			else {
 				inter_symbol *eq = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), equate_name);
 				if (eq == NULL) eq = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), equate_name);
 				if (eq == NULL) {
 					Wiring::wire_to_name(name_name, equate_name);
-					Inter::Symbols::set_scope(name_name, EXTERNAL_ISYMS);
+					InterSymbol::set_scope(name_name, EXTERNAL_ISYMS);
 				} else {
 					Wiring::convert_to_socket(name_name, eq);
 				}
@@ -97,16 +97,16 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 			*E = Inter::Errors::plain(I"link symbol not equated", eloc); return;
 		}
 	} else {
-		if (Inter::Symbols::is_connector(name_name)) {
+		if (InterSymbol::is_connector(name_name)) {
 			*E = Inter::Errors::plain(I"plugs and sockets may only occur in a _linkage package", eloc); return;
 		}
-		if (trans_name) Inter::Symbols::set_translate(name_name, trans_name);
+		if (trans_name) InterSymbol::set_translate(name_name, trans_name);
 		if (equate_name) {
 			inter_symbol *eq = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), equate_name);
 			if (eq == NULL) eq = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), equate_name);
 			if (eq == NULL) {
 				Wiring::wire_to_name(name_name, equate_name);
-				Inter::Symbols::set_scope(name_name, EXTERNAL_ISYMS);
+				InterSymbol::set_scope(name_name, EXTERNAL_ISYMS);
 			} else {
 				Wiring::wire_to(name_name, eq);
 			}
@@ -114,7 +114,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	}
 
 	if (starred) {
-		Inter::Symbols::set_flag(name_name, MAKE_NAME_UNIQUE);
+		InterSymbol::set_flag(name_name, MAKE_NAME_UNIQUE);
 	}
 }
 

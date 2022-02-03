@@ -89,7 +89,7 @@ void Emit::to_value_pair_in_context(inter_name *context, inter_ti *v1, inter_ti 
 void Emit::stvp_inner(inter_symbol *S, inter_ti *v1, inter_ti *v2,
 	inter_package *pack) {
 	if (S) {
-		Inter::Symbols::to_data(InterPackage::tree(pack), pack, S, v1, v2);
+		InterSymbol::to_data(InterPackage::tree(pack), pack, S, v1, v2);
 		return;
 	}
 	*v1 = LITERAL_IVAL; *v2 = 0;
@@ -268,7 +268,7 @@ inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
 	inter_symbol *kind_s, inter_ti annotation) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::define(con_iname);
-	if (annotation != INVALID_IANN) Inter::Symbols::annotate_i(con_s, annotation, 0);
+	if (annotation != INVALID_IANN) InterSymbol::annotate_i(con_s, annotation, 0);
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
 		Emit::symbol_id(kind_s), LITERAL_IVAL, val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);

@@ -117,21 +117,21 @@ void Inter::Primitive::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 
 int Inter::Primitive::arity(inter_symbol *prim) {
 	if (prim == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(prim);
+	inter_tree_node *D = InterSymbol::definition(prim);
 	if (D == NULL) return 0;
 	return D->W.extent - CAT_PRIM_IFLD - 1;
 }
 
 inter_ti Inter::Primitive::operand_category(inter_symbol *prim, int i) {
 	if (prim == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(prim);
+	inter_tree_node *D = InterSymbol::definition(prim);
 	if (D == NULL) return 0;
 	return D->W.instruction[CAT_PRIM_IFLD + i];
 }
 
 inter_ti Inter::Primitive::result_category(inter_symbol *prim) {
 	if (prim == NULL) return 0;
-	inter_tree_node *D = Inter::Symbols::definition(prim);
+	inter_tree_node *D = InterSymbol::definition(prim);
 	if (D == NULL) return 0;
 	return D->W.instruction[D->W.extent - 1];
 }

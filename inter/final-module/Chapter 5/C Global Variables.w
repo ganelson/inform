@@ -53,7 +53,7 @@ void CGlobals::declare_variables(code_generator *gtr, code_generation *gen, link
 	int N = 1;
 	inter_symbol *var_name;
 	LOOP_OVER_LINKED_LIST(var_name, inter_symbol, L) {
-		text_stream *identifier = Inter::Symbols::name(var_name);
+		text_stream *identifier = InterSymbol::name(var_name);
 		@<Define a constant for this position in the globals array@>;
 		@<Add the initial value to the globals array@>;
 		@<Define a more legible constant for the header target@>;
@@ -127,7 +127,7 @@ void CGlobals::evaluate_variable(code_generator *gtr, code_generation *gen,
 	inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("proc->state.variables[");
-	CNamespace::mangle_variable(OUT, Inter::Symbols::name(var_name));
+	CNamespace::mangle_variable(OUT, InterSymbol::name(var_name));
 	WRITE("]");
 }
 

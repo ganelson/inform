@@ -64,7 +64,7 @@ void Inter::Annotations::remove_from_set(inter_annotation_set *set, inter_ti ann
 void Inter::Annotations::copy_set_to_symbol(inter_annotation_set *set, inter_symbol *S) {
 	if (set)
 		for (inter_annotation *A = set->anns; A; A = A->next)
-			Inter::Symbols::annotate(S, *A);
+			InterSymbol::annotate(S, *A);
 }
 
 void Inter::Annotations::transpose_set(inter_annotation_set *set, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {

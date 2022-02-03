@@ -118,7 +118,7 @@ void CNamespace::sweep_for_locals(inter_tree *I, inter_tree_node *P, void *state
 		InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 	TEMPORARY_TEXT(T)
 	WRITE_TO(T, "local_%S", var_name->symbol_name);
-	Inter::Symbols::set_translate(var_name, T);
+	InterSymbol::set_translate(var_name, T);
 	DISCARD_TEXT(T)
 }
 
@@ -131,7 +131,7 @@ For the reason why |Serial| and |Release| are placed higher-up in the file, see
 =
 void CNamespace::declare_constant(code_generator *gtr, code_generation *gen,
 	inter_symbol *const_s, int form, text_stream *val) {
-	text_stream *name = Inter::Symbols::name(const_s);
+	text_stream *name = InterSymbol::name(const_s);
 	int seg = c_constants_I7CGS;
 	if (Str::eq(name, I"Serial")) seg = c_ids_and_maxima_I7CGS;
 	if (Str::eq(name, I"Release")) seg = c_ids_and_maxima_I7CGS;

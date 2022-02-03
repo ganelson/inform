@@ -259,7 +259,7 @@ its nouns exchanged.
 	if (val1 == DWORD_IVAL) {
 		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
 		vanilla_dword *dw = VanillaIF::text_to_verb_dword(gen, glob_text, verbnum);
-		if (Inter::Symbols::read_annotation(array_s, METAVERB_IANN) == 1) dw->meta = TRUE;
+		if (InterSymbol::read_annotation(array_s, METAVERB_IANN) == 1) dw->meta = TRUE;
 		synonyms++;
 		if (synonyms == 1) ADD_TO_LINKED_LIST(dw, vanilla_dword, gen->verbs);
 		dw->grammar_table_offset = address;
@@ -394,11 +394,11 @@ The opening byte gives some metadata bits, and then there's a word.
 
 @<Handle a noun filter, a scope filter or similar@> =
 	int bc = 0x86;				
-	if (Inter::Symbols::read_annotation(S, SCOPE_FILTER_IANN) == 1) bc = 0x85;
-	if (Inter::Symbols::read_annotation(S, NOUN_FILTER_IANN) == 1)  bc = 0x83;
+	if (InterSymbol::read_annotation(S, SCOPE_FILTER_IANN) == 1) bc = 0x85;
+	if (InterSymbol::read_annotation(S, NOUN_FILTER_IANN) == 1)  bc = 0x83;
 	VanillaIF::grammar_byte(gen, bc + token_metadata);
 	TEMPORARY_TEXT(MG)
-	Generators::mangle(gen, MG, Inter::Symbols::name(S));
+	Generators::mangle(gen, MG, InterSymbol::name(S));
 	VanillaIF::grammar_word_textual(gen, MG);
 	DISCARD_TEXT(MG)
 
@@ -424,7 +424,7 @@ The opening byte gives some metadata bits, and then there's a word.
 @ =
 inter_symbol *VanillaIF::get_symbol(code_generation *gen, inter_tree_node *P,
 	inter_ti val1, inter_ti val2) {
-	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+	if (InterSymbol::is_stored_in_data(val1, val2)) {
 		inter_symbol *S =
 			InterSymbolsTable::symbol_from_data_pair(val1, val2,
 				InterPackage::scope_of(P));

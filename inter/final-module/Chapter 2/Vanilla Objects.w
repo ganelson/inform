@@ -75,7 +75,7 @@ void VanillaObjects::declare_properties(code_generation *gen) {
 }
 
 @<Group the properties by name@> =
-	text_stream *name = Inter::Symbols::name(prop_name);
+	text_stream *name = InterSymbol::name(prop_name);
 	if (Dictionaries::find(last_with_name, name) == NULL) {
 		text_stream *inner_name = Str::duplicate(name);
 		Dictionaries::create(last_with_name, inner_name);
@@ -114,35 +114,35 @@ ways because of the built-in |name| property, whose name cannot be declared or
 altered.
 
 @<Declare one property for each name group@> =
-	text_stream *name = Inter::Symbols::name(prop_name);
+	text_stream *name = InterSymbol::name(prop_name);
 	text_stream *inner_name = NULL;
 	if (Dictionaries::find(first_with_name, name) == NULL) {
 		LOGIF(PROPERTY_ALLOCATION, "! NEW name=%S   sname=%S   eor=%d   assim=%d\n",
 			name, prop_name->symbol_name,
-			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
-			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
+			InterSymbol::read_annotation(prop_name, EITHER_OR_IANN),
+			InterSymbol::read_annotation(prop_name, ASSIMILATED_IANN));
 		inner_name = Str::duplicate(name);
 		Dictionaries::create(first_with_name, inner_name);
 		Dictionaries::write_value(first_with_name, inner_name, (void *) prop_name);
-		Inter::Symbols::annotate_t(gen->from, Inter::Symbols::package(prop_name),
+		InterSymbol::annotate_t(gen->from, InterSymbol::package(prop_name),
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
 		@<Set the translation to a new metadata array@>;
 	} else {
 		LOGIF(PROPERTY_ALLOCATION, "! OLD name=%S   sname=%S   eor=%d   assim=%d\n",
 			name, prop_name->symbol_name,
-			Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN),
-			Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN));
+			InterSymbol::read_annotation(prop_name, EITHER_OR_IANN),
+			InterSymbol::read_annotation(prop_name, ASSIMILATED_IANN));
 		inter_symbol *existing_prop_name = 
 			(inter_symbol *) Dictionaries::read_value(first_with_name, name);
 		inner_name = I"<nameless>";
-		int N = Inter::Symbols::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
+		int N = InterSymbol::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
 		if (N > 0) inner_name = InterWarehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
-		Inter::Symbols::set_translate(prop_name, Inter::Symbols::name(existing_prop_name));
-		Inter::Symbols::annotate_t(gen->from, Inter::Symbols::package(prop_name),
+		InterSymbol::set_translate(prop_name, InterSymbol::name(existing_prop_name));
+		InterSymbol::annotate_t(gen->from, InterSymbol::package(prop_name),
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
 	}
 	LOGIF(PROPERTY_ALLOCATION, "! Translation %S, inner name %S\n",
-		Inter::Symbols::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
+		InterSymbol::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
 
 @ Note that //Generators::declare_property// calls the generator to ask it to
 create the first two entries in the metadata array. Those can be anything the
@@ -151,7 +151,7 @@ generator wants.
 @<Set the translation to a new metadata array@> =
 	text_stream *array_name = Str::new();
 	WRITE_TO(array_name, "A_%S", inner_name);
-	Inter::Symbols::set_translate(prop_name, array_name);
+	InterSymbol::set_translate(prop_name, array_name);
 
 	linked_list *all_forms = (linked_list *) Dictionaries::read_value(all_with_name, name);
 
@@ -165,7 +165,7 @@ generator wants.
 	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
 
 @<Write the either-or flag@> =
-	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN))
+	if (InterSymbol::read_annotation(prop_name, EITHER_OR_IANN))
 		Generators::array_entry(gen, I"1", WORD_ARRAY_FORMAT);
 	else
 		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
@@ -178,7 +178,7 @@ because that will come from an I7 source text definition.
 		(inter_symbol *) Dictionaries::read_value(last_with_name, name);
 	inter_tree *I = gen->from;
 	text_stream *pname = I"<nameless>";
-	int N = Inter::Symbols::read_annotation(last_prop_name, PROPERTY_NAME_IANN);
+	int N = InterSymbol::read_annotation(last_prop_name, PROPERTY_NAME_IANN);
 	if (N > 0) pname = InterWarehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
 	TEMPORARY_TEXT(entry)
 	CodeGen::select_temporary(gen, entry);
@@ -269,7 +269,7 @@ not as wasteful as it looks.)
 =
 text_stream *VanillaObjects::inner_property_name(code_generation *gen, inter_symbol *prop_name) {
 	text_stream *inner_name = I"<nameless>";
-	int N = Inter::Symbols::read_annotation(prop_name, INNER_PROPERTY_NAME_IANN);
+	int N = InterSymbol::read_annotation(prop_name, INNER_PROPERTY_NAME_IANN);
 	if (N > 0) inner_name = InterWarehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
 	return inner_name;
 }
@@ -363,7 +363,7 @@ by table, no sticks exist and we must compile them.
 	if (X->W.instruction[STORAGE_PERM_IFLD]) {
 		inter_symbol *store = InterSymbolsTable::symbol_from_ID_at_node(X, STORAGE_PERM_IFLD);
 		if (store == NULL) internal_error("bad PP in inter");
-		ident = Inter::Symbols::name(store);
+		ident = InterSymbol::name(store);
 	} else {
 		ident = Str::new();
 		WRITE_TO(ident, "KOVP_%d", unique_kovp_id++);
@@ -445,7 +445,7 @@ was all taken care of with the sticks of property values already declared.
 @<Declare instances@> =
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
-		inter_tree_node *P = Inter::Symbols::definition(inst_s);
+		inter_tree_node *P = InterSymbol::definition(inst_s);
 		inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_INST_IFLD);
 		int N = -1;
 		if (Inter::Kind::is_a(inst_kind, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) == FALSE)
@@ -492,7 +492,7 @@ news for, say, the C generator.
 void VanillaObjects::append(code_generation *gen, inter_symbol *symb) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
-	text_stream *S = Inter::Symbols::read_annotation_t(symb, I, APPEND_IANN);
+	text_stream *S = InterSymbol::read_annotation_t(symb, I, APPEND_IANN);
 	if (Str::len(S) > 0) Vanilla::splat_matter(OUT, I, S);
 }
 
@@ -504,7 +504,7 @@ int VanillaObjects::weak_id(inter_symbol *kind_s) {
 	inter_package *pack = InterPackage::container(kind_s->definition);
 	inter_symbol *weak_s = Metadata::read_optional_symbol(pack, I"^weak_id");
 	int alt_N = -1;
-	if (weak_s) alt_N = Inter::Symbols::evaluate_to_int(weak_s);
+	if (weak_s) alt_N = InterSymbol::evaluate_to_int(weak_s);
 	if (alt_N >= 0) return alt_N;
 	return 0;
 }
@@ -559,7 +559,7 @@ int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *pr
 			InterPackage::scope_of(X), X->W.instruction[OWNER_PERM_IFLD]);
 		if (owner_s == NULL) internal_error("bad owner");
 		inter_symbol *owner_kind_s = NULL;
-		inter_tree_node *D = Inter::Symbols::definition(owner_s);
+		inter_tree_node *D = InterSymbol::definition(owner_s);
 		if ((D) && (D->W.instruction[ID_IFLD] == INSTANCE_IST)) {
 			owner_kind_s = Inter::Instance::kind_of(owner_s);
 		} else {

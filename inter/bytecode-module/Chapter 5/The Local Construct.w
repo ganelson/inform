@@ -39,8 +39,8 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 
 	inter_symbol *var_name = Inter::Textual::find_undefined_symbol(IBM, eloc, locals, ilp->mr.exp[0], E);
 	if (*E) return;
-	if ((Inter::Symbols::get_scope(var_name) != PRIVATE_ISYMS) ||
-		(Inter::Symbols::get_type(var_name) != MISC_ISYMT)) { *E = Inter::Errors::plain(I"symbol of wrong S-type", eloc); return; }
+	if ((InterSymbol::get_scope(var_name) != PRIVATE_ISYMS) ||
+		(InterSymbol::get_type(var_name) != MISC_ISYMT)) { *E = Inter::Errors::plain(I"symbol of wrong S-type", eloc); return; }
 
 	inter_symbol *var_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
@@ -72,13 +72,13 @@ void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
 	inter_symbol *var_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_LOCAL_IFLD);
 	if (var_name) {
 		WRITE("local %S %S", var_name->symbol_name, var_kind->symbol_name);
-		Inter::Symbols::write_annotations(OUT, P, var_name);
+		InterSymbol::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write local", NULL); return; }
 }
 
 inter_symbol *Inter::Local::kind_of(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(con_symbol);
+	inter_tree_node *D = InterSymbol::definition(con_symbol);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != LOCAL_IST) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_LOCAL_IFLD);

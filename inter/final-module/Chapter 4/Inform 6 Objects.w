@@ -95,11 +95,11 @@ that definition to be the true one.
 @<Find whether this property has been assimilated from a kit@> =
 	inter_symbol *p;
 	LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
-		if (Inter::Symbols::read_annotation(p, ASSIMILATED_IANN) >= 0)
+		if (InterSymbol::read_annotation(p, ASSIMILATED_IANN) >= 0)
 			originated_in_a_kit = TRUE;
 
 @<Decide whether to store this in a VM-attribute@> =
-	if (Inter::Symbols::read_annotation(prop_name, EITHER_OR_IANN) == 1) {
+	if (InterSymbol::read_annotation(prop_name, EITHER_OR_IANN) == 1) {
 		store_in_VM_attribute = NOT_APPLICABLE;
 		@<Any either/or property which can belong to a value instance is ineligible@>;
 		@<An either/or property coming from a kit must be chosen@>;
@@ -108,11 +108,11 @@ that definition to be the true one.
 	if (store_in_VM_attribute == TRUE) {
 		inter_symbol *p;
 		LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
-			Inter::Symbols::set_flag(p, ATTRIBUTE_MARK_BIT);
+			InterSymbol::set_flag(p, ATTRIBUTE_MARK_BIT);
 	} else if (store_in_VM_attribute == FALSE) {
 		inter_symbol *p;
 		LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
-			Inter::Symbols::clear_flag(p, ATTRIBUTE_MARK_BIT);
+			InterSymbol::clear_flag(p, ATTRIBUTE_MARK_BIT);
 	} else {
 		internal_error("No decision was taken");
 	}
@@ -253,10 +253,10 @@ void I6TargetObjects::declare_kind(code_generator *gtr, code_generation *gen,
 
 @<A kind of object, including the kind object itself@> =
 	*saved = CodeGen::select(gen, classes_I7CGS);
-	text_stream *class_name = Inter::Symbols::name(kind_s);
+	text_stream *class_name = InterSymbol::name(kind_s);
 	text_stream *super_class = NULL;
 	inter_symbol *super_name = Inter::Kind::super(kind_s);
-	if (super_name) super_class = Inter::Symbols::name(super_name);
+	if (super_name) super_class = InterSymbol::name(super_name);
 
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Class %S\n", class_name);
@@ -303,11 +303,11 @@ void I6TargetObjects::declare_instance(code_generator *gtr,
 @ Each instance of a kind of object becomes a VM-object:
 
 @<An object instance@> =
-	int c = Inter::Symbols::read_annotation(inst_s, ARROW_COUNT_IANN);
+	int c = InterSymbol::read_annotation(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
 	int is_dir = Inter::Kind::is_a(kind_s, RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
-	I6TargetObjects::VM_object_header(gen, Inter::Symbols::name(kind_s),
-		Inter::Symbols::name(inst_s), NULL, c, is_dir, saved);
+	I6TargetObjects::VM_object_header(gen, InterSymbol::name(kind_s),
+		InterSymbol::name(inst_s), NULL, c, is_dir, saved);
 
 @ And instances of enumerated kinds are simply declared as constant values,
 equal to their enumeration numbers. So for e.g.
@@ -359,7 +359,7 @@ void I6TargetObjects::VM_object_header(code_generation *gen, text_stream *class_
 void I6TargetObjects::VM_property(code_generation *gen, inter_symbol *prop_name, text_stream *val) {
 	text_stream *OUT = CodeGen::current(gen);
 	text_stream *property_name = VanillaObjects::inner_property_name(gen, prop_name);
-	if (Inter::Symbols::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
+	if (InterSymbol::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
 		if (Str::eq(val, I"0")) WRITE("    has ~%S\n", property_name);
 		else WRITE("    has %S\n", property_name);
 	} else {
@@ -406,10 +406,10 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, val);
 	int inline_this = FALSE;
-	if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+	if (InterSymbol::is_stored_in_data(val1, val2)) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_data_pair_at_node(val1, val2, X);
-		if ((S) && (Inter::Symbols::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
-			inter_tree_node *P = Inter::Symbols::definition(S);
+		if ((S) && (InterSymbol::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
+			inter_tree_node *P = InterSymbol::definition(S);
 			text_stream *OUT = CodeGen::current(gen);
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) WRITE(" ");
@@ -469,7 +469,7 @@ each enumerative kind, and is indexed by weak kind ID.
 	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
-		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
+		int M = InterSymbol::evaluate_to_int(max_weak_id);
 		for (int w=1; w<M; w++) {
 			int written = FALSE;
 			inter_symbol *kind_name;
@@ -497,7 +497,7 @@ the value property holders for each enumerative kind.
 	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
 	if (max_weak_id) {
-		int M = Inter::Symbols::evaluate_to_int(max_weak_id);
+		int M = InterSymbol::evaluate_to_int(max_weak_id);
 		for (int w=1; w<M; w++) {
 			int written = FALSE;
 			inter_symbol *kind_name;

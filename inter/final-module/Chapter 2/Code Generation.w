@@ -126,7 +126,7 @@ void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 		}
 		case PROPERTY_IST: {
 			inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PROP_IFLD);
-			if (Inter::Symbols::read_annotation(prop_name, ASSIMILATED_IANN) == 1)
+			if (InterSymbol::read_annotation(prop_name, ASSIMILATED_IANN) == 1)
 				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties);
 			else
 				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties);
@@ -174,10 +174,10 @@ int CodeGen::in_annotation_order(const void *elem1, const void *elem2, inter_ti 
 	int s1 = CodeGen::sequence_number(*e1, annot);
 	int s2 = CodeGen::sequence_number(*e2, annot);
 	if (s1 != s2) return s1-s2;
-	return Inter::Symbols::sort_number(*e1) - Inter::Symbols::sort_number(*e2);
+	return InterSymbol::sort_number(*e1) - InterSymbol::sort_number(*e2);
 }
 int CodeGen::sequence_number(const inter_symbol *kind_name, inter_ti annot) {
-	int N = Inter::Symbols::read_annotation(kind_name, annot);
+	int N = InterSymbol::read_annotation(kind_name, annot);
 	if (N >= 0) return N;
 	return 100000000;
 }
@@ -429,22 +429,22 @@ void CodeGen::clear_transients(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_package *pack = InterPackage::at_this_head(P);
 	inter_symbols_table *T = InterPackage::scope(pack);
 	LOOP_OVER_SYMBOLS_TABLE(S, T)
-		Inter::Symbols::clear_transient_flags(S);
+		InterSymbol::clear_transient_flags(S);
 }
 
 @ In particular the |TRAVERSE_MARK_BIT| flag is sometimes convenient to use.
 
 =
 int CodeGen::marked(inter_symbol *symb_name) {
-	return Inter::Symbols::get_flag(symb_name, TRAVERSE_MARK_BIT);
+	return InterSymbol::get_flag(symb_name, TRAVERSE_MARK_BIT);
 }
 
 void CodeGen::mark(inter_symbol *symb_name) {
-	Inter::Symbols::set_flag(symb_name, TRAVERSE_MARK_BIT);
+	InterSymbol::set_flag(symb_name, TRAVERSE_MARK_BIT);
 }
 
 void CodeGen::unmark(inter_symbol *symb_name) {
-	Inter::Symbols::clear_flag(symb_name, TRAVERSE_MARK_BIT);
+	InterSymbol::clear_flag(symb_name, TRAVERSE_MARK_BIT);
 }
 
 @h Value pairs.
@@ -469,7 +469,7 @@ void CodeGen::pair(code_generation *gen, inter_tree_node *P,
 	text_stream *OUT = CodeGen::current(gen);
 	if (val1 == LITERAL_IVAL) {
 		Generators::compile_literal_number(gen, val2, FALSE);
-	} else if (Inter::Symbols::is_stored_in_data(val1, val2)) {
+	} else if (InterSymbol::is_stored_in_data(val1, val2)) {
 		inter_symbol *s = InterSymbolsTable::symbol_from_data_pair(val1, val2, T);
 		if (s == NULL) internal_error("bad symbol in Inter pair");
 		Generators::compile_literal_symbol(gen, s);

@@ -123,7 +123,7 @@ inter_error_message *InterPackage::write_symbols(OUTPUT_STREAM, inter_tree_node 
 		inter_symbols_table *locals = InterPackage::scope(pack);
 		int L = (int) (P->W.instruction[LEVEL_IFLD] + 1);
 		LOOP_OVER_SYMBOLS_TABLE(S, locals) {
-			Inter::Symbols::write_declaration(OUT, S, L);
+			InterSymbol::write_declaration(OUT, S, L);
 			WRITE("\n");
 		}
 	}
@@ -132,7 +132,7 @@ inter_error_message *InterPackage::write_symbols(OUTPUT_STREAM, inter_tree_node 
 
 int InterPackage::is(inter_symbol *package_name) {
 	if (package_name == NULL) return FALSE;
-	inter_tree_node *D = Inter::Symbols::definition(package_name);
+	inter_tree_node *D = InterSymbol::definition(package_name);
 	if (D == NULL) return FALSE;
 	if (D->W.instruction[ID_IFLD] != PACKAGE_IST) return FALSE;
 	return TRUE;
@@ -140,7 +140,7 @@ int InterPackage::is(inter_symbol *package_name) {
 
 inter_package *InterPackage::which(inter_symbol *package_name) {
 	if (package_name == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(package_name);
+	inter_tree_node *D = InterSymbol::definition(package_name);
 	if (D == NULL) return NULL;
 	return Inode::ID_to_package(D, D->W.instruction[PID_PACKAGE_IFLD]);
 }
@@ -160,7 +160,7 @@ inter_symbol *InterPackage::type(inter_package *pack) {
 
 inter_symbols_table *InterPackage::local_symbols(inter_symbol *package_name) {
 	if (package_name == NULL) return NULL;
-	inter_tree_node *D = Inter::Symbols::definition(package_name);
+	inter_tree_node *D = InterSymbol::definition(package_name);
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != PACKAGE_IST) return NULL;
 	return Inode::ID_to_symbols_table(D, D->W.instruction[SYMBOLS_PACKAGE_IFLD]);

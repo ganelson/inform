@@ -11,14 +11,14 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *con_name =
 		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	if (con_name == NULL) internal_error("no constant");
-	if (con_name->metadata_key == FALSE) {
-		if (Inter::Symbols::read_annotation(con_name, ACTION_IANN) == 1)  {
+	if (InterSymbol::is_metadata_key(con_name) == FALSE) {
+		if (InterSymbol::read_annotation(con_name, ACTION_IANN) == 1)  {
 			@<Declare this constant as an action name@>;
-		} else if (Inter::Symbols::read_annotation(con_name, FAKE_ACTION_IANN) == 1) {
+		} else if (InterSymbol::read_annotation(con_name, FAKE_ACTION_IANN) == 1) {
 			@<Declare this constant as a fake action name@>;
-		} else if (Inter::Symbols::read_annotation(con_name, VENEER_IANN) > 0) {
+		} else if (InterSymbol::read_annotation(con_name, VENEER_IANN) > 0) {
 			@<Ignore this constant as part of the veneer@>;
-		} else if (Inter::Symbols::read_annotation(con_name, OBJECT_IANN) > 0) {
+		} else if (InterSymbol::read_annotation(con_name, OBJECT_IANN) > 0) {
 			@<Declare this constant as a pseudo-object@>;
 		} else if (Inter::Constant::is_routine(con_name)) {
 			@<Declare this constant as a function@>;
@@ -54,7 +54,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	;
 
 @<Declare this constant as a pseudo-object@> =
-	Generators::pseudo_object(gen, Inter::Symbols::name(con_name));
+	Generators::pseudo_object(gen, InterSymbol::name(con_name));
 
 @<Declare this constant as a function@> =
 	VanillaFunctions::declare_function(gen, con_name);
@@ -108,9 +108,9 @@ than a literal, or may even be computed.
 
 @<Declare this as a list constant@> =
 	int format = WORD_ARRAY_FORMAT;
-	if (Inter::Symbols::read_annotation(con_name, BYTEARRAY_IANN) == 1) format = BYTE_ARRAY_FORMAT;
-	if (Inter::Symbols::read_annotation(con_name, TABLEARRAY_IANN) == 1) format = TABLE_ARRAY_FORMAT;
-	if (Inter::Symbols::read_annotation(con_name, BUFFERARRAY_IANN) == 1) format = BUFFER_ARRAY_FORMAT;
+	if (InterSymbol::read_annotation(con_name, BYTEARRAY_IANN) == 1) format = BYTE_ARRAY_FORMAT;
+	if (InterSymbol::read_annotation(con_name, TABLEARRAY_IANN) == 1) format = TABLE_ARRAY_FORMAT;
+	if (InterSymbol::read_annotation(con_name, BUFFERARRAY_IANN) == 1) format = BUFFER_ARRAY_FORMAT;
 
 	int entry_count = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
@@ -118,14 +118,14 @@ than a literal, or may even be computed.
 			entry_count++;
 	int give_count = FALSE;
 	if ((entry_count == 1) &&
-		(Inter::Symbols::read_annotation(con_name, ASSIMILATED_IANN) >= 0)) {
+		(InterSymbol::read_annotation(con_name, ASSIMILATED_IANN) >= 0)) {
 		inter_ti val1 = P->W.instruction[DATA_CONST_IFLD], val2 = P->W.instruction[DATA_CONST_IFLD+1];
 		entry_count = (int) Inter::Constant::evaluate(InterPackage::scope_of(P), val1, val2);
 		give_count = TRUE;
 	}
 
 	segmentation_pos saved;
-	if (Generators::begin_array(gen, Inter::Symbols::name(con_name), con_name, P, format, &saved)) {
+	if (Generators::begin_array(gen, InterSymbol::name(con_name), con_name, P, format, &saved)) {
 		if (give_count) {
 			Generators::array_entries(gen, entry_count, format);
 		} else {
@@ -181,7 +181,7 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 		case DATA_GDCFORM: {
 			inter_ti val1 = P->W.instruction[DATA_CONST_IFLD];
 			inter_ti val2 = P->W.instruction[DATA_CONST_IFLD + 1];
-			if ((val1 == LITERAL_IVAL) && (Inter::Symbols::read_annotation(con_name, HEX_IANN)))
+			if ((val1 == LITERAL_IVAL) && (InterSymbol::read_annotation(con_name, HEX_IANN)))
 				Generators::compile_literal_number(gen, val2, TRUE);
 			else
 				CodeGen::pair(gen, P, val1, val2);
@@ -198,7 +198,7 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 				}
 				int bracket = TRUE;
 				if ((P->W.instruction[i] == LITERAL_IVAL) ||
-					(Inter::Symbols::is_stored_in_data(P->W.instruction[i], P->W.instruction[i+1]))) bracket = FALSE;
+					(InterSymbol::is_stored_in_data(P->W.instruction[i], P->W.instruction[i+1]))) bracket = FALSE;
 				if (bracket) WRITE("(");
 				CodeGen::pair(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
 				if (bracket) WRITE(")");
