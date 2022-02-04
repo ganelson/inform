@@ -353,29 +353,30 @@ Any symbol can be annotated with one or more flags or values: but see //Annotati
 for how this is implemented. Here we only play pass the parcel.
 
 =
-void InterSymbol::annotate(inter_symbol *S, inter_annotation IA) {
+void InterSymbol::annotate(int iatype, inter_symbol *S, inter_annotation IA) {
 	if (S == NULL) internal_error("annotated null symbol");
-	Inter::Annotations::add_to_set(&(S->annotations), IA);
-}
-
-void InterSymbol::unannotate(inter_symbol *S, inter_ti annot_ID) {
-	if (S == NULL) internal_error("annotated null symbol");
-	Inter::Annotations::remove_from_set(&(S->annotations), annot_ID);
+	Inter::Annotations::add_to_set(iatype, &(S->annotations), IA);
 }
 
 void InterSymbol::annotate_i(inter_symbol *S, inter_ti annot_ID, inter_ti n) {
 	inter_annotation IA = Inter::Annotations::from_bytecode(annot_ID, n);
-	InterSymbol::annotate(S, IA);
+	InterSymbol::annotate(INTEGER_IATYPE, S, IA);
+}
+
+int InterSymbol::read_annotation_b(const inter_symbol *S, inter_ti ID) {
+	inter_annotation *IA = Inter::Annotations::find(BOOLEAN_IATYPE, &(S->annotations), ID);
+	if (IA) return (int) IA->annot_value;
+	return 0;
 }
 
 int InterSymbol::read_annotation(const inter_symbol *S, inter_ti ID) {
-	inter_annotation *IA = Inter::Annotations::find(&(S->annotations), ID);
+	inter_annotation *IA = Inter::Annotations::find(INTEGER_IATYPE, &(S->annotations), ID);
 	if (IA) return (int) IA->annot_value;
 	return -1;
 }
 
 text_stream *InterSymbol::read_annotation_t(inter_symbol *S, inter_tree *I, inter_ti ID) {
-	inter_annotation *IA = Inter::Annotations::find(&(S->annotations), ID);
+	inter_annotation *IA = Inter::Annotations::find(TEXTUAL_IATYPE, &(S->annotations), ID);
 	if (IA) return InterWarehouse::get_text(InterTree::warehouse(I), IA->annot_value);
 	return NULL;
 }
@@ -385,7 +386,7 @@ void InterSymbol::annotate_t(inter_tree *I, inter_package *owner, inter_symbol *
 	inter_ti n = InterWarehouse::create_text(InterTree::warehouse(I), owner);
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), n), text);
 	inter_annotation IA = Inter::Annotations::from_bytecode(annot_ID, n);
-	InterSymbol::annotate(S, IA);
+	InterSymbol::annotate(TEXTUAL_IATYPE, S, IA);
 }
 
 void InterSymbol::write_annotations(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *S) {

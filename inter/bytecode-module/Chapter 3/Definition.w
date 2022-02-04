@@ -106,7 +106,7 @@ void Inter::Defn::create_language(void) {
 
 inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keyword, inter_error_location *eloc, inter_error_message **E) {
 	inter_ti val = 0;
-	int textual = FALSE;
+	int iatype = INTEGER_IATYPE;
 	*E = NULL;
 	LOOP_THROUGH_TEXT(P, keyword)
 		if (Str::get(P) == '=') {
@@ -119,10 +119,10 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 				Str::copy(InterWarehouse::get_text(warehouse, val), parsed_text);
 				DISCARD_TEXT(parsed_text)
 				if (EP) *E = EP;
-				textual = TRUE;
+				iatype = TEXTUAL_IATYPE;
 			} else {
 				val = (inter_ti) Str::atoi(keyword, P.index + 1);
-				textual = FALSE;
+				iatype = INTEGER_IATYPE;
 			}
 			Str::truncate(keyword, P.index);
 		}
@@ -130,7 +130,7 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 	inter_annotation_form *IAF;
 	LOOP_OVER(IAF, inter_annotation_form)
 		if (Str::eq(keyword, IAF->annotation_keyword)) {
-			if (IAF->textual_flag != textual) *E = Inter::Errors::plain(I"bad type for =value", eloc);
+			if (IAF->iatype != iatype) *E = Inter::Errors::plain(I"bad type for =value", eloc);
 			return Inter::Annotations::value_annotation(IAF, val);
 		}
 	*E = Inter::Errors::plain(I"unrecognised annotation", eloc);
@@ -140,7 +140,7 @@ inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keywor
 void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter_annotation IA) {
 	WRITE(" %S", IA.annot->annotation_keyword);
 	if (IA.annot_value != 0) {
-		if (IA.annot->textual_flag) {
+		if (IA.annot->iatype == TEXTUAL_IATYPE) {
 			WRITE("=\"");
 			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, IA.annot_value));
 			WRITE("\"");
@@ -151,7 +151,7 @@ void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter_anno
 }
 
 void Inter::Defn::transpose_annotation(inter_annotation *IA, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	if (IA->annot->textual_flag)
+	if (IA->annot->iatype == TEXTUAL_IATYPE)
 		IA->annot_value = grid[IA->annot_value];
 }
 
@@ -258,7 +258,7 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 		inter_error_message *E = NULL;
 		inter_annotation IA = Inter::Defn::read_annotation(InterBookmark::tree(IBM), ilp.mr.exp[1], eloc, &E);
 		if (E) return E;
-		Inter::Annotations::add_to_set(&(ilp.set), IA);
+		Inter::Annotations::add_to_set(-1, &(ilp.set), IA);
 	}
 	inter_construct *IC;
 	LOOP_OVER(IC, inter_construct)

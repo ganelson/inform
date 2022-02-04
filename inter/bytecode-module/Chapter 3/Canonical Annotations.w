@@ -43,40 +43,40 @@ Defining the one true set of Inter annotation codes.
 
 @ =
 void Inter::Canon::declare(void) {
-	invalid_IAF = Inter::Annotations::form(INVALID_IANN, I"__invalid", FALSE);
+	invalid_IAF = Inter::Annotations::form(INVALID_IANN, I"__invalid", INTEGER_IATYPE);
 
-	name_IAF = Inter::Annotations::form(PROPERTY_NAME_IANN, I"__property_name", TRUE);
-	inner_pname_IAF = Inter::Annotations::form(INNER_PROPERTY_NAME_IANN, I"__inner_property_name", TRUE);
-	Inter::Annotations::form(HEX_IANN, I"__hex", FALSE);
-	Inter::Annotations::form(SIGNED_IANN, I"__signed", FALSE);
-	Inter::Annotations::form(CALL_PARAMETER_IANN, I"__call_parameter", FALSE);
-	Inter::Annotations::form(IMPLIED_CALL_PARAMETER_IANN, I"__implied_call_parameter", FALSE);
+	name_IAF = Inter::Annotations::form(PROPERTY_NAME_IANN, I"__property_name", TEXTUAL_IATYPE);
+	inner_pname_IAF = Inter::Annotations::form(INNER_PROPERTY_NAME_IANN, I"__inner_property_name", TEXTUAL_IATYPE);
+	Inter::Annotations::form(HEX_IANN, I"__hex", INTEGER_IATYPE);
+	Inter::Annotations::form(SIGNED_IANN, I"__signed", INTEGER_IATYPE);
+	Inter::Annotations::form(CALL_PARAMETER_IANN, I"__call_parameter", INTEGER_IATYPE);
+	Inter::Annotations::form(IMPLIED_CALL_PARAMETER_IANN, I"__implied_call_parameter", INTEGER_IATYPE);
 
-	Inter::Annotations::form(ACTION_IANN, I"__action", FALSE);
-	Inter::Annotations::form(APPEND_IANN, I"__append", TRUE);
-	Inter::Annotations::form(ARROW_COUNT_IANN, I"__arrow_count", FALSE);
-	Inter::Annotations::form(ASSIMILATED_IANN, I"__assimilated", FALSE);
-	Inter::Annotations::form(BIP_CODE_IANN, I"__bip", FALSE);
-	Inter::Annotations::form(BUFFERARRAY_IANN, I"__buffer_array", FALSE);
-	Inter::Annotations::form(BYTEARRAY_IANN, I"__byte_array", FALSE);
-	Inter::Annotations::form(DECLARATION_ORDER_IANN, I"__declaration_order", FALSE);
-	Inter::Annotations::form(EITHER_OR_IANN, I"__either_or", FALSE);
-	Inter::Annotations::form(ENCLOSING_IANN, I"__enclosing", FALSE);
-	Inter::Annotations::form(FAKE_ACTION_IANN, I"__fake_action", FALSE);
-	Inter::Annotations::form(OBJECT_IANN, I"__object", FALSE);
-	Inter::Annotations::form(INLINE_ARRAY_IANN, I"__inline_array", FALSE);
-	Inter::Annotations::form(METAVERB_IANN, I"__meta_verb", FALSE);
-	Inter::Annotations::form(NOUN_FILTER_IANN, I"__noun_filter", FALSE);
-	Inter::Annotations::form(OBJECT_KIND_COUNTER_IANN, I"__object_kind_counter", FALSE);
-	Inter::Annotations::form(SCOPE_FILTER_IANN, I"__scope_filter", FALSE);
-	Inter::Annotations::form(SOURCE_ORDER_IANN, I"__source_order", FALSE);
-	Inter::Annotations::form(TABLEARRAY_IANN, I"__table_array", FALSE);
-	Inter::Annotations::form(VERBARRAY_IANN, I"__verb", FALSE);
-	Inter::Annotations::form(EXPLICIT_VARIABLE_IANN, I"__explicit_variable", FALSE);
-	Inter::Annotations::form(TEXT_LITERAL_IANN, I"__text_literal", FALSE);
-	Inter::Annotations::form(ARCHITECTURAL_IANN, I"__architectural", FALSE);
-	Inter::Annotations::form(VENEER_IANN, I"__veneer", FALSE);
-	Inter::Annotations::form(SYNOPTIC_IANN, I"__synoptic", FALSE);
-	Inter::Annotations::form(I6_GLOBAL_OFFSET_IANN, I"__global_offset", FALSE);
-	Inter::Annotations::form(C_ARRAY_ADDRESS_IANN, I"__array_address", FALSE);
+	Inter::Annotations::form(ACTION_IANN, I"__action", INTEGER_IATYPE);
+	Inter::Annotations::form(APPEND_IANN, I"__append", TEXTUAL_IATYPE);
+	Inter::Annotations::form(ARROW_COUNT_IANN, I"__arrow_count", INTEGER_IATYPE);
+	Inter::Annotations::form(ASSIMILATED_IANN, I"__assimilated", INTEGER_IATYPE);
+	Inter::Annotations::form(BIP_CODE_IANN, I"__bip", INTEGER_IATYPE);
+	Inter::Annotations::form(BUFFERARRAY_IANN, I"__buffer_array", INTEGER_IATYPE);
+	Inter::Annotations::form(BYTEARRAY_IANN, I"__byte_array", INTEGER_IATYPE);
+	Inter::Annotations::form(DECLARATION_ORDER_IANN, I"__declaration_order", INTEGER_IATYPE);
+	Inter::Annotations::form(EITHER_OR_IANN, I"__either_or", INTEGER_IATYPE);
+	Inter::Annotations::form(ENCLOSING_IANN, I"__enclosing", INTEGER_IATYPE);
+	Inter::Annotations::form(FAKE_ACTION_IANN, I"__fake_action", INTEGER_IATYPE);
+	Inter::Annotations::form(OBJECT_IANN, I"__object", INTEGER_IATYPE);
+	Inter::Annotations::form(INLINE_ARRAY_IANN, I"__inline_array", INTEGER_IATYPE);
+	Inter::Annotations::form(METAVERB_IANN, I"__meta_verb", INTEGER_IATYPE);
+	Inter::Annotations::form(NOUN_FILTER_IANN, I"__noun_filter", INTEGER_IATYPE);
+	Inter::Annotations::form(OBJECT_KIND_COUNTER_IANN, I"__object_kind_counter", INTEGER_IATYPE);
+	Inter::Annotations::form(SCOPE_FILTER_IANN, I"__scope_filter", INTEGER_IATYPE);
+	Inter::Annotations::form(SOURCE_ORDER_IANN, I"__source_order", INTEGER_IATYPE);
+	Inter::Annotations::form(TABLEARRAY_IANN, I"__table_array", INTEGER_IATYPE);
+	Inter::Annotations::form(VERBARRAY_IANN, I"__verb", INTEGER_IATYPE);
+	Inter::Annotations::form(EXPLICIT_VARIABLE_IANN, I"__explicit_variable", INTEGER_IATYPE);
+	Inter::Annotations::form(TEXT_LITERAL_IANN, I"__text_literal", INTEGER_IATYPE);
+	Inter::Annotations::form(ARCHITECTURAL_IANN, I"__architectural", INTEGER_IATYPE);
+	Inter::Annotations::form(VENEER_IANN, I"__veneer", INTEGER_IATYPE);
+	Inter::Annotations::form(SYNOPTIC_IANN, I"__synoptic", INTEGER_IATYPE);
+	Inter::Annotations::form(I6_GLOBAL_OFFSET_IANN, I"__global_offset", INTEGER_IATYPE);
+	Inter::Annotations::form(C_ARRAY_ADDRESS_IANN, I"__array_address", INTEGER_IATYPE);
 }

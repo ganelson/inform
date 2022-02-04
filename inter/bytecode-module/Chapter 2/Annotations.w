@@ -4,13 +4,41 @@ To mark symbols up with metadata.
 
 @h Forms.
 
+@e BOOLEAN_IATYPE from 1
+@e INTEGER_IATYPE
+@e TEXTUAL_IATYPE
+
+@d MAX_IAFS 512
+
 =
 typedef struct inter_annotation_form {
 	inter_ti annotation_ID;
-	int textual_flag;
+	int iatype; /* one of the |*_IATYPE| constants above */
 	struct text_stream *annotation_keyword;
 	CLASS_DEFINITION
 } inter_annotation_form;
+
+inter_annotation_form *iafs_registered[MAX_IAFS];
+int iafs_registered_initialised = FALSE;
+
+inter_annotation_form *Inter::Annotations::form(inter_ti ID, text_stream *keyword, int iatype) {
+	if (iafs_registered_initialised == FALSE) {
+		for (int i=0; i<MAX_IAFS; i++)
+			iafs_registered[i] = NULL;
+		iafs_registered_initialised = TRUE;
+	}
+	if (ID >= MAX_IAFS) internal_error("ID out of range");
+	if (iafs_registered[ID]) {
+		if (Str::eq(keyword, iafs_registered[ID]->annotation_keyword))
+			return iafs_registered[ID];
+		return NULL;
+	}
+	iafs_registered[ID] = CREATE(inter_annotation_form);
+	iafs_registered[ID]->annotation_ID = ID;
+	iafs_registered[ID]->annotation_keyword = Str::duplicate(keyword);
+	iafs_registered[ID]->iatype = iatype;
+	return iafs_registered[ID];
+}
 
 typedef struct inter_annotation {
 	struct inter_annotation_form *annot;
@@ -33,7 +61,17 @@ inter_annotation_set Inter::Annotations::new_set(void) {
 	return set;
 }
 
-void Inter::Annotations::add_to_set(inter_annotation_set *set, inter_annotation A) {
+void Inter::Annotations::add_to_set(int iatype, inter_annotation_set *set, inter_annotation A) {
+	if (A.annot == invalid_IAF) internal_error("added invalid annotation");
+	if (iatype >= 0) {
+		if (iatype != A.annot->iatype) {
+			WRITE_TO(STDERR, "Annotation %S (%d) should have type %d but used %d\n",
+				A.annot->annotation_keyword, 
+				A.annot->annotation_ID,
+				A.annot->iatype, iatype);
+			internal_error("added annotation with wrong type");
+		}
+	}
 	inter_annotation *NA = CREATE(inter_annotation);
 	NA->annot = A.annot;
 	NA->annot_value = A.annot_value;
@@ -47,24 +85,10 @@ void Inter::Annotations::add_to_set(inter_annotation_set *set, inter_annotation 
 	}
 }
 
-void Inter::Annotations::remove_from_set(inter_annotation_set *set, inter_ti annot_ID) {
-	if (set) {
-		inter_annotation *prev = NULL;
-		for (inter_annotation *L = set->anns; L; L = L->next) {
-			if (L->annot->annotation_ID == annot_ID) {
-				if (prev) prev->next = L->next;
-				else set->anns = L->next;
-				break;
-			}
-			prev = L;
-		}
-	}
-}
-
 void Inter::Annotations::copy_set_to_symbol(inter_annotation_set *set, inter_symbol *S) {
 	if (set)
 		for (inter_annotation *A = set->anns; A; A = A->next)
-			InterSymbol::annotate(S, *A);
+			InterSymbol::annotate(A->annot->iatype, S, *A);
 }
 
 void Inter::Annotations::transpose_set(inter_annotation_set *set, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
@@ -82,29 +106,20 @@ int Inter::Annotations::exist(inter_annotation_set *set) {
 	return FALSE;
 }
 
-inter_annotation *Inter::Annotations::find(const inter_annotation_set *set, inter_ti ID) {
+inter_annotation *Inter::Annotations::find(int iatype, const inter_annotation_set *set, inter_ti ID) {
+	if ((iafs_registered_initialised == FALSE) || (ID >= MAX_IAFS)) return NULL;
+	if ((iatype >= 0) && (iatype != iafs_registered[ID]->iatype)) {
+		WRITE_TO(STDERR, "Annotation %S (%d) should have type %d but sought %d\n",
+			iafs_registered[ID]->annotation_keyword, 
+			iafs_registered[ID]->annotation_ID,
+			iafs_registered[ID]->iatype, iatype);
+		internal_error("sought IAF of wrong type");
+	}
 	if (set)
 		for (inter_annotation *A = set->anns; A; A = A->next)
 			if (A->annot->annotation_ID == ID)
 				return A;
 	return NULL;
-}
-
-inter_annotation_form *Inter::Annotations::form(inter_ti ID, text_stream *keyword, int textual) {
-	inter_annotation_form *IAF;
-	LOOP_OVER(IAF, inter_annotation_form)
-		if (Str::eq(keyword, IAF->annotation_keyword)) {
-			if (IAF->annotation_ID == ID)
-				return IAF;
-			else
-				return NULL;
-		}
-
-	IAF = CREATE(inter_annotation_form);
-	IAF->annotation_ID = ID;
-	IAF->annotation_keyword = Str::duplicate(keyword);
-	IAF->textual_flag = textual;
-	return IAF;
 }
 
 inter_annotation Inter::Annotations::invalid_annotation(void) {
@@ -126,14 +141,12 @@ int Inter::Annotations::is_invalid(inter_annotation IA) {
 	return FALSE;
 }
 inter_annotation Inter::Annotations::from_bytecode(inter_ti c1, inter_ti c2) {
-	inter_annotation_form *IAF;
-	LOOP_OVER(IAF, inter_annotation_form)
-		if (c1 == IAF->annotation_ID) {
-			inter_annotation IA;
-			IA.annot = IAF;
-			IA.annot_value = c2;
-			return IA;
-		}
+	if ((iafs_registered_initialised) && (c1 < MAX_IAFS) && (iafs_registered[c1])) {
+		inter_annotation IA;
+		IA.annot = iafs_registered[c1];
+		IA.annot_value = c2;
+		return IA;
+	}
 	return Inter::Annotations::invalid_annotation();
 }
 

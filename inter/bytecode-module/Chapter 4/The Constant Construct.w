@@ -394,7 +394,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	inter_symbol *con_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_CONST_IFLD);
 	int hex = FALSE;
-	if (Inter::Annotations::find(&(con_name->annotations), HEX_IANN)) hex = TRUE;
+	if (Inter::Annotations::find(INTEGER_IATYPE, &(con_name->annotations), HEX_IANN)) hex = TRUE;
 	if ((con_name) && (con_kind)) {
 		WRITE("constant %S %S = ", con_name->symbol_name, con_kind->symbol_name);
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {

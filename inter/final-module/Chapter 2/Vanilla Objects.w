@@ -134,9 +134,7 @@ altered.
 			InterSymbol::read_annotation(prop_name, ASSIMILATED_IANN));
 		inter_symbol *existing_prop_name = 
 			(inter_symbol *) Dictionaries::read_value(first_with_name, name);
-		inner_name = I"<nameless>";
-		int N = InterSymbol::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
-		if (N > 0) inner_name = InterWarehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
+		inner_name = VanillaObjects::inner_property_name(gen, existing_prop_name);
 		InterSymbol::set_translate(prop_name, InterSymbol::trans(existing_prop_name));
 		InterSymbol::annotate_t(gen->from, InterSymbol::package(prop_name),
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
@@ -177,9 +175,8 @@ because that will come from an I7 source text definition.
 	inter_symbol *last_prop_name = 
 		(inter_symbol *) Dictionaries::read_value(last_with_name, name);
 	inter_tree *I = gen->from;
-	text_stream *pname = I"<nameless>";
-	int N = InterSymbol::read_annotation(last_prop_name, PROPERTY_NAME_IANN);
-	if (N > 0) pname = InterWarehouse::get_text(InterTree::warehouse(I), (inter_ti) N);
+	text_stream *pname = InterSymbol::read_annotation_t(last_prop_name, I, PROPERTY_NAME_IANN);
+	if (pname == NULL) pname = I"<nameless>";
 	TEMPORARY_TEXT(entry)
 	CodeGen::select_temporary(gen, entry);
 	Generators::compile_literal_text(gen, pname, TRUE);
@@ -268,9 +265,9 @@ not as wasteful as it looks.)
 
 =
 text_stream *VanillaObjects::inner_property_name(code_generation *gen, inter_symbol *prop_name) {
-	text_stream *inner_name = I"<nameless>";
-	int N = InterSymbol::read_annotation(prop_name, INNER_PROPERTY_NAME_IANN);
-	if (N > 0) inner_name = InterWarehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
+	text_stream *inner_name = InterSymbol::read_annotation_t(prop_name,
+		gen->from, INNER_PROPERTY_NAME_IANN);
+	if (inner_name == NULL) inner_name = I"<nameless>";
 	return inner_name;
 }
 

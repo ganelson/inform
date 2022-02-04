@@ -86,7 +86,7 @@ resource block later on.
 			if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			PUT_TO(keyword, (int) c);
 		}
-		inter_annotation_form *IA = Inter::Annotations::form(ID, keyword, FALSE);
+		inter_annotation_form *IA = Inter::Annotations::form(ID, keyword, INTEGER_IATYPE);
 		if (IA == NULL) {
 			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "conflicting annotation name '%S'", keyword);
@@ -253,7 +253,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			if (Inter::Annotations::is_invalid(IA))
 				Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
 			if (grid) Inter::Defn::transpose_annotation(&IA, grid, grid_extent, NULL);
-			InterSymbol::annotate(S, IA);
+			InterSymbol::annotate(-1, S, IA);
 		}
 		if (InterSymbol::is_plug(S)) {
 			TEMPORARY_TEXT(N)

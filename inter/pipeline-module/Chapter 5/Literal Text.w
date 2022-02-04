@@ -89,7 +89,7 @@ in |texts|.
 
 	inter_symbol *con_name =
 		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-	InterSymbol::unannotate(con_name, TEXT_LITERAL_IANN);
+	InterSymbol::annotate_i(con_name, TEXT_LITERAL_IANN, 0);
 
 @ Here we extract the actual text from a node defining a constant literal text,
 and use that to define a sorting function on nodes:
