@@ -59,16 +59,20 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		if (*E) return;
 	}
 
-	if (Str::eq(ilp->mr.exp[0], I"private")) InterSymbol::set_scope(name_name, PRIVATE_ISYMS);
-	else if (Str::eq(ilp->mr.exp[0], I"public")) InterSymbol::set_scope(name_name, PUBLIC_ISYMS);
-	else if (Str::eq(ilp->mr.exp[0], I"plug")) InterSymbol::set_scope(name_name, PLUG_ISYMS);
-	else if (Str::eq(ilp->mr.exp[0], I"socket")) InterSymbol::set_scope(name_name, SOCKET_ISYMS);
+	if (Str::eq(ilp->mr.exp[0], I"private")) ;
+	else if (Str::eq(ilp->mr.exp[0], I"public")) ;
 	else { *E = Inter::Errors::plain(I"unknown scope keyword", eloc); return; }
 
-	if (Str::eq(ilp->mr.exp[1], I"label")) InterSymbol::set_type(name_name, LABEL_ISYMT);
-	else if (Str::eq(ilp->mr.exp[1], I"misc")) InterSymbol::set_type(name_name, MISC_ISYMT);
-	else if (Str::eq(ilp->mr.exp[1], I"package")) InterSymbol::set_type(name_name, PACKAGE_ISYMT);
-	else if (Str::eq(ilp->mr.exp[1], I"packagetype")) InterSymbol::set_type(name_name, PTYPE_ISYMT);
+	if (Str::eq(ilp->mr.exp[1], I"label"))  {
+	     if (Str::get_first_char(symbol_name) != '.') {
+	    	 *E = Inter::Errors::plain(I"label names must begin with a '.'", eloc); return;
+	     }
+	     InterSymbol::make_label(name_name);
+	}
+	else if (Str::eq(ilp->mr.exp[1], I"misc"))   InterSymbol::make_miscellaneous(name_name);
+	else if (Str::eq(ilp->mr.exp[1], I"plug"))   InterSymbol::make_plug(name_name);
+	else if (Str::eq(ilp->mr.exp[1], I"socket")) InterSymbol::make_socket(name_name);
+	else if (Str::eq(ilp->mr.exp[1], I"local"))  InterSymbol::make_local(name_name);
 	else { *E = Inter::Errors::plain(I"unknown symbol-type keyword", eloc); return; }
 
 	if ((trans_name) && (equate_name)) {
@@ -80,15 +84,15 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 			*E = Inter::Errors::plain(I"in a _linkage package, all symbols must be plugs or sockets", eloc); return;
 		}
 		if (equate_name) {
-			if (InterSymbol::get_scope(name_name) == PLUG_ISYMS)
-				Wiring::convert_to_plug(name_name, equate_name);
+			if (InterSymbol::is_plug(name_name))
+				Wiring::make_plug_wanting_identifier(name_name, equate_name);
 			else {
 				inter_symbol *eq = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), equate_name);
 				if (eq == NULL) eq = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), equate_name);
 				if (eq == NULL) {
 					Wiring::wire_to_name(name_name, equate_name);
 				} else {
-					Wiring::convert_to_socket(name_name, eq);
+					Wiring::make_socket_to(name_name, eq);
 				}
 			}
 		} else {

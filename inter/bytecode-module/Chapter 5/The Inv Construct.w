@@ -48,7 +48,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 
 	if ((InterSymbol::defined_elsewhere(invoked_name)) ||
-		(InterSymbol::misc_public_and_undefined(invoked_name))) {
+		(InterSymbol::misc_but_undefined(invoked_name))) {
 		*E = Inter::Inv::new_call(IBM, invoked_name, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}

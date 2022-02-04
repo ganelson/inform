@@ -103,14 +103,15 @@ int InterSymbol::sort_number(const inter_symbol *S) {
 The //inter_symbol// structure could not really be called concise, but we
 do make some effort, by packing various flags into a single |symbol_status| field.
 
-First, the "type" of a symbol is enumerated in these 2 bits:
+First, the "type" of a symbol is enumerated in these 3 bits:
 
-@d LABEL_ISYMT              0x00000000
-@d MISC_ISYMT               0x00000001
-@d PACKAGE_ISYMT            0x00000002
-@d PTYPE_ISYMT              0x00000003
+@d MISC_ISYMT               0x00000000
+@d PLUG_ISYMT               0x00000001
+@d SOCKET_ISYMT             0x00000002
+@d LABEL_ISYMT              0x00000003
+@d LOCAL_ISYMT              0x00000004
 
-@d SYMBOL_TYPE_STATUS_MASK  0x00000003
+@d SYMBOL_TYPE_STATUS_MASK  0x00000007
 
 =
 int InterSymbol::get_type(inter_symbol *S) {
@@ -121,35 +122,17 @@ void InterSymbol::set_type(inter_symbol *S, int V) {
 	S->symbol_status = S->symbol_status - (S->symbol_status & SYMBOL_TYPE_STATUS_MASK) + V;
 }
 
-@ Second, the "scope" of a symbol is enumerated in these 2:
-
-@d PRIVATE_ISYMS            0x00000000
-@d PUBLIC_ISYMS             0x00000004
-@d PLUG_ISYMS               0x00000008
-@d SOCKET_ISYMS             0x0000000C
-
-@d SYMBOL_SCOPE_STATUS_MASK 0x0000000C
-
-=
-int InterSymbol::get_scope(inter_symbol *S) {
-	return S->symbol_status & SYMBOL_SCOPE_STATUS_MASK;
-}
-
-void InterSymbol::set_scope(inter_symbol *S, int V) {
-	S->symbol_status = S->symbol_status - (S->symbol_status & SYMBOL_SCOPE_STATUS_MASK) + V;
-}
-
 @ Subsequent bits are used for miscellaneous persistent flags, and then after
 that for some transient flags:
 
-@d MAKE_NAME_UNIQUE_ISYMF   0x00000010
-@d METADATA_KEY_ISYMF 		0x00000020
+@d MAKE_NAME_UNIQUE_ISYMF   0x00000008
+@d METADATA_KEY_ISYMF 		0x00000010
 
-@d SYMBOL_FLAGS_STATUS_MASK 0x00000030
+@d SYMBOL_FLAGS_STATUS_MASK 0x00000018
 
-@d TRAVERSE_MARK_ISYMF  	0x00000040
-@d ATTRIBUTE_MARK_ISYMF 	0x00000080
-@d USED_MARK_ISYMF          0x00000100
+@d TRAVERSE_MARK_ISYMF  	0x00000020
+@d ATTRIBUTE_MARK_ISYMF 	0x00000040
+@d USED_MARK_ISYMF          0x00000080
 
 =
 int InterSymbol::get_flag(inter_symbol *S, int f) {
@@ -170,8 +153,7 @@ void InterSymbol::clear_flag(inter_symbol *S, int f) {
 @ Transient flags convey no lasting meaning: they're used as workspace during
 optimisations. The part of the word which must be preserved is:
 
-@d NONTRANSIENT_SYMBOL_BITS
-	(SYMBOL_FLAGS_STATUS_MASK + SYMBOL_TYPE_STATUS_MASK + SYMBOL_SCOPE_STATUS_MASK)
+@d NONTRANSIENT_SYMBOL_BITS (SYMBOL_FLAGS_STATUS_MASK + SYMBOL_TYPE_STATUS_MASK)
 
 =
 void InterSymbol::clear_transient_flags(inter_symbol *S) {
@@ -180,30 +162,19 @@ void InterSymbol::clear_transient_flags(inter_symbol *S) {
 
 @h Various sorts of symbol.
 By far the most common symbols are the miscellaneous ones, which are destined
-to be defined as constants, variables and the like. These can be either public
-(accessible from outside the current package) or private (accessible only within
-the current package).
+to be defined as constants, variables and the like.
 
 =
 void InterSymbol::make_miscellaneous(inter_symbol *S) {
 	InterSymbol::set_type(S, MISC_ISYMT);
-	InterSymbol::set_scope(S, PUBLIC_ISYMS);
 }
 
-int InterSymbol::misc_public_and_undefined(inter_symbol *S) {
-	if (S == NULL) return FALSE;
-	if (InterSymbol::get_scope(S) != PUBLIC_ISYMS) return FALSE;
-	if (InterSymbol::get_type(S) != MISC_ISYMT) return FALSE;
-	if (InterSymbol::is_defined(S)) return FALSE;
-	return TRUE;
-}
-
-int InterSymbol::misc_private_and_undefined(inter_symbol *S) {
-	if (S == NULL) return FALSE;
-	if (InterSymbol::get_scope(S) != PRIVATE_ISYMS) return FALSE;
-	if (InterSymbol::get_type(S) != MISC_ISYMT) return FALSE;
-	if (InterSymbol::is_defined(S)) return FALSE;
-	return TRUE;
+int InterSymbol::misc_but_undefined(inter_symbol *S) {
+	if ((S) &&
+		(InterSymbol::get_type(S) == MISC_ISYMT) &&
+		(InterSymbol::is_defined(S) == FALSE))
+		return TRUE; 
+	return FALSE;
 }
 
 @ Symbols whose names begin |^| are metadata keys. Those should always be defined
@@ -216,7 +187,6 @@ int InterSymbol::is_metadata_key(inter_symbol *S) {
 
 void InterSymbol::make_metadata_key(inter_symbol *S) {
 	InterSymbol::set_type(S, MISC_ISYMT);
-	InterSymbol::set_scope(S, PRIVATE_ISYMS);
 	InterSymbol::set_flag(S, METADATA_KEY_ISYMF);
 }
 
@@ -225,10 +195,8 @@ execution of code can jump. Their names must begin with a |.|.
 
 =
 int InterSymbol::is_label(inter_symbol *S) {
-	if (S == NULL) return FALSE;
-	if (InterSymbol::get_scope(S) != PRIVATE_ISYMS) return FALSE;
-	if (InterSymbol::get_type(S) != LABEL_ISYMT) return FALSE;
-	return TRUE;
+	if ((S) && (InterSymbol::get_type(S) == LABEL_ISYMT)) return TRUE;
+	return FALSE;
 }
 
 void InterSymbol::make_label(inter_symbol *S) {
@@ -236,7 +204,6 @@ void InterSymbol::make_label(inter_symbol *S) {
 		LOG("Name is %S\n", S->symbol_name);
 		internal_error("not a label name");
 	}
-	InterSymbol::set_scope(S, PRIVATE_ISYMS);
 	InterSymbol::set_type(S, LABEL_ISYMT);
 	S->definition = NULL;
 }
@@ -245,15 +212,12 @@ void InterSymbol::make_label(inter_symbol *S) {
 
 =
 int InterSymbol::is_local(inter_symbol *S) {
-	if (S == NULL) return FALSE;
-	if (InterSymbol::get_scope(S) != PRIVATE_ISYMS) return FALSE;
-	if (InterSymbol::get_type(S) != MISC_ISYMT) return FALSE;
-	return TRUE;
+	if ((S) && (InterSymbol::get_type(S) == LOCAL_ISYMT)) return TRUE;
+	return FALSE;
 }
 
 void InterSymbol::make_local(inter_symbol *S) {
-	InterSymbol::set_scope(S, PRIVATE_ISYMS);
-	InterSymbol::set_type(S, MISC_ISYMT);
+	InterSymbol::set_type(S, LOCAL_ISYMT);
 	S->definition = NULL;
 }
 
@@ -262,12 +226,42 @@ in one special package, and are used to link different trees together.
 See //Connectors//.
 
 =
-int InterSymbol::is_connector(inter_symbol *S) {
-	if ((S) && ((InterSymbol::get_scope(S) == PLUG_ISYMS) ||
-		(InterSymbol::get_scope(S) == SOCKET_ISYMS)))
-		return TRUE;
+int InterSymbol::is_plug(inter_symbol *S) {
+	if ((S) && (InterSymbol::get_type(S) == PLUG_ISYMT)) return TRUE;
 	return FALSE;
 }
+
+void InterSymbol::make_plug(inter_symbol *S) {
+	InterSymbol::set_type(S, PLUG_ISYMT);
+	S->definition = NULL;
+}
+
+int InterSymbol::is_socket(inter_symbol *S) {
+	if ((S) && (InterSymbol::get_type(S) == SOCKET_ISYMT)) return TRUE;
+	return FALSE;
+}
+
+void InterSymbol::make_socket(inter_symbol *S) {
+	InterSymbol::set_type(S, SOCKET_ISYMT);
+	S->definition = NULL;
+}
+
+int InterSymbol::is_connector(inter_symbol *S) {
+	if ((InterSymbol::is_plug(S)) || (InterSymbol::is_socket(S))) return TRUE;
+	return FALSE;
+}
+
+@ A symbol is "private" if it cannot be seen from outside the package, that is,
+if no external symbol is allowed to be wired to it. For example, local variables
+in a function body have this property.
+
+=
+int InterSymbol::private(inter_symbol *S) {
+	if (InterSymbol::get_type(S) == LABEL_ISYMT) return TRUE;
+	if (InterSymbol::get_type(S) == LOCAL_ISYMT) return TRUE;
+	if (InterSymbol::is_metadata_key(S)) return TRUE;
+	return FALSE;
+} 
 
 @h Definition of a symbol.
 When created, a symbol is "undefined": it has no meaning as yet, though it is
@@ -350,7 +344,7 @@ in the current package. So:
 int InterSymbol::defined_elsewhere(inter_symbol *S) {
 	if (S == NULL) return FALSE;
 	if (Wiring::is_wired(S)) return TRUE;
-	if (InterSymbol::get_scope(S) == PLUG_ISYMS) return TRUE;
+	if (InterSymbol::get_type(S) == PLUG_ISYMT) return TRUE;
 	return FALSE;
 }
 
@@ -466,19 +460,15 @@ appearing at level |N| in the hierarchy.
 void InterSymbol::write_declaration(OUTPUT_STREAM, inter_symbol *S, int N) {
 	for (int L=0; L<N; L++) WRITE("\t");
 	WRITE("symbol ");
-	switch (InterSymbol::get_scope(S)) {
-		case PRIVATE_ISYMS:  WRITE("private"); break;
-		case PUBLIC_ISYMS:   WRITE("public"); break;
-		case PLUG_ISYMS:     WRITE("plug"); break;
-		case SOCKET_ISYMS:   WRITE("socket"); break;
-		default: internal_error("unknown symbol type"); break;
-	}
+	if (InterSymbol::private(S)) WRITE("private");
+	else WRITE("public");
 	WRITE(" ");
 	switch (InterSymbol::get_type(S)) {
 		case LABEL_ISYMT:    WRITE("label"); break;
 		case MISC_ISYMT:     WRITE("misc"); break;
-		case PACKAGE_ISYMT:  WRITE("package"); break;
-		case PTYPE_ISYMT:    WRITE("packagetype"); break;
+		case PLUG_ISYMT:     WRITE("plug"); break;
+		case SOCKET_ISYMT:   WRITE("socket"); break;
+		case LOCAL_ISYMT:    WRITE("local"); break;
 		default: internal_error("unknown symbol type"); break;
 	}
 	WRITE(" %S", S->symbol_name);

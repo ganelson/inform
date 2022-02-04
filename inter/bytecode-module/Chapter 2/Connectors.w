@@ -82,15 +82,14 @@ void Wiring::shorten_wiring(inter_symbol *S) {
 	if ((S != E) && (Wiring::wired_to(S) != E)) Wiring::wire_to(S, E);
 }
 
-void Wiring::convert_to_plug(inter_symbol *S, text_stream *wanted) {
+void Wiring::make_plug_wanting_identifier(inter_symbol *S, text_stream *wanted) {
 	Wiring::wire_to_name(S, wanted);
-	InterSymbol::set_scope(S, PLUG_ISYMS);
-	InterSymbol::set_type(S, MISC_ISYMT);
+	InterSymbol::make_plug(S);
 }
 
-void Wiring::convert_to_socket(inter_symbol *S, inter_symbol *to) {
+void Wiring::make_socket_to(inter_symbol *S, inter_symbol *to) {
 	Wiring::wire_to(S, to);
-	InterSymbol::set_scope(S, SOCKET_ISYMS);
+	InterSymbol::make_socket(S);
 }
 
 int unique_plug_number = 1;
@@ -101,7 +100,7 @@ inter_symbol *Wiring::plug(inter_tree *I, text_stream *wanted) {
 	inter_symbol *plug = InterSymbolsTable::create_with_unique_name(
 		InterPackage::scope(connectors), PN);
 	DISCARD_TEXT(PN)
-	Wiring::convert_to_plug(plug, wanted);
+	Wiring::make_plug_wanting_identifier(plug, wanted);
 	LOGIF(INTER_CONNECTORS, "Plug I%d: $3 seeking %S\n", I->allocation_id, plug, Wiring::plug_name(plug));
 	return plug;
 }
@@ -110,7 +109,7 @@ inter_symbol *Wiring::socket(inter_tree *I, text_stream *socket_name, inter_symb
 	inter_package *connectors = LargeScale::ensure_connectors_package(I);
 	inter_symbol *socket = InterSymbolsTable::create_with_unique_name(
 		InterPackage::scope(connectors), socket_name);
-	Wiring::convert_to_socket(socket, to);
+	Wiring::make_socket_to(socket, to);
 	LOGIF(INTER_CONNECTORS, "Socket I%d: $3 wired to $3\n", I->allocation_id, socket, to);
 	return socket;
 }
@@ -120,7 +119,7 @@ inter_symbol *Wiring::find_socket(inter_tree *I, text_stream *identifier) {
 	if (connectors) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_name_not_equating(
 			InterPackage::scope(LargeScale::connectors_package_if_it_exists(I)), identifier);
-		if ((S) && (InterSymbol::get_scope(S) == SOCKET_ISYMS)) return S;
+		if (InterSymbol::is_socket(S)) return S;
 	}
 	return NULL;
 }
@@ -130,7 +129,7 @@ inter_symbol *Wiring::find_plug(inter_tree *I, text_stream *identifier) {
 	if (connectors) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_name_not_equating(
 			InterPackage::scope(LargeScale::connectors_package_if_it_exists(I)), identifier);
-		if ((S) && (InterSymbol::get_scope(S) == PLUG_ISYMS)) return S;
+		if (InterSymbol::is_plug(S)) return S;
 	}
 	return NULL;
 }
@@ -139,11 +138,6 @@ void Wiring::wire_plug(inter_symbol *plug, inter_symbol *to) {
 	if (plug == NULL) internal_error("no plug");
 	LOGIF(INTER_CONNECTORS, "Plug $3 wired to $3\n", plug, to);
 	Wiring::wire_to(plug, to);
-}
-
-int Wiring::is_plug(inter_symbol *S) {
-	if ((S) && (InterSymbol::get_scope(S) == PLUG_ISYMS)) return TRUE;
-	return FALSE;
 }
 
 @ See //bytecode: Connectors// for more, but consider this example:
@@ -193,13 +187,8 @@ void Wiring::connect_plugs_to_sockets(inter_tree *I) {
 	}
 }
 
-int Wiring::is_socket(inter_symbol *S) {
-	if ((S) && (InterSymbol::get_scope(S) == SOCKET_ISYMS)) return TRUE;
-	return FALSE;
-}
-
 int Wiring::is_loose_plug(inter_symbol *S) {
-	if ((Wiring::is_plug(S)) && (Wiring::is_wired(S) == FALSE)) return TRUE;
+	if ((InterSymbol::is_plug(S)) && (Wiring::is_wired(S) == FALSE)) return TRUE;
 	return FALSE;
 }
 

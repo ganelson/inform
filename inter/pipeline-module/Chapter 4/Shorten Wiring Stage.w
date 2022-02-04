@@ -91,13 +91,13 @@ The result should be a completely empty |connectors| module.
 
 @<Remove plugs with no incoming connections@> =
 	LOOP_OVER_SYMBOLS_TABLE(S, ST) {
-		if ((Wiring::is_plug(S)) && (Wiring::has_no_incoming_connections(S)))
+		if ((InterSymbol::is_plug(S)) && (Wiring::has_no_incoming_connections(S)))
 			InterSymbolsTable::remove_symbol(S);
 	}
 
 @<Remove sockets with no incoming connections@> =
 	LOOP_OVER_SYMBOLS_TABLE(S, ST) {
-		if ((Wiring::is_socket(S)) && (Wiring::has_no_incoming_connections(S)))
+		if ((InterSymbol::is_socket(S)) && (Wiring::has_no_incoming_connections(S)))
 			InterSymbolsTable::remove_symbol(S);
 	}
 

@@ -93,7 +93,7 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 				LOG("(did you forget to make the package type enclosing?)\n");
 				return Inode::error(P, I"no such symbol", NULL);
 			}
-			if (InterSymbol::misc_public_and_undefined(symb)) return NULL;
+			if (InterSymbol::misc_but_undefined(symb)) return NULL;
 			if (InterSymbol::defined_elsewhere(symb)) return NULL;
 			inter_tree_node *D = InterSymbol::definition(symb);
 			if (D == NULL) return Inode::error(P, I"undefined symbol", symb->symbol_name);
@@ -238,7 +238,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(scope, S);
 	if (symb) {
 		inter_tree_node *D = InterSymbol::definition(symb);
-		if (InterSymbol::misc_public_and_undefined(symb)) {
+		if (InterSymbol::misc_but_undefined(symb)) {
 			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
 			return NULL;
 		}
