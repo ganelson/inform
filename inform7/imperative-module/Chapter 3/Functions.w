@@ -297,6 +297,6 @@ inter_name *Functions::function_kernel(inter_tree *I, inter_name *public_name) {
 		internal_error("routine not housed in function");
 	package_request *P = InterNames::location(public_name);
 	inter_name *kernel_name = Packaging::make_iname_within(P, I"kernel");
-	InterNames::set_flag(kernel_name, MAKE_NAME_UNIQUE);
+	InterNames::set_flag(kernel_name, MAKE_NAME_UNIQUE_ISYMF);
 	return kernel_name;
 }

@@ -82,7 +82,7 @@ in |texts|.
 
 	Wiring::wire_to(ref_s, latest_s);
 	inter_ti val1 = 0, val2 = 0;
-	InterSymbol::to_data(I, InterPackage::container(P), ref_s, &val1, &val2);
+	Inter::Types::symbol_to_pair(I, InterPackage::container(P), ref_s, &val1, &val2);
 	P->W.instruction[FORMAT_CONST_IFLD] = CONSTANT_DIRECT;
 	P->W.instruction[DATA_CONST_IFLD] = val1;
 	P->W.instruction[DATA_CONST_IFLD+1] = val2;

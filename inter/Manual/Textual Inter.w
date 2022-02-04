@@ -121,28 +121,28 @@ one of these three forms:
 = (text as Inter)
 	symbol private TYPE NAME
 	symbol public TYPE NAME
-	symbol external TYPE NAME --> SYMBOL
+	symbol public TYPE NAME --> SYMBOL
 =
 For example,
 = (text as Inter)
 	symbol public misc MEMORY_HEAP_SIZE
-	symbol external misc AllowInShowme --> /main/resources/template/AllowInShowme
+	symbol public misc AllowInShowme --> /main/resources/template/AllowInShowme
 =
 |private| means that the meaning and existence of |NAME| are invisible
 from outside the current package; |public| means that other packages are
-allowed to refer to |NAME|; and |external| means that this package is
+allowed to refer to |NAME|; and |-->| means that this package is
 making just such a reference, and that |NAME| in this package is equivalent
 to |SYMBOL|, defined elsewhere. It is possible that |SYMBOL| points only to
-another symbol which is also |external|, so that we then have to follow
-another link to find the original non-external definition. However, it is
+another symbol which is also referred onwards by |-->|, so that we then have
+to follow another link to find the original non-external definition. However, it is
 a requirement that this process must eventually end. It would be illegal
 to write
 = (text as Inter)
 	package main _plain
 	    package A _plain
-	        symbol external misc S --> /main/B/T
+	        symbol public misc S --> /main/B/T
 	    package B _plain
-	        symbol external misc T --> /main/B/S
+	        symbol public misc T --> /main/B/S
 =
 The symbol |TYPE| must be one of four possibilities:
 (a) |label|, used to mark execution positions in code packages;
@@ -185,13 +185,13 @@ So, for example,
 = (text as Inter)
 	symbol public misc launcher `launcher_U32`
 =
-Symbols tabulated as |external| cannot be marked in this way, but of course
+Symbols declared with |-->| cannot be marked in this way, but of course
 the original definition (to which the external link eventually leads) can be.
 For example,
 = (text as Inter)
 	package main _plain
 	    package A _plain
-	        symbol external misc S --> /main/B/T
+	        symbol public misc S --> /main/B/T
 	    package B _plain
 	        symbol public misc T `FancyName`
 =

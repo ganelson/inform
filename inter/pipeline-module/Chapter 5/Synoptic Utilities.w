@@ -72,7 +72,7 @@ void Synoptic::begin_function(inter_tree *I, inter_name *iname) {
 }
 void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	Produce::end_function_body(I);
-	inter_symbol *fn_s = InterNames::define(iname);
+	inter_symbol *fn_s = InterNames::to_symbol(iname);
 	Produce::guard(Inter::Constant::new_function(Packaging::at(I),
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(Packaging::at(I)), fn_s),
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(Packaging::at(I)),
@@ -97,7 +97,7 @@ packaging_state synoptic_array_ps;
 
 void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	synoptic_array_ps = Packaging::enter_home_of(iname);
-	inter_symbol *con_s = InterNames::define(iname);
+	inter_symbol *con_s = InterNames::to_symbol(iname);
 	synoptic_array_node = Inode::new_with_3_data_fields(Packaging::at(I), CONSTANT_IST,
 		 InterSymbolsTable::id_from_symbol_at_bookmark(Packaging::at(I), con_s),
 		 InterSymbolsTable::id_from_symbol_at_bookmark(Packaging::at(I),
@@ -132,7 +132,7 @@ void Synoptic::symbol_entry(inter_symbol *S) {
 		InterSymbolsTable::create_with_unique_name(InterPackage::scope(pack), S->symbol_name);
 	Wiring::wire_to(local_S, S);
 	inter_ti val1 = 0, val2 = 0;
-	InterSymbol::to_data(InterPackage::tree(pack), pack, local_S, &val1, &val2);
+	Inter::Types::symbol_to_pair(InterPackage::tree(pack), pack, local_S, &val1, &val2);
 	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = ALIAS_IVAL;
 	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
 }

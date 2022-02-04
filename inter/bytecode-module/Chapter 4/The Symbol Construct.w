@@ -61,7 +61,6 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 
 	if (Str::eq(ilp->mr.exp[0], I"private")) InterSymbol::set_scope(name_name, PRIVATE_ISYMS);
 	else if (Str::eq(ilp->mr.exp[0], I"public")) InterSymbol::set_scope(name_name, PUBLIC_ISYMS);
-	else if (Str::eq(ilp->mr.exp[0], I"external")) InterSymbol::set_scope(name_name, EXTERNAL_ISYMS);
 	else if (Str::eq(ilp->mr.exp[0], I"plug")) InterSymbol::set_scope(name_name, PLUG_ISYMS);
 	else if (Str::eq(ilp->mr.exp[0], I"socket")) InterSymbol::set_scope(name_name, SOCKET_ISYMS);
 	else { *E = Inter::Errors::plain(I"unknown scope keyword", eloc); return; }
@@ -88,7 +87,6 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 				if (eq == NULL) eq = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), equate_name);
 				if (eq == NULL) {
 					Wiring::wire_to_name(name_name, equate_name);
-					InterSymbol::set_scope(name_name, EXTERNAL_ISYMS);
 				} else {
 					Wiring::convert_to_socket(name_name, eq);
 				}
@@ -106,7 +104,6 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 			if (eq == NULL) eq = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), equate_name);
 			if (eq == NULL) {
 				Wiring::wire_to_name(name_name, equate_name);
-				InterSymbol::set_scope(name_name, EXTERNAL_ISYMS);
 			} else {
 				Wiring::wire_to(name_name, eq);
 			}
@@ -114,7 +111,7 @@ void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	}
 
 	if (starred) {
-		InterSymbol::set_flag(name_name, MAKE_NAME_UNIQUE);
+		InterSymbol::set_flag(name_name, MAKE_NAME_UNIQUE_ISYMF);
 	}
 }
 

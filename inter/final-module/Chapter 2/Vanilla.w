@@ -148,7 +148,7 @@ void Vanilla::splat_matter(OUTPUT_STREAM, inter_tree *I, text_stream *S) {
 				PUT_TO(T, c);
 			}
 			inter_symbol *symb = InterSymbolsTable::URL_to_symbol(I, T);
-			WRITE("%S", InterSymbol::name(symb));
+			WRITE("%S", InterSymbol::trans(symb));
 			DISCARD_TEXT(T)
 		} else PUT(c);
 	}

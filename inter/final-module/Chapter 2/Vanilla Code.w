@@ -91,7 +91,7 @@ need to.
 /*		if (F->W.instruction[ID_IFLD] == VAL_IST) {
 			inter_ti val1 = F->W.instruction[VAL1_VAL_IFLD];
 			inter_ti val2 = F->W.instruction[VAL2_VAL_IFLD];
-			if (InterSymbol::is_stored_in_data(val1, val2)) {
+			if (Inter::Types::pair_holds_symbol(val1, val2)) {
 				inter_symbol *symb =
 					InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(F), val2);
 				if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {
@@ -127,14 +127,14 @@ a variable here.
 void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) {
 	inter_ti val1 = P->W.instruction[VAL1_VAL_IFLD];
 	inter_ti val2 = P->W.instruction[VAL2_VAL_IFLD];
-	if (InterSymbol::is_stored_in_data(val1, val2)) {
+	if (Inter::Types::pair_holds_symbol(val1, val2)) {
 		inter_package *pack = InterPackage::container(P);
 		inter_symbol *named_s =
 			InterSymbolsTable::symbol_from_ID_in_package(pack, val2);
 		if (named_s == NULL) named_s =
 			InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(P), val2);
 		if (named_s == NULL) internal_error("unknown constant in val/ref in Inter tree");
-		if ((Str::eq(InterSymbol::name(named_s), I"self")) ||
+		if ((Str::eq(InterSymbol::trans(named_s), I"self")) ||
 			((named_s->definition) &&
 				(named_s->definition->W.instruction[ID_IFLD] == VARIABLE_IST))) {
 			Generators::evaluate_variable(gen, named_s, ref);

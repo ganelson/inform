@@ -46,9 +46,6 @@ void Wiring::wire_to(inter_symbol *S, inter_symbol *T) {
 	S->wiring.connects_to = T;
 	S->wiring.wants_to_connect_to = NULL;
 	if (T) T->wiring.no_connections++;
-	if ((InterSymbol::get_scope(S) != SOCKET_ISYMS) &&
-		(InterSymbol::get_scope(S) != PLUG_ISYMS))
-		InterSymbol::set_scope(S, EXTERNAL_ISYMS);
 	LOGIF(INTER_SYMBOLS, "Wired $3 to $3\n", S, T);
 	int c = 0;
 	for (inter_symbol *W = S; W; W = W->wiring.connects_to, c++)

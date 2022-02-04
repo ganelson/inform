@@ -27,7 +27,7 @@ inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbo
 	*E = NULL;
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb) {
-		if (InterSymbol::is_predeclared(symb)) {
+		if (InterSymbol::misc_public_and_undefined(symb)) {
 			InterSymbol::undefine(symb);
 			return symb;
 		}
@@ -42,10 +42,10 @@ inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *e
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	inter_tree_node *D = InterSymbol::definition(symb);
-	if (InterSymbol::is_extern(symb)) return symb;
-	if (InterSymbol::is_predeclared(symb)) return symb;
+	if (InterSymbol::defined_elsewhere(symb)) return symb;
+	if (InterSymbol::misc_public_and_undefined(symb)) return symb;
 	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
-	if ((D->W.instruction[ID_IFLD] != construct) && (InterSymbol::is_predeclared(symb) == FALSE)) {
+	if ((D->W.instruction[ID_IFLD] != construct) && (InterSymbol::misc_public_and_undefined(symb) == FALSE)) {
 		*E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL;
 	}
 	return symb;
@@ -56,8 +56,8 @@ inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_e
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	if ((InterSymbol::is_defined(symb)) &&
-		(InterSymbol::is_predeclared(symb) == FALSE) &&
-		(InterSymbol::is_predeclared_local(symb) == FALSE)) {
+		(InterSymbol::misc_public_and_undefined(symb) == FALSE) &&
+		(InterSymbol::misc_private_and_undefined(symb) == FALSE)) {
 		WRITE_TO(STDERR, "Ho! %S\n", symb->symbol_name);
 		inter_tree_node *D = InterSymbol::definition(symb);
 		Inter::Defn::write_construct_text(STDERR, D);

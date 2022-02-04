@@ -739,11 +739,11 @@ text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *pro
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
 		inter_ti val1 = prop_node->W.instruction[VAL1_VAL_IFLD];
 		inter_ti val2 = prop_node->W.instruction[VAL2_VAL_IFLD];
-		if (InterSymbol::is_stored_in_data(val1, val2))
+		if (Inter::Types::pair_holds_symbol(val1, val2))
 			prop_symbol =
 				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(prop_node), val2);
 	}
-	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
+	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_ISYMF))) {
 		return VanillaObjects::inner_property_name(gen, prop_symbol);
 	} else if ((prop_symbol) && (prop_symbol->definition->W.instruction[ID_IFLD] == PROPERTY_IST)) {
 		return VanillaObjects::inner_property_name(gen, prop_symbol);
@@ -779,22 +779,22 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 	if (kind_node->W.instruction[ID_IFLD] == VAL_IST) {
 		inter_ti val1 = kind_node->W.instruction[VAL1_VAL_IFLD];
 		inter_ti val2 = kind_node->W.instruction[VAL2_VAL_IFLD];
-		if (InterSymbol::is_stored_in_data(val1, val2))
+		if (Inter::Types::pair_holds_symbol(val1, val2))
 			kind_symbol =
 				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(kind_node), val2);
 	}
-	if (Str::eq(InterSymbol::name(kind_symbol), I"OBJECT_TY") == FALSE)
+	if (Str::eq(InterSymbol::trans(kind_symbol), I"OBJECT_TY") == FALSE)
 		return I6G_CANNOT_PROVE;
 
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
 		inter_ti val1 = prop_node->W.instruction[VAL1_VAL_IFLD];
 		inter_ti val2 = prop_node->W.instruction[VAL2_VAL_IFLD];
-		if (InterSymbol::is_stored_in_data(val1, val2))
+		if (Inter::Types::pair_holds_symbol(val1, val2))
 			prop_symbol =
 				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(prop_node), val2);
 	}
-	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_BIT))) {
+	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_ISYMF))) {
 		return I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE;
 	} else if ((prop_symbol) && (prop_symbol->definition->W.instruction[ID_IFLD] == PROPERTY_IST)) {
 		return I6G_CAN_PROVE_IS_OBJ_PROPERTY;

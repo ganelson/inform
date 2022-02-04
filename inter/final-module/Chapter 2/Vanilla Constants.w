@@ -54,7 +54,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	;
 
 @<Declare this constant as a pseudo-object@> =
-	Generators::pseudo_object(gen, InterSymbol::name(con_name));
+	Generators::pseudo_object(gen, InterSymbol::trans(con_name));
 
 @<Declare this constant as a function@> =
 	VanillaFunctions::declare_function(gen, con_name);
@@ -125,7 +125,7 @@ than a literal, or may even be computed.
 	}
 
 	segmentation_pos saved;
-	if (Generators::begin_array(gen, InterSymbol::name(con_name), con_name, P, format, &saved)) {
+	if (Generators::begin_array(gen, InterSymbol::trans(con_name), con_name, P, format, &saved)) {
 		if (give_count) {
 			Generators::array_entries(gen, entry_count, format);
 		} else {
@@ -198,7 +198,7 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 				}
 				int bracket = TRUE;
 				if ((P->W.instruction[i] == LITERAL_IVAL) ||
-					(InterSymbol::is_stored_in_data(P->W.instruction[i], P->W.instruction[i+1]))) bracket = FALSE;
+					(Inter::Types::pair_holds_symbol(P->W.instruction[i], P->W.instruction[i+1]))) bracket = FALSE;
 				if (bracket) WRITE("(");
 				CodeGen::pair(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
 				if (bracket) WRITE(")");

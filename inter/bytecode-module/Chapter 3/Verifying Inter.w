@@ -17,7 +17,7 @@ inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *
 	inter_tree_node *D = InterSymbol::definition(S);
 	if (D == NULL) InterSymbol::define(S, P);
 	else if (Inode::same_instruction(D, P) == FALSE) {
-		if (InterSymbol::is_predeclared(S)) {
+		if (InterSymbol::misc_public_and_undefined(S)) {
 			InterSymbol::define(S, P);
 			return NULL;
 		}
@@ -31,7 +31,7 @@ inter_error_message *Inter::Verify::local_defn(inter_tree_node *P, int index, in
 	inter_symbol *S = InterSymbolsTable::symbol_from_ID(T, P->W.instruction[index]);
 	if (S == NULL) return Inode::error(P, I"no symbol for ID (case 2)", NULL);
 	if ((InterSymbol::is_defined(S)) &&
-		(InterSymbol::is_predeclared_local(S) == FALSE))
+		(InterSymbol::misc_private_and_undefined(S) == FALSE))
 		return Inode::error(P, I"duplicated local symbol", S->symbol_name);
 	InterSymbol::define(S, P);
 	return NULL;
@@ -43,12 +43,12 @@ inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_tree_node
 	inter_symbol *S = InterSymbolsTable::symbol_from_ID(T, ID);
 	if (S == NULL) return Inode::error(P, I"no symbol for ID (case 3)", NULL);
 	inter_tree_node *D = InterSymbol::definition(S);
-	if (InterSymbol::is_extern(S)) return NULL;
-	if (InterSymbol::is_predeclared(S)) return NULL;
+	if (InterSymbol::defined_elsewhere(S)) return NULL;
+	if (InterSymbol::misc_public_and_undefined(S)) return NULL;
 	if (D == NULL) return Inode::error(P, I"undefined symbol", S->symbol_name);
 	if ((D->W.instruction[ID_IFLD] != construct) &&
-		(InterSymbol::is_extern(S) == FALSE) &&
-		(InterSymbol::is_predeclared(S) == FALSE)) {
+		(InterSymbol::defined_elsewhere(S) == FALSE) &&
+		(InterSymbol::misc_public_and_undefined(S) == FALSE)) {
 		return Inode::error(P, I"symbol of wrong type", S->symbol_name);
 	}
 	return NULL;
@@ -58,12 +58,12 @@ inter_error_message *Inter::Verify::global_symbol(inter_tree_node *P, inter_ti I
 	inter_symbol *S = InterSymbolsTable::symbol_from_ID(Inode::globals(P), ID);
 	if (S == NULL) { internal_error("IO"); return Inode::error(P, I"3no symbol for ID", NULL); }
 	inter_tree_node *D = InterSymbol::definition(S);
-	if (InterSymbol::is_extern(S)) return NULL;
-	if (InterSymbol::is_predeclared(S)) return NULL;
+	if (InterSymbol::defined_elsewhere(S)) return NULL;
+	if (InterSymbol::misc_public_and_undefined(S)) return NULL;
 	if (D == NULL) return Inode::error(P, I"undefined symbol", S->symbol_name);
 	if ((D->W.instruction[ID_IFLD] != construct) &&
-		(InterSymbol::is_extern(S) == FALSE) &&
-		(InterSymbol::is_predeclared(S) == FALSE)) {
+		(InterSymbol::defined_elsewhere(S) == FALSE) &&
+		(InterSymbol::misc_public_and_undefined(S) == FALSE)) {
 		return Inode::error(P, I"symbol of wrong type", S->symbol_name);
 	}
 	return NULL;
@@ -73,12 +73,12 @@ inter_error_message *Inter::Verify::local_symbol(inter_tree_node *P, inter_ti ID
 	inter_symbol *S = InterSymbolsTable::symbol_from_ID(T, ID);
 	if (S == NULL) return Inode::error(P, I"4no symbol for ID", NULL);
 	inter_tree_node *D = InterSymbol::definition(S);
-	if (InterSymbol::is_extern(S)) return NULL;
-	if (InterSymbol::is_predeclared(S)) return NULL;
+	if (InterSymbol::defined_elsewhere(S)) return NULL;
+	if (InterSymbol::misc_public_and_undefined(S)) return NULL;
 	if (D == NULL) return Inode::error(P, I"undefined symbol", S->symbol_name);
 	if ((D->W.instruction[ID_IFLD] != construct) &&
-		(InterSymbol::is_extern(S) == FALSE) &&
-		(InterSymbol::is_predeclared(S) == FALSE)) {
+		(InterSymbol::defined_elsewhere(S) == FALSE) &&
+		(InterSymbol::misc_public_and_undefined(S) == FALSE)) {
 		return Inode::error(P, I"symbol of wrong type", S->symbol_name);
 	}
 	return NULL;
@@ -90,13 +90,13 @@ inter_error_message *Inter::Verify::symbol_KOI(inter_package *owner, inter_tree_
 	inter_symbol *S = InterSymbolsTable::symbol_from_ID(T, ID);
 	if (S == NULL) return Inode::error(P, I"5no symbol for ID", NULL);
 	inter_tree_node *D = InterSymbol::definition(S);
-	if (InterSymbol::is_extern(S)) return NULL;
-	if (InterSymbol::is_predeclared(S)) return NULL;
+	if (InterSymbol::defined_elsewhere(S)) return NULL;
+	if (InterSymbol::misc_public_and_undefined(S)) return NULL;
 	if (D == NULL) return Inode::error(P, I"undefined symbol", S->symbol_name);
 	if ((D->W.instruction[ID_IFLD] != KIND_IST) &&
-		(InterSymbol::is_extern(S) == FALSE) &&
+		(InterSymbol::defined_elsewhere(S) == FALSE) &&
 		(D->W.instruction[ID_IFLD] != INSTANCE_IST) &&
-		(InterSymbol::is_predeclared(S) == FALSE)) return Inode::error(P, I"symbol of wrong type", S->symbol_name);
+		(InterSymbol::misc_public_and_undefined(S) == FALSE)) return Inode::error(P, I"symbol of wrong type", S->symbol_name);
 	return NULL;
 }
 

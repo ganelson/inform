@@ -213,22 +213,22 @@ one of these three forms:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">private</span><span class="plain-syntax"> TYPE NAME</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">public</span><span class="plain-syntax"> TYPE NAME</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">external</span><span class="plain-syntax"> TYPE NAME </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> SYMBOL</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">public</span><span class="plain-syntax"> TYPE NAME </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> SYMBOL</span>
 </pre>
 <p class="commentary">For example,
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">public</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> MEMORY_HEAP_SIZE</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">external</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> AllowInShowme </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> /main/resources/template/AllowInShowme</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">public</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> AllowInShowme </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> /main/resources/template/AllowInShowme</span>
 </pre>
 <p class="commentary"><span class="extract"><span class="extract-syntax">private</span></span> means that the meaning and existence of <span class="extract"><span class="extract-syntax">NAME</span></span> are invisible
 from outside the current package; <span class="extract"><span class="extract-syntax">public</span></span> means that other packages are
-allowed to refer to <span class="extract"><span class="extract-syntax">NAME</span></span>; and <span class="extract"><span class="extract-syntax">external</span></span> means that this package is
+allowed to refer to <span class="extract"><span class="extract-syntax">NAME</span></span>; and <span class="extract"><span class="extract-syntax">--&gt;</span></span> means that this package is
 making just such a reference, and that <span class="extract"><span class="extract-syntax">NAME</span></span> in this package is equivalent
 to <span class="extract"><span class="extract-syntax">SYMBOL</span></span>, defined elsewhere. It is possible that <span class="extract"><span class="extract-syntax">SYMBOL</span></span> points only to
-another symbol which is also <span class="extract"><span class="extract-syntax">external</span></span>, so that we then have to follow
-another link to find the original non-external definition. However, it is
+another symbol which is also referred onwards by <span class="extract"><span class="extract-syntax">--&gt;</span></span>, so that we then have
+to follow another link to find the original non-external definition. However, it is
 a requirement that this process must eventually end. It would be illegal
 to write
 </p>
@@ -236,9 +236,9 @@ to write
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">package</span><span class="plain-syntax"> main _plain</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">package</span><span class="plain-syntax"> A _plain</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">external</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> S </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> /main/B/T</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">public</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> S </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> /main/B/T</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">package</span><span class="plain-syntax"> B _plain</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">external</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> T </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> /main/B/S</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">public</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> T </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> /main/B/S</span>
 </pre>
 <p class="commentary">The symbol <span class="extract"><span class="extract-syntax">TYPE</span></span> must be one of four possibilities:
 </p>
@@ -292,7 +292,7 @@ wishes to be given when the Inter is translated into some other language
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">public</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> launcher </span><span class="element-syntax">`launcher_U32</span><span class="plain-syntax">`</span>
 </pre>
-<p class="commentary">Symbols tabulated as <span class="extract"><span class="extract-syntax">external</span></span> cannot be marked in this way, but of course
+<p class="commentary">Symbols declared with <span class="extract"><span class="extract-syntax">--&gt;</span></span> cannot be marked in this way, but of course
 the original definition (to which the external link eventually leads) can be.
 For example,
 </p>
@@ -300,7 +300,7 @@ For example,
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">package</span><span class="plain-syntax"> main _plain</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">package</span><span class="plain-syntax"> A _plain</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">external</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> S </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> /main/B/T</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">public</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> S </span><span class="reserved-syntax">--&gt;</span><span class="plain-syntax"> /main/B/T</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">package</span><span class="plain-syntax"> B _plain</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">symbol</span><span class="plain-syntax"> </span><span class="reserved-syntax">public</span><span class="plain-syntax"> </span><span class="reserved-syntax">misc</span><span class="plain-syntax"> T </span><span class="element-syntax">`FancyName</span><span class="plain-syntax">`</span>
 </pre>

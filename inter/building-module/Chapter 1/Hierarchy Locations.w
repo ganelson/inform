@@ -339,7 +339,7 @@ inter_name *HierarchyLocations::iip(inter_tree *I, int id, package_request *P,
 		@<Make the actual iname@>;
 	}
 	
-	if (hl->trans.then_make_unique) InterNames::set_flag(iname, MAKE_NAME_UNIQUE);
+	if (hl->trans.then_make_unique) InterNames::set_flag(iname, MAKE_NAME_UNIQUE_ISYMF);
 	return iname;
 }
 

@@ -114,28 +114,7 @@ function togglePopup(material_id) {
 <span class="definition-keyword">enum</span> <span class="constant-syntax">I6_GLOBAL_OFFSET_IANN</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">C_ARRAY_ADDRESS_IANN</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>And also the canonical set of bits to use in the flags word for an Inter
-symbol.
-</p>
-
-<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">LABEL_ISYMT</span><span class="plain-syntax">    </span><span class="constant-syntax">0x00000000</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">MISC_ISYMT</span><span class="plain-syntax">     </span><span class="constant-syntax">0x00000001</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PACKAGE_ISYMT</span><span class="plain-syntax">  </span><span class="constant-syntax">0x00000002</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PTYPE_ISYMT</span><span class="plain-syntax">    </span><span class="constant-syntax">0x00000003</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SYMBOL_TYPE_MASK_ISYMT</span><span class="plain-syntax"> </span><span class="constant-syntax">0x00000003</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PRIVATE_ISYMS</span><span class="plain-syntax">  </span><span class="constant-syntax">0x00000000</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PUBLIC_ISYMS</span><span class="plain-syntax">   </span><span class="constant-syntax">0x00000004</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">EXTERNAL_ISYMS</span><span class="plain-syntax"> </span><span class="constant-syntax">0x00000008</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">PLUG_ISYMS</span><span class="plain-syntax">     </span><span class="constant-syntax">0x0000000C</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SOCKET_ISYMS</span><span class="plain-syntax">   </span><span class="constant-syntax">0x00000010</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">SYMBOL_SCOPE_MASK_ISYMT</span><span class="plain-syntax"> </span><span class="constant-syntax">0x0000001C</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">TRAVERSE_MARK_BIT</span><span class="plain-syntax">       </span><span class="constant-syntax">0x00000020</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">ATTRIBUTE_MARK_BIT</span><span class="plain-syntax">      </span><span class="constant-syntax">0x00000040</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">USED_MARK_BIT</span><span class="plain-syntax">           </span><span class="constant-syntax">0x00000100</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">MAKE_NAME_UNIQUE</span><span class="plain-syntax">        </span><span class="constant-syntax">0x00000200</span>
-<span class="definition-keyword">define</span> <span class="constant-syntax">NONTRANSIENT_SYMBOL_BITS</span><span class="plain-syntax"> (</span><span class="constant-syntax">MAKE_NAME_UNIQUE</span><span class="plain-syntax"> + </span><span class="constant-syntax">SYMBOL_TYPE_MASK_ISYMT</span><span class="plain-syntax"> + </span><span class="constant-syntax">SYMBOL_SCOPE_MASK_ISYMT</span><span class="plain-syntax">)</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Inter::Canon::declare</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Inter::Canon::declare</span></span>:<br/>Definition - <a href="3-dfn.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>

@@ -45,7 +45,7 @@ languages where it is not true.
 void CLiteralsModel::compile_literal_symbol(code_generator *gtr, code_generation *gen,
 	inter_symbol *aliased) {
 	text_stream *OUT = CodeGen::current(gen);
-	text_stream *S = InterSymbol::name(aliased);
+	text_stream *S = InterSymbol::trans(aliased);
 	Generators::mangle(gen, OUT, S);
 }
 

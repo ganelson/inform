@@ -108,11 +108,11 @@ that definition to be the true one.
 	if (store_in_VM_attribute == TRUE) {
 		inter_symbol *p;
 		LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
-			InterSymbol::set_flag(p, ATTRIBUTE_MARK_BIT);
+			InterSymbol::set_flag(p, ATTRIBUTE_MARK_ISYMF);
 	} else if (store_in_VM_attribute == FALSE) {
 		inter_symbol *p;
 		LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
-			InterSymbol::clear_flag(p, ATTRIBUTE_MARK_BIT);
+			InterSymbol::clear_flag(p, ATTRIBUTE_MARK_ISYMF);
 	} else {
 		internal_error("No decision was taken");
 	}
@@ -253,10 +253,10 @@ void I6TargetObjects::declare_kind(code_generator *gtr, code_generation *gen,
 
 @<A kind of object, including the kind object itself@> =
 	*saved = CodeGen::select(gen, classes_I7CGS);
-	text_stream *class_name = InterSymbol::name(kind_s);
+	text_stream *class_name = InterSymbol::trans(kind_s);
 	text_stream *super_class = NULL;
 	inter_symbol *super_name = Inter::Kind::super(kind_s);
-	if (super_name) super_class = InterSymbol::name(super_name);
+	if (super_name) super_class = InterSymbol::trans(super_name);
 
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Class %S\n", class_name);
@@ -306,8 +306,8 @@ void I6TargetObjects::declare_instance(code_generator *gtr,
 	int c = InterSymbol::read_annotation(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
 	int is_dir = Inter::Kind::is_a(kind_s, RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
-	I6TargetObjects::VM_object_header(gen, InterSymbol::name(kind_s),
-		InterSymbol::name(inst_s), NULL, c, is_dir, saved);
+	I6TargetObjects::VM_object_header(gen, InterSymbol::trans(kind_s),
+		InterSymbol::trans(inst_s), NULL, c, is_dir, saved);
 
 @ And instances of enumerated kinds are simply declared as constant values,
 equal to their enumeration numbers. So for e.g.
@@ -359,7 +359,7 @@ void I6TargetObjects::VM_object_header(code_generation *gen, text_stream *class_
 void I6TargetObjects::VM_property(code_generation *gen, inter_symbol *prop_name, text_stream *val) {
 	text_stream *OUT = CodeGen::current(gen);
 	text_stream *property_name = VanillaObjects::inner_property_name(gen, prop_name);
-	if (InterSymbol::get_flag(prop_name, ATTRIBUTE_MARK_BIT)) {
+	if (InterSymbol::get_flag(prop_name, ATTRIBUTE_MARK_ISYMF)) {
 		if (Str::eq(val, I"0")) WRITE("    has ~%S\n", property_name);
 		else WRITE("    has %S\n", property_name);
 	} else {
@@ -406,7 +406,7 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, val);
 	int inline_this = FALSE;
-	if (InterSymbol::is_stored_in_data(val1, val2)) {
+	if (Inter::Types::pair_holds_symbol(val1, val2)) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_data_pair_at_node(val1, val2, X);
 		if ((S) && (InterSymbol::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
 			inter_tree_node *P = InterSymbol::definition(S);

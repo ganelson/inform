@@ -2,15 +2,29 @@
 
 To move packages between repositories.
 
-@ =
+@ 
+
+=
+typedef struct transmigration_data {
+	int link_time;
+	struct inter_symbol *linked_to;
+} transmigration_data;
+
+transmigration_data Inter::Transmigration::new_transmigration_data(inter_symbol *S) {
+	transmigration_data td;
+	td.link_time = 0;
+	td.linked_to = NULL;
+	return td;
+}
+
 int ipct_cache_count = 0;
 void Inter::Transmigration::cache(inter_symbol *S, inter_symbol *V) {
-	S->linked_to = V;
-	S->link_time = ipct_cache_count;
+	S->transmigration.linked_to = V;
+	S->transmigration.link_time = ipct_cache_count;
 }
 
 inter_symbol *Inter::Transmigration::cached_equivalent(inter_symbol *S) {
-	if (S->link_time == ipct_cache_count) return S->linked_to;
+	if (S->transmigration.link_time == ipct_cache_count) return S->transmigration.linked_to;
 	return NULL;
 }
 

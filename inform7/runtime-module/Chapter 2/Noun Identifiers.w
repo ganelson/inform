@@ -65,7 +65,7 @@ void NounIdentifiers::noun_set_translation(noun *t, text_stream *new) {
 	inter_name *iname = t->compilation_data.nt_iname;
 	if (iname) {
 		InterNames::set_translation(iname, ident);
-		InterNames::clear_flag(iname, MAKE_NAME_UNIQUE);
+		InterNames::clear_flag(iname, MAKE_NAME_UNIQUE_ISYMF);
 		Hierarchy::make_available(iname);
 	}
 }

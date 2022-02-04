@@ -127,7 +127,7 @@ inter_symbol *InterSymbolsTable::search_inner(inter_symbols_table *T, text_strea
 
 @<Create a new symbol with this name, and return it@> =
 	if (ID == 0) ID = T->next_free_symbol_ID++;
-	inter_symbol *S = InterSymbol::new(name, T, ID);
+	inter_symbol *S = InterSymbol::new_for_symbols_table(name, T, ID);
 	@<Add S to the array@>;
 	if (T->symbols_dictionary) {
 		@<Add S to the dictionary@>;

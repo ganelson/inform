@@ -46,7 +46,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	WRITE("  (");
 	CodeGen::pair(gen, P, v1, v2);
 	WRITE(") ! -->%d = %S (%S)\n", k,
-		InterSymbol::name(var_name), var_name->symbol_name);
+		InterSymbol::trans(var_name), var_name->symbol_name);
 	CodeGen::deselect(gen, saved);
 	k++;
 
@@ -59,7 +59,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 @<Variables created by kits all become Globals in I6@> =
 	segmentation_pos saved = CodeGen::select(gen, global_variables_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Global %S = ", InterSymbol::name(var_name));
+	WRITE("Global %S = ", InterSymbol::trans(var_name));
 	CodeGen::pair(gen, P, v1, v2);
 	WRITE(";\n");
 	CodeGen::deselect(gen, saved);
@@ -73,5 +73,5 @@ void I6TargetVariables::evaluate_variable(code_generator *gtr, code_generation *
 	text_stream *OUT = CodeGen::current(gen);
 	int k = InterSymbol::read_annotation(var_name, I6_GLOBAL_OFFSET_IANN);
 	if (k > 0) WRITE("(Global_Vars-->%d)", k);
-	else WRITE("%S", InterSymbol::name(var_name));
+	else WRITE("%S", InterSymbol::trans(var_name));
 }

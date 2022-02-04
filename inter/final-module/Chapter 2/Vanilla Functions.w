@@ -97,7 +97,7 @@ vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s
 	text_stream *i7_syntax = Metadata::read_optional_textual(PP, I"^phrase_syntax");
 	vanilla_function *vf = CREATE(vanilla_function);
 	vf->takes_variable_arguments = FALSE;
-	vf->identifier = Str::duplicate(InterSymbol::name(fn_s));
+	vf->identifier = Str::duplicate(InterSymbol::trans(fn_s));
 	vf->locals = NEW_LINKED_LIST(text_stream);
 	vf->phrase_syntax = Str::duplicate(i7_syntax);
 	inter_package *code_block = Inter::Constant::code_block(fn_s);
@@ -112,7 +112,7 @@ vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s
 @ This performs a local traverse of the body of the function to look for local
 variable declarations.
 
-Note that we look at |local_s->symbol_name| not |InterSymbol::name(local_s)|
+Note that we look at |local_s->symbol_name| not |InterSymbol::trans(local_s)|
 when checking for |_vararg_count| because the translated name may have been mangled
 in some way by the generator. (As indeed the C generator does, mangling this to
 |local__vararg_count|.)
@@ -124,7 +124,7 @@ void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
 		inter_package *pack = InterPackage::container(P);
 		inter_symbol *local_s =
 			InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
-		ADD_TO_LINKED_LIST(InterSymbol::name(local_s), text_stream, vf->locals);
+		ADD_TO_LINKED_LIST(InterSymbol::trans(local_s), text_stream, vf->locals);
 		if (Str::eq(local_s->symbol_name, I"_vararg_count"))
 			vf->takes_variable_arguments = TRUE;
 	}
@@ -147,7 +147,7 @@ void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 		(D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
 		inter_ti val1 = D->W.instruction[DATA_CONST_IFLD];
 		inter_ti val2 = D->W.instruction[DATA_CONST_IFLD + 1];
-		if (InterSymbol::is_stored_in_data(val1, val2)) {
+		if (Inter::Types::pair_holds_symbol(val1, val2)) {
 			inter_symbol *S = InterSymbolsTable::symbol_from_data_pair(
 				val1, val2, InterPackage::scope_of(D));
 			if (S) fn_s = S;

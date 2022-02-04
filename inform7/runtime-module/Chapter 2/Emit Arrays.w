@@ -183,7 +183,7 @@ nascent_array *EmitArrays::pull(void) {
 
 =
 void EmitArrays::begin_inner(inter_name *N, kind *K, int const_sum) {
-	inter_symbol *symb = InterNames::define(N);
+	inter_symbol *symb = InterNames::to_symbol(N);
 	nascent_array *current_A = EmitArrays::push_new();
 	current_A->entry_kind = K?K:K_value;
 	current_A->array_name_symbol = symb;

@@ -154,10 +154,9 @@ But here it is not:
 	DISCARD_TEXT(ident)
 
 @<Decide whether symbol defined@> =
-	inter_symbol *symbol =
-		LargeScale::architectural_symbol(I, symbol_name);
+	inter_symbol *symbol = LargeScale::architectural_symbol(I, symbol_name);
 	if (symbol) {
-		result = (InterSymbol::is_extern(symbol))?FALSE:TRUE;
+		result = (InterSymbol::defined_elsewhere(symbol))?FALSE:TRUE;
 	} else {
 		if (Dictionaries::find(state->I6_level_symbols, symbol_name)) result = TRUE;
 	}

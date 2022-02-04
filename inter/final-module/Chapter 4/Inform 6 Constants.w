@@ -25,7 +25,7 @@ code than that for |X|. See //Code Generation// for how this is done.
 =
 void I6TargetConstants::declare_constant(code_generator *gtr, code_generation *gen,
 	inter_symbol *const_s, int form, text_stream *val) {
-	text_stream *const_name = InterSymbol::name(const_s);
+	text_stream *const_name = InterSymbol::trans(const_s);
     @<Leave undeclared any array used as a value of a property@>;
 	@<Leave undeclared any constant auto-declared by the I6 compiler@>;
 
@@ -145,13 +145,13 @@ they were any other arrays. Here goes:
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		WRITE(" ");
 		inter_ti val1 = P->W.instruction[i], val2 = P->W.instruction[i+1];
-		if (InterSymbol::is_stored_in_data(val1, val2)) {
+		if (Inter::Types::pair_holds_symbol(val1, val2)) {
 			inter_symbol *A = InterSymbolsTable::symbol_from_data_pair(
 				val1, val2, InterPackage::scope_of(P));
 			if (A == NULL) internal_error("bad aliased symbol");
 			if (InterSymbol::read_annotation(A, SCOPE_FILTER_IANN) == 1) WRITE("scope=");
 			if (InterSymbol::read_annotation(A, NOUN_FILTER_IANN) == 1)  WRITE("noun=");
-			text_stream *S = InterSymbol::name(A);
+			text_stream *S = InterSymbol::trans(A);
 			     if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_divider_RPSYM))     WRITE("\n\t*");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_reverse_RPSYM))     WRITE("reverse");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_slash_RPSYM))       WRITE("/");
@@ -441,5 +441,5 @@ hexadecimal.
 void I6TargetConstants::compile_literal_symbol(code_generator *gtr, code_generation *gen,
 	inter_symbol *A) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("%S", InterSymbol::name(A));
+	WRITE("%S", InterSymbol::trans(A));
 }

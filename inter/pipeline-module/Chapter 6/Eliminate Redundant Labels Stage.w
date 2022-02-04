@@ -38,13 +38,13 @@ void EliminateRedundantLabelsStage::visitor(inter_tree *I, inter_tree_node *P, v
 	@<Look through the function for mentions of labels, marking those as used@>;
 	@<Remove the label declarations for any that are still marked unused@>;
 
-@ The symbol flag |USED_MARK_BIT| is free for us to use, but its value for
+@ The symbol flag |USED_MARK_ISYMF| is free for us to use, but its value for
 any given symbol is undefined when we begin. We'll clear it for all labels.
 
 @<Mark all the labels for this function as being unused@> =
 	LOOP_OVER_SYMBOLS_TABLE(S, local_symbols)
 		if (InterSymbol::is_label(S))
-			InterSymbol::clear_flag(S, USED_MARK_BIT);
+			InterSymbol::clear_flag(S, USED_MARK_ISYMF);
 
 @<Look through the function for mentions of labels, marking those as used@> =
 	inter_tree_node *D = InterPackage::head(pack);
@@ -61,7 +61,7 @@ anywhere) we may as well remove it.
 @<Remove the label declarations for any that are still marked unused@> =
 	LOOP_OVER_SYMBOLS_TABLE(S, local_symbols)
 		if (InterSymbol::is_label(S))
-			if (InterSymbol::get_flag(S, USED_MARK_BIT) == FALSE) {
+			if (InterSymbol::get_flag(S, USED_MARK_ISYMF) == FALSE) {
 				InterSymbol::strike_definition(S);
 				InterSymbolsTable::remove_symbol(S);
 				redundant_labels_removed++;
@@ -84,5 +84,5 @@ We look for such lines.
 @<Examine a line of code in the function@> =
 	if (F->W.instruction[ID_IFLD] == LAB_IST) {
 		inter_symbol *lab = Inter::Lab::label_symbol(F);
-		InterSymbol::set_flag(lab, USED_MARK_BIT);
+		InterSymbol::set_flag(lab, USED_MARK_ISYMF);
 	}

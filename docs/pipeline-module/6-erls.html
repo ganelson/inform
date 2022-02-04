@@ -115,7 +115,7 @@ on an Inter tree.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-erls.html#SP1_1_3" class="named-paragraph-link"><span class="named-paragraph">Remove the label declarations for any that are still marked unused</span><span class="named-paragraph-number">1.1.3</span></a></span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-erls.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_1_1" class="paragraph-anchor"></a><b>&#167;1.1.1.  </b>The symbol flag <span class="extract"><span class="extract-syntax">USED_MARK_BIT</span></span> is free for us to use, but its value for
+<p class="commentary firstcommentary"><a id="SP1_1_1" class="paragraph-anchor"></a><b>&#167;1.1.1.  </b>The symbol flag <span class="extract"><span class="extract-syntax">USED_MARK_ISYMF</span></span> is free for us to use, but its value for
 any given symbol is undefined when we begin. We'll clear it for all labels.
 </p>
 
@@ -124,8 +124,8 @@ any given symbol is undefined when we begin. We'll clear it for all labels.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_SYMBOLS_TABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">local_symbols</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::is_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Inter::Symbols::clear_flag</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">USED_MARK_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">InterSymbol::is_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">InterSymbol::clear_flag</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">USED_MARK_ISYMF</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-erls.html#SP1_1">&#167;1.1</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP1_1_2" class="paragraph-anchor"></a><b>&#167;1.1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look through the function for mentions of labels, marking those as used</span><span class="named-paragraph-number">1.1.2</span></span><span class="comment-syntax"> =</span>
@@ -150,9 +150,9 @@ anywhere) we may as well remove it.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER_SYMBOLS_TABLE</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">local_symbols</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::is_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inter::Symbols::get_flag</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">USED_MARK_BIT</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">Inter::Symbols::strike_definition</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">InterSymbol::is_label</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">InterSymbol::get_flag</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">, </span><span class="identifier-syntax">USED_MARK_ISYMF</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">InterSymbol::strike_definition</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">InterSymbolsTable::remove_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">redundant_labels_removed</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">            }</span>
@@ -180,7 +180,7 @@ We look for such lines.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">F</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">instruction</span><span class="plain-syntax">[</span><span class="identifier-syntax">ID_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">LAB_IST</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lab</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Inter::Lab::label_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Inter::Symbols::set_flag</span><span class="plain-syntax">(</span><span class="identifier-syntax">lab</span><span class="plain-syntax">, </span><span class="identifier-syntax">USED_MARK_BIT</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">InterSymbol::set_flag</span><span class="plain-syntax">(</span><span class="identifier-syntax">lab</span><span class="plain-syntax">, </span><span class="identifier-syntax">USED_MARK_ISYMF</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="6-erls.html#SP2">&#167;2</a>.</li></ul>

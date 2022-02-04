@@ -432,19 +432,19 @@ void CodeGen::clear_transients(inter_tree *I, inter_tree_node *P, void *state) {
 		InterSymbol::clear_transient_flags(S);
 }
 
-@ In particular the |TRAVERSE_MARK_BIT| flag is sometimes convenient to use.
+@ In particular the |TRAVERSE_MARK_ISYMF| flag is sometimes convenient to use.
 
 =
 int CodeGen::marked(inter_symbol *symb_name) {
-	return InterSymbol::get_flag(symb_name, TRAVERSE_MARK_BIT);
+	return InterSymbol::get_flag(symb_name, TRAVERSE_MARK_ISYMF);
 }
 
 void CodeGen::mark(inter_symbol *symb_name) {
-	InterSymbol::set_flag(symb_name, TRAVERSE_MARK_BIT);
+	InterSymbol::set_flag(symb_name, TRAVERSE_MARK_ISYMF);
 }
 
 void CodeGen::unmark(inter_symbol *symb_name) {
-	InterSymbol::clear_flag(symb_name, TRAVERSE_MARK_BIT);
+	InterSymbol::clear_flag(symb_name, TRAVERSE_MARK_ISYMF);
 }
 
 @h Value pairs.
@@ -469,7 +469,7 @@ void CodeGen::pair(code_generation *gen, inter_tree_node *P,
 	text_stream *OUT = CodeGen::current(gen);
 	if (val1 == LITERAL_IVAL) {
 		Generators::compile_literal_number(gen, val2, FALSE);
-	} else if (InterSymbol::is_stored_in_data(val1, val2)) {
+	} else if (Inter::Types::pair_holds_symbol(val1, val2)) {
 		inter_symbol *s = InterSymbolsTable::symbol_from_data_pair(val1, val2, T);
 		if (s == NULL) internal_error("bad symbol in Inter pair");
 		Generators::compile_literal_symbol(gen, s);

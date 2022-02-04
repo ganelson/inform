@@ -276,7 +276,7 @@ private namespaces within packages, whereas the languages we are transpiling to 
 to some extent C, but certainly Inform 6 -- have a single global namespace,
 where collisions of identifiers would be very unfortunate.)
 
-At the end of this stage, no symbol still has the |MAKE_NAME_UNIQUE| flag.
+At the end of this stage, no symbol still has the |MAKE_NAME_UNIQUE_ISYMF| flag.
 
 For the implementation, see //pipeline: Make Identifiers Unique Stage//.
 

@@ -131,7 +131,7 @@ For the reason why |Serial| and |Release| are placed higher-up in the file, see
 =
 void CNamespace::declare_constant(code_generator *gtr, code_generation *gen,
 	inter_symbol *const_s, int form, text_stream *val) {
-	text_stream *name = InterSymbol::name(const_s);
+	text_stream *name = InterSymbol::trans(const_s);
 	int seg = c_constants_I7CGS;
 	if (Str::eq(name, I"Serial")) seg = c_ids_and_maxima_I7CGS;
 	if (Str::eq(name, I"Release")) seg = c_ids_and_maxima_I7CGS;

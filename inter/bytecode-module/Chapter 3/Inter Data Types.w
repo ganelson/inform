@@ -93,8 +93,8 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 				LOG("(did you forget to make the package type enclosing?)\n");
 				return Inode::error(P, I"no such symbol", NULL);
 			}
-			if (InterSymbol::is_predeclared(symb)) return NULL;
-			if (InterSymbol::is_extern(symb)) return NULL;
+			if (InterSymbol::misc_public_and_undefined(symb)) return NULL;
+			if (InterSymbol::defined_elsewhere(symb)) return NULL;
 			inter_tree_node *D = InterSymbol::definition(symb);
 			if (D == NULL) return Inode::error(P, I"undefined symbol", symb->symbol_name);
 
@@ -238,12 +238,12 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(scope, S);
 	if (symb) {
 		inter_tree_node *D = InterSymbol::definition(symb);
-		if (InterSymbol::is_predeclared(symb)) {
-			InterSymbol::to_data(I, pack, symb, val1, val2);
+		if (InterSymbol::misc_public_and_undefined(symb)) {
+			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
 			return NULL;
 		}
-		if (InterSymbol::is_extern(symb)) {
-			InterSymbol::to_data(I, pack, symb, val1, val2);
+		if (InterSymbol::defined_elsewhere(symb)) {
+			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
 			return NULL;
 		}
 		if (D == NULL) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
@@ -256,13 +256,13 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 					(kind_symbol)?(kind_symbol->symbol_name):I"<none>");
 				return Inter::Errors::quoted(err, S, eloc);
 			}
-			InterSymbol::to_data(I, pack, symb, val1, val2);
+			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
 			return NULL;
 		}
 		if (D->W.instruction[ID_IFLD] == CONSTANT_IST) {
 			inter_symbol *kind_const = Inter::Constant::kind_of(symb);
 			if (Inter::Kind::is_a(kind_const, kind_symbol) == FALSE) return Inter::Errors::quoted(I"symbol has the wrong kind", S, eloc);
-			InterSymbol::to_data(I, pack, symb, val1, val2);
+			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
 			return NULL;
 		}
 	}
@@ -274,8 +274,8 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 		if (D == NULL) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
 		inter_symbol *kind_const = Inter::Instance::kind_of(symb);
 		if (Inter::Kind::is_a(kind_const, kind_symbol) == FALSE) return Inter::Errors::quoted(I"symbol has the wrong kind", S, eloc);
-		InterSymbol::to_data(I, pack, symb, val1, val2);
-		InterSymbol::to_data(I, pack, symb, val1, val2);
+		Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
+		Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
 		return NULL;
 	}
 
@@ -360,3 +360,17 @@ void Inter::Types::create_all(void) {
 	Inter::Types::create(RELATION_IDT, I"relation", -2147483648, 2147483647, FALSE);
 	Inter::Types::create(DESCRIPTION_IDT, I"description", -2147483648, 2147483647, FALSE);
 }
+
+@
+
+=
+int Inter::Types::pair_holds_symbol(inter_ti val1, inter_ti val2) {
+	if (val1 == ALIAS_IVAL) return TRUE;
+	return FALSE;
+}
+
+void Inter::Types::symbol_to_pair(inter_tree *I, inter_package *pack, inter_symbol *S, inter_ti *val1, inter_ti *val2) {
+	if (S == NULL) internal_error("no symbol");
+	*val1 = ALIAS_IVAL; *val2 = InterSymbolsTable::id_from_symbol(I, pack, S);
+}
+

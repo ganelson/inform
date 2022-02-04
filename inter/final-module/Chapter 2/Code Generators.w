@@ -191,7 +191,7 @@ void Generators::mangled_array_entry(code_generation *gen, text_stream *entry, i
 	DISCARD_TEXT(mangled)
 }
 void Generators::symbol_array_entry(code_generation *gen, inter_symbol *entry, int format) {
-	Generators::mangled_array_entry(gen, InterSymbol::name(entry), format);
+	Generators::mangled_array_entry(gen, InterSymbol::trans(entry), format);
 }
 
 void Generators::end_array(code_generation *gen, int format, segmentation_pos *saved) {

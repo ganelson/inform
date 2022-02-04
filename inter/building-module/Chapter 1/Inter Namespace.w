@@ -248,12 +248,6 @@ int InterNames::is_defined(inter_name *iname) {
 	return FALSE;
 }
 
-inter_symbol *InterNames::define(inter_name *iname) {
-	inter_symbol *S = InterNames::to_symbol(iname);
-	if ((S) && (InterSymbol::is_predeclared(S))) InterSymbol::undefine(S);
-	return S;
-}
-
 @h Annotation.
 Note that these functions all force an iname to be incarnated.
 

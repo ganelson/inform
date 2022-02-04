@@ -398,7 +398,7 @@ The opening byte gives some metadata bits, and then there's a word.
 	if (InterSymbol::read_annotation(S, NOUN_FILTER_IANN) == 1)  bc = 0x83;
 	VanillaIF::grammar_byte(gen, bc + token_metadata);
 	TEMPORARY_TEXT(MG)
-	Generators::mangle(gen, MG, InterSymbol::name(S));
+	Generators::mangle(gen, MG, InterSymbol::trans(S));
 	VanillaIF::grammar_word_textual(gen, MG);
 	DISCARD_TEXT(MG)
 
@@ -424,7 +424,7 @@ The opening byte gives some metadata bits, and then there's a word.
 @ =
 inter_symbol *VanillaIF::get_symbol(code_generation *gen, inter_tree_node *P,
 	inter_ti val1, inter_ti val2) {
-	if (InterSymbol::is_stored_in_data(val1, val2)) {
+	if (Inter::Types::pair_holds_symbol(val1, val2)) {
 		inter_symbol *S =
 			InterSymbolsTable::symbol_from_data_pair(val1, val2,
 				InterPackage::scope_of(P));

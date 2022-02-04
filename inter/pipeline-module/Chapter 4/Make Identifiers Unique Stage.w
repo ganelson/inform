@@ -12,9 +12,9 @@ names. (Recall that a symbol has a "translated" name as well as its real name;
 the "translated" name is the identifier used for it in the code we generated.)
 
 So the following gives unique translated names to symbols marked with the
-|MAKE_NAME_UNIQUE| bit. So for example
+|MAKE_NAME_UNIQUE_ISYMF| bit. So for example
 = (text)
-	NAME		MAKE_NAME_UNIQUE	TRANSLATION
+	NAME		MAKE_NAME_UNIQUE_ISYMF	TRANSLATION
 	call		TRUE				--
 	call		TRUE				--
 	example		FALSE				--
@@ -22,7 +22,7 @@ So the following gives unique translated names to symbols marked with the
 =
 will become
 = (text)
-	NAME		MAKE_NAME_UNIQUE	TRANSLATION
+	NAME		MAKE_NAME_UNIQUE_ISYMF	TRANSLATION
 	call		FALSE				call_U1
 	call		FALSE				call_U2
 	example		FALSE				--
@@ -72,9 +72,9 @@ void MakeIdentifiersUniqueStage::visitor(inter_tree *I, inter_tree_node *P, void
 		inter_symbols_table *ST = InterPackage::scope(Q);
 		LOOP_OVER_SYMBOLS_TABLE(S, ST) {
 			if ((Wiring::is_wired(S) == FALSE) &&
-				(InterSymbol::get_flag(S, MAKE_NAME_UNIQUE))) {
+				(InterSymbol::get_flag(S, MAKE_NAME_UNIQUE_ISYMF))) {
 				@<Give this symbol a unique translation@>;
-				InterSymbol::clear_flag(S, MAKE_NAME_UNIQUE);
+				InterSymbol::clear_flag(S, MAKE_NAME_UNIQUE_ISYMF);
 			}
 		}
 	}

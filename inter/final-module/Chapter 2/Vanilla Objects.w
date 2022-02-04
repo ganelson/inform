@@ -75,7 +75,7 @@ void VanillaObjects::declare_properties(code_generation *gen) {
 }
 
 @<Group the properties by name@> =
-	text_stream *name = InterSymbol::name(prop_name);
+	text_stream *name = InterSymbol::trans(prop_name);
 	if (Dictionaries::find(last_with_name, name) == NULL) {
 		text_stream *inner_name = Str::duplicate(name);
 		Dictionaries::create(last_with_name, inner_name);
@@ -114,7 +114,7 @@ ways because of the built-in |name| property, whose name cannot be declared or
 altered.
 
 @<Declare one property for each name group@> =
-	text_stream *name = InterSymbol::name(prop_name);
+	text_stream *name = InterSymbol::trans(prop_name);
 	text_stream *inner_name = NULL;
 	if (Dictionaries::find(first_with_name, name) == NULL) {
 		LOGIF(PROPERTY_ALLOCATION, "! NEW name=%S   sname=%S   eor=%d   assim=%d\n",
@@ -137,12 +137,12 @@ altered.
 		inner_name = I"<nameless>";
 		int N = InterSymbol::read_annotation(existing_prop_name, INNER_PROPERTY_NAME_IANN);
 		if (N > 0) inner_name = InterWarehouse::get_text(InterTree::warehouse(gen->from), (inter_ti) N);
-		InterSymbol::set_translate(prop_name, InterSymbol::name(existing_prop_name));
+		InterSymbol::set_translate(prop_name, InterSymbol::trans(existing_prop_name));
 		InterSymbol::annotate_t(gen->from, InterSymbol::package(prop_name),
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
 	}
 	LOGIF(PROPERTY_ALLOCATION, "! Translation %S, inner name %S\n",
-		InterSymbol::name(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
+		InterSymbol::trans(prop_name), VanillaObjects::inner_property_name(gen, prop_name));
 
 @ Note that //Generators::declare_property// calls the generator to ask it to
 create the first two entries in the metadata array. Those can be anything the
@@ -363,7 +363,7 @@ by table, no sticks exist and we must compile them.
 	if (X->W.instruction[STORAGE_PERM_IFLD]) {
 		inter_symbol *store = InterSymbolsTable::symbol_from_ID_at_node(X, STORAGE_PERM_IFLD);
 		if (store == NULL) internal_error("bad PP in inter");
-		ident = InterSymbol::name(store);
+		ident = InterSymbol::trans(store);
 	} else {
 		ident = Str::new();
 		WRITE_TO(ident, "KOVP_%d", unique_kovp_id++);
