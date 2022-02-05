@@ -51,7 +51,7 @@ inter_symbol *Synoptic::new_symbol(inter_package *pack, text_stream *name) {
 =
 void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 	inter_symbol *con_s, text_stream *S, inter_bookmark *IBM) {
-	InterSymbol::annotate_i(con_s, TEXT_LITERAL_IANN, 1);
+	SymbolAnnotation::set_b(con_s, TEXT_LITERAL_IANN, TRUE);
 	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
 		InterBookmark::package(IBM));
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), S);
@@ -86,7 +86,7 @@ void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *inam
 
 =
 inter_symbol *Synoptic::local(inter_tree *I, text_stream *name, text_stream *comment) {
-	return Produce::local(I, K_value, name, 0, comment);
+	return Produce::local(I, K_value, name, INVALID_IANN, comment);
 }
 
 @h Making arrays.

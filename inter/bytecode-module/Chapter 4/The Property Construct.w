@@ -36,7 +36,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	inter_symbol *prop_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
-	Inter::Annotations::copy_set_to_symbol(&(ilp->set), prop_name);
+	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), prop_name);
 
 	*E = Inter::Property::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_kind), (inter_ti) ilp->indent_level, eloc);
 }
@@ -73,7 +73,7 @@ void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *prop_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_PROP_IFLD);
 	if ((prop_name) && (prop_kind)) {
 		WRITE("property %S %S", prop_name->symbol_name, prop_kind->symbol_name);
-		InterSymbol::write_annotations(OUT, P, prop_name);
+		SymbolAnnotation::write_annotations(OUT, P, prop_name);
 	} else { *E = Inode::error(P, I"cannot write property", NULL); return; }
 }
 

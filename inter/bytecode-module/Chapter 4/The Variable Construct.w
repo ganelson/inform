@@ -36,7 +36,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	inter_symbol *var_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
-	Inter::Annotations::copy_set_to_symbol(&(ilp->set), var_name);
+	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), var_name);
 
 	inter_ti var_val1 = 0;
 	inter_ti var_val2 = 0;
@@ -66,7 +66,7 @@ void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	if ((var_name) && (var_kind)) {
 		WRITE("variable %S %S = ", var_name->symbol_name, var_kind->symbol_name);
 		Inter::Types::write(OUT, P, var_kind, P->W.instruction[VAL1_VAR_IFLD], P->W.instruction[VAL2_VAR_IFLD], InterPackage::scope_of(P), FALSE);
-		InterSymbol::write_annotations(OUT, P, var_name);
+		SymbolAnnotation::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write variable", NULL); return; }
 }
 

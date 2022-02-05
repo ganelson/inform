@@ -72,7 +72,7 @@ inter_symbol *InterSymbol::new_for_symbols_table(text_stream *name, inter_symbol
 	else InterSymbol::make_miscellaneous(S);
 
 	S->definition = NULL;
-	S->annotations = Inter::Annotations::new_set();
+	S->annotations = SymbolAnnotation::new_annotation_set();
 	S->wiring = Wiring::new_wiring_data(S);
 	S->transmigration = Inter::Transmigration::new_transmigration_data(S);
 	S->translation_data = NULL_GENERAL_POINTER;
@@ -346,56 +346,6 @@ int InterSymbol::defined_elsewhere(inter_symbol *S) {
 	if (Wiring::is_wired(S)) return TRUE;
 	if (InterSymbol::get_type(S) == PLUG_ISYMT) return TRUE;
 	return FALSE;
-}
-
-@h Annotation.
-Any symbol can be annotated with one or more flags or values: but see //Annotations//
-for how this is implemented. Here we only play pass the parcel.
-
-=
-void InterSymbol::annotate(int iatype, inter_symbol *S, inter_annotation IA) {
-	if (S == NULL) internal_error("annotated null symbol");
-	Inter::Annotations::add_to_set(iatype, &(S->annotations), IA);
-}
-
-void InterSymbol::annotate_i(inter_symbol *S, inter_ti annot_ID, inter_ti n) {
-	inter_annotation IA = Inter::Annotations::from_bytecode(annot_ID, n);
-	InterSymbol::annotate(INTEGER_IATYPE, S, IA);
-}
-
-int InterSymbol::read_annotation_b(const inter_symbol *S, inter_ti ID) {
-	inter_annotation *IA = Inter::Annotations::find(BOOLEAN_IATYPE, &(S->annotations), ID);
-	if (IA) return (int) IA->annot_value;
-	return 0;
-}
-
-int InterSymbol::read_annotation(const inter_symbol *S, inter_ti ID) {
-	inter_annotation *IA = Inter::Annotations::find(INTEGER_IATYPE, &(S->annotations), ID);
-	if (IA) return (int) IA->annot_value;
-	return -1;
-}
-
-text_stream *InterSymbol::read_annotation_t(inter_symbol *S, inter_tree *I, inter_ti ID) {
-	inter_annotation *IA = Inter::Annotations::find(TEXTUAL_IATYPE, &(S->annotations), ID);
-	if (IA) return InterWarehouse::get_text(InterTree::warehouse(I), IA->annot_value);
-	return NULL;
-}
-
-void InterSymbol::annotate_t(inter_tree *I, inter_package *owner, inter_symbol *S,
-	inter_ti annot_ID, text_stream *text) {
-	inter_ti n = InterWarehouse::create_text(InterTree::warehouse(I), owner);
-	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), n), text);
-	inter_annotation IA = Inter::Annotations::from_bytecode(annot_ID, n);
-	InterSymbol::annotate(TEXTUAL_IATYPE, S, IA);
-}
-
-void InterSymbol::write_annotations(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *S) {
-	if (S) Inter::Annotations::write_set(OUT, &(S->annotations), F);
-}
-
-void InterSymbol::transpose_annotations(inter_symbol *S, inter_ti *grid,
-	inter_ti grid_extent, inter_error_message **E) {
-	if (S) Inter::Annotations::transpose_set(&(S->annotations), grid, grid_extent, E);
 }
 
 @h Translation.

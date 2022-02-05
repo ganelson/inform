@@ -119,24 +119,24 @@ altered.
 	if (Dictionaries::find(first_with_name, name) == NULL) {
 		LOGIF(PROPERTY_ALLOCATION, "! NEW name=%S   sname=%S   eor=%d   assim=%d\n",
 			name, prop_name->symbol_name,
-			InterSymbol::read_annotation(prop_name, EITHER_OR_IANN),
-			InterSymbol::read_annotation(prop_name, ASSIMILATED_IANN));
+			SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN),
+			SymbolAnnotation::get_b(prop_name, ASSIMILATED_IANN));
 		inner_name = Str::duplicate(name);
 		Dictionaries::create(first_with_name, inner_name);
 		Dictionaries::write_value(first_with_name, inner_name, (void *) prop_name);
-		InterSymbol::annotate_t(gen->from, InterSymbol::package(prop_name),
+		SymbolAnnotation::set_t(gen->from, InterSymbol::package(prop_name),
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
 		@<Set the translation to a new metadata array@>;
 	} else {
 		LOGIF(PROPERTY_ALLOCATION, "! OLD name=%S   sname=%S   eor=%d   assim=%d\n",
 			name, prop_name->symbol_name,
-			InterSymbol::read_annotation(prop_name, EITHER_OR_IANN),
-			InterSymbol::read_annotation(prop_name, ASSIMILATED_IANN));
+			SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN),
+			SymbolAnnotation::get_b(prop_name, ASSIMILATED_IANN));
 		inter_symbol *existing_prop_name = 
 			(inter_symbol *) Dictionaries::read_value(first_with_name, name);
 		inner_name = VanillaObjects::inner_property_name(gen, existing_prop_name);
 		InterSymbol::set_translate(prop_name, InterSymbol::trans(existing_prop_name));
-		InterSymbol::annotate_t(gen->from, InterSymbol::package(prop_name),
+		SymbolAnnotation::set_t(gen->from, InterSymbol::package(prop_name),
 			prop_name, INNER_PROPERTY_NAME_IANN, inner_name);
 	}
 	LOGIF(PROPERTY_ALLOCATION, "! Translation %S, inner name %S\n",
@@ -163,7 +163,7 @@ generator wants.
 	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
 
 @<Write the either-or flag@> =
-	if (InterSymbol::read_annotation(prop_name, EITHER_OR_IANN))
+	if (SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN))
 		Generators::array_entry(gen, I"1", WORD_ARRAY_FORMAT);
 	else
 		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
@@ -175,7 +175,7 @@ because that will come from an I7 source text definition.
 	inter_symbol *last_prop_name = 
 		(inter_symbol *) Dictionaries::read_value(last_with_name, name);
 	inter_tree *I = gen->from;
-	text_stream *pname = InterSymbol::read_annotation_t(last_prop_name, I, PROPERTY_NAME_IANN);
+	text_stream *pname = SymbolAnnotation::get_t(last_prop_name, I, PROPERTY_NAME_IANN);
 	if (pname == NULL) pname = I"<nameless>";
 	TEMPORARY_TEXT(entry)
 	CodeGen::select_temporary(gen, entry);
@@ -265,7 +265,7 @@ not as wasteful as it looks.)
 
 =
 text_stream *VanillaObjects::inner_property_name(code_generation *gen, inter_symbol *prop_name) {
-	text_stream *inner_name = InterSymbol::read_annotation_t(prop_name,
+	text_stream *inner_name = SymbolAnnotation::get_t(prop_name,
 		gen->from, INNER_PROPERTY_NAME_IANN);
 	if (inner_name == NULL) inner_name = I"<nameless>";
 	return inner_name;
@@ -489,7 +489,7 @@ news for, say, the C generator.
 void VanillaObjects::append(code_generation *gen, inter_symbol *symb) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
-	text_stream *S = InterSymbol::read_annotation_t(symb, I, APPEND_IANN);
+	text_stream *S = SymbolAnnotation::get_t(symb, I, APPEND_IANN);
 	if (Str::len(S) > 0) Vanilla::splat_matter(OUT, I, S);
 }
 

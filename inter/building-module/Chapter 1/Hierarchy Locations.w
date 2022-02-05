@@ -354,7 +354,7 @@ but it is at least policed.
 		internal_error("this must be found with HierarchyLocations::iname");
 
 	if (hl->requirements.any_enclosure) {
-		if (InterSymbol::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
+		if (SymbolAnnotation::get_b(P->eventual_type, ENCLOSING_IANN) == FALSE)
 			internal_error("subpackage not in enclosing superpackage");
 	} else if (P == NULL) {
 		internal_error("iname in null package");
@@ -395,7 +395,7 @@ package_request *HierarchyLocations::subpackage(inter_tree *I, int id, package_r
 			LargeScale::package_type(I, hl->requirements.any_package_of_this_type))
 			internal_error("subpackage in superpackage of wrong type");
 	} else if (hl->requirements.any_enclosure) {
-		if (InterSymbol::read_annotation(P->eventual_type, ENCLOSING_IANN) != 1)
+		if (SymbolAnnotation::get_b(P->eventual_type, ENCLOSING_IANN) == FALSE)
 			internal_error("subpackage not in enclosing superpackage");
 	} else internal_error("HL does not call for a package");
 

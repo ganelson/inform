@@ -22,7 +22,7 @@ void Inter::Symbol::define(void) {
 void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	*E = Inter::Defn::vet_level(IBM, SYMBOL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_package *routine = Inter::Defn::get_latest_block_package();
 

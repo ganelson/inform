@@ -31,7 +31,7 @@ void Inter::Ref::define(void) {
 
 =
 void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
 	*E = Inter::Defn::vet_level(IBM, REF_IST, ilp->indent_level, eloc);
 	if (*E) return;

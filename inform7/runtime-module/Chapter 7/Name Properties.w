@@ -112,6 +112,6 @@ parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 	}
 
 	EmitArrays::end(save);
-	InterNames::annotate_i(name_array, INLINE_ARRAY_IANN, 1);
+	InterNames::annotate_b(name_array, INLINE_ARRAY_IANN, TRUE);
 	return Rvalues::from_iname(name_array);
 }

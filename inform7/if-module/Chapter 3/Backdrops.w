@@ -200,7 +200,7 @@ int Backdrops::complete_model(int stage) {
 	POSITIVE_KNOWLEDGE_LOOP(inf, Instances::as_subject(I), found_in_inf)
 		EmitArrays::iname_entry(RTInstances::value_iname(Backdrops::get_inferred_location(inf)));
 	EmitArrays::end(save);
-	InterNames::annotate_i(iname, INLINE_ARRAY_IANN, 1);
+	InterNames::annotate_b(iname, INLINE_ARRAY_IANN, TRUE);
 	val_of_found_in = Rvalues::from_iname(iname);
 
 @<The object is found in many rooms or in whole regions, so make it a routine@> =

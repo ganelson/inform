@@ -34,7 +34,7 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = Inter::Defn::vet_level(IBM, INSTANCE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
 	text_stream *ktext = ilp->mr.exp[1], *vtext = NULL;
 
@@ -113,7 +113,7 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				P->W.instruction[VAL1_INST_IFLD], P->W.instruction[VAL2_INST_IFLD], InterPackage::scope_of(P), FALSE);
 		} else { *E = Inode::error(P, I"instance with bad data type", NULL); return; }
 	} else { *E = Inode::error(P, I"bad instance", NULL); return; }
-	InterSymbol::write_annotations(OUT, P, inst_name);
+	SymbolAnnotation::write_annotations(OUT, P, inst_name);
 }
 
 inter_ti Inter::Instance::properties_list(inter_symbol *inst_name) {

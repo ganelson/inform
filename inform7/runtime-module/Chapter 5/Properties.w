@@ -210,7 +210,7 @@ package metadata instead?
 @<Annotate the property iname@> =
 	InterNames::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
 	if (Properties::is_either_or(prn))
-		InterNames::annotate_i(RTProperties::iname(prn), EITHER_OR_IANN, 1);
+		InterNames::annotate_b(RTProperties::iname(prn), EITHER_OR_IANN, TRUE);
 	if (Wordings::nonempty(prn->name))
 		InterNames::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
 

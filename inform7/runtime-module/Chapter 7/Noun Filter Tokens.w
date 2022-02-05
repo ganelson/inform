@@ -317,14 +317,15 @@ other tokens.
 void NounFilterTokens::array_entry(noun_filter_token *nft) {
 	inter_name *iname = NounFilterTokens::filter_fn_iname(nft);
 	if (nft) {
-		inter_ti annot = 0;
+		inter_ti annot = INVALID_IANN;
 		switch (NounFilterTokens::implementation(nft)) {
 			case VIA_GPR_NFTIMP: break;
 			case VIA_SCOPE_FILTER_NFTIMP: annot = SCOPE_FILTER_IANN; break;
 			case VIA_NOUN_FILTER_NFTIMP: annot = NOUN_FILTER_IANN; break;
 		}
-		if ((annot) && (InterNames::read_annotation(iname, annot) != 1))
-			InterNames::annotate_i(iname, annot, 1);
+		if ((annot != INVALID_IANN) &&
+			(InterNames::read_annotation_b(iname, annot) == FALSE))
+			InterNames::annotate_b(iname, annot, TRUE);
 		EmitArrays::iname_entry(iname);
 	}
 }

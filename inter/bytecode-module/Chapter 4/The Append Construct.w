@@ -29,7 +29,7 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	*E = Inter::Defn::vet_level(IBM, APPEND_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (Inter::Annotations::exist(&(ilp->set))) {
+	if (SymbolAnnotation::nonempty(&(ilp->set))) {
 		*E = Inter::Errors::plain(I"__annotations are not allowed", eloc);
 		return;
 	}
@@ -65,7 +65,7 @@ void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_packag
 	if (vcount == 0) {
 		inter_ti ID = P->W.instruction[TEXT_APPEND_IFLD];
 		text_stream *S = Inode::ID_to_text(P, ID);
-		InterSymbol::annotate_t(P->tree, P->package, symbol, APPEND_IANN, S);
+		SymbolAnnotation::set_t(P->tree, P->package, symbol, APPEND_IANN, S);
 	}
 }
 

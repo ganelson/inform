@@ -331,7 +331,6 @@ int RTVariables::compile(inference_subject_family *f, int ignored) {
 			(nlv->constant_at_run_time == FALSE)) {
 			inter_name *iname = RTVariables::iname(nlv);
 			if (nlv->compilation_data.nlv_name_translated == FALSE) {
-				InterNames::annotate_i(iname, EXPLICIT_VARIABLE_IANN, 1);
 				inter_ti v1 = 0, v2 = 0;
 				RTVariables::initial_value_as_pair(iname, &v1, &v2, nlv);
 				Emit::variable(iname, nlv->nlv_kind, v1, v2);

@@ -28,21 +28,21 @@ packaging_state EmitArrays::begin_word(inter_name *name, kind *K) {
 packaging_state EmitArrays::begin_byte(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	EmitArrays::begin_inner(name, K, FALSE);
-	InterNames::annotate_i(name, BYTEARRAY_IANN, 1);
+	InterNames::annotate_b(name, BYTEARRAY_IANN, TRUE);
 	return save;
 }
 
 packaging_state EmitArrays::begin_table(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	EmitArrays::begin_inner(name, K, FALSE);
-	InterNames::annotate_i(name, TABLEARRAY_IANN, 1);
+	InterNames::annotate_b(name, TABLEARRAY_IANN, TRUE);
 	return save;
 }
 
 packaging_state EmitArrays::begin_verb(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
 	EmitArrays::begin_inner(name, K, FALSE);
-	InterNames::annotate_i(name, VERBARRAY_IANN, 1);
+	InterNames::annotate_b(name, VERBARRAY_IANN, TRUE);
 	return save;
 }
 

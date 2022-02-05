@@ -95,11 +95,11 @@ that definition to be the true one.
 @<Find whether this property has been assimilated from a kit@> =
 	inter_symbol *p;
 	LOOP_OVER_LINKED_LIST(p, inter_symbol, all_forms)
-		if (InterSymbol::read_annotation(p, ASSIMILATED_IANN) >= 0)
+		if (SymbolAnnotation::get_b(p, ASSIMILATED_IANN))
 			originated_in_a_kit = TRUE;
 
 @<Decide whether to store this in a VM-attribute@> =
-	if (InterSymbol::read_annotation(prop_name, EITHER_OR_IANN) == 1) {
+	if (SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN)) {
 		store_in_VM_attribute = NOT_APPLICABLE;
 		@<Any either/or property which can belong to a value instance is ineligible@>;
 		@<An either/or property coming from a kit must be chosen@>;
@@ -303,7 +303,7 @@ void I6TargetObjects::declare_instance(code_generator *gtr,
 @ Each instance of a kind of object becomes a VM-object:
 
 @<An object instance@> =
-	int c = InterSymbol::read_annotation(inst_s, ARROW_COUNT_IANN);
+	int c = SymbolAnnotation::get_i(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
 	int is_dir = Inter::Kind::is_a(kind_s, RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
 	I6TargetObjects::VM_object_header(gen, InterSymbol::trans(kind_s),
@@ -408,7 +408,7 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	int inline_this = FALSE;
 	if (Inter::Types::pair_holds_symbol(val1, val2)) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_data_pair_at_node(val1, val2, X);
-		if ((S) && (InterSymbol::read_annotation(S, INLINE_ARRAY_IANN) == 1)) {
+		if ((S) && (SymbolAnnotation::get_b(S, INLINE_ARRAY_IANN))) {
 			inter_tree_node *P = InterSymbol::definition(S);
 			text_stream *OUT = CodeGen::current(gen);
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {

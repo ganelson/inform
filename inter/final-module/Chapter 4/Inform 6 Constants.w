@@ -56,7 +56,7 @@ directly into the body of the relevant object or class declaration. It therefore
 does not need to declre the name of this small array, and so --
 
 @<Leave undeclared any array used as a value of a property@> =
-	if ((const_s) && (InterSymbol::read_annotation(const_s, INLINE_ARRAY_IANN) == 1))
+	if ((const_s) && (SymbolAnnotation::get_b(const_s, INLINE_ARRAY_IANN)))
 		return;
 
 @ We cannot declare these constants because they exist automatically, and
@@ -122,7 +122,7 @@ case, whereupon Vanilla will lead us through the rest of the declaration.
 int I6TargetConstants::begin_array(code_generator *gtr, code_generation *gen,
 	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format,
 	segmentation_pos *saved) {
-	if ((array_s) && (InterSymbol::read_annotation(array_s, VERBARRAY_IANN) == 1)) {
+	if ((array_s) && (SymbolAnnotation::get_b(array_s, VERBARRAY_IANN))) {
 		@<Write a complete I6 Verb directive@>;
 		return FALSE;
 	} else {
@@ -141,7 +141,7 @@ they were any other arrays. Here goes:
 	if (saved) *saved = CodeGen::select(gen, command_grammar_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Verb ");
-	if (InterSymbol::read_annotation(array_s, METAVERB_IANN) == 1) WRITE("meta ");
+	if (SymbolAnnotation::get_b(array_s, METAVERB_IANN)) WRITE("meta ");
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		WRITE(" ");
 		inter_ti val1 = P->W.instruction[i], val2 = P->W.instruction[i+1];
@@ -149,8 +149,8 @@ they were any other arrays. Here goes:
 			inter_symbol *A = InterSymbolsTable::symbol_from_data_pair(
 				val1, val2, InterPackage::scope_of(P));
 			if (A == NULL) internal_error("bad aliased symbol");
-			if (InterSymbol::read_annotation(A, SCOPE_FILTER_IANN) == 1) WRITE("scope=");
-			if (InterSymbol::read_annotation(A, NOUN_FILTER_IANN) == 1)  WRITE("noun=");
+			if (SymbolAnnotation::get_b(A, SCOPE_FILTER_IANN)) WRITE("scope=");
+			if (SymbolAnnotation::get_b(A, NOUN_FILTER_IANN))  WRITE("noun=");
 			text_stream *S = InterSymbol::trans(A);
 			     if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_divider_RPSYM))     WRITE("\n\t*");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_reverse_RPSYM))     WRITE("reverse");

@@ -161,7 +161,7 @@ void Inter::Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, v
 		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
 			if (Wiring::is_wired(symb)) {
 				inter_symbol *target = Wiring::cable_end(symb);
-				if (InterSymbol::read_annotation(target, ARCHITECTURAL_IANN) > 0) {
+				if (SymbolAnnotation::get_b(target, ARCHITECTURAL_IANN)) {
 					Wiring::wire_to(symb,
 						LargeScale::find_architectural_symbol(ipct->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL)));
 				} else if (InterSymbol::is_plug(target)) {

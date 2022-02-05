@@ -44,7 +44,7 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	inter_symbol *var_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
-	Inter::Annotations::copy_set_to_symbol(&(ilp->set), var_name);
+	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), var_name);
 
 	*E = Inter::Local::new(IBM, var_name, var_kind, ilp->terminal_comment, (inter_ti) ilp->indent_level, eloc);
 }
@@ -71,7 +71,7 @@ void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
 	inter_symbol *var_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_LOCAL_IFLD);
 	if (var_name) {
 		WRITE("local %S %S", var_name->symbol_name, var_kind->symbol_name);
-		InterSymbol::write_annotations(OUT, P, var_name);
+		SymbolAnnotation::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write local", NULL); return; }
 }
 

@@ -223,10 +223,12 @@ after the call parameters, and is used only as a scratch variable.
 
 @<Compile I6 locals for the outer shell@> =
 	if (returns_block_value)
-		rv_symbol = Produce::local(Emit::tree(), K_number, I"BRV", 0, I"block return value");
+		rv_symbol = Produce::local(Emit::tree(),
+			K_number, I"BRV", INVALID_IANN, I"block return value");
 	LocalVariableSlates::declare_all_parameters(frame);
 	if (!returns_block_value)
-		rv_symbol = Produce::local(Emit::tree(), K_number, I"RV", 0, I"return value");
+		rv_symbol = Produce::local(Emit::tree(),
+			K_number, I"RV",INVALID_IANN, I"return value");
 
 @ We allocate memory for each pointer value used in the stack frame:
 

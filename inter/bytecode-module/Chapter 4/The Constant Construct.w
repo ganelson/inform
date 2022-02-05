@@ -43,7 +43,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	inter_symbol *con_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
-	Inter::Annotations::copy_set_to_symbol(&(ilp->set), con_name);
+	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), con_name);
 
 	inter_symbol *con_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
@@ -394,7 +394,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	inter_symbol *con_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_CONST_IFLD);
 	int hex = FALSE;
-	if (Inter::Annotations::find(INTEGER_IATYPE, &(con_name->annotations), HEX_IANN)) hex = TRUE;
+	if (SymbolAnnotation::get_b(con_name, HEX_IANN)) hex = TRUE;
 	if ((con_name) && (con_kind)) {
 		WRITE("constant %S %S = ", con_name->symbol_name, con_kind->symbol_name);
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
@@ -445,7 +445,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				break;
 			}
 		}
-		InterSymbol::write_annotations(OUT, P, con_name);
+		SymbolAnnotation::write_annotations(OUT, P, con_name);
 	} else {
 		*E = Inode::error(P, I"constant can't be written", NULL);
 		return;

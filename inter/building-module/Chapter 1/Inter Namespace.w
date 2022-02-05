@@ -253,21 +253,30 @@ Note that these functions all force an iname to be incarnated.
 
 =
 void InterNames::annotate_i(inter_name *iname, inter_ti annot_ID, inter_ti V) {
-	InterSymbol::annotate_i(InterNames::to_symbol(iname), annot_ID, V);
+	SymbolAnnotation::set_i(InterNames::to_symbol(iname), annot_ID, V);
+}
+
+void InterNames::annotate_b(inter_name *iname, inter_ti annot_ID, inter_ti V) {
+	SymbolAnnotation::set_b(InterNames::to_symbol(iname), annot_ID, V);
 }
 
 void InterNames::annotate_w(inter_name *iname, inter_ti annot_ID, wording W) {
 	inter_symbol *S = InterNames::to_symbol(iname);
 	TEMPORARY_TEXT(temp)
 	WRITE_TO(temp, "%W", W);
-	InterSymbol::annotate_t(InterPackage::tree(InterSymbol::package(S)),
+	SymbolAnnotation::set_t(InterPackage::tree(InterSymbol::package(S)),
 		InterSymbol::package(S), S, annot_ID, temp);
 	DISCARD_TEXT(temp)
 }
 
 int InterNames::read_annotation(inter_name *iname, inter_ti annot) {
 	inter_symbol *S = InterNames::to_symbol(iname);
-	return InterSymbol::read_annotation(S, annot);
+	return SymbolAnnotation::get_i(S, annot);
+}
+
+int InterNames::read_annotation_b(inter_name *iname, inter_ti annot) {
+	inter_symbol *S = InterNames::to_symbol(iname);
+	return SymbolAnnotation::get_b(S, annot);
 }
 
 void InterNames::set_flag(inter_name *iname, int f) {

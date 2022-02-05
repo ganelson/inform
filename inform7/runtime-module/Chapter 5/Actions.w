@@ -168,7 +168,7 @@ void RTActions::compilation_agent(compilation_subtask *t) {
 	inter_name *ds_iname = RTActions::double_sharp(an);
 	Emit::unchecked_numeric_constant(ds_iname, (inter_ti) an->allocation_id);
 	Hierarchy::make_available(ds_iname);
-	InterNames::annotate_i(ds_iname, ACTION_IANN, 1);
+	InterNames::annotate_b(ds_iname, ACTION_IANN, 1);
 
 @<Compile miscellaneous metadata@> =
 	Hierarchy::apply_metadata_from_wording(pack, ACTION_NAME_MD_HL,

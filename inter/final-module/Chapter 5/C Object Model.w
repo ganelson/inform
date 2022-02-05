@@ -389,7 +389,7 @@ void CObjectModel::declare_instance(code_generator *gtr, code_generation *gen,
 }
 
 @<Declare an object instance@> =
-	int c = InterSymbol::read_annotation(inst_s, ARROW_COUNT_IANN);
+	int c = SymbolAnnotation::get_i(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
 	int is_dir = Inter::Kind::is_a(kind_s,
 		RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
@@ -488,7 +488,7 @@ void CObjectModel::declare_property(code_generator *gtr, code_generation *gen,
 	inter_symbol *prop_name, linked_list *all_forms) {
 	text_stream *name = InterSymbol::trans(prop_name);
 	int either_or = FALSE;
-	if (InterSymbol::read_annotation(prop_name, EITHER_OR_IANN) == 1) either_or = TRUE;
+	if (SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN)) either_or = TRUE;
 	C_property *cp = CObjectModel::property_by_name(gen, name, either_or);
 	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
 
@@ -526,7 +526,7 @@ But the second entry is the inner property, as with Inform 6.
 	text_stream *pname = Metadata::read_optional_textual(
 		InterPackage::container(prop_name->definition), I"^name");
 	if (Str::len(pname) > 0) {
-		int A = InterSymbol::read_annotation(prop_name, C_ARRAY_ADDRESS_IANN);
+		int A = SymbolAnnotation::get_i(prop_name, C_ARRAY_ADDRESS_IANN);
 		if (A > 0) {
 			segmentation_pos saved = CodeGen::select(gen, c_property_symbols_I7CGS);
 			text_stream *OUT = CodeGen::current(gen);
@@ -546,7 +546,7 @@ void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
 	int inline_this = FALSE;
 	if (Inter::Types::pair_holds_symbol(val1, val2)) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_data_pair_at_node(val1, val2, X);
-		if ((S) && (InterSymbol::read_annotation(S, INLINE_ARRAY_IANN) == 1))
+		if ((S) && (SymbolAnnotation::get_b(S, INLINE_ARRAY_IANN)))
 			inline_this = TRUE;
 	}	
 

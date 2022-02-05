@@ -328,7 +328,7 @@ void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 			}
 		}
 	} else { *E = Inode::error(P, I"cannot write kind", NULL); return; }
-	InterSymbol::write_annotations(OUT, P, symb);
+	SymbolAnnotation::write_annotations(OUT, P, symb);
 }
 
 void Inter::Kind::new_instance(inter_symbol *kind_symbol, inter_symbol *inst_name) {

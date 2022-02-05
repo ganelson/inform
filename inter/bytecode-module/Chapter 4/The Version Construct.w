@@ -29,7 +29,7 @@ void Inter::Version::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	*E = Inter::Defn::vet_level(IBM, VERSION_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
 	*E = Inter::Version::new(IBM, Str::atoi(ilp->mr.exp[0], 0), (inter_ti) ilp->indent_level, eloc);
 }

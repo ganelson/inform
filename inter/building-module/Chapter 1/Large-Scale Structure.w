@@ -208,7 +208,7 @@ inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *
 		}
 		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N)) {
 			S = LargeScale::arch_constant(I, N, uks, 0);			
-			InterSymbol::annotate_i(S, VENEER_IANN, 1);
+			SymbolAnnotation::set_b(S, VENEER_IANN, TRUE);
 		}	
 	}	
 	return S;
@@ -276,7 +276,7 @@ inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 	inter_package *arch = LargeScale::architecture_package(I);
 	inter_symbols_table *tab = InterPackage::scope(arch);
 	inter_symbol *S = InterSymbolsTable::symbol_from_name_creating(tab, N);
-	InterSymbol::annotate_i(S, ARCHITECTURAL_IANN, 1);
+	SymbolAnnotation::set_b(S, ARCHITECTURAL_IANN, TRUE);
 	inter_bookmark *IBM = &(I->site.strdata.architecture_bookmark);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol(I, arch, S),
@@ -289,14 +289,14 @@ inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 inter_symbol *LargeScale::arch_constant_hex(inter_tree *I, text_stream *N,
 	inter_symbol *uks, inter_ti val) {
 	inter_symbol *S = LargeScale::arch_constant(I, N, uks, val);
-	InterSymbol::annotate_i(S, HEX_IANN, 1);
+	SymbolAnnotation::set_b(S, HEX_IANN, 1);
 	return S;
 }
 
 inter_symbol *LargeScale::arch_constant_signed(inter_tree *I, text_stream *N,
 	inter_symbol *uks, int val) {
 	inter_symbol *S = LargeScale::arch_constant(I, N, uks, (inter_ti) val);
-	InterSymbol::annotate_i(S, SIGNED_IANN, 1);
+	SymbolAnnotation::set_b(S, SIGNED_IANN, 1);
 	return S;
 }
 
@@ -447,7 +447,7 @@ inter_symbol *LargeScale::package_type(inter_tree *I, text_stream *name) {
 		Produce::guard(Inter::PackageType::new_packagetype(
 			&(I->site.strdata.package_types_bookmark), ptype, 0, NULL));
 		if (Str::ne(name, I"_code"))
-			InterSymbol::annotate_i(ptype, ENCLOSING_IANN, 1);
+			SymbolAnnotation::set_b(ptype, ENCLOSING_IANN, TRUE);
 	}
 	return ptype;
 }

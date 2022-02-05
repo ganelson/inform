@@ -12,13 +12,13 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	if (con_name == NULL) internal_error("no constant");
 	if (InterSymbol::is_metadata_key(con_name) == FALSE) {
-		if (InterSymbol::read_annotation(con_name, ACTION_IANN) == 1)  {
+		if (SymbolAnnotation::get_b(con_name, ACTION_IANN) == 1)  {
 			@<Declare this constant as an action name@>;
-		} else if (InterSymbol::read_annotation(con_name, FAKE_ACTION_IANN) == 1) {
+		} else if (SymbolAnnotation::get_b(con_name, FAKE_ACTION_IANN)) {
 			@<Declare this constant as a fake action name@>;
-		} else if (InterSymbol::read_annotation(con_name, VENEER_IANN) > 0) {
+		} else if (SymbolAnnotation::get_b(con_name, VENEER_IANN)) {
 			@<Ignore this constant as part of the veneer@>;
-		} else if (InterSymbol::read_annotation(con_name, OBJECT_IANN) > 0) {
+		} else if (SymbolAnnotation::get_b(con_name, OBJECT_IANN)) {
 			@<Declare this constant as a pseudo-object@>;
 		} else if (Inter::Constant::is_routine(con_name)) {
 			@<Declare this constant as a function@>;
@@ -108,9 +108,9 @@ than a literal, or may even be computed.
 
 @<Declare this as a list constant@> =
 	int format = WORD_ARRAY_FORMAT;
-	if (InterSymbol::read_annotation(con_name, BYTEARRAY_IANN) == 1) format = BYTE_ARRAY_FORMAT;
-	if (InterSymbol::read_annotation(con_name, TABLEARRAY_IANN) == 1) format = TABLE_ARRAY_FORMAT;
-	if (InterSymbol::read_annotation(con_name, BUFFERARRAY_IANN) == 1) format = BUFFER_ARRAY_FORMAT;
+	if (SymbolAnnotation::get_b(con_name, BYTEARRAY_IANN)) format = BYTE_ARRAY_FORMAT;
+	if (SymbolAnnotation::get_b(con_name, TABLEARRAY_IANN)) format = TABLE_ARRAY_FORMAT;
+	if (SymbolAnnotation::get_b(con_name, BUFFERARRAY_IANN)) format = BUFFER_ARRAY_FORMAT;
 
 	int entry_count = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
@@ -118,7 +118,7 @@ than a literal, or may even be computed.
 			entry_count++;
 	int give_count = FALSE;
 	if ((entry_count == 1) &&
-		(InterSymbol::read_annotation(con_name, ASSIMILATED_IANN) >= 0)) {
+		(SymbolAnnotation::get_b(con_name, ASSIMILATED_IANN))) {
 		inter_ti val1 = P->W.instruction[DATA_CONST_IFLD], val2 = P->W.instruction[DATA_CONST_IFLD+1];
 		entry_count = (int) Inter::Constant::evaluate(InterPackage::scope_of(P), val1, val2);
 		give_count = TRUE;
@@ -181,7 +181,7 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 		case DATA_GDCFORM: {
 			inter_ti val1 = P->W.instruction[DATA_CONST_IFLD];
 			inter_ti val2 = P->W.instruction[DATA_CONST_IFLD + 1];
-			if ((val1 == LITERAL_IVAL) && (InterSymbol::read_annotation(con_name, HEX_IANN)))
+			if ((val1 == LITERAL_IVAL) && (SymbolAnnotation::get_b(con_name, HEX_IANN)))
 				Generators::compile_literal_number(gen, val2, TRUE);
 			else
 				CodeGen::pair(gen, P, val1, val2);

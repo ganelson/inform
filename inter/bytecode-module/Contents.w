@@ -25,7 +25,6 @@ Chapter 2: Interoperability
 	Transmigration
 
 Chapter 3: Language Definition
-	Canonical Annotations
 	Definition
 	Inter in Binary Files
 	Inter in Text Files

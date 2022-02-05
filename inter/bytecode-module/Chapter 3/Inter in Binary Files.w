@@ -86,8 +86,7 @@ resource block later on.
 			if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			PUT_TO(keyword, (int) c);
 		}
-		inter_annotation_form *IA = Inter::Annotations::form(ID, keyword, INTEGER_IATYPE);
-		if (IA == NULL) {
+		if (SymbolAnnotation::declare(ID, keyword, INTEGER_IATYPE) == FALSE) {
 			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "conflicting annotation name '%S'", keyword);
 			Inter::Binary::read_error(&eloc, ftell(fh), err);
@@ -244,16 +243,19 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		if (uniq == 1) InterSymbol::set_flag(S, MAKE_NAME_UNIQUE_ISYMF);
 		if (Str::len(trans) > 0) InterSymbol::set_translate(S, trans);
 
-		if (BinaryFiles::read_int32(fh, &L) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+		unsigned int bm;
+		if (BinaryFiles::read_int32(fh, &bm) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
+		S->annotations.boolean_annotations |= (bm / 0x20);
+		L = bm & 0x1f;
 		for (unsigned int i=0; i<L; i++) {
 			unsigned int c1, c2;
 			if (BinaryFiles::read_int32(fh, &c1) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 			if (BinaryFiles::read_int32(fh, &c2) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
-			inter_annotation IA = Inter::Annotations::from_bytecode(c1, c2);
-			if (Inter::Annotations::is_invalid(IA))
+			inter_annotation IA = SymbolAnnotation::from_pair(c1, c2);
+			if (SymbolAnnotation::is_invalid(IA))
 				Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
-			if (grid) Inter::Defn::transpose_annotation(&IA, grid, grid_extent, NULL);
-			InterSymbol::annotate(-1, S, IA);
+			if (grid) if (IA.annot->iatype == TEXTUAL_IATYPE) IA.annot_value = grid[IA.annot_value];
+			SymbolAnnotation::set(-1, S, IA);
 		}
 		if (InterSymbol::is_plug(S)) {
 			TEMPORARY_TEXT(N)
@@ -289,7 +291,19 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 			BinaryFiles::write_int32(fh, (unsigned int) Str::len(symb->translate_text));
 			LOOP_THROUGH_TEXT(P, symb->translate_text)
 				BinaryFiles::write_int32(fh, (unsigned int) Str::get(P));
-			Inter::Annotations::set_to_bytecode(fh, &(symb->annotations));
+			inter_annotation_set *set = &(symb->annotations);
+			BinaryFiles::write_int32(fh,
+				0x20*((unsigned int) set->boolean_annotations) +
+				(unsigned int) LinkedLists::len(set->other_annotations));
+			if (set->other_annotations) {
+				inter_annotation *A;
+				LOOP_OVER_LINKED_LIST(A, inter_annotation, set->other_annotations) {
+					inter_ti c1 = 0, c2 = 0;
+					SymbolAnnotation::to_pair(*A, &c1, &c2);
+					BinaryFiles::write_int32(fh, (unsigned int) c1);
+					BinaryFiles::write_int32(fh, (unsigned int) c2);
+				}
+			}
 			if (InterSymbol::is_plug(symb)) {
 				text_stream *N = Wiring::wired_to_name(symb);
 				LOOP_THROUGH_TEXT(pos, N)

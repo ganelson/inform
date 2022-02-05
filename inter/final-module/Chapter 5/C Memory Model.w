@@ -85,7 +85,7 @@ int CMemoryModel::begin_array(code_generator *gtr, code_generation *gen,
 	Str::clear(C_GEN_DATA(memdata.array_name));
 	WRITE_TO(C_GEN_DATA(memdata.array_name), "%S", array_name);
 	C_GEN_DATA(memdata.entry_count) = 0;
-	if ((array_s) && (InterSymbol::read_annotation(array_s, VERBARRAY_IANN) == 1))
+	if ((array_s) && (SymbolAnnotation::get_b(array_s, VERBARRAY_IANN)))
 		@<Short-circuit the usual Vanilla algorithm by compiling the whole array now@>
 	else
 		@<Declare this array in concert with the usual Vanilla algorithm@>;
@@ -132,7 +132,7 @@ because they too are defined constants, equal to their IDs: see //C Object Model
 	WRITE(" %d /* = position in memory of %S array %S */\n",
 		C_GEN_DATA(memdata.himem), format_name, array_name);
 	if (array_s)
-		InterSymbol::annotate_i(array_s, C_ARRAY_ADDRESS_IANN,
+		SymbolAnnotation::set_i(array_s, C_ARRAY_ADDRESS_IANN,
 			(inter_ti) C_GEN_DATA(memdata.himem));
 	CodeGen::deselect(gen, saved);
 

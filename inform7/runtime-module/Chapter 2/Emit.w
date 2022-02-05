@@ -268,7 +268,7 @@ inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
 	inter_symbol *kind_s, inter_ti annotation) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
-	if (annotation != INVALID_IANN) InterSymbol::annotate_i(con_s, annotation, 0);
+	if (annotation != INVALID_IANN) SymbolAnnotation::set_b(con_s, annotation, 0);
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
 		Emit::symbol_id(kind_s), LITERAL_IVAL, val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);

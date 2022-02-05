@@ -126,7 +126,7 @@ void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 		}
 		case PROPERTY_IST: {
 			inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PROP_IFLD);
-			if (InterSymbol::read_annotation(prop_name, ASSIMILATED_IANN) == 1)
+			if (SymbolAnnotation::get_b(prop_name, ASSIMILATED_IANN))
 				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties);
 			else
 				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->unassimilated_properties);
@@ -177,7 +177,7 @@ int CodeGen::in_annotation_order(const void *elem1, const void *elem2, inter_ti 
 	return InterSymbol::sort_number(*e1) - InterSymbol::sort_number(*e2);
 }
 int CodeGen::sequence_number(const inter_symbol *kind_name, inter_ti annot) {
-	int N = InterSymbol::read_annotation(kind_name, annot);
+	int N = SymbolAnnotation::get_i(kind_name, annot);
 	if (N >= 0) return N;
 	return 100000000;
 }

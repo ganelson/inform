@@ -308,10 +308,10 @@ not already there.
 		Wiring::wire_to(external_name, made_s);
 		Wiring::wire_to(made_s, NULL);
 	}
-	InterSymbol::annotate_i(made_s, ASSIMILATED_IANN, 1);
-	if (directive == FAKEACTION_I6DIR) InterSymbol::annotate_i(made_s, FAKE_ACTION_IANN, 1);
-	if (directive == OBJECT_I6DIR) InterSymbol::annotate_i(made_s, OBJECT_IANN, 1);
-	if (directive == ATTRIBUTE_I6DIR) InterSymbol::annotate_i(made_s, EITHER_OR_IANN, 1);
+	SymbolAnnotation::set_b(made_s, ASSIMILATED_IANN, 1);
+	if (directive == FAKEACTION_I6DIR) SymbolAnnotation::set_b(made_s, FAKE_ACTION_IANN, TRUE);
+	if (directive == OBJECT_I6DIR) SymbolAnnotation::set_b(made_s, OBJECT_IANN, TRUE);
+	if (directive == ATTRIBUTE_I6DIR) SymbolAnnotation::set_b(made_s, EITHER_OR_IANN, TRUE);
 	if (directive == VERB_I6DIR) InterSymbol::set_flag(made_s, MAKE_NAME_UNIQUE_ISYMF);
 
 @<Declare a property ID symbol to go with it@> =
@@ -389,9 +389,9 @@ not already there.
 @<Make a list constant in Inter@> =
 	match_results mr = Regexp::create_mr();
 	text_stream *conts = NULL;
-	inter_ti annot = 0;
+	inter_ti annot = INVALID_IANN;
 	@<Work out the format of the array and the string of contents@>;
-	if (annot != 0) InterSymbol::annotate_i(made_s, annot, 1);
+	if (annot != INVALID_IANN) SymbolAnnotation::set_b(made_s, annot, TRUE);
 
 	inter_ti v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES], v2_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
 	int no_assimilated_array_entries = 0;
@@ -415,7 +415,7 @@ in this instance), then the contents |2 (-56) 17 "hey, I am typeless" ' '|.
 @<Work out the format of the array and the string of contents@> =
 	if (directive == ARRAY_I6DIR) {
 		if (Regexp::match(&mr, value, L" *--> *(%c*?) *")) {
-			conts = mr.exp[0]; annot = 0;
+			conts = mr.exp[0]; annot = INVALID_IANN;
 		} else if (Regexp::match(&mr, value, L" *-> *(%c*?) *")) {
 			conts = mr.exp[0]; annot = BYTEARRAY_IANN;
 		} else if (Regexp::match(&mr, value, L" *table *(%c*?) *")) {
@@ -484,7 +484,7 @@ for the action.
 		if (next_is_action) @<Ensure that a socket exists for this action name@>;
 		next_is_action = FALSE;
 		if ((NT++ == 0) && (Str::eq(value, I"meta"))) {
-			InterSymbol::annotate_i(made_s, METAVERB_IANN, 1);
+			SymbolAnnotation::set_b(made_s, METAVERB_IANN, TRUE);
 		} else if (Str::len(value) > 0) {
 			inter_ti v1 = 0, v2 = 0;
 			@<Assimilate a value@>;
@@ -550,7 +550,7 @@ in other compilation units. So we create |action_id| equal just to 0 for now.
 		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Constant::new_numerical(IBM, MID, KID, LITERAL_IVAL, 10000, B, NULL));
-	InterSymbol::annotate_i(action_s, ACTION_IANN, 1);
+	SymbolAnnotation::set_b(action_s, ACTION_IANN, 1);
 
 @ The Inter convention is that an action package should contain a function
 to carry it out; for |##ScriptOn|, this would be called |ScriptOnSub|. In fact
@@ -737,7 +737,7 @@ These have package types |_function| and |_code| respectively.
 @<Create a symbol for calling the function@> =
 	inter_symbol *function_name_s =
 		CompileSplatsStage::make_socketed_symbol(IBM, identifier);
-	InterSymbol::annotate_i(function_name_s, ASSIMILATED_IANN, 1);
+	SymbolAnnotation::set_b(function_name_s, ASSIMILATED_IANN, 1);
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, OP, function_name_s);
 	inter_ti KID = InterSymbolsTable::id_from_symbol(I, OP,
 		RunningPipelines::get_symbol(step, unchecked_function_RPSYM));
@@ -988,16 +988,16 @@ void CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_st
 	if (Regexp::match(&mr, S, L"scope=(%i+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
-			if (InterSymbol::read_annotation(symb, SCOPE_FILTER_IANN) != 1)
-				InterSymbol::annotate_i(symb, SCOPE_FILTER_IANN, 1);
+			if (SymbolAnnotation::get_b(symb, SCOPE_FILTER_IANN) == FALSE)
+				SymbolAnnotation::set_b(symb, SCOPE_FILTER_IANN, TRUE);
 			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2); return;
 		}
 	}
 	if (Regexp::match(&mr, S, L"noun=(%i+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
-			if (InterSymbol::read_annotation(symb, NOUN_FILTER_IANN) != 1)
-				InterSymbol::annotate_i(symb, NOUN_FILTER_IANN, 1);
+			if (SymbolAnnotation::get_b(symb, NOUN_FILTER_IANN) == FALSE)
+				SymbolAnnotation::set_b(symb, NOUN_FILTER_IANN, TRUE);
 			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2); return;
 		}
 	}

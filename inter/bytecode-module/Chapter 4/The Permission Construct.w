@@ -32,7 +32,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	*E = Inter::Defn::vet_level(IBM, PERMISSION_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_symbol *prop_name = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;

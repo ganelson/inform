@@ -646,7 +646,7 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 			InterBookmark::package(Packaging::at(I)));
 		Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), comm);
 	}
-	if (annot) InterSymbol::annotate_i(local_s, annot, 0);
+	if (annot != INVALID_IANN) SymbolAnnotation::set_b(local_s, annot, TRUE);
 	InterSymbol::make_local(local_s);
 	inter_bookmark *locals_at = &(I->site.sprdata.function_locals_bookmark);
 	Produce::guard(Inter::Local::new(locals_at, local_s, kind_s,

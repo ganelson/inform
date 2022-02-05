@@ -23,7 +23,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	LOOP_OVER_LINKED_LIST(var_name, inter_symbol, L) {
 		inter_tree_node *P = var_name->definition;
 		inter_ti v1 = P->W.instruction[VAL1_VAR_IFLD], v2 = P->W.instruction[VAL2_VAR_IFLD];
-		if (InterSymbol::read_annotation(var_name, ASSIMILATED_IANN) != 1) {
+		if (SymbolAnnotation::get_b(var_name, ASSIMILATED_IANN) == FALSE) {
 			if (k == 1) @<Begin the array@>;
 			@<Variables created by Inform 7 source text all go into the array@>;
 		} else {
@@ -40,7 +40,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	CodeGen::deselect(gen, saved);
 
 @<Variables created by Inform 7 source text all go into the array@> =
-	InterSymbol::annotate_i(var_name, I6_GLOBAL_OFFSET_IANN, (inter_ti) k);
+	SymbolAnnotation::set_i(var_name, I6_GLOBAL_OFFSET_IANN, (inter_ti) k);
 	segmentation_pos saved = CodeGen::select(gen, global_variables_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("  (");
@@ -71,7 +71,7 @@ the variable (lvalue in the case of |as_reference| being set).
 void I6TargetVariables::evaluate_variable(code_generator *gtr, code_generation *gen,
 	inter_symbol *var_name, int as_reference) {
 	text_stream *OUT = CodeGen::current(gen);
-	int k = InterSymbol::read_annotation(var_name, I6_GLOBAL_OFFSET_IANN);
+	int k = SymbolAnnotation::get_i(var_name, I6_GLOBAL_OFFSET_IANN);
 	if (k > 0) WRITE("(Global_Vars-->%d)", k);
 	else WRITE("%S", InterSymbol::trans(var_name));
 }

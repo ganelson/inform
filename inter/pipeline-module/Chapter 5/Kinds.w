@@ -473,7 +473,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 	int i = 1;
 	inter_symbol *kind_name;
 	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L)
-		InterSymbol::annotate_i(kind_name, OBJECT_KIND_COUNTER_IANN, (inter_ti) i++);
+		SymbolAnnotation::set_i(kind_name, OBJECT_KIND_COUNTER_IANN, (inter_ti) i++);
 
 	inter_name *iname = HierarchyLocations::iname(I, KINDHIERARCHY_HL);
 	Synoptic::begin_array(I, step, iname);
@@ -503,7 +503,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 inter_ti SynopticKinds::kind_of_object_count(pipeline_step *step, inter_symbol *kind_name) {
 	if ((kind_name == NULL) ||
 		(kind_name == RunningPipelines::get_symbol(step, object_kind_RPSYM))) return 0;
-	int N = InterSymbol::read_annotation(kind_name, OBJECT_KIND_COUNTER_IANN);
+	int N = SymbolAnnotation::get_i(kind_name, OBJECT_KIND_COUNTER_IANN);
 	if (N >= 0) return (inter_ti) N;
 	return 0;
 }

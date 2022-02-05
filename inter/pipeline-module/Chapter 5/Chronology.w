@@ -59,7 +59,7 @@ are independent and can overlap.
 
 @<Define TIMEDEVENTSTABLE@> =
 	inter_name *iname = HierarchyLocations::iname(I, TIMEDEVENTSTABLE_HL);
-	InterNames::annotate_i(iname, TABLEARRAY_IANN, 1);
+	InterNames::annotate_b(iname, TABLEARRAY_IANN, TRUE);
 	Synoptic::begin_array(I, step, iname);
 	int when_count = 0;
 	for (int i=0; i<InterNodeList::array_len(inv->rule_nodes); i++) {
@@ -79,7 +79,7 @@ are independent and can overlap.
 
 @<Define TIMEDEVENTTIMESTABLE@> =
 	inter_name *iname = HierarchyLocations::iname(I, TIMEDEVENTTIMESTABLE_HL);
-	InterNames::annotate_i(iname, TABLEARRAY_IANN, 1);
+	InterNames::annotate_b(iname, TABLEARRAY_IANN, TRUE);
 	Synoptic::begin_array(I, step, iname);
 	int when_count = 0;
 	for (int i=0; i<InterNodeList::array_len(inv->rule_nodes); i++) {

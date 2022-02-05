@@ -532,10 +532,10 @@ inter_symbol *Primitives::from_BIP(inter_tree *I, inter_ti bip) {
 
 inter_ti Primitives::to_BIP(inter_tree *I, inter_symbol *symb) {
 	if (symb == NULL) return 0;
-	int B = InterSymbol::read_annotation(symb, BIP_CODE_IANN);
+	int B = SymbolAnnotation::get_i(symb, BIP_CODE_IANN);
 	inter_ti bip = (B > 0)?((inter_ti) B):0;
 	if (bip != 0) return bip;
 	bip = Primitives::name_to_BIP(symb->symbol_name);
-	if (bip != 0) InterSymbol::annotate_i(symb, BIP_CODE_IANN, bip);
+	if (bip != 0) SymbolAnnotation::set_i(symb, BIP_CODE_IANN, bip);
 	return bip;
 }

@@ -31,7 +31,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	*E = Inter::Defn::vet_level(IBM, PRAGMA_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (Inter::Annotations::exist(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_symbol *target_name = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
 	if (target_name == NULL)

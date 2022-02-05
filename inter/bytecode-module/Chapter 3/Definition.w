@@ -70,7 +70,7 @@ void Inter::Defn::create_language(void) {
 	for (int i=0; i<MAX_INTER_CONSTRUCTS; i++) IC_lookup[i] = NULL;
 
 	Inter::Defn::create_construct(INVALID_IST, NULL, I"nothing", I"nothings");
-	Inter::Canon::declare();
+	SymbolAnnotation::declare_canonical_annotations();
 
 	Inter::Nop::define();
 	Inter::Comment::define();
@@ -104,56 +104,6 @@ void Inter::Defn::create_language(void) {
 	Inter::Splat::define();
 }
 
-inter_annotation Inter::Defn::read_annotation(inter_tree *I, text_stream *keyword, inter_error_location *eloc, inter_error_message **E) {
-	inter_ti val = 0;
-	int iatype = INTEGER_IATYPE;
-	*E = NULL;
-	LOOP_THROUGH_TEXT(P, keyword)
-		if (Str::get(P) == '=') {
-			if (Str::get(Str::forward(P)) == '"') {
-				TEMPORARY_TEXT(parsed_text)
-				inter_error_message *EP =
-					Inter::Constant::parse_text(parsed_text, keyword, P.index+2, Str::len(keyword)-2, NULL);
-				inter_warehouse *warehouse = InterTree::warehouse(I);
-				val = InterWarehouse::create_text(warehouse, InterTree::root_package(I));
-				Str::copy(InterWarehouse::get_text(warehouse, val), parsed_text);
-				DISCARD_TEXT(parsed_text)
-				if (EP) *E = EP;
-				iatype = TEXTUAL_IATYPE;
-			} else {
-				val = (inter_ti) Str::atoi(keyword, P.index + 1);
-				iatype = INTEGER_IATYPE;
-			}
-			Str::truncate(keyword, P.index);
-		}
-
-	inter_annotation_form *IAF;
-	LOOP_OVER(IAF, inter_annotation_form)
-		if (Str::eq(keyword, IAF->annotation_keyword)) {
-			if (IAF->iatype != iatype) *E = Inter::Errors::plain(I"bad type for =value", eloc);
-			return Inter::Annotations::value_annotation(IAF, val);
-		}
-	*E = Inter::Errors::plain(I"unrecognised annotation", eloc);
-	return Inter::Annotations::invalid_annotation();
-}
-
-void Inter::Defn::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter_annotation IA) {
-	WRITE(" %S", IA.annot->annotation_keyword);
-	if (IA.annot_value != 0) {
-		if (IA.annot->iatype == TEXTUAL_IATYPE) {
-			WRITE("=\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, IA.annot_value));
-			WRITE("\"");
-		} else {
-			WRITE("=%d", IA.annot_value);
-		}
-	}
-}
-
-void Inter::Defn::transpose_annotation(inter_annotation *IA, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	if (IA->annot->iatype == TEXTUAL_IATYPE)
-		IA->annot_value = grid[IA->annot_value];
-}
 
 @
 
@@ -217,7 +167,7 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 	ilp.line = line;
 	ilp.mr = Regexp::create_mr();
 	ilp.terminal_comment = 0;
-	ilp.set = Inter::Annotations::new_set();
+	ilp.set = SymbolAnnotation::new_annotation_set();
 	ilp.indent_level = 0;
 
 	LOOP_THROUGH_TEXT(P, ilp.line) {
@@ -256,9 +206,9 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 	while (Regexp::match(&ilp.mr, ilp.line, L"(%c+) (__%c+) *")) {
 		Str::copy(ilp.line, ilp.mr.exp[0]);
 		inter_error_message *E = NULL;
-		inter_annotation IA = Inter::Defn::read_annotation(InterBookmark::tree(IBM), ilp.mr.exp[1], eloc, &E);
+		inter_annotation IA = SymbolAnnotation::read_annotation(InterBookmark::tree(IBM), ilp.mr.exp[1], eloc, &E);
 		if (E) return E;
-		Inter::Annotations::add_to_set(-1, &(ilp.set), IA);
+		SymbolAnnotation::write_to_set(IA.annot->iatype, &(ilp.set), IA);
 	}
 	inter_construct *IC;
 	LOOP_OVER(IC, inter_construct)
