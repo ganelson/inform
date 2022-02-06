@@ -1,11 +1,11 @@
 100.0% in inform7 run
-     57.2% in compilation to Inter
-         41.1% in //Sequence::undertake_queued_tasks//
-          3.5% in //MajorNodes::pre_pass//
-          2.6% in //MajorNodes::pass_1//
-          2.2% in //RTPhrasebook::compile_entries//
+     57.7% in compilation to Inter
+         41.4% in //Sequence::undertake_queued_tasks//
+          3.7% in //MajorNodes::pre_pass//
+          2.7% in //MajorNodes::pass_1//
+          2.1% in //RTPhrasebook::compile_entries//
           1.4% in //ImperativeDefinitions::assess_all//
-          1.1% in //RTKindConstructors::compile//
+          1.2% in //RTKindConstructors::compile//
           0.4% in //ImperativeDefinitions::compile_first_block//
           0.4% in //MajorNodes::pass_2//
           0.4% in //Sequence::undertake_queued_tasks//
@@ -17,18 +17,18 @@
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
           2.0% not specifically accounted for
-     40.7% in running Inter pipeline
-         10.2% in step preparation
-         10.0% in inter step 6/14: make-synoptic-module
-          8.0% in inter step 5/14: load-binary-kits
-          6.9% in inter step 14/14: generate inform6 -> auto.inf
-          1.6% in inter step 9/14: make-identifiers-unique
+     40.2% in running Inter pipeline
+         10.1% in inter step 6/14: make-synoptic-module
+         10.1% in step preparation
+          7.1% in inter step 14/14: generate inform6 -> auto.inf
+          7.1% in inter step 5/14: load-binary-kits
+          1.5% in inter step 9/14: make-identifiers-unique
           0.4% in inter step 12/14: eliminate-redundant-operations
           0.2% in inter step 4/14: compile-splats
           0.2% in inter step 7/14: shorten-wiring
+          0.2% in inter step 8/14: detect-indirect-calls
           0.1% in inter step 10/14: reconcile-verbs
           0.1% in inter step 11/14: eliminate-redundant-labels
-          0.1% in inter step 8/14: detect-indirect-calls
-          2.4% not specifically accounted for
+          2.5% not specifically accounted for
       1.7% in supervisor
       0.3% not specifically accounted for

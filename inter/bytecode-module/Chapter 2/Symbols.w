@@ -74,7 +74,7 @@ inter_symbol *InterSymbol::new_for_symbols_table(text_stream *name, inter_symbol
 	S->definition = NULL;
 	S->annotations = SymbolAnnotation::new_annotation_set();
 	S->wiring = Wiring::new_wiring_data(S);
-	S->transmigration = Inter::Transmigration::new_transmigration_data(S);
+	S->transmigration = Transmigration::new_transmigration_data(S);
 	S->translation_data = NULL_GENERAL_POINTER;
 
 	LOGIF(INTER_SYMBOLS, "Created symbol $3 in $4\n", S, T);
@@ -223,7 +223,7 @@ void InterSymbol::make_local(inter_symbol *S) {
 
 @ Connectors are symbols used either as plugs or sockets. These only appear
 in one special package, and are used to link different trees together.
-See //Connectors//.
+See //The Wiring//.
 
 =
 int InterSymbol::is_plug(inter_symbol *S) {
@@ -270,7 +270,7 @@ sometimes changed later on.
 
 Giving a symbol a definition says that it means something right here, in the
 package to which it belongs. The alternative is to wire it, which says that the
-meaning is far away, in another package: see //Connectors//.
+meaning is far away, in another package: see //The Wiring//.
 
 A definition in this sense is a pointer to an //inter_tree_node// holding an
 instruction which creates the symbol. For example, the definition of |magic_number|

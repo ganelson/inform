@@ -104,7 +104,9 @@ inter_name *RTKindDeclarations::create_iname(kind *K) {
 	DISCARD_TEXT(KT)
 	int v = -2;
 	if (Kinds::Behaviour::is_subkind_of_object(K)) v = Kinds::Behaviour::get_range_number(K);
-	return Hierarchy::make_iname_with_memo_and_value(KIND_CLASS_HL, R, W, v);
+	inter_name *iname = Hierarchy::make_iname_with_memo_and_value(KIND_CLASS_HL, R, W, v);
+	if (Kinds::is_proper_constructor(K) == FALSE) Hierarchy::make_available(iname);
+	return iname;
 }
 
 @h Actual declarations.

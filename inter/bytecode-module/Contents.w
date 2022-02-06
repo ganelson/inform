@@ -21,7 +21,7 @@ Chapter 2: Interoperability
 	Symbols Tables
 	Symbols
 	Annotations
-	Connectors
+	The Wiring
 	Transmigration
 
 Chapter 3: Language Definition

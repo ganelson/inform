@@ -137,7 +137,8 @@ void RTProperties::set_translation(property *prn, text_stream *T) {
 void RTProperties::set_translation_and_make_available(property *prn, text_stream *T) {
 	inter_name *iname = RTProperties::iname(prn);
 	InterNames::set_translation(iname, T);
-	Hierarchy::make_available(iname);
+	inter_tree *I = InterPackage::tree(InterSymbol::package(InterNames::to_symbol(iname)));
+	if (Wiring::find_socket(I, T) == NULL) Hierarchy::make_available(iname);
 	prn->compilation_data.translated = TRUE;
 }
 

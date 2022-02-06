@@ -43,7 +43,7 @@ int SimpleStages::run_move_stage(pipeline_step *step) {
 		return FALSE;
 	}
 	Regexp::dispose_of(&mr);
-	Inter::Transmigration::move(pack, LargeScale::main_package(step->ephemera.tree), FALSE);
+	Transmigration::move(pack, LargeScale::main_package(step->ephemera.tree), FALSE);
 	return TRUE;
 }
 
