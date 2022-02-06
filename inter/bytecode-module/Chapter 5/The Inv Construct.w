@@ -8,7 +8,7 @@ Defining the inv construct.
 
 =
 void Inter::Inv::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		INV_IST,
 		L"inv (%C+)",
 		I"inv", I"invs");
@@ -37,10 +37,10 @@ void Inter::Inv::define(void) {
 =
 void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
-	*E = Inter::Defn::vet_level(IBM, INV_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, INV_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = Inter::Defn::get_latest_block_package();
+	inter_package *routine = InterConstruct::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
 	inter_symbol *invoked_name = InterSymbolsTable::symbol_from_name(InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[0]);
@@ -69,7 +69,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_PRIMITIVE, InterSymbolsTable::id_from_symbol(InterBookmark::tree(IBM), NULL, invoked_name),
 		eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -77,7 +77,7 @@ inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol
 
 inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_ROUTINE, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, invoked_name), eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -85,7 +85,7 @@ inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *inv
 
 inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_ti opcode_storage, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -176,6 +176,22 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_
 			return;
 		}
 	}
+}
+
+inter_symbol *Inter::Inv::read_primitive(inter_tree *I, inter_tree_node *P) {
+	if ((P->W.instruction[ID_IFLD] == INV_IST) &&
+		(P->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
+		return InterSymbolsTable::symbol_from_ID(InterTree::global_scope(I),
+			P->W.instruction[INVOKEE_INV_IFLD]);
+	}
+	return NULL;
+}
+
+void Inter::Inv::write_primitive(inter_tree *I, inter_tree_node *P, inter_symbol *prim) {
+	if ((P->W.instruction[ID_IFLD] == INV_IST) &&
+		(P->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
+		P->W.instruction[INVOKEE_INV_IFLD] = InterSymbolsTable::id_from_symbol(I, NULL, prim);
+	} else internal_error("wrote primitive to non-primitive invocation");
 }
 
 char *Inter::Inv::cat_name(inter_ti cat) {

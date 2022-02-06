@@ -70,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">bytecode</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the bytecode module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. WHat is intermediate about inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Packages</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Symbols</a></li><li><a href="P-wtmd.html#SP6">&#167;6. The warehouse and the building site</a></li><li><a href="P-wtmd.html#SP7">&#167;7. Nodes and instructions</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. WHat is intermediate about inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Packages</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Symbols</a></li><li><a href="P-wtmd.html#SP9">&#167;9. The warehouse and the building site</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Nodes and instructions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The bytecode module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -106,7 +106,6 @@ the flow might look like this:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">  Swift</span>
 <span class="plain-syntax">  source  ----&gt;   AST   ------------&gt;   IR  ----&gt;  Assembly language</span>
 </pre>
 <p class="commentary">In the Inform family of tools, two languages have to be compiled: natural
@@ -115,8 +114,8 @@ like a conventional programming language. Having very different syntaxes, they
 have different ASTs:
 </p>
 
-<ul class="items"><li>&#9679; For I7, it's a <span class="extract"><span class="extract-syntax">parse_node_tree</span></span> structure: see the <a href="../syntax-module/index.html" class="internal">syntax</a> module.
-</li><li>&#9679; For Inter, it's an <span class="extract"><span class="extract-syntax">inter_schema</span></span> structure: see the <a href="../building-module/index.html" class="internal">building</a> module.
+<ul class="items"><li>&#9679; For I7, a <span class="extract"><span class="extract-syntax">parse_node_tree</span></span>, managed by the <a href="../syntax-module/index.html" class="internal">syntax</a> module.
+</li><li>&#9679; For Inter, an <span class="extract"><span class="extract-syntax">inter_schema</span></span>, managed by the <a href="../building-module/index.html" class="internal">building</a> module.
 </li></ul>
 <p class="commentary">But these two compiler flows share the same IR &mdash; an <a href="2-it.html#SP1" class="internal">inter_tree</a> provides the
 intermediate representation for both:<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
@@ -124,17 +123,15 @@ intermediate representation for both:<sup id="fnref:1"><a href="#fn:1" rel="foot
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">                 "AST"                 "IR"</span>
-<span class="plain-syntax">+-----------------------+</span>
-<span class="plain-syntax">| source        syntax  |</span>
-<span class="plain-syntax">| text    ---&gt;   tree -------+</span>
-<span class="plain-syntax">|-----------------------+     \</span>
-<span class="plain-syntax"> INFORM7                       \</span>
-<span class="plain-syntax">                                ----&gt;  Inter  ----&gt;  C, I6, or others</span>
-<span class="plain-syntax">+-----------------------+      /</span>
-<span class="plain-syntax">| kit           inter   |     /</span>
-<span class="plain-syntax">| source  ---&gt;  schemas -----+</span>
-<span class="plain-syntax">+-----------------------+</span>
-<span class="plain-syntax"> INTER</span>
+<span class="plain-syntax">  source        syntax</span>
+<span class="plain-syntax">  text    ---&gt;   tree -------+</span>
+<span class="plain-syntax">         INFORM7              \</span>
+<span class="plain-syntax">                               \</span>
+<span class="plain-syntax">                                ----&gt;  Inter  ----&gt;  "Final" output: C, I6, or other</span>
+<span class="plain-syntax">                               /       tree</span>
+<span class="plain-syntax">  kit           Inter         /</span>
+<span class="plain-syntax">  source  ---&gt;  schemas -----+</span>
+<span class="plain-syntax">          INTER</span>
 </pre>
 <p class="commentary">Because we want to work with hybrid programs, part compiled by one flow and
 part by the other, Inter is not quite as low-level as most IRs.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> It still
@@ -143,9 +140,9 @@ feasible. (Not very much of this is actually done at present, but see e.g.
 <a href="../pipeline-module/6-eros.html" class="internal">Eliminate Redundant Operations Stage (in pipeline)</a>.)
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> This diagram is a slight simplification, because <a href="../inform7/index.html" class="internal">inform7</a> also makes
-use of Inter schemas when generating code for certain low-level operations,
-such as storing values in properties. But the big picture is right.
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> In fact Inter schemas are so useful as a tool for generating short runs of
+Inter that the main <a href="../inform7/index.html" class="internal">inform7</a> compiler also uses them from time to time, but
+not directly to represent the source text.
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Though IRs vary considerably. Microsoft's Common Intermediate Language (CIL),
 used as a back-end by C#, has quite low-level bytecode but stores it in a
 highly structured object-oriented way.
@@ -215,29 +212,177 @@ rather than anything about the program it represents. Material from that
 program &mdash; a variable, say, or a function &mdash; is not allowed at the root level.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. The warehouse and the building site. </b>There is a lot of memory to be managed here: Inter trees can be huge, though
+<p class="commentary">Symbols can be annotated in various ways. See <a href="2-ann.html" class="internal">Annotations</a>. They also come
+in several types, see <a href="2-sym.html#SP5" class="internal">InterSymbol::get_type</a>, and can have a few flags,
+see <a href="2-sym.html#SP6" class="internal">InterSymbol::get_flag</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The bytecode in a package can only refer to resources using symbols in that
+same package. On the face of it, that means packages are so well sealed up
+that they might as well all be independent programs, unable to see each other's
+variables, constants and functions.
+</p>
+
+<p class="commentary">But that is not true because symbols in one package can be "wired" to symbols
+in another:<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> see <a href="2-tw2.html" class="internal">The Wiring</a>. We write <span class="extract"><span class="extract-syntax">S ~~&gt; T</span></span> if the symbol <span class="extract"><span class="extract-syntax">S</span></span> is "wired to"
+<span class="extract"><span class="extract-syntax">T</span></span>, and we understand this as meaning that <span class="extract"><span class="extract-syntax">S</span></span> means whatever <span class="extract"><span class="extract-syntax">T</span></span> does.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    +-----------------+        +-------------------------------+</span>
+<span class="plain-syntax">    | Package X       |        | Package Y                     |</span>
+<span class="plain-syntax">    |                 |        |                               |</span>
+<span class="plain-syntax">    |  earth ~~~~~~~~~~~~~~~~~~~~&gt; earth                       |</span>
+<span class="plain-syntax">    +-----------------+        | .....                         |</span>
+<span class="plain-syntax">                               | variable K_int32 earth = 7    |</span>
+<span class="plain-syntax">                               +-------------------------------+</span>
+</pre>
+<p class="commentary">In this example, the symbol <span class="extract"><span class="extract-syntax">earth</span></span> in package <span class="extract"><span class="extract-syntax">X</span></span> is undefined. Instead it is
+wired to a different symbol of the same name in package <span class="extract"><span class="extract-syntax">Y</span></span>, which is defined
+as the name of a variable declared in that package. (The names do not have to
+be the same, but they often are.)
+</p>
+
+<p class="commentary">Wiring is directional: <span class="extract"><span class="extract-syntax">S ~~&gt; T</span></span> very definitely does not mean that <span class="extract"><span class="extract-syntax">T ~~&gt; S</span></span>,
+and indeed circuits are forbidden, because <span class="extract"><span class="extract-syntax">S1 ~~&gt; S2 ~~&gt; ... ~~&gt; S1</span></span> would
+create a circular definition. To change metaphor for a moment, it's as if, on
+looking up <span class="extract"><span class="extract-syntax">S</span></span> in the index of a book, we found the entry "<span class="extract"><span class="extract-syntax">S</span></span>, see <span class="extract"><span class="extract-syntax">T</span></span>": we
+then have to look up <span class="extract"><span class="extract-syntax">T</span></span> to find, say, "<span class="extract"><span class="extract-syntax">T</span></span>, 125", and turn to page 125. It
+would be no good to find instead "<span class="extract"><span class="extract-syntax">T</span></span>, see <span class="extract"><span class="extract-syntax">S</span></span>".
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> There are fleeting exceptional cases when a symbol can be wired to another
+symbol in the same package, but those occur only with sockets and plugs in the
+special connectors package, and only temporarily even then.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Special symbols called plugs and sockets are used to import or export meanings
+from one tree of Inter code to a potential other tree, which will be "linked"
+into it later on.
+</p>
+
+<p class="commentary">For example, <a href="../inform7/index.html" class="internal">inform7</a> compiles a tree of Inter, but then <a href="../inter/index.html" class="internal">inter</a> links
+this with a separately compiled Inter tree from <a href="../BasicInformKit/index.html" class="internal">BasicInformKit</a>. Each both
+imports from and exports to the other.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    .....................           .......................</span>
+<span class="plain-syntax">    .  Main tree        . ~~~~~~~~&gt; . BasicInformKit tree .</span>
+<span class="plain-syntax">    .                   .           .                     .</span>
+<span class="plain-syntax">    .                   . &lt;~~~~~~~~ .                     .</span>
+<span class="plain-syntax">    .....................           .......................</span>
+</pre>
+<p class="commentary">It would be chaotic<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> to allow random symbols in packages all over each tree
+to be wired directly to symbols in the other. Instead, every tree has a sort
+of embassy package <span class="extract"><span class="extract-syntax">/main/connectors</span></span> (a package called <span class="extract"><span class="extract-syntax">connectors</span></span> which is
+a subpackage of <span class="extract"><span class="extract-syntax">main</span></span>) which acts as an intermediary.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    ...............................       ..................................</span>
+<span class="plain-syntax">    .  Main tree                  .       .  BasicInformKit tree           .</span>
+<span class="plain-syntax">    .              +------------+ .       . +------------+                 .</span>
+<span class="plain-syntax">    .  other       | connectors | .       . | connectors |                 .</span>
+<span class="plain-syntax">    .  packages ~~~~~~~&gt; plugs ~~~~~~~~~~~~~~&gt; sockets ~~~~~&gt;   other      .</span>
+<span class="plain-syntax">    .            &lt;~~~~ sockets &lt;~~~~~~~~~~~~~~ plugs &lt;~~~~~~~~~ packages   .</span>
+<span class="plain-syntax">    .              +------------+ .       . +------------+                 .</span>
+<span class="plain-syntax">    ...............................       ..................................</span>
+</pre>
+<p class="commentary">The connectors package contains only symbols, and they are all either "plugs" or
+"sockets". A "plug" is made for every external meaning needed by a tree; a
+"socket" is made for each meaning that the tree declares itself but wants to
+make available for other trees to access. So if you know the contents of the
+connectors package of a tree, you know everything it needs from outside (plugs)
+and everything it offers to the outside (sockets).
+</p>
+
+<p class="commentary">For further zany ASCII-art like this, see <a href="2-tw2.html" class="internal">The Wiring</a>.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> And also slow, and prone to namespace collisions.
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>It is not literally the case that plugs in one tree are wired to sockets in
+another, as the diagram above suggests. The actual wiring-together occurs only
+when (part of) one tree is merged into another, in what is called <a href="2-trn.html" class="internal">Transmigration</a>.
+</p>
+
+<p class="commentary">Transmigration is by definition the process of moving a package from one tree
+to another. Almost the whole design of Inter is motivated by the need to make this
+fast &mdash; the hierarchies of packages, the use of wiring, and the existence of sockets
+and plugs all came about working backwards from the goal of implementing
+transmigration efficiently.
+</p>
+
+<p class="commentary">Transmigration is how the <a href="../pipeline-module/index.html" class="internal">pipeline</a> for processing Inter links a tree
+produced by <a href="../inform7/index.html" class="internal">inform7</a> to trees from kits produced by <a href="../inter/index.html" class="internal">inter</a>. This
+diagram is also a little simplified, but the idea is right. We start with:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    .........................         .........................</span>
+<span class="plain-syntax">    .  Main tree            .         . BasicInformKit tree   .</span>
+<span class="plain-syntax">    .  main                 .         . main                  .</span>
+<span class="plain-syntax">    .    architectural      .         .    architectural      .</span>
+<span class="plain-syntax">    .    basic_inform       .         .    BasicInformKit     .</span>
+<span class="plain-syntax">    .    source_text        .         .    connectors         .</span>
+<span class="plain-syntax">    .    connectors         .         .                       .</span>
+<span class="plain-syntax">    .........................         .........................</span>
+</pre>
+<p class="commentary">where all of the substantive content of the BasicInformKit tree is in its
+package <span class="extract"><span class="extract-syntax">/main/BasicInformKit</span></span>. Transmigration simply moves that package,
+the result being:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    .........................         .........................</span>
+<span class="plain-syntax">    .  Main tree            .         . BasicInformKit tree   .</span>
+<span class="plain-syntax">    .  main                 .         . main                  .</span>
+<span class="plain-syntax">    .    architectural      .         .    architectural      .</span>
+<span class="plain-syntax">    .    basic_inform       .         .    connectors         .</span>
+<span class="plain-syntax">    .    source_text        .         .                       .</span>
+<span class="plain-syntax">    .    BasicInformKit     .         .                       .</span>
+<span class="plain-syntax">    .    connectors         .         .                       .</span>
+<span class="plain-syntax">    .........................         .........................</span>
+</pre>
+<p class="commentary">The original BasicInformKit tree is reduced to a husk and can be discarded.
+</p>
+
+<p class="commentary">Plugs and sockets are important here because when BasicInformKit moves to the
+main tree, its plugs looking for meanings in that tree can now be connected
+to sockets in it; and conversely, plugs in the main tree hoping to connect
+to meanings in BasicInformKit can now connect to the relevant sockets.
+</p>
+
+<p class="commentary">There are conventions on what goes in the <span class="extract"><span class="extract-syntax">main</span></span> package of each tree: see
+<a href="../building-module/1-ls.html" class="internal">Large-Scale Structure (in building)</a> for more on that. (The <span class="extract"><span class="extract-syntax">architectural</span></span>
+package in each tree just makes some definitions establishing the size of
+integers, and so on, and for these two trees whose definitions will just be
+duplicates of each other.)
+</p>
+
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. The warehouse and the building site. </b>There is a lot of memory to be managed here: Inter trees can be huge, though
 there are never more than one or two in memory at once.
 </p>
 
 <p class="commentary">In particular, each <a href="2-it.html#SP1" class="internal">inter_tree</a> structure contains two pools of data
-besides the actual tree:<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
+besides the actual tree:<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
 </p>
 
 <ul class="items"><li>(a) A "building site", which contains workspace data needed by the <a href="../building-module/index.html" class="internal">building</a>
-module. That module is essentially a piece of middleware sitting on top of
+module. <a href="../building-module/index.html" class="internal">building</a> is essentially a piece of middleware sitting on top of
 this one, and making it easier for the compilers to use our facilities. We
 will ignore the building site completely here: it's not our problem.
-</li><li>(b) A "warehouse", which does belong to this module: see <a href="2-tw.html" class="internal">The Warehouse</a>.
+</li><li>(b) A "warehouse", which very much is our problem: see <a href="2-tw.html" class="internal">The Warehouse</a>.
 This provides storage for strings, symbols tables and the like, assigning each
 one an ID number. Resource number 178, for example, might be a <span class="extract"><span class="extract-syntax">text_stream</span></span>
 which is the content of some text literal in a function, while 179 might be
 an <a href="2-st.html#SP1" class="internal">inter_symbols_table</a> belonging to some package.
 </li></ul>
-<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> In real-life botany, trees do not have building sites or warehouses, but
+<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> In real-life botany, trees do not have building sites or warehouses, but
 mixing some metaphors cannot really be helped. Trees in nature do not grow
 the way they do in computer science.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Nodes and instructions. </b>Each node in an Inter tree represents a single Inter instruction,<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> details of
+<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Nodes and instructions. </b>Each node in an Inter tree represents a single Inter instruction,<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> details of
 which are stored as a stretch of bytecode in memory.
 </p>
 
@@ -283,10 +428,10 @@ order of words in bytecode memory is only significant within a single
 instruction.
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> Well, except for the root node, which has no real meaning. But there is
+<ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Well, except for the root node, which has no real meaning. But there is
 only one of those.
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>As these diagrams suggest, we can generate Inter instructions quite flexibly,
+<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>As these diagrams suggest, we can generate Inter instructions quite flexibly,
 and are under no obligation to do so in sequence or all at once. (Indeed, we
 can add entirely new instructions in the linking process or when optimising
 code.)

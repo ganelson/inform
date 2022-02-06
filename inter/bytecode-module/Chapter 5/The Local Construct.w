@@ -8,7 +8,7 @@ Defining the local construct.
 
 =
 void Inter::Local::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		LOCAL_IST,
 		L"local (%C+) (%c+)",
 		I"local", I"locals");
@@ -30,9 +30,9 @@ void Inter::Local::define(void) {
 
 =
 void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IBM, LOCAL_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, LOCAL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	inter_package *routine = Inter::Defn::get_latest_block_package();
+	inter_package *routine = InterConstruct::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'local' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
@@ -52,7 +52,7 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *var_name, inter_symbol *var_kind, inter_ti ID, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, LOCAL_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_name), var_kind?(InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_kind)):0, eloc, level);
 	Inode::attach_comment(P, ID);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

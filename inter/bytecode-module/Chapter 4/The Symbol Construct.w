@@ -8,7 +8,7 @@ Defining the symbol construct.
 
 =
 void Inter::Symbol::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		SYMBOL_IST,
 		L"symbol (%C+) (%i+) (%c+)",
 		I"symbol", I"symbols");
@@ -20,11 +20,11 @@ void Inter::Symbol::define(void) {
 }
 
 void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IBM, SYMBOL_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, SYMBOL_IST, ilp->indent_level, eloc);
 	if (*E) return;
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_package *routine = Inter::Defn::get_latest_block_package();
+	inter_package *routine = InterConstruct::get_latest_block_package();
 
 	text_stream *symbol_name = ilp->mr.exp[2];
 	text_stream *trans_name = NULL;

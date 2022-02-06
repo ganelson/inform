@@ -111,7 +111,7 @@ void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 		case COMMENT_IST:       break;
 
 		default:
-			Inter::Defn::write_construct_text(DL, P);
+			InterConstruct::write_construct_text(DL, P);
 			internal_error("unexpected node type in Inter tree");
 	}
 }

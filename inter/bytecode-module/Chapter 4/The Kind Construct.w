@@ -8,7 +8,7 @@ Defining the kind construct.
 
 =
 void Inter::Kind::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		KIND_IST,
 		L"kind (%i+) (%c+)",
 		I"kind", I"kinds");
@@ -46,7 +46,7 @@ void Inter::Kind::define(void) {
 
 =
 void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IBM, KIND_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, KIND_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *symb = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
@@ -170,7 +170,7 @@ inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_ti SID, inter_t
 		Inode::extend_instruction_by(P, (inter_ti) arity);
 		for (int i=0; i<arity; i++) P->W.instruction[OPERANDS_KIND_IFLD+i] = operands[i];
 	}
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

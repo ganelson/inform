@@ -234,7 +234,7 @@ inter_tree_node *Inode::new_with_8_data_fields(inter_bookmark *IBM, int S,
 To find the package of a node, which needs to be fast, always call
 //Inode::get_package//. The field |F->package| really just caches a result
 we could determine algorithmically, but more slowly; the other function here
-does just that, but is used only by //Inter::Defn::lint_visitor// to verify
+does just that, but is used only by //InterConstruct::lint_visitor// to verify
 that we haven't fumbled our invariants.
 
 =

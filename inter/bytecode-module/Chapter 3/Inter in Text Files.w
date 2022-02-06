@@ -19,7 +19,7 @@ void Inter::Textual::read(inter_tree *I, filename *F) {
 }
 
 void Inter::Textual::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_error_message *E = Inter::Defn::verify_children_inner(P);
+	inter_error_message *E = InterConstruct::verify_children_inner(P);
 	if (E) Inter::Errors::issue(E);
 }
 
@@ -58,7 +58,7 @@ inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_e
 	if (InterSymbol::is_defined(symb)) {
 		WRITE_TO(STDERR, "Symbol is: %S\n", symb->symbol_name);
 		inter_tree_node *D = InterSymbol::definition(symb);
-		Inter::Defn::write_construct_text(STDERR, D);
+		InterConstruct::write_construct_text(STDERR, D);
 		*E = Inter::Errors::quoted(I"symbol already defined", name, eloc);
 		return NULL;
 	}
@@ -88,11 +88,11 @@ void Inter::Textual::read_line(text_stream *line, text_file_position *tfp, void 
 	if (Str::len(line) == 0) { no_blank_lines_stacked++; return; }
 	for (int i=0; i<no_blank_lines_stacked; i++) {
 		inter_error_location b_eloc = Inter::Errors::file_location(I"", tfp);
-		inter_error_message *E = Inter::Defn::read_construct_text(I"", &b_eloc, IBM);
+		inter_error_message *E = InterConstruct::read_construct_text(I"", &b_eloc, IBM);
 		if (E) Inter::Errors::issue(E);
 	}
 	no_blank_lines_stacked = 0;
-	inter_error_message *E = Inter::Defn::read_construct_text(line, &eloc, IBM);
+	inter_error_message *E = InterConstruct::read_construct_text(line, &eloc, IBM);
 	if (E) Inter::Errors::issue(E);
 }
 
@@ -122,7 +122,7 @@ void Inter::Textual::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_tre
 void Inter::Textual::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	textual_write_state *tws = (textual_write_state *) state;
 	if ((tws->filter) && ((*(tws->filter))(*P, tws->pass) == FALSE)) return;
-	inter_error_message *E = Inter::Defn::write_construct_text(tws->to, P);
+	inter_error_message *E = InterConstruct::write_construct_text(tws->to, P);
 	if (E) Inter::Errors::issue(E);
 }
 

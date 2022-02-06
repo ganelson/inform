@@ -8,7 +8,7 @@ Defining the permission construct.
 
 =
 void Inter::Permission::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		PERMISSION_IST,
 		L"permission (%i+) (%i+) *(%i*)",
 		I"permission", I"permissions");
@@ -29,7 +29,7 @@ void Inter::Permission::define(void) {
 =
 int pp_counter = 1;
 void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IBM, PERMISSION_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, PERMISSION_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
@@ -89,7 +89,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID,
 	inter_ti PPID, inter_ti SID, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

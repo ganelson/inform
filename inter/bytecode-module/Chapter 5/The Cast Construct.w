@@ -8,7 +8,7 @@ Defining the cast construct.
 
 =
 void Inter::Cast::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		CAST_IST,
 		L"cast (%i+) <- (%i+)",
 		I"cast", I"casts");
@@ -33,10 +33,10 @@ void Inter::Cast::define(void) {
 void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Defn::vet_level(IBM, CAST_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, CAST_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = Inter::Defn::get_latest_block_package();
+	inter_package *routine = InterConstruct::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'val' used outside function", eloc); return; }
 
 	inter_symbol *from_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
@@ -49,7 +49,7 @@ void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 
 inter_error_message *Inter::Cast::new(inter_bookmark *IBM, inter_symbol *from_kind, inter_symbol *to_kind, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, CAST_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, to_kind), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, from_kind), eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

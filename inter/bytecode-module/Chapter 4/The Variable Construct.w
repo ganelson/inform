@@ -8,7 +8,7 @@ Defining the variable construct.
 
 =
 void Inter::Variable::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		VARIABLE_IST,
 		L"variable (%i+) (%i+) = (%c+)",
 		I"variable", I"variables");
@@ -28,7 +28,7 @@ void Inter::Variable::define(void) {
 
 =
 void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IBM, VARIABLE_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, VARIABLE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *var_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
@@ -48,7 +48,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, inter_ti KID, inter_ti var_val1, inter_ti var_val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VARIABLE_IST, VID, KID, var_val1, var_val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

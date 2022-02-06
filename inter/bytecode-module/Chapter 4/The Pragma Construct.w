@@ -8,7 +8,7 @@ Defining the pragma construct.
 
 =
 void Inter::Pragma::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		PRAGMA_IST,
 		L"pragma (%i+) \"(%c+)\"",
 		I"pragma", I"pragmas"); /* pragmae? pragmata? */
@@ -28,7 +28,7 @@ void Inter::Pragma::define(void) {
 
 =
 void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IBM, PRAGMA_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, PRAGMA_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
@@ -64,7 +64,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 
 inter_error_message *Inter::Pragma::new(inter_bookmark *IBM, inter_symbol *target_name, inter_ti pragma_text, inter_ti level, struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, PRAGMA_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, target_name), pragma_text, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

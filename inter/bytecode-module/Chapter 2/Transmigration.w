@@ -34,23 +34,29 @@ transmigrated, and nor can the root package |/|. Anything else is fair game
 to be a |migrant| here.
 
 =
+typedef struct transmigration_details {
+	inter_package *migrant;           /* package which is to move between trees */
+	inter_tree *origin_tree;          /* tree it moves from */
+	inter_tree *destination_tree;     /* tree it moves to */
+	inter_package *origin;            /* original parent package of the migrant */
+	inter_package *destination;       /* eventual parent package of the migrant */
+	inter_bookmark deletion_point;    /* where the migrant's head node starts */
+	inter_bookmark insertion_point;   /* where the migrant's head node ends */
+	inter_bookmark primitives_point;  /* where primitives are declared in destination tree */
+	inter_bookmark ptypes_point;      /* where package types are declared in destination tree */
+} transmigration_details;
+
+@ =
 void Transmigration::move(inter_package *migrant, inter_package *destination,
 	int tidy_origin) {
 	inter_package *P = migrant; while (P) P = InterPackage::parent(P); /* make names exist */
 
-	inter_tree *origin_tree = InterPackage::tree(migrant);
-	inter_tree *destination_tree = InterPackage::tree(destination);
-
-	inter_package *origin = InterPackage::parent(migrant);
-
-	inter_bookmark deletion_point, insertion_point, primitives_point, ptypes_point;
-	@<Create these bookmarks@>;
-
+	transmigration_details det;
+	@<Initialise the transmigration details@>;
 	@<Mark the insertion and deletion points with comments@>;
 	@<Move the head node of the migrant to its new home@>;
-	@<Correct any references from the migrant to the origin@>;
-	if (tidy_origin) @<Correct any references from the origin to the migrant@>;
-	@<Reconcile sockets in the origin@>;
+	@<Correct cross-references between the migrant and the rest of the origin tree@>;
+	@<Transfer any sockets wired to the migrant@>;
 }
 
 @ Both trees will have, at the root level, declarations of the Inter primitives
@@ -65,26 +71,32 @@ such extra declarations would go.
 position of the |migrant|'s head node in the origin tree before transmigration
 and in the destination tree afterwards.
 
-@<Create these bookmarks@> =
-	deletion_point = InterBookmark::after_this_node(migrant->package_head);
-	insertion_point = InterBookmark::at_end_of_this_package(destination);
+@<Initialise the transmigration details@> =
+	det.migrant = migrant;
+	det.origin = InterPackage::parent(migrant);
+	det.destination = destination;
+	det.origin_tree = InterPackage::tree(migrant);
+	det.destination_tree = InterPackage::tree(destination);
+
+	det.deletion_point = InterBookmark::after_this_node(migrant->package_head);
+	det.insertion_point = InterBookmark::at_end_of_this_package(destination);
 	inter_tree_node *prims = NULL;
 	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
 		if (F->W.instruction[ID_IFLD] == PRIMITIVE_IST)
 			prims = F;
 	if (prims == NULL) internal_error("destination has no primitives");
-	primitives_point = InterBookmark::after_this_node(prims);
+	det.primitives_point = InterBookmark::after_this_node(prims);
 	inter_tree_node *ptypes = NULL;
 	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
 		if (F->W.instruction[ID_IFLD] == PACKAGETYPE_IST)
 			ptypes = F;
-	if (ptypes == NULL) internal_error("dest has no prims");
-	ptypes_point = InterBookmark::after_this_node(ptypes);
+	if (ptypes == NULL) internal_error("destination has no package types");
+	det.ptypes_point = InterBookmark::after_this_node(ptypes);
 
 @<Mark the insertion and deletion points with comments@> =
-	Transmigration::comment(&deletion_point, InterPackage::baseline(migrant),
+	Transmigration::comment(&det.deletion_point, InterPackage::baseline(migrant),
 		I"Transmigration removed", InterPackage::name(migrant));
-	Transmigration::comment(&insertion_point, InterPackage::baseline(destination) + 1,
+	Transmigration::comment(&det.insertion_point, InterPackage::baseline(destination) + 1,
 		I"Transmigration inserted", InterPackage::name(migrant));
 
 @ =
@@ -97,10 +109,32 @@ void Transmigration::comment(inter_bookmark *IBM, int level, text_stream *action
 	Inter::Comment::new(IBM, (inter_ti) level, NULL, C);
 }
 
+@ This is the only point anywhere in the Inform tool chain where a node is moved
+between packages. What makes it tricky is that the symbol giving the name of the
+|migrant| package, which was in the original parent package's symbols table,
+must be deleted. A new symbol with the same name must be created in the symbols
+table for the destination package, and the bytecode for the |package| instruction
+at the node must be altered to conform with this. But when we are done, all is
+consistent again.
+
 @<Move the head node of the migrant to its new home@> =
-	InterPackage::remove_subpackage_name(InterPackage::parent(migrant), migrant);
-	InterPackage::add_subpackage_name(destination, migrant);
-	NodePlacement::move_to_moving_bookmark(migrant->package_head, &insertion_point);
+	text_stream *migrant_name = Str::duplicate(InterPackage::name(migrant));
+	inter_symbol *OS = InterSymbolsTable::symbol_from_name_not_following(
+		InterPackage::parent(migrant)->package_scope, migrant_name);
+	if (OS) InterSymbolsTable::remove_symbol(OS);
+
+	NodePlacement::move_to_moving_bookmark(migrant->package_head, &det.insertion_point);
+	migrant->package_head->tree = det.destination_tree;
+	migrant->package_head->package = destination;
+
+	inter_symbol *NS = InterSymbolsTable::symbol_from_name_creating(
+		destination->package_scope, migrant_name);
+	InterPackage::set_name_symbol(migrant, NS);
+
+	if (InterPackage::container(migrant->package_head) != destination)
+		internal_error("transmigration did not take the migrant to the right place");
+	inter_symbol *S = InterPackage::name_symbol(migrant);
+	if (NS != S) internal_error("transmigration of head node and symbol failed");
 
 @ That was the easy part. The migrant package is now inside the destination tree.
 Unfortunately:
@@ -113,243 +147,312 @@ incorrect.
 migrant, which are therefore not in the origin tree any more. This means the origin
 tree is now incorrect.
 
-@<Correct any references from the migrant to the origin@> =
-	correct_migrant_state cms;
-	@<Initialise the IPCT state@>;
-	InterTree::traverse(destination->package_head->tree,
-		Transmigration::correct_migrant, &cms, migrant, 0);
+@<Correct cross-references between the migrant and the rest of the origin tree@> =
+	InterTree::traverse(det.destination_tree, Transmigration::correct_migrant, &det, migrant, 0);
+	if (tidy_origin)
+		InterTree::traverse(det.origin_tree, Transmigration::correct_origin, &det, NULL, 0);
 
-@ The following state is used during our traverse of the |migrant| subtree;
-really, this just allows //Transmigration::correct_migrant// to access our
-relevant variables.
+@ A further issue is that the original tree may have offered sockets for some
+of the definitions in |migrant|. For example, |migrant| might contain some
+useful function, which the origin tree was offering for linking. We want to
+make an equivalent socket in the destination tree for the same function.
 
-=
-typedef struct correct_migrant_state {
-	inter_package *migrant;
-	inter_package *destination;
-	inter_bookmark *primitives_point;
-	inter_bookmark *ptypes_point;
-	inter_tree *origin_tree;
-	inter_tree *destination_tree;
-} correct_migrant_state;
+This is important for two reasons: firstly, because after transmigration, the
+caller will need to use those sockets (see //Wiring::connect_plugs_to_sockets//),
+and secondly, because this may be only one of a series of transmigrations of
+Inter kits. All those kits need to see each others' sockets. So we cannot assume
+that having transmigrated BasicInformKit (say), we no longer need its resources
+to be socketed.
 
-@<Initialise the IPCT state@> =
-	Transmigration::begin_cache_session();
-	cms.migrant = migrant;
-	cms.destination = destination;
-	cms.origin_tree = origin_tree;
-	cms.destination_tree = destination_tree;
-	cms.primitives_point = &primitives_point;
-	cms.ptypes_point = &ptypes_point;
-
-@ =
-void Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, void *state) {
-	correct_migrant_state *cms = (correct_migrant_state *) state;
-	P->tree = I;
-	if ((P->W.instruction[ID_IFLD] == INV_IST) && (P->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
-		inter_symbol *primitive =
-			InterSymbolsTable::symbol_from_ID(InterTree::global_scope(cms->origin_tree), P->W.instruction[INVOKEE_INV_IFLD]);
-		if (primitive) @<Correct the reference to this primitive@>;
-	}
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = InterPackage::at_this_head(P);
-		if (pack == NULL) internal_error("no package defined here");
-		if (InterPackage::is_a_linkage_package(pack)) return;
-		@<Correct the reference to this package type@>;
-		inter_symbols_table *T = InterPackage::scope(pack);
-		if (T == NULL) internal_error("package with no symbols");
-		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
-			if (Wiring::is_wired(symb)) {
-				inter_symbol *target = Wiring::cable_end(symb);
-				if (SymbolAnnotation::get_b(target, ARCHITECTURAL_IANN)) {
-					Wiring::wire_to(symb,
-						LargeScale::find_architectural_symbol(cms->destination->package_head->tree, target->symbol_name, Produce::kind_to_symbol(NULL)));
-				} else if (InterSymbol::is_plug(target)) {
-					inter_symbol *equivalent = Transmigration::cached_equivalent(target);
-					if (equivalent == NULL) {
-						text_stream *N = Wiring::wired_to_name(target);
-						equivalent = Wiring::plug(cms->destination->package_head->tree, N);
-						Transmigration::cache(target, equivalent);
-					}
-					Wiring::wire_to(symb, equivalent);					
-				} else {
-					inter_package *target_package = InterSymbol::package(target);
-					while ((target_package) && (target_package != cms->migrant)) {
-						target_package = InterPackage::parent(target_package);
-					}
-					if (target_package != cms->migrant)
-						@<Correct the reference to this symbol@>;
-				}
+@<Transfer any sockets wired to the migrant@> =
+	inter_package *origin_connectors =
+		LargeScale::connectors_package_if_it_exists(det.origin_tree);
+	if (origin_connectors) {
+		inter_symbols_table *T = InterPackage::scope(origin_connectors);
+		LOOP_OVER_SYMBOLS_TABLE(S, T) {
+			if (InterSymbol::is_socket(S)) {
+				inter_symbol *target = Wiring::cable_end(S);
+				if (InterSymbol::defined_inside(target, migrant))
+					@<S is a socket wired to a definition in the migrant@>;
 			}
 		}
 	}
+
+@ The difficult case here is where the destination already has a socket of
+the same name. This would happen, for instance, if you transmigrated two kits
+in turn, and both of them provided a function called |OverlyEagerFn()|: the
+first time, a socket would be made in the destination tree; but the second
+time we would find that a socket already existed.
+
+This is arguably just a linking error and we should halt. In fact we let it
+slide, and allow the destination's original socket to remain as it was. We do
+this because the issues involved in linking property/attribute declarations in
+WorldModelKit with their Inform 7 counterparts in the main tree are just too
+awkward to confront here. (Essentially, this is a situation where the same
+declaration is made twice, once in each tree, an issue to confront later. They
+will end up meaning the same thing, though, so it's fine to keep using the
+existing socket here.)
+
+@<S is a socket wired to a definition in the migrant@> =
+	LOGIF(INTER_CONNECTORS, "Origin offers socket $3 ~~> $3 in migrant\n", S, target);
+	inter_symbol *equivalent = Wiring::find_socket(det.destination_tree, S->symbol_name);
+	if (equivalent) {
+		inter_symbol *e_target = Wiring::cable_end(equivalent);
+		if (InterSymbol::is_defined(e_target) == FALSE) {
+			LOGIF(INTER_CONNECTORS, "Co-opted undefined socket $3 ~~> $3\n",
+				equivalent, e_target);
+			Wiring::wire_to(equivalent, target);
+			Wiring::wire_to(e_target, target);
+		} else {
+			LOGIF(INTER_CONNECTORS,
+				"There is already a socket %S ~~> $3\n"
+				"We use this rather than continue with %S ~~> $3\n",
+				S->symbol_name, e_target, S->symbol_name, target);
+		}
+	} else {
+		Wiring::socket(det.destination_tree, S->symbol_name, S);
+	}
+
+@ Okay, so now for the first cross-referencing fix. The following function traverses
+every node inside the |migrant| tree. The first thing to do is to correct |P->tree|,
+which records, for every node, the tree to which it belongs: this is why the traverse
+needs to visit every node inside |migrant| (including its own head node).
+
+But then there are only two cases of interest: primitive invocations, and package
+head nodes.
+
+=
+void Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, void *state) {
+	transmigration_details *det = (transmigration_details *) state;
+	P->tree = I;
+	inter_symbol *primitive = Inter::Inv::read_primitive(det->origin_tree, P);
+	if (primitive)
+		@<Transfer from a primitive in the origin tree to one in the destination@>;
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST)
+		@<This is the headnode of a subpackage of migrant@>;
 }
 
-@<Correct the reference to this primitive@> =
-	inter_symbol *equivalent_primitive = Transmigration::cached_equivalent(primitive);
+@ Primitive invocations matter because, say, |inv !printnumber| in the migrant
+will contain a reference to the origin tree's definition of |!printnumber|; this
+must be converted to a reference to the destination's definition of the same thing.
+
+Note that we expect to perform this operation frequently -- there may be, say,
+10,000 primitive invocations in the migrant, but always of the same 50 or so
+primitives round and around -- so we cache the results.
+
+@<Transfer from a primitive in the origin tree to one in the destination@> =
+	inter_symbol *equivalent_primitive = Transmigration::known_equivalent(primitive);
 	if (equivalent_primitive == NULL) {
-		equivalent_primitive = InterSymbolsTable::symbol_from_name(InterTree::global_scope(cms->destination_tree), primitive->symbol_name);
+		equivalent_primitive = InterSymbolsTable::symbol_from_name(
+			InterTree::global_scope(det->destination_tree), primitive->symbol_name);
 		if (equivalent_primitive == NULL) @<Duplicate this primitive@>;
-		if (equivalent_primitive) Transmigration::cache(primitive, equivalent_primitive);
+		Transmigration::learn_equivalent(primitive, equivalent_primitive);
 	}
 	if (equivalent_primitive)
-		P->W.instruction[INVOKEE_INV_IFLD] = InterSymbolsTable::id_from_symbol(cms->destination_tree, NULL, equivalent_primitive);
+		Inter::Inv::write_primitive(det->destination_tree, P, equivalent_primitive);
+
+@ In the worst-case scenario, the destination might not even have a declaration
+of |!printnumber|. (Actually this is unlikely in practice, because we tend to make
+the same set of primitive declarations in every tree.) In this case, we write a
+new declaration in the root package of the destination, duplicating the one in
+the root package of the origin.
 
 @<Duplicate this primitive@> =
-	equivalent_primitive = InterSymbolsTable::symbol_from_name_creating(InterTree::global_scope(cms->destination_tree), primitive->symbol_name);
-	inter_tree_node *D = Inode::new_with_1_data_field(cms->primitives_point, PRIMITIVE_IST, InterSymbolsTable::id_from_symbol(cms->destination_tree, NULL, equivalent_primitive), NULL, 0);
+	equivalent_primitive = InterSymbolsTable::symbol_from_name_creating(
+		InterTree::global_scope(det->destination_tree), primitive->symbol_name);
+	inter_tree_node *D = Inode::new_with_1_data_field(&(det->primitives_point), PRIMITIVE_IST,
+		InterSymbolsTable::id_from_symbol(det->destination_tree, NULL, equivalent_primitive),
+		NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
 	for (int i=CAT_PRIM_IFLD; i<old_D->W.extent; i++) {
 		Inode::extend_instruction_by(D, 1);
 		D->W.instruction[i] = old_D->W.instruction[i];
 	}
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(cms->primitives_point), D);
+	inter_error_message *E = InterConstruct::verify_construct(
+		InterBookmark::package(&(det->primitives_point)), D);
 	if (E) {
 		Inter::Errors::issue(E);
 		equivalent_primitive = NULL;
 	} else {
-		NodePlacement::move_to_moving_bookmark(D, cms->primitives_point);
+		NodePlacement::move_to_moving_bookmark(D, &(det->primitives_point));
 	}
+
+@<This is the headnode of a subpackage of migrant@> =
+	inter_package *pack = InterPackage::at_this_head(P);
+	if (InterPackage::is_a_linkage_package(pack))
+		internal_error("tried to transmigrate /main, /main/connectors or /");
+	@<Correct the reference to this package type@>;
+	@<Correct outbound wiring from the package's symbols table@>;
+
+@ Package types present the exact same issue as primitive invocations: the types
+are given in terms of declarations in the origin tree, and have to be transferred
+to matching declarations in the destination.
 
 @<Correct the reference to this package type@> =
-	inter_symbol *original_ptype =
-		InterSymbolsTable::symbol_from_ID(
-			InterTree::global_scope(cms->origin_tree), P->W.instruction[PTYPE_PACKAGE_IFLD]);
-	inter_symbol *equivalent_ptype = Transmigration::cached_equivalent(original_ptype);
+	inter_symbol *original_ptype = InterPackage::read_type(det->origin_tree, P);
+	inter_symbol *equivalent_ptype = Transmigration::known_equivalent(original_ptype);
 	if (equivalent_ptype == NULL) {
-		equivalent_ptype = InterSymbolsTable::symbol_from_name(InterTree::global_scope(cms->destination_tree), original_ptype->symbol_name);
+		equivalent_ptype = InterSymbolsTable::symbol_from_name(
+			InterTree::global_scope(det->destination_tree), original_ptype->symbol_name);
 		if (equivalent_ptype == NULL) @<Duplicate this package type@>;
-		if (equivalent_ptype) Transmigration::cache(original_ptype, equivalent_ptype);
+		Transmigration::learn_equivalent(original_ptype, equivalent_ptype);
 	}
-	if (equivalent_ptype)
-		P->W.instruction[PTYPE_PACKAGE_IFLD] = InterSymbolsTable::id_from_symbol(cms->destination_tree, NULL, equivalent_ptype);
+	InterPackage::write_type(det->destination_tree, P, equivalent_ptype);
 
 @<Duplicate this package type@> =
-	equivalent_ptype = InterSymbolsTable::symbol_from_name_creating(InterTree::global_scope(cms->destination_tree), original_ptype->symbol_name);
-	inter_tree_node *D = Inode::new_with_1_data_field(cms->ptypes_point, PACKAGETYPE_IST, InterSymbolsTable::id_from_symbol(cms->destination_tree, NULL, equivalent_ptype), NULL, 0);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(cms->ptypes_point), D);
+	equivalent_ptype = InterSymbolsTable::symbol_from_name_creating(
+		InterTree::global_scope(det->destination_tree), original_ptype->symbol_name);
+	inter_tree_node *D = Inode::new_with_1_data_field(&(det->ptypes_point), PACKAGETYPE_IST,
+		InterSymbolsTable::id_from_symbol(det->destination_tree, NULL, equivalent_ptype), NULL, 0);
+	inter_error_message *E = InterConstruct::verify_construct(
+		InterBookmark::package(&(det->ptypes_point)), D);
 	if (E) {
 		Inter::Errors::issue(E);
 		equivalent_ptype = NULL;
 	} else {
-		NodePlacement::move_to_moving_bookmark(D, cms->ptypes_point);
+		NodePlacement::move_to_moving_bookmark(D, &(det->ptypes_point));
 	}
 
-@<Correct the reference to this symbol@> =
-	inter_symbol *equivalent = Transmigration::cached_equivalent(target);
+@ Here |S| is some miscellaneous symbol in our subpackage of |migrant| -- it
+can't be either a plug or a socket, since the connectors never migrate -- and
+there are three bad possibilities:
+
+@<Correct outbound wiring from the package's symbols table@> =
+	inter_symbols_table *T = InterPackage::scope(pack);
+	if (T == NULL) internal_error("package with no symbols");
+	LOOP_OVER_SYMBOLS_TABLE(S, T) {
+		if (Wiring::is_wired(S)) {
+			inter_symbol *target = Wiring::cable_end(S);
+			if (SymbolAnnotation::get_b(target, ARCHITECTURAL_IANN))
+				@<S is wired to an architectural symbol in the origin tree@>
+			else if (InterSymbol::is_plug(target))
+				@<S is wired to a loose plug in the origin tree@>
+			else if (InterSymbol::defined_inside(S, det->migrant) == FALSE)
+				@<S is wired to a miscellaneous symbol still in the origin tree@>
+		}
+	}
+
+@ For example, |S| is wired to |WORD_SIZE| ih the origin tree, which is (let
+us say) a constant equal to 4. We wire it instead to |WORD_SIZE| in the destination
+tree, which will also be equal to 4 because we only ever transmigrate between
+trees with the same Inter architecture.
+
+@<S is wired to an architectural symbol in the origin tree@> =
+	inter_symbol *equivalent = Transmigration::known_equivalent(target);
 	if (equivalent == NULL) {
-		TEMPORARY_TEXT(URL)
-		InterSymbolsTable::write_symbol_URL(URL, target);
-		equivalent = InterSymbolsTable::URL_to_symbol(cms->destination->package_head->tree, URL);
-		if ((equivalent == NULL) && (Inter::Kind::is(target)))
-			equivalent = LargeScale::find_symbol_in_tree(cms->destination->package_head->tree, target->symbol_name);
-		if (equivalent == NULL)
-			equivalent = Wiring::plug(cms->destination_tree, target->symbol_name);
-		DISCARD_TEXT(URL)
-		Transmigration::cache(target, equivalent);
+		equivalent = LargeScale::find_architectural_symbol(det->destination_tree,
+			target->symbol_name, Produce::kind_to_symbol(NULL));
+		Transmigration::learn_equivalent(target, equivalent);
 	}
-	Wiring::wire_to(symb, equivalent);
+	Wiring::wire_to(S, equivalent);					
 
-@<Correct any references from the origin to the migrant@> =
-	correct_migrant_state cms;
-	@<Initialise the IPCT state@>;
-	InterTree::traverse(origin->package_head->tree,
-		Transmigration::correct_origin, &cms, NULL, 0);
+@ Here |S| is wired to a plug, and it must be a loose plug because |target| is
+the cable-end from |S|: if that cable ends in a plug, clearly the plug is not
+wired to a socket. That means it is wired to a name, |target ~~> "some_name"|.
+We wire |S| instead to a plug seeking |some_name| in the destination tree;
+note that this may result in a new plug being made there, or may re-use an
+existing one already looking for (or indeed already having found) |"some_name"|.
 
-@ =
+@<S is wired to a loose plug in the origin tree@> =
+	inter_symbol *equivalent = Transmigration::known_equivalent(target);
+	if (equivalent == NULL) {
+		text_stream *N = Wiring::wired_to_name(target);
+		equivalent = Wiring::plug(det->destination_tree, N);
+		Transmigration::learn_equivalent(target, equivalent);
+	}
+	Wiring::wire_to(S, equivalent);					
+
+@ Finally |S| may be wired to some ordinary symbol defined in the origin tree
+but outside of |migrant|. Well, that resource is now outside of the destination
+tree: and this is exactly what plugs in the destination tree are for.
+
+@<S is wired to a miscellaneous symbol still in the origin tree@> =
+	inter_symbol *equivalent = Transmigration::known_equivalent(target);
+	if (equivalent == NULL) {
+		equivalent = Wiring::plug(det->destination_tree, target->symbol_name);
+		Transmigration::learn_equivalent(target, equivalent);
+	}
+	Wiring::wire_to(S, equivalent);
+
+@ Now time for the second sort of correction: references from the origin tree
+into the migrant. If we care about those, then we traverse so that the following 
+visits every node in the origin tree. Note that at this point the head node
+of |migrant| has been removed from the origin tree -- so this visitor can never
+visit anything inside |migrant|.
+
+Note that we do not correct references from the origin tree's |/main/connectors|
+package, i.e., plugs and sockets wired to something in |migrant|; we handle
+those separately (see above).
+
+=
 void Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, void *state) {
-	correct_migrant_state *cms = (correct_migrant_state *) state;
+	transmigration_details *det = (transmigration_details *) state;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = InterPackage::at_this_head(P);
-		if (pack == NULL) internal_error("no package defined here");
-		if (InterPackage::is_a_linkage_package(pack)) return;
-		inter_symbols_table *T = InterPackage::scope(pack);
-		if (T == NULL) internal_error("package with no symbols");
-		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
-			if (Wiring::is_wired(symb)) {
-				inter_symbol *target = Wiring::cable_end(symb);
-				inter_package *target_package = InterSymbol::package(target);
-				while ((target_package) && (target_package != cms->migrant)) {
-					target_package = InterPackage::parent(target_package);
+		if (InterPackage::is_a_linkage_package(pack) == FALSE) {
+			inter_symbols_table *T = InterPackage::scope(pack);
+			LOOP_OVER_SYMBOLS_TABLE(S, T)
+				if (Wiring::is_wired(S)) {
+					inter_symbol *target = Wiring::cable_end(S);
+					if (InterSymbol::defined_inside(target, det->migrant))
+						@<S is wired to a symbol in the migrant@>;
 				}
-				if (target_package == cms->migrant)
-					@<Correct the origin reference to this migrant symbol@>;
-			}
 		}
 	}
 }
 
-@<Correct the origin reference to this migrant symbol@> =
-	inter_symbol *equivalent = Transmigration::cached_equivalent(target);
+@ This is now symmetrical to the case above. |S| is wired to what is now a
+resource in a different tree, so it needs to be wired to a plug instead.
+
+@<S is wired to a symbol in the migrant@> =
+	inter_symbol *equivalent = Transmigration::known_equivalent(target);
 	if (equivalent == NULL) {
-		TEMPORARY_TEXT(URL)
-		InterSymbolsTable::write_symbol_URL(URL, target);
-		equivalent = Wiring::plug(cms->origin_tree, URL);
-		DISCARD_TEXT(URL)
-		Transmigration::cache(target, equivalent);
+		equivalent = Wiring::plug(det->origin_tree, S->symbol_name);
+		Transmigration::learn_equivalent(target, equivalent);
 	}
-	Wiring::wire_to(symb, equivalent);
+	Wiring::wire_to(S, equivalent);
 
-@<Reconcile sockets in the origin@> =
-	inter_package *origin_connectors =
-		LargeScale::connectors_package_if_it_exists(origin_tree);
-	if (origin_connectors) {
-		inter_symbols_table *T = InterPackage::scope(origin_connectors);
-		if (T == NULL) internal_error("package with no symbols");
-		LOOP_OVER_SYMBOLS_TABLE(symb, T) {
-			if (InterSymbol::is_socket(symb)) {
-				inter_symbol *target = Wiring::cable_end(symb);
-				inter_package *target_package = InterSymbol::package(target);
-				while ((target_package) && (target_package != migrant)) {
-					target_package = InterPackage::parent(target_package);
-				}
-				if (target_package == migrant) {
-					LOGIF(INTER_CONNECTORS, "Origin offers socket inside migrant: $3 == $3\n", symb, target);
-					inter_symbol *equivalent = Wiring::find_socket(destination_tree, symb->symbol_name);
-					if (equivalent) {
-						inter_symbol *e_target = Wiring::cable_end(equivalent);
-						if (!InterSymbol::is_defined(e_target)) {
-							LOGIF(INTER_CONNECTORS, "Able to match with $3 ~~> $3\n", equivalent, Wiring::cable_end(equivalent));
-							Wiring::wire_to(equivalent, target);
-							Wiring::wire_to(e_target, target);
-						} else {
-							LOGIF(INTER_CONNECTORS, "Clash of sockets\n");
-						}
-					} else {
-						Wiring::socket(destination_tree, symb->symbol_name, symb);
-					}
-				}
-			}
-		}
-	}
-
-@ 
+@ That just leaves the cache. The idea is that for each different act of
+transmigration, we want to cache the symbol conversions made. The following
+is fast, but a little wasteful of memory, since it involves storing two fields
+in every //inter_symbol//:
 
 =
 typedef struct transmigration_data {
-	int link_time;
-	struct inter_symbol *linked_to;
+	int valid_on_which_transmigration;
+	struct inter_symbol *cached_equivalent;
 } transmigration_data;
 
+@ =
 transmigration_data Transmigration::new_transmigration_data(inter_symbol *S) {
 	transmigration_data td;
-	td.link_time = 0;
-	td.linked_to = NULL;
+	td.valid_on_which_transmigration = 0;
+	td.cached_equivalent = NULL;
 	return td;
 }
 
-int ipct_cache_count = 0;
+@ The scheme is that each different act of transmigration has its own unique
+ID, counting upwards from 1. 
 
+=
+int current_transmigration_count = 1;
 void Transmigration::begin_cache_session(void) {
-	ipct_cache_count++;
+	++current_transmigration_count;
 }
 
-void Transmigration::cache(inter_symbol *S, inter_symbol *V) {
-	S->transmigration.linked_to = V;
-	S->transmigration.link_time = ipct_cache_count;
+@ This count is used only to see if the |cached_equivalent| symbol was set
+during the current transmigration (rather than some previous one). Using this
+count is quicker, since it saves the time needed to walk through all existing
+symbols resetting the |cached_equivalent| fields to |NULL|.
+
+=
+void Transmigration::learn_equivalent(inter_symbol *S, inter_symbol *V) {
+	S->transmigration.cached_equivalent = V;
+	S->transmigration.valid_on_which_transmigration = current_transmigration_count;
 }
 
-inter_symbol *Transmigration::cached_equivalent(inter_symbol *S) {
-	if (S->transmigration.link_time == ipct_cache_count) return S->transmigration.linked_to;
+inter_symbol *Transmigration::known_equivalent(inter_symbol *S) {
+	if (S->transmigration.valid_on_which_transmigration == current_transmigration_count)
+		return S->transmigration.cached_equivalent;
 	return NULL;
 }

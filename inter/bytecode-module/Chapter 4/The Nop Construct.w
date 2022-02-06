@@ -8,7 +8,7 @@ Defining the nop construct.
 
 =
 void Inter::Nop::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		NOP_IST, NULL,
 		I"nop", I"nops");
 	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + INSIDE_CODE_PACKAGE;
@@ -17,7 +17,7 @@ void Inter::Nop::define(void) {
 
 inter_error_message *Inter::Nop::new(inter_bookmark *IBM, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_0_data_fields(IBM, NOP_IST, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

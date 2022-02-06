@@ -1,4 +1,4 @@
-[Inter::Defn::] Definition.
+[InterConstruct::] Definition.
 
 Defining the Inter format.
 
@@ -29,7 +29,7 @@ typedef struct inter_construct {
 
 inter_construct *IC_lookup[MAX_INTER_CONSTRUCTS];
 
-inter_construct *Inter::Defn::create_construct(inter_ti ID, wchar_t *syntax,
+inter_construct *InterConstruct::create_construct(inter_ti ID, wchar_t *syntax,
 	text_stream *sing,
 	text_stream *plur) {
 	inter_construct *IC = CREATE(inter_construct);
@@ -66,10 +66,10 @@ VOID_METHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_tree_nod
 @e INVALID_IST from 0
 
 =
-void Inter::Defn::create_language(void) {
+void InterConstruct::create_language(void) {
 	for (int i=0; i<MAX_INTER_CONSTRUCTS; i++) IC_lookup[i] = NULL;
 
-	Inter::Defn::create_construct(INVALID_IST, NULL, I"nothing", I"nothings");
+	InterConstruct::create_construct(INVALID_IST, NULL, I"nothing", I"nothings");
 	SymbolAnnotation::declare_canonical_annotations();
 
 	Inter::Nop::define();
@@ -113,23 +113,23 @@ void Inter::Defn::create_language(void) {
 @d CAN_HAVE_CHILDREN 8
 
 =
-inter_error_message *Inter::Defn::verify_construct(inter_package *owner, inter_tree_node *P) {
+inter_error_message *InterConstruct::verify_construct(inter_package *owner, inter_tree_node *P) {
 	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
+	inter_error_message *E = InterConstruct::get_construct(P, &IC);
 	if (E) return E;
 	VOID_METHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, owner, &E);
 	return E;
 }
 
-inter_error_message *Inter::Defn::transpose_construct(inter_package *owner, inter_tree_node *P, inter_ti *grid, inter_ti max) {
+inter_error_message *InterConstruct::transpose_construct(inter_package *owner, inter_tree_node *P, inter_ti *grid, inter_ti max) {
 	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
+	inter_error_message *E = InterConstruct::get_construct(P, &IC);
 	if (E) return E;
 	VOID_METHOD_CALL(IC, CONSTRUCT_TRANSPOSE_MTID, P, grid, max, &E);
 	return E;
 }
 
-inter_error_message *Inter::Defn::get_construct(inter_tree_node *P, inter_construct **to) {
+inter_error_message *InterConstruct::get_construct(inter_tree_node *P, inter_construct **to) {
 	if (P == NULL) return Inode::error(P, I"invalid frame", NULL);
 	if ((P->W.instruction[ID_IFLD] == INVALID_IST) || (P->W.instruction[ID_IFLD] >= MAX_INTER_CONSTRUCTS))
 		return Inode::error(P, I"no such construct", NULL);
@@ -139,14 +139,14 @@ inter_error_message *Inter::Defn::get_construct(inter_tree_node *P, inter_constr
 	return NULL;
 }
 
-inter_error_message *Inter::Defn::write_construct_text(OUTPUT_STREAM, inter_tree_node *P) {
+inter_error_message *InterConstruct::write_construct_text(OUTPUT_STREAM, inter_tree_node *P) {
 	if (P->W.instruction[ID_IFLD] == NOP_IST) return NULL;
-	return Inter::Defn::write_construct_text_allowing_nop(OUT, P);
+	return InterConstruct::write_construct_text_allowing_nop(OUT, P);
 }
 
-inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREAM, inter_tree_node *P) {
+inter_error_message *InterConstruct::write_construct_text_allowing_nop(OUTPUT_STREAM, inter_tree_node *P) {
 	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
+	inter_error_message *E = InterConstruct::get_construct(P, &IC);
 	if (E) return E;
 	for (inter_ti L=0; L<P->W.instruction[LEVEL_IFLD]; L++) WRITE("\t");
 	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
@@ -162,7 +162,7 @@ inter_error_message *Inter::Defn::write_construct_text_allowing_nop(OUTPUT_STREA
 
 inter_package *latest_block_package = NULL;
 
-inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM) {
+inter_error_message *InterConstruct::read_construct_text(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM) {
 	inter_line_parse ilp;
 	ilp.line = line;
 	ilp.mr = Regexp::create_mr();
@@ -221,15 +221,15 @@ inter_error_message *Inter::Defn::read_construct_text(text_stream *line, inter_e
 	return Inter::Errors::plain(I"bad inter line", eloc);
 }
 
-void Inter::Defn::set_latest_block_package(inter_package *F) {
+void InterConstruct::set_latest_block_package(inter_package *F) {
 	latest_block_package = F;
 }
 
-inter_package *Inter::Defn::get_latest_block_package(void) {
+inter_package *InterConstruct::get_latest_block_package(void) {
 	return latest_block_package;
 }
 
-inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_ti cons, int level, inter_error_location *eloc) {
+inter_error_message *InterConstruct::vet_level(inter_bookmark *IBM, inter_ti cons, int level, inter_error_location *eloc) {
 	int actual = level;
 	if ((InterBookmark::package(IBM)) &&
 		(InterPackage::is_a_root_package(InterBookmark::package(IBM)) == FALSE))	
@@ -245,16 +245,16 @@ inter_error_message *Inter::Defn::vet_level(inter_bookmark *IBM, inter_ti cons, 
 	return Inter::Errors::plain(I"no such construct", eloc);
 }
 
-int Inter::Defn::get_level(inter_tree_node *P) {
+int InterConstruct::get_level(inter_tree_node *P) {
 	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
+	inter_error_message *E = InterConstruct::get_construct(P, &IC);
 	if (E) return 0;
 	return (int) P->W.instruction[LEVEL_IFLD];
 }
 
-inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
+inter_error_message *InterConstruct::verify_children_inner(inter_tree_node *P) {
 	inter_construct *IC = NULL;
-	inter_error_message *E = Inter::Defn::get_construct(P, &IC);
+	inter_error_message *E = InterConstruct::get_construct(P, &IC);
 	if (E) return E;
 	inter_package *pack = InterPackage::container(P);
 	int need = INSIDE_PLAIN_PACKAGE;
@@ -263,7 +263,7 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 	if ((IC->usage_permissions & need) != need) {
 		text_stream *M = Str::new();
 		WRITE_TO(M, "construct (%d) '", P->W.instruction[LEVEL_IFLD]);
-		Inter::Defn::write_construct_text(M, P);
+		InterConstruct::write_construct_text(M, P);
 		WRITE_TO(M, "' (%d) cannot be used ", IC->construct_ID);
 		switch (need) {
 			case OUTSIDE_OF_PACKAGES: WRITE_TO(M, "outside packages"); break;
@@ -278,11 +278,11 @@ inter_error_message *Inter::Defn::verify_children_inner(inter_tree_node *P) {
 	return E;
 }
 
-void Inter::Defn::lint(inter_tree *I) {
-	InterTree::traverse(I, Inter::Defn::lint_visitor, NULL, NULL, -PACKAGE_IST);
+void InterConstruct::lint(inter_tree *I) {
+	InterTree::traverse(I, InterConstruct::lint_visitor, NULL, NULL, -PACKAGE_IST);
 }
 
-void Inter::Defn::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
+void InterConstruct::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_ti c = Inode::get_package(P)->resource_ID;
 	inter_ti a = Inode::get_package_slowly_getting_same_answer(P);
 	if (c != a) {
@@ -295,6 +295,6 @@ void Inter::Defn::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 		internal_error("misplaced package");
 	}
 
-	Produce::guard(Inter::Defn::verify_children_inner(P));
+	Produce::guard(InterConstruct::verify_children_inner(P));
 }
 

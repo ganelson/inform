@@ -281,7 +281,7 @@ inter_symbol *Wiring::find_socket(inter_tree *I, text_stream *name) {
 	inter_package *connectors = LargeScale::connectors_package_if_it_exists(I);
 	inter_symbols_table *CT = InterPackage::scope(connectors);
 	if (connectors) {
-		inter_symbol *S = InterSymbolsTable::symbol_from_name_not_equating(CT, name);
+		inter_symbol *S = InterSymbolsTable::symbol_from_name_not_following(CT, name);
 		if (InterSymbol::is_socket(S)) return S;
 	}
 	return NULL;
@@ -321,7 +321,7 @@ inter_symbol *Wiring::socket(inter_tree *I, text_stream *name, inter_symbol *def
 	}
 	inter_package *connectors = LargeScale::ensure_connectors_package(I);
 	inter_symbols_table *CT = InterPackage::scope(connectors);
-	inter_symbol *socket = InterSymbolsTable::symbol_from_name_not_equating(CT, name);
+	inter_symbol *socket = InterSymbolsTable::symbol_from_name_not_following(CT, name);
 	if (socket) {
 		if (InterSymbol::is_socket(socket) == FALSE)
 			internal_error("tried to make socket with same name as a plug");
@@ -358,7 +358,7 @@ inter_symbol *Wiring::plug(inter_tree *I, text_stream *wanted) {
 	inter_symbols_table *CT = InterPackage::scope(connectors);
 	TEMPORARY_TEXT(name)
 	WRITE_TO(name, "_plug_%S", wanted);
-	inter_symbol *plug = InterSymbolsTable::symbol_from_name_not_equating(CT, name);
+	inter_symbol *plug = InterSymbolsTable::symbol_from_name_not_following(CT, name);
 	if (plug) {
 		if (InterSymbol::is_plug(plug) == FALSE)
 			internal_error("tried to make plug with same name as a socket");

@@ -8,7 +8,7 @@ Defining the defaultvalue construct.
 
 =
 void Inter::DefaultValue::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		DEFAULTVALUE_IST,
 		L"defaultvalue (%i+) = (%c+)",
 		I"defaultvalue", I"defaultvalues");
@@ -27,7 +27,7 @@ void Inter::DefaultValue::define(void) {
 
 =
 void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IBM, DEFAULTVALUE_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, DEFAULTVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *con_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
@@ -43,7 +43,7 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 
 inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_ti KID, inter_ti val1, inter_ti val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

@@ -188,7 +188,7 @@ is wired to something elsewhere in the tree, and doesn't really have a local
 meaning of its own.
 
 =
-inter_symbol *InterSymbolsTable::symbol_from_name_not_equating(inter_symbols_table *T,
+inter_symbol *InterSymbolsTable::symbol_from_name_not_following(inter_symbols_table *T,
 	text_stream *name) {
 	return InterSymbolsTable::search_inner(T, name, FALSE, 0, FALSE);
 }
@@ -253,7 +253,7 @@ a different meaning in one inter frame than in another. We provide two ways
 to access this: one following equations, the other not.
 
 =
-inter_symbol *InterSymbolsTable::symbol_from_ID_not_equating(inter_symbols_table *T,
+inter_symbol *InterSymbolsTable::symbol_from_ID_not_following(inter_symbols_table *T,
 	inter_ti ID) {
 	if (T == NULL) return NULL;
 	int index = (int) ID - (int) SYMBOL_BASE_VAL;
@@ -263,7 +263,7 @@ inter_symbol *InterSymbolsTable::symbol_from_ID_not_equating(inter_symbols_table
 }
 
 inter_symbol *InterSymbolsTable::symbol_from_ID(inter_symbols_table *T, inter_ti ID) {
-	inter_symbol *S = InterSymbolsTable::symbol_from_ID_not_equating(T, ID);
+	inter_symbol *S = InterSymbolsTable::symbol_from_ID_not_following(T, ID);
 	return Wiring::cable_end(S);
 }
 

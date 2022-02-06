@@ -87,6 +87,15 @@ inter_package *InterSymbol::package(inter_symbol *S) {
 	return InterSymbolsTable::package(S->owning_table);
 }
 
+int InterSymbol::defined_inside(inter_symbol *S, inter_package *M) {
+	inter_package *P = InterSymbol::package(S);
+	while (P) {
+		if (P == M) return TRUE;
+		P = InterPackage::parent(P);
+	}
+	return FALSE;
+}
+
 @ This is used only as a final criterion in sorting algorithms for symbols.
 It assumes no table contains more than 100,000 symbols, which I think is a
 pretty safe assumption, but in fact a violation of this would make no real

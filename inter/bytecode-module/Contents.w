@@ -10,7 +10,7 @@ Preliminaries
 Chapter 1: Setting Up
 	Bytecode Module
 
-Chapter 2: Interoperability
+Chapter 2: The Trees
 	Inter Trees
 	Inter Nodes
 	Bookmarks
@@ -24,7 +24,7 @@ Chapter 2: Interoperability
 	The Wiring
 	Transmigration
 
-Chapter 3: Language Definition
+Chapter 3: Their Instructions
 	Definition
 	Inter in Binary Files
 	Inter in Text Files

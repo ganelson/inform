@@ -8,7 +8,7 @@ Defining the label construct.
 
 =
 void Inter::Label::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		LABEL_IST,
 		L"(.%i+)",
 		I"label", I"labels");
@@ -30,9 +30,9 @@ void Inter::Label::define(void) {
 =
 void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
-	*E = Inter::Defn::vet_level(IBM, LABEL_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, LABEL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	inter_package *routine = Inter::Defn::get_latest_block_package();
+	inter_package *routine = InterConstruct::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'label' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
@@ -45,7 +45,7 @@ void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 
 inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *lab_name, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, LABEL_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, lab_name), eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

@@ -54,7 +54,7 @@ void BytecodeModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 
-	Inter::Defn::create_language();
+	InterConstruct::create_language();
 	Inter::Types::create_all();
 }
 void BytecodeModule::end(void) {

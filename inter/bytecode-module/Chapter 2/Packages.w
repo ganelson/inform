@@ -42,9 +42,7 @@ resource list of the tree's warehouse, and has a resource ID within it. See
 typedef struct inter_package {
 	struct inter_tree_node *package_head;
 	struct inter_symbols_table *package_scope;
-	struct text_stream *package_name_t;
 	int package_flags; /* a bitmap of the |*_PACKAGE_FLAG| bits */
-	struct dictionary *name_lookup;
 	inter_ti resource_ID; /* within the warehouse for the tree holding the package */
 	CLASS_DEFINITION
 } inter_package;
@@ -62,9 +60,7 @@ inter_package *InterPackage::new(inter_tree *I, inter_ti n) {
 	pack->package_head = NULL;
 	pack->package_scope = NULL;
 	pack->package_flags = 0;
-	pack->package_name_t = NULL;
 	pack->resource_ID = n;
-	pack->name_lookup = Dictionaries::new(16, FALSE);
 	return pack;
 }
 
@@ -118,28 +114,21 @@ node, or is 0 for the root package.
 int InterPackage::baseline(inter_package *P) {
 	if (P == NULL) return 0;
 	if (InterPackage::is_a_root_package(P)) return 0;
-	return Inter::Defn::get_level(InterPackage::head(P));
+	return InterConstruct::get_level(InterPackage::head(P));
 }
 
 @h Naming.
-It seems redundant to store the textual name of a package, but (a) there are
-timing issues involved when packages are loaded in binary form from a file,
-and (b) as noted above, the name symbol is not visible inside the package.
+The name of a package is by definition the name of its symbol, which can be
+extracted from the bytecode of its |package| instruction, stored at the head-node.
+(And the root package, which has no head-node, has the empty name.)
 
 =
 text_stream *InterPackage::name(inter_package *pack) {
-	if (pack == NULL) return NULL;
-	return pack->package_name_t;
-}
-
-void InterPackage::set_name(inter_tree *I, inter_package *Q, inter_package *P, text_stream *N) {
-	if (P == NULL) internal_error("null package");
-	if (N == NULL) internal_error("null package name");
-	P->package_name_t = Str::duplicate(N);
-	if (Str::len(N) > 0) {
-		LargeScale::note_package_name(I, P, N);
-		InterPackage::add_subpackage_name(Q, P);
+	if (pack) {
+		inter_symbol *S = InterPackage::name_symbol(pack);
+		if (S) return S->symbol_name;
 	}
+	return NULL;
 }
 
 @h Scope.
@@ -303,37 +292,20 @@ void InterPackage::log(OUTPUT_STREAM, void *vp) {
 }
 
 @ The other direction, parsing a URL into its corresponding //inter_package//, is
-necessarily slower. But we do our best to speed this up by giving each package a
-dictionary (i.e., an associative hash) of names of its immediate subpackages.
-
-=
-void InterPackage::add_subpackage_name(inter_package *Q, inter_package *P) {
-	if (Q == NULL) internal_error("no parent supplied");
-	text_stream *N = P->package_name_t;
-	dict_entry *de = Dictionaries::find(Q->name_lookup, N);
-	if (de) {
-		LOG("This would be the second '%S' in $6\n", N, Q);
-		internal_error("duplicated package name");
-	}
-	Dictionaries::create(Q->name_lookup, N);
-	Dictionaries::write_value(Q->name_lookup, N, (void *) P);
-}
-
-void InterPackage::remove_subpackage_name(inter_package *Q, inter_package *P) {
-	if (Q == NULL) internal_error("no parent supplied");
-	text_stream *N = P->package_name_t;
-	dict_entry *de = Dictionaries::find(Q->name_lookup, N);
-	if (de) Dictionaries::write_value(Q->name_lookup, N, NULL);
-}
-
-@ This makes rapid lookup possible. The following looks for a subpackage called
-|name| within the parent package |P|:
+necessarily slower, and we perform it as little as possible. The following looks
+for a subpackage called |name| within the parent package |P|:
 
 =
 inter_package *InterPackage::from_name(inter_package *P, text_stream *name) {
 	if (P == NULL) return NULL;
-	dict_entry *de = Dictionaries::find(P->name_lookup, name);
-	if (de) return (inter_package *) Dictionaries::read_value(P->name_lookup, name);
+	if (P == P->package_head->tree->root_package) {
+		if (Str::eq(name, I"main"))
+			return LargeScale::main_package_if_it_exists(P->package_head->tree);
+	} else {
+		inter_symbol *S = InterSymbolsTable::symbol_from_name_not_following(
+			P->package_scope, name);
+		if (S) return InterPackage::at_this_head(S->definition);
+	}
 	return NULL;
 }
 

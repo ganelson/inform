@@ -346,7 +346,7 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		if (BinaryFiles::read_int32(fh, &c) == FALSE) Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		PUT_TO(N, (int) c);
 	}
-	InterPackage::set_name(I, (parent)?(parent):(I->root_package), stored_package, N);
+	LargeScale::note_package_name(I, stored_package, N);
 	DISCARD_TEXT(N)
 
 @<Write a package resource@> =
@@ -358,8 +358,8 @@ that's the end of the list and therefore the block. (There is no resource 0.)
 		BinaryFiles::write_int32(fh, (unsigned int) InterPackage::is_a_function_body(P));
 		BinaryFiles::write_int32(fh, (unsigned int) InterPackage::is_a_root_package(P));
 		BinaryFiles::write_int32(fh, P->package_scope->resource_ID);
-		BinaryFiles::write_int32(fh, (unsigned int) Str::len(P->package_name_t));
-		LOOP_THROUGH_TEXT(C, P->package_name_t)
+		BinaryFiles::write_int32(fh, (unsigned int) Str::len(InterPackage::name(P)));
+		LOOP_THROUGH_TEXT(C, InterPackage::name(P))
 			BinaryFiles::write_int32(fh, (unsigned int) Str::get(C));
 	}
 
@@ -451,10 +451,10 @@ enough that the slot exists for the eventual list to be stored in.
 		} else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	if (trace_bin) WRITE_TO(STDOUT, "Verify\n");
 		inter_error_message *E = NULL;
-		if (grid) E = Inter::Defn::transpose_construct(owner, P, grid, grid_extent);
+		if (grid) E = InterConstruct::transpose_construct(owner, P, grid, grid_extent);
 		if (E) { Inter::Errors::issue(E); exit(1); }
 		suppress_type_errors = TRUE;
-		E = Inter::Defn::verify_construct(owner, P);
+		E = InterConstruct::verify_construct(owner, P);
 		suppress_type_errors = FALSE;
 		if (E) { Inter::Errors::issue(E); exit(1); }
 	if (trace_bin) WRITE_TO(STDOUT, "Done\n");

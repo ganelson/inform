@@ -106,18 +106,18 @@ void Inter::Errors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
 					inter_tree_node *prev = InterTree::previous(X);
 					if (prev) {
 						WRITE("%2d. -1 ", n);
-						Inter::Defn::write_construct_text_allowing_nop(OUT, prev);
+						InterConstruct::write_construct_text_allowing_nop(OUT, prev);
 					}
 					WRITE("%2d. ** ", n);
-					Inter::Defn::write_construct_text_allowing_nop(OUT, X);
+					InterConstruct::write_construct_text_allowing_nop(OUT, X);
 					inter_tree_node *next = InterTree::previous(X);
 					if (next) {
 						WRITE("%2d. +1 ", n);
-						Inter::Defn::write_construct_text_allowing_nop(OUT, next);
+						InterConstruct::write_construct_text_allowing_nop(OUT, next);
 					}
 				} else {
 					WRITE("%2d.    ", (n-i));
-					Inter::Defn::write_construct_text_allowing_nop(OUT, X);
+					InterConstruct::write_construct_text_allowing_nop(OUT, X);
 				}
 				break;
 			}
@@ -127,6 +127,6 @@ void Inter::Errors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
 	}
 	LOOP_THROUGH_INTER_CHILDREN(C, F) {
 		WRITE("%2d.    ", (n+1));
-		Inter::Defn::write_construct_text_allowing_nop(OUT, C);
+		InterConstruct::write_construct_text_allowing_nop(OUT, C);
 	}
 }		

@@ -32,7 +32,6 @@ code reducing the AST to a list of still-abstract operations to perform. The IR
 is then then further converted to actual code for a particular processor. So
 the flow might look like this:
 = (text)
-  Swift
   source  ---->   AST   ------------>   IR  ---->  Assembly language
 =
 In the Inform family of tools, two languages have to be compiled: natural
@@ -40,24 +39,22 @@ language by Inform 7, and also kit source by Inter (the tool), which looks more
 like a conventional programming language. Having very different syntaxes, they
 have different ASTs:
 
-(*) For I7, it's a |parse_node_tree| structure: see the //syntax// module.
-(*) For Inter, it's an |inter_schema| structure: see the //building// module.
+(*) For I7, a |parse_node_tree|, managed by the //syntax// module.
+(*) For Inter, an |inter_schema|, managed by the //building// module.
 
 But these two compiler flows share the same IR -- an //inter_tree// provides the
 intermediate representation for both:[1]
 = (text)
                  "AST"                 "IR"
-+-----------------------+
-| source        syntax  |
-| text    --->   tree -------+
-|-----------------------+     \
- INFORM7                       \
-                                ---->  Inter  ---->  C, I6, or others
-+-----------------------+      /
-| kit           inter   |     /
-| source  --->  schemas -----+
-+-----------------------+
- INTER
+  source        syntax   
+  text    --->   tree -------+
+         INFORM7              \
+                               \
+                                ---->  Inter  ---->  "Final" output: C, I6, or other
+                               /       tree
+  kit           Inter         /
+  source  --->  schemas -----+
+          INTER
 =
 Because we want to work with hybrid programs, part compiled by one flow and
 part by the other, Inter is not quite as low-level as most IRs.[2] It still
@@ -65,9 +62,9 @@ contains a great deal of semantic markup, making analysis and optimisation
 feasible. (Not very much of this is actually done at present, but see e.g.
 //pipeline: Eliminate Redundant Operations Stage//.)
 
-[1] This diagram is a slight simplification, because //inform7// also makes
-use of Inter schemas when generating code for certain low-level operations,
-such as storing values in properties. But the big picture is right.
+[1] In fact Inter schemas are so useful as a tool for generating short runs of
+Inter that the main //inform7// compiler also uses them from time to time, but
+not directly to represent the source text.
 
 [2] Though IRs vary considerably. Microsoft's Common Intermediate Language (CIL),
 used as a back-end by C#, has quite low-level bytecode but stores it in a
@@ -131,6 +128,132 @@ by Inter itself, such as the identities of primitives like |!add| or
 rather than anything about the program it represents. Material from that
 program -- a variable, say, or a function -- is not allowed at the root level.
 
+Symbols can be annotated in various ways. See //Annotations//. They also come
+in several types, see //InterSymbol::get_type//, and can have a few flags,
+see //InterSymbol::get_flag//.
+
+@ The bytecode in a package can only refer to resources using symbols in that
+same package. On the face of it, that means packages are so well sealed up
+that they might as well all be independent programs, unable to see each other's
+variables, constants and functions.
+
+But that is not true because symbols in one package can be "wired" to symbols
+in another:[1] see //The Wiring//. We write |S ~~> T| if the symbol |S| is "wired to"
+|T|, and we understand this as meaning that |S| means whatever |T| does.
+= (text)
+    +-----------------+        +-------------------------------+
+    | Package X       |        | Package Y                     |
+    |                 |        |                               |
+    |  earth ~~~~~~~~~~~~~~~~~~~~> earth                       |
+    +-----------------+        | .....                         |
+                               | variable K_int32 earth = 7    |
+                               +-------------------------------+
+=
+In this example, the symbol |earth| in package |X| is undefined. Instead it is
+wired to a different symbol of the same name in package |Y|, which is defined
+as the name of a variable declared in that package. (The names do not have to
+be the same, but they often are.)
+
+Wiring is directional: |S ~~> T| very definitely does not mean that |T ~~> S|,
+and indeed circuits are forbidden, because |S1 ~~> S2 ~~> ... ~~> S1| would
+create a circular definition. To change metaphor for a moment, it's as if, on
+looking up |S| in the index of a book, we found the entry "|S|, see |T|": we
+then have to look up |T| to find, say, "|T|, 125", and turn to page 125. It
+would be no good to find instead "|T|, see |S|".
+
+[1] There are fleeting exceptional cases when a symbol can be wired to another
+symbol in the same package, but those occur only with sockets and plugs in the
+special connectors package, and only temporarily even then.
+
+@ Special symbols called plugs and sockets are used to import or export meanings
+from one tree of Inter code to a potential other tree, which will be "linked"
+into it later on.
+
+For example, //inform7// compiles a tree of Inter, but then //inter// links
+this with a separately compiled Inter tree from //BasicInformKit//. Each both
+imports from and exports to the other.
+= (text)
+    .....................           .......................
+    .  Main tree        . ~~~~~~~~> . BasicInformKit tree .
+    .                   .           .                     .
+    .                   . <~~~~~~~~ .                     .
+    .....................           .......................
+=
+It would be chaotic[1] to allow random symbols in packages all over each tree
+to be wired directly to symbols in the other. Instead, every tree has a sort
+of embassy package |/main/connectors| (a package called |connectors| which is
+a subpackage of |main|) which acts as an intermediary.
+= (text)
+    ...............................       ..................................
+    .  Main tree                  .       .  BasicInformKit tree           .
+    .              +------------+ .       . +------------+                 .
+    .  other       | connectors | .       . | connectors |                 .
+    .  packages ~~~~~~~> plugs ~~~~~~~~~~~~~~> sockets ~~~~~>   other      .
+    .            <~~~~ sockets <~~~~~~~~~~~~~~ plugs <~~~~~~~~~ packages   .
+    .              +------------+ .       . +------------+                 .
+    ...............................       ..................................
+=
+The connectors package contains only symbols, and they are all either "plugs" or
+"sockets". A "plug" is made for every external meaning needed by a tree; a
+"socket" is made for each meaning that the tree declares itself but wants to
+make available for other trees to access. So if you know the contents of the
+connectors package of a tree, you know everything it needs from outside (plugs)
+and everything it offers to the outside (sockets).
+
+For further zany ASCII-art like this, see //The Wiring//.
+
+[1] And also slow, and prone to namespace collisions.
+
+@ It is not literally the case that plugs in one tree are wired to sockets in
+another, as the diagram above suggests. The actual wiring-together occurs only
+when (part of) one tree is merged into another, in what is called //Transmigration//.
+
+Transmigration is by definition the process of moving a package from one tree
+to another. Almost the whole design of Inter is motivated by the need to make this
+fast -- the hierarchies of packages, the use of wiring, and the existence of sockets
+and plugs all came about working backwards from the goal of implementing
+transmigration efficiently.
+
+Transmigration is how the //pipeline// for processing Inter links a tree
+produced by //inform7// to trees from kits produced by //inter//. This
+diagram is also a little simplified, but the idea is right. We start with:
+= (text)
+    .........................         .........................
+    .  Main tree            .         . BasicInformKit tree   .
+    .  main                 .         . main                  .
+    .    architectural      .         .    architectural      .
+    .    basic_inform       .         .    BasicInformKit     .
+    .    source_text        .         .    connectors         .
+    .    connectors         .         .                       .
+    .........................         .........................
+=
+where all of the substantive content of the BasicInformKit tree is in its
+package |/main/BasicInformKit|. Transmigration simply moves that package,
+the result being:
+= (text)
+    .........................         .........................
+    .  Main tree            .         . BasicInformKit tree   .
+    .  main                 .         . main                  .
+    .    architectural      .         .    architectural      .
+    .    basic_inform       .         .    connectors         .
+    .    source_text        .         .                       .
+    .    BasicInformKit     .         .                       .
+    .    connectors         .         .                       .
+    .........................         .........................
+=
+The original BasicInformKit tree is reduced to a husk and can be discarded.
+
+Plugs and sockets are important here because when BasicInformKit moves to the
+main tree, its plugs looking for meanings in that tree can now be connected
+to sockets in it; and conversely, plugs in the main tree hoping to connect
+to meanings in BasicInformKit can now connect to the relevant sockets.
+
+There are conventions on what goes in the |main| package of each tree: see
+//building: Large-Scale Structure// for more on that. (The |architectural|
+package in each tree just makes some definitions establishing the size of
+integers, and so on, and for these two trees whose definitions will just be
+duplicates of each other.)
+
 @h The warehouse and the building site.
 There is a lot of memory to be managed here: Inter trees can be huge, though
 there are never more than one or two in memory at once. 
@@ -139,11 +262,11 @@ In particular, each //inter_tree// structure contains two pools of data
 besides the actual tree:[1]
 
 (a) A "building site", which contains workspace data needed by the //building//
-module. That module is essentially a piece of middleware sitting on top of
+module. //building// is essentially a piece of middleware sitting on top of
 this one, and making it easier for the compilers to use our facilities. We
 will ignore the building site completely here: it's not our problem.
 
-(b) A "warehouse", which does belong to this module: see //The Warehouse//.
+(b) A "warehouse", which very much is our problem: see //The Warehouse//.
 This provides storage for strings, symbols tables and the like, assigning each
 one an ID number. Resource number 178, for example, might be a |text_stream|
 which is the content of some text literal in a function, while 179 might be

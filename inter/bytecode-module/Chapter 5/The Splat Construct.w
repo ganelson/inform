@@ -8,7 +8,7 @@ Defining the splat construct.
 
 =
 void Inter::Splat::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		SPLAT_IST,
 		L"splat (%C*) *&\"(%c*)\"",
 		I"splat", I"splats");
@@ -52,12 +52,12 @@ void Inter::Splat::define(void) {
 void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Defn::vet_level(IBM, SPLAT_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, SPLAT_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_package *routine = NULL;
 	if (ilp->indent_level > 0) {
-		routine = Inter::Defn::get_latest_block_package();
+		routine = InterConstruct::get_latest_block_package();
 		if (routine == NULL) { *E = Inter::Errors::plain(I"indented 'splat' used outside function", eloc); return; }
 	}
 
@@ -122,7 +122,7 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_ti plm) {
 inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_ti SID, inter_ti plm, inter_ti level, inter_ti ID, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
 	if (ID) Inode::attach_comment(P, ID);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

@@ -8,7 +8,7 @@ Defining the Reference construct.
 
 =
 void Inter::Reference::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		REFERENCE_IST,
 		L"reference",
 		I"reference", I"references");
@@ -31,10 +31,10 @@ void Inter::Reference::define(void) {
 void Inter::Reference::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = Inter::Defn::vet_level(IBM, REFERENCE_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, REFERENCE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = Inter::Defn::get_latest_block_package();
+	inter_package *routine = InterConstruct::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'reference' used outside function", eloc); return; }
 
 	*E = Inter::Reference::new(IBM, ilp->indent_level, eloc);
@@ -42,7 +42,7 @@ void Inter::Reference::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 
 inter_error_message *Inter::Reference::new(inter_bookmark *IBM, int level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_1_data_field(IBM, REFERENCE_IST, 0, eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

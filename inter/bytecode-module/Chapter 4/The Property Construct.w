@@ -8,7 +8,7 @@ Defining the property construct.
 
 =
 void Inter::Property::define(void) {
-	inter_construct *IC = Inter::Defn::create_construct(
+	inter_construct *IC = InterConstruct::create_construct(
 		PROPERTY_IST,
 		L"property (%i+) (%i+)",
 		I"property", I"properties");
@@ -28,7 +28,7 @@ void Inter::Property::define(void) {
 
 =
 void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = Inter::Defn::vet_level(IBM, PROPERTY_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::vet_level(IBM, PROPERTY_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *prop_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
@@ -45,7 +45,7 @@ inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, int
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 	inter_ti L1 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PROPERTY_IST, PID, KID, L1, eloc, level);
-	inter_error_message *E = Inter::Defn::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

@@ -6,7 +6,7 @@ Verifying that a chunk of inter is correct and consistent.
 inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *P, int index) {
 	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
-	inter_symbol *S = InterSymbolsTable::symbol_from_ID_not_equating(T, P->W.instruction[index]);
+	inter_symbol *S = InterSymbolsTable::symbol_from_ID_not_following(T, P->W.instruction[index]);
 	if (S == NULL) return Inode::error(P, I"no symbol for ID (case 1)", NULL);
 	if (Wiring::is_wired(S)) {
 		inter_symbol *E = Wiring::cable_end(S);
