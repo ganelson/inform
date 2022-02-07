@@ -8,14 +8,12 @@ Defining the packagetype construct.
 
 =
 void Inter::PackageType::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		PACKAGETYPE_IST,
-		L"packagetype (_%i+)",
-		I"packagetype", I"packagetypes");
+	inter_construct *IC = InterConstruct::create_construct(PACKAGETYPE_IST, I"packagetype");
+	InterConstruct::specify_syntax(IC, L"packagetype (_%i+)");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::PackageType::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::PackageType::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::PackageType::write);
-	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
+	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 }
 
 @

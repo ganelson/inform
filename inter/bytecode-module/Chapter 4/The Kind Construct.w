@@ -8,10 +8,9 @@ Defining the kind construct.
 
 =
 void Inter::Kind::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		KIND_IST,
-		L"kind (%i+) (%c+)",
-		I"kind", I"kinds");
+	inter_construct *IC = InterConstruct::create_construct(KIND_IST, I"kind");
+	InterConstruct::specify_syntax(IC, L"kind (%i+) (%c+)");
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Kind::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Kind::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Kind::verify);

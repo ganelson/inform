@@ -8,11 +8,11 @@ Defining the package construct.
 
 =
 void InterPackage::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		PACKAGE_IST,
-		L"package (%i+) (%i+)",
-		I"package", I"packages");
-	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + CAN_HAVE_CHILDREN;
+	inter_construct *IC = InterConstruct::create_construct(PACKAGE_IST, I"package");
+	InterConstruct::specify_syntax(IC, L"package (%i+) (%i+)");
+	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, InterPackage::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, InterPackage::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, InterPackage::verify);

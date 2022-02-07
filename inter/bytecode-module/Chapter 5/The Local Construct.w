@@ -8,13 +8,9 @@ Defining the local construct.
 
 =
 void Inter::Local::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		LOCAL_IST,
-		L"local (%C+) (%c+)",
-		I"local", I"locals");
-	IC->min_level = 0;
-	IC->max_level = 0;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	inter_construct *IC = InterConstruct::create_construct(LOCAL_IST, I"local");
+	InterConstruct::specify_syntax(IC, L"local (%C+) (%c+)");
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Local::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Local::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Local::write);

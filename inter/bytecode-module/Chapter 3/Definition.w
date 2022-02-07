@@ -2,75 +2,129 @@
 
 Defining the Inter format.
 
-@
+@ Every Inter instruction is a use of a "comstruct". There are only about two
+dozen, and inevitably some are used far more often than others.
 
-@d MAX_INTER_CONSTRUCTS 100
+Each different construct is represented by an instance of the following:
 
 =
-typedef struct inter_line_parse {
-	struct text_stream *line;
-	struct match_results mr;
-	struct inter_annotation_set set;
-	inter_ti terminal_comment;
-	int indent_level;
-} inter_line_parse;
-
 typedef struct inter_construct {
-	inter_ti construct_ID;
+	inter_ti construct_ID; /* used to identify this in bytecode */
+	struct text_stream *construct_name;
+
 	wchar_t *construct_syntax;
-	int min_level;
-	int max_level;
-	int usage_permissions;
-	struct text_stream *singular_name;
-	struct text_stream *plural_name;
-	struct method_set *methods;
+
+	int min_level; /* min node tree depth within its package */
+	int max_level; /* max node tree depth within its package */
+	int usage_permissions; /* a bitmap of the |*_ICUP| values */
+
+	struct method_set *methods; /* what it does is entirely specified by these */
+
 	CLASS_DEFINITION
 } inter_construct;
 
-inter_construct *IC_lookup[MAX_INTER_CONSTRUCTS];
-
-inter_construct *InterConstruct::create_construct(inter_ti ID, wchar_t *syntax,
-	text_stream *sing,
-	text_stream *plur) {
+inter_construct *InterConstruct::create_construct(inter_ti ID, text_stream *name) {
 	inter_construct *IC = CREATE(inter_construct);
-	IC->methods = Methods::new_set();
 	IC->construct_ID = ID;
-	IC->construct_syntax = syntax;
-	if (ID >= MAX_INTER_CONSTRUCTS) internal_error("too many constructs");
+	IC->construct_name = Str::duplicate(name);
+
+	IC->construct_syntax = NULL;
+
 	IC->min_level = 0;
 	IC->max_level = 0;
-	IC_lookup[ID] = IC;
-	IC->usage_permissions = INSIDE_PLAIN_PACKAGE;
-	IC->singular_name = Str::duplicate(sing);
-	IC->plural_name = Str::duplicate(plur);
+	IC->usage_permissions = INSIDE_PLAIN_PACKAGE_ICUP;
+
+	IC->methods = Methods::new_set();
+
+	InterConstruct::set_construct_for_ID(ID, IC);
 	return IC;
 }
 
-@
+@ Several fields specify restrictions on where, in an Inter tree, instructions
+using this construct can appear. |min_level| to |max_level|, inclusive, give
+the range of hierarchical levels within their packages which such instructions
+can occur at.
 
-@e CONSTRUCT_READ_MTID
-@e CONSTRUCT_TRANSPOSE_MTID
-@e CONSTRUCT_VERIFY_MTID
-@e CONSTRUCT_WRITE_MTID
-@e VERIFY_INTER_CHILDREN_MTID
+By default, note that a construct can only be used at the top level of a package --
+min and max both equal 0; and by default, it has no usage permissions at all.
+Those must be explicitly granted when a new construct is created.
+
+@d INFINITELY_DEEP 100000000
+
+@d OUTSIDE_OF_PACKAGES_ICUP  1
+@d INSIDE_PLAIN_PACKAGE_ICUP 2
+@d INSIDE_CODE_PACKAGE_ICUP  4
+@d CAN_HAVE_CHILDREN_ICUP    8
 
 =
-VOID_METHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_bookmark *, inter_line_parse *, inter_error_location *, inter_error_message **E)
-VOID_METHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti max, inter_error_message **E)
-VOID_METHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E)
-VOID_METHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_tree_node *P, inter_error_message **E)
-VOID_METHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_tree_node *P, inter_error_message **E)
+void InterConstruct::permit(inter_construct *IC, int usage) {
+	IC->usage_permissions |= usage;
+}
 
-@
+void InterConstruct::allow_in_depth_range(inter_construct *IC, int l1, int l2) {
+	IC->min_level = l1;
+	IC->max_level = l2;
+}
+
+@ This specifies the textual format of the construct for parsing purposes, and
+it needs to be set up so that no two different constructs can match the same
+line of text.
+
+Note that if no syntax is specified for a construct, then it will be inexpressible
+in textual Inter code.
+
+=
+void InterConstruct::specify_syntax(inter_construct *IC, wchar_t *syntax) {
+	IC->construct_syntax = syntax;	
+}
+
+@ There isn't really a construct with ID 0: this is used only as a sort of "not
+a legal construct" value. Notice the way we give it no syntax, grant it no
+permissions, and allow it only in an impossible range. So this cannot be expressed
+in textual Inter, and cannot be stored in bytecode binary Inter either.
 
 @e INVALID_IST from 0
 
 =
-void InterConstruct::create_language(void) {
-	for (int i=0; i<MAX_INTER_CONSTRUCTS; i++) IC_lookup[i] = NULL;
+void InterConstruct::define_invalid_construct(void) {
+	inter_construct *IC = InterConstruct::create_construct(INVALID_IST, I"invalid");
+	InterConstruct::allow_in_depth_range(IC, 0, -1);
+}
 
-	InterConstruct::create_construct(INVALID_IST, NULL, I"nothing", I"nothings");
+@ The valid construct IDs then count upwards from there. Since these IDs are
+stored in the bytecode for an instruction, in fact in the 0th word of the frame,
+we will need to convert them to their //inter_construct// equivalents quickly.
+So we store a lookup table:
+
+@d MAX_INTER_CONSTRUCTS 100
+
+=
+int inter_construct_by_ID_ready = FALSE;
+inter_construct *inter_construct_by_ID[MAX_INTER_CONSTRUCTS];
+
+void InterConstruct::set_construct_for_ID(inter_ti ID, inter_construct *IC) {
+	if (inter_construct_by_ID_ready == FALSE) {
+		inter_construct_by_ID_ready = TRUE;
+		for (int i=0; i<MAX_INTER_CONSTRUCTS; i++) inter_construct_by_ID[i] = NULL;
+	}
+	if (ID >= MAX_INTER_CONSTRUCTS) internal_error("too many constructs");
+	inter_construct_by_ID[ID] = IC;
+}
+
+inter_construct *InterConstruct::get_construct_for_ID(inter_ti ID) {
+	if ((ID == INVALID_IST) || (ID >= MAX_INTER_CONSTRUCTS) ||
+		(inter_construct_by_ID_ready == FALSE))
+		return NULL;
+	return inter_construct_by_ID[ID];
+}
+
+@
+
+=
+void InterConstruct::create_language(void) {
 	SymbolAnnotation::declare_canonical_annotations();
+
+	InterConstruct::define_invalid_construct();
 
 	Inter::Nop::define();
 	Inter::Comment::define();
@@ -105,12 +159,24 @@ void InterConstruct::create_language(void) {
 }
 
 
+
 @
 
-@d OUTSIDE_OF_PACKAGES 1
-@d INSIDE_PLAIN_PACKAGE 2
-@d INSIDE_CODE_PACKAGE 4
-@d CAN_HAVE_CHILDREN 8
+@e CONSTRUCT_READ_MTID
+@e CONSTRUCT_TRANSPOSE_MTID
+@e CONSTRUCT_VERIFY_MTID
+@e CONSTRUCT_WRITE_MTID
+@e VERIFY_INTER_CHILDREN_MTID
+
+=
+VOID_METHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_bookmark *, inter_line_parse *, inter_error_location *, inter_error_message **E)
+VOID_METHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti max, inter_error_message **E)
+VOID_METHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E)
+VOID_METHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT, inter_tree_node *P, inter_error_message **E)
+VOID_METHOD_TYPE(VERIFY_INTER_CHILDREN_MTID, inter_construct *IC, inter_tree_node *P, inter_error_message **E)
+
+
+@
 
 =
 inter_error_message *InterConstruct::verify_construct(inter_package *owner, inter_tree_node *P) {
@@ -131,10 +197,8 @@ inter_error_message *InterConstruct::transpose_construct(inter_package *owner, i
 
 inter_error_message *InterConstruct::get_construct(inter_tree_node *P, inter_construct **to) {
 	if (P == NULL) return Inode::error(P, I"invalid frame", NULL);
-	if ((P->W.instruction[ID_IFLD] == INVALID_IST) || (P->W.instruction[ID_IFLD] >= MAX_INTER_CONSTRUCTS))
-		return Inode::error(P, I"no such construct", NULL);
-	inter_construct *IC = IC_lookup[P->W.instruction[ID_IFLD]];
-	if (IC == NULL) return Inode::error(P, I"bad construct", NULL);
+	inter_construct *IC = InterConstruct::get_construct_for_ID(P->W.instruction[ID_IFLD]);
+	if (IC == NULL) return Inode::error(P, I"no such construct", NULL);
 	if (to) *to = IC;
 	return NULL;
 }
@@ -257,18 +321,18 @@ inter_error_message *InterConstruct::verify_children_inner(inter_tree_node *P) {
 	inter_error_message *E = InterConstruct::get_construct(P, &IC);
 	if (E) return E;
 	inter_package *pack = InterPackage::container(P);
-	int need = INSIDE_PLAIN_PACKAGE;
-	if (pack == NULL) need = OUTSIDE_OF_PACKAGES;
-	else if (InterPackage::is_a_function_body(pack)) need = INSIDE_CODE_PACKAGE;
+	int need = INSIDE_PLAIN_PACKAGE_ICUP;
+	if (pack == NULL) need = OUTSIDE_OF_PACKAGES_ICUP;
+	else if (InterPackage::is_a_function_body(pack)) need = INSIDE_CODE_PACKAGE_ICUP;
 	if ((IC->usage_permissions & need) != need) {
 		text_stream *M = Str::new();
 		WRITE_TO(M, "construct (%d) '", P->W.instruction[LEVEL_IFLD]);
 		InterConstruct::write_construct_text(M, P);
 		WRITE_TO(M, "' (%d) cannot be used ", IC->construct_ID);
 		switch (need) {
-			case OUTSIDE_OF_PACKAGES: WRITE_TO(M, "outside packages"); break;
-			case INSIDE_PLAIN_PACKAGE: WRITE_TO(M, "inside non-code packages such as %S", InterPackage::name(pack)); break;
-			case INSIDE_CODE_PACKAGE: WRITE_TO(M, "inside code packages such as %S", InterPackage::name(pack)); break;
+			case OUTSIDE_OF_PACKAGES_ICUP: WRITE_TO(M, "outside packages"); break;
+			case INSIDE_PLAIN_PACKAGE_ICUP: WRITE_TO(M, "inside non-code packages such as %S", InterPackage::name(pack)); break;
+			case INSIDE_CODE_PACKAGE_ICUP: WRITE_TO(M, "inside code packages such as %S", InterPackage::name(pack)); break;
 		}
 		return Inode::error(P, M, NULL);
 	}
@@ -298,3 +362,10 @@ void InterConstruct::lint_visitor(inter_tree *I, inter_tree_node *P, void *state
 	Produce::guard(InterConstruct::verify_children_inner(P));
 }
 
+typedef struct inter_line_parse {
+	struct text_stream *line;
+	struct match_results mr;
+	struct inter_annotation_set set;
+	inter_ti terminal_comment;
+	int indent_level;
+} inter_line_parse;

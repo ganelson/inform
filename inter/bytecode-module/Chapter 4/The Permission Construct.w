@@ -8,10 +8,9 @@ Defining the permission construct.
 
 =
 void Inter::Permission::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		PERMISSION_IST,
-		L"permission (%i+) (%i+) *(%i*)",
-		I"permission", I"permissions");
+	inter_construct *IC = InterConstruct::create_construct(PERMISSION_IST, I"permission");
+	InterConstruct::specify_syntax(IC, L"permission (%i+) (%i+) *(%i*)");
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Permission::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Permission::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Permission::write);

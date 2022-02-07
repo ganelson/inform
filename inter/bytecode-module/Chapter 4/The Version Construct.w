@@ -8,11 +8,9 @@ Defining the version construct.
 
 =
 void Inter::Version::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		VERSION_IST,
-		L"version (%d+)",
-		I"version", I"versions");
-	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
+	inter_construct *IC = InterConstruct::create_construct(VERSION_IST, I"version");
+	InterConstruct::specify_syntax(IC, L"version (%d+)");
+	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Version::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Version::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Version::write);

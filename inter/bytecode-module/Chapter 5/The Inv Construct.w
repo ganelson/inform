@@ -8,13 +8,11 @@ Defining the inv construct.
 
 =
 void Inter::Inv::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		INV_IST,
-		L"inv (%C+)",
-		I"inv", I"invs");
-	IC->min_level = 1;
-	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
+	inter_construct *IC = InterConstruct::create_construct(INV_IST, I"inv");
+	InterConstruct::specify_syntax(IC, L"inv (%C+)");
+	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
+	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Inv::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Inv::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Inv::verify);

@@ -8,13 +8,11 @@ Defining the cast construct.
 
 =
 void Inter::Cast::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		CAST_IST,
-		L"cast (%i+) <- (%i+)",
-		I"cast", I"casts");
-	IC->min_level = 1;
-	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
+	inter_construct *IC = InterConstruct::create_construct(CAST_IST, I"cast");
+	InterConstruct::specify_syntax(IC, L"cast (%i+) <- (%i+)");
+	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
+	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Cast::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Cast::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Cast::write);

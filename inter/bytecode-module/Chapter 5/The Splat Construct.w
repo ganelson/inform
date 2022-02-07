@@ -8,13 +8,12 @@ Defining the splat construct.
 
 =
 void Inter::Splat::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		SPLAT_IST,
-		L"splat (%C*) *&\"(%c*)\"",
-		I"splat", I"splats");
-	IC->min_level = 0;
-	IC->max_level = 100000000;
-	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + INSIDE_CODE_PACKAGE;
+	inter_construct *IC = InterConstruct::create_construct(SPLAT_IST, I"splat");
+	InterConstruct::specify_syntax(IC, L"splat (%C*) *&\"(%c*)\"");
+	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
+	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Splat::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Splat::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Splat::verify);

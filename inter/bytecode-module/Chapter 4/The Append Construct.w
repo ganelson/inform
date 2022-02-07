@@ -8,10 +8,9 @@ Defining the append construct.
 
 =
 void Inter::Append::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		APPEND_IST,
-		L"append (%i+) \"(%c+)\"",
-		I"append", I"appends");
+	inter_construct *IC = InterConstruct::create_construct(APPEND_IST, I"append");
+	InterConstruct::specify_syntax(IC, L"append (%i+) \"(%c+)\"");
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Append::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Append::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Append::write);

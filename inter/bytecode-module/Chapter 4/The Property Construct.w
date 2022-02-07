@@ -8,10 +8,9 @@ Defining the property construct.
 
 =
 void Inter::Property::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		PROPERTY_IST,
-		L"property (%i+) (%i+)",
-		I"property", I"properties");
+	inter_construct *IC = InterConstruct::create_construct(PROPERTY_IST, I"property");
+	InterConstruct::specify_syntax(IC, L"property (%i+) (%i+)");
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Property::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Property::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Property::verify);

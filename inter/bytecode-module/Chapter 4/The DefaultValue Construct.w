@@ -8,10 +8,9 @@ Defining the defaultvalue construct.
 
 =
 void Inter::DefaultValue::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		DEFAULTVALUE_IST,
-		L"defaultvalue (%i+) = (%c+)",
-		I"defaultvalue", I"defaultvalues");
+	inter_construct *IC = InterConstruct::create_construct(DEFAULTVALUE_IST, I"defaultvalue");
+	InterConstruct::specify_syntax(IC, L"defaultvalue (%i+) = (%c+)");
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::DefaultValue::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::DefaultValue::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::DefaultValue::write);

@@ -70,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">bytecode</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the bytecode module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. WHat is intermediate about inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Packages</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Symbols</a></li><li><a href="P-wtmd.html#SP9">&#167;9. The warehouse and the building site</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Nodes and instructions</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. What is intermediate about inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Packages</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Symbols</a></li><li><a href="P-wtmd.html#SP9">&#167;9. The warehouse and the building site</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Nodes and instructions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The bytecode module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -86,7 +86,7 @@ and where functions have names like <span class="extract"><span class="extract-s
 uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. WHat is intermediate about inter. </b>This module is concerned with managing the <a href="2-it.html#SP1" class="internal">inter_tree</a> data structure in
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. What is intermediate about inter. </b>This module is concerned with managing the <a href="2-it.html#SP1" class="internal">inter_tree</a> data structure in
 memory, and with reading and writing it from and to the filing system.
 </p>
 
@@ -97,21 +97,20 @@ typically a C or I6 program.
 </p>
 
 <p class="commentary">In conventional compiler design, a high-level language such as Swift or C# is
-parsed first into an abstract syntax tree, or AST, which is essentially a tree
+parsed first into an abstract syntax tree, or "AST", which is essentially a tree
 representation of the syntax but is marked up with semantic information about
-what everything in it means. This AST is then compiled down to IR, intermediate
-code reducing the AST to a list of still-abstract operations to perform. The IR
-is then then further converted to actual code for a particular processor. So
-the flow might look like this:
+what everything in it means. This AST is then compiled down to an intermediate
+representation, an "IR", which is a sort of structured list of still-abstract
+operations to perform. The IR is then further converted to produce the compiler's
+actual output. Thus:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">  source  ----&gt;   AST   ------------&gt;   IR  ----&gt;  Assembly language</span>
+<span class="plain-syntax">  </span><span class="element-syntax">source</span><span class="plain-syntax">  ----&gt;   </span><span class="function-syntax">AST</span><span class="plain-syntax">   ------------&gt;   </span><span class="function-syntax">IR</span><span class="plain-syntax">  ----&gt;  </span><span class="element-syntax">output</span><span class="plain-syntax"> (</span><span class="element-syntax">e</span><span class="plain-syntax">.</span><span class="element-syntax">g</span><span class="plain-syntax">., </span><span class="element-syntax">assembly</span><span class="plain-syntax"> </span><span class="element-syntax">language</span><span class="plain-syntax">)</span>
 </pre>
 <p class="commentary">In the Inform family of tools, two languages have to be compiled: natural
-language by Inform 7, and also kit source by Inter (the tool), which looks more
-like a conventional programming language. Having very different syntaxes, they
-have different ASTs:
+language by <a href="../inform7/index.html" class="internal">inform7</a> and more conventional C-like code by <a href="../inter/index.html" class="internal">inter</a>.
+Having very different syntaxes, these have different ASTs:
 </p>
 
 <ul class="items"><li>&#9679; For I7, a <span class="extract"><span class="extract-syntax">parse_node_tree</span></span>, managed by the <a href="../syntax-module/index.html" class="internal">syntax</a> module.
@@ -122,16 +121,16 @@ intermediate representation for both:<sup id="fnref:1"><a href="#fn:1" rel="foot
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                 "AST"                 "IR"</span>
-<span class="plain-syntax">  source        syntax</span>
-<span class="plain-syntax">  text    ---&gt;   tree -------+</span>
-<span class="plain-syntax">         INFORM7              \</span>
+<span class="plain-syntax">                 "</span><span class="function-syntax">AST</span><span class="plain-syntax">"                 "</span><span class="function-syntax">IR</span><span class="plain-syntax">"</span>
+<span class="plain-syntax">  </span><span class="element-syntax">source</span><span class="plain-syntax">        </span><span class="element-syntax">syntax</span>
+<span class="plain-syntax">  </span><span class="element-syntax">text</span><span class="plain-syntax">    ---&gt;   </span><span class="element-syntax">tree</span><span class="plain-syntax"> -------+</span>
+<span class="plain-syntax">         </span><span class="function-syntax">INFORM7</span><span class="plain-syntax">              \</span>
 <span class="plain-syntax">                               \</span>
-<span class="plain-syntax">                                ----&gt;  Inter  ----&gt;  "Final" output: C, I6, or other</span>
-<span class="plain-syntax">                               /       tree</span>
-<span class="plain-syntax">  kit           Inter         /</span>
-<span class="plain-syntax">  source  ---&gt;  schemas -----+</span>
-<span class="plain-syntax">          INTER</span>
+<span class="plain-syntax">                                ----&gt;  </span><span class="element-syntax">Inter</span><span class="plain-syntax">  ----&gt;  </span><span class="element-syntax">output</span><span class="plain-syntax"> (</span><span class="element-syntax">e</span><span class="plain-syntax">.</span><span class="element-syntax">g</span><span class="plain-syntax">., </span><span class="element-syntax">C</span><span class="plain-syntax"> </span><span class="element-syntax">or</span><span class="plain-syntax"> </span><span class="element-syntax">Inform</span><span class="plain-syntax"> </span><span class="constant-syntax">6</span><span class="plain-syntax"> </span><span class="element-syntax">code</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                               /       </span><span class="element-syntax">tree</span>
+<span class="plain-syntax">  </span><span class="element-syntax">kit</span><span class="plain-syntax">           </span><span class="element-syntax">Inter</span><span class="plain-syntax">         /</span>
+<span class="plain-syntax">  </span><span class="element-syntax">source</span><span class="plain-syntax">  ---&gt;  </span><span class="element-syntax">schemas</span><span class="plain-syntax"> -----+</span>
+<span class="plain-syntax">          </span><span class="function-syntax">INTER</span>
 </pre>
 <p class="commentary">Because we want to work with hybrid programs, part compiled by one flow and
 part by the other, Inter is not quite as low-level as most IRs.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> It still
@@ -168,16 +167,16 @@ inside the package <span class="extract"><span class="extract-syntax">BasicInfor
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">....................................................</span>
-<span class="plain-syntax">.  top-level material                              .</span>
+<span class="plain-syntax">.  </span><span class="element-syntax">top</span><span class="plain-syntax">-</span><span class="element-syntax">level</span><span class="plain-syntax"> </span><span class="element-syntax">material</span><span class="plain-syntax">                              .</span>
 <span class="plain-syntax">.  +--------------------------------------------+  .</span>
-<span class="plain-syntax">.  | /main                                      |  .</span>
+<span class="plain-syntax">.  | /</span><span class="element-syntax">main</span><span class="plain-syntax">                                      |  .</span>
 <span class="plain-syntax">.  |   +-------------------------------------+  |  .</span>
-<span class="plain-syntax">.  |   | /main/BasicInformKit                |  |  .</span>
+<span class="plain-syntax">.  |   | /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">                |  |  .</span>
 <span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
-<span class="plain-syntax">.  |   | | /main/BasicInformKit/variables  | |  |  .</span>
+<span class="plain-syntax">.  |   | | /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">/</span><span class="element-syntax">variables</span><span class="plain-syntax">  | |  |  .</span>
 <span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
 <span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
-<span class="plain-syntax">.  |   | | /main/BasicInformKit/properties | |  |  .</span>
+<span class="plain-syntax">.  |   | | /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">/</span><span class="element-syntax">properties</span><span class="plain-syntax"> | |  |  .</span>
 <span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
 <span class="plain-syntax">.  |   | ...                                 |  |  .</span>
 <span class="plain-syntax">.  |   +-------------------------------------+  |  .</span>
@@ -198,12 +197,21 @@ simply provide infrastructure allowing pretty general hierarchies to be made.
 
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Symbols. </b>Packages provide <a href="2-st.html" class="internal">Symbols Tables</a>: in fact, each package has its own
 symbols table, which records identifier names and their meanings
-within that package. For example, if a package contains a definition of a
+within that package. For example, if a package <span class="extract"><span class="extract-syntax">X</span></span> contains a definition of a
 constant called <span class="extract"><span class="extract-syntax">pi</span></span>, then the definition will occupy an Inter instruction
 inside the package, and the identifier name <span class="extract"><span class="extract-syntax">pi</span></span> will be an <a href="2-sym.html#SP1" class="internal">inter_symbol</a>
 recorded in its <a href="2-st.html#SP1" class="internal">inter_symbols_table</a>.
 </p>
 
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    +-------------------------+</span>
+<span class="plain-syntax">    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">               |</span>
+<span class="plain-syntax">    |                         |</span>
+<span class="plain-syntax">    | </span><span class="element-syntax">pi</span><span class="plain-syntax">                      |</span>
+<span class="plain-syntax">    | .....                   |</span>
+<span class="plain-syntax">    | </span><span class="element-syntax">constant</span><span class="plain-syntax"> </span><span class="element-syntax">K_int32</span><span class="plain-syntax"> </span><span class="element-syntax">pi</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax"> |</span>
+<span class="plain-syntax">    +-------------------------+</span>
+</pre>
 <p class="commentary">The symbols table for the root package is special, and represents global
 meanings accessible everywhere. But they are used only for concepts needed
 by Inter itself, such as the identities of primitives like <span class="extract"><span class="extract-syntax">!add</span></span> or
@@ -230,11 +238,11 @@ in another:<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> see <a h
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    +-----------------+        +-------------------------------+</span>
-<span class="plain-syntax">    | Package X       |        | Package Y                     |</span>
+<span class="plain-syntax">    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">       |        | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">Y</span><span class="plain-syntax">                     |</span>
 <span class="plain-syntax">    |                 |        |                               |</span>
-<span class="plain-syntax">    |  earth ~~~~~~~~~~~~~~~~~~~~&gt; earth                       |</span>
+<span class="plain-syntax">    |  </span><span class="element-syntax">earth</span><span class="plain-syntax"> ~~~~~~~~~~~~~~~~~~~~&gt; </span><span class="element-syntax">earth</span><span class="plain-syntax">                       |</span>
 <span class="plain-syntax">    +-----------------+        | .....                         |</span>
-<span class="plain-syntax">                               | variable K_int32 earth = 7    |</span>
+<span class="plain-syntax">                               | </span><span class="element-syntax">variable</span><span class="plain-syntax"> </span><span class="element-syntax">K_int32</span><span class="plain-syntax"> </span><span class="element-syntax">earth</span><span class="plain-syntax"> = </span><span class="constant-syntax">7</span><span class="plain-syntax">    |</span>
 <span class="plain-syntax">                               +-------------------------------+</span>
 </pre>
 <p class="commentary">In this example, the symbol <span class="extract"><span class="extract-syntax">earth</span></span> in package <span class="extract"><span class="extract-syntax">X</span></span> is undefined. Instead it is
@@ -267,7 +275,7 @@ imports from and exports to the other.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    .....................           .......................</span>
-<span class="plain-syntax">    .  Main tree        . ~~~~~~~~&gt; . BasicInformKit tree .</span>
+<span class="plain-syntax">    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">        . ~~~~~~~~&gt; . </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax"> .</span>
 <span class="plain-syntax">    .                   .           .                     .</span>
 <span class="plain-syntax">    .                   . &lt;~~~~~~~~ .                     .</span>
 <span class="plain-syntax">    .....................           .......................</span>
@@ -280,11 +288,11 @@ a subpackage of <span class="extract"><span class="extract-syntax">main</span></
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    ...............................       ..................................</span>
-<span class="plain-syntax">    .  Main tree                  .       .  BasicInformKit tree           .</span>
+<span class="plain-syntax">    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">                  .       .  </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">           .</span>
 <span class="plain-syntax">    .              +------------+ .       . +------------+                 .</span>
-<span class="plain-syntax">    .  other       | connectors | .       . | connectors |                 .</span>
-<span class="plain-syntax">    .  packages ~~~~~~~&gt; plugs ~~~~~~~~~~~~~~&gt; sockets ~~~~~&gt;   other      .</span>
-<span class="plain-syntax">    .            &lt;~~~~ sockets &lt;~~~~~~~~~~~~~~ plugs &lt;~~~~~~~~~ packages   .</span>
+<span class="plain-syntax">    .  </span><span class="element-syntax">other</span><span class="plain-syntax">       | </span><span class="element-syntax">connectors</span><span class="plain-syntax"> | .       . | </span><span class="element-syntax">connectors</span><span class="plain-syntax"> |                 .</span>
+<span class="plain-syntax">    .  </span><span class="element-syntax">packages</span><span class="plain-syntax"> ~~~~~~~&gt; </span><span class="element-syntax">plugs</span><span class="plain-syntax"> ~~~~~~~~~~~~~~&gt; </span><span class="element-syntax">sockets</span><span class="plain-syntax"> ~~~~~&gt;   </span><span class="element-syntax">other</span><span class="plain-syntax">      .</span>
+<span class="plain-syntax">    .            &lt;~~~~ </span><span class="element-syntax">sockets</span><span class="plain-syntax"> &lt;~~~~~~~~~~~~~~ </span><span class="element-syntax">plugs</span><span class="plain-syntax"> &lt;~~~~~~~~~ </span><span class="element-syntax">packages</span><span class="plain-syntax">   .</span>
 <span class="plain-syntax">    .              +------------+ .       . +------------+                 .</span>
 <span class="plain-syntax">    ...............................       ..................................</span>
 </pre>
@@ -320,12 +328,12 @@ diagram is also a little simplified, but the idea is right. We start with:
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    .........................         .........................</span>
-<span class="plain-syntax">    .  Main tree            .         . BasicInformKit tree   .</span>
-<span class="plain-syntax">    .  main                 .         . main                  .</span>
-<span class="plain-syntax">    .    architectural      .         .    architectural      .</span>
-<span class="plain-syntax">    .    basic_inform       .         .    BasicInformKit     .</span>
-<span class="plain-syntax">    .    source_text        .         .    connectors         .</span>
-<span class="plain-syntax">    .    connectors         .         .                       .</span>
+<span class="plain-syntax">    .  </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">            .         . </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax"> </span><span class="element-syntax">tree</span><span class="plain-syntax">   .</span>
+<span class="plain-syntax">    .  </span><span class="element-syntax">main</span><span class="plain-syntax">                 .         . </span><span class="element-syntax">main</span><span class="plain-syntax">                  .</span>
+<span class="plain-syntax">    .    </span><span class="element-syntax">architectural</span><span class="plain-syntax">      .         .    </span><span class="element-syntax">architectural</span><span class="plain-syntax">      .</span>
+<span class="plain-syntax">    .    </span><span class="element-syntax">basic_inform</span><span class="plain-syntax">       .         .    </span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">     .</span>
+<span class="plain-syntax">    .    </span><span class="element-syntax">source_text</span><span class="plain-syntax">        .         .    </span><span class="element-syntax">connectors</span><span class="plain-syntax">         .</span>
+<span class="plain-syntax">    .    </span><span class="element-syntax">connectors</span><span class="plain-syntax">         .         .                       .</span>
 <span class="plain-syntax">    .........................         .........................</span>
 </pre>
 <p class="commentary">where all of the substantive content of the BasicInformKit tree is in its
@@ -396,10 +404,10 @@ Still, the result is an unusual hybrid of a data structure.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            ... 102 103 104 105 106 107 108 109 ...</span>
-<span class="plain-syntax">    node1  -----------------------&gt; [.........]</span>
-<span class="plain-syntax">        node2  -------------------------------&gt; [.....]</span>
-<span class="plain-syntax">        node3  ---------------------------------------&gt; [.........]</span>
+<span class="plain-syntax">                            ... </span><span class="constant-syntax">102</span><span class="plain-syntax"> </span><span class="constant-syntax">103</span><span class="plain-syntax"> </span><span class="constant-syntax">104</span><span class="plain-syntax"> </span><span class="constant-syntax">105</span><span class="plain-syntax"> </span><span class="constant-syntax">106</span><span class="plain-syntax"> </span><span class="constant-syntax">107</span><span class="plain-syntax"> </span><span class="constant-syntax">108</span><span class="plain-syntax"> </span><span class="constant-syntax">109</span><span class="plain-syntax"> ...</span>
+<span class="plain-syntax">    </span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]</span>
+<span class="plain-syntax">        </span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]</span>
+<span class="plain-syntax">        </span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]</span>
 </pre>
 <p class="commentary">Here <span class="extract"><span class="extract-syntax">node1</span></span> represents an instruction, with the details stored at bytecode
 locations 103 to 105; <span class="extract"><span class="extract-syntax">node2</span></span> points to bytecode at 106 to 107, and so on.
@@ -409,10 +417,10 @@ the tree structure achieve this without needing to edit the bytecode:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            ... 102 103 104 105 106 107 108 109 ...</span>
-<span class="plain-syntax">    node1  -----------------------&gt; [.........]</span>
-<span class="plain-syntax">        node3  ---------------------------------------&gt; [.........]</span>
-<span class="plain-syntax">        node2  -------------------------------&gt; [.....]</span>
+<span class="plain-syntax">                            ... </span><span class="constant-syntax">102</span><span class="plain-syntax"> </span><span class="constant-syntax">103</span><span class="plain-syntax"> </span><span class="constant-syntax">104</span><span class="plain-syntax"> </span><span class="constant-syntax">105</span><span class="plain-syntax"> </span><span class="constant-syntax">106</span><span class="plain-syntax"> </span><span class="constant-syntax">107</span><span class="plain-syntax"> </span><span class="constant-syntax">108</span><span class="plain-syntax"> </span><span class="constant-syntax">109</span><span class="plain-syntax"> ...</span>
+<span class="plain-syntax">    </span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]</span>
+<span class="plain-syntax">        </span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]</span>
+<span class="plain-syntax">        </span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]</span>
 </pre>
 <p class="commentary">Indeed, we could decide that the instruction at <span class="extract"><span class="extract-syntax">node2</span></span> is redundant and cut it:
 </p>

@@ -8,11 +8,9 @@ Defining the primitive construct.
 
 =
 void Inter::Primitive::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		PRIMITIVE_IST,
-		L"primitive (!%i+) (%c+) -> (%C+)",
-		I"primitive", I"primitives");
-	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
+	inter_construct *IC = InterConstruct::create_construct(PRIMITIVE_IST, I"primitive");
+	InterConstruct::specify_syntax(IC, L"primitive (!%i+) (%c+) -> (%C+)");
+	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Primitive::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Primitive::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Primitive::write);

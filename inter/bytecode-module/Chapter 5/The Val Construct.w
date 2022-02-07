@@ -8,13 +8,10 @@ Defining the val construct.
 
 =
 void Inter::Val::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		VAL_IST,
-		L"val (%i+) (%c+)",
-		I"val", I"vals");
-	IC->min_level = 1;
-	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	inter_construct *IC = InterConstruct::create_construct(VAL_IST, I"val");
+	InterConstruct::specify_syntax(IC, L"val (%i+) (%c+)");
+	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Val::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Val::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Val::verify);

@@ -8,13 +8,11 @@ Defining the Code construct.
 
 =
 void Inter::Code::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		CODE_IST,
-		L"code",
-		I"code", I"codes");
-	IC->min_level = 0;
-	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE + CAN_HAVE_CHILDREN;
+	inter_construct *IC = InterConstruct::create_construct(CODE_IST, I"code");
+	InterConstruct::specify_syntax(IC, L"code");
+	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
+	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Code::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Code::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Code::write);

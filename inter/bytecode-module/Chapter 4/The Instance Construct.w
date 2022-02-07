@@ -8,10 +8,9 @@ Defining the instance construct.
 
 =
 void Inter::Instance::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		INSTANCE_IST,
-		L"instance (%i+) (%c+)",
-		I"instance", I"instances");
+	inter_construct *IC = InterConstruct::create_construct(INSTANCE_IST, I"instance");
+	InterConstruct::specify_syntax(IC, L"instance (%i+) (%c+)");
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Instance::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Instance::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Instance::verify);

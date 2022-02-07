@@ -8,13 +8,11 @@ Defining the label construct.
 
 =
 void Inter::Label::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		LABEL_IST,
-		L"(.%i+)",
-		I"label", I"labels");
-	IC->min_level = 0;
-	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	inter_construct *IC = InterConstruct::create_construct(LABEL_IST, I"label");
+	InterConstruct::specify_syntax(IC, L"(.%i+)");
+	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
+	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Label::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Label::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Label::write);

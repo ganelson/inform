@@ -8,10 +8,10 @@ Defining the nop construct.
 
 =
 void Inter::Nop::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		NOP_IST, NULL,
-		I"nop", I"nops");
-	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + INSIDE_CODE_PACKAGE;
+	inter_construct *IC = InterConstruct::create_construct(NOP_IST, I"nop");
+	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Nop::write);
 }
 

@@ -8,10 +8,9 @@ Defining the variable construct.
 
 =
 void Inter::Variable::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		VARIABLE_IST,
-		L"variable (%i+) (%i+) = (%c+)",
-		I"variable", I"variables");
+	inter_construct *IC = InterConstruct::create_construct(VARIABLE_IST, I"variable");
+	InterConstruct::specify_syntax(IC, L"variable (%i+) (%i+) = (%c+)");
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Variable::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Variable::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Variable::write);

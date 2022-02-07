@@ -8,13 +8,10 @@ Defining the Lab construct.
 
 =
 void Inter::Assembly::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		ASSEMBLY_IST,
-		L"assembly (%C+)",
-		I"assembly", I"assemblies");
-	IC->min_level = 1;
-	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	inter_construct *IC = InterConstruct::create_construct(ASSEMBLY_IST, I"assembly");
+	InterConstruct::specify_syntax(IC, L"assembly (%C+)");
+	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Assembly::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Assembly::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Assembly::write);

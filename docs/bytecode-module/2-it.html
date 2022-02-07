@@ -94,13 +94,15 @@ the <a href="../building-module/index.html" class="internal">building</a> module
 <span class="plain-syntax">} </span><span class="reserved-syntax">inter_tree</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure inter_tree is accessed in 2/bkm, 2/tw, 2/pck, 2/st, 2/trn and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b></p>
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>The warehouse must be created before anything else can be done, since we can't
+make symbols tables without it:
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="function-syntax">InterTree::new</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_tree</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-it.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Make the warehouse</span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-it.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">Make the root node and the root package</span><span class="named-paragraph-number">2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">housed</span><span class="plain-syntax"> = </span><a href="2-tw.html#SP2" class="function-link"><span class="function-syntax">InterWarehouse::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-it.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Make the root node and the root package</span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">history_bits</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">blame_errors_on_this_file</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="2-it.html#SP11" class="function-link"><span class="function-syntax">InterTree::set_history</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">CREATED_ITHBIT</span><span class="plain-syntax">);</span>
@@ -108,17 +110,7 @@ the <a href="../building-module/index.html" class="internal">building</a> module
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">I</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>This must be done first, since we can't make symbols tables without it:
-</p>
-
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the warehouse</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">housed</span><span class="plain-syntax"> = </span><a href="2-tw.html#SP2" class="function-link"><span class="function-syntax">InterWarehouse::new</span></a><span class="plain-syntax">();</span>
-</pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-it.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b>Now a delicate little dance. The entire content of the tree is contained
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>Now a delicate little dance. The entire content of the tree is contained
 inside a special "root package". Packages are visible from the outside but
 not the inside, so the root package is effectively invisible: nothing is
 outside it. This is why it has no name, and is never referred to by Inter
@@ -136,7 +128,7 @@ definition the head node for the root package of the tree.
 which is by definition the symbols table for the root package.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the root node and the root package</span><span class="named-paragraph-number">2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make the root node and the root package</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -302,7 +294,7 @@ root level, for which see above.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InterTree::traverse</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">InterTree::traverse</span></span>:<br/>Transmigration - <a href="2-trn.html#SP3_5">&#167;3.5</a><br/>Definition - <a href="3-dfn.html#SP4">&#167;4</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP1_1_5">&#167;1.1.5</a><br/>Inter in Text Files - <a href="3-iitf.html#SP1">&#167;1</a>, <a href="3-iitf.html#SP2">&#167;2</a>, <a href="3-iitf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">,</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InterTree::traverse</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">InterTree::traverse</span></span>:<br/>Transmigration - <a href="2-trn.html#SP3_5">&#167;3.5</a><br/>Definition - <a href="3-dfn.html#SP8">&#167;8</a><br/>Inter in Binary Files - <a href="3-iibf.html#SP1_1_5">&#167;1.1.5</a><br/>Inter in Text Files - <a href="3-iitf.html#SP1">&#167;1</a>, <a href="3-iitf.html#SP2">&#167;2</a>, <a href="3-iitf.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">from</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> (*</span><span class="identifier-syntax">visitor</span><span class="plain-syntax">)(</span><span class="reserved-syntax">inter_tree</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">inter_tree_node</span><span class="plain-syntax"> *, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *),</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">mp</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">filter</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">mp</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">mp</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LargeScale::main_package_if_it_exists</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">);</span>
@@ -355,7 +347,10 @@ a package.
 </pre>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. History of a tree. </b>In 1964, a Nevada geologist felled a bristlecone pine and was dismayed to find
 that it contained 4862 rings, and had therefore germinated in around 2900 BC.
-Inter trees also record their history, though can safely accommodate only 32
+Until just that morning, it had been the oldest tree in the world.
+</p>
+
+<p class="commentary">Inter trees also record their history, though can safely accommodate only 32
 different events, identified as flag bits 0 to 31.
 </p>
 

@@ -16,7 +16,7 @@ imaginatble link. Suppose the structure is:
 =
 Then the links are:
 = (text)
-				 |	of A	B		C		D		E
+              of |	A		B		C		D		E
 	-------------+--------------------------------------
 	parent		 |	NULL	A		A		C		A
 	first_child	 |	B		NULL	D		NULL	NULL
@@ -296,9 +296,7 @@ almost any length). But the preframe is of fixed size:
 @d PREFRAME_ORIGIN 2
 @d PREFRAME_COMMENT 3
 
-@ In the preframe:
-
-(*) |PREFRAME_SKIP_AMOUNT| is the offset (in words) to the next instruction.
+@ |PREFRAME_SKIP_AMOUNT| is the offset (in words) to the next instruction.
 Since the preframe has fixed length, this is both the offset from one preframe
 to the next and also from one frame to the next.
 
@@ -416,24 +414,6 @@ inter_package *Inode::ID_to_package(inter_tree_node *F, inter_ti ID) {
 
 inter_node_list *Inode::ID_to_frame_list(inter_tree_node *F, inter_ti N) {
 	return InterWarehouse::get_node_list(Inode::warehouse(F), N);
-}
-
-@h Equality.
-It can temporarily happen that two nodes exist which represent the
-same instruction, and the following tests for that. Note that the test is not
-that the nodes do the same thing as each other, but that they point to the
-same strip of bytecode as each other. Two identical instructions but at
-different points in the program would not pass this test.
-
-=
-int Inode::same_instruction(inter_tree_node *F1, inter_tree_node *F2) {
-	if ((F1 == NULL) || (F2 == NULL)) {
-		if (F1 == F2) return TRUE;
-		return FALSE;
-	}
-	if (F1->W.in_room != F2->W.in_room) return FALSE;
-	if (F1->W.index != F2->W.index) return FALSE;
-	return TRUE;
 }
 
 @h Errors.

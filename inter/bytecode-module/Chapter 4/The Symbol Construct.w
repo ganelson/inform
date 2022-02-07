@@ -8,15 +8,12 @@ Defining the symbol construct.
 
 =
 void Inter::Symbol::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		SYMBOL_IST,
-		L"symbol (%C+) (%i+) (%c+)",
-		I"symbol", I"symbols");
+	inter_construct *IC = InterConstruct::create_construct(SYMBOL_IST, I"symbol");
+	InterConstruct::specify_syntax(IC, L"symbol (%C+) (%i+) (%c+)");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Symbol::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Symbol::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Symbol::write);
-	IC->min_level = 0;
-	IC->max_level = 1;
+	InterConstruct::allow_in_depth_range(IC, 0, 1);
 }
 
 void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {

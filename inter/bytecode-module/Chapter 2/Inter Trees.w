@@ -20,10 +20,13 @@ typedef struct inter_tree {
 	CLASS_DEFINITION
 } inter_tree;
 
-@ =
+@ The warehouse must be created before anything else can be done, since we can't
+make symbols tables without it:
+
+=
 inter_tree *InterTree::new(void) {
 	inter_tree *I = CREATE(inter_tree);
-	@<Make the warehouse@>;
+	I->housed = InterWarehouse::new();
 	@<Make the root node and the root package@>;
 	I->history_bits = 0;
 	I->blame_errors_on_this_file = NULL;
@@ -31,11 +34,6 @@ inter_tree *InterTree::new(void) {
 	BuildingModule::clear_data(I);
 	return I;
 }
-
-@ This must be done first, since we can't make symbols tables without it:
-
-@<Make the warehouse@> =
-	I->housed = InterWarehouse::new();
 
 @ Now a delicate little dance. The entire content of the tree is contained
 inside a special "root package". Packages are visible from the outside but
@@ -259,6 +257,8 @@ int InterTree::no_subpackages(inter_package *pack, text_stream *ptype) {
 @h History of a tree.
 In 1964, a Nevada geologist felled a bristlecone pine and was dismayed to find
 that it contained 4862 rings, and had therefore germinated in around 2900 BC.
+Until just that morning, it had been the oldest tree in the world.
+
 Inter trees also record their history, though can safely accommodate only 32
 different events, identified as flag bits 0 to 31.
 

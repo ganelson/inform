@@ -14,13 +14,9 @@ inter_error_message *Inter::Verify::defn(inter_package *owner, inter_tree_node *
 			InterPackage::container(P), S, E, InterPackage::container(E->definition));
 		return Inode::error(P, I"symbol defined outside its native scope", S->symbol_name);
 	}
-	inter_tree_node *D = InterSymbol::definition(S);
-	if (D == NULL) InterSymbol::define(S, P);
-	else if (Inode::same_instruction(D, P) == FALSE) {
-		if (InterSymbol::misc_but_undefined(S)) {
-			InterSymbol::define(S, P);
-			return NULL;
-		}
+	if (InterSymbol::misc_but_undefined(S)) {
+		InterSymbol::define(S, P);
+	} else if (P != InterSymbol::definition(S)) {
 		LOG("So S ---> %S\n", S->translate_text);
 		return Inode::error(P, I"duplicated symbol", S->symbol_name);
 	}

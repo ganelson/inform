@@ -15,7 +15,7 @@ and where functions have names like |Tags::add_by_name| rather than just |add_by
 uses a module of utility functions called //foundation//.
 For more, see //foundation: A Brief Guide to Foundation//.
 
-@h WHat is intermediate about inter.
+@h What is intermediate about inter.
 This module is concerned with managing the //inter_tree// data structure in
 memory, and with reading and writing it from and to the filing system.
 
@@ -25,32 +25,31 @@ perhaps Inform 6-syntax source for a kit -- and the so-called "final" output,
 typically a C or I6 program.
 
 In conventional compiler design, a high-level language such as Swift or C# is
-parsed first into an abstract syntax tree, or AST, which is essentially a tree
+parsed first into an abstract syntax tree, or "AST", which is essentially a tree
 representation of the syntax but is marked up with semantic information about
-what everything in it means. This AST is then compiled down to IR, intermediate
-code reducing the AST to a list of still-abstract operations to perform. The IR
-is then then further converted to actual code for a particular processor. So
-the flow might look like this:
-= (text)
-  source  ---->   AST   ------------>   IR  ---->  Assembly language
+what everything in it means. This AST is then compiled down to an intermediate
+representation, an "IR", which is a sort of structured list of still-abstract
+operations to perform. The IR is then further converted to produce the compiler's
+actual output. Thus:
+= (text as BoxArt)
+  source  ---->   AST   ------------>   IR  ---->  output (e.g., assembly language)
 =
 In the Inform family of tools, two languages have to be compiled: natural
-language by Inform 7, and also kit source by Inter (the tool), which looks more
-like a conventional programming language. Having very different syntaxes, they
-have different ASTs:
+language by //inform7// and more conventional C-like code by //inter//.
+Having very different syntaxes, these have different ASTs:
 
 (*) For I7, a |parse_node_tree|, managed by the //syntax// module.
 (*) For Inter, an |inter_schema|, managed by the //building// module.
 
 But these two compiler flows share the same IR -- an //inter_tree// provides the
 intermediate representation for both:[1]
-= (text)
+= (text as BoxArt)
                  "AST"                 "IR"
   source        syntax   
   text    --->   tree -------+
          INFORM7              \
                                \
-                                ---->  Inter  ---->  "Final" output: C, I6, or other
+                                ---->  Inter  ---->  output (e.g., C or Inform 6 code)
                                /       tree
   kit           Inter         /
   source  --->  schemas -----+
@@ -85,7 +84,7 @@ providing code or data, or both.
 Each package has a name, and its location can be identified by a "URL". For
 example, |/main/BasicInformKit/properties| means "the package |properties|
 inside the package |BasicInformKit| inside the package |main|".
-= (text)
+= (text as BoxArt)
 ....................................................
 .  top-level material                              .
 .  +--------------------------------------------+  .
@@ -116,11 +115,19 @@ simply provide infrastructure allowing pretty general hierarchies to be made.
 @h Symbols.
 Packages provide //Symbols Tables//: in fact, each package has its own
 symbols table, which records identifier names and their meanings
-within that package. For example, if a package contains a definition of a
+within that package. For example, if a package |X| contains a definition of a
 constant called |pi|, then the definition will occupy an Inter instruction
 inside the package, and the identifier name |pi| will be an //inter_symbol//
 recorded in its //inter_symbols_table//.
-
+= (text as BoxArt)
+    +-------------------------+ 
+    | Package X               | 
+    |                         | 
+    | pi                      |
+    | .....                   |
+    | constant K_int32 pi = 3 |
+    +-------------------------+
+=
 The symbols table for the root package is special, and represents global
 meanings accessible everywhere. But they are used only for concepts needed
 by Inter itself, such as the identities of primitives like |!add| or
@@ -140,7 +147,7 @@ variables, constants and functions.
 But that is not true because symbols in one package can be "wired" to symbols
 in another:[1] see //The Wiring//. We write |S ~~> T| if the symbol |S| is "wired to"
 |T|, and we understand this as meaning that |S| means whatever |T| does.
-= (text)
+= (text as BoxArt)
     +-----------------+        +-------------------------------+
     | Package X       |        | Package Y                     |
     |                 |        |                               |
@@ -172,7 +179,7 @@ into it later on.
 For example, //inform7// compiles a tree of Inter, but then //inter// links
 this with a separately compiled Inter tree from //BasicInformKit//. Each both
 imports from and exports to the other.
-= (text)
+= (text as BoxArt)
     .....................           .......................
     .  Main tree        . ~~~~~~~~> . BasicInformKit tree .
     .                   .           .                     .
@@ -183,7 +190,7 @@ It would be chaotic[1] to allow random symbols in packages all over each tree
 to be wired directly to symbols in the other. Instead, every tree has a sort
 of embassy package |/main/connectors| (a package called |connectors| which is
 a subpackage of |main|) which acts as an intermediary.
-= (text)
+= (text as BoxArt)
     ...............................       ..................................
     .  Main tree                  .       .  BasicInformKit tree           .
     .              +------------+ .       . +------------+                 .
@@ -217,7 +224,7 @@ transmigration efficiently.
 Transmigration is how the //pipeline// for processing Inter links a tree
 produced by //inform7// to trees from kits produced by //inter//. This
 diagram is also a little simplified, but the idea is right. We start with:
-= (text)
+= (text as BoxArt)
     .........................         .........................
     .  Main tree            .         . BasicInformKit tree   .
     .  main                 .         . main                  .
@@ -286,7 +293,7 @@ cut and reorder code; the binary bytecode storage is quick to load from a file.
 Still, the result is an unusual hybrid of a data structure.
 
 For example, the tree might start out like this:
-= (text)
+= (text as BoxArt)
 							...	102	103	104	105	106	107	108	109	...
 	node1  -----------------------> [.........]
 		node2  -------------------------------> [.....]
@@ -297,7 +304,7 @@ locations 103 to 105; |node2| points to bytecode at 106 to 107, and so on.
 But then we could decide, when optimising code, that we want instructions
 |node2| and |node3| performed the other way round. Simple amendments to
 the tree structure achieve this without needing to edit the bytecode:
-= (text)
+= (text as BoxArt)
 							...	102	103	104	105	106	107	108	109	...
 	node1  -----------------------> [.........]
 		node3  ---------------------------------------> [.........]

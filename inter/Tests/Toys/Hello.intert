@@ -6,13 +6,14 @@ primitive !print val -> void
 primitive !quit void -> void
 
 package main _plain
-	package resources _plain
-		kind K_unchecked unchecked
-		kind K_unchecked_function function K_unchecked -> K_unchecked
-		package Main_B _code
-			symbol external misc K_unchecked
-			code
-				inv !print
-					val K_unchecked "Hello, world.\n"
-				inv !quit
-		constant Main K_unchecked_function = Main_B
+	kind K_unchecked unchecked
+	kind K_unchecked_function function K_unchecked -> K_unchecked
+	kind K_unchecked_list list of K_unchecked
+	kind K_int2 int2
+	package Main_B _code
+		symbol public misc K_unchecked --> /main/K_unchecked
+		code
+			inv !print
+				val K_unchecked "Hello, world.\n"
+			inv !quit
+	constant Main K_unchecked_function = Main_B

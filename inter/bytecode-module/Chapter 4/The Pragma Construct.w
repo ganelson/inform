@@ -8,11 +8,9 @@ Defining the pragma construct.
 
 =
 void Inter::Pragma::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		PRAGMA_IST,
-		L"pragma (%i+) \"(%c+)\"",
-		I"pragma", I"pragmas"); /* pragmae? pragmata? */
-	IC->usage_permissions = OUTSIDE_OF_PACKAGES;
+	inter_construct *IC = InterConstruct::create_construct(PRAGMA_IST, I"pragma");
+	InterConstruct::specify_syntax(IC, L"pragma (%i+) \"(%c+)\"");
+	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Pragma::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Pragma::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Pragma::verify);

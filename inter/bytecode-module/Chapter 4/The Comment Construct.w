@@ -10,15 +10,14 @@ Defining the comment construct.
 
 =
 void Inter::Comment::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		COMMENT_IST,
-		L" *",
-		I"comment", I"comments");
+	inter_construct *IC = InterConstruct::create_construct(COMMENT_IST, I"comment");
+	InterConstruct::specify_syntax(IC, L" *");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Comment::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Comment::transpose);
-	IC->min_level = 0;
-	IC->max_level = 100000000;
-	IC->usage_permissions = OUTSIDE_OF_PACKAGES + INSIDE_PLAIN_PACKAGE + INSIDE_CODE_PACKAGE;
+	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
+	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 }
 
 void Inter::Comment::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {

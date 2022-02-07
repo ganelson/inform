@@ -8,13 +8,10 @@ Defining the Lab construct.
 
 =
 void Inter::Lab::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		LAB_IST,
-		L"lab (%C+)",
-		I"lab", I"labs");
-	IC->min_level = 1;
-	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	inter_construct *IC = InterConstruct::create_construct(LAB_IST, I"lab");
+	InterConstruct::specify_syntax(IC, L"lab (%C+)");
+	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Lab::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Lab::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Lab::write);

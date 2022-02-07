@@ -8,13 +8,10 @@ Defining the ref construct.
 
 =
 void Inter::Ref::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(
-		REF_IST,
-		L"ref (%i+) (%C+)",
-		I"ref", I"refs");
-	IC->min_level = 1;
-	IC->max_level = 100000000;
-	IC->usage_permissions = INSIDE_CODE_PACKAGE;
+	inter_construct *IC = InterConstruct::create_construct(REF_IST, I"ref");
+	InterConstruct::specify_syntax(IC, L"ref (%i+) (%C+)");
+	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Ref::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Ref::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Ref::write);

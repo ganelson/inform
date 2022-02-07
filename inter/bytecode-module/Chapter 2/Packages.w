@@ -11,11 +11,11 @@ will be a |PACKAGE_IST| instruction. Every package has a name and a type. For
 example, suppose we have:
 = (text as Inter)
 	A
-	B
+		B
 	package gadgets _paraphernalia          <-- package_head node
 		symbol private misc ^is_electrical
 		C
-		D
+			D
 		E
 	F
 	G
