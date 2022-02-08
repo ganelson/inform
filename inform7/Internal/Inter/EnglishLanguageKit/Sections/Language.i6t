@@ -4,6 +4,11 @@ The fundamental definitions needed by the parser and the verb
 library in order to specify the language of play -- that is, the language
 used for communications between the story file and the player.
 
+@h Identification.
+
+=
+Constant ENGLISHLANGUAGEKIT = 1;
+
 @h Vocabulary.
 
 =

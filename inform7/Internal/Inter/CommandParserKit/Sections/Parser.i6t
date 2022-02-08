@@ -3,6 +3,11 @@ Parser Template.
 The parser for turning the text of the typed command into a proposed
 action by the player.
 
+@h Identification.
+
+=
+Constant COMMANDPARSERKIT = 1;
+
 @h Parser Error Numbers.
 The traditional ways in which the I6 library's parser, which we adopt here
 more or less intact, can give up on a player's command.

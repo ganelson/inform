@@ -1,5 +1,10 @@
 Miscellany Template.
 
+@h Identification.
+
+=
+Constant WORLDMODELKIT = 1;
+
 @h Global Variables.
 These are not the only global variables defined in the template layer:
 those needed locally only by single sections (and not used in definitions

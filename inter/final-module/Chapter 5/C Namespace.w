@@ -135,6 +135,7 @@ void CNamespace::declare_constant(code_generator *gtr, code_generation *gen,
 	int seg = c_constants_I7CGS;
 	if (Str::eq(name, I"Serial")) seg = c_ids_and_maxima_I7CGS;
 	if (Str::eq(name, I"Release")) seg = c_ids_and_maxima_I7CGS;
+	if (Str::eq(name, I"BASICINFORMKIT")) seg = c_ids_and_maxima_I7CGS;
 	segmentation_pos saved = CodeGen::select_layered(gen, seg,
 		Inter::Constant::constant_depth(const_s));
 	text_stream *OUT = CodeGen::current(gen);

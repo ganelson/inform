@@ -94,7 +94,7 @@ int VanillaFunctions::formal_arity(vanilla_function *vf) {
 vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s) {
 	inter_package *P = InterPackage::container(fn_s->definition);
 	inter_package *PP = InterPackage::parent(P);
-	text_stream *i7_syntax = Metadata::read_optional_textual(PP, I"^phrase_syntax");
+	text_stream *i7_syntax = PP?(Metadata::read_optional_textual(PP, I"^phrase_syntax")):NULL;
 	vanilla_function *vf = CREATE(vanilla_function);
 	vf->takes_variable_arguments = FALSE;
 	vf->identifier = Str::duplicate(InterSymbol::trans(fn_s));

@@ -1,7 +1,0 @@
-Constant Grammar__Version 2;
-Global debug_flag;
-Array KindHierarchy --> (0) (0);
-[ Main;
-    print "Hello, world.^";
-    quit;
-];

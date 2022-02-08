@@ -1,8 +1,7 @@
-  The third prime is: 5.
-  The fourth prime is: seven.
-  The sixth prime is: 13.
-  The second pair of twins is: 5, 7.
-  I knaw of 12 Carmichael numbers.
-  I knaw of 0 triangle numbers.
-  As mutated, middle entry is: 666.
-  As mutated, middle entry is: 777.
+The third prime is: 5.
+The fourth prime is: seven.
+The sixth prime is: 13.
+The second pair of twins is: 5, 7.
+I knaw of 12 Carmichael numbers.
+As mutated, middle entry is: 666.
+As mutated, middle entry is: 777.

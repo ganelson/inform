@@ -394,7 +394,7 @@ void SymbolAnnotation::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter
 =
 inter_annotation SymbolAnnotation::read_annotation(inter_tree *I, text_stream *text,
 	inter_error_location *eloc, inter_error_message **E) {
-	inter_ti val = FALSE;
+	inter_ti val = TRUE;
 	int iatype = BOOLEAN_IATYPE;
 	*E = NULL;
 	LOOP_THROUGH_TEXT(P, text)
@@ -419,7 +419,9 @@ inter_annotation SymbolAnnotation::read_annotation(inter_tree *I, text_stream *t
 	inter_annotation_form *IAF;
 	LOOP_OVER(IAF, inter_annotation_form)
 		if (Str::eq(text, IAF->annotation_keyword)) {
-			if (IAF->iatype != iatype) *E = Inter::Errors::plain(I"bad type for =value", eloc);
+			if (IAF->iatype != iatype)
+				*E = Inter::Errors::quoted(I"wrong sort of value for annotation",
+					IAF->annotation_keyword, eloc);
 			inter_annotation IA;
 			IA.annot = IAF;
 			IA.annot_value = val;

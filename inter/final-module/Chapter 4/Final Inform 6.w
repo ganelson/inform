@@ -128,6 +128,7 @@ Document for a specification.
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#Ifdef TARGET_ZCODE;\n");
 	WRITE("Global max_z_object;\n");
+	WRITE("#Ifdef Z__Region;\n");
 	WRITE("[ OC__Cl obj cla j a n objflag;\n"); INDENT;
 	WRITE("@jl obj 1 ?NotObj;\n");
 	WRITE("@jg obj max_z_object ?NotObj;\n");
@@ -189,6 +190,7 @@ Document for a specification.
 	WRITE("RT__Err(\"apply 'ofclass' for\", cla, -1);\n");
 	WRITE("rfalse;\n");
 	OUTDENT; WRITE("];\n");
+	WRITE("#Endif;\n");
 	WRITE("#Endif;\n");
 	CodeGen::deselect(gen, saved);
 

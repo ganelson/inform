@@ -64,8 +64,20 @@ a slightly more elaborate linker and then including the code below in kits
 have to refer to eldritch Z-only symbols like |#largest_object| or Glulx-only
 symbols like |#g$self|.
 
+Purely as a convenience for testing purposes...
+
 @<Inject code at the top of Main@> =
 	WRITE("#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;\n");
+	WRITE("#ifndef BASICINFORMKIT; #ifdef TARGET_GLULX;\n");
+    WRITE("@setiosys 2 0; ! Set to use Glk\n");
+    WRITE("@push 201; ! = GG_MAINWIN_ROCK;\n");
+    WRITE("@push 3; ! = wintype_TextBuffer\n");
+    WRITE("@push 0;\n");
+    WRITE("@push 0;\n");
+    WRITE("@push 0;\n");
+    WRITE("@glk 35 5 sp; ! glk_window_open\n");
+    WRITE("@glk 47 1 0; ! glk_set_window\n");
+	WRITE("#endif; #endif;\n");
 
 @<Inject code at the top of DebugAction@> =
 	WRITE("#ifdef TARGET_GLULX;\n");
@@ -835,6 +847,7 @@ the Inform 6 operator |.|, used as an rvalue, in cases where we cannot prove
 it would be safe to use |.| directly:
 
 @<Most general implementation of !propertyvalue@> =
+	WRITE("#ifdef BASICINFORMKIT;\n");
 	WRITE("[ _final_propertyvalue K o p t;\n");
 	WRITE("    if (K == OBJECT_TY) {\n");
 	WRITE("        if (metaclass(o) == Object) {\n");
@@ -848,10 +861,12 @@ it would be safe to use |.| directly:
 	WRITE("        return (t.(p-->1))-->(o+COL_HSIZE);\n");
 	WRITE("    }\n");
 	WRITE("];\n");
+	WRITE("#endif;\n");
 
 @ Similarly, this is a safe wrapper for |provides|:
 
 @<Most general implementation of !propertyexists@> =
+	WRITE("#ifdef BASICINFORMKIT;\n");
 	WRITE("[ _final_propertyexists K o p holder;\n");
 	WRITE("if (K == OBJECT_TY) {\n");
 	WRITE("    if ((o) && (metaclass(o) == Object)) {\n");
@@ -876,31 +891,37 @@ it would be safe to use |.| directly:
 	WRITE("    }\n");
 	WRITE("}\n");
 	WRITE("rfalse; ];\n");
+	WRITE("#endif;\n");
 
 @ And this for |.&|. Note that we always return 0 if the owner is not an object.
 
 @<Most general implementation of !propertyarray@> =
+	WRITE("#ifdef BASICINFORMKIT;\n");
 	WRITE("[ _final_propertyarray K o p v t;\n");
 	WRITE("    if (K ~= OBJECT_TY) return 0;\n");
 	WRITE("    t = p-->0; p = p-->1;\n");
 	WRITE("    if (t == 2) return 0;\n");
 	WRITE("    return o.&p;\n");
 	WRITE("];\n");
+	WRITE("#endif;\n");
 
 @ And this for |.#|. Again, we always return 0 if the owner is not an object.
 
 @<Most general implementation of !propertylength@> =
+	WRITE("#ifdef BASICINFORMKIT;\n");
 	WRITE("[ _final_propertylength K o p v t;\n");
 	WRITE("    if (K ~= OBJECT_TY) return 0;\n");
 	WRITE("    t = p-->0; p = p-->1;\n");
 	WRITE("    if (t == 2) return 0;\n");
 	WRITE("    return o.#p;\n");
 	WRITE("];\n");
+	WRITE("#endif;\n");
 
 @ And this is a safe way to write to or otherwise alter |O.P|, laboriously
 written out as seven functions. (Speed is more important than conciseness here.)
 
 @<Most general implementation of writing to a property@> =
+	WRITE("#ifdef BASICINFORMKIT;\n");
 	WRITE("[ _final_store_property K o p v t;\n");
 	WRITE("    if (K == OBJECT_TY) {\n");
 	WRITE("        if (metaclass(o) == Object) {\n");
@@ -1005,12 +1026,14 @@ written out as seven functions. (Speed is more important than conciseness here.)
 	WRITE("            ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) & ~v;\n");
 	WRITE("    }\n");
 	WRITE("];\n");
+	WRITE("#endif;\n");
 
 @ It's not entirely clear what the result of trying to send a message to an
 either/or property ought to be: nobody should ever do that. We're going to say
 that it's 0 here.
 
 @<Implementation of !messageX@> =
+	WRITE("#ifdef BASICINFORMKIT;\n");
 	WRITE("[ _final_message0 o p q x a rv;\n");
 	WRITE("    if (p-->0 == 2) return 0;\n");
 	WRITE("    q = p-->1; return o.q();\n");
@@ -1027,3 +1050,4 @@ that it's 0 here.
 	WRITE("    if (p-->0 == 2) return 0;\n");
 	WRITE("    q = p-->1; return o.q(v1, v2, v3);\n");
 	WRITE("];\n");
+	WRITE("#endif;\n");

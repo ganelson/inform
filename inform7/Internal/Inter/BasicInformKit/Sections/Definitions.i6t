@@ -4,6 +4,11 @@ Miscellaneous constant definitions, usually providing symbolic names
 for otherwise inscrutable numbers, which are used throughout the template
 layer.
 
+@h Identification.
+
+=
+Constant BASICINFORMKIT = 1;
+
 @h Z-Machine Definitions.
 The Z-machine contains certain special constants and variables at fixed
 position in its "header"; the addresses of these are given below. See

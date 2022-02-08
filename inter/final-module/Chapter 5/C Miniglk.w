@@ -902,12 +902,14 @@ void i7_default_stylist(i7process_t *proc, i7word_t which, i7word_t what) {
 			case 2: sprintf(S->style, "italic"); break;
 			case 3: sprintf(S->style, "reverse"); break;
 			default: {
+			    #ifdef i7_mgl_BASICINFORMKIT
 				int L =
 					i7_fn_TEXT_TY_CharacterLength(proc, what, 0, 0, 0, 0, 0, 0);
 				if (L > 127) L = 127;
 				for (int i=0; i<L; i++) S->style[i] =
 					i7_fn_BlkValueRead(proc, what, i, 0, 0, 0, 0, 0, 0, 0);
 				S->style[L] = 0;
+				#endif
 			}
 		}
 	}

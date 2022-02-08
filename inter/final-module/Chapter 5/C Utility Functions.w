@@ -70,6 +70,7 @@ i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc,
 	i7word_t i7_mgl_local_r);
 
 char *i7_read_string(i7process_t *proc, i7word_t S) {
+	#ifdef i7_mgl_BASICINFORMKIT
 	i7_fn_TEXT_TY_Transmute(proc, S);
 	int L = i7_fn_TEXT_TY_CharacterLength(proc, S, 0, 0, 0, 0, 0, 0);
 	char *A = malloc(L + 1);
@@ -80,9 +81,14 @@ char *i7_read_string(i7process_t *proc, i7word_t S) {
 		A[i] = i7_fn_BlkValueRead(proc, S, i, 0, 0, 0, 0, 0, 0, 0);
 	A[L] = 0;
 	return A;
+	#endif
+	#ifndef i7_mgl_BASICINFORMKIT
+	return NULL;
+	#endif
 }
 
 void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
+	#ifdef i7_mgl_BASICINFORMKIT
 	i7_fn_TEXT_TY_Transmute(proc, S);
 	i7_fn_BlkValueWrite(proc, S, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	if (A) {
@@ -90,6 +96,7 @@ void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
 		for (int i=0; i<L; i++)
 			i7_fn_BlkValueWrite(proc, S, i, A[i], 0, 0, 0, 0, 0, 0, 0);
 	}
+	#endif
 }
 =
 
@@ -113,6 +120,7 @@ i7word_t i7_fn_LIST_OF_TY_PutItem(i7process_t *proc, i7word_t i7_mgl_local_list,
 	i7word_t i7_mgl_local_nv);
 
 i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N) {
+	#ifdef i7_mgl_BASICINFORMKIT
 	int L = i7_fn_LIST_OF_TY_GetLength(proc, S);
 	i7word_t *A = calloc(L + 1, sizeof(i7word_t));
 	if (A == NULL) {
@@ -122,14 +130,20 @@ i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N) {
 	A[L] = 0;
 	if (N) *N = L;
 	return A;
+	#endif
+	#ifndef i7_mgl_BASICINFORMKIT
+	return NULL;
+	#endif
 }
 
 void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L) {
+	#ifdef i7_mgl_BASICINFORMKIT
 	i7_fn_LIST_OF_TY_SetLength(proc, S, L, 0, 0, 0, 0, 0, 0);
 	if (A) {
 		for (int i=0; i<L; i++) 
 			i7_fn_LIST_OF_TY_PutItem(proc, S, i+1, A[i], 0, 0);
 	}
+	#endif
 }
 =
 

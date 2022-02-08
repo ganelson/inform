@@ -150,11 +150,24 @@ have to refer to eldritch Z-only symbols like <span class="extract"><span class=
 symbols like <span class="extract"><span class="extract-syntax">#g$self</span></span>.
 </p>
 
+<p class="commentary">Purely as a convenience for testing purposes...
+</p>
+
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inject code at the top of Main</span><span class="named-paragraph-number">2.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#ifndef BASICINFORMKIT; #ifdef TARGET_GLULX;\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"@setiosys 2 0; ! Set to use Glk\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"@push 201; ! = GG_MAINWIN_ROCK;\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"@push 3; ! = wintype_TextBuffer\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"@push 0;\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"@push 0;\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"@push 0;\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"@glk 35 5 sp; ! glk_window_open\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"@glk 47 1 0; ! glk_set_window\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#endif; #endif;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-i6c2.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2_4" class="paragraph-anchor"></a><b>&#167;2.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inject code at the top of DebugAction</span><span class="named-paragraph-number">2.4</span></span><span class="comment-syntax"> =</span>
@@ -1075,6 +1088,7 @@ it would be safe to use <span class="extract"><span class="extract-syntax">.</sp
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#ifdef BASICINFORMKIT;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[ _final_propertyvalue K o p t;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (K == OBJECT_TY) {\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"        if (metaclass(o) == Object) {\n"</span><span class="plain-syntax">);</span>
@@ -1088,6 +1102,7 @@ it would be safe to use <span class="extract"><span class="extract-syntax">.</sp
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"        return (t.(p--&gt;1))--&gt;(o+COL_HSIZE);\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    }\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"];\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#endif;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-i6c2.html#SP9">&#167;9</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b>Similarly, this is a safe wrapper for <span class="extract"><span class="extract-syntax">provides</span></span>:
@@ -1097,6 +1112,7 @@ it would be safe to use <span class="extract"><span class="extract-syntax">.</sp
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#ifdef BASICINFORMKIT;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[ _final_propertyexists K o p holder;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"if (K == OBJECT_TY) {\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if ((o) &amp;&amp; (metaclass(o) == Object)) {\n"</span><span class="plain-syntax">);</span>
@@ -1121,6 +1137,7 @@ it would be safe to use <span class="extract"><span class="extract-syntax">.</sp
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    }\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"}\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"rfalse; ];\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#endif;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-i6c2.html#SP9">&#167;9</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b>And this for <span class="extract"><span class="extract-syntax">.&amp;</span></span>. Note that we always return 0 if the owner is not an object.
@@ -1130,12 +1147,14 @@ it would be safe to use <span class="extract"><span class="extract-syntax">.</sp
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#ifdef BASICINFORMKIT;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[ _final_propertyarray K o p v t;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (K ~= OBJECT_TY) return 0;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    t = p--&gt;0; p = p--&gt;1;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (t == 2) return 0;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    return o.&amp;p;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"];\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#endif;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-i6c2.html#SP9">&#167;9</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9_4" class="paragraph-anchor"></a><b>&#167;9.4.  </b>And this for <span class="extract"><span class="extract-syntax">.#</span></span>. Again, we always return 0 if the owner is not an object.
@@ -1145,12 +1164,14 @@ it would be safe to use <span class="extract"><span class="extract-syntax">.</sp
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#ifdef BASICINFORMKIT;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[ _final_propertylength K o p v t;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (K ~= OBJECT_TY) return 0;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    t = p--&gt;0; p = p--&gt;1;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (t == 2) return 0;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    return o.#p;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"];\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#endif;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-i6c2.html#SP9">&#167;9</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9_5" class="paragraph-anchor"></a><b>&#167;9.5.  </b>And this is a safe way to write to or otherwise alter <span class="extract"><span class="extract-syntax">O.P</span></span>, laboriously
@@ -1161,6 +1182,7 @@ written out as seven functions. (Speed is more important than conciseness here.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#ifdef BASICINFORMKIT;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[ _final_store_property K o p v t;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (K == OBJECT_TY) {\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"        if (metaclass(o) == Object) {\n"</span><span class="plain-syntax">);</span>
@@ -1265,6 +1287,7 @@ written out as seven functions. (Speed is more important than conciseness here.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"            ((value_property_holders--&gt;K).(p--&gt;1))--&gt;(o+COL_HSIZE) &amp; ~v;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    }\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"];\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#endif;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-i6c2.html#SP9">&#167;9</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9_6" class="paragraph-anchor"></a><b>&#167;9.6.  </b>It's not entirely clear what the result of trying to send a message to an
@@ -1276,6 +1299,7 @@ that it's 0 here.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#ifdef BASICINFORMKIT;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"[ _final_message0 o p q x a rv;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (p--&gt;0 == 2) return 0;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    q = p--&gt;1; return o.q();\n"</span><span class="plain-syntax">);</span>
@@ -1292,6 +1316,7 @@ that it's 0 here.
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    if (p--&gt;0 == 2) return 0;\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"    q = p--&gt;1; return o.q(v1, v2, v3);\n"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"];\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"#endif;\n"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-i6c2.html#SP9">&#167;9</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">

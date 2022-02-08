@@ -1029,6 +1029,7 @@ void i7_change_gprop_value(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t
 void CObjectModel::compile_gprop_functions(code_generation *gen) {
 	segmentation_pos saved = CodeGen::select(gen, c_function_declarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
+	WRITE("#ifdef i7_mgl_OBJECT_TY\n");
 	WRITE("int i7_provides_gprop(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t p) {\n");
 	WRITE("    return i7_provides_gprop_inner(proc, K, obj, p, i7_mgl_OBJECT_TY,\n");
 	WRITE("         i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_COL_HSIZE);\n");
@@ -1047,6 +1048,7 @@ void CObjectModel::compile_gprop_functions(code_generation *gen) {
 	WRITE("    i7_change_gprop_value_inner(proc, K, obj, p, val, form, i7_mgl_OBJECT_TY,\n");
 	WRITE("         i7_mgl_value_ranges, i7_mgl_value_property_holders, i7_mgl_COL_HSIZE);\n");
 	WRITE("}\n");
+	WRITE("#endif\n");
 	CodeGen::deselect(gen, saved);
 }
 

@@ -1109,11 +1109,16 @@ void i7_print_box(i7process_t *proc, i7word_t x) {
 }
 void i7_print_char(i7process_t *proc, i7word_t x) {
 	if (x == 13) x = 10;
+	#ifdef i7_mgl_BASICINFORMKIT
 	i7_push(proc, x);
 	i7word_t current = 0;
 	i7_opcode_glk(proc, i7_glk_stream_get_current, 0, &current);
 	i7_push(proc, current);
 	i7_opcode_glk(proc, i7_glk_put_char_stream, 2, NULL);
+	#endif
+	#ifndef i7_mgl_BASICINFORMKIT
+	printf("%c", x);
+	#endif
 }
 void i7_styling(i7process_t *proc, i7word_t which, i7word_t what) {
 	(proc->stylist)(proc, which, what);
@@ -1715,12 +1720,14 @@ void i7_default_stylist(i7process_t *proc, i7word_t which, i7word_t what) {
 			case 2: sprintf(S->style, "italic"); break;
 			case 3: sprintf(S->style, "reverse"); break;
 			default: {
+			    #ifdef i7_mgl_BASICINFORMKIT
 				int L =
 					i7_fn_TEXT_TY_CharacterLength(proc, what, 0, 0, 0, 0, 0, 0);
 				if (L > 127) L = 127;
 				for (int i=0; i<L; i++) S->style[i] =
 					i7_fn_BlkValueRead(proc, what, i, 0, 0, 0, 0, 0, 0, 0);
 				S->style[L] = 0;
+				#endif
 			}
 		}
 	}
@@ -1766,6 +1773,7 @@ i7word_t i7_fn_TEXT_TY_CharacterLength(i7process_t *proc,
 	i7word_t i7_mgl_local_r);
 
 char *i7_read_string(i7process_t *proc, i7word_t S) {
+	#ifdef i7_mgl_BASICINFORMKIT
 	i7_fn_TEXT_TY_Transmute(proc, S);
 	int L = i7_fn_TEXT_TY_CharacterLength(proc, S, 0, 0, 0, 0, 0, 0);
 	char *A = malloc(L + 1);
@@ -1776,9 +1784,14 @@ char *i7_read_string(i7process_t *proc, i7word_t S) {
 		A[i] = i7_fn_BlkValueRead(proc, S, i, 0, 0, 0, 0, 0, 0, 0);
 	A[L] = 0;
 	return A;
+	#endif
+	#ifndef i7_mgl_BASICINFORMKIT
+	return NULL;
+	#endif
 }
 
 void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
+	#ifdef i7_mgl_BASICINFORMKIT
 	i7_fn_TEXT_TY_Transmute(proc, S);
 	i7_fn_BlkValueWrite(proc, S, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	if (A) {
@@ -1786,6 +1799,7 @@ void i7_write_string(i7process_t *proc, i7word_t S, char *A) {
 		for (int i=0; i<L; i++)
 			i7_fn_BlkValueWrite(proc, S, i, A[i], 0, 0, 0, 0, 0, 0, 0);
 	}
+	#endif
 }
 i7word_t i7_fn_LIST_OF_TY_GetLength(i7process_t *proc, i7word_t i7_mgl_local_list);
 i7word_t i7_fn_LIST_OF_TY_SetLength(i7process_t *proc, i7word_t i7_mgl_local_list,
@@ -1799,6 +1813,7 @@ i7word_t i7_fn_LIST_OF_TY_PutItem(i7process_t *proc, i7word_t i7_mgl_local_list,
 	i7word_t i7_mgl_local_nv);
 
 i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N) {
+	#ifdef i7_mgl_BASICINFORMKIT
 	int L = i7_fn_LIST_OF_TY_GetLength(proc, S);
 	i7word_t *A = calloc(L + 1, sizeof(i7word_t));
 	if (A == NULL) {
@@ -1808,14 +1823,20 @@ i7word_t *i7_read_list(i7process_t *proc, i7word_t S, int *N) {
 	A[L] = 0;
 	if (N) *N = L;
 	return A;
+	#endif
+	#ifndef i7_mgl_BASICINFORMKIT
+	return NULL;
+	#endif
 }
 
 void i7_write_list(i7process_t *proc, i7word_t S, i7word_t *A, int L) {
+	#ifdef i7_mgl_BASICINFORMKIT
 	i7_fn_LIST_OF_TY_SetLength(proc, S, L, 0, 0, 0, 0, 0, 0);
 	if (A) {
 		for (int i=0; i<L; i++)
 			i7_fn_LIST_OF_TY_PutItem(proc, S, i+1, A[i], 0, 0);
 	}
+	#endif
 }
 #ifdef i7_mgl_TryAction
 i7word_t i7_fn_TryAction(i7process_t *proc, i7word_t i7_mgl_local_req,

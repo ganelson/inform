@@ -3,6 +3,11 @@ Miscellany.
 Additions to the Basic Inform template which are needed only if the Standard
 Rules are not to be used.
 
+@h Identification.
+
+=
+Constant BASICINFORMEXTRASKIT = 1;
+
 @h Justification.
 Q. Why isn't all of this done with conditional compilation in the Basic Inform
 template files? A. That wouldn't work, since template files are assimilated
