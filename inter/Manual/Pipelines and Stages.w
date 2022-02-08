@@ -300,7 +300,7 @@ This stage is not used in the regular Inform pipelines, but exists to assist
 testing of the so-called "transmigration" process, which powers |load-binary-kits|
 (see above).
 
-For the implementation, see //pipeline: Read, Move, Wipe, Stop Stages//.
+For the implementation, see //pipeline: Read, Move, Stop Stages//.
 
 @ |new|.
 A completely empty Inter tree is not very useful. |new| adds the very basic
@@ -335,7 +335,7 @@ compilation, because //inform7// will already have made an Inter tree in
 memory, and it would be inefficient to save this out to the file system and
 then read it in again.
 
-For the implementation, see //pipeline: Read, Move, Wipe, Stop Stages//.
+For the implementation, see //pipeline: Read, Move, Stop Stages//.
 
 @ |reconcile-verbs|.
 Looks for clashes between any verbs (i.e., command parser imperatives like
@@ -389,9 +389,9 @@ this is only useful for making experimental edits to pipeline descriptions
 to see what just the first half does, without deleting the second half of
 the description.
 
-For the implementation, see //pipeline: Read, Move, Wipe, Stop Stages//.
+For the implementation, see //pipeline: Read, Move, Stop Stages//.
 
 @ |wipe|.
 Empties a tree slot, freeing it up to be used again.
 
-For the implementation, see //pipeline: Read, Move, Wipe, Stop Stages//.
+For the implementation, see //pipeline: Read, Move, Stop Stages//.

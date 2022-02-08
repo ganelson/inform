@@ -2,6 +2,7 @@ packagetype _plain
 packagetype _code
 packagetype _linkage
 
+primitive !enableprinting void -> void
 primitive !print val -> void
 primitive !quit void -> void
 
@@ -13,6 +14,7 @@ package main _plain
 	package Main_B _code
 		symbol public misc K_unchecked --> /main/K_unchecked
 		code
+			inv !enableprinting
 			inv !print
 				val K_unchecked "Hello, world.\n"
 			inv !quit

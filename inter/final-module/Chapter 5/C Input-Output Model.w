@@ -54,6 +54,19 @@ int CInputOutputModel::invoke_primitive(code_generation *gen, inter_ti bip, inte
 		case BOX_BIP:
 			WRITE("i7_print_box(proc, "); CodeGen::lt_mode(gen, BOX_LTM); VNODE_1C;
 			CodeGen::lt_mode(gen, REGULAR_LTM); WRITE(")"); break;
+		case ENABLEPRINTING_BIP:
+			WRITE("{ i7word_t window_id = 0;\n");
+			WRITE("i7_opcode_setiosys(proc, 2, 0); // Set to use Glk\n");
+			WRITE("i7_push(proc, 201); // = GG_MAINWIN_ROCK;\n");
+			WRITE("i7_push(proc, 3); // = wintype_TextBuffer;\n");
+			WRITE("i7_push(proc, 0);\n");
+			WRITE("i7_push(proc, 0);\n");
+			WRITE("i7_push(proc, 0);\n");
+			WRITE("i7_opcode_glk(proc, 35, 5, &window_id); // glk_window_open, pushing a window ID\n");
+			WRITE("i7_push(proc, window_id);\n");
+			WRITE("i7_opcode_glk(proc, 47, 1, NULL); // glk_set_window to that window ID\n");
+			WRITE("}\n");
+			break;
 		default: return NOT_APPLICABLE;
 	}
 	return FALSE;
@@ -101,16 +114,11 @@ void i7_print_char(i7process_t *proc, i7word_t x);
 = (text to inform7_clib.c)
 void i7_print_char(i7process_t *proc, i7word_t x) {
 	if (x == 13) x = 10;
-	#ifdef i7_mgl_BASICINFORMKIT
 	i7_push(proc, x);
 	i7word_t current = 0;
 	i7_opcode_glk(proc, i7_glk_stream_get_current, 0, &current);
 	i7_push(proc, current);
 	i7_opcode_glk(proc, i7_glk_put_char_stream, 2, NULL);
-	#endif
-	#ifndef i7_mgl_BASICINFORMKIT
-	printf("%c", x);
-	#endif
 }
 =
 

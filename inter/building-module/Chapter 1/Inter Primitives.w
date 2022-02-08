@@ -81,6 +81,7 @@ there would have to be string comparisons.
 @e NOTIN_BIP
 @e ALTERNATIVE_BIP
 
+@e ENABLEPRINTING_BIP
 @e FONT_BIP
 @e STYLE_BIP
 @e PRINT_BIP
@@ -200,6 +201,7 @@ inform7_primitive standard_inform7_primitives[] = {
 	{ NOTIN_BIP,             "!notin",             "val val -> val",                  SIP_RECORD_END },
 	{ ALTERNATIVE_BIP,       "!alternative",       "val val -> val",                  SIP_RECORD_END },
 
+	{ ENABLEPRINTING_BIP,    "!enableprinting",    "void -> void",                    SIP_RECORD_END },
 	{ FONT_BIP,              "!font",              "val -> void",                     SIP_RECORD_END },
 	{ STYLE_BIP,             "!style",             "val -> void",                     SIP_RECORD_END },
 	{ PRINT_BIP,             "!print",             "val -> void",                     SIP_RECORD_END },

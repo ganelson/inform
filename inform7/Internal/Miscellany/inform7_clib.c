@@ -1109,16 +1109,11 @@ void i7_print_box(i7process_t *proc, i7word_t x) {
 }
 void i7_print_char(i7process_t *proc, i7word_t x) {
 	if (x == 13) x = 10;
-	#ifdef i7_mgl_BASICINFORMKIT
 	i7_push(proc, x);
 	i7word_t current = 0;
 	i7_opcode_glk(proc, i7_glk_stream_get_current, 0, &current);
 	i7_push(proc, current);
 	i7_opcode_glk(proc, i7_glk_put_char_stream, 2, NULL);
-	#endif
-	#ifndef i7_mgl_BASICINFORMKIT
-	printf("%c", x);
-	#endif
 }
 void i7_styling(i7process_t *proc, i7word_t which, i7word_t what) {
 	(proc->stylist)(proc, which, what);

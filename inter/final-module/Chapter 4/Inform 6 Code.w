@@ -64,20 +64,8 @@ a slightly more elaborate linker and then including the code below in kits
 have to refer to eldritch Z-only symbols like |#largest_object| or Glulx-only
 symbols like |#g$self|.
 
-Purely as a convenience for testing purposes...
-
 @<Inject code at the top of Main@> =
 	WRITE("#ifdef TARGET_ZCODE; max_z_object = #largest_object - 255; #endif;\n");
-	WRITE("#ifndef BASICINFORMKIT; #ifdef TARGET_GLULX;\n");
-    WRITE("@setiosys 2 0; ! Set to use Glk\n");
-    WRITE("@push 201; ! = GG_MAINWIN_ROCK;\n");
-    WRITE("@push 3; ! = wintype_TextBuffer\n");
-    WRITE("@push 0;\n");
-    WRITE("@push 0;\n");
-    WRITE("@push 0;\n");
-    WRITE("@glk 35 5 sp; ! glk_window_open\n");
-    WRITE("@glk 47 1 0; ! glk_set_window\n");
-	WRITE("#endif; #endif;\n");
 
 @<Inject code at the top of DebugAction@> =
 	WRITE("#ifdef TARGET_GLULX;\n");
@@ -729,6 +717,18 @@ a constant 1, 2 or 3, or else plain roman is all you get.
 		}
 		break;
 	}
+	case ENABLEPRINTING_BIP:
+		WRITE("#ifdef TARGET_GLULX;\n");
+		WRITE("@setiosys 2 0; ! Set to use Glk\n");
+		WRITE("@push 201;     ! = GG_MAINWIN_ROCK;\n");
+		WRITE("@push 3;       ! = wintype_TextBuffer\n");
+		WRITE("@push 0;\n");
+		WRITE("@push 0;\n");
+		WRITE("@push 0;\n");
+		WRITE("@glk 35 5 sp;  ! glk_window_open, pushing a window ID\n");
+		WRITE("@glk 47 1 0;   ! glk_set_window to that window ID\n");
+		WRITE("#endif;\n");
+		break;
 
 @<The VM object tree@> =
 	case MOVE_BIP:          WRITE("move "); VNODE_1C; WRITE(" to "); VNODE_2C; break;

@@ -93,6 +93,14 @@ Lastly, a primitive for a rum feature of Inform 6 allowing for the display of
 
 (a) |primitive !box val -> void|. 
 
+On some platforms, active steps need to be taken before text can actually appear:
+for example, those using the Glk input/output framework. As a convenience, this
+primitive will do anything which might be necessary. //inform7// doesn't use
+this, instead compiling its own code to activate Glk, but it's useful to have
+this opcode for making small Inter test cases work:
+
+(a) !primitive !enableprinting void -> void|.
+
 @h Stack access.
 The stack is not directly accessible anywhere in memory, so the only access
 is via the following.

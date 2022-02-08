@@ -162,6 +162,15 @@ values which supply names for styles.
 
 <ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !box val -&gt; void</span></span>.
 </li></ul>
+<p class="commentary">On some platforms, active steps need to be taken before text can actually appear:
+for example, those using the Glk input/output framework. As a convenience, this
+primitive will do anything which might be necessary. <a href="../inform7/index.html" class="internal">inform7</a> doesn't use
+this, instead compiling its own code to activate Glk, but it's useful to have
+this opcode for making small Inter test cases work:
+</p>
+
+<ul class="items"><li>(a) !primitive !enableprinting void -&gt; void<span class="extract"><span class="extract-syntax">.
+</span></span></li></ul>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Stack access. </b>The stack is not directly accessible anywhere in memory, so the only access
 is via the following.
 </p>
