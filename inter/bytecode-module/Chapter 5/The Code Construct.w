@@ -16,7 +16,7 @@ void Inter::Code::define(void) {
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Code::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Code::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Code::write);
-	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Code::verify_children);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, Inter::Code::verify_children);
 }
 
 @
@@ -29,10 +29,10 @@ void Inter::Code::define(void) {
 void Inter::Code::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = InterConstruct::vet_level(IBM, CODE_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::check_level_in_package(IBM, CODE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = InterConstruct::get_latest_block_package();
+	inter_package *routine = Inter::Textual::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'code' used outside function", eloc); return; }
 
 	*E = Inter::Code::new(IBM, ilp->indent_level, eloc);

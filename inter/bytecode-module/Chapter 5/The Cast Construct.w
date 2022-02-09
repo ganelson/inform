@@ -16,7 +16,7 @@ void Inter::Cast::define(void) {
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Cast::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Cast::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Cast::write);
-	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Cast::verify_children);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, Inter::Cast::verify_children);
 }
 
 @
@@ -31,10 +31,10 @@ void Inter::Cast::define(void) {
 void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	*E = InterConstruct::vet_level(IBM, CAST_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::check_level_in_package(IBM, CAST_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = InterConstruct::get_latest_block_package();
+	inter_package *routine = Inter::Textual::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'val' used outside function", eloc); return; }
 
 	inter_symbol *from_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);

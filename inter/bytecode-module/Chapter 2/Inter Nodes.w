@@ -230,12 +230,7 @@ inter_tree_node *Inode::new_with_8_data_fields(inter_bookmark *IBM, int S,
 	return P;
 }
 
-@h The package of a node.
-To find the package of a node, which needs to be fast, always call
-//Inode::get_package//. The field |F->package| really just caches a result
-we could determine algorithmically, but more slowly; the other function here
-does just that, but is used only by //InterConstruct::lint_visitor// to verify
-that we haven't fumbled our invariants.
+@h The package and tree of a node.
 
 =
 inter_package *Inode::get_package(inter_tree_node *F) {
@@ -243,20 +238,6 @@ inter_package *Inode::get_package(inter_tree_node *F) {
 	return NULL;
 }
 
-inter_ti Inode::get_package_slowly_getting_same_answer(inter_tree_node *X) {
-	inter_tree_node *F = X;
-	while (TRUE) {
-		F = InterTree::parent(F);
-		if (F == NULL) break;
-		if (F->W.instruction[ID_IFLD] == PACKAGE_IST)
-			return F->W.instruction[PID_PACKAGE_IFLD];
-	}
-	return 0;
-}
-
-@ More straightforwardly:
-
-=
 inter_tree *Inode::tree(inter_tree_node *F) {
 	if (F) return F->tree;
 	return NULL;
@@ -302,7 +283,7 @@ to the next and also from one frame to the next.
 
 @ |PREFRAME_VERIFICATION_COUNT| is the number of times the instruction has
 been "verified". This is not always a passive process of checking, which is why
-we need to track whether it has happened. See //Definition//.
+we need to track whether it has happened. See //Inter Constructs//.
 
 This function effectively performs |v++|, where |v| is the count.
 
@@ -381,6 +362,14 @@ if the system is out of memory.
 =
 void Inode::extend_instruction_by(inter_tree_node *F, inter_ti by) {
 	if (by > 0) F->W = InterWarehouse::enlarge_floor_space(F->W, by);
+}
+
+@ Every instruction has a level:
+
+=
+int Inode::get_level(inter_tree_node *P) {
+	if (P == NULL) return 0;
+	return (int) P->W.instruction[LEVEL_IFLD];
 }
 
 @h Interpreting values stored in bytecode.

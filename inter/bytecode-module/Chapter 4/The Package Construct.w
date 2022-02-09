@@ -17,7 +17,7 @@ void InterPackage::define(void) {
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, InterPackage::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, InterPackage::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, InterPackage::write);
-	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, InterPackage::verify_children);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, InterPackage::verify_children);
 }
 
 @
@@ -31,7 +31,7 @@ void InterPackage::define(void) {
 
 =
 void InterPackage::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::vet_level(IBM, PACKAGE_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::check_level_in_package(IBM, PACKAGE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *ptype_name = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
@@ -115,7 +115,7 @@ void InterPackage::verify(inter_construct *IC, inter_tree_node *P, inter_package
 	else internal_error("uh?");
 	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
-	InterConstruct::set_latest_block_package(pack);
+	Inter::Textual::set_latest_block_package(pack);
 }
 
 void InterPackage::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
@@ -211,7 +211,7 @@ void InterPackage::verify_children(inter_construct *IC, inter_tree_node *P, inte
 	inter_symbol *ptype_name = InterSymbolsTable::global_symbol_from_ID_at_node(P, PTYPE_PACKAGE_IFLD);
 	if (Str::eq(ptype_name->symbol_name, I"_code")) {
 		LOOP_THROUGH_INTER_CHILDREN(C, P) {
-			if ((C->W.instruction[0] != LABEL_IST) && (C->W.instruction[0] != LOCAL_IST) && (C->W.instruction[0] != SYMBOL_IST)) {
+			if ((C->W.instruction[0] != LABEL_IST) && (C->W.instruction[0] != LOCAL_IST) && (C->W.instruction[0] != SYMBOL_IST) && (C->W.instruction[0] != CODE_IST)) {
 				*E = Inode::error(C, I"only a local or a symbol can be at the top level", NULL);
 				return;
 			}

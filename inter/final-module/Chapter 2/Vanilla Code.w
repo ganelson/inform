@@ -23,7 +23,7 @@ produced is discarded), whereas the invocation of |!plus| is not.
 =
 void VanillaCode::code(code_generation *gen, inter_tree_node *P) {
 	int old_level = gen->void_level;
-	gen->void_level = InterConstruct::get_level(P) + 1;
+	gen->void_level = Inode::get_level(P) + 1;
 	VNODE_ALLC;
 	gen->void_level = old_level;
 }
@@ -51,7 +51,7 @@ language, can only in fact occur in void context, but we won't assume that here.
 =
 void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 	int void_context = FALSE;
-	if (InterConstruct::get_level(P) == gen->void_level) void_context = TRUE;
+	if (Inode::get_level(P) == gen->void_level) void_context = TRUE;
 	switch (P->W.instruction[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE: @<Invoke a primitive@>; break;
 		case INVOKED_ROUTINE: @<Invoke a function@>; break;

@@ -27,7 +27,7 @@ void Inter::Property::define(void) {
 
 =
 void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::vet_level(IBM, PROPERTY_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::check_level_in_package(IBM, PROPERTY_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_symbol *prop_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);

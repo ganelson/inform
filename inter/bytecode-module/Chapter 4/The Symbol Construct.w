@@ -14,14 +14,17 @@ void Inter::Symbol::define(void) {
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Symbol::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Symbol::write);
 	InterConstruct::allow_in_depth_range(IC, 0, 1);
+	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
+	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 }
 
 void Inter::Symbol::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::vet_level(IBM, SYMBOL_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::check_level_in_package(IBM, SYMBOL_IST, ilp->indent_level, eloc);
 	if (*E) return;
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_package *routine = InterConstruct::get_latest_block_package();
+	inter_package *routine = Inter::Textual::get_latest_block_package();
 
 	text_stream *symbol_name = ilp->mr.exp[2];
 	text_stream *trans_name = NULL;

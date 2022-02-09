@@ -25,7 +25,7 @@ Chapter 2: The Trees
 	Transmigration
 
 Chapter 3: Their Instructions
-	Definition
+	Inter Constructs
 	Inter in Binary Files
 	Inter in Text Files
 	Verifying Inter

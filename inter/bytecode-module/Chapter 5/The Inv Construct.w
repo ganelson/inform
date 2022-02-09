@@ -17,7 +17,7 @@ void Inter::Inv::define(void) {
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Inv::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Inv::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Inv::write);
-	METHOD_ADD(IC, VERIFY_INTER_CHILDREN_MTID, Inter::Inv::verify_children);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, Inter::Inv::verify_children);
 }
 
 @
@@ -35,10 +35,10 @@ void Inter::Inv::define(void) {
 =
 void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
-	*E = InterConstruct::vet_level(IBM, INV_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::check_level_in_package(IBM, INV_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = InterConstruct::get_latest_block_package();
+	inter_package *routine = Inter::Textual::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
 	inter_symbol *invoked_name = InterSymbolsTable::symbol_from_name(InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[0]);

@@ -114,7 +114,7 @@ node, or is 0 for the root package.
 int InterPackage::baseline(inter_package *P) {
 	if (P == NULL) return 0;
 	if (InterPackage::is_a_root_package(P)) return 0;
-	return InterConstruct::get_level(InterPackage::head(P));
+	return Inode::get_level(InterPackage::head(P));
 }
 
 @h Naming.

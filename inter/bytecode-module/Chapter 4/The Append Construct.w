@@ -25,7 +25,7 @@ void Inter::Append::define(void) {
 
 =
 void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::vet_level(IBM, APPEND_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::check_level_in_package(IBM, APPEND_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (SymbolAnnotation::nonempty(&(ilp->set))) {

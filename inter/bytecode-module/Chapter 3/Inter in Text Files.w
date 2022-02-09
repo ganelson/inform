@@ -14,13 +14,8 @@ void Inter::Textual::read(inter_tree *I, filename *F) {
 	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
 	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IBM);
 	Inter::Textual::resolve_forward_references(I, &eloc);
-	InterTree::traverse(I, Inter::Textual::lint_visitor, NULL, NULL, -PACKAGE_IST);
+	InterConstruct::tree_lint(I);
 	Primitives::index_primitives_in_tree(I);
-}
-
-void Inter::Textual::lint_visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_error_message *E = InterConstruct::verify_children_inner(P);
-	if (E) Inter::Errors::issue(E);
 }
 
 inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
@@ -88,11 +83,11 @@ void Inter::Textual::read_line(text_stream *line, text_file_position *tfp, void 
 	if (Str::len(line) == 0) { no_blank_lines_stacked++; return; }
 	for (int i=0; i<no_blank_lines_stacked; i++) {
 		inter_error_location b_eloc = Inter::Errors::file_location(I"", tfp);
-		inter_error_message *E = InterConstruct::read_construct_text(I"", &b_eloc, IBM);
+		inter_error_message *E = Inter::Textual::read_construct_text(I"", &b_eloc, IBM);
 		if (E) Inter::Errors::issue(E);
 	}
 	no_blank_lines_stacked = 0;
-	inter_error_message *E = InterConstruct::read_construct_text(line, &eloc, IBM);
+	inter_error_message *E = Inter::Textual::read_construct_text(line, &eloc, IBM);
 	if (E) Inter::Errors::issue(E);
 }
 
@@ -154,3 +149,72 @@ void Inter::Textual::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state)
 	}
 }
 
+inter_package *latest_block_package = NULL;
+
+void Inter::Textual::set_latest_block_package(inter_package *F) {
+	latest_block_package = F;
+}
+
+inter_package *Inter::Textual::get_latest_block_package(void) {
+	return latest_block_package;
+}
+
+typedef struct inter_line_parse {
+	struct text_stream *line;
+	struct match_results mr;
+	struct inter_annotation_set set;
+	inter_ti terminal_comment;
+	int indent_level;
+} inter_line_parse;
+
+inter_error_message *Inter::Textual::read_construct_text(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM) {
+	inter_line_parse ilp;
+	ilp.line = line;
+	ilp.mr = Regexp::create_mr();
+	ilp.terminal_comment = 0;
+	ilp.set = SymbolAnnotation::new_annotation_set();
+	ilp.indent_level = 0;
+
+	LOOP_THROUGH_TEXT(P, ilp.line) {
+		wchar_t c = Str::get(P);
+		if (c == '\t') ilp.indent_level++;
+		else if (c == ' ')
+			return Inter::Errors::plain(I"spaces (rather than tabs) at the beginning of this line", eloc);
+		else break;
+	}
+
+	int quoted = FALSE, literal = FALSE;
+	LOOP_THROUGH_TEXT(P, ilp.line) {
+		wchar_t c = Str::get(P);
+		if ((literal == FALSE) && (c == '"')) quoted = (quoted)?FALSE:TRUE;
+		literal = FALSE;
+		if (c == '\\') literal = TRUE;
+		if ((c == '#') && ((P.index == 0) || (Str::get_at(ilp.line, P.index-1) != '#')) && (Str::get_at(ilp.line, P.index+1) != '#') && (quoted == FALSE)) {
+			ilp.terminal_comment = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+			int at = Str::index(P);
+			P = Str::forward(P);
+			while (Str::get(P) == ' ') P = Str::forward(P);
+			Str::substr(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
+			Str::truncate(ilp.line, at);
+			break;
+		}
+	}
+
+	Str::trim_white_space(ilp.line);
+
+	if (ilp.indent_level == 0) latest_block_package = NULL;
+
+	while ((InterBookmark::package(IBM)) && (InterPackage::is_a_root_package(InterBookmark::package(IBM)) == FALSE) && (ilp.indent_level <= InterBookmark::baseline(IBM))) {
+		InterBookmark::move_into_package(IBM, InterPackage::parent(InterBookmark::package(IBM)));
+	}
+
+	while (Regexp::match(&ilp.mr, ilp.line, L"(%c+) (__%c+) *")) {
+		Str::copy(ilp.line, ilp.mr.exp[0]);
+		inter_error_message *E = NULL;
+		inter_annotation IA = SymbolAnnotation::read_annotation(InterBookmark::tree(IBM), ilp.mr.exp[1], eloc, &E);
+		if (E) return E;
+		SymbolAnnotation::write_to_set(IA.annot->iatype, &(ilp.set), IA);
+	}
+	
+	return InterConstruct::match(&ilp, eloc, IBM);
+}

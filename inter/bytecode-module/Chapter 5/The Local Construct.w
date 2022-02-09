@@ -26,9 +26,9 @@ void Inter::Local::define(void) {
 
 =
 void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::vet_level(IBM, LOCAL_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::check_level_in_package(IBM, LOCAL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	inter_package *routine = InterConstruct::get_latest_block_package();
+	inter_package *routine = Inter::Textual::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'local' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }

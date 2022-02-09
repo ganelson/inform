@@ -27,7 +27,7 @@ void Inter::PropertyValue::define(void) {
 
 =
 void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::vet_level(IBM, PROPERTYVALUE_IST, ilp->indent_level, eloc);
+	*E = InterConstruct::check_level_in_package(IBM, PROPERTYVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
