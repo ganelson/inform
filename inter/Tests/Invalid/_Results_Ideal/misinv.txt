@@ -6,24 +6,6 @@ inter: inter/Tests/Invalid/misinv.intert, line 25: bad digit for this number bas
 >--> ref K_stuff S_stuff
 inter: inter/Tests/Invalid/misinv.intert, line 30: local has kind K_colour which is not a K_number: 'x'
 >--> ref K_number x
- 1.    package main _plain
-	symbol public misc K_number
-	symbol public misc K_colour
-	symbol public misc K_stuff
-	symbol public misc K_colour____colour
-	symbol public misc R_101_B
-	symbol public misc R_101
-	symbol public misc R_101_A
-	symbol public misc R_102
- 2.    	package R_101_B _code
-		symbol private local x
-		symbol public misc K_colour --> /main/K_colour
-		symbol public misc K_number --> /main/K_number
-		symbol public misc K_stuff --> /main/K_stuff
-		symbol public misc R_101 --> /main/R_101
-		symbol public misc R_102 --> /main/R_102
- 3.    		code
- 4. ** 			inv !increment
 inter: inter/Tests/Invalid/misinv.intert, line 22: this inv of !increment should have 1 argument(s), but has 0
  1.    package main _plain
 	symbol public misc K_number
@@ -43,8 +25,27 @@ inter: inter/Tests/Invalid/misinv.intert, line 22: this inv of !increment should
 		symbol public misc R_102 --> /main/R_102
  3.    		code
  4. ** 			inv !increment
- 5.    				val K_number 2
 inter: inter/Tests/Invalid/misinv.intert, line 27: operand 1 of inv '!increment' should be ref, but this is val
+ 1.    package main _plain
+	symbol public misc K_number
+	symbol public misc K_colour
+	symbol public misc K_stuff
+	symbol public misc K_colour____colour
+	symbol public misc R_101_B
+	symbol public misc R_101
+	symbol public misc R_101_A
+	symbol public misc R_102
+ 2.    	package R_101_B _code
+		symbol private local x
+		symbol public misc K_colour --> /main/K_colour
+		symbol public misc K_number --> /main/K_number
+		symbol public misc K_stuff --> /main/K_stuff
+		symbol public misc R_101 --> /main/R_101
+		symbol public misc R_102 --> /main/R_102
+ 3.    		code
+ 4. ** 			inv !increment
+ 5.    				val K_number 2
+inter: inter/Tests/Invalid/misinv.intert, line 29: operand 1 of inv 'R_101' should be val, but this is void
  1.    package main _plain
 	symbol public misc K_number
 	symbol public misc K_colour
@@ -64,7 +65,7 @@ inter: inter/Tests/Invalid/misinv.intert, line 27: operand 1 of inv '!increment'
  3.    		code
  4. ** 			inv R_101
  5.    				inv !increment
-inter: inter/Tests/Invalid/misinv.intert, line 29: operand 1 of inv 'R_101' should be val, but this is void
+inter: inter/Tests/Invalid/misinv.intert, line 29: this inv of !increment should have 1 argument(s), but has 0
  1.    package main _plain
 	symbol public misc K_number
 	symbol public misc K_colour
@@ -84,7 +85,7 @@ inter: inter/Tests/Invalid/misinv.intert, line 29: operand 1 of inv 'R_101' shou
  3.    		code
  4.    			inv R_101
  5. ** 				inv !increment
-inter: inter/Tests/Invalid/misinv.intert, line 29: this inv of !increment should have 1 argument(s), but has 0
+inter: inter/Tests/Invalid/misinv.intert, line 38: this inv of !increment should have 1 argument(s), but has 0
  1.    package main _plain
 	symbol public misc K_number
 	symbol public misc K_colour
@@ -100,4 +101,3 @@ inter: inter/Tests/Invalid/misinv.intert, line 29: this inv of !increment should
 		symbol public misc K_colour --> /main/K_colour
  3.    		code
  4. ** 			inv !increment
-inter: inter/Tests/Invalid/misinv.intert, line 38: this inv of !increment should have 1 argument(s), but has 0

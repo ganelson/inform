@@ -268,7 +268,7 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 				InterWarehouse::get_text(InterBookmark::warehouse(IBM), SID);
 			Str::copy(textual_storage, R);
 			Produce::guard(Inter::Splat::new(IBM, SID, I6_dir,
-				(inter_ti) (InterBookmark::baseline(IBM) + 1), 0, NULL));
+				(inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
 		}
 		Str::clear(R);
 	}

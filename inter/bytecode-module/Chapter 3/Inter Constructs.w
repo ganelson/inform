@@ -215,6 +215,8 @@ void InterConstruct::specify_syntax(inter_construct *IC, text_stream *syntax) {
 			i += 4; WRITE_TO(regexp, "(%%C+)");
 		} else if (Str::includes_wide_string_at(syntax, L"TEXT", i)) {
 			i += 3; WRITE_TO(regexp, "\"(%%c*)\"");
+		} else if (Str::includes_wide_string_at(syntax, L"ANY", i)) {
+			i += 2; WRITE_TO(regexp, "(%%c*)");
 		} else {
 			wchar_t c = Str::get_at(syntax, i);
 			if (c == '\'') c = '"';
@@ -390,11 +392,6 @@ inter_error_message *InterConstruct::write_construct_text_allowing_nop(OUTPUT_ST
 	if (E) return E;
 	for (inter_ti L=0; L<P->W.instruction[LEVEL_IFLD]; L++) WRITE("\t");
 	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
-	inter_ti ID = Inode::get_comment(P);
-	if (ID != 0) {
-		if (P->W.instruction[ID_IFLD] != COMMENT_IST) WRITE(" ");
-		WRITE("# %S", Inode::ID_to_text(P, ID));
-	}
 	WRITE("\n");
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) InterPackage::write_symbols(OUT, P);
 	return E;

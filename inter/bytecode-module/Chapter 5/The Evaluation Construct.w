@@ -32,7 +32,7 @@ void Inter::Evaluation::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	*E = InterConstruct::check_level_in_package(IBM, EVALUATION_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = Inter::Textual::get_latest_block_package();
+	inter_package *routine = TextualInter::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'evaluation' used outside function", eloc); return; }
 
 	*E = Inter::Evaluation::new(IBM, ilp->indent_level, eloc);

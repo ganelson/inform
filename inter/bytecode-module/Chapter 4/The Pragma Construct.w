@@ -33,7 +33,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 
 	inter_symbol *target_name = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
 	if (target_name == NULL)
-		target_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
+		target_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	text_stream *S = ilp->mr.exp[1];

@@ -34,18 +34,18 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	*E = InterConstruct::check_level_in_package(IBM, VAL_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = Inter::Textual::get_latest_block_package();
+	inter_package *routine = TextualInter::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'val' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *val_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *val_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_ti val1 = 0;
 	inter_ti val2 = 0;
 
-	inter_symbol *kind_as_value = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *kind_as_value = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	*E = NULL;
 	if (kind_as_value) {
 		Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value, &val1, &val2);

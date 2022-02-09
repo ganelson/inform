@@ -108,14 +108,14 @@ form, which would be written to |*outt|.
 		if (Inter::Binary::test_file(F))
 			Inter::Binary::read(I, F);
 		else
-			Inter::Textual::read(I, F);
+			TextualInter::read(I, F);
 	}
 	if (output_textually) {
 		text_stream C_struct; text_stream *OUT = &C_struct;
 		if (STREAM_OPEN_TO_FILE(OUT, output_textually, UTF8_ENC) == FALSE)
 			Errors::fatal_with_file("unable to open textual inter file for output: %f",
 				output_textually);
-		Inter::Textual::write(OUT, I, NULL, 1);
+		TextualInter::write(OUT, I, NULL, 1);
 		STREAM_CLOSE(OUT);
 	}
 	if (output_binarily) Inter::Binary::write(output_binarily, I);

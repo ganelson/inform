@@ -35,7 +35,7 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prim_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
+	inter_symbol *prim_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	inter_tree_node *F = Inode::new_with_1_data_field(IBM, PRIMITIVE_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prim_name), eloc, (inter_ti) ilp->indent_level);

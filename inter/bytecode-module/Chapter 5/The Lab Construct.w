@@ -31,7 +31,7 @@ void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	*E = InterConstruct::check_level_in_package(IBM, LAB_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = Inter::Textual::get_latest_block_package();
+	inter_package *routine = TextualInter::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'lab' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }

@@ -32,7 +32,7 @@ void Inter::Reference::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 	*E = InterConstruct::check_level_in_package(IBM, REFERENCE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = Inter::Textual::get_latest_block_package();
+	inter_package *routine = TextualInter::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'reference' used outside function", eloc); return; }
 
 	*E = Inter::Reference::new(IBM, ilp->indent_level, eloc);

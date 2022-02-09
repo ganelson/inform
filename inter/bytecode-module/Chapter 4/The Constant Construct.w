@@ -39,12 +39,12 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = InterConstruct::check_level_in_package(IBM, CONSTANT_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *con_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
+	inter_symbol *con_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
 
 	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), con_name);
 
-	inter_symbol *con_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *con_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 	text_stream *S = ilp->mr.exp[2];
 
@@ -276,7 +276,7 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
 	if (conts_kind == NULL) {
-		inter_symbol *tc = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), S, CONSTANT_IST, E);
+		inter_symbol *tc = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), S, CONSTANT_IST, E);
 		if (*E) return FALSE;
 		if (Inter::Kind::constructor(Inter::Constant::kind_of(tc)) == COLUMN_ICON) {
 			Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM), tc, &con_val1, &con_val2);

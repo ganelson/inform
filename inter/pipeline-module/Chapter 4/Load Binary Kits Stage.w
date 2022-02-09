@@ -68,7 +68,7 @@ regular users: it would be quite slow to read in.
 	if (TextFiles::exists(arch_file) == FALSE)
 		internal_error("no arch file for requirement");
 	if (Inter::Binary::test_file(arch_file)) Inter::Binary::read(sidecar, arch_file);
-	else Inter::Textual::read(sidecar, arch_file);		
+	else TextualInter::read(sidecar, arch_file);		
 
 @ The "attachment point" for the kit will be something like |/main/BasicInformKit|.
 (This point will be different for each different kit in the requirements list:

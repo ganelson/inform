@@ -29,7 +29,7 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 	*E = InterConstruct::check_level_in_package(IBM, DEFAULTVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *con_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *con_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_ti con_val1 = 0;

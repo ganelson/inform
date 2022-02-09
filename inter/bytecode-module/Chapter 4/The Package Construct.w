@@ -34,7 +34,7 @@ void InterPackage::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	*E = InterConstruct::check_level_in_package(IBM, PACKAGE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *ptype_name = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
+	inter_symbol *ptype_name = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
 	if (*E) return;
 
 	inter_package *pack = NULL;
@@ -70,7 +70,7 @@ inter_error_message *InterPackage::new_package_named(inter_bookmark *IBM, text_s
 inter_error_message *InterPackage::new_package(inter_bookmark *IBM, text_stream *name_text, inter_symbol *ptype_name, inter_ti level, inter_error_location *eloc, inter_package **created) {
 	inter_ti STID = InterWarehouse::create_symbols_table(InterBookmark::warehouse(IBM));
 	inter_error_message *E = NULL;
-	inter_symbol *package_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), name_text, &E);
+	inter_symbol *package_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), name_text, &E);
 	if (E) return E;
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM,
 		PACKAGE_IST,
@@ -115,7 +115,7 @@ void InterPackage::verify(inter_construct *IC, inter_tree_node *P, inter_package
 	else internal_error("uh?");
 	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
-	Inter::Textual::set_latest_block_package(pack);
+	TextualInter::set_latest_block_package(pack);
 }
 
 void InterPackage::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

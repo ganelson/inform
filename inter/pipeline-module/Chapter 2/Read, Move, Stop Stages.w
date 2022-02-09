@@ -15,7 +15,7 @@ void SimpleStages::create_pipeline_stages(void) {
 int SimpleStages::run_read_stage(pipeline_step *step) {
 	filename *F = step->ephemera.parsed_filename;
 	if (Inter::Binary::test_file(F)) Inter::Binary::read(step->ephemera.tree, F);
-	else Inter::Textual::read(step->ephemera.tree, F);
+	else TextualInter::read(step->ephemera.tree, F);
 	return TRUE;
 }
 

@@ -28,26 +28,25 @@ void Inter::Local::define(void) {
 void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	*E = InterConstruct::check_level_in_package(IBM, LOCAL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	inter_package *routine = Inter::Textual::get_latest_block_package();
+	inter_package *routine = TextualInter::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'local' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *var_name = Inter::Textual::find_undefined_symbol(IBM, eloc, locals, ilp->mr.exp[0], E);
+	inter_symbol *var_name = TextualInter::find_undefined_symbol(IBM, eloc, locals, ilp->mr.exp[0], E);
 	if (*E) return;
 	if (InterSymbol::is_local(var_name) == FALSE) { *E = Inter::Errors::plain(I"symbol of wrong S-type", eloc); return; }
 
-	inter_symbol *var_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *var_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), var_name);
 
-	*E = Inter::Local::new(IBM, var_name, var_kind, ilp->terminal_comment, (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::Local::new(IBM, var_name, var_kind, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *var_name, inter_symbol *var_kind, inter_ti ID, inter_ti level, inter_error_location *eloc) {
+inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *var_name, inter_symbol *var_kind, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, LOCAL_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_name), var_kind?(InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_kind)):0, eloc, level);
-	Inode::attach_comment(P, ID);
 	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

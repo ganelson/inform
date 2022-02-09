@@ -38,7 +38,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	*E = InterConstruct::check_level_in_package(IBM, INV_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = Inter::Textual::get_latest_block_package();
+	inter_package *routine = TextualInter::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
 	inter_symbol *invoked_name = InterSymbolsTable::symbol_from_name(InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[0]);

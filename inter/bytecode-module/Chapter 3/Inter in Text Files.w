@@ -1,38 +1,127 @@
-[Inter::Textual::] Inter in Text Files.
+[TextualInter::] Inter in Text Files.
 
-To read inter from a textual file.
+To read a tree from a file written in the plain text version of Inter.
 
 @h Reading textual inter.
 
 =
-int no_blank_lines_stacked = 0;
-
-void Inter::Textual::read(inter_tree *I, filename *F) {
-	LOGIF(INTER_FILE_READ, "(Reading textual inter file %f)\n", F);
-	no_blank_lines_stacked = 0;
+void TextualInter::read(inter_tree *I, filename *F) {
+	LOGIF(INTER_FILE_READ, "Reading textual inter file %f\n", F);
+	irl_state irl;
+	irl.no_blank_lines_stacked = 0;
 	inter_bookmark IBM = InterBookmark::at_start_of_this_repository(I);
-	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
-	TextFiles::read(F, FALSE, "can't open inter file", FALSE, Inter::Textual::read_line, 0, &IBM);
-	Inter::Textual::resolve_forward_references(I, &eloc);
+	irl.write_pos = &IBM;
+	TextFiles::read(F, FALSE, "can't open inter file", FALSE,
+		TextualInter::read_line, 0, &irl);
+	TextualInter::resolve_forward_references(I);
 	InterConstruct::tree_lint(I);
 	Primitives::index_primitives_in_tree(I);
 }
 
-inter_symbol *Inter::Textual::new_symbol(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
+@ This fussy little mechanism passes each line of the text file to
+//TextualInter::parse_single_line//, except that it omits any run of blank
+lines at the end. (Most text files technically have one blank line at the end
+without anyone realising it.)
+
+=
+typedef struct irl_state {
+	int no_blank_lines_stacked;
+	struct inter_bookmark *write_pos;
+} irl_state;
+
+void TextualInter::read_line(text_stream *line, text_file_position *tfp, void *state) {
+	irl_state *irl = (irl_state *) state;
+	inter_error_location eloc = Inter::Errors::file_location(line, tfp);
+	if (Str::len(line) == 0) { irl->no_blank_lines_stacked++; return; }
+	for (int i=0; i<irl->no_blank_lines_stacked; i++) {
+		inter_error_location b_eloc = Inter::Errors::file_location(I"", tfp);
+		inter_error_message *E =
+			TextualInter::parse_single_line(I"#", &b_eloc, irl->write_pos);
+		if (E) Inter::Errors::issue(E);
+	}
+	irl->no_blank_lines_stacked = 0;
+	inter_error_message *E =
+		TextualInter::parse_single_line(line, &eloc, irl->write_pos);
+	if (E) Inter::Errors::issue(E);
+}
+
+
+
+typedef struct inter_line_parse {
+	struct text_stream *line;
+	struct match_results mr;
+	struct inter_annotation_set set;
+	inter_ti terminal_comment;
+	int indent_level;
+} inter_line_parse;
+
+inter_error_message *TextualInter::parse_single_line(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM) {
+	inter_line_parse ilp;
+	ilp.line = line;
+	ilp.mr = Regexp::create_mr();
+	ilp.terminal_comment = 0;
+	ilp.set = SymbolAnnotation::new_annotation_set();
+	ilp.indent_level = 0;
+
+	LOOP_THROUGH_TEXT(P, ilp.line) {
+		wchar_t c = Str::get(P);
+		if (c == '\t') ilp.indent_level++;
+		else if (c == ' ')
+			return Inter::Errors::plain(I"spaces (rather than tabs) at the beginning of this line", eloc);
+		else break;
+	}
+
+/*	int quoted = FALSE, literal = FALSE;
+	LOOP_THROUGH_TEXT(P, ilp.line) {
+		wchar_t c = Str::get(P);
+		if ((literal == FALSE) && (c == '"')) quoted = (quoted)?FALSE:TRUE;
+		literal = FALSE;
+		if (c == '\\') literal = TRUE;
+		if ((c == '#') && ((P.index == 0) || (Str::get_at(ilp.line, P.index-1) != '#')) && (Str::get_at(ilp.line, P.index+1) != '#') && (quoted == FALSE)) {
+			ilp.terminal_comment = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+			int at = Str::index(P);
+			P = Str::forward(P);
+			while (Str::get(P) == ' ') P = Str::forward(P);
+			Str::substr(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
+			Str::truncate(ilp.line, at);
+			break;
+		}
+	}
+*/
+	Str::trim_white_space(ilp.line);
+
+	if (ilp.indent_level == 0) TextualInter::set_latest_block_package(NULL);
+
+	while ((InterBookmark::package(IBM)) && (InterPackage::is_a_root_package(InterBookmark::package(IBM)) == FALSE) && (ilp.indent_level <= InterBookmark::baseline(IBM))) {
+		InterBookmark::move_into_package(IBM, InterPackage::parent(InterBookmark::package(IBM)));
+	}
+
+	while (Regexp::match(&ilp.mr, ilp.line, L"(%c+) (__%c+) *")) {
+		Str::copy(ilp.line, ilp.mr.exp[0]);
+		inter_error_message *E = NULL;
+		inter_annotation IA = SymbolAnnotation::read_annotation(InterBookmark::tree(IBM), ilp.mr.exp[1], eloc, &E);
+		if (E) return E;
+		SymbolAnnotation::write_to_set(IA.annot->iatype, &(ilp.set), IA);
+	}
+	
+	return InterConstruct::match(&ilp, eloc, IBM);
+}
+
+
+
+
+inter_symbol *TextualInter::new_symbol(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb) {
-		if (InterSymbol::misc_but_undefined(symb)) {
-			InterSymbol::undefine(symb);
-			return symb;
-		}
+		if (InterSymbol::misc_but_undefined(symb)) return symb;
 		*E = Inter::Errors::quoted(I"symbol already exists", name, eloc);
 		return NULL;
 	}
 	return InterSymbolsTable::symbol_from_name_creating(T, name);
 }
 
-inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_ti construct, inter_error_message **E) {
+inter_symbol *TextualInter::find_symbol(inter_tree *I, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_ti construct, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
@@ -46,7 +135,7 @@ inter_symbol *Inter::Textual::find_symbol(inter_tree *I, inter_error_location *e
 	return symb;
 }
 
-inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
+inter_symbol *TextualInter::find_undefined_symbol(inter_bookmark *IBM, inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
@@ -60,7 +149,7 @@ inter_symbol *Inter::Textual::find_undefined_symbol(inter_bookmark *IBM, inter_e
 	return symb;
 }
 
-inter_symbol *Inter::Textual::find_KOI(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
+inter_symbol *TextualInter::find_KOI(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
@@ -71,32 +160,18 @@ inter_symbol *Inter::Textual::find_KOI(inter_error_location *eloc, inter_symbols
 	return symb;
 }
 
-inter_data_type *Inter::Textual::data_type(inter_error_location *eloc, text_stream *name, inter_error_message **E) {
+inter_data_type *TextualInter::data_type(inter_error_location *eloc, text_stream *name, inter_error_message **E) {
 	inter_data_type *idt = Inter::Types::find_by_name(name);
 	if (idt == NULL) *E = Inter::Errors::quoted(I"no such data type", name, eloc);
 	return idt;
 }
 
-void Inter::Textual::read_line(text_stream *line, text_file_position *tfp, void *state) {
-	inter_bookmark *IBM = (inter_bookmark *) state;
-	inter_error_location eloc = Inter::Errors::file_location(line, tfp);
-	if (Str::len(line) == 0) { no_blank_lines_stacked++; return; }
-	for (int i=0; i<no_blank_lines_stacked; i++) {
-		inter_error_location b_eloc = Inter::Errors::file_location(I"", tfp);
-		inter_error_message *E = Inter::Textual::read_construct_text(I"", &b_eloc, IBM);
-		if (E) Inter::Errors::issue(E);
-	}
-	no_blank_lines_stacked = 0;
-	inter_error_message *E = Inter::Textual::read_construct_text(line, &eloc, IBM);
-	if (E) Inter::Errors::issue(E);
-}
-
 @h Writing textual inter.
 
 =
-void Inter::Textual::writer(OUTPUT_STREAM, char *format_string, void *vI) {
+void TextualInter::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 	inter_tree *I = (inter_tree *) vI;
-	Inter::Textual::write(OUT, I, NULL, 1);
+	TextualInter::write(OUT, I, NULL, 1);
 }
 
 typedef struct textual_write_state {
@@ -105,16 +180,16 @@ typedef struct textual_write_state {
 	int pass;
 } textual_write_state;
 
-void Inter::Textual::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_tree_node, int), int pass) {
+void TextualInter::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_tree_node, int), int pass) {
 	if (I == NULL) { WRITE("<no-inter>\n"); return; }
 	textual_write_state tws;
 	tws.to = OUT;
 	tws.filter = filter;
 	tws.pass = pass;
-	InterTree::traverse_root_only(I, Inter::Textual::visitor, &tws, -PACKAGE_IST);
-	InterTree::traverse(I, Inter::Textual::visitor, &tws, NULL, 0);
+	InterTree::traverse_root_only(I, TextualInter::visitor, &tws, -PACKAGE_IST);
+	InterTree::traverse(I, TextualInter::visitor, &tws, NULL, 0);
 }
-void Inter::Textual::visitor(inter_tree *I, inter_tree_node *P, void *state) {
+void TextualInter::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	textual_write_state *tws = (textual_write_state *) state;
 	if ((tws->filter) && ((*(tws->filter))(*P, tws->pass) == FALSE)) return;
 	inter_error_message *E = InterConstruct::write_construct_text(tws->to, P);
@@ -124,11 +199,12 @@ void Inter::Textual::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 @h Forward references.
 
 =
-void Inter::Textual::resolve_forward_references(inter_tree *I, inter_error_location *eloc) {
-	InterTree::traverse(I, Inter::Textual::rfr_visitor, eloc, NULL, PACKAGE_IST);
+void TextualInter::resolve_forward_references(inter_tree *I) {
+	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
+	InterTree::traverse(I, TextualInter::rfr_visitor, &eloc, NULL, PACKAGE_IST);
 }
 
-void Inter::Textual::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
+void TextualInter::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_error_location *eloc = (inter_error_location *) state;
 	inter_package *pack = InterPackage::at_this_head(P);
 	if (pack == NULL) internal_error("no package defined here");
@@ -151,70 +227,10 @@ void Inter::Textual::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state)
 
 inter_package *latest_block_package = NULL;
 
-void Inter::Textual::set_latest_block_package(inter_package *F) {
+void TextualInter::set_latest_block_package(inter_package *F) {
 	latest_block_package = F;
 }
 
-inter_package *Inter::Textual::get_latest_block_package(void) {
+inter_package *TextualInter::get_latest_block_package(void) {
 	return latest_block_package;
-}
-
-typedef struct inter_line_parse {
-	struct text_stream *line;
-	struct match_results mr;
-	struct inter_annotation_set set;
-	inter_ti terminal_comment;
-	int indent_level;
-} inter_line_parse;
-
-inter_error_message *Inter::Textual::read_construct_text(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM) {
-	inter_line_parse ilp;
-	ilp.line = line;
-	ilp.mr = Regexp::create_mr();
-	ilp.terminal_comment = 0;
-	ilp.set = SymbolAnnotation::new_annotation_set();
-	ilp.indent_level = 0;
-
-	LOOP_THROUGH_TEXT(P, ilp.line) {
-		wchar_t c = Str::get(P);
-		if (c == '\t') ilp.indent_level++;
-		else if (c == ' ')
-			return Inter::Errors::plain(I"spaces (rather than tabs) at the beginning of this line", eloc);
-		else break;
-	}
-
-	int quoted = FALSE, literal = FALSE;
-	LOOP_THROUGH_TEXT(P, ilp.line) {
-		wchar_t c = Str::get(P);
-		if ((literal == FALSE) && (c == '"')) quoted = (quoted)?FALSE:TRUE;
-		literal = FALSE;
-		if (c == '\\') literal = TRUE;
-		if ((c == '#') && ((P.index == 0) || (Str::get_at(ilp.line, P.index-1) != '#')) && (Str::get_at(ilp.line, P.index+1) != '#') && (quoted == FALSE)) {
-			ilp.terminal_comment = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
-			int at = Str::index(P);
-			P = Str::forward(P);
-			while (Str::get(P) == ' ') P = Str::forward(P);
-			Str::substr(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ilp.terminal_comment), P, Str::end(ilp.line));
-			Str::truncate(ilp.line, at);
-			break;
-		}
-	}
-
-	Str::trim_white_space(ilp.line);
-
-	if (ilp.indent_level == 0) latest_block_package = NULL;
-
-	while ((InterBookmark::package(IBM)) && (InterPackage::is_a_root_package(InterBookmark::package(IBM)) == FALSE) && (ilp.indent_level <= InterBookmark::baseline(IBM))) {
-		InterBookmark::move_into_package(IBM, InterPackage::parent(InterBookmark::package(IBM)));
-	}
-
-	while (Regexp::match(&ilp.mr, ilp.line, L"(%c+) (__%c+) *")) {
-		Str::copy(ilp.line, ilp.mr.exp[0]);
-		inter_error_message *E = NULL;
-		inter_annotation IA = SymbolAnnotation::read_annotation(InterBookmark::tree(IBM), ilp.mr.exp[1], eloc, &E);
-		if (E) return E;
-		SymbolAnnotation::write_to_set(IA.annot->iatype, &(ilp.set), IA);
-	}
-	
-	return InterConstruct::match(&ilp, eloc, IBM);
 }

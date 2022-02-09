@@ -410,7 +410,7 @@ void Emit::permission(property *prn, inter_symbol *owner_name,
 	TEMPORARY_TEXT(ident)
 	WRITE_TO(ident, "pp_i7_%d", ppi7_counter++);
 	inter_symbol *pp_s =
-		Inter::Textual::new_symbol(NULL, InterBookmark::scope(Emit::at()), ident, &E);
+		TextualInter::new_symbol(NULL, InterBookmark::scope(Emit::at()), ident, &E);
 	DISCARD_TEXT(ident)
 	Produce::guard(E);
 	Produce::guard(Inter::Permission::new(Emit::at(),

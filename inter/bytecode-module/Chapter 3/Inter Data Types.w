@@ -268,7 +268,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 	}
 	if (Inter::Types::is_enumerated(idt)) {
 		inter_error_message *E;
-		inter_symbol *symb = Inter::Textual::find_symbol(I, eloc, scope, S, INSTANCE_IST, &E);
+		inter_symbol *symb = TextualInter::find_symbol(I, eloc, scope, S, INSTANCE_IST, &E);
 		if (E) return E;
 		inter_tree_node *D = InterSymbol::definition(symb);
 		if (D == NULL) return Inter::Errors::quoted(I"undefined symbol", S, eloc);

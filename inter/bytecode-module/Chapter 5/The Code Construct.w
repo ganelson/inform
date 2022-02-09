@@ -32,7 +32,7 @@ void Inter::Code::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	*E = InterConstruct::check_level_in_package(IBM, CODE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = Inter::Textual::get_latest_block_package();
+	inter_package *routine = TextualInter::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'code' used outside function", eloc); return; }
 
 	*E = Inter::Code::new(IBM, ilp->indent_level, eloc);

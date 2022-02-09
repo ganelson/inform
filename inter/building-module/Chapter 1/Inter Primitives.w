@@ -517,9 +517,9 @@ void Primitives::declare_standard_set(inter_tree *I, inter_bookmark *IBM) {
 		text_stream *signature = standard_inform7_primitives[i].signature;
 		TEMPORARY_TEXT(prim_command)
 		WRITE_TO(prim_command, "primitive %S %S", prim, signature);
-		Produce::guard(Inter::Textual::read_construct_text(prim_command, NULL, IBM));
+		Produce::guard(TextualInter::parse_single_line(prim_command, NULL, IBM));
 		inter_error_message *E = NULL;
-		inter_symbol *S = Inter::Textual::find_symbol(I, NULL,
+		inter_symbol *S = TextualInter::find_symbol(I, NULL,
 			InterTree::global_scope(I), prim, PRIMITIVE_IST, &E);
 		inter_ti bip = Primitives::to_BIP(I, S);
 		if (bip == 0) internal_error("missing bip");

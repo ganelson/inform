@@ -74,7 +74,7 @@ void BytecodeModule::end(void) {
 	Memory::reason_name(TREE_LIST_MREASON, "inter tree location list storage");
 
 @<Register this module's stream writers@> =
-	Writers::register_writer('t', &Inter::Textual::writer);
+	Writers::register_writer('t', &TextualInter::writer);
 	Writers::register_writer('F', &Inter::Verify::writer);
 
 @

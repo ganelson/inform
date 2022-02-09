@@ -445,10 +445,6 @@ enough that the slot exists for the eventual list to be stored in.
 			if (BinaryFiles::read_int32(fh, &word)) P->W.instruction[i] = word;
 			else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 		}
-		unsigned int comment = 0;
-		if (BinaryFiles::read_int32(fh, &comment)) {
-			if (comment != 0) Inode::attach_comment(P, (inter_ti) comment);
-		} else Inter::Binary::read_error(&eloc, ftell(fh), I"bytecode incomplete");
 	if (trace_bin) WRITE_TO(STDOUT, "Verify\n");
 		inter_error_message *E = NULL;
 		if (grid) E = InterConstruct::transpose_construct(owner, P, grid, grid_extent);
@@ -472,7 +468,6 @@ void Inter::Binary::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	BinaryFiles::write_int32(fh, (unsigned int) (Inode::get_package(P)->resource_ID));
 	for (int i=0; i<P->W.extent; i++)
 		BinaryFiles::write_int32(fh, (unsigned int) (P->W.instruction[i]));
-	BinaryFiles::write_int32(fh, (unsigned int) (Inode::get_comment(P)));
 }
 
 @ Errors in reading binary inter are not recoverable:

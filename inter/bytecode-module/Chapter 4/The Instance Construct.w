@@ -40,9 +40,9 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, ktext, L"(%i+) = (%c+)")) { ktext = mr2.exp[0]; vtext = mr2.exp[1]; }
 
-	inter_symbol *inst_name = Inter::Textual::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
+	inter_symbol *inst_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *inst_kind = Inter::Textual::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ktext, KIND_IST, E);
+	inter_symbol *inst_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ktext, KIND_IST, E);
 	if (*E) return;
 
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);

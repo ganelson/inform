@@ -258,10 +258,10 @@ Each node represents one instruction, which is encoded with a contiguous
 block of bytecode. That bytecode is not stored in the //inter_tree_node//
 structure, but in warehouse memory. 
 = (text)
-......+------+----------+--------+---------+----+-------+-------------+........
-      | Skip | Verified | Origin | Comment | ID | Level | Data        |
-......+------+----------+--------+---------+----+-------+-------------+........
-       <----------------------------------> <------------------------>
+......+------+----------+--------+----+-------+-------------+........
+      | Skip | Verified | Origin | ID | Level | Data        |
+......+------+----------+--------+----+-------+-------------+........
+       <------------------------> <------------------------>
         Preframe                             Frame
 =
 This stretch of memory is divided into a "preframe" and a "frame": the frame
@@ -270,12 +270,11 @@ so on. The frame is of variable size, depending on the instruction (and in
 some cases its particular content: a constant definition for a list can be
 almost any length). But the preframe is of fixed size:
 
-@d PREFRAME_SIZE 4
+@d PREFRAME_SIZE 3
 
 @d PREFRAME_SKIP_AMOUNT 0
 @d PREFRAME_VERIFICATION_COUNT 1
 @d PREFRAME_ORIGIN 2
-@d PREFRAME_COMMENT 3
 
 @ |PREFRAME_SKIP_AMOUNT| is the offset (in words) to the next instruction.
 Since the preframe has fixed length, this is both the offset from one preframe
@@ -310,22 +309,6 @@ inter_error_location *Inode::get_error_location(inter_tree_node *F) {
 void Inode::attach_error_location(inter_tree_node *F, inter_error_location *eloc) {
 	Inode::set_preframe(F, PREFRAME_ORIGIN,
 		InterTree::eloc_to_origin_word(Inode::tree(F), eloc));
-}
-
-@ |PREFRAME_COMMENT| allows a piece of text to be attached to the instruction
-as a comment. (Thus, when textual Inter is converted to binary and back again,
-comments survive.) It is 0 if no comment is attached, and otherwise is the ID
-of a |text_stream| stored in the warehouse; use //Inode::ID_to_text// to
-read the actual content.
-
-=
-inter_ti Inode::get_comment(inter_tree_node *F) {
-	if (F) return Inode::get_preframe(F, PREFRAME_COMMENT);
-	return 0;
-}
-
-void Inode::attach_comment(inter_tree_node *F, inter_ti ID) {
-	if (F) Inode::set_preframe(F, PREFRAME_COMMENT, ID);
 }
 
 @ The following gets and sets from the preframe:

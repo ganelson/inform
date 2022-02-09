@@ -718,7 +718,7 @@ These have package types |_function| and |_code| respectively.
 		InterSymbol::make_local(loc_name);
 		inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 		Produce::guard(Inter::Local::new(IBM, loc_name,
-			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM), 0, B, NULL));
+			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM), B, NULL));
 		DISCARD_TEXT(value)
 	}
 

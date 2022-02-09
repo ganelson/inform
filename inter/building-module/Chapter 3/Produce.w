@@ -640,17 +640,18 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 	if (K == NULL) K = K_value;
 	inter_symbol *local_s = Produce::new_local_symbol(I, lname);
 	inter_symbol *kind_s = Produce::kind_to_symbol(K);
-	inter_ti ID = 0;
-	if ((comm) && (Str::len(comm) > 0)) {
-		ID = InterWarehouse::create_text(InterTree::warehouse(I),
-			InterBookmark::package(Packaging::at(I)));
-		Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), comm);
-	}
 	if (annot != INVALID_IANN) SymbolAnnotation::set_b(local_s, annot, TRUE);
 	InterSymbol::make_local(local_s);
 	inter_bookmark *locals_at = &(I->site.sprdata.function_locals_bookmark);
+	if ((comm) && (Str::len(comm) > 0)) {
+		inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
+			InterBookmark::package(Packaging::at(I)));
+		Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), comm);
+		Produce::guard(Inter::Comment::new(locals_at, Produce::baseline(locals_at) + 1,
+			NULL, ID));
+	}
 	Produce::guard(Inter::Local::new(locals_at, local_s, kind_s,
-		ID, Produce::baseline(locals_at) + 1, NULL));
+		Produce::baseline(locals_at) + 1, NULL));
 	return local_s;
 }
 

@@ -56,7 +56,7 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 
 	inter_package *routine = NULL;
 	if (ilp->indent_level > 0) {
-		routine = Inter::Textual::get_latest_block_package();
+		routine = TextualInter::get_latest_block_package();
 		if (routine == NULL) { *E = Inter::Errors::plain(I"indented 'splat' used outside function", eloc); return; }
 	}
 
@@ -68,7 +68,7 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	*E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
-	*E = Inter::Splat::new(IBM, SID, plm, (inter_ti) ilp->indent_level, ilp->terminal_comment, eloc);
+	*E = Inter::Splat::new(IBM, SID, plm, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_ti Inter::Splat::parse_plm(text_stream *S) {
@@ -118,9 +118,8 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_ti plm) {
 	}
 }
 
-inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_ti SID, inter_ti plm, inter_ti level, inter_ti ID, inter_error_location *eloc) {
+inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_ti SID, inter_ti plm, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
-	if (ID) Inode::attach_comment(P, ID);
 	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
