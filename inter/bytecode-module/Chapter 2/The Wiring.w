@@ -163,7 +163,6 @@ void Wiring::wire_to_name(inter_symbol *S, text_stream *T) {
 	if (S == NULL) internal_error("null symbol cannot be wired");
 	if (InterSymbol::is_metadata_key(S)) internal_error("metadata keys cannot be wired");
 	if (Str::len(T) == 0) internal_error("symbols cannot be wired to the empty name");
-	if (Str::get_at(T, 0) == '/') internal_error("symbols cannot be wired to URLs");
 	Wiring::wire_to(S, NULL);
 	S->wiring.wants_to_connect_to = Str::duplicate(T);
 }

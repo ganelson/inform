@@ -12,11 +12,11 @@ package main _plain
 		kind K_number int32
 		kind K_phrase_number____nothing function K_number -> void
 		package MyRoutine_B _code
-			symbol private misc x
-			symbol private misc y
+			symbol private local x
+			symbol private local y
 			symbol private label .useless
 			symbol private label .useful
-			symbol external misc K_number
+			symbol public misc K_number
 			local x K_number
 			local y K_number
 			code

@@ -9,13 +9,13 @@ package main _plain
 	kind K_stuff struct K_number K_colour K_odour
 	kind K_colour____colour function K_colour -> K_colour
 	package R_101_B _code
-		symbol private misc x
-		symbol external misc K_colour --> /main/K_colour
-		symbol external misc K_number --> /main/K_number
-		symbol external misc K_stuff --> /main/K_stuff
-		symbol external misc R_101 --> /main/R_101
-		symbol external misc R_102 --> /main/R_102
-		local x K_colour __call_parameter
+		symbol private local x
+		symbol public misc K_colour --> /main/K_colour
+		symbol public misc K_number --> /main/K_number
+		symbol public misc K_stuff --> /main/K_stuff
+		symbol public misc R_101 --> /main/R_101
+		symbol public misc R_102 --> /main/R_102
+		local x K_colour __argument
 		code
 			val K_number 3
 			.spong
@@ -30,10 +30,10 @@ package main _plain
 					ref K_number x
 	constant R_101 K_colour____colour = R_101_B
 	package R_101_A _code
-		symbol private misc x
-		symbol external misc R_101 --> /main/R_101
-		symbol external misc K_colour --> /main/K_colour
-		local x K_colour __call_parameter
+		symbol private local x
+		symbol public misc R_101 --> /main/R_101
+		symbol public misc K_colour --> /main/K_colour
+		local x K_colour __argument
 		code
 			inv !increment
 			inv R_101

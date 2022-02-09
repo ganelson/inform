@@ -9,7 +9,7 @@ Defining the Lab construct.
 =
 void Inter::Assembly::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(ASSEMBLY_IST, I"assembly");
-	InterConstruct::specify_syntax(IC, L"assembly (%C+)");
+	InterConstruct::specify_syntax(IC, I"assembly TOKEN");
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Assembly::read);

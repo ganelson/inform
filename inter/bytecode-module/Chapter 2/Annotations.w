@@ -137,6 +137,26 @@ void SymbolAnnotation::declare_canonical_annotations(void) {
 	SymbolAnnotation::declare(SOURCE_ORDER_IANN,        I"__source_order",        INTEGER_IATYPE);
 }
 
+@ This is printed when //inter// is run with the |-annotations| switch.
+
+=
+void SymbolAnnotation::show_annotations(OUTPUT_STREAM) {
+	WRITE("  Code     Annotation              Type of value\n");
+	for (int ID=0; ID<MAX_IAFS; ID++) {
+		inter_annotation_form *IC = iafs_registered[ID];
+		if ((IC) && (ID != INVALID_IANN)) {
+			WRITE("  %4x     %S", ID, IC->annotation_keyword);
+			for (int j = Str::len(IC->annotation_keyword); j<24; j++) PUT(' ');
+			switch (IC->iatype) {
+				case BOOLEAN_IATYPE: WRITE("none (boolean)\n"); break;
+				case INTEGER_IATYPE: WRITE("integer\n"); break;
+				case TEXTUAL_IATYPE: WRITE("text\n"); break;
+				default: WRITE("unknown type\n"); break;
+			}
+		}
+	}	
+}
+
 @h API for making annotations.
 
 =

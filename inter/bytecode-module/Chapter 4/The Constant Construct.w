@@ -9,7 +9,7 @@ Defining the constant construct.
 =
 void Inter::Constant::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(CONSTANT_IST, I"constant");
-	InterConstruct::specify_syntax(IC, L"constant (%C+) (%i+) = (%c+)");
+	InterConstruct::specify_syntax(IC, I"constant TOKEN IDENTIFIER = TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Constant::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Constant::transpose);

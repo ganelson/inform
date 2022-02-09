@@ -9,7 +9,7 @@ Defining the Reference construct.
 =
 void Inter::Reference::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(REFERENCE_IST, I"reference");
-	InterConstruct::specify_syntax(IC, L"reference");
+	InterConstruct::specify_syntax(IC, I"reference");
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);

@@ -11,7 +11,7 @@ Defining the comment construct.
 =
 void Inter::Comment::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(COMMENT_IST, I"comment");
-	InterConstruct::specify_syntax(IC, L" *");
+	InterConstruct::specify_syntax(IC, I"WHITESPACE");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Comment::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Comment::transpose);
 	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);

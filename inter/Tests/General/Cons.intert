@@ -5,22 +5,20 @@ packagetype _module
 packagetype _submodule
 
 package main _plain
-	package generic _module
-		package kinds _submodule
-			symbol public misc K_unchecked
-			symbol public misc K_unchecked_function
-			symbol public misc K_unchecked_list
-			symbol public misc K_int32
-			symbol public misc K_int2
-			symbol public misc K_string
-			kind K_unchecked unchecked
-			kind K_unchecked_function function K_unchecked -> K_unchecked
-			kind K_unchecked_list list of K_unchecked
-			kind K_int32 int32
-			kind K_int2 int2
-			kind K_string text
+	symbol public misc K_unchecked
+	symbol public misc K_unchecked_function
+	symbol public misc K_unchecked_list
+	symbol public misc K_int32
+	symbol public misc K_int2
+	symbol public misc K_string
+	kind K_unchecked unchecked
+	kind K_unchecked_function function K_unchecked -> K_unchecked
+	kind K_unchecked_list list of K_unchecked
+	kind K_int32 int32
+	kind K_int2 int2
+	kind K_string text
 	package resources _plain
-		symbol external misc K_unchecked
+		symbol public misc K_unchecked --> /main/K_unchecked
 		constant Bidger K_unchecked = 20
 		splat &"Constant Badger =     12;\n"
 		splat &"Constant Bodger $$10011101;\n"

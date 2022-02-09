@@ -13,75 +13,65 @@ packagetype _to_phrase
 packagetype _response
 # Pragmas:
 # Primitives:
-primitive !font val -> void
-primitive !stylebold void -> void
-primitive !styleunderline void -> void
-primitive !stylereverse void -> void
-primitive !styleroman void -> void
-primitive !print val -> void
-primitive !printret val -> void
-primitive !printchar val -> void
-primitive !printname val -> void
-primitive !printobj val -> void
-primitive !printproperty val -> void
-primitive !printnumber val -> void
-primitive !printdword val -> void
-primitive !printstring val -> void
-primitive !printnlnumber val -> void
-primitive !printdef val -> void
-primitive !printcdef val -> void
-primitive !printindef val -> void
-primitive !printcindef val -> void
-primitive !box val -> void
-primitive !push val -> void
-primitive !pull ref -> void
-primitive !postincrement ref -> val
-primitive !preincrement ref -> val
-primitive !postdecrement ref -> val
-primitive !predecrement ref -> val
-primitive !return val -> void
-primitive !quit void -> void
-primitive !restore lab -> void
-primitive !spaces val -> void
-primitive !break void -> void
-primitive !continue void -> void
-primitive !jump lab -> void
-primitive !move val val -> void
-primitive !remove val -> void
-primitive !give val val -> void
-primitive !take val val -> void
-primitive !store ref val -> val
-primitive !setbit ref val -> void
-primitive !clearbit ref val -> void
+primitive !plus val val -> val
+primitive !minus val val -> val
+primitive !unaryminus val -> val
+primitive !times val val -> val
+primitive !divide val val -> val
 primitive !modulo val val -> val
-primitive !random val -> val
-primitive !lookup val val -> val
-primitive !lookupbyte val val -> val
-primitive !not val -> val
-primitive !and val val -> val
-primitive !or val val -> val
-primitive !alternative val val -> val
-primitive !alternativecase val val -> val
 primitive !bitwiseand val val -> val
 primitive !bitwiseor val val -> val
 primitive !bitwisenot val -> val
+primitive !sequential val val -> val
+primitive !ternarysequential val val val -> val
+primitive !random val -> val
+primitive !store ref val -> val
+primitive !preincrement ref -> val
+primitive !postincrement ref -> val
+primitive !predecrement ref -> val
+primitive !postdecrement ref -> val
+primitive !setbit ref val -> void
+primitive !clearbit ref val -> void
+primitive !push val -> void
+primitive !pull ref -> void
+primitive !lookup val val -> val
+primitive !lookupbyte val val -> val
+primitive !propertyarray val val val -> val
+primitive !propertylength val val val -> val
+primitive !propertyexists val val val -> val
+primitive !propertyvalue val val val -> val
+primitive !move val val -> void
+primitive !remove val -> void
+primitive !child val -> val
+primitive !children val -> val
+primitive !sibling val -> val
+primitive !parent val -> val
+primitive !metaclass val -> val
+primitive !not val -> val
+primitive !and val val -> val
+primitive !or val val -> val
 primitive !eq val val -> val
 primitive !ne val val -> val
 primitive !gt val val -> val
 primitive !ge val val -> val
 primitive !lt val val -> val
 primitive !le val val -> val
-primitive !has val val -> val
-primitive !hasnt val val -> val
-primitive !in val val -> val
 primitive !ofclass val val -> val
-primitive !sequential val val -> val
-primitive !ternarysequential val val val -> val
-primitive !plus val val -> val
-primitive !minus val val -> val
-primitive !unaryminus val -> val
-primitive !times val val -> val
-primitive !divide val val -> val
+primitive !in val val -> val
+primitive !notin val val -> val
+primitive !alternative val val -> val
+primitive !enableprinting void -> void
+primitive !font val -> void
+primitive !style val -> void
+primitive !print val -> void
+primitive !printnl void -> void
+primitive !printchar val -> void
+primitive !printobj val -> void
+primitive !printnumber val -> void
+primitive !printdword val -> void
+primitive !printstring val -> void
+primitive !box val -> void
+primitive !spaces val -> void
 primitive !if val code -> void
 primitive !ifdebug code -> void
 primitive !ifstrict code -> void
@@ -91,9 +81,16 @@ primitive !do val code -> void
 primitive !for val val val code -> void
 primitive !objectloop ref val val code -> void
 primitive !objectloopx ref val code -> void
+primitive !break void -> void
+primitive !continue void -> void
 primitive !switch val code -> void
 primitive !case val code -> void
+primitive !alternativecase val val -> val
 primitive !default code -> void
+primitive !return val -> void
+primitive !jump lab -> void
+primitive !quit void -> void
+primitive !restore lab -> void
 primitive !indirect0v val -> void
 primitive !indirect1v val val -> void
 primitive !indirect2v val val val -> void
@@ -110,39 +107,42 @@ primitive !message0 val val -> val
 primitive !message1 val val val -> val
 primitive !message2 val val val val -> val
 primitive !message3 val val val val val -> val
-primitive !callmessage0 val -> val
-primitive !callmessage1 val val -> val
-primitive !callmessage2 val val val -> val
-primitive !callmessage3 val val val val -> val
-primitive !propertyaddress val val -> val
-primitive !propertylength val val -> val
-primitive !provides val val -> val
-primitive !propertyvalue val val -> val
-primitive !notin val val -> val
-primitive !read val val -> void
-primitive !inversion void -> void
+primitive !externalcall val val -> val
 package main _plain
-	package veneer _linkage
-		symbol external misc K_unchecked --> /main/generic/K_unchecked
+	symbol public misc generic
+	symbol public misc architectural
+	package architectural _linkage
 		symbol public misc WORDSIZE
+		symbol public misc K_unchecked --> /main/generic/kinds/K_unchecked
+		symbol public misc NULL
+		symbol public misc WORD_HIGHBIT
+		symbol public misc WORD_NEXTTOHIGHBIT
+		symbol public misc IMPROBABLE_VALUE
+		symbol public misc MAX_POSITIVE_NUMBER
+		symbol public misc MIN_NEGATIVE_NUMBER
 		symbol public misc TARGET_ZCODE
 		symbol public misc DEBUG
-		symbol public misc FILES_PLUGIN
-		constant WORDSIZE K_unchecked = 2
-		constant TARGET_ZCODE K_unchecked = 1
-		constant DEBUG K_unchecked = 1
-		constant FILES_PLUGIN K_unchecked = 1
+		constant WORDSIZE K_unchecked = 2 __architectural
+		constant NULL K_unchecked = 0xffff __architectural __hex
+		constant WORD_HIGHBIT K_unchecked = 0x8000 __architectural __hex
+		constant WORD_NEXTTOHIGHBIT K_unchecked = 0x4000 __architectural __hex
+		constant IMPROBABLE_VALUE K_unchecked = 0x7fe3 __architectural __hex
+		constant MAX_POSITIVE_NUMBER K_unchecked = 32767 __architectural
+		constant MIN_NEGATIVE_NUMBER K_unchecked = -32768 __architectural __signed
+		constant TARGET_ZCODE K_unchecked = 1 __architectural
+		constant DEBUG K_unchecked = 1 __architectural
 	package generic _module
+		symbol public misc kinds
+	package kinds _submodule
 		symbol public misc K_unchecked
-		symbol public misc K_typeless_int
-		symbol public misc K_truth_state
-		symbol public misc K_action_name
 		symbol public misc K_unchecked_function
-		symbol public misc K_list_of_values
+		symbol public misc K_unchecked_list
+		symbol public misc K_int32
+		symbol public misc K_int2
+		symbol public misc K_string
 		kind K_unchecked unchecked
-		kind K_typeless_int int32
-		kind K_truth_state int2
-		kind K_action_name int32
 		kind K_unchecked_function function K_unchecked -> K_unchecked
-		kind K_list_of_values list of K_unchecked
-	package template _module
+		kind K_unchecked_list list of K_unchecked
+		kind K_int32 int32
+		kind K_int2 int2
+		kind K_string text

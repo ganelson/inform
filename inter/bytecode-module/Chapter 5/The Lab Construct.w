@@ -9,7 +9,7 @@ Defining the Lab construct.
 =
 void Inter::Lab::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(LAB_IST, I"lab");
-	InterConstruct::specify_syntax(IC, L"lab (%C+)");
+	InterConstruct::specify_syntax(IC, I"lab .IDENTIFIER");
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Lab::read);

@@ -9,7 +9,7 @@ Defining the label construct.
 =
 void Inter::Label::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(LABEL_IST, I"label");
-	InterConstruct::specify_syntax(IC, L"(.%i+)");
+	InterConstruct::specify_syntax(IC, I".IDENTIFIER");
 	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);

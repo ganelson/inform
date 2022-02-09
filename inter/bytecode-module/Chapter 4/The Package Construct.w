@@ -9,7 +9,7 @@ Defining the package construct.
 =
 void InterPackage::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PACKAGE_IST, I"package");
-	InterConstruct::specify_syntax(IC, L"package (%i+) (%i+)");
+	InterConstruct::specify_syntax(IC, I"package IDENTIFIER _IDENTIFIER");
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);

@@ -9,7 +9,7 @@ Defining the link construct.
 =
 void Inter::Link::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(LINK_IST, I"link");
-	InterConstruct::specify_syntax(IC, L"link (%i+) \"(%c*)\" \"(%c*)\" \"(%c*)\" \"(%c*)\"");
+	InterConstruct::specify_syntax(IC, I"link IDENTIFIER TEXT TEXT TEXT TEXT");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Link::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Link::transpose);

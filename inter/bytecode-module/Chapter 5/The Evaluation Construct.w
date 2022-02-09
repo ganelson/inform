@@ -9,7 +9,7 @@ Defining the Evaluation construct.
 =
 void Inter::Evaluation::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(EVALUATION_IST, I"evaluation");
-	InterConstruct::specify_syntax(IC, L"evaluation");
+	InterConstruct::specify_syntax(IC, I"evaluation");
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);

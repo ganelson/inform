@@ -354,6 +354,20 @@ inter_ti Primitives::name_to_BIP(text_stream *name) {
 	return 0;
 }
 
+@ This is printed when //inter// is run with the |-primitives| switch.
+
+=
+void Primitives::show_primitives(OUTPUT_STREAM) {
+	WRITE("  Code     Primitive           Signature\n");
+	Primitives::prepare_standard_set_array();
+	for (inter_ti i=0; i<standard_inform7_primitives_extent; i++) {
+		inform7_primitive *prim = &(standard_inform7_primitives[i]);
+		WRITE("  %4x     %S", prim->BIP, prim->name);
+		for (int j = Str::len(prim->name); j<20; j++) PUT(' ');
+		WRITE("%S\n", prim->signature);
+	}	
+}
+
 @ In general the standard set is a miscellany, but with one systematic family
 of primitives for making indirect function calls (that is, calling a function
 whose identity is not known at compile time). These 12 primitives all do

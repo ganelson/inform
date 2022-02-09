@@ -9,7 +9,7 @@ Defining the splat construct.
 =
 void Inter::Splat::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(SPLAT_IST, I"splat");
-	InterConstruct::specify_syntax(IC, L"splat (%C*) *&\"(%c*)\"");
+	InterConstruct::specify_syntax(IC, I"splat OPTIONALIDENTIFIER &TEXT");
 	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);

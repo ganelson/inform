@@ -6,6 +6,8 @@
 -cases [Toy] 'inter/Tests/Toys'
 -cases [Kit] 'inter/Tests/Kits'
 
+-groups 'inter/Tests/Groups'
+
 -recipe [Valid]
 
 	set: $O = $PATH/$CASE.intert

@@ -142,6 +142,9 @@ form, which would be written to |*outt|.
 @e ARCHITECTURE_CLSW
 @e BUILD_KIT_CLSW
 @e INTERNAL_CLSW
+@e CONSTRUCTS_CLSW
+@e ANNOTATIONS_CLSW
+@e PRIMITIVES_CLSW
 
 @<Read the command line@> =
 	CommandLine::declare_heading(
@@ -166,6 +169,12 @@ form, which would be written to |*outt|.
 		L"generate Inter with architecture X");
 	CommandLine::declare_switch(BUILD_KIT_CLSW, L"build-kit", 2,
 		L"build Inter kit X for the current architecture");
+	CommandLine::declare_switch(CONSTRUCTS_CLSW, L"constructs", 1,
+		L"print out table of all constructs in the Inter language");
+	CommandLine::declare_switch(ANNOTATIONS_CLSW, L"annotations", 1,
+		L"print out table of all symbol annotations in the Inter language");
+	CommandLine::declare_switch(PRIMITIVES_CLSW, L"primitives", 1,
+		L"print out table of all primitive invocations in the Inter language");
 		
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::add_file);
 
@@ -186,6 +195,9 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 			if (PipelineModule::set_architecture(arg) == FALSE)
 				Errors::fatal("no such -architecture");
 			break;
+		case CONSTRUCTS_CLSW:  InterConstruct::show_constructs(STDOUT); break;
+		case ANNOTATIONS_CLSW: SymbolAnnotation::show_annotations(STDOUT); break;
+		case PRIMITIVES_CLSW:  Primitives::show_primitives(STDOUT); break;
 	}
 }
 

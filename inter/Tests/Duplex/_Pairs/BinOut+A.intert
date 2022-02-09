@@ -11,10 +11,10 @@ package main _plain
 	kind K_number int32
 	kind K_func function K_number -> K_number
 	package R_101_B _code
-		symbol private misc x
+		symbol private local x
 		symbol private label .begin
-		symbol external misc K_number --> /main/K_number
-		local x K_number __call_parameter
+		symbol public misc K_number --> /main/K_number
+		local x K_number __argument
 		code
 			.begin
 			inv !if

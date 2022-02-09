@@ -4,7 +4,7 @@ packagetype _code
 package main _plain
 	symbol public misc K_number
 	symbol public misc K_list_of_number
-	symbol external misc FROG
+	symbol public misc FROG
 	symbol public misc C_test
 	symbol public misc C_kermit
 	kind K_number int32

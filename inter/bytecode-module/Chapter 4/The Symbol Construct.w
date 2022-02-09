@@ -9,7 +9,7 @@ Defining the symbol construct.
 =
 void Inter::Symbol::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(SYMBOL_IST, I"symbol");
-	InterConstruct::specify_syntax(IC, L"symbol (%C+) (%i+) (%c+)");
+	InterConstruct::specify_syntax(IC, I"symbol TOKEN IDENTIFIER TOKENS");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Symbol::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Symbol::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Symbol::write);

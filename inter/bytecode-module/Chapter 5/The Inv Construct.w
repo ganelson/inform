@@ -9,7 +9,7 @@ Defining the inv construct.
 =
 void Inter::Inv::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(INV_IST, I"inv");
-	InterConstruct::specify_syntax(IC, L"inv (%C+)");
+	InterConstruct::specify_syntax(IC, I"inv TOKEN");
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);

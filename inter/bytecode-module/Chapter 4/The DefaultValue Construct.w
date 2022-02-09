@@ -9,7 +9,7 @@ Defining the defaultvalue construct.
 =
 void Inter::DefaultValue::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(DEFAULTVALUE_IST, I"defaultvalue");
-	InterConstruct::specify_syntax(IC, L"defaultvalue (%i+) = (%c+)");
+	InterConstruct::specify_syntax(IC, I"defaultvalue IDENTIFIER = TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::DefaultValue::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::DefaultValue::verify);

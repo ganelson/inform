@@ -9,7 +9,7 @@ Defining the propertyvalue construct.
 =
 void Inter::PropertyValue::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PROPERTYVALUE_IST, I"propertyvalue");
-	InterConstruct::specify_syntax(IC, L"propertyvalue (%i+) (%i+) = (%c+)");
+	InterConstruct::specify_syntax(IC, I"propertyvalue IDENTIFIER IDENTIFIER = TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::PropertyValue::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::PropertyValue::verify);

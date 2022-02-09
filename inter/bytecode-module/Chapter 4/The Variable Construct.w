@@ -9,7 +9,7 @@ Defining the variable construct.
 =
 void Inter::Variable::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(VARIABLE_IST, I"variable");
-	InterConstruct::specify_syntax(IC, L"variable (%i+) (%i+) = (%c+)");
+	InterConstruct::specify_syntax(IC, I"variable IDENTIFIER IDENTIFIER = TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Variable::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Variable::verify);

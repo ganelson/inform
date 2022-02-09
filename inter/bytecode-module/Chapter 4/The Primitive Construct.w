@@ -9,7 +9,7 @@ Defining the primitive construct.
 =
 void Inter::Primitive::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PRIMITIVE_IST, I"primitive");
-	InterConstruct::specify_syntax(IC, L"primitive (!%i+) (%c+) -> (%C+)");
+	InterConstruct::specify_syntax(IC, I"primitive !IDENTIFIER TOKENS -> TOKEN");
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Primitive::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Primitive::verify);

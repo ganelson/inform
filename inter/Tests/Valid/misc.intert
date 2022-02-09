@@ -22,7 +22,7 @@ package main _plain
 	symbol public misc cornelius
 	symbol public misc gaius
 	symbol public misc mark_my_words
-	symbol external misc peach
+	symbol public misc peach
 	symbol public misc K_colour
 	symbol public misc I_green
 	symbol public misc I_red
@@ -71,6 +71,8 @@ package main _plain
 	symbol public misc R_102
 	symbol public misc amount
 	symbol public misc R_101_A
+	symbol public misc R_101_B
+	symbol public misc R_102_B
 	kind K_number int32
 	kind K_truth_state int2
 	defaultvalue K_number = 47
@@ -135,13 +137,13 @@ package main _plain
 	constant RB_after K_rulebook = { R_after1, R_after2 }
 	kind K_colour____colour function K_colour -> K_colour
 	package R_101_B _code
-		symbol private misc x
-		symbol external misc K_colour --> /main/K_colour
-		symbol external misc R_102 --> /main/R_102
-		symbol external misc I_green --> /main/I_green
-		symbol external misc K_number --> /main/K_number
-		symbol external misc K_truth_state --> /main/K_truth_state
-		local x K_colour __call_parameter
+		symbol private local x
+		symbol public misc K_colour --> /main/K_colour
+		symbol public misc R_102 --> /main/R_102
+		symbol public misc I_green --> /main/I_green
+		symbol public misc K_number --> /main/K_number
+		symbol public misc K_truth_state --> /main/K_truth_state
+		local x K_colour __argument
 		code
 			inv R_102
 				val K_colour I_green
@@ -154,10 +156,10 @@ package main _plain
 					val K_truth_state &"a b"
 	constant R_101 K_colour____colour = R_101_B
 	package R_102_B _code
-		symbol private misc x
-		symbol external misc K_colour --> /main/K_colour
-		symbol external misc I_red --> /main/I_red
-		local x K_colour __call_parameter
+		symbol private local x
+		symbol public misc K_colour --> /main/K_colour
+		symbol public misc I_red --> /main/I_red
+		local x K_colour __argument
 		code
 			inv !return
 				val K_colour I_red

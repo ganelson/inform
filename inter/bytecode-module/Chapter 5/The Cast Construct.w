@@ -9,7 +9,7 @@ Defining the cast construct.
 =
 void Inter::Cast::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(CAST_IST, I"cast");
-	InterConstruct::specify_syntax(IC, L"cast (%i+) <- (%i+)");
+	InterConstruct::specify_syntax(IC, I"cast IDENTIFIER <- IDENTIFIER");
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);

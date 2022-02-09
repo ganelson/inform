@@ -12,7 +12,8 @@ typedef struct inter_construct {
 	inter_ti construct_ID; /* used to identify this in bytecode */
 	struct text_stream *construct_name;
 
-	wchar_t *construct_syntax;
+	wchar_t recognition_regexp[MAX_RECOGNITION_REGEXP_LENGTH];
+	struct text_stream *syntax;
 
 	int min_level; /* min node tree depth within its package */
 	int max_level; /* max node tree depth within its package */
@@ -28,7 +29,7 @@ inter_construct *InterConstruct::create_construct(inter_ti ID, text_stream *name
 	IC->construct_ID = ID;
 	IC->construct_name = Str::duplicate(name);
 
-	IC->construct_syntax = NULL;
+	IC->recognition_regexp[0] = 0;
 
 	IC->min_level = 0;
 	IC->max_level = 0;
@@ -73,9 +74,47 @@ line of text.
 Note that if no syntax is specified for a construct, then it will be inexpressible
 in textual Inter code.
 
+@d MAX_RECOGNITION_REGEXP_LENGTH 64
+
 =
-void InterConstruct::specify_syntax(inter_construct *IC, wchar_t *syntax) {
-	IC->construct_syntax = syntax;	
+void InterConstruct::specify_syntax(inter_construct *IC, text_stream *syntax) {
+	IC->syntax = syntax;
+	TEMPORARY_TEXT(regexp)
+	for (int i = 0; i < Str::len(syntax); i++) {
+		if (Str::includes_wide_string_at(syntax, L"OPTIONALIDENTIFIER", i)) {
+			i += 17; WRITE_TO(regexp, "*(%%i*)");
+		} else if (Str::includes_wide_string_at(syntax, L"WHITESPACE", i)) {
+			i += 9;  WRITE_TO(regexp, " *");
+		} else if (Str::includes_wide_string_at(syntax, L"IDENTIFIER", i)) {
+			i += 9;  WRITE_TO(regexp, "(%%i+)");
+		} else if (Str::includes_wide_string_at(syntax, L"_IDENTIFIER", i)) {
+			i += 10; WRITE_TO(regexp, "(_%%i+)");
+		} else if (Str::includes_wide_string_at(syntax, L".IDENTIFIER", i)) {
+			i += 10; WRITE_TO(regexp, "(.%%i+)");
+		} else if (Str::includes_wide_string_at(syntax, L"!IDENTIFIER", i)) {
+			i += 10; WRITE_TO(regexp, "(!%%i+)");
+		} else if (Str::includes_wide_string_at(syntax, L"IDENTIFIER", i)) {
+			i += 9; WRITE_TO(regexp, "(%%i+)");
+		} else if (Str::includes_wide_string_at(syntax, L"NUMBER", i)) {
+			i += 5; WRITE_TO(regexp, "(%%d+)");
+		} else if (Str::includes_wide_string_at(syntax, L"TOKENS", i)) {
+			i += 5; WRITE_TO(regexp, "(%%c+)");
+		} else if (Str::includes_wide_string_at(syntax, L"TOKEN", i)) {
+			i += 4; WRITE_TO(regexp, "(%%C+)");
+		} else if (Str::includes_wide_string_at(syntax, L"TEXT", i)) {
+			i += 3; WRITE_TO(regexp, "\"(%%c*)\"");
+		} else {
+			wchar_t c = Str::get_at(syntax, i);
+			if (c == '\'') c = '"';
+			PUT_TO(regexp, c);
+		}
+	}
+	if (Str::len(regexp) >= MAX_RECOGNITION_REGEXP_LENGTH - 1)
+		internal_error("too much syntax");
+	int j = 0;
+	LOOP_THROUGH_TEXT(pos, regexp) IC->recognition_regexp[j++] = Str::get(pos);
+	IC->recognition_regexp[j++] = 0;
+	DISCARD_TEXT(regexp)
 }
 
 @ There isn't really a construct with ID 0: this is used only as a sort of "not
@@ -118,14 +157,13 @@ inter_construct *InterConstruct::get_construct_for_ID(inter_ti ID) {
 	return inter_construct_by_ID[ID];
 }
 
-@
+@ Each construct is managed by its own section of code, and that includes
+the creation of the constructs: so we poll those sections in turn.
 
 =
 void InterConstruct::create_language(void) {
 	SymbolAnnotation::declare_canonical_annotations();
-
 	InterConstruct::define_invalid_construct();
-
 	Inter::Nop::define();
 	Inter::Comment::define();
 	Inter::Symbol::define();
@@ -158,7 +196,20 @@ void InterConstruct::create_language(void) {
 	Inter::Splat::define();
 }
 
+@ The result is printed when //inter// is run with the |-constructs| switch.
 
+=
+void InterConstruct::show_constructs(OUTPUT_STREAM) {
+	WRITE("  Code     Construct           Syntax\n");
+	for (int ID=0; ID<MAX_INTER_CONSTRUCTS; ID++) {
+		inter_construct *IC = inter_construct_by_ID[ID];
+		if ((IC) && (ID != INVALID_IST)) {
+			WRITE("  %4x     %S", ID, IC->construct_name);
+			for (int j = Str::len(IC->construct_name); j<20; j++) PUT(' ');
+			WRITE("%S\n", IC->syntax);
+		}
+	}	
+}
 
 @
 
@@ -276,8 +327,8 @@ inter_error_message *InterConstruct::read_construct_text(text_stream *line, inte
 	}
 	inter_construct *IC;
 	LOOP_OVER(IC, inter_construct)
-		if (IC->construct_syntax)
-			if (Regexp::match(&ilp.mr, ilp.line, IC->construct_syntax)) {
+		if (IC->recognition_regexp[0])
+			if (Regexp::match(&ilp.mr, ilp.line, IC->recognition_regexp)) {
 				inter_error_message *E = NULL;
 				VOID_METHOD_CALL(IC, CONSTRUCT_READ_MTID, IBM, &ilp, eloc, &E);
 				return E;

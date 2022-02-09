@@ -10,20 +10,20 @@ package main _plain
 	symbol public misc K_func
 	symbol public misc awkward
 	symbol public misc troublesome
-	symbol external misc secret --> /main/my_fn/secret
+	symbol public misc secret --> /main/my_fn/secret
 	kind K_number int32
 	kind K_func function K_number -> K_number
 	package my_fn _plain
 		symbol public misc R_101
 		symbol public misc secret
-		symbol external misc K_func --> /main/K_func
-		symbol external misc K_number --> /main/K_number
+		symbol public misc K_func --> /main/K_func
+		symbol public misc K_number --> /main/K_number
 		package R_101_B _code
-			symbol private misc x
+			symbol private local x
 			symbol private label .begin
-			symbol external misc K_number --> /main/K_number
-			symbol external misc troublesome --> /main/troublesome
-			local x K_number __call_parameter
+			symbol public misc K_number --> /main/K_number
+			symbol public misc troublesome --> /main/troublesome
+			local x K_number __argument
 			code
 				.begin
 				inv !if

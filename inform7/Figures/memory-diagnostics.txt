@@ -1,9 +1,9 @@
-Total memory consumption was 376910K = 368 MB
+Total memory consumption was 376924K = 368 MB
 
-64.3% was used for 2026948 objects, in 356561 frames in 303 x 800K = 242400K = 236 MB:
+64.3% was used for 2027148 objects, in 356563 frames in 303 x 800K = 242400K = 236 MB:
 
     10.8%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
-     7.6%  text_stream_array                        5260 x 100 = 526000 objects, 29624320 bytes
+     7.6%  text_stream_array                        5261 x 100 = 526100 objects, 29629952 bytes
      5.2%  linked_list                              35976 objects, 20146560 bytes
      4.9%  inter_symbol_array                       165 x 1024 = 168960 objects, 18928800 bytes
      2.6%  parse_node                               129462 objects, 10356960 bytes
@@ -18,7 +18,7 @@ Total memory consumption was 376910K = 368 MB
      0.4%  vocabulary_entry_array                   161 x 100 = 16100 objects, 1808352 bytes
      0.3%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes
      0.3%  inter_symbols_table                      26578 objects, 1488368 bytes
-     0.3%  dict_entry_array                         447 x 100 = 44700 objects, 1444704 bytes
+     0.3%  dict_entry_array                         448 x 100 = 44800 objects, 1447936 bytes
      0.3%  i6_schema_array                          23 x 100 = 2300 objects, 1380736 bytes
      0.3%  inter_package                            26578 objects, 1275744 bytes
      0.2%  map_data                                 670 objects, 1125600 bytes
@@ -64,8 +64,8 @@ Total memory consumption was 376910K = 368 MB
      ----  spatial_data                             670 objects, 64320 bytes
      ----  kind_macro_definition                    9 objects, 62280 bytes
      ----  booking                                  860 objects, 61920 bytes
-     ----  actions_rcd_data                         1882 objects, 60224 bytes
      ----  scenes_rcd_data                          1882 objects, 60224 bytes
+     ----  actions_rcd_data                         1882 objects, 60224 bytes
      ----  command_grammar                          130 objects, 58240 bytes
      ----  kind_constructor                         77 objects, 57904 bytes
      ----  table                                    7 objects, 56672 bytes
@@ -76,15 +76,15 @@ Total memory consumption was 376910K = 368 MB
      ----  response_message                         407 objects, 52096 bytes
      ----  ap_clause_array                          2 x 400 = 800 objects, 51264 bytes
      ----  text_substitution                        436 objects, 41856 bytes
-     ----  anl_clause_array                         1 x 1000 objects, 40032 bytes
      ----  activity_list_array                      1 x 1000 objects, 40032 bytes
+     ----  anl_clause_array                         1 x 1000 objects, 40032 bytes
      ----  to_family_data                           497 objects, 39760 bytes
      ----  shared_variable_access_list_array        12 x 100 = 1200 objects, 38784 bytes
      ----  parsing_data                             670 objects, 37520 bytes
      ----  heading                                  198 objects, 36432 bytes
      ----  production_list                          617 objects, 34552 bytes
-     ----  regions_data                             670 objects, 32160 bytes
      ----  counting_data                            670 objects, 32160 bytes
+     ----  regions_data                             670 objects, 32160 bytes
      ----  linked_list_item_array                   2 x 1000 = 2000 objects, 32064 bytes
      ----  HTML_tag_array                           1 x 1000 objects, 32032 bytes
      ----  property_permission                      96 objects, 31488 bytes
@@ -105,14 +105,15 @@ Total memory consumption was 376910K = 368 MB
      ----  parse_node_tree                          20 objects, 17280 bytes
      ----  understanding_reference_array            2 x 100 = 200 objects, 16064 bytes
      ----  to_phrase_request                        59 objects, 16048 bytes
-     ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
+     ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
      ----  adjective                                137 objects, 15344 bytes
      ----  generated_segment                        14 objects, 14784 bytes
      ----  booking_list                             407 objects, 13024 bytes
      ----  pathname                                 324 objects, 12960 bytes
      ----  adjective_iname_holder                   320 objects, 12800 bytes
      ----  uniqueness_count                         451 objects, 10824 bytes
+     ----  inter_construct                          31 objects, 10168 bytes
      ----  filename                                 246 objects, 9840 bytes
      ----  stopwatch_timer                          111 objects, 8880 bytes
      ----  equation_node                            68 objects, 7616 bytes
@@ -143,12 +144,11 @@ Total memory consumption was 376910K = 368 MB
      ----  either_or_property_data                  62 objects, 2976 bytes
      ----  semver_range                             25 objects, 2600 bytes
      ----  use_option                               29 objects, 2552 bytes
-     ----  part_of_inference_data                   79 objects, 2528 bytes
      ----  parentage_inference_data                 79 objects, 2528 bytes
+     ----  part_of_inference_data                   79 objects, 2528 bytes
      ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes
      ----  kind_constructor_instance_array          1 x 100 objects, 2432 bytes
      ----  equation_symbol                          30 objects, 2400 bytes
-     ----  inter_construct                          31 objects, 2232 bytes
      ----  scene                                    1 object, 2096 bytes
      ----  build_script                             60 objects, 1920 bytes
      ----  pronoun_usage                            42 objects, 1680 bytes
@@ -176,8 +176,8 @@ Total memory consumption was 376910K = 368 MB
      ----  cached_understanding                     21 objects, 840 bytes
      ----  phrase_option_array                      1 x 100 objects, 824 bytes
      ----  inter_data_type                          14 objects, 784 bytes
-     ----  inbuild_search_result                    18 objects, 720 bytes
      ----  internal_test                            15 objects, 720 bytes
+     ----  inbuild_search_result                    18 objects, 720 bytes
      ----  inform_language                          6 objects, 672 bytes
      ----  relation_guard                           5 objects, 640 bytes
      ----  code_generation                          1 object, 576 bytes
@@ -237,7 +237,7 @@ Total memory consumption was 376910K = 368 MB
 
 35.6% was used for memory not allocated for objects:
 
-    21.7%  text stream storage                      84030528 bytes in 544029 claims
+    21.7%  text stream storage                      84044664 bytes in 544087 claims
      1.4%  dictionary storage                       5593600 bytes in 8619 claims
      ----  sorting                                  736 bytes in 3 claims
      1.8%  source text                              7200000 bytes in 3 claims
@@ -255,5 +255,5 @@ Total memory consumption was 376910K = 368 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    161792 bytes in 2062 claims
 
-18.9% was overhead - 73288832 bytes = 71571K = 69 MB
+18.9% was overhead - 73272032 bytes = 71554K = 69 MB
 

@@ -10,21 +10,21 @@ package main _plain
 	symbol public misc K_func
 	symbol public misc awkward
 	symbol public misc troublesome
-	symbol external misc secret --> /main/my_fn/secret
+	symbol public misc secret --> /main/my_fn/secret
 	kind K_number int32
 	kind K_func function K_number -> K_number
 	package my_fn _plain
 		symbol public misc R_101
 		symbol public misc secret
-		symbol external misc K_func --> /main/K_func
-		symbol external misc K_number --> /main/K_number
-		symbol external misc plug00002 --> /main/connectors/plug00002
+		symbol public misc K_func --> /main/K_func
+		symbol public misc K_number --> /main/K_number
+		symbol public misc plug00002 --> /main/connectors/plug00002
 		package R_101_B _code
-			symbol private misc x
+			symbol private local x
 			symbol private label .begin
-			symbol external misc K_number --> /main/K_number
-			symbol external misc troublesome --> /main/troublesome
-			local x K_number __call_parameter
+			symbol public misc K_number --> /main/K_number
+			symbol public misc troublesome --> /main/troublesome
+			local x K_number __argument
 			code
 				.begin
 				inv !if
@@ -38,5 +38,5 @@ package main _plain
 	constant awkward K_number = secret
 	constant troublesome K_number = 12
 	package connectors _linkage
-		symbol socket misc secret --> /main/my_fn/secret
-		symbol plug misc plug00002 --? C_majors
+		symbol public socket secret --> /main/my_fn/secret
+		symbol public plug plug00002 --? C_majors

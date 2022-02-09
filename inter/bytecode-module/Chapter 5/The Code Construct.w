@@ -9,7 +9,7 @@ Defining the Code construct.
 =
 void Inter::Code::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(CODE_IST, I"code");
-	InterConstruct::specify_syntax(IC, L"code");
+	InterConstruct::specify_syntax(IC, I"code");
 	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);

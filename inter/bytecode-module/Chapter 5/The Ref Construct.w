@@ -9,7 +9,7 @@ Defining the ref construct.
 =
 void Inter::Ref::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(REF_IST, I"ref");
-	InterConstruct::specify_syntax(IC, L"ref (%i+) (%C+)");
+	InterConstruct::specify_syntax(IC, I"ref IDENTIFIER TOKEN");
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Ref::read);
