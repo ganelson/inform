@@ -39,18 +39,18 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *val_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *val_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_ti val1 = 0;
 	inter_ti val2 = 0;
 
-	inter_symbol *kind_as_value = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *kind_as_value = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[1], KIND_IST, E);
 	*E = NULL;
 	if (kind_as_value) {
 		Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value, &val1, &val2);
 	} else {
-		*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), val_kind, ilp->mr.exp[1], &val1, &val2, locals);
+		*E = Inter::Types::read(ilp->line, eloc, IBM, val_kind, ilp->mr.exp[1], &val1, &val2, locals);
 		if (*E) return;
 	}
 
@@ -82,7 +82,9 @@ void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	inter_symbol *val_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_VAL_IFLD);
 	if (val_kind) {
-		WRITE("val %S ", val_kind->symbol_name);
+		WRITE("val ");
+		TextualInter::write_symbol_from(OUT, P, KIND_VAL_IFLD);
+		WRITE(" ");
 		Inter::Types::write(OUT, P, val_kind, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);
 	} else { *E = Inode::error(P, I"cannot write val", NULL); return; }
 }

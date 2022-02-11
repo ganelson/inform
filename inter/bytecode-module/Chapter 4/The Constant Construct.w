@@ -9,7 +9,7 @@ Defining the constant construct.
 =
 void Inter::Constant::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(CONSTANT_IST, I"constant");
-	InterConstruct::specify_syntax(IC, I"constant TOKEN IDENTIFIER = TOKENS");
+	InterConstruct::specify_syntax(IC, I"constant TOKEN TOKEN = TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Constant::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Constant::transpose);
@@ -44,7 +44,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), con_name);
 
-	inter_symbol *con_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *con_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 	text_stream *S = ilp->mr.exp[2];
 
@@ -189,7 +189,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	if (Str::eq(S, I"0")) { con_val1 = LITERAL_IVAL; con_val2 = 0; }
 	else {
-		*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), con_kind, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
+		*E = Inter::Types::read(ilp->line, eloc, IBM, con_kind, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
 		if (*E) return;
 	}
 
@@ -276,7 +276,7 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
 	if (conts_kind == NULL) {
-		inter_symbol *tc = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), S, CONSTANT_IST, E);
+		inter_symbol *tc = TextualInter::find_symbol(IBM, eloc, S, CONSTANT_IST, E);
 		if (*E) return FALSE;
 		if (Inter::Kind::constructor(Inter::Constant::kind_of(tc)) == COLUMN_ICON) {
 			Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM), tc, &con_val1, &con_val2);
@@ -285,7 +285,7 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 			return FALSE;
 		}
 	} else {
-		*E = Inter::Types::read(line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), conts_kind, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
+		*E = Inter::Types::read(line, eloc, IBM, conts_kind, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
 		if (*E) return FALSE;
 	}
 	Inode::extend_instruction_by(P, 2);
@@ -395,7 +395,9 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	int hex = FALSE;
 	if (SymbolAnnotation::get_b(con_name, HEX_IANN)) hex = TRUE;
 	if ((con_name) && (con_kind)) {
-		WRITE("constant %S %S = ", con_name->symbol_name, con_kind->symbol_name);
+		WRITE("constant %S ", con_name->symbol_name);
+		TextualInter::write_symbol_from(OUT, P, KIND_CONST_IFLD);
+		WRITE(" = ", con_name->symbol_name, con_kind->symbol_name);
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:
 				Inter::Types::write(OUT, P, con_kind,

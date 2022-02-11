@@ -33,7 +33,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 
-	inter_symbol *prop_name = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], PROPERTY_IST, E);
+	inter_symbol *prop_name = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
 	inter_symbol *owner_name = TextualInter::find_KOI(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
@@ -77,7 +77,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 	inter_symbol *store = NULL;
 	if (Str::len(ilp->mr.exp[2]) > 0) {
-		store = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[2], CONSTANT_IST, E);
+		store = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[2], CONSTANT_IST, E);
 		if (*E) return;
 	}
 

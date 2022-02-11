@@ -42,7 +42,7 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_symbol *inst_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *inst_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ktext, KIND_IST, E);
+	inter_symbol *inst_kind = TextualInter::find_symbol(IBM, eloc, ktext, KIND_IST, E);
 	if (*E) return;
 
 	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
@@ -51,7 +51,7 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_ti v1 = UNDEF_IVAL, v2 = 0;
 	if (vtext) {
-		*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), NULL, vtext, &v1, &v2, InterBookmark::scope(IBM));
+		*E = Inter::Types::read(ilp->line, eloc, IBM, NULL, vtext, &v1, &v2, InterBookmark::scope(IBM));
 		if (*E) return;
 	}
 	*E = Inter::Instance::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_kind), v1, v2, (inter_ti) ilp->indent_level, eloc);

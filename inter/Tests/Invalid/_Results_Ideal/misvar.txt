@@ -4,7 +4,4 @@ inter: inter/Tests/Invalid/misvar.intert, line 8: no such symbol: 'int32'
 >--> variable V_peach int32 = 12
 inter: inter/Tests/Invalid/misvar.intert, line 15: symbol has the wrong kind: 'I_citrus'
 >--> variable V_overtone K_colour = I_citrus
-inter: inter/Tests/Invalid/misvar.intert, line 16: bad digit for this number base: 'khglkl'
->--> constant V_drivel K_number = khglkl
-inter: inter/Tests/Invalid/misvar.intert, line 17: bad digit for this number base: 'khglkl'
->--> constant C_drivel K_number = khglkl
+inter: inter/Tests/Invalid/misvar.intert, line 4: symbol undefined in package: 'khglkl'

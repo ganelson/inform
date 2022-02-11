@@ -33,11 +33,11 @@ void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *var_name = TextualInter::find_undefined_symbol(IBM, eloc, locals, ilp->mr.exp[0], E);
+	inter_symbol *var_name = TextualInter::new_symbol(eloc, locals, ilp->mr.exp[0], E);
 	if (*E) return;
-	if (InterSymbol::is_local(var_name) == FALSE) { *E = Inter::Errors::plain(I"symbol of wrong S-type", eloc); return; }
+	InterSymbol::make_local(var_name);
 
-	inter_symbol *var_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *var_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), var_name);
@@ -64,8 +64,9 @@ void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
 	inter_package *pack = InterPackage::container(P);
 	inter_symbol *var_name = InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 	inter_symbol *var_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_LOCAL_IFLD);
-	if (var_name) {
-		WRITE("local %S %S", var_name->symbol_name, var_kind->symbol_name);
+	if ((var_name) && (var_kind)) {
+		WRITE("local %S ", var_name->symbol_name);
+		TextualInter::write_symbol_from(OUT, P, KIND_LOCAL_IFLD);
 		SymbolAnnotation::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write local", NULL); return; }
 }

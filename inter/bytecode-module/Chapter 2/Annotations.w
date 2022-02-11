@@ -447,6 +447,6 @@ inter_annotation SymbolAnnotation::read_annotation(inter_tree *I, text_stream *t
 			IA.annot_value = val;
 			return IA;
 		}
-	*E = Inter::Errors::plain(I"unrecognised annotation", eloc);
+	*E = Inter::Errors::quoted(I"unrecognised annotation", text, eloc);
 	return SymbolAnnotation::invalid_annotation();
 }

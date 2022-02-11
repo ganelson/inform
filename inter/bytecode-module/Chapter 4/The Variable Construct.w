@@ -32,14 +32,14 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_symbol *var_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *var_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *var_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
 
 	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), var_name);
 
 	inter_ti var_val1 = 0;
 	inter_ti var_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), var_kind, ilp->mr.exp[2], &var_val1, &var_val2, InterBookmark::scope(IBM));
+	*E = Inter::Types::read(ilp->line, eloc, IBM, var_kind, ilp->mr.exp[2], &var_val1, &var_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::Variable::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_kind), var_val1, var_val2, (inter_ti) ilp->indent_level, eloc);

@@ -37,9 +37,9 @@ void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	inter_package *routine = TextualInter::get_latest_block_package();
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'val' used outside function", eloc); return; }
 
-	inter_symbol *from_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *from_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[1], KIND_IST, E);
 	if (*E) return;
-	inter_symbol *to_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *to_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	*E = Inter::Cast::new(IBM, from_kind, to_kind, (inter_ti) ilp->indent_level, eloc);
@@ -64,7 +64,10 @@ void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 	inter_symbol *from_kind = InterSymbolsTable::symbol_from_ID_at_node(P, FROM_KIND_CAST_IFLD);
 	inter_symbol *to_kind = InterSymbolsTable::symbol_from_ID_at_node(P, TO_KIND_CAST_IFLD);
 	if ((from_kind) && (to_kind)) {
-		WRITE("cast %S <- %S", to_kind->symbol_name, from_kind->symbol_name);
+		WRITE("cast ");
+		TextualInter::write_symbol_from(OUT, P, TO_KIND_CAST_IFLD);
+		WRITE(" <- ");
+		TextualInter::write_symbol_from(OUT, P, FROM_KIND_CAST_IFLD);
 	} else { *E = Inode::error(P, I"cannot write cast", NULL); return; }
 }
 

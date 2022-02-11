@@ -59,7 +59,7 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	inter_symbol *super_kind = NULL;
 	for (int i=0; i<MAX_ICON_OPERANDS; i++) operands[i] = 0;
 	if (Regexp::match(&mr2, ilp->mr.exp[1], L"<= (%i+)")) {
-		super_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), mr2.exp[0], KIND_IST, E);
+		super_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
 		if (*E) return;
 		idt = Inter::Kind::data_type(super_kind);
 		if (Inter::Types::is_enumerated(idt) == FALSE)
@@ -68,23 +68,23 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		idt = TextualInter::data_type(eloc, I"list", E);
 		if (*E) return;
 		constructor = RULEBOOK_ICON;
-		inter_symbol *conts_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), mr2.exp[0], KIND_IST, E);
+		inter_symbol *conts_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
 		if (*E) return;
 		operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"list of (%i+)")) {
 		idt = TextualInter::data_type(eloc, I"list", E);
 		if (*E) return;
 		constructor = LIST_ICON;
-		inter_symbol *conts_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), mr2.exp[0], KIND_IST, E);
+		inter_symbol *conts_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
 		if (*E) return;
 		operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"relation of (%i+) to (%i+)")) {
 		idt = TextualInter::data_type(eloc, I"relation", E);
 		if (*E) return;
 		constructor = RELATION_ICON;
-		inter_symbol *X_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), mr2.exp[0], KIND_IST, E);
+		inter_symbol *X_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
 		if (*E) return;
-		inter_symbol *Y_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), mr2.exp[1], KIND_IST, E);
+		inter_symbol *Y_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[1], KIND_IST, E);
 		if (*E) return;
 		operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, X_kind);
 		operands[1] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, Y_kind);
@@ -93,14 +93,14 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		idt = TextualInter::data_type(eloc, I"column", E);
 		if (*E) return;
 		constructor = COLUMN_ICON;
-		inter_symbol *conts_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), mr2.exp[0], KIND_IST, E);
+		inter_symbol *conts_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
 		if (*E) return;
 		operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"description of (%i+)")) {
 		idt = TextualInter::data_type(eloc, I"description", E);
 		if (*E) return;
 		constructor = DESCRIPTION_ICON;
-		inter_symbol *conts_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), mr2.exp[0], KIND_IST, E);
+		inter_symbol *conts_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
 		if (*E) return;
 		operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, conts_kind); arity = 1;
 	} else if ((Regexp::match(&mr2, ilp->mr.exp[1], L"(function) (%c+) -> (%i+)")) ||
@@ -117,7 +117,7 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		} else {
 			match_results mr3 = Regexp::create_mr();
 			while (Regexp::match(&mr3, from, L" *(%i+) *(%c*)")) {
-				inter_symbol *arg_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), mr3.exp[0], KIND_IST, E);
+				inter_symbol *arg_kind = TextualInter::find_symbol(IBM, eloc, mr3.exp[0], KIND_IST, E);
 				if (*E) return;
 				Str::copy(from, mr3.exp[1]);
 				if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
@@ -128,7 +128,7 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
 			operands[arity++] = 0;
 		} else {
-			inter_symbol *res_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), to, KIND_IST, E);
+			inter_symbol *res_kind = TextualInter::find_symbol(IBM, eloc, to, KIND_IST, E);
 			if (*E) return;
 			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }
 			operands[arity++] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, res_kind);
@@ -140,7 +140,7 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		text_stream *elements = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, elements, L" *(%i+) *(%c*)")) {
-			inter_symbol *arg_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), mr3.exp[0], KIND_IST, E);
+			inter_symbol *arg_kind = TextualInter::find_symbol(IBM, eloc, mr3.exp[0], KIND_IST, E);
 			if (*E) return;
 			Str::copy(elements, mr3.exp[1]);
 			if (arity >= MAX_ICON_OPERANDS) { *E = Inter::Errors::plain(I"too many args", eloc); return; }

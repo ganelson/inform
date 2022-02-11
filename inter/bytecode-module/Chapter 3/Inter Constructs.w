@@ -150,8 +150,9 @@ void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_st
 			inter_ti level_in_package = level;
 			if (tls->package) level_in_package -= tls->package_level;
 
-			if (((int) level_in_package < IC->min_level) ||
-					((int) level_in_package > IC->max_level)) {
+			if ((IC->construct_ID != PACKAGE_IST) &&
+					(((int) level_in_package < IC->min_level) ||
+						((int) level_in_package > IC->max_level))) {
 				text_stream *M = Str::new();
 				WRITE_TO(M, "construct '%S' used at level %d in its package, not %d to %d",
 					IC->construct_name, level_in_package, IC->min_level, IC->max_level);
@@ -162,6 +163,11 @@ void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_st
 				inner_tls.package = InterPackage::at_this_head(C);
 				inner_tls.package_level = level + 1;
 				InterConstruct::tree_lint_r(I, C, &inner_tls);
+				LOOP_OVER_SYMBOLS_TABLE(S, InterPackage::scope(inner_tls.package))
+					if ((InterSymbol::get_flag(S, SPECULATIVE_ISYMF)) &&
+						(InterSymbol::is_defined(S) == FALSE)) {
+						Inter::Errors::issue(Inter::Errors::quoted(I"symbol undefined in package", S->symbol_name, eloc));
+					}
 			} else {
 				InterConstruct::tree_lint_r(I, C, tls);
 			}
@@ -198,7 +204,7 @@ void InterConstruct::specify_syntax(inter_construct *IC, text_stream *syntax) {
 		} else if (Str::includes_wide_string_at(syntax, L"WHITESPACE", i)) {
 			i += 9;  WRITE_TO(regexp, " *");
 		} else if (Str::includes_wide_string_at(syntax, L"IDENTIFIER", i)) {
-			i += 9;  WRITE_TO(regexp, "(%%i+)");
+			i += 9;  WRITE_TO(regexp, "(%%C+)");
 		} else if (Str::includes_wide_string_at(syntax, L"_IDENTIFIER", i)) {
 			i += 10; WRITE_TO(regexp, "(_%%i+)");
 		} else if (Str::includes_wide_string_at(syntax, L".IDENTIFIER", i)) {
@@ -291,7 +297,8 @@ void InterConstruct::create_language(void) {
 	InterConstruct::define_invalid_construct();
 	Inter::Nop::define();
 	Inter::Comment::define();
-	Inter::Symbol::define();
+	Inter::Plug::define();
+	Inter::Socket::define();
 	Inter::Version::define();
 	Inter::Pragma::define();
 	Inter::Link::define();

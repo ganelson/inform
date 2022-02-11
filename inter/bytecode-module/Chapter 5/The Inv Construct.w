@@ -42,7 +42,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
 	inter_symbol *invoked_name = InterSymbolsTable::symbol_from_name(InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[0]);
-	if (invoked_name == NULL) invoked_name = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
+	if (invoked_name == NULL) invoked_name = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], 0, E);
 	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 
 	if ((InterSymbol::defined_elsewhere(invoked_name)) ||
@@ -111,13 +111,25 @@ void Inter::Inv::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 }
 
 void Inter::Inv::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	if (P->W.instruction[METHOD_INV_IFLD] == INVOKED_OPCODE) {
-		WRITE("inv %S", Inode::ID_to_text(P, P->W.instruction[INVOKEE_INV_IFLD]));
-	} else {
-		inter_symbol *invokee = Inter::Inv::invokee(P);
-		if (invokee) {
-			WRITE("inv %S", invokee->symbol_name);
-		} else { *E = Inode::error(P, I"cannot write inv", NULL); return; }
+	switch (P->W.instruction[METHOD_INV_IFLD]) {
+		case INVOKED_PRIMITIVE: {
+			inter_symbol *invokee = Inter::Inv::invokee(P);
+			if (invokee) {
+				WRITE("inv %S", invokee->symbol_name);
+			} else { *E = Inode::error(P, I"cannot write inv", NULL); return; }
+			break;
+		}
+		case INVOKED_OPCODE:
+			WRITE("inv %S", Inode::ID_to_text(P, P->W.instruction[INVOKEE_INV_IFLD]));
+			break;
+		case INVOKED_ROUTINE: {
+			inter_symbol *invokee = Inter::Inv::invokee(P);
+			if (invokee) {
+				WRITE("inv ");
+				TextualInter::write_symbol_from(OUT, P, INVOKEE_INV_IFLD);
+			} else { *E = Inode::error(P, I"cannot write inv", NULL); return; }
+			break;
+		}
 	}
 }
 

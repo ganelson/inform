@@ -37,6 +37,11 @@ void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
 	inter_symbol *label = InterSymbolsTable::symbol_from_name(locals, ilp->mr.exp[0]);
+	if (label == NULL) {
+		label = TextualInter::new_symbol(eloc, locals, ilp->mr.exp[0], E);
+		if (*E) return;
+		InterSymbol::make_label(label);
+	}
 	if (InterSymbol::is_label(label) == FALSE) { *E = Inter::Errors::plain(I"not a label", eloc); return; }
 
 	*E = Inter::Lab::new(IBM, label, (inter_ti) ilp->indent_level, eloc);

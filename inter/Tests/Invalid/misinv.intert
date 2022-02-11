@@ -2,6 +2,7 @@ packagetype _plain
 packagetype _code
 
 primitive !increment ref -> void
+primitive !jump lab -> void
 
 package main _plain
 	kind K_number int32
@@ -9,32 +10,25 @@ package main _plain
 	kind K_stuff struct K_number K_colour K_odour
 	kind K_colour____colour function K_colour -> K_colour
 	package R_101_B _code
-		symbol private local x
-		symbol public misc K_colour --> /main/K_colour
-		symbol public misc K_number --> /main/K_number
-		symbol public misc K_stuff --> /main/K_stuff
-		symbol public misc R_101 --> /main/R_101
-		symbol public misc R_102 --> /main/R_102
-		local x K_colour __argument
+		local x /main/K_colour __argument
 		code
-			val K_number 3
+			val /main/K_number 3
+			inv !jump
+				lab .spong
 			.spong
 			inv !increment
-			inv R_102
-				val K_number 12
-				ref K_stuff S_stuff
+			inv /main/R_102
+				val /main/K_number 12
+				ref /main/K_stuff S_stuff
 			inv !increment
-				val K_number 2
-			inv R_101
+				val /main/K_number 2
+			inv /main/R_101
 				inv !increment
-					ref K_number x
+					ref /main/K_number x
 	constant R_101 K_colour____colour = R_101_B
 	package R_101_A _code
-		symbol private local x
-		symbol public misc R_101 --> /main/R_101
-		symbol public misc K_colour --> /main/K_colour
-		local x K_colour __argument
+		local x /main/K_colour __argument
 		code
 			inv !increment
-			inv R_101
+			inv /main/R_101
 	constant R_102 K_colour____colour = R_101_A

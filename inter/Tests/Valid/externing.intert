@@ -2,12 +2,9 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	symbol public misc K_number
-	symbol public misc K_list_of_number
-	symbol public misc FROG
-	symbol public misc C_test
-	symbol public misc C_kermit
 	kind K_number int32
 	kind K_list_of_number list of K_number
-	constant C_kermit K_number = FROG
-	constant C_test K_list_of_number = { 2, FROG }
+	constant C_kermit K_number = /main/pond/FROG
+	constant C_test K_list_of_number = { 2, /main/pond/FROG }
+	package pond _plain
+		constant FROG /main/K_number = 12

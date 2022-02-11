@@ -170,8 +170,8 @@ void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *kind_s
 			WRITE("\"");
 			break;
 		case ALIAS_IVAL: {
-			inter_symbol *symb = InterSymbolsTable::symbol_from_ID(scope, V2);
-			if (symb) WRITE("%S", symb->symbol_name); else WRITE("<invalid-symbol>");
+			inter_symbol *symb = InterSymbolsTable::symbol_from_ID_not_following(scope, V2);
+			TextualInter::write_symbol(OUT, symb);
 			break;
 		}
 		case UNDEF_IVAL: WRITE("undef"); break;
@@ -199,7 +199,10 @@ void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *kind_s
 	}
 }
 
-inter_error_message *Inter::Types::read(text_stream *line, inter_error_location *eloc, inter_tree *I, inter_package *pack, inter_symbol *kind_symbol, text_stream *S, inter_ti *val1, inter_ti *val2, inter_symbols_table *scope) {
+inter_error_message *Inter::Types::read(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM, inter_symbol *kind_symbol, text_stream *S, inter_ti *val1, inter_ti *val2, inter_symbols_table *scope) {
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_package *pack = InterBookmark::package(IBM);
+
 	if (Str::eq(S, I"undef")) {
 		*val1 = UNDEF_IVAL; *val2 = 0; return NULL;
 	}
@@ -235,6 +238,26 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 	}
 	inter_data_type *idt = int32_idt;
 	if (kind_symbol) idt = Inter::Kind::data_type(kind_symbol);
+	if (Str::get_first_char(S) == '/') {
+		inter_symbol *symb = InterSymbolsTable::URL_to_symbol(I, S);
+		if (symb == NULL) {
+			TEMPORARY_TEXT(leaf)
+			LOOP_THROUGH_TEXT(pos, S) {
+				wchar_t c = Str::get(pos);
+				if (c == '/') Str::clear(leaf);
+				else PUT_TO(leaf, c);
+			}
+			if (Str::len(leaf) == 0) return Inter::Errors::quoted(I"URL ends in '/'", S, eloc);
+			symb = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), leaf);
+			if (!((symb) && (Wiring::is_wired_to_name(symb)) && (Str::eq(Wiring::wired_to_name(symb), S)))) {			
+				symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), leaf);
+				Wiring::wire_to_name(symb, S);
+			}
+			DISCARD_TEXT(leaf)
+		}
+		Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
+		return NULL;
+	}
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(scope, S);
 	if (symb) {
 		inter_tree_node *D = InterSymbol::definition(symb);
@@ -268,7 +291,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 	}
 	if (Inter::Types::is_enumerated(idt)) {
 		inter_error_message *E;
-		inter_symbol *symb = TextualInter::find_symbol(I, eloc, scope, S, INSTANCE_IST, &E);
+		inter_symbol *symb = TextualInter::find_symbol(IBM, eloc, S, INSTANCE_IST, &E);
 		if (E) return E;
 		inter_tree_node *D = InterSymbol::definition(symb);
 		if (D == NULL) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
@@ -279,28 +302,47 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 		return NULL;
 	}
 
-	int sign = 1, base = 10, from = 0;
-	if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
-	if (Str::prefix_eq(S, I"0b", 2)) { base = 2; from = 2; }
-	if (Str::prefix_eq(S, I"0x", 2)) { base = 16; from = 2; }
-	long long int N = 0;
-	LOOP_THROUGH_TEXT(pos, S) {
-		if (pos.index < from) continue;
-		int c = Str::get(pos), d = 0;
-		if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
-		else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
-		else if ((c >= '0') && (c <= '9')) d = c-'0';
-		else return Inter::Errors::quoted(I"bad digit", S, eloc);
-		if (d > base) return Inter::Errors::quoted(I"bad digit for this number base", S, eloc);
-		N = base*N + (long long int) d;
-		if (pos.index > 34) return Inter::Errors::quoted(I"value out of range", S, eloc);
-	}
-	N = sign*N;
-	if ((idt) && ((N < idt->min_value) || (N > idt->max_value)))
-		return Inter::Errors::quoted(I"value out of range", S, eloc);
+	wchar_t c = Str::get_first_char(S);
+	if ((c == '-') || (Characters::isdigit(c))) {
+		int sign = 1, base = 10, from = 0;
+		if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
+		if (Str::prefix_eq(S, I"0b", 2)) { base = 2; from = 2; }
+		if (Str::prefix_eq(S, I"0x", 2)) { base = 16; from = 2; }
+		long long int N = 0;
+		LOOP_THROUGH_TEXT(pos, S) {
+			if (pos.index < from) continue;
+			int c = Str::get(pos), d = 0;
+			if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
+			else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
+			else if ((c >= '0') && (c <= '9')) d = c-'0';
+			else return Inter::Errors::quoted(I"bad digit", S, eloc);
+			if (d > base) return Inter::Errors::quoted(I"bad digit for this number base", S, eloc);
+			N = base*N + (long long int) d;
+			if (pos.index > 34) return Inter::Errors::quoted(I"value out of range", S, eloc);
+		}
+		N = sign*N;
+		if ((idt) && ((N < idt->min_value) || (N > idt->max_value)))
+			return Inter::Errors::quoted(I"value out of range", S, eloc);
 
-	*val1 = LITERAL_IVAL; *val2 = (inter_ti) N;
-	return NULL;
+		*val1 = LITERAL_IVAL; *val2 = (inter_ti) N;
+		return NULL;
+	}
+
+	int ident = TRUE;
+	LOOP_THROUGH_TEXT(pos, S)
+		if ((Characters::isalpha(Str::get(pos)) == FALSE) &&
+			(Characters::isdigit(Str::get(pos)) == FALSE) &&
+			(Str::get(pos) != '_'))
+			ident = FALSE;
+
+	if (ident) {
+		inter_symbol *symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), S);
+		Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
+		InterSymbol::set_flag(symb, SPECULATIVE_ISYMF);
+		return NULL;
+	}
+
+	return Inter::Errors::quoted(I"unrecognised value", S, eloc);
 }
 
 int Inter::Types::read_int_in_I6_notation(text_stream *S, inter_ti *val1, inter_ti *val2) {

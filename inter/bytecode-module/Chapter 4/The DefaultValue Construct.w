@@ -29,12 +29,12 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 	*E = InterConstruct::check_level_in_package(IBM, DEFAULTVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *con_kind = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *con_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], KIND_IST, E);
 	if (*E) return;
 
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, InterBookmark::tree(IBM), InterBookmark::package(IBM), con_kind, ilp->mr.exp[1], &con_val1, &con_val2, InterBookmark::scope(IBM));
+	*E = Inter::Types::read(ilp->line, eloc, IBM, con_kind, ilp->mr.exp[1], &con_val1, &con_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::DefaultValue::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_kind), con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);

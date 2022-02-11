@@ -142,6 +142,7 @@ that for some transient flags:
 @d TRAVERSE_MARK_ISYMF  	0x00000020
 @d ATTRIBUTE_MARK_ISYMF 	0x00000040
 @d USED_MARK_ISYMF          0x00000080
+@d SPECULATIVE_ISYMF        0x00000100
 
 =
 int InterSymbol::get_flag(inter_symbol *S, int f) {
@@ -410,38 +411,6 @@ text_stream *InterSymbol::trans(inter_symbol *S) {
 	if (S == NULL) return NULL;
 	if (InterSymbol::get_translate(S)) return InterSymbol::get_translate(S);
 	return S->symbol_name;
-}
-
-@h Textual form.
-The following writes a valid line of textual Inter to declare the symbol,
-appearing at level |N| in the hierarchy.
-
-=
-void InterSymbol::write_declaration(OUTPUT_STREAM, inter_symbol *S, int N) {
-	for (int L=0; L<N; L++) WRITE("\t");
-	WRITE("symbol ");
-	if (InterSymbol::private(S)) WRITE("private");
-	else WRITE("public");
-	WRITE(" ");
-	switch (InterSymbol::get_type(S)) {
-		case LABEL_ISYMT:    WRITE("label"); break;
-		case MISC_ISYMT:     WRITE("misc"); break;
-		case PLUG_ISYMT:     WRITE("plug"); break;
-		case SOCKET_ISYMT:   WRITE("socket"); break;
-		case LOCAL_ISYMT:    WRITE("local"); break;
-		default: internal_error("unknown symbol type"); break;
-	}
-	WRITE(" %S", S->symbol_name);
-	if (InterSymbol::get_flag(S, MAKE_NAME_UNIQUE_ISYMF)) WRITE("*");
-	if (Wiring::is_wired_to_name(S)) {
-		WRITE(" --? %S", Wiring::wired_to_name(S));
-	}
-	text_stream *trans_name = InterSymbol::get_translate(S);
-	if (Str::len(trans_name) > 0) WRITE(" `%S`", trans_name);
-	if (Wiring::is_wired(S)) {
-		WRITE(" --> ");
-		InterSymbolsTable::write_symbol_URL(OUT, Wiring::wired_to(S));
-	}
 }
 
 @h Logging.

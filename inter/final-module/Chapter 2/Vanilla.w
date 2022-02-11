@@ -105,7 +105,6 @@ void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 		case INSTANCE_IST:      break;
 		case VARIABLE_IST:      break;
 		case PROPERTYVALUE_IST: break;
-		case SYMBOL_IST:        break;
 		case LOCAL_IST:         break;
 		case NOP_IST:           break;
 		case COMMENT_IST:       break;

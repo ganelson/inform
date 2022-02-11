@@ -3,30 +3,15 @@ packagetype _code
 packagetype _linkage
 
 package main _plain
-	symbol public misc K_number
-	symbol public misc C_alpha
-	symbol public misc connectors
-	symbol public misc sub
 	kind K_number int32
 	constant C_alpha K_number = 1
 	package connectors _linkage
-		symbol public plug faraway --? /main/template/timbuktu
-		symbol public plug distant --? /main/template/ultima/thule
-		symbol public socket gamma --> /main/sub/subsub/C_gamma
+		plug faraway ~~> "timbuktu"
+		plug distant ~~> "ultima_thule"
+		socket gamma ~~> /main/sub/subsub/C_gamma
 	package sub _plain
-		symbol public misc C_beta
-		symbol public misc C_gamma --> /main/sub/subsub/C_gamma
-		symbol public misc C_alpha --> /main/C_alpha
-		symbol public misc K_number --> /main/K_number
-		symbol public misc C_epsilon
-		symbol public misc subsub
-		constant C_beta K_number = C_alpha
+		constant C_beta /main/K_number = /main/C_alpha
 		package subsub _plain
-			symbol public misc C_gamma
-			symbol public misc C_delta
-			symbol public misc C_alpha --> /main/C_alpha
-			symbol public misc K_number --> /main/K_number
-			symbol public misc C_beta --> /main/sub/C_beta
-			constant C_gamma K_number = C_alpha
-			constant C_delta K_number = C_beta
-		constant C_epsilon K_number = C_gamma
+			constant C_gamma /main/K_number = /main/C_alpha
+			constant C_delta /main/K_number = /main/sub/C_beta
+		constant C_epsilon /main/K_number = /main/sub/subsub/C_gamma

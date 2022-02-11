@@ -36,7 +36,8 @@ Chapter 3: Their Instructions
 Chapter 4: Void Constructs
 	The Nop Construct
 	The Comment Construct
-	The Symbol Construct
+	The Plug Construct
+	The Socket Construct
 	The Version Construct
 	The Pragma Construct
 	The Link Construct

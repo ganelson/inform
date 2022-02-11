@@ -2,15 +2,7 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	symbol public misc K_number
-	symbol public misc x
-	symbol public misc y
-	symbol public misc sub
 	kind K_number int32
 	constant x K_number = 11
 	package sub _plain
-		symbol public misc y
-		symbol public misc K_number --> /main/K_number
-		symbol public misc `name
-		symbol public misc `purpose
-		constant y K_number = 17
+		constant y /main/K_number = 17

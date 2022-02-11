@@ -2,10 +2,6 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	symbol public misc K_table
-	symbol public misc C_egtable_col1
-	symbol public misc C_egtable_col2
-	symbol public misc C_egtable
 	kind K_table table
 	kind K_column_of_number column of K_number
 	kind K_column_of_colour column of K_colour

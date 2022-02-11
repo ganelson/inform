@@ -34,7 +34,7 @@ void InterPackage::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	*E = InterConstruct::check_level_in_package(IBM, PACKAGE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *ptype_name = TextualInter::find_symbol(InterBookmark::tree(IBM), eloc, InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[1], PACKAGETYPE_IST, E);
+	inter_symbol *ptype_name = TextualInter::find_global_symbol(IBM, eloc, ilp->mr.exp[1], PACKAGETYPE_IST, E);
 	if (*E) return;
 
 	inter_package *pack = NULL;
@@ -135,8 +135,16 @@ inter_error_message *InterPackage::write_symbols(OUTPUT_STREAM, inter_tree_node 
 		inter_symbols_table *locals = InterPackage::scope(pack);
 		int L = (int) (P->W.instruction[LEVEL_IFLD] + 1);
 		LOOP_OVER_SYMBOLS_TABLE(S, locals) {
-			InterSymbol::write_declaration(OUT, S, L);
-			WRITE("\n");
+			if (InterSymbol::is_plug(S)) {
+				Inter::Plug::write_declaration(OUT, S, L);
+				WRITE("\n");
+			}
+		}
+		LOOP_OVER_SYMBOLS_TABLE(S, locals) {
+			if (InterSymbol::is_socket(S)) {
+				Inter::Plug::write_declaration(OUT, S, L);
+				WRITE("\n");
+			}
 		}
 	}
 	return NULL;
@@ -211,7 +219,7 @@ void InterPackage::verify_children(inter_construct *IC, inter_tree_node *P, inte
 	inter_symbol *ptype_name = InterSymbolsTable::global_symbol_from_ID_at_node(P, PTYPE_PACKAGE_IFLD);
 	if (Str::eq(ptype_name->symbol_name, I"_code")) {
 		LOOP_THROUGH_INTER_CHILDREN(C, P) {
-			if ((C->W.instruction[0] != LABEL_IST) && (C->W.instruction[0] != LOCAL_IST) && (C->W.instruction[0] != SYMBOL_IST) && (C->W.instruction[0] != CODE_IST)) {
+			if ((C->W.instruction[0] != LABEL_IST) && (C->W.instruction[0] != LOCAL_IST) && (C->W.instruction[0] != CODE_IST) && (C->W.instruction[0] != COMMENT_IST)) {
 				*E = Inode::error(C, I"only a local or a symbol can be at the top level", NULL);
 				return;
 			}
