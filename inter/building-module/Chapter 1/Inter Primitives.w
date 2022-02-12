@@ -512,22 +512,39 @@ We then make various paranoid consistency checks.
 =
 void Primitives::declare_standard_set(inter_tree *I, inter_bookmark *IBM) {
 	Primitives::prepare_standard_set_array();
+	for (inter_ti i=0; i<standard_inform7_primitives_extent; i++)
+		Primitives::declare_one(I, IBM, &(standard_inform7_primitives[i]));
+}
+
+inter_symbol *Primitives::declare_one(inter_tree *I, inter_bookmark *IBM, inform7_primitive *prim) {
+	text_stream *name = prim->name;
+	text_stream *signature = prim->signature;
+	TEMPORARY_TEXT(prim_command)
+	WRITE_TO(prim_command, "primitive %S %S", name, signature);
+	Produce::guard(TextualInter::parse_single_line(prim_command, NULL, IBM));
+	inter_error_message *E = NULL;
+	inter_symbol *S = TextualInter::find_global_symbol(IBM, NULL, name, PRIMITIVE_IST, &E);
+	inter_ti bip = Primitives::to_BIP(I, S);
+	if (bip == 0) internal_error("missing bip");
+	if (bip != prim->BIP) internal_error("wrong BIP");
+	if (bip >= MAX_BIPS) internal_error("unsafely high bip");
+	I->site.spridata.primitives_by_BIP[bip] = S;
+	Produce::guard(E);
+	DISCARD_TEXT(prim_command)
+	return S;
+}
+
+@ Used when parsing textual Inter:
+
+=
+inter_symbol *Primitives::declare_one_named(inter_tree *I, inter_bookmark *IBM,
+	text_stream *name) {
+	Primitives::prepare_standard_set_array();
 	for (inter_ti i=0; i<standard_inform7_primitives_extent; i++) {
-		text_stream *prim = standard_inform7_primitives[i].name;
-		text_stream *signature = standard_inform7_primitives[i].signature;
-		TEMPORARY_TEXT(prim_command)
-		WRITE_TO(prim_command, "primitive %S %S", prim, signature);
-		Produce::guard(TextualInter::parse_single_line(prim_command, NULL, IBM));
-		inter_error_message *E = NULL;
-		inter_symbol *S = TextualInter::find_global_symbol(IBM, NULL, prim, PRIMITIVE_IST, &E);
-		inter_ti bip = Primitives::to_BIP(I, S);
-		if (bip == 0) internal_error("missing bip");
-		if (bip != standard_inform7_primitives[i].BIP) internal_error("wrong BIP");
-		if (bip >= MAX_BIPS) internal_error("unsafely high bip");
-		I->site.spridata.primitives_by_BIP[bip] = S;
-		Produce::guard(E);
-		DISCARD_TEXT(prim_command)
+		inform7_primitive *prim = &(standard_inform7_primitives[i]);
+		if (Str::eq(prim->name, name)) return Primitives::declare_one(I, IBM, prim);
 	}
+	return NULL;
 }
 
 @ Finally, then, we provide functions to convert between BIPs and local primitive

@@ -42,6 +42,14 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
 	inter_symbol *invoked_name = InterSymbolsTable::symbol_from_name(InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[0]);
+	if ((invoked_name == NULL) && (Str::get_first_char(ilp->mr.exp[0]) == '!')) {
+		inter_package *save_lbp = TextualInter::get_latest_block_package();
+		invoked_name = Primitives::declare_one_named(InterBookmark::tree(IBM), &(InterBookmark::tree(IBM)->site.strdata.package_types_bookmark), ilp->mr.exp[0]);
+		TextualInter::set_latest_block_package(save_lbp);
+		if (invoked_name == NULL) {
+			*E = Inter::Errors::quoted(I"'inv' on undeclared primitive", ilp->mr.exp[0], eloc); return;
+		}
+	}
 	if (invoked_name == NULL) invoked_name = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], 0, E);
 	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 

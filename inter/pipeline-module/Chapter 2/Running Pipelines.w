@@ -259,28 +259,28 @@ inter_symbol *RunningPipelines::get_symbol(pipeline_step *step, int id) {
 		switch (id) {
 			case code_ptype_RPSYM:
 				step->ephemera.cached_symbols[code_ptype_RPSYM] =
-				InterSymbolsTable::URL_to_symbol(I, I"/_code"); break;
+					LargeScale::package_type(I, I"_code"); break;
 			case plain_ptype_RPSYM:
 				step->ephemera.cached_symbols[plain_ptype_RPSYM] =
-				InterSymbolsTable::URL_to_symbol(I, I"/_plain"); break;
+					LargeScale::package_type(I, I"_plain"); break;
 			case submodule_ptype_RPSYM:
 				step->ephemera.cached_symbols[submodule_ptype_RPSYM] =
-				InterSymbolsTable::URL_to_symbol(I, I"/_submodule"); break;
+					LargeScale::package_type(I, I"_submodule"); break;
 			case function_ptype_RPSYM:
 				step->ephemera.cached_symbols[function_ptype_RPSYM] =
-				InterSymbolsTable::URL_to_symbol(I, I"/_function"); break;
+					LargeScale::package_type(I, I"_function"); break;
 			case action_ptype_RPSYM:
 				step->ephemera.cached_symbols[action_ptype_RPSYM] =
-				InterSymbolsTable::URL_to_symbol(I, I"/_action"); break;
+					LargeScale::package_type(I, I"_action"); break;
 			case command_ptype_RPSYM:
 				step->ephemera.cached_symbols[command_ptype_RPSYM] =
-				InterSymbolsTable::URL_to_symbol(I, I"/_command"); break;
+					LargeScale::package_type(I, I"_command"); break;
 			case property_ptype_RPSYM:
 				step->ephemera.cached_symbols[property_ptype_RPSYM] =
-				InterSymbolsTable::URL_to_symbol(I, I"/_property"); break;
+					LargeScale::package_type(I, I"_property"); break;
 			case to_phrase_ptype_RPSYM:
 				step->ephemera.cached_symbols[to_phrase_ptype_RPSYM] =
-				InterSymbolsTable::URL_to_symbol(I, I"/_to_phrase"); break;
+					LargeScale::package_type(I, I"_to_phrase"); break;
 
 			case unchecked_kind_RPSYM:
 				step->ephemera.cached_symbols[unchecked_kind_RPSYM] =

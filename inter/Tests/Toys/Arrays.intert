@@ -1,16 +1,3 @@
-packagetype _plain
-packagetype _code
-packagetype _linkage
-
-primitive !enableprinting void -> void
-primitive !print val -> void
-primitive !quit void -> void
-primitive !lookup val val -> val
-primitive !lookupbyte val val -> val
-primitive !printnumber val -> void
-primitive !printstring val -> void
-primitive !store ref val -> val
-
 package main _plain
 	kind K_unchecked unchecked
 	kind K_unchecked_function function K_unchecked -> K_unchecked
@@ -24,88 +11,81 @@ package main _plain
 	constant carmichaels K_list_of_values = { 561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841, 29341, 41041, 46657 } __table_array
 	constant mutable K_list_of_values = { 10, 20, 30 }
 	package Main_B _code
-		symbol public misc K_unchecked --> /main/K_unchecked
-		symbol public misc K_number --> /main/K_number
-		symbol public misc K_list_of_values --> /main/K_list_of_values
-		symbol public misc primes
-		symbol public misc twins
-		symbol public misc carmichaels
-		symbol public misc mutable
 		code
 			inv !enableprinting
 			inv !print
-				val K_unchecked "The third prime is: "
+				val /main/K_unchecked "The third prime is: "
 			inv !printnumber
 				inv !lookup
-					val K_list_of_values primes
-					val K_number 2
+					val /main/K_list_of_values /main/primes
+					val /main/K_number 2
 			inv !print
-				val K_unchecked ".\n"
+				val /main/K_unchecked ".\n"
 			inv !print
-				val K_unchecked "The fourth prime is: "
+				val /main/K_unchecked "The fourth prime is: "
 			inv !printstring
 				inv !lookup
-					val K_list_of_values primes
-					val K_number 3
+					val /main/K_list_of_values /main/primes
+					val /main/K_number 3
 			inv !print
-				val K_unchecked ".\n"
+				val /main/K_unchecked ".\n"
 			inv !print
-				val K_unchecked "The sixth prime is: "
+				val /main/K_unchecked "The sixth prime is: "
 			inv !printnumber
 				inv !lookup
-					val K_list_of_values primes
-					val K_number 5
+					val /main/K_list_of_values /main/primes
+					val /main/K_number 5
 			inv !print
-				val K_unchecked ".\n"
+				val /main/K_unchecked ".\n"
 			inv !print
-				val K_unchecked "The second pair of twins is: "
+				val /main/K_unchecked "The second pair of twins is: "
 			inv !printnumber
 				inv !lookupbyte
-					val K_list_of_values twins
-					val K_number 2
+					val /main/K_list_of_values /main/twins
+					val /main/K_number 2
 			inv !print
-				val K_unchecked ", "
+				val /main/K_unchecked ", "
 			inv !printnumber
 				inv !lookupbyte
-					val K_list_of_values twins
-					val K_number 3
+					val /main/K_list_of_values /main/twins
+					val /main/K_number 3
 			inv !print
-				val K_unchecked ".\n"
+				val /main/K_unchecked ".\n"
 			inv !print
-				val K_unchecked "I knaw of "
+				val /main/K_unchecked "I knaw of "
 			inv !printnumber
 				inv !lookup
-					val K_list_of_values carmichaels
-					val K_number 0
+					val /main/K_list_of_values /main/carmichaels
+					val /main/K_number 0
 			inv !print
-				val K_unchecked " Carmichael numbers.\n"
+				val /main/K_unchecked " Carmichael numbers.\n"
 			inv !store
 				reference
 					inv !lookup
-						val K_list_of_values mutable
-						val K_number 1
-				val K_number 666
+						val /main/K_list_of_values /main/mutable
+						val /main/K_number 1
+				val /main/K_number 666
 			inv !print
-				val K_unchecked "As mutated, middle entry is: "
+				val /main/K_unchecked "As mutated, middle entry is: "
 			inv !printnumber
 				inv !lookup
-					val K_list_of_values mutable
-					val K_number 1
+					val /main/K_list_of_values /main/mutable
+					val /main/K_number 1
 			inv !print
-				val K_unchecked ".\n"
+				val /main/K_unchecked ".\n"
 			inv !store
 				reference
 					inv !lookup
-						val K_list_of_values mutable
-						val K_number 1
-				val K_number 777
+						val /main/K_list_of_values /main/mutable
+						val /main/K_number 1
+				val /main/K_number 777
 			inv !print
-				val K_unchecked "As mutated, middle entry is: "
+				val /main/K_unchecked "As mutated, middle entry is: "
 			inv !printnumber
 				inv !lookup
-					val K_list_of_values mutable
-					val K_number 1
+					val /main/K_list_of_values /main/mutable
+					val /main/K_number 1
 			inv !print
-				val K_unchecked ".\n"
+				val /main/K_unchecked ".\n"
 			inv !quit
 	constant Main K_unchecked_function = Main_B

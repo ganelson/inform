@@ -1,12 +1,3 @@
-packagetype _plain
-packagetype _code
-packagetype _linkage
-packagetype _function
-packagetype _module
-packagetype _submodule
-packagetype _command
-packagetype _action
-
 package main _plain
 	package other _module
 		kind K_unchecked unchecked
@@ -17,22 +8,22 @@ package main _plain
 		constant VERB_DIRECTIVE_DIVIDER K_unchecked = 1
 		constant VERB_DIRECTIVE_RESULT K_unchecked = 2
 	package template _module
-		splat &"Constant DEBUG;\n"
-		splat &"Constant Badger = 12;\n"
-		splat &"[ Falsity; return false; ];\n"
-		splat &"[ Demo x y; return x+y; ];\n"
-		splat &"Array XA --> 2 4 56;\n"
-		splat &"Array XB--> (71 + 3);\n"
-		splat &"Array XC -> 17 91;\n"
-		splat &"Array XD-> 8 6;\n"
-		splat &"Array XE table 2 3 4 5;\n"
-		splat &"Array XF buffer 6 7 8 9;\n"
-		splat &"Constant Bodger $$10011101;\n"
-		splat &"Constant Budger $7fe2  ;\n"
-		splat &"Global nitwit = 2;\n"
-		splat &"Default Bodger = 77;\n"
-		splat &"Default Bydger = 777;\n"
-		splat &"#Stub Banana 2;\n"
-		splat &"#Stub Peach 0;\n"
-		splat &"Attribute marmorial;\n"
-		splat &"Property density;\n"
+		splat CONSTANT &"Constant DEBUG;\n"
+		splat CONSTANT &"Constant Badger = 12;\n"
+		splat ROUTINE &"[ Falsity; return false; ];\n"
+		splat ROUTINE &"[ Demo x y; return x+y; ];\n"
+		splat ARRAY &"Array XA --> 2 4 56;\n"
+		splat ARRAY &"Array XB--> (71 + 3);\n"
+		splat ARRAY &"Array XC -> 17 91;\n"
+		splat ARRAY &"Array XD-> 8 6;\n"
+		splat ARRAY &"Array XE table 2 3 4 5;\n"
+		splat ARRAY &"Array XF buffer 6 7 8 9;\n"
+		splat CONSTANT &"Constant Bodger $$10011101;\n"
+		splat CONSTANT &"Constant Budger $7fe2  ;\n"
+		splat GLOBAL &"Global nitwit = 2;\n"
+		splat DEFAULT &"Default Bodger = 77;\n"
+		splat DEFAULT &"Default Bydger = 777;\n"
+		splat STUB &"#Stub Banana 2;\n"
+		splat STUB &"#Stub Peach 0;\n"
+		splat ATTRIBUTE &"Attribute marmorial;\n"
+		splat PROPERTY &"Property density;\n"

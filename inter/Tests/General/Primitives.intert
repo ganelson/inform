@@ -1,36 +1,26 @@
-packagetype _plain
-packagetype _code
-packagetype _linkage
-
-primitive !return val -> void
-primitive !modulo val val -> val
-primitive !plus val val -> val
-primitive !minus val val -> val
-
 package main _plain
-	package resources _plain
-		kind K_unchecked unchecked
-		kind K_number int32
-		kind K_phrase_number____nothing function K_number -> void
-		package MyRoutine_B _code
-			symbol private local x
-			symbol private local y
-			symbol public misc K_number
-			local x K_number
-			local y K_number
-			code
-				inv !return
-					val K_number x
-				inv !return
-					inv !plus
-						val K_number x
-						val K_number y
-				inv !return
-					inv !minus
-						val K_number x
-						val K_number y
-				inv !return
-					inv !modulo
-						val K_number x
-						val K_number y
-		constant MyRoutine K_phrase_number____nothing = MyRoutine_B
+	kind K_unchecked unchecked
+	kind K_unchecked_function function K_unchecked -> K_unchecked
+	kind K_unchecked_list list of K_unchecked
+	kind K_number int32
+	kind K_int2 int2
+	kind K_phrase_number____nothing function K_number -> void
+	package MyRoutine_B _code
+		local x /main/K_number
+		local y /main/K_number
+		code
+			inv !return
+				val /main/K_number x
+			inv !return
+				inv !plus
+					val /main/K_number x
+					val /main/K_number y
+			inv !return
+				inv !minus
+					val /main/K_number x
+					val /main/K_number y
+			inv !return
+				inv !modulo
+					val /main/K_number x
+					val /main/K_number y
+	constant MyRoutine K_phrase_number____nothing = MyRoutine_B

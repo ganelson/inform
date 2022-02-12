@@ -1,3 +1,0 @@
-read <- *in
-parse-insertions
-generate text -> *out

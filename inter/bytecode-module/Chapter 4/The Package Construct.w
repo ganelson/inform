@@ -34,9 +34,23 @@ void InterPackage::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	*E = InterConstruct::check_level_in_package(IBM, PACKAGE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
+	inter_symbol *ptype_name = LargeScale::package_type(InterBookmark::tree(IBM), ilp->mr.exp[1]);
+
+	
+	
+/*	
+	InterSymbolsTable::symbol_from_name(InterTree::global_scope(), name);
+	if (symb == NULL) {
+		inter_bookmark *types = 
+		inter_symbol *ptype_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
+		if (*E) return;
+		*E = Inter::PackageType::new_packagetype(IBM, ptype_name, (inter_ti) ilp->indent_level, eloc);
+		if (*E) return;
+	}
+
 	inter_symbol *ptype_name = TextualInter::find_global_symbol(IBM, eloc, ilp->mr.exp[1], PACKAGETYPE_IST, E);
 	if (*E) return;
-
+*/
 	inter_package *pack = NULL;
 	*E = InterPackage::new_package_named(IBM, ilp->mr.exp[0], FALSE, ptype_name, (inter_ti) ilp->indent_level, eloc, &pack);
 	if (*E) return;

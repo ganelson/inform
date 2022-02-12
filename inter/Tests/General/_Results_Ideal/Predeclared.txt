@@ -1,5 +1,255 @@
 Constant Grammar__Version 2;
 Global debug_flag;
+Global or_tmp_var;
 Constant Banana = 2;
 Constant Peach = Banana;
-Array KindHierarchy --> (0) (0);
+#Ifdef TARGET_ZCODE;
+Global max_z_object;
+#Ifdef Z__Region;
+[ OC__Cl obj cla j a n objflag;
+    @jl obj 1 ?NotObj;
+    @jg obj max_z_object ?NotObj;
+    @inc objflag;
+    #Ifdef K1_room;
+    @je cla K1_room ?~NotRoom;
+    @test_attr obj mark_as_room ?rtrue;
+    @rfalse;
+    .NotRoom;
+    #Endif;
+    #Ifdef K2_thing;
+    @je cla K2_thing ?~NotObj;
+    @test_attr obj mark_as_thing ?rtrue;
+    @rfalse;
+    #Endif;
+    .NotObj;
+
+    @je cla Object Class ?ObjOrClass;
+    @je cla Routine String ?RoutOrStr;
+
+    @jin cla 1 ?~Mistake;
+
+    @jz objflag ?rfalse;
+    @get_prop_addr obj 2 -> a;
+    @jz a ?rfalse;
+    @get_prop_len a -> n;
+
+    @div n 2 -> n;
+    .Loop;
+    @loadw a j -> sp;
+    @je sp cla ?rtrue;
+    @inc j;
+    @jl j n ?Loop;
+    @rfalse;
+
+    .ObjOrClass;
+    @jz objflag ?rfalse;
+    @je cla Object ?JustObj;
+
+    ! So now cla is Class
+    @jg obj String ?~rtrue;
+    @jin obj Class ?rtrue;
+    @rfalse;
+
+    .JustObj;
+    ! So now cla is Object
+    @jg obj String ?~rfalse;
+    @jin obj Class ?rfalse;
+    @rtrue;
+
+    .RoutOrStr;
+    @jz objflag ?~rfalse;
+    @call_2s Z__Region obj -> sp;
+    @inc sp;
+    @je sp cla ?rtrue;
+    @rfalse;
+
+    .Mistake;
+    RT__Err("apply 'ofclass' for", cla, -1);
+    rfalse;
+];
+#Endif;
+#Endif;
+[ DebugAttribute a anames str;
+    print "<attribute ", a, ">";
+];
+#ifdef BASICINFORMKIT;
+[ _final_propertyvalue K o p t;
+    if (K == OBJECT_TY) {
+        if (metaclass(o) == Object) {
+            t = p-->0; p = p-->1;
+            if (t == 2) { if (o has p) rtrue; rfalse; }
+            if (o provides p) return o.p;
+        }
+        rfalse;
+    } else {
+        t = value_property_holders-->K;
+        return (t.(p-->1))-->(o+COL_HSIZE);
+    }
+];
+#endif;
+#ifdef BASICINFORMKIT;
+[ _final_propertyexists K o p holder;
+if (K == OBJECT_TY) {
+    if ((o) && (metaclass(o) == Object)) {
+        if ((p-->0 == 2) || (o provides p-->1)) {
+            rtrue;
+        } else {
+            rfalse;
+        }
+    } else {
+        rfalse;
+    }
+} else {
+    if ((o >= 1) && (o <= value_ranges-->K)) {
+        holder = value_property_holders-->K;
+        if ((holder) && (holder provides p-->1)) {
+            rtrue;
+        } else {
+            rfalse;
+        }
+    } else {
+        rfalse;
+    }
+}
+rfalse; ];
+#endif;
+#ifdef BASICINFORMKIT;
+[ _final_propertyarray K o p v t;
+    if (K ~= OBJECT_TY) return 0;
+    t = p-->0; p = p-->1;
+    if (t == 2) return 0;
+    return o.&p;
+];
+#endif;
+#ifdef BASICINFORMKIT;
+[ _final_propertylength K o p v t;
+    if (K ~= OBJECT_TY) return 0;
+    t = p-->0; p = p-->1;
+    if (t == 2) return 0;
+    return o.#p;
+];
+#endif;
+#ifdef BASICINFORMKIT;
+[ _final_store_property K o p v t;
+    if (K == OBJECT_TY) {
+        if (metaclass(o) == Object) {
+            t = p-->0; p = p-->1;
+            if (t == 2) {
+                if (v) give o p; else give o ~p;
+            } else if (o provides p) {
+                o.p = v;
+            }
+        }
+    } else {
+        ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) = v;
+    }
+];
+[ _final_preinc_property K o p t;
+    if (K == OBJECT_TY) {
+        if (metaclass(o) == Object) {
+            t = p-->0; p = p-->1;
+            if (t == 2) {
+                if (o has p) { give o ~p; rfalse; } give o p; rtrue;
+            } else if (o provides p) {
+                return ++(o.p);
+            }
+        }
+    } else {
+       return ++(((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE));
+    }
+    return 0;
+];
+[ _final_predec_property K o p t;
+    if (K == OBJECT_TY) {
+        if (metaclass(o) == Object) {
+            t = p-->0; p = p-->1;
+            if (t == 2) {
+                if (o has p) { give o ~p; rfalse; } give o p; rtrue;
+            } else if (o provides p) {
+                return --(o.p);
+            }
+        }
+    } else {
+       return --(((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE));
+    }
+    return 0;
+];
+[ _final_postinc_property K o p t;
+    if (K == OBJECT_TY) {
+        if (metaclass(o) == Object) {
+            t = p-->0; p = p-->1;
+            if (t == 2) {
+                if (o has p) { give o ~p; rtrue; } give o p; rfalse;
+            } else if (o provides p) {
+                return (o.p)++;
+            }
+        }
+    } else {
+       return (((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE))++;
+    }
+    return 0;
+];
+[ _final_postdec_property K o p t;
+    if (K == OBJECT_TY) {
+        if (metaclass(o) == Object) {
+            t = p-->0; p = p-->1;
+            if (t == 2) {
+                if (o has p) { give o ~p; rtrue; } give o p; rfalse;
+            } else if (o provides p) {
+                return (o.p)--;
+            }
+        }
+    } else {
+       return (((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE))--;
+    }
+    return 0;
+];
+[ _final_setbit_property K o p v t;
+    if (K == OBJECT_TY) {
+        if (metaclass(o) == Object) {
+            t = p-->0; p = p-->1;
+            if (t == 2) {
+                if (v & 1) give o p;
+            } else if (o provides p) {
+                o.p = o.p | v;
+            }
+        }
+    } else {
+        ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) =
+            ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) | v;
+    }
+];
+[ _final_clearbit_property K o p v t;
+    if (K == OBJECT_TY) {
+        if (metaclass(o) == Object) {
+            t = p-->0; p = p-->1;
+            if (t == 2) {
+                if (v & 1) give o ~p;
+            } else if (o provides p) {
+                o.p = o.p & ~v;
+            }
+        }
+    } else {
+        ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) =
+            ((value_property_holders-->K).(p-->1))-->(o+COL_HSIZE) & ~v;
+    }
+];
+#endif;
+#ifdef BASICINFORMKIT;
+[ _final_message0 o p q x a rv;
+    if (p-->0 == 2) return 0;
+    q = p-->1; return o.q();
+];
+[ _final_message1 o p v1 q x a rv;
+    if (p-->0 == 2) return 0;
+    q = p-->1; return o.q(v1);
+];
+[ _final_message2 o p v1 v2 q x a rv;
+    if (p-->0 == 2) return 0;
+    q = p-->1; return o.q(v1, v2);
+];
+[ _final_message3 o p v1 v2 v3 q x a rv;
+    if (p-->0 == 2) return 0;
+    q = p-->1; return o.q(v1, v2, v3);
+];
+#endif;

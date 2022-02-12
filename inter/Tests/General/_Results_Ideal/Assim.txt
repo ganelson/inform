@@ -1,182 +1,85 @@
-packagetype _plain
-packagetype _code
-packagetype _linkage
-packagetype _function
-packagetype _module
-packagetype _submodule
-packagetype _command
-packagetype _action
-
 primitive !return val -> void
 primitive !plus val val -> val
 
+packagetype _plain
+packagetype _module
+packagetype _submodule
+packagetype _function
+packagetype _code
+packagetype _linkage
+packagetype _property
 package main _plain
-	package other _module
-		symbol public misc K_unchecked
-		symbol public misc K_unchecked_function
-		symbol public misc K_typeless_int
-		symbol public misc K_list_of_values
-		symbol public misc K_truth_state
-		symbol public misc VERB_DIRECTIVE_DIVIDER
-		symbol public misc VERB_DIRECTIVE_RESULT
-		kind K_unchecked unchecked
-		kind K_unchecked_function function K_unchecked -> K_unchecked
-		kind K_typeless_int int32
-		kind K_list_of_values list of K_unchecked
-		kind K_truth_state int2
-		constant VERB_DIRECTIVE_DIVIDER K_unchecked = 1
-		constant VERB_DIRECTIVE_RESULT K_unchecked = 2
+	kind K_unchecked unchecked
+	kind K_unchecked_function function K_unchecked -> K_unchecked
+	kind K_unchecked_list list of K_unchecked
+	kind K_int32 int32
+	kind K_int2 int2
+	constant VERB_DIRECTIVE_DIVIDER K_unchecked = 1
+	constant VERB_DIRECTIVE_RESULT K_unchecked = 2
 	package template _module
 		package constants _submodule
 			package DEBUG_con _plain
-				symbol public misc DEBUG
-				symbol external misc K_unchecked --> /main/other/K_unchecked
-				constant DEBUG K_unchecked = 0 __assimilated=1
+				constant DEBUG /main/K_unchecked = 0 __assimilated
 			package Badger_con _plain
-				symbol public misc Badger
-				symbol external misc K_unchecked --> /main/other/K_unchecked
-				constant Badger K_unchecked = 12 __assimilated=1
+				constant Badger /main/K_unchecked = 12 __assimilated
 			package Bodger_con _plain
-				symbol public misc Bodger
-				symbol external misc K_unchecked --> /main/other/K_unchecked
-				constant Bodger K_unchecked = 157 __assimilated=1
+				constant Bodger /main/K_unchecked = 157 __assimilated
 			package Budger_con _plain
-				symbol public misc Budger
-				symbol external misc K_unchecked --> /main/other/K_unchecked
-				constant Budger K_unchecked = 32738 __assimilated=1
+				constant Budger /main/K_unchecked = 32738 __assimilated
 			package Bydger_con _plain
-				symbol public misc Bydger
-				symbol external misc K_unchecked --> /main/other/K_unchecked
-				constant Bydger K_unchecked = 777 __assimilated=1
-		package functions _submodule
-			package Falsity_fn _function
-				symbol public misc Falsity
-				symbol external misc K_unchecked_function --> /main/other/K_unchecked_function
-				package Falsity_B _code
-					symbol external misc K_unchecked --> /main/other/K_unchecked
-					code
-						inv !return
-							val K_unchecked 0
-				constant Falsity K_unchecked_function = Falsity_B __assimilated=1
-			package Demo_fn _function
-				symbol public misc Demo
-				symbol external misc K_unchecked_function --> /main/other/K_unchecked_function
-				package Demo_B _code
-					symbol private misc x
-					symbol external misc K_unchecked --> /main/other/K_unchecked
-					symbol private misc y
-					local x K_unchecked
-					local y K_unchecked
-					code
-						inv !return
-							inv !plus
-								val K_unchecked x
-								val K_unchecked y
-				constant Demo K_unchecked_function = Demo_B __assimilated=1
-			package Banana_fn _function
-				symbol public misc Banana
-				symbol external misc K_unchecked_function --> /main/other/K_unchecked_function
-				package Banana_B _code
-					symbol private misc x1
-					symbol external misc K_unchecked --> /main/other/K_unchecked
-					symbol private misc x2
-					local x1 K_unchecked
-					local x2 K_unchecked
-					code
-						inv !return
-							val K_unchecked 0
-				constant Banana K_unchecked_function = Banana_B __assimilated=1
-			package Peach_fn _function
-				symbol public misc Peach
-				symbol external misc K_unchecked_function --> /main/other/K_unchecked_function
-				package Peach_B _code
-					symbol external misc K_unchecked --> /main/other/K_unchecked
-					code
-						inv !return
-							val K_unchecked 0
-				constant Peach K_unchecked_function = Peach_B __assimilated=1
+				constant Bydger /main/K_unchecked = 777 __assimilated
+		package Falsity_fn _function
+			package Falsity_B _code
+				code
+					inv !return
+						val /main/K_unchecked 0
+			constant Falsity /main/K_unchecked_function = Falsity_B __assimilated
+		package Demo_fn _function
+			package Demo_B _code
+				local x /main/K_unchecked
+				local y /main/K_unchecked
+				code
+					inv !return
+						inv !plus
+							val /main/K_unchecked x
+							val /main/K_unchecked y
+			constant Demo /main/K_unchecked_function = Demo_B __assimilated
 		package arrays _submodule
 			package XA_arr _plain
-				symbol public misc XA
-				symbol external misc K_list_of_values --> /main/other/K_list_of_values
-				constant XA K_list_of_values = { 2, 4, 56 } __assimilated=1
+				constant XA /main/K_unchecked_list = { 2, 4, 56 } __assimilated
 			package XB_arr _plain
-				symbol public misc XB
-				symbol public misc Computed_Constant_Value_0*
-				symbol external misc K_unchecked --> /main/other/K_unchecked
-				symbol public misc Computed_Constant_Value_1*
-				symbol public misc Computed_Constant_Value_2*
-				symbol external misc K_list_of_values --> /main/other/K_list_of_values
-				constant Computed_Constant_Value_0 K_unchecked = 71
-				constant Computed_Constant_Value_1 K_unchecked = 3
-				constant Computed_Constant_Value_2 K_unchecked = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 }
-				constant XB K_list_of_values = { Computed_Constant_Value_2 } __assimilated=1
+				constant Computed_Constant_Value_0 /main/K_unchecked = 71
+				constant Computed_Constant_Value_1 /main/K_unchecked = 3
+				constant Computed_Constant_Value_2 /main/K_unchecked = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 }
+				constant XB /main/K_unchecked_list = { Computed_Constant_Value_2 } __assimilated
 			package XC_arr _plain
-				symbol public misc XC
-				symbol external misc K_list_of_values --> /main/other/K_list_of_values
-				constant XC K_list_of_values = { 17, 91 } __assimilated=1 __byte_array=1
+				constant XC /main/K_unchecked_list = { 17, 91 } __assimilated __byte_array
 			package XD_arr _plain
-				symbol public misc XD
-				symbol external misc K_list_of_values --> /main/other/K_list_of_values
-				constant XD K_list_of_values = { 8, 6 } __assimilated=1 __byte_array=1
+				constant XD /main/K_unchecked_list = { 8, 6 } __assimilated __byte_array
 			package XE_arr _plain
-				symbol public misc XE
-				symbol external misc K_list_of_values --> /main/other/K_list_of_values
-				constant XE K_list_of_values = { 2, 3, 4, 5 } __assimilated=1 __table_array=1
+				constant XE /main/K_unchecked_list = { 2, 3, 4, 5 } __assimilated __table_array
 			package XF_arr _plain
-				symbol public misc XF
-				symbol external misc K_list_of_values --> /main/other/K_list_of_values
-				constant XF K_list_of_values = { 6, 7, 8, 9 } __assimilated=1 __buffer_array=1
+				constant XF /main/K_unchecked_list = { 6, 7, 8, 9 } __assimilated __buffer_array
 		package variables _submodule
 			package nitwit_var _plain
-				symbol public misc nitwit
-				symbol external misc K_unchecked --> /main/other/K_unchecked
-				variable nitwit K_unchecked = 2 __assimilated=1
-		package properties _submodule
-			package marmorial_prop _plain
-				symbol public misc marmorial `marmorial`
-				symbol public misc property_id*
-				symbol external misc K_unchecked --> /main/other/K_unchecked
-				symbol external misc K_truth_state --> /main/other/K_truth_state
-				constant property_id K_unchecked = 0
-				property marmorial K_truth_state __assimilated=1 __attribute=1 __either_or=1
-			package density_prop _plain
-				symbol public misc density
-				symbol public misc property_id*
-				symbol external misc K_unchecked --> /main/other/K_unchecked
-				constant property_id K_unchecked = 0
-				property density K_unchecked __assimilated=1
-	package connectors _linkage
-		symbol plug misc plug_00001 --? VERB_DIRECTIVE_REVERSE
-		symbol plug misc plug_00002 --? VERB_DIRECTIVE_SLASH
-		symbol plug misc plug_00003 --? VERB_DIRECTIVE_SPECIAL
-		symbol plug misc plug_00004 --? VERB_DIRECTIVE_NUMBER
-		symbol plug misc plug_00005 --? VERB_DIRECTIVE_NOUN
-		symbol plug misc plug_00006 --? VERB_DIRECTIVE_MULTI
-		symbol plug misc plug_00007 --? VERB_DIRECTIVE_MULTIINSIDE
-		symbol plug misc plug_00008 --? VERB_DIRECTIVE_MULTIHELD
-		symbol plug misc plug_00009 --? VERB_DIRECTIVE_HELD
-		symbol plug misc plug_00010 --? VERB_DIRECTIVE_CREATURE
-		symbol plug misc plug_00011 --? VERB_DIRECTIVE_TOPIC
-		symbol plug misc plug_00012 --? VERB_DIRECTIVE_MULTIEXCEPT
-		symbol socket misc self --> /main_1/veneer/self
-		symbol socket misc Falsity --> /main/template/functions/Falsity_fn/Falsity
-		symbol socket misc Demo --> /main/template/functions/Demo_fn/Demo
-		symbol socket misc Banana --> /main/template/functions/Banana_fn/Banana
-		symbol socket misc Peach --> /main/template/functions/Peach_fn/Peach
-		symbol socket misc marmorial --> /main/template/properties/marmorial_prop/marmorial
-		symbol socket misc property_id --> /main/template/properties/marmorial_prop/property_id
-		symbol socket misc P_marmorial --> /main/template/properties/marmorial_prop/marmorial
-		symbol socket misc density --> /main/template/properties/density_prop/density
-		symbol socket misc DEBUG --> /main/template/constants/DEBUG_con/DEBUG
-		symbol socket misc Badger --> /main/template/constants/Badger_con/Badger
-		symbol socket misc XA --> /main/template/arrays/XA_arr/XA
-		symbol socket misc XB --> /main/template/arrays/XB_arr/XB
-		symbol socket misc XC --> /main/template/arrays/XC_arr/XC
-		symbol socket misc XD --> /main/template/arrays/XD_arr/XD
-		symbol socket misc XE --> /main/template/arrays/XE_arr/XE
-		symbol socket misc XF --> /main/template/arrays/XF_arr/XF
-		symbol socket misc Bodger --> /main/template/constants/Bodger_con/Bodger
-		symbol socket misc Budger --> /main/template/constants/Budger_con/Budger
-		symbol socket misc Bydger --> /main/template/constants/Bydger_con/Bydger
-		symbol socket misc nitwit --> /main/template/variables/nitwit_var/nitwit
+				variable nitwit K_unchecked = 2 __assimilated
+		package Banana_fn _function
+			package Banana_B _code
+				local x1 /main/K_unchecked
+				local x2 /main/K_unchecked
+				code
+					inv !return
+						val /main/K_unchecked 0
+			constant Banana /main/K_unchecked_function = Banana_B __assimilated
+		package Peach_fn _function
+			package Peach_B _code
+				code
+					inv !return
+						val /main/K_unchecked 0
+			constant Peach /main/K_unchecked_function = Peach_B __assimilated
+		package marmorial_prop _property
+			constant property_id /main/K_unchecked = 0
+			property marmorial K_int2 __assimilated __either_or
+		package density_prop _property
+			constant property_id /main/K_unchecked = 0
+			property density K_unchecked __assimilated

@@ -2,7 +2,7 @@ packagetype _plain
 packagetype _code
 
 primitive !if val code -> void
-primitive !goto lab -> void
+primitive !jump lab -> void
 
 package main _plain
 	kind K_number int32
@@ -14,6 +14,6 @@ package main _plain
 			inv !if
 				val /main/K_number 1
 				code
-					inv !goto
+					inv !jump
 						lab .begin
 	constant R_101 K_func = R_101_B

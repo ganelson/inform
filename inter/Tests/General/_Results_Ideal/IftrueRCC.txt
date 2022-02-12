@@ -1,11 +1,5 @@
 packagetype _plain
-packagetype _code
-
 package main _plain
-	symbol public misc K_number
-	symbol public misc MAGIC
-	symbol public misc WIZARD
-	symbol public misc MUGGLE
 	kind K_number int32
 	constant MAGIC K_number = 16339
 	constant WIZARD K_number = 5

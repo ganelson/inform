@@ -51,10 +51,10 @@ void I6TargetCode::declare_function(code_generator *gtr, code_generation *gen,
 	text_stream *var_name;
 	LOOP_OVER_LINKED_LIST(var_name, text_stream, vf->locals)
 		WRITE(" %S", var_name);
-	WRITE(";");
+	WRITE(";\n"); INDENT;
 
 @<Close the function@> =
-	WRITE("];\n");
+	OUTDENT; WRITE("];\n");
 
 @ A few functions will be sneakily rewritten in passing. This is done to handle
 specific features of the Z or Glulx virtual machines which do not meaningfully
