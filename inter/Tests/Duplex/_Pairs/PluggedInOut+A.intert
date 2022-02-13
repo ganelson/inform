@@ -6,37 +6,23 @@ primitive !if val code -> void
 primitive !goto lab -> void
 
 package main _plain
-	symbol public misc K_number
-	symbol public misc K_func
-	symbol public misc awkward
-	symbol public misc troublesome
-	symbol public misc secret --> /main/my_fn/secret
 	kind K_number int32
 	kind K_func function K_number -> K_number
 	package my_fn _plain
-		symbol public misc R_101
-		symbol public misc secret
-		symbol public misc K_func --> /main/K_func
-		symbol public misc K_number --> /main/K_number
-		symbol public misc plug00002 --> /main/connectors/plug00002
 		package R_101_B _code
-			symbol private local x
-			symbol private label .begin
-			symbol public misc K_number --> /main/K_number
-			symbol public misc troublesome --> /main/troublesome
-			local x K_number __argument
+			local x /main/K_number __argument
 			code
 				.begin
 				inv !if
-					val K_number troublesome
+					val /main/K_number /main/troublesome
 					code
 						inv !goto
 							lab .begin
-		constant R_101 K_func = R_101_B
-		constant secret K_number = 7
-		constant tricksy K_number = plug00002
-	constant awkward K_number = secret
+		constant R_101 /main/K_func = R_101_B
+		constant secret /main/K_number = 7
+		constant tricksy /main/K_number = /main/connectors/plug00002
+	constant awkward K_number = /main/my_fn/secret
 	constant troublesome K_number = 12
 	package connectors _linkage
-		symbol public socket secret --> /main/my_fn/secret
-		symbol public plug plug00002 --? C_majors
+		socket secret ~~> /main/my_fn/secret
+		plug plug00002 ~~> "C_majors"

@@ -6,16 +6,11 @@ primitive !if val code -> void
 primitive !goto lab -> void
 
 package main _plain
-	symbol public misc K_number
-	symbol public misc K_func
-	symbol public misc awkward
-	symbol public misc troublesome
-	symbol external misc secret --> /main/my_fn/secret
 	kind K_number int32
 	kind K_func function K_number -> K_number
-	# Exported my_fn here
-	constant awkward K_number = secret
+	#Transmigration removed my_fn here
+	constant awkward K_number = /main/my_fn/secret
 	constant troublesome K_number = 12
 	package connectors _linkage
-		symbol socket misc secret --> /main/my_fn/secret
-		symbol plug misc plug00002 --? C_majors
+		plug plug00002 ~~> "C_majors"
+		socket secret ~~> /main/my_fn/secret
