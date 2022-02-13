@@ -39,7 +39,7 @@ void Inter::Assembly::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = InterConstruct::check_level_in_package(IBM, ASSEMBLY_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = TextualInter::get_latest_block_package();
+	inter_package *routine = InterBookmark::package(IBM);
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'assembly' used outside function", eloc); return; }
 
 	inter_ti which = 0;

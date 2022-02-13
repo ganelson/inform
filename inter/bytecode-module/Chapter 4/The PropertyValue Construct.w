@@ -34,7 +34,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 
 	inter_symbol *prop_name = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
-	inter_symbol *owner_name = TextualInter::find_KOI(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
+	inter_symbol *owner_name = Inter::PropertyValue::parse_owner(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
 	inter_ti plist_ID;
@@ -58,6 +58,17 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 
 	*E = Inter::PropertyValue::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_name),
 		con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
+}
+
+inter_symbol *Inter::PropertyValue::parse_owner(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
+	*E = NULL;
+	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
+	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
+	inter_tree_node *D = InterSymbol::definition(symb);
+	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
+	if ((D->W.instruction[ID_IFLD] != KIND_IST) &&
+		(D->W.instruction[ID_IFLD] != INSTANCE_IST)) { *E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL; }
+	return symb;
 }
 
 int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, inter_symbol *owner, inter_symbol *prop_name) {
@@ -111,8 +122,8 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 
 		if (Inter::PropertyValue::permitted(P, owner, owner_name, prop_name) == FALSE) {
 			text_stream *err = Str::new();
-			WRITE_TO(err, "no permission for '%S' have this property", owner_name->symbol_name);
-			*E = Inode::error(P, err, prop_name->symbol_name); return;
+			WRITE_TO(err, "no permission for '%S' have this property", InterSymbol::identifier(owner_name));
+			*E = Inode::error(P, err, InterSymbol::identifier(prop_name)); return;
 		}
 
 		inter_ti plist_ID;
@@ -137,7 +148,7 @@ void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_
 	inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID_at_node(P, OWNER_PVAL_IFLD);
 	if ((prop_name) && (owner_name)) {
 		inter_symbol *val_kind = Inter::Property::kind_of(InterSymbolsTable::symbol_from_ID_at_node(P, PROP_PVAL_IFLD));
-		WRITE("propertyvalue %S %S = ", prop_name->symbol_name, owner_name->symbol_name);
+		WRITE("propertyvalue %S %S = ", InterSymbol::identifier(prop_name), InterSymbol::identifier(owner_name));
 		Inter::Types::write(OUT, P, val_kind, P->W.instruction[DVAL1_PVAL_IFLD], P->W.instruction[DVAL2_PVAL_IFLD], InterPackage::scope_of(P), FALSE);
 	} else { *E = Inode::error(P, I"cannot write propertyvalue", NULL); return; }
 }

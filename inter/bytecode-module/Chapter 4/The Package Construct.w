@@ -36,21 +36,6 @@ void InterPackage::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 
 	inter_symbol *ptype_name = LargeScale::package_type(InterBookmark::tree(IBM), ilp->mr.exp[1]);
 
-	
-	
-/*	
-	InterSymbolsTable::symbol_from_name(InterTree::global_scope(), name);
-	if (symb == NULL) {
-		inter_bookmark *types = 
-		inter_symbol *ptype_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
-		if (*E) return;
-		*E = Inter::PackageType::new_packagetype(IBM, ptype_name, (inter_ti) ilp->indent_level, eloc);
-		if (*E) return;
-	}
-
-	inter_symbol *ptype_name = TextualInter::find_global_symbol(IBM, eloc, ilp->mr.exp[1], PACKAGETYPE_IST, E);
-	if (*E) return;
-*/
 	inter_package *pack = NULL;
 	*E = InterPackage::new_package_named(IBM, ilp->mr.exp[0], FALSE, ptype_name, (inter_ti) ilp->indent_level, eloc, &pack);
 	if (*E) return;
@@ -103,9 +88,9 @@ inter_error_message *InterPackage::new_package(inter_bookmark *IBM, text_stream 
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 
 	LargeScale::note_package_name(InterPackage::tree(InterBookmark::package(IBM)), pack, name_text);
-	if (Str::eq(ptype_name->symbol_name, I"_code"))
+	if (Str::eq(InterSymbol::identifier(ptype_name), I"_code"))
 		InterPackage::mark_as_a_function_body(pack);
-	if (Str::eq(ptype_name->symbol_name, I"_linkage"))
+	if (Str::eq(InterSymbol::identifier(ptype_name), I"_linkage"))
 		InterPackage::mark_as_a_linkage_package(pack);
 
 	if (created) *created = pack;
@@ -129,14 +114,13 @@ void InterPackage::verify(inter_construct *IC, inter_tree_node *P, inter_package
 	else internal_error("uh?");
 	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
-	TextualInter::set_latest_block_package(pack);
 }
 
 void InterPackage::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = InterPackage::at_this_head(P);
 	inter_symbol *ptype_name = InterSymbolsTable::global_symbol_from_ID_at_node(P, PTYPE_PACKAGE_IFLD);
 	if ((pack) && (ptype_name)) {
-		WRITE("package %S %S", InterPackage::name(pack), ptype_name->symbol_name);
+		WRITE("package %S %S", InterPackage::name(pack), InterSymbol::identifier(ptype_name));
 	} else {
 		if (pack == NULL) { *E = Inode::error(P, I"package can't be written - no name", NULL); return; }
 		*E = Inode::error(P, I"package can't be written - no type", NULL); return;
@@ -231,7 +215,7 @@ inter_symbols_table *InterPackage::local_symbols(inter_symbol *package_name) {
 
 void InterPackage::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *ptype_name = InterSymbolsTable::global_symbol_from_ID_at_node(P, PTYPE_PACKAGE_IFLD);
-	if (Str::eq(ptype_name->symbol_name, I"_code")) {
+	if (Str::eq(InterSymbol::identifier(ptype_name), I"_code")) {
 		LOOP_THROUGH_INTER_CHILDREN(C, P) {
 			if ((C->W.instruction[0] != LABEL_IST) && (C->W.instruction[0] != LOCAL_IST) && (C->W.instruction[0] != CODE_IST) && (C->W.instruction[0] != COMMENT_IST)) {
 				*E = Inode::error(C, I"only a local or a symbol can be at the top level", NULL);

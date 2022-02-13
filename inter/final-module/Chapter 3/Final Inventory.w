@@ -27,9 +27,9 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	text_stream *OUT = (text_stream *) state;
 	inter_package *from = InterPackage::at_this_head(P);
 	inter_symbol *ptype = InterPackage::type(from);
-	if (Str::eq(ptype->symbol_name, I"_module")) {
+	if (Str::eq(InterSymbol::identifier(ptype), I"_module")) {
 		@<Produce a heading for a module package@>;
-	} else if (Str::eq(ptype->symbol_name, I"_submodule")) {
+	} else if (Str::eq(InterSymbol::identifier(ptype), I"_submodule")) {
 		int contents = 0;
 		LOOP_THROUGH_INTER_CHILDREN(C, P) contents++;
 		if (contents > 0) {
@@ -62,7 +62,7 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	if (InterPackage::get_flag(R, MARK_PACKAGE_FLAG)) continue;
 	inter_symbol *ptype = InterPackage::type(R);
 	OUTDENT;
-	WRITE("  %S ", ptype->symbol_name);
+	WRITE("  %S ", InterSymbol::identifier(ptype));
 	int N = 0;
 	LOOP_THROUGH_INTER_CHILDREN(D, P) {
 		if (D->W.instruction[ID_IFLD] == PACKAGE_IST) {
@@ -72,7 +72,7 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	}
 	WRITE("x %d: ", N);
 	INDENT;
-	int pos = Str::len(ptype->symbol_name) + 7;
+	int pos = Str::len(InterSymbol::identifier(ptype)) + 7;
 	int first = TRUE;
 	LOOP_THROUGH_INTER_CHILDREN(D, P) {
 		if (D->W.instruction[ID_IFLD] == PACKAGE_IST) {

@@ -224,18 +224,18 @@ its nouns exchanged.
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		inter_symbol *S = VanillaIF::get_symbol(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
 		if (S) {
-			if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
+			if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_DIVIDER")) {
 				if (lines >= MAX_LINES_IN_VANILLA_GRAMMAR)
 					internal_error("too many lines in grammar");
 				line_reverse[lines] = FALSE;
 				line_actions[lines] = NULL;
 				lines++;
 			}
-			if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_RESULT")) {
+			if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_RESULT")) {
 				line_actions[lines-1] =
 					VanillaIF::get_symbol(gen, P, P->W.instruction[i+2], P->W.instruction[i+3]);
 			}
-			if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_REVERSE"))
+			if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_REVERSE"))
 				line_reverse[lines-1] = TRUE;
 		}
 	}
@@ -265,7 +265,7 @@ its nouns exchanged.
 		dw->grammar_table_offset = address;
 	} else {
 		inter_symbol *S = VanillaIF::get_symbol(gen, P, val1, val2);
-		if ((S) && (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_DIVIDER"))) {
+		if ((S) && (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_DIVIDER"))) {
 			reading_command_verbs = FALSE; i -= 2;
 		}
 	}
@@ -288,26 +288,26 @@ like |'fish' / 'fowl' / 'chalk'|, where |'fish'| has a slash after but not befor
 @<Add the slash before and slash after bits to token_metadata@> =
 	if (i > DATA_CONST_IFLD) {
 		inter_symbol *S_before = VanillaIF::get_symbol(gen, P, P->W.instruction[i-2], P->W.instruction[i-1]);
-		if ((S_before) && (Str::eq(S_before->symbol_name, I"VERB_DIRECTIVE_SLASH")))
+		if ((S_before) && (Str::eq(InterSymbol::identifier(S_before), I"VERB_DIRECTIVE_SLASH")))
 			token_metadata += 0x10;
 	}
 	if (i+2 < P->W.extent) {
 		inter_symbol *S_after = VanillaIF::get_symbol(gen, P, P->W.instruction[i+2], P->W.instruction[i+3]);
-		if ((S_after) && (Str::eq(S_after->symbol_name, I"VERB_DIRECTIVE_SLASH")))
+		if ((S_after) && (Str::eq(InterSymbol::identifier(S_after), I"VERB_DIRECTIVE_SLASH")))
 			token_metadata += 0x20;
 	}
 
 @<Read this symbol name as part of a grammar line@> =
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_SLASH")) continue;
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_REVERSE")) continue;
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_DIVIDER")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_SLASH")) continue;
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_REVERSE")) continue;
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_DIVIDER")) {
 		@<Close any grammar line record we have already started writing@>;
 		@<Start writing a record for a new grammar line@>;
 		lines++;
 		line_started = TRUE;
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_RESULT")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_RESULT")) {
 		i += 2; /* Skip the result action */
 		continue;
 	}
@@ -320,7 +320,7 @@ for reversal. (Happily, we worked these out in the first pass through earlier.)
 
 @<Start writing a record for a new grammar line@> =
 	TEMPORARY_TEXT(NT)
-	Generators::mangle(gen, NT, line_actions[lines]->symbol_name);
+	Generators::mangle(gen, NT, InterSymbol::identifier(line_actions[lines]));
 	TEMPORARY_TEXT(A)
 	TEMPORARY_TEXT(B)
 	Generators::word_to_byte(gen, A, NT, 2);
@@ -339,52 +339,52 @@ for reversal. (Happily, we worked these out in the first pass through earlier.)
 The opening byte gives some metadata bits, and then there's a word.
 
 @<Handle the 10 built-in tokens@> =
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_NOUN")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_NOUN")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 0);
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_HELD")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_HELD")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 1);
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_MULTI")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_MULTI")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 2);
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_MULTIHELD")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_MULTIHELD")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 3);
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_MULTIEXCEPT")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_MULTIEXCEPT")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 4);
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_MULTIINSIDE")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_MULTIINSIDE")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 5);
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_CREATURE")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_CREATURE")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 6);
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_SPECIAL")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_SPECIAL")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 7);
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_NUMBER")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_NUMBER")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 8);
 		continue;
 	}
-	if (Str::eq(S->symbol_name, I"VERB_DIRECTIVE_TOPIC")) {
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_TOPIC")) {
 		VanillaIF::grammar_byte(gen, 1 + token_metadata);
 		VanillaIF::grammar_word(gen, 9);
 		continue;

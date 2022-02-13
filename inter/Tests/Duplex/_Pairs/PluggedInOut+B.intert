@@ -4,8 +4,6 @@ packagetype _plain
 packagetype _code
 packagetype _linkage
 
-version 7
-
 primitive !return val -> void
 primitive !modulo val val -> val
 primitive !plus val val -> val

@@ -65,21 +65,21 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		if (Inter::Types::is_enumerated(idt) == FALSE)
 			{ *E = Inter::Errors::quoted(I"not a kind which can have subkinds", mr2.exp[0], eloc); return; }
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"rulebook of (%i+)")) {
-		idt = TextualInter::data_type(eloc, I"list", E);
+		idt = Inter::Kind::parse_data_type(eloc, I"list", E);
 		if (*E) return;
 		constructor = RULEBOOK_ICON;
 		inter_symbol *conts_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
 		if (*E) return;
 		operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"list of (%i+)")) {
-		idt = TextualInter::data_type(eloc, I"list", E);
+		idt = Inter::Kind::parse_data_type(eloc, I"list", E);
 		if (*E) return;
 		constructor = LIST_ICON;
 		inter_symbol *conts_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
 		if (*E) return;
 		operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"relation of (%i+) to (%i+)")) {
-		idt = TextualInter::data_type(eloc, I"relation", E);
+		idt = Inter::Kind::parse_data_type(eloc, I"relation", E);
 		if (*E) return;
 		constructor = RELATION_ICON;
 		inter_symbol *X_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
@@ -90,14 +90,14 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		operands[1] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, Y_kind);
 		arity = 2;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"column of (%i+)")) {
-		idt = TextualInter::data_type(eloc, I"column", E);
+		idt = Inter::Kind::parse_data_type(eloc, I"column", E);
 		if (*E) return;
 		constructor = COLUMN_ICON;
 		inter_symbol *conts_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
 		if (*E) return;
 		operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, conts_kind); arity = 1;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"description of (%i+)")) {
-		idt = TextualInter::data_type(eloc, I"description", E);
+		idt = Inter::Kind::parse_data_type(eloc, I"description", E);
 		if (*E) return;
 		constructor = DESCRIPTION_ICON;
 		inter_symbol *conts_kind = TextualInter::find_symbol(IBM, eloc, mr2.exp[0], KIND_IST, E);
@@ -105,7 +105,7 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, conts_kind); arity = 1;
 	} else if ((Regexp::match(&mr2, ilp->mr.exp[1], L"(function) (%c+) -> (%i+)")) ||
 			(Regexp::match(&mr2, ilp->mr.exp[1], L"(rule) (%c+) -> (%i+)"))) {
-		idt = TextualInter::data_type(eloc, I"routine", E);
+		idt = Inter::Kind::parse_data_type(eloc, I"routine", E);
 		if (*E) return;
 		if (Str::eq(mr2.exp[0], I"function")) constructor = FUNCTION_ICON;
 		else constructor = RULE_ICON;
@@ -134,7 +134,7 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 			operands[arity++] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, res_kind);
 		}
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"struct (%c+)")) {
-		idt = TextualInter::data_type(eloc, I"struct", E);
+		idt = Inter::Kind::parse_data_type(eloc, I"struct", E);
 		if (*E) return;
 		constructor = STRUCT_ICON;
 		text_stream *elements = mr2.exp[0];
@@ -147,7 +147,7 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 			operands[arity++] = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, arg_kind);
 		}
 	} else {
-		idt = TextualInter::data_type(eloc, ilp->mr.exp[1], E);
+		idt = Inter::Kind::parse_data_type(eloc, ilp->mr.exp[1], E);
 		if (*E) return;
 	}
 	if (idt == NULL) internal_error("null IDT");
@@ -155,6 +155,12 @@ void Inter::Kind::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	*E = Inter::Kind::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, symb), idt->type_ID,
 		(super_kind)?(InterSymbolsTable::id_from_symbol_at_bookmark(IBM, super_kind)):0,
 		constructor, arity, operands, (inter_ti) ilp->indent_level, eloc);
+}
+
+inter_data_type *Inter::Kind::parse_data_type(inter_error_location *eloc, text_stream *name, inter_error_message **E) {
+	inter_data_type *idt = Inter::Types::find_by_name(name);
+	if (idt == NULL) *E = Inter::Errors::quoted(I"no such data type", name, eloc);
+	return idt;
 }
 
 inter_error_message *Inter::Kind::new(inter_bookmark *IBM, inter_ti SID, inter_ti TID, inter_ti SUP,
@@ -261,37 +267,37 @@ void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 	inter_symbol *symb = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_KIND_IFLD);
 	inter_data_type *idt = Inter::Types::find_by_ID(P->W.instruction[DATA_TYPE_KIND_IFLD]);
 	if ((symb) && (idt)) {
-		WRITE("kind %S ", symb->symbol_name);
+		WRITE("kind %S ", InterSymbol::identifier(symb));
 		if (P->W.instruction[SUPER_KIND_IFLD]) {
 			inter_symbol *super = InterSymbolsTable::symbol_from_ID_at_node(P, SUPER_KIND_IFLD);
-			WRITE("<= %S", super->symbol_name);
+			WRITE("<= %S", InterSymbol::identifier(super));
 		} else {
 			switch (P->W.instruction[CONSTRUCTOR_KIND_IFLD]) {
 				case BASE_ICON: WRITE("%S", idt->reserved_word); break;
 				case LIST_ICON: {
 					inter_symbol *conts_kind = InterSymbolsTable::symbol_from_ID_at_node(P, OPERANDS_KIND_IFLD);
-					WRITE("list of %S", conts_kind->symbol_name);
+					WRITE("list of %S", InterSymbol::identifier(conts_kind));
 					break;
 				}
 				case RULEBOOK_ICON: {
 					inter_symbol *conts_kind = InterSymbolsTable::symbol_from_ID_at_node(P, OPERANDS_KIND_IFLD);
-					WRITE("rulebook of %S", conts_kind->symbol_name);
+					WRITE("rulebook of %S", InterSymbol::identifier(conts_kind));
 					break;
 				}
 				case COLUMN_ICON: {
 					inter_symbol *conts_kind = InterSymbolsTable::symbol_from_ID_at_node(P, OPERANDS_KIND_IFLD);
-					WRITE("column of %S", conts_kind->symbol_name);
+					WRITE("column of %S", InterSymbol::identifier(conts_kind));
 					break;
 				}
 				case DESCRIPTION_ICON: {
 					inter_symbol *conts_kind = InterSymbolsTable::symbol_from_ID_at_node(P, OPERANDS_KIND_IFLD);
-					WRITE("description of %S", conts_kind->symbol_name);
+					WRITE("description of %S", InterSymbol::identifier(conts_kind));
 					break;
 				}
 				case RELATION_ICON: {
 					inter_symbol *X_kind = InterSymbolsTable::symbol_from_ID_at_node(P, OPERANDS_KIND_IFLD);
 					inter_symbol *Y_kind = InterSymbolsTable::symbol_from_ID_at_node(P, OPERANDS_KIND_IFLD+1);
-					WRITE("relation of %S to %S", X_kind->symbol_name, Y_kind->symbol_name);
+					WRITE("relation of %S to %S", InterSymbol::identifier(X_kind), InterSymbol::identifier(Y_kind));
 					break;
 				}
 				case FUNCTION_ICON:
@@ -308,7 +314,7 @@ void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 							WRITE("void");
 						} else {
 							inter_symbol *K = InterSymbolsTable::symbol_from_ID_at_node(P, OPERANDS_KIND_IFLD + i);
-							WRITE("%S", K->symbol_name);
+							WRITE("%S", InterSymbol::identifier(K));
 						}
 					}
 					break;
@@ -318,7 +324,7 @@ void Inter::Kind::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 					int arity = P->W.extent - MIN_EXTENT_KIND_IFR;
 					for (int i=0; i<arity; i++) {
 						inter_symbol *K = InterSymbolsTable::symbol_from_ID_at_node(P, OPERANDS_KIND_IFLD + i);
-						WRITE(" %S", K->symbol_name);
+						WRITE(" %S", InterSymbol::identifier(K));
 					}
 					break;
 				}

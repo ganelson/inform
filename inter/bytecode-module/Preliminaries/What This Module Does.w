@@ -17,7 +17,10 @@ For more, see //foundation: A Brief Guide to Foundation//.
 
 @h What is intermediate about inter.
 This module is concerned with managing the //inter_tree// data structure in
-memory, and with reading and writing it from and to the filing system.
+memory, and with reading and writing it from and to the filing system. Because
+this data structure can live in files outside of memory, we need to worry about
+whether its design changes over time: see //The Inter Version// for the issues
+arising over that.
 
 An Inter tree is an expression of a single program. It's an intermediate state
 between the source code for that program -- perhaps Inform 7 source text,

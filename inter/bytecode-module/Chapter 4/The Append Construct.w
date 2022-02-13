@@ -72,7 +72,7 @@ void Inter::Append::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P
 	inter_symbol *symbol = InterSymbolsTable::symbol_from_ID_at_node(P, SYMBOL_APPEND_IFLD);
 	inter_ti ID = P->W.instruction[TEXT_APPEND_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
-	WRITE("append %S \"", symbol->symbol_name);
+	WRITE("append %S \"", InterSymbol::identifier(symbol));
 	Inter::Constant::write_text(OUT, S);
 	WRITE("\"");
 }

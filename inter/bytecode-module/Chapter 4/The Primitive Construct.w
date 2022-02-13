@@ -86,7 +86,7 @@ void Inter::Primitive::verify(inter_construct *IC, inter_tree_node *P, inter_pac
 	if (P->W.extent < MIN_EXTENT_PRIM_IFR) { *E = Inode::error(P, I"primitive extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_PRIM_IFLD); if (*E) return;
 	inter_symbol *prim_name = InterSymbolsTable::symbol_from_ID(Inode::globals(P), P->W.instruction[DEFN_PRIM_IFLD]);
-	if ((prim_name == NULL) || (Str::get_first_char(prim_name->symbol_name) != '!'))
+	if ((prim_name == NULL) || (Str::get_first_char(InterSymbol::identifier(prim_name)) != '!'))
 		{ *E = Inode::error(P, I"primitive not beginning with '!'", NULL); return; }
 	int voids = 0, args = 0;
 	for (int i=CAT_PRIM_IFLD; i<P->W.extent-1; i++) {
@@ -100,7 +100,7 @@ void Inter::Primitive::verify(inter_construct *IC, inter_tree_node *P, inter_pac
 void Inter::Primitive::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *prim_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PRIM_IFLD);
 	if (prim_name) {
-		WRITE("primitive %S", prim_name->symbol_name);
+		WRITE("primitive %S", InterSymbol::identifier(prim_name));
 		int cats = 0;
 		for (int i=CAT_PRIM_IFLD; i<P->W.extent-1; i++) {
 			WRITE(" ");

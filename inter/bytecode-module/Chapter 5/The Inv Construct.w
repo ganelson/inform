@@ -38,14 +38,12 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	*E = InterConstruct::check_level_in_package(IBM, INV_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = TextualInter::get_latest_block_package();
+	inter_package *routine = InterBookmark::package(IBM);
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
 
 	inter_symbol *invoked_name = InterSymbolsTable::symbol_from_name(InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[0]);
 	if ((invoked_name == NULL) && (Str::get_first_char(ilp->mr.exp[0]) == '!')) {
-		inter_package *save_lbp = TextualInter::get_latest_block_package();
 		invoked_name = Primitives::declare_one_named(InterBookmark::tree(IBM), &(InterBookmark::tree(IBM)->site.strdata.package_types_bookmark), ilp->mr.exp[0]);
-		TextualInter::set_latest_block_package(save_lbp);
 		if (invoked_name == NULL) {
 			*E = Inter::Errors::quoted(I"'inv' on undeclared primitive", ilp->mr.exp[0], eloc); return;
 		}
@@ -123,7 +121,7 @@ void Inter::Inv::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 		case INVOKED_PRIMITIVE: {
 			inter_symbol *invokee = Inter::Inv::invokee(P);
 			if (invokee) {
-				WRITE("inv %S", invokee->symbol_name);
+				WRITE("inv %S", InterSymbol::identifier(invokee));
 			} else { *E = Inode::error(P, I"cannot write inv", NULL); return; }
 			break;
 		}
@@ -167,7 +165,7 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_
 		inter_symbol *invokee = Inter::Inv::invokee(P);
 		text_stream *err = Str::new();
 		WRITE_TO(err, "this inv of %S should have %d argument(s), but has %d",
-			(invokee)?(invokee->symbol_name):I"<unknown>", Inter::Inv::arity(P), arity_as_invoked);
+			(invokee)?(InterSymbol::identifier(invokee)):I"<unknown>", Inter::Inv::arity(P), arity_as_invoked);
 		*E = Inode::error(P, err, NULL);
 		return;
 	}
@@ -188,7 +186,7 @@ void Inter::Inv::verify_children(inter_construct *IC, inter_tree_node *P, inter_
 			inter_symbol *invokee = Inter::Inv::invokee(P);
 			text_stream *err = Str::new();
 			WRITE_TO(err, "operand %d of inv '%S' should be %s, but this is %s",
-				i, (invokee)?(invokee->symbol_name):I"<unknown>",
+				i, (invokee)?(InterSymbol::identifier(invokee)):I"<unknown>",
 				Inter::Inv::cat_name(cat_needed), Inter::Inv::cat_name(cat_as_invoked));
 			*E = Inode::error(C, err, NULL);
 			return;

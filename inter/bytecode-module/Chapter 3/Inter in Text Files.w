@@ -68,12 +68,8 @@ inter_error_message *TextualInter::parse_single_line(text_stream *line,
 	ilp.set = SymbolAnnotation::new_annotation_set();
 	ilp.indent_level = 0;
 	@<Find indentation@>;
-
-	if (ilp.indent_level == 0) TextualInter::set_latest_block_package(NULL);
-
 	@<If the indentation is now lower than expected, move the write position up the tree@>;
 	@<Parse any annotations at the end of the line@>;
-	
 	return InterConstruct::match(&ilp, eloc, write_pos);
 }
 
@@ -151,138 +147,114 @@ pleases.
 	}
 	if (cutoff >= 0) Str::put_at(ilp.line, cutoff, 0);
 
-@h Writing textual inter.
-This more or less reverses the above process:
+@h Utility functions for parsing construct lines.
+First, the following tries to make a symbol with a given name in the given
+scope; the name must currently be free, or an error is generated.
 
 =
-void TextualInter::writer(OUTPUT_STREAM, char *format_string, void *vI) {
-	inter_tree *I = (inter_tree *) vI;
-	TextualInter::write(OUT, I, NULL, 1);
-}
-
-typedef struct textual_write_state {
-	struct text_stream *to;
-	int (*filter)(inter_tree_node, int);
-	int pass;
-} textual_write_state;
-
-void TextualInter::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_tree_node, int), int pass) {
-	if (I == NULL) { WRITE("<no-inter>\n"); return; }
-	textual_write_state tws;
-	tws.to = OUT;
-	tws.filter = filter;
-	tws.pass = pass;
-	InterTree::traverse_root_only(I, TextualInter::visitor, &tws, -PACKAGE_IST);
-	InterTree::traverse(I, TextualInter::visitor, &tws, NULL, 0);
-}
-void TextualInter::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	textual_write_state *tws = (textual_write_state *) state;
-	if ((tws->filter) && ((*(tws->filter))(*P, tws->pass) == FALSE)) return;
-	inter_error_message *E = InterConstruct::write_construct_text(tws->to, P);
-	if (E) Inter::Errors::issue(E);
-}
-
-@ =
-inter_symbol *TextualInter::new_symbol(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
+inter_symbol *TextualInter::new_symbol(inter_error_location *eloc, inter_symbols_table *T,
+	text_stream *name, inter_error_message **E) {
 	*E = NULL;
-	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
-	if (symb) {
-		if (InterSymbol::misc_but_undefined(symb)) return symb;
+	inter_symbol *S = InterSymbolsTable::symbol_from_name(T, name);
+	if (S) {
+		if (InterSymbol::misc_but_undefined(S)) return S;
 		*E = Inter::Errors::quoted(I"symbol already exists", name, eloc);
 		return NULL;
 	}
 	return InterSymbolsTable::symbol_from_name_creating(T, name);
 }
 
-void TextualInter::write_symbol(OUTPUT_STREAM, inter_symbol *symb) {
-	if (Wiring::is_wired(symb)) {
-		InterSymbolsTable::write_symbol_URL(OUT, Wiring::cable_end(symb));
-	} else if (symb) {
-		WRITE("%S", symb->symbol_name);
-	} else {
-		WRITE("<invalid-symbol>");
-	}
-}
+@ Second, this attempts to match a name against a symbol in the scope local to
+the bookmark |IBM|. If it exists, we return it, though if |construct| is non-zero
+then we first check if it is defined by an instruction of that type. (This
+enables us to tell if it's, e.g., a variable, defined by |VARIABLE_IST| instruction.)
 
-void TextualInter::write_symbol_from(OUTPUT_STREAM, inter_tree_node *P, int field) {
-	inter_symbol *S = InterSymbolsTable::symbol_from_ID_not_following(
-		InterPackage::scope_of(P), P->W.instruction[field]);
-	TextualInter::write_symbol(OUT, S);
-}
-
-inter_symbol *TextualInter::find_symbol(inter_bookmark *IBM, inter_error_location *eloc, text_stream *name, inter_ti construct, inter_error_message **E) {
+=
+inter_symbol *TextualInter::find_symbol(inter_bookmark *IBM, inter_error_location *eloc,
+	text_stream *name, inter_ti construct, inter_error_message **E) {
 	inter_symbols_table *T = InterBookmark::scope(IBM);
 	*E = NULL;
-	inter_symbol *symb = NULL;
-	if (Str::get_first_char(name) == '/') {
-		symb = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), name);
-		if (symb == NULL) {
-			TEMPORARY_TEXT(leaf)
-			LOOP_THROUGH_TEXT(pos, name) {
-				wchar_t c = Str::get(pos);
-				if (c == '/') Str::clear(leaf);
-				else PUT_TO(leaf, c);
-			}
-			if (Str::len(leaf) == 0) {
-				*E = Inter::Errors::quoted(I"URL ends in '/'", name, eloc);
-				return NULL;
-			}
-			symb = InterSymbolsTable::symbol_from_name(T, leaf);
-			if (!((symb) && (Wiring::is_wired_to_name(symb)) && (Str::eq(Wiring::wired_to_name(symb), name)))) {			
-				symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), leaf);
-				Wiring::wire_to_name(symb, name);
-			}
-			DISCARD_TEXT(leaf)
-		}
-	} else {
-		symb = InterSymbolsTable::symbol_from_name(T, name);
+	inter_symbol *S = NULL;
+	if (Str::get_first_char(name) == '/')
+		@<Search using URL conventions@>
+	else
+		S = InterSymbolsTable::symbol_from_name(T, name);
+	if (S == NULL) {
+		*E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL;
 	}
-	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
-	if (construct == 0) return symb;
-	inter_tree_node *D = InterSymbol::definition(symb);
-	if (InterSymbol::defined_elsewhere(symb)) return symb;
-	if (InterSymbol::misc_but_undefined(symb)) return symb;
-	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
-	if ((D->W.instruction[ID_IFLD] != construct) && (InterSymbol::misc_but_undefined(symb) == FALSE)) {
-		*E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL;
-	}
-	return symb;
+	if (construct != 0) @<Check that it is defined by the correct construct@>;
+	return S;
 }
 
-inter_symbol *TextualInter::find_global_symbol(inter_bookmark *IBM, inter_error_location *eloc, text_stream *name, inter_ti construct, inter_error_message **E) {
+@ Using a URL allows an instruction to refer to a symbol in another package.
+If this has already been created, all well and good, but it may be a forward
+reference, or even a reference to something in another tree which is to be
+linked in later on. So if we see a URL which does not (yet) exist, we wire
+a plug to it. For example, given |/some/enchanted/evening|, we make a local
+symbol |evening ~~> "/some/enchanted/evening"|. This is then fixed up when we
+resolve forward references at the end of the parsing process -- see below.
+
+@<Search using URL conventions@> =
+	S = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), name);
+	if (S == NULL) {
+		TEMPORARY_TEXT(leaf)
+		LOOP_THROUGH_TEXT(pos, name) {
+			wchar_t c = Str::get(pos);
+			if (c == '/') Str::clear(leaf);
+			else PUT_TO(leaf, c);
+		}
+		if (Str::len(leaf) == 0) {
+			*E = Inter::Errors::quoted(I"URL ends in '/'", name, eloc);
+			return NULL;
+		}
+		S = InterSymbolsTable::symbol_from_name(T, leaf);
+		if (!((S) && (Wiring::is_wired_to_name(S)) &&
+				(Str::eq(Wiring::wired_to_name(S), name)))) {			
+			S = InterSymbolsTable::create_with_unique_name(
+				InterBookmark::scope(IBM), leaf);
+			Wiring::wire_to_name(S, name);
+		}
+		DISCARD_TEXT(leaf)
+	}
+
+@ This check is not foolproof. In particular, it is fooled by forward references.
+But it really doesn't need to catch every possible error; this is Inter, not Inform.
+
+@<Check that it is defined by the correct construct@> =
+	inter_tree_node *D = InterSymbol::definition(S);
+	if (InterSymbol::defined_elsewhere(S)) return S;
+	if (InterSymbol::misc_but_undefined(S)) return S;
+	if (D == NULL) {
+		*E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL;
+	}
+	if ((D->W.instruction[ID_IFLD] != construct) &&
+		(InterSymbol::misc_but_undefined(S) == FALSE)) {
+		*E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL;
+	}
+
+@ This simpler version checks the global symbols for the tree, rather than the local
+package, and does not allow URL references. (Of course they could only consist of
+the same name with a single slash in front anyway, so this is no loss.) Here they
+cannot be forward references to symbols not yet created.
+
+=
+inter_symbol *TextualInter::find_global_symbol(inter_bookmark *IBM, inter_error_location *eloc,
+	text_stream *name, inter_ti construct, inter_error_message **E) {
 	inter_tree *I = InterBookmark::tree(IBM);
 	inter_symbols_table *T = InterTree::global_scope(I);
 	*E = NULL;
-	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
-	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
-	inter_tree_node *D = InterSymbol::definition(symb);
-	if (InterSymbol::defined_elsewhere(symb)) return symb;
-	if (InterSymbol::misc_but_undefined(symb)) return symb;
-	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
-	if ((D->W.instruction[ID_IFLD] != construct) && (InterSymbol::misc_but_undefined(symb) == FALSE)) {
-		*E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL;
+	inter_symbol *S = InterSymbolsTable::symbol_from_name(T, name);
+	if (S == NULL) {
+		*E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL;
 	}
-	return symb;
-}
-
-inter_symbol *TextualInter::find_KOI(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
-	*E = NULL;
-	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
-	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
-	inter_tree_node *D = InterSymbol::definition(symb);
-	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
-	if ((D->W.instruction[ID_IFLD] != KIND_IST) &&
-		(D->W.instruction[ID_IFLD] != INSTANCE_IST)) { *E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL; }
-	return symb;
-}
-
-inter_data_type *TextualInter::data_type(inter_error_location *eloc, text_stream *name, inter_error_message **E) {
-	inter_data_type *idt = Inter::Types::find_by_name(name);
-	if (idt == NULL) *E = Inter::Errors::quoted(I"no such data type", name, eloc);
-	return idt;
+	if (construct != 0) @<Check that it is defined by the correct construct@>;
+	return S;
 }
 
 @h Forward references.
+Because of the way we temporarily wire symbols to URLs when their references
+cannot be resolved, the above process leaves us with a tree in which those
+symbols are still left dangling. This is where we fix things:
 
 =
 void TextualInter::resolve_forward_references(inter_tree *I) {
@@ -297,26 +269,96 @@ void TextualInter::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_symbols_table *T = InterPackage::scope(pack);
 	if (T == NULL) internal_error("package with no symbols");
 	for (int i=0; i<T->symbol_array_size; i++) {
-		inter_symbol *symb = T->symbol_array[i];
-		if (Wiring::is_wired_to_name(symb)) {
-			text_stream *N = Wiring::wired_to_name(symb);
-			if (InterSymbol::is_plug(symb)) continue;
-			inter_symbol *S_to = InterSymbolsTable::URL_to_symbol(InterPackage::tree(pack), N);
-			if (S_to == NULL) S_to = InterSymbolsTable::symbol_from_name(T, N);
-			if (S_to == NULL) Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", N, eloc));
-			else if (InterSymbol::is_socket(symb))
-				Wiring::make_socket_to(symb, S_to);
-			else Wiring::wire_to(symb, S_to);
+		inter_symbol *S = T->symbol_array[i];
+		if (Wiring::is_wired_to_name(S)) {
+			if (InterSymbol::is_plug(S)) continue;
+			@<This is a forward reference wiring@>;
 		}
 	}
 }
 
-inter_package *latest_block_package = NULL;
+@ The unexpected case here is where our unresolved symbol |S| is itself a socket,
+having been declared by a line of Inter like
+= (text as Inter)
+	socket hypothetical ~~> /ultima/thule
+=
+at a position in the text file where |/ultima/thule| has not yet been defined.
+This then becomes that most heretical thing, a socket wired to a name:
+= (text as Inter)
+	socket hypothetical ~~> "/ultima/thule"
+=
+...until we correct that heresy here by calling //Wiring::make_socket_to//.
+(It was already a socket: but now it's a socket to |S_to|.)
 
-void TextualInter::set_latest_block_package(inter_package *F) {
-	latest_block_package = F;
+@<This is a forward reference wiring@> =
+	text_stream *N = Wiring::wired_to_name(S);
+	inter_symbol *S_to;
+	if (Str::get_first_char(N) == '/')
+		S_to = InterSymbolsTable::URL_to_symbol(InterPackage::tree(pack), N);
+	else
+		S_to = InterSymbolsTable::symbol_from_name(T, N);
+	if (S_to == NULL)
+		Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", N, eloc));
+	else if (InterSymbol::is_socket(S))
+		Wiring::make_socket_to(S, S_to);
+	else
+		Wiring::wire_to(S, S_to);
+
+@h Writing textual inter.
+This more or less reverses the above process. Note that we do not write the
+|version| pseudo-construct, which would indicate the version number of Inter
+used; that's a bit of a choice, but in the end it makes testing slightly easier
+if we don't, because otherwise many test cases would need changing whenever
+//The Inter Version// does.
+
+This is a point of difference with binary Inter files, though, which are all
+required to embed their specification version numbers.
+
+=
+void TextualInter::writer(OUTPUT_STREAM, char *format_string, void *vI) {
+	inter_tree *I = (inter_tree *) vI;
+	TextualInter::write(OUT, I, NULL);
 }
 
-inter_package *TextualInter::get_latest_block_package(void) {
-	return latest_block_package;
+typedef struct textual_write_state {
+	struct text_stream *to;
+	int (*filter)(inter_tree_node *);
+} textual_write_state;
+
+@ If the function |filter| is provided then we only write those nodes passing
+the filter test.
+
+=
+void TextualInter::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_tree_node *)) {
+	if (I == NULL) { WRITE("<no-inter>\n"); return; }
+	textual_write_state tws;
+	tws.to = OUT;
+	tws.filter = filter;
+	InterTree::traverse_root_only(I, TextualInter::visitor, &tws, -PACKAGE_IST);
+	InterTree::traverse(I, TextualInter::visitor, &tws, NULL, 0);
+}
+void TextualInter::visitor(inter_tree *I, inter_tree_node *P, void *state) {
+	textual_write_state *tws = (textual_write_state *) state;
+	if ((tws->filter) && ((*(tws->filter))(P) == FALSE)) return;
+	inter_error_message *E = InterConstruct::write_construct_text(tws->to, P);
+	if (E) Inter::Errors::issue(E);
+}
+
+@h Utility functions for writing construct lines.
+
+=
+void TextualInter::write_symbol(OUTPUT_STREAM, inter_symbol *S) {
+	if (Wiring::is_wired(S)) {
+		InterSymbolsTable::write_symbol_URL(OUT, Wiring::cable_end(S));
+	} else if (S) {
+		WRITE("%S", InterSymbol::identifier(S));
+	} else {
+		WRITE("<invalid-symbol>");
+	}
+}
+
+void TextualInter::write_symbol_from(OUTPUT_STREAM, inter_tree_node *P, int field) {
+	inter_symbol *S = InterSymbolsTable::symbol_from_ID_not_following(
+		InterPackage::scope_of(P), P->W.instruction[field]);
+	TextualInter::write_symbol(OUT, S);
 }

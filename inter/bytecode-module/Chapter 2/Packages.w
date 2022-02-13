@@ -126,7 +126,7 @@ extracted from the bytecode of its |package| instruction, stored at the head-nod
 text_stream *InterPackage::name(inter_package *pack) {
 	if (pack) {
 		inter_symbol *S = InterPackage::name_symbol(pack);
-		if (S) return S->symbol_name;
+		if (S) return InterSymbol::identifier(S);
 	}
 	return NULL;
 }
@@ -195,6 +195,8 @@ as temporary markers when fooling with Inter code during pipeline processing.)
 @d FUNCTION_BODY_PACKAGE_FLAG 2
 @d LINKAGE_PACKAGE_FLAG       4
 
+@d PERSISTENT_PACKAGE_FLAGS   255
+
 @d USED_PACKAGE_FLAG          256
 @d MARK_PACKAGE_FLAG          512
 
@@ -212,6 +214,21 @@ void InterPackage::set_flag(inter_package *P, int f) {
 void InterPackage::clear_flag(inter_package *P, int f) {
 	if (P == NULL) internal_error("no package");
 	if (P->package_flags & f) P->package_flags = P->package_flags - f;
+}
+
+@ These are used when reading and writing binary Inter files: because of course
+the data in the flags must persist when files are written out and read back again.
+
+=
+int InterPackage::get_persistent_flags(inter_package *P) {
+	if (P == NULL) internal_error("no package");
+	return P->package_flags & PERSISTENT_PACKAGE_FLAGS;
+}
+
+void InterPackage::set_persistent_flags(inter_package *P, int x) {
+	if (P == NULL) internal_error("no package");
+	P->package_flags =
+		(P->package_flags & (~PERSISTENT_PACKAGE_FLAGS)) | (x & PERSISTENT_PACKAGE_FLAGS);
 }
 
 @ The |ROOT_PACKAGE_FLAG| is given only to the root package of a tree, so there

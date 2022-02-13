@@ -255,7 +255,8 @@ void I6TargetCode::invoke_primitive(code_generator *gtr, code_generation *gen,
 		@<Textual output@>;
 		@<The VM object tree@>;
 		default:
-			WRITE_TO(STDERR, "Unimplemented primitive is '%S'\n", prim_name->symbol_name);
+			WRITE_TO(STDERR, "Unimplemented primitive is '%S'\n",
+				InterSymbol::identifier(prim_name));
 			internal_error("unimplemented prim");
 	}
 	if (suppress_terminal_semicolon == FALSE) WRITE(";\n");

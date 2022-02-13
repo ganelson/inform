@@ -128,8 +128,8 @@ void Synoptic::numeric_entry(inter_ti val2) {
 void Synoptic::symbol_entry(inter_symbol *S) {
 	Inode::extend_instruction_by(synoptic_array_node, 2);
 	inter_package *pack = InterPackage::container(synoptic_array_node);
-	inter_symbol *local_S =
-		InterSymbolsTable::create_with_unique_name(InterPackage::scope(pack), S->symbol_name);
+	inter_symbol *local_S = InterSymbolsTable::create_with_unique_name(
+		InterPackage::scope(pack), InterSymbol::identifier(S));
 	Wiring::wire_to(local_S, S);
 	inter_ti val1 = 0, val2 = 0;
 	Inter::Types::symbol_to_pair(InterPackage::tree(pack), pack, local_S, &val1, &val2);

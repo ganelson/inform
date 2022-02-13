@@ -30,7 +30,7 @@ void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
 	*E = InterConstruct::check_level_in_package(IBM, LABEL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	inter_package *routine = TextualInter::get_latest_block_package();
+	inter_package *routine = InterBookmark::package(IBM);
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'label' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
@@ -58,7 +58,7 @@ void Inter::Label::verify(inter_construct *IC, inter_tree_node *P, inter_package
 	if (P->W.extent != EXTENT_LABEL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *lab_name = InterSymbolsTable::symbol_from_ID_in_package(owner, P->W.instruction[DEFN_LABEL_IFLD]);
 	if (InterSymbol::is_label(lab_name) == FALSE) {
-		*E = Inode::error(P, I"not a label", (lab_name)?(lab_name->symbol_name):NULL);
+		*E = Inode::error(P, I"not a label", (lab_name)?(InterSymbol::identifier(lab_name)):NULL);
 		return;
 	}
 	if (P->W.instruction[LEVEL_IFLD] < 1) { *E = Inode::error(P, I"label with bad level", NULL); return; }
@@ -71,6 +71,6 @@ void Inter::Label::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
 	inter_package *pack = InterPackage::container(P);
 	inter_symbol *lab_name = InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LABEL_IFLD]);
 	if (lab_name) {
-		WRITE("%S", lab_name->symbol_name);
+		WRITE("%S", InterSymbol::identifier(lab_name));
 	} else { *E = Inode::error(P, I"cannot write label", NULL); return; }
 }

@@ -13,6 +13,6 @@ void TextualTarget::create_generator(void) {
 }
 
 int TextualTarget::text(code_generator *gtr, code_generation *gen) {
-	if (gen->to_stream) TextualInter::write(gen->to_stream, gen->from, NULL, 1);
+	if (gen->to_stream) TextualInter::write(gen->to_stream, gen->from, NULL);
 	return TRUE;
 }

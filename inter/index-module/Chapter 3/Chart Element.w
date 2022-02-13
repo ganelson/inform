@@ -313,7 +313,7 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
 	if (depth == MAX_OBJECT_INDEX_DEPTH) internal_error("MAX_OBJECT_INDEX_DEPTH exceeded");
 	inter_symbol *class_s = Metadata::read_optional_symbol(pack, I"^object_class");
 	if (class_s == NULL) internal_error("no class for object kind");
-	text_stream *anchor = class_s->symbol_name;
+	text_stream *anchor = InterSymbol::identifier(class_s);
 
 	int shaded = FALSE;
 	@<Begin the object citation line@>;

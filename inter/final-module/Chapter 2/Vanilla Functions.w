@@ -112,7 +112,7 @@ vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s
 @ This performs a local traverse of the body of the function to look for local
 variable declarations.
 
-Note that we look at |local_s->symbol_name| not |InterSymbol::trans(local_s)|
+Note that we look at |InterSymbol::identifier(local_s)| not |InterSymbol::trans(local_s)|
 when checking for |_vararg_count| because the translated name may have been mangled
 in some way by the generator. (As indeed the C generator does, mangling this to
 |local__vararg_count|.)
@@ -125,7 +125,7 @@ void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
 		inter_symbol *local_s =
 			InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 		ADD_TO_LINKED_LIST(InterSymbol::trans(local_s), text_stream, vf->locals);
-		if (Str::eq(local_s->symbol_name, I"_vararg_count"))
+		if (Str::eq(InterSymbol::identifier(local_s), I"_vararg_count"))
 			vf->takes_variable_arguments = TRUE;
 	}
 	LOOP_THROUGH_INTER_CHILDREN(F, P) VanillaFunctions::seek_locals(gen, F, vf);

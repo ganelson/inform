@@ -22,7 +22,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 			@<Declare this constant as a pseudo-object@>;
 		} else if (Inter::Constant::is_routine(con_name)) {
 			@<Declare this constant as a function@>;
-		} else if (Str::eq(con_name->symbol_name, I"UUID_ARRAY")) {
+		} else if (Str::eq(InterSymbol::identifier(con_name), I"UUID_ARRAY")) {
 			@<Declare this constant as the special UUID string array@>;
 		} else switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_INDIRECT_TEXT: @<Declare this as a textual constant@>; break;
@@ -38,14 +38,14 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 }
 
 @<Declare this constant as an action name@> =
-	text_stream *fa = Str::duplicate(con_name->symbol_name);
+	text_stream *fa = Str::duplicate(InterSymbol::identifier(con_name));
 	Str::delete_first_character(fa);
 	Str::delete_first_character(fa);
 	Generators::new_action(gen, fa, TRUE, gen->true_action_count++);
 	ADD_TO_LINKED_LIST(fa, text_stream, gen->actions);
 
 @<Declare this constant as a fake action name@> =
-	text_stream *fa = Str::duplicate(con_name->symbol_name);
+	text_stream *fa = Str::duplicate(InterSymbol::identifier(con_name));
 	Str::delete_first_character(fa);
 	Str::delete_first_character(fa);
 	Generators::new_action(gen, fa, FALSE, 4096 + gen->fake_action_count++);

@@ -107,7 +107,7 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	if ((inst_name) && (inst_kind)) {
 		inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 		if (idt) {
-			WRITE("instance %S %S = ", inst_name->symbol_name, inst_kind->symbol_name);
+			WRITE("instance %S %S = ", InterSymbol::identifier(inst_name), InterSymbol::identifier(inst_kind));
 			Inter::Types::write(OUT, P, NULL,
 				P->W.instruction[VAL1_INST_IFLD], P->W.instruction[VAL2_INST_IFLD], InterPackage::scope_of(P), FALSE);
 		} else { *E = Inode::error(P, I"instance with bad data type", NULL); return; }

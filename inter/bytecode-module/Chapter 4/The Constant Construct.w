@@ -341,7 +341,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			inter_data_type *idt = Inter::Kind::data_type(con_kind);
 			if ((idt) && ((idt->type_ID == LIST_IDT) || (idt->type_ID == COLUMN_IDT))) {
 				inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, 0);
-				if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inode::error(P, I"not a kind", (conts_kind)?(conts_kind->symbol_name):NULL); return; }
+				if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inode::error(P, I"not a kind", InterSymbol::identifier(conts_kind)); return; }
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					*E = Inter::Verify::value(owner, P, i, conts_kind); if (*E) return;
 				}
@@ -353,7 +353,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 					if (Inter::Kind::constructor(K) != COLUMN_ICON) { *E = Inode::error(P, I"not a table column constant", NULL); return; }
 				}
 			} else {
-				{ *E = Inode::error(P, I"not a list", con_kind->symbol_name); return; }
+				{ *E = Inode::error(P, I"not a list", InterSymbol::identifier(con_kind)); return; }
 			}
 			break;
 		}
@@ -366,7 +366,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 				if (arity != given) { *E = Inode::error(P, I"extent not same size as struct definition", NULL); return; }
 				for (int i=DATA_CONST_IFLD, counter = 0; i<P->W.extent; i=i+2) {
 					inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, counter++);
-					if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inode::error(P, I"not a kind", (conts_kind)?(conts_kind->symbol_name):NULL); return; }
+					if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inode::error(P, I"not a kind", InterSymbol::identifier(conts_kind)); return; }
 					*E = Inter::Verify::value(owner, P, i, conts_kind); if (*E) return;
 				}
 			} else {
@@ -395,9 +395,9 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	int hex = FALSE;
 	if (SymbolAnnotation::get_b(con_name, HEX_IANN)) hex = TRUE;
 	if ((con_name) && (con_kind)) {
-		WRITE("constant %S ", con_name->symbol_name);
+		WRITE("constant %S ", InterSymbol::identifier(con_name));
 		TextualInter::write_symbol_from(OUT, P, KIND_CONST_IFLD);
-		WRITE(" = ", con_name->symbol_name, con_kind->symbol_name);
+		WRITE(" = ");
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:
 				Inter::Types::write(OUT, P, con_kind,
@@ -491,7 +491,7 @@ int Inter::Constant::char_acceptable(int c) {
 int Inter::Constant::constant_depth(inter_symbol *con) {
 	LOG_INDENT;
 	int d = Inter::Constant::constant_depth_r(con);
-	LOGIF(CONSTANT_DEPTH_CALCULATION, "%S has depth %d\n", con->symbol_name, d);
+	LOGIF(CONSTANT_DEPTH_CALCULATION, "%S has depth %d\n", InterSymbol::identifier(con), d);
 	LOG_OUTDENT;
 	return d;
 }

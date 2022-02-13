@@ -72,7 +72,6 @@ inter_ti Inter::Types::transpose_value(inter_ti V1, inter_ti V2, inter_ti *grid,
 }
 
 inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind_symbol, inter_ti V1, inter_ti V2, inter_symbols_table *scope) {
-	if (suppress_type_errors) return NULL;
 	switch (V1) {
 		case LITERAL_IVAL: {
 			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
@@ -81,8 +80,7 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 				if ((I < idt->min_value) || (I > idt->max_value)) return Inode::error(P, I"value out of range", NULL);
 				return NULL;
 			}
-			WRITE_TO(STDERR, "ks %S\n", kind_symbol->symbol_name);
-			return Inode::error(P, I"unknown kind for value", NULL);
+			return NULL;
 		}
 		case ALIAS_IVAL: {
 			inter_symbol *symb = InterSymbolsTable::symbol_from_ID(scope, V2);
@@ -96,7 +94,7 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 			if (InterSymbol::misc_but_undefined(symb)) return NULL;
 			if (InterSymbol::defined_elsewhere(symb)) return NULL;
 			inter_tree_node *D = InterSymbol::definition(symb);
-			if (D == NULL) return Inode::error(P, I"undefined symbol", symb->symbol_name);
+			if (D == NULL) return Inode::error(P, I"undefined symbol", InterSymbol::identifier(symb));
 
 			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
 			if (idt == unchecked_idt) return NULL;
@@ -107,10 +105,10 @@ inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind
 			else if (D->W.instruction[ID_IFLD] == LOCAL_IST) ckind_symbol = Inter::Local::kind_of(symb);
 			else if (D->W.instruction[ID_IFLD] == VARIABLE_IST) ckind_symbol = Inter::Variable::kind_of(symb);
 			else if (D->W.instruction[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
-			else return Inode::error(P, I"nonconstant symbol", symb->symbol_name);
+			else return Inode::error(P, I"nonconstant symbol", InterSymbol::identifier(symb));
 			if (Inter::Kind::is_a(ckind_symbol, kind_symbol) == FALSE) {
-				LOG("cks %S, ks %S\n", ckind_symbol->symbol_name, kind_symbol->symbol_name);
-				return Inode::error(P, I"value of wrong kind", symb->symbol_name);
+				LOG("cks %S, ks %S\n", InterSymbol::identifier(ckind_symbol), InterSymbol::identifier(kind_symbol));
+				return Inode::error(P, I"value of wrong kind", InterSymbol::identifier(symb));
 			}
 			return NULL;
 		}
@@ -275,8 +273,8 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 			if (Inter::Kind::is_a(kind_loc, kind_symbol) == FALSE) {
 				text_stream *err = Str::new();
 				WRITE_TO(err, "local has kind %S which is not a %S",
-					(kind_loc)?(kind_loc->symbol_name):I"<none>",
-					(kind_symbol)?(kind_symbol->symbol_name):I"<none>");
+					InterSymbol::identifier(kind_loc),
+					InterSymbol::identifier(kind_symbol));
 				return Inter::Errors::quoted(err, S, eloc);
 			}
 			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);

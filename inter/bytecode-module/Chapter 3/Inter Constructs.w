@@ -166,7 +166,9 @@ void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_st
 				LOOP_OVER_SYMBOLS_TABLE(S, InterPackage::scope(inner_tls.package))
 					if ((InterSymbol::get_flag(S, SPECULATIVE_ISYMF)) &&
 						(InterSymbol::is_defined(S) == FALSE)) {
-						Inter::Errors::issue(Inter::Errors::quoted(I"symbol undefined in package", S->symbol_name, eloc));
+						Inter::Errors::issue(Inter::Errors::quoted(
+							I"symbol undefined in package",
+							InterSymbol::identifier(S), eloc));
 					}
 			} else {
 				InterConstruct::tree_lint_r(I, C, tls);

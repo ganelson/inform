@@ -94,6 +94,7 @@ The set of annotations used by the Inform tool suite is as follows.
 @e APPEND_IANN
 @e INNER_PROPERTY_NAME_IANN
 @e PROPERTY_NAME_IANN
+@e TRANSLATION_IANN
 
 @ The special annotation |__invalid|, with ID |INVALID_IANN|, is never given to
 any symbol: it's used to mean "do not make an annotation".
@@ -127,6 +128,7 @@ void SymbolAnnotation::declare_canonical_annotations(void) {
 	SymbolAnnotation::declare(APPEND_IANN,              I"__append",              TEXTUAL_IATYPE);
 	SymbolAnnotation::declare(INNER_PROPERTY_NAME_IANN, I"__inner_property_name", TEXTUAL_IATYPE);
 	SymbolAnnotation::declare(PROPERTY_NAME_IANN,       I"__property_name",       TEXTUAL_IATYPE);
+	SymbolAnnotation::declare(TRANSLATION_IANN,         I"__translation",         TEXTUAL_IATYPE);
 
 	SymbolAnnotation::declare(ARROW_COUNT_IANN,         I"__arrow_count",         INTEGER_IATYPE);
 	SymbolAnnotation::declare(BIP_CODE_IANN,            I"__bip",                 INTEGER_IATYPE);

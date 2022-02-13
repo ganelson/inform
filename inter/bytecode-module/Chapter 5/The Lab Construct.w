@@ -31,7 +31,7 @@ void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	*E = InterConstruct::check_level_in_package(IBM, LAB_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_package *routine = TextualInter::get_latest_block_package();
+	inter_package *routine = InterBookmark::package(IBM);
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'lab' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
@@ -64,7 +64,7 @@ void Inter::Lab::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	inter_package *pack = InterPackage::container(P);
 	inter_symbol *label = InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[LABEL_LAB_IFLD]);
 	if (label) {
-		WRITE("lab %S", label->symbol_name);
+		WRITE("lab %S", InterSymbol::identifier(label));
 	} else { *E = Inode::error(P, I"cannot write lab", NULL); return; }
 }
 

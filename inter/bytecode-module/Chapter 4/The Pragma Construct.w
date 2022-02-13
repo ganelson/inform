@@ -82,5 +82,5 @@ void Inter::Pragma::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P
 	inter_symbol *target_name = InterSymbolsTable::symbol_from_ID_at_node(P, TARGET_PRAGMA_IFLD);
 	inter_ti ID = P->W.instruction[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
-	WRITE("pragma %S \"%S\"", target_name->symbol_name, S);
+	WRITE("pragma %S \"%S\"", InterSymbol::identifier(target_name), S);
 }

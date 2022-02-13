@@ -460,7 +460,6 @@ room to insert those resources, then incarnate |main| and enter it.
 =
 void LargeScale::begin_new_tree(inter_tree *I) {
 	Packaging::initialise_state(I);
-	Produce::version(I, 1);
 
 	Produce::comment(I, I"Package types:");
 	I->site.strdata.package_types_bookmark = Packaging::bubble(I);

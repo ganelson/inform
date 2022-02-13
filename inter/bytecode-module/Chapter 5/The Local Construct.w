@@ -28,7 +28,7 @@ void Inter::Local::define(void) {
 void Inter::Local::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	*E = InterConstruct::check_level_in_package(IBM, LOCAL_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	inter_package *routine = TextualInter::get_latest_block_package();
+	inter_package *routine = InterBookmark::package(IBM);
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'local' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
@@ -65,7 +65,7 @@ void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
 	inter_symbol *var_name = InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
 	inter_symbol *var_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_LOCAL_IFLD);
 	if ((var_name) && (var_kind)) {
-		WRITE("local %S ", var_name->symbol_name);
+		WRITE("local %S ", InterSymbol::identifier(var_name));
 		TextualInter::write_symbol_from(OUT, P, KIND_LOCAL_IFLD);
 		SymbolAnnotation::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write local", NULL); return; }

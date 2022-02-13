@@ -195,7 +195,7 @@ existing socket here.)
 
 @<S is a socket wired to a definition in the migrant@> =
 	LOGIF(INTER_CONNECTORS, "Origin offers socket $3 ~~> $3 in migrant\n", S, target);
-	inter_symbol *equivalent = Wiring::find_socket(det.destination_tree, S->symbol_name);
+	inter_symbol *equivalent = Wiring::find_socket(det.destination_tree, InterSymbol::identifier(S));
 	if (equivalent) {
 		inter_symbol *e_target = Wiring::cable_end(equivalent);
 		if (InterSymbol::is_defined(e_target) == FALSE) {
@@ -207,10 +207,10 @@ existing socket here.)
 			LOGIF(INTER_CONNECTORS,
 				"There is already a socket %S ~~> $3\n"
 				"We use this rather than continue with %S ~~> $3\n",
-				S->symbol_name, e_target, S->symbol_name, target);
+				InterSymbol::identifier(S), e_target, InterSymbol::identifier(S), target);
 		}
 	} else {
-		Wiring::socket(det.destination_tree, S->symbol_name, S);
+		Wiring::socket(det.destination_tree, InterSymbol::identifier(S), S);
 	}
 
 @ Okay, so now for the first cross-referencing fix. The following function traverses
@@ -244,7 +244,7 @@ primitives round and around -- so we cache the results.
 	inter_symbol *equivalent_primitive = Transmigration::known_equivalent(primitive);
 	if (equivalent_primitive == NULL) {
 		equivalent_primitive = InterSymbolsTable::symbol_from_name(
-			InterTree::global_scope(det->destination_tree), primitive->symbol_name);
+			InterTree::global_scope(det->destination_tree), InterSymbol::identifier(primitive));
 		if (equivalent_primitive == NULL) @<Duplicate this primitive@>;
 		Transmigration::learn_equivalent(primitive, equivalent_primitive);
 	}
@@ -259,7 +259,7 @@ the root package of the origin.
 
 @<Duplicate this primitive@> =
 	equivalent_primitive = InterSymbolsTable::symbol_from_name_creating(
-		InterTree::global_scope(det->destination_tree), primitive->symbol_name);
+		InterTree::global_scope(det->destination_tree), InterSymbol::identifier(primitive));
 	inter_tree_node *D = Inode::new_with_1_data_field(&(det->primitives_point), PRIMITIVE_IST,
 		InterSymbolsTable::id_from_symbol(det->destination_tree, NULL, equivalent_primitive),
 		NULL, 0);
@@ -293,7 +293,7 @@ to matching declarations in the destination.
 	inter_symbol *equivalent_ptype = Transmigration::known_equivalent(original_ptype);
 	if (equivalent_ptype == NULL) {
 		equivalent_ptype = InterSymbolsTable::symbol_from_name(
-			InterTree::global_scope(det->destination_tree), original_ptype->symbol_name);
+			InterTree::global_scope(det->destination_tree), InterSymbol::identifier(original_ptype));
 		if (equivalent_ptype == NULL) @<Duplicate this package type@>;
 		Transmigration::learn_equivalent(original_ptype, equivalent_ptype);
 	}
@@ -301,7 +301,7 @@ to matching declarations in the destination.
 
 @<Duplicate this package type@> =
 	equivalent_ptype = InterSymbolsTable::symbol_from_name_creating(
-		InterTree::global_scope(det->destination_tree), original_ptype->symbol_name);
+		InterTree::global_scope(det->destination_tree), InterSymbol::identifier(original_ptype));
 	inter_tree_node *D = Inode::new_with_1_data_field(&(det->ptypes_point), PACKAGETYPE_IST,
 		InterSymbolsTable::id_from_symbol(det->destination_tree, NULL, equivalent_ptype), NULL, 0);
 	inter_error_message *E = InterConstruct::verify_construct(
@@ -341,7 +341,7 @@ trees with the same Inter architecture.
 	inter_symbol *equivalent = Transmigration::known_equivalent(target);
 	if (equivalent == NULL) {
 		equivalent = LargeScale::find_architectural_symbol(det->destination_tree,
-			target->symbol_name, Produce::kind_to_symbol(NULL));
+			InterSymbol::identifier(target), Produce::kind_to_symbol(NULL));
 		Transmigration::learn_equivalent(target, equivalent);
 	}
 	Wiring::wire_to(S, equivalent);					
@@ -369,7 +369,7 @@ tree: and this is exactly what plugs in the destination tree are for.
 @<S is wired to a miscellaneous symbol still in the origin tree@> =
 	inter_symbol *equivalent = Transmigration::known_equivalent(target);
 	if (equivalent == NULL) {
-		equivalent = Wiring::plug(det->destination_tree, target->symbol_name);
+		equivalent = Wiring::plug(det->destination_tree, InterSymbol::identifier(target));
 		Transmigration::learn_equivalent(target, equivalent);
 	}
 	Wiring::wire_to(S, equivalent);
@@ -407,7 +407,7 @@ resource in a different tree, so it needs to be wired to a plug instead.
 @<S is wired to a symbol in the migrant@> =
 	inter_symbol *equivalent = Transmigration::known_equivalent(target);
 	if (equivalent == NULL) {
-		equivalent = Wiring::plug(det->origin_tree, S->symbol_name);
+		equivalent = Wiring::plug(det->origin_tree, InterSymbol::identifier(S));
 		Transmigration::learn_equivalent(target, equivalent);
 	}
 	Wiring::wire_to(S, equivalent);

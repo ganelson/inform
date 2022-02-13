@@ -295,11 +295,6 @@ inter_ti Produce::baseline(inter_bookmark *IBM) {
 @ Demonstrating both of these, some simple Inter instructions:
 
 =
-void Produce::version(inter_tree *I, int N) {
-	inter_bookmark *IBM = Packaging::at(I);
-	Produce::guard(Inter::Version::new(IBM, N, Produce::baseline(IBM), NULL));
-}
-
 void Produce::nop(inter_tree *I) {
 	Produce::nop_at(Packaging::at(I), 0);
 }

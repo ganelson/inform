@@ -37,7 +37,7 @@ void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	if (target_s == NULL) internal_error("bad pragma");
 	inter_ti ID = P->W.instruction[TEXT_PRAGMA_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
-	Generators::offer_pragma(gen, P, target_s->symbol_name, S);
+	Generators::offer_pragma(gen, P, InterSymbol::identifier(target_s), S);
 }
 
 @<General traverse@> =

@@ -12,7 +12,9 @@ each symbol in two ways:
 Note that symbol IDs are just unsigned integers, though always integers which
 exceed |SYMBOL_BASE_VAL|. They can be interpreted only in context of the
 symbols table they refer to: so, for example, the ID |0x40000005| will mean
-one thing in one package and something else in another. 
+one thing in one package and something else in another. Note: do not change the
+value of |SYMBOL_BASE_VAL| without considering the effect on the file
+compression scheme in //Inter in Binary Files//.
 
 Some packages are very small. To save memory, the dictionary (a) is created
 only when the number of symbols reaches |NO_SYMBOLS_WORTH_A_DICTIONARY|; if
@@ -113,7 +115,7 @@ inter_symbol *InterSymbolsTable::search_inner(inter_symbols_table *T, text_strea
 	inter_symbol *S = NULL;
 	if (T->symbols_dictionary == NULL) {
 		LOOP_OVER_SYMBOLS_TABLE(A, T)
-			if (Str::eq(name, A->symbol_name)) {
+			if (Str::eq(name, InterSymbol::identifier(A))) {
 				S = A; break;
 			}
 	} else {	
@@ -165,8 +167,8 @@ inter_symbol *InterSymbolsTable::search_inner(inter_symbols_table *T, text_strea
 @<Make a dictionary from the whole symbols array, including the new S@> =
 	T->symbols_dictionary = Dictionaries::new(16, FALSE);
 	LOOP_OVER_SYMBOLS_TABLE(A, T) {
-		Dictionaries::create(T->symbols_dictionary, A->symbol_name);
-		Dictionaries::write_value(T->symbols_dictionary, A->symbol_name, (void *) A);
+		Dictionaries::create(T->symbols_dictionary, InterSymbol::identifier(A));
+		Dictionaries::write_value(T->symbols_dictionary, InterSymbol::identifier(A), (void *) A);
 	}
 
 @h From name to symbol.
@@ -425,7 +427,7 @@ them on a package-by-package basis, so it is an error to call this function if
 			return (inter_ti) E->symbol_ID;
 
 @<Otherwise make a new symbol in the table and wire it to the faraway one@> =
-	inter_symbol *X = InterSymbolsTable::create_with_unique_name(P_table, S->symbol_name);
+	inter_symbol *X = InterSymbolsTable::create_with_unique_name(P_table, InterSymbol::identifier(S));
 	Wiring::wire_to(X, S);
 	return X->symbol_ID;
 
@@ -457,14 +459,14 @@ void InterSymbolsTable::write_symbol_URL(OUTPUT_STREAM, inter_symbol *S) {
 	inter_package *chain[MAX_URL_SYMBOL_NAME_DEPTH];
 	int chain_length = 0;
 	inter_package *P = InterSymbolsTable::package(S->owning_table);
-	if (P == NULL) { WRITE("%S", S->symbol_name); return; }
+	if (P == NULL) { WRITE("%S", InterSymbol::identifier(S)); return; }
 	while (P) {
 		if (chain_length >= MAX_URL_SYMBOL_NAME_DEPTH) internal_error("package nesting too deep");
 		chain[chain_length++] = P;
 		P = InterPackage::parent(P);
 	}
 	for (int i=chain_length-1; i>=0; i--) WRITE("/%S", InterPackage::name(chain[i]));
-	WRITE("/%S", S->symbol_name);
+	WRITE("/%S", InterSymbol::identifier(S));
 }
 
 @ Conversely, we parse a URL and locate the symbol it describes.

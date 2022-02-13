@@ -46,7 +46,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	WRITE("  (");
 	CodeGen::pair(gen, P, v1, v2);
 	WRITE(") ! -->%d = %S (%S)\n", k,
-		InterSymbol::trans(var_name), var_name->symbol_name);
+		InterSymbol::trans(var_name), InterSymbol::identifier(var_name));
 	CodeGen::deselect(gen, saved);
 	k++;
 

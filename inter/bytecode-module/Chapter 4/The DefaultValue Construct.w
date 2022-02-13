@@ -55,7 +55,7 @@ void Inter::DefaultValue::verify(inter_construct *IC, inter_tree_node *P, inter_
 void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *con_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_DEF_IFLD);
 	if (con_kind) {
-		WRITE("defaultvalue %S = ", con_kind->symbol_name);
+		WRITE("defaultvalue %S = ", InterSymbol::identifier(con_kind));
 		Inter::Types::write(OUT, P, con_kind,
 			P->W.instruction[VAL1_DEF_IFLD], P->W.instruction[VAL1_DEF_IFLD+1], InterPackage::scope_of(P), FALSE);
 	} else {

@@ -37,8 +37,7 @@ typedef struct inter_symbol {
 	struct inter_symbols_table *owning_table;
 	inter_ti symbol_ID;
 	int symbol_status;
-	struct text_stream *symbol_name;
-	struct text_stream *translate_text;
+	struct text_stream *identifier;
 
 	struct inter_tree_node *definition;
 	struct inter_annotation_set annotations;
@@ -65,8 +64,7 @@ inter_symbol *InterSymbol::new_for_symbols_table(text_stream *name, inter_symbol
 	S->owning_table = T;
 	S->symbol_ID = ID;
 	S->symbol_status = 0;
-	S->symbol_name = Str::duplicate(name);
-	S->translate_text = NULL;
+	S->identifier = Str::duplicate(name);
 
 	if (Metadata::valid_key(name)) InterSymbol::make_metadata_key(S);
 	else InterSymbol::make_miscellaneous(S);
@@ -160,6 +158,21 @@ void InterSymbol::clear_flag(inter_symbol *S, int f) {
 	if (S->symbol_status & f) S->symbol_status = S->symbol_status - f;
 }
 
+@ These are used when reading and writing binary Inter files: because of course
+the data in the flags must persist when files are written out and read back again.
+
+=
+int InterSymbol::get_persistent_flags(inter_symbol *S) {
+	if (S == NULL) internal_error("no symbol");
+	return S->symbol_status & SYMBOL_FLAGS_STATUS_MASK;
+}
+
+void InterSymbol::set_persistent_flags(inter_symbol *S, int x) {
+	if (S == NULL) internal_error("no symbol");
+	S->symbol_status =
+		(S->symbol_status & (~SYMBOL_FLAGS_STATUS_MASK)) | (x & SYMBOL_FLAGS_STATUS_MASK);
+}
+
 @ Transient flags convey no lasting meaning: they're used as workspace during
 optimisations. The part of the word which must be preserved is:
 
@@ -210,10 +223,8 @@ int InterSymbol::is_label(inter_symbol *S) {
 }
 
 void InterSymbol::make_label(inter_symbol *S) {
-	if (Str::get_first_char(S->symbol_name) != '.') {
-		LOG("Name is %S\n", S->symbol_name);
+	if (Str::get_first_char(InterSymbol::identifier(S)) != '.')
 		internal_error("not a label name");
-	}
 	InterSymbol::set_type(S, LABEL_ISYMT);
 	S->definition = NULL;
 }
@@ -358,6 +369,14 @@ int InterSymbol::defined_elsewhere(inter_symbol *S) {
 	return FALSE;
 }
 
+@h Identifier name.
+
+=
+text_stream *InterSymbol::identifier(inter_symbol *S) {
+	if (S == NULL) return NULL;
+	return S->identifier;
+}
+
 @h Translation.
 Any symbol can be marked with a "translation", which is the textual identifier
 to use when compiling final code which refers to it. For example, if our
@@ -394,23 +413,26 @@ The tally translates into Inter as "SHAZAM".
 In order for this instruction to reach the //final// code generators, this
 data clearly has to be expressed in the Inter tree. Well, this is where.
 
-With that apologia out of the way:
+With that apologia out of the way, the translation text is held in the
+annotation |_translation|:
 
 =
 void InterSymbol::set_translate(inter_symbol *S, text_stream *identifier) {
 	if (S == NULL) internal_error("no symbol");
-	S->translate_text = Str::duplicate(identifier);
+	SymbolAnnotation::set_t(InterPackage::tree(InterSymbol::package(S)),
+		InterSymbol::package(S), S, TRANSLATION_IANN, identifier);
 }
 
 text_stream *InterSymbol::get_translate(inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
-	return S->translate_text;
+	return SymbolAnnotation::get_t(S,
+		InterPackage::tree(InterSymbol::package(S)), TRANSLATION_IANN);
 }
 
 text_stream *InterSymbol::trans(inter_symbol *S) {
 	if (S == NULL) return NULL;
 	if (InterSymbol::get_translate(S)) return InterSymbol::get_translate(S);
-	return S->symbol_name;
+	return InterSymbol::identifier(S);
 }
 
 @h Logging.
@@ -423,6 +445,7 @@ void InterSymbol::log(OUTPUT_STREAM, void *vs) {
 	} else {
 		InterSymbolsTable::write_symbol_URL(DL, S);
 		WRITE("{%d}", S->symbol_ID - SYMBOL_BASE_VAL);
-		if (Str::len(S->translate_text) > 0) WRITE("'%S'", S->translate_text);
+		text_stream *trans = InterSymbol::get_translate(S);
+		if (Str::len(trans) > 0) WRITE("'%S'", trans);
 	}
 }

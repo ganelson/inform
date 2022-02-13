@@ -230,7 +230,7 @@ inter_symbol *InterNames::to_symbol(inter_name *iname) {
 
 text_stream *InterNames::to_text(inter_name *iname) {
 	if (iname == NULL) return NULL;
-	return InterNames::to_symbol(iname)->symbol_name;
+	return InterSymbol::identifier(InterNames::to_symbol(iname));
 }
 
 @h Definition.

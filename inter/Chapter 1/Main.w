@@ -115,7 +115,7 @@ form, which would be written to |*outt|.
 		if (STREAM_OPEN_TO_FILE(OUT, output_textually, UTF8_ENC) == FALSE)
 			Errors::fatal_with_file("unable to open textual inter file for output: %f",
 				output_textually);
-		TextualInter::write(OUT, I, NULL, 1);
+		TextualInter::write(OUT, I, NULL);
 		STREAM_CLOSE(OUT);
 	}
 	if (output_binarily) Inter::Binary::write(output_binarily, I);

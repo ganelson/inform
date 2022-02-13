@@ -1,0 +1,128 @@
+#Package types:
+packagetype _plain
+packagetype _code
+packagetype _linkage
+packagetype _module
+packagetype _submodule
+packagetype _function
+packagetype _action
+packagetype _command
+packagetype _property
+packagetype _to_phrase
+packagetype _response
+#Pragmas:
+#Primitives:
+primitive !plus val val -> val
+primitive !minus val val -> val
+primitive !unaryminus val -> val
+primitive !times val val -> val
+primitive !divide val val -> val
+primitive !modulo val val -> val
+primitive !bitwiseand val val -> val
+primitive !bitwiseor val val -> val
+primitive !bitwisenot val -> val
+primitive !sequential val val -> val
+primitive !ternarysequential val val val -> val
+primitive !random val -> val
+primitive !store ref val -> val
+primitive !preincrement ref -> val
+primitive !postincrement ref -> val
+primitive !predecrement ref -> val
+primitive !postdecrement ref -> val
+primitive !setbit ref val -> void
+primitive !clearbit ref val -> void
+primitive !push val -> void
+primitive !pull ref -> void
+primitive !lookup val val -> val
+primitive !lookupbyte val val -> val
+primitive !propertyarray val val val -> val
+primitive !propertylength val val val -> val
+primitive !propertyexists val val val -> val
+primitive !propertyvalue val val val -> val
+primitive !move val val -> void
+primitive !remove val -> void
+primitive !child val -> val
+primitive !children val -> val
+primitive !sibling val -> val
+primitive !parent val -> val
+primitive !metaclass val -> val
+primitive !not val -> val
+primitive !and val val -> val
+primitive !or val val -> val
+primitive !eq val val -> val
+primitive !ne val val -> val
+primitive !gt val val -> val
+primitive !ge val val -> val
+primitive !lt val val -> val
+primitive !le val val -> val
+primitive !ofclass val val -> val
+primitive !in val val -> val
+primitive !notin val val -> val
+primitive !alternative val val -> val
+primitive !enableprinting void -> void
+primitive !font val -> void
+primitive !style val -> void
+primitive !print val -> void
+primitive !printnl void -> void
+primitive !printchar val -> void
+primitive !printobj val -> void
+primitive !printnumber val -> void
+primitive !printdword val -> void
+primitive !printstring val -> void
+primitive !box val -> void
+primitive !spaces val -> void
+primitive !if val code -> void
+primitive !ifdebug code -> void
+primitive !ifstrict code -> void
+primitive !ifelse val code code -> void
+primitive !while val code -> void
+primitive !do val code -> void
+primitive !for val val val code -> void
+primitive !objectloop ref val val code -> void
+primitive !objectloopx ref val code -> void
+primitive !break void -> void
+primitive !continue void -> void
+primitive !switch val code -> void
+primitive !case val code -> void
+primitive !alternativecase val val -> val
+primitive !default code -> void
+primitive !return val -> void
+primitive !jump lab -> void
+primitive !quit void -> void
+primitive !restore lab -> void
+primitive !indirect0v val -> void
+primitive !indirect1v val val -> void
+primitive !indirect2v val val val -> void
+primitive !indirect3v val val val val -> void
+primitive !indirect4v val val val val val -> void
+primitive !indirect5v val val val val val val -> void
+primitive !indirect0 val -> val
+primitive !indirect1 val val -> val
+primitive !indirect2 val val val -> val
+primitive !indirect3 val val val val -> val
+primitive !indirect4 val val val val val -> val
+primitive !indirect5 val val val val val val -> val
+primitive !message0 val val -> val
+primitive !message1 val val val -> val
+primitive !message2 val val val val -> val
+primitive !message3 val val val val val -> val
+primitive !externalcall val val -> val
+package main _plain
+	package architectural _linkage
+		constant WORDSIZE /main/generic/kinds/K_unchecked = 2 __architectural
+		constant NULL /main/generic/kinds/K_unchecked = 0xffff __architectural __hex
+		constant WORD_HIGHBIT /main/generic/kinds/K_unchecked = 0x8000 __architectural __hex
+		constant WORD_NEXTTOHIGHBIT /main/generic/kinds/K_unchecked = 0x4000 __architectural __hex
+		constant IMPROBABLE_VALUE /main/generic/kinds/K_unchecked = 0x7fe3 __architectural __hex
+		constant MAX_POSITIVE_NUMBER /main/generic/kinds/K_unchecked = 32767 __architectural
+		constant MIN_NEGATIVE_NUMBER /main/generic/kinds/K_unchecked = -32768 __architectural __signed
+		constant TARGET_ZCODE /main/generic/kinds/K_unchecked = 1 __architectural
+		constant DEBUG /main/generic/kinds/K_unchecked = 1 __architectural
+	package generic _module
+		package kinds _submodule
+			kind K_unchecked unchecked
+			kind K_unchecked_function function K_unchecked -> K_unchecked
+			kind K_unchecked_list list of K_unchecked
+			kind K_int32 int32
+			kind K_int2 int2
+			kind K_string text

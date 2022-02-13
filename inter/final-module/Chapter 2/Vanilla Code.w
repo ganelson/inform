@@ -40,7 +40,7 @@ void VanillaCode::label(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = InterPackage::container(P);
 	inter_symbol *lab_name =
 		InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LABEL_IFLD]);
-	Generators::place_label(gen, lab_name->symbol_name);
+	Generators::place_label(gen, InterSymbol::identifier(lab_name));
 }
 
 @ There are three ways to perform an invocation. One of the three, assembly
@@ -88,20 +88,6 @@ need to.
 
 @<Scan the operands@> =
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
-/*		if (F->W.instruction[ID_IFLD] == VAL_IST) {
-			inter_ti val1 = F->W.instruction[VAL1_VAL_IFLD];
-			inter_ti val2 = F->W.instruction[VAL2_VAL_IFLD];
-			if (Inter::Types::pair_holds_symbol(val1, val2)) {
-				inter_symbol *symb =
-					InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(F), val2);
-				if ((symb) && (Str::eq(symb->symbol_name, I"__assembly_negated_label"))) {
-					label_sense = FALSE;
-					continue;
-				}
-
-			}
-		}
-*/
 		if (F->W.instruction[ID_IFLD] == ASSEMBLY_IST) {
 			if (Inter::Assembly::which_marker(F) == ASM_NEG_ASMMARKER) {
 				label_sense = FALSE;
@@ -165,7 +151,7 @@ void VanillaCode::lab(code_generation *gen, inter_tree_node *P) {
 	inter_symbol *label_s =
 		InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[LABEL_LAB_IFLD]);
 	if (label_s == NULL) internal_error("unknown label in lab in Inter tree");
-	Generators::evaluate_label(gen, label_s->symbol_name);
+	Generators::evaluate_label(gen, InterSymbol::identifier(label_s));
 }
 
 @ An |assembly| specifies one of a fixed number of special assembly-language

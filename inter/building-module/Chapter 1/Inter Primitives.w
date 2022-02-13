@@ -567,7 +567,7 @@ inter_ti Primitives::to_BIP(inter_tree *I, inter_symbol *symb) {
 	int B = SymbolAnnotation::get_i(symb, BIP_CODE_IANN);
 	inter_ti bip = (B > 0)?((inter_ti) B):0;
 	if (bip != 0) return bip;
-	bip = Primitives::name_to_BIP(symb->symbol_name);
+	bip = Primitives::name_to_BIP(InterSymbol::identifier(symb));
 	if (bip != 0) SymbolAnnotation::set_i(symb, BIP_CODE_IANN, bip);
 	return bip;
 }

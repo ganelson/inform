@@ -118,7 +118,7 @@ altered.
 	text_stream *inner_name = NULL;
 	if (Dictionaries::find(first_with_name, name) == NULL) {
 		LOGIF(PROPERTY_ALLOCATION, "! NEW name=%S   sname=%S   eor=%d   assim=%d\n",
-			name, prop_name->symbol_name,
+			name, InterSymbol::identifier(prop_name),
 			SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN),
 			SymbolAnnotation::get_b(prop_name, ASSIMILATED_IANN));
 		inner_name = Str::duplicate(name);
@@ -129,7 +129,7 @@ altered.
 		@<Set the translation to a new metadata array@>;
 	} else {
 		LOGIF(PROPERTY_ALLOCATION, "! OLD name=%S   sname=%S   eor=%d   assim=%d\n",
-			name, prop_name->symbol_name,
+			name, InterSymbol::identifier(prop_name),
 			SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN),
 			SymbolAnnotation::get_b(prop_name, ASSIMILATED_IANN));
 		inter_symbol *existing_prop_name = 

@@ -50,6 +50,6 @@ void Inter::PackageType::verify(inter_construct *IC, inter_tree_node *P, inter_p
 
 void Inter::PackageType::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *ptype_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PTYPE_IFLD);
-	if (ptype_name) WRITE("packagetype %S", ptype_name->symbol_name);
+	if (ptype_name) WRITE("packagetype %S", InterSymbol::identifier(ptype_name));
 	else { *E = Inode::error(P, I"cannot write packagetype", NULL); return; }
 }

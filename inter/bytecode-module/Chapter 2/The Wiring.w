@@ -115,7 +115,7 @@ void Wiring::wire_to(inter_symbol *S, inter_symbol *T) {
 		if (c == 100) {
 			c = 0;
 			for (inter_symbol *W = S; ((W) && (c < 20)); W = W->wiring.connects_to, c++)
-				LOG("%d. %S\n", c, W->symbol_name);
+				LOG("%d. %S\n", c, InterSymbol::identifier(W));
 			LOG("...");
 			internal_error("probably made a circuit in wiring");
 		}
@@ -131,7 +131,7 @@ plenty here.
 			WRITE_TO(STDERR, "Wiring caused circuit:\n");
 			c = 0;
 			for (inter_symbol *W = S; ((W) && (c < 20)); W = W->wiring.connects_to, c++)
-				WRITE_TO(STDERR, "%d. %S\n", c, W->symbol_name);
+				WRITE_TO(STDERR, "%d. %S\n", c, InterSymbol::identifier(W));
 			WRITE_TO(STDERR, "...");
 			internal_error("made a circuit in wiring");
 		}
