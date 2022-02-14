@@ -445,7 +445,8 @@ was all taken care of with the sticks of property values already declared.
 		inter_tree_node *P = InterSymbol::definition(inst_s);
 		inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_INST_IFLD);
 		int N = -1;
-		if (Inter::Kind::is_a(inst_kind, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) == FALSE)
+		inter_symbol *object_kind = RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM);
+		if ((object_kind == NULL) || (Inter::Kind::is_a(inst_kind, object_kind) == FALSE))
 			N = (int) (P->W.instruction[VAL2_INST_IFLD]);
 		segmentation_pos saved;
 		Generators::declare_instance(gen, inst_s, inst_kind, N, &saved);
@@ -510,10 +511,11 @@ int VanillaObjects::weak_id(inter_symbol *kind_s) {
 
 =
 int VanillaObjects::is_kind_of_object(code_generation *gen, inter_symbol *kind_s) {
-	if (kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) return FALSE;
-	inter_data_type *idt = Inter::Kind::data_type(kind_s);
-	if (idt == unchecked_idt) return FALSE;
-	if (Inter::Kind::is_a(kind_s, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM))) return TRUE;
+	inter_symbol *object_kind = RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM);
+	if (object_kind == NULL) return FALSE;
+	if (kind_s == object_kind) return FALSE;
+	if (Inter::Kind::data_type(kind_s) == unchecked_idt) return FALSE;
+	if (Inter::Kind::is_a(kind_s, object_kind)) return TRUE;
 	return FALSE;
 }
 

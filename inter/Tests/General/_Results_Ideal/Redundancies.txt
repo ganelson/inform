@@ -13,20 +13,20 @@ package main _plain
 		local y /main/K_number
 		code
 			inv !return
-				val /main/K_number x
+				val x
 			inv !return
 				inv !plus
-					val /main/K_number x
-					val /main/K_number y
+					val x
+					val y
 			inv !return
 				inv !minus
-					val /main/K_number x
-					val /main/K_number y
+					val x
+					val y
 			inv !jump
 				lab .useful
 			.useful
 			inv !return
 				inv !modulo
-					val /main/K_number x
-					val /main/K_number y
+					val x
+					val y
 	constant MyRoutine K_phrase_number____nothing = MyRoutine_B

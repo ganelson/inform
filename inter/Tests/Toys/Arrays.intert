@@ -14,78 +14,78 @@ package main _plain
 		code
 			inv !enableprinting
 			inv !print
-				val /main/K_unchecked "The third prime is: "
+				val "The third prime is: "
 			inv !printnumber
 				inv !lookup
-					val /main/K_list_of_values /main/primes
-					val /main/K_number 2
+					val (/main/K_list_of_values) /main/primes
+					val (/main/K_number) 2
 			inv !print
-				val /main/K_unchecked ".\n"
+				val ".\n"
 			inv !print
-				val /main/K_unchecked "The fourth prime is: "
+				val "The fourth prime is: "
 			inv !printstring
 				inv !lookup
-					val /main/K_list_of_values /main/primes
-					val /main/K_number 3
+					val (/main/K_list_of_values) /main/primes
+					val (/main/K_number) 3
 			inv !print
-				val /main/K_unchecked ".\n"
+				val ".\n"
 			inv !print
-				val /main/K_unchecked "The sixth prime is: "
+				val "The sixth prime is: "
 			inv !printnumber
 				inv !lookup
-					val /main/K_list_of_values /main/primes
-					val /main/K_number 5
+					val (/main/K_list_of_values) /main/primes
+					val (/main/K_number) 5
 			inv !print
-				val /main/K_unchecked ".\n"
+				val ".\n"
 			inv !print
-				val /main/K_unchecked "The second pair of twins is: "
+				val "The second pair of twins is: "
 			inv !printnumber
 				inv !lookupbyte
-					val /main/K_list_of_values /main/twins
-					val /main/K_number 2
+					val (/main/K_list_of_values) /main/twins
+					val (/main/K_number) 2
 			inv !print
-				val /main/K_unchecked ", "
+				val ", "
 			inv !printnumber
 				inv !lookupbyte
-					val /main/K_list_of_values /main/twins
-					val /main/K_number 3
+					val (/main/K_list_of_values) /main/twins
+					val (/main/K_number) 3
 			inv !print
-				val /main/K_unchecked ".\n"
+				val ".\n"
 			inv !print
-				val /main/K_unchecked "I knaw of "
+				val "I knaw of "
 			inv !printnumber
 				inv !lookup
-					val /main/K_list_of_values /main/carmichaels
-					val /main/K_number 0
+					val (/main/K_list_of_values) /main/carmichaels
+					val (/main/K_number) 0
 			inv !print
-				val /main/K_unchecked " Carmichael numbers.\n"
+				val " Carmichael numbers.\n"
 			inv !store
 				reference
 					inv !lookup
-						val /main/K_list_of_values /main/mutable
-						val /main/K_number 1
-				val /main/K_number 666
+						val (/main/K_list_of_values) /main/mutable
+						val (/main/K_number) 1
+				val (/main/K_number) 666
 			inv !print
-				val /main/K_unchecked "As mutated, middle entry is: "
+				val "As mutated, middle entry is: "
 			inv !printnumber
 				inv !lookup
-					val /main/K_list_of_values /main/mutable
-					val /main/K_number 1
+					val (/main/K_list_of_values) /main/mutable
+					val (/main/K_number) 1
 			inv !print
-				val /main/K_unchecked ".\n"
+				val ".\n"
 			inv !store
 				reference
 					inv !lookup
-						val /main/K_list_of_values /main/mutable
-						val /main/K_number 1
-				val /main/K_number 777
+						val (/main/K_list_of_values) /main/mutable
+						val (/main/K_number) 1
+				val (/main/K_number) 777
 			inv !print
-				val /main/K_unchecked "As mutated, middle entry is: "
+				val "As mutated, middle entry is: "
 			inv !printnumber
 				inv !lookup
-					val /main/K_list_of_values /main/mutable
-					val /main/K_number 1
+					val (/main/K_list_of_values) /main/mutable
+					val (/main/K_number) 1
 			inv !print
-				val /main/K_unchecked ".\n"
+				val ".\n"
 			inv !quit
 	constant Main K_unchecked_function = Main_B

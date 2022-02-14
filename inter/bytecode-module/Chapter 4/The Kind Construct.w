@@ -377,9 +377,9 @@ inter_symbol *Inter::Kind::operand_symbol(inter_symbol *kind_symbol, int i) {
 }
 
 inter_data_type *Inter::Kind::data_type(inter_symbol *kind_symbol) {
-	if (kind_symbol == NULL) return NULL;
+	if (kind_symbol == NULL) return unchecked_idt;
 	inter_tree_node *D = InterSymbol::definition(kind_symbol);
-	if (D == NULL) return NULL;
+	if (D == NULL) return unchecked_idt;
 	return Inter::Types::find_by_ID(D->W.instruction[DATA_TYPE_KIND_IFLD]);
 }
 

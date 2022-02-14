@@ -325,7 +325,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 		case CONSTANT_DIRECT:
 			if (P->W.extent != DATA_CONST_IFLD + 2) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-			*E = Inter::Verify::value(owner, P, DATA_CONST_IFLD, con_kind); if (*E) return;
+			*E = Inter::Types::validate(owner, P, DATA_CONST_IFLD, con_kind); if (*E) return;
 			break;
 		case CONSTANT_SUM_LIST:
 		case CONSTANT_PRODUCT_LIST:
@@ -333,7 +333,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 		case CONSTANT_QUOTIENT_LIST:
 			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				*E = Inter::Verify::value(owner, P, i, con_kind); if (*E) return;
+				*E = Inter::Types::validate(owner, P, i, con_kind); if (*E) return;
 			}
 			break;
 		case CONSTANT_INDIRECT_LIST: {
@@ -343,7 +343,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 				inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, 0);
 				if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inode::error(P, I"not a kind", InterSymbol::identifier(conts_kind)); return; }
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-					*E = Inter::Verify::value(owner, P, i, conts_kind); if (*E) return;
+					*E = Inter::Types::validate(owner, P, i, conts_kind); if (*E) return;
 				}
 			} else if ((idt) && (idt->type_ID == TABLE_IDT)) {
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
@@ -367,7 +367,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 				for (int i=DATA_CONST_IFLD, counter = 0; i<P->W.extent; i=i+2) {
 					inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, counter++);
 					if (Inter::Kind::is(conts_kind) == FALSE) { *E = Inode::error(P, I"not a kind", InterSymbol::identifier(conts_kind)); return; }
-					*E = Inter::Verify::value(owner, P, i, conts_kind); if (*E) return;
+					*E = Inter::Types::validate(owner, P, i, conts_kind); if (*E) return;
 				}
 			} else {
 				{ *E = Inode::error(P, I"not a struct", NULL); return; }
@@ -400,7 +400,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		WRITE(" = ");
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:
-				Inter::Types::write(OUT, P, con_kind,
+				Inter::Types::write(OUT, P,
 					P->W.instruction[DATA_CONST_IFLD], P->W.instruction[DATA_CONST_IFLD+1], InterPackage::scope_of(P), hex);
 				break;
 			case CONSTANT_SUM_LIST:			
@@ -417,7 +417,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					Inter::Types::write(OUT, P, conts_kind, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
+					Inter::Types::write(OUT, P, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;
@@ -428,7 +428,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
 					inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, counter++);
-					Inter::Types::write(OUT, P, conts_kind, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
+					Inter::Types::write(OUT, P, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;

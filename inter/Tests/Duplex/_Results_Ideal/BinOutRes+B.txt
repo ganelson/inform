@@ -77,19 +77,19 @@ package main _plain
 		local x /main/K_colour __argument
 		code
 			inv /main/R_102
-				val /main/K_number dw'marbles'
+				val (/main/K_number) dw'marbles'
 			inv !return
 				inv !modulo
 					inv !plus
 						cast /main/K_number <- /main/K_colour
-							val /main/K_colour x
-						val /main/K_number 1
-					val /main/K_truth_state &"a b"
+							val (/main/K_colour) x
+						val (/main/K_number) 1
+					val (/main/K_truth_state) &"a b"
 	constant R_101 K_colour____colour = R_101_B
 	package R_102_B _code
 		local x /main/K_colour __argument
 		code
 			inv !return
-				val /main/K_colour /main/I_red
+				val (/main/K_colour) /main/I_red
 	constant R_102 K_colour____colour = R_102_B
 	constant amount K_number = sum{ 2, C_taxes }

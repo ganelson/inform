@@ -104,22 +104,6 @@ inter_error_message *Inter::Verify::data_type(inter_tree_node *P, int index) {
 	return NULL;
 }
 
-inter_error_message *Inter::Verify::value(inter_package *owner, inter_tree_node *P, int index, inter_symbol *kind_symbol) {
-	inter_symbols_table *T = InterPackage::scope(owner);
-	if (T == NULL) T = Inode::globals(P);
-	if (kind_symbol == NULL) return Inode::error(P, I"unknown kind for value", NULL);
-	inter_ti V1 = P->W.instruction[index];
-	inter_ti V2 = P->W.instruction[index+1];
-	return Inter::Types::verify(P, kind_symbol, V1, V2, T);
-}
-
-inter_error_message *Inter::Verify::local_value(inter_tree_node *P, int index, inter_symbol *kind_symbol, inter_symbols_table *T) {
-	if (kind_symbol == NULL) return Inode::error(P, I"unknown kind for value", NULL);
-	inter_ti V1 = P->W.instruction[index];
-	inter_ti V2 = P->W.instruction[index+1];
-	return Inter::Types::verify(P, kind_symbol, V1, V2, T);
-}
-
 void Inter::Verify::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 	inter_tree_node *F = (inter_tree_node *) vI;
 	if (F == NULL) { WRITE("<no frame>"); return; }

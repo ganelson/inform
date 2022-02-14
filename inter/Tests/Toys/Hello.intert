@@ -7,6 +7,6 @@ package main _plain
 		code
 			inv !enableprinting
 			inv !print
-				val /main/K_unchecked "Hello, world.\n"
+				val "Hello, world.\n"
 			inv !quit
 	constant Main K_unchecked_function = Main_B

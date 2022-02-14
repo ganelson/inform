@@ -87,7 +87,10 @@ uses a module of utility functions called <a href="../../../inweb/docs/foundatio
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. What is intermediate about inter. </b>This module is concerned with managing the <a href="2-it.html#SP1" class="internal">inter_tree</a> data structure in
-memory, and with reading and writing it from and to the filing system.
+memory, and with reading and writing it from and to the filing system. Because
+this data structure can live in files outside of memory, we need to worry about
+whether its design changes over time: see <a href="1-tiv.html" class="internal">The Inter Version</a> for the issues
+arising over that.
 </p>
 
 <p class="commentary">An Inter tree is an expression of a single program. It's an intermediate state

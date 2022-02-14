@@ -71,7 +71,24 @@ inter_ti Inter::Types::transpose_value(inter_ti V1, inter_ti V2, inter_ti *grid,
 	return V2;
 }
 
-inter_error_message *Inter::Types::verify(inter_tree_node *P, inter_symbol *kind_symbol, inter_ti V1, inter_ti V2, inter_symbols_table *scope) {
+inter_error_message *Inter::Types::validate(inter_package *owner, inter_tree_node *P, int index, inter_symbol *kind_symbol) {
+	inter_symbols_table *T = InterPackage::scope(owner);
+	if (T == NULL) T = Inode::globals(P);
+	inter_ti V1 = P->W.instruction[index];
+	inter_ti V2 = P->W.instruction[index+1];
+	return Inter::Types::verify_inner(P, kind_symbol, V1, V2, T);
+}
+
+inter_error_message *Inter::Types::validate_local(inter_tree_node *P, int index, int kind_index, inter_symbols_table *T) {
+	inter_symbol *kind_symbol = NULL;
+	if (P->W.instruction[kind_index])
+		kind_symbol = InterSymbolsTable::symbol_from_ID(T, P->W.instruction[kind_index]);
+	inter_ti V1 = P->W.instruction[index];
+	inter_ti V2 = P->W.instruction[index+1];
+	return Inter::Types::verify_inner(P, kind_symbol, V1, V2, T);
+}
+
+inter_error_message *Inter::Types::verify_inner(inter_tree_node *P, inter_symbol *kind_symbol, inter_ti V1, inter_ti V2, inter_symbols_table *scope) {
 	switch (V1) {
 		case LITERAL_IVAL: {
 			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
@@ -151,7 +168,7 @@ inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T
 
 =
 
-void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F, inter_symbol *kind_symbol,
+void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F,
 	inter_ti V1, inter_ti V2, inter_symbols_table *scope, int hex_flag) {
 	switch (V1) {
 		case LITERAL_IVAL:

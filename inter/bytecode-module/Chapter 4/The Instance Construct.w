@@ -86,7 +86,7 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			P->W.instruction[VAL2_INST_IFLD] = Inter::Kind::next_enumerated_value(inst_kind);
 		}
 	} else { *E = Inode::error(P, I"not a kind which has instances", NULL); return; }
-	*E = Inter::Verify::value(owner, P, VAL1_INST_IFLD, inst_kind); if (*E) return;
+	*E = Inter::Types::validate(owner, P, VAL1_INST_IFLD, inst_kind); if (*E) return;
 
 	inter_ti vcount = Inode::bump_verification_count(P);
 	if (vcount == 0) {
@@ -108,7 +108,7 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		inter_data_type *idt = Inter::Kind::data_type(inst_kind);
 		if (idt) {
 			WRITE("instance %S %S = ", InterSymbol::identifier(inst_name), InterSymbol::identifier(inst_kind));
-			Inter::Types::write(OUT, P, NULL,
+			Inter::Types::write(OUT, P,
 				P->W.instruction[VAL1_INST_IFLD], P->W.instruction[VAL2_INST_IFLD], InterPackage::scope_of(P), FALSE);
 		} else { *E = Inode::error(P, I"instance with bad data type", NULL); return; }
 	} else { *E = Inode::error(P, I"bad instance", NULL); return; }

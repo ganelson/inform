@@ -9,7 +9,7 @@ Defining the val construct.
 =
 void Inter::Val::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(VAL_IST, I"val");
-	InterConstruct::specify_syntax(IC, I"val IDENTIFIER TOKENS");
+	InterConstruct::specify_syntax(IC, I"val TOKENS");
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Val::read);
@@ -39,18 +39,28 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *val_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], KIND_IST, E);
-	if (*E) return;
+	text_stream *kind_text = NULL, *value_text = ilp->mr.exp[0];
+	match_results mr2 = Regexp::create_mr();
+	if (Regexp::match(&mr2, value_text, L"%((%c+)%) (%c+)")) {
+		kind_text = mr2.exp[0];
+		value_text = mr2.exp[1];
+	}
+
+	inter_symbol *val_kind = NULL;
+	if (kind_text) {
+		val_kind = TextualInter::find_symbol(IBM, eloc, kind_text, KIND_IST, E);
+		if (*E) return;
+	}
 
 	inter_ti val1 = 0;
 	inter_ti val2 = 0;
 
-	inter_symbol *kind_as_value = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[1], KIND_IST, E);
-	*E = NULL;
+	inter_symbol *kind_as_value = TextualInter::find_symbol(IBM, eloc, value_text, KIND_IST, E);
 	if (kind_as_value) {
+		*E = NULL;
 		Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value, &val1, &val2);
 	} else {
-		*E = Inter::Types::read(ilp->line, eloc, IBM, val_kind, ilp->mr.exp[1], &val1, &val2, locals);
+		*E = Inter::Types::read(ilp->line, eloc, IBM, val_kind, value_text, &val1, &val2, locals);
 		if (*E) return;
 	}
 
@@ -58,7 +68,9 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 }
 
 inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_symbol *val_kind, int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, val_kind), val1, val2, eloc, (inter_ti) level);
+	inter_ti KID = 0;
+	if (val_kind) KID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, val_kind);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, KID, val1, val2, eloc, (inter_ti) level);
 	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -72,19 +84,23 @@ void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 	if (P->W.extent != EXTENT_VAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbols_table *locals = InterPackage::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
-	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_VAL_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *val_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_VAL_IFLD]);
-	*E = Inter::Verify::local_value(P, VAL1_VAL_IFLD, val_kind, locals); if (*E) return;
+	if (P->W.instruction[KIND_VAL_IFLD]) {
+		*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_VAL_IFLD], KIND_IST);
+		if (*E) return;
+		*E = Inter::Types::validate_local(P, VAL1_VAL_IFLD, KIND_VAL_IFLD, locals);
+		if (*E) return;
+	}
 }
 
 void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbols_table *locals = InterPackage::scope_of(P);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
-	inter_symbol *val_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_VAL_IFLD);
-	if (val_kind) {
-		WRITE("val ");
-		TextualInter::write_symbol_from(OUT, P, KIND_VAL_IFLD);
-		WRITE(" ");
-		Inter::Types::write(OUT, P, val_kind, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);
-	} else { *E = Inode::error(P, I"cannot write val", NULL); return; }
+	WRITE("val ");
+	if (P->W.instruction[KIND_VAL_IFLD]) {
+		inter_symbol *val_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_VAL_IFLD);
+		if (val_kind) {
+			WRITE("("); TextualInter::write_symbol_from(OUT, P, KIND_VAL_IFLD); WRITE(") ");
+		} else { *E = Inode::error(P, I"cannot write val", NULL); return; }
+	} 
+	Inter::Types::write(OUT, P, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);
 }

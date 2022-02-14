@@ -70,7 +70,7 @@ and so on: the ratio was fairly consistent. More could certainly be done (even
 these compressed files reduce further if run through gzip), but it would be a
 trade-off for complexity. At some point enough is good enough.
 
-@ Compressed data exists only in files: decompression happens as this is read
+@ Compressed data exists only in files: decompression happens as data is read
 into memory, and compression happens as it is written to the file.
 
 This is the decoder. It stores the 32-bit unsigned value read in |result|,
@@ -79,41 +79,37 @@ occurs, then it returns |FALSE| and the contents of |result| are undefined.
 
 =
 int Inter::Binary::read_word(FILE *binary_file, unsigned int *result) {
-	int c1 = getc(binary_file); if (c1 == EOF) return FALSE;
+	int c1 = getc(binary_file), c2, c3, c4, c5; if (c1 == EOF) return FALSE;
 	switch (c1 & 0xE0) {
 		case 0:     /* opening byte 000xxxxx */
 		case 0x20:  /* opening byte 001xxxxx */
 		case 0x40:  /* opening byte 010xxxxx */
-		case 0x60:  /* opening byte 011xxxxx */ {
+		case 0x60:  /* opening byte 011xxxxx */
 			*result = (unsigned int) c1; break;
-		}
 		case 0x80:  /* opening byte 100xxxxx */
-		case 0xa0:  /* opening byte 101xxxxx */ {
+		case 0xa0:  /* opening byte 101xxxxx */
 			c1 = c1 & 0x3f;
-	    	int c2 = getc(binary_file); if (c2 == EOF) return FALSE;
+	    	c2 = getc(binary_file); if (c2 == EOF) return FALSE;
 			*result = (((unsigned int) c1) << 8) + (unsigned int) c2; break;
-		}
-		case 0xc0:  /* opening byte 110xxxxx */ {
+		case 0xc0:  /* opening byte 110xxxxx */
 	    	c1 = c1 & 0x1f;
-	    	int c2 = getc(binary_file); if (c2 == EOF) return FALSE;
-	    	int c3 = getc(binary_file); if (c3 == EOF) return FALSE;
+	    	c2 = getc(binary_file); if (c2 == EOF) return FALSE;
+	    	c3 = getc(binary_file); if (c3 == EOF) return FALSE;
 			*result = (((unsigned int) c1) << 16) +
 				(((unsigned int) c2) << 8) + (unsigned int) c3; break;
-		}
-		case 0xe0:  /* opening byte 111xxxxx */ {
+		case 0xe0:  /* opening byte 111xxxxx */
 			if (c1 != 0xff) {
 				*result = 0x40000000 + (unsigned int) (c1 & 0x1f); break;
 			} else {
-				int c2 = getc(binary_file); if (c2 == EOF) return FALSE;
-				int c3 = getc(binary_file); if (c3 == EOF) return FALSE;
-				int c4 = getc(binary_file); if (c4 == EOF) return FALSE;
-				int c5 = getc(binary_file); if (c5 == EOF) return FALSE;
+				c2 = getc(binary_file); if (c2 == EOF) return FALSE;
+				c3 = getc(binary_file); if (c3 == EOF) return FALSE;
+				c4 = getc(binary_file); if (c4 == EOF) return FALSE;
+				c5 = getc(binary_file); if (c5 == EOF) return FALSE;
 				*result = (((unsigned int) c2) << 24) +
 							(((unsigned int) c3) << 16) +
 							(((unsigned int) c4) << 8) + ((unsigned int) c5);
 			}
 			break;
-		}
 	}
 	return TRUE;
 }

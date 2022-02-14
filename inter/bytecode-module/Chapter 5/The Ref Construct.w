@@ -61,8 +61,7 @@ void Inter::Ref::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 	inter_symbols_table *locals = InterPackage::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
 	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_REF_IFLD], KIND_IST); if (*E) return;
-	inter_symbol *ref_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_REF_IFLD]);;
-	*E = Inter::Verify::local_value(P, VAL1_REF_IFLD, ref_kind, locals); if (*E) return;
+	*E = Inter::Types::validate_local(P, VAL1_REF_IFLD, KIND_REF_IFLD, locals); if (*E) return;
 }
 
 void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
@@ -74,6 +73,6 @@ void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 		WRITE("ref ");
 		TextualInter::write_symbol_from(OUT, P, KIND_REF_IFLD);
 		WRITE(" ");
-		Inter::Types::write(OUT, P, ref_kind, P->W.instruction[VAL1_REF_IFLD], P->W.instruction[VAL2_REF_IFLD], locals, FALSE);
+		Inter::Types::write(OUT, P, P->W.instruction[VAL1_REF_IFLD], P->W.instruction[VAL2_REF_IFLD], locals, FALSE);
 	} else { *E = Inode::error(P, I"cannot write ref", NULL); return; }
 }

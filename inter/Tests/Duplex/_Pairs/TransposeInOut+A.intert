@@ -14,7 +14,7 @@ package main _plain
 			code
 				.begin
 				inv !if
-					val /main/K_number /main/troublesome
+					val (/main/K_number) /main/troublesome
 					code
 						inv !goto
 							lab .begin
