@@ -8,14 +8,14 @@ package main _plain
 			splat &"return false;"
 	constant Falsity K_unchecked_function = Falsity_B
 	package Demo_B _code
-		local x /main/K_unchecked
-		local y /main/K_unchecked
+		local x
+		local y
 		code
 			splat &"return x+y;"
 	constant Demo K_unchecked_function = Demo_B
 	package Prop_Falsity_B _code
-		local reason /main/K_unchecked
-		local obj /main/K_unchecked
+		local reason
+		local obj
 		code
 			splat &"return 0;"
 	constant Prop_Falsity K_unchecked_function = Prop_Falsity_B

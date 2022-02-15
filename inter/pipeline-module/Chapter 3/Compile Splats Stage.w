@@ -358,12 +358,10 @@ not already there.
 
 @<Make a global variable in Inter@> =
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
-		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_ti v1 = 0, v2 = 0;
 	@<Assimilate a value@>;
-	Produce::guard(Inter::Variable::new(IBM, MID, KID, v1, v2, B, NULL));
+	Produce::guard(Inter::Variable::new(IBM, MID, NULL, v1, v2, B, NULL));
 
 @<Make a general property in Inter@> =
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);

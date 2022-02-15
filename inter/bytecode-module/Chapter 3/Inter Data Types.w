@@ -123,7 +123,7 @@ inter_error_message *Inter::Types::verify_inner(inter_tree_node *P, inter_symbol
 			else if (D->W.instruction[ID_IFLD] == VARIABLE_IST) ckind_symbol = Inter::Variable::kind_of(symb);
 			else if (D->W.instruction[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
 			else return Inode::error(P, I"nonconstant symbol", InterSymbol::identifier(symb));
-			if (Inter::Kind::is_a(ckind_symbol, kind_symbol) == FALSE) {
+			if ((ckind_symbol) && (Inter::Kind::is_a(ckind_symbol, kind_symbol) == FALSE)) {
 				LOG("cks %S, ks %S\n", InterSymbol::identifier(ckind_symbol), InterSymbol::identifier(kind_symbol));
 				return Inode::error(P, I"value of wrong kind", InterSymbol::identifier(symb));
 			}

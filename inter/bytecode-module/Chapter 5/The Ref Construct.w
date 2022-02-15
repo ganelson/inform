@@ -9,7 +9,7 @@ Defining the ref construct.
 =
 void Inter::Ref::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(REF_IST, I"ref");
-	InterConstruct::specify_syntax(IC, I"ref IDENTIFIER TOKEN");
+	InterConstruct::specify_syntax(IC, I"ref TOKENS");
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Ref::read);
@@ -38,19 +38,31 @@ void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbols_table *locals = InterPackage::scope(routine);
 	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
 
-	inter_symbol *ref_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], KIND_IST, E);
-	if (*E) return;
+	text_stream *kind_text = NULL, *value_text = ilp->mr.exp[0];
+	match_results mr2 = Regexp::create_mr();
+	if (Regexp::match(&mr2, value_text, L"%((%c+)%) (%c+)")) {
+		kind_text = mr2.exp[0];
+		value_text = mr2.exp[1];
+	}
+
+	inter_symbol *ref_kind = NULL;
+	if (kind_text) {
+		ref_kind = TextualInter::find_symbol(IBM, eloc, kind_text, KIND_IST, E);
+		if (*E) return;
+	}
 
 	inter_ti var_val1 = 0;
 	inter_ti var_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IBM, ref_kind, ilp->mr.exp[1], &var_val1, &var_val2, locals);
+	*E = Inter::Types::read(ilp->line, eloc, IBM, ref_kind, value_text, &var_val1, &var_val2, locals);
 	if (*E) return;
 
 	*E = Inter::Ref::new(IBM, ref_kind, ilp->indent_level, var_val1, var_val2, eloc);
 }
 
 inter_error_message *Inter::Ref::new(inter_bookmark *IBM, inter_symbol *ref_kind, int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, REF_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, ref_kind), val1, val2, eloc, (inter_ti) level);
+	inter_ti KID = 0;
+	if (ref_kind) KID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, ref_kind);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, REF_IST, 0, KID, val1, val2, eloc, (inter_ti) level);
 	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -60,19 +72,24 @@ void Inter::Ref::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 	if (P->W.extent != EXTENT_REF_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbols_table *locals = InterPackage::scope(owner);
 	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
-	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_REF_IFLD], KIND_IST); if (*E) return;
-	*E = Inter::Types::validate_local(P, VAL1_REF_IFLD, KIND_REF_IFLD, locals); if (*E) return;
+	if (P->W.instruction[KIND_REF_IFLD]) {
+		*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_REF_IFLD], KIND_IST);
+		if (*E) return;
+		*E = Inter::Types::validate_local(P, VAL1_REF_IFLD, KIND_REF_IFLD, locals);
+		if (*E) return;
+	}
 }
 
 void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = InterPackage::container(P);
 	inter_symbols_table *locals = InterPackage::scope(pack);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
-	inter_symbol *ref_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_REF_IFLD);
-	if (ref_kind) {
-		WRITE("ref ");
-		TextualInter::write_symbol_from(OUT, P, KIND_REF_IFLD);
-		WRITE(" ");
-		Inter::Types::write(OUT, P, P->W.instruction[VAL1_REF_IFLD], P->W.instruction[VAL2_REF_IFLD], locals, FALSE);
-	} else { *E = Inode::error(P, I"cannot write ref", NULL); return; }
+	WRITE("ref ");
+	if (P->W.instruction[KIND_REF_IFLD]) {
+		inter_symbol *val_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_REF_IFLD);
+		if (val_kind) {
+			WRITE("("); TextualInter::write_symbol_from(OUT, P, KIND_REF_IFLD); WRITE(") ");
+		} else { *E = Inode::error(P, I"cannot write ref", NULL); return; }
+	} 
+	Inter::Types::write(OUT, P, P->W.instruction[VAL1_REF_IFLD], P->W.instruction[VAL2_REF_IFLD], locals, FALSE);
 }

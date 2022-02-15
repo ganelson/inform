@@ -412,7 +412,6 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) WRITE("product");
 				if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) WRITE("difference");
 				if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE("quotient");
-				inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, 0);
 				WRITE("{");
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
@@ -424,10 +423,9 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 			}
 			case CONSTANT_STRUCT: {
 				WRITE("{");
-				for (int i=DATA_CONST_IFLD, counter = 0; i<P->W.extent; i=i+2) {
+				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					inter_symbol *conts_kind = Inter::Kind::operand_symbol(con_kind, counter++);
 					Inter::Types::write(OUT, P, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");

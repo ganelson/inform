@@ -9,8 +9,8 @@ package main _plain
 	kind K_number int32
 	kind K_phrase_number____nothing function K_number -> void
 	package MyRoutine_B _code
-		local x /main/K_number
-		local y /main/K_number
+		local (/main/K_number) x
+		local (/main/K_number) y
 		code
 			inv !return
 				val x

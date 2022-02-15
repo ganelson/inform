@@ -3,15 +3,15 @@ packagetype _code
 
 package main _plain
 	kind K_number int32
-	variable V_apple K_number = 1
-	variable V_apple K_number = 2
-	variable V_peach int32 = 12
+	variable V_apple = 1
+	variable V_apple = 2
+	variable (int32) V_peach = 12
 	kind K_colour enum
 	instance I_green K_colour
 	instance I_red K_colour
 	kind K_odour enum
 	instance I_citrus K_odour
 	instance I_leather K_odour
-	variable V_overtone K_colour = I_citrus
+	variable V_overtone = I_citrus
 	constant V_drivel K_number = khglkl
 	constant C_drivel K_number = khglkl

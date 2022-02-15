@@ -10,7 +10,7 @@ package main _plain
 	kind K_func function K_number -> K_number
 	package my_fn _plain
 		package R_101_B _code
-			local x /main/K_number __argument
+			local (/main/K_number) x __argument
 			code
 				.begin
 				inv !if

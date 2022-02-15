@@ -1,7 +1,7 @@
 inter: inter/Tests/Invalid/misinv.intert, line 10: no such symbol: 'K_odour'
 >--> kind K_stuff struct K_number K_colour K_odour
 inter: inter/Tests/Invalid/misinv.intert, line 27: local has kind K_colour which is not a K_number: 'x'
->--> ref /main/K_number x
+>--> ref (/main/K_number) x
 inter: inter/Tests/Invalid/misinv.intert, line 19: this inv of !increment should have 1 argument(s), but has 0
  1.    package main _plain
  2.    	package R_101_B _code
@@ -13,7 +13,7 @@ inter: inter/Tests/Invalid/misinv.intert, line 22: operand 2 of inv 'R_102' shou
  3.    		code
  4. ** 			inv /main/R_102
  5.    				val (/main/K_number) 12
- 5.    				ref /main/K_stuff S_stuff
+ 5.    				ref S_stuff
 inter: inter/Tests/Invalid/misinv.intert, line 24: operand 1 of inv '!increment' should be ref, but this is val
  1.    package main _plain
  2.    	package R_101_B _code

@@ -16,10 +16,10 @@ package main _plain
 	kind K_number int32
 	kind K_truth_state int2
 	defaultvalue K_number = 47
-	variable V_banana K_number = 100
+	variable (K_number) V_banana = 100
 	constant C_death K_number = -5
 	constant C_taxes K_number = 14
-	variable V_anxiety K_number = C_death
+	variable (K_number) V_anxiety = C_death
 	constant C_x K_number = 0x7f2a __hex
 	link early "alpha" "beta" "gamma" "delta"
 	link before "alpha" "" "" ""
@@ -31,11 +31,11 @@ package main _plain
 	kind K_colour enum
 	instance I_green K_colour = 1
 	instance I_red K_colour = 17
-	variable V_shade K_colour = I_red
+	variable (K_colour) V_shade = I_red
 	kind K_list_of_number list of K_number
 	constant C_primes K_list_of_number = { 2, 3, 5, 7, 11, 13, 17, 19 }
 	constant C_concealed K_list_of_number = C_primes
-	variable V_watch_list K_list_of_number = C_concealed
+	variable (K_list_of_number) V_watch_list = C_concealed
 	kind K_text text
 	constant C_complaint K_text = "This is already quite a long test case."
 	constant C_raw K_number = &"SOME_I6_DRIVEL"
@@ -77,7 +77,7 @@ package main _plain
 	constant RB_after K_rulebook = { R_after1, R_after2 }
 	kind K_colour____colour function K_colour -> K_colour
 	package R_101_B _code
-		local x /main/K_colour __argument
+		local (/main/K_colour) x __argument
 		code
 			inv /main/R_102
 				val (/main/K_colour) /main/I_green
@@ -90,7 +90,7 @@ package main _plain
 					val (/main/K_truth_state) &"a b"
 	constant R_101 K_colour____colour = R_101_B
 	package R_102_B _code
-		local x /main/K_colour __argument
+		local (/main/K_colour) x __argument
 		code
 			inv !return
 				val (/main/K_colour) /main/I_red
@@ -99,7 +99,7 @@ package main _plain
 	#Transmigration inserted my_fn here
 	package my_fn _plain
 		package R_101_B _code
-			local x /main/K_number __argument
+			local (/main/K_number) x __argument
 			code
 				.begin
 				inv !if

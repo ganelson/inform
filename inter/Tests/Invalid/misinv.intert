@@ -10,7 +10,7 @@ package main _plain
 	kind K_stuff struct K_number K_colour K_odour
 	kind K_colour____colour function K_colour -> K_colour
 	package R_101_B _code
-		local x /main/K_colour __argument
+		local (/main/K_colour) x __argument
 		code
 			val (/main/K_number) 3
 			inv !jump
@@ -19,15 +19,15 @@ package main _plain
 			inv !increment
 			inv /main/R_102
 				val (/main/K_number) 12
-				ref /main/K_stuff S_stuff
+				ref S_stuff
 			inv !increment
 				val (/main/K_number) 2
 			inv /main/R_101
 				inv !increment
-					ref /main/K_number x
+					ref (/main/K_number) x
 	constant R_101 K_colour____colour = R_101_B
 	package R_101_A _code
-		local x /main/K_colour __argument
+		local (/main/K_colour) x __argument
 		code
 			inv !increment
 			inv /main/R_101

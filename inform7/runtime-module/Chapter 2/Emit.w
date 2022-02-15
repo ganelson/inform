@@ -383,7 +383,7 @@ inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_ti v1, inter_
 	inter_symbol *var_s = InterNames::to_symbol(var_iname);
 	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Variable::new(Emit::at(),
-		Emit::symbol_id(var_s), Emit::symbol_id(kind_s), v1, v2, Emit::baseline(), NULL));
+		Emit::symbol_id(var_s), kind_s, v1, v2, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return var_s;
 }

@@ -36,8 +36,8 @@ package main _plain
 			constant Falsity /main/K_unchecked_function = Falsity_B __assimilated
 		package Demo_fn _function
 			package Demo_B _code
-				local x /main/K_unchecked
-				local y /main/K_unchecked
+				local (/main/K_unchecked) x
+				local (/main/K_unchecked) y
 				code
 					inv !return
 						inv !plus
@@ -62,11 +62,11 @@ package main _plain
 				constant XF /main/K_unchecked_list = { 6, 7, 8, 9 } __assimilated __buffer_array
 		package variables _submodule
 			package nitwit_var _plain
-				variable nitwit K_unchecked = 2 __assimilated
+				variable nitwit = 2 __assimilated
 		package Banana_fn _function
 			package Banana_B _code
-				local x1 /main/K_unchecked
-				local x2 /main/K_unchecked
+				local (/main/K_unchecked) x1
+				local (/main/K_unchecked) x2
 				code
 					inv !return
 						val (/main/K_unchecked) 0
