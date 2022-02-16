@@ -6,9 +6,9 @@ package main _plain
 	kind K_int2 int2
 	kind K_string text
 	package resources _plain
-		constant Bidger /main/K_unchecked = 20
+		constant (/main/K_unchecked) Bidger = 20
 		splat CONSTANT &"Constant Badger =     12;\n"
 		splat CONSTANT &"Constant Bodger $$10011101;\n"
 		splat CONSTANT &"Constant Budger $7fe2  ;\n"
-		constant Danza /main/K_unchecked = sum{ 2, 34 }
-		constant Sahara /main/K_unchecked = sum{ Danza, Bidger, 1 }
+		constant (/main/K_unchecked) Danza = sum{ 2, 34 }
+		constant (/main/K_unchecked) Sahara = sum{ Danza, Bidger, 1 }

@@ -1,8 +1,8 @@
 package main _plain
 	kind K_number int32
-	constant MAGIC K_number = 16339
+	constant (K_number) MAGIC = 16339
 	splat IFTRUE &"#iftrue MAGIC == 16339;\n"
-	constant WIZARD K_number = 5
+	constant (K_number) WIZARD = 5
 	splat IFNOT &"#ifnot;\n"
-	constant MUGGLE K_number = 0
+	constant (K_number) MUGGLE = 0
 	splat ENDIF &"#endif;\n"

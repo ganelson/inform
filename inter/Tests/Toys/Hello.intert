@@ -9,4 +9,4 @@ package main _plain
 			inv !print
 				val "Hello, world.\n"
 			inv !quit
-	constant Main K_unchecked_function = Main_B
+	constant (K_unchecked_function) Main = Main_B

@@ -13,5 +13,5 @@ package main _plain
 	instance I_citrus K_odour
 	instance I_leather K_odour
 	variable V_overtone = I_citrus
-	constant V_drivel K_number = khglkl
-	constant C_drivel K_number = khglkl
+	constant (K_number) V_drivel = khglkl
+	constant (K_number) C_drivel = khglkl

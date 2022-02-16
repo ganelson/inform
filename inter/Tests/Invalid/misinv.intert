@@ -25,10 +25,10 @@ package main _plain
 			inv /main/R_101
 				inv !increment
 					ref (/main/K_number) x
-	constant R_101 K_colour____colour = R_101_B
+	constant (K_colour____colour) R_101 = R_101_B
 	package R_101_A _code
 		local (/main/K_colour) x __argument
 		code
 			inv !increment
 			inv /main/R_101
-	constant R_102 K_colour____colour = R_101_A
+	constant (K_colour____colour) R_102 = R_101_A

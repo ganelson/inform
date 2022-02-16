@@ -8,5 +8,5 @@ package main _plain
 	kind K_unchecked_list list of K_unchecked
 	kind K_number int32
 	kind K_int2 int2
-	constant Peach K_number = Banana
-	constant Banana K_number = 2
+	constant (K_number) Peach = Banana
+	constant (K_number) Banana = 2

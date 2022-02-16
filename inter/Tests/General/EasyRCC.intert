@@ -12,7 +12,7 @@ package main _plain
 	instance I_turquoise K_colour = 17
 	splat ENDIF &"#ENDIF;\n"
 	instance I_maroon K_colour = 4002
-	constant wallpaper_shade K_colour = I_green
+	constant (K_colour) wallpaper_shade = I_green
 	splat IFDEF &"#ifdef wallpaper_shade;\n"
 	instance I_cerise K_colour = 28
 	splat ENDIF &"  #ENDif ; \n"

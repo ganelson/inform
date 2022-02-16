@@ -9,5 +9,5 @@ package main _plain
 	kind K_number int32
 	kind K_func function K_number -> K_number
 	#Transmigration removed my_fn here
-	constant awkward K_number = /main/my_fn/secret
-	constant troublesome K_number = 12
+	constant (K_number) awkward = /main/my_fn/secret
+	constant (K_number) troublesome = 12

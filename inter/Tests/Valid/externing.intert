@@ -4,7 +4,7 @@ packagetype _code
 package main _plain
 	kind K_number int32
 	kind K_list_of_number list of K_number
-	constant C_kermit K_number = /main/pond/FROG
-	constant C_test K_list_of_number = { 2, /main/pond/FROG }
+	constant (K_number) C_kermit = /main/pond/FROG
+	constant (K_list_of_number) C_test = { 2, /main/pond/FROG }
 	package pond _plain
-		constant FROG /main/K_number = 12
+		constant (/main/K_number) FROG = 12

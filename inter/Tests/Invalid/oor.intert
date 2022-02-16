@@ -4,6 +4,6 @@ packagetype _code
 package main _plain
 	kind K_number int32
 	kind K_truth_state int2
-	constant true K_truth_state = 1
-	constant false K_truth_state = 0
-	constant dunno K_truth_state = 2
+	constant (K_truth_state) true = 1
+	constant (K_truth_state) false = 0
+	constant (K_truth_state) dunno = 2

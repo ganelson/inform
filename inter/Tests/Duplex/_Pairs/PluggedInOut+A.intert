@@ -18,11 +18,11 @@ package main _plain
 					code
 						inv !goto
 							lab .begin
-		constant R_101 /main/K_func = R_101_B
-		constant secret /main/K_number = 7
-		constant tricksy /main/K_number = /main/connectors/plug00002
-	constant awkward K_number = /main/my_fn/secret
-	constant troublesome K_number = 12
+		constant (/main/K_func) R_101 = R_101_B
+		constant (/main/K_number) secret = 7
+		constant (/main/K_number) tricksy = /main/connectors/plug00002
+	constant (K_number) awkward = /main/my_fn/secret
+	constant (K_number) troublesome = 12
 	package connectors _linkage
 		socket secret ~~> /main/my_fn/secret
 		plug plug00002 ~~> "C_majors"

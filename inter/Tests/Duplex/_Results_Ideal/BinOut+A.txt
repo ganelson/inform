@@ -16,4 +16,4 @@ package main _plain
 				code
 					inv !goto
 						lab .begin
-	constant R_101 K_func = R_101_B
+	constant (K_func) R_101 = R_101_B

@@ -1,2 +1,2 @@
 inter: inter/Tests/Invalid/oor.intert, line 9: value out of range: '2'
->--> constant dunno K_truth_state = 2
+>--> constant (K_truth_state) dunno = 2

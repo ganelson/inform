@@ -4,4 +4,4 @@ packagetype _code
 package main _plain
 	kind K_number int32
 	kind K_list_of_number list of K_number
-	constant C_primes K_list_of_number = { 2, 3, 5, 7, 11, 13, 17, 19 }
+	constant (K_list_of_number) C_primes = { 2, 3, 5, 7, 11, 13, 17, 19 }

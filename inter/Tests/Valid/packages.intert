@@ -3,6 +3,6 @@ packagetype _code
 
 package main _plain
 	kind K_number int32
-	constant x K_number = 11
+	constant (K_number) x = 11
 	package sub _plain
-		constant y /main/K_number = 17
+		constant (/main/K_number) y = 17

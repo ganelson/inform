@@ -299,7 +299,8 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 		}
 		if (D->W.instruction[ID_IFLD] == CONSTANT_IST) {
 			inter_symbol *kind_const = Inter::Constant::kind_of(symb);
-			if (Inter::Kind::is_a(kind_const, kind_symbol) == FALSE) return Inter::Errors::quoted(I"symbol has the wrong kind", S, eloc);
+			if ((kind_const) && (Inter::Kind::is_a(kind_const, kind_symbol) == FALSE))
+				return Inter::Errors::quoted(I"symbol has the wrong kind", S, eloc);
 			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
 			return NULL;
 		}

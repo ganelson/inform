@@ -5,8 +5,8 @@ package main _plain
 		kind K_typeless_int int32
 		kind K_list_of_values list of K_unchecked
 		kind K_truth_state int2
-		constant VERB_DIRECTIVE_DIVIDER K_unchecked = 1
-		constant VERB_DIRECTIVE_RESULT K_unchecked = 2
+		constant VERB_DIRECTIVE_DIVIDER = 1
+		constant VERB_DIRECTIVE_RESULT = 2
 	package template _module
 		splat CONSTANT &"Constant DEBUG;\n"
 		splat CONSTANT &"Constant Badger = 12;\n"

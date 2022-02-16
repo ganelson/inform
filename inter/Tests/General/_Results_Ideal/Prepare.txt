@@ -109,15 +109,15 @@ primitive !message3 val val val val val -> val
 primitive !externalcall val val -> val
 package main _plain
 	package architectural _linkage
-		constant WORDSIZE /main/generic/kinds/K_unchecked = 2 __architectural
-		constant NULL /main/generic/kinds/K_unchecked = 0xffff __architectural __hex
-		constant WORD_HIGHBIT /main/generic/kinds/K_unchecked = 0x8000 __architectural __hex
-		constant WORD_NEXTTOHIGHBIT /main/generic/kinds/K_unchecked = 0x4000 __architectural __hex
-		constant IMPROBABLE_VALUE /main/generic/kinds/K_unchecked = 0x7fe3 __architectural __hex
-		constant MAX_POSITIVE_NUMBER /main/generic/kinds/K_unchecked = 32767 __architectural
-		constant MIN_NEGATIVE_NUMBER /main/generic/kinds/K_unchecked = -32768 __architectural __signed
-		constant TARGET_ZCODE /main/generic/kinds/K_unchecked = 1 __architectural
-		constant DEBUG /main/generic/kinds/K_unchecked = 1 __architectural
+		constant (/main/generic/kinds/K_unchecked) WORDSIZE = 2 __architectural
+		constant (/main/generic/kinds/K_unchecked) NULL = 0xffff __architectural __hex
+		constant (/main/generic/kinds/K_unchecked) WORD_HIGHBIT = 0x8000 __architectural __hex
+		constant (/main/generic/kinds/K_unchecked) WORD_NEXTTOHIGHBIT = 0x4000 __architectural __hex
+		constant (/main/generic/kinds/K_unchecked) IMPROBABLE_VALUE = 0x7fe3 __architectural __hex
+		constant (/main/generic/kinds/K_unchecked) MAX_POSITIVE_NUMBER = 32767 __architectural
+		constant (/main/generic/kinds/K_unchecked) MIN_NEGATIVE_NUMBER = -32768 __architectural __signed
+		constant (/main/generic/kinds/K_unchecked) TARGET_ZCODE = 1 __architectural
+		constant (/main/generic/kinds/K_unchecked) DEBUG = 1 __architectural
 	package generic _module
 		package kinds _submodule
 			kind K_unchecked unchecked
