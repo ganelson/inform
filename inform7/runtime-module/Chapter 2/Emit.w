@@ -381,9 +381,10 @@ void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_ti v1, inter_ti v2) {
 	packaging_state save = Packaging::enter_home_of(var_iname);
 	inter_symbol *var_s = InterNames::to_symbol(var_iname);
-	inter_symbol *kind_s = Produce::kind_to_symbol(K);
+	inter_type it = Inter::Types::untyped();
+	if ((K) && (K != K_value)) it = Inter::Types::from_symbol(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Variable::new(Emit::at(),
-		Emit::symbol_id(var_s), kind_s, v1, v2, Emit::baseline(), NULL));
+		Emit::symbol_id(var_s), it, v1, v2, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return var_s;
 }

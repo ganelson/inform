@@ -497,9 +497,12 @@ Inter pair --
 
 =
 void Produce::val(inter_tree *I, kind *K, inter_ti val1, inter_ti val2) {
-	inter_symbol *val_kind = Produce::kind_to_symbol(K);
-	if (val_kind == NULL) internal_error("no kind for val");
-	Produce::guard(Inter::Val::new(Produce::at(I), val_kind,
+	inter_symbol *val_kind = NULL;
+	if ((K) && (K != K_value)) {
+		val_kind = Produce::kind_to_symbol(K);
+		if (val_kind == NULL) internal_error("no kind for val");
+	}
+	Produce::guard(Inter::Val::new(Produce::at(I), Inter::Types::from_symbol(val_kind),
 		Produce::level(I), val1, val2, NULL));
 }
 
@@ -551,10 +554,13 @@ void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_bookmark *IBM = Packaging::at(I);
 	Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM),
 		s, &val1, &val2);
-	inter_symbol *val_kind = Produce::kind_to_symbol(K);
-	if (val_kind == NULL) internal_error("no kind for ref");
-	Produce::guard(Inter::Ref::new(Produce::at(I), val_kind, Produce::level(I),
-		val1, val2, NULL));
+	inter_symbol *val_kind = NULL;
+	if ((K) && (K != K_value)) {
+		val_kind = Produce::kind_to_symbol(K);
+		if (val_kind == NULL) internal_error("no kind for ref");
+	}
+	Produce::guard(Inter::Ref::new(Produce::at(I), Inter::Types::from_symbol(val_kind),
+		Produce::level(I), val1, val2, NULL));
 }
 
 @ |cast| and kinds may yet disappear from Inter: they don't really accomplish
@@ -634,7 +640,6 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 		internal_error("local variable emitted outside function");
 	if (K == NULL) K = K_value;
 	inter_symbol *local_s = Produce::new_local_symbol(I, lname);
-	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	if (annot != INVALID_IANN) SymbolAnnotation::set_b(local_s, annot, TRUE);
 	InterSymbol::make_local(local_s);
 	inter_bookmark *locals_at = &(I->site.sprdata.function_locals_bookmark);
@@ -645,7 +650,9 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 		Produce::guard(Inter::Comment::new(locals_at, Produce::baseline(locals_at) + 1,
 			NULL, ID));
 	}
-	Produce::guard(Inter::Local::new(locals_at, local_s, kind_s,
+	inter_type it = Inter::Types::untyped();
+	if ((K) && (K != K_value)) it = Inter::Types::from_symbol(Produce::kind_to_symbol(K));
+	Produce::guard(Inter::Local::new(locals_at, local_s, it,
 		Produce::baseline(locals_at) + 1, NULL));
 	return local_s;
 }

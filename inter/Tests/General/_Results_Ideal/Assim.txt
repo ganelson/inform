@@ -32,17 +32,17 @@ package main _plain
 			package Falsity_B _code
 				code
 					inv !return
-						val (/main/K_unchecked) 0
+						val 0
 			constant (/main/K_unchecked_function) Falsity = Falsity_B __assimilated
 		package Demo_fn _function
 			package Demo_B _code
-				local (/main/K_unchecked) x
-				local (/main/K_unchecked) y
+				local x
+				local y
 				code
 					inv !return
 						inv !plus
-							val (/main/K_unchecked) x
-							val (/main/K_unchecked) y
+							val x
+							val y
 			constant (/main/K_unchecked_function) Demo = Demo_B __assimilated
 		package arrays _submodule
 			package XA_arr _plain
@@ -65,17 +65,17 @@ package main _plain
 				variable nitwit = 2 __assimilated
 		package Banana_fn _function
 			package Banana_B _code
-				local (/main/K_unchecked) x1
-				local (/main/K_unchecked) x2
+				local x1
+				local x2
 				code
 					inv !return
-						val (/main/K_unchecked) 0
+						val 0
 			constant (/main/K_unchecked_function) Banana = Banana_B __assimilated
 		package Peach_fn _function
 			package Peach_B _code
 				code
 					inv !return
-						val (/main/K_unchecked) 0
+						val 0
 			constant (/main/K_unchecked_function) Peach = Peach_B __assimilated
 		package marmorial_prop _property
 			constant (/main/K_unchecked) property_id = 0

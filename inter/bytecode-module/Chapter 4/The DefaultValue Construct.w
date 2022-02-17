@@ -9,7 +9,7 @@ Defining the defaultvalue construct.
 =
 void Inter::DefaultValue::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(DEFAULTVALUE_IST, I"defaultvalue");
-	InterConstruct::specify_syntax(IC, I"defaultvalue IDENTIFIER = TOKENS");
+	InterConstruct::specify_syntax(IC, I"defaultvalue TOKEN = TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::DefaultValue::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::DefaultValue::verify);
@@ -56,7 +56,7 @@ void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	inter_symbol *con_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_DEF_IFLD);
 	if (con_kind) {
 		WRITE("defaultvalue %S = ", InterSymbol::identifier(con_kind));
-		Inter::Types::write(OUT, P,
+		Inter::Types::write_pair(OUT, P,
 			P->W.instruction[VAL1_DEF_IFLD], P->W.instruction[VAL1_DEF_IFLD+1], InterPackage::scope_of(P), FALSE);
 	} else {
 		*E = Inode::error(P, I"defaultvalue can't be written", NULL);

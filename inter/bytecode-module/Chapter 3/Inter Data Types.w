@@ -168,7 +168,7 @@ inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T
 
 =
 
-void Inter::Types::write(OUTPUT_STREAM, inter_tree_node *F,
+void Inter::Types::write_pair(OUTPUT_STREAM, inter_tree_node *F,
 	inter_ti V1, inter_ti V2, inter_symbols_table *scope, int hex_flag) {
 	switch (V1) {
 		case LITERAL_IVAL:
@@ -427,8 +427,97 @@ int Inter::Types::pair_holds_symbol(inter_ti val1, inter_ti val2) {
 	return FALSE;
 }
 
-void Inter::Types::symbol_to_pair(inter_tree *I, inter_package *pack, inter_symbol *S, inter_ti *val1, inter_ti *val2) {
+void Inter::Types::symbol_to_pair(inter_tree *I, inter_package *pack, inter_symbol *S,
+	inter_ti *val1, inter_ti *val2) {
 	if (S == NULL) internal_error("no symbol");
 	*val1 = ALIAS_IVAL; *val2 = InterSymbolsTable::id_from_symbol(I, pack, S);
 }
 
+typedef struct inter_type {
+	inter_data_type *underlying_data;
+	inter_symbol *conceptual_type;
+} inter_type;
+
+inter_type Inter::Types::parse(inter_symbols_table *T, inter_error_location *eloc,
+	text_stream *text, inter_error_message **E) {
+	inter_type it;
+	it.conceptual_type = NULL;
+	it.underlying_data = unchecked_idt;
+	if (Str::len(text) > 0) {
+		it.conceptual_type = TextualInter::find_symbol_in_table(T, eloc, text, KIND_IST, E);
+		if (it.conceptual_type)
+			it.underlying_data = Inter::Kind::data_type(it.conceptual_type);
+		else {
+			it.underlying_data = Inter::Types::find_by_name(text);
+			if (it.underlying_data == NULL) {
+				*E = Inter::Errors::quoted(I"unrecognised data type", text, eloc);
+				it.underlying_data = unchecked_idt;
+			}
+		}
+	}
+	return it;
+}
+
+inter_type Inter::Types::from_symbol(inter_symbol *S) {
+	inter_type it;
+	if (S) it.underlying_data = Inter::Kind::data_type(S);
+	else it.underlying_data = unchecked_idt;
+	it.conceptual_type = S;
+	return it;
+}
+
+inter_symbol *Inter::Types::conceptual_type(inter_type it) {
+	return it.conceptual_type;
+}
+
+inter_type Inter::Types::untyped(void) {
+	return Inter::Types::from_symbol(NULL);
+}
+
+inter_data_type *Inter::Types::data_format(inter_type it) {
+	return it.underlying_data;
+}
+
+inter_type Inter::Types::from_TID(inter_tree_node *P, int field) {
+	inter_type it;
+	it.underlying_data = unchecked_idt;
+	it.conceptual_type = InterSymbolsTable::symbol_from_ID_at_node(P, field);
+	if (it.conceptual_type)
+		it.underlying_data = Inter::Kind::data_type(it.conceptual_type);
+	return it;
+}
+
+inter_ti Inter::Types::to_TID(inter_bookmark *IBM, inter_type it) {
+	if (it.conceptual_type)
+		return InterSymbolsTable::id_from_symbol_at_bookmark(IBM, it.conceptual_type);
+	return 0;
+}
+
+void Inter::Types::verify_type_field(inter_package *owner, inter_tree_node *P,
+	int field, int data_field, inter_error_message **E) {
+	if (P->W.instruction[field]) {
+		inter_symbols_table *locals = InterPackage::scope(owner);
+		if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
+		*E = Inter::Verify::symbol(owner, P, P->W.instruction[field], KIND_IST);
+		if (*E) return;
+		if (data_field >= 0) {
+			*E = Inter::Types::validate_local(P, data_field, field, locals);
+			if (*E) return;
+		}
+	}
+}
+
+void Inter::Types::write_type_field(OUTPUT_STREAM, inter_tree_node *P, int field) {
+	inter_type it = Inter::Types::from_TID(P, field);
+	if (it.conceptual_type) {
+		WRITE("("); TextualInter::write_symbol_from(OUT, P, field); WRITE(") ");
+	} else if (it.underlying_data != unchecked_idt) {
+		WRITE("(%S) ", it.underlying_data->reserved_word);
+	}
+}
+
+inter_error_message *Inter::Types::read_to_type(text_stream *line, inter_error_location *eloc,
+	inter_bookmark *IBM, inter_type it, text_stream *S, inter_ti *val1, inter_ti *val2,
+	inter_symbols_table *scope) {
+	return Inter::Types::read(line, eloc, IBM, it.conceptual_type, S, val1, val2, scope);
+}

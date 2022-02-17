@@ -46,11 +46,8 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 		value_text = mr2.exp[1];
 	}
 
-	inter_symbol *val_kind = NULL;
-	if (kind_text) {
-		val_kind = TextualInter::find_symbol(IBM, eloc, kind_text, KIND_IST, E);
-		if (*E) return;
-	}
+	inter_type val_type = Inter::Types::parse(InterBookmark::scope(IBM), eloc, kind_text, E);
+	if (*E) return;
 
 	inter_ti val1 = 0;
 	inter_ti val2 = 0;
@@ -60,17 +57,16 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 		*E = NULL;
 		Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value, &val1, &val2);
 	} else {
-		*E = Inter::Types::read(ilp->line, eloc, IBM, val_kind, value_text, &val1, &val2, locals);
+		*E = Inter::Types::read_to_type(ilp->line, eloc, IBM, val_type, value_text, &val1, &val2, locals);
 		if (*E) return;
 	}
 
-	*E = Inter::Val::new(IBM, val_kind, ilp->indent_level, val1, val2, eloc);
+	*E = Inter::Val::new(IBM, val_type, ilp->indent_level, val1, val2, eloc);
 }
 
-inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_symbol *val_kind, int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
-	inter_ti KID = 0;
-	if (val_kind) KID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, val_kind);
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, KID, val1, val2, eloc, (inter_ti) level);
+inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_type val_type,
+	int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, Inter::Types::to_TID(IBM, val_type), val1, val2, eloc, (inter_ti) level);
 	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -82,25 +78,13 @@ void Inter::Val::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *gr
 
 void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_VAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	inter_symbols_table *locals = InterPackage::scope(owner);
-	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
-	if (P->W.instruction[KIND_VAL_IFLD]) {
-		*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_VAL_IFLD], KIND_IST);
-		if (*E) return;
-		*E = Inter::Types::validate_local(P, VAL1_VAL_IFLD, KIND_VAL_IFLD, locals);
-		if (*E) return;
-	}
+	Inter::Types::verify_type_field(owner, P, KIND_VAL_IFLD, VAL1_VAL_IFLD, E);
 }
 
 void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbols_table *locals = InterPackage::scope_of(P);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	WRITE("val ");
-	if (P->W.instruction[KIND_VAL_IFLD]) {
-		inter_symbol *val_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_VAL_IFLD);
-		if (val_kind) {
-			WRITE("("); TextualInter::write_symbol_from(OUT, P, KIND_VAL_IFLD); WRITE(") ");
-		} else { *E = Inode::error(P, I"cannot write val", NULL); return; }
-	} 
-	Inter::Types::write(OUT, P, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);
+	Inter::Types::write_type_field(OUT, P, KIND_VAL_IFLD);
+	Inter::Types::write_pair(OUT, P, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);
 }

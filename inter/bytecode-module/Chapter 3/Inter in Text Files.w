@@ -172,7 +172,10 @@ enables us to tell if it's, e.g., a variable, defined by |VARIABLE_IST| instruct
 =
 inter_symbol *TextualInter::find_symbol(inter_bookmark *IBM, inter_error_location *eloc,
 	text_stream *name, inter_ti construct, inter_error_message **E) {
-	inter_symbols_table *T = InterBookmark::scope(IBM);
+	return TextualInter::find_symbol_in_table(InterBookmark::scope(IBM), eloc, name, construct, E);
+}
+inter_symbol *TextualInter::find_symbol_in_table(inter_symbols_table *T, inter_error_location *eloc,
+	text_stream *name, inter_ti construct, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *S = NULL;
 	if (Str::get_first_char(name) == '/')
@@ -195,7 +198,7 @@ symbol |evening ~~> "/some/enchanted/evening"|. This is then fixed up when we
 resolve forward references at the end of the parsing process -- see below.
 
 @<Search using URL conventions@> =
-	S = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), name);
+	S = InterSymbolsTable::URL_to_symbol(InterPackage::tree(InterSymbolsTable::package(T)), name);
 	if (S == NULL) {
 		TEMPORARY_TEXT(leaf)
 		LOOP_THROUGH_TEXT(pos, name) {
@@ -210,8 +213,7 @@ resolve forward references at the end of the parsing process -- see below.
 		S = InterSymbolsTable::symbol_from_name(T, leaf);
 		if (!((S) && (Wiring::is_wired_to_name(S)) &&
 				(Str::eq(Wiring::wired_to_name(S), name)))) {			
-			S = InterSymbolsTable::create_with_unique_name(
-				InterBookmark::scope(IBM), leaf);
+			S = InterSymbolsTable::create_with_unique_name(T, leaf);
 			Wiring::wire_to_name(S, name);
 		}
 		DISCARD_TEXT(leaf)

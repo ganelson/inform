@@ -409,23 +409,15 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 
 void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-	inter_symbol *con_kind = NULL;
-	if (P->W.instruction[KIND_CONST_IFLD]) {
-		con_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_CONST_IFLD);
-	}
 	int hex = FALSE;
 	if (SymbolAnnotation::get_b(con_name, HEX_IANN)) hex = TRUE;
 	if (con_name) {
 		WRITE("constant ");
-		if (con_kind) {
-			WRITE("(");
-			TextualInter::write_symbol_from(OUT, P, KIND_CONST_IFLD);
-			WRITE(") ");
-		}
+		Inter::Types::write_type_field(OUT, P, KIND_CONST_IFLD);
 		WRITE("%S = ", InterSymbol::identifier(con_name));
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:
-				Inter::Types::write(OUT, P,
+				Inter::Types::write_pair(OUT, P,
 					P->W.instruction[DATA_CONST_IFLD], P->W.instruction[DATA_CONST_IFLD+1], InterPackage::scope_of(P), hex);
 				break;
 			case CONSTANT_SUM_LIST:			
@@ -441,7 +433,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					Inter::Types::write(OUT, P, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
+					Inter::Types::write_pair(OUT, P, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;
@@ -451,7 +443,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					Inter::Types::write(OUT, P, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
+					Inter::Types::write_pair(OUT, P, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;

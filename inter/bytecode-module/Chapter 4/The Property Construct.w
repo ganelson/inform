@@ -71,7 +71,8 @@ void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PROP_IFLD);
 	inter_symbol *prop_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_PROP_IFLD);
 	if ((prop_name) && (prop_kind)) {
-		WRITE("property %S %S", InterSymbol::identifier(prop_name), InterSymbol::identifier(prop_kind));
+		WRITE("property %S %S",
+			InterSymbol::identifier(prop_name), InterSymbol::identifier(prop_kind));
 		SymbolAnnotation::write_annotations(OUT, P, prop_name);
 	} else { *E = Inode::error(P, I"cannot write property", NULL); return; }
 }
