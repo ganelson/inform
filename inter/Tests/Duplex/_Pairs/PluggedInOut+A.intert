@@ -18,7 +18,7 @@ package main _plain
 					code
 						inv !goto
 							lab .begin
-		constant (/main/K_func) R_101 = R_101_B
+		constant (/main/K_func) R_101 = function R_101_B
 		constant (/main/K_number) secret = 7
 		constant (/main/K_number) tricksy = /main/connectors/plug00002
 	constant (K_number) awkward = /main/my_fn/secret

@@ -6,16 +6,16 @@ package main _plain
 	package Falsity_B _code
 		code
 			splat &"return false;"
-	constant (K_unchecked_function) Falsity = Falsity_B
+	constant (K_unchecked_function) Falsity = function Falsity_B
 	package Demo_B _code
 		local x
 		local y
 		code
 			splat &"return x+y;"
-	constant (K_unchecked_function) Demo = Demo_B
+	constant (K_unchecked_function) Demo = function Demo_B
 	package Prop_Falsity_B _code
 		local reason
 		local obj
 		code
 			splat &"return 0;"
-	constant (K_unchecked_function) Prop_Falsity = Prop_Falsity_B
+	constant (K_unchecked_function) Prop_Falsity = function Prop_Falsity_B

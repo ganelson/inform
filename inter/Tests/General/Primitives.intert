@@ -23,4 +23,4 @@ package main _plain
 				inv !modulo
 					val (/main/K_number) x
 					val (/main/K_number) y
-	constant (K_phrase_number____nothing) MyRoutine = MyRoutine_B
+	constant (K_phrase_number____nothing) MyRoutine = function MyRoutine_B

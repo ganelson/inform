@@ -16,4 +16,4 @@ package main _plain
 				code
 					inv !jump
 						lab .begin
-	constant (K_func) R_101 = R_101_B
+	constant (K_func) R_101 = function R_101_B

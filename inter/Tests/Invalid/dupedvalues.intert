@@ -6,11 +6,11 @@ package main _plain
 	kind K_odour enum
 	instance I_citrus K_odour
 	instance I_leather K_odour
-	property P_strength K_number
+	property (K_number) P_strength
 	permission P_strength K_odour
 	propertyvalue P_strength I_citrus = 20
 	propertyvalue P_strength I_leather = 7
-	property P_lingeringness K_number
+	property (K_number) P_lingeringness
 	permission P_lingeringness K_odour
 	permission P_lingeringness K_odour
 	propertyvalue P_lingeringness I_citrus = 1

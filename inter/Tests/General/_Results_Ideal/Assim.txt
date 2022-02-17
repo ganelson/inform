@@ -33,7 +33,7 @@ package main _plain
 				code
 					inv !return
 						val 0
-			constant (/main/K_unchecked_function) Falsity = Falsity_B __assimilated
+			constant (/main/K_unchecked_function) Falsity = function Falsity_B __assimilated
 		package Demo_fn _function
 			package Demo_B _code
 				local x
@@ -43,7 +43,7 @@ package main _plain
 						inv !plus
 							val x
 							val y
-			constant (/main/K_unchecked_function) Demo = Demo_B __assimilated
+			constant (/main/K_unchecked_function) Demo = function Demo_B __assimilated
 		package arrays _submodule
 			package XA_arr _plain
 				constant (/main/K_unchecked_list) XA = { 2, 4, 56 } __assimilated
@@ -70,16 +70,16 @@ package main _plain
 				code
 					inv !return
 						val 0
-			constant (/main/K_unchecked_function) Banana = Banana_B __assimilated
+			constant (/main/K_unchecked_function) Banana = function Banana_B __assimilated
 		package Peach_fn _function
 			package Peach_B _code
 				code
 					inv !return
 						val 0
-			constant (/main/K_unchecked_function) Peach = Peach_B __assimilated
+			constant (/main/K_unchecked_function) Peach = function Peach_B __assimilated
 		package marmorial_prop _property
 			constant (/main/K_unchecked) property_id = 0
-			property marmorial K_int2 __assimilated __either_or
+			property (/main/K_int2) marmorial __assimilated __either_or
 		package density_prop _property
 			constant (/main/K_unchecked) property_id = 0
-			property density K_unchecked __assimilated
+			property density __assimilated

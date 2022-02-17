@@ -76,22 +76,28 @@ inter_error_message *Inter::Types::validate(inter_package *owner, inter_tree_nod
 	if (T == NULL) T = Inode::globals(P);
 	inter_ti V1 = P->W.instruction[index];
 	inter_ti V2 = P->W.instruction[index+1];
-	return Inter::Types::verify_inner(P, kind_symbol, V1, V2, T);
+	return Inter::Types::verify_inner(P, Inter::Types::from_symbol(kind_symbol), V1, V2, T);
 }
 
-inter_error_message *Inter::Types::validate_local(inter_tree_node *P, int index, int kind_index, inter_symbols_table *T) {
-	inter_symbol *kind_symbol = NULL;
-	if (P->W.instruction[kind_index])
-		kind_symbol = InterSymbolsTable::symbol_from_ID(T, P->W.instruction[kind_index]);
+inter_error_message *Inter::Types::validate_local(inter_tree_node *P, int index, int type_index, inter_symbols_table *T) {
+	inter_type type = Inter::Types::from_TID(P, type_index);
 	inter_ti V1 = P->W.instruction[index];
 	inter_ti V2 = P->W.instruction[index+1];
-	return Inter::Types::verify_inner(P, kind_symbol, V1, V2, T);
+	return Inter::Types::verify_inner(P, type, V1, V2, T);
 }
 
-inter_error_message *Inter::Types::verify_inner(inter_tree_node *P, inter_symbol *kind_symbol, inter_ti V1, inter_ti V2, inter_symbols_table *scope) {
+inter_error_message *Inter::Types::validate_against(inter_package *owner, inter_tree_node *P, int index, inter_type type) {
+	inter_symbols_table *T = InterPackage::scope(owner);
+	if (T == NULL) T = Inode::globals(P);
+	inter_ti V1 = P->W.instruction[index];
+	inter_ti V2 = P->W.instruction[index+1];
+	return Inter::Types::verify_inner(P, type, V1, V2, T);
+}
+
+inter_error_message *Inter::Types::verify_inner(inter_tree_node *P, inter_type type, inter_ti V1, inter_ti V2, inter_symbols_table *scope) {
 	switch (V1) {
 		case LITERAL_IVAL: {
-			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
+			inter_data_type *idt = Inter::Types::data_format(type);
 			if (idt) {
 				long long int I = (signed_inter_ti) V2;
 				if ((I < idt->min_value) || (I > idt->max_value)) return Inode::error(P, I"value out of range", NULL);
@@ -113,10 +119,11 @@ inter_error_message *Inter::Types::verify_inner(inter_tree_node *P, inter_symbol
 			inter_tree_node *D = InterSymbol::definition(symb);
 			if (D == NULL) return Inode::error(P, I"undefined symbol", InterSymbol::identifier(symb));
 
-			inter_data_type *idt = Inter::Kind::data_type(kind_symbol);
+			inter_data_type *idt = Inter::Types::data_format(type);
 			if (idt == unchecked_idt) return NULL;
 
 			inter_symbol *ckind_symbol = NULL;
+			inter_symbol *kind_symbol = Inter::Types::conceptual_type(type);
 			if (D->W.instruction[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
 			else if (D->W.instruction[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
 			else if (D->W.instruction[ID_IFLD] == LOCAL_IST) ckind_symbol = Inter::Local::kind_of(symb);
@@ -478,6 +485,14 @@ inter_data_type *Inter::Types::data_format(inter_type it) {
 	return it.underlying_data;
 }
 
+int Inter::Types::type_arity(inter_type it) {
+	return Inter::Kind::arity(Inter::Types::conceptual_type(it));
+}
+
+inter_type Inter::Types::type_operand(inter_type it, int n) {
+	return Inter::Types::from_symbol(Inter::Kind::operand_symbol(Inter::Types::conceptual_type(it), n));
+}
+
 inter_type Inter::Types::from_TID(inter_tree_node *P, int field) {
 	inter_type it;
 	it.underlying_data = unchecked_idt;
@@ -496,12 +511,10 @@ inter_ti Inter::Types::to_TID(inter_bookmark *IBM, inter_type it) {
 void Inter::Types::verify_type_field(inter_package *owner, inter_tree_node *P,
 	int field, int data_field, inter_error_message **E) {
 	if (P->W.instruction[field]) {
-		inter_symbols_table *locals = InterPackage::scope(owner);
-		if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 		*E = Inter::Verify::symbol(owner, P, P->W.instruction[field], KIND_IST);
 		if (*E) return;
 		if (data_field >= 0) {
-			*E = Inter::Types::validate_local(P, data_field, field, locals);
+			*E = Inter::Types::validate_local(P, data_field, field, InterPackage::scope(owner));
 			if (*E) return;
 		}
 	}

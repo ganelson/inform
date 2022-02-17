@@ -64,7 +64,7 @@ inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, int
 void Inter::Variable::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_VAR_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_VAR_IFLD); if (*E) return;
-	Inter::Types::verify_type_field(owner, P, KIND_VAR_IFLD, -1, E);
+	Inter::Types::verify_type_field(owner, P, KIND_VAR_IFLD, VAL1_VAR_IFLD, E);
 }
 
 void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

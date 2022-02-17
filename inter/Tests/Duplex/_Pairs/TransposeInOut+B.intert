@@ -40,11 +40,11 @@ package main _plain
 	kind K_odour enum
 	instance I_citrus K_odour = 5
 	instance I_leather K_odour = 10
-	property P_strength K_number __property_name="strength"
+	property (K_number) P_strength __property_name="strength"
 	permission P_strength K_odour
 	propertyvalue P_strength I_citrus = 20
 	propertyvalue P_strength I_leather = 7
-	property P_lingeringness K_number
+	property (K_number) P_lingeringness
 	permission P_lingeringness K_odour
 	propertyvalue P_lingeringness I_citrus = 1
 	propertyvalue P_lingeringness I_leather = 3
@@ -67,11 +67,11 @@ package main _plain
 	kind K_rule rule void -> void
 	kind K_rulebook rulebook of K_rule
 	kind K_stuff struct K_number K_colour K_odour
-	constant (K_stuff) S_stuff = { 5, I_red, I_citrus }
+	constant (K_stuff) S_stuff = struct{ 5, I_red, I_citrus }
 	package R_after1_B _code
 	package R_after2_B _code
-	constant (K_rule) R_after1 = R_after1_B
-	constant (K_rule) R_after2 = R_after2_B
+	constant (K_rule) R_after1 = function R_after1_B
+	constant (K_rule) R_after2 = function R_after2_B
 	constant (K_rulebook) RB_after = { R_after1, R_after2 }
 	kind K_colour____colour function K_colour -> K_colour
 	package R_101_B _code
@@ -86,11 +86,11 @@ package main _plain
 							val (/main/K_colour) x
 						val (/main/K_number) 1
 					val (/main/K_truth_state) &"a b"
-	constant (K_colour____colour) R_101 = R_101_B
+	constant (K_colour____colour) R_101 = function R_101_B
 	package R_102_B _code
 		local (/main/K_colour) x __argument
 		code
 			inv !return
 				val (/main/K_colour) /main/I_red
-	constant (K_colour____colour) R_102 = R_102_B
+	constant (K_colour____colour) R_102 = function R_102_B
 	constant (K_number) amount = sum{ 2, C_taxes }

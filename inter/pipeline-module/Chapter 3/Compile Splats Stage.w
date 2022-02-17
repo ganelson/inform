@@ -365,17 +365,15 @@ not already there.
 
 @<Make a general property in Inter@> =
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
-		RunningPipelines::get_symbol(step, unchecked_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(Inter::Property::new(IBM, MID, KID, B, NULL));
+	Produce::guard(Inter::Property::new(IBM, MID, Inter::Types::untyped(), B, NULL));
 
 @<Make an either-or property in Inter@> =
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
-		RunningPipelines::get_symbol(step, truth_state_kind_RPSYM));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(Inter::Property::new(IBM, MID, KID, B, NULL));
+	Produce::guard(Inter::Property::new(IBM, MID,
+		Inter::Types::from_symbol(RunningPipelines::get_symbol(step, truth_state_kind_RPSYM)),
+		B, NULL));
 
 @ A typical Inform 6 array declaration looks like this:
 = (text as Inform 6)

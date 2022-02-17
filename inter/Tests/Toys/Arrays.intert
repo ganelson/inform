@@ -88,4 +88,4 @@ package main _plain
 			inv !print
 				val ".\n"
 			inv !quit
-	constant (K_unchecked_function) Main = Main_B
+	constant (K_unchecked_function) Main = function Main_B
