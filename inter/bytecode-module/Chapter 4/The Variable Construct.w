@@ -47,7 +47,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_ti var_val1 = 0;
 	inter_ti var_val2 = 0;
-	*E = Inter::Types::read_to_type(ilp->line, eloc, IBM, var_type, ilp->mr.exp[1], &var_val1, &var_val2, InterBookmark::scope(IBM));
+	*E = Inter::Types::read_data_pair(ilp->line, eloc, IBM, var_type, ilp->mr.exp[1], &var_val1, &var_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::Variable::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_name), var_type, var_val1, var_val2, (inter_ti) ilp->indent_level, eloc);

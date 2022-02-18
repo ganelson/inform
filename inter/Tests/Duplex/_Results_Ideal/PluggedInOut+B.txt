@@ -56,7 +56,7 @@ package main _plain
 	kind K_column_of_colour column of K_colour
 	constant (K_column_of_number) C_egtable_col1 = { 1, 4, 9, 16 }
 	constant (K_column_of_colour) C_egtable_col2 = { I_green, undef, I_red }
-	constant (K_table) C_egtable = { C_egtable_col1, C_egtable_col2 }
+	constant (K_table) C_egtable = table{ C_egtable_col1, C_egtable_col2 }
 	kind K_object enum
 	instance I_board K_object = 1
 	kind K_piece <= K_object

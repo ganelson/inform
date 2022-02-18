@@ -71,30 +71,11 @@ inter_ti Inter::Types::transpose_value(inter_ti V1, inter_ti V2, inter_ti *grid,
 	return V2;
 }
 
-inter_error_message *Inter::Types::validate(inter_package *owner, inter_tree_node *P, int index, inter_symbol *kind_symbol) {
-	inter_symbols_table *T = InterPackage::scope(owner);
-	if (T == NULL) T = Inode::globals(P);
+inter_error_message *Inter::Types::validate_pair(inter_package *owner, inter_tree_node *P, int index, inter_type type) {
 	inter_ti V1 = P->W.instruction[index];
 	inter_ti V2 = P->W.instruction[index+1];
-	return Inter::Types::verify_inner(P, Inter::Types::from_symbol(kind_symbol), V1, V2, T);
-}
-
-inter_error_message *Inter::Types::validate_local(inter_tree_node *P, int index, int type_index, inter_symbols_table *T) {
-	inter_type type = Inter::Types::from_TID(P, type_index);
-	inter_ti V1 = P->W.instruction[index];
-	inter_ti V2 = P->W.instruction[index+1];
-	return Inter::Types::verify_inner(P, type, V1, V2, T);
-}
-
-inter_error_message *Inter::Types::validate_against(inter_package *owner, inter_tree_node *P, int index, inter_type type) {
-	inter_symbols_table *T = InterPackage::scope(owner);
-	if (T == NULL) T = Inode::globals(P);
-	inter_ti V1 = P->W.instruction[index];
-	inter_ti V2 = P->W.instruction[index+1];
-	return Inter::Types::verify_inner(P, type, V1, V2, T);
-}
-
-inter_error_message *Inter::Types::verify_inner(inter_tree_node *P, inter_type type, inter_ti V1, inter_ti V2, inter_symbols_table *scope) {
+	inter_symbols_table *scope = InterPackage::scope(owner);
+	if (scope == NULL) scope = Inode::globals(P);
 	switch (V1) {
 		case LITERAL_IVAL: {
 			inter_data_type *idt = Inter::Types::data_format(type);
@@ -221,7 +202,10 @@ void Inter::Types::write_pair(OUTPUT_STREAM, inter_tree_node *F,
 	}
 }
 
-inter_error_message *Inter::Types::read(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM, inter_symbol *kind_symbol, text_stream *S, inter_ti *val1, inter_ti *val2, inter_symbols_table *scope) {
+inter_error_message *Inter::Types::read_data_pair(text_stream *line, inter_error_location *eloc,
+	inter_bookmark *IBM, inter_type it, text_stream *S, inter_ti *val1, inter_ti *val2,
+	inter_symbols_table *scope) {
+	inter_symbol *kind_symbol = it.conceptual_type;
 	inter_tree *I = InterBookmark::tree(IBM);
 	inter_package *pack = InterBookmark::package(IBM);
 
@@ -258,8 +242,7 @@ inter_error_message *Inter::Types::read(text_stream *line, inter_error_location 
 		text_stream *divider_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(divider_storage, S, 2, Str::len(S)-2, eloc);
 	}
-	inter_data_type *idt = int32_idt;
-	if (kind_symbol) idt = Inter::Kind::data_type(kind_symbol);
+	inter_data_type *idt = it.underlying_data;
 	if (Str::get_first_char(S) == '/') {
 		inter_symbol *symb = InterSymbolsTable::URL_to_symbol(I, S);
 		if (symb == NULL) {
@@ -514,7 +497,8 @@ void Inter::Types::verify_type_field(inter_package *owner, inter_tree_node *P,
 		*E = Inter::Verify::symbol(owner, P, P->W.instruction[field], KIND_IST);
 		if (*E) return;
 		if (data_field >= 0) {
-			*E = Inter::Types::validate_local(P, data_field, field, InterPackage::scope(owner));
+			inter_type type = Inter::Types::from_TID(P, field);
+			*E = Inter::Types::validate_pair(owner, P, data_field, type);
 			if (*E) return;
 		}
 	}
@@ -527,10 +511,4 @@ void Inter::Types::write_type_field(OUTPUT_STREAM, inter_tree_node *P, int field
 	} else if (it.underlying_data != unchecked_idt) {
 		WRITE("(%S) ", it.underlying_data->reserved_word);
 	}
-}
-
-inter_error_message *Inter::Types::read_to_type(text_stream *line, inter_error_location *eloc,
-	inter_bookmark *IBM, inter_type it, text_stream *S, inter_ti *val1, inter_ti *val2,
-	inter_symbols_table *scope) {
-	return Inter::Types::read(line, eloc, IBM, it.conceptual_type, S, val1, val2, scope);
 }

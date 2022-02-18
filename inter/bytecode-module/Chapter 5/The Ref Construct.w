@@ -50,7 +50,7 @@ void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 
 	inter_ti var_val1 = 0;
 	inter_ti var_val2 = 0;
-	*E = Inter::Types::read_to_type(ilp->line, eloc, IBM, ref_type, value_text, &var_val1, &var_val2, locals);
+	*E = Inter::Types::read_data_pair(ilp->line, eloc, IBM, ref_type, value_text, &var_val1, &var_val2, locals);
 	if (*E) return;
 
 	*E = Inter::Ref::new(IBM, ref_type, ilp->indent_level, var_val1, var_val2, eloc);

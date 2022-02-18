@@ -51,7 +51,7 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_ti v1 = UNDEF_IVAL, v2 = 0;
 	if (vtext) {
-		*E = Inter::Types::read(ilp->line, eloc, IBM, NULL, vtext, &v1, &v2, InterBookmark::scope(IBM));
+		*E = Inter::Types::read_data_pair(ilp->line, eloc, IBM, Inter::Types::untyped(), vtext, &v1, &v2, InterBookmark::scope(IBM));
 		if (*E) return;
 	}
 	*E = Inter::Instance::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_kind), v1, v2, (inter_ti) ilp->indent_level, eloc);
@@ -86,7 +86,7 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			P->W.instruction[VAL2_INST_IFLD] = Inter::Kind::next_enumerated_value(inst_kind);
 		}
 	} else { *E = Inode::error(P, I"not a kind which has instances", NULL); return; }
-	*E = Inter::Types::validate(owner, P, VAL1_INST_IFLD, inst_kind); if (*E) return;
+	*E = Inter::Types::validate_pair(owner, P, VAL1_INST_IFLD, Inter::Types::from_symbol(inst_kind)); if (*E) return;
 
 	inter_ti vcount = Inode::bump_verification_count(P);
 	if (vcount == 0) {

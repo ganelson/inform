@@ -50,10 +50,10 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 			{ *E = Inter::Errors::quoted(I"property already given", ilp->mr.exp[0], eloc); return; }
 	}
 
-	inter_symbol *val_kind = Inter::Property::kind_of(prop_name);
+	inter_type val_type = Inter::Property::type_of(prop_name);
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
-	*E = Inter::Types::read(ilp->line, eloc, IBM, val_kind, ilp->mr.exp[2], &con_val1, &con_val2, InterBookmark::scope(IBM));
+	*E = Inter::Types::read_data_pair(ilp->line, eloc, IBM, val_type, ilp->mr.exp[2], &con_val1, &con_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::PropertyValue::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_name),

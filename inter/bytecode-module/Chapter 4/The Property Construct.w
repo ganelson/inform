@@ -92,3 +92,11 @@ inter_symbol *Inter::Property::kind_of(inter_symbol *prop_symbol) {
 	if (D->W.instruction[ID_IFLD] != PROPERTY_IST) return NULL;
 	return Inter::Types::conceptual_type(Inter::Types::from_TID(D, KIND_PROP_IFLD));
 }
+
+inter_type Inter::Property::type_of(inter_symbol *prop_symbol) {
+	if (prop_symbol == NULL) return Inter::Types::untyped();
+	inter_tree_node *D = InterSymbol::definition(prop_symbol);
+	if (D == NULL) return Inter::Types::untyped();
+	if (D->W.instruction[ID_IFLD] != PROPERTY_IST) return Inter::Types::untyped();
+	return Inter::Types::from_TID(D, KIND_PROP_IFLD);
+}
