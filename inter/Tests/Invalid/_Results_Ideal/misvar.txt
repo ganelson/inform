@@ -2,5 +2,4 @@ inter: inter/Tests/Invalid/misvar.intert, line 7: symbol already exists: 'V_appl
 >--> variable V_apple = 2
 inter: inter/Tests/Invalid/misvar.intert, line 8: no such symbol: 'int32'
 >--> variable (int32) V_peach = 12
-inter: inter/Tests/Invalid/misvar.intert, line 4: symbol undefined in package: 'I_citrus_1'
 inter: inter/Tests/Invalid/misvar.intert, line 4: symbol undefined in package: 'khglkl'

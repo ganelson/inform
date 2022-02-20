@@ -143,8 +143,8 @@ void RTKindDeclarations::declare_base_kind(kind *K) {
 		RTKindDeclarations::declare_base_kind(S);
 		dt = ENUM_IDT;
 	}
-	Emit::kind(RTKindDeclarations::iname(K), dt, S?RTKindDeclarations::iname(S):NULL,
-		BASE_ICON, 0, NULL);
+	Emit::kind(RTKindDeclarations::iname(K), S?RTKindDeclarations::iname(S):NULL,
+		dt, 0, NULL);
 	if (K == K_object) {
 		InterNames::set_translation(RTKindDeclarations::iname(K), I"K0_kind");
 		Hierarchy::make_available(RTKindDeclarations::iname(K));
@@ -158,8 +158,7 @@ void RTKindDeclarations::declare_constructed_kind(cached_kind_declaration *dec) 
 	kind *K = dec->noted_kind;
 	int arity = 0;
 	kind *operands[MAX_KIND_ARITY];
-	int icon = -1;
-	inter_ti idt = ROUTINE_IDT;
+	inter_ti icon = 0;
 	if (Kinds::get_construct(K) == CON_description)       @<Run out inter kind for description@>
 	else if (Kinds::get_construct(K) == CON_list_of)      @<Run out inter kind for list@>
 	else if (Kinds::get_construct(K) == CON_phrase)       @<Run out inter kind for phrase@>
@@ -171,33 +170,32 @@ void RTKindDeclarations::declare_constructed_kind(cached_kind_declaration *dec) 
 		LOG("Unfortunate kind is: %u\n", K);
 		internal_error("unable to represent kind in inter");
 	}
-	if (icon < 0) internal_error("icon unset");
-	Emit::kind(dec->noted_iname, idt, NULL, icon, arity, operands);
+	if (icon == 0) internal_error("icon unset");
+	Emit::kind(dec->noted_iname, NULL, icon, arity, operands);
 }
 
 @<Run out inter kind for list@> =
 	arity = 1;
 	operands[0] = Kinds::unary_construction_material(K);
-	icon = LIST_ICON;
-	idt = LIST_IDT;
+	icon = LIST_IDT;
 
 @<Run out inter kind for description@> =
 	arity = 1;
 	operands[0] = Kinds::unary_construction_material(K);
-	icon = DESCRIPTION_ICON;
+	icon = DESCRIPTION_IDT;
 
 @<Run out inter kind for column@> =
 	arity = 1;
 	operands[0] = Kinds::unary_construction_material(K);
-	icon = COLUMN_ICON;
+	icon = COLUMN_IDT;
 
 @<Run out inter kind for relation@> =
 	arity = 2;
 	Kinds::binary_construction_material(K, &operands[0], &operands[1]);
-	icon = RELATION_ICON;
+	icon = RELATION_IDT;
 
 @<Run out inter kind for phrase@> =
-	icon = FUNCTION_ICON;
+	icon = FUNCTION_IDT;
 	kind *X = NULL, *result = NULL;
 	Kinds::binary_construction_material(K, &X, &result);
 	while (Kinds::get_construct(X) == CON_TUPLE_ENTRY) {
@@ -213,11 +211,11 @@ void RTKindDeclarations::declare_constructed_kind(cached_kind_declaration *dec) 
 @<Run out inter kind for rule@> =
 	arity = 2;
 	Kinds::binary_construction_material(K, &operands[0], &operands[1]);
-	icon = RULE_ICON;
+	icon = RULE_IDT;
 
 @<Run out inter kind for rulebook@> =
 	arity = 1;
 	kind *X = NULL, *Y = NULL;
 	Kinds::binary_construction_material(K, &X, &Y);
 	operands[0] = Kinds::binary_con(CON_phrase, X, Y);
-	icon = RULEBOOK_ICON;
+	icon = RULEBOOK_IDT;

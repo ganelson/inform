@@ -78,10 +78,10 @@ void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	} else { *E = Inode::error(P, I"cannot write variable", NULL); return; }
 }
 
-inter_symbol *Inter::Variable::kind_of(inter_symbol *con_symbol) {
-	if (con_symbol == NULL) return NULL;
+inter_type Inter::Variable::type_of(inter_symbol *con_symbol) {
+	if (con_symbol == NULL) return Inter::Types::untyped();
 	inter_tree_node *D = InterSymbol::definition(con_symbol);
-	if (D == NULL) return NULL;
-	if (D->W.instruction[ID_IFLD] != VARIABLE_IST) return NULL;
-	return Inter::Types::conceptual_type(Inter::Types::from_TID(D, KIND_VAR_IFLD));
+	if (D == NULL) return Inter::Types::untyped();
+	if (D->W.instruction[ID_IFLD] != VARIABLE_IST) return Inter::Types::untyped();
+	return Inter::Types::from_TID(D, KIND_VAR_IFLD);
 }

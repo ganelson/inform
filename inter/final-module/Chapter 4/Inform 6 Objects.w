@@ -305,7 +305,10 @@ void I6TargetObjects::declare_instance(code_generator *gtr,
 @<An object instance@> =
 	int c = SymbolAnnotation::get_i(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
-	int is_dir = Inter::Kind::is_a(kind_s, RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
+	int is_dir = FALSE;
+	inter_symbol *K_direction =
+		RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM);
+	if (K_direction) is_dir = Inter::Kind::is_a(kind_s, K_direction);
 	I6TargetObjects::VM_object_header(gen, InterSymbol::trans(kind_s),
 		InterSymbol::trans(inst_s), NULL, c, is_dir, saved);
 

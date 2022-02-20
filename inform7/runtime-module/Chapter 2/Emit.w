@@ -119,8 +119,8 @@ void Emit::rudimentary_kinds(void) {
 	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
 	packaging_state save = Packaging::enter_home_of(KU);
 	unchecked_interk = InterNames::to_symbol(KU);
-	Emit::kind_inner(Emit::symbol_id(unchecked_interk), UNCHECKED_IDT, 0,
-		BASE_ICON, 0, NULL);
+	Emit::kind_inner(Emit::symbol_id(unchecked_interk), 0,
+		UNCHECKED_IDT, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KUF = Hierarchy::find(K_UNCHECKED_FUNCTION_HL);
@@ -129,34 +129,34 @@ void Emit::rudimentary_kinds(void) {
 	inter_ti operands[2];
 	operands[0] = Emit::symbol_id(unchecked_interk);
 	operands[1] = Emit::symbol_id(unchecked_interk);
-	Emit::kind_inner(Emit::symbol_id(unchecked_function_interk), ROUTINE_IDT, 0,
-		FUNCTION_ICON, 2, operands);
+	Emit::kind_inner(Emit::symbol_id(unchecked_function_interk), 0,
+		FUNCTION_IDT, 2, operands);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KLF = Hierarchy::find(K_UNCHECKED_LIST_HL);
 	save = Packaging::enter_home_of(KLF);
 	unchecked_list_interk = InterNames::to_symbol(KLF);
 	operands[0] = Emit::symbol_id(unchecked_interk);
-	Emit::kind_inner(Emit::symbol_id(unchecked_list_interk), LIST_IDT, 0,
-		LIST_ICON, 1, operands);
+	Emit::kind_inner(Emit::symbol_id(unchecked_list_interk), 0,
+		LIST_IDT, 1, operands);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KTI = Hierarchy::find(K_INT32_HL);
 	save = Packaging::enter_home_of(KTI);
 	int_interk = InterNames::to_symbol(KTI);
-	Emit::kind_inner(Emit::symbol_id(int_interk), INT32_IDT, 0, BASE_ICON, 0, NULL);
+	Emit::kind_inner(Emit::symbol_id(int_interk), 0, INT32_IDT, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KTB = Hierarchy::find(K_INT2_HL);
 	save = Packaging::enter_home_of(KTB);
 	boolean_interk = InterNames::to_symbol(KTB);
-	Emit::kind_inner(Emit::symbol_id(boolean_interk), INT2_IDT, 0, BASE_ICON, 0, NULL);
+	Emit::kind_inner(Emit::symbol_id(boolean_interk), 0, INT2_IDT, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KTS = Hierarchy::find(K_STRING_HL);
 	save = Packaging::enter_home_of(KTS);
 	string_interk = InterNames::to_symbol(KTS);
-	Emit::kind_inner(Emit::symbol_id(string_interk), TEXT_IDT, 0, BASE_ICON, 0, NULL);
+	Emit::kind_inner(Emit::symbol_id(string_interk), 0, TEXT_IDT, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -168,8 +168,8 @@ constructors.
 @d MAX_KIND_ARITY 128
 
 =
-void Emit::kind(inter_name *iname, inter_ti idt, inter_name *super,
-	int constructor, int arity, kind **operand_kinds) {
+void Emit::kind(inter_name *iname, inter_name *super,
+	inter_ti constructor, int arity, kind **operand_kinds) {
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *S = InterNames::to_symbol(iname);
 	inter_ti SID = 0;
@@ -186,7 +186,7 @@ void Emit::kind(inter_name *iname, inter_ti idt, inter_name *super,
 			operands[i] = Emit::symbol_id(S);
 		}
 	}
-	Emit::kind_inner(SID, idt, SUP, constructor, arity, operands);
+	Emit::kind_inner(SID, SUP, constructor, arity, operands);
 	InterNames::to_symbol(iname);
 	Packaging::exit(Emit::tree(), save);
 }
@@ -194,9 +194,9 @@ void Emit::kind(inter_name *iname, inter_ti idt, inter_name *super,
 @ The above both use:
 
 =
-void Emit::kind_inner(inter_ti SID, inter_ti idt, inter_ti SUP,
-	int constructor, int arity, inter_ti *operands) {
-	Produce::guard(Inter::Kind::new(Emit::at(), SID, idt, SUP, constructor, arity,
+void Emit::kind_inner(inter_ti SID, inter_ti SUP,
+	inter_ti constructor, int arity, inter_ti *operands) {
+	Produce::guard(Inter::Kind::new(Emit::at(), SID, constructor, SUP, arity,
 		operands, Emit::baseline(), NULL));
 }
 

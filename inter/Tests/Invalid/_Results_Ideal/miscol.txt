@@ -4,5 +4,4 @@ inter: inter/Tests/Invalid/miscol.intert, line 7: no such symbol: 'K_colour'
 >--> kind K_column_of_colour column of K_colour
 inter: inter/Tests/Invalid/miscol.intert, line 8: not a list: 'K_column_of_number'
 inter: inter/Tests/Invalid/miscol.intert, line 9: not a list: 'K_column_of_colour'
-inter: inter/Tests/Invalid/miscol.intert, line 10: not a table column constant: 'C_egtable_col1'
->--> constant (K_table) C_egtable = table{ C_egtable_col1, C_egtable_col2, C_complaint }
+inter: inter/Tests/Invalid/miscol.intert, line 4: symbol undefined in package: 'C_complaint'

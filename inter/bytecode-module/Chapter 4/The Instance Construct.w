@@ -122,10 +122,14 @@ inter_ti Inter::Instance::properties_list(inter_symbol *inst_name) {
 	return D->W.instruction[PLIST_INST_IFLD];
 }
 
-inter_symbol *Inter::Instance::kind_of(inter_symbol *inst_name) {
-	if (inst_name == NULL) return NULL;
+inter_type Inter::Instance::type_of(inter_symbol *inst_name) {
+	if (inst_name == NULL) return Inter::Types::untyped();
 	inter_tree_node *D = InterSymbol::definition(inst_name);
-	if (D == NULL) return NULL;
-	if (D->W.instruction[ID_IFLD] != INSTANCE_IST) return NULL;
-	return InterSymbolsTable::symbol_from_ID_at_node(D, KIND_INST_IFLD);
+	if (D == NULL) return Inter::Types::untyped();
+	if (D->W.instruction[ID_IFLD] != INSTANCE_IST) return Inter::Types::untyped();
+	return Inter::Types::from_symbol(InterSymbolsTable::symbol_from_ID_at_node(D, KIND_INST_IFLD));
+}
+
+inter_symbol *Inter::Instance::kind_of(inter_symbol *inst_name) {
+	return Inter::Types::conceptual_type(Inter::Instance::type_of(inst_name));
 }

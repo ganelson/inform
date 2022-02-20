@@ -38,6 +38,59 @@ inter_data_type *Inter::Types::create(inter_ti ID, text_stream *name, int A, int
 	return IDT;
 }
 
+@
+
+@e UNCHECKED_IDT from 0x60000000
+@e INT32_IDT
+@e INT16_IDT
+@e INT8_IDT
+@e INT2_IDT
+@e ENUM_IDT
+@e LIST_IDT
+@e COLUMN_IDT
+@e TABLE_IDT
+@e TEXT_IDT
+@e FUNCTION_IDT
+@e STRUCT_IDT
+@e RELATION_IDT
+@e DESCRIPTION_IDT
+@e RULE_IDT
+@e RULEBOOK_IDT
+
+=
+void Inter::Types::create_all(void) {
+	unchecked_idt = Inter::Types::create(UNCHECKED_IDT, I"unchecked", -2147483648, 2147483647, FALSE);
+	int32_idt = Inter::Types::create(INT32_IDT, I"int32", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(INT16_IDT, I"int16", -32768, 32767, FALSE);
+	Inter::Types::create(INT8_IDT, I"int8", -128, 127, FALSE);
+	Inter::Types::create(INT2_IDT, I"int2", 0, 1, FALSE);
+	Inter::Types::create(ENUM_IDT, I"enum", 0, 2147483647, TRUE);
+	Inter::Types::create(LIST_IDT, I"list", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(COLUMN_IDT, I"column", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(TABLE_IDT, I"table", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(TEXT_IDT, I"text", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(FUNCTION_IDT, I"function", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(STRUCT_IDT, I"struct", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(RELATION_IDT, I"relation", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(DESCRIPTION_IDT, I"description", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(RULE_IDT, I"rule", -2147483648, 2147483647, FALSE);
+	Inter::Types::create(RULEBOOK_IDT, I"rulebook", -2147483648, 2147483647, FALSE);
+}
+
+int Inter::Types::is_base(inter_data_type *idt) {
+	switch (idt->type_ID) {
+		case LIST_IDT:
+		case COLUMN_IDT:
+		case TABLE_IDT:
+		case FUNCTION_IDT:
+		case STRUCT_IDT:
+		case RELATION_IDT:
+		case DESCRIPTION_IDT:
+			return FALSE;
+	}
+	return TRUE;
+}
+
 int Inter::Types::is_enumerated(inter_data_type *idt) {
 	if ((idt) && (idt->enumerated)) return TRUE;
 	return FALSE;
@@ -88,34 +141,13 @@ inter_error_message *Inter::Types::validate_pair(inter_package *owner, inter_tre
 		}
 		case ALIAS_IVAL: {
 			inter_symbol *symb = InterSymbolsTable::symbol_from_ID(scope, V2);
-			if (symb == NULL) {
-				LOG("No such symbol when verifying memory inter\n");
-				LOG("V2 is %08x\n", V2);
-				LOG("IST is $4\n", scope);
-				LOG("(did you forget to make the package type enclosing?)\n");
-				return Inode::error(P, I"no such symbol", NULL);
-			}
+			if (symb == NULL) return Inode::error(P, I"no such symbol", NULL);
 			if (InterSymbol::misc_but_undefined(symb)) return NULL;
 			if (InterSymbol::defined_elsewhere(symb)) return NULL;
-			inter_tree_node *D = InterSymbol::definition(symb);
-			if (D == NULL) return Inode::error(P, I"undefined symbol", InterSymbol::identifier(symb));
-
-			inter_data_type *idt = Inter::Types::data_format(type);
-			if (idt == unchecked_idt) return NULL;
-
-			inter_symbol *ckind_symbol = NULL;
-			inter_symbol *kind_symbol = Inter::Types::conceptual_type(type);
-			if (D->W.instruction[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
-			else if (D->W.instruction[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
-			else if (D->W.instruction[ID_IFLD] == LOCAL_IST) ckind_symbol = Inter::Local::kind_of(symb);
-			else if (D->W.instruction[ID_IFLD] == VARIABLE_IST) ckind_symbol = Inter::Variable::kind_of(symb);
-			else if (D->W.instruction[ID_IFLD] == PROPERTY_IST) ckind_symbol = Inter::Property::kind_of(symb);
-			else return Inode::error(P, I"nonconstant symbol", InterSymbol::identifier(symb));
-			if ((ckind_symbol) && (Inter::Kind::is_a(ckind_symbol, kind_symbol) == FALSE)) {
-				LOG("cks %S, ks %S\n", InterSymbol::identifier(ckind_symbol), InterSymbol::identifier(kind_symbol));
-				return Inode::error(P, I"value of wrong kind", InterSymbol::identifier(symb));
-			}
-			return NULL;
+			if (Inter::Types::expresses_value(symb) == FALSE)
+				return Inode::error(P, I"nonconstant symbol", InterSymbol::identifier(symb));
+			inter_type symbol_type = Inter::Types::of_symbol(symb);
+			return Inter::Types::can_be_used_as(symbol_type, type, InterSymbol::identifier(symb), Inode::get_error_location(P));
 		}
 		case DWORD_IVAL:
 		case PDWORD_IVAL:
@@ -129,17 +161,17 @@ inter_error_message *Inter::Types::validate_pair(inter_package *owner, inter_tre
 	return Inode::error(P, I"value of unknown category", NULL);
 }
 
-inter_symbol *Inter::Types::value_to_constant_symbol_kind(inter_symbols_table *T, inter_ti V1, inter_ti V2) {
-	inter_symbol *symb = InterSymbolsTable::symbol_from_data_pair(V1, V2, T);
-	if (symb) {
-		inter_tree_node *D = InterSymbol::definition(symb);
-		if (D == NULL) return NULL;
-		inter_symbol *ckind_symbol = NULL;
-		if (D->W.instruction[ID_IFLD] == INSTANCE_IST) ckind_symbol = Inter::Instance::kind_of(symb);
-		else if (D->W.instruction[ID_IFLD] == CONSTANT_IST) ckind_symbol = Inter::Constant::kind_of(symb);
-		return ckind_symbol;
+int Inter::Types::expresses_value(inter_symbol *symb) {
+	inter_tree_node *D = InterSymbol::definition(symb);
+	if (D) {
+		if (D->W.instruction[ID_IFLD] == KIND_IST)     return TRUE;
+		if (D->W.instruction[ID_IFLD] == INSTANCE_IST) return TRUE;
+		if (D->W.instruction[ID_IFLD] == CONSTANT_IST) return TRUE;
+		if (D->W.instruction[ID_IFLD] == LOCAL_IST)    return TRUE;
+		if (D->W.instruction[ID_IFLD] == VARIABLE_IST) return TRUE;
+		if (D->W.instruction[ID_IFLD] == PROPERTY_IST) return TRUE;
 	}
-	return NULL;
+	return FALSE;
 }
 
 @
@@ -202,10 +234,65 @@ void Inter::Types::write_pair(OUTPUT_STREAM, inter_tree_node *F,
 	}
 }
 
+inter_error_message *Inter::Types::can_be_used_as(inter_type A, inter_type B,
+	text_stream *S, inter_error_location *eloc) {
+	inter_data_type *A_idt = Inter::Types::data_format(A);
+	inter_data_type *B_idt = Inter::Types::data_format(A);
+
+	if ((A_idt->type_ID == UNCHECKED_IDT) || (B_idt->type_ID == UNCHECKED_IDT))
+		return NULL;
+
+	if ((A_idt->type_ID == LIST_IDT) && (B_idt->type_ID == TEXT_IDT))
+		return NULL; // so that two-element arrays can be used to implement I7 texts
+
+	if (Inter::Types::is_base(A_idt) != Inter::Types::is_base(B_idt))
+		@<Throw type mismatch error@>;
+
+	if (Inter::Types::is_base(A_idt)) {
+		inter_symbol *kind_symbol = B.conceptual_type;
+		inter_symbol *kind_loc = A.conceptual_type;
+		if ((kind_symbol) && (kind_loc) && (Inter::Kind::is_a(kind_loc, kind_symbol) == FALSE))
+			@<Throw type mismatch error@>;
+	} else {
+		if (A_idt->type_ID != B_idt->type_ID)
+			@<Throw type mismatch error@>;
+		inter_error_message *operand_E = NULL;
+		switch (A_idt->type_ID) {
+			case LIST_IDT:
+				operand_E = Inter::Types::can_be_used_as(Inter::Types::type_operand(A, 0),
+					Inter::Types::type_operand(B, 0), S, eloc);
+				if (operand_E) @<Throw type mismatch error@>;
+				break;
+		}
+	}
+	return NULL;
+}
+
+@<Throw type mismatch error@> =
+	text_stream *err = Str::new();
+	WRITE_TO(err, "value '%S' has kind ", S);
+	Inter::Types::write_type(err, A);
+	WRITE_TO(err, " which is not a ");
+	Inter::Types::write_type(err, B);
+	// WRITE_TO(STDERR, "%S: %S: %x, %x\n", err, S, A.underlying_data->type_ID, B.underlying_data->type_ID);
+	return Inter::Errors::plain(err, eloc);
+
+@ =
+inter_type Inter::Types::of_symbol(inter_symbol *symb) {
+	inter_tree_node *D = InterSymbol::definition(symb);
+	if (D == NULL) return Inter::Types::untyped();
+	if (InterSymbol::defined_elsewhere(symb)) return Inter::Types::untyped();
+	if (D->W.instruction[ID_IFLD] == LOCAL_IST) return Inter::Local::type_of(symb);
+	if (D->W.instruction[ID_IFLD] == CONSTANT_IST) return Inter::Constant::type_of(symb);
+	if (D->W.instruction[ID_IFLD] == INSTANCE_IST) return Inter::Instance::type_of(symb);
+	if (D->W.instruction[ID_IFLD] == VARIABLE_IST) return Inter::Variable::type_of(symb);
+	if (D->W.instruction[ID_IFLD] == PROPERTY_IST) return Inter::Property::type_of(symb);
+	return Inter::Types::untyped();
+}
+
 inter_error_message *Inter::Types::read_data_pair(text_stream *line, inter_error_location *eloc,
 	inter_bookmark *IBM, inter_type it, text_stream *S, inter_ti *val1, inter_ti *val2,
 	inter_symbols_table *scope) {
-	inter_symbol *kind_symbol = it.conceptual_type;
 	inter_tree *I = InterBookmark::tree(IBM);
 	inter_package *pack = InterBookmark::package(IBM);
 
@@ -242,7 +329,6 @@ inter_error_message *Inter::Types::read_data_pair(text_stream *line, inter_error
 		text_stream *divider_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
 		return Inter::Constant::parse_text(divider_storage, S, 2, Str::len(S)-2, eloc);
 	}
-	inter_data_type *idt = it.underlying_data;
 	if (Str::get_first_char(S) == '/') {
 		inter_symbol *symb = InterSymbolsTable::URL_to_symbol(I, S);
 		if (symb == NULL) {
@@ -260,51 +346,23 @@ inter_error_message *Inter::Types::read_data_pair(text_stream *line, inter_error
 			}
 			DISCARD_TEXT(leaf)
 		}
-		Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
-		return NULL;
+		@<Read symb@>;
 	}
-	inter_symbol *symb = InterSymbolsTable::symbol_from_name(scope, S);
-	if (symb) {
-		inter_tree_node *D = InterSymbol::definition(symb);
-		if (InterSymbol::misc_but_undefined(symb)) {
-			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
-			return NULL;
-		}
-		if (InterSymbol::defined_elsewhere(symb)) {
-			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
-			return NULL;
-		}
-		if (D == NULL) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
-		if (D->W.instruction[ID_IFLD] == LOCAL_IST) {
-			inter_symbol *kind_loc = Inter::Local::kind_of(symb);
-			if (Inter::Kind::is_a(kind_loc, kind_symbol) == FALSE) {
-				text_stream *err = Str::new();
-				WRITE_TO(err, "local has kind %S which is not a %S",
-					InterSymbol::identifier(kind_loc),
-					InterSymbol::identifier(kind_symbol));
-				return Inter::Errors::quoted(err, S, eloc);
-			}
-			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
-			return NULL;
-		}
-		if (D->W.instruction[ID_IFLD] == CONSTANT_IST) {
-			inter_symbol *kind_const = Inter::Constant::kind_of(symb);
-			if ((kind_const) && (Inter::Kind::is_a(kind_const, kind_symbol) == FALSE))
-				return Inter::Errors::quoted(I"symbol has the wrong kind", S, eloc);
-			Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
-			return NULL;
-		}
+	int ident = FALSE;
+	if (Characters::isalpha(Str::get_first_char(S))) {
+		ident = TRUE;
+		LOOP_THROUGH_TEXT(pos, S)
+			if ((Characters::isalpha(Str::get(pos)) == FALSE) &&
+				(Characters::isdigit(Str::get(pos)) == FALSE) &&
+				(Str::get(pos) != '_'))
+				ident = FALSE;
 	}
-	if (Inter::Types::is_enumerated(idt)) {
-		inter_error_message *E;
-		inter_symbol *symb = TextualInter::find_symbol(IBM, eloc, S, INSTANCE_IST, &E);
-		if (E) return E;
-		inter_tree_node *D = InterSymbol::definition(symb);
-		if (D == NULL) return Inter::Errors::quoted(I"undefined symbol", S, eloc);
-		inter_symbol *kind_const = Inter::Instance::kind_of(symb);
-		if (Inter::Kind::is_a(kind_const, kind_symbol) == FALSE) return Inter::Errors::quoted(I"symbol has the wrong kind", S, eloc);
+	if (ident) {
+		inter_symbol *symb = InterSymbolsTable::symbol_from_name(scope, S);
+		if (symb) @<Read symb@>;
+		symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), S);
 		Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
-		Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
+		InterSymbol::set_flag(symb, SPECULATIVE_ISYMF);
 		return NULL;
 	}
 
@@ -327,6 +385,7 @@ inter_error_message *Inter::Types::read_data_pair(text_stream *line, inter_error
 			if (pos.index > 34) return Inter::Errors::quoted(I"value out of range", S, eloc);
 		}
 		N = sign*N;
+		inter_data_type *idt = it.underlying_data;
 		if ((idt) && ((N < idt->min_value) || (N > idt->max_value)))
 			return Inter::Errors::quoted(I"value out of range", S, eloc);
 
@@ -334,23 +393,23 @@ inter_error_message *Inter::Types::read_data_pair(text_stream *line, inter_error
 		return NULL;
 	}
 
-	int ident = TRUE;
-	LOOP_THROUGH_TEXT(pos, S)
-		if ((Characters::isalpha(Str::get(pos)) == FALSE) &&
-			(Characters::isdigit(Str::get(pos)) == FALSE) &&
-			(Str::get(pos) != '_'))
-			ident = FALSE;
-
-	if (ident) {
-		inter_symbol *symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), S);
-		Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
-		InterSymbol::set_flag(symb, SPECULATIVE_ISYMF);
-		return NULL;
-	}
-
 	return Inter::Errors::quoted(I"unrecognised value", S, eloc);
 }
 
+@<Read symb@> =
+	inter_data_type *idt = it.underlying_data;
+	if ((Inter::Types::is_enumerated(idt)) &&
+		(InterSymbol::is_defined(symb) == FALSE))
+		return Inter::Errors::quoted(I"undefined symbol", S, eloc);
+	inter_type symbol_type = Inter::Types::of_symbol(symb);
+	if (symbol_type.underlying_data->type_ID != UNCHECKED_IDT) {
+		inter_error_message *E = Inter::Types::can_be_used_as(symbol_type, it, S, eloc);
+		if (E) return E;
+	}
+	Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
+	return NULL;
+
+@ =
 int Inter::Types::read_int_in_I6_notation(text_stream *S, inter_ti *val1, inter_ti *val2) {
 	int sign = 1, base = 10, from = 0;
 	if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
@@ -372,41 +431,6 @@ int Inter::Types::read_int_in_I6_notation(text_stream *S, inter_ti *val1, inter_
 
 	*val1 = LITERAL_IVAL; *val2 = (inter_ti) N;
 	return TRUE;
-}
-
-@
-
-@e UNCHECKED_IDT from 0x60000000
-@e INT32_IDT
-@e INT16_IDT
-@e INT8_IDT
-@e INT2_IDT
-@e ENUM_IDT
-@e LIST_IDT
-@e COLUMN_IDT
-@e TABLE_IDT
-@e TEXT_IDT
-@e ROUTINE_IDT
-@e STRUCT_IDT
-@e RELATION_IDT
-@e DESCRIPTION_IDT
-
-=
-void Inter::Types::create_all(void) {
-	unchecked_idt = Inter::Types::create(UNCHECKED_IDT, I"unchecked", -2147483648, 2147483647, FALSE);
-	int32_idt = Inter::Types::create(INT32_IDT, I"int32", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(INT16_IDT, I"int16", -32768, 32767, FALSE);
-	Inter::Types::create(INT8_IDT, I"int8", -128, 127, FALSE);
-	Inter::Types::create(INT2_IDT, I"int2", 0, 1, FALSE);
-	Inter::Types::create(ENUM_IDT, I"enum", 0, 2147483647, TRUE);
-	Inter::Types::create(LIST_IDT, I"list", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(COLUMN_IDT, I"column", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(TABLE_IDT, I"table", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(TEXT_IDT, I"text", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(ROUTINE_IDT, I"routine", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(STRUCT_IDT, I"struct", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(RELATION_IDT, I"relation", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(DESCRIPTION_IDT, I"description", -2147483648, 2147483647, FALSE);
 }
 
 @
@@ -510,5 +534,13 @@ void Inter::Types::write_type_field(OUTPUT_STREAM, inter_tree_node *P, int field
 		WRITE("("); TextualInter::write_symbol_from(OUT, P, field); WRITE(") ");
 	} else if (it.underlying_data != unchecked_idt) {
 		WRITE("(%S) ", it.underlying_data->reserved_word);
+	}
+}
+
+void Inter::Types::write_type(OUTPUT_STREAM, inter_type type) {
+	if (type.conceptual_type) {
+		TextualInter::write_symbol(OUT, type.conceptual_type);
+	} else if (type.underlying_data != unchecked_idt) {
+		WRITE("%S", type.underlying_data->reserved_word);
 	}
 }

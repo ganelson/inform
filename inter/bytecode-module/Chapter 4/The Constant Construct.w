@@ -262,20 +262,21 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 	*E = NULL;
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
-	if (Inter::Types::conceptual_type(conts_type) == NULL) {
+/*	if (Inter::Types::conceptual_type(conts_type) == NULL) {
 		inter_symbol *tc = TextualInter::find_symbol(IBM, eloc, S, CONSTANT_IST, E);
 		if (*E) return FALSE;
-		if (Inter::Kind::constructor(Inter::Constant::kind_of(tc)) == COLUMN_ICON) {
+		if (Inter::Kind::constructor(Inter::Constant::kind_of(tc)) == COLUMN_IDT) {
 			Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM), tc, &con_val1, &con_val2);
 		} else {
 			*E = Inter::Errors::quoted(I"not a table column constant", S, eloc);
 			return FALSE;
 		}
 	} else {
+*/
 		// WRITE_TO(STDERR, "Line <%S> S = <%S>\n", line, S);
 		*E = Inter::Types::read_data_pair(line, eloc, IBM, conts_type, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
 		if (*E) return FALSE;
-	}
+//	}
 	Inode::extend_instruction_by(P, 2);
 	P->W.instruction[P->W.extent-2] = con_val1;
 	P->W.instruction[P->W.extent-1] = con_val2;
@@ -334,14 +335,22 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				inter_ti V1 = P->W.instruction[i];
 				inter_ti V2 = P->W.instruction[i+1];
-				inter_symbol *K = Inter::Types::value_to_constant_symbol_kind(InterPackage::scope(owner), V1, V2);
-				if (Inter::Kind::constructor(K) != COLUMN_ICON) { *E = Inode::error(P, I"not a table column constant", NULL); return; }
+				inter_symbol *symb = InterSymbolsTable::symbol_from_data_pair(V1, V2, InterPackage::scope(owner));
+				if (symb) {
+					inter_type type = Inter::Types::of_symbol(symb);
+					if ((type.underlying_data->type_ID != COLUMN_IDT) &&
+						(type.underlying_data->type_ID != UNCHECKED_IDT)) {
+						*E = Inode::error(P, I"not a table column constant", NULL); return;
+					}
+				} else {
+					*E = Inode::error(P, I"not a table column constant", NULL); return;
+				}
 			}
 			break;
 		case CONSTANT_INDIRECT_LIST: {
 			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			inter_data_type *idt = Inter::Types::data_format(it);
-			if ((idt) && ((idt->type_ID == LIST_IDT) || (idt->type_ID == COLUMN_IDT))) {
+			if ((idt) && ((idt->type_ID == LIST_IDT) || (idt->type_ID == RULEBOOK_IDT) || (idt->type_ID == COLUMN_IDT))) {
 				inter_type conts_type = Inter::Types::type_operand(it, 0);
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					*E = Inter::Types::validate_pair(owner, P, i, conts_type); if (*E) return;
@@ -445,12 +454,12 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	}
 }
 
-inter_symbol *Inter::Constant::kind_of(inter_symbol *con_symbol) {
-	if (con_symbol == NULL) return NULL;
+inter_type Inter::Constant::type_of(inter_symbol *con_symbol) {
+	if (con_symbol == NULL) return Inter::Types::untyped();
 	inter_tree_node *D = InterSymbol::definition(con_symbol);
-	if (D == NULL) return NULL;
-	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return NULL;
-	return Inter::Types::conceptual_type(Inter::Types::from_TID(D, KIND_CONST_IFLD));
+	if (D == NULL) return Inter::Types::untyped();
+	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return Inter::Types::untyped();
+	return Inter::Types::from_TID(D, KIND_CONST_IFLD);
 }
 
 inter_package *Inter::Constant::code_block(inter_symbol *con_symbol) {

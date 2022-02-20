@@ -70,7 +70,7 @@ base data type matches this".
 			InterBookmark::scope(&in_generic_kinds), I"K_unchecked");
 	Inter::Kind::new(&in_generic_kinds,
 		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, unchecked_kind_symbol),
-		UNCHECKED_IDT, 0, BASE_ICON, 0, NULL,
+		UNCHECKED_IDT, 0, 0, NULL,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
 @ And this expresses the idea of "any sort of function":
@@ -86,7 +86,7 @@ base data type matches this".
 			InterBookmark::scope(&in_generic_kinds), I"K_unchecked_function");
 	Inter::Kind::new(&in_generic_kinds,
 		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, unchecked_function_symbol),
-		ROUTINE_IDT, 0, FUNCTION_ICON, 2, operands,
+		FUNCTION_IDT, 0, 2, operands,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
 @ And "any sort of list":
@@ -102,7 +102,7 @@ base data type matches this".
 			InterBookmark::scope(&in_generic_kinds), I"K_unchecked_list");
 	Inter::Kind::new(&in_generic_kinds,
 		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, unchecked_list_symbol),
-		LIST_IDT, 0, LIST_ICON, 1, operands,
+		LIST_IDT, 0, 1, operands,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
 @ It's safe to say that we are likely to need these, too. (Note that they do not
@@ -115,7 +115,7 @@ end up being basically the same thing.)
 			InterBookmark::scope(&in_generic_kinds), I"K_int32");
 	Inter::Kind::new(&in_generic_kinds,
 		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, integer_kind_symbol),
-		INT32_IDT, 0, BASE_ICON, 0, NULL,
+		INT32_IDT, 0, 0, NULL,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
 @<Create the boolean kind@> =
@@ -124,7 +124,7 @@ end up being basically the same thing.)
 			InterBookmark::scope(&in_generic_kinds), I"K_int2");
 	Inter::Kind::new(&in_generic_kinds,
 		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, boolean_kind_symbol),
-		INT2_IDT, 0, BASE_ICON, 0, NULL,
+		INT2_IDT, 0, 0, NULL,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
 @<Create the string kind@> =
@@ -133,5 +133,5 @@ end up being basically the same thing.)
 			InterBookmark::scope(&in_generic_kinds), I"K_string");
 	Inter::Kind::new(&in_generic_kinds,
 		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, string_kind_symbol),
-		TEXT_IDT, 0, BASE_ICON, 0, NULL,
+		TEXT_IDT, 0, 0, NULL,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
