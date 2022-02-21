@@ -37,7 +37,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		name_text = mr2.exp[1];
 	}
 
-	inter_type prop_type = Inter::Types::parse(InterBookmark::scope(IBM), eloc, kind_text, E);
+	inter_type prop_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, kind_text, E);
 	if (*E) return;
 
 	inter_symbol *prop_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), name_text, E);
@@ -51,7 +51,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, inter_type prop_type, inter_ti level, inter_error_location *eloc) {
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 	inter_ti L1 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
-	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PROPERTY_IST, PID, Inter::Types::to_TID(IBM, prop_type), L1, eloc, level);
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PROPERTY_IST, PID, InterTypes::to_TID_wrt_bookmark(IBM, prop_type), L1, eloc, level);
 	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -65,7 +65,7 @@ void Inter::Property::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 void Inter::Property::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_PROP_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_PROP_IFLD); if (*E) return;
-	Inter::Types::verify_type_field(owner, P, KIND_PROP_IFLD, -1, E);
+	Inter::Verify::typed_data(owner, P, KIND_PROP_IFLD, -1, E);
 }
 
 inter_ti Inter::Property::permissions_list(inter_symbol *prop_name) {
@@ -79,16 +79,16 @@ void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PROP_IFLD);
 	if (prop_name) {
 		WRITE("property ");
-		Inter::Types::write_type_field(OUT, P, KIND_PROP_IFLD);
+		InterTypes::write_optional_type_marker(OUT, P, KIND_PROP_IFLD);
 		WRITE("%S", InterSymbol::identifier(prop_name));
 		SymbolAnnotation::write_annotations(OUT, P, prop_name);
 	} else { *E = Inode::error(P, I"cannot write property", NULL); return; }
 }
 
 inter_type Inter::Property::type_of(inter_symbol *prop_symbol) {
-	if (prop_symbol == NULL) return Inter::Types::untyped();
+	if (prop_symbol == NULL) return InterTypes::untyped();
 	inter_tree_node *D = InterSymbol::definition(prop_symbol);
-	if (D == NULL) return Inter::Types::untyped();
-	if (D->W.instruction[ID_IFLD] != PROPERTY_IST) return Inter::Types::untyped();
-	return Inter::Types::from_TID(D, KIND_PROP_IFLD);
+	if (D == NULL) return InterTypes::untyped();
+	if (D->W.instruction[ID_IFLD] != PROPERTY_IST) return InterTypes::untyped();
+	return InterTypes::from_TID_in_field(D, KIND_PROP_IFLD);
 }

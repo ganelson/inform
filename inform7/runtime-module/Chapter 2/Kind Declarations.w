@@ -131,17 +131,17 @@ source text.
 void RTKindDeclarations::declare_base_kind(kind *K) {
 	if (K == NULL) internal_error("tried to emit null kind");
 	if (InterNames::is_defined(RTKindDeclarations::iname(K))) return;
-	inter_ti dt = INT32_IDT;
-	if (K == K_object) dt = ENUM_IDT;
-	if (Kinds::Behaviour::is_an_enumeration(K)) dt = ENUM_IDT;
-	if (K == K_truth_state) dt = INT2_IDT;
-	if (K == K_text) dt = TEXT_IDT;
-	if (K == K_table) dt = TABLE_IDT;
+	inter_ti dt = INT32_ITCONC;
+	if (K == K_object) dt = ENUM_ITCONC;
+	if (Kinds::Behaviour::is_an_enumeration(K)) dt = ENUM_ITCONC;
+	if (K == K_truth_state) dt = INT2_ITCONC;
+	if (K == K_text) dt = TEXT_ITCONC;
+	if (K == K_table) dt = TABLE_ITCONC;
 	kind *S = Latticework::super(K);
 	if ((S) && (Kinds::conforms_to(S, K_object) == FALSE)) S = NULL;
 	if (S) {
 		RTKindDeclarations::declare_base_kind(S);
-		dt = ENUM_IDT;
+		dt = ENUM_ITCONC;
 	}
 	Emit::kind(RTKindDeclarations::iname(K), S?RTKindDeclarations::iname(S):NULL,
 		dt, 0, NULL);
@@ -177,25 +177,25 @@ void RTKindDeclarations::declare_constructed_kind(cached_kind_declaration *dec) 
 @<Run out inter kind for list@> =
 	arity = 1;
 	operands[0] = Kinds::unary_construction_material(K);
-	icon = LIST_IDT;
+	icon = LIST_ITCONC;
 
 @<Run out inter kind for description@> =
 	arity = 1;
 	operands[0] = Kinds::unary_construction_material(K);
-	icon = DESCRIPTION_IDT;
+	icon = DESCRIPTION_ITCONC;
 
 @<Run out inter kind for column@> =
 	arity = 1;
 	operands[0] = Kinds::unary_construction_material(K);
-	icon = COLUMN_IDT;
+	icon = COLUMN_ITCONC;
 
 @<Run out inter kind for relation@> =
 	arity = 2;
 	Kinds::binary_construction_material(K, &operands[0], &operands[1]);
-	icon = RELATION_IDT;
+	icon = RELATION_ITCONC;
 
 @<Run out inter kind for phrase@> =
-	icon = FUNCTION_IDT;
+	icon = FUNCTION_ITCONC;
 	kind *X = NULL, *result = NULL;
 	Kinds::binary_construction_material(K, &X, &result);
 	while (Kinds::get_construct(X) == CON_TUPLE_ENTRY) {
@@ -211,11 +211,11 @@ void RTKindDeclarations::declare_constructed_kind(cached_kind_declaration *dec) 
 @<Run out inter kind for rule@> =
 	arity = 2;
 	Kinds::binary_construction_material(K, &operands[0], &operands[1]);
-	icon = RULE_IDT;
+	icon = RULE_ITCONC;
 
 @<Run out inter kind for rulebook@> =
 	arity = 1;
 	kind *X = NULL, *Y = NULL;
 	Kinds::binary_construction_material(K, &X, &Y);
 	operands[0] = Kinds::binary_con(CON_phrase, X, Y);
-	icon = RULEBOOK_IDT;
+	icon = RULEBOOK_ITCONC;

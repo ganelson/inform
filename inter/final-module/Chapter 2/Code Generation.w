@@ -469,7 +469,7 @@ void CodeGen::pair(code_generation *gen, inter_tree_node *P,
 	text_stream *OUT = CodeGen::current(gen);
 	if (val1 == LITERAL_IVAL) {
 		Generators::compile_literal_number(gen, val2, FALSE);
-	} else if (Inter::Types::pair_holds_symbol(val1, val2)) {
+	} else if (InterValuePairs::holds_symbol(val1, val2)) {
 		inter_symbol *s = InterSymbolsTable::symbol_from_data_pair(val1, val2, T);
 		if (s == NULL) internal_error("bad symbol in Inter pair");
 		Generators::compile_literal_symbol(gen, s);

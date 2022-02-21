@@ -752,7 +752,7 @@ text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *pro
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
 		inter_ti val1 = prop_node->W.instruction[VAL1_VAL_IFLD];
 		inter_ti val2 = prop_node->W.instruction[VAL2_VAL_IFLD];
-		if (Inter::Types::pair_holds_symbol(val1, val2))
+		if (InterValuePairs::holds_symbol(val1, val2))
 			prop_symbol =
 				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(prop_node), val2);
 	}
@@ -792,7 +792,7 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 	if (kind_node->W.instruction[ID_IFLD] == VAL_IST) {
 		inter_ti val1 = kind_node->W.instruction[VAL1_VAL_IFLD];
 		inter_ti val2 = kind_node->W.instruction[VAL2_VAL_IFLD];
-		if (Inter::Types::pair_holds_symbol(val1, val2))
+		if (InterValuePairs::holds_symbol(val1, val2))
 			kind_symbol =
 				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(kind_node), val2);
 	}
@@ -803,7 +803,7 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
 		inter_ti val1 = prop_node->W.instruction[VAL1_VAL_IFLD];
 		inter_ti val2 = prop_node->W.instruction[VAL2_VAL_IFLD];
-		if (Inter::Types::pair_holds_symbol(val1, val2))
+		if (InterValuePairs::holds_symbol(val1, val2))
 			prop_symbol =
 				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(prop_node), val2);
 	}

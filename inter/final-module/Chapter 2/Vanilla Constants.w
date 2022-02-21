@@ -198,7 +198,7 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 				}
 				int bracket = TRUE;
 				if ((P->W.instruction[i] == LITERAL_IVAL) ||
-					(Inter::Types::pair_holds_symbol(P->W.instruction[i], P->W.instruction[i+1]))) bracket = FALSE;
+					(InterValuePairs::holds_symbol(P->W.instruction[i], P->W.instruction[i+1]))) bracket = FALSE;
 				if (bracket) WRITE("(");
 				CodeGen::pair(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
 				if (bracket) WRITE(")");

@@ -145,7 +145,7 @@ they were any other arrays. Here goes:
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		WRITE(" ");
 		inter_ti val1 = P->W.instruction[i], val2 = P->W.instruction[i+1];
-		if (Inter::Types::pair_holds_symbol(val1, val2)) {
+		if (InterValuePairs::holds_symbol(val1, val2)) {
 			inter_symbol *A = InterSymbolsTable::symbol_from_data_pair(
 				val1, val2, InterPackage::scope_of(P));
 			if (A == NULL) internal_error("bad aliased symbol");

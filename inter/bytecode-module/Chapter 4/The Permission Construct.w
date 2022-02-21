@@ -39,7 +39,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	if (*E) return;
 
 	if (Inter::Kind::is(owner_name)) {
-		if (Inter::Types::is_enumerated(Inter::Kind::data_type(owner_name)) == FALSE)
+		if (InterTypes::is_enumerated(InterTypes::from_type_name(owner_name)) == FALSE)
 			{ *E = Inter::Errors::quoted(I"not a kind which can have property values", ilp->mr.exp[1], eloc); return; }
 
 		inter_node_list *FL =
@@ -111,7 +111,7 @@ void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_pa
 		inter_node_list *FL = NULL;
 
 		if (Inter::Kind::is(owner_name)) {
-			if (Inter::Types::is_enumerated(Inter::Kind::data_type(owner_name)) == FALSE)
+			if (InterTypes::is_enumerated(InterTypes::from_type_name(owner_name)) == FALSE)
 				{ *E = Inode::error(P, I"property permission for non-enumerated kind", NULL); return; }
 			FL = Inode::ID_to_frame_list(P, Inter::Kind::permissions_list(owner_name));
 			if (FL == NULL) internal_error("no permissions list");

@@ -337,7 +337,7 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	inter_ti v1 = 0, v2 = 0;
 	inter_package *pack = InterBookmark::package(IBM);
-	Inter::Types::symbol_to_pair(InterPackage::tree(pack), pack, val_s, &v1, &v2);
+	InterValuePairs::from_symbol(InterPackage::tree(pack), pack, val_s, &v1, &v2);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, Produce::kind_to_symbol(K)),
@@ -487,7 +487,7 @@ void Produce::val_iname(inter_tree *I, kind *K, inter_name *iname) {
 void Produce::val_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
-	Inter::Types::symbol_to_pair(InterBookmark::tree(IBM),
+	InterValuePairs::from_symbol(InterBookmark::tree(IBM),
 		InterBookmark::package(IBM), s, &val1, &val2);
 	Produce::val(I, K, val1, val2);
 }
@@ -502,7 +502,7 @@ void Produce::val(inter_tree *I, kind *K, inter_ti val1, inter_ti val2) {
 		val_kind = Produce::kind_to_symbol(K);
 		if (val_kind == NULL) internal_error("no kind for val");
 	}
-	Produce::guard(Inter::Val::new(Produce::at(I), Inter::Types::from_symbol(val_kind),
+	Produce::guard(Inter::Val::new(Produce::at(I), InterTypes::from_type_name(val_kind),
 		Produce::level(I), val1, val2, NULL));
 }
 
@@ -552,14 +552,14 @@ void Produce::ref_iname(inter_tree *I, kind *K, inter_name *iname) {
 void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
-	Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM),
+	InterValuePairs::from_symbol(InterBookmark::tree(IBM), InterBookmark::package(IBM),
 		s, &val1, &val2);
 	inter_symbol *val_kind = NULL;
 	if ((K) && (K != K_value)) {
 		val_kind = Produce::kind_to_symbol(K);
 		if (val_kind == NULL) internal_error("no kind for ref");
 	}
-	Produce::guard(Inter::Ref::new(Produce::at(I), Inter::Types::from_symbol(val_kind),
+	Produce::guard(Inter::Ref::new(Produce::at(I), InterTypes::from_type_name(val_kind),
 		Produce::level(I), val1, val2, NULL));
 }
 
@@ -650,8 +650,8 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 		Produce::guard(Inter::Comment::new(locals_at, Produce::baseline(locals_at) + 1,
 			NULL, ID));
 	}
-	inter_type it = Inter::Types::untyped();
-	if ((K) && (K != K_value)) it = Inter::Types::from_symbol(Produce::kind_to_symbol(K));
+	inter_type it = InterTypes::untyped();
+	if ((K) && (K != K_value)) it = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Local::new(locals_at, local_s, it,
 		Produce::baseline(locals_at) + 1, NULL));
 	return local_s;

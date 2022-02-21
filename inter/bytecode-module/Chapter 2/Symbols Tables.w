@@ -404,6 +404,12 @@ inter_ti InterSymbolsTable::id_from_symbol(inter_tree *I, inter_package *P, inte
 	if (S == NULL) internal_error("no symbol");
 	inter_symbols_table *P_table = InterPackage::scope(P);
 	if (P_table == NULL) P_table = InterTree::global_scope(I);
+	return InterSymbolsTable::id_from_symbol_in_table(P_table, S);
+}
+
+inter_ti InterSymbolsTable::id_from_symbol_in_table(inter_symbols_table *P_table, inter_symbol *S) {
+	if (S == NULL) internal_error("no symbol");
+	if (P_table == NULL) internal_error("no table");
 	inter_symbols_table *SP_table = S->owning_table;
 	if (P_table != SP_table) @<We need an ID to a faraway symbol@>
 	else return S->symbol_ID;
@@ -416,8 +422,6 @@ them on a package-by-package basis, so it is an error to call this function if
 @<We need an ID to a faraway symbol@> =
 	LOGIF(INTER_SYMBOLS,
 		"Seek ID of $3 from $4, which is not its owner $4\n", S, P_table, SP_table);
-	if (SP_table == InterTree::global_scope(I))
-		internal_error("cannot make a local symbol ID from a global symbol");
 	@<If this table already has a symbol wired to that faraway symbol, fine: use that@>;
 	@<Otherwise make a new symbol in the table and wire it to the faraway one@>;
 

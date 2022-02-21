@@ -409,7 +409,7 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, val);
 	int inline_this = FALSE;
-	if (Inter::Types::pair_holds_symbol(val1, val2)) {
+	if (InterValuePairs::holds_symbol(val1, val2)) {
 		inter_symbol *S = InterSymbolsTable::symbol_from_data_pair_at_node(val1, val2, X);
 		if ((S) && (SymbolAnnotation::get_b(S, INLINE_ARRAY_IANN))) {
 			inter_tree_node *P = InterSymbol::definition(S);

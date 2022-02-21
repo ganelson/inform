@@ -1,266 +1,597 @@
-[Inter::Types::] Inter Data Types.
+[InterTypes::] Inter Data Types.
 
 A primitive notion of data type, below the level of kinds.
 
-@ 
+@h Constructors.
+Abstractly, an Inter type is a combination of a "constructor" and 0 or more
+"operand types", the number depending on which constructor is used. If this
+is 0, type is a "base" constructor.
 
-@d inter_ti unsigned int
-@d signed_inter_ti int
+Constructors are identified textually by keywords, such as |int32|, and also
+by "constructor ID" numbers, such as |INT32_ITCONC|. This one is a base;
+whereas |list|, for example, is not -- |list of int32| is a valid type, with
+1 type operand, but |list| alone is not sufficient to specify a type.
+
+@ The set of valid constructor IDs is fixed and it is here:
+
+@e UNCHECKED_ITCONC from 1
+@e INT32_ITCONC
+@e INT16_ITCONC
+@e INT8_ITCONC
+@e INT2_ITCONC
+@e TEXT_ITCONC
+@e ENUM_ITCONC
+@e LIST_ITCONC
+@e COLUMN_ITCONC
+@e TABLE_ITCONC
+@e FUNCTION_ITCONC
+@e STRUCT_ITCONC
+@e RELATION_ITCONC
+@e DESCRIPTION_ITCONC
+@e RULE_ITCONC
+@e RULEBOOK_ITCONC
+@e EQUATED_ITCONC
+@e VOID_ITCONC
+
+@d MIN_INTER_TYPE_CONSTRUCTOR UNCHECKED_ITCONC
+@d MAX_INTER_TYPE_CONSTRUCTOR VOID_ITCONC
 
 =
-typedef struct inter_data_type {
-	inter_ti type_ID;
-	struct text_stream *reserved_word;
+int InterTypes::is_valid_constructor_code(inter_ti constructor) {
+	if ((constructor < MIN_INTER_TYPE_CONSTRUCTOR) ||
+		(constructor > MAX_INTER_TYPE_CONSTRUCTOR)) return FALSE;
+	return TRUE;
+}
+
+@ Clearly we need to store some metadata about what these constructor IDs
+mean, and we do that with a simple lookup array large enough to hold all
+valid constructor codes as indexes:
+
+=
+typedef struct inter_type_constructor {
+	inter_ti constructor_ID;
+	struct text_stream *constructor_keyword;
 	long long int min_value;
 	long long int max_value;
-	int enumerated;
-	CLASS_DEFINITION
-} inter_data_type;
+	int is_enumerated;
+	int is_base;
+	int arity;
+} inter_type_constructor;
 
-inter_data_type *int32_idt = NULL;
-inter_data_type *unchecked_idt = NULL;
+inter_type_constructor inter_type_constructors[MAX_INTER_TYPE_CONSTRUCTOR + 1];
 
-@ =
-dictionary *idt_lookup = NULL;
+@ That array initially contains undetermined data, of course, so we need to
+initialise it:
 
-inter_data_type *Inter::Types::create(inter_ti ID, text_stream *name, int A, int B, int en) {
-	inter_data_type *IDT = CREATE(inter_data_type);
-	IDT->type_ID = ID;
-	IDT->reserved_word = Str::duplicate(name);
-	IDT->min_value = A;
-	IDT->max_value = B;
-	IDT->enumerated = en;
+=
+void InterTypes::initialise_constructors(void) {
+	InterTypes::init_con(UNCHECKED_ITCONC,   I"unchecked",   -2147483648, 2147483647, FALSE,  TRUE, 0);
+	InterTypes::init_con(INT32_ITCONC,       I"int32",       -2147483648, 2147483647, FALSE,  TRUE, 0);
+	InterTypes::init_con(INT16_ITCONC,       I"int16",            -32768,      32767, FALSE,  TRUE, 0);
+	InterTypes::init_con(INT8_ITCONC,        I"int8",               -128,        127, FALSE,  TRUE, 0);
+	InterTypes::init_con(INT2_ITCONC,        I"int2",                  0,          1, FALSE,  TRUE, 0);
+	InterTypes::init_con(TEXT_ITCONC,        I"text",        -2147483648, 2147483647, FALSE,  TRUE, 0);
+	InterTypes::init_con(ENUM_ITCONC,        I"enum",                  0, 2147483647,  TRUE,  TRUE, 0);
+	InterTypes::init_con(LIST_ITCONC,        I"list",        -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(COLUMN_ITCONC,      I"column",      -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(TABLE_ITCONC,       I"table",       -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(FUNCTION_ITCONC,    I"function",    -2147483648, 2147483647, FALSE, FALSE, 2);
+	InterTypes::init_con(STRUCT_ITCONC,      I"struct",      -2147483648, 2147483647, FALSE, FALSE, 0);
+	InterTypes::init_con(RELATION_ITCONC,    I"relation",    -2147483648, 2147483647, FALSE, FALSE, 2);
+	InterTypes::init_con(DESCRIPTION_ITCONC, I"description", -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(RULE_ITCONC,        I"rule",        -2147483648, 2147483647, FALSE, FALSE, 2);
+	InterTypes::init_con(RULEBOOK_ITCONC,    I"rulebook",    -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(EQUATED_ITCONC,     I"",            -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(VOID_ITCONC,        I"void",                  1,          0, FALSE,  TRUE, 0);
+}
 
-	if (idt_lookup == NULL) idt_lookup = Dictionaries::new(128, FALSE);
-	Dictionaries::create(idt_lookup, name);
-	Dictionaries::write_value(idt_lookup, name, (void *) IDT);
+@ Where:
+
+=
+inter_type_constructor *InterTypes::init_con(inter_ti ID, text_stream *name,
+	int range_from, int range_to, int en, int base, int arity) {
+	if (InterTypes::is_valid_constructor_code(ID) == FALSE)
+		internal_error("constructor ID out of range");
+
+	inter_type_constructor *IDT = &(inter_type_constructors[ID]);
+	IDT->constructor_ID = ID;
+	IDT->constructor_keyword = Str::duplicate(name);
+	IDT->min_value = range_from;
+	IDT->max_value = range_to;
+	IDT->is_enumerated = en;
+	IDT->is_base = base;
 
 	return IDT;
 }
 
-@
-
-@e UNCHECKED_IDT from 0x60000000
-@e INT32_IDT
-@e INT16_IDT
-@e INT8_IDT
-@e INT2_IDT
-@e ENUM_IDT
-@e LIST_IDT
-@e COLUMN_IDT
-@e TABLE_IDT
-@e TEXT_IDT
-@e FUNCTION_IDT
-@e STRUCT_IDT
-@e RELATION_IDT
-@e DESCRIPTION_IDT
-@e RULE_IDT
-@e RULEBOOK_IDT
+@ Assuming that has been done, it is safe to call these lookup functions. Note
+that it's fine for textual lookups to be relatively slow.
 
 =
-void Inter::Types::create_all(void) {
-	unchecked_idt = Inter::Types::create(UNCHECKED_IDT, I"unchecked", -2147483648, 2147483647, FALSE);
-	int32_idt = Inter::Types::create(INT32_IDT, I"int32", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(INT16_IDT, I"int16", -32768, 32767, FALSE);
-	Inter::Types::create(INT8_IDT, I"int8", -128, 127, FALSE);
-	Inter::Types::create(INT2_IDT, I"int2", 0, 1, FALSE);
-	Inter::Types::create(ENUM_IDT, I"enum", 0, 2147483647, TRUE);
-	Inter::Types::create(LIST_IDT, I"list", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(COLUMN_IDT, I"column", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(TABLE_IDT, I"table", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(TEXT_IDT, I"text", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(FUNCTION_IDT, I"function", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(STRUCT_IDT, I"struct", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(RELATION_IDT, I"relation", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(DESCRIPTION_IDT, I"description", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(RULE_IDT, I"rule", -2147483648, 2147483647, FALSE);
-	Inter::Types::create(RULEBOOK_IDT, I"rulebook", -2147483648, 2147483647, FALSE);
+inter_type_constructor *InterTypes::constructor_from_ID(inter_ti ID) {
+	if (InterTypes::is_valid_constructor_code(ID)) return &(inter_type_constructors[ID]);
+	return NULL;
 }
 
-int Inter::Types::is_base(inter_data_type *idt) {
-	switch (idt->type_ID) {
-		case LIST_IDT:
-		case COLUMN_IDT:
-		case TABLE_IDT:
-		case FUNCTION_IDT:
-		case STRUCT_IDT:
-		case RELATION_IDT:
-		case DESCRIPTION_IDT:
-			return FALSE;
+inter_type_constructor *InterTypes::constructor_from_name(text_stream *name) {
+	for (inter_ti ID = MIN_INTER_TYPE_CONSTRUCTOR; ID <= MAX_INTER_TYPE_CONSTRUCTOR; ID++) {
+		inter_type_constructor *itc = &(inter_type_constructors[ID]);
+		if (Str::eq(itc->constructor_keyword, name))
+			return itc;
 	}
+	return NULL;
+}
+
+@h Simple types and type names.
+We need to represent types very economically in terms of memory. In principle,
+the set of abstract types is infinite (consider for example |int32|, |list of int32|,
+|list of list of int32|, ...), so there is no limit to the memory which might
+be required.
+
+We use the following representations, starting with the most concise:
+
+(1) A "TID", or type ID, is a single |inter_ti| value, often stored as a field
+in the bytecode for some instruction. For example, a |VARIABLE_IST| instruction
+includes a field holding the TID of its variable's type. This can only represent
+simple descriptions (see below), and you need to know what package a TID
+came from (i.e., what symbols table was in use there) to unravel it.
+
+(2) An //inter_type// is a lightweight structure intended for passing around
+the functions in this section. It can also only represent simple descriptions -- in
+fact, TIDs and |inter_type|s can faithfully be converted back and forth -- but
+has the advantage that you don't need any package context to understand it.
+Arguably this should be called |inter_simple_type_description|, but this is the
+one we use most often, so brevity is good.
+
+(3) An //inter_semisimple_type_description// is a much larger structure used only
+when parsing Inter code from text -- so in a regular Inform 7 compilation run, no
+such structures will ever exist. This is still limited, but to the larger
+set of semi-simple type descriptions.
+
+The following definitions look circular, but are not:[1]
+
+(*) A "simple type description" is either a constructor for which all type
+operands are |unchecked|, such as |int32| or |list of unchecked|, or else a
+"type name".
+
+(*) A "semi-simple type description" is either a constructor for which all
+type operands are simple, or else a "type name".
+
+(*) A "type name" is a name defined with a specific semi-simple type description.
+
+[1] Because the hierarchy of definitions of type names must be well-founded.
+You cannot define |K_apple| to equal |K_pear| and vice versa. Each type name
+must be defined in terms of a finite number of simple types, once all type
+name substitution has been performed, and no type name can ever lead back to
+itself.
+
+@ By using type names we can (indirectly) represent any abstract type using
+any of the representations above. For example, |list of list of int32| is neither
+simple nor semi-simple, but we can get to it by:
+
+(1) Defining |K_list_of_int32| as a type name for |list of int32|, which is
+semi-simple.
+
+(2) Defining |K_list_of_list_of_int32| as a type name for |list of K_list_of_int32|,
+which is semi-simple.
+
+And we now have |K_list_of_list_of_int32|, which is simple since it is a bare
+type name, and so can be stored in an //inter_type// or a TID.
+
+@ So, then, this holds any simple type description:
+
+=
+typedef struct inter_type {
+	inter_ti underlying_constructor;
+	inter_symbol *type_name;
+} inter_type;
+
+@ Since there are two possibilities, there are two functions to construct these:
+
+=
+inter_type InterTypes::from_constructor_code(inter_ti constructor_code) {
+	if (InterTypes::is_valid_constructor_code(constructor_code) == FALSE)
+		internal_error("invalid constructor code");
+	inter_type type;
+	type.underlying_constructor = constructor_code;
+	type.type_name = NULL;
+	return type;
+}
+
+inter_type InterTypes::from_type_name(inter_symbol *S) {
+	if (S) {
+		inter_type type;
+		type.underlying_constructor = Inter::Kind::constructor(S);
+		type.type_name = S;
+		return type;
+	}
+	return InterTypes::untyped();
+}
+
+@ Reading those back:
+
+=
+inter_symbol *InterTypes::type_name(inter_type type) {
+	return type.type_name;
+}
+
+inter_type_constructor *InterTypes::constructor(inter_type type) {
+	inter_type_constructor *itc = InterTypes::constructor_from_ID(type.underlying_constructor);
+	if (itc == NULL) itc = InterTypes::constructor_from_ID(UNCHECKED_ITCONC);
+	return itc;
+}
+
+inter_ti InterTypes::constructor_code(inter_type type) {
+	return InterTypes::constructor(type)->constructor_ID;
+}
+
+@ In some ways the most useful simple type is |unchecked|. This declares that
+all type-checking rules are waived for the data being described. A program
+in which all data is |unchecked| is a program with no type-checking at all.
+
+=
+inter_type InterTypes::untyped(void) {
+	return InterTypes::from_constructor_code(UNCHECKED_ITCONC);
+}
+
+int InterTypes::is_untyped(inter_type type) {
+	if (InterTypes::constructor_code(type) == UNCHECKED_ITCONC) return TRUE;
+	return FALSE;
+}
+
+@
+
+=
+int InterTypes::type_arity(inter_type type) {
+	inter_symbol *type_name = InterTypes::type_name(type);
+	if (type_name) return Inter::Kind::arity(type_name);
+	return InterTypes::constructor(type)->arity;
+}
+
+inter_type InterTypes::type_operand(inter_type type, int n) {
+	inter_symbol *type_name = InterTypes::type_name(type);
+	if (type_name) return Inter::Kind::operand_type(InterTypes::type_name(type), n);
+	return InterTypes::untyped();
+}
+
+@h Converting inter_type to TID and vice versa.
+
+=
+inter_type InterTypes::from_TID(inter_symbols_table *T, inter_ti TID) {
+	if (TID >= SYMBOL_BASE_VAL)
+		return InterTypes::from_type_name(InterSymbolsTable::symbol_from_ID(T, TID));
+	if (InterTypes::is_valid_constructor_code(TID))
+		return InterTypes::from_constructor_code(TID);
+	return InterTypes::untyped();
+}
+
+inter_type InterTypes::from_TID_in_field(inter_tree_node *P, int field) {
+	return InterTypes::from_TID(InterPackage::scope(Inode::get_package(P)), P->W.instruction[field]);
+}
+
+@ =
+inter_ti InterTypes::to_TID(inter_symbols_table *T, inter_type type) {
+	if (type.type_name)
+		return InterSymbolsTable::id_from_symbol_in_table(T, type.type_name);
+	return type.underlying_constructor;
+}
+
+inter_ti InterTypes::to_TID_wrt_bookmark(inter_bookmark *IBM, inter_type type) {
+	if (type.type_name)
+		return InterSymbolsTable::id_from_symbol_at_bookmark(IBM, type.type_name);
+	return type.underlying_constructor;
+}
+
+@h Parsing from text.
+
+@d DEFAULT_SIZE_OF_ISSTD_OPERAND_ARRAY 32
+
+=
+typedef struct inter_semisimple_type_description {
+	inter_ti constructor_code;
+	int arity;
+	int capacity;
+	inter_ti default_operand_TIDs[DEFAULT_SIZE_OF_ISSTD_OPERAND_ARRAY];
+	inter_ti *operand_TIDs;
+} inter_semisimple_type_description;
+
+void InterTypes::initialise_isstd(inter_semisimple_type_description *results) {
+	results->constructor_code = UNCHECKED_ITCONC;
+	results->arity = 0;
+	results->capacity = DEFAULT_SIZE_OF_ISSTD_OPERAND_ARRAY;
+	results->operand_TIDs = results->default_operand_TIDs;
+}
+
+void InterTypes::add_operand_to_isstd(inter_semisimple_type_description *results,
+	inter_symbols_table *T, inter_type type) {
+	inter_ti TID = InterTypes::to_TID(T, type);
+	if (results->arity >= results->capacity) {
+		inter_ti *extended = (inter_ti *) Memory::calloc(2*results->capacity, sizeof(inter_ti),
+			INTER_BYTECODE_MREASON);
+		for (int i=0; i<2*results->capacity; i++)
+			if (i < results->capacity)
+				extended[i] = results->operand_TIDs[i];
+			else
+				extended[i] = 0;
+		@<Free operand memory@>;
+		results->capacity = 2*results->capacity;
+		results->operand_TIDs = extended;
+	}
+	results->operand_TIDs[(results->arity)++] = TID;	
+}
+
+@ =
+void InterTypes::dispose_of_isstd(inter_semisimple_type_description *results) {
+	results->constructor_code = UNCHECKED_ITCONC;
+	results->arity = 0;
+	@<Free operand memory@>;
+}
+
+@<Free operand memory@> =
+	if (results->capacity > DEFAULT_SIZE_OF_ISSTD_OPERAND_ARRAY)
+		Memory::I7_array_free(results->operand_TIDs, INTER_BYTECODE_MREASON,
+			results->capacity, sizeof(inter_ti));
+
+@ =
+inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbols_table *T,
+	inter_error_location *eloc, inter_semisimple_type_description *results) {
+	results->constructor_code = UNCHECKED_ITCONC;
+	results->arity = 0;
+	inter_error_message *E = NULL;
+	match_results mr2 = Regexp::create_mr();
+	if (Regexp::match(&mr2, text, L"rulebook of (%C+)")) {
+		results->constructor_code = RULEBOOK_ITCONC;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
+		if (E) return E;
+		InterTypes::add_operand_to_isstd(results, T, conts_type);
+	} else if (Regexp::match(&mr2, text, L"list of (%C+)")) {
+		results->constructor_code = LIST_ITCONC;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
+		if (E) return E;
+		InterTypes::add_operand_to_isstd(results, T, conts_type);
+	} else if (Regexp::match(&mr2, text, L"relation of (%C+) to (%C+)")) {
+		results->constructor_code = RELATION_ITCONC;
+		inter_type X_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
+		if (E) return E;
+		inter_type Y_type = InterTypes::parse_simple(T, eloc, mr2.exp[1], &E);
+		if (E) return E;
+		InterTypes::add_operand_to_isstd(results, T, X_type);
+		InterTypes::add_operand_to_isstd(results, T, Y_type);
+	} else if (Regexp::match(&mr2, text, L"column of (%C+)")) {
+		results->constructor_code = COLUMN_ITCONC;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
+		if (E) return E;
+		InterTypes::add_operand_to_isstd(results, T, conts_type);
+	} else if (Regexp::match(&mr2, text, L"description of (%C+)")) {
+		results->constructor_code = DESCRIPTION_ITCONC;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
+		if (E) return E;
+		InterTypes::add_operand_to_isstd(results, T, conts_type);
+	} else if ((Regexp::match(&mr2, text, L"(function) (%c+) -> (%i+)")) ||
+			(Regexp::match(&mr2, text, L"(rule) (%c+) -> (%i+)"))) {
+		if (Str::eq(mr2.exp[0], I"function")) results->constructor_code = FUNCTION_ITCONC;
+		else results->constructor_code = RULE_ITCONC;
+		text_stream *from = mr2.exp[1];
+		text_stream *to = mr2.exp[2];
+		if (Str::eq(from, I"void")) {
+			InterTypes::add_operand_to_isstd(results, T, InterTypes::from_constructor_code(VOID_ITCONC));
+		} else {
+			match_results mr3 = Regexp::create_mr();
+			while (Regexp::match(&mr3, from, L" *(%C+) *(%c*)")) {
+				inter_type arg_type = InterTypes::parse_simple(T, eloc, mr3.exp[0], &E);
+				if (E) return E;
+				Str::copy(from, mr3.exp[1]);
+				InterTypes::add_operand_to_isstd(results, T, arg_type);
+			}
+		}
+		if (Str::eq(to, I"void")) {
+			InterTypes::add_operand_to_isstd(results, T, InterTypes::from_constructor_code(VOID_ITCONC));
+		} else {
+			inter_type res_type = InterTypes::parse_simple(T, eloc, to, &E);
+			if (E) return E;
+			InterTypes::add_operand_to_isstd(results, T, res_type);
+		}
+	} else if (Regexp::match(&mr2, text, L"struct (%c+)")) {
+		results->constructor_code = STRUCT_ITCONC;
+		text_stream *elements = mr2.exp[0];
+		match_results mr3 = Regexp::create_mr();
+		while (Regexp::match(&mr3, elements, L" *(%C+) *(%c*)")) {
+			inter_type arg_type = InterTypes::parse_simple(T, eloc, mr3.exp[0], &E);
+			if (E) return E;
+			Str::copy(elements, mr3.exp[1]);
+			InterTypes::add_operand_to_isstd(results, T, arg_type);
+		}
+	} else {
+		inter_type_constructor *itc = InterTypes::constructor_from_name(text);
+		if (itc) {
+			results->constructor_code = itc->constructor_ID;
+			return NULL;
+		}
+		inter_symbol *K = TextualInter::find_symbol_in_table(T, eloc, text, KIND_IST, &E);
+		if (E) return E;
+		if (K) {
+			results->constructor_code = EQUATED_ITCONC;
+			InterTypes::add_operand_to_isstd(results, T, InterTypes::from_type_name(K));
+			return NULL;
+		}
+		return Inter::Errors::quoted(I"no such data type", text, eloc);
+	}
+	return NULL;
+}
+
+inter_type InterTypes::parse_simple(inter_symbols_table *T, inter_error_location *eloc,
+	text_stream *text, inter_error_message **E) {
+	if (Str::len(text) > 0) {
+		inter_semisimple_type_description parsed_description;
+		InterTypes::initialise_isstd(&parsed_description);
+		*E = InterTypes::parse_semisimple(text, T, eloc, &parsed_description);
+		if (*E) return InterTypes::untyped();
+		if (parsed_description.constructor_code == VOID_ITCONC) {
+			*E = Inter::Errors::quoted(I"'void' cannot be used as a type", text, eloc);
+			return InterTypes::untyped();
+		}
+		if (parsed_description.constructor_code == EQUATED_ITCONC) {
+			inter_type type = InterTypes::from_TID(T, parsed_description.operand_TIDs[0]);
+			InterTypes::dispose_of_isstd(&parsed_description);
+			return type;
+		}
+		if (parsed_description.arity > 0)  {
+			InterTypes::dispose_of_isstd(&parsed_description);
+			*E = Inter::Errors::quoted(I"type too complex", text, eloc);
+			return InterTypes::untyped();
+		}
+		inter_type type = InterTypes::from_constructor_code(parsed_description.constructor_code);
+		InterTypes::dispose_of_isstd(&parsed_description);
+		return type;
+	}
+	return InterTypes::untyped();
+}
+
+@h Writing to text.
+
+=
+void InterTypes::write_optional_type_marker(OUTPUT_STREAM, inter_tree_node *P, int field) {
+	inter_type type = InterTypes::from_TID_in_field(P, field);
+	if (type.type_name) {
+		WRITE("("); TextualInter::write_symbol_from(OUT, P, field); WRITE(") ");
+	} else if (InterTypes::is_untyped(type) == FALSE) {
+		WRITE("("); InterTypes::write_type(OUT, type); WRITE(") ");
+	}
+}
+
+void InterTypes::write_type_in_field(OUTPUT_STREAM, inter_tree_node *P, int field) {
+	InterTypes::write_type(OUT, InterTypes::from_TID_in_field(P, field));
+}
+
+void InterTypes::write_type(OUTPUT_STREAM, inter_type type) {
+	if (type.type_name) {
+		TextualInter::write_symbol(OUT, type.type_name);
+	} else {
+		inter_type_constructor *itc = InterTypes::constructor(type);
+		WRITE("%S", itc->constructor_keyword);
+		switch (itc->constructor_ID) {
+			case EQUATED_ITCONC:
+				InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
+				break;
+			case DESCRIPTION_ITCONC:
+			case COLUMN_ITCONC:
+			case RULEBOOK_ITCONC:
+			case LIST_ITCONC:
+				WRITE(" of ");
+				InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
+				break;
+			case RELATION_ITCONC:
+				WRITE(" of ");
+				InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
+				WRITE(" to ");
+				InterTypes::write_type(OUT, InterTypes::type_operand(type, 1));
+				break;
+			case FUNCTION_ITCONC:
+			case RULE_ITCONC: {
+				int arity = InterTypes::type_arity(type);
+				for (int i=0; i<arity; i++) {
+					WRITE(" ");
+					if (i == arity - 1) WRITE("-> ");
+					InterTypes::write_type(OUT, InterTypes::type_operand(type, i));
+				}
+				break;
+			}
+			case STRUCT_ITCONC: {
+				int arity = InterTypes::type_arity(type);
+				for (int i=0; i<arity; i++) {
+					WRITE(" ");
+					InterTypes::write_type(OUT, InterTypes::type_operand(type, i));
+				}
+				break;
+			}
+		}		
+	}
+}
+
+void InterTypes::write_type_name_definition(OUTPUT_STREAM, inter_symbol *type_name) {
+	inter_type_constructor *itc = InterTypes::constructor_from_ID(Inter::Kind::constructor(type_name));
+	if (itc == NULL) { WRITE("<bad-constructor>"); return; }
+	WRITE("%S", itc->constructor_keyword);
+	switch (itc->constructor_ID) {
+		case EQUATED_ITCONC:
+			InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, 0));
+			break;
+		case DESCRIPTION_ITCONC:
+		case COLUMN_ITCONC:
+		case RULEBOOK_ITCONC:
+		case LIST_ITCONC:
+			WRITE(" of ");
+			InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, 0));
+			break;
+		case RELATION_ITCONC:
+			WRITE(" of ");
+			InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, 0));
+			WRITE(" to ");
+			InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, 1));
+			break;
+		case FUNCTION_ITCONC:
+		case RULE_ITCONC: {
+			int arity = Inter::Kind::arity(type_name);
+			for (int i=0; i<arity; i++) {
+				WRITE(" ");
+				if (i == arity - 1) WRITE("-> ");
+				InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, i));
+			}
+			break;
+		}
+		case STRUCT_ITCONC: {
+			int arity = Inter::Kind::arity(type_name);
+			for (int i=0; i<arity; i++) {
+				WRITE(" ");
+				InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, i));
+			}
+			break;
+		}
+	}		
+}
+
+@h Typechecking.
+
+=
+int InterTypes::is_enumerated(inter_type type) {
+	inter_type_constructor *itc = InterTypes::constructor(type);
+	if (itc->is_enumerated) return TRUE;
+	return FALSE;
+}
+
+int InterTypes::literal_is_in_range(long long int N, inter_type type) {
+	inter_type_constructor *itc = InterTypes::constructor(type);
+	if ((N < itc->min_value) || (N > itc->max_value)) return FALSE;
 	return TRUE;
 }
 
-int Inter::Types::is_enumerated(inter_data_type *idt) {
-	if ((idt) && (idt->enumerated)) return TRUE;
-	return FALSE;
-}
-
-inter_data_type *Inter::Types::find_by_ID(inter_ti ID) {
-	inter_data_type *IDT;
-	LOOP_OVER(IDT, inter_data_type)
-		if (ID == IDT->type_ID)
-			return IDT;
-	return NULL;
-}
-
-inter_data_type *Inter::Types::find_by_name(text_stream *name) {
-	dict_entry *de = Dictionaries::find(idt_lookup, name);
-	if (de) return (inter_data_type *) Dictionaries::read_value(idt_lookup, name);
-	return NULL;
-}
-
-inter_ti Inter::Types::transpose_value(inter_ti V1, inter_ti V2, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	switch (V1) {
-		case DWORD_IVAL:
-		case PDWORD_IVAL:
-		case LITERAL_TEXT_IVAL:
-		case REAL_IVAL:
-		case GLOB_IVAL:
-		case DIVIDER_IVAL:
-			V2 = grid[V2];
-			break;
-	}
-	return V2;
-}
-
-inter_error_message *Inter::Types::validate_pair(inter_package *owner, inter_tree_node *P, int index, inter_type type) {
-	inter_ti V1 = P->W.instruction[index];
-	inter_ti V2 = P->W.instruction[index+1];
-	inter_symbols_table *scope = InterPackage::scope(owner);
-	if (scope == NULL) scope = Inode::globals(P);
-	switch (V1) {
-		case LITERAL_IVAL: {
-			inter_data_type *idt = Inter::Types::data_format(type);
-			if (idt) {
-				long long int I = (signed_inter_ti) V2;
-				if ((I < idt->min_value) || (I > idt->max_value)) return Inode::error(P, I"value out of range", NULL);
-				return NULL;
-			}
-			return NULL;
-		}
-		case ALIAS_IVAL: {
-			inter_symbol *symb = InterSymbolsTable::symbol_from_ID(scope, V2);
-			if (symb == NULL) return Inode::error(P, I"no such symbol", NULL);
-			if (InterSymbol::misc_but_undefined(symb)) return NULL;
-			if (InterSymbol::defined_elsewhere(symb)) return NULL;
-			if (Inter::Types::expresses_value(symb) == FALSE)
-				return Inode::error(P, I"nonconstant symbol", InterSymbol::identifier(symb));
-			inter_type symbol_type = Inter::Types::of_symbol(symb);
-			return Inter::Types::can_be_used_as(symbol_type, type, InterSymbol::identifier(symb), Inode::get_error_location(P));
-		}
-		case DWORD_IVAL:
-		case PDWORD_IVAL:
-		case LITERAL_TEXT_IVAL:
-		case REAL_IVAL:
-		case GLOB_IVAL:
-		case UNDEF_IVAL:
-		case DIVIDER_IVAL:
-			return NULL;
-	}
-	return Inode::error(P, I"value of unknown category", NULL);
-}
-
-int Inter::Types::expresses_value(inter_symbol *symb) {
-	inter_tree_node *D = InterSymbol::definition(symb);
-	if (D) {
-		if (D->W.instruction[ID_IFLD] == KIND_IST)     return TRUE;
-		if (D->W.instruction[ID_IFLD] == INSTANCE_IST) return TRUE;
-		if (D->W.instruction[ID_IFLD] == CONSTANT_IST) return TRUE;
-		if (D->W.instruction[ID_IFLD] == LOCAL_IST)    return TRUE;
-		if (D->W.instruction[ID_IFLD] == VARIABLE_IST) return TRUE;
-		if (D->W.instruction[ID_IFLD] == PROPERTY_IST) return TRUE;
-	}
-	return FALSE;
-}
-
-@
-
-@e LITERAL_IVAL from 0x10000
-@e LITERAL_TEXT_IVAL
-@e REAL_IVAL
-@e ALIAS_IVAL
-@e UNDEF_IVAL
-@e DWORD_IVAL
-@e PDWORD_IVAL
-@e GLOB_IVAL
-@e DIVIDER_IVAL
-
-=
-
-void Inter::Types::write_pair(OUTPUT_STREAM, inter_tree_node *F,
-	inter_ti V1, inter_ti V2, inter_symbols_table *scope, int hex_flag) {
-	switch (V1) {
-		case LITERAL_IVAL:
-			if (hex_flag) WRITE("0x%x", V2);
-			else WRITE("%d", V2); break;
-		case REAL_IVAL:
-			WRITE("r\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
-			WRITE("\"");
-			break;
-		case LITERAL_TEXT_IVAL:
-			WRITE("\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
-			WRITE("\"");
-			break;
-		case ALIAS_IVAL: {
-			inter_symbol *symb = InterSymbolsTable::symbol_from_ID_not_following(scope, V2);
-			TextualInter::write_symbol(OUT, symb);
-			break;
-		}
-		case UNDEF_IVAL: WRITE("undef"); break;
-		case GLOB_IVAL:
-			WRITE("&\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
-			WRITE("\"");
-			break;
-		case DWORD_IVAL:
-			WRITE("dw'");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
-			WRITE("'");
-			break;
-		case PDWORD_IVAL:
-			WRITE("dwp'");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
-			WRITE("'");
-			break;
-		case DIVIDER_IVAL:
-			WRITE("^\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
-			WRITE("\"");
-			break;
-		default: WRITE("<invalid-value-type>"); break;
-	}
-}
-
-inter_error_message *Inter::Types::can_be_used_as(inter_type A, inter_type B,
+inter_error_message *InterTypes::can_be_used_as(inter_type A, inter_type B,
 	text_stream *S, inter_error_location *eloc) {
-	inter_data_type *A_idt = Inter::Types::data_format(A);
-	inter_data_type *B_idt = Inter::Types::data_format(A);
+	inter_type_constructor *A_itc = InterTypes::constructor(A);
+	inter_type_constructor *B_itc = InterTypes::constructor(B);
 
-	if ((A_idt->type_ID == UNCHECKED_IDT) || (B_idt->type_ID == UNCHECKED_IDT))
+	if ((A_itc->constructor_ID == UNCHECKED_ITCONC) || (B_itc->constructor_ID == UNCHECKED_ITCONC))
 		return NULL;
 
-	if ((A_idt->type_ID == LIST_IDT) && (B_idt->type_ID == TEXT_IDT))
+	if ((A_itc->constructor_ID == LIST_ITCONC) && (B_itc->constructor_ID == TEXT_ITCONC))
 		return NULL; // so that two-element arrays can be used to implement I7 texts
 
-	if (Inter::Types::is_base(A_idt) != Inter::Types::is_base(B_idt))
+	if (A_itc->is_base != B_itc->is_base)
 		@<Throw type mismatch error@>;
 
-	if (Inter::Types::is_base(A_idt)) {
-		inter_symbol *kind_symbol = B.conceptual_type;
-		inter_symbol *kind_loc = A.conceptual_type;
+	if (A_itc->is_base) {
+		inter_symbol *kind_symbol = B.type_name;
+		inter_symbol *kind_loc = A.type_name;
 		if ((kind_symbol) && (kind_loc) && (Inter::Kind::is_a(kind_loc, kind_symbol) == FALSE))
 			@<Throw type mismatch error@>;
 	} else {
-		if (A_idt->type_ID != B_idt->type_ID)
+		if (A_itc->constructor_ID != B_itc->constructor_ID)
 			@<Throw type mismatch error@>;
 		inter_error_message *operand_E = NULL;
-		switch (A_idt->type_ID) {
-			case LIST_IDT:
-				operand_E = Inter::Types::can_be_used_as(Inter::Types::type_operand(A, 0),
-					Inter::Types::type_operand(B, 0), S, eloc);
+		switch (A_itc->constructor_ID) {
+			case LIST_ITCONC:
+				operand_E = InterTypes::can_be_used_as(InterTypes::type_operand(A, 0),
+					InterTypes::type_operand(B, 0), S, eloc);
 				if (operand_E) @<Throw type mismatch error@>;
 				break;
 		}
@@ -271,276 +602,35 @@ inter_error_message *Inter::Types::can_be_used_as(inter_type A, inter_type B,
 @<Throw type mismatch error@> =
 	text_stream *err = Str::new();
 	WRITE_TO(err, "value '%S' has kind ", S);
-	Inter::Types::write_type(err, A);
+	InterTypes::write_type(err, A);
 	WRITE_TO(err, " which is not a ");
-	Inter::Types::write_type(err, B);
-	// WRITE_TO(STDERR, "%S: %S: %x, %x\n", err, S, A.underlying_data->type_ID, B.underlying_data->type_ID);
+	InterTypes::write_type(err, B);
 	return Inter::Errors::plain(err, eloc);
 
-@ =
-inter_type Inter::Types::of_symbol(inter_symbol *symb) {
+@h The type of a defined symbol.
+
+=
+inter_type InterTypes::of_symbol(inter_symbol *symb) {
 	inter_tree_node *D = InterSymbol::definition(symb);
-	if (D == NULL) return Inter::Types::untyped();
-	if (InterSymbol::defined_elsewhere(symb)) return Inter::Types::untyped();
+	if (D == NULL) return InterTypes::untyped();
+	if (InterSymbol::defined_elsewhere(symb)) return InterTypes::untyped();
 	if (D->W.instruction[ID_IFLD] == LOCAL_IST) return Inter::Local::type_of(symb);
 	if (D->W.instruction[ID_IFLD] == CONSTANT_IST) return Inter::Constant::type_of(symb);
 	if (D->W.instruction[ID_IFLD] == INSTANCE_IST) return Inter::Instance::type_of(symb);
 	if (D->W.instruction[ID_IFLD] == VARIABLE_IST) return Inter::Variable::type_of(symb);
 	if (D->W.instruction[ID_IFLD] == PROPERTY_IST) return Inter::Property::type_of(symb);
-	return Inter::Types::untyped();
+	return InterTypes::untyped();
 }
 
-inter_error_message *Inter::Types::read_data_pair(text_stream *line, inter_error_location *eloc,
-	inter_bookmark *IBM, inter_type it, text_stream *S, inter_ti *val1, inter_ti *val2,
-	inter_symbols_table *scope) {
-	inter_tree *I = InterBookmark::tree(IBM);
-	inter_package *pack = InterBookmark::package(IBM);
-
-	if (Str::eq(S, I"undef")) {
-		*val1 = UNDEF_IVAL; *val2 = 0; return NULL;
+int InterTypes::expresses_value(inter_symbol *symb) {
+	inter_tree_node *D = InterSymbol::definition(symb);
+	if (D) {
+		if (D->W.instruction[ID_IFLD] == KIND_IST)     return TRUE;
+		if (D->W.instruction[ID_IFLD] == INSTANCE_IST) return TRUE;
+		if (D->W.instruction[ID_IFLD] == CONSTANT_IST) return TRUE;
+		if (D->W.instruction[ID_IFLD] == LOCAL_IST)    return TRUE;
+		if (D->W.instruction[ID_IFLD] == VARIABLE_IST) return TRUE;
+		if (D->W.instruction[ID_IFLD] == PROPERTY_IST) return TRUE;
 	}
-	if ((Str::begins_with_wide_string(S, L"\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = LITERAL_TEXT_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
-		return Inter::Constant::parse_text(glob_storage, S, 1, Str::len(S)-2, eloc);
-	}
-	if ((Str::begins_with_wide_string(S, L"r\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = REAL_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
-		return Inter::Constant::parse_text(glob_storage, S, 2, Str::len(S)-2, eloc);
-	}
-	if ((Str::begins_with_wide_string(S, L"&\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = GLOB_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
-		return Inter::Constant::parse_text(glob_storage, S, 2, Str::len(S)-2, eloc);
-	}
-	if ((Str::begins_with_wide_string(S, L"dw'")) && (Str::ends_with_wide_string(S, L"'"))) {
-		*val1 = DWORD_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
-		return Inter::Constant::parse_text(glob_storage, S, 3, Str::len(S)-2, eloc);
-	}
-	if ((Str::begins_with_wide_string(S, L"dwp'")) && (Str::ends_with_wide_string(S, L"'"))) {
-		*val1 = PDWORD_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
-		return Inter::Constant::parse_text(glob_storage, S, 4, Str::len(S)-2, eloc);
-	}
-	if ((Str::begins_with_wide_string(S, L"^\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = DIVIDER_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *divider_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
-		return Inter::Constant::parse_text(divider_storage, S, 2, Str::len(S)-2, eloc);
-	}
-	if (Str::get_first_char(S) == '/') {
-		inter_symbol *symb = InterSymbolsTable::URL_to_symbol(I, S);
-		if (symb == NULL) {
-			TEMPORARY_TEXT(leaf)
-			LOOP_THROUGH_TEXT(pos, S) {
-				wchar_t c = Str::get(pos);
-				if (c == '/') Str::clear(leaf);
-				else PUT_TO(leaf, c);
-			}
-			if (Str::len(leaf) == 0) return Inter::Errors::quoted(I"URL ends in '/'", S, eloc);
-			symb = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), leaf);
-			if (!((symb) && (Wiring::is_wired_to_name(symb)) && (Str::eq(Wiring::wired_to_name(symb), S)))) {			
-				symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), leaf);
-				Wiring::wire_to_name(symb, S);
-			}
-			DISCARD_TEXT(leaf)
-		}
-		@<Read symb@>;
-	}
-	int ident = FALSE;
-	if (Characters::isalpha(Str::get_first_char(S))) {
-		ident = TRUE;
-		LOOP_THROUGH_TEXT(pos, S)
-			if ((Characters::isalpha(Str::get(pos)) == FALSE) &&
-				(Characters::isdigit(Str::get(pos)) == FALSE) &&
-				(Str::get(pos) != '_'))
-				ident = FALSE;
-	}
-	if (ident) {
-		inter_symbol *symb = InterSymbolsTable::symbol_from_name(scope, S);
-		if (symb) @<Read symb@>;
-		symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), S);
-		Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
-		InterSymbol::set_flag(symb, SPECULATIVE_ISYMF);
-		return NULL;
-	}
-
-	wchar_t c = Str::get_first_char(S);
-	if ((c == '-') || (Characters::isdigit(c))) {
-		int sign = 1, base = 10, from = 0;
-		if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
-		if (Str::prefix_eq(S, I"0b", 2)) { base = 2; from = 2; }
-		if (Str::prefix_eq(S, I"0x", 2)) { base = 16; from = 2; }
-		long long int N = 0;
-		LOOP_THROUGH_TEXT(pos, S) {
-			if (pos.index < from) continue;
-			int c = Str::get(pos), d = 0;
-			if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
-			else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
-			else if ((c >= '0') && (c <= '9')) d = c-'0';
-			else return Inter::Errors::quoted(I"bad digit", S, eloc);
-			if (d > base) return Inter::Errors::quoted(I"bad digit for this number base", S, eloc);
-			N = base*N + (long long int) d;
-			if (pos.index > 34) return Inter::Errors::quoted(I"value out of range", S, eloc);
-		}
-		N = sign*N;
-		inter_data_type *idt = it.underlying_data;
-		if ((idt) && ((N < idt->min_value) || (N > idt->max_value)))
-			return Inter::Errors::quoted(I"value out of range", S, eloc);
-
-		*val1 = LITERAL_IVAL; *val2 = (inter_ti) N;
-		return NULL;
-	}
-
-	return Inter::Errors::quoted(I"unrecognised value", S, eloc);
-}
-
-@<Read symb@> =
-	inter_data_type *idt = it.underlying_data;
-	if ((Inter::Types::is_enumerated(idt)) &&
-		(InterSymbol::is_defined(symb) == FALSE))
-		return Inter::Errors::quoted(I"undefined symbol", S, eloc);
-	inter_type symbol_type = Inter::Types::of_symbol(symb);
-	if (symbol_type.underlying_data->type_ID != UNCHECKED_IDT) {
-		inter_error_message *E = Inter::Types::can_be_used_as(symbol_type, it, S, eloc);
-		if (E) return E;
-	}
-	Inter::Types::symbol_to_pair(I, pack, symb, val1, val2);
-	return NULL;
-
-@ =
-int Inter::Types::read_int_in_I6_notation(text_stream *S, inter_ti *val1, inter_ti *val2) {
-	int sign = 1, base = 10, from = 0;
-	if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
-	if (Str::prefix_eq(S, I"$", 1)) { base = 16; from = 1; }
-	if (Str::prefix_eq(S, I"$$", 2)) { base = 2; from = 2; }
-	long long int N = 0;
-	LOOP_THROUGH_TEXT(pos, S) {
-		if (pos.index < from) continue;
-		int c = Str::get(pos), d = 0;
-		if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
-		else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
-		else if ((c >= '0') && (c <= '9')) d = c-'0';
-		else return FALSE;
-		if (d > base) return FALSE;
-		N = base*N + (long long int) d;
-		if (pos.index > 34) return FALSE;
-	}
-	N = sign*N;
-
-	*val1 = LITERAL_IVAL; *val2 = (inter_ti) N;
-	return TRUE;
-}
-
-@
-
-=
-int Inter::Types::pair_holds_symbol(inter_ti val1, inter_ti val2) {
-	if (val1 == ALIAS_IVAL) return TRUE;
 	return FALSE;
-}
-
-void Inter::Types::symbol_to_pair(inter_tree *I, inter_package *pack, inter_symbol *S,
-	inter_ti *val1, inter_ti *val2) {
-	if (S == NULL) internal_error("no symbol");
-	*val1 = ALIAS_IVAL; *val2 = InterSymbolsTable::id_from_symbol(I, pack, S);
-}
-
-typedef struct inter_type {
-	inter_data_type *underlying_data;
-	inter_symbol *conceptual_type;
-} inter_type;
-
-inter_type Inter::Types::parse(inter_symbols_table *T, inter_error_location *eloc,
-	text_stream *text, inter_error_message **E) {
-	inter_type it;
-	it.conceptual_type = NULL;
-	it.underlying_data = unchecked_idt;
-	if (Str::len(text) > 0) {
-		it.conceptual_type = TextualInter::find_symbol_in_table(T, eloc, text, KIND_IST, E);
-		if (it.conceptual_type)
-			it.underlying_data = Inter::Kind::data_type(it.conceptual_type);
-		else {
-			it.underlying_data = Inter::Types::find_by_name(text);
-			if (it.underlying_data == NULL) {
-				*E = Inter::Errors::quoted(I"unrecognised data type", text, eloc);
-				it.underlying_data = unchecked_idt;
-			}
-		}
-	}
-	return it;
-}
-
-inter_type Inter::Types::from_symbol(inter_symbol *S) {
-	inter_type it;
-	if (S) it.underlying_data = Inter::Kind::data_type(S);
-	else it.underlying_data = unchecked_idt;
-	it.conceptual_type = S;
-	return it;
-}
-
-inter_symbol *Inter::Types::conceptual_type(inter_type it) {
-	return it.conceptual_type;
-}
-
-inter_type Inter::Types::untyped(void) {
-	return Inter::Types::from_symbol(NULL);
-}
-
-inter_data_type *Inter::Types::data_format(inter_type it) {
-	return it.underlying_data;
-}
-
-int Inter::Types::type_arity(inter_type it) {
-	return Inter::Kind::arity(Inter::Types::conceptual_type(it));
-}
-
-inter_type Inter::Types::type_operand(inter_type it, int n) {
-	return Inter::Types::from_symbol(Inter::Kind::operand_symbol(Inter::Types::conceptual_type(it), n));
-}
-
-inter_type Inter::Types::from_TID(inter_tree_node *P, int field) {
-	inter_type it;
-	it.underlying_data = unchecked_idt;
-	it.conceptual_type = InterSymbolsTable::symbol_from_ID_at_node(P, field);
-	if (it.conceptual_type)
-		it.underlying_data = Inter::Kind::data_type(it.conceptual_type);
-	return it;
-}
-
-inter_ti Inter::Types::to_TID(inter_bookmark *IBM, inter_type it) {
-	if (it.conceptual_type)
-		return InterSymbolsTable::id_from_symbol_at_bookmark(IBM, it.conceptual_type);
-	return 0;
-}
-
-void Inter::Types::verify_type_field(inter_package *owner, inter_tree_node *P,
-	int field, int data_field, inter_error_message **E) {
-	if (P->W.instruction[field]) {
-		*E = Inter::Verify::symbol(owner, P, P->W.instruction[field], KIND_IST);
-		if (*E) return;
-		if (data_field >= 0) {
-			inter_type type = Inter::Types::from_TID(P, field);
-			*E = Inter::Types::validate_pair(owner, P, data_field, type);
-			if (*E) return;
-		}
-	}
-}
-
-void Inter::Types::write_type_field(OUTPUT_STREAM, inter_tree_node *P, int field) {
-	inter_type it = Inter::Types::from_TID(P, field);
-	if (it.conceptual_type) {
-		WRITE("("); TextualInter::write_symbol_from(OUT, P, field); WRITE(") ");
-	} else if (it.underlying_data != unchecked_idt) {
-		WRITE("(%S) ", it.underlying_data->reserved_word);
-	}
-}
-
-void Inter::Types::write_type(OUTPUT_STREAM, inter_type type) {
-	if (type.conceptual_type) {
-		TextualInter::write_symbol(OUT, type.conceptual_type);
-	} else if (type.underlying_data != unchecked_idt) {
-		WRITE("%S", type.underlying_data->reserved_word);
-	}
 }

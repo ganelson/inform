@@ -132,7 +132,7 @@ void Synoptic::symbol_entry(inter_symbol *S) {
 		InterPackage::scope(pack), InterSymbol::identifier(S));
 	Wiring::wire_to(local_S, S);
 	inter_ti val1 = 0, val2 = 0;
-	Inter::Types::symbol_to_pair(InterPackage::tree(pack), pack, local_S, &val1, &val2);
+	InterValuePairs::from_symbol(InterPackage::tree(pack), pack, local_S, &val1, &val2);
 	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = ALIAS_IVAL;
 	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
 }

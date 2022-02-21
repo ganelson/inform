@@ -30,6 +30,7 @@ Chapter 3: Their Instructions
 	Inter in Binary Files
 	Inter in Text Files
 	Verifying Inter
+	Inter Value Pairs
 	Inter Data Types
 	Metadata
 	Inter Errors

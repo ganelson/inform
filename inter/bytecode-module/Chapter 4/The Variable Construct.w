@@ -37,7 +37,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		name_text = mr2.exp[1];
 	}
 
-	inter_type var_type = Inter::Types::parse(InterBookmark::scope(IBM), eloc, kind_text, E);
+	inter_type var_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, kind_text, E);
 	if (*E) return;
 
 	inter_symbol *var_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), name_text, E);
@@ -47,14 +47,14 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_ti var_val1 = 0;
 	inter_ti var_val2 = 0;
-	*E = Inter::Types::read_data_pair(ilp->line, eloc, IBM, var_type, ilp->mr.exp[1], &var_val1, &var_val2, InterBookmark::scope(IBM));
+	*E = InterValuePairs::parse(ilp->line, eloc, IBM, var_type, ilp->mr.exp[1], &var_val1, &var_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::Variable::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_name), var_type, var_val1, var_val2, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, inter_type var_type, inter_ti var_val1, inter_ti var_val2, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VARIABLE_IST, VID, Inter::Types::to_TID(IBM, var_type), var_val1, var_val2, eloc, level);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VARIABLE_IST, VID, InterTypes::to_TID_wrt_bookmark(IBM, var_type), var_val1, var_val2, eloc, level);
 	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -64,24 +64,24 @@ inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, int
 void Inter::Variable::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_VAR_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_VAR_IFLD); if (*E) return;
-	Inter::Types::verify_type_field(owner, P, KIND_VAR_IFLD, VAL1_VAR_IFLD, E);
+	Inter::Verify::typed_data(owner, P, KIND_VAR_IFLD, VAL1_VAR_IFLD, E);
 }
 
 void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *var_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_VAR_IFLD);
 	if (var_name) {
 		WRITE("variable ");
-		Inter::Types::write_type_field(OUT, P, KIND_VAR_IFLD);
+		InterTypes::write_optional_type_marker(OUT, P, KIND_VAR_IFLD);
 		WRITE("%S = ", InterSymbol::identifier(var_name));
-		Inter::Types::write_pair(OUT, P, P->W.instruction[VAL1_VAR_IFLD], P->W.instruction[VAL2_VAR_IFLD], InterPackage::scope_of(P), FALSE);
+		InterValuePairs::write(OUT, P, P->W.instruction[VAL1_VAR_IFLD], P->W.instruction[VAL2_VAR_IFLD], InterPackage::scope_of(P), FALSE);
 		SymbolAnnotation::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write variable", NULL); return; }
 }
 
 inter_type Inter::Variable::type_of(inter_symbol *con_symbol) {
-	if (con_symbol == NULL) return Inter::Types::untyped();
+	if (con_symbol == NULL) return InterTypes::untyped();
 	inter_tree_node *D = InterSymbol::definition(con_symbol);
-	if (D == NULL) return Inter::Types::untyped();
-	if (D->W.instruction[ID_IFLD] != VARIABLE_IST) return Inter::Types::untyped();
-	return Inter::Types::from_TID(D, KIND_VAR_IFLD);
+	if (D == NULL) return InterTypes::untyped();
+	if (D->W.instruction[ID_IFLD] != VARIABLE_IST) return InterTypes::untyped();
+	return InterTypes::from_TID_in_field(D, KIND_VAR_IFLD);
 }

@@ -50,6 +50,32 @@ inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_tree_node
 	return NULL;
 }
 
+inter_error_message *Inter::Verify::TID(inter_package *owner, inter_tree_node *P, inter_ti TID) {
+	if (TID == 0) return NULL;
+	if (InterTypes::is_valid_constructor_code(TID)) return NULL;
+	return Inter::Verify::symbol(owner, P, TID, KIND_IST);
+}
+
+inter_error_message *Inter::Verify::constructor_code(inter_tree_node *P, int index) {
+	inter_ti ID = P->W.instruction[index];
+	if (InterTypes::is_valid_constructor_code(ID) == FALSE)
+		return Inode::error(P, I"unknown type constructor", NULL);
+	return NULL;
+}
+
+void Inter::Verify::typed_data(inter_package *owner, inter_tree_node *P,
+	int field, int data_field, inter_error_message **E) {
+	if (P->W.instruction[field]) {
+		*E = Inter::Verify::TID(owner, P, P->W.instruction[field]);
+		if (*E) return;
+		if (data_field >= 0) {
+			inter_type type = InterTypes::from_TID_in_field(P, field);
+			*E = InterValuePairs::validate(owner, P, data_field, type);
+			if (*E) return;
+		}
+	}
+}
+
 inter_error_message *Inter::Verify::global_symbol(inter_tree_node *P, inter_ti ID, inter_ti construct) {
 	inter_symbol *S = InterSymbolsTable::symbol_from_ID(Inode::globals(P), ID);
 	if (S == NULL) { internal_error("IO"); return Inode::error(P, I"3no symbol for ID", NULL); }
@@ -94,13 +120,6 @@ inter_error_message *Inter::Verify::symbol_KOI(inter_package *owner, inter_tree_
 		(D->W.instruction[ID_IFLD] != INSTANCE_IST) &&
 		(InterSymbol::misc_but_undefined(S) == FALSE))
 			return Inode::error(P, I"symbol of wrong type", InterSymbol::identifier(S));
-	return NULL;
-}
-
-inter_error_message *Inter::Verify::data_type(inter_tree_node *P, int index) {
-	inter_ti ID = P->W.instruction[index];
-	inter_data_type *idt = Inter::Types::find_by_ID(ID);
-	if (idt == NULL) return Inode::error(P, I"unknown data type", NULL);
 	return NULL;
 }
 

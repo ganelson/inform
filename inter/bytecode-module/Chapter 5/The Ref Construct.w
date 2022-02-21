@@ -45,19 +45,19 @@ void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 		value_text = mr2.exp[1];
 	}
 
-	inter_type ref_type = Inter::Types::parse(InterBookmark::scope(IBM), eloc, kind_text, E);
+	inter_type ref_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, kind_text, E);
 	if (*E) return;
 
 	inter_ti var_val1 = 0;
 	inter_ti var_val2 = 0;
-	*E = Inter::Types::read_data_pair(ilp->line, eloc, IBM, ref_type, value_text, &var_val1, &var_val2, locals);
+	*E = InterValuePairs::parse(ilp->line, eloc, IBM, ref_type, value_text, &var_val1, &var_val2, locals);
 	if (*E) return;
 
 	*E = Inter::Ref::new(IBM, ref_type, ilp->indent_level, var_val1, var_val2, eloc);
 }
 
 inter_error_message *Inter::Ref::new(inter_bookmark *IBM, inter_type ref_type, int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, REF_IST, 0, Inter::Types::to_TID(IBM, ref_type), val1, val2, eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, REF_IST, 0, InterTypes::to_TID_wrt_bookmark(IBM, ref_type), val1, val2, eloc, (inter_ti) level);
 	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -65,7 +65,7 @@ inter_error_message *Inter::Ref::new(inter_bookmark *IBM, inter_type ref_type, i
 
 void Inter::Ref::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_REF_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	Inter::Types::verify_type_field(owner, P, KIND_REF_IFLD, VAL1_REF_IFLD, E);
+	Inter::Verify::typed_data(owner, P, KIND_REF_IFLD, VAL1_REF_IFLD, E);
 }
 
 void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
@@ -73,6 +73,6 @@ void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	inter_symbols_table *locals = InterPackage::scope(pack);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	WRITE("ref ");
-	Inter::Types::write_type_field(OUT, P, KIND_REF_IFLD);
-	Inter::Types::write_pair(OUT, P, P->W.instruction[VAL1_REF_IFLD], P->W.instruction[VAL2_REF_IFLD], locals, FALSE);
+	InterTypes::write_optional_type_marker(OUT, P, KIND_REF_IFLD);
+	InterValuePairs::write(OUT, P, P->W.instruction[VAL1_REF_IFLD], P->W.instruction[VAL2_REF_IFLD], locals, FALSE);
 }

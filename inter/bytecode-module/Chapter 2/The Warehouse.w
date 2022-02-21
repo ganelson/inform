@@ -4,8 +4,8 @@ To manage the memory storage of inter code.
 
 @h Introduction.
 The data structure in this section may bring to mind the title of the Metallica
-song "The Thing That Should Not Be", but it works. It's also better that it used
-to be (which is more than can be said for Metallica).
+song "The Thing That Should Not Be", but it works. It's also better than it used
+to be (which is more than you can say for Metallica).
 
 Each inter tree needs to store data outside of its own //inter_tree_node// structures,
 data which falls into two categories:

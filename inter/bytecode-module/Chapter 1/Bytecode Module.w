@@ -17,7 +17,6 @@ which use this module:
 @e inter_symbols_table_CLASS
 @e inter_symbol_CLASS
 @e inter_annotation_CLASS
-@e inter_data_type_CLASS
 @e inter_construct_CLASS
 @e inter_annotation_form_CLASS
 @e inter_error_location_CLASS
@@ -32,7 +31,6 @@ DECLARE_CLASS(inter_tree)
 DECLARE_CLASS(inter_warehouse)
 DECLARE_CLASS(inter_warehouse_room)
 DECLARE_CLASS(inter_symbols_table)
-DECLARE_CLASS(inter_data_type)
 DECLARE_CLASS(inter_construct)
 DECLARE_CLASS(inter_annotation_form)
 DECLARE_CLASS(inter_error_location)
@@ -55,7 +53,7 @@ void BytecodeModule::start(void) {
 	@<Register this module's debugging log writers@>;
 
 	InterConstruct::create_language();
-	Inter::Types::create_all();
+	InterTypes::initialise_constructors();
 }
 void BytecodeModule::end(void) {
 }

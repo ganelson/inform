@@ -45,13 +45,13 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	inter_symbol *inst_kind = TextualInter::find_symbol(IBM, eloc, ktext, KIND_IST, E);
 	if (*E) return;
 
-	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
-	if (Inter::Types::is_enumerated(idt) == FALSE)
+	inter_type inst_type = InterTypes::from_type_name(inst_kind);
+	if (InterTypes::is_enumerated(inst_type) == FALSE)
 		{ *E = Inter::Errors::quoted(I"not a kind which has instances", ilp->mr.exp[1], eloc); return; }
 
 	inter_ti v1 = UNDEF_IVAL, v2 = 0;
 	if (vtext) {
-		*E = Inter::Types::read_data_pair(ilp->line, eloc, IBM, Inter::Types::untyped(), vtext, &v1, &v2, InterBookmark::scope(IBM));
+		*E = InterValuePairs::parse(ilp->line, eloc, IBM, InterTypes::untyped(), vtext, &v1, &v2, InterBookmark::scope(IBM));
 		if (*E) return;
 	}
 	*E = Inter::Instance::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_kind), v1, v2, (inter_ti) ilp->indent_level, eloc);
@@ -79,14 +79,14 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[DEFN_INST_IFLD]);
 	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_INST_IFLD], KIND_IST); if (*E) return;
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_INST_IFLD]);
-	inter_data_type *idt = Inter::Kind::data_type(inst_kind);
-	if (Inter::Types::is_enumerated(idt)) {
+	inter_type inst_type = InterTypes::from_type_name(inst_kind);
+	if (InterTypes::is_enumerated(inst_type)) {
 		if (P->W.instruction[VAL1_INST_IFLD] == UNDEF_IVAL) {
 			P->W.instruction[VAL1_INST_IFLD] = LITERAL_IVAL;
 			P->W.instruction[VAL2_INST_IFLD] = Inter::Kind::next_enumerated_value(inst_kind);
 		}
 	} else { *E = Inode::error(P, I"not a kind which has instances", NULL); return; }
-	*E = Inter::Types::validate_pair(owner, P, VAL1_INST_IFLD, Inter::Types::from_symbol(inst_kind)); if (*E) return;
+	*E = InterValuePairs::validate(owner, P, VAL1_INST_IFLD, InterTypes::from_type_name(inst_kind)); if (*E) return;
 
 	inter_ti vcount = Inode::bump_verification_count(P);
 	if (vcount == 0) {
@@ -105,12 +105,9 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_INST_IFLD);
 	if ((inst_name) && (inst_kind)) {
-		inter_data_type *idt = Inter::Kind::data_type(inst_kind);
-		if (idt) {
-			WRITE("instance %S %S = ", InterSymbol::identifier(inst_name), InterSymbol::identifier(inst_kind));
-			Inter::Types::write_pair(OUT, P,
-				P->W.instruction[VAL1_INST_IFLD], P->W.instruction[VAL2_INST_IFLD], InterPackage::scope_of(P), FALSE);
-		} else { *E = Inode::error(P, I"instance with bad data type", NULL); return; }
+		WRITE("instance %S %S = ", InterSymbol::identifier(inst_name), InterSymbol::identifier(inst_kind));
+		InterValuePairs::write(OUT, P,
+			P->W.instruction[VAL1_INST_IFLD], P->W.instruction[VAL2_INST_IFLD], InterPackage::scope_of(P), FALSE);
 	} else { *E = Inode::error(P, I"bad instance", NULL); return; }
 	SymbolAnnotation::write_annotations(OUT, P, inst_name);
 }
@@ -123,13 +120,13 @@ inter_ti Inter::Instance::properties_list(inter_symbol *inst_name) {
 }
 
 inter_type Inter::Instance::type_of(inter_symbol *inst_name) {
-	if (inst_name == NULL) return Inter::Types::untyped();
+	if (inst_name == NULL) return InterTypes::untyped();
 	inter_tree_node *D = InterSymbol::definition(inst_name);
-	if (D == NULL) return Inter::Types::untyped();
-	if (D->W.instruction[ID_IFLD] != INSTANCE_IST) return Inter::Types::untyped();
-	return Inter::Types::from_symbol(InterSymbolsTable::symbol_from_ID_at_node(D, KIND_INST_IFLD));
+	if (D == NULL) return InterTypes::untyped();
+	if (D->W.instruction[ID_IFLD] != INSTANCE_IST) return InterTypes::untyped();
+	return InterTypes::from_type_name(InterSymbolsTable::symbol_from_ID_at_node(D, KIND_INST_IFLD));
 }
 
 inter_symbol *Inter::Instance::kind_of(inter_symbol *inst_name) {
-	return Inter::Types::conceptual_type(Inter::Instance::type_of(inst_name));
+	return InterTypes::type_name(Inter::Instance::type_of(inst_name));
 }

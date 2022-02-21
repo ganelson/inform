@@ -89,7 +89,7 @@ void Emit::to_value_pair_in_context(inter_name *context, inter_ti *v1, inter_ti 
 void Emit::stvp_inner(inter_symbol *S, inter_ti *v1, inter_ti *v2,
 	inter_package *pack) {
 	if (S) {
-		Inter::Types::symbol_to_pair(InterPackage::tree(pack), pack, S, v1, v2);
+		InterValuePairs::from_symbol(InterPackage::tree(pack), pack, S, v1, v2);
 		return;
 	}
 	*v1 = LITERAL_IVAL; *v2 = 0;
@@ -120,7 +120,7 @@ void Emit::rudimentary_kinds(void) {
 	packaging_state save = Packaging::enter_home_of(KU);
 	unchecked_interk = InterNames::to_symbol(KU);
 	Emit::kind_inner(Emit::symbol_id(unchecked_interk), 0,
-		UNCHECKED_IDT, 0, NULL);
+		UNCHECKED_ITCONC, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KUF = Hierarchy::find(K_UNCHECKED_FUNCTION_HL);
@@ -130,7 +130,7 @@ void Emit::rudimentary_kinds(void) {
 	operands[0] = Emit::symbol_id(unchecked_interk);
 	operands[1] = Emit::symbol_id(unchecked_interk);
 	Emit::kind_inner(Emit::symbol_id(unchecked_function_interk), 0,
-		FUNCTION_IDT, 2, operands);
+		FUNCTION_ITCONC, 2, operands);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KLF = Hierarchy::find(K_UNCHECKED_LIST_HL);
@@ -138,25 +138,25 @@ void Emit::rudimentary_kinds(void) {
 	unchecked_list_interk = InterNames::to_symbol(KLF);
 	operands[0] = Emit::symbol_id(unchecked_interk);
 	Emit::kind_inner(Emit::symbol_id(unchecked_list_interk), 0,
-		LIST_IDT, 1, operands);
+		LIST_ITCONC, 1, operands);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KTI = Hierarchy::find(K_INT32_HL);
 	save = Packaging::enter_home_of(KTI);
 	int_interk = InterNames::to_symbol(KTI);
-	Emit::kind_inner(Emit::symbol_id(int_interk), 0, INT32_IDT, 0, NULL);
+	Emit::kind_inner(Emit::symbol_id(int_interk), 0, INT32_ITCONC, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KTB = Hierarchy::find(K_INT2_HL);
 	save = Packaging::enter_home_of(KTB);
 	boolean_interk = InterNames::to_symbol(KTB);
-	Emit::kind_inner(Emit::symbol_id(boolean_interk), 0, INT2_IDT, 0, NULL);
+	Emit::kind_inner(Emit::symbol_id(boolean_interk), 0, INT2_ITCONC, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 
 	inter_name *KTS = Hierarchy::find(K_STRING_HL);
 	save = Packaging::enter_home_of(KTS);
 	string_interk = InterNames::to_symbol(KTS);
-	Emit::kind_inner(Emit::symbol_id(string_interk), 0, TEXT_IDT, 0, NULL);
+	Emit::kind_inner(Emit::symbol_id(string_interk), 0, TEXT_ITCONC, 0, NULL);
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -381,8 +381,8 @@ void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_ti v1, inter_ti v2) {
 	packaging_state save = Packaging::enter_home_of(var_iname);
 	inter_symbol *var_s = InterNames::to_symbol(var_iname);
-	inter_type it = Inter::Types::untyped();
-	if ((K) && (K != K_value)) it = Inter::Types::from_symbol(Produce::kind_to_symbol(K));
+	inter_type it = InterTypes::untyped();
+	if ((K) && (K != K_value)) it = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Variable::new(Emit::at(),
 		Emit::symbol_id(var_s), it, v1, v2, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
@@ -395,8 +395,8 @@ inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_ti v1, inter_
 void Emit::property(inter_name *prop_iname, kind *K) {
 	packaging_state save = Packaging::enter_home_of(prop_iname);
 	inter_symbol *prop_s = InterNames::to_symbol(prop_iname);
-	inter_type it = Inter::Types::untyped();
-	if ((K) && (K != K_value)) it = Inter::Types::from_symbol(Produce::kind_to_symbol(K));
+	inter_type it = InterTypes::untyped();
+	if ((K) && (K != K_value)) it = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Property::new(Emit::at(),
 		Emit::symbol_id(prop_s), it, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);

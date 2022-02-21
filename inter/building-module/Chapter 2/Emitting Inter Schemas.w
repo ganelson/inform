@@ -603,7 +603,7 @@ parsing the schema.)
 			if (t->constant_number >= 0) {
 				v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number;
 			} else {
-				if (Inter::Types::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE) {
+				if (InterValuePairs::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE) {
 					TEMPORARY_TEXT(msg)
 					WRITE_TO(msg, "malformed literal number '%S'", t->material);
 					InterSchemas::throw_error(node, msg);

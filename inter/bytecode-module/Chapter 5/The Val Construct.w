@@ -46,7 +46,7 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 		value_text = mr2.exp[1];
 	}
 
-	inter_type val_type = Inter::Types::parse(InterBookmark::scope(IBM), eloc, kind_text, E);
+	inter_type val_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, kind_text, E);
 	if (*E) return;
 
 	inter_ti val1 = 0;
@@ -55,9 +55,9 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbol *kind_as_value = TextualInter::find_symbol(IBM, eloc, value_text, KIND_IST, E);
 	if (kind_as_value) {
 		*E = NULL;
-		Inter::Types::symbol_to_pair(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value, &val1, &val2);
+		InterValuePairs::from_symbol(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value, &val1, &val2);
 	} else {
-		*E = Inter::Types::read_data_pair(ilp->line, eloc, IBM, val_type, value_text, &val1, &val2, locals);
+		*E = InterValuePairs::parse(ilp->line, eloc, IBM, val_type, value_text, &val1, &val2, locals);
 		if (*E) return;
 	}
 
@@ -66,25 +66,25 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 
 inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_type val_type,
 	int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, Inter::Types::to_TID(IBM, val_type), val1, val2, eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, InterTypes::to_TID_wrt_bookmark(IBM, val_type), val1, val2, eloc, (inter_ti) level);
 	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 void Inter::Val::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	P->W.instruction[VAL2_VAL_IFLD] = Inter::Types::transpose_value(P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], grid, grid_extent, E);
+	P->W.instruction[VAL2_VAL_IFLD] = InterValuePairs::transpose_value(P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], grid, grid_extent, E);
 }
 
 void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_VAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	Inter::Types::verify_type_field(owner, P, KIND_VAL_IFLD, VAL1_VAL_IFLD, E);
+	Inter::Verify::typed_data(owner, P, KIND_VAL_IFLD, VAL1_VAL_IFLD, E);
 }
 
 void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbols_table *locals = InterPackage::scope_of(P);
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	WRITE("val ");
-	Inter::Types::write_type_field(OUT, P, KIND_VAL_IFLD);
-	Inter::Types::write_pair(OUT, P, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);
+	InterTypes::write_optional_type_marker(OUT, P, KIND_VAL_IFLD);
+	InterValuePairs::write(OUT, P, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);
 }

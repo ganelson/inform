@@ -27993,7 +27993,7 @@ package main _plain
 			constant (/main/generic/kinds/K_int32) KIT_CONFIGURATION_BITMAP = 0
 			constant (/main/generic/kinds/K_int32) KIT_CONFIGURATION_LOOKMODE = 2
 			constant (/main/generic/kinds/K_string) I7_VERSION_NUMBER = "10.1.0"
-			constant (/main/generic/kinds/K_string) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U36"
+			constant (/main/generic/kinds/K_string) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U37"
 			constant (/main/generic/kinds/K_string) ^virtual_machine = "C/32d/v1/no-main"
 			constant (/main/generic/kinds/K_string) ^virtual_machine_icon = "vm_glulx.png"
 			constant (/main/generic/kinds/K_string) ^language_elements_used = "core, naming, instance counting, glulx external files"

@@ -113,7 +113,7 @@ a variable here.
 void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) {
 	inter_ti val1 = P->W.instruction[VAL1_VAL_IFLD];
 	inter_ti val2 = P->W.instruction[VAL2_VAL_IFLD];
-	if (Inter::Types::pair_holds_symbol(val1, val2)) {
+	if (InterValuePairs::holds_symbol(val1, val2)) {
 		inter_package *pack = InterPackage::container(P);
 		inter_symbol *named_s =
 			InterSymbolsTable::symbol_from_ID_in_package(pack, val2);

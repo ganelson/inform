@@ -261,7 +261,7 @@ names are not.
 
 @<Kinds whose default values are set by Neptune files@> =
 	inter_ti val1 = 0, val2 = 0;
-	if (Inter::Types::read_int_in_I6_notation(textual_description, &val1, &val2) == TRUE) {
+	if (InterValuePairs::read_int_in_I6_notation(textual_description, &val1, &val2) == TRUE) {
 		*v1 = val1; *v2 = val2; return;
 	}
 

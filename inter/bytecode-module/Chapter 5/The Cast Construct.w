@@ -54,8 +54,8 @@ inter_error_message *Inter::Cast::new(inter_bookmark *IBM, inter_symbol *from_ki
 
 void Inter::Cast::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_CAST_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::symbol(owner, P, P->W.instruction[TO_KIND_CAST_IFLD], KIND_IST); if (*E) return;
-	*E = Inter::Verify::symbol(owner, P, P->W.instruction[FROM_KIND_CAST_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::TID(owner, P, P->W.instruction[TO_KIND_CAST_IFLD]); if (*E) return;
+	*E = Inter::Verify::TID(owner, P, P->W.instruction[FROM_KIND_CAST_IFLD]); if (*E) return;
 }
 
 void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

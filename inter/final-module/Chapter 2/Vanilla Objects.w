@@ -514,7 +514,7 @@ int VanillaObjects::is_kind_of_object(code_generation *gen, inter_symbol *kind_s
 	inter_symbol *object_kind = RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM);
 	if (object_kind == NULL) return FALSE;
 	if (kind_s == object_kind) return FALSE;
-	if (Inter::Kind::data_type(kind_s) == unchecked_idt) return FALSE;
+	if (InterTypes::is_untyped(InterTypes::from_type_name(kind_s))) return FALSE;
 	if (Inter::Kind::is_a(kind_s, object_kind)) return TRUE;
 	return FALSE;
 }

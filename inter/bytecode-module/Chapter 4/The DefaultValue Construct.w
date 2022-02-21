@@ -34,7 +34,7 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
-	*E = Inter::Types::read_data_pair(ilp->line, eloc, IBM, Inter::Types::from_symbol(con_kind), ilp->mr.exp[1], &con_val1, &con_val2, InterBookmark::scope(IBM));
+	*E = InterValuePairs::parse(ilp->line, eloc, IBM, InterTypes::from_type_name(con_kind), ilp->mr.exp[1], &con_val1, &con_val2, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::DefaultValue::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_kind), con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
@@ -56,7 +56,7 @@ void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	inter_symbol *con_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_DEF_IFLD);
 	if (con_kind) {
 		WRITE("defaultvalue %S = ", InterSymbol::identifier(con_kind));
-		Inter::Types::write_pair(OUT, P,
+		InterValuePairs::write(OUT, P,
 			P->W.instruction[VAL1_DEF_IFLD], P->W.instruction[VAL1_DEF_IFLD+1], InterPackage::scope_of(P), FALSE);
 	} else {
 		*E = Inode::error(P, I"defaultvalue can't be written", NULL);

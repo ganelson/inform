@@ -424,7 +424,7 @@ The opening byte gives some metadata bits, and then there's a word.
 @ =
 inter_symbol *VanillaIF::get_symbol(code_generation *gen, inter_tree_node *P,
 	inter_ti val1, inter_ti val2) {
-	if (Inter::Types::pair_holds_symbol(val1, val2)) {
+	if (InterValuePairs::holds_symbol(val1, val2)) {
 		inter_symbol *S =
 			InterSymbolsTable::symbol_from_data_pair(val1, val2,
 				InterPackage::scope_of(P));
