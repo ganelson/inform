@@ -483,7 +483,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 		inter_symbol *kind_name;
 		LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L) {
 			Synoptic::symbol_entry(kind_name);
-			inter_symbol *super_name = Inter::Kind::super(kind_name);
+			inter_symbol *super_name = Inter::Typename::super(kind_name);
 			if ((super_name) &&
 				(super_name != RunningPipelines::get_symbol(step, object_kind_RPSYM))) {
 				Synoptic::numeric_entry(SynopticKinds::kind_of_object_count(step, super_name));

@@ -37,9 +37,9 @@ void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	inter_package *routine = InterBookmark::package(IBM);
 	if (routine == NULL) { *E = Inter::Errors::plain(I"'val' used outside function", eloc); return; }
 
-	inter_symbol *from_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[1], KIND_IST, E);
+	inter_symbol *from_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[1], TYPENAME_IST, E);
 	if (*E) return;
-	inter_symbol *to_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *to_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], TYPENAME_IST, E);
 	if (*E) return;
 
 	*E = Inter::Cast::new(IBM, from_kind, to_kind, (inter_ti) ilp->indent_level, eloc);

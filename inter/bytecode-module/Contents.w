@@ -43,7 +43,7 @@ Chapter 4: Void Constructs
 	The Append Construct
 	The PackageType Construct
 	The Package Construct
-	The Kind Construct
+	The Typename Construct
 	The DefaultValue Construct
 	The Variable Construct
 	The Constant Construct

@@ -52,7 +52,7 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_ti val1 = 0;
 	inter_ti val2 = 0;
 
-	inter_symbol *kind_as_value = TextualInter::find_symbol(IBM, eloc, value_text, KIND_IST, E);
+	inter_symbol *kind_as_value = TextualInter::find_symbol(IBM, eloc, value_text, TYPENAME_IST, E);
 	if (kind_as_value) {
 		*E = NULL;
 		InterValuePairs::from_symbol(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value, &val1, &val2);

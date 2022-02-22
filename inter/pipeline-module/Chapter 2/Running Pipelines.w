@@ -216,11 +216,7 @@ of the step, since running a step changes the Inter tree and could conceivably
 move, add or remove some of these symbols.
 
 =
-@e unchecked_kind_RPSYM from 0
-@e unchecked_function_RPSYM
-@e list_of_unchecked_kind_RPSYM
-@e object_kind_RPSYM
-@e truth_state_kind_RPSYM
+@e object_kind_RPSYM from 0
 @e direction_kind_RPSYM
 
 @e verb_directive_reverse_RPSYM
@@ -282,21 +278,9 @@ inter_symbol *RunningPipelines::get_symbol(pipeline_step *step, int id) {
 				step->ephemera.cached_symbols[to_phrase_ptype_RPSYM] =
 					LargeScale::package_type(I, I"_to_phrase"); break;
 
-			case unchecked_kind_RPSYM:
-				step->ephemera.cached_symbols[unchecked_kind_RPSYM] =
-				LargeScale::find_symbol_in_tree(I, I"K_unchecked"); break;
-			case unchecked_function_RPSYM:
-				step->ephemera.cached_symbols[unchecked_function_RPSYM] =
-				LargeScale::find_symbol_in_tree(I, I"K_unchecked_function"); break;
-			case list_of_unchecked_kind_RPSYM:
-				step->ephemera.cached_symbols[list_of_unchecked_kind_RPSYM] =
-				LargeScale::find_symbol_in_tree(I, I"K_unchecked_list"); break;
 			case object_kind_RPSYM:
 				step->ephemera.cached_symbols[object_kind_RPSYM] =
 				LargeScale::find_symbol_in_tree(I, I"K_object"); break;
-			case truth_state_kind_RPSYM:
-				step->ephemera.cached_symbols[truth_state_kind_RPSYM] =
-				LargeScale::find_symbol_in_tree(I, I"K_int2"); break;
 			case direction_kind_RPSYM:
 				step->ephemera.cached_symbols[direction_kind_RPSYM] =
 				LargeScale::find_symbol_in_tree(I, I"K3_direction"); break;

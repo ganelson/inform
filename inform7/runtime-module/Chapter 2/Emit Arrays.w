@@ -21,27 +21,33 @@ enforced; it's fine to store arbitrary data with |K| being |NULL|.
 =
 packaging_state EmitArrays::begin_word(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE);
+	EmitArrays::begin_inner(name, K, FALSE, FALSE);
+	return save;
+}
+
+packaging_state EmitArrays::begin_unchecked(inter_name *name) {
+	packaging_state save = Packaging::enter_home_of(name);
+	EmitArrays::begin_inner(name, NULL, FALSE, TRUE);
 	return save;
 }
 
 packaging_state EmitArrays::begin_byte(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE);
+	EmitArrays::begin_inner(name, K, FALSE, FALSE);
 	InterNames::annotate_b(name, BYTEARRAY_IANN, TRUE);
 	return save;
 }
 
 packaging_state EmitArrays::begin_table(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE);
+	EmitArrays::begin_inner(name, K, FALSE, FALSE);
 	InterNames::annotate_b(name, TABLEARRAY_IANN, TRUE);
 	return save;
 }
 
 packaging_state EmitArrays::begin_verb(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE);
+	EmitArrays::begin_inner(name, K, FALSE, FALSE);
 	InterNames::annotate_b(name, VERBARRAY_IANN, TRUE);
 	return save;
 }
@@ -58,7 +64,7 @@ to symbols to be defined externally.
 =
 packaging_state EmitArrays::begin_sum_constant(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, TRUE);
+	EmitArrays::begin_inner(name, K, TRUE, FALSE);
 	return save;
 }
 
@@ -182,10 +188,10 @@ nascent_array *EmitArrays::pull(void) {
 @ The various ways an array can begin all merge into this function:
 
 =
-void EmitArrays::begin_inner(inter_name *N, kind *K, int const_sum) {
+void EmitArrays::begin_inner(inter_name *N, kind *K, int const_sum, int unchecked) {
 	inter_symbol *symb = InterNames::to_symbol(N);
 	nascent_array *current_A = EmitArrays::push_new();
-	current_A->entry_kind = K?K:K_value;
+	current_A->entry_kind = (unchecked)?NULL:(K?K:K_value);
 	current_A->array_name_symbol = symb;
 	if (const_sum) current_A->array_form = CONSTANT_SUM_LIST;
 }
@@ -223,16 +229,14 @@ void EmitArrays::end_inner(void) {
 	if (current_A == NULL) internal_error("no nascent array");
 	inter_symbol *con_s = current_A->array_name_symbol;
 	kind *K = current_A->entry_kind;
-	inter_ti CID = 0;
+	inter_ti CID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::untyped());
 	if (K) {
 		inter_symbol *con_kind = NULL;
 		if (current_A->array_form == CONSTANT_INDIRECT_LIST)
 			con_kind = Produce::kind_to_symbol(Kinds::unary_con(CON_list_of, K));
 		else
 			con_kind = Produce::kind_to_symbol(K);
-		CID = Emit::symbol_id(con_kind);
-	} else {
-		CID = Emit::symbol_id(unchecked_interk);
+		if (con_kind) CID = Emit::symbol_id(con_kind);
 	}
 	inter_tree_node *array_in_progress =
 		Inode::new_with_3_data_fields(Emit::at(), CONSTANT_IST, Emit::symbol_id(con_s), CID,

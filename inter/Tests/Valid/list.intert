@@ -2,6 +2,6 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	kind K_number int32
-	kind K_list_of_number list of K_number
+	typename K_number = int32
+	typename K_list_of_number = list of K_number
 	constant (K_list_of_number) C_primes = { 2, 3, 5, 7, 11, 13, 17, 19 }

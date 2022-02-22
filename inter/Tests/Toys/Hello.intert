@@ -1,12 +1,7 @@
 package main _plain
-	kind K_unchecked unchecked
-	kind K_unchecked_function function K_unchecked -> K_unchecked
-	kind K_unchecked_list list of K_unchecked
-	kind K_int2 int2
 	package Main_B _code
 		code
 			inv !enableprinting
 			inv !print
 				val "Hello, world.\n"
-			inv !quit
-	constant (K_unchecked_function) Main = function Main_B
+	constant Main = function Main_B

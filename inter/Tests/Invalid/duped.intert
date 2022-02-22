@@ -1,5 +1,5 @@
 packagetype _plain
 
 package main _plain
-	kind K_number int32
-	kind K_number int2
+	typename K_number = int32
+	typename K_number = int2

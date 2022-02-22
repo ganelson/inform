@@ -2,7 +2,7 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	kind K_number int32
+	typename K_number = int32
 	constant (K_number) x = 11
 	package sub _plain
 		constant (/main/K_number) y = 17

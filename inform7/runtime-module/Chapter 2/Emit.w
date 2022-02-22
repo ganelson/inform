@@ -96,74 +96,11 @@ void Emit::stvp_inner(inter_symbol *S, inter_ti *v1, inter_ti *v2,
 }
 
 @h Kinds.
-Inter has a very simple, and non-binding, system of "kinds" -- a much simpler
-one than Inform. We need symbols to refer to some basic Inter kinds, and here
-they are. (See also //pipeline: New Stage//, where a matching set is made for
-other Inter business: we want to keep this minimum set matching.)
-
-The way these are created is typical. First we ask //Hierarchy// for the
-Inter tree position of what we're intending to make. Then call |Packaging::enter_home_of|
-to move the emission point to the current end of the package in question; then
-we compile what it is we actually want to make; and then call |Packaging::exit|
-again to return to where we were.
-
-=
-inter_symbol *unchecked_interk = NULL;
-inter_symbol *unchecked_function_interk = NULL;
-inter_symbol *unchecked_list_interk = NULL;
-inter_symbol *int_interk = NULL;
-inter_symbol *boolean_interk = NULL;
-inter_symbol *string_interk = NULL;
-
-void Emit::rudimentary_kinds(void) {
-	inter_name *KU = Hierarchy::find(K_UNCHECKED_HL);
-	packaging_state save = Packaging::enter_home_of(KU);
-	unchecked_interk = InterNames::to_symbol(KU);
-	Emit::kind_inner(Emit::symbol_id(unchecked_interk), 0,
-		UNCHECKED_ITCONC, 0, NULL);
-	Packaging::exit(Emit::tree(), save);
-
-	inter_name *KUF = Hierarchy::find(K_UNCHECKED_FUNCTION_HL);
-	save = Packaging::enter_home_of(KUF);
-	unchecked_function_interk = InterNames::to_symbol(KUF);
-	inter_ti operands[2];
-	operands[0] = Emit::symbol_id(unchecked_interk);
-	operands[1] = Emit::symbol_id(unchecked_interk);
-	Emit::kind_inner(Emit::symbol_id(unchecked_function_interk), 0,
-		FUNCTION_ITCONC, 2, operands);
-	Packaging::exit(Emit::tree(), save);
-
-	inter_name *KLF = Hierarchy::find(K_UNCHECKED_LIST_HL);
-	save = Packaging::enter_home_of(KLF);
-	unchecked_list_interk = InterNames::to_symbol(KLF);
-	operands[0] = Emit::symbol_id(unchecked_interk);
-	Emit::kind_inner(Emit::symbol_id(unchecked_list_interk), 0,
-		LIST_ITCONC, 1, operands);
-	Packaging::exit(Emit::tree(), save);
-
-	inter_name *KTI = Hierarchy::find(K_INT32_HL);
-	save = Packaging::enter_home_of(KTI);
-	int_interk = InterNames::to_symbol(KTI);
-	Emit::kind_inner(Emit::symbol_id(int_interk), 0, INT32_ITCONC, 0, NULL);
-	Packaging::exit(Emit::tree(), save);
-
-	inter_name *KTB = Hierarchy::find(K_INT2_HL);
-	save = Packaging::enter_home_of(KTB);
-	boolean_interk = InterNames::to_symbol(KTB);
-	Emit::kind_inner(Emit::symbol_id(boolean_interk), 0, INT2_ITCONC, 0, NULL);
-	Packaging::exit(Emit::tree(), save);
-
-	inter_name *KTS = Hierarchy::find(K_STRING_HL);
-	save = Packaging::enter_home_of(KTS);
-	string_interk = InterNames::to_symbol(KTS);
-	Emit::kind_inner(Emit::symbol_id(string_interk), 0, TEXT_ITCONC, 0, NULL);
-	Packaging::exit(Emit::tree(), save);
-}
-
-@ This emits a more general Inter kind, and is used by //Kind Declarations//.
-Here |idt| is one of the |*_IDT| constants expressing what actual data is held;
-|super| is the superkind, if any; the other three arguments are for kind
-constructors.
+Inter has a very simple, and non-binding, system of "typenames" -- a much simpler
+system than Inform's hierarchy of kinds. Here we create a typename corresponding
+to each kind whose data we will need to use in Inter. |super| is the superkind,
+if any; |constructor| is one of the codes defined in //bytecode: Inter Data Types//;
+the other three arguments are for kind constructors.
 
 @d MAX_KIND_ARITY 128
 
@@ -181,10 +118,7 @@ void Emit::kind(inter_name *iname, inter_name *super,
 	if (arity > MAX_KIND_ARITY) internal_error("kind arity too high");
 	for (int i=0; i<arity; i++) {
 		if ((operand_kinds[i] == K_nil) || (operand_kinds[i] == K_void)) operands[i] = 0;
-		else {
-			inter_symbol *S = Produce::kind_to_symbol(operand_kinds[i]);
-			operands[i] = Emit::symbol_id(S);
-		}
+		else operands[i] = Produce::kind_to_TID(Emit::at(), operand_kinds[i]);
 	}
 	Emit::kind_inner(SID, SUP, constructor, arity, operands);
 	InterNames::to_symbol(iname);
@@ -196,7 +130,7 @@ void Emit::kind(inter_name *iname, inter_name *super,
 =
 void Emit::kind_inner(inter_ti SID, inter_ti SUP,
 	inter_ti constructor, int arity, inter_ti *operands) {
-	Produce::guard(Inter::Kind::new(Emit::at(), SID, constructor, SUP, arity,
+	Produce::guard(Inter::Typename::new(Emit::at(), SID, constructor, SUP, arity,
 		operands, Emit::baseline(), NULL));
 }
 
@@ -219,9 +153,9 @@ void Emit::ensure_defaultvalue(kind *K) {
 	DefaultValues::to_value_pair(&v1, &v2, K);
 	if (v1 != 0) {
 		packaging_state save = Packaging::enter(RTKindConstructors::kind_package(K));
-		inter_symbol *owner_kind = Produce::kind_to_symbol(K);
 		Produce::guard(Inter::DefaultValue::new(Emit::at(),
-			Emit::symbol_id(owner_kind), v1, v2, Emit::baseline(), NULL));
+			Produce::kind_to_TID(Emit::at(), K), v1, v2,
+			Emit::baseline(), NULL));
 		Packaging::exit(Emit::tree(), save);
 	}
 }
@@ -245,32 +179,34 @@ it represents an actual number at run-time, the second if not:
 
 =
 inter_name *Emit::numeric_constant(inter_name *con_iname, inter_ti val) {
-	return Emit::numeric_constant_inner(con_iname, val, int_interk, INVALID_IANN);
+	return Emit::numeric_constant_inner(con_iname, val, INT32_ITCONC, INVALID_IANN);
 }
 
 inter_name *Emit::named_numeric_constant_hex(inter_name *con_iname, inter_ti val) {
-	return Emit::numeric_constant_inner(con_iname, val, int_interk, HEX_IANN);
+	return Emit::numeric_constant_inner(con_iname, val, INT32_ITCONC, HEX_IANN);
 }
 
 inter_name *Emit::named_unchecked_constant_hex(inter_name *con_iname, inter_ti val) {
-	return Emit::numeric_constant_inner(con_iname, val, unchecked_interk, HEX_IANN);
+	return Emit::numeric_constant_inner(con_iname, val, UNCHECKED_ITCONC, HEX_IANN);
 }
 
 inter_name *Emit::named_numeric_constant_signed(inter_name *con_iname, int val) {
-	return Emit::numeric_constant_inner(con_iname, (inter_ti) val, int_interk, SIGNED_IANN);
+	return Emit::numeric_constant_inner(con_iname, (inter_ti) val, INT32_ITCONC, SIGNED_IANN);
 }
 
 inter_name *Emit::unchecked_numeric_constant(inter_name *con_iname, inter_ti val) {
-	return Emit::numeric_constant_inner(con_iname, val, unchecked_interk, INVALID_IANN);
+	return Emit::numeric_constant_inner(con_iname, val, UNCHECKED_ITCONC, INVALID_IANN);
 }
 
 inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
-	inter_symbol *kind_s, inter_ti annotation) {
+	inter_ti constructor_code, inter_ti annotation) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	if (annotation != INVALID_IANN) SymbolAnnotation::set_b(con_s, annotation, 0);
+	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Emit::at()),
+		InterTypes::from_constructor_code(constructor_code));
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
-		Emit::symbol_id(kind_s), LITERAL_IVAL, val, Emit::baseline(), NULL));
+		TID, LITERAL_IVAL, val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return con_iname;
 }
@@ -284,8 +220,10 @@ void Emit::text_constant(inter_name *con_iname, text_stream *contents) {
 		Emit::package());
 	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID), contents);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
+	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Emit::at()),
+		InterTypes::from_constructor_code(TEXT_ITCONC));
 	Produce::guard(Inter::Constant::new_textual(Emit::at(), Emit::symbol_id(con_s),
-		Emit::symbol_id(string_interk), ID, Emit::baseline(), NULL));
+		TID, ID, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -295,7 +233,6 @@ void Emit::text_constant(inter_name *con_iname, text_stream *contents) {
 inter_name *Emit::iname_constant(inter_name *con_iname, kind *K, inter_name *val_iname) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
-	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	inter_symbol *val_s = (val_iname)?InterNames::to_symbol(val_iname):NULL;
 	if (val_s == NULL) {
 		if (Kinds::Behaviour::is_object(K))
@@ -306,7 +243,7 @@ inter_name *Emit::iname_constant(inter_name *con_iname, kind *K, inter_name *val
 	inter_ti v1 = 0, v2 = 0;
 	Emit::symbol_to_value_pair(&v1, &v2, val_s);
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
-		Emit::symbol_id(kind_s), v1, v2, Emit::baseline(), NULL));
+		Produce::kind_to_TID(Emit::at(), K), v1, v2, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return con_iname;
 }
@@ -355,8 +292,9 @@ void Emit::initial_value_as_raw_text(inter_name *con_iname, nonlocal_variable *v
 void Emit::named_generic_constant(inter_name *con_iname, inter_ti v1, inter_ti v2) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
+	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::untyped());
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
-		Emit::symbol_id(unchecked_interk), v1, v2, Emit::baseline(), NULL));
+		KID, v1, v2, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -366,12 +304,10 @@ void Emit::named_generic_constant(inter_name *con_iname, inter_ti v1, inter_ti v
 void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 	packaging_state save = Packaging::enter_home_of(inst_iname);
 	inter_symbol *inst_s = InterNames::to_symbol(inst_iname);
-	inter_symbol *kind_s = Produce::kind_to_symbol(K);
-	if (kind_s == NULL) internal_error("no kind for val");
 	inter_ti v1 = LITERAL_IVAL, v2 = (inter_ti) v;
 	if (v == 0) { v1 = UNDEF_IVAL; v2 = 0; }
 	Produce::guard(Inter::Instance::new(Emit::at(), Emit::symbol_id(inst_s),
-		Emit::symbol_id(kind_s), v1, v2, Emit::baseline(), NULL));
+		Produce::kind_to_TID(Emit::at(), K), v1, v2, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -381,10 +317,11 @@ void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_ti v1, inter_ti v2) {
 	packaging_state save = Packaging::enter_home_of(var_iname);
 	inter_symbol *var_s = InterNames::to_symbol(var_iname);
-	inter_type it = InterTypes::untyped();
-	if ((K) && (K != K_value)) it = InterTypes::from_type_name(Produce::kind_to_symbol(K));
+	inter_type type = InterTypes::untyped();
+	if ((K) && (K != K_value))
+		type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Variable::new(Emit::at(),
-		Emit::symbol_id(var_s), it, v1, v2, Emit::baseline(), NULL));
+		Emit::symbol_id(var_s), type, v1, v2, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return var_s;
 }
@@ -395,10 +332,11 @@ inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_ti v1, inter_
 void Emit::property(inter_name *prop_iname, kind *K) {
 	packaging_state save = Packaging::enter_home_of(prop_iname);
 	inter_symbol *prop_s = InterNames::to_symbol(prop_iname);
-	inter_type it = InterTypes::untyped();
-	if ((K) && (K != K_value)) it = InterTypes::from_type_name(Produce::kind_to_symbol(K));
+	inter_type type = InterTypes::untyped();
+	if ((K) && (K != K_value))
+		type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Property::new(Emit::at(),
-		Emit::symbol_id(prop_s), it, Emit::baseline(), NULL));
+		Emit::symbol_id(prop_s), type, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -439,9 +377,8 @@ the real API for starting and ending functions.
 void Emit::function(inter_name *fn_iname, kind *K, inter_package *block) {
 	if (Emit::at() == NULL) internal_error("no inter repository");
 	inter_symbol *fn_s = InterNames::to_symbol(fn_iname);
-	inter_symbol *kind_s = Produce::kind_to_symbol(K);
 	Produce::guard(Inter::Constant::new_function(Emit::at(),
-		Emit::symbol_id(fn_s), Emit::symbol_id(kind_s), block,
+		Emit::symbol_id(fn_s), Produce::kind_to_TID(Emit::at(), K), block,
 		Emit::baseline(), NULL));
 }
 

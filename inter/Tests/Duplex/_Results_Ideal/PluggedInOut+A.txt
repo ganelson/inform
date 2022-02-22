@@ -6,8 +6,8 @@ primitive !if val code -> void
 primitive !goto lab -> void
 
 package main _plain
-	kind K_number int32
-	kind K_func function K_number -> K_number
+	typename K_number = int32
+	typename K_func = function K_number -> K_number
 	#Transmigration removed my_fn here
 	constant (K_number) awkward = /main/my_fn/secret
 	constant (K_number) troublesome = 12

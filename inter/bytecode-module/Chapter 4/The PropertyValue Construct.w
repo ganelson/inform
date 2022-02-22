@@ -38,7 +38,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	if (*E) return;
 
 	inter_ti plist_ID;
-	if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
+	if (Inter::Typename::is(owner_name)) plist_ID = Inter::Typename::properties_list(owner_name);
 	else plist_ID = Inter::Instance::properties_list(owner_name);
 	inter_node_list *FL = InterWarehouse::get_node_list(InterBookmark::warehouse(IBM), plist_ID);
 	if (FL == NULL) internal_error("no properties list");
@@ -66,14 +66,14 @@ inter_symbol *Inter::PropertyValue::parse_owner(inter_error_location *eloc, inte
 	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
 	inter_tree_node *D = InterSymbol::definition(symb);
 	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
-	if ((D->W.instruction[ID_IFLD] != KIND_IST) &&
+	if ((D->W.instruction[ID_IFLD] != TYPENAME_IST) &&
 		(D->W.instruction[ID_IFLD] != INSTANCE_IST)) { *E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL; }
 	return symb;
 }
 
 int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, inter_symbol *owner, inter_symbol *prop_name) {
 	inter_ti plist_ID;
-	if (Inter::Kind::is(owner)) plist_ID = Inter::Kind::permissions_list(owner);
+	if (Inter::Typename::is(owner)) plist_ID = Inter::Typename::permissions_list(owner);
 	else plist_ID = Inter::Instance::permissions_list(owner);
 	inter_node_list *FL = Inode::ID_to_frame_list(F, plist_ID);
 	inter_tree_node *X;
@@ -83,11 +83,11 @@ int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, int
 			return TRUE;
 	}
 	inter_symbol *inst_kind;
-	if (Inter::Kind::is(owner)) inst_kind = Inter::Kind::super(owner);
+	if (Inter::Typename::is(owner)) inst_kind = Inter::Typename::super(owner);
 	else inst_kind = Inter::Instance::kind_of(owner);
 	while (inst_kind) {
 		inter_node_list *FL =
-			Inode::ID_to_frame_list(F, Inter::Kind::permissions_list(inst_kind));
+			Inode::ID_to_frame_list(F, Inter::Typename::permissions_list(inst_kind));
 		if (FL == NULL) internal_error("no permissions list");
 		inter_tree_node *X;
 		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
@@ -95,7 +95,7 @@ int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, int
 			if (prop_allowed == prop_name)
 				return TRUE;
 		}
-		inst_kind = Inter::Kind::super(inst_kind);
+		inst_kind = Inter::Typename::super(inst_kind);
 	}
 	return FALSE;
 }
@@ -127,7 +127,7 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 		}
 
 		inter_ti plist_ID;
-		if (Inter::Kind::is(owner_name)) plist_ID = Inter::Kind::properties_list(owner_name);
+		if (Inter::Typename::is(owner_name)) plist_ID = Inter::Typename::properties_list(owner_name);
 		else plist_ID = Inter::Instance::properties_list(owner_name);
 
 		inter_node_list *FL = Inode::ID_to_frame_list(P, plist_ID);

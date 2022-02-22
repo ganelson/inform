@@ -1,2 +1,2 @@
 inter: inter/Tests/Invalid/mistype.intert, line 5: no such symbol: 'int32768'
->--> kind K_number int32768
+>--> typename K_number = int32768

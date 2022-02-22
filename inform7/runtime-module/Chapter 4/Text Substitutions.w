@@ -56,7 +56,7 @@ we expand this on the spot, i.e., inside the original stack frame.
 =
 void TextSubstitutions::compile_value(inter_name *at, inter_name *fn,
 	int makes_local_references) {
-	packaging_state save = EmitArrays::begin_word(at, K_value);
+	packaging_state save = EmitArrays::begin_unchecked(at);
 	if (makes_local_references)
 		EmitArrays::iname_entry(Hierarchy::find(CONSTANT_PERISHABLE_TEXT_STORAGE_HL));
 	else

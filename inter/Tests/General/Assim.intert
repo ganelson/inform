@@ -2,11 +2,6 @@ primitive !return val -> void
 primitive !plus val val -> val
 
 package main _plain
-	kind K_unchecked unchecked
-	kind K_unchecked_function function K_unchecked -> K_unchecked
-	kind K_unchecked_list list of K_unchecked
-	kind K_int32 int32
-	kind K_int2 int2
 	constant VERB_DIRECTIVE_DIVIDER = 1
 	constant VERB_DIRECTIVE_RESULT = 2
 	package template _module

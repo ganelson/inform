@@ -57,8 +57,7 @@ void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), S);
 	Produce::guard(Inter::Constant::new_textual(IBM,
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), con_s),
-		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM),
-			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
+		InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::untyped()),
 		ID, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 }
 
@@ -75,8 +74,7 @@ void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *inam
 	inter_symbol *fn_s = InterNames::to_symbol(iname);
 	Produce::guard(Inter::Constant::new_function(Packaging::at(I),
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(Packaging::at(I)), fn_s),
-		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(Packaging::at(I)),
-			RunningPipelines::get_symbol(step, unchecked_kind_RPSYM)),
+		InterTypes::to_TID(InterBookmark::scope(Packaging::at(I)), InterTypes::untyped()),
 		synoptic_fn_package,
 		Produce::baseline(Packaging::at(I)), NULL));
 	Packaging::exit(I, synoptic_fn_ps);
@@ -98,11 +96,11 @@ packaging_state synoptic_array_ps;
 void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	synoptic_array_ps = Packaging::enter_home_of(iname);
 	inter_symbol *con_s = InterNames::to_symbol(iname);
+	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Packaging::at(I)),
+		InterTypes::from_constructor_code(LIST_ITCONC));
 	synoptic_array_node = Inode::new_with_3_data_fields(Packaging::at(I), CONSTANT_IST,
 		 InterSymbolsTable::id_from_symbol_at_bookmark(Packaging::at(I), con_s),
-		 InterSymbolsTable::id_from_symbol_at_bookmark(Packaging::at(I),
-		 	RunningPipelines::get_symbol(step, list_of_unchecked_kind_RPSYM)),
-		 CONSTANT_INDIRECT_LIST, NULL, 
+		 TID, CONSTANT_INDIRECT_LIST, NULL, 
 		 (inter_ti) InterBookmark::baseline(Packaging::at(I)) + 1);
 }
 

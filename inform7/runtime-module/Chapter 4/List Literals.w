@@ -52,7 +52,7 @@ void ListLiterals::end_large_block(packaging_state save) {
 =
 inter_name *ListLiterals::small_block(inter_name *large_block) {
 	inter_name *N = Enclosures::new_small_block_for_constant();
-	packaging_state save = EmitArrays::begin_word(N, K_value);
+	packaging_state save = EmitArrays::begin_unchecked(N);
 	EmitArrays::iname_entry(large_block);
 	EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);

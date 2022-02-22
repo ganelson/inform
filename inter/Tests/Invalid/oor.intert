@@ -2,8 +2,8 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	kind K_number int32
-	kind K_truth_state int2
+	typename K_number = int32
+	typename K_truth_state = int2
 	constant (K_truth_state) true = 1
 	constant (K_truth_state) false = 0
 	constant (K_truth_state) dunno = 2

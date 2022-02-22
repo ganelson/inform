@@ -1,10 +1,10 @@
 package main _plain
-	kind K_unchecked unchecked
-	kind K_unchecked_function function K_unchecked -> K_unchecked
-	kind K_unchecked_list list of K_unchecked
-	kind K_number int32
-	kind K_int2 int2
-	kind K_list_of_values list of K_unchecked
+	typename K_unchecked = unchecked
+	typename K_unchecked_function = function K_unchecked -> K_unchecked
+	typename K_unchecked_list = list of K_unchecked
+	typename K_number = int32
+	typename K_int2 = int2
+	typename K_list_of_values = list of K_unchecked
 	constant (K_number) thirteen = 13
 	constant (K_list_of_values) primes = { 2, 3, 5, "seven", 11, thirteen }
 	constant (K_list_of_values) twins = { 3, 5, 5, 7, 11, 13, 17, 19 } __byte_array

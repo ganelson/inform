@@ -5,10 +5,10 @@ primitive !increment ref -> void
 primitive !jump lab -> void
 
 package main _plain
-	kind K_number int32
-	kind K_colour enum
-	kind K_stuff struct K_number K_colour K_odour
-	kind K_colour____colour function K_colour -> K_colour
+	typename K_number = int32
+	typename K_colour = enum
+	typename K_stuff = struct K_number K_colour K_odour
+	typename K_colour____colour = function K_colour -> K_colour
 	package R_101_B _code
 		local (/main/K_colour) x __argument
 		code

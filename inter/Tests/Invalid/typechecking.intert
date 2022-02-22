@@ -1,0 +1,72 @@
+package main _plain
+	# start with some parsing errors
+	constant (bananas) bogus = 1
+	typename bogus2 = bananas
+	# this is not simple, so causes an error
+	constant (list of int32) bogus = { 4, 7 }
+	# K_acceptable is okay here:
+	typename K_acceptable = list of int32
+	constant (K_acceptable) nonbogus = { 4, 7 }
+	typename K_unacceptable = list of list of int32
+	# one typename can equal another:
+	typename K_also_acceptable = K_acceptable
+	constant (K_also_acceptable) alsononbogus = { 4, 7 }
+	# dunno should fail, but the others should work:
+	constant (int2) true = 1
+	constant (int2) false = 0
+	constant (int2) dunno = 2
+	# similarly for alsodunno, despite the use of the typename K_truth_state
+	typename K_truth_state = int2
+	constant (K_truth_state) alsotrue = 1
+	constant (K_truth_state) alsofalse = 0
+	constant (K_truth_state) alsodunno = 2
+	# only small = medium fails here
+	constant (int16) medium = 10000
+	constant (int32) big = medium
+	constant (int8) small = medium
+	constant (int32) mytruth = true
+	# unchecked values are acceptable anywhere, so no error here:
+	constant dangerous = 17432
+	constant (int2) safe = dangerous
+	# void is illegal as a type:
+	constant (void) emptiness = 0
+	typename K_vacuity = void
+	# list of... is covariant, so V2 = L32 goes wrong, but not V32 = L2:
+	typename K_list_of_int2 = list of int2
+	typename K_list_of_int32 = list of int32
+	constant (K_list_of_int2) L2 = { 1, 0, 0, 1, 0, 0, 1 }
+	constant (K_list_of_int32) L32 = { 2, 3, 5, 7, 11 }
+	variable (K_list_of_int2) V2 = L32
+	variable (K_list_of_int32) V32 = L2
+	# similarly for VV32 = LL2:
+	typename K_lli2 = list of K_list_of_int2
+	typename K_lli32 = list of K_list_of_int32
+	constant (K_lli2) LL2 = { }
+	constant (K_lli32) LL32 = { }
+	variable (K_lli2) VV2 = LL32
+	variable (K_lli32) VV32 = LL2
+	# relation of... to... is covariant in both terms; test the second:
+	typename K_r2 = relation of int32 to int2
+	typename K_r32 = relation of int32 to int32
+	constant inexpressible = 0
+	constant (K_r2) R2 = inexpressible
+	constant (K_r32) R32 = inexpressible
+	variable (K_r2) VR2 = R32
+	variable (K_r32) VR32 = R2
+	# fun with structs: VSR = lefty is okay, VSL = righty is not:
+	typename K_lefthanded = struct int32 int2
+	typename K_righthanded = struct int32 int32
+	constant (K_lefthanded) lefty = struct{ 45, 0 }
+	constant (K_righthanded) righty = struct{ 1, -36 }
+	variable (K_lefthanded) VSL = righty
+	variable (K_righthanded) VSR = lefty
+	# fun with functions: note contravariance of first term, V32_32 = f2_32 is wrong:
+	typename K_int32_to_int32 = function int32 -> int32
+	typename K_int2_to_int32 = function int2 -> int32
+	typename K_int32_to_int2 = function int32 -> int2
+	constant (K_int32_to_int32) f32_32 = inexpressible
+	constant (K_int2_to_int32) f2_32 = inexpressible
+	constant (K_int32_to_int2) f32_2 = inexpressible
+	variable (K_int32_to_int32) V32_32 = f2_32
+	variable (K_int32_to_int32) V32_32a = f32_2
+	variable (K_int2_to_int32) V2_32 = f32_32

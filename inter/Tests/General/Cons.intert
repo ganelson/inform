@@ -1,14 +1,8 @@
 package main _plain
-	kind K_unchecked unchecked
-	kind K_unchecked_function function K_unchecked -> K_unchecked
-	kind K_unchecked_list list of K_unchecked
-	kind K_int32 int32
-	kind K_int2 int2
-	kind K_string text
 	package resources _plain
-		constant (/main/K_unchecked) Bidger = 20
+		constant Bidger = 20
 		splat CONSTANT &"Constant Badger =     12;\n"
 		splat CONSTANT &"Constant Bodger $$10011101;\n"
 		splat CONSTANT &"Constant Budger $7fe2  ;\n"
-		constant (/main/K_unchecked) Danza = sum{ 2, 34 }
-		constant (/main/K_unchecked) Sahara = sum{ Danza, Bidger, 1 }
+		constant Danza = sum{ 2, 34 }
+		constant Sahara = sum{ Danza, Bidger, 1 }

@@ -1,9 +1,4 @@
 package main _plain
-	kind K_unchecked unchecked
-	kind K_unchecked_function function K_unchecked -> K_unchecked
-	kind K_unchecked_list list of K_unchecked
-	kind K_number int32
-	kind K_int2 int2
-	kind K_colour enum
+	typename K_colour = enum
 	instance I_green K_colour = 1
 	instance I_red K_colour = 17

@@ -5,8 +5,8 @@ primitive !if val code -> void
 primitive !goto lab -> void
 
 package main _plain
-	kind K_number int32
-	kind K_func function K_number -> K_number
+	typename K_number = int32
+	typename K_func = function K_number -> K_number
 	package R_101_B _code
 		local (/main/K_number) x __argument
 		code

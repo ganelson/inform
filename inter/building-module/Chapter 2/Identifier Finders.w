@@ -74,8 +74,7 @@ So the above internal error cannot occur.
 		inter_symbol *S = InterSymbolsTable::symbol_from_name(finder.priorities[i], name);
 		if (S) return S;
 	}
-	inter_symbol *S = LargeScale::find_architectural_symbol(I, name,
-		Produce::kind_to_symbol(NULL));
+	inter_symbol *S = LargeScale::find_architectural_symbol(I, name);
 	if (S) return S;
 	S = InterSymbolsTable::symbol_from_name(LargeScale::connectors_scope(I), name);
 	if (S) return S;

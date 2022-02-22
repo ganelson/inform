@@ -42,7 +42,7 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_symbol *inst_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
-	inter_symbol *inst_kind = TextualInter::find_symbol(IBM, eloc, ktext, KIND_IST, E);
+	inter_symbol *inst_kind = TextualInter::find_symbol(IBM, eloc, ktext, TYPENAME_IST, E);
 	if (*E) return;
 
 	inter_type inst_type = InterTypes::from_type_name(inst_kind);
@@ -77,20 +77,20 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	if (P->W.extent != EXTENT_INST_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	*E = Inter::Verify::defn(owner, P, DEFN_INST_IFLD); if (*E) return;
 	inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[DEFN_INST_IFLD]);
-	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_INST_IFLD], KIND_IST); if (*E) return;
+	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_INST_IFLD], TYPENAME_IST); if (*E) return;
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_INST_IFLD]);
 	inter_type inst_type = InterTypes::from_type_name(inst_kind);
 	if (InterTypes::is_enumerated(inst_type)) {
 		if (P->W.instruction[VAL1_INST_IFLD] == UNDEF_IVAL) {
 			P->W.instruction[VAL1_INST_IFLD] = LITERAL_IVAL;
-			P->W.instruction[VAL2_INST_IFLD] = Inter::Kind::next_enumerated_value(inst_kind);
+			P->W.instruction[VAL2_INST_IFLD] = Inter::Typename::next_enumerated_value(inst_kind);
 		}
 	} else { *E = Inode::error(P, I"not a kind which has instances", NULL); return; }
 	*E = InterValuePairs::validate(owner, P, VAL1_INST_IFLD, InterTypes::from_type_name(inst_kind)); if (*E) return;
 
 	inter_ti vcount = Inode::bump_verification_count(P);
 	if (vcount == 0) {
-		Inter::Kind::new_instance(inst_kind, inst_name);
+		Inter::Typename::new_instance(inst_kind, inst_name);
 	}
 }
 

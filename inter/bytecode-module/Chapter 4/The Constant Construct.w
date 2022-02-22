@@ -83,6 +83,16 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		return;
 	}
 
+	if (Regexp::match(&mr2, S, L"{ }")) {
+		inter_ti form = CONSTANT_INDIRECT_LIST;
+		inter_tree_node *P =
+			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), form, eloc, (inter_ti) ilp->indent_level);
+		*E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
+		if (*E) return;
+		NodePlacement::move_to_moving_bookmark(P, IBM);
+		return;
+	}
+
 	if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
 		inter_type conts_type = InterTypes::type_operand(con_type, 0);
 		inter_ti form = CONSTANT_INDIRECT_LIST;
@@ -336,31 +346,20 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			break;
 		case CONSTANT_INDIRECT_LIST: {
 			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-			inter_ti constructor = InterTypes::constructor_code(it);
-			if ((constructor == LIST_ITCONC) || (constructor == RULEBOOK_ITCONC) || (constructor == COLUMN_ITCONC)) {
-				inter_type conts_type = InterTypes::type_operand(it, 0);
-				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-					*E = InterValuePairs::validate(owner, P, i, conts_type); if (*E) return;
-				}
-			} else {
-				*E = Inode::error(P, I"not a list", NULL);
-				return;
+			inter_type conts_type = InterTypes::type_operand(it, 0);
+			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+				*E = InterValuePairs::validate(owner, P, i, conts_type); if (*E) return;
 			}
 			break;
 		}
 		case CONSTANT_STRUCT: {
 			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent odd", NULL); return; }
-			inter_ti constructor = InterTypes::constructor_code(it);
-			if (constructor == STRUCT_ITCONC) {
-				int arity = InterTypes::type_arity(it);
-				int given = (P->W.extent - DATA_CONST_IFLD)/2;
-				if (arity != given) { *E = Inode::error(P, I"extent not same size as struct definition", NULL); return; }
-				for (int i=DATA_CONST_IFLD, counter = 0; i<P->W.extent; i=i+2) {
-					inter_type conts_type = InterTypes::type_operand(it, counter++);
-					*E = InterValuePairs::validate(owner, P, i, conts_type); if (*E) return;
-				}
-			} else {
-				*E = Inode::error(P, I"not a struct", NULL); return;
+			int arity = InterTypes::type_arity(it);
+			int given = (P->W.extent - DATA_CONST_IFLD)/2;
+			if (arity != given) { *E = Inode::error(P, I"extent not same size as struct definition", NULL); return; }
+			for (int i=DATA_CONST_IFLD, counter = 0; i<P->W.extent; i=i+2) {
+				inter_type conts_type = InterTypes::type_operand(it, counter++);
+				*E = InterValuePairs::validate(owner, P, i, conts_type); if (*E) return;
 			}
 			break;
 		}

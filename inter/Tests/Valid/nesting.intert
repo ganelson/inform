@@ -2,7 +2,7 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	kind K_number int32
+	typename K_number = int32
 	constant (K_number) C_alpha = 1
 	package sub _plain
 		constant (/main/K_number) C_beta = /main/C_alpha

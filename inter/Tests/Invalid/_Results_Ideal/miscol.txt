@@ -1,7 +1,7 @@
 inter: inter/Tests/Invalid/miscol.intert, line 6: no such symbol: 'K_number'
->--> kind K_column_of_number column of K_number
+>--> typename K_column_of_number = column of K_number
 inter: inter/Tests/Invalid/miscol.intert, line 7: no such symbol: 'K_colour'
->--> kind K_column_of_colour column of K_colour
-inter: inter/Tests/Invalid/miscol.intert, line 8: not a list
-inter: inter/Tests/Invalid/miscol.intert, line 9: not a list
+>--> typename K_column_of_colour = column of K_colour
+inter: inter/Tests/Invalid/miscol.intert, line 4: symbol undefined in package: 'I_green'
+inter: inter/Tests/Invalid/miscol.intert, line 4: symbol undefined in package: 'I_red'
 inter: inter/Tests/Invalid/miscol.intert, line 4: symbol undefined in package: 'C_complaint'

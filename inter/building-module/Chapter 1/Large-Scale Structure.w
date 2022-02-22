@@ -189,8 +189,7 @@ many more of these.)
 =
 dictionary *create_these_architectural_symbols_on_demand = NULL;
 
-inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *N,
-	inter_symbol *uks) {
+inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *N) {
 	inter_package *arch = LargeScale::architecture_package(I);
 	inter_symbols_table *tab = InterPackage::scope(arch);
 	inter_symbol *S = InterSymbolsTable::symbol_from_name(tab, N);
@@ -207,7 +206,7 @@ inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *
 			Dictionaries::create(create_these_architectural_symbols_on_demand, I"Object");
 		}
 		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N)) {
-			S = LargeScale::arch_constant(I, N, uks, 0);			
+			S = LargeScale::arch_constant(I, N, InterTypes::untyped(), 0);			
 			SymbolAnnotation::set_b(S, VENEER_IANN, TRUE);
 		}	
 	}	
@@ -241,38 +240,38 @@ compilation when building kits.
 
 =
 void LargeScale::make_architectural_definitions(inter_tree *I,
-	inter_architecture *current_architecture, inter_symbol *uks) {
+	inter_architecture *current_architecture) {
 	if (current_architecture == NULL) internal_error("no architecture set");
-
+	inter_type type = InterTypes::untyped();
 	if (Architectures::is_16_bit(current_architecture)) {
-		LargeScale::arch_constant(I,        I"WORDSIZE", uks,                      2);
-		LargeScale::arch_constant_hex(I,    I"NULL", uks,                     0xffff);
-		LargeScale::arch_constant_hex(I,    I"WORD_HIGHBIT", uks,             0x8000);
-		LargeScale::arch_constant_hex(I,    I"WORD_NEXTTOHIGHBIT", uks,       0x4000);
-		LargeScale::arch_constant_hex(I,    I"IMPROBABLE_VALUE", uks,         0x7fe3);
-		LargeScale::arch_constant(I,        I"MAX_POSITIVE_NUMBER", uks,       32767);
-		LargeScale::arch_constant_signed(I, I"MIN_NEGATIVE_NUMBER", uks,      -32768);
-		LargeScale::arch_constant(I,        I"TARGET_ZCODE", uks,                  1);
+		LargeScale::arch_constant(I,        I"WORDSIZE", type,                      2);
+		LargeScale::arch_constant_hex(I,    I"NULL", type,                     0xffff);
+		LargeScale::arch_constant_hex(I,    I"WORD_HIGHBIT", type,             0x8000);
+		LargeScale::arch_constant_hex(I,    I"WORD_NEXTTOHIGHBIT", type,       0x4000);
+		LargeScale::arch_constant_hex(I,    I"IMPROBABLE_VALUE", type,         0x7fe3);
+		LargeScale::arch_constant(I,        I"MAX_POSITIVE_NUMBER", type,       32767);
+		LargeScale::arch_constant_signed(I, I"MIN_NEGATIVE_NUMBER", type,      -32768);
+		LargeScale::arch_constant(I,        I"TARGET_ZCODE", type,                  1);
 	} else {
-		LargeScale::arch_constant(I,        I"WORDSIZE", uks,                      4);
-		LargeScale::arch_constant_hex(I,    I"NULL", uks,                 0xffffffff);
-		LargeScale::arch_constant_hex(I,    I"WORD_HIGHBIT", uks,         0x80000000);
-		LargeScale::arch_constant_hex(I,    I"WORD_NEXTTOHIGHBIT", uks,   0x40000000);
-		LargeScale::arch_constant_hex(I,    I"IMPROBABLE_VALUE", uks,     0xdeadce11);
-		LargeScale::arch_constant(I,        I"MAX_POSITIVE_NUMBER", uks,  2147483647);
-		LargeScale::arch_constant_signed(I, I"MIN_NEGATIVE_NUMBER", uks, -2147483648);
-		LargeScale::arch_constant(I,        I"TARGET_GLULX", uks,                  1);
+		LargeScale::arch_constant(I,        I"WORDSIZE", type,                      4);
+		LargeScale::arch_constant_hex(I,    I"NULL", type,                 0xffffffff);
+		LargeScale::arch_constant_hex(I,    I"WORD_HIGHBIT", type,         0x80000000);
+		LargeScale::arch_constant_hex(I,    I"WORD_NEXTTOHIGHBIT", type,   0x40000000);
+		LargeScale::arch_constant_hex(I,    I"IMPROBABLE_VALUE", type,     0xdeadce11);
+		LargeScale::arch_constant(I,        I"MAX_POSITIVE_NUMBER", type,  2147483647);
+		LargeScale::arch_constant_signed(I, I"MIN_NEGATIVE_NUMBER", type, -2147483648);
+		LargeScale::arch_constant(I,        I"TARGET_GLULX", type,                  1);
 	}
 
 	if (Architectures::debug_enabled(current_architecture))
-		LargeScale::arch_constant(I, I"DEBUG", uks, 1);
+		LargeScale::arch_constant(I, I"DEBUG", type, 1);
 }
 
 @ The functions above use the following tiny API to create architectural constants:
 
 =
 inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
-	inter_symbol *uks, inter_ti val) {
+	inter_type type, inter_ti val) {
 	inter_package *arch = LargeScale::architecture_package(I);
 	inter_symbols_table *tab = InterPackage::scope(arch);
 	inter_symbol *S = InterSymbolsTable::symbol_from_name_creating(tab, N);
@@ -280,22 +279,22 @@ inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 	inter_bookmark *IBM = &(I->site.strdata.architecture_bookmark);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol(I, arch, S),
-		InterSymbolsTable::id_from_symbol(I, arch, uks),
+		InterTypes::to_TID(InterBookmark::scope(IBM), type),
 		LITERAL_IVAL, val,
 		(inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 	return S;
 }
 
 inter_symbol *LargeScale::arch_constant_hex(inter_tree *I, text_stream *N,
-	inter_symbol *uks, inter_ti val) {
-	inter_symbol *S = LargeScale::arch_constant(I, N, uks, val);
+	inter_type type, inter_ti val) {
+	inter_symbol *S = LargeScale::arch_constant(I, N, type, val);
 	SymbolAnnotation::set_b(S, HEX_IANN, 1);
 	return S;
 }
 
 inter_symbol *LargeScale::arch_constant_signed(inter_tree *I, text_stream *N,
-	inter_symbol *uks, int val) {
-	inter_symbol *S = LargeScale::arch_constant(I, N, uks, (inter_ti) val);
+	inter_type type, int val) {
+	inter_symbol *S = LargeScale::arch_constant(I, N, type, (inter_ti) val);
 	SymbolAnnotation::set_b(S, SIGNED_IANN, 1);
 	return S;
 }

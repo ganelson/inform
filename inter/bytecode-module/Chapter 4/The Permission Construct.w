@@ -38,14 +38,14 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	inter_symbol *owner_name = Inter::PropertyValue::parse_owner(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
-	if (Inter::Kind::is(owner_name)) {
+	if (Inter::Typename::is(owner_name)) {
 		if (InterTypes::is_enumerated(InterTypes::from_type_name(owner_name)) == FALSE)
 			{ *E = Inter::Errors::quoted(I"not a kind which can have property values", ilp->mr.exp[1], eloc); return; }
 
 		inter_node_list *FL =
 			InterWarehouse::get_node_list(
 				InterBookmark::warehouse(IBM),
-				Inter::Kind::permissions_list(owner_name));
+				Inter::Typename::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
 		inter_tree_node *X;
@@ -110,10 +110,10 @@ void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_pa
 	if (vcount == 0) {
 		inter_node_list *FL = NULL;
 
-		if (Inter::Kind::is(owner_name)) {
+		if (Inter::Typename::is(owner_name)) {
 			if (InterTypes::is_enumerated(InterTypes::from_type_name(owner_name)) == FALSE)
 				{ *E = Inode::error(P, I"property permission for non-enumerated kind", NULL); return; }
-			FL = Inode::ID_to_frame_list(P, Inter::Kind::permissions_list(owner_name));
+			FL = Inode::ID_to_frame_list(P, Inter::Typename::permissions_list(owner_name));
 			if (FL == NULL) internal_error("no permissions list");
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, FL) {

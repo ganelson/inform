@@ -2,5 +2,5 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	kind K_number int32
-	kind K_blurg <= K_number
+	typename K_number = int32
+	typename K_blurg <=  K_number

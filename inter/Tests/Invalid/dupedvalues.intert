@@ -2,8 +2,8 @@ packagetype _plain
 packagetype _code
 
 package main _plain
-	kind K_number int32
-	kind K_odour enum
+	typename K_number = int32
+	typename K_odour = enum
 	instance I_citrus K_odour
 	instance I_leather K_odour
 	property (K_number) P_strength
@@ -17,6 +17,6 @@ package main _plain
 	propertyvalue P_lingeringness I_leather = 3
 	propertyvalue P_lingeringness I_leather = 6
 	permission P_lingeringness K_number
-	kind K_colour enum
+	typename K_colour = enum
 	instance I_green K_colour
 	propertyvalue P_lingeringness I_green = 27

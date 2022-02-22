@@ -341,7 +341,7 @@ trees with the same Inter architecture.
 	inter_symbol *equivalent = Transmigration::known_equivalent(target);
 	if (equivalent == NULL) {
 		equivalent = LargeScale::find_architectural_symbol(det->destination_tree,
-			InterSymbol::identifier(target), Produce::kind_to_symbol(NULL));
+			InterSymbol::identifier(target));
 		Transmigration::learn_equivalent(target, equivalent);
 	}
 	Wiring::wire_to(S, equivalent);					

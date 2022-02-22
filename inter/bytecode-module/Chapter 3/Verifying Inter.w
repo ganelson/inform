@@ -53,7 +53,7 @@ inter_error_message *Inter::Verify::symbol(inter_package *owner, inter_tree_node
 inter_error_message *Inter::Verify::TID(inter_package *owner, inter_tree_node *P, inter_ti TID) {
 	if (TID == 0) return NULL;
 	if (InterTypes::is_valid_constructor_code(TID)) return NULL;
-	return Inter::Verify::symbol(owner, P, TID, KIND_IST);
+	return Inter::Verify::symbol(owner, P, TID, TYPENAME_IST);
 }
 
 inter_error_message *Inter::Verify::constructor_code(inter_tree_node *P, int index) {
@@ -115,7 +115,7 @@ inter_error_message *Inter::Verify::symbol_KOI(inter_package *owner, inter_tree_
 	if (InterSymbol::defined_elsewhere(S)) return NULL;
 	if (InterSymbol::misc_but_undefined(S)) return NULL;
 	if (D == NULL) return Inode::error(P, I"undefined symbol", InterSymbol::identifier(S));
-	if ((D->W.instruction[ID_IFLD] != KIND_IST) &&
+	if ((D->W.instruction[ID_IFLD] != TYPENAME_IST) &&
 		(InterSymbol::defined_elsewhere(S) == FALSE) &&
 		(D->W.instruction[ID_IFLD] != INSTANCE_IST) &&
 		(InterSymbol::misc_but_undefined(S) == FALSE))

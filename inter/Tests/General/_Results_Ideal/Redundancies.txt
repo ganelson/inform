@@ -6,8 +6,8 @@ primitive !minus val val -> val
 primitive !jump lab -> void
 primitive !modulo val val -> val
 package main _plain
-	kind K_number int32
-	kind K_phrase_number____nothing function K_number -> void
+	typename K_number = int32
+	typename K_phrase_number____nothing = function K_number -> void
 	package MyRoutine_B _code
 		local (/main/K_number) x
 		local (/main/K_number) y

@@ -9,31 +9,26 @@ packagetype _code
 packagetype _linkage
 packagetype _property
 package main _plain
-	kind K_unchecked unchecked
-	kind K_unchecked_function function K_unchecked -> K_unchecked
-	kind K_unchecked_list list of K_unchecked
-	kind K_int32 int32
-	kind K_int2 int2
 	constant VERB_DIRECTIVE_DIVIDER = 1
 	constant VERB_DIRECTIVE_RESULT = 2
 	package template _module
 		package constants _submodule
 			package DEBUG_con _plain
-				constant (/main/K_unchecked) DEBUG = 0 __assimilated
+				constant DEBUG = 0 __assimilated
 			package Badger_con _plain
-				constant (/main/K_unchecked) Badger = 12 __assimilated
+				constant Badger = 12 __assimilated
 			package Bodger_con _plain
-				constant (/main/K_unchecked) Bodger = 157 __assimilated
+				constant Bodger = 157 __assimilated
 			package Budger_con _plain
-				constant (/main/K_unchecked) Budger = 32738 __assimilated
+				constant Budger = 32738 __assimilated
 			package Bydger_con _plain
-				constant (/main/K_unchecked) Bydger = 777 __assimilated
+				constant Bydger = 777 __assimilated
 		package Falsity_fn _function
 			package Falsity_B _code
 				code
 					inv !return
 						val 0
-			constant (/main/K_unchecked_function) Falsity = function Falsity_B __assimilated
+			constant (function unchecked -> unchecked) Falsity = function Falsity_B __assimilated
 		package Demo_fn _function
 			package Demo_B _code
 				local x
@@ -43,23 +38,23 @@ package main _plain
 						inv !plus
 							val x
 							val y
-			constant (/main/K_unchecked_function) Demo = function Demo_B __assimilated
+			constant (function unchecked -> unchecked) Demo = function Demo_B __assimilated
 		package arrays _submodule
 			package XA_arr _plain
-				constant (/main/K_unchecked_list) XA = { 2, 4, 56 } __assimilated
+				constant (list of unchecked) XA = { 2, 4, 56 } __assimilated
 			package XB_arr _plain
-				constant (/main/K_unchecked) Computed_Constant_Value_0 = 71
-				constant (/main/K_unchecked) Computed_Constant_Value_1 = 3
-				constant (/main/K_unchecked) Computed_Constant_Value_2 = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 }
-				constant (/main/K_unchecked_list) XB = { Computed_Constant_Value_2 } __assimilated
+				constant Computed_Constant_Value_0 = 71
+				constant Computed_Constant_Value_1 = 3
+				constant Computed_Constant_Value_2 = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 }
+				constant (list of unchecked) XB = { Computed_Constant_Value_2 } __assimilated
 			package XC_arr _plain
-				constant (/main/K_unchecked_list) XC = { 17, 91 } __assimilated __byte_array
+				constant (list of unchecked) XC = { 17, 91 } __assimilated __byte_array
 			package XD_arr _plain
-				constant (/main/K_unchecked_list) XD = { 8, 6 } __assimilated __byte_array
+				constant (list of unchecked) XD = { 8, 6 } __assimilated __byte_array
 			package XE_arr _plain
-				constant (/main/K_unchecked_list) XE = { 2, 3, 4, 5 } __assimilated __table_array
+				constant (list of unchecked) XE = { 2, 3, 4, 5 } __assimilated __table_array
 			package XF_arr _plain
-				constant (/main/K_unchecked_list) XF = { 6, 7, 8, 9 } __assimilated __buffer_array
+				constant (list of unchecked) XF = { 6, 7, 8, 9 } __assimilated __buffer_array
 		package variables _submodule
 			package nitwit_var _plain
 				variable nitwit = 2 __assimilated
@@ -70,16 +65,16 @@ package main _plain
 				code
 					inv !return
 						val 0
-			constant (/main/K_unchecked_function) Banana = function Banana_B __assimilated
+			constant (function unchecked -> unchecked) Banana = function Banana_B __assimilated
 		package Peach_fn _function
 			package Peach_B _code
 				code
 					inv !return
 						val 0
-			constant (/main/K_unchecked_function) Peach = function Peach_B __assimilated
+			constant (function unchecked -> unchecked) Peach = function Peach_B __assimilated
 		package marmorial_prop _property
-			constant (/main/K_unchecked) property_id = 0
-			property (/main/K_int2) marmorial __assimilated __either_or
+			constant property_id = 0
+			property (int2) marmorial __assimilated __either_or
 		package density_prop _property
-			constant (/main/K_unchecked) property_id = 0
+			constant property_id = 0
 			property density __assimilated

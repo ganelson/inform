@@ -29,7 +29,7 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 	*E = InterConstruct::check_level_in_package(IBM, DEFAULTVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	inter_symbol *con_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], KIND_IST, E);
+	inter_symbol *con_kind = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], TYPENAME_IST, E);
 	if (*E) return;
 
 	inter_ti con_val1 = 0;
@@ -49,7 +49,7 @@ inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_ti KID,
 
 void Inter::DefaultValue::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_DEF_IFR) *E = Inode::error(P, I"extent wrong", NULL);
-	else *E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_DEF_IFLD], KIND_IST);
+	else *E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_DEF_IFLD], TYPENAME_IST);
 }
 
 void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

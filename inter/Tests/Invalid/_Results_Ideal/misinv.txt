@@ -1,5 +1,5 @@
 inter: inter/Tests/Invalid/misinv.intert, line 10: no such symbol: 'K_odour'
->--> kind K_stuff struct K_number K_colour K_odour
+>--> typename K_stuff = struct K_number K_colour K_odour
 inter: inter/Tests/Invalid/misinv.intert, line 27: value 'x' has kind K_colour which is not a K_number
 >--> ref (/main/K_number) x
 inter: inter/Tests/Invalid/misinv.intert, line 19: this inv of !increment should have 1 argument(s), but has 0

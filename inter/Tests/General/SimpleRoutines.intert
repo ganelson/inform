@@ -1,21 +1,17 @@
 package main _plain
-	kind K_unchecked unchecked
-	kind K_unchecked_function function K_unchecked -> K_unchecked
-	kind K_unchecked_list list of K_unchecked
-	kind K_int2 int2
 	package Falsity_B _code
 		code
 			splat &"return false;"
-	constant (K_unchecked_function) Falsity = function Falsity_B
+	constant Falsity = function Falsity_B
 	package Demo_B _code
 		local x
 		local y
 		code
 			splat &"return x+y;"
-	constant (K_unchecked_function) Demo = function Demo_B
+	constant Demo = function Demo_B
 	package Prop_Falsity_B _code
 		local reason
 		local obj
 		code
 			splat &"return 0;"
-	constant (K_unchecked_function) Prop_Falsity = function Prop_Falsity_B
+	constant Prop_Falsity = function Prop_Falsity_B

@@ -313,7 +313,7 @@ void CObjectModel::declare_kind(code_generator *gtr, code_generation *gen,
 	text_stream *printed_name = Metadata::read_optional_textual(
 		InterPackage::container(kind_s->definition), I"^printed_name");
 	text_stream *super_class = NULL;
-	inter_symbol *super_name = Inter::Kind::super(kind_s);
+	inter_symbol *super_name = Inter::Typename::super(kind_s);
 	if (super_name) super_class = InterSymbol::trans(super_name);
 	if (Str::len(super_class) == 0) super_class = I"Class";
 	CObjectModel::new_runtime_class(gen, class_name, printed_name, super_class);
@@ -391,7 +391,7 @@ void CObjectModel::declare_instance(code_generator *gtr, code_generation *gen,
 @<Declare an object instance@> =
 	int c = SymbolAnnotation::get_i(inst_s, ARROW_COUNT_IANN);
 	if (c < 0) c = 0;
-	int is_dir = Inter::Kind::is_a(kind_s,
+	int is_dir = Inter::Typename::is_a(kind_s,
 		RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
 	C_property_owner *owner = CObjectModel::new_runtime_object(gtr, gen,
 		InterSymbol::trans(kind_s), InterSymbol::trans(inst_s), c, is_dir);
@@ -717,7 +717,7 @@ for an enumerated kind; or just 0 if the kind is not an enumeration.
 					if (VanillaObjects::value_kind_with_properties(gen, kind_s)) {
 						written = TRUE;
 						TEMPORARY_TEXT(N)
-						WRITE_TO(N, "%d", Inter::Kind::instance_count(kind_s));
+						WRITE_TO(N, "%d", Inter::Typename::instance_count(kind_s));
 						CMemoryModel::array_entry(NULL, gen, N, WORD_ARRAY_FORMAT);
 						DISCARD_TEXT(N)
 					}

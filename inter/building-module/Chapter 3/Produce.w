@@ -321,7 +321,7 @@ inter_name *Produce::numeric_constant(inter_tree *I, inter_name *con_iname, kind
 	inter_bookmark *IBM = Packaging::at(I);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
-		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, Produce::kind_to_symbol(K)),
+		Produce::kind_to_TID(IBM, K),
 		LITERAL_IVAL, val, Produce::baseline(IBM), NULL));
 	Packaging::exit(I, save);
 	return con_iname;
@@ -340,7 +340,7 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	InterValuePairs::from_symbol(InterPackage::tree(pack), pack, val_s, &v1, &v2);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
-		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, Produce::kind_to_symbol(K)),
+		Produce::kind_to_TID(IBM, K),
 		v1, v2, Produce::baseline(IBM), NULL));
 	Packaging::exit(I, save);
 	return con_iname;
@@ -563,8 +563,8 @@ void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 		Produce::level(I), val1, val2, NULL));
 }
 
-@ |cast| and kinds may yet disappear from Inter: they don't really accomplish
-anything at present.
+@ |cast| may yet disappear from Inter: it doesn't really accomplish anything at
+present, and is more of a placeholder than anything else.
 
 =
 void Produce::cast(inter_tree *I, kind *F, kind *T) {
@@ -576,19 +576,19 @@ void Produce::cast(inter_tree *I, kind *F, kind *T) {
 
 inter_symbol *Produce::kind_to_symbol(kind *K) {
 	#ifdef CORE_MODULE
-	if (K == NULL) return unchecked_interk;
-	if (K == K_value) return unchecked_interk; /* for error recovery */
+	if ((K == NULL) || (K == K_value)) return NULL;
 	return InterNames::to_symbol(RTKindDeclarations::iname(K));
 	#endif
 	#ifndef CORE_MODULE
-	#ifdef PIPELINE_MODULE
-	return RunningPipelines::get_symbol(
-		RunningPipelines::current_step(), unchecked_kind_RPSYM);
-	#endif
-	#ifndef PIPELINE_MODULE
 	return NULL;
 	#endif
-	#endif
+}
+
+inter_ti Produce::kind_to_TID(inter_bookmark *IBM, kind *K) {
+	inter_type type = InterTypes::untyped();
+	inter_symbol *S = Produce::kind_to_symbol(K);
+	if (S) type = InterTypes::from_type_name(S);
+	return InterTypes::to_TID_wrt_bookmark(IBM, type);
 }
 
 @ The following reserves a label, that is, declares that a given name will be
@@ -650,9 +650,9 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 		Produce::guard(Inter::Comment::new(locals_at, Produce::baseline(locals_at) + 1,
 			NULL, ID));
 	}
-	inter_type it = InterTypes::untyped();
-	if ((K) && (K != K_value)) it = InterTypes::from_type_name(Produce::kind_to_symbol(K));
-	Produce::guard(Inter::Local::new(locals_at, local_s, it,
+	inter_type type = InterTypes::untyped();
+	if ((K) && (K != K_value)) type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
+	Produce::guard(Inter::Local::new(locals_at, local_s, type,
 		Produce::baseline(locals_at) + 1, NULL));
 	return local_s;
 }

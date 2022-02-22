@@ -305,7 +305,7 @@ void InterConstruct::create_language(void) {
 	Inter::Pragma::define();
 	Inter::Link::define();
 	Inter::Append::define();
-	Inter::Kind::define();
+	Inter::Typename::define();
 	Inter::DefaultValue::define();
 	Inter::Constant::define();
 	Inter::Instance::define();

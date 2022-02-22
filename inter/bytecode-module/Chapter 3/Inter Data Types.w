@@ -100,6 +100,7 @@ inter_type_constructor *InterTypes::init_con(inter_ti ID, text_stream *name,
 	IDT->max_value = range_to;
 	IDT->is_enumerated = en;
 	IDT->is_base = base;
+	IDT->arity = arity;
 
 	return IDT;
 }
@@ -201,7 +202,7 @@ inter_type InterTypes::from_constructor_code(inter_ti constructor_code) {
 inter_type InterTypes::from_type_name(inter_symbol *S) {
 	if (S) {
 		inter_type type;
-		type.underlying_constructor = Inter::Kind::constructor(S);
+		type.underlying_constructor = Inter::Typename::constructor(S);
 		type.type_name = S;
 		return type;
 	}
@@ -244,13 +245,13 @@ int InterTypes::is_untyped(inter_type type) {
 =
 int InterTypes::type_arity(inter_type type) {
 	inter_symbol *type_name = InterTypes::type_name(type);
-	if (type_name) return Inter::Kind::arity(type_name);
+	if (type_name) return Inter::Typename::arity(type_name);
 	return InterTypes::constructor(type)->arity;
 }
 
 inter_type InterTypes::type_operand(inter_type type, int n) {
 	inter_symbol *type_name = InterTypes::type_name(type);
-	if (type_name) return Inter::Kind::operand_type(InterTypes::type_name(type), n);
+	if (type_name) return Inter::Typename::operand_type(InterTypes::type_name(type), n);
 	return InterTypes::untyped();
 }
 
@@ -405,9 +406,11 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 		inter_type_constructor *itc = InterTypes::constructor_from_name(text);
 		if (itc) {
 			results->constructor_code = itc->constructor_ID;
+			if (itc->constructor_ID == VOID_ITCONC)
+				return Inter::Errors::quoted(I"'void' cannot be used as a type", text, eloc);
 			return NULL;
 		}
-		inter_symbol *K = TextualInter::find_symbol_in_table(T, eloc, text, KIND_IST, &E);
+		inter_symbol *K = TextualInter::find_symbol_in_table(T, eloc, text, TYPENAME_IST, &E);
 		if (E) return E;
 		if (K) {
 			results->constructor_code = EQUATED_ITCONC;
@@ -426,10 +429,6 @@ inter_type InterTypes::parse_simple(inter_symbols_table *T, inter_error_location
 		InterTypes::initialise_isstd(&parsed_description);
 		*E = InterTypes::parse_semisimple(text, T, eloc, &parsed_description);
 		if (*E) return InterTypes::untyped();
-		if (parsed_description.constructor_code == VOID_ITCONC) {
-			*E = Inter::Errors::quoted(I"'void' cannot be used as a type", text, eloc);
-			return InterTypes::untyped();
-		}
 		if (parsed_description.constructor_code == EQUATED_ITCONC) {
 			inter_type type = InterTypes::from_TID(T, parsed_description.operand_TIDs[0]);
 			InterTypes::dispose_of_isstd(&parsed_description);
@@ -509,41 +508,41 @@ void InterTypes::write_type(OUTPUT_STREAM, inter_type type) {
 }
 
 void InterTypes::write_type_name_definition(OUTPUT_STREAM, inter_symbol *type_name) {
-	inter_type_constructor *itc = InterTypes::constructor_from_ID(Inter::Kind::constructor(type_name));
+	inter_type_constructor *itc = InterTypes::constructor_from_ID(Inter::Typename::constructor(type_name));
 	if (itc == NULL) { WRITE("<bad-constructor>"); return; }
 	WRITE("%S", itc->constructor_keyword);
 	switch (itc->constructor_ID) {
 		case EQUATED_ITCONC:
-			InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, 0));
+			InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, 0));
 			break;
 		case DESCRIPTION_ITCONC:
 		case COLUMN_ITCONC:
 		case RULEBOOK_ITCONC:
 		case LIST_ITCONC:
 			WRITE(" of ");
-			InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, 0));
+			InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, 0));
 			break;
 		case RELATION_ITCONC:
 			WRITE(" of ");
-			InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, 0));
+			InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, 0));
 			WRITE(" to ");
-			InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, 1));
+			InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, 1));
 			break;
 		case FUNCTION_ITCONC:
 		case RULE_ITCONC: {
-			int arity = Inter::Kind::arity(type_name);
+			int arity = Inter::Typename::arity(type_name);
 			for (int i=0; i<arity; i++) {
 				WRITE(" ");
 				if (i == arity - 1) WRITE("-> ");
-				InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, i));
+				InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, i));
 			}
 			break;
 		}
 		case STRUCT_ITCONC: {
-			int arity = Inter::Kind::arity(type_name);
+			int arity = Inter::Typename::arity(type_name);
 			for (int i=0; i<arity; i++) {
 				WRITE(" ");
-				InterTypes::write_type(OUT, Inter::Kind::operand_type(type_name, i));
+				InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, i));
 			}
 			break;
 		}
@@ -559,6 +558,20 @@ int InterTypes::is_enumerated(inter_type type) {
 	return FALSE;
 }
 
+int InterTypes::arity_is_possible(inter_type type, int arity) {
+	inter_type_constructor *itc = InterTypes::constructor(type);
+// WRITE_TO(STDERR, "%S: itc->a = %d, a = %d\n", itc->constructor_keyword, itc->arity, arity);
+	if (itc->arity == (int) arity) return TRUE;
+	if (itc->constructor_ID == TABLE_ITCONC)
+		if (arity == 0) return TRUE;
+	if ((itc->constructor_ID == FUNCTION_ITCONC) ||
+		(itc->constructor_ID == RULE_ITCONC) ||
+		(itc->constructor_ID == STRUCT_ITCONC)) {
+		if (itc->arity <= (int) arity) return TRUE;
+	}
+	return FALSE;
+}
+
 int InterTypes::literal_is_in_range(long long int N, inter_type type) {
 	inter_type_constructor *itc = InterTypes::constructor(type);
 	if ((N < itc->min_value) || (N > itc->max_value)) return FALSE;
@@ -569,39 +582,95 @@ inter_error_message *InterTypes::can_be_used_as(inter_type A, inter_type B,
 	text_stream *S, inter_error_location *eloc) {
 	inter_type_constructor *A_itc = InterTypes::constructor(A);
 	inter_type_constructor *B_itc = InterTypes::constructor(B);
+//WRITE_TO(STDERR, "Checking if ");
+//InterTypes::write_type(STDERR, A);
+//WRITE_TO(STDERR, " can be used as ");
+//InterTypes::write_type(STDERR, B);
+//WRITE_TO(STDERR, "\n");
 
 	if ((A_itc->constructor_ID == UNCHECKED_ITCONC) || (B_itc->constructor_ID == UNCHECKED_ITCONC))
 		return NULL;
-
-	if ((A_itc->constructor_ID == LIST_ITCONC) && (B_itc->constructor_ID == TEXT_ITCONC))
-		return NULL; // so that two-element arrays can be used to implement I7 texts
 
 	if (A_itc->is_base != B_itc->is_base)
 		@<Throw type mismatch error@>;
 
 	if (A_itc->is_base) {
-		inter_symbol *kind_symbol = B.type_name;
-		inter_symbol *kind_loc = A.type_name;
-		if ((kind_symbol) && (kind_loc) && (Inter::Kind::is_a(kind_loc, kind_symbol) == FALSE))
-			@<Throw type mismatch error@>;
+		if (A_itc->constructor_ID != B_itc->constructor_ID)
+			@<Different bases@>
+		else
+			@<Same bases@>;
 	} else {
 		if (A_itc->constructor_ID != B_itc->constructor_ID)
-			@<Throw type mismatch error@>;
-		inter_error_message *operand_E = NULL;
-		switch (A_itc->constructor_ID) {
-			case LIST_ITCONC:
-				operand_E = InterTypes::can_be_used_as(InterTypes::type_operand(A, 0),
-					InterTypes::type_operand(B, 0), S, eloc);
-				if (operand_E) @<Throw type mismatch error@>;
-				break;
-		}
+			@<Throw type mismatch error@>
+		else
+			@<Same proper constructor@>;
 	}
 	return NULL;
 }
 
+@<Different bases@> =
+	switch (A_itc->constructor_ID) {
+		case INT2_ITCONC:
+			if ((B_itc->constructor_ID == INT8_ITCONC) ||
+				(B_itc->constructor_ID == INT16_ITCONC) ||
+				(B_itc->constructor_ID == INT32_ITCONC)) return NULL;
+			break;
+		case INT8_ITCONC:
+			if ((B_itc->constructor_ID == INT16_ITCONC) ||
+				(B_itc->constructor_ID == INT32_ITCONC)) return NULL;
+			break;
+		case INT16_ITCONC:
+			if (B_itc->constructor_ID == INT32_ITCONC) return NULL;
+			break;		
+	}
+	@<Throw type mismatch error@>;
+
+@<Same bases@> =
+	if (A_itc->constructor_ID == ENUM_ITCONC) {
+		inter_symbol *typenameB_s = B.type_name;
+		inter_symbol *typenameA_s = A.type_name;
+		if ((typenameB_s) && (typenameA_s) && (Inter::Typename::is_a(typenameA_s, typenameB_s) == FALSE))
+			@<Throw type mismatch error@>;
+	}
+
+@<Same proper constructor@> =
+	inter_error_message *operand_E = NULL;
+	switch (A_itc->constructor_ID) {
+		case STRUCT_ITCONC:
+		case FUNCTION_ITCONC: {			
+			inter_symbol *typename_A = A.type_name;
+			inter_symbol *typename_B = B.type_name;
+			if ((typename_A) && (typename_B)) {
+				if (InterTypes::type_arity(A) != InterTypes::type_arity(B))
+					@<Throw type mismatch error@>;
+				int arity = InterTypes::type_arity(A);
+				for (int i=0; i<arity; i++) {
+					int covariant = TRUE;
+					if ((A_itc->constructor_ID == FUNCTION_ITCONC) && (i<arity-1))
+						covariant = FALSE;
+					if (covariant)
+						operand_E = InterTypes::can_be_used_as(InterTypes::type_operand(A, i),
+							InterTypes::type_operand(B, i), S, eloc);
+					else
+						operand_E = InterTypes::can_be_used_as(InterTypes::type_operand(B, i),
+							InterTypes::type_operand(A, i), S, eloc);
+					if (operand_E) @<Throw type mismatch error@>;
+				}
+			}
+			break;
+		}
+		default:
+			for (int i=0; i<A_itc->arity; i++) {
+				operand_E = InterTypes::can_be_used_as(InterTypes::type_operand(A, i),
+					InterTypes::type_operand(B, i), S, eloc);
+				if (operand_E) @<Throw type mismatch error@>;
+			}
+			break;
+	}
+
 @<Throw type mismatch error@> =
 	text_stream *err = Str::new();
-	WRITE_TO(err, "value '%S' has kind ", S);
+	WRITE_TO(err, "value '%S' has type ", S);
 	InterTypes::write_type(err, A);
 	WRITE_TO(err, " which is not a ");
 	InterTypes::write_type(err, B);
@@ -625,7 +694,7 @@ inter_type InterTypes::of_symbol(inter_symbol *symb) {
 int InterTypes::expresses_value(inter_symbol *symb) {
 	inter_tree_node *D = InterSymbol::definition(symb);
 	if (D) {
-		if (D->W.instruction[ID_IFLD] == KIND_IST)     return TRUE;
+		if (D->W.instruction[ID_IFLD] == TYPENAME_IST)     return TRUE;
 		if (D->W.instruction[ID_IFLD] == INSTANCE_IST) return TRUE;
 		if (D->W.instruction[ID_IFLD] == CONSTANT_IST) return TRUE;
 		if (D->W.instruction[ID_IFLD] == LOCAL_IST)    return TRUE;

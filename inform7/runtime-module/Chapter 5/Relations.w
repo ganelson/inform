@@ -350,7 +350,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	Emit::iname_constant(md_iname, K_value, iname);
 
 @<Compile the metadata array@> =
-	packaging_state save = EmitArrays::begin_word(RTRelations::iname(bp), K_value);
+	packaging_state save = EmitArrays::begin_unchecked(RTRelations::iname(bp));
 	if (ExplicitRelations::stored_dynamically(bp)) {
 		EmitArrays::numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
 	} else {
@@ -1087,7 +1087,7 @@ relation of the right kind.
 
 =
 void RTRelations::default_value_of_relation_kind(inter_name *identifier, kind *K) {
-	packaging_state save = EmitArrays::begin_word(identifier, K_value);
+	packaging_state save = EmitArrays::begin_unchecked(identifier);
 	TheHeap::emit_block_value_header(K, FALSE, 8);
 	EmitArrays::null_entry();
 	EmitArrays::null_entry();

@@ -1,5 +1,5 @@
 package main _plain
-	kind K_number int32
+	typename K_number = int32
 	constant (K_number) MAGIC = 16339
 	splat IFTRUE &"#iftrue MAGIC == 16339;\n"
 	constant (K_number) WIZARD = 5
