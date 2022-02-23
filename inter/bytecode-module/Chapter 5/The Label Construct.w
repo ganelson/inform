@@ -9,7 +9,9 @@ Defining the label construct.
 =
 void Inter::Label::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(LABEL_IST, I"label");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_LABEL_IFLD, -1);
 	InterConstruct::specify_syntax(IC, I".IDENTIFIER");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_LABEL_IFR, EXTENT_LABEL_IFR);
 	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
@@ -49,22 +51,18 @@ void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 
 inter_error_message *Inter::Label::new(inter_bookmark *IBM, inter_symbol *lab_name, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, LABEL_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, lab_name), eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 void Inter::Label::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_LABEL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *lab_name = InterSymbolsTable::symbol_from_ID_in_package(owner, P->W.instruction[DEFN_LABEL_IFLD]);
 	if (InterSymbol::is_label(lab_name) == FALSE) {
 		*E = Inode::error(P, I"not a label", (lab_name)?(InterSymbol::identifier(lab_name)):NULL);
 		return;
 	}
 	if (P->W.instruction[LEVEL_IFLD] < 1) { *E = Inode::error(P, I"label with bad level", NULL); return; }
-	inter_symbols_table *locals = InterPackage::scope(owner);
-	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
-	*E = Inter::Verify::local_defn(P, DEFN_LABEL_IFLD, locals);
 }
 
 void Inter::Label::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

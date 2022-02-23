@@ -11,6 +11,7 @@ void Inter::Variable::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(VARIABLE_IST, I"variable");
 	InterConstruct::defines_symbol_in_fields(IC, DEFN_VAR_IFLD, KIND_VAR_IFLD);
 	InterConstruct::specify_syntax(IC, I"variable TOKENS = TOKENS");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_VAR_IFR, EXTENT_VAR_IFR);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Variable::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Variable::verify);
@@ -56,15 +57,16 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, inter_type var_type, inter_ti var_val1, inter_ti var_val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VARIABLE_IST, VID, InterTypes::to_TID_wrt_bookmark(IBM, var_type), var_val1, var_val2, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 void Inter::Variable::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_VAR_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	Inter::Verify::typed_data(owner, P, KIND_VAR_IFLD, VAL1_VAR_IFLD, E);
+	*E = Inter::Verify::TID_field(owner, P, KIND_VAR_IFLD); if (*E) return;
+	inter_type type = InterTypes::from_TID_in_field(P, KIND_VAR_IFLD);
+	*E = Inter::Verify::data_pair_fields(owner, P, VAL1_VAR_IFLD, type); if (*E) return;
 }
 
 void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

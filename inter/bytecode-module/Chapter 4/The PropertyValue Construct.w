@@ -10,6 +10,7 @@ Defining the propertyvalue construct.
 void Inter::PropertyValue::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PROPERTYVALUE_IST, I"propertyvalue");
 	InterConstruct::specify_syntax(IC, I"propertyvalue IDENTIFIER IDENTIFIER = TOKENS");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_PVAL_IFR, EXTENT_PVAL_IFR);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::PropertyValue::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::PropertyValue::verify);
@@ -104,43 +105,38 @@ inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_ti PID
 	inter_ti con_val1, inter_ti con_val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, PROPERTYVALUE_IST,
 		PID, OID, con_val1, con_val2, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	inter_ti vcount = Inode::bump_verification_count(P);
+	*E = Inter::Verify::SID_field(owner, P, PROP_PVAL_IFLD, PROPERTY_IST); if (*E) return;
+	*E = Inter::Verify::POID_field(owner, P, OWNER_PVAL_IFLD); if (*E) return;
 
-	if (P->W.extent != EXTENT_PVAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::symbol(owner, P, P->W.instruction[PROP_PVAL_IFLD], PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::symbol_KOI(owner, P, P->W.instruction[OWNER_PVAL_IFLD]); if (*E) return;
+	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[PROP_PVAL_IFLD]);;
+	inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[OWNER_PVAL_IFLD]);;
 
-	if (vcount == 0) {
-		inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[PROP_PVAL_IFLD]);;
-		inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[OWNER_PVAL_IFLD]);;
-
-		if (Inter::PropertyValue::permitted(P, owner, owner_name, prop_name) == FALSE) {
-			text_stream *err = Str::new();
-			WRITE_TO(err, "no permission for '%S' have this property", InterSymbol::identifier(owner_name));
-			*E = Inode::error(P, err, InterSymbol::identifier(prop_name)); return;
-		}
-
-		inter_ti plist_ID;
-		if (Inter::Typename::is(owner_name)) plist_ID = Inter::Typename::properties_list(owner_name);
-		else plist_ID = Inter::Instance::properties_list(owner_name);
-
-		inter_node_list *FL = Inode::ID_to_frame_list(P, plist_ID);
-		if (FL == NULL) internal_error("no properties list");
-
-		inter_tree_node *X;
-		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-			if (X->W.instruction[PROP_PVAL_IFLD] == P->W.instruction[PROP_PVAL_IFLD]) { *E = Inode::error(P, I"duplicate property value", NULL); return; }
-			if (X->W.instruction[OWNER_PVAL_IFLD] != P->W.instruction[OWNER_PVAL_IFLD]) { *E = Inode::error(P, I"instance property list malformed", NULL); return; }
-		}
-
-		InterNodeList::add(FL, P);
+	if (Inter::PropertyValue::permitted(P, owner, owner_name, prop_name) == FALSE) {
+		text_stream *err = Str::new();
+		WRITE_TO(err, "no permission for '%S' have this property", InterSymbol::identifier(owner_name));
+		*E = Inode::error(P, err, InterSymbol::identifier(prop_name)); return;
 	}
+
+	inter_ti plist_ID;
+	if (Inter::Typename::is(owner_name)) plist_ID = Inter::Typename::properties_list(owner_name);
+	else plist_ID = Inter::Instance::properties_list(owner_name);
+
+	inter_node_list *FL = Inode::ID_to_frame_list(P, plist_ID);
+	if (FL == NULL) internal_error("no properties list");
+
+	inter_tree_node *X;
+	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
+		if (X->W.instruction[PROP_PVAL_IFLD] == P->W.instruction[PROP_PVAL_IFLD]) { *E = Inode::error(P, I"duplicate property value", NULL); return; }
+		if (X->W.instruction[OWNER_PVAL_IFLD] != P->W.instruction[OWNER_PVAL_IFLD]) { *E = Inode::error(P, I"instance property list malformed", NULL); return; }
+	}
+
+	InterNodeList::add(FL, P);
 }
 
 void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

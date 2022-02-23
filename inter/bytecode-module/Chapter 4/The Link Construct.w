@@ -10,6 +10,7 @@ Defining the link construct.
 void Inter::Link::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(LINK_IST, I"link");
 	InterConstruct::specify_syntax(IC, I"link IDENTIFIER TEXT TEXT TEXT TEXT");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_LINK_IFR, EXTENT_LINK_IFR);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Link::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Link::transpose);
@@ -63,7 +64,7 @@ inter_error_message *Inter::Link::new(inter_bookmark *IBM,
 	inter_ti stage, inter_ti text1, inter_ti text2, inter_ti text3, inter_ti text4, inter_ti level,
 	struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_5_data_fields(IBM, LINK_IST, stage, text1, text2, text3, text4, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
@@ -74,8 +75,6 @@ void Inter::Link::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *g
 }
 
 void Inter::Link::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_LINK_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-
 	if ((P->W.instruction[STAGE_LINK_IFLD] != EARLY_LINK_STAGE) &&
 		(P->W.instruction[STAGE_LINK_IFLD] != BEFORE_LINK_STAGE) &&
 		(P->W.instruction[STAGE_LINK_IFLD] != INSTEAD_LINK_STAGE) &&

@@ -10,20 +10,20 @@ Defining the Reference construct.
 void Inter::Reference::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(REFERENCE_IST, I"reference");
 	InterConstruct::specify_syntax(IC, I"reference");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_RCE_IFR, EXTENT_RCE_IFR);
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Reference::read);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Reference::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Reference::write);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, Inter::Reference::verify_children);
 }
 
 @
 
-@d BLOCK_RCE_IFLD 2
+Used to be BLOCK_RCE_IFLD 2 with extent 3
 
-@d EXTENT_RCE_IFR 3
+@d EXTENT_RCE_IFR 2
 
 =
 void Inter::Reference::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
@@ -39,15 +39,12 @@ void Inter::Reference::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 }
 
 inter_error_message *Inter::Reference::new(inter_bookmark *IBM, int level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_1_data_field(IBM, REFERENCE_IST, 0, eloc, (inter_ti) level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_tree_node *P = Inode::new_with_0_data_fields(IBM, REFERENCE_IST, eloc, (inter_ti) level);
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
-void Inter::Reference::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_RCE_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-}
 
 void Inter::Reference::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("reference");

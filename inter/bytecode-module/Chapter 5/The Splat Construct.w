@@ -10,6 +10,7 @@ Defining the splat construct.
 void Inter::Splat::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(SPLAT_IST, I"splat");
 	InterConstruct::specify_syntax(IC, I"splat OPTIONALIDENTIFIER &TEXT");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_SPLAT_IFR, EXTENT_SPLAT_IFR);
 	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
@@ -120,7 +121,7 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_ti plm) {
 
 inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_ti SID, inter_ti plm, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
@@ -130,7 +131,6 @@ void Inter::Splat::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *
 }
 
 void Inter::Splat::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_SPLAT_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	if (P->W.instruction[MATTER_SPLAT_IFLD] == 0) { *E = Inode::error(P, I"no matter text", NULL); return; }
 	if (P->W.instruction[PLM_SPLAT_IFLD] > MYSTERY_I6DIR) { *E = Inode::error(P, I"plm out of range", NULL); return; }
 }

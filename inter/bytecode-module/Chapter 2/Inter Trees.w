@@ -291,7 +291,9 @@ in the preframe for an instruction (see //Inter Nodes//).
 
 By convention, an origin value below |INTER_ERROR_ORIGIN_OFFSET| is a line
 number; an origin above that is a binary address within a file (plus
-|INTER_ERROR_ORIGIN_OFFSET|).
+|INTER_ERROR_ORIGIN_OFFSET|). We record such addresses only up to a file
+position equivalent to about 179 megabytes; in practice the largest binary
+inter files now in existence are about 8 megabytes, so this seems fine for now.
 
 @d INTER_ERROR_ORIGIN_OFFSET 0x10000000
 
@@ -300,7 +302,9 @@ inter_ti InterTree::eloc_to_origin_word(inter_tree *tree, inter_error_location *
 	if (eloc) {
 		if (eloc->error_interb) {
 			tree->blame_errors_on_this_file = eloc->error_interb;
-			return (inter_ti) (INTER_ERROR_ORIGIN_OFFSET + eloc->error_offset);
+			inter_ti w = (inter_ti) (INTER_ERROR_ORIGIN_OFFSET + eloc->error_offset);
+			if (w & 0x80000000) w = 0;
+			return w;
 		}
 		if (eloc->error_tfp) {
 			tree->blame_errors_on_this_file = eloc->error_tfp->text_file_filename;

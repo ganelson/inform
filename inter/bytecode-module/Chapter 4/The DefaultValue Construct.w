@@ -10,6 +10,7 @@ Defining the defaultvalue construct.
 void Inter::DefaultValue::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(DEFAULTVALUE_IST, I"defaultvalue");
 	InterConstruct::specify_syntax(IC, I"defaultvalue TOKEN = TOKENS");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_DEF_IFR, EXTENT_DEF_IFR);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::DefaultValue::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::DefaultValue::verify);
@@ -42,14 +43,13 @@ void Inter::DefaultValue::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 
 inter_error_message *Inter::DefaultValue::new(inter_bookmark *IBM, inter_ti KID, inter_ti val1, inter_ti val2, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, DEFAULTVALUE_IST, KID, val1, val2, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 void Inter::DefaultValue::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_DEF_IFR) *E = Inode::error(P, I"extent wrong", NULL);
-	else *E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_DEF_IFLD], TYPENAME_IST);
+	*E = Inter::Verify::SID_field(owner, P, KIND_DEF_IFLD, TYPENAME_IST);
 }
 
 void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

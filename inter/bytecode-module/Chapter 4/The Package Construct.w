@@ -11,6 +11,7 @@ void InterPackage::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PACKAGE_IST, I"package");
 	InterConstruct::defines_symbol_in_fields(IC, DEFN_PACKAGE_IFLD, -1);
 	InterConstruct::specify_syntax(IC, I"package IDENTIFIER _IDENTIFIER");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_PACKAGE_IFR, EXTENT_PACKAGE_IFR);
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
@@ -84,7 +85,7 @@ inter_error_message *InterPackage::new_package(inter_bookmark *IBM, text_stream 
 	InterPackage::set_scope(pack, InterWarehouse::get_symbols_table(InterBookmark::warehouse(IBM), STID));
 	InterWarehouse::set_symbols_table_owner(InterBookmark::warehouse(IBM), STID, pack);
 
-	E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
+	E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 
@@ -106,11 +107,8 @@ void InterPackage::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *
 }
 
 void InterPackage::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_PACKAGE_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-
 	inter_package *pack = Inode::ID_to_package(P, P->W.instruction[PID_PACKAGE_IFLD]);
-	if (pack) pack->package_head = P;
-	else internal_error("uh?");
+	if (pack) pack->package_head = P; else internal_error("no package in PID field");
 	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
 }

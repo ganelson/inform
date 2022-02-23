@@ -10,6 +10,7 @@ Defining the val construct.
 void Inter::Val::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(VAL_IST, I"val");
 	InterConstruct::specify_syntax(IC, I"val TOKENS");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_VAL_IFR, EXTENT_VAL_IFR);
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Val::read);
@@ -67,7 +68,7 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_type val_type,
 	int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, InterTypes::to_TID_wrt_bookmark(IBM, val_type), val1, val2, eloc, (inter_ti) level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
@@ -77,8 +78,11 @@ void Inter::Val::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *gr
 }
 
 void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_VAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	Inter::Verify::typed_data(owner, P, KIND_VAL_IFLD, VAL1_VAL_IFLD, E);
+	*E = Inter::Verify::TID_field(owner, P, KIND_VAL_IFLD);
+	if (*E) return;
+	inter_type type = InterTypes::from_TID_in_field(P, KIND_VAL_IFLD);
+	*E = Inter::Verify::data_pair_fields(owner, P, VAL1_VAL_IFLD, type);
+	if (*E) return;
 }
 
 void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

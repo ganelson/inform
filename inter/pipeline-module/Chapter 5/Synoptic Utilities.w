@@ -105,7 +105,7 @@ void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname
 }
 
 void Synoptic::end_array(inter_tree *I) {
-	inter_error_message *E = InterConstruct::verify_construct(
+	inter_error_message *E = Inter::Verify::instruction(
 		InterBookmark::package(Packaging::at(I)), synoptic_array_node);
 	if (E) {
 		Inter::Errors::issue(E);

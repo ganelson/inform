@@ -268,7 +268,7 @@ the root package of the origin.
 		Inode::extend_instruction_by(D, 1);
 		D->W.instruction[i] = old_D->W.instruction[i];
 	}
-	inter_error_message *E = InterConstruct::verify_construct(
+	inter_error_message *E = Inter::Verify::instruction(
 		InterBookmark::package(&(det->primitives_point)), D);
 	if (E) {
 		Inter::Errors::issue(E);
@@ -304,7 +304,7 @@ to matching declarations in the destination.
 		InterTree::global_scope(det->destination_tree), InterSymbol::identifier(original_ptype));
 	inter_tree_node *D = Inode::new_with_1_data_field(&(det->ptypes_point), PACKAGETYPE_IST,
 		InterSymbolsTable::id_from_symbol(det->destination_tree, NULL, equivalent_ptype), NULL, 0);
-	inter_error_message *E = InterConstruct::verify_construct(
+	inter_error_message *E = Inter::Verify::instruction(
 		InterBookmark::package(&(det->ptypes_point)), D);
 	if (E) {
 		Inter::Errors::issue(E);

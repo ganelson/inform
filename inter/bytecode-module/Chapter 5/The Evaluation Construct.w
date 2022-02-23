@@ -10,11 +10,11 @@ Defining the Evaluation construct.
 void Inter::Evaluation::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(EVALUATION_IST, I"evaluation");
 	InterConstruct::specify_syntax(IC, I"evaluation");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_EVAL_IFR, EXTENT_EVAL_IFR);
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Evaluation::read);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Evaluation::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Evaluation::write);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, Inter::Evaluation::verify_children);
 }
@@ -40,13 +40,9 @@ void Inter::Evaluation::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 inter_error_message *Inter::Evaluation::new(inter_bookmark *IBM, int level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_1_data_field(IBM, EVALUATION_IST, 0, eloc, (inter_ti) level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
-}
-
-void Inter::Evaluation::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_EVAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 }
 
 void Inter::Evaluation::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

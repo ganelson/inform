@@ -13,6 +13,7 @@ Defining the comment construct.
 void Inter::Comment::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(COMMENT_IST, I"comment");
 	InterConstruct::specify_syntax(IC, I"#ANY");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_COMMENT_IFR, EXTENT_COMMENT_IFR);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Comment::read);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Comment::write);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Comment::transpose);
@@ -33,7 +34,7 @@ void Inter::Comment::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 
 inter_error_message *Inter::Comment::new(inter_bookmark *IBM, inter_ti level, inter_error_location *eloc, inter_ti comment_ID) {
 	inter_tree_node *P = Inode::new_with_1_data_field(IBM, COMMENT_IST, comment_ID, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }

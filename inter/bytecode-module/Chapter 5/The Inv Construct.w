@@ -10,6 +10,7 @@ Defining the inv construct.
 void Inter::Inv::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(INV_IST, I"inv");
 	InterConstruct::specify_syntax(IC, I"inv TOKEN");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_INV_IFR, EXTENT_INV_IFR);
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
@@ -73,7 +74,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_PRIMITIVE, InterSymbolsTable::id_from_symbol(InterBookmark::tree(IBM), NULL, invoked_name),
 		eloc, (inter_ti) level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -81,7 +82,7 @@ inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol
 
 inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_ROUTINE, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, invoked_name), eloc, (inter_ti) level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -89,7 +90,7 @@ inter_error_message *Inter::Inv::new_call(inter_bookmark *IBM, inter_symbol *inv
 
 inter_error_message *Inter::Inv::new_assembly(inter_bookmark *IBM, inter_ti opcode_storage, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_OPCODE, opcode_storage, eloc, (inter_ti) level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -101,11 +102,9 @@ void Inter::Inv::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *gr
 }
 
 void Inter::Inv::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_INV_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-
 	switch (P->W.instruction[METHOD_INV_IFLD]) {
 		case INVOKED_PRIMITIVE:
-			*E = Inter::Verify::global_symbol(P, P->W.instruction[INVOKEE_INV_IFLD], PRIMITIVE_IST); if (*E) return;
+			*E = Inter::Verify::GSID_field(P, INVOKEE_INV_IFLD, PRIMITIVE_IST); if (*E) return;
 			break;
 		case INVOKED_OPCODE:
 		case INVOKED_ROUTINE:

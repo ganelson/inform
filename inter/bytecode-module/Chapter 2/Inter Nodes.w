@@ -258,42 +258,35 @@ Each node represents one instruction, which is encoded with a contiguous
 block of bytecode. That bytecode is not stored in the //inter_tree_node//
 structure, but in warehouse memory. 
 = (text)
-......+------+----------+--------+----+-------+-------------+........
-      | Skip | Verified | Origin | ID | Level | Data        |
-......+------+----------+--------+----+-------+-------------+........
-       <------------------------> <------------------------>
+......+------+-----------------+----+-------+-------------+........
+      | Skip | Origin/Verified | ID | Level | Data        |
+......+------+-----------------+----+-------+-------------+........
+       <----------------------> <------------------------>
         Preframe                             Frame
 =
 This stretch of memory is divided into a "preframe" and a "frame": the frame
 holds the words of data described above, with position 0 being the ID, and
-so on. The frame is of variable size, depending on the instruction (and in
+so on. Unlike the frame, the preframe data is not part of the instruction, and
+is not saved out when Inter is stored in a binary file.
+
+The frame is of variable size, depending on the instruction (and in
 some cases its particular content: a constant definition for a list can be
 almost any length). But the preframe is of fixed size:
 
-@d PREFRAME_SIZE 3
+@d PREFRAME_SIZE 2
 
 @d PREFRAME_SKIP_AMOUNT 0
-@d PREFRAME_VERIFICATION_COUNT 1
-@d PREFRAME_ORIGIN 2
+@d PREFRAME_ORIGIN_AND_VFLAG 1
 
 @ |PREFRAME_SKIP_AMOUNT| is the offset (in words) to the next instruction.
 Since the preframe has fixed length, this is both the offset from one preframe
 to the next and also from one frame to the next.
 
-@ |PREFRAME_VERIFICATION_COUNT| is the number of times the instruction has
-been "verified". This is not always a passive process of checking, which is why
-we need to track whether it has happened. See //Inter Constructs//.
+@ |PREFRAME_ORIGIN_AND_VFLAG| contains two unrelated pieces of data. One is bit 31,
+which is set if the instruction in the frame has been verified, and is otherwise
+clear.
 
-This function effectively performs |v++|, where |v| is the count.
-
-=
-inter_ti Inode::bump_verification_count(inter_tree_node *F) {
-	inter_ti v = Inode::get_preframe(F, PREFRAME_VERIFICATION_COUNT);
-	Inode::set_preframe(F, PREFRAME_VERIFICATION_COUNT, v + 1);
-	return v;
-}
-
-@ |PREFRAME_ORIGIN| allows the origin of the instruction, in source code,
+The other, in bits 0-30, allows the origin of the instruction, in source code,
 to be preserved: for example, to show that this came from line 14 of a file
 called |whatever.intert|. It is 0 if no origin is recorded; it is used only
 for better reporting of any errors which arise. For how the location is
@@ -302,13 +295,27 @@ actually encoded in the word, see //The Warehouse//.
 =
 inter_error_location *Inode::get_error_location(inter_tree_node *F) {
 	if (F == NULL) return NULL;
-	inter_ti L = Inode::get_preframe(F, PREFRAME_ORIGIN);
+	inter_ti L = (Inode::get_preframe(F, PREFRAME_ORIGIN_AND_VFLAG)) & 0x7fffffff;
 	return InterTree::origin_word_to_eloc(Inode::tree(F), L);
 }
 
 void Inode::attach_error_location(inter_tree_node *F, inter_error_location *eloc) {
-	Inode::set_preframe(F, PREFRAME_ORIGIN,
-		InterTree::eloc_to_origin_word(Inode::tree(F), eloc));
+	inter_ti val = InterTree::eloc_to_origin_word(Inode::tree(F), eloc);
+	if ((Inode::get_preframe(F, PREFRAME_ORIGIN_AND_VFLAG)) & 0x80000000)
+		val |= 0x80000000;
+	Inode::set_preframe(F, PREFRAME_ORIGIN_AND_VFLAG, val);
+}
+
+@ Note that the vflag can never be cleared, once set.
+
+=
+int Inode::get_vflag(inter_tree_node *F) {
+	return ((Inode::get_preframe(F, PREFRAME_ORIGIN_AND_VFLAG)) & 0x80000000)?TRUE:FALSE;
+}
+
+void Inode::set_vflag(inter_tree_node *F) {
+	Inode::set_preframe(F, PREFRAME_ORIGIN_AND_VFLAG, 
+		(Inode::get_preframe(F, PREFRAME_ORIGIN_AND_VFLAG)) | 0x80000000);
 }
 
 @ The following gets and sets from the preframe:

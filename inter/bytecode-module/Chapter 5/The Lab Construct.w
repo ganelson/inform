@@ -10,6 +10,7 @@ Defining the Lab construct.
 void Inter::Lab::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(LAB_IST, I"lab");
 	InterConstruct::specify_syntax(IC, I"lab .IDENTIFIER");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_LAB_IFR, EXTENT_LAB_IFR);
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Lab::read);
@@ -49,13 +50,12 @@ void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 
 inter_error_message *Inter::Lab::new(inter_bookmark *IBM, inter_symbol *label, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, LAB_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, label), eloc, (inter_ti) level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 void Inter::Lab::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_LAB_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *label = InterSymbolsTable::symbol_from_ID_in_package(owner, P->W.instruction[LABEL_LAB_IFLD]);
 	if (InterSymbol::is_label(label) == FALSE) { *E = Inode::error(P, I"no such label", NULL); return; }
 }

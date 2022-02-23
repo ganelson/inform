@@ -11,6 +11,8 @@ void Inter::Typename::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(TYPENAME_IST, I"typename");
 	InterConstruct::defines_symbol_in_fields(IC, DEFN_TYPENAME_IFLD, -1);
 	InterConstruct::specify_syntax(IC, I"typename IDENTIFIER TOKEN TOKENS");
+	InterConstruct::fix_instruction_length_between(IC,
+		MIN_EXTENT_TYPENAME_IFR, UNLIMITED_INSTRUCTION_FRAME_LENGTH);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Typename::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Typename::transpose);
@@ -79,7 +81,7 @@ inter_error_message *Inter::Typename::new(inter_bookmark *IBM, inter_ti SID, int
 		Inode::extend_instruction_by(P, (inter_ti) arity);
 		for (int i=0; i<arity; i++) P->W.instruction[OPERANDS_TYPENAME_IFLD+i] = operands[i];
 	}
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
@@ -90,7 +92,6 @@ void Inter::Typename::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 }
 
 void Inter::Typename::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent < MIN_EXTENT_TYPENAME_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	if (P->W.instruction[ENUM_RANGE_TYPENAME_IFLD] != 0) {
 		inter_symbol *typename_s = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[DEFN_TYPENAME_IFLD]);
 		if ((typename_s == NULL) ||
@@ -98,16 +99,16 @@ void Inter::Typename::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			{ *E = Inode::error(P, I"spurious extent in non-enumeration", NULL); return; }
 	}
 	if (P->W.instruction[SUPER_TYPENAME_IFLD] != 0) {
-		*E = Inter::Verify::symbol(owner, P, P->W.instruction[SUPER_TYPENAME_IFLD], TYPENAME_IST); if (*E) return;
+		*E = Inter::Verify::SID_field(owner, P, SUPER_TYPENAME_IFLD, TYPENAME_IST); if (*E) return;
 		inter_symbol *super_s = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[SUPER_TYPENAME_IFLD]);
 		if (InterTypes::is_enumerated(InterTypes::from_type_name(super_s)) == FALSE)
 			{ *E = Inode::error(P, I"subtype of nonenumerated type", NULL); return; }
 	}
-	*E = Inter::Verify::constructor_code(P, CONSTRUCTOR_TYPENAME_IFLD); if (*E) return;
+	*E = Inter::Verify::constructor_field(P, CONSTRUCTOR_TYPENAME_IFLD); if (*E) return;
 	inter_type type = InterTypes::from_constructor_code(P->W.instruction[CONSTRUCTOR_TYPENAME_IFLD]);
 	int arity = P->W.extent - MIN_EXTENT_TYPENAME_IFR;
 	for (int i=0; i<arity; i++) {
-		*E = Inter::Verify::TID(owner, P, P->W.instruction[OPERANDS_TYPENAME_IFLD + i]);
+		*E = Inter::Verify::TID_field(owner, P, OPERANDS_TYPENAME_IFLD + i);
 		if (*E) return;
 	}
 	if (InterTypes::arity_is_possible(type, arity) == FALSE) {

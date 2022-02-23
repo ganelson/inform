@@ -10,6 +10,7 @@ Defining the append construct.
 void Inter::Append::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(APPEND_IST, I"append");
 	InterConstruct::specify_syntax(IC, I"append IDENTIFIER TEXT");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_APPEND_IFR, EXTENT_APPEND_IFR);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Append::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Append::verify);
@@ -48,24 +49,19 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 
 inter_error_message *Inter::Append::new(inter_bookmark *IBM, inter_symbol *symbol, inter_ti append_text, inter_ti level, struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, APPEND_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, symbol), append_text, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 void Inter::Append::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	inter_ti vcount = Inode::bump_verification_count(P);
-
-	if (P->W.extent != EXTENT_APPEND_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *symbol = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[SYMBOL_APPEND_IFLD]);;
 	if (symbol == NULL) { *E = Inode::error(P, I"no target name", NULL); return; }
 	if (P->W.instruction[TEXT_APPEND_IFLD] == 0) { *E = Inode::error(P, I"no translation text", NULL); return; }
 
-	if (vcount == 0) {
-		inter_ti ID = P->W.instruction[TEXT_APPEND_IFLD];
-		text_stream *S = Inode::ID_to_text(P, ID);
-		SymbolAnnotation::set_t(P->tree, P->package, symbol, APPEND_IANN, S);
-	}
+	inter_ti ID = P->W.instruction[TEXT_APPEND_IFLD];
+	text_stream *S = Inode::ID_to_text(P, ID);
+	SymbolAnnotation::set_t(P->tree, P->package, symbol, APPEND_IANN, S);
 }
 
 void Inter::Append::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

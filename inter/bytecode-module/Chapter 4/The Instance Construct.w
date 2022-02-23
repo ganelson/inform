@@ -11,6 +11,7 @@ void Inter::Instance::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(INSTANCE_IST, I"instance");
 	InterConstruct::defines_symbol_in_fields(IC, DEFN_INST_IFLD, KIND_INST_IFLD);
 	InterConstruct::specify_syntax(IC, I"instance IDENTIFIER TOKENS");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_INST_IFR, EXTENT_INST_IFR);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Instance::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Instance::transpose);
@@ -63,7 +64,7 @@ inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_ti SID, int
 	inter_ti L1 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
 	inter_ti L2 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
 	inter_tree_node *P = Inode::new_with_6_data_fields(IBM, INSTANCE_IST, SID, KID, V1, V2, L1, L2, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -75,9 +76,8 @@ void Inter::Instance::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 }
 
 void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_INST_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[DEFN_INST_IFLD]);
-	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_INST_IFLD], TYPENAME_IST); if (*E) return;
+	*E = Inter::Verify::SID_field(owner, P, KIND_INST_IFLD, TYPENAME_IST); if (*E) return;
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_INST_IFLD]);
 	inter_type inst_type = InterTypes::from_type_name(inst_kind);
 	if (InterTypes::is_enumerated(inst_type)) {
@@ -86,12 +86,10 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			P->W.instruction[VAL2_INST_IFLD] = Inter::Typename::next_enumerated_value(inst_kind);
 		}
 	} else { *E = Inode::error(P, I"not a kind which has instances", NULL); return; }
-	*E = InterValuePairs::validate(owner, P, VAL1_INST_IFLD, InterTypes::from_type_name(inst_kind)); if (*E) return;
+	*E = Inter::Verify::data_pair_fields(owner, P, VAL1_INST_IFLD, InterTypes::from_type_name(inst_kind)); if (*E) return;
 
-	inter_ti vcount = Inode::bump_verification_count(P);
-	if (vcount == 0) {
-		Inter::Typename::new_instance(inst_kind, inst_name);
-	}
+
+	Inter::Typename::new_instance(inst_kind, inst_name);
 }
 
 inter_ti Inter::Instance::permissions_list(inter_symbol *kind_symbol) {

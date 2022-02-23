@@ -118,7 +118,7 @@ which use this module:
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP3_5" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log aspects</span><span class="named-paragraph-number">3.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="1-bm.html#SP3_6" class="named-paragraph-link"><span class="named-paragraph">Register this module's debugging log writers</span><span class="named-paragraph-number">3.6</span></a></span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><a href="3-ic.html#SP11" class="function-link"><span class="function-syntax">InterConstruct::create_language</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="3-ic.html#SP12" class="function-link"><span class="function-syntax">InterConstruct::create_language</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><a href="3-idt.html#SP4" class="function-link"><span class="function-syntax">InterTypes::initialise_constructors</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BytecodeModule::end</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -146,7 +146,7 @@ which use this module:
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'t'</span><span class="plain-syntax">, &amp;</span><a href="3-iitf.html#SP8" class="function-link"><span class="function-syntax">TextualInter::writer</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'F'</span><span class="plain-syntax">, &amp;</span><a href="3-vi.html#SP1" class="function-link"><span class="function-syntax">Inter::Verify::writer</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Writers::register_writer</span><span class="plain-syntax">(</span><span class="character-syntax">'F'</span><span class="plain-syntax">, &amp;</span><a href="3-ic.html#SP16" class="function-link"><span class="function-syntax">InterConstruct::instruction_writer</span></a><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-bm.html#SP3">&#167;3</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_4" class="paragraph-anchor"></a><b>&#167;3.4.  </b></p>

@@ -10,6 +10,7 @@ Defining the cast construct.
 void Inter::Cast::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(CAST_IST, I"cast");
 	InterConstruct::specify_syntax(IC, I"cast IDENTIFIER <- IDENTIFIER");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_CAST_IFR, EXTENT_CAST_IFR);
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
@@ -47,15 +48,14 @@ void Inter::Cast::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 
 inter_error_message *Inter::Cast::new(inter_bookmark *IBM, inter_symbol *from_kind, inter_symbol *to_kind, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, CAST_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, to_kind), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, from_kind), eloc, (inter_ti) level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 void Inter::Cast::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_CAST_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::TID(owner, P, P->W.instruction[TO_KIND_CAST_IFLD]); if (*E) return;
-	*E = Inter::Verify::TID(owner, P, P->W.instruction[FROM_KIND_CAST_IFLD]); if (*E) return;
+	*E = Inter::Verify::TID_field(owner, P, TO_KIND_CAST_IFLD); if (*E) return;
+	*E = Inter::Verify::TID_field(owner, P, FROM_KIND_CAST_IFLD); if (*E) return;
 }
 
 void Inter::Cast::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

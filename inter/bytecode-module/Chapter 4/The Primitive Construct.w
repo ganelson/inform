@@ -11,6 +11,8 @@ void Inter::Primitive::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PRIMITIVE_IST, I"primitive");
 	InterConstruct::defines_symbol_in_fields(IC, DEFN_PRIM_IFLD, -1);
 	InterConstruct::specify_syntax(IC, I"primitive !IDENTIFIER TOKENS -> TOKEN");
+	InterConstruct::fix_instruction_length_between(IC,
+		MIN_EXTENT_PRIM_IFR, UNLIMITED_INSTRUCTION_FRAME_LENGTH);
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Primitive::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Primitive::verify);
@@ -57,7 +59,7 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 	Inode::extend_instruction_by(F, 1);
 	F->W.instruction[F->W.extent - 1] = rcat;
 
-	*E = InterConstruct::verify_construct(InterBookmark::package(IBM), F); if (*E) return;
+	*E = Inter::Verify::instruction(InterBookmark::package(IBM), F); if (*E) return;
 	NodePlacement::move_to_moving_bookmark(F, IBM);
 }
 
@@ -84,7 +86,6 @@ void Inter::Primitive::write_category(OUTPUT_STREAM, inter_ti cat) {
 }
 
 void Inter::Primitive::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent < MIN_EXTENT_PRIM_IFR) { *E = Inode::error(P, I"primitive extent wrong", NULL); return; }
 	inter_symbol *prim_name = InterSymbolsTable::symbol_from_ID(Inode::globals(P), P->W.instruction[DEFN_PRIM_IFLD]);
 	if ((prim_name == NULL) || (Str::get_first_char(InterSymbol::identifier(prim_name)) != '!'))
 		{ *E = Inode::error(P, I"primitive not beginning with '!'", NULL); return; }

@@ -1099,7 +1099,7 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	} else {
 		pair_list->W.instruction[pos+2] = LITERAL_IVAL; pair_list->W.instruction[pos+3] = 0;
 	}
-	Produce::guard(InterConstruct::verify_construct(InterBookmark::package(IBM), pair_list));
+	Produce::guard(Inter::Verify::instruction(InterBookmark::package(IBM), pair_list));
 	NodePlacement::move_to_moving_bookmark(pair_list, IBM);
 	return result_s;
 }

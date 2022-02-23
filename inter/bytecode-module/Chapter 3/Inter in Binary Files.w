@@ -776,7 +776,7 @@ the definition of any symbol created in the instruction to |P|.
 	inter_error_message *E = NULL;
 	if (grid) E = InterConstruct::transpose_construct(owner, P, grid, grid_extent);
 	if (E) { Inter::Errors::issue(E); exit(1); }
-	E = InterConstruct::verify_construct(owner, P);
+	E = Inter::Verify::instruction(owner, P);
 	if (E) { Inter::Errors::issue(E); exit(1); }
 
 @ Errors in reading binary inter are not recoverable:

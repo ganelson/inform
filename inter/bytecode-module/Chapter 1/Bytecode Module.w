@@ -73,7 +73,7 @@ void BytecodeModule::end(void) {
 
 @<Register this module's stream writers@> =
 	Writers::register_writer('t', &TextualInter::writer);
-	Writers::register_writer('F', &Inter::Verify::writer);
+	Writers::register_writer('F', &InterConstruct::instruction_writer);
 
 @
 

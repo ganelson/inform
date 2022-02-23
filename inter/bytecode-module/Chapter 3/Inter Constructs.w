@@ -17,6 +17,8 @@ typedef struct inter_construct {
 	int max_level; /* max node tree depth within its package */
 	int usage_permissions; /* a bitmap of the |*_ICUP| values */
 
+	int min_extent; /* min number of words in the frame for this instruction */
+	int max_extent; /* max number of words in the frame for this instruction */
 	int symbol_defn_field; /* if this instruction declares a symbol, -1 otherwise */
 	int TID_field; /* if this instruction declares a symbol with a type, -1 otherwise */
 
@@ -35,6 +37,7 @@ inter_construct *InterConstruct::create_construct(inter_ti ID, text_stream *name
 	IC->min_level = 0;
 	IC->max_level = 0;
 	IC->usage_permissions = INSIDE_PLAIN_PACKAGE_ICUP;
+	IC->min_extent = 1; IC->max_extent = UNLIMITED_INSTRUCTION_FRAME_LENGTH;
 
 	IC->symbol_defn_field = -1;
 	IC->TID_field = -1;
@@ -80,6 +83,17 @@ void InterConstruct::permit(inter_construct *IC, int usage) {
 void InterConstruct::allow_in_depth_range(inter_construct *IC, int l1, int l2) {
 	IC->min_level = l1;
 	IC->max_level = l2;
+}
+
+@ The instruction can be constrained to have a given length, in terms of the
+number of words of bytecode it occupies:
+
+@d UNLIMITED_INSTRUCTION_FRAME_LENGTH 0x7fffffff
+
+=
+void InterConstruct::fix_instruction_length_between(inter_construct *IC, int l1, int l2) {
+	IC->min_extent = l1;
+	IC->max_extent = l2;
 }
 
 @ So here is the code to police those restrictions. First, for a node already
@@ -371,6 +385,11 @@ Firstly, each construct has a method for verifying (i) that it is being used in
 a self-consistent way by the given instruction, and (ii) that it can see child
 nodes to that instruction of a kind it expects.
 
+//InterConstruct::verify// should be called only by //Inter::Verify::instruction//,
+which ensures that //InterConstruct::verify// is never called twice on the same
+instruction. |CONSTRUCT_VERIFY_MTID| methods for the constructs can therefore
+safely assume that.
+
 @e CONSTRUCT_VERIFY_MTID
 @e CONSTRUCT_VERIFY_CHILDREN_MTID
 
@@ -380,25 +399,9 @@ VOID_METHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_tree_node *P,
 VOID_METHOD_TYPE(CONSTRUCT_VERIFY_CHILDREN_MTID, inter_construct *IC,
 	inter_tree_node *P, inter_error_message **E)
 
-inter_error_message *InterConstruct::verify_construct(inter_package *owner,
-	inter_tree_node *P) {
-	inter_construct *IC = NULL;
-	inter_error_message *E = InterConstruct::get_construct(P, &IC);
-	if (E) return E;
-
-	if (IC->symbol_defn_field >= 0) {
-		if (P->W.extent < IC->symbol_defn_field)
-			return Inode::error(P, I"extent wrong", NULL);
-		if (IC->construct_ID == LOCAL_IST) {
-			inter_symbols_table *locals = InterPackage::scope(owner);
-			if (locals == NULL) return Inode::error(P, I"no symbols table in function", NULL);
-			E = Inter::Verify::local_defn(P, IC->symbol_defn_field, locals);
-		} else {
-			E = Inter::Verify::defn(owner, P, IC->symbol_defn_field);
-		}
-		if (E) return E;
-	}
-
+inter_error_message *InterConstruct::verify(inter_package *owner,
+	inter_construct *IC, inter_tree_node *P) {
+	inter_error_message *E = NULL;
 	VOID_METHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, owner, &E);
 	return E;
 }
@@ -435,6 +438,19 @@ inter_error_message *InterConstruct::write_construct_text_allowing_nop(OUTPUT_ST
 	WRITE("\n");
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) InterPackage::write_symbols(OUT, P);
 	return E;
+}
+
+@ A much less elegant presentation is just to dump the hexadecimal bytecode,
+and this is used only for debugging or to show errors in binary Inter files.
+
+=
+void InterConstruct::instruction_writer(OUTPUT_STREAM, char *format_string, void *vI) {
+	inter_tree_node *F = (inter_tree_node *) vI;
+	if (F == NULL) { WRITE("<no frame>"); return; }
+	WRITE("%05d -> ", F->W.index);
+	WRITE("%d {", F->W.extent);
+	for (int i=0; i<F->W.extent; i++) WRITE(" %08x", F->W.instruction[i]);
+	WRITE(" }");
 }
 
 @ Conversely, the function //InterConstruct::match// takes a line of textual Inter

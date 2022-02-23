@@ -10,6 +10,7 @@ Defining the pragma construct.
 void Inter::Pragma::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PRAGMA_IST, I"pragma");
 	InterConstruct::specify_syntax(IC, I"pragma IDENTIFIER TEXT");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_PRAGMA_IFR, EXTENT_PRAGMA_IFR);
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Pragma::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Pragma::transpose);
@@ -62,7 +63,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 
 inter_error_message *Inter::Pragma::new(inter_bookmark *IBM, inter_symbol *target_name, inter_ti pragma_text, inter_ti level, struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, PRAGMA_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, target_name), pragma_text, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
@@ -72,7 +73,6 @@ void Inter::Pragma::transpose(inter_construct *IC, inter_tree_node *P, inter_ti 
 }
 
 void Inter::Pragma::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_PRAGMA_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_symbol *target_name = InterSymbolsTable::symbol_from_ID_at_node(P, TARGET_PRAGMA_IFLD);
 	if (target_name == NULL) { *E = Inode::error(P, I"no target name", NULL); return; }
 	if (P->W.instruction[TEXT_PRAGMA_IFLD] == 0) { *E = Inode::error(P, I"no pragma text", NULL); return; }

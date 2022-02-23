@@ -233,9 +233,7 @@ inter_ti InterValuePairs::transpose_value(inter_ti V1, inter_ti V2, inter_ti *gr
 	return V2;
 }
 
-inter_error_message *InterValuePairs::validate(inter_package *owner, inter_tree_node *P, int index, inter_type type) {
-	inter_ti V1 = P->W.instruction[index];
-	inter_ti V2 = P->W.instruction[index+1];
+inter_error_message *InterValuePairs::verify(inter_package *owner, inter_tree_node *P, inter_ti V1, inter_ti V2, inter_type type) {
 	inter_symbols_table *scope = InterPackage::scope(owner);
 	if (scope == NULL) scope = Inode::globals(P);
 	switch (V1) {

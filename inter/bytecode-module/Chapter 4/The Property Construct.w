@@ -11,6 +11,7 @@ void Inter::Property::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PROPERTY_IST, I"property");
 	InterConstruct::defines_symbol_in_fields(IC, DEFN_PROP_IFLD, KIND_PROP_IFLD);
 	InterConstruct::specify_syntax(IC, I"property TOKENS");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_PROP_IFR, EXTENT_PROP_IFR);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Property::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Property::transpose);
@@ -53,7 +54,7 @@ inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, int
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 	inter_ti L1 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PROPERTY_IST, PID, InterTypes::to_TID_wrt_bookmark(IBM, prop_type), L1, eloc, level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P);
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -64,8 +65,7 @@ void Inter::Property::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 }
 
 void Inter::Property::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_PROP_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	Inter::Verify::typed_data(owner, P, KIND_PROP_IFLD, -1, E);
+	*E = Inter::Verify::TID_field(owner, P, KIND_PROP_IFLD);
 }
 
 inter_ti Inter::Property::permissions_list(inter_symbol *prop_name) {

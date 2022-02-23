@@ -10,6 +10,7 @@ Defining the Lab construct.
 void Inter::Assembly::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(ASSEMBLY_IST, I"assembly");
 	InterConstruct::specify_syntax(IC, I"assembly TOKEN");
+	InterConstruct::fix_instruction_length_between(IC, EXTENT_ASSEMBLY_IFR, EXTENT_ASSEMBLY_IFR);
 	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Assembly::read);
@@ -57,13 +58,12 @@ void Inter::Assembly::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 inter_error_message *Inter::Assembly::new(inter_bookmark *IBM, inter_ti which, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, ASSEMBLY_IST, 0, which, eloc, (inter_ti) level);
-	inter_error_message *E = InterConstruct::verify_construct(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
 void Inter::Assembly::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	if (P->W.extent != EXTENT_ASSEMBLY_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 	inter_ti which = P->W.instruction[WHICH_ASSEMBLY_IFLD];
 	if ((which == 0) || (which > ASM_NEG_RFALSE_ASMMARKER)) {
 		*E = Inode::error(P, I"bad assembly marker code", NULL); return; }
