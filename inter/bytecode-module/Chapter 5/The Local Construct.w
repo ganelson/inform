@@ -9,6 +9,7 @@ Defining the local construct.
 =
 void Inter::Local::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(LOCAL_IST, I"local");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_LOCAL_IFLD, KIND_LOCAL_IFLD);
 	InterConstruct::specify_syntax(IC, I"local TOKENS");
 	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Local::read);
@@ -62,9 +63,6 @@ inter_error_message *Inter::Local::new(inter_bookmark *IBM, inter_symbol *var_na
 
 void Inter::Local::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_LOCAL_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	inter_symbols_table *locals = InterPackage::scope(owner);
-	if (locals == NULL) { *E = Inode::error(P, I"no symbols table in function", NULL); return; }
-	*E = Inter::Verify::local_defn(P, DEFN_LOCAL_IFLD, locals); if (*E) return;
 	Inter::Verify::typed_data(owner, P, KIND_LOCAL_IFLD, -1, E);
 }
 
@@ -77,12 +75,4 @@ void Inter::Local::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
 		WRITE("%S", InterSymbol::identifier(var_name));
 		SymbolAnnotation::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write local", NULL); return; }
-}
-
-inter_type Inter::Local::type_of(inter_symbol *con_symbol) {
-	if (con_symbol == NULL) return InterTypes::untyped();
-	inter_tree_node *D = InterSymbol::definition(con_symbol);
-	if (D == NULL) return InterTypes::untyped();
-	if (D->W.instruction[ID_IFLD] != LOCAL_IST) return InterTypes::untyped();
-	return InterTypes::from_TID_in_field(D, KIND_LOCAL_IFLD);
 }

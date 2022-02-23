@@ -9,6 +9,7 @@ Defining the primitive construct.
 =
 void Inter::Primitive::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PRIMITIVE_IST, I"primitive");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_PRIM_IFLD, -1);
 	InterConstruct::specify_syntax(IC, I"primitive !IDENTIFIER TOKENS -> TOKEN");
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Primitive::read);
@@ -84,7 +85,6 @@ void Inter::Primitive::write_category(OUTPUT_STREAM, inter_ti cat) {
 
 void Inter::Primitive::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent < MIN_EXTENT_PRIM_IFR) { *E = Inode::error(P, I"primitive extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(owner, P, DEFN_PRIM_IFLD); if (*E) return;
 	inter_symbol *prim_name = InterSymbolsTable::symbol_from_ID(Inode::globals(P), P->W.instruction[DEFN_PRIM_IFLD]);
 	if ((prim_name == NULL) || (Str::get_first_char(InterSymbol::identifier(prim_name)) != '!'))
 		{ *E = Inode::error(P, I"primitive not beginning with '!'", NULL); return; }

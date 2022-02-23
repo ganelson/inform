@@ -50,7 +50,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 			{ *E = Inter::Errors::quoted(I"property already given", ilp->mr.exp[0], eloc); return; }
 	}
 
-	inter_type val_type = Inter::Property::type_of(prop_name);
+	inter_type val_type = InterTypes::of_symbol(prop_name);
 	inter_ti con_val1 = 0;
 	inter_ti con_val2 = 0;
 	*E = InterValuePairs::parse(ilp->line, eloc, IBM, val_type, ilp->mr.exp[2], &con_val1, &con_val2, InterBookmark::scope(IBM));

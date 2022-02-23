@@ -10,19 +10,19 @@ inter: inter/Tests/Invalid/typechecking.intert, line 17: value out of range: '2'
 >--> constant (int2) dunno = 2
 inter: inter/Tests/Invalid/typechecking.intert, line 22: value out of range: '2'
 >--> constant (K_truth_state) alsodunno = 2
-inter: inter/Tests/Invalid/typechecking.intert, line 26: value 'medium' has kind int16 which is not a int8
+inter: inter/Tests/Invalid/typechecking.intert, line 26: value 'medium' has type int16 which is not a int8
 >--> constant (int8) small = medium
 inter: inter/Tests/Invalid/typechecking.intert, line 32: 'void' cannot be used as a type: 'void'
 >--> constant (void) emptiness = 0
 inter: inter/Tests/Invalid/typechecking.intert, line 33: 'void' cannot be used as a type: 'void'
 >--> typename K_vacuity = void
-inter: inter/Tests/Invalid/typechecking.intert, line 39: value 'L32' has kind K_list_of_int32 which is not a K_list_of_int2
+inter: inter/Tests/Invalid/typechecking.intert, line 39: value 'L32' has type K_list_of_int32 which is not a K_list_of_int2
 >--> variable (K_list_of_int2) V2 = L32
-inter: inter/Tests/Invalid/typechecking.intert, line 46: value 'LL32' has kind K_lli32 which is not a K_lli2
+inter: inter/Tests/Invalid/typechecking.intert, line 46: value 'LL32' has type K_lli32 which is not a K_lli2
 >--> variable (K_lli2) VV2 = LL32
-inter: inter/Tests/Invalid/typechecking.intert, line 54: value 'R32' has kind K_r32 which is not a K_r2
+inter: inter/Tests/Invalid/typechecking.intert, line 54: value 'R32' has type K_r32 which is not a K_r2
 >--> variable (K_r2) VR2 = R32
-inter: inter/Tests/Invalid/typechecking.intert, line 61: value 'righty' has kind K_righthanded which is not a K_lefthanded
+inter: inter/Tests/Invalid/typechecking.intert, line 61: value 'righty' has type K_righthanded which is not a K_lefthanded
 >--> variable (K_lefthanded) VSL = righty
-inter: inter/Tests/Invalid/typechecking.intert, line 70: value 'f2_32' has kind K_int2_to_int32 which is not a K_int32_to_int32
+inter: inter/Tests/Invalid/typechecking.intert, line 70: value 'f2_32' has type K_int2_to_int32 which is not a K_int32_to_int32
 >--> variable (K_int32_to_int32) V32_32 = f2_32

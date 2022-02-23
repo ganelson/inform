@@ -9,6 +9,7 @@ Defining the packagetype construct.
 =
 void Inter::PackageType::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PACKAGETYPE_IST, I"packagetype");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_PTYPE_IFLD, -1);
 	InterConstruct::specify_syntax(IC, I"packagetype _IDENTIFIER");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::PackageType::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::PackageType::verify);
@@ -45,7 +46,6 @@ inter_error_message *Inter::PackageType::new_packagetype(inter_bookmark *IBM, in
 
 void Inter::PackageType::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent < EXTENT_PTYPE_IFR) { *E = Inode::error(P, I"package extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(owner, P, DEFN_PTYPE_IFLD);
 }
 
 void Inter::PackageType::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {

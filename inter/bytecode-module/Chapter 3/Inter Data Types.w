@@ -677,29 +677,27 @@ inter_error_message *InterTypes::can_be_used_as(inter_type A, inter_type B,
 	return Inter::Errors::plain(err, eloc);
 
 @h The type of a defined symbol.
+Note that a typename can be used as a value, and that if so, its type is |untyped|.
 
 =
 inter_type InterTypes::of_symbol(inter_symbol *symb) {
+	if (symb == NULL) return InterTypes::untyped();
 	inter_tree_node *D = InterSymbol::definition(symb);
 	if (D == NULL) return InterTypes::untyped();
 	if (InterSymbol::defined_elsewhere(symb)) return InterTypes::untyped();
-	if (D->W.instruction[ID_IFLD] == LOCAL_IST) return Inter::Local::type_of(symb);
-	if (D->W.instruction[ID_IFLD] == CONSTANT_IST) return Inter::Constant::type_of(symb);
-	if (D->W.instruction[ID_IFLD] == INSTANCE_IST) return Inter::Instance::type_of(symb);
-	if (D->W.instruction[ID_IFLD] == VARIABLE_IST) return Inter::Variable::type_of(symb);
-	if (D->W.instruction[ID_IFLD] == PROPERTY_IST) return Inter::Property::type_of(symb);
+	inter_construct *IC = NULL;
+	if (InterConstruct::get_construct(D, &IC)) return InterTypes::untyped();
+	if (IC->TID_field >= 0) return InterTypes::from_TID_in_field(D, IC->TID_field);
 	return InterTypes::untyped();
 }
 
 int InterTypes::expresses_value(inter_symbol *symb) {
 	inter_tree_node *D = InterSymbol::definition(symb);
 	if (D) {
-		if (D->W.instruction[ID_IFLD] == TYPENAME_IST)     return TRUE;
-		if (D->W.instruction[ID_IFLD] == INSTANCE_IST) return TRUE;
-		if (D->W.instruction[ID_IFLD] == CONSTANT_IST) return TRUE;
-		if (D->W.instruction[ID_IFLD] == LOCAL_IST)    return TRUE;
-		if (D->W.instruction[ID_IFLD] == VARIABLE_IST) return TRUE;
-		if (D->W.instruction[ID_IFLD] == PROPERTY_IST) return TRUE;
+		inter_construct *IC = NULL;
+		if (InterConstruct::get_construct(D, &IC)) return FALSE;
+		if (IC->construct_ID == TYPENAME_IST) return TRUE;
+		if (IC->TID_field >= 0) return TRUE;
 	}
 	return FALSE;
 }

@@ -9,6 +9,7 @@ Defining the property construct.
 =
 void Inter::Property::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PROPERTY_IST, I"property");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_PROP_IFLD, KIND_PROP_IFLD);
 	InterConstruct::specify_syntax(IC, I"property TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Property::read);
@@ -64,7 +65,6 @@ void Inter::Property::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 
 void Inter::Property::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_PROP_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(owner, P, DEFN_PROP_IFLD); if (*E) return;
 	Inter::Verify::typed_data(owner, P, KIND_PROP_IFLD, -1, E);
 }
 
@@ -83,12 +83,4 @@ void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		WRITE("%S", InterSymbol::identifier(prop_name));
 		SymbolAnnotation::write_annotations(OUT, P, prop_name);
 	} else { *E = Inode::error(P, I"cannot write property", NULL); return; }
-}
-
-inter_type Inter::Property::type_of(inter_symbol *prop_symbol) {
-	if (prop_symbol == NULL) return InterTypes::untyped();
-	inter_tree_node *D = InterSymbol::definition(prop_symbol);
-	if (D == NULL) return InterTypes::untyped();
-	if (D->W.instruction[ID_IFLD] != PROPERTY_IST) return InterTypes::untyped();
-	return InterTypes::from_TID_in_field(D, KIND_PROP_IFLD);
 }

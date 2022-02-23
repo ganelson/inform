@@ -9,6 +9,7 @@ Defining the constant construct.
 =
 void Inter::Constant::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(CONSTANT_IST, I"constant");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_CONST_IFLD, KIND_CONST_IFLD);
 	InterConstruct::specify_syntax(IC, I"constant TOKENS = TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Constant::read);
@@ -306,8 +307,6 @@ void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 }
 
 void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	*E = Inter::Verify::defn(owner, P, DEFN_CONST_IFLD);
-	if (*E) return;
 	Inter::Verify::typed_data(owner, P, KIND_CONST_IFLD, -1, E);
 	if (*E) return;
 	inter_type it = InterTypes::from_TID_in_field(P, KIND_CONST_IFLD);
@@ -439,14 +438,6 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		*E = Inode::error(P, I"constant can't be written", NULL);
 		return;
 	}
-}
-
-inter_type Inter::Constant::type_of(inter_symbol *con_symbol) {
-	if (con_symbol == NULL) return InterTypes::untyped();
-	inter_tree_node *D = InterSymbol::definition(con_symbol);
-	if (D == NULL) return InterTypes::untyped();
-	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return InterTypes::untyped();
-	return InterTypes::from_TID_in_field(D, KIND_CONST_IFLD);
 }
 
 inter_package *Inter::Constant::code_block(inter_symbol *con_symbol) {

@@ -9,6 +9,7 @@ Defining the typename construct.
 =
 void Inter::Typename::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(TYPENAME_IST, I"typename");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_TYPENAME_IFLD, -1);
 	InterConstruct::specify_syntax(IC, I"typename IDENTIFIER TOKEN TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Typename::read);
@@ -90,7 +91,6 @@ void Inter::Typename::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 
 void Inter::Typename::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent < MIN_EXTENT_TYPENAME_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(owner, P, DEFN_TYPENAME_IFLD); if (*E) return;
 	if (P->W.instruction[ENUM_RANGE_TYPENAME_IFLD] != 0) {
 		inter_symbol *typename_s = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[DEFN_TYPENAME_IFLD]);
 		if ((typename_s == NULL) ||

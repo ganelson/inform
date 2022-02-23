@@ -9,6 +9,7 @@ Defining the permission construct.
 =
 void Inter::Permission::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PERMISSION_IST, I"permission");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_PERM_IFLD, -1);
 	InterConstruct::specify_syntax(IC, I"permission IDENTIFIER IDENTIFIER OPTIONALIDENTIFIER");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Permission::read);
@@ -98,7 +99,6 @@ void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_pa
 
 	if (P->W.extent != EXTENT_PERM_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 
-	*E = Inter::Verify::defn(owner, P, DEFN_PERM_IFLD); if (*E) return;
 	*E = Inter::Verify::symbol(owner, P, P->W.instruction[PROP_PERM_IFLD], PROPERTY_IST); if (*E) return;
 	*E = Inter::Verify::symbol_KOI(owner, P, P->W.instruction[OWNER_PERM_IFLD]); if (*E) return;
 	if (P->W.instruction[STORAGE_PERM_IFLD]) {

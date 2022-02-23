@@ -9,6 +9,7 @@ Defining the variable construct.
 =
 void Inter::Variable::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(VARIABLE_IST, I"variable");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_VAR_IFLD, KIND_VAR_IFLD);
 	InterConstruct::specify_syntax(IC, I"variable TOKENS = TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Variable::read);
@@ -63,7 +64,6 @@ inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, int
 
 void Inter::Variable::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_VAR_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(owner, P, DEFN_VAR_IFLD); if (*E) return;
 	Inter::Verify::typed_data(owner, P, KIND_VAR_IFLD, VAL1_VAR_IFLD, E);
 }
 
@@ -76,12 +76,4 @@ void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		InterValuePairs::write(OUT, P, P->W.instruction[VAL1_VAR_IFLD], P->W.instruction[VAL2_VAR_IFLD], InterPackage::scope_of(P), FALSE);
 		SymbolAnnotation::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write variable", NULL); return; }
-}
-
-inter_type Inter::Variable::type_of(inter_symbol *con_symbol) {
-	if (con_symbol == NULL) return InterTypes::untyped();
-	inter_tree_node *D = InterSymbol::definition(con_symbol);
-	if (D == NULL) return InterTypes::untyped();
-	if (D->W.instruction[ID_IFLD] != VARIABLE_IST) return InterTypes::untyped();
-	return InterTypes::from_TID_in_field(D, KIND_VAR_IFLD);
 }

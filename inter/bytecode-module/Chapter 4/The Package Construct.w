@@ -9,6 +9,7 @@ Defining the package construct.
 =
 void InterPackage::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(PACKAGE_IST, I"package");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_PACKAGE_IFLD, -1);
 	InterConstruct::specify_syntax(IC, I"package IDENTIFIER _IDENTIFIER");
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
@@ -106,8 +107,6 @@ void InterPackage::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *
 
 void InterPackage::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_PACKAGE_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-
-	*E = Inter::Verify::defn(owner, P, DEFN_PACKAGE_IFLD); if (*E) return;
 
 	inter_package *pack = Inode::ID_to_package(P, P->W.instruction[PID_PACKAGE_IFLD]);
 	if (pack) pack->package_head = P;

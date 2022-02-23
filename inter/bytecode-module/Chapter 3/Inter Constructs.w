@@ -17,6 +17,9 @@ typedef struct inter_construct {
 	int max_level; /* max node tree depth within its package */
 	int usage_permissions; /* a bitmap of the |*_ICUP| values */
 
+	int symbol_defn_field; /* if this instruction declares a symbol, -1 otherwise */
+	int TID_field; /* if this instruction declares a symbol with a type, -1 otherwise */
+
 	struct method_set *methods; /* what it does is entirely specified by these */
 
 	CLASS_DEFINITION
@@ -33,10 +36,24 @@ inter_construct *InterConstruct::create_construct(inter_ti ID, text_stream *name
 	IC->max_level = 0;
 	IC->usage_permissions = INSIDE_PLAIN_PACKAGE_ICUP;
 
+	IC->symbol_defn_field = -1;
+	IC->TID_field = -1;
+
 	IC->methods = Methods::new_set();
 
 	InterConstruct::set_construct_for_ID(ID, IC);
 	return IC;
+}
+
+@ Numerous constructs are for instructions which define symbols, and sometimes
+those have a data type attached. If so, the symbol ID will live in one field
+of an instruction made with that construct, and the data type (in TID form --
+see //Inter Data Types//) will live in another.
+
+=
+void InterConstruct::defines_symbol_in_fields(inter_construct *IC, int s, int t) {
+	IC->symbol_defn_field = s;
+	IC->TID_field = t;
 }
 
 @ Several fields specify restrictions on where, in an Inter tree, instructions
@@ -368,6 +385,20 @@ inter_error_message *InterConstruct::verify_construct(inter_package *owner,
 	inter_construct *IC = NULL;
 	inter_error_message *E = InterConstruct::get_construct(P, &IC);
 	if (E) return E;
+
+	if (IC->symbol_defn_field >= 0) {
+		if (P->W.extent < IC->symbol_defn_field)
+			return Inode::error(P, I"extent wrong", NULL);
+		if (IC->construct_ID == LOCAL_IST) {
+			inter_symbols_table *locals = InterPackage::scope(owner);
+			if (locals == NULL) return Inode::error(P, I"no symbols table in function", NULL);
+			E = Inter::Verify::local_defn(P, IC->symbol_defn_field, locals);
+		} else {
+			E = Inter::Verify::defn(owner, P, IC->symbol_defn_field);
+		}
+		if (E) return E;
+	}
+
 	VOID_METHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, owner, &E);
 	return E;
 }

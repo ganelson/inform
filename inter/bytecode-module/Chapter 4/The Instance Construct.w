@@ -9,6 +9,7 @@ Defining the instance construct.
 =
 void Inter::Instance::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(INSTANCE_IST, I"instance");
+	InterConstruct::defines_symbol_in_fields(IC, DEFN_INST_IFLD, KIND_INST_IFLD);
 	InterConstruct::specify_syntax(IC, I"instance IDENTIFIER TOKENS");
 	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Instance::read);
@@ -75,7 +76,6 @@ void Inter::Instance::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 
 void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.extent != EXTENT_INST_IFR) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-	*E = Inter::Verify::defn(owner, P, DEFN_INST_IFLD); if (*E) return;
 	inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[DEFN_INST_IFLD]);
 	*E = Inter::Verify::symbol(owner, P, P->W.instruction[KIND_INST_IFLD], TYPENAME_IST); if (*E) return;
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_INST_IFLD]);
@@ -119,14 +119,6 @@ inter_ti Inter::Instance::properties_list(inter_symbol *inst_name) {
 	return D->W.instruction[PLIST_INST_IFLD];
 }
 
-inter_type Inter::Instance::type_of(inter_symbol *inst_name) {
-	if (inst_name == NULL) return InterTypes::untyped();
-	inter_tree_node *D = InterSymbol::definition(inst_name);
-	if (D == NULL) return InterTypes::untyped();
-	if (D->W.instruction[ID_IFLD] != INSTANCE_IST) return InterTypes::untyped();
-	return InterTypes::from_type_name(InterSymbolsTable::symbol_from_ID_at_node(D, KIND_INST_IFLD));
-}
-
 inter_symbol *Inter::Instance::kind_of(inter_symbol *inst_name) {
-	return InterTypes::type_name(Inter::Instance::type_of(inst_name));
+	return InterTypes::type_name(InterTypes::of_symbol(inst_name));
 }
