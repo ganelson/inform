@@ -2,12 +2,14 @@
 
 Two consecutive bytecode words are used to store a single value in binary Inter.
 
-@ 
+@ About time to define the types we're using to represent Inter words in C.
+It turns out to be more convenient to define these by what amounts to |#define|
+than to use |typedef|.
 
 @d inter_ti unsigned int
 @d signed_inter_ti int
 
-@
+@ A constant value in Inter code is represented by a pair of |inter_ti| values.
 
 @e LITERAL_IVAL from 0x10000
 @e LITERAL_TEXT_IVAL
@@ -20,46 +22,70 @@ Two consecutive bytecode words are used to store a single value in binary Inter.
 @e DIVIDER_IVAL
 
 =
+typedef struct inter_pair {
+	inter_ti data_format;
+	inter_ti data_content;
+} inter_pair;
+
+@ Instructions which contain such values in their bytecode always store pairs in
+two consecutive fields, so:
+
+=
+inter_pair InterValuePairs::in_field(inter_tree_node *P, int field) {
+	inter_pair pair;
+	pair.data_format = P->W.instruction[field];
+	pair.data_content = P->W.instruction[field+1];
+	return pair;
+}
+
+void InterValuePairs::to_field(inter_tree_node *P, int field, inter_pair pair) {
+	P->W.instruction[field] = pair.data_format;
+	P->W.instruction[field+1] = pair.data_content;
+}
+
+@ Printing out a pair in textual Inter syntax:
+
+=
 void InterValuePairs::write(OUTPUT_STREAM, inter_tree_node *F,
-	inter_ti V1, inter_ti V2, inter_symbols_table *scope, int hex_flag) {
-	switch (V1) {
+	inter_pair pair, inter_symbols_table *scope, int hex_flag) {
+	switch (pair.data_format) {
 		case LITERAL_IVAL:
-			if (hex_flag) WRITE("0x%x", V2);
-			else WRITE("%d", V2); break;
+			if (hex_flag) WRITE("0x%x", pair.data_content);
+			else WRITE("%d", pair.data_content); break;
 		case REAL_IVAL:
 			WRITE("r\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, pair.data_content));
 			WRITE("\"");
 			break;
 		case LITERAL_TEXT_IVAL:
 			WRITE("\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, pair.data_content));
 			WRITE("\"");
 			break;
 		case ALIAS_IVAL: {
-			inter_symbol *symb = InterSymbolsTable::symbol_from_ID_not_following(scope, V2);
+			inter_symbol *symb = InterSymbolsTable::symbol_from_ID_not_following(scope, pair.data_content);
 			TextualInter::write_symbol(OUT, symb);
 			break;
 		}
 		case UNDEF_IVAL: WRITE("undef"); break;
 		case GLOB_IVAL:
 			WRITE("&\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, pair.data_content));
 			WRITE("\"");
 			break;
 		case DWORD_IVAL:
 			WRITE("dw'");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, pair.data_content));
 			WRITE("'");
 			break;
 		case PDWORD_IVAL:
 			WRITE("dwp'");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, pair.data_content));
 			WRITE("'");
 			break;
 		case DIVIDER_IVAL:
 			WRITE("^\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, V2));
+			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, pair.data_content));
 			WRITE("\"");
 			break;
 		default: WRITE("<invalid-value-type>"); break;
@@ -219,32 +245,33 @@ inter_error_message *InterValuePairs::parse(text_stream *line, inter_error_locat
 	return NULL;
 
 @ =
-inter_ti InterValuePairs::transpose_value(inter_ti V1, inter_ti V2, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	switch (V1) {
+inter_pair InterValuePairs::transpose(inter_pair pair, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
+	switch (pair.data_format) {
 		case DWORD_IVAL:
 		case PDWORD_IVAL:
 		case LITERAL_TEXT_IVAL:
 		case REAL_IVAL:
 		case GLOB_IVAL:
 		case DIVIDER_IVAL:
-			V2 = grid[V2];
+			pair.data_content = grid[pair.data_content];
 			break;
 	}
-	return V2;
+	return pair;
 }
 
-inter_error_message *InterValuePairs::verify(inter_package *owner, inter_tree_node *P, inter_ti V1, inter_ti V2, inter_type type) {
+inter_error_message *InterValuePairs::verify(inter_package *owner, inter_tree_node *P,
+	inter_pair pair, inter_type type) {
 	inter_symbols_table *scope = InterPackage::scope(owner);
 	if (scope == NULL) scope = Inode::globals(P);
-	switch (V1) {
+	switch (pair.data_format) {
 		case LITERAL_IVAL: {
-			long long int I = (signed_inter_ti) V2;
+			long long int I = (signed_inter_ti) pair.data_content;
 			if (InterTypes::literal_is_in_range(I, type) == FALSE)
 				return Inode::error(P, I"value out of range", NULL);
 			return NULL;
 		}
 		case ALIAS_IVAL: {
-			inter_symbol *symb = InterSymbolsTable::symbol_from_ID(scope, V2);
+			inter_symbol *symb = InterSymbolsTable::symbol_from_ID(scope, pair.data_content);
 			if (symb == NULL) return Inode::error(P, I"no such symbol", NULL);
 			if (InterSymbol::misc_but_undefined(symb)) return NULL;
 			if (InterSymbol::defined_elsewhere(symb)) return NULL;

@@ -74,7 +74,8 @@ inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_type val_type,
 }
 
 void Inter::Val::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
-	P->W.instruction[VAL2_VAL_IFLD] = InterValuePairs::transpose_value(P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], grid, grid_extent, E);
+	InterValuePairs::to_field(P, VAL1_VAL_IFLD,
+		InterValuePairs::transpose(InterValuePairs::in_field(P, VAL1_VAL_IFLD), grid, grid_extent, E));
 }
 
 void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
@@ -90,5 +91,5 @@ void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	WRITE("val ");
 	InterTypes::write_optional_type_marker(OUT, P, KIND_VAL_IFLD);
-	InterValuePairs::write(OUT, P, P->W.instruction[VAL1_VAL_IFLD], P->W.instruction[VAL2_VAL_IFLD], locals, FALSE);
+	InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, VAL1_VAL_IFLD), locals, FALSE);
 }

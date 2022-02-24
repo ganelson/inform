@@ -41,8 +41,11 @@ inter_error_message *Inter::Verify::instruction(inter_package *owner, inter_tree
 if |P| is |constant bakers_dozen = 13| then a new |bakers_dozen| symbol must
 be created and given the node |P| as its definition.
 
-We have to do this in verification, because if we did it only when an instruction
-is created, that would then not be done bytecode is read in from a binary Inter file.
+We create the symbol when we create the instruction. But the assignment of the
+instruction as the definition of the symbol happens only during verification.
+This is done because binary Inter files do contain the symbols and the instructions,
+but not the assignments of which instruction is the definition of which symbol.
+Instead, these assignments are deduced as each instruction is verified.
 
 @<Set the symbol definition to this instruction@> =
 	if (P->W.extent < IC->symbol_defn_field) return Inode::error(P, I"extent wrong", NULL);
@@ -203,7 +206,5 @@ the context of the current package:
 =
 inter_error_message *Inter::Verify::data_pair_fields(inter_package *owner,
 	inter_tree_node *P, int first_field, inter_type type) {
-	inter_ti V1 = P->W.instruction[first_field];
-	inter_ti V2 = P->W.instruction[first_field+1];
-	return InterValuePairs::verify(owner, P, V1, V2, type);
+	return InterValuePairs::verify(owner, P, InterValuePairs::in_field(P, first_field), type);
 }

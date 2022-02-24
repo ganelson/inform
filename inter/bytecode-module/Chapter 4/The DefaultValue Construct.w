@@ -56,8 +56,7 @@ void Inter::DefaultValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	inter_symbol *con_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_DEF_IFLD);
 	if (con_kind) {
 		WRITE("defaultvalue %S = ", InterSymbol::identifier(con_kind));
-		InterValuePairs::write(OUT, P,
-			P->W.instruction[VAL1_DEF_IFLD], P->W.instruction[VAL1_DEF_IFLD+1], InterPackage::scope_of(P), FALSE);
+		InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, VAL1_DEF_IFLD), InterPackage::scope_of(P), FALSE);
 	} else {
 		*E = Inode::error(P, I"defaultvalue can't be written", NULL);
 	}

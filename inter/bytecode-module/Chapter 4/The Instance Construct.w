@@ -104,8 +104,7 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_INST_IFLD);
 	if ((inst_name) && (inst_kind)) {
 		WRITE("instance %S %S = ", InterSymbol::identifier(inst_name), InterSymbol::identifier(inst_kind));
-		InterValuePairs::write(OUT, P,
-			P->W.instruction[VAL1_INST_IFLD], P->W.instruction[VAL2_INST_IFLD], InterPackage::scope_of(P), FALSE);
+		InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, VAL1_INST_IFLD), InterPackage::scope_of(P), FALSE);
 	} else { *E = Inode::error(P, I"bad instance", NULL); return; }
 	SymbolAnnotation::write_annotations(OUT, P, inst_name);
 }

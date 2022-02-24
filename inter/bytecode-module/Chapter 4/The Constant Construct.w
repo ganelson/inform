@@ -288,7 +288,8 @@ void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 
 	switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 		case CONSTANT_DIRECT:
-			P->W.instruction[DATA_CONST_IFLD+1] = InterValuePairs::transpose_value(P->W.instruction[DATA_CONST_IFLD], P->W.instruction[DATA_CONST_IFLD+1], grid, grid_extent, E);
+			InterValuePairs::to_field(P, DATA_CONST_IFLD,
+				InterValuePairs::transpose(InterValuePairs::in_field(P, DATA_CONST_IFLD), grid, grid_extent, E));
 			break;
 		case CONSTANT_INDIRECT_TEXT:
 			P->W.instruction[DATA_CONST_IFLD] = grid[P->W.instruction[DATA_CONST_IFLD]];
@@ -301,7 +302,8 @@ void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 		case CONSTANT_STRUCT:
 		case CONSTANT_TABLE:
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				P->W.instruction[i+1] = InterValuePairs::transpose_value(P->W.instruction[i], P->W.instruction[i+1], grid, grid_extent, E);
+				InterValuePairs::to_field(P, i,
+					InterValuePairs::transpose(InterValuePairs::in_field(P, i), grid, grid_extent, E));
 			}
 			break;
 	}
@@ -388,8 +390,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		WRITE("%S = ", InterSymbol::identifier(con_name));
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:
-				InterValuePairs::write(OUT, P,
-					P->W.instruction[DATA_CONST_IFLD], P->W.instruction[DATA_CONST_IFLD+1], InterPackage::scope_of(P), hex);
+				InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, DATA_CONST_IFLD), InterPackage::scope_of(P), hex);
 				break;
 			case CONSTANT_TABLE:			
 			case CONSTANT_SUM_LIST:			
@@ -406,7 +407,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					InterValuePairs::write(OUT, P, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
+					InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, i), InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;
@@ -416,7 +417,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					InterValuePairs::write(OUT, P, P->W.instruction[i], P->W.instruction[i+1], InterPackage::scope_of(P), hex);
+					InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, i), InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;

@@ -75,7 +75,7 @@ void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		WRITE("variable ");
 		InterTypes::write_optional_type_marker(OUT, P, KIND_VAR_IFLD);
 		WRITE("%S = ", InterSymbol::identifier(var_name));
-		InterValuePairs::write(OUT, P, P->W.instruction[VAL1_VAR_IFLD], P->W.instruction[VAL2_VAR_IFLD], InterPackage::scope_of(P), FALSE);
+		InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, VAL1_VAR_IFLD), InterPackage::scope_of(P), FALSE);
 		SymbolAnnotation::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write variable", NULL); return; }
 }
