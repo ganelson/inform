@@ -37,7 +37,7 @@ a number: all that matters is that the correct integer value is compiled.
 @<Compile a literal-compilation-mode constant@> =
 	int N = Rvalues::to_int(value);
 	if (Holsters::value_pair_allowed(VH))
-		Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) N);
+		Holsters::holster_pair(VH, InterValuePairs::number((inter_ti) N));
 
 @ Whereas here, an instance is attached.
 
@@ -111,7 +111,7 @@ kinds of value:
 			}
 		} else if (Annotations::read_int(value, nothing_object_ANNOT)) {
 			if (Holsters::value_pair_allowed(VH))
-				Holsters::holster_pair(VH, LITERAL_IVAL, 0);
+				Holsters::holster_pair(VH, InterValuePairs::number(0));
 		} else {
 			instance *I = Rvalues::to_instance(value);
 			if (I) {
@@ -166,11 +166,8 @@ kinds of value:
 	if ((K_understanding) && (Kinds::eq(kind_of_constant, K_understanding))) {
 		if (Wordings::empty(Node::get_text(value)))
 			internal_error("Text no longer available for CONSTANT/UNDERSTANDING");
-		inter_ti v1 = 0, v2 = 0;
-		CompileRvalues::compile_understanding(&v1, &v2, Node::get_text(value));
-		if (Holsters::value_pair_allowed(VH)) {
-			Holsters::holster_pair(VH, v1, v2);
-		}
+		inter_pair val = CompileRvalues::compile_understanding(Node::get_text(value));
+		if (Holsters::value_pair_allowed(VH)) Holsters::holster_pair(VH, val);
 		return;
 	}
 	if (Kinds::eq(kind_of_constant, K_use_option)) {
@@ -188,7 +185,7 @@ kinds of value:
 		int c = Annotations::read_int(value, response_code_ANNOT);
 		inter_name *iname = Responses::response_constant_iname(R, c);
 		if (iname) Emit::holster_iname(VH, iname);
-		else Holsters::holster_pair(VH, LITERAL_IVAL, 0);
+		else Holsters::holster_pair(VH, InterValuePairs::number(0));
 		Rules::now_rule_needs_response(R, c, EMPTY_WORDING);
 		return;
 	}
@@ -309,7 +306,7 @@ compiler, rather than parsed from the source.)
 	} else {
 		int A = Annotations::read_int(str, constant_number_ANNOT);
 		if (Holsters::value_pair_allowed(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, (inter_ti) A);
+			Holsters::holster_pair(VH, InterValuePairs::number((inter_ti) A));
 	}
 
 @<This is a response text@> =
@@ -352,24 +349,21 @@ typedef struct cached_understanding {
 	CLASS_DEFINITION
 } cached_understanding;
 
-void CompileRvalues::compile_understanding(inter_ti *val1, inter_ti *val2, wording W) {
+inter_pair CompileRvalues::compile_understanding(wording W) {
 	if (<subject-pronoun>(W)) {
-		*val1 = LITERAL_IVAL; *val2 = 0;
+		return InterValuePairs::number(0);
 	} else {
 		cached_understanding *cu;
 		LOOP_OVER(cu, cached_understanding)
-			if (Wordings::match(cu->understanding_text, W)) {
-				Emit::to_value_pair(val1, val2, cu->cu_iname);
-				return;
-			}
+			if (Wordings::match(cu->understanding_text, W))
+				return Emit::to_value_pair(cu->cu_iname);
 		command_grammar *cg = Understand::consultation(W);
 		inter_name *iname = RTCommandGrammars::get_consult_fn_iname(cg);
-		if (iname) {
-			cu = CREATE(cached_understanding);
-			cu->understanding_text = W;
-			cu->cu_iname = iname;
-			Emit::to_value_pair(val1, val2, iname);
-		}
+		if (iname == NULL) internal_error("no consultation iname");
+		cu = CREATE(cached_understanding);
+		cu->understanding_text = W;
+		cu->cu_iname = iname;
+		return Emit::to_value_pair(iname);
 	}
 }
 

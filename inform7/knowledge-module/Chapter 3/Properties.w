@@ -476,7 +476,7 @@ void Properties::compile_inferred_value(value_holster *VH, inference_subject *in
 	}
 	if (Properties::is_either_or(prn)) {
 		if (Holsters::value_pair_allowed(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
+			Holsters::holster_pair(VH, InterValuePairs::number(0));
 	} else {
 		current_sentence = NULL;
 		if (RTProperties::compile_vp_default_value(VH, prn) == FALSE) {
@@ -507,12 +507,12 @@ int Properties::compile_property_value_inner(value_holster *VH, inference_subjec
 			if (Properties::is_either_or(prn)) {
 				if (inferred_property == prn) {
 					if (Holsters::value_pair_allowed(VH))
-						Holsters::holster_pair(VH, LITERAL_IVAL, (sense)?1:0);
+						Holsters::holster_pair(VH, InterValuePairs::number((sense)?1:0));
 					return TRUE;
 				}
 				if (inferred_property == EitherOrProperties::get_negation(prn)) {
 					if (Holsters::value_pair_allowed(VH))
-						Holsters::holster_pair(VH, LITERAL_IVAL, (sense)?0:1);
+						Holsters::holster_pair(VH, InterValuePairs::number((sense)?0:1));
 					return TRUE;
 				}
 			} else {

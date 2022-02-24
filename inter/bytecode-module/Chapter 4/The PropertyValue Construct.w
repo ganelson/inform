@@ -52,13 +52,12 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	}
 
 	inter_type val_type = InterTypes::of_symbol(prop_name);
-	inter_ti con_val1 = 0;
-	inter_ti con_val2 = 0;
-	*E = InterValuePairs::parse(ilp->line, eloc, IBM, val_type, ilp->mr.exp[2], &con_val1, &con_val2, InterBookmark::scope(IBM));
+	inter_pair con_val = InterValuePairs::undef();
+	*E = InterValuePairs::parse(ilp->line, eloc, IBM, val_type, ilp->mr.exp[2], &con_val, InterBookmark::scope(IBM));
 	if (*E) return;
 
 	*E = Inter::PropertyValue::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_name),
-		con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
+		con_val, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_symbol *Inter::PropertyValue::parse_owner(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
@@ -102,9 +101,9 @@ int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, int
 }
 
 inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_ti PID, inter_ti OID,
-	inter_ti con_val1, inter_ti con_val2, inter_ti level, inter_error_location *eloc) {
+	inter_pair val, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, PROPERTYVALUE_IST,
-		PID, OID, con_val1, con_val2, eloc, level);
+		PID, OID, InterValuePairs::to_word1(val), InterValuePairs::to_word2(val), eloc, level);
 	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

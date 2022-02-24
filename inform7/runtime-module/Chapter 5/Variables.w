@@ -331,9 +331,8 @@ int RTVariables::compile(inference_subject_family *f, int ignored) {
 			(nlv->constant_at_run_time == FALSE)) {
 			inter_name *iname = RTVariables::iname(nlv);
 			if (nlv->compilation_data.nlv_name_translated == FALSE) {
-				inter_ti v1 = 0, v2 = 0;
-				RTVariables::initial_value_as_pair(iname, &v1, &v2, nlv);
-				Emit::variable(iname, nlv->nlv_kind, v1, v2);
+				inter_pair val = RTVariables::initial_value_as_pair(iname, nlv);
+				Emit::variable(iname, nlv->nlv_kind, val);
 			} else {
 				if (nlv->compilation_data.lvalue_nve.iname_form) {
 					inter_symbol *S = InterNames::to_symbol(iname);
@@ -383,9 +382,8 @@ ways:
 void RTVariables::initial_value_as_array_entry(nonlocal_variable *nlv) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	RTVariables::holster_initial_value(&VH, nlv);
-	inter_ti v1 = 0, v2 = 0;
-	Holsters::unholster_to_pair(&VH, &v1, &v2);
-	EmitArrays::generic_entry(v1, v2);
+	inter_pair val = Holsters::unholster_to_pair(&VH);
+	EmitArrays::generic_entry(val);
 }
 
 void RTVariables::initial_value_as_val(nonlocal_variable *nlv) {
@@ -394,13 +392,13 @@ void RTVariables::initial_value_as_val(nonlocal_variable *nlv) {
 	Holsters::unholster_to_code_val(Emit::tree(), &VH);
 }
 
-void RTVariables::initial_value_as_pair(inter_name *iname, inter_ti *v1,
-	inter_ti *v2, nonlocal_variable *nlv) {
+inter_pair RTVariables::initial_value_as_pair(inter_name *iname, nonlocal_variable *nlv) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	packaging_state save = Packaging::enter_home_of(iname);
 	RTVariables::holster_initial_value(&VH, nlv);
-	Holsters::unholster_to_pair(&VH, v1, v2);
+	inter_pair val = Holsters::unholster_to_pair(&VH);
 	Packaging::exit(Emit::tree(), save);
+	return val;
 }
 
 @ Which are all powered by the following function.
@@ -435,7 +433,7 @@ void RTVariables::holster_initial_value(value_holster *VH, nonlocal_variable *nl
 @<Initialise with the default value of its kind@> =
 	if (DefaultValues::to_holster(VH, nlv->nlv_kind, nlv->name, "variable") == FALSE) {
 		if (nlv->var_is_allowed_to_be_zero) {
-			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
+			Holsters::holster_pair(VH, InterValuePairs::number(0));
 		} else {
 			wording W = Kinds::Behaviour::get_name(nlv->nlv_kind, FALSE);
 			Problems::quote_wording(1, nlv->name);

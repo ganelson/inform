@@ -280,7 +280,7 @@ inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol(I, arch, S),
 		InterTypes::to_TID(InterBookmark::scope(IBM), type),
-		LITERAL_IVAL, val,
+		InterValuePairs::number(val),
 		(inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 	return S;
 }

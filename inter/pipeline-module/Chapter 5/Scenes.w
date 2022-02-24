@@ -67,7 +67,8 @@ whether any change in status has or has not occurred.
 		Produce::inv_primitive(I, GT_BIP);
 		Produce::down(I);
 			Produce::val_symbol(I, K_value, chs_s);
-			Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) MAX_SCENE_CHANGE_ITERATION);
+			Produce::val(I, K_value,
+				InterValuePairs::number((inter_ti) MAX_SCENE_CHANGE_ITERATION));
 		Produce::up(I);
 		Produce::code(I);
 		Produce::down(I);

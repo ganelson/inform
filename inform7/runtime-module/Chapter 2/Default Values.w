@@ -17,9 +17,8 @@ messages.
 int DefaultValues::array_entry(kind *K, wording W, char *storage_name) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	int rv = DefaultValues::to_holster(&VH, K, W, storage_name);
-	inter_ti v1 = 0, v2 = 0;
-	Holsters::unholster_to_pair(&VH, &v1, &v2);
-	EmitArrays::generic_entry(v1, v2);
+	inter_pair val = Holsters::unholster_to_pair(&VH);
+	EmitArrays::generic_entry(val);
 	return rv;
 }
 int DefaultValues::val(kind *K, wording W, char *storage_name) {
@@ -34,11 +33,10 @@ int DefaultValues::to_holster(value_holster *VH, kind *K,
 		@<"Value" is too vague to be the kind of a variable@>;
 	if (Kinds::Behaviour::definite(K) == FALSE)
 		@<This is a kind not intended for end users at all@>;
-	inter_ti v1 = 0, v2 = 0;
-	DefaultValues::to_value_pair(&v1, &v2, K);
-	if (v1 != 0) {
+	inter_pair def_val = DefaultValues::to_value_pair(K);
+	if (InterValuePairs::is_undef(def_val) == FALSE) {
 		if (Holsters::value_pair_allowed(VH)) {
-			Holsters::holster_pair(VH, v1, v2);
+			Holsters::holster_pair(VH, def_val);
 			return TRUE;
 		}
 		internal_error("thwarted on gdv inter");
@@ -102,7 +100,7 @@ or properties with dubious kinds such as |value|.
 	return NOT_APPLICABLE;
 
 @ The above functions all convert into this one, where the actual choice is made.
-If no choice is possible, the function simply returns leaving |v1| and |v2| unset.
+If no choice is possible, the function simply returns the |undef| value.
 
 We begin with some special cases where the default value depends on circumstances,
 or has to be constructed in a more elaborate way. For example, the default value
@@ -113,8 +111,8 @@ for example, the default value of |K_number| is always 0.
 The test case |DefaultValues| may be helpful when tinkering with this.
 
 =
-void DefaultValues::to_value_pair(inter_ti *v1, inter_ti *v2, kind *K) {
-	if (K == NULL) return;
+inter_pair DefaultValues::to_value_pair(kind *K) {
+	if (K == NULL) return InterValuePairs::undef();
 	@<Constructed kinds stored as block values@>;
 	@<Base kinds stored as block values@>;
 	@<Object@>;
@@ -125,6 +123,7 @@ void DefaultValues::to_value_pair(inter_ti *v1, inter_ti *v2, kind *K) {
 	text_stream *textual_description = K->construct->default_value;
 	if (Str::len(textual_description) > 0)
 		@<Kinds whose default values are set by Neptune files@>;
+	return InterValuePairs::undef();
 }
 
 @ These cases are special because different default values are needed for
@@ -145,10 +144,8 @@ which each wrap the same large block.) Phrases do not have this issue since
 they cannot be modified at runtime.
 
 @<Constructed kinds stored as block values@> =
-	if (Kinds::get_construct(K) == CON_relation) {
-		Emit::to_value_pair(v1, v2, RelationLiterals::default(K));
-		return;
-	}
+	if (Kinds::get_construct(K) == CON_relation)
+		return Emit::to_value_pair(RelationLiterals::default(K));
 	if (Kinds::get_construct(K) == CON_list_of) {
 		runtime_kind_structure *rks = RTKindIDs::get_rks(K);
 		inter_name *dv = RTKindIDs::default_value_from_rks(rks);
@@ -156,8 +153,7 @@ they cannot be modified at runtime.
 			rks->default_created = TRUE;
 			ListLiterals::default_large_block(dv, K);
 		}
-		Emit::to_value_pair(v1, v2, ListLiterals::small_block(dv));
-		return;
+		return Emit::to_value_pair(ListLiterals::small_block(dv));
 	}
 	if (Kinds::get_construct(K) == CON_phrase) {
 		runtime_kind_structure *rks = RTKindIDs::get_rks(K);
@@ -166,31 +162,24 @@ they cannot be modified at runtime.
 			rks->default_created = TRUE;
 			Closures::compile_default_closure(dv, K);
 		}
-		Emit::to_value_pair(v1, v2, dv);
-		return;
+		return Emit::to_value_pair(dv);
 	}
 
 @ Text has the same "new one each time" issue as lists and relations have;
 stored action does not. Stored actions, again, cannot be modified at runtime.
 
 @<Base kinds stored as block values@> =
-	if (Kinds::eq(K, K_stored_action)) {
-		Emit::to_value_pair(v1, v2, StoredActionLiterals::default());
-		return;
-	}
-	if (Kinds::eq(K, K_text)) {
-		Emit::to_value_pair(v1, v2, TextLiterals::default_text());
-		return;
-	}
+	if (Kinds::eq(K, K_stored_action))
+		return Emit::to_value_pair(StoredActionLiterals::default());
+	if (Kinds::eq(K, K_text))
+		return Emit::to_value_pair(TextLiterals::default_text());
 
 @ The default value of |K_object| is |nothing|, which is represented at runtime
 as the number 0.
 
 @<Object@> =
-	if (Kinds::eq(K, K_object)) {
-		*v1 = LITERAL_IVAL; *v2 = 0;
-		return;
-	}
+	if (Kinds::eq(K, K_object))
+		return InterValuePairs::number(0);
 
 @ For an enumeration or a subkind of object such as "thing", the default value
 is the first one created. That makes for an interesting edge case when there
@@ -206,10 +195,10 @@ find any instances...
 	instance *I;
 	LOOP_OVER_INSTANCES(I, K) {
 		inter_name *N = RTInstances::value_iname(I);
-		Emit::to_value_pair(v1, v2, N);
-		return;
+		return Emit::to_value_pair(N);
 	}
-	if (Kinds::Behaviour::is_an_enumeration(K)) return;
+	if (Kinds::Behaviour::is_an_enumeration(K))
+		return InterValuePairs::undef();
 
 @ ...and that will take us here. Ordinarily we just |return|, triggering a
 problem message higher up because we couldn't find a default value.
@@ -221,21 +210,17 @@ absence of rooms would otherwise result in.
 
 @<Kinds of object which have no instances@> =
 	if (Kinds::Behaviour::is_subkind_of_object(K)) {
-		if (Task::wraps_existing_storyfile()) {
-			*v1 = LITERAL_IVAL; *v2 = 0;
-			return;
-		}
-		return;
+		if (Task::wraps_existing_storyfile())
+			return InterValuePairs::number(0);
+		return InterValuePairs::undef();
 	}
 
 @ Rulebook outcomes are very nearly an enumeration, too, and follow the same
 conventions.
 
 @<Rulebook outcome@> =
-	if (Kinds::eq(K, K_rulebook_outcome)) {
-		Emit::to_value_pair(v1, v2, RTRulebooks::default_outcome_iname());
-		return;
-	}
+	if (Kinds::eq(K, K_rulebook_outcome))
+		return Emit::to_value_pair(RTRulebooks::default_outcome_iname());
 
 @ Whereas the default action name is |##Wait|. This is handled as a special
 case to avoid having to parse double-sharp notation below.
@@ -243,8 +228,7 @@ case to avoid having to parse double-sharp notation below.
 @<Action name@> =
 	if (Kinds::eq(K, K_action_name)) {
 		inter_name *wait = RTActions::double_sharp(ActionsPlugin::default_action_name());
-		Emit::to_value_pair(v1, v2, wait);
-		return;
+		return Emit::to_value_pair(wait);
 	}
 
 @ Now we reach the most general case, where the default value is something fixed
@@ -260,13 +244,11 @@ cache the result. But if so be careful: it would only be safe to cache the
 names are not.
 
 @<Kinds whose default values are set by Neptune files@> =
-	inter_ti val1 = 0, val2 = 0;
-	if (InterValuePairs::read_int_in_I6_notation(textual_description, &val1, &val2) == TRUE) {
-		*v1 = val1; *v2 = val2; return;
-	}
+	inter_pair val = InterValuePairs::read_int_in_I6_notation(textual_description);
+	if (InterValuePairs::is_undef(val) == FALSE) return val;
 
-	if (Str::eq(textual_description, I"true")) { *v1 = LITERAL_IVAL; *v2 = 1; return; }
-	if (Str::eq(textual_description, I"false")) { *v1 = LITERAL_IVAL; *v2 = 0; return; }
+	if (Str::eq(textual_description, I"true")) return InterValuePairs::number(1);
+	if (Str::eq(textual_description, I"false")) return InterValuePairs::number(0);
 
 	int hl = Hierarchy::kind_default(Kinds::get_construct(K), textual_description);
-	Emit::to_value_pair(v1, v2, Hierarchy::find(hl));
+	return Emit::to_value_pair(Hierarchy::find(hl));

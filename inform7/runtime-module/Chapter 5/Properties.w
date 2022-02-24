@@ -240,7 +240,7 @@ int RTProperties::uses_non_typesafe_0(property *prn) {
 int RTProperties::compile_vp_default_value(value_holster *VH, property *prn) {
 	if (RTProperties::uses_non_typesafe_0(prn)) {
 		if (Holsters::value_pair_allowed(VH))
-			Holsters::holster_pair(VH, LITERAL_IVAL, 0);
+			Holsters::holster_pair(VH, InterValuePairs::number(0));
 		return TRUE;
 	}
 	kind *K = ValueProperties::kind(prn);

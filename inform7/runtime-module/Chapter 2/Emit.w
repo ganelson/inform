@@ -61,9 +61,7 @@ of |inter_ti| variables:
 void Emit::holster_iname(value_holster *VH, inter_name *iname) {
 	if (Holsters::value_pair_allowed(VH)) {
 		if (iname == NULL) internal_error("no iname to holster");
-		inter_ti v1 = 0, v2 = 0;
-		Emit::to_value_pair(&v1, &v2, iname);
-		Holsters::holster_pair(VH, v1, v2);
+		Holsters::holster_pair(VH, Emit::to_value_pair(iname));
 	}
 }
 
@@ -71,28 +69,23 @@ void Emit::holster_iname(value_holster *VH, inter_name *iname) {
 what package it belongs to, the "context" referred to below:
 
 =
-void Emit::symbol_to_value_pair(inter_ti *v1, inter_ti *v2, inter_symbol *S) {
-	Emit::stvp_inner(S, v1, v2, InterBookmark::package(Emit::at()));
+inter_pair Emit::symbol_to_value_pair(inter_symbol *S) {
+	return Emit::stvp_inner(S, InterBookmark::package(Emit::at()));
 }
 
-void Emit::to_value_pair(inter_ti *v1, inter_ti *v2, inter_name *iname) {
-	Emit::stvp_inner(InterNames::to_symbol(iname), v1, v2, InterBookmark::package(Emit::at()));
+inter_pair Emit::to_value_pair(inter_name *iname) {
+	return Emit::stvp_inner(InterNames::to_symbol(iname), InterBookmark::package(Emit::at()));
 }
 
-void Emit::to_value_pair_in_context(inter_name *context, inter_ti *v1, inter_ti *v2,
-	inter_name *iname) {
+inter_pair Emit::to_value_pair_in_context(inter_name *context, inter_name *iname) {
 	inter_package *pack = Packaging::incarnate(InterNames::location(context));
 	inter_symbol *S = InterNames::to_symbol(iname);
-	Emit::stvp_inner(S, v1, v2, pack);
+	return Emit::stvp_inner(S, pack);
 }
 
-void Emit::stvp_inner(inter_symbol *S, inter_ti *v1, inter_ti *v2,
-	inter_package *pack) {
-	if (S) {
-		InterValuePairs::from_symbol(InterPackage::tree(pack), pack, S, v1, v2);
-		return;
-	}
-	*v1 = LITERAL_IVAL; *v2 = 0;
+inter_pair Emit::stvp_inner(inter_symbol *S, inter_package *pack) {
+	if (S) return InterValuePairs::p_from_symbol(InterPackage::tree(pack), pack, S);
+	return InterValuePairs::number(0);
 }
 
 @h Kinds.
@@ -149,12 +142,11 @@ void Emit::ensure_defaultvalue(kind *K) {
 		if (Kinds::eq(K, L))
 			return;
 	ADD_TO_LINKED_LIST(K, kind, default_values_written);
-	inter_ti v1 = 0, v2 = 0;
-	DefaultValues::to_value_pair(&v1, &v2, K);
-	if (v1 != 0) {
+	inter_pair def_val = DefaultValues::to_value_pair(K);
+	if (InterValuePairs::is_undef(def_val) == FALSE) {
 		packaging_state save = Packaging::enter(RTKindConstructors::kind_package(K));
 		Produce::guard(Inter::DefaultValue::new(Emit::at(),
-			Produce::kind_to_TID(Emit::at(), K), v1, v2,
+			Produce::kind_to_TID(Emit::at(), K), def_val,
 			Emit::baseline(), NULL));
 		Packaging::exit(Emit::tree(), save);
 	}
@@ -206,7 +198,7 @@ inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
 	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Emit::at()),
 		InterTypes::from_constructor_code(constructor_code));
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
-		TID, LITERAL_IVAL, val, Emit::baseline(), NULL));
+		TID, InterValuePairs::number(val), Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return con_iname;
 }
@@ -240,10 +232,9 @@ inter_name *Emit::iname_constant(inter_name *con_iname, kind *K, inter_name *val
 		else
 			internal_error("can't handle a null alias");
 	}
-	inter_ti v1 = 0, v2 = 0;
-	Emit::symbol_to_value_pair(&v1, &v2, val_s);
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
-		Produce::kind_to_TID(Emit::at(), K), v1, v2, Emit::baseline(), NULL));
+		Produce::kind_to_TID(Emit::at(), K), Emit::symbol_to_value_pair(val_s),
+		Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return con_iname;
 }
@@ -253,17 +244,15 @@ is compiled.
 
 =
 void Emit::text_constant_from_wide_string(inter_name *con_iname, wchar_t *str) {
-	inter_ti v1 = 0, v2 = 0;
 	inter_name *iname = TextLiterals::to_value(Feeds::feed_C_string(str));
-	Emit::to_value_pair_in_context(con_iname, &v1, &v2, iname);
-	Emit::named_generic_constant(con_iname, v1, v2);
+	Emit::named_generic_constant(con_iname,
+		Emit::to_value_pair_in_context(con_iname, iname));
 }
 
 void Emit::serial_number(inter_name *con_iname, text_stream *serial) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
-	inter_ti v1 = 0, v2 = 0;
-	ProducePairs::from_text(Emit::tree(), &v1, &v2, serial);
-	Emit::named_generic_constant(con_iname, v1, v2);
+	inter_pair val = InterValuePairs::from_text(Emit::tree(), serial);
+	Emit::named_generic_constant(con_iname, val);
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -272,9 +261,8 @@ of a "variable" and define it as a constant:
 
 =
 void Emit::initial_value_as_constant(inter_name *con_iname, nonlocal_variable *var) {
-	inter_ti v1 = 0, v2 = 0;
-	RTVariables::initial_value_as_pair(con_iname, &v1, &v2, var);
-	Emit::named_generic_constant(con_iname, v1, v2);
+	Emit::named_generic_constant(con_iname,
+		RTVariables::initial_value_as_pair(con_iname, var));
 }
 
 void Emit::initial_value_as_raw_text(inter_name *con_iname, nonlocal_variable *var) {
@@ -289,12 +277,12 @@ void Emit::initial_value_as_raw_text(inter_name *con_iname, nonlocal_variable *v
 @ The above make use of this:
 
 =
-void Emit::named_generic_constant(inter_name *con_iname, inter_ti v1, inter_ti v2) {
+void Emit::named_generic_constant(inter_name *con_iname, inter_pair val) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::untyped());
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
-		KID, v1, v2, Emit::baseline(), NULL));
+		KID, val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -304,24 +292,23 @@ void Emit::named_generic_constant(inter_name *con_iname, inter_ti v1, inter_ti v
 void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 	packaging_state save = Packaging::enter_home_of(inst_iname);
 	inter_symbol *inst_s = InterNames::to_symbol(inst_iname);
-	inter_ti v1 = LITERAL_IVAL, v2 = (inter_ti) v;
-	if (v == 0) { v1 = UNDEF_IVAL; v2 = 0; }
+	inter_pair val = v ? InterValuePairs::number((inter_ti) v) : InterValuePairs::undef();
 	Produce::guard(Inter::Instance::new(Emit::at(), Emit::symbol_id(inst_s),
-		Produce::kind_to_TID(Emit::at(), K), v1, v2, Emit::baseline(), NULL));
+		Produce::kind_to_TID(Emit::at(), K), val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
 @h Variables.
 
 =
-inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_ti v1, inter_ti v2) {
+inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_pair val) {
 	packaging_state save = Packaging::enter_home_of(var_iname);
 	inter_symbol *var_s = InterNames::to_symbol(var_iname);
 	inter_type type = InterTypes::untyped();
 	if ((K) && (K != K_value))
 		type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Variable::new(Emit::at(),
-		Emit::symbol_id(var_s), type, v1, v2, Emit::baseline(), NULL));
+		Emit::symbol_id(var_s), type, val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return var_s;
 }
@@ -361,12 +348,11 @@ void Emit::permission(property *prn, inter_symbol *owner_name,
 @h Property values.
 
 =
-void Emit::propertyvalue(property *P, inter_name *owner, inter_ti v1, inter_ti v2) {
+void Emit::propertyvalue(property *P, inter_name *owner, inter_pair val) {
 	inter_symbol *prop_s = InterNames::to_symbol(RTProperties::iname(P));
 	inter_symbol *owner_s = InterNames::to_symbol(owner);
-	Produce::guard(Inter::PropertyValue::new(Emit::at(),
-		Emit::symbol_id(prop_s),
-		Emit::symbol_id(owner_s), v1, v2, Emit::baseline(), NULL));
+	Produce::guard(Inter::PropertyValue::new(Emit::at(), Emit::symbol_id(prop_s),
+		Emit::symbol_id(owner_s), val, Emit::baseline(), NULL));
 }
 
 @h Private, keep out.

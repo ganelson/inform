@@ -92,7 +92,7 @@ just a run of |if (id == 1) ...|, then |if (id == 2) ...|, and so on.
 			Produce::inv_primitive(I, EQ_BIP);
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, id_s);
-				Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) (i + 1));
+				Produce::val(I, K_value, InterValuePairs::number((inter_ti) (i + 1)));
 			Produce::up(I);
 			Produce::code(I);
 			Produce::down(I);

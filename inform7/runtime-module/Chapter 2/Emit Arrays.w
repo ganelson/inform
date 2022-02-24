@@ -75,16 +75,14 @@ which would be a typesafe list in I7, so they can be absolutely any data,
 
 =
 void EmitArrays::numeric_entry(inter_ti N) {
-	EmitArrays::entry_inner(LITERAL_IVAL, N);
+	EmitArrays::entry_inner(InterValuePairs::number(N));
 }
 
 void EmitArrays::iname_entry(inter_name *iname) {
 	inter_symbol *alias;
 	if (iname == NULL) alias = InterNames::to_symbol(Hierarchy::find(NOTHING_HL));
 	else alias = InterNames::to_symbol(iname);
-	inter_ti v1 = 0, v2 = 0;
-	Emit::symbol_to_value_pair(&v1, &v2, alias);
-	EmitArrays::entry_inner(v1, v2);
+	EmitArrays::entry_inner(Emit::symbol_to_value_pair(alias));
 }
 
 void EmitArrays::null_entry(void) {
@@ -92,25 +90,22 @@ void EmitArrays::null_entry(void) {
 }
 
 void EmitArrays::text_entry(text_stream *content) {
-	inter_ti v1 = 0, v2 = 0;
-	ProducePairs::from_text(Emit::tree(), &v1, &v2, content);
-	EmitArrays::entry_inner(v1, v2);
+	inter_pair val = InterValuePairs::from_text(Emit::tree(), content);
+	EmitArrays::entry_inner(val);
 }
 
 void EmitArrays::dword_entry(text_stream *content) {
-	inter_ti v1 = 0, v2 = 0;
-	ProducePairs::from_singular_dword(Emit::tree(), &v1, &v2, content);
-	EmitArrays::entry_inner(v1, v2);
+	inter_pair val = InterValuePairs::from_singular_dword(Emit::tree(), content);
+	EmitArrays::entry_inner(val);
 }
 
 void EmitArrays::plural_dword_entry(text_stream *content) {
-	inter_ti v1 = 0, v2 = 0;
-	ProducePairs::from_plural_dword(Emit::tree(), &v1, &v2, content);
-	EmitArrays::entry_inner(v1, v2);
+	inter_pair val = InterValuePairs::from_plural_dword(Emit::tree(), content);
+	EmitArrays::entry_inner(val);
 }
 
-void EmitArrays::generic_entry(inter_ti v1, inter_ti v2) {
-	EmitArrays::entry_inner(v1, v2);
+void EmitArrays::generic_entry(inter_pair val) {
+	EmitArrays::entry_inner(val);
 }
 
 @ Dividers are really just commentary points inside Inter arrays, to make the
@@ -119,9 +114,7 @@ difference to compiled code.
 
 =
 void EmitArrays::divider(text_stream *divider_text) {
-	inter_ti S = InterWarehouse::create_text(Emit::warehouse(), Emit::package());
-	Str::copy(InterWarehouse::get_text(Emit::warehouse(), S), divider_text);
-	EmitArrays::entry_inner(DIVIDER_IVAL, S);
+	EmitArrays::entry_inner(InterValuePairs::divider(Emit::tree(), divider_text));
 }
 
 @h End.
@@ -199,13 +192,13 @@ void EmitArrays::begin_inner(inter_name *N, kind *K, int const_sum, int unchecke
 @ And the various ways to add an entry merge into this one:
 
 =
-void EmitArrays::entry_inner(inter_ti v1, inter_ti v2) {
+void EmitArrays::entry_inner(inter_pair val) {
 	nascent_array *current_A = EmitArrays::current();
 	if (current_A == NULL) internal_error("no nascent array");
 	int N = current_A->space_used;
 	if (N >= current_A->capacity) @<Quadruple the available storage@>;
-	current_A->entry_storage[current_A->space_used++] = v1;
-	current_A->entry_storage[current_A->space_used++] = v2;
+	current_A->entry_storage[current_A->space_used++] = InterValuePairs::to_word1(val);
+	current_A->entry_storage[current_A->space_used++] = InterValuePairs::to_word2(val);
 }
 
 @<Quadruple the available storage@> =

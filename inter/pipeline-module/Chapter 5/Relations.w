@@ -88,6 +88,6 @@ so we change the values of these constants accordingly.
 	Produce::up(I);
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);
-		Produce::val(I, K_value, LITERAL_IVAL, 0);
+		Produce::val(I, K_value, InterValuePairs::number(0));
 	Produce::up(I);
 	Synoptic::end_function(I, step, iname);

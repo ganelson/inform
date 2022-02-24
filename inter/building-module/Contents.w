@@ -28,5 +28,4 @@ Chapter 2: Blueprints
 
 Chapter 3: Masonry
 	Produce
-	Produce Pairs
 	Value Holsters

@@ -322,7 +322,7 @@ inter_name *Produce::numeric_constant(inter_tree *I, inter_name *con_iname, kind
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
 		Produce::kind_to_TID(IBM, K),
-		LITERAL_IVAL, val, Produce::baseline(IBM), NULL));
+		InterValuePairs::number(val), Produce::baseline(IBM), NULL));
 	Packaging::exit(I, save);
 	return con_iname;
 }
@@ -335,13 +335,12 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_bookmark *IBM = Packaging::at(I);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
-	inter_ti v1 = 0, v2 = 0;
 	inter_package *pack = InterBookmark::package(IBM);
-	InterValuePairs::from_symbol(InterPackage::tree(pack), pack, val_s, &v1, &v2);
+	inter_pair val = InterValuePairs::p_from_symbol(InterPackage::tree(pack), pack, val_s);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
 		Produce::kind_to_TID(IBM, K),
-		v1, v2, Produce::baseline(IBM), NULL));
+		val, Produce::baseline(IBM), NULL));
 	Packaging::exit(I, save);
 	return con_iname;
 }
@@ -394,14 +393,14 @@ void Produce::inv_primitive(inter_tree *I, inter_ti bip) {
 void Produce::rtrue(inter_tree *I) {
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);
-		Produce::val(I, K_value, LITERAL_IVAL, 1); /* that is, return "true" */
+		Produce::val(I, K_value, InterValuePairs::number(1)); /* that is, return "true" */
 	Produce::up(I);
 }
 
 void Produce::rfalse(inter_tree *I) {
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);
-		Produce::val(I, K_value, LITERAL_IVAL, 0); /* that is, return "false" */
+		Produce::val(I, K_value, InterValuePairs::number(0)); /* that is, return "false" */
 	Produce::up(I);
 }
 
@@ -475,7 +474,7 @@ by an iname:
 void Produce::val_iname(inter_tree *I, kind *K, inter_name *iname) {
 	if (iname == NULL) {
 		if (problem_count == 0) internal_error("no iname");
-		else Produce::val(I, K_value, LITERAL_IVAL, 0); /* for error recovery */
+		else Produce::val(I, K_value, InterValuePairs::number(0)); /* for error recovery */
 	} else {
 		Produce::val_symbol(I, K, InterNames::to_symbol(iname));
 	}
@@ -485,60 +484,51 @@ void Produce::val_iname(inter_tree *I, kind *K, inter_name *iname) {
 
 =
 void Produce::val_symbol(inter_tree *I, kind *K, inter_symbol *s) {
-	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
-	InterValuePairs::from_symbol(InterBookmark::tree(IBM),
-		InterBookmark::package(IBM), s, &val1, &val2);
-	Produce::val(I, K, val1, val2);
+	inter_pair val = InterValuePairs::p_from_symbol(InterBookmark::tree(IBM),
+		InterBookmark::package(IBM), s);
+	Produce::val(I, K, val);
 }
 
 @ Which in turn falls into this, the general case: a value specified by an
 Inter pair --
 
 =
-void Produce::val(inter_tree *I, kind *K, inter_ti val1, inter_ti val2) {
+void Produce::val(inter_tree *I, kind *K, inter_pair val) {
 	inter_symbol *val_kind = NULL;
 	if ((K) && (K != K_value)) {
 		val_kind = Produce::kind_to_symbol(K);
 		if (val_kind == NULL) internal_error("no kind for val");
 	}
 	Produce::guard(Inter::Val::new(Produce::at(I), InterTypes::from_type_name(val_kind),
-		Produce::level(I), val1, val2, NULL));
+		Produce::level(I), val, NULL));
 }
 
 @ There remain some convenience functions for making such pairs.
 
 =
 void Produce::val_nothing(inter_tree *I) {
-	Produce::val(I, K_value, LITERAL_IVAL, 0);
+	Produce::val(I, K_value, InterValuePairs::number(0));
 }
 
 void Produce::val_text(inter_tree *I, text_stream *S) {
-	inter_ti v1 = 0, v2 = 0;
-	ProducePairs::from_text(I, &v1, &v2, S);
-	Produce::val(I, K_value, v1, v2);
+	Produce::val(I, K_value, InterValuePairs::from_text(I, S));
 }
 
 void Produce::val_char(inter_tree *I, wchar_t c) {
-	Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) c);
+	Produce::val(I, K_value, InterValuePairs::number((inter_ti) c));
 }
 
 void Produce::val_real(inter_tree *I, double g) {
-	inter_ti v1 = 0, v2 = 0;
-	ProducePairs::from_real(I, &v1, &v2, g);
-	Produce::val(I, K_value, v1, v2);
+	Produce::val(I, K_value, InterValuePairs::real(I, g));
 }
 
 void Produce::val_real_from_text(inter_tree *I, text_stream *S) {
-	inter_ti v1 = 0, v2 = 0;
-	ProducePairs::from_real_text(I, &v1, &v2, S);
-	Produce::val(I, K_value, v1, v2);
+	Produce::val(I, K_value, InterValuePairs::from_real_text(I, S));
 }
 
 void Produce::val_dword(inter_tree *I, text_stream *S) {
-	inter_ti v1 = 0, v2 = 0;
-	ProducePairs::from_singular_dword(I, &v1, &v2, S);
-	Produce::val(I, K_value, v1, v2);
+	Produce::val(I, K_value, InterValuePairs::from_singular_dword(I, S));
 }
 
 @ The |ref| instruction is simpler. It makes no sense to have a storage reference
@@ -550,17 +540,16 @@ void Produce::ref_iname(inter_tree *I, kind *K, inter_name *iname) {
 }
 
 void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
-	inter_ti val1 = 0, val2 = 0;
 	inter_bookmark *IBM = Packaging::at(I);
-	InterValuePairs::from_symbol(InterBookmark::tree(IBM), InterBookmark::package(IBM),
-		s, &val1, &val2);
+	inter_pair val = InterValuePairs::p_from_symbol(InterBookmark::tree(IBM),
+		InterBookmark::package(IBM), s);
 	inter_symbol *val_kind = NULL;
 	if ((K) && (K != K_value)) {
 		val_kind = Produce::kind_to_symbol(K);
 		if (val_kind == NULL) internal_error("no kind for ref");
 	}
 	Produce::guard(Inter::Ref::new(Produce::at(I), InterTypes::from_type_name(val_kind),
-		Produce::level(I), val1, val2, NULL));
+		Produce::level(I), val, NULL));
 }
 
 @ |cast| may yet disappear from Inter: it doesn't really accomplish anything at

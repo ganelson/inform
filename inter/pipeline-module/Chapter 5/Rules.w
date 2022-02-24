@@ -99,7 +99,7 @@ so we change the values of these constants accordingly.
 			if (vc_s) {
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
-					Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) i);
+					Produce::val(I, K_value, InterValuePairs::number((inter_ti) i));
 					Produce::code(I);
 					Produce::down(I);
 						Produce::inv_primitive(I, RETURN_BIP);
@@ -114,7 +114,7 @@ so we change the values of these constants accordingly.
 	Produce::up(I);
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);
-		Produce::val(I, K_value, LITERAL_IVAL, 0);
+		Produce::val(I, K_value, InterValuePairs::number(0));
 	Produce::up(I);
 	Synoptic::end_function(I, step, iname);
 
@@ -130,12 +130,13 @@ so we change the values of these constants accordingly.
 			Produce::inv_primitive(I, GE_BIP);
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, R_s);
-				Produce::val(I, K_value, LITERAL_IVAL, 0);
+				Produce::val(I, K_value, InterValuePairs::number(0));
 			Produce::up(I);
 			Produce::inv_primitive(I, LT_BIP);
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, R_s);
-				Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) InterNodeList::array_len(inv->rulebook_nodes));
+				Produce::val(I, K_value, InterValuePairs::number((inter_ti)
+					InterNodeList::array_len(inv->rulebook_nodes)));
 			Produce::up(I);
 		Produce::up(I);
 		Produce::code(I);

@@ -43,6 +43,134 @@ void InterValuePairs::to_field(inter_tree_node *P, int field, inter_pair pair) {
 	P->W.instruction[field+1] = pair.data_content;
 }
 
+/* inter_pair InterValuePairs::conv(inter_ti val1, inter_ti val2) {
+	inter_pair pair;
+	pair.data_format = val1;
+	pair.data_content = val2;
+	return pair;
+}
+*/
+
+inter_ti InterValuePairs::to_word1(inter_pair pair) {
+	return pair.data_format;
+}
+inter_ti InterValuePairs::to_word2(inter_pair pair) {
+	return pair.data_content;
+}
+
+inter_pair InterValuePairs::undef(void) {
+	inter_pair pair;
+	pair.data_format = UNDEF_IVAL;
+	pair.data_content = 0;
+	return pair;
+}
+
+int InterValuePairs::is_undef(inter_pair pair) {
+	if (pair.data_format == UNDEF_IVAL) return TRUE;
+	return FALSE;
+}
+
+inter_pair InterValuePairs::number(inter_ti N) {
+	inter_pair pair;
+	pair.data_format = LITERAL_IVAL;
+	pair.data_content = N;
+	return pair;
+}
+
+inter_ti InterValuePairs::to_number(inter_pair pair) {
+	if (pair.data_format == LITERAL_IVAL) return pair.data_content;
+	return 0;
+}
+
+@ Real numbers, which Inter stores in a textual way:
+
+=
+inter_pair InterValuePairs::real(inter_tree *I, double g) {
+	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
+		InterBookmark::package(Packaging::at(I)));
+	text_stream *text_storage = InterWarehouse::get_text(InterTree::warehouse(I), ID);
+	if (g > 0) WRITE_TO(text_storage, "+");
+	WRITE_TO(text_storage, "%g", g);
+	inter_pair pair;
+	pair.data_format = REAL_IVAL;
+	pair.data_content = ID;
+	return pair;
+}
+
+inter_pair InterValuePairs::from_real_text(inter_tree *I, text_stream *S) {
+	return InterValuePairs::from_real_text_at(I, InterBookmark::package(Packaging::at(I)), S);
+}
+inter_pair InterValuePairs::from_real_text_at(inter_tree *I, inter_package *pack,
+	text_stream *S) {
+	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *text_storage = InterWarehouse::get_text(InterTree::warehouse(I), ID);
+	LOOP_THROUGH_TEXT(pos, S)
+		if (Str::get(pos) != '$')
+			PUT_TO(text_storage, Str::get(pos));
+	inter_pair pair;
+	pair.data_format = REAL_IVAL;
+	pair.data_content = ID;
+	return pair;
+}
+
+@ Dictionary words, singular and plural:
+
+=
+inter_pair InterValuePairs::from_singular_dword(inter_tree *I, text_stream *word) {
+	return InterValuePairs::from_singular_dword_at(I, InterBookmark::package(Packaging::at(I)), word);
+}
+inter_pair InterValuePairs::from_singular_dword_at(inter_tree *I, inter_package *pack,
+	text_stream *word) {
+	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *text_storage = InterWarehouse::get_text(InterTree::warehouse(I), ID);
+	Str::copy(text_storage, word);
+	inter_pair pair;
+	pair.data_format = DWORD_IVAL;
+	pair.data_content = ID;
+	return pair;
+}
+
+inter_pair InterValuePairs::from_plural_dword(inter_tree *I, text_stream *word) {
+	return InterValuePairs::from_plural_dword_at(I, InterBookmark::package(Packaging::at(I)), word);
+}
+inter_pair InterValuePairs::from_plural_dword_at(inter_tree *I, inter_package *pack,
+	text_stream *word) {
+	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *text_storage = InterWarehouse::get_text(InterTree::warehouse(I), ID);
+	Str::copy(text_storage, word);
+	inter_pair pair;
+	pair.data_format = PDWORD_IVAL;
+	pair.data_content = ID;
+	return pair;
+}
+
+@ Text:
+
+=
+inter_pair InterValuePairs::from_text(inter_tree *I, text_stream *text) {
+	return InterValuePairs::from_text_at(I, InterBookmark::package(Packaging::at(I)), text);
+}
+inter_pair InterValuePairs::from_text_at(inter_tree *I, inter_package *pack, text_stream *text) {
+	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+	text_stream *text_storage = InterWarehouse::get_text(InterTree::warehouse(I), ID);
+	Str::copy(text_storage, text);
+	inter_pair pair;
+	pair.data_format = LITERAL_TEXT_IVAL;
+	pair.data_content = ID;
+	return pair;
+}
+
+inter_pair InterValuePairs::divider(inter_tree *I, text_stream *text) {
+	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
+		InterBookmark::package(Packaging::at(I)));
+	text_stream *text_storage = InterWarehouse::get_text(InterTree::warehouse(I), ID);
+	Str::copy(text_storage, text);
+	inter_pair pair;
+	pair.data_format = DIVIDER_IVAL;
+	pair.data_content = ID;
+	return pair;
+}
+
 @ Printing out a pair in textual Inter syntax:
 
 =
@@ -93,7 +221,7 @@ void InterValuePairs::write(OUTPUT_STREAM, inter_tree_node *F,
 }
 
 @ =
-int InterValuePairs::read_int_in_I6_notation(text_stream *S, inter_ti *val1, inter_ti *val2) {
+inter_pair InterValuePairs::read_int_in_I6_notation(text_stream *S) {
 	int sign = 1, base = 10, from = 0;
 	if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
 	if (Str::prefix_eq(S, I"$", 1)) { base = 16; from = 1; }
@@ -105,15 +233,12 @@ int InterValuePairs::read_int_in_I6_notation(text_stream *S, inter_ti *val1, int
 		if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
 		else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
 		else if ((c >= '0') && (c <= '9')) d = c-'0';
-		else return FALSE;
-		if (d > base) return FALSE;
+		else return InterValuePairs::undef();
+		if (d > base) return InterValuePairs::undef();
 		N = base*N + (long long int) d;
-		if (pos.index > 34) return FALSE;
+		if (pos.index > 34) return InterValuePairs::undef();
 	}
-	N = sign*N;
-
-	*val1 = LITERAL_IVAL; *val2 = (inter_ti) N;
-	return TRUE;
+	return InterValuePairs::number((inter_ti) (sign*N));
 }
 
 @
@@ -124,6 +249,14 @@ int InterValuePairs::holds_symbol(inter_ti val1, inter_ti val2) {
 	return FALSE;
 }
 
+inter_pair InterValuePairs::p_from_symbol(inter_tree *I, inter_package *pack, inter_symbol *S) {
+	if (S == NULL) internal_error("no symbol");
+	inter_pair pair;
+	pair.data_format = ALIAS_IVAL;
+	pair.data_content = InterSymbolsTable::id_from_symbol(I, pack, S);
+	return pair;
+}
+
 void InterValuePairs::from_symbol(inter_tree *I, inter_package *pack, inter_symbol *S,
 	inter_ti *val1, inter_ti *val2) {
 	if (S == NULL) internal_error("no symbol");
@@ -131,42 +264,42 @@ void InterValuePairs::from_symbol(inter_tree *I, inter_package *pack, inter_symb
 }
 
 inter_error_message *InterValuePairs::parse(text_stream *line, inter_error_location *eloc,
-	inter_bookmark *IBM, inter_type type_wanted, text_stream *S, inter_ti *val1, inter_ti *val2,
+	inter_bookmark *IBM, inter_type type_wanted, text_stream *S, inter_pair *pair,
 	inter_symbols_table *scope) {
 	inter_tree *I = InterBookmark::tree(IBM);
 	inter_package *pack = InterBookmark::package(IBM);
 
 	if (Str::eq(S, I"undef")) {
-		*val1 = UNDEF_IVAL; *val2 = 0; return NULL;
+		pair->data_format = UNDEF_IVAL; pair->data_content = 0; return NULL;
 	}
 	if ((Str::begins_with_wide_string(S, L"\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = LITERAL_TEXT_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
+		pair->data_format = LITERAL_TEXT_IVAL; pair->data_content = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), pair->data_content);
 		return Inter::Constant::parse_text(glob_storage, S, 1, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"r\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = REAL_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
+		pair->data_format = REAL_IVAL; pair->data_content = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), pair->data_content);
 		return Inter::Constant::parse_text(glob_storage, S, 2, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"&\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = GLOB_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
+		pair->data_format = GLOB_IVAL; pair->data_content = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), pair->data_content);
 		return Inter::Constant::parse_text(glob_storage, S, 2, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"dw'")) && (Str::ends_with_wide_string(S, L"'"))) {
-		*val1 = DWORD_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
+		pair->data_format = DWORD_IVAL; pair->data_content = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), pair->data_content);
 		return Inter::Constant::parse_text(glob_storage, S, 3, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"dwp'")) && (Str::ends_with_wide_string(S, L"'"))) {
-		*val1 = PDWORD_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
+		pair->data_format = PDWORD_IVAL; pair->data_content = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), pair->data_content);
 		return Inter::Constant::parse_text(glob_storage, S, 4, Str::len(S)-2, eloc);
 	}
 	if ((Str::begins_with_wide_string(S, L"^\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		*val1 = DIVIDER_IVAL; *val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *divider_storage = InterWarehouse::get_text(InterTree::warehouse(I), *val2);
+		pair->data_format = DIVIDER_IVAL; pair->data_content = InterWarehouse::create_text(InterTree::warehouse(I), pack);
+		text_stream *divider_storage = InterWarehouse::get_text(InterTree::warehouse(I), pair->data_content);
 		return Inter::Constant::parse_text(divider_storage, S, 2, Str::len(S)-2, eloc);
 	}
 	if (Str::get_first_char(S) == '/') {
@@ -201,7 +334,7 @@ inter_error_message *InterValuePairs::parse(text_stream *line, inter_error_locat
 		inter_symbol *symb = InterSymbolsTable::symbol_from_name(scope, S);
 		if (symb) @<Read symb@>;
 		symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), S);
-		InterValuePairs::from_symbol(I, pack, symb, val1, val2);
+		*pair = InterValuePairs::p_from_symbol(I, pack, symb);
 		InterSymbol::set_flag(symb, SPECULATIVE_ISYMF);
 		return NULL;
 	}
@@ -228,7 +361,7 @@ inter_error_message *InterValuePairs::parse(text_stream *line, inter_error_locat
 		if (InterTypes::literal_is_in_range(N, type_wanted) == FALSE)
 			return Inter::Errors::quoted(I"value out of range", S, eloc);
 
-		*val1 = LITERAL_IVAL; *val2 = (inter_ti) N;
+		pair->data_format = LITERAL_IVAL; pair->data_content = (inter_ti) N;
 		return NULL;
 	}
 
@@ -241,7 +374,7 @@ inter_error_message *InterValuePairs::parse(text_stream *line, inter_error_locat
 	inter_type symbol_type = InterTypes::of_symbol(symb);
 	inter_error_message *E = InterTypes::can_be_used_as(symbol_type, type_wanted, S, eloc);
 	if (E) return E;
-	InterValuePairs::from_symbol(I, pack, symb, val1, val2);
+	*pair = InterValuePairs::p_from_symbol(I, pack, symb);
 	return NULL;
 
 @ =

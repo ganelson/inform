@@ -50,24 +50,24 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_type val_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, kind_text, E);
 	if (*E) return;
 
-	inter_ti val1 = 0;
-	inter_ti val2 = 0;
+	inter_pair val = InterValuePairs::undef();
 
 	inter_symbol *kind_as_value = TextualInter::find_symbol(IBM, eloc, value_text, TYPENAME_IST, E);
 	if (kind_as_value) {
 		*E = NULL;
-		InterValuePairs::from_symbol(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value, &val1, &val2);
+		val = InterValuePairs::p_from_symbol(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value);
 	} else {
-		*E = InterValuePairs::parse(ilp->line, eloc, IBM, val_type, value_text, &val1, &val2, locals);
+		*E = InterValuePairs::parse(ilp->line, eloc, IBM, val_type, value_text, &val, locals);
 		if (*E) return;
 	}
 
-	*E = Inter::Val::new(IBM, val_type, ilp->indent_level, val1, val2, eloc);
+	*E = Inter::Val::new(IBM, val_type, ilp->indent_level, val, eloc);
 }
 
 inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_type val_type,
-	int level, inter_ti val1, inter_ti val2, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, InterTypes::to_TID_wrt_bookmark(IBM, val_type), val1, val2, eloc, (inter_ti) level);
+	int level, inter_pair val, inter_error_location *eloc) {
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, InterTypes::to_TID_wrt_bookmark(IBM, val_type),
+		InterValuePairs::to_word1(val), InterValuePairs::to_word2(val), eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

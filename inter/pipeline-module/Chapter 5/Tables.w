@@ -143,7 +143,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 		inter_symbol *tc_kind = Metadata::read_symbol(pack, I"^column_kind");
 		Produce::inv_primitive(I, CASE_BIP);
 		Produce::down(I);
-			Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) (i + 100));
+			Produce::val(I, K_value, InterValuePairs::number((inter_ti) (i + 100)));
 			Produce::code(I);
 			Produce::down(I);
 				Produce::inv_primitive(I, RETURN_BIP);

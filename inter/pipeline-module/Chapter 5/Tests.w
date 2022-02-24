@@ -44,7 +44,7 @@ at runtime.
 							Produce::down(I);
 								Produce::val_symbol(I, K_value, text_s);
 								Produce::val_symbol(I, K_value, req_s);
-								Produce::val(I, K_value, LITERAL_IVAL, len);
+								Produce::val(I, K_value, InterValuePairs::number(len));
 							Produce::up(I);
 						Produce::up(I);
 					Produce::up(I);

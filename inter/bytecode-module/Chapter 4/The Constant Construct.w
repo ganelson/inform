@@ -186,13 +186,11 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		return;
 	}
 
-	inter_ti con_val1 = 0;
-	inter_ti con_val2 = 0;
-
-	*E = InterValuePairs::parse(ilp->line, eloc, IBM, con_type, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
+	inter_pair val = InterValuePairs::undef();
+	*E = InterValuePairs::parse(ilp->line, eloc, IBM, con_type, S, &val, InterBookmark::scope(IBM));
 	if (*E) return;
 
-	*E = Inter::Constant::new_numerical(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), con_val1, con_val2, (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::Constant::new_numerical(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), val, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Constant::parse_text(text_stream *parsed_text, text_stream *S, int from, int to, inter_error_location *eloc) {
@@ -231,9 +229,9 @@ void Inter::Constant::write_text(OUTPUT_STREAM, text_stream *S) {
 	}
 }
 
-inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti val1, inter_ti val2, inter_ti level, inter_error_location *eloc) {
+inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_pair val, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_5_data_fields(IBM,
-		CONSTANT_IST, SID, KID, CONSTANT_DIRECT, val1, val2, eloc, level);
+		CONSTANT_IST, SID, KID, CONSTANT_DIRECT, InterValuePairs::to_word1(val), InterValuePairs::to_word2(val), eloc, level);
 	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
@@ -272,13 +270,11 @@ inter_error_message *Inter::Constant::new_list(inter_bookmark *IBM, inter_ti SID
 
 int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM, inter_type conts_type, inter_tree_node *P, text_stream *S, inter_error_message **E) {
 	*E = NULL;
-	inter_ti con_val1 = 0;
-	inter_ti con_val2 = 0;
-	*E = InterValuePairs::parse(line, eloc, IBM, conts_type, S, &con_val1, &con_val2, InterBookmark::scope(IBM));
+	inter_pair val = InterValuePairs::undef();
+	*E = InterValuePairs::parse(line, eloc, IBM, conts_type, S, &val, InterBookmark::scope(IBM));
 	if (*E) return FALSE;
 	Inode::extend_instruction_by(P, 2);
-	P->W.instruction[P->W.extent-2] = con_val1;
-	P->W.instruction[P->W.extent-1] = con_val2;
+	InterValuePairs::to_field(P, P->W.extent-2, val);
 	return TRUE;
 }
 

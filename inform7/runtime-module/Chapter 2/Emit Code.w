@@ -77,15 +77,15 @@ These functions all generate a |val| opcode:
 
 =
 void EmitCode::val_number(inter_ti N) {
-	Produce::val(Emit::tree(), K_number, LITERAL_IVAL, N);
+	Produce::val(Emit::tree(), K_number, InterValuePairs::number(N));
 }
 
 void EmitCode::val_true(void) {
-	Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 1);
+	Produce::val(Emit::tree(), K_truth_state, InterValuePairs::number(1));
 }
 
 void EmitCode::val_false(void) {
-	Produce::val(Emit::tree(), K_truth_state, LITERAL_IVAL, 0);
+	Produce::val(Emit::tree(), K_truth_state, InterValuePairs::number(0));
 }
 
 void EmitCode::val_iname(kind *K, inter_name *iname) {

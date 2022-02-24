@@ -40,22 +40,22 @@ value holsters continue to be a useful device.
 typedef struct value_holster {
 	int vhmode_wanted;
 	int vhmode_provided;
-	inter_ti val1, val2;
+	inter_pair val;
 } value_holster;
 
 @ =
 value_holster Holsters::new(int vhm) {
 	value_holster vh;
-	vh.val1 = 0; vh.val2 = 0;
+	vh.val = InterValuePairs::undef();
 	vh.vhmode_wanted = vhm;
 	vh.vhmode_provided = NO_VHMODE; /* the compilation function has not yet set this */
 	if (vhm == NO_VHMODE) internal_error("can't want NO_VHMODE");
 	return vh;
 }
 
-@ A compilation function can produce, as its output, a value pair |val1|, |val2|
-in either |INTER_DATA_VHMODE| (where this is exactly what is wanted) or in
-|INTER_VAL_VHMODE| (where it can easily be adapted).
+@ A compilation function can produce, as its output, a value in either
+|INTER_DATA_VHMODE| (where this is exactly what is wanted) or in |INTER_VAL_VHMODE|
+(where it can easily be adapted).
 
 =
 int Holsters::value_pair_allowed(value_holster *vh) {
@@ -68,15 +68,15 @@ int Holsters::value_pair_allowed(value_holster *vh) {
 @ This is how a compilation function "holsters" a value pair:
 
 =
-void Holsters::holster_pair(value_holster *vh, inter_ti v1, inter_ti v2) {
+void Holsters::holster_pair(value_holster *vh, inter_pair val) {
 	if (vh == NULL) internal_error("no VH");
-	vh->val1 = v1; vh->val2 = v2;
+	vh->val = val;
 	vh->vhmode_provided = INTER_DATA_VHMODE;
 }
 
-@ And this is how the caller "unholsters" that pair, after the function has
+@ And this is how the caller "unholsters" that value, after the function has
 returned. If we find |NO_VHMODE|, we convert that to |INTER_DATA_VHMODE| with
-the literal number value 0 as the pair.
+the literal number value 0.
 
 On exit, the provided mode is always |INTER_DATA_VHMODE|.
 
@@ -86,11 +86,10 @@ really like a gunslinger's holster, where a revolver once drawn is no longer
 in the holster.)
 
 =
-void Holsters::unholster_to_pair(value_holster *vh, inter_ti *v1, inter_ti *v2) {
+inter_pair Holsters::unholster_to_pair(value_holster *vh) {
 	if (vh == NULL) internal_error("no VH");
 	switch (vh->vhmode_provided) {
 		case INTER_DATA_VHMODE:
-			*v1 = vh->val1; *v2 = vh->val2;
 			break;
 		case INTER_VAL_VHMODE:
 			internal_error("impossible to unholster pair for compiled val code");
@@ -100,10 +99,10 @@ void Holsters::unholster_to_pair(value_holster *vh, inter_ti *v1, inter_ti *v2) 
 			break;
 		case NO_VHMODE:
 			vh->vhmode_provided = INTER_DATA_VHMODE;
-			vh->val1 = LITERAL_IVAL; vh->val2 = 0;
-			*v1 = vh->val1; *v2 = vh->val2;
+			vh->val = InterValuePairs::number(0);
 			break;
 	}
+	return vh->val;
 }
 
 @ If, on the other hand, the caller was asking for |INTER_VAL_VHMODE|, it
@@ -121,9 +120,8 @@ void Holsters::unholster_to_code_val(inter_tree *I, value_holster *vh) {
 	switch (vh->vhmode_provided) {
 		case INTER_DATA_VHMODE:
 		case NO_VHMODE: {
-			inter_ti v1 = LITERAL_IVAL, v2 = 0;
-			Holsters::unholster_to_pair(vh, &v1, &v2);
-			Produce::val(I, K_value, v1, v2);
+			inter_pair val = Holsters::unholster_to_pair(vh);
+			Produce::val(I, K_value, val);
 			vh->vhmode_provided = INTER_VAL_VHMODE;
 			break;
 		}

@@ -504,7 +504,7 @@ evaluated for their potential side-effects, but only the last produces a value.
 		InterSchemas::throw_error(node, I"expression in unexpected place");
 		return;
 	}
-	if (node->child_node == NULL) Produce::val(I, K_value, LITERAL_IVAL, 1);
+	if (node->child_node == NULL) Produce::val(I, K_value, InterValuePairs::number(1));
 	else {
 		int d = 0;
 		for (inter_schema_node *at = node->child_node; at; at=at->next_node) {
@@ -599,11 +599,12 @@ parsing the schema.)
 		case NUMBER_ISTT:
 		case BIN_NUMBER_ISTT:
 		case HEX_NUMBER_ISTT: {
-			inter_ti v1 = 0, v2 = 0;
+			inter_pair val;
 			if (t->constant_number >= 0) {
-				v1 = LITERAL_IVAL; v2 = (inter_ti) t->constant_number;
+				val = InterValuePairs::number((inter_ti) t->constant_number);
 			} else {
-				if (InterValuePairs::read_int_in_I6_notation(t->material, &v1, &v2) == FALSE) {
+				val = InterValuePairs::read_int_in_I6_notation(t->material);
+				if (InterValuePairs::is_undef(val)) {
 					TEMPORARY_TEXT(msg)
 					WRITE_TO(msg, "malformed literal number '%S'", t->material);
 					InterSchemas::throw_error(node, msg);
@@ -611,7 +612,7 @@ parsing the schema.)
 					return;
 				}
 			}
-			Produce::val(I, K_value, v1, v2);
+			Produce::val(I, K_value, val);
 			break;
 		}
 		case REAL_NUMBER_ISTT:

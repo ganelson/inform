@@ -202,10 +202,8 @@ used to define new kinds; in this case it doesn't matter what we write, but
 	} else {
 		#ifdef IF_MODULE
 		if (bits & TB_COLUMN_TOPIC) {
-			inter_ti v1 = 0, v2 = 0;
 			wording W = Node::get_text(cell);
-			CompileRvalues::compile_understanding(&v1, &v2, W);
-			EmitArrays::generic_entry(v1, v2);
+			EmitArrays::generic_entry(CompileRvalues::compile_understanding(W));
 		} else {
 		#endif
 			parse_node *val = Node::get_evaluation(cell);

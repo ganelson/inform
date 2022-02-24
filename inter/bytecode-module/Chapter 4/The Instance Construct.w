@@ -51,19 +51,20 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	if (InterTypes::is_enumerated(inst_type) == FALSE)
 		{ *E = Inter::Errors::quoted(I"not a kind which has instances", ilp->mr.exp[1], eloc); return; }
 
-	inter_ti v1 = UNDEF_IVAL, v2 = 0;
+	inter_pair val = InterValuePairs::undef();
 	if (vtext) {
-		*E = InterValuePairs::parse(ilp->line, eloc, IBM, InterTypes::untyped(), vtext, &v1, &v2, InterBookmark::scope(IBM));
+		*E = InterValuePairs::parse(ilp->line, eloc, IBM, InterTypes::untyped(), vtext, &val, InterBookmark::scope(IBM));
 		if (*E) return;
 	}
-	*E = Inter::Instance::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_kind), v1, v2, (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::Instance::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_kind), val, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti V1, inter_ti V2, inter_ti level, inter_error_location *eloc) {
+inter_error_message *Inter::Instance::new(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_pair val, inter_ti level, inter_error_location *eloc) {
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 	inter_ti L1 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
 	inter_ti L2 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
-	inter_tree_node *P = Inode::new_with_6_data_fields(IBM, INSTANCE_IST, SID, KID, V1, V2, L1, L2, eloc, level);
+	inter_tree_node *P = Inode::new_with_6_data_fields(IBM, INSTANCE_IST, SID, KID,
+		InterValuePairs::to_word1(val), InterValuePairs::to_word2(val), L1, L2, eloc, level);
 	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);

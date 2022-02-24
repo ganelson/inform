@@ -258,7 +258,7 @@ unless the two values are genuinely equal.
 					Produce::down(I);
 						Produce::inv_primitive(I, RETURN_BIP);
 						Produce::down(I);
-							Produce::val(I, K_value, LITERAL_IVAL, domain_size);
+							Produce::val(I, K_value, InterValuePairs::number(domain_size));
 						Produce::up(I);
 					Produce::up(I);
 				Produce::up(I);

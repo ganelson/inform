@@ -162,7 +162,7 @@ are independent and can overlap.
 				Produce::val_symbol(I, K_value, pacr_s);
 				Produce::val_symbol(I, K_value, pt_s);
 			Produce::up(I);
-			Produce::val(I, K_value, LITERAL_IVAL, 1);
+			Produce::val(I, K_value, InterValuePairs::number(1));
 		Produce::up(I);
 	Produce::up(I);
 	Produce::inv_primitive(I, STORE_BIP);
@@ -177,9 +177,9 @@ are independent and can overlap.
 					Produce::val_symbol(I, K_value, pacr_s);
 					Produce::val_symbol(I, K_value, pt_s);
 				Produce::up(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 0xFE);
+				Produce::val(I, K_value, InterValuePairs::number(0xFE));
 			Produce::up(I);
-			Produce::val(I, K_value, LITERAL_IVAL, 2);
+			Produce::val(I, K_value, InterValuePairs::number(2));
 		Produce::up(I);
 	Produce::up(I);
 	Produce::inv_primitive(I, STORE_BIP);
@@ -194,9 +194,9 @@ are independent and can overlap.
 					Produce::val_symbol(I, K_value, pacr_s);
 					Produce::val_symbol(I, K_value, pt_s);
 				Produce::up(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 0xFF00);
+				Produce::val(I, K_value, InterValuePairs::number(0xFF00));
 			Produce::up(I);
-			Produce::val(I, K_value, LITERAL_IVAL, 0x100);
+			Produce::val(I, K_value, InterValuePairs::number(0x100));
 		Produce::up(I);
 	Produce::up(I);
 
@@ -211,7 +211,7 @@ are independent and can overlap.
 				Produce::val_symbol(I, K_value, prcr_s);
 				Produce::val_symbol(I, K_value, pt_s);
 			Produce::up(I);
-			Produce::val(I, K_value, LITERAL_IVAL, 1);
+			Produce::val(I, K_value, InterValuePairs::number(1));
 		Produce::up(I);
 	Produce::up(I);
 	Produce::inv_primitive(I, STORE_BIP);
@@ -226,9 +226,9 @@ are independent and can overlap.
 					Produce::val_symbol(I, K_value, prcr_s);
 					Produce::val_symbol(I, K_value, pt_s);
 				Produce::up(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 0xFE);
+				Produce::val(I, K_value, InterValuePairs::number(0xFE));
 			Produce::up(I);
-			Produce::val(I, K_value, LITERAL_IVAL, 2);
+			Produce::val(I, K_value, InterValuePairs::number(2));
 		Produce::up(I);
 	Produce::up(I);
 	Produce::inv_primitive(I, STORE_BIP);
@@ -243,9 +243,9 @@ are independent and can overlap.
 					Produce::val_symbol(I, K_value, prcr_s);
 					Produce::val_symbol(I, K_value, pt_s);
 				Produce::up(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 0xFF00);
+				Produce::val(I, K_value, InterValuePairs::number(0xFF00));
 			Produce::up(I);
-			Produce::val(I, K_value, LITERAL_IVAL, 0x100);
+			Produce::val(I, K_value, InterValuePairs::number(0x100));
 		Produce::up(I);
 	Produce::up(I);
 
@@ -268,12 +268,12 @@ are independent and can overlap.
 				Produce::inv_primitive(I, TIMES_BIP);
 				Produce::down(I);
 					Produce::val_symbol(I, K_value, trips_s);
-					Produce::val(I, K_value, LITERAL_IVAL, 0x02);
+					Produce::val(I, K_value, InterValuePairs::number(0x02));
 				Produce::up(I);
 				Produce::inv_primitive(I, TIMES_BIP);
 				Produce::down(I);
 					Produce::val_symbol(I, K_value, consecutives_s);
-					Produce::val(I, K_value, LITERAL_IVAL, 0x100);
+					Produce::val(I, K_value, InterValuePairs::number(0x100));
 				Produce::up(I);
 			Produce::up(I);
 		Produce::up(I);
@@ -292,7 +292,7 @@ are independent and can overlap.
 				if (fn_s == NULL) internal_error("no pcon_fn");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
-					Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) i);
+					Produce::val(I, K_value, InterValuePairs::number((inter_ti) i));
 					Produce::code(I);
 					Produce::down(I);
 						Produce::inv_primitive(I, STORE_BIP);
@@ -314,7 +314,7 @@ are independent and can overlap.
 					Produce::inv_primitive(I, STORE_BIP);
 					Produce::down(I);
 						Produce::ref_symbol(I, K_value, new_s);
-						Produce::val(I, K_value, LITERAL_IVAL, 0);
+						Produce::val(I, K_value, InterValuePairs::number(0));
 					Produce::up(I);
 				Produce::up(I);
 			Produce::up(I);
@@ -331,7 +331,7 @@ are independent and can overlap.
 				Produce::inv_primitive(I, EQ_BIP);
 				Produce::down(I);
 					Produce::val_symbol(I, K_value, old_s);
-					Produce::val(I, K_value, LITERAL_IVAL, 0);
+					Produce::val(I, K_value, InterValuePairs::number(0));
 				Produce::up(I);
 				Produce::code(I);
 				Produce::down(I);
@@ -344,14 +344,14 @@ are independent and can overlap.
 						Produce::inv_primitive(I, GT_BIP);
 						Produce::down(I);
 							Produce::val_symbol(I, K_value, trips_s);
-							Produce::val(I, K_value, LITERAL_IVAL, 127);
+							Produce::val(I, K_value, InterValuePairs::number(127));
 						Produce::up(I);
 						Produce::code(I);
 						Produce::down(I);
 							Produce::inv_primitive(I, STORE_BIP);
 							Produce::down(I);
 								Produce::ref_symbol(I, K_value, trips_s);
-								Produce::val(I, K_value, LITERAL_IVAL, 127);
+								Produce::val(I, K_value, InterValuePairs::number(127));
 							Produce::up(I);
 						Produce::up(I);
 					Produce::up(I);
@@ -372,14 +372,14 @@ are independent and can overlap.
 						Produce::inv_primitive(I, GT_BIP);
 						Produce::down(I);
 							Produce::val_symbol(I, K_value, consecutives_s);
-							Produce::val(I, K_value, LITERAL_IVAL, 127);
+							Produce::val(I, K_value, InterValuePairs::number(127));
 						Produce::up(I);
 						Produce::code(I);
 						Produce::down(I);
 							Produce::inv_primitive(I, STORE_BIP);
 							Produce::down(I);
 								Produce::ref_symbol(I, K_value, consecutives_s);
-								Produce::val(I, K_value, LITERAL_IVAL, 127);
+								Produce::val(I, K_value, InterValuePairs::number(127));
 							Produce::up(I);
 						Produce::up(I);
 					Produce::up(I);
@@ -392,7 +392,7 @@ are independent and can overlap.
 			Produce::inv_primitive(I, STORE_BIP);
 			Produce::down(I);
 				Produce::ref_symbol(I, K_value, consecutives_s);
-				Produce::val(I, K_value, LITERAL_IVAL, 0);
+				Produce::val(I, K_value, InterValuePairs::number(0));
 			Produce::up(I);
 		Produce::up(I);
 	Produce::up(I);
@@ -405,7 +405,7 @@ are independent and can overlap.
 		Produce::down(I);
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 0);
+				Produce::val(I, K_value, InterValuePairs::number(0));
 				Produce::code(I);
 				Produce::down(I);
 					Produce::inv_primitive(I, IF_BIP);
@@ -423,7 +423,7 @@ are independent and can overlap.
 			Produce::up(I);
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 1);
+				Produce::val(I, K_value, InterValuePairs::number(1));
 				Produce::code(I);
 				Produce::down(I);
 					Produce::inv_primitive(I, IF_BIP);
@@ -441,7 +441,7 @@ are independent and can overlap.
 			Produce::up(I);
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 2);
+				Produce::val(I, K_value, InterValuePairs::number(2));
 				Produce::code(I);
 				Produce::down(I);
 					Produce::inv_primitive(I, IF_BIP);
@@ -454,7 +454,7 @@ are independent and can overlap.
 								Produce::inv_primitive(I, PLUS_BIP); /* +1 counting the current turn */
 								Produce::down(I);
 									Produce::val_symbol(I, K_value, consecutives_s);
-									Produce::val(I, K_value, LITERAL_IVAL, 1);
+									Produce::val(I, K_value, InterValuePairs::number(1));
 								Produce::up(I);
 							Produce::up(I);
 						Produce::up(I);
@@ -463,7 +463,7 @@ are independent and can overlap.
 			Produce::up(I);
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 4);
+				Produce::val(I, K_value, InterValuePairs::number(4));
 				Produce::code(I);
 				Produce::down(I);
 					Produce::inv_primitive(I, RETURN_BIP);
@@ -474,7 +474,7 @@ are independent and can overlap.
 			Produce::up(I);
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 5);
+				Produce::val(I, K_value, InterValuePairs::number(5));
 				Produce::code(I);
 				Produce::down(I);
 					Produce::inv_primitive(I, RETURN_BIP);
@@ -485,7 +485,7 @@ are independent and can overlap.
 			Produce::up(I);
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
-				Produce::val(I, K_value, LITERAL_IVAL, 6);
+				Produce::val(I, K_value, InterValuePairs::number(6));
 				Produce::code(I);
 				Produce::down(I);
 					Produce::inv_primitive(I, RETURN_BIP);
@@ -499,5 +499,5 @@ are independent and can overlap.
 
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);
-		Produce::val(I, K_value, LITERAL_IVAL, 0);
+		Produce::val(I, K_value, InterValuePairs::number(0));
 	Produce::up(I);

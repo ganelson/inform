@@ -117,7 +117,7 @@ code is less limited.
 			Produce::inv_primitive(I, EQ_BIP);
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, R_s);
-				Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) i+1);
+				Produce::val(I, K_value, InterValuePairs::number((inter_ti) i+1));
 			Produce::up(I);
 			Produce::code(I);
 			Produce::down(I);
@@ -131,7 +131,7 @@ code is less limited.
 				Produce::up(I);
 				Produce::inv_primitive(I, PRINTCHAR_BIP);
 				Produce::down(I);
-					Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) ('A' + m));
+					Produce::val(I, K_value, InterValuePairs::number((inter_ti) ('A' + m)));
 				Produce::up(I);
 				Produce::inv_primitive(I, PRINT_BIP);
 				Produce::down(I);

@@ -50,7 +50,7 @@ name of a given use option.
 				Produce::inv_primitive(I, EQ_BIP);
 				Produce::down(I);
 					Produce::val_symbol(I, K_value, UO_s);
-					Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) i);
+					Produce::val(I, K_value, InterValuePairs::number((inter_ti) i));
 				Produce::up(I);
 				Produce::code(I);
 				Produce::down(I);
@@ -77,7 +77,7 @@ name of a given use option.
 				text_stream *printed_name = Metadata::read_textual(pack, I"^printed_name");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
-					Produce::val(I, K_value, LITERAL_IVAL, (inter_ti) i);
+					Produce::val(I, K_value, InterValuePairs::number((inter_ti) i));
 					Produce::code(I);
 					Produce::down(I);
 						Produce::inv_primitive(I, PRINT_BIP);

@@ -231,7 +231,7 @@ with the iname for that function). For example:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">RETURN_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="function-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="function-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="function-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">InterValuePairs::number</span><span class="plain-syntax">(1));</span>
 <span class="plain-syntax">    </span><span class="function-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>But that is a laborious sort of notation for what, in a C-like language, would
@@ -300,7 +300,7 @@ example, we can write:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="function-syntax">Produce::inv_primitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="constant-syntax">RETURN_BIP</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="function-syntax">Produce::down</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="function-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">LITERAL_IVAL</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="function-syntax">Produce::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">InterValuePairs::number</span><span class="plain-syntax">(17));</span>
 <span class="plain-syntax">    </span><span class="function-syntax">Produce::up</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 </pre>
 <p class="commentary">to produce the Inter code:

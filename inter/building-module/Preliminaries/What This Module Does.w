@@ -151,7 +151,7 @@ with the iname for that function). For example:
 = (text as InC)
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);
-		Produce::val(I, K_value, LITERAL_IVAL, 1);
+		Produce::val(I, K_value, InterValuePairs::number(1));
 	Produce::up(I);
 =
 
@@ -216,7 +216,7 @@ example, we can write:
 = (text as InC)
 	Produce::inv_primitive(I, RETURN_BIP);
 	Produce::down(I);
-		Produce::val(I, K_value, LITERAL_IVAL, 17);
+		Produce::val(I, K_value, InterValuePairs::number(17));
 	Produce::up(I);
 =
 to produce the Inter code:

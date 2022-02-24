@@ -48,11 +48,10 @@ void CompileValues::to_array_entry_of_kind(parse_node *value, kind *K_wanted) {
 }
 
 void CompileValues::to_array_entry(parse_node *value) {
-	inter_ti v1 = 0, v2 = 0;
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	CompileValues::to_holster(&VH, value, COMPILE_SPEC_AS_CONSTANT);
-	Holsters::unholster_to_pair(&VH, &v1, &v2);
-	EmitArrays::generic_entry(v1, v2);
+	inter_pair val = Holsters::unholster_to_pair(&VH);
+	EmitArrays::generic_entry(val);
 }
 
 @ Now constants, which can be compiled either to a holster or to a pair of |inter_t|
@@ -65,11 +64,10 @@ void CompileValues::constant_to_holster(value_holster *VH, parse_node *value,
 		CompileValues::cast_constant(value, K_wanted), COMPILE_SPEC_AS_CONSTANT);
 }
 
-void CompileValues::constant_to_pair(inter_ti *v1, inter_ti *v2,
-	parse_node *value, kind *K_wanted) {
+inter_pair CompileValues::constant_to_pair(parse_node *value, kind *K_wanted) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	CompileValues::constant_to_holster(&VH, value, K_wanted);
-	Holsters::unholster_to_pair(&VH, v1, v2);
+	return Holsters::unholster_to_pair(&VH);
 }
 
 @ A general method (i.e., not restricted to constant context) for compiling to a
@@ -79,7 +77,9 @@ pair of |inter_t| numbers. Use this as little as possible.
 void CompileValues::to_pair(inter_ti *v1, inter_ti *v2, parse_node *spec) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	CompileValues::to_holster(&VH, spec, COMPILE_SPEC_AS_VALUE);
-	Holsters::unholster_to_pair(&VH, v1, v2);
+	inter_pair val = Holsters::unholster_to_pair(&VH);
+	*v1 = InterValuePairs::to_word1(val);
+	*v2 = InterValuePairs::to_word2(val);
 }
 
 @ Finally, for compiling to Inter opcodes in a |val| context -- in other words,
