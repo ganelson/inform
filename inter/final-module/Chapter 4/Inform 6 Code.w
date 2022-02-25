@@ -750,11 +750,9 @@ See //Vanilla Objects// for more on inner names.
 text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *prop_node) {
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = prop_node->W.instruction[VAL1_VAL_IFLD];
-		inter_ti val2 = prop_node->W.instruction[VAL2_VAL_IFLD];
-		if (InterValuePairs::holds_symbol(val1, val2))
-			prop_symbol =
-				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(prop_node), val2);
+		inter_pair val = InterValuePairs::in_field(prop_node, VAL1_VAL_IFLD);
+		if (InterValuePairs::p_holds_symbol(val))
+			prop_symbol = InterValuePairs::p_symbol_from_data_pair_at_node(val, prop_node);
 	}
 	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_ISYMF))) {
 		return VanillaObjects::inner_property_name(gen, prop_symbol);
@@ -790,22 +788,18 @@ int I6TargetCode::pval_case(inter_tree_node *P) {
 int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *prop_node) {
 	inter_symbol *kind_symbol = NULL;
 	if (kind_node->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = kind_node->W.instruction[VAL1_VAL_IFLD];
-		inter_ti val2 = kind_node->W.instruction[VAL2_VAL_IFLD];
-		if (InterValuePairs::holds_symbol(val1, val2))
-			kind_symbol =
-				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(kind_node), val2);
+		inter_pair val = InterValuePairs::in_field(kind_node, VAL1_VAL_IFLD);
+		if (InterValuePairs::p_holds_symbol(val))
+			kind_symbol = InterValuePairs::p_symbol_from_data_pair_at_node(val, kind_node);
 	}
 	if (Str::eq(InterSymbol::trans(kind_symbol), I"OBJECT_TY") == FALSE)
 		return I6G_CANNOT_PROVE;
 
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = prop_node->W.instruction[VAL1_VAL_IFLD];
-		inter_ti val2 = prop_node->W.instruction[VAL2_VAL_IFLD];
-		if (InterValuePairs::holds_symbol(val1, val2))
-			prop_symbol =
-				InterSymbolsTable::symbol_from_ID(InterPackage::scope_of(prop_node), val2);
+		inter_pair val = InterValuePairs::in_field(prop_node, VAL1_VAL_IFLD);
+		if (InterValuePairs::p_holds_symbol(val))
+			prop_symbol = InterValuePairs::p_symbol_from_data_pair_at_node(val, prop_node);
 	}
 	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_ISYMF))) {
 		return I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE;

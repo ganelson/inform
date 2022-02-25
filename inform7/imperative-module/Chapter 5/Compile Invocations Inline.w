@@ -1707,17 +1707,16 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	parse_node *spec = NULL;
 	@<Evaluate the text as a value@>;
 
-	inter_ti v1 = 0, v2 = 0;
-	CompileValues::to_pair(&v1, &v2, spec);
-	if (v1 == ALIAS_IVAL) {
+	inter_pair val = CompileValues::to_pair(spec);
+	if (InterValuePairs::p_holds_symbol(val)) {
 		PUT(URL_SYMBOL_CHAR);
 		inter_symbols_table *T =
 			InterPackage::scope(Emit::current_enclosure()->actual_package);
-		inter_symbol *S = InterSymbolsTable::symbol_from_ID(T, v2);
+		inter_symbol *S = InterValuePairs::p_symbol_from_data_pair(val, T);
 		InterSymbolsTable::write_symbol_URL(OUT, S);
 		PUT(URL_SYMBOL_CHAR);
 	} else {
-		CodeGen::val_to_text(OUT, Emit::at(), v1, v2, Task::vm());
+		CodeGen::val_to_text(OUT, Emit::at(), val, Task::vm());
 	}
 }
 

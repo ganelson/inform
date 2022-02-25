@@ -222,7 +222,7 @@ its nouns exchanged.
 @<Find the resulting actions and reversal states for each grammar line@> =
 	int lines = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-		inter_symbol *S = VanillaIF::get_symbol(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
+		inter_symbol *S = VanillaIF::get_symbol(gen, P, InterValuePairs::in_field(P, i));
 		if (S) {
 			if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_DIVIDER")) {
 				if (lines >= MAX_LINES_IN_VANILLA_GRAMMAR)
@@ -233,7 +233,7 @@ its nouns exchanged.
 			}
 			if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_RESULT")) {
 				line_actions[lines-1] =
-					VanillaIF::get_symbol(gen, P, P->W.instruction[i+2], P->W.instruction[i+3]);
+					VanillaIF::get_symbol(gen, P, InterValuePairs::in_field(P, i+2));
 			}
 			if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_REVERSE"))
 				line_reverse[lines-1] = TRUE;
@@ -249,22 +249,22 @@ its nouns exchanged.
 	int reading_command_verbs = TRUE, synonyms = 0, line_started = FALSE;
 	int lines = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-		inter_ti val1 = P->W.instruction[i], val2 = P->W.instruction[i+1];
+		inter_pair val = InterValuePairs::in_field(P, i);
 		if (reading_command_verbs) @<Read this as a command verb@>
 		else @<Read this as part of a grammar line@>;
 	}
 	@<Close any grammar line record we have already started writing@>;
 
 @<Read this as a command verb@> =
-	if (val1 == DWORD_IVAL) {
-		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
+	if (InterValuePairs::is_dword(val)) {
+		text_stream *glob_text = InterValuePairs::dword_text(I, val);
 		vanilla_dword *dw = VanillaIF::text_to_verb_dword(gen, glob_text, verbnum);
 		if (SymbolAnnotation::get_b(array_s, METAVERB_IANN)) dw->meta = TRUE;
 		synonyms++;
 		if (synonyms == 1) ADD_TO_LINKED_LIST(dw, vanilla_dword, gen->verbs);
 		dw->grammar_table_offset = address;
 	} else {
-		inter_symbol *S = VanillaIF::get_symbol(gen, P, val1, val2);
+		inter_symbol *S = VanillaIF::get_symbol(gen, P, val);
 		if ((S) && (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_DIVIDER"))) {
 			reading_command_verbs = FALSE; i -= 2;
 		}
@@ -274,10 +274,10 @@ its nouns exchanged.
 	int token_metadata = 0;
 	@<Add the slash before and slash after bits to token_metadata@>;
 		
-	inter_symbol *S = VanillaIF::get_symbol(gen, P, val1, val2);
+	inter_symbol *S = VanillaIF::get_symbol(gen, P, val);
 	if (S) {
 		@<Read this symbol name as part of a grammar line@>;
-	} else if ((val1 == DWORD_IVAL) || (val1 == PDWORD_IVAL)) {
+	} else if (InterValuePairs::is_dword(val)) {
 		@<Read this dictionary word as part of a grammar line@>;
 	}
 
@@ -287,12 +287,12 @@ like |'fish' / 'fowl' / 'chalk'|, where |'fish'| has a slash after but not befor
 
 @<Add the slash before and slash after bits to token_metadata@> =
 	if (i > DATA_CONST_IFLD) {
-		inter_symbol *S_before = VanillaIF::get_symbol(gen, P, P->W.instruction[i-2], P->W.instruction[i-1]);
+		inter_symbol *S_before = VanillaIF::get_symbol(gen, P, InterValuePairs::in_field(P, i-2));
 		if ((S_before) && (Str::eq(InterSymbol::identifier(S_before), I"VERB_DIRECTIVE_SLASH")))
 			token_metadata += 0x10;
 	}
 	if (i+2 < P->W.extent) {
-		inter_symbol *S_after = VanillaIF::get_symbol(gen, P, P->W.instruction[i+2], P->W.instruction[i+3]);
+		inter_symbol *S_after = VanillaIF::get_symbol(gen, P, InterValuePairs::in_field(P, i+2));
 		if ((S_after) && (Str::eq(InterSymbol::identifier(S_after), I"VERB_DIRECTIVE_SLASH")))
 			token_metadata += 0x20;
 	}
@@ -403,10 +403,10 @@ The opening byte gives some metadata bits, and then there's a word.
 	DISCARD_TEXT(MG)
 
 @<Read this dictionary word as part of a grammar line@> =
-	text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
+	text_stream *glob_text = InterValuePairs::dword_text(I, val);
 	vanilla_dword *dw =
 		VanillaIF::text_to_prep_dword(gen, glob_text,
-			(val1 == PDWORD_IVAL)?TRUE:FALSE);
+			(InterValuePairs::is_plural_dword(val))?TRUE:FALSE);
 	VanillaIF::grammar_byte(gen, 0x42 + token_metadata);
 	TEMPORARY_TEXT(MG)
 	Generators::mangle(gen, MG, dw->identifier);
@@ -423,10 +423,10 @@ The opening byte gives some metadata bits, and then there's a word.
 
 @ =
 inter_symbol *VanillaIF::get_symbol(code_generation *gen, inter_tree_node *P,
-	inter_ti val1, inter_ti val2) {
-	if (InterValuePairs::holds_symbol(val1, val2)) {
+	inter_pair val) {
+	if (InterValuePairs::p_holds_symbol(val)) {
 		inter_symbol *S =
-			InterSymbolsTable::symbol_from_data_pair(val1, val2,
+			InterValuePairs::p_symbol_from_data_pair(val,
 				InterPackage::scope_of(P));
 		if (S == NULL) internal_error("bad symbol in grammar token data");
 		return S;

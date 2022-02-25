@@ -230,15 +230,15 @@ void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I, index_session *se
 	if (P) {
 		int offset = DATA_CONST_IFLD;
 		while (offset < P->W.extent) {
-			inter_ti v1 = P->W.instruction[offset], v2 = P->W.instruction[offset+1];
-			if (v1 == LITERAL_IVAL) {
+			inter_pair val = InterValuePairs::in_field(P, offset);
+			if (InterValuePairs::is_number(val)) {
 				k++;
 				if (k == 1) {
 					HTML::open_indented_p(OUT, 1, "tight");
 					Localisation::italic(OUT, LD, I"Index.Elements.Mp.MentionedIn");					
 					WRITE(": ");
 				} else WRITE("; ");
-				IndexUtilities::link(OUT, (int) v2);				
+				IndexUtilities::link(OUT, (int) InterValuePairs::to_number(val));				
 			} else internal_error("malformed usage metadata");
 			offset += 2;
 		}

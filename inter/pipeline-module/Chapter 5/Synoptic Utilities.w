@@ -118,10 +118,10 @@ void Synoptic::end_array(inter_tree *I) {
 @ Three ways to define an entry:
 
 =
-void Synoptic::numeric_entry(inter_ti val2) {
+void Synoptic::numeric_entry(inter_ti N) {
 	Inode::extend_instruction_by(synoptic_array_node, 2);
-	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = LITERAL_IVAL;
-	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
+	InterValuePairs::to_field(synoptic_array_node, synoptic_array_node->W.extent-2,
+		InterValuePairs::number(N));
 }
 void Synoptic::symbol_entry(inter_symbol *S) {
 	Inode::extend_instruction_by(synoptic_array_node, 2);
@@ -129,18 +129,11 @@ void Synoptic::symbol_entry(inter_symbol *S) {
 	inter_symbol *local_S = InterSymbolsTable::create_with_unique_name(
 		InterPackage::scope(pack), InterSymbol::identifier(S));
 	Wiring::wire_to(local_S, S);
-	inter_ti val1 = 0, val2 = 0;
-	InterValuePairs::from_symbol(InterPackage::tree(pack), pack, local_S, &val1, &val2);
-	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = ALIAS_IVAL;
-	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
+	InterValuePairs::to_field(synoptic_array_node, synoptic_array_node->W.extent-2,
+		InterValuePairs::p_from_symbol(InterPackage::tree(pack), pack, local_S));
 }
 void Synoptic::textual_entry(text_stream *text) {
 	Inode::extend_instruction_by(synoptic_array_node, 2);
-	inter_package *pack = InterPackage::container(synoptic_array_node);
-	inter_tree *I = InterPackage::tree(pack);
-	inter_ti val2 = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-	text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), val2);
-	Str::copy(glob_storage, text);
-	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-2] = LITERAL_TEXT_IVAL;
-	synoptic_array_node->W.instruction[synoptic_array_node->W.extent-1] = val2;
+	InterValuePairs::to_field(synoptic_array_node, synoptic_array_node->W.extent-2,
+		InterValuePairs::from_text(Inode::tree(synoptic_array_node), text));
 }

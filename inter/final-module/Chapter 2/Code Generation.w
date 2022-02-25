@@ -203,8 +203,7 @@ single temporary segement, which is set to |OUT|.
 =
 code_generation *ad_hoc_generation = NULL;
 
-void CodeGen::val_to_text(OUTPUT_STREAM, inter_bookmark *IBM,
-	inter_ti val1, inter_ti val2, target_vm *VM) {
+void CodeGen::val_to_text(OUTPUT_STREAM, inter_bookmark *IBM, inter_pair val, target_vm *VM) {
 	if (ad_hoc_generation == NULL) {
 		if (VM == NULL) internal_error("no VM given");
 		code_generator *generator = Generators::find_for(VM);
@@ -219,7 +218,7 @@ void CodeGen::val_to_text(OUTPUT_STREAM, inter_bookmark *IBM,
 	ad_hoc_generation->generator = generator;
 	
 	CodeGen::select_temporary(ad_hoc_generation, OUT);
-	CodeGen::pair_at_bookmark(ad_hoc_generation, IBM, val1, val2);
+	CodeGen::pair_at_bookmark(ad_hoc_generation, IBM, val);
 	CodeGen::deselect_temporary(ad_hoc_generation);
 }
 
@@ -452,14 +451,12 @@ We will very often need to compile an expression from a pair |val1|, |val2|
 extracted from some Inter instruction.
 
 =
-void CodeGen::pair_at_bookmark(code_generation *gen, inter_bookmark *IBM,
-	inter_ti val1, inter_ti val2) {
+void CodeGen::pair_at_bookmark(code_generation *gen, inter_bookmark *IBM, inter_pair val) {
 	inter_symbols_table *T = IBM?(InterBookmark::scope(IBM)):NULL;
 	@<Generate from a value pair@>;
 }
 
-void CodeGen::pair(code_generation *gen, inter_tree_node *P,
-	inter_ti val1, inter_ti val2) {
+void CodeGen::pair(code_generation *gen, inter_tree_node *P, inter_pair val) {
 	inter_symbols_table *T = P?(InterPackage::scope_of(P)):NULL;
 	@<Generate from a value pair@>;
 }
@@ -467,28 +464,39 @@ void CodeGen::pair(code_generation *gen, inter_tree_node *P,
 @<Generate from a value pair@> =
 	inter_tree *I = gen->from;
 	text_stream *OUT = CodeGen::current(gen);
-	if (val1 == LITERAL_IVAL) {
-		Generators::compile_literal_number(gen, val2, FALSE);
-	} else if (InterValuePairs::holds_symbol(val1, val2)) {
-		inter_symbol *s = InterSymbolsTable::symbol_from_data_pair(val1, val2, T);
+	if (InterValuePairs::p_holds_symbol(val)) {
+		inter_symbol *s = InterValuePairs::p_symbol_from_data_pair(val, T);
 		if (s == NULL) internal_error("bad symbol in Inter pair");
 		Generators::compile_literal_symbol(gen, s);
-	} else if (val1 == DIVIDER_IVAL) {
-		text_stream *divider_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
-		WRITE(" ! %S\n\t", divider_text);
-	} else if (val1 == REAL_IVAL) {
-		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
-		Generators::compile_literal_real(gen, glob_text);
-	} else if (val1 == DWORD_IVAL) {
-		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
-		Generators::compile_dictionary_word(gen, glob_text, FALSE);
-	} else if (val1 == PDWORD_IVAL) {
-		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
-		Generators::compile_dictionary_word(gen, glob_text, TRUE);
-	} else if (val1 == LITERAL_TEXT_IVAL) {
-		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
-		Generators::compile_literal_text(gen, glob_text, TRUE);
-	} else if (val1 == GLOB_IVAL) {
-		text_stream *glob_text = InterWarehouse::get_text(InterTree::warehouse(I), val2);
-		WRITE("%S", glob_text);
-	} else internal_error("unimplemented data pair");
+	} else {
+		inter_ti val2 = val.data_content;
+		switch (val.data_format) {
+			case LITERAL_IVAL:
+				Generators::compile_literal_number(gen, val2, FALSE);
+				break;
+			case DIVIDER_IVAL:
+				WRITE(" ! %S\n\t", InterWarehouse::get_text(InterTree::warehouse(I), val2));
+				break;
+			case REAL_IVAL:
+				Generators::compile_literal_real(gen,
+					InterWarehouse::get_text(InterTree::warehouse(I), val2));
+				break;
+			case DWORD_IVAL:
+				Generators::compile_dictionary_word(gen,
+					InterWarehouse::get_text(InterTree::warehouse(I), val2), FALSE);
+				break;
+			case PDWORD_IVAL:
+				Generators::compile_dictionary_word(gen,
+					InterWarehouse::get_text(InterTree::warehouse(I), val2), TRUE);
+				break;
+			case LITERAL_TEXT_IVAL:
+				Generators::compile_literal_text(gen,
+					InterWarehouse::get_text(InterTree::warehouse(I), val2), TRUE);
+				break;
+			case GLOB_IVAL:
+				WRITE("%S", InterWarehouse::get_text(InterTree::warehouse(I), val2));
+				break;
+			default:
+				internal_error("unimplemented data pair format");
+		}
+	}

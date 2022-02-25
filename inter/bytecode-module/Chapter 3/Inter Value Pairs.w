@@ -43,14 +43,6 @@ void InterValuePairs::to_field(inter_tree_node *P, int field, inter_pair pair) {
 	P->W.instruction[field+1] = pair.data_content;
 }
 
-/* inter_pair InterValuePairs::conv(inter_ti val1, inter_ti val2) {
-	inter_pair pair;
-	pair.data_format = val1;
-	pair.data_content = val2;
-	return pair;
-}
-*/
-
 inter_ti InterValuePairs::to_word1(inter_pair pair) {
 	return pair.data_format;
 }
@@ -70,11 +62,21 @@ int InterValuePairs::is_undef(inter_pair pair) {
 	return FALSE;
 }
 
+int InterValuePairs::is_divider(inter_pair pair) {
+	if (pair.data_format == DIVIDER_IVAL) return TRUE;
+	return FALSE;
+}
+
 inter_pair InterValuePairs::number(inter_ti N) {
 	inter_pair pair;
 	pair.data_format = LITERAL_IVAL;
 	pair.data_content = N;
 	return pair;
+}
+
+int InterValuePairs::is_number(inter_pair pair) {
+	if (pair.data_format == LITERAL_IVAL) return TRUE;
+	return FALSE;
 }
 
 inter_ti InterValuePairs::to_number(inter_pair pair) {
@@ -128,6 +130,22 @@ inter_pair InterValuePairs::from_singular_dword_at(inter_tree *I, inter_package 
 	pair.data_format = DWORD_IVAL;
 	pair.data_content = ID;
 	return pair;
+}
+
+int InterValuePairs::is_dword(inter_pair pair) {
+	if ((pair.data_format == DWORD_IVAL) || (pair.data_format == PDWORD_IVAL)) return TRUE;
+	return FALSE;
+}
+
+int InterValuePairs::is_plural_dword(inter_pair pair) {
+	if (pair.data_format == PDWORD_IVAL) return TRUE;
+	return FALSE;
+}
+
+text_stream *InterValuePairs::dword_text(inter_tree *I, inter_pair pair) {
+	if (InterValuePairs::is_dword(pair))
+		return InterWarehouse::get_text(InterTree::warehouse(I), pair.data_content);
+	return NULL;
 }
 
 inter_pair InterValuePairs::from_plural_dword(inter_tree *I, text_stream *word) {
@@ -244,9 +262,20 @@ inter_pair InterValuePairs::read_int_in_I6_notation(text_stream *S) {
 @
 
 =
-int InterValuePairs::holds_symbol(inter_ti val1, inter_ti val2) {
-	if (val1 == ALIAS_IVAL) return TRUE;
+int InterValuePairs::p_holds_symbol(inter_pair pair) {
+	if (pair.data_format == ALIAS_IVAL) return TRUE;
 	return FALSE;
+}
+
+inter_symbol *InterValuePairs::p_symbol_from_data_pair(inter_pair pair,
+	inter_symbols_table *T) {
+	if (pair.data_format == ALIAS_IVAL) return InterSymbolsTable::symbol_from_ID(T, pair.data_content);
+	return NULL;
+}
+
+inter_symbol *InterValuePairs::p_symbol_from_data_pair_at_node(inter_pair pair,
+	inter_tree_node *P) {
+	return InterValuePairs::p_symbol_from_data_pair(pair, InterPackage::scope_of(P));
 }
 
 inter_pair InterValuePairs::p_from_symbol(inter_tree *I, inter_package *pack, inter_symbol *S) {
@@ -255,12 +284,6 @@ inter_pair InterValuePairs::p_from_symbol(inter_tree *I, inter_package *pack, in
 	pair.data_format = ALIAS_IVAL;
 	pair.data_content = InterSymbolsTable::id_from_symbol(I, pack, S);
 	return pair;
-}
-
-void InterValuePairs::from_symbol(inter_tree *I, inter_package *pack, inter_symbol *S,
-	inter_ti *val1, inter_ti *val2) {
-	if (S == NULL) internal_error("no symbol");
-	*val1 = ALIAS_IVAL; *val2 = InterSymbolsTable::id_from_symbol(I, pack, S);
 }
 
 inter_error_message *InterValuePairs::parse(text_stream *line, inter_error_location *eloc,

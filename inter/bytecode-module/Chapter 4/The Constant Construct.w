@@ -255,14 +255,12 @@ inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_ti
 }
 
 inter_error_message *Inter::Constant::new_list(inter_bookmark *IBM, inter_ti SID, inter_ti KID,
-	int no_pairs, inter_ti *v1_pile, inter_ti *v2_pile, inter_ti level, inter_error_location *eloc) {
+	int no_pairs, inter_pair *val_array, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *AP = Inode::new_with_3_data_fields(IBM, CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_LIST, eloc, level);
 	int pos = AP->W.extent;
 	Inode::extend_instruction_by(AP, (inter_ti) (2*no_pairs));
-	for (int i=0; i<no_pairs; i++) {
-		AP->W.instruction[pos++] = v1_pile[i];
-		AP->W.instruction[pos++] = v2_pile[i];
-	}
+	for (int i=0; i<no_pairs; i++, pos += 2)
+		InterValuePairs::to_field(AP, pos, val_array[i]);
 	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), AP); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(AP, IBM);
 	return NULL;
@@ -328,9 +326,8 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 		case CONSTANT_TABLE:
 			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				inter_ti V1 = P->W.instruction[i];
-				inter_ti V2 = P->W.instruction[i+1];
-				inter_symbol *symb = InterSymbolsTable::symbol_from_data_pair(V1, V2, InterPackage::scope(owner));
+				inter_pair val = InterValuePairs::in_field(P, i);
+				inter_symbol *symb = InterValuePairs::p_symbol_from_data_pair(val, InterPackage::scope(owner));
 				if (symb) {
 					inter_type type = InterTypes::of_symbol(symb);
 					inter_ti constructor = InterTypes::constructor_code(type);
@@ -477,12 +474,11 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 	inter_tree_node *D = InterSymbol::definition(con);
 	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return 1;
 	if (D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) {
-		inter_ti val1 = D->W.instruction[DATA_CONST_IFLD];
-		inter_ti val2 = D->W.instruction[DATA_CONST_IFLD + 1];
-		if (val1 == ALIAS_IVAL) {
+		inter_pair val = InterValuePairs::in_field(D, DATA_CONST_IFLD);
+		if (InterValuePairs::p_holds_symbol(val)) {
 			inter_symbol *alias =
-				InterSymbolsTable::symbol_from_data_pair(
-					val1, val2, InterPackage::scope(D->package));
+				InterValuePairs::p_symbol_from_data_pair(val,
+					InterPackage::scope(D->package));
 			return Inter::Constant::constant_depth(alias) + 1;
 		}
 		return 1;
@@ -493,12 +489,11 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 		(D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST)) {
 		int total = 0;
 		for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
-			inter_ti val1 = D->W.instruction[i];
-			inter_ti val2 = D->W.instruction[i + 1];
-			if (val1 == ALIAS_IVAL) {
+			inter_pair val = InterValuePairs::in_field(D, i);
+			if (InterValuePairs::p_holds_symbol(val)) {
 				inter_symbol *alias =
-					InterSymbolsTable::symbol_from_data_pair(
-						val1, val2, InterPackage::scope(D->package));
+					InterValuePairs::p_symbol_from_data_pair(val,
+						InterPackage::scope(D->package));
 				total += Inter::Constant::constant_depth(alias);
 			} else total++;
 		}
@@ -507,18 +502,17 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 	return 1;
 }
 
-inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_ti val2) {
-	if (val1 == LITERAL_IVAL) return val2;
-	if (InterValuePairs::holds_symbol(val1, val2)) {
-		inter_symbol *aliased = InterSymbolsTable::symbol_from_data_pair(val1, val2, T);
+inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_pair val) {
+	if (InterValuePairs::is_number(val)) return InterValuePairs::to_number(val);
+	if (InterValuePairs::p_holds_symbol(val)) {
+		inter_symbol *aliased = InterValuePairs::p_symbol_from_data_pair(val, T);
 		if (aliased == NULL) internal_error("bad aliased symbol");
 		inter_tree_node *D = aliased->definition;
 		if (D == NULL) internal_error("undefined symbol");
 		switch (D->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT: {
-				inter_ti dval1 = D->W.instruction[DATA_CONST_IFLD];
-				inter_ti dval2 = D->W.instruction[DATA_CONST_IFLD + 1];
-				inter_ti e = Inter::Constant::evaluate(InterPackage::scope_of(D), dval1, dval2);
+				inter_pair dval = InterValuePairs::in_field(D, DATA_CONST_IFLD);
+				inter_ti e = Inter::Constant::evaluate(InterPackage::scope_of(D), dval);
 				return e;
 			}
 			case CONSTANT_SUM_LIST:
@@ -527,7 +521,8 @@ inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_ti val1, inter_
 			case CONSTANT_QUOTIENT_LIST: {
 				inter_ti result = 0;
 				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
-					inter_ti extra = Inter::Constant::evaluate(InterPackage::scope_of(D), D->W.instruction[i], D->W.instruction[i+1]);
+					inter_pair operand = InterValuePairs::in_field(D, i);
+					inter_ti extra = Inter::Constant::evaluate(InterPackage::scope_of(D), operand);
 					if (i == DATA_CONST_IFLD) result = extra;
 					else {
 						if (D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) result = result + extra;

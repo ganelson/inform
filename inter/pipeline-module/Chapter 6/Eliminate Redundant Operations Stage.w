@@ -83,9 +83,9 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 	if ((operands[0]) && (operands[1])) {
 		for (int i = 0; i < 2; i++) {
 			if ((iden[i] >= 0) && (operands[i]->W.instruction[ID_IFLD] == VAL_IST)) {
-				inter_ti val1 = operands[i]->W.instruction[VAL1_VAL_IFLD];
-				inter_ti val2 = operands[i]->W.instruction[VAL2_VAL_IFLD];
-				if ((val1 == LITERAL_IVAL) && (val2 == (inter_ti) iden[i])) {
+				inter_pair val = InterValuePairs::in_field(operands[i], VAL1_VAL_IFLD);
+				if ((InterValuePairs::is_number(val)) &&
+					(InterValuePairs::to_number(val) == (inter_ti) iden[i])) {
 					redundant_operations_removed++;
 					NodePlacement::remove(operands[i]);
 					NodePlacement::move_to(operands[1-i], InterBookmark::immediately_after(F));

@@ -144,10 +144,10 @@ they were any other arrays. Here goes:
 	if (SymbolAnnotation::get_b(array_s, METAVERB_IANN)) WRITE("meta ");
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		WRITE(" ");
-		inter_ti val1 = P->W.instruction[i], val2 = P->W.instruction[i+1];
-		if (InterValuePairs::holds_symbol(val1, val2)) {
-			inter_symbol *A = InterSymbolsTable::symbol_from_data_pair(
-				val1, val2, InterPackage::scope_of(P));
+		inter_pair val = InterValuePairs::in_field(P, i);
+		if (InterValuePairs::p_holds_symbol(val)) {
+			inter_symbol *A = InterValuePairs::p_symbol_from_data_pair(val,
+				InterPackage::scope_of(P));
 			if (A == NULL) internal_error("bad aliased symbol");
 			if (SymbolAnnotation::get_b(A, SCOPE_FILTER_IANN)) WRITE("scope=");
 			if (SymbolAnnotation::get_b(A, NOUN_FILTER_IANN))  WRITE("noun=");
@@ -169,7 +169,7 @@ they were any other arrays. Here goes:
 			else if (Str::begins_with_wide_string(S, L"##")) @<Write without sharps@>
 			else I6TargetConstants::compile_literal_symbol(gtr, gen, A);
 		} else {
-			CodeGen::pair(gen, P, val1, val2);
+			CodeGen::pair(gen, P, val);
 		}
 	}
 	WRITE(";");

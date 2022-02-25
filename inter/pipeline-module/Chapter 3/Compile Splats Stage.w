@@ -378,19 +378,19 @@ not already there.
 	@<Work out the format of the array and the string of contents@>;
 	if (annot != INVALID_IANN) SymbolAnnotation::set_b(made_s, annot, TRUE);
 
-	inter_ti v1_pile[MAX_ASSIMILATED_ARRAY_ENTRIES], v2_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
+	inter_pair val_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
 	int no_assimilated_array_entries = 0;
 	if (directive == ARRAY_I6DIR)
-		@<Compile the string of array contents into the pile of v1 and v2 values@>
+		@<Compile the string of array contents into the pile of values@>
 	else
-		@<Compile the string of command grammar contents into the pile of v1 and v2 values@>;
+		@<Compile the string of command grammar contents into the pile of values@>;
 
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
 	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM),
 		InterTypes::from_constructor_code(LIST_ITCONC));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(Inter::Constant::new_list(IBM, MID, KID, no_assimilated_array_entries,
-		v1_pile, v2_pile, B, NULL));
+		val_pile, B, NULL));
 	Regexp::dispose_of(&mr);
 
 @ At this point |value| is |table 2 (-56) 17 "hey, I am typeless" ' '|. We want
@@ -425,7 +425,7 @@ where the entries are specified in a way using arithmetic operators, we won't
 support that here: the standard Inform kits do not need it, and it's hard to
 see why other kits would, either.
 
-@<Compile the string of array contents into the pile of v1 and v2 values@> =
+@<Compile the string of array contents into the pile of values@> =
 	string_position spos = Str::start(conts);
 	int finished = FALSE;
 	while (finished == FALSE) {
@@ -459,7 +459,7 @@ their names. Thus in:
 the action name |Do| is converted automatically to |##Do|, the actual identifier
 for the action.
 
-@<Compile the string of command grammar contents into the pile of v1 and v2 values@> =
+@<Compile the string of command grammar contents into the pile of values@> =
 	string_position spos = Str::start(conts);
 	int NT = 0, next_is_action = FALSE, finished = FALSE;
 	while (finished == FALSE) {
@@ -565,8 +565,7 @@ equating it to a function definition elsewhere.
 		PipelineErrors::kit_error("excessively long Verb or Extend", NULL);
 		break;
 	}
-	v1_pile[no_assimilated_array_entries] = InterValuePairs::to_word1(val);
-	v2_pile[no_assimilated_array_entries] = InterValuePairs::to_word2(val);
+	val_pile[no_assimilated_array_entries] = val;
 	no_assimilated_array_entries++;
 
 @<Extract a token@> =
@@ -1060,20 +1059,19 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	inter_ti MID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, result_s);
 	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::untyped());
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	inter_tree_node *pair_list = Inode::new_with_3_data_fields(IBM, CONSTANT_IST, MID, KID, op, NULL, B);
+	inter_tree_node *pair_list =
+		Inode::new_with_3_data_fields(IBM, CONSTANT_IST, MID, KID, op, NULL, B);
 	int pos = pair_list->W.extent;
 	Inode::extend_instruction_by(pair_list, 4);
 	if (i1) {
-		InterValuePairs::from_symbol(I, pack, i1,
-			&(pair_list->W.instruction[pos]), &(pair_list->W.instruction[pos+1]));
+		InterValuePairs::to_field(pair_list, pos, InterValuePairs::p_from_symbol(I, pack, i1));
 	} else {
-		pair_list->W.instruction[pos] = LITERAL_IVAL; pair_list->W.instruction[pos+1] = 0;
+		InterValuePairs::to_field(pair_list, pos, InterValuePairs::number(0));
 	}
 	if (i2) {
-		InterValuePairs::from_symbol(I, pack, i2,
-			&(pair_list->W.instruction[pos+2]), &(pair_list->W.instruction[pos+3]));
+		InterValuePairs::to_field(pair_list, pos+2, InterValuePairs::p_from_symbol(I, pack, i2));
 	} else {
-		pair_list->W.instruction[pos+2] = LITERAL_IVAL; pair_list->W.instruction[pos+3] = 0;
+		InterValuePairs::to_field(pair_list, pos+2, InterValuePairs::number(0));
 	}
 	Produce::guard(Inter::Verify::instruction(InterBookmark::package(IBM), pair_list));
 	NodePlacement::move_to_moving_bookmark(pair_list, IBM);

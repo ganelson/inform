@@ -240,8 +240,8 @@ maybe an array, maybe a constant.
 
 This is faster than it looks, but still not fast, and there would be a case to
 cache the result. But if so be careful: it would only be safe to cache the
-|LITERAL_IVAL| results, because only those are the same in all packages. Symbol
-names are not.
+numerical results, because only those are the same in all packages. Symbol
+names, for example, are not.
 
 @<Kinds whose default values are set by Neptune files@> =
 	inter_pair val = InterValuePairs::read_int_in_I6_notation(textual_description);

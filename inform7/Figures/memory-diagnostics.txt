@@ -1,4 +1,4 @@
-Total memory consumption was 412950K = 403 MB
+Total memory consumption was 413066K = 403 MB
 
 66.4% was used for 2046381 objects, in 417128 frames in 343 x 800K = 274400K = 267 MB:
 
@@ -253,7 +253,7 @@ Total memory consumption was 412950K = 403 MB
      ----  compilation workspace for objects        21856 bytes in 25 claims
      ----  lists for type-checking invocations      16000 bytes in 1 claim
      ----  code generation workspace for objects    1336 bytes in 4 claims
-     ----  emitter array storage                    161792 bytes in 2062 claims
+     ----  emitter array storage                    279904 bytes in 1996 claims
 
 20.2% was overhead - 85744384 bytes = 83734K = 81 MB
 

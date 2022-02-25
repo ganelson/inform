@@ -71,15 +71,13 @@ inter_pair CompileValues::constant_to_pair(parse_node *value, kind *K_wanted) {
 }
 
 @ A general method (i.e., not restricted to constant context) for compiling to a
-pair of |inter_t| numbers. Use this as little as possible.
+pair value. Use this as little as possible.
 
 =
-void CompileValues::to_pair(inter_ti *v1, inter_ti *v2, parse_node *spec) {
+inter_pair CompileValues::to_pair(parse_node *spec) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
 	CompileValues::to_holster(&VH, spec, COMPILE_SPEC_AS_VALUE);
-	inter_pair val = Holsters::unholster_to_pair(&VH);
-	*v1 = InterValuePairs::to_word1(val);
-	*v2 = InterValuePairs::to_word2(val);
+	return Holsters::unholster_to_pair(&VH);
 }
 
 @ Finally, for compiling to Inter opcodes in a |val| context -- in other words,

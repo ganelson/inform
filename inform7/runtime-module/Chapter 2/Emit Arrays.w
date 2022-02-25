@@ -140,7 +140,7 @@ typedef struct nascent_array {
 	inter_ti array_form;
 	int space_used;
 	int capacity;
-	inter_ti *entry_storage;
+	inter_pair *entry_storage;
 	CLASS_DEFINITION
 } nascent_array;
 
@@ -197,19 +197,17 @@ void EmitArrays::entry_inner(inter_pair val) {
 	if (current_A == NULL) internal_error("no nascent array");
 	int N = current_A->space_used;
 	if (N >= current_A->capacity) @<Quadruple the available storage@>;
-	current_A->entry_storage[current_A->space_used++] = InterValuePairs::to_word1(val);
-	current_A->entry_storage[current_A->space_used++] = InterValuePairs::to_word2(val);
+	current_A->entry_storage[current_A->space_used++] = val;
 }
 
 @<Quadruple the available storage@> =
 	int M = 4*(N+1);
 	if (current_A->capacity == 0) M = 16;
-	inter_ti *old_storage = current_A->entry_storage;
-	current_A->entry_storage = Memory::calloc(M, sizeof(inter_ti), EMIT_ARRAY_MREASON);
-	for (int i=0; i<current_A->capacity; i++)
-		current_A->entry_storage[i] = old_storage[i];
+	inter_pair *old_storage = current_A->entry_storage;
+	current_A->entry_storage = Memory::calloc(M, sizeof(inter_pair), EMIT_ARRAY_MREASON);
+	for (int i=0; i<current_A->capacity; i++) current_A->entry_storage[i] = old_storage[i];
 	if (old_storage) Memory::I7_array_free(old_storage, EMIT_ARRAY_MREASON,
-		current_A->capacity, sizeof(inter_ti));
+		current_A->capacity, sizeof(inter_pair));
 	current_A->capacity = M;
 
 @ There is just one way to end. This is the only point at which any Inter
@@ -235,9 +233,9 @@ void EmitArrays::end_inner(void) {
 		Inode::new_with_3_data_fields(Emit::at(), CONSTANT_IST, Emit::symbol_id(con_s), CID,
 			current_A->array_form, NULL, Emit::baseline());
 	int pos = array_in_progress->W.extent;
-	Inode::extend_instruction_by(array_in_progress, (unsigned int) (current_A->space_used));
-	for (int i=0; i<current_A->space_used; i++)
-		array_in_progress->W.instruction[pos++] = current_A->entry_storage[i];
+	Inode::extend_instruction_by(array_in_progress, (unsigned int) (2*(current_A->space_used)));
+	for (int i=0; i<current_A->space_used; i++, pos += 2)
+		InterValuePairs::to_field(array_in_progress, pos, current_A->entry_storage[i]);
 	Produce::guard(Inter::Verify::instruction(
 		Emit::package(), array_in_progress));
 	NodePlacement::move_to_moving_bookmark(array_in_progress, Emit::at());

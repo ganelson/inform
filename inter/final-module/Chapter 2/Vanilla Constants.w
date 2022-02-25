@@ -114,13 +114,13 @@ than a literal, or may even be computed.
 
 	int entry_count = 0;
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
-		if (P->W.instruction[i] != DIVIDER_IVAL)
+		if (InterValuePairs::is_divider(InterValuePairs::in_field(P, i)) == FALSE)
 			entry_count++;
 	int give_count = FALSE;
 	if ((entry_count == 1) &&
 		(SymbolAnnotation::get_b(con_name, ASSIMILATED_IANN))) {
-		inter_ti val1 = P->W.instruction[DATA_CONST_IFLD], val2 = P->W.instruction[DATA_CONST_IFLD+1];
-		entry_count = (int) Inter::Constant::evaluate(InterPackage::scope_of(P), val1, val2);
+		inter_pair val = InterValuePairs::in_field(P, DATA_CONST_IFLD);
+		entry_count = (int) Inter::Constant::evaluate(InterPackage::scope_of(P), val);
 		give_count = TRUE;
 	}
 
@@ -130,10 +130,10 @@ than a literal, or may even be computed.
 			Generators::array_entries(gen, entry_count, format);
 		} else {
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				if (P->W.instruction[i] != DIVIDER_IVAL) {
+				if (InterValuePairs::is_divider(InterValuePairs::in_field(P, i)) == FALSE) {
 					TEMPORARY_TEXT(entry)
 					CodeGen::select_temporary(gen, entry);
-					CodeGen::pair(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
+					CodeGen::pair(gen, P, InterValuePairs::in_field(P, i));
 					CodeGen::deselect_temporary(gen);
 					Generators::array_entry(gen, entry, format);
 					DISCARD_TEXT(entry)
@@ -179,12 +179,14 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 			}
 			break;
 		case DATA_GDCFORM: {
-			inter_ti val1 = P->W.instruction[DATA_CONST_IFLD];
-			inter_ti val2 = P->W.instruction[DATA_CONST_IFLD + 1];
-			if ((val1 == LITERAL_IVAL) && (SymbolAnnotation::get_b(con_name, HEX_IANN)))
-				Generators::compile_literal_number(gen, val2, TRUE);
-			else
-				CodeGen::pair(gen, P, val1, val2);
+			inter_pair val = InterValuePairs::in_field(P, DATA_CONST_IFLD);
+			if ((InterValuePairs::is_number(val)) &&
+				(SymbolAnnotation::get_b(con_name, HEX_IANN))) {
+				inter_ti N = InterValuePairs::to_number(val);
+				Generators::compile_literal_number(gen, N, TRUE);
+			} else {
+				CodeGen::pair(gen, P, val);
+			}
 			break;
 		}
 		case COMPUTED_GDCFORM: {
@@ -197,10 +199,11 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE(" / ");
 				}
 				int bracket = TRUE;
-				if ((P->W.instruction[i] == LITERAL_IVAL) ||
-					(InterValuePairs::holds_symbol(P->W.instruction[i], P->W.instruction[i+1]))) bracket = FALSE;
+				inter_pair operand = InterValuePairs::in_field(P, i);
+				if ((InterValuePairs::is_number(operand)) ||
+					(InterValuePairs::p_holds_symbol(operand))) bracket = FALSE;
 				if (bracket) WRITE("(");
-				CodeGen::pair(gen, P, P->W.instruction[i], P->W.instruction[i+1]);
+				CodeGen::pair(gen, P, operand);
 				if (bracket) WRITE(")");
 			}
 			WRITE(")");

@@ -403,11 +403,10 @@ number of instances, and is worth it for simplicity and speed.
 			InterPackage::scope_of(Y), Y->W.instruction[PROP_PVAL_IFLD]);
 		if ((p_name == prop_name) && (found == 0)) {
 			found = 1;
-			inter_ti v1 = Y->W.instruction[DVAL1_PVAL_IFLD];
-			inter_ti v2 = Y->W.instruction[DVAL2_PVAL_IFLD];
+			inter_pair pair = InterValuePairs::in_field(Y, DVAL1_PVAL_IFLD);
 			TEMPORARY_TEXT(val)
 			CodeGen::select_temporary(gen, val);
-			CodeGen::pair(gen, Y, v1, v2);
+			CodeGen::pair(gen, Y, pair);
 			CodeGen::deselect_temporary(gen);
 			Generators::array_entry(gen, val, TABLE_ARRAY_FORMAT);
 			DISCARD_TEXT(val)
@@ -469,7 +468,7 @@ function calls.
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL)
 		Generators::assign_property(gen,
 			InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PVAL_IFLD),
-			X->W.instruction[DVAL1_PVAL_IFLD], X->W.instruction[DVAL2_PVAL_IFLD], X);
+			InterValuePairs::in_field(X, DVAL1_PVAL_IFLD), X);
 
 @ That just leaves the following horrible function, which is called for each
 kind or instance of object, and passes raw splat matter down into the declaration

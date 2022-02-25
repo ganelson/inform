@@ -22,7 +22,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	inter_symbol *var_name;
 	LOOP_OVER_LINKED_LIST(var_name, inter_symbol, L) {
 		inter_tree_node *P = var_name->definition;
-		inter_ti v1 = P->W.instruction[VAL1_VAR_IFLD], v2 = P->W.instruction[VAL2_VAR_IFLD];
+		inter_pair val = InterValuePairs::in_field(P, VAL1_VAR_IFLD);
 		if (SymbolAnnotation::get_b(var_name, ASSIMILATED_IANN) == FALSE) {
 			if (k == 1) @<Begin the array@>;
 			@<Variables created by Inform 7 source text all go into the array@>;
@@ -44,7 +44,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	segmentation_pos saved = CodeGen::select(gen, global_variables_array_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("  (");
-	CodeGen::pair(gen, P, v1, v2);
+	CodeGen::pair(gen, P, val);
 	WRITE(") ! -->%d = %S (%S)\n", k,
 		InterSymbol::trans(var_name), InterSymbol::identifier(var_name));
 	CodeGen::deselect(gen, saved);
@@ -60,7 +60,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	segmentation_pos saved = CodeGen::select(gen, global_variables_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Global %S = ", InterSymbol::trans(var_name));
-	CodeGen::pair(gen, P, v1, v2);
+	CodeGen::pair(gen, P, val);
 	WRITE(";\n");
 	CodeGen::deselect(gen, saved);
 

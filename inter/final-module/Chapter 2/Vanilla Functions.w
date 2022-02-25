@@ -145,11 +145,10 @@ void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 	inter_tree_node *D = fn_s->definition;
 	if ((D) && (D->W.instruction[ID_IFLD] == CONSTANT_IST) &&
 		(D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
-		inter_ti val1 = D->W.instruction[DATA_CONST_IFLD];
-		inter_ti val2 = D->W.instruction[DATA_CONST_IFLD + 1];
-		if (InterValuePairs::holds_symbol(val1, val2)) {
-			inter_symbol *S = InterSymbolsTable::symbol_from_data_pair(
-				val1, val2, InterPackage::scope_of(D));
+		inter_pair val = InterValuePairs::in_field(D, DATA_CONST_IFLD);
+		if (InterValuePairs::p_holds_symbol(val)) {
+			inter_symbol *S = InterValuePairs::p_symbol_from_data_pair(val,
+				InterPackage::scope_of(D));
 			if (S) fn_s = S;
 		}
 	}

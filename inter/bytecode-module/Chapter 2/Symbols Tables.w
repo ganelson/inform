@@ -284,21 +284,6 @@ inter_symbol *InterSymbolsTable::symbol_from_ID_in_package(inter_package *owner,
 	return InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), ID);
 }
 
-@ A data pair in the form |(ALIAS_IVAL, ID)| is understood as the symbol with this
-ID in the contextually relevant package. So:
-
-=
-inter_symbol *InterSymbolsTable::symbol_from_data_pair(inter_ti val1, inter_ti val2,
-	inter_symbols_table *T) {
-	if (val1 == ALIAS_IVAL) return InterSymbolsTable::symbol_from_ID(T, val2);
-	return NULL;
-}
-
-inter_symbol *InterSymbolsTable::symbol_from_data_pair_at_node(inter_ti val1,
-	inter_ti val2, inter_tree_node *P) {
-	return InterSymbolsTable::symbol_from_data_pair(val1, val2, InterPackage::scope_of(P));
-}
-
 @h From symbol to ID.
 If all we want is to read the ID of a symbol definitely present in the given
 symbols table, that's easy. Suppose we have this example:

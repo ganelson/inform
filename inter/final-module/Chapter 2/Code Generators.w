@@ -377,12 +377,12 @@ void Generators::end_instance(code_generation *gen, inter_symbol *inst_s,
 }
 
 VOID_METHOD_TYPE(ASSIGN_PROPERTY_MTID, code_generator *generator, code_generation *gen,
-	inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X)
+	inter_symbol *prop_name, inter_pair val, inter_tree_node *X)
 VOID_METHOD_TYPE(ASSIGN_PROPERTIES_MTID, code_generator *generator, code_generation *gen,
 	inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array)
 void Generators::assign_property(code_generation *gen, inter_symbol *prop_name,
-	inter_ti val1, inter_ti val2, inter_tree_node *X) {
-	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTY_MTID, gen, prop_name, val1, val2, X);
+	inter_pair val, inter_tree_node *X) {
+	VOID_METHOD_CALL(gen->generator, ASSIGN_PROPERTY_MTID, gen, prop_name, val, X);
 }
 void Generators::assign_properties(code_generation *gen, inter_symbol *kind_name,
 	inter_symbol *prop_name, text_stream *array) {

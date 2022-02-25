@@ -541,18 +541,18 @@ Vabilla calls this to assign a property to a single owner:
 
 =
 void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
-	inter_symbol *prop_name, inter_ti val1, inter_ti val2, inter_tree_node *X) {
+	inter_symbol *prop_name, inter_pair pair, inter_tree_node *X) {
 
 	int inline_this = FALSE;
-	if (InterValuePairs::holds_symbol(val1, val2)) {
-		inter_symbol *S = InterSymbolsTable::symbol_from_data_pair_at_node(val1, val2, X);
+	if (InterValuePairs::p_holds_symbol(pair)) {
+		inter_symbol *S = InterValuePairs::p_symbol_from_data_pair_at_node(pair, X);
 		if ((S) && (SymbolAnnotation::get_b(S, INLINE_ARRAY_IANN)))
 			inline_this = TRUE;
 	}	
 
 	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, val);
-	CodeGen::pair(gen, X, val1, val2);
+	CodeGen::pair(gen, X, pair);
 	CodeGen::deselect_temporary(gen);
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
 	C_property *prop = CObjectModel::existing_property_by_name(gen,

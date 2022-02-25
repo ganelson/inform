@@ -82,11 +82,12 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_INST_IFLD]);
 	inter_type inst_type = InterTypes::from_type_name(inst_kind);
 	if (InterTypes::is_enumerated(inst_type)) {
-		if (P->W.instruction[VAL1_INST_IFLD] == UNDEF_IVAL) {
-			P->W.instruction[VAL1_INST_IFLD] = LITERAL_IVAL;
-			P->W.instruction[VAL2_INST_IFLD] = Inter::Typename::next_enumerated_value(inst_kind);
-		}
-	} else { *E = Inode::error(P, I"not a kind which has instances", NULL); return; }
+		if (InterValuePairs::is_undef(InterValuePairs::in_field(P, VAL1_INST_IFLD)))
+			InterValuePairs::to_field(P, VAL1_INST_IFLD,
+				InterValuePairs::number(Inter::Typename::next_enumerated_value(inst_kind)));
+	} else {
+		*E = Inode::error(P, I"not a kind which has instances", NULL); return;
+	}
 	*E = Inter::Verify::data_pair_fields(owner, P, VAL1_INST_IFLD, InterTypes::from_type_name(inst_kind)); if (*E) return;
 
 
