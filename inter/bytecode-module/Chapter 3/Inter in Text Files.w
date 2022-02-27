@@ -364,3 +364,284 @@ void TextualInter::write_symbol_from(OUTPUT_STREAM, inter_tree_node *P, int fiel
 		InterPackage::scope_of(P), P->W.instruction[field]);
 	TextualInter::write_symbol(OUT, S);
 }
+
+@h Notation for text literals.
+
+=
+void TextualInter::write_text(OUTPUT_STREAM, text_stream *S) {
+	LOOP_THROUGH_TEXT(P, S) {
+		wchar_t c = Str::get(P);
+		if (c == 9) { WRITE("\\t"); continue; }
+		if (c == 10) { WRITE("\\n"); continue; }
+		if (c == '"') { WRITE("\\\""); continue; }
+		if (c == '\\') { WRITE("\\\\"); continue; }
+		PUT(c);
+	}
+}
+
+inter_error_message *TextualInter::parse_literal_text(text_stream *parsed_text,
+	text_stream *S, int from, int to, inter_error_location *eloc) {
+	inter_error_message *E = NULL;
+	int literal_mode = FALSE;
+	LOOP_THROUGH_TEXT(pos, S) {
+		if ((pos.index < from) || (pos.index > to)) continue;
+		int c = (int) Str::get(pos);
+		if (literal_mode == FALSE) {
+			if (c == '\\') { literal_mode = TRUE; continue; }
+		} else {
+			switch (c) {
+				case '\\': break;
+				case '"': break;
+				case 't': c = 9; break;
+				case 'n': c = 10; break;
+				default: E = Inter::Errors::plain(I"no such backslash escape", eloc); break;
+			}
+		}
+		if (Inter::Constant::char_acceptable(c) == FALSE)
+			E = Inter::Errors::quoted(I"bad character in text", S, eloc);
+		PUT_TO(parsed_text, c);
+		literal_mode = FALSE;
+	}
+	if (E) Str::clear(parsed_text);
+	return E;
+}
+
+@h Notation for value pairs.
+See //Inter Value Pairs//. The printing and parsing functions are shown here
+in an interleaved form, to keep each notation together. Both have a simple
+outer structure:
+
+=
+void TextualInter::write_pair(OUTPUT_STREAM, inter_tree_node *P, inter_pair pair, int hex) {
+	inter_tree *I = Inode::tree(P);
+
+	     if (InterValuePairs::is_number(pair))         @<Print numeric literal syntax@>
+	else if (InterValuePairs::is_text(pair))           @<Print text literal syntax@>
+	else if (InterValuePairs::is_real(pair))           @<Print real literal syntax@>
+	else if (InterValuePairs::is_singular_dword(pair)) @<Print singular dword syntax@>
+	else if (InterValuePairs::is_plural_dword(pair))   @<Print plural dword syntax@>
+	else if (InterValuePairs::is_glob(pair))           @<Print glob syntax@>
+	else if (InterValuePairs::is_undef(pair))          @<Print undef syntax@>
+	else if (InterValuePairs::is_symbolic(pair))       @<Print symbol name syntax@>
+	else WRITE("<invalid-value-type>");
+}
+
+inter_error_message *TextualInter::parse_pair(text_stream *line, inter_error_location *eloc,
+	inter_bookmark *IBM, inter_type type_wanted, text_stream *S, inter_pair *pair) {
+	inter_symbols_table *scope = InterBookmark::scope(IBM);
+	inter_tree *I = InterBookmark::tree(IBM);
+
+	wchar_t first_char = Str::get_first_char(S);
+	wchar_t last_char = Str::get_last_char(S);
+	int is_identifier = FALSE;
+	if (Characters::isalpha(first_char)) {
+		is_identifier = TRUE;
+		LOOP_THROUGH_TEXT(pos, S)
+			if ((Characters::isalpha(Str::get(pos)) == FALSE) &&
+				(Characters::isdigit(Str::get(pos)) == FALSE) &&
+				(Str::get(pos) != '_'))
+				is_identifier = FALSE;
+	}
+	int quoted_from = -1, quoted_to = -1;
+	if (last_char == '"') {
+		for (int i=0; i<Str::len(S); i++)
+			if (Str::get_at(S, i) == '"') {
+				quoted_from = i+1;
+				quoted_to = Str::len(S)-2;
+				if (quoted_from > quoted_to)
+					return Inter::Errors::quoted(I"mismatched quotes", S, eloc);
+				break;
+			}
+	}
+
+	@<Parse numeric literal syntax@>;
+	@<Parse text literal syntax@>;
+	@<Parse real literal syntax@>;
+	@<Parse singular dword syntax@>;
+	@<Parse plural dword syntax@>;
+	@<Parse glob syntax@>;
+	@<Parse symbol name syntax@>;
+	@<Parse undef syntax@>;
+
+	return Inter::Errors::quoted(I"unrecognised value", S, eloc);
+}
+
+@ Literal numbers can be parsed in (signed) decimal, (unsigned) hexadecimal
+or (unsigned) binary, but cannot be printed back in binary.
+
+@<Print numeric literal syntax@> =
+	if (hex) WRITE("0x%x", InterValuePairs::to_number(pair));
+	else WRITE("%d", InterValuePairs::to_number(pair));
+
+@<Parse numeric literal syntax@> =
+	wchar_t c = first_char;
+	if ((c == '-') || (Characters::isdigit(c))) {
+		int sign = 1, base = 10, from = 0;
+		if (Str::prefix_eq(S, I"-", 1)) { sign = -1; from = 1; }
+		if (Str::prefix_eq(S, I"0b", 2)) { base = 2; from = 2; }
+		if (Str::prefix_eq(S, I"0x", 2)) { base = 16; from = 2; }
+		long long int N = 0;
+		LOOP_THROUGH_TEXT(pos, S) {
+			if (pos.index < from) continue;
+			int c = Str::get(pos), d = 0;
+			if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
+			else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
+			else if ((c >= '0') && (c <= '9')) d = c-'0';
+			else return Inter::Errors::quoted(I"bad digit", S, eloc);
+			if (d > base)
+				return Inter::Errors::quoted(I"bad digit for this number base", S, eloc);
+			N = base*N + (long long int) d;
+			if (pos.index > 34) return Inter::Errors::quoted(I"value out of range", S, eloc);
+		}
+		N = sign*N;
+		if (InterTypes::literal_is_in_range(N, type_wanted) == FALSE)
+			return Inter::Errors::quoted(I"value out of range", S, eloc);
+		*pair = InterValuePairs::number((inter_ti) N);
+		return NULL;
+	}
+
+@ Literal text is written in double quotes: see the functions above for the
+rules on escape characters inside.
+
+@<Print text literal syntax@> =
+	WRITE("\"");
+	TextualInter::write_text(OUT, InterValuePairs::to_text(I, pair));
+	WRITE("\"");
+
+@<Parse text literal syntax@> =
+	if (quoted_from == 1) {
+		TEMPORARY_TEXT(text)
+		inter_error_message *E =
+			TextualInter::parse_literal_text(text, S, quoted_from, quoted_to, eloc);
+		*pair = InterValuePairs::from_text(IBM, text);
+		DISCARD_TEXT(text)
+		return E;
+	}
+
+@ Real numbers are written thus: |r"3.14159"|.
+
+@<Print real literal syntax@> =
+	WRITE("r\"");
+	TextualInter::write_text(OUT, InterValuePairs::to_textual_real(I, pair));
+	WRITE("\"");
+
+@<Parse real literal syntax@> =
+	if ((quoted_from == 2) && (Str::begins_with_wide_string(S, L"r"))) {
+		TEMPORARY_TEXT(text)
+		inter_error_message *E =
+			TextualInter::parse_literal_text(text, S, quoted_from, quoted_to, eloc);
+		*pair = InterValuePairs::real_from_I6_notation(IBM, text);
+		DISCARD_TEXT(text)
+		return E;
+	}
+
+@ Dictionary words are like literal text, but prefaced by |dw| or |dwp|. For
+example, |dw"xyzzy"| or |dwp"fruits"|.
+
+@<Print singular dword syntax@> =
+	WRITE("dw\"");
+	TextualInter::write_text(OUT, InterValuePairs::to_dictionary_word(I, pair));
+	WRITE("\"");
+
+@<Parse singular dword syntax@> =
+	if ((quoted_from == 3) && (Str::begins_with_wide_string(S, L"dw"))) {
+		TEMPORARY_TEXT(text)
+		inter_error_message *E =
+			TextualInter::parse_literal_text(text, S, quoted_from, quoted_to, eloc);
+		*pair = InterValuePairs::from_singular_dword(IBM, text);
+		DISCARD_TEXT(text)
+		return E;
+	}
+
+@<Print plural dword syntax@> =
+	WRITE("dwp\"");
+	TextualInter::write_text(OUT, InterValuePairs::to_dictionary_word(I, pair));
+	WRITE("\"");
+
+@<Parse plural dword syntax@> =
+	if ((quoted_from == 4) && (Str::begins_with_wide_string(S, L"dwp"))) {
+		TEMPORARY_TEXT(text)
+		inter_error_message *E =
+			TextualInter::parse_literal_text(text, S, quoted_from, quoted_to, eloc);
+		*pair = InterValuePairs::from_plural_dword(IBM, text);
+		DISCARD_TEXT(text)
+		return E;
+	}
+
+@ Globs should never be talked about at all, but if they were, they would be
+written |glob"..."|, with the same escaping rules as literal text.
+
+@<Print glob syntax@> =
+	WRITE("glob\"");
+	TextualInter::write_text(OUT, InterValuePairs::to_glob_text(I, pair));
+	WRITE("\"");
+
+@<Parse glob syntax@> =
+	if ((quoted_from == 5) && (Str::begins_with_wide_string(S, L"glob"))) {
+		TEMPORARY_TEXT(text)
+		inter_error_message *E =
+			TextualInter::parse_literal_text(text, S, quoted_from, quoted_to, eloc);
+		*pair = InterValuePairs::glob(IBM, text);
+		DISCARD_TEXT(text)
+		return E;
+	}
+
+@ Symbol names can either be bare identifiers, in the current package, or can be
+given as URLs. Note that they are created tentatively if they do not already exist,
+in order for forward references to be read in by a one-pass assembler such as the
+one above.
+
+@<Print symbol name syntax@> =
+	TextualInter::write_symbol(OUT,
+		InterValuePairs::to_symbol_not_following(pair, InterPackage::scope_of(P)));
+
+@<Parse symbol name syntax@> =
+	if (first_char == '/') {
+		inter_symbol *symb = InterSymbolsTable::URL_to_symbol(I, S);
+		if (symb == NULL) {
+			TEMPORARY_TEXT(leaf)
+			LOOP_THROUGH_TEXT(pos, S) {
+				wchar_t c = Str::get(pos);
+				if (c == '/') Str::clear(leaf);
+				else PUT_TO(leaf, c);
+			}
+			if (Str::len(leaf) == 0) return Inter::Errors::quoted(I"URL ends in '/'", S, eloc);
+			symb = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), leaf);
+			if (!((symb) && (Wiring::is_wired_to_name(symb)) &&
+				(Str::eq(Wiring::wired_to_name(symb), S)))) {			
+				symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), leaf);
+				Wiring::wire_to_name(symb, S);
+			}
+			DISCARD_TEXT(leaf)
+		}
+		@<Use this symb as the result@>;
+	}
+	if (is_identifier) {
+		inter_symbol *symb = InterSymbolsTable::symbol_from_name(scope, S);
+		if (symb) @<Use this symb as the result@>;
+		symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), S);
+		*pair = InterValuePairs::symbolic(IBM, symb);
+		InterSymbol::set_flag(symb, SPECULATIVE_ISYMF);
+		return NULL;
+	}
+
+@<Use this symb as the result@> =
+	if ((InterTypes::is_enumerated(type_wanted)) && (InterSymbol::is_defined(symb) == FALSE))
+		return Inter::Errors::quoted(I"undefined symbol", S, eloc);
+	inter_type symbol_type = InterTypes::of_symbol(symb);
+	inter_error_message *E = InterTypes::can_be_used_as(symbol_type, type_wanted, S, eloc);
+	if (E) return E;
+	*pair = InterValuePairs::symbolic(IBM, symb);
+	return NULL;
+
+@ Note that the undef syntax is not a valid identifier, since it begins |!|.
+This choice of character is meant to give it a dangerous aspect.
+
+@<Print undef syntax@> =
+	WRITE("!undef");
+
+@<Parse undef syntax@> =
+	if (Str::eq(S, I"!undef")) {
+		*pair = InterValuePairs::undef();
+		return NULL;
+	}

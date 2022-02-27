@@ -146,9 +146,8 @@ void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 	if ((D) && (D->W.instruction[ID_IFLD] == CONSTANT_IST) &&
 		(D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
 		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
-		if (InterValuePairs::holds_symbol(val)) {
-			inter_symbol *S = InterValuePairs::symbol_from_data_pair(val,
-				InterPackage::scope_of(D));
+		if (InterValuePairs::is_symbolic(val)) {
+			inter_symbol *S = InterValuePairs::to_symbol_at(val, D);
 			if (S) fn_s = S;
 		}
 	}

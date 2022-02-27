@@ -41,7 +41,7 @@ void Inter::Append::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	}
 
 	inter_ti ID = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
-	*E = Inter::Constant::parse_text(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
+	*E = TextualInter::parse_literal_text(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ID), ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
 	*E = Inter::Append::new(IBM, symbol, ID, (inter_ti) ilp->indent_level, eloc);
@@ -69,6 +69,6 @@ void Inter::Append::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P
 	inter_ti ID = P->W.instruction[TEXT_APPEND_IFLD];
 	text_stream *S = Inode::ID_to_text(P, ID);
 	WRITE("append %S \"", InterSymbol::identifier(symbol));
-	Inter::Constant::write_text(OUT, S);
+	TextualInter::write_text(OUT, S);
 	WRITE("\"");
 }

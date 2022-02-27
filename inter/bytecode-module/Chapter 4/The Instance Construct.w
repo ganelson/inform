@@ -53,7 +53,7 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_pair val = InterValuePairs::undef();
 	if (vtext) {
-		*E = InterValuePairs::parse(ilp->line, eloc, IBM, InterTypes::untyped(), vtext, &val, InterBookmark::scope(IBM));
+		*E = TextualInter::parse_pair(ilp->line, eloc, IBM, InterTypes::untyped(), vtext, &val);
 		if (*E) return;
 	}
 	*E = Inter::Instance::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_kind), val, (inter_ti) ilp->indent_level, eloc);
@@ -106,7 +106,7 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_INST_IFLD);
 	if ((inst_name) && (inst_kind)) {
 		WRITE("instance %S %S = ", InterSymbol::identifier(inst_name), InterSymbol::identifier(inst_kind));
-		InterValuePairs::write(OUT, P, InterValuePairs::get(P, VAL1_INST_IFLD), InterPackage::scope_of(P), FALSE);
+		TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_INST_IFLD), FALSE);
 	} else { *E = Inode::error(P, I"bad instance", NULL); return; }
 	SymbolAnnotation::write_annotations(OUT, P, inst_name);
 }

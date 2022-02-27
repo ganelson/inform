@@ -29,9 +29,9 @@ inter_symbol *Metadata::read_symbol(inter_package *pack, text_stream *key) {
 		Metadata::err("not direct", pack, key);
 	}
 	inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
-	if (InterValuePairs::holds_symbol(val) == FALSE) Metadata::err("not symbol", pack, key);
+	if (InterValuePairs::is_symbolic(val) == FALSE) Metadata::err("not symbol", pack, key);
 
-	inter_symbol *s = InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(pack));
+	inter_symbol *s = InterValuePairs::to_symbol_in(val, pack);
 	if (s == NULL) Metadata::err("no symbol", pack, key);
 	return s;
 }
@@ -46,9 +46,9 @@ inter_symbol *Metadata::read_optional_symbol(inter_package *pack, text_stream *k
 		Metadata::err("not direct", pack, key);
 	}
 	inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
-	if (InterValuePairs::holds_symbol(val) == FALSE) Metadata::err("not symbol", pack, key);
+	if (InterValuePairs::is_symbolic(val) == FALSE) Metadata::err("not symbol", pack, key);
 
-	inter_symbol *s = InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(pack));
+	inter_symbol *s = InterValuePairs::to_symbol_in(val, pack);
 	if (s == NULL) Metadata::err("no symbol", pack, key);
 	return s;
 }

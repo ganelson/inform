@@ -130,10 +130,11 @@ void Synoptic::symbol_entry(inter_symbol *S) {
 		InterPackage::scope(pack), InterSymbol::identifier(S));
 	Wiring::wire_to(local_S, S);
 	InterValuePairs::set(synoptic_array_node, synoptic_array_node->W.extent-2,
-		InterValuePairs::from_symbol(InterPackage::tree(pack), pack, local_S));
+		InterValuePairs::symbolic_in(pack, local_S));
 }
 void Synoptic::textual_entry(text_stream *text) {
+	inter_tree *I = Inode::tree(synoptic_array_node);
 	Inode::extend_instruction_by(synoptic_array_node, 2);
 	InterValuePairs::set(synoptic_array_node, synoptic_array_node->W.extent-2,
-		InterValuePairs::from_text(Inode::tree(synoptic_array_node), text));
+		InterValuePairs::from_text(Packaging::at(I), text));
 }

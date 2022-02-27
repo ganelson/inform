@@ -257,7 +257,7 @@ its nouns exchanged.
 
 @<Read this as a command verb@> =
 	if (InterValuePairs::is_dword(val)) {
-		text_stream *glob_text = InterValuePairs::dword_text(I, val);
+		text_stream *glob_text = InterValuePairs::to_dictionary_word(I, val);
 		vanilla_dword *dw = VanillaIF::text_to_verb_dword(gen, glob_text, verbnum);
 		if (SymbolAnnotation::get_b(array_s, METAVERB_IANN)) dw->meta = TRUE;
 		synonyms++;
@@ -403,7 +403,7 @@ The opening byte gives some metadata bits, and then there's a word.
 	DISCARD_TEXT(MG)
 
 @<Read this dictionary word as part of a grammar line@> =
-	text_stream *glob_text = InterValuePairs::dword_text(I, val);
+	text_stream *glob_text = InterValuePairs::to_dictionary_word(I, val);
 	vanilla_dword *dw =
 		VanillaIF::text_to_prep_dword(gen, glob_text,
 			(InterValuePairs::is_plural_dword(val))?TRUE:FALSE);
@@ -424,10 +424,8 @@ The opening byte gives some metadata bits, and then there's a word.
 @ =
 inter_symbol *VanillaIF::get_symbol(code_generation *gen, inter_tree_node *P,
 	inter_pair val) {
-	if (InterValuePairs::holds_symbol(val)) {
-		inter_symbol *S =
-			InterValuePairs::symbol_from_data_pair(val,
-				InterPackage::scope_of(P));
+	if (InterValuePairs::is_symbolic(val)) {
+		inter_symbol *S = InterValuePairs::to_symbol_at(val, P);
 		if (S == NULL) internal_error("bad symbol in grammar token data");
 		return S;
 	}

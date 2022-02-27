@@ -544,8 +544,8 @@ void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
 	inter_symbol *prop_name, inter_pair pair, inter_tree_node *X) {
 
 	int inline_this = FALSE;
-	if (InterValuePairs::holds_symbol(pair)) {
-		inter_symbol *S = InterValuePairs::symbol_from_data_pair_at_node(pair, X);
+	if (InterValuePairs::is_symbolic(pair)) {
+		inter_symbol *S = InterValuePairs::to_symbol_at(pair, X);
 		if ((S) && (SymbolAnnotation::get_b(S, INLINE_ARRAY_IANN)))
 			inline_this = TRUE;
 	}	

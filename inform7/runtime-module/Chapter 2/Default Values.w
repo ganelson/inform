@@ -244,7 +244,7 @@ numerical results, because only those are the same in all packages. Symbol
 names, for example, are not.
 
 @<Kinds whose default values are set by Neptune files@> =
-	inter_pair val = InterValuePairs::read_int_in_I6_notation(textual_description);
+	inter_pair val = InterValuePairs::number_from_I6_notation(textual_description);
 	if (InterValuePairs::is_undef(val) == FALSE) return val;
 
 	if (Str::eq(textual_description, I"true")) return InterValuePairs::number(1);

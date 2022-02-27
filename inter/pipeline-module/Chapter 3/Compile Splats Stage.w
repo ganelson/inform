@@ -798,7 +798,6 @@ from command parser grammar: slightly different syntax applies there.
 inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_stream *S,
 	int Verbal) {
 	inter_tree *I = InterBookmark::tree(IBM);
-	inter_package *pack = InterBookmark::package(IBM);
 	int from = 0, to = Str::len(S)-1;
 	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\'')) {
 		if (to - from == 2)
@@ -841,8 +840,8 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 			}
 		}
 	inter_pair val;
-	if (plural) val = InterValuePairs::from_plural_dword_at(I, pack, dw);
-	else val = InterValuePairs::from_singular_dword_at(I, pack, dw);
+	if (plural) val = InterValuePairs::from_plural_dword(IBM, dw);
+	else val = InterValuePairs::from_singular_dword(IBM, dw);
 	DISCARD_TEXT(dw)
 	return val;
 
@@ -851,7 +850,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 	LOOP_THROUGH_TEXT(pos, S)
 		if ((pos.index > from) && (pos.index < to))
 			PUT_TO(dw, Str::get(pos));
-	inter_pair val = InterValuePairs::from_text_at(I, pack, dw);
+	inter_pair val = InterValuePairs::from_text(IBM, dw);
 	DISCARD_TEXT(dw)
 	return val;
 
@@ -860,7 +859,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 	LOOP_THROUGH_TEXT(pos, S)
 		if ((pos.index > from + 1) && (pos.index <= to))
 			PUT_TO(rw, Str::get(pos));
-	inter_pair val = InterValuePairs::from_real_text_at(I, pack, rw);
+	inter_pair val = InterValuePairs::real_from_I6_notation(IBM, rw);
 	DISCARD_TEXT(rw)
 	return val;
 
@@ -900,46 +899,46 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 
 @<Attempt to parse this as a command grammar token@> =
 	if (Str::eq(S, I"*"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_divider_RPSYM, I"VERB_DIRECTIVE_DIVIDER"));
 	if (Str::eq(S, I"->"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_result_RPSYM, I"VERB_DIRECTIVE_RESULT"));
 	if (Str::eq(S, I"reverse"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_reverse_RPSYM, I"VERB_DIRECTIVE_REVERSE"));
 	if (Str::eq(S, I"/"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_slash_RPSYM, I"VERB_DIRECTIVE_SLASH"));
 	if (Str::eq(S, I"special"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_special_RPSYM, I"VERB_DIRECTIVE_SPECIAL"));
 	if (Str::eq(S, I"number"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_number_RPSYM, I"VERB_DIRECTIVE_NUMBER"));
 	if (Str::eq(S, I"noun"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_noun_RPSYM, I"VERB_DIRECTIVE_NOUN"));
 	if (Str::eq(S, I"multi"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_multi_RPSYM, I"VERB_DIRECTIVE_MULTI"));
 	if (Str::eq(S, I"multiinside"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiinside_RPSYM, I"VERB_DIRECTIVE_MULTIINSIDE"));
 	if (Str::eq(S, I"multiheld"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiheld_RPSYM, I"VERB_DIRECTIVE_MULTIHELD"));
 	if (Str::eq(S, I"held"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_held_RPSYM, I"VERB_DIRECTIVE_HELD"));
 	if (Str::eq(S, I"creature"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_creature_RPSYM, I"VERB_DIRECTIVE_CREATURE"));
 	if (Str::eq(S, I"topic"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_topic_RPSYM, I"VERB_DIRECTIVE_TOPIC"));
 	if (Str::eq(S, I"multiexcept"))
-		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiexcept_RPSYM, I"VERB_DIRECTIVE_MULTIEXCEPT"));
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, S, L"scope=(%i+)")) {
@@ -947,7 +946,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 		if (symb) {
 			if (SymbolAnnotation::get_b(symb, SCOPE_FILTER_IANN) == FALSE)
 				SymbolAnnotation::set_b(symb, SCOPE_FILTER_IANN, TRUE);
-			return InterValuePairs::from_symbol(I, pack, symb);
+			return InterValuePairs::symbolic(IBM, symb);
 		}
 	}
 	if (Regexp::match(&mr, S, L"noun=(%i+)")) {
@@ -955,14 +954,14 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 		if (symb) {
 			if (SymbolAnnotation::get_b(symb, NOUN_FILTER_IANN) == FALSE)
 				SymbolAnnotation::set_b(symb, NOUN_FILTER_IANN, TRUE);
-			return InterValuePairs::from_symbol(I, pack, symb);
+			return InterValuePairs::symbolic(IBM, symb);
 		}
 	}
 
 @<Attempt to parse this as an identifier name for something already defined by this kit@> =
 	inter_symbol *symb = Wiring::find_socket(I, S);
 	if (symb) {
-		return InterValuePairs::from_symbol(I, pack, symb);
+		return InterValuePairs::symbolic(IBM, symb);
 	}
 
 @ At this point, maybe the reason we haven't yet recognised the constant |S| is
@@ -992,7 +991,7 @@ before they are needed.
 		CompileSplatsStage::compute_r(step, IBM, sch->node_tree);
 	if (result_s == NULL)
 		PipelineErrors::kit_error("Inform 6 constant in kit too complex", S);
-	return InterValuePairs::from_symbol(I, pack, result_s);
+	return InterValuePairs::symbolic(IBM, result_s);
 
 @ So this is the recursion. Note that we calculate $-x$ as $0 - x$, thus
 reducing unary subtraction to a case of binary subtraction.
@@ -1053,7 +1052,6 @@ But not really more efficient Inter.
 =
 inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *step,
 	inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
-	inter_tree *I = InterBookmark::tree(IBM);
 	inter_package *pack = InterBookmark::package(IBM);
 	inter_symbol *result_s = CompileSplatsStage::new_ccv_symbol(pack);
 	inter_ti MID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, result_s);
@@ -1064,12 +1062,12 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	int pos = pair_list->W.extent;
 	Inode::extend_instruction_by(pair_list, 4);
 	if (i1) {
-		InterValuePairs::set(pair_list, pos, InterValuePairs::from_symbol(I, pack, i1));
+		InterValuePairs::set(pair_list, pos, InterValuePairs::symbolic(IBM, i1));
 	} else {
 		InterValuePairs::set(pair_list, pos, InterValuePairs::number(0));
 	}
 	if (i2) {
-		InterValuePairs::set(pair_list, pos+2, InterValuePairs::from_symbol(I, pack, i2));
+		InterValuePairs::set(pair_list, pos+2, InterValuePairs::symbolic(IBM, i2));
 	} else {
 		InterValuePairs::set(pair_list, pos+2, InterValuePairs::number(0));
 	}
@@ -1100,7 +1098,7 @@ inter_symbol *CompileSplatsStage::compute_eval(pipeline_step *step,
 	if (t->constant_number >= 0) {
 		val = InterValuePairs::number((inter_ti) t->constant_number);
 	} else {
-		val = InterValuePairs::read_int_in_I6_notation(t->material);
+		val = InterValuePairs::number_from_I6_notation(t->material);
 		if (InterValuePairs::is_undef(val))
 			return NULL;
 	}

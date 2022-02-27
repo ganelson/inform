@@ -112,8 +112,8 @@ a variable here.
 =
 void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) {
 	inter_pair val = InterValuePairs::get(P, VAL1_VAL_IFLD);
-	if (InterValuePairs::holds_symbol(val)) {
-		inter_symbol *named_s = InterValuePairs::symbol_from_data_pair_at_node(val, P);
+	if (InterValuePairs::is_symbolic(val)) {
+		inter_symbol *named_s = InterValuePairs::to_symbol_at(val, P);
 		if ((Str::eq(InterSymbol::trans(named_s), I"self")) ||
 			((named_s->definition) &&
 				(named_s->definition->W.instruction[ID_IFLD] == VARIABLE_IST))) {

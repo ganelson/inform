@@ -400,7 +400,7 @@ void SymbolAnnotation::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter
 	switch (IA.annot->iatype) {
 		case TEXTUAL_IATYPE:
 			WRITE("=\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, IA.annot_value));
+			TextualInter::write_text(OUT, Inode::ID_to_text(F, IA.annot_value));
 			WRITE("\"");
 			break;
 		case INTEGER_IATYPE:
@@ -423,7 +423,7 @@ inter_annotation SymbolAnnotation::read_annotation(inter_tree *I, text_stream *t
 		if (Str::get(P) == '=') {
 			if (Str::get(Str::forward(P)) == '"') {
 				TEMPORARY_TEXT(parsed_text)
-				inter_error_message *EP = Inter::Constant::parse_text(parsed_text,
+				inter_error_message *EP = TextualInter::parse_literal_text(parsed_text,
 					text, P.index+2, Str::len(text)-2, NULL);
 				inter_warehouse *warehouse = InterTree::warehouse(I);
 				val = InterWarehouse::create_text(warehouse, InterTree::root_package(I));

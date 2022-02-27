@@ -750,8 +750,8 @@ text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *pro
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
 		inter_pair val = InterValuePairs::get(prop_node, VAL1_VAL_IFLD);
-		if (InterValuePairs::holds_symbol(val))
-			prop_symbol = InterValuePairs::symbol_from_data_pair_at_node(val, prop_node);
+		if (InterValuePairs::is_symbolic(val))
+			prop_symbol = InterValuePairs::to_symbol_at(val, prop_node);
 	}
 	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_ISYMF))) {
 		return VanillaObjects::inner_property_name(gen, prop_symbol);
@@ -788,8 +788,8 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 	inter_symbol *kind_symbol = NULL;
 	if (kind_node->W.instruction[ID_IFLD] == VAL_IST) {
 		inter_pair val = InterValuePairs::get(kind_node, VAL1_VAL_IFLD);
-		if (InterValuePairs::holds_symbol(val))
-			kind_symbol = InterValuePairs::symbol_from_data_pair_at_node(val, kind_node);
+		if (InterValuePairs::is_symbolic(val))
+			kind_symbol = InterValuePairs::to_symbol_at(val, kind_node);
 	}
 	if (Str::eq(InterSymbol::trans(kind_symbol), I"OBJECT_TY") == FALSE)
 		return I6G_CANNOT_PROVE;
@@ -797,8 +797,8 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
 		inter_pair val = InterValuePairs::get(prop_node, VAL1_VAL_IFLD);
-		if (InterValuePairs::holds_symbol(val))
-			prop_symbol = InterValuePairs::symbol_from_data_pair_at_node(val, prop_node);
+		if (InterValuePairs::is_symbolic(val))
+			prop_symbol = InterValuePairs::to_symbol_at(val, prop_node);
 	}
 	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_ISYMF))) {
 		return I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE;

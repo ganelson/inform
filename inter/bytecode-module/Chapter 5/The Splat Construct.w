@@ -9,7 +9,7 @@ Defining the splat construct.
 =
 void Inter::Splat::define(void) {
 	inter_construct *IC = InterConstruct::create_construct(SPLAT_IST, I"splat");
-	InterConstruct::specify_syntax(IC, I"splat OPTIONALIDENTIFIER &TEXT");
+	InterConstruct::specify_syntax(IC, I"splat OPTIONALIDENTIFIER TEXT");
 	InterConstruct::fix_instruction_length_between(IC, EXTENT_SPLAT_IFR, EXTENT_SPLAT_IFR);
 	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
@@ -66,7 +66,7 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 
 	inter_ti SID = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 	text_stream *glob_storage = InterWarehouse::get_text(InterBookmark::warehouse(IBM), SID);
-	*E = Inter::Constant::parse_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
+	*E = TextualInter::parse_literal_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
 	*E = Inter::Splat::new(IBM, SID, plm, (inter_ti) ilp->indent_level, eloc);
@@ -138,7 +138,7 @@ void Inter::Splat::verify(inter_construct *IC, inter_tree_node *P, inter_package
 void Inter::Splat::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("splat ");
 	Inter::Splat::write_plm(OUT, P->W.instruction[PLM_SPLAT_IFLD]);
-	WRITE("&\"");
-	Inter::Constant::write_text(OUT, Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]));
+	WRITE("\"");
+	TextualInter::write_text(OUT, Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]));
 	WRITE("\"");
 }

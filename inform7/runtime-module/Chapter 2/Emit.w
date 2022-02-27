@@ -84,7 +84,7 @@ inter_pair Emit::to_value_pair_in_context(inter_name *context, inter_name *iname
 }
 
 inter_pair Emit::stvp_inner(inter_symbol *S, inter_package *pack) {
-	if (S) return InterValuePairs::from_symbol(InterPackage::tree(pack), pack, S);
+	if (S) return InterValuePairs::symbolic_in(pack, S);
 	return InterValuePairs::number(0);
 }
 
@@ -251,7 +251,7 @@ void Emit::text_constant_from_wide_string(inter_name *con_iname, wchar_t *str) {
 
 void Emit::serial_number(inter_name *con_iname, text_stream *serial) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
-	inter_pair val = InterValuePairs::from_text(Emit::tree(), serial);
+	inter_pair val = InterValuePairs::from_text(Emit::at(), serial);
 	Emit::named_generic_constant(con_iname, val);
 	Packaging::exit(Emit::tree(), save);
 }

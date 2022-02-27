@@ -603,7 +603,7 @@ parsing the schema.)
 			if (t->constant_number >= 0) {
 				val = InterValuePairs::number((inter_ti) t->constant_number);
 			} else {
-				val = InterValuePairs::read_int_in_I6_notation(t->material);
+				val = InterValuePairs::number_from_I6_notation(t->material);
 				if (InterValuePairs::is_undef(val)) {
 					TEMPORARY_TEXT(msg)
 					WRITE_TO(msg, "malformed literal number '%S'", t->material);

@@ -409,8 +409,8 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, val);
 	int inline_this = FALSE;
-	if (InterValuePairs::holds_symbol(pair)) {
-		inter_symbol *S = InterValuePairs::symbol_from_data_pair_at_node(pair, X);
+	if (InterValuePairs::is_symbolic(pair)) {
+		inter_symbol *S = InterValuePairs::to_symbol_at(pair, X);
 		if ((S) && (SymbolAnnotation::get_b(S, INLINE_ARRAY_IANN))) {
 			inter_tree_node *P = InterSymbol::definition(S);
 			text_stream *OUT = CodeGen::current(gen);

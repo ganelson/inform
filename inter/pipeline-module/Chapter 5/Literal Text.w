@@ -81,7 +81,7 @@ in |texts|.
 	inter_symbol *ref_s = Synoptic::new_symbol(pack, I"ref_to_text");
 
 	Wiring::wire_to(ref_s, latest_s);
-	inter_pair val = InterValuePairs::from_symbol(I, InterPackage::container(P), ref_s);
+	inter_pair val = InterValuePairs::symbolic_in(InterPackage::container(P), ref_s);
 	P->W.instruction[FORMAT_CONST_IFLD] = CONSTANT_DIRECT;
 	InterValuePairs::set(P, DATA_CONST_IFLD, val);
 

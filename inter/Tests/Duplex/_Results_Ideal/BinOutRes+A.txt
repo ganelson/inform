@@ -12,7 +12,7 @@ package main _plain
 		code
 			.begin
 			inv !if
-				val dw'frog'
+				val dw"frog"
 				code
 					inv !goto
 						lab .begin

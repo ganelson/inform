@@ -332,8 +332,8 @@ there are three bad possibilities:
 		}
 	}
 
-@ For example, |S| is wired to |WORD_SIZE| ih the origin tree, which is (let
-us say) a constant equal to 4. We wire it instead to |WORD_SIZE| in the destination
+@ For example, |S| is wired to |WORDSIZE| ih the origin tree, which is (let
+us say) a constant equal to 4. We wire it instead to |WORDSIZE| in the destination
 tree, which will also be equal to 4 because we only ever transmigrate between
 trees with the same Inter architecture.
 

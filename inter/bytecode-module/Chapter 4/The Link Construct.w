@@ -53,7 +53,7 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	SIDS[0] = stage;
 	for (int i=1; i<=4; i++) {
 		SIDS[i] = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
-		*E = Inter::Constant::parse_text(InterWarehouse::get_text(InterBookmark::warehouse(IBM), SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
+		*E = TextualInter::parse_literal_text(InterWarehouse::get_text(InterBookmark::warehouse(IBM), SIDS[i]), ilp->mr.exp[i], 0, Str::len(ilp->mr.exp[i]), eloc);
 		if (*E) return;
 	}
 
@@ -97,7 +97,7 @@ void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 	for (int i=SEGMENT_LINK_IFLD; i<=TO_SEGMENT_LINK_IFLD; i++) {
 		WRITE(" \"");
 		text_stream *S = Inode::ID_to_text(P, P->W.instruction[i]);
-		Inter::Constant::write_text(OUT, S);
+		TextualInter::write_text(OUT, S);
 		WRITE("\"");
 	}
 }

@@ -48,7 +48,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), var_name);
 
 	inter_pair val = InterValuePairs::undef();
-	*E = InterValuePairs::parse(ilp->line, eloc, IBM, var_type, ilp->mr.exp[1], &val, InterBookmark::scope(IBM));
+	*E = TextualInter::parse_pair(ilp->line, eloc, IBM, var_type, ilp->mr.exp[1], &val);
 	if (*E) return;
 
 	*E = Inter::Variable::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_name), var_type, val, (inter_ti) ilp->indent_level, eloc);
@@ -74,7 +74,7 @@ void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		WRITE("variable ");
 		InterTypes::write_optional_type_marker(OUT, P, KIND_VAR_IFLD);
 		WRITE("%S = ", InterSymbol::identifier(var_name));
-		InterValuePairs::write(OUT, P, InterValuePairs::get(P, VAL1_VAR_IFLD), InterPackage::scope_of(P), FALSE);
+		TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_VAR_IFLD), FALSE);
 		SymbolAnnotation::write_annotations(OUT, P, var_name);
 	} else { *E = Inode::error(P, I"cannot write variable", NULL); return; }
 }

@@ -194,7 +194,7 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 				int bracket = TRUE;
 				inter_pair operand = InterValuePairs::get(P, i);
 				if ((InterValuePairs::is_number(operand)) ||
-					(InterValuePairs::holds_symbol(operand))) bracket = FALSE;
+					(InterValuePairs::is_symbolic(operand))) bracket = FALSE;
 				if (bracket) WRITE("(");
 				CodeGen::pair(gen, P, operand);
 				if (bracket) WRITE(")");

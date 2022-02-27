@@ -464,18 +464,18 @@ void CodeGen::pair(code_generation *gen, inter_tree_node *P, inter_pair val) {
 @<Generate from a value pair@> =
 	inter_tree *I = gen->from;
 	text_stream *OUT = CodeGen::current(gen);
-	if (InterValuePairs::holds_symbol(val)) {
-		inter_symbol *s = InterValuePairs::symbol_from_data_pair(val, T);
+	if (InterValuePairs::is_symbolic(val)) {
+		inter_symbol *s = InterValuePairs::to_symbol(val, T);
 		if (s == NULL) internal_error("bad symbol in Inter pair");
 		Generators::compile_literal_symbol(gen, s);
 	} else if (InterValuePairs::is_number(val)) {
 		Generators::compile_literal_number(gen, InterValuePairs::to_number(val), FALSE);
 	} else if (InterValuePairs::is_real(val)) {
-		Generators::compile_literal_real(gen, InterValuePairs::real_to_text(I, val));
+		Generators::compile_literal_real(gen, InterValuePairs::to_textual_real(I, val));
 	} else if (InterValuePairs::is_singular_dword(val)) {
-		Generators::compile_dictionary_word(gen, InterValuePairs::dword_text(I, val), FALSE);
+		Generators::compile_dictionary_word(gen, InterValuePairs::to_dictionary_word(I, val), FALSE);
 	} else if (InterValuePairs::is_plural_dword(val)) {
-		Generators::compile_dictionary_word(gen, InterValuePairs::dword_text(I, val), TRUE);
+		Generators::compile_dictionary_word(gen, InterValuePairs::to_dictionary_word(I, val), TRUE);
 	} else if (InterValuePairs::is_text(val)) {
 		Generators::compile_literal_text(gen, InterValuePairs::to_text(I, val), TRUE);
 	} else if (InterValuePairs::is_glob(val)) {

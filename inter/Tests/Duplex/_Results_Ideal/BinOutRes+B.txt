@@ -22,9 +22,9 @@ package main _plain
 	link before "alpha" "" "" ""
 	link instead "" "beta" "" ""
 	link after "" "" "gamma" ""
-	constant (K_number) cornelius = dw'frogs'
-	constant (K_number) gaius = dw'toads'
-	splat &"Sing a song of \"six splats\"...\nand don't wait up"
+	constant (K_number) cornelius = dw"frogs"
+	constant (K_number) gaius = dw"toads"
+	splat "Sing a song of \"six splats\"...\nand don't wait up"
 	typename K_colour = enum
 	instance I_green K_colour = 1
 	instance I_red K_colour = 17
@@ -35,7 +35,7 @@ package main _plain
 	variable (K_list_of_number) V_watch_list = C_concealed
 	typename K_text = text
 	constant (K_text) C_complaint = "This is already quite a long test case."
-	constant (K_number) C_raw = &"SOME_I6_DRIVEL"
+	constant (K_number) C_raw = glob"SOME_I6_DRIVEL"
 	typename K_odour = enum
 	instance I_citrus K_odour = 5
 	instance I_leather K_odour = 10
@@ -52,7 +52,7 @@ package main _plain
 	typename K_column_of_number = column of K_number
 	typename K_column_of_colour = column of K_colour
 	constant (K_column_of_number) C_egtable_col1 = { 1, 4, 9, 16 }
-	constant (K_column_of_colour) C_egtable_col2 = { I_green, undef, I_red }
+	constant (K_column_of_colour) C_egtable_col2 = { I_green, !undef, I_red }
 	constant (K_table) C_egtable = table{ C_egtable_col1, C_egtable_col2 }
 	typename K_object = enum
 	instance I_board K_object = 1
@@ -77,14 +77,14 @@ package main _plain
 		local (/main/K_colour) x __argument
 		code
 			inv /main/R_102
-				val (/main/K_number) dw'marbles'
+				val (/main/K_number) dw"marbles"
 			inv !return
 				inv !modulo
 					inv !plus
 						cast /main/K_number <- /main/K_colour
 							val (/main/K_colour) x
 						val (/main/K_number) 1
-					val (/main/K_truth_state) &"a b"
+					val (/main/K_truth_state) glob"a b"
 	constant (K_colour____colour) R_101 = function R_101_B
 	package R_102_B _code
 		local (/main/K_colour) x __argument

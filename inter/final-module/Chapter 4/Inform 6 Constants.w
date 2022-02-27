@@ -145,9 +145,8 @@ they were any other arrays. Here goes:
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		WRITE(" ");
 		inter_pair val = InterValuePairs::get(P, i);
-		if (InterValuePairs::holds_symbol(val)) {
-			inter_symbol *A = InterValuePairs::symbol_from_data_pair(val,
-				InterPackage::scope_of(P));
+		if (InterValuePairs::is_symbolic(val)) {
+			inter_symbol *A = InterValuePairs::to_symbol_at(val, P);
 			if (A == NULL) internal_error("bad aliased symbol");
 			if (SymbolAnnotation::get_b(A, SCOPE_FILTER_IANN)) WRITE("scope=");
 			if (SymbolAnnotation::get_b(A, NOUN_FILTER_IANN))  WRITE("noun=");

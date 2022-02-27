@@ -16,8 +16,8 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 			inter_tree_node *ID = Synoptic::get_definition(pack, I"column_identity");
 			inter_symbol *id_s = NULL;
 			inter_pair id_val = InterValuePairs::get(ID, DATA_CONST_IFLD);
-			if (InterValuePairs::holds_symbol(id_val))
-				id_s = InterValuePairs::symbol_from_data_pair_at_node(id_val, ID);
+			if (InterValuePairs::is_symbolic(id_val))
+				id_s = InterValuePairs::to_symbol_at(id_val, ID);
 			if (id_s == NULL) internal_error("column_identity not a symbol");
 			ID = InterSymbol::definition(id_s);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"column_bits");

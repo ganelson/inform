@@ -335,8 +335,7 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_bookmark *IBM = Packaging::at(I);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
-	inter_package *pack = InterBookmark::package(IBM);
-	inter_pair val = InterValuePairs::from_symbol(InterPackage::tree(pack), pack, val_s);
+	inter_pair val = InterValuePairs::symbolic(IBM, val_s);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
 		Produce::kind_to_TID(IBM, K),
@@ -484,9 +483,7 @@ void Produce::val_iname(inter_tree *I, kind *K, inter_name *iname) {
 
 =
 void Produce::val_symbol(inter_tree *I, kind *K, inter_symbol *s) {
-	inter_bookmark *IBM = Packaging::at(I);
-	inter_pair val = InterValuePairs::from_symbol(InterBookmark::tree(IBM),
-		InterBookmark::package(IBM), s);
+	inter_pair val = InterValuePairs::symbolic(Packaging::at(I), s);
 	Produce::val(I, K, val);
 }
 
@@ -512,7 +509,7 @@ void Produce::val_nothing(inter_tree *I) {
 }
 
 void Produce::val_text(inter_tree *I, text_stream *S) {
-	Produce::val(I, K_value, InterValuePairs::from_text(I, S));
+	Produce::val(I, K_value, InterValuePairs::from_text(Packaging::at(I), S));
 }
 
 void Produce::val_char(inter_tree *I, wchar_t c) {
@@ -520,15 +517,15 @@ void Produce::val_char(inter_tree *I, wchar_t c) {
 }
 
 void Produce::val_real(inter_tree *I, double g) {
-	Produce::val(I, K_value, InterValuePairs::real(I, g));
+	Produce::val(I, K_value, InterValuePairs::real(Packaging::at(I), g));
 }
 
 void Produce::val_real_from_text(inter_tree *I, text_stream *S) {
-	Produce::val(I, K_value, InterValuePairs::from_real_text(I, S));
+	Produce::val(I, K_value, InterValuePairs::real_from_I6_notation(Packaging::at(I), S));
 }
 
 void Produce::val_dword(inter_tree *I, text_stream *S) {
-	Produce::val(I, K_value, InterValuePairs::from_singular_dword(I, S));
+	Produce::val(I, K_value, InterValuePairs::from_singular_dword(Packaging::at(I), S));
 }
 
 @ The |ref| instruction is simpler. It makes no sense to have a storage reference
@@ -540,9 +537,7 @@ void Produce::ref_iname(inter_tree *I, kind *K, inter_name *iname) {
 }
 
 void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
-	inter_bookmark *IBM = Packaging::at(I);
-	inter_pair val = InterValuePairs::from_symbol(InterBookmark::tree(IBM),
-		InterBookmark::package(IBM), s);
+	inter_pair val = InterValuePairs::symbolic(Packaging::at(I), s);
 	inter_symbol *val_kind = NULL;
 	if ((K) && (K != K_value)) {
 		val_kind = Produce::kind_to_symbol(K);

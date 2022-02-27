@@ -164,7 +164,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	if ((Str::begins_with_wide_string(S, L"\"")) && (Str::ends_with_wide_string(S, L"\""))) {
 		TEMPORARY_TEXT(parsed_text)
-		*E = Inter::Constant::parse_text(parsed_text, S, 1, Str::len(S)-2, eloc);
+		*E = TextualInter::parse_literal_text(parsed_text, S, 1, Str::len(S)-2, eloc);
 		inter_ti ID = 0;
 		if (*E == NULL) {
 			ID = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
@@ -187,46 +187,10 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	}
 
 	inter_pair val = InterValuePairs::undef();
-	*E = InterValuePairs::parse(ilp->line, eloc, IBM, con_type, S, &val, InterBookmark::scope(IBM));
+	*E = TextualInter::parse_pair(ilp->line, eloc, IBM, con_type, S, &val);
 	if (*E) return;
 
 	*E = Inter::Constant::new_numerical(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), val, (inter_ti) ilp->indent_level, eloc);
-}
-
-inter_error_message *Inter::Constant::parse_text(text_stream *parsed_text, text_stream *S, int from, int to, inter_error_location *eloc) {
-	inter_error_message *E = NULL;
-	int literal_mode = FALSE;
-	LOOP_THROUGH_TEXT(pos, S) {
-		if ((pos.index < from) || (pos.index > to)) continue;
-		int c = (int) Str::get(pos);
-		if (literal_mode == FALSE) {
-			if (c == '\\') { literal_mode = TRUE; continue; }
-		} else {
-			switch (c) {
-				case '\\': break;
-				case '"': break;
-				case 't': c = 9; break;
-				case 'n': c = 10; break;
-				default: E = Inter::Errors::plain(I"no such backslash escape", eloc); break;
-			}
-		}
-		if (Inter::Constant::char_acceptable(c) == FALSE) E = Inter::Errors::quoted(I"bad character in text", S, eloc);
-		PUT_TO(parsed_text, c);
-		literal_mode = FALSE;
-	}
-	if (E) Str::clear(parsed_text);
-	return E;
-}
-
-void Inter::Constant::write_text(OUTPUT_STREAM, text_stream *S) {
-	LOOP_THROUGH_TEXT(P, S) {
-		wchar_t c = Str::get(P);
-		if (c == 9) { WRITE("\\t"); continue; }
-		if (c == 10) { WRITE("\\n"); continue; }
-		if (c == '"') { WRITE("\\\""); continue; }
-		if (c == '\\') { WRITE("\\\\"); continue; }
-		PUT(c);
-	}
 }
 
 inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_pair val, inter_ti level, inter_error_location *eloc) {
@@ -269,7 +233,7 @@ inter_error_message *Inter::Constant::new_list(inter_bookmark *IBM, inter_ti SID
 int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM, inter_type conts_type, inter_tree_node *P, text_stream *S, inter_error_message **E) {
 	*E = NULL;
 	inter_pair val = InterValuePairs::undef();
-	*E = InterValuePairs::parse(line, eloc, IBM, conts_type, S, &val, InterBookmark::scope(IBM));
+	*E = TextualInter::parse_pair(line, eloc, IBM, conts_type, S, &val);
 	if (*E) return FALSE;
 	Inode::extend_instruction_by(P, 2);
 	InterValuePairs::set(P, P->W.extent-2, val);
@@ -327,7 +291,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				inter_pair val = InterValuePairs::get(P, i);
-				inter_symbol *symb = InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(owner));
+				inter_symbol *symb = InterValuePairs::to_symbol_in(val, owner);
 				if (symb) {
 					inter_type type = InterTypes::of_symbol(symb);
 					inter_ti constructor = InterTypes::constructor_code(type);
@@ -383,7 +347,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		WRITE("%S = ", InterSymbol::identifier(con_name));
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:
-				InterValuePairs::write(OUT, P, InterValuePairs::get(P, DATA_CONST_IFLD), InterPackage::scope_of(P), hex);
+				TextualInter::write_pair(OUT, P, InterValuePairs::get(P, DATA_CONST_IFLD), hex);
 				break;
 			case CONSTANT_TABLE:			
 			case CONSTANT_SUM_LIST:			
@@ -400,7 +364,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					InterValuePairs::write(OUT, P, InterValuePairs::get(P, i), InterPackage::scope_of(P), hex);
+					TextualInter::write_pair(OUT, P, InterValuePairs::get(P, i), hex);
 				}
 				WRITE(" }");
 				break;
@@ -410,7 +374,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					InterValuePairs::write(OUT, P, InterValuePairs::get(P, i), InterPackage::scope_of(P), hex);
+					TextualInter::write_pair(OUT, P, InterValuePairs::get(P, i), hex);
 				}
 				WRITE(" }");
 				break;
@@ -419,7 +383,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				WRITE("\"");
 				inter_ti ID = P->W.instruction[DATA_CONST_IFLD];
 				text_stream *S = Inode::ID_to_text(P, ID);
-				Inter::Constant::write_text(OUT, S);
+				TextualInter::write_text(OUT, S);
 				WRITE("\"");
 				break;
 			case CONSTANT_ROUTINE: {
@@ -475,10 +439,8 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return 1;
 	if (D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) {
 		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
-		if (InterValuePairs::holds_symbol(val)) {
-			inter_symbol *alias =
-				InterValuePairs::symbol_from_data_pair(val,
-					InterPackage::scope(D->package));
+		if (InterValuePairs::is_symbolic(val)) {
+			inter_symbol *alias = InterValuePairs::to_symbol_at(val, D);
 			return Inter::Constant::constant_depth(alias) + 1;
 		}
 		return 1;
@@ -490,10 +452,8 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 		int total = 0;
 		for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
 			inter_pair val = InterValuePairs::get(D, i);
-			if (InterValuePairs::holds_symbol(val)) {
-				inter_symbol *alias =
-					InterValuePairs::symbol_from_data_pair(val,
-						InterPackage::scope(D->package));
+			if (InterValuePairs::is_symbolic(val)) {
+				inter_symbol *alias = InterValuePairs::to_symbol_at(val, D);
 				total += Inter::Constant::constant_depth(alias);
 			} else total++;
 		}
@@ -504,8 +464,8 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 
 inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_pair val) {
 	if (InterValuePairs::is_number(val)) return InterValuePairs::to_number(val);
-	if (InterValuePairs::holds_symbol(val)) {
-		inter_symbol *aliased = InterValuePairs::symbol_from_data_pair(val, T);
+	if (InterValuePairs::is_symbolic(val)) {
+		inter_symbol *aliased = InterValuePairs::to_symbol(val, T);
 		if (aliased == NULL) internal_error("bad aliased symbol");
 		inter_tree_node *D = aliased->definition;
 		if (D == NULL) internal_error("undefined symbol");
@@ -546,9 +506,9 @@ int Inter::Constant::evaluate_to_int(inter_symbol *S) {
 		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
 		if (InterValuePairs::is_number(val))
 			return (int) InterValuePairs::to_number(val);
-		if (InterValuePairs::holds_symbol(val)) {
+		if (InterValuePairs::is_symbolic(val)) {
 			inter_symbols_table *scope = S->owning_table;
-			inter_symbol *alias_to = InterValuePairs::symbol_from_data_pair(val, scope);
+			inter_symbol *alias_to = InterValuePairs::to_symbol(val, scope);
 			return InterSymbol::evaluate_to_int(alias_to);
 		}
 	}
@@ -565,9 +525,9 @@ int Inter::Constant::set_int(inter_symbol *S, int N) {
 			InterValuePairs::set(P, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) N));
 			return TRUE;
 		}
-		if (InterValuePairs::holds_symbol(val)) {
+		if (InterValuePairs::is_symbolic(val)) {
 			inter_symbols_table *scope = S->owning_table;
-			inter_symbol *alias_to = InterValuePairs::symbol_from_data_pair(val, scope);
+			inter_symbol *alias_to = InterValuePairs::to_symbol(val, scope);
 			InterSymbol::set_int(alias_to, N);
 			return TRUE;
 		}

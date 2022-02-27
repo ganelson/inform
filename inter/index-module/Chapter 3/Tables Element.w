@@ -123,8 +123,8 @@ Rules, which of course are always present. So these are hidden by default.
 	inter_tree_node *ID = Synoptic::get_definition(usage_pack, I"column_identity");
 	inter_symbol *id_s = NULL;
 	inter_pair val = InterValuePairs::get(ID, DATA_CONST_IFLD);
-	if (InterValuePairs::holds_symbol(val))
-		id_s = InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(usage_pack));
+	if (InterValuePairs::is_symbolic(val))
+		id_s = InterValuePairs::to_symbol_in(val, usage_pack);
 	if (id_s == NULL) internal_error("column_identity not specified");
 	inter_package *col_pack = InterPackage::container(id_s->definition);
 	HTML::first_html_column(OUT, 0);

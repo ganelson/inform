@@ -223,9 +223,8 @@ void FauxInstances::make_faux(index_session *session) {
 			int offset = DATA_CONST_IFLD + 4*i;
 			if (offset >= P->W.extent) break;
 			inter_pair val = InterValuePairs::get(P, offset);
-			if (InterValuePairs::holds_symbol(val)) {
-				inter_symbol *S =
-					InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(pack));
+			if (InterValuePairs::is_symbolic(val)) {
+				inter_symbol *S = InterValuePairs::to_symbol_in(val, pack);
 				if (S == NULL) internal_error("malformed map metadata");
 				I->fimd.exits[i] = FauxInstances::symbol_to_faux_instance(faux_set, S);
 			} else if (InterValuePairs::is_zero(val) == FALSE)
@@ -244,9 +243,9 @@ void FauxInstances::make_faux(index_session *session) {
 		int offset = DATA_CONST_IFLD;
 		while (offset < P->W.extent) {
 			inter_pair val = InterValuePairs::get(P, offset);
-			if (InterValuePairs::holds_symbol(val)) {
+			if (InterValuePairs::is_symbolic(val)) {
 				inter_symbol *S =
-					InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(pack));
+					InterValuePairs::to_symbol_in(val, pack);
 				if (S == NULL) internal_error("malformed map metadata");
 				faux_instance *FL = FauxInstances::symbol_to_faux_instance(faux_set, S);
 				ADD_TO_LINKED_LIST(I, faux_instance, FL->backdrop_presences);

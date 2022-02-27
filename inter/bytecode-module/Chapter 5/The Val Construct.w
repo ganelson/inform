@@ -55,9 +55,9 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	inter_symbol *kind_as_value = TextualInter::find_symbol(IBM, eloc, value_text, TYPENAME_IST, E);
 	if (kind_as_value) {
 		*E = NULL;
-		val = InterValuePairs::from_symbol(InterBookmark::tree(IBM), InterBookmark::package(IBM), kind_as_value);
+		val = InterValuePairs::symbolic(IBM, kind_as_value);
 	} else {
-		*E = InterValuePairs::parse(ilp->line, eloc, IBM, val_type, value_text, &val, locals);
+		*E = TextualInter::parse_pair(ilp->line, eloc, IBM, val_type, value_text, &val);
 		if (*E) return;
 	}
 
@@ -87,9 +87,7 @@ void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 }
 
 void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_symbols_table *locals = InterPackage::scope_of(P);
-	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	WRITE("val ");
 	InterTypes::write_optional_type_marker(OUT, P, KIND_VAL_IFLD);
-	InterValuePairs::write(OUT, P, InterValuePairs::get(P, VAL1_VAL_IFLD), locals, FALSE);
+	TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_VAL_IFLD), FALSE);
 }

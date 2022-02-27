@@ -90,17 +90,17 @@ void EmitArrays::null_entry(void) {
 }
 
 void EmitArrays::text_entry(text_stream *content) {
-	inter_pair val = InterValuePairs::from_text(Emit::tree(), content);
+	inter_pair val = InterValuePairs::from_text(Emit::at(), content);
 	EmitArrays::entry_inner(val);
 }
 
 void EmitArrays::dword_entry(text_stream *content) {
-	inter_pair val = InterValuePairs::from_singular_dword(Emit::tree(), content);
+	inter_pair val = InterValuePairs::from_singular_dword(Emit::at(), content);
 	EmitArrays::entry_inner(val);
 }
 
 void EmitArrays::plural_dword_entry(text_stream *content) {
-	inter_pair val = InterValuePairs::from_plural_dword(Emit::tree(), content);
+	inter_pair val = InterValuePairs::from_plural_dword(Emit::at(), content);
 	EmitArrays::entry_inner(val);
 }
 

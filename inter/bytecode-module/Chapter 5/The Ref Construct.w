@@ -50,7 +50,7 @@ void Inter::Ref::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	if (*E) return;
 
 	inter_pair val = InterValuePairs::undef();
-	*E = InterValuePairs::parse(ilp->line, eloc, IBM, ref_type, value_text, &val, locals);
+	*E = TextualInter::parse_pair(ilp->line, eloc, IBM, ref_type, value_text, &val);
 	if (*E) return;
 
 	*E = Inter::Ref::new(IBM, ref_type, ilp->indent_level, val, eloc);
@@ -73,10 +73,7 @@ void Inter::Ref::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 }
 
 void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_package *pack = InterPackage::container(P);
-	inter_symbols_table *locals = InterPackage::scope(pack);
-	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	WRITE("ref ");
 	InterTypes::write_optional_type_marker(OUT, P, KIND_REF_IFLD);
-	InterValuePairs::write(OUT, P, InterValuePairs::get(P, VAL1_REF_IFLD), locals, FALSE);
+	TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_REF_IFLD), FALSE);
 }

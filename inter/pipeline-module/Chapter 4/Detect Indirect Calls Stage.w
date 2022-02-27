@@ -84,7 +84,6 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 
 @<Insert the variable as the new first argument@> =
 	inter_bookmark IBM = InterBookmark::first_child_of(F);
-	inter_pair val = InterValuePairs::from_symbol(InterBookmark::tree(&IBM),
-		InterBookmark::package(&IBM), var);
+	inter_pair val = InterValuePairs::symbolic(&IBM, var);
 	Inter::Val::new(&IBM, InterTypes::untyped(),
 		(int) F->W.instruction[LEVEL_IFLD] + 1, val, NULL); 
