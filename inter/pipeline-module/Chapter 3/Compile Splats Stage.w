@@ -900,46 +900,46 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 
 @<Attempt to parse this as a command grammar token@> =
 	if (Str::eq(S, I"*"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_divider_RPSYM, I"VERB_DIRECTIVE_DIVIDER"));
 	if (Str::eq(S, I"->"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_result_RPSYM, I"VERB_DIRECTIVE_RESULT"));
 	if (Str::eq(S, I"reverse"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_reverse_RPSYM, I"VERB_DIRECTIVE_REVERSE"));
 	if (Str::eq(S, I"/"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_slash_RPSYM, I"VERB_DIRECTIVE_SLASH"));
 	if (Str::eq(S, I"special"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_special_RPSYM, I"VERB_DIRECTIVE_SPECIAL"));
 	if (Str::eq(S, I"number"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_number_RPSYM, I"VERB_DIRECTIVE_NUMBER"));
 	if (Str::eq(S, I"noun"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_noun_RPSYM, I"VERB_DIRECTIVE_NOUN"));
 	if (Str::eq(S, I"multi"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_multi_RPSYM, I"VERB_DIRECTIVE_MULTI"));
 	if (Str::eq(S, I"multiinside"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiinside_RPSYM, I"VERB_DIRECTIVE_MULTIINSIDE"));
 	if (Str::eq(S, I"multiheld"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiheld_RPSYM, I"VERB_DIRECTIVE_MULTIHELD"));
 	if (Str::eq(S, I"held"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_held_RPSYM, I"VERB_DIRECTIVE_HELD"));
 	if (Str::eq(S, I"creature"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_creature_RPSYM, I"VERB_DIRECTIVE_CREATURE"));
 	if (Str::eq(S, I"topic"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_topic_RPSYM, I"VERB_DIRECTIVE_TOPIC"));
 	if (Str::eq(S, I"multiexcept"))
-		return InterValuePairs::p_from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
+		return InterValuePairs::from_symbol(I, pack, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiexcept_RPSYM, I"VERB_DIRECTIVE_MULTIEXCEPT"));
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, S, L"scope=(%i+)")) {
@@ -947,7 +947,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 		if (symb) {
 			if (SymbolAnnotation::get_b(symb, SCOPE_FILTER_IANN) == FALSE)
 				SymbolAnnotation::set_b(symb, SCOPE_FILTER_IANN, TRUE);
-			return InterValuePairs::p_from_symbol(I, pack, symb);
+			return InterValuePairs::from_symbol(I, pack, symb);
 		}
 	}
 	if (Regexp::match(&mr, S, L"noun=(%i+)")) {
@@ -955,14 +955,14 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 		if (symb) {
 			if (SymbolAnnotation::get_b(symb, NOUN_FILTER_IANN) == FALSE)
 				SymbolAnnotation::set_b(symb, NOUN_FILTER_IANN, TRUE);
-			return InterValuePairs::p_from_symbol(I, pack, symb);
+			return InterValuePairs::from_symbol(I, pack, symb);
 		}
 	}
 
 @<Attempt to parse this as an identifier name for something already defined by this kit@> =
 	inter_symbol *symb = Wiring::find_socket(I, S);
 	if (symb) {
-		return InterValuePairs::p_from_symbol(I, pack, symb);
+		return InterValuePairs::from_symbol(I, pack, symb);
 	}
 
 @ At this point, maybe the reason we haven't yet recognised the constant |S| is
@@ -992,7 +992,7 @@ before they are needed.
 		CompileSplatsStage::compute_r(step, IBM, sch->node_tree);
 	if (result_s == NULL)
 		PipelineErrors::kit_error("Inform 6 constant in kit too complex", S);
-	return InterValuePairs::p_from_symbol(I, pack, result_s);
+	return InterValuePairs::from_symbol(I, pack, result_s);
 
 @ So this is the recursion. Note that we calculate $-x$ as $0 - x$, thus
 reducing unary subtraction to a case of binary subtraction.
@@ -1064,14 +1064,14 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	int pos = pair_list->W.extent;
 	Inode::extend_instruction_by(pair_list, 4);
 	if (i1) {
-		InterValuePairs::to_field(pair_list, pos, InterValuePairs::p_from_symbol(I, pack, i1));
+		InterValuePairs::set(pair_list, pos, InterValuePairs::from_symbol(I, pack, i1));
 	} else {
-		InterValuePairs::to_field(pair_list, pos, InterValuePairs::number(0));
+		InterValuePairs::set(pair_list, pos, InterValuePairs::number(0));
 	}
 	if (i2) {
-		InterValuePairs::to_field(pair_list, pos+2, InterValuePairs::p_from_symbol(I, pack, i2));
+		InterValuePairs::set(pair_list, pos+2, InterValuePairs::from_symbol(I, pack, i2));
 	} else {
-		InterValuePairs::to_field(pair_list, pos+2, InterValuePairs::number(0));
+		InterValuePairs::set(pair_list, pos+2, InterValuePairs::number(0));
 	}
 	Produce::guard(Inter::Verify::instruction(InterBookmark::package(IBM), pair_list));
 	NodePlacement::move_to_moving_bookmark(pair_list, IBM);

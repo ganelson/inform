@@ -336,7 +336,7 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	inter_bookmark *IBM = Packaging::at(I);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	inter_package *pack = InterBookmark::package(IBM);
-	inter_pair val = InterValuePairs::p_from_symbol(InterPackage::tree(pack), pack, val_s);
+	inter_pair val = InterValuePairs::from_symbol(InterPackage::tree(pack), pack, val_s);
 	Produce::guard(Inter::Constant::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
 		Produce::kind_to_TID(IBM, K),
@@ -485,7 +485,7 @@ void Produce::val_iname(inter_tree *I, kind *K, inter_name *iname) {
 =
 void Produce::val_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_bookmark *IBM = Packaging::at(I);
-	inter_pair val = InterValuePairs::p_from_symbol(InterBookmark::tree(IBM),
+	inter_pair val = InterValuePairs::from_symbol(InterBookmark::tree(IBM),
 		InterBookmark::package(IBM), s);
 	Produce::val(I, K, val);
 }
@@ -541,7 +541,7 @@ void Produce::ref_iname(inter_tree *I, kind *K, inter_name *iname) {
 
 void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 	inter_bookmark *IBM = Packaging::at(I);
-	inter_pair val = InterValuePairs::p_from_symbol(InterBookmark::tree(IBM),
+	inter_pair val = InterValuePairs::from_symbol(InterBookmark::tree(IBM),
 		InterBookmark::package(IBM), s);
 	inter_symbol *val_kind = NULL;
 	if ((K) && (K != K_value)) {

@@ -25,14 +25,12 @@ int RTMap::compile_model_tables(void) {
 	packaging_state save = EmitArrays::begin_word(iname, K_object);
 	int words_used = 0;
 	if (Task::wraps_existing_storyfile()) {
-		EmitArrays::divider(I"minimal, as there are no rooms");
 		EmitArrays::iname_entry(NULL);
 		EmitArrays::iname_entry(NULL);
 		EmitArrays::iname_entry(NULL);
 		EmitArrays::iname_entry(NULL);
 		words_used = 4;
 	} else {
-		EmitArrays::divider(I"one row per room");
 		instance *I;
 		LOOP_OVER_INSTANCES(I, K_object)
 			if (Spatial::object_is_a_room(I)) {
@@ -45,10 +43,6 @@ int RTMap::compile_model_tables(void) {
 						EmitArrays::numeric_entry(0);
 				}
 				words_used++;
-				TEMPORARY_TEXT(divider)
-				WRITE_TO(divider, "Exits from: %~I", I);
-				EmitArrays::divider(divider);
-				DISCARD_TEXT(divider)
 			}
 	}
 	EmitArrays::end(save);

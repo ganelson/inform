@@ -120,7 +120,7 @@ void Synoptic::end_array(inter_tree *I) {
 =
 void Synoptic::numeric_entry(inter_ti N) {
 	Inode::extend_instruction_by(synoptic_array_node, 2);
-	InterValuePairs::to_field(synoptic_array_node, synoptic_array_node->W.extent-2,
+	InterValuePairs::set(synoptic_array_node, synoptic_array_node->W.extent-2,
 		InterValuePairs::number(N));
 }
 void Synoptic::symbol_entry(inter_symbol *S) {
@@ -129,11 +129,11 @@ void Synoptic::symbol_entry(inter_symbol *S) {
 	inter_symbol *local_S = InterSymbolsTable::create_with_unique_name(
 		InterPackage::scope(pack), InterSymbol::identifier(S));
 	Wiring::wire_to(local_S, S);
-	InterValuePairs::to_field(synoptic_array_node, synoptic_array_node->W.extent-2,
-		InterValuePairs::p_from_symbol(InterPackage::tree(pack), pack, local_S));
+	InterValuePairs::set(synoptic_array_node, synoptic_array_node->W.extent-2,
+		InterValuePairs::from_symbol(InterPackage::tree(pack), pack, local_S));
 }
 void Synoptic::textual_entry(text_stream *text) {
 	Inode::extend_instruction_by(synoptic_array_node, 2);
-	InterValuePairs::to_field(synoptic_array_node, synoptic_array_node->W.extent-2,
+	InterValuePairs::set(synoptic_array_node, synoptic_array_node->W.extent-2,
 		InterValuePairs::from_text(Inode::tree(synoptic_array_node), text));
 }

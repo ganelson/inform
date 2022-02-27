@@ -28,10 +28,10 @@ inter_symbol *Metadata::read_symbol(inter_package *pack, text_stream *key) {
 		LOG("%d\n", D->W.instruction[FORMAT_CONST_IFLD]);
 		Metadata::err("not direct", pack, key);
 	}
-	if (D->W.instruction[DATA_CONST_IFLD] != ALIAS_IVAL) Metadata::err("not symbol", pack, key);
+	inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+	if (InterValuePairs::holds_symbol(val) == FALSE) Metadata::err("not symbol", pack, key);
 
-	inter_symbol *s = InterSymbolsTable::symbol_from_ID(InterPackage::scope(pack),
-		D->W.instruction[DATA_CONST_IFLD + 1]);
+	inter_symbol *s = InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(pack));
 	if (s == NULL) Metadata::err("no symbol", pack, key);
 	return s;
 }
@@ -45,10 +45,10 @@ inter_symbol *Metadata::read_optional_symbol(inter_package *pack, text_stream *k
 		LOG("%d\n", D->W.instruction[FORMAT_CONST_IFLD]);
 		Metadata::err("not direct", pack, key);
 	}
-	if (D->W.instruction[DATA_CONST_IFLD] != ALIAS_IVAL) Metadata::err("not symbol", pack, key);
+	inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+	if (InterValuePairs::holds_symbol(val) == FALSE) Metadata::err("not symbol", pack, key);
 
-	inter_symbol *s = InterSymbolsTable::symbol_from_ID(InterPackage::scope(pack),
-		D->W.instruction[DATA_CONST_IFLD + 1]);
+	inter_symbol *s = InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(pack));
 	if (s == NULL) Metadata::err("no symbol", pack, key);
 	return s;
 }
@@ -71,8 +71,9 @@ inter_ti Metadata::read_numeric(inter_package *pack, text_stream *key) {
 	inter_tree_node *D = md->definition;
 	if (D == NULL) Metadata::err("not defined", pack, key);
 	if (D->W.instruction[FORMAT_CONST_IFLD] != CONSTANT_DIRECT) Metadata::err("not direct", pack, key);
-	if (D->W.instruction[DATA_CONST_IFLD] != LITERAL_IVAL) Metadata::err("not literal", pack, key);
-	return D->W.instruction[DATA_CONST_IFLD + 1];
+	inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+	if (InterValuePairs::is_number(val) == FALSE) Metadata::err("not literal", pack, key);
+	return InterValuePairs::to_number(val);
 }
 
 inter_ti Metadata::read_optional_numeric(inter_package *pack, text_stream *key) {
@@ -81,8 +82,9 @@ inter_ti Metadata::read_optional_numeric(inter_package *pack, text_stream *key) 
 	inter_tree_node *D = md->definition;
 	if (D == NULL) Metadata::err("not defined", pack, key);
 	if (D->W.instruction[FORMAT_CONST_IFLD] != CONSTANT_DIRECT) Metadata::err("not direct", pack, key);
-	if (D->W.instruction[DATA_CONST_IFLD] != LITERAL_IVAL) Metadata::err("not literal", pack, key);
-	return D->W.instruction[DATA_CONST_IFLD + 1];
+	inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+	if (InterValuePairs::is_number(val) == FALSE) Metadata::err("not literal", pack, key);
+	return InterValuePairs::to_number(val);
 }
 
 text_stream *Metadata::read_textual(inter_package *pack, text_stream *key) {

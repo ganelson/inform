@@ -108,15 +108,6 @@ void EmitArrays::generic_entry(inter_pair val) {
 	EmitArrays::entry_inner(val);
 }
 
-@ Dividers are really just commentary points inside Inter arrays, to make the
-code when printed out as plain text look more comprehensible. They make no
-difference to compiled code.
-
-=
-void EmitArrays::divider(text_stream *divider_text) {
-	EmitArrays::entry_inner(InterValuePairs::divider(Emit::tree(), divider_text));
-}
-
 @h End.
 And then call this to conclude:
 
@@ -235,7 +226,7 @@ void EmitArrays::end_inner(void) {
 	int pos = array_in_progress->W.extent;
 	Inode::extend_instruction_by(array_in_progress, (unsigned int) (2*(current_A->space_used)));
 	for (int i=0; i<current_A->space_used; i++, pos += 2)
-		InterValuePairs::to_field(array_in_progress, pos, current_A->entry_storage[i]);
+		InterValuePairs::set(array_in_progress, pos, current_A->entry_storage[i]);
 	Produce::guard(Inter::Verify::instruction(
 		Emit::package(), array_in_progress));
 	NodePlacement::move_to_moving_bookmark(array_in_progress, Emit::at());

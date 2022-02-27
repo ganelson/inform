@@ -145,9 +145,9 @@ void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 	inter_tree_node *D = fn_s->definition;
 	if ((D) && (D->W.instruction[ID_IFLD] == CONSTANT_IST) &&
 		(D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
-		inter_pair val = InterValuePairs::in_field(D, DATA_CONST_IFLD);
-		if (InterValuePairs::p_holds_symbol(val)) {
-			inter_symbol *S = InterValuePairs::p_symbol_from_data_pair(val,
+		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+		if (InterValuePairs::holds_symbol(val)) {
+			inter_symbol *S = InterValuePairs::symbol_from_data_pair(val,
 				InterPackage::scope_of(D));
 			if (S) fn_s = S;
 		}

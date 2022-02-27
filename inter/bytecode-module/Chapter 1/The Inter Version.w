@@ -14,9 +14,8 @@ the |major| version should change on any of the following:
 (a) Removal of an Inter construct, or any renumbering of |*_IST| constants.
 (b) Change of bytecode representation of an instruction.
 (c) Change of the binary file format in //Inter in Binary Files//. Note that
-changing some of the defined constants in this module, such as |LITERAL_TEXT_IVAL|
-or |SYMBOL_BASE_VAL|, could have the same effect, since these constants are used
-as distinguishing values in binary Inter files.
+changing some of the defined constants in this module could have the same effect,
+since these constants are used as distinguishing values in binary Inter files.
 (d) Change of the textual file format in //Inter in Text Files// and elsewhere
 in the |CONSTRUCT_READ_MTID| methods for the constructs.
 (e) Removal of one of the standard annotations, or any renumbering of existing

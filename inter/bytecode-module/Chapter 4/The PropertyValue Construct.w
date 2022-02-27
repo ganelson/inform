@@ -143,6 +143,6 @@ void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_
 	inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID_at_node(P, OWNER_PVAL_IFLD);
 	if ((prop_name) && (owner_name)) {
 		WRITE("propertyvalue %S %S = ", InterSymbol::identifier(prop_name), InterSymbol::identifier(owner_name));
-		InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, DVAL1_PVAL_IFLD), InterPackage::scope_of(P), FALSE);
+		InterValuePairs::write(OUT, P, InterValuePairs::get(P, DVAL1_PVAL_IFLD), InterPackage::scope_of(P), FALSE);
 	} else { *E = Inode::error(P, I"cannot write propertyvalue", NULL); return; }
 }

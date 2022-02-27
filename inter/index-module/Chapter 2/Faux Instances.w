@@ -222,16 +222,19 @@ void FauxInstances::make_faux(index_session *session) {
 		for (int i=0; i<MAX_DIRECTIONS; i++) {
 			int offset = DATA_CONST_IFLD + 4*i;
 			if (offset >= P->W.extent) break;
-			inter_ti v1 = P->W.instruction[offset], v2 = P->W.instruction[offset+1];
-			if (v1 == ALIAS_IVAL) {
+			inter_pair val = InterValuePairs::get(P, offset);
+			if (InterValuePairs::holds_symbol(val)) {
 				inter_symbol *S =
-					InterSymbolsTable::symbol_from_ID(InterPackage::scope(pack), v2);
+					InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(pack));
 				if (S == NULL) internal_error("malformed map metadata");
 				I->fimd.exits[i] = FauxInstances::symbol_to_faux_instance(faux_set, S);
-			} else if ((v1 != LITERAL_IVAL) || (v2 != 0)) internal_error("malformed map metadata");
-			inter_ti v3 = P->W.instruction[offset+2], v4 = P->W.instruction[offset+3];
-			if (v3 != LITERAL_IVAL) internal_error("malformed map metadata");
-			if (v4) I->fimd.exits_set_at[i] = (int) v4;
+			} else if (InterValuePairs::is_zero(val) == FALSE)
+				internal_error("malformed map metadata");
+			inter_pair val2 = InterValuePairs::get(P, offset+2);
+			if (InterValuePairs::is_number(val2) == FALSE)
+				internal_error("malformed map metadata");
+			inter_ti N = InterValuePairs::to_number(val2);
+			if (N) I->fimd.exits_set_at[i] = (int) N;
 		}
 	}
 
@@ -240,10 +243,10 @@ void FauxInstances::make_faux(index_session *session) {
 	if (P) {
 		int offset = DATA_CONST_IFLD;
 		while (offset < P->W.extent) {
-			inter_ti v1 = P->W.instruction[offset], v2 = P->W.instruction[offset+1];
-			if (v1 == ALIAS_IVAL) {
+			inter_pair val = InterValuePairs::get(P, offset);
+			if (InterValuePairs::holds_symbol(val)) {
 				inter_symbol *S =
-					InterSymbolsTable::symbol_from_ID(InterPackage::scope(pack), v2);
+					InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(pack));
 				if (S == NULL) internal_error("malformed map metadata");
 				faux_instance *FL = FauxInstances::symbol_to_faux_instance(faux_set, S);
 				ADD_TO_LINKED_LIST(I, faux_instance, FL->backdrop_presences);

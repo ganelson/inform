@@ -82,8 +82,8 @@ void Inter::Instance::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[KIND_INST_IFLD]);
 	inter_type inst_type = InterTypes::from_type_name(inst_kind);
 	if (InterTypes::is_enumerated(inst_type)) {
-		if (InterValuePairs::is_undef(InterValuePairs::in_field(P, VAL1_INST_IFLD)))
-			InterValuePairs::to_field(P, VAL1_INST_IFLD,
+		if (InterValuePairs::is_undef(InterValuePairs::get(P, VAL1_INST_IFLD)))
+			InterValuePairs::set(P, VAL1_INST_IFLD,
 				InterValuePairs::number(Inter::Typename::next_enumerated_value(inst_kind)));
 	} else {
 		*E = Inode::error(P, I"not a kind which has instances", NULL); return;
@@ -106,7 +106,7 @@ void Inter::Instance::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_INST_IFLD);
 	if ((inst_name) && (inst_kind)) {
 		WRITE("instance %S %S = ", InterSymbol::identifier(inst_name), InterSymbol::identifier(inst_kind));
-		InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, VAL1_INST_IFLD), InterPackage::scope_of(P), FALSE);
+		InterValuePairs::write(OUT, P, InterValuePairs::get(P, VAL1_INST_IFLD), InterPackage::scope_of(P), FALSE);
 	} else { *E = Inode::error(P, I"bad instance", NULL); return; }
 	SymbolAnnotation::write_annotations(OUT, P, inst_name);
 }

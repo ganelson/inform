@@ -230,7 +230,7 @@ void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I, index_session *se
 	if (P) {
 		int offset = DATA_CONST_IFLD;
 		while (offset < P->W.extent) {
-			inter_pair val = InterValuePairs::in_field(P, offset);
+			inter_pair val = InterValuePairs::get(P, offset);
 			if (InterValuePairs::is_number(val)) {
 				k++;
 				if (k == 1) {

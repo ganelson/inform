@@ -1708,11 +1708,11 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 	@<Evaluate the text as a value@>;
 
 	inter_pair val = CompileValues::to_pair(spec);
-	if (InterValuePairs::p_holds_symbol(val)) {
+	if (InterValuePairs::holds_symbol(val)) {
 		PUT(URL_SYMBOL_CHAR);
 		inter_symbols_table *T =
 			InterPackage::scope(Emit::current_enclosure()->actual_package);
-		inter_symbol *S = InterValuePairs::p_symbol_from_data_pair(val, T);
+		inter_symbol *S = InterValuePairs::symbol_from_data_pair(val, T);
 		InterSymbolsTable::write_symbol_URL(OUT, S);
 		PUT(URL_SYMBOL_CHAR);
 	} else {

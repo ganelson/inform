@@ -28,9 +28,10 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	for (int i=0; i<InterNodeList::array_len(inv->activity_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"activity_id");
-		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i;
+		InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) i));
 		D = Synoptic::get_optional_definition(pack, I"var_id");
-		if (D) D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) (10000 + i);
+		if (D) InterValuePairs::set(D, DATA_CONST_IFLD,
+			InterValuePairs::number((inter_ti) i+10000));
 	}
 
 @<Define ACTIVITY_AFTER_RULEBOOKS array@> =

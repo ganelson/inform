@@ -95,8 +95,9 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	WRITE("for (");
 	inter_tree_node *INIT = InterTree::first_child(P);
 	if (!((INIT->W.instruction[ID_IFLD] == VAL_IST) &&
-		(INIT->W.instruction[VAL1_VAL_IFLD] == LITERAL_IVAL) &&
-		(INIT->W.instruction[VAL2_VAL_IFLD] == 1))) VNODE_1C;
+		(InterValuePairs::is_number(InterValuePairs::get(INIT, VAL1_VAL_IFLD))) &&
+		(InterValuePairs::to_number(InterValuePairs::get(INIT, VAL1_VAL_IFLD)) == 1)))
+			VNODE_1C;
 	WRITE(";"); VNODE_2C;
 	WRITE(";");
 	inter_tree_node *U = InterTree::third_child(P);

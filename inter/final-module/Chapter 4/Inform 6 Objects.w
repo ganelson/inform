@@ -409,14 +409,14 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, val);
 	int inline_this = FALSE;
-	if (InterValuePairs::p_holds_symbol(pair)) {
-		inter_symbol *S = InterValuePairs::p_symbol_from_data_pair_at_node(pair, X);
+	if (InterValuePairs::holds_symbol(pair)) {
+		inter_symbol *S = InterValuePairs::symbol_from_data_pair_at_node(pair, X);
 		if ((S) && (SymbolAnnotation::get_b(S, INLINE_ARRAY_IANN))) {
 			inter_tree_node *P = InterSymbol::definition(S);
 			text_stream *OUT = CodeGen::current(gen);
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) WRITE(" ");
-				CodeGen::pair(gen, P, InterValuePairs::in_field(P, i));
+				CodeGen::pair(gen, P, InterValuePairs::get(P, i));
 			}
 			inline_this = TRUE;
 		}

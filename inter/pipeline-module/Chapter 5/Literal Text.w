@@ -81,9 +81,9 @@ in |texts|.
 	inter_symbol *ref_s = Synoptic::new_symbol(pack, I"ref_to_text");
 
 	Wiring::wire_to(ref_s, latest_s);
-	inter_pair val = InterValuePairs::p_from_symbol(I, InterPackage::container(P), ref_s);
+	inter_pair val = InterValuePairs::from_symbol(I, InterPackage::container(P), ref_s);
 	P->W.instruction[FORMAT_CONST_IFLD] = CONSTANT_DIRECT;
-	InterValuePairs::to_field(P, DATA_CONST_IFLD, val);
+	InterValuePairs::set(P, DATA_CONST_IFLD, val);
 
 	inter_symbol *con_name =
 		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);

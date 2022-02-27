@@ -260,7 +260,7 @@ inter_error_message *Inter::Constant::new_list(inter_bookmark *IBM, inter_ti SID
 	int pos = AP->W.extent;
 	Inode::extend_instruction_by(AP, (inter_ti) (2*no_pairs));
 	for (int i=0; i<no_pairs; i++, pos += 2)
-		InterValuePairs::to_field(AP, pos, val_array[i]);
+		InterValuePairs::set(AP, pos, val_array[i]);
 	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), AP); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(AP, IBM);
 	return NULL;
@@ -272,7 +272,7 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 	*E = InterValuePairs::parse(line, eloc, IBM, conts_type, S, &val, InterBookmark::scope(IBM));
 	if (*E) return FALSE;
 	Inode::extend_instruction_by(P, 2);
-	InterValuePairs::to_field(P, P->W.extent-2, val);
+	InterValuePairs::set(P, P->W.extent-2, val);
 	return TRUE;
 }
 
@@ -282,8 +282,8 @@ void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 
 	switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 		case CONSTANT_DIRECT:
-			InterValuePairs::to_field(P, DATA_CONST_IFLD,
-				InterValuePairs::transpose(InterValuePairs::in_field(P, DATA_CONST_IFLD), grid, grid_extent, E));
+			InterValuePairs::set(P, DATA_CONST_IFLD,
+				InterValuePairs::transpose(InterValuePairs::get(P, DATA_CONST_IFLD), grid, grid_extent, E));
 			break;
 		case CONSTANT_INDIRECT_TEXT:
 			P->W.instruction[DATA_CONST_IFLD] = grid[P->W.instruction[DATA_CONST_IFLD]];
@@ -296,8 +296,8 @@ void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 		case CONSTANT_STRUCT:
 		case CONSTANT_TABLE:
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				InterValuePairs::to_field(P, i,
-					InterValuePairs::transpose(InterValuePairs::in_field(P, i), grid, grid_extent, E));
+				InterValuePairs::set(P, i,
+					InterValuePairs::transpose(InterValuePairs::get(P, i), grid, grid_extent, E));
 			}
 			break;
 	}
@@ -326,8 +326,8 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 		case CONSTANT_TABLE:
 			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				inter_pair val = InterValuePairs::in_field(P, i);
-				inter_symbol *symb = InterValuePairs::p_symbol_from_data_pair(val, InterPackage::scope(owner));
+				inter_pair val = InterValuePairs::get(P, i);
+				inter_symbol *symb = InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(owner));
 				if (symb) {
 					inter_type type = InterTypes::of_symbol(symb);
 					inter_ti constructor = InterTypes::constructor_code(type);
@@ -383,7 +383,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 		WRITE("%S = ", InterSymbol::identifier(con_name));
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:
-				InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, DATA_CONST_IFLD), InterPackage::scope_of(P), hex);
+				InterValuePairs::write(OUT, P, InterValuePairs::get(P, DATA_CONST_IFLD), InterPackage::scope_of(P), hex);
 				break;
 			case CONSTANT_TABLE:			
 			case CONSTANT_SUM_LIST:			
@@ -400,7 +400,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, i), InterPackage::scope_of(P), hex);
+					InterValuePairs::write(OUT, P, InterValuePairs::get(P, i), InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;
@@ -410,7 +410,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 					if (i > DATA_CONST_IFLD) WRITE(",");
 					WRITE(" ");
-					InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, i), InterPackage::scope_of(P), hex);
+					InterValuePairs::write(OUT, P, InterValuePairs::get(P, i), InterPackage::scope_of(P), hex);
 				}
 				WRITE(" }");
 				break;
@@ -474,10 +474,10 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 	inter_tree_node *D = InterSymbol::definition(con);
 	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return 1;
 	if (D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) {
-		inter_pair val = InterValuePairs::in_field(D, DATA_CONST_IFLD);
-		if (InterValuePairs::p_holds_symbol(val)) {
+		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+		if (InterValuePairs::holds_symbol(val)) {
 			inter_symbol *alias =
-				InterValuePairs::p_symbol_from_data_pair(val,
+				InterValuePairs::symbol_from_data_pair(val,
 					InterPackage::scope(D->package));
 			return Inter::Constant::constant_depth(alias) + 1;
 		}
@@ -489,10 +489,10 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 		(D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST)) {
 		int total = 0;
 		for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
-			inter_pair val = InterValuePairs::in_field(D, i);
-			if (InterValuePairs::p_holds_symbol(val)) {
+			inter_pair val = InterValuePairs::get(D, i);
+			if (InterValuePairs::holds_symbol(val)) {
 				inter_symbol *alias =
-					InterValuePairs::p_symbol_from_data_pair(val,
+					InterValuePairs::symbol_from_data_pair(val,
 						InterPackage::scope(D->package));
 				total += Inter::Constant::constant_depth(alias);
 			} else total++;
@@ -504,14 +504,14 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 
 inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_pair val) {
 	if (InterValuePairs::is_number(val)) return InterValuePairs::to_number(val);
-	if (InterValuePairs::p_holds_symbol(val)) {
-		inter_symbol *aliased = InterValuePairs::p_symbol_from_data_pair(val, T);
+	if (InterValuePairs::holds_symbol(val)) {
+		inter_symbol *aliased = InterValuePairs::symbol_from_data_pair(val, T);
 		if (aliased == NULL) internal_error("bad aliased symbol");
 		inter_tree_node *D = aliased->definition;
 		if (D == NULL) internal_error("undefined symbol");
 		switch (D->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT: {
-				inter_pair dval = InterValuePairs::in_field(D, DATA_CONST_IFLD);
+				inter_pair dval = InterValuePairs::get(D, DATA_CONST_IFLD);
 				inter_ti e = Inter::Constant::evaluate(InterPackage::scope_of(D), dval);
 				return e;
 			}
@@ -521,7 +521,7 @@ inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_pair val) {
 			case CONSTANT_QUOTIENT_LIST: {
 				inter_ti result = 0;
 				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
-					inter_pair operand = InterValuePairs::in_field(D, i);
+					inter_pair operand = InterValuePairs::get(D, i);
 					inter_ti extra = Inter::Constant::evaluate(InterPackage::scope_of(D), operand);
 					if (i == DATA_CONST_IFLD) result = extra;
 					else {
@@ -542,17 +542,15 @@ int Inter::Constant::evaluate_to_int(inter_symbol *S) {
 	inter_tree_node *P = InterSymbol::definition(S);
 	if ((P) &&
 		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
-		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
-		(P->W.instruction[DATA_CONST_IFLD] == LITERAL_IVAL)) {
-		return (int) P->W.instruction[DATA_CONST_IFLD + 1];
-	}
-	if ((P) &&
-		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
-		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
-		(P->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)) {
-		inter_symbols_table *scope = S->owning_table;
-		inter_symbol *alias_to = InterSymbolsTable::symbol_from_ID(scope, P->W.instruction[DATA_CONST_IFLD + 1]);
-		return InterSymbol::evaluate_to_int(alias_to);
+		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
+		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+		if (InterValuePairs::is_number(val))
+			return (int) InterValuePairs::to_number(val);
+		if (InterValuePairs::holds_symbol(val)) {
+			inter_symbols_table *scope = S->owning_table;
+			inter_symbol *alias_to = InterValuePairs::symbol_from_data_pair(val, scope);
+			return InterSymbol::evaluate_to_int(alias_to);
+		}
 	}
 	return -1;
 }
@@ -561,19 +559,18 @@ int Inter::Constant::set_int(inter_symbol *S, int N) {
 	inter_tree_node *P = InterSymbol::definition(S);
 	if ((P) &&
 		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
-		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
-		(P->W.instruction[DATA_CONST_IFLD] == LITERAL_IVAL)) {
-		P->W.instruction[DATA_CONST_IFLD + 1] = (inter_ti) N;
-		return TRUE;
-	}
-	if ((P) &&
-		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
-		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT) &&
-		(P->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)) {
-		inter_symbols_table *scope = S->owning_table;
-		inter_symbol *alias_to = InterSymbolsTable::symbol_from_ID(scope, P->W.instruction[DATA_CONST_IFLD + 1]);
-		InterSymbol::set_int(alias_to, N);
-		return TRUE;
+		(P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
+		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+		if (InterValuePairs::is_number(val)) {
+			InterValuePairs::set(P, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) N));
+			return TRUE;
+		}
+		if (InterValuePairs::holds_symbol(val)) {
+			inter_symbols_table *scope = S->owning_table;
+			inter_symbol *alias_to = InterValuePairs::symbol_from_data_pair(val, scope);
+			InterSymbol::set_int(alias_to, N);
+			return TRUE;
+		}
 	}
 	return FALSE;
 }

@@ -397,10 +397,11 @@ function called |_final_change_property|.
 	inter_tree_node *VP = InterTree::second_child(P);
 	int set = NOT_APPLICABLE;
 	if (VP->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = VP->W.instruction[VAL1_VAL_IFLD];
-		inter_ti val2 = VP->W.instruction[VAL2_VAL_IFLD];
-		if ((val1 == LITERAL_IVAL) && (val2)) set = TRUE;
-		if ((val1 == LITERAL_IVAL) && (val2 == 0)) set = FALSE;
+		inter_pair val = InterValuePairs::get(VP, VAL1_VAL_IFLD);
+		if (InterValuePairs::is_number(val)) {
+			if (InterValuePairs::is_zero(val)) set = FALSE;
+			else if (InterValuePairs::is_one(val)) set = TRUE;
+		}
 	}
 	
 	int c = I6TargetCode::pval_case(storage_ref);
@@ -555,12 +556,9 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	int rboolean = NOT_APPLICABLE;
 	inter_tree_node *V = InterTree::first_child(P);
 	if (V->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_ti val1 = V->W.instruction[VAL1_VAL_IFLD];
-		inter_ti val2 = V->W.instruction[VAL2_VAL_IFLD];
-		if (val1 == LITERAL_IVAL) {
-			if (val2 == 0) rboolean = FALSE;
-			if (val2 == 1) rboolean = TRUE;
-		}
+		inter_pair val = InterValuePairs::get(V, VAL1_VAL_IFLD);
+		if (InterValuePairs::is_zero(val)) rboolean = FALSE;
+		else if (InterValuePairs::is_one(val)) rboolean = TRUE;
 	}
 	switch (rboolean) {
 		case FALSE: WRITE("rfalse"); break;
@@ -597,8 +595,9 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	WRITE("for (");
 	inter_tree_node *INIT = InterTree::first_child(P);
 	if (!((INIT->W.instruction[ID_IFLD] == VAL_IST) &&
-		(INIT->W.instruction[VAL1_VAL_IFLD] == LITERAL_IVAL) &&
-		(INIT->W.instruction[VAL2_VAL_IFLD] == 1))) VNODE_1C;
+		(InterValuePairs::is_number(InterValuePairs::get(INIT, VAL1_VAL_IFLD))) &&
+		(InterValuePairs::to_number(InterValuePairs::get(INIT, VAL1_VAL_IFLD)) == 1)))
+			VNODE_1C;
 	WRITE(":"); VNODE_2C;
 	WRITE(":");
 	inter_tree_node *U = InterTree::third_child(P);
@@ -750,9 +749,9 @@ See //Vanilla Objects// for more on inner names.
 text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *prop_node) {
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_pair val = InterValuePairs::in_field(prop_node, VAL1_VAL_IFLD);
-		if (InterValuePairs::p_holds_symbol(val))
-			prop_symbol = InterValuePairs::p_symbol_from_data_pair_at_node(val, prop_node);
+		inter_pair val = InterValuePairs::get(prop_node, VAL1_VAL_IFLD);
+		if (InterValuePairs::holds_symbol(val))
+			prop_symbol = InterValuePairs::symbol_from_data_pair_at_node(val, prop_node);
 	}
 	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_ISYMF))) {
 		return VanillaObjects::inner_property_name(gen, prop_symbol);
@@ -788,18 +787,18 @@ int I6TargetCode::pval_case(inter_tree_node *P) {
 int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *prop_node) {
 	inter_symbol *kind_symbol = NULL;
 	if (kind_node->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_pair val = InterValuePairs::in_field(kind_node, VAL1_VAL_IFLD);
-		if (InterValuePairs::p_holds_symbol(val))
-			kind_symbol = InterValuePairs::p_symbol_from_data_pair_at_node(val, kind_node);
+		inter_pair val = InterValuePairs::get(kind_node, VAL1_VAL_IFLD);
+		if (InterValuePairs::holds_symbol(val))
+			kind_symbol = InterValuePairs::symbol_from_data_pair_at_node(val, kind_node);
 	}
 	if (Str::eq(InterSymbol::trans(kind_symbol), I"OBJECT_TY") == FALSE)
 		return I6G_CANNOT_PROVE;
 
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_pair val = InterValuePairs::in_field(prop_node, VAL1_VAL_IFLD);
-		if (InterValuePairs::p_holds_symbol(val))
-			prop_symbol = InterValuePairs::p_symbol_from_data_pair_at_node(val, prop_node);
+		inter_pair val = InterValuePairs::get(prop_node, VAL1_VAL_IFLD);
+		if (InterValuePairs::holds_symbol(val))
+			prop_symbol = InterValuePairs::symbol_from_data_pair_at_node(val, prop_node);
 	}
 	if ((prop_symbol) && (InterSymbol::get_flag(prop_symbol, ATTRIBUTE_MARK_ISYMF))) {
 		return I6G_CAN_PROVE_IS_OBJ_ATTRIBUTE;

@@ -144,9 +144,9 @@ they were any other arrays. Here goes:
 	if (SymbolAnnotation::get_b(array_s, METAVERB_IANN)) WRITE("meta ");
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		WRITE(" ");
-		inter_pair val = InterValuePairs::in_field(P, i);
-		if (InterValuePairs::p_holds_symbol(val)) {
-			inter_symbol *A = InterValuePairs::p_symbol_from_data_pair(val,
+		inter_pair val = InterValuePairs::get(P, i);
+		if (InterValuePairs::holds_symbol(val)) {
+			inter_symbol *A = InterValuePairs::symbol_from_data_pair(val,
 				InterPackage::scope_of(P));
 			if (A == NULL) internal_error("bad aliased symbol");
 			if (SymbolAnnotation::get_b(A, SCOPE_FILTER_IANN)) WRITE("scope=");

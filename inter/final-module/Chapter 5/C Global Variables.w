@@ -93,7 +93,7 @@ void CGlobals::declare_variables(code_generator *gtr, code_generation *gen, link
 	WRITE(", ");
 	if (var_name->definition) {
 		inter_tree_node *P = var_name->definition;
-		CodeGen::pair(gen, P, InterValuePairs::in_field(P, VAL1_VAR_IFLD));
+		CodeGen::pair(gen, P, InterValuePairs::get(P, VAL1_VAR_IFLD));
 	} else {
 		WRITE("0");
 	}

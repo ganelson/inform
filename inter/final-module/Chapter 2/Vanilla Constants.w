@@ -99,9 +99,7 @@ word entries | WORD_ARRAY_FORMAT             | TABLE_ARRAY_FORMAT
 =
 In most cases, the entries in the list are then given in value pairs from |DATA_CONST_IFLD|
 to the end of the frame. However:
-(a) |DIVIDER_IVAL| entries are not real entries, but just places where comments
-or line breaks could be placed to make the code prettier;
-(b) if an array assimilated from a kit has exactly one purported entry, then in
+(*) if an array assimilated from a kit has exactly one purported entry, then in
 fact this should be interpreted as being that many blank entries. This number
 must however be carefully evaluated, as it may be another constant name rather
 than a literal, or may even be computed. 
@@ -112,14 +110,11 @@ than a literal, or may even be computed.
 	if (SymbolAnnotation::get_b(con_name, TABLEARRAY_IANN)) format = TABLE_ARRAY_FORMAT;
 	if (SymbolAnnotation::get_b(con_name, BUFFERARRAY_IANN)) format = BUFFER_ARRAY_FORMAT;
 
-	int entry_count = 0;
-	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2)
-		if (InterValuePairs::is_divider(InterValuePairs::in_field(P, i)) == FALSE)
-			entry_count++;
+	int entry_count = (int) (P->W.extent - DATA_CONST_IFLD)/2;
 	int give_count = FALSE;
 	if ((entry_count == 1) &&
 		(SymbolAnnotation::get_b(con_name, ASSIMILATED_IANN))) {
-		inter_pair val = InterValuePairs::in_field(P, DATA_CONST_IFLD);
+		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
 		entry_count = (int) Inter::Constant::evaluate(InterPackage::scope_of(P), val);
 		give_count = TRUE;
 	}
@@ -130,14 +125,12 @@ than a literal, or may even be computed.
 			Generators::array_entries(gen, entry_count, format);
 		} else {
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				if (InterValuePairs::is_divider(InterValuePairs::in_field(P, i)) == FALSE) {
-					TEMPORARY_TEXT(entry)
-					CodeGen::select_temporary(gen, entry);
-					CodeGen::pair(gen, P, InterValuePairs::in_field(P, i));
-					CodeGen::deselect_temporary(gen);
-					Generators::array_entry(gen, entry, format);
-					DISCARD_TEXT(entry)
-				}
+				TEMPORARY_TEXT(entry)
+				CodeGen::select_temporary(gen, entry);
+				CodeGen::pair(gen, P, InterValuePairs::get(P, i));
+				CodeGen::deselect_temporary(gen);
+				Generators::array_entry(gen, entry, format);
+				DISCARD_TEXT(entry)
 			}
 		}
 		Generators::end_array(gen, format, &saved);
@@ -179,7 +172,7 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 			}
 			break;
 		case DATA_GDCFORM: {
-			inter_pair val = InterValuePairs::in_field(P, DATA_CONST_IFLD);
+			inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
 			if ((InterValuePairs::is_number(val)) &&
 				(SymbolAnnotation::get_b(con_name, HEX_IANN))) {
 				inter_ti N = InterValuePairs::to_number(val);
@@ -199,9 +192,9 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE(" / ");
 				}
 				int bracket = TRUE;
-				inter_pair operand = InterValuePairs::in_field(P, i);
+				inter_pair operand = InterValuePairs::get(P, i);
 				if ((InterValuePairs::is_number(operand)) ||
-					(InterValuePairs::p_holds_symbol(operand))) bracket = FALSE;
+					(InterValuePairs::holds_symbol(operand))) bracket = FALSE;
 				if (bracket) WRITE("(");
 				CodeGen::pair(gen, P, operand);
 				if (bracket) WRITE(")");

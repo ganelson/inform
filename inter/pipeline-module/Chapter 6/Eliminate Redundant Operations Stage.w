@@ -83,7 +83,7 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 	if ((operands[0]) && (operands[1])) {
 		for (int i = 0; i < 2; i++) {
 			if ((iden[i] >= 0) && (operands[i]->W.instruction[ID_IFLD] == VAL_IST)) {
-				inter_pair val = InterValuePairs::in_field(operands[i], VAL1_VAL_IFLD);
+				inter_pair val = InterValuePairs::get(operands[i], VAL1_VAL_IFLD);
 				if ((InterValuePairs::is_number(val)) &&
 					(InterValuePairs::to_number(val) == (inter_ti) iden[i])) {
 					redundant_operations_removed++;

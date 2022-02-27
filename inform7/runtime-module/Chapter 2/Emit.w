@@ -84,7 +84,7 @@ inter_pair Emit::to_value_pair_in_context(inter_name *context, inter_name *iname
 }
 
 inter_pair Emit::stvp_inner(inter_symbol *S, inter_package *pack) {
-	if (S) return InterValuePairs::p_from_symbol(InterPackage::tree(pack), pack, S);
+	if (S) return InterValuePairs::from_symbol(InterPackage::tree(pack), pack, S);
 	return InterValuePairs::number(0);
 }
 

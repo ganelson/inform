@@ -31,7 +31,7 @@ values at runtime of the kind |K_response|.
 	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->response_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"response_id");
-		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) i+1;
+		InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) i+1));
 	}
 
 @<Define NO_RESPONSES@> =

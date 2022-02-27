@@ -10,6 +10,8 @@ than to use |typedef|.
 @d signed_inter_ti int
 
 @ A constant value in Inter code is represented by a pair of |inter_ti| values.
+Note that changing any of these values would invalidate existing Inter binary
+files: that would necessitate a bump of //The Inter Version//.
 
 @e LITERAL_IVAL from 0x10000
 @e LITERAL_TEXT_IVAL
@@ -19,7 +21,6 @@ than to use |typedef|.
 @e DWORD_IVAL
 @e PDWORD_IVAL
 @e GLOB_IVAL
-@e DIVIDER_IVAL
 
 =
 typedef struct inter_pair {
@@ -31,14 +32,14 @@ typedef struct inter_pair {
 two consecutive fields, so:
 
 =
-inter_pair InterValuePairs::in_field(inter_tree_node *P, int field) {
+inter_pair InterValuePairs::get(inter_tree_node *P, int field) {
 	inter_pair pair;
 	pair.data_format = P->W.instruction[field];
 	pair.data_content = P->W.instruction[field+1];
 	return pair;
 }
 
-void InterValuePairs::to_field(inter_tree_node *P, int field, inter_pair pair) {
+void InterValuePairs::set(inter_tree_node *P, int field, inter_pair pair) {
 	P->W.instruction[field] = pair.data_format;
 	P->W.instruction[field+1] = pair.data_content;
 }
@@ -62,11 +63,6 @@ int InterValuePairs::is_undef(inter_pair pair) {
 	return FALSE;
 }
 
-int InterValuePairs::is_divider(inter_pair pair) {
-	if (pair.data_format == DIVIDER_IVAL) return TRUE;
-	return FALSE;
-}
-
 inter_pair InterValuePairs::number(inter_ti N) {
 	inter_pair pair;
 	pair.data_format = LITERAL_IVAL;
@@ -76,6 +72,18 @@ inter_pair InterValuePairs::number(inter_ti N) {
 
 int InterValuePairs::is_number(inter_pair pair) {
 	if (pair.data_format == LITERAL_IVAL) return TRUE;
+	return FALSE;
+}
+
+int InterValuePairs::is_zero(inter_pair pair) {
+	if ((pair.data_format == LITERAL_IVAL) &&
+		(pair.data_content == 0)) return TRUE;
+	return FALSE;
+}
+
+int InterValuePairs::is_one(inter_pair pair) {
+	if ((pair.data_format == LITERAL_IVAL) &&
+		(pair.data_content == 1)) return TRUE;
 	return FALSE;
 }
 
@@ -99,6 +107,11 @@ inter_pair InterValuePairs::real(inter_tree *I, double g) {
 	return pair;
 }
 
+int InterValuePairs::is_real(inter_pair pair) {
+	if (pair.data_format == REAL_IVAL) return TRUE;
+	return FALSE;
+}
+
 inter_pair InterValuePairs::from_real_text(inter_tree *I, text_stream *S) {
 	return InterValuePairs::from_real_text_at(I, InterBookmark::package(Packaging::at(I)), S);
 }
@@ -113,6 +126,12 @@ inter_pair InterValuePairs::from_real_text_at(inter_tree *I, inter_package *pack
 	pair.data_format = REAL_IVAL;
 	pair.data_content = ID;
 	return pair;
+}
+
+text_stream *InterValuePairs::real_to_text(inter_tree *I, inter_pair pair) {
+	if (InterValuePairs::is_real(pair))
+		return InterWarehouse::get_text(InterTree::warehouse(I), pair.data_content);
+	return NULL;
 }
 
 @ Dictionary words, singular and plural:
@@ -134,6 +153,11 @@ inter_pair InterValuePairs::from_singular_dword_at(inter_tree *I, inter_package 
 
 int InterValuePairs::is_dword(inter_pair pair) {
 	if ((pair.data_format == DWORD_IVAL) || (pair.data_format == PDWORD_IVAL)) return TRUE;
+	return FALSE;
+}
+
+int InterValuePairs::is_singular_dword(inter_pair pair) {
+	if (pair.data_format == DWORD_IVAL) return TRUE;
 	return FALSE;
 }
 
@@ -178,15 +202,26 @@ inter_pair InterValuePairs::from_text_at(inter_tree *I, inter_package *pack, tex
 	return pair;
 }
 
-inter_pair InterValuePairs::divider(inter_tree *I, text_stream *text) {
-	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
-		InterBookmark::package(Packaging::at(I)));
-	text_stream *text_storage = InterWarehouse::get_text(InterTree::warehouse(I), ID);
-	Str::copy(text_storage, text);
-	inter_pair pair;
-	pair.data_format = DIVIDER_IVAL;
-	pair.data_content = ID;
-	return pair;
+int InterValuePairs::is_text(inter_pair pair) {
+	if (pair.data_format == LITERAL_TEXT_IVAL) return TRUE;
+	return FALSE;
+}
+
+text_stream *InterValuePairs::to_text(inter_tree *I, inter_pair pair) {
+	if (InterValuePairs::is_text(pair))
+		return InterWarehouse::get_text(InterTree::warehouse(I), pair.data_content);
+	return NULL;
+}
+
+int InterValuePairs::is_glob(inter_pair pair) {
+	if (pair.data_format == GLOB_IVAL) return TRUE;
+	return FALSE;
+}
+
+text_stream *InterValuePairs::to_glob_text(inter_tree *I, inter_pair pair) {
+	if (InterValuePairs::is_glob(pair))
+		return InterWarehouse::get_text(InterTree::warehouse(I), pair.data_content);
+	return NULL;
 }
 
 @ Printing out a pair in textual Inter syntax:
@@ -229,11 +264,6 @@ void InterValuePairs::write(OUTPUT_STREAM, inter_tree_node *F,
 			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, pair.data_content));
 			WRITE("'");
 			break;
-		case DIVIDER_IVAL:
-			WRITE("^\"");
-			Inter::Constant::write_text(OUT, Inode::ID_to_text(F, pair.data_content));
-			WRITE("\"");
-			break;
 		default: WRITE("<invalid-value-type>"); break;
 	}
 }
@@ -262,23 +292,23 @@ inter_pair InterValuePairs::read_int_in_I6_notation(text_stream *S) {
 @
 
 =
-int InterValuePairs::p_holds_symbol(inter_pair pair) {
+int InterValuePairs::holds_symbol(inter_pair pair) {
 	if (pair.data_format == ALIAS_IVAL) return TRUE;
 	return FALSE;
 }
 
-inter_symbol *InterValuePairs::p_symbol_from_data_pair(inter_pair pair,
+inter_symbol *InterValuePairs::symbol_from_data_pair(inter_pair pair,
 	inter_symbols_table *T) {
 	if (pair.data_format == ALIAS_IVAL) return InterSymbolsTable::symbol_from_ID(T, pair.data_content);
 	return NULL;
 }
 
-inter_symbol *InterValuePairs::p_symbol_from_data_pair_at_node(inter_pair pair,
+inter_symbol *InterValuePairs::symbol_from_data_pair_at_node(inter_pair pair,
 	inter_tree_node *P) {
-	return InterValuePairs::p_symbol_from_data_pair(pair, InterPackage::scope_of(P));
+	return InterValuePairs::symbol_from_data_pair(pair, InterPackage::scope_of(P));
 }
 
-inter_pair InterValuePairs::p_from_symbol(inter_tree *I, inter_package *pack, inter_symbol *S) {
+inter_pair InterValuePairs::from_symbol(inter_tree *I, inter_package *pack, inter_symbol *S) {
 	if (S == NULL) internal_error("no symbol");
 	inter_pair pair;
 	pair.data_format = ALIAS_IVAL;
@@ -320,11 +350,6 @@ inter_error_message *InterValuePairs::parse(text_stream *line, inter_error_locat
 		text_stream *glob_storage = InterWarehouse::get_text(InterTree::warehouse(I), pair->data_content);
 		return Inter::Constant::parse_text(glob_storage, S, 4, Str::len(S)-2, eloc);
 	}
-	if ((Str::begins_with_wide_string(S, L"^\"")) && (Str::ends_with_wide_string(S, L"\""))) {
-		pair->data_format = DIVIDER_IVAL; pair->data_content = InterWarehouse::create_text(InterTree::warehouse(I), pack);
-		text_stream *divider_storage = InterWarehouse::get_text(InterTree::warehouse(I), pair->data_content);
-		return Inter::Constant::parse_text(divider_storage, S, 2, Str::len(S)-2, eloc);
-	}
 	if (Str::get_first_char(S) == '/') {
 		inter_symbol *symb = InterSymbolsTable::URL_to_symbol(I, S);
 		if (symb == NULL) {
@@ -357,7 +382,7 @@ inter_error_message *InterValuePairs::parse(text_stream *line, inter_error_locat
 		inter_symbol *symb = InterSymbolsTable::symbol_from_name(scope, S);
 		if (symb) @<Read symb@>;
 		symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), S);
-		*pair = InterValuePairs::p_from_symbol(I, pack, symb);
+		*pair = InterValuePairs::from_symbol(I, pack, symb);
 		InterSymbol::set_flag(symb, SPECULATIVE_ISYMF);
 		return NULL;
 	}
@@ -397,7 +422,7 @@ inter_error_message *InterValuePairs::parse(text_stream *line, inter_error_locat
 	inter_type symbol_type = InterTypes::of_symbol(symb);
 	inter_error_message *E = InterTypes::can_be_used_as(symbol_type, type_wanted, S, eloc);
 	if (E) return E;
-	*pair = InterValuePairs::p_from_symbol(I, pack, symb);
+	*pair = InterValuePairs::from_symbol(I, pack, symb);
 	return NULL;
 
 @ =
@@ -408,7 +433,6 @@ inter_pair InterValuePairs::transpose(inter_pair pair, inter_ti *grid, inter_ti 
 		case LITERAL_TEXT_IVAL:
 		case REAL_IVAL:
 		case GLOB_IVAL:
-		case DIVIDER_IVAL:
 			pair.data_content = grid[pair.data_content];
 			break;
 	}
@@ -442,7 +466,6 @@ inter_error_message *InterValuePairs::verify(inter_package *owner, inter_tree_no
 		case REAL_IVAL:
 		case GLOB_IVAL:
 		case UNDEF_IVAL:
-		case DIVIDER_IVAL:
 			return NULL;
 	}
 	return Inode::error(P, I"value of unknown category", NULL);

@@ -15,13 +15,18 @@ void SynopticTables::compile(inter_tree *I, pipeline_step *step, tree_inventory 
 			inter_package *pack = InterPackage::at_this_head(inv->table_column_usage_nodes->list[i].node);
 			inter_tree_node *ID = Synoptic::get_definition(pack, I"column_identity");
 			inter_symbol *id_s = NULL;
-			inter_pair id_val = InterValuePairs::in_field(ID, DATA_CONST_IFLD);
-			if (InterValuePairs::p_holds_symbol(id_val))
-				id_s = InterValuePairs::p_symbol_from_data_pair_at_node(id_val, ID);
+			inter_pair id_val = InterValuePairs::get(ID, DATA_CONST_IFLD);
+			if (InterValuePairs::holds_symbol(id_val))
+				id_s = InterValuePairs::symbol_from_data_pair_at_node(id_val, ID);
 			if (id_s == NULL) internal_error("column_identity not a symbol");
 			ID = InterSymbol::definition(id_s);
 			inter_tree_node *D = Synoptic::get_definition(pack, I"column_bits");
-			D->W.instruction[DATA_CONST_IFLD+1] += ID->W.instruction[DATA_CONST_IFLD+1];
+			inter_ti D_bits =
+				InterValuePairs::to_number(InterValuePairs::get(D, DATA_CONST_IFLD));
+			inter_ti ID_bits =
+				InterValuePairs::to_number(InterValuePairs::get(ID, DATA_CONST_IFLD));
+			InterValuePairs::set(D, DATA_CONST_IFLD,
+				InterValuePairs::number(D_bits + ID_bits));
 		}
 	}
 	@<Define TABLEOFTABLES array@>;
@@ -40,7 +45,7 @@ so we change the values of these constants accordingly.
 	for (int i=0; i<InterNodeList::array_len(inv->table_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->table_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"table_id");
-		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) (i + 1);
+		InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) i+1));
 	}
 
 @ And similarly for columns. The runtime code uses a range of unique ID numbers
@@ -54,7 +59,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	for (int i=0; i<InterNodeList::array_len(inv->table_column_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->table_column_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"table_column_id");
-		D->W.instruction[DATA_CONST_IFLD+1] = (inter_ti) (i + 100);
+		InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) i+100));
 	}
 
 @<Define TABLEOFTABLES array@> =
@@ -173,10 +178,11 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 			InterPackage::at_this_head(inv->table_column_usage_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_optional_definition(pack, I"column_blanks");
 		if (D) {
-			D->W.instruction[DATA_CONST_IFLD+1] = hwm;
+			InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number(hwm));
 			inter_tree_node *B = Synoptic::get_definition(pack, I"^column_blank_data");
 			for (int i=DATA_CONST_IFLD; i<B->W.extent; i=i+2) {
-				Synoptic::numeric_entry(B->W.instruction[i+1]);
+				Synoptic::numeric_entry(
+					InterValuePairs::to_number(InterValuePairs::get(B, i)));
 				hwm++;
 			}
 		}

@@ -122,10 +122,10 @@ Rules, which of course are always present. So these are hidden by default.
 @<Produce a row for this table usage@> =
 	inter_tree_node *ID = Synoptic::get_definition(usage_pack, I"column_identity");
 	inter_symbol *id_s = NULL;
-	if (ID->W.instruction[DATA_CONST_IFLD] == ALIAS_IVAL)
-		id_s = InterSymbolsTable::symbol_from_ID(InterPackage::scope(usage_pack),
-			ID->W.instruction[DATA_CONST_IFLD+1]);
-	if (id_s == NULL) internal_error("column_identity not an ALIAS_IVAL");
+	inter_pair val = InterValuePairs::get(ID, DATA_CONST_IFLD);
+	if (InterValuePairs::holds_symbol(val))
+		id_s = InterValuePairs::symbol_from_data_pair(val, InterPackage::scope(usage_pack));
+	if (id_s == NULL) internal_error("column_identity not specified");
 	inter_package *col_pack = InterPackage::container(id_s->definition);
 	HTML::first_html_column(OUT, 0);
 	WRITE("&nbsp;&nbsp;");

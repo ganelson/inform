@@ -206,5 +206,5 @@ the context of the current package:
 =
 inter_error_message *Inter::Verify::data_pair_fields(inter_package *owner,
 	inter_tree_node *P, int first_field, inter_type type) {
-	return InterValuePairs::verify(owner, P, InterValuePairs::in_field(P, first_field), type);
+	return InterValuePairs::verify(owner, P, InterValuePairs::get(P, first_field), type);
 }

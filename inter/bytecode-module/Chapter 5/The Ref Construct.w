@@ -78,5 +78,5 @@ void Inter::Ref::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	if (locals == NULL) { *E = Inode::error(P, I"function has no symbols table", NULL); return; }
 	WRITE("ref ");
 	InterTypes::write_optional_type_marker(OUT, P, KIND_REF_IFLD);
-	InterValuePairs::write(OUT, P, InterValuePairs::in_field(P, VAL1_REF_IFLD), locals, FALSE);
+	InterValuePairs::write(OUT, P, InterValuePairs::get(P, VAL1_REF_IFLD), locals, FALSE);
 }

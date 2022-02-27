@@ -22,7 +22,7 @@ void I6TargetVariables::declare_variables(code_generator *gtr, code_generation *
 	inter_symbol *var_name;
 	LOOP_OVER_LINKED_LIST(var_name, inter_symbol, L) {
 		inter_tree_node *P = var_name->definition;
-		inter_pair val = InterValuePairs::in_field(P, VAL1_VAR_IFLD);
+		inter_pair val = InterValuePairs::get(P, VAL1_VAR_IFLD);
 		if (SymbolAnnotation::get_b(var_name, ASSIMILATED_IANN) == FALSE) {
 			if (k == 1) @<Begin the array@>;
 			@<Variables created by Inform 7 source text all go into the array@>;
