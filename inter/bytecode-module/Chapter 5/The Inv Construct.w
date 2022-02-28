@@ -35,22 +35,22 @@ void Inter::Inv::define(void) {
 
 =
 void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 	*E = InterConstruct::check_level_in_package(IBM, INV_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_package *routine = InterBookmark::package(IBM);
-	if (routine == NULL) { *E = Inter::Errors::plain(I"'inv' used outside function", eloc); return; }
+	if (routine == NULL) { *E = InterErrors::plain(I"'inv' used outside function", eloc); return; }
 
 	inter_symbol *invoked_name = InterSymbolsTable::symbol_from_name(InterTree::global_scope(InterBookmark::tree(IBM)), ilp->mr.exp[0]);
 	if ((invoked_name == NULL) && (Str::get_first_char(ilp->mr.exp[0]) == '!')) {
 		invoked_name = Primitives::declare_one_named(InterBookmark::tree(IBM), &(InterBookmark::tree(IBM)->site.strdata.package_types_bookmark), ilp->mr.exp[0]);
 		if (invoked_name == NULL) {
-			*E = Inter::Errors::quoted(I"'inv' on undeclared primitive", ilp->mr.exp[0], eloc); return;
+			*E = InterErrors::quoted(I"'inv' on undeclared primitive", ilp->mr.exp[0], eloc); return;
 		}
 	}
 	if (invoked_name == NULL) invoked_name = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], 0, E);
-	if (invoked_name == NULL) { *E = Inter::Errors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
+	if (invoked_name == NULL) { *E = InterErrors::quoted(I"'inv' on unknown routine or primitive", ilp->mr.exp[0], eloc); return; }
 
 	if ((InterSymbol::defined_elsewhere(invoked_name)) ||
 		(InterSymbol::misc_but_undefined(invoked_name))) {
@@ -68,7 +68,7 @@ void Inter::Inv::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 			}
 			break;
 	}
-	*E = Inter::Errors::quoted(I"not a function or primitive", ilp->mr.exp[0], eloc);
+	*E = InterErrors::quoted(I"not a function or primitive", ilp->mr.exp[0], eloc);
 }
 
 inter_error_message *Inter::Inv::new_primitive(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {

@@ -27,13 +27,13 @@ Used to be BLOCK_RCE_IFLD 2 with extent 3
 
 =
 void Inter::Reference::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	*E = InterConstruct::check_level_in_package(IBM, REFERENCE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_package *routine = InterBookmark::package(IBM);
-	if (routine == NULL) { *E = Inter::Errors::plain(I"'reference' used outside function", eloc); return; }
+	if (routine == NULL) { *E = InterErrors::plain(I"'reference' used outside function", eloc); return; }
 
 	*E = Inter::Reference::new(IBM, ilp->indent_level, eloc);
 }

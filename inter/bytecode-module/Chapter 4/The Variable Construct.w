@@ -55,7 +55,7 @@ void Inter::Variable::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *Inter::Variable::new(inter_bookmark *IBM, inter_ti VID, inter_type var_type, inter_pair val, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VARIABLE_IST, VID, InterTypes::to_TID_wrt_bookmark(IBM, var_type), InterValuePairs::to_word1(val), InterValuePairs::to_word2(val), eloc, level);
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VARIABLE_IST, VID, InterTypes::to_TID_at(IBM, var_type), InterValuePairs::to_word1(val), InterValuePairs::to_word2(val), eloc, level);
 	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -72,7 +72,7 @@ void Inter::Variable::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *var_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_VAR_IFLD);
 	if (var_name) {
 		WRITE("variable ");
-		InterTypes::write_optional_type_marker(OUT, P, KIND_VAR_IFLD);
+		TextualInter::write_optional_type_marker(OUT, P, KIND_VAR_IFLD);
 		WRITE("%S = ", InterSymbol::identifier(var_name));
 		TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_VAR_IFLD), FALSE);
 		SymbolAnnotation::write_annotations(OUT, P, var_name);

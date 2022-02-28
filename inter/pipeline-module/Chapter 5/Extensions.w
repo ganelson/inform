@@ -51,7 +51,7 @@ would violate the CC license.
 			InterPackage::at_this_head(inv->extension_nodes->list[i].node);
 		inter_ti modesty = Metadata::read_numeric(pack, I"^modesty");
 		if (modesty == 0) {
-			text_stream *credit = Str::duplicate(Metadata::read_textual(pack, I"^credit"));
+			text_stream *credit = Str::duplicate(Metadata::required_textual(pack, I"^credit"));
 			WRITE_TO(credit, "\n");
 			Produce::inv_primitive(I, PRINT_BIP);
 			Produce::down(I);
@@ -68,7 +68,7 @@ would violate the CC license.
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->extension_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->extension_nodes->list[i].node);
-		text_stream *credit = Str::duplicate(Metadata::read_textual(pack, I"^credit"));
+		text_stream *credit = Str::duplicate(Metadata::required_textual(pack, I"^credit"));
 		WRITE_TO(credit, "\n");
 		Produce::inv_primitive(I, PRINT_BIP);
 		Produce::down(I);
@@ -87,7 +87,7 @@ just a run of |if (id == 1) ...|, then |if (id == 2) ...|, and so on.
 	inter_symbol *id_s = Synoptic::local(I, I"id", NULL);
 	for (int i=0; i<InterNodeList::array_len(inv->extension_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->extension_nodes->list[i].node);
-		text_stream *credit = Metadata::read_textual(pack, I"^credit");
+		text_stream *credit = Metadata::required_textual(pack, I"^credit");
 		Produce::inv_primitive(I, IF_BIP);
 		Produce::down(I);
 			Produce::inv_primitive(I, EQ_BIP);

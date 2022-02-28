@@ -36,7 +36,7 @@ void Inter::Primitive::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 	*E = InterConstruct::check_level_in_package(IBM, PRIMITIVE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_symbol *prim_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;
@@ -70,7 +70,7 @@ inter_ti Inter::Primitive::category(inter_error_location *eloc, text_stream *T, 
 	if (Str::eq(T, I"ref")) return REF_PRIM_CAT;
 	if (Str::eq(T, I"lab")) return LAB_PRIM_CAT;
 	if (Str::eq(T, I"code")) return CODE_PRIM_CAT;
-	*E = Inter::Errors::quoted(I"no such category", T, eloc);
+	*E = InterErrors::quoted(I"no such category", T, eloc);
 	return VAL_PRIM_CAT;
 }
 

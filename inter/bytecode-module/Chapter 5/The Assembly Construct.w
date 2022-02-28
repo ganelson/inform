@@ -35,13 +35,13 @@ void Inter::Assembly::define(void) {
 
 =
 void Inter::Assembly::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	*E = InterConstruct::check_level_in_package(IBM, ASSEMBLY_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_package *routine = InterBookmark::package(IBM);
-	if (routine == NULL) { *E = Inter::Errors::plain(I"'assembly' used outside function", eloc); return; }
+	if (routine == NULL) { *E = InterErrors::plain(I"'assembly' used outside function", eloc); return; }
 
 	inter_ti which = 0;
 	if (Str::eq(ilp->mr.exp[0], I"store_to")) which = ASM_ARROW_ASMMARKER;
@@ -51,7 +51,7 @@ void Inter::Assembly::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	else if (Str::eq(ilp->mr.exp[0], I"branch_if_false")) which = ASM_NEG_ASMMARKER;
 	else if (Str::eq(ilp->mr.exp[0], I"return_true_if_false")) which = ASM_NEG_RTRUE_ASMMARKER;
 	else if (Str::eq(ilp->mr.exp[0], I"return_false_if_false")) which = ASM_NEG_RFALSE_ASMMARKER;
-	if (which == 0) { *E = Inter::Errors::plain(I"unrecognised 'assembly' marker", eloc); return; }
+	if (which == 0) { *E = InterErrors::plain(I"unrecognised 'assembly' marker", eloc); return; }
 
 	*E = Inter::Assembly::new(IBM, which, (inter_ti) ilp->indent_level, eloc);
 }

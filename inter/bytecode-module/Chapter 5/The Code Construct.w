@@ -27,13 +27,13 @@ void Inter::Code::define(void) {
 
 =
 void Inter::Code::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	*E = InterConstruct::check_level_in_package(IBM, CODE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	if (InterBookmark::package(IBM) == NULL) {
-		*E = Inter::Errors::plain(I"'code' used outside package", eloc); return;
+		*E = InterErrors::plain(I"'code' used outside package", eloc); return;
 	}
 
 	*E = Inter::Code::new(IBM, ilp->indent_level, eloc);

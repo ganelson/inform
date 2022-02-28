@@ -34,8 +34,8 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	Localisation::roman(OUT, LD, I"Index.Elements.In.Format");
 	WRITE(": ");
 	inter_package *pack = InterPackage::from_URL(I, I"/main/completion/basics");
-	text_stream *VM = Metadata::read_optional_textual(pack, I"^virtual_machine");
-	text_stream *VM_icon = Metadata::read_optional_textual(pack, I"^virtual_machine_icon");
+	text_stream *VM = Metadata::optional_textual(pack, I"^virtual_machine");
+	text_stream *VM_icon = Metadata::optional_textual(pack, I"^virtual_machine_icon");
 	if (Str::len(VM_icon) > 0) {
 		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/%S", VM_icon);
 		WRITE("&nbsp;");
@@ -74,10 +74,10 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 @<Write in the index line for a use option not taken@> =
 	HTML_OPEN_WITH("span", "style=\"white-space:nowrap\";");
 	TEMPORARY_TEXT(TEMP)
-	WRITE_TO(TEMP, "Use %S.", Metadata::read_textual(pack, I"^name"));
+	WRITE_TO(TEMP, "Use %S.", Metadata::required_textual(pack, I"^name"));
 	PasteButtons::paste_text(OUT, TEMP);
 	DISCARD_TEXT(TEMP)
-	WRITE("&nbsp;%S", Metadata::read_textual(pack, I"^name"));
+	WRITE("&nbsp;%S", Metadata::required_textual(pack, I"^name"));
 	HTML_CLOSE("span");
 
 @<Show the language elements used@> =
@@ -87,8 +87,8 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
 	inter_package *pack = InterPackage::from_URL(I, I"/main/completion/basics");
-	text_stream *used = Metadata::read_optional_textual(pack, I"^language_elements_used");
-	text_stream *not_used = Metadata::read_optional_textual(pack, I"^language_elements_not_used");
+	text_stream *used = Metadata::optional_textual(pack, I"^language_elements_used");
+	text_stream *not_used = Metadata::optional_textual(pack, I"^language_elements_not_used");
 	if (Str::len(used) > 0) 
 		Localisation::roman_t(OUT, LD, I"Index.Elements.In.Included", used);
 	if ((Str::len(used) > 0) && (Str::len(not_used) > 0)) WRITE("<br>");
@@ -107,7 +107,7 @@ void InnardsElement::render(OUTPUT_STREAM, index_session *session) {
 	LOOP_THROUGH_SUBPACKAGES(aspect_pack, pack, I"_debugging_aspect") {	
 		TEMPORARY_TEXT(is)
 		WRITE_TO(is, "Include %S in the debugging log.",
-			Metadata::read_textual(aspect_pack, I"^name"));
+			Metadata::required_textual(aspect_pack, I"^name"));
 		PasteButtons::paste_text(OUT, is);
 		WRITE("&nbsp;%S&nbsp;", is);
 		DISCARD_TEXT(is)
@@ -138,7 +138,7 @@ int InnardsElement::uo_set_from(inter_package *pack, int way, inter_package *E) 
 			if (Metadata::read_optional_numeric(pack, I"^used_in_options")) return TRUE;
 			break;
 		case EXTENSION_UO_ORIGIN: {
-			inter_symbol *id = Metadata::read_optional_symbol(pack, I"^used_in_extension");
+			inter_symbol *id = Metadata::optional_symbol(pack, I"^used_in_extension");
 			if (id) {
 				inter_package *used_in_E = InterPackage::container(id->definition);
 				if ((used_in_E) && (used_in_E == E)) return TRUE;
@@ -180,7 +180,7 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 			DocReferences::link(OUT, I"OPTIONSFILE"); break;
 		case EXTENSION_UO_ORIGIN:
 			Localisation::roman_t(OUT, LD, I"Index.Elements.In.SetFrom",
-				Metadata::read_optional_textual(E, I"^credit"));
+				Metadata::optional_textual(E, I"^credit"));
 			break;
 	}
 	WRITE(":");
@@ -189,7 +189,7 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 
 @<Write in the index line for a use option taken@> =
 	HTML::open_indented_p(OUT, 3, "tight");
-	WRITE("Use %S", Metadata::read_optional_textual(pack, I"^name"));
+	WRITE("Use %S", Metadata::optional_textual(pack, I"^name"));
 	int msv = (int) Metadata::read_optional_numeric(pack, I"^minimum");
 	if (msv > 0) WRITE(" of at least %d", msv);
 	int at = (int) Metadata::read_optional_numeric(pack, I"^used_at");
@@ -198,7 +198,7 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 		WRITE("&nbsp;");
 		TEMPORARY_TEXT(TEMP)
 		WRITE_TO(TEMP, "Use %S of at least %d.",
-			Metadata::read_optional_textual(pack, I"^name"), 2*msv);
+			Metadata::optional_textual(pack, I"^name"), 2*msv);
 		PasteButtons::paste_text(OUT, TEMP);
 		DISCARD_TEXT(TEMP)
 		WRITE("&nbsp;");

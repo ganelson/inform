@@ -104,7 +104,7 @@ void CGlobals::declare_variables(code_generator *gtr, code_generation *gen, link
 	CGlobals::define_header_constant_for_variable(gen, I"self", 0);
 
 @<Define a more legible constant for the header target@> =
-	text_stream *name = Metadata::read_optional_textual(
+	text_stream *name = Metadata::optional_textual(
 		InterPackage::container(var_name->definition), I"^name");
 	if (name)
 		CGlobals::define_header_constant_for_variable(gen, name, N);

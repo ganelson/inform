@@ -67,7 +67,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) op = CONSTANT_QUOTIENT_LIST;
 	if (op != 0) {
 		inter_tree_node *P =
-			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), op, eloc, (inter_ti) ilp->indent_level);
+			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), op, eloc, (inter_ti) ilp->indent_level);
 		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
@@ -88,7 +88,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	if (Regexp::match(&mr2, S, L"{ }")) {
 		inter_ti form = CONSTANT_INDIRECT_LIST;
 		inter_tree_node *P =
-			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), form, eloc, (inter_ti) ilp->indent_level);
+			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), form, eloc, (inter_ti) ilp->indent_level);
 		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 		if (*E) return;
 		NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -99,7 +99,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		inter_type conts_type = InterTypes::type_operand(con_type, 0);
 		inter_ti form = CONSTANT_INDIRECT_LIST;
 		inter_tree_node *P =
-			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), form, eloc, (inter_ti) ilp->indent_level);
+			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), form, eloc, (inter_ti) ilp->indent_level);
 		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
@@ -119,7 +119,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	if (Regexp::match(&mr2, S, L"struct{ (%c*) }")) {
 		inter_tree_node *P =
-			 Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), CONSTANT_STRUCT, eloc, (inter_ti) ilp->indent_level);
+			 Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), CONSTANT_STRUCT, eloc, (inter_ti) ilp->indent_level);
 		int arity = InterTypes::type_arity(con_type);
 		int counter = 0;
 		text_stream *conts = mr2.exp[0];
@@ -136,7 +136,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 				return;
 		}
 		if (counter != arity)
-			{ *E = Inter::Errors::quoted(I"wrong size", S, eloc); return; }
+			{ *E = InterErrors::quoted(I"wrong size", S, eloc); return; }
 		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (*E) return;
 		NodePlacement::move_to_moving_bookmark(P, IBM);
 		return;
@@ -144,18 +144,18 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	if (Regexp::match(&mr2, S, L"table{ (%c*) }")) {
 		inter_tree_node *P =
-			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), CONSTANT_TABLE, eloc, (inter_ti) ilp->indent_level);
+			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), CONSTANT_TABLE, eloc, (inter_ti) ilp->indent_level);
 		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-			if (Inter::Constant::append(ilp->line, eloc, IBM, InterTypes::untyped(), P, mr3.exp[0], E) == FALSE)
+			if (Inter::Constant::append(ilp->line, eloc, IBM, InterTypes::unchecked(), P, mr3.exp[0], E) == FALSE)
 				return;
 			Str::copy(conts, mr3.exp[1]);
 		}
 		if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-			if (Inter::Constant::append(ilp->line, eloc, IBM, InterTypes::untyped(), P, mr3.exp[0], E) == FALSE)
+			if (Inter::Constant::append(ilp->line, eloc, IBM, InterTypes::unchecked(), P, mr3.exp[0], E) == FALSE)
 				return;
 		}
 		NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -172,7 +172,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		}
 		DISCARD_TEXT(parsed_text)
 		if (*E) return;
-		*E = Inter::Constant::new_textual(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), ID, (inter_ti) ilp->indent_level, eloc);
+		*E = Inter::Constant::new_textual(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), ID, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}
 
@@ -180,9 +180,9 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		text_stream *fname = mr2.exp[0];
 		inter_package *block = InterPackage::from_name(InterBookmark::package(IBM), fname);
 		if (block == NULL) {
-			*E = Inter::Errors::quoted(I"no such function body", fname, eloc); return;
+			*E = InterErrors::quoted(I"no such function body", fname, eloc); return;
 		}
-		*E = Inter::Constant::new_function(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), block, (inter_ti) ilp->indent_level, eloc);
+		*E = Inter::Constant::new_function(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), block, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}
 
@@ -190,7 +190,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = TextualInter::parse_pair(ilp->line, eloc, IBM, con_type, S, &val);
 	if (*E) return;
 
-	*E = Inter::Constant::new_numerical(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_wrt_bookmark(IBM, con_type), val, (inter_ti) ilp->indent_level, eloc);
+	*E = Inter::Constant::new_numerical(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), val, (inter_ti) ilp->indent_level, eloc);
 }
 
 inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_pair val, inter_ti level, inter_error_location *eloc) {
@@ -343,7 +343,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	if (SymbolAnnotation::get_b(con_name, HEX_IANN)) hex = TRUE;
 	if (con_name) {
 		WRITE("constant ");
-		InterTypes::write_optional_type_marker(OUT, P, KIND_CONST_IFLD);
+		TextualInter::write_optional_type_marker(OUT, P, KIND_CONST_IFLD);
 		WRITE("%S = ", InterSymbol::identifier(con_name));
 		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT:

@@ -93,7 +93,7 @@ fact, end.
 	HTML::open_indented_p(OUT, 1, "hanging");
 	IndexUtilities::anchor_numbered(OUT, ssc->allocation_id);
 	Localisation::bold_t(OUT, LD, I"Index.Elements.Pl.SceneName",
-		Metadata::read_textual(ssc->pack, I"^name"));
+		Metadata::required_textual(ssc->pack, I"^name"));
 	IndexUtilities::link_package(OUT, ssc->pack);
 	if (FauxScenes::recurs(ssc)) {
 		WRITE("&nbsp;&nbsp;");
@@ -118,7 +118,7 @@ fact, end.
 				HTML_CLOSE("p");
 			}
 			HTML::open_indented_p(OUT, 2, "hanging");
-			WRITE("<i>%S</i>", Metadata::read_textual(pack, I"^printed_name"));
+			WRITE("<i>%S</i>", Metadata::required_textual(pack, I"^printed_name"));
 			HTML_CLOSE("p");
 			IndexRules::rulebook_list(OUT, I, pack, I"",
 				IndexRules::scene_context(ssc), session);
@@ -241,7 +241,7 @@ void PlotElement::index_from_scene(OUTPUT_STREAM, simplified_scene *ssc, int dep
 
 @<Name the scene in the table, italicised if we've seen it already@> =
 	if (ssc->indexed_already) WRITE("<i>");
-	WRITE("%S", Metadata::read_textual(ssc->pack, I"^name"));
+	WRITE("%S", Metadata::required_textual(ssc->pack, I"^name"));
 	if (ssc->indexed_already) WRITE("</i>");
 	else IndexUtilities::below_link_numbered(OUT, ssc->allocation_id);
 

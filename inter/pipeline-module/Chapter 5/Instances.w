@@ -24,7 +24,7 @@ void SynopticInstances::compile(inter_tree *I, pipeline_step *step, tree_invento
 	inter_symbol *t_0_s = Synoptic::local(I, I"t_0", NULL);
 	for (int i=0; i<InterNodeList::array_len(inv->instance_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->instance_nodes->list[i].node);
-		inter_symbol *showme_s = Metadata::read_optional_symbol(pack, I"^showme_fn");
+		inter_symbol *showme_s = Metadata::optional_symbol(pack, I"^showme_fn");
 		if (showme_s) {
 			Produce::inv_primitive(I, STORE_BIP);
 			Produce::down(I);

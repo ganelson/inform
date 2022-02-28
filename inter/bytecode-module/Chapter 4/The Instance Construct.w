@@ -35,7 +35,7 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = InterConstruct::check_level_in_package(IBM, INSTANCE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	text_stream *ktext = ilp->mr.exp[1], *vtext = NULL;
 
@@ -49,11 +49,11 @@ void Inter::Instance::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 
 	inter_type inst_type = InterTypes::from_type_name(inst_kind);
 	if (InterTypes::is_enumerated(inst_type) == FALSE)
-		{ *E = Inter::Errors::quoted(I"not a kind which has instances", ilp->mr.exp[1], eloc); return; }
+		{ *E = InterErrors::quoted(I"not a kind which has instances", ilp->mr.exp[1], eloc); return; }
 
 	inter_pair val = InterValuePairs::undef();
 	if (vtext) {
-		*E = TextualInter::parse_pair(ilp->line, eloc, IBM, InterTypes::untyped(), vtext, &val);
+		*E = TextualInter::parse_pair(ilp->line, eloc, IBM, InterTypes::unchecked(), vtext, &val);
 		if (*E) return;
 	}
 	*E = Inter::Instance::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, inst_kind), val, (inter_ti) ilp->indent_level, eloc);

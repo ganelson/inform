@@ -32,12 +32,12 @@ void CommandsElement::render(OUTPUT_STREAM, index_session *session) {
 	CommandsElement::make_direction_entry(entries);
 
 @<Create entry for this command@> =
-	text_stream *main_command = Metadata::read_optional_textual(entry, I"^command");
+	text_stream *main_command = Metadata::optional_textual(entry, I"^command");
 	if (Str::len(main_command) == 0) main_command = I"0";
 	CommandsElement::make_entry(main_command, entry, NORMAL_COMMAND, entries);
 	inter_package *alias;
 	LOOP_THROUGH_SUBPACKAGES(alias, entry, I"_cg_alias") {
-		text_stream *alias_command = Metadata::read_textual(alias, I"^alias");
+		text_stream *alias_command = Metadata::required_textual(alias, I"^alias");
 		CommandsElement::make_entry(alias_command, entry, ALIAS_COMMAND, entries);
 	}
 
@@ -160,26 +160,26 @@ void CommandsElement::index_alias(OUTPUT_STREAM, inter_tree *I, inter_package *c
 	text_stream *headword, localisation_dictionary *LD) {
 	WRITE("&quot;%S&quot;, ", headword);
 	Localisation::italic(OUT, LD, I"Index.Elements.Cm.Alias");
-	WRITE(" &quot;%S&quot;", Metadata::read_textual(cg_pack, I"^command"));
+	WRITE(" &quot;%S&quot;", Metadata::required_textual(cg_pack, I"^command"));
 	IndexUtilities::link_package(OUT, cg_pack);
 	HTML_TAG("br");
 }
 
 void CommandsElement::index_grammar_line(OUTPUT_STREAM, inter_package *cgl,
 	text_stream *headword, localisation_dictionary *LD) {
-	inter_symbol *an_s = Metadata::read_optional_symbol(cgl, I"^action");
+	inter_symbol *an_s = Metadata::optional_symbol(cgl, I"^action");
 	if (an_s == NULL) return;
 	inter_package *an = InterPackage::container(an_s->definition);
 	int oow = (int) Metadata::read_optional_numeric(an, I"^out_of_world");
 	if (Str::len(headword) > 0) IndexUtilities::anchor(OUT, headword);
 	if (oow) HTML::begin_colour(OUT, I"800000");
 	WRITE("&quot;");
-	TokensElement::verb_definition(OUT, Metadata::read_optional_textual(cgl, I"^text"),
+	TokensElement::verb_definition(OUT, Metadata::optional_textual(cgl, I"^text"),
 		headword, EMPTY_WORDING);
 	WRITE("&quot;");
 	IndexUtilities::link_package(OUT, cgl);
 	
-	WRITE(" - <i>%S</i>", Metadata::read_textual(an, I"^name"));
+	WRITE(" - <i>%S</i>", Metadata::required_textual(an, I"^name"));
 	IndexUtilities::detail_link(OUT, "A",
 		(int) Metadata::read_numeric(an, I"action_id"), TRUE);
 	if (Metadata::read_optional_numeric(cgl, I"^reversed")) {

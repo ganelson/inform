@@ -35,18 +35,18 @@ typedef struct irl_state {
 
 void TextualInter::read_line(text_stream *line, text_file_position *tfp, void *state) {
 	irl_state *irl = (irl_state *) state;
-	inter_error_location eloc = Inter::Errors::file_location(line, tfp);
+	inter_error_location eloc = InterErrors::file_location(line, tfp);
 	if (Str::len(line) == 0) { irl->no_blank_lines_stacked++; return; }
 	for (int i=0; i<irl->no_blank_lines_stacked; i++) {
-		inter_error_location b_eloc = Inter::Errors::file_location(I"", tfp);
+		inter_error_location b_eloc = InterErrors::file_location(I"", tfp);
 		inter_error_message *E =
 			TextualInter::parse_single_line(Str::new(), &b_eloc, irl->write_pos);
-		if (E) Inter::Errors::issue(E);
+		if (E) InterErrors::issue(E);
 	}
 	irl->no_blank_lines_stacked = 0;
 	inter_error_message *E =
 		TextualInter::parse_single_line(line, &eloc, irl->write_pos);
-	if (E) Inter::Errors::issue(E);
+	if (E) InterErrors::issue(E);
 }
 
 @ The following is called not only by the above but also when creating primitives.
@@ -87,7 +87,7 @@ deception.
 	LOOP_THROUGH_TEXT(P, ilp.line) {
 		wchar_t c = Str::get(P);
 		if (c == '\t') ilp.indent_level++;
-		else if (c == ' ') return Inter::Errors::plain(
+		else if (c == ' ') return InterErrors::plain(
 			I"spaces (rather than tabs) at beginning of line", eloc);
 		else break;
 	}
@@ -158,7 +158,7 @@ inter_symbol *TextualInter::new_symbol(inter_error_location *eloc, inter_symbols
 	inter_symbol *S = InterSymbolsTable::symbol_from_name(T, name);
 	if (S) {
 		if (InterSymbol::misc_but_undefined(S)) return S;
-		*E = Inter::Errors::quoted(I"symbol already exists", name, eloc);
+		*E = InterErrors::quoted(I"symbol already exists", name, eloc);
 		return NULL;
 	}
 	return InterSymbolsTable::symbol_from_name_creating(T, name);
@@ -183,7 +183,7 @@ inter_symbol *TextualInter::find_symbol_in_table(inter_symbols_table *T, inter_e
 	else
 		S = InterSymbolsTable::symbol_from_name(T, name);
 	if (S == NULL) {
-		*E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL;
+		*E = InterErrors::quoted(I"no such symbol", name, eloc); return NULL;
 	}
 	if (construct != 0) @<Check that it is defined by the correct construct@>;
 	return S;
@@ -207,7 +207,7 @@ resolve forward references at the end of the parsing process -- see below.
 			else PUT_TO(leaf, c);
 		}
 		if (Str::len(leaf) == 0) {
-			*E = Inter::Errors::quoted(I"URL ends in '/'", name, eloc);
+			*E = InterErrors::quoted(I"URL ends in '/'", name, eloc);
 			return NULL;
 		}
 		S = InterSymbolsTable::symbol_from_name(T, leaf);
@@ -227,11 +227,11 @@ But it really doesn't need to catch every possible error; this is Inter, not Inf
 	if (InterSymbol::defined_elsewhere(S)) return S;
 	if (InterSymbol::misc_but_undefined(S)) return S;
 	if (D == NULL) {
-		*E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL;
+		*E = InterErrors::quoted(I"undefined symbol", name, eloc); return NULL;
 	}
 	if ((D->W.instruction[ID_IFLD] != construct) &&
 		(InterSymbol::misc_but_undefined(S) == FALSE)) {
-		*E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL;
+		*E = InterErrors::quoted(I"symbol of wrong type", name, eloc); return NULL;
 	}
 
 @ This simpler version checks the global symbols for the tree, rather than the local
@@ -247,7 +247,7 @@ inter_symbol *TextualInter::find_global_symbol(inter_bookmark *IBM, inter_error_
 	*E = NULL;
 	inter_symbol *S = InterSymbolsTable::symbol_from_name(T, name);
 	if (S == NULL) {
-		*E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL;
+		*E = InterErrors::quoted(I"no such symbol", name, eloc); return NULL;
 	}
 	if (construct != 0) @<Check that it is defined by the correct construct@>;
 	return S;
@@ -260,7 +260,7 @@ symbols are still left dangling. This is where we fix things:
 
 =
 void TextualInter::resolve_forward_references(inter_tree *I) {
-	inter_error_location eloc = Inter::Errors::file_location(NULL, NULL);
+	inter_error_location eloc = InterErrors::file_location(NULL, NULL);
 	InterTree::traverse(I, TextualInter::rfr_visitor, &eloc, NULL, PACKAGE_IST);
 }
 
@@ -300,7 +300,7 @@ This then becomes that most heretical thing, a socket wired to a name:
 	else
 		S_to = InterSymbolsTable::symbol_from_name(T, N);
 	if (S_to == NULL)
-		Inter::Errors::issue(Inter::Errors::quoted(I"unable to locate symbol", N, eloc));
+		InterErrors::issue(InterErrors::quoted(I"unable to locate symbol", N, eloc));
 	else if (InterSymbol::is_socket(S))
 		Wiring::make_socket_to(S, S_to);
 	else
@@ -343,7 +343,7 @@ void TextualInter::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	textual_write_state *tws = (textual_write_state *) state;
 	if ((tws->filter) && ((*(tws->filter))(P) == FALSE)) return;
 	inter_error_message *E = InterConstruct::write_construct_text(tws->to, P);
-	if (E) Inter::Errors::issue(E);
+	if (E) InterErrors::issue(E);
 }
 
 @h Utility functions for writing construct lines.
@@ -394,11 +394,11 @@ inter_error_message *TextualInter::parse_literal_text(text_stream *parsed_text,
 				case '"': break;
 				case 't': c = 9; break;
 				case 'n': c = 10; break;
-				default: E = Inter::Errors::plain(I"no such backslash escape", eloc); break;
+				default: E = InterErrors::plain(I"no such backslash escape", eloc); break;
 			}
 		}
 		if (Inter::Constant::char_acceptable(c) == FALSE)
-			E = Inter::Errors::quoted(I"bad character in text", S, eloc);
+			E = InterErrors::quoted(I"bad character in text", S, eloc);
 		PUT_TO(parsed_text, c);
 		literal_mode = FALSE;
 	}
@@ -449,7 +449,7 @@ inter_error_message *TextualInter::parse_pair(text_stream *line, inter_error_loc
 				quoted_from = i+1;
 				quoted_to = Str::len(S)-2;
 				if (quoted_from > quoted_to)
-					return Inter::Errors::quoted(I"mismatched quotes", S, eloc);
+					return InterErrors::quoted(I"mismatched quotes", S, eloc);
 				break;
 			}
 	}
@@ -463,7 +463,7 @@ inter_error_message *TextualInter::parse_pair(text_stream *line, inter_error_loc
 	@<Parse symbol name syntax@>;
 	@<Parse undef syntax@>;
 
-	return Inter::Errors::quoted(I"unrecognised value", S, eloc);
+	return InterErrors::quoted(I"unrecognised value", S, eloc);
 }
 
 @ Literal numbers can be parsed in (signed) decimal, (unsigned) hexadecimal
@@ -487,15 +487,15 @@ or (unsigned) binary, but cannot be printed back in binary.
 			if ((c >= 'a') && (c <= 'z')) d = c-'a'+10;
 			else if ((c >= 'A') && (c <= 'Z')) d = c-'A'+10;
 			else if ((c >= '0') && (c <= '9')) d = c-'0';
-			else return Inter::Errors::quoted(I"bad digit", S, eloc);
+			else return InterErrors::quoted(I"bad digit", S, eloc);
 			if (d > base)
-				return Inter::Errors::quoted(I"bad digit for this number base", S, eloc);
+				return InterErrors::quoted(I"bad digit for this number base", S, eloc);
 			N = base*N + (long long int) d;
-			if (pos.index > 34) return Inter::Errors::quoted(I"value out of range", S, eloc);
+			if (pos.index > 34) return InterErrors::quoted(I"value out of range", S, eloc);
 		}
 		N = sign*N;
 		if (InterTypes::literal_is_in_range(N, type_wanted) == FALSE)
-			return Inter::Errors::quoted(I"value out of range", S, eloc);
+			return InterErrors::quoted(I"value out of range", S, eloc);
 		*pair = InterValuePairs::number((inter_ti) N);
 		return NULL;
 	}
@@ -605,7 +605,7 @@ one above.
 				if (c == '/') Str::clear(leaf);
 				else PUT_TO(leaf, c);
 			}
-			if (Str::len(leaf) == 0) return Inter::Errors::quoted(I"URL ends in '/'", S, eloc);
+			if (Str::len(leaf) == 0) return InterErrors::quoted(I"URL ends in '/'", S, eloc);
 			symb = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), leaf);
 			if (!((symb) && (Wiring::is_wired_to_name(symb)) &&
 				(Str::eq(Wiring::wired_to_name(symb), S)))) {			
@@ -627,7 +627,7 @@ one above.
 
 @<Use this symb as the result@> =
 	if ((InterTypes::is_enumerated(type_wanted)) && (InterSymbol::is_defined(symb) == FALSE))
-		return Inter::Errors::quoted(I"undefined symbol", S, eloc);
+		return InterErrors::quoted(I"undefined symbol", S, eloc);
 	inter_type symbol_type = InterTypes::of_symbol(symb);
 	inter_error_message *E = InterTypes::can_be_used_as(symbol_type, type_wanted, S, eloc);
 	if (E) return E;
@@ -645,3 +645,18 @@ This choice of character is meant to give it a dangerous aspect.
 		*pair = InterValuePairs::undef();
 		return NULL;
 	}
+
+@h Bracketed type markers.
+The following prints out the bracketed type markers used in textual Inter,
+but printing nothing in the case where the type is unchecked and the value is
+therefore used typelessly.
+
+=
+void TextualInter::write_optional_type_marker(OUTPUT_STREAM, inter_tree_node *P, int field) {
+	inter_type type = InterTypes::from_TID_in_field(P, field);
+	if (type.type_name) {
+		WRITE("("); TextualInter::write_symbol_from(OUT, P, field); WRITE(") ");
+	} else if (InterTypes::is_unchecked(type) == FALSE) {
+		WRITE("("); InterTypes::write_type(OUT, type); WRITE(") ");
+	}
+}

@@ -116,7 +116,7 @@ inter_error_message *InterConstruct::check_permissions(inter_construct *IC,
 			case INSIDE_CODE_PACKAGE_ICUP:
 				WRITE_TO(M, "inside code package '%S'", InterPackage::name(pack)); break;
 		}
-		return Inter::Errors::plain(M, eloc);
+		return InterErrors::plain(M, eloc);
 	}
 	return NULL;
 }
@@ -128,14 +128,14 @@ reading textual inter, hence the message about indentation:
 inter_error_message *InterConstruct::check_level_in_package(inter_bookmark *IBM,
 	inter_ti ID, int level, inter_error_location *eloc) {
 	inter_construct *proposed = InterConstruct::get_construct_for_ID(ID);
-	if (proposed == NULL) return Inter::Errors::plain(I"no such construct", eloc);
+	if (proposed == NULL) return InterErrors::plain(I"no such construct", eloc);
 	inter_package *pack = InterBookmark::package(IBM);
 	int actual = level;
 	if ((pack) && (InterPackage::is_a_root_package(pack) == FALSE))	
 		actual = level - InterBookmark::baseline(IBM) - 1;
-	if (actual < 0) return Inter::Errors::plain(I"impossible level", eloc);
+	if (actual < 0) return InterErrors::plain(I"impossible level", eloc);
 	if ((actual < proposed->min_level) || (actual > proposed->max_level))
-		return Inter::Errors::plain(I"indentation error", eloc);
+		return InterErrors::plain(I"indentation error", eloc);
 	return InterConstruct::check_permissions(proposed, pack, eloc);
 }
 
@@ -167,15 +167,15 @@ void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_st
 		}
 		inter_construct *IC = NULL;
 		inter_error_message *E = InterConstruct::get_construct(C, &IC);
-		if (E) Inter::Errors::issue(E);
+		if (E) InterErrors::issue(E);
 		if (IC) {
 			inter_error_location *eloc = Inode::get_error_location(C);
 			E = InterConstruct::check_permissions(IC, tls->package, eloc);
-			if (E) Inter::Errors::issue(E);
+			if (E) InterErrors::issue(E);
 			E = InterConstruct::verify_children(C);
 			if (E) {
-				Inter::Errors::issue(E);
-				Inter::Errors::backtrace(STDERR, C);
+				InterErrors::issue(E);
+				InterErrors::backtrace(STDERR, C);
 			}
 			inter_ti level = C->W.instruction[LEVEL_IFLD];
 			inter_ti level_in_package = level;
@@ -187,7 +187,7 @@ void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_st
 				text_stream *M = Str::new();
 				WRITE_TO(M, "construct '%S' used at level %d in its package, not %d to %d",
 					IC->construct_name, level_in_package, IC->min_level, IC->max_level);
-				Inter::Errors::issue(Inter::Errors::plain(M, eloc));
+				InterErrors::issue(InterErrors::plain(M, eloc));
 			}
 			if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
 				tree_lint_state inner_tls;
@@ -197,7 +197,7 @@ void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_st
 				LOOP_OVER_SYMBOLS_TABLE(S, InterPackage::scope(inner_tls.package))
 					if ((InterSymbol::get_flag(S, SPECULATIVE_ISYMF)) &&
 						(InterSymbol::is_defined(S) == FALSE)) {
-						Inter::Errors::issue(Inter::Errors::quoted(
+						InterErrors::issue(InterErrors::quoted(
 							I"symbol undefined in package",
 							InterSymbol::identifier(S), eloc));
 					}
@@ -474,7 +474,7 @@ inter_error_message *InterConstruct::match(inter_line_parse *ilp, inter_error_lo
 				VOID_METHOD_CALL(IC, CONSTRUCT_READ_MTID, IBM, ilp, eloc, &E);
 				return E;
 			}
-	return Inter::Errors::plain(I"bad inter line", eloc);
+	return InterErrors::plain(I"bad inter line", eloc);
 }
 
 @ Transposition is an awkward necessity when binary Inter is read in from a file,

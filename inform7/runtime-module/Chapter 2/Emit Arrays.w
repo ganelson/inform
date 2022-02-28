@@ -211,7 +211,7 @@ void EmitArrays::end_inner(void) {
 	if (current_A == NULL) internal_error("no nascent array");
 	inter_symbol *con_s = current_A->array_name_symbol;
 	kind *K = current_A->entry_kind;
-	inter_ti CID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::untyped());
+	inter_ti CID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::unchecked());
 	if (K) {
 		inter_symbol *con_kind = NULL;
 		if (current_A->array_form == CONSTANT_INDIRECT_LIST)

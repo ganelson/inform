@@ -23,8 +23,8 @@ void RelationsElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML::end_html_row(OUT);
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->relation_nodes) {
-		text_stream *name = Metadata::read_optional_textual(pack, I"^name");
-		text_stream *type = Metadata::read_optional_textual(pack, I"^description");
+		text_stream *name = Metadata::optional_textual(pack, I"^name");
+		text_stream *type = Metadata::optional_textual(pack, I"^description");
 		if ((Str::len(type) == 0) || (Str::len(name) == 0)) continue;
 		HTML::first_html_column(OUT, 0);
 		WRITE("%S", name);
@@ -32,10 +32,10 @@ void RelationsElement::render(OUTPUT_STREAM, index_session *session) {
 		HTML::next_html_column(OUT, 0);
 		if (Str::len(type) > 0) WRITE("%S", type); else WRITE("--");
 		HTML::next_html_column(OUT, 0);
-		text_stream *term0 = Metadata::read_optional_textual(pack, I"^term0");
+		text_stream *term0 = Metadata::optional_textual(pack, I"^term0");
 		if (Str::len(term0) > 0) WRITE("%S", term0); else WRITE("--");
 		HTML::next_html_column(OUT, 0);
-		text_stream *term1 = Metadata::read_optional_textual(pack, I"^term1");
+		text_stream *term1 = Metadata::optional_textual(pack, I"^term1");
 		if (Str::len(term1) > 0) WRITE("%S", term1); else WRITE("--");
 		HTML::end_html_row(OUT);
 	}

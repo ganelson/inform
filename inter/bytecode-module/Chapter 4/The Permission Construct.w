@@ -33,7 +33,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	*E = InterConstruct::check_level_in_package(IBM, PERMISSION_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_symbol *prop_name = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
@@ -42,7 +42,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 
 	if (Inter::Typename::is(owner_name)) {
 		if (InterTypes::is_enumerated(InterTypes::from_type_name(owner_name)) == FALSE)
-			{ *E = Inter::Errors::quoted(I"not a kind which can have property values", ilp->mr.exp[1], eloc); return; }
+			{ *E = InterErrors::quoted(I"not a kind which can have property values", ilp->mr.exp[1], eloc); return; }
 
 		inter_node_list *FL =
 			InterWarehouse::get_node_list(
@@ -54,7 +54,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
 			inter_symbol *prop_allowed = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PERM_IFLD);
 			if (prop_allowed == prop_name)
-				{ *E = Inter::Errors::quoted(I"permission already given", ilp->mr.exp[0], eloc); return; }
+				{ *E = InterErrors::quoted(I"permission already given", ilp->mr.exp[0], eloc); return; }
 		}
 	} else {
 		inter_node_list *FL =
@@ -67,7 +67,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
 			inter_symbol *prop_allowed = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PERM_IFLD);
 			if (prop_allowed == prop_name)
-				{ *E = Inter::Errors::quoted(I"permission already given", ilp->mr.exp[0], eloc); return; }
+				{ *E = InterErrors::quoted(I"permission already given", ilp->mr.exp[0], eloc); return; }
 		}
 	}
 

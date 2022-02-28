@@ -35,7 +35,7 @@ so we change the values of these constants accordingly.
 	Synoptic::begin_function(I, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->relation_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->relation_nodes->list[i].node);
-		inter_symbol *creator_s = Metadata::read_optional_symbol(pack, I"^creator");
+		inter_symbol *creator_s = Metadata::optional_symbol(pack, I"^creator");
 		if (creator_s) Produce::inv_call_symbol(I, creator_s);
 	}
 	Synoptic::end_function(I, step, iname);
@@ -46,7 +46,7 @@ so we change the values of these constants accordingly.
 	inter_symbol *callback_s = Synoptic::local(I, I"callback", NULL);
 	for (int i=0; i<InterNodeList::array_len(inv->relation_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->relation_nodes->list[i].node);
-		inter_symbol *rel_s = Metadata::read_optional_symbol(pack, I"^value");
+		inter_symbol *rel_s = Metadata::optional_symbol(pack, I"^value");
 		if (rel_s) {
 			Produce::inv_primitive(I, INDIRECT1V_BIP);
 			Produce::down(I);

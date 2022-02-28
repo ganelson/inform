@@ -335,10 +335,10 @@ inter_error_location *InterTree::origin_word_to_eloc(inter_tree *tree, inter_ti 
 			tfp->text_file_filename = tree->blame_errors_on_this_file;
 			tfp->line_count = (int) C;
 			stash->stashed_eloc =
-				Inter::Errors::file_location(NULL, tfp);
+				InterErrors::file_location(NULL, tfp);
 		} else {
 			stash->stashed_eloc =
-				Inter::Errors::interb_location(tree->blame_errors_on_this_file,
+				InterErrors::interb_location(tree->blame_errors_on_this_file,
 					(size_t) (C - INTER_ERROR_ORIGIN_OFFSET));
 		}
 		return &(stash->stashed_eloc);

@@ -20,7 +20,7 @@ void BehaviourElement::render(OUTPUT_STREAM, index_session *session) {
 		InterNodeList::array_sort(inv->named_action_pattern_nodes, MakeSynopticModuleStage::module_order);
 		inter_package *pack;
 		LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->named_action_pattern_nodes) {
-			text_stream *name = Metadata::read_optional_textual(pack, I"^name");
+			text_stream *name = Metadata::optional_textual(pack, I"^name");
 			HTML_OPEN("p"); WRITE("<b>%S</b>", name);
 			IndexUtilities::link_package(OUT, pack);
 			HTML_TAG("br");
@@ -32,7 +32,7 @@ void BehaviourElement::render(OUTPUT_STREAM, index_session *session) {
 					inter_package *entry = InterPackage::at_this_head(C);
 					if (InterPackage::type(entry) ==
 						LargeScale::package_type(I, I"_named_action_pattern_entry")) {
-						text_stream *text = Metadata::read_optional_textual(entry, I"^text");
+						text_stream *text = Metadata::optional_textual(entry, I"^text");
 						HTML_TAG("br");
 						WRITE("&nbsp;&nbsp;&nbsp;&nbsp;%S", text);
 						IndexUtilities::link_package(OUT, entry);

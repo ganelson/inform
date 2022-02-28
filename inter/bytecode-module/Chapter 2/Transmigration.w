@@ -271,7 +271,7 @@ the root package of the origin.
 	inter_error_message *E = Inter::Verify::instruction(
 		InterBookmark::package(&(det->primitives_point)), D);
 	if (E) {
-		Inter::Errors::issue(E);
+		InterErrors::issue(E);
 		equivalent_primitive = NULL;
 	} else {
 		NodePlacement::move_to_moving_bookmark(D, &(det->primitives_point));
@@ -307,7 +307,7 @@ to matching declarations in the destination.
 	inter_error_message *E = Inter::Verify::instruction(
 		InterBookmark::package(&(det->ptypes_point)), D);
 	if (E) {
-		Inter::Errors::issue(E);
+		InterErrors::issue(E);
 		equivalent_ptype = NULL;
 	} else {
 		NodePlacement::move_to_moving_bookmark(D, &(det->ptypes_point));

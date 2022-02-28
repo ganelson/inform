@@ -39,7 +39,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->activity_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
-		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^after_rulebook");
+		inter_symbol *vc_s = Metadata::required_symbol(pack, I"^after_rulebook");
 		Synoptic::symbol_entry(vc_s);
 	}
 	Synoptic::end_array(I);
@@ -60,7 +60,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->activity_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
-		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^before_rulebook");
+		inter_symbol *vc_s = Metadata::required_symbol(pack, I"^before_rulebook");
 		Synoptic::symbol_entry(vc_s);
 	}
 	Synoptic::end_array(I);
@@ -70,7 +70,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->activity_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
-		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^for_rulebook");
+		inter_symbol *vc_s = Metadata::required_symbol(pack, I"^for_rulebook");
 		Synoptic::symbol_entry(vc_s);
 	}
 	Synoptic::end_array(I);
@@ -80,7 +80,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->activity_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->activity_nodes->list[i].node);
-		inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
+		inter_symbol *vc_s = Metadata::optional_symbol(pack, I"^var_creator");
 		if (vc_s) Synoptic::symbol_entry(vc_s);
 		else Synoptic::numeric_entry(0);
 	}

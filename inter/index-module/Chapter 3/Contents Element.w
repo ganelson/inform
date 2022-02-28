@@ -21,8 +21,8 @@ void ContentsElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML_OPEN("p");
 	WRITE("<b>");
 	inter_package *pack = InterPackage::from_URL(I, I"/main/completion/bibliographic");
-	text_stream *title = Metadata::read_optional_textual(pack, I"^title");
-	text_stream *author = Metadata::read_optional_textual(pack, I"^author");
+	text_stream *title = Metadata::optional_textual(pack, I"^title");
+	text_stream *author = Metadata::optional_textual(pack, I"^author");
 	if (Str::len(title) > 0) {
 		if (Str::len(author) > 0)
 			Localisation::roman_tt(OUT, LD, I"Index.Elements.C.Titling", title, author);
@@ -66,7 +66,7 @@ void ContentsElement::render(OUTPUT_STREAM, index_session *session) {
 	if (L == 0) ind_used = 1;
 	HTML_OPEN_WITH("li", "class=\"leaded indent%d\"", ind_used);
 	HTML_OPEN("span");
-	WRITE("%S", Metadata::read_textual(heading_pack, I"^text"));
+	WRITE("%S", Metadata::required_textual(heading_pack, I"^text"));
 	HTML_CLOSE("span");
 	HTML_OPEN("span");
 	if (L > min_positive_level) HTML::begin_colour(OUT, I"808080");
@@ -78,7 +78,7 @@ void ContentsElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML_CLOSE("li");
 	HTML_CLOSE("ul");
 	WRITE("\n");
-	text_stream *summary = Metadata::read_optional_textual(heading_pack, I"^summary");
+	text_stream *summary = Metadata::optional_textual(heading_pack, I"^summary");
 	if (Str::len(summary) > 0) {
 		HTML::open_indented_p(OUT, ind_used+1, "hanging");
 		HTML::begin_colour(OUT, I"808080");
@@ -95,7 +95,7 @@ void ContentsElement::render(OUTPUT_STREAM, index_session *session) {
 	inter_package *ext_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(ext_pack, i, inv->extension_nodes) {
 		inter_symbol *by_id =
-			Metadata::read_optional_symbol(ext_pack, I"^included_by");
+			Metadata::optional_symbol(ext_pack, I"^included_by");
 		if (by_id) ContentsElement::index_extensions_included_by(OUT, inv, by_id,
 			NOT_APPLICABLE, LD);
 	}
@@ -109,7 +109,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 	int show_head = TRUE;
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->extension_nodes) {
-		inter_symbol *by_id = Metadata::read_optional_symbol(pack, I"^included_by");
+		inter_symbol *by_id = Metadata::optional_symbol(pack, I"^included_by");
 		if (by_id == owner_id) {
 			if ((auto_included != NOT_APPLICABLE) &&
 				((int) Metadata::read_optional_numeric(pack, I"^auto_included") != auto_included))
@@ -124,7 +124,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 				else {
 					inter_package *owner_pack = InterPackage::container(owner_id->definition);
 					Localisation::roman_t(OUT, LD, I"Index.Elements.C.IncludedBy",
-						Metadata::read_optional_textual(owner_pack, I"^title"));
+						Metadata::optional_textual(owner_pack, I"^title"));
 				}
 				HTML::end_colour(OUT);
 				HTML_CLOSE("p");
@@ -136,24 +136,24 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 }
 
 @<Index this extension@> =
-	inter_symbol *by_id = Metadata::read_optional_symbol(pack, I"^included_by");
+	inter_symbol *by_id = Metadata::optional_symbol(pack, I"^included_by");
 	HTML_OPEN_WITH("ul", "class=\"leaders\"");
 	HTML_OPEN_WITH("li", "class=\"leaded indent2\"");
 	HTML_OPEN("span");
-	WRITE("%S ", Metadata::read_textual(pack, I"^title"));
+	WRITE("%S ", Metadata::required_textual(pack, I"^title"));
 	if (Metadata::read_optional_numeric(pack, I"^standard") == 0) {
 		IndexUtilities::link_package(OUT, pack); WRITE("&nbsp;&nbsp;");
 	}
 
-	if (auto_included != TRUE) WRITE("by %S ", Metadata::read_textual(pack, I"^author"));
-	text_stream *v = Metadata::read_textual(pack, I"^version");
+	if (auto_included != TRUE) WRITE("by %S ", Metadata::required_textual(pack, I"^author"));
+	text_stream *v = Metadata::required_textual(pack, I"^version");
 	if (Str::len(v) > 0) {
 		HTML_OPEN_WITH("span", "class=\"smaller\"");
 		Localisation::roman_t(OUT, LD, I"Index.Elements.C.Version", v);
 		HTML_CLOSE("span");
 		WRITE(" ");
 	}
-	text_stream *ec = Metadata::read_optional_textual(pack, I"^extra_credit");
+	text_stream *ec = Metadata::optional_textual(pack, I"^extra_credit");
 	if (Str::len(ec) > 0) {
 		HTML_OPEN_WITH("span", "class=\"smaller\"");
 		WRITE("(%S) ", ec);

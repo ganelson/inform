@@ -38,7 +38,7 @@ void ValuesElement::render(OUTPUT_STREAM, index_session *session) {
 	}
 
 @<Index a regular variable@> =
-	definition_area = Metadata::read_optional_symbol(pack, I"^heading");
+	definition_area = Metadata::optional_symbol(pack, I"^heading");
 	if (definition_area == NULL) continue;
 	if (definition_area != current_area) {
 		inter_package *heading_pack =
@@ -49,11 +49,11 @@ void ValuesElement::render(OUTPUT_STREAM, index_session *session) {
 	}
 	current_area = definition_area;
 
-	text_stream *name = Metadata::read_optional_textual(pack, I"^name");
+	text_stream *name = Metadata::optional_textual(pack, I"^name");
 	WRITE("%S", name);
 	IndexUtilities::link_package(OUT, pack);
 	IndexUtilities::link_to_documentation(OUT, pack);
-	text_stream *contents = Metadata::read_optional_textual(pack, I"^contents");
+	text_stream *contents = Metadata::optional_textual(pack, I"^contents");
 	WRITE(" - <i>%S</i>", contents);
 	HTML_TAG("br");
 
@@ -70,9 +70,9 @@ void ValuesElement::render(OUTPUT_STREAM, index_session *session) {
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->equation_nodes) {
 		int at = (int) Metadata::read_optional_numeric(pack, I"^at");
 		if (at > 0) {
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^name"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^name"));
 			IndexUtilities::link(OUT, at);
-			WRITE(" (%S)", Metadata::read_optional_textual(pack, I"^text"));
+			WRITE(" (%S)", Metadata::optional_textual(pack, I"^text"));
 			HTML_TAG("br");
 			N++;
 		}

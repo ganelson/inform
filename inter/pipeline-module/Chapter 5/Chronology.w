@@ -65,7 +65,7 @@ are independent and can overlap.
 	for (int i=0; i<InterNodeList::array_len(inv->rule_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->rule_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^timed")) {
-			inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");
+			inter_symbol *rule_s = Metadata::required_symbol(pack, I"^value");
 			if (Metadata::exists(pack, I"^timed_for")) {
 				Synoptic::symbol_entry(rule_s);
 			} else when_count++;
@@ -104,7 +104,7 @@ are independent and can overlap.
 	for (int i=0; i<InterNodeList::array_len(inv->action_history_condition_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->action_history_condition_nodes->list[i].node);
-		inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");
+		inter_symbol *fn_s = Metadata::required_symbol(pack, I"^value");
 		if (fn_s == NULL) internal_error("no pap_fn");
 		Synoptic::symbol_entry(fn_s);
 	}
@@ -288,7 +288,7 @@ are independent and can overlap.
 			for (int i=0; i<InterNodeList::array_len(inv->past_tense_condition_nodes); i++) {
 				inter_package *pack =
 					InterPackage::at_this_head(inv->past_tense_condition_nodes->list[i].node);
-				inter_symbol *fn_s = Metadata::read_symbol(pack, I"^value");
+				inter_symbol *fn_s = Metadata::required_symbol(pack, I"^value");
 				if (fn_s == NULL) internal_error("no pcon_fn");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);

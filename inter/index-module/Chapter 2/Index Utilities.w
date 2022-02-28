@@ -104,7 +104,7 @@ system set up in //html: Documentation References//.
 
 =
 void IndexUtilities::link_to_documentation(OUTPUT_STREAM, inter_package *pack) {
-	text_stream *doc = Metadata::read_optional_textual(pack, I"^documentation");
+	text_stream *doc = Metadata::optional_textual(pack, I"^documentation");
 	if (Str::len(doc) > 0) DocReferences::link(OUT, doc);
 }
 
@@ -243,11 +243,11 @@ void IndexUtilities::show_definition_area(OUTPUT_STREAM, inter_package *heading_
 	if ((parts == 1) && (show_if_unhyphenated == FALSE)) return;
 	HTML_OPEN("b");
 	switch (parts) {
-		case 1: WRITE("%S", Metadata::read_optional_textual(heading_pack, I"^part1")); break;
-		case 2: WRITE("%S", Metadata::read_optional_textual(heading_pack, I"^part2")); break;
+		case 1: WRITE("%S", Metadata::optional_textual(heading_pack, I"^part1")); break;
+		case 2: WRITE("%S", Metadata::optional_textual(heading_pack, I"^part2")); break;
 		case 3: WRITE("%S - %S",
-			Metadata::read_optional_textual(heading_pack, I"^part2"),
-			Metadata::read_optional_textual(heading_pack, I"^part3")); break;
+			Metadata::optional_textual(heading_pack, I"^part2"),
+			Metadata::optional_textual(heading_pack, I"^part3")); break;
 	}
 	HTML_CLOSE("b");
 	HTML_TAG("br");
@@ -260,7 +260,7 @@ void IndexUtilities::kind_name(OUTPUT_STREAM, inter_package *pack, int plural,
 	int with_links) {
 	if (pack == NULL) return;
 	text_stream *key = (plural)?I"^index_plural":I"^index_singular";
-	WRITE("%S", Metadata::read_optional_textual(pack, key));
+	WRITE("%S", Metadata::optional_textual(pack, key));
 	if (with_links) IndexUtilities::link_package(OUT, pack);
 }
 

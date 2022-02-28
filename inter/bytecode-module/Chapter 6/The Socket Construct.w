@@ -20,7 +20,7 @@ void Inter::Socket::define(void) {
 void Inter::Socket::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	*E = InterConstruct::check_level_in_package(IBM, SOCKET_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_package *routine = InterBookmark::package(IBM);
 
@@ -28,18 +28,18 @@ void Inter::Socket::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	text_stream *equate_name = NULL;
 	match_results mr2 = Regexp::create_mr();
 	if (Regexp::match(&mr2, ilp->mr.exp[1], L"~~> \"(%C+)\"")) {
-		*E = Inter::Errors::plain(I"a socket cannot wire to a name", eloc); return;
+		*E = InterErrors::plain(I"a socket cannot wire to a name", eloc); return;
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"~~> (%C+)")) {
 		equate_name = mr2.exp[0];
 	} else {
-		*E = Inter::Errors::plain(I"bad socket syntax", eloc); return;
+		*E = InterErrors::plain(I"bad socket syntax", eloc); return;
 	}
 
 	inter_symbol *name_name = NULL;
 	inter_ti level = 0;
 	if (routine) {
 		inter_symbols_table *locals = InterPackage::scope(routine);
-		if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
+		if (locals == NULL) { *E = InterErrors::plain(I"function has no symbols table", eloc); return; }
 		name_name = TextualInter::new_symbol(eloc, locals, symbol_name, E);
 		if (*E) return;
 		inter_symbol *eq = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), equate_name);
@@ -52,7 +52,7 @@ void Inter::Socket::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 		}
 		level = (inter_ti) ilp->indent_level;
 	} else {
-		*E = Inter::Errors::plain(I"sockets can exist only in the connectors package", eloc); return;
+		*E = InterErrors::plain(I"sockets can exist only in the connectors package", eloc); return;
 	}
 }
 

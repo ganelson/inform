@@ -43,7 +43,7 @@ int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->verb_form_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->verb_form_nodes->list[i].node);
-		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^verb_value");
+		inter_symbol *vc_s = Metadata::required_symbol(pack, I"^verb_value");
 		Synoptic::symbol_entry(vc_s);
 	}
 	Synoptic::numeric_entry(0);

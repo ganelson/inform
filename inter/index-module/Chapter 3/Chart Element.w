@@ -148,7 +148,7 @@ or as paragraph of text in pass 2:
 			break;
 		}
 	}
-	if (Str::eq(Metadata::read_textual(pack, I"^printed_name"), I"object"))
+	if (Str::eq(Metadata::required_textual(pack, I"^printed_name"), I"object"))
 		ChartElement::index_subkinds(OUT, inv, pack, 2, pass, session);
 
 @<Write heading for the detailed index entry for this kind@> =
@@ -161,7 +161,7 @@ or as paragraph of text in pass 2:
 	IndexUtilities::kind_name(OUT, pack, TRUE, FALSE); WRITE(")");
 	IndexUtilities::link_to_documentation(OUT, pack);
 	HTML_CLOSE("p");
-	text_stream *variance =  Metadata::read_optional_textual(pack, I"^variance");
+	text_stream *variance =  Metadata::optional_textual(pack, I"^variance");
 	if (Str::len(variance) > 0) {
 		HTML::open_indented_p(OUT, 1, "tight");
 		WRITE("<i>%S&nbsp;", variance);
@@ -173,7 +173,7 @@ or as paragraph of text in pass 2:
 	}
 
 @<Index literal patterns which can specify this kind@> =
-	text_stream *notation = Metadata::read_optional_textual(pack, I"^notation");
+	text_stream *notation = Metadata::optional_textual(pack, I"^notation");
 	if (Str::len(notation) > 0) {
 		WRITE("%S", notation);
 		HTML_TAG("br");
@@ -184,7 +184,7 @@ or as paragraph of text in pass 2:
 	WRITE("<i>Matches:</i> ");
 	inter_package *conf_pack;
 	LOOP_THROUGH_SUBPACKAGES(conf_pack, pack, I"_conformance") {
-		inter_symbol *xref = Metadata::read_optional_symbol(conf_pack, I"^conformed_to");
+		inter_symbol *xref = Metadata::optional_symbol(conf_pack, I"^conformed_to");
 		inter_package *other = InterPackage::container(xref->definition);
 		if (f) WRITE(", ");
 		IndexUtilities::kind_name(OUT, other, FALSE, TRUE);
@@ -193,7 +193,7 @@ or as paragraph of text in pass 2:
 	HTML_TAG("br");
 
 @<Index possible values of an enumerated kind@> =
-	if (Str::ne(Metadata::read_textual(pack, I"^printed_name"), I"object"))
+	if (Str::ne(Metadata::required_textual(pack, I"^printed_name"), I"object"))
 		if (Metadata::read_optional_numeric(pack, I"^instance_count") > 0)
 			ChartElement::index_instances(OUT, inv, pack, 1, session);
 
@@ -267,7 +267,7 @@ void ChartElement::end_chart_row(OUTPUT_STREAM, int shaded, inter_package *pack,
 	if (tick1) HTML::next_html_column(OUT, 0);
 	else HTML::next_html_column_spanning(OUT, 0, 4);
 	if (shaded) HTML::begin_colour(OUT, I"808080");
-	WRITE("%S", Metadata::read_optional_textual(pack, I"^index_default"));
+	WRITE("%S", Metadata::optional_textual(pack, I"^index_default"));
 	if (shaded) HTML::end_colour(OUT);
 	if (tick1) {
 		HTML::next_html_column_centred(OUT, 0);
@@ -301,7 +301,7 @@ void ChartElement::index_subkinds(OUTPUT_STREAM, tree_inventory *inv, inter_pack
 	LOOP_OVER_INVENTORY_PACKAGES(subkind_pack, i, inv->kind_nodes)
 		if ((Metadata::read_optional_numeric(subkind_pack, I"^is_base")) &&
 			(Metadata::read_optional_numeric(subkind_pack, I"^is_subkind_of_object"))) {
-			inter_symbol *super_weak = Metadata::read_optional_symbol(subkind_pack, I"^superkind");
+			inter_symbol *super_weak = Metadata::optional_symbol(subkind_pack, I"^superkind");
 			if ((super_weak) && (InterPackage::container(super_weak->definition) == pack))
 				ChartElement::index_object_kind(OUT, inv, subkind_pack, depth, pass, session);
 		}
@@ -311,7 +311,7 @@ void ChartElement::index_object_kind(OUTPUT_STREAM, tree_inventory *inv,
 	inter_package *pack, int depth, int pass, index_session *session) {
 	localisation_dictionary *D = Indexing::get_localisation(session);
 	if (depth == MAX_OBJECT_INDEX_DEPTH) internal_error("MAX_OBJECT_INDEX_DEPTH exceeded");
-	inter_symbol *class_s = Metadata::read_optional_symbol(pack, I"^object_class");
+	inter_symbol *class_s = Metadata::optional_symbol(pack, I"^object_class");
 	if (class_s == NULL) internal_error("no class for object kind");
 	text_stream *anchor = InterSymbol::identifier(class_s);
 
@@ -396,11 +396,11 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 	int c = 0;
 	inter_package *I_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(I_pack, i, inv->instance_nodes) {
-		inter_symbol *strong_kind_ID = Metadata::read_optional_symbol(I_pack, I"^kind_xref");
+		inter_symbol *strong_kind_ID = Metadata::optional_symbol(I_pack, I"^kind_xref");
 		if ((strong_kind_ID) && (InterPackage::container(strong_kind_ID->definition) == pack)) {
 			if (c > 0) WRITE(", "); c++;
 			HTML::begin_colour(OUT, I"808080");
-			WRITE("%S", Metadata::read_optional_textual(I_pack, I"^name"));
+			WRITE("%S", Metadata::optional_textual(I_pack, I"^name"));
 			HTML::end_colour(OUT);
 			IndexUtilities::link_package(OUT, I_pack);
 		}
@@ -410,13 +410,13 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 
 =
 void ChartElement::index_inferences(OUTPUT_STREAM, inter_package *pack, int brief) {
-	text_stream *explanation = Metadata::read_optional_textual(pack, I"^specification");
+	text_stream *explanation = Metadata::optional_textual(pack, I"^specification");
 	if (Str::len(explanation) > 0) {
 		WRITE("%S", explanation);
 		HTML_TAG("br");
 	}
 	text_stream *material = NULL;
-	if (brief) material = Metadata::read_optional_textual(pack, I"^brief_inferences");
-	else material = Metadata::read_optional_textual(pack, I"^inferences");
+	if (brief) material = Metadata::optional_textual(pack, I"^brief_inferences");
+	else material = Metadata::optional_textual(pack, I"^inferences");
 	WRITE("%S", material);
 }

@@ -442,13 +442,13 @@ inter_annotation SymbolAnnotation::read_annotation(inter_tree *I, text_stream *t
 	LOOP_OVER(IAF, inter_annotation_form)
 		if (Str::eq(text, IAF->annotation_keyword)) {
 			if (IAF->iatype != iatype)
-				*E = Inter::Errors::quoted(I"wrong sort of value for annotation",
+				*E = InterErrors::quoted(I"wrong sort of value for annotation",
 					IAF->annotation_keyword, eloc);
 			inter_annotation IA;
 			IA.annot = IAF;
 			IA.annot_value = val;
 			return IA;
 		}
-	*E = Inter::Errors::quoted(I"unrecognised annotation", text, eloc);
+	*E = InterErrors::quoted(I"unrecognised annotation", text, eloc);
 	return SymbolAnnotation::invalid_annotation();
 }

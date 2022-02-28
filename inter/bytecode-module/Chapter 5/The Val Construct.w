@@ -30,15 +30,15 @@ void Inter::Val::define(void) {
 
 =
 void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	*E = InterConstruct::check_level_in_package(IBM, VAL_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
 	inter_package *routine = InterBookmark::package(IBM);
-	if (routine == NULL) { *E = Inter::Errors::plain(I"'val' used outside function", eloc); return; }
+	if (routine == NULL) { *E = InterErrors::plain(I"'val' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
-	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
+	if (locals == NULL) { *E = InterErrors::plain(I"function has no symbols table", eloc); return; }
 
 	text_stream *kind_text = NULL, *value_text = ilp->mr.exp[0];
 	match_results mr2 = Regexp::create_mr();
@@ -66,7 +66,7 @@ void Inter::Val::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 
 inter_error_message *Inter::Val::new(inter_bookmark *IBM, inter_type val_type,
 	int level, inter_pair val, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, InterTypes::to_TID_wrt_bookmark(IBM, val_type),
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VAL_IST, 0, InterTypes::to_TID_at(IBM, val_type),
 		InterValuePairs::to_word1(val), InterValuePairs::to_word2(val), eloc, (inter_ti) level);
 	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -88,6 +88,6 @@ void Inter::Val::verify(inter_construct *IC, inter_tree_node *P, inter_package *
 
 void Inter::Val::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("val ");
-	InterTypes::write_optional_type_marker(OUT, P, KIND_VAL_IFLD);
+	TextualInter::write_optional_type_marker(OUT, P, KIND_VAL_IFLD);
 	TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_VAL_IFLD), FALSE);
 }

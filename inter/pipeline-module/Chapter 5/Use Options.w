@@ -74,7 +74,7 @@ name of a given use option.
 			for (int i=0; i<InterNodeList::array_len(inv->use_option_nodes); i++) {
 				inter_package *pack =
 					InterPackage::at_this_head(inv->use_option_nodes->list[i].node);
-				text_stream *printed_name = Metadata::read_textual(pack, I"^printed_name");
+				text_stream *printed_name = Metadata::required_textual(pack, I"^printed_name");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);
 					Produce::val(I, K_value, InterValuePairs::number((inter_ti) i));

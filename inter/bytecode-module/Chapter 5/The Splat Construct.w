@@ -50,7 +50,7 @@ void Inter::Splat::define(void) {
 
 =
 void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	*E = InterConstruct::check_level_in_package(IBM, SPLAT_IST, ilp->indent_level, eloc);
 	if (*E) return;
@@ -58,11 +58,11 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	inter_package *routine = NULL;
 	if (ilp->indent_level > 0) {
 		routine = InterBookmark::package(IBM);
-		if (routine == NULL) { *E = Inter::Errors::plain(I"indented 'splat' used outside function", eloc); return; }
+		if (routine == NULL) { *E = InterErrors::plain(I"indented 'splat' used outside function", eloc); return; }
 	}
 
 	inter_ti plm = Inter::Splat::parse_plm(ilp->mr.exp[0]);
-	if (plm == 1000000) { *E = Inter::Errors::plain(I"unknown PLM code before text matter", eloc); return; }
+	if (plm == 1000000) { *E = InterErrors::plain(I"unknown PLM code before text matter", eloc); return; }
 
 	inter_ti SID = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 	text_stream *glob_storage = InterWarehouse::get_text(InterBookmark::warehouse(IBM), SID);

@@ -48,7 +48,7 @@ to match this width, preserving the aspect ratio.
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->figure_nodes) {
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
 		if (id > 1) {
-			text_stream *filename_as_text = Metadata::read_textual(pack, I"^filename");
+			text_stream *filename_as_text = Metadata::required_textual(pack, I"^filename");
 			filename *F = Filenames::from_text(filename_as_text);
 			TEMPORARY_TEXT(description)
 			unsigned int width = 0, height = 0;
@@ -114,7 +114,7 @@ to match this width, preserving the aspect ratio.
 	}
 
 	HTML::next_html_column(OUT, 0);
-	WRITE("%S", Metadata::read_textual(pack, I"^name"));
+	WRITE("%S", Metadata::required_textual(pack, I"^name"));
 	IndexUtilities::link_package(OUT, pack);
 	HTML_TAG("br");
 	if (Str::len(description) > 0) {
@@ -144,7 +144,7 @@ to match this width, preserving the aspect ratio.
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->sound_nodes) {
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
-		text_stream *filename_as_text = Metadata::read_textual(pack, I"^filename");
+		text_stream *filename_as_text = Metadata::required_textual(pack, I"^filename");
 		filename *F = Filenames::from_text(filename_as_text);
 		unsigned int duration, pBitsPerSecond, pChannels, pSampleRate, fsize,
 			midi_version = 0, no_tracks = 0;
@@ -259,7 +259,7 @@ to match this width, preserving the aspect ratio.
 	}
 	WRITE("&nbsp;");
 	HTML::next_html_column(OUT, 0);
-	WRITE("%S", Metadata::read_textual(pack, I"^name"));
+	WRITE("%S", Metadata::required_textual(pack, I"^name"));
 	IndexUtilities::link_package(OUT, pack);
 	HTML_TAG("br");
 	if (Str::len(description) > 0) {
@@ -298,15 +298,15 @@ This is more or less perfunctory, but still of some use, if only as a list.
 		}
 		WRITE("&nbsp;");
 		HTML::next_html_column(OUT, 0);
-		WRITE("%S", Metadata::read_textual(pack, I"^name"));
+		WRITE("%S", Metadata::required_textual(pack, I"^name"));
 		IndexUtilities::link_package(OUT, pack);
 		HTML_TAG("br");
 		if (is_binary)
 			Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.BinaryFile",
-				Metadata::read_textual(pack, I"^leafname"));
+				Metadata::required_textual(pack, I"^leafname"));
 		else
 			Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.TextFile",
-				Metadata::read_textual(pack, I"^leafname"));
+				Metadata::required_textual(pack, I"^leafname"));
 		WRITE(" - ");
 		if (Metadata::read_optional_numeric(pack, I"^file_owned")) {
 			Localisation::roman(OUT, LD, I"Index.Elements.Fi.FileOwnedByThis");
@@ -314,7 +314,7 @@ This is more or less perfunctory, but still of some use, if only as a list.
 			Localisation::roman(OUT, LD, I"Index.Elements.Fi.FileOwnedByOther");
 		} else {
 			Localisation::roman_t(OUT, LD, I"Index.Elements.Fi.FileOwnedBy",
-				Metadata::read_textual(pack, I"^file_owner"));
+				Metadata::required_textual(pack, I"^file_owner"));
 		}
 		HTML::end_html_row(OUT);
 	}

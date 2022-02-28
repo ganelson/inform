@@ -406,7 +406,7 @@ inter_error_message *Inode::error(inter_tree_node *F, text_stream *err, text_str
 	if (eloc)
 		iem->error_at = *eloc;
 	else
-		iem->error_at = Inter::Errors::file_location(NULL, NULL);
+		iem->error_at = InterErrors::file_location(NULL, NULL);
 	iem->error_body = err;
 	iem->error_quote = quote;
 	return iem;

@@ -29,20 +29,20 @@ void Inter::Label::define(void) {
 
 =
 void Inter::Label::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 	*E = InterConstruct::check_level_in_package(IBM, LABEL_IST, ilp->indent_level, eloc);
 	if (*E) return;
 	inter_package *routine = InterBookmark::package(IBM);
-	if (routine == NULL) { *E = Inter::Errors::plain(I"'label' used outside function", eloc); return; }
+	if (routine == NULL) { *E = InterErrors::plain(I"'label' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
-	if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
+	if (locals == NULL) { *E = InterErrors::plain(I"function has no symbols table", eloc); return; }
 
 	inter_symbol *lab_name = InterSymbolsTable::symbol_from_name(locals, ilp->mr.exp[0]);
 	if (lab_name == NULL) {
 		lab_name = TextualInter::new_symbol(eloc, locals, ilp->mr.exp[0], E);
 		if (*E) return;
 	} else if (InterSymbol::is_defined(lab_name)) {
-		*E = Inter::Errors::plain(I"label defined in function once already", eloc);
+		*E = InterErrors::plain(I"label defined in function once already", eloc);
 		return;
 	}
 	InterSymbol::make_label(lab_name);

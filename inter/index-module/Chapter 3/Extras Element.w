@@ -31,7 +31,7 @@ void ExtrasElement::render(OUTPUT_STREAM, index_session *session) {
 				continue;
 			if (c++ == 0) @<Heading for these@>;
 			IndexRules::rulebook_box(OUT, inv, 
-				Metadata::read_optional_textual(rb_pack, I"^printed_name"),
+				Metadata::optional_textual(rb_pack, I"^printed_name"),
 				NULL, rb_pack, NULL, 1, TRUE, session);
 		}
 	inter_package *av_pack;
@@ -48,7 +48,7 @@ void ExtrasElement::render(OUTPUT_STREAM, index_session *session) {
 		Localisation::roman(OUT, LD, I"Index.Elements.Xt.FromSourceText");
 	} else {
 		Localisation::roman_t(OUT, LD, I"Index.Elements.Xt.FromExtension",
-			Metadata::read_optional_textual(E, I"^credit"));
+			Metadata::optional_textual(E, I"^credit"));
 	}
 	WRITE("</b>");
 	HTML_CLOSE("p");

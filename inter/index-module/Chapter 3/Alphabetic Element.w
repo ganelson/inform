@@ -26,8 +26,8 @@ void AlphabeticElement::render(OUTPUT_STREAM, index_session *session) {
 		inter_ti can_have_second = Metadata::read_numeric(an_pack, I"^can_have_second");
 		inter_ti noun_access = Metadata::read_numeric(an_pack, I"^noun_access");
 		inter_ti second_access = Metadata::read_numeric(an_pack, I"^second_access");
-		inter_symbol *noun_kind = Metadata::read_symbol(an_pack, I"^noun_kind");
-		inter_symbol *second_kind = Metadata::read_symbol(an_pack, I"^second_kind");
+		inter_symbol *noun_kind = Metadata::required_symbol(an_pack, I"^noun_kind");
+		inter_symbol *second_kind = Metadata::required_symbol(an_pack, I"^second_kind");
 
 		HTML::first_html_column(OUT, 0);
 		@<Action column@>;
@@ -42,7 +42,7 @@ void AlphabeticElement::render(OUTPUT_STREAM, index_session *session) {
 
 @<Action column@> =
 	if (oow) HTML::begin_colour(OUT, I"800000");
-	WRITE("%S", Metadata::read_optional_textual(an_pack, I"^name"));
+	WRITE("%S", Metadata::optional_textual(an_pack, I"^name"));
 	if (oow) HTML::end_colour(OUT);
 	IndexUtilities::detail_link(OUT, "A", i, TRUE);
 	if (requires_light) AlphabeticElement::note(OUT, I"Light", LD);
@@ -97,7 +97,7 @@ int AlphabeticElement::alphabetical_order(const void *ent1, const void *ent2) {
 	inter_tree_node *P2 = E2->node;
 	inter_package *an1_pack = InterPackage::at_this_head(P1);
 	inter_package *an2_pack = InterPackage::at_this_head(P2);
-	text_stream *an1_name = Metadata::read_optional_textual(an1_pack, I"^name");
-	text_stream *an2_name = Metadata::read_optional_textual(an2_pack, I"^name");
+	text_stream *an1_name = Metadata::optional_textual(an1_pack, I"^name");
+	text_stream *an2_name = Metadata::optional_textual(an2_pack, I"^name");
 	return Str::cmp(an1_name, an2_name);
 }

@@ -15,7 +15,7 @@ void GroupedElement::render(OUTPUT_STREAM, index_session *session) {
 	text_stream *current_subarea = I"___no_sub_area___";
 	inter_package *an_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
-		text_stream *this_area = Metadata::read_optional_textual(an_pack, I"^index_heading");
+		text_stream *this_area = Metadata::optional_textual(an_pack, I"^index_heading");
 		int suppress_comma = FALSE;
 		if (Str::eq(this_area, current_area) == FALSE) {
 			if (f) HTML_CLOSE("p");
@@ -27,7 +27,7 @@ void GroupedElement::render(OUTPUT_STREAM, index_session *session) {
 			f = FALSE;
 			suppress_comma = TRUE;
 		}
-		text_stream *this_subarea = Metadata::read_optional_textual(an_pack, I"^index_subheading");
+		text_stream *this_subarea = Metadata::optional_textual(an_pack, I"^index_subheading");
 		if (Str::eq(this_subarea, current_subarea) == FALSE) {
 			if (f) HTML_CLOSE("p");
 			HTML_OPEN("p");
@@ -40,7 +40,7 @@ void GroupedElement::render(OUTPUT_STREAM, index_session *session) {
 		if ((f) && (suppress_comma == FALSE)) WRITE(", ");
 		inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
 		if (oow) HTML::begin_colour(OUT, I"800000");
-		WRITE("%S", Metadata::read_optional_textual(an_pack, I"^name"));
+		WRITE("%S", Metadata::optional_textual(an_pack, I"^name"));
 		if (oow) HTML::end_colour(OUT);
 		IndexUtilities::link_package(OUT, an_pack);
 		IndexUtilities::detail_link(OUT, "A", i, FALSE);
@@ -81,19 +81,19 @@ void GroupedElement::detail_pages(index_session *session) {
 	@<Show the rules relevant to this action@>;
 
 @<Show the fancy navigate-similar-actions menu@> =
-	text_stream *this_area = Metadata::read_optional_textual(an_pack, I"^index_heading");
-	text_stream *this_subarea = Metadata::read_optional_textual(an_pack, I"^index_subheading");
+	text_stream *this_area = Metadata::optional_textual(an_pack, I"^index_heading");
+	text_stream *this_subarea = Metadata::optional_textual(an_pack, I"^index_subheading");
 	HTML_OPEN("p");
 	WRITE("<b>%S - %S</b><br>", this_area, this_subarea);
 	int c = 0;
 	inter_package *an2_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(an2_pack, j, inv->action_nodes) {
-		text_stream *this_area2 = Metadata::read_optional_textual(an2_pack, I"^index_heading");
-		text_stream *this_subarea2 = Metadata::read_optional_textual(an2_pack, I"^index_subheading");
+		text_stream *this_area2 = Metadata::optional_textual(an2_pack, I"^index_heading");
+		text_stream *this_subarea2 = Metadata::optional_textual(an2_pack, I"^index_subheading");
 		if ((Str::eq(this_area, this_area2)) && (Str::eq(this_subarea, this_subarea2))) {
 			if (c++ > 0) WRITE(", ");
 			if (j == i) WRITE("<b>");
-			WRITE("%S", Metadata::read_optional_textual(an2_pack, I"^name"));
+			WRITE("%S", Metadata::optional_textual(an2_pack, I"^name"));
 			if (j == i) WRITE("</b>");
 			if (j != i) IndexUtilities::detail_link(OUT, "A", j, FALSE);
 		}
@@ -106,7 +106,7 @@ void GroupedElement::detail_pages(index_session *session) {
 	HTML_OPEN("p");
 	if (oow) HTML::begin_colour(OUT, I"800000");
 	WRITE("<b>");
-	WRITE("%S", Metadata::read_optional_textual(an_pack, I"^display_name"));
+	WRITE("%S", Metadata::optional_textual(an_pack, I"^display_name"));
 	if (oow) HTML::end_colour(OUT);
 	WRITE("</b>");
 	IndexUtilities::link_package(OUT, an_pack);
@@ -117,11 +117,11 @@ void GroupedElement::detail_pages(index_session *session) {
 	}
 	WRITE(" (");	
 	Localisation::italic(OUT, LD, I"Index.Elements.A1.PastTense");
-	WRITE(" %S)", Metadata::read_optional_textual(an_pack, I"^past_name"));
-	text_stream *spec = Metadata::read_optional_textual(an_pack, I"^specification");
+	WRITE(" %S)", Metadata::optional_textual(an_pack, I"^past_name"));
+	text_stream *spec = Metadata::optional_textual(an_pack, I"^specification");
 	if (Str::len(spec) > 0)	WRITE(": %S", spec);
 	HTML_CLOSE("p");
-	text_stream *desc = Metadata::read_optional_textual(an_pack, I"^description");
+	text_stream *desc = Metadata::optional_textual(an_pack, I"^description");
 	if (Str::len(desc) > 0)	{ HTML_OPEN("p"); WRITE("%S", desc); HTML_CLOSE("p"); }
 
 @<Show the commands@> =
@@ -132,7 +132,7 @@ void GroupedElement::detail_pages(index_session *session) {
 	int producers = 0;
 	inter_package *line_pack;
 	LOOP_THROUGH_SUBPACKAGES(line_pack, an_pack, I"_cg_line") {
-		inter_symbol *xref = Metadata::read_symbol(line_pack, I"^line");
+		inter_symbol *xref = Metadata::required_symbol(line_pack, I"^line");
 		CommandsElement::index_grammar_line(OUT,
 			InterPackage::container(xref->definition), NULL, LD);
 		producers++;
@@ -167,9 +167,9 @@ void GroupedElement::detail_pages(index_session *session) {
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
 			I"instead", I"instead of", session);
 	}
-	inter_symbol *check_s = Metadata::read_symbol(an_pack, I"^check_rulebook");
-	inter_symbol *carry_out_s = Metadata::read_symbol(an_pack, I"^carry_out_rulebook");
-	inter_symbol *report_s = Metadata::read_symbol(an_pack, I"^report_rulebook");
+	inter_symbol *check_s = Metadata::required_symbol(an_pack, I"^check_rulebook");
+	inter_symbol *carry_out_s = Metadata::required_symbol(an_pack, I"^carry_out_rulebook");
+	inter_symbol *report_s = Metadata::required_symbol(an_pack, I"^report_rulebook");
 	inter_package *check_pack = InterPackage::container(check_s->definition);
 	inter_package *carry_out_pack = InterPackage::container(carry_out_s->definition);
 	inter_package *report_pack = InterPackage::container(report_s->definition);
@@ -200,10 +200,10 @@ void GroupedElement::index_shv_set(OUTPUT_STREAM, inter_tree *I, inter_package *
 	inter_package *var_pack;
 	LOOP_THROUGH_SUBPACKAGES(var_pack, set, I"_shared_variable") {
 		HTML::open_indented_p(OUT, 2, "tight");
-		WRITE("%S", Metadata::read_optional_textual(var_pack, I"^name"));
+		WRITE("%S", Metadata::optional_textual(var_pack, I"^name"));
 		IndexUtilities::link_package(OUT, var_pack);
 		IndexUtilities::link_to_documentation(OUT, var_pack);
-		WRITE(" - <i>%S</i>", Metadata::read_optional_textual(var_pack, I"^kind"));
+		WRITE(" - <i>%S</i>", Metadata::optional_textual(var_pack, I"^kind"));
 		HTML_CLOSE("p");
 	}
 }

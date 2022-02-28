@@ -53,7 +53,7 @@ void Inter::Property::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 inter_error_message *Inter::Property::new(inter_bookmark *IBM, inter_ti PID, inter_type prop_type, inter_ti level, inter_error_location *eloc) {
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 	inter_ti L1 = InterWarehouse::create_node_list(warehouse, InterBookmark::package(IBM));
-	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PROPERTY_IST, PID, InterTypes::to_TID_wrt_bookmark(IBM, prop_type), L1, eloc, level);
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PROPERTY_IST, PID, InterTypes::to_TID_at(IBM, prop_type), L1, eloc, level);
 	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -79,7 +79,7 @@ void Inter::Property::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PROP_IFLD);
 	if (prop_name) {
 		WRITE("property ");
-		InterTypes::write_optional_type_marker(OUT, P, KIND_PROP_IFLD);
+		TextualInter::write_optional_type_marker(OUT, P, KIND_PROP_IFLD);
 		WRITE("%S", InterSymbol::identifier(prop_name));
 		SymbolAnnotation::write_annotations(OUT, P, prop_name);
 	} else { *E = Inode::error(P, I"cannot write property", NULL); return; }

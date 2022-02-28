@@ -30,7 +30,7 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	*E = InterConstruct::check_level_in_package(IBM, PRAGMA_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_symbol *target_name = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), ilp->mr.exp[0]);
 	if (target_name == NULL)
@@ -50,10 +50,10 @@ void Inter::Pragma::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 				case '"': break;
 				case 't': c = 9; break;
 				case 'n': c = 10; break;
-				default: { *E = Inter::Errors::plain(I"no such backslash escape", eloc); return; }
+				default: { *E = InterErrors::plain(I"no such backslash escape", eloc); return; }
 			}
 		}
-		if (Inter::Constant::char_acceptable(c) == FALSE) { *E = Inter::Errors::quoted(I"bad character in text", S, eloc); return; }
+		if (Inter::Constant::char_acceptable(c) == FALSE) { *E = InterErrors::quoted(I"bad character in text", S, eloc); return; }
 		PUT_TO(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ID), c);
 		literal_mode = FALSE;
 	}

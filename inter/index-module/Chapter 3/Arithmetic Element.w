@@ -45,13 +45,13 @@ void ArithmeticElement::render(OUTPUT_STREAM, index_session *session) {
 
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->kind_nodes)
-		if (Str::len(Metadata::read_optional_textual(pack, I"^min_value")) > 0) {
+		if (Str::len(Metadata::optional_textual(pack, I"^min_value")) > 0) {
 			HTML::first_html_column(OUT, 0);
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^printed_name"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^printed_name"));
 			HTML::next_html_column(OUT, 0);
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^min_value"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^min_value"));
 			HTML::next_html_column(OUT, 0);
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^max_value"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^max_value"));
 			HTML::next_html_column(OUT, 0);
 			@<Dimensions column@>;
 			HTML::end_html_row(OUT);
@@ -60,7 +60,7 @@ void ArithmeticElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML_CLOSE("p");
 
 @<Dimensions column@> =
-	text_stream *dims = Metadata::read_optional_textual(pack, I"^dimensions");
+	text_stream *dims = Metadata::optional_textual(pack, I"^dimensions");
 	if (Str::len(dims) > 0) {
 		WRITE("%S", dims);
 	} else {
@@ -82,26 +82,26 @@ text, sorted into kind order of left and then right operand.
 			HTML::first_html_column(OUT, 0);
 			IndexUtilities::link_package(OUT, pack);
 			HTML::next_html_column(OUT, 0);
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^left_operand"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^left_operand"));
 			HTML::begin_colour(OUT, I"808080");
 			WRITE(" x ");
 			HTML::end_colour(OUT);
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^right_operand"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^right_operand"));
 			HTML::begin_colour(OUT, I"808080");
 			WRITE(" = ");
 			HTML::end_colour(OUT);
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^result"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^result"));
 			WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
 			HTML::next_html_column(OUT, 0);
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^left_operand_benchmark"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^left_operand_benchmark"));
 			HTML::begin_colour(OUT, I"808080");
 			WRITE(" x ");
 			HTML::end_colour(OUT);
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^right_operand_benchmark"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^right_operand_benchmark"));
 			HTML::begin_colour(OUT, I"808080");
 			WRITE(" = ");
 			HTML::end_colour(OUT);
-			WRITE("%S", Metadata::read_optional_textual(pack, I"^result_benchmark"));
+			WRITE("%S", Metadata::optional_textual(pack, I"^result_benchmark"));
 			HTML::end_html_row(OUT);
 		}
 		HTML::end_html_table(OUT);

@@ -206,7 +206,7 @@ inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *
 			Dictionaries::create(create_these_architectural_symbols_on_demand, I"Object");
 		}
 		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N)) {
-			S = LargeScale::arch_constant(I, N, InterTypes::untyped(), 0);			
+			S = LargeScale::arch_constant(I, N, InterTypes::unchecked(), 0);			
 			SymbolAnnotation::set_b(S, VENEER_IANN, TRUE);
 		}	
 	}	
@@ -242,7 +242,7 @@ compilation when building kits.
 void LargeScale::make_architectural_definitions(inter_tree *I,
 	inter_architecture *current_architecture) {
 	if (current_architecture == NULL) internal_error("no architecture set");
-	inter_type type = InterTypes::untyped();
+	inter_type type = InterTypes::unchecked();
 	if (Architectures::is_16_bit(current_architecture)) {
 		LargeScale::arch_constant(I,        I"WORDSIZE", type,                      2);
 		LargeScale::arch_constant_hex(I,    I"NULL", type,                     0xffff);

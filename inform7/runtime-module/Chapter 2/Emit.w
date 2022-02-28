@@ -280,7 +280,7 @@ void Emit::initial_value_as_raw_text(inter_name *con_iname, nonlocal_variable *v
 void Emit::named_generic_constant(inter_name *con_iname, inter_pair val) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
-	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::untyped());
+	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::unchecked());
 	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
 		KID, val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
@@ -304,7 +304,7 @@ void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_pair val) {
 	packaging_state save = Packaging::enter_home_of(var_iname);
 	inter_symbol *var_s = InterNames::to_symbol(var_iname);
-	inter_type type = InterTypes::untyped();
+	inter_type type = InterTypes::unchecked();
 	if ((K) && (K != K_value))
 		type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Variable::new(Emit::at(),
@@ -319,7 +319,7 @@ inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_pair val) {
 void Emit::property(inter_name *prop_iname, kind *K) {
 	packaging_state save = Packaging::enter_home_of(prop_iname);
 	inter_symbol *prop_s = InterNames::to_symbol(prop_iname);
-	inter_type type = InterTypes::untyped();
+	inter_type type = InterTypes::unchecked();
 	if ((K) && (K != K_value))
 		type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Property::new(Emit::at(),

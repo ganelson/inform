@@ -32,7 +32,7 @@ void EventsElement::render(OUTPUT_STREAM, index_session *session) {
 			}
 			when_count++;
 			HTML_OPEN_WITH("p", "class=\"tightin2\"");
-			WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
+			WRITE("%S", Metadata::required_textual(pack, I"^preamble"));
 			IndexUtilities::link_package(OUT, pack);
 			WRITE(" (");
 			Localisation::roman(OUT, LD, I"Index.Elements.Ev.WhereTriggered");
@@ -58,7 +58,7 @@ void EventsElement::render(OUTPUT_STREAM, index_session *session) {
 			}
 			tt_count++;
 			HTML_OPEN_WITH("p", "class=\"in2\"");
-			WRITE("%S", Metadata::read_textual(pack, I"^preamble"));
+			WRITE("%S", Metadata::required_textual(pack, I"^preamble"));
 			IndexUtilities::link_package(OUT, pack);
 			HTML_CLOSE("p");
 		}

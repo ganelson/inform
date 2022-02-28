@@ -60,7 +60,7 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<InterNodeList::array_len(inv->file_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->file_nodes->list[i].node);
-		inter_symbol *vc_s = Metadata::read_symbol(pack, I"^file_value");
+		inter_symbol *vc_s = Metadata::required_symbol(pack, I"^file_value");
 		Synoptic::symbol_entry(vc_s);
 	}
 	Synoptic::numeric_entry(0);

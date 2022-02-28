@@ -28,7 +28,7 @@ void Inter::PackageType::read(inter_construct *IC, inter_bookmark *IBM, inter_li
 	*E = InterConstruct::check_level_in_package(IBM, PACKAGETYPE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_symbol *ptype_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
 	if (*E) return;

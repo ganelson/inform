@@ -196,7 +196,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 @<Add a subsidiary paragraph of details about this object@> =
 	HTML::open_indented_p(OUT, depth, "tight");
 	text_stream *material =
-		Metadata::read_optional_textual(I->package, I"^brief_inferences");
+		Metadata::optional_textual(I->package, I"^brief_inferences");
 	WRITE("%S", material);
 
 @<Add the chain of kinds@> =
@@ -211,7 +211,7 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 
 @<Add the catalogue of specific properties@> =
 	text_stream *material =
-		Metadata::read_optional_textual(I->package, I"^specific_inferences");
+		Metadata::optional_textual(I->package, I"^specific_inferences");
 	WRITE("%S", material);
 
 @<Add details depending on the kind@> =
@@ -226,7 +226,7 @@ void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I, index_session *se
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	int k = 0;
 	inter_package *pack = I->package;
-	inter_tree_node *P = Metadata::read_optional_list(pack, I"^backdrop_presences");
+	inter_tree_node *P = Metadata::optional_list(pack, I"^backdrop_presences");
 	if (P) {
 		int offset = DATA_CONST_IFLD;
 		while (offset < P->W.extent) {

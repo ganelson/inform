@@ -57,7 +57,7 @@ void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), S);
 	Produce::guard(Inter::Constant::new_textual(IBM,
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), con_s),
-		InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::untyped()),
+		InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::unchecked()),
 		ID, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 }
 
@@ -74,7 +74,7 @@ void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *inam
 	inter_symbol *fn_s = InterNames::to_symbol(iname);
 	Produce::guard(Inter::Constant::new_function(Packaging::at(I),
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(Packaging::at(I)), fn_s),
-		InterTypes::to_TID(InterBookmark::scope(Packaging::at(I)), InterTypes::untyped()),
+		InterTypes::to_TID(InterBookmark::scope(Packaging::at(I)), InterTypes::unchecked()),
 		synoptic_fn_package,
 		Produce::baseline(Packaging::at(I)), NULL));
 	Packaging::exit(I, synoptic_fn_ps);
@@ -108,7 +108,7 @@ void Synoptic::end_array(inter_tree *I) {
 	inter_error_message *E = Inter::Verify::instruction(
 		InterBookmark::package(Packaging::at(I)), synoptic_array_node);
 	if (E) {
-		Inter::Errors::issue(E);
+		InterErrors::issue(E);
 		internal_error("synoptic array failed verification");
 	}
 	NodePlacement::move_to_moving_bookmark(synoptic_array_node, Packaging::at(I));

@@ -63,8 +63,8 @@ int FauxScenes::scene_order(const void *ent1, const void *ent2) {
 	inter_package *sc2 = InterPackage::at_this_head(P2);
 	if (Metadata::read_optional_numeric(sc1, I"^is_entire_game")) return -1;
 	if (Metadata::read_optional_numeric(sc2, I"^is_entire_game")) return 1;
-	text_stream *SW1 = Metadata::read_textual(sc1, I"^name");
-	text_stream *SW2 = Metadata::read_textual(sc2, I"^name");
+	text_stream *SW1 = Metadata::required_textual(sc1, I"^name");
+	text_stream *SW2 = Metadata::required_textual(sc2, I"^name");
 	return Str::cmp(SW1, SW2);
 }
 
@@ -133,16 +133,16 @@ int FauxScenes::no_ends(simplified_scene *ssc) {
 }
 
 text_stream *FauxScenes::scene_name(simplified_scene *ssc) {
-	return Metadata::read_textual(ssc->pack, I"^name");
+	return Metadata::required_textual(ssc->pack, I"^name");
 }
 
 @ =
 text_stream *FauxScenes::end_name(simplified_end *se) {
-	return Metadata::read_textual(se->end_pack, I"^name");
+	return Metadata::required_textual(se->end_pack, I"^name");
 }
 
 text_stream *FauxScenes::anchor_condition(simplified_end *se) {
-	return Metadata::read_textual(se->end_pack, I"^condition");
+	return Metadata::required_textual(se->end_pack, I"^condition");
 }
 
 int FauxScenes::has_anchor_condition(simplified_end *se) {
@@ -155,7 +155,7 @@ int FauxScenes::anchor_condition_set_at(simplified_end *se) {
 }
 
 inter_symbol *FauxScenes::end_rulebook(simplified_end *se) {
-	return Metadata::read_optional_symbol(se->end_pack, I"^rulebook");
+	return Metadata::optional_symbol(se->end_pack, I"^rulebook");
 }
 
 @ A connector leads, of course, to another scene. Determiming that is quite
@@ -164,7 +164,7 @@ slow, but ww cache the result so that it must only be done once.
 =
 simplified_scene *FauxScenes::connects_to(simplified_connector *scon, index_session *session) {
 	if (scon->connect_to) return scon->connect_to;
-	inter_symbol *sc_symbol = Metadata::read_optional_symbol(scon->con_pack, I"^to");
+	inter_symbol *sc_symbol = Metadata::optional_symbol(scon->con_pack, I"^to");
 	if (sc_symbol) {
 		inter_package *to_pack = InterPackage::container(sc_symbol->definition);
 		linked_list *L = Indexing::get_list_of_scenes(session);

@@ -12,7 +12,8 @@ by "constructor ID" numbers, such as |INT32_ITCONC|. This one is a base;
 whereas |list|, for example, is not -- |list of int32| is a valid type, with
 1 type operand, but |list| alone is not sufficient to specify a type.
 
-@ The set of valid constructor IDs is fixed and it is here:
+@ These are the constructor IDs. Note that changing any of these values would
+invalidate existing Inter binary files, necessitating a bump of //The Inter Version//.
 
 @e UNCHECKED_ITCONC from 1
 @e INT32_ITCONC
@@ -206,7 +207,7 @@ inter_type InterTypes::from_type_name(inter_symbol *S) {
 		type.type_name = S;
 		return type;
 	}
-	return InterTypes::untyped();
+	return InterTypes::unchecked();
 }
 
 @ Reading those back:
@@ -231,18 +232,33 @@ all type-checking rules are waived for the data being described. A program
 in which all data is |unchecked| is a program with no type-checking at all.
 
 =
-inter_type InterTypes::untyped(void) {
+inter_type InterTypes::unchecked(void) {
 	return InterTypes::from_constructor_code(UNCHECKED_ITCONC);
 }
 
-int InterTypes::is_untyped(inter_type type) {
+int InterTypes::is_unchecked(inter_type type) {
 	if (InterTypes::constructor_code(type) == UNCHECKED_ITCONC) return TRUE;
 	return FALSE;
 }
 
-@
+@ Access to the arity and operands depends on whether there's a typename or not:
+only with a typename can we have an arity other than the default (e.g. a
+|FUNCTION_ITCONC| with arity 5) or operands other than |unchecked|.
 
 =
+int InterTypes::arity_is_possible(inter_type type, int arity) {
+	inter_type_constructor *itc = InterTypes::constructor(type);
+	if (itc->arity == (int) arity) return TRUE;
+	if (itc->constructor_ID == TABLE_ITCONC)
+		if (arity == 0) return TRUE;
+	if ((itc->constructor_ID == FUNCTION_ITCONC) ||
+		(itc->constructor_ID == RULE_ITCONC) ||
+		(itc->constructor_ID == STRUCT_ITCONC)) {
+		if (itc->arity <= (int) arity) return TRUE;
+	}
+	return FALSE;
+}
+
 int InterTypes::type_arity(inter_type type) {
 	inter_symbol *type_name = InterTypes::type_name(type);
 	if (type_name) return Inter::Typename::arity(type_name);
@@ -252,10 +268,10 @@ int InterTypes::type_arity(inter_type type) {
 inter_type InterTypes::type_operand(inter_type type, int n) {
 	inter_symbol *type_name = InterTypes::type_name(type);
 	if (type_name) return Inter::Typename::operand_type(InterTypes::type_name(type), n);
-	return InterTypes::untyped();
+	return InterTypes::unchecked();
 }
 
-@h Converting inter_type to TID and vice versa.
+@h Converting inter_type to TID.
 
 =
 inter_type InterTypes::from_TID(inter_symbols_table *T, inter_ti TID) {
@@ -263,27 +279,36 @@ inter_type InterTypes::from_TID(inter_symbols_table *T, inter_ti TID) {
 		return InterTypes::from_type_name(InterSymbolsTable::symbol_from_ID(T, TID));
 	if (InterTypes::is_valid_constructor_code(TID))
 		return InterTypes::from_constructor_code(TID);
-	return InterTypes::untyped();
+	return InterTypes::unchecked();
 }
 
 inter_type InterTypes::from_TID_in_field(inter_tree_node *P, int field) {
-	return InterTypes::from_TID(InterPackage::scope(Inode::get_package(P)), P->W.instruction[field]);
+	return InterTypes::from_TID(InterPackage::scope(Inode::get_package(P)),
+		P->W.instruction[field]);
 }
 
-@ =
+@h Converting TID to inter_type.
+
+=
 inter_ti InterTypes::to_TID(inter_symbols_table *T, inter_type type) {
 	if (type.type_name)
 		return InterSymbolsTable::id_from_symbol_in_table(T, type.type_name);
 	return type.underlying_constructor;
 }
 
-inter_ti InterTypes::to_TID_wrt_bookmark(inter_bookmark *IBM, inter_type type) {
+inter_ti InterTypes::to_TID_at(inter_bookmark *IBM, inter_type type) {
 	if (type.type_name)
 		return InterSymbolsTable::id_from_symbol_at_bookmark(IBM, type.type_name);
 	return type.underlying_constructor;
 }
 
 @h Parsing from text.
+The data structure //inter_semisimple_type_description// exists as a way of
+holding the results of the function //InterTypes::parse_semisimple// -- see
+below. It's made convoluted by the remote but theoretical need to handle an
+arbitrarily large number of type operands. No human user of Inter would ever
+write a type exceeding about 10 operands, but we want to avoid any maxima in
+Inter because it's primarily designed as a language for programs to write.
 
 @d DEFAULT_SIZE_OF_ISSTD_OPERAND_ARRAY 32
 
@@ -321,7 +346,11 @@ void InterTypes::add_operand_to_isstd(inter_semisimple_type_description *results
 	results->operand_TIDs[(results->arity)++] = TID;	
 }
 
-@ =
+@ After a call to //InterTypes::parse_semisimple// the following should be used
+to dispose of the structure. Of course, almost always it does nothing, but it
+prevents a memory leak if really large results were returned.
+
+=
 void InterTypes::dispose_of_isstd(inter_semisimple_type_description *results) {
 	results->constructor_code = UNCHECKED_ITCONC;
 	results->arity = 0;
@@ -333,102 +362,165 @@ void InterTypes::dispose_of_isstd(inter_semisimple_type_description *results) {
 		Memory::I7_array_free(results->operand_TIDs, INTER_BYTECODE_MREASON,
 			results->capacity, sizeof(inter_ti));
 
-@ =
+@ Here goes, then:
+
+=
 inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbols_table *T,
 	inter_error_location *eloc, inter_semisimple_type_description *results) {
 	results->constructor_code = UNCHECKED_ITCONC;
 	results->arity = 0;
 	inter_error_message *E = NULL;
-	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, text, L"rulebook of (%C+)")) {
+	match_results mr = Regexp::create_mr();
+	
+	@<Parse rulebook syntax@>;
+	@<Parse list syntax@>;
+	@<Parse column syntax@>;
+	@<Parse description syntax@>;
+	@<Parse relation syntax@>;
+	@<Parse rule or function syntax@>;
+	@<Parse struct syntax@>;
+	@<Parse bare constructor-name syntax@>;
+	@<Parse bare typename syntax@>;
+
+	Regexp::dispose_of(&mr);
+	return InterErrors::quoted(I"no such data type", text, eloc);
+}
+
+@<Parse rulebook syntax@> =	
+	if (Regexp::match(&mr, text, L"rulebook of (%C+)")) {
 		results->constructor_code = RULEBOOK_ITCONC;
-		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
-		if (E) return E;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
-	} else if (Regexp::match(&mr2, text, L"list of (%C+)")) {
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+
+@<Parse list syntax@> =
+	if (Regexp::match(&mr, text, L"list of (%C+)")) {
 		results->constructor_code = LIST_ITCONC;
-		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
-		if (E) return E;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
-	} else if (Regexp::match(&mr2, text, L"relation of (%C+) to (%C+)")) {
-		results->constructor_code = RELATION_ITCONC;
-		inter_type X_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
-		if (E) return E;
-		inter_type Y_type = InterTypes::parse_simple(T, eloc, mr2.exp[1], &E);
-		if (E) return E;
-		InterTypes::add_operand_to_isstd(results, T, X_type);
-		InterTypes::add_operand_to_isstd(results, T, Y_type);
-	} else if (Regexp::match(&mr2, text, L"column of (%C+)")) {
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+
+@<Parse column syntax@> =
+	if (Regexp::match(&mr, text, L"column of (%C+)")) {
 		results->constructor_code = COLUMN_ITCONC;
-		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
-		if (E) return E;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
-	} else if (Regexp::match(&mr2, text, L"description of (%C+)")) {
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+
+@<Parse description syntax@> =
+	if (Regexp::match(&mr, text, L"description of (%C+)")) {
 		results->constructor_code = DESCRIPTION_ITCONC;
-		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr2.exp[0], &E);
-		if (E) return E;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
-	} else if ((Regexp::match(&mr2, text, L"(function) (%c+) -> (%i+)")) ||
-			(Regexp::match(&mr2, text, L"(rule) (%c+) -> (%i+)"))) {
-		if (Str::eq(mr2.exp[0], I"function")) results->constructor_code = FUNCTION_ITCONC;
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+
+@<Parse relation syntax@> =
+	if (Regexp::match(&mr, text, L"relation of (%C+) to (%C+)")) {
+		results->constructor_code = RELATION_ITCONC;
+		inter_type X_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
+		InterTypes::add_operand_to_isstd(results, T, X_type);
+		if (E == NULL) {
+			inter_type Y_type = InterTypes::parse_simple(T, eloc, mr.exp[1], &E);
+			InterTypes::add_operand_to_isstd(results, T, Y_type);
+		} else {
+			InterTypes::add_operand_to_isstd(results, T, InterTypes::unchecked());
+		}
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+
+@<Parse rule or function syntax@> =
+	if ((Regexp::match(&mr, text, L"(function) (%c+) -> (%i+)")) ||
+		(Regexp::match(&mr, text, L"(rule) (%c+) -> (%i+)"))) {
+		if (Str::eq(mr.exp[0], I"function")) results->constructor_code = FUNCTION_ITCONC;
 		else results->constructor_code = RULE_ITCONC;
-		text_stream *from = mr2.exp[1];
-		text_stream *to = mr2.exp[2];
+		text_stream *from = mr.exp[1];
+		text_stream *to = mr.exp[2];
+		inter_error_message *returned_E = NULL;
 		if (Str::eq(from, I"void")) {
-			InterTypes::add_operand_to_isstd(results, T, InterTypes::from_constructor_code(VOID_ITCONC));
+			InterTypes::add_operand_to_isstd(results, T,
+				InterTypes::from_constructor_code(VOID_ITCONC));
 		} else {
 			match_results mr3 = Regexp::create_mr();
 			while (Regexp::match(&mr3, from, L" *(%C+) *(%c*)")) {
 				inter_type arg_type = InterTypes::parse_simple(T, eloc, mr3.exp[0], &E);
-				if (E) return E;
-				Str::copy(from, mr3.exp[1]);
 				InterTypes::add_operand_to_isstd(results, T, arg_type);
+				if ((E) && (returned_E == NULL)) returned_E = E;
+				Str::copy(from, mr3.exp[1]);
 			}
 		}
 		if (Str::eq(to, I"void")) {
-			InterTypes::add_operand_to_isstd(results, T, InterTypes::from_constructor_code(VOID_ITCONC));
+			InterTypes::add_operand_to_isstd(results, T,
+				InterTypes::from_constructor_code(VOID_ITCONC));
 		} else {
 			inter_type res_type = InterTypes::parse_simple(T, eloc, to, &E);
-			if (E) return E;
+			if ((E) && (returned_E == NULL)) returned_E = E;
 			InterTypes::add_operand_to_isstd(results, T, res_type);
 		}
-	} else if (Regexp::match(&mr2, text, L"struct (%c+)")) {
+		Regexp::dispose_of(&mr);
+		return returned_E;
+	}
+
+@<Parse struct syntax@> =
+	if (Regexp::match(&mr, text, L"struct (%c+)")) {
 		results->constructor_code = STRUCT_ITCONC;
-		text_stream *elements = mr2.exp[0];
+		text_stream *elements = mr.exp[0];
+		inter_error_message *returned_E = NULL;
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, elements, L" *(%C+) *(%c*)")) {
 			inter_type arg_type = InterTypes::parse_simple(T, eloc, mr3.exp[0], &E);
-			if (E) return E;
+			if ((E) && (returned_E == NULL)) returned_E = E;
 			Str::copy(elements, mr3.exp[1]);
 			InterTypes::add_operand_to_isstd(results, T, arg_type);
 		}
-	} else {
-		inter_type_constructor *itc = InterTypes::constructor_from_name(text);
-		if (itc) {
-			results->constructor_code = itc->constructor_ID;
-			if (itc->constructor_ID == VOID_ITCONC)
-				return Inter::Errors::quoted(I"'void' cannot be used as a type", text, eloc);
-			return NULL;
-		}
-		inter_symbol *K = TextualInter::find_symbol_in_table(T, eloc, text, TYPENAME_IST, &E);
-		if (E) return E;
-		if (K) {
-			results->constructor_code = EQUATED_ITCONC;
-			InterTypes::add_operand_to_isstd(results, T, InterTypes::from_type_name(K));
-			return NULL;
-		}
-		return Inter::Errors::quoted(I"no such data type", text, eloc);
+		Regexp::dispose_of(&mr);
+		return returned_E;
 	}
-	return NULL;
-}
 
+@<Parse bare constructor-name syntax@> =
+	inter_type_constructor *itc = InterTypes::constructor_from_name(text);
+	if (itc) {
+		results->constructor_code = itc->constructor_ID;
+		if (itc->constructor_ID == VOID_ITCONC)
+			return InterErrors::quoted(I"'void' cannot be used as a type", text, eloc);
+		Regexp::dispose_of(&mr);
+		return NULL;
+	}
+
+@<Parse bare typename syntax@> =
+	inter_symbol *K = TextualInter::find_symbol_in_table(T, eloc, text, TYPENAME_IST, &E);
+	if (K) {
+		results->constructor_code = EQUATED_ITCONC;
+		InterTypes::add_operand_to_isstd(results, T, InterTypes::from_type_name(K));
+		Regexp::dispose_of(&mr);
+		return NULL;
+	}
+	if (E) {
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+
+@ Sometimes we want to allow only a simple type, and if so then we can return
+an //inter_type//, which is less fuss. But we still write this as a wrapper
+around the full //InterTypes::parse_semisimple// so that it can produce a
+useful error message in response to a semisimple but not simple piece of syntax.
+
+=
 inter_type InterTypes::parse_simple(inter_symbols_table *T, inter_error_location *eloc,
 	text_stream *text, inter_error_message **E) {
 	if (Str::len(text) > 0) {
 		inter_semisimple_type_description parsed_description;
 		InterTypes::initialise_isstd(&parsed_description);
 		*E = InterTypes::parse_semisimple(text, T, eloc, &parsed_description);
-		if (*E) return InterTypes::untyped();
+		if (*E) return InterTypes::unchecked();
 		if (parsed_description.constructor_code == EQUATED_ITCONC) {
 			inter_type type = InterTypes::from_TID(T, parsed_description.operand_TIDs[0]);
 			InterTypes::dispose_of_isstd(&parsed_description);
@@ -436,139 +528,85 @@ inter_type InterTypes::parse_simple(inter_symbols_table *T, inter_error_location
 		}
 		if (parsed_description.arity > 0)  {
 			InterTypes::dispose_of_isstd(&parsed_description);
-			*E = Inter::Errors::quoted(I"type too complex", text, eloc);
-			return InterTypes::untyped();
+			*E = InterErrors::quoted(I"type too complex", text, eloc);
+			return InterTypes::unchecked();
 		}
 		inter_type type = InterTypes::from_constructor_code(parsed_description.constructor_code);
 		InterTypes::dispose_of_isstd(&parsed_description);
 		return type;
 	}
-	return InterTypes::untyped();
+	return InterTypes::unchecked();
 }
 
 @h Writing to text.
+We offer two functions here so that it's possible to force a typename to print
+its full definition out: otherwise printing the typename |K_whatever| would
+just print that name, |K_whatever|.
 
 =
-void InterTypes::write_optional_type_marker(OUTPUT_STREAM, inter_tree_node *P, int field) {
-	inter_type type = InterTypes::from_TID_in_field(P, field);
-	if (type.type_name) {
-		WRITE("("); TextualInter::write_symbol_from(OUT, P, field); WRITE(") ");
-	} else if (InterTypes::is_untyped(type) == FALSE) {
-		WRITE("("); InterTypes::write_type(OUT, type); WRITE(") ");
-	}
-}
-
-void InterTypes::write_type_in_field(OUTPUT_STREAM, inter_tree_node *P, int field) {
-	InterTypes::write_type(OUT, InterTypes::from_TID_in_field(P, field));
-}
-
 void InterTypes::write_type(OUTPUT_STREAM, inter_type type) {
 	if (type.type_name) {
 		TextualInter::write_symbol(OUT, type.type_name);
 	} else {
-		inter_type_constructor *itc = InterTypes::constructor(type);
-		WRITE("%S", itc->constructor_keyword);
-		switch (itc->constructor_ID) {
-			case EQUATED_ITCONC:
-				InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
-				break;
-			case DESCRIPTION_ITCONC:
-			case COLUMN_ITCONC:
-			case RULEBOOK_ITCONC:
-			case LIST_ITCONC:
-				WRITE(" of ");
-				InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
-				break;
-			case RELATION_ITCONC:
-				WRITE(" of ");
-				InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
-				WRITE(" to ");
-				InterTypes::write_type(OUT, InterTypes::type_operand(type, 1));
-				break;
-			case FUNCTION_ITCONC:
-			case RULE_ITCONC: {
-				int arity = InterTypes::type_arity(type);
-				for (int i=0; i<arity; i++) {
-					WRITE(" ");
-					if (i == arity - 1) WRITE("-> ");
-					InterTypes::write_type(OUT, InterTypes::type_operand(type, i));
-				}
-				break;
-			}
-			case STRUCT_ITCONC: {
-				int arity = InterTypes::type_arity(type);
-				for (int i=0; i<arity; i++) {
-					WRITE(" ");
-					InterTypes::write_type(OUT, InterTypes::type_operand(type, i));
-				}
-				break;
-			}
-		}		
+		InterTypes::write_type_longhand(OUT, type);
 	}
 }
 
-void InterTypes::write_type_name_definition(OUTPUT_STREAM, inter_symbol *type_name) {
-	inter_type_constructor *itc = InterTypes::constructor_from_ID(Inter::Typename::constructor(type_name));
-	if (itc == NULL) { WRITE("<bad-constructor>"); return; }
+void InterTypes::write_typename_definition(OUTPUT_STREAM, inter_symbol *type_name) {
+	InterTypes::write_type_longhand(OUT, InterTypes::from_type_name(type_name));
+}
+
+@ Both of which use this:
+
+=
+void InterTypes::write_type_longhand(OUTPUT_STREAM, inter_type type) {
+	inter_type_constructor *itc = InterTypes::constructor(type);
 	WRITE("%S", itc->constructor_keyword);
 	switch (itc->constructor_ID) {
 		case EQUATED_ITCONC:
-			InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, 0));
+			InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
 			break;
 		case DESCRIPTION_ITCONC:
 		case COLUMN_ITCONC:
 		case RULEBOOK_ITCONC:
 		case LIST_ITCONC:
 			WRITE(" of ");
-			InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, 0));
+			InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
 			break;
 		case RELATION_ITCONC:
 			WRITE(" of ");
-			InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, 0));
+			InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
 			WRITE(" to ");
-			InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, 1));
+			InterTypes::write_type(OUT, InterTypes::type_operand(type, 1));
 			break;
 		case FUNCTION_ITCONC:
 		case RULE_ITCONC: {
-			int arity = Inter::Typename::arity(type_name);
+			int arity = InterTypes::type_arity(type);
 			for (int i=0; i<arity; i++) {
 				WRITE(" ");
 				if (i == arity - 1) WRITE("-> ");
-				InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, i));
+				InterTypes::write_type(OUT, InterTypes::type_operand(type, i));
 			}
 			break;
 		}
 		case STRUCT_ITCONC: {
-			int arity = Inter::Typename::arity(type_name);
+			int arity = InterTypes::type_arity(type);
 			for (int i=0; i<arity; i++) {
 				WRITE(" ");
-				InterTypes::write_type(OUT, Inter::Typename::operand_type(type_name, i));
+				InterTypes::write_type(OUT, InterTypes::type_operand(type, i));
 			}
 			break;
 		}
-	}		
+	}
 }
 
 @h Typechecking.
+These are easy enough:
 
 =
 int InterTypes::is_enumerated(inter_type type) {
 	inter_type_constructor *itc = InterTypes::constructor(type);
 	if (itc->is_enumerated) return TRUE;
-	return FALSE;
-}
-
-int InterTypes::arity_is_possible(inter_type type, int arity) {
-	inter_type_constructor *itc = InterTypes::constructor(type);
-// WRITE_TO(STDERR, "%S: itc->a = %d, a = %d\n", itc->constructor_keyword, itc->arity, arity);
-	if (itc->arity == (int) arity) return TRUE;
-	if (itc->constructor_ID == TABLE_ITCONC)
-		if (arity == 0) return TRUE;
-	if ((itc->constructor_ID == FUNCTION_ITCONC) ||
-		(itc->constructor_ID == RULE_ITCONC) ||
-		(itc->constructor_ID == STRUCT_ITCONC)) {
-		if (itc->arity <= (int) arity) return TRUE;
-	}
 	return FALSE;
 }
 
@@ -578,37 +616,38 @@ int InterTypes::literal_is_in_range(long long int N, inter_type type) {
 	return TRUE;
 }
 
+@ This is what matters: whether we allow a value of type |A| to be used where
+a value of type |B| is expected.
+
+Anything can be used as |unchecked|, and |unchecked| can be used as anything.
+
+Otherwise, they must both be base types, or both constructed: and then we
+split into four cases as to whether they are the same or different.
+
+=
 inter_error_message *InterTypes::can_be_used_as(inter_type A, inter_type B,
 	text_stream *S, inter_error_location *eloc) {
 	inter_type_constructor *A_itc = InterTypes::constructor(A);
 	inter_type_constructor *B_itc = InterTypes::constructor(B);
-//WRITE_TO(STDERR, "Checking if ");
-//InterTypes::write_type(STDERR, A);
-//WRITE_TO(STDERR, " can be used as ");
-//InterTypes::write_type(STDERR, B);
-//WRITE_TO(STDERR, "\n");
 
-	if ((A_itc->constructor_ID == UNCHECKED_ITCONC) || (B_itc->constructor_ID == UNCHECKED_ITCONC))
+	if ((A_itc->constructor_ID == UNCHECKED_ITCONC) ||
+		(B_itc->constructor_ID == UNCHECKED_ITCONC))
 		return NULL;
 
-	if (A_itc->is_base != B_itc->is_base)
-		@<Throw type mismatch error@>;
+	if (A_itc->is_base != B_itc->is_base) @<Throw type mismatch error@>;
 
 	if (A_itc->is_base) {
-		if (A_itc->constructor_ID != B_itc->constructor_ID)
-			@<Different bases@>
-		else
-			@<Same bases@>;
+		if (A_itc->constructor_ID != B_itc->constructor_ID) @<Different base@>
+		else @<Same base@>;
 	} else {
-		if (A_itc->constructor_ID != B_itc->constructor_ID)
-			@<Throw type mismatch error@>
-		else
-			@<Same proper constructor@>;
+		if (A_itc->constructor_ID != B_itc->constructor_ID) @<Different proper constructor@>
+		else @<Same proper constructor@>;
 	}
-	return NULL;
 }
 
-@<Different bases@> =
+@ This expresses that |int2 <= int8 <= int16 <= int32|.
+
+@<Different base@> =
 	switch (A_itc->constructor_ID) {
 		case INT2_ITCONC:
 			if ((B_itc->constructor_ID == INT8_ITCONC) ||
@@ -625,13 +664,31 @@ inter_error_message *InterTypes::can_be_used_as(inter_type A, inter_type B,
 	}
 	@<Throw type mismatch error@>;
 
-@<Same bases@> =
+@ Enumerated types, if named, can be declared as subtypes of each other. This
+is used by Inform to make the enumerated type for "vehicle" a subtype of the
+enumerated type for "thing", for example.
+
+@<Same base@> =
 	if (A_itc->constructor_ID == ENUM_ITCONC) {
 		inter_symbol *typenameB_s = B.type_name;
 		inter_symbol *typenameA_s = A.type_name;
-		if ((typenameB_s) && (typenameA_s) && (Inter::Typename::is_a(typenameA_s, typenameB_s) == FALSE))
+		if ((typenameB_s) && (typenameA_s) &&
+			(Inter::Typename::is_a(typenameA_s, typenameB_s) == FALSE))
 			@<Throw type mismatch error@>;
 	}
+	return NULL;
+
+@ Different proper constructors never match.
+
+@<Different proper constructor@> =
+	@<Throw type mismatch error@>;
+
+@ If the same proper constructor is used, the question is then whether the
+operands match. For example, |list of int2| can be used as |list of int32|
+but not vice versa: that's a covariant operand. But |function int2 -> text|
+cannot be used as |function int32 -> text|, it's the other way around: that
+is an example of contravariance. In the simple type system of Inter, only
+function arguments are contravariant.
 
 @<Same proper constructor@> =
 	inter_error_message *operand_E = NULL;
@@ -667,6 +724,7 @@ inter_error_message *InterTypes::can_be_used_as(inter_type A, inter_type B,
 			}
 			break;
 	}
+	return NULL;
 
 @<Throw type mismatch error@> =
 	text_stream *err = Str::new();
@@ -674,21 +732,21 @@ inter_error_message *InterTypes::can_be_used_as(inter_type A, inter_type B,
 	InterTypes::write_type(err, A);
 	WRITE_TO(err, " which is not a ");
 	InterTypes::write_type(err, B);
-	return Inter::Errors::plain(err, eloc);
+	return InterErrors::plain(err, eloc);
 
 @h The type of a defined symbol.
-Note that a typename can be used as a value, and that if so, its type is |untyped|.
+Note that a typename can be used as a value, and that if so, its type is |unchecked|.
 
 =
 inter_type InterTypes::of_symbol(inter_symbol *symb) {
-	if (symb == NULL) return InterTypes::untyped();
+	if (symb == NULL) return InterTypes::unchecked();
 	inter_tree_node *D = InterSymbol::definition(symb);
-	if (D == NULL) return InterTypes::untyped();
-	if (InterSymbol::defined_elsewhere(symb)) return InterTypes::untyped();
+	if (D == NULL) return InterTypes::unchecked();
+	if (InterSymbol::defined_elsewhere(symb)) return InterTypes::unchecked();
 	inter_construct *IC = NULL;
-	if (InterConstruct::get_construct(D, &IC)) return InterTypes::untyped();
+	if (InterConstruct::get_construct(D, &IC)) return InterTypes::unchecked();
 	if (IC->TID_field >= 0) return InterTypes::from_TID_in_field(D, IC->TID_field);
-	return InterTypes::untyped();
+	return InterTypes::unchecked();
 }
 
 int InterTypes::expresses_value(inter_symbol *symb) {

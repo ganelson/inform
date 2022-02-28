@@ -26,7 +26,7 @@ void Inter::Comment::define(void) {
 void Inter::Comment::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	*E = InterConstruct::check_level_in_package(IBM, COMMENT_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 	inter_ti ID = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 	WRITE_TO(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ID), "%S", ilp->mr.exp[0]);
 	*E = Inter::Comment::new(IBM, (inter_ti) ilp->indent_level, eloc, ID);

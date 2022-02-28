@@ -19,7 +19,7 @@ void CardElement::render(OUTPUT_STREAM, index_session *session) {
 	CardElement::Library_Card_entry(OUT, "Story headline", pack, I"^headline", I"An Interactive Fiction");
 	CardElement::Library_Card_entry(OUT, "Story genre", pack, I"^genre", I"Fiction");
 	int E = (int) Metadata::read_optional_numeric(pack, I"^episode");
-	text_stream *series_name = Metadata::read_optional_textual(pack, I"^series");
+	text_stream *series_name = Metadata::optional_textual(pack, I"^series");
 	if (series_name) {
 		TEMPORARY_TEXT(episode_text)
 		WRITE_TO(episode_text, "%d of %S", E, series_name);
@@ -69,7 +69,7 @@ void CardElement::index_variable(OUTPUT_STREAM, inter_package *pack,
 			int R = (int) Metadata::read_optional_numeric(pack, key);
 			if (R > 0) { WRITE("%d", R); return; }
 		} else {
-			text_stream *matter = Metadata::read_optional_textual(pack, key);
+			text_stream *matter = Metadata::optional_textual(pack, key);
 			if (matter) { WRITE("%S", matter); return; }
 		}
 	}

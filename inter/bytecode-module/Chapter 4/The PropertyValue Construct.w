@@ -31,7 +31,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	*E = InterConstruct::check_level_in_package(IBM, PROPERTYVALUE_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_symbol *prop_name = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
@@ -48,7 +48,7 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
 		inter_symbol *prop_X = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PVAL_IFLD);
 		if (prop_X == prop_name)
-			{ *E = Inter::Errors::quoted(I"property already given", ilp->mr.exp[0], eloc); return; }
+			{ *E = InterErrors::quoted(I"property already given", ilp->mr.exp[0], eloc); return; }
 	}
 
 	inter_type val_type = InterTypes::of_symbol(prop_name);
@@ -63,11 +63,11 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 inter_symbol *Inter::PropertyValue::parse_owner(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
-	if (symb == NULL) { *E = Inter::Errors::quoted(I"no such symbol", name, eloc); return NULL; }
+	if (symb == NULL) { *E = InterErrors::quoted(I"no such symbol", name, eloc); return NULL; }
 	inter_tree_node *D = InterSymbol::definition(symb);
-	if (D == NULL) { *E = Inter::Errors::quoted(I"undefined symbol", name, eloc); return NULL; }
+	if (D == NULL) { *E = InterErrors::quoted(I"undefined symbol", name, eloc); return NULL; }
 	if ((D->W.instruction[ID_IFLD] != TYPENAME_IST) &&
-		(D->W.instruction[ID_IFLD] != INSTANCE_IST)) { *E = Inter::Errors::quoted(I"symbol of wrong type", name, eloc); return NULL; }
+		(D->W.instruction[ID_IFLD] != INSTANCE_IST)) { *E = InterErrors::quoted(I"symbol of wrong type", name, eloc); return NULL; }
 	return symb;
 }
 

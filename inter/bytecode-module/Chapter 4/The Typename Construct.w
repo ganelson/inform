@@ -49,13 +49,13 @@ void Inter::Typename::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		super_s = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[2], TYPENAME_IST, E);
 		if ((*E == NULL) &&
 			(InterTypes::is_enumerated(InterTypes::from_type_name(super_s)) == FALSE))
-			{ *E = Inter::Errors::quoted(I"not a type which can have subtypes", ilp->mr.exp[2], eloc); return; }
+			{ *E = InterErrors::quoted(I"not a type which can have subtypes", ilp->mr.exp[2], eloc); return; }
 		parsed_description.constructor_code = ENUM_ITCONC;
 		parsed_description.arity = 0;
 	} else if (Str::eq(ilp->mr.exp[1], I"=")) {
 		*E = InterTypes::parse_semisimple(ilp->mr.exp[2], InterBookmark::scope(IBM), eloc, &parsed_description);
 	} else {
-		*E = Inter::Errors::quoted(I"expected '=' or '<='", ilp->mr.exp[1], eloc);
+		*E = InterErrors::quoted(I"expected '=' or '<='", ilp->mr.exp[1], eloc);
 	}
 	
 	if (*E == NULL)
@@ -143,7 +143,7 @@ void Inter::Typename::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 			WRITE("<= %S", InterSymbol::identifier(super));
 		} else {
 			WRITE("= ");
-			InterTypes::write_type_name_definition(OUT, symb);
+			InterTypes::write_typename_definition(OUT, symb);
 		}
 	} else { *E = Inode::error(P, I"cannot write typename", NULL); return; }
 	SymbolAnnotation::write_annotations(OUT, P, symb);
@@ -173,10 +173,10 @@ int Inter::Typename::arity(inter_symbol *typename_s) {
 }
 
 inter_type Inter::Typename::operand_type(inter_symbol *typename_s, int i) {
-	if (typename_s == NULL) return InterTypes::untyped();
+	if (typename_s == NULL) return InterTypes::unchecked();
 	inter_tree_node *D = InterSymbol::definition(typename_s);
-	if (D == NULL) return InterTypes::untyped();
-	if (i >= D->W.extent - MIN_EXTENT_TYPENAME_IFR) return InterTypes::untyped();
+	if (D == NULL) return InterTypes::unchecked();
+	if (i >= D->W.extent - MIN_EXTENT_TYPENAME_IFR) return InterTypes::unchecked();
 	inter_ti TID = D->W.instruction[OPERANDS_TYPENAME_IFLD + i];
 	inter_symbols_table *T = InterPackage::scope_of(D);
 	return InterTypes::from_TID(T, TID);
@@ -214,7 +214,7 @@ int Inter::Typename::is(inter_symbol *typename_s) {
 int Inter::Typename::is_a(inter_symbol *typename1_s, inter_symbol *typename2_s) {
 	inter_type type1 = InterTypes::from_type_name(typename1_s);
 	inter_type type2 = InterTypes::from_type_name(typename2_s);
-	if ((InterTypes::is_untyped(type1)) || (InterTypes::is_untyped(type2))) return TRUE;
+	if ((InterTypes::is_unchecked(type1)) || (InterTypes::is_unchecked(type2))) return TRUE;
 	while (typename1_s) {
 		if (typename1_s == typename2_s) return TRUE;
 		typename1_s = Inter::Typename::super(typename1_s);

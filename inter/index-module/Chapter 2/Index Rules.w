@@ -18,7 +18,7 @@ dictionary, but it's not used often enough to make it worth the work.
 inter_package *IndexRules::find_rulebook(tree_inventory *inv, text_stream *marker) {
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->rulebook_nodes)
-		if (Str::eq(marker, Metadata::read_optional_textual(pack, I"^index_id")))
+		if (Str::eq(marker, Metadata::optional_textual(pack, I"^index_id")))
 			return pack;
 	return NULL;
 }
@@ -26,7 +26,7 @@ inter_package *IndexRules::find_rulebook(tree_inventory *inv, text_stream *marke
 inter_package *IndexRules::find_activity(tree_inventory *inv, text_stream *marker) {
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->activity_nodes)
-		if (Str::eq(marker, Metadata::read_optional_textual(pack, I"^index_id")))
+		if (Str::eq(marker, Metadata::optional_textual(pack, I"^index_id")))
 			return pack;
 	return NULL;
 }
@@ -82,14 +82,14 @@ int IndexRules::phrase_fits_rule_context(inter_tree *I, inter_package *rule_pack
 		int passes = FALSE;
 		inter_package *rel_pack;
 		LOOP_THROUGH_SUBPACKAGES(rel_pack, rule_pack, I"_relevant_action") {
-			inter_symbol *act_ds = Metadata::read_symbol(rel_pack, I"^action");
+			inter_symbol *act_ds = Metadata::required_symbol(rel_pack, I"^action");
 			if (InterPackage::container(act_ds->definition) == rc.action_context)
 				passes = TRUE;
 		}
 		if (passes == FALSE) return FALSE;
 	}
 	if (rc.scene_context) {
-		inter_symbol *scene_symbol = Metadata::read_optional_symbol(rule_pack, I"^during");
+		inter_symbol *scene_symbol = Metadata::optional_symbol(rule_pack, I"^during");
 		if (scene_symbol == NULL) return FALSE;
 		if (InterPackage::container(scene_symbol->definition) !=
 			rc.scene_context->pack) return FALSE;
@@ -192,7 +192,7 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 
 @<Add links and such to the titling@> =
 	if (Str::len(doc_link) > 0) DocReferences::link(OUT, doc_link);
-	WRITE(" ... %S", Metadata::read_optional_textual(rb_pack, I"^focus"));
+	WRITE(" ... %S", Metadata::optional_textual(rb_pack, I"^focus"));
 	IndexUtilities::link_package(OUT, rb_pack);
 
 @h Two ways to list a rulebook.
@@ -263,7 +263,7 @@ of adjacent rules in a listing:
 @<Show a linkage icon@> =
 	text_stream *icon_name = NULL; /* redundant assignment to appease |gcc -O2| */
 	if ((prev == NULL) ||
-		(Str::len(Metadata::read_optional_textual(prev, I"^tooltip")) == 0)) {
+		(Str::len(Metadata::optional_textual(prev, I"^tooltip")) == 0)) {
 		HTML::icon_with_tooltip(OUT, I"inform:/doc_images/rulenone.png",
 			I"start of rulebook", NULL);
 	} else {
@@ -274,8 +274,8 @@ of adjacent rules in a listing:
 			default: internal_error("unknown rule specificity");
 		}
 		HTML::icon_with_tooltip(OUT, icon_name,
-			Metadata::read_optional_textual(prev, I"^tooltip"),
-			Metadata::read_optional_textual(prev, I"^law"));
+			Metadata::optional_textual(prev, I"^tooltip"),
+			Metadata::optional_textual(prev, I"^law"));
 	}
 
 @h Listing a single rule.
@@ -286,9 +286,9 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	int no_responses_indexed = 0;
 	int response_box_id = IndexUtilities::extra_ID(session);
-	text_stream *name = Metadata::read_optional_textual(R, I"^name");
-	text_stream *italicised_text = Metadata::read_optional_textual(R, I"^index_name");
-	text_stream *first_line = Metadata::read_optional_textual(R, I"^first_line");
+	text_stream *name = Metadata::optional_textual(R, I"^name");
+	text_stream *italicised_text = Metadata::optional_textual(R, I"^index_name");
+	text_stream *first_line = Metadata::optional_textual(R, I"^first_line");
 	if (Str::len(italicised_text) > 0) @<Index the italicised text to do with the rule@>;
 	if (Str::len(name) > 0) @<Index the rule name along with Javascript buttons@>;
 	if ((Str::len(italicised_text) == 0) &&
@@ -327,12 +327,12 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 
 	Str::clear(S);
 	Localisation::roman_tt(S, LD, I"Index.Elements.RS.Response", name,
-		Metadata::read_optional_textual(owner, I"^printed_name"));
+		Metadata::optional_textual(owner, I"^printed_name"));
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>unlist</i>");
 	DISCARD_TEXT(S)
 
-	inter_symbol *R_symbol = Metadata::read_optional_symbol(R, I"^rule");
+	inter_symbol *R_symbol = Metadata::optional_symbol(R, I"^rule");
 	if (R_symbol) {
 		int c = InterTree::no_subpackages(R, I"_response");
 		if (c > 0) {
@@ -343,7 +343,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	}
 
 @<Index any response texts in the rule@> =
-	inter_symbol *R_symbol = Metadata::read_optional_symbol(R, I"^rule");
+	inter_symbol *R_symbol = Metadata::optional_symbol(R, I"^rule");
 	if (R_symbol) {
 		int c = 0;
 		inter_package *resp_pack;
@@ -373,13 +373,13 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	}
 
 @<Index any applicability conditions@> =
-	inter_symbol *R_symbol = Metadata::read_optional_symbol(R, I"^rule");
+	inter_symbol *R_symbol = Metadata::optional_symbol(R, I"^rule");
 	if (R_symbol) {
 		inter_package *ac_pack;
 		LOOP_THROUGH_SUBPACKAGES(ac_pack, R, I"_applicability_condition") {
 			HTML_TAG("br");
 			IndexUtilities::link_package(OUT, ac_pack);
-			WRITE("&nbsp;%S", Metadata::read_textual(ac_pack, I"^index_text"));
+			WRITE("&nbsp;%S", Metadata::required_textual(ac_pack, I"^index_text"));
 		}
 	}
 
@@ -390,7 +390,7 @@ text to assert a change:
 void IndexRules::index_response(OUTPUT_STREAM, inter_package *rule_pack,
 	inter_package *resp_pack, localisation_dictionary *LD) {
 	int marker = (int) Metadata::read_numeric(resp_pack, I"^marker");
-	text_stream *text = Metadata::read_textual(resp_pack, I"^index_text");
+	text_stream *text = Metadata::required_textual(resp_pack, I"^index_text");
 	WRITE("&nbsp;&nbsp;&nbsp;&nbsp;");
 	HTML_OPEN_WITH("span",
 		"style=\"color: #ffffff; "
@@ -403,7 +403,7 @@ void IndexRules::index_response(OUTPUT_STREAM, inter_package *rule_pack,
 	WRITE("&nbsp;&nbsp;");
 	TEMPORARY_TEXT(S)
 	WRITE_TO(S, "%S response (%c)",
-		Metadata::read_textual(rule_pack, I"^name"), 'A' + marker);
+		Metadata::required_textual(rule_pack, I"^name"), 'A' + marker);
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>name</i>");
 	WRITE("&nbsp;");
@@ -411,7 +411,7 @@ void IndexRules::index_response(OUTPUT_STREAM, inter_package *rule_pack,
 	TEMPORARY_TEXT(letter)
 	WRITE_TO(letter, "%c", 'A' + marker);
 	Localisation::roman_tt(S, LD, I"Index.Elements.RS.Response",
-		Metadata::read_textual(rule_pack, I"^name"), letter);
+		Metadata::required_textual(rule_pack, I"^name"), letter);
 	PasteButtons::paste_text(OUT, S);
 	WRITE("&nbsp;<i>set</i>");
 	DISCARD_TEXT(letter)
@@ -429,7 +429,7 @@ void IndexRules::index_outcomes(OUTPUT_STREAM, inter_tree *I, inter_package *rb_
 		WRITE("</i>&nbsp;&nbsp;");
 		int is_def = (int) Metadata::read_optional_numeric(ro_pack, I"^is_default");
 		if (is_def) WRITE("<b>");
-		WRITE("%S", Metadata::read_optional_textual(ro_pack, I"^text"));
+		WRITE("%S", Metadata::optional_textual(ro_pack, I"^text"));
 		if (is_def) WRITE("</b> (default)");
 		WRITE(" - <i>");
 		if (Metadata::read_optional_numeric(ro_pack, I"^succeeds"))
@@ -464,7 +464,7 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 	LOOP_THROUGH_SUBPACKAGES(rp_pack, rb_pack, I"_rulebook_placement") {	
 		WRITE("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
 		HTML_OPEN_WITH("span", "class=\"smaller\"");
-		WRITE("<i>NB:</i> %S", Metadata::read_optional_textual(rp_pack, I"^text"));
+		WRITE("<i>NB:</i> %S", Metadata::optional_textual(rp_pack, I"^text"));
 		IndexUtilities::link_package(OUT, rp_pack);
 		HTML_CLOSE("span");
 		HTML_TAG("br");
@@ -484,9 +484,9 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 
 	int expand_id = IndexUtilities::extra_ID(session);
 
-	inter_symbol *before_s = Metadata::read_symbol(av_pack, I"^before_rulebook");
-	inter_symbol *for_s = Metadata::read_symbol(av_pack, I"^for_rulebook");
-	inter_symbol *after_s = Metadata::read_symbol(av_pack, I"^after_rulebook");
+	inter_symbol *before_s = Metadata::required_symbol(av_pack, I"^before_rulebook");
+	inter_symbol *for_s = Metadata::required_symbol(av_pack, I"^for_rulebook");
+	inter_symbol *after_s = Metadata::required_symbol(av_pack, I"^after_rulebook");
 	inter_package *before_pack = InterPackage::container(before_s->definition);
 	inter_package *for_pack = InterPackage::container(for_s->definition);
 	inter_package *after_pack = InterPackage::container(after_s->definition);
@@ -496,7 +496,7 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 			IndexRules::no_rules(after_pack);
 
 	TEMPORARY_TEXT(textual_name)
-	text_stream *name = Metadata::read_optional_textual(av_pack, I"^name");
+	text_stream *name = Metadata::optional_textual(av_pack, I"^name");
 	if (Str::len(name) > 0) WRITE_TO(textual_name, "%S", name);
 	else WRITE_TO(textual_name, "nameless");
 	string_position start = Str::start(textual_name);
@@ -555,7 +555,7 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	inter_package *xref_pack;
 	LOOP_THROUGH_SUBPACKAGES(xref_pack, av_pack, I"_activity_xref") {	
 		HTML::open_indented_p(OUT, 2, "tight");
-		WRITE("NB: %S", Metadata::read_optional_textual(xref_pack, I"^text"));
+		WRITE("NB: %S", Metadata::optional_textual(xref_pack, I"^text"));
 		IndexUtilities::link_package(OUT, xref_pack);
 		HTML_CLOSE("p");
 	}

@@ -69,7 +69,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 		HierarchyLocations::iname(I, THEEMPTYTABLE_HL)));
 	for (int i=0; i<InterNodeList::array_len(inv->table_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->table_nodes->list[i].node);
-		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
+		inter_symbol *value_s = Metadata::required_symbol(pack, I"^value");
 		Synoptic::symbol_entry(value_s);
 	}
 	Synoptic::numeric_entry(0);
@@ -101,8 +101,8 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 
 		for (int i=0; i<InterNodeList::array_len(inv->table_nodes); i++) {
 			inter_package *pack = InterPackage::at_this_head(inv->table_nodes->list[i].node);
-			inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
-			text_stream *printed_name = Metadata::read_textual(pack, I"^printed_name");
+			inter_symbol *value_s = Metadata::required_symbol(pack, I"^value");
+			text_stream *printed_name = Metadata::required_textual(pack, I"^printed_name");
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, value_s);
@@ -146,7 +146,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 	for (int i=0; i<InterNodeList::array_len(inv->table_column_nodes); i++) {
 		inter_package *pack =
 			InterPackage::at_this_head(inv->table_column_nodes->list[i].node);
-		inter_symbol *tc_kind = Metadata::read_symbol(pack, I"^column_kind");
+		inter_symbol *tc_kind = Metadata::required_symbol(pack, I"^column_kind");
 		Produce::inv_primitive(I, CASE_BIP);
 		Produce::down(I);
 			Produce::val(I, K_value, InterValuePairs::number((inter_ti) (i + 100)));
@@ -198,7 +198,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 		inter_package *pack =
 			InterPackage::at_this_head(inv->table_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^ranking_table")) {
-			inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
+			inter_symbol *value_s = Metadata::required_symbol(pack, I"^value");
 			Produce::symbol_constant(I, iname, K_value, value_s);
 			found = TRUE;
 			break;

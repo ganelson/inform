@@ -49,10 +49,10 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 
 @<Produce a heading for a module package@> =
 	WRITE("Module '%S'\n", InterPackage::name(from));
-	text_stream *title = Metadata::read_optional_textual(from, I"^title");
+	text_stream *title = Metadata::optional_textual(from, I"^title");
 	if (title) WRITE("From extension '%S by %S' version %S\n", title,
-		Metadata::read_textual(from, I"^author"),
-		Metadata::read_textual(from, I"^version"));
+		Metadata::required_textual(from, I"^author"),
+		Metadata::required_textual(from, I"^version"));
 
 @<Produce a subheading for a submodule package@> =
 	WRITE("%S:\n", InterPackage::name(from));
@@ -78,7 +78,7 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 		if (D->W.instruction[ID_IFLD] == PACKAGE_IST) {
 			inter_package *R2 = InterPackage::at_this_head(D);
 			if (InterPackage::type(R2) == ptype) {
-				text_stream *name = Metadata::read_optional_textual(R2, I"^name");
+				text_stream *name = Metadata::optional_textual(R2, I"^name");
 				if (name == NULL) name = InterPackage::name(R2);
 				if ((pos > 0) && (first == FALSE)) WRITE(", ");
 				pos += Str::len(name) + 2;

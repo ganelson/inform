@@ -20,7 +20,7 @@ void Inter::Plug::define(void) {
 void Inter::Plug::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	*E = InterConstruct::check_level_in_package(IBM, PLUG_IST, ilp->indent_level, eloc);
 	if (*E) return;
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_package *routine = InterBookmark::package(IBM);
 
@@ -34,14 +34,14 @@ void Inter::Plug::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"~~> (%C+)")) {
 		equate_name = mr2.exp[0];
 	} else {
-		*E = Inter::Errors::plain(I"bad plug syntax", eloc); return;
+		*E = InterErrors::plain(I"bad plug syntax", eloc); return;
 	}
 
 	inter_symbol *name_name = NULL;
 	inter_ti level = 0;
 	if (routine) {
 		inter_symbols_table *locals = InterPackage::scope(routine);
-		if (locals == NULL) { *E = Inter::Errors::plain(I"function has no symbols table", eloc); return; }
+		if (locals == NULL) { *E = InterErrors::plain(I"function has no symbols table", eloc); return; }
 		name_name = TextualInter::new_symbol(eloc, locals, symbol_name, E);
 		if (*E) return;
 		InterSymbol::make_plug(name_name);
@@ -57,7 +57,7 @@ void Inter::Plug::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		}
 		level = (inter_ti) ilp->indent_level;
 	} else {
-		*E = Inter::Errors::plain(I"plugs can exist only in the connectors package", eloc); return;
+		*E = InterErrors::plain(I"plugs can exist only in the connectors package", eloc); return;
 	}
 }
 

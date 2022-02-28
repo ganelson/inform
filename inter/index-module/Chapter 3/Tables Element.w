@@ -51,7 +51,7 @@ Rules, which of course are always present. So these are hidden by default.
 		}
 		IndexUtilities::extra_div_open(OUT, 2, 1, "e0e0e0");		
 		HTML_OPEN("p");
-		WRITE("<i>%S</i>", Metadata::read_textual(mod, I"^title"));
+		WRITE("<i>%S</i>", Metadata::required_textual(mod, I"^title"));
 		HTML_CLOSE("p");
 	}
 	open_cat = cat;
@@ -81,7 +81,7 @@ Rules, which of course are always present. So these are hidden by default.
 	HTML::end_html_row(OUT);
 
 @<Table name column@> =
-	WRITE("<b>%S</b>", Metadata::read_textual(table_pack, I"^printed_name"));
+	WRITE("<b>%S</b>", Metadata::required_textual(table_pack, I"^printed_name"));
 	int ntc = 0;
 	inter_package *cont_pack;
 	LOOP_THROUGH_SUBPACKAGES(cont_pack, table_pack, I"_table_contribution") {
@@ -93,7 +93,7 @@ Rules, which of course are always present. So these are hidden by default.
 	int nc = InterTree::no_subpackages(table_pack, I"_table_column_usage");
 	int nr = (int) Metadata::read_numeric(table_pack, I"^rows");
 	int nb = (int) Metadata::read_numeric(table_pack, I"^blank_rows");
-	text_stream *for_each = Metadata::read_optional_textual(table_pack, I"^blank_rows_for_each");
+	text_stream *for_each = Metadata::optional_textual(table_pack, I"^blank_rows_for_each");
 
 	WRITE("<i>");
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
@@ -137,9 +137,9 @@ Rules, which of course are always present. So these are hidden by default.
 	HTML::end_html_row(OUT);
 
 @<Give usage details@> =
-	text_stream *CW = Metadata::read_optional_textual(col_pack, I"^name");
+	text_stream *CW = Metadata::optional_textual(col_pack, I"^name");
 	if ((defines) && (col == 0)) {
-		WRITE("%S", Metadata::read_optional_textual(table_pack, I"^defines_text"));
+		WRITE("%S", Metadata::optional_textual(table_pack, I"^defines_text"));
 		int at = (int) Metadata::read_optional_numeric(table_pack, I"^defines_at");
 		IndexUtilities::link(OUT, at);
 	} else {
@@ -160,8 +160,8 @@ Rules, which of course are always present. So these are hidden by default.
 		Localisation::italic(OUT, LD, I"Index.Elements.Tb.Names");
 	} else if (defines) {
 		Localisation::roman_t(OUT, LD, I"Index.Elements.Tb.Property",
-			Metadata::read_optional_textual(col_pack, I"^contents"));
+			Metadata::optional_textual(col_pack, I"^contents"));
 	} else {
 		Localisation::roman_t(OUT, LD, I"Index.Elements.Tb.Of",
-			Metadata::read_optional_textual(col_pack, I"^contents"));
+			Metadata::optional_textual(col_pack, I"^contents"));
 	}

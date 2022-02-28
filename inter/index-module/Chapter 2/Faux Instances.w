@@ -43,11 +43,11 @@ faux_instance *FauxInstances::new(inter_package *pack, index_session *session) {
 	faux_instance *I = CREATE(faux_instance);
 	I->index_appearances = 0;
 	I->package = pack;
-	I->name = Str::duplicate(Metadata::read_textual(pack, I"^name"));
-	I->printed_name = Str::duplicate(Metadata::read_textual(pack, I"^printed_name"));
-	I->abbrev = Str::duplicate(Metadata::read_textual(pack, I"^abbreviation"));
-	I->kind_text = Str::duplicate(Metadata::read_textual(pack, I"^index_kind"));
-	I->kind_chain = Str::duplicate(Metadata::read_textual(pack, I"^index_kind_chain"));
+	I->name = Str::duplicate(Metadata::required_textual(pack, I"^name"));
+	I->printed_name = Str::duplicate(Metadata::required_textual(pack, I"^printed_name"));
+	I->abbrev = Str::duplicate(Metadata::required_textual(pack, I"^abbreviation"));
+	I->kind_text = Str::duplicate(Metadata::required_textual(pack, I"^index_kind"));
+	I->kind_chain = Str::duplicate(Metadata::required_textual(pack, I"^index_kind_chain"));
 	I->other_side = NULL;
 	I->direction_index = -1;
 
@@ -217,7 +217,7 @@ void FauxInstances::make_faux(index_session *session) {
 	I->incorp_tree_child = FauxInstances::xref(faux_set, I->package, I"^incorp_child");
 
 @<Cross-reference map relationships@> =
-	inter_tree_node *P = Metadata::read_optional_list(pack, I"^map");
+	inter_tree_node *P = Metadata::optional_list(pack, I"^map");
 	if (P) {
 		for (int i=0; i<MAX_DIRECTIONS; i++) {
 			int offset = DATA_CONST_IFLD + 4*i;
@@ -238,7 +238,7 @@ void FauxInstances::make_faux(index_session *session) {
 	}
 
 @<Cross-reference backdrop locations@> =
-	inter_tree_node *P = Metadata::read_optional_list(pack, I"^backdrop_presences");
+	inter_tree_node *P = Metadata::optional_list(pack, I"^backdrop_presences");
 	if (P) {
 		int offset = DATA_CONST_IFLD;
 		while (offset < P->W.extent) {
@@ -274,7 +274,7 @@ was made from that package.
 faux_instance *FauxInstances::xref(faux_instance_set *faux_set, inter_package *pack,
 	text_stream *key) {
 	return FauxInstances::symbol_to_faux_instance(faux_set,
-		Metadata::read_optional_symbol(pack, key));
+		Metadata::optional_symbol(pack, key));
 }
 
 faux_instance *FauxInstances::symbol_to_faux_instance(faux_instance_set *faux_set,
@@ -316,11 +316,11 @@ void FauxInstances::decode_hints(index_session *session, int pass) {
 			if (pass == 1) @<Decode a hint mapping one room in a specific direction from another@>;
 			continue;
 		}
-		text_stream *name = Metadata::read_optional_textual(hint_pack, I"^name");
+		text_stream *name = Metadata::optional_textual(hint_pack, I"^name");
 		if (Str::len(name) > 0) {
 			int scope_level = (int) Metadata::read_optional_numeric(hint_pack, I"^scope_level");
 			faux_instance *scope_I = FauxInstances::xref(faux_set, hint_pack, I"^scope_instance");
-			text_stream *text_val = Metadata::read_optional_textual(hint_pack, I"^text");
+			text_stream *text_val = Metadata::optional_textual(hint_pack, I"^text");
 			int int_val = (int) Metadata::read_optional_numeric(hint_pack, I"^number");
 			if (scope_level != 1000000) {
 				if (pass == 2) @<Decode a hint setting EPS map parameters relating to levels@>;
@@ -329,14 +329,14 @@ void FauxInstances::decode_hints(index_session *session, int pass) {
 			}
 			continue;
 		}
-		text_stream *annotation = Metadata::read_optional_textual(hint_pack, I"^annotation");
+		text_stream *annotation = Metadata::optional_textual(hint_pack, I"^annotation");
 		if (Str::len(annotation) > 0) {
 			if (pass == 1) {
 				rubric_holder *rh = CREATE(rubric_holder);
 				rh->annotation = annotation;
 				rh->point_size = (int) Metadata::read_optional_numeric(hint_pack, I"^point_size");
-				rh->font = Metadata::read_optional_textual(hint_pack, I"^font");
-				rh->colour = Metadata::read_optional_textual(hint_pack, I"^colour");
+				rh->font = Metadata::optional_textual(hint_pack, I"^font");
+				rh->colour = Metadata::optional_textual(hint_pack, I"^colour");
 				rh->at_offset = (int) Metadata::read_optional_numeric(hint_pack, I"^offset");
 				rh->offset_from = FauxInstances::xref(faux_set, hint_pack, I"^offset_from");
 				ADD_TO_LINKED_LIST(rh, rubric_holder, faux_set->rubrics);	

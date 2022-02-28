@@ -46,7 +46,7 @@ of the text of that response.
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->response_nodes->list[i].node);
-		inter_symbol *value_s = Metadata::read_symbol(pack, I"^value");
+		inter_symbol *value_s = Metadata::required_symbol(pack, I"^value");
 		Synoptic::symbol_entry(value_s);
 	}
 	Synoptic::numeric_entry(0);
@@ -69,7 +69,7 @@ The triple |(0, 0, 0)| ends the array.
 	text_stream *current_group = NULL; int start_pos = -1;
 	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->response_nodes->list[i].node);
-		text_stream *group = Metadata::read_textual(pack, I"^group");
+		text_stream *group = Metadata::required_textual(pack, I"^group");
 		if (Str::ne(group, current_group)) {
 			if (start_pos >= 0) {
 				Synoptic::textual_entry(current_group);
@@ -111,7 +111,7 @@ code is less limited.
 	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->response_nodes->list[i].node);
 		inter_ti m = Metadata::read_numeric(pack, I"^marker");
-		inter_symbol *rule_s = Metadata::read_symbol(pack, I"^value");
+		inter_symbol *rule_s = Metadata::required_symbol(pack, I"^value");
 		Produce::inv_primitive(I, IF_BIP);
 		Produce::down(I);
 			Produce::inv_primitive(I, EQ_BIP);

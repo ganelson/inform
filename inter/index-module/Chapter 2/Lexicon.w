@@ -65,10 +65,10 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I, tree_inventory *inv) {
 		index_lexicon_entry *lex;
 		if (Metadata::read_numeric(pack, I"^meaningless"))
 			lex = IndexLexicon::new_entry_with_package(
-				Metadata::read_textual(pack, I"^infinitive"), MVERB_TLEXE, pack);
+				Metadata::required_textual(pack, I"^infinitive"), MVERB_TLEXE, pack);
 		else
 			lex = IndexLexicon::new_entry_with_package(
-				Metadata::read_textual(pack, I"^infinitive"), VERB_TLEXE, pack);
+				Metadata::required_textual(pack, I"^infinitive"), VERB_TLEXE, pack);
 		lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 		ADD_TO_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted);
 	}
@@ -77,14 +77,14 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I, tree_inventory *inv) {
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->preposition_nodes) {
 		index_lexicon_entry *lex = IndexLexicon::new_entry_with_package(
-			Metadata::read_textual(pack, I"^text"), PREP_TLEXE, pack);
+			Metadata::required_textual(pack, I"^text"), PREP_TLEXE, pack);
 		lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 	}
 
 @<Add adjective entries@> =
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->adjective_nodes) {
-		text_stream *lemma = Metadata::read_textual(pack, I"^text");
+		text_stream *lemma = Metadata::required_textual(pack, I"^text");
 		if (Str::len(lemma) > 0) {
 			index_lexicon_entry *lex = IndexLexicon::new_entry(lemma, ADJECTIVAL_PHRASE_TLEXE);
 			lex->category = "adjective";
@@ -99,7 +99,7 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I, tree_inventory *inv) {
 		if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
 			(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object"))) {
 			index_lexicon_entry *lex = IndexLexicon::new_entry(
-				Metadata::read_textual(pack, I"^name"), COMMON_NOUN_TLEXE);
+				Metadata::required_textual(pack, I"^name"), COMMON_NOUN_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 			lex->category = "noun";
 			lex->lex_package = pack;			
@@ -111,14 +111,14 @@ inter_lexicon *IndexLexicon::stock(inter_tree *I, tree_inventory *inv) {
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->instance_nodes) {
 		if (Metadata::read_optional_numeric(pack, I"^is_object")) {
 			index_lexicon_entry *lex = IndexLexicon::new_entry(
-				Metadata::read_textual(pack, I"^name"), PROPER_NOUN_TLEXE);
+				Metadata::required_textual(pack, I"^name"), PROPER_NOUN_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 			lex->category = "noun";
 			lex->lex_package = pack;
 			ADD_TO_LINKED_LIST(lex, index_lexicon_entry, lexicon->unsorted);
 		} else {
 			index_lexicon_entry *lex = IndexLexicon::new_entry(
-				Metadata::read_textual(pack, I"^name"), ENUMERATED_CONSTANT_TLEXE);
+				Metadata::required_textual(pack, I"^name"), ENUMERATED_CONSTANT_TLEXE);
 			lex->link_to = (int) Metadata::read_numeric(pack, I"^at");
 			lex->category = "noun";
 			lex->lex_package = pack;
@@ -291,14 +291,14 @@ source text: so any single link would be potentially misleading.
 	@<Begin definition text@>;
 	WRITE(", ");
 	Localisation::roman_t(OUT, LD, I"Index.Elements.Lx.KindOf",
-		Metadata::read_optional_textual(lex->lex_package, I"^index_superkind"));
+		Metadata::optional_textual(lex->lex_package, I"^index_superkind"));
 	@<End definition text@>;
 
 @ Simply the name of an instance.
 
 @<Definition of proper noun entry@> =
 	@<Begin definition text@>;
-	WRITE("%S", Metadata::read_textual(lex->lex_package, I"^index_kind"));
+	WRITE("%S", Metadata::required_textual(lex->lex_package, I"^index_kind"));
 	@<End definition text@>;
 
 @ As mentioned above, an adjectival phrase can be multiply defined in
@@ -306,14 +306,14 @@ different contexts. We want to quote all of those.
 
 @<Definition of adjectival phrase entry@> =
 	@<Begin definition text@>;
-	WRITE(": %S", Metadata::read_textual(lex->lex_package, I"^index_entry"));
+	WRITE(": %S", Metadata::required_textual(lex->lex_package, I"^index_entry"));
 	@<End definition text@>;
 
 @<Definition of enumerated instance entry@> =
 	@<Begin definition text@>;
 	WRITE(", ");
 	Localisation::roman_t(OUT, LD, I"Index.Elements.Lx.ValueOf",
-		Metadata::read_optional_textual(lex->lex_package, I"^index_kind"));
+		Metadata::optional_textual(lex->lex_package, I"^index_kind"));
 	@<End definition text@>;
 
 @<Begin definition text@> =

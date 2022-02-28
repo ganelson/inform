@@ -45,7 +45,7 @@ void TokensElement::token(OUTPUT_STREAM, inter_tree *I, char *special,
 	HTML::open_indented_p(OUT, 1, "tight");
 	WRITE("\"[");
 	if (special) WRITE("%s", special);
-	else if (cg_pack) WRITE("%S", Metadata::read_optional_textual(cg_pack, I"^name"));
+	else if (cg_pack) WRITE("%S", Metadata::optional_textual(cg_pack, I"^name"));
 	WRITE("]\"");
 	if (cg_pack) IndexUtilities::link_package(OUT, cg_pack);
 	if (Str::len(help) > 0) DocReferences::link(OUT, help);
@@ -58,12 +58,12 @@ void TokensElement::token(OUTPUT_STREAM, inter_tree *I, char *special,
 		int k = 0;
 		inter_package *line_pack;
 		LOOP_THROUGH_SUBPACKAGES(line_pack, cg_pack, I"_cg_line") {
-			text_stream *trueverb = Metadata::read_optional_textual(line_pack, I"^true_verb");
+			text_stream *trueverb = Metadata::optional_textual(line_pack, I"^true_verb");
 			HTML::open_indented_p(OUT, 2, "hanging");
 			if (k++ == 0) WRITE("="); else WRITE("or");
 			WRITE(" &quot;");
 			TokensElement::verb_definition(OUT,
-				Metadata::read_optional_textual(line_pack, I"^text"),
+				Metadata::optional_textual(line_pack, I"^text"),
 				trueverb, EMPTY_WORDING);
 			WRITE("&quot;");
 			IndexUtilities::link_package(OUT, line_pack);

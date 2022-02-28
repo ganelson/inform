@@ -24,7 +24,7 @@ void Inter::Version::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	*E = InterConstruct::check_level_in_package(IBM, VERSION_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	semantic_version_number file_version = VersionNumbers::from_text(ilp->mr.exp[0]);
 	if (InterVersion::check_readable(file_version) == FALSE) {
@@ -33,7 +33,7 @@ void Inter::Version::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 		WRITE_TO(erm,
 			"file holds Inter written for specification v%v, but I expect v%v",
 			&file_version, &current_version);
-		*E = Inter::Errors::plain(erm, eloc);
+		*E = InterErrors::plain(erm, eloc);
 	}
 }
 

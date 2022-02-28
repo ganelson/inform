@@ -272,7 +272,7 @@ internal error to halt the compiler if they occur.
 =
 void Produce::guard(inter_error_message *ERR) {
 	if ((ERR) && (problem_count == 0)) {
-		Inter::Errors::issue(ERR); internal_error("inter error");
+		InterErrors::issue(ERR); internal_error("inter error");
 	}
 }
 
@@ -569,10 +569,10 @@ inter_symbol *Produce::kind_to_symbol(kind *K) {
 }
 
 inter_ti Produce::kind_to_TID(inter_bookmark *IBM, kind *K) {
-	inter_type type = InterTypes::untyped();
+	inter_type type = InterTypes::unchecked();
 	inter_symbol *S = Produce::kind_to_symbol(K);
 	if (S) type = InterTypes::from_type_name(S);
-	return InterTypes::to_TID_wrt_bookmark(IBM, type);
+	return InterTypes::to_TID_at(IBM, type);
 }
 
 @ The following reserves a label, that is, declares that a given name will be
@@ -634,7 +634,7 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 		Produce::guard(Inter::Comment::new(locals_at, Produce::baseline(locals_at) + 1,
 			NULL, ID));
 	}
-	inter_type type = InterTypes::untyped();
+	inter_type type = InterTypes::unchecked();
 	if ((K) && (K != K_value)) type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(Inter::Local::new(locals_at, local_s, type,
 		Produce::baseline(locals_at) + 1, NULL));

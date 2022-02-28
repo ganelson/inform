@@ -19,7 +19,6 @@ which use this module:
 @e inter_annotation_CLASS
 @e inter_construct_CLASS
 @e inter_annotation_form_CLASS
-@e inter_error_location_CLASS
 @e inter_error_message_CLASS
 @e inter_error_stash_CLASS
 @e inter_package_CLASS
@@ -33,7 +32,6 @@ DECLARE_CLASS(inter_warehouse_room)
 DECLARE_CLASS(inter_symbols_table)
 DECLARE_CLASS(inter_construct)
 DECLARE_CLASS(inter_annotation_form)
-DECLARE_CLASS(inter_error_location)
 DECLARE_CLASS(inter_error_message)
 DECLARE_CLASS(inter_error_stash)
 DECLARE_CLASS(inter_package)

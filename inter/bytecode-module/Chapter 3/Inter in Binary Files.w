@@ -236,7 +236,7 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	LOGIF(INTER_FILE_READ, "(Reading binary inter file %f)\n", F);
 	long int max_offset = BinaryFiles::size(F);
 	FILE *fh = BinaryFiles::open_for_reading(F);
-	inter_error_location eloc = Inter::Errors::interb_location(F, 0);
+	inter_error_location eloc = InterErrors::interb_location(F, 0);
 	inter_bookmark at = InterBookmark::at_start_of_this_repository(I);
 	inter_warehouse *warehouse = InterTree::warehouse(I);
 	inter_ti *grid = NULL;
@@ -775,15 +775,15 @@ the definition of any symbol created in the instruction to |P|.
 @<Correct and verify the frame@> =
 	inter_error_message *E = NULL;
 	if (grid) E = InterConstruct::transpose_construct(owner, P, grid, grid_extent);
-	if (E) { Inter::Errors::issue(E); exit(1); }
+	if (E) { InterErrors::issue(E); exit(1); }
 	E = Inter::Verify::instruction(owner, P);
-	if (E) { Inter::Errors::issue(E); exit(1); }
+	if (E) { InterErrors::issue(E); exit(1); }
 
 @ Errors in reading binary inter are not recoverable:
 
 =
 void Inter::Binary::read_error(inter_error_location *eloc, long at, text_stream *err) {
 	eloc->error_offset = (size_t) at;
-	Inter::Errors::issue(Inter::Errors::plain(err, eloc));
+	InterErrors::issue(InterErrors::plain(err, eloc));
 	exit(1);
 }

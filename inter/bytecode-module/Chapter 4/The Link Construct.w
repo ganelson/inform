@@ -39,7 +39,7 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	*E = InterConstruct::check_level_in_package(IBM, LINK_IST, ilp->indent_level, eloc);
 	if (*E) return;
 
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = Inter::Errors::plain(I"__annotations are not allowed", eloc); return; }
+	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
 
 	inter_ti stage = 0;
 	text_stream *stage_text = ilp->mr.exp[0];
@@ -47,7 +47,7 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	else if (Str::eq(stage_text, I"before")) stage = BEFORE_LINK_STAGE;
 	else if (Str::eq(stage_text, I"instead")) stage = INSTEAD_LINK_STAGE;
 	else if (Str::eq(stage_text, I"after")) stage = AFTER_LINK_STAGE;
-	else { *E = Inter::Errors::plain(I"no such stage name is supported", eloc); return; }
+	else { *E = InterErrors::plain(I"no such stage name is supported", eloc); return; }
 
 	inter_ti SIDS[5];
 	SIDS[0] = stage;

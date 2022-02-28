@@ -1,8 +1,9 @@
-[Inter::Errors::] Inter Errors.
+[InterErrors::] Inter Errors.
 
-To issue error messages.
+To issue error messages arising from loading incorrect Inter code from files.
 
-@h Reading textual inter.
+@ We use the following relatively lightweight structure to represent a position
+where an error has occurred, in reading in Inter either from a text or binary file:
 
 =
 typedef struct inter_error_location {
@@ -10,10 +11,15 @@ typedef struct inter_error_location {
 	struct text_stream *error_line;
 	struct filename *error_interb;
 	size_t error_offset;
-	CLASS_DEFINITION
 } inter_error_location;
 
-inter_error_location Inter::Errors::file_location(text_stream *line, text_file_position *tfp) {
+@ These two possibilities have two creators. Note that neither of these requires
+any memory to be allocated, so they return quickly and cannot cause memory leaks.
+So it's no problem to manufacture an //inter_error_location// for each location
+in the tree we look at.
+
+=
+inter_error_location InterErrors::file_location(text_stream *line, text_file_position *tfp) {
 	inter_error_location eloc;
 	eloc.error_tfp = tfp;
 	eloc.error_line = line;
@@ -22,7 +28,7 @@ inter_error_location Inter::Errors::file_location(text_stream *line, text_file_p
 	return eloc;
 }
 
-inter_error_location Inter::Errors::interb_location(filename *F, size_t at) {
+inter_error_location InterErrors::interb_location(filename *F, size_t at) {
 	inter_error_location eloc;
 	eloc.error_tfp = NULL;
 	eloc.error_line = NULL;
@@ -31,6 +37,12 @@ inter_error_location Inter::Errors::interb_location(filename *F, size_t at) {
 	return eloc;
 }
 
+@ Every actual error message is defined by an instance of the following, which
+includes its location. (The point of making these is that errors might be passed
+higher up the call stack before being issued, and can be issued in a variety
+of ways.)
+
+=
 typedef struct inter_error_message {
 	struct inter_error_location error_at;
 	struct text_stream *error_body;
@@ -38,13 +50,16 @@ typedef struct inter_error_message {
 	CLASS_DEFINITION
 } inter_error_message;
 
-inter_error_message *Inter::Errors::quoted(text_stream *err, text_stream *quote, inter_error_location *eloc) {
-	inter_error_message *iem = Inter::Errors::plain(err, eloc);
+@ There are just two sorts of message: those quoting some text, and those not.
+
+=
+inter_error_message *InterErrors::quoted(text_stream *err, text_stream *quote, inter_error_location *eloc) {
+	inter_error_message *iem = InterErrors::plain(err, eloc);
 	iem->error_quote = Str::duplicate(quote);
 	return iem;
 }
 
-inter_error_message *Inter::Errors::plain(text_stream *err, inter_error_location *eloc) {
+inter_error_message *InterErrors::plain(text_stream *err, inter_error_location *eloc) {
 	inter_error_message *iem = CREATE(inter_error_message);
 	iem->error_body = Str::duplicate(err);
 	iem->error_quote = NULL;
@@ -52,16 +67,20 @@ inter_error_message *Inter::Errors::plain(text_stream *err, inter_error_location
 	return iem;
 }
 
-void Inter::Errors::issue(inter_error_message *iem) {
+@ The textual form of an error can be output to |STDERR| and also the Inform 7
+debugging log at the same time, if there is one:
+
+=
+void InterErrors::issue(inter_error_message *iem) {
 	if (iem == NULL) internal_error("no error to issue");
-	Inter::Errors::issue_to(STDERR, iem);
+	InterErrors::issue_to(STDERR, iem);
 	#ifdef CORE_MODULE
 	LOG("Inter error:\n");
-	Inter::Errors::issue_to(DL, iem);
+	InterErrors::issue_to(DL, iem);
 	#endif
 }
 
-void Inter::Errors::issue_to(OUTPUT_STREAM, inter_error_message *iem) {
+void InterErrors::issue_to(OUTPUT_STREAM, inter_error_message *iem) {
 	TEMPORARY_TEXT(E)
 	WRITE_TO(E, "%S", iem->error_body);
 	if (iem->error_quote)
@@ -79,15 +98,12 @@ void Inter::Errors::issue_to(OUTPUT_STREAM, inter_error_message *iem) {
 	DISCARD_TEXT(E)
 }
 
-inter_error_message *Inter::Errors::gather_first(inter_error_message *E, inter_error_message *F) {
-	if (E) return E;
-	return F;
-}
-
-@
+@ This shows a debugger-like backtrace: this isn't done for every Inter error,
+but only in cases where at least a superficially plausible Inter program does
+exist. See //InterConstruct::tree_lint//.
 
 =
-void Inter::Errors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
+void InterErrors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
 	inter_tree_node *X = F;
 	int n = 0;
 	while (TRUE) {
@@ -118,4 +134,4 @@ void Inter::Errors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
 		WRITE("%2d.    ", (n+1));
 		InterConstruct::write_construct_text_allowing_nop(OUT, C);
 	}
-}		
+}

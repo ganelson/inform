@@ -59,7 +59,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->action_nodes->list[i].node);
-		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
+		inter_symbol *double_sharp_s = Metadata::optional_symbol(pack, I"^double_sharp");
 		inter_ti no = Metadata::read_optional_numeric(pack, I"^no_coding");
 		if ((no) || (double_sharp_s == NULL)) Synoptic::numeric_entry(0);
 		else Synoptic::symbol_entry(double_sharp_s);
@@ -80,7 +80,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->action_nodes->list[i].node);
-		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
+		inter_symbol *double_sharp_s = Metadata::optional_symbol(pack, I"^double_sharp");
 		if (double_sharp_s == NULL) {
 			Synoptic::numeric_entry(0);
 			Synoptic::numeric_entry(0);
@@ -95,8 +95,8 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 			inter_ti can_have_second = Metadata::read_numeric(pack, I"^can_have_second");
 			inter_ti noun_access = Metadata::read_numeric(pack, I"^noun_access");
 			inter_ti second_access = Metadata::read_numeric(pack, I"^second_access");
-			inter_symbol *noun_kind = Metadata::read_symbol(pack, I"^noun_kind");
-			inter_symbol *second_kind = Metadata::read_symbol(pack, I"^second_kind");
+			inter_symbol *noun_kind = Metadata::required_symbol(pack, I"^noun_kind");
+			inter_symbol *second_kind = Metadata::required_symbol(pack, I"^second_kind");
 			int mn = 0, ms = 0, ml = 0, mnp = 1, msp = 1, hn = 0, hs = 0;
 			if (requires_light) ml = 1;
 			if (noun_access == REQUIRES_ACCESS) mn = 1;
@@ -110,7 +110,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 			Synoptic::numeric_entry(bitmap);
 			Synoptic::symbol_entry(noun_kind);
 			Synoptic::symbol_entry(second_kind);
-			inter_symbol *vc_s = Metadata::read_optional_symbol(pack, I"^var_creator");
+			inter_symbol *vc_s = Metadata::optional_symbol(pack, I"^var_creator");
 			if (vc_s) Synoptic::symbol_entry(vc_s);
 			else Synoptic::numeric_entry(0);
 		}
@@ -134,9 +134,9 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 
 	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack = InterPackage::at_this_head(inv->action_nodes->list[i].node);
-		inter_symbol *double_sharp_s = Metadata::read_optional_symbol(pack, I"^double_sharp");
+		inter_symbol *double_sharp_s = Metadata::optional_symbol(pack, I"^double_sharp");
 		if (double_sharp_s) {
-			inter_symbol *debug_fn_s = Metadata::read_symbol(pack, I"^debug_fn");
+			inter_symbol *debug_fn_s = Metadata::required_symbol(pack, I"^debug_fn");
 			Produce::inv_primitive(I, CASE_BIP);
 			Produce::down(I);
 				Produce::val_symbol(I, K_value, double_sharp_s);

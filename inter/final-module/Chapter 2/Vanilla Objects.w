@@ -499,7 +499,7 @@ Returns the weak ID of a kind, which is a small integer known at compile time.
 =
 int VanillaObjects::weak_id(inter_symbol *kind_s) {
 	inter_package *pack = InterPackage::container(kind_s->definition);
-	inter_symbol *weak_s = Metadata::read_optional_symbol(pack, I"^weak_id");
+	inter_symbol *weak_s = Metadata::optional_symbol(pack, I"^weak_id");
 	int alt_N = -1;
 	if (weak_s) alt_N = InterSymbol::evaluate_to_int(weak_s);
 	if (alt_N >= 0) return alt_N;
@@ -513,7 +513,7 @@ int VanillaObjects::is_kind_of_object(code_generation *gen, inter_symbol *kind_s
 	inter_symbol *object_kind = RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM);
 	if (object_kind == NULL) return FALSE;
 	if (kind_s == object_kind) return FALSE;
-	if (InterTypes::is_untyped(InterTypes::from_type_name(kind_s))) return FALSE;
+	if (InterTypes::is_unchecked(InterTypes::from_type_name(kind_s))) return FALSE;
 	if (Inter::Typename::is_a(kind_s, object_kind)) return TRUE;
 	return FALSE;
 }
@@ -525,7 +525,7 @@ int VanillaObjects::value_kind_with_properties(code_generation *gen, inter_symbo
 	inter_tree *I = gen->from;
 	if (VanillaObjects::is_kind_of_object(gen, kind_s)) return FALSE;
 	if (kind_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) return FALSE;
-	if (InterTypes::is_untyped(InterTypes::from_type_name(kind_s))) return FALSE;
+	if (InterTypes::is_unchecked(InterTypes::from_type_name(kind_s))) return FALSE;
 	inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 		Inter::Typename::permissions_list(kind_s));
 	if (InterNodeList::empty(FL) == FALSE) return TRUE;
