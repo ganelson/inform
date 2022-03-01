@@ -352,7 +352,7 @@ for example, be a global variable, or a memory location.
 	inter_tree_node *storage_ref = InterTree::first_child(P);	
 	if (storage_ref->W.instruction[0] == REFERENCE_IST)
 		storage_ref = InterTree::first_child(storage_ref);
-	if ((Inter::Reference::node_is_ref_to(gen->from, InterTree::first_child(P),
+	if ((ReferenceInstruction::node_is_ref_to(gen->from, InterTree::first_child(P),
 		PROPERTYVALUE_BIP)) &&
 		(I6TargetCode::pval_case(storage_ref) != I6G_CAN_PROVE_IS_OBJ_PROPERTY)) {
 		@<Alter a property value@>;
@@ -497,7 +497,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	text_stream *OUT = CodeGen::current(gen);
 	if (Y->W.instruction[ID_IFLD] == INV_IST) {
 		if (Y->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
-			inter_symbol *prim = Inter::Inv::invokee(Y);
+			inter_symbol *prim = InvInstruction::invokee(Y);
 			inter_ti ybip = Primitives::to_BIP(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
 				if (depth == 0) { WRITE("((or_tmp_var = "); Vanilla::node(gen, X); WRITE(") && (("); }
@@ -611,7 +611,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	int in_flag = FALSE;
 	inter_tree_node *U = InterTree::third_child(P);
 	if ((U->W.instruction[ID_IFLD] == INV_IST) && (U->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
-		inter_symbol *prim = Inter::Inv::invokee(U);
+		inter_symbol *prim = InvInstruction::invokee(U);
 		if ((prim) && (Primitives::to_BIP(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 

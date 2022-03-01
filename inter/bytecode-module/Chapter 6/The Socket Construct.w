@@ -1,27 +1,21 @@
-[Inter::Socket::] The Socket Construct.
+[SocketInstruction::] The Socket Construct.
 
 Defining the socket construct.
 
 @
 
-@e SOCKET_IST
-
 =
-void Inter::Socket::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(SOCKET_IST, I"socket");
-	InterConstruct::specify_syntax(IC, I"socket IDENTIFIER TOKENS");
-	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Socket::read);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Socket::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Socket::write);
-	InterConstruct::allow_in_depth_range(IC, 0, 1);
-	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+void SocketInstruction::define_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(SOCKET_IST, I"socket");
+	InterInstruction::specify_syntax(IC, I"socket IDENTIFIER TOKENS");
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, SocketInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, SocketInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, SocketInstruction::write);
+	InterInstruction::allow_in_depth_range(IC, 0, 1);
+	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 }
 
-void Inter::Socket::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::check_level_in_package(IBM, SOCKET_IST, ilp->indent_level, eloc);
-	if (*E) return;
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
-
+void SocketInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	inter_package *routine = InterBookmark::package(IBM);
 
 	text_stream *symbol_name = ilp->mr.exp[0];
@@ -56,11 +50,11 @@ void Inter::Socket::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pa
 	}
 }
 
-void Inter::Socket::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+void SocketInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	internal_error("SOCKET_IST structures cannot exist");
 }
 
-void Inter::Socket::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+void SocketInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	internal_error("SOCKET_IST structures cannot exist");
 }
 
@@ -68,7 +62,7 @@ void Inter::Socket::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P
 appearing at level |N| in the hierarchy.
 
 =
-void Inter::Socket::write_declaration(OUTPUT_STREAM, inter_symbol *S, int N) {
+void SocketInstruction::write_declaration(OUTPUT_STREAM, inter_symbol *S, int N) {
 	for (int L=0; L<N; L++) WRITE("\t");
 	switch (InterSymbol::get_type(S)) {
 		case PLUG_ISYMT:   WRITE("plug"); break;

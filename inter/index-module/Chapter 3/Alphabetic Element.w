@@ -95,8 +95,8 @@ int AlphabeticElement::alphabetical_order(const void *ent1, const void *ent2) {
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;
-	inter_package *an1_pack = InterPackage::at_this_head(P1);
-	inter_package *an2_pack = InterPackage::at_this_head(P2);
+	inter_package *an1_pack = PackageInstruction::at_this_head(P1);
+	inter_package *an2_pack = PackageInstruction::at_this_head(P2);
 	text_stream *an1_name = Metadata::optional_textual(an1_pack, I"^name");
 	text_stream *an2_name = Metadata::optional_textual(an2_pack, I"^name");
 	return Str::cmp(an1_name, an2_name);

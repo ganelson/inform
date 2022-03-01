@@ -77,7 +77,7 @@ void CConditions::comparison_r(code_generation *gen,
 	inter_ti bip, inter_tree_node *K, inter_tree_node *X, inter_tree_node *Y, int depth) {
 	if (Y->W.instruction[ID_IFLD] == INV_IST) {
 		if (Y->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
-			inter_symbol *prim = Inter::Inv::invokee(Y);
+			inter_symbol *prim = InvInstruction::invokee(Y);
 			inter_ti ybip = Primitives::to_BIP(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
 				text_stream *OUT = CodeGen::current(gen);

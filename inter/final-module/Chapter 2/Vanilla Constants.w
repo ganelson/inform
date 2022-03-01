@@ -20,7 +20,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 			@<Ignore this constant as part of the veneer@>;
 		} else if (SymbolAnnotation::get_b(con_name, OBJECT_IANN)) {
 			@<Declare this constant as a pseudo-object@>;
-		} else if (Inter::Constant::is_routine(con_name)) {
+		} else if (ConstantInstruction::is_routine(con_name)) {
 			@<Declare this constant as a function@>;
 		} else if (Str::eq(InterSymbol::identifier(con_name), I"UUID_ARRAY")) {
 			@<Declare this constant as the special UUID string array@>;
@@ -115,7 +115,7 @@ than a literal, or may even be computed.
 	if ((entry_count == 1) &&
 		(SymbolAnnotation::get_b(con_name, ASSIMILATED_IANN))) {
 		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
-		entry_count = (int) Inter::Constant::evaluate(InterPackage::scope_of(P), val);
+		entry_count = (int) ConstantInstruction::evaluate(InterPackage::scope_of(P), val);
 		give_count = TRUE;
 	}
 

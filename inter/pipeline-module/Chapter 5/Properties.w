@@ -18,7 +18,7 @@ so we change the values of these constants accordingly.
 @<Assign unique property ID numbers@> =
 	InterNodeList::array_sort(inv->property_nodes, MakeSynopticModuleStage::module_order);
 	for (int i=0; i<InterNodeList::array_len(inv->property_nodes); i++) {
-		inter_package *pack = InterPackage::at_this_head(inv->property_nodes->list[i].node);
+		inter_package *pack = PackageInstruction::at_this_head(inv->property_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"property_id");
 		InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) i));
 	}

@@ -68,7 +68,7 @@ translation in that case.
 void MakeIdentifiersUniqueStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	dictionary *D = (dictionary *) state;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *Q = InterPackage::at_this_head(P);
+		inter_package *Q = PackageInstruction::at_this_head(P);
 		inter_symbols_table *ST = InterPackage::scope(Q);
 		LOOP_OVER_SYMBOLS_TABLE(S, ST) {
 			if ((Wiring::is_wired(S) == FALSE) &&

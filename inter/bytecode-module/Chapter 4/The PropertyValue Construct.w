@@ -1,20 +1,19 @@
-[Inter::PropertyValue::] The PropertyValue Construct.
+[PropertyValueInstruction::] The PropertyValue Construct.
 
 Defining the propertyvalue construct.
 
 @
 
-@e PROPERTYVALUE_IST
 
 =
-void Inter::PropertyValue::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(PROPERTYVALUE_IST, I"propertyvalue");
-	InterConstruct::specify_syntax(IC, I"propertyvalue IDENTIFIER IDENTIFIER = TOKENS");
-	InterConstruct::fix_instruction_length_between(IC, EXTENT_PVAL_IFR, EXTENT_PVAL_IFR);
-	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
-	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::PropertyValue::read);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::PropertyValue::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::PropertyValue::write);
+void PropertyValueInstruction::define_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(PROPERTYVALUE_IST, I"propertyvalue");
+	InterInstruction::specify_syntax(IC, I"propertyvalue IDENTIFIER IDENTIFIER = TOKENS");
+	InterInstruction::fix_instruction_length_between(IC, EXTENT_PVAL_IFR, EXTENT_PVAL_IFR);
+	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PropertyValueInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PropertyValueInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, PropertyValueInstruction::write);
 }
 
 @
@@ -27,20 +26,15 @@ void Inter::PropertyValue::define(void) {
 @d EXTENT_PVAL_IFR 6
 
 =
-void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::check_level_in_package(IBM, PROPERTYVALUE_IST, ilp->indent_level, eloc);
-	if (*E) return;
-
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
-
+void PropertyValueInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	inter_symbol *prop_name = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
-	inter_symbol *owner_name = Inter::PropertyValue::parse_owner(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
+	inter_symbol *owner_name = PropertyValueInstruction::parse_owner(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
 	inter_ti plist_ID;
-	if (Inter::Typename::is(owner_name)) plist_ID = Inter::Typename::properties_list(owner_name);
-	else plist_ID = Inter::Instance::properties_list(owner_name);
+	if (TypenameInstruction::is(owner_name)) plist_ID = TypenameInstruction::properties_list(owner_name);
+	else plist_ID = InstanceInstruction::properties_list(owner_name);
 	inter_node_list *FL = InterWarehouse::get_node_list(InterBookmark::warehouse(IBM), plist_ID);
 	if (FL == NULL) internal_error("no properties list");
 
@@ -56,11 +50,11 @@ void Inter::PropertyValue::read(inter_construct *IC, inter_bookmark *IBM, inter_
 	*E = TextualInter::parse_pair(ilp->line, eloc, IBM, val_type, ilp->mr.exp[2], &con_val);
 	if (*E) return;
 
-	*E = Inter::PropertyValue::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_name),
+	*E = PropertyValueInstruction::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_name),
 		con_val, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_symbol *Inter::PropertyValue::parse_owner(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
+inter_symbol *PropertyValueInstruction::parse_owner(inter_error_location *eloc, inter_symbols_table *T, text_stream *name, inter_error_message **E) {
 	*E = NULL;
 	inter_symbol *symb = InterSymbolsTable::symbol_from_name(T, name);
 	if (symb == NULL) { *E = InterErrors::quoted(I"no such symbol", name, eloc); return NULL; }
@@ -71,10 +65,10 @@ inter_symbol *Inter::PropertyValue::parse_owner(inter_error_location *eloc, inte
 	return symb;
 }
 
-int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, inter_symbol *owner, inter_symbol *prop_name) {
+int PropertyValueInstruction::permitted(inter_tree_node *F, inter_package *pack, inter_symbol *owner, inter_symbol *prop_name) {
 	inter_ti plist_ID;
-	if (Inter::Typename::is(owner)) plist_ID = Inter::Typename::permissions_list(owner);
-	else plist_ID = Inter::Instance::permissions_list(owner);
+	if (TypenameInstruction::is(owner)) plist_ID = TypenameInstruction::permissions_list(owner);
+	else plist_ID = InstanceInstruction::permissions_list(owner);
 	inter_node_list *FL = Inode::ID_to_frame_list(F, plist_ID);
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
@@ -83,11 +77,11 @@ int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, int
 			return TRUE;
 	}
 	inter_symbol *inst_kind;
-	if (Inter::Typename::is(owner)) inst_kind = Inter::Typename::super(owner);
-	else inst_kind = Inter::Instance::kind_of(owner);
+	if (TypenameInstruction::is(owner)) inst_kind = TypenameInstruction::super(owner);
+	else inst_kind = InstanceInstruction::kind_of(owner);
 	while (inst_kind) {
 		inter_node_list *FL =
-			Inode::ID_to_frame_list(F, Inter::Typename::permissions_list(inst_kind));
+			Inode::ID_to_frame_list(F, TypenameInstruction::permissions_list(inst_kind));
 		if (FL == NULL) internal_error("no permissions list");
 		inter_tree_node *X;
 		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
@@ -95,36 +89,36 @@ int Inter::PropertyValue::permitted(inter_tree_node *F, inter_package *pack, int
 			if (prop_allowed == prop_name)
 				return TRUE;
 		}
-		inst_kind = Inter::Typename::super(inst_kind);
+		inst_kind = TypenameInstruction::super(inst_kind);
 	}
 	return FALSE;
 }
 
-inter_error_message *Inter::PropertyValue::new(inter_bookmark *IBM, inter_ti PID, inter_ti OID,
+inter_error_message *PropertyValueInstruction::new(inter_bookmark *IBM, inter_ti PID, inter_ti OID,
 	inter_pair val, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, PROPERTYVALUE_IST,
 		PID, OID, InterValuePairs::to_word1(val), InterValuePairs::to_word2(val), eloc, level);
-	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
-void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	*E = Inter::Verify::SID_field(owner, P, PROP_PVAL_IFLD, PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::POID_field(owner, P, OWNER_PVAL_IFLD); if (*E) return;
+void PropertyValueInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	*E = VerifyingInter::SID_field(owner, P, PROP_PVAL_IFLD, PROPERTY_IST); if (*E) return;
+	*E = VerifyingInter::POID_field(owner, P, OWNER_PVAL_IFLD); if (*E) return;
 
 	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[PROP_PVAL_IFLD]);;
 	inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[OWNER_PVAL_IFLD]);;
 
-	if (Inter::PropertyValue::permitted(P, owner, owner_name, prop_name) == FALSE) {
+	if (PropertyValueInstruction::permitted(P, owner, owner_name, prop_name) == FALSE) {
 		text_stream *err = Str::new();
 		WRITE_TO(err, "no permission for '%S' have this property", InterSymbol::identifier(owner_name));
 		*E = Inode::error(P, err, InterSymbol::identifier(prop_name)); return;
 	}
 
 	inter_ti plist_ID;
-	if (Inter::Typename::is(owner_name)) plist_ID = Inter::Typename::properties_list(owner_name);
-	else plist_ID = Inter::Instance::properties_list(owner_name);
+	if (TypenameInstruction::is(owner_name)) plist_ID = TypenameInstruction::properties_list(owner_name);
+	else plist_ID = InstanceInstruction::properties_list(owner_name);
 
 	inter_node_list *FL = Inode::ID_to_frame_list(P, plist_ID);
 	if (FL == NULL) internal_error("no properties list");
@@ -138,7 +132,7 @@ void Inter::PropertyValue::verify(inter_construct *IC, inter_tree_node *P, inter
 	InterNodeList::add(FL, P);
 }
 
-void Inter::PropertyValue::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+void PropertyValueInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, PROP_PVAL_IFLD);
 	inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID_at_node(P, OWNER_PVAL_IFLD);
 	if ((prop_name) && (owner_name)) {

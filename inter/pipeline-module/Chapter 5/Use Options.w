@@ -21,7 +21,7 @@ and never duplicated, so we change the values of these constants accordingly.
 	InterNodeList::array_sort(inv->use_option_nodes, MakeSynopticModuleStage::module_order);
 	for (int i=0; i<InterNodeList::array_len(inv->use_option_nodes); i++) {
 		inter_package *pack =
-			InterPackage::at_this_head(inv->use_option_nodes->list[i].node);
+			PackageInstruction::at_this_head(inv->use_option_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"use_option_id");
 		InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) i));
 	}
@@ -42,7 +42,7 @@ name of a given use option.
 	inter_symbol *UO_s = Synoptic::local(I, I"UO", NULL);
 	for (int i=0; i<InterNodeList::array_len(inv->use_option_nodes); i++) {
 		inter_package *pack =
-			InterPackage::at_this_head(inv->use_option_nodes->list[i].node);
+			PackageInstruction::at_this_head(inv->use_option_nodes->list[i].node);
 		inter_ti set = Metadata::read_numeric(pack, I"^active");
 		if (set) {
 			Produce::inv_primitive(I, IF_BIP);
@@ -73,7 +73,7 @@ name of a given use option.
 		Produce::down(I);
 			for (int i=0; i<InterNodeList::array_len(inv->use_option_nodes); i++) {
 				inter_package *pack =
-					InterPackage::at_this_head(inv->use_option_nodes->list[i].node);
+					PackageInstruction::at_this_head(inv->use_option_nodes->list[i].node);
 				text_stream *printed_name = Metadata::required_textual(pack, I"^printed_name");
 				Produce::inv_primitive(I, CASE_BIP);
 				Produce::down(I);

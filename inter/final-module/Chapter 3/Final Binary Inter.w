@@ -13,6 +13,6 @@ void BinaryTarget::create_generator(void) {
 }
 
 int BinaryTarget::text(code_generator *gtr, code_generation *gen) {
-	if (gen->to_file) Inter::Binary::write(gen->to_file, gen->from);
+	if (gen->to_file) BinaryInter::write(gen->to_file, gen->from);
 	return TRUE;
 }

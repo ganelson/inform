@@ -30,7 +30,7 @@ void I6TargetConstants::declare_constant(code_generator *gtr, code_generation *g
 	@<Leave undeclared any constant auto-declared by the I6 compiler@>;
 
 	int depth = 1;
-	if (const_s) depth = Inter::Constant::constant_depth(const_s);
+	if (const_s) depth = ConstantInstruction::constant_depth(const_s);
 	segmentation_pos saved = CodeGen::select_layered(gen, constants_I7CGS, depth);
 	text_stream *OUT = CodeGen::current(gen);
 

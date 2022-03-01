@@ -123,7 +123,7 @@ void Emit::kind(inter_name *iname, inter_name *super,
 =
 void Emit::kind_inner(inter_ti SID, inter_ti SUP,
 	inter_ti constructor, int arity, inter_ti *operands) {
-	Produce::guard(Inter::Typename::new(Emit::at(), SID, constructor, SUP, arity,
+	Produce::guard(TypenameInstruction::new(Emit::at(), SID, constructor, SUP, arity,
 		operands, Emit::baseline(), NULL));
 }
 
@@ -145,7 +145,7 @@ void Emit::ensure_defaultvalue(kind *K) {
 	inter_pair def_val = DefaultValues::to_value_pair(K);
 	if (InterValuePairs::is_undef(def_val) == FALSE) {
 		packaging_state save = Packaging::enter(RTKindConstructors::kind_package(K));
-		Produce::guard(Inter::DefaultValue::new(Emit::at(),
+		Produce::guard(DefaultValueInstruction::new(Emit::at(),
 			Produce::kind_to_TID(Emit::at(), K), def_val,
 			Emit::baseline(), NULL));
 		Packaging::exit(Emit::tree(), save);
@@ -197,7 +197,7 @@ inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
 	if (annotation != INVALID_IANN) SymbolAnnotation::set_b(con_s, annotation, 0);
 	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Emit::at()),
 		InterTypes::from_constructor_code(constructor_code));
-	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
+	Produce::guard(ConstantInstruction::new_numerical(Emit::at(), Emit::symbol_id(con_s),
 		TID, InterValuePairs::number(val), Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return con_iname;
@@ -214,7 +214,7 @@ void Emit::text_constant(inter_name *con_iname, text_stream *contents) {
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Emit::at()),
 		InterTypes::from_constructor_code(TEXT_ITCONC));
-	Produce::guard(Inter::Constant::new_textual(Emit::at(), Emit::symbol_id(con_s),
+	Produce::guard(ConstantInstruction::new_textual(Emit::at(), Emit::symbol_id(con_s),
 		TID, ID, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
@@ -232,7 +232,7 @@ inter_name *Emit::iname_constant(inter_name *con_iname, kind *K, inter_name *val
 		else
 			internal_error("can't handle a null alias");
 	}
-	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
+	Produce::guard(ConstantInstruction::new_numerical(Emit::at(), Emit::symbol_id(con_s),
 		Produce::kind_to_TID(Emit::at(), K), Emit::symbol_to_value_pair(val_s),
 		Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
@@ -281,7 +281,7 @@ void Emit::named_generic_constant(inter_name *con_iname, inter_pair val) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::unchecked());
-	Produce::guard(Inter::Constant::new_numerical(Emit::at(), Emit::symbol_id(con_s),
+	Produce::guard(ConstantInstruction::new_numerical(Emit::at(), Emit::symbol_id(con_s),
 		KID, val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
@@ -293,7 +293,7 @@ void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 	packaging_state save = Packaging::enter_home_of(inst_iname);
 	inter_symbol *inst_s = InterNames::to_symbol(inst_iname);
 	inter_pair val = v ? InterValuePairs::number((inter_ti) v) : InterValuePairs::undef();
-	Produce::guard(Inter::Instance::new(Emit::at(), Emit::symbol_id(inst_s),
+	Produce::guard(InstanceInstruction::new(Emit::at(), Emit::symbol_id(inst_s),
 		Produce::kind_to_TID(Emit::at(), K), val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
@@ -307,7 +307,7 @@ inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_pair val) {
 	inter_type type = InterTypes::unchecked();
 	if ((K) && (K != K_value))
 		type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
-	Produce::guard(Inter::Variable::new(Emit::at(),
+	Produce::guard(VariableInstruction::new(Emit::at(),
 		Emit::symbol_id(var_s), type, val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return var_s;
@@ -322,7 +322,7 @@ void Emit::property(inter_name *prop_iname, kind *K) {
 	inter_type type = InterTypes::unchecked();
 	if ((K) && (K != K_value))
 		type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
-	Produce::guard(Inter::Property::new(Emit::at(),
+	Produce::guard(PropertyInstruction::new(Emit::at(),
 		Emit::symbol_id(prop_s), type, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
@@ -340,7 +340,7 @@ void Emit::permission(property *prn, inter_symbol *owner_name,
 		TextualInter::new_symbol(NULL, InterBookmark::scope(Emit::at()), ident, &E);
 	DISCARD_TEXT(ident)
 	Produce::guard(E);
-	Produce::guard(Inter::Permission::new(Emit::at(),
+	Produce::guard(PermissionInstruction::new(Emit::at(),
 		Emit::symbol_id(prop_s), Emit::symbol_id(owner_name), Emit::symbol_id(pp_s),
 		(store_s)?(Emit::symbol_id(store_s)):0, Emit::baseline(), NULL));
 }
@@ -351,7 +351,7 @@ void Emit::permission(property *prn, inter_symbol *owner_name,
 void Emit::propertyvalue(property *P, inter_name *owner, inter_pair val) {
 	inter_symbol *prop_s = InterNames::to_symbol(RTProperties::iname(P));
 	inter_symbol *owner_s = InterNames::to_symbol(owner);
-	Produce::guard(Inter::PropertyValue::new(Emit::at(), Emit::symbol_id(prop_s),
+	Produce::guard(PropertyValueInstruction::new(Emit::at(), Emit::symbol_id(prop_s),
 		Emit::symbol_id(owner_s), val, Emit::baseline(), NULL));
 }
 
@@ -363,7 +363,7 @@ the real API for starting and ending functions.
 void Emit::function(inter_name *fn_iname, kind *K, inter_package *block) {
 	if (Emit::at() == NULL) internal_error("no inter repository");
 	inter_symbol *fn_s = InterNames::to_symbol(fn_iname);
-	Produce::guard(Inter::Constant::new_function(Emit::at(),
+	Produce::guard(ConstantInstruction::new_function(Emit::at(),
 		Emit::symbol_id(fn_s), Produce::kind_to_TID(Emit::at(), K), block,
 		Emit::baseline(), NULL));
 }
@@ -390,7 +390,7 @@ void Emit::intervention(int stage, text_stream *segment, text_stream *part,
 	inter_ti ID4 = InterWarehouse::create_text(warehouse, Emit::package());
 	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID4), seg);
 
-	Produce::guard(Inter::Link::new(Emit::at(), (inter_ti) stage,
+	Produce::guard(LinkInstruction::new(Emit::at(), (inter_ti) stage,
 		ID1, ID2, ID3, ID4, Emit::baseline(), NULL));
 }
 
@@ -403,6 +403,6 @@ void Emit::append(inter_name *iname, text_stream *text) {
 	inter_symbol *symbol = InterNames::to_symbol(iname);
 	inter_ti ID = InterWarehouse::create_text(Emit::warehouse(), Emit::package());
 	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID), text);
-	Produce::guard(Inter::Append::new(Emit::at(), symbol, ID, Emit::baseline(), NULL));
+	Produce::guard(AppendInstruction::new(Emit::at(), symbol, ID, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }

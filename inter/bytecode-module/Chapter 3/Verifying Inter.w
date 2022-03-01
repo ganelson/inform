@@ -1,4 +1,4 @@
-[Inter::Verify::] Verifying Inter.
+[VerifyingInter::] Verifying Inter.
 
 Verifying that a new Inter instruction is correct and consistent.
 
@@ -15,11 +15,11 @@ the new instruction. (Because of this, unverified instructions may not work,
 and this is why the code to create instructions automatically calls us.)
 
 =
-inter_error_message *Inter::Verify::instruction(inter_package *owner, inter_tree_node *P) {
+inter_error_message *VerifyingInter::instruction(inter_package *owner, inter_tree_node *P) {
 	if (Inode::get_vflag(P) == FALSE) {
 		Inode::set_vflag(P);
 		inter_construct *IC = NULL;
-		inter_error_message *E = InterConstruct::get_construct(P, &IC);
+		inter_error_message *E = InterInstruction::get_construct(P, &IC);
 		if (E) return E;
 		@<Check the extent of the instruction@>;
 		if (IC->symbol_defn_field >= 0) @<Set the symbol definition to this instruction@>;
@@ -91,12 +91,12 @@ own work (i.e. bugs in the code generating instructions), but also because raw
 bytecode read in by //Inter in Binary Files// is not trustworthy. There's less
 chance of garbage bytecode crashing the compiler if we take precautions.
 
-All that //InterConstruct::verify// does is to call the |CONSTRUCT_VERIFY_MTID|
+All that //InterInstruction::verify// does is to call the |CONSTRUCT_VERIFY_MTID|
 method for the construct of the instruction. So, for example, for |PROPERTY_IST|
-instructions this is done by //Inter::Property::verify//, and so on.
+instructions this is done by //PropertyInstruction::verify//, and so on.
 
 @<Apply construct-specific checks@> =
-	E = InterConstruct::verify(owner, IC, P);
+	E = InterInstruction::verify(owner, IC, P);
 
 @ Although that work is delegated to the implementation of each construct, it's
 convenient for those implementations to use the functions below for some common
@@ -110,12 +110,12 @@ block, or for it not to be defined yet because the rest of the bytecode for
 the program has not yet been loaded); but it cannot be the wrong sort of thing.
 
 =
-inter_error_message *Inter::Verify::SID_field(inter_package *owner, inter_tree_node *P,
+inter_error_message *VerifyingInter::SID_field(inter_package *owner, inter_tree_node *P,
 	int field, inter_ti construct) {
-	return Inter::Verify::SID(owner, P, P->W.instruction[field], construct);
+	return VerifyingInter::SID(owner, P, P->W.instruction[field], construct);
 }
 
-inter_error_message *Inter::Verify::SID(inter_package *owner, inter_tree_node *P,
+inter_error_message *VerifyingInter::SID(inter_package *owner, inter_tree_node *P,
 	inter_ti SID, inter_ti construct) {
 	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
@@ -125,7 +125,8 @@ inter_error_message *Inter::Verify::SID(inter_package *owner, inter_tree_node *P
 	if (InterSymbol::defined_elsewhere(S)) return NULL;
 	if (InterSymbol::misc_but_undefined(S)) return NULL;
 	if (D == NULL) return Inode::error(P, I"undefined symbol", InterSymbol::identifier(S));
-	if ((D->W.instruction[ID_IFLD] != construct) &&
+	if ((construct != INVALID_IST) &&
+		(D->W.instruction[ID_IFLD] != construct) &&
 		(InterSymbol::defined_elsewhere(S) == FALSE) &&
 		(InterSymbol::misc_but_undefined(S) == FALSE))
 		return Inode::error(P, I"symbol of wrong type", InterSymbol::identifier(S));
@@ -136,7 +137,7 @@ inter_error_message *Inter::Verify::SID(inter_package *owner, inter_tree_node *P
 table (such as a primitive invocation):
 
 =
-inter_error_message *Inter::Verify::GSID_field(inter_tree_node *P, int field,
+inter_error_message *VerifyingInter::GSID_field(inter_tree_node *P, int field,
 	inter_ti construct) {
 	inter_ti GSID = P->W.instruction[field];
 	inter_symbol *S = InterSymbolsTable::symbol_from_ID(Inode::globals(P), GSID);
@@ -156,7 +157,7 @@ inter_error_message *Inter::Verify::GSID_field(inter_tree_node *P, int field,
 either the typename for an enumerated type, or an instance.
 
 =
-inter_error_message *Inter::Verify::POID_field(inter_package *owner, inter_tree_node *P,
+inter_error_message *VerifyingInter::POID_field(inter_package *owner, inter_tree_node *P,
 	int field) {
 	inter_ti POID = P->W.instruction[field];
 	inter_symbols_table *T = InterPackage::scope(owner);
@@ -181,7 +182,7 @@ inter_error_message *Inter::Verify::POID_field(inter_package *owner, inter_tree_
 or |FUNCTION_ITCONC|: see //Inter Data Types//.
 
 =
-inter_error_message *Inter::Verify::constructor_field(inter_tree_node *P, int field) {
+inter_error_message *VerifyingInter::constructor_field(inter_tree_node *P, int field) {
 	inter_ti ID = P->W.instruction[field];
 	if (InterTypes::is_valid_constructor_code(ID) == FALSE)
 		return Inode::error(P, I"unknown type constructor", NULL);
@@ -192,19 +193,30 @@ inter_error_message *Inter::Verify::constructor_field(inter_tree_node *P, int fi
 //Inter Data Types//.
 
 =
-inter_error_message *Inter::Verify::TID_field(inter_package *owner, inter_tree_node *P,
+inter_error_message *VerifyingInter::TID_field(inter_package *owner, inter_tree_node *P,
 	int field) {
 	inter_ti TID = P->W.instruction[field];
 	if (TID == 0) return NULL;
 	if (InterTypes::is_valid_constructor_code(TID)) return NULL;
-	return Inter::Verify::SID(owner, P, TID, TYPENAME_IST);
+	return VerifyingInter::SID(owner, P, TID, TYPENAME_IST);
+}
+
+@ Next, a field which purportedly holds a valid text ID:
+
+=
+inter_error_message *VerifyingInter::text_field(inter_package *owner, inter_tree_node *P,
+	int field) {
+	inter_ti text_ID = P->W.instruction[field];
+	inter_warehouse *W = InterTree::warehouse(InterPackage::tree(owner));
+	if (InterWarehouse::known_type_code(W, text_ID) == TEXT_IRSRC) return NULL;
+	return Inode::error(P, I"not a valid text ID", NULL);
 }
 
 @ Finally, two consecutive fields which purportedly hold a valid data pair in
 the context of the current package:
 
 =
-inter_error_message *Inter::Verify::data_pair_fields(inter_package *owner,
+inter_error_message *VerifyingInter::data_pair_fields(inter_package *owner,
 	inter_tree_node *P, int first_field, inter_type type) {
 	return InterValuePairs::verify(owner, P, InterValuePairs::get(P, first_field), type);
 }

@@ -1,21 +1,20 @@
-[Inter::Lab::] The Lab Construct.
+[LabInstruction::] The Lab Construct.
 
 Defining the Lab construct.
 
 @
 
-@e LAB_IST
 
 =
-void Inter::Lab::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(LAB_IST, I"lab");
-	InterConstruct::specify_syntax(IC, I"lab .IDENTIFIER");
-	InterConstruct::fix_instruction_length_between(IC, EXTENT_LAB_IFR, EXTENT_LAB_IFR);
-	InterConstruct::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
-	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
-	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Lab::read);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Lab::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Lab::write);
+void LabInstruction::define_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(LAB_IST, I"lab");
+	InterInstruction::specify_syntax(IC, I"lab .IDENTIFIER");
+	InterInstruction::fix_instruction_length_between(IC, EXTENT_LAB_IFR, EXTENT_LAB_IFR);
+	InterInstruction::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
+	InterInstruction::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, LabInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, LabInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, LabInstruction::write);
 }
 
 @
@@ -26,12 +25,7 @@ void Inter::Lab::define(void) {
 @d EXTENT_LAB_IFR 4
 
 =
-void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
-
-	*E = InterConstruct::check_level_in_package(IBM, LAB_IST, ilp->indent_level, eloc);
-	if (*E) return;
-
+void LabInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	inter_package *routine = InterBookmark::package(IBM);
 	if (routine == NULL) { *E = InterErrors::plain(I"'lab' used outside function", eloc); return; }
 	inter_symbols_table *locals = InterPackage::scope(routine);
@@ -45,22 +39,22 @@ void Inter::Lab::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse
 	}
 	if (InterSymbol::is_label(label) == FALSE) { *E = InterErrors::plain(I"not a label", eloc); return; }
 
-	*E = Inter::Lab::new(IBM, label, (inter_ti) ilp->indent_level, eloc);
+	*E = LabInstruction::new(IBM, label, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Lab::new(inter_bookmark *IBM, inter_symbol *label, inter_ti level, inter_error_location *eloc) {
+inter_error_message *LabInstruction::new(inter_bookmark *IBM, inter_symbol *label, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, LAB_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, label), eloc, (inter_ti) level);
-	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
-void Inter::Lab::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+void LabInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	inter_symbol *label = InterSymbolsTable::symbol_from_ID_in_package(owner, P->W.instruction[LABEL_LAB_IFLD]);
 	if (InterSymbol::is_label(label) == FALSE) { *E = Inode::error(P, I"no such label", NULL); return; }
 }
 
-void Inter::Lab::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+void LabInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_package *pack = InterPackage::container(P);
 	inter_symbol *label = InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[LABEL_LAB_IFLD]);
 	if (label) {
@@ -68,7 +62,7 @@ void Inter::Lab::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, i
 	} else { *E = Inode::error(P, I"cannot write lab", NULL); return; }
 }
 
-inter_symbol *Inter::Lab::label_symbol(inter_tree_node *P) {
+inter_symbol *LabInstruction::label_symbol(inter_tree_node *P) {
 	inter_package *pack = InterPackage::container(P);
 	inter_symbol *lab = InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[LABEL_LAB_IFLD]);
 	if (lab == NULL) internal_error("bad lab");

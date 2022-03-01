@@ -105,8 +105,8 @@ form, which would be written to |*outt|.
 	inter_tree *I = InterTree::new();
 	filename *F;
 	LOOP_OVER_LINKED_LIST(F, filename, inter_file_list) {
-		if (Inter::Binary::test_file(F))
-			Inter::Binary::read(I, F);
+		if (BinaryInter::test_file(F))
+			BinaryInter::read(I, F);
 		else
 			TextualInter::read(I, F);
 	}
@@ -118,7 +118,7 @@ form, which would be written to |*outt|.
 		TextualInter::write(OUT, I, NULL);
 		STREAM_CLOSE(OUT);
 	}
-	if (output_binarily) Inter::Binary::write(output_binarily, I);
+	if (output_binarily) BinaryInter::write(output_binarily, I);
 
 @<Shut down the modules@> =
 	BytecodeModule::end();
@@ -195,7 +195,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 			if (PipelineModule::set_architecture(arg) == FALSE)
 				Errors::fatal("no such -architecture");
 			break;
-		case CONSTRUCTS_CLSW:  InterConstruct::show_constructs(STDOUT); break;
+		case CONSTRUCTS_CLSW:  InterInstruction::show_constructs(STDOUT); break;
 		case ANNOTATIONS_CLSW: SymbolAnnotation::show_annotations(STDOUT); break;
 		case PRIMITIVES_CLSW:  Primitives::show_primitives(STDOUT); break;
 	}

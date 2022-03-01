@@ -52,7 +52,7 @@ to exist already, and that has to be allocated. So instead you could call
 //InterWarehouse::create_package//, which calls this. But in fact what you
 should really do is just to generate a |PACKAGE_IST| instruction, because
 the package needs its head node too: everything will then automatically work.
-See //InterPackage::new_package// for how to do that.
+See //PackageInstruction::new_package// for how to do that.
 
 =
 inter_package *InterPackage::new(inter_tree *I, inter_ti n) {
@@ -68,7 +68,7 @@ inter_package *InterPackage::new(inter_tree *I, inter_ti n) {
 to each other in a way which exactly matches, except for the root package.
 For all other packages, these two operations are inverse to each other: 
 
-(*) To get from a head node to its package, call //InterPackage::at_this_head//.
+(*) To get from a head node to its package, call //PackageInstruction::at_this_head//.
 (*) To get from a package to its head node, call //InterPackage::head//.
 
 The root package is a very special one-off case -- see //Inter Trees//: it
@@ -102,7 +102,7 @@ inter_package *InterPackage::parent(inter_package *pack) {
 		inter_tree_node *D = InterPackage::head(pack);
 		inter_tree_node *P = InterTree::parent(D);
 		if (P == NULL) return NULL;
-		return InterPackage::at_this_head(P);
+		return PackageInstruction::at_this_head(P);
 	}
 	return NULL;
 }
@@ -125,7 +125,7 @@ extracted from the bytecode of its |package| instruction, stored at the head-nod
 =
 text_stream *InterPackage::name(inter_package *pack) {
 	if (pack) {
-		inter_symbol *S = InterPackage::name_symbol(pack);
+		inter_symbol *S = PackageInstruction::name_symbol(pack);
 		if (S) return InterSymbol::identifier(S);
 	}
 	return NULL;
@@ -160,7 +160,7 @@ inter_symbol *InterPackage::find_symbol_slowly(inter_package *P, text_stream *S)
 	inter_tree_node *D = InterPackage::head(P);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
 		if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
-			inter_package *Q = InterPackage::at_this_head(C);
+			inter_package *Q = PackageInstruction::at_this_head(C);
 			found = InterPackage::find_symbol_slowly(Q, S);
 			if (found) return found;
 		}
@@ -321,7 +321,7 @@ inter_package *InterPackage::from_name(inter_package *P, text_stream *name) {
 	} else {
 		inter_symbol *S = InterSymbolsTable::symbol_from_name_not_following(
 			P->package_scope, name);
-		if (S) return InterPackage::at_this_head(S->definition);
+		if (S) return PackageInstruction::at_this_head(S->definition);
 	}
 	return NULL;
 }

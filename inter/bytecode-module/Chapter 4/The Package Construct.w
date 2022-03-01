@@ -1,25 +1,24 @@
-[InterPackage::] The Package Construct.
+[PackageInstruction::] The Package Construct.
 
 Defining the package construct.
 
 @
 
-@e PACKAGE_IST
 
 =
-void InterPackage::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(PACKAGE_IST, I"package");
-	InterConstruct::defines_symbol_in_fields(IC, DEFN_PACKAGE_IFLD, -1);
-	InterConstruct::specify_syntax(IC, I"package IDENTIFIER _IDENTIFIER");
-	InterConstruct::fix_instruction_length_between(IC, EXTENT_PACKAGE_IFR, EXTENT_PACKAGE_IFR);
-	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
-	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
-	InterConstruct::permit(IC, CAN_HAVE_CHILDREN_ICUP);
-	METHOD_ADD(IC, CONSTRUCT_READ_MTID, InterPackage::read);
-	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, InterPackage::transpose);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, InterPackage::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, InterPackage::write);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, InterPackage::verify_children);
+void PackageInstruction::define_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(PACKAGE_IST, I"package");
+	InterInstruction::defines_symbol_in_fields(IC, DEFN_PACKAGE_IFLD, -1);
+	InterInstruction::specify_syntax(IC, I"package IDENTIFIER _IDENTIFIER");
+	InterInstruction::fix_instruction_length_between(IC, EXTENT_PACKAGE_IFR, EXTENT_PACKAGE_IFR);
+	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
+	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	InterInstruction::permit(IC, CAN_HAVE_CHILDREN_ICUP);
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PackageInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, PackageInstruction::transpose);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PackageInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, PackageInstruction::write);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, PackageInstruction::verify_children);
 }
 
 @
@@ -32,20 +31,17 @@ void InterPackage::define(void) {
 @d EXTENT_PACKAGE_IFR 6
 
 =
-void InterPackage::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::check_level_in_package(IBM, PACKAGE_IST, ilp->indent_level, eloc);
-	if (*E) return;
-
+void PackageInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	inter_symbol *ptype_name = LargeScale::package_type(InterBookmark::tree(IBM), ilp->mr.exp[1]);
 
 	inter_package *pack = NULL;
-	*E = InterPackage::new_package_named(IBM, ilp->mr.exp[0], FALSE, ptype_name, (inter_ti) ilp->indent_level, eloc, &pack);
+	*E = PackageInstruction::new_package_named(IBM, ilp->mr.exp[0], FALSE, ptype_name, (inter_ti) ilp->indent_level, eloc, &pack);
 	if (*E) return;
 
 	InterBookmark::move_into_package(IBM, pack);
 }
 
-inter_error_message *InterPackage::new_package_named(inter_bookmark *IBM, text_stream *name, int uniquely,
+inter_error_message *PackageInstruction::new_package_named(inter_bookmark *IBM, text_stream *name, int uniquely,
 	inter_symbol *ptype_name, inter_ti level, inter_error_location *eloc, inter_package **created) {
 	if (uniquely) {
 		TEMPORARY_TEXT(mutable)
@@ -61,14 +57,14 @@ inter_error_message *InterPackage::new_package_named(inter_bookmark *IBM, text_s
 			Str::truncate(mutable, 31);
 			DISCARD_TEXT(TAIL)
 		}
-		inter_error_message *E = InterPackage::new_package(IBM, mutable, ptype_name, level, eloc, created);
+		inter_error_message *E = PackageInstruction::new_package(IBM, mutable, ptype_name, level, eloc, created);
 		DISCARD_TEXT(mutable)
 		return E;
 	}
-	return InterPackage::new_package(IBM, name, ptype_name, level, eloc, created);
+	return PackageInstruction::new_package(IBM, name, ptype_name, level, eloc, created);
 }
 
-inter_error_message *InterPackage::new_package(inter_bookmark *IBM, text_stream *name_text, inter_symbol *ptype_name, inter_ti level, inter_error_location *eloc, inter_package **created) {
+inter_error_message *PackageInstruction::new_package(inter_bookmark *IBM, text_stream *name_text, inter_symbol *ptype_name, inter_ti level, inter_error_location *eloc, inter_package **created) {
 	inter_ti STID = InterWarehouse::create_symbols_table(InterBookmark::warehouse(IBM));
 	inter_error_message *E = NULL;
 	inter_symbol *package_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), name_text, &E);
@@ -85,7 +81,7 @@ inter_error_message *InterPackage::new_package(inter_bookmark *IBM, text_stream 
 	InterPackage::set_scope(pack, InterWarehouse::get_symbols_table(InterBookmark::warehouse(IBM), STID));
 	InterWarehouse::set_symbols_table_owner(InterBookmark::warehouse(IBM), STID, pack);
 
-	E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
+	E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 
@@ -101,20 +97,20 @@ inter_error_message *InterPackage::new_package(inter_bookmark *IBM, text_stream 
 	return NULL;
 }
 
-void InterPackage::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
+void PackageInstruction::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	P->W.instruction[PID_PACKAGE_IFLD] = grid[P->W.instruction[PID_PACKAGE_IFLD]];
 	P->W.instruction[SYMBOLS_PACKAGE_IFLD] = grid[P->W.instruction[SYMBOLS_PACKAGE_IFLD]];
 }
 
-void InterPackage::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+void PackageInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	inter_package *pack = Inode::ID_to_package(P, P->W.instruction[PID_PACKAGE_IFLD]);
 	if (pack) pack->package_head = P; else internal_error("no package in PID field");
 	inter_symbols_table *T = InterPackage::scope(owner);
 	if (T == NULL) T = Inode::globals(P);
 }
 
-void InterPackage::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	inter_package *pack = InterPackage::at_this_head(P);
+void PackageInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+	inter_package *pack = PackageInstruction::at_this_head(P);
 	inter_symbol *ptype_name = InterSymbolsTable::global_symbol_from_ID_at_node(P, PTYPE_PACKAGE_IFLD);
 	if ((pack) && (ptype_name)) {
 		WRITE("package %S %S", InterPackage::name(pack), InterSymbol::identifier(ptype_name));
@@ -124,20 +120,20 @@ void InterPackage::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
 	}
 }
 
-inter_error_message *InterPackage::write_symbols(OUTPUT_STREAM, inter_tree_node *P) {
-	inter_package *pack = InterPackage::at_this_head(P);
+inter_error_message *PackageInstruction::write_symbols(OUTPUT_STREAM, inter_tree_node *P) {
+	inter_package *pack = PackageInstruction::at_this_head(P);
 	if (pack) {
 		inter_symbols_table *locals = InterPackage::scope(pack);
 		int L = (int) (P->W.instruction[LEVEL_IFLD] + 1);
 		LOOP_OVER_SYMBOLS_TABLE(S, locals) {
 			if (InterSymbol::is_plug(S)) {
-				Inter::Plug::write_declaration(OUT, S, L);
+				PlugInstruction::write_declaration(OUT, S, L);
 				WRITE("\n");
 			}
 		}
 		LOOP_OVER_SYMBOLS_TABLE(S, locals) {
 			if (InterSymbol::is_socket(S)) {
-				Inter::Plug::write_declaration(OUT, S, L);
+				PlugInstruction::write_declaration(OUT, S, L);
 				WRITE("\n");
 			}
 		}
@@ -145,7 +141,7 @@ inter_error_message *InterPackage::write_symbols(OUTPUT_STREAM, inter_tree_node 
 	return NULL;
 }
 
-int InterPackage::is(inter_symbol *package_name) {
+int PackageInstruction::is(inter_symbol *package_name) {
 	if (package_name == NULL) return FALSE;
 	inter_tree_node *D = InterSymbol::definition(package_name);
 	if (D == NULL) return FALSE;
@@ -153,27 +149,27 @@ int InterPackage::is(inter_symbol *package_name) {
 	return TRUE;
 }
 
-inter_package *InterPackage::which(inter_symbol *package_name) {
+inter_package *PackageInstruction::which(inter_symbol *package_name) {
 	if (package_name == NULL) return NULL;
 	inter_tree_node *D = InterSymbol::definition(package_name);
 	if (D == NULL) return NULL;
 	return Inode::ID_to_package(D, D->W.instruction[PID_PACKAGE_IFLD]);
 }
 
-inter_package *InterPackage::at_this_head(inter_tree_node *D) {
+inter_package *PackageInstruction::at_this_head(inter_tree_node *D) {
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != PACKAGE_IST) return NULL;
 	return Inode::ID_to_package(D, D->W.instruction[PID_PACKAGE_IFLD]);
 }
 
-inter_symbol *InterPackage::name_symbol(inter_package *pack) {
+inter_symbol *PackageInstruction::name_symbol(inter_package *pack) {
 	if (pack == NULL) return NULL;
 	inter_tree_node *D = pack->package_head;
 	inter_symbol *package_name = InterSymbolsTable::symbol_from_ID_at_node(D, DEFN_PACKAGE_IFLD);
 	return package_name;
 }
 
-void InterPackage::set_name_symbol(inter_package *pack, inter_symbol *S) {
+void PackageInstruction::set_name_symbol(inter_package *pack, inter_symbol *S) {
 	if (pack == NULL) internal_error("no package");
 	inter_tree_node *D = pack->package_head;
 	S->definition = D;
@@ -182,27 +178,27 @@ void InterPackage::set_name_symbol(inter_package *pack, inter_symbol *S) {
 		InterSymbolsTable::id_from_symbol_not_creating(InterPackage::tree(S_pack), S_pack, S);
 }
 
-inter_symbol *InterPackage::type(inter_package *pack) {
+inter_symbol *PackageInstruction::type(inter_package *pack) {
 	if (pack == NULL) return NULL;
 	inter_tree_node *D = pack->package_head;
 	inter_symbol *ptype_name = InterSymbolsTable::global_symbol_from_ID_at_node(D, PTYPE_PACKAGE_IFLD);
 	return ptype_name;
 }
 
-inter_symbol *InterPackage::read_type(inter_tree *I, inter_tree_node *P) {
+inter_symbol *PackageInstruction::read_type(inter_tree *I, inter_tree_node *P) {
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST)
 		return InterSymbolsTable::symbol_from_ID(
 			InterTree::global_scope(I), P->W.instruction[PTYPE_PACKAGE_IFLD]);
 	return NULL;
 }
 
-void InterPackage::write_type(inter_tree *I, inter_tree_node *P, inter_symbol *ptype) {
+void PackageInstruction::write_type(inter_tree *I, inter_tree_node *P, inter_symbol *ptype) {
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST)
 		P->W.instruction[PTYPE_PACKAGE_IFLD] = InterSymbolsTable::id_from_symbol(I, NULL, ptype);
 	else internal_error("wrote primitive to non-primitive invocation");
 }
 
-inter_symbols_table *InterPackage::local_symbols(inter_symbol *package_name) {
+inter_symbols_table *PackageInstruction::local_symbols(inter_symbol *package_name) {
 	if (package_name == NULL) return NULL;
 	inter_tree_node *D = InterSymbol::definition(package_name);
 	if (D == NULL) return NULL;
@@ -210,7 +206,7 @@ inter_symbols_table *InterPackage::local_symbols(inter_symbol *package_name) {
 	return Inode::ID_to_symbols_table(D, D->W.instruction[SYMBOLS_PACKAGE_IFLD]);
 }
 
-void InterPackage::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
+void PackageInstruction::verify_children(inter_construct *IC, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *ptype_name = InterSymbolsTable::global_symbol_from_ID_at_node(P, PTYPE_PACKAGE_IFLD);
 	if (Str::eq(InterSymbol::identifier(ptype_name), I"_code")) {
 		LOOP_THROUGH_INTER_CHILDREN(C, P) {

@@ -255,7 +255,7 @@ void I6TargetObjects::declare_kind(code_generator *gtr, code_generation *gen,
 	*saved = CodeGen::select(gen, classes_I7CGS);
 	text_stream *class_name = InterSymbol::trans(kind_s);
 	text_stream *super_class = NULL;
-	inter_symbol *super_name = Inter::Typename::super(kind_s);
+	inter_symbol *super_name = TypenameInstruction::super(kind_s);
 	if (super_name) super_class = InterSymbol::trans(super_name);
 
 	text_stream *OUT = CodeGen::current(gen);
@@ -308,7 +308,7 @@ void I6TargetObjects::declare_instance(code_generator *gtr,
 	int is_dir = FALSE;
 	inter_symbol *K_direction =
 		RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM);
-	if (K_direction) is_dir = Inter::Typename::is_a(kind_s, K_direction);
+	if (K_direction) is_dir = TypenameInstruction::is_a(kind_s, K_direction);
 	I6TargetObjects::VM_object_header(gen, InterSymbol::trans(kind_s),
 		InterSymbol::trans(inst_s), NULL, c, is_dir, saved);
 
@@ -480,7 +480,7 @@ each enumerative kind, and is indexed by weak kind ID.
 				if (VanillaObjects::weak_id(kind_name) == w) {
 					if (VanillaObjects::value_kind_with_properties(gen, kind_name)) {
 						written = TRUE;
-						WRITE(" %d", Inter::Typename::instance_count(kind_name));
+						WRITE(" %d", TypenameInstruction::instance_count(kind_name));
 					}
 				}
 			}

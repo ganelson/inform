@@ -55,7 +55,7 @@ void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
 		InterBookmark::package(IBM));
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), S);
-	Produce::guard(Inter::Constant::new_textual(IBM,
+	Produce::guard(ConstantInstruction::new_textual(IBM,
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), con_s),
 		InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::unchecked()),
 		ID, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
@@ -72,7 +72,7 @@ void Synoptic::begin_function(inter_tree *I, inter_name *iname) {
 void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	Produce::end_function_body(I);
 	inter_symbol *fn_s = InterNames::to_symbol(iname);
-	Produce::guard(Inter::Constant::new_function(Packaging::at(I),
+	Produce::guard(ConstantInstruction::new_function(Packaging::at(I),
 		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(Packaging::at(I)), fn_s),
 		InterTypes::to_TID(InterBookmark::scope(Packaging::at(I)), InterTypes::unchecked()),
 		synoptic_fn_package,
@@ -105,7 +105,7 @@ void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname
 }
 
 void Synoptic::end_array(inter_tree *I) {
-	inter_error_message *E = Inter::Verify::instruction(
+	inter_error_message *E = VerifyingInter::instruction(
 		InterBookmark::package(Packaging::at(I)), synoptic_array_node);
 	if (E) {
 		InterErrors::issue(E);

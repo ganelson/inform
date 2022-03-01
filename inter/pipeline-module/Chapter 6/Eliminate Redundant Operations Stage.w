@@ -44,7 +44,7 @@ int EliminateRedundantOperationsStage::run(pipeline_step *step) {
 
 void EliminateRedundantOperationsStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = InterPackage::at_this_head(P);
+		inter_package *pack = PackageInstruction::at_this_head(P);
 		if (InterPackage::is_a_function_body(pack)) {
 			inter_tree_node *D = InterPackage::head(pack);
 			EliminateRedundantOperationsStage::traverse_code_tree(D);
@@ -64,7 +64,7 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 		int iden[2] = { -1, -1 };
 		if ((F->W.instruction[ID_IFLD] == INV_IST) &&
 			(F->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
-			inter_symbol *prim = Inter::Inv::invokee(F);
+			inter_symbol *prim = InvInstruction::invokee(F);
 			if (Primitives::to_BIP(P->tree, prim) == OR_BIP)     { iden[1] = 0; }
 			if (Primitives::to_BIP(P->tree, prim) == AND_BIP)    { iden[1] = 1; }
 			if (Primitives::to_BIP(P->tree, prim) == PLUS_BIP)   { iden[0] = 0; iden[1] = 0; }

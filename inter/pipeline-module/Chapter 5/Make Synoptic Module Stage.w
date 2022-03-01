@@ -157,12 +157,12 @@ tree_inventory *MakeSynopticModuleStage::take_inventory(inter_tree *I) {
 	tree_inventory *inv = MakeSynopticModuleStage::new_inventory(I);
 	InterTree::traverse(I, MakeSynopticModuleStage::visitor, inv, NULL, 0);
 	for (int i=0; i<InterNodeList::array_len(inv->module_nodes); i++) {
-		inter_package *pack = InterPackage::at_this_head(inv->module_nodes->list[i].node);
+		inter_package *pack = PackageInstruction::at_this_head(inv->module_nodes->list[i].node);
 		if (InterSymbolsTable::symbol_from_name(InterPackage::scope(pack), I"extension_id"))
 			InterNodeList::array_add(inv->extension_nodes, inv->module_nodes->list[i].node);
 	}
 	for (int i=0; i<InterNodeList::array_len(inv->instance_nodes); i++) {
-		inter_package *pack = InterPackage::at_this_head(inv->instance_nodes->list[i].node);
+		inter_package *pack = PackageInstruction::at_this_head(inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_scene"))
 			InterNodeList::array_add(inv->scene_nodes, inv->instance_nodes->list[i].node);
 		if (Metadata::exists(pack, I"^is_file"))
@@ -184,8 +184,8 @@ void MakeSynopticModuleStage::visitor(inter_tree *I, inter_tree_node *P, void *s
 			InterNodeList::array_add(inv->text_nodes, P);
 	}
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = InterPackage::at_this_head(P);
-		inter_symbol *ptype = InterPackage::type(pack);
+		inter_package *pack = PackageInstruction::at_this_head(P);
+		inter_symbol *ptype = PackageInstruction::type(pack);
 		tree_inventory_item *item;
 		LOOP_OVER_LINKED_LIST(item, tree_inventory_item, inv->items)
 			if (ptype == item->required_ptype) {
@@ -213,7 +213,7 @@ array contains package head nodes, as in the above inventories:
 
 @d LOOP_OVER_INVENTORY_PACKAGES(pack, i, node_list)
 	for (int i=0; i<InterNodeList::array_len(node_list); i++)
-		if ((pack = InterPackage::at_this_head(node_list->list[i].node)))
+		if ((pack = PackageInstruction::at_this_head(node_list->list[i].node)))
 
 @ The following are used for sorting.
 
@@ -252,7 +252,7 @@ inter_package *MakeSynopticModuleStage::module_containing(inter_tree_node *P) {
 	inter_package *pack = InterPackage::container(P);
 	inter_tree *I = InterPackage::tree(pack);
 	while (pack) {
-		inter_symbol *ptype = InterPackage::type(pack);
+		inter_symbol *ptype = PackageInstruction::type(pack);
 		if (ptype == LargeScale::package_type(I, I"_module")) return pack;
 		pack = InterPackage::parent(pack);
 	}

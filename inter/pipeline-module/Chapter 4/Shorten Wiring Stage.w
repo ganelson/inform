@@ -58,7 +58,7 @@ we simplify just to |S1 -> T3|.
 =
 void ShortenWiringStage::visitor(inter_tree *I, inter_tree_node *P, void *v_state) {
 	plug_inspection_state *state = (plug_inspection_state *) v_state;
-	inter_package *Q = InterPackage::at_this_head(P);
+	inter_package *Q = PackageInstruction::at_this_head(P);
 	inter_symbols_table *ST = InterPackage::scope(Q);
 	LOOP_OVER_SYMBOLS_TABLE(S, ST) {
 		inter_symbol *E = Wiring::cable_end(S);

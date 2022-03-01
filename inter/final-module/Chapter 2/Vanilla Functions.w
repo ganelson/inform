@@ -20,7 +20,7 @@ void VanillaFunctions::predeclare_this(inter_tree *I, inter_tree_node *P, void *
 	code_generation *gen = (code_generation *) state;
 	inter_symbol *constant_s =
 		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-	if (Inter::Constant::is_routine(constant_s)) {
+	if (ConstantInstruction::is_routine(constant_s)) {
 		vanilla_function *vf = VanillaFunctions::new(gen, constant_s);
 		Generators::predeclare_function(gen, vf);
 	}
@@ -100,7 +100,7 @@ vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s
 	vf->identifier = Str::duplicate(InterSymbol::trans(fn_s));
 	vf->locals = NEW_LINKED_LIST(text_stream);
 	vf->phrase_syntax = Str::duplicate(i7_syntax);
-	inter_package *code_block = Inter::Constant::code_block(fn_s);
+	inter_package *code_block = ConstantInstruction::code_block(fn_s);
 	vf->function_body = InterPackage::head(code_block);
 	fn_s->translation_data = STORE_POINTER_vanilla_function(vf);
 	VanillaFunctions::seek_locals(gen, vf->function_body, vf);

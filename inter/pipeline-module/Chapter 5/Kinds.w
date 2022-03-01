@@ -36,7 +36,7 @@ are addresses of small arrays.
 @<Assign unique strong ID numbers@> =
 	InterNodeList::array_sort(inv->kind_nodes, MakeSynopticModuleStage::module_order);
 	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-		inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+		inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 		inter_symbol *id_s = Metadata::optional_symbol(pack, I"^strong_id");
 		if (id_s) InterSymbol::set_int(id_s, i+2);
 	}
@@ -55,7 +55,7 @@ or higher is therefore that of a derived kind.
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	for (int i=0; i<InterNodeList::array_len(inv->derived_kind_nodes); i++) {
 		inter_package *pack =
-			InterPackage::at_this_head(inv->derived_kind_nodes->list[i].node);
+			PackageInstruction::at_this_head(inv->derived_kind_nodes->list[i].node);
 		if (Metadata::read_numeric(pack, I"^default_value_needed")) {
 			inter_symbol *rks_s = Synoptic::get_symbol(pack, I"strong_id");
 			inter_symbol *dv_s = Synoptic::get_symbol(pack, I"default_value");
@@ -102,7 +102,7 @@ which have to be given some type-safe value to start out at.
 		Produce::code(I);
 		Produce::down(I);
 		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::optional_symbol(pack, I"^mkdef_fn")) {
 				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
 				inter_symbol *mkdef_fn_s = Metadata::required_symbol(pack, I"^mkdef_fn");
@@ -148,7 +148,7 @@ which have to be given some type-safe value to start out at.
 		Produce::code(I);
 		Produce::down(I);
 		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 			if ((Metadata::read_optional_numeric(pack, I"^is_base")) &&
 				(Metadata::optional_symbol(pack, I"^print_fn")) &&
 				(Metadata::read_optional_numeric(pack, I"^is_subkind_of_object") == FALSE)) {
@@ -207,7 +207,7 @@ unless the two values are genuinely equal.
 		Produce::code(I);
 		Produce::down(I);
 		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::optional_symbol(pack, I"^cmp_fn")) {
 				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
 				inter_symbol *cmp_fn_s = Metadata::required_symbol(pack, I"^cmp_fn");
@@ -247,7 +247,7 @@ unless the two values are genuinely equal.
 		Produce::code(I);
 		Produce::down(I);
 		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^domain_size")) {
 				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
 				inter_ti domain_size = Metadata::read_numeric(pack, I"^domain_size");
@@ -292,7 +292,7 @@ a kind storing pointers to blocks of data.
 		Produce::code(I);
 		Produce::down(I);
 		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
 				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
 				Produce::inv_primitive(I, CASE_BIP);
@@ -315,7 +315,7 @@ a kind storing pointers to blocks of data.
 	Synoptic::begin_function(I, iname);
 	inter_symbol *k_s = Synoptic::local(I, I"k", NULL);
 	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-		inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+		inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 		inter_symbol *class_s = Metadata::optional_symbol(pack, I"^object_class");
 		if (class_s) {
 			text_stream *pn = Metadata::required_textual(pack, I"^printed_name");
@@ -363,7 +363,7 @@ such a function does, see "BlockValues.i6t".
 		Produce::code(I);
 		Produce::down(I);
 		for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-			inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+			inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 			if (Metadata::read_optional_numeric(pack, I"^has_block_values")) {
 				inter_symbol *id_s = Metadata::required_symbol(pack, I"^strong_id");
 				inter_symbol *support_s = Metadata::required_symbol(pack, I"^support_fn");
@@ -405,7 +405,7 @@ such a function does, see "BlockValues.i6t".
 	inter_symbol *na_s = Synoptic::local(I, I"na", NULL);
 	inter_symbol *t_0_s = Synoptic::local(I, I"t_0", NULL);
 	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
-		inter_package *pack = InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+		inter_package *pack = PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_object")) {
 			inter_symbol *showme_s = Metadata::optional_symbol(pack, I"^showme_fn");
 			if (showme_s) {
@@ -440,7 +440,7 @@ name), with other actors oblivious.
 	int found = FALSE;
 	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 		inter_package *pack =
-			InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+			PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^rucksack_class")) {
 			inter_symbol *value_s = Metadata::required_symbol(pack, I"^object_class");
 			Produce::symbol_constant(I, iname, K_value, value_s);
@@ -461,7 +461,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 	linked_list *L = NEW_LINKED_LIST(inter_symbol);
 	for (int i=0; i<InterNodeList::array_len(inv->kind_nodes); i++) {
 		inter_package *pack =
-			InterPackage::at_this_head(inv->kind_nodes->list[i].node);
+			PackageInstruction::at_this_head(inv->kind_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_subkind_of_object")) {
 			inter_symbol *kind_name = Metadata::required_symbol(pack, I"^object_class");
 			ADD_TO_LINKED_LIST(kind_name, inter_symbol, L);
@@ -483,7 +483,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 		inter_symbol *kind_name;
 		LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L) {
 			Synoptic::symbol_entry(kind_name);
-			inter_symbol *super_name = Inter::Typename::super(kind_name);
+			inter_symbol *super_name = TypenameInstruction::super(kind_name);
 			if ((super_name) &&
 				(super_name != RunningPipelines::get_symbol(step, object_kind_RPSYM))) {
 				Synoptic::numeric_entry(SynopticKinds::kind_of_object_count(step, super_name));

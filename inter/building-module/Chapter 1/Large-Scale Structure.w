@@ -277,7 +277,7 @@ inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 	inter_symbol *S = InterSymbolsTable::symbol_from_name_creating(tab, N);
 	SymbolAnnotation::set_b(S, ARCHITECTURAL_IANN, TRUE);
 	inter_bookmark *IBM = &(I->site.strdata.architecture_bookmark);
-	Produce::guard(Inter::Constant::new_numerical(IBM,
+	Produce::guard(ConstantInstruction::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol(I, arch, S),
 		InterTypes::to_TID(InterBookmark::scope(IBM), type),
 		InterValuePairs::number(val),
@@ -417,7 +417,7 @@ void LargeScale::emit_pragma(inter_tree *I, text_stream *target, text_stream *co
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), content);
 	inter_symbol *target_name =
 		InterSymbolsTable::symbol_from_name_creating(InterTree::global_scope(I), target);
-	Produce::guard(Inter::Pragma::new(&(I->site.strdata.pragmas_bookmark), target_name, ID, 0, NULL));
+	Produce::guard(PragmaInstruction::new(&(I->site.strdata.pragmas_bookmark), target_name, ID, 0, NULL));
 }
 
 @h Package types.
@@ -443,7 +443,7 @@ inter_symbol *LargeScale::package_type(inter_tree *I, text_stream *name) {
 	inter_symbol *ptype = InterSymbolsTable::symbol_from_name(scope, name);
 	if (ptype == NULL) {
 		ptype = InterSymbolsTable::create_with_unique_name(scope, name);
-		Produce::guard(Inter::PackageType::new_packagetype(
+		Produce::guard(PackageTypeInstruction::new_packagetype(
 			&(I->site.strdata.package_types_bookmark), ptype, 0, NULL));
 		if (Str::ne(name, I"_code"))
 			SymbolAnnotation::set_b(ptype, ENCLOSING_IANN, TRUE);

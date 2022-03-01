@@ -59,8 +59,8 @@ int FauxScenes::scene_order(const void *ent1, const void *ent2) {
 	if (E1 == E2) return 0;
 	inter_tree_node *P1 = E1->node;
 	inter_tree_node *P2 = E2->node;
-	inter_package *sc1 = InterPackage::at_this_head(P1);
-	inter_package *sc2 = InterPackage::at_this_head(P2);
+	inter_package *sc1 = PackageInstruction::at_this_head(P1);
+	inter_package *sc2 = PackageInstruction::at_this_head(P2);
 	if (Metadata::read_optional_numeric(sc1, I"^is_entire_game")) return -1;
 	if (Metadata::read_optional_numeric(sc2, I"^is_entire_game")) return 1;
 	text_stream *SW1 = Metadata::required_textual(sc1, I"^name");

@@ -30,7 +30,7 @@ at runtime.
 			Produce::code(I);
 			Produce::down(I);
 				for (int i=0; i<InterNodeList::array_len(inv->test_nodes); i++) {
-					inter_package *pack = InterPackage::at_this_head(inv->test_nodes->list[i].node);
+					inter_package *pack = PackageInstruction::at_this_head(inv->test_nodes->list[i].node);
 					text_stream *name = Metadata::required_textual(pack, I"^name");
 					inter_ti len = Metadata::read_numeric(pack, I"^length");
 					inter_symbol *text_s = Synoptic::get_symbol(pack, I"script");
@@ -59,7 +59,7 @@ at runtime.
 						Produce::up(I);
 						for (int i=0; i<InterNodeList::array_len(inv->test_nodes); i++) {
 							inter_package *pack =
-								InterPackage::at_this_head(inv->test_nodes->list[i].node);
+								PackageInstruction::at_this_head(inv->test_nodes->list[i].node);
 							text_stream *name = Metadata::required_textual(pack, I"^name");
 							TEMPORARY_TEXT(T)
 							WRITE_TO(T, "'test %S'\n", name);

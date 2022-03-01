@@ -27,7 +27,7 @@ int EliminateRedundantLabelsStage::run(pipeline_step *step) {
 }
 
 void EliminateRedundantLabelsStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_package *pack = InterPackage::at_this_head(P);
+	inter_package *pack = PackageInstruction::at_this_head(P);
 	if (InterPackage::is_a_function_body(pack))
 		@<Perform peephole optimisation on this function body@>;
 }
@@ -83,6 +83,6 @@ We look for such lines.
 
 @<Examine a line of code in the function@> =
 	if (F->W.instruction[ID_IFLD] == LAB_IST) {
-		inter_symbol *lab = Inter::Lab::label_symbol(F);
+		inter_symbol *lab = LabInstruction::label_symbol(F);
 		InterSymbol::set_flag(lab, USED_MARK_ISYMF);
 	}

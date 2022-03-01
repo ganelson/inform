@@ -29,7 +29,7 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<InterNodeList::array_len(inv->figure_nodes); i++) {
 		inter_package *pack =
-			InterPackage::at_this_head(inv->figure_nodes->list[i].node);
+			PackageInstruction::at_this_head(inv->figure_nodes->list[i].node);
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
 		Synoptic::numeric_entry(id);
 	}
@@ -42,7 +42,7 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<InterNodeList::array_len(inv->sound_nodes); i++) {
 		inter_package *pack =
-			InterPackage::at_this_head(inv->sound_nodes->list[i].node);
+			PackageInstruction::at_this_head(inv->sound_nodes->list[i].node);
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
 		Synoptic::numeric_entry(id);
 	}
@@ -59,7 +59,7 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 	Synoptic::begin_array(I, step, iname);
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<InterNodeList::array_len(inv->file_nodes); i++) {
-		inter_package *pack = InterPackage::at_this_head(inv->file_nodes->list[i].node);
+		inter_package *pack = PackageInstruction::at_this_head(inv->file_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::required_symbol(pack, I"^file_value");
 		Synoptic::symbol_entry(vc_s);
 	}

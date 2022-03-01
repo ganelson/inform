@@ -1,21 +1,20 @@
-[Inter::Permission::] The Permission Construct.
+[PermissionInstruction::] The Permission Construct.
 
 Defining the permission construct.
 
 @
 
-@e PERMISSION_IST
 
 =
-void Inter::Permission::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(PERMISSION_IST, I"permission");
-	InterConstruct::defines_symbol_in_fields(IC, DEFN_PERM_IFLD, -1);
-	InterConstruct::specify_syntax(IC, I"permission IDENTIFIER IDENTIFIER OPTIONALIDENTIFIER");
-	InterConstruct::fix_instruction_length_between(IC, EXTENT_PERM_IFR, EXTENT_PERM_IFR);
-	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
-	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Permission::read);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Permission::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Permission::write);
+void PermissionInstruction::define_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(PERMISSION_IST, I"permission");
+	InterInstruction::defines_symbol_in_fields(IC, DEFN_PERM_IFLD, -1);
+	InterInstruction::specify_syntax(IC, I"permission IDENTIFIER IDENTIFIER OPTIONALIDENTIFIER");
+	InterInstruction::fix_instruction_length_between(IC, EXTENT_PERM_IFR, EXTENT_PERM_IFR);
+	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PermissionInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PermissionInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, PermissionInstruction::write);
 }
 
 @
@@ -29,25 +28,20 @@ void Inter::Permission::define(void) {
 
 =
 int pp_counter = 1;
-void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::check_level_in_package(IBM, PERMISSION_IST, ilp->indent_level, eloc);
-	if (*E) return;
-
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
-
+void PermissionInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	inter_symbol *prop_name = TextualInter::find_symbol(IBM, eloc, ilp->mr.exp[0], PROPERTY_IST, E);
 	if (*E) return;
-	inter_symbol *owner_name = Inter::PropertyValue::parse_owner(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
+	inter_symbol *owner_name = PropertyValueInstruction::parse_owner(eloc, InterBookmark::scope(IBM), ilp->mr.exp[1], E);
 	if (*E) return;
 
-	if (Inter::Typename::is(owner_name)) {
+	if (TypenameInstruction::is(owner_name)) {
 		if (InterTypes::is_enumerated(InterTypes::from_type_name(owner_name)) == FALSE)
 			{ *E = InterErrors::quoted(I"not a kind which can have property values", ilp->mr.exp[1], eloc); return; }
 
 		inter_node_list *FL =
 			InterWarehouse::get_node_list(
 				InterBookmark::warehouse(IBM),
-				Inter::Typename::permissions_list(owner_name));
+				TypenameInstruction::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
 		inter_tree_node *X;
@@ -60,7 +54,7 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 		inter_node_list *FL =
 			InterWarehouse::get_node_list(
 				InterBookmark::warehouse(IBM),
-				Inter::Instance::permissions_list(owner_name));
+				InstanceInstruction::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 
 		inter_tree_node *X;
@@ -83,33 +77,33 @@ void Inter::Permission::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 		if (*E) return;
 	}
 
-	*E = Inter::Permission::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_name),
+	*E = PermissionInstruction::new(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_name), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_name),
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, pp_name), (store)?(InterSymbolsTable::id_from_symbol_at_bookmark(IBM, store)):0, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Permission::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID,
+inter_error_message *PermissionInstruction::new(inter_bookmark *IBM, inter_ti PID, inter_ti KID,
 	inter_ti PPID, inter_ti SID, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, PERMISSION_IST, PPID, PID, KID, SID, eloc, level);
-	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
-void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	*E = Inter::Verify::SID_field(owner, P, PROP_PERM_IFLD, PROPERTY_IST); if (*E) return;
-	*E = Inter::Verify::POID_field(owner, P, OWNER_PERM_IFLD); if (*E) return;
+void PermissionInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	*E = VerifyingInter::SID_field(owner, P, PROP_PERM_IFLD, PROPERTY_IST); if (*E) return;
+	*E = VerifyingInter::POID_field(owner, P, OWNER_PERM_IFLD); if (*E) return;
 	if (P->W.instruction[STORAGE_PERM_IFLD]) {
-		*E = Inter::Verify::SID_field(owner, P, STORAGE_PERM_IFLD, CONSTANT_IST); if (*E) return;
+		*E = VerifyingInter::SID_field(owner, P, STORAGE_PERM_IFLD, CONSTANT_IST); if (*E) return;
 	}
 	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[PROP_PERM_IFLD]);;
 	inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID(InterPackage::scope(owner), P->W.instruction[OWNER_PERM_IFLD]);;
 
 	inter_node_list *FL = NULL;
 
-	if (Inter::Typename::is(owner_name)) {
+	if (TypenameInstruction::is(owner_name)) {
 		if (InterTypes::is_enumerated(InterTypes::from_type_name(owner_name)) == FALSE)
 			{ *E = Inode::error(P, I"property permission for non-enumerated kind", NULL); return; }
-		FL = Inode::ID_to_frame_list(P, Inter::Typename::permissions_list(owner_name));
+		FL = Inode::ID_to_frame_list(P, TypenameInstruction::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 		inter_tree_node *X;
 		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
@@ -121,7 +115,7 @@ void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_pa
 			if (owner_X != owner_P) { *E = Inode::error(P, I"kind permission list malformed", InterSymbol::identifier(owner_name)); return; }
 		}
 	} else {
-		FL = Inode::ID_to_frame_list(P, Inter::Instance::permissions_list(owner_name));
+		FL = Inode::ID_to_frame_list(P, InstanceInstruction::permissions_list(owner_name));
 		if (FL == NULL) internal_error("no permissions list");
 		inter_tree_node *X;
 		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
@@ -136,11 +130,11 @@ void Inter::Permission::verify(inter_construct *IC, inter_tree_node *P, inter_pa
 
 	InterNodeList::add(FL, P);
 
-	FL = Inode::ID_to_frame_list(P, Inter::Property::permissions_list(prop_name));
+	FL = Inode::ID_to_frame_list(P, PropertyInstruction::permissions_list(prop_name));
 	InterNodeList::add(FL, P);
 }
 
-void Inter::Permission::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+void PermissionInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, PROP_PERM_IFLD);
 	inter_symbol *owner_name = InterSymbolsTable::symbol_from_ID_at_node(P, OWNER_PERM_IFLD);
 	if ((prop_name) && (owner_name)) {

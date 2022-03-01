@@ -425,7 +425,7 @@ void CodeGen::clear_all_transients(inter_tree *I) {
 }
 
 void CodeGen::clear_transients(inter_tree *I, inter_tree_node *P, void *state) {
-	inter_package *pack = InterPackage::at_this_head(P);
+	inter_package *pack = PackageInstruction::at_this_head(P);
 	inter_symbols_table *T = InterPackage::scope(pack);
 	LOOP_OVER_SYMBOLS_TABLE(S, T)
 		InterSymbol::clear_transient_flags(S);

@@ -68,7 +68,7 @@ void EmitCode::comment(text_stream *text) {
 		internal_error("code comment emitted outside function");
 	inter_ti ID = InterWarehouse::create_text(Emit::warehouse(), Emit::package());
 	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID), text);
-	Produce::guard(Inter::Comment::new(EmitCode::at(),
+	Produce::guard(CommentInstruction::new(EmitCode::at(),
 		(inter_ti) EmitCode::level(), NULL, ID));
 }
 

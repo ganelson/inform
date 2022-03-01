@@ -100,7 +100,7 @@ void InterErrors::issue_to(OUTPUT_STREAM, inter_error_message *iem) {
 
 @ This shows a debugger-like backtrace: this isn't done for every Inter error,
 but only in cases where at least a superficially plausible Inter program does
-exist. See //InterConstruct::tree_lint//.
+exist. See //InterInstruction::tree_lint//.
 
 =
 void InterErrors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
@@ -123,7 +123,7 @@ void InterErrors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
 				} else {
 					WRITE("%2d.    ", (n-i));
 				}
-				InterConstruct::write_construct_text_allowing_nop(OUT, X);
+				InterInstruction::write_construct_text_allowing_nop(OUT, X);
 				break;
 			}
 			X = Y;
@@ -132,6 +132,6 @@ void InterErrors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
 	}
 	LOOP_THROUGH_INTER_CHILDREN(C, F) {
 		WRITE("%2d.    ", (n+1));
-		InterConstruct::write_construct_text_allowing_nop(OUT, C);
+		InterInstruction::write_construct_text_allowing_nop(OUT, C);
 	}
 }

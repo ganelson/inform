@@ -1,27 +1,21 @@
-[Inter::Plug::] The Plug Construct.
+[PlugInstruction::] The Plug Construct.
 
 Defining the symbol construct.
 
 @
 
-@e PLUG_IST
-
 =
-void Inter::Plug::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(PLUG_IST, I"plug");
-	InterConstruct::specify_syntax(IC, I"plug IDENTIFIER TOKENS");
-	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Plug::read);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Plug::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Plug::write);
-	InterConstruct::allow_in_depth_range(IC, 0, 1);
-	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+void PlugInstruction::define_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(PLUG_IST, I"plug");
+	InterInstruction::specify_syntax(IC, I"plug IDENTIFIER TOKENS");
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PlugInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PlugInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, PlugInstruction::write);
+	InterInstruction::allow_in_depth_range(IC, 0, 1);
+	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 }
 
-void Inter::Plug::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::check_level_in_package(IBM, PLUG_IST, ilp->indent_level, eloc);
-	if (*E) return;
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
-
+void PlugInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	inter_package *routine = InterBookmark::package(IBM);
 
 	text_stream *symbol_name = ilp->mr.exp[0];
@@ -61,11 +55,11 @@ void Inter::Plug::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 	}
 }
 
-void Inter::Plug::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+void PlugInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	internal_error("PLUG_IST structures cannot exist");
 }
 
-void Inter::Plug::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+void PlugInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	internal_error("PLUG_IST structures cannot exist");
 }
 
@@ -73,7 +67,7 @@ void Inter::Plug::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 appearing at level |N| in the hierarchy.
 
 =
-void Inter::Plug::write_declaration(OUTPUT_STREAM, inter_symbol *S, int N) {
+void PlugInstruction::write_declaration(OUTPUT_STREAM, inter_symbol *S, int N) {
 	for (int L=0; L<N; L++) WRITE("\t");
 	switch (InterSymbol::get_type(S)) {
 		case PLUG_ISYMT:   WRITE("plug"); break;

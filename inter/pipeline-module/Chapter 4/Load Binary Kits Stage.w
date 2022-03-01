@@ -67,7 +67,7 @@ regular users: it would be quite slow to read in.
 	filename *arch_file = Architectures::canonical_binary(req->location, A);
 	if (TextFiles::exists(arch_file) == FALSE)
 		internal_error("no arch file for requirement");
-	if (Inter::Binary::test_file(arch_file)) Inter::Binary::read(sidecar, arch_file);
+	if (BinaryInter::test_file(arch_file)) BinaryInter::read(sidecar, arch_file);
 	else TextualInter::read(sidecar, arch_file);		
 
 @ The "attachment point" for the kit will be something like |/main/BasicInformKit|.

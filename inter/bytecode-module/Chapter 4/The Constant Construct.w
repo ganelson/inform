@@ -1,22 +1,22 @@
-[Inter::Constant::] The Constant Construct.
+[ConstantInstruction::] The Constant Construct.
 
 Defining the constant construct.
 
 @
 
-@e CONSTANT_IST
 
 =
-void Inter::Constant::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(CONSTANT_IST, I"constant");
-	InterConstruct::defines_symbol_in_fields(IC, DEFN_CONST_IFLD, KIND_CONST_IFLD);
-	InterConstruct::specify_syntax(IC, I"constant TOKENS = TOKENS");
-	InterConstruct::fix_instruction_length_between(IC, 4, UNLIMITED_INSTRUCTION_FRAME_LENGTH);
-	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
-	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Constant::read);
-	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Constant::transpose);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Constant::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Constant::write);
+void ConstantInstruction::define_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(CONSTANT_IST, I"constant");
+	InterInstruction::defines_symbol_in_fields(IC, DEFN_CONST_IFLD, KIND_CONST_IFLD);
+	InterInstruction::specify_syntax(IC, I"constant TOKENS = TOKENS");
+	InterInstruction::fix_instruction_length_between(IC, 4, UNLIMITED_INSTRUCTION_FRAME_LENGTH);
+	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	InterInstruction::permit(IC, CAN_HAVE_ANNOTATIONS_ICUP);
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, ConstantInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, ConstantInstruction::transpose);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, ConstantInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, ConstantInstruction::write);
 }
 
 @
@@ -38,10 +38,7 @@ void Inter::Constant::define(void) {
 @d CONSTANT_TABLE 9
 
 =
-void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::check_level_in_package(IBM, CONSTANT_IST, ilp->indent_level, eloc);
-	if (*E) return;
-
+void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	text_stream *kind_text = NULL, *name_text = ilp->mr.exp[0];
 	match_results mr3 = Regexp::create_mr();
 	if (Regexp::match(&mr3, name_text, L"%((%c+)%) (%c+)")) {
@@ -68,17 +65,17 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	if (op != 0) {
 		inter_tree_node *P =
 			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), op, eloc, (inter_ti) ilp->indent_level);
-		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
+		*E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-			if (Inter::Constant::append(ilp->line, eloc, IBM, con_type, P, mr3.exp[0], E) == FALSE)
+			if (ConstantInstruction::append(ilp->line, eloc, IBM, con_type, P, mr3.exp[0], E) == FALSE)
 				return;
 			Str::copy(conts, mr3.exp[1]);
 		}
 		if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-			if (Inter::Constant::append(ilp->line, eloc, IBM, con_type, P, mr3.exp[0], E) == FALSE)
+			if (ConstantInstruction::append(ilp->line, eloc, IBM, con_type, P, mr3.exp[0], E) == FALSE)
 				return;
 		}
 		NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -89,7 +86,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		inter_ti form = CONSTANT_INDIRECT_LIST;
 		inter_tree_node *P =
 			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), form, eloc, (inter_ti) ilp->indent_level);
-		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
+		*E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 		if (*E) return;
 		NodePlacement::move_to_moving_bookmark(P, IBM);
 		return;
@@ -100,17 +97,17 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		inter_ti form = CONSTANT_INDIRECT_LIST;
 		inter_tree_node *P =
 			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), form, eloc, (inter_ti) ilp->indent_level);
-		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
+		*E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-			if (Inter::Constant::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
+			if (ConstantInstruction::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
 				return;
 			Str::copy(conts, mr3.exp[1]);
 		}
 		if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-			if (Inter::Constant::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
+			if (ConstantInstruction::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
 				return;
 		}
 		NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -126,18 +123,18 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
 			inter_type conts_type = InterTypes::type_operand(con_type, counter++);
-			if (Inter::Constant::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
+			if (ConstantInstruction::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
 				return;
 			Str::copy(conts, mr3.exp[1]);
 		}
 		if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
 			inter_type conts_type = InterTypes::type_operand(con_type, counter++);
-			if (Inter::Constant::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
+			if (ConstantInstruction::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
 				return;
 		}
 		if (counter != arity)
 			{ *E = InterErrors::quoted(I"wrong size", S, eloc); return; }
-		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (*E) return;
+		*E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (*E) return;
 		NodePlacement::move_to_moving_bookmark(P, IBM);
 		return;
 	}
@@ -145,17 +142,17 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	if (Regexp::match(&mr2, S, L"table{ (%c*) }")) {
 		inter_tree_node *P =
 			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), CONSTANT_TABLE, eloc, (inter_ti) ilp->indent_level);
-		*E = Inter::Verify::instruction(InterBookmark::package(IBM), P);
+		*E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 		if (*E) return;
 		text_stream *conts = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
 		while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-			if (Inter::Constant::append(ilp->line, eloc, IBM, InterTypes::unchecked(), P, mr3.exp[0], E) == FALSE)
+			if (ConstantInstruction::append(ilp->line, eloc, IBM, InterTypes::unchecked(), P, mr3.exp[0], E) == FALSE)
 				return;
 			Str::copy(conts, mr3.exp[1]);
 		}
 		if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-			if (Inter::Constant::append(ilp->line, eloc, IBM, InterTypes::unchecked(), P, mr3.exp[0], E) == FALSE)
+			if (ConstantInstruction::append(ilp->line, eloc, IBM, InterTypes::unchecked(), P, mr3.exp[0], E) == FALSE)
 				return;
 		}
 		NodePlacement::move_to_moving_bookmark(P, IBM);
@@ -172,7 +169,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		}
 		DISCARD_TEXT(parsed_text)
 		if (*E) return;
-		*E = Inter::Constant::new_textual(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), ID, (inter_ti) ilp->indent_level, eloc);
+		*E = ConstantInstruction::new_textual(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), ID, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}
 
@@ -182,7 +179,7 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 		if (block == NULL) {
 			*E = InterErrors::quoted(I"no such function body", fname, eloc); return;
 		}
-		*E = Inter::Constant::new_function(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), block, (inter_ti) ilp->indent_level, eloc);
+		*E = ConstantInstruction::new_function(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), block, (inter_ti) ilp->indent_level, eloc);
 		return;
 	}
 
@@ -190,47 +187,47 @@ void Inter::Constant::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 	*E = TextualInter::parse_pair(ilp->line, eloc, IBM, con_type, S, &val);
 	if (*E) return;
 
-	*E = Inter::Constant::new_numerical(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), val, (inter_ti) ilp->indent_level, eloc);
+	*E = ConstantInstruction::new_numerical(IBM, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), val, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Constant::new_numerical(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_pair val, inter_ti level, inter_error_location *eloc) {
+inter_error_message *ConstantInstruction::new_numerical(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_pair val, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_5_data_fields(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_DIRECT, InterValuePairs::to_word1(val), InterValuePairs::to_word2(val), eloc, level);
-	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
-inter_error_message *Inter::Constant::new_textual(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti TID, inter_ti level, inter_error_location *eloc) {
+inter_error_message *ConstantInstruction::new_textual(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_ti TID, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_TEXT, TID, eloc, level);
-	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
-inter_error_message *Inter::Constant::new_function(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_package *block, inter_ti level, inter_error_location *eloc) {
+inter_error_message *ConstantInstruction::new_function(inter_bookmark *IBM, inter_ti SID, inter_ti KID, inter_package *block, inter_ti level, inter_error_location *eloc) {
 	inter_ti BID = block->resource_ID;
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM,
 		CONSTANT_IST, SID, KID, CONSTANT_ROUTINE, BID, eloc, level);
-	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
-inter_error_message *Inter::Constant::new_list(inter_bookmark *IBM, inter_ti SID, inter_ti KID,
+inter_error_message *ConstantInstruction::new_list(inter_bookmark *IBM, inter_ti SID, inter_ti KID,
 	int no_pairs, inter_pair *val_array, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *AP = Inode::new_with_3_data_fields(IBM, CONSTANT_IST, SID, KID, CONSTANT_INDIRECT_LIST, eloc, level);
 	int pos = AP->W.extent;
 	Inode::extend_instruction_by(AP, (inter_ti) (2*no_pairs));
 	for (int i=0; i<no_pairs; i++, pos += 2)
 		InterValuePairs::set(AP, pos, val_array[i]);
-	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), AP); if (E) return E;
+	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), AP); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(AP, IBM);
 	return NULL;
 }
 
-int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM, inter_type conts_type, inter_tree_node *P, text_stream *S, inter_error_message **E) {
+int ConstantInstruction::append(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM, inter_type conts_type, inter_tree_node *P, text_stream *S, inter_error_message **E) {
 	*E = NULL;
 	inter_pair val = InterValuePairs::undef();
 	*E = TextualInter::parse_pair(line, eloc, IBM, conts_type, S, &val);
@@ -240,7 +237,7 @@ int Inter::Constant::append(text_stream *line, inter_error_location *eloc, inter
 	return TRUE;
 }
 
-void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
+void ConstantInstruction::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_ROUTINE)
 		P->W.instruction[DATA_CONST_IFLD] = grid[P->W.instruction[DATA_CONST_IFLD]];
 
@@ -267,14 +264,14 @@ void Inter::Constant::transpose(inter_construct *IC, inter_tree_node *P, inter_t
 	}
 }
 
-void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	*E = Inter::Verify::TID_field(owner, P, KIND_CONST_IFLD);
+void ConstantInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+	*E = VerifyingInter::TID_field(owner, P, KIND_CONST_IFLD);
 	if (*E) return;
 	inter_type it = InterTypes::from_TID_in_field(P, KIND_CONST_IFLD);
 	switch (P->W.instruction[FORMAT_CONST_IFLD]) {
 		case CONSTANT_DIRECT:
 			if (P->W.extent != DATA_CONST_IFLD + 2) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-			*E = Inter::Verify::data_pair_fields(owner, P, DATA_CONST_IFLD, it);
+			*E = VerifyingInter::data_pair_fields(owner, P, DATA_CONST_IFLD, it);
 			if (*E) return;
 			break;
 		case CONSTANT_SUM_LIST:
@@ -283,7 +280,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 		case CONSTANT_QUOTIENT_LIST:
 			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				*E = Inter::Verify::data_pair_fields(owner, P, i, it);
+				*E = VerifyingInter::data_pair_fields(owner, P, i, it);
 				if (*E) return;
 			}
 			break;
@@ -307,7 +304,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
 			inter_type conts_type = InterTypes::type_operand(it, 0);
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				*E = Inter::Verify::data_pair_fields(owner, P, i, conts_type); if (*E) return;
+				*E = VerifyingInter::data_pair_fields(owner, P, i, conts_type); if (*E) return;
 			}
 			break;
 		}
@@ -318,7 +315,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			if (arity != given) { *E = Inode::error(P, I"extent not same size as struct definition", NULL); return; }
 			for (int i=DATA_CONST_IFLD, counter = 0; i<P->W.extent; i=i+2) {
 				inter_type conts_type = InterTypes::type_operand(it, counter++);
-				*E = Inter::Verify::data_pair_fields(owner, P, i, conts_type); if (*E) return;
+				*E = VerifyingInter::data_pair_fields(owner, P, i, conts_type); if (*E) return;
 			}
 			break;
 		}
@@ -328,7 +325,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 			text_stream *S = Inode::ID_to_text(P, ID);
 			if (S == NULL) { *E = Inode::error(P, I"no text in comment", NULL); return; }
 			LOOP_THROUGH_TEXT(pos, S)
-				if (Inter::Constant::char_acceptable(Str::get(pos)) == FALSE)
+				if (ConstantInstruction::char_acceptable(Str::get(pos)) == FALSE)
 					{ *E = Inode::error(P, I"bad character in text", NULL); return; }
 			break;
 		case CONSTANT_ROUTINE:
@@ -337,7 +334,7 @@ void Inter::Constant::verify(inter_construct *IC, inter_tree_node *P, inter_pack
 	}
 }
 
-void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	int hex = FALSE;
 	if (SymbolAnnotation::get_b(con_name, HEX_IANN)) hex = TRUE;
@@ -379,13 +376,12 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 				WRITE(" }");
 				break;
 			}
-			case CONSTANT_INDIRECT_TEXT:
-				WRITE("\"");
+			case CONSTANT_INDIRECT_TEXT: {
 				inter_ti ID = P->W.instruction[DATA_CONST_IFLD];
 				text_stream *S = Inode::ID_to_text(P, ID);
 				TextualInter::write_text(OUT, S);
-				WRITE("\"");
 				break;
+			}
 			case CONSTANT_ROUTINE: {
 				inter_package *block = Inode::ID_to_package(P, P->W.instruction[DATA_CONST_IFLD]);
 				WRITE("function %S", InterPackage::name(block));
@@ -399,7 +395,7 @@ void Inter::Constant::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node 
 	}
 }
 
-inter_package *Inter::Constant::code_block(inter_symbol *con_symbol) {
+inter_package *ConstantInstruction::code_block(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
 	inter_tree_node *D = InterSymbol::definition(con_symbol);
 	if (D == NULL) return NULL;
@@ -408,7 +404,7 @@ inter_package *Inter::Constant::code_block(inter_symbol *con_symbol) {
 	return Inode::ID_to_package(D, D->W.instruction[DATA_CONST_IFLD]);
 }
 
-int Inter::Constant::is_routine(inter_symbol *con_symbol) {
+int ConstantInstruction::is_routine(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return FALSE;
 	inter_tree_node *D = InterSymbol::definition(con_symbol);
 	if (D == NULL) return FALSE;
@@ -417,23 +413,23 @@ int Inter::Constant::is_routine(inter_symbol *con_symbol) {
 	return TRUE;
 }
 
-inter_symbols_table *Inter::Constant::local_symbols(inter_symbol *con_symbol) {
-	return InterPackage::scope(Inter::Constant::code_block(con_symbol));
+inter_symbols_table *ConstantInstruction::local_symbols(inter_symbol *con_symbol) {
+	return InterPackage::scope(ConstantInstruction::code_block(con_symbol));
 }
 
-int Inter::Constant::char_acceptable(int c) {
+int ConstantInstruction::char_acceptable(int c) {
 	if ((c < 0x20) && (c != 0x09) && (c != 0x0a)) return FALSE;
 	return TRUE;
 }
 
-int Inter::Constant::constant_depth(inter_symbol *con) {
+int ConstantInstruction::constant_depth(inter_symbol *con) {
 	LOG_INDENT;
-	int d = Inter::Constant::constant_depth_r(con);
+	int d = ConstantInstruction::constant_depth_r(con);
 	LOGIF(CONSTANT_DEPTH_CALCULATION, "%S has depth %d\n", InterSymbol::identifier(con), d);
 	LOG_OUTDENT;
 	return d;
 }
-int Inter::Constant::constant_depth_r(inter_symbol *con) {
+int ConstantInstruction::constant_depth_r(inter_symbol *con) {
 	if (con == NULL) return 1;
 	inter_tree_node *D = InterSymbol::definition(con);
 	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return 1;
@@ -441,7 +437,7 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
 		if (InterValuePairs::is_symbolic(val)) {
 			inter_symbol *alias = InterValuePairs::to_symbol_at(val, D);
-			return Inter::Constant::constant_depth(alias) + 1;
+			return ConstantInstruction::constant_depth(alias) + 1;
 		}
 		return 1;
 	}
@@ -454,7 +450,7 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 			inter_pair val = InterValuePairs::get(D, i);
 			if (InterValuePairs::is_symbolic(val)) {
 				inter_symbol *alias = InterValuePairs::to_symbol_at(val, D);
-				total += Inter::Constant::constant_depth(alias);
+				total += ConstantInstruction::constant_depth(alias);
 			} else total++;
 		}
 		return 1 + total;
@@ -462,7 +458,7 @@ int Inter::Constant::constant_depth_r(inter_symbol *con) {
 	return 1;
 }
 
-inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_pair val) {
+inter_ti ConstantInstruction::evaluate(inter_symbols_table *T, inter_pair val) {
 	if (InterValuePairs::is_number(val)) return InterValuePairs::to_number(val);
 	if (InterValuePairs::is_symbolic(val)) {
 		inter_symbol *aliased = InterValuePairs::to_symbol(val, T);
@@ -472,7 +468,7 @@ inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_pair val) {
 		switch (D->W.instruction[FORMAT_CONST_IFLD]) {
 			case CONSTANT_DIRECT: {
 				inter_pair dval = InterValuePairs::get(D, DATA_CONST_IFLD);
-				inter_ti e = Inter::Constant::evaluate(InterPackage::scope_of(D), dval);
+				inter_ti e = ConstantInstruction::evaluate(InterPackage::scope_of(D), dval);
 				return e;
 			}
 			case CONSTANT_SUM_LIST:
@@ -482,7 +478,7 @@ inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_pair val) {
 				inter_ti result = 0;
 				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
 					inter_pair operand = InterValuePairs::get(D, i);
-					inter_ti extra = Inter::Constant::evaluate(InterPackage::scope_of(D), operand);
+					inter_ti extra = ConstantInstruction::evaluate(InterPackage::scope_of(D), operand);
 					if (i == DATA_CONST_IFLD) result = extra;
 					else {
 						if (D->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) result = result + extra;
@@ -498,7 +494,7 @@ inter_ti Inter::Constant::evaluate(inter_symbols_table *T, inter_pair val) {
 	return 0;
 }
 
-int Inter::Constant::evaluate_to_int(inter_symbol *S) {
+int ConstantInstruction::evaluate_to_int(inter_symbol *S) {
 	inter_tree_node *P = InterSymbol::definition(S);
 	if ((P) &&
 		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
@@ -515,7 +511,7 @@ int Inter::Constant::evaluate_to_int(inter_symbol *S) {
 	return -1;
 }
 
-int Inter::Constant::set_int(inter_symbol *S, int N) {
+int ConstantInstruction::set_int(inter_symbol *S, int N) {
 	inter_tree_node *P = InterSymbol::definition(S);
 	if ((P) &&
 		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&

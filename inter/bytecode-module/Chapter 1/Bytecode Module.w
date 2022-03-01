@@ -50,7 +50,7 @@ void BytecodeModule::start(void) {
 	@<Register this module's debugging log aspects@>;
 	@<Register this module's debugging log writers@>;
 
-	InterConstruct::create_language();
+	InterInstruction::create_language();
 	InterTypes::initialise_constructors();
 }
 void BytecodeModule::end(void) {
@@ -71,7 +71,7 @@ void BytecodeModule::end(void) {
 
 @<Register this module's stream writers@> =
 	Writers::register_writer('t', &TextualInter::writer);
-	Writers::register_writer('F', &InterConstruct::instruction_writer);
+	Writers::register_writer('F', &InterInstruction::instruction_writer);
 
 @
 

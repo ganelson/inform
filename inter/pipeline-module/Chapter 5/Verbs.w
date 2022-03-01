@@ -42,7 +42,7 @@ int SynopticVerbs::form_order(const void *ent1, const void *ent2) {
 	inter_name *iname = HierarchyLocations::iname(I, TABLEOFVERBS_HL);
 	Synoptic::begin_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->verb_form_nodes); i++) {
-		inter_package *pack = InterPackage::at_this_head(inv->verb_form_nodes->list[i].node);
+		inter_package *pack = PackageInstruction::at_this_head(inv->verb_form_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::required_symbol(pack, I"^verb_value");
 		Synoptic::symbol_entry(vc_s);
 	}

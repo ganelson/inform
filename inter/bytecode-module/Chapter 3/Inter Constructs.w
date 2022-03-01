@@ -1,4 +1,4 @@
-[InterConstruct::] Inter Constructs.
+[InterInstruction::] Inter Constructs.
 
 There are around two dozen constructs in textual Inter source code, with each
 instruction in bytecode being a usage of one of them.
@@ -27,7 +27,7 @@ typedef struct inter_construct {
 	CLASS_DEFINITION
 } inter_construct;
 
-inter_construct *InterConstruct::create_construct(inter_ti ID, text_stream *name) {
+inter_construct *InterInstruction::create_construct(inter_ti ID, text_stream *name) {
 	inter_construct *IC = CREATE(inter_construct);
 	IC->construct_ID = ID;
 	IC->construct_name = Str::duplicate(name);
@@ -44,7 +44,7 @@ inter_construct *InterConstruct::create_construct(inter_ti ID, text_stream *name
 
 	IC->methods = Methods::new_set();
 
-	InterConstruct::set_construct_for_ID(ID, IC);
+	InterInstruction::set_construct_for_ID(ID, IC);
 	return IC;
 }
 
@@ -54,7 +54,7 @@ of an instruction made with that construct, and the data type (in TID form --
 see //Inter Data Types//) will live in another.
 
 =
-void InterConstruct::defines_symbol_in_fields(inter_construct *IC, int s, int t) {
+void InterInstruction::defines_symbol_in_fields(inter_construct *IC, int s, int t) {
 	IC->symbol_defn_field = s;
 	IC->TID_field = t;
 }
@@ -74,13 +74,14 @@ Those must be explicitly granted when a new construct is created.
 @d INSIDE_PLAIN_PACKAGE_ICUP 2
 @d INSIDE_CODE_PACKAGE_ICUP  4
 @d CAN_HAVE_CHILDREN_ICUP    8
+@d CAN_HAVE_ANNOTATIONS_ICUP 16
 
 =
-void InterConstruct::permit(inter_construct *IC, int usage) {
+void InterInstruction::permit(inter_construct *IC, int usage) {
 	IC->usage_permissions |= usage;
 }
 
-void InterConstruct::allow_in_depth_range(inter_construct *IC, int l1, int l2) {
+void InterInstruction::allow_in_depth_range(inter_construct *IC, int l1, int l2) {
 	IC->min_level = l1;
 	IC->max_level = l2;
 }
@@ -91,7 +92,7 @@ number of words of bytecode it occupies:
 @d UNLIMITED_INSTRUCTION_FRAME_LENGTH 0x7fffffff
 
 =
-void InterConstruct::fix_instruction_length_between(inter_construct *IC, int l1, int l2) {
+void InterInstruction::fix_instruction_length_between(inter_construct *IC, int l1, int l2) {
 	IC->min_extent = l1;
 	IC->max_extent = l2;
 }
@@ -100,7 +101,7 @@ void InterConstruct::fix_instruction_length_between(inter_construct *IC, int l1,
 in position:
 
 =
-inter_error_message *InterConstruct::check_permissions(inter_construct *IC,
+inter_error_message *InterInstruction::check_permissions(inter_construct *IC,
 	inter_package *pack, inter_error_location *eloc) {
 	int need = INSIDE_PLAIN_PACKAGE_ICUP;
 	if (pack == NULL) need = OUTSIDE_OF_PACKAGES_ICUP;
@@ -121,14 +122,17 @@ inter_error_message *InterConstruct::check_permissions(inter_construct *IC,
 	return NULL;
 }
 
+int InterInstruction::allows(inter_construct *IC, int icup) {
+	if (IC->usage_permissions & icup) return TRUE;
+	return FALSE;
+}
+
 @ Second, for a proposed use of node not yet in position -- this is used when
 reading textual inter, hence the message about indentation:
 
 =
-inter_error_message *InterConstruct::check_level_in_package(inter_bookmark *IBM,
-	inter_ti ID, int level, inter_error_location *eloc) {
-	inter_construct *proposed = InterConstruct::get_construct_for_ID(ID);
-	if (proposed == NULL) return InterErrors::plain(I"no such construct", eloc);
+inter_error_message *InterInstruction::check_level_in_package(inter_bookmark *IBM,
+	inter_construct *proposed, int level, inter_error_location *eloc) {
 	inter_package *pack = InterBookmark::package(IBM);
 	int actual = level;
 	if ((pack) && (InterPackage::is_a_root_package(pack) == FALSE))	
@@ -136,7 +140,7 @@ inter_error_message *InterConstruct::check_level_in_package(inter_bookmark *IBM,
 	if (actual < 0) return InterErrors::plain(I"impossible level", eloc);
 	if ((actual < proposed->min_level) || (actual > proposed->max_level))
 		return InterErrors::plain(I"indentation error", eloc);
-	return InterConstruct::check_permissions(proposed, pack, eloc);
+	return InterInstruction::check_permissions(proposed, pack, eloc);
 }
 
 @ A much more formidable check. This traverses an entire tree, and verifies
@@ -148,14 +152,14 @@ typedef struct tree_lint_state {
 	inter_ti package_level;
 } tree_lint_state;
 
-void InterConstruct::tree_lint(inter_tree *I) {
+void InterInstruction::tree_lint(inter_tree *I) {
 	tree_lint_state tls;
 	tls.package = I->root_package;
 	tls.package_level = 0;
-	InterConstruct::tree_lint_r(I, I->root_node, &tls);
+	InterInstruction::tree_lint_r(I, I->root_node, &tls);
 }
 
-void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_state *tls) {
+void InterInstruction::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_state *tls) {
 	LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if (Inode::get_package(C) != tls->package) {
 			WRITE_TO(STDERR, "Node gives package as ");
@@ -166,13 +170,13 @@ void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_st
 			internal_error("node in wrong package");
 		}
 		inter_construct *IC = NULL;
-		inter_error_message *E = InterConstruct::get_construct(C, &IC);
+		inter_error_message *E = InterInstruction::get_construct(C, &IC);
 		if (E) InterErrors::issue(E);
 		if (IC) {
 			inter_error_location *eloc = Inode::get_error_location(C);
-			E = InterConstruct::check_permissions(IC, tls->package, eloc);
+			E = InterInstruction::check_permissions(IC, tls->package, eloc);
 			if (E) InterErrors::issue(E);
-			E = InterConstruct::verify_children(C);
+			E = InterInstruction::verify_children(C);
 			if (E) {
 				InterErrors::issue(E);
 				InterErrors::backtrace(STDERR, C);
@@ -191,9 +195,9 @@ void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_st
 			}
 			if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
 				tree_lint_state inner_tls;
-				inner_tls.package = InterPackage::at_this_head(C);
+				inner_tls.package = PackageInstruction::at_this_head(C);
 				inner_tls.package_level = level + 1;
-				InterConstruct::tree_lint_r(I, C, &inner_tls);
+				InterInstruction::tree_lint_r(I, C, &inner_tls);
 				LOOP_OVER_SYMBOLS_TABLE(S, InterPackage::scope(inner_tls.package))
 					if ((InterSymbol::get_flag(S, SPECULATIVE_ISYMF)) &&
 						(InterSymbol::is_defined(S) == FALSE)) {
@@ -202,7 +206,7 @@ void InterConstruct::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_st
 							InterSymbol::identifier(S), eloc));
 					}
 			} else {
-				InterConstruct::tree_lint_r(I, C, tls);
+				InterInstruction::tree_lint_r(I, C, tls);
 			}
 		}
 	}
@@ -228,7 +232,7 @@ but give it no syntax. If so, it will be inexpressible in textual Inter code.
 @d MAX_RECOGNITION_REGEXP_LENGTH 64
 
 =
-void InterConstruct::specify_syntax(inter_construct *IC, text_stream *syntax) {
+void InterInstruction::specify_syntax(inter_construct *IC, text_stream *syntax) {
 	IC->syntax = syntax;
 	TEMPORARY_TEXT(regexp)
 	for (int i = 0; i < Str::len(syntax); i++) {
@@ -278,15 +282,59 @@ in textual Inter, and cannot be stored in bytecode binary Inter either.
 @e INVALID_IST from 0
 
 =
-void InterConstruct::define_invalid_construct(void) {
-	inter_construct *IC = InterConstruct::create_construct(INVALID_IST, I"invalid");
-	InterConstruct::allow_in_depth_range(IC, 0, -1);
+void InterInstruction::define_invalid_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(INVALID_IST, I"invalid");
+	InterInstruction::allow_in_depth_range(IC, 0, -1);
 }
 
-@ The valid construct IDs then count upwards from there. Since these IDs are
-stored in the bytecode for an instruction, in fact in the 0th word of the frame,
-we will need to convert them to their //inter_construct// equivalents quickly.
-So we store a lookup table:
+@ The valid construct IDs then count upwards from there. Note that changing any
+of these values would invalidate existing Inter binary files, necessitating a
+bump of //The Inter Version//.
+
+These are constructs used for instructions outside function bodies:
+
+@e APPEND_IST
+@e COMMENT_IST
+@e CONSTANT_IST
+@e DEFAULTVALUE_IST
+@e INSTANCE_IST
+@e LINK_IST
+@e NOP_IST
+@e PACKAGE_IST
+@e PACKAGETYPE_IST
+@e PERMISSION_IST
+@e PRAGMA_IST
+@e PRIMITIVE_IST
+@e PROPERTY_IST
+@e PROPERTYVALUE_IST
+@e TYPENAME_IST
+@e VARIABLE_IST
+
+@ These are constructs used for instructions inside function bodies:
+
+@e ASSEMBLY_IST
+@e CAST_IST
+@e CODE_IST
+@e EVALUATION_IST
+@e INV_IST
+@e LAB_IST
+@e LABEL_IST
+@e LOCAL_IST
+@e REF_IST
+@e REFERENCE_IST
+@e SPLAT_IST
+@e VAL_IST
+
+@ These are pseudo-constructs, in that they do not create instructions, and
+instead specify something else about the tree:
+
+@e PLUG_IST
+@e SOCKET_IST
+@e VERSION_IST
+
+@ Since these IDs are stored in the bytecode for an instruction, in fact in the
+0th word of the frame, we will need to convert them to their //inter_construct//
+equivalents quickly. So we store a lookup table:
 
 @d MAX_INTER_CONSTRUCTS 100
 
@@ -294,7 +342,7 @@ So we store a lookup table:
 int inter_construct_by_ID_ready = FALSE;
 inter_construct *inter_construct_by_ID[MAX_INTER_CONSTRUCTS];
 
-void InterConstruct::set_construct_for_ID(inter_ti ID, inter_construct *IC) {
+void InterInstruction::set_construct_for_ID(inter_ti ID, inter_construct *IC) {
 	if (inter_construct_by_ID_ready == FALSE) {
 		inter_construct_by_ID_ready = TRUE;
 		for (int i=0; i<MAX_INTER_CONSTRUCTS; i++) inter_construct_by_ID[i] = NULL;
@@ -303,7 +351,7 @@ void InterConstruct::set_construct_for_ID(inter_ti ID, inter_construct *IC) {
 	inter_construct_by_ID[ID] = IC;
 }
 
-inter_construct *InterConstruct::get_construct_for_ID(inter_ti ID) {
+inter_construct *InterInstruction::get_construct_for_ID(inter_ti ID) {
 	if ((ID == INVALID_IST) || (ID >= MAX_INTER_CONSTRUCTS) ||
 		(inter_construct_by_ID_ready == FALSE))
 		return NULL;
@@ -313,9 +361,9 @@ inter_construct *InterConstruct::get_construct_for_ID(inter_ti ID) {
 @ Whence, in a faintly paranoid way:
 
 =
-inter_error_message *InterConstruct::get_construct(inter_tree_node *P, inter_construct **to) {
+inter_error_message *InterInstruction::get_construct(inter_tree_node *P, inter_construct **to) {
 	if (P == NULL) return Inode::error(P, I"invalid node", NULL);
-	inter_construct *IC = InterConstruct::get_construct_for_ID(P->W.instruction[ID_IFLD]);
+	inter_construct *IC = InterInstruction::get_construct_for_ID(P->W.instruction[ID_IFLD]);
 	if (IC == NULL) return Inode::error(P, I"no such construct", NULL);
 	if (to) *to = IC;
 	return NULL;
@@ -325,46 +373,46 @@ inter_error_message *InterConstruct::get_construct(inter_tree_node *P, inter_con
 the creation of the constructs: so we poll those sections in turn.
 
 =
-void InterConstruct::create_language(void) {
+void InterInstruction::create_language(void) {
 	SymbolAnnotation::declare_canonical_annotations();
-	InterConstruct::define_invalid_construct();
-	Inter::Nop::define();
-	Inter::Comment::define();
-	Inter::Plug::define();
-	Inter::Socket::define();
-	Inter::Version::define();
-	Inter::Pragma::define();
-	Inter::Link::define();
-	Inter::Append::define();
-	Inter::Typename::define();
-	Inter::DefaultValue::define();
-	Inter::Constant::define();
-	Inter::Instance::define();
-	Inter::Variable::define();
-	Inter::Property::define();
-	Inter::Permission::define();
-	Inter::PropertyValue::define();
-	Inter::Primitive::define();
-	InterPackage::define();
-	Inter::PackageType::define();
-	Inter::Label::define();
-	Inter::Local::define();
-	Inter::Inv::define();
-	Inter::Ref::define();
-	Inter::Val::define();
-	Inter::Lab::define();
-	Inter::Assembly::define();
-	Inter::Code::define();
-	Inter::Evaluation::define();
-	Inter::Reference::define();
-	Inter::Cast::define();
-	Inter::Splat::define();
+	InterInstruction::define_invalid_construct();
+	NopInstruction::define_construct();
+	CommentInstruction::define_construct();
+	PlugInstruction::define_construct();
+	SocketInstruction::define_construct();
+	VersionInstruction::define_construct();
+	PragmaInstruction::define_construct();
+	LinkInstruction::define_construct();
+	AppendInstruction::define_construct();
+	TypenameInstruction::define_construct();
+	DefaultValueInstruction::define_construct();
+	ConstantInstruction::define_construct();
+	InstanceInstruction::define_construct();
+	VariableInstruction::define_construct();
+	PropertyInstruction::define_construct();
+	PermissionInstruction::define_construct();
+	PropertyValueInstruction::define_construct();
+	PrimitiveInstruction::define_construct();
+	PackageInstruction::define_construct();
+	PackageTypeInstruction::define_construct();
+	LabelInstruction::define_construct();
+	LocalInstruction::define_construct();
+	InvInstruction::define_construct();
+	RefInstruction::define_construct();
+	ValInstruction::define_construct();
+	LabInstruction::define_construct();
+	AssemblyInstruction::define_construct();
+	CodeInstruction::define_construct();
+	EvaluationInstruction::define_construct();
+	ReferenceInstruction::define_construct();
+	CastInstruction::define_construct();
+	SplatInstruction::define_construct();
 }
 
 @ The result is printed when //inter// is run with the |-constructs| switch.
 
 =
-void InterConstruct::show_constructs(OUTPUT_STREAM) {
+void InterInstruction::show_constructs(OUTPUT_STREAM) {
 	WRITE("  Code     Construct           Syntax\n");
 	for (int ID=0; ID<MAX_INTER_CONSTRUCTS; ID++) {
 		inter_construct *IC = inter_construct_by_ID[ID];
@@ -385,8 +433,8 @@ Firstly, each construct has a method for verifying (i) that it is being used in
 a self-consistent way by the given instruction, and (ii) that it can see child
 nodes to that instruction of a kind it expects.
 
-//InterConstruct::verify// should be called only by //Inter::Verify::instruction//,
-which ensures that //InterConstruct::verify// is never called twice on the same
+//InterInstruction::verify// should be called only by //VerifyingInter::instruction//,
+which ensures that //InterInstruction::verify// is never called twice on the same
 instruction. |CONSTRUCT_VERIFY_MTID| methods for the constructs can therefore
 safely assume that.
 
@@ -399,16 +447,16 @@ VOID_METHOD_TYPE(CONSTRUCT_VERIFY_MTID, inter_construct *IC, inter_tree_node *P,
 VOID_METHOD_TYPE(CONSTRUCT_VERIFY_CHILDREN_MTID, inter_construct *IC,
 	inter_tree_node *P, inter_error_message **E)
 
-inter_error_message *InterConstruct::verify(inter_package *owner,
+inter_error_message *InterInstruction::verify(inter_package *owner,
 	inter_construct *IC, inter_tree_node *P) {
 	inter_error_message *E = NULL;
 	VOID_METHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, owner, &E);
 	return E;
 }
 
-inter_error_message *InterConstruct::verify_children(inter_tree_node *P) {
+inter_error_message *InterInstruction::verify_children(inter_tree_node *P) {
 	inter_construct *IC = NULL;
-	inter_error_message *E = InterConstruct::get_construct(P, &IC);
+	inter_error_message *E = InterInstruction::get_construct(P, &IC);
 	if (E) return E;
 	VOID_METHOD_CALL(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, P, &E);
 	return E;
@@ -423,20 +471,20 @@ handled differently by each construct.
 VOID_METHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT,
 	inter_tree_node *P, inter_error_message **E)
 
-inter_error_message *InterConstruct::write_construct_text(OUTPUT_STREAM, inter_tree_node *P) {
+inter_error_message *InterInstruction::write_construct_text(OUTPUT_STREAM, inter_tree_node *P) {
 	if (P->W.instruction[ID_IFLD] == NOP_IST) return NULL;
-	return InterConstruct::write_construct_text_allowing_nop(OUT, P);
+	return InterInstruction::write_construct_text_allowing_nop(OUT, P);
 }
 
-inter_error_message *InterConstruct::write_construct_text_allowing_nop(OUTPUT_STREAM,
+inter_error_message *InterInstruction::write_construct_text_allowing_nop(OUTPUT_STREAM,
 	inter_tree_node *P) {
 	inter_construct *IC = NULL;
-	inter_error_message *E = InterConstruct::get_construct(P, &IC);
+	inter_error_message *E = InterInstruction::get_construct(P, &IC);
 	if (E) return E;
 	for (inter_ti L=0; L<P->W.instruction[LEVEL_IFLD]; L++) WRITE("\t");
 	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
 	WRITE("\n");
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) InterPackage::write_symbols(OUT, P);
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) PackageInstruction::write_symbols(OUT, P);
 	return E;
 }
 
@@ -444,7 +492,7 @@ inter_error_message *InterConstruct::write_construct_text_allowing_nop(OUTPUT_ST
 and this is used only for debugging or to show errors in binary Inter files.
 
 =
-void InterConstruct::instruction_writer(OUTPUT_STREAM, char *format_string, void *vI) {
+void InterInstruction::instruction_writer(OUTPUT_STREAM, char *format_string, void *vI) {
 	inter_tree_node *F = (inter_tree_node *) vI;
 	if (F == NULL) { WRITE("<no frame>"); return; }
 	WRITE("%05d -> ", F->W.index);
@@ -453,7 +501,7 @@ void InterConstruct::instruction_writer(OUTPUT_STREAM, char *format_string, void
 	WRITE(" }");
 }
 
-@ Conversely, the function //InterConstruct::match// takes a line of textual Inter
+@ Conversely, the function //InterInstruction::match// takes a line of textual Inter
 source code, uses the regular expressions for each construct to find which one
 is being used, and then calls its |CONSTRUCT_READ_MTID| method to ask for the
 job to be completed.
@@ -464,13 +512,18 @@ job to be completed.
 VOID_METHOD_TYPE(CONSTRUCT_READ_MTID, inter_construct *IC, inter_bookmark *,
 	inter_line_parse *, inter_error_location *, inter_error_message **E)
 
-inter_error_message *InterConstruct::match(inter_line_parse *ilp, inter_error_location *eloc,
+inter_error_message *InterInstruction::match(inter_line_parse *ilp, inter_error_location *eloc,
 	inter_bookmark *IBM) {
 	inter_construct *IC;
 	LOOP_OVER(IC, inter_construct)
 		if (IC->recognition_regexp[0])
 			if (Regexp::match(&ilp->mr, ilp->line, IC->recognition_regexp)) {
-				inter_error_message *E = NULL;
+				inter_error_message *E =
+					InterInstruction::check_level_in_package(IBM, IC, ilp->indent_level, eloc);
+				if (E) return E;
+				if ((SymbolAnnotation::nonempty(&(ilp->set))) &&
+					(InterInstruction::allows(IC, CAN_HAVE_ANNOTATIONS_ICUP) == FALSE))
+					return InterErrors::plain(I"__annotations are not allowed", eloc);
 				VOID_METHOD_CALL(IC, CONSTRUCT_READ_MTID, IBM, ilp, eloc, &E);
 				return E;
 			}
@@ -487,10 +540,10 @@ not the place to explain it. See //Inter in Binary Files//.
 VOID_METHOD_TYPE(CONSTRUCT_TRANSPOSE_MTID, inter_construct *IC, inter_tree_node *P,
 	inter_ti *grid, inter_ti max, inter_error_message **E)
 
-inter_error_message *InterConstruct::transpose_construct(inter_package *owner,
+inter_error_message *InterInstruction::transpose_construct(inter_package *owner,
 	inter_tree_node *P, inter_ti *grid, inter_ti max) {
 	inter_construct *IC = NULL;
-	inter_error_message *E = InterConstruct::get_construct(P, &IC);
+	inter_error_message *E = InterInstruction::get_construct(P, &IC);
 	if (E) return E;
 	VOID_METHOD_CALL(IC, CONSTRUCT_TRANSPOSE_MTID, P, grid, max, &E);
 	return E;

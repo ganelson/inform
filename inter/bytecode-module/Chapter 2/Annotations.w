@@ -399,9 +399,8 @@ void SymbolAnnotation::write_annotation(OUTPUT_STREAM, inter_tree_node *F, inter
 	WRITE(" %S", IA.annot->annotation_keyword);
 	switch (IA.annot->iatype) {
 		case TEXTUAL_IATYPE:
-			WRITE("=\"");
+			WRITE("=");
 			TextualInter::write_text(OUT, Inode::ID_to_text(F, IA.annot_value));
-			WRITE("\"");
 			break;
 		case INTEGER_IATYPE:
 			WRITE("=%d", IA.annot_value);

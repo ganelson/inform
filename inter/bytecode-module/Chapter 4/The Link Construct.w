@@ -1,21 +1,20 @@
-[Inter::Link::] The Link Construct.
+[LinkInstruction::] The Link Construct.
 
 Defining the link construct.
 
 @
 
-@e LINK_IST
 
 =
-void Inter::Link::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(LINK_IST, I"link");
-	InterConstruct::specify_syntax(IC, I"link IDENTIFIER TEXT TEXT TEXT TEXT");
-	InterConstruct::fix_instruction_length_between(IC, EXTENT_LINK_IFR, EXTENT_LINK_IFR);
-	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
-	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Link::read);
-	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Link::transpose);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Link::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Link::write);
+void LinkInstruction::define_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(LINK_IST, I"link");
+	InterInstruction::specify_syntax(IC, I"link IDENTIFIER TEXT TEXT TEXT TEXT");
+	InterInstruction::fix_instruction_length_between(IC, EXTENT_LINK_IFR, EXTENT_LINK_IFR);
+	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, LinkInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, LinkInstruction::transpose);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, LinkInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, LinkInstruction::write);
 }
 
 @
@@ -35,12 +34,7 @@ void Inter::Link::define(void) {
 @d CATCH_ALL_LINK_STAGE 5
 
 =
-void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	*E = InterConstruct::check_level_in_package(IBM, LINK_IST, ilp->indent_level, eloc);
-	if (*E) return;
-
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
-
+void LinkInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	inter_ti stage = 0;
 	text_stream *stage_text = ilp->mr.exp[0];
 	if (Str::eq(stage_text, I"early")) stage = EARLY_LINK_STAGE;
@@ -57,24 +51,24 @@ void Inter::Link::read(inter_construct *IC, inter_bookmark *IBM, inter_line_pars
 		if (*E) return;
 	}
 
-	*E = Inter::Link::new(IBM, SIDS[0], SIDS[1], SIDS[2], SIDS[3], SIDS[4], (inter_ti) ilp->indent_level, eloc);
+	*E = LinkInstruction::new(IBM, SIDS[0], SIDS[1], SIDS[2], SIDS[3], SIDS[4], (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_error_message *Inter::Link::new(inter_bookmark *IBM,
+inter_error_message *LinkInstruction::new(inter_bookmark *IBM,
 	inter_ti stage, inter_ti text1, inter_ti text2, inter_ti text3, inter_ti text4, inter_ti level,
 	struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_5_data_fields(IBM, LINK_IST, stage, text1, text2, text3, text4, eloc, level);
-	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
-void Inter::Link::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
+void LinkInstruction::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	for (int i=SEGMENT_LINK_IFLD; i<=TO_SEGMENT_LINK_IFLD; i++)
 		P->W.instruction[i] = grid[P->W.instruction[i]];
 }
 
-void Inter::Link::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+void LinkInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if ((P->W.instruction[STAGE_LINK_IFLD] != EARLY_LINK_STAGE) &&
 		(P->W.instruction[STAGE_LINK_IFLD] != BEFORE_LINK_STAGE) &&
 		(P->W.instruction[STAGE_LINK_IFLD] != INSTEAD_LINK_STAGE) &&
@@ -86,7 +80,7 @@ void Inter::Link::verify(inter_construct *IC, inter_tree_node *P, inter_package 
 	if (P->W.instruction[TO_SEGMENT_LINK_IFLD] == 0) { *E = Inode::error(P, I"no to-segment text", NULL); return; }
 }
 
-void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+void LinkInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("link ");
 	switch (P->W.instruction[STAGE_LINK_IFLD]) {
 		case EARLY_LINK_STAGE: WRITE("early"); break;
@@ -95,9 +89,8 @@ void Inter::Link::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, 
 		case AFTER_LINK_STAGE: WRITE("after"); break;
 	}
 	for (int i=SEGMENT_LINK_IFLD; i<=TO_SEGMENT_LINK_IFLD; i++) {
-		WRITE(" \"");
+		WRITE(" ");
 		text_stream *S = Inode::ID_to_text(P, P->W.instruction[i]);
 		TextualInter::write_text(OUT, S);
-		WRITE("\"");
 	}
 }

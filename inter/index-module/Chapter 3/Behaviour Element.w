@@ -29,8 +29,8 @@ void BehaviourElement::render(OUTPUT_STREAM, index_session *session) {
 			inter_tree_node *D = InterPackage::head(pack);
 			LOOP_THROUGH_INTER_CHILDREN(C, D) {
 				if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
-					inter_package *entry = InterPackage::at_this_head(C);
-					if (InterPackage::type(entry) ==
+					inter_package *entry = PackageInstruction::at_this_head(C);
+					if (PackageInstruction::type(entry) ==
 						LargeScale::package_type(I, I"_named_action_pattern_entry")) {
 						text_stream *text = Metadata::optional_textual(entry, I"^text");
 						HTML_TAG("br");

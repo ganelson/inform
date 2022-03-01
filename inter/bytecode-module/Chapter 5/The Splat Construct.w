@@ -1,24 +1,22 @@
-[Inter::Splat::] The Splat Construct.
+[SplatInstruction::] The Splat Construct.
 
 Defining the splat construct.
 
 @
 
-@e SPLAT_IST
-
 =
-void Inter::Splat::define(void) {
-	inter_construct *IC = InterConstruct::create_construct(SPLAT_IST, I"splat");
-	InterConstruct::specify_syntax(IC, I"splat OPTIONALIDENTIFIER TEXT");
-	InterConstruct::fix_instruction_length_between(IC, EXTENT_SPLAT_IFR, EXTENT_SPLAT_IFR);
-	InterConstruct::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
-	InterConstruct::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
-	InterConstruct::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
-	InterConstruct::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
-	METHOD_ADD(IC, CONSTRUCT_READ_MTID, Inter::Splat::read);
-	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, Inter::Splat::transpose);
-	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, Inter::Splat::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, Inter::Splat::write);
+void SplatInstruction::define_construct(void) {
+	inter_construct *IC = InterInstruction::create_construct(SPLAT_IST, I"splat");
+	InterInstruction::specify_syntax(IC, I"splat OPTIONALIDENTIFIER TEXT");
+	InterInstruction::fix_instruction_length_between(IC, EXTENT_SPLAT_IFR, EXTENT_SPLAT_IFR);
+	InterInstruction::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
+	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
+	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
+	InterInstruction::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
+	METHOD_ADD(IC, CONSTRUCT_READ_MTID, SplatInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, SplatInstruction::transpose);
+	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, SplatInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, SplatInstruction::write);
 }
 
 @
@@ -49,19 +47,14 @@ void Inter::Splat::define(void) {
 @e WHITESPACE_I6DIR
 
 =
-void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	if (SymbolAnnotation::nonempty(&(ilp->set))) { *E = InterErrors::plain(I"__annotations are not allowed", eloc); return; }
-
-	*E = InterConstruct::check_level_in_package(IBM, SPLAT_IST, ilp->indent_level, eloc);
-	if (*E) return;
-
+void SplatInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	inter_package *routine = NULL;
 	if (ilp->indent_level > 0) {
 		routine = InterBookmark::package(IBM);
 		if (routine == NULL) { *E = InterErrors::plain(I"indented 'splat' used outside function", eloc); return; }
 	}
 
-	inter_ti plm = Inter::Splat::parse_plm(ilp->mr.exp[0]);
+	inter_ti plm = SplatInstruction::parse_plm(ilp->mr.exp[0]);
 	if (plm == 1000000) { *E = InterErrors::plain(I"unknown PLM code before text matter", eloc); return; }
 
 	inter_ti SID = InterWarehouse::create_text(InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
@@ -69,10 +62,10 @@ void Inter::Splat::read(inter_construct *IC, inter_bookmark *IBM, inter_line_par
 	*E = TextualInter::parse_literal_text(glob_storage, ilp->mr.exp[1], 0, Str::len(ilp->mr.exp[1]), eloc);
 	if (*E) return;
 
-	*E = Inter::Splat::new(IBM, SID, plm, (inter_ti) ilp->indent_level, eloc);
+	*E = SplatInstruction::new(IBM, SID, plm, (inter_ti) ilp->indent_level, eloc);
 }
 
-inter_ti Inter::Splat::parse_plm(text_stream *S) {
+inter_ti SplatInstruction::parse_plm(text_stream *S) {
 	if (Str::len(S) == 0) return 0;
 	if (Str::eq(S, I"ARRAY")) return ARRAY_I6DIR;
 	if (Str::eq(S, I"ATTRIBUTE")) return ATTRIBUTE_I6DIR;
@@ -96,7 +89,7 @@ inter_ti Inter::Splat::parse_plm(text_stream *S) {
 	return 1000000;
 }
 
-void Inter::Splat::write_plm(OUTPUT_STREAM, inter_ti plm) {
+void SplatInstruction::write_plm(OUTPUT_STREAM, inter_ti plm) {
 	switch (plm) {
 		case ARRAY_I6DIR: WRITE("ARRAY "); break;
 		case ATTRIBUTE_I6DIR: WRITE("ATTRIBUTE "); break;
@@ -119,26 +112,24 @@ void Inter::Splat::write_plm(OUTPUT_STREAM, inter_ti plm) {
 	}
 }
 
-inter_error_message *Inter::Splat::new(inter_bookmark *IBM, inter_ti SID, inter_ti plm, inter_ti level, inter_error_location *eloc) {
+inter_error_message *SplatInstruction::new(inter_bookmark *IBM, inter_ti SID, inter_ti plm, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, SPLAT_IST, 0, SID, plm, eloc, level);
-	inter_error_message *E = Inter::Verify::instruction(InterBookmark::package(IBM), P); if (E) return E;
+	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
 }
 
-void Inter::Splat::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
+void SplatInstruction::transpose(inter_construct *IC, inter_tree_node *P, inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
 	P->W.instruction[MATTER_SPLAT_IFLD] = grid[P->W.instruction[MATTER_SPLAT_IFLD]];
 }
 
-void Inter::Splat::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
+void SplatInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
 	if (P->W.instruction[MATTER_SPLAT_IFLD] == 0) { *E = Inode::error(P, I"no matter text", NULL); return; }
 	if (P->W.instruction[PLM_SPLAT_IFLD] > MYSTERY_I6DIR) { *E = Inode::error(P, I"plm out of range", NULL); return; }
 }
 
-void Inter::Splat::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+void SplatInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
 	WRITE("splat ");
-	Inter::Splat::write_plm(OUT, P->W.instruction[PLM_SPLAT_IFLD]);
-	WRITE("\"");
+	SplatInstruction::write_plm(OUT, P->W.instruction[PLM_SPLAT_IFLD]);
 	TextualInter::write_text(OUT, Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]));
-	WRITE("\"");
 }

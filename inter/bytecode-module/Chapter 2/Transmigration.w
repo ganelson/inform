@@ -106,7 +106,7 @@ void Transmigration::comment(inter_bookmark *IBM, int level, text_stream *action
 		InterBookmark::package(IBM));
 	WRITE_TO(InterWarehouse::get_text(InterBookmark::warehouse(IBM), C), 
 		"%S %S here", action, content);
-	Inter::Comment::new(IBM, (inter_ti) level, NULL, C);
+	CommentInstruction::new(IBM, (inter_ti) level, NULL, C);
 }
 
 @ This is the only point anywhere in the Inform tool chain where a node is moved
@@ -129,11 +129,11 @@ consistent again.
 
 	inter_symbol *NS = InterSymbolsTable::symbol_from_name_creating(
 		destination->package_scope, migrant_name);
-	InterPackage::set_name_symbol(migrant, NS);
+	PackageInstruction::set_name_symbol(migrant, NS);
 
 	if (InterPackage::container(migrant->package_head) != destination)
 		internal_error("transmigration did not take the migrant to the right place");
-	inter_symbol *S = InterPackage::name_symbol(migrant);
+	inter_symbol *S = PackageInstruction::name_symbol(migrant);
 	if (NS != S) internal_error("transmigration of head node and symbol failed");
 
 @ That was the easy part. The migrant package is now inside the destination tree.
@@ -225,7 +225,7 @@ head nodes.
 void Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, void *state) {
 	transmigration_details *det = (transmigration_details *) state;
 	P->tree = I;
-	inter_symbol *primitive = Inter::Inv::read_primitive(det->origin_tree, P);
+	inter_symbol *primitive = InvInstruction::read_primitive(det->origin_tree, P);
 	if (primitive)
 		@<Transfer from a primitive in the origin tree to one in the destination@>;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST)
@@ -249,7 +249,7 @@ primitives round and around -- so we cache the results.
 		Transmigration::learn_equivalent(primitive, equivalent_primitive);
 	}
 	if (equivalent_primitive)
-		Inter::Inv::write_primitive(det->destination_tree, P, equivalent_primitive);
+		InvInstruction::write_primitive(det->destination_tree, P, equivalent_primitive);
 
 @ In the worst-case scenario, the destination might not even have a declaration
 of |!printnumber|. (Actually this is unlikely in practice, because we tend to make
@@ -268,7 +268,7 @@ the root package of the origin.
 		Inode::extend_instruction_by(D, 1);
 		D->W.instruction[i] = old_D->W.instruction[i];
 	}
-	inter_error_message *E = Inter::Verify::instruction(
+	inter_error_message *E = VerifyingInter::instruction(
 		InterBookmark::package(&(det->primitives_point)), D);
 	if (E) {
 		InterErrors::issue(E);
@@ -278,7 +278,7 @@ the root package of the origin.
 	}
 
 @<This is the headnode of a subpackage of migrant@> =
-	inter_package *pack = InterPackage::at_this_head(P);
+	inter_package *pack = PackageInstruction::at_this_head(P);
 	if (InterPackage::is_a_linkage_package(pack))
 		internal_error("tried to transmigrate /main, /main/connectors or /");
 	@<Correct the reference to this package type@>;
@@ -289,7 +289,7 @@ are given in terms of declarations in the origin tree, and have to be transferre
 to matching declarations in the destination.
 
 @<Correct the reference to this package type@> =
-	inter_symbol *original_ptype = InterPackage::read_type(det->origin_tree, P);
+	inter_symbol *original_ptype = PackageInstruction::read_type(det->origin_tree, P);
 	inter_symbol *equivalent_ptype = Transmigration::known_equivalent(original_ptype);
 	if (equivalent_ptype == NULL) {
 		equivalent_ptype = InterSymbolsTable::symbol_from_name(
@@ -297,14 +297,14 @@ to matching declarations in the destination.
 		if (equivalent_ptype == NULL) @<Duplicate this package type@>;
 		Transmigration::learn_equivalent(original_ptype, equivalent_ptype);
 	}
-	InterPackage::write_type(det->destination_tree, P, equivalent_ptype);
+	PackageInstruction::write_type(det->destination_tree, P, equivalent_ptype);
 
 @<Duplicate this package type@> =
 	equivalent_ptype = InterSymbolsTable::symbol_from_name_creating(
 		InterTree::global_scope(det->destination_tree), InterSymbol::identifier(original_ptype));
 	inter_tree_node *D = Inode::new_with_1_data_field(&(det->ptypes_point), PACKAGETYPE_IST,
 		InterSymbolsTable::id_from_symbol(det->destination_tree, NULL, equivalent_ptype), NULL, 0);
-	inter_error_message *E = Inter::Verify::instruction(
+	inter_error_message *E = VerifyingInter::instruction(
 		InterBookmark::package(&(det->ptypes_point)), D);
 	if (E) {
 		InterErrors::issue(E);
@@ -388,7 +388,7 @@ those separately (see above).
 void Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, void *state) {
 	transmigration_details *det = (transmigration_details *) state;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
-		inter_package *pack = InterPackage::at_this_head(P);
+		inter_package *pack = PackageInstruction::at_this_head(P);
 		if (InterPackage::is_a_linkage_package(pack) == FALSE) {
 			inter_symbols_table *T = InterPackage::scope(pack);
 			LOOP_OVER_SYMBOLS_TABLE(S, T)

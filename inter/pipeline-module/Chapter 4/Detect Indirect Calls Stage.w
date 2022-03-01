@@ -42,7 +42,7 @@ int DetectIndirectCallsStage::run(pipeline_step *step) {
 
 void DetectIndirectCallsStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	pipeline_step *step = (pipeline_step *) state;
-	inter_package *pack = InterPackage::at_this_head(P);
+	inter_package *pack = PackageInstruction::at_this_head(P);
 	if (InterPackage::is_a_function_body(pack)) {
 		inter_tree_node *D = InterPackage::head(pack);
 		DetectIndirectCallsStage::traverse_code_tree(D, step);
@@ -85,5 +85,5 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 @<Insert the variable as the new first argument@> =
 	inter_bookmark IBM = InterBookmark::first_child_of(F);
 	inter_pair val = InterValuePairs::symbolic(&IBM, var);
-	Inter::Val::new(&IBM, InterTypes::unchecked(),
+	ValInstruction::new(&IBM, InterTypes::unchecked(),
 		(int) F->W.instruction[LEVEL_IFLD] + 1, val, NULL); 

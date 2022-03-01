@@ -204,7 +204,7 @@ inter_package *Produce::function_body(inter_tree *I, packaging_state *save, inte
 	Produce::set_function(I,
 		Produce::make_and_set_package(I, block_iname, LargeScale::package_type(I, I"_code")));
 
-	Produce::guard(Inter::Code::new(Packaging::at(I),
+	Produce::guard(CodeInstruction::new(Packaging::at(I),
 		(int) Produce::baseline(Packaging::at(I)) + 1, NULL));
 
 	I->site.sprdata.function_body_start_bookmark =
@@ -300,7 +300,7 @@ void Produce::nop(inter_tree *I) {
 }
 
 void Produce::nop_at(inter_bookmark *IBM, inter_ti delta) {
-	Produce::guard(Inter::Nop::new(IBM, Produce::baseline(IBM) + delta, NULL));
+	Produce::guard(NopInstruction::new(IBM, Produce::baseline(IBM) + delta, NULL));
 }
 
 void Produce::comment(inter_tree *I, text_stream *text) {
@@ -308,7 +308,7 @@ void Produce::comment(inter_tree *I, text_stream *text) {
 	inter_ti ID = InterWarehouse::create_text(
 		InterTree::warehouse(I), InterBookmark::package(IBM));
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), text);
-	Produce::guard(Inter::Comment::new(IBM, Produce::baseline(IBM), NULL, ID));
+	Produce::guard(CommentInstruction::new(IBM, Produce::baseline(IBM), NULL, ID));
 }
 
 @ Defining a constant with numerical value |val|:
@@ -319,7 +319,7 @@ inter_name *Produce::numeric_constant(inter_tree *I, inter_name *con_iname, kind
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	inter_bookmark *IBM = Packaging::at(I);
-	Produce::guard(Inter::Constant::new_numerical(IBM,
+	Produce::guard(ConstantInstruction::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
 		Produce::kind_to_TID(IBM, K),
 		InterValuePairs::number(val), Produce::baseline(IBM), NULL));
@@ -336,7 +336,7 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	inter_bookmark *IBM = Packaging::at(I);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	inter_pair val = InterValuePairs::symbolic(IBM, val_s);
-	Produce::guard(Inter::Constant::new_numerical(IBM,
+	Produce::guard(ConstantInstruction::new_numerical(IBM,
 		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
 		Produce::kind_to_TID(IBM, K),
 		val, Produce::baseline(IBM), NULL));
@@ -353,7 +353,7 @@ inter_package *Produce::make_and_set_package(inter_tree *I, inter_name *iname,
 	inter_package *P = NULL;
 	TEMPORARY_TEXT(textual_name)
 	WRITE_TO(textual_name, "%n", iname);
-	Produce::guard(InterPackage::new_package_named(Packaging::at(I), textual_name, TRUE,
+	Produce::guard(PackageInstruction::new_package_named(Packaging::at(I), textual_name, TRUE,
 		ptype, Produce::baseline(Packaging::at(I)), NULL, &P));
 	DISCARD_TEXT(textual_name)
 	if (P) InterBookmark::move_into_package(Packaging::at(I), P);
@@ -367,7 +367,7 @@ is created at the level below that in |IBM|.
 inter_package *Produce::make_subpackage(inter_bookmark *IBM,
 	text_stream *name, inter_symbol *ptype) {
 	inter_package *P = NULL;
-	Produce::guard(InterPackage::new_package_named(IBM, name, TRUE,
+	Produce::guard(PackageInstruction::new_package_named(IBM, name, TRUE,
 		ptype, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL, &P));
 	return P;
 }
@@ -382,7 +382,7 @@ void Produce::inv_primitive(inter_tree *I, inter_ti bip) {
 	if ((Primitives::takes_code_blocks(bip)) &&
 		(bip != CASE_BIP) && (bip != DEFAULT_BIP))
 		Produce::note_level_of_newly_opening_code_block(I);
-	Produce::guard(Inter::Inv::new_primitive(Produce::at(I),
+	Produce::guard(InvInstruction::new_primitive(Produce::at(I),
 		prim_symb, (inter_ti) Produce::level(I), NULL));
 }
 
@@ -425,21 +425,21 @@ void Produce::inv_assembly(inter_tree *I, text_stream *opcode) {
 	inter_ti SID = InterWarehouse::create_text(InterTree::warehouse(I),
 		InterBookmark::package(IBM));
 	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), SID), opcode);
-	Produce::guard(Inter::Inv::new_assembly(IBM, SID, (inter_ti) Produce::level(I), NULL));
+	Produce::guard(InvInstruction::new_assembly(IBM, SID, (inter_ti) Produce::level(I), NULL));
 }
 
 @ The "assembly marker" punctuation can be placed thus:
 
 =
 void Produce::assembly_marker(inter_tree *I, inter_ti which) {
-	Produce::guard(Inter::Assembly::new(Produce::at(I), which, (inter_ti) Produce::level(I), NULL));
+	Produce::guard(AssemblyInstruction::new(Produce::at(I), which, (inter_ti) Produce::level(I), NULL));
 }
 
 @ Function calls:
 
 =
 void Produce::inv_call_symbol(inter_tree *I, inter_symbol *fn_s) {
-	Produce::guard(Inter::Inv::new_call(Produce::at(I), fn_s,
+	Produce::guard(InvInstruction::new_call(Produce::at(I), fn_s,
 		(inter_ti) Produce::level(I), NULL));
 }
 
@@ -455,15 +455,15 @@ void Produce::inv_indirect_call(inter_tree *I, int arity) {
 
 =
 void Produce::code(inter_tree *I) {
-	Produce::guard(Inter::Code::new(Produce::at(I), Produce::level(I), NULL));
+	Produce::guard(CodeInstruction::new(Produce::at(I), Produce::level(I), NULL));
 }
 
 void Produce::evaluation(inter_tree *I) {
-	Produce::guard(Inter::Evaluation::new(Produce::at(I), Produce::level(I), NULL));
+	Produce::guard(EvaluationInstruction::new(Produce::at(I), Produce::level(I), NULL));
 }
 
 void Produce::reference(inter_tree *I) {
-	Produce::guard(Inter::Reference::new(Produce::at(I), Produce::level(I), NULL));
+	Produce::guard(ReferenceInstruction::new(Produce::at(I), Produce::level(I), NULL));
 }
 
 @ The |val| instruction. First, we can take the value of something identified
@@ -497,7 +497,7 @@ void Produce::val(inter_tree *I, kind *K, inter_pair val) {
 		val_kind = Produce::kind_to_symbol(K);
 		if (val_kind == NULL) internal_error("no kind for val");
 	}
-	Produce::guard(Inter::Val::new(Produce::at(I), InterTypes::from_type_name(val_kind),
+	Produce::guard(ValInstruction::new(Produce::at(I), InterTypes::from_type_name(val_kind),
 		Produce::level(I), val, NULL));
 }
 
@@ -543,7 +543,7 @@ void Produce::ref_symbol(inter_tree *I, kind *K, inter_symbol *s) {
 		val_kind = Produce::kind_to_symbol(K);
 		if (val_kind == NULL) internal_error("no kind for ref");
 	}
-	Produce::guard(Inter::Ref::new(Produce::at(I), InterTypes::from_type_name(val_kind),
+	Produce::guard(RefInstruction::new(Produce::at(I), InterTypes::from_type_name(val_kind),
 		Produce::level(I), val, NULL));
 }
 
@@ -554,7 +554,7 @@ present, and is more of a placeholder than anything else.
 void Produce::cast(inter_tree *I, kind *F, kind *T) {
 	inter_symbol *F_s = Produce::kind_to_symbol(F);
 	inter_symbol *T_s = Produce::kind_to_symbol(T);
-	Produce::guard(Inter::Cast::new(Produce::at(I), F_s, T_s,
+	Produce::guard(CastInstruction::new(Produce::at(I), F_s, T_s,
 		(inter_ti) Produce::level(I), NULL));
 }
 
@@ -600,14 +600,14 @@ inter_symbol *Produce::reserve_label(inter_tree *I, text_stream *lname) {
 
 =
 void Produce::place_label(inter_tree *I, inter_symbol *lab_name) {
-	Produce::guard(Inter::Label::new(Produce::at(I), lab_name, (inter_ti) Produce::level(I), NULL));
+	Produce::guard(LabelInstruction::new(Produce::at(I), lab_name, (inter_ti) Produce::level(I), NULL));
 }
 
 @ And here we make a |lab| instruction, suitable for a jump instruction to use.
 
 =
 void Produce::lab(inter_tree *I, inter_symbol *L) {
-	Produce::guard(Inter::Lab::new(Produce::at(I), L, (inter_ti) Produce::level(I), NULL));
+	Produce::guard(LabInstruction::new(Produce::at(I), L, (inter_ti) Produce::level(I), NULL));
 }
 
 @ Now for local variables.
@@ -631,12 +631,12 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 		inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
 			InterBookmark::package(Packaging::at(I)));
 		Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), comm);
-		Produce::guard(Inter::Comment::new(locals_at, Produce::baseline(locals_at) + 1,
+		Produce::guard(CommentInstruction::new(locals_at, Produce::baseline(locals_at) + 1,
 			NULL, ID));
 	}
 	inter_type type = InterTypes::unchecked();
 	if ((K) && (K != K_value)) type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
-	Produce::guard(Inter::Local::new(locals_at, local_s, type,
+	Produce::guard(LocalInstruction::new(locals_at, local_s, type,
 		Produce::baseline(locals_at) + 1, NULL));
 	return local_s;
 }

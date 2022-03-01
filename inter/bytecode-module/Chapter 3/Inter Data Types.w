@@ -203,7 +203,7 @@ inter_type InterTypes::from_constructor_code(inter_ti constructor_code) {
 inter_type InterTypes::from_type_name(inter_symbol *S) {
 	if (S) {
 		inter_type type;
-		type.underlying_constructor = Inter::Typename::constructor(S);
+		type.underlying_constructor = TypenameInstruction::constructor(S);
 		type.type_name = S;
 		return type;
 	}
@@ -261,13 +261,13 @@ int InterTypes::arity_is_possible(inter_type type, int arity) {
 
 int InterTypes::type_arity(inter_type type) {
 	inter_symbol *type_name = InterTypes::type_name(type);
-	if (type_name) return Inter::Typename::arity(type_name);
+	if (type_name) return TypenameInstruction::arity(type_name);
 	return InterTypes::constructor(type)->arity;
 }
 
 inter_type InterTypes::type_operand(inter_type type, int n) {
 	inter_symbol *type_name = InterTypes::type_name(type);
-	if (type_name) return Inter::Typename::operand_type(InterTypes::type_name(type), n);
+	if (type_name) return TypenameInstruction::operand_type(InterTypes::type_name(type), n);
 	return InterTypes::unchecked();
 }
 
@@ -673,7 +673,7 @@ enumerated type for "thing", for example.
 		inter_symbol *typenameB_s = B.type_name;
 		inter_symbol *typenameA_s = A.type_name;
 		if ((typenameB_s) && (typenameA_s) &&
-			(Inter::Typename::is_a(typenameA_s, typenameB_s) == FALSE))
+			(TypenameInstruction::is_a(typenameA_s, typenameB_s) == FALSE))
 			@<Throw type mismatch error@>;
 	}
 	return NULL;
@@ -744,7 +744,7 @@ inter_type InterTypes::of_symbol(inter_symbol *symb) {
 	if (D == NULL) return InterTypes::unchecked();
 	if (InterSymbol::defined_elsewhere(symb)) return InterTypes::unchecked();
 	inter_construct *IC = NULL;
-	if (InterConstruct::get_construct(D, &IC)) return InterTypes::unchecked();
+	if (InterInstruction::get_construct(D, &IC)) return InterTypes::unchecked();
 	if (IC->TID_field >= 0) return InterTypes::from_TID_in_field(D, IC->TID_field);
 	return InterTypes::unchecked();
 }
@@ -753,7 +753,7 @@ int InterTypes::expresses_value(inter_symbol *symb) {
 	inter_tree_node *D = InterSymbol::definition(symb);
 	if (D) {
 		inter_construct *IC = NULL;
-		if (InterConstruct::get_construct(D, &IC)) return FALSE;
+		if (InterInstruction::get_construct(D, &IC)) return FALSE;
 		if (IC->construct_ID == TYPENAME_IST) return TRUE;
 		if (IC->TID_field >= 0) return TRUE;
 	}

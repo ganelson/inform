@@ -17,7 +17,7 @@ void TextualInter::read(inter_tree *I, filename *F) {
 	TextFiles::read(F, FALSE, "can't open inter file", FALSE,
 		TextualInter::read_line, 0, &irl);
 	TextualInter::resolve_forward_references(I);
-	InterConstruct::tree_lint(I);
+	InterInstruction::tree_lint(I);
 	Primitives::index_primitives_in_tree(I);
 }
 
@@ -70,7 +70,7 @@ inter_error_message *TextualInter::parse_single_line(text_stream *line,
 	@<Find indentation@>;
 	@<If the indentation is now lower than expected, move the write position up the tree@>;
 	@<Parse any annotations at the end of the line@>;
-	return InterConstruct::match(&ilp, eloc, write_pos);
+	return InterInstruction::match(&ilp, eloc, write_pos);
 }
 
 @ We are a bit aggressive in requiring the Python-style indentation at the start
@@ -80,7 +80,7 @@ really an interchange format for programs to use.
 
 A blank line is treated as a comment, so we rewrite it with the explicit |#|
 notation. If it is printed back, it will actually be printed back as empty
-anyway -- see //Inter::Comment::write//. So nobody will ever know our little
+anyway -- see //CommentInstruction::write//. So nobody will ever know our little
 deception.
 
 @<Find indentation@> =
@@ -266,7 +266,7 @@ void TextualInter::resolve_forward_references(inter_tree *I) {
 
 void TextualInter::rfr_visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	inter_error_location *eloc = (inter_error_location *) state;
-	inter_package *pack = InterPackage::at_this_head(P);
+	inter_package *pack = PackageInstruction::at_this_head(P);
 	if (pack == NULL) internal_error("no package defined here");
 	inter_symbols_table *T = InterPackage::scope(pack);
 	if (T == NULL) internal_error("package with no symbols");
@@ -342,7 +342,7 @@ void TextualInter::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_tree_
 void TextualInter::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	textual_write_state *tws = (textual_write_state *) state;
 	if ((tws->filter) && ((*(tws->filter))(P) == FALSE)) return;
-	inter_error_message *E = InterConstruct::write_construct_text(tws->to, P);
+	inter_error_message *E = InterInstruction::write_construct_text(tws->to, P);
 	if (E) InterErrors::issue(E);
 }
 
@@ -369,6 +369,7 @@ void TextualInter::write_symbol_from(OUTPUT_STREAM, inter_tree_node *P, int fiel
 
 =
 void TextualInter::write_text(OUTPUT_STREAM, text_stream *S) {
+	WRITE("\"");
 	LOOP_THROUGH_TEXT(P, S) {
 		wchar_t c = Str::get(P);
 		if (c == 9) { WRITE("\\t"); continue; }
@@ -377,6 +378,7 @@ void TextualInter::write_text(OUTPUT_STREAM, text_stream *S) {
 		if (c == '\\') { WRITE("\\\\"); continue; }
 		PUT(c);
 	}
+	WRITE("\"");
 }
 
 inter_error_message *TextualInter::parse_literal_text(text_stream *parsed_text,
@@ -397,7 +399,7 @@ inter_error_message *TextualInter::parse_literal_text(text_stream *parsed_text,
 				default: E = InterErrors::plain(I"no such backslash escape", eloc); break;
 			}
 		}
-		if (Inter::Constant::char_acceptable(c) == FALSE)
+		if (ConstantInstruction::char_acceptable(c) == FALSE)
 			E = InterErrors::quoted(I"bad character in text", S, eloc);
 		PUT_TO(parsed_text, c);
 		literal_mode = FALSE;
@@ -504,9 +506,7 @@ or (unsigned) binary, but cannot be printed back in binary.
 rules on escape characters inside.
 
 @<Print text literal syntax@> =
-	WRITE("\"");
 	TextualInter::write_text(OUT, InterValuePairs::to_text(I, pair));
-	WRITE("\"");
 
 @<Parse text literal syntax@> =
 	if (quoted_from == 1) {
@@ -521,9 +521,8 @@ rules on escape characters inside.
 @ Real numbers are written thus: |r"3.14159"|.
 
 @<Print real literal syntax@> =
-	WRITE("r\"");
+	WRITE("r");
 	TextualInter::write_text(OUT, InterValuePairs::to_textual_real(I, pair));
-	WRITE("\"");
 
 @<Parse real literal syntax@> =
 	if ((quoted_from == 2) && (Str::begins_with_wide_string(S, L"r"))) {
@@ -539,9 +538,8 @@ rules on escape characters inside.
 example, |dw"xyzzy"| or |dwp"fruits"|.
 
 @<Print singular dword syntax@> =
-	WRITE("dw\"");
+	WRITE("dw");
 	TextualInter::write_text(OUT, InterValuePairs::to_dictionary_word(I, pair));
-	WRITE("\"");
 
 @<Parse singular dword syntax@> =
 	if ((quoted_from == 3) && (Str::begins_with_wide_string(S, L"dw"))) {
@@ -554,9 +552,8 @@ example, |dw"xyzzy"| or |dwp"fruits"|.
 	}
 
 @<Print plural dword syntax@> =
-	WRITE("dwp\"");
+	WRITE("dwp");
 	TextualInter::write_text(OUT, InterValuePairs::to_dictionary_word(I, pair));
-	WRITE("\"");
 
 @<Parse plural dword syntax@> =
 	if ((quoted_from == 4) && (Str::begins_with_wide_string(S, L"dwp"))) {
@@ -572,9 +569,8 @@ example, |dw"xyzzy"| or |dwp"fruits"|.
 written |glob"..."|, with the same escaping rules as literal text.
 
 @<Print glob syntax@> =
-	WRITE("glob\"");
+	WRITE("glob");
 	TextualInter::write_text(OUT, InterValuePairs::to_glob_text(I, pair));
-	WRITE("\"");
 
 @<Parse glob syntax@> =
 	if ((quoted_from == 5) && (Str::begins_with_wide_string(S, L"glob"))) {

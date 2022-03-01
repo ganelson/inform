@@ -61,12 +61,12 @@ void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 }
 
 @<Invoke a primitive@> =
-	inter_symbol *primitive_s = Inter::Inv::invokee(P);
+	inter_symbol *primitive_s = InvInstruction::invokee(P);
 	if (primitive_s == NULL) internal_error("no primitive");
 	Generators::invoke_primitive(gen, primitive_s, P, void_context);
 
 @<Invoke a function@> =
-	inter_symbol *function_s = Inter::Inv::invokee(P);
+	inter_symbol *function_s = InvInstruction::invokee(P);
 	if (function_s == NULL) internal_error("no function");
 	VanillaFunctions::invoke_function(gen, function_s, P, void_context);
 
@@ -89,7 +89,7 @@ need to.
 @<Scan the operands@> =
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		if (F->W.instruction[ID_IFLD] == ASSEMBLY_IST) {
-			if (Inter::Assembly::which_marker(F) == ASM_NEG_ASMMARKER) {
+			if (AssemblyInstruction::which_marker(F) == ASM_NEG_ASMMARKER) {
 				label_sense = FALSE;
 				continue;
 			}
@@ -145,6 +145,6 @@ punctuation marks:
 
 =
 void VanillaCode::assembly(code_generation *gen, inter_tree_node *P) {
-	inter_ti which = Inter::Assembly::which_marker(P);
+	inter_ti which = AssemblyInstruction::which_marker(P);
 	Generators::assembly_marker(gen, which);
 }

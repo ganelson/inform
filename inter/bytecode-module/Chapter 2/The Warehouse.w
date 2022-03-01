@@ -137,11 +137,27 @@ inter_ti InterWarehouse::resource_type_code(inter_warehouse *warehouse, inter_ti
 	return 0;
 }
 
+int InterWarehouse::known_type_code(inter_warehouse *warehouse, inter_ti n) {
+	if ((n == 0) || (n >= warehouse->next_free_resource_ID)) return 0;
+	switch (warehouse->stored_resources[n].res.run_time_type_code) {
+		case text_stream_CLASS:         return TEXT_IRSRC;
+		case inter_symbols_table_CLASS: return SYMBOLS_TABLE_IRSRC;
+		case inter_node_list_CLASS:     return NODE_LIST_IRSRC;
+		case inter_package_CLASS:       return PACKAGE_REF_IRSRC;
+	}
+	return 0;
+}
+
 @ First, it can be a text:
 
 =
 inter_ti InterWarehouse::create_text(inter_warehouse *warehouse, inter_package *owner) {
 	return InterWarehouse::create_ref(warehouse, STORE_POINTER_text_stream(Str::new()), owner);
+}
+
+inter_ti InterWarehouse::create_text_at(inter_bookmark *IBM) {
+	return InterWarehouse::create_text(
+		InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
 }
 
 text_stream *InterWarehouse::get_text(inter_warehouse *warehouse, inter_ti n) {

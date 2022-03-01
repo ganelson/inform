@@ -227,7 +227,7 @@ void EmitArrays::end_inner(void) {
 	Inode::extend_instruction_by(array_in_progress, (unsigned int) (2*(current_A->space_used)));
 	for (int i=0; i<current_A->space_used; i++, pos += 2)
 		InterValuePairs::set(array_in_progress, pos, current_A->entry_storage[i]);
-	Produce::guard(Inter::Verify::instruction(
+	Produce::guard(VerifyingInter::instruction(
 		Emit::package(), array_in_progress));
 	NodePlacement::move_to_moving_bookmark(array_in_progress, Emit::at());
 }

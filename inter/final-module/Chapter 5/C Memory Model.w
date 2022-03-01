@@ -209,8 +209,8 @@ primitive !lookupbyte val val -> val
 
 =
 int CMemoryModel::handle_store_by_ref(code_generation *gen, inter_tree_node *ref) {
-	if (Inter::Reference::node_is_ref_to(gen->from, ref, LOOKUP_BIP)) return TRUE;
-	if (Inter::Reference::node_is_ref_to(gen->from, ref, LOOKUPBYTE_BIP)) return TRUE;
+	if (ReferenceInstruction::node_is_ref_to(gen->from, ref, LOOKUP_BIP)) return TRUE;
+	if (ReferenceInstruction::node_is_ref_to(gen->from, ref, LOOKUPBYTE_BIP)) return TRUE;
 	return FALSE;
 }
 

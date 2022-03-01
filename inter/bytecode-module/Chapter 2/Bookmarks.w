@@ -124,7 +124,7 @@ inter_package *InterBookmark::package(inter_bookmark *IBM) {
 	inter_package *pack = IBM->R->package;
 	if ((IBM->placement_wrt_R == AS_FIRST_CHILD_OF_NODEPLACEMENT) ||
 		(IBM->placement_wrt_R == AS_LAST_CHILD_OF_NODEPLACEMENT)) {
-		inter_package *R_defined = InterPackage::at_this_head(IBM->R);
+		inter_package *R_defined = PackageInstruction::at_this_head(IBM->R);
 		if (R_defined) pack = R_defined;
 	}
 	return pack;

@@ -69,11 +69,11 @@ calling functions.
 		storage_ref = InterTree::first_child(storage_ref);
 	int val_supplied = FALSE;
 	if ((bip == STORE_BIP) || (bip == SETBIT_BIP) || (bip == CLEARBIT_BIP)) val_supplied = TRUE;
-	if (Inter::Reference::node_is_ref_to(gen->from, ref, LOOKUP_BIP))
+	if (ReferenceInstruction::node_is_ref_to(gen->from, ref, LOOKUP_BIP))
 		@<This is a reference to a word lookup@>
-	else if (Inter::Reference::node_is_ref_to(gen->from, ref, LOOKUPBYTE_BIP))
+	else if (ReferenceInstruction::node_is_ref_to(gen->from, ref, LOOKUPBYTE_BIP))
 		@<This is a reference to a byte lookup@>
-	else if (Inter::Reference::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP))
+	else if (ReferenceInstruction::node_is_ref_to(gen->from, ref, PROPERTYVALUE_BIP))
 		@<This is a reference to a property value@>
 	else
 		@<This is a reference to something else@>;

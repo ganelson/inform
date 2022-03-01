@@ -1,4 +1,4 @@
-[Inter::Binary::] Inter in Binary Files.
+[BinaryInter::] Inter in Binary Files.
 
 To read or write inter between memory and binary files.
 
@@ -20,7 +20,7 @@ these words would be 5, 2 and 4 respectively.
 @d INTER_SHIBBOLETH ((inter_ti) 0x696E7472)
 
 =
-int Inter::Binary::test_file(filename *F) {
+int BinaryInter::test_file(filename *F) {
 	int verdict = TRUE;
 	FILE *fh = BinaryFiles::open_for_reading(F);
 	unsigned int X = 0;
@@ -78,7 +78,7 @@ and returns |TRUE| if all went well; if a file system error, or end of file,
 occurs, then it returns |FALSE| and the contents of |result| are undefined.
 
 =
-int Inter::Binary::read_word(FILE *binary_file, unsigned int *result) {
+int BinaryInter::read_word(FILE *binary_file, unsigned int *result) {
 	int c1 = getc(binary_file), c2, c3, c4, c5; if (c1 == EOF) return FALSE;
 	switch (c1 & 0xE0) {
 		case 0:     /* opening byte 000xxxxx */
@@ -117,10 +117,10 @@ int Inter::Binary::read_word(FILE *binary_file, unsigned int *result) {
 @ And this version always returns a word:
 
 =
-unsigned int Inter::Binary::read_next(FILE *binary_file, inter_error_location *eloc) {
+unsigned int BinaryInter::read_next(FILE *binary_file, inter_error_location *eloc) {
 	unsigned int X = 0;
-	if (Inter::Binary::read_word(binary_file, &X) == FALSE) {
-		Inter::Binary::read_error(eloc, ftell(binary_file),
+	if (BinaryInter::read_word(binary_file, &X) == FALSE) {
+		BinaryInter::read_error(eloc, ftell(binary_file),
 			I"binary Inter file incomplete");
 		return 0;
 	}
@@ -136,7 +136,7 @@ occurred, making it impossible to write the data.
 int Inter_words_with_byte_count[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 #endif
 
-int Inter::Binary::write_word(FILE *binary_file, unsigned int val) {
+int BinaryInter::write_word(FILE *binary_file, unsigned int val) {
 	if (val < 0x80) {
 		#ifdef MEASURE_INTER_COMPRESSION
 		Inter_words_with_byte_count[1]++;
@@ -185,7 +185,7 @@ int Inter::Binary::write_word(FILE *binary_file, unsigned int val) {
 }
 
 @ =
-void Inter::Binary::write_compression_statistics(OUTPUT_STREAM) {
+void BinaryInter::write_compression_statistics(OUTPUT_STREAM) {
 	#ifdef MEASURE_INTER_COMPRESSION
 	int tot_words = 0, tot_bytes = 0;
 	for (int i=1; i<10; i++)
@@ -209,18 +209,18 @@ void Inter::Binary::write_compression_statistics(OUTPUT_STREAM) {
 So, note, this is not a C-style null terminated string.
 
 =
-void Inter::Binary::read_text(FILE *binary_file, text_stream *T, inter_error_location *eloc) {
-	unsigned int L = Inter::Binary::read_next(binary_file, eloc);
+void BinaryInter::read_text(FILE *binary_file, text_stream *T, inter_error_location *eloc) {
+	unsigned int L = BinaryInter::read_next(binary_file, eloc);
 	for (unsigned int i=0; i<L; i++) {
-		unsigned int c = Inter::Binary::read_next(binary_file, eloc);
+		unsigned int c = BinaryInter::read_next(binary_file, eloc);
 		PUT_TO(T, (wchar_t) c);
 	}
 }
 
-void Inter::Binary::write_text(FILE *binary_file, text_stream *T) {
-	Inter::Binary::write_word(binary_file, (unsigned int) Str::len(T));
+void BinaryInter::write_text(FILE *binary_file, text_stream *T) {
+	BinaryInter::write_word(binary_file, (unsigned int) Str::len(T));
 	LOOP_THROUGH_TEXT(pos, T)
-		Inter::Binary::write_word(binary_file, (unsigned int) Str::get(pos));
+		BinaryInter::write_word(binary_file, (unsigned int) Str::get(pos));
 }
 
 @h Reading and writing inter to binary.
@@ -232,7 +232,7 @@ corresponding writer.
 Still, let's do the file-handling first:
 
 =
-void Inter::Binary::read(inter_tree *I, filename *F) {
+void BinaryInter::read(inter_tree *I, filename *F) {
 	LOGIF(INTER_FILE_READ, "(Reading binary inter file %f)\n", F);
 	long int max_offset = BinaryFiles::size(F);
 	FILE *fh = BinaryFiles::open_for_reading(F);
@@ -248,13 +248,13 @@ void Inter::Binary::read(inter_tree *I, filename *F) {
 	BinaryFiles::close(fh);
 }
 
-void Inter::Binary::write(filename *F, inter_tree *I) {
+void BinaryInter::write(filename *F, inter_tree *I) {
 	LOGIF(INTER_FILE_READ, "(Writing binary inter file %f)\n", F);
 	FILE *fh = BinaryFiles::open_for_writing(F);
 	inter_warehouse *warehouse = InterTree::warehouse(I);
 	@<Write the content@>;
 	BinaryFiles::close(fh);
-	Inter::Binary::write_compression_statistics(STDOUT);
+	BinaryInter::write_compression_statistics(STDOUT);
 }
 
 @ The file is organised in five blocks:
@@ -282,7 +282,7 @@ void Inter::Binary::write(filename *F, inter_tree *I) {
 		((inter_ti) X != INTER_SHIBBOLETH) ||
 		(BinaryFiles::read_int32(fh, &X) == FALSE) ||
 		((inter_ti) X != 0)) {
-		Inter::Binary::read_error(&eloc, 0, I"not a binary inter file");
+		BinaryInter::read_error(&eloc, 0, I"not a binary inter file");
 		BinaryFiles::close(fh);
 		return;
 	}
@@ -290,7 +290,7 @@ void Inter::Binary::write(filename *F, inter_tree *I) {
 	if ((BinaryFiles::read_int32(fh, &v1) == FALSE) ||
 		(BinaryFiles::read_int32(fh, &v2) == FALSE) ||
 		(BinaryFiles::read_int32(fh, &v3) == FALSE)) {
-		Inter::Binary::read_error(&eloc, 0, I"header breaks off");
+		BinaryInter::read_error(&eloc, 0, I"header breaks off");
 		BinaryFiles::close(fh);
 		return;
 	}
@@ -301,7 +301,7 @@ void Inter::Binary::write(filename *F, inter_tree *I) {
 		WRITE_TO(erm,
 			"file '%f' holds Inter written for specification v%v, but I expect v%v",
 			F, &file_version, &current_version);
-		Inter::Binary::read_error(&eloc, 0, erm);
+		BinaryInter::read_error(&eloc, 0, erm);
 		DISCARD_TEXT(erm)
 	}
 
@@ -330,15 +330,15 @@ they are not necessarily in increasing order of ID.
 
 @<Read the annotations@> =
 	inter_ti ID = INVALID_IANN;
-	while (Inter::Binary::read_word(fh, &ID)) {
+	while (BinaryInter::read_word(fh, &ID)) {
 		if (ID == INVALID_IANN) break;
 		TEMPORARY_TEXT(keyword)
-		Inter::Binary::read_text(fh, keyword, &eloc);
-		unsigned int iatype = Inter::Binary::read_next(fh, &eloc);
+		BinaryInter::read_text(fh, keyword, &eloc);
+		unsigned int iatype = BinaryInter::read_next(fh, &eloc);
 		if (SymbolAnnotation::declare(ID, keyword, (int) iatype) == FALSE) {
 			TEMPORARY_TEXT(err)
 			WRITE_TO(err, "conflicting annotation name '%S'", keyword);
-			Inter::Binary::read_error(&eloc, ftell(fh), err);
+			BinaryInter::read_error(&eloc, ftell(fh), err);
 			DISCARD_TEXT(err)
 		}
 		DISCARD_TEXT(keyword)
@@ -348,25 +348,25 @@ they are not necessarily in increasing order of ID.
 	inter_annotation_form *IAF;
 	LOOP_OVER(IAF, inter_annotation_form)
 		if (IAF->annotation_ID != INVALID_IANN) {
-			Inter::Binary::write_word(fh, IAF->annotation_ID);
-			Inter::Binary::write_text(fh, IAF->annotation_keyword);
-			Inter::Binary::write_word(fh, (unsigned int) IAF->iatype);
+			BinaryInter::write_word(fh, IAF->annotation_ID);
+			BinaryInter::write_text(fh, IAF->annotation_keyword);
+			BinaryInter::write_word(fh, (unsigned int) IAF->iatype);
 		}
-	Inter::Binary::write_word(fh, INVALID_IANN);
+	BinaryInter::write_word(fh, INVALID_IANN);
 
 @ There follows a block of resources. This consists of a single word giving
 the count of the number of resources (which may be 0); then a table of warehouse
 IDs; then a table of metadata for the resources.
 
 @<Read the resources@> =
-	unsigned int count = Inter::Binary::read_next(fh, &eloc);
+	unsigned int count = BinaryInter::read_next(fh, &eloc);
 	@<Read the table of warehouse ID numbers@>;
 	@<Read the table of resources proper@>;
 
 @<Write the resources@> =
 	inter_ti count = 0;
 	LOOP_OVER_RESOURCE_IDS(n, I) count++;
-	Inter::Binary::write_word(fh, (unsigned int) count);
+	BinaryInter::write_word(fh, (unsigned int) count);
 	@<Write the table of warehouse ID numbers@>;
 	@<Write the table of resources proper@>;
 
@@ -392,13 +392,13 @@ ever used in the original file, plus 1; and then is a list of words giving
 the warehouse IDs for the resources in turn.
 
 @<Read the table of warehouse ID numbers@> =
-	grid_extent = Inter::Binary::read_next(fh, &eloc);
+	grid_extent = BinaryInter::read_next(fh, &eloc);
 	if (grid_extent > 0) {
 		grid = (inter_ti *) Memory::calloc((int) grid_extent, sizeof(inter_ti),
 			INTER_BYTECODE_MREASON);
 		for (inter_ti i=0; i<grid_extent; i++) grid[i] = 0;
 		for (inter_ti i=0; i<count; i++) {
-			unsigned int original_ID = Inter::Binary::read_next(fh, &eloc);
+			unsigned int original_ID = BinaryInter::read_next(fh, &eloc);
 			inter_ti n;
 			switch (i) {
 				case 0: n = InterTree::global_scope(I)->resource_ID; break;
@@ -407,7 +407,7 @@ the warehouse IDs for the resources in turn.
 			}
 			if (original_ID >= grid_extent) {
 				original_ID = grid_extent-1;
-				Inter::Binary::read_error(&eloc, ftell(fh), I"max incorrect");
+				BinaryInter::read_error(&eloc, ftell(fh), I"max incorrect");
 			}
 			grid[original_ID] = n;
 		}
@@ -418,9 +418,9 @@ the warehouse IDs for the resources in turn.
 	LOOP_OVER_RESOURCE_IDS(n, I)
 		if (n+1 > max)
 			max = n+1;
-	Inter::Binary::write_word(fh, (unsigned int) max);
+	BinaryInter::write_word(fh, (unsigned int) max);
 	LOOP_OVER_RESOURCE_IDS(n, I)
-		Inter::Binary::write_word(fh, (unsigned int) n);
+		BinaryInter::write_word(fh, (unsigned int) n);
 
 @ The table of resources is then a series of records, one for each resource.
 Each record begins with a type word, which must be one of the |*_IRSRC| values.
@@ -438,27 +438,27 @@ resources will be in increasing warehouse ID order.
 
 @<Read the table of resources proper@> =		
 	for (inter_ti i=0; i<count; i++) {
-		unsigned int original_ID = Inter::Binary::read_next(fh, &eloc);
+		unsigned int original_ID = BinaryInter::read_next(fh, &eloc);
 		if ((original_ID == 0) || (original_ID >= grid_extent)) {
-			Inter::Binary::read_error(&eloc, ftell(fh), I"warehouse ID out of range");
+			BinaryInter::read_error(&eloc, ftell(fh), I"warehouse ID out of range");
 			original_ID = grid_extent - 1;
 		}
 		inter_ti ID = grid[original_ID];
-		unsigned int X = Inter::Binary::read_next(fh, &eloc);
+		unsigned int X = BinaryInter::read_next(fh, &eloc);
 		switch (X) {
 			case TEXT_IRSRC:          @<Read a string resource@>; break;
 			case SYMBOLS_TABLE_IRSRC: @<Read a symbols table resource@>; break;
 			case NODE_LIST_IRSRC:     @<Read a node list resource@>; break;
 			case PACKAGE_REF_IRSRC:   @<Read a package resource@>; break;
-			default: Inter::Binary::read_error(&eloc, ftell(fh), I"unknown resource type");
+			default: BinaryInter::read_error(&eloc, ftell(fh), I"unknown resource type");
 		}
 	}
 
 @<Write the table of resources proper@> =
 	LOOP_OVER_RESOURCE_IDS(ID, I) {
 		inter_ti RT = InterWarehouse::resource_type_code(warehouse, ID);
-		Inter::Binary::write_word(fh, (unsigned int) ID);
-		Inter::Binary::write_word(fh, RT);
+		BinaryInter::write_word(fh, (unsigned int) ID);
+		BinaryInter::write_word(fh, RT);
 		switch (RT) {
 			case TEXT_IRSRC:          @<Write a string resource@>; break;
 			case SYMBOLS_TABLE_IRSRC: @<Write a symbols table resource@>; break;
@@ -473,11 +473,11 @@ resources will be in increasing warehouse ID order.
 @<Read a string resource@> =
 	text_stream *txt = Str::new();
 	InterWarehouse::create_ref_at(warehouse, ID, STORE_POINTER_text_stream(txt), NULL);
-	Inter::Binary::read_text(fh, txt, &eloc);
+	BinaryInter::read_text(fh, txt, &eloc);
 
 @<Write a string resource@> =
 	text_stream *txt = InterWarehouse::get_text(warehouse, ID);
-	Inter::Binary::write_text(fh, txt);
+	BinaryInter::write_text(fh, txt);
 
 @ A symbols table resource is |SYMBOLS_TABLE_IRSRC| followed by a list of records,
 one for each symbol:
@@ -498,12 +498,12 @@ one for each symbol:
 			STORE_POINTER_inter_symbols_table(tab), NULL);
 	}
 	unsigned int symbol_ID = 0;
-	while (Inter::Binary::read_word(fh, &symbol_ID)) {
+	while (BinaryInter::read_word(fh, &symbol_ID)) {
 		if (symbol_ID == 0) break;
 		TEMPORARY_TEXT(identifier)
-		unsigned int st = Inter::Binary::read_next(fh, &eloc);
-		unsigned int flags = Inter::Binary::read_next(fh, &eloc);
-		Inter::Binary::read_text(fh, identifier, &eloc);
+		unsigned int st = BinaryInter::read_next(fh, &eloc);
+		unsigned int flags = BinaryInter::read_next(fh, &eloc);
+		BinaryInter::read_text(fh, identifier, &eloc);
 		inter_symbol *S = InterSymbolsTable::symbol_from_name_creating_at_ID(tab,
 			identifier, symbol_ID);
 		InterSymbol::set_type(S, (int) st);
@@ -511,7 +511,7 @@ one for each symbol:
 		@<Read the annotations for a symbol@>;
 		if (InterSymbol::is_plug(S)) {
 			TEMPORARY_TEXT(N)
-			Inter::Binary::read_text(fh, N, &eloc);
+			BinaryInter::read_text(fh, N, &eloc);
 			Wiring::wire_to_name(S, N);
 			DISCARD_TEXT(N)
 		}
@@ -523,18 +523,18 @@ one for each symbol:
 	inter_symbols_table *T = InterWarehouse::get_symbols_table(warehouse, ID);
 	if (T) {
 		LOOP_OVER_SYMBOLS_TABLE(S, T) {
-			Inter::Binary::write_word(fh, S->symbol_ID);
-			Inter::Binary::write_word(fh, (unsigned int) InterSymbol::get_type(S));
-			Inter::Binary::write_word(fh, (unsigned int) InterSymbol::get_persistent_flags(S));
-			Inter::Binary::write_text(fh, InterSymbol::identifier(S));
+			BinaryInter::write_word(fh, S->symbol_ID);
+			BinaryInter::write_word(fh, (unsigned int) InterSymbol::get_type(S));
+			BinaryInter::write_word(fh, (unsigned int) InterSymbol::get_persistent_flags(S));
+			BinaryInter::write_text(fh, InterSymbol::identifier(S));
 			@<Write the annotations for a symbol@>;
 			if (InterSymbol::is_plug(S)) {
 				text_stream *N = Wiring::wired_to_name(S);
-				Inter::Binary::write_text(fh, N);
+				BinaryInter::write_text(fh, N);
 			}
 		}
 	}
-	Inter::Binary::write_word(fh, 0);
+	BinaryInter::write_word(fh, 0);
 
 @ The annotations table for a single symbol begins with a word in the form
 |(bm << 6) + n|, where |bm| is the bitmap of its boolean annotations, and |n|
@@ -548,15 +548,15 @@ This word is then followed by |n| pairs:
 The meaning of the value depends on the annotation type.
 
 @<Read the annotations for a symbol@> =
-	unsigned int bm = Inter::Binary::read_next(fh, &eloc);
+	unsigned int bm = BinaryInter::read_next(fh, &eloc);
 	S->annotations.boolean_annotations |= (bm / 0x20);
 	unsigned int L = bm & 0x1f;
 	for (unsigned int i=0; i<L; i++) {
-		unsigned int c1 = Inter::Binary::read_next(fh, &eloc);
-		unsigned int c2 = Inter::Binary::read_next(fh, &eloc);
+		unsigned int c1 = BinaryInter::read_next(fh, &eloc);
+		unsigned int c2 = BinaryInter::read_next(fh, &eloc);
 		inter_annotation IA = SymbolAnnotation::from_pair(c1, c2);
 		if (SymbolAnnotation::is_invalid(IA))
-			Inter::Binary::read_error(&eloc, ftell(fh), I"invalid annotation");
+			BinaryInter::read_error(&eloc, ftell(fh), I"invalid annotation");
 		if ((grid) && (IA.annot->iatype == TEXTUAL_IATYPE))
 			IA.annot_value = grid[IA.annot_value];
 		SymbolAnnotation::set(-1, S, IA);
@@ -564,7 +564,7 @@ The meaning of the value depends on the annotation type.
 
 @<Write the annotations for a symbol@> =
 	inter_annotation_set *set = &(S->annotations);
-	Inter::Binary::write_word(fh,
+	BinaryInter::write_word(fh,
 		0x20*((unsigned int) set->boolean_annotations) +
 		(unsigned int) LinkedLists::len(set->other_annotations));
 	if (set->other_annotations) {
@@ -572,8 +572,8 @@ The meaning of the value depends on the annotation type.
 		LOOP_OVER_LINKED_LIST(A, inter_annotation, set->other_annotations) {
 			inter_ti c1 = 0, c2 = 0;
 			SymbolAnnotation::to_pair(*A, &c1, &c2);
-			Inter::Binary::write_word(fh, (unsigned int) c1);
-			Inter::Binary::write_word(fh, (unsigned int) c2);
+			BinaryInter::write_word(fh, (unsigned int) c1);
+			BinaryInter::write_word(fh, (unsigned int) c2);
 		}
 	}
 
@@ -591,9 +591,9 @@ easy to determine from the binary Inter file seems no bad thing, and it doesn't
 consume so very many extra bytes. Package names are short and compress well.
 
 @<Read a package resource@> =
-	unsigned int parent_package_resource_ID = Inter::Binary::read_next(fh, &eloc);
-	unsigned int flags = Inter::Binary::read_next(fh, &eloc);
-	unsigned int symbols_table_resource_ID = Inter::Binary::read_next(fh, &eloc);
+	unsigned int parent_package_resource_ID = BinaryInter::read_next(fh, &eloc);
+	unsigned int flags = BinaryInter::read_next(fh, &eloc);
+	unsigned int symbols_table_resource_ID = BinaryInter::read_next(fh, &eloc);
 	inter_package *parent = NULL;
 	if (parent_package_resource_ID != 0) {
 		if (grid) parent_package_resource_ID = grid[parent_package_resource_ID];
@@ -612,7 +612,7 @@ consume so very many extra bytes. Package names are short and compress well.
 			InterWarehouse::get_symbols_table(warehouse, symbols_table_resource_ID));
 	}
 	TEMPORARY_TEXT(N)
-	Inter::Binary::read_text(fh, N, &eloc);
+	BinaryInter::read_text(fh, N, &eloc);
 	LargeScale::note_package_name(I, stored_package, N);
 	DISCARD_TEXT(N)
 
@@ -620,11 +620,11 @@ consume so very many extra bytes. Package names are short and compress well.
 	inter_package *P = InterWarehouse::get_package(warehouse, ID);
 	if (P == NULL) internal_error("no package for warehouse ID");
 	inter_package *par = InterPackage::parent(P);
-	if (par == NULL) Inter::Binary::write_word(fh, 0);
-	else Inter::Binary::write_word(fh, (unsigned int) par->resource_ID);
-	Inter::Binary::write_word(fh, (unsigned int) InterPackage::get_persistent_flags(P));
-	Inter::Binary::write_word(fh, P->package_scope->resource_ID);
-	Inter::Binary::write_text(fh, InterPackage::name(P));
+	if (par == NULL) BinaryInter::write_word(fh, 0);
+	else BinaryInter::write_word(fh, (unsigned int) par->resource_ID);
+	BinaryInter::write_word(fh, (unsigned int) InterPackage::get_persistent_flags(P));
+	BinaryInter::write_word(fh, P->package_scope->resource_ID);
+	BinaryInter::write_text(fh, InterPackage::name(P));
 
 @ A node list resource consists only of the word |NODE_LIST_IRSRC|, with no
 further data. That's because node lists are built fresh as instructions are
@@ -663,25 +663,25 @@ Again, this is null-terminated, which is safe since all symbol IDs are at least
 
 @<Read the symbol wirings@> =
 	unsigned int S1_table_ID = 0;
-	while (Inter::Binary::read_word(fh, &S1_table_ID)) {
+	while (BinaryInter::read_word(fh, &S1_table_ID)) {
 		if (S1_table_ID == 0) break;
 		if (grid) S1_table_ID = grid[S1_table_ID];
 		inter_symbols_table *S1_table = InterWarehouse::get_symbols_table(warehouse, S1_table_ID);
 		if (S1_table == NULL)
-			Inter::Binary::read_error(&eloc, ftell(fh), I"invalid symbols table in wiring");
+			BinaryInter::read_error(&eloc, ftell(fh), I"invalid symbols table in wiring");
 		unsigned int S1_symbol_ID = 0;
-		while (Inter::Binary::read_word(fh, &S1_symbol_ID)) {
+		while (BinaryInter::read_word(fh, &S1_symbol_ID)) {
 			if (S1_symbol_ID == 0) break;
-			unsigned int S2_table_ID = Inter::Binary::read_next(fh, &eloc);
+			unsigned int S2_table_ID = BinaryInter::read_next(fh, &eloc);
 			if (grid) S2_table_ID = grid[S2_table_ID];
-			unsigned int S2_symbol_ID = Inter::Binary::read_next(fh, &eloc);
+			unsigned int S2_symbol_ID = BinaryInter::read_next(fh, &eloc);
 			inter_symbols_table *S2_table = InterWarehouse::get_symbols_table(warehouse, S2_table_ID);
 			if (S1_table == NULL)
-				Inter::Binary::read_error(&eloc, ftell(fh), I"invalid symbols table in wiring");
+				BinaryInter::read_error(&eloc, ftell(fh), I"invalid symbols table in wiring");
 			inter_symbol *S1 = InterSymbolsTable::symbol_from_ID(S1_table, S1_symbol_ID);
 			inter_symbol *S2 = InterSymbolsTable::symbol_from_ID(S2_table, S2_symbol_ID);
 			if ((S1 == NULL) || (S2 == NULL))
-				Inter::Binary::read_error(&eloc, ftell(fh), I"invalid symbols in wiring");
+				BinaryInter::read_error(&eloc, ftell(fh), I"invalid symbols in wiring");
 			Wiring::wire_to(S1, S2);
 		}
 	}
@@ -694,19 +694,19 @@ Again, this is null-terminated, which is safe since all symbol IDs are at least
 			LOOP_OVER_SYMBOLS_TABLE(S, from_T) {
 				if (Wiring::is_wired(S)) {
 					if (table_needed == FALSE) {
-						Inter::Binary::write_word(fh, (unsigned int) ID);
+						BinaryInter::write_word(fh, (unsigned int) ID);
 						table_needed = TRUE;
 					}
 					inter_symbol *W = Wiring::wired_to(S);
-					Inter::Binary::write_word(fh, S->symbol_ID);
-					Inter::Binary::write_word(fh, W->owning_table->resource_ID);
-					Inter::Binary::write_word(fh, W->symbol_ID);
+					BinaryInter::write_word(fh, S->symbol_ID);
+					BinaryInter::write_word(fh, W->owning_table->resource_ID);
+					BinaryInter::write_word(fh, W->symbol_ID);
 				}
 			}
-			if (table_needed) Inter::Binary::write_word(fh, 0);
+			if (table_needed) BinaryInter::write_word(fh, 0);
 		}
 	}
-	Inter::Binary::write_word(fh, 0);
+	BinaryInter::write_word(fh, 0);
 
 @ Finally the bytecode block. Surprisingly, this is easy to handle here, but
 only because a non-trivial part of the process is handled elsewhere.
@@ -715,7 +715,7 @@ Note that this loop continues until the file runs out.
 
 @<Read the bytecode@> =
 	unsigned int X = 0;
-	while (Inter::Binary::read_word(fh, &X)) {
+	while (BinaryInter::read_word(fh, &X)) {
 		inter_package *owner = NULL;
 		int extent = (int) X;
 		@<Read the preframe@>;
@@ -726,11 +726,11 @@ Note that this loop continues until the file runs out.
 	}
 
 @<Write the bytecode@> =
-	InterTree::traverse_root_only(I, Inter::Binary::frame_writer, fh, -PACKAGE_IST);
-	InterTree::traverse(I, Inter::Binary::frame_writer, fh, NULL, 0);
+	InterTree::traverse_root_only(I, BinaryInter::frame_writer, fh, -PACKAGE_IST);
+	InterTree::traverse(I, BinaryInter::frame_writer, fh, NULL, 0);
 
 @ =
-void Inter::Binary::frame_writer(inter_tree *I, inter_tree_node *P, void *state) {
+void BinaryInter::frame_writer(inter_tree *I, inter_tree_node *P, void *state) {
 	FILE *fh = (FILE *) state;
 	@<Write the preframe@>;
 	@<Write the frame@>;
@@ -739,26 +739,26 @@ void Inter::Binary::frame_writer(inter_tree *I, inter_tree_node *P, void *state)
 @<Read the preframe@> =
 	eloc.error_offset = (size_t) ftell(fh) - PREFRAME_SIZE;
 	if ((extent < 2) || ((long int) extent >= max_offset))
-		Inter::Binary::read_error(&eloc, ftell(fh), I"wildly overlarge instruction frame");
+		BinaryInter::read_error(&eloc, ftell(fh), I"wildly overlarge instruction frame");
 	unsigned int PID = 0;
-	if (Inter::Binary::read_word(fh, &PID)) {
+	if (BinaryInter::read_word(fh, &PID)) {
 		if (grid) PID = grid[PID];
 		if (PID) owner = InterWarehouse::get_package(warehouse, PID);
 	}
 
 @<Write the preframe@> =
-	Inter::Binary::write_word(fh, (unsigned int) (P->W.extent + 1));
-	Inter::Binary::write_word(fh, (unsigned int) (Inode::get_package(P)->resource_ID));
+	BinaryInter::write_word(fh, (unsigned int) (P->W.extent + 1));
+	BinaryInter::write_word(fh, (unsigned int) (Inode::get_package(P)->resource_ID));
 
 @<Read the frame@> =
 	for (int i=0; i<extent-1; i++) {
-		unsigned int word = Inter::Binary::read_next(fh, &eloc);
+		unsigned int word = BinaryInter::read_next(fh, &eloc);
 		P->W.instruction[i] = word;
 	}
 
 @<Write the frame@> =
 	for (int i=0; i<P->W.extent; i++)
-		Inter::Binary::write_word(fh, (unsigned int) (P->W.instruction[i]));
+		BinaryInter::write_word(fh, (unsigned int) (P->W.instruction[i]));
 
 @ That just leaves the process of correction. We do two things:
 
@@ -774,15 +774,15 @@ the definition of any symbol created in the instruction to |P|.
 
 @<Correct and verify the frame@> =
 	inter_error_message *E = NULL;
-	if (grid) E = InterConstruct::transpose_construct(owner, P, grid, grid_extent);
+	if (grid) E = InterInstruction::transpose_construct(owner, P, grid, grid_extent);
 	if (E) { InterErrors::issue(E); exit(1); }
-	E = Inter::Verify::instruction(owner, P);
+	E = VerifyingInter::instruction(owner, P);
 	if (E) { InterErrors::issue(E); exit(1); }
 
 @ Errors in reading binary inter are not recoverable:
 
 =
-void Inter::Binary::read_error(inter_error_location *eloc, long at, text_stream *err) {
+void BinaryInter::read_error(inter_error_location *eloc, long at, text_stream *err) {
 	eloc->error_offset = (size_t) at;
 	InterErrors::issue(InterErrors::plain(err, eloc));
 	exit(1);
