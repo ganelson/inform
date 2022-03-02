@@ -155,9 +155,12 @@ inter_ti InterWarehouse::create_text(inter_warehouse *warehouse, inter_package *
 	return InterWarehouse::create_ref(warehouse, STORE_POINTER_text_stream(Str::new()), owner);
 }
 
-inter_ti InterWarehouse::create_text_at(inter_bookmark *IBM) {
-	return InterWarehouse::create_text(
-		InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
+inter_ti InterWarehouse::create_text_at(inter_bookmark *IBM, text_stream *text) {
+	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
+	inter_ti text_ID = InterWarehouse::create_text(warehouse, InterBookmark::package(IBM));
+	text_stream *to = InterWarehouse::get_text(warehouse, text_ID);
+	Str::copy(to, text);
+	return text_ID;
 }
 
 text_stream *InterWarehouse::get_text(inter_warehouse *warehouse, inter_ti n) {

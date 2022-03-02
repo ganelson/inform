@@ -195,10 +195,9 @@ inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	if (annotation != INVALID_IANN) SymbolAnnotation::set_b(con_s, annotation, 0);
-	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Emit::at()),
-		InterTypes::from_constructor_code(constructor_code));
-	Produce::guard(ConstantInstruction::new_numerical(Emit::at(), Emit::symbol_id(con_s),
-		TID, InterValuePairs::number(val), Emit::baseline(), NULL));
+	Produce::guard(ConstantInstruction::new(Emit::at(), con_s,
+		InterTypes::from_constructor_code(constructor_code), InterValuePairs::number(val),
+		Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return con_iname;
 }
@@ -208,14 +207,10 @@ inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
 =
 void Emit::text_constant(inter_name *con_iname, text_stream *contents) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
-	inter_ti ID = InterWarehouse::create_text(Emit::warehouse(),
-		Emit::package());
-	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID), contents);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
-	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Emit::at()),
-		InterTypes::from_constructor_code(TEXT_ITCONC));
-	Produce::guard(ConstantInstruction::new_textual(Emit::at(), Emit::symbol_id(con_s),
-		TID, ID, Emit::baseline(), NULL));
+	Produce::guard(ConstantInstruction::new(Emit::at(), con_s,
+		InterTypes::from_constructor_code(TEXT_ITCONC),
+		InterValuePairs::from_text(Emit::at(), contents), Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -232,8 +227,8 @@ inter_name *Emit::iname_constant(inter_name *con_iname, kind *K, inter_name *val
 		else
 			internal_error("can't handle a null alias");
 	}
-	Produce::guard(ConstantInstruction::new_numerical(Emit::at(), Emit::symbol_id(con_s),
-		Produce::kind_to_TID(Emit::at(), K), Emit::symbol_to_value_pair(val_s),
+	Produce::guard(ConstantInstruction::new(Emit::at(), con_s,
+		Produce::kind_to_type(K), Emit::symbol_to_value_pair(val_s),
 		Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return con_iname;
@@ -280,9 +275,8 @@ void Emit::initial_value_as_raw_text(inter_name *con_iname, nonlocal_variable *v
 void Emit::named_generic_constant(inter_name *con_iname, inter_pair val) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
-	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::unchecked());
-	Produce::guard(ConstantInstruction::new_numerical(Emit::at(), Emit::symbol_id(con_s),
-		KID, val, Emit::baseline(), NULL));
+	Produce::guard(ConstantInstruction::new(Emit::at(), con_s,
+		InterTypes::unchecked(), val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -363,8 +357,8 @@ the real API for starting and ending functions.
 void Emit::function(inter_name *fn_iname, kind *K, inter_package *block) {
 	if (Emit::at() == NULL) internal_error("no inter repository");
 	inter_symbol *fn_s = InterNames::to_symbol(fn_iname);
-	Produce::guard(ConstantInstruction::new_function(Emit::at(),
-		Emit::symbol_id(fn_s), Produce::kind_to_TID(Emit::at(), K), block,
+	Produce::guard(ConstantInstruction::new(Emit::at(), fn_s,
+		Produce::kind_to_type(K), InterValuePairs::functional(block),
 		Emit::baseline(), NULL));
 }
 
@@ -401,8 +395,6 @@ void Emit::append(inter_name *iname, text_stream *text) {
 	LOG("Append '%S'\n", text);
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symbol = InterNames::to_symbol(iname);
-	inter_ti ID = InterWarehouse::create_text(Emit::warehouse(), Emit::package());
-	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID), text);
-	Produce::guard(AppendInstruction::new(Emit::at(), symbol, ID, Emit::baseline(), NULL));
+	Produce::guard(AppendInstruction::new(Emit::at(), symbol, text, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }

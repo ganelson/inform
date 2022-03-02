@@ -156,7 +156,7 @@ nascent_array *EmitArrays::push_new(void) {
 	A->space_used = 0;
 	A->entry_kind = NULL;
 	A->array_name_symbol = NULL;
-	A->array_form = CONSTANT_INDIRECT_LIST;
+	A->array_form = CONST_LIST_FORMAT_COLLECTION;
 	A->entry_storage = NULL;
 	PUSH_TO_LIFO_STACK(A, nascent_array, emission_array_stack);
 	return A;
@@ -177,7 +177,7 @@ void EmitArrays::begin_inner(inter_name *N, kind *K, int const_sum, int unchecke
 	nascent_array *current_A = EmitArrays::push_new();
 	current_A->entry_kind = (unchecked)?NULL:(K?K:K_value);
 	current_A->array_name_symbol = symb;
-	if (const_sum) current_A->array_form = CONSTANT_SUM_LIST;
+	if (const_sum) current_A->array_form = CONST_LIST_FORMAT_SUM;
 }
 
 @ And the various ways to add an entry merge into this one:
@@ -214,7 +214,7 @@ void EmitArrays::end_inner(void) {
 	inter_ti CID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::unchecked());
 	if (K) {
 		inter_symbol *con_kind = NULL;
-		if (current_A->array_form == CONSTANT_INDIRECT_LIST)
+		if (current_A->array_form == CONST_LIST_FORMAT_COLLECTION)
 			con_kind = Produce::kind_to_symbol(Kinds::unary_con(CON_list_of, K));
 		else
 			con_kind = Produce::kind_to_symbol(K);

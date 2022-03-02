@@ -66,10 +66,8 @@ start of a function.
 void EmitCode::comment(text_stream *text) {
 	if (Functions::a_function_is_being_compiled() == FALSE)
 		internal_error("code comment emitted outside function");
-	inter_ti ID = InterWarehouse::create_text(Emit::warehouse(), Emit::package());
-	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID), text);
-	Produce::guard(CommentInstruction::new(EmitCode::at(),
-		(inter_ti) EmitCode::level(), NULL, ID));
+	Produce::guard(CommentInstruction::new(EmitCode::at(), text, NULL,
+		(inter_ti) EmitCode::level()));
 }
 
 @h In value context.

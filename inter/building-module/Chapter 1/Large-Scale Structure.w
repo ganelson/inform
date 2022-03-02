@@ -277,10 +277,7 @@ inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 	inter_symbol *S = InterSymbolsTable::symbol_from_name_creating(tab, N);
 	SymbolAnnotation::set_b(S, ARCHITECTURAL_IANN, TRUE);
 	inter_bookmark *IBM = &(I->site.strdata.architecture_bookmark);
-	Produce::guard(ConstantInstruction::new_numerical(IBM,
-		InterSymbolsTable::id_from_symbol(I, arch, S),
-		InterTypes::to_TID(InterBookmark::scope(IBM), type),
-		InterValuePairs::number(val),
+	Produce::guard(ConstantInstruction::new(IBM, S, type, InterValuePairs::number(val),
 		(inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 	return S;
 }

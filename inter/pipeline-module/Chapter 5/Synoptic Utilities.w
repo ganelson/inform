@@ -52,13 +52,9 @@ inter_symbol *Synoptic::new_symbol(inter_package *pack, text_stream *name) {
 void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 	inter_symbol *con_s, text_stream *S, inter_bookmark *IBM) {
 	SymbolAnnotation::set_b(con_s, TEXT_LITERAL_IANN, TRUE);
-	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
-		InterBookmark::package(IBM));
-	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), S);
-	Produce::guard(ConstantInstruction::new_textual(IBM,
-		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), con_s),
-		InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::unchecked()),
-		ID, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
+	Produce::guard(ConstantInstruction::new(IBM, con_s,
+		InterTypes::unchecked(), InterValuePairs::from_text(IBM, S),
+		(inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 }
 
 @h Making functions.
@@ -72,10 +68,8 @@ void Synoptic::begin_function(inter_tree *I, inter_name *iname) {
 void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	Produce::end_function_body(I);
 	inter_symbol *fn_s = InterNames::to_symbol(iname);
-	Produce::guard(ConstantInstruction::new_function(Packaging::at(I),
-		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(Packaging::at(I)), fn_s),
-		InterTypes::to_TID(InterBookmark::scope(Packaging::at(I)), InterTypes::unchecked()),
-		synoptic_fn_package,
+	Produce::guard(ConstantInstruction::new(Packaging::at(I), fn_s,
+		InterTypes::unchecked(), InterValuePairs::functional(synoptic_fn_package),
 		Produce::baseline(Packaging::at(I)), NULL));
 	Packaging::exit(I, synoptic_fn_ps);
 }
@@ -100,7 +94,7 @@ void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname
 		InterTypes::from_constructor_code(LIST_ITCONC));
 	synoptic_array_node = Inode::new_with_3_data_fields(Packaging::at(I), CONSTANT_IST,
 		 InterSymbolsTable::id_from_symbol_at_bookmark(Packaging::at(I), con_s),
-		 TID, CONSTANT_INDIRECT_LIST, NULL, 
+		 TID, CONST_LIST_FORMAT_COLLECTION, NULL, 
 		 (inter_ti) InterBookmark::baseline(Packaging::at(I)) + 1);
 }
 

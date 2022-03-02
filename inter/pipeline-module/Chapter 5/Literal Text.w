@@ -82,7 +82,7 @@ in |texts|.
 
 	Wiring::wire_to(ref_s, latest_s);
 	inter_pair val = InterValuePairs::symbolic_in(InterPackage::container(P), ref_s);
-	P->W.instruction[FORMAT_CONST_IFLD] = CONSTANT_DIRECT;
+	P->W.instruction[FORMAT_CONST_IFLD] = CONST_LIST_FORMAT_NONE;
 	InterValuePairs::set(P, DATA_CONST_IFLD, val);
 
 	inter_symbol *con_name =
@@ -94,11 +94,10 @@ and use that to define a sorting function on nodes:
 
 =
 text_stream *SynopticText::text_quoted_here(inter_tree_node *P) {
-	if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_INDIRECT_TEXT) {
-		inter_ti val1 = P->W.instruction[DATA_CONST_IFLD];
-		return Inode::ID_to_text(P, val1);
+	if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE) {
+		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+		return InterValuePairs::to_text(Inode::tree(P), val);
 	}
-	internal_error("not indirect");
 	return NULL;
 }
 

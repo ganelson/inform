@@ -102,11 +102,10 @@ and in the destination tree afterwards.
 @ =
 void Transmigration::comment(inter_bookmark *IBM, int level, text_stream *action,
 	text_stream *content) {
-	inter_ti C = InterWarehouse::create_text(InterBookmark::warehouse(IBM),
-		InterBookmark::package(IBM));
-	WRITE_TO(InterWarehouse::get_text(InterBookmark::warehouse(IBM), C), 
-		"%S %S here", action, content);
-	CommentInstruction::new(IBM, (inter_ti) level, NULL, C);
+	TEMPORARY_TEXT(C)
+	WRITE_TO(C, "%S %S here", action, content);
+	CommentInstruction::new(IBM, C, NULL, (inter_ti) level);
+	DISCARD_TEXT(C)
 }
 
 @ This is the only point anywhere in the Inform tool chain where a node is moved

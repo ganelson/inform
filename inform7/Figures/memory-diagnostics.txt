@@ -1,6 +1,6 @@
-Total memory consumption was 413062K = 403 MB
+Total memory consumption was 413068K = 403 MB
 
-66.4% was used for 2046381 objects, in 417128 frames in 343 x 800K = 274400K = 267 MB:
+66.4% was used for 2046385 objects, in 417132 frames in 343 x 800K = 274400K = 267 MB:
 
     10.4%  linked_list                              78564 objects, 43995840 bytes
      9.8%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
@@ -84,8 +84,8 @@ Total memory consumption was 413062K = 403 MB
      ----  parsing_data                             670 objects, 37520 bytes
      ----  heading                                  198 objects, 36432 bytes
      ----  production_list                          617 objects, 34552 bytes
-     ----  counting_data                            670 objects, 32160 bytes
      ----  regions_data                             670 objects, 32160 bytes
+     ----  counting_data                            670 objects, 32160 bytes
      ----  linked_list_item_array                   2 x 1000 = 2000 objects, 32064 bytes
      ----  HTML_tag_array                           1 x 1000 objects, 32032 bytes
      ----  property_permission                      96 objects, 31488 bytes
@@ -100,14 +100,14 @@ Total memory consumption was 413062K = 403 MB
      ----  property                                 146 objects, 19856 bytes
      ----  timed_rules_rfd_data                     400 objects, 19200 bytes
      ----  pipeline_step                            14 objects, 18928 bytes
-     ----  method                                   379 objects, 18192 bytes
+     ----  method                                   381 objects, 18288 bytes
      ----  pcalc_prop_deferral                      86 objects, 17888 bytes
      ----  instance                                 167 objects, 17368 bytes
      ----  parse_node_tree                          20 objects, 17280 bytes
      ----  understanding_reference_array            2 x 100 = 200 objects, 16064 bytes
      ----  to_phrase_request                        59 objects, 16048 bytes
-     ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
      ----  match_avinue_array                       1 x 1000 objects, 16032 bytes
+     ----  action_name_list_array                   1 x 1000 objects, 16032 bytes
      ----  adjective                                137 objects, 15344 bytes
      ----  generated_segment                        14 objects, 14784 bytes
      ----  booking_list                             407 objects, 13024 bytes
@@ -123,8 +123,8 @@ Total memory consumption was 413062K = 403 MB
      ----  determiner                               22 objects, 7216 bytes
      ----  build_vertex                             60 objects, 7200 bytes
      ----  hierarchy_attachment_point               77 objects, 6776 bytes
+     ----  text_literal_holder                      163 objects, 6520 bytes
      ----  inbuild_work                             101 objects, 6464 bytes
-     ----  text_literal_holder                      161 objects, 6440 bytes
      ----  verb                                     108 objects, 6048 bytes
      ----  inbuild_copy                             55 objects, 5720 bytes
      ----  heading_tree                             20 objects, 5440 bytes
@@ -246,7 +246,7 @@ Total memory consumption was 413062K = 403 MB
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
      1.0%  inter symbols storage                    4516000 bytes in 27927 claims
-     3.9%  inter bytecode storage                   16769084 bytes in 14 claims
+     3.9%  inter bytecode storage                   16774748 bytes in 14 claims
      2.9%  inter links storage                      12448896 bytes in 12 claims
      ----  inter tree location list storage         191232 bytes in 32 claims
      0.4%  instance-of-kind counting                1695204 bytes in 1 claim
@@ -255,5 +255,5 @@ Total memory consumption was 413062K = 403 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      ----  emitter array storage                    279904 bytes in 1996 claims
 
-20.3% was overhead - 86222080 bytes = 84201K = 82 MB
+20.3% was overhead - 86221904 bytes = 84201K = 82 MB
 

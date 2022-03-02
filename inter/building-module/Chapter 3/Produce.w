@@ -305,10 +305,7 @@ void Produce::nop_at(inter_bookmark *IBM, inter_ti delta) {
 
 void Produce::comment(inter_tree *I, text_stream *text) {
 	inter_bookmark *IBM = Packaging::at(I);
-	inter_ti ID = InterWarehouse::create_text(
-		InterTree::warehouse(I), InterBookmark::package(IBM));
-	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), text);
-	Produce::guard(CommentInstruction::new(IBM, Produce::baseline(IBM), NULL, ID));
+	Produce::guard(CommentInstruction::new(IBM, text, NULL, Produce::baseline(IBM)));
 }
 
 @ Defining a constant with numerical value |val|:
@@ -319,10 +316,9 @@ inter_name *Produce::numeric_constant(inter_tree *I, inter_name *con_iname, kind
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	inter_bookmark *IBM = Packaging::at(I);
-	Produce::guard(ConstantInstruction::new_numerical(IBM,
-		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
-		Produce::kind_to_TID(IBM, K),
-		InterValuePairs::number(val), Produce::baseline(IBM), NULL));
+	Produce::guard(ConstantInstruction::new(IBM, con_s,
+		Produce::kind_to_type(K), InterValuePairs::number(val),
+		Produce::baseline(IBM), NULL));
 	Packaging::exit(I, save);
 	return con_iname;
 }
@@ -336,10 +332,8 @@ inter_name *Produce::symbol_constant(inter_tree *I, inter_name *con_iname, kind 
 	inter_bookmark *IBM = Packaging::at(I);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
 	inter_pair val = InterValuePairs::symbolic(IBM, val_s);
-	Produce::guard(ConstantInstruction::new_numerical(IBM,
-		InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_s),
-		Produce::kind_to_TID(IBM, K),
-		val, Produce::baseline(IBM), NULL));
+	Produce::guard(ConstantInstruction::new(IBM, con_s,
+		Produce::kind_to_type(K), val, Produce::baseline(IBM), NULL));
 	Packaging::exit(I, save);
 	return con_iname;
 }
@@ -568,10 +562,15 @@ inter_symbol *Produce::kind_to_symbol(kind *K) {
 	#endif
 }
 
-inter_ti Produce::kind_to_TID(inter_bookmark *IBM, kind *K) {
+inter_type Produce::kind_to_type(kind *K) {
 	inter_type type = InterTypes::unchecked();
 	inter_symbol *S = Produce::kind_to_symbol(K);
 	if (S) type = InterTypes::from_type_name(S);
+	return type;
+}
+
+inter_ti Produce::kind_to_TID(inter_bookmark *IBM, kind *K) {
+	inter_type type = Produce::kind_to_type(K);
 	return InterTypes::to_TID_at(IBM, type);
 }
 
@@ -627,13 +626,9 @@ inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
 	if (annot != INVALID_IANN) SymbolAnnotation::set_b(local_s, annot, TRUE);
 	InterSymbol::make_local(local_s);
 	inter_bookmark *locals_at = &(I->site.sprdata.function_locals_bookmark);
-	if ((comm) && (Str::len(comm) > 0)) {
-		inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I),
-			InterBookmark::package(Packaging::at(I)));
-		Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), comm);
-		Produce::guard(CommentInstruction::new(locals_at, Produce::baseline(locals_at) + 1,
-			NULL, ID));
-	}
+	if ((comm) && (Str::len(comm) > 0))
+		Produce::guard(CommentInstruction::new(locals_at, comm, NULL,
+			Produce::baseline(locals_at) + 1));
 	inter_type type = InterTypes::unchecked();
 	if ((K) && (K != K_value)) type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
 	Produce::guard(LocalInstruction::new(locals_at, local_s, type,

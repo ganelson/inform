@@ -310,10 +310,9 @@ not already there.
 	inter_bookmark *IBM = &content_at;
 	inter_symbol *id_s = CompileSplatsStage::make_socketed_symbol(IBM, I"property_id");	
 	InterSymbol::set_flag(id_s, MAKE_NAME_UNIQUE_ISYMF);
-	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::unchecked());
-	Produce::guard(ConstantInstruction::new_numerical(IBM,
-		InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), id_s),
-		KID, InterValuePairs::number(0), (inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
+	Produce::guard(ConstantInstruction::new(IBM, id_s,
+		InterTypes::unchecked(), InterValuePairs::number(0),
+		(inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 
 @<Make a definition for made_s@> =
 	inter_bookmark *IBM = &content_at;
@@ -339,24 +338,25 @@ not already there.
 	}
 
 @<Make a scalar constant in Inter@> =
-	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::unchecked());
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_pair val = InterValuePairs::undef();
 	@<Assimilate a value@>;
-	Produce::guard(ConstantInstruction::new_numerical(IBM, MID, KID, val, B, NULL));
+	Produce::guard(ConstantInstruction::new(IBM, made_s,
+		InterTypes::unchecked(), val, B, NULL));
 
 @<Make a global variable in Inter@> =
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_pair val = InterValuePairs::undef();
 	@<Assimilate a value@>;
-	Produce::guard(VariableInstruction::new(IBM, MID, InterTypes::unchecked(), val, B, NULL));
+	Produce::guard(VariableInstruction::new(IBM, MID,
+		InterTypes::unchecked(), val, B, NULL));
 
 @<Make a general property in Inter@> =
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(PropertyInstruction::new(IBM, MID, InterTypes::unchecked(), B, NULL));
+	Produce::guard(PropertyInstruction::new(IBM, MID,
+		InterTypes::unchecked(), B, NULL));
 
 @<Make an either-or property in Inter@> =
 	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
@@ -385,12 +385,10 @@ not already there.
 	else
 		@<Compile the string of command grammar contents into the pile of values@>;
 
-	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
-	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM),
-		InterTypes::from_constructor_code(LIST_ITCONC));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(ConstantInstruction::new_list(IBM, MID, KID, no_assimilated_array_entries,
-		val_pile, B, NULL));
+	Produce::guard(ConstantInstruction::new_list(IBM, made_s,
+		InterTypes::from_constructor_code(LIST_ITCONC), CONST_LIST_FORMAT_COLLECTION,
+		no_assimilated_array_entries, val_pile, B, NULL));
 	Regexp::dispose_of(&mr);
 
 @ At this point |value| is |table 2 (-56) 17 "hey, I am typeless" ' '|. We want
@@ -517,22 +515,18 @@ assigned at link time -- at this stage we cannot know what other actions exist
 in other compilation units. So we create |action_id| equal just to 0 for now.
 
 @<Make an action_id symbol in the action package@> =
-	inter_package *pack = InterBookmark::package(IBM);
 	inter_symbol *action_id_s = InterSymbolsTable::create_with_unique_name(
 		InterBookmark::scope(IBM), I"action_id");
-	inter_ti MID = InterSymbolsTable::id_from_symbol(I, pack, action_id_s);
-	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::unchecked());
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(ConstantInstruction::new_numerical(IBM, MID, KID, InterValuePairs::number(0), B, NULL));
+	Produce::guard(ConstantInstruction::new(IBM, action_id_s,
+		InterTypes::unchecked(), InterValuePairs::number(0), B, NULL));
 	InterSymbol::set_flag(action_id_s, MAKE_NAME_UNIQUE_ISYMF);
 
 @<Make the actual double-sharped action symbol@> =
-	inter_package *pack = InterBookmark::package(IBM);
 	inter_symbol *action_s = CompileSplatsStage::make_socketed_symbol(IBM, value);
-	inter_ti MID = InterSymbolsTable::id_from_symbol(I, pack, action_s);
-	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::unchecked());
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(ConstantInstruction::new_numerical(IBM, MID, KID, InterValuePairs::number(10000), B, NULL));
+	Produce::guard(ConstantInstruction::new(IBM, action_s,
+		InterTypes::unchecked(), InterValuePairs::number(10000), B, NULL));
 	SymbolAnnotation::set_b(action_s, ACTION_IANN, 1);
 
 @ The Inter convention is that an action package should contain a function
@@ -719,11 +713,10 @@ These have package types |_function| and |_code| respectively.
 	inter_symbol *function_name_s =
 		CompileSplatsStage::make_socketed_symbol(IBM, identifier);
 	SymbolAnnotation::set_b(function_name_s, ASSIMILATED_IANN, 1);
-	inter_ti MID = InterSymbolsTable::id_from_symbol(I, OP, function_name_s);
-	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM),
-		InterTypes::from_constructor_code(FUNCTION_ITCONC));
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(ConstantInstruction::new_function(IBM, MID, KID, IP, B, NULL));
+	Produce::guard(ConstantInstruction::new(IBM, function_name_s,
+		InterTypes::from_constructor_code(FUNCTION_ITCONC),
+		InterValuePairs::functional(IP), B, NULL));
 
 @h Plumbing.
 Some convenient Inter utilities.
@@ -1003,10 +996,10 @@ inter_symbol *CompileSplatsStage::compute_r(pipeline_step *step,
 		return CompileSplatsStage::compute_r(step, IBM, isn->child_node);
 	if (isn->isn_type == OPERATION_ISNT) {
 		inter_ti op = 0;
-		if (isn->isn_clarifier == PLUS_BIP) op = CONSTANT_SUM_LIST;
-		else if (isn->isn_clarifier == TIMES_BIP) op = CONSTANT_PRODUCT_LIST;
-		else if (isn->isn_clarifier == MINUS_BIP) op = CONSTANT_DIFFERENCE_LIST;
-		else if (isn->isn_clarifier == DIVIDE_BIP) op = CONSTANT_QUOTIENT_LIST;
+		if (isn->isn_clarifier == PLUS_BIP) op = CONST_LIST_FORMAT_SUM;
+		else if (isn->isn_clarifier == TIMES_BIP) op = CONST_LIST_FORMAT_PRODUCT;
+		else if (isn->isn_clarifier == MINUS_BIP) op = CONST_LIST_FORMAT_DIFFERENCE;
+		else if (isn->isn_clarifier == DIVIDE_BIP) op = CONST_LIST_FORMAT_QUOTIENT;
 		else if (isn->isn_clarifier == UNARYMINUS_BIP) @<Calculate unary minus@>
 		else return NULL;
 		@<Calculate binary operation@>;
@@ -1028,7 +1021,7 @@ inter_symbol *CompileSplatsStage::compute_r(pipeline_step *step,
 @<Calculate unary minus@> =
 	inter_symbol *i2 = CompileSplatsStage::compute_r(step, IBM, isn->child_node);
 	if (i2 == NULL) return NULL;
-	return CompileSplatsStage::compute_binary_op(CONSTANT_DIFFERENCE_LIST, step, IBM, NULL, i2);
+	return CompileSplatsStage::compute_binary_op(CONST_LIST_FORMAT_DIFFERENCE, step, IBM, NULL, i2);
 
 @ The binary operation $x + y$ is "calculated" by forming a constant list with
 two entries, $x$ and $y$, and marking this list in Inter as a list whose meaning
@@ -1103,10 +1096,9 @@ inter_symbol *CompileSplatsStage::compute_eval(pipeline_step *step,
 			return NULL;
 	}
 	inter_symbol *result_s = CompileSplatsStage::new_ccv_symbol(pack);
-	inter_ti MID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, result_s);
-	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::unchecked());
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(ConstantInstruction::new_numerical(IBM, MID, KID, val, B, NULL));
+	Produce::guard(ConstantInstruction::new(IBM, result_s,
+		InterTypes::unchecked(), val, B, NULL));
 	return result_s;
 
 @ This is the harder case by far, despite the brevity of the following code.

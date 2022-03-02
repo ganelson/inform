@@ -25,13 +25,12 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 		} else if (Str::eq(InterSymbol::identifier(con_name), I"UUID_ARRAY")) {
 			@<Declare this constant as the special UUID string array@>;
 		} else switch (P->W.instruction[FORMAT_CONST_IFLD]) {
-			case CONSTANT_INDIRECT_TEXT: @<Declare this as a textual constant@>; break;
-			case CONSTANT_INDIRECT_LIST: @<Declare this as a list constant@>; break;
-			case CONSTANT_SUM_LIST:
-			case CONSTANT_PRODUCT_LIST:
-			case CONSTANT_DIFFERENCE_LIST:
-			case CONSTANT_QUOTIENT_LIST: @<Declare this as a computed constant@>; break;
-			case CONSTANT_DIRECT: @<Declare this as an explicit constant@>; break;
+			case CONST_LIST_FORMAT_NONE: @<Declare this as an explicit constant@>; break;
+			case CONST_LIST_FORMAT_COLLECTION: @<Declare this as a list constant@>; break;
+			case CONST_LIST_FORMAT_SUM:
+			case CONST_LIST_FORMAT_PRODUCT:
+			case CONST_LIST_FORMAT_DIFFERENCE:
+			case CONST_LIST_FORMAT_QUOTIENT: @<Declare this as a computed constant@>; break;
 			default: internal_error("ungenerated constant format");
 		}
 	}
@@ -60,8 +59,8 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	VanillaFunctions::declare_function(gen, con_name);
 
 @<Declare this constant as the special UUID string array@> =
-	inter_ti ID = P->W.instruction[DATA_CONST_IFLD];
-	text_stream *S = Inode::ID_to_text(P, ID);
+	inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+	text_stream *S = InterValuePairs::to_text(Inode::tree(P), val);
 	segmentation_pos saved;
 	TEMPORARY_TEXT(content)
 	TEMPORARY_TEXT(length)
@@ -82,11 +81,6 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	Generators::end_array(gen, BYTE_ARRAY_FORMAT, &saved);
 	DISCARD_TEXT(length)
 	DISCARD_TEXT(content)
-
-@<Declare this as a textual constant@> =
-	inter_ti ID = P->W.instruction[DATA_CONST_IFLD];
-	text_stream *S = Inode::ID_to_text(P, ID);
-	VanillaConstants::defer_declaring_literal_text(gen, S, con_name);
 
 @ Inter supports four sorts of arrays, with behaviour as laid out in this 2x2 grid:
 = (text)
@@ -140,7 +134,13 @@ than a literal, or may even be computed.
 	Generators::declare_constant(gen, con_name, COMPUTED_GDCFORM, NULL);
 
 @<Declare this as an explicit constant@> =
-	Generators::declare_constant(gen, con_name, DATA_GDCFORM, NULL);
+	inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+	if (InterValuePairs::is_text(val)) {
+		text_stream *S = InterValuePairs::to_text(Inode::tree(P), val);
+		VanillaConstants::defer_declaring_literal_text(gen, S, con_name);
+	} else {
+		Generators::declare_constant(gen, con_name, DATA_GDCFORM, NULL);
+	}
 
 @ When called by //Generators::declare_constant//, generators may if they choose
 make use of the following convenient function for generating the value to which a
@@ -186,10 +186,10 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 			WRITE("(");
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				if (i>DATA_CONST_IFLD) {
-					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_SUM_LIST) WRITE(" + ");
-					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_PRODUCT_LIST) WRITE(" * ");
-					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIFFERENCE_LIST) WRITE(" - ");
-					if (P->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_QUOTIENT_LIST) WRITE(" / ");
+					if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_SUM) WRITE(" + ");
+					if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_PRODUCT) WRITE(" * ");
+					if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_DIFFERENCE) WRITE(" - ");
+					if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_QUOTIENT) WRITE(" / ");
 				}
 				int bracket = TRUE;
 				inter_pair operand = InterValuePairs::get(P, i);

@@ -13,11 +13,13 @@ void AppendInstruction::define_construct(void) {
 	InterInstruction::fix_instruction_length_between(IC, 4, 4);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, AppendInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, AppendInstruction::transpose);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, AppendInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, AppendInstruction::write);
 }
 
-@ In bytecode, the frame of an |append| instruction is laid out with the two
+@h Instructions.
+In bytecode, the frame of an |append| instruction is laid out with the two
 compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 
 @d SYMBOL_APPEND_IFLD 2
@@ -25,15 +27,20 @@ compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 
 =
 inter_error_message *AppendInstruction::new(inter_bookmark *IBM, inter_symbol *S,
-	inter_ti append_text_ID, inter_ti level, struct inter_error_location *eloc) {
+	text_stream *append_text, inter_ti level, struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, APPEND_IST,
 		/* SYMBOL_APPEND_IFLD:  */ InterSymbolsTable::id_from_symbol_at_bookmark(IBM, S), 
-		/* CONTENT_APPEND_IFLD: */ append_text_ID,
+		/* CONTENT_APPEND_IFLD: */ InterWarehouse::create_text_at(IBM, append_text),
 		eloc, level);
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
+}
+
+void AppendInstruction::transpose(inter_construct *IC, inter_tree_node *P,
+	inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
+	P->W.instruction[CONTENT_APPEND_IFLD] = grid[P->W.instruction[CONTENT_APPEND_IFLD]];
 }
 
 @ Verification consists of sanity checks followed by some cross-referencing.
@@ -61,12 +68,10 @@ void AppendInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 	inter_symbol *S = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), identifier);
 	if (S == NULL) { *E = InterErrors::quoted(I"no such identifier", identifier, eloc); return; }
 
-	inter_ti ID = InterWarehouse::create_text_at(IBM);
-	text_stream *to = InterWarehouse::get_text(InterBookmark::warehouse(IBM), ID);
-	*E = TextualInter::parse_literal_text(to, content, 0, Str::len(content), eloc);
-	if (*E) return;
-
-	*E = AppendInstruction::new(IBM, S, ID, (inter_ti) ilp->indent_level, eloc);
+	TEMPORARY_TEXT(raw)
+	*E = TextualInter::parse_literal_text(raw, content, 0, Str::len(content), eloc);
+	if (*E == NULL) *E = AppendInstruction::new(IBM, S, raw, (inter_ti) ilp->indent_level, eloc);
+	DISCARD_TEXT(content)
 }
 
 @h Writing to textual Inter syntax.

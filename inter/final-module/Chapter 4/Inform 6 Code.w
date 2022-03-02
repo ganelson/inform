@@ -704,7 +704,7 @@ a constant 1, 2 or 3, or else plain roman is all you get.
 	case STYLE_BIP: {
 		inter_tree_node *N = InterTree::first_child(P);
 		if ((N->W.instruction[ID_IFLD] == CONSTANT_IST) &&
-			(N->W.instruction[FORMAT_CONST_IFLD] == CONSTANT_DIRECT)) {
+			(N->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE)) {
 			inter_ti val2 = N->W.instruction[DATA_CONST_IFLD + 1];
 			switch (val2) {
 				case 1: WRITE("style bold"); break;

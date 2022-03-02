@@ -27987,7 +27987,7 @@ package main _plain
 			constant (int32) KIT_CONFIGURATION_BITMAP = 0
 			constant (int32) KIT_CONFIGURATION_LOOKMODE = 2
 			constant (text) I7_VERSION_NUMBER = "10.1.0"
-			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U42"
+			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U45"
 			constant (text) ^virtual_machine = "C/32d/v1/no-main"
 			constant (text) ^virtual_machine_icon = "vm_glulx.png"
 			constant (text) ^language_elements_used = "core, naming, instance counting, glulx external files"
@@ -78364,97 +78364,97 @@ package main _plain
 			package ENGLISHLANGUAGEKIT_con _plain
 				constant ENGLISHLANGUAGEKIT = 1 __assimilated
 			package AGAIN1__WD_con _plain
-				constant AGAIN1__WD = dw'again' __assimilated
+				constant AGAIN1__WD = dw"again" __assimilated
 			package AGAIN2__WD_con _plain
-				constant AGAIN2__WD = dw'g' __assimilated
+				constant AGAIN2__WD = dw"g" __assimilated
 			package AGAIN3__WD_con _plain
-				constant AGAIN3__WD = dw'again' __assimilated
+				constant AGAIN3__WD = dw"again" __assimilated
 			package OOPS1__WD_con _plain
-				constant OOPS1__WD = dw'oops' __assimilated
+				constant OOPS1__WD = dw"oops" __assimilated
 			package OOPS2__WD_con _plain
-				constant OOPS2__WD = dw'o' __assimilated
+				constant OOPS2__WD = dw"o" __assimilated
 			package OOPS3__WD_con _plain
-				constant OOPS3__WD = dw'oops' __assimilated
+				constant OOPS3__WD = dw"oops" __assimilated
 			package UNDO1__WD_con _plain
-				constant UNDO1__WD = dw'undo' __assimilated
+				constant UNDO1__WD = dw"undo" __assimilated
 			package UNDO2__WD_con _plain
-				constant UNDO2__WD = dw'undo' __assimilated
+				constant UNDO2__WD = dw"undo" __assimilated
 			package UNDO3__WD_con _plain
-				constant UNDO3__WD = dw'undo' __assimilated
+				constant UNDO3__WD = dw"undo" __assimilated
 			package ALL1__WD_con _plain
-				constant ALL1__WD = dw'all' __assimilated
+				constant ALL1__WD = dw"all" __assimilated
 			package ALL2__WD_con _plain
-				constant ALL2__WD = dw'each' __assimilated
+				constant ALL2__WD = dw"each" __assimilated
 			package ALL3__WD_con _plain
-				constant ALL3__WD = dw'every' __assimilated
+				constant ALL3__WD = dw"every" __assimilated
 			package ALL4__WD_con _plain
-				constant ALL4__WD = dw'everything' __assimilated
+				constant ALL4__WD = dw"everything" __assimilated
 			package ALL5__WD_con _plain
-				constant ALL5__WD = dw'both' __assimilated
+				constant ALL5__WD = dw"both" __assimilated
 			package AND1__WD_con _plain
-				constant AND1__WD = dw'and' __assimilated
+				constant AND1__WD = dw"and" __assimilated
 			package AND2__WD_con _plain
-				constant AND2__WD = dw'and' __assimilated
+				constant AND2__WD = dw"and" __assimilated
 			package AND3__WD_con _plain
-				constant AND3__WD = dw'and' __assimilated
+				constant AND3__WD = dw"and" __assimilated
 			package BUT1__WD_con _plain
-				constant BUT1__WD = dw'but' __assimilated
+				constant BUT1__WD = dw"but" __assimilated
 			package BUT2__WD_con _plain
-				constant BUT2__WD = dw'except' __assimilated
+				constant BUT2__WD = dw"except" __assimilated
 			package BUT3__WD_con _plain
-				constant BUT3__WD = dw'but' __assimilated
+				constant BUT3__WD = dw"but" __assimilated
 			package ME1__WD_con _plain
-				constant ME1__WD = dw'me' __assimilated
+				constant ME1__WD = dw"me" __assimilated
 			package ME2__WD_con _plain
-				constant ME2__WD = dw'myself' __assimilated
+				constant ME2__WD = dw"myself" __assimilated
 			package ME3__WD_con _plain
-				constant ME3__WD = dw'self' __assimilated
+				constant ME3__WD = dw"self" __assimilated
 			package OF1__WD_con _plain
-				constant OF1__WD = dw'of' __assimilated
+				constant OF1__WD = dw"of" __assimilated
 			package OF2__WD_con _plain
-				constant OF2__WD = dw'of' __assimilated
+				constant OF2__WD = dw"of" __assimilated
 			package OF3__WD_con _plain
-				constant OF3__WD = dw'of' __assimilated
+				constant OF3__WD = dw"of" __assimilated
 			package OF4__WD_con _plain
-				constant OF4__WD = dw'of' __assimilated
+				constant OF4__WD = dw"of" __assimilated
 			package OTHER1__WD_con _plain
-				constant OTHER1__WD = dw'another' __assimilated
+				constant OTHER1__WD = dw"another" __assimilated
 			package OTHER2__WD_con _plain
-				constant OTHER2__WD = dw'other' __assimilated
+				constant OTHER2__WD = dw"other" __assimilated
 			package OTHER3__WD_con _plain
-				constant OTHER3__WD = dw'other' __assimilated
+				constant OTHER3__WD = dw"other" __assimilated
 			package THEN1__WD_con _plain
-				constant THEN1__WD = dw'then' __assimilated
+				constant THEN1__WD = dw"then" __assimilated
 			package THEN2__WD_con _plain
-				constant THEN2__WD = dw'then' __assimilated
+				constant THEN2__WD = dw"then" __assimilated
 			package THEN3__WD_con _plain
-				constant THEN3__WD = dw'then' __assimilated
+				constant THEN3__WD = dw"then" __assimilated
 			package NO1__WD_con _plain
-				constant NO1__WD = dw'n' __assimilated
+				constant NO1__WD = dw"n" __assimilated
 			package NO2__WD_con _plain
-				constant NO2__WD = dw'no' __assimilated
+				constant NO2__WD = dw"no" __assimilated
 			package NO3__WD_con _plain
-				constant NO3__WD = dw'no' __assimilated
+				constant NO3__WD = dw"no" __assimilated
 			package YES1__WD_con _plain
-				constant YES1__WD = dw'y' __assimilated
+				constant YES1__WD = dw"y" __assimilated
 			package YES2__WD_con _plain
-				constant YES2__WD = dw'yes' __assimilated
+				constant YES2__WD = dw"yes" __assimilated
 			package YES3__WD_con _plain
-				constant YES3__WD = dw'yes' __assimilated
+				constant YES3__WD = dw"yes" __assimilated
 			package AMUSING__WD_con _plain
-				constant AMUSING__WD = dw'amusing' __assimilated
+				constant AMUSING__WD = dw"amusing" __assimilated
 			package FULLSCORE1__WD_con _plain
-				constant FULLSCORE1__WD = dw'fullscore' __assimilated
+				constant FULLSCORE1__WD = dw"fullscore" __assimilated
 			package FULLSCORE2__WD_con _plain
-				constant FULLSCORE2__WD = dw'full' __assimilated
+				constant FULLSCORE2__WD = dw"full" __assimilated
 			package QUIT1__WD_con _plain
-				constant QUIT1__WD = dw'q' __assimilated
+				constant QUIT1__WD = dw"q" __assimilated
 			package QUIT2__WD_con _plain
-				constant QUIT2__WD = dw'quit' __assimilated
+				constant QUIT2__WD = dw"quit" __assimilated
 			package RESTART__WD_con _plain
-				constant RESTART__WD = dw'restart' __assimilated
+				constant RESTART__WD = dw"restart" __assimilated
 			package RESTORE__WD_con _plain
-				constant RESTORE__WD = dw'restore' __assimilated
+				constant RESTORE__WD = dw"restore" __assimilated
 			package LanguageAnimateGender_con _plain
 				constant LanguageAnimateGender = /main/BasicInformKit/properties/male_prop/male __assimilated
 			package LanguageInanimateGender_con _plain
@@ -78463,11 +78463,11 @@ package main _plain
 				constant LanguageContractionForms = 2 __assimilated
 		package arrays _submodule
 			package LanguagePronouns_arr _plain
-				constant (list of unchecked) LanguagePronouns = { dw'it', 568, /main/architectural/NULL, dw'him', 2048, /main/architectural/NULL, dw'her', 1024, /main/architectural/NULL, dw'them', 455, /main/architectural/NULL } __assimilated __table_array
+				constant (list of unchecked) LanguagePronouns = { dw"it", 568, /main/architectural/NULL, dw"him", 2048, /main/architectural/NULL, dw"her", 1024, /main/architectural/NULL, dw"them", 455, /main/architectural/NULL } __assimilated __table_array
 			package LanguageDescriptors_arr _plain
-				constant (list of unchecked) LanguageDescriptors = { dw'my', 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw'this', 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw'these', 455, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw'that', 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 1, dw'those', 455, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 1, dw'his', 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw'him', dw'her', 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw'her', dw'their', 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw'them', dw'its', 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw'it', dw'the', 4095, /main/BasicInformKit/constants/DEFART_PK_con/DEFART_PK, /main/architectural/NULL, dw'a', 3640, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw'an', 3640, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw'some', 455, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw'lit', 4095, /main/BasicInformKit/constants/LIGHTED_PK_con/LIGHTED_PK, /main/architectural/NULL, dw'lighted', 4095, /main/BasicInformKit/constants/LIGHTED_PK_con/LIGHTED_PK, /main/architectural/NULL, dw'unlit', 4095, /main/BasicInformKit/constants/UNLIGHTED_PK_con/UNLIGHTED_PK, /main/architectural/NULL } __assimilated __table_array
+				constant (list of unchecked) LanguageDescriptors = { dw"my", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw"this", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw"these", 455, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw"that", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 1, dw"those", 455, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 1, dw"his", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"him", dw"her", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"her", dw"their", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"them", dw"its", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"it", dw"the", 4095, /main/BasicInformKit/constants/DEFART_PK_con/DEFART_PK, /main/architectural/NULL, dw"a", 3640, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw"an", 3640, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw"some", 455, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw"lit", 4095, /main/BasicInformKit/constants/LIGHTED_PK_con/LIGHTED_PK, /main/architectural/NULL, dw"lighted", 4095, /main/BasicInformKit/constants/LIGHTED_PK_con/LIGHTED_PK, /main/architectural/NULL, dw"unlit", 4095, /main/BasicInformKit/constants/UNLIGHTED_PK_con/UNLIGHTED_PK, /main/architectural/NULL } __assimilated __table_array
 			package LanguageNumbers_arr _plain
-				constant (list of unchecked) LanguageNumbers = { dw'one', 1, dw'two', 2, dw'three', 3, dw'four', 4, dw'five', 5, dw'six', 6, dw'seven', 7, dw'eight', 8, dw'nine', 9, dw'ten', 10, dw'eleven', 11, dw'twelve', 12, dw'thirteen', 13, dw'fourteen', 14, dw'fifteen', 15, dw'sixteen', 16, dw'seventeen', 17, dw'eighteen', 18, dw'nineteen', 19, dw'twenty', 20, dw'twenty-one', 21, dw'twenty-two', 22, dw'twenty-three', 23, dw'twenty-four', 24, dw'twenty-five', 25, dw'twenty-six', 26, dw'twenty-seven', 27, dw'twenty-eight', 28, dw'twenty-nine', 29, dw'thirty', 30 } __assimilated __table_array
+				constant (list of unchecked) LanguageNumbers = { dw"one", 1, dw"two", 2, dw"three", 3, dw"four", 4, dw"five", 5, dw"six", 6, dw"seven", 7, dw"eight", 8, dw"nine", 9, dw"ten", 10, dw"eleven", 11, dw"twelve", 12, dw"thirteen", 13, dw"fourteen", 14, dw"fifteen", 15, dw"sixteen", 16, dw"seventeen", 17, dw"eighteen", 18, dw"nineteen", 19, dw"twenty", 20, dw"twenty-one", 21, dw"twenty-two", 22, dw"twenty-three", 23, dw"twenty-four", 24, dw"twenty-five", 25, dw"twenty-six", 26, dw"twenty-seven", 27, dw"twenty-eight", 28, dw"twenty-nine", 29, dw"thirty", 30 } __assimilated __table_array
 			package LanguageArticles_arr _plain
 				constant (list of unchecked) LanguageArticles = { "The ", "the ", "a ", "The ", "the ", "an ", "The ", "the ", "some ", "The ", "the ", "some " } __assimilated
 			package LanguageGNAsToArticles_arr _plain
@@ -78581,24 +78581,24 @@ package main _plain
 								inv !case
 									inv !alternativecase
 										inv !alternativecase
-											val dw'i//'
-											val dw'inv'
-										val dw'inventory'
+											val dw"i//"
+											val dw"inv"
+										val dw"inventory"
 									code
 										inv !print
 											val "take inventory"
 								inv !case
-									val dw'l//'
+									val dw"l//"
 									code
 										inv !print
 											val "look"
 								inv !case
-									val dw'x//'
+									val dw"x//"
 									code
 										inv !print
 											val "examine"
 								inv !case
-									val dw'z//'
+									val dw"z//"
 									code
 										inv !print
 											val "wait"
@@ -78619,10 +78619,10 @@ package main _plain
 								inv !alternative
 									inv !alternative
 										inv !alternative
-											val dw'look'
-											val dw'go'
-										val dw'push'
-									val dw'walk'
+											val dw"look"
+											val dw"go"
+										val dw"push"
+									val dw"walk"
 							code
 								inv !return
 									val 1
@@ -78641,12 +78641,12 @@ package main _plain
 										inv !alternative
 											inv !alternative
 												inv !alternative
-													val dw'long'
-													val dw'short'
-												val dw'normal'
-											val dw'brief'
-										val dw'full'
-									val dw'verbose'
+													val dw"long"
+													val dw"short"
+												val dw"normal"
+											val dw"brief"
+										val dw"full"
+									val dw"verbose"
 							code
 								inv !return
 									val 1

@@ -64,6 +64,11 @@ inter_package *InterPackage::new(inter_tree *I, inter_ti n) {
 	return pack;
 }
 
+inter_ti InterPackage::warehouse_ID(inter_package *pack) {
+	if (pack == NULL) return 0;
+	return pack->resource_ID;
+}
+
 @ //inter_package// structures and |PACKAGE_IST| instruction nodes correspond
 to each other in a way which exactly matches, except for the root package.
 For all other packages, these two operations are inverse to each other: 
