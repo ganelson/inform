@@ -1,0 +1,102 @@
+Inform 6.36 (24th January 2022)
+line 4: Warning:  Array "a_1" declared but not used
+line 5: Warning:  Static array "a_2" declared but not used
+line 6: Warning:  Array "a_3" declared but not used
+line 7: Warning:  Static array "a_4" declared but not used
+line 8: Warning:  Array "a_5" declared but not used
+line 9: Warning:  Static array "a_6" declared but not used
+line 10: Warning:  Array "a_7" declared but not used
+line 11: Warning:  Static array "a_8" declared but not used
+line 12: Warning:  Array "a_9" declared but not used
+line 13: Warning:  Static array "a_10" declared but not used
+line 14: Warning:  Array "a_11" declared but not used
+line 15: Warning:  Static array "a_12" declared but not used
+line 16: Warning:  Array "a_13" declared but not used
+line 17: Warning:  Static array "a_14" declared but not used
+line 18: Warning:  Array "a_15" declared but not used
+line 19: Warning:  Static array "a_16" declared but not used
+line 20: Warning:  Array "a_17" declared but not used
+line 21: Warning:  Static array "a_18" declared but not used
+line 22: Warning:  Array "a_19" declared but not used
+line 23: Warning:  Static array "a_20" declared but not used
+line 24: Warning:  Array "a_21" declared but not used
+line 25: Warning:  Static array "a_22" declared but not used
+line 26: Warning:  Array "a_23" declared but not used
+line 27: Warning:  Static array "a_24" declared but not used
+line 28: Warning:  Array "a_25" declared but not used
+line 29: Warning:  Static array "a_26" declared but not used
+line 30: Warning:  Array "a_27" declared but not used
+line 31: Warning:  Static array "a_28" declared but not used
+line 32: Warning:  Array "a_29" declared but not used
+line 33: Warning:  Static array "a_30" declared but not used
+line 34: Warning:  Array "a_31" declared but not used
+line 35: Warning:  Static array "a_32" declared but not used
+line 36: Warning:  Array "a_33" declared but not used
+line 37: Warning:  Static array "a_34" declared but not used
+line 38: Warning:  Array "a_35" declared but not used
+line 39: Warning:  Static array "a_36" declared but not used
+line 40: Warning:  Array "a_37" declared but not used
+line 41: Warning:  Static array "a_38" declared but not used
+line 42: Warning:  Array "a_39" declared but not used
+line 43: Warning:  Static array "a_40" declared but not used
+line 44: Warning:  Array "a_41" declared but not used
+line 45: Warning:  Static array "a_42" declared but not used
+line 46: Warning:  Array "a_43" declared but not used
+line 47: Warning:  Static array "a_44" declared but not used
+line 48: Warning:  Array "a_45" declared but not used
+line 49: Warning:  Static array "a_46" declared but not used
+line 50: Warning:  Array "a_47" declared but not used
+line 51: Warning:  Static array "a_48" declared but not used
+line 52: Warning:  Array "a_49" declared but not used
+line 53: Warning:  Static array "a_50" declared but not used
+line 54: Warning:  Array "a_51" declared but not used
+line 55: Warning:  Static array "a_52" declared but not used
+line 56: Warning:  Array "a_53" declared but not used
+line 57: Warning:  Static array "a_54" declared but not used
+line 58: Warning:  Array "a_55" declared but not used
+line 59: Warning:  Static array "a_56" declared but not used
+line 60: Warning:  Array "a_57" declared but not used
+line 61: Warning:  Static array "a_58" declared but not used
+line 62: Warning:  Array "a_59" declared but not used
+line 63: Warning:  Static array "a_60" declared but not used
+line 64: Warning:  Array "a_61" declared but not used
+line 65: Warning:  Static array "a_62" declared but not used
+line 66: Warning:  Array "a_63" declared but not used
+line 67: Warning:  Static array "a_64" declared but not used
+line 68: Warning:  Array "a_65" declared but not used
+line 69: Warning:  Static array "a_66" declared but not used
+line 70: Warning:  Array "a_67" declared but not used
+line 71: Warning:  Static array "a_68" declared but not used
+line 72: Warning:  Array "a_69" declared but not used
+line 73: Warning:  Static array "a_70" declared but not used
+line 74: Warning:  Array "a_71" declared but not used
+line 75: Warning:  Static array "a_72" declared but not used
+line 76: Warning:  Array "a_73" declared but not used
+line 77: Warning:  Static array "a_74" declared but not used
+line 78: Warning:  Array "a_75" declared but not used
+line 79: Warning:  Static array "a_76" declared but not used
+line 80: Warning:  Array "a_77" declared but not used
+line 81: Warning:  Static array "a_78" declared but not used
+line 82: Warning:  Array "a_79" declared but not used
+line 83: Warning:  Static array "a_80" declared but not used
+line 84: Warning:  Array "a_81" declared but not used
+line 85: Warning:  Static array "a_82" declared but not used
+line 86: Warning:  Array "a_83" declared but not used
+line 87: Warning:  Static array "a_84" declared but not used
+line 88: Warning:  Array "a_85" declared but not used
+line 89: Warning:  Static array "a_86" declared but not used
+line 90: Warning:  Array "a_87" declared but not used
+line 91: Warning:  Static array "a_88" declared but not used
+line 92: Warning:  Array "a_89" declared but not used
+line 93: Warning:  Static array "a_90" declared but not used
+line 94: Warning:  Array "a_91" declared but not used
+line 95: Warning:  Static array "a_92" declared but not used
+line 96: Warning:  Array "a_93" declared but not used
+line 97: Warning:  Static array "a_94" declared but not used
+line 98: Warning:  Array "a_95" declared but not used
+line 99: Warning:  Static array "a_96" declared but not used
+line 100: Warning:  Array "a_97" declared but not used
+line 101: Warning:  Static array "a_98" declared but not used
+line 102: Warning:  Array "a_99" declared but not used
+line 103: Warning:  Static array "a_100" declared but not used
+Compiled with 100 warnings

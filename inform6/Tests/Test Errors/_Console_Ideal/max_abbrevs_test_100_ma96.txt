@@ -1,0 +1,10 @@
+Inform 6.36 (24th January 2022)
+line 97: Error:  The number of abbreviations has exceeded 96, the limit in Z-code
+> Abbreviate "96"
+line 98: Error:  The number of abbreviations has exceeded 96, the limit in Z-code
+> Abbreviate "97"
+line 99: Error:  The number of abbreviations has exceeded 96, the limit in Z-code
+> Abbreviate "98"
+line 100: Error:  The number of abbreviations has exceeded 96, the limit in Z-code
+> Abbreviate "99"
+Compiled with 4 errors (no output)

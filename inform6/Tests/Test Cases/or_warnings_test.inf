@@ -1,0 +1,47 @@
+[ Main;
+	func();
+];
+
+
+[ func val res;
+	! warnings on <=
+	
+	if (val <= 111 or 222) new_line;
+
+	if (val <= 111 or 222) rtrue;
+
+	if (val && val <= 111 or 222) rtrue;
+
+	if (~~(val >= 112 or 223)) new_line;
+
+	res = (val <= 115 or 226);
+	
+	! should not warn
+	if (~~(val > 123 or 234)) new_line;
+
+
+	! warnings on >=
+	
+	if (val >= 111 or 222) new_line;
+
+	if (val >= 111 or 222 or 333 or 555) rtrue;
+
+	if (val && val >= 111 or 222) rtrue;
+
+	if (~~(val <= 112 or 223)) new_line;
+	
+	res = (val >= 115 or 226);
+
+	res = (~~(val >= 115 or 226 or 123));
+	
+	! should not warn
+	if (~~(val < 123 or 234)) new_line;
+
+	! no warnings
+	if (val <= 1) new_line;
+	if (val >= 1) new_line;
+	if (val == 1 or 2 or 3) new_line;
+	if (val ~= 1 or 2 or 3) new_line;
+];
+
+

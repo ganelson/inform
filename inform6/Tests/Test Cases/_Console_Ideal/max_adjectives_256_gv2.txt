@@ -1,0 +1,2 @@
+Inform 6.36 (24th January 2022)
+Switch "-_" unknown (try "inform -h2" for the list)

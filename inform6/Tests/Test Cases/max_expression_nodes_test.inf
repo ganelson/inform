@@ -1,0 +1,8 @@
+Global foo;
+Global bar;
+
+[ Main val;
+	val = ((((((foo + bar) * foo) + bar) * foo) + bar) * foo)
+		+ ((((((foo + bar) * foo) + bar) * foo) + bar) * foo)
+		+ ((((((foo + bar) * foo) + bar) * foo) + bar) * foo);
+];

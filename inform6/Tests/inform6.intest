@@ -33,6 +33,10 @@
 		set: $INTNAME		= dumb-frotz
 		set: $INTOPTIONS	= -w 1000
 	endif
+	set: $SETTINGS = $PATH/Settings/$CASE.txt
+	if exists: $SETTINGS
+		set: $I6OPTIONS = `$[`$SETTINGS$]
+	endif
 
 	mkdir: $PATH/_Transcript_Actual
 	mkdir: $PATH/_Transcript_Ideal
@@ -45,14 +49,13 @@
 	set: $IC = $PATH/_Console_Ideal/$CASE.txt
 	set: $I6SOURCE = $PATH/$CASE.inf
 	set: $STORYFILE = $PATH/_Story_File_Actual/$CASE.$EXT
-	set: $SETTINGS = $PATH/Settings/$CASE.txt
 
 	! First, error message cases, where we require inform6 to fail and with the
 	! correct error messages.
 
 	if: $TYPE problem
-		debugger: lldb -f $I6 -- `$I6OPTIONS $[$SETTINGS$] $I6SOURCE $STORYFILE
-		fail step: $I6 `$I6OPTIONS $[$SETTINGS$] $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
+		debugger: lldb -f $I6 -- `$I6OPTIONS $I6SOURCE $STORYFILE
+		fail step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
 		or: 'failed to produce error messages' $I6CONSOLE
 		show: $I6CONSOLE
 		exists: $IC
@@ -64,8 +67,8 @@
 
 	! And then the general case.
 
-	debugger: lldb -f $I6 -- `$I6OPTIONS $[$SETTINGS$] $I6SOURCE $STORYFILE
-	step: $I6 `$I6OPTIONS $[$SETTINGS$] $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
+	debugger: lldb -f $I6 -- `$I6OPTIONS $I6SOURCE $STORYFILE
+	step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
 
 	show: $I6CONSOLE
 	exists: $IC

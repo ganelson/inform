@@ -1,0 +1,40 @@
+[ Main;
+];
+
+[ FooSub;
+];
+
+Verb 'foo'
+	* 'p0' -> Foo
+	* 'p1' -> Foo
+	* 'p2' -> Foo
+	* 'p3' -> Foo
+	* 'p4' -> Foo
+	* 'p5' -> Foo
+	* 'p6' -> Foo
+	* 'p7' -> Foo
+	* 'p8' -> Foo
+	* 'p9' -> Foo
+	* 'p10' -> Foo
+	* 'p11' -> Foo
+	* 'p12' -> Foo
+	* 'p13' -> Foo
+	* 'p14' -> Foo
+	* 'p15' -> Foo
+	* 'p16' -> Foo
+	* 'p17' -> Foo
+	* 'p18' -> Foo
+	* 'p19' -> Foo
+	* 'p20' -> Foo
+	* 'p21' -> Foo
+	* 'p22' -> Foo
+	* 'p23' -> Foo
+	* 'p24' -> Foo
+	* 'p25' -> Foo
+	* 'p26' -> Foo
+	* 'p27' -> Foo
+	* 'p28' -> Foo
+	* 'p29' -> Foo
+	* 'p30' -> Foo
+	* 'p31' -> Foo
+	* 'p32' -> Foo;

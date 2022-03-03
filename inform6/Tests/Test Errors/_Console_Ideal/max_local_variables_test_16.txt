@@ -1,0 +1,20 @@
+Inform 6.36 (24th January 2022)
+line 3: Error:  Too many local variables for a routine; max is 15.
+>  p15
+line 3: Warning:  Local variable "p0" declared but not used
+line 3: Warning:  Local variable "p1" declared but not used
+line 3: Warning:  Local variable "p2" declared but not used
+line 3: Warning:  Local variable "p3" declared but not used
+line 3: Warning:  Local variable "p4" declared but not used
+line 3: Warning:  Local variable "p5" declared but not used
+line 3: Warning:  Local variable "p6" declared but not used
+line 3: Warning:  Local variable "p7" declared but not used
+line 3: Warning:  Local variable "p8" declared but not used
+line 3: Warning:  Local variable "p9" declared but not used
+line 3: Warning:  Local variable "p10" declared but not used
+line 3: Warning:  Local variable "p11" declared but not used
+line 3: Warning:  Local variable "p12" declared but not used
+line 3: Warning:  Local variable "p13" declared but not used
+line 3: Warning:  Local variable "p14" declared but not used
+line 3: Warning:  Routine "func" declared but not used
+Compiled with 1 error and 16 warnings (no output)

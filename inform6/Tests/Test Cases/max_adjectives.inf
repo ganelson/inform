@@ -1,0 +1,313 @@
+[ Main;
+];
+
+! ---
+
+[ Action0_0Sub; ];
+Verb 'foo0' * 'p0_0' -> Action0_0;
+
+[ Action0_1Sub; ];
+Extend 'foo0' * 'p0_1' -> Action0_1;
+
+[ Action0_2Sub; ];
+Extend 'foo0' * 'p0_2' -> Action0_2;
+
+[ Action0_3Sub; ];
+Extend 'foo0' * 'p0_3' -> Action0_3;
+
+[ Action0_4Sub; ];
+Extend 'foo0' * 'p0_4' -> Action0_4;
+
+[ Action0_5Sub; ];
+Extend 'foo0' * 'p0_5' -> Action0_5;
+
+[ Action0_6Sub; ];
+Extend 'foo0' * 'p0_6' -> Action0_6;
+
+[ Action0_7Sub; ];
+Extend 'foo0' * 'p0_7' -> Action0_7;
+
+[ Action0_8Sub; ];
+Extend 'foo0' * 'p0_8' -> Action0_8;
+
+[ Action0_9Sub; ];
+Extend 'foo0' * 'p0_9' -> Action0_9;
+
+[ Action0_10Sub; ];
+Extend 'foo0' * 'p0_10' -> Action0_10;
+
+[ Action0_11Sub; ];
+Extend 'foo0' * 'p0_11' -> Action0_11;
+
+[ Action0_12Sub; ];
+Extend 'foo0' * 'p0_12' -> Action0_12;
+
+[ Action0_13Sub; ];
+Extend 'foo0' * 'p0_13' -> Action0_13;
+
+[ Action0_14Sub; ];
+Extend 'foo0' * 'p0_14' -> Action0_14;
+
+[ Action0_15Sub; ];
+Extend 'foo0' * 'p0_15' -> Action0_15;
+
+[ Action0_16Sub; ];
+Extend 'foo0' * 'p0_16' -> Action0_16;
+
+[ Action0_17Sub; ];
+Extend 'foo0' * 'p0_17' -> Action0_17;
+
+[ Action0_18Sub; ];
+Extend 'foo0' * 'p0_18' -> Action0_18;
+
+[ Action0_19Sub; ];
+Extend 'foo0' * 'p0_19' -> Action0_19;
+
+! ---
+
+[ Action1_0Sub; ];
+Verb 'foo1' * 'p1_0' -> Action1_0;
+
+[ Action1_1Sub; ];
+Extend 'foo1' * 'p1_1' -> Action1_1;
+
+[ Action1_2Sub; ];
+Extend 'foo1' * 'p1_2' -> Action1_2;
+
+[ Action1_3Sub; ];
+Extend 'foo1' * 'p1_3' -> Action1_3;
+
+[ Action1_4Sub; ];
+Extend 'foo1' * 'p1_4' -> Action1_4;
+
+[ Action1_5Sub; ];
+Extend 'foo1' * 'p1_5' -> Action1_5;
+
+[ Action1_6Sub; ];
+Extend 'foo1' * 'p1_6' -> Action1_6;
+
+[ Action1_7Sub; ];
+Extend 'foo1' * 'p1_7' -> Action1_7;
+
+[ Action1_8Sub; ];
+Extend 'foo1' * 'p1_8' -> Action1_8;
+
+[ Action1_9Sub; ];
+Extend 'foo1' * 'p1_9' -> Action1_9;
+
+[ Action1_10Sub; ];
+Extend 'foo1' * 'p1_10' -> Action1_10;
+
+[ Action1_11Sub; ];
+Extend 'foo1' * 'p1_11' -> Action1_11;
+
+[ Action1_12Sub; ];
+Extend 'foo1' * 'p1_12' -> Action1_12;
+
+[ Action1_13Sub; ];
+Extend 'foo1' * 'p1_13' -> Action1_13;
+
+[ Action1_14Sub; ];
+Extend 'foo1' * 'p1_14' -> Action1_14;
+
+[ Action1_15Sub; ];
+Extend 'foo1' * 'p1_15' -> Action1_15;
+
+[ Action1_16Sub; ];
+Extend 'foo1' * 'p1_16' -> Action1_16;
+
+[ Action1_17Sub; ];
+Extend 'foo1' * 'p1_17' -> Action1_17;
+
+[ Action1_18Sub; ];
+Extend 'foo1' * 'p1_18' -> Action1_18;
+
+[ Action1_19Sub; ];
+Extend 'foo1' * 'p1_19' -> Action1_19;
+
+! ---
+
+[ Action2_0Sub; ];
+Verb 'foo2' * 'p2_0' -> Action2_0;
+
+[ Action2_1Sub; ];
+Extend 'foo2' * 'p2_1' -> Action2_1;
+
+[ Action2_2Sub; ];
+Extend 'foo2' * 'p2_2' -> Action2_2;
+
+[ Action2_3Sub; ];
+Extend 'foo2' * 'p2_3' -> Action2_3;
+
+[ Action2_4Sub; ];
+Extend 'foo2' * 'p2_4' -> Action2_4;
+
+[ Action2_5Sub; ];
+Extend 'foo2' * 'p2_5' -> Action2_5;
+
+[ Action2_6Sub; ];
+Extend 'foo2' * 'p2_6' -> Action2_6;
+
+[ Action2_7Sub; ];
+Extend 'foo2' * 'p2_7' -> Action2_7;
+
+[ Action2_8Sub; ];
+Extend 'foo2' * 'p2_8' -> Action2_8;
+
+[ Action2_9Sub; ];
+Extend 'foo2' * 'p2_9' -> Action2_9;
+
+[ Action2_10Sub; ];
+Extend 'foo2' * 'p2_10' -> Action2_10;
+
+[ Action2_11Sub; ];
+Extend 'foo2' * 'p2_11' -> Action2_11;
+
+[ Action2_12Sub; ];
+Extend 'foo2' * 'p2_12' -> Action2_12;
+
+[ Action2_13Sub; ];
+Extend 'foo2' * 'p2_13' -> Action2_13;
+
+[ Action2_14Sub; ];
+Extend 'foo2' * 'p2_14' -> Action2_14;
+
+[ Action2_15Sub; ];
+Extend 'foo2' * 'p2_15' -> Action2_15;
+
+[ Action2_16Sub; ];
+Extend 'foo2' * 'p2_16' -> Action2_16;
+
+[ Action2_17Sub; ];
+Extend 'foo2' * 'p2_17' -> Action2_17;
+
+[ Action2_18Sub; ];
+Extend 'foo2' * 'p2_18' -> Action2_18;
+
+[ Action2_19Sub; ];
+Extend 'foo2' * 'p2_19' -> Action2_19;
+
+! ---
+
+[ Action3_0Sub; ];
+Verb 'foo3' * 'p3_0' -> Action3_0;
+
+[ Action3_1Sub; ];
+Extend 'foo3' * 'p3_1' -> Action3_1;
+
+[ Action3_2Sub; ];
+Extend 'foo3' * 'p3_2' -> Action3_2;
+
+[ Action3_3Sub; ];
+Extend 'foo3' * 'p3_3' -> Action3_3;
+
+[ Action3_4Sub; ];
+Extend 'foo3' * 'p3_4' -> Action3_4;
+
+[ Action3_5Sub; ];
+Extend 'foo3' * 'p3_5' -> Action3_5;
+
+[ Action3_6Sub; ];
+Extend 'foo3' * 'p3_6' -> Action3_6;
+
+[ Action3_7Sub; ];
+Extend 'foo3' * 'p3_7' -> Action3_7;
+
+[ Action3_8Sub; ];
+Extend 'foo3' * 'p3_8' -> Action3_8;
+
+[ Action3_9Sub; ];
+Extend 'foo3' * 'p3_9' -> Action3_9;
+
+[ Action3_10Sub; ];
+Extend 'foo3' * 'p3_10' -> Action3_10;
+
+[ Action3_11Sub; ];
+Extend 'foo3' * 'p3_11' -> Action3_11;
+
+[ Action3_12Sub; ];
+Extend 'foo3' * 'p3_12' -> Action3_12;
+
+[ Action3_13Sub; ];
+Extend 'foo3' * 'p3_13' -> Action3_13;
+
+[ Action3_14Sub; ];
+Extend 'foo3' * 'p3_14' -> Action3_14;
+
+[ Action3_15Sub; ];
+Extend 'foo3' * 'p3_15' -> Action3_15;
+
+[ Action3_16Sub; ];
+Extend 'foo3' * 'p3_16' -> Action3_16;
+
+[ Action3_17Sub; ];
+Extend 'foo3' * 'p3_17' -> Action3_17;
+
+[ Action3_18Sub; ];
+Extend 'foo3' * 'p3_18' -> Action3_18;
+
+[ Action3_19Sub; ];
+Extend 'foo3' * 'p3_19' -> Action3_19;
+
+! ---
+
+[ Action4_0Sub; ];
+Verb 'foo4' * 'p4_0' -> Action4_0;
+
+[ Action4_1Sub; ];
+Extend 'foo4' * 'p4_1' -> Action4_1;
+
+[ Action4_2Sub; ];
+Extend 'foo4' * 'p4_2' -> Action4_2;
+
+[ Action4_3Sub; ];
+Extend 'foo4' * 'p4_3' -> Action4_3;
+
+[ Action4_4Sub; ];
+Extend 'foo4' * 'p4_4' -> Action4_4;
+
+[ Action4_5Sub; ];
+Extend 'foo4' * 'p4_5' -> Action4_5;
+
+[ Action4_6Sub; ];
+Extend 'foo4' * 'p4_6' -> Action4_6;
+
+[ Action4_7Sub; ];
+Extend 'foo4' * 'p4_7' -> Action4_7;
+
+[ Action4_8Sub; ];
+Extend 'foo4' * 'p4_8' -> Action4_8;
+
+[ Action4_9Sub; ];
+Extend 'foo4' * 'p4_9' -> Action4_9;
+
+[ Action4_10Sub; ];
+Extend 'foo4' * 'p4_10' -> Action4_10;
+
+[ Action4_11Sub; ];
+Extend 'foo4' * 'p4_11' -> Action4_11;
+
+[ Action4_12Sub; ];
+Extend 'foo4' * 'p4_12' -> Action4_12;
+
+[ Action4_13Sub; ];
+Extend 'foo4' * 'p4_13' -> Action4_13;
+
+[ Action4_14Sub; ];
+Extend 'foo4' * 'p4_14' -> Action4_14;
+
+[ Action4_15Sub; ];
+Extend 'foo4' * 'p4_15' -> Action4_15;
+
+[ Action4_16Sub; ];
+Extend 'foo4' * 'p4_16' -> Action4_16;
+
+[ Action4_17Sub; ];
+Extend 'foo4' * 'p4_17' -> Action4_17;
+
+[ Action4_18Sub; ];
+Extend 'foo4' * 'p4_18' -> Action4_18;
+
+[ Action4_19Sub; ];
+Extend 'foo4' * 'p4_19' -> Action4_19;
+

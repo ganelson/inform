@@ -1,0 +1,24 @@
+Inform 6.36 (24th January 2022)
+line 9: Warning:  The behavior of (<= or) may be unexpected.
+>  if (val <= 111 or 222)
+line 11: Warning:  The behavior of (<= or) may be unexpected.
+>  if (val <= 111 or 222)
+line 13: Warning:  The behavior of (<= or) may be unexpected.
+>  if (val && val <= 111 or 222)
+line 15: Warning:  The behavior of (>= or) may be unexpected.
+>  if (~~(val >= 112 or 223))
+line 17: Warning:  The behavior of (<= or) may be unexpected.
+>  res = (val <= 115 or 226);
+line 25: Warning:  The behavior of (>= or) may be unexpected.
+>  if (val >= 111 or 222)
+line 27: Warning:  The behavior of (>= or) may be unexpected.
+>  if (val >= 111 or 222 or 333 or 555)
+line 29: Warning:  The behavior of (>= or) may be unexpected.
+>  if (val && val >= 111 or 222)
+line 31: Warning:  The behavior of (<= or) may be unexpected.
+>  if (~~(val <= 112 or 223))
+line 33: Warning:  The behavior of (>= or) may be unexpected.
+>  res = (val >= 115 or 226);
+line 35: Warning:  The behavior of (>= or) may be unexpected.
+>  res = (~~(val >= 115 or 226 or 123));
+Compiled with 11 warnings

@@ -1,0 +1,4 @@
+[ Main; ];
+
+Class Foo(10000)
+  with name 'foo';

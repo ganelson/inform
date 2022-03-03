@@ -1,0 +1,4 @@
+Inform 6.36 (24th January 2022)
+line 11: Error:  Grammar version 1 cannot support more than 255 prepositions
+>  * 'p255'
+Compiled with 1 error (no output)

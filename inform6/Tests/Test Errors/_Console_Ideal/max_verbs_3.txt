@@ -1,0 +1,12 @@
+Inform 6.36 (24th January 2022)
+line 262: Error:  Z-code is limited to 255 verbs.
+> Extend only
+line 263: Error:  Z-code is limited to 255 verbs.
+> Extend only
+line 264: Error:  Z-code is limited to 255 verbs.
+> Extend only
+line 265: Error:  Z-code is limited to 255 verbs.
+> Extend only
+line 266: Error:  Z-code is limited to 255 verbs.
+> Extend only
+Compiled with 5 errors (no output)
