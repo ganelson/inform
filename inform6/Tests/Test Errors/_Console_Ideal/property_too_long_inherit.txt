@@ -1,0 +1,4 @@
+Inform 6.36 (24th January 2022)
+File "inform6/Tests/Test Errors/property_too_long_inherit.inf"; Line 9	# Error:  An additive property has inherited so many values that the list has overflowed the maximum 32 entries
+>  with prop 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32;
+Compiled with 1 error (no output)

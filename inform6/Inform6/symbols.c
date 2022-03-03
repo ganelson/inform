@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "symbols" :  The symbols table; creating stock of reserved words        */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -17,24 +17,32 @@ int no_symbols;                        /* Total number of symbols defined    */
 int no_named_constants;                         /* Copied into story file    */
 
 /* ------------------------------------------------------------------------- */
-/*   Plus six arrays.  Each symbol has its own index n (an int32) and        */
+/*   Plus an array of symbolinfo.  Each symbol has its own index n (an       */
+/*   int32) in the array. The struct there contains:                         */
 /*                                                                           */
-/*       svals[n]   is its value (must be 32 bits wide, i.e. an int32, tho'  */
-/*                  it is used to hold an unsigned 16 bit Z-machine value)   */
-/*       sflags[n]  holds flags (see "header.h" for a list)                  */
-/*       stypes[n]  is the "type", distinguishing between the data type of   */
+/*       value   is its value. In Z-code, this holds both the 16-bit value   */
+/*                  and the 16-bit backpatch marker, so it is an int32.      */
+/*       marker   is the backpatch marker in Glulx.                          */
+/*       flags  holds flags (see "header.h" for a list of ?_SFLAGS)          */
+/*       type  is the "type", distinguishing between the data type of        */
 /*                  different kinds of constants/variables.                  */
-/*                  (See the "typename()" below.)                            */
-/*       symbs[n]   (needs to be cast to (char *) to be used) is the name    */
-/*                  of the symbol, in the same case form as when created.    */
-/*       slines[n]  is the source line on which the symbol value was first   */
+/*                  (A ?_T constant; see the "typename()" below.)            */
+/*       name   is the name of the symbol, in the same case form as          */
+/*                  when created.                                            */
+/*       line  is the source line on which the symbol value was first        */
 /*                  assigned                                                 */
-/*       symbol_debug_backpatch_positions[n]                                 */
+/*       next_entry  is the forward link in the symbol hash table. (See      */
+/*                  start_of_list, below.)                                   */
+/*                                                                           */
+/*   When generating a debug file (-k switch), we also allocate an array     */
+/*   of symboldebuginfo, which contains:                                     */
+/*                                                                           */
+/*       backpatch_pos                                                       */
 /*                  is a file position in the debug information file where   */
 /*                  the symbol's value should be written after backpatching, */
 /*                  or else the null position if the value was known and     */
 /*                  written beforehand                                       */
-/*       replacement_debug_backpatch_positions[n]                            */
+/*       replacement_backpatch_pos                                           */
 /*                  is a file position in the debug information file where   */
 /*                  the symbol's name can be erased if it is replaced, or    */
 /*                  else null if the name will never need to be replaced     */
@@ -43,38 +51,29 @@ int no_named_constants;                         /* Copied into story file    */
 /*   Note that local variable names are not entered into the symbols table,  */
 /*   as their numbers and scope are too limited for this to be efficient.    */
 /* ------------------------------------------------------------------------- */
-/*   Caveat editor: some array types are set up to work even on machines     */
-/*   where sizeof(int32 *) differs from, e.g., sizeof(char *): so do not     */
-/*   alter the types unless you understand what is going on!                 */
-/* ------------------------------------------------------------------------- */
 
-  int32  **symbs;
-  int32  *svals;
-  int    *smarks;            /* Glulx-only */
-  brief_location  *slines;
-  int    *sflags;
-#ifdef VAX
-  char   *stypes;            /* In VAX C, insanely, "signed char" is illegal */
-#else
-  signed char *stypes;
-#endif
-  maybe_file_position  *symbol_debug_backpatch_positions;
-  maybe_file_position  *replacement_debug_backpatch_positions;
+symbolinfo *symbols;                           /* Allocated up to no_symbols */
+static memory_list symbols_memlist;
+symboldebuginfo *symbol_debug_info;            /* Allocated up to no_symbols */
+static memory_list symbol_debug_info_memlist;
 
 /* ------------------------------------------------------------------------- */
 /*   Memory to hold the text of symbol names: note that this memory is       */
 /*   allocated as needed in chunks of size SYMBOLS_CHUNK_SIZE.               */
 /* ------------------------------------------------------------------------- */
 
-#define MAX_SYMBOL_CHUNKS (100)
+#define SYMBOLS_CHUNK_SIZE (4096)
 
-static uchar *symbols_free_space,       /* Next byte free to hold new names  */
+static char *symbols_free_space,        /* Next byte free to hold new names  */
            *symbols_ceiling;            /* Pointer to the end of the current
                                            allocation of memory for names    */
 
 static char** symbol_name_space_chunks; /* For chunks of memory used to hold
                                            the name strings of symbols       */
 static int no_symbol_name_space_chunks;
+static memory_list symbol_name_space_chunks_memlist;
+
+/* Symbol replacements (used by the "Replace X Y" directive). */
 
 typedef struct value_pair_struct {
     int original_symbol;
@@ -83,6 +82,18 @@ typedef struct value_pair_struct {
 static value_pair_t *symbol_replacements;
 static int symbol_replacements_count;
 static int symbol_replacements_size; /* calloced size */
+
+/* Symbol definitions requested at compile time. (There may not be any.)
+   These are set up at command-line parse time, not in init_symbols_vars().
+   Similarly, they are not cleaned up by symbols_free_arrays(). */
+
+typedef struct keyvalue_pair_struct {
+    char *symbol;
+    int32 value;
+} keyvalue_pair_t;
+static keyvalue_pair_t *symbol_definitions = NULL;
+static int symbol_definitions_count = 0;
+static int symbol_definitions_size = 0; /* calloced size */
 
 /* ------------------------------------------------------------------------- */
 /*   The symbols table is "hash-coded" into a disjoint union of linked       */
@@ -104,8 +115,8 @@ static int symbol_replacements_size; /* calloced size */
 /*   idea to choose HASH_TAB_SIZE as large as conveniently possible.         */
 /* ------------------------------------------------------------------------- */
 
-static int   *next_entry;
-static int32 *start_of_list;
+static int32 *start_of_list; /* Allocated array of size HASH_TAB_SIZE */
+/* The next_entry field is part of the symbolinfo struct. */
 
 /* ------------------------------------------------------------------------- */
 /*   Initialisation.                                                         */
@@ -158,20 +169,74 @@ extern int strcmpcis(char *p, char *q)
 }
 
 /* ------------------------------------------------------------------------- */
+
+extern void add_config_symbol_definition(char *symbol, int32 value)
+{   char *str;
+
+    if (symbol_definitions_count == symbol_definitions_size) {
+        int oldsize = symbol_definitions_size;
+        if (symbol_definitions_size == 0) 
+            symbol_definitions_size = 4;
+        else
+            symbol_definitions_size *= 2;
+        my_recalloc(&symbol_definitions, sizeof(keyvalue_pair_t), oldsize,
+            symbol_definitions_size, "symbol definition table");
+    }
+
+    str = my_malloc(strlen(symbol)+1, "symbol name");
+    strcpy(str, symbol);
+    
+    symbol_definitions[symbol_definitions_count].symbol = str;
+    symbol_definitions[symbol_definitions_count].value = value;
+    symbol_definitions_count++;
+}
+
+/* ------------------------------------------------------------------------- */
 /*   Symbol finding, creating, and removing.                                 */
 /* ------------------------------------------------------------------------- */
 
+extern int get_symbol_index(char *p)
+{
+    /*  Return the index in the symbols array of symbol "p", or -1
+        if it isn't there. Does not create a new symbol or mark the
+        symbol as used. */
+
+    int32 new_entry, this;
+    char *r;
+    int hashcode = hash_code_from_string(p);
+
+    this = start_of_list[hashcode];
+
+    do
+    {   if (this == -1) break;
+
+        r = symbols[this].name;
+        new_entry = strcmpcis(r, p);
+        if (new_entry == 0) 
+        {
+            return this;
+        }
+        if (new_entry > 0) break;
+
+        this = symbols[this].next_entry;
+    } while (this != -1);
+
+    return -1;
+}
+
 extern int symbol_index(char *p, int hashcode)
 {
-    /*  Return the index in the symbs/svals/sflags/stypes/... arrays of symbol
-        "p", creating a new symbol with that name if it isn't already there.
+    /*  Return the index in the symbols array of symbol "p", creating a
+        new symbol with that name if it isn't already there.
 
         New symbols are created with flag UNKNOWN_SFLAG, value 0x100
         (a 2-byte quantity in Z-machine terms) and type CONSTANT_T.
 
         The string "p" is undamaged.                                         */
 
-    int32 new_entry, this, last; char *r;
+    int32 new_entry, this, last;
+    char *r;
+    int len;    
 
     if (hashcode == -1) hashcode = hash_code_from_string(p);
 
@@ -180,7 +245,7 @@ extern int symbol_index(char *p, int hashcode)
     do
     {   if (this == -1) break;
 
-        r = (char *)symbs[this];
+        r = symbols[this].name;
         new_entry = strcmpcis(r, p);
         if (new_entry == 0) 
         {
@@ -191,51 +256,52 @@ extern int symbol_index(char *p, int hashcode)
         if (new_entry > 0) break;
 
         last = this;
-        this = next_entry[this];
+        this = symbols[this].next_entry;
     } while (this != -1);
 
-    if (no_symbols >= MAX_SYMBOLS)
-        memoryerror("MAX_SYMBOLS", MAX_SYMBOLS);
+    ensure_memory_list_available(&symbols_memlist, no_symbols+1);
+    if (debugfile_switch)
+        ensure_memory_list_available(&symbol_debug_info_memlist, no_symbols+1);
 
     if (last == -1)
-    {   next_entry[no_symbols]=start_of_list[hashcode];
+    {   symbols[no_symbols].next_entry=start_of_list[hashcode];
         start_of_list[hashcode]=no_symbols;
     }
     else
-    {   next_entry[no_symbols]=this;
-        next_entry[last]=no_symbols;
+    {   symbols[no_symbols].next_entry=this;
+        symbols[last].next_entry=no_symbols;
     }
 
-    if (symbols_free_space+strlen(p)+1 >= symbols_ceiling)
+    len = strlen(p);
+    if (symbols_free_space+len+1 >= symbols_ceiling)
     {   symbols_free_space
             = my_malloc(SYMBOLS_CHUNK_SIZE, "symbol names chunk");
         symbols_ceiling = symbols_free_space + SYMBOLS_CHUNK_SIZE;
-        /* If we've passed MAX_SYMBOL_CHUNKS chunks, we print an error
-           message telling the user to increase SYMBOLS_CHUNK_SIZE.
-           That is the correct cure, even though the error comes out
-           worded inaccurately. */
-        if (no_symbol_name_space_chunks >= MAX_SYMBOL_CHUNKS)
-            memoryerror("SYMBOLS_CHUNK_SIZE", SYMBOLS_CHUNK_SIZE);
+        ensure_memory_list_available(&symbol_name_space_chunks_memlist, no_symbol_name_space_chunks+1);
         symbol_name_space_chunks[no_symbol_name_space_chunks++]
-            = (char *) symbols_free_space;
-        if (symbols_free_space+strlen(p)+1 >= symbols_ceiling)
-            memoryerror("SYMBOLS_CHUNK_SIZE", SYMBOLS_CHUNK_SIZE);
+            = symbols_free_space;
+        if (symbols_free_space+len+1 >= symbols_ceiling)
+        {
+            /* This should be impossible, since SYMBOLS_CHUNK_SIZE > MAX_IDENTIFIER_LENGTH. */
+            fatalerror("Symbol exceeds the maximum possible length");
+        }
     }
 
-    strcpy((char *) symbols_free_space, p);
-    symbs[no_symbols] = (int32 *) symbols_free_space;
-    symbols_free_space += strlen((char *)symbols_free_space) + 1;
+    strcpy(symbols_free_space, p);
+    symbols[no_symbols].name   = symbols_free_space;
+    symbols_free_space += (len+1);
 
-    svals[no_symbols]   =  0x100; /* ###-wrong? Would this fix the
+    symbols[no_symbols].value   =  0x100; /* ###-wrong? Would this fix the
                                      unbound-symbol-causes-asm-error? */
-    sflags[no_symbols]  =  UNKNOWN_SFLAG;
-    stypes[no_symbols]  =  CONSTANT_T;
-    slines[no_symbols]  =  get_brief_location(&ErrorReport);
+    symbols[no_symbols].flags  =  UNKNOWN_SFLAG;
+    symbols[no_symbols].marker =  0;
+    symbols[no_symbols].type  =  CONSTANT_T;
+    symbols[no_symbols].line  =  get_brief_location(&ErrorReport);
     if (debugfile_switch)
     {   nullify_debug_file_position
-            (&symbol_debug_backpatch_positions[no_symbols]);
+            (&symbol_debug_info[no_symbols].backpatch_pos);
         nullify_debug_file_position
-            (&replacement_debug_backpatch_positions[no_symbols]);
+            (&symbol_debug_info[no_symbols].replacement_backpatch_pos);
     }
 
     if (track_unused_routines)
@@ -251,19 +317,19 @@ extern void end_symbol_scope(int k)
     */
 
     int j;
-    j = hash_code_from_string((char *) symbs[k]);
+    j = hash_code_from_string(symbols[k].name);
     if (start_of_list[j] == k)
-    {   start_of_list[j] = next_entry[k];
+    {   start_of_list[j] = symbols[k].next_entry;
         return;
     }
     j = start_of_list[j];
     while (j != -1)
     {
-        if (next_entry[j] == k)
-        {   next_entry[j] = next_entry[k];
+        if (symbols[j].next_entry == k)
+        {   symbols[j].next_entry = symbols[k].next_entry;
             return;
         }
-        j = next_entry[j];
+        j = symbols[j].next_entry;
     }
 }
 
@@ -298,37 +364,81 @@ extern char *typename(int type)
 
 static void describe_flags(int flags)
 {   if (flags & UNKNOWN_SFLAG)  printf("(?) ");
-    if (flags & USED_SFLAG)     printf("(used) ");
     if (flags & REPLACE_SFLAG)  printf("(Replaced) ");
+    if (flags & USED_SFLAG)     printf("(used) ");
     if (flags & DEFCON_SFLAG)   printf("(Defaulted) ");
     if (flags & STUB_SFLAG)     printf("(Stubbed) ");
-    if (flags & CHANGE_SFLAG)   printf("(value will change) ");
     if (flags & IMPORT_SFLAG)   printf("(Imported) ");
     if (flags & EXPORT_SFLAG)   printf("(Exported) ");
+    if (flags & ALIASED_SFLAG)  printf("(aliased) ");
+    if (flags & CHANGE_SFLAG)   printf("(value will change) ");
     if (flags & SYSTEM_SFLAG)   printf("(System) ");
     if (flags & INSF_SFLAG)     printf("(created in sys file) ");
     if (flags & UERROR_SFLAG)   printf("('Unknown' error issued) ");
-    if (flags & ALIASED_SFLAG)  printf("(aliased) ");
     if (flags & ACTION_SFLAG)   printf("(Action name) ");
     if (flags & REDEFINABLE_SFLAG) printf("(Redefinable) ");
+    if (flags & STAR_SFLAG)     printf("(*) ");
 }
 
 extern void describe_symbol(int k)
 {   printf("%4d  %-16s  %2d:%04d  %04x  %s  ",
-        k, (char *) (symbs[k]), 
-        (int)(slines[k].file_index),
-        (int)(slines[k].line_number),
-        svals[k], typename(stypes[k]));
-    describe_flags(sflags[k]);
+        k, (symbols[k].name), 
+        (int)(symbols[k].line.file_index),
+        (int)(symbols[k].line.line_number),
+        symbols[k].value, typename(symbols[k].type));
+    describe_flags(symbols[k].flags);
 }
 
 extern void list_symbols(int level)
 {   int k;
     for (k=0; k<no_symbols; k++)
     {   if ((level==2) ||
-            ((sflags[k] & (SYSTEM_SFLAG + UNKNOWN_SFLAG + INSF_SFLAG)) == 0))
+            ((symbols[k].flags & (SYSTEM_SFLAG + UNKNOWN_SFLAG + INSF_SFLAG)) == 0))
         {   describe_symbol(k); printf("\n");
         }
+    }
+}
+
+/* Check that the operand is of the given symbol type (XXX_T). If wanttype2 is nonzero, that's a second allowable type.
+   Generate a warning if no match. */
+extern void check_warn_symbol_type(const assembly_operand *AO, int wanttype, int wanttype2, char *context)
+{
+    symbolinfo *sym;
+    int symtype;
+    
+    if (AO->symindex < 0)
+    {
+        /* This argument is not a symbol; it's a local variable, a literal, or a computed expression. We don't try to generate type warnings. */
+        /* (We could figure out some warnings for literals -- e.g., "give 0 attr" and "give 'word' attr" are errors. But we currently don't. */
+        return;
+    }
+    
+    sym = &symbols[AO->symindex];
+    symtype = sym->type;
+    
+    if (symtype == GLOBAL_VARIABLE_T)
+    {
+        /* A global variable could have any value. No way to generate a warning. */
+        return;
+    }
+    if (symtype == CONSTANT_T)
+    {
+        /* A constant could also have any value. This case also includes forward-declared constants (UNKNOWN_SFLAG). */
+        /* We try inferring its type by looking at the backpatch marker. Sadly, this only works for objects. (And not in Z-code, where object values are not backpatched.) */
+        if (sym->marker == OBJECT_MV) {
+            /* Continue with inferred type. */
+            symtype = OBJECT_T;
+        }
+        else {
+            /* Give up. */
+            return;
+        }
+    }
+    
+    if (!(   (symtype == wanttype)
+          || (wanttype2 != 0 && symtype == wanttype2)))
+    {
+        symtype_warning(context, sym->name, typename(symtype), typename(wanttype));
     }
 }
 
@@ -344,14 +454,25 @@ extern void issue_unused_warnings(void)
     /*  Now back to mark anything necessary as used  */
 
     i = symbol_index("Main", -1);
-    if (!(sflags[i] & UNKNOWN_SFLAG)) sflags[i] |= USED_SFLAG;
+    if (!(symbols[i].flags & UNKNOWN_SFLAG)) symbols[i].flags |= USED_SFLAG;
 
     for (i=0;i<no_symbols;i++)
-    {   if (((sflags[i]
+    {   if (((symbols[i].flags
              & (SYSTEM_SFLAG + UNKNOWN_SFLAG + EXPORT_SFLAG
                 + INSF_SFLAG + USED_SFLAG + REPLACE_SFLAG)) == 0)
-             && (stypes[i] != OBJECT_T))
-            dbnu_warning(typename(stypes[i]), (char *) symbs[i], slines[i]);
+             && (symbols[i].type != OBJECT_T))
+            dbnu_warning(typename(symbols[i].type), symbols[i].name, symbols[i].line);
+    }
+}
+
+extern void issue_debug_symbol_warnings(void)
+{
+    int value = get_symbol_index("DEBUG");
+    if (value >= 0 && (symbols[value].flags & USED_SFLAG) && !(symbols[value].flags & UNKNOWN_SFLAG)) {
+        value = get_symbol_index("debug_flag");
+        if (value >= 0 && (symbols[value].flags & USED_SFLAG) && (symbols[value].flags & UNKNOWN_SFLAG)) {
+            warning("DEBUG mode is on, but this story or library does not appear to support it");
+        }
     }
 }
 
@@ -378,119 +499,119 @@ extern void write_the_identifier_names(void)
 
     veneer_mode = TRUE;
 
-    null_value = compile_string(unknown_attribute, FALSE, FALSE);
+    null_value = compile_string(unknown_attribute, STRCTX_SYMBOL);
     for (i=0; i<NUM_ATTR_BYTES*8; i++) attribute_name_strings[i] = null_value;
 
     for (i=0; i<no_symbols; i++)
-    {   t=stypes[i];
+    {   t=symbols[i].type;
         if ((t == INDIVIDUAL_PROPERTY_T) || (t == PROPERTY_T))
-        {   if (sflags[i] & ALIASED_SFLAG)
-            {   if (individual_name_strings[svals[i]] == 0)
-                {   sprintf(idname_string, "%s", (char *) symbs[i]);
+        {   if (symbols[i].flags & ALIASED_SFLAG)
+            {   if (individual_name_strings[symbols[i].value] == 0)
+                {   sprintf(idname_string, "%s", symbols[i].name);
 
                     for (j=i+1, k=0; (j<no_symbols && k<3); j++)
-                    {   if ((stypes[j] == stypes[i])
-                            && (svals[j] == svals[i]))
+                    {   if ((symbols[j].type == symbols[i].type)
+                            && (symbols[j].value == symbols[i].value))
                         {   sprintf(idname_string+strlen(idname_string),
-                                "/%s", (char *) symbs[j]);
+                                "/%s", symbols[j].name);
                             k++;
                         }
                     }
 
-                    individual_name_strings[svals[i]]
-                        = compile_string(idname_string, FALSE, FALSE);
+                    individual_name_strings[symbols[i].value]
+                        = compile_string(idname_string, STRCTX_SYMBOL);
                 }
             }
             else
-            {   sprintf(idname_string, "%s", (char *) symbs[i]);
+            {   sprintf(idname_string, "%s", symbols[i].name);
 
-                individual_name_strings[svals[i]]
-                    = compile_string(idname_string, FALSE, FALSE);
+                individual_name_strings[symbols[i].value]
+                    = compile_string(idname_string, STRCTX_SYMBOL);
             }
         }
         if (t == ATTRIBUTE_T)
-        {   if (sflags[i] & ALIASED_SFLAG)
-            {   if (attribute_name_strings[svals[i]] == null_value)
-                {   sprintf(idname_string, "%s", (char *) symbs[i]);
+        {   if (symbols[i].flags & ALIASED_SFLAG)
+            {   if (attribute_name_strings[symbols[i].value] == null_value)
+                {   sprintf(idname_string, "%s", symbols[i].name);
 
                     for (j=i+1, k=0; (j<no_symbols && k<3); j++)
-                    {   if ((stypes[j] == stypes[i])
-                            && (svals[j] == svals[i]))
+                    {   if ((symbols[j].type == symbols[i].type)
+                            && (symbols[j].value == symbols[i].value))
                         {   sprintf(idname_string+strlen(idname_string),
-                                "/%s", (char *) symbs[j]);
+                                "/%s", symbols[j].name);
                             k++;
                         }
                     }
 
-                    attribute_name_strings[svals[i]]
-                        = compile_string(idname_string, FALSE, FALSE);
+                    attribute_name_strings[symbols[i].value]
+                        = compile_string(idname_string, STRCTX_SYMBOL);
                 }
             }
             else
-            {   sprintf(idname_string, "%s", (char *) symbs[i]);
+            {   sprintf(idname_string, "%s", symbols[i].name);
 
-                attribute_name_strings[svals[i]]
-                    = compile_string(idname_string, FALSE, FALSE);
+                attribute_name_strings[symbols[i].value]
+                    = compile_string(idname_string, STRCTX_SYMBOL);
             }
         }
-        if (sflags[i] & ACTION_SFLAG)
-        {   sprintf(idname_string, "%s", (char *) symbs[i]);
+        if (symbols[i].flags & ACTION_SFLAG)
+        {   sprintf(idname_string, "%s", symbols[i].name);
             idname_string[strlen(idname_string)-3] = 0;
 
             if (debugfile_switch)
             {   debug_file_printf("<action>");
                 debug_file_printf
                     ("<identifier>##%s</identifier>", idname_string);
-                debug_file_printf("<value>%d</value>", svals[i]);
+                debug_file_printf("<value>%d</value>", symbols[i].value);
                 debug_file_printf("</action>");
             }
 
-            action_name_strings[svals[i]]
-                = compile_string(idname_string, FALSE, FALSE);
+            action_name_strings[symbols[i].value]
+                = compile_string(idname_string, STRCTX_SYMBOL);
         }
     }
 
     for (i=0; i<no_symbols; i++)
-    {   if (stypes[i] == FAKE_ACTION_T)
-        {   sprintf(idname_string, "%s", (char *) symbs[i]);
+    {   if (symbols[i].type == FAKE_ACTION_T)
+        {   sprintf(idname_string, "%s", symbols[i].name);
             idname_string[strlen(idname_string)-3] = 0;
 
-            action_name_strings[svals[i]
+            action_name_strings[symbols[i].value
                     - ((grammar_version_number==1)?256:4096) + no_actions]
-                = compile_string(idname_string, FALSE, FALSE);
+                = compile_string(idname_string, STRCTX_SYMBOL);
         }
     }
 
     for (j=0; j<no_arrays; j++)
-    {   i = array_symbols[j];
-        sprintf(idname_string, "%s", (char *) symbs[i]);
+    {   i = arrays[j].symbol;
+        sprintf(idname_string, "%s", symbols[i].name);
 
         array_name_strings[j]
-            = compile_string(idname_string, FALSE, FALSE);
+            = compile_string(idname_string, STRCTX_SYMBOL);
     }
   if (define_INFIX_switch)
   { for (i=0; i<no_symbols; i++)
-    {   if (stypes[i] == GLOBAL_VARIABLE_T)
-        {   sprintf(idname_string, "%s", (char *) symbs[i]);
-            array_name_strings[no_arrays + svals[i] -16]
-                = compile_string(idname_string, FALSE, FALSE);
+    {   if (symbols[i].type == GLOBAL_VARIABLE_T)
+        {   sprintf(idname_string, "%s", symbols[i].name);
+            array_name_strings[no_arrays + symbols[i].value -16]
+                = compile_string(idname_string, STRCTX_SYMBOL);
         }
     }
 
     for (i=0; i<no_named_routines; i++)
-    {   sprintf(idname_string, "%s", (char *) symbs[named_routine_symbols[i]]);
+    {   sprintf(idname_string, "%s", symbols[named_routine_symbols[i]].name);
             array_name_strings[no_arrays + no_globals + i]
-                = compile_string(idname_string, FALSE, FALSE);
+                = compile_string(idname_string, STRCTX_SYMBOL);
     }
 
     for (i=0, no_named_constants=0; i<no_symbols; i++)
-    {   if (((stypes[i] == OBJECT_T) || (stypes[i] == CLASS_T)
-            || (stypes[i] == CONSTANT_T))
-            && ((sflags[i] & (UNKNOWN_SFLAG+ACTION_SFLAG))==0))
-        {   sprintf(idname_string, "%s", (char *) symbs[i]);
+    {   if (((symbols[i].type == OBJECT_T) || (symbols[i].type == CLASS_T)
+            || (symbols[i].type == CONSTANT_T))
+            && ((symbols[i].flags & (UNKNOWN_SFLAG+ACTION_SFLAG))==0))
+        {   sprintf(idname_string, "%s", symbols[i].name);
             array_name_strings[no_arrays + no_globals + no_named_routines
                 + no_named_constants++]
-                = compile_string(idname_string, FALSE, FALSE);
+                = compile_string(idname_string, STRCTX_SYMBOL);
         }
     }
   }
@@ -502,36 +623,25 @@ extern void write_the_identifier_names(void)
 /* ------------------------------------------------------------------------- */
 
 static void assign_symbol_base(int index, int32 value, int type)
-{   svals[index]  = value;
-    stypes[index] = type;
-    if (sflags[index] & UNKNOWN_SFLAG)
-    {   sflags[index] &= (~UNKNOWN_SFLAG);
-        if (is_systemfile()) sflags[index] |= INSF_SFLAG;
-        slines[index] = get_brief_location(&ErrorReport);
+{   symbols[index].value  = value;
+    symbols[index].type = type;
+    if (symbols[index].flags & UNKNOWN_SFLAG)
+    {   symbols[index].flags &= (~UNKNOWN_SFLAG);
+        if (is_systemfile()) symbols[index].flags |= INSF_SFLAG;
+        symbols[index].line = get_brief_location(&ErrorReport);
     }
 }
 
 extern void assign_symbol(int index, int32 value, int type)
 {
-    if (!glulx_mode) {
-        assign_symbol_base(index, value, type);
-    }
-    else {
-        smarks[index] = 0;
-        assign_symbol_base(index, value, type);
-    }
+    assign_symbol_base(index, value, type);
+    symbols[index].marker = 0;
 }
 
 extern void assign_marked_symbol(int index, int marker, int32 value, int type)
 {
-    if (!glulx_mode) {
-        assign_symbol_base(index, (int32)marker*0x10000 + (value % 0x10000),
-            type);
-    }
-    else {
-        smarks[index] = marker;
-        assign_symbol_base(index, value, type);
-    }
+    assign_symbol_base(index, value, type);
+    symbols[index].marker = marker;
 }
 
 static void emit_debug_information_for_predefined_symbol
@@ -584,15 +694,30 @@ static void emit_debug_information_for_predefined_symbol
 
 static void create_symbol(char *p, int32 value, int type)
 {   int i = symbol_index(p, -1);
-    svals[i] = value; stypes[i] = type; slines[i] = blank_brief_location;
-    sflags[i] = USED_SFLAG + SYSTEM_SFLAG;
+    if (!(symbols[i].flags & (UNKNOWN_SFLAG + REDEFINABLE_SFLAG))) {
+        /* Symbol already defined! */
+        if (symbols[i].value == value && symbols[i].type == type) {
+            /* Special case: the symbol was already defined with this same
+               value. We let it pass. */
+            return;
+        }
+        else {
+            ebf_symbol_error("new symbol", p, typename(symbols[i].type), symbols[i].line);
+            return;
+        }
+    }
+    symbols[i].value = value; symbols[i].type = type; symbols[i].line = blank_brief_location;
+    /* If the symbol already existed with REDEFINABLE_SFLAG, we keep that. */
+    symbols[i].flags = USED_SFLAG + SYSTEM_SFLAG + (symbols[i].flags & REDEFINABLE_SFLAG);
     emit_debug_information_for_predefined_symbol(p, i, value, type);
 }
 
 static void create_rsymbol(char *p, int value, int type)
 {   int i = symbol_index(p, -1);
-    svals[i] = value; stypes[i] = type; slines[i] = blank_brief_location;
-    sflags[i] = USED_SFLAG + SYSTEM_SFLAG + REDEFINABLE_SFLAG;
+    /* This is only called for a few symbols with known names.
+       They will not collide. */
+    symbols[i].value = value; symbols[i].type = type; symbols[i].line = blank_brief_location;
+    symbols[i].flags = USED_SFLAG + SYSTEM_SFLAG + REDEFINABLE_SFLAG;
     emit_debug_information_for_predefined_symbol(p, i, value, type);
 }
 
@@ -634,7 +759,8 @@ static void stockup_symbols(void)
     }
 
     create_symbol("WORDSIZE",        WORDSIZE, CONSTANT_T);
-    create_symbol("DICT_ENTRY_BYTES", DICT_ENTRY_BYTE_LENGTH, CONSTANT_T);
+    /* DICT_ENTRY_BYTES must be REDEFINABLE_SFLAG because the Version directive can change it. */
+    create_rsymbol("DICT_ENTRY_BYTES", DICT_ENTRY_BYTE_LENGTH, CONSTANT_T);
     if (!glulx_mode) {
         create_symbol("DICT_WORD_SIZE", ((version_number==3)?4:6), CONSTANT_T);
         create_symbol("NUM_ATTR_BYTES", ((version_number==3)?4:6), CONSTANT_T);
@@ -735,6 +861,15 @@ static void stockup_symbols(void)
         create_symbol("FLOAT_NINFINITY", 0xFF800000, CONSTANT_T);
         create_symbol("FLOAT_NAN",       0x7FC00000, CONSTANT_T);
     }
+
+    if (symbol_definitions && symbol_definitions_count) {
+        int ix;
+        for (ix=0; ix<symbol_definitions_count; ix++) {
+            char *str = symbol_definitions[ix].symbol;
+            int32 val = symbol_definitions[ix].value;
+            create_symbol(str, val, CONSTANT_T);
+        }
+    }
 }
 
 /* ------------------------------------------------------------------------- */
@@ -747,7 +882,7 @@ extern void add_symbol_replacement_mapping(int original, int renamed)
     int ix;
 
     if (original == renamed) {
-        error_named("A routine cannot be 'Replace'd to itself:", (char *)symbs[original]);
+        error_named("A routine cannot be 'Replace'd to itself:", symbols[original].name);
         return;        
     }
 
@@ -768,10 +903,10 @@ extern void add_symbol_replacement_mapping(int original, int renamed)
 
     for (ix=0; ix<symbol_replacements_count; ix++) {
         if (original == symbol_replacements[ix].original_symbol) {
-            error_named("A routine cannot be 'Replace'd to more than one new name:", (char *)symbs[original]);
+            error_named("A routine cannot be 'Replace'd to more than one new name:", symbols[original].name);
         }
         if (renamed == symbol_replacements[ix].original_symbol) {
-            error_named("A routine cannot be 'Replace'd to a 'Replace'd name:", (char *)symbs[original]);
+            error_named("A routine cannot be 'Replace'd to a 'Replace'd name:", symbols[original].name);
         }
     }
 
@@ -969,10 +1104,10 @@ extern void df_note_function_symbol(int symbol)
 
     /* We are only interested in functions, or forward-declared symbols
        that might turn out to be functions. */
-    symtype = stypes[symbol];
+    symtype = symbols[symbol].type;
     if (symtype != ROUTINE_T && symtype != CONSTANT_T)
         return;
-    if (symtype == CONSTANT_T && !(sflags[symbol] & UNKNOWN_SFLAG))
+    if (symtype == CONSTANT_T && !(symbols[symbol].flags & UNKNOWN_SFLAG))
         return;
 
     bucket = (df_current_function_addr ^ (uint32)symbol) % DF_SYMBOL_HASH_BUCKETS;
@@ -1021,15 +1156,15 @@ extern void locate_dead_functions(void)
        we'll mark them specially. */
 
     ix = symbol_index("Main__", -1);
-    if (stypes[ix] == ROUTINE_T) {
-        uint32 addr = svals[ix] * (glulx_mode ? 1 : scale_factor);
+    if (symbols[ix].type == ROUTINE_T) {
+        uint32 addr = symbols[ix].value * (glulx_mode ? 1 : scale_factor);
         tofunc = df_function_for_address(addr);
         if (tofunc)
             tofunc->usage |= DF_USAGE_MAIN;
     }
     ix = symbol_index("Main", -1);
-    if (stypes[ix] == ROUTINE_T) {
-        uint32 addr = svals[ix] * (glulx_mode ? 1 : scale_factor);
+    if (symbols[ix].type == ROUTINE_T) {
+        uint32 addr = symbols[ix].value * (glulx_mode ? 1 : scale_factor);
         tofunc = df_function_for_address(addr);
         if (tofunc)
             tofunc->usage |= DF_USAGE_MAIN;
@@ -1039,18 +1174,20 @@ extern void locate_dead_functions(void)
        mark them as used. */
 
     func = df_functions_head;
-    if (!func || func->address != DF_NOT_IN_FUNCTION)
+    if (!func || func->address != DF_NOT_IN_FUNCTION) {
         compiler_error("DF: Global namespace entry is not at the head of the chain.");
+        return;
+    }
 
     for (ent = func->refs; ent; ent=ent->refsnext) {
         uint32 addr;
         int symbol = ent->symbol;
-        if (stypes[symbol] != ROUTINE_T)
+        if (symbols[symbol].type != ROUTINE_T)
             continue;
-        addr = svals[symbol] * (glulx_mode ? 1 : scale_factor);
+        addr = symbols[symbol].value * (glulx_mode ? 1 : scale_factor);
         tofunc = df_function_for_address(addr);
         if (!tofunc) {
-            error_named("Internal error in stripping: global ROUTINE_T symbol is not found in df_function map:", (char *)symbs[symbol]);
+            error_named("Internal error in stripping: global ROUTINE_T symbol is not found in df_function map:", symbols[symbol].name);
             continue;
         }
         /* A function may be marked here more than once. That's fine. */
@@ -1102,12 +1239,12 @@ extern void locate_dead_functions(void)
             for (ent = func->refs; ent; ent=ent->refsnext) {
                 uint32 addr;
                 int symbol = ent->symbol;
-                if (stypes[symbol] != ROUTINE_T)
+                if (symbols[symbol].type != ROUTINE_T)
                     continue;
-                addr = svals[symbol] * (glulx_mode ? 1 : scale_factor);
+                addr = symbols[symbol].value * (glulx_mode ? 1 : scale_factor);
                 tofunc = df_function_for_address(addr);
                 if (!tofunc) {
-                    error_named("Internal error in stripping: function ROUTINE_T symbol is not found in df_function map:", (char *)symbs[symbol]);
+                    error_named("Internal error in stripping: function ROUTINE_T symbol is not found in df_function map:", symbols[symbol].name);
                     continue;
                 }
                 if (tofunc->usage)
@@ -1210,6 +1347,8 @@ uint32 df_stripped_offset_for_code_offset(uint32 offset, int *stripped)
 {
     df_function_t *func;
     int count;
+    int beg;
+    int end;
 
     if (!track_unused_routines)
         compiler_error("DF: df_stripped_offset_for_code_offset called, but function references have not been mapped");
@@ -1237,13 +1376,14 @@ uint32 df_stripped_offset_for_code_offset(uint32 offset, int *stripped)
 
     /* Do a binary search. Maintain beg <= res < end, where res is the
        function containing the desired address. */
-    int beg = 0;
-    int end = df_functions_sorted_count;
+    beg = 0;
+    end = df_functions_sorted_count;
 
     /* Set stripped flag until we decide on a non-stripped function. */
     *stripped = TRUE;
 
     while (1) {
+        int new;
         if (beg >= end) {
             error("DF: offset_for_code_offset: Could not locate address.");
             return 0;
@@ -1255,7 +1395,7 @@ uint32 df_stripped_offset_for_code_offset(uint32 offset, int *stripped)
             *stripped = FALSE;
             return func->newaddress + (offset - func->address);
         }
-        int new = (beg + end) / 2;
+        new = (beg + end) / 2;
         if (new <= beg || new >= end)
             compiler_error("DF: binary search went off the rails");
 
@@ -1313,18 +1453,14 @@ extern uint32 df_next_function_iterate(int *funcused)
 
 extern void init_symbols_vars(void)
 {
-    symbs = NULL;
-    svals = NULL;
-    smarks = NULL;
-    stypes = NULL;
-    sflags = NULL;
-    next_entry = NULL;
+    symbols = NULL;
     start_of_list = NULL;
+    symbol_debug_info = NULL;
 
     symbol_name_space_chunks = NULL;
     no_symbol_name_space_chunks = 0;
     symbols_free_space=NULL;
-    symbols_ceiling=symbols_free_space;
+    symbols_ceiling=NULL;
 
     no_symbols = 0;
 
@@ -1355,28 +1491,21 @@ extern void symbols_begin_pass(void)
 
 extern void symbols_allocate_arrays(void)
 {
-    symbs      = my_calloc(sizeof(char *),  MAX_SYMBOLS, "symbols");
-    svals      = my_calloc(sizeof(int32),   MAX_SYMBOLS, "symbol values");
-    if (glulx_mode)
-        smarks = my_calloc(sizeof(int),     MAX_SYMBOLS, "symbol markers");
-    slines     = my_calloc(sizeof(brief_location), MAX_SYMBOLS, "symbol lines");
-    stypes     = my_calloc(sizeof(char),    MAX_SYMBOLS, "symbol types");
-    sflags     = my_calloc(sizeof(int),     MAX_SYMBOLS, "symbol flags");
+    initialise_memory_list(&symbols_memlist,
+        sizeof(symbolinfo), 6400, (void**)&symbols,
+        "symbols");
     if (debugfile_switch)
-    {   symbol_debug_backpatch_positions =
-            my_calloc(sizeof(maybe_file_position), MAX_SYMBOLS,
-                      "symbol debug information backpatch positions");
-        replacement_debug_backpatch_positions =
-            my_calloc(sizeof(maybe_file_position), MAX_SYMBOLS,
-                      "replacement debug information backpatch positions");
+    {
+        initialise_memory_list(&symbol_debug_info_memlist,
+            sizeof(symboldebuginfo), 6400, (void**)&symbol_debug_info,
+            "symbol debug backpatch info");
     }
-    next_entry = my_calloc(sizeof(int),     MAX_SYMBOLS,
-                     "symbol linked-list forward links");
     start_of_list = my_calloc(sizeof(int32), HASH_TAB_SIZE,
                      "hash code list beginnings");
 
-    symbol_name_space_chunks
-        = my_calloc(sizeof(char *), MAX_SYMBOL_CHUNKS, "symbol names chunk addresses");
+    initialise_memory_list(&symbol_name_space_chunks_memlist,
+        sizeof(char *), 32, (void**)&symbol_name_space_chunks,
+        "symbol names chunk addresses");
 
     if (track_unused_routines) {
         df_tables_closed = FALSE;
@@ -1417,23 +1546,13 @@ extern void symbols_free_arrays(void)
         my_free(&(symbol_name_space_chunks[i]),
             "symbol names chunk");
 
-    my_free(&symbol_name_space_chunks, "symbol names chunk addresses");
+    deallocate_memory_list(&symbol_name_space_chunks_memlist);
 
-    my_free(&symbs, "symbols");
-    my_free(&svals, "symbol values");
-    my_free(&smarks, "symbol markers");
-    my_free(&slines, "symbol lines");
-    my_free(&stypes, "symbol types");
-    my_free(&sflags, "symbol flags");
+    deallocate_memory_list(&symbols_memlist);
     if (debugfile_switch)
-    {   my_free
-            (&symbol_debug_backpatch_positions,
-             "symbol debug information backpatch positions");
-        my_free
-            (&replacement_debug_backpatch_positions,
-             "replacement debug information backpatch positions");
+    {
+        deallocate_memory_list(&symbol_debug_info_memlist);
     }
-    my_free(&next_entry, "symbol linked-list forward links");
     my_free(&start_of_list, "hash code list beginnings");
 
     if (symbol_replacements)

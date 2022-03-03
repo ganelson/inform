@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "states" :  Statement translator                                        */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -246,17 +246,17 @@ extern int parse_label(void)
     get_next_token();
 
     if ((token_type == SYMBOL_TT) &&
-        (stypes[token_value] == LABEL_T))
-    {   sflags[token_value] |= USED_SFLAG;
-        return(svals[token_value]);
+        (symbols[token_value].type == LABEL_T))
+    {   symbols[token_value].flags |= USED_SFLAG;
+        return(symbols[token_value].value);
     }
 
-    if ((token_type == SYMBOL_TT) && (sflags[token_value] & UNKNOWN_SFLAG))
+    if ((token_type == SYMBOL_TT) && (symbols[token_value].flags & UNKNOWN_SFLAG))
     {   assign_symbol(token_value, next_label, LABEL_T);
         define_symbol_label(token_value);
         next_label++;
-        sflags[token_value] |= CHANGE_SFLAG + USED_SFLAG;
-        return(svals[token_value]);
+        symbols[token_value].flags |= CHANGE_SFLAG + USED_SFLAG;
+        return(symbols[token_value].value);
     }
 
     ebf_error("label name", token_text);
@@ -295,7 +295,7 @@ static void parse_print_z(int finally_return)
               if (strlen(token_text) > 32)
               {   INITAOT(&AO, LONG_CONSTANT_OT);
                   AO.marker = STRING_MV;
-                  AO.value  = compile_string(token_text, FALSE, FALSE);
+                  AO.value  = compile_string(token_text, STRCTX_GAME);
                   assemblez_1(print_paddr_zc, AO);
                   if (finally_return)
                   {   get_next_token();
@@ -416,19 +416,21 @@ static void parse_print_z(int finally_return)
                           break;
 
                         case SYMBOL_TT:
-                          if (sflags[token_value] & UNKNOWN_SFLAG)
+                          if (symbols[token_value].flags & UNKNOWN_SFLAG)
                           {   INITAOT(&AO, LONG_CONSTANT_OT);
                               AO.value = token_value;
                               AO.marker = SYMBOL_MV;
+                              AO.symindex = token_value;
                           }
                           else
                           {   INITAOT(&AO, LONG_CONSTANT_OT);
-                              AO.value = svals[token_value];
+                              AO.value = symbols[token_value].value;
                               AO.marker = IROUTINE_MV;
-                              if (stypes[token_value] != ROUTINE_T)
+                              AO.symindex = token_value;
+                              if (symbols[token_value].type != ROUTINE_T)
                                 ebf_error("printing routine name", token_text);
                           }
-                          sflags[token_value] |= USED_SFLAG;
+                          symbols[token_value].flags |= USED_SFLAG;
 
                           PrintByRoutine:
 
@@ -524,7 +526,7 @@ static void parse_print_g(int finally_return)
                  so this always goes into the string area. */
               {   INITAOT(&AO, CONSTANT_OT);
                   AO.marker = STRING_MV;
-                  AO.value  = compile_string(token_text, FALSE, FALSE);
+                  AO.value  = compile_string(token_text, STRCTX_GAME);
                   assembleg_1(streamstr_gc, AO);
                   if (finally_return)
                   {   get_next_token();
@@ -651,19 +653,21 @@ static void parse_print_g(int finally_return)
                           break;
 
                         case SYMBOL_TT:
-                          if (sflags[token_value] & UNKNOWN_SFLAG)
+                          if (symbols[token_value].flags & UNKNOWN_SFLAG)
                           {   INITAOT(&AO, CONSTANT_OT);
                               AO.value = token_value;
                               AO.marker = SYMBOL_MV;
+                              AO.symindex = token_value;
                           }
                           else
                           {   INITAOT(&AO, CONSTANT_OT);
-                              AO.value = svals[token_value];
+                              AO.value = symbols[token_value].value;
                               AO.marker = IROUTINE_MV;
-                              if (stypes[token_value] != ROUTINE_T)
+                              AO.symindex = token_value;
+                              if (symbols[token_value].type != ROUTINE_T)
                                 ebf_error("printing routine name", token_text);
                           }
-                          sflags[token_value] |= USED_SFLAG;
+                          symbols[token_value].flags |= USED_SFLAG;
 
                           PrintByRoutine:
 
@@ -734,18 +738,18 @@ static void parse_statement_z(int break_label, int continue_label)
         get_next_token();
         if (token_type == SYMBOL_TT)
         {
-            if (sflags[token_value] & UNKNOWN_SFLAG)
+            if (symbols[token_value].flags & UNKNOWN_SFLAG)
             {   assign_symbol(token_value, next_label, LABEL_T);
-                sflags[token_value] |= USED_SFLAG;
+                symbols[token_value].flags |= USED_SFLAG;
                 assemble_label_no(next_label);
                 define_symbol_label(token_value);
                 next_label++;
             }
             else
-            {   if (stypes[token_value] != LABEL_T) goto LabelError;
-                if (sflags[token_value] & CHANGE_SFLAG)
-                {   sflags[token_value] &= (~(CHANGE_SFLAG));
-                    assemble_label_no(svals[token_value]);
+            {   if (symbols[token_value].type != LABEL_T) goto LabelError;
+                if (symbols[token_value].flags & CHANGE_SFLAG)
+                {   symbols[token_value].flags &= (~(CHANGE_SFLAG));
+                    assemble_label_no(symbols[token_value].value);
                     define_symbol_label(token_value);
                 }
                 else error_named("Duplicate definition of label:", token_text);
@@ -961,6 +965,10 @@ static void parse_statement_z(int break_label, int continue_label)
                  get_next_token();
 
                  /*  Initialisation code  */
+                 AO.type = OMITTED_OT;
+                 spare_debug_location1 = statement_debug_location;
+                 AO2.type = OMITTED_OT; flag = 0;
+                 spare_debug_location2 = statement_debug_location;
 
                  if (!((token_type==SEP_TT)&&(token_value==COLON_SEP)))
                  {   put_token_back();
@@ -983,7 +991,6 @@ static void parse_statement_z(int break_label, int continue_label)
                              assemble_label_no(ln2);
                              return;
                          }
-                         AO.type = OMITTED_OT;
                          goto ParseUpdate;
                      }
                      put_token_back();
@@ -991,7 +998,6 @@ static void parse_statement_z(int break_label, int continue_label)
                  }
 
                  get_next_token();
-                 AO.type = OMITTED_OT;
                  if (!((token_type==SEP_TT)&&(token_value==COLON_SEP)))
                  {   put_token_back();
                      spare_debug_location1 = get_token_location();
@@ -1001,7 +1007,6 @@ static void parse_statement_z(int break_label, int continue_label)
                  get_next_token();
 
                  ParseUpdate:
-                 AO2.type = OMITTED_OT; flag = 0;
                  if (!((token_type==SEP_TT)&&(token_value==CLOSEB_SEP)))
                  {   put_token_back();
                      spare_debug_location2 = get_token_location();
@@ -1102,6 +1107,7 @@ static void parse_statement_z(int break_label, int continue_label)
         case GIVE_CODE:
                  AO = code_generate(parse_expression(QUANTITY_CONTEXT),
                           QUANTITY_CONTEXT, -1);
+                 check_warn_symbol_type(&AO, OBJECT_T, 0, "\"give\" statement");
                  if ((AO.type == VARIABLE_OT) && (AO.value == 0))
                  {   INITAOTV(&AO, SHORT_CONSTANT_OT, 252);
                      if (version_number != 6) assemblez_1(pull_zc, AO);
@@ -1116,15 +1122,12 @@ static void parse_statement_z(int break_label, int continue_label)
                      if ((token_type == SEP_TT)&&(token_value == ARTNOT_SEP))
                          ln = clear_attr_zc;
                      else
-                     {   if ((token_type == SYMBOL_TT)
-                             && (stypes[token_value] != ATTRIBUTE_T))
-                           warning_named("This is not a declared Attribute:",
-                             token_text);
-                         ln = set_attr_zc;
+                     {   ln = set_attr_zc;
                          put_token_back();
                      }
                      AO2 = code_generate(parse_expression(QUANTITY_CONTEXT),
                                QUANTITY_CONTEXT, -1);
+                     check_warn_symbol_type(&AO2, ATTRIBUTE_T, 0, "\"give\" statement");
                      if (runtime_error_checking_switch)
                      {   ln2 = (ln==set_attr_zc)?RT__ChG_VR:RT__ChGt_VR;
                          if (version_number >= 5)
@@ -1178,6 +1181,14 @@ static void parse_statement_z(int break_label, int continue_label)
 
                  statements.enabled = TRUE;
                  get_next_token();
+
+                 /* An #if directive around the ELSE clause is legal. */
+                 while ((token_type == SEP_TT) && (token_value == HASH_SEP))
+                 {   parse_directive(TRUE);
+                     statements.enabled = TRUE;
+                     get_next_token();
+                 }
+                 
                  if ((token_type == STATEMENT_TT) && (token_value == ELSE_CODE))
                  {   flag = TRUE;
                      if (ln >= 0)
@@ -1249,6 +1260,8 @@ static void parse_statement_z(int break_label, int continue_label)
                  AO2 = code_generate(parse_expression(QUANTITY_CONTEXT),
                      QUANTITY_CONTEXT, -1);
                  AO = code_generate(AO, QUANTITY_CONTEXT, -1);
+                 check_warn_symbol_type(&AO, OBJECT_T, 0, "\"move\" statement");
+                 check_warn_symbol_type(&AO2, OBJECT_T, CLASS_T, "\"move\" statement");
                  if ((runtime_error_checking_switch) && (veneer_mode == FALSE))
                  {   if (version_number >= 5)
                          assemblez_3(call_vn_zc, veneer_routine(RT__ChT_VR),
@@ -1281,8 +1294,8 @@ static void parse_statement_z(int break_label, int continue_label)
                      AO.value = token_value;
                  else
                  if ((token_type == SYMBOL_TT) &&
-                     (stypes[token_value] == GLOBAL_VARIABLE_T))
-                     AO.value = svals[token_value];
+                     (symbols[token_value].type == GLOBAL_VARIABLE_T))
+                     AO.value = symbols[token_value].value;
                  else
                  {   ebf_error("'objectloop' variable", token_text);
                      panic_mode_error_recovery(); break;
@@ -1468,6 +1481,7 @@ static void parse_statement_z(int break_label, int continue_label)
         case REMOVE_CODE:
                  AO = code_generate(parse_expression(QUANTITY_CONTEXT),
                      QUANTITY_CONTEXT, -1);
+                 check_warn_symbol_type(&AO, OBJECT_T, 0, "\"remove\" statement");
                  if ((runtime_error_checking_switch) && (veneer_mode == FALSE))
                  {   if (version_number >= 5)
                          assemblez_2(call_2n_zc, veneer_routine(RT__ChR_VR),
@@ -1576,10 +1590,19 @@ static void parse_statement_z(int break_label, int continue_label)
                  assemblez_2_to(loadw_zc, AO, AO2, AO3);
                  AO2 = code_generate(parse_expression(QUANTITY_CONTEXT),
                      QUANTITY_CONTEXT, -1);
+                 if (is_constant_ot(AO2.type) && AO2.marker == 0) {
+                     /* Compile-time check */
+                     if (AO2.value < 0 || AO2.value >= 96 || AO2.value >= MAX_DYNAMIC_STRINGS) {
+                         error_max_dynamic_strings(AO2.value);
+                         AO2.value = 0;
+                     }
+                 }
                  get_next_token();
                  if (token_type == DQ_TT)
                  {   INITAOT(&AO4, LONG_CONSTANT_OT);
-                     AO4.value = compile_string(token_text, TRUE, TRUE);
+                     /* This string must be in low memory so that the
+                        dynamic string table can refer to it. */
+                     AO4.value = compile_string(token_text, STRCTX_LOWSTRING);
                  }
                  else
                  {   put_token_back();
@@ -1694,18 +1717,18 @@ static void parse_statement_g(int break_label, int continue_label)
         get_next_token();
         if (token_type == SYMBOL_TT)
         {
-            if (sflags[token_value] & UNKNOWN_SFLAG)
+            if (symbols[token_value].flags & UNKNOWN_SFLAG)
             {   assign_symbol(token_value, next_label, LABEL_T);
-                sflags[token_value] |= USED_SFLAG;
+                symbols[token_value].flags |= USED_SFLAG;
                 assemble_label_no(next_label);
                 define_symbol_label(token_value);
                 next_label++;
             }
             else
-            {   if (stypes[token_value] != LABEL_T) goto LabelError;
-                if (sflags[token_value] & CHANGE_SFLAG)
-                {   sflags[token_value] &= (~(CHANGE_SFLAG));
-                    assemble_label_no(svals[token_value]);
+            {   if (symbols[token_value].type != LABEL_T) goto LabelError;
+                if (symbols[token_value].flags & CHANGE_SFLAG)
+                {   symbols[token_value].flags &= (~(CHANGE_SFLAG));
+                    assemble_label_no(symbols[token_value].value);
                     define_symbol_label(token_value);
                 }
                 else error_named("Duplicate definition of label:", token_text);
@@ -1902,6 +1925,10 @@ static void parse_statement_g(int break_label, int continue_label)
                  get_next_token();
 
                  /*  Initialisation code  */
+                 AO.type = OMITTED_OT;
+                 spare_debug_location1 = statement_debug_location;
+                 AO2.type = OMITTED_OT; flag = 0;
+                 spare_debug_location2 = statement_debug_location;
 
                  if (!((token_type==SEP_TT)&&(token_value==COLON_SEP)))
                  {   put_token_back();
@@ -1924,7 +1951,6 @@ static void parse_statement_g(int break_label, int continue_label)
                              assemble_label_no(ln2);
                              return;
                          }
-                         AO.type = OMITTED_OT;
                          goto ParseUpdate;
                      }
                      put_token_back();
@@ -1932,7 +1958,6 @@ static void parse_statement_g(int break_label, int continue_label)
                  }
 
                  get_next_token();
-                 AO.type = OMITTED_OT;
                  if (!((token_type==SEP_TT)&&(token_value==COLON_SEP)))
                  {   put_token_back();
                      spare_debug_location1 = get_token_location();
@@ -1942,7 +1967,6 @@ static void parse_statement_g(int break_label, int continue_label)
                  get_next_token();
 
                  ParseUpdate:
-                 AO2.type = OMITTED_OT; flag = 0;
                  if (!((token_type==SEP_TT)&&(token_value==CLOSEB_SEP)))
                  {   put_token_back();
                      spare_debug_location2 = get_token_location();
@@ -2047,6 +2071,7 @@ static void parse_statement_g(int break_label, int continue_label)
         case GIVE_CODE:
                  AO = code_generate(parse_expression(QUANTITY_CONTEXT),
                           QUANTITY_CONTEXT, -1);
+                 check_warn_symbol_type(&AO, OBJECT_T, 0, "\"give\" statement");
                  if ((AO.type == LOCALVAR_OT) && (AO.value == 0))
                      onstack = TRUE;
                  else
@@ -2064,15 +2089,12 @@ static void parse_statement_g(int break_label, int continue_label)
                      if ((token_type == SEP_TT)&&(token_value == ARTNOT_SEP))
                          ln = 0;
                      else
-                     {   if ((token_type == SYMBOL_TT)
-                             && (stypes[token_value] != ATTRIBUTE_T))
-                           warning_named("This is not a declared Attribute:",
-                             token_text);
-                         ln = 1;
+                     {   ln = 1;
                          put_token_back();
                      }
                      AO2 = code_generate(parse_expression(QUANTITY_CONTEXT),
                                QUANTITY_CONTEXT, -1);
+                     check_warn_symbol_type(&AO2, ATTRIBUTE_T, 0, "\"give\" statement");
                      if (runtime_error_checking_switch && (!veneer_mode))
                      {   ln2 = (ln ? RT__ChG_VR : RT__ChGt_VR);
                          if ((AO2.type == LOCALVAR_OT) && (AO2.value == 0)) {
@@ -2152,6 +2174,14 @@ static void parse_statement_g(int break_label, int continue_label)
 
                  statements.enabled = TRUE;
                  get_next_token();
+                 
+                 /* An #if directive around the ELSE clause is legal. */
+                 while ((token_type == SEP_TT) && (token_value == HASH_SEP))
+                 {   parse_directive(TRUE);
+                     statements.enabled = TRUE;
+                     get_next_token();
+                 }
+                 
                  if ((token_type == STATEMENT_TT) && (token_value == ELSE_CODE))
                  {   flag = TRUE;
                      if (ln >= 0)
@@ -2249,6 +2279,8 @@ static void parse_statement_g(int break_label, int continue_label)
                  AO2 = code_generate(parse_expression(QUANTITY_CONTEXT),
                      QUANTITY_CONTEXT, -1);
                  AO = code_generate(AO, QUANTITY_CONTEXT, -1);
+                 check_warn_symbol_type(&AO, OBJECT_T, 0, "\"move\" statement");
+                 check_warn_symbol_type(&AO2, OBJECT_T, CLASS_T, "\"move\" statement");
                  if ((runtime_error_checking_switch) && (veneer_mode == FALSE))
                      assembleg_call_2(veneer_routine(RT__ChT_VR), AO, AO2,
                          zero_operand);
@@ -2278,8 +2310,8 @@ static void parse_statement_g(int break_label, int continue_label)
                      INITAOTV(&AO, LOCALVAR_OT, token_value);
                  }
                  else if ((token_type == SYMBOL_TT) &&
-                   (stypes[token_value] == GLOBAL_VARIABLE_T)) {
-                     INITAOTV(&AO, GLOBALVAR_OT, svals[token_value]);
+                   (symbols[token_value].type == GLOBAL_VARIABLE_T)) {
+                     INITAOTV(&AO, GLOBALVAR_OT, symbols[token_value].value);
                  }
                  else {
                      ebf_error("'objectloop' variable", token_text);
@@ -2381,7 +2413,7 @@ static void parse_statement_g(int break_label, int continue_label)
                  sequence_point_follows = TRUE;
                  ln = symbol_index("Class", -1);
                  INITAOT(&AO2, CONSTANT_OT);
-                 AO2.value = svals[ln];
+                 AO2.value = symbols[ln].value;
                  AO2.marker = OBJECT_MV;
                  assembleg_store(AO, AO2);
 
@@ -2431,6 +2463,7 @@ static void parse_statement_g(int break_label, int continue_label)
         case REMOVE_CODE:
                  AO = code_generate(parse_expression(QUANTITY_CONTEXT),
                      QUANTITY_CONTEXT, -1);
+                 check_warn_symbol_type(&AO, OBJECT_T, 0, "\"remove\" statement");
                  if ((runtime_error_checking_switch) && (veneer_mode == FALSE))
                      assembleg_call_1(veneer_routine(RT__ChR_VR), AO,
                          zero_operand);
@@ -2500,10 +2533,19 @@ static void parse_statement_g(int break_label, int continue_label)
         case STRING_CODE:
                  AO2 = code_generate(parse_expression(QUANTITY_CONTEXT),
                      QUANTITY_CONTEXT, -1);
+                 if (is_constant_ot(AO2.type) && AO2.marker == 0) {
+                     /* Compile-time check */
+                     if (AO2.value < 0 || AO2.value >= MAX_DYNAMIC_STRINGS) {
+                         error_max_dynamic_strings(AO2.value);
+                     }
+                 }
                  get_next_token();
                  if (token_type == DQ_TT)
                  {   INITAOT(&AO4, CONSTANT_OT);
-                     AO4.value = compile_string(token_text, TRUE, TRUE);
+                     /* This is not actually placed in low memory; Glulx
+                        has no such concept. We use the LOWSTRING flag
+                        for compatibility with older compiler behavior. */
+                     AO4.value = compile_string(token_text, STRCTX_LOWSTRING);
                      AO4.marker = STRING_MV;
                  }
                  else

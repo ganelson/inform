@@ -1,37 +1,32 @@
 /* ------------------------------------------------------------------------- */
 /*   "text" : Text translation, the abbreviations optimiser, the dictionary  */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
 #include "header.h"
 
-uchar *low_strings, *low_strings_top;  /* Start and next free byte in the low
-                                          strings pool */
+uchar *low_strings;                    /* Allocated to low_strings_top       */
+int32 low_strings_top;
+static memory_list low_strings_memlist;
 
 int32 static_strings_extent;           /* Number of bytes of static strings
                                           made so far */
-memory_block static_strings_area;      /* Used if (!temporary_files_switch) to
-                                          hold the static strings area so far */
+uchar *static_strings_area;            /* Used if (!temporary_files_switch) to
+                                          hold the static strings area so far
+                                          Allocated to static_strings_extent */
+memory_list static_strings_area_memlist;
 
-static uchar *strings_holding_area;    /* Area holding translated strings
-                                          until they are moved into either
-                                          a temporary file, or the
-                                          static_strings_area below */
-
-char *all_text, *all_text_top;         /* Start and next byte free in (large)
-                                          text buffer holding the entire text
+static char *all_text;                 /* Text buffer holding the entire text
                                           of the game, when it is being
-                                          recorded                           */
-int put_strings_in_low_memory,         /* When TRUE, put static strings in
-                                          the low strings pool at 0x100 rather
-                                          than in the static strings area    */
-    is_abbreviation,                   /* When TRUE, the string being trans
-                                          is itself an abbreviation string
-                                          so can't make use of abbreviations */
-    abbrevs_lookup_table_made,         /* The abbreviations lookup table is
+                                          recorded
+                                          (Allocated to all_text_top) */
+static memory_list all_text_memlist;
+static int32 all_text_top;
+
+int abbrevs_lookup_table_made,         /* The abbreviations lookup table is
                                           constructed when the first non-
                                           abbreviation string is translated:
                                           this flag is TRUE after that       */
@@ -41,8 +36,6 @@ int put_strings_in_low_memory,         /* When TRUE, put static strings in
                                           with ASCII character n, or -1
                                           if none of the abbreviations do    */
 int no_abbreviations;                  /* No of abbreviations defined so far */
-uchar *abbreviations_at;                 /* Memory to hold the text of any
-                                          abbreviation strings declared      */
 /* ------------------------------------------------------------------------- */
 /*   Glulx string compression storage                                        */
 /* ------------------------------------------------------------------------- */
@@ -55,7 +48,6 @@ int no_dynamic_strings;                /* No. of @.. string escapes used
 int no_unicode_chars;                  /* Number of distinct Unicode chars
                                           used. (Beyond 0xFF.)               */
 
-static int MAX_CHARACTER_SET;          /* Number of possible entities */
 huffentity_t *huff_entities;           /* The list of entities (characters,
                                           abbreviations, @.. escapes, and 
                                           the terminator)                    */
@@ -80,11 +72,16 @@ int32 compression_string_size;         /* Length of the compressed string
 int32 *compressed_offsets;             /* The beginning of every string in
                                           the game, relative to the beginning
                                           of the Huffman table. (So entry 0
-                                          is equal to compression_table_size)*/
+                                          is equal to compression_table_size).
+                                          Allocated to no_strings at
+                                          compress_game_text() time.         */
+static memory_list compressed_offsets_memlist;
+
+unicode_usage_t *unicode_usage_entries; /* Allocated to no_unicode_chars     */
+static memory_list unicode_usage_entries_memlist;
 
 #define UNICODE_HASH_BUCKETS (64)
-unicode_usage_t *unicode_usage_entries;
-static unicode_usage_t *unicode_usage_hash[UNICODE_HASH_BUCKETS];
+static int unicode_usage_hash[UNICODE_HASH_BUCKETS];
 
 static int unicode_entity_index(int32 unicode);
 
@@ -92,9 +89,20 @@ static int unicode_entity_index(int32 unicode);
 /*   Abbreviation arrays                                                     */
 /* ------------------------------------------------------------------------- */
 
-int *abbrev_values;
-int *abbrev_quality;
-int *abbrev_freqs;
+abbreviation *abbreviations;             /* Allocated up to no_abbreviations */
+static memory_list abbreviations_memlist;
+
+/* Memory to hold the text of any abbreviation strings declared. This is
+   counted in units of MAX_ABBREV_LENGTH bytes. (An abbreviation must fit
+   in that many bytes, null included.)                                       */
+uchar *abbreviations_at;                 /* Allocated up to no_abbreviations */
+static memory_list abbreviations_at_memlist;
+
+static int *abbreviations_optimal_parse_schedule;
+static memory_list abbreviations_optimal_parse_schedule_memlist;
+
+static int *abbreviations_optimal_parse_scores;
+static memory_list abbreviations_optimal_parse_scores_memlist;
 
 /* ------------------------------------------------------------------------- */
 
@@ -103,26 +111,30 @@ int32 total_chars_trans,               /* Number of ASCII chars of text in   */
       zchars_trans_in_last_string;     /* Number of Z-chars in last string:
                                           needed only for abbrev efficiency
                                           calculation in "directs.c"         */
-static int32 total_zchars_trans,       /* Number of Z-chars of text out
+static int32 total_zchars_trans;       /* Number of Z-chars of text out
                                           (only used to calculate the above) */
-      no_chars_transcribed;            /* Number of ASCII chars written to
-                                          the text transcription area (used
-                                          for the -r and -u switches)        */
 
 static int zchars_out_buffer[3],       /* During text translation, a buffer of
                                           3 Z-chars at a time: when it's full
                                           these are written as a 2-byte word */
            zob_index;                  /* Index (0 to 2) into it             */
 
-static unsigned char *text_out_pc;     /* The "program counter" during text
-                                          translation: the next address to
+uchar *translated_text;                /* Area holding translated strings
+                                          until they are moved into either
+                                          a temporary file, or the
+                                          static_strings_area below */
+static memory_list translated_text_memlist;
+
+static int32 text_out_pos;             /* The "program counter" during text
+                                          translation: the next position to
                                           write Z-coded text output to       */
 
-static unsigned char *text_out_limit;  /* The upper limit of text_out_pc
-                                          during text translation            */
+static int32 text_out_limit;           /* The upper limit of text_out_pos
+                                          during text translation (or -1
+                                          for no limit)                      */
 
 static int text_out_overflow;          /* During text translation, becomes
-                                          true if text_out_pc tries to pass
+                                          true if text_out_pos tries to pass
                                           text_out_limit                     */
 
 /* ------------------------------------------------------------------------- */
@@ -147,10 +159,10 @@ static void make_abbrevs_lookup(void)
                 p2=(char *)abbreviations_at+k*MAX_ABBREV_LENGTH;
                 if (strcmp(p1,p2)<0)
                 {   strcpy(p,p1); strcpy(p1,p2); strcpy(p2,p);
-                    l=abbrev_values[j]; abbrev_values[j]=abbrev_values[k];
-                    abbrev_values[k]=l;
-                    l=abbrev_quality[j]; abbrev_quality[j]=abbrev_quality[k];
-                    abbrev_quality[k]=l;
+                    l=abbreviations[j].value; abbreviations[j].value=abbreviations[k].value;
+                    abbreviations[k].value=l;
+                    l=abbreviations[j].quality; abbreviations[j].quality=abbreviations[k].quality;
+                    abbreviations[k].quality=l;
                     bubble_sort = TRUE;
                 }
             }
@@ -159,7 +171,7 @@ static void make_abbrevs_lookup(void)
     for (j=no_abbreviations-1; j>=0; j--)
     {   p1=(char *)abbreviations_at+j*MAX_ABBREV_LENGTH;
         abbrevs_lookup[(uchar)p1[0]]=j;
-        abbrev_freqs[j]=0;
+        abbreviations[j].freq=0;
     }
     abbrevs_lookup_table_made = TRUE;
 }
@@ -190,7 +202,7 @@ static int try_abbreviations_from(unsigned char *text, int i, int from)
             if (!glulx_mode) {
                 for (k=0; p[k]!=0; k++) text[i+k]=1;
             }
-            abbrev_freqs[j]++;
+            abbreviations[j].freq++;
             return(j);
             NotMatched: ;
         }
@@ -200,48 +212,65 @@ static int try_abbreviations_from(unsigned char *text, int i, int from)
 
 extern void make_abbreviation(char *text)
 {
+    ensure_memory_list_available(&abbreviations_memlist, no_abbreviations+1);
+    ensure_memory_list_available(&abbreviations_at_memlist, no_abbreviations+1);
+    
     strcpy((char *)abbreviations_at
             + no_abbreviations*MAX_ABBREV_LENGTH, text);
 
-    is_abbreviation = TRUE;
-    abbrev_values[no_abbreviations] = compile_string(text, TRUE, TRUE);
-    is_abbreviation = FALSE;
+    abbreviations[no_abbreviations].value = compile_string(text, STRCTX_ABBREV);
+    abbreviations[no_abbreviations].freq = 0;
 
     /*   The quality is the number of Z-chars saved by using this            */
     /*   abbreviation: note that it takes 2 Z-chars to print it.             */
 
-    abbrev_quality[no_abbreviations++] = zchars_trans_in_last_string - 2;
+    abbreviations[no_abbreviations].quality = zchars_trans_in_last_string - 2;
+
+    if (abbreviations[no_abbreviations].quality <= 0) {
+        warning_named("Abbreviation does not save any characters:", text);
+    }
+    
+    no_abbreviations++;
 }
 
 /* ------------------------------------------------------------------------- */
-/*   The front end routine for text translation                              */
+/*   The front end routine for text translation.                             */
+/*   strctx indicates the purpose of the string. This is mostly used for     */
+/*   informational output (gametext.txt), but we treat some string contexts  */
+/*   specially during compilation.                                           */
 /* ------------------------------------------------------------------------- */
 
-extern int32 compile_string(char *b, int in_low_memory, int is_abbrev)
-{   int i, j; uchar *c;
-
-    is_abbreviation = is_abbrev;
-
-    /* Put into the low memory pool (at 0x100 in the Z-machine) of strings   */
-    /* which may be wanted as possible entries in the abbreviations table    */
+extern int32 compile_string(char *b, int strctx)
+{   int32 i, j, k;
+    uchar *c;
+ 
+    /* In Z-code, abbreviations go in the low memory pool (0x100). So
+       do strings explicitly defined with the Lowstring directive.
+       (In Glulx, the in_low_memory flag is ignored.) */
+    int in_low_memory = (strctx == STRCTX_ABBREV || strctx == STRCTX_LOWSTRING);
 
     if (!glulx_mode && in_low_memory)
-    {   j=subtract_pointers(low_strings_top,low_strings);
-        low_strings_top=translate_text(low_strings_top, low_strings+MAX_LOW_STRINGS, b);
-        if (!low_strings_top)
-            memoryerror("MAX_LOW_STRINGS", MAX_LOW_STRINGS);
-        is_abbreviation = FALSE;
+    {
+        k = translate_text(-1, b, strctx);
+        if (k<0) {
+            error("text translation failed");
+            k = 0;
+        }
+        ensure_memory_list_available(&low_strings_memlist, low_strings_top+k);
+        memcpy(low_strings+low_strings_top, translated_text, k);
+        j = low_strings_top;
+        low_strings_top += k;
         return(0x21+(j/2));
     }
 
     if (glulx_mode && done_compression)
         compiler_error("Tried to add a string after compression was done.");
 
-    c = translate_text(strings_holding_area, strings_holding_area+MAX_STATIC_STRINGS, b);
-    if (!c)
-        memoryerror("MAX_STATIC_STRINGS",MAX_STATIC_STRINGS);
-
-    i = subtract_pointers(c, strings_holding_area);
+    i = translate_text(-1, b, strctx);
+    if (i < 0) {
+        error("text translation failed");
+        i = 0;
+    }
 
     /* Insert null bytes as needed to ensure that the next static string */
     /* also occurs at an address expressible as a packed address         */
@@ -254,25 +283,25 @@ extern int32 compile_string(char *b, int in_low_memory, int is_abbrev)
             textalign = scale_factor;
         while ((i%textalign)!=0)
         {
-            if (i+2 > MAX_STATIC_STRINGS)
-                memoryerror("MAX_STATIC_STRINGS",MAX_STATIC_STRINGS);
-            i+=2; *c++ = 0; *c++ = 0;
+            ensure_memory_list_available(&translated_text_memlist, i+2);
+            translated_text[i++] = 0;
+            translated_text[i++] = 0;
         }
     }
 
     j = static_strings_extent;
 
-    if (temporary_files_switch)
-        for (c=strings_holding_area; c<strings_holding_area+i;
+    if (temporary_files_switch) {
+        for (c=translated_text; c<translated_text+i;
              c++, static_strings_extent++)
             fputc(*c,Temp1_fp);
-    else
-        for (c=strings_holding_area; c<strings_holding_area+i;
+    }
+    else {
+        ensure_memory_list_available(&static_strings_area_memlist, static_strings_extent+i);
+        for (c=translated_text; c<translated_text+i;
              c++, static_strings_extent++)
-            write_byte_to_memory_block(&static_strings_area,
-                static_strings_extent, *c);
-
-    is_abbreviation = FALSE;
+            static_strings_area[static_strings_extent] = *c;
+    }
 
     if (!glulx_mode) {
         return(j/scale_factor);
@@ -297,11 +326,18 @@ static void write_z_char_z(int i)
     zob_index=0;
     j= zchars_out_buffer[0]*0x0400 + zchars_out_buffer[1]*0x0020
        + zchars_out_buffer[2];
-    if (text_out_pc+2 > text_out_limit) {
-        text_out_overflow = TRUE;
-        return;
+    
+    if (text_out_limit >= 0) {
+        if (text_out_pos+2 > text_out_limit) {
+            text_out_overflow = TRUE;
+            return;
+        }
     }
-    text_out_pc[0] = j/256; text_out_pc[1] = j%256; text_out_pc+=2;
+    else {
+        ensure_memory_list_available(&translated_text_memlist, text_out_pos+2);
+    }
+    
+    translated_text[text_out_pos++] = j/256; translated_text[text_out_pos++] = j%256;
     total_bytes_trans+=2;
 }
 
@@ -337,48 +373,84 @@ static void write_zscii(int zsc)
 /* ------------------------------------------------------------------------- */
 
 static void end_z_chars(void)
-{   unsigned char *p;
+{
     zchars_trans_in_last_string=total_zchars_trans-zchars_trans_in_last_string;
     while (zob_index!=0) write_z_char_z(5);
-    p=(unsigned char *) text_out_pc;
-    *(p-2)= *(p-2)+128;
+    if (text_out_pos < 2) {
+        /* Something went wrong. */
+        text_out_overflow = TRUE;
+        return;
+    }
+    translated_text[text_out_pos-2] += 128;
 }
 
 /* Glulx handles this much more simply -- compression is done elsewhere. */
 static void write_z_char_g(int i)
 {
-  ASSERT_GLULX();
-  if (text_out_pc+1 > text_out_limit) {
-      text_out_overflow = TRUE;
-      return;
-  }
-  total_zchars_trans++;
-  text_out_pc[0] = i;
-  text_out_pc++;
-  total_bytes_trans++;  
+    ASSERT_GLULX();
+    if (text_out_limit >= 0) {
+        if (text_out_pos+1 > text_out_limit) {
+            text_out_overflow = TRUE;
+            return;
+        }
+    }
+    else {
+        ensure_memory_list_available(&translated_text_memlist, text_out_pos+1);
+    }
+    total_zchars_trans++;
+    translated_text[text_out_pos++] = i;
+    total_bytes_trans++;  
+}
+
+/* Helper routine to compute the weight, in units, of a character handled by the Z-Machine */
+static int zchar_weight(int c)
+{
+    int lookup = iso_to_alphabet_grid[c];
+    if (lookup < 0) return 4;
+    if (lookup < 26) return 1;
+    return 2;
 }
 
 /* ------------------------------------------------------------------------- */
 /*   The main routine "text.c" provides to the rest of Inform: the text      */
-/*   translator. p is the address to write output to, s_text the source text */
-/*   and the return value is the next free address to write output to.       */
-/*   The return value will not exceed p_limit. If the translation tries to   */
-/*   overflow this boundary, the return value will be NULL (and you should   */
-/*   display an error).                                                      */
+/*   translator. s_text is the source text and the return value is the       */
+/*   number of bytes translated.                                             */
+/*   The translated text will be stored in translated_text.                  */
+/*                                                                           */
+/*   If p_limit is >= 0, the text length will not exceed that many bytes.    */
+/*   If the translation tries to overflow this boundary, the return value    */
+/*   will be -1. (You should display an error and not read translated_text.) */
+/*                                                                           */
+/*   If p_limit is negative, any amount of text is accepted (up to int32     */
+/*   anyway).                                                                */
+/*                                                                           */
 /*   Note that the source text may be corrupted by this routine.             */
 /* ------------------------------------------------------------------------- */
 
-extern uchar *translate_text(uchar *p, uchar *p_limit, char *s_text)
-{   int i, j, k, in_alphabet, lookup_value;
+extern int32 translate_text(int32 p_limit, char *s_text, int strctx)
+{   int i, j, k, in_alphabet, lookup_value, is_abbreviation;
     int32 unicode; int zscii;
     unsigned char *text_in;
 
-    /*  Cast the input and output streams to unsigned char: text_out_pc will
+    if (p_limit >= 0) {
+        ensure_memory_list_available(&translated_text_memlist, p_limit);
+    }
+    
+    /* For STRCTX_ABBREV, the string being translated is itself an
+       abbreviation string, so it can't make use of abbreviations. Set
+       the is_abbreviation flag to indicate this.
+       The compiler has historically set this flag for the Lowstring
+       directive as well -- the in_low_memory and is_abbreviation flag were
+       always the same. I am preserving that convention. */
+    is_abbreviation = (strctx == STRCTX_ABBREV || strctx == STRCTX_LOWSTRING);
+
+
+    /*  Cast the input and output streams to unsigned char: text_out_pos will
         advance as bytes of Z-coded text are written, but text_in doesn't    */
 
     text_in     = (unsigned char *) s_text;
-    text_out_pc = (unsigned char *) p;
-    text_out_limit = (unsigned char *) p_limit;
+    text_out_pos = 0;
+    text_out_limit = p_limit;
     text_out_overflow = FALSE;
 
     /*  Remember the Z-chars total so that later we can subtract to find the
@@ -401,19 +473,79 @@ extern uchar *translate_text(uchar *p, uchar *p_limit, char *s_text)
         && (!is_abbreviation))
         make_abbrevs_lookup();
 
-    /*  If we're storing the whole game text to memory, then add this text   */
+    /*  If we're storing the whole game text to memory, then add this text.
+        We will put two newlines between each text and four at the very end.
+        (The optimise code does a lot of sloppy text[i+2], so the extra
+        two newlines past all_text_top are necessary.) */
 
     if ((!is_abbreviation) && (store_the_text))
-    {   no_chars_transcribed += strlen(s_text)+2;
-        if (no_chars_transcribed >= MAX_TRANSCRIPT_SIZE)
-            memoryerror("MAX_TRANSCRIPT_SIZE", MAX_TRANSCRIPT_SIZE);
-        sprintf(all_text_top, "%s\n\n", s_text);
-        all_text_top += strlen(all_text_top);
+    {   int addlen = strlen(s_text);
+        ensure_memory_list_available(&all_text_memlist, all_text_top+addlen+5);
+        sprintf(all_text+all_text_top, "%s\n\n\n\n", s_text);
+        /* Advance past two newlines. */
+        all_text_top += (addlen+2);
     }
 
-    if (transcript_switch && (!veneer_mode))
-        write_to_transcript_file(s_text);
+    if (transcript_switch) {
+        /* Omit veneer strings, unless we're using the new transcript format, which includes everything. */
+        if ((!veneer_mode) || TRANSCRIPT_FORMAT == 1) {
+            int label = strctx;
+            if (veneer_mode) {
+                if (label == STRCTX_GAME)
+                    label = STRCTX_VENEER;
+                else if (label == STRCTX_GAMEOPC)
+                    label = STRCTX_VENEEROPC;
+            }
+            write_to_transcript_file(s_text, label);
+        }
+    }
+    
+    /* Computing the optimal way to parse strings to insert abbreviations with dynamic programming */
+    /*  (ref: R.A. Wagner , "Common phrases and minimum-space text storage", Commun. ACM, 16 (3) (1973)) */
+    /* We compute this optimal way here; it's stored in abbreviations_optimal_parse_schedule */
+    if (economy_switch)
+    {   
+        uchar *q, c;
+        int l, min_score, from;
+        int text_in_length;
 
+        text_in_length = strlen( (char*) text_in);
+        ensure_memory_list_available(&abbreviations_optimal_parse_schedule_memlist, text_in_length);
+        ensure_memory_list_available(&abbreviations_optimal_parse_scores_memlist, text_in_length+1);
+        
+        abbreviations_optimal_parse_scores[text_in_length] = 0;
+        for(j=text_in_length-1; j>=0; j--)
+        {   /* Initial values: empty schedule, score = just write the letter without abbreviating. */
+            abbreviations_optimal_parse_schedule[j] = -1;
+            min_score = zchar_weight(text_in[j]) + abbreviations_optimal_parse_scores[j+1];
+            /* If there's an abbreviation starting with that letter... */
+            if ( (from = abbrevs_lookup[text_in[j]]) != -1)
+            {
+                c = text_in[j];
+                /* Loop on all abbreviations starting with what is in c. */
+                for (k=from, q=(uchar *)abbreviations_at+from*MAX_ABBREV_LENGTH;
+                    (k<no_abbreviations)&&(c==q[0]); k++, q+=MAX_ABBREV_LENGTH)
+                {   
+                    /* Let's compare; we also keep track of the length of the abbreviation. */
+                    for (l=1; q[l]!=0; l++)
+                    {    if (text_in[j+l]!=q[l]) {goto NotMatched;}
+                    }
+                    /* We have a match (length l), but is it smaller in size? */
+                    if (min_score > 2 + abbreviations_optimal_parse_scores[j+l])
+                    {   /* It is indeed smaller, so let's write it down in our schedule. */
+                        min_score = 2 + abbreviations_optimal_parse_scores[j+l];
+                        abbreviations_optimal_parse_schedule[j] = k;
+                    }
+                    NotMatched: ;
+                }
+            }
+            /* We gave it our best, this is the smallest we got. */
+            abbreviations_optimal_parse_scores[j] = min_score;
+        }
+    }
+
+
+    
   if (!glulx_mode) {
 
     /*  The empty string of Z-text is illegal, since it can't carry an end
@@ -441,15 +573,24 @@ extern uchar *translate_text(uchar *p, uchar *p_limit, char *s_text)
             }
         }
 
-        /*  Try abbreviations if the economy switch set                      */
-
-        if ((economy_switch) && (!is_abbreviation)
-            && ((k=abbrevs_lookup[text_in[i]])!=-1))
-        {   if ((j=try_abbreviations_from(text_in, i, k))!=-1)
-            {   if (j<32) { write_z_char_z(2); write_z_char_z(j); }
-                else { write_z_char_z(3); write_z_char_z(j-32); }
-            }
+        /*  Try abbreviations if the economy switch set. */
+        /*  Look at the abbreviation schedule to see if we should abbreviate here. */
+        /*  Note: Just because the schedule has something doesn't mean we should abbreviate there; */
+        /*  sometimes you abbreviate before because it's better. If we have already replaced the */
+        /*  char by a '1', it means we're in the middle of an abbreviation; don't try to abbreviate then. */
+        if ((economy_switch) && (!is_abbreviation) && text_in[i] != 1 &&
+            ((j = abbreviations_optimal_parse_schedule[i]) != -1))
+        {
+            /* Fill with 1s, which will get ignored by everyone else. */
+            uchar *p = (uchar *)abbreviations_at+j*MAX_ABBREV_LENGTH;
+            for (k=0; p[k]!=0; k++) text_in[i+k]=1;
+            /* Actually write the abbreviation in the story file. */
+            abbreviations[j].freq++;
+            /* Abbreviations run from MAX_DYNAMIC_STRINGS to 96. */
+            j += MAX_DYNAMIC_STRINGS;
+            write_z_char_z(j/32+1); write_z_char_z(j%32);
         }
+        
 
         /* If Unicode switch set, use text_to_unicode to perform UTF-8
            decoding */
@@ -503,15 +644,26 @@ advance as part of 'Zcharacter table':", unicode);
             else if (isdigit(text_in[i+1])!=0)
             {   int d1, d2;
 
-                /*   @..   */
+                /*   @.. (dynamic string)   */
 
                 d1 = character_digit_value[text_in[i+1]];
                 d2 = character_digit_value[text_in[i+2]];
                 if ((d1 == 127) || (d1 >= 10) || (d2 == 127) || (d2 >= 10))
                     error("'@..' must have two decimal digits");
                 else
-                {   i+=2;
-                    write_z_char_z(1); write_z_char_z(d1*10 + d2);
+                {
+                    j = d1*10 + d2;
+                    if (!glulx_mode && j >= 96) {
+                        error_max_dynamic_strings(j);
+                        j = 0;
+                    }
+                    if (j >= MAX_DYNAMIC_STRINGS) {
+                        /* Shouldn't get here with two digits */
+                        error_max_dynamic_strings(j);
+                        j = 0;
+                    }
+                    i+=2;
+                    write_z_char_z(j/32+1); write_z_char_z(j%32);
                 }
             }
             else
@@ -573,7 +725,6 @@ advance as part of 'Zcharacter table':", unicode);
     /*  Flush the Z-characters output buffer and set the "end" bit           */
 
     end_z_chars();
-
   }
   else {
 
@@ -651,7 +802,7 @@ string; substituting '   '.");
             i += 2;
             j = d1*10 + d2;
             if (j >= MAX_DYNAMIC_STRINGS) {
-              memoryerror("MAX_DYNAMIC_STRINGS", MAX_DYNAMIC_STRINGS);
+              error_max_dynamic_strings(j);
               j = 0;
             }
             if (j+1 >= no_dynamic_strings)
@@ -752,37 +903,26 @@ string; substituting '?'.");
   }
 
   if (text_out_overflow)
-      return NULL;
+      return -1;
   else
-      return((uchar *) text_out_pc);
+      return text_out_pos;
 }
 
 static int unicode_entity_index(int32 unicode)
 {
-  unicode_usage_t *uptr;
   int j;
   int buck = unicode % UNICODE_HASH_BUCKETS;
 
-  for (uptr = unicode_usage_hash[buck]; uptr; uptr=uptr->next) {
-    if (uptr->ch == unicode)
+  for (j = unicode_usage_hash[buck]; j >= 0; j=unicode_usage_entries[j].next) {
+    if (unicode_usage_entries[j].ch == unicode)
       break;
   }
-  if (uptr) {
-    j = (uptr - unicode_usage_entries);
-  }
-  else {
-    if (no_unicode_chars >= MAX_UNICODE_CHARS) {
-      memoryerror("MAX_UNICODE_CHARS", MAX_UNICODE_CHARS);
-      j = 0;
-    }
-    else {
-      j = no_unicode_chars;
-      no_unicode_chars++;
-      uptr = unicode_usage_entries + j;
-      uptr->ch = unicode;
-      uptr->next = unicode_usage_hash[buck];
-      unicode_usage_hash[buck] = uptr;
-    }
+  if (j < 0) {
+    ensure_memory_list_available(&unicode_usage_entries_memlist, no_unicode_chars+1);
+    j = no_unicode_chars++;
+    unicode_usage_entries[j].ch = unicode;
+    unicode_usage_entries[j].next = unicode_usage_hash[buck];
+    unicode_usage_hash[buck] = j;
   }
 
   return j;
@@ -805,9 +945,16 @@ void compress_game_text()
   int jx;
   int ch;
   int32 ix;
+  int max_char_set;
   huffbitlist_t bits;
 
   if (compression_switch) {
+    max_char_set = 257 + no_abbreviations + no_dynamic_strings + no_unicode_chars;
+
+    huff_entities = my_calloc(sizeof(huffentity_t), max_char_set*2+1, 
+      "huffman entities");
+    hufflist = my_calloc(sizeof(huffentity_t *), max_char_set, 
+      "huffman node list");
 
     /* How many entities have we currently got? Well, 256 plus the
        string-terminator plus Unicode chars plus abbrevations plus
@@ -821,8 +968,8 @@ void compress_game_text()
     huff_dynam_start = entities;
     entities += no_dynamic_strings;
 
-    if (entities > MAX_CHARACTER_SET)
-      memoryerror("MAX_CHARACTER_SET",MAX_CHARACTER_SET);
+    if (entities > max_char_set)
+      compiler_error("Too many entities for max_char_set");
 
     /* Characters */
     for (jx=0; jx<256; jx++) {
@@ -857,7 +1004,7 @@ void compress_game_text()
     no_huff_entities = 257;
     huff_unicode_start = 257;
     huff_abbrev_start = 257;
-    huff_dynam_start = 257+MAX_ABBREVS;
+    huff_dynam_start = 257+no_abbreviations;
     compression_table_size = 0;
   }
 
@@ -878,7 +1025,7 @@ void compress_game_text()
         if (temporary_files_switch)
           ch = fgetc(Temp1_fp);
         else
-          ch = read_byte_from_memory_block(&static_strings_area, ix);
+          ch = static_strings_area[ix];
         ix++;
         if (ix > static_strings_extent || ch < 0)
           compiler_error("Read too much not-yet-compressed text.");
@@ -1007,8 +1154,7 @@ void compress_game_text()
     fseek(Temp1_fp, 0, SEEK_SET);
   }
 
-  if (no_strings >= MAX_NUM_STATIC_STRINGS) 
-    memoryerror("MAX_NUM_STATIC_STRINGS", MAX_NUM_STATIC_STRINGS);
+  ensure_memory_list_available(&compressed_offsets_memlist, no_strings);
 
   for (lx=0, ix=0; lx<no_strings; lx++) {
     int escapelen=0, escapetype=0;
@@ -1021,7 +1167,7 @@ void compress_game_text()
       if (temporary_files_switch)
         ch = fgetc(Temp1_fp);
       else
-        ch = read_byte_from_memory_block(&static_strings_area, ix);
+        ch = static_strings_area[ix];
       ix++;
       if (ix > static_strings_extent || ch < 0)
         compiler_error("Read too much not-yet-compressed text.");
@@ -1146,11 +1292,16 @@ static void compress_makebits(int entnum, int depth, int prevbit,
 /*   for compatibility with previous releases.                               */
 /* ------------------------------------------------------------------------- */
 
+/* The complete game text. */
+static char *opttext;
+static int32 opttextlen;
+
 typedef struct tlb_s
 {   char text[4];
     int32 intab, occurrences;
 } tlb;
-static tlb *tlbtab;
+static tlb *tlbtab; /* Three-letter blocks (allocated up to no_occs) */
+static memory_list tlbtab_memlist;
 static int32 no_occs;
 
 static int32 *grandtable;
@@ -1162,16 +1313,19 @@ typedef struct optab_s
     int32  location;
     char text[MAX_ABBREV_LENGTH];
 } optab;
-static optab *bestyet, *bestyet2;
+static int32 MAX_BESTYET;
+static optab *bestyet; /* High-score entries (up to MAX_BESTYET used/allocated) */
+static optab *bestyet2; /* The selected entries (up to selected used; allocated to MAX_ABBREVS) */
 
 static int pass_no;
 
-static char *sub_buffer;
-
 static void optimise_pass(void)
-{   int32 i; int t1, t2;
+{
+    TIMEVALUE t1, t2;
+    float duration;
+    int32 i;
     int32 j, j2, k, nl, matches, noflags, score, min, minat=0, x, scrabble, c;
-    for (i=0; i<256; i++) bestyet[i].length=0;
+    for (i=0; i<MAX_BESTYET; i++) bestyet[i].length=0;
     for (i=0; i<no_occs; i++)
     {   if ((*(tlbtab[i].text)!=(int) '\n')&&(tlbtab[i].occurrences!=0))
         {
@@ -1179,9 +1333,7 @@ static void optimise_pass(void)
             if (i%((**g_pm_hndl).linespercheck) == 0)
             {   ProcessEvents (&g_proc);
                 if (g_proc != true)
-                {   free_arrays();
-                    if (store_the_text)
-                        my_free(&all_text,"transcription text");
+                {   ao_free_arrays();
                     longjmp (g_fallback, 1);
                 }
             }
@@ -1189,14 +1341,14 @@ static void optimise_pass(void)
             printf("Pass %d, %4ld/%ld '%s' (%ld occurrences) ",
                 pass_no, (long int) i, (long int) no_occs, tlbtab[i].text,
                 (long int) tlbtab[i].occurrences);
-            t1=(int) (time(0));
+            TIMEVALUE_NOW(&t1);
             for (j=0; j<tlbtab[i].occurrences; j++)
             {   for (j2=0; j2<tlbtab[i].occurrences; j2++) grandflags[j2]=1;
                 nl=2; noflags=tlbtab[i].occurrences;
-                while ((noflags>=2)&&(nl<=62))
+                while ((noflags>=2)&&(nl<MAX_ABBREV_LENGTH-1))
                 {   nl++;
                     for (j2=0; j2<nl; j2++)
-                        if (all_text[grandtable[tlbtab[i].intab+j]+j2]=='\n')
+                        if (opttext[grandtable[tlbtab[i].intab+j]+j2]=='\n')
                             goto FinishEarly;
                     matches=0;
                     for (j2=j; j2<tlbtab[i].occurrences; j2++)
@@ -1204,8 +1356,8 @@ static void optimise_pass(void)
                         {   x=grandtable[tlbtab[i].intab+j2]
                               - grandtable[tlbtab[i].intab+j];
                          if (((x>-nl)&&(x<nl))
-                            || (memcmp(all_text+grandtable[tlbtab[i].intab+j],
-                                       all_text+grandtable[tlbtab[i].intab+j2],
+                            || (memcmp(opttext+grandtable[tlbtab[i].intab+j],
+                                       opttext+grandtable[tlbtab[i].intab+j2],
                                        nl)!=0))
                             {   grandflags[j2]=0; noflags--; }
                             else matches++;
@@ -1214,7 +1366,7 @@ static void optimise_pass(void)
                     scrabble=0;
                     for (k=0; k<nl; k++)
                     {   scrabble++;
-                        c=all_text[grandtable[tlbtab[i].intab+j+k]];
+                        c=opttext[grandtable[tlbtab[i].intab+j+k]];
                         if (c!=(int) ' ')
                         {   if (iso_to_alphabet_grid[c]<0)
                                 scrabble+=2;
@@ -1225,12 +1377,12 @@ static void optimise_pass(void)
                     }
                     score=(matches-1)*(scrabble-2);
                     min=score;
-                    for (j2=0; j2<256; j2++)
+                    for (j2=0; j2<MAX_BESTYET; j2++)
                     {   if ((nl==bestyet[j2].length)
-                                && (memcmp(all_text+bestyet[j2].location,
-                                       all_text+grandtable[tlbtab[i].intab+j],
+                                && (memcmp(opttext+bestyet[j2].location,
+                                       opttext+grandtable[tlbtab[i].intab+j],
                                        nl)==0))
-                        {   j2=256; min=score; }
+                        {   j2=MAX_BESTYET; min=score; }
                         else
                         {   if (bestyet[j2].score<min)
                             {   min=bestyet[j2].score; minat=j2;
@@ -1242,15 +1394,13 @@ static void optimise_pass(void)
                         bestyet[minat].length=nl;
                         bestyet[minat].location=grandtable[tlbtab[i].intab+j];
                         bestyet[minat].popularity=matches;
-                        for (j2=0; j2<nl; j2++) sub_buffer[j2]=
-                            all_text[bestyet[minat].location+j2];
-                        sub_buffer[nl]=0;
                     }
                 }
                 FinishEarly: ;
             }
-            t2=((int) time(0)) - t1;
-            printf(" (%d seconds)\n",t2);
+            TIMEVALUE_NOW(&t2);
+            duration = TIMEVALUE_DIFFERENCE(&t1, &t2);
+            printf(" (%.4f seconds)\n", duration);
         }
     }
 }
@@ -1268,22 +1418,35 @@ static int any_overlap(char *s1, char *s2)
     return(0);
 }
 
-#define MAX_TLBS 8000
-
 extern void optimise_abbreviations(void)
-{   int32 i, j, t, max=0, MAX_GTABLE;
+{   int32 i, j, tcount, max=0, MAX_GTABLE;
     int32 j2, selected, available, maxat=0, nl;
-    tlb test;
 
+    if (opttext == NULL)
+        return;
+
+    /* We insist that the first two abbreviations will be ". " and ", ". */
+    if (MAX_ABBREVS < 2)
+        return;
+
+    /* Note that it's safe to access opttext[opttextlen+2]. There are
+       two newlines and a null beyond opttextlen. */
+    
     printf("Beginning calculation of optimal abbreviations...\n");
 
     pass_no = 0;
-    tlbtab=my_calloc(sizeof(tlb), MAX_TLBS, "tlb table"); no_occs=0;
-    sub_buffer=my_calloc(sizeof(char), 4000, "sub_buffer");
-    for (i=0; i<MAX_TLBS; i++) tlbtab[i].occurrences=0;
 
-    bestyet=my_calloc(sizeof(optab), 256, "bestyet");
-    bestyet2=my_calloc(sizeof(optab), 64, "bestyet2");
+    initialise_memory_list(&tlbtab_memlist,
+        sizeof(tlb), 1000, (void**)&tlbtab,
+        "three-letter-blocks buffer");
+    
+    no_occs=0;
+
+    /* Not sure what the optimal size is for MAX_BESTYET. The original code always created 64 abbreviations and used MAX_BESTYET=256. I'm guessing that 4*MAX_ABBREVS is reasonable. */
+    MAX_BESTYET = 4 * MAX_ABBREVS;
+    
+    bestyet=my_calloc(sizeof(optab), MAX_BESTYET, "bestyet");
+    bestyet2=my_calloc(sizeof(optab), MAX_ABBREVS, "bestyet2");
 
     bestyet2[0].text[0]='.';
     bestyet2[0].text[1]=' ';
@@ -1293,57 +1456,61 @@ extern void optimise_abbreviations(void)
     bestyet2[1].text[1]=' ';
     bestyet2[1].text[2]=0;
 
-    for (i=0; all_text+i<all_text_top; i++)
+    selected=2;
+
+    for (i=0; i<opttextlen; i++)
     {
-        if ((all_text[i]=='.') && (all_text[i+1]==' ') && (all_text[i+2]==' '))
-        {   all_text[i]='\n'; all_text[i+1]='\n'; all_text[i+2]='\n';
+        if ((opttext[i]=='.') && (opttext[i+1]==' ') && (opttext[i+2]==' '))
+        {   opttext[i]='\n'; opttext[i+1]='\n'; opttext[i+2]='\n';
             bestyet2[0].popularity++;
         }
 
-        if ((all_text[i]=='.') && (all_text[i+1]==' '))
-        {   all_text[i]='\n'; all_text[i+1]='\n';
+        if ((opttext[i]=='.') && (opttext[i+1]==' '))
+        {   opttext[i]='\n'; opttext[i+1]='\n';
             bestyet2[0].popularity++;
         }
 
-        if ((all_text[i]==',') && (all_text[i+1]==' '))
-        {   all_text[i]='\n'; all_text[i+1]='\n';
+        if ((opttext[i]==',') && (opttext[i+1]==' '))
+        {   opttext[i]='\n'; opttext[i+1]='\n';
             bestyet2[1].popularity++;
         }
     }
 
-    MAX_GTABLE=subtract_pointers(all_text_top,all_text)+1;
+    MAX_GTABLE=opttextlen+1;
     grandtable=my_calloc(4*sizeof(int32), MAX_GTABLE/4, "grandtable");
 
-    for (i=0, t=0; all_text+i<all_text_top; i++)
-    {   test.text[0]=all_text[i];
-        test.text[1]=all_text[i+1];
-        test.text[2]=all_text[i+2];
+    for (i=0, tcount=0; i<opttextlen; i++)
+    {
+        tlb test;
+        test.text[0]=opttext[i];
+        test.text[1]=opttext[i+1];
+        test.text[2]=opttext[i+2];
         test.text[3]=0;
         if ((test.text[0]=='\n')||(test.text[1]=='\n')||(test.text[2]=='\n'))
             goto DontKeep;
-        for (j=0; j<no_occs; j++)
+        for (j=0; j<no_occs; j++) {
             if (strcmp(test.text,tlbtab[j].text)==0)
                 goto DontKeep;
+        }
         test.occurrences=0;
-        for (j=i+3; all_text+j<all_text_top; j++)
+        test.intab=0;
+        for (j=i+3; j<opttextlen; j++)
         {
 #ifdef MAC_FACE
             if (j%((**g_pm_hndl).linespercheck) == 0)
             {   ProcessEvents (&g_proc);
                 if (g_proc != true)
-                {   free_arrays();
-                    if (store_the_text)
-                        my_free(&all_text,"transcription text");
+                {   ao_free_arrays();
                     longjmp (g_fallback, 1);
                 }
             }
 #endif
-            if ((all_text[i]==all_text[j])
-                 && (all_text[i+1]==all_text[j+1])
-                 && (all_text[i+2]==all_text[j+2]))
-                 {   grandtable[t+test.occurrences]=j;
+            if ((opttext[i]==opttext[j])
+                 && (opttext[i+1]==opttext[j+1])
+                 && (opttext[i+2]==opttext[j+2]))
+                 {   grandtable[tcount+test.occurrences]=j;
                      test.occurrences++;
-                     if (t+test.occurrences==MAX_GTABLE)
+                     if (tcount+test.occurrences==MAX_GTABLE)
                      {   printf("All %ld cross-references used\n",
                              (long int) MAX_GTABLE);
                          goto Built;
@@ -1351,16 +1518,14 @@ extern void optimise_abbreviations(void)
                  }
         }
         if (test.occurrences>=2)
-        {   tlbtab[no_occs]=test;
-            tlbtab[no_occs].intab=t; t+=tlbtab[no_occs].occurrences;
+        {
+            ensure_memory_list_available(&tlbtab_memlist, no_occs+1);
+            tlbtab[no_occs]=test;
+            tlbtab[no_occs].intab=tcount;
+            tcount += tlbtab[no_occs].occurrences;
             if (max<tlbtab[no_occs].occurrences)
                 max=tlbtab[no_occs].occurrences;
             no_occs++;
-            if (no_occs==MAX_TLBS)
-            {   printf("All %d three-letter-blocks used\n",
-                    MAX_TLBS);
-                goto Built;
-            }
         }
         DontKeep: ;
     }
@@ -1376,25 +1541,25 @@ extern void optimise_abbreviations(void)
                 tlbtab[i].occurrences);
     */
 
-    for (i=0; i<64; i++) bestyet2[i].length=0; selected=2;
-    available=256;
-    while ((available>0)&&(selected<64))
+    for (i=0; i<MAX_ABBREVS; i++) bestyet2[i].length=0;
+    available=MAX_BESTYET;
+    while ((available>0)&&(selected<MAX_ABBREVS))
     {   printf("Pass %d\n", ++pass_no);
 
         optimise_pass();
         available=0;
-        for (i=0; i<256; i++)
+        for (i=0; i<MAX_BESTYET; i++)
             if (bestyet[i].score!=0)
             {   available++;
                 nl=bestyet[i].length;
                 for (j2=0; j2<nl; j2++) bestyet[i].text[j2]=
-                    all_text[bestyet[i].location+j2];
+                    opttext[bestyet[i].location+j2];
                 bestyet[i].text[nl]=0;
             }
 
     /*  printf("End of pass results:\n");
         printf("\nno   score  freq   string\n");
-        for (i=0; i<256; i++)
+        for (i=0; i<MAX_BESTYET; i++)
             if (bestyet[i].score>0)
                 printf("%02d:  %4d   %4d   '%s'\n", i, bestyet[i].score,
                     bestyet[i].popularity, bestyet[i].text);
@@ -1402,14 +1567,16 @@ extern void optimise_abbreviations(void)
 
         do
         {   max=0;
-            for (i=0; i<256; i++)
+            for (i=0; i<MAX_BESTYET; i++)
                 if (max<bestyet[i].score)
                 {   max=bestyet[i].score;
                     maxat=i;
                 }
 
             if (max>0)
-            {   bestyet2[selected++]=bestyet[maxat];
+            {
+                char testtext[4];
+                bestyet2[selected++]=bestyet[maxat];
 
                 printf(
                     "Selection %2ld: '%s' (repeated %ld times, scoring %ld)\n",
@@ -1417,25 +1584,25 @@ extern void optimise_abbreviations(void)
                     (long int) bestyet[maxat].popularity,
                     (long int) bestyet[maxat].score);
 
-                test.text[0]=bestyet[maxat].text[0];
-                test.text[1]=bestyet[maxat].text[1];
-                test.text[2]=bestyet[maxat].text[2];
-                test.text[3]=0;
+                testtext[0]=bestyet[maxat].text[0];
+                testtext[1]=bestyet[maxat].text[1];
+                testtext[2]=bestyet[maxat].text[2];
+                testtext[3]=0;
 
                 for (i=0; i<no_occs; i++)
-                    if (strcmp(test.text,tlbtab[i].text)==0)
+                    if (strcmp(testtext,tlbtab[i].text)==0)
                         break;
 
                 for (j=0; j<tlbtab[i].occurrences; j++)
                 {   if (memcmp(bestyet[maxat].text,
-                               all_text+grandtable[tlbtab[i].intab+j],
+                               opttext+grandtable[tlbtab[i].intab+j],
                                bestyet[maxat].length)==0)
                     {   for (j2=0; j2<bestyet[maxat].length; j2++)
-                            all_text[grandtable[tlbtab[i].intab+j]+j2]='\n';
+                            opttext[grandtable[tlbtab[i].intab+j]+j2]='\n';
                     }
                 }
 
-                for (i=0; i<256; i++)
+                for (i=0; i<MAX_BESTYET; i++)
                     if ((bestyet[i].score>0)&&
                         (any_overlap(bestyet[maxat].text,bestyet[i].text)==1))
                     {   bestyet[i].score=0;
@@ -1443,7 +1610,7 @@ extern void optimise_abbreviations(void)
                             bestyet[i].text); */
                     }
             }
-        } while ((max>0)&&(available>0)&&(selected<64));
+        } while ((max>0)&&(available>0)&&(selected<MAX_ABBREVS));
     }
 
     printf("\nChosen abbreviations (in Inform syntax):\n\n");
@@ -1471,11 +1638,11 @@ extern void optimise_abbreviations(void)
 /*        <Z-coded text>    <flags>   <verbnumber>     <adjectivenumber>     */
 /*        4 or 6 bytes       byte        byte             byte               */
 /*                                                                           */
-/*   For Glulx, the form is instead: (But see below about Unicode-valued     */
-/*   dictionaries and my heinie.)                                            */
+/*   For Glulx, the form is instead: (See below about Unicode-valued         */
+/*   dictionaries and DICT_WORD_BYTES.)                                      */
 /*                                                                           */
-/*        <plain text>      <flags>   <verbnumber>     <adjectivenumber>     */
-/*        DICT_WORD_SIZE     short       short            short              */
+/*        <tag>  <plain text>    <flags>  <verbnumber>   <adjectivenumber>   */
+/*         $60    DICT_WORD_BYTES short    short          short              */
 /*                                                                           */
 /*   These records are stored in "accession order" (i.e. in order of their   */
 /*   first being received by these routines) and only alphabetically sorted  */
@@ -1502,28 +1669,31 @@ extern void optimise_abbreviations(void)
 /*   fields. (The high bytes are $DICT_WORD_SIZE+1/3/5.)                     */
 /* ------------------------------------------------------------------------- */
 
-uchar *dictionary,                    /* (These two pointers are externally
+uchar *dictionary;                    /* (These two variables are externally
                                          used only in "tables.c" when
                                          building the story-file)            */
-    *dictionary_top;                  /* Pointer to next free record         */
+static memory_list dictionary_memlist;
+int32 dictionary_top;                 /* Position of the next free record
+                                         in dictionary (i.e., the current
+                                         number of bytes)                    */
 
 int dict_entries;                     /* Total number of records entered     */
 
 /* ------------------------------------------------------------------------- */
-/*   dict_word is a typedef for a struct of 6 unsigned chars (defined in     */
-/*   "header.h"): it holds the (4 or) 6 bytes of Z-coded text of a word.     */
+/*   dict_word was originally a typedef for a struct of 6 unsigned chars.    */
+/*   It held the (4 or) 6 bytes of Z-coded text of a word.                   */
 /*   Usefully, because the PAD character 5 is < all alphabetic characters,   */
 /*   alphabetic order corresponds to numeric order.  For this reason, the    */
 /*   dict_word is called the "sort code" of the original text word.          */
 /*                                                                           */
-/*   ###- In modifying the compiler, I've found it easier to discard the     */
+/*   In modifying the compiler for Glulx, I found it easier to discard the   */
 /*   typedef, and operate directly on uchar arrays of length DICT_WORD_SIZE. */
 /*   In Z-code, DICT_WORD_SIZE will be 6, so the Z-code compiler will work   */
 /*   as before. In Glulx, it can be any value up to MAX_DICT_WORD_SIZE.      */
 /*   (That limit is defined as 40 in the header; it exists only for a few    */
 /*   static buffers, and can be increased without using significant memory.) */
 /*                                                                           */
-/*   ###- Well, that certainly bit me on the butt, didn't it. In further     */
+/*   ...Well, that certainly bit me on the butt, didn't it. In further       */
 /*   modifying the compiler to generate a Unicode dictionary, I have to      */
 /*   store four-byte values in the uchar array. This is handled by making    */
 /*   the array size DICT_WORD_BYTES (which is DICT_WORD_SIZE*DICT_CHAR_SIZE).*/
@@ -1559,6 +1729,8 @@ static void dictionary_prepare_z(char *dword, uchar *optresult)
        applying to the text of dictionary entries: first produce a sequence
        of 6 (v3) or 9 (v4+) Z-characters                                     */
 
+    int dictsize = (version_number==3) ? 6 : 9;
+
     number_and_case = 0;
 
     for (i=0, j=0; dword[j]!=0; i++, j++)
@@ -1574,7 +1746,7 @@ to give number of dictionary word", dword);
             }
             break;
         }
-        if (i>=9) break;
+        if (i>=dictsize) break;
 
         k=(int) dword[j];
         if (k==(int) '\'')
@@ -1623,7 +1795,7 @@ apostrophe in", dword);
 
     for (; i<9; i++) wd[i]=5;
 
-    /* The array of Z-chars is converted to three 2-byte blocks              */
+    /* The array of Z-chars is converted to two or three 2-byte blocks       */
 
     tot = wd[2] + wd[1]*(1<<5) + wd[0]*(1<<10);
     prepared_sort[1]=tot%0x100;
@@ -1631,7 +1803,10 @@ apostrophe in", dword);
     tot = wd[5] + wd[4]*(1<<5) + wd[3]*(1<<10);
     prepared_sort[3]=tot%0x100;
     prepared_sort[2]=(tot/0x100)%0x100;
-    tot = wd[8] + wd[7]*(1<<5) + wd[6]*(1<<10);
+    if (version_number==3)
+        tot = 0;
+    else
+        tot = wd[8] + wd[7]*(1<<5) + wd[6]*(1<<10);
     prepared_sort[5]=tot%0x100;
     prepared_sort[4]=(tot/0x100)%0x100;
 
@@ -1765,10 +1940,13 @@ typedef struct dict_tree_node_s
     char colour;                  /* The colour of the branch to the parent */
 } dict_tree_node;
 
-static dict_tree_node *dtree;
+static dict_tree_node *dtree;     /* Allocated to dict_entries */
+static memory_list dtree_memlist;
 
-int   *final_dict_order;
-static uchar *dict_sort_codes;
+static uchar *dict_sort_codes;  /* Allocated to dict_entries*DICT_WORD_BYTES */
+static memory_list dict_sort_codes_memlist;
+
+int   *final_dict_order;          /* Allocated at sort_dictionary() time */
 
 static void dictionary_begin_pass(void)
 {
@@ -1776,10 +1954,12 @@ static void dictionary_begin_pass(void)
     /*  Glulx has a 4-byte header instead. */
 
     if (!glulx_mode)
-        dictionary_top=dictionary+7;
+        dictionary_top = 7;
     else
-        dictionary_top=dictionary+4;
+        dictionary_top = 4;
 
+    ensure_memory_list_available(&dictionary_memlist, dictionary_top);
+    
     root = VACANT;
     dict_entries = 0;
 }
@@ -1795,6 +1975,9 @@ static void recursively_sort(int node)
 
 extern void sort_dictionary(void)
 {   int i;
+    
+    final_dict_order = my_calloc(sizeof(int), dict_entries, "final dictionary ordering table");
+    
     if (module_switch)
     {   for (i=0; i<dict_entries; i++)
             final_dict_order[i] = i;
@@ -1851,8 +2034,10 @@ extern int dictionary_add(char *dword, int x, int y, int z)
         if (n==0)
         {
             if (!glulx_mode) {
-                p = dictionary+7 + at*(3+res) + res;
-                p[0]=(p[0])|x; p[1]=(p[1])|y; p[2]=(p[2])|z;
+                p = dictionary+7 + at*DICT_ENTRY_BYTE_LENGTH + res;
+                p[0]=(p[0])|x; p[1]=(p[1])|y;
+                if (!ZCODE_LESS_DICT_DATA)
+                    p[2]=(p[2])|z;
                 if (x & 128) p[0] = (p[0])|number_and_case;
             }
             else {
@@ -1947,8 +2132,8 @@ extern int dictionary_add(char *dword, int x, int y, int z)
 
     CreateEntry:
 
-    if (dict_entries==MAX_DICT_ENTRIES)
-        memoryerror("MAX_DICT_ENTRIES",MAX_DICT_ENTRIES);
+    ensure_memory_list_available(&dtree_memlist, dict_entries+1);
+    ensure_memory_list_available(&dict_sort_codes_memlist, (dict_entries+1)*DICT_WORD_BYTES);
 
     dtree[dict_entries].branch[0] = VACANT;
     dtree[dict_entries].branch[1] = VACANT;
@@ -1958,7 +2143,8 @@ extern int dictionary_add(char *dword, int x, int y, int z)
 
     if (!glulx_mode) {
 
-        p = dictionary + (3+res)*dict_entries + 7;
+        ensure_memory_list_available(&dictionary_memlist, dictionary_top + DICT_ENTRY_BYTE_LENGTH);
+        p = dictionary + DICT_ENTRY_BYTE_LENGTH*dict_entries + 7;
 
         /*  So copy in the 4 (or 6) bytes of Z-coded text and the 3 data 
             bytes */
@@ -1970,11 +2156,12 @@ extern int dictionary_add(char *dword, int x, int y, int z)
         p[res]=x; p[res+1]=y; p[res+2]=z;
         if (x & 128) p[res] = (p[res])|number_and_case;
 
-        dictionary_top += res+3;
+        dictionary_top += DICT_ENTRY_BYTE_LENGTH;
 
     }
     else {
         int i;
+        ensure_memory_list_available(&dictionary_memlist, dictionary_top + DICT_ENTRY_BYTE_LENGTH);
         p = dictionary + 4 + DICT_ENTRY_BYTE_LENGTH*dict_entries;
         p[0] = 0x60; /* type byte -- dict word */
 
@@ -2011,7 +2198,7 @@ extern void dictionary_set_verb_number(char *dword, int to)
     if (i!=0)
     {   
         if (!glulx_mode) {
-            p=dictionary+7+(i-1)*(3+res)+res; 
+            p=dictionary+7+(i-1)*DICT_ENTRY_BYTE_LENGTH+res; 
             p[1]=to;
         }
         else {
@@ -2027,15 +2214,79 @@ extern void dictionary_set_verb_number(char *dword, int to)
 /*   by the linker.                                                          */
 /* ------------------------------------------------------------------------- */
 
-static char *d_show_to;
-static int d_show_total;
+/* In the dictionary-showing code, if d_show_buf is NULL, the text is
+   printed directly. (The "Trace dictionary" directive does this.)
+   If d_show_buf is not NULL, we add words to it (reallocing if necessary)
+   until it's a page-width. 
+*/
+static char *d_show_buf = NULL;
+static int d_show_size; /* allocated size */
+static int d_show_len;  /* current length */
 
 static void show_char(char c)
-{   if (d_show_to == NULL) printf("%c", c);
-    else
-    {   int i = strlen(d_show_to);
-        d_show_to[i] = c; d_show_to[i+1] = 0;
+{
+    if (d_show_buf == NULL) {
+        printf("%c", c);
     }
+    else {
+        if (d_show_len+2 >= d_show_size) {
+            int newsize = 2 * d_show_len + 16;
+            my_realloc(&d_show_buf, d_show_size, newsize, "dictionary display buffer");
+            d_show_size = newsize;
+        }
+        d_show_buf[d_show_len++] = c;
+        d_show_buf[d_show_len] = '\0';
+    }
+}
+
+/* Display a Unicode character in user-readable form. This uses the same
+   character encoding as the source code. */
+static void show_uchar(uint32 c)
+{
+    char buf[16];
+    int ix;
+    
+    if (c < 0x80) {
+        /* ASCII always works */
+        show_char(c);
+        return;
+    }
+    if (character_set_unicode) {
+        /* UTF-8 the character */
+        if (c < 0x80) {
+            show_char(c);
+        }
+        else if (c < 0x800) {
+            show_char((0xC0 | ((c & 0x7C0) >> 6)));
+            show_char((0x80 |  (c & 0x03F)     ));
+        }
+        else if (c < 0x10000) {
+            show_char((0xE0 | ((c & 0xF000) >> 12)));
+            show_char((0x80 | ((c & 0x0FC0) >>  6)));
+            show_char((0x80 |  (c & 0x003F)      ));
+        }
+        else if (c < 0x200000) {
+            show_char((0xF0 | ((c & 0x1C0000) >> 18)));
+            show_char((0x80 | ((c & 0x03F000) >> 12)));
+            show_char((0x80 | ((c & 0x000FC0) >>  6)));
+            show_char((0x80 |  (c & 0x00003F)      ));
+        }
+        else {
+            show_char('?');
+        }
+        return;
+    }
+    if (character_set_setting == 1 && c < 0x100) {
+        /* Fits in Latin-1 */
+        show_char(c);
+        return;
+    }
+    /* Supporting other character_set_setting is harder; not currently implemented. */
+    
+    /* Use the escaped form */
+    sprintf(buf, "@{%x}", c);
+    for (ix=0; buf[ix]; ix++)
+        show_char(buf[ix]);
 }
 
 extern void word_to_ascii(uchar *p, char *results)
@@ -2050,6 +2301,10 @@ extern void word_to_ascii(uchar *p, char *results)
     {   encoded_word[6] = (((int) p[4])&0x7c)/4;
         encoded_word[7] = 8*(((int) p[4])&0x3) + (((int) p[5])&0xe0)/32;
         encoded_word[8] = ((int) p[5])&0x1f;
+    }
+    else
+    {
+        encoded_word[6] = encoded_word[7] = encoded_word[8] = 0;
     }
 
     shift = 0; cc = 0;
@@ -2080,15 +2335,49 @@ extern void word_to_ascii(uchar *p, char *results)
     results[cc] = 0;
 }
 
+/* Print a dictionary word to stdout. 
+   (This assumes that d_show_buf is null.)
+ */
+void print_dict_word(int node)
+{
+    uchar *p;
+    int cprinted;
+    
+    if (!glulx_mode) {
+        char textual_form[32];
+        p = (uchar *)dictionary + 7 + DICT_ENTRY_BYTE_LENGTH*node;
+        
+        word_to_ascii(p, textual_form);
+        
+        for (cprinted = 0; textual_form[cprinted]!=0; cprinted++)
+            show_char(textual_form[cprinted]);
+    }
+    else {
+        p = (uchar *)dictionary + 4 + DICT_ENTRY_BYTE_LENGTH*node;
+        
+        for (cprinted = 0; cprinted<DICT_WORD_SIZE; cprinted++)
+        {
+            uint32 ch;
+            if (DICT_CHAR_SIZE == 1)
+                ch = p[1+cprinted];
+            else
+                ch = (p[4*cprinted+4] << 24) + (p[4*cprinted+5] << 16) + (p[4*cprinted+6] << 8) + (p[4*cprinted+7]);
+            if (!ch)
+                break;
+            show_uchar(ch);
+        }
+    }
+}
+
 static void recursively_show_z(int node)
 {   int i, cprinted, flags; uchar *p;
     char textual_form[32];
-    int res = (version_number == 3)?4:6;
+    int res = (version_number == 3)?4:6; /* byte length of encoded text */
 
     if (dtree[node].branch[0] != VACANT)
         recursively_show_z(dtree[node].branch[0]);
 
-    p = (uchar *)dictionary + 7 + (3+res)*node;
+    p = (uchar *)dictionary + 7 + DICT_ENTRY_BYTE_LENGTH*node;
 
     word_to_ascii(p, textual_form);
 
@@ -2097,8 +2386,8 @@ static void recursively_show_z(int node)
     for (; cprinted < 4 + ((version_number==3)?6:9); cprinted++)
         show_char(' ');
 
-    if (d_show_to == NULL)
-    {   for (i=0; i<3+res; i++) printf("%02x ",p[i]);
+    if (d_show_buf == NULL)
+    {   for (i=0; i<DICT_ENTRY_BYTE_LENGTH; i++) printf("%02x ",p[i]);
 
         flags = (int) p[res];
         if (flags & 128)
@@ -2118,12 +2407,11 @@ static void recursively_show_z(int node)
         printf("\n");
     }
 
-    if (d_show_total++ == 5)
-    {   d_show_total = 0;
-        if (d_show_to != NULL)
-        {   write_to_transcript_file(d_show_to);
-            d_show_to[0] = 0;
-        }
+    /* Show five words per line in classic TRANSCRIPT_FORMAT; one per line in the new format. */
+    if (d_show_buf && (d_show_len >= 64 || TRANSCRIPT_FORMAT == 1))
+    {
+        write_to_transcript_file(d_show_buf, STRCTX_DICT);
+        d_show_len = 0;
     }
 
     if (dtree[node].branch[1] != VACANT)
@@ -2131,8 +2419,56 @@ static void recursively_show_z(int node)
 }
 
 static void recursively_show_g(int node)
-{
-  warning("### Glulx dictionary-show not yet implemented.\n");
+{   int i, cprinted;
+    uchar *p;
+
+    if (dtree[node].branch[0] != VACANT)
+        recursively_show_g(dtree[node].branch[0]);
+
+    p = (uchar *)dictionary + 4 + DICT_ENTRY_BYTE_LENGTH*node;
+
+    for (cprinted = 0; cprinted<DICT_WORD_SIZE; cprinted++)
+    {
+        uint32 ch;
+        if (DICT_CHAR_SIZE == 1)
+            ch = p[1+cprinted];
+        else
+            ch = (p[4*cprinted+4] << 24) + (p[4*cprinted+5] << 16) + (p[4*cprinted+6] << 8) + (p[4*cprinted+7]);
+        if (!ch)
+            break;
+        show_uchar(ch);
+    }
+    for (; cprinted<DICT_WORD_SIZE+4; cprinted++)
+        show_char(' ');
+
+    if (d_show_buf == NULL)
+    {   int flagpos = (DICT_CHAR_SIZE == 1) ? (DICT_WORD_SIZE+1) : (DICT_WORD_BYTES+4);
+        int flags = (p[flagpos+0] << 8) | (p[flagpos+1]);
+        int verbnum = (p[flagpos+2] << 8) | (p[flagpos+3]);
+        for (i=0; i<DICT_ENTRY_BYTE_LENGTH; i++) printf("%02x ",p[i]);
+        if (flags & 128)
+        {   printf("noun ");
+            if (flags & 4)  printf("p"); else printf(" ");
+            printf(" ");
+        }
+        else printf("       ");
+        if (flags & 8)
+        {   printf("preposition    ");
+        }
+        if ((flags & 3) == 3) printf("metaverb:%d  ", verbnum);
+        else if ((flags & 3) == 1) printf("verb:%d  ", verbnum);
+        printf("\n");
+    }
+
+    /* Show five words per line in classic TRANSCRIPT_FORMAT; one per line in the new format. */
+    if (d_show_buf && (d_show_len >= 64 || TRANSCRIPT_FORMAT == 1))
+    {
+        write_to_transcript_file(d_show_buf, STRCTX_DICT);
+        d_show_len = 0;
+    }
+
+    if (dtree[node].branch[1] != VACANT)
+        recursively_show_g(dtree[node].branch[1]);
 }
 
 static void show_alphabet(int i)
@@ -2154,33 +2490,43 @@ static void show_alphabet(int i)
 extern void show_dictionary(void)
 {   printf("Dictionary contains %d entries:\n",dict_entries);
     if (dict_entries != 0)
-    {   d_show_total = 0; d_show_to = NULL; 
+    {   d_show_len = 0; d_show_buf = NULL; 
         if (!glulx_mode)    
             recursively_show_z(root);
         else
             recursively_show_g(root);
     }
-    printf("\nZ-machine alphabet entries:\n");
-    show_alphabet(0);
-    show_alphabet(1);
-    show_alphabet(2);
+    if (!glulx_mode)
+    {
+        printf("\nZ-machine alphabet entries:\n");
+        show_alphabet(0);
+        show_alphabet(1);
+        show_alphabet(2);
+    }
 }
 
 extern void write_dictionary_to_transcript(void)
-{   char d_buffer[81];
+{
+    d_show_size = 80; /* initial size */
+    d_show_buf = my_malloc(d_show_size, "dictionary display buffer");
 
-    sprintf(d_buffer, "\n[Dictionary contains %d entries:]\n", dict_entries);
-
-    d_buffer[0] = 0; write_to_transcript_file(d_buffer);
+    write_to_transcript_file("", STRCTX_INFO);
+    sprintf(d_show_buf, "[Dictionary contains %d entries:]", dict_entries);
+    write_to_transcript_file(d_show_buf, STRCTX_INFO);
+    
+    d_show_len = 0;
 
     if (dict_entries != 0)
-    {   d_show_total = 0; d_show_to = d_buffer; 
+    {
         if (!glulx_mode)    
             recursively_show_z(root);
         else
             recursively_show_g(root);
     }
-    if (d_show_total != 0) write_to_transcript_file(d_buffer);
+    if (d_show_len != 0) write_to_transcript_file(d_show_buf, STRCTX_DICT);
+
+    my_free(&d_show_buf, "dictionary display buffer");
+    d_show_len = 0; d_show_buf = NULL;
 }
 
 /* ========================================================================= */
@@ -2189,34 +2535,45 @@ extern void write_dictionary_to_transcript(void)
 
 extern void init_text_vars(void)
 {   int j;
+
+    opttext = NULL;
+    opttextlen = 0;
     bestyet = NULL;
     bestyet2 = NULL;
     tlbtab = NULL;
     grandtable = NULL;
     grandflags = NULL;
-    no_chars_transcribed = 0;
-    is_abbreviation = FALSE;
-    put_strings_in_low_memory = FALSE;
+
+    all_text = NULL;
 
     for (j=0; j<256; j++) abbrevs_lookup[j] = -1;
 
     total_zchars_trans = 0;
 
+    dictionary = NULL;
+    dictionary_top = 0;
     dtree = NULL;
     final_dict_order = NULL;
     dict_sort_codes = NULL;
     dict_entries=0;
 
-    initialise_memory_block(&static_strings_area);
+    static_strings_area = NULL;
+    abbreviations_optimal_parse_schedule = NULL;
+    abbreviations_optimal_parse_scores = NULL;
+
+    compressed_offsets = NULL;
+    huff_entities = NULL;
+    hufflist = NULL;
+    unicode_usage_entries = NULL;
 }
 
 extern void text_begin_pass(void)
 {   abbrevs_lookup_table_made = FALSE;
     no_abbreviations=0;
     total_chars_trans=0; total_bytes_trans=0;
-    if (store_the_text) all_text_top=all_text;
+    all_text_top=0;
     dictionary_begin_pass();
-    low_strings_top = low_strings;
+    low_strings_top = 0;
 
     static_strings_extent = 0;
     no_strings = 0;
@@ -2227,29 +2584,59 @@ extern void text_begin_pass(void)
 /*  Note: for allocation and deallocation of all_the_text, see inform.c      */
 
 extern void text_allocate_arrays(void)
-{   abbreviations_at = my_malloc(MAX_ABBREVS*MAX_ABBREV_LENGTH,
+{
+    int ix;
+
+    initialise_memory_list(&translated_text_memlist,
+        sizeof(uchar), 8000, (void**)&translated_text,
+        "translated text holding area");
+    
+    initialise_memory_list(&all_text_memlist,
+        sizeof(char), 0, (void**)&all_text,
+        "transcription text for optimise");
+    
+    initialise_memory_list(&static_strings_area_memlist,
+        sizeof(uchar), 128, (void**)&static_strings_area,
+        "static strings area");
+    
+    initialise_memory_list(&abbreviations_at_memlist,
+        MAX_ABBREV_LENGTH, 64, (void**)&abbreviations_at,
+        "abbreviation text");
+
+    initialise_memory_list(&abbreviations_memlist,
+        sizeof(abbreviation), 64, (void**)&abbreviations,
         "abbreviations");
-    abbrev_values    = my_calloc(sizeof(int), MAX_ABBREVS, "abbrev values");
-    abbrev_quality   = my_calloc(sizeof(int), MAX_ABBREVS, "abbrev quality");
-    abbrev_freqs     = my_calloc(sizeof(int),   MAX_ABBREVS, "abbrev freqs");
 
-    dtree            = my_calloc(sizeof(dict_tree_node), MAX_DICT_ENTRIES,
-                                 "red-black tree for dictionary");
-    final_dict_order = my_calloc(sizeof(int),  MAX_DICT_ENTRIES,
-                                 "final dictionary ordering table");
-    dict_sort_codes  = my_calloc(DICT_WORD_BYTES, MAX_DICT_ENTRIES,
-                                 "dictionary sort codes");
+    initialise_memory_list(&abbreviations_optimal_parse_schedule_memlist,
+        sizeof(int), 0, (void**)&abbreviations_optimal_parse_schedule,
+        "abbreviations optimal parse schedule");
+    initialise_memory_list(&abbreviations_optimal_parse_scores_memlist,
+        sizeof(int), 0, (void**)&abbreviations_optimal_parse_scores,
+        "abbreviations optimal parse scores");
+    
+    initialise_memory_list(&dtree_memlist,
+        sizeof(dict_tree_node), 1500, (void**)&dtree,
+        "red-black tree for dictionary");
+    initialise_memory_list(&dict_sort_codes_memlist,
+        sizeof(uchar), 1500*DICT_WORD_BYTES, (void**)&dict_sort_codes,
+        "dictionary sort codes");
 
-    if (!glulx_mode)
-        dictionary = my_malloc(9*MAX_DICT_ENTRIES+7,
-            "dictionary");
-    else
-        dictionary = my_malloc(DICT_ENTRY_BYTE_LENGTH*MAX_DICT_ENTRIES+4,
-            "dictionary");
+    final_dict_order = NULL; /* will be allocated at sort_dictionary() time */
 
-    strings_holding_area
-         = my_malloc(MAX_STATIC_STRINGS,"static strings holding area");
-    low_strings = my_malloc(MAX_LOW_STRINGS,"low (abbreviation) strings");
+    /* The exact size will be 7+7*num for z3, 7+9*num for z4+, 
+       4+DICT_ENTRY_BYTE_LENGTH*num for Glulx. But this is just an initial
+       allocation; we don't have to be precise. */
+    initialise_memory_list(&dictionary_memlist,
+        sizeof(uchar), 1000*DICT_ENTRY_BYTE_LENGTH, (void**)&dictionary,
+        "dictionary");
+
+    initialise_memory_list(&low_strings_memlist,
+        sizeof(uchar), 1024, (void**)&low_strings,
+        "low (abbreviation) strings");
+
+    d_show_buf = NULL;
+    d_show_size = 0;
+    d_show_len = 0;
 
     huff_entities = NULL;
     hufflist = NULL;
@@ -2258,57 +2645,78 @@ extern void text_allocate_arrays(void)
     compression_table_size = 0;
     compressed_offsets = NULL;
 
-    MAX_CHARACTER_SET = 0;
+    initialise_memory_list(&unicode_usage_entries_memlist,
+        sizeof(unicode_usage_t), 0, (void**)&unicode_usage_entries,
+        "unicode entity entries");
 
-    if (glulx_mode) {
-      if (compression_switch) {
-        int ix;
-        MAX_CHARACTER_SET = 257 + MAX_ABBREVS + MAX_DYNAMIC_STRINGS 
-          + MAX_UNICODE_CHARS;
-        huff_entities = my_calloc(sizeof(huffentity_t), MAX_CHARACTER_SET*2+1, 
-          "huffman entities");
-        hufflist = my_calloc(sizeof(huffentity_t *), MAX_CHARACTER_SET, 
-          "huffman node list");
-        unicode_usage_entries = my_calloc(sizeof(unicode_usage_t), 
-          MAX_UNICODE_CHARS, "unicode entity entries");
-        for (ix=0; ix<UNICODE_HASH_BUCKETS; ix++)
-          unicode_usage_hash[ix] = NULL;
-      }
-      compressed_offsets = my_calloc(sizeof(int32), MAX_NUM_STATIC_STRINGS,
+    /* hufflist and huff_entities will be allocated at compress_game_text() time. */
+
+    /* This hash table is only used in Glulx */
+    for (ix=0; ix<UNICODE_HASH_BUCKETS; ix++)
+        unicode_usage_hash[ix] = -1;
+    
+    initialise_memory_list(&compressed_offsets_memlist,
+        sizeof(int32), 0, (void**)&compressed_offsets,
         "static strings index table");
-    }
+}
+
+extern void extract_all_text()
+{
+    /* optimise_abbreviations() is called after free_arrays(). Therefore,
+       we need to preserve the text transcript where it will not be
+       freed up. We do this by copying the pointer to opttext. */
+    opttext = all_text;
+    opttextlen = all_text_top;
+
+    /* Re-init all_text_memlist. This causes it to forget all about the
+       old pointer. Deallocating it in text_free_arrays() will be a no-op. */
+    initialise_memory_list(&all_text_memlist,
+        sizeof(char), 0, (void**)&all_text,
+        "dummy transcription text");
 }
 
 extern void text_free_arrays(void)
 {
-    my_free(&strings_holding_area, "static strings holding area");
-    my_free(&low_strings, "low (abbreviation) strings");
-    my_free(&abbreviations_at, "abbreviations");
-    my_free(&abbrev_values,    "abbrev values");
-    my_free(&abbrev_quality,   "abbrev quality");
-    my_free(&abbrev_freqs,     "abbrev freqs");
+    deallocate_memory_list(&translated_text_memlist);
+    
+    deallocate_memory_list(&all_text_memlist);
+    
+    deallocate_memory_list(&low_strings_memlist);
+    deallocate_memory_list(&abbreviations_at_memlist);
+    deallocate_memory_list(&abbreviations_memlist);
 
-    my_free(&dtree,            "red-black tree for dictionary");
+    deallocate_memory_list(&abbreviations_optimal_parse_schedule_memlist);
+    deallocate_memory_list(&abbreviations_optimal_parse_scores_memlist);
+
+    deallocate_memory_list(&dtree_memlist);
+    deallocate_memory_list(&dict_sort_codes_memlist);
     my_free(&final_dict_order, "final dictionary ordering table");
-    my_free(&dict_sort_codes,  "dictionary sort codes");
 
-    my_free(&dictionary,"dictionary");
+    deallocate_memory_list(&dictionary_memlist);
 
-    my_free(&compressed_offsets, "static strings index table");
+    deallocate_memory_list(&compressed_offsets_memlist);
     my_free(&hufflist, "huffman node list");
     my_free(&huff_entities, "huffman entities");
-    my_free(&unicode_usage_entries, "unicode entity entities");
+    
+    deallocate_memory_list(&unicode_usage_entries_memlist);
 
-    deallocate_memory_block(&static_strings_area);
+    deallocate_memory_list(&static_strings_area_memlist);
 }
 
 extern void ao_free_arrays(void)
-{   my_free (&tlbtab,"tlb table");
-    my_free (&sub_buffer,"sub_buffer");
+{
+    /* Called only after optimise_abbreviations() runs. */
+    
+    my_free (&opttext,"stashed transcript for optimisation");
     my_free (&bestyet,"bestyet");
     my_free (&bestyet2,"bestyet2");
     my_free (&grandtable,"grandtable");
     my_free (&grandflags,"grandflags");
+
+    deallocate_memory_list(&tlbtab_memlist);
+    
+    /* This was re-inited, so we should re-deallocate it. */
+    deallocate_memory_list(&all_text_memlist);
 }
 
 /* ========================================================================= */

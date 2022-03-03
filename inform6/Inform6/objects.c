@@ -6,8 +6,8 @@
 /*                    checks syntax and translates such directives into      */
 /*                    specifications for the object-maker.                   */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -34,30 +34,34 @@ static fpropt full_object;             /* "fpropt" is a typedef for a struct
                                           sizeof(fpropt) is about 6200 bytes */
 static fproptg full_object_g;          /* Equivalent for Glulx. This object
                                           is very small, since the large arrays
-                                          are allocated dynamically by the
-                                          Glulx compiler                     */
+                                          are allocated dynamically as
+                                          memory-lists                       */
+
 static char shortname_buffer[766];     /* Text buffer to hold the short name
                                           (which is read in first, but
                                           written almost last)               */
 static int parent_of_this_obj;
 
-static char *classname_text, *objectname_text;
-                                       /* For printing names of embedded
-                                          routines only                      */
+static memory_list current_object_name; /* The name of the object currently
+                                           being defined.                    */
+
+static int current_classname_symbol;    /* The symbol index of the class
+                                           currently being defined.
+                                           For error-checking and printing
+                                           names of embedded routines only.  */
+
+static memory_list embedded_function_name; /* Temporary storage for inline
+                                              function name in property.     */
 
 /* ------------------------------------------------------------------------- */
 /*   Classes.                                                                */
 /* ------------------------------------------------------------------------- */
 /*   Arrays defined below:                                                   */
 /*                                                                           */
-/*    int32 class_begins_at[n]            offset of properties block for     */
-/*                                        nth class (always an offset        */
-/*                                        inside the properties_table)       */
+/*    classinfo class_info[]              Object number and prop offset      */
 /*    int   classes_to_inherit_from[]     The list of classes to inherit     */
 /*                                        from as taken from the current     */
 /*                                        Nearby/Object/Class definition     */
-/*    int   class_object_numbers[n]       The number of the prototype-object */
-/*                                        for the nth class                  */
 /* ------------------------------------------------------------------------- */
 
 int        no_classes;                 /* Number of class defns made so far  */
@@ -83,8 +87,8 @@ static void trace_s(char *name, int32 number, int f)
 {   if (!printprops_switch) return;
     printf("%s  %02ld  ",(f==0)?"Attr":"Prop",(long int) number);
     if (f==0) printf("  ");
-    else      printf("%s%s",(prop_is_long[number])?"L":" ",
-                            (prop_is_additive[number])?"A":" ");
+    else      printf("%s%s",(commonprops[number].is_long)?"L":" ",
+                            (commonprops[number].is_additive)?"A":" ");
     printf("  %s\n",name);
 }
 
@@ -121,9 +125,17 @@ more than",
 
     get_next_token();
     i = token_value; name = token_text;
-    if ((token_type != SYMBOL_TT) || (!(sflags[i] & UNKNOWN_SFLAG)))
+    /* We hold onto token_text through the end of this Property directive, which should be okay. */
+    if (token_type != SYMBOL_TT)
     {   discard_token_location(beginning_debug_location);
         ebf_error("new attribute name", token_text);
+        panic_mode_error_recovery(); 
+        put_token_back();
+        return;
+    }
+    if (!(symbols[i].flags & UNKNOWN_SFLAG))
+    {   discard_token_location(beginning_debug_location);
+        ebf_symbol_error("new attribute name", token_text, typename(symbols[i].type), symbols[i].line);
         panic_mode_error_recovery(); 
         put_token_back();
         return;
@@ -136,7 +148,7 @@ more than",
     if ((token_type == DIR_KEYWORD_TT) && (token_value == ALIAS_DK))
     {   get_next_token();
         if (!((token_type == SYMBOL_TT)
-              && (stypes[token_value] == ATTRIBUTE_T)))
+              && (symbols[token_value].type == ATTRIBUTE_T)))
         {   discard_token_location(beginning_debug_location);
             ebf_error("an existing attribute name after 'alias'",
                 token_text);
@@ -144,9 +156,9 @@ more than",
             put_token_back();
             return;
         }
-        assign_symbol(i, svals[token_value], ATTRIBUTE_T);
-        sflags[token_value] |= ALIASED_SFLAG;
-        sflags[i] |= ALIASED_SFLAG;
+        assign_symbol(i, symbols[token_value].value, ATTRIBUTE_T);
+        symbols[token_value].flags |= ALIASED_SFLAG;
+        symbols[i].flags |= ALIASED_SFLAG;
     }
     else
     {   assign_symbol(i, no_attributes++, ATTRIBUTE_T);
@@ -156,75 +168,132 @@ more than",
     if (debugfile_switch)
     {   debug_file_printf("<attribute>");
         debug_file_printf("<identifier>%s</identifier>", name);
-        debug_file_printf("<value>%d</value>", svals[i]);
+        debug_file_printf("<value>%d</value>", symbols[i].value);
         write_debug_locations(get_token_location_end(beginning_debug_location));
         debug_file_printf("</attribute>");
     }
 
-    trace_s(name, svals[i], 0);
+    trace_s(name, symbols[i].value, 0);
     return;
 }
 
+/* Format:
+   Property [long] [additive] name
+   Property [long] [additive] name alias oldname
+   Property [long] [additive] name defaultvalue
+   Property [long] individual name
+ */
 extern void make_property(void)
 {   int32 default_value, i;
-    int additive_flag=FALSE; char *name;
-    assembly_operand AO;
+    int keywords, prevkeywords;
+    char *name;
+    int namelen;
+    int additive_flag, indiv_flag;
     debug_location_beginning beginning_debug_location =
         get_token_location_beginning();
 
-    if (!glulx_mode) {
-        if (no_properties==((version_number==3)?32:64))
-        {   discard_token_location(beginning_debug_location);
-            if (version_number==3)
-                error("All 30 properties already declared (compile as \
-Advanced game to get an extra 62)");
-            else
-                error("All 62 properties already declared");
-            panic_mode_error_recovery();
-            put_token_back();
-            return;
-        }
-    }
-    else {
-        if (no_properties==INDIV_PROP_START) {
-            discard_token_location(beginning_debug_location);
-            error_numbered("All properties already declared -- max is",
-                INDIV_PROP_START);
-            panic_mode_error_recovery(); 
-            put_token_back();
-            return;
-        }
-    }
-
+    /* The next bit is tricky. We want to accept any number of the keywords
+       "long", "additive", "individual" before the property name. But we
+       also want to accept "Property long" -- that's a legitimate
+       property name.
+       The solution is to keep track of which keywords we've seen in
+       a bitmask, and another for one token previous. That way we
+       can back up one token if there's no name visible. */
+    keywords = prevkeywords = 0;
     do
     {   directive_keywords.enabled = TRUE;
         get_next_token();
-        if ((token_type == DIR_KEYWORD_TT) && (token_value == LONG_DK))
-            obsolete_warning("all properties are now automatically 'long'");
-        else
-        if ((token_type == DIR_KEYWORD_TT) && (token_value == ADDITIVE_DK))
-            additive_flag = TRUE;
-        else break;
+        if ((token_type == DIR_KEYWORD_TT) && (token_value == LONG_DK)) {
+            prevkeywords = keywords;
+            keywords |= 1;
+        }
+        else if ((token_type == DIR_KEYWORD_TT) && (token_value == ADDITIVE_DK)) {
+            prevkeywords = keywords;
+            keywords |= 2;
+        }
+        else if ((token_type == DIR_KEYWORD_TT) && (token_value == INDIVIDUAL_DK)) {
+            prevkeywords = keywords;
+            keywords |= 4;
+        }
+        else {
+            break;
+        }
     } while (TRUE);
-
+    
+    /* Re-parse the name with keywords turned off. (This allows us to
+       accept a property name like "table".) */
     put_token_back();
     directive_keywords.enabled = FALSE;
     get_next_token();
 
+    if (token_type != SYMBOL_TT && keywords) {
+        /* This can't be a name. Try putting back the last keyword. */
+        keywords = prevkeywords;
+        put_token_back();
+        put_token_back();
+        get_next_token();
+    }
+
+    additive_flag = indiv_flag = FALSE;
+    if (keywords & 1)
+        obsolete_warning("all properties are now automatically 'long'");
+    if (keywords & 2)
+        additive_flag = TRUE;
+    if (keywords & 4)
+        indiv_flag = TRUE;
+    
     i = token_value; name = token_text;
-    if ((token_type != SYMBOL_TT) || (!(sflags[i] & UNKNOWN_SFLAG)))
+    /* We hold onto token_text through the end of this Property directive, which should be okay. */
+    if (token_type != SYMBOL_TT)
     {   discard_token_location(beginning_debug_location);
         ebf_error("new property name", token_text);
         panic_mode_error_recovery();
         put_token_back();
         return;
     }
+    if (!(symbols[i].flags & UNKNOWN_SFLAG))
+    {   discard_token_location(beginning_debug_location);
+        ebf_symbol_error("new property name", token_text, typename(symbols[i].type), symbols[i].line);
+        panic_mode_error_recovery();
+        put_token_back();
+        return;
+    }
+
+    if (indiv_flag) {
+        int this_identifier_number;
+        
+        if (additive_flag)
+        {   error("'individual' incompatible with 'additive'");
+            panic_mode_error_recovery();
+            put_token_back();
+            return;
+        }
+
+        this_identifier_number = no_individual_properties++;
+        assign_symbol(i, this_identifier_number, INDIVIDUAL_PROPERTY_T);
+        if (debugfile_switch) {
+            debug_file_printf("<property>");
+            debug_file_printf
+                ("<identifier>%s</identifier>", name);
+            debug_file_printf
+                ("<value>%d</value>", this_identifier_number);
+            debug_file_printf("</property>");
+        }
+        return;        
+    }
 
     directive_keywords.enabled = TRUE;
     get_next_token();
     directive_keywords.enabled = FALSE;
 
-    if (strcmp(name+strlen(name)-3, "_to") == 0) sflags[i] |= STAR_SFLAG;
+    namelen = strlen(name);
+    if (namelen > 3 && strcmp(name+namelen-3, "_to") == 0) {
+        /* Direction common properties "n_to", etc are compared in some
+           libraries. They have STAR_SFLAG to tell us to skip a warning. */
+        symbols[i].flags |= STAR_SFLAG;
+    }
+
+    /* Now we might have "alias" or a default value (but not both). */
 
     if ((token_type == DIR_KEYWORD_TT) && (token_value == ALIAS_DK))
     {   discard_token_location(beginning_debug_location);
@@ -236,7 +305,7 @@ Advanced game to get an extra 62)");
         }
         get_next_token();
         if (!((token_type == SYMBOL_TT)
-            && (stypes[token_value] == PROPERTY_T)))
+            && (symbols[token_value].type == PROPERTY_T)))
         {   ebf_error("an existing property name after 'alias'",
                 token_text);
             panic_mode_error_recovery();
@@ -244,59 +313,88 @@ Advanced game to get an extra 62)");
             return;
         }
 
-        assign_symbol(i, svals[token_value], PROPERTY_T);
-        trace_s(name, svals[i], 1);
-        sflags[token_value] |= ALIASED_SFLAG;
-        sflags[i] |= ALIASED_SFLAG;
+        assign_symbol(i, symbols[token_value].value, PROPERTY_T);
+        trace_s(name, symbols[i].value, 1);
+        symbols[token_value].flags |= ALIASED_SFLAG;
+        symbols[i].flags |= ALIASED_SFLAG;
         return;
+    }
+
+    /* We now know we're allocating a new common property. Make sure 
+       there's room. */
+    if (!glulx_mode) {
+        if (no_properties==((version_number==3)?32:64))
+        {   discard_token_location(beginning_debug_location);
+            /* The maximum listed here includes "name" but not the 
+               unused zero value or the two hidden properties (class
+               inheritance and indiv table). */
+            if (version_number==3)
+                error("All 29 properties already declared (compile as \
+Advanced game to get 32 more)");
+            else
+                error("All 61 properties already declared");
+            panic_mode_error_recovery();
+            put_token_back();
+            return;
+        }
+    }
+    else {
+        if (no_properties==INDIV_PROP_START) {
+            char error_b[128];
+            discard_token_location(beginning_debug_location);
+            sprintf(error_b,
+                "All %d properties already declared (increase INDIV_PROP_START to get more)",
+                INDIV_PROP_START-3);
+            error(error_b);
+            panic_mode_error_recovery(); 
+            put_token_back();
+            return;
+        }
     }
 
     default_value = 0;
     put_token_back();
 
     if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP)))
-    {   AO = parse_expression(CONSTANT_CONTEXT);
+    {
+        assembly_operand AO = parse_expression(CONSTANT_CONTEXT);
         default_value = AO.value;
         if (AO.marker != 0)
             backpatch_zmachine(AO.marker, PROP_DEFAULTS_ZA, 
                 (no_properties-1) * WORDSIZE);
     }
 
-    prop_default_value[no_properties] = default_value;
-    prop_is_long[no_properties] = TRUE;
-    prop_is_additive[no_properties] = additive_flag;
+    commonprops[no_properties].default_value = default_value;
+    commonprops[no_properties].is_long = TRUE;
+    commonprops[no_properties].is_additive = additive_flag;
 
     assign_symbol(i, no_properties++, PROPERTY_T);
 
     if (debugfile_switch)
     {   debug_file_printf("<property>");
         debug_file_printf("<identifier>%s</identifier>", name);
-        debug_file_printf("<value>%d</value>", svals[i]);
+        debug_file_printf("<value>%d</value>", symbols[i].value);
         write_debug_locations
             (get_token_location_end(beginning_debug_location));
         debug_file_printf("</property>");
     }
 
-    trace_s(name, svals[i], 1);
+    trace_s(name, symbols[i].value, 1);
 }
 
 /* ------------------------------------------------------------------------- */
 /*   Properties.                                                             */
 /* ------------------------------------------------------------------------- */
 
-int32 *prop_default_value;             /* Default values for properties      */
-int   *prop_is_long,                   /* Property modifiers, TRUE or FALSE:
-                                          "long" means "never write a 1-byte
-                                          value to this property", and is an
-                                          obsolete feature: since Inform 5
-                                          all properties have been "long"    */
-      *prop_is_additive;               /* "additive" means that values
-                                          accumulate rather than erase each
-                                          other during class inheritance     */
-char *properties_table;                /* Holds the table of property values
+commonpropinfo *commonprops;            /* Info about common properties
+                                           (fixed allocation of 
+                                           INDIV_PROP_START entries) */
+
+uchar *properties_table;               /* Holds the table of property values
                                           (holding one block for each object
                                           and coming immediately after the
                                           object tree in Z-memory)           */
+memory_list properties_table_memlist;
 int properties_table_size;             /* Number of bytes in this table      */
 
 /* ------------------------------------------------------------------------- */
@@ -336,6 +434,7 @@ static int individual_prop_table_size; /* Size of the table of individual
                                           properties so far for current obj  */
        uchar *individuals_table;       /* Table of records, each being the
                                           i.p. table for an object           */
+       memory_list individuals_table_memlist;
        int i_m;                        /* Write mark position in the above   */
        int individuals_length;         /* Extent of individuals_table        */
 
@@ -343,13 +442,16 @@ static int individual_prop_table_size; /* Size of the table of individual
 /*   Arrays used by this file                                                */
 /* ------------------------------------------------------------------------- */
 
-objecttz     *objectsz;                /* Z-code only                        */
-objecttg     *objectsg;                /* Glulx only                         */
-uchar        *objectatts;              /* Glulx only                         */
-static int   *classes_to_inherit_from;
-int          *class_object_numbers;
-int32        *class_begins_at;
-
+objecttz     *objectsz;              /* Allocated to no_objects; Z-code only */
+memory_list objectsz_memlist;
+objecttg     *objectsg;              /* Allocated to no_objects; Glulx only  */
+static memory_list objectsg_memlist;
+uchar        *objectatts;            /* Allocated to no_objects; Glulx only  */
+static memory_list objectatts_memlist;
+static int   *classes_to_inherit_from; /* Allocated to no_classes_to_inherit_from */
+static memory_list classes_to_inherit_from_memlist;
+classinfo    *class_info;            /* Allocated up to no_classes           */
+memory_list   class_info_memlist;
 
 /* ------------------------------------------------------------------------- */
 /*   Tracing for compiler maintenance                                        */
@@ -410,8 +512,8 @@ static void property_inheritance_z(void)
     for (class=0; class<no_classes_to_inherit_from; class++)
     {
         j=0;
-        mark = class_begins_at[classes_to_inherit_from[class]-1];
-        class_prop_block = (uchar *) (properties_table + mark);
+        mark = class_info[classes_to_inherit_from[class] - 1].begins_at;
+        class_prop_block = (properties_table + mark);
 
         while (class_prop_block[j]!=0)
         {   if (version_number == 3)
@@ -436,6 +538,8 @@ static void property_inheritance_z(void)
             prop_in_current_defn = FALSE;
 
             kmax = full_object.l;
+            if (kmax > 64)
+                fatalerror("More than 64 property entries in an object");
 
             for (k=0; k<kmax; k++)
                 if (full_object.pp[k].num == prop_number)
@@ -443,7 +547,7 @@ static void property_inheritance_z(void)
 
                     /*  (Note that the built-in "name" property is additive) */
 
-                    if ((prop_number==1) || (prop_is_additive[prop_number]))
+                    if ((prop_number==1) || (commonprops[prop_number].is_additive))
                     {
                         /*  The additive case: we accumulate the class
                             property values onto the end of the full_object
@@ -456,10 +560,9 @@ static void property_inheritance_z(void)
 so many values that the list has overflowed the maximum 32 entries");
                                 break;
                             }
-                            full_object.pp[k].ao[i].value = mark + j;
+                            INITAOTV(&full_object.pp[k].ao[i], LONG_CONSTANT_OT, mark + j);
                             j += 2;
                             full_object.pp[k].ao[i].marker = INHERIT_MV;
-                            full_object.pp[k].ao[i].type = LONG_CONSTANT_OT;
                         }
                         full_object.pp[k].l += prop_length/2;
                     }
@@ -472,7 +575,6 @@ so many values that the list has overflowed the maximum 32 entries");
 
                     if (prop_number==3)
                     {   int y, z, class_block_offset;
-                        uchar *p;
 
                         /*  Property 3 holds the address of the table of
                             instance variables, so this is the case where
@@ -483,35 +585,31 @@ so many values that the list has overflowed the maximum 32 entries");
                         class_block_offset = class_prop_block[j-2]*256
                                              + class_prop_block[j-1];
 
-                        p = individuals_table + class_block_offset;
                         z = class_block_offset;
-                        while ((p[0]!=0)||(p[1]!=0))
+                        while ((individuals_table[z]!=0)||(individuals_table[z+1]!=0))
                         {   int already_present = FALSE, l;
                             for (l = full_object.pp[k].ao[0].value; l < i_m;
                                  l = l + 3 + individuals_table[l + 2])
-                                if (individuals_table[l] == p[0]
-                                    && individuals_table[l + 1] == p[1])
+                                if (individuals_table[l] == individuals_table[z]
+                                    && individuals_table[l + 1] == individuals_table[z+1])
                                 {   already_present = TRUE; break;
                                 }
                             if (already_present == FALSE)
                             {   if (module_switch)
                                     backpatch_zmachine(IDENT_MV,
                                         INDIVIDUAL_PROP_ZA, i_m);
-                                if (i_m+3+p[2] > MAX_INDIV_PROP_TABLE_SIZE)
-                                    memoryerror("MAX_INDIV_PROP_TABLE_SIZE",
-                                        MAX_INDIV_PROP_TABLE_SIZE);
-                                individuals_table[i_m++] = p[0];
-                                individuals_table[i_m++] = p[1];
-                                individuals_table[i_m++] = p[2];
-                                for (y=0;y < p[2]/2;y++)
+                                ensure_memory_list_available(&individuals_table_memlist, i_m+3+individuals_table[z+2]);
+                                individuals_table[i_m++] = individuals_table[z];
+                                individuals_table[i_m++] = individuals_table[z+1];
+                                individuals_table[i_m++] = individuals_table[z+2];
+                                for (y=0;y < individuals_table[z+2]/2;y++)
                                 {   individuals_table[i_m++] = (z+3+y*2)/256;
                                     individuals_table[i_m++] = (z+3+y*2)%256;
                                     backpatch_zmachine(INHERIT_INDIV_MV,
                                         INDIVIDUAL_PROP_ZA, i_m-2);
                                 }
                             }
-                            z += p[2] + 3;
-                            p += p[2] + 3;
+                            z += individuals_table[z+2] + 3;
                         }
                         individuals_length = i_m;
                     }
@@ -529,18 +627,19 @@ so many values that the list has overflowed the maximum 32 entries");
                     a new property added to full_object                      */
 
                 k=full_object.l++;
+                if (k >= 64)
+                    fatalerror("More than 64 property entries in an object");
                 full_object.pp[k].num = prop_number;
                 full_object.pp[k].l = prop_length/2;
                 for (i=0; i<prop_length/2; i++)
-                {   full_object.pp[k].ao[i].value = mark + j;
+                {
+                    INITAOTV(&full_object.pp[k].ao[i], LONG_CONSTANT_OT, mark + j);
                     j+=2;
                     full_object.pp[k].ao[i].marker = INHERIT_MV;
-                    full_object.pp[k].ao[i].type = LONG_CONSTANT_OT;
                 }
 
                 if (prop_number==3)
                 {   int y, z, class_block_offset;
-                    uchar *p;
 
                     /*  Property 3 holds the address of the table of
                         instance variables, so this is the case where
@@ -550,34 +649,28 @@ so many values that the list has overflowed the maximum 32 entries");
                     if (individual_prop_table_size++ == 0)
                     {   full_object.pp[k].num = 3;
                         full_object.pp[k].l = 1;
-                        full_object.pp[k].ao[0].value
-                            = individuals_length;
+                        INITAOTV(&full_object.pp[k].ao[0], LONG_CONSTANT_OT, individuals_length);
                         full_object.pp[k].ao[0].marker = INDIVPT_MV;
-                        full_object.pp[k].ao[0].type = LONG_CONSTANT_OT;
                         i_m = individuals_length;
                     }
                     class_block_offset = class_prop_block[j-2]*256
                                          + class_prop_block[j-1];
 
-                    p = individuals_table + class_block_offset;
                     z = class_block_offset;
-                    while ((p[0]!=0)||(p[1]!=0))
+                    while ((individuals_table[z]!=0)||(individuals_table[z+1]!=0))
                     {   if (module_switch)
                         backpatch_zmachine(IDENT_MV, INDIVIDUAL_PROP_ZA, i_m);
-                        if (i_m+3+p[2] > MAX_INDIV_PROP_TABLE_SIZE)
-                            memoryerror("MAX_INDIV_PROP_TABLE_SIZE",
-                                MAX_INDIV_PROP_TABLE_SIZE);
-                        individuals_table[i_m++] = p[0];
-                        individuals_table[i_m++] = p[1];
-                        individuals_table[i_m++] = p[2];
-                        for (y=0;y < p[2]/2;y++)
+                        ensure_memory_list_available(&individuals_table_memlist, i_m+3+individuals_table[z+2]);
+                        individuals_table[i_m++] = individuals_table[z];
+                        individuals_table[i_m++] = individuals_table[z+1];
+                        individuals_table[i_m++] = individuals_table[z+2];
+                        for (y=0;y < individuals_table[z+2]/2;y++)
                         {   individuals_table[i_m++] = (z+3+y*2)/256;
                             individuals_table[i_m++] = (z+3+y*2)%256;
                             backpatch_zmachine(INHERIT_INDIV_MV,
                                 INDIVIDUAL_PROP_ZA, i_m-2);
                         }
-                        z += p[2] + 3;
-                        p += p[2] + 3;
+                        z += individuals_table[z+2] + 3;
                     }
                     individuals_length = i_m;
                 }
@@ -587,9 +680,7 @@ so many values that the list has overflowed the maximum 32 entries");
 
     if (individual_prop_table_size > 0)
     {
-        if (i_m+2 > MAX_INDIV_PROP_TABLE_SIZE)
-            memoryerror("MAX_INDIV_PROP_TABLE_SIZE",
-                MAX_INDIV_PROP_TABLE_SIZE);
+        ensure_memory_list_available(&individuals_table_memlist, i_m+2);
 
         individuals_table[i_m++] = 0;
         individuals_table[i_m++] = 0;
@@ -614,8 +705,8 @@ static void property_inheritance_g(void)
   ASSERT_GLULX();
 
   for (class=0; class<no_classes_to_inherit_from; class++) {
-    mark = class_begins_at[classes_to_inherit_from[class]-1];
-    cpb = (uchar *) (properties_table + mark);
+    mark = class_info[classes_to_inherit_from[class] - 1].begins_at;
+    cpb = (properties_table + mark);
     /* This now points to the compiled property-table for the class.
        We'll have to go through and decompile it. (For our sins.) */
     num_props = ReadInt32(cpb);
@@ -648,7 +739,7 @@ static void property_inheritance_g(void)
       if (prop_in_current_defn) {
         if ((prop_number==1)
           || (prop_number < INDIV_PROP_START 
-            && prop_is_additive[prop_number])) {
+            && commonprops[prop_number].is_additive)) {
           /*  The additive case: we accumulate the class
               property values onto the end of the full_object
               properties. Remember that k is still the index number
@@ -667,21 +758,18 @@ static void property_inheritance_g(void)
             }
           }
           k = full_object_g.numprops++;
+          ensure_memory_list_available(&full_object_g.props_memlist, k+1);
           full_object_g.props[k].num = prop_number;
           full_object_g.props[k].flags = 0;
           full_object_g.props[k].datastart = full_object_g.propdatasize;
           full_object_g.props[k].continuation = prevcont+1;
           full_object_g.props[k].datalen = prop_length;
-          if (full_object_g.propdatasize + prop_length 
-            > MAX_OBJ_PROP_TABLE_SIZE) {
-            memoryerror("MAX_OBJ_PROP_TABLE_SIZE",MAX_OBJ_PROP_TABLE_SIZE);
-          }
-
+          
+          ensure_memory_list_available(&full_object_g.propdata_memlist, full_object_g.propdatasize + prop_length);
           for (i=0; i<prop_length; i++) {
             int ppos = full_object_g.propdatasize++;
-            full_object_g.propdata[ppos].value = prop_addr + 4*i;
+            INITAOTV(&full_object_g.propdata[ppos], CONSTANT_OT, prop_addr + 4*i);
             full_object_g.propdata[ppos].marker = INHERIT_MV;
-            full_object_g.propdata[ppos].type = CONSTANT_OT;
           }
         }
         else {
@@ -695,27 +783,21 @@ static void property_inheritance_g(void)
                 defined at all in full_object_g: we copy out the data into
                 a new property added to full_object_g. */
             k = full_object_g.numprops++;
+            ensure_memory_list_available(&full_object_g.props_memlist, k+1);
             full_object_g.props[k].num = prop_number;
             full_object_g.props[k].flags = prop_flags;
             full_object_g.props[k].datastart = full_object_g.propdatasize;
             full_object_g.props[k].continuation = 0;
             full_object_g.props[k].datalen = prop_length;
-            if (full_object_g.propdatasize + prop_length 
-              > MAX_OBJ_PROP_TABLE_SIZE) {
-              memoryerror("MAX_OBJ_PROP_TABLE_SIZE",MAX_OBJ_PROP_TABLE_SIZE);
-            }
 
+            ensure_memory_list_available(&full_object_g.propdata_memlist, full_object_g.propdatasize + prop_length);
             for (i=0; i<prop_length; i++) {
               int ppos = full_object_g.propdatasize++;
-              full_object_g.propdata[ppos].value = prop_addr + 4*i;
+              INITAOTV(&full_object_g.propdata[ppos], CONSTANT_OT, prop_addr + 4*i);
               full_object_g.propdata[ppos].marker = INHERIT_MV; 
-              full_object_g.propdata[ppos].type = CONSTANT_OT;
             }
           }
 
-          if (full_object_g.numprops == MAX_OBJ_PROP_COUNT) {
-            memoryerror("MAX_OBJ_PROP_COUNT",MAX_OBJ_PROP_COUNT);
-          }
     }
   }
   
@@ -725,27 +807,27 @@ static void property_inheritance_g(void)
 /*   Construction of Z-machine-format property blocks.                       */
 /* ------------------------------------------------------------------------- */
 
-static int write_properties_between(uchar *p, int mark, int from, int to)
-{   int j, k, prop_number, prop_length;
-    /* Note that p is properties_table. */
+static int write_properties_between(int mark, int from, int to)
+{   int j, k, prop_number;
+
     for (prop_number=to; prop_number>=from; prop_number--)
     {   for (j=0; j<full_object.l; j++)
         {   if ((full_object.pp[j].num == prop_number)
                 && (full_object.pp[j].l != 100))
-            {   prop_length = 2*full_object.pp[j].l;
-                if (mark+2+prop_length >= MAX_PROP_TABLE_SIZE)
-                    memoryerror("MAX_PROP_TABLE_SIZE",MAX_PROP_TABLE_SIZE);
+            {
+                int prop_length = 2*full_object.pp[j].l;
+                ensure_memory_list_available(&properties_table_memlist, mark+2+prop_length);
                 if (version_number == 3)
-                    p[mark++] = prop_number + (prop_length - 1)*32;
+                    properties_table[mark++] = prop_number + (prop_length - 1)*32;
                 else
                 {   switch(prop_length)
                     {   case 1:
-                          p[mark++] = prop_number; break;
+                          properties_table[mark++] = prop_number; break;
                         case 2:
-                          p[mark++] = prop_number + 0x40; break;
+                          properties_table[mark++] = prop_number + 0x40; break;
                         default:
-                          p[mark++] = prop_number + 0x80;
-                          p[mark++] = prop_length + 0x80; break;
+                          properties_table[mark++] = prop_number + 0x80;
+                          properties_table[mark++] = prop_length + 0x80; break;
                     }
                 }
 
@@ -753,14 +835,15 @@ static int write_properties_between(uchar *p, int mark, int from, int to)
                 {   if (full_object.pp[j].ao[k].marker != 0)
                         backpatch_zmachine(full_object.pp[j].ao[k].marker,
                             PROP_ZA, mark);
-                    p[mark++] = full_object.pp[j].ao[k].value/256;
-                    p[mark++] = full_object.pp[j].ao[k].value%256;
+                    properties_table[mark++] = full_object.pp[j].ao[k].value/256;
+                    properties_table[mark++] = full_object.pp[j].ao[k].value%256;
                 }
             }
         }
     }
 
-    p[mark++]=0;
+    ensure_memory_list_available(&properties_table_memlist, mark+1);
+    properties_table[mark++]=0;
     return(mark);
 }
 
@@ -774,28 +857,31 @@ static int write_property_block_z(char *shortname)
         Return the number of bytes written to the block.                     */
 
     int32 mark = properties_table_size, i;
-    uchar *p = (uchar *) properties_table;
 
     /* printf("Object at %04x\n", mark); */
 
     if (shortname != NULL)
-    {   uchar *tmp;
-        if (mark+1+510 >= MAX_PROP_TABLE_SIZE)
-            memoryerror("MAX_PROP_TABLE_SIZE",MAX_PROP_TABLE_SIZE);
-        tmp = translate_text(p+mark+1,p+mark+1+510,shortname);
-        if (!tmp) error ("Short name of object exceeded 765 Z-characters");
-        i = subtract_pointers(tmp,(p+mark+1));
-        p[mark] = i/2;
+    {
+        i = translate_text(510,shortname,STRCTX_OBJNAME);
+        if (i < 0) {
+            error ("Short name of object exceeded 765 Z-characters");
+            i = 0;
+        }
+        ensure_memory_list_available(&properties_table_memlist, mark+1+i);
+        memcpy(properties_table + mark+1, translated_text, i);
+        properties_table[mark] = i/2;
         mark += i+1;
     }
     if (current_defn_is_class)
-    {   mark = write_properties_between(p,mark,3,3);
+    {   mark = write_properties_between(mark,3,3);
+        ensure_memory_list_available(&properties_table_memlist, mark+6);
         for (i=0;i<6;i++)
-            p[mark++] = full_object.atts[i];
-        class_begins_at[no_classes++] = mark;
+            properties_table[mark++] = full_object.atts[i];
+        ensure_memory_list_available(&class_info_memlist, no_classes+1);
+        class_info[no_classes++].begins_at = mark;
     }
 
-    mark = write_properties_between(p, mark, 1, (version_number==3)?31:63);
+    mark = write_properties_between(mark, 1, (version_number==3)?31:63);
 
     i = mark - properties_table_size;
     properties_table_size = mark;
@@ -832,12 +918,13 @@ static int32 write_property_block_g(void)
   int ix, jx, kx, totalprops;
   int32 mark = properties_table_size;
   int32 datamark;
-  uchar *p = (uchar *) properties_table;
 
   if (current_defn_is_class) {
+    ensure_memory_list_available(&properties_table_memlist, mark+NUM_ATTR_BYTES);
     for (i=0;i<NUM_ATTR_BYTES;i++)
-      p[mark++] = full_object_g.atts[i];
-    class_begins_at[no_classes++] = mark;
+      properties_table[mark++] = full_object_g.atts[i];
+    ensure_memory_list_available(&class_info_memlist, no_classes+1);
+    class_info[no_classes++].begins_at = mark;
   }
 
   qsort(full_object_g.props, full_object_g.numprops, sizeof(propg), 
@@ -858,9 +945,8 @@ static int32 write_property_block_g(void)
   }
 
   /* Write out the number of properties in this table. */
-  if (mark+4 >= MAX_PROP_TABLE_SIZE)
-      memoryerror("MAX_PROP_TABLE_SIZE",MAX_PROP_TABLE_SIZE);
-  WriteInt32(p+mark, totalprops);
+  ensure_memory_list_available(&properties_table_memlist, mark+4);
+  WriteInt32(properties_table+mark, totalprops);
   mark += 4;
 
   datamark = mark + 10*totalprops;
@@ -876,11 +962,10 @@ static int32 write_property_block_g(void)
         jx<full_object_g.numprops && full_object_g.props[jx].num == propnum;
         jx++) {
       int32 datastart = full_object_g.props[jx].datastart;
-      if (datamark+4*full_object_g.props[jx].datalen >= MAX_PROP_TABLE_SIZE)
-        memoryerror("MAX_PROP_TABLE_SIZE",MAX_PROP_TABLE_SIZE);
+      ensure_memory_list_available(&properties_table_memlist, datamark+4*full_object_g.props[jx].datalen);
       for (kx=0; kx<full_object_g.props[jx].datalen; kx++) {
         int32 val = full_object_g.propdata[datastart+kx].value;
-        WriteInt32(p+datamark, val);
+        WriteInt32(properties_table+datamark, val);
         if (full_object_g.propdata[datastart+kx].marker != 0)
           backpatch_zmachine(full_object_g.propdata[datastart+kx].marker,
             PROP_ZA, datamark);
@@ -888,15 +973,14 @@ static int32 write_property_block_g(void)
         datamark += 4;
       }
     }
-    if (mark+10 >= MAX_PROP_TABLE_SIZE)
-        memoryerror("MAX_PROP_TABLE_SIZE",MAX_PROP_TABLE_SIZE);
-    WriteInt16(p+mark, propnum);
+    ensure_memory_list_available(&properties_table_memlist, mark+10);
+    WriteInt16(properties_table+mark, propnum);
     mark += 2;
-    WriteInt16(p+mark, totallen);
+    WriteInt16(properties_table+mark, totallen);
     mark += 2;
-    WriteInt32(p+mark, datamarkstart); 
+    WriteInt32(properties_table+mark, datamarkstart); 
     mark += 4;
-    WriteInt16(p+mark, flags);
+    WriteInt16(properties_table+mark, flags);
     mark += 2;
   }
 
@@ -917,6 +1001,8 @@ static void manufacture_object_z(void)
     segment_markers.enabled = FALSE;
     directives.enabled = TRUE;
 
+    ensure_memory_list_available(&objectsz_memlist, no_objects+1);
+    
     property_inheritance_z();
 
     objectsz[no_objects].parent = parent_of_this_obj;
@@ -940,8 +1026,6 @@ static void manufacture_object_z(void)
     j = write_property_block_z(shortname_buffer);
 
     objectsz[no_objects].propsize = j;
-    if (properties_table_size >= MAX_PROP_TABLE_SIZE)
-        memoryerror("MAX_PROP_TABLE_SIZE",MAX_PROP_TABLE_SIZE);
 
     if (current_defn_is_class)
         for (i=0;i<6;i++) objectsz[no_objects].atts[i] = 0;
@@ -958,6 +1042,9 @@ static void manufacture_object_g(void)
     segment_markers.enabled = FALSE;
     directives.enabled = TRUE;
 
+    ensure_memory_list_available(&objectsg_memlist, no_objects+1);
+    ensure_memory_list_available(&objectatts_memlist, no_objects+1);
+    
     property_inheritance_g();
 
     objectsg[no_objects].parent = parent_of_this_obj;
@@ -975,7 +1062,7 @@ static void manufacture_object_g(void)
     }
 
     objectsg[no_objects].shortname = compile_string(shortname_buffer,
-      FALSE, FALSE);
+      STRCTX_OBJNAME);
 
         /*  The properties table consists simply of a sequence of property
             blocks, one for each object in order of definition, exactly as
@@ -986,8 +1073,6 @@ static void manufacture_object_g(void)
     objectsg[no_objects].propaddr = full_object_g.finalpropaddr;
 
     objectsg[no_objects].propsize = j;
-    if (properties_table_size >= MAX_PROP_TABLE_SIZE)
-        memoryerror("MAX_PROP_TABLE_SIZE",MAX_PROP_TABLE_SIZE);
 
     if (current_defn_is_class)
         for (i=0;i<NUM_ATTR_BYTES;i++) 
@@ -1045,10 +1130,10 @@ static void properties_segment_z(int this_segment)
             return;
         }
 
-        individual_property = (stypes[token_value] != PROPERTY_T);
+        individual_property = (symbols[token_value].type != PROPERTY_T);
 
         if (individual_property)
-        {   if (sflags[token_value] & UNKNOWN_SFLAG)
+        {   if (symbols[token_value].flags & UNKNOWN_SFLAG)
             {   this_identifier_number = no_individual_properties++;
                 assign_symbol(token_value, this_identifier_number,
                     INDIVIDUAL_PROPERTY_T);
@@ -1064,15 +1149,10 @@ static void properties_segment_z(int this_segment)
 
             }
             else
-            {   if (stypes[token_value]==INDIVIDUAL_PROPERTY_T)
-                    this_identifier_number = svals[token_value];
+            {   if (symbols[token_value].type==INDIVIDUAL_PROPERTY_T)
+                    this_identifier_number = symbols[token_value].value;
                 else
-                {   char already_error[128];
-                    sprintf(already_error,
-                        "\"%s\" is a name already in use (with type %s) \
-and may not be used as a property name too",
-                        token_text, typename(stypes[token_value]));
-                    error(already_error);
+                {   ebf_symbol_error("property name", token_text, typename(symbols[token_value].type), symbols[token_value].line);
                     return;
                 }
             }
@@ -1082,16 +1162,18 @@ and may not be used as a property name too",
             defined_this_segment[def_t_s++] = token_value;
 
             if (individual_prop_table_size++ == 0)
-            {   full_object.pp[full_object.l].num = 3;
-                full_object.pp[full_object.l].l = 1;
-                full_object.pp[full_object.l].ao[0].value
-                    = individuals_length;
-                full_object.pp[full_object.l].ao[0].type = LONG_CONSTANT_OT;
-                full_object.pp[full_object.l].ao[0].marker = INDIVPT_MV;
+            {
+                int k=full_object.l++;
+                if (k >= 64)
+                    fatalerror("More than 64 property entries in an object");
+                full_object.pp[k].num = 3;
+                full_object.pp[k].l = 1;
+                INITAOTV(&full_object.pp[k].ao[0], LONG_CONSTANT_OT, individuals_length);
+                full_object.pp[k].ao[0].marker = INDIVPT_MV;
 
                 i_m = individuals_length;
-                full_object.l++;
             }
+            ensure_memory_list_available(&individuals_table_memlist, i_m+3);
             individuals_table[i_m] = this_identifier_number/256;
             if (this_segment == PRIVATE_SEGMENT)
                 individuals_table[i_m] |= 0x80;
@@ -1101,7 +1183,7 @@ and may not be used as a property name too",
             individuals_table[i_m+2] = 0;
         }
         else
-        {   if (sflags[token_value] & UNKNOWN_SFLAG)
+        {   if (symbols[token_value].flags & UNKNOWN_SFLAG)
             {   error_named("No such property name as", token_text);
                 return;
             }
@@ -1111,30 +1193,32 @@ not 'private':", token_text);
             if (def_t_s >= defined_this_segment_size)
                 ensure_defined_this_segment(def_t_s*2);
             defined_this_segment[def_t_s++] = token_value;
-            property_number = svals[token_value];
+            property_number = symbols[token_value].value;
 
             next_prop=full_object.l++;
+            if (next_prop >= 64)
+                fatalerror("More than 64 property entries in an object");
             full_object.pp[next_prop].num = property_number;
         }
 
         for (i=0; i<(def_t_s-1); i++)
             if (defined_this_segment[i] == token_value)
             {   error_named("Property given twice in the same declaration:",
-                    (char *) symbs[token_value]);
+                    symbols[token_value].name);
             }
             else
-            if (svals[defined_this_segment[i]] == svals[token_value])
-            {   char error_b[128];
+            if (symbols[defined_this_segment[i]].value == symbols[token_value].value)
+            {   char error_b[128+2*MAX_IDENTIFIER_LENGTH];
                 sprintf(error_b,
                     "Property given twice in the same declaration, because \
 the names '%s' and '%s' actually refer to the same property",
-                    (char *) symbs[defined_this_segment[i]],
-                    (char *) symbs[token_value]);
+                    symbols[defined_this_segment[i]].name,
+                    symbols[token_value].name);
                 error(error_b);
             }
 
         property_name_symbol = token_value;
-        sflags[token_value] |= USED_SFLAG;
+        symbols[token_value].flags |= USED_SFLAG;
 
         length=0;
         do
@@ -1154,18 +1238,24 @@ the names '%s' and '%s' actually refer to the same property",
                 warning ("'name' property should only contain dictionary words");
 
             if ((token_type == SEP_TT) && (token_value == OPEN_SQUARE_SEP))
-            {   char embedded_name[80];
+            {
+                char *prefix, *sep, *sym;
+                sym = symbols[property_name_symbol].name;
                 if (current_defn_is_class)
-                {   sprintf(embedded_name,
-                        "%s::%s", classname_text,
-                        (char *) symbs[property_name_symbol]);
+                {
+                    prefix = symbols[current_classname_symbol].name;
+                    sep = "::";
                 }
                 else
-                {   sprintf(embedded_name,
-                        "%s.%s", objectname_text,
-                        (char *) symbs[property_name_symbol]);
+                {
+                    prefix = current_object_name.data;
+                    sep = ".";
                 }
-                AO.value = parse_routine(NULL, TRUE, embedded_name, FALSE, -1);
+                ensure_memory_list_available(&embedded_function_name, strlen(prefix)+strlen(sep)+strlen(sym)+1);
+                sprintf(embedded_function_name.data, "%s%s%s", prefix, sep, sym);
+
+                /* parse_routine() releases lexer text! */
+                AO.value = parse_routine(NULL, TRUE, embedded_function_name.data, FALSE, -1);
                 AO.type = LONG_CONSTANT_OT;
                 AO.marker = IROUTINE_MV;
 
@@ -1195,7 +1285,7 @@ the names '%s' and '%s' actually refer to the same property",
             {   if (length!=0)
                 {
                     if ((token_type == SYMBOL_TT)
-                        && (stypes[token_value]==PROPERTY_T))
+                        && (symbols[token_value].type==PROPERTY_T))
                     {
                         /*  This is not necessarily an error: it's possible
                             to imagine a property whose value is a list
@@ -1217,7 +1307,7 @@ the names '%s' and '%s' actually refer to the same property",
 
             if (length == 64)
             {   error_named("Limit (of 32 values) exceeded for property",
-                    (char *) symbs[property_name_symbol]);
+                    symbols[property_name_symbol].name);
                 break;
             }
 
@@ -1225,6 +1315,7 @@ the names '%s' and '%s' actually refer to the same property",
             {   if (AO.marker != 0)
                     backpatch_zmachine(AO.marker, INDIVIDUAL_PROP_ZA,
                         i_m+3+length);
+                ensure_memory_list_available(&individuals_table_memlist, i_m+3+length+2);
                 individuals_table[i_m+3+length++] = AO.value/256;
                 individuals_table[i_m+3+length++] = AO.value%256;
             }
@@ -1245,13 +1336,14 @@ the names '%s' and '%s' actually refer to the same property",
 
         if (length == 0)
         {   if (individual_property)
-            {   individuals_table[i_m+3+length++] = 0;
+            {
+                ensure_memory_list_available(&individuals_table_memlist, i_m+3+length+2);
+                individuals_table[i_m+3+length++] = 0;
                 individuals_table[i_m+3+length++] = 0;
             }
             else
-            {   full_object.pp[next_prop].ao[0].value = 0;
-                full_object.pp[next_prop].ao[0].type  = LONG_CONSTANT_OT;
-                full_object.pp[next_prop].ao[0].marker = 0;
+            {
+                INITAOTV(&full_object.pp[next_prop].ao[0], LONG_CONSTANT_OT, 0);
                 length = 2;
             }
         }
@@ -1261,16 +1353,14 @@ the names '%s' and '%s' actually refer to the same property",
             {
        warning_named("Version 3 limit of 4 values per property exceeded \
 (use -v5 to get 32), so truncating property",
-                    (char *) symbs[property_name_symbol]);
-                full_object.pp[next_prop].l=4;
+                    symbols[property_name_symbol].name);
+                length = 8;
             }
         }
 
         if (individual_property)
         {
-            if (individuals_length+length+3 > MAX_INDIV_PROP_TABLE_SIZE)
-                memoryerror("MAX_INDIV_PROP_TABLE_SIZE",
-                    MAX_INDIV_PROP_TABLE_SIZE);
+            ensure_memory_list_available(&individuals_table_memlist, individuals_length+length+3);
             individuals_table[i_m + 2] = length;
             individuals_length += length+3;
             i_m = individuals_length;
@@ -1314,10 +1404,10 @@ static void properties_segment_g(int this_segment)
             return;
         }
 
-        individual_property = (stypes[token_value] != PROPERTY_T);
+        individual_property = (symbols[token_value].type != PROPERTY_T);
 
         if (individual_property)
-        {   if (sflags[token_value] & UNKNOWN_SFLAG)
+        {   if (symbols[token_value].flags & UNKNOWN_SFLAG)
             {   this_identifier_number = no_individual_properties++;
                 assign_symbol(token_value, this_identifier_number,
                     INDIVIDUAL_PROPERTY_T);
@@ -1333,15 +1423,10 @@ static void properties_segment_g(int this_segment)
 
             }
             else
-            {   if (stypes[token_value]==INDIVIDUAL_PROPERTY_T)
-                    this_identifier_number = svals[token_value];
+            {   if (symbols[token_value].type==INDIVIDUAL_PROPERTY_T)
+                    this_identifier_number = symbols[token_value].value;
                 else
-                {   char already_error[128];
-                    sprintf(already_error,
-                        "\"%s\" is a name already in use (with type %s) \
-and may not be used as a property name too",
-                        token_text, typename(stypes[token_value]));
-                    error(already_error);
+                {   ebf_symbol_error("property name", token_text, typename(symbols[token_value].type), symbols[token_value].line);
                     return;
                 }
             }
@@ -1349,9 +1434,10 @@ and may not be used as a property name too",
             if (def_t_s >= defined_this_segment_size)
                 ensure_defined_this_segment(def_t_s*2);
             defined_this_segment[def_t_s++] = token_value;
-            property_number = svals[token_value];
+            property_number = symbols[token_value].value;
 
             next_prop=full_object_g.numprops++;
+            ensure_memory_list_available(&full_object_g.props_memlist, next_prop+1);
             full_object_g.props[next_prop].num = property_number;
             full_object_g.props[next_prop].flags = 
               ((this_segment == PRIVATE_SEGMENT) ? 1 : 0);
@@ -1360,7 +1446,7 @@ and may not be used as a property name too",
             full_object_g.props[next_prop].datalen = 0;
         }
         else
-        {   if (sflags[token_value] & UNKNOWN_SFLAG)
+        {   if (symbols[token_value].flags & UNKNOWN_SFLAG)
             {   error_named("No such property name as", token_text);
                 return;
             }
@@ -1371,9 +1457,10 @@ not 'private':", token_text);
             if (def_t_s >= defined_this_segment_size)
                 ensure_defined_this_segment(def_t_s*2);
             defined_this_segment[def_t_s++] = token_value;
-            property_number = svals[token_value];
+            property_number = symbols[token_value].value;
 
             next_prop=full_object_g.numprops++;
+            ensure_memory_list_available(&full_object_g.props_memlist, next_prop+1);
             full_object_g.props[next_prop].num = property_number;
             full_object_g.props[next_prop].flags = 0;
             full_object_g.props[next_prop].datastart = full_object_g.propdatasize;
@@ -1384,25 +1471,21 @@ not 'private':", token_text);
         for (i=0; i<(def_t_s-1); i++)
             if (defined_this_segment[i] == token_value)
             {   error_named("Property given twice in the same declaration:",
-                    (char *) symbs[token_value]);
+                    symbols[token_value].name);
             }
             else
-            if (svals[defined_this_segment[i]] == svals[token_value])
-            {   char error_b[128];
+            if (symbols[defined_this_segment[i]].value == symbols[token_value].value)
+            {   char error_b[128+2*MAX_IDENTIFIER_LENGTH];
                 sprintf(error_b,
                     "Property given twice in the same declaration, because \
 the names '%s' and '%s' actually refer to the same property",
-                    (char *) symbs[defined_this_segment[i]],
-                    (char *) symbs[token_value]);
+                    symbols[defined_this_segment[i]].name,
+                    symbols[token_value].name);
                 error(error_b);
             }
 
-        if (full_object_g.numprops == MAX_OBJ_PROP_COUNT) {
-          memoryerror("MAX_OBJ_PROP_COUNT",MAX_OBJ_PROP_COUNT);
-        }
-
         property_name_symbol = token_value;
-        sflags[token_value] |= USED_SFLAG;
+        symbols[token_value].flags |= USED_SFLAG;
 
         length=0;
         do
@@ -1416,24 +1499,31 @@ the names '%s' and '%s' actually refer to the same property",
             if (token_type == SEGMENT_MARKER_TT) { put_token_back(); break; }
 
             if ((!individual_property) && (property_number==1)
-                && (token_type != SQ_TT) && (token_type != DQ_TT)
+                && ((token_type != SQ_TT) || (strlen(token_text) <2 )) 
+                && (token_type != DQ_TT)
                 )
                 warning ("'name' property should only contain dictionary words");
 
             if ((token_type == SEP_TT) && (token_value == OPEN_SQUARE_SEP))
-            {   char embedded_name[80];
+            {
+                char *prefix, *sep, *sym;
+                sym = symbols[property_name_symbol].name;
                 if (current_defn_is_class)
-                {   sprintf(embedded_name,
-                        "%s::%s", classname_text,
-                        (char *) symbs[property_name_symbol]);
+                {
+                    prefix = symbols[current_classname_symbol].name;
+                    sep = "::";
                 }
                 else
-                {   sprintf(embedded_name,
-                        "%s.%s", objectname_text,
-                        (char *) symbs[property_name_symbol]);
+                {
+                    prefix = current_object_name.data;
+                    sep = ".";
                 }
-                AO.value = parse_routine(NULL, TRUE, embedded_name, FALSE, -1);
-                AO.type = CONSTANT_OT; 
+                ensure_memory_list_available(&embedded_function_name, strlen(prefix)+strlen(sep)+strlen(sym)+1);
+                sprintf(embedded_function_name.data, "%s%s%s", prefix, sep, sym);
+
+                INITAOT(&AO, CONSTANT_OT);
+                /* parse_routine() releases lexer text! */
+                AO.value = parse_routine(NULL, TRUE, embedded_function_name.data, FALSE, -1);
                 AO.marker = IROUTINE_MV;
 
                 directives.enabled = FALSE;
@@ -1462,7 +1552,7 @@ the names '%s' and '%s' actually refer to the same property",
             {   if (length!=0)
                 {
                     if ((token_type == SYMBOL_TT)
-                        && (stypes[token_value]==PROPERTY_T))
+                        && (symbols[token_value].type==PROPERTY_T))
                     {
                         /*  This is not necessarily an error: it's possible
                             to imagine a property whose value is a list
@@ -1484,13 +1574,11 @@ the names '%s' and '%s' actually refer to the same property",
 
             if (length == 32768) /* VENEER_CONSTRAINT_ON_PROP_TABLE_SIZE? */
             {   error_named("Limit (of 32768 values) exceeded for property",
-                    (char *) symbs[property_name_symbol]);
+                    symbols[property_name_symbol].name);
                 break;
             }
 
-            if (full_object_g.propdatasize >= MAX_OBJ_PROP_TABLE_SIZE) {
-              memoryerror("MAX_OBJ_PROP_TABLE_SIZE",MAX_OBJ_PROP_TABLE_SIZE);
-            }
+            ensure_memory_list_available(&full_object_g.propdata_memlist, full_object_g.propdatasize+1);
 
             full_object_g.propdata[full_object_g.propdatasize++] = AO;
             length += 1;
@@ -1508,9 +1596,8 @@ the names '%s' and '%s' actually refer to the same property",
         if (length == 0)
         {
             assembly_operand AO;
-            AO.value = 0;
-            AO.type = CONSTANT_OT;
-            AO.marker = 0;
+            INITAOTV(&AO, CONSTANT_OT, 0);
+            ensure_memory_list_available(&full_object_g.propdata_memlist, full_object_g.propdatasize+1);
             full_object_g.propdata[full_object_g.propdatasize++] = AO;
             length += 1;
         }
@@ -1565,13 +1652,13 @@ static void attributes_segment(void)
         }
 
         if ((token_type != SYMBOL_TT)
-            || (stypes[token_value] != ATTRIBUTE_T))
+            || (symbols[token_value].type != ATTRIBUTE_T))
         {   ebf_error("name of an already-declared attribute", token_text);
             return;
         }
 
-        attribute_number = svals[token_value];
-        sflags[token_value] |= USED_SFLAG;
+        attribute_number = symbols[token_value].value;
+        symbols[token_value].flags |= USED_SFLAG;
 
         if (!glulx_mode) {
             bitmask = (1 << (7-attribute_number%8));
@@ -1605,13 +1692,15 @@ static void add_class_to_inheritance_list(int class_number)
         to be translated into its actual class number:                       */
 
     for (i=0;i<no_classes;i++)
-        if (class_number == class_object_numbers[i])
+        if (class_number == class_info[i].object_number)
         {   class_number = i+1;
             break;
         }
 
     /*  Remember the inheritance list so that property inheritance can
         be sorted out later on, when the definition has been finished:       */
+
+    ensure_memory_list_available(&classes_to_inherit_from_memlist, no_classes_to_inherit_from+1);
 
     classes_to_inherit_from[no_classes_to_inherit_from++] = class_number;
 
@@ -1620,12 +1709,12 @@ static void add_class_to_inheritance_list(int class_number)
     if (!glulx_mode) {
         for (i=0; i<6; i++)
             full_object.atts[i]
-                |= properties_table[class_begins_at[class_number-1] - 6 + i];
+                |= properties_table[class_info[class_number-1].begins_at - 6 + i];
     }
     else {
         for (i=0; i<NUM_ATTR_BYTES; i++)
             full_object_g.atts[i]
-                |= properties_table[class_begins_at[class_number-1] 
+                |= properties_table[class_info[class_number-1].begins_at 
                     - NUM_ATTR_BYTES + i];
     }
 }
@@ -1646,13 +1735,17 @@ static void classes_segment(void)
         if ((token_type == SEP_TT) && (token_value == COMMA_SEP)) return;
 
         if ((token_type != SYMBOL_TT)
-            || (stypes[token_value] != CLASS_T))
+            || (symbols[token_value].type != CLASS_T))
         {   ebf_error("name of an already-declared class", token_text);
             return;
         }
+        if (current_defn_is_class && token_value == current_classname_symbol)
+        {   error("A class cannot inherit from itself");
+            return;
+        }
 
-        sflags[token_value] |= USED_SFLAG;
-        add_class_to_inheritance_list(svals[token_value]);
+        symbols[token_value].flags |= USED_SFLAG;
+        add_class_to_inheritance_list(symbols[token_value].value);
     } while (TRUE);
 }
 
@@ -1737,16 +1830,13 @@ static void initialise_full_object(void)
 extern void make_class(char * metaclass_name)
 {   int n, duplicates_to_make = 0, class_number = no_objects+1,
         metaclass_flag = (metaclass_name != NULL);
-    char duplicate_name[128];
-    int class_symbol;
     debug_location_beginning beginning_debug_location =
         get_token_location_beginning();
 
     current_defn_is_class = TRUE; no_classes_to_inherit_from = 0;
     individual_prop_table_size = 0;
 
-    if (no_classes==MAX_CLASSES)
-        memoryerror("MAX_CLASSES", MAX_CLASSES);
+    ensure_memory_list_available(&class_info_memlist, no_classes+1);
 
     if (no_classes==VENEER_CONSTRAINT_ON_CLASSES)
         fatalerror("Inform's maximum possible number of classes (whatever \
@@ -1762,10 +1852,15 @@ inconvenience, please contact the maintainers.");
     }
     else
     {   get_next_token();
-        if ((token_type != SYMBOL_TT)
-            || (!(sflags[token_value] & UNKNOWN_SFLAG)))
+        if (token_type != SYMBOL_TT)
         {   discard_token_location(beginning_debug_location);
             ebf_error("new class name", token_text);
+            panic_mode_error_recovery();
+            return;
+        }
+        if (!(symbols[token_value].flags & UNKNOWN_SFLAG))
+        {   discard_token_location(beginning_debug_location);
+            ebf_symbol_error("new class name", token_text, typename(symbols[token_value].type), symbols[token_value].line);
             panic_mode_error_recovery();
             return;
         }
@@ -1776,15 +1871,15 @@ inconvenience, please contact the maintainers.");
     strcpy(shortname_buffer, token_text);
 
     assign_symbol(token_value, class_number, CLASS_T);
-    classname_text = (char *) symbs[token_value];
+    current_classname_symbol = token_value;
 
     if (!glulx_mode) {
-        if (metaclass_flag) sflags[token_value] |= SYSTEM_SFLAG;
+        if (metaclass_flag) symbols[token_value].flags |= SYSTEM_SFLAG;
     }
     else {
         /*  In Glulx, metaclasses have to be backpatched too! So we can't 
             mark it as "system", but we should mark it "used". */
-        if (metaclass_flag) sflags[token_value] |= USED_SFLAG;
+        if (metaclass_flag) symbols[token_value].flags |= USED_SFLAG;
     }
 
     /*  "Class" (object 1) has no parent, whereas all other classes are
@@ -1794,7 +1889,7 @@ inconvenience, please contact the maintainers.");
     if (metaclass_flag) parent_of_this_obj = 0;
     else parent_of_this_obj = (module_switch)?MAXINTWORD:1;
 
-    class_object_numbers[no_classes] = class_number;
+    class_info[no_classes].object_number = class_number;
 
     initialise_full_object();
 
@@ -1807,24 +1902,22 @@ inconvenience, please contact the maintainers.");
       full_object.l = 1;
       full_object.pp[0].num = 2;
       full_object.pp[0].l = 1;
-      full_object.pp[0].ao[0].value  = no_objects + 1;
-      full_object.pp[0].ao[0].type   = LONG_CONSTANT_OT;
+      INITAOTV(&full_object.pp[0].ao[0], LONG_CONSTANT_OT, no_objects + 1);
       full_object.pp[0].ao[0].marker = OBJECT_MV;
     }
     else {
       full_object_g.numprops = 1;
+      ensure_memory_list_available(&full_object_g.props_memlist, 1);
       full_object_g.props[0].num = 2;
       full_object_g.props[0].flags = 0;
       full_object_g.props[0].datastart = 0;
       full_object_g.props[0].continuation = 0;
       full_object_g.props[0].datalen = 1;
       full_object_g.propdatasize = 1;
-      full_object_g.propdata[0].value  = no_objects + 1;
-      full_object_g.propdata[0].type   = CONSTANT_OT;
+      ensure_memory_list_available(&full_object_g.propdata_memlist, 1);
+      INITAOTV(&full_object_g.propdata[0], CONSTANT_OT, no_objects + 1);
       full_object_g.propdata[0].marker = OBJECT_MV;
     }
-
-    class_symbol = token_value;
 
     if (!metaclass_flag)
     {   get_next_token();
@@ -1878,16 +1971,20 @@ You may be able to get round this by declaring some of its property names as \
 \"common properties\" using the 'Property' directive.");
 
     if (duplicates_to_make > 0)
-    {   sprintf(duplicate_name, "%s_1", shortname_buffer);
+    {
+        int namelen = strlen(shortname_buffer);
+        char *duplicate_name = my_malloc(namelen+16, "temporary storage for object duplicate names");
+        strcpy(duplicate_name, shortname_buffer);
         for (n=1; (duplicates_to_make--) > 0; n++)
-        {   if (n>1)
-            {   int i = strlen(duplicate_name);
-                while (duplicate_name[i] != '_') i--;
-                sprintf(duplicate_name+i+1, "%d", n);
-            }
+        {
+            sprintf(duplicate_name+namelen, "_%d", n);
             make_object(FALSE, duplicate_name, class_number, class_number, -1);
         }
+        my_free(&duplicate_name, "temporary storage for object duplicate names");
     }
+
+    /* Finished building the class. */
+    current_classname_symbol = 0;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1916,16 +2013,13 @@ extern void make_object(int nearby_flag,
         The last is used to create instances of a particular class.  */
 
     int i, tree_depth, internal_name_symbol = 0;
-    char internal_name[64];
     debug_location_beginning beginning_debug_location =
         get_token_location_beginning();
 
     directives.enabled = FALSE;
 
-    if (no_objects==MAX_OBJECTS) memoryerror("MAX_OBJECTS", MAX_OBJECTS);
-
-    sprintf(internal_name, "nameless_obj__%d", no_objects+1);
-    objectname_text = internal_name;
+    ensure_memory_list_available(&current_object_name, 32);
+    sprintf(current_object_name.data, "nameless_obj__%d", no_objects+1);
 
     current_defn_is_class = FALSE;
 
@@ -1962,13 +2056,17 @@ extern void make_object(int nearby_flag,
 
     if (token_type == DQ_TT) textual_name = token_text;
     else
-    {   if ((token_type != SYMBOL_TT)
-            || (!(sflags[token_value] & UNKNOWN_SFLAG)))
+    {   if (token_type != SYMBOL_TT) {
             ebf_error("name for new object or its textual short name",
                 token_text);
+        }
+        else if (!(symbols[token_value].flags & UNKNOWN_SFLAG)) {
+            ebf_symbol_error("new object", token_text, typename(symbols[token_value].type), symbols[token_value].line);
+        }
         else
         {   internal_name_symbol = token_value;
-            strcpy(internal_name, token_text);
+            ensure_memory_list_available(&current_object_name, strlen(token_text)+1);
+            strcpy(current_object_name.data, token_text);
         }
     }
 
@@ -1986,7 +2084,7 @@ extern void make_object(int nearby_flag,
     }
     else
     {   if ((token_type != SYMBOL_TT)
-            || (sflags[token_value] & UNKNOWN_SFLAG))
+            || (symbols[token_value].flags & UNKNOWN_SFLAG))
         {   if (textual_name == NULL)
                 ebf_error("parent object or the object's textual short name",
                     token_text);
@@ -2005,10 +2103,10 @@ extern void make_object(int nearby_flag,
         ebf_error("body of object definition", token_text);
     else
     {   SpecParent:
-        if ((stypes[token_value] == OBJECT_T)
-            || (stypes[token_value] == CLASS_T))
-        {   specified_parent = svals[token_value];
-            sflags[token_value] |= USED_SFLAG;
+        if ((symbols[token_value].type == OBJECT_T)
+            || (symbols[token_value].type == CLASS_T))
+        {   specified_parent = symbols[token_value].value;
+            symbols[token_value].flags |= USED_SFLAG;
         }
         else ebf_error("name of (the parent) object", token_text);
     }
@@ -2032,7 +2130,7 @@ extern void make_object(int nearby_flag,
     if (textual_name == NULL)
     {   if (internal_name_symbol > 0)
             sprintf(shortname_buffer, "(%s)",
-                (char *) symbs[internal_name_symbol]);
+                symbols[internal_name_symbol].name);
         else
             sprintf(shortname_buffer, "(%d)", no_objects+1);
     }
@@ -2101,11 +2199,12 @@ extern void make_object(int nearby_flag,
     if (debugfile_switch)
     {   debug_file_printf("<object>");
         if (internal_name_symbol > 0)
-        {   debug_file_printf("<identifier>%s</identifier>", internal_name);
+        {   debug_file_printf("<identifier>%s</identifier>",
+                 current_object_name.data);
         } else
         {   debug_file_printf
                 ("<identifier artificial=\"true\">%s</identifier>",
-                 internal_name);
+                 current_object_name.data);
         }
         debug_file_printf("<value>");
         write_debug_object_backpatch(no_objects + 1);
@@ -2128,29 +2227,51 @@ extern void make_object(int nearby_flag,
 extern void init_objects_vars(void)
 {
     properties_table = NULL;
-    prop_is_long = NULL;
-    prop_is_additive = NULL;
-    prop_default_value = NULL;
+    individuals_table = NULL;
+    commonprops = NULL;
 
     objectsz = NULL;
     objectsg = NULL;
     objectatts = NULL;
     classes_to_inherit_from = NULL;
-    class_begins_at = NULL;
+    class_info = NULL;
+
+    full_object_g.props = NULL;    
+    full_object_g.propdata = NULL;    
 }
 
 extern void objects_begin_pass(void)
 {
     properties_table_size=0;
-    prop_is_long[1] = TRUE; prop_is_additive[1] = TRUE;            /* "name" */
-    prop_is_long[2] = TRUE; prop_is_additive[2] = TRUE;  /* inheritance prop */
-    if (!glulx_mode)
-        prop_is_long[3] = TRUE; prop_is_additive[3] = FALSE;
-                                         /* instance variables table address */
+
+    /* The three predefined common properties: */
+    /* (Entry 0 is not used.) */
+
+    /* "name" */
+    commonprops[1].default_value = 0;
+    commonprops[1].is_long = TRUE;
+    commonprops[1].is_additive = TRUE;
+
+    /* class inheritance property */
+    commonprops[2].default_value = 0;
+    commonprops[2].is_long = TRUE;
+    commonprops[2].is_additive = TRUE;
+
+    /* instance variables table address */
+    /* (This property is only meaningful in Z-code; in Glulx its entry is
+       reserved but never used.) */
+    commonprops[3].default_value = 0;
+    commonprops[3].is_long = TRUE;
+    commonprops[3].is_additive = FALSE;
+                                         
     no_properties = 4;
 
     if (debugfile_switch)
-    {   debug_file_printf("<property>");
+    {
+        /* These two properties are not symbols, so they won't be emitted
+           by emit_debug_information_for_predefined_symbol(). Do it
+           manually. */
+        debug_file_printf("<property>");
         debug_file_printf
             ("<identifier artificial=\"true\">inheritance class</identifier>");
         debug_file_printf("<value>2</value>");
@@ -2167,15 +2288,19 @@ extern void objects_begin_pass(void)
     else no_attributes = 0;
 
     no_objects = 0;
+    /* Setting the info for object zero is probably a relic of very old code, but we do it. */
     if (!glulx_mode) {
+        ensure_memory_list_available(&objectsz_memlist, 1);
         objectsz[0].parent = 0; objectsz[0].child = 0; objectsz[0].next = 0;
         no_individual_properties=72;
     }
     else {
+        ensure_memory_list_available(&objectsg_memlist, 1);
         objectsg[0].parent = 0; objectsg[0].child = 0; objectsg[0].next = 0;
         no_individual_properties = INDIV_PROP_START+8;
     }
     no_classes = 0;
+    current_classname_symbol = 0;
 
     no_embedded_routines = 0;
 
@@ -2188,66 +2313,75 @@ extern void objects_allocate_arrays(void)
     objectsg = NULL;
     objectatts = NULL;
 
-    prop_default_value    = my_calloc(sizeof(int32), INDIV_PROP_START,
-                                "property default values");
-    prop_is_long          = my_calloc(sizeof(int), INDIV_PROP_START,
-                                "property-is-long flags");
-    prop_is_additive      = my_calloc(sizeof(int), INDIV_PROP_START,
-                                "property-is-additive flags");
+    commonprops = my_calloc(sizeof(commonpropinfo), INDIV_PROP_START,
+                                "common property info");
 
-    classes_to_inherit_from = my_calloc(sizeof(int), MAX_CLASSES,
-                                "inherited classes list");
-    class_begins_at       = my_calloc(sizeof(int32), MAX_CLASSES,
-                                "pointers to classes");
-    class_object_numbers  = my_calloc(sizeof(int),     MAX_CLASSES,
-                                "class object numbers");
+    initialise_memory_list(&class_info_memlist,
+        sizeof(classinfo), 64, (void**)&class_info,
+        "class info");
+    initialise_memory_list(&classes_to_inherit_from_memlist,
+        sizeof(int),       64, (void**)&classes_to_inherit_from,
+        "inherited classes list");
 
-    properties_table      = my_malloc(MAX_PROP_TABLE_SIZE,"properties table");
-    individuals_table     = my_malloc(MAX_INDIV_PROP_TABLE_SIZE,
-                                "individual properties table");
+    initialise_memory_list(&properties_table_memlist,
+        sizeof(uchar), 10000, (void**)&properties_table,
+        "properties table");
+    initialise_memory_list(&individuals_table_memlist,
+        sizeof(uchar), 10000, (void**)&individuals_table,
+        "individual properties table");
 
     defined_this_segment_size = 128;
     defined_this_segment  = my_calloc(sizeof(int), defined_this_segment_size,
                                 "defined this segment table");
 
+    initialise_memory_list(&current_object_name,
+        sizeof(char), 32, NULL,
+        "object name currently being defined");
+    initialise_memory_list(&embedded_function_name,
+        sizeof(char), 32, NULL,
+        "temporary storage for inline function name");
+    
     if (!glulx_mode) {
-      objectsz            = my_calloc(sizeof(objecttz), MAX_OBJECTS, 
-                                "z-objects");
+      initialise_memory_list(&objectsz_memlist,
+          sizeof(objecttz), 256, (void**)&objectsz,
+          "z-objects");
     }
     else {
-      objectsg            = my_calloc(sizeof(objecttg), MAX_OBJECTS, 
-                                "g-objects");
-      objectatts          = my_calloc(NUM_ATTR_BYTES, MAX_OBJECTS, 
-                                "g-attributes");
-      full_object_g.props = my_calloc(sizeof(propg), MAX_OBJ_PROP_COUNT,
-                              "object property list");
-      full_object_g.propdata = my_calloc(sizeof(assembly_operand),
-                                 MAX_OBJ_PROP_TABLE_SIZE,
-                                 "object property data table");
+      initialise_memory_list(&objectsg_memlist,
+          sizeof(objecttg), 256, (void**)&objectsg,
+          "g-objects");
+      initialise_memory_list(&objectatts_memlist,
+          NUM_ATTR_BYTES, 256, (void**)&objectatts,
+          "g-attributes");
+      initialise_memory_list(&full_object_g.props_memlist,
+          sizeof(propg), 64, (void**)&full_object_g.props,
+          "object property list");
+      initialise_memory_list(&full_object_g.propdata_memlist,
+          sizeof(assembly_operand), 1024, (void**)&full_object_g.propdata,
+          "object property data table");
     }
 }
 
 extern void objects_free_arrays(void)
 {
-    my_free(&prop_default_value, "property default values");
-    my_free(&prop_is_long,     "property-is-long flags");
-    my_free(&prop_is_additive, "property-is-additive flags");
+    my_free(&commonprops, "common property info");
+    
+    deallocate_memory_list(&current_object_name);
+    deallocate_memory_list(&embedded_function_name);
+    deallocate_memory_list(&objectsz_memlist);
+    deallocate_memory_list(&objectsg_memlist);
+    deallocate_memory_list(&objectatts_memlist);
+    deallocate_memory_list(&class_info_memlist);
+    deallocate_memory_list(&classes_to_inherit_from_memlist);
 
-    my_free(&objectsz,         "z-objects");
-    my_free(&objectsg,         "g-objects");
-    my_free(&objectatts,       "g-attributes");
-    my_free(&class_object_numbers,"class object numbers");
-    my_free(&classes_to_inherit_from, "inherited classes list");
-    my_free(&class_begins_at,  "pointers to classes");
-
-    my_free(&properties_table, "properties table");
-    my_free(&individuals_table,"individual properties table");
+    deallocate_memory_list(&properties_table_memlist);
+    deallocate_memory_list(&individuals_table_memlist);
 
     my_free(&defined_this_segment,"defined this segment table");
 
     if (!glulx_mode) {
-        my_free(&full_object_g.props, "object property list");
-        my_free(&full_object_g.propdata, "object property data table");
+        deallocate_memory_list(&full_object_g.props_memlist);
+        deallocate_memory_list(&full_object_g.propdata_memlist);
     }
     
 }

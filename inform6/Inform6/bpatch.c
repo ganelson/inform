@@ -2,15 +2,19 @@
 /*   "bpatch" : Keeps track of, and finally acts on, backpatch markers,      */
 /*              correcting symbol values not known at compilation time       */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
 #include "header.h"
 
-memory_block zcode_backpatch_table, staticarray_backpatch_table,
-    zmachine_backpatch_table;
+uchar *staticarray_backpatch_table; /* Allocated to staticarray_backpatch_size */
+memory_list staticarray_backpatch_table_memlist;
+uchar *zmachine_backpatch_table; /* Allocated to zmachine_backpatch_size */
+memory_list zmachine_backpatch_table_memlist;
+uchar *zcode_backpatch_table; /* Allocated to zcode_backpatch_size */
+memory_list zcode_backpatch_table_memlist;
 int32 zcode_backpatch_size, staticarray_backpatch_size,
     zmachine_backpatch_size;
 
@@ -73,7 +77,7 @@ static int32 backpatch_value_z(int32 value)
             value = value_of_system_constant(value); break;
         case DWORD_MV:
             value = dictionary_offset + 7 +
-                    final_dict_order[value]*((version_number==3)?7:9);
+                    final_dict_order[value]*(DICT_ENTRY_BYTE_LENGTH);
             break;
         case ACTION_MV:
             break;
@@ -92,10 +96,10 @@ static int32 backpatch_value_z(int32 value)
             break;
         case MAIN_MV:
             value = symbol_index("Main", -1);
-            if (stypes[value] != ROUTINE_T)
+            if (symbols[value].type != ROUTINE_T)
                 error("No 'Main' routine has been defined");
-            sflags[value] |= USED_SFLAG;
-            value = svals[value];
+            symbols[value].flags |= USED_SFLAG;
+            value = symbols[value].value;
             if (OMIT_UNUSED_ROUTINES)
                 value = df_stripped_address_for_address(value);
             value += code_offset/scale_factor;
@@ -110,34 +114,34 @@ static int32 backpatch_value_z(int32 value)
                 value = 0;
                 break;
             }
-            if (sflags[value] & UNKNOWN_SFLAG)
-            {   if (!(sflags[value] & UERROR_SFLAG))
-                {   sflags[value] |= UERROR_SFLAG;
+            if (symbols[value].flags & UNKNOWN_SFLAG)
+            {   if (!(symbols[value].flags & UERROR_SFLAG))
+                {   symbols[value].flags |= UERROR_SFLAG;
                     error_named_at("No such constant as",
-                        (char *) symbs[value], slines[value]);
+                        symbols[value].name, symbols[value].line);
                 }
             }
             else
-            if (sflags[value] & CHANGE_SFLAG)
-            {   sflags[value] &= (~(CHANGE_SFLAG));
-                backpatch_marker = (svals[value]/0x10000);
+            if (symbols[value].flags & CHANGE_SFLAG)
+            {   symbols[value].flags &= (~(CHANGE_SFLAG));
+                backpatch_marker = (symbols[value].marker);
                 if ((backpatch_marker < 0)
                     || (backpatch_marker > LARGEST_BPATCH_MV))
                 {
                     if (no_link_errors == 0)
                     {   compiler_error_named(
                         "Illegal backpatch marker attached to symbol",
-                        (char *) symbs[value]);
+                        symbols[value].name);
                         backpatch_error_flag = TRUE;
                     }
                 }
                 else
-                    svals[value] = backpatch_value_z((svals[value]) % 0x10000);
+                    symbols[value].value = backpatch_value_z((symbols[value].value) % 0x10000);
             }
 
-            sflags[value] |= USED_SFLAG;
-            {   int t = stypes[value];
-                value = svals[value];
+            symbols[value].flags |= USED_SFLAG;
+            {   int t = symbols[value].type;
+                value = symbols[value].value;
                 switch(t)
                 {   case ROUTINE_T: 
                         if (OMIT_UNUSED_ROUTINES)
@@ -242,10 +246,10 @@ static int32 backpatch_value_g(int32 value)
             break;
         case MAIN_MV:
             value = symbol_index("Main", -1);
-            if (stypes[value] != ROUTINE_T)
+            if (symbols[value].type != ROUTINE_T)
                 error("No 'Main' routine has been defined");
-            sflags[value] |= USED_SFLAG;
-            value = svals[value];
+            symbols[value].flags |= USED_SFLAG;
+            value = symbols[value].value;
             if (OMIT_UNUSED_ROUTINES)
                 value = df_stripped_address_for_address(value);
             value += code_offset;
@@ -260,34 +264,34 @@ static int32 backpatch_value_g(int32 value)
                 value = 0;
                 break;
             }
-            if (sflags[value] & UNKNOWN_SFLAG)
-            {   if (!(sflags[value] & UERROR_SFLAG))
-                {   sflags[value] |= UERROR_SFLAG;
+            if (symbols[value].flags & UNKNOWN_SFLAG)
+            {   if (!(symbols[value].flags & UERROR_SFLAG))
+                {   symbols[value].flags |= UERROR_SFLAG;
                     error_named_at("No such constant as",
-                        (char *) symbs[value], slines[value]);
+                        symbols[value].name, symbols[value].line);
                 }
             }
             else
-            if (sflags[value] & CHANGE_SFLAG)
-            {   sflags[value] &= (~(CHANGE_SFLAG));
-                backpatch_marker = smarks[value];
+            if (symbols[value].flags & CHANGE_SFLAG)
+            {   symbols[value].flags &= (~(CHANGE_SFLAG));
+                backpatch_marker = symbols[value].marker;
                 if ((backpatch_marker < 0)
                     || (backpatch_marker > LARGEST_BPATCH_MV))
                 {
                     if (no_link_errors == 0)
                     {   compiler_error_named(
                         "Illegal backpatch marker attached to symbol",
-                        (char *) symbs[value]);
+                        symbols[value].name);
                         backpatch_error_flag = TRUE;
                     }
                 }
                 else
-                    svals[value] = backpatch_value_g(svals[value]);
+                    symbols[value].value = backpatch_value_g(symbols[value].value);
             }
 
-            sflags[value] |= USED_SFLAG;
-            {   int t = stypes[value];
-                value = svals[value];
+            symbols[value].flags |= USED_SFLAG;
+            {   int t = symbols[value].type;
+                value = symbols[value].value;
                 switch(t)
                 {
                     case ROUTINE_T:
@@ -307,6 +311,7 @@ static int32 backpatch_value_g(int32 value)
                       break;
                     case CONSTANT_T:
                     case INDIVIDUAL_PROPERTY_T:
+                    case PROPERTY_T:
                       /* value is unchanged */
                       break;
                     default:
@@ -351,14 +356,11 @@ static void backpatch_zmachine_z(int mv, int zmachine_area, int32 offset)
 
     /* printf("MV %d ZA %d Off %04x\n", mv, zmachine_area, offset); */
 
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, mv);
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, zmachine_area);
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, offset/256);
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, offset%256);
+    ensure_memory_list_available(&zmachine_backpatch_table_memlist, zmachine_backpatch_size+4);
+    zmachine_backpatch_table[zmachine_backpatch_size++] = mv;
+    zmachine_backpatch_table[zmachine_backpatch_size++] = zmachine_area;
+    zmachine_backpatch_table[zmachine_backpatch_size++] = offset/256;
+    zmachine_backpatch_table[zmachine_backpatch_size++] = offset%256;
 }
 
 static void backpatch_zmachine_g(int mv, int zmachine_area, int32 offset)
@@ -378,18 +380,13 @@ static void backpatch_zmachine_g(int mv, int zmachine_area, int32 offset)
 
 /*    printf("+MV %d ZA %d Off %06x\n", mv, zmachine_area, offset);  */
 
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, mv);
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, zmachine_area);
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, (offset >> 24) & 0xFF);
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, (offset >> 16) & 0xFF);
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, (offset >> 8) & 0xFF);
-    write_byte_to_memory_block(&zmachine_backpatch_table,
-        zmachine_backpatch_size++, (offset) & 0xFF);
+    ensure_memory_list_available(&zmachine_backpatch_table_memlist, zmachine_backpatch_size+6);
+    zmachine_backpatch_table[zmachine_backpatch_size++] = mv;
+    zmachine_backpatch_table[zmachine_backpatch_size++] = zmachine_area;
+    zmachine_backpatch_table[zmachine_backpatch_size++] = (offset >> 24) & 0xFF;
+    zmachine_backpatch_table[zmachine_backpatch_size++] = (offset >> 16) & 0xFF;
+    zmachine_backpatch_table[zmachine_backpatch_size++] = (offset >> 8) & 0xFF;
+    zmachine_backpatch_table[zmachine_backpatch_size++] = (offset) & 0xFF;
 }
 
 extern void backpatch_zmachine(int mv, int zmachine_area, int32 offset)
@@ -406,12 +403,12 @@ extern void backpatch_zmachine_image_z(void)
     backpatch_error_flag = FALSE;
     while (bm < zmachine_backpatch_size)
     {   backpatch_marker
-            = read_byte_from_memory_block(&zmachine_backpatch_table, bm);
+            = zmachine_backpatch_table[bm];
         zmachine_area
-            = read_byte_from_memory_block(&zmachine_backpatch_table, bm+1);
+            = zmachine_backpatch_table[bm+1];
         offset
-          = 256*read_byte_from_memory_block(&zmachine_backpatch_table,bm+2)
-            + read_byte_from_memory_block(&zmachine_backpatch_table, bm+3);
+          = 256*zmachine_backpatch_table[bm+2]
+            + zmachine_backpatch_table[bm+3];
         bm += 4;
 
         switch(zmachine_area)
@@ -448,16 +445,16 @@ extern void backpatch_zmachine_image_g(void)
     backpatch_error_flag = FALSE;
     while (bm < zmachine_backpatch_size)
     {   backpatch_marker
-            = read_byte_from_memory_block(&zmachine_backpatch_table, bm);
+            = zmachine_backpatch_table[bm];
         zmachine_area
-            = read_byte_from_memory_block(&zmachine_backpatch_table, bm+1);
-        offset = read_byte_from_memory_block(&zmachine_backpatch_table, bm+2);
+            = zmachine_backpatch_table[bm+1];
+        offset = zmachine_backpatch_table[bm+2];
         offset = (offset << 8) |
-          read_byte_from_memory_block(&zmachine_backpatch_table, bm+3);
+          zmachine_backpatch_table[bm+3];
         offset = (offset << 8) |
-          read_byte_from_memory_block(&zmachine_backpatch_table, bm+4);
+          zmachine_backpatch_table[bm+4];
         offset = (offset << 8) |
-          read_byte_from_memory_block(&zmachine_backpatch_table, bm+5);
+          zmachine_backpatch_table[bm+5];
             bm += 6;
 
         /* printf("-MV %d ZA %d Off %06x\n", backpatch_marker, zmachine_area, offset);  */
@@ -500,9 +497,9 @@ extern void backpatch_zmachine_image_g(void)
 /* ------------------------------------------------------------------------- */
 
 extern void init_bpatch_vars(void)
-{   initialise_memory_block(&zcode_backpatch_table);
-    initialise_memory_block(&staticarray_backpatch_table);
-    initialise_memory_block(&zmachine_backpatch_table);
+{   zcode_backpatch_table = NULL;
+    staticarray_backpatch_table = NULL;
+    zmachine_backpatch_table = NULL;
 }
 
 extern void bpatch_begin_pass(void)
@@ -513,12 +510,21 @@ extern void bpatch_begin_pass(void)
 
 extern void bpatch_allocate_arrays(void)
 {
+    initialise_memory_list(&zcode_backpatch_table_memlist,
+        sizeof(uchar), 128, (void**)&zcode_backpatch_table,
+        "code backpatch table");
+    initialise_memory_list(&staticarray_backpatch_table_memlist,
+        sizeof(uchar), 128, (void**)&staticarray_backpatch_table,
+        "static array backpatch table");
+    initialise_memory_list(&zmachine_backpatch_table_memlist,
+        sizeof(uchar), 128, (void**)&zmachine_backpatch_table,
+        "machine backpatch table");
 }
 
 extern void bpatch_free_arrays(void)
-{   deallocate_memory_block(&zcode_backpatch_table);
-    deallocate_memory_block(&staticarray_backpatch_table);
-    deallocate_memory_block(&zmachine_backpatch_table);
+{   deallocate_memory_list(&zcode_backpatch_table_memlist);
+    deallocate_memory_list(&staticarray_backpatch_table_memlist);
+    deallocate_memory_list(&zmachine_backpatch_table_memlist);
 }
 
 /* ========================================================================= */

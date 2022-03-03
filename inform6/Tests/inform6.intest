@@ -1,0 +1,90 @@
+-cases			[Main] 'inform6/Tests/Test Cases'
+-problems		[Main] 'inform6/Tests/Test Errors'
+
+-groups 'inform6/Tests/Groups'
+
+-recipe [Main]
+
+	set: $I6 = inform6/Tangled/inform6
+	set: $WORKSPACE = intest/Workspace
+	set: $ZINT = inform6/Tests/Assistants/dumb-frotz/dumb-frotz
+	set: $GINT = inform6/Tests/Assistants/dumb-glulx/glulxe/glulxe
+	set: $TOC = NO
+
+	! First we decide whether to compile it for the Z-machine or Glulx.
+
+	set: $VM = Z
+	if: $CASE %c*-G
+		set: $VM = G
+	endif
+
+	! On the basis of which:
+
+	if: $VM G
+		set: $EXT           = ulx
+		set: $I6OPTIONS		= -G
+		set: $INT			= $GINT
+		set: $INTNAME		= dumb-glulxe
+		set: $INTOPTIONS	= -u -q
+	else
+		set: $EXT           = z8
+		set: $I6OPTIONS		= 
+		set: $INT			= $ZINT
+		set: $INTNAME		= dumb-frotz
+		set: $INTOPTIONS	= -w 1000
+	endif
+
+	mkdir: $PATH/_Transcript_Actual
+	mkdir: $PATH/_Transcript_Ideal
+	mkdir: $PATH/_Story_File_Actual
+	mkdir: $PATH/_Console_Actual
+	set: $I6CONSOLE = $PATH/_Console_Actual/$CASE.txt
+
+	set: $A = $PATH/_Transcript_Actual/$CASE.txt
+	set: $I = $PATH/_Transcript_Ideal/$CASE.txt
+	set: $IC = $PATH/_Console_Ideal/$CASE.txt
+	set: $I6SOURCE = $PATH/$CASE.inf
+	set: $STORYFILE = $PATH/_Story_File_Actual/$CASE.$EXT
+	set: $SETTINGS = $PATH/Settings/$CASE.txt
+
+	! First, error message cases, where we require inform6 to fail and with the
+	! correct error messages.
+
+	if: $TYPE problem
+		debugger: lldb -f $I6 -- `$I6OPTIONS $[$SETTINGS$] $I6SOURCE $STORYFILE
+		fail step: $I6 `$I6OPTIONS $[$SETTINGS$] $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
+		or: 'failed to produce error messages' $I6CONSOLE
+		show: $I6CONSOLE
+		exists: $IC
+		or: 'produced error(s), but no ideal transcript existed'
+		match problem: $I6CONSOLE $IC
+		or: 'produced the wrong error(s)'
+		pass: 'passed'
+	endif
+
+	! And then the general case.
+
+	debugger: lldb -f $I6 -- `$I6OPTIONS $[$SETTINGS$] $I6SOURCE $STORYFILE
+	step: $I6 `$I6OPTIONS $[$SETTINGS$] $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
+
+	show: $I6CONSOLE
+	exists: $IC
+	or: 'compiled, but no ideal console output existed'
+	match problem: $I6CONSOLE $IC
+	or: 'compiled, but produced the wrong console output'
+
+	step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
+	or: 'compiled, but was unable to run $INTNAME (do you need to make interpreters?)'
+
+	exists: $I
+	or: 'compiled, but no ideal transcript existed'
+	if: $VM G
+		match glulxe transcript: $A $I
+		or: 'compiled, but played incorrectly'
+	else
+		match frotz transcript: $A $I
+		or: 'compiled, but played incorrectly'
+	endif
+
+	pass: 'passed'
+-end

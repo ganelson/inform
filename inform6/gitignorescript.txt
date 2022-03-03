@@ -5,4 +5,8 @@ Tests/Assistants/dumb-frotz/*.o
 Tests/Assistants/dumb-glulx/glulxe/glulxe
 Tests/Assistants/dumb-glulx/cheapglk/*.o
 Tests/Assistants/dumb-glulx/glulxe/*.o
+Tests/Test Cases/_Console_Actual/
+Tests/Test Errors/_Console_Actual/
+Tests/Test Cases/_Story_File_Actual/
+Tests/Test Cases/_Transcript_Actual/
 Tangled/inform6

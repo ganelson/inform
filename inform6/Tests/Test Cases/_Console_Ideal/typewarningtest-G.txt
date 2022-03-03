@@ -1,0 +1,152 @@
+Inform 6.36 (24th January 2022)
+line 60: Warning:  Bare property name found. "self.prop" intended?
+>  give obj cprop;
+line 60: Warning:  In "give" statement, expected Attribute but found Property "cprop"
+>  give obj cprop;
+line 61: Warning:  Bare property name found. "self.prop" intended?
+>  give obj iprop1;
+line 61: Warning:  In "give" statement, expected Attribute but found Individual property "iprop1"
+>  give obj iprop1;
+line 62: Warning:  In "give" statement, expected Attribute but found Array "arr"
+>  give obj arr;
+line 63: Warning:  In "give" statement, expected Attribute but found Object "obj"
+>  give obj obj;
+line 64: Warning:  In "give" statement, expected Attribute but found Routine "func"
+>  give obj func;
+line 65: Warning:  In "give" statement, expected Attribute but found Class "cla"
+>  give obj cla;
+line 68: Warning:  In "give" statement, expected Attribute but found Object "objconst"
+>  give obj objconst;
+line 71: Warning:  Bare property name found. "self.prop" intended?
+>  give cprop attr1
+line 71: Warning:  In "give" statement, expected Object but found Property "cprop"
+>  give cprop attr1
+line 72: Warning:  Bare property name found. "self.prop" intended?
+>  give iprop1 attr1
+line 72: Warning:  In "give" statement, expected Object but found Individual property "iprop1"
+>  give iprop1 attr1
+line 73: Warning:  In "give" statement, expected Object but found Array "arr"
+>  give arr attr1
+line 74: Warning:  In "give" statement, expected Object but found Attribute "attr1"
+>  give attr1 attr2
+line 75: Warning:  In "give" statement, expected Object but found Routine "func"
+>  give func attr2
+line 76: Warning:  In "give" statement, expected Object but found Class "cla"
+>  give cla attr1
+line 101: Warning:  In "has/hasnt" expression, expected Attribute but found Object "obj"
+>  loc = (obj has obj);
+line 102: Warning:  In "has/hasnt" expression, expected Attribute but found Object "obj"
+>  loc = (obj hasnt obj);
+line 103: Warning:  In "has/hasnt" expression, expected Attribute but found Array "arr"
+>  loc = (obj has arr);
+line 104: Warning:  In "has/hasnt" expression, expected Attribute but found Array "arr"
+>  loc = (obj hasnt arr);
+line 105: Warning:  Property name in expression is not qualified by object
+>  loc = (obj has cprop)
+line 105: Warning:  In "has/hasnt" expression, expected Attribute but found Property "cprop"
+>  loc = (obj has cprop);
+line 106: Warning:  In "has/hasnt" expression, expected Attribute but found Routine "func"
+>  loc = (obj has func);
+line 107: Warning:  In "has/hasnt" expression, expected Attribute but found Class "cla"
+>  loc = (obj has cla);
+line 111: Warning:  In "has/hasnt" expression, expected Attribute but found Object "objconst"
+>  loc = (obj hasnt objconst);
+line 114: Warning:  In "has/hasnt" expression, expected Object but found Array "arr"
+>  loc = (arr has attr1);
+line 115: Warning:  In "has/hasnt" expression, expected Object but found Array "arr"
+>  loc = (arr hasnt attr1);
+line 116: Warning:  In "has/hasnt" expression, expected Object but found Attribute "attr1"
+>  loc = (attr1 has attr1);
+line 117: Warning:  In "has/hasnt" expression, expected Object but found Routine "func"
+>  loc = (func has attr1);
+line 118: Warning:  Property name in expression is not qualified by object
+>  loc = (cprop hasnt attr1)
+line 118: Warning:  In "has/hasnt" expression, expected Object but found Property "cprop"
+>  loc = (cprop hasnt attr1);
+line 119: Warning:  In "has/hasnt" expression, expected Object but found Class "cla"
+>  loc = (cla has attr1);
+line 133: Warning:  In "move" statement, expected Object but found Routine "func"
+>  move func to obj;
+line 134: Warning:  In "move" statement, expected Object but found Attribute "attr2"
+>  move obj to attr2;
+line 135: Warning:  Bare property name found. "self.prop" intended?
+>  move arr to iprop1;
+line 135: Warning:  In "move" statement, expected Object but found Array "arr"
+>  move arr to iprop1;
+line 135: Warning:  In "move" statement, expected Object but found Individual property "iprop1"
+>  move arr to iprop1;
+line 136: Warning:  In "move" statement, expected Object but found Class "cla"
+>  move cla to obj;
+line 146: Warning:  In "remove" statement, expected Object but found Routine "func"
+>  remove func;
+line 147: Warning:  In "remove" statement, expected Object but found Array "arr"
+>  remove arr;
+line 148: Warning:  In "remove" statement, expected Object but found Attribute "attr1"
+>  remove attr1;
+line 149: Warning:  Bare property name found. "self.prop" intended?
+>  remove cprop;
+line 149: Warning:  In "remove" statement, expected Object but found Property "cprop"
+>  remove cprop;
+line 150: Warning:  In "remove" statement, expected Object but found Class "cla"
+>  remove cla;
+line 164: Warning:  In "in/notin" expression, expected Object but found Routine "func"
+>  loc = (obj in func);
+line 165: Warning:  In "in/notin" expression, expected Object but found Array "arr"
+>  loc = (obj notin arr);
+line 166: Warning:  In "in/notin" expression, expected Object but found Class "cla"
+>  loc = (cla in obj);
+line 182: Warning:  In "provides" expression, expected Property but found Routine "func"
+>  loc = (obj provides func);
+line 183: Warning:  In "provides" expression, expected Property but found Array "arr"
+>  loc = (obj provides arr);
+line 184: Warning:  In "provides" expression, expected Property but found Object "obj"
+>  loc = (obj provides obj);
+line 185: Warning:  In "provides" expression, expected Property but found Class "cla"
+>  loc = (obj provides cla);
+line 186: Warning:  In "provides" expression, expected Property but found Attribute "attr1"
+>  loc = (obj provides attr1);
+line 201: Warning:  In "ofclass" expression, expected Class but found Routine "func"
+>  loc = (obj ofclass func);
+line 202: Warning:  In "ofclass" expression, expected Class but found Array "arr"
+>  loc = (obj ofclass arr);
+line 203: Warning:  In "ofclass" expression, expected Class but found Object "obj"
+>  loc = (obj ofclass obj);
+line 204: Warning:  Property name in expression is not qualified by object
+>  loc = (obj ofclass cprop)
+line 204: Warning:  In "ofclass" expression, expected Class but found Property "cprop"
+>  loc = (obj ofclass cprop);
+line 205: Warning:  In "ofclass" expression, expected Class but found Attribute "attr1"
+>  loc = (obj ofclass attr1);
+line 210: Warning:  Property name in expression is not qualified by object
+>  loc = (loc < n_to)
+line 211: Warning:  Property name in expression is not qualified by object
+>  loc = (n_to <= loc)
+line 212: Warning:  Property name in expression is not qualified by object
+>  loc = (loc <= cprop)
+line 213: Warning:  Property name in expression is not qualified by object
+>  loc = (loc <= iprop1)
+line 236: Warning:  In "." expression, expected Property but found Attribute "attr1"
+>  loc = obj.attr1;
+line 237: Warning:  In "." expression, expected Property but found Class "cla"
+>  loc = obj.cla;
+line 238: Warning:  In "." expression, expected Property but found Object "obj"
+>  loc = obj.obj;
+line 239: Warning:  In "." expression, expected Property but found Routine "func"
+>  loc = obj.func;
+line 240: Warning:  In "." expression, expected Property but found Array "arr"
+>  loc = obj.arr;
+line 251: Warning:  In ".()" expression, expected Property but found Attribute "attr1"
+>  loc = obj.attr1();
+line 252: Warning:  In ".()" expression, expected Property but found Class "cla"
+>  loc = cla.cla();
+line 253: Warning:  In ".()" expression, expected Property but found Array "arr"
+>  loc = cla.arr();
+line 254: Warning:  In ".&" expression, expected Property but found Attribute "attr2"
+>  loc = obj.&attr2;
+line 255: Warning:  In ".&" expression, expected Property but found Array "arr"
+>  loc = cla.&arr;
+line 256: Warning:  In ".#" expression, expected Property but found Routine "func"
+>  loc = obj.#func;
+line 257: Warning:  In ".#" expression, expected Property but found Object "obj"
+>  loc = cla.#obj;
+Compiled with 75 warnings

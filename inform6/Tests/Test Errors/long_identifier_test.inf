@@ -1,0 +1,7 @@
+[ Main; ];
+
+! Identifier too long error
+Global xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxyzzy = 0;
+
+
+

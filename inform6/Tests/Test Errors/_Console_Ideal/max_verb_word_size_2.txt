@@ -1,0 +1,4 @@
+Inform 6.36 (24th January 2022)
+line 6: Error:  Verb word is too long -- max length is 120.
+> Verb "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  ...etc
+Compiled with 1 error (no output)

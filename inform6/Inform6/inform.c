@@ -2,13 +2,15 @@
 /*   "inform" :  The top level of Inform: switches, pathnames, filenaming    */
 /*               conventions, ICL (Inform Command Line) files, main          */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
 #define MAIN_INFORM_FILE
 #include "header.h"
+
+#define CMD_BUF_SIZE (256)
 
 /* ------------------------------------------------------------------------- */
 /*   Compiler progress                                                       */
@@ -108,6 +110,8 @@ static void select_target(int targ)
     WORDSIZE = 2;
     MAXINTWORD = 0x7FFF;
 
+    MAX_LOCAL_VARIABLES = 16; /* including "sp" */
+
     if (INDIV_PROP_START != 64) {
         INDIV_PROP_START = 64;
         fatalerror("You cannot change INDIV_PROP_START in Z-code");
@@ -124,24 +128,16 @@ static void select_target(int targ)
       NUM_ATTR_BYTES = 6;
       fatalerror("You cannot change NUM_ATTR_BYTES in Z-code");
     }
-    if (MAX_LOCAL_VARIABLES != 16) {
-      MAX_LOCAL_VARIABLES = 16;
-      fatalerror("You cannot change MAX_LOCAL_VARIABLES in Z-code");
-    }
-    if (MAX_GLOBAL_VARIABLES != 240) {
-      MAX_GLOBAL_VARIABLES = 240;
-      fatalerror("You cannot change MAX_GLOBAL_VARIABLES in Z-code");
-    }
-    if (MAX_VERBS > 255) {
-      MAX_VERBS = 255;
-      fatalerror("MAX_VERBS can only go above 255 when Glulx is used");
-    }
   }
   else {
     /* Glulx */
     WORDSIZE = 4;
     MAXINTWORD = 0x7FFFFFFF;
     scale_factor = 0; /* It should never even get used in Glulx */
+
+    /* This could really be 120, since the practical limit is the size
+       of local_variables.keywords. But historically it's been 119. */
+    MAX_LOCAL_VARIABLES = 119; /* including "sp" */
 
     if (INDIV_PROP_START < 256) {
         INDIV_PROP_START = 256;
@@ -159,12 +155,6 @@ static void select_target(int targ)
     }
   }
 
-  if (MAX_LOCAL_VARIABLES >= 120) {
-    MAX_LOCAL_VARIABLES = 119;
-    warning("MAX_LOCAL_VARIABLES cannot exceed 119; resetting to 119");
-    /* This is because the keyword table in the lexer only has 120
-       entries. */
-  }
   if (DICT_WORD_SIZE > MAX_DICT_WORD_SIZE) {
     DICT_WORD_SIZE = MAX_DICT_WORD_SIZE;
     warning_numbered(
@@ -185,10 +175,8 @@ static void select_target(int targ)
   if (!targ) {
     /* Z-machine */
     DICT_WORD_BYTES = DICT_WORD_SIZE;
-    /* The Z-code generator doesn't use the following variables, although 
-       it would be a little cleaner if it did. */
     OBJECT_BYTE_LENGTH = 0;
-    DICT_ENTRY_BYTE_LENGTH = (version_number==3)?7:9;
+    DICT_ENTRY_BYTE_LENGTH = ((version_number==3)?7:9) - (ZCODE_LESS_DICT_DATA?1:0);
     DICT_ENTRY_FLAG_POS = 0;
   }
   else {
@@ -202,6 +190,34 @@ static void select_target(int targ)
     else {
       DICT_ENTRY_BYTE_LENGTH = (12+DICT_WORD_BYTES);
       DICT_ENTRY_FLAG_POS = (4+DICT_WORD_BYTES);
+    }
+  }
+
+  if (!targ) {
+    /* Z-machine */
+    /* The Z-machine's 96 abbreviations are used for these two purposes.
+       Make sure they are set consistently. If exactly one has been
+       set non-default, set the other to match. */
+    if (MAX_DYNAMIC_STRINGS == 32 && MAX_ABBREVS != 64) {
+        MAX_DYNAMIC_STRINGS = 96 - MAX_ABBREVS;
+    }
+    if (MAX_ABBREVS == 64 && MAX_DYNAMIC_STRINGS != 32) {
+        MAX_ABBREVS = 96 - MAX_DYNAMIC_STRINGS;
+    }
+    if (MAX_ABBREVS + MAX_DYNAMIC_STRINGS != 96
+        || MAX_ABBREVS < 0
+        || MAX_DYNAMIC_STRINGS < 0) {
+      warning("MAX_ABBREVS plus MAX_DYNAMIC_STRINGS must be 96 in Z-code; resetting both");
+      MAX_DYNAMIC_STRINGS = 32;
+      MAX_ABBREVS = 64;
+    }
+  }
+  else {
+    if (MAX_DYNAMIC_STRINGS > 100) {
+      MAX_DYNAMIC_STRINGS = 100;
+      warning("MAX_DYNAMIC_STRINGS cannot exceed 100; resetting to 100");
+      /* This is because they are specified in text literals like "@00",
+         with two digits. */
     }
   }
 }
@@ -264,7 +280,7 @@ int character_set_setting,          /* set by -C0 through -C9 */
     trace_fns_setting,              /* set by -g: 0, 1 or 2 */
     linker_trace_setting,           /* set by -y: ditto for linker_... */
     store_the_text;                 /* when set, record game text to a chunk
-                                       of memory (used by both -r & -k) */
+                                       of memory (used by -u) */
 static int r_e_c_s_set;             /* has -S been explicitly set? */
 
 int glulx_mode;                     /* -G */
@@ -588,7 +604,7 @@ static void set_default_paths(void)
     set_path_value(Temporary_Path,  Temporary_Directory);
     set_path_value(Debugging_Name,  Debugging_File);
     set_path_value(Transcript_Name, Transcript_File);
-    set_path_value(Language_Name,   "English");
+    set_path_value(Language_Name,   Default_Language);
     set_path_value(Charset_Map,     "");
 }
 
@@ -1035,6 +1051,7 @@ extern void translate_temp_filename(int i)
     {   case 1: p=Temp1_Name; break;
         case 2: p=Temp2_Name; break;
         case 3: p=Temp3_Name; break;
+        default: return;
     }
     if (strlen(Temporary_Path)+strlen(Temporary_File)+6 >= PATHLEN) {
         printf ("Temporary_Path is too long.\n");
@@ -1087,6 +1104,8 @@ static void run_pass(void)
     lexer_endpass();
     if (module_switch) linker_endpass();
 
+    issue_debug_symbol_warnings();
+    
     close_all_source();
     if (hash_switch && hash_printed_since_newline) printf("\n");
 
@@ -1102,9 +1121,8 @@ static void run_pass(void)
 
 int output_has_occurred;
 
-static void rennab(int32 time_taken)
+static void rennab(float time_taken)
 {   /*  rennab = reverse of banner  */
-
     int t = no_warnings + no_suppressed_warnings;
 
     if (memout_switch) print_memory_usage();
@@ -1131,7 +1149,16 @@ static void rennab(int32 time_taken)
     if (no_compiler_errors > 0) print_sorry_message();
 
     if (statistics_switch)
-        printf("Completed in %ld seconds\n", (long int) time_taken);
+    {
+        /* Print the duration to a sensible number of decimal places.
+           (We aim for three significant figures.) */
+        if (time_taken >= 10.0)
+            printf("Completed in %.1f seconds\n", time_taken);
+        else if (time_taken >= 1.0)
+            printf("Completed in %.2f seconds\n", time_taken);
+        else
+            printf("Completed in %.3f seconds\n", time_taken);
+    }
 }
 
 /* ------------------------------------------------------------------------- */
@@ -1141,7 +1168,9 @@ static void rennab(int32 time_taken)
 static int execute_icl_header(char *file1);
 
 static int compile(int number_of_files_specified, char *file1, char *file2)
-{   int32 time_start;
+{
+    TIMEVALUE time_start, time_end;
+    float duration;
 
     if (execute_icl_header(file1))
       return 1;
@@ -1171,7 +1200,9 @@ compiling modules: disabling -S switch\n");
         runtime_error_checking_switch = FALSE;
     }
 
-    time_start=time(0); no_compilations++;
+    TIMEVALUE_NOW(&time_start);
+    
+    no_compilations++;
 
     strcpy(Source_Name, file1); convert_filename_flag = TRUE;
     strcpy(Code_Name, file1);
@@ -1203,13 +1234,22 @@ compiling modules: disabling -S switch\n");
 
     if (temporary_files_switch && (no_errors>0)) remove_temp_files();
 
+    if (optimise_switch) {
+        /* Pull out all_text so that it will not be freed. */
+        extract_all_text();
+    }
+
     free_arrays();
 
-    rennab((int32) (time(0)-time_start));
+    TIMEVALUE_NOW(&time_end);
+    duration = TIMEVALUE_DIFFERENCE(&time_start, &time_end);
+    
+    rennab(duration);
 
-    if (optimise_switch) optimise_abbreviations();
-
-    if (store_the_text) my_free(&all_text,"transcription text");
+    if (optimise_switch) {
+        optimise_abbreviations();
+        ao_free_arrays();
+    }
 
     return (no_errors==0)?0:1;
 }
@@ -1222,7 +1262,8 @@ static void cli_print_help(int help_level)
 {
     printf(
 "\nThis program is a compiler of Infocom format (also called \"Z-machine\")\n\
-story files: copyright (c) Graham Nelson 1993 - 2020.\n\n");
+story files, as well as \"Glulx\" story files:\n\
+Copyright (c) Graham Nelson 1993 - 2022.\n\n");
 
    /* For people typing just "inform", a summary only: */
 
@@ -1245,23 +1286,33 @@ One or more words can be supplied as \"commands\". These may be:\n\n\
   -switches     a list of compiler switches, 1 or 2 letter\n\
                 (see \"inform -h2\" for the full range)\n\n\
   +dir          set Include_Path to this directory\n\
-  +PATH=dir     change the PATH to this directory\n\n\
-  $...          one of the following memory commands:\n");
+  ++dir         add this directory to Include_Path\n\
+  +PATH=dir     change the PATH to this directory\n\
+  ++PATH=dir    add this directory to the PATH\n\n\
+  $...          one of the following configuration commands:\n");
+  
   printf(
-"     $list            list current memory allocation settings\n\
-     $huge            make standard \"huge game\" settings %s\n\
-     $large           make standard \"large game\" settings %s\n\
-     $small           make standard \"small game\" settings %s\n\
+"     $list            list current settings\n\
      $?SETTING        explain briefly what SETTING is for\n\
-     $SETTING=number  change SETTING to given number\n\n\
-  (filename)    read in a list of commands (in the format above)\n\
-                from this \"setup file\"\n\n",
-    (DEFAULT_MEMORY_SIZE==HUGE_SIZE)?"(default)":"",
-    (DEFAULT_MEMORY_SIZE==LARGE_SIZE)?"(default)":"",
-    (DEFAULT_MEMORY_SIZE==SMALL_SIZE)?"(default)":"");
+     $SETTING=number  change SETTING to given number\n\
+     $#SYMBOL=number  define SYMBOL as a constant in the story\n\n");
+
+  printf(
+"  (filename)    read in a list of commands (in the format above)\n\
+                from this \"setup file\"\n\n");
+
+  printf("Alternate command-line formats for the above:\n\
+  --help                 (this page)\n\
+  --path PATH=dir\n\
+  --addpath PATH=dir\n\
+  --list\n\
+  --helpopt SETTING\n\
+  --opt SETTING=number\n\
+  --define SETTING=number\n\
+  --config filename      (setup file)\n\n");
 
 #ifndef PROMPT_INPUT
-    printf("For example: \"inform -dexs $huge curses\".\n\n");
+    printf("For example: \"inform -dexs curses\".\n\n");
 #endif
 
     printf(
@@ -1285,15 +1336,18 @@ One or more words can be supplied as \"commands\". These may be:\n\n\
 
    printf("\
   f   frequencies mode: show how useful abbreviations are\n\
-  g   traces calls to functions (except in the library)\n\
-  g2  traces calls to all functions\n\
-  h   print this information\n");
+  g   traces calls to all game functions\n\
+  g2  traces calls to all game and library functions\n\
+  g3  traces calls to all functions (including veneer)\n\
+  h   print general help information\n\
+  h1  print help information on filenames and path options\n\
+  h2  print help information on switches (this page)\n");
 
    printf("\
   i   ignore default switches set within the file\n\
   j   list objects as constructed\n\
-  k   output Infix debugging information to \"%s\" (and switch -D on)\n\
-  l   list every statement run through Inform\n\
+  k   output debugging information to \"%s\"\n\
+  l   list every statement run through Inform (not implemented)\n\
   m   say how much memory has been allocated\n\
   n   print numbers of properties, attributes and actions\n",
           Debugging_Name);
@@ -1308,15 +1362,16 @@ One or more words can be supplied as \"commands\". These may be:\n\n\
 
    printf("\
   u   work out most useful abbreviations (very very slowly)\n\
-  v3  compile to version-3 (\"Standard\") story file\n\
-  v4  compile to version-4 (\"Plus\") story file\n\
-  v5  compile to version-5 (\"Advanced\") story file: the default\n\
-  v6  compile to version-6 (graphical) story file\n\
+  v3  compile to version-3 (\"Standard\"/\"ZIP\") story file\n\
+  v4  compile to version-4 (\"Plus\"/\"EZIP\") story file\n\
+  v5  compile to version-5 (\"Advanced\"/\"XZIP\") story file: the default\n\
+  v6  compile to version-6 (graphical/\"YZIP\") story file\n\
+  v7  compile to version-7 (expanded \"Advanced\") story file\n\
   v8  compile to version-8 (expanded \"Advanced\") story file\n\
   w   disable warning messages\n\
   x   print # for every 100 lines compiled\n\
   y   trace linking system\n\
-  z   print memory map of the Z-machine\n\n");
+  z   print memory map of the virtual machine\n\n");
 
 printf("\
   B   use big memory model (for large V6/V7 files)\n\
@@ -1391,6 +1446,7 @@ extern void switches(char *p, int cmode)
         case 'g': switch(p[i+1])
                   {   case '1': trace_fns_setting=1; s=2; break;
                       case '2': trace_fns_setting=2; s=2; break;
+                      case '3': trace_fns_setting=3; s=2; break;
                       default: trace_fns_setting=1; break;
                   }
                   break;
@@ -1406,9 +1462,7 @@ extern void switches(char *p, int cmode)
         case 'k': if (cmode == 0)
                       error("The switch '-k' can't be set with 'Switches'");
                   else
-                  {   debugfile_switch = state;
-                      if (state) define_DEBUG_switch = TRUE;
-                  }
+                      debugfile_switch = state;
                   break;
         case 'l': listing_switch = state; break;
         case 'm': memout_switch = state; break;
@@ -1504,6 +1558,8 @@ extern void switches(char *p, int cmode)
                   r_e_c_s_set = TRUE; break;
         case 'G': if (cmode == 0)
                       error("The switch '-G' can't be set with 'Switches'");
+                  else if (version_set_switch)
+                      error("The '-G' switch cannot follow the '-v' switch");
                   else
                   {   glulx_mode = state;
                       adjust_memory_sizes();
@@ -1528,19 +1584,8 @@ extern void switches(char *p, int cmode)
         }
     }
 
-    if (optimise_switch && (!store_the_text))
+    if (optimise_switch)
     {   store_the_text=TRUE;
-#ifdef PC_QUICKC
-        if (memout_switch)
-            printf("Allocation %ld bytes for transcription text\n",
-                (long) MAX_TRANSCRIPT_SIZE);
-        all_text = halloc(MAX_TRANSCRIPT_SIZE,1);
-        malloced_bytes += MAX_TRANSCRIPT_SIZE;
-        if (all_text==NULL)
-         fatalerror("Can't hallocate memory for transcription text.  Darn.");
-#else
-        all_text=my_malloc(MAX_TRANSCRIPT_SIZE,"transcription text");
-#endif
     }
 }
 
@@ -1593,12 +1638,29 @@ static int copy_icl_word(char *from, char *to, int max)
     return i;
 }
 
+/* Copy a string, converting to uppercase. The to array should be
+   (at least) max characters. Result will be null-terminated, so
+   at most max-1 characters will be copied. 
+*/
+static int strcpyupper(char *to, char *from, int max)
+{
+    int ix;
+    for (ix=0; ix<max-1; ix++) {
+        char ch = from[ix];
+        if (islower(ch)) ch = toupper(ch);
+        to[ix] = ch;
+    }
+    to[ix] = 0;
+    return ix;
+}
+
 static void execute_icl_command(char *p);
+static int execute_dashdash_command(char *p, char *p2);
 
 static int execute_icl_header(char *argname)
 {
   FILE *command_file;
-  char cli_buff[256], fw[256];
+  char cli_buff[CMD_BUF_SIZE], fw[CMD_BUF_SIZE];
   int line = 0;
   int errcount = 0;
   int i;
@@ -1616,14 +1678,14 @@ static int execute_icl_header(char *argname)
   }
 
   while (feof(command_file)==0) {
-    if (fgets(cli_buff,256,command_file)==0) break;
+    if (fgets(cli_buff,CMD_BUF_SIZE,command_file)==0) break;
     line++;
     if (!(cli_buff[0] == '!' && cli_buff[1] == '%'))
       break;
-    i = copy_icl_word(cli_buff+2, fw, 256);
+    i = copy_icl_word(cli_buff+2, fw, CMD_BUF_SIZE);
     if (icl_command(fw)) {
       execute_icl_command(fw);
-      copy_icl_word(cli_buff+2 + i, fw, 256);
+      copy_icl_word(cli_buff+2 + i, fw, CMD_BUF_SIZE);
       if ((fw[0] != 0) && (fw[0] != '!')) {
         icl_header_error(filename, line);
         errcount++;
@@ -1645,17 +1707,17 @@ static int execute_icl_header(char *argname)
 
 
 static void run_icl_file(char *filename, FILE *command_file)
-{   char cli_buff[256], fw[256];
+{   char cli_buff[CMD_BUF_SIZE], fw[CMD_BUF_SIZE];
     int i, x, line = 0;
     printf("[Running ICL file '%s']\n", filename);
 
     while (feof(command_file)==0)
-    {   if (fgets(cli_buff,256,command_file)==0) break;
+    {   if (fgets(cli_buff,CMD_BUF_SIZE,command_file)==0) break;
         line++;
-        i = copy_icl_word(cli_buff, fw, 256);
+        i = copy_icl_word(cli_buff, fw, CMD_BUF_SIZE);
         if (icl_command(fw))
         {   execute_icl_command(fw);
-            copy_icl_word(cli_buff + i, fw, 256);
+            copy_icl_word(cli_buff + i, fw, CMD_BUF_SIZE);
             if ((fw[0] != 0) && (fw[0] != '!'))
             {   icl_error(filename, line);
                 printf("expected comment or nothing but found '%s'\n", fw);
@@ -1681,7 +1743,7 @@ static void run_icl_file(char *filename, FILE *command_file)
                     case 2: printf("[Compiling <%s> to <%s>]\n",
                                 story_name, code_name);
                             compile(x, story_name, code_name);
-                            copy_icl_word(cli_buff + i, fw, 256);
+                            copy_icl_word(cli_buff + i, fw, CMD_BUF_SIZE);
                             if (fw[0]!=0)
                             {   icl_error(filename, line);
                         printf("Expected comment or nothing but found '%s'\n",
@@ -1699,49 +1761,156 @@ static void run_icl_file(char *filename, FILE *command_file)
     }
 }
 
+/* This should only be called if the argument has been verified to be
+   an ICL command, e.g. by checking icl_command().
+*/
 static void execute_icl_command(char *p)
-{   char filename[PATHLEN], cli_buff[256];
+{   char filename[PATHLEN], cli_buff[CMD_BUF_SIZE];
     FILE *command_file;
-
+    int len;
+    
     switch(p[0])
     {   case '+': set_path_command(p+1); break;
         case '-': switches(p,1); break;
         case '$': memory_command(p+1); break;
-        case '(': strcpy(cli_buff,p+1); cli_buff[strlen(cli_buff)-1]=0;
+        case '(': len = strlen(p);
+                  if (p[len-1] != ')') {
+                      printf("Error in ICL: (command) missing closing paren\n");
+                      break;
+                  }
+                  len -= 2; /* omit parens */
+                  if (len > CMD_BUF_SIZE-1) len = CMD_BUF_SIZE-1;
+                  strncpy(cli_buff, p+1, len);
+                  cli_buff[len]=0;
                   {   int x = 0;
                       do
                       {   x = translate_icl_filename(x, filename, cli_buff);
                           command_file = fopen(filename,"r");
                       } while ((command_file == NULL) && (x != 0));
                   }
-                  if (command_file == NULL)
+                  if (command_file == NULL) {
                       printf("Error in ICL: Couldn't open command file '%s'\n",
                           filename);
-                  else
-                  {   run_icl_file(filename, command_file);
-                      fclose(command_file);
+                      break;
                   }
+                  run_icl_file(filename, command_file);
+                  fclose(command_file);
                   break;
     }
+}
+
+/* Convert a --command into the equivalent ICL command and call 
+   execute_icl_command(). The dashes have already been stripped.
+
+   The second argument is the following command-line argument 
+   (or NULL if there was none). This may or may not be consumed.
+   Returns TRUE if it was.
+*/
+static int execute_dashdash_command(char *p, char *p2)
+{
+    char cli_buff[CMD_BUF_SIZE];
+    int consumed2 = FALSE;
+    
+    if (!strcmp(p, "help")) {
+        strcpy(cli_buff, "-h");
+    }
+    else if (!strcmp(p, "list")) {
+        strcpy(cli_buff, "$LIST");
+    }
+    else if (!strcmp(p, "size")) {
+        consumed2 = TRUE;
+        /* We accept these arguments even though they've been withdrawn. */
+        if (!(p2 && (!strcmpcis(p2, "HUGE") || !strcmpcis(p2, "LARGE") || !strcmpcis(p2, "SMALL")))) {
+            printf("--size must be followed by \"huge\", \"large\", or \"small\"\n");
+            return consumed2;
+        }
+        strcpy(cli_buff, "$");
+        strcpyupper(cli_buff+1, p2, CMD_BUF_SIZE-1);
+    }
+    else if (!strcmp(p, "opt")) {
+        consumed2 = TRUE;
+        if (!p2 || !strchr(p2, '=')) {
+            printf("--opt must be followed by \"setting=number\"\n");
+            return consumed2;
+        }
+        strcpy(cli_buff, "$");
+        strcpyupper(cli_buff+1, p2, CMD_BUF_SIZE-1);
+    }
+    else if (!strcmp(p, "helpopt")) {
+        consumed2 = TRUE;
+        if (!p2) {
+            printf("--helpopt must be followed by \"setting\"\n");
+            return consumed2;
+        }
+        strcpy(cli_buff, "$?");
+        strcpyupper(cli_buff+2, p2, CMD_BUF_SIZE-2);
+    }
+    else if (!strcmp(p, "define")) {
+        consumed2 = TRUE;
+        if (!p2) {
+            printf("--define must be followed by \"symbol=number\"\n");
+            return consumed2;
+        }
+        strcpy(cli_buff, "$#");
+        strcpyupper(cli_buff+2, p2, CMD_BUF_SIZE-2);
+    }
+    else if (!strcmp(p, "path")) {
+        consumed2 = TRUE;
+        if (!p2 || !strchr(p2, '=')) {
+            printf("--path must be followed by \"name=path\"\n");
+            return consumed2;
+        }
+        snprintf(cli_buff, CMD_BUF_SIZE, "+%s", p2);
+    }
+    else if (!strcmp(p, "addpath")) {
+        consumed2 = TRUE;
+        if (!p2 || !strchr(p2, '=')) {
+            printf("--addpath must be followed by \"name=path\"\n");
+            return consumed2;
+        }
+        snprintf(cli_buff, CMD_BUF_SIZE, "++%s", p2);
+    }
+    else if (!strcmp(p, "config")) {
+        consumed2 = TRUE;
+        if (!p2) {
+            printf("--config must be followed by \"file.icl\"\n");
+            return consumed2;
+        }
+        snprintf(cli_buff, CMD_BUF_SIZE, "(%s)", p2);
+    }
+    else {
+        printf("Option \"--%s\" unknown (try \"inform -h\")\n", p);
+        return FALSE;
+    }
+
+    execute_icl_command(cli_buff);
+    return consumed2;
 }
 
 /* ------------------------------------------------------------------------- */
 /*   Opening and closing banners                                             */
 /* ------------------------------------------------------------------------- */
 
-char banner_line[80];
+char banner_line[CMD_BUF_SIZE];
 
+/* We store the banner text for use elsewhere (see files.c).
+*/
 static void banner(void)
 {
-    sprintf(banner_line, "Inform %d.%d%d",
+    int len;
+    snprintf(banner_line, CMD_BUF_SIZE, "Inform %d.%d%d",
         (VNUMBER/100)%10, (VNUMBER/10)%10, VNUMBER%10);
 #ifdef RELEASE_SUFFIX
-    strcat(banner_line, RELEASE_SUFFIX);
+    len = strlen(banner_line);
+    snprintf(banner_line+len, CMD_BUF_SIZE-len, "%s", RELEASE_SUFFIX);
 #endif
 #ifdef MACHINE_STRING
-    sprintf(banner_line+strlen(banner_line), " for %s", MACHINE_STRING);
+    len = strlen(banner_line);
+    snprintf(banner_line+len, CMD_BUF_SIZE-len, " for %s", MACHINE_STRING);
 #endif
-    sprintf(banner_line+strlen(banner_line), " (%s)", RELEASE_DATE);
+    len = strlen(banner_line);
+    snprintf(banner_line+len, CMD_BUF_SIZE-len, " (%s)", RELEASE_DATE);
+    
     printf("%s\n", banner_line);
 }
 
@@ -1771,9 +1940,19 @@ static void read_command_line(int argc, char **argv)
     if (argc==1) switches("-h",1);
 
     for (i=1, cli_files_specified=0; i<argc; i++)
-        if (icl_command(argv[i]))
+        if (argv[i][0] == '-' && argv[i][1] == '-') {
+            char *nextarg = NULL;
+            int consumed2;
+            if (i+1 < argc) nextarg = argv[i+1];
+            consumed2 = execute_dashdash_command(argv[i]+2, nextarg);
+            if (consumed2 && i+1 < argc) {
+                i++;
+            }
+        }
+        else if (icl_command(argv[i])) {
             execute_icl_command(argv[i]);
-        else
+        }
+        else {
             switch(++cli_files_specified)
             {   case 1: cli_file1 = argv[i]; break;
                 case 2: cli_file2 = argv[i]; break;
@@ -1781,6 +1960,7 @@ static void read_command_line(int argc, char **argv)
                     printf("Command line error: unknown parameter '%s'\n",
                         argv[i]); return;
             }
+        }
 }
 #endif
 
@@ -1835,7 +2015,7 @@ static int sub_main(int argc, char **argv)
 
     banner();
 
-    set_memory_sizes(DEFAULT_MEMORY_SIZE); set_default_paths();
+    set_memory_sizes(); set_default_paths();
     reset_switch_settings(); select_version(5);
 
     cli_files_specified = 0; no_compilations = 0;

@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Inform Release Notes</h1>
-<h3>Inform Compiler 6.34, 6.33, 6.32, 6.31, 6.30<br>Inform Library 6/11</h3>
+<h3>Inform Compiler 6.30 to 6.36</h3>
 
 <h2>Introduction</h2>
 This is a maintenance release of the Inform system for creating adventure games, intended to address 
@@ -32,8 +32,11 @@ can alternatively generate code for the Glulx VM if you supply the <tt>-G</tt> c
 on this topic in <a href="#Glulx">Support for Glulx</a>.
 Before that, though, we&rsquo;ll summarise the changes to the compiler and to the library files.
 <p>
-If you&rsquo;ve translated the 6/10 library into another language, you may find
+If you&rsquo;ve translated the Inform library into another language, you may find
 <a href="#Translate">Information for translators</a> helpful.
+<p>
+Since the first release of the Inform 6.3 compiler, the Inform 6 library has been split into a separate project,
+maintained at <a href="https://gitlab.com/DavidGriffith/inform6lib">https://gitlab.com/DavidGriffith/inform6lib</a>.
 
 <h2>Acknowledgements</h2>
 Far too many people contributed towards this release &mdash; reporting and resolving bugs, making helpful 
@@ -41,8 +44,192 @@ suggestions, providing support and facilities, testing, and so on &mdash; for th
 listed. So instead, this is a general thank-you to everybody who has made this release happen, and 
 specific ones to Graham for permitting it in the first place, and to Andrew for his pioneering work on 
 Glulx.
-There are, naturally, sure to be imperfections in the release, and these should be reported through the
-<a href="http://inform7.com/mantis/">Inform bug tracker</a>.
+
+<h2>Compiler 6.36</h2>
+These are the changes delivered in version 6.36 of the Inform compiler.
+
+<h3>Features added</h3>
+<ul>
+<li><p>The algorithm used to apply abbreviations for Z-code has been replaced with a more efficient dynamic
+programming algorithm, based on the paper by R.A. Wagner "Common phrases and minimum-space text storage",
+Communications of the ACM, 16 (3) (1973).
+<li><p>Inform has been refactored to use dynamic memory allocation rather than fixed size buffers. As a result,
+the following settings are now removed: if the available space is filled, Inform will allocate more memory
+without requiring user intervention.
+ <ul>
+ <li>ALLOC_CHUNK_SIZE
+ <li>SYMBOLS_CHUNK_SIZE
+ <li>MAX_ABBREVS (removed only for Glulx)
+ <li>MAX_ACTIONS
+ <li>MAX_ADJECTIVES
+ <li>MAX_ARRAYS
+ <li>MAX_CLASSES
+ <li>MAX_DICT_ENTRIES
+ <li>MAX_EXPRESSION_NODES
+ <li>MAX_GLOBAL_VARIABLES
+ <li>MAX_INCLUSION_DEPTH
+ <li>MAX_INDIV_PROP_TABLE_SIZE
+ <li>MAX_LABELS
+ <li>MAX_LINESPACE
+ <li>MAX_LINK_DATA_SIZE
+ <li>MAX_LOCAL_VARIABLES (now a constant)
+ <li>MAX_LOW_STRINGS
+ <li>MAX_NUM_STATIC_STRINGS
+ <li>MAX_OBJ_PROP_COUNT
+ <li>MAX_OBJ_PROP_TABLE_SIZE
+ <li>MAX_OBJECTS
+ <li>MAX_PROP_TABLE_SIZE
+ <li>MAX_QTEXT_SIZE
+ <li>MAX_SOURCE_FILES
+ <li>MAX_STATIC_DATA
+ <li>MAX_STATIC_STRINGS
+ <li>MAX_SYMBOLS
+ <li>MAX_TRANSCRIPT_SIZE
+ <li>MAX_UNICODE_CHARS
+ <li>MAX_VERBS
+ <li>MAX_VERBSPACE
+ <li>MAX_ZCODE_SIZE
+ </ul>
+As a result of this, the memory size command line arguments (<tt>$SMALL</tt>, <tt>$LARGE</tt> and <tt>$HUGE</tt>)
+are now redundant, and have been removed.
+<li><p>It is now possible to declare an individual property with the <tt>Property</tt> directive:
+<pre>
+  Property individual propname;
+</pre>
+<li><p>A new setting <tt>$ZCODE_LESS_DICT_DATA</tt> has been introduced. When set to a non-zero value, this tells
+the compiler to omit the last byte of Z-code dictionary entries (which can be referred as <tt>#dict_par3</tt>), as this is
+commonly unused.
+<li><p>There are now warnings if the compiler detects that the type used in certain expressions is not correct.
+This only checks expressions that contain defined symbols, and does not change the generated code. The checks are:
+ <ul>
+ <li><tt>remove O</tt>: O is an object
+ <li><tt>move O to P</tt>: O is an object; P is an object or a class
+ <li><tt>give O A</tt>: O is an object; A is an attribute
+ <li><tt>O has/hasnt A</tt>: O is an object; A is an attribute
+ <li><tt>O in/notin P</tt>: O is an object; P is an object or a class
+ <li><tt>X ofclass C</tt>: C is a class
+ <li><tt>X provides P</tt>: P is a property
+ <li><tt>X.P</tt>, <tt>X.P()</tt>, <tt>X.&P</tt>, <tt>X.#P</tt>: P is a property
+ </ul>
+<li><p>Assembly output (<tt>-a</tt> mode) now shows symbolic information for each assembly operand, if possible.
+<li><p>The <tt>-u</tt> switch now generates <tt>$MAX_ABBREVS</tt> possible abbreviations.
+<li><p>The <tt>Trace verbs</tt> directive now prints out the entire grammar table.
+<li><p>Using the <tt>-D</tt> switch when the game or library does not support <tt>debug_flag</tt> now produces an
+explanatory warning:
+<pre>
+  DEBUG mode is on, but this story or library does not appear to support it
+</pre>
+<li><p>Expressions of the form <tt>(x <= y or z)</tt> or <tt>(x >= y or z)</tt> now produce a warning message:
+while their effect is documented, well defined, and is not being changed, it is not necessarily what a user might
+expect.
+<li><p>The check for whether an abbreviation actually reduces the size of the Z-code output file has been made
+more accurate, and the message if an abbreviation does not reduce the size is now a warning, rather than an error.
+</ul>
+
+<h3>Bugs fixed</h3>
+<ul>
+<li><p>For Glulx, stub functions (and the veneer function <tt>Symb__Tab()</tt>) are now always compiled as
+local-argument functions (with a type byte of 0xC1). Previously, they were in some cases compiled as stack-argument
+functions (with a type byte of 0xC0).
+<li><p>Counts of properties in errors and in the statistics report (output with the <tt>-s</tt> switch) are now
+consistent, and reflect how many properties the user can define.
+<li><p>The check that there are not too many common properties defined now correctly excludes individual and alias
+properties.
+<li><p>Inform will now report an error if the "class" line of a class definition mentions the class being defined.
+<li><p>A crash when compiling a malformed array declaration has been fixed.
+</ul>
+
+<h2>Compiler 6.35</h2>
+These are the changes delivered in version 6.35 of the Inform compiler.
+
+<h3>Features added</h3>
+<ul>
+<li><p>Some Unix-style command line options are now supported, primarily to avoid the use of $ in command
+lines (although the old syntax is still supported). The new syntax for these options is:
+<pre>
+  --help
+  --path PATH=dir
+  --addpath PATH=dir
+  --list
+  --size huge, --size large, --size small
+  --helpopt SETTING
+  --opt SETTING=number
+  --config filename
+</pre>
+<li><p>Numeric constants can be declared as command line options, either like a setting:
+<pre>
+  $#SYMBOL
+  $#SYMBOL=NUM
+</pre>
+Or as a new Unix-style command line option:
+<pre>
+  --define SYMBOL
+  --define SYMBOL=NUM
+</pre>
+This defines SYMBOL as a constant, just like the <tt>Constant</tt> directive. Like that directive, if no value
+is supplied, it defaults to zero.
+<li><p>The settings <tt>$MAX_ABBREVS</tt> and <tt>MAX_DYNAMIC_STRINGS</tt> control the number of abbreviations
+and the number of dynamic strings, respectively. When compiling to Z-code these settings are linked, as they
+both use the same 96 Z-code abbreviations that are available.
+<li><p>The setting <tt>$TRANSCRIPT_FORMAT</tt> controls the output format of the <tt>-r</tt> option. The default
+is still the same format as before, (and can be explicitly selected with <tt>$TRANSCRIPT_FORMAT=0</tt>), but
+<tt>$TRANSCRIPT_FORMAT=1</tt> enables the new, more informative and machine-readable format.
+<li><p>The <tt>Origsource</tt> directive, added in version 6.34, is now used in error reporting, regardless of
+the error format selected. (Previously it only appeared with the default error message format, E0.)
+<li><p>If an attempt is made to redefine an existing symbol, there is now a clearer error message, explaining
+what the error is and where the symbol was previously defined.
+<li><p><tt>-g3</tt> is now a valid option: it enables tracing for all routines, including the veneer. This
+functionality was added back in Inform 6.21, but the code to check the actual option was omitted.
+<li><p>Using the option <tt>-k</tt> (which turns on the generation of debugging information) no longer implies
+<tt>-D</tt> (which turns on debug mode).
+</ul>
+
+<h3>Bugs fixed</h3>
+<ul>
+<li><p>Only the following directives are now allowed in a function or object definition: all others give
+an error:
+<pre>
+  #ifv3
+  #ifv5
+  #ifdef
+  #ifndef
+  #iftrue
+  #iffalse
+  #ifnot
+  #endif
+  #message
+  #origsource
+  #trace
+</pre>
+<li><p>An <tt>#ifdef</tt> statement at the start of a <tt>switch</tt> block now compiles correctly, and no
+longer gives a spurious error.
+<li><p>The following, incorrect forms of array declaration now generate an error:
+<pre>
+  Array foo --> 'dictword';
+  Array foo --> FunctionName;
+  Array foo --> [];
+</pre>
+<li><p>If a common property array overflows when compiling to Z-code version 3, the object is no longer
+corrupted.
+<li><p>The incorrect code
+<pre>
+  Object foo with name 'x';
+</pre>
+now correctly causes the warning
+<pre>
+  'name' property should only contain dictionary words
+</pre>
+when compiled to either Glulx or Z-code: previously the warning only appeared when compiling to Z-code.
+<li><p>The compiler now correctly handles <tt>#If</tt> directives around <tt>if</tt> and <tt>else</tt> clauses.
+<li><p>Forward declared properties (that is, properties that are used before they are defined in the game
+source code) now work correctly.
+<li><p>Where directives allow a constant to be used (<tt>Release</tt>, <tt>Version</tt>, <tt>Dictionary</tt>,
+<tt>Iftrue</tt> and <tt>Iffalse</tt>), the compiler now reports an error if the constant is not defined.
+<li><p>When compiling to Z-code version 3, dictionary words are now correctly truncated at 6 Z-characters
+(instead of 9).
+<li><p>When compiling to Z-code version 3, two dictionary words that differed only in Z-characters 7-9 would
+lead to two identical dictionary entries: now there will only be one entry.
+</ul>
 
 <h2>Compiler 6.34</h2>
 These are the changes delivered in version 6.34 of the Inform compiler.
@@ -76,6 +263,12 @@ e.g.
 <li><p>It has always been possible to replace the paths used by the compiler with a command line option of the
 form <tt>+include_path=foo</tt>. It is now possible to add to an existing path without replacing it by using
 an additional '+' character, like so: <tt>++include_path=foo</tt>.
+<li><p>The <tt>Replace</tt> directive can now be applied to routines in any file, whether it has the <tt>System_file</tt> directive or not. <tt>Replace</tt> also now works on recursive functions, which it previously did not. Its behavior can now be described this way:
+<pre>
+  Replace Func;
+  Replace Func OriginalFunc;
+</pre>
+Multiple definitions of <tt>Func()</tt> may follow this directive. <tt>Func</tt> will refer to the last-defined version, except that definitions in normal files are preferred over definitions in <tt>System_file</tt> files or the veneer. With the two-symbol form (introduced in 6.33), the latter symbol will refer to the <em>first</em>-defined version of the function.
 <li><p>A new <tt>Origsource</tt> directive has been added to allow a record of the location of the relevant in
 a higher-level language that has been converted to Inform 6. (In practice, this will very likely be the location in
 an Inform 7 source.) The syntax is
@@ -101,40 +294,38 @@ the end of ROM (after string storage). The syntax is
 </pre>
 </ul>
 <h3>Bugs fixed</h3>
-Items of the form [Mantis N] quote the bug&rsquo;s reference number in Inform 7&rsquo;s Mantis bug tracker. 
 <ul>
 <li><p>It is no longer possible to cause values to be pushed onto the stack but not then pulled by evaluating
-a logical expression but not assigning or using the result of that expression. [Mantis 509]
-<li><p>Replacing a recursive function now works correctly. [Mantis 1094]
+a logical expression but not assigning or using the result of that expression.
+<li><p>Replacing a recursive function now works correctly.
 <li><p>The output for the <tt>$list</tt> command line argument now includes the value of the
-<tt>$MAX_ARRAYS</tt> setting. [Mantis 1355]
+<tt>$MAX_ARRAYS</tt> setting.
 <li><p>Memory settings can no longer overflow if set to very large values. These values are limited to a
-maximum of 999999999: setting them higher just results in a warning. [Mantis 1356]
+maximum of 999999999: setting them higher just results in a warning.
 <li><p>The debugging output file now contains the correct function addresses even when the compiler has been
-told to omit unused functions. [Mantis 1515]
-<li><p>Invalid statements with empty parentheses (like <tt>return ();</tt>) now generate a sensible error. [Mantis 1688]
+told to omit unused functions.
+<li><p>Invalid statements with empty parentheses (like <tt>return ();</tt>) now generate a sensible error.
 <li><p>Crashes caused by over-long identifiers have been fixed. Note that as a result, the previously allowed
 (although undocumented) use of strings or dictionary words in an action-based (implicit) switch statement
-now causes an error. [Mantis 1696,1702]
+now causes an error.
 <li><p>The object table is now always generated at an even Z-Machine address, as the logic in the veneer
-routine <tt>RA__Pr()</tt> requires this. [Mantis 1712]
+routine <tt>RA__Pr()</tt> requires this.
 <li><p>The <b>F</b> and <b>u</b> options are now explicitly disallowed with the <tt>Switches</tt> directive.
-[Mantis 1703]
-<li><p>Assigning values to system functions now leads to an error message, rather than a crash. [Mantis 1704]
-<li><p>Crashes due to over-long abbreviations have been fixed. [Mantis 1719]
-<li><p>Representing the at symbol '@' by <tt>@{0040}</tt> now works when compiling to Glulx. [Mantis 1933]
+<li><p>Assigning values to system functions now leads to an error message, rather than a crash.
+<li><p>Crashes due to over-long abbreviations have been fixed.
+<li><p>Representing the at symbol '@' by <tt>@{0040}</tt> now works when compiling to Glulx.
 <li><p>The <tt>USE_TEMPORARY_FILES</tt> option no longer has a bug that led to files being closed more than
-once. [Mantis 1934]
+once.
 <li><p>The platform-specific definitions in <tt>header.h</tt> for Unix have been cleaned up: "UNIX64" has been
-removed, since it was identical to "UNIX"; and "UNIX" no longer implies "USE_TEMPORARY_FILES". [Mantis 1937]
+removed, since it was identical to "UNIX"; and "UNIX" no longer implies "USE_TEMPORARY_FILES".
 <li><p>The platform-specific definitions in <tt>header.h</tt> for the Macintosh have been cleaned up: "MACINTOSH" is
-now "MAC_CLASSIC"; "OSX" is now "MACOS", and "MACOS" now uses "HUGE_SIZE" for the default array sizes. [Mantis 1937]
+now "MAC_CLASSIC"; "OSX" is now "MACOS", and "MACOS" now uses "HUGE_SIZE" for the default array sizes.
 <li><p>The maximum length of a verb is now limited to 120 (which can be changed in the source code). Previously
-very long verbs would crash the compiler. [Mantis 2023]
+very long verbs would crash the compiler.
 <li><p>Compiling to Z-code version 3 has shown a number of regressions since Inform 6.15:
  <ul>
  <li>Diverted actions, of the form <tt>&lt;&lt;ACTION&gt;&gt;</tt>, are fixed.
- <li>The veneer routine <tt>RA__Ptr</tt> can be used.
+ <li>The veneer routine <tt>RA__Pr()</tt> can be used.
  </ul>
 </ul>
 
@@ -199,47 +390,46 @@ which is the "flags3" field.
 amount of additional space to add to each object record. The default is 0.
 </ul>
 <h3>Bugs fixed</h3>
-Items of the form [Mantis N] quote the bug&rsquo;s reference number in Inform 7&rsquo;s Mantis bug tracker. 
 <ul>
 <li><p>Function calls of the form <tt>f(g)(h)</tt> (that is, where <tt>f()</tt> returns the address of a
 function that is called with <tt>h</tt> as its argument) are now compiled correctly: previously, such calls were
-compiled as if the code was <tt>f(g(h))</tt>. [Mantis 510]
+compiled as if the code was <tt>f(g(h))</tt>.
 <li><p>The bounds checking related to internal arrays that are are sized from various compiler settings
 has been improved, so that it should not be possible to crash the compiler if these settings are too small.
 In addition, a start has been made on allowing the compiler to grow its internal buffers, rather than relying
-on these settings to specify sufficient buffer sizes. [Mantis 601,603,610,614,758,842,844]
+on these settings to specify sufficient buffer sizes.
 <li><p>The error message shown when too many global variables are declared now tells the user to
-increase the <tt>$MAX_GLOBAL_VARIABLES</tt> setting. [Mantis 611]
-<li><p>The setting <tt>$MAX_CLASS_TABLE_SIZE</tt>, which was not used anywhere, has been removed. [Mantis 612]
+increase the <tt>$MAX_GLOBAL_VARIABLES</tt> setting.
+<li><p>The setting <tt>$MAX_CLASS_TABLE_SIZE</tt>, which was not used anywhere, has been removed.
 <li><p>The compiler no longer crashes if run with the <tt><b>-k</b></tt> switch and passed a source file
-containing no routines at all. [Mantis 843]
+containing no routines at all.
 <li><p>Floating-point constants in &ldquo;<tt>#Ifdef TARGET_GLULX;</tt>&rdquo; sections do not now cause an error
-when compiling to Z-code. [Mantis 927]
+when compiling to Z-code.
 <li><p>The error message produced if an action routine is not found for an action name has been improved to include
-the action name, and a sensible line number. [Mantis 1014]
+the action name, and a sensible line number.
 <li><p>The compiler is now better at not producing spurious additional errors after it has encountered a directive
-that contains an error. [Mantis 1018,1035]
-<li><p>The compiler no longer crashes when reporting errors after line 65,535 in long Inform 6 source files. [Mantis 1023]
+that contains an error.
+<li><p>The compiler no longer crashes when reporting errors after line 65,535 in long Inform 6 source files.
 <li><p>The compiler now reports a meaningful text compression rate when outputting statistics for Glulx with the
-<tt>-Gs</tt> switches. [Mantis 1026]
-<li><p>An error is now reported if a source file ends with an unterminated object definition. [Mantis 1036]
+<tt>-Gs</tt> switches.
+<li><p>An error is now reported if a source file ends with an unterminated object definition.
 <li><p>The three argument form of the <tt>read</tt> statement no longer assumes that the routine passed as the
-third argument to the statement will not change the global variable that the statement uses internally. [Mantis 1084]
-<li><p>The 'Abbreviate' statement now works with words containing non-English characters. [Mantis 1130]
-<li><p>Attempting to use <tt>@pop</tt> opcode for V5 or higher no longer results in a crash. [Mantis 1172]
+third argument to the statement will not change the global variable that the statement uses internally.
+<li><p>The 'Abbreviate' statement now works with words containing non-English characters.
+<li><p>Attempting to use <tt>@pop</tt> opcode for V5 or higher no longer results in a crash.
 <li><p>The Glulx setting <tt>$NUM_ATTR_BYTES</tt>, which determines the number of bytes in an object set aside
 for attribute flags, now works correctly. Note that this has required a change to the veneer routines that conflicts
 with the definition of <tt>FUNC_2_CP__Tab()</tt> in the &lsquo;Accelerated Functions&rsquo; section of the Glulx 3.1.2
 specification. If you change this setting, you should take great care if you also use the Glulx accelerated functions
-feature (as Inform 7 does by default). [Mantis 1197]
+feature (as Inform 7 does by default).
 <li><p>The syntax of declaring a function so that it prints its name and arguments:
 <pre>
   [ Whatever * x y;
     ! Whatever function logic ...
   ];
 </pre>
-is now supported for Glulx. [Mantis 1214]
-<li><p>The statistics produced by the <tt>-s</tt> compiler switch are now correct for Glulx. [Mantis 1267]
+is now supported for Glulx.
+<li><p>The statistics produced by the <tt>-s</tt> compiler switch are now correct for Glulx.
 </ul>
 
 <h2>Compiler 6.32</h2>
@@ -307,7 +497,7 @@ This defaults to 0: if it is redefined to a larger value then the size of the ga
 the game file, the compiler creates a dictionary table that contains verb numbers. However, despite in Glulx there being space for a verb
 number between 0 and 65535 in this table, only one byte of it (that is, values between 0 and 255) was used. This has been fixed.<p>
 However, this also requires library changes to be useful, as the library makes use of this dictionary table. The library used by Inform 7
-has been adjusted to take advantage of this, but the Inform 6/11 library has not.
+has been adjusted to take advantage of this, but the Inform 6 library has not.
 <li><p>The dictionary of Glulx games can now contain characters outside of ISO 8859-1. There is a new
 memory setting, <tt>$DICT_CHAR_SIZE</tt>: by default this is 1, but setting it to 4 causes the compiler to create a dictionary containing
 32-bit Unicode characters.<p>
@@ -526,7 +716,8 @@ mysteriously large number of instances if <tt>NUM_PEBBLES</tt> isn&rsquo;t defin
 </ul>
 
 <h2>Library 6/11</h2>
-These are the changes delivered in version 6/11 of the Inform library.
+At the same time as the Inform 6.30 release, a new version of the Inform library was made. These are the changes
+delivered in version 6/11 of the Inform library.
 <h3>Features added</h3>
 <ul>
 <li><p>The library automatically defines four constants: <tt>LIBRARY_PARSER</tt> at the end of Parser.h, 

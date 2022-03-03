@@ -93,41 +93,39 @@ void ConstantInstruction::transpose(inter_construct *IC, inter_tree_node *P,
 =
 void ConstantInstruction::verify(inter_construct *IC, inter_tree_node *P,
 	inter_package *owner, inter_error_message **E) {
-	if ((P->W.extent % 2) != 1) { *E = Inode::error(P, I"extent wrong", NULL); return; }
+	if ((P->W.extent % 2) != 1) {
+		*E = Inode::error(P, I"extent not an odd number", NULL); return;
+	}
+	int data_fields = (P->W.extent - DATA_CONST_IFLD)/2;
+	inter_ti format = P->W.instruction[FORMAT_CONST_IFLD];
+	if ((format == CONST_LIST_FORMAT_NONE) && (data_fields != 1)) {
+		*E = Inode::error(P, I"extent wrong", NULL); return;
+	}
+
 	*E = VerifyingInter::TID_field(owner, P, TYPE_CONST_IFLD);
 	if (*E) return;
-	inter_type it = InterTypes::from_TID_in_field(P, TYPE_CONST_IFLD);
-	switch (P->W.instruction[FORMAT_CONST_IFLD]) {
-		case CONST_LIST_FORMAT_NONE:
-			if (P->W.extent != DATA_CONST_IFLD + 2) { *E = Inode::error(P, I"extent wrong", NULL); return; }
-			*E = VerifyingInter::data_pair_fields(owner, P, DATA_CONST_IFLD, it);
-			if (*E) return;
-			break;
-		case CONST_LIST_FORMAT_SUM:
-		case CONST_LIST_FORMAT_PRODUCT:
-		case CONST_LIST_FORMAT_DIFFERENCE:
-		case CONST_LIST_FORMAT_QUOTIENT:
-			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				*E = VerifyingInter::data_pair_fields(owner, P, i, it);
-				if (*E) return;
-			}
-			break;
-		case CONST_LIST_FORMAT_COLLECTION: {
-			inter_type conts_type = InterTypes::type_operand(it, 0);
-			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				*E = VerifyingInter::data_pair_fields(owner, P, i, conts_type); if (*E) return;
-			}
-			break;
+	
+	if (format > CONST_LIST_FORMAT_STRUCT) {
+		*E = Inode::error(P, I"no such constant format", NULL); return;
+	}
+
+	inter_type type = InterTypes::from_TID_in_field(P, TYPE_CONST_IFLD);
+	if (format == CONST_LIST_FORMAT_STRUCT) {
+		if (data_fields != InterTypes::type_arity(type)) {
+			*E = Inode::error(P, I"extent not same as struct length", NULL); return;
 		}
-		case CONST_LIST_FORMAT_STRUCT: {
-			int arity = InterTypes::type_arity(it);
-			int given = (P->W.extent - DATA_CONST_IFLD)/2;
-			if (arity != given) { *E = Inode::error(P, I"extent not same size as struct definition", NULL); return; }
-			for (int i=DATA_CONST_IFLD, counter = 0; i<P->W.extent; i=i+2) {
-				inter_type conts_type = InterTypes::type_operand(it, counter++);
-				*E = VerifyingInter::data_pair_fields(owner, P, i, conts_type); if (*E) return;
-			}
-			break;
+		for (int i=DATA_CONST_IFLD, counter = 0; i<P->W.extent; i=i+2) {
+			inter_type field_type = InterTypes::type_operand(type, counter++);
+			*E = VerifyingInter::data_pair_fields(owner, P, i, field_type);
+			if (*E) return;
+		}
+	} else {
+		inter_type verify_type = type;
+		if (format == CONST_LIST_FORMAT_COLLECTION)
+			verify_type = InterTypes::type_operand(type, 0);
+		for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+			*E = VerifyingInter::data_pair_fields(owner, P, i, verify_type);
+			if (*E) return;
 		}
 	}
 }

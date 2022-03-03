@@ -1,0 +1,265 @@
+[ Main val;
+	! We don't want to call the test funcs; they would just be a mess of runtime errors.
+	val = testgive;
+	val = testhas;
+	val = testmove;
+	val = testin;
+	val = testprovides;
+	val = testofclass;
+	val = testbareprop;
+	val = testdot;
+];
+
+Attribute attr1;
+Attribute attr2;
+
+Property cprop;
+Property n_to;  ! like a library direction property
+
+Class cla;
+
+Object obj
+  with iprop1 [; ],
+  with iprop2 0;
+
+Global glob;
+
+Array arr --> 3;
+
+Constant zero 0;
+Constant objconst obj;
+
+[ func; ];
+
+[ testgive loc;
+	! All these statements are ok
+	give obj attr1;
+	give glob attr2;
+	give loc attr1;
+	give obj glob;
+	give obj loc;
+	give loc loc;
+
+	! Literals do not produce a warning
+	give obj 5;
+	give obj 'word';
+	give 'word' attr1;
+	! Constants do not produce a warning
+	give obj zero;
+	give zero attr2;
+	! Expressions do not produce a warning
+	give obj (obj+1);
+	give (arr+1) attr2;
+	
+	! Forward symbols do not produce a warning
+	give obj objlate;
+	give alate attr1;
+	give obj cproplate;
+
+	! Warnings: expected Attribute
+	give obj cprop;
+	give obj iprop1;
+	give obj arr;
+	give obj obj;
+	give obj func;
+	give obj cla;
+
+	! This produces a warning in Glulx only
+	give obj objconst;
+
+	! Warnings: expected Object
+	give cprop attr1;
+	give iprop1 attr1;
+	give arr attr1;
+	give attr1 attr2;
+	give func attr2;
+	give cla attr1;
+];
+
+[ testhas loc;
+	! No warnings
+	loc = (obj has attr1);
+	loc = (obj hasnt attr2);
+	loc = (glob has attr1);
+	loc = (loc has attr1);
+	loc = (obj has glob);
+	loc = (glob has loc);
+
+	! Literals do not produce a warning
+	loc = (obj has 5);
+	! Constants do not produce a warning
+	loc = (obj has zero);
+	! Expressions do not produce a warning
+	loc = (obj has arr+1);
+	
+	! Forward symbols do not produce a warning
+	loc = (obj has objlate);
+	loc = (alate has attr1);
+	loc = (obj has cproplate);
+
+	! Warnings: expected Attribute
+	loc = (obj has obj);
+	loc = (obj hasnt obj);
+	loc = (obj has arr);
+	loc = (obj hasnt arr);
+	loc = (obj has cprop);
+	loc = (obj has func);
+	loc = (obj has cla);
+	! iprop1 is beyond MAX_ATTRS and therefore produces an error
+
+	! This produces a warning in Glulx only
+	loc = (obj hasnt objconst);
+
+	! Warnings: expected Object
+	loc = (arr has attr1);
+	loc = (arr hasnt attr1);
+	loc = (attr1 has attr1);
+	loc = (func has attr1);
+	loc = (cprop hasnt attr1);
+	loc = (cla has attr1);
+];
+
+[ testmove loc;
+	! No warnings
+	move obj to glob;
+	move loc to obj;
+	move arr-->0 to obj.iprop1;
+	move alate to funclate;
+	move obj to 5;
+	move obj to objconst;
+	move obj to cla;
+
+	! Warnings: expected Object
+	move func to obj;
+	move obj to attr2;
+	move arr to iprop1;
+	move cla to obj;
+
+	! No warnings
+	remove glob;
+	remove loc;
+	remove alate;
+	remove 'dict';
+	remove objconst;
+	
+	! Warnings: expected Object
+	remove func;
+	remove arr;
+	remove attr1;
+	remove cprop;
+	remove cla;
+];
+
+[ testin loc;
+	! No warnings
+	loc = (obj in obj);
+	loc = (obj in cla);
+	loc = (obj notin obj);
+	loc = (obj in glob);
+	loc = (glob notin obj);
+	loc = (obj.iprop1 in arr-->0);
+	loc = (objconst in objconst);
+
+	! Warnings: expected Object
+	loc = (obj in func);
+	loc = (obj notin arr);
+	loc = (cla in obj);
+];
+
+[ testprovides loc;
+	! No warnings
+	loc = (obj provides iprop1);
+	loc = (obj provides cprop);
+	loc = (obj provides cproplate);
+	loc = (obj provides loc);
+	loc = (obj provides glob);
+	loc = (glob provides cprop);
+	loc = (obj.iprop1 provides arr-->0);
+	loc = (objconst provides cprop);
+	loc = (func provides call);
+
+	! Warnings: expected Property
+	loc = (obj provides func);
+	loc = (obj provides arr);
+	loc = (obj provides obj);
+	loc = (obj provides cla);
+	loc = (obj provides attr1);
+];
+
+[ testofclass loc;
+	! No warnings
+	loc = (obj ofclass cla);
+	loc = (obj ofclass 1);
+	loc = (obj ofclass cproplate);
+	loc = (obj ofclass loc);
+	loc = (obj ofclass glob);
+	loc = (glob ofclass cla);
+	loc = (obj.iprop1 ofclass arr-->0);
+	loc = (objconst ofclass cla);
+
+	! Warnings: expected Class
+	loc = (obj ofclass func);
+	loc = (obj ofclass arr);
+	loc = (obj ofclass obj);
+	loc = (obj ofclass cprop);
+	loc = (obj ofclass attr1);
+];
+
+[ testbareprop loc;
+	! Bare property warnings:
+	loc = (loc < n_to);
+	loc = (n_to <= loc);
+	loc = (loc <= cprop);
+	loc = (loc <= iprop1);
+	
+	! No warning; this is a special case for some libraries
+	loc = (loc <= n_to);
+	loc = (loc >= n_to);
+];
+
+[ testdot loc;
+	! No warnings
+	loc = obj.iprop1;
+	loc = obj.glob;
+	loc = glob.cprop;
+	loc = cla.cprop;
+	loc = cla.copy;
+	loc = cla.recreate;
+	loc = objconst.iprop1;
+	loc = objlate.iprop1;
+	loc = obj.cproplate;
+	loc = obj.3;
+	loc = obj.loc;
+	loc = obj.zero;
+
+	! Warnings: expected Property
+	loc = obj.attr1;
+	loc = obj.cla;
+	loc = obj.obj;
+	loc = obj.func;
+	loc = obj.arr;
+
+	! No warnings
+	loc = obj.cprop();
+	loc = cla.create();
+	loc = obj.&cprop;
+	loc = obj.&iprop1;
+	loc = obj.#cprop;
+	loc = obj.#iprop1;
+
+	! Warnings: expected Property
+	loc = obj.attr1();
+	loc = cla.cla();
+	loc = cla.arr();
+	loc = obj.&attr2;
+	loc = cla.&arr;
+	loc = obj.#func;
+	loc = cla.#obj;
+];
+
+Object objlate;
+
+Attribute alate;
+Property cproplate;
+
+[ funclate; ];

@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "syntax" : Syntax analyser and compiler                                 */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -71,13 +71,7 @@ extern void get_next_token_with_directives(void)
 
        This is called while parsing a long construct, such as Class or
        Object, where we want to support internal #ifdefs. (Although
-       function-parsing predates this and doesn't make use of it.)
-
-       (Technically this permits *any* #-directive, which means you
-       can define global variables or properties or what-have-you in
-       the middle of an object. You can do that in the middle of an
-       object, too. Don't. It's about as well-supported as Wile E.
-       Coyote one beat before the plummet-lines kick in.) */
+       function-parsing predates this and doesn't make use of it.) */
 
     int directives_save, segment_markers_save, statements_save;
 
@@ -139,9 +133,11 @@ extern void parse_program(char *source)
 
 extern int parse_directive(int internal_flag)
 {
-    /*  Internal_flag is FALSE if the directive is encountered normally,
-        TRUE if encountered with a # prefix inside a routine or object
-        definition.
+    /*  Internal_flag is FALSE if the directive is encountered normally
+        (at the top level of the program); TRUE if encountered with 
+        a # prefix inside a routine or object definition.
+
+        (Only directives like #ifdef are permitted inside a definition.)
 
         Returns: TRUE if program continues, FALSE if end of file reached.    */
 
@@ -149,6 +145,11 @@ extern int parse_directive(int internal_flag)
     int is_renamed;
 
     begin_syntax_line(FALSE);
+    if (!internal_flag) {
+        /* An internal directive can occur in the middle of an expression or
+           object definition. So we only release for top-level directives.   */
+        release_token_texts();
+    }
     get_next_token();
 
     if (token_type == EOF_TT) return(FALSE);
@@ -171,10 +172,13 @@ extern int parse_directive(int internal_flag)
         df_dont_note_global_symbols = TRUE;
         get_next_token();
         df_dont_note_global_symbols = FALSE;
-        if ((token_type != SYMBOL_TT)
-            || ((!(sflags[token_value] & UNKNOWN_SFLAG))
-                && (!(sflags[token_value] & REPLACE_SFLAG))))
+        if (token_type != SYMBOL_TT)
         {   ebf_error("routine name", token_text);
+            return(FALSE);
+        }
+        if ((!(symbols[token_value].flags & UNKNOWN_SFLAG))
+            && (!(symbols[token_value].flags & REPLACE_SFLAG)))
+        {   ebf_symbol_error("routine name", token_text, typename(symbols[token_value].type), symbols[token_value].line);
             return(FALSE);
         }
 
@@ -183,7 +187,7 @@ extern int parse_directive(int internal_flag)
         rep_symbol = routine_symbol;
         is_renamed = find_symbol_replacement(&rep_symbol);
 
-        if ((sflags[routine_symbol] & REPLACE_SFLAG) 
+        if ((symbols[routine_symbol].flags & REPLACE_SFLAG) 
             && !is_renamed && (is_systemfile()))
         {   /* The function is definitely being replaced (system_file
                always loses priority in a replacement) but is not
@@ -202,9 +206,9 @@ extern int parse_directive(int internal_flag)
         {   /* Parse the function definition and assign its symbol. */
             assign_symbol(routine_symbol,
                 parse_routine(lexical_source, FALSE,
-                    (char *) symbs[routine_symbol], FALSE, routine_symbol),
+                    symbols[routine_symbol].name, FALSE, routine_symbol),
                 ROUTINE_T);
-            slines[routine_symbol] = routine_starts_line;
+            symbols[routine_symbol].line = routine_starts_line;
         }
 
         if (is_renamed) {
@@ -212,8 +216,8 @@ extern int parse_directive(int internal_flag)
                The first time we see a definition for symbol X, we
                copy it to Y -- that's the "original" form of the
                function. */
-            if (svals[rep_symbol] == 0) {
-                assign_symbol(rep_symbol, svals[routine_symbol], ROUTINE_T);
+            if (symbols[rep_symbol].value == 0) {
+                assign_symbol(rep_symbol, symbols[routine_symbol].value, ROUTINE_T);
             }
         }
 
@@ -225,13 +229,13 @@ extern int parse_directive(int internal_flag)
         return TRUE;
     }
 
-    if ((token_type == SYMBOL_TT) && (stypes[token_value] == CLASS_T))
+    if ((token_type == SYMBOL_TT) && (symbols[token_value].type == CLASS_T))
     {   if (internal_flag)
         {   error("It is illegal to nest an object in a routine using '#classname'");
             return(TRUE);
         }
-        sflags[token_value] |= USED_SFLAG;
-        make_object(FALSE, NULL, -1, -1, svals[token_value]);
+        symbols[token_value].flags |= USED_SFLAG;
+        make_object(FALSE, NULL, -1, -1, symbols[token_value].value);
         return TRUE;
     }
 
@@ -249,6 +253,7 @@ extern int parse_directive(int internal_flag)
     return !(parse_given_directive(internal_flag));
 }
 
+/* Check what's coming up after a switch case value. */
 static int switch_sign(void)
 {
     if ((token_type == SEP_TT)&&(token_value == COLON_SEP))   return 1;
@@ -257,8 +262,10 @@ static int switch_sign(void)
     return 0;
 }
 
-static assembly_operand spec_stack[32];
-static int spec_type[32];
+/* Info for the current switch statement. Both arrays indexed by spec_sp */
+#define MAX_SPEC_STACK (32)
+static assembly_operand spec_stack[MAX_SPEC_STACK];
+static int spec_type[MAX_SPEC_STACK];
 
 static void compile_alternatives_z(assembly_operand switch_value, int n,
     int stack_level, int label, int flag)
@@ -312,7 +319,7 @@ static void parse_switch_spec(assembly_operand switch_value, int label,
     sequence_point_follows = FALSE;
 
     do
-    {   if (spec_sp == 32)
+    {   if (spec_sp >= MAX_SPEC_STACK)
         {   error("At most 32 values can be given in a single 'switch' case");
             panic_mode_error_recovery();
             return;
@@ -432,7 +439,8 @@ extern int32 parse_routine(char *source, int embedded_flag, char *name,
 
     no_locals = 0;
 
-    for (i=0;i<MAX_LOCAL_VARIABLES-1;i++) local_variables.keywords[i] = "";
+    for (i=0;i<MAX_LOCAL_VARIABLES-1;i++)
+        local_variable_names[i].text[0] = 0;
 
     do
     {   statements.enabled = TRUE;
@@ -465,12 +473,15 @@ extern int32 parse_routine(char *source, int embedded_flag, char *name,
             break;
         }
 
-        for (i=0;i<no_locals;i++)
-            if (strcmpcis(token_text, local_variables.keywords[i])==0)
+        for (i=0;i<no_locals;i++) {
+            if (strcmpcis(token_text, local_variable_names[i].text)==0)
                 error_named("Local variable defined twice:", token_text);
-        local_variables.keywords[no_locals++] = token_text;
+        }
+        strcpy(local_variable_names[no_locals++].text, token_text);
     } while(TRUE);
 
+    /* Set up the local variable hash and the local_variables.keywords
+       table. */
     construct_local_variable_tables();
 
     if ((trace_fns_setting==3)
@@ -478,14 +489,14 @@ extern int32 parse_routine(char *source, int embedded_flag, char *name,
         || ((trace_fns_setting==1) && (is_systemfile()==FALSE)))
         debug_flag = TRUE;
     if ((embedded_flag == FALSE) && (veneer_mode == FALSE) && debug_flag)
-        sflags[r_symbol] |= STAR_SFLAG;
+        symbols[r_symbol].flags |= STAR_SFLAG;
 
     packed_address = assemble_routine_header(no_locals, debug_flag,
         name, embedded_flag, r_symbol);
 
     do
     {   begin_syntax_line(TRUE);
-
+        release_token_texts();
         get_next_token();
 
         if (token_type == EOF_TT)
@@ -594,12 +605,19 @@ extern void parse_code_block(int break_label, int continue_label,
         unary_minus_flag;
 
     begin_syntax_line(TRUE);
+    release_token_texts();
     get_next_token();
 
     if (token_type == SEP_TT && token_value == OPEN_BRACE_SEP)
     {   do
         {   begin_syntax_line(TRUE);
+            release_token_texts();
             get_next_token();
+            
+            if ((token_type == SEP_TT) && (token_value == HASH_SEP))
+            {   parse_directive(TRUE);
+                continue;
+            }
             if (token_type == SEP_TT && token_value == CLOSE_BRACE_SEP)
             {   if (switch_clause_made && (!default_clause_made))
                     assemble_label_no(switch_label);

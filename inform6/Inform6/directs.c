@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------------- */
 /*   "directs" : Directives (# commands)                                     */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -21,7 +21,8 @@ brief_location routine_starts_line; /* Source code location where the current
 
 static int constant_made_yet;      /* Have any constants been defined yet?   */
 
-static int ifdef_stack[32], ifdef_sp;
+#define MAX_IFDEF_STACK (32)
+static int ifdef_stack[MAX_IFDEF_STACK], ifdef_sp;
 
 /* ------------------------------------------------------------------------- */
 
@@ -34,6 +35,14 @@ static int ebf_error_recover(char *s1, char *s2)
           return ebf_error_recover(...);
     */
     ebf_error(s1, s2);
+    panic_mode_error_recovery();
+    return FALSE;
+}
+
+static int ebf_symbol_error_recover(char *s1, char *name, char *type, brief_location report_line)
+{
+    /* Same for ebf_symbol_error(). */
+    ebf_symbol_error(s1, name, type, report_line);
     panic_mode_error_recovery();
     return FALSE;
 }
@@ -51,6 +60,26 @@ extern int parse_given_directive(int internal_flag)
     const char *constant_name;
     debug_location_beginning beginning_debug_location;
 
+    if (internal_flag)
+    {
+        /* Only certain directives, such as #ifdef, are permitted within
+           a routine or object definition. In older versions of Inform,
+           nearly any directive was accepted, but this was -- to quote
+           an old code comment -- "about as well-supported as Wile E. 
+           Coyote one beat before the plummet-lines kick in." */
+        
+        if (token_value != IFV3_CODE && token_value != IFV5_CODE
+            && token_value != IFDEF_CODE && token_value != IFNDEF_CODE
+            && token_value != IFTRUE_CODE && token_value != IFFALSE_CODE
+            && token_value != IFNOT_CODE && token_value != ENDIF_CODE
+            && token_value != MESSAGE_CODE && token_value != ORIGSOURCE_CODE
+            && token_value != TRACE_CODE) {
+            char *dirname = directives.keywords[token_value];
+            error_named("Cannot nest this directive inside a routine or object:", dirname);
+            panic_mode_error_recovery(); return FALSE;
+        }
+    }
+    
     switch(token_value)
     {
 
@@ -65,23 +94,22 @@ extern int parse_given_directive(int internal_flag)
            if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))
                return FALSE;
 
-           /* Z-code has a 64-abbrev limit; Glulx doesn't. */
-           if (!glulx_mode && no_abbreviations==64)
-           {   error("All 64 abbreviations already declared");
+           if (!glulx_mode && no_abbreviations==96)
+           {   error_max_abbreviations(no_abbreviations);
                panic_mode_error_recovery(); return FALSE;
            }
-           if (no_abbreviations==MAX_ABBREVS)
-               memoryerror("MAX_ABBREVS", MAX_ABBREVS);
+           if (!glulx_mode && no_abbreviations==MAX_ABBREVS)
+           {   error_max_abbreviations(no_abbreviations);
+               /* This is no longer a memoryerror(); MAX_ABBREVS is an authoring decision for Z-code games. */
+               panic_mode_error_recovery(); return FALSE;
+           }
 
            if (abbrevs_lookup_table_made)
            {   error("All abbreviations must be declared together");
                panic_mode_error_recovery(); return FALSE;
            }
            if (token_type != DQ_TT)
-               return ebf_error_recover("abbreviation string", token_text);
-           if (strlen(token_text)<2)
-           {   error_named("It's not worth abbreviating", token_text);
-               continue;
+           {   return ebf_error_recover("abbreviation string", token_text);
            }
            /* Abbreviation string with null must fit in a MAX_ABBREV_LENGTH
               array. */
@@ -110,10 +138,6 @@ extern int parse_given_directive(int internal_flag)
     /* --------------------------------------------------------------------- */
 
     case CLASS_CODE: 
-        if (internal_flag)
-        {   error("Cannot nest #Class inside a routine or object");
-            panic_mode_error_recovery(); return FALSE;
-        }
         make_class(NULL);                                 /* See "objects.c" */
         return FALSE;
 
@@ -128,10 +152,14 @@ extern int parse_given_directive(int internal_flag)
         get_next_token(); i = token_value;
         beginning_debug_location = get_token_location_beginning();
 
-        if ((token_type != SYMBOL_TT)
-            || (!(sflags[i] & (UNKNOWN_SFLAG + REDEFINABLE_SFLAG))))
+        if (token_type != SYMBOL_TT)
         {   discard_token_location(beginning_debug_location);
             return ebf_error_recover("new constant name", token_text);
+        }
+
+        if (!(symbols[i].flags & (UNKNOWN_SFLAG + REDEFINABLE_SFLAG)))
+        {   discard_token_location(beginning_debug_location);
+            return ebf_symbol_error_recover("new constant name", token_text, typename(symbols[i].type), symbols[i].line);
         }
 
         assign_symbol(i, 0, CONSTANT_T);
@@ -140,7 +168,7 @@ extern int parse_given_directive(int internal_flag)
         get_next_token();
 
         if ((token_type == SEP_TT) && (token_value == COMMA_SEP))
-        {   if (debugfile_switch && !(sflags[i] & REDEFINABLE_SFLAG))
+        {   if (debugfile_switch && !(symbols[i].flags & REDEFINABLE_SFLAG))
             {   debug_file_printf("<constant>");
                 debug_file_printf("<identifier>%s</identifier>", constant_name);
                 write_debug_symbol_optional_backpatch(i);
@@ -151,7 +179,7 @@ extern int parse_given_directive(int internal_flag)
         }
 
         if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))
-        {   if (debugfile_switch && !(sflags[i] & REDEFINABLE_SFLAG))
+        {   if (debugfile_switch && !(symbols[i].flags & REDEFINABLE_SFLAG))
             {   debug_file_printf("<constant>");
                 debug_file_printf("<identifier>%s</identifier>", constant_name);
                 write_debug_symbol_optional_backpatch(i);
@@ -168,7 +196,7 @@ extern int parse_given_directive(int internal_flag)
             if (AO.marker != 0)
             {   assign_marked_symbol(i, AO.marker, AO.value,
                     CONSTANT_T);
-                sflags[i] |= CHANGE_SFLAG;
+                symbols[i].flags |= CHANGE_SFLAG;
                 if (i == grammar_version_symbol)
                     error(
                 "Grammar__Version must be given an explicit constant value");
@@ -187,7 +215,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
             }
         }
 
-        if (debugfile_switch && !(sflags[i] & REDEFINABLE_SFLAG))
+        if (debugfile_switch && !(symbols[i].flags & REDEFINABLE_SFLAG))
         {   debug_file_printf("<constant>");
             debug_file_printf("<identifier>%s</identifier>", constant_name);
             write_debug_symbol_optional_backpatch(i);
@@ -217,9 +245,9 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
             return ebf_error_recover("name", token_text);
 
         i = -1;
-        if (sflags[token_value] & UNKNOWN_SFLAG)
+        if (symbols[token_value].flags & UNKNOWN_SFLAG)
         {   i = token_value;
-            sflags[i] |= DEFCON_SFLAG;
+            symbols[i].flags |= DEFCON_SFLAG;
         }
 
         get_next_token();
@@ -232,7 +260,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
             {   if (AO.marker != 0)
                 {   assign_marked_symbol(i, AO.marker, AO.value,
                         CONSTANT_T);
-                    sflags[i] |= CHANGE_SFLAG;
+                    symbols[i].flags |= CHANGE_SFLAG;
                 }
                 else assign_symbol(i, AO.value, CONSTANT_T);
             }
@@ -275,7 +303,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
                 assembly_operand AO;
                 put_token_back();
                 AO = parse_expression(CONSTANT_CONTEXT);
-                if (module_switch && (AO.marker != 0))
+                if (AO.marker != 0)
                     error("A definite value must be given as a Dictionary flag");
                 else
                     val1 = AO.value;
@@ -287,8 +315,10 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
                 else {
                     assembly_operand AO;
                     put_token_back();
+                    if (ZCODE_LESS_DICT_DATA && !glulx_mode)
+                        warning("The third dictionary field will be ignored because ZCODE_LESS_DICT_DATA is set");
                     AO = parse_expression(CONSTANT_CONTEXT);
-                    if (module_switch && (AO.marker != 0))
+                    if (AO.marker != 0)
                         error("A definite value must be given as a Dictionary flag");
                     else
                         val3 = AO.value;
@@ -373,8 +403,8 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
             goto HashIfCondition;
         }
 
-        if (sflags[token_value] & UNKNOWN_SFLAG) flag = (flag)?FALSE:TRUE;
-        else sflags[token_value] |= USED_SFLAG;
+        if (symbols[token_value].flags & UNKNOWN_SFLAG) flag = (flag)?FALSE:TRUE;
+        else symbols[token_value].flags |= USED_SFLAG;
         goto HashIfCondition;
 
     case IFNOT_CODE:
@@ -387,14 +417,17 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         {   dont_enter_into_symbol_table = -2; n = 1;
             directives.enabled = TRUE;
             do
-            {   get_next_token();
+            {
+                release_token_texts();
+                get_next_token();
                 if (token_type == EOF_TT)
                 {   error("End of file reached in code 'If...'d out");
                     directives.enabled = FALSE;
                     return TRUE;
                 }
                 if (token_type == DIRECTIVE_TT)
-                {   switch(token_value)
+                {
+                    switch(token_value)
                     {   case ENDIF_CODE:
                             n--; break;
                         case IFV3_CODE:
@@ -420,17 +453,19 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         break;
 
     case IFV3_CODE:
-        flag = FALSE; if (version_number == 3) flag = TRUE;
+        flag = FALSE;
+        if (!glulx_mode && version_number <= 3) flag = TRUE;
         goto HashIfCondition;
 
     case IFV5_CODE:
-        flag = TRUE; if (version_number == 3) flag = FALSE;
+        flag = TRUE;
+        if (!glulx_mode && version_number <= 3) flag = FALSE;
         goto HashIfCondition;
 
     case IFTRUE_CODE:
         {   assembly_operand AO;
             AO = parse_expression(CONSTANT_CONTEXT);
-            if (module_switch && (AO.marker != 0))
+            if (AO.marker != 0)
             {   error("This condition can't be determined");
                 flag = 0;
             }
@@ -441,7 +476,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     case IFFALSE_CODE:
         {   assembly_operand AO;
             AO = parse_expression(CONSTANT_CONTEXT);
-            if (module_switch && (AO.marker != 0))
+            if (AO.marker != 0)
             {   error("This condition can't be determined");
                 flag = 1;
             }
@@ -454,13 +489,20 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         if (!((token_type == SEP_TT) && (token_value == SEMICOLON_SEP)))
             return ebf_error_recover("semicolon after 'If...' condition", token_text);
 
+        if (ifdef_sp >= MAX_IFDEF_STACK) {
+            error("'If' directives nested too deeply");
+            panic_mode_error_recovery(); return FALSE;
+        }
+        
         if (flag)
         {   ifdef_stack[ifdef_sp++] = TRUE; return FALSE; }
         else
         {   dont_enter_into_symbol_table = -2; n = 1;
             directives.enabled = TRUE;
             do
-            {   get_next_token();
+            {
+                release_token_texts();
+                get_next_token();
                 if (token_type == EOF_TT)
                 {   error("End of file reached in code 'If...'d out");
                     directives.enabled = FALSE;
@@ -565,15 +607,21 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         {   error("'LowString' cannot be used in -M (Module) mode");
             panic_mode_error_recovery(); return FALSE;
         }
+        if (glulx_mode) {
+            error("The LowString directive has no meaning in Glulx.");
+            panic_mode_error_recovery(); return FALSE;
+        }
         get_next_token(); i = token_value;
-        if ((token_type != SYMBOL_TT) || (!(sflags[i] & UNKNOWN_SFLAG)))
+        if (token_type != SYMBOL_TT)
             return ebf_error_recover("new low string name", token_text);
+        if (!(symbols[i].flags & UNKNOWN_SFLAG))
+            return ebf_symbol_error_recover("new low string name", token_text, typename(symbols[i].type), symbols[i].line);
 
         get_next_token();
         if (token_type != DQ_TT)
             return ebf_error_recover("literal string in double-quotes", token_text);
 
-        assign_symbol(i, compile_string(token_text, TRUE, TRUE), CONSTANT_T);
+        assign_symbol(i, compile_string(token_text, STRCTX_LOWSTRING), CONSTANT_T);
         break;
 
     /* --------------------------------------------------------------------- */
@@ -629,10 +677,6 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     /* --------------------------------------------------------------------- */
 
     case NEARBY_CODE:
-        if (internal_flag)
-        {   error("Cannot nest #Nearby inside a routine or object");
-            panic_mode_error_recovery(); return FALSE;
-        }
         make_object(TRUE, NULL, -1, -1, -1);
         return FALSE;                                     /* See "objects.c" */
 
@@ -641,10 +685,6 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     /* --------------------------------------------------------------------- */
 
     case OBJECT_CODE:
-        if (internal_flag)
-        {   error("Cannot nest #Object inside a routine or object");
-            panic_mode_error_recovery(); return FALSE;
-        }
         make_object(FALSE, NULL, -1, -1, -1);
         return FALSE;                                     /* See "objects.c" */
 
@@ -715,7 +755,10 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         break;
 
     /* --------------------------------------------------------------------- */
-    /*   Property [long] [additive] name [alias oldname]                     */
+    /*   Property [long] [additive] name                                     */
+    /*   Property [long] [additive] name alias oldname                       */
+    /*   Property [long] [additive] name defaultvalue                        */
+    /*   Property [long] individual name                                     */
     /* --------------------------------------------------------------------- */
 
     case PROPERTY_CODE: make_property(); break;           /* See "objects.c" */
@@ -727,7 +770,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     case RELEASE_CODE:
         {   assembly_operand AO;
             AO = parse_expression(CONSTANT_CONTEXT);
-            if (module_switch && (AO.marker != 0))
+            if (AO.marker != 0)
                 error("A definite value must be given as release number");
             else
                 release_number = AO.value;
@@ -766,10 +809,10 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
 
         if (token_type != SYMBOL_TT)
             return ebf_error_recover("name of routine to replace", token_text);
-        if (!(sflags[token_value] & UNKNOWN_SFLAG))
+        if (!(symbols[token_value].flags & UNKNOWN_SFLAG))
             return ebf_error_recover("name of routine not yet defined", token_text);
 
-        sflags[token_value] |= REPLACE_SFLAG;
+        symbols[token_value].flags |= REPLACE_SFLAG;
 
         /* If a second symbol is provided, it will refer to the
            original (replaced) definition of the routine. */
@@ -783,7 +826,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         {   return FALSE;
         }
 
-        if (token_type != SYMBOL_TT || !(sflags[token_value] & UNKNOWN_SFLAG))
+        if (token_type != SYMBOL_TT || !(symbols[token_value].flags & UNKNOWN_SFLAG))
             return ebf_error_recover("semicolon ';' or new routine name", token_text);
 
         /* Define the original-form symbol as a zero constant. Its
@@ -835,11 +878,6 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     /* --------------------------------------------------------------------- */
 
     case STUB_CODE:
-        if (internal_flag)
-        {   error("Cannot nest #Stub inside a routine or object");
-            panic_mode_error_recovery(); return FALSE;
-        }
-
         /* The upcoming symbol is a definition; don't count it as a
            top-level reference *to* the stub function. */
         df_dont_note_global_symbols = TRUE;
@@ -850,8 +888,8 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
 
         i = token_value; flag = FALSE;
 
-        if (sflags[i] & UNKNOWN_SFLAG)
-        {   sflags[i] |= STUB_SFLAG;
+        if (symbols[i].flags & UNKNOWN_SFLAG)
+        {   symbols[i].flags |= STUB_SFLAG;
             flag = TRUE;
         }
 
@@ -867,15 +905,17 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         {
             /*  Give these parameter-receiving local variables names
                 for the benefit of the debugging information file,
-                and for assembly tracing to look sensible.                   */
+                and for assembly tracing to look sensible.
+                (We don't set local_variable.keywords because we're not
+                going to be parsing any code.)                               */
 
-            local_variable_texts[0] = "dummy1";
-            local_variable_texts[1] = "dummy2";
-            local_variable_texts[2] = "dummy3";
-            local_variable_texts[3] = "dummy4";
+            strcpy(local_variable_names[0].text, "dummy1");
+            strcpy(local_variable_names[1].text, "dummy2");
+            strcpy(local_variable_names[2].text, "dummy3");
+            strcpy(local_variable_names[3].text, "dummy4");
 
             assign_symbol(i,
-                assemble_routine_header(k, FALSE, (char *) symbs[i], FALSE, i),
+                assemble_routine_header(k, FALSE, symbols[i].name, FALSE, i),
                 ROUTINE_T);
 
             /*  Ensure the return value of a stubbed routine is false,
@@ -888,7 +928,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
 
             /*  Inhibit "local variable unused" warnings  */
 
-            for (i=1; i<=k; i++) variable_usage[i] = 1;
+            for (i=1; i<=k; i++) variables[i].usage = 1;
             sequence_point_follows = FALSE;
             assemble_routine_end(FALSE, get_token_locations());
         }
@@ -1008,12 +1048,12 @@ the first constant definition");
         if (token_type != SYMBOL_TT)
             return ebf_error_recover("symbol name", token_text);
 
-        if (sflags[token_value] & UNKNOWN_SFLAG)
+        if (symbols[token_value].flags & UNKNOWN_SFLAG)
         {   break; /* undef'ing an undefined constant is okay */
         }
 
-        if (stypes[token_value] != CONSTANT_T)
-        {   error_named("Cannot Undef a symbol which is not a defined constant:", (char *)symbs[token_value]);
+        if (symbols[token_value].type != CONSTANT_T)
+        {   error_named("Cannot Undef a symbol which is not a defined constant:", symbols[token_value].name);
             break;
         }
 
@@ -1021,7 +1061,7 @@ the first constant definition");
         {   write_debug_undef(token_value);
         }
         end_symbol_scope(token_value);
-        sflags[token_value] |= USED_SFLAG;
+        symbols[token_value].flags |= USED_SFLAG;
         break;
 
     /* --------------------------------------------------------------------- */
@@ -1046,22 +1086,47 @@ the first constant definition");
               break;
             }
 
-            if (module_switch && (AO.marker != 0))
-                error("A definite value must be given as version number");
-            else 
-            if (glulx_mode) 
+            if (AO.marker != 0)
+            {
+              error("A definite value must be given as version number.");
+              break;
+            }
+            else if (no_routines > 1)
+            {
+              /* The built-in Main__ routine is number zero. */
+              error("A 'Version' directive must come before the first routine definition.");
+              break;
+            }
+            else if (glulx_mode) 
             {
               warning("The Version directive does not work in Glulx. Use \
 -vX.Y.Z instead, as either a command-line argument or a header comment.");
               break;
             }
             else
-            {   i = AO.value;
+            {
+                int debtok;
+                i = AO.value;
                 if ((i<3) || (i>8))
                 {   error("The version number must be in the range 3 to 8");
                     break;
                 }
                 select_version(i);
+                /* We must now do a small dance to reset the DICT_ENTRY_BYTES
+                   constant, which was defined at startup based on the Z-code
+                   version.
+                   The calculation here is repeated from select_target(). */
+                DICT_ENTRY_BYTE_LENGTH = ((version_number==3)?7:9) - (ZCODE_LESS_DICT_DATA?1:0);
+                debtok = symbol_index("DICT_ENTRY_BYTES", -1);
+                if (!(symbols[debtok].flags & UNKNOWN_SFLAG))
+                {
+                    if (!(symbols[debtok].flags & REDEFINABLE_SFLAG))
+                    {
+                        warning("The DICT_ENTRY_BYTES symbol is not marked redefinable");
+                    }
+                    /* Redefine the symbol... */
+                    assign_symbol(debtok, DICT_ENTRY_BYTE_LENGTH, CONSTANT_T);
+                }
             }
         }
         break;                                             /* see "inform.c" */

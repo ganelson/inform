@@ -1,0 +1,12 @@
+[ Main;
+	@setiosys 2 0; ! Set to use Glk
+	@push 201;     ! = GG_MAINWIN_ROCK;
+	@push 3;       ! = wintype_TextBuffer
+	@push 0;
+	@push 0;
+	@push 0;
+	@glk 35 5 sp;  ! glk_window_open, pushing a window ID
+	@glk 47 1 0;   ! glk_set_window to that window ID
+
+	print "Hello, world of 1979.^";
+];

@@ -1,0 +1,4 @@
+[ Main;
+	new_line;
+	print "Hello, world of 1979.^";
+];

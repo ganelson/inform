@@ -3,8 +3,8 @@
 /*               end of dynamic memory, gluing together all the required     */
 /*               tables.                                                     */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
@@ -141,7 +141,7 @@ static int32 rough_size_of_paged_memory_z(void)
     ASSERT_ZCODE();
 
     total = 64                                                     /* header */
-            + 2 + subtract_pointers(low_strings_top, low_strings)
+            + 2 + low_strings_top
                                                          /* low strings pool */
             + 6*32;                                   /* abbreviations table */
 
@@ -175,7 +175,7 @@ static int32 rough_size_of_paged_memory_z(void)
               + 2*no_actions                              /* action routines */
               + 2*no_grammar_token_routines;     /* general parsing routines */
 
-    total += (subtract_pointers(dictionary_top, dictionary))  /* dictionary */
+    total += (dictionary_top)                            /* dictionary size */
              + ((module_switch)?30:0);                        /* module map */
 
     total += static_array_area_size;                       /* static arrays */
@@ -199,7 +199,8 @@ static int32 rough_size_of_paged_memory_g(void)
     /* No header for us! */
     total = 1000; /* bit of a fudge factor */
 
-    total += dynamic_array_area_size; /* arrays and global variables */
+    total += no_globals * 4; /* global variables */
+    total += dynamic_array_area_size; /* arrays */
 
     total += no_objects * OBJECT_BYTE_LENGTH; /* object tables */
     total += properties_table_size; /* property tables */
@@ -220,7 +221,7 @@ static int32 rough_size_of_paged_memory_g(void)
     total += 4 + no_actions * 4; /* actions functions table */
 
     total += 4;
-    total += subtract_pointers(dictionary_top, dictionary);
+    total += dictionary_top;
 
     while (total % GPAGESIZE)
       total++;
@@ -278,17 +279,27 @@ static void construct_storyfile_z(void)
     p[mark]=0x80; p[mark+1]=0; mark+=2;        /* Start the low strings pool
                                          with a useful default string, "   " */
 
-    for (i=0; i+low_strings<low_strings_top; mark++, i++) /* Low strings pool */
+    for (i=0; i<low_strings_top; mark++, i++)  /* Low strings pool */
         p[0x42+i]=low_strings[i];
 
     abbrevs_at = mark;
-    for (i=0; i<3*32; i++)                       /* Initially all 96 entries */
-    {   p[mark++]=0; p[mark++]=0x20;                     /* are set to "   " */
+    
+    if (MAX_ABBREVS + MAX_DYNAMIC_STRINGS != 96)
+        fatalerror("MAX_ABBREVS + MAX_DYNAMIC_STRINGS is not 96");
+    
+    /* Initially all 96 entries are set to "   ". (We store half of 0x40,
+       the address of the "   " we wrote above.) */
+    for (i=0; i<3*32; i++)
+    {   p[mark++]=0; p[mark++]=0x20;
     }
-    for (i=0; i<no_abbreviations; i++)            /* Write any abbreviations */
-    {   j=abbrev_values[i];                            /* into banks 2 and 3 */
-        p[abbrevs_at+64+2*i]=j/256;               /* (bank 1 is reserved for */
-        p[abbrevs_at+65+2*i]=j%256;                   /* "variable strings") */
+    
+    /* Entries from 0 to MAX_DYNAMIC_STRINGS (default 32) are "variable 
+       strings". Write the abbreviations after these. */
+    k = abbrevs_at+2*MAX_DYNAMIC_STRINGS;
+    for (i=0; i<no_abbreviations; i++)
+    {   j=abbreviations[i].value;
+        p[k++]=j/256;
+        p[k++]=j%256;
     }
 
     /*  ------------------- Header extension table ------------------------- */
@@ -338,8 +349,7 @@ static void construct_storyfile_z(void)
     /*  -------------------- Objects and Properties ------------------------ */
 
     /* The object table must be word-aligned. The Z-machine spec does not
-       require this, but the RA__Pr() veneer routine does. See 
-       http://inform7.com/mantis/view.php?id=1712.
+       require this, but the RA__Pr() veneer routine does.
     */
     while ((mark%2) != 0) p[mark++]=0;
 
@@ -348,8 +358,8 @@ static void construct_storyfile_z(void)
     p[mark++]=0; p[mark++]=0;
 
     for (i=2; i< ((version_number==3)?32:64); i++)
-    {   p[mark++]=prop_default_value[i]/256;
-        p[mark++]=prop_default_value[i]%256;
+    {   p[mark++]=commonprops[i].default_value/256;
+        p[mark++]=commonprops[i].default_value%256;
     }
 
     object_tree_at = mark;
@@ -405,11 +415,11 @@ static void construct_storyfile_z(void)
 
     class_numbers_offset = mark;
     for (i=0; i<no_classes; i++)
-    {   p[mark++] = class_object_numbers[i]/256;
-        p[mark++] = class_object_numbers[i]%256;
+    {   p[mark++] = class_info[i].object_number/256;
+        p[mark++] = class_info[i].object_number%256;
         if (module_switch)
-        {   p[mark++] = class_begins_at[i]/256;
-            p[mark++] = class_begins_at[i]%256;
+        {   p[mark++] = class_info[i].begins_at/256;
+            p[mark++] = class_info[i].begins_at%256;
         }
     }
     p[mark++] = 0;
@@ -457,7 +467,7 @@ static void construct_storyfile_z(void)
 
     if (define_INFIX_switch)
     {   for (i=0, k=1, l=0; i<no_named_routines; i++)
-        {   if (sflags[named_routine_symbols[i]] & STAR_SFLAG) l=l+k;
+        {   if (symbols[named_routine_symbols[i]].flags & STAR_SFLAG) l=l+k;
             k=k*2;
             if (k==256) { p[mark++] = l; k=1; l=0; }
         }
@@ -558,7 +568,7 @@ table format requested (producing number 2 format instead)");
 
         for (i=0; i<no_adjectives; i++)
         {   j = final_dict_order[adjectives[no_adjectives-i-1]]
-                *((version_number==3)?7:9)
+                *DICT_ENTRY_BYTE_LENGTH
                 + dictionary_offset + 7;
             p[mark++]=j/256; p[mark++]=j%256; p[mark++]=0;
             p[mark++]=(256-no_adjectives+i);
@@ -578,19 +588,19 @@ table format requested (producing number 2 format instead)");
                      dictionary[2]=',';                 /* force words apart */
                      dictionary[3]='"';
 
-    dictionary[4]=(version_number==3)?7:9;           /* Length of each entry */
+    dictionary[4]=DICT_ENTRY_BYTE_LENGTH;           /* Length of each entry */
     dictionary[5]=(dict_entries/256);                   /* Number of entries */
     dictionary[6]=(dict_entries%256);
 
     for (i=0; i<7; i++) p[mark++] = dictionary[i];
 
     for (i=0; i<dict_entries; i++)
-    {   k = 7 + i*((version_number==3)?7:9);
-        j = mark + final_dict_order[i]*((version_number==3)?7:9);
-        for (l = 0; l<((version_number==3)?7:9); l++)
+    {   k = 7 + i*DICT_ENTRY_BYTE_LENGTH;
+        j = mark + final_dict_order[i]*DICT_ENTRY_BYTE_LENGTH;
+        for (l = 0; l<DICT_ENTRY_BYTE_LENGTH; l++)
             p[j++] = dictionary[k++];
     }
-    mark += dict_entries * ((version_number==3)?7:9);
+    mark += dict_entries * DICT_ENTRY_BYTE_LENGTH;
 
     /*  ------------------------- Module Map ------------------------------- */
 
@@ -889,7 +899,7 @@ or less.");
 
         mark = actions_at;
         for (i=0; i<no_actions; i++)
-        {   j=action_byte_offset[i];
+        {   j=actions[i].byte_offset;
             if (OMIT_UNUSED_ROUTINES)
                 j = df_stripped_address_for_address(j);
             j += code_offset/scale_factor;
@@ -919,7 +929,7 @@ or less.");
                         switch(topbits)
                         {   case 1:
                                 value = final_dict_order[value]
-                                        *((version_number==3)?7:9)
+                                        *DICT_ENTRY_BYTE_LENGTH
                                         + dictionary_offset + 7;
                                 break;
                             case 2:
@@ -960,9 +970,9 @@ or less.");
             }
 
             printf("Allocated:\n\
-%6d symbols (maximum %4d)    %8ld bytes of memory\n\
+%6d symbols                    %8ld bytes of memory\n\
 Out:   Version %d \"%s\" %s %d.%c%c%c%c%c%c (%ld%sK long):\n",
-                 no_symbols, MAX_SYMBOLS,
+                 no_symbols,
                  (long int) malloced_bytes,
                  version_number,
                  version_name(version_number),
@@ -971,25 +981,25 @@ Out:   Version %d \"%s\" %s %d.%c%c%c%c%c%c (%ld%sK long):\n",
                  (long int) k_long, k_str);
 
             printf("\
-%6d classes (maximum %3d)        %6d objects (maximum %3d)\n\
-%6d global vars (maximum 233)    %6d variable/array space (maximum %d)\n",
-                 no_classes, MAX_CLASSES,
-                 no_objects, ((version_number==3)?255:(MAX_OBJECTS-1)),
+%6d classes                      %6d objects\n\
+%6d global vars (maximum 233)    %6d variable/array space\n",
+                 no_classes,
+                 no_objects,
                  no_globals,
-                 dynamic_array_area_size, MAX_STATIC_DATA);
+                 dynamic_array_area_size);
 
             printf(
-"%6d verbs (maximum %3d)          %6d dictionary entries (maximum %d)\n\
+"%6d verbs                        %6d dictionary entries\n\
 %6d grammar lines (version %d)    %6d grammar tokens (unlimited)\n\
-%6d actions (maximum %3d)        %6d attributes (maximum %2d)\n\
+%6d actions                      %6d attributes (maximum %2d)\n\
 %6d common props (maximum %2d)    %6d individual props (unlimited)\n",
-                 no_Inform_verbs, MAX_VERBS,
-                 dict_entries, MAX_DICT_ENTRIES,
+                 no_Inform_verbs,
+                 dict_entries,
                  no_grammar_lines, grammar_version_number,
                  no_grammar_tokens,
-                 no_actions, MAX_ACTIONS,
+                 no_actions,
                  no_attributes, ((version_number==3)?32:48),
-                 no_properties-2, ((version_number==3)?30:62),
+                 no_properties-3, ((version_number==3)?29:61),
                  no_individual_properties - 64);
 
             if (track_unused_routines)
@@ -1182,8 +1192,8 @@ printf("        +---------------------+   %05lx\n", (long int) Out_Size);
                     (char *)abbreviations_at+i*MAX_ABBREV_LENGTH);
                 for (j=0; abbrev_string[j]!=0; j++)
                     if (abbrev_string[j]==' ') abbrev_string[j]='_';
-                printf("%10s %5d/%5d   ",abbrev_string,abbrev_freqs[i],
-                    2*((abbrev_freqs[i]-1)*abbrev_quality[i])/3);
+                printf("%10s %5d/%5d   ",abbrev_string,abbreviations[i].freq,
+                    2*((abbreviations[i].freq-1)*abbreviations[i].quality)/3);
                 if ((i%3)==2) printf("\n");
             }
             if ((i%3)!=0) printf("\n");
@@ -1219,7 +1229,7 @@ static void construct_storyfile_g(void)
             "array name strings");
 
     write_the_identifier_names();
-    threespaces = compile_string("   ", FALSE, FALSE);
+    threespaces = compile_string("   ", STRCTX_GAME);
 
     compress_game_text();
 
@@ -1279,7 +1289,7 @@ static void construct_storyfile_g(void)
     }
 
     arrays_at = mark;
-    for (i=MAX_GLOBAL_VARIABLES*4; i<dynamic_array_area_size; i++)
+    for (i=0; i<dynamic_array_area_size; i++)
         p[mark++] = dynamic_array_area[i];
 
     /* -------------------------- Dynamic Strings -------------------------- */
@@ -1385,7 +1395,7 @@ static void construct_storyfile_g(void)
 
     prop_defaults_at = mark;
     for (i=0; i<no_properties; i++) {
-      k = prop_default_value[i];
+      k = commonprops[i].default_value;
       WriteInt32(p+mark, k);
       mark += 4;
     }
@@ -1395,7 +1405,7 @@ static void construct_storyfile_g(void)
     class_numbers_offset = mark;
     for (i=0; i<no_classes; i++) {
       j = Write_RAM_At + object_tree_at +
-        (OBJECT_BYTE_LENGTH*(class_object_numbers[i]-1));
+        (OBJECT_BYTE_LENGTH*(class_info[i].object_number-1));
       WriteInt32(p+mark, j);
       mark += 4;
     }
@@ -1583,7 +1593,7 @@ table format requested (producing number 2 format instead)");
 
         mark = actions_at + 4;
         for (i=0; i<no_actions; i++) {
-          j = action_byte_offset[i];
+          j = actions[i].byte_offset;
           if (OMIT_UNUSED_ROUTINES)
             j = df_stripped_address_for_address(j);
           j += code_offset;
@@ -1648,9 +1658,9 @@ table format requested (producing number 2 format instead)");
             {char serialnum[8];
             write_serial_number(serialnum);
             printf("Allocated:\n\
-%6d symbols (maximum %4d)    %8ld bytes of memory\n\
+%6d symbols                    %8ld bytes of memory\n\
 Out:   %s %s %d.%c%c%c%c%c%c (%ld%sK long):\n",
-                 no_symbols, MAX_SYMBOLS,
+                 no_symbols,
                  (long int) malloced_bytes,
                  version_name(version_number),
                  output_called,
@@ -1661,25 +1671,25 @@ Out:   %s %s %d.%c%c%c%c%c%c (%ld%sK long):\n",
             } 
 
             printf("\
-%6d classes (maximum %3d)        %6d objects (maximum %3d)\n\
-%6d global vars (maximum %3d)    %6d variable/array space (maximum %d)\n",
-                 no_classes, MAX_CLASSES,
-                 no_objects, MAX_OBJECTS,
-                 no_globals, MAX_GLOBAL_VARIABLES,
-                 dynamic_array_area_size, MAX_STATIC_DATA);
+%6d classes                      %6d objects\n\
+%6d global vars                  %6d variable/array space\n",
+                 no_classes,
+                 no_objects,
+                 no_globals,
+                 dynamic_array_area_size);
 
             printf(
-"%6d verbs (maximum %3d)          %6d dictionary entries (maximum %d)\n\
+"%6d verbs                        %6d dictionary entries\n\
 %6d grammar lines (version %d)    %6d grammar tokens (unlimited)\n\
-%6d actions (maximum %3d)        %6d attributes (maximum %2d)\n\
+%6d actions                      %6d attributes (maximum %2d)\n\
 %6d common props (maximum %3d)   %6d individual props (unlimited)\n",
-                 no_Inform_verbs, MAX_VERBS,
-                 dict_entries, MAX_DICT_ENTRIES,
+                 no_Inform_verbs,
+                 dict_entries,
                  no_grammar_lines, grammar_version_number,
                  no_grammar_tokens,
-                 no_actions, MAX_ACTIONS,
+                 no_actions,
                  no_attributes, NUM_ATTR_BYTES*8,
-                 no_properties, INDIV_PROP_START,
+                 no_properties-3, INDIV_PROP_START-3,
                  no_individual_properties - INDIV_PROP_START);
 
             if (track_unused_routines)
@@ -1882,8 +1892,8 @@ printf("  extn  +---------------------+   %06lx\n", (long int) Out_Size+MEMORY_M
                     (char *)abbreviations_at+i*MAX_ABBREV_LENGTH);
                 for (j=0; abbrev_string[j]!=0; j++)
                     if (abbrev_string[j]==' ') abbrev_string[j]='_';
-                printf("%10s %5d/%5d   ",abbrev_string,abbrev_freqs[i],
-                    2*((abbrev_freqs[i]-1)*abbrev_quality[i])/3);
+                printf("%10s %5d/%5d   ",abbrev_string,abbreviations[i].freq,
+                    2*((abbreviations[i].freq-1)*abbreviations[i].quality)/3);
                 if ((i%3)==2) printf("\n");
             }
             if ((i%3)!=0) printf("\n");

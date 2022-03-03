@@ -1,19 +1,22 @@
 /* ------------------------------------------------------------------------- */
 /*   "linker" : For compiling and linking modules                            */
 /*                                                                           */
-/*   Part of Inform 6.34                                                     */
-/*   copyright (c) Graham Nelson 1993 - 2020                                 */
+/*   Part of Inform 6.36                                                     */
+/*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
 
 #include "header.h"
 
-memory_block link_data_area;
-uchar *link_data_holding_area, *link_data_top;
+uchar *link_data_holding_area;            /* Allocated to link_data_ha_size  */
+static memory_list link_data_holding_area_memlist;
+int32 link_data_ha_size;
+
+uchar *link_data_area;
+static memory_list link_data_area_memlist;
                                           /*  Start, current top, size of    */
 int32 link_data_size;                     /*  link data table being written  */
                                           /*  (holding import/export names)  */
-extern int32 *action_symbol;
 
 /* ------------------------------------------------------------------------- */
 /*   Marker values                                                           */
@@ -207,28 +210,28 @@ static void accept_export(void)
 
     xref_table[IE.symbol_number] = index;
 
-    if (!(sflags[index] & UNKNOWN_SFLAG))
+    if (!(symbols[index].flags & UNKNOWN_SFLAG))
     {   if (IE.module_value == EXPORTAC_MV)
-        {   if ((!(sflags[index] & ACTION_SFLAG))
-                && (stypes[index] != FAKE_ACTION_T))
+        {   if ((!(symbols[index].flags & ACTION_SFLAG))
+                && (symbols[index].type != FAKE_ACTION_T))
                 link_error_named(
 "action name clash with", IE.symbol_name);
         }
         else
-        if (stypes[index] == IE.symbol_type)
+        if (symbols[index].type == IE.symbol_type)
         {   switch(IE.symbol_type)
             {   case CONSTANT_T:
-                    if ((!(svals[index] == IE.symbol_value))
+                    if ((!(symbols[index].value == IE.symbol_value))
                         || (IE.backpatch != 0))
                         link_error_named(
 "program and module give differing values of", IE.symbol_name);
                     break;
                 case INDIVIDUAL_PROPERTY_T:
-                    property_identifier_map[IE.symbol_value] = svals[index];
+                    property_identifier_map[IE.symbol_value] = symbols[index].value;
                     break;
                 case ROUTINE_T:
                     if ((IE.module_value == EXPORTSF_MV)
-                        && (sflags[index] & REPLACE_SFLAG))
+                        && (symbols[index].flags & REPLACE_SFLAG))
                     break;
                 default:
                     sprintf(link_errorm,
@@ -241,7 +244,7 @@ static void accept_export(void)
         else
         {   sprintf(link_errorm,
                     "'%s' has type %s in program but type %s in module",
-                    IE.symbol_name, typename(stypes[index]),
+                    IE.symbol_name, typename(symbols[index].type),
                     typename(IE.symbol_type));
             link_error(link_errorm);
         }
@@ -249,15 +252,18 @@ static void accept_export(void)
     else
     {   if (IE.module_value == EXPORTAC_MV)
         {   IE.symbol_value = no_actions;
-            action_symbol[no_actions++] = index;
+            ensure_memory_list_available(&actions_memlist, no_actions+1);
+            actions[no_actions].symbol = index;
+            actions[no_actions].byte_offset = 0; /* fill in later */
+            no_actions++;
             if (linker_trace_level >= 4)
-                printf("Creating action ##%s\n", (char *) symbs[index]);
+                printf("Creating action ##%s\n", symbols[index].name);
         }
         else
         switch(IE.symbol_type)
         {   case ROUTINE_T:
                 if ((IE.module_value == EXPORTSF_MV)
-                    && (sflags[index] & REPLACE_SFLAG))
+                    && (symbols[index].flags & REPLACE_SFLAG))
                 {   routine_replace[no_rr] = IE.symbol_value;
                     routine_replace_with[no_rr++] = index;
                     return;
@@ -269,7 +275,7 @@ static void accept_export(void)
                 IE.symbol_value += no_objects;
                 break;
             case ARRAY_T:
-                IE.symbol_value += dynamic_array_area_size - (MAX_GLOBAL_VARIABLES*2);
+                IE.symbol_value += dynamic_array_area_size - (MAX_ZCODE_GLOBAL_VARS*2);
                 break;
             case GLOBAL_VARIABLE_T:
                 if (no_globals==233)
@@ -297,21 +303,21 @@ static void accept_export(void)
 
                 break;
         }
-        assign_symbol(index, IE.backpatch*0x10000 + IE.symbol_value,
+        assign_marked_symbol(index, IE.backpatch, IE.symbol_value,
             IE.symbol_type);
-        if (IE.backpatch != 0) sflags[index] |= CHANGE_SFLAG;
-        sflags[index] |= EXPORT_SFLAG;
+        if (IE.backpatch != 0) symbols[index].flags |= CHANGE_SFLAG;
+        symbols[index].flags |= EXPORT_SFLAG;
         if (IE.module_value == EXPORTSF_MV)
-            sflags[index] |= INSF_SFLAG;
+            symbols[index].flags |= INSF_SFLAG;
         if (IE.module_value == EXPORTAC_MV)
-            sflags[index] |= ACTION_SFLAG;
+            symbols[index].flags |= ACTION_SFLAG;
     }
 
     if (IE.module_value == EXPORTAC_MV)
     {   if (linker_trace_level >= 4)
             printf("Map %d '%s' to %d\n",
-                IE.symbol_value, (char *) (symbs[index]), svals[index]);
-        actions_map[map_to] = svals[index];
+                IE.symbol_value, (symbols[index].name), symbols[index].value);
+        actions_map[map_to] = symbols[index].value;
     }
 }
 
@@ -319,22 +325,22 @@ static void accept_import(void)
 {   int32 index;
 
     index = symbol_index(IE.symbol_name, -1);
-    sflags[index] |= USED_SFLAG;
+    symbols[index].flags |= USED_SFLAG;
     xref_table[IE.symbol_number] = index;
 
-    if (!(sflags[index] & UNKNOWN_SFLAG))
+    if (!(symbols[index].flags & UNKNOWN_SFLAG))
     {   switch (IE.symbol_type)
         {
             case GLOBAL_VARIABLE_T:
-                if (stypes[index] != GLOBAL_VARIABLE_T)
+                if (symbols[index].type != GLOBAL_VARIABLE_T)
                     link_error_named(
 "module (wrongly) declared this a variable:", IE.symbol_name);
-                variables_map[IE.symbol_value] = svals[index];
+                variables_map[IE.symbol_value] = symbols[index].value;
                 if (IE.symbol_value < lowest_imported_global_no)
                     lowest_imported_global_no = IE.symbol_value;
                 break;
             default:
-                switch(stypes[index])
+                switch(symbols[index].type)
                 {   case ATTRIBUTE_T:
                         link_error_named(
 "this attribute is undeclared within module:", IE.symbol_name);; break;
@@ -361,7 +367,7 @@ static void accept_import(void)
     {   switch (IE.symbol_type)
         {
             case GLOBAL_VARIABLE_T:
-                if (stypes[index] != GLOBAL_VARIABLE_T)
+                if (symbols[index].type != GLOBAL_VARIABLE_T)
                     link_error_named(
                 "Module tried to import a Global variable not defined here:",
                         IE.symbol_name);
@@ -450,11 +456,11 @@ static int32 backpatch_backpatch(int32 v)
             break;
 
         case ARRAY_MV:
-            if (v < (MAX_GLOBAL_VARIABLES*2))
+            if (v < (MAX_ZCODE_GLOBAL_VARS*2))
             {   v = 2*(variables_map[v/2 + 16] - 16);
             }
             else
-            {   v += dynamic_array_area_size - (MAX_GLOBAL_VARIABLES*2);
+            {   v += dynamic_array_area_size - (MAX_ZCODE_GLOBAL_VARS*2);
             }
             break;
 
@@ -632,7 +638,7 @@ of the Inform 6 compiler knows about: it may not link in correctly", filename);
             filename, module_size/1024);
         if (linker_trace_level >= 1) printf("%s\n", link_banner);
         if (transcript_switch)
-            write_to_transcript_file(link_banner);
+            write_to_transcript_file(link_banner, STRCTX_INFO);
     }
 
     /* (4) Merge in the dictionary */
@@ -668,7 +674,7 @@ of the Inform 6 compiler knows about: it may not link in correctly", filename);
         if (((record_type == EXPORT_MV) || (record_type == EXPORTSF_MV))
             && (IE.symbol_type == INDIVIDUAL_PROPERTY_T))
         {   int32 si = symbol_index(IE.symbol_name, -1);
-            property_identifier_map[IE.symbol_value] = svals[si];
+            property_identifier_map[IE.symbol_value] = symbols[si].value;
         }
         switch(record_type)
         {   case EXPORT_MV:
@@ -693,7 +699,7 @@ of the Inform 6 compiler knows about: it may not link in correctly", filename);
         for (i=0; i<module_map[6]; i++)
         {   if (xref_table[i] != -1)
                 printf("module %4d -> story file '%s'\n", i,
-                    (char *) symbs[xref_table[i]]);
+                    symbols[xref_table[i]].name);
         }
     }
 
@@ -715,14 +721,14 @@ of the Inform 6 compiler knows about: it may not link in correctly", filename);
     /* (6) Backpatch the backpatch markers attached to exported symbols  */
 
     for (i=symbols_base; i<no_symbols; i++)
-    {   if ((sflags[i] & CHANGE_SFLAG) && (sflags[i] & EXPORT_SFLAG))
-        {   backpatch_marker = svals[i]/0x10000;
-            j = svals[i] % 0x10000;
+    {   if ((symbols[i].flags & CHANGE_SFLAG) && (symbols[i].flags & EXPORT_SFLAG))
+        {   backpatch_marker = symbols[i].marker;
+            j = symbols[i].value % 0x10000;
 
             j = backpatch_backpatch(j);
 
-            svals[i] = backpatch_marker*0x10000 + j;
-            if (backpatch_marker == 0) sflags[i] &= (~(CHANGE_SFLAG));
+            symbols[i].value = j;
+            if (backpatch_marker == 0) symbols[i].flags &= (~(CHANGE_SFLAG));
         }
     }
 
@@ -740,13 +746,11 @@ of the Inform 6 compiler knows about: it may not link in correctly", filename);
                 backpatch_module_image(p, marker_value, ZCODE_ZA, offset);
                 break;
             default:
+                ensure_memory_list_available(&zcode_backpatch_table_memlist, zcode_backpatch_size+3);
                 backpatch_module_image(p, marker_value, ZCODE_ZA, offset);
-                write_byte_to_memory_block(&zcode_backpatch_table,
-                    zcode_backpatch_size++, backpatch_marker);
-                write_byte_to_memory_block(&zcode_backpatch_table,
-                    zcode_backpatch_size++, (offset + zmachine_pc)/256);
-                write_byte_to_memory_block(&zcode_backpatch_table,
-                    zcode_backpatch_size++, (offset + zmachine_pc)%256);
+                zcode_backpatch_table[zcode_backpatch_size++] = backpatch_marker;
+                zcode_backpatch_table[zcode_backpatch_size++] = (offset + zmachine_pc)/256;
+                zcode_backpatch_table[zcode_backpatch_size++] = (offset + zmachine_pc)%256;
                 break;
         }
     }
@@ -773,11 +777,11 @@ of the Inform 6 compiler knows about: it may not link in correctly", filename);
                     case INDIVIDUAL_PROP_ZA:
                         offset += individuals_length; break;
                     case DYNAMIC_ARRAY_ZA:
-                        if (offset < (MAX_GLOBAL_VARIABLES*2))
+                        if (offset < (MAX_ZCODE_GLOBAL_VARS*2))
                         {   offset = 2*(variables_map[offset/2 + 16] - 16);
                         }
                         else
-                        {   offset += dynamic_array_area_size - (MAX_GLOBAL_VARIABLES*2);
+                        {   offset += dynamic_array_area_size - (MAX_ZCODE_GLOBAL_VARS*2);
                         }
                         break;
                 }
@@ -808,17 +812,16 @@ of the Inform 6 compiler knows about: it may not link in correctly", filename);
 
     /* (10) Glue in the dynamic array data */
 
-    i = m_static_offset - m_vars_offset - MAX_GLOBAL_VARIABLES*2;
-    if (dynamic_array_area_size + i >= MAX_STATIC_DATA)
-        memoryerror("MAX_STATIC_DATA", MAX_STATIC_DATA);
+    i = m_static_offset - m_vars_offset - MAX_ZCODE_GLOBAL_VARS*2;
+    ensure_memory_list_available(&dynamic_array_area_memlist, dynamic_array_area_size + i);
 
     if (linker_trace_level >= 2)
         printf("Inserting dynamic array area, %04x to %04x, at %04x\n",
-            m_vars_offset + MAX_GLOBAL_VARIABLES*2, m_static_offset,
+            m_vars_offset + MAX_ZCODE_GLOBAL_VARS*2, m_static_offset,
             variables_offset + dynamic_array_area_size);
     for (k=0;k<i;k++)
     {   dynamic_array_area[dynamic_array_area_size+k]
-            = p[m_vars_offset+MAX_GLOBAL_VARIABLES*2+k];
+            = p[m_vars_offset+MAX_ZCODE_GLOBAL_VARS*2+k];
     }
     dynamic_array_area_size+=i;
 
@@ -828,13 +831,17 @@ of the Inform 6 compiler knows about: it may not link in correctly", filename);
       printf("Inserting code area, %04x to %04x, at code offset %04x (+%04x)\n",
         m_code_offset, m_strs_offset, code_offset, zmachine_pc);
 
+    ensure_memory_list_available(&zcode_area_memlist, zmachine_pc + (m_strs_offset - m_code_offset));
+    
     for (k=m_code_offset;k<m_strs_offset;k++)
     {   if (temporary_files_switch)
         {   fputc(p[k],Temp2_fp);
             zmachine_pc++;
         }
         else
-            write_byte_to_memory_block(&zcode_area, zmachine_pc++, p[k]);
+        {
+            zcode_area[zmachine_pc++] = p[k];
+        }
     }
 
     /* (12) Glue in the static strings area */
@@ -844,14 +851,16 @@ of the Inform 6 compiler knows about: it may not link in correctly", filename);
 at strings offset %04x (+%04x)\n",
         m_strs_offset, link_offset, strings_offset,
         static_strings_extent);
+    if (!temporary_files_switch) {
+        ensure_memory_list_available(&static_strings_area_memlist, static_strings_extent+link_offset-m_strs_offset);
+    }
     for (k=m_strs_offset;k<link_offset;k++)
     {   if (temporary_files_switch)
         {   fputc(p[k], Temp1_fp);
             static_strings_extent++;
         }
         else
-            write_byte_to_memory_block(&static_strings_area,
-                    static_strings_extent++, p[k]);
+            static_strings_area[static_strings_extent++] = p[k];
     }
 
     /* (13) Append the class object-numbers table: note that modules
@@ -862,9 +871,11 @@ at strings offset %04x (+%04x)\n",
     {   j = p[i]*256 + p[i+1]; i+=2;
         if (j == 0) break;
 
-        class_object_numbers[no_classes] = j + no_objects;
+        ensure_memory_list_available(&class_info_memlist, no_classes+1);
+        
+        class_info[no_classes].object_number = j + no_objects;
         j = p[i]*256 + p[i+1]; i+=2;
-        class_begins_at[no_classes++] = j + properties_table_size;
+        class_info[no_classes++].begins_at = j + properties_table_size;
 
     } while (TRUE);
 
@@ -874,7 +885,9 @@ at strings offset %04x (+%04x)\n",
         printf("Joining on object tree of size %d\n", m_no_objects);
 
     for (i=0, k=no_objects, last=m_props_offset;i<m_no_objects;i++)
-    {   objectsz[no_objects].atts[0]=p[m_objs_offset+14*i];
+    {
+        ensure_memory_list_available(&objectsz_memlist, no_objects+1);
+        objectsz[no_objects].atts[0]=p[m_objs_offset+14*i];
         objectsz[no_objects].atts[1]=p[m_objs_offset+14*i+1];
         objectsz[no_objects].atts[2]=p[m_objs_offset+14*i+2];
         objectsz[no_objects].atts[3]=p[m_objs_offset+14*i+3];
@@ -922,13 +935,12 @@ at strings offset %04x (+%04x)\n",
     /* (15) Glue on the properties */
 
     if (last>m_props_offset)
-    {   i = m_static_offset - m_vars_offset - MAX_GLOBAL_VARIABLES*2;
-        if (dynamic_array_area_size + i >= MAX_STATIC_DATA)
-            memoryerror("MAX_STATIC_DATA", MAX_STATIC_DATA);
+    {   i = m_static_offset - m_vars_offset - MAX_ZCODE_GLOBAL_VARS*2;
 
         if (linker_trace_level >= 2)
             printf("Inserting object properties area, %04x to %04x, at +%04x\n",
                 m_props_offset, last, properties_table_size);
+        ensure_memory_list_available(&properties_table_memlist, properties_table_size+last-m_props_offset);
         for (k=0;k<last-m_props_offset;k++)
             properties_table[properties_table_size++] = p[m_props_offset+k];
     }
@@ -941,9 +953,7 @@ at strings offset %04x (+%04x)\n",
     /* (17) Append the individual property values table */
 
     i = m_individuals_length;
-    if (individuals_length + i >= MAX_INDIV_PROP_TABLE_SIZE)
-        memoryerror("MAX_INDIV_PROP_TABLE_SIZE",
-            MAX_INDIV_PROP_TABLE_SIZE);
+    ensure_memory_list_available(&individuals_table_memlist, individuals_length + i);
 
     if (linker_trace_level >= 2)
       printf("Inserting individual prop tables area, %04x to %04x, at +%04x\n",
@@ -974,23 +984,24 @@ at strings offset %04x (+%04x)\n",
 /* ------------------------------------------------------------------------- */
 
 static void write_link_byte(int x)
-{   *link_data_top=(unsigned char) x; link_data_top++; link_data_size++;
-    if (subtract_pointers(link_data_top,link_data_holding_area)
-        >= MAX_LINK_DATA_SIZE)
-    {   memoryerror("MAX_LINK_DATA_SIZE",MAX_LINK_DATA_SIZE);
-    }
+{
+    ensure_memory_list_available(&link_data_holding_area_memlist, link_data_ha_size+1);
+    link_data_holding_area[link_data_ha_size] = (unsigned char) x;
+    link_data_ha_size++; link_data_size++;
 }
 
 extern void flush_link_data(void)
 {   int32 i, j;
-    j = subtract_pointers(link_data_top, link_data_holding_area);
-    if (temporary_files_switch)
+    j = link_data_ha_size;
+    if (temporary_files_switch) {
         for (i=0;i<j;i++) fputc(link_data_holding_area[i], Temp3_fp);
-    else
+    }
+    else {
+        ensure_memory_list_available(&link_data_area_memlist, link_data_size);
         for (i=0;i<j;i++)
-            write_byte_to_memory_block(&link_data_area, link_data_size-j+i,
-            link_data_holding_area[i]);
-    link_data_top=link_data_holding_area;
+            link_data_area[link_data_size-j+i] = link_data_holding_area[i];
+    }
+    link_data_ha_size = 0;
 }
 
 static void write_link_word(int32 x)
@@ -1013,23 +1024,23 @@ static void export_symbols(void)
     for (symbol_number = 0; symbol_number < no_symbols; symbol_number++)
     {   int export_flag = FALSE, import_flag = FALSE;
 
-        if (stypes[symbol_number]==GLOBAL_VARIABLE_T)
-        {   if (svals[symbol_number] < LOWEST_SYSTEM_VAR_NUMBER)
-            {   if (sflags[symbol_number] & IMPORT_SFLAG)
+        if (symbols[symbol_number].type==GLOBAL_VARIABLE_T)
+        {   if (symbols[symbol_number].value < LOWEST_SYSTEM_VAR_NUMBER)
+            {   if (symbols[symbol_number].flags & IMPORT_SFLAG)
                     import_flag = TRUE;
                 else
-                    if (!(sflags[symbol_number] & SYSTEM_SFLAG))
+                    if (!(symbols[symbol_number].flags & SYSTEM_SFLAG))
                         export_flag = TRUE;
             }
         }
         else
-        {   if (!(sflags[symbol_number] & SYSTEM_SFLAG))
-            {   if (sflags[symbol_number] & UNKNOWN_SFLAG)
-                {   if (sflags[symbol_number] & IMPORT_SFLAG)
+        {   if (!(symbols[symbol_number].flags & SYSTEM_SFLAG))
+            {   if (symbols[symbol_number].flags & UNKNOWN_SFLAG)
+                {   if (symbols[symbol_number].flags & IMPORT_SFLAG)
                         import_flag = TRUE;
                 }
                 else
-                switch(stypes[symbol_number])
+                switch(symbols[symbol_number].type)
                 {   case LABEL_T:
                     case ATTRIBUTE_T:
                     case PROPERTY_T:
@@ -1045,27 +1056,27 @@ static void export_symbols(void)
         {   if (linker_trace_level >= 1)
             {   IE.module_value = EXPORT_MV;
                 IE.symbol_number = symbol_number;
-                IE.symbol_type = stypes[symbol_number];
-                IE.symbol_value = svals[symbol_number];
-                IE.symbol_name = (char *) (symbs[symbol_number]);
+                IE.symbol_type = symbols[symbol_number].type;
+                IE.symbol_value = symbols[symbol_number].value;
+                IE.symbol_name = (symbols[symbol_number].name);
                 describe_importexport(&IE);
             }
 
-            if (sflags[symbol_number] & ACTION_SFLAG)
+            if (symbols[symbol_number].flags & ACTION_SFLAG)
                 write_link_byte(EXPORTAC_MV);
             else
-            if (sflags[symbol_number] & INSF_SFLAG)
+            if (symbols[symbol_number].flags & INSF_SFLAG)
                 write_link_byte(EXPORTSF_MV);
             else
                 write_link_byte(EXPORT_MV);
 
             write_link_word(symbol_number);
-            write_link_byte(stypes[symbol_number]);
-            if (sflags[symbol_number] & CHANGE_SFLAG)
-                 write_link_byte(svals[symbol_number] / 0x10000);
+            write_link_byte(symbols[symbol_number].type);
+            if (symbols[symbol_number].flags & CHANGE_SFLAG)
+                 write_link_byte(symbols[symbol_number].marker);
             else write_link_byte(0);
-            write_link_word(svals[symbol_number] % 0x10000);
-            write_link_string((char *) (symbs[symbol_number]));
+            write_link_word(symbols[symbol_number].value % 0x10000);
+            write_link_string((symbols[symbol_number].name));
             flush_link_data();
         }
 
@@ -1073,17 +1084,17 @@ static void export_symbols(void)
         {   if (linker_trace_level >= 1)
             {   IE.module_value = IMPORT_MV;
                 IE.symbol_number = symbol_number;
-                IE.symbol_type = stypes[symbol_number];
-                IE.symbol_value = svals[symbol_number];
-                IE.symbol_name = (char *) (symbs[symbol_number]);
+                IE.symbol_type = symbols[symbol_number].type;
+                IE.symbol_value = symbols[symbol_number].value;
+                IE.symbol_name = (symbols[symbol_number].name);
                 describe_importexport(&IE);
             }
 
             write_link_byte(IMPORT_MV);
             write_link_word(symbol_number);
-            write_link_byte(stypes[symbol_number]);
-            write_link_word(svals[symbol_number]);
-            write_link_string((char *) (symbs[symbol_number]));
+            write_link_byte(symbols[symbol_number].type);
+            write_link_word(symbols[symbol_number].value);
+            write_link_string((symbols[symbol_number].name));
             flush_link_data();
         }
     }
@@ -1096,10 +1107,10 @@ static void export_symbols(void)
 int mv_vref=LOWEST_SYSTEM_VAR_NUMBER-1;
 
 void import_symbol(int32 symbol_number)
-{   sflags[symbol_number] |= IMPORT_SFLAG;
-    switch(stypes[symbol_number])
+{   symbols[symbol_number].flags |= IMPORT_SFLAG;
+    switch(symbols[symbol_number].type)
     {   case GLOBAL_VARIABLE_T:
-            assign_symbol(symbol_number, mv_vref--, stypes[symbol_number]);
+            assign_symbol(symbol_number, mv_vref--, symbols[symbol_number].type);
             break;
     }
 }
@@ -1110,11 +1121,13 @@ void import_symbol(int32 symbol_number)
 
 extern void init_linker_vars(void)
 {   link_data_size = 0;
-    initialise_memory_block(&link_data_area);
+    link_data_area = NULL;
+    link_data_ha_size = 0;
+    link_data_holding_area = NULL;
 }
 
 extern void linker_begin_pass(void)
-{   link_data_top = link_data_holding_area;
+{   link_data_ha_size = 0;
 }
 
 extern void linker_endpass(void)
@@ -1124,17 +1137,20 @@ extern void linker_endpass(void)
 }
 
 extern void linker_allocate_arrays(void)
-{   if (!module_switch)
-        link_data_holding_area
-            = my_malloc(64, "link data holding area");
-    else
-        link_data_holding_area
-            = my_malloc(MAX_LINK_DATA_SIZE, "link data holding area");
+{
+    int initlinksize = (module_switch ? 2000 : 0);
+    initialise_memory_list(&link_data_holding_area_memlist,
+        sizeof(uchar), initlinksize, (void**)&link_data_holding_area,
+        "link data holding area");
+    initialise_memory_list(&link_data_area_memlist,
+        sizeof(uchar), 128, (void**)&link_data_area,
+        "link data area");
 }
 
 extern void linker_free_arrays(void)
-{   my_free(&link_data_holding_area, "link data holding area");
-    deallocate_memory_block(&link_data_area);
+{
+    deallocate_memory_list(&link_data_holding_area_memlist);
+    deallocate_memory_list(&link_data_area_memlist);
 }
 
 /* ========================================================================= */
