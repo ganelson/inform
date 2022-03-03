@@ -163,26 +163,24 @@ void Generators::declare_function(code_generation *gen, vanilla_function *vf) {
 
 =
 INT_METHOD_TYPE(BEGIN_ARRAY_MTID, code_generator *generator, code_generation *gen,
-	text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int format,
-	segmentation_pos *saved)
+	text_stream *const_name, inter_symbol *array_s, inter_tree_node *P, int zero_count,
+	int format, segmentation_pos *saved)
 VOID_METHOD_TYPE(ARRAY_ENTRY_MTID, code_generator *generator, code_generation *gen,
 	text_stream *entry, int format)
 VOID_METHOD_TYPE(ARRAY_ENTRIES_MTID, code_generator *generator, code_generation *gen,
 	int how_many, int format)
 VOID_METHOD_TYPE(END_ARRAY_MTID, code_generator *generator, code_generation *gen,
-	int format, segmentation_pos *saved)
+	int format, int zero_count, segmentation_pos *saved)
 int Generators::begin_array(code_generation *gen, text_stream *const_name,
-	inter_symbol *array_s, inter_tree_node *P, int format, segmentation_pos *saved) {
+	inter_symbol *array_s, inter_tree_node *P, int format, int zero_count,
+	segmentation_pos *saved) {
 	int rv = FALSE;
 	INT_METHOD_CALL(rv, gen->generator, BEGIN_ARRAY_MTID, gen, const_name, array_s,
-		P, format, saved);
+		P, format, zero_count, saved);
 	return rv;
 }
 void Generators::array_entry(code_generation *gen, text_stream *entry, int format) {
 	VOID_METHOD_CALL(gen->generator, ARRAY_ENTRY_MTID, gen, entry, format);
-}
-void Generators::array_entries(code_generation *gen, int how_many, int format) {
-	VOID_METHOD_CALL(gen->generator, ARRAY_ENTRIES_MTID, gen, how_many, format);
 }
 void Generators::mangled_array_entry(code_generation *gen, text_stream *entry, int format) {
 	TEMPORARY_TEXT(mangled)
@@ -194,8 +192,9 @@ void Generators::symbol_array_entry(code_generation *gen, inter_symbol *entry, i
 	Generators::mangled_array_entry(gen, InterSymbol::trans(entry), format);
 }
 
-void Generators::end_array(code_generation *gen, int format, segmentation_pos *saved) {
-	VOID_METHOD_CALL(gen->generator, END_ARRAY_MTID, gen, format, saved);
+void Generators::end_array(code_generation *gen, int format, int zero_count,
+	segmentation_pos *saved) {
+	VOID_METHOD_CALL(gen->generator, END_ARRAY_MTID, gen, format, zero_count, saved);
 }
 
 @

@@ -25,7 +25,6 @@ void CMemoryModel::initialise(code_generator *gtr) {
 	METHOD_ADD(gtr, WORD_TO_BYTE_MTID, CMemoryModel::word_to_byte);
 	METHOD_ADD(gtr, BEGIN_ARRAY_MTID, CMemoryModel::begin_array);
 	METHOD_ADD(gtr, ARRAY_ENTRY_MTID, CMemoryModel::array_entry);
-	METHOD_ADD(gtr, ARRAY_ENTRIES_MTID, CMemoryModel::array_entries);
 	METHOD_ADD(gtr, END_ARRAY_MTID, CMemoryModel::end_array);
 }
 
@@ -81,7 +80,7 @@ such arrays, which are declared one at a time. See //Vanilla Constants//.
 =
 int CMemoryModel::begin_array(code_generator *gtr, code_generation *gen,
 	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format,
-	segmentation_pos *saved) {
+	int zero_count, segmentation_pos *saved) {
 	Str::clear(C_GEN_DATA(memdata.array_name));
 	WRITE_TO(C_GEN_DATA(memdata.array_name), "%S", array_name);
 	C_GEN_DATA(memdata.entry_count) = 0;
@@ -106,6 +105,7 @@ which tells Vanilla not to call us again about this array.
 	@<Define a constant for the byte address in memory where the array begins@>;
 	if ((format == TABLE_ARRAY_FORMAT) || (format == BUFFER_ARRAY_FORMAT))
 		@<Place the extent entry N at index 0@>;
+	for (int i=0; i<zero_count; i++) CMemoryModel::array_entry(gtr, gen, I"0", format);
 	return TRUE;
 
 @<Work out the format name@> =
@@ -176,21 +176,12 @@ and therefore if |X| is a valid constant-context expression in C then so is
 		entry, entry, entry, entry, C_GEN_DATA(memdata.himem));
 	C_GEN_DATA(memdata.himem) += 4;
 
-@ Alternatively, we can just specify how many entries there will be: they will
-then be initialised to 0.
-
-=
-void CMemoryModel::array_entries(code_generator *gtr, code_generation *gen,
-	int how_many, int format) {
-	for (int i=0; i<how_many; i++) CMemoryModel::array_entry(gtr, gen, I"0", format);
-}
-
 @ When all the entries have been placed, the following is called. It does nothing
 except to predeclare the extent constant.
 
 =
 void CMemoryModel::end_array(code_generator *gtr, code_generation *gen, int format,
-	segmentation_pos *saved) {
+	int zero_count, segmentation_pos *saved) {
 	segmentation_pos x_saved = CodeGen::select(gen, c_predeclarations_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("#define ");

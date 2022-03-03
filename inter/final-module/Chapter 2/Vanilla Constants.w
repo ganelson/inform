@@ -70,7 +70,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	WRITE_TO(content, "//");
 	WRITE_TO(length, "%d", (int) Str::len(content));
 
-	Generators::begin_array(gen, I"UUID_ARRAY", NULL, NULL, BYTE_ARRAY_FORMAT, &saved);
+	Generators::begin_array(gen, I"UUID_ARRAY", NULL, NULL, BYTE_ARRAY_FORMAT, -1, &saved);
 	Generators::array_entry(gen, length, BYTE_ARRAY_FORMAT);
 	LOOP_THROUGH_TEXT(pos, content) {
 		TEMPORARY_TEXT(ch)
@@ -78,7 +78,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 		Generators::array_entry(gen, ch, BYTE_ARRAY_FORMAT);
 		DISCARD_TEXT(ch)
 	}
-	Generators::end_array(gen, BYTE_ARRAY_FORMAT, &saved);
+	Generators::end_array(gen, BYTE_ARRAY_FORMAT, -1, &saved);
 	DISCARD_TEXT(length)
 	DISCARD_TEXT(content)
 
@@ -104,20 +104,19 @@ than a literal, or may even be computed.
 	if (SymbolAnnotation::get_b(con_name, TABLEARRAY_IANN)) format = TABLE_ARRAY_FORMAT;
 	if (SymbolAnnotation::get_b(con_name, BUFFERARRAY_IANN)) format = BUFFER_ARRAY_FORMAT;
 
+	int zero_count = -1;
 	int entry_count = (int) (P->W.extent - DATA_CONST_IFLD)/2;
-	int give_count = FALSE;
 	if ((entry_count == 1) &&
-		(SymbolAnnotation::get_b(con_name, ASSIMILATED_IANN))) {
+		((SymbolAnnotation::get_b(con_name, ASSIMILATED_IANN)) ||
+			(SymbolAnnotation::get_b(con_name, EXTENT_IANN)))) {
 		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
-		entry_count = (int) ConstantInstruction::evaluate(InterPackage::scope_of(P), val);
-		give_count = TRUE;
+		zero_count = (int) ConstantInstruction::evaluate(InterPackage::scope_of(P), val);
 	}
 
 	segmentation_pos saved;
-	if (Generators::begin_array(gen, InterSymbol::trans(con_name), con_name, P, format, &saved)) {
-		if (give_count) {
-			Generators::array_entries(gen, entry_count, format);
-		} else {
+	if (Generators::begin_array(gen, InterSymbol::trans(con_name), con_name, P,
+		format, zero_count, &saved)) {
+		if (zero_count == -1) {
 			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 				TEMPORARY_TEXT(entry)
 				CodeGen::select_temporary(gen, entry);
@@ -127,7 +126,7 @@ than a literal, or may even be computed.
 				DISCARD_TEXT(entry)
 			}
 		}
-		Generators::end_array(gen, format, &saved);
+		Generators::end_array(gen, format, zero_count, &saved);
 	}
 
 @<Declare this as a computed constant@> =

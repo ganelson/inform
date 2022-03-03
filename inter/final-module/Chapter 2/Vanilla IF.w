@@ -127,16 +127,16 @@ instead so that we are not concatenating arrays with different formats; this is
 just in case some generators are opting to align word arrays in memory.
 
 @<Compile the dictionary length@> =
-	Generators::begin_array(gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
+	Generators::begin_array(gen, I"#dictionary_table", NULL, NULL, BYTE_ARRAY_FORMAT, -1, NULL);
 	VanillaIF::byte_entry(gen, 0);
 	VanillaIF::byte_entry(gen, ((dictlen & 0x00FF0000) >> 16));
 	VanillaIF::byte_entry(gen, ((dictlen & 0x0000FF00) >> 8));
 	VanillaIF::byte_entry(gen, (dictlen & 0x000000FF));
-	Generators::end_array(gen, BYTE_ARRAY_FORMAT, NULL);
+	Generators::end_array(gen, BYTE_ARRAY_FORMAT, -1, NULL);
 
 @<Compile an array for this dword@> =
 	dw = sorted[i];
-	Generators::begin_array(gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
+	Generators::begin_array(gen, sorted[i]->identifier, NULL, NULL, BYTE_ARRAY_FORMAT, -1, NULL);
 	VanillaIF::byte_entry(gen, 0x60);
 	for (int i=0; i<9; i++) {
 		int c = 0;
@@ -155,7 +155,7 @@ just in case some generators are opting to align word arrays in memory.
 	VanillaIF::byte_entry(gen, (0xFFFF - dw->verb_number)%256);
 	VanillaIF::byte_entry(gen, 0);
 	VanillaIF::byte_entry(gen, 0);
-	Generators::end_array(gen, BYTE_ARRAY_FORMAT, NULL);
+	Generators::end_array(gen, BYTE_ARRAY_FORMAT, -1, NULL);
 
 @ =
 void VanillaIF::byte_entry(code_generation *gen, int N) {
@@ -176,7 +176,7 @@ and shows just how far back into the history of Inform 1 this all goes.
 =
 void VanillaIF::compile_actions_table(code_generation *gen) {
 	Generators::begin_array(gen, I"#actions_table", NULL, NULL,
-		TABLE_ARRAY_FORMAT, NULL);
+		TABLE_ARRAY_FORMAT, -1, NULL);
 	text_stream *an;
 	LOOP_OVER_LINKED_LIST(an, text_stream, gen->actions) {
 		TEMPORARY_TEXT(O)
@@ -187,7 +187,7 @@ void VanillaIF::compile_actions_table(code_generation *gen) {
 		DISCARD_TEXT(O)
 		DISCARD_TEXT(M)
 	}
-	Generators::end_array(gen, TABLE_ARRAY_FORMAT, NULL);	
+	Generators::end_array(gen, TABLE_ARRAY_FORMAT, -1, NULL);	
 }
 
 @h Command grammar.
@@ -478,7 +478,7 @@ they are here, but that's what Inform 6 always did, and we're imitating Inform 6
 
 =
 void VanillaIF::compile_verb_table(code_generation *gen) {
-	Generators::begin_array(gen, I"#grammar_table", NULL, NULL, TABLE_ARRAY_FORMAT, NULL);
+	Generators::begin_array(gen, I"#grammar_table", NULL, NULL, TABLE_ARRAY_FORMAT, -1, NULL);
 	vanilla_dword *dw;
 	LOOP_OVER_LINKED_LIST(dw, vanilla_dword, gen->verbs) {
 		TEMPORARY_TEXT(N)
@@ -488,11 +488,11 @@ void VanillaIF::compile_verb_table(code_generation *gen) {
 		Generators::array_entry(gen, N, TABLE_ARRAY_FORMAT);
 		DISCARD_TEXT(N)
 	}
-	Generators::end_array(gen, TABLE_ARRAY_FORMAT, NULL);
+	Generators::end_array(gen, TABLE_ARRAY_FORMAT, -1, NULL);
 
-	Generators::begin_array(gen, I"#grammar_table_cont", NULL, NULL, BYTE_ARRAY_FORMAT, NULL);
+	Generators::begin_array(gen, I"#grammar_table_cont", NULL, NULL, BYTE_ARRAY_FORMAT, -1, NULL);
 	text_stream *entry;
 	LOOP_OVER_LINKED_LIST(entry, text_stream, gen->verb_grammar)
 		Generators::array_entry(gen, entry, BYTE_ARRAY_FORMAT);
-	Generators::end_array(gen, BYTE_ARRAY_FORMAT, NULL);
+	Generators::end_array(gen, BYTE_ARRAY_FORMAT, -1, NULL);
 }

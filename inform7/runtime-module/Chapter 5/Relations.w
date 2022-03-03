@@ -1235,12 +1235,14 @@ above: it forces the template layer to generate the cache when first used.
 			EmitArrays::numeric_entry((inter_ti) (2*left_count*left_count));
 			EmitArrays::end(save);
 			bytes_used += 2*left_count*left_count;
+			SymbolAnnotation::set_b(InterNames::to_symbol(iname), EXTENT_IANN, 1);
 		} else {
 			v2v_iname = iname;
 			packaging_state save = EmitArrays::begin_word(iname, K_number);
 			EmitArrays::numeric_entry((inter_ti) (2*left_count*left_count));
 			EmitArrays::end(save);
 			words_used += 2*left_count*left_count;
+			SymbolAnnotation::set_b(InterNames::to_symbol(iname), EXTENT_IANN, 1);
 		}
 	} else {
 		v2v_iname = Emit::numeric_constant(iname, 0);

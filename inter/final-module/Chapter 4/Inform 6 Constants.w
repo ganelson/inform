@@ -7,7 +7,6 @@ void I6TargetConstants::create_generator(code_generator *gtr) {
 	METHOD_ADD(gtr, DECLARE_CONSTANT_MTID, I6TargetConstants::declare_constant);
 	METHOD_ADD(gtr, BEGIN_ARRAY_MTID, I6TargetConstants::begin_array);
 	METHOD_ADD(gtr, ARRAY_ENTRY_MTID, I6TargetConstants::array_entry);
-	METHOD_ADD(gtr, ARRAY_ENTRIES_MTID, I6TargetConstants::array_entries);
 	METHOD_ADD(gtr, END_ARRAY_MTID, I6TargetConstants::end_array);
 	METHOD_ADD(gtr, NEW_ACTION_MTID, I6TargetConstants::new_action);
 	METHOD_ADD(gtr, COMPILE_DICTIONARY_WORD_MTID, I6TargetConstants::compile_dictionary_word);
@@ -121,7 +120,7 @@ case, whereupon Vanilla will lead us through the rest of the declaration.
 =
 int I6TargetConstants::begin_array(code_generator *gtr, code_generation *gen,
 	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format,
-	segmentation_pos *saved) {
+	int zero_count, segmentation_pos *saved) {
 	if ((array_s) && (SymbolAnnotation::get_b(array_s, VERBARRAY_IANN))) {
 		@<Write a complete I6 Verb directive@>;
 		return FALSE;
@@ -201,21 +200,16 @@ block of four words in memory: |3, 10, 20, 30|. However,
 =
 makes a table with 10 entries, initially zeroes, so that |X| points to the
 block |10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0|. We do not want this: there are times
-when we genuinely need a 1-entry table array. In such cases, we convert to:
+when we genuinely need a 1-entry table array. So we use the alternate syntax,
+provided by Inform 6 since at least 2000 but for some reason not documented in
+the DM4:
 = (text as Inform 6)
-	Array X --> 1 10;
+	Array X table [ 10 ];
 =
-which has |X| pointing to |1, 10| as we need. This applies only to table-format
-arrays because those are the only ones where we ever make singletons in Inter.
 
 @<Begin an I6 Array directive@> =
 	if (saved) *saved = CodeGen::select(gen, arrays_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	int convert = FALSE;
-	if ((format == TABLE_ARRAY_FORMAT) && (P) && (P->W.extent - DATA_CONST_IFLD == 2)) {
-		format = WORD_ARRAY_FORMAT; convert = TRUE;
-	}
-
 	WRITE("Array %S ", array_name);
 	switch (format) {
 		case WORD_ARRAY_FORMAT: WRITE("-->"); break;
@@ -223,50 +217,43 @@ arrays because those are the only ones where we ever make singletons in Inter.
 		case TABLE_ARRAY_FORMAT: WRITE("table"); break;
 		case BUFFER_ARRAY_FORMAT: WRITE("buffer"); break;
 	}
-	if (convert) I6TargetConstants::array_entry(gtr, gen, I"1", format);
+	if (zero_count >= 0) {
+		WRITE(" %d", zero_count);
+	} else {
+	    WRITE(" [");
+	}
 
-@ If an array is actually intended to contain some number of 0 entries, then
-we can use this same unfortunate syntax to achieve our goal:
-
-=
-void I6TargetConstants::array_entries(code_generator *gtr, code_generation *gen,
-	int how_many, int format) {
-	text_stream *OUT = CodeGen::current(gen);
-	WRITE(" (%d)", how_many);
-}
-
-@ But if not, we now have to write out the initial contents of the entries,
-one at a time. A further quirk (again, blunder) is that I6 has no delimiter
-syntax to mark off one entry from the next -- in most languages, such as C,
-a comma would be used, but I6 uses only white space.
+@ A further quirk (again, blunder) is that I6 has no delimiter syntax to mark
+off one entry from the next -- in most languages, such as C, a comma would be
+used, but I6 uses only white space.
 
 That's fine until entries begin with operators which are ambiguously unary
 or binary -- in other words, with minus signs. In I6, this:
 = (text as Inform 6)
-	Array X --> 2 4 -5;
+	Array X --> [ 2 4 -5 ];
 =
 makes a two-element array, with |X| pointing to |2, -1|, because |4 -5| is
 read as a binary operation (subtraction), not as 4 followed by a unary
 operation (negation) applied to 5.
 
-We avoid this by bracketing every entry, just in case:
+We avoid this by placing semicolons after every entry, just in case:
 = (text as Inform 6)
-	Array X --> (2) (4) (-5);
+	Array X --> [ 2; 4; -5; ];
 =
-This cannot be confused with function calling because I6 doesn't allow function
-calls in a constant context.
+Again, though undocumented in the DM4, this is a long-established syntax in I6.
 
 =
 void I6TargetConstants::array_entry(code_generator *gtr, code_generation *gen,
 	text_stream *entry, int format) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE(" (%S)", entry);
+	WRITE(" %S;", entry);
 }
 
 void I6TargetConstants::end_array(code_generator *gtr, code_generation *gen, int format,
-	segmentation_pos *saved) {
+	int zero_count, segmentation_pos *saved) {
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE(";\n");
+	if (zero_count < 0) WRITE(" ];\n");
+	else WRITE("; ! blank with extent %d\n", zero_count);
 	if (saved) CodeGen::deselect(gen, *saved);
 }
 

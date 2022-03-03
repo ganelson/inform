@@ -125,7 +125,6 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 		@<Add the chain of kinds@>;
 		@<Add the catalogue of specific properties@>;
 		@<Add details depending on the kind@>;
-		MapElement::index_usages(OUT, I, session);
 		IndexUtilities::extra_div_close(OUT, "e0e0e0");
 	}
 	@<Recurse the index citation for the object as necessary@>;
@@ -222,30 +221,6 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 @
 
 =
-void MapElement::index_usages(OUTPUT_STREAM, faux_instance *I, index_session *session) {
-	localisation_dictionary *LD = Indexing::get_localisation(session);
-	int k = 0;
-	inter_package *pack = I->package;
-	inter_tree_node *P = Metadata::optional_list(pack, I"^backdrop_presences");
-	if (P) {
-		int offset = DATA_CONST_IFLD;
-		while (offset < P->W.extent) {
-			inter_pair val = InterValuePairs::get(P, offset);
-			if (InterValuePairs::is_number(val)) {
-				k++;
-				if (k == 1) {
-					HTML::open_indented_p(OUT, 1, "tight");
-					Localisation::italic(OUT, LD, I"Index.Elements.Mp.MentionedIn");					
-					WRITE(": ");
-				} else WRITE("; ");
-				IndexUtilities::link(OUT, (int) InterValuePairs::to_number(val));				
-			} else internal_error("malformed usage metadata");
-			offset += 2;
-		}
-	}
-	if (k > 0) HTML_CLOSE("p");
-}
-
 int MapElement::add_room_to_World_index(OUTPUT_STREAM, faux_instance *O,
 	index_session *session) {
 	if ((O) && (FauxInstances::is_a_room(O))) {

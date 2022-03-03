@@ -154,13 +154,13 @@ generator wants.
 	linked_list *all_forms = (linked_list *) Dictionaries::read_value(all_with_name, name);
 
 	segmentation_pos saved;
-	Generators::begin_array(gen, array_name, prop_name, NULL, WORD_ARRAY_FORMAT, &saved);
+	Generators::begin_array(gen, array_name, prop_name, NULL, WORD_ARRAY_FORMAT, -1, &saved);
 	Generators::declare_property(gen, prop_name, all_forms);
 	@<Write the either-or flag@>;
 	@<Write the property name in double quotes@>;
 	@<Write a list of kinds or objects which are permitted to have this property@>;
 	Generators::mangled_array_entry(gen, I"NULL", WORD_ARRAY_FORMAT);
-	Generators::end_array(gen, WORD_ARRAY_FORMAT, &saved);
+	Generators::end_array(gen, WORD_ARRAY_FORMAT, -1, &saved);
 
 @<Write the either-or flag@> =
 	if (SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN))
@@ -377,7 +377,7 @@ number of instances, and is worth it for simplicity and speed.
 
 @<Compile a stick of property values and put its address here@> =
 	segmentation_pos saved;
-	Generators::begin_array(gen, ident, NULL, NULL, TABLE_ARRAY_FORMAT, &saved);
+	Generators::begin_array(gen, ident, NULL, NULL, TABLE_ARRAY_FORMAT, -1, &saved);
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	inter_symbol *inst_s;
@@ -394,7 +394,7 @@ number of instances, and is worth it for simplicity and speed.
 			if (found == 0) Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 		}
 	}
-	Generators::end_array(gen, TABLE_ARRAY_FORMAT, &saved);
+	Generators::end_array(gen, TABLE_ARRAY_FORMAT, -1, &saved);
 
 @<Work through this node list of values@> =
 	inter_tree_node *Y;

@@ -703,7 +703,7 @@ void CObjectModel::make_enumerated_property_arrays(code_generation *gen) {
 for an enumerated kind; or just 0 if the kind is not an enumeration.
 
 @<Make the value ranges@> =
-	CMemoryModel::begin_array(NULL, gen, I"value_ranges", NULL, NULL, WORD_ARRAY_FORMAT, NULL);
+	CMemoryModel::begin_array(NULL, gen, I"value_ranges", NULL, NULL, WORD_ARRAY_FORMAT, -1, NULL);
 	CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
 	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
@@ -727,7 +727,7 @@ for an enumerated kind; or just 0 if the kind is not an enumeration.
 				CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
 		}
 	}
-	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, NULL);
+	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, -1, NULL);
 
 @ This is an array indexed by weak kind ID which holds the object ID of the
 value property holder for an enumerated kind; or just 0 if the kind is not an
@@ -735,7 +735,7 @@ enumeration.
 
 @<Make the value property holders@> =
 	CMemoryModel::begin_array(NULL, gen, I"value_property_holders",
-		NULL, NULL, WORD_ARRAY_FORMAT, NULL);
+		NULL, NULL, WORD_ARRAY_FORMAT, -1, NULL);
 	CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
 	inter_symbol *max_weak_id = InterSymbolsTable::URL_to_symbol(gen->from,
 		I"/main/synoptic/kinds/BASE_KIND_HWM");
@@ -762,7 +762,7 @@ enumeration.
 				CMemoryModel::array_entry(NULL, gen, I"0", WORD_ARRAY_FORMAT);
 		}
 	}
-	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, NULL);
+	CMemoryModel::end_array(NULL, gen, WORD_ARRAY_FORMAT, -1, NULL);
 
 @h Primitives.
 The following primitives are all implemented by calling suitable C functions,
