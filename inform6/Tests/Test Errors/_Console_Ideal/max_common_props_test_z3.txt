@@ -1,0 +1,96 @@
+Inform 6.36 (24th January 2022)
+line 35: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p28;
+line 36: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p29;
+line 37: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p30;
+line 38: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p31;
+line 39: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p32;
+line 40: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p33;
+line 41: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p34;
+line 42: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p35;
+line 43: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p36;
+line 44: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p37;
+line 45: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p38;
+line 46: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p39;
+line 47: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p40;
+line 48: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p41;
+line 49: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p42;
+line 50: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p43;
+line 51: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p44;
+line 52: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p45;
+line 53: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p46;
+line 54: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p47;
+line 55: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p48;
+line 56: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p49;
+line 57: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p50;
+line 58: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p51;
+line 59: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p52;
+line 60: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p53;
+line 61: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p54;
+line 62: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p55;
+line 63: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p56;
+line 64: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p57;
+line 65: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p58;
+line 66: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p59;
+line 67: Error:  All 29 properties already declared (compile as Advanced game to get 32 more)
+> Property p60;
+line 7: Warning:  Property "p0" declared but not used
+line 8: Warning:  Property "p1" declared but not used
+line 9: Warning:  Property "p2" declared but not used
+line 10: Warning:  Property "p3" declared but not used
+line 11: Warning:  Property "p4" declared but not used
+line 12: Warning:  Property "p5" declared but not used
+line 13: Warning:  Property "p6" declared but not used
+line 14: Warning:  Property "p7" declared but not used
+line 15: Warning:  Property "p8" declared but not used
+line 16: Warning:  Property "p9" declared but not used
+line 17: Warning:  Property "p10" declared but not used
+line 18: Warning:  Property "p11" declared but not used
+line 19: Warning:  Property "p12" declared but not used
+line 20: Warning:  Property "p13" declared but not used
+line 21: Warning:  Property "p14" declared but not used
+line 22: Warning:  Property "p15" declared but not used
+line 23: Warning:  Property "p16" declared but not used
+line 24: Warning:  Property "p17" declared but not used
+line 25: Warning:  Property "p18" declared but not used
+line 26: Warning:  Property "p19" declared but not used
+line 27: Warning:  Property "p20" declared but not used
+line 28: Warning:  Property "p21" declared but not used
+line 29: Warning:  Property "p22" declared but not used
+line 30: Warning:  Property "p23" declared but not used
+line 31: Warning:  Property "p24" declared but not used
+line 32: Warning:  Property "p25" declared but not used
+line 33: Warning:  Property "p26" declared but not used
+line 34: Warning:  Property "p27" declared but not used
+Compiled with 33 errors and 28 warnings (no output)

@@ -1,0 +1,3 @@
+Inform 6.36 (24th January 2022)
+line 11: Warning:  Defined constant "str8000" declared but not used
+Compiled with 1 warning

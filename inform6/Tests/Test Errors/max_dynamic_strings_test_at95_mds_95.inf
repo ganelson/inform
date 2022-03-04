@@ -1,0 +1,5 @@
+[ Main;
+];
+
+Constant str0 = "@00";
+Constant str95 = "@95";

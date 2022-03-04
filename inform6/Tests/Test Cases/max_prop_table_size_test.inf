@@ -1,0 +1,127 @@
+[ Main;
+];
+
+Property p0;
+Property p1;
+Property p2;
+Property p3;
+Property p4;
+Property p5;
+Property p6;
+Property p7;
+Property p8;
+Property p9;
+
+Class FatProp
+  with
+    p0 0 1 2 3 4 5 6 7 8 9,
+    p1 0 1 2 3 4 5 6 7 8 9,
+    p2 0 1 2 3 4 5 6 7 8 9,
+    p3 0 1 2 3 4 5 6 7 8 9,
+    p4 0 1 2 3 4 5 6 7 8 9,
+    p5 0 1 2 3 4 5 6 7 8 9,
+    p6 0 1 2 3 4 5 6 7 8 9,
+    p7 0 1 2 3 4 5 6 7 8 9,
+    p8 0 1 2 3 4 5 6 7 8 9,
+    p9 0 1 2 3 4 5 6 7 8 9;
+
+FatProp o_1;
+FatProp o_2;
+FatProp o_3;
+FatProp o_4;
+FatProp o_5;
+FatProp o_6;
+FatProp o_7;
+FatProp o_8;
+FatProp o_9;
+FatProp o_10;
+FatProp o_11;
+FatProp o_12;
+FatProp o_13;
+FatProp o_14;
+FatProp o_15;
+FatProp o_16;
+FatProp o_17;
+FatProp o_18;
+FatProp o_19;
+FatProp o_20;
+FatProp o_21;
+FatProp o_22;
+FatProp o_23;
+FatProp o_24;
+FatProp o_25;
+FatProp o_26;
+FatProp o_27;
+FatProp o_28;
+FatProp o_29;
+FatProp o_30;
+FatProp o_31;
+FatProp o_32;
+FatProp o_33;
+FatProp o_34;
+FatProp o_35;
+FatProp o_36;
+FatProp o_37;
+FatProp o_38;
+FatProp o_39;
+FatProp o_40;
+FatProp o_41;
+FatProp o_42;
+FatProp o_43;
+FatProp o_44;
+FatProp o_45;
+FatProp o_46;
+FatProp o_47;
+FatProp o_48;
+FatProp o_49;
+FatProp o_50;
+FatProp o_51;
+FatProp o_52;
+FatProp o_53;
+FatProp o_54;
+FatProp o_55;
+FatProp o_56;
+FatProp o_57;
+FatProp o_58;
+FatProp o_59;
+FatProp o_60;
+FatProp o_61;
+FatProp o_62;
+FatProp o_63;
+FatProp o_64;
+FatProp o_65;
+FatProp o_66;
+FatProp o_67;
+FatProp o_68;
+FatProp o_69;
+FatProp o_70;
+FatProp o_71;
+FatProp o_72;
+FatProp o_73;
+FatProp o_74;
+FatProp o_75;
+FatProp o_76;
+FatProp o_77;
+FatProp o_78;
+FatProp o_79;
+FatProp o_80;
+FatProp o_81;
+FatProp o_82;
+FatProp o_83;
+FatProp o_84;
+FatProp o_85;
+FatProp o_86;
+FatProp o_87;
+FatProp o_88;
+FatProp o_89;
+FatProp o_90;
+FatProp o_91;
+FatProp o_92;
+FatProp o_93;
+FatProp o_94;
+FatProp o_95;
+FatProp o_96;
+FatProp o_97;
+FatProp o_98;
+FatProp o_99;
+FatProp o_100;

@@ -1,0 +1,310 @@
+Inform 6.36 (24th January 2022)
+line 255: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p252;
+line 256: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p253;
+line 257: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p254;
+line 258: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p255;
+line 259: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p256;
+line 260: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p257;
+line 261: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p258;
+line 262: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p259;
+line 263: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p260;
+line 264: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p261;
+line 265: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p262;
+line 266: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p263;
+line 267: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p264;
+line 268: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p265;
+line 269: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p266;
+line 270: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p267;
+line 271: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p268;
+line 272: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p269;
+line 273: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p270;
+line 274: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p271;
+line 275: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p272;
+line 276: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p273;
+line 277: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p274;
+line 278: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p275;
+line 279: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p276;
+line 280: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p277;
+line 281: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p278;
+line 282: Error:  All 253 properties already declared (increase INDIV_PROP_START to get more)
+> Property p279;
+line 3: Warning:  Property "p0" declared but not used
+line 4: Warning:  Property "p1" declared but not used
+line 5: Warning:  Property "p2" declared but not used
+line 6: Warning:  Property "p3" declared but not used
+line 7: Warning:  Property "p4" declared but not used
+line 8: Warning:  Property "p5" declared but not used
+line 9: Warning:  Property "p6" declared but not used
+line 10: Warning:  Property "p7" declared but not used
+line 11: Warning:  Property "p8" declared but not used
+line 12: Warning:  Property "p9" declared but not used
+line 13: Warning:  Property "p10" declared but not used
+line 14: Warning:  Property "p11" declared but not used
+line 15: Warning:  Property "p12" declared but not used
+line 16: Warning:  Property "p13" declared but not used
+line 17: Warning:  Property "p14" declared but not used
+line 18: Warning:  Property "p15" declared but not used
+line 19: Warning:  Property "p16" declared but not used
+line 20: Warning:  Property "p17" declared but not used
+line 21: Warning:  Property "p18" declared but not used
+line 22: Warning:  Property "p19" declared but not used
+line 23: Warning:  Property "p20" declared but not used
+line 24: Warning:  Property "p21" declared but not used
+line 25: Warning:  Property "p22" declared but not used
+line 26: Warning:  Property "p23" declared but not used
+line 27: Warning:  Property "p24" declared but not used
+line 28: Warning:  Property "p25" declared but not used
+line 29: Warning:  Property "p26" declared but not used
+line 30: Warning:  Property "p27" declared but not used
+line 31: Warning:  Property "p28" declared but not used
+line 32: Warning:  Property "p29" declared but not used
+line 33: Warning:  Property "p30" declared but not used
+line 34: Warning:  Property "p31" declared but not used
+line 35: Warning:  Property "p32" declared but not used
+line 36: Warning:  Property "p33" declared but not used
+line 37: Warning:  Property "p34" declared but not used
+line 38: Warning:  Property "p35" declared but not used
+line 39: Warning:  Property "p36" declared but not used
+line 40: Warning:  Property "p37" declared but not used
+line 41: Warning:  Property "p38" declared but not used
+line 42: Warning:  Property "p39" declared but not used
+line 43: Warning:  Property "p40" declared but not used
+line 44: Warning:  Property "p41" declared but not used
+line 45: Warning:  Property "p42" declared but not used
+line 46: Warning:  Property "p43" declared but not used
+line 47: Warning:  Property "p44" declared but not used
+line 48: Warning:  Property "p45" declared but not used
+line 49: Warning:  Property "p46" declared but not used
+line 50: Warning:  Property "p47" declared but not used
+line 51: Warning:  Property "p48" declared but not used
+line 52: Warning:  Property "p49" declared but not used
+line 53: Warning:  Property "p50" declared but not used
+line 54: Warning:  Property "p51" declared but not used
+line 55: Warning:  Property "p52" declared but not used
+line 56: Warning:  Property "p53" declared but not used
+line 57: Warning:  Property "p54" declared but not used
+line 58: Warning:  Property "p55" declared but not used
+line 59: Warning:  Property "p56" declared but not used
+line 60: Warning:  Property "p57" declared but not used
+line 61: Warning:  Property "p58" declared but not used
+line 62: Warning:  Property "p59" declared but not used
+line 63: Warning:  Property "p60" declared but not used
+line 64: Warning:  Property "p61" declared but not used
+line 65: Warning:  Property "p62" declared but not used
+line 66: Warning:  Property "p63" declared but not used
+line 67: Warning:  Property "p64" declared but not used
+line 68: Warning:  Property "p65" declared but not used
+line 69: Warning:  Property "p66" declared but not used
+line 70: Warning:  Property "p67" declared but not used
+line 71: Warning:  Property "p68" declared but not used
+line 72: Warning:  Property "p69" declared but not used
+line 73: Warning:  Property "p70" declared but not used
+line 74: Warning:  Property "p71" declared but not used
+line 75: Warning:  Property "p72" declared but not used
+line 76: Warning:  Property "p73" declared but not used
+line 77: Warning:  Property "p74" declared but not used
+line 78: Warning:  Property "p75" declared but not used
+line 79: Warning:  Property "p76" declared but not used
+line 80: Warning:  Property "p77" declared but not used
+line 81: Warning:  Property "p78" declared but not used
+line 82: Warning:  Property "p79" declared but not used
+line 83: Warning:  Property "p80" declared but not used
+line 84: Warning:  Property "p81" declared but not used
+line 85: Warning:  Property "p82" declared but not used
+line 86: Warning:  Property "p83" declared but not used
+line 87: Warning:  Property "p84" declared but not used
+line 88: Warning:  Property "p85" declared but not used
+line 89: Warning:  Property "p86" declared but not used
+line 90: Warning:  Property "p87" declared but not used
+line 91: Warning:  Property "p88" declared but not used
+line 92: Warning:  Property "p89" declared but not used
+line 93: Warning:  Property "p90" declared but not used
+line 94: Warning:  Property "p91" declared but not used
+line 95: Warning:  Property "p92" declared but not used
+line 96: Warning:  Property "p93" declared but not used
+line 97: Warning:  Property "p94" declared but not used
+line 98: Warning:  Property "p95" declared but not used
+line 99: Warning:  Property "p96" declared but not used
+line 100: Warning:  Property "p97" declared but not used
+line 101: Warning:  Property "p98" declared but not used
+line 102: Warning:  Property "p99" declared but not used
+line 103: Warning:  Property "p100" declared but not used
+line 104: Warning:  Property "p101" declared but not used
+line 105: Warning:  Property "p102" declared but not used
+line 106: Warning:  Property "p103" declared but not used
+line 107: Warning:  Property "p104" declared but not used
+line 108: Warning:  Property "p105" declared but not used
+line 109: Warning:  Property "p106" declared but not used
+line 110: Warning:  Property "p107" declared but not used
+line 111: Warning:  Property "p108" declared but not used
+line 112: Warning:  Property "p109" declared but not used
+line 113: Warning:  Property "p110" declared but not used
+line 114: Warning:  Property "p111" declared but not used
+line 115: Warning:  Property "p112" declared but not used
+line 116: Warning:  Property "p113" declared but not used
+line 117: Warning:  Property "p114" declared but not used
+line 118: Warning:  Property "p115" declared but not used
+line 119: Warning:  Property "p116" declared but not used
+line 120: Warning:  Property "p117" declared but not used
+line 121: Warning:  Property "p118" declared but not used
+line 122: Warning:  Property "p119" declared but not used
+line 123: Warning:  Property "p120" declared but not used
+line 124: Warning:  Property "p121" declared but not used
+line 125: Warning:  Property "p122" declared but not used
+line 126: Warning:  Property "p123" declared but not used
+line 127: Warning:  Property "p124" declared but not used
+line 128: Warning:  Property "p125" declared but not used
+line 129: Warning:  Property "p126" declared but not used
+line 130: Warning:  Property "p127" declared but not used
+line 131: Warning:  Property "p128" declared but not used
+line 132: Warning:  Property "p129" declared but not used
+line 133: Warning:  Property "p130" declared but not used
+line 134: Warning:  Property "p131" declared but not used
+line 135: Warning:  Property "p132" declared but not used
+line 136: Warning:  Property "p133" declared but not used
+line 137: Warning:  Property "p134" declared but not used
+line 138: Warning:  Property "p135" declared but not used
+line 139: Warning:  Property "p136" declared but not used
+line 140: Warning:  Property "p137" declared but not used
+line 141: Warning:  Property "p138" declared but not used
+line 142: Warning:  Property "p139" declared but not used
+line 143: Warning:  Property "p140" declared but not used
+line 144: Warning:  Property "p141" declared but not used
+line 145: Warning:  Property "p142" declared but not used
+line 146: Warning:  Property "p143" declared but not used
+line 147: Warning:  Property "p144" declared but not used
+line 148: Warning:  Property "p145" declared but not used
+line 149: Warning:  Property "p146" declared but not used
+line 150: Warning:  Property "p147" declared but not used
+line 151: Warning:  Property "p148" declared but not used
+line 152: Warning:  Property "p149" declared but not used
+line 153: Warning:  Property "p150" declared but not used
+line 154: Warning:  Property "p151" declared but not used
+line 155: Warning:  Property "p152" declared but not used
+line 156: Warning:  Property "p153" declared but not used
+line 157: Warning:  Property "p154" declared but not used
+line 158: Warning:  Property "p155" declared but not used
+line 159: Warning:  Property "p156" declared but not used
+line 160: Warning:  Property "p157" declared but not used
+line 161: Warning:  Property "p158" declared but not used
+line 162: Warning:  Property "p159" declared but not used
+line 163: Warning:  Property "p160" declared but not used
+line 164: Warning:  Property "p161" declared but not used
+line 165: Warning:  Property "p162" declared but not used
+line 166: Warning:  Property "p163" declared but not used
+line 167: Warning:  Property "p164" declared but not used
+line 168: Warning:  Property "p165" declared but not used
+line 169: Warning:  Property "p166" declared but not used
+line 170: Warning:  Property "p167" declared but not used
+line 171: Warning:  Property "p168" declared but not used
+line 172: Warning:  Property "p169" declared but not used
+line 173: Warning:  Property "p170" declared but not used
+line 174: Warning:  Property "p171" declared but not used
+line 175: Warning:  Property "p172" declared but not used
+line 176: Warning:  Property "p173" declared but not used
+line 177: Warning:  Property "p174" declared but not used
+line 178: Warning:  Property "p175" declared but not used
+line 179: Warning:  Property "p176" declared but not used
+line 180: Warning:  Property "p177" declared but not used
+line 181: Warning:  Property "p178" declared but not used
+line 182: Warning:  Property "p179" declared but not used
+line 183: Warning:  Property "p180" declared but not used
+line 184: Warning:  Property "p181" declared but not used
+line 185: Warning:  Property "p182" declared but not used
+line 186: Warning:  Property "p183" declared but not used
+line 187: Warning:  Property "p184" declared but not used
+line 188: Warning:  Property "p185" declared but not used
+line 189: Warning:  Property "p186" declared but not used
+line 190: Warning:  Property "p187" declared but not used
+line 191: Warning:  Property "p188" declared but not used
+line 192: Warning:  Property "p189" declared but not used
+line 193: Warning:  Property "p190" declared but not used
+line 194: Warning:  Property "p191" declared but not used
+line 195: Warning:  Property "p192" declared but not used
+line 196: Warning:  Property "p193" declared but not used
+line 197: Warning:  Property "p194" declared but not used
+line 198: Warning:  Property "p195" declared but not used
+line 199: Warning:  Property "p196" declared but not used
+line 200: Warning:  Property "p197" declared but not used
+line 201: Warning:  Property "p198" declared but not used
+line 202: Warning:  Property "p199" declared but not used
+line 203: Warning:  Property "p200" declared but not used
+line 204: Warning:  Property "p201" declared but not used
+line 205: Warning:  Property "p202" declared but not used
+line 206: Warning:  Property "p203" declared but not used
+line 207: Warning:  Property "p204" declared but not used
+line 208: Warning:  Property "p205" declared but not used
+line 209: Warning:  Property "p206" declared but not used
+line 210: Warning:  Property "p207" declared but not used
+line 211: Warning:  Property "p208" declared but not used
+line 212: Warning:  Property "p209" declared but not used
+line 213: Warning:  Property "p210" declared but not used
+line 214: Warning:  Property "p211" declared but not used
+line 215: Warning:  Property "p212" declared but not used
+line 216: Warning:  Property "p213" declared but not used
+line 217: Warning:  Property "p214" declared but not used
+line 218: Warning:  Property "p215" declared but not used
+line 219: Warning:  Property "p216" declared but not used
+line 220: Warning:  Property "p217" declared but not used
+line 221: Warning:  Property "p218" declared but not used
+line 222: Warning:  Property "p219" declared but not used
+line 223: Warning:  Property "p220" declared but not used
+line 224: Warning:  Property "p221" declared but not used
+line 225: Warning:  Property "p222" declared but not used
+line 226: Warning:  Property "p223" declared but not used
+line 227: Warning:  Property "p224" declared but not used
+line 228: Warning:  Property "p225" declared but not used
+line 229: Warning:  Property "p226" declared but not used
+line 230: Warning:  Property "p227" declared but not used
+line 231: Warning:  Property "p228" declared but not used
+line 232: Warning:  Property "p229" declared but not used
+line 233: Warning:  Property "p230" declared but not used
+line 234: Warning:  Property "p231" declared but not used
+line 235: Warning:  Property "p232" declared but not used
+line 236: Warning:  Property "p233" declared but not used
+line 237: Warning:  Property "p234" declared but not used
+line 238: Warning:  Property "p235" declared but not used
+line 239: Warning:  Property "p236" declared but not used
+line 240: Warning:  Property "p237" declared but not used
+line 241: Warning:  Property "p238" declared but not used
+line 242: Warning:  Property "p239" declared but not used
+line 243: Warning:  Property "p240" declared but not used
+line 244: Warning:  Property "p241" declared but not used
+line 245: Warning:  Property "p242" declared but not used
+line 246: Warning:  Property "p243" declared but not used
+line 247: Warning:  Property "p244" declared but not used
+line 248: Warning:  Property "p245" declared but not used
+line 249: Warning:  Property "p246" declared but not used
+line 250: Warning:  Property "p247" declared but not used
+line 251: Warning:  Property "p248" declared but not used
+line 252: Warning:  Property "p249" declared but not used
+line 253: Warning:  Property "p250" declared but not used
+line 254: Warning:  Property "p251" declared but not used
+Compiled with 28 errors and 252 warnings (no output)

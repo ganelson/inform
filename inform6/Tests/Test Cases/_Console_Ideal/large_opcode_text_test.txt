@@ -1,0 +1,2 @@
+Inform 6.36 (24th January 2022)
+The Inform 6 memory setting "MAX_QTEXT_SIZE" is no longer needed and has been withdrawn.

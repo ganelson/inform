@@ -1,0 +1,202 @@
+Inform 6.36 (24th January 2022)
+line 237: Error:  All 233 global variables already declared
+> Global var_233;
+line 238: Error:  All 233 global variables already declared
+> Global var_234;
+line 239: Error:  All 233 global variables already declared
+> Global var_235;
+line 240: Error:  All 233 global variables already declared
+> Global var_236;
+line 241: Error:  All 233 global variables already declared
+> Global var_237;
+line 242: Error:  All 233 global variables already declared
+> Global var_238;
+line 243: Error:  All 233 global variables already declared
+> Global var_239;
+line 244: Error:  All 233 global variables already declared
+> Global var_240;
+line 245: Error:  All 233 global variables already declared
+> Global var_241;
+line 246: Error:  All 233 global variables already declared
+> Global var_242;
+line 247: Error:  All 233 global variables already declared
+> Global var_243;
+line 248: Error:  All 233 global variables already declared
+> Global var_244;
+line 249: Error:  All 233 global variables already declared
+> Global var_245;
+line 250: Error:  All 233 global variables already declared
+> Global var_246;
+line 251: Error:  All 233 global variables already declared
+> Global var_247;
+line 252: Error:  All 233 global variables already declared
+> Global var_248;
+line 253: Error:  All 233 global variables already declared
+> Global var_249;
+line 254: Error:  All 233 global variables already declared
+> Global var_250;
+line 255: Error:  All 233 global variables already declared
+> Global var_251;
+line 256: Error:  All 233 global variables already declared
+> Global var_252;
+line 257: Error:  All 233 global variables already declared
+> Global var_253;
+line 258: Error:  All 233 global variables already declared
+> Global var_254;
+line 259: Error:  All 233 global variables already declared
+> Global var_255;
+line 260: Error:  All 233 global variables already declared
+> Global var_256;
+line 261: Error:  All 233 global variables already declared
+> Global var_257;
+line 262: Error:  All 233 global variables already declared
+> Global var_258;
+line 263: Error:  All 233 global variables already declared
+> Global var_259;
+line 264: Error:  All 233 global variables already declared
+> Global var_260;
+line 265: Error:  All 233 global variables already declared
+> Global var_261;
+line 266: Error:  All 233 global variables already declared
+> Global var_262;
+line 267: Error:  All 233 global variables already declared
+> Global var_263;
+line 268: Error:  All 233 global variables already declared
+> Global var_264;
+line 269: Error:  All 233 global variables already declared
+> Global var_265;
+line 270: Error:  All 233 global variables already declared
+> Global var_266;
+line 271: Error:  All 233 global variables already declared
+> Global var_267;
+line 272: Error:  All 233 global variables already declared
+> Global var_268;
+line 273: Error:  All 233 global variables already declared
+> Global var_269;
+line 274: Error:  All 233 global variables already declared
+> Global var_270;
+line 275: Error:  All 233 global variables already declared
+> Global var_271;
+line 276: Error:  All 233 global variables already declared
+> Global var_272;
+line 277: Error:  All 233 global variables already declared
+> Global var_273;
+line 278: Error:  All 233 global variables already declared
+> Global var_274;
+line 279: Error:  All 233 global variables already declared
+> Global var_275;
+line 280: Error:  All 233 global variables already declared
+> Global var_276;
+line 281: Error:  All 233 global variables already declared
+> Global var_277;
+line 282: Error:  All 233 global variables already declared
+> Global var_278;
+line 283: Error:  All 233 global variables already declared
+> Global var_279;
+line 284: Error:  All 233 global variables already declared
+> Global var_280;
+line 285: Error:  All 233 global variables already declared
+> Global var_281;
+line 286: Error:  All 233 global variables already declared
+> Global var_282;
+line 287: Error:  All 233 global variables already declared
+> Global var_283;
+line 288: Error:  All 233 global variables already declared
+> Global var_284;
+line 289: Error:  All 233 global variables already declared
+> Global var_285;
+line 290: Error:  All 233 global variables already declared
+> Global var_286;
+line 291: Error:  All 233 global variables already declared
+> Global var_287;
+line 292: Error:  All 233 global variables already declared
+> Global var_288;
+line 293: Error:  All 233 global variables already declared
+> Global var_289;
+line 294: Error:  All 233 global variables already declared
+> Global var_290;
+line 295: Error:  All 233 global variables already declared
+> Global var_291;
+line 296: Error:  All 233 global variables already declared
+> Global var_292;
+line 297: Error:  All 233 global variables already declared
+> Global var_293;
+line 298: Error:  All 233 global variables already declared
+> Global var_294;
+line 299: Error:  All 233 global variables already declared
+> Global var_295;
+line 300: Error:  All 233 global variables already declared
+> Global var_296;
+line 301: Error:  All 233 global variables already declared
+> Global var_297;
+line 302: Error:  All 233 global variables already declared
+> Global var_298;
+line 303: Error:  All 233 global variables already declared
+> Global var_299;
+line 304: Error:  All 233 global variables already declared
+> Global var_300;
+line 305: Error:  All 233 global variables already declared
+> Global var_301;
+line 306: Error:  All 233 global variables already declared
+> Global var_302;
+line 307: Error:  All 233 global variables already declared
+> Global var_303;
+line 308: Error:  All 233 global variables already declared
+> Global var_304;
+line 309: Error:  All 233 global variables already declared
+> Global var_305;
+line 310: Error:  All 233 global variables already declared
+> Global var_306;
+line 311: Error:  All 233 global variables already declared
+> Global var_307;
+line 312: Error:  All 233 global variables already declared
+> Global var_308;
+line 313: Error:  All 233 global variables already declared
+> Global var_309;
+line 314: Error:  All 233 global variables already declared
+> Global var_310;
+line 315: Error:  All 233 global variables already declared
+> Global var_311;
+line 316: Error:  All 233 global variables already declared
+> Global var_312;
+line 317: Error:  All 233 global variables already declared
+> Global var_313;
+line 318: Error:  All 233 global variables already declared
+> Global var_314;
+line 319: Error:  All 233 global variables already declared
+> Global var_315;
+line 320: Error:  All 233 global variables already declared
+> Global var_316;
+line 321: Error:  All 233 global variables already declared
+> Global var_317;
+line 322: Error:  All 233 global variables already declared
+> Global var_318;
+line 323: Error:  All 233 global variables already declared
+> Global var_319;
+line 324: Error:  All 233 global variables already declared
+> Global var_320;
+line 325: Error:  All 233 global variables already declared
+> Global var_321;
+line 326: Error:  All 233 global variables already declared
+> Global var_322;
+line 327: Error:  All 233 global variables already declared
+> Global var_323;
+line 328: Error:  All 233 global variables already declared
+> Global var_324;
+line 329: Error:  All 233 global variables already declared
+> Global var_325;
+line 330: Error:  All 233 global variables already declared
+> Global var_326;
+line 331: Error:  All 233 global variables already declared
+> Global var_327;
+line 332: Error:  All 233 global variables already declared
+> Global var_328;
+line 333: Error:  All 233 global variables already declared
+> Global var_329;
+line 334: Error:  All 233 global variables already declared
+> Global var_330;
+line 335: Error:  All 233 global variables already declared
+> Global var_331;
+line 336: Error:  All 233 global variables already declared
+> Global var_332;
+line 337: Fatal error: Too many errors: giving up

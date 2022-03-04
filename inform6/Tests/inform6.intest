@@ -38,6 +38,23 @@
 		set: $I6OPTIONS = `$[`$SETTINGS$]
 	endif
 
+	set: $EXECUTE = 1
+	! dumb-frotz crashes on this story file with "Fatal error: Text buffer overflow",
+	! but it is in fact correct
+	if: $CASE large_opcode_text_test
+		set: $EXECUTE = 0
+	endif
+	! similarly, glulxe does not like these: "This is neither a Glulx game file nor a Blorb file which contains one."
+	if: $CASE max_dynamic_strings_test_at63_mds_64-G
+		set: $EXECUTE = 0
+	endif
+	if: $CASE max_static_data_test_mqs_8001-G
+		set: $EXECUTE = 0
+	endif
+	if: $CASE max_dynamic_strings_test_str64_mds_65-G
+		set: $EXECUTE = 0
+	endif
+
 	mkdir: $PATH/_Transcript_Actual
 	mkdir: $PATH/_Transcript_Ideal
 	mkdir: $PATH/_Story_File_Actual
@@ -76,17 +93,19 @@
 	match problem: $I6CONSOLE $IC
 	or: 'compiled, but produced the wrong console output'
 
-	step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
-	or: 'compiled, but was unable to run $INTNAME (do you need to make interpreters?)'
+	if: $EXECUTE 1
+		step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
+		or: 'compiled, but was unable to run $INTNAME (do you need to make interpreters?)'
 
-	exists: $I
-	or: 'compiled, but no ideal transcript existed'
-	if: $VM G
-		match glulxe transcript: $A $I
-		or: 'compiled, but played incorrectly'
-	else
-		match frotz transcript: $A $I
-		or: 'compiled, but played incorrectly'
+		exists: $I
+		or: 'compiled, but no ideal transcript existed'
+		if: $VM G
+			match glulxe transcript: $A $I
+			or: 'compiled, but played incorrectly'
+		else
+			match frotz transcript: $A $I
+			or: 'compiled, but played incorrectly'
+		endif
 	endif
 
 	pass: 'passed'

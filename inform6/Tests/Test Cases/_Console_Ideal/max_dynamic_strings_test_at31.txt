@@ -1,0 +1,4 @@
+Inform 6.36 (24th January 2022)
+line 4: Warning:  Defined constant "str0" declared but not used
+line 5: Warning:  Defined constant "str31" declared but not used
+Compiled with 2 warnings

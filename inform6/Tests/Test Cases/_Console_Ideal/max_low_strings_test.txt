@@ -1,0 +1,22 @@
+Inform 6.36 (24th January 2022)
+line 4: Warning:  Defined constant "lstr_0" declared but not used
+line 5: Warning:  Defined constant "lstr_1" declared but not used
+line 6: Warning:  Defined constant "lstr_2" declared but not used
+line 7: Warning:  Defined constant "lstr_3" declared but not used
+line 8: Warning:  Defined constant "lstr_4" declared but not used
+line 9: Warning:  Defined constant "lstr_5" declared but not used
+line 10: Warning:  Defined constant "lstr_6" declared but not used
+line 11: Warning:  Defined constant "lstr_7" declared but not used
+line 12: Warning:  Defined constant "lstr_8" declared but not used
+line 13: Warning:  Defined constant "lstr_9" declared but not used
+line 14: Warning:  Defined constant "lstr_10" declared but not used
+line 15: Warning:  Defined constant "lstr_11" declared but not used
+line 16: Warning:  Defined constant "lstr_12" declared but not used
+line 17: Warning:  Defined constant "lstr_13" declared but not used
+line 18: Warning:  Defined constant "lstr_14" declared but not used
+line 19: Warning:  Defined constant "lstr_15" declared but not used
+line 20: Warning:  Defined constant "lstr_16" declared but not used
+line 21: Warning:  Defined constant "lstr_17" declared but not used
+line 22: Warning:  Defined constant "lstr_18" declared but not used
+line 23: Warning:  Defined constant "lstr_19" declared but not used
+Compiled with 20 warnings

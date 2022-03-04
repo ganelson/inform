@@ -1,0 +1,6 @@
+Inform 6.36 (24th January 2022)
+line 14: Error:  At most 32 values can be given in a single 'switch' case
+>   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,   ...etc
+line 3: Warning:  Routine "goodfunc" declared but not used
+line 12: Warning:  Routine "badfunc" declared but not used
+Compiled with 1 error and 2 warnings (no output)

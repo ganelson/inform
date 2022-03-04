@@ -1,0 +1,6 @@
+Inform 6.36 (24th January 2022)
+line 5: Error:  Only dynamic strings @00 to @63 may be used, because $MAX_DYNAMIC_STRINGS has been set to 64. Increase MAX_DYNAMIC_STRINGS.
+> Constant str64 = "@64";
+line 4: Warning:  Defined constant "str0" declared but not used
+line 5: Warning:  Defined constant "str64" declared but not used
+Compiled with 1 error and 2 warnings (no output)

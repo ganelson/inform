@@ -1,0 +1,12 @@
+[ Main;
+];
+
+[ FooSub;
+];
+
+Verb
+  'foo0' 'foo1' 'foo2' 'foo3' 'foo4' 'foo5' 'foo6' 'foo7' 'foo8' 'foo9'
+  'foo10' 'foo11' 'foo12' 'foo13' 'foo14' 'foo15' 'foo16' 'foo17' 'foo18' 'foo19'
+  'foo20' 'foo21' 'foo22' 'foo23' 'foo24' 'foo25' 'foo26' 'foo27' 'foo28' 'foo29'
+  'foo30' 'foo31' 'foo32'
+  * -> Foo;
