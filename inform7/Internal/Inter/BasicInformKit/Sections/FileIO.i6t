@@ -274,7 +274,7 @@ Glk errors.
 
 =
 [ FileIO_PutC extf char  struc;
-	if ((extf < 1) || (extf > NO_EXTERNAL_FILES)) return -1;
+	if ((extf < 1) || (extf > NO_EXTERNAL_FILES))
 		return FileIO_Error(extf, "tried to write to a non-file");
 	struc = TableOfExternalFiles-->extf;
 	if (struc-->AUXF_STATUS ~=

@@ -39520,12 +39520,9 @@ package main _plain
 									val /main/synoptic/multimedia/NO_EXTERNAL_FILES
 							code
 								inv !return
-									inv !unaryminus
-										val 1
-						inv !return
-							inv /main/BasicInformKit/functions/FileIO_Error_fn/FileIO_Error
-								val extf
-								val "tried to write to a non-file"
+									inv /main/BasicInformKit/functions/FileIO_Error_fn/FileIO_Error
+										val extf
+										val "tried to write to a non-file"
 						inv !store
 							reference
 								val struc
