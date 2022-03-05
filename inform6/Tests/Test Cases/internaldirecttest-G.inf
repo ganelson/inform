@@ -1,0 +1,345 @@
+Constant Story "InternalDirectiveTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+! This is a compiler unit test for directives (such as #if)
+! appearing inside switch statements. And other places.
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+Global failures;
+
+[ Main;
+    #ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 0;
+    #endif; ! TARGET_GLULX
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ check_value val1 val2;
+	print val1;
+	if (val1 ~= val2) {
+		failures++;
+		print " (ERROR, should be ", val2, ")";
+	}
+];
+
+Attribute light;
+Property genprop;
+
+Constant ISDEF 1;
+Constant SEVEN 7;
+
+Object testobj
+  with name 'testobj',
+#ifdef ISDEF;
+  with color 'red',
+#ifnot;
+  with color 'green',
+#endif;
+#ifdef NOTDEF;
+  with size 4,
+#ifnot;
+  with size 5,
+#endif;
+#ifdef NOTDEF;
+  with genprop 12,
+  has light,
+#endif;
+  with lastprop;
+
+#ifdef ISDEF;
+[ Func4; return 4; ];
+#ifnot;
+[ Func4; return 44; ];
+#endif;
+
+#ifdef NOTDEF;
+[ Func5; return 55; ];
+#ifnot;
+[ Func5; return 5; ];
+#endif;
+
+[ RunTest;
+
+	TestObject();
+	TestFunc1();
+	TestFunc2();
+	TestFunc3();
+
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];
+
+[ TestObject val;
+	print "testobj.color: ";
+	check_value(testobj.color, 'red');
+	print ".^";
+	print "testobj.size: ";
+	check_value(testobj.size, 5);
+	print ".^";
+	print "testobj has light: ";
+	val = (testobj has light);
+	check_value(val, false);
+	print ".^";
+	print "testobj provides genprop: ";
+	val = (testobj provides genprop);
+	check_value(val, false);
+	print ".^";
+	print "testobj provides lastprop: ";
+	val = (testobj provides lastprop);
+	check_value(val, true);
+	print ".^";
+];
+
+[ TestFunc1 val ix;
+
+#ifdef ISDEF;
+	val = 7;
+#ifnot;
+	failures++;
+	badfunc();
+#endif;
+	print "val: ";
+	check_value(val, 7);
+	print ".^";
+
+#ifdef NOTDEF;
+	failures++;
+#ifnot;
+	val = 9;
+#endif;
+	print "val: ";
+	check_value(val, 9);
+	print ".^";
+
+	if (1) {
+#ifdef ISDEF;
+		val = 11;
+#endif;
+	}
+	print "val: ";
+	check_value(val, 11);
+	print ".^";
+
+	val = 0;
+	for (ix=0 : ix<5 : ix++) {
+#ifndef NOTDEF;
+		val = val + ix;
+#ifnot;
+		val = -1;
+#endif;
+	}
+	print "val: ";
+	check_value(val, 10);
+	print ".^";
+
+	print "Func4(): ";
+	check_value(Func4(), 4);
+	print ".^";
+	print "Func5(): ";
+	check_value(Func5(), 5);
+	print ".^";
+
+];
+
+[ TestFunc2 val;
+
+	val = 0;
+#iftrue (SEVEN == 7);
+	#ifdef ISDEF;
+	val = val + 1;
+	#ifnot;
+	val = 100;
+	#endif;
+#ifnot;
+	#ifdef ISDEF;
+	val = 101;
+	#ifnot;
+	val = 102;
+	#endif;
+#endif;
+
+	print "val: ";
+	check_value(val, 1);
+	print ".^";
+
+	val = 0;
+#iftrue (SEVEN == 8);
+	#ifdef ISDEF;
+	val = val + 1;
+	#ifnot;
+	val = 100;
+	#endif;
+#ifnot;
+	#ifdef ISDEF;
+	val = 101;
+	#ifnot;
+	val = 102;
+	#endif;
+#endif;
+
+	print "val: ";
+	check_value(val, 101);
+	print ".^";
+
+	val = 0;
+#iftrue (SEVEN == 8);
+	#ifdef ISDEF;
+	val = val + 1;
+	#ifnot;
+	val = 110;
+	#endif;
+#ifnot;
+	#ifdef NOTDEF;
+	val = 111;
+	#ifnot;
+	val = 112;
+	#endif;
+	val = val + 5;
+#endif;
+
+	print "val: ";
+	check_value(val, 117);
+	print ".^";
+
+];
+
+[ SwitchTest val;
+	switch (val) {
+		#ifdef ISDEF;
+		9: return 99;
+		#endif;
+		0: return 0;
+		#ifdef ISDEF;
+		1: return 11;
+		2: return 22;
+		#ifnot;
+		7: return 77;
+		#endif;
+		3: return 33;
+		#ifdef NOTDEF;
+		4: return 44;
+		5: return 55;
+		#endif;
+		6:
+			#ifdef ISDEF;
+			return 66;
+			#ifnot;
+			return 67;
+			#endif;
+		#ifdef NOTDEF;
+		#ifnot;
+		8: return 88;
+		#endif;
+		#ifdef ISDEF;
+		default: return -1;
+		#endif;
+	}
+];
+
+[ TestFunc3;
+	print "SwitchTest(-1): ";
+	check_value(SwitchTest(-1), -1);
+	print ".^";
+	print "SwitchTest(0): ";
+	check_value(SwitchTest(0), 0);
+	print ".^";
+	print "SwitchTest(1): ";
+	check_value(SwitchTest(1), 11);
+	print ".^";
+	print "SwitchTest(2): ";
+	check_value(SwitchTest(2), 22);
+	print ".^";
+	print "SwitchTest(3): ";
+	check_value(SwitchTest(3), 33);
+	print ".^";
+	print "SwitchTest(4): ";
+	check_value(SwitchTest(4), -1);
+	print ".^";
+	print "SwitchTest(5): ";
+	check_value(SwitchTest(5), -1);
+	print ".^";
+	print "SwitchTest(6): ";
+	check_value(SwitchTest(6), 66);
+	print ".^";
+	print "SwitchTest(7): ";
+	check_value(SwitchTest(7), -1);
+	print ".^";
+	print "SwitchTest(8): ";
+	check_value(SwitchTest(8), 88);
+	print ".^";
+	print "SwitchTest(9): ";
+	check_value(SwitchTest(9), 99);
+	print ".^";
+];

@@ -1,0 +1,31 @@
+  ReplaceRecurseTest: Not a game.
+  Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+  
+  Calls to replaced function:
+  Call0: Replacement.
+  Call1: Replacement.
+  Call2: Replacement.
+  Call3: Replacement.
+    ...called 4 times.
+  
+  Calls to recursive replaced function:
+  Recurse replacement: 4
+  Recurse replacement: 3
+  Recurse replacement: 2
+  Recurse replacement: 1
+  Recurse replacement: 0
+    ...called 5 times.
+  
+  Calls to double-replaced function:
+  Tricall0: Replacement 2.
+  Tricall1: Replacement 2.
+  Tricall2: Replacement 2.
+  Tricall3: Replacement 2.
+  Tricall4: Replacement 2.
+    ...called 5 times.
+  
+  Calls to never-replaced function:
+  Unicall0: Unreplaced original.
+    ...called 1 times.
+  
+  All passed.

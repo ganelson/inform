@@ -1,0 +1,360 @@
+Constant Story "IfElseDirectiveTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+! This is a compiler unit test for directives (such as #if)
+! appearing inside if/else statements.
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+Global failures;
+
+[ Main;
+    #ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 0;
+    #endif; ! TARGET_GLULX
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ check_value val1 val2;
+	print val1;
+	if (val1 ~= val2) {
+		failures++;
+		print " (ERROR, should be ", val2, ")";
+	}
+];
+
+[ RunTest;
+
+	TestFunc1();
+	TestFunc2();
+	TestFunc3();
+
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];
+
+Constant ISDEF 1;
+
+! This function has an "if" statement under #if TRUE.
+[ Compare1 val val2;
+
+#ifdef ISDEF;
+	if (val == val2) return 1;
+#ifnot;
+	if (val > val2) return 2;
+#endif;
+	else return -1;
+
+	print "(BUG, should not get here.)^";
+];
+
+! This function has an "if" statement under #if FALSE.
+[ Compare2 val val2;
+
+#ifdef ISNOTDEF;
+	if (val == val2) return 1;
+#ifnot;
+	if (val > val2) return 2;
+#endif;
+	else return -1;
+
+	print "(BUG, should not get here.)^";
+];
+
+! This function has an "else" statement under #if TRUE.
+[ IsDefault1 val;
+	if (val) return val;
+#ifdef ISDEF;
+	else return -1;
+#ifnot;
+	else return -2;
+#endif;
+
+	print "(BUG, should not get here.)^";	
+];
+
+! This function has an "else" statement under #if FALSE.
+[ IsDefault2 val;
+	if (val) return val;
+#ifdef ISNOTDEF;
+	else return -1;
+#ifnot;
+	else return -2;
+#endif;
+
+	print "(BUG, should not get here.)^";	
+];
+
+[ TestFunc1 val;
+	val = Compare1(3, 3);
+	print "3==3: ";
+	check_value(val, 1);
+	print ".^";
+	
+	val = Compare1(3, 5);
+	print "3==5: ";
+	check_value(val, -1);
+	print ".^";
+	
+	val = Compare1(3, 2);
+	print "3==2: ";
+	check_value(val, -1);
+	print ".^";
+	
+	val = Compare2(3, 3);
+	print "3>3: ";
+	check_value(val, -1);
+	print ".^";
+	
+	val = Compare2(3, 5);
+	print "3>5: ";
+	check_value(val, -1);
+	print ".^";
+	
+	val = Compare2(3, 2);
+	print "3>2: ";
+	check_value(val, 2);
+	print ".^";
+	
+	val = IsDefault1(5);
+	print "5 or -1: ";
+	check_value(val, 5);
+	print ".^";
+	
+	val = IsDefault1(0);
+	print "0 or -1: ";
+	check_value(val, -1);
+	print ".^";
+	
+	val = IsDefault2(5);
+	print "5 or -2: ";
+	check_value(val, 5);
+	print ".^";
+	
+	val = IsDefault2(0);
+	print "0 or -2: ";
+	check_value(val, -2);
+	print ".^";
+	
+];
+
+! This function has a bunch of #if directives between the "if" and "else";
+! they add up to nothing.
+[ GetAbs val res;
+	if (val < 0)
+	{
+		res = -val;
+	}
+#ifdef ISDEF;
+#ifnot;
+	bad_statement;
+#endif;
+#ifdef ISNOTDEF;
+	bad_statement;
+#ifnot;
+#endif;
+	else
+	{
+		res = val;
+	}
+
+	return res;
+];
+
+[ TestFunc2 val;
+	val = GetAbs(3);
+	print "GetAbs(3): ";
+	check_value(val, 3);
+	print ".^";
+	
+	val = GetAbs(-7);
+	print "GetAbs(-7): ";
+	check_value(val, 7);
+	print ".^";
+	
+	val = GetAbs(0);
+	print "GetAbs(0): ";
+	check_value(val, 0);
+	print ".^";
+	
+];
+
+! Four variations where both the "if" and "else" are conditional!
+
+[ Path1 arg val;
+
+#ifdef ISDEF;
+	if (arg) val = 1;
+#ifnot;
+	if (arg) val = 2;
+#endif;
+#ifdef ISDEF;
+	else val = 3;
+#ifnot;
+	else val = 4;
+#endif;
+
+	return val;
+];
+
+[ Path2 arg val;
+
+#ifdef ISDEF;
+	if (arg) val = 1;
+#ifnot;
+	if (arg) val = 2;
+#endif;
+#ifdef ISNOTDEF;
+	else val = 3;
+#ifnot;
+	else val = 4;
+#endif;
+
+	return val;
+];
+
+[ Path3 arg val;
+
+#ifdef ISNOTDEF;
+	if (arg) val = 1;
+#ifnot;
+	if (arg) val = 2;
+#endif;
+#ifdef ISDEF;
+	else val = 3;
+#ifnot;
+	else val = 4;
+#endif;
+
+	return val;
+];
+
+[ Path4 arg val;
+
+#ifdef ISNOTDEF;
+	if (arg) val = 1;
+#ifnot;
+	if (arg) val = 2;
+#endif;
+#ifdef ISNOTDEF;
+	else val = 3;
+#ifnot;
+	else val = 4;
+#endif;
+
+	return val;
+];
+
+[ TestFunc3 val;
+	val = Path1(false);
+	print "Path1(false): ";
+	check_value(val, 3);
+	print ".^";
+	
+	val = Path1(true);
+	print "Path1(true): ";
+	check_value(val, 1);
+	print ".^";
+	
+	val = Path2(false);
+	print "Path2(false): ";
+	check_value(val, 4);
+	print ".^";
+	
+	val = Path2(true);
+	print "Path2(true): ";
+	check_value(val, 1);
+	print ".^";
+	
+	val = Path3(false);
+	print "Path3(false): ";
+	check_value(val, 3);
+	print ".^";
+	
+	val = Path3(true);
+	print "Path3(true): ";
+	check_value(val, 2);
+	print ".^";
+	
+	val = Path4(false);
+	print "Path4(false): ";
+	check_value(val, 4);
+	print ".^";
+	
+	val = Path4(true);
+	print "Path4(true): ";
+	check_value(val, 2);
+	print ".^";
+	
+];

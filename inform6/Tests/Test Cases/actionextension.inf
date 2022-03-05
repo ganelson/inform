@@ -1,0 +1,292 @@
+Constant Story "ActionExtensionTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+! This is a compiler unit test, testing the new <verb, actor> form of the
+! <...> action statement. Or rather, it exhaustively tests different
+! ways to pass arguments to the <...> statement, covering both the old
+! cases (without the ",actor") and the new cases (with it).
+
+! If you want to test only the old syntax, comment out the definition
+! of TRY_NEW_SYNTAX. (You might want this to verify the correctness of
+! a 6.31 compiler fork.)
+Constant TRY_NEW_SYNTAX;
+
+! (Even with TRY_NEW_SYNTAX commented out, this does not compile
+! correctly on -z3. This is a pre-existing compiler bug, which I have
+! not tracked down. I might even be doing something which is illegal
+! in z-code v3.)
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+Global failures;
+
+[ Main;
+    #ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 0;
+    #endif; ! TARGET_GLULX
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #ifnot;
+    print "Game file format ", 0->0, ".^";
+    #Endif; ! TARGET_GLULX
+];
+
+Global expect_verb;
+Global expect_noun;
+Global expect_second;
+Global expect_actor;
+
+[ set_expect verb noun second actor;
+	expect_verb = verb;
+	expect_noun = noun;
+	expect_second = second;
+	expect_actor = actor;
+];
+
+! <...> statements are compiled as calls to R_Process(). This implementation
+! simply checks that the arguments arrived as expected.
+
+[ R_Process verb noun second actor;
+	print "Action <", verb, " ", noun, " ", second;
+	if (actor) print ", ", actor;
+	print ">";
+	if (expect_verb == verb && expect_noun == noun
+		&& expect_second == second && expect_actor == actor) {
+		! all correct
+		new_line;
+		rtrue;
+	}
+	print ": ERROR, expected ";
+	print " <", expect_verb, " ", expect_noun, " ", expect_second;
+	if (expect_actor) print ", ", expect_actor;
+	print ">";
+	new_line;
+	failures++;
+	rfalse;
+];
+
+Verb 'verb0' * -> Verb0;
+Verb 'verb1' * -> Verb1;
+Verb 'verb2' * -> Verb2;
+Verb 'verb3' * -> Verb3;
+
+[ Verb0Sub; ];
+[ Verb1Sub; ];
+[ Verb2Sub; ];
+[ Verb3Sub; ];
+
+Global glob;
+Object obj;
+[ func37; return 37; ];
+[ func38; return 38; ];
+[ funcglobinc;
+	glob++;
+	return glob;
+];
+
+[ RunTest loc;
+	loc = R_Process; ! quiet compiler warning
+	
+	! First, we test the old syntax with a passel of variations.
+	print "The standard action syntax:^";
+	loc = 55;
+
+	set_expect(1);
+	<Verb1>;
+	set_expect(2, 13);
+	<Verb2 13>;
+	set_expect(2, 14);
+	<Verb2 15 - 1>; ! parsed as one computed argument
+	set_expect(3, 18, 6);
+	<Verb3 18 6>;
+	set_expect(1, 19, -6);
+	<Verb1 19 (-6)>; ! parsed as two arguments
+	set_expect(2, obj, 44);
+	<Verb2 obj 44>;
+	set_expect(3, 55);
+	<Verb3 loc>;
+
+	! variations with computed arguments
+	loc = 20;
+	glob = 30;
+	
+	set_expect(2);
+	<(##Verb2)>;
+	set_expect(21);
+	<(loc+1)>;
+	set_expect(30, 40);
+	<(glob) (loc*2)>;
+	set_expect(20, 30, 40);
+	<(loc) glob (loc*2)>;
+	set_expect(21, 22, 23);
+	<(loc+1) (loc+2) (loc+3)>;
+	set_expect(30, 37, 33);
+	<(glob) (func37()) 33>;
+	set_expect(37, 31, 38);
+	<(func37()) (glob+1) (func38())>;
+	set_expect(21, 0, 10);
+	<(loc+1) 0 glob-loc>;
+	set_expect(30, obj, 32000);
+	<(glob) obj 32000>;
+	set_expect(1, 31, 21);
+	<Verb1 (glob+1) (loc+1)>;
+
+	! comma-expression arguments
+	set_expect(5, 6);
+	<(loc++, 5) (glob++, 6)>;
+	set_expect(3, 62, 93);
+	<(loc++, ##Verb3) (loc++, glob*2) (loc++, glob*3)>;
+	set_expect(1, 24, 31);
+	<Verb1 loc glob>;
+
+	! arguments with side-effects
+	! note that the arguments are evaluated right-to-left! This is goofy,
+	! but Inform function arguments are handled the same way, so it's
+	! "consistent".
+	glob = 40;
+	set_expect(41);
+	<(funcglobinc())>;
+	set_expect(43, 42);
+	<(funcglobinc()) (funcglobinc())>;
+	set_expect(46, 45, 44);
+	<(funcglobinc()) (funcglobinc()) (funcglobinc())>;
+
+#ifdef TRY_NEW_SYNTAX;
+	! And now, the new syntax. (If we want to test that.)
+	print "^The new action syntax:^";
+	
+	loc = 20;
+	glob = 30;
+	
+	set_expect(2, 0, 0, 1234);
+	<Verb2, 1234>;
+	set_expect(1, 0, 0, obj);
+	<Verb1, obj>;
+	set_expect(3, 0, 0, 20);
+	<Verb3, loc>;
+	set_expect(2, 0, 0, 30);
+	<Verb2, glob>;
+	set_expect(2, 0, 0, 1235);
+	<Verb2, (1235)>;
+	set_expect(1, 0, 0, obj);
+	<Verb1, (obj)>;
+	set_expect(3, 0, 0, 20);
+	<Verb3, (loc)>;
+	set_expect(2, 0, 0, 30);
+	<Verb2, (glob)>;
+
+	set_expect(1, 0, 0, 7);
+	<Verb1, 7>;
+	set_expect(1, 6, 0, 8);
+	<Verb1 6, 8>;
+	set_expect(1, 5, 6, 9);
+	<Verb1 5 6, 9>;
+
+	set_expect(2, 0, 0, 99);
+	<(##Verb2), 99>;
+	set_expect(21, 0, 0, 31);
+	<(loc+1), (glob+1)>;
+	set_expect(30, 40, 0, 90);
+	<(glob) (loc*2), (glob*3)>;
+	set_expect(20, 30, 40, 33);
+	<(loc) glob (loc*2), (glob+3)>;
+	set_expect(30, 37, 33, 38);
+	<(glob) (func37()) 33, (func38())>;
+	set_expect(37, 31, 2, 38);
+	<(func37()) (glob+1) 2, (func38())>;
+	set_expect(21, 0, 10, 50);
+	<(loc+1) 0 glob-loc, glob+loc>;
+	set_expect(1, 31, 0, 21);
+	<Verb1 (glob+1), (loc+1)>;
+
+	! comma-expression arguments
+	set_expect(5, 0, 0, 6);
+	<(loc++, 5), (glob++, 6)>;
+	set_expect(3, 62, 93, 124);
+	<(loc++, ##Verb3) (loc++, glob*2) (loc++, glob*3), (loc++, glob*4)>;
+	set_expect(1, 25, 31);
+	<Verb1 loc glob>;
+
+	! arguments with side-effects
+	glob = 40;
+	set_expect(42, 0, 0, 41);
+	<(funcglobinc()), (funcglobinc())>;
+	set_expect(45, 44, 0, 43);
+	<(funcglobinc()) (funcglobinc()), (funcglobinc())>;
+	set_expect(49, 48, 47, 46);
+	<(funcglobinc()) (funcglobinc()) (funcglobinc()), (funcglobinc())>;
+	
+#endif; ! TRY_NEW_SYNTAX
+
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];

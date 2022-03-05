@@ -1,0 +1,36 @@
+  ClassCopyTest: Not a game.
+  Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+  Game file format 5.
+  
+  obj1.indprop: 12
+  obj1.genprop: 33
+  obj1.attr1: 0
+  obj1.attr2: 1
+  obj1.attr3: 1
+  obj2.indprop: 12
+  obj2.genprop: 33
+  obj2.attr1: 0
+  obj2.attr2: 1
+  obj2.attr3: 1
+  obj2.indprop: 4
+  obj2.genprop: 4
+  obj2.attr1: 0
+  obj2.attr2: 1
+  obj2.attr3: 0
+  obj3.indprop: 5
+  obj3.genprop: 6
+  obj3.longprop[0]: 10
+  obj3.attr1: 1
+  obj3.attr2: 1
+  obj3.attr3: 0
+  obj3.indprop: 11
+  obj3.genprop: 67
+  obj3.longprop[0]: 10
+  obj3.attr1: 1
+  obj3.attr2: 1
+  obj3.attr3: 0
+  obj3.longprop[0]: 13
+  obj3.longprop[1]: 114
+  obj3.longprop[2]: 15
+  
+  All passed.

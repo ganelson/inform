@@ -1,0 +1,50 @@
+DictFlagTest: Not a game.
+Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+Interpreter version 0.5.4 / VM 3.1.2 / game file format 3.0.0
+
+$DICT_WORD_SIZE=9, #dict_par1=11, #dict_par2=13, #dict_par3=15.
+
+'plain'
+  flag values: $80 $0 $0
+'noun1'
+  flag values: $80 $0 $0
+'noun2'
+  flag values: $80 $0 $0
+'plural'
+  flag values: $84 $0 $0
+'pluname'
+  flag values: $84 $0 $0
+'verb'
+  flag values: $C1 $FFFF $0
+'meta'
+  flag values: $C3 $FFFD $0
+'prep'
+  flag values: $88 $0 $0
+'prep2'
+  flag values: $8 $0 $0
+'verb2'
+  flag values: $41 $FFFE $0
+'foo'
+  flag values: $80 $0 $0
+'foo2'
+  flag values: $0 $0 $0
+'bar'
+  flag values: $90 $0 $0
+'baz'
+  flag values: $92 $0 $5D
+'dquot'
+  flag values: $81 $0 $1
+'pip'
+  flag values: $87 $0 $16
+'pop'
+  flag values: $84 $0 $FF
+'merge'
+  flag values: $C3 $0 $61
+'mergeverb'
+  flag values: $C5 $FFFC $7B
+'big'
+  flag values: $FFFF $0 $FFFF
+'bigmerge'
+  flag values: $12B4 $0 $4321
+
+Passed.

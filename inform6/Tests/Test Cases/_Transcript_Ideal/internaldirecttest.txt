@@ -1,0 +1,30 @@
+  InternalDirectiveTest: Not a game.
+  Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+  
+  testobj.color: 1311.
+  testobj.size: 5.
+  testobj has light: 0.
+  testobj provides genprop: 0.
+  testobj provides lastprop: 1.
+  val: 7.
+  val: 9.
+  val: 11.
+  val: 10.
+  Func4(): 4.
+  Func5(): 5.
+  val: 1.
+  val: 101.
+  val: 117.
+  SwitchTest(-1): -1.
+  SwitchTest(0): 0.
+  SwitchTest(1): 11.
+  SwitchTest(2): 22.
+  SwitchTest(3): 33.
+  SwitchTest(4): -1.
+  SwitchTest(5): -1.
+  SwitchTest(6): 66.
+  SwitchTest(7): -1.
+  SwitchTest(8): 88.
+  SwitchTest(9): 99.
+  
+  All passed.

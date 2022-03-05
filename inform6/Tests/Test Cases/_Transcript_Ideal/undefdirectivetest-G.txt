@@ -1,0 +1,13 @@
+UndefDirectiveTest: Not a game.
+Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+Interpreter version 0.5.4 / VM 3.1.2 / game file format 3.0.0
+
+UndefMe_post: 1.
+WillBeDefinedLater: 2.
+WillBeDefinedLater_pre: 3.
+WillBeDefinedLater_post: 4.
+RemainsDefined: 5.
+FutureSymbol: 6.
+Function returning FutureSymbol: 6.
+
+All passed.

@@ -1,0 +1,326 @@
+Constant Story "DictFlagTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+! This is a compiler unit test, testing the new form of the Dictionary
+! directive (proposed December 2011). If you try to compile this with an
+! older I6 compiler, you'll get errors.
+
+! Given a newer I6 compiler, this test should compile and pass in both
+! Z-code and Glulx.
+
+#ifndef TARGET_GLULX;
+
+! This magic constant tells I6 to use grammar version 2, which is the current
+! standard.
+Constant Grammar__Version 2;
+
+Constant HDR_GAMERELEASE   $02;     ! word
+Constant HDR_DICTIONARY    $08;     ! word
+Constant HDR_GAMESERIAL    $12;     ! six ASCII characters
+
+#ifnot;
+
+Global gg_mainwin;
+
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+
+#endif;
+
+Global failures;
+
+[ Main loc;
+#ifdef TARGET_GLULX;
+    @setiosys 2 0;
+    @push 201; @push 3; @push 0; @push 0; @push 0;
+    @glk $0023 5 gg_mainwin;
+
+    @push gg_mainwin;
+    @glk $002F 1 loc;
+#endif;
+
+    Banner();
+    new_line;
+    RunTest();
+    
+    loc = print_dictionary; ! shut up unused-variable warnings
+    !print_dictionary();
+];
+
+#ifndef TARGET_GLULX;
+
+[ Banner  i;
+    if (Story ~= 0) {
+        style bold;
+        print (string) Story;
+        style roman;
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    print "Release ";
+    print (HDR_GAMERELEASE-->0) & $03ff;
+    print " / Serial number ";
+    for (i=0 : i<6 : i++) print (char) HDR_GAMESERIAL->i;
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    i = false;
+    #Ifdef STRICT_MODE;
+    print "S"; i++;
+    #Endif; ! STRICT_MODE
+    #Ifdef INFIX;
+    print "X"; i++;
+    #Ifnot;
+    #Ifdef DEBUG;
+    print "D"; i++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~i) print "(none)";
+    new_line;
+];
+
+#ifnot;
+
+[ Banner  i ix;
+    if (Story ~= 0) {
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 i;
+    print i;
+    print " / Serial number ";
+    for (i=0 : i<6 : i++) print (char) ROM_GAMESERIAL->i;
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    i = false;
+    #Ifdef STRICT_MODE;
+    print "S"; i++;
+    #Endif; ! STRICT_MODE
+    #Ifdef INFIX;
+    print "X"; i++;
+    #Ifnot;
+    #Ifdef DEBUG;
+    print "D"; i++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~i) print "(none)";
+    new_line;
+
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+];
+
+#endif;
+
+[ RunTest  verboffset entrylen;
+    print "$DICT_WORD_SIZE=", DICT_WORD_SIZE;
+    print ", #dict_par1=", #dict_par1, ", #dict_par2=", #dict_par2,  ", #dict_par3=", #dict_par3, ".^^";
+
+    ! Allow for the fact that verbs count down from 255 in Z-code,
+    ! but from 65535 in Glulx.
+    #ifndef TARGET_GLULX;
+    verboffset = $100;
+    entrylen = 9;
+    #ifnot;
+    verboffset = $10000;
+    entrylen = DICT_WORD_SIZE + 7;
+    #endif;
+
+    ! Simple cases.
+    check_word('plain', $80, 0, 0);
+    check_word('noun1', $80, 0, 0);
+    check_word('noun2', $80, 0, 0);
+    check_word('plural//p', $84, 0, 0);
+    check_word('pluname', $84, 0, 0);
+    check_word('verb', $C1, verboffset-1, 0);
+    check_word('meta', $C3, verboffset-3, 0);
+    check_word('prep', $88, 0, 0);
+
+    ! Any word referred to as a single-quoted literal in code gets bit 7
+    ! set. To test the cases where it's not, we cleverly name a word by
+    ! adding entrylen to the previous dict word.
+    check_word('prep'+entrylen, $8, 0, 0);
+    check_word('verb'+entrylen, $41, verboffset-2, 0);
+
+    ! And now, words defined with the new Dictionary directive.
+    check_word('foo', $80, 0, 0);
+    check_word('foo'+entrylen, $0, 0, 0);
+    check_word('bar', $90, 0, 0);
+    check_word('baz', $92, 0, 93);
+    check_word('dquot', $81, 0, 1);
+    check_word('pip', $87, 0, 22);
+    check_word('pop', $84, 0, 255);
+    check_word('merge', $C3, 0, $61);
+    check_word('mergeverb', $C5, verboffset-4, 123);
+
+    ! Wordd using the 16-bit fields available in Glulx.
+    #ifdef TARGET_GLULX;
+    check_word('big', $FFFF, 0, $FFFF);
+    check_word('bigmerge', $12B4, 0, $4321);
+    #endif;
+
+    new_line;
+    if (failures == 0)
+        print "Passed.^";
+    else
+        print "FAILED! ", failures, " errors.^";
+];
+
+Object thing1 with name 'noun1' 'pluname//p';
+Object thing2 with name "noun2";
+
+Verb 'verb' * -> Dummy
+            * 'prep' -> Dummy;
+Verb 'verb2' * 'prep2' -> Dummy;
+Verb meta 'meta' * -> Dummy;
+Verb 'mergeverb' * -> Dummy;
+
+[ DummySub;
+];
+
+Dictionary 'foo';
+Dictionary 'foo2';
+Dictionary 'bar' 16;
+Dictionary 'baz' 18 93;
+Dictionary "dquot" 1 1;
+Constant PIPVAL 22;
+Dictionary 'pip' 7 PIPVAL;
+Dictionary 'pop' (PIPVAL-18) $FF;
+Dictionary 'merge' $41 $41;
+Dictionary 'merge' $42 $21;
+Dictionary 'mergeverb' 4 123;
+
+#ifdef TARGET_GLULX;
+Dictionary 'big' $FFFF $FFFF;
+Dictionary 'bigmerge' $1030 $0301;
+Dictionary 'bigmerge' $0204 $4020;
+#endif;
+
+! The following lines, if uncommented, will produce warnings for Z-code
+!Dictionary 'warning' $100;
+!Dictionary 'warning' 0 $100;
+! The following lines will produce warnings for both Glulx and Z-code
+!Dictionary 'warning' $10000;
+!Dictionary 'warning' 0 $10000;
+!Dictionary 'warning' (-1);
+
+[ check_word wd want1 want2 want3   val1 val2 val3;
+    #ifndef TARGET_GLULX;
+    val1 = wd->#dict_par1;
+    val2 = wd->#dict_par2;
+    val3 = wd->#dict_par3;
+    #ifnot;
+    val1 = wd->(#dict_par1-1) * 256 + wd->#dict_par1;
+    val2 = wd->(#dict_par2-1) * 256 + wd->#dict_par2;
+    val3 = wd->(#dict_par3-1) * 256 + wd->#dict_par3;
+    #endif;
+    print "'", (address) wd, "'^";
+    print "  flag values: ";
+    print (Hex) val1;
+    if (val1 ~= want1) {
+        failures++;
+        print " (error, wanted ", (Hex) want1, ")";
+    }
+    print " ";
+    print (Hex) val2;
+    if (val2 ~= want2) {
+        failures++;
+        print " (error, wanted ", (Hex) want2, ")";
+    }
+    print " ";
+    print (Hex) val3;
+    if (val3 ~= want3) {
+        failures++;
+        print " (error, wanted ", (Hex) want3, ")";
+    }
+    print "^";
+];
+
+! This routine is not used in the test, but it may be handy for development.
+! It prints out the entire dictionary.
+[ print_dictionary ix dictstart dictlen entrylen wd;
+    #ifndef TARGET_GLULX;
+    dictstart = HDR_DICTIONARY-->0 + 7;
+    dictlen = (dictstart - 2)-->0;
+    entrylen = 9;
+    #ifnot;
+    dictstart = #dictionary_table + WORDSIZE;
+    dictlen = #dictionary_table-->0;
+    entrylen = DICT_WORD_SIZE + 7;
+    #endif;
+    
+    for (ix=0 : ix<dictlen : ix++) {
+        wd = dictstart + entrylen*ix;
+        print_word(wd);
+    }
+];
+
+! Print a single word, and its data fields.
+[ print_word wd   val1 val2 val3;
+    #ifndef TARGET_GLULX;
+    val1 = wd->#dict_par1;
+    val2 = wd->#dict_par2;
+    val3 = wd->#dict_par3;
+    #ifnot;
+    val1 = wd->(#dict_par1-1) * 256 + wd->#dict_par1;
+    val2 = wd->(#dict_par2-1) * 256 + wd->#dict_par2;
+    val3 = wd->(#dict_par3-1) * 256 + wd->#dict_par3;
+    #endif;
+    print "'", (address) wd, "'^";
+    print "  flag values: ";
+    print (Hex) val1;
+    print " ";
+    print (Hex) val2;
+    print " ";
+    print (Hex) val3;
+    print "^";
+];
+
+#ifndef TARGET_GLULX;
+
+[ Hex val   byte initial ix;
+    print "$";
+    initial = true;
+    for (ix=0 : ix<4 : ix++) {
+        @log_shift val (-12) -> byte;
+        @log_shift val 4 -> val;
+        byte = byte & $0F;
+        if (byte == 0 && initial && ix < 3)
+            continue;
+        initial = false;
+        if (byte <= 9)
+            print (char) (byte+'0');
+        else
+            print (char) (byte-10+'A');
+    }
+];
+
+#ifnot;
+
+[ Hex val   byte initial ix;
+    print "$";
+    initial = true;
+    for (ix=0 : ix<8 : ix++) {
+        @ushiftr val 28 byte;
+        @shiftl val 4 val;
+        byte = byte & $0F;
+        if (byte == 0 && initial && ix < 7)
+            continue;
+        initial = false;
+        if (byte <= 9)
+            print (char) (byte+'0');
+        else
+            print (char) (byte-10+'A');
+    }
+];
+
+#endif;

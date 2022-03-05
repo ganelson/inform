@@ -1,0 +1,350 @@
+Constant Story "StaticArrayTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+! This is a compiler unit test for the ability to create arrays in
+! static memory.
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+Global failures;
+
+! Comment this out to test only classical (dynamic) arrays. You can do
+! this if you're compiling with an older version of Inform.
+Constant TEST_STATIC_ARRAYS 1;
+
+[ Main loc;
+    #Ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 loc;
+    #Endif; ! TARGET_
+
+	loc = 0;
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #ifnot;
+    print "Game file format ", 0->0, ".^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ RunTest;
+	#ifdef TARGET_ZCODE;
+	print "Static memory begins at address ", 0-->7, ".^";;
+	#ifnot; ! TARGET_GLULX;
+	print "Dynamic memory begins at address ", 0-->2, ".^";;
+	#endif; ! TARGET;
+
+	TestDynamicArrays();
+	
+	#ifdef TEST_STATIC_ARRAYS;
+	TestStaticArrays();
+	#endif; ! TEST_STATIC_ARRAYS;
+	
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];
+
+Object testobj
+  with bufferarrayprop bufferarray;
+
+Global bytearrayref = bytearray;
+
+Array wordarray --> 10 testobj "foo" 'bar' check_value 14 propobj wordarray bytearray;
+Array bytearray -> 5 6 7 8;
+Array stringarray string "frotz";
+Array tablearray table 6;
+Array bufferarray buffer 11;
+Array bigarray -> 431;
+Array bracket1array table [ 4 ];
+Array bracket5array table [ 55 66 77; 'eight'; 99 ];
+
+Global stringarrayref = stringarray;
+
+Object propobj
+  with tablearrayprop tablearray,
+  with wordarrayprop wordarray;
+
+[ TestDynamicArrays val val2;
+	print "^TestDynamicArrays:^";
+	
+	print "wordarray-->0: "; check_value(wordarray-->0, 10); print "^";
+	print "wordarray-->1: "; check_value(wordarray-->1, testobj); print "^";
+	print "wordarray-->2: ", (string) wordarray-->2, "; is string:"; check_value(wordarray-->2 ofclass String, 1); print "^";
+	print "wordarray-->3: "; check_value(wordarray-->3, 'bar'); print "^";
+	print "wordarray-->4: "; check_value(wordarray-->4, check_value); print "^";
+	print "wordarray-->5: "; check_value(wordarray-->5, 14); print "^";
+	print "wordarray-->6: "; check_value(wordarray-->6, propobj); print "^";
+	print "wordarray-->7: "; check_value(wordarray-->7, wordarray); print "^";
+	print "wordarray-->8: "; check_value(wordarray-->8, bytearray); print "^";
+
+	print "bytearray->0: "; check_value(bytearray->0, 5); print "^";
+	print "bytearray->3: "; check_value(bytearray->3, 8); print "^";
+
+	print "stringarray->0: "; check_value(stringarray->0, 5); print "^";
+	print "stringarray->1: "; check_value(stringarray->1, 'f'); print "^";
+	print "stringarray->5: "; check_value(stringarray->5, 'z'); print "^";
+
+	print "tablearray-->0: "; check_value(tablearray-->0, 6); print "^";
+	print "tablearray-->1: "; check_value(tablearray-->1, 0); print "^";
+	print "tablearray-->6: "; check_value(tablearray-->6, 0); print "^";
+	tablearray-->6 = 33;
+	print "tablearray-->6: "; check_value(tablearray-->6, 33); print "^";
+
+	print "bufferarray-->0: "; check_value(bufferarray-->0, 11); print "^";
+	print "bufferarray->W+0: "; check_value(bufferarray->(WORDSIZE+0), 0); print "^";
+	print "bufferarray->W+10: "; check_value(bufferarray->(WORDSIZE+10), 0); print "^";
+	bufferarray->(WORDSIZE+10) = 'A';
+	print "bufferarray->W+10: "; check_value(bufferarray->(WORDSIZE+10), 'A'); print "^";
+
+	print "bytearrayref: "; check_value(bytearrayref, bytearray); print "^";
+	print "stringarrayref: "; check_value(stringarrayref, stringarray); print "^";
+	print "testobj.bufferarrayprop: "; check_value(testobj.bufferarrayprop, bufferarray); print "^";
+	print "propobj.tablearrayprop: "; check_value(propobj.tablearrayprop, tablearray); print "^";
+	print "propobj.wordarrayprop: "; check_value(propobj.wordarrayprop, wordarray); print "^";
+
+	print "bigarray->430: "; check_value(bigarray->430, 0); print "^";
+	bigarray->430 = 75;
+	print "bigarray->430: "; check_value(bigarray->430, 75); print "^";
+
+	print "bracket1array-->0: "; check_value(bracket1array-->0, 1); print "^";
+	print "bracket1array-->1: "; check_value(bracket1array-->1, 4); print "^";
+	print "bracket5array-->0: "; check_value(bracket5array-->0, 5); print "^";
+	print "bracket5array-->1: "; check_value(bracket5array-->1, 55); print "^";
+	print "bracket5array-->4: "; check_value(bracket5array-->4, 'eight'); print "^";
+	print "bracket5array-->5: "; check_value(bracket5array-->5, 99); print "^";
+
+	! The random() function implicitly constructs an array.
+	val = random(8, 8, 8, 8, 8);
+	print "random(): "; check_value(val, 8); print "^";
+
+	print "wordarray: "; check_address_dynamic(wordarray);
+	print "bytearray: "; check_address_dynamic(bytearray);
+	print "stringarray: "; check_address_dynamic(stringarray);
+	print "tablearray: "; check_address_dynamic(tablearray);
+	print "bufferarray: "; check_address_dynamic(bufferarray);
+	print "bigarray: "; check_address_dynamic(bigarray);
+	print "bracket1array: "; check_address_dynamic(bracket1array);
+	print "bracket5array: "; check_address_dynamic(bracket5array);
+
+	#ifdef STRICT_MODE;
+	
+	print "^The following lines should produce 4 veneer programming errors, as we access outside array bounds. This is expected!^";
+	val = 431;
+	val2 = bigarray->val;
+	bigarray->val = 0;
+	val = 9;
+	val2 = wordarray-->val;
+	wordarray-->val = 0;
+
+	#ifnot; ! STRICT_MODE
+
+	print "^Skipping array-bounds test because we did not compile with strict (-S) mode.^";
+	
+	#Endif; ! STRICT_MODE
+];
+
+#ifdef TEST_STATIC_ARRAYS;
+
+Object testobjst
+  with bufferarrayprop bufferarrayst;
+
+Global bytearraystref = bytearrayst;
+
+Array wordarrayst static --> 11 testobjst 'bar' "foo" check_value propobjst wordarrayst bytearrayst 99;
+Array bytearrayst static -> 15 16 17 18;
+Array stringarrayst static string "plugh";
+Array tablearrayst static table 7;
+Array bufferarrayst static buffer 13;
+Array bigarrayst static -> 531;
+
+Global stringarraystref = stringarrayst;
+
+Object propobjst
+  with tablearrayprop tablearrayst,
+  with wordarrayprop wordarrayst;
+
+[ TestStaticArrays arr val val2;
+	print "^TestStaticArrays:^";
+
+	print "wordarrayst-->0: "; check_value(wordarrayst-->0, 11); print "^";
+	print "wordarrayst-->1: "; check_value(wordarrayst-->1, testobjst); print "^";
+	print "wordarrayst-->2: "; check_value(wordarrayst-->2, 'bar'); print "^";
+	print "wordarrayst-->3: ", (string) wordarrayst-->3, "; is string:"; check_value(wordarrayst-->3 ofclass String, 1); print "^";
+	print "wordarrayst-->4: "; check_value(wordarrayst-->4, check_value); print "^";
+	print "wordarrayst-->5: "; check_value(wordarrayst-->5, propobjst); print "^";
+	print "wordarrayst-->6: "; check_value(wordarrayst-->6, wordarrayst); print "^";
+	print "wordarrayst-->7: "; check_value(wordarrayst-->7, bytearrayst); print "^";
+	print "wordarrayst-->8: "; check_value(wordarrayst-->8, 99); print "^";
+
+	print "bytearrayst->0: "; check_value(bytearrayst->0, 15); print "^";
+	print "bytearrayst->3: "; check_value(bytearrayst->3, 18); print "^";
+
+	print "stringarrayst->0: "; check_value(stringarrayst->0, 5); print "^";
+	print "stringarrayst->1: "; check_value(stringarrayst->1, 'p'); print "^";
+	print "stringarrayst->5: "; check_value(stringarrayst->5, 'h'); print "^";
+
+	print "tablearrayst-->0: "; check_value(tablearrayst-->0, 7); print "^";
+	print "tablearrayst-->1: "; check_value(tablearrayst-->1, 0); print "^";
+	print "tablearrayst-->6: "; check_value(tablearrayst-->7, 0); print "^";
+
+	print "bufferarrayst-->0: "; check_value(bufferarrayst-->0, 13); print "^";
+	print "bufferarrayst->W+0: "; check_value(bufferarrayst->(WORDSIZE+0), 0); print "^";
+	print "bufferarrayst->W+12: "; check_value(bufferarrayst->(WORDSIZE+12), 0); print "^";
+
+	print "bytearraystref: "; check_value(bytearraystref, bytearrayst); print "^";
+	print "stringarraystref: "; check_value(stringarraystref, stringarrayst); print "^";
+	print "testobjst.bufferarrayprop: "; check_value(testobjst.bufferarrayprop, bufferarrayst); print "^";
+	print "propobjst.tablearrayprop: "; check_value(propobjst.tablearrayprop, tablearrayst); print "^";
+	print "propobjst.wordarrayprop: "; check_value(propobjst.wordarrayprop, wordarrayst); print "^";
+
+	print "wordarrayst: "; check_address_static(wordarrayst);
+	print "bytearrayst: "; check_address_static(bytearrayst);
+	print "stringarrayst: "; check_address_static(stringarrayst);
+	print "tablearrayst: "; check_address_static(tablearrayst);
+	print "bufferarrayst: "; check_address_static(bufferarrayst);
+	print "bigarrayst: "; check_address_static(bigarrayst);
+	
+	#ifdef STRICT_MODE;
+	
+	print "^The following lines should produce 4 veneer programming errors, as we access outside array bounds. This is expected!^";
+	val = 531;
+	val2 = bigarrayst->val;
+	val = 9;
+	val2 = wordarrayst-->val;
+	arr = bigarrayst;
+	arr->0 = 0;
+	arr = wordarrayst;
+	arr-->0 = 0;
+
+	#ifnot; ! STRICT_MODE
+
+	print "^Skipping array-bounds test because we did not compile with strict (-S) mode.^";
+	
+	#Endif; ! STRICT_MODE
+];
+
+#endif; ! TEST_STATIC_ARRAYS
+
+[ check_value val1 val2;
+	print val1;
+	if (val1 ~= val2) {
+		failures++;
+		print " (ERROR, should be ", val2, ")";
+	}
+];
+
+[ check_address_dynamic addr val;
+	#ifdef TARGET_ZCODE;
+	
+	val = 0-->7;  ! start of static memory
+	if (addr >= 0 && addr < val) {
+		print addr, " is dynamic.^";
+		rtrue;
+	}
+	failures++;
+	print "ERROR, address ", addr, " is not in dynamic memory.^";
+		
+	#ifnot; ! TARGET_GLULX;
+
+	val = 0-->2;  ! start of dynamic memory
+	if (addr >= val) {
+		print addr, " is dynamic.^";
+		rtrue;
+	}
+	failures++;
+	print "ERROR, address ", addr, " is not in dynamic memory.^";
+	
+	#endif; ! TARGET;
+];
+
+[ check_address_static addr val;
+	#ifdef TARGET_ZCODE;
+	
+	val = 0-->7;  ! start of static memory
+	if (addr >= val) {
+		print addr, " is static.^";
+		rtrue;
+	}
+	failures++;
+	print "ERROR, address ", addr, " is not in static memory.^";
+		
+	#ifnot; ! TARGET_GLULX;
+
+	val = 0-->2;  ! start of dynamic memory
+	if (addr >= 0 && addr < val) {
+		print addr, " is static.^";
+		rtrue;
+	}
+	failures++;
+	print "ERROR, address ", addr, " is not in static memory.^";
+	
+	#endif; ! TARGET;
+];
+

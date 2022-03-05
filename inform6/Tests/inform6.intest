@@ -33,7 +33,7 @@
 		set: $INTNAME		= dumb-frotz
 		set: $INTOPTIONS	= -w 1000
 	endif
-	set: $SETTINGS = $PATH/Settings/$CASE.txt
+	set: $SETTINGS = $PATH/_Settings/$CASE.txt
 	if exists: $SETTINGS
 		set: $I6OPTIONS = `$[`$SETTINGS$]
 	endif
@@ -105,11 +105,20 @@
 	if exists: $IMD5
 		match text: $AMD5 $IMD5
 		or: 'compiled, but produced the wrong md5 checksum'
+		
+		pass: 'passed, no need to run because md5 correct'
 	endif
 
 	if: $EXECUTE 1
-		step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
-		or: 'compiled, but was unable to run $INTNAME (do you need to make interpreters?)'
+	
+		set: $SCRIPT = $PATH/_Scripts/$CASE.txt
+		if exists: $SCRIPT
+			step: $INT `$INTOPTIONS $STORYFILE <$SCRIPT >$A 2>&1
+			or: 'compiled, but was unable to run $INTNAME (do you need to make interpreters?)'
+		else
+			step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
+			or: 'compiled, but was unable to run $INTNAME (do you need to make interpreters?)'
+		endif
 
 		exists: $I
 		or: 'compiled, but no ideal transcript existed'

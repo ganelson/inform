@@ -1,0 +1,53 @@
+ClassOrderTest: Not a game.
+Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+Interpreter version 0.5.4 / VM 3.1.2 / game file format 3.0.0
+
+obj1.indprop: 11
+obj2.indprop: 22
+obj3.indprop: 4
+obj4.indprop: 5
+obj5.indprop: 6
+obj5a.indprop: 7
+obj6.indprop: 22
+obj7.indprop: 11
+obj11.indprop: 111
+obj12.indprop: 111
+obj12a.indprop: 111
+obj13.indprop: 22
+obj13a.indprop: 22
+obj3.genprop: 4
+obj6.genprop: 33
+obj7.genprop: 33
+obj8.genprop: 44
+obj8a.genprop: 44
+obj8.#addprop: 8
+obj8.addprop[0]: 55
+obj8.addprop[1]: 66
+obj9.#addprop: 12
+obj9.addprop[0]: 2
+obj9.addprop[1]: 88
+obj9.addprop[2]: 99
+obj10.#addprop: 24
+obj10.addprop[0]: 3
+obj10.addprop[1]: 4
+obj10.addprop[2]: 55
+obj10.addprop[3]: 66
+obj10.addprop[4]: 88
+obj10.addprop[5]: 99
+obj11.#addprop: 8
+obj11.addprop[0]: 777
+obj11.addprop[1]: 77
+obj1.attr1: 1
+obj2.attr1: 1
+obj3.attr1: 0
+obj11.attr1: 0
+obj12.attr1: 0
+obj13.attr1: 0
+obj8.attr2: 1
+obj9.attr2: 1
+obj10.attr2: 1
+obj11.attr2: 1
+obj12.attr2: 0
+obj13.attr2: 1
+
+All passed.

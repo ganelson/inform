@@ -1,0 +1,106 @@
+  StaticArrayTest: Not a game.
+  Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+  Game file format 5.
+  
+  Static memory begins at address 1945.
+  
+  TestDynamicArrays:
+  wordarray-->0: 10
+  wordarray-->1: 5
+  wordarray-->2: foo; is string:1
+  wordarray-->3: 1954
+  wordarray-->4: 1697
+  wordarray-->5: 14
+  wordarray-->6: 6
+  wordarray-->7: 1432
+  wordarray-->8: 1450
+  bytearray->0: 5
+  bytearray->3: 8
+  stringarray->0: 5
+  stringarray->1: 102
+  stringarray->5: 122
+  tablearray-->0: 6
+  tablearray-->1: 0
+  tablearray-->6: 0
+  tablearray-->6: 33
+  bufferarray-->0: 11
+  bufferarray->W+0: 0
+  bufferarray->W+10: 0
+  bufferarray->W+10: 65
+  bytearrayref: 1450
+  stringarrayref: 1454
+  testobj.bufferarrayprop: 1474
+  propobj.tablearrayprop: 1460
+  propobj.wordarrayprop: 1432
+  bigarray->430: 0
+  bigarray->430: 75
+  bracket1array-->0: 1
+  bracket1array-->1: 4
+  bracket5array-->0: 5
+  bracket5array-->1: 55
+  bracket5array-->4: 1963
+  bracket5array-->5: 99
+  random(): 8
+  wordarray: 1432 is dynamic.
+  bytearray: 1450 is dynamic.
+  stringarray: 1454 is dynamic.
+  tablearray: 1460 is dynamic.
+  bufferarray: 1474 is dynamic.
+  bigarray: 1487 is dynamic.
+  bracket1array: 1918 is dynamic.
+  bracket5array: 1922 is dynamic.
+  
+  The following lines should produce 4 veneer programming errors, as we access outside array bounds. This is expected!
+  
+  [** Programming error: tried to read from ->431 in the array "bigarray", which has entries 0 up to 430 **]
+  
+  [** Programming error: tried to write to ->431 in the array "bigarray", which has entries 0 up to 430 **]
+  
+  [** Programming error: tried to read from -->9 in the array "wordarray", which has entries 0 up to 8 **]
+  
+  [** Programming error: tried to write to -->9 in the array "wordarray", which has entries 0 up to 8 **]
+  
+  TestStaticArrays:
+  wordarrayst-->0: 11
+  wordarrayst-->1: 7
+  wordarrayst-->2: 1954
+  wordarrayst-->3: foo; is string:1
+  wordarrayst-->4: 1697
+  wordarrayst-->5: 8
+  wordarrayst-->6: 1972
+  wordarrayst-->7: 1990
+  wordarrayst-->8: 99
+  bytearrayst->0: 15
+  bytearrayst->3: 18
+  stringarrayst->0: 5
+  stringarrayst->1: 112
+  stringarrayst->5: 104
+  tablearrayst-->0: 7
+  tablearrayst-->1: 0
+  tablearrayst-->6: 0
+  bufferarrayst-->0: 13
+  bufferarrayst->W+0: 0
+  bufferarrayst->W+12: 0
+  bytearraystref: 1990
+  stringarraystref: 1994
+  testobjst.bufferarrayprop: 2016
+  propobjst.tablearrayprop: 2000
+  propobjst.wordarrayprop: 1972
+  wordarrayst: 1972 is static.
+  bytearrayst: 1990 is static.
+  stringarrayst: 1994 is static.
+  tablearrayst: 2000 is static.
+  bufferarrayst: 2016 is static.
+  bigarrayst: 2031 is static.
+  
+  The following lines should produce 4 veneer programming errors, as we access outside array bounds. This is expected!
+  
+  [** Programming error: tried to read from ->531 in the array "bigarrayst", which has entries 0 up to 530 **]
+  
+  [** Programming error: tried to read from -->9 in the array "wordarrayst", which has entries 0 up to 8 **]
+  
+  [** Programming error: tried to write outside memory using -> **]
+  
+  [** Programming error: tried to write outside memory using --> **]
+  
+  All passed.

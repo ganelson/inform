@@ -1,0 +1,262 @@
+Constant Story "ClassOrderTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+! This is a compiler unit test for how multiple-inheritance objects
+! are resolved.
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+Global failures;
+
+[ Main loc;
+    #Ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 loc;
+    #Endif; ! TARGET_
+
+	loc = 0;
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #ifnot;
+    print "Game file format ", 0->0, ".^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ RunTest;
+	ClassOrderTest();
+	
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];
+
+Property genprop;
+Property additive addprop;
+Attribute attr1;
+Attribute attr2;
+
+class Foo
+  with indprop 11,
+  with addprop 77,
+  has attr1,
+  has attr2;
+
+class Foofoo
+  class Foo
+  with indprop 111,
+  with genprop 222,
+  with addprop 777,
+  has ~attr1;
+
+class Bar
+  with indprop 22,
+  with genprop 33,
+  has ~attr1;
+
+class Mum
+  with genprop 44,
+  with addprop 55 66,
+  has attr2;
+
+class Qux
+  with addprop 88 99,
+  has ~attr2;
+
+Object obj1
+  class Foo,
+  class Bar;
+
+Object obj2
+  class Bar,
+  class Foo;
+
+Object obj3
+  class Bar,
+  class Foo,
+  with indprop 4,
+  with genprop 4,
+  has ~attr1;
+
+Bar obj4
+  with indprop 5;
+
+Bar obj5
+  class Foo,
+  with indprop 6;
+
+Bar obj5a
+  with indprop 7,
+  class Foo;
+
+Bar obj6
+  class Foo;
+
+Foo obj7
+  class Bar;
+
+Object obj8
+  class Mum,
+  class Bar;
+
+Object obj8a
+  class Mum Bar;
+
+Qux obj9
+  with addprop 2,
+  has attr2;
+
+Object obj10
+  class Mum,
+  class Qux,
+  with addprop 3 4;
+
+Foofoo obj11;
+
+Object obj12
+  class Foofoo,
+  class Bar,
+  has ~attr2;
+
+Object obj12a
+  class Foofoo Bar,
+  has ~attr2;
+
+Object obj13
+  class Bar,
+  class Foofoo;
+
+Object obj13a
+  class Bar Foofoo;
+
+[ ClassOrderTest;
+	print "obj1.indprop: "; check_value(obj1.indprop, 11); print "^";
+	print "obj2.indprop: "; check_value(obj2.indprop, 22); print "^";
+	print "obj3.indprop: "; check_value(obj3.indprop, 4); print "^";
+	print "obj4.indprop: "; check_value(obj4.indprop, 5); print "^";
+	print "obj5.indprop: "; check_value(obj5.indprop, 6); print "^";
+	print "obj5a.indprop: "; check_value(obj5a.indprop, 7); print "^";
+	print "obj6.indprop: "; check_value(obj6.indprop, 22); print "^";
+	print "obj7.indprop: "; check_value(obj7.indprop, 11); print "^";
+	print "obj11.indprop: "; check_value(obj11.indprop, 111); print "^";
+	print "obj12.indprop: "; check_value(obj12.indprop, 111); print "^";
+	print "obj12a.indprop: "; check_value(obj12a.indprop, 111); print "^";
+	print "obj13.indprop: "; check_value(obj13.indprop, 22); print "^";
+	print "obj13a.indprop: "; check_value(obj13a.indprop, 22); print "^";
+	
+	print "obj3.genprop: "; check_value(obj3.genprop, 4); print "^";
+	print "obj6.genprop: "; check_value(obj6.genprop, 33); print "^";
+	print "obj7.genprop: "; check_value(obj7.genprop, 33); print "^";
+	print "obj8.genprop: "; check_value(obj8.genprop, 44); print "^";
+	print "obj8a.genprop: "; check_value(obj8a.genprop, 44); print "^";
+
+	print "obj8.#addprop: "; check_value(obj8.#addprop, WORDSIZE*2); print "^";
+	print "obj8.addprop[0]: "; check_value(obj8.&addprop-->0, 55); print "^";
+	print "obj8.addprop[1]: "; check_value(obj8.&addprop-->1, 66); print "^";
+	
+	print "obj9.#addprop: "; check_value(obj9.#addprop, WORDSIZE*3); print "^";
+	print "obj9.addprop[0]: "; check_value(obj9.&addprop-->0, 2); print "^";
+	print "obj9.addprop[1]: "; check_value(obj9.&addprop-->1, 88); print "^";
+	print "obj9.addprop[2]: "; check_value(obj9.&addprop-->2, 99); print "^";
+	
+	print "obj10.#addprop: "; check_value(obj10.#addprop, WORDSIZE*6); print "^";
+	print "obj10.addprop[0]: "; check_value(obj10.&addprop-->0, 3); print "^";
+	print "obj10.addprop[1]: "; check_value(obj10.&addprop-->1, 4); print "^";
+	print "obj10.addprop[2]: "; check_value(obj10.&addprop-->2, 55); print "^";
+	print "obj10.addprop[3]: "; check_value(obj10.&addprop-->3, 66); print "^";
+	print "obj10.addprop[4]: "; check_value(obj10.&addprop-->4, 88); print "^";
+	print "obj10.addprop[5]: "; check_value(obj10.&addprop-->5, 99); print "^";
+
+	print "obj11.#addprop: "; check_value(obj11.#addprop, WORDSIZE*2); print "^";
+	print "obj11.addprop[0]: "; check_value(obj11.&addprop-->0, 777); print "^";
+	print "obj11.addprop[1]: "; check_value(obj11.&addprop-->1, 77); print "^";
+
+	print "obj1.attr1: "; check_value(obj1 has attr1, true); print "^";
+	print "obj2.attr1: "; check_value(obj2 has attr1, true); print "^";
+	print "obj3.attr1: "; check_value(obj3 has attr1, false); print "^";
+	print "obj11.attr1: "; check_value(obj11 has attr1, false); print "^";
+	print "obj12.attr1: "; check_value(obj12 has attr1, false); print "^";
+	print "obj13.attr1: "; check_value(obj13 has attr1, false); print "^";
+	
+	print "obj8.attr2: "; check_value(obj8 has attr2, true); print "^";
+	print "obj9.attr2: "; check_value(obj9 has attr2, true); print "^";
+	print "obj10.attr2: "; check_value(obj10 has attr2, true); print "^";
+	print "obj11.attr2: "; check_value(obj11 has attr2, true); print "^";
+	print "obj12.attr2: "; check_value(obj12 has attr2, false); print "^";
+	print "obj13.attr2: "; check_value(obj13 has attr2, true); print "^";
+];
+
+[ check_value val1 val2;
+	print val1;
+	if (val1 ~= val2) {
+		failures++;
+		print " (ERROR, should be ", val2, ")";
+	}
+];
+

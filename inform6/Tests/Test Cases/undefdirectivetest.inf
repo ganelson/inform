@@ -1,0 +1,234 @@
+Constant Story "UndefDirectiveTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+! This is a compiler unit test for the Undef directive
+! (remove the definition of a Constant).
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+Global failures;
+
+[ Main;
+    #ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 0;
+    #endif; ! TARGET_GLULX
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ check_value val1 val2;
+	print val1;
+	if (val1 ~= val2) {
+		failures++;
+		print " (ERROR, should be ", val2, ")";
+	}
+];
+
+[ testfunc;
+	! This symbol isn't defined yet, but it will be.
+	return FutureSymbol;
+];
+
+Object sword;
+Array testarray --> 4;
+
+! Here's a constant.
+Constant UndefMe = 1;
+! Undefine it.
+Undef UndefMe;
+
+#ifndef UndefMe;
+! UndefMe should be undefined now.
+Constant UndefMe_post 1;
+#endif;
+
+! Here's another constant.
+Constant UndefMe2;
+! Undefine it, with the optional hash sign.
+#undef UndefMe2;
+! Redefine it.
+Constant UndefMe2 = 99;
+! Undefine it again.
+#undef UndefMe2;
+
+! It's legal to Undef a symbol which was never defined at all.
+Undef NotDefinedAtAll;
+
+! If you Undef a symbol which will be defined later, it doesn't affect
+! the later definition.
+Undef WillBeDefinedLater;
+
+
+#ifndef WillBeDefinedLater;
+! WillBeDefinedLater is not yet defined.
+Constant WillBeDefinedLater_pre 3;
+#endif;
+
+Constant WillBeDefinedLater = 2;
+
+#ifdef WillBeDefinedLater;
+! WillBeDefinedLater is defined now.
+Constant WillBeDefinedLater_post 4;
+#endif;
+
+
+! Here's a constant.
+Constant RemainsDefined = 5;
+
+#ifdef Zggrablfoo;
+! This doesn't happen, because it's #if'd out.
+Undef RemainsDefined;
+#endif;
+
+#ifdef NotDefinedAtAll;
+! This doesn't happen, because it's #if'd out.
+Undef RemainsDefined;
+#endif;
+
+
+! "FutureSymbol" was forward-referenced from an earlier function.
+! Undef'ing it has no effect, because it's not actually defined yet.
+! (I think it makes sense for this to be legal.)
+Undef FutureSymbol;
+
+! Okay, define FutureSymbol now.
+Constant FutureSymbol = 6;
+
+
+! The following lines should fail, producing errors of the form
+!   "Expected symbol name but found ..."
+! Uncomment them to test this.
+!
+! Undef;
+! Undef Undef;
+! Undef 1234;
+! Undef "Hello";
+! Undef (1);
+
+! The following lines should fail, producing errors of the form
+!   "Cannot Undef a symbol which is not a defined constant: ..."
+! Uncomment them to test this.
+!
+! Undef Banner;
+! Undef sword;
+! Undef failures;
+! Undef testarray;
+
+
+[ RunTest val;
+	val = testarray; ! silence compiler warning
+	val = testfunc; ! silence compiler warning
+
+	print "UndefMe_post: ";
+	check_value(UndefMe_post, 1);
+	print ".^";
+
+	#ifdef UndefMe;
+	! UndefMe should be undefined now.
+	print "ERROR: UndefMe is defined!^";
+	failures++;
+	#endif;
+
+	#ifdef UndefMe2;
+	! UndefMe2 should be undefined now.
+	print "ERROR: UndefMe2 is defined!^";
+	failures++;
+	#endif;
+
+	print "WillBeDefinedLater: ";
+	check_value(WillBeDefinedLater, 2);
+	print ".^";
+
+	print "WillBeDefinedLater_pre: ";
+	check_value(WillBeDefinedLater_pre, 3);
+	print ".^";
+
+	print "WillBeDefinedLater_post: ";
+	check_value(WillBeDefinedLater_post, 4);
+	print ".^";
+
+	print "RemainsDefined: ";
+	check_value(RemainsDefined, 5);
+	print ".^";
+
+	print "FutureSymbol: ";
+	check_value(FutureSymbol, 6);
+	print ".^";
+
+	print "Function returning FutureSymbol: ";
+	check_value(testfunc(), 6);
+	print ".^";
+
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];
