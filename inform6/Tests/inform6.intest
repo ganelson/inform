@@ -55,14 +55,9 @@
 		set: $EXECUTE = 0
 	endif
 
-	mkdir: $PATH/_Transcript_Actual
-	mkdir: $PATH/_Transcript_Ideal
 	mkdir: $PATH/_Story_File_Actual
 	mkdir: $PATH/_Console_Actual
-	set: $I6CONSOLE = $PATH/_Console_Actual/$CASE.txt
-
-	set: $A = $PATH/_Transcript_Actual/$CASE.txt
-	set: $I = $PATH/_Transcript_Ideal/$CASE.txt
+	set: $AC = $PATH/_Console_Actual/$CASE.txt
 	set: $IC = $PATH/_Console_Ideal/$CASE.txt
 	set: $I6SOURCE = $PATH/$CASE.inf
 	set: $STORYFILE = $PATH/_Story_File_Actual/$CASE.$EXT
@@ -72,26 +67,45 @@
 
 	if: $TYPE problem
 		debugger: lldb -f $I6 -- `$I6OPTIONS $I6SOURCE $STORYFILE
-		fail step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
-		or: 'failed to produce error messages' $I6CONSOLE
-		show: $I6CONSOLE
+		fail step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$AC 2>&1
+		or: 'failed to produce error messages' $AC
+		show: $AC
 		exists: $IC
 		or: 'produced error(s), but no ideal transcript existed'
-		match problem: $I6CONSOLE $IC
+		match problem: $AC $IC
 		or: 'produced the wrong error(s)'
 		pass: 'passed'
 	endif
 
 	! And then the general case.
 
-	debugger: lldb -f $I6 -- `$I6OPTIONS $I6SOURCE $STORYFILE
-	step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
+	mkdir: $PATH/_Transcript_Actual
+	mkdir: $PATH/_Transcript_Ideal
+	mkdir: $PATH/_md5_Actual
 
-	show: $I6CONSOLE
+	set: $AMD5 = $PATH/_md5_Actual/$CASE.txt
+	set: $IMD5 = $PATH/_md5_Ideal/$CASE.txt
+	set: $A = $PATH/_Transcript_Actual/$CASE.txt
+	set: $I = $PATH/_Transcript_Ideal/$CASE.txt
+
+	debugger: lldb -f $I6 -- `$I6OPTIONS $I6SOURCE $STORYFILE
+	step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$AC 2>&1
+
+	show: $AC
 	exists: $IC
 	or: 'compiled, but no ideal console output existed'
-	match problem: $I6CONSOLE $IC
+	match text: $AC $IC
 	or: 'compiled, but produced the wrong console output'
+
+	if: $VM G
+		step: echo ${glulx:$STORYFILE$} >$AMD5
+	else
+		step: echo ${zmachine:$STORYFILE$} >$AMD5
+	endif
+	if exists: $IMD5
+		match text: $AMD5 $IMD5
+		or: 'compiled, but produced the wrong md5 checksum'
+	endif
 
 	if: $EXECUTE 1
 		step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
