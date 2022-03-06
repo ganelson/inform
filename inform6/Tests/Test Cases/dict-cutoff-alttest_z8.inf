@@ -1,0 +1,159 @@
+Zcharacter table '@^a' '@:o' '@:u' '@{3b1}' '@{3b2}' '@{3b3}' '@{3b4}' '@{3b5}';
+
+Zcharacter "abcdefghijklmnop-rstuvwxyz"
+           "ABCDEFGHIJKLMNOP_RSTUVWXYZ"
+           "0123456789qQ!$&;,.@{3b1}@{3b2}@{3b3}@{3b4}@{3b5}";
+
+Constant Story "Dict-Cutoff-Alt Test";
+Constant Headline "Not a game.^";
+
+! Compiler test for Z-characters in dict words being truncated.
+! Alternate alphabets, v4+ only.
+! (This test is Z-code only.)
+
+Release 1;
+
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+
+Global failures;
+
+[ Main;
+	Banner();
+	new_line;
+	
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ error msg;
+	print "Error: ", (string) msg, "^";
+	failures++;
+];
+
+[ test_same w1 w2;
+	print w1, " ", (address) w1, " == ";
+	print w2, " ", (address) w2, "^";
+	
+	if (w1 ~= w2) error("should be same");
+];
+
+[ test_different w1 w2;
+	print w1, " ", (address) w1, " != ";
+	print w2, " ", (address) w2, "^";
+	
+	if (w1 == w2) error("should be different");
+];
+
+[ RunTest;
+	! These words are four zchars each.
+	! (Remember that the // just indicates a dict word; the slashes don't appear *in* the dict word.)
+	test_different('<//', '>//');
+	test_different('%//', '@:o//');
+	
+	test_different('abcde', 'abcdef');
+	test_different('abcdef', 'abcdeg');
+	test_different('abcd-', 'abcde');
+	test_different('abcd-', 'abcd_');
+
+	! These words are six zchars each.
+	test_different('12q', '129');
+
+	! These words are eight zchars each.
+	test_different('<<', '<>');
+
+	! q or ! in the ninth place gets truncated
+	test_same('abcdefghq', 'abcdefgh!');
+	test_different('abcdefghi', 'abcdefghx');
+	test_same('abcdefgh', 'abcdefgh!');
+	test_different('abcdefghi', 'abcdefgh!');
+
+	test_different('0101', '0102');
+	test_same('10101', '10102');    ! truncated
+	test_same('<><', '<>');    ! truncated
+	test_same('<><', '<>>');    ! truncated
+
+	! Truncated after nine characters
+	test_same('abcdefghij', 'abcdefghix');
+	test_same('abcdefghi', 'abcdefghix');
+	
+	! These differ only in the low five bits of the last character, which is truncated.
+	test_same('abcdef+', 'abcdef*');
+	! These differ in the high five bits of the last character, which is *not* truncated.
+	test_different('abcdef%', 'abcdef@:o');
+
+	! A two-byte character in the ninth place is distinguishable only by which alphabet is being switched to.
+	test_same('abcdefgh0', 'abcdefgh1');
+	test_same('abcdefgh0', 'abcdefgh,');
+	test_different('abcdefgh0', 'abcdefgh_');
+	test_different('abcdefgh0', 'abcdefgh-');
+
+	! A four-byte character in the eighth place leaves zchar 6 followed by no bits
+	test_same('abcdefg%', 'abcdefg@:o');
+	test_different('abcdefg', 'abcdefg@:o');
+	test_different('abcdefg_', 'abcdefg@:o');
+
+	! Greek characters are two chars each
+	test_different('@{3b1}@{3b2}@{3b3}@{3b4}', '@{3b1}@{3b2}@{3b3}@{3b5}');
+	test_different('a@{3b1}@{3b2}@{3b3}@{3b4}', 'a@{3b1}@{3b2}@{3b3}@{3b5}');
+	! Last character truncated, but with a different escape character
+	test_same('_@{3b1}@{3b2}@{3b3}@{3b4}', '_@{3b1}@{3b2}@{3b3}@{3b5}');
+	test_different('_@{3b1}@{3b2}@{3b3}_', '_@{3b1}@{3b2}@{3b3}@{3b5}');
+	test_different('aa@{3b1}@{3b2}@{3b3}_', 'aa@{3b1}@{3b2}@{3b3}@{3b5}');
+	test_same('aad@{3b1}@{3b2}@{3b3}_', 'aad@{3b1}@{3b2}@{3b3}@{3b5}');
+
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];

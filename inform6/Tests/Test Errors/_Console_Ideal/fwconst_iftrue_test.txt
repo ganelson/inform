@@ -1,0 +1,6 @@
+Inform 6.36 (24th January 2022)
+line 90: Error:  This condition can't be determined
+>  #iftrue FORWARD_CONSTANT_A;
+line 96: Error:  This condition can't be determined
+>  #iffalse FORWARD_CONSTANT_B;
+Compiled with 2 errors (no output)

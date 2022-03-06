@@ -1,0 +1,6 @@
+  FwConstDictionaryTest: Not a game.
+  Release 1 / Serial number 220306 / Inform v6.36, compiler options S
+  Game file format 5.
+  
+  dict_par1: 129
+  dict_par3: 2

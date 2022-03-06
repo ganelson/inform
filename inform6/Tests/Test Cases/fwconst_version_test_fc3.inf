@@ -1,0 +1,8 @@
+Version FORWARD_CONSTANT;
+
+#ifndef FORWARD_CONSTANT;
+Constant FORWARD_CONSTANT 3;
+#endif;
+
+[ Main;
+];

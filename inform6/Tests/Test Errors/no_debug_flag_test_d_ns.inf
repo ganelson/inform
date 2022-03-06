@@ -1,0 +1,8 @@
+Object obj
+  with prop 0;
+
+[ Main;
+	! This line will not compile in DEBUG mode, due to veneer checks.
+	obj.prop = 1;
+];
+

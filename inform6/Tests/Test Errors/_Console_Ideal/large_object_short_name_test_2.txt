@@ -1,0 +1,4 @@
+Inform 6.36 (24th January 2022)
+line 4: Error:  Short name of object (in quotes) exceeded 765 characters
+> Object foo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  ...etc
+Compiled with 1 error (no output)

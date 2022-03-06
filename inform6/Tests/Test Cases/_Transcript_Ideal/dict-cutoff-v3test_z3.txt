@@ -1,0 +1,31 @@
+
+Dict-Cutoff-V3 Test: Not a game.
+Release 1 / Serial number 220306 / Inform v6.36, compiler options (none)
+
+1208 -_ != 1229 --
+1187 + != 1180 *
+1173 % != 1201 ö
+1306 abcde != 1313 abcdef
+1313 abcdef != 1320 abcdeg
+1299 abcd- != 1306 abcde
+1299 abcd- != 1292 abcd_
+1250 ab+ != 1243 ab*
+1236 ab% != 1257 abö
+V3 cases:
+1306 abcde == 1306 abcde
+1327 human == 1327 human
+1327 human == 1327 human
+1327 human != 1334 humanl
+1222 -_- != 1215 -__
+1194 + == 1194 +
+1313 abcdef == 1313 abcdef
+1313 abcdef == 1313 abcdef
+1313 abcdef == 1313 abcdef
+1313 abcdef == 1313 abcdef
+1264 abc == 1264 abc
+1264 abc != 1271 abc
+1285 abcd == 1285 abcd
+1278 abcd != 1285 abcd
+1292 abcd_ != 1285 abcd
+
+All passed.

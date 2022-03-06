@@ -1,0 +1,54 @@
+OrConditionTest: Not a game.
+Release 1 / Serial number 220306 / Inform v6.36, compiler options S
+Interpreter version 0.5.4 / VM 3.1.2 / game file format 3.0.0
+
+5 == 1 or 3: false
+5 == 5 or 3: true
+5 == 1 or 5: true
+2 == 2 or 2: true
+5 ~= 1 or 3: true
+5 ~= 5 or 3: false
+5 ~= 1 or 5: false
+2 ~= 2 or 2: false
+3 < 4 or 8: true
+4 < 4 or 8: true
+6 < 4 or 8: true
+8 < 4 or 8: false
+9 < 4 or 8: false
+3 > 4 or 8: false
+4 > 4 or 8: false
+6 > 4 or 8: true
+8 > 4 or 8: true
+9 > 4 or 8: true
+3 <= 4 or 8: true
+4 <= 4 or 8: true
+6 <= 4 or 8: false
+8 <= 4 or 8: false
+9 <= 4 or 8: false
+3 >= 4 or 8: false
+4 >= 4 or 8: false
+6 >= 4 or 8: false
+8 >= 4 or 8: true
+9 >= 4 or 8: true
+rock in kitchen or study: false
+book in kitchen or study: true
+stove in kitchen or study: true
+stove in hall or study: false
+rock notin kitchen or study: true
+book notin kitchen or study: false
+stove notin kitchen or study: false
+stove notin hall or study: true
+book has hot or heavy: false
+stove has hot or heavy: true
+stove has room or heavy: true
+study has room or heavy: true
+study has heavy or room: true
+study has hot or heavy: false
+book hasnt hot or heavy: true
+stove hasnt hot or heavy: false
+stove hasnt room or heavy: false
+study hasnt room or heavy: false
+study hasnt heavy or room: false
+study hasnt hot or heavy: true
+
+All passed.

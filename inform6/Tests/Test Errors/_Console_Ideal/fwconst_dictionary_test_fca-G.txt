@@ -1,0 +1,4 @@
+Inform 6.36 (24th January 2022)
+line 18: Error:  A definite value must be given as a Dictionary flag
+> Dictionary 'xyzzy' FORWARD_CONSTANT_A FORWARD_CONSTANT_B;
+Compiled with 1 error (no output)

@@ -1,0 +1,1 @@
+Glulxe fatal error: This is neither a Glulx game file nor a Blorb file which contains one.

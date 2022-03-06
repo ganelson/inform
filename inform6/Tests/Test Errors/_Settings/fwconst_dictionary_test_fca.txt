@@ -1,0 +1,1 @@
+--define FORWARD_CONSTANT_A=1

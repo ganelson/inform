@@ -1,0 +1,10 @@
+
+
+
+Test Case
+An Interactive Fiction by Andrew Plotkin
+Release 1 / Serial number 200915 / Inform 7 build 6M62 (I6/v6.36 lib 6/12N) S
+
+Kitchen
+
+>Are you sure you want to quit? 

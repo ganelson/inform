@@ -1,0 +1,192 @@
+Constant Story "Dict-Cutoff-V3 Test";
+Constant Headline "Not a game.^";
+
+! Compiler test for Z-characters in dict words being truncated.
+! (This test is Z-code only.)
+
+Release 1;
+
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+
+Global failures;
+
+[ Main;
+	Banner();
+	new_line;
+	
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ error msg;
+	print "Error: ", (string) msg, "^";
+	failures++;
+];
+
+[ test_same w1 w2;
+	print w1, " ", (address) w1, " == ";
+	print w2, " ", (address) w2, "^";
+	
+	if (w1 ~= w2) error("should be same");
+];
+
+[ test_different w1 w2;
+	print w1, " ", (address) w1, " != ";
+	print w2, " ", (address) w2, "^";
+	
+	if (w1 == w2) error("should be different");
+];
+
+[ RunTest;
+	! These words are four zchars each.
+	test_different('-_', '--');
+	
+	! These words are four zchars each.
+	! (Remember that the // just indicates a dict word; the slashes don't appear *in* the dict word.)
+	test_different('+//', '*//');
+	test_different('%//', '@:o//');
+	
+	test_different('abcde', 'abcdef');
+	test_different('abcdef', 'abcdeg');
+	test_different('abcd-', 'abcde');
+	test_different('abcd-', 'abcd_');
+
+	test_different('ab+', 'ab*');
+	test_different('ab%', 'ab@:o');
+	
+#IFV3;
+	print "V3 cases:^";
+	
+	! _ or - in the sixth place gets truncated
+	test_same('abcde', 'abcde-');
+	test_same('human', 'human-like');
+	test_same('human', 'human_like');
+	test_different('human', 'humanlike');
+
+	! These words are six zchars each.
+	test_different('-_-', '-__');
+
+	! These words are eight zchars each, and thus truncated.
+	test_same('+*', '++');
+
+	! Truncated after six characters
+	test_same('abcdef', 'abcdef-');
+	test_same('abcdef_', 'abcdef-');
+	test_same('abcdefg', 'abcdef-');
+	test_same('abcdefg', 'abcdefh');
+
+	! These differ only in the low five bits of the last character, which is truncated.
+	test_same('abc+', 'abc*');
+	! These differ in the high five bits of the last character, which is *not* truncated.
+	test_different('abc%', 'abc@:o');
+
+	! A four-byte character in the fifth place leaves zchar 6 followed by no bits
+	test_same('abcd%', 'abcd@:o');
+	test_different('abcd', 'abcd@:o');
+	test_different('abcd_', 'abcd@:o');
+
+#IFNOT;
+	print "V4+ cases:^";
+	
+	test_different('abcde', 'abcde-');
+	test_different('human', 'human-like');
+	test_different('human', 'human_like');
+	test_different('human', 'humanlike');
+
+	! These words are six zchars each.
+	test_different('-_-', '-__');
+
+	! These words are eight zchars each.
+	test_different('+*', '++');
+
+	test_different('abcdef', 'abcdef-');
+	test_different('abcdef_', 'abcdef-');
+	test_different('abcdefg', 'abcdef-');
+	test_different('abcdefg', 'abcdefh');
+
+	test_different('abc+', 'abc*');
+	test_different('abc%', 'abc@:o');
+	
+	! _ or - in the ninth place gets truncated
+	test_same('abcdefghi', 'abcdefghi');
+	test_different('abcdefghi', 'abcdefghx');
+	test_same('abcdefgh', 'abcdefgh-');
+	test_different('abcdefghi', 'abcdefgh-');
+
+	test_different('-_-_', '-_--');
+	test_same('-_-_-', '-_-__');    ! truncated
+	test_same('+*+', '+*');    ! truncated
+	test_same('+*+', '+**');    ! truncated
+
+	! Truncated after nine characters
+	test_same('abcdefghij', 'abcdefghix');
+	test_same('abcdefghi', 'abcdefghix');
+	
+	! These differ only in the low five bits of the last character, which is truncated.
+	test_same('abcdef+', 'abcdef*');
+	! These differ in the high five bits of the last character, which is *not* truncated.
+	test_different('abcdef%', 'abcdef@:o');
+
+	! A four-byte character in the eighth place leaves zchar 6 followed by no bits
+	test_same('abcdefg%', 'abcdefg@:o');
+	test_different('abcdefg', 'abcdefg@:o');
+	test_different('abcdefg_', 'abcdefg@:o');
+
+#ENDIF;
+
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];

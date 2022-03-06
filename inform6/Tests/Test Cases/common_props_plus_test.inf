@@ -1,0 +1,74 @@
+[ Main; ];
+
+! This defines 60 common properties and then adds some aliases and individual
+! properties.
+
+Property p0;
+Property p1;
+Property p2;
+Property p3;
+Property p4;
+Property p5;
+Property p6;
+Property p7;
+Property p8;
+Property p9;
+Property p10;
+Property p11;
+Property p12;
+Property p13;
+Property p14;
+Property p15;
+Property p16;
+Property p17;
+Property p18;
+Property p19;
+Property p20;
+Property p21;
+Property p22;
+Property p23;
+Property p24;
+Property p25;
+Property p26;
+Property p27;
+Property p28;
+Property p29;
+Property p30;
+Property p31;
+Property p32;
+Property p33;
+Property p34;
+Property p35;
+Property p36;
+Property p37;
+Property p38;
+Property p39;
+Property p40;
+Property p41;
+Property p42;
+Property p43;
+Property p44;
+Property p45;
+Property p46;
+Property p47;
+Property p48;
+Property p49;
+Property p50;
+Property p51;
+Property p52;
+Property p53;
+Property p54;
+Property p55;
+Property p56;
+Property p57;
+Property p58;
+Property p59;
+
+Property individual pindivid1;
+Property individual pindivid2;
+Property palias1 alias p0;
+Property palias2 alias p59;
+
+#ifdef TOOMANY;
+Property p60;
+#endif;

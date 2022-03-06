@@ -1,0 +1,42 @@
+  Dict-Cutoff-V3 Test: Not a game.
+  Release 1 / Serial number 220306 / Inform v6.36, compiler options (none)
+  
+  1312 -_ != 1357 --
+  1276 + != 1267 *
+  1258 % != 1303 ö
+  1456 abcde != 1474 abcdef
+  1474 abcdef != 1582 abcdeg
+  1447 abcd- != 1456 abcde
+  1447 abcd- != 1438 abcd_
+  1384 ab+ != 1375 ab*
+  1366 ab% != 1393 abö
+  V4+ cases:
+  1456 abcde != 1465 abcde-
+  1591 human != 1609 human-li
+  1591 human != 1600 human_li
+  1591 human != 1618 humanlike
+  1330 -_- != 1321 -__
+  1285 +* != 1294 ++
+  1474 abcdef != 1510 abcdef-
+  1501 abcdef_ != 1510 abcdef-
+  1519 abcdefg != 1510 abcdef-
+  1519 abcdefg != 1573 abcdefh
+  1420 abc+ != 1411 abc*
+  1402 abc% != 1429 abcö
+  1555 abcdefghi == 1555 abcdefghi
+  1555 abcdefghi != 1564 abcdefghx
+  1546 abcdefgh == 1546 abcdefgh
+  1555 abcdefghi != 1546 abcdefgh
+  1339 -_-_ != 1348 -_--
+  1339 -_-_ == 1339 -_-_
+  1285 +* == 1285 +*
+  1285 +* == 1285 +*
+  1555 abcdefghi == 1555 abcdefghi
+  1555 abcdefghi == 1555 abcdefghi
+  1483 abcdef == 1483 abcdef
+  1483 abcdef != 1492 abcdef
+  1528 abcdefg == 1528 abcdefg
+  1519 abcdefg != 1528 abcdefg
+  1537 abcdefg_ != 1528 abcdefg
+  
+  All passed.

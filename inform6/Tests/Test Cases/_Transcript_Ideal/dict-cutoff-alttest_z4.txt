@@ -1,0 +1,39 @@
+  
+  Dict-Cutoff-Alt Test: Not a game.
+  Release 1 / Serial number 220306 / Inform v6.36, compiler options (none)
+  
+  1380 < != 1407 >
+  1371 % != 1416 ö
+  1542 abcde != 1551 abcdef
+  1551 abcdef != 1650 abcdeg
+  1659 abcd- != 1542 abcde
+  1659 abcd- != 1533 abcd_
+  1461 12q != 1452 129
+  1389 << != 1398 <>
+  1614 abcdefgh == 1614 abcdefgh
+  1623 abcdefghi != 1641 abcdefghx
+  1614 abcdefgh == 1614 abcdefgh
+  1623 abcdefghi != 1614 abcdefgh
+  1425 0101 != 1434 0102
+  1443 1010 == 1443 1010
+  1398 <> == 1398 <>
+  1398 <> == 1398 <>
+  1623 abcdefghi == 1623 abcdefghi
+  1623 abcdefghi == 1623 abcdefghi
+  1560 abcdef == 1560 abcdef
+  1560 abcdef != 1569 abcdef
+  1614 abcdefgh == 1614 abcdefgh
+  1614 abcdefgh == 1614 abcdefgh
+  1614 abcdefgh != 1605 abcdefgh
+  1614 abcdefgh != 1632 abcdefgh-
+  1596 abcdefg == 1596 abcdefg
+  1587 abcdefg != 1596 abcdefg
+  1578 abcdefg_ != 1596 abcdefg
+  1470 ???? != 1479 ????
+  1488 a???? != 1497 a????
+  1362 _??? == 1362 _???
+  1353 _??? != 1362 _???
+  1506 aa??? != 1515 aa???
+  1524 aad??? == 1524 aad???
+  
+  All passed.

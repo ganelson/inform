@@ -1,0 +1,6 @@
+
+Dict-Size-V3 Test: Not a game.
+Release 1 / Serial number 220306 / Inform v6.36, compiler options (none)
+
+
+All passed.

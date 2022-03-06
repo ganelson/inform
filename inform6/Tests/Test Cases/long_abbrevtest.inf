@@ -1,0 +1,12 @@
+[ Main;
+	func();
+];
+
+[ func;
+	print "This is a long string the likes of which may not have been seen in the text -- A.^";
+	print "This is a long string the likes of which may not have been seen in the text -- B.^";
+	print "This is a long string the likes of which may not have been seen in the text -- C.^";
+	print "This is a long string the likes of which may not have been seen in the text -- D.^";
+	print "This is a long string the likes of which may not have been seen in the text -- E.^";
+	print "This is a long string the likes of which may not have been seen in the text -- F.^";
+];

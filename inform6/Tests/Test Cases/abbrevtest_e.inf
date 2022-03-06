@@ -1,0 +1,248 @@
+Constant Story "AbbrevTest";
+Constant Headline "Not a game.^";
+
+! A game that uses all 64 abbreviations and 32 dynamic strings.
+! (That's the default Z-code layout.)
+
+Release 1;
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+!Global failures;
+
+! This list has 96 abbreviations, but Inform only handles 64 by default. The other 32 are commented out.
+
+Abbreviate "--";
+!Abbreviate "above";
+Abbreviate "add";
+!Abbreviate "advanced";
+Abbreviate "and";
+Abbreviate "be";
+!Abbreviate "before";
+!Abbreviate "birth";
+!Abbreviate "brave";
+Abbreviate "but";
+Abbreviate "by";
+Abbreviate "can";
+Abbreviate "cause";
+Abbreviate "consecrate";
+!Abbreviate "consecrated";
+Abbreviate "dead";
+Abbreviate "dedicate";
+Abbreviate "dedicated";
+!Abbreviate "detract";
+!Abbreviate "devotion";
+Abbreviate "did";
+Abbreviate "died";
+!Abbreviate "earth";
+Abbreviate "far";
+Abbreviate "for";
+!Abbreviate "forget";
+!Abbreviate "fought";
+!Abbreviate "freedom";
+Abbreviate "from";
+Abbreviate "full";
+Abbreviate "gave";
+Abbreviate "God";
+!Abbreviate "government";
+Abbreviate "great";
+!Abbreviate "ground";
+!Abbreviate "hallow";
+Abbreviate "have";
+Abbreviate "here";
+!Abbreviate "highly";
+!Abbreviate "honored";
+Abbreviate "in";
+!Abbreviate "increased";
+Abbreviate "is";
+Abbreviate "It";
+Abbreviate "it";
+!Abbreviate "larger";
+Abbreviate "last";
+!Abbreviate "little";
+Abbreviate "living";
+Abbreviate "long";
+!Abbreviate "measure";
+Abbreviate "men";
+!Abbreviate "nation";
+Abbreviate "never";
+Abbreviate "new";
+!Abbreviate "nobly";
+Abbreviate "nor";
+Abbreviate "not";
+Abbreviate "note";
+Abbreviate "of";
+Abbreviate "or";
+Abbreviate "our";
+!Abbreviate "people";
+!Abbreviate "perish";
+Abbreviate "poor";
+Abbreviate "power";
+Abbreviate "rather";
+!Abbreviate "remaining";
+!Abbreviate "remember";
+Abbreviate "resolve";
+Abbreviate "say";
+!Abbreviate "sense";
+!Abbreviate "shall";
+Abbreviate "so";
+!Abbreviate "struggled";
+Abbreviate "take";
+Abbreviate "task";
+Abbreviate "that";
+Abbreviate "The";
+Abbreviate "the";
+Abbreviate "these";
+Abbreviate "they";
+Abbreviate "this";
+Abbreviate "thus";
+Abbreviate "to";
+Abbreviate "under";
+!Abbreviate "unfinished";
+Abbreviate "us";
+Abbreviate "vain";
+Abbreviate "we";
+Abbreviate "what";
+!Abbreviate "which";
+Abbreviate "who";
+Abbreviate "will";
+Abbreviate "work";
+Abbreviate "world";
+
+[ Main;
+    #ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 0;
+    #endif; ! TARGET_GLULX
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #Endif; ! TARGET_GLULX
+];
+
+#ifdef TARGET_ZCODE;
+Lowstring ODYSSEUS "Odysseus";
+#endif; ! TARGET_ZCODE
+
+[ RunTest val;
+	print "Unset strings: 0='@00', 1='@01', 16='@16', 31='@31'.^";
+	
+	FillDynamic32();
+	print "Set strings: 0='@00', 1='@01', 16='@16', 31='@31'.^";
+
+	string 0 "xyzzy";
+	val = 16;
+	string val "plugh";
+	print "Updated strings: 0='@00', 1='@01', 16='@16', 31='@31'.^";
+
+	#ifdef TARGET_ZCODE;
+	string 31 ODYSSEUS;
+	print "Z-code only: setting 31 to ", (address) (ODYSSEUS*2), ":^";
+	print "More strings: 0='@00', 1='@01', 16='@16', 31='@31'.^";
+	#endif; ! TARGET_ZCODE
+
+	new_line;
+	
+	PrintText();
+];
+
+[ PrintText;
+	print "But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.^";
+];
+
+[ FillDynamic32;
+	string 0 "zero";
+	string 1 "one";
+	string 2 "two";
+	string 3 "three";
+	string 4 "four";
+	string 5 "five";
+	string 6 "six";
+	string 7 "seven";
+	string 8 "eight";
+	string 9 "nine";
+	string 10 "ten";
+	string 11 "eleven";
+	string 12 "twelve";
+	string 13 "thirteen";
+	string 14 "fourteen";
+	string 15 "fifteen";
+	string 16 "sixteen";
+	string 17 "seventeen";
+	string 18 "eighteen";
+	string 19 "nineteen";
+	string 20 "twenty";
+	string 21 "twentyone";
+	string 22 "twentytwo";
+	string 23 "twentythree";
+	string 24 "twentyfour";
+	string 25 "twentyfive";
+	string 26 "twentysix";
+	string 27 "twentyseven";
+	string 28 "twentyeight";
+	string 29 "twentynine";
+	string 30 "thirty";
+	string 31 "thirtyone";
+];

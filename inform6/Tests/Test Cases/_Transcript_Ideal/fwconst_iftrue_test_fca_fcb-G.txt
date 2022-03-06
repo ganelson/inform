@@ -1,0 +1,7 @@
+FwConstIfTrueTest: Not a game.
+Release 1 / Serial number 220306 / Inform v6.36, compiler options S
+Interpreter version 0.5.4 / VM 3.1.2 / game file format 3.0.0
+
+RunTest.
+FORWARD_CONSTANT_A is true.
+FORWARD_CONSTANT_B is false.

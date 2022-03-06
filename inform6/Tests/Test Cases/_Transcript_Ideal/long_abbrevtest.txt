@@ -1,0 +1,6 @@
+  This is a long string the likes of which may not have been seen in the text -- A.
+  This is a long string the likes of which may not have been seen in the text -- B.
+  This is a long string the likes of which may not have been seen in the text -- C.
+  This is a long string the likes of which may not have been seen in the text -- D.
+  This is a long string the likes of which may not have been seen in the text -- E.
+  This is a long string the likes of which may not have been seen in the text -- F.

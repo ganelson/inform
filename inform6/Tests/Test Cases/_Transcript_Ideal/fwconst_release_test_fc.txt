@@ -1,0 +1,3 @@
+  FwConstReleaseTest: Not a game.
+  Release 7 / Serial number 220306 / Inform v6.36, compiler options S
+  Game file format 5.

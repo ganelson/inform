@@ -1,0 +1,4 @@
+Inform 6.36 (24th January 2022)
+line 4: Error:  A definite value must be given as release number
+> Release FORWARD_CONSTANT;
+Compiled with 1 error (no output)

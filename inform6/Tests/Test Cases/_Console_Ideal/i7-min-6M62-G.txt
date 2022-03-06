@@ -1,0 +1,1844 @@
+Inform 6.36 (24th January 2022)
+The Inform 6 memory setting "ALLOC_CHUNK_SIZE" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_ARRAYS" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_CLASSES" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_VERBS" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_LABELS" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_ZCODE_SIZE" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_STATIC_DATA" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_PROP_TABLE_SIZE" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_INDIV_PROP_TABLE_SIZE" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_SYMBOLS" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_EXPRESSION_NODES" is no longer needed and has been withdrawn.
+The Inform 6 memory setting "MAX_LOCAL_VARIABLES" is no longer needed and has been withdrawn.
+line 652: Warning:  Local variable "reason" declared but not used
+line 652: Warning:  Local variable "obj" declared but not used
+line 1938: Warning:  Local variable "i" declared but not used
+line 4628: Warning:  Local variable "o" declared but not used
+line 4843: Warning:  Local variable "partition_class_sizes" declared but not used
+line 4886: Warning:  Local variable "k2" declared but not used
+line 5393: Warning:  Local variable "u" declared but not used
+line 5393: Warning:  Local variable "v" declared but not used
+line 5443: Warning:  Local variable "n" declared but not used
+line 5881: Warning:  This statement can never be reached
+>  }
+line 7286: Warning:  Local variable "cto" declared but not used
+line 7286: Warning:  Local variable "n" declared but not used
+line 8363: Warning:  Local variable "i" declared but not used
+line 8472: Warning:  Local variable "i" declared but not used
+line 9096: Warning:  This statement can never be reached
+>   }
+line 9858: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->list_together =
+line 9859: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->short_name =
+line 9860: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->plural =
+line 9861: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->article =
+line 9862: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->description =
+line 9863: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->map_region =
+line 9864: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->initial =
+line 9866: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->door_to =
+line 9867: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->capacity =
+line 9868: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->with_key =
+line 9895: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->p57_recurring =
+line 9896: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->vector =
+line 9897: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->room_index =
+line 9898: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->door_dir =
+line 9899: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->door_to =
+line 9904: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->component_parent =
+line 9905: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->component_child =
+line 9906: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->component_sibling =
+line 9907: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->regional_found_in =
+line 9908: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK1_Count =
+line 9909: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK1_Link =
+line 9910: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK2_Count =
+line 9911: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK2_Link =
+line 9914: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK4_Count =
+line 9916: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK5_Count =
+line 9917: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK5_Link =
+line 9918: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK6_Count =
+line 9919: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK6_Link =
+line 9922: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK8_Count =
+line 9923: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->IK8_Link =
+line 9938: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->KD_Count =
+line 9939: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->name =
+line 9940: Warning:  Property name in expression is not qualified by object
+>     valued_property_offsets-->parse_name =
+line 11962: Warning:  This statement can never be reached
+>     rfalse;
+line 12156: Warning:  '=' used as condition: '==' intended?
+>     if (temporary_value = FollowRulebook(RULEBOOK_TY_to_RULE_TY((MSt  ...etc
+line 12220: Warning:  This statement can never be reached
+>     rfalse;
+line 12448: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 12463: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 12478: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 12493: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 12508: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 12776: Warning:  This statement can never be reached
+>     rfalse;
+line 12814: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 12815: Warning:  This statement can never be reached
+>     rfalse;
+line 12955: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 12956: Warning:  This statement can never be reached
+>     rfalse;
+line 12988: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 12989: Warning:  This statement can never be reached
+>     rfalse;
+line 13038: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 13057: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 13076: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 13095: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 13114: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 13147: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 13197: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 13240: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 13283: Warning:  This statement can never be reached
+>     RulebookSucceeds();
+line 15305: Warning:  '=' used as condition: '==' intended?
+>             if (((matched_text=SnippetIncludes(Consult_Grammar_98,pl  ...etc
+line 15310: Warning:  '=' used as condition: '==' intended?
+>                 if (((matched_text=SnippetIncludes(Consult_Grammar_9  ...etc
+line 15315: Warning:  '=' used as condition: '==' intended?
+>                     if (((matched_text=SnippetIncludes(Consult_Gramm  ...etc
+line 15521: Warning:  This statement can never be reached
+>             rfalse
+line 19182: Warning:  Local variable "t_0" declared but not used
+line 19190: Warning:  Local variable "t_0" declared but not used
+line 19198: Warning:  Local variable "t_0" declared but not used
+line 19206: Warning:  Local variable "t_0" declared but not used
+line 19214: Warning:  Local variable "t_0" declared but not used
+line 19222: Warning:  Local variable "t_0" declared but not used
+line 19230: Warning:  Local variable "t_0" declared but not used
+line 19238: Warning:  Local variable "t_0" declared but not used
+line 19246: Warning:  Local variable "t_0" declared but not used
+line 19254: Warning:  Local variable "t_0" declared but not used
+line 19262: Warning:  Local variable "t_0" declared but not used
+line 19270: Warning:  Local variable "t_0" declared but not used
+line 19278: Warning:  Local variable "t_0" declared but not used
+line 19286: Warning:  Local variable "t_0" declared but not used
+line 19294: Warning:  Local variable "t_0" declared but not used
+line 19302: Warning:  Local variable "t_0" declared but not used
+line 19310: Warning:  Local variable "t_0" declared but not used
+line 19318: Warning:  Local variable "t_0" declared but not used
+line 19326: Warning:  Local variable "t_0" declared but not used
+line 19334: Warning:  Local variable "t_0" declared but not used
+line 19342: Warning:  Local variable "t_0" declared but not used
+line 19350: Warning:  Local variable "t_0" declared but not used
+line 19358: Warning:  Local variable "t_0" declared but not used
+line 19366: Warning:  Local variable "t_0" declared but not used
+line 19374: Warning:  Local variable "t_0" declared but not used
+line 19382: Warning:  Local variable "t_0" declared but not used
+line 19390: Warning:  Local variable "t_0" declared but not used
+line 19398: Warning:  Local variable "t_0" declared but not used
+line 19406: Warning:  Local variable "t_0" declared but not used
+line 19414: Warning:  Local variable "t_0" declared but not used
+line 19422: Warning:  Local variable "t_0" declared but not used
+line 19430: Warning:  Local variable "t_0" declared but not used
+line 19438: Warning:  Local variable "t_0" declared but not used
+line 19446: Warning:  Local variable "t_0" declared but not used
+line 19454: Warning:  Local variable "t_0" declared but not used
+line 19462: Warning:  Local variable "t_0" declared but not used
+line 19563: Warning:  This statement can never be reached
+>     rfalse;
+line 19570: Warning:  This statement can never be reached
+>     rfalse;
+line 19577: Warning:  This statement can never be reached
+>     rfalse;
+line 19584: Warning:  This statement can never be reached
+>     rfalse;
+line 19591: Warning:  This statement can never be reached
+>     rfalse;
+line 19598: Warning:  This statement can never be reached
+>     rfalse;
+line 19605: Warning:  This statement can never be reached
+>     rfalse;
+line 19612: Warning:  This statement can never be reached
+>     rfalse;
+line 19619: Warning:  This statement can never be reached
+>     rfalse;
+line 19626: Warning:  This statement can never be reached
+>     rfalse;
+line 19633: Warning:  This statement can never be reached
+>     rfalse;
+line 19640: Warning:  This statement can never be reached
+>     rfalse;
+line 19647: Warning:  This statement can never be reached
+>     rfalse;
+line 19654: Warning:  This statement can never be reached
+>     rfalse;
+line 19661: Warning:  This statement can never be reached
+>     rfalse;
+line 19668: Warning:  This statement can never be reached
+>     rfalse;
+line 19675: Warning:  This statement can never be reached
+>     rfalse;
+line 19682: Warning:  This statement can never be reached
+>     rfalse;
+line 19689: Warning:  This statement can never be reached
+>     rfalse;
+line 19696: Warning:  This statement can never be reached
+>     rfalse;
+line 19703: Warning:  This statement can never be reached
+>     rfalse;
+line 19710: Warning:  This statement can never be reached
+>     rfalse;
+line 19717: Warning:  This statement can never be reached
+>     rfalse;
+line 19724: Warning:  This statement can never be reached
+>     rfalse;
+line 19731: Warning:  This statement can never be reached
+>     rfalse;
+line 19738: Warning:  This statement can never be reached
+>     rfalse;
+line 19745: Warning:  This statement can never be reached
+>     rfalse;
+line 19752: Warning:  This statement can never be reached
+>     rfalse;
+line 19759: Warning:  This statement can never be reached
+>     rfalse;
+line 19766: Warning:  This statement can never be reached
+>     rfalse;
+line 19773: Warning:  This statement can never be reached
+>     rfalse;
+line 19780: Warning:  This statement can never be reached
+>     rfalse;
+line 19787: Warning:  This statement can never be reached
+>     rfalse;
+line 19794: Warning:  This statement can never be reached
+>     rfalse;
+line 19801: Warning:  This statement can never be reached
+>     rfalse;
+line 19808: Warning:  This statement can never be reached
+>     rfalse;
+line 19815: Warning:  This statement can never be reached
+>     rfalse;
+line 19822: Warning:  This statement can never be reached
+>     rfalse;
+line 19829: Warning:  This statement can never be reached
+>     rfalse;
+line 19836: Warning:  This statement can never be reached
+>     rfalse;
+line 20144: Warning:  This statement can never be reached
+>     rfalse;
+line 20151: Warning:  This statement can never be reached
+>     rfalse;
+line 20193: Warning:  This statement can never be reached
+>     rfalse;
+line 20200: Warning:  This statement can never be reached
+>     rfalse;
+line 20207: Warning:  This statement can never be reached
+>     rfalse;
+line 20214: Warning:  This statement can never be reached
+>     rfalse;
+line 20221: Warning:  This statement can never be reached
+>     rfalse;
+line 20228: Warning:  This statement can never be reached
+>     rfalse;
+line 20235: Warning:  This statement can never be reached
+>     rfalse;
+line 20242: Warning:  This statement can never be reached
+>     rfalse;
+line 20543: Warning:  This statement can never be reached
+>     rfalse;
+line 20550: Warning:  This statement can never be reached
+>     rfalse;
+line 20592: Warning:  This statement can never be reached
+>     rfalse;
+line 20599: Warning:  This statement can never be reached
+>     rfalse;
+line 20606: Warning:  This statement can never be reached
+>     rfalse;
+line 20613: Warning:  This statement can never be reached
+>     rfalse;
+line 20620: Warning:  This statement can never be reached
+>     rfalse;
+line 20627: Warning:  This statement can never be reached
+>     rfalse;
+line 20634: Warning:  This statement can never be reached
+>     rfalse;
+line 20641: Warning:  This statement can never be reached
+>     rfalse;
+line 20942: Warning:  This statement can never be reached
+>     rfalse;
+line 20949: Warning:  This statement can never be reached
+>     rfalse;
+line 20992: Warning:  Local variable "forbid_breaks" declared but not used
+line 21231: Warning:  Local variable "forbid_breaks" declared but not used
+line 21245: Warning:  Local variable "forbid_breaks" declared but not used
+line 21506: Warning:  Local variable "forbid_breaks" declared but not used
+line 21544: Warning:  Local variable "forbid_breaks" declared but not used
+line 21559: Warning:  Local variable "forbid_breaks" declared but not used
+line 21612: Warning:  Local variable "forbid_breaks" declared but not used
+line 21627: Warning:  Local variable "forbid_breaks" declared but not used
+line 21644: Warning:  Local variable "forbid_breaks" declared but not used
+line 21661: Warning:  Local variable "forbid_breaks" declared but not used
+line 21684: Warning:  Local variable "forbid_breaks" declared but not used
+line 21719: Warning:  Local variable "forbid_breaks" declared but not used
+line 21867: Warning:  Local variable "forbid_breaks" declared but not used
+line 21884: Warning:  Local variable "forbid_breaks" declared but not used
+line 21975: Warning:  Local variable "forbid_breaks" declared but not used
+line 22045: Warning:  Local variable "forbid_breaks" declared but not used
+line 22153: Warning:  Local variable "forbid_breaks" declared but not used
+line 22192: Warning:  Local variable "forbid_breaks" declared but not used
+line 22306: Warning:  Local variable "forbid_breaks" declared but not used
+line 22318: Warning:  Local variable "forbid_breaks" declared but not used
+line 22424: Warning:  Local variable "forbid_breaks" declared but not used
+line 22436: Warning:  Local variable "forbid_breaks" declared but not used
+line 22502: Warning:  Local variable "forbid_breaks" declared but not used
+line 22598: Warning:  Local variable "forbid_breaks" declared but not used
+line 22670: Warning:  Local variable "forbid_breaks" declared but not used
+line 22682: Warning:  Local variable "forbid_breaks" declared but not used
+line 22778: Warning:  Local variable "forbid_breaks" declared but not used
+line 22860: Warning:  Local variable "forbid_breaks" declared but not used
+line 22932: Warning:  Local variable "forbid_breaks" declared but not used
+line 22966: Warning:  Local variable "forbid_breaks" declared but not used
+line 22978: Warning:  Local variable "forbid_breaks" declared but not used
+line 23059: Warning:  Local variable "forbid_breaks" declared but not used
+line 23126: Warning:  Local variable "forbid_breaks" declared but not used
+line 23139: Warning:  Local variable "forbid_breaks" declared but not used
+line 23151: Warning:  Local variable "forbid_breaks" declared but not used
+line 23218: Warning:  Local variable "forbid_breaks" declared but not used
+line 23268: Warning:  Local variable "forbid_breaks" declared but not used
+line 23280: Warning:  Local variable "forbid_breaks" declared but not used
+line 23322: Warning:  Local variable "forbid_breaks" declared but not used
+line 23334: Warning:  Local variable "forbid_breaks" declared but not used
+line 23368: Warning:  Local variable "forbid_breaks" declared but not used
+line 23380: Warning:  Local variable "forbid_breaks" declared but not used
+line 23414: Warning:  Local variable "forbid_breaks" declared but not used
+line 23426: Warning:  Local variable "forbid_breaks" declared but not used
+line 23468: Warning:  Local variable "forbid_breaks" declared but not used
+line 23524: Warning:  Local variable "forbid_breaks" declared but not used
+line 23536: Warning:  Local variable "forbid_breaks" declared but not used
+line 23578: Warning:  Local variable "forbid_breaks" declared but not used
+line 23590: Warning:  Local variable "forbid_breaks" declared but not used
+line 23624: Warning:  Local variable "forbid_breaks" declared but not used
+line 23636: Warning:  Local variable "forbid_breaks" declared but not used
+line 23702: Warning:  Local variable "forbid_breaks" declared but not used
+line 23714: Warning:  Local variable "forbid_breaks" declared but not used
+line 23758: Warning:  Local variable "forbid_breaks" declared but not used
+line 23804: Warning:  Local variable "forbid_breaks" declared but not used
+line 23844: Warning:  Local variable "forbid_breaks" declared but not used
+line 23856: Warning:  Local variable "forbid_breaks" declared but not used
+line 23869: Warning:  Local variable "forbid_breaks" declared but not used
+line 23883: Warning:  Local variable "forbid_breaks" declared but not used
+line 23921: Warning:  Local variable "forbid_breaks" declared but not used
+line 23965: Warning:  Local variable "forbid_breaks" declared but not used
+line 23978: Warning:  Local variable "forbid_breaks" declared but not used
+line 24021: Warning:  Local variable "forbid_breaks" declared but not used
+line 24064: Warning:  Local variable "forbid_breaks" declared but not used
+line 24107: Warning:  Local variable "forbid_breaks" declared but not used
+line 24175: Warning:  Local variable "forbid_breaks" declared but not used
+line 24188: Warning:  Local variable "forbid_breaks" declared but not used
+line 24200: Warning:  Local variable "forbid_breaks" declared but not used
+line 24214: Warning:  Local variable "forbid_breaks" declared but not used
+line 24228: Warning:  Local variable "forbid_breaks" declared but not used
+line 24242: Warning:  Local variable "forbid_breaks" declared but not used
+line 24256: Warning:  Local variable "forbid_breaks" declared but not used
+line 24272: Warning:  Local variable "forbid_breaks" declared but not used
+line 24286: Warning:  Local variable "forbid_breaks" declared but not used
+line 24300: Warning:  Local variable "forbid_breaks" declared but not used
+line 24312: Warning:  Local variable "forbid_breaks" declared but not used
+line 24328: Warning:  Local variable "forbid_breaks" declared but not used
+line 24340: Warning:  Local variable "forbid_breaks" declared but not used
+line 24354: Warning:  Local variable "forbid_breaks" declared but not used
+line 24368: Warning:  Local variable "forbid_breaks" declared but not used
+line 24382: Warning:  Local variable "forbid_breaks" declared but not used
+line 24396: Warning:  Local variable "forbid_breaks" declared but not used
+line 24409: Warning:  Local variable "forbid_breaks" declared but not used
+line 24421: Warning:  Local variable "forbid_breaks" declared but not used
+line 24437: Warning:  Local variable "forbid_breaks" declared but not used
+line 24449: Warning:  Local variable "forbid_breaks" declared but not used
+line 24463: Warning:  Local variable "forbid_breaks" declared but not used
+line 24477: Warning:  Local variable "forbid_breaks" declared but not used
+line 24492: Warning:  Local variable "forbid_breaks" declared but not used
+line 24506: Warning:  Local variable "forbid_breaks" declared but not used
+line 24520: Warning:  Local variable "forbid_breaks" declared but not used
+line 24534: Warning:  Local variable "forbid_breaks" declared but not used
+line 24548: Warning:  Local variable "forbid_breaks" declared but not used
+line 24562: Warning:  Local variable "forbid_breaks" declared but not used
+line 24576: Warning:  Local variable "forbid_breaks" declared but not used
+line 24590: Warning:  Local variable "forbid_breaks" declared but not used
+line 24604: Warning:  Local variable "forbid_breaks" declared but not used
+line 24618: Warning:  Local variable "forbid_breaks" declared but not used
+line 24630: Warning:  Local variable "forbid_breaks" declared but not used
+line 24643: Warning:  Local variable "forbid_breaks" declared but not used
+line 24655: Warning:  Local variable "forbid_breaks" declared but not used
+line 24668: Warning:  Local variable "forbid_breaks" declared but not used
+line 24680: Warning:  Local variable "forbid_breaks" declared but not used
+line 24693: Warning:  Local variable "forbid_breaks" declared but not used
+line 24705: Warning:  Local variable "forbid_breaks" declared but not used
+line 24718: Warning:  Local variable "forbid_breaks" declared but not used
+line 24730: Warning:  Local variable "forbid_breaks" declared but not used
+line 24743: Warning:  Local variable "forbid_breaks" declared but not used
+line 24987: Warning:  Local variable "ks" declared but not used
+line 25060: Warning:  Local variable "p2" declared but not used
+line 25060: Warning:  Local variable "p3" declared but not used
+line 25060: Warning:  Local variable "p4" declared but not used
+line 25060: Warning:  Local variable "p5" declared but not used
+line 25383: Warning:  Local variable "vis" declared but not used
+line 25383: Warning:  Local variable "rv" declared but not used
+line 25449: Warning:  Using '->' to access a --> or table array
+>    ActionHappened->0 = (ActionHappened->0) | 1;
+line 25449: Warning:  Using '->' to access a --> or table array
+>    ActionHappened->0 = (ActionHappened->0) | 1;
+line 25450: Warning:  Using '->' to access a --> or table array
+>    ActionHappened->j = (ActionHappened->j) | k;
+line 25450: Warning:  Using '->' to access a --> or table array
+>    ActionHappened->j = (ActionHappened->j) | k;
+line 25478: Warning:  Local variable "t" declared but not used
+line 25478: Warning:  Local variable "at" declared but not used
+line 25478: Warning:  Local variable "l" declared but not used
+line 25478: Warning:  Local variable "j" declared but not used
+line 25478: Warning:  Local variable "v" declared but not used
+line 25478: Warning:  Local variable "c" declared but not used
+line 25478: Warning:  Local variable "clc" declared but not used
+line 25638: Warning:  Local variable "o" declared but not used
+line 25940: Warning:  This statement can never be reached
+>  struc = TableOfExternalFiles-->extf;
+line 25971: Warning:  Local variable "tab" declared but not used
+line 25988: Warning:  Local variable "ch" declared but not used
+line 26450: Warning:  Local variable "r" declared but not used
+line 26531: Warning:  Local variable "i" declared but not used
+line 26574: Warning:  Local variable "d" declared but not used
+line 26716: Warning:  Local variable "pv" declared but not used
+line 26716: Warning:  Local variable "st" declared but not used
+line 26742: Warning:  Local variable "v" declared but not used
+line 26961: Warning:  Local variable "oldval" declared but not used
+line 26964: Warning:  Local variable "v" declared but not used
+line 26967: Warning:  Local variable "oldval" declared but not used
+line 27050: Warning:  Local variable "i" declared but not used
+line 27418: Warning:  Local variable "sym" declared but not used
+line 27487: Warning:  Local variable "x" declared but not used
+line 27576: Warning:  Local variable "sym" declared but not used
+line 27576: Warning:  Local variable "N1" declared but not used
+line 27618: Warning:  Local variable "sym" declared but not used
+line 27773: Warning:  Local variable "filter" declared but not used
+line 27773: Warning:  Local variable "use_doors" declared but not used
+line 27773: Warning:  Local variable "oy" declared but not used
+line 27785: Warning:  Local variable "filter" declared but not used
+line 27785: Warning:  Local variable "use_doors" declared but not used
+line 27792: Warning:  Local variable "filter" declared but not used
+line 27792: Warning:  Local variable "dir" declared but not used
+line 27792: Warning:  Local variable "nd" declared but not used
+line 27985: Warning:  Local variable "related" declared but not used
+line 28155: Warning:  Local variable "i" declared but not used
+line 28155: Warning:  Local variable "c" declared but not used
+line 28418: Warning:  Local variable "i" declared but not used
+line 29076: Warning:  Local variable "p1" declared but not used
+line 29455: Warning:  Local variable "i" declared but not used
+line 29462: Warning:  Local variable "N" declared but not used
+line 29495: Warning:  Local variable "test_flag" declared but not used
+line 29640: Warning:  Local variable "n" declared but not used
+line 29640: Warning:  Local variable "val" declared but not used
+line 29640: Warning:  Local variable "shift" declared but not used
+line 29640: Warning:  Local variable "p1" declared but not used
+line 29640: Warning:  Local variable "p2" declared but not used
+line 29694: Warning:  Local variable "n" declared but not used
+line 29748: Warning:  Local variable "i" declared but not used
+line 29766: Warning:  Local variable "i" declared but not used
+line 29785: Warning:  Local variable "i" declared but not used
+line 29901: Warning:  Local variable "kov" declared but not used
+line 30296: Warning:  Local variable "f" declared but not used
+line 30453: Warning:  Local variable "i" declared but not used
+line 30453: Warning:  Local variable "j" declared but not used
+line 30453: Warning:  Local variable "v" declared but not used
+line 30695: Warning:  Local variable "From" declared but not used
+line 30779: Warning:  This statement can never be reached
+>   }
+line 30846: Warning:  Local variable "flag" declared but not used
+line 30905: Warning:  Local variable "x" declared but not used
+line 30920: Warning:  Local variable "i" declared but not used
+line 30997: Warning:  Local variable "use_doors" declared but not used
+line 30997: Warning:  Local variable "sl" declared but not used
+line 30997: Warning:  Local variable "through_door" declared but not used
+line 31098: Warning:  Local variable "dir" declared but not used
+line 31178: Warning:  Local variable "wna" declared but not used
+line 31985: Warning:  Local variable "aop" declared but not used
+line 32176: Warning:  Local variable "modal_to" declared but not used
+line 32234: Warning:  Local variable "modal_to" declared but not used
+line 32258: Warning:  Local variable "modal_to" declared but not used
+line 32288: Warning:  Local variable "modal_to" declared but not used
+line 32318: Warning:  Local variable "modal_to" declared but not used
+line 32348: Warning:  Local variable "modal_to" declared but not used
+line 32378: Warning:  Local variable "modal_to" declared but not used
+line 32408: Warning:  Local variable "modal_to" declared but not used
+line 32438: Warning:  Local variable "modal_to" declared but not used
+line 32468: Warning:  Local variable "modal_to" declared but not used
+line 32498: Warning:  Local variable "modal_to" declared but not used
+line 32528: Warning:  Local variable "modal_to" declared but not used
+line 32558: Warning:  Local variable "modal_to" declared but not used
+line 32588: Warning:  Local variable "modal_to" declared but not used
+line 32618: Warning:  Local variable "modal_to" declared but not used
+line 32752: Warning:  Local variable "modal_to" declared but not used
+line 32782: Warning:  Local variable "modal_to" declared but not used
+line 32816: Warning:  Local variable "modal_to" declared but not used
+line 32846: Warning:  Local variable "modal_to" declared but not used
+line 32876: Warning:  Local variable "modal_to" declared but not used
+line 32906: Warning:  Local variable "modal_to" declared but not used
+line 32936: Warning:  Local variable "modal_to" declared but not used
+line 32966: Warning:  Local variable "modal_to" declared but not used
+line 32996: Warning:  Local variable "modal_to" declared but not used
+line 33026: Warning:  Local variable "modal_to" declared but not used
+line 33056: Warning:  Local variable "modal_to" declared but not used
+line 33086: Warning:  Local variable "modal_to" declared but not used
+line 33116: Warning:  Local variable "modal_to" declared but not used
+line 33146: Warning:  Local variable "modal_to" declared but not used
+line 33176: Warning:  Local variable "modal_to" declared but not used
+line 33206: Warning:  Local variable "modal_to" declared but not used
+line 33236: Warning:  Local variable "modal_to" declared but not used
+line 33266: Warning:  Local variable "modal_to" declared but not used
+line 33296: Warning:  Local variable "modal_to" declared but not used
+line 33326: Warning:  Local variable "modal_to" declared but not used
+line 33356: Warning:  Local variable "modal_to" declared but not used
+line 33386: Warning:  Local variable "modal_to" declared but not used
+line 33416: Warning:  Local variable "modal_to" declared but not used
+line 33446: Warning:  Local variable "modal_to" declared but not used
+line 33476: Warning:  Local variable "modal_to" declared but not used
+line 33506: Warning:  Local variable "modal_to" declared but not used
+line 33536: Warning:  Local variable "modal_to" declared but not used
+line 33566: Warning:  Local variable "modal_to" declared but not used
+line 33596: Warning:  Local variable "modal_to" declared but not used
+line 33626: Warning:  Local variable "modal_to" declared but not used
+line 33656: Warning:  Local variable "modal_to" declared but not used
+line 33686: Warning:  Local variable "modal_to" declared but not used
+line 33716: Warning:  Local variable "modal_to" declared but not used
+line 33746: Warning:  Local variable "modal_to" declared but not used
+line 33776: Warning:  Local variable "modal_to" declared but not used
+line 33806: Warning:  Local variable "modal_to" declared but not used
+line 33836: Warning:  Local variable "modal_to" declared but not used
+line 33866: Warning:  Local variable "modal_to" declared but not used
+line 33896: Warning:  Local variable "modal_to" declared but not used
+line 33926: Warning:  Local variable "modal_to" declared but not used
+line 33956: Warning:  Local variable "modal_to" declared but not used
+line 33986: Warning:  Local variable "modal_to" declared but not used
+line 34016: Warning:  Local variable "modal_to" declared but not used
+line 34046: Warning:  Local variable "modal_to" declared but not used
+line 34076: Warning:  Local variable "modal_to" declared but not used
+line 34106: Warning:  Local variable "modal_to" declared but not used
+line 34136: Warning:  Local variable "modal_to" declared but not used
+line 34166: Warning:  Local variable "modal_to" declared but not used
+line 34196: Warning:  Local variable "modal_to" declared but not used
+line 34226: Warning:  Local variable "modal_to" declared but not used
+line 34256: Warning:  Local variable "modal_to" declared but not used
+line 34286: Warning:  Local variable "modal_to" declared but not used
+line 34916: Warning:  Local variable "modal_to" declared but not used
+line 34974: Warning:  Local variable "modal_to" declared but not used
+line 35004: Warning:  Local variable "modal_to" declared but not used
+line 36441: Warning:  This statement can never be reached
+>     return 0;
+line 36457: Warning:  This statement can never be reached
+>     return 0;
+line 36473: Warning:  This statement can never be reached
+>     return 0;
+line 36489: Warning:  This statement can never be reached
+>     return 0;
+line 40101: Warning:  Local variable "x_ix" declared but not used
+line 40152: Warning:  Local variable "x_ix" declared but not used
+line 40300: Warning:  Local variable "x_ix" declared but not used
+line 40336: Warning:  Local variable "x_ix" declared but not used
+line 40372: Warning:  Local variable "x_ix" declared but not used
+line 40408: Warning:  Local variable "x_ix" declared but not used
+line 40425: Warning:  Local variable "x_ix" declared but not used
+line 40460: Warning:  Local variable "x_ix" declared but not used
+line 40477: Warning:  Local variable "x_ix" declared but not used
+line 40495: Warning:  Local variable "x_ix" declared but not used
+line 40513: Warning:  Local variable "x_ix" declared but not used
+line 40530: Warning:  Local variable "x_ix" declared but not used
+line 40547: Warning:  Local variable "x_ix" declared but not used
+line 40564: Warning:  Local variable "x_ix" declared but not used
+line 40581: Warning:  Local variable "x_ix" declared but not used
+line 40616: Warning:  Local variable "x_ix" declared but not used
+line 40632: Warning:  Local variable "x_ix" declared but not used
+line 40648: Warning:  Local variable "x_ix" declared but not used
+line 40664: Warning:  Local variable "x_ix" declared but not used
+line 40680: Warning:  Local variable "x_ix" declared but not used
+line 40696: Warning:  Local variable "x_ix" declared but not used
+line 40712: Warning:  Local variable "x_ix" declared but not used
+line 40729: Warning:  Local variable "x_ix" declared but not used
+line 42863: Warning:  Local variable "tmp_0" declared but not used
+line 42863: Warning:  Local variable "tmp_1" declared but not used
+line 42863: Warning:  Local variable "tmp_2" declared but not used
+line 42863: Warning:  Local variable "ct_0" declared but not used
+line 42863: Warning:  Local variable "ct_1" declared but not used
+line 42877: Warning:  Local variable "tmp_0" declared but not used
+line 42877: Warning:  Local variable "tmp_1" declared but not used
+line 42877: Warning:  Local variable "tmp_2" declared but not used
+line 42877: Warning:  Local variable "ct_0" declared but not used
+line 42877: Warning:  Local variable "ct_1" declared but not used
+line 42900: Warning:  Local variable "tmp_0" declared but not used
+line 42900: Warning:  Local variable "tmp_1" declared but not used
+line 42900: Warning:  Local variable "ct_0" declared but not used
+line 42900: Warning:  Local variable "ct_1" declared but not used
+line 42913: Warning:  Local variable "tmp_0" declared but not used
+line 42913: Warning:  Local variable "tmp_1" declared but not used
+line 42913: Warning:  Local variable "tmp_2" declared but not used
+line 42913: Warning:  Local variable "tmp_3" declared but not used
+line 42913: Warning:  Local variable "ct_0" declared but not used
+line 42913: Warning:  Local variable "ct_1" declared but not used
+line 42979: Warning:  Local variable "tmp_0" declared but not used
+line 42979: Warning:  Local variable "tmp_1" declared but not used
+line 42979: Warning:  Local variable "tmp_2" declared but not used
+line 42979: Warning:  Local variable "tmp_3" declared but not used
+line 42979: Warning:  Local variable "ct_0" declared but not used
+line 42979: Warning:  Local variable "ct_1" declared but not used
+line 42996: Warning:  Local variable "tmp_0" declared but not used
+line 42996: Warning:  Local variable "tmp_1" declared but not used
+line 42996: Warning:  Local variable "tmp_2" declared but not used
+line 42996: Warning:  Local variable "tmp_3" declared but not used
+line 42996: Warning:  Local variable "ct_0" declared but not used
+line 42996: Warning:  Local variable "ct_1" declared but not used
+line 43013: Warning:  Local variable "tmp_0" declared but not used
+line 43013: Warning:  Local variable "tmp_1" declared but not used
+line 43013: Warning:  Local variable "tmp_2" declared but not used
+line 43013: Warning:  Local variable "tmp_3" declared but not used
+line 43013: Warning:  Local variable "tmp_4" declared but not used
+line 43013: Warning:  Local variable "tmp_5" declared but not used
+line 43013: Warning:  Local variable "ct_0" declared but not used
+line 43013: Warning:  Local variable "ct_1" declared but not used
+line 43176: Warning:  Local variable "tmp_0" declared but not used
+line 43190: Warning:  Local variable "tmp_0" declared but not used
+line 43459: Warning:  Local variable "tmp_0" declared but not used
+line 43459: Warning:  Local variable "tmp_1" declared but not used
+line 43459: Warning:  Local variable "tmp_2" declared but not used
+line 43534: Warning:  Local variable "tmp_0" declared but not used
+line 43534: Warning:  Local variable "tmp_1" declared but not used
+line 43534: Warning:  Local variable "tmp_2" declared but not used
+line 43809: Warning:  Local variable "tmp_0" declared but not used
+line 43809: Warning:  Local variable "tmp_1" declared but not used
+line 43809: Warning:  Local variable "tmp_2" declared but not used
+line 43824: Warning:  Local variable "tmp_0" declared but not used
+line 43824: Warning:  Local variable "tmp_1" declared but not used
+line 43824: Warning:  Local variable "tmp_2" declared but not used
+line 43858: Warning:  Local variable "tmp_0" declared but not used
+line 43858: Warning:  Local variable "tmp_1" declared but not used
+line 43858: Warning:  Local variable "tmp_2" declared but not used
+line 43872: Warning:  Local variable "tmp_0" declared but not used
+line 43872: Warning:  Local variable "tmp_1" declared but not used
+line 43872: Warning:  Local variable "tmp_2" declared but not used
+line 43889: Warning:  Local variable "tmp_0" declared but not used
+line 43889: Warning:  Local variable "tmp_1" declared but not used
+line 43889: Warning:  Local variable "tmp_2" declared but not used
+line 43927: Warning:  Local variable "tmp_0" declared but not used
+line 43927: Warning:  Local variable "tmp_1" declared but not used
+line 43927: Warning:  Local variable "tmp_2" declared but not used
+line 43943: Warning:  Local variable "tmp_0" declared but not used
+line 43943: Warning:  Local variable "tmp_1" declared but not used
+line 43943: Warning:  Local variable "tmp_2" declared but not used
+line 43959: Warning:  Local variable "tmp_0" declared but not used
+line 43959: Warning:  Local variable "tmp_1" declared but not used
+line 43959: Warning:  Local variable "tmp_2" declared but not used
+line 43972: Warning:  Local variable "tmp_0" declared but not used
+line 43972: Warning:  Local variable "tmp_1" declared but not used
+line 43972: Warning:  Local variable "tmp_2" declared but not used
+line 43985: Warning:  Local variable "tmp_0" declared but not used
+line 43985: Warning:  Local variable "tmp_1" declared but not used
+line 43985: Warning:  Local variable "tmp_2" declared but not used
+line 44001: Warning:  Local variable "tmp_0" declared but not used
+line 44001: Warning:  Local variable "tmp_1" declared but not used
+line 44001: Warning:  Local variable "tmp_2" declared but not used
+line 44015: Warning:  Local variable "tmp_0" declared but not used
+line 44015: Warning:  Local variable "tmp_1" declared but not used
+line 44015: Warning:  Local variable "tmp_2" declared but not used
+line 44029: Warning:  Local variable "tmp_0" declared but not used
+line 44029: Warning:  Local variable "tmp_1" declared but not used
+line 44029: Warning:  Local variable "tmp_2" declared but not used
+line 44043: Warning:  Local variable "tmp_0" declared but not used
+line 44043: Warning:  Local variable "tmp_1" declared but not used
+line 44043: Warning:  Local variable "tmp_2" declared but not used
+line 44057: Warning:  Local variable "tmp_0" declared but not used
+line 44072: Warning:  Local variable "tmp_0" declared but not used
+line 44182: Warning:  Local variable "tmp_0" declared but not used
+line 44327: Warning:  Local variable "tmp_0" declared but not used
+line 46225: Warning:  Local variable "rr" declared but not used
+line 46225: Warning:  Local variable "Z1" declared but not used
+line 46225: Warning:  Local variable "Z2" declared but not used
+line 46225: Warning:  Local variable "Z3" declared but not used
+line 46225: Warning:  Local variable "Z4" declared but not used
+line 46246: Warning:  Local variable "rr" declared but not used
+line 46246: Warning:  Local variable "X" declared but not used
+line 46246: Warning:  Local variable "Y" declared but not used
+line 46246: Warning:  Local variable "Z1" declared but not used
+line 46246: Warning:  Local variable "Z2" declared but not used
+line 46246: Warning:  Local variable "Z3" declared but not used
+line 46246: Warning:  Local variable "Z4" declared but not used
+line 46267: Warning:  Local variable "rr" declared but not used
+line 46267: Warning:  Local variable "Z1" declared but not used
+line 46267: Warning:  Local variable "Z2" declared but not used
+line 46267: Warning:  Local variable "Z3" declared but not used
+line 46267: Warning:  Local variable "Z4" declared but not used
+line 46288: Warning:  Local variable "rr" declared but not used
+line 46288: Warning:  Local variable "Z1" declared but not used
+line 46288: Warning:  Local variable "Z2" declared but not used
+line 46288: Warning:  Local variable "Z3" declared but not used
+line 46288: Warning:  Local variable "Z4" declared but not used
+line 46375: Warning:  This statement can never be reached
+>         RELS_ASSERT_FALSE: rfalse; rtrue;
+line 46309: Warning:  Local variable "Z2" declared but not used
+line 46309: Warning:  Local variable "Z4" declared but not used
+line 46450: Warning:  This statement can never be reached
+>         RELS_ASSERT_FALSE: rfalse; rtrue;
+line 46384: Warning:  Local variable "Z2" declared but not used
+line 46384: Warning:  Local variable "Z4" declared but not used
+line 46525: Warning:  This statement can never be reached
+>         RELS_ASSERT_FALSE: rfalse; rtrue;
+line 46459: Warning:  Local variable "Z2" declared but not used
+line 46459: Warning:  Local variable "Z4" declared but not used
+line 46600: Warning:  This statement can never be reached
+>         RELS_ASSERT_FALSE: rfalse; rtrue;
+line 46534: Warning:  Local variable "Z2" declared but not used
+line 46534: Warning:  Local variable "Z4" declared but not used
+line 46675: Warning:  This statement can never be reached
+>         RELS_ASSERT_FALSE: rfalse; rtrue;
+line 46609: Warning:  Local variable "Z2" declared but not used
+line 46609: Warning:  Local variable "Z4" declared but not used
+line 46750: Warning:  This statement can never be reached
+>         RELS_ASSERT_FALSE: rfalse; rtrue;
+line 46684: Warning:  Local variable "Z2" declared but not used
+line 46684: Warning:  Local variable "Z4" declared but not used
+line 46789: Warning:  This statement can never be reached
+>         RELS_ASSERT_FALSE: rfalse; rtrue;
+line 46759: Warning:  Local variable "rr" declared but not used
+line 46759: Warning:  Local variable "Z1" declared but not used
+line 46759: Warning:  Local variable "Z2" declared but not used
+line 46759: Warning:  Local variable "Z3" declared but not used
+line 46759: Warning:  Local variable "Z4" declared but not used
+line 46798: Warning:  Local variable "Z2" declared but not used
+line 46798: Warning:  Local variable "Z4" declared but not used
+line 46871: Warning:  Local variable "Z2" declared but not used
+line 46871: Warning:  Local variable "Z4" declared but not used
+line 46944: Warning:  Local variable "Z2" declared but not used
+line 46944: Warning:  Local variable "Z4" declared but not used
+line 47017: Warning:  Local variable "Z2" declared but not used
+line 47017: Warning:  Local variable "Z4" declared but not used
+line 47090: Warning:  Local variable "Z2" declared but not used
+line 47090: Warning:  Local variable "Z4" declared but not used
+line 47169: Warning:  Local variable "Z2" declared but not used
+line 47169: Warning:  Local variable "Z4" declared but not used
+line 47243: Warning:  Local variable "i" declared but not used
+line 47243: Warning:  Local variable "rel" declared but not used
+line 47256: Warning:  Local variable "X" declared but not used
+line 47261: Warning:  Local variable "L" declared but not used
+line 47261: Warning:  Local variable "R" declared but not used
+line 47292: Warning:  Local variable "X" declared but not used
+line 47297: Warning:  Local variable "L" declared but not used
+line 47297: Warning:  Local variable "R" declared but not used
+line 47537: Warning:  This statement can never be reached
+>         }
+line 47500: Warning:  Local variable "group_wn" declared but not used
+line 47500: Warning:  Local variable "w" declared but not used
+line 47500: Warning:  Local variable "rv" declared but not used
+line 47500: Warning:  Local variable "g" declared but not used
+line 47500: Warning:  Local variable "ss" declared but not used
+line 47500: Warning:  Local variable "spn" declared but not used
+line 47591: Warning:  This statement can never be reached
+>         }
+line 47554: Warning:  Local variable "group_wn" declared but not used
+line 47554: Warning:  Local variable "w" declared but not used
+line 47554: Warning:  Local variable "rv" declared but not used
+line 47554: Warning:  Local variable "g" declared but not used
+line 47554: Warning:  Local variable "ss" declared but not used
+line 47554: Warning:  Local variable "spn" declared but not used
+line 47645: Warning:  This statement can never be reached
+>         }
+line 47608: Warning:  Local variable "group_wn" declared but not used
+line 47608: Warning:  Local variable "w" declared but not used
+line 47608: Warning:  Local variable "rv" declared but not used
+line 47608: Warning:  Local variable "g" declared but not used
+line 47608: Warning:  Local variable "ss" declared but not used
+line 47608: Warning:  Local variable "spn" declared but not used
+line 47699: Warning:  This statement can never be reached
+>         }
+line 47662: Warning:  Local variable "group_wn" declared but not used
+line 47662: Warning:  Local variable "w" declared but not used
+line 47662: Warning:  Local variable "rv" declared but not used
+line 47662: Warning:  Local variable "g" declared but not used
+line 47662: Warning:  Local variable "ss" declared but not used
+line 47662: Warning:  Local variable "spn" declared but not used
+line 47753: Warning:  This statement can never be reached
+>         }
+line 47716: Warning:  Local variable "group_wn" declared but not used
+line 47716: Warning:  Local variable "w" declared but not used
+line 47716: Warning:  Local variable "rv" declared but not used
+line 47716: Warning:  Local variable "g" declared but not used
+line 47716: Warning:  Local variable "ss" declared but not used
+line 47716: Warning:  Local variable "spn" declared but not used
+line 47807: Warning:  This statement can never be reached
+>         }
+line 47770: Warning:  Local variable "group_wn" declared but not used
+line 47770: Warning:  Local variable "w" declared but not used
+line 47770: Warning:  Local variable "rv" declared but not used
+line 47770: Warning:  Local variable "g" declared but not used
+line 47770: Warning:  Local variable "ss" declared but not used
+line 47770: Warning:  Local variable "spn" declared but not used
+line 47861: Warning:  This statement can never be reached
+>         }
+line 47824: Warning:  Local variable "group_wn" declared but not used
+line 47824: Warning:  Local variable "w" declared but not used
+line 47824: Warning:  Local variable "rv" declared but not used
+line 47824: Warning:  Local variable "g" declared but not used
+line 47824: Warning:  Local variable "ss" declared but not used
+line 47824: Warning:  Local variable "spn" declared but not used
+line 47915: Warning:  This statement can never be reached
+>         }
+line 47878: Warning:  Local variable "group_wn" declared but not used
+line 47878: Warning:  Local variable "w" declared but not used
+line 47878: Warning:  Local variable "rv" declared but not used
+line 47878: Warning:  Local variable "g" declared but not used
+line 47878: Warning:  Local variable "ss" declared but not used
+line 47878: Warning:  Local variable "spn" declared but not used
+line 47969: Warning:  This statement can never be reached
+>         }
+line 47932: Warning:  Local variable "group_wn" declared but not used
+line 47932: Warning:  Local variable "w" declared but not used
+line 47932: Warning:  Local variable "rv" declared but not used
+line 47932: Warning:  Local variable "g" declared but not used
+line 47932: Warning:  Local variable "ss" declared but not used
+line 47932: Warning:  Local variable "spn" declared but not used
+line 48023: Warning:  This statement can never be reached
+>         }
+line 47986: Warning:  Local variable "group_wn" declared but not used
+line 47986: Warning:  Local variable "w" declared but not used
+line 47986: Warning:  Local variable "rv" declared but not used
+line 47986: Warning:  Local variable "g" declared but not used
+line 47986: Warning:  Local variable "ss" declared but not used
+line 47986: Warning:  Local variable "spn" declared but not used
+line 48077: Warning:  This statement can never be reached
+>         }
+line 48040: Warning:  Local variable "group_wn" declared but not used
+line 48040: Warning:  Local variable "w" declared but not used
+line 48040: Warning:  Local variable "rv" declared but not used
+line 48040: Warning:  Local variable "g" declared but not used
+line 48040: Warning:  Local variable "ss" declared but not used
+line 48040: Warning:  Local variable "spn" declared but not used
+line 48131: Warning:  This statement can never be reached
+>         }
+line 48094: Warning:  Local variable "group_wn" declared but not used
+line 48094: Warning:  Local variable "w" declared but not used
+line 48094: Warning:  Local variable "rv" declared but not used
+line 48094: Warning:  Local variable "g" declared but not used
+line 48094: Warning:  Local variable "ss" declared but not used
+line 48094: Warning:  Local variable "spn" declared but not used
+line 48206: Warning:  This statement can never be reached
+>         }
+line 48148: Warning:  Local variable "group_wn" declared but not used
+line 48148: Warning:  Local variable "w" declared but not used
+line 48148: Warning:  Local variable "rv" declared but not used
+line 48148: Warning:  Local variable "g" declared but not used
+line 48148: Warning:  Local variable "ss" declared but not used
+line 48148: Warning:  Local variable "spn" declared but not used
+line 48223: Warning:  Local variable "group_wn" declared but not used
+line 48223: Warning:  Local variable "w" declared but not used
+line 48243: Warning:  Local variable "group_wn" declared but not used
+line 48243: Warning:  Local variable "w" declared but not used
+line 48263: Warning:  Local variable "group_wn" declared but not used
+line 48263: Warning:  Local variable "w" declared but not used
+line 48283: Warning:  Local variable "group_wn" declared but not used
+line 48283: Warning:  Local variable "w" declared but not used
+line 48303: Warning:  Local variable "group_wn" declared but not used
+line 48303: Warning:  Local variable "w" declared but not used
+line 48323: Warning:  Local variable "group_wn" declared but not used
+line 48323: Warning:  Local variable "w" declared but not used
+line 48343: Warning:  Local variable "group_wn" declared but not used
+line 48343: Warning:  Local variable "w" declared but not used
+line 48363: Warning:  Local variable "group_wn" declared but not used
+line 48363: Warning:  Local variable "w" declared but not used
+line 48698: Warning:  Local variable "v" declared but not used
+line 48986: Warning:  Local variable "K" declared but not used
+line 49036: Warning:  Using '-->' to access a -> or string array
+>  Flex_Heap-->BLK_HEADER_KOV = 0;
+line 49037: Warning:  Using '-->' to access a -> or string array
+>  Flex_Heap-->BLK_HEADER_RCOUNT = MAX_POSITIVE_NUMBER;
+line 49039: Warning:  Using '-->' to access a -> or string array
+>  Flex_Heap-->BLK_NEXT = blk2;
+line 49040: Warning:  Using '-->' to access a -> or string array
+>  Flex_Heap-->BLK_PREV = NULL;
+line 49056: Warning:  Using '-->' to access a -> or string array
+>  for (txb=Flex_Heap-->BLK_NEXT:
+line 49090: Warning:  Using '-->' to access a -> or string array
+>   for (B = Flex_Heap-->BLK_NEXT:
+line 49096: Warning:  Using '-->' to access a -> or string array
+>   Flex_Heap-->BLK_NEXT = newblock;
+line 49108: Warning:  Using '-->' to access a -> or string array
+>  for (txb=Flex_Heap-->BLK_NEXT:
+line 49147: Warning:  Using '-->' to access a -> or string array
+>  for (free_block = Flex_Heap-->BLK_NEXT:
+line 49275: Warning:  Local variable "tsize" declared but not used
+line 49275: Warning:  Local variable "dsize" declared but not used
+line 50028: Warning:  Local variable "block" declared but not used
+line 50364: Warning:  Local variable "max" declared but not used
+line 50395: Warning:  Local variable "max" declared but not used
+line 50481: Warning:  Unlike C, Inform uses ':' to divide parts of a 'for' loop specification: replacing ';' with ':'
+>  for (i=32: i<$E0;
+line 50480: Warning:  Local variable "case" declared but not used
+line 50538: Warning:  Local variable "x" declared but not used
+line 50871: Warning:  Local variable "i" declared but not used
+line 50871: Warning:  Local variable "p" declared but not used
+line 51372: Warning:  Local variable "tosize" declared but not used
+line 51372: Warning:  Local variable "x" declared but not used
+line 51372: Warning:  Local variable "y" declared but not used
+line 51372: Warning:  Local variable "case" declared but not used
+line 51577: Warning:  Local variable "txt" declared but not used
+line 52084: Warning:  Local variable "rv" declared but not used
+line 52268: Warning:  Local variable "i" declared but not used
+line 52305: Warning:  Local variable "rewind_this" declared but not used
+line 52985: Warning:  Local variable "blobtype" declared but not used
+line 53052: Warning:  Local variable "arg3" declared but not used
+line 53442: Warning:  Local variable "splk" declared but not used
+line 53554: Warning:  Local variable "no_items" declared but not used
+line 54009: Warning:  Local variable "col" declared but not used
+line 54009: Warning:  Local variable "d" declared but not used
+line 54175: Warning:  Local variable "format" declared but not used
+line 54210: Warning:  Local variable "arg3" declared but not used
+line 54300: Warning:  Local variable "rv" declared but not used
+line 54305: Warning:  Local variable "i" declared but not used
+line 54320: Warning:  Local variable "relation" declared but not used
+line 54320: Warning:  Local variable "X" declared but not used
+line 54320: Warning:  Local variable "Y" declared but not used
+line 54330: Warning:  Local variable "skov" declared but not used
+line 54378: Warning:  Local variable "lfrom" declared but not used
+line 54480: Warning:  Local variable "handler" declared but not used
+line 54782: Warning:  Local variable "sym" declared but not used
+line 55262: Warning:  Local variable "cy" declared but not used
+line 43: Warning:  Defined constant "LIBRARY_VERSION" declared but not used
+line 62: Warning:  Routine "ShowFullExtensionVersions" declared but not used
+line 84: Warning:  Defined constant "MAX_FIGURE_THUMBNAILS_IN_INDEX" declared but not used
+line 193: Warning:  Defined constant "HDR_MAGICNUMBER" declared but not used
+line 194: Warning:  Defined constant "HDR_GLULXVERSION" declared but not used
+line 195: Warning:  Defined constant "HDR_RAMSTART" declared but not used
+line 196: Warning:  Defined constant "HDR_EXTSTART" declared but not used
+line 197: Warning:  Defined constant "HDR_ENDMEM" declared but not used
+line 198: Warning:  Defined constant "HDR_STACKSIZE" declared but not used
+line 199: Warning:  Defined constant "HDR_STARTFUNC" declared but not used
+line 200: Warning:  Defined constant "HDR_DECODINGTBL" declared but not used
+line 201: Warning:  Defined constant "HDR_CHECKSUM" declared but not used
+line 202: Warning:  Defined constant "ROM_INFO" declared but not used
+line 203: Warning:  Defined constant "ROM_MEMORYLAYOUT" declared but not used
+line 204: Warning:  Defined constant "ROM_INFORMVERSION" declared but not used
+line 205: Warning:  Defined constant "ROM_COMPVERSION" declared but not used
+line 267: Warning:  Defined constant "CLR_BLACK" declared but not used
+line 268: Warning:  Defined constant "CLR_RED" declared but not used
+line 269: Warning:  Defined constant "CLR_GREEN" declared but not used
+line 270: Warning:  Defined constant "CLR_YELLOW" declared but not used
+line 271: Warning:  Defined constant "CLR_BLUE" declared but not used
+line 272: Warning:  Defined constant "CLR_MAGENTA" declared but not used
+line 272: Warning:  Defined constant "CLR_PURPLE" declared but not used
+line 273: Warning:  Defined constant "CLR_CYAN" declared but not used
+line 273: Warning:  Defined constant "CLR_AZURE" declared but not used
+line 274: Warning:  Defined constant "CLR_WHITE" declared but not used
+line 315: Warning:  Defined constant "RTP_RULESTACK" declared but not used
+line 393: Warning:  Defined constant "WRITING_A_PARAGRAPH_ABOUT_ACT" declared but not used
+line 394: Warning:  Defined constant "LISTING_NONDESCRIPT_ITEMS_ACT" declared but not used
+line 397: Warning:  Defined constant "PRINTING_DESC_OF_DARK_ROOM_ACT" declared but not used
+line 417: Warning:  Defined constant "AMUSING_A_VICTORIOUS_PLAYER_ACT" declared but not used
+line 418: Warning:  Defined constant "PRINTING_PLAYERS_OBITUARY_ACT" declared but not used
+line 421: Warning:  Defined constant "PRINTING_LOCALE_DESCRIPTION_ACT" declared but not used
+line 422: Warning:  Defined constant "CHOOSING_NOTABLE_LOCALE_OBJ_ACT" declared but not used
+line 423: Warning:  Defined constant "PRINTING_LOCALE_PARAGRAPH_ACT" declared but not used
+line 436: Warning:  Defined constant "WHEN_PLAY_BEGINS_RB" declared but not used
+line 437: Warning:  Defined constant "WHEN_PLAY_ENDS_RB" declared but not used
+line 454: Warning:  Defined constant "REPORT_RB" declared but not used
+line 465: Warning:  Defined constant "POINTER_VALUE_TY" declared but not used
+line 466: Warning:  Defined constant "WORD_VALUE_TY" declared but not used
+line 467: Warning:  Defined constant "ARITHMETIC_VALUE_TY" declared but not used
+line 468: Warning:  Defined constant "REAL_ARITHMETIC_VALUE_TY" declared but not used
+line 469: Warning:  Defined constant "ENUMERATED_VALUE_TY" declared but not used
+line 470: Warning:  Defined constant "SAYABLE_VALUE_TY" declared but not used
+line 471: Warning:  Defined constant "COMBINED_VALUE_TY" declared but not used
+line 477: Warning:  Defined constant "UNICODE_CHARACTER_TY" declared but not used
+line 478: Warning:  Defined constant "USE_OPTION_TY" declared but not used
+line 479: Warning:  Defined constant "RESPONSE_TY" declared but not used
+line 480: Warning:  Defined constant "VERB_TY" declared but not used
+line 482: Warning:  Defined constant "TABLE_TY" declared but not used
+line 483: Warning:  Defined constant "EQUATION_TY" declared but not used
+line 484: Warning:  Defined constant "RULEBOOK_OUTCOME_TY" declared but not used
+line 486: Warning:  Defined constant "INTERMEDIATE_TY" declared but not used
+line 488: Warning:  Defined constant "KIND_VARIABLE_TY" declared but not used
+line 490: Warning:  Defined constant "TUPLE_ENTRY_TY" declared but not used
+line 491: Warning:  Defined constant "VARIABLE_TY" declared but not used
+line 494: Warning:  Defined constant "RULEBOOK_TY" declared but not used
+line 497: Warning:  Defined constant "DESCRIPTION_OF_TY" declared but not used
+line 498: Warning:  Defined constant "PROPERTY_TY" declared but not used
+line 499: Warning:  Defined constant "TABLE_COLUMN_TY" declared but not used
+line 501: Warning:  Defined constant "DESCRIPTION_OF_ACTION_TY" declared but not used
+line 504: Warning:  Defined constant "TIME_TY" declared but not used
+line 506: Warning:  Defined constant "FIGURE_NAME_TY" declared but not used
+line 507: Warning:  Defined constant "SOUND_NAME_TY" declared but not used
+line 508: Warning:  Defined constant "EXTERNAL_FILE_TY" declared but not used
+line 550: Warning:  Defined constant "EACH_TURN_REASON" declared but not used
+line 559: Warning:  Defined constant "ILLEGAL_TT" declared but not used
+line 590: Warning:  Defined constant "GPR_HELD" declared but not used
+line 591: Warning:  Defined constant "GPR_MULTI" declared but not used
+line 592: Warning:  Defined constant "GPR_MULTIHELD" declared but not used
+line 593: Warning:  Defined constant "GPR_MULTIEXCEPT" declared but not used
+line 594: Warning:  Defined constant "GPR_MULTIINSIDE" declared but not used
+line 595: Warning:  Defined constant "GPR_CREATURE" declared but not used
+line 652: Warning:  Routine "Prop_Falsity" declared but not used
+line 754: Warning:  Property "inside_description" declared but not used
+line 762: Warning:  Defined constant "life" declared but not used
+line 776: Warning:  Fake action "ListMiscellany__A" declared but not used
+line 777: Warning:  Fake action "Miscellany__A" declared but not used
+line 789: Warning:  Global variable "formal_par2" declared but not used
+line 790: Warning:  Global variable "formal_par3" declared but not used
+line 791: Warning:  Global variable "formal_par4" declared but not used
+line 792: Warning:  Global variable "formal_par5" declared but not used
+line 793: Warning:  Global variable "formal_par6" declared but not used
+line 794: Warning:  Global variable "formal_par7" declared but not used
+line 795: Warning:  Global variable "unicode_temp" declared but not used
+line 812: Warning:  Global variable "los_rv" declared but not used
+line 835: Warning:  Global variable "standard_interpreter" declared but not used
+line 860: Warning:  Global variable "notify_mode" declared but not used
+line 876: Warning:  Global variable "actor_location" declared but not used
+line 889: Warning:  Global variable "trace_actions" declared but not used
+line 931: Warning:  Global variable "reason_code" declared but not used
+line 938: Warning:  Global variable "move_from" declared but not used
+line 939: Warning:  Global variable "move_to" declared but not used
+line 940: Warning:  Global variable "move_by" declared but not used
+line 941: Warning:  Global variable "move_through" declared but not used
+line 983: Warning:  Global variable "debug_flag" declared but not used
+line 1017: Warning:  Defined constant "GLK_NULL" declared but not used
+line 1037: Warning:  Defined constant "evtype_Arrange" declared but not used
+line 1038: Warning:  Defined constant "evtype_CharInput" declared but not used
+line 1039: Warning:  Defined constant "evtype_Hyperlink" declared but not used
+line 1040: Warning:  Defined constant "evtype_LineInput" declared but not used
+line 1041: Warning:  Defined constant "evtype_MouseInput" declared but not used
+line 1042: Warning:  Defined constant "evtype_None" declared but not used
+line 1043: Warning:  Defined constant "evtype_Redraw" declared but not used
+line 1044: Warning:  Defined constant "evtype_SoundNotify" declared but not used
+line 1045: Warning:  Defined constant "evtype_Timer" declared but not used
+line 1046: Warning:  Defined constant "evtype_VolumeNotify" declared but not used
+line 1053: Warning:  Defined constant "fileusage_InputRecord" declared but not used
+line 1054: Warning:  Defined constant "fileusage_SavedGame" declared but not used
+line 1056: Warning:  Defined constant "fileusage_Transcript" declared but not used
+line 1057: Warning:  Defined constant "fileusage_TypeMask" declared but not used
+line 1058: Warning:  Defined constant "gestalt_CharInput" declared but not used
+line 1059: Warning:  Defined constant "gestalt_CharOutput" declared but not used
+line 1060: Warning:  Defined constant "gestalt_CharOutput_ApproxPrint" declared but not used
+line 1061: Warning:  Defined constant "gestalt_CharOutput_CannotPrint" declared but not used
+line 1062: Warning:  Defined constant "gestalt_CharOutput_ExactPrint" declared but not used
+line 1063: Warning:  Defined constant "gestalt_DateTime" declared but not used
+line 1064: Warning:  Defined constant "gestalt_DrawImage" declared but not used
+line 1066: Warning:  Defined constant "gestalt_GraphicsCharInput" declared but not used
+line 1067: Warning:  Defined constant "gestalt_GraphicsTransparency" declared but not used
+line 1068: Warning:  Defined constant "gestalt_HyperlinkInput" declared but not used
+line 1069: Warning:  Defined constant "gestalt_Hyperlinks" declared but not used
+line 1070: Warning:  Defined constant "gestalt_LineInput" declared but not used
+line 1071: Warning:  Defined constant "gestalt_LineInputEcho" declared but not used
+line 1072: Warning:  Defined constant "gestalt_LineTerminatorKey" declared but not used
+line 1073: Warning:  Defined constant "gestalt_LineTerminators" declared but not used
+line 1074: Warning:  Defined constant "gestalt_MouseInput" declared but not used
+line 1075: Warning:  Defined constant "gestalt_ResourceStream" declared but not used
+line 1077: Warning:  Defined constant "gestalt_Sound2" declared but not used
+line 1078: Warning:  Defined constant "gestalt_SoundMusic" declared but not used
+line 1079: Warning:  Defined constant "gestalt_SoundNotify" declared but not used
+line 1080: Warning:  Defined constant "gestalt_SoundVolume" declared but not used
+line 1081: Warning:  Defined constant "gestalt_Timer" declared but not used
+line 1083: Warning:  Defined constant "gestalt_UnicodeNorm" declared but not used
+line 1084: Warning:  Defined constant "gestalt_Version" declared but not used
+line 1086: Warning:  Defined constant "imagealign_InlineDown" declared but not used
+line 1087: Warning:  Defined constant "imagealign_MarginLeft" declared but not used
+line 1088: Warning:  Defined constant "imagealign_MarginRight" declared but not used
+line 1089: Warning:  Defined constant "imagealign_InlineUp" declared but not used
+line 1090: Warning:  Defined constant "keycode_Delete" declared but not used
+line 1091: Warning:  Defined constant "keycode_Down" declared but not used
+line 1092: Warning:  Defined constant "keycode_End" declared but not used
+line 1093: Warning:  Defined constant "keycode_Escape" declared but not used
+line 1094: Warning:  Defined constant "keycode_Func1" declared but not used
+line 1095: Warning:  Defined constant "keycode_Func10" declared but not used
+line 1096: Warning:  Defined constant "keycode_Func11" declared but not used
+line 1097: Warning:  Defined constant "keycode_Func12" declared but not used
+line 1098: Warning:  Defined constant "keycode_Func2" declared but not used
+line 1099: Warning:  Defined constant "keycode_Func3" declared but not used
+line 1100: Warning:  Defined constant "keycode_Func4" declared but not used
+line 1101: Warning:  Defined constant "keycode_Func5" declared but not used
+line 1102: Warning:  Defined constant "keycode_Func6" declared but not used
+line 1103: Warning:  Defined constant "keycode_Func7" declared but not used
+line 1104: Warning:  Defined constant "keycode_Func8" declared but not used
+line 1105: Warning:  Defined constant "keycode_Func9" declared but not used
+line 1106: Warning:  Defined constant "keycode_Home" declared but not used
+line 1107: Warning:  Defined constant "keycode_Left" declared but not used
+line 1108: Warning:  Defined constant "keycode_MAXVAL" declared but not used
+line 1109: Warning:  Defined constant "keycode_PageDown" declared but not used
+line 1110: Warning:  Defined constant "keycode_PageUp" declared but not used
+line 1111: Warning:  Defined constant "keycode_Return" declared but not used
+line 1112: Warning:  Defined constant "keycode_Right" declared but not used
+line 1113: Warning:  Defined constant "keycode_Tab" declared but not used
+line 1114: Warning:  Defined constant "keycode_Unknown" declared but not used
+line 1115: Warning:  Defined constant "keycode_Up" declared but not used
+line 1116: Warning:  Defined constant "seekmode_Current" declared but not used
+line 1117: Warning:  Defined constant "seekmode_End" declared but not used
+line 1118: Warning:  Defined constant "seekmode_Start" declared but not used
+line 1127: Warning:  Defined constant "style_Preformatted" declared but not used
+line 1129: Warning:  Defined constant "style_User1" declared but not used
+line 1130: Warning:  Defined constant "style_User2" declared but not used
+line 1132: Warning:  Defined constant "stylehint_Indentation" declared but not used
+line 1134: Warning:  Defined constant "stylehint_NUMHINTS" declared but not used
+line 1136: Warning:  Defined constant "stylehint_ParaIndentation" declared but not used
+line 1137: Warning:  Defined constant "stylehint_Proportional" declared but not used
+line 1139: Warning:  Defined constant "stylehint_Size" declared but not used
+line 1142: Warning:  Defined constant "stylehint_just_Centered" declared but not used
+line 1143: Warning:  Defined constant "stylehint_just_LeftFlush" declared but not used
+line 1144: Warning:  Defined constant "stylehint_just_LeftRight" declared but not used
+line 1145: Warning:  Defined constant "stylehint_just_RightFlush" declared but not used
+line 1147: Warning:  Defined constant "winmethod_Below" declared but not used
+line 1148: Warning:  Defined constant "winmethod_Border" declared but not used
+line 1149: Warning:  Defined constant "winmethod_BorderMask" declared but not used
+line 1150: Warning:  Defined constant "winmethod_DirMask" declared but not used
+line 1151: Warning:  Defined constant "winmethod_DivisionMask" declared but not used
+line 1153: Warning:  Defined constant "winmethod_Left" declared but not used
+line 1154: Warning:  Defined constant "winmethod_NoBorder" declared but not used
+line 1155: Warning:  Defined constant "winmethod_Proportional" declared but not used
+line 1156: Warning:  Defined constant "winmethod_Right" declared but not used
+line 1157: Warning:  Defined constant "wintype_AllTypes" declared but not used
+line 1158: Warning:  Defined constant "wintype_Blank" declared but not used
+line 1159: Warning:  Defined constant "wintype_Graphics" declared but not used
+line 1160: Warning:  Defined constant "wintype_Pair" declared but not used
+line 1164: Warning:  Routine "glk_exit" declared but not used
+line 1170: Warning:  Routine "glk_tick" declared but not used
+line 1182: Warning:  Routine "glk_gestalt_ext" declared but not used
+line 1194: Warning:  Routine "glk_window_get_rock" declared but not used
+line 1200: Warning:  Routine "glk_window_get_root" declared but not used
+line 1230: Warning:  Routine "glk_window_get_arrangement" declared but not used
+line 1236: Warning:  Routine "glk_window_get_type" declared but not used
+line 1260: Warning:  Routine "glk_window_get_stream" declared but not used
+line 1272: Warning:  Routine "glk_window_get_echo_stream" declared but not used
+line 1284: Warning:  Routine "glk_window_get_sibling" declared but not used
+line 1296: Warning:  Routine "glk_stream_get_rock" declared but not used
+line 1326: Warning:  Routine "glk_stream_get_position" declared but not used
+line 1344: Warning:  Routine "glk_stream_open_resource" declared but not used
+line 1350: Warning:  Routine "glk_fileref_create_temp" declared but not used
+line 1380: Warning:  Routine "glk_fileref_get_rock" declared but not used
+line 1386: Warning:  Routine "glk_fileref_delete_file" declared but not used
+line 1398: Warning:  Routine "glk_fileref_create_from_fileref" declared but not used
+line 1404: Warning:  Routine "glk_put_char" declared but not used
+line 1416: Warning:  Routine "glk_put_string" declared but not used
+line 1422: Warning:  Routine "glk_put_string_stream" declared but not used
+line 1446: Warning:  Routine "glk_set_style_stream" declared but not used
+line 1464: Warning:  Routine "glk_get_buffer_stream" declared but not used
+line 1494: Warning:  Routine "glk_style_distinguish" declared but not used
+line 1500: Warning:  Routine "glk_style_measure" declared but not used
+line 1512: Warning:  Routine "glk_select_poll" declared but not used
+line 1524: Warning:  Routine "glk_cancel_line_event" declared but not used
+line 1542: Warning:  Routine "glk_request_mouse_event" declared but not used
+line 1548: Warning:  Routine "glk_cancel_mouse_event" declared but not used
+line 1560: Warning:  Routine "glk_image_get_info" declared but not used
+line 1572: Warning:  Routine "glk_image_draw_scaled" declared but not used
+line 1578: Warning:  Routine "glk_window_flow_break" declared but not used
+line 1584: Warning:  Routine "glk_window_erase_rect" declared but not used
+line 1590: Warning:  Routine "glk_window_fill_rect" declared but not used
+line 1596: Warning:  Routine "glk_window_set_background_color" declared but not used
+line 1608: Warning:  Routine "glk_schannel_get_rock" declared but not used
+line 1620: Warning:  Routine "glk_schannel_destroy" declared but not used
+line 1626: Warning:  Routine "glk_schannel_create_ext" declared but not used
+line 1632: Warning:  Routine "glk_schannel_play_multi" declared but not used
+line 1644: Warning:  Routine "glk_schannel_play_ext" declared but not used
+line 1656: Warning:  Routine "glk_schannel_set_volume" declared but not used
+line 1662: Warning:  Routine "glk_sound_load_hint" declared but not used
+line 1668: Warning:  Routine "glk_schannel_set_volume_ext" declared but not used
+line 1674: Warning:  Routine "glk_schannel_pause" declared but not used
+line 1680: Warning:  Routine "glk_schannel_unpause" declared but not used
+line 1686: Warning:  Routine "glk_set_hyperlink" declared but not used
+line 1692: Warning:  Routine "glk_set_hyperlink_stream" declared but not used
+line 1698: Warning:  Routine "glk_request_hyperlink_event" declared but not used
+line 1704: Warning:  Routine "glk_cancel_hyperlink_event" declared but not used
+line 1710: Warning:  Routine "glk_buffer_to_lower_case_uni" declared but not used
+line 1716: Warning:  Routine "glk_buffer_to_upper_case_uni" declared but not used
+line 1722: Warning:  Routine "glk_buffer_to_title_case_uni" declared but not used
+line 1728: Warning:  Routine "glk_buffer_canon_decompose_uni" declared but not used
+line 1734: Warning:  Routine "glk_buffer_canon_normalize_uni" declared but not used
+line 1740: Warning:  Routine "glk_put_char_uni" declared but not used
+line 1746: Warning:  Routine "glk_put_string_uni" declared but not used
+line 1752: Warning:  Routine "glk_put_buffer_uni" declared but not used
+line 1758: Warning:  Routine "glk_put_char_stream_uni" declared but not used
+line 1764: Warning:  Routine "glk_put_string_stream_uni" declared but not used
+line 1770: Warning:  Routine "glk_put_buffer_stream_uni" declared but not used
+line 1776: Warning:  Routine "glk_get_char_stream_uni" declared but not used
+line 1782: Warning:  Routine "glk_get_buffer_stream_uni" declared but not used
+line 1788: Warning:  Routine "glk_get_line_stream_uni" declared but not used
+line 1794: Warning:  Routine "glk_stream_open_file_uni" declared but not used
+line 1806: Warning:  Routine "glk_stream_open_resource_uni" declared but not used
+line 1812: Warning:  Routine "glk_request_char_event_uni" declared but not used
+line 1818: Warning:  Routine "glk_request_line_event_uni" declared but not used
+line 1824: Warning:  Routine "glk_set_echo_line_event" declared but not used
+line 1830: Warning:  Routine "glk_set_terminators_line_event" declared but not used
+line 1836: Warning:  Routine "glk_current_time" declared but not used
+line 1842: Warning:  Routine "glk_current_simple_time" declared but not used
+line 1848: Warning:  Routine "glk_time_to_date_utc" declared but not used
+line 1854: Warning:  Routine "glk_time_to_date_local" declared but not used
+line 1860: Warning:  Routine "glk_simple_time_to_date_utc" declared but not used
+line 1866: Warning:  Routine "glk_simple_time_to_date_local" declared but not used
+line 1872: Warning:  Routine "glk_date_to_time_utc" declared but not used
+line 1878: Warning:  Routine "glk_date_to_time_local" declared but not used
+line 1884: Warning:  Routine "glk_date_to_simple_time_utc" declared but not used
+line 1890: Warning:  Routine "glk_date_to_simple_time_local" declared but not used
+line 1906: Warning:  Defined constant "GG_COMMANDWSTR_ROCK" declared but not used
+line 1907: Warning:  Defined constant "GG_COMMANDRSTR_ROCK" declared but not used
+line 2133: Warning:  Routine "VM_KeyChar" declared but not used
+line 2216: Warning:  Routine "VM_KeyDelay" declared but not used
+line 2365: Warning:  Routine "LTI_Insert" declared but not used
+line 2399: Warning:  Routine "GGWordCompare" declared but not used
+line 2438: Warning:  Routine "VM_CommandTableAddress" declared but not used
+line 2442: Warning:  Routine "VM_PrintCommandWords" declared but not used
+line 2641: Warning:  Routine "VM_ScreenHeight" declared but not used
+line 2743: Warning:  Routine "Box__Routine" declared but not used
+line 3006: Warning:  Routine "Unsigned__Compare" declared but not used
+line 3016: Warning:  Routine "RT__ChLDW" declared but not used
+line 3021: Warning:  Routine "RT__ChLDB" declared but not used
+line 3818: Warning:  Defined constant "AMUSING__WD" declared but not used
+line 3819: Warning:  Defined constant "FULLSCORE1__WD" declared but not used
+line 3820: Warning:  Defined constant "FULLSCORE2__WD" declared but not used
+line 3821: Warning:  Defined constant "QUIT1__WD" declared but not used
+line 3822: Warning:  Defined constant "QUIT2__WD" declared but not used
+line 3823: Warning:  Defined constant "RESTART__WD" declared but not used
+line 3824: Warning:  Defined constant "RESTORE__WD" declared but not used
+line 3955: Warning:  Routine "LanguageTimeOfDay" declared but not used
+line 4028: Warning:  Routine "LanguageVerbLikesAdverb" declared but not used
+line 4489: Warning:  Routine "RegardingMarkedObjects" declared but not used
+line 5241: Warning:  Routine "DigitToValue" declared but not used
+line 5258: Warning:  Defined constant "R_DecimalNumber" declared but not used
+line 5259: Warning:  Defined constant "R_PrintTimeOfDay" declared but not used
+line 5306: Warning:  Routine "SwapWorkflags" declared but not used
+line 5322: Warning:  Defined constant "NO_USE_OPTIONS" declared but not used
+line 5373: Warning:  Routine "IntegerDivide" declared but not used
+line 5418: Warning:  Routine "SignedCompare" declared but not used
+line 5528: Warning:  Global variable "length_of_noun" declared but not used
+line 5532: Warning:  Global variable "multi_mode" declared but not used
+line 5634: Warning:  Routine "SpliceSnippet" declared but not used
+line 7286: Warning:  Routine "ArticleDescriptors" declared but not used
+line 8116: Warning:  Defined constant "SCORE__IFGOOD" declared but not used
+line 8124: Warning:  Defined constant "SCORE__DIVISOR" declared but not used
+line 8415: Warning:  Routine "MultiFilter" declared but not used
+line 8429: Warning:  Routine "PlaceInScope" declared but not used
+line 8436: Warning:  Routine "AddToScope" declared but not used
+line 8457: Warning:  Routine "LoopOverScope" declared but not used
+line 8847: Warning:  Routine "GetGender" declared but not used
+line 8891: Warning:  Routine "SetPronoun" declared but not used
+line 8906: Warning:  Routine "ResetVagueWords" declared but not used
+line 8927: Warning:  Routine "PronounNoticeHeldObjects" declared but not used
+line 9399: Warning:  Routine "SetTimedEvent" declared but not used
+line 9417: Warning:  Routine "SetTime" declared but not used
+line 9581: Warning:  Defined constant "p3_list_grouping_key" declared but not used
+line 9582: Warning:  Defined constant "p4_printed_name" declared but not used
+line 9583: Warning:  Defined constant "p5_printed_plural_name" declared but not used
+line 9584: Warning:  Defined constant "p6_indefinite_article" declared but not used
+line 9585: Warning:  Defined constant "p7_description" declared but not used
+line 9586: Warning:  Defined constant "p8_map_region" declared but not used
+line 9587: Warning:  Defined constant "p9_initial_appearance" declared but not used
+line 9588: Warning:  Defined constant "p11_other_side" declared but not used
+line 9589: Warning:  Defined constant "p12_carrying_capacity" declared but not used
+line 9590: Warning:  Defined constant "p13_matching_key" declared but not used
+line 9591: Warning:  Defined constant "p15_plural_named" declared but not used
+line 9592: Warning:  Defined constant "p17_proper_named" declared but not used
+line 9593: Warning:  Defined constant "p19_ambiguously_plural" declared but not used
+line 9594: Warning:  Defined constant "p20_privately_named" declared but not used
+line 9595: Warning:  Defined constant "p22_lighted" declared but not used
+line 9596: Warning:  Defined constant "p24_visited" declared but not used
+line 9597: Warning:  Defined constant "p26_lit" declared but not used
+line 9598: Warning:  Defined constant "p28_edible" declared but not used
+line 9599: Warning:  Defined constant "p30_fixed_in_place" declared but not used
+line 9600: Warning:  Defined constant "p32_scenery" declared but not used
+line 9601: Warning:  Defined constant "p33_wearable" declared but not used
+line 9602: Warning:  Defined constant "p34_pushable_between_rooms" declared but not used
+line 9603: Warning:  Defined constant "p35_handled" declared but not used
+line 9604: Warning:  Defined constant "p37_undescribed" declared but not used
+line 9605: Warning:  Defined constant "p38_marked_for_listing" declared but not used
+line 9606: Warning:  Defined constant "p40_mentioned" declared but not used
+line 9607: Warning:  Defined constant "p42_enterable" declared but not used
+line 9608: Warning:  Defined constant "p44_transparent" declared but not used
+line 9609: Warning:  Defined constant "p45_open" declared but not used
+line 9610: Warning:  Defined constant "p47_openable" declared but not used
+line 9611: Warning:  Defined constant "p49_lockable" declared but not used
+line 9612: Warning:  Defined constant "p50_locked" declared but not used
+line 9613: Warning:  Defined constant "p52_female" declared but not used
+line 9614: Warning:  Defined constant "p54_neuter" declared but not used
+line 9615: Warning:  Defined constant "p55_switched_on" declared but not used
+line 9616: Warning:  Defined constant "p59" declared but not used
+line 9617: Warning:  Defined constant "p60" declared but not used
+line 9618: Warning:  Defined constant "p61" declared but not used
+line 9619: Warning:  Defined constant "p62" declared but not used
+line 9620: Warning:  Defined constant "p63" declared but not used
+line 9621: Warning:  Defined constant "p64" declared but not used
+line 9622: Warning:  Defined constant "p65" declared but not used
+line 9623: Warning:  Defined constant "p66" declared but not used
+line 9624: Warning:  Defined constant "p67" declared but not used
+line 9625: Warning:  Defined constant "p68" declared but not used
+line 9626: Warning:  Defined constant "p69" declared but not used
+line 9627: Warning:  Defined constant "p70" declared but not used
+line 9628: Warning:  Defined constant "p71" declared but not used
+line 9629: Warning:  Defined constant "p72" declared but not used
+line 9630: Warning:  Defined constant "p73" declared but not used
+line 9631: Warning:  Defined constant "p74" declared but not used
+line 9632: Warning:  Defined constant "p75" declared but not used
+line 9633: Warning:  Defined constant "p76" declared but not used
+line 9634: Warning:  Defined constant "p77" declared but not used
+line 9635: Warning:  Defined constant "p78" declared but not used
+line 9636: Warning:  Defined constant "p79" declared but not used
+line 9637: Warning:  Defined constant "p80" declared but not used
+line 9638: Warning:  Defined constant "p81" declared but not used
+line 9639: Warning:  Defined constant "p82" declared but not used
+line 9640: Warning:  Defined constant "p83" declared but not used
+line 9641: Warning:  Defined constant "p84" declared but not used
+line 9642: Warning:  Defined constant "p85" declared but not used
+line 9643: Warning:  Defined constant "p86" declared but not used
+line 9644: Warning:  Defined constant "p87" declared but not used
+line 9645: Warning:  Defined constant "p88" declared but not used
+line 9646: Warning:  Defined constant "p89" declared but not used
+line 9647: Warning:  Defined constant "p90" declared but not used
+line 9648: Warning:  Defined constant "p91" declared but not used
+line 9649: Warning:  Defined constant "p92" declared but not used
+line 9650: Warning:  Defined constant "p93" declared but not used
+line 9651: Warning:  Defined constant "p94" declared but not used
+line 9652: Warning:  Defined constant "p95" declared but not used
+line 9653: Warning:  Defined constant "p96" declared but not used
+line 9654: Warning:  Defined constant "p97" declared but not used
+line 9655: Warning:  Defined constant "p98" declared but not used
+line 9656: Warning:  Defined constant "p99" declared but not used
+line 9657: Warning:  Defined constant "p100" declared but not used
+line 9658: Warning:  Defined constant "p101" declared but not used
+line 9659: Warning:  Defined constant "p102" declared but not used
+line 9660: Warning:  Defined constant "p103" declared but not used
+line 9661: Warning:  Defined constant "p104" declared but not used
+line 9951: Warning:  Defined constant "V0_printing_the_name" declared but not used
+line 9953: Warning:  Defined constant "V2_printing_a_number" declared but not used
+line 9954: Warning:  Defined constant "V3_printing_room_description" declared but not used
+line 9955: Warning:  Defined constant "V4_printing_inventory_detail" declared but not used
+line 9956: Warning:  Defined constant "V5_listing_contents" declared but not used
+line 9957: Warning:  Defined constant "V6_grouping_together" declared but not used
+line 9962: Warning:  Defined constant "V11_printing_the_announcemen" declared but not used
+line 9963: Warning:  Defined constant "V12_printing_the_announcemen" declared but not used
+line 9964: Warning:  Defined constant "V13_printing_a_refusal_to_ac" declared but not used
+line 9965: Warning:  Defined constant "V14_constructing_the_status_" declared but not used
+line 9966: Warning:  Defined constant "V15_printing_the_banner_text" declared but not used
+line 9967: Warning:  Defined constant "V16_reading_a_command" declared but not used
+line 9968: Warning:  Defined constant "V17_deciding_the_scope" declared but not used
+line 9969: Warning:  Defined constant "V18_deciding_the_concealed_p" declared but not used
+line 9970: Warning:  Defined constant "V19_deciding_whether_all_inc" declared but not used
+line 9971: Warning:  Defined constant "V20_clarifying_the_parser_s_" declared but not used
+line 9972: Warning:  Defined constant "V21_asking_which_do_you_mean" declared but not used
+line 9973: Warning:  Defined constant "V22_printing_a_parser_error" declared but not used
+line 9974: Warning:  Defined constant "V23_supplying_a_missing_noun" declared but not used
+line 9975: Warning:  Defined constant "V24_supplying_a_missing_seco" declared but not used
+line 9977: Warning:  Defined constant "V26_starting_the_virtual_mac" declared but not used
+line 9980: Warning:  Defined constant "V29_handling_the_final_quest" declared but not used
+line 10017: Warning:  Defined constant "REL_BLOCK_HEADER" declared but not used
+line 10034: Warning:  Routine "A_PrintSceneName" declared but not used
+line 10039: Warning:  Routine "B_PrintSceneName" declared but not used
+line 10044: Warning:  Routine "R_PrintSceneName" declared but not used
+line 10061: Warning:  Routine "A_PrintFigureName" declared but not used
+line 10066: Warning:  Routine "B_PrintFigureName" declared but not used
+line 10071: Warning:  Routine "R_PrintFigureName" declared but not used
+line 10087: Warning:  Routine "A_PrintSoundName" declared but not used
+line 10092: Warning:  Routine "B_PrintSoundName" declared but not used
+line 10097: Warning:  Routine "R_PrintSoundName" declared but not used
+line 10113: Warning:  Routine "A_PrintExternalFileName" declared but not used
+line 10118: Warning:  Routine "B_PrintExternalFileName" declared but not used
+line 10123: Warning:  Routine "R_PrintExternalFileName" declared but not used
+line 10145: Warning:  Routine "A_E61" declared but not used
+line 10150: Warning:  Routine "B_E61" declared but not used
+line 10155: Warning:  Routine "R_E61" declared but not used
+line 10196: Warning:  Routine "A_E62" declared but not used
+line 10201: Warning:  Routine "B_E62" declared but not used
+line 10206: Warning:  Routine "R_E62" declared but not used
+line 10227: Warning:  Routine "A_E63" declared but not used
+line 10232: Warning:  Routine "B_E63" declared but not used
+line 10237: Warning:  Routine "R_E63" declared but not used
+line 10259: Warning:  Routine "A_E64" declared but not used
+line 10264: Warning:  Routine "B_E64" declared but not used
+line 10269: Warning:  Routine "R_E64" declared but not used
+line 10287: Warning:  Routine "A_E65" declared but not used
+line 10292: Warning:  Routine "B_E65" declared but not used
+line 10297: Warning:  Routine "R_E65" declared but not used
+line 10316: Warning:  Routine "A_E66" declared but not used
+line 10321: Warning:  Routine "B_E66" declared but not used
+line 10326: Warning:  Routine "R_E66" declared but not used
+line 10503: Warning:  Routine "I7_Kind_Name" declared but not used
+line 10524: Warning:  Defined constant "RBNO_1" declared but not used
+line 10525: Warning:  Defined constant "RBNO_2" declared but not used
+line 10526: Warning:  Defined constant "RBNO_3" declared but not used
+line 10527: Warning:  Defined constant "RBNO_4" declared but not used
+line 10528: Warning:  Defined constant "RBNO_5" declared but not used
+line 10535: Warning:  Defined constant "RBNO_12" declared but not used
+line 10553: Warning:  Defined constant "IK3_First" declared but not used
+line 10554: Warning:  Defined constant "IK4_First" declared but not used
+line 10555: Warning:  Defined constant "IK5_First" declared but not used
+line 10556: Warning:  Defined constant "IK6_First" declared but not used
+line 10557: Warning:  Defined constant "IK7_First" declared but not used
+line 10559: Warning:  Defined constant "IK9_First" declared but not used
+line 10560: Warning:  Defined constant "IK10_First" declared but not used
+line 10561: Warning:  Defined constant "IK11_First" declared but not used
+line 10562: Warning:  Defined constant "IK12_First" declared but not used
+line 10563: Warning:  Defined constant "IK13_First" declared but not used
+line 10564: Warning:  Defined constant "IK14_First" declared but not used
+line 10565: Warning:  Defined constant "IK15_First" declared but not used
+line 10568: Warning:  Defined constant "DirectionObject_0" declared but not used
+line 10569: Warning:  Defined constant "DirectionObject_1" declared but not used
+line 10570: Warning:  Defined constant "DirectionObject_2" declared but not used
+line 10571: Warning:  Defined constant "DirectionObject_3" declared but not used
+line 10572: Warning:  Defined constant "DirectionObject_4" declared but not used
+line 10573: Warning:  Defined constant "DirectionObject_5" declared but not used
+line 10574: Warning:  Defined constant "DirectionObject_6" declared but not used
+line 10575: Warning:  Defined constant "DirectionObject_7" declared but not used
+line 10576: Warning:  Defined constant "DirectionObject_8" declared but not used
+line 10577: Warning:  Defined constant "DirectionObject_9" declared but not used
+line 10578: Warning:  Defined constant "DirectionObject_10" declared but not used
+line 10579: Warning:  Defined constant "DirectionObject_11" declared but not used
+line 11153: Warning:  Array "TableOfTables" declared but not used
+line 19182: Warning:  Routine "R_0" declared but not used
+line 19190: Warning:  Routine "R_1" declared but not used
+line 19198: Warning:  Routine "R_2" declared but not used
+line 19206: Warning:  Routine "R_3" declared but not used
+line 19214: Warning:  Routine "R_4" declared but not used
+line 19222: Warning:  Routine "R_5" declared but not used
+line 19230: Warning:  Routine "R_6" declared but not used
+line 19238: Warning:  Routine "R_7" declared but not used
+line 19246: Warning:  Routine "R_8" declared but not used
+line 19254: Warning:  Routine "R_39" declared but not used
+line 19262: Warning:  Routine "R_40" declared but not used
+line 19270: Warning:  Routine "R_41" declared but not used
+line 19278: Warning:  Routine "R_42" declared but not used
+line 19286: Warning:  Routine "R_43" declared but not used
+line 19294: Warning:  Routine "R_44" declared but not used
+line 19302: Warning:  Routine "R_45" declared but not used
+line 19310: Warning:  Routine "R_46" declared but not used
+line 19318: Warning:  Routine "R_47" declared but not used
+line 19326: Warning:  Routine "R_48" declared but not used
+line 19334: Warning:  Routine "R_49" declared but not used
+line 19342: Warning:  Routine "R_50" declared but not used
+line 19350: Warning:  Routine "R_51" declared but not used
+line 19358: Warning:  Routine "R_52" declared but not used
+line 19366: Warning:  Routine "R_53" declared but not used
+line 19374: Warning:  Routine "R_54" declared but not used
+line 19382: Warning:  Routine "R_55" declared but not used
+line 19390: Warning:  Routine "R_56" declared but not used
+line 19398: Warning:  Routine "R_57" declared but not used
+line 19406: Warning:  Routine "R_58" declared but not used
+line 19414: Warning:  Routine "R_59" declared but not used
+line 19422: Warning:  Routine "R_60" declared but not used
+line 19430: Warning:  Routine "R_61" declared but not used
+line 19438: Warning:  Routine "R_62" declared but not used
+line 19446: Warning:  Routine "R_63" declared but not used
+line 19454: Warning:  Routine "R_64" declared but not used
+line 19462: Warning:  Routine "R_95" declared but not used
+line 19474: Warning:  Routine "Adj_1_t1_v10" declared but not used
+line 19481: Warning:  Routine "Adj_2_t1_v10" declared but not used
+line 19495: Warning:  Routine "Adj_4_t1_v10" declared but not used
+line 19502: Warning:  Routine "Adj_5_t1_v10" declared but not used
+line 19509: Warning:  Routine "Adj_6_t1_v10" declared but not used
+line 19516: Warning:  Routine "Adj_7_t1_v10" declared but not used
+line 19523: Warning:  Routine "Adj_8_t1_v10" declared but not used
+line 19537: Warning:  Routine "Adj_10_t1_v10" declared but not used
+line 19544: Warning:  Routine "Adj_11_t1_v10" declared but not used
+line 19551: Warning:  Routine "Adj_12_t1_v10" declared but not used
+line 19558: Warning:  Routine "Adj_13_t1_v11" declared but not used
+line 19565: Warning:  Routine "Adj_14_t1_v11" declared but not used
+line 19572: Warning:  Routine "Adj_15_t1_v11" declared but not used
+line 19579: Warning:  Routine "Adj_15_t1_v12" declared but not used
+line 19586: Warning:  Routine "Adj_16_t1_v11" declared but not used
+line 19593: Warning:  Routine "Adj_16_t1_v12" declared but not used
+line 19600: Warning:  Routine "Adj_17_t1_v14" declared but not used
+line 19607: Warning:  Routine "Adj_17_t1_v20" declared but not used
+line 19614: Warning:  Routine "Adj_17_t1_v32" declared but not used
+line 19628: Warning:  Routine "Adj_17_t1_v34" declared but not used
+line 19635: Warning:  Routine "Adj_17_t1_v30" declared but not used
+line 19642: Warning:  Routine "Adj_18_t1_v14" declared but not used
+line 19649: Warning:  Routine "Adj_18_t1_v20" declared but not used
+line 19656: Warning:  Routine "Adj_18_t1_v32" declared but not used
+line 19663: Warning:  Routine "Adj_18_t1_v33" declared but not used
+line 19670: Warning:  Routine "Adj_18_t1_v34" declared but not used
+line 19677: Warning:  Routine "Adj_18_t1_v30" declared but not used
+line 19684: Warning:  Routine "Adj_19_t1_v14" declared but not used
+line 19691: Warning:  Routine "Adj_20_t1_v14" declared but not used
+line 19698: Warning:  Routine "Adj_21_t1_v43" declared but not used
+line 19705: Warning:  Routine "Adj_22_t1_v20" declared but not used
+line 19712: Warning:  Routine "Adj_23_t1_v20" declared but not used
+line 19719: Warning:  Routine "Adj_24_t1_v33" declared but not used
+line 19733: Warning:  Routine "Adj_26_t1_v16" declared but not used
+line 19740: Warning:  Routine "Adj_27_t1_v30" declared but not used
+line 19747: Warning:  Routine "Adj_28_t1_v30" declared but not used
+line 19754: Warning:  Routine "Adj_29_t1_v30" declared but not used
+line 19761: Warning:  Routine "Adj_30_t1_v30" declared but not used
+line 19768: Warning:  Routine "Adj_31_t1_v30" declared but not used
+line 19775: Warning:  Routine "Adj_32_t1_v30" declared but not used
+line 19782: Warning:  Routine "Adj_33_t1_v18" declared but not used
+line 19789: Warning:  Routine "Adj_34_t1_v18" declared but not used
+line 19796: Warning:  Routine "Adj_35_t1_v18" declared but not used
+line 19803: Warning:  Routine "Adj_36_t1_v18" declared but not used
+line 19810: Warning:  Routine "Adj_37_t1_v12" declared but not used
+line 19817: Warning:  Routine "Adj_38_t1_v12" declared but not used
+line 19824: Warning:  Routine "Adj_39_t1_v12" declared but not used
+line 19831: Warning:  Routine "Adj_40_t1_v12" declared but not used
+line 19845: Warning:  Routine "Adj_42_t1_v10" declared but not used
+line 19852: Warning:  Routine "Adj_43_t1_v10" declared but not used
+line 19859: Warning:  Routine "Adj_44_t1_v10" declared but not used
+line 19866: Warning:  Routine "Adj_45_t1_v10" declared but not used
+line 19873: Warning:  Routine "Adj_46_t1_v10" declared but not used
+line 19880: Warning:  Routine "Adj_47_t1_v10" declared but not used
+line 19887: Warning:  Routine "Adj_48_t1_v10" declared but not used
+line 19894: Warning:  Routine "Adj_49_t1_v10" declared but not used
+line 19901: Warning:  Routine "Adj_50_t1_v10" declared but not used
+line 19915: Warning:  Routine "Adj_52_t1_v10" declared but not used
+line 19929: Warning:  Routine "Adj_54_t1_v10" declared but not used
+line 19943: Warning:  Routine "Adj_56_t1_v10" declared but not used
+line 20013: Warning:  Routine "Adj_66_t1_v10" declared but not used
+line 20076: Warning:  Routine "Adj_75_t1_v10" declared but not used
+line 20097: Warning:  Routine "Adj_78_t1_v10" declared but not used
+line 20139: Warning:  Routine "Adj_84_t1_v43" declared but not used
+line 20146: Warning:  Routine "Adj_85_t1_v43" declared but not used
+line 20153: Warning:  Routine "Adj_86_t1_v10" declared but not used
+line 20160: Warning:  Routine "Adj_87_t1_v10" declared but not used
+line 20167: Warning:  Routine "Adj_88_t1_v10" declared but not used
+line 20174: Warning:  Routine "Adj_9_t2_v10" declared but not used
+line 20181: Warning:  Routine "Adj_10_t2_v10" declared but not used
+line 20188: Warning:  Routine "Adj_17_t2_v30" declared but not used
+line 20195: Warning:  Routine "Adj_18_t2_v30" declared but not used
+line 20202: Warning:  Routine "Adj_27_t2_v30" declared but not used
+line 20209: Warning:  Routine "Adj_28_t2_v30" declared but not used
+line 20216: Warning:  Routine "Adj_29_t2_v30" declared but not used
+line 20223: Warning:  Routine "Adj_30_t2_v30" declared but not used
+line 20230: Warning:  Routine "Adj_31_t2_v30" declared but not used
+line 20237: Warning:  Routine "Adj_32_t2_v30" declared but not used
+line 20244: Warning:  Routine "Adj_42_t2_v10" declared but not used
+line 20251: Warning:  Routine "Adj_43_t2_v10" declared but not used
+line 20258: Warning:  Routine "Adj_44_t2_v10" declared but not used
+line 20265: Warning:  Routine "Adj_45_t2_v10" declared but not used
+line 20272: Warning:  Routine "Adj_46_t2_v10" declared but not used
+line 20279: Warning:  Routine "Adj_47_t2_v10" declared but not used
+line 20286: Warning:  Routine "Adj_48_t2_v10" declared but not used
+line 20293: Warning:  Routine "Adj_49_t2_v10" declared but not used
+line 20300: Warning:  Routine "Adj_50_t2_v10" declared but not used
+line 20314: Warning:  Routine "Adj_52_t2_v10" declared but not used
+line 20321: Warning:  Routine "Adj_53_t2_v10" declared but not used
+line 20328: Warning:  Routine "Adj_54_t2_v10" declared but not used
+line 20335: Warning:  Routine "Adj_55_t2_v10" declared but not used
+line 20342: Warning:  Routine "Adj_56_t2_v10" declared but not used
+line 20349: Warning:  Routine "Adj_57_t2_v10" declared but not used
+line 20356: Warning:  Routine "Adj_58_t2_v10" declared but not used
+line 20363: Warning:  Routine "Adj_59_t2_v10" declared but not used
+line 20370: Warning:  Routine "Adj_60_t2_v10" declared but not used
+line 20377: Warning:  Routine "Adj_61_t2_v10" declared but not used
+line 20391: Warning:  Routine "Adj_63_t2_v10" declared but not used
+line 20398: Warning:  Routine "Adj_64_t2_v10" declared but not used
+line 20412: Warning:  Routine "Adj_66_t2_v10" declared but not used
+line 20426: Warning:  Routine "Adj_68_t2_v10" declared but not used
+line 20433: Warning:  Routine "Adj_69_t2_v10" declared but not used
+line 20440: Warning:  Routine "Adj_70_t2_v10" declared but not used
+line 20447: Warning:  Routine "Adj_71_t2_v10" declared but not used
+line 20468: Warning:  Routine "Adj_74_t2_v10" declared but not used
+line 20475: Warning:  Routine "Adj_75_t2_v10" declared but not used
+line 20482: Warning:  Routine "Adj_76_t2_v10" declared but not used
+line 20496: Warning:  Routine "Adj_78_t2_v10" declared but not used
+line 20503: Warning:  Routine "Adj_79_t2_v10" declared but not used
+line 20510: Warning:  Routine "Adj_80_t2_v10" declared but not used
+line 20517: Warning:  Routine "Adj_81_t2_v10" declared but not used
+line 20538: Warning:  Routine "Adj_84_t2_v43" declared but not used
+line 20545: Warning:  Routine "Adj_85_t2_v43" declared but not used
+line 20552: Warning:  Routine "Adj_86_t2_v10" declared but not used
+line 20559: Warning:  Routine "Adj_87_t2_v10" declared but not used
+line 20566: Warning:  Routine "Adj_88_t2_v10" declared but not used
+line 20573: Warning:  Routine "Adj_9_t3_v10" declared but not used
+line 20580: Warning:  Routine "Adj_10_t3_v10" declared but not used
+line 20587: Warning:  Routine "Adj_17_t3_v30" declared but not used
+line 20594: Warning:  Routine "Adj_18_t3_v30" declared but not used
+line 20601: Warning:  Routine "Adj_27_t3_v30" declared but not used
+line 20608: Warning:  Routine "Adj_28_t3_v30" declared but not used
+line 20615: Warning:  Routine "Adj_29_t3_v30" declared but not used
+line 20622: Warning:  Routine "Adj_30_t3_v30" declared but not used
+line 20629: Warning:  Routine "Adj_31_t3_v30" declared but not used
+line 20636: Warning:  Routine "Adj_32_t3_v30" declared but not used
+line 20643: Warning:  Routine "Adj_42_t3_v10" declared but not used
+line 20650: Warning:  Routine "Adj_43_t3_v10" declared but not used
+line 20657: Warning:  Routine "Adj_44_t3_v10" declared but not used
+line 20664: Warning:  Routine "Adj_45_t3_v10" declared but not used
+line 20671: Warning:  Routine "Adj_46_t3_v10" declared but not used
+line 20678: Warning:  Routine "Adj_47_t3_v10" declared but not used
+line 20685: Warning:  Routine "Adj_48_t3_v10" declared but not used
+line 20692: Warning:  Routine "Adj_49_t3_v10" declared but not used
+line 20699: Warning:  Routine "Adj_50_t3_v10" declared but not used
+line 20706: Warning:  Routine "Adj_51_t3_v10" declared but not used
+line 20713: Warning:  Routine "Adj_52_t3_v10" declared but not used
+line 20720: Warning:  Routine "Adj_53_t3_v10" declared but not used
+line 20727: Warning:  Routine "Adj_54_t3_v10" declared but not used
+line 20734: Warning:  Routine "Adj_55_t3_v10" declared but not used
+line 20741: Warning:  Routine "Adj_56_t3_v10" declared but not used
+line 20748: Warning:  Routine "Adj_57_t3_v10" declared but not used
+line 20755: Warning:  Routine "Adj_58_t3_v10" declared but not used
+line 20762: Warning:  Routine "Adj_59_t3_v10" declared but not used
+line 20769: Warning:  Routine "Adj_60_t3_v10" declared but not used
+line 20776: Warning:  Routine "Adj_61_t3_v10" declared but not used
+line 20783: Warning:  Routine "Adj_62_t3_v10" declared but not used
+line 20790: Warning:  Routine "Adj_63_t3_v10" declared but not used
+line 20797: Warning:  Routine "Adj_64_t3_v10" declared but not used
+line 20811: Warning:  Routine "Adj_66_t3_v10" declared but not used
+line 20825: Warning:  Routine "Adj_68_t3_v10" declared but not used
+line 20832: Warning:  Routine "Adj_69_t3_v10" declared but not used
+line 20839: Warning:  Routine "Adj_70_t3_v10" declared but not used
+line 20846: Warning:  Routine "Adj_71_t3_v10" declared but not used
+line 20853: Warning:  Routine "Adj_72_t3_v10" declared but not used
+line 20860: Warning:  Routine "Adj_73_t3_v10" declared but not used
+line 20867: Warning:  Routine "Adj_74_t3_v10" declared but not used
+line 20874: Warning:  Routine "Adj_75_t3_v10" declared but not used
+line 20881: Warning:  Routine "Adj_76_t3_v10" declared but not used
+line 20895: Warning:  Routine "Adj_78_t3_v10" declared but not used
+line 20902: Warning:  Routine "Adj_79_t3_v10" declared but not used
+line 20909: Warning:  Routine "Adj_80_t3_v10" declared but not used
+line 20916: Warning:  Routine "Adj_81_t3_v10" declared but not used
+line 20923: Warning:  Routine "Adj_82_t3_v10" declared but not used
+line 20930: Warning:  Routine "Adj_83_t3_v10" declared but not used
+line 20937: Warning:  Routine "Adj_84_t3_v43" declared but not used
+line 20944: Warning:  Routine "Adj_85_t3_v43" declared but not used
+line 20951: Warning:  Routine "Adj_86_t3_v10" declared but not used
+line 20958: Warning:  Routine "Adj_87_t3_v10" declared but not used
+line 20965: Warning:  Routine "Adj_88_t3_v10" declared but not used
+line 24854: Warning:  Routine "ActionNumberIndexed" declared but not used
+line 24873: Warning:  Routine "NeedToCarryNoun" declared but not used
+line 24874: Warning:  Routine "NeedToCarrySecondNoun" declared but not used
+line 24875: Warning:  Routine "NeedToTouchNoun" declared but not used
+line 24876: Warning:  Routine "NeedToTouchSecondNoun" declared but not used
+line 24942: Warning:  Routine "R_Process" declared but not used
+line 25420: Warning:  Routine "TestActionBitmap" declared but not used
+line 25660: Warning:  Routine "DisplayFigure" declared but not used
+line 25671: Warning:  Routine "PlaySound" declared but not used
+line 25742: Warning:  Routine "FileIO_Exists" declared but not used
+line 25760: Warning:  Routine "FileIO_Ready" declared but not used
+line 25780: Warning:  Routine "FileIO_MarkReady" declared but not used
+line 25937: Warning:  Routine "FileIO_PutC" declared but not used
+line 25971: Warning:  Routine "FileIO_PrintContents" declared but not used
+line 25988: Warning:  Routine "FileIO_PutContents" declared but not used
+line 26011: Warning:  Routine "FileIO_PutTable" declared but not used
+line 26026: Warning:  Routine "FileIO_GetTable" declared but not used
+line 26175: Warning:  Routine "MstVON" declared but not used
+line 26548: Warning:  Routine "DisplayBoxedQuotation" declared but not used
+line 26709: Warning:  Routine "I7_String" declared but not used
+line 26896: Warning:  Routine "IndefArt" declared but not used
+line 26925: Warning:  Routine "DefArt" declared but not used
+line 26934: Warning:  Routine "CDefArt" declared but not used
+line 26964: Warning:  Routine "I7_SOO_STI" declared but not used
+line 26965: Warning:  Routine "I7_SOO_CYC" declared but not used
+line 26966: Warning:  Routine "I7_SOO_STOP" declared but not used
+line 26967: Warning:  Routine "I7_SOO_TAP" declared but not used
+line 26969: Warning:  Routine "I7_SOO_TRAN" declared but not used
+line 26971: Warning:  Routine "I7_SOO_TPAR" declared but not used
+line 26976: Warning:  Routine "I7_SOO_SHU" declared but not used
+line 27132: Warning:  Routine "Relation_Now1to1" declared but not used
+line 27142: Warning:  Routine "Relation_Now1to1V" declared but not used
+line 27152: Warning:  Routine "Relation_NowN1toVV" declared but not used
+line 27162: Warning:  Routine "Relation_NowS1to1" declared but not used
+line 27171: Warning:  Routine "Relation_NowSN1to1" declared but not used
+line 27179: Warning:  Routine "Relation_NowS1to1V" declared but not used
+line 27188: Warning:  Routine "Relation_NowSN1to1V" declared but not used
+line 27202: Warning:  Defined constant "VTOVS_LEFT_DOMAIN_SIZE" declared but not used
+line 27273: Warning:  Routine "Relation_NowEquiv" declared but not used
+line 27281: Warning:  Routine "Relation_NowNEquiv" declared but not used
+line 27291: Warning:  Routine "Relation_NowEquivV" declared but not used
+line 27305: Warning:  Routine "Relation_NowNEquivV" declared but not used
+line 27323: Warning:  Routine "Relation_ShowVtoV" declared but not used
+line 27384: Warning:  Routine "Relation_ShowOtoO" declared but not used
+line 27487: Warning:  Routine "Relation_ShowEquiv" declared but not used
+line 27618: Warning:  Routine "Relation_EmptyEquiv" declared but not used
+line 27647: Warning:  Routine "Relation_EmptyVtoV" declared but not used
+line 27726: Warning:  Routine "MapRouteTo" declared but not used
+line 27921: Warning:  Routine "RelationRouteTo" declared but not used
+line 27969: Warning:  Routine "VtoORelRouteTo" declared but not used
+line 27985: Warning:  Routine "VtoVRelRouteTo" declared but not used
+line 28122: Warning:  Routine "IterateRelations" declared but not used
+line 28361: Warning:  Defined constant "MAX_TIMERS" declared but not used
+line 28406: Warning:  Routine "CheckKindReturned" declared but not used
+line 28664: Warning:  Routine "RuleHasNoOutcome" declared but not used
+line 28668: Warning:  Routine "SetRulebookOutcome" declared but not used
+line 29554: Warning:  Routine "OldSortAlgorithm" declared but not used
+line 29901: Warning:  Routine "ExistsTableRowCorr" declared but not used
+line 29926: Warning:  Routine "TableLookUpCorr" declared but not used
+line 30052: Warning:  Routine "TableBlankOutColumn" declared but not used
+line 30059: Warning:  Routine "TableBlankOutAll" declared but not used
+line 30091: Warning:  Routine "TableRandomRow" declared but not used
+line 30187: Warning:  Routine "TableShuffle" declared but not used
+line 30198: Warning:  Routine "TableNextRow" declared but not used
+line 30453: Warning:  Routine "PrintRank" declared but not used
+line 30508: Warning:  Routine "TableDebug" declared but not used
+line 30526: Warning:  Routine "ParentOf" declared but not used
+line 30593: Warning:  Routine "WhetherIn" declared but not used
+line 30833: Warning:  Routine "BackdropEverywhere" declared but not used
+line 30905: Warning:  Routine "MoveBackdrop" declared but not used
+line 30991: Warning:  Routine "DoorFrom" declared but not used
+line 31006: Warning:  Routine "AssertMapConnection" declared but not used
+line 31021: Warning:  Routine "AssertMapUnconnection" declared but not used
+line 31098: Warning:  Routine "DirectionDoorLeadsIn" declared but not used
+line 31178: Warning:  Routine "DECIMAL_TOKEN" declared but not used
+line 31235: Warning:  Routine "TRUTH_STATE_TOKEN" declared but not used
+line 31251: Warning:  Routine "NUMBER_TY_Abs" declared but not used
+line 31307: Warning:  Routine "REAL_NUMBER_TY_Reciprocal" declared but not used
+line 31308: Warning:  Routine "REAL_NUMBER_TY_Negate" declared but not used
+line 31312: Warning:  Routine "REAL_NUMBER_TY_Divide" declared but not used
+line 31313: Warning:  Routine "REAL_NUMBER_TY_Remainder" declared but not used
+line 31314: Warning:  Routine "REAL_NUMBER_TY_Approximate" declared but not used
+line 31322: Warning:  Routine "REAL_NUMBER_TY_Cube_Root" declared but not used
+line 31326: Warning:  Routine "REAL_NUMBER_TY_BLog" declared but not used
+line 31346: Warning:  Defined constant "M_N1" declared but not used
+line 31347: Warning:  Defined constant "M_PI" declared but not used
+line 31348: Warning:  Defined constant "M_NPI" declared but not used
+line 31349: Warning:  Defined constant "M_2PI" declared but not used
+line 31350: Warning:  Defined constant "M_PI2" declared but not used
+line 31351: Warning:  Defined constant "M_NPI2" declared but not used
+line 31352: Warning:  Defined constant "M_E" declared but not used
+line 31353: Warning:  Defined constant "M_E2" declared but not used
+line 31354: Warning:  Defined constant "M_N0" declared but not used
+line 31355: Warning:  Defined constant "M_INF" declared but not used
+line 31356: Warning:  Defined constant "M_NINF" declared but not used
+line 31357: Warning:  Defined constant "M_NAN" declared but not used
+line 31358: Warning:  Defined constant "M_NNAN" declared but not used
+line 31543: Warning:  Routine "FLOAT_TOKEN" declared but not used
+line 31885: Warning:  Routine "RoundOffTime" declared but not used
+line 31895: Warning:  Routine "NUMBER_TY_to_TIME_TY" declared but not used
+line 31944: Warning:  Routine "CubeRoot" declared but not used
+line 31985: Warning:  Routine "PrintTimeOfDayEnglish" declared but not used
+line 32005: Warning:  Routine "TIME_TOKEN" declared but not used
+line 32090: Warning:  Routine "RELATIVE_TIME_TOKEN" declared but not used
+line 32139: Warning:  Routine "DuringSceneMatching" declared but not used
+line 32150: Warning:  Routine "SceneUtility" declared but not used
+line 32234: Warning:  Routine "ConjugateVerb_1" declared but not used
+line 34974: Warning:  Routine "ConjugateVerb_75" declared but not used
+line 35223: Warning:  Routine "ConjugateVerb_80" declared but not used
+line 35283: Warning:  Routine "ConjugateVerb_81" declared but not used
+line 35343: Warning:  Routine "ConjugateVerb_82" declared but not used
+line 35403: Warning:  Routine "ConjugateVerb_83" declared but not used
+line 35463: Warning:  Routine "ConjugateVerb_84" declared but not used
+line 35523: Warning:  Routine "ConjugateVerb_85" declared but not used
+line 35583: Warning:  Routine "ConjugateVerb_86" declared but not used
+line 35643: Warning:  Array "TableOfVerbs" declared but not used
+line 36412: Warning:  Routine "PHR_350_r2" declared but not used
+line 36420: Warning:  Routine "PHR_390_r3" declared but not used
+line 36494: Warning:  Routine "PHR_527_r8" declared but not used
+line 36507: Warning:  Routine "PHR_528_r9" declared but not used
+line 37229: Warning:  Routine "PHR_780_r27" declared but not used
+line 37303: Warning:  Routine "PHR_782_r29" declared but not used
+line 37340: Warning:  Routine "PHR_783_r30" declared but not used
+line 37377: Warning:  Routine "PHR_784_r31" declared but not used
+line 37451: Warning:  Routine "PHR_786_r33" declared but not used
+line 37488: Warning:  Routine "PHR_787_r34" declared but not used
+line 37584: Warning:  Routine "PHR_791_r38" declared but not used
+line 37593: Warning:  Routine "PHR_792_r39" declared but not used
+line 37602: Warning:  Routine "PHR_793_r40" declared but not used
+line 37622: Warning:  Routine "PHR_795_r42" declared but not used
+line 37632: Warning:  Routine "PHR_796_r43" declared but not used
+line 37642: Warning:  Routine "PHR_797_r44" declared but not used
+line 37670: Warning:  Routine "PHR_798_r45" declared but not used
+line 38966: Warning:  Routine "REP_SWITCH_NOTIFY_ON_RM" declared but not used
+line 38990: Warning:  Routine "REP_SWITCH_NOTIFY_OFF_RM" declared but not used
+line 41137: Warning:  Defined constant "NO_RESPONSES" declared but not used
+line 41539: Warning:  Array "ResponseDivisions" declared but not used
+line 47248: Warning:  Routine "RProperty" declared but not used
+line 47256: Warning:  Routine "RGuard_f1_0" declared but not used
+line 47261: Warning:  Routine "RGuard_T_0" declared but not used
+line 47292: Warning:  Routine "RGuard_f1_1" declared but not used
+line 47297: Warning:  Routine "RGuard_T_1" declared but not used
+line 48865: Warning:  Array "Closure_0" declared but not used
+line 48870: Warning:  Array "Closure_1" declared but not used
+line 48875: Warning:  Array "Closure_2" declared but not used
+line 48880: Warning:  Array "Closure_3" declared but not used
+line 48885: Warning:  Array "Closure_4" declared but not used
+line 48890: Warning:  Array "Closure_5" declared but not used
+line 48895: Warning:  Array "Closure_6" declared but not used
+line 48900: Warning:  Array "Closure_7" declared but not used
+line 48905: Warning:  Array "Closure_8" declared but not used
+line 48910: Warning:  Array "Closure_9" declared but not used
+line 48915: Warning:  Array "Closure_10" declared but not used
+line 48920: Warning:  Array "Closure_11" declared but not used
+line 48925: Warning:  Array "Closure_12" declared but not used
+line 48930: Warning:  Array "Closure_13" declared but not used
+line 48935: Warning:  Array "Closure_14" declared but not used
+line 48940: Warning:  Array "Closure_15" declared but not used
+line 48945: Warning:  Array "Closure_16" declared but not used
+line 48950: Warning:  Array "Closure_17" declared but not used
+line 48955: Warning:  Array "Closure_18" declared but not used
+line 48960: Warning:  Array "Closure_19" declared but not used
+line 49117: Warning:  Routine "HeapDebug" declared but not used
+line 49455: Warning:  Defined constant "BLK_BVBITMAP_TEXTMASK" declared but not used
+line 49889: Warning:  Routine "BlkValueFreeOnStack" declared but not used
+line 49989: Warning:  Routine "BlkValueCopyAZ" declared but not used
+line 50120: Warning:  Routine "BlkValueDebug" declared but not used
+line 50480: Warning:  Routine "CharTestCases" declared but not used
+line 50611: Warning:  Routine "SNIPPET_TY_to_TEXT_TY" declared but not used
+line 50786: Warning:  Routine "TEXT_TY_Distinguish" declared but not used
+line 50918: Warning:  Routine "TEXT_TY_ExpandIfPerishable" declared but not used
+line 50929: Warning:  Routine "TEXT_TY_ROGPR" declared but not used
+line 51127: Warning:  Routine "TEXT_TY_GetBlob" declared but not used
+line 51139: Warning:  Routine "TEXT_TY_ReplaceBlob" declared but not used
+line 51179: Warning:  Routine "TEXT_TY_ReplaceText" declared but not used
+line 51302: Warning:  Routine "TEXT_TY_CharactersOfCase" declared but not used
+line 51320: Warning:  Routine "TEXT_TY_CharactersToCase" declared but not used
+line 51419: Warning:  Routine "TEXT_TY_RE_SetTrace" declared but not used
+line 51584: Warning:  Routine "TEXT_TY_RE_GetMatchVar" declared but not used
+line 51602: Warning:  Routine "TEXT_TY_MV_End" declared but not used
+line 52263: Warning:  Routine "TEXT_TY_RE_PrintNoRewinds" declared but not used
+line 53148: Warning:  Routine "STORED_ACTION_TY_Distinguish" declared but not used
+line 53232: Warning:  Routine "STORED_ACTION_TY_Involves" declared but not used
+line 53249: Warning:  Routine "STORED_ACTION_TY_Part" declared but not used
+line 53265: Warning:  Routine "STORED_ACTION_TY_Adopt" declared but not used
+line 53290: Warning:  Routine "STORED_ACTION_TY_Unadopt" declared but not used
+line 53305: Warning:  Routine "STORED_ACTION_TY_Current" declared but not used
+line 53340: Warning:  Routine "STORED_ACTION_TY_Try" declared but not used
+line 53495: Warning:  Routine "LIST_OF_TY_Distinguish" declared but not used
+line 53554: Warning:  Routine "LIST_OF_TY_Desc" declared but not used
+line 53732: Warning:  Routine "LIST_OF_TY_RemoveItemRange" declared but not used
+line 53765: Warning:  Routine "LIST_OF_TY_Remove_List" declared but not used
+line 53878: Warning:  Routine "WriteLIST_OF_TY_GetItem" declared but not used
+line 53915: Warning:  Routine "LIST_OF_TY_Mol" declared but not used
+line 53924: Warning:  Routine "LIST_OF_TY_Set_Mol" declared but not used
+line 53938: Warning:  Routine "LIST_OF_TY_Reverse" declared but not used
+line 53956: Warning:  Routine "LIST_OF_TY_Rotate" declared but not used
+line 53983: Warning:  Routine "LIST_OF_TY_Sort" declared but not used
+line 54103: Warning:  Routine "COMBINATION_TY_CopySB" declared but not used
+line 54149: Warning:  Routine "COMBINATION_TY_Distinguish" declared but not used
+line 54300: Warning:  Routine "RelationTest" declared but not used
+line 54396: Warning:  Routine "RELATION_TY_Distinguish" declared but not used
+line 54416: Warning:  Routine "RELATION_TY_Name" declared but not used
+line 55905: Warning:  Array "ResourceIDsOfFigures" declared but not used
+line 55907: Warning:  Array "ResourceIDsOfSounds" declared but not used
+Compiled with 1665 warnings

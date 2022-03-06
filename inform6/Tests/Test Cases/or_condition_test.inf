@@ -1,0 +1,481 @@
+Constant Story "OrConditionTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+Global failures;
+
+[ Main;
+    #ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 0;
+    #endif; ! TARGET_GLULX
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ RunTest;
+	test_equality();
+	test_ordering();
+	test_in();
+	test_has();
+	
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];
+
+[ test_equality;
+	compare_eq(5, 1, 3, false);
+	compare_eq(5, 5, 3, true);
+	compare_eq(5, 1, 5, true);
+	compare_eq(2, 2, 2, true);
+	
+	compare_noteq(5, 1, 3, true);
+	compare_noteq(5, 5, 3, false);
+	compare_noteq(5, 1, 5, false);
+	compare_noteq(2, 2, 2, false);
+];
+
+[ compare_eq val arg1 arg2 wanted  res;
+	print val, " == ", arg1, " or ", arg2, ": ";
+	
+	if (val == arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val == arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+
+[ compare_noteq val arg1 arg2 wanted  res;
+	print val, " @@126= ", arg1, " or ", arg2, ": ";
+	
+	if (val ~= arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val ~= arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+
+[ test_ordering;
+	compare_lt(3, 4, 8, true);
+	compare_lt(4, 4, 8, true);
+	compare_lt(6, 4, 8, true);
+	compare_lt(8, 4, 8, false);
+	compare_lt(9, 4, 8, false);
+
+	compare_gt(3, 4, 8, false);
+	compare_gt(4, 4, 8, false);
+	compare_gt(6, 4, 8, true);
+	compare_gt(8, 4, 8, true);
+	compare_gt(9, 4, 8, true);
+
+	! These results are surprising.
+	compare_lte(3, 4, 8, true);
+	compare_lte(4, 4, 8, true);
+	compare_lte(6, 4, 8, false);
+	compare_lte(8, 4, 8, false);
+	compare_lte(9, 4, 8, false);
+
+	! These too.
+	compare_gte(3, 4, 8, false);
+	compare_gte(4, 4, 8, false);
+	compare_gte(6, 4, 8, false);
+	compare_gte(8, 4, 8, true);
+	compare_gte(9, 4, 8, true);
+];
+
+[ compare_lt val arg1 arg2 wanted  res;
+	print val, " < ", arg1, " or ", arg2, ": ";
+	
+	if (val < arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val < arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+
+[ compare_gt val arg1 arg2 wanted  res;
+	print val, " > ", arg1, " or ", arg2, ": ";
+	
+	if (val > arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val > arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+
+[ compare_lte val arg1 arg2 wanted  res;
+	print val, " <= ", arg1, " or ", arg2, ": ";
+	
+	if (val <= arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val <= arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+
+[ compare_gte val arg1 arg2 wanted  res;
+	print val, " >= ", arg1, " or ", arg2, ": ";
+	
+	if (val >= arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val >= arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+
+Attribute room;
+Attribute hot;
+Attribute heavy;
+
+[ attrname attr;
+	if (attr == room) print "room";
+	else if (attr == hot) print "hot";
+	else if (attr == heavy) print "heavy";
+	else print "???";
+];
+
+Object rock "rock" has heavy;
+Object hall "hall" has room;
+Object kitchen "kitchen" has room hot;
+Object -> stove "stove" has hot heavy;
+Object study "study" has room;
+Object -> book "book";
+
+[ test_in;
+	compare_in(rock, kitchen, study, false);
+	compare_in(book, kitchen, study, true);
+	compare_in(stove, kitchen, study, true);
+	compare_in(stove, hall, study, false);
+
+	compare_notin(rock, kitchen, study, true);
+	compare_notin(book, kitchen, study, false);
+	compare_notin(stove, kitchen, study, false);
+	compare_notin(stove, hall, study, true);
+];
+
+[ compare_in val arg1 arg2 wanted  res;
+	print (name) val, " in ", (name) arg1, " or ", (name) arg2, ": ";
+	
+	if (val in arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val in arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+
+[ compare_notin val arg1 arg2 wanted  res;
+	print (name) val, " notin ", (name) arg1, " or ", (name) arg2, ": ";
+	
+	if (val notin arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val notin arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+
+[ test_has;
+	compare_has(book, hot, heavy, false);
+	compare_has(stove, hot, heavy, true);
+	compare_has(stove, room, heavy, true);
+	compare_has(study, room, heavy, true);
+	compare_has(study, heavy, room, true);
+	compare_has(study, hot, heavy, false);
+
+	compare_hasnt(book, hot, heavy, true);
+	compare_hasnt(stove, hot, heavy, false);
+	compare_hasnt(stove, room, heavy, false);
+	compare_hasnt(study, room, heavy, false);
+	compare_hasnt(study, heavy, room, false);
+	compare_hasnt(study, hot, heavy, true);
+];
+
+[ compare_has val arg1 arg2 wanted  res;
+	print (name) val, " has ", (attrname) arg1, " or ", (attrname) arg2, ": ";
+	
+	if (val has arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val has arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+
+[ compare_hasnt val arg1 arg2 wanted  res;
+	print (name) val, " hasnt ", (attrname) arg1, " or ", (attrname) arg2, ": ";
+	
+	if (val hasnt arg1 or arg2) {
+		res = true;
+		print "true";
+	}
+	else {
+		res = false;
+		print "false";
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (ERROR)";
+	}
+
+	if (~~(val hasnt arg1 or arg2)) {
+		res = false;
+	}
+	else {
+		res = true;
+	}
+	if (wanted ~= res) {
+		failures++;
+		print " (neg ERROR)";
+	}
+	
+	new_line;
+];
+

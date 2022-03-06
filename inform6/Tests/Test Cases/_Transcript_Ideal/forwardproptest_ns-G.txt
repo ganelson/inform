@@ -1,0 +1,29 @@
+ForwardPropTest: Not a game.
+Release 1 / Serial number 220306 / Inform v6.36, compiler options (none)
+Interpreter version 0.5.4 / VM 3.1.2 / game file format 3.0.0
+
+blank.common1: 1
+blank.common2: 2
+obj.common1: 0
+obj.common2: 0
+obj.common1: 11
+obj.common2: 22
+obj.common1: 12
+obj.common2: 23
+obj.common1: 15
+obj.common2: 25
+
+obj.indiv1: 5
+obj.indiv2: 6
+obj.indiv1: 5
+obj.indiv2: 6
+obj.indiv1: 15
+obj.indiv2: 16
+obj.indiv1: 25
+obj.indiv2: 26
+obj.indiv1: 27
+obj.indiv2: 29
+obj.indiv1: 27
+obj.indiv2: 29
+
+All passed.

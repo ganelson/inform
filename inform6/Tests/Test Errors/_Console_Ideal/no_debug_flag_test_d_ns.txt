@@ -1,0 +1,5 @@
+Inform 6.36 (24th January 2022)
+"<constructing output>", line 0: Warning:  DEBUG mode is on, but this story or library does not appear to support it
+> 
+"<constructing output>", line 0: Error:  No such constant as "debug_flag"
+Compiled with 1 error and 1 warning

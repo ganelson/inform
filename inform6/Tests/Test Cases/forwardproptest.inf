@@ -1,0 +1,259 @@
+Constant Story "ForwardPropTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+! This is a compiler unit test for forward declarations of properties.
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+Global failures;
+
+[ Main;
+    #ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 0;
+    #endif; ! TARGET_GLULX
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ check_value val1 val2;
+	print val1;
+	if (val1 ~= val2) {
+		failures++;
+		print " (ERROR, should be ", val2, ")";
+	}
+];
+
+Property common1 1;
+
+Object dummy1 with indiv1;
+
+[ getanyprop o p;
+	return o.p;
+];
+
+[ getcommon1 o;
+	return o.common1;
+];
+
+[ getcommon2 o;
+	return o.common2;
+];
+
+[ getindiv1 o;
+	return o.indiv1;
+];
+
+[ getindiv2 o;
+	return o.indiv2;
+];
+
+[ setanyprop o p v;
+	o.p = v;
+];
+
+[ setcommon1 o v;
+	o.common1 = v;
+];
+
+[ setcommon2 o v;
+	o.common2 = v;
+];
+
+[ setindiv1 o v;
+	o.indiv1 = v;
+];
+
+[ setindiv2 o v;
+	o.indiv2 = v;
+];
+
+[ incanyprop o p;
+	o.p++;
+];
+
+[ inccommon1 o;
+	o.common1++;
+];
+
+[ inccommon2 o;
+	o.common2++;
+];
+
+[ incindiv1 o;
+	o.indiv1++;
+];
+
+[ incindiv2 o;
+	o.indiv2++;
+];
+
+[ RunTest val;
+	val = getanyprop(blank, common1);
+	print "blank.common1: "; check_value(val, 1); new_line;
+	val = getanyprop(blank, common2);
+	print "blank.common2: "; check_value(val, 2); new_line;
+
+	val = getanyprop(obj, common1);
+	print "obj.common1: "; check_value(val, 0); new_line;
+	val = getanyprop(obj, common2);
+	print "obj.common2: "; check_value(val, 0); new_line;
+
+	setanyprop(obj, common1, 11);
+	setanyprop(obj, common2, 22);
+
+	val = getanyprop(obj, common1);
+	print "obj.common1: "; check_value(val, 11); new_line;
+	val = getanyprop(obj, common2);
+	print "obj.common2: "; check_value(val, 22); new_line;
+
+	setcommon1(obj, 12);
+	setcommon2(obj, 23);
+
+	val = getcommon1(obj);
+	print "obj.common1: "; check_value(val, 12); new_line;
+	val = getcommon2(obj);
+	print "obj.common2: "; check_value(val, 23); new_line;
+
+	inccommon1(obj);
+	incanyprop(obj, common1);
+	incanyprop(obj, common1);
+	inccommon2(obj);
+	incanyprop(obj, common2);
+
+	val = getcommon1(obj);
+	print "obj.common1: "; check_value(val, 15); new_line;
+	val = getcommon2(obj);
+	print "obj.common2: "; check_value(val, 25); new_line;
+
+	new_line;
+
+	val = getanyprop(obj, indiv1);
+	print "obj.indiv1: "; check_value(val, 5); new_line;
+	val = getanyprop(obj, indiv2);
+	print "obj.indiv2: "; check_value(val, 6); new_line;
+
+	val = getindiv1(obj);
+	print "obj.indiv1: "; check_value(val, 5); new_line;
+	val = getindiv2(obj);
+	print "obj.indiv2: "; check_value(val, 6); new_line;
+
+	setanyprop(obj, indiv1, 15);
+	setanyprop(obj, indiv2, 16);
+
+	val = getanyprop(obj, indiv1);
+	print "obj.indiv1: "; check_value(val, 15); new_line;
+	val = getanyprop(obj, indiv2);
+	print "obj.indiv2: "; check_value(val, 16); new_line;
+
+	setindiv1(obj, 25);
+	setindiv2(obj, 26);
+
+	val = getanyprop(obj, indiv1);
+	print "obj.indiv1: "; check_value(val, 25); new_line;
+	val = getanyprop(obj, indiv2);
+	print "obj.indiv2: "; check_value(val, 26); new_line;
+
+	incindiv1(obj);
+	incanyprop(obj, indiv1);
+	incindiv2(obj);
+	incanyprop(obj, indiv2);
+	incanyprop(obj, indiv2);
+	
+	val = getanyprop(obj, indiv1);
+	print "obj.indiv1: "; check_value(val, 27); new_line;
+	val = getanyprop(obj, indiv2);
+	print "obj.indiv2: "; check_value(val, 29); new_line;
+
+	val = getindiv1(obj);
+	print "obj.indiv1: "; check_value(val, 27); new_line;
+	val = getindiv2(obj);
+	print "obj.indiv2: "; check_value(val, 29); new_line;
+
+
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];
+
+
+Property common2 2;
+
+Object dummy2 with indiv2;
+
+Object blank;
+
+Object obj
+  with indiv1 5,
+  with indiv2 6,
+  with common1,
+  with common2;
+

@@ -1,0 +1,1 @@
+-G --define FORWARD_CONSTANT_B=2
