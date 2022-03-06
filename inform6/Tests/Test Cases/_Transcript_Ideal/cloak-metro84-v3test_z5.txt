@@ -1,0 +1,13 @@
+   Opera House Foyer                                                                                                                                                                                           Score: 0     Moves: 1
+  Hurrying through the rainswept November night, you're glad to see the bright lights of the Opera House. It's surprising that there aren't more people about but, hey, what do you expect in a cheap demo game...?
+  
+  
+  Cloak of Darkness
+  A basic IF demonstration.
+  Release 1 / Serial number 200212 / Inform v6.36R with Metrocenter84 v1.0
+  Standard interpreter 1.0
+  
+  Opera House Foyer
+  You are standing in a spacious hall, splendidly decorated in red and gold, with glittering chandeliers overhead. The entrance from the street is to the north, and there are doorways south and west.
+  
+> >

@@ -1,6 +1,3 @@
--if osx		-set hash_utility		'md5'
--if gnome	-set hash_utility		'md5'
--if linux	-set hash_utility		'md5'
 -set extensions_testing_area     	'inform7/Tests/Test Extensions'
 -set hash_cache						'inform7/Tests/hashes.intest'
 

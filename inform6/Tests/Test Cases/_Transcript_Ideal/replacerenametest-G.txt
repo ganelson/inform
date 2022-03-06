@@ -1,0 +1,43 @@
+ReplaceRenameTest: Not a game.
+Release 1 / Serial number 220306 / Inform v6.36, compiler options S
+Interpreter version 0.5.4 / VM 3.1.2 / game file format 3.0.0
+
+Non-system-file includes:
+funcalpha: replacement funcalpha.
+...returned 11.
+funcbeta: replacement funcbeta.
+...returned 12.
+funcgamma: replacement funcgamma.
+  Internal call to funcgammaorig: original funcgamma.
+  ...returned 2.
+...returned 13.
+funcgammaorig: original funcgamma.
+...returned 2.
+funcdelta: replacement funcdelta.
+  Internal call to funcdeltaorig: original funcdelta.
+  ...returned 4.
+...returned 14.
+funcdeltaorig: original funcdelta.
+...returned 4.
+System-file includes:
+funcepsilon: replacement funcepsilon.
+...returned 15.
+funczeta: replacement funczeta.
+...returned 16.
+funceta: replacement funceta.
+  Internal call to funcetaorig: original funceta.
+  ...returned 6.
+...returned 17.
+funcetaorig: original funceta.
+...returned 6.
+functheta: replacement functheta.
+  Internal call to functhetaorig: original functheta.
+  ...returned 8.
+...returned 18.
+functhetaorig: original functheta.
+...returned 8.
+Replacing a system function:
+child: replacement child.
+...returned -3.
+
+All passed.

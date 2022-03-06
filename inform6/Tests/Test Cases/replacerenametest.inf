@@ -1,0 +1,284 @@
+Constant Story "ReplaceRenameTest";
+Constant Headline "Not a game.^";
+
+Release 1;
+
+! This is a compiler unit test for the "Replace X Y" directive.
+! It also tests the original "Replace X" form.
+
+#ifdef TARGET_ZCODE;
+Constant HDR_GAMERELEASE      = $02;     ! word
+Constant HDR_GAMESERIAL       = $12;     ! six ASCII characters
+#ifnot;
+Global gg_mainwin;
+Constant HDR_GLULXVERSION  $04;     ! long word
+Constant ROM_GAMERELEASE   $34;     ! short word
+Constant ROM_GAMESERIAL    $36;     ! six ASCII characters
+#endif; ! TARGET_GLULX
+
+Global failures;
+
+[ Main;
+    #ifdef TARGET_GLULX;
+	@setiosys 2 0;
+	@push 201; @push 3; @push 0; @push 0; @push 0;
+	@glk $0023 5 gg_mainwin;
+
+	@push gg_mainwin;
+	@glk $002F 1 0;
+    #endif; ! TARGET_GLULX
+
+	Banner();
+	new_line;
+	RunTest();
+];
+
+[ Banner  ix;
+    if (Story ~= 0) {
+        #ifdef TARGET_ZCODE;
+        #ifV5; style bold; #Endif;
+        print (string) Story;
+        #ifV5; style roman; #Endif;
+        #ifnot; ! TARGET_GLULX;
+        glk($0086, 3); ! set header style
+        print (string) Story;
+        glk($0086, 0); ! set normal style
+        #Endif; ! TARGET_
+    }
+    if (Headline ~= 0) print ": ", (string) Headline;
+    #ifdef TARGET_ZCODE;
+    print "Release ", (HDR_GAMERELEASE-->0) & $03ff, " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) HDR_GAMESERIAL->ix;
+    #ifnot; ! TARGET_GLULX;
+    print "Release ";
+    @aloads ROM_GAMERELEASE 0 ix;
+    print ix;
+    print " / Serial number ";
+    for (ix=0 : ix<6 : ix++) print (char) ROM_GAMESERIAL->ix;
+    #Endif; ! TARGET_
+    print " / Inform v"; inversion;
+    print ", compiler options ";
+    ix = false;
+    #ifdef STRICT_MODE;
+    print "S"; ix++;
+    #Endif; ! STRICT_MODE
+    #ifdef INFIX;
+    print "X"; ix++;
+    #ifnot;
+    #ifdef DEBUG;
+    print "D"; ix++;
+    #Endif; ! DEBUG
+    #Endif; ! INFIX
+    if (~~ix) print "(none)";
+    new_line;
+
+    #ifdef TARGET_GLULX;
+    @gestalt 1 0 ix;
+    print "Interpreter version ", ix / $10000, ".", (ix & $FF00) / $100,
+    ".", ix & $FF, " / ";
+    @gestalt 0 0 ix;
+    print "VM ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, " / ";
+    ix = HDR_GLULXVERSION-->0;
+    print "game file format ", ix / $10000, ".", (ix & $FF00) / $100, ".", ix & $FF, "^";
+    #Endif; ! TARGET_GLULX
+];
+
+[ check_value val1 val2;
+	print val1;
+	if (val1 ~= val2) {
+		failures++;
+		print " (ERROR, should be ", val2, ")";
+	}
+];
+
+! We are going to go through eight replacement cases, with four inclusion
+! files:
+! 
+! - System_File or not;
+! - simple replacement or renaming replacement;
+! - forward-declared functions or not.
+
+Replace funcalpha;
+Replace funcgamma funcgammaorig;
+
+Include "replacerename_inc1";
+
+[ funcalpha;
+	print "replacement funcalpha.^";
+	return 11;
+];
+
+[ funcgamma   val;
+	print "replacement funcgamma.^";
+	
+	print "  Internal call to funcgammaorig: ";
+	val = funcgammaorig();
+	print "  ...returned "; check_value(val, 2); print ".^";
+
+	return 13;
+];
+
+
+Replace funcepsilon;
+Replace funceta funcetaorig;
+
+Include "replacerename_inc1sys";
+
+[ funcepsilon;
+	print "replacement funcepsilon.^";
+	return 15;
+];
+
+[ funceta   val;
+	print "replacement funceta.^";
+	
+	print "  Internal call to funcetaorig: ";
+	val = funcetaorig();
+	print "  ...returned "; check_value(val, 6); print ".^";
+
+	return 17;
+];
+
+
+Object kitchen;
+
+Replace child;
+
+! A replacement for the system function child().
+[ child;
+	print "replacement child.^";
+	return -3;
+];
+
+
+[ RunTest val;
+
+	print "Non-system-file includes:^";
+
+	print "funcalpha: ";
+	val = funcalpha();
+	print "...returned "; check_value(val, 11); print ".^";
+	print "funcbeta: ";
+	val = funcbeta();
+	print "...returned "; check_value(val, 12); print ".^";
+
+	print "funcgamma: ";
+	val = funcgamma();
+	print "...returned "; check_value(val, 13); print ".^";
+	print "funcgammaorig: ";
+	val = funcgammaorig();
+	print "...returned "; check_value(val, 2); print ".^";
+
+	print "funcdelta: ";
+	val = funcdelta();
+	print "...returned "; check_value(val, 14); print ".^";
+	print "funcdeltaorig: ";
+	val = funcdeltaorig();
+	print "...returned "; check_value(val, 4); print ".^";
+
+	print "System-file includes:^";
+	
+	print "funcepsilon: ";
+	val = funcepsilon();
+	print "...returned "; check_value(val, 15); print ".^";
+	print "funczeta: ";
+	val = funczeta();
+	print "...returned "; check_value(val, 16); print ".^";
+
+	print "funceta: ";
+	val = funceta();
+	print "...returned "; check_value(val, 17); print ".^";
+	print "funcetaorig: ";
+	val = funcetaorig();
+	print "...returned "; check_value(val, 6); print ".^";
+
+	print "functheta: ";
+	val = functheta();
+	print "...returned "; check_value(val, 18); print ".^";
+	print "functhetaorig: ";
+	val = functhetaorig();
+	print "...returned "; check_value(val, 8); print ".^";
+
+	print "Replacing a system function:^";
+	
+	print "child: ";
+	val = child(kitchen);
+	print "...returned "; check_value(val, -3); print ".^";
+
+	new_line;
+	if (failures == 0)
+		print "All passed.^";
+	else
+		print failures, " errors!^";
+];
+
+
+Replace funcbeta;
+Replace funcdelta funcdeltaorig;
+
+Include "replacerename_inc2";
+
+[ funcbeta;
+    print "replacement funcbeta.^";
+	return 12;
+];
+
+[ funcdelta   val;
+    print "replacement funcdelta.^";
+	
+	print "  Internal call to funcdeltaorig: ";
+	val = funcdeltaorig();
+	print "  ...returned "; check_value(val, 4); print ".^";
+
+	return 14;
+];
+
+
+Replace funczeta;
+Replace functheta functhetaorig;
+
+Include "replacerename_inc2sys";
+
+[ funczeta;
+    print "replacement funczeta.^";
+	return 16;
+];
+
+[ functheta   val;
+    print "replacement functheta.^";
+	
+	print "  Internal call to functhetaorig: ";
+	val = functhetaorig();
+	print "  ...returned "; check_value(val, 8); print ".^";
+
+	return 18;
+];
+
+! Finally, a list of cases which the compiler catches as errors.
+! Uncommenting any of these should result in at least one compiler error.
+
+! Can't replace Main__(), because it has to be the first compiled function.
+!Replace Main__;
+
+! Can't replace a function with itself.
+!Replace Func Func;
+
+! Can't replace a function to two different targets.
+!Replace Func Orig1;
+!Replace Func Orig2;
+
+! Can't chain replacements.
+!Replace Orig Zoom;
+!Replace Func Orig;
+
+! Can't chain replacements in the opposite order.
+!Replace Func Orig;
+!Replace Orig Zoom;
+
+! Can't replace two different functions to the same target.
+!Replace Func Orig;
+!Replace Bar Orig;
+
+! Can't call a replaced function with no definition at all.
+!Replace Func2;
+![ Func1; Func2(); ];

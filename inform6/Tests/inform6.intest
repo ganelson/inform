@@ -72,7 +72,7 @@
 		show: $AC
 		exists: $IC
 		or: 'produced error(s), but no ideal transcript existed'
-		match problem: $AC $IC
+		match i6 transcript: $AC $IC
 		or: 'produced the wrong error(s)'
 		pass: 'passed'
 	endif
@@ -94,7 +94,7 @@
 	show: $AC
 	exists: $IC
 	or: 'compiled, but no ideal console output existed'
-	match text: $AC $IC
+	match i6 transcript: $AC $IC
 	or: 'compiled, but produced the wrong console output'
 
 	if: $VM G

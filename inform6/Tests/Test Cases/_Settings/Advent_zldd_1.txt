@@ -1,0 +1,1 @@
++include_path=inform6/Tests/include/i6lib-611 $ZCODE_LESS_DICT_DATA=1

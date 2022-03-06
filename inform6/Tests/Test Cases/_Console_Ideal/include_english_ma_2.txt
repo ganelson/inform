@@ -1,0 +1,8 @@
+Inform 6.36 (24th January 2022)
+Beginning calculation of optimal abbreviations...
+Cross-reference table (850 entries) built...
+
+Chosen abbreviations (in Inform syntax):
+
+Abbreviate ". ";
+Abbreviate ", ";

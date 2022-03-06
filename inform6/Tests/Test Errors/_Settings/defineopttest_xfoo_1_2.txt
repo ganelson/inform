@@ -1,0 +1,1 @@
+--define XFOO=1 --define xfoo=2

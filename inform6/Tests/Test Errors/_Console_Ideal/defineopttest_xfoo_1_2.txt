@@ -1,0 +1,3 @@
+Inform 6.36 (24th January 2022)
+"", line 0: Error:  "XFOO" is a name already in use and may not be used as a new symbol (Defined constant "XFOO" was defined at compiler setup)
+Compiled with 1 error (no output)

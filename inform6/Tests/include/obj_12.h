@@ -1,0 +1,1 @@
+Object obj_12;

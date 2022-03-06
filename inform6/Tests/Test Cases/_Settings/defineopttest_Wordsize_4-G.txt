@@ -1,0 +1,1 @@
+-G --define Wordsize=4

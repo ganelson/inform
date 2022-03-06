@@ -1,0 +1,3 @@
+
+DICT_ENTRY_BYTE_LENGTH is 6
+hello there

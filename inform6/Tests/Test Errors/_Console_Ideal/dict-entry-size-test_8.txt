@@ -1,0 +1,4 @@
+Inform 6.36 (24th January 2022)
+line 21: Error:  #dict_par3 is unavailable when ZCODE_LESS_DICT_DATA is set
+>  wd1 = #dict_par3;
+Compiled with 1 error (no output)

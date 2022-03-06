@@ -1,0 +1,1 @@
+-e +include_path=inform6/Tests/include/i6lib-611

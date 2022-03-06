@@ -1,0 +1,4354 @@
+! ============================================================================ !
+!   Cloak of Darkness - a simple demonstration of Interactive Fiction
+!       This version for INFORM written by Roger Firth on 17Sep1999,
+!  adapted to Metrocenter '84 by Stefan Vogt, Puddle Software on 12Feb2020.
+! ============================================================================ !
+! ### This file has the metro84 library included inline, so it will compile
+! ### standalone. Compilable with -v3.
+
+! ### Switches e;  ! This version can be compiled with or without Economize
+
+Constant Story      "Cloak of Darkness";
+Constant Headline   "^A basic IF demonstration.^";
+!Constant MANUAL_PRONOUNS;
+Constant MAX_SCORE  2;
+
+Constant ENABLE_WEAR; ! disabling wearbale objects saves 500 bytes 
+!Constant DISABLE_INFERENCE; ! prevents printing assumption messages
+
+Serial "200212";
+
+! ----------------------------------------------------------------------------
+!  Metrocenter '84 version of PARSER.
+!  (c) Stefan Vogt, Puddle Software 2020.
+!
+!  This project is based on:
+!  Inform 6, mInform 1.1 Library
+!  (c) Graham Nelson 1993, 1994, 1995, 1996 but freely usable (see manuals),
+!  (c) Dave Bernazzani 2004.
+! ----------------------------------------------------------------------------
+
+#ifndef CUSTOM_ABBREVIATIONS;
+Abbreviate ". ";
+Abbreviate ", ";
+Abbreviate "You ";
+Abbreviate "'t ";
+Abbreviate "That's not something you can ";
+Abbreviate "_to/";
+Abbreviate "nothing";
+Abbreviate "That ";
+Abbreviate "close";
+Abbreviate "already";
+Abbreviate "(which is ";
+Abbreviate " is ";
+Abbreviate "thing";
+Abbreviate "ed.";
+Abbreviate "t's";
+Abbreviate "lock";
+Abbreviate "rea";
+Abbreviate "witch";
+Abbreviate "can";
+Abbreviate "open";
+Abbreviate "empty";
+Abbreviate "You";
+Abbreviate "t first.";
+Abbreviate "rrying";
+Abbreviate "contain";
+Abbreviate "when_";
+Abbreviate "that.";
+Abbreviate "t wa";
+Abbreviate "But you";
+Abbreviate "t of";
+Abbreviate "Tha";
+Abbreviate "Res";
+Abbreviate " the ";
+Abbreviate "all";
+Abbreviate "yourself";
+Abbreviate "_to";
+Abbreviate "ter";
+Abbreviate "here";
+Abbreviate "able";
+Abbreviate "ing";
+Abbreviate "are";
+Abbreviate "have";
+Abbreviate "and";
+Abbreviate "unexpected";
+Abbreviate "ion";
+Abbreviate "side";
+Abbreviate "talk";
+Abbreviate "see";
+Abbreviate "sco";
+Abbreviate "ake";
+Abbreviate "ame";
+Abbreviate "urn";
+Abbreviate " to ";
+Abbreviate "ore";
+Abbreviate "the";
+Abbreviate "tha";
+Abbreviate "you";
+Abbreviate "ome";
+Abbreviate "t i";
+Abbreviate "off";
+Abbreviate "rin";
+Abbreviate "pec";
+Abbreviate "on.";
+Abbreviate "ste";
+#endif;
+
+Constant LibSerial "200420";
+Constant LibRelease "Metrocenter84 v1.0";
+
+System_file;
+
+Constant LIBRARY_Metrocenter84;
+Constant Grammar__Version 1;
+
+Constant MAX_TIMERS  4;
+Array  the_timers  --> MAX_TIMERS;
+
+Array  buffer          string 64;
+Array  parse           string 64;
+
+#IFDEF DEBUG;
+[ DebugAttribute a anames;
+    if (a < 0 || a >= 48) print "<invalid attribute ", a, ">";
+    else {
+        anames = #identifiers_table; anames = anames + 2*(anames-->0);
+        print (string) anames-->a;
+    }
+];
+#ENDIF;
+                                    ! calls to object routines, etc.
+Attribute animate;
+Attribute clothing;
+Attribute concealed;
+Attribute container;
+Attribute door;
+Attribute edible;
+Attribute enterable;
+Attribute general;
+Attribute light;
+Attribute lockable;
+Attribute locked;
+Attribute moved;
+Attribute on;
+Attribute open;
+Attribute openable;
+Attribute proper;
+Attribute scenery;
+Attribute scored;
+Attribute static;
+Attribute supporter;
+Attribute switchable;
+Attribute talkable;
+Attribute transparent;
+Attribute visited;
+Attribute workflag;
+Attribute worn;
+
+Attribute absent;      !  Please, no psychoanalysis
+
+Property additive before $ffff;
+Property additive after  $ffff;
+Property additive life   $ffff;
+
+Property long n_to;  Property long s_to; !  Slightly wastefully, these are
+Property long e_to;  Property long w_to; !  long (they might be routines)
+Property long ne_to; Property long se_to;
+Property long nw_to; Property long sw_to;
+Property long u_to;  Property long d_to;
+Property long in_to; Property long out_to;
+
+Property door_to     alias n_to;     !  For economy: these properties are
+Property when_closed alias s_to;     !  used only by objects which
+Property with_key    alias e_to;     !  aren't rooms
+Property door_dir    alias w_to;
+Property invent      alias u_to;
+Property add_to_scope alias se_to;
+Property list_together alias sw_to;
+Property react_before alias ne_to;
+Property react_after  alias nw_to;
+Property grammar     alias in_to;
+Property orders      alias out_to;
+
+Property long initial;
+Property when_open   alias initial;
+Property when_on     alias initial;
+Property when_off    alias when_closed;
+Property long description;
+Property additive describe $ffff;
+Property article "a";
+
+Property cant_go "You can't go that way.";
+
+Property long found_in;         !  For fiddly reasons this can't alias
+
+Property long time_left;
+Property long number;
+Property additive time_out $ffff;
+Property daemon alias time_out;
+Property additive each_turn $ffff;
+
+Property capacity 100;
+
+Property long short_name 0;
+Property long parse_name 0;
+
+Fake_Action LetGo;
+Fake_Action Receive;
+Fake_Action ThrownAt;
+Fake_Action Order;
+Fake_Action Miscellany;
+Fake_Action Prompt;
+Fake_Action NotUnderstood;
+
+[ Main; PlayTheGame(); ];
+
+Constant NULL $ffff;
+
+! ----------------------------------------------------------------------------
+!  Attribute and property definitions
+!  The compass, directions, darkness and player objects
+!  Definitions of fake actions
+!  Library global variables
+!  Private parser variables
+!  Keyboard reading
+!  Parser, level 0: outer shell, conversation, errors
+!                1: grammar lines
+!                2: tokens
+!                3: object lists
+!                4: scope and ambiguity resolving
+!                5: object comparisons
+!                6: word comparisons
+!                7: reading words and moving tables about
+!  Main game loop
+!  Action processing
+!  Menus
+!  Time: timers and daemons
+!  Changing player personality
+!  Printing short names
+! ----------------------------------------------------------------------------
+
+Object GameController "GameController";
+
+! ----------------------------------------------------------------------------
+! Construct the compass - a dummy object containing the directions, which also
+! represent the walls in whatever room the player is in (these are given the
+! general-purpose "number" property for the programmer's convenience)
+! ----------------------------------------------------------------------------
+
+Object compass "compass" has concealed;
+
+#ifndef WITHOUT_DIRECTIONS;
+Object n_obj "north" compass      
+  with name "n" "north", door_dir n_to, number 0
+  has  scenery;
+Object s_obj "south" compass      
+  with name "s" "south", door_dir s_to, number 0
+  has  scenery;
+Object e_obj "east" compass      
+  with name "e" "east", door_dir e_to, number 0
+   has  scenery;
+Object w_obj "west" compass       
+  with name "w" "west", door_dir w_to, number 0
+   has  scenery;
+Object ne_obj "ne" compass 
+  with name "ne" "northeast", door_dir ne_to, number 0
+  has  scenery;
+Object se_obj "sw" compass
+  with name "se" "southeast", door_dir se_to, number 0
+  has  scenery;
+Object nw_obj "nw" compass
+  with name "nw" "northwest", door_dir nw_to, number 0
+  has  scenery;
+Object sw_obj "sw" compass
+  with name "sw" "southwest", door_dir sw_to, number 0
+  has  scenery;
+Object u_obj "above" compass         
+  with name "u" "up" "above" "sky", door_dir u_to, number 0
+   has  scenery;
+Object d_obj "ground" compass
+  with name "d" "down" "ground" "floor", door_dir d_to, number 0
+   has  scenery;
+#endif; 
+
+Object out_obj "outside" compass
+  with  door_dir out_to, number 0
+   has  scenery;
+Object in_obj "inside" compass
+  with  door_dir in_to, number 0
+   has  scenery;
+
+! ----------------------------------------------------------------------------
+! Create the player object
+! ----------------------------------------------------------------------------
+
+Object selfobj "yourself"
+  with description "As good-looking as ever.", number 0,
+       before $ffff, after $ffff, life $ffff, each_turn $ffff,
+       time_out $ffff, describe $ffff, capacity 100,
+       parse_name 0, short_name 0, orders 0, add_to_scope 0,
+  has  concealed animate proper transparent;
+
+! ----------------------------------------------------------------------------
+! Globals: note that the first one defined gives the status line place, the
+! next two the score/turns
+! ----------------------------------------------------------------------------
+
+Global location = 1;
+Global sline1 = 0;
+Global sline2 = 0;
+
+Global score = 0;
+Global turns = 1;
+Global player;
+
+Global deadflag = 0;
+
+Global transcript_mode = 0;
+
+Global last_score = 0;
+Global notify_mode = 1;       ! Score notification
+
+Global places_score = 0;
+Global things_score = 0;
+Global lastdesc = 0;
+
+Global top_object = 0;
+Global standard_interpreter = 0;
+
+! ----------------------------------------------------------------------------
+! Parser variables accessible to the rest of the game
+! ----------------------------------------------------------------------------
+
+Array  inputobjs       --> 16;       ! To hold parameters
+Global actor           = 0;          ! Person asked to do something
+Global actors_location = 0;          ! Like location, but for the actor
+Global action          = 0;          ! Thing he is asked to do
+Global inp1            = 0;          ! First parameter
+Global inp2            = 0;          ! Second parameter
+Global special_number1 = 0;          ! First number, if one was typed
+Global noun            = 0;          ! First noun
+Global second          = 0;          ! Second noun
+Global special_word    = 0;          ! Dictionary address of "special"
+Global parsed_number   = 0;          ! For user-supplied parsing routines
+global meta;                         ! Verb is a meta-command (such as "save")
+global reason_code;                  ! Reason for calling a life
+global consult_from;                 ! Word that "consult"�topic starts on
+global consult_words;                ! ...and number of words in topic
+
+#ifdef DEBUG;
+global parser_trace = 0;             ! Set this to 1 to make the parser trace
+                                     ! tokens and lines
+global debug_flag = 0;               ! For debugging information
+#ENDIF;
+
+global lm_n;                         ! Parameters for LibraryMessages
+global lm_o;
+
+Constant REPARSE_CODE 10000;
+
+Constant PARSING_REASON        0;
+Constant TALKING_REASON        1;
+Constant EACH_TURN_REASON      2;
+Constant REACT_BEFORE_REASON   3;
+Constant REACT_AFTER_REASON    4;
+Constant LOOPOVERSCOPE_REASON  5;
+Constant TESTSCOPE_REASON      6;
+
+! ----------------------------------------------------------------------------
+! The parser, beginning with variables private to itself:
+! ----------------------------------------------------------------------------
+
+global wn;                      ! Word number (counts from 1)
+global num_words;               ! Number of words typed
+global verb_word;               ! Verb word (eg, take in "take all" or
+                                ! "dwarf, take all") - address in dictionary
+global verb_wordnum;            ! and the number in typing order (eg, 1 or 3)
+
+Array pattern --> 8;            ! For the current pattern match
+global pcount;                  ! and a marker within it
+Array pattern2 --> 8;           ! And another, which stores the best match
+global pcount2;                 ! so far
+
+global parameters;              ! Parameters (objects) entered so far
+global params_wanted;           ! Number needed (may change in parsing)
+
+global inferfrom;               ! The point from which the rest of the
+                                ! command must be inferred
+global inferword;               ! And the preposition inferred
+
+Constant MATCH_LIST_SIZE 8;
+Array  match_list    -> 8;
+                                ! An array of matched objects so far
+Array  match_classes -> 8;
+                                ! An array of equivalence classes for them
+global number_matched;          ! How many items in it?  (0 means none)
+global number_of_classes;       ! How many equivalence classes?
+global match_length;            ! How many typed words long are these matches?
+global match_from;              ! At what word of the input do they begin?
+
+global parser_action;           ! For the use of the parser when calling
+global parser_one;              ! user-supplied routines
+global parser_two;              !
+
+global lookahead;               ! The token after the object now being matched
+global not_holding;             ! Object to be automatically taken as an
+                                ! implicit command
+global best_etype;              ! Error number used within parser
+global nextbest_etype;          ! Error number used within parser
+global etype;                   ! Error number used for individual lines
+
+global token_was;               ! For noun filtering by user routines
+
+global advance_warning;         ! What a later-named thing will be
+
+global placed_in_flag;          ! To do with PlaceInScope
+
+global action_to_be;            ! So the parser can "cheat" in one case
+global dont_infer;              ! Another dull flag
+
+global scope_reason = PARSING_REASON;   ! For "each_turn" and reactions
+
+global scope_token;             ! For scope:Routine tokens
+global scope_error;
+global scope_stage;
+
+global ats_flag = 0;            ! For AddToScope routines
+
+global usual_grammar_after = 0;
+Global active_timers = 0;
+
+! ----------------------------------------------------------------------------
+!  Variables for Verblib
+! ----------------------------------------------------------------------------
+
+global inventory_stage = 1;
+global c_style;
+global wlf_indent;
+global keep_silent;
+global receive_action;
+
+#ifdef DEBUG;
+global xcommsdir;
+Global x_scope_count;
+#endif;
+
+! ----------------------------------------------------------------------------
+!  The comma_word is a special word, used to substitute commas in the input
+! ----------------------------------------------------------------------------
+
+Constant comma_word 'xcomma';
+
+! ----------------------------------------------------------------------------
+!  In Advanced games only, the DrawStatusLine routine does just that: this is
+!  provided explicitly so that it can be Replace'd to change the style, and
+!  as written it emulates the ordinary Standard game status line, which is
+!  drawn in hardware
+! ----------------------------------------------------------------------------
+#IFV5;
+[ DrawStatusLine width posa posb;
+   @split_window 1; @set_window 1; @set_cursor 1 1; style reverse;
+   width = 0->33; posa = width-26; posb = width-13;
+   spaces (width);
+   @set_cursor 1 2;  PrintShortName(location);
+   if (width > 76)
+   {   @set_cursor 1 posa; print "Score: ", sline1;
+       @set_cursor 1 posb; print "Moves: ", sline2;
+   }
+   if (width > 63 && width <= 76)
+   {   @set_cursor 1 posb; print sline1, "/", sline2;
+   }
+   @set_cursor 1 1; style roman; @set_window 0;
+];
+#ENDIF;
+
+! ----------------------------------------------------------------------------
+!  The Keyboard routine actually receives the player's words,
+!  putting the words in "a_buffer" and their dictionary addresses in
+!  "a_table".  It is assumed that the table is the same one on each
+!  (standard) call.
+!
+!  It can also be used by miscellaneous routines in the game to ask
+!  yes-no questions and the like, without invoking the rest of the parser.
+!
+!  Return the number of words typed
+! ----------------------------------------------------------------------------
+
+[ Keyboard  a_buffer a_table  nw;
+
+    DisplayStatus();
+
+    .FreshInput;
+
+!  In case of an array entry corruption that shouldn't happen, but would be
+!  disastrous if it did:
+
+   a_buffer->0 = 64;
+   a_table->0 = 64;
+
+!  Print the prompt, and read in the words and dictionary addresses
+
+    L__M(##Prompt);
+    AfterPrompt();
+    #IFV3; read a_buffer a_table; #ENDIF;
+    temp_global = 0;
+    #IFV5; read a_buffer a_table DrawStatusLine; #ENDIF;
+    nw=a_table->1;
+
+!  If the line was blank, get a fresh line
+    if (nw == 0)
+    { 
+        jump FreshInput; 
+    }
+    return nw;
+];
+
+Constant STUCK_PE     1;
+Constant UPTO_PE      2;
+Constant NUMBER_PE    3;
+Constant CANTSEE_PE   4;
+Constant TOOLIT_PE    5;
+Constant NOTHELD_PE   6;
+Constant MULTI_PE     7;
+Constant MMULTI_PE    8;
+Constant VAGUE_PE     9;
+Constant EXCEPT_PE    10;
+Constant ANIMA_PE     11;
+Constant VERB_PE      12;
+Constant SCENERY_PE   13;
+Constant ITGONE_PE    14;
+Constant JUNKAFTER_PE 15;
+Constant TOOFEW_PE    16;
+Constant NOTHING_PE   17;
+Constant ASKSCOPE_PE  18;
+
+! ----------------------------------------------------------------------------
+!  The Parser routine is the heart of the parser.
+!
+!  It returns only when a sensible request has been made, and puts into the
+!  "results" buffer:
+!
+!  Word 0 = The action number
+!  Word 1 = Number of parameters
+!  Words 2, 3, ... = The parameters (object numbers), but
+!                    00 means "multiple object list goes here"
+!                    01 means "special word goes here"
+!
+!  (Some of the global variables above are really local variables for this
+!  routine, because the Z-machine only allows up to 15 local variables per
+!  routine, and Parser runs out.)
+!
+!  To simplify the picture a little, a rough map of this routine is:
+!
+!  (A)    Get the input, do "oops" and "again"
+!  (B)    Is it a direction, and so an implicit "go"?  If so go to (K)
+!  (C)    Is anyone being addressed?
+!  (D)    Get the verb: try all the syntax lines for that verb
+!  (E)        Go through each token in the syntax line
+!  (F)           Check (or infer) an adjective
+!  (G)            Check to see if the syntax is finished, and if so return
+!  (H)    Cheaply parse otherwise unrecognised conversation and return
+!  (I)    Print best possible error message
+!  (J)    Retry the whole lot
+!  (K)    Last thing: check for "then" and further instructions(s), return.
+!
+!  The strategic points (A) to (K) are marked in the commentary.
+!
+!  Note that there are three different places where a return can happen.
+!
+! ----------------------------------------------------------------------------
+[ Parser  results   syntax line num_lines line_address i j
+                    token l m;
+
+!  **** (A) ****
+  .ReType;
+
+   Keyboard(buffer,parse);
+
+  .ReParse;
+
+!  Initially assume the command is aimed at the player, and the verb
+!  is the first word
+
+    num_words=parse->1;
+    wn=1;
+    BeforeParsing();
+    num_words=parse->1;
+#ifdef DEBUG;
+    if (parser_trace>=4)
+    {   print "[ ", num_words, " to parse: ";
+        for (i=1:i<=num_words:i++)
+        {   j=parse-->((i-1)*2+1);
+            if (j == 0) print "? ";
+            else
+            {   if (UnsignedCompare(j, 0-->4)>=0
+                    && UnsignedCompare(j, 0-->2)<0) print (address) j;
+                else print j; print " ";
+            }
+        }
+        print "]^";
+    }
+#endif;
+    verb_wordnum=1;
+    actor=player; actors_location=location;
+    usual_grammar_after = 0;
+
+  .AlmostReParse;
+
+    token_was = 0; ! In case we're still in "user-filter" mode from last round
+    scope_token = 0;
+    action_to_be = NULL;
+
+!  Begin from what we currently think is the verb word
+
+  .BeginCommand;
+    wn=verb_wordnum;
+    verb_word = NextWordStopped();
+
+!  If there's no input here, we must have something like
+!  "person,".
+
+    if (verb_word==-1)
+    {   best_etype = STUCK_PE; jump GiveError; }
+
+    if (usual_grammar_after==0)
+    {   i = RunRoutines(actor, grammar);
+#ifdef DEBUG;
+        if (parser_trace>=2 && actor.grammar~=0 or NULL)
+            print " [Grammar property returned ", i, "]^";
+#endif;
+        if (i<0) { usual_grammar_after = verb_wordnum; i=-i; }
+        if (i==1)
+        {   results-->0 = action;
+            results-->1 = noun;
+            results-->2 = second;
+            rtrue;
+        }
+        if (i~=0) { verb_word = i; wn--; verb_wordnum--; }
+        else
+        {   wn = verb_wordnum; verb_word=NextWord();
+        }
+    }
+    else usual_grammar_after=0;
+
+!  **** (B) ****
+
+!  If the first word is not listed as a verb, it must be a direction
+!  or the name of someone to talk to
+!  (NB: better avoid having a Mr Take or Mrs Inventory around...)
+
+    if (verb_word==0 || ((verb_word->#dict_par1) & 1) == 0)
+    {   
+
+!  So is the first word an object contained in the special object "compass"
+!  (i.e., a direction)?  This needs use of NounDomain, a routine which
+!  does the object matching, returning the object number, or 0 if none found,
+!  or REPARSE_CODE if it has restructured the parse table so that the whole parse
+!  must be begun again...
+
+        wn=verb_wordnum;
+        l=NounDomain(compass,0,0); 
+        if (l==REPARSE_CODE) jump ReParse;
+
+!  If it is a direction, send back the results:
+!  action=GoSub, no of arguments=1, argument 1=the direction.
+
+        if (l~=0)
+        {   results-->0 = ##Go;
+            results-->1 = 1;
+            results-->2 = l;
+            jump LookForMore;
+        }
+
+!  **** (C) ****
+
+!  Only check for a comma (a "someone, do something" command) if we are
+!  not already in the middle of one.  (This simplification stops us from
+!  worrying about "robot, wizard, you are an idiot", telling the robot to
+!  tell the wizard that she is an idiot.)
+
+        if (actor==player)
+        {   for (j=2:j<=num_words:j++)
+            {   i=NextWord(); if (i==comma_word) jump Conversation;
+            }
+
+            verb_word=UnknownVerb(verb_word);
+            if (verb_word~=0) jump VerbAccepted;
+        }
+
+        best_etype=VERB_PE; jump GiveError;
+
+!  NextWord nudges the word number wn on by one each time, so we've now
+!  advanced past a comma.  (A comma is a word all on its own in the table.)
+
+      .Conversation;
+        j=wn-1;
+        if (j==1) { jump ReType; }
+
+!  Use NounDomain (in the context of "animate creature") to see if the
+!  words make sense as the name of someone held or nearby
+
+        wn=1; lookahead=1;
+        scope_reason = TALKING_REASON;
+        l=NounDomain(player,actors_location,6);
+        scope_reason = PARSING_REASON;
+        if (l==REPARSE_CODE) jump ReParse;
+
+        if (l==0) { print "I can't figure out who you want to talk with.^"; jump ReType; }
+
+!  The object addressed must at least be "talkable" if not actually "animate"
+!  (the distinction allows, for instance, a microphone to be spoken to,
+!  without the parser thinking that the microphone is human).
+
+        if (l hasnt animate && l hasnt talkable)
+        {   print "You can't talk to "; DefArt(l); print ".^"; jump ReType; }
+
+!  Check that there aren't any mystery words between the end of the person's
+!  name and the comma (eg, throw out "dwarf sdfgsdgs, go north").
+
+        if (wn~=j)
+        {   print "To talk, use ~someone, hello~.^";
+            jump ReType;
+        }
+
+!  Set the global variable "actor", adjust the number of the first word,
+!  and begin parsing again from there.
+
+        verb_wordnum=j+1; actor=l;
+        actors_location=l;
+        while (parent(actors_location)~=0)
+            actors_location=parent(actors_location);
+#ifdef DEBUG;
+        if (parser_trace>=1)
+            print "[Actor is ", (the) actor, " in ",
+                (name) actors_location, "]^";
+#endif;
+        jump BeginCommand;
+    }
+
+!  **** (D) ****
+
+   .VerbAccepted;
+
+!  We now definitely have a verb, not a direction, whether we got here by the
+!  "take ..." or "person, take ..." method.  Get the meta flag for this verb:
+
+    meta=((verb_word->#dict_par1) & 2)/2;
+
+!  You can't order other people to "full score" for you, and so on...
+
+    if (meta==1 && actor~=player)
+    {   best_etype=VERB_PE; meta=0; jump GiveError; }
+
+!  Now let i be the corresponding verb number, stored in the dictionary entry
+!  (in a peculiar 255-n fashion for traditional Infocom reasons)...
+
+    i=$ff-(verb_word->#dict_par2);
+
+!  ...then look up the i-th entry in the verb table, whose address is at word
+!  7 in the Z-machine (in the header), so as to get the address of the syntax
+!  table for the given verb...
+
+    syntax=(0-->7)-->i;
+
+!  ...and then see how many lines (ie, different patterns corresponding to the
+!  same verb) are stored in the parse table...
+
+    num_lines=(syntax->0)-1;
+
+#ifdef DEBUG;
+   if (parser_trace>=1)
+   {    print "[Parsing for the verb '", (address) verb_word,
+              "' (", num_lines+1, " lines)]^";
+   }
+#endif;
+
+   best_etype=STUCK_PE; nextbest_etype=best_etype;
+!  "best_etype" is the current failure-to-match error - it is by default
+!  the least informative one, "don't understand that sentence"
+
+
+!  **** (E) ****
+
+    for (line=0:line<=num_lines:line++)
+    {   line_address = syntax+1+line*8;
+
+#ifdef DEBUG;
+        if (parser_trace>=1)
+        {   print "[Line ", line, ": ", line_address->0, " parameters: ";
+            for (pcount=1:pcount<=6:pcount++)
+            {   token=line_address->pcount;
+                print token, " ";
+            }
+            print " -> action ", line_address->7, "]^";
+        }
+#endif;
+
+!  We aren't in "not holding" or inferring modes, and haven't entered
+!  any parameters on the line yet, or any special numbers; the multiple
+!  object is still empty.
+
+        not_holding=0;
+        inferfrom=0;
+        parameters=0;
+        params_wanted = line_address->0;
+        special_word=0; 
+        etype=STUCK_PE;
+        action_to_be = line_address->7;
+
+!  Put the word marker back to just after the verb
+
+        wn=verb_wordnum+1;
+
+!  An individual "line" contains six tokens...  There's a preliminary pass
+!  first, to parse late tokens early if necessary (because of mi or me).
+!  We also check to see whether the line contains any "multi"s.
+
+        advance_warning=-1;
+        for (i=0,m=0,pcount=1:pcount<=6:pcount++)
+        {   scope_token=0;
+            token=line_address->pcount;
+            if (token==2) m++;
+            if (token<180) i++;
+            if (token==4 or 5 && i==1)
+            {
+#ifdef DEBUG;
+                if (parser_trace>=2) print " [Trying look-ahead]^";
+#endif;
+                pcount++;
+                while (pcount<=6 && line_address->pcount>=180) pcount++;
+                token=line_address->(pcount-1);
+                if (token>=180)
+                {   j=AdjectiveAddress(token);
+
+                    !  Now look for word with j, move wn, parse next
+                    !  token...
+                    while (wn <= num_words)
+                    {   if (NextWord()==j)
+                        {   l = NounDomain(actors_location,actor,token);
+#ifdef DEBUG;
+                            if (parser_trace>=2)
+                            {   print " [Forward token parsed: ";
+                                if (l==REPARSE_CODE) print "re-parse request]^";
+                                if (l==1) print "but multiple found]^";
+                                if (l==0) print "hit error ", etype, "]^";
+                            }
+#endif;
+                            if (l==REPARSE_CODE) jump ReParse;
+                            if (l>=2)
+                            {   advance_warning = l;
+#ifdef DEBUG;
+                                if (parser_trace>=3)
+                                {   DefArt(l); print "]^";
+                                }
+#endif;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+!  And now start again, properly, forearmed or not as the case may be.
+
+        not_holding=0;
+        inferfrom=0;
+        parameters=0;
+        special_word=0; 
+        etype=STUCK_PE;
+        action_to_be = line_address->7;
+        wn=verb_wordnum+1;
+
+!  "Pattern" gradually accumulates what has been recognised so far,
+!  so that it may be reprinted by the parser later on
+
+        for (pcount=1:pcount<=6:pcount++)
+        {   pattern-->pcount=0; scope_token=0;
+
+            token=line_address->pcount;
+
+#ifdef DEBUG;
+            if (parser_trace>=2)
+            {   print " [Token ",pcount, " is ", token, ": ";
+                if (token<16)
+                {   if (token==0) print "<noun> or null";
+                    if (token==1) print "<held>";
+                    if (token==2) print "<multi>";
+                    if (token==3) print "<multiheld>";
+                    if (token==4) print "<multiexcept>";
+                    if (token==5) print "<multiinside>";
+                    if (token==6) print "<creature>";
+                    if (token==7) print "<special>";
+                    if (token==8) print "<number>";
+                }
+                if (token>=16 && token<48)
+                    print "<noun filter by routine ",token-16, ">";
+                if (token>=48 && token<80)
+                    print "<general parse by routine ",token-48, ">";
+                if (token>=80 && token<128)
+                    print "<scope parse by routine ",token-80, ">";
+                if (token>=128 && token<180)
+                    print "<noun filter by attribute ",token-128, ">";
+                if (token>180)
+                {   print "<adjective ",255-token, " '",
+                    (address) AdjectiveAddress(token), "'>";
+                }
+                print " at word number ", wn, "]^";
+            }
+#endif;
+
+!  Lookahead is set to the token after this one, or 8 if there isn't one.
+!  (Complicated because the line is padded with 0's.)
+
+            m=pcount+1; lookahead=8;
+            if (m<=6) lookahead=line_address->m;
+            if (lookahead==0)
+            {   m=parameters; if (token<=7) m++;
+                if (m>=params_wanted) lookahead=8;
+            }
+
+!  **** (F) ****
+
+!  When the token is a large number, it must be an adjective:
+!  remember the adjective number in the "pattern".
+
+            if (token>180)
+            {   pattern-->pcount = REPARSE_CODE+token;
+
+!  If we've run out of the player's input, but still have parameters to
+!  specify, we go into "infer" mode, remembering where we are and the
+!  adjective we are inferring...
+
+                if (wn > num_words)
+                {   if (inferfrom==0 && parameters<params_wanted)
+                    { inferfrom=pcount; inferword=token; }
+
+!  Otherwise, this line must be wrong.
+
+                    if (inferfrom==0) break;
+                }
+
+!  Whereas, if the player has typed something here, see if it is the
+!  required adjective... if it's wrong, the line must be wrong,
+!  but if it's right, the token is passed (jump to finish this token).
+
+                if (wn <= num_words && token~=AdjectiveWord()) break;
+                jump TokenPassed;
+            }
+
+!  **** (G) ****
+!  Check now to see if the player has entered enough parameters...
+!  (since params_wanted is the number of them)
+
+            if (parameters == params_wanted)
+            {  
+                if (wn <= num_words)
+                {   for (m=0:m<8:m++) pattern2-->m=pattern-->m;
+                        pcount2=pcount;
+                        etype=UPTO_PE; break;
+                }
+
+#ifdef DEBUG;
+                if (parser_trace>=1)
+                    print "[Line successfully parsed]^";
+#endif;
+
+!  At this point the line has worked out perfectly, and it's a matter of
+!  sending the results back...
+!  ...pausing to explain any inferences made (using the pattern)...
+
+                if (inferfrom~=0)
+                {   print "("; PrintCommand(inferfrom,1); print ")^";
+                }
+
+!  ...and to copy the action number, and the number of parameters...
+
+                results-->1 = params_wanted;
+                results-->0 = line_address->7;
+
+!  ...and declare the user's input to be error free...
+
+!  ...and worry about the case where an object was allowed as a parameter
+!  even though the player wasn't holding it and should have been: in this
+!  event, keep the results for next time round, go into "not holding" mode,
+!  and for now tell the player what's happening and return a "take" request
+!  instead...
+
+                if (not_holding~=0 && actor==player)
+                {   
+                   print "You need to be in possession of it first.^"; 
+                   jump reType;
+                }
+
+!  (Notice that implicit takes are only generated for the player, and not
+!  for other actors.  This avoids entirely logical, but misleading, text
+!  being printed.)
+!  ...and finish.
+
+                rtrue;
+            }
+
+!  Otherwise, the player still has at least one parameter to specify: an
+!  object of some kind is expected, and this we hand over to POL.
+
+            if (token==6 && (action_to_be==##Answer or ##Ask or ##AskFor
+                             || action_to_be==##Tell))
+                scope_reason=TALKING_REASON;
+            l=ParseObjectList(results,token);
+
+            scope_reason=PARSING_REASON;
+#ifdef DEBUG;
+            if (parser_trace>=3)
+            {   print "  [Parse object list replied with";
+                if (l==REPARSE_CODE) print " re-parse request]^";
+                if (l==0) print " token failed, error type ", etype, "]^";
+                if (l==1) print " token accepted]^";
+            }
+#endif;
+            if (l==REPARSE_CODE) jump ReParse;
+            if (l==0)    break;
+
+!  The token has been successfully passed; we are ready for the next.
+
+            .TokenPassed;
+        }
+
+!  But if we get here it means that the line failed somewhere, so we continue
+!  the outer for loop and try the next line...
+
+        if (etype>best_etype)
+        {   best_etype=etype;
+        }
+        if (etype~=ASKSCOPE_PE && etype>nextbest_etype)
+        {   nextbest_etype=etype;
+        }
+   }
+
+!  So that if we get here, each line for the specified verb has failed.
+
+!  **** (H) ****
+
+  .GiveError;
+        etype=best_etype;
+
+!  Errors are handled differently depending on who was talking.
+
+!  If the command was addressed to somebody else (eg, "dwarf, sfgh") then
+!  it is taken as conversation which the parser has no business in disallowing.
+
+    if (actor~=player)
+    {   
+        if (usual_grammar_after>0)
+        {   verb_wordnum = usual_grammar_after;
+            jump AlmostReParse;
+        }
+        wn=verb_wordnum;
+        special_word=NextWord();
+        if (special_word=='xcomma')
+        {   special_word=NextWord();
+            verb_wordnum++;
+        }
+        results-->0=##NotUnderstood;
+        results-->1=2;
+        results-->2=1; special_number1=special_word;
+        results-->3=actor;
+        consult_from = verb_wordnum; consult_words = num_words-consult_from+1;
+        rtrue;
+    }
+
+!  **** (I) ****
+
+!  If the player was the actor (eg, in "take dfghh") the error must be printed,
+!  and fresh input called for.  In three cases the oops word must be jiggled.
+
+    if (ParserError(etype)~=0) jump ReType;
+
+    if (etype==STUCK_PE)
+             {   print "I didn't understand that.^"; }
+    if (etype==UPTO_PE)
+             {   print "I only understood you as far as wanting to ";
+                 for (m=0:m<8:m++) pattern-->m = pattern2-->m;
+                 pcount=pcount2; PrintCommand(0,1); print ".^";
+             }
+    if (etype==CANTSEE_PE)
+             {   print "You can't see any such thing.^"; }
+    if (etype==ANIMA_PE)
+                 print "You can only do that to something animate.^";
+    if (etype==VERB_PE)
+                 print "Unknown command.^";
+    if (etype==SCENERY_PE)
+                 print "No need to concern yourself with that.^";
+    if (etype==ASKSCOPE_PE)
+    {            scope_stage=3;
+                 if (indirect(scope_error)==-1)
+                 {   best_etype=nextbest_etype; jump GiveError;  }
+    }
+
+!  **** (J) ****
+
+!  And go (almost) right back to square one...
+
+    jump ReType;
+
+!  ...being careful not to go all the way back, to avoid infinite repetition
+!  of a deferred command causing an error.
+
+
+!  **** (K) ****
+
+!  At this point, the return value is all prepared, and we are only looking
+!  to see if there is a "then" followed by subsequent instruction(s).
+    
+   .LookForMore;
+
+   if (wn>num_words) rtrue;
+
+   best_etype=UPTO_PE; jump GiveError;
+];
+
+
+! ----------------------------------------------------------------------------
+!  Descriptors()
+!  Skips "the", and leaves wn pointing to the first misunderstood word.
+!  Returns error number, or 0 if no error occurred
+! ----------------------------------------------------------------------------
+
+[ Descriptors o flag;
+   for (flag=1:flag==1:)
+   {   o=NextWord(); flag=0;
+       if (o=='the') flag=1;
+   }
+   wn--;
+];
+
+! ----------------------------------------------------------------------------
+!  CreatureTest: Will this person do for a "creature" token?
+! ----------------------------------------------------------------------------
+
+[ CreatureTest obj;
+  if (obj has animate) rtrue;
+  if (obj hasnt talkable) rfalse;
+  if (action_to_be==##Ask or ##Answer or ##Tell
+      || action_to_be==##AskFor) rtrue;
+  rfalse;
+];
+
+! ----------------------------------------------------------------------------
+!  ParseObjectList: Parses tokens 0 to 179, from the current word number wn
+!
+!  Returns:
+!    REPARSE_CODE for "reconstructed input, please re-parse from scratch"
+!    1            for "token accepted"
+!    0            for "token failed"
+!
+!  (A)            Preliminaries and special/number tokens
+!  (B)            Actual object names (mostly subcontracted!)
+!  (C)            and/but and so on
+!  (D)            Returning an accepted token
+!
+! ----------------------------------------------------------------------------
+[ ParseObjectList results token  l single_object desc_wn oops_from;
+
+    dont_infer=0;
+    oops_from = 0;
+!  **** (A) ****
+!  We expect to find a list of objects next in what the player's typed.
+
+  .ObjectList;
+
+#ifdef DEBUG;
+   if (parser_trace>=3) print "  [Object list from word ", wn, "]^";
+#endif;
+
+    if (token>=48 && token<80)
+    {   l=indirect(#preactions_table-->(token-48));
+#ifdef DEBUG;
+        if (parser_trace>=3)
+            print "  [Outside parsing routine returned ", l, "]^";
+#endif;
+        if (l<0) rfalse;
+        if (l==0) { params_wanted--; rtrue; }  ! An adjective after all...
+        if (l==1)
+        {   
+            special_number1 = parsed_number; !TBD, this is where ASK ROBOT ABOUT X broke.
+        }
+        if (l==REPARSE_CODE) return l;
+        single_object=l; jump PassToken;
+    }
+
+    if (token>=80 && token<128)
+    {   scope_token = #preactions_table-->(token-80);
+        scope_stage = 1;
+        l=indirect(scope_token);
+#ifdef DEBUG;
+        if (parser_trace>=3)
+            print "  [Scope routine returned multiple-flag of ", l, "]^";
+#endif;
+        if (l==1) token=2; else token=0;
+    }
+
+    token_was=0;
+    if (token>=16)
+    {   token_was = token;
+        token=0;
+    }
+
+!  Otherwise, we have one of the tokens 0 to 6, all of which really do mean
+!  that objects are expected.
+
+!  So now we parse any descriptive words
+
+    desc_wn = wn;
+
+    .TryAgain;
+
+    Descriptors();
+
+!  **** (B) ****
+
+!  This is an actual specified object, and is therefore where a typing error
+!  is most likely to occur, so we set:
+
+    oops_from=wn;
+
+!  In either case below we use NounDomain, giving it the token number as
+!  context, and two places to look: among the actor's possessions, and in the
+!  present location.  (Note that the order depends on which is likeliest.)
+
+    l=NounDomain(actor, actors_location, token);
+    if (l==REPARSE_CODE) return l;
+    if (l==0) { etype=CantSee(); return l; }
+    if (token==6 && CreatureTest(l)==0)   ! Animation is required
+    {   
+        etype=ANIMA_PE; jump FailToken; 
+    } ! for token 6
+        
+    single_object = l;
+
+!  The following moves the word marker to just past the named object...
+
+    wn = oops_from + match_length;
+
+!  **** (C) ****
+
+!  Object(s) specified now
+    .NextInList;
+
+!  **** (D) ****
+
+!  Happy or unhappy endings:
+
+    .PassToken;
+
+    results-->(parameters+2) = single_object;
+    parameters++;
+    pattern-->pcount = single_object;
+    return 1;
+
+    .FailToken;
+
+    return 0;
+];
+
+! ----------------------------------------------------------------------------
+!  NounDomain does the most substantial part of parsing an object name.
+!
+!  It is given two "domains" - usually a location and then the actor who is
+!  looking - and a context (i.e. token type), and returns:
+!
+!   0    if no match at all could be made,
+!   1    if a multiple object was made,
+!   k    if object k was the one decided upon,
+!   REPARSE_CODE if it asked a question of the player and consequently rewrote all
+!        the player's input, so that the whole parser should start again
+!        on the rewritten input.
+!
+!   In the case when it returns 1<k<REPARSE_CODE, it also sets the variable
+!   length_of_noun to the number of words in the input text matched to the
+!   noun.
+!   In the case k=1, the multiple objects are added to multiple_object by
+!   hand (not by MultiAdd, because we want to allow duplicates).
+! ----------------------------------------------------------------------------
+
+[ NounDomain domain1 domain2 context  first_word i answer_words;
+
+#ifdef DEBUG;
+  if (parser_trace>=4) print "   [NounDomain called at word ", wn, "^";
+#endif;
+
+  match_length=0; number_matched=0; match_from=wn; placed_in_flag=0;
+
+  SearchScope(domain1, domain2, context);
+
+#ifdef DEBUG;
+  if (parser_trace>=4) print "   [ND made ", number_matched, " matches]^";
+#endif;
+
+  wn=match_from+match_length;
+
+!  If nothing worked at all, leave with the word marker skipped past the
+!  first unmatched word...
+
+  if (number_matched==0) { wn++; rfalse; }
+
+!  Suppose that there really were some words being parsed (i.e., we did
+!  not just infer).  If so, and if there was only one match, it must be
+!  right and we return it...
+
+  if (match_from <= num_words)
+  {   if (number_matched==1) { i=match_list-->0; return i; }
+
+!  ...now suppose that there was more typing to come, i.e. suppose that
+!  the user entered something beyond this noun.  Use the lookahead token
+!  to check that if an adjective comes next, it is the right one.  (If
+!  not then there must be a mistake like "press red buttno" where "red"
+!  has been taken for the noun in the mistaken belief that "buttno" is
+!  some preposition or other.)
+!
+!  If nothing ought to follow, then similarly there must be a mistake,
+!  (unless what does follow is just a full stop, and or comma)
+
+      if (wn<=num_words)
+      {   i=NextWord(); wn--;
+          if (lookahead==8) rfalse;
+          if (lookahead>8)
+          {   if (lookahead~=AdjectiveWord())
+              { wn--;
+#ifdef DEBUG;
+                if (parser_trace>=3)
+                print "   [ND failed at lookahead at word ", wn, "]^";
+#endif;
+                rfalse;
+              }
+              wn--;
+          }
+      }
+  }
+
+!  Now look for a good choice, if there's more than one choice...
+
+  number_of_classes=0;
+  
+  if (number_matched==1) i=match_list-->0;
+  if (number_matched>1)
+  {   
+      i=Adjudicate(context);
+      if (i==-1) rfalse;
+      if (i==1) rtrue;       !  Adjudicate has made a multiple
+                             !  object, and we pass it on
+  }
+
+!  If i is non-zero here, one of two things is happening: either
+!  (a) an inference has been successfully made that object i is
+!      the intended one from the user's specification, or
+!  (b) the user finished typing some time ago, but we've decided
+!      on i because it's the only possible choice.
+!  In either case we have to keep the pattern up to date,
+!  note that an inference has been made and return.
+!  (Except, we don't note which of a pile of identical objects.)
+
+#ifndef DISABLE_INFERENCE;
+  if (i~=0)
+  {   
+      if (dont_infer==1) return i;
+      if (inferfrom==0) inferfrom=pcount;
+      pattern-->pcount = i;
+      return i;
+  }
+#endif;
+
+!  Now we come to the question asked when the input has run out
+!  and can't easily be guessed (eg, the player typed "take" and there
+!  were plenty of things which might have been meant).
+
+  .Incomplete;
+
+  print "You'll need to be more specific.^";
+  answer_words=Keyboard(buffer, parse);
+  first_word=(parse-->1);
+  return REPARSE_CODE;
+];
+
+! ----------------------------------------------------------------------------
+!  The Adjudicate routine tries to see if there is an obvious choice, when
+!  faced with a list of objects (the match_list) each of which matches the
+!  player's specification equally well.
+!
+!  To do this it makes use of the context (the token type being worked on).
+!  It counts up the number of obvious choices for the given context
+!  (all to do with where a candidate is, except for 6 (animate) which is to
+!  do with whether it is animate or not);
+!
+!  if only one obvious choice is found, that is returned;
+!
+!  if we are in indefinite mode (don't care which) one of the obvious choices
+!    is returned, or if there is no obvious choice then an unobvious one is
+!    made;
+!
+!  at this stage, we work out whether the objects are distinguishable from
+!    each other or not: if they are all indistinguishable from each other,
+!    then choose one, it doesn't matter which;
+!
+!  otherwise, 0 (meaning, unable to decide) is returned (but remember that
+!    the equivalence classes we've just worked out will be needed by other
+!    routines to clear up this mess, so we can't economise on working them
+!    out).
+!
+!  Returns -1 if an error occurred
+! ----------------------------------------------------------------------------
+
+[ Adjudicate context i j k good_ones last n ultimate;
+
+#ifdef DEBUG;
+  if (parser_trace>=4)
+      print "   [Adjudicating match list of size ", number_matched, "^";
+#endif;
+
+  j=number_matched-1; good_ones=0; last=match_list-->0;
+  for (i=0:i<=j:i++)
+  {   n=match_list-->i;
+      if (n hasnt concealed)
+      {   ultimate=n;
+          do
+              ultimate=parent(ultimate);
+          until (ultimate==actors_location or actor or 0);
+
+          if (context==0 && ultimate==actors_location &&
+              (token_was==0 || UserFilter(n)==1)) { good_ones++; last=n; }
+          if (context==1 && parent(n)==actor)     { good_ones++; last=n; }
+          if (context==2 && ultimate==actors_location) 
+                                                  { good_ones++; last=n; }
+          if (context==3 && parent(n)==actor)     { good_ones++; last=n; }
+
+          if (context==4 or 5)
+          {   if (advance_warning==-1)
+              {   if (parent(n)==actor) { good_ones++; last=n; }
+              }
+              else
+              {   if (context==4 && parent(n)==actor && n~=advance_warning)
+                  { good_ones++; last=n; }
+                  if (context==5 && parent(n)==actor && n in advance_warning)
+                  { good_ones++; last=n; }
+              }
+          }
+          if (context==6 && CreatureTest(n)==1)   { good_ones++; last=n; }
+      }
+  }
+  if (good_ones==1) return last;
+
+  ! If there is ambiguity about what was typed, but it definitely wasn't
+  ! animate as required, then return anything; higher up in the parser
+  ! a suitable error will be given.  (This prevents a question being asked.)
+  !
+  if (context==6 && good_ones==0) return match_list-->0;
+
+  n=1;
+  for (i=0:i<number_matched:i++)
+      if (match_classes-->i==0)
+      {   
+          match_classes-->i=n++; 
+      }
+  n--;
+
+#ifdef DEBUG;
+  if (parser_trace>=4)
+  {   print "   Difficult adjudication with ", n, " equivalence classes:^";
+      for (i=0:i<number_matched:i++)
+      {   print "   "; CDefArt(match_list-->i);
+          print " (", match_list-->i, ")  ---  ",match_classes-->i, "^";
+      }
+  }
+#endif;
+
+  number_of_classes = n;
+
+  if (n>1)
+  {   j=0; good_ones=0;
+      for (i=0:i<number_matched:i++)
+      {   k=ChooseObjects(match_list-->i,2);
+          if (k==j) good_ones++;
+          if (k>j) { j=k; good_ones=1; last=match_list-->i; }
+      }
+      if (good_ones==1)
+      {
+#ifdef DEBUG;
+          if (parser_trace>=4)
+              print "   ChooseObjects picked a best.]^";
+#endif;
+          return last;
+      }
+#ifdef DEBUG;
+      if (parser_trace>=4)
+          print "   Unable to decide: it's a draw.]^";
+#endif;
+      return 0;
+  }
+
+!  When the player is really vague, or there's a single collection of
+!  indistinguishable objects to choose from, choose the one the player
+!  most recently acquired, or if the player has none of them, then
+!  the one most recently put where it is.
+
+  if (n==1) dont_infer = 1;
+
+  return BestGuess();
+];
+
+! ----------------------------------------------------------------------------
+!  ScoreMatchL  scores the match list for quality in terms of what the
+!  player has vaguely asked for.  Points are awarded for conforming with
+!  requirements like "my", and so on.  If the score is less than the
+!  threshold, block out the entry to -1.
+!  The scores are put in the match_classes array, which we can safely
+!  reuse by now.
+! ----------------------------------------------------------------------------
+
+[ ScoreMatchL  its_owner its_score obj i threshold a_s l_s;
+
+  a_s = 30; l_s = 20;
+  if (action_to_be == ##Take or ##Remove) { a_s=20; l_s=30; }
+
+  for (i=0:i<number_matched:i++)
+  {   obj = match_list-->i; its_owner = parent(obj); its_score=0;
+      if (its_owner==actor)   its_score=a_s;
+      if (its_owner==actors_location) its_score=l_s;
+      if (its_score==0 && its_owner~=compass) its_score=10;
+
+      its_score=its_score + ChooseObjects(obj,2);
+
+      if (its_score < threshold) match_list-->i=-1;
+      else
+      {   match_classes-->i=its_score;
+#ifdef DEBUG;
+          if (parser_trace >= 4)
+          {   print "   "; CDefArt(match_list-->i);
+              print " (", match_list-->i, ") in "; DefArt(its_owner);
+              print " scores ",its_score, "^";
+          }
+#endif;
+      }
+  }
+  number_of_classes=2;
+];
+
+! ----------------------------------------------------------------------------
+!  BestGuess makes the best guess it can out of the match list, assuming that
+!  everything in the match list is textually as good as everything else;
+!  however it ignores items marked as -1, and so marks anything it chooses.
+!  It returns -1 if there are no possible choices.
+! ----------------------------------------------------------------------------
+
+[ BestGuess  earliest its_score best i;
+
+  if (number_of_classes~=1) ScoreMatchL();
+
+  earliest=0; best=-1;
+  for (i=0:i<number_matched:i++)
+  {   if (match_list-->i >= 0)
+      {   its_score=match_classes-->i;
+          if (its_score>best) { best=its_score; earliest=i; }
+      }
+  }
+#ifdef DEBUG;
+  if (parser_trace>=4)
+  {   if (best<0)
+          print "   Best guess ran out of choices^";
+      else
+      {   print "   Best guess "; DefArt(match_list-->earliest);
+          print  " (", match_list-->earliest, ")^";
+      }
+  }
+#endif;
+  if (best<0) return -1;
+  i=match_list-->earliest;
+  match_list-->earliest=-1;
+  return i;
+];
+
+! ----------------------------------------------------------------------------
+!  PrintCommand reconstructs the command as it presently reads, from
+!  the pattern which has been built up
+!
+!  If from is 0, it starts with the verb: then it goes through the pattern.
+!  The other parameter is "emptyf" - a flag: if 0, it goes up to pcount:
+!  if 1, it goes up to pcount-1.
+!
+!  Note that verbs and prepositions are printed out of the dictionary:
+!  and that since the dictionary may only preserve the first six characters
+!  of a word (in a V3 game), we have to hand-code the longer words needed.
+!
+!  (Recall that pattern entries are 0 for "multiple object", 1 for "special
+!  word", 2 to 999 are object numbers and REPARSE_CODE+n means the preposition n)
+! ----------------------------------------------------------------------------
+
+[ PrintCommand from emptyf i j k f;
+  if (from==0)
+  {   
+       i=verb_word; from=1; f=1;
+       if (i==#n$l)              { print "look";    jump VerbPrinted; }
+       if (i=='examine' or #n$x) { print "examine"; jump VerbPrinted; }
+       if (PrintVerb(i)==0) print (address) i;
+  }
+  .VerbPrinted;
+
+  j=pcount-emptyf;
+  for (k=from:k<=j:k++)
+  {   
+      if (f==1) print (char) ' ';
+      i=pattern-->k;
+      if (i>=REPARSE_CODE)
+      {   i=AdjectiveAddress(i-REPARSE_CODE);
+          print (address) i;
+      }
+      else DefArt(i);
+      .TokenPrinted;
+      f=1;
+  }
+];
+
+! ----------------------------------------------------------------------------
+!  The CantSee routine returns a good error number for the situation where
+!  the last word looked at didn't seem to refer to any object in context.
+!
+!  The idea is that: if the actor is in a location (but not inside something
+!  like, for instance, a tank which is in that location) then an attempt to
+!  refer to one of the words listed as meaningful-but-irrelevant there
+!  will cause "you don't need to refer to that in this game" rather than
+!  "no such thing" or "what's 'it'?".
+!  (The advantage of not having looked at "irrelevant" local nouns until now
+!  is that it stops them from clogging up the ambiguity-resolving process.
+!  Thus game objects always triumph over scenery.)
+! ----------------------------------------------------------------------------
+
+[ CantSee  i w e;
+    if (scope_token~=0) { scope_error = scope_token; return ASKSCOPE_PE; }
+
+    wn--; w=NextWord();
+    e=CANTSEE_PE;
+    i=parent(actor);
+    if (i has visited && Refers(i,w)==1) e=SCENERY_PE;
+    if (etype>e) return etype;
+    return e;
+];
+
+
+! ----------------------------------------------------------------------------
+!  The UserFilter routine consults the user's filter (or checks on attribute)
+!  to see what already-accepted nouns are acceptable
+! ----------------------------------------------------------------------------
+
+[ UserFilter obj;
+
+  if (token_was>=128)
+  {   if (obj has (token_was-128)) rtrue;
+      rfalse;
+  }
+  noun=obj;
+  return (indirect(#preactions_table-->(token_was-16)));
+];
+
+! ----------------------------------------------------------------------------
+!  SearchScope  domain1 domain2 context
+!
+!  Works out what objects are in scope (possibly asking an outside routine),
+!  but does not look at anything the player has typed.
+! ----------------------------------------------------------------------------
+
+[ SearchScope domain1 domain2 context i;
+
+  i=0;
+!  Everything is in scope to the debugging commands
+
+#ifdef DEBUG;
+  if (scope_reason==PARSING_REASON
+      && (verb_word == 'purloin' or 'tree' or 'abstract'
+          || verb_word == 'gonear' or 'scope'))
+  {   for (i=selfobj+1:i<=top_object:i++) PlaceInScope(i);
+      rtrue;
+  }
+#endif;
+
+!  First, a scope token gets priority here:
+
+  if (scope_token ~= 0)
+  {   scope_stage=2;
+      if (indirect(scope_token)~=0) rtrue;
+  }
+
+!  Next, call any user-supplied routine adding things to the scope,
+!  which may circumvent the usual routines altogether if they return true:
+
+  if (actor==domain1 or domain2 && InScope(actor)~=0) rtrue;
+
+!  Pick up everything in the location except the actor's possessions;
+!  then go through those.  (This ensures the actor's possessions are in
+!  scope even in Darkness.)
+
+  if (context==5 && advance_warning ~= -1)
+  {   if (IsSeeThrough(advance_warning)==1)
+          ScopeWithin(advance_warning, 0, context);
+  }
+  else
+  {   ScopeWithin(domain1, domain2, context);
+      ScopeWithin(domain2,0,context);
+  }
+];
+
+! ----------------------------------------------------------------------------
+!  IsSeeThrough is used at various places: roughly speaking, it determines
+!  whether o being in scope means that the contents of o are in scope.
+! ----------------------------------------------------------------------------
+
+[ IsSeeThrough o;
+  if (o has supporter
+      || (o has transparent)
+      || (o has container && o has open))
+      rtrue;
+  rfalse;
+];
+
+! ----------------------------------------------------------------------------
+!  PlaceInScope is provided for routines outside the library, and is not
+!  called within the parser (except for debugging purposes).
+! ----------------------------------------------------------------------------
+
+[ PlaceInScope thing;
+   if (scope_reason~=PARSING_REASON or TALKING_REASON)
+   {   DoScopeAction(thing); rtrue; }
+   wn=match_from; TryGivenObject(thing); placed_in_flag=1;
+];
+
+! ----------------------------------------------------------------------------
+!  DoScopeAction
+! ----------------------------------------------------------------------------
+
+[ DoScopeAction thing s p1;
+  s = scope_reason; p1=parser_one;
+#ifdef DEBUG;
+  if (parser_trace>=5)
+  {   print "[DSA on ", (the) thing, " with reason = ", scope_reason,
+      " p1 = ", parser_one, " p2 = ", parser_two, "]^";
+  }
+#endif;
+  switch(scope_reason)
+  {   REACT_BEFORE_REASON:
+          if (thing.react_before==0 or NULL) return;
+#ifdef DEBUG;
+          if (parser_trace>=2)
+          {   print "[Considering react_before for ", (the) thing, "]^"; }
+#endif;
+          if (parser_one==0) parser_one = RunRoutines(thing,react_before);
+      REACT_AFTER_REASON:
+          if (thing.react_after==0 or NULL) return;
+#ifdef DEBUG;
+          if (parser_trace>=2)
+          {   print "[Considering react_after for ", (the) thing, "]^"; }
+#endif;
+          if (parser_one==0) parser_one = RunRoutines(thing,react_after);
+      EACH_TURN_REASON:
+          if (thing.&each_turn==0) return;
+#ifdef DEBUG;
+          if (parser_trace>=2)
+          {   print "[Considering each_turn for ", (the) thing, "]^"; }
+#endif;
+          PrintOrRun(thing, each_turn);
+      TESTSCOPE_REASON:
+          if (thing==parser_one) parser_two = 1;
+      LOOPOVERSCOPE_REASON:
+          indirect(parser_one,thing); parser_one=p1;
+  }
+  scope_reason = s;
+];
+
+! ----------------------------------------------------------------------------
+!  ScopeWithin looks for objects in the domain which make textual sense
+!  and puts them in the match list.  (However, it does not recurse through
+!  the second argument.)
+! ----------------------------------------------------------------------------
+
+[ ScopeWithin domain nosearch context;
+
+   if (domain==0) rtrue;
+
+!  multiexcept doesn't have second parameter in scope
+   if (context==4 && domain==advance_warning) rtrue;
+
+!  Special rule: the directions (interpreted as the 12 walls of a room) are
+!  always in context.  (So, e.g., "examine north wall" is always legal.)
+!  (Unless we're parsing something like "all", because it would just slow
+!  things down then, or unless the context is "creature".)
+
+   if (domain==actors_location
+       && scope_reason==PARSING_REASON && context~=6) ScopeWithin(compass);
+
+!  Look through the objects in the domain
+
+   objectloop (domain in domain) ScopeWithin_O(domain, nosearch, context);
+];
+
+[ ScopeWithin_O domain nosearch context i ad n;
+
+!  If the scope reason is unusual, don't parse.
+
+      if (scope_reason~=PARSING_REASON or TALKING_REASON)
+      {   DoScopeAction(domain); jump DontAccept; }
+
+!  If we're beyond the end of the user's typing, accept everything
+!  (NounDomain will sort things out)
+
+      if (match_from > num_words)
+      {   
+#ifdef DEBUG;
+          i=parser_trace; parser_trace=0;
+          if (i>=5) { print "     Out of text: matching "; DefArt(domain);
+                      new_line; }
+#endif;
+          MakeMatch(domain,1);
+#ifdef DEBUG;
+          parser_trace=i; 
+#ENDIF;
+          jump DontAccept;
+      }
+
+!  "it" or "them" matches to the it-object only.  (Note that (1) this means
+!  that "it" will only be understood if the object in question is still
+!  in context, and (2) only one match can ever be made in this case.)
+
+      wn=match_from;
+      i=NounWord();
+      if (i==4 && player==domain)  MakeMatch(player,1);
+      
+!  Construing the current word as the start of a noun, can it refer to the
+!  object?
+
+      wn--; TryGivenObject(domain);
+
+      .DontAccept;
+
+!  Shall we consider the possessions of the current object, as well?
+!  Only if it's a container (so, for instance, if a dwarf carries a
+!  sword, then "drop sword" will not be accepted, but "dwarf, drop sword"
+!  will).
+!  Also, only if there are such possessions.
+!
+!  Notice that the parser can see "into" anything flagged as
+!  transparent - such as a dwarf whose sword you can get at.
+
+      if (child(domain)~=0 && domain ~= nosearch && IsSeeThrough(domain)==1)
+          ScopeWithin(domain,0,context);
+
+!  Drag any extras into context
+
+   ad = domain.&add_to_scope;
+   if (ad ~= 0)
+   {   if (UnsignedCompare(ad-->0,top_object) > 0)
+       {   ats_flag = 2+context;
+           RunRoutines(domain, add_to_scope);
+           ats_flag = 0;
+       }
+       else
+       {   n=domain.#add_to_scope;
+           for (i=0:(2*i)<n:i++)
+               if (ad-->i) 
+                  ScopeWithin_O(ad-->i,0,context); !bugfix: backport from 6/11
+       }
+   }
+];
+
+[ AddToScope obj;
+   if (ats_flag>=2)
+       ScopeWithin_O(obj,0,ats_flag-2);
+];
+
+! ----------------------------------------------------------------------------
+!  MakeMatch looks at how good a match is.  If it's the best so far, then
+!  wipe out all the previous matches and start a new list with this one.
+!  If it's only as good as the best so far, add it to the list.
+!  If it's worse, ignore it altogether.
+!
+!  The idea is that "red panic button" is better than "red button" or "panic".
+!
+!  number_matched (the number of words matched) is set to the current level
+!  of quality.
+!
+!  We never match anything twice, and keep at most 32 equally good items.
+! ----------------------------------------------------------------------------
+
+[ MakeMatch obj quality i;
+#ifdef DEBUG;
+   if (parser_trace>=5) print "    Match with quality ",quality,"^";
+#endif;
+   if (token_was~=0 && UserFilter(obj)==0)
+   {   #ifdef DEBUG;
+       if (parser_trace>=5) print "    Match filtered out^";
+       #endif;
+       rtrue;
+   }
+   if (quality < match_length) rtrue;
+   if (quality > match_length) { match_length=quality; number_matched=0; }
+   else
+   {   if (2*number_matched>=MATCH_LIST_SIZE) rtrue;
+       for (i=0:i<number_matched:i++)
+           if (match_list-->i==obj) rtrue;
+   }
+   match_list-->number_matched++ = obj;
+#ifdef DEBUG;
+   if (parser_trace>=5) print "    Match added to list^";
+#endif;
+];
+
+! ----------------------------------------------------------------------------
+!  TryGivenObject tries to match as many words as possible in what has been
+!  typed to the given object, obj.  If it manages any words matched at all,
+!  it calls MakeMatch to say so.  There is no return value.
+! ----------------------------------------------------------------------------
+
+[ TryGivenObject obj threshold k w j;
+
+#ifdef DEBUG;
+   if (parser_trace>=5)
+   {   print "    Trying "; DefArt(obj);
+       print " (", obj, ") at word ", wn, "^";
+   }
+#endif;
+
+!  Ask the object to parse itself if necessary:
+
+   if (obj.parse_name~=0)
+   {   parser_action=-1; j=wn;
+       k=RunRoutines(obj,parse_name);
+       if (k>0)
+       {   wn=j+k;
+           .MMbyPN;
+           MakeMatch(obj,k); rfalse;
+       }
+       if (k==0) jump NoWordsMatch;
+   }
+
+!  The default algorithm is simply to count up how many words pass the
+!  Refers test:
+
+   w = NounWord();
+   if (w==4 && obj==player) { MakeMatch(obj,1); rfalse; }
+      
+   j=--wn;
+   threshold = ParseNoun(obj);
+#ifdef DEBUG;
+   if (threshold>=0 && parser_trace>=5)
+       print "    ParseNoun returned ", threshold, "^";
+#endif;
+   if (threshold<0) wn++;
+   if (threshold>0) { k=threshold; jump MMbyPN; }
+   if (threshold==0 || Refers(obj,w)==0)
+   {   
+       .NoWordsMatch;
+       rfalse;
+   }
+
+   if (threshold<0)
+   {   
+        threshold=1; while (0~=Refers(obj,NextWord())) threshold++;
+   }
+
+   MakeMatch(obj,threshold);
+
+#ifdef DEBUG;
+   if (parser_trace>=5) print "    Matched^";
+#endif;
+];
+
+! ----------------------------------------------------------------------------
+!  Refers works out whether the word with dictionary address wd can refer to
+!  the object obj, by seeing if wd is listed in the "names" property of obj.
+! ----------------------------------------------------------------------------
+
+[ Refers obj wd   k l m;
+    if (obj==0) rfalse;
+    k=obj.&1; l=(obj.#1)/2-1;
+    for (m=0:m<=l:m++)
+        if (wd==k-->m) rtrue;
+    rfalse;
+];
+
+! ----------------------------------------------------------------------------
+!  NounWord (which takes no arguments) returns:
+!
+!   4  if "me", "myself", "self"
+!   0  if the next word is unrecognised or does not carry the "noun" bit in
+!      its dictionary entry,
+!   or the address in the dictionary if it is a recognised noun.
+!
+!  The "current word" marker moves on one.
+! ----------------------------------------------------------------------------
+
+[ NounWord i;
+   i=NextWord();
+   if (i=='me' or 'myself' or 'self') return 4;
+   if (i==0) rfalse;
+   if ((i->#dict_par1)&128 == 0) rfalse;
+   return i;
+];
+
+! ----------------------------------------------------------------------------
+!  WordInProperty returns:
+!
+!   true if the dictionary word is listed in the property values for 
+!   the obj_id.
+!
+!  This code was backported to Metrocenter'84 from a later Inform version.
+! ----------------------------------------------------------------------------
+
+[ WordInProperty wd obj prop k l m;
+    k=obj.&prop; l=(obj.#prop)/2-1;
+    for (m=0:m<=l:m++)
+        if (wd==k-->m) rtrue;
+    rfalse;
+];
+! ----------------------------------------------------------------------------
+!  AdjectiveWord (which takes no arguments) returns:
+!
+!   0  if the next word is listed in the dictionary as possibly an adjective,
+!   or its adjective number if it is.
+!
+!  The "current word" marker moves on one.
+! ----------------------------------------------------------------------------
+
+[ AdjectiveWord i j;
+   j=NextWord();
+   if (j==0) rfalse;
+   i=j->#dict_par1;
+   if (i&8 == 0) rfalse;
+   return(j->#dict_par3);
+];
+
+! ----------------------------------------------------------------------------
+!  AdjectiveAddress works out the address in the dictionary of the word
+!  corresponding to the given adjective number.
+!
+!  It should never produce the given error (which would mean that Inform
+!  had set up the adjectives table incorrectly).
+! ----------------------------------------------------------------------------
+
+[ AdjectiveAddress n m;
+   m=#adjectives_table;
+   for (::)
+   {   if (n==m-->1) return m-->0;
+       m=m+4;
+   }
+   m=#adjectives_table; RunTimeError(1);
+   return m;
+];
+
+! ----------------------------------------------------------------------------
+!  NextWord (which takes no arguments) returns:
+!
+!  0            if the next word is unrecognised,
+!  comma_word   if it is a comma character
+!               (which is treated oddly by the Z-machine, hence the code)
+!  or the dictionary address if it is recognised.
+!  The "current word" marker is moved on.
+!
+!  NextWordStopped does the same, but returns -1 when input has run out
+! ----------------------------------------------------------------------------
+
+[ NextWord i j k;
+   if (wn > parse->1) { wn++; rfalse; }
+   i=wn*2-1; wn++;
+   j=parse-->i;
+   if (j==0)
+   {   k=wn*4-3; i=buffer->(parse->k);
+       if (i==',') j=comma_word;
+   }
+   return j;
+];   
+
+[ NextWordStopped;
+   if (wn > parse->1) { wn++; return -1; }
+   return NextWord();
+];
+
+[ WordAddress wordnum;
+   return buffer + parse->(wordnum*4+1);
+];
+
+[ WordLength wordnum;
+   return parse->(wordnum*4);
+];
+
+! ----------------------------------------------------------------------------
+!  Useful routine: unsigned comparison (for addresses in Z-machine)
+!    Returns 1 if x>y, 0 if x=y, -1 if x<y
+!  ZRegion(addr) returns 1 if object num, 2 if in code area, 3 if in strings
+! ----------------------------------------------------------------------------
+
+[ UnsignedCompare x y u v;
+  if (x==y) return 0;
+  if (x<0 && y>=0) return 1;
+  if (x>=0 && y<0) return -1;
+  u = x&$7fff; v= y&$7fff;
+  if (u>v) return 1;
+  return -1;
+];
+
+[ ZRegion addr;
+  if (addr==0) return 0;
+  if (addr>=1 && addr<=top_object) return 1;
+  if (UnsignedCompare(addr, #strings_offset)>=0) return 3;
+  if (UnsignedCompare(addr, #code_offset)>=0) return 2;
+  return 0;
+];
+
+[ PrintOrRun obj prop flag a;
+  if (obj.#prop > 2) return RunRoutines(obj,prop);
+  if (obj.prop==NULL) rfalse;
+  a=ZRegion(obj.prop);
+  if (a==0 or 1) return RunTimeError(2,obj,prop);
+  if (a==3) { print (string) obj.prop; if (flag==0) new_line; rtrue; }
+  return RunRoutines(obj,prop);
+];
+
+[ ValueOrRun obj prop a;
+  a=ZRegion(obj.prop);
+  if (a==2) return RunRoutines(obj,prop);
+  return obj.prop;
+];
+
+#IFDEF DEBUG;
+[ NameTheProperty prop;
+  if (#identifiers_table-->prop == 0)
+  {   print "property ", prop; return;
+  }
+  print (string) #identifiers_table-->prop;
+];
+#ENDIF;
+
+[ RunRoutines obj prop i j k l m ssv;
+
+   if (obj.prop==NULL or 0) rfalse;
+
+#IFDEF DEBUG;
+   if (debug_flag & 1 ~= 0 && prop~=short_name)
+    print "[Running ", (NameTheProperty) prop, " for ", (name) obj,"]^";
+#ENDIF;
+
+   j=obj.&prop; k=obj.#prop; m=self; self=obj;
+   ssv=sw__var;
+   if (prop==life) sw__var=reason_code;
+   else sw__var=action;
+   for (i=0:i<k/2:i++)
+   {   if (j-->i == NULL) { self=m; sw__var=ssv; rfalse; }
+       l=ZRegion(j-->i);
+       if (l==2)
+       {   l=indirect(j-->i);
+           if (l~=0) { self=m; sw__var=ssv; return l; }
+       }
+       else
+       {   if (l==3) { print (string) j-->i; new_line; rtrue;}
+           else RunTimeError(3,obj,prop);
+       }
+   }
+   self=m; sw__var=ssv;
+   rfalse;
+];
+
+! ----------------------------------------------------------------------------
+!  End of the parser proper: the remaining routines are its front end.
+! ----------------------------------------------------------------------------
+
+[ DisplayStatus;
+  sline1=score; sline2=turns; 
+];
+
+[ NotifyTheScore i;
+  print "^[Your score has just gone ";
+  if (last_score > score) { i=last_score-score; print "down"; }
+  else { i=score-last_score; print "up"; }
+  print " by ", i,"]^";
+];
+
+[ PlayTheGame i j;
+
+   standard_interpreter = $32-->0;
+
+   player = selfobj;
+   top_object = #largest_object-255;
+   selfobj.capacity = MAX_CARRIED;
+
+   self = GameController; sender = GameController;
+   j=Initialise();
+
+   last_score = score;
+   move player to location;
+   while (parent(location)~=0) location=parent(location);
+   objectloop (i in player) give i moved ~concealed;
+
+   if (j~=2) Banner();
+   <Look>;
+
+   for (i=1:i<=100:i++) j=random(i);
+
+   while (deadflag==0)
+   {
+       self = GameController; sender = GameController;
+       if (score ~= last_score)
+       {   if (notify_mode==1) NotifyTheScore(); last_score=score; }
+
+      .late__error;
+
+       inputobjs-->0 = 0; inputobjs-->1 = 0;
+       inputobjs-->2 = 0; inputobjs-->3 = 0; meta=0;
+
+       !  The Parser writes its results into inputobjs and meta,
+       !  a flag indicating a "meta-verb".  This can only be set for
+       !  commands by the player, not for orders to others.
+
+       Parser(inputobjs);
+
+       noun=0; second=0; action=0; 
+
+       action=inputobjs-->0;
+
+       !  Reverse "give fred biscuit" into "give biscuit to fred"
+
+       if (action==##GiveR or ##ShowR)
+       {   i=inputobjs-->2; inputobjs-->2=inputobjs-->3; inputobjs-->3=i;
+           if (action==##GiveR) action=##Give; else action=##Show;
+       }
+
+       !  Convert "P, tell me about X" to "ask P about X"
+
+       if (action==##Tell && inputobjs-->2==player && actor~=player)
+       {   inputobjs-->2=actor; actor=player; action=##Ask;
+       }
+
+       !  Convert "ask P for X" to "P, give X to me"
+
+       if (action==##AskFor && inputobjs-->2~=player && actor==player)
+       {   actor=inputobjs-->2; inputobjs-->2=inputobjs-->3;
+           inputobjs-->3=player; action=##Give;
+       }
+
+      .begin__action;
+       inp1=0; inp2=0; i=inputobjs-->1;
+       if (i>=1) inp1=inputobjs-->2;
+       if (i>=2) inp2=inputobjs-->3;
+
+       !  inp1 and inp2 hold: object numbers, or 0 for "multiple object",
+       !  or 1 for "a number or dictionary address"
+
+       noun=inp1; second=inp2;
+       if (inp1==1) 
+       {
+            noun=special_number1;
+       }
+       if (inp2==1)
+       {   
+          second=special_number1;
+       }
+
+       !  noun and second equal inp1 and inp2, except that in place of 1
+       !  they substitute the actual number or dictionary address
+
+       if (actor~=player)
+       {   
+           !  The player's "orders" property can refuse to allow conversation
+           !  here, by returning true.  If not, the order is sent to the
+           !  other person's "orders" property.  If that also returns false,
+           !  then: if it was a misunderstood command anyway, it is converted
+           !  to an Answer action (thus "floyd, grrr" ends up as
+           !  "say grrr to floyd").  If it was a good command, it is finally
+           !  offered to the Order: part of the other person's "life"
+           !  property, the old-fashioned way of dealing with conversation.
+
+           j=RunRoutines(player,orders);
+           if (j==0)
+           {   j=RunRoutines(actor,orders);
+               if (j==0)
+               {   if (action==##NotUnderstood)
+                   {   inputobjs-->3=actor; actor=player; action=##Answer;
+                       jump begin__action;
+                   }
+                   if (RunLife(actor,##Order)==0) L__M(##Order,1,actor);
+               }
+           }
+           jump turn__end;
+       }
+
+       !  So now we must have an ordinary parser-generated action, unless
+       !  inp1 is a "multiple object", in which case we: (a) check the
+       !  multiple list isn't empty; (b) warn the player if it has been
+       !  cut short because of excessive size, and (c) generate a sequence
+       !  of actions from the list (stopping on death or movement away).
+
+       if (i==0 || inp1~=0) Process();
+       else
+       {
+          RunTimeError(99);
+       }
+
+       .turn__end;
+
+       !  No time passes if either (i) the verb was meta, or
+       !  (ii) we've only had the implicit take before the "real"
+       !  action to follow.
+
+       if (deadflag==0 && meta==0) EndTurnSequence();
+   }
+
+   if (deadflag~=2) AfterLife();
+   if (deadflag==0) jump late__error;
+
+   print "^";
+   if (deadflag==1) L__M(##Miscellany,3);
+   if (deadflag==2) L__M(##Miscellany,4);
+   if (deadflag>2)  { print " "; DeathMessage(); print " "; }
+   print "^";
+   ScoreSub();
+   DisplayStatus();
+
+   .RRQL;
+   L__M(##Miscellany,5);
+   print "> ";
+   #IFV3; read buffer parse; #ENDIF;
+   temp_global=0;
+   #IFV5; read buffer parse DrawStatusLine; #ENDIF;
+   i=parse-->1;
+   if (i=='quit' or #n$q) quit;
+   if (i=='restart')      @restart;
+   if (i=='restore')      { RestoreSub(); }
+   jump RRQL;
+];
+
+[ Process;
+#IFDEF DEBUG;
+   if (debug_flag & 2 ~= 0) TraceAction(0);
+#ENDIF;
+   if (meta==1 || BeforeRoutines()==0)
+       indirect(#actions_table-->action);
+];
+
+#IFDEF DEBUG;
+Array debug_anames table
+[;##Inv "Inv";
+  ##Take "Take";
+  ##Drop "Drop";
+  ##Remove "Remove";
+  ##PutOn "PutOn";
+  ##Insert "Insert";
+  ##Enter "Enter";
+  ##Exit "Exit";
+  ##GetOff "GetOff";
+  ##Go "Go";
+  ##GoIn "GoIn";
+  ##Look "Look";
+  ##Examine "Examine";
+  ##Search "Search";
+  ##Give "Give";
+  ##Show "Show";
+  ##Unlock "Unlock";
+  ##Lock "Lock";
+  ##SwitchOn "SwitchOn";
+  ##SwitchOff "SwitchOff";
+  ##Open "Open";
+  ##Close "Close";
+!  ##Disrobe "Disrobe";
+!  ##Wear "Wear";
+  ##Eat "Eat";
+  ##Burn "Burn";
+  ##Consult "Consult";
+  ##Smell "Smell";
+  ##Listen "Listen";
+  ##Taste "Taste";
+  ##Touch "Touch";
+  ##Dig "Dig";
+  ##Cut "Cut";
+  ##Jump "Jump";
+  ##JumpOver "JumpOver";
+  ##Tie "Tie";
+  ##Drink "Drink";
+  ##Fill "Fill";
+  ##Attack "Attack";
+  ##Swim "Swim";
+  ##Rub "Rub";
+  ##Set "Set";
+  ##SetTo "SetTo";
+  ##Pull "Pull";
+  ##Push "Push";
+  ##PushDir "PushDir";
+  ##Turn "Turn";
+  ##ThrowAt "ThrowAt";
+  ##Answer "Answer";
+  ##Ask "Ask";
+  ##Tell "Tell";
+  ##AskFor "AskFor";
+  ##Climb "Climb";
+  ##Wait "Wait";
+  ##Order "Order";
+  ##NotUnderstood "NotUnderstood";
+];
+
+[ DebugParameter w x n l;
+  x=0-->4; x=x+(x->0)+1; l=x->0; n=(x+1)-->0; x=w-(x+3);
+  print w;
+  if (w>=1 && w<=top_object) print " (", (name) w, ")";
+  if (x%l==0 && (x/l)<n) print " ('", (address) w, "')";
+];
+
+[ DebugAction a i;
+  for (i=1:i<=debug_anames-->0:i=i+2)
+  {   
+      if (debug_anames-->i==a)
+      {   print (string) debug_anames-->(i+1); rfalse; }
+  }
+  print a;
+];
+
+[ TraceAction source ar;
+  if (source<2) { print "[Action "; DebugAction(action); }
+  else
+  {   if (ar==##Order)
+      {   print "[Order to "; PrintShortName(actor); print ": ";
+          DebugAction(action);
+      }
+      else
+      {   print "[Life rule "; DebugAction(ar); }
+  }
+  if (noun~=0)   { print " with noun "; DebugParameter(noun);  }
+  if (second~=0) { print " and second "; DebugParameter(second); }
+  if (source==0) print " (from parser)";
+  if (source==1) print " (from outside)";
+  print "]^";
+];
+#ENDIF;
+
+[ TestScope obj act a al sr x y;
+  x=parser_one; y=parser_two;
+  parser_one=obj; parser_two=0; a=actor; al=actors_location;
+  sr=scope_reason; scope_reason=TESTSCOPE_REASON;
+  if (act==0) actor=player; else actor=act;
+  actors_location=actor;
+  while (parent(actors_location)~=0)
+      actors_location=parent(actors_location);
+  SearchScope(location,player,0); scope_reason=sr; actor=a;
+  actors_location=al; parser_one=x; x=parser_two; parser_two=y;
+  return x;
+];
+
+[ LoopOverScope routine act x y a al;
+  x = parser_one; y=scope_reason; a=actor; al=actors_location;
+  parser_one=routine; if (act==0) actor=player; else actor=act;
+  actors_location=actor;
+  while (parent(actors_location)~=0)
+      actors_location=parent(actors_location);
+  scope_reason=LOOPOVERSCOPE_REASON;
+  SearchScope(actors_location,actor,0);
+  parser_one=x; scope_reason=y; actor=a; actors_location=al;
+];
+
+[ BeforeRoutines;
+  if (GamePreRoutine()~=0) rtrue;
+  if (RunRoutines(player,orders)~=0) rtrue;
+  if (location~=0 && RunRoutines(location,before)~=0) rtrue;
+  scope_reason=REACT_BEFORE_REASON; parser_one=0;
+  SearchScope(location,player,0); scope_reason=PARSING_REASON;
+  if (parser_one~=0) rtrue;
+  if (inp1>1 && RunRoutines(inp1,before)~=0) rtrue;
+  rfalse;
+];
+
+[ AfterRoutines;
+  scope_reason=REACT_AFTER_REASON; parser_one=0;
+  SearchScope(location,player,0); scope_reason=PARSING_REASON;
+  if (parser_one~=0) rtrue;
+  if (location~=0 && RunRoutines(location,after)~=0) rtrue;
+  if (inp1>1 && RunRoutines(inp1,after)~=0) rtrue;
+  return GamePostRoutine();
+];
+
+[ R_Process acti i j sn ss sa sse;
+   sn=inp1; ss=inp2; sa=action; sse=self;
+   inp1 = i; inp2 = j; noun=i; second=j; action=acti;
+
+#IFDEF DEBUG;
+   if (debug_flag & 2 ~= 0) TraceAction(1);
+#ENDIF;
+
+   if ((meta==1 || BeforeRoutines()==0) && action<256)
+   {   indirect(#actions_table-->action);
+       self=sse; inp1=sn; noun=sn; inp2=ss; second=ss; action=sa; rfalse;
+   }
+   self=sse; inp1=sn; noun=sn; inp2=ss; second=ss; action=sa; rtrue;
+];
+
+[ RunLife a j;
+#IFDEF DEBUG;
+   if (debug_flag & 2 ~= 0) TraceAction(2, j);
+#ENDIF;
+   reason_code = j; return RunRoutines(a,life);
+];
+
+[ StartTimer obj timer i;
+   for (i=0:i<active_timers:i++)
+       if (the_timers-->i==obj) rfalse;
+   for (i=0:i<active_timers:i++)
+       if (the_timers-->i==0) jump FoundTSlot;
+   i=active_timers++;
+   if (i >= MAX_TIMERS) RunTimeError(4);
+   .FoundTSlot;
+   if (obj.&time_left==0) RunTimeError(5,obj);
+   the_timers-->i=obj; obj.time_left=timer;
+];
+
+[ StopTimer obj i;
+   for (i=0:i<active_timers:i++)
+       if (the_timers-->i==obj) jump FoundTSlot2;
+   rfalse;
+   .FoundTSlot2;
+   if (obj.&time_left==0) RunTimeError(5,obj);
+   the_timers-->i=0; obj.time_left=0;
+];
+
+[ StartDaemon obj i;
+   for (i=0:i<active_timers:i++)
+       if (the_timers-->i == $8000 + obj)
+           rfalse;
+   for (i=0:i<active_timers:i++)
+       if (the_timers-->i==0) jump FoundTSlot3;
+   i=active_timers++;
+   if (i >= MAX_TIMERS) RunTimeError(4);
+   .FoundTSlot3;
+   the_timers-->i = $8000 + obj;
+];
+
+[ StopDaemon obj i;
+   for (i=0:i<active_timers:i++)
+       if (the_timers-->i == $8000 + obj) jump FoundTSlot4;
+   rfalse;
+   .FoundTSlot4;
+   the_timers-->i=0;
+];
+
+[ EndTurnSequence i j;
+
+   turns++;
+
+   for (i=0: i<active_timers: i++)
+   {   if (deadflag) return;
+       j=the_timers-->i;
+       if (j~=0)
+       {   
+           if (j & $8000) RunRoutines(j&$7fff,daemon);
+           else
+           {   
+               if (j.time_left==0)
+               {   
+                   StopTimer(j);
+                   RunRoutines(j,time_out);
+               }
+               else
+                   j.time_left=j.time_left-1;
+           }
+       }
+   }
+   if (deadflag) return;
+
+   scope_reason=EACH_TURN_REASON; verb_word=0;
+   DoScopeAction(location); SearchScope(location,player,0);
+   scope_reason=PARSING_REASON;
+   if (deadflag) return;
+
+   TimePasses();
+   if (deadflag) return;
+   objectloop (i in player)
+       if (i hasnt moved)
+       {   give i moved;
+           if (i has scored)
+           {   score=score+OBJECT_SCORE;
+               things_score=things_score+OBJECT_SCORE;
+           }
+       }
+];
+
+[ ChangeDefault prop val;
+   (0-->5)-->(prop-1) = val;
+];
+
+[ Indefart o;
+   if (o hasnt proper) { PrintOrRun(o,article,1); print " "; }
+   PrintShortName(o);
+];
+
+[ Defart o;
+   if (o hasnt proper) print "the "; PrintShortName(o);
+];
+
+[ CDefart o;
+   if (o hasnt proper) print "The "; PrintShortName(o);
+];
+
+[ PrintShortName o;
+   if (o==0) { print "nothing"; rtrue; }
+   if (o>top_object || o<0) { rtrue; }
+   if (o==player) { print "yourself"; rtrue; }
+   if (o.&short_name~=0 && PrintOrRun(o,short_name,1)~=0) rtrue;
+   @print_obj o;
+];
+
+[ Banner i;
+   if (Story ~= 0)
+   {
+#IFV5; style bold; #ENDIF;
+   print (string) Story;
+#IFV5; style roman; #ENDIF;
+   }
+   if (Headline ~= 0)
+       print (string) Headline;
+   print "Release ", (0-->1) & $03ff, " / Serial number ";
+   for (i=18:i<24:i++) print (char) 0->i;
+   print " / Inform v"; inversion;
+   print "R";
+   print " with ", (string) LibRelease;
+#ifdef DEBUG;
+   print " D";
+#endif;
+   new_line;
+   if (standard_interpreter > 0)
+       print "Standard interpreter ",
+           standard_interpreter/256, ".", standard_interpreter%256, "^";
+];
+
+[ VersionSub;
+  Banner();
+#IFV5;
+  print "Interpreter ", 0->$1e, " Version ", (char) 0->$1f, " / ";
+#ENDIF;
+  print "Library serial number ", (string) LibSerial, "^";
+];
+
+[ RunTimeError n p1 p2;
+#IFDEF DEBUG;
+  print "** Library error ", n, " (", p1, ",", p2, ") **^** ";
+  switch(n)
+  {   1: print "Adjective not found (this should not occur)";
+      2: print "Property value not routine or string: ~",
+               (NameTheProperty) p2, "~ of ~", (name) p1, "~ (", p1, ")";
+      3: print "Entry in property list not routine or string: ~",
+               (NameTheProperty) p2, "~ list of ~", (name) p1,
+               "~ (", p1, ")";
+      4: print "Too many timers/daemons are active simultaneously.  The \
+                limit is the library constant MAX_TIMERS (currently ",
+                MAX_TIMERS, ") and should be increased";
+      5: print "Object ~", (name) p1, "~ has no ~time_left~ property";
+      6: print "The object ~", (name) p1, "~ cannot be active as a \
+                daemon and as a timer at the same time";
+      7: print "The object ~", (name) p1, "~ can only be used as a player \
+                object if it has the ~number~ property";
+      8: print "Attempt to take random entry from an empty table array";
+      9: print p1, " is not a valid direction property number";
+      10: print "The player-object is outside the object tree";
+      11: print "The room ~", (name) p1, "~ has no ~description~ property";
+      99: print "Multiple objects not allowed.";
+      default: print "(unexplained)";
+  }
+  " **";
+#IFNOT;
+  print_ret "*LIBERR ", n, " (", p1, ",", p2, ")*";
+#ENDIF;
+];
+
+! ----------------------------------------------------------------------------
+
+
+! ----------------------------------------------------------------------------
+!  Metrocenter '84 version of VERBLIB.
+!  (c) Stefan Vogt, Puddle Software 2020.
+!
+!  This project is based on:
+!  Inform 6, mInform 1.1 Library
+!  (c) Graham Nelson 1993, 1994, 1995, 1996 but freely usable (see manuals),
+!  (c) Dave Bernazzani 2004.
+! ----------------------------------------------------------------------------
+System_file;
+
+Default MAX_CARRIED  100;
+Default MAX_SCORE    0;
+Default OBJECT_SCORE 4;
+Default ROOM_SCORE   5;
+
+! ----------------------------------------------------------------------------
+!  Next the WriteListFrom routine, a flexible object-lister taking care of
+!  plurals, inventory information, various formats and so on.  This is used
+!  by everything in the library which ever wants to list anything.
+!
+!  If there were no objects to list, it prints nothing and returns false;
+!  otherwise it returns true.
+!
+!  o is the object, and style is a bitmap, whose bits are given by:
+! ----------------------------------------------------------------------------
+
+Constant NEWLINE_BIT    1;    !  New-line after each entry
+Constant INDENT_BIT     2;    !  Indent each entry by depth
+Constant FULLINV_BIT    4;    !  Full inventory information after entry
+Constant ENGLISH_BIT    8;    !  English sentence style, with commas and and
+Constant RECURSE_BIT   16;    !  Recurse downwards with usual rules
+Constant ALWAYS_BIT    32;    !  Always recurse downwards
+Constant TERSE_BIT     64;    !  More terse English style
+Constant PARTINV_BIT  128;    !  Only brief inventory information after entry
+Constant DEFART_BIT   256;    !  Use the definite article in list
+Constant WORKFLAG_BIT 512;    !  At top level (only), only list objects
+                              !  which have the "workflag" attribute
+Constant ISARE_BIT   1024;    !  Print " is" or " are" before list
+Constant CONCEAL_BIT 2048;    !  Omit objects with "concealed" or "scenery":
+                              !  if WORKFLAG_BIT also set, then does _not_
+                              !  apply at top level, but does lower down
+Constant NOARTICLE_BIT 4096;  !  Print no articles, definite or not
+
+[ NextEntry o depth;
+  o=sibling(o);
+  if (c_style & WORKFLAG_BIT ~= 0 && depth==0)
+  {   while (o~=0 && o hasnt workflag) o=sibling(o);
+      return o;
+  }
+  if (c_style & CONCEAL_BIT ~= 0)
+      while (o~=0 && (o has concealed || o has scenery)) o=sibling(o);
+  return o;
+];
+
+[ WriteListFrom o style depth;
+  c_style=style;
+  if (style & WORKFLAG_BIT ~= 0)
+  {   
+    while (o~=0 && o hasnt workflag) o=sibling(o);
+  }
+  else
+  {   if (c_style & CONCEAL_BIT ~= 0)
+          while (o~=0 && (o has concealed || o has scenery)) o=sibling(o);
+  }
+  if (o==0) rfalse;
+  WriteListR(o,depth);
+  rtrue;
+];
+
+
+[ WriteListR o depth stack_pointer  classes_p sizes_p i j n;
+  classes_p = match_classes + stack_pointer;
+  sizes_p   = match_list + stack_pointer;
+
+  for (i=o,j=0:i~=0 && (j+stack_pointer)<128:i=NextEntry(i,depth),j++)
+  {   
+      classes_p->j=0;
+  }
+
+  if (c_style & ISARE_BIT ~= 0)
+  {   if (j==1) print " is"; else print " are";
+      if (c_style & NEWLINE_BIT ~= 0) print ":^"; else print " ";
+      c_style = c_style - ISARE_BIT;
+  }
+
+  stack_pointer = stack_pointer+j+1;
+
+  n=j;
+
+  for (i=1, j=o: i<=n: j=NextEntry(j,depth), i++)
+  {   
+      WriteBeforeEntry(j,depth);
+      if (c_style & DEFART_BIT ~= 0) DefArt(j); else InDefArt(j);
+      WriteAfterEntry(j,depth,stack_pointer);
+      if (c_style & ENGLISH_BIT ~= 0)
+      {   if (i==n-1) print " and ";
+          if (i<n-1) print ", ";
+      }
+  }
+];
+
+
+[ WriteBeforeEntry o depth  flag;
+  if (c_style & INDENT_BIT ~= 0) spaces 2*(depth+wlf_indent);
+
+  if (c_style & FULLINV_BIT ~= 0)
+  {   if (o.invent~=0)
+      {   inventory_stage=1;
+          flag=PrintOrRun(o,invent,1);
+          if (flag==1 && c_style & NEWLINE_BIT ~= 0) new_line;
+      }
+  }
+  return flag;
+];
+
+
+[ WriteAfterEntry o depth stack_p  flag flag2 comb;
+
+  if (c_style & PARTINV_BIT ~= 0)
+  {   comb=0;
+      if (o has container && o hasnt open)     comb=comb+2;
+      if ((o has container && (o has open || o has transparent))
+          && (child(o)==0)) comb=comb+4;
+      if (comb==2) print " (which is closed)";
+      if (comb==4) print " (which is empty)";
+      if (comb==6) print " (which is closed and empty)";
+  }
+
+  if (c_style & FULLINV_BIT ~= 0)
+  {   if (o.invent ~= 0)
+      {   inventory_stage=2;
+          if (RunRoutines(o,invent)~=0)
+          {   if (c_style & NEWLINE_BIT ~= 0) new_line;
+              rtrue;
+          }
+      }
+#IFDEF ENABLE_WEAR;
+      if (o has worn)  { print " (being worn"; flag2=1; }
+#ENDIF;
+      if (o has container)
+      {   if (o has openable)
+          {   if (flag2==1) print " and ";
+              else print " (which is ";
+              if (o has open)
+              {   print "open";
+                  if (child(o)==0) print " but empty";
+              }
+              else print "closed";
+              if (o has lockable && o has locked) print " and locked";
+              flag2=1;
+          }
+          else
+              if (child(o)==0)
+              {   if (flag2==1) print " and empty";
+                  else print " (which is empty)";
+              }
+      }
+      if (flag2==1) print ")";
+  }
+
+  if (c_style & ALWAYS_BIT ~= 0 && child(o)~=0)
+  {   if (c_style & ENGLISH_BIT ~= 0) print " containing ";
+      flag=1;
+  }
+
+  if (c_style & RECURSE_BIT ~= 1 && child(o)~=0)
+  {   if (o has supporter)
+      {   if (c_style & ENGLISH_BIT ~= 0)
+          {   if (c_style & TERSE_BIT ~= 0)
+              print " (on "; else print ", on top of ";
+              if (o has animate) print "whom "; else print "which ";
+          }
+          flag=1;
+      }
+      if (o has container && (o has open || o has transparent))
+      {   if (c_style & ENGLISH_BIT ~= 0)
+          {   if (c_style & TERSE_BIT ~= 0)
+                  print " (in "; else print ", inside ";
+              if (o has animate) print "whom "; else print "which ";
+          }
+          flag=1;
+      }
+  }
+
+  if (flag==1 && c_style & ENGLISH_BIT ~= 0)
+  {   if (children(o) > 1) print "are "; else print "is ";
+  }
+
+  if (c_style & NEWLINE_BIT ~= 0) new_line;
+
+  if (flag==1) WriteListR(child(o),depth+1,stack_p);
+
+  if (flag==1 && c_style & TERSE_BIT ~= 0) print ")";
+];
+
+! ----------------------------------------------------------------------------
+!   A cunning routine (which could have been a daemon, but isn't, for the
+!   sake of efficiency) to move objects which could be in many rooms about
+!   so that the player never catches one not in place
+! ----------------------------------------------------------------------------
+
+[ MoveFloatingObjects i k l m address;
+  for (i=selfobj+1: i<=top_object: i++)
+  {   address=i.&found_in;
+      if (address~=0 && i hasnt absent)
+      {   if (ZRegion(address-->0)==2)
+          {   if (indirect(address-->0) ~= 0) move i to location;
+          }
+          else
+          {   k=i.#found_in;
+              for (l=0: l<k/2: l++)
+              {   m=address-->l;
+                  if (m==location || m in location) move i to location;
+              }
+          }
+      }
+  }
+];
+
+! ----------------------------------------------------------------------------
+!   Two little routines for moving the player safely.
+! ----------------------------------------------------------------------------
+
+[ PlayerTo newplace flag;
+
+  move player to newplace;
+  while (parent(newplace) ~= 0) newplace = parent(newplace);
+  location = newplace;
+  MoveFloatingObjects();
+  if (flag == 0) <Look>;
+  if (flag == 1) { NoteArrival(); ScoreArrival(); }
+  if (flag == 2) LookSub();
+];
+
+[ MovePlayer direc; <Go direc>; <Look>; ];
+
+[ QuitSub; quit; ];
+
+[ RestartSub; @restart; ];
+
+[ RestoreSub;
+  restore Rmaybe;
+  return L__M(##Restore,1);
+  .RMaybe; L__M(##Restore,2);
+];
+
+[ SaveSub;
+  save Smaybe;
+  return L__M(##Restore,1);
+  .SMaybe; L__M(##Restore,2);
+];
+
+[ ScriptOnSub;
+  if (transcript_mode==1) return L__M(##ScriptOn,1);
+  transcript_mode=1;
+  0-->8 = (0-->8)|1;
+  L__M(##ScriptOn,2); VersionSub();
+];
+
+[ ScriptOffSub;
+  if (transcript_mode==0) return L__M(##ScriptOff,1);
+  L__M(##ScriptOff,2);
+  transcript_mode=0;
+  0-->8 = (0-->8)&$fffe;
+];
+
+! ----------------------------------------------------------------------------
+!   The scoring system
+! ----------------------------------------------------------------------------
+
+[ ScoreSub;
+  L__M(##Score);
+];
+
+! ----------------------------------------------------------------------------
+!   Real verbs start here: Inventory
+! ----------------------------------------------------------------------------
+
+[ InvSub;
+  if (child(player)==0) return L__M(##Inv,1);
+  L__M(##Inv,2);
+  print ":^";
+  WriteListFrom(child(player), (FULLINV_BIT + INDENT_BIT + NEWLINE_BIT + RECURSE_BIT), 1);
+  AfterRoutines();
+];
+
+! ----------------------------------------------------------------------------
+!   Object movement verbs
+! ----------------------------------------------------------------------------
+
+[TakeAllSub;
+    "You must take things individually.";
+];
+    
+[ TakeSub;
+  if (RTakeSub(location)~=0) rtrue;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##Take,1);
+];
+
+[ RTakeSub fromobj i j k postonobj;
+  if (noun==player) return L__M(##Take,5);
+  if (noun has animate) return L__M(##Take,2,noun);
+  if (parent(player)==noun) return L__M(##Take,4,noun);
+
+  i=parent(noun);
+  if (i==player) return L__M(##Take,5);
+
+  if (i has container || i has supporter)
+  {   postonobj=i;
+      k=action; action=##LetGo;
+      if (RunRoutines(i,before)~=0) { action=k; rtrue; }
+      action=k;
+  }
+
+  while (i~=fromobj && i~=0)
+  {   if (i hasnt container && i hasnt supporter)
+      {   if (i has animate) return L__M(##Take,6,i);
+          if (i has transparent) return L__M(##Take,7,i);
+          return L__M(##Take,8);
+      }
+      if (i has container && i hasnt open)
+          return L__M(##Take,9,i);
+      i=parent(i);
+      if (i==player) i=fromobj;
+  }
+  if (noun has scenery or static) return L__M(##Take,10);
+
+  k=0; objectloop (j in player) if (j hasnt worn) k++;
+
+  if (k >= ValueOrRun(player,capacity))
+  {   
+      return L__M(##Take,12);
+  }
+  move noun to player;
+
+  if (postonobj~=0)
+  {   k=action; action=##LetGo;
+      if (RunRoutines(postonobj,after)~=0) { action=k; rtrue; }
+      action=k;
+  }
+  rfalse;
+];
+
+[ DropSub i;
+  i=parent(noun);
+  if (i==location) return L__M(##Drop,1);
+  if (i~=player) return L__M(##Drop,2);
+#IFDEF ENABLE_WEAR;
+  if (noun has worn)
+  {   L__M(##Drop,3,noun);
+      <Disrobe noun>;
+      if (noun has worn) rtrue;
+  }
+#ENDIF;
+  move noun to parent(player);
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  return L__M(##Drop,4);
+];
+
+[ RemoveSub i;
+  i=parent(noun);
+  if (i has container && i hasnt open) return L__M(##Remove,1);
+  if (i~=second) return L__M(##Remove,2);
+  if (i has animate) return L__M(##Take,6,i);
+  if (RTakeSub(second)~=0) rtrue;
+  action=##Take;   if (AfterRoutines()==1) rtrue;
+  action=##Remove; if (AfterRoutines()==1) rtrue;
+
+  if (keep_silent==1) rtrue;
+  return L__M(##Remove,4);
+];
+
+[ IndirectlyContains o1 o2;  ! Does o1 already (ultimately) have o2?
+  while (o2~=0)
+  {   
+      if (o1==o2) rtrue;
+      o2=parent(o2);
+  }
+  rfalse;
+];
+
+[ PutOnSub;
+  receive_action=##PutOn; 
+  if (second==d_obj) { <Drop noun>; rfalse; }
+  if (parent(noun)~=player) return L__M(##Insert,1);
+
+  if (second>1)
+  {   action=##Receive;
+      if (RunRoutines(second,before)~=0) { action=##PutOn; rtrue; }
+      action=##PutOn;
+  }
+
+  if (IndirectlyContains(noun,second)==1) return L__M(##Miscellany,1);
+  if (second hasnt supporter) return L__M(##PutOn,3,second);
+  if (parent(second)==player) return L__M(##PutOn,4);
+#IFDEF ENABLE_WEAR;
+  if (noun has worn)
+  {   L__M(##PutOn,5);
+      <Disrobe noun>;
+      if (noun has worn) rtrue;
+  }
+#ENDIF;
+  if (children(second)>=ValueOrRun(second,capacity))
+      return L__M(##PutOn,6,second);
+
+  move noun to second;
+
+  if (AfterRoutines()==1) rtrue;
+
+  if (second>1)
+  {   action=##Receive;
+      if (RunRoutines(second,after)~=0) { action=##PutOn; rtrue; }
+      action=##PutOn;
+  }
+
+  if (keep_silent==1) rtrue;
+  L__M(##PutOn,8,noun);
+];
+
+[ InsertSub;
+  receive_action = ##Insert;
+  if (second==d_obj ) <<Drop noun>>;
+  if (parent(noun)~=player) return L__M(##Insert,1);
+
+  if (second>1)
+  {   action=##Receive;
+      if (RunRoutines(second,before)~=0) { action=##Insert; rtrue; }
+      action=##Insert;
+  }
+  if (second hasnt container) return L__M(##Insert,2);
+  if (second hasnt open)      return L__M(##Insert,3);
+  if (IndirectlyContains(noun,second)==1) return L__M(##Insert,5);
+#IFDEF ENABLE_WEAR;
+  if (noun has worn)
+  {   L__M(##Insert,6);
+      <Disrobe noun>; if (noun has worn) rtrue;
+  }
+#ENDIF;
+  if (children(second)>=ValueOrRun(second,capacity))
+      return L__M(##Insert,7,second);
+
+  move noun to second;
+
+  if (AfterRoutines()==1) rtrue;
+
+  if (second>1)
+  {   action=##Receive;
+      if (RunRoutines(second,after)~=0) { action=##Insert; rtrue; }
+      action=##Insert;
+  }
+  if (keep_silent==1) rtrue;
+  L__M(##Insert,9,noun);
+];
+
+[ TransferSub i act_needed k postonobj par;
+  act_needed=##Drop;
+  if (second ~= 0)
+  {
+      if (second has container) 
+         act_needed=##Insert;
+      else
+          if (second has supporter) act_needed=##PutOn;
+  }
+
+  i=parent(noun);
+  .DoTransfer;
+  if (noun notin player)
+  {
+      par = parent(noun);
+      if (par has container || par has supporter)
+      {   postonobj=par;
+          k=action; action=##LetGo;
+          if (RunRoutines(par,before)~=0) { action=k; rtrue; }
+          action=k;
+      }
+      move noun to player;
+      if (postonobj~=0)
+      {   k=action; action=##LetGo;
+          if (RunRoutines(postonobj,after)~=0) { action=k; rtrue; }
+          action=k;
+      }
+  }
+  if (act_needed==##Drop)   <<Drop noun>>;
+  if (act_needed==##Insert) <<Insert noun second>>;
+  if (act_needed==##PutOn)  <<PutOn noun second>>;
+];
+
+[ EmptySub;
+  second=d_obj; EmptyTSub();
+];
+
+[ EmptyTSub i j;
+  if (noun hasnt container) return L__M(##EmptyT,1,noun);
+  if (noun hasnt open) return L__M(##EmptyT,2,noun);
+  if (second~=d_obj)
+  {   if (second hasnt container) return L__M(##EmptyT,1,second);
+      if (second hasnt open) return L__M(##EmptyT,2,second);
+  }
+  if (noun notin player) return L__M(##Transfer,1);
+  i=child(noun);
+  if (i==0) return L__M(##EmptyT,3,noun);
+  while (i~=0)
+  {   j=sibling(i);
+      PrintShortName(i); print ": ";
+      <Transfer i second>;
+      i=j;
+  }
+];
+
+[ GiveSub;
+  if (parent(noun)~=player) return L__M(##Give,1,noun);
+  if (second==player)  return L__M(##Give,2,noun);
+  if (RunLife(second,##Give)~=0) rfalse;
+  L__M(##Give,3,second);
+];
+
+[ GiveRSub; <Give second noun>; ];
+
+[ ShowSub;
+  if (parent(noun)~=player) return L__M(##Show,1,noun);
+  if (second==player) <<Examine noun>>;
+  if (RunLife(second,##Show)~=0) rfalse;
+  L__M(##Show,2,second);
+];
+
+[ ShowRSub; <Show second noun>; ];
+
+! ----------------------------------------------------------------------------
+!   Travelling around verbs
+! ----------------------------------------------------------------------------
+
+[ EnterSub i;
+  if (noun has door) <<Go noun>>;
+  i=parent(player);
+  if (i~=location) return L__M(##Enter,1,i);
+  i=parent(noun);
+  if (i==compass) <<Go noun>>;
+  if (noun hasnt enterable) return L__M(##Enter,2);
+  if (noun has container && noun hasnt open) return L__M(##Remove,1);
+  if (i~=location)  return L__M(##Enter,4);
+  move player to noun;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##Enter,5,noun);
+  Locale(noun);
+];
+
+[ GetOffSub;
+  if (parent(player)==noun) <<Exit>>;
+  L__M(##GetOff,1,noun);
+];
+
+[ ExitSub p;
+  p=parent(player);
+  if (p==location)
+  {   if (location.out_to~=0) <<Go out_obj>>;
+      return L__M(##Exit,1);
+  }
+  if (p has container && p hasnt open)
+      return L__M(##Exit,2,p);
+  move player to location;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##Exit,3,p); LookSub();
+];
+
+[ VagueGoSub; L__M(##VagueGo); 
+];
+
+[ GoInSub;
+  <<Go in_obj>>;
+];
+
+[ GoSub i j k movewith thedir;
+  movewith=0;
+  i=parent(player);
+  if (i~=location)
+  {
+      j=location;
+      k=RunRoutines(i,before); if (k~=3) location=j;
+      if (k==1)
+      {   movewith=i; i=parent(i); jump gotroom; }
+      if (k==0) L__M(##Go,1,i); rtrue;
+  }
+  .gotroom;
+  thedir=noun.door_dir;
+  if (ZRegion(thedir)==2) thedir=RunRoutines(noun,door_dir);
+  
+  j=i.thedir; k=ZRegion(j);
+  if (k==3) { print (string) j; new_line; rfalse; }
+  if (k==2) { j=RunRoutines(i,thedir);
+              if (j==1) rtrue;
+            }
+
+  if (k==0 || j==0)
+  {   
+      if (i.cant_go ~= 0) PrintOrRun(i, cant_go);
+      rfalse;
+  }
+
+  if (j has door)
+  {   if (j has concealed) return L__M(##Go,2);
+      if (j hasnt open)
+      {
+          return L__M(##Go,2);
+      }
+      if (ZRegion(j.door_to)==2) j=RunRoutines(j,door_to);
+      else j=j.door_to;
+      if (j==0) return L__M(##Go,6,j);
+      if (j==1) rtrue;
+  }
+  if (movewith==0) move player to j; else move movewith to j;
+  
+  location=j; MoveFloatingObjects();
+ 
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  LookSub();
+];
+
+! ----------------------------------------------------------------------------
+!   Describing the world.  SayWhatsOn(object) does just that (producing
+!   no text if nothing except possibly "scenery" and "concealed" items are).
+!   Locale(object) runs through the "tail end" of a Look-style room
+!   description for the contents of the object, printing up suitable
+!   descriptions as it goes.
+! ----------------------------------------------------------------------------
+
+[ SayWhatsOn descon j f;
+  if (descon==parent(player)) rfalse;
+  objectloop (j in descon)
+      if (j hasnt concealed && j hasnt scenery) f=1;
+  if (f==0) rfalse;
+  L__M(##Look, 4, descon); rtrue;
+];
+
+[ Locale descin text1 text2  o p k j flag f2;
+
+  objectloop (o in descin) give o ~workflag;
+
+  k=0;
+  objectloop (o in descin)
+      if (o hasnt concealed && o~=parent(player))
+      {  if (o hasnt scenery)
+         {   give o workflag; k++;
+             p=initial; f2=0;
+             if (o has door && o hasnt open) { p=when_closed; f2=1; }
+             if (o has switchable && o hasnt on) { p=when_off; f2=1; }
+             if (o has container && o hasnt open && o.&when_closed~=0)
+             {   p=when_closed; f2=1; }
+             if (o hasnt moved || o.describe~=NULL || f2==1)
+             {   if (o.describe~=NULL && RunRoutines(o,describe)~=0)
+                 {   flag=1;
+                     give o ~workflag; k--;
+                 }    
+                 else
+                 {   j=o.p;
+                     if (j~=0)
+                     {   new_line;
+                         PrintOrRun(o,p);
+                         flag=1;
+                         give o ~workflag; k--;
+                         if (o has supporter && child(o)~=0) SayWhatsOn(o);
+                     }
+                 }
+             }
+         }
+         else
+             if (o has supporter && child(o)~=0) SayWhatsOn(o);
+      }
+
+  if (k==0) return 0;
+
+  if (text1~=0)
+  {   new_line;
+      if (flag==1) text1=text2;
+      print (string) text1, " ";
+      WriteListFrom(child(descin),
+          WORKFLAG_BIT + RECURSE_BIT
+          + PARTINV_BIT + TERSE_BIT + CONCEAL_BIT);
+      return k;
+  }
+
+  if (flag==1) L__M(##Look,5,descin); else L__M(##Look,6,descin);
+];
+
+[ NoteArrival descin;
+  descin=location;
+  if (descin~=lastdesc)
+  {   if (descin.initial~=0) PrintOrRun(descin, initial);
+      NewRoom();
+      !MoveFloatingObjects();
+      lastdesc=descin;
+  }
+];
+
+[ ScoreArrival;
+  if (location hasnt visited)
+  {   give location visited;
+      if (location has scored)
+      {   score=score+ROOM_SCORE;
+          places_score=places_score+ROOM_SCORE;
+      }
+  }
+];
+
+[ LookSub ;
+  if (parent(player)==0) return RunTimeError(10);
+  NoteArrival();
+  new_line;
+#IFV5; style bold; #ENDIF;
+  PrintShortName(location);
+#IFV5; style roman; #ENDIF;
+  new_line;
+
+  if (location.describe~=NULL) 
+  {
+      RunRoutines(location,describe);
+  }
+  else
+  {   
+      if (location.description==0) RunTimeError(11,location);
+      else PrintOrRun(location,description);
+  }
+
+  Locale(location);
+
+  LookRoutine();
+  ScoreArrival();
+
+  action=##Look;
+  if (AfterRoutines()==1) rtrue;
+];
+
+[ ExamineSub i;
+  i=noun.description;
+  if (i==0)
+  {   if (noun has container) <<Search noun>>;
+      if (noun has switchable) { L__M(##Examine,3,noun); rfalse; }
+      return L__M(##Examine,2,noun);
+  }
+  PrintOrRun(noun, description);
+  if (noun has switchable) L__M(##Examine,3,noun);
+  if (AfterRoutines()==1) rtrue;
+];
+
+[ SearchSub i f;
+  objectloop (i in noun) if (i hasnt concealed) f=1;
+  if (noun has supporter)
+  {   if (f==0) return L__M(##Search,2,noun);
+      return L__M(##Search,3,noun);
+  }
+  if (noun hasnt container) return L__M(##Search,4);
+  if (noun hasnt transparent && noun hasnt open)
+      return L__M(##Search,5);
+  if (AfterRoutines()==1) rtrue;
+
+  i=children(noun);
+  if (f==0) return L__M(##Search,6,noun);
+  L__M(##Search,7,noun);
+];
+
+! ----------------------------------------------------------------------------
+!   Verbs which change the state of objects without moving them
+! ----------------------------------------------------------------------------
+
+[ UnlockSub;
+  if (noun hasnt lockable) return L__M(##Lock,1);
+  if (noun hasnt locked)   return L__M(##Unlock,2);
+  if (noun.with_key~=second) return L__M(##Lock,4);
+  give noun ~locked;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##Unlock,4,noun);
+];
+
+[ LockSub;
+  if (noun hasnt lockable) return L__M(##Lock,1);
+  if (noun has locked)     return L__M(##Lock,2);
+  if (noun has open)       return L__M(##Lock,3);
+  if (noun.with_key~=second) return L__M(##Lock,4);
+  give noun locked;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##Lock,5,noun);
+];
+
+[ SwitchonSub;
+  if (noun hasnt switchable) return L__M(##SwitchOn,1);
+  if (noun has on) return L__M(##SwitchOn,2, 1);
+  give noun on;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##SwitchOn,3,noun); 
+];
+
+[ SwitchoffSub;
+  if (noun hasnt switchable) return L__M(##SwitchOn,1);
+  if (noun hasnt on) return L__M(##SwitchOn,2, 2);
+  give noun ~on;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##SwitchOn,4,noun);
+];
+
+[ OpenSub;
+  if (noun hasnt openable) return L__M(##Open,1);
+  if (noun has locked)     return L__M(##Open,2);
+  if (noun has open)       return L__M(##Open,3);
+  give noun open;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  if (noun has container && noun hasnt transparent && child(noun)~=0)
+      return L__M(##Open,4,noun);
+  L__M(##Open,5,noun);
+];
+
+[ CloseSub;
+  if (noun hasnt openable) return L__M(##Close,1);
+  if (noun hasnt open)     return L__M(##Close,2);
+  give noun ~open;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##Close,3,noun);
+];
+
+#IFDEF ENABLE_WEAR;
+[ DisrobeSub;
+  if (noun hasnt worn) return L__M(##Disrobe,1);
+  give noun ~worn;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##Disrobe,2,noun);
+];
+
+[ WearSub;
+  if (noun hasnt clothing)  return L__M(##Wear,1);
+  if (parent(noun)~=player) return L__M(##Wear,2);
+  if (noun has worn)        return L__M(##Wear,3);
+  give noun worn;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##Wear,4,noun);
+];
+#ENDIF;  !ENABLE_WEAR
+
+[ EatSub;
+  if (noun hasnt edible) return L__M(##Eat,1);
+  remove noun;
+  if (AfterRoutines()==1) rtrue;
+  if (keep_silent==1) rtrue;
+  L__M(##Eat,2,noun);
+];
+
+! ----------------------------------------------------------------------------
+!   Verbs which are really just stubs (anything which happens for these
+!   actions must happen in before rules)
+! ----------------------------------------------------------------------------
+
+[ BurnSub; L__M(##Burn); ];
+[ SmellSub; L__M(##Smell,1); ];
+[ ListenSub; L__M(##Listen,2); ];
+[ TasteSub; L__M(##Taste,3); ];
+[ DigSub; L__M(##Dig); ];
+[ CutSub; L__M(##Cut); ];
+[ JumpSub; L__M(##Jump); ];
+[ JumpOverSub; L__M(##JumpOver); ];
+[ TieSub; L__M(##Tie); ];
+[ DrinkSub; L__M(##Miscellany,1); ];
+[ FillSub; L__M(##Miscellany,1); ];
+[ SwimSub; L__M(##Miscellany,1); ];
+[ RubSub; L__M(##Rub); ];
+[ SetSub; L__M(##Set); ];
+[ SetToSub; L__M(##SetTo); ];
+[ ClimbSub; L__M(##Climb); ];
+[ ConsultSub; L__M(##Consult,1,noun); ];
+[ TouchSub;L__M(##Touch); ];
+[ PullSub;
+  if (noun has static or scenery or animate)   return L__M(##Miscellany,1);
+  L__M(##Pull,3);
+];
+[ PushSub;
+   PullSub();  
+];
+[ TurnSub;
+   PullSub();  
+];
+
+[ WaitSub;
+  if (AfterRoutines()==1) rtrue;
+  L__M(##Wait);
+];
+
+[ PushDirSub; L__M(##Miscellany,1); ];
+
+[ AllowPushDir i;
+  if (parent(second)~=compass) return L__M(##PushDir,2);
+  if (second==u_obj or d_obj)  return L__M(##PushDir,3);
+  AfterRoutines(); i=noun; move i to player;
+  <Go second>;
+  move i to location;
+];
+
+[ ThrowAtSub;
+  if (second>1)
+  {   action=##ThrownAt;
+      if (RunRoutines(second,before)~=0) { action=##ThrowAt; rtrue; }
+      action=##ThrowAt;
+  }
+  if (second hasnt animate) return L__M(##ThrowAt,1);
+  if (RunLife(second,##ThrowAt)~=0) rfalse;
+  L__M(##ThrowAt,2);
+];
+
+[ AttackSub;
+  if (noun has animate && RunLife(noun,##Attack)~=0) rfalse;
+  L__M(##Miscellany, 1); ];
+
+[ AnswerSub;
+  if (RunLife(second,##Answer)~=0) rfalse;
+  L__M(##Answer);
+];  
+
+[ TellSub;
+  if (noun==player) return L__M(##Tell);
+  if (RunLife(noun,##Tell)~=0) rfalse;
+  L__M(##Tell,2);
+];  
+  
+[ AskSub;
+  if (RunLife(noun,##Ask)~=0) rfalse;
+  L__M(##Ask);
+];  
+
+[ AskForSub;
+  if (noun==player) <<Inv>>;
+  L__M(##Order,1,noun);
+];
+
+! ----------------------------------------------------------------------------
+!   Debugging verbs
+! ----------------------------------------------------------------------------
+
+#IFDEF DEBUG;
+[ TraceOnSub; parser_trace=2; "[Trace on.]"; ];
+[ TraceLevelSub; parser_trace=noun;
+  print "[Parser tracing set to level ", parser_trace, ".]^"; ];
+[ TraceOffSub; parser_trace=0; "Trace off."; ];
+[ RoutinesOnSub;  debug_flag=debug_flag | 1; "[Routine listing on.]"; ];
+[ RoutinesOffSub; debug_flag=debug_flag & 6; "[Routine listing off.]"; ];
+[ ActionsOnSub;  debug_flag=debug_flag | 2; "[Action listing on.]"; ];
+[ ActionsOffSub; debug_flag=debug_flag & 5; "[Action listing off.]"; ];
+[ TimersOnSub;  debug_flag=debug_flag | 4; "[Timers listing on.]"; ];
+[ TimersOffSub; debug_flag=debug_flag & 3; "[Timers listing off.]"; ];
+[ CommandsOnSub;
+  @output_stream 4; xcommsdir=1; "[Command recording on.]"; ];
+[ CommandsOffSub;
+  if (xcommsdir==1) @output_stream -4;
+  xcommsdir=0;
+  "[Command recording off.]"; ];
+[ CommandsReadSub;
+  @input_stream 1; xcommsdir=2; "[Replaying commands.]"; ];
+[ PredictableSub i; i=random(-100);
+  "[Random number generator now predictable.]"; ];
+[ XPurloinSub; move noun to player; give noun moved ~concealed; "[Purloined.]"; ];
+[ XAbstractSub; move noun to second; "[Abstracted.]"; ];
+
+[ XObj obj f;
+  if (parent(obj)==0) PrintShortName(obj); else InDefArt(obj);
+  print " (", obj, ") ";
+  if (f==1) { print "(in "; PrintShortName(parent(obj));
+              print " ", parent(obj), ")"; }
+  new_line;
+  if (child(obj)==0) rtrue;
+  WriteListFrom(child(obj),
+      FULLINV_BIT + INDENT_BIT + NEWLINE_BIT + ALWAYS_BIT, 1);
+];
+[ XTreeSub i;
+  if (noun==0)
+  {   for (i=selfobj+1:i<=top_object:i++)
+      {   if (parent(i)==0) XObj(i);
+      }
+      rfalse;
+  }
+  XObj(noun,1);
+];
+[ GotoSub;
+  if (noun>top_object || noun<=selfobj || parent(noun)~=0)
+      "[Not a safe place.]";
+  PlayerTo(noun);
+];
+[ GonearSub x; x=noun; while (parent(x)~=0) x=parent(x); PlayerTo(x); ];
+[ Print_ScL obj; print_ret ++x_scope_count, ": ", (a) obj, " (", obj, ")"; ];
+[ ScopeSub; x_scope_count=0; LoopOverScope(#r$Print_ScL, noun);
+  if (x_scope_count==0) "Nothing is in scope.";
+];
+#ENDIF;
+
+! ----------------------------------------------------------------------------
+!   Finally: virtually all the text produced by library routines, except for
+!   some parser errors (which are indirected through ParserError).
+! ----------------------------------------------------------------------------
+
+[ L__M act n x1 s;
+  s=sw__var; sw__var=act; if (n==0) n=1;
+  L___M(n,x1);
+  sw__var=s;
+];
+
+[ L___M n x1 s;
+  s=action;
+
+#IFDEF LibraryMessages;
+  lm_n=n; lm_o=x1;
+  action=sw__var;
+  if (RunRoutines(LibraryMessages,before)~=0) { action=s; rfalse; }
+  action=s;
+#ENDIF;
+  
+  Prompt:  print "^>"; rtrue;
+  Miscellany:
+           if (n==1) "Sorry, can't do that.";
+           if (n==3) { print "You have died"; rtrue; }
+           if (n==4) { print "You have won"; rtrue; }
+           if (n==5) "^Restart, Restore or Quit?";
+  Order:   CDefArt(x1); " has better things to do.";
+  Restore: if (n==1) "Failed.";
+           "Ok.";
+  ScriptOn: if (n==1) "Already on.";
+           "Start of a transcript of";
+  ScriptOff: if (n==1) "Already off.";
+           "^End of transcript.";
+  Score:   print "You have scored ",score, " out of ", MAX_SCORE,", in ", turns, " turns.^";
+  Inv:     if (n==1) "You are carrying nothing.";
+           print "You are carrying"; rtrue;
+  Take:    if (n==1) "Taken.";
+           if (n==2) {print "You can't take "; DefArt(x1); ".";}
+           if (n==4) "You can't reach that here.";
+           if (n==5) "You already have that.";
+           if (n==6) { print "That belongs to "; DefArt(x1); "."; }
+           if (n==7) { print "That's a part of "; DefArt(x1); "."; }
+           if (n==8) "That isn't available.";
+           if (n==9) { CDefArt(x1); " is not open."; }
+           if (n==10) "Not portable.";
+           if (n==12) "Carrying too much.";
+  Drop:    if (n==1) "Already on the floor.";
+           if (n==2) "You haven't got that.";
+#IFDEF ENABLE_WEAR;
+           if (n==3) { print "(first taking "; DefArt(x1); " off)"; }
+#ENDIF;
+           "Dropped.";
+  Remove:  if (n==1) "But it's closed.";
+           if (n==2) "But it isn't there now.";
+           "Removed.";
+  PutOn:
+           if (n==3) "That would achieve nothing.";
+           if (n==4) "You lack the dexterity.";
+#IFDEF ENABLE_WEAR;
+           if (n==5) "(first taking it off)^";
+#ENDIF;
+           if (n==6) { print "No room on "; DefArt(x1); "."; }
+           print "You put "; DefArt(x1); print " on "; DefArt(second); ".";
+  Insert:  if (n==1) "You must be holding it first.";
+           if (n==2) "That can't contain things.";
+           if (n==3) "Alas, it is closed.";
+!           if (n==4) "You'll need to take it off first.";
+           if (n==5) "You can't put something inside itself.";
+#IFDEF ENABLE_WEAR;
+           if (n==6) "(first taking it off)^";
+#ENDIF;
+           if (n==7) { print "No room left in "; DefArt(x1); "."; }
+           print "You put "; DefArt(x1); print " into "; DefArt(second); ".";
+  EmptyT:  if (n==1) { CDefArt(x1); " can't contain things."; }
+           if (n==2) { CDefArt(x1); " is closed."; }
+           CDefArt(x1); " is empty already.";
+  Transfer: if (n==1) "That isn't in your possession.";
+  Give:    if (n==1) { print "You aren't holding "; DefArt(x1); "."; }
+           if (n==2) "To yourself?";
+           CDefArt(x1); " doesn't seem interested.";
+  Show:    if (n==1) { print "You aren't holding "; DefArt(x1); "."; }
+           CDefArt(x1); " is unimpressed.";
+  Enter:   if (n==1) { print "But you're already ";
+                       if (x1 has supporter) print "on ";
+                       else print "in "; DefArt(x1); "."; }
+           if (n==2) "That's not something you can enter.";
+           if (n==4) "Must be on the floor.";
+           print "You get "; if (x1 has supporter) print "onto ";
+           else print "into "; DefArt(x1); ".";
+  GetOff:  print "But you aren't on "; DefArt(x1); " at the moment.";
+  Exit:    if (n==1) "But you aren't in anything at the moment.";
+           if (n==2) { print "You can't get out of the closed ";
+                       PrintShortName(x1); "."; }
+           print "You get "; if (x1 has supporter) print "off ";
+           else print "out of "; DefArt(x1); ".";
+  VagueGo: "Specify a compass direction.";
+  Go:      if (n==1)
+           {   print "You'll have to get ";
+               if (x1 has supporter) print "off "; else print "out of ";
+               DefArt(x1); " first.";
+           }
+           if (n==2) "You can't go that way.";
+           print "You can't, since "; DefArt(x1); " leads nowhere.";
+  Look:    if (n==4)
+           {   print "^On "; DefArt(x1);
+               WriteListFrom(child(x1),
+                   ENGLISH_BIT + RECURSE_BIT + PARTINV_BIT
+                   + TERSE_BIT + ISARE_BIT + CONCEAL_BIT);
+               ".";
+           }
+           if (x1~=location) { print "^In "; DefArt(x1); print " you"; }
+           else print "^You";
+           print " can "; if (n==5) print "also "; print "see ";
+           WriteListFrom(child(x1),
+                ENGLISH_BIT + WORKFLAG_BIT + RECURSE_BIT
+                + PARTINV_BIT + TERSE_BIT + CONCEAL_BIT);
+           if (x1~=location) ".";
+           " here.";
+  Examine: if (noun in compass) "A look in this direction does not bring new insights.";
+           if (n==2) { print "You see nothing special about ";
+                       Defart(x1); "."; }
+           CDefArt(x1); print " is currently switched ";
+           if (x1 has on) "on."; else "off.";
+  Search:  
+           if (n==2) { print "There is nothing on "; DefArt(x1); "."; }
+           if (n==3)
+           {   print "On "; DefArt(x1);
+               WriteListFrom(child(x1),
+                   TERSE_BIT + ISARE_BIT + CONCEAL_BIT);
+               ".";
+           }
+           if (n==4) "You find nothing of interest.";
+           if (n==5) "Can't, it's closed.";
+           if (n==6) { CDefArt(x1); " is empty."; }
+           print "In "; DefArt(x1);
+           WriteListFrom(child(x1),
+               TERSE_BIT + ENGLISH_BIT + ISARE_BIT + CONCEAL_BIT);
+           ".";
+  Unlock:  if (n==2) "It's unlocked already.";
+           print "You unlock "; DefArt(x1); ".";
+
+  Lock:    if (n==1) "That's not a lockable item.";
+           if (n==2) "It's locked already.";
+           if (n==3) "Must close it first.";
+           if (n==4) "That doesn't fit the lock.";
+           print "You lock "; DefArt(x1); ".";
+
+  SwitchOn:if (n==1) "That's not something you can switch.";
+           if (n==2) {print "That's already "; if (x1==1) "on."; else "off.";return true;}
+           if (n==3) {print "You switch "; DefArt(x1); " on.";}
+           print "You switch "; DefArt(x1); " off.";
+           
+  Open:    if (n==1) "That's not something you can open.";
+           if (n==2) "It seems to be locked.";
+           if (n==3) "It's already open.";
+           if (n==4)
+           {   print "You open "; DefArt(x1); print ", revealing ";
+               if (WriteListFrom(child(x1),
+                   ENGLISH_BIT + TERSE_BIT + CONCEAL_BIT)==0) "nothing.";
+               ".";
+           }
+           print "You open "; DefArt(x1); ".";
+  Close:   if (n==1) "That's not something you can close.";
+           if (n==2) "It's already closed.";
+           print "You close "; DefArt(x1); ".";
+#IFDEF ENABLE_WEAR;
+  Disrobe: if (n==1) "You're not wearing that.";
+           print "You take off "; DefArt(x1); ".";
+  Wear:    if (n==1) "You can't wear that!";
+           if (n==2) "You're not holding that!";
+           if (n==3) "You're already wearing that!";
+           print "You put on "; DefArt(x1); ".";
+#ENDIF;
+  Eat:     if (n==1) "Not edible.";
+           print "You eat "; DefArt(x1); ".";
+  Smell:   "You smell nothing unexpected.";
+  Listen:  "You hear nothing unexpected.";
+  Taste:   "You taste nothing unexpected.";
+  Touch:   "You feel nothing unexpected.";
+  Burn, Climb, Set, SetTo, Rub, JumpOver, Tie, Dig, Cut, Jump: "That would achieve nothing here.";
+  Pull, Push, Turn: "Nothing obvious happens.";
+  PushDir: "Not that way you can't.";
+  ThrowAt: if (n==1) "Futile.";
+           "You lack the nerve.";
+  Tell:    "There is no reaction.";
+  Answer, Ask:  "There is no reply.";
+  Wait:    "Time passes.";
+  Consult: print "You discover nothing of interest in "; DefArt(x1); ".";
+];
+
+! ----------------------------------------------------------------------------
+
+
+
+! ============================================================================ !
+
+Object  foyer "Opera House Foyer"
+  with  description
+           "You are standing in a spacious hall, splendidly decorated in red
+            and gold, with glittering chandeliers overhead. The entrance from
+            the street is to the north, and there are doorways south and west.",
+        s_to  bar,
+        w_to  cloakroom,
+        n_to
+           "You've only just arrived, and besides, the weather outside
+            seems to be getting worse.",
+  has   light;
+
+Object  cloakroom "Cloakroom"
+  with  description
+           "The walls of this small room were clearly once lined with hooks,
+            though now only one remains. The exit is a door to the east.",
+        e_to  foyer,
+  has   light;
+
+Object  hook "small brass hook" cloakroom
+  with  name 'small' 'brass' 'hook' 'peg',
+        description [;
+            print "It's just a small brass hook, ";
+            if (self == parent(cloak)) "with a cloak hanging on it.";
+            "screwed to the wall.";
+            ],
+  has   scenery supporter;
+
+Object  bar "Foyer bar"
+  with  description [;
+            if (self hasnt light) "It's pitch black in here, you can't see.";
+            if (self has light) "The bar, much rougher than you'd have guessed after the opulence
+            of the foyer to the north, is completely empty. There seems to
+            be some sort of message scrawled in the sawdust on the floor.";
+            ],
+        n_to  foyer,
+        before [;
+            Go:
+                if (self hasnt light && noun ~= n_obj) {
+                    message.number = message.number + 2;
+                    "Blundering around in the dark isn't a good idea!";
+                    }
+            default:
+                if (self hasnt light) {
+                    message.number = message.number + 1;
+                    "In the dark? You could easily disturb something!";
+                    }
+            ],
+  has   ~light;
+
+Object  cloak "velvet cloak"
+  with  name 'black' 'velvet' 'satin' 'cloak',
+        description
+           "A handsome cloak, of velvet trimmed with satin, and slightly
+            spattered with raindrops. Its blackness is so deep that it
+            almost seems to suck light from the room.",
+        before [;
+            Drop, PutOn:
+                if (location == cloakroom) {
+                    give bar light;
+                    if (action == ##PutOn && self has general) {
+                        give self ~general;
+                        score++;
+                        }
+                    }
+                else
+                   "This isn't the best place to leave a smart cloak
+                    lying around.";
+            ],
+        after [;
+            Take: give bar ~light;
+            ],
+  has   clothing general;
+
+Object  message "scrawled message" bar
+  with  name 'message' 'sawdust' 'floor',
+        description [;
+            if (self.number < 2) {
+                score++;
+                deadflag = 2;
+                print "The message, neatly marked in the sawdust, reads...";
+                }
+            else {
+                deadflag = 3;
+                print "The message has been carelessly trampled, making it
+                  difficult to read. You can just distinguish the words...";
+                }
+            ],
+        number  0,
+  has   scenery;
+
+[ Initialise;
+    location = foyer;
+    move cloak to player;
+    give cloak worn;
+   "^^Hurrying through the rainswept November night, you're glad to see the
+    bright lights of the Opera House. It's surprising that there aren't more
+    people about but, hey, what do you expect in a cheap demo game...?^^";
+    ];
+
+[ DeathMessage; print "You have lost"; ];
+
+! ============================================================================ !
+
+! ----------------------------------------------------------------------------
+!  Metrocenter '84 version of GRAMMAR.
+!  (c) Stefan Vogt, Puddle Software 2020.
+!
+!  This project is based on:
+!  Inform 6, mInform 1.1 Library
+!  (c) Graham Nelson 1993, 1994, 1995, 1996 but freely usable (see manuals),
+!  (c) Dave Bernazzani 2004.
+! ----------------------------------------------------------------------------
+
+! ----------------------------------------------------------------------------
+!  The "meta-verbs", commands to the game rather than in the game, come first:
+! ----------------------------------------------------------------------------
+
+System_file;
+
+Verb meta "score"
+                *                                -> Score;
+Verb meta "q" "quit"
+                *                                -> Quit;
+Verb meta "restore"
+                *                                -> Restore;
+Verb meta "restart"
+                *                                -> Restart;
+Verb meta "save"
+                *                                -> Save;
+Verb meta "script"
+                *                                -> ScriptOn
+                * "off"                          -> ScriptOff
+                * "on"                           -> ScriptOn;
+Verb meta "noscript" "unscript"
+                *                                -> ScriptOff;
+              
+Verb meta "version"
+                *                                -> Version;
+                
+! ----------------------------------------------------------------------------
+!  Debugging grammar
+! ----------------------------------------------------------------------------
+
+#ifdef DEBUG;
+Verb meta "trace"
+                *                                -> TraceOn
+                * number                         -> TraceLevel
+                * "on"                           -> TraceOn
+                * "off"                          -> TraceOff;
+Verb meta "actions"
+                *                                -> ActionsOn
+                * "on"                           -> ActionsOn
+                * "off"                          -> ActionsOff;
+Verb meta "routines"
+                *                                -> RoutinesOn
+                * "on"                           -> RoutinesOn
+                * "off"                          -> RoutinesOff;
+Verb meta "timers" "daemons"
+                *                                -> TimersOn
+                * "on"                           -> TimersOn
+                * "off"                          -> TimersOff;
+Verb meta "recording"
+                *                                -> CommandsOn
+                * "on"                           -> CommandsOn
+                * "off"                          -> CommandsOff;
+Verb meta "replay"
+                *                                -> CommandsRead;
+Verb meta "random"
+                *                                -> Predictable;
+Verb meta "purloin"
+                * multi                          -> XPurloin;
+Verb meta "abstract"
+                * noun "to" noun                 -> XAbstract;
+Verb meta "tree"
+                *                                -> XTree
+                * noun                           -> XTree;
+Verb meta "goto"
+                * number                         -> Goto;
+Verb meta "gonear"
+                * noun                           -> Gonear;
+Verb meta "scope"
+                *                                -> Scope
+                * noun                           -> Scope;
+#endif;
+
+! ----------------------------------------------------------------------------
+!  And now the game verbs.
+! ----------------------------------------------------------------------------
+
+Verb "take" "get"
+                * "all"                          -> TakeAll
+                * "out"                          -> Exit
+                * "off"                          -> Exit
+                * "up"                           -> Exit
+                * multi                          -> Take
+                * multiinside "from" noun        -> Remove
+                * "in" noun                      -> Enter
+                * "into" noun                    -> Enter
+                * "on" noun                      -> Enter
+                * multiinside "off" noun         -> Remove;
+
+#IFDEF ENABLE_WEAR;
+extend "take"
+                * "off" worn                     -> Disrobe
+                * "off" noun                     -> GetOff;
+#ENDIF;
+
+
+Verb "stand"
+                *                                -> Exit
+                * "up"                           -> Exit
+                * "on" noun                      -> Enter;
+
+Verb "remove"
+                * multi                          -> Take
+                * multiinside "from" noun        -> Remove;
+
+Verb "put"
+                * multiexcept "in" noun          -> Insert
+                * multiexcept "inside" noun      -> Insert
+                * multiexcept "into" noun        -> Insert
+                * multiexcept "on" noun          -> PutOn
+                * multiexcept "onto" noun        -> PutOn
+                * "down" multiheld               -> Drop
+                * multiheld "down"               -> Drop;
+
+#IFDEF ENABLE_WEAR;
+extend "remove" first
+                * held                           -> Disrobe;
+Verb "shed" "doff" "disrobe"
+                * held                           -> Disrobe; 
+Verb "wear" "don"
+                * held                           -> Wear;
+extend "put" first
+                * "on" held                      -> Wear;
+
+#ENDIF;
+
+Verb "insert"
+                * multiexcept "in" noun          -> Insert
+                * multiexcept "into" noun        -> Insert;
+
+Verb "empty"
+                * noun                           -> Empty
+                * "out" noun                     -> Empty
+                * noun "out"                     -> Empty
+                * noun "to" noun                 -> EmptyT
+                * noun "into" noun               -> EmptyT
+                * noun "on" noun                 -> EmptyT
+                * noun "onto" noun               -> EmptyT;
+
+Verb "drop" "throw" "discard"
+                * multiheld                      -> Drop
+                * multiexcept "in" noun          -> Insert
+                * multiexcept "into" noun        -> Insert
+                * multiexcept "on" noun          -> PutOn
+                * multiexcept "onto" noun        -> PutOn
+                * multiexcept "down" noun        -> Insert
+                * held "at" noun                 -> ThrowAt
+                * held "against" noun            -> ThrowAt;
+
+Verb "give" "pay" "offer" "feed"
+                * creature held                  -> GiveR
+                * held "to" creature             -> Give;
+
+Verb "show" "present" "display"
+                * creature held                  -> ShowR
+                * held "to" creature             -> Show;
+
+[ ADirection; if (noun in compass) rtrue; rfalse; ];
+
+Verb "go" "walk" "run"
+                *                                -> VagueGo
+                * noun=ADirection                -> Go
+                * noun                           -> Enter
+                * "into" noun                    -> Enter
+                * "in" noun                      -> Enter
+                * "inside" noun                  -> Enter
+                * "through" noun                 -> Enter;
+
+Verb "leave"
+    *                                           -> VagueGo
+    * noun=ADirection                           -> Go
+    * noun                                      -> Exit;
+
+Verb "inventory" "i"
+                *                                -> Inv;
+
+[ ConTopic w; consult_from = wn;
+  do w=NextWordStopped();
+  until (w==-1 || (w=='to' && action_to_be==##Answer));
+  wn--;
+  consult_words = wn-consult_from;
+  if (consult_words==0) return -1;
+  if (action_to_be==##Ask or ##Answer or ##Tell)
+  {   w=wn; wn=consult_from; parsed_number=NextWord();
+      if (parsed_number=='the' && consult_words>1) parsed_number=NextWord();
+      wn=w; return 1;
+  }
+  return 0;
+];
+
+[ ConTopicI w;
+  consult_from = wn;
+  do w=NextWordStopped(); until (w=='in' or -1); if (w==-1) return -1;
+  wn--; consult_words = wn-consult_from;
+  if (consult_words==0) return -1; return 0; ];
+
+Verb "look" "l"
+                *                                -> Look
+                * "at" noun                      -> Examine
+                * "inside" noun                  -> Search
+                * "in" noun                      -> Search
+                * "into" noun                    -> Search
+                * "through" noun                 -> Search
+                * "up" ConTopicI "in" noun       -> Consult;
+
+Verb "consult"  * noun "about" ConTopic          -> Consult
+                * noun "on" ConTopic             -> Consult;
+
+Verb "open" "uncover"
+                * noun                           -> Open
+                * noun "with" held               -> Unlock;
+                
+Verb "close" "shut" "cover"
+                * noun                           -> Close
+                * "up"                           -> Close
+                * "off" noun                     -> SwitchOff;
+
+Verb "enter"
+                *                                -> GoIn
+                * noun                           -> Enter;
+
+Verb "sit" "lie"
+                * "on" noun                      -> Enter
+                * "in" noun                      -> Enter
+                * "inside" noun                  -> Enter;
+
+Verb "in" 
+                *                                -> GoIn;
+
+Verb "exit" "out"
+                * noun                           -> Exit
+                *                                -> Exit;
+                
+Verb "examine" "x" "watch" "describe" "check"
+                * noun                           -> Examine;
+
+Verb "read"
+                * noun                           -> Examine
+                * "about" ConTopicI "in" noun    -> Consult
+                * ConTopicI "in" noun            -> Consult;
+
+Verb "search"
+                * noun                           -> Search;
+
+Verb "set" "adjust"
+                * noun                           -> Set
+                * noun "to" special              -> SetTo;
+                
+Verb "pull" "drag"
+                * noun                           -> Pull;
+                
+Verb "push" "move" "shift" "press"
+                * noun                           -> Push
+                * noun noun                      -> PushDir;
+                
+Verb "turn" "rotate" "twist" "unscrew" "screw"
+                * noun                           -> Turn
+                * noun "on"                      -> Switchon
+                * noun "off"                     -> Switchoff
+                * "on" noun                      -> Switchon
+                * "off" noun                     -> Switchoff;
+
+Verb "switch"
+                * noun                           -> Switchon
+                * noun "on"                      -> Switchon
+                * noun "off"                     -> Switchoff
+                * "on" noun                      -> Switchon
+                * "off" noun                     -> Switchoff;
+
+Verb "lock"
+                * noun "with" held               -> Lock;
+
+Verb "unlock"
+                * noun "with" held               -> Unlock;
+
+Verb "attack" "break" "smash" "hit" "fight" "crack"
+     "destroy" "murder" "kill" "punch" "kick"
+                * noun                           -> Attack;
+                
+Verb "wait" "z"
+                *                                -> Wait;
+                
+Verb "answer" "say" "shout" "speak"
+                * ConTopic "to" creature         -> Answer;
+                
+Verb "tell"
+                * creature "about" ConTopic      -> Tell;
+                
+Verb "ask"
+                * creature "about" ConTopic      -> Ask
+                * creature "for" noun            -> AskFor;
+                
+Verb "eat"
+                * held                           -> Eat;
+                
+Verb "climb" "scale"
+                * noun                           -> Climb
+                * "up" noun                      -> Climb
+                * "over" noun                    -> Climb;
+                
+Verb "swim" "dive"
+                *                                -> Swim;
+                
+Verb "smell" "sniff"
+                *                                -> Smell
+                * noun                           -> Smell;
+
+Verb "hear" "listen"
+                *                                -> Listen
+                * noun                           -> Listen
+                * "to" noun                      -> Listen;
+Verb "taste"
+                * noun                           -> Taste;
+
+Verb "touch" "feel"
+                * noun                           -> Touch;
+
+Verb "rub" "shine" "polish" "sweep" "clean" "wipe" "scrub"
+                * noun                           -> Rub;
+
+Verb "tie" "attach" "fasten"
+                * noun                           -> Tie
+                * noun "to" noun                 -> Tie;
+
+Verb "burn" "light"
+                * noun                           -> Burn
+                * noun "with" held               -> Burn;
+                
+Verb "drink" "swallow" "sip"
+                * noun                           -> Drink;
+
+Verb "fill"
+                * noun                           -> Fill;
+
+Verb "cut" "slice" "chop"
+                * noun                           -> Cut;
+
+Verb "jump" "hop"
+                *                                -> Jump
+                * "over" noun                    -> JumpOver;
+
+Verb "dig"      * noun                           -> Dig
+                * noun "with" held               -> Dig;
+
+! ----------------------------------------------------------------------------
+!  Final task: provide trivial routines if the user hasn't already:
+! ----------------------------------------------------------------------------
+
+#Stub TimePasses      0;
+#Stub DeathMessage    0;
+#Stub NewRoom         0;
+#Stub LookRoutine     0;
+#Stub AfterLife       0;
+#Stub GamePreRoutine  0;
+#Stub GamePostRoutine 0;
+#Stub AfterPrompt     0;
+#Stub BeforeParsing   0;
+#Stub InScope         1;
+#Stub UnknownVerb     1;
+#Stub PrintVerb       1;
+#Stub ParserError     1;
+#Stub ParseNumber     2;
+#Stub ChooseObjects   2;
+
+#IFNDEF ParseNoun;
+Constant Make__PN;
+#ENDIF;
+#IFDEF Make__PN;
+[ ParseNoun obj; obj=obj; return -1; ];
+#ENDIF;
+#Default Story 0;
+#Default Headline 0;
+
+! ----------------------------------------------------------------------------
+
+
+
+Verb 'hang'     * held 'on' noun    -> PutOn;
+
+! ============================================================================ !

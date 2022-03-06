@@ -1,0 +1,777 @@
+!% -~S
+
+! The very first lines of the main source code file for a game can contain compiler options, like the two lines above.
+! -~S disables strict error checking. This is otherwise used in z5 and z8 games by default. While useful for debugging,
+!   it adds ~10 KB to the story file size and it makes the game slower.
+! $OMIT_UNUSED_ROUTINES=1 makes the compiler remove all routines which aren't used. This can save some space.
+! XXX Shifted $OMIT_UNUSED_ROUTINES to the runtest.py script.
+
+! Library_of_horror.inf - a sample game which uses PunyInform
+
+
+! ====================================
+! Setup constants to customize PunyInform
+! ====================================
+
+! Uncomment to add optional features to PunyLib
+!Constant DEBUG;
+!Constant CUSTOM_ABBREVIATIONS;
+!Constant OPTIONAL_FULL_DIRECTIONS;
+!Constant OPTIONAL_ALLOW_WRITTEN_NUMBERS;
+!Constant OPTIONAL_EXTENDED_METAVERBS;
+!Constant OPTIONAL_EXTENDED_VERBSET;
+!Constant OPTIONAL_GUESS_MISSING_NOUN;
+Constant OPTIONAL_FULL_SCORE;
+Constant OPTIONAL_MANUAL_SCOPE;
+Constant RUNTIME_ERRORS = 0; ! 0 = Minimal error checking, 1 = Numeric error codes, 2: Error messages
+
+Constant INITIAL_LOCATION_VALUE = GloomyStreet;
+
+Constant Story	  "The Library Of Horror";
+Constant Headline   "^A PunyInform demo game, by Pablo Martinez and Fredrik Ramsberg.^";
+Release 4;
+
+Constant MAX_SCORE = 100;
+Constant TASKS_PROVIDED;
+Constant NUMBER_TASKS = 5;
+Array task_scores -> 10 20 20 50 20;
+Constant TASK_TALK_MANAGER = 0;
+Constant TASK_GIVE_BOOK = 1;
+Constant TASK_BLOCK_ROBOT = 2;
+Constant TASK_BURN_BOOK = 3;
+Constant TASK_LEAVE = 4;
+
+! ====================================
+! Include globals.h
+! ====================================
+Include "globals.h";
+
+! ====================================
+! Define library entry routines
+! ====================================
+[ PrintRank;
+	print ", earning you the rank of ";
+	if (score >= 100) "Hero.";
+	if (score >= 70) "Brave.";
+	if (score >= 50) "Trustworthy.";
+	if (score >= 30) "Promising.";
+	if (score >= 10) "Well-meaning.";
+	"Novice.";
+];
+[ PrintTaskName task_number;
+	switch (task_number) {
+		TASK_TALK_MANAGER: 	"talking to the manager";
+		TASK_GIVE_BOOK: 	"giving the manager the book";
+		TASK_BLOCK_ROBOT: 	"obstructing the robot";
+		TASK_BURN_BOOK: 	"burning the evil book";
+		TASK_LEAVE: 		"leaving the library";
+	}
+];
+
+
+[ DeathMessage;
+	switch(deadflag) {
+		3: print "You have summoned demons set to destroy the world";
+		4: print "You have been incinerated";
+	}
+];
+
+#IfV3;
+! The dictionary only holds six characters in z3 games, so we need to help print verbs longer than this.
+[PrintVerb p_verb;
+	switch(p_verb) {
+		'blindfold': print "blindfold"; rtrue;
+	}
+	rfalse;
+];
+#EndIf;
+
+! ====================================
+! Setup flags
+! ====================================
+Constant FLAG_COUNT = 5;
+Constant F_TALKED_TO_MANAGER = 0;
+Constant F_FRANK_BLOCKED_BY_BOX = 1;
+Constant F_BOOK_DELIVERED = 2;
+Constant F_STARTED_FIRE = 3;
+Constant F_FRANK_HAS_SEEN_BOOK = 4;
+Include "ext_flags.h";
+
+! ====================================
+! Setup cheap scenery
+! ====================================
+[SceneryReply;
+	default:
+		"Better just leave it alone and get on with the task at hand.";
+];
+Include "ext_cheap_scenery.h";
+
+! ====================================
+! Setup quote box
+! ====================================
+Constant QUOTE_V3_SCREEN_WIDTH 40;
+Include "ext_quote_box.h";
+
+Array quote_stairs static --> 5 34
+"It is by going down into the abyss"
+"that we recover the treasures of"
+"life. Where you stumble, there"
+"lies your treasure."
+"              -- Joseph Campbell";
+
+Array quote_darkchamber static --> 6 35
+"Light thinks it travels faster than"
+"anything but it is wrong. No matter"
+"how fast light travels, it finds"
+"the darkness has always got there"
+"first, and is waiting for it."
+"              -- Terry Pratchett";
+
+
+
+
+! ====================================
+! Include puny.h
+! ====================================
+Include "puny.h";
+
+! ====================================
+! Classes, verbs etc for game
+! ====================================
+
+! -- testing scope grammar token
+! See: https://www.inform-fiction.org/manual/html/s32.html
+
+! Burn is available in the extended verb set, but we'll define it here instead of adding the weight of all those new verbs.
+! Also, we want it to work a little differently from the way it works in the library - the player shouldn't have to
+! carry the candles to burn the book.
+
+[ BurnSub;
+	"That seems dangerous and pointless.";
+];
+
+Verb 'burn' 'light'
+	* noun						-> Burn
+	* noun 'with' noun			-> Burn;
+
+[ CoverSub;
+	"That seems pointless.";
+];
+
+
+Extend only 'cover' replace
+	* noun 'with'/'using' held	-> Cover;
+
+Verb 'blindfold' = 'cover';
+
+Extend 'put' first
+	* held 'on' creature		-> Cover reverse
+	* held 'over' noun 			-> Cover reverse;
+
+[ TalkToSub;
+	print_ret (The) noun, " doesn't seem interested.";
+];
+
+Verb 'talk' 'report'
+	* 'to' creature -> TalkTo;
+
+
+! ====================================
+! The following code, heavily inspired by the cheap_scenery extension, allows the player to ask
+! questions like "WHAT IS A LIBRARY" without using an object for each question.
+! ====================================
+
+[ QueryTopic;
+  switch (scope_stage) {
+	  1: rfalse;
+	  2: ScopeWithin(WhatIsTopics); rtrue;
+	  3: "You haven't the faintest.";
+  }
+];
+
+[ QuerySub; noun.description();];
+
+Verb 'what' * 'is'/'was' scope=QueryTopic -> Query;
+
+Class MultiTopic
+	with
+		number 0,
+		parse_name [ _w1 _w2 _i _sw1 _sw2 _len;
+			_w1 = NextWordStopped();
+			_w2 = NextWordStopped();
+			_i = 0;
+			_len = self.#topics / 2;
+#IfTrue RUNTIME_ERRORS > RTE_MINIMUM;
+#IfTrue RUNTIME_ERRORS == RTE_VERBOSE;
+			if(_len % 3 > 0)
+				"ERROR: multi_topic topics property of ", (the) self," has incorrect # of values!^";
+#IfNot;
+			if(_len % 3 > 0)
+				"ERROR: multi_topic #1!^";
+#EndIf;
+			while(_i < _len) {
+				_sw1 = self.&topics-->(_i+2);
+#IfTrue RUNTIME_ERRORS == RTE_VERBOSE;
+				if(~~(_sw1 ofclass String or Routine))
+					"ERROR: Element ", _i+2, " in multi_topic topics property of ", (the) self," is not a string or routine!^",
+						"Element: ", (name) _sw1, "^";
+#IfNot;
+				if(~~(_sw1 ofclass String or Routine))
+					"ERROR: multi_topic #2!^";
+#EndIf;
+
+				_i = _i + 3;
+			}
+			_i = 0;
+#endif;
+			while(_i < _len) {
+				_sw1 = self.&topics-->_i;
+				_sw2 = self.&topics-->(_i+1);
+				if(_w1 == _sw1 && _w2 == _sw2) {
+					self.number = _i;
+					return 2;
+				}
+				if(_w1 == _sw1 or _sw2) {
+					self.number = _i;
+					return 1;
+				}
+				_i = _i + 3;
+			}
+			! It would make sense to return 0 here, but property
+			! routines return 0 by default anyway.
+		],
+		description [ _k;
+			_k = self.&topics-->(self.number + 2);
+			if(_k ofclass Routine) {
+				_k();
+				rtrue;
+			}
+			print_ret (string) _k;
+		];
+
+Object WhatIsTopics "WhatIsTopics";
+
+MultiTopic -> WhatIsTopic_1 "topic"
+	with
+		topics
+			1 'library' "A library is venue where books are kept and people can borrow said books."
+			1 'grue' "A grue is a sinister creature lurking in the dark. If anyone has actually seen a grue,
+				they have not lived long enough to tell the tale."
+			1 'manager' "Library managers oversee the daily activities and functions of a library.";
+
+! ====================================
+! The rooms and game objects start here.
+! ====================================
+
+Object GloomyStreet "Gloomy Street"
+	with
+		description
+			"The houses in this area seem hastily abandoned as if a mysterious tragedy had sown
+				panic among its former inhabitants. All you see are shattered windows and ripped doors.
+				In front of you, to the south, is the strangely well preserved and beautiful
+				library building where you have to work.",
+		cheap_scenery
+			'windows' 'doors' "Remains of a distant and mysterious tragedy!"
+			'houses' 'street' "Creepy and abandoned."
+			1 'library' "It's a beautiful building. Looks like 19th century Art Nouveau architecture to you.",
+		s_to Library,
+		cant_go "Your work is to the south, though you are tempted to go home and forget all about it.",
+		after [;
+			Go:
+				if(FlagIsSet(F_STARTED_FIRE))
+					StopDaemon(EvilBook);
+				if(FlagIsSet(F_BOOK_DELIVERED) || FlagIsSet(F_STARTED_FIRE)) {
+					Achieved(TASK_LEAVE);
+					<Look>;
+					deadflag = 2;
+					if(FlagIsSet(F_BOOK_DELIVERED))
+						"^You leave the library with mixed feelings. On the one hand, you're glad
+							to be done with your modest task and to get out of this gloomy neighbourhood.
+							On the other hand, there's something about that library that makes your hair
+							stand on end.
+							^^Oh well. Maybe it's better to forget about it and enjoy a quiet afternoon in your flat.";
+					else
+						"^You managed to escape the burning building just in time! As you catch your breath
+							on the street slabs, you watch the walls blackened by the flames, the door falling
+							to pieces on the floor and the windows bursting in the heat.
+							^^A sound reaches you, distant but discernible, beyond the crackling of the flames.
+							It is a sinister laugh, echoing through the lonely streets, the laughter of the
+							library manager.
+							^^Terrified, you walk away from that place, never to return. In the future,
+							you'll be more careful about the jobs you choose.";
+				}
+		],
+	has light;
+
+Object Library "The Library"
+	with
+		description [;
+			if(FlagIsSet(F_STARTED_FIRE))
+				"You watch in horror as the flames reach the books, climbing the shelves
+					and turning each volume into a fireball. To the east is the interior
+					of the building, and to the north, you can escape to the outside.";
+			"The library seems surprisingly large inside. Tens of thousands of valuable antique
+			volumes line the high shelves. The air feels charged with dust and the smell of antiquity.
+			^^To the east, it is possible to go deeper into the building. To the north is the exit to the outside.";
+		],
+		cheap_scenery
+			'volumes' 'books' "One could spend a lifetime reading only a fraction of the books in this room."
+			'shelf' 'shelves' "Full of every conceivable book in this world."
+			1 'library' "It's a beautiful old library.",
+		n_to GloomyStreet,
+		e_to TopOfStairs,
+		cant_go "You'd love to explore the library, but you have other things on your mind right now.",
+	has light;
+
+Object -> Manager "library manager"
+	with
+		article "the",
+		description
+			"Although at first glance he looks like a normal middle-aged man, something is
+				unsettling about this person. Perhaps it is the fact that he wears black or
+				the constant movement of his eyes and his whispers to himself. Or maybe it is
+				the mysterious and arcane looking symbols hanging over his whole body.",
+		describe [;
+			print "^The manager of the library is here, deeply concentrated on the arrangement of one of the shelves";
+			if(FlagIsClear(F_TALKED_TO_MANAGER)) print ". Perhaps you should talk to him and ask him about the job";
+			".";
+		],
+		parse_name [ _w1;
+			_w1 = NextWordStopped();
+			if(_w1 == 'manager') return 1;
+			if(_w1 == 'library' && NextWordStopped() == 'manager') return 2;
+		],
+		before [;
+			TalkTo:
+				if(FlagIsClear(F_TALKED_TO_MANAGER)) {
+					SetFlag(F_TALKED_TO_MANAGER);
+					Achieved(TASK_TALK_MANAGER);
+					"He looks up from the shelf in surprise. When he sees you, he smiles (there is
+						something unsettling about his smile) and says: ~Wow! I forgot you were coming
+						today. You're the new assistant, right? I imagined you taller. Never mind! I
+						won't be able to spend much time with you today. You'd better come tomorrow.~
+						^^Just as you're about to leave the library upset, you hear his voice again.
+						~Wait! Maybe I do need you. There's a book I need, Where the Wild Things Are
+						by Maurice Sendak. I must have left it in the repair shop in the basement.
+						Frank the Robot is down there. He'll help you find it.~
+						^^After saying this, he turns his back on you and continues to arrange the shelf.
+						^^(Did he mention... a robot?)";
+				} else
+					"~Can't you see I'm busy? I can't waste my time with nonsense! Ask Frank for help!~
+						^^Once again, he directs his attention to the fascinating shelf.";
+		],
+		life [;
+			Ask, Tell, Show:
+				if(noun==WildThingsBook)
+					<<Give noun self>>;
+				<<TalkTo self>>;
+			Give:
+				if(noun==WildThingsBook) {
+					remove noun;
+					scope_modified = true;
+					SetFlag(F_BOOK_DELIVERED);
+					Achieved(TASK_GIVE_BOOK);
+					"When you approach the manager, for a moment, he seems ready to get angry about
+						the interruption, but his face lights up when he sees the book in your hand.
+						^^~Great! You've done exactly what I asked!~
+						^^In confidence, he adds: ~I'm glad you didn't waste your time with things that
+						are none of your business. It makes me trust you more.~
+						^^He pats you on the back twice and says: ~Come first thing tomorrow. We'll
+						start working for real.~ And again he turns towards the shelf.";
+				}
+		],
+	has animate;
+
+Object TopOfStairs "Staircase Leading Down"
+	with
+		description [;
+			if(FlagIsSet(F_STARTED_FIRE))
+				"The fire has reached the dusty little room! The boxes and their contents are burning
+					too. From the stairs and from the library to the west comes the sound of the
+					crackling of the flames. How could it spread so quickly?";
+			"This is a small, dusty room, with some boxes piled up and stairs leading down to the
+			dark basement. A beam of light comes from the west, leading to the main hall of the library,";
+		],
+		cheap_scenery
+			'beam' 'light' "The light beam stands out clearly in the darkness of the room."
+			'box' 'boxes' "The boxes are full of books waiting to be placed on their shelves. There's
+							nothing here that would interest you."
+			1 'stairs' "The stairs lead towars the darkness of the basement.",
+		before [;
+			Go:
+				if(selected_direction==d_to) {
+					if(FlagIsClear(F_TALKED_TO_MANAGER))
+						"You have no business running around in the basement. Better go talk to the library manager instead,
+							to find out where you're needed.";
+					if(FlagIsSet(F_BOOK_DELIVERED))
+						"You're done for today, and the library manager told you to go home. Better not go snooping around
+						 	in the basement.";
+					if(self hasnt general) {
+						give self general;
+						QuoteBox(quote_stairs);
+					}
+				}
+		],
+		w_to Library,
+		d_to BottomOfStairs,
+	has light;
+
+Object BottomOfStairs "Basement, Near Staircase"
+	with
+		description [;
+			if(FlagIsSet(F_STARTED_FIRE))
+				"The walls of the corridor burn fiercely, from the stairs going up to the room
+					to the east. The heat is suffocating.";
+			"It's nearly dark here, since the lamp in the ceiling is missing its light bulb.
+				However, there's enough light coming in from the stairs to make
+				out your surroundings. There is more light to the east.";
+		],
+		u_to TopOfStairs,
+		e_to Hallway,
+	has light;
+
+! Data that Frank needs to print where he came from.
+#IfDef OPTION_FULL_DIRECTIONS;
+Array opposite_directions static table "south" "north" "west" "east" "southwest" "southeast" "northwest" "northeast"
+	"down" "up" "out" "in";
+#IfNot;
+Array opposite_directions static table "south" "north" "west" "east" "down" "up" "out" "in";
+#EndIf;
+
+Object -> Frank "Frank the Robot"
+	with
+		number 0,
+		name 'frank' 'the' 'robot',
+		when_off [; ! The first time the player spots Frank, he turns on automatically and his daemon is started.
+			give self on;
+			give self moved;
+			StartDaemon(self);
+			"Frank the Robot is standing here, all dark and quiet. As you enter the room,
+				some LEDs light up, and Frank's eyes start to glow with a feeble yellow light.
+				Its voice begins to sound with bizarre metallic courtesy. ~Hey, hello, sir!
+				You must be the new employee, right? My name is Frank, short for Frankfurter
+				Gelenkroboter 2100. But please, just call me Frank. I'm here to help
+				you in your search for the book.~";
+		],
+		before [;
+			TalkTo:
+				"~My apologies, sir, my understanding of spoken language is not ideal, but they
+					will undoubtedly improve this aspect in the next software update!~";
+			SwitchOff:
+				"A bright light arc juts out from near the button and the electric shock makes
+					you jump back. ~I wouldn't advise it, sir.~";
+			Cover:
+				if(second==Box) {
+					if(child(Box))
+						"But the box isn't empty!";
+					SetFlag(F_FRANK_BLOCKED_BY_BOX);
+					move Box to self;
+					scope_modified = true;
+					Achieved(TASK_BLOCK_ROBOT);
+					self.number = 3; ! Make the box stay in place this many moves minus one.
+					"You take advantage of a moment when Frank doesn't look in your direction
+						and quickly place the box on it. The robot loses its cool and starts
+						spinning, while its voice sounds muffled from the inside. ~Sir, I seem
+						to have a problem with my sensors! Give me a few moments to fix it!~";
+				}
+				"It doesn't look like it would fit.";
+		],
+		react_before [;
+			Go:
+				if(location == StorageRoom && selected_direction == e_to && FlagIsClear(F_FRANK_BLOCKED_BY_BOX)) {
+					print "Frank rolls up in front of you, blocking your path. ";
+					if(self hasnt general) {
+						give self general;
+						"~Oh, sir, forgive my rudeness, but I beg you not to enter this room.
+							It is not safe. And besides, there's nothing unusual to see in
+							there. Nothing at all. It's an incredibly dull room.~ Its
+							voice becomes deep and threatening for a second. ~So I strongly
+							advise you not to insist.~";
+					}
+					"~Please, sir, don't insist. There's nothing to see there.~";
+				}
+		],
+		daemon [ _my_loc _i _dir_prop _dir_count;
+			! Frank may want to say something about the box
+			if(FlagIsSet(F_FRANK_BLOCKED_BY_BOX)) {
+				if(Frank in location)
+					print "^Frank's going around like crazy trying to get free in vain.^";
+				if(--self.number == 0) {
+					ClearFlag(F_FRANK_BLOCKED_BY_BOX);
+					remove Box;
+					scope_modified = true;
+					if(Frank in location)
+						"^From one of the robot's arms comes a kind of blade that cuts the box
+							in half. Once released, it rises another of its arms, and a flame of
+							fire comes out that turns the cardboard into ashes.
+						^^~Oh, hahaha, you won't believe it, sir! It looks like I had a cardboard
+						box on top of me. What a silly oversight on my part!~";
+					else
+						"^From some other room, you hear the sound of the cardboard box falling to
+							the floor and then what sounds like a quick burst of fire.";
+				}
+			}
+			! Frank wants to follow the player around, but can't go up/down/in/out
+			if(FlagIsClear(F_FRANK_BLOCKED_BY_BOX)) {
+				_my_loc = parent(self);
+				if(location ~= _my_loc){
+					_dir_count = DIRECTION_COUNT - 4; ! Skip the last 4 directions (u_to, d_to, in_to, out_to)
+					for(_i=1 : _i <= _dir_count : _i++) {
+						_dir_prop = direction_properties_array-->_i;
+						if(_my_loc provides _dir_prop && _my_loc._dir_prop == location) {
+							move self to location;
+							scope_modified = true;
+							print "^Frank enters from the ", (string) opposite_directions-->_i, ".^";
+							if (location == RepairShop && WildThingsBook in Box && Box in location &&
+									FlagIsClear(F_FRANK_HAS_SEEN_BOOK)) {
+								SetFlag(F_FRANK_HAS_SEEN_BOOK);
+								print "^~Oh, here it is, sir! The book that the master asked for! Right
+									inside that cardboard box!~^";
+							}
+							if(location == DarkChamber) {
+								print "^When it sees you inside the room, it starts to get nervous.
+									~Oh, no, no, no, sir! It's not right for you to be here! There's
+									nothing to see here, really. Let me escort you.~ And he pushes you out
+									gently but firmly.^";
+								move self to StorageRoom;
+								PlayerTo(StorageRoom);
+							}
+							rtrue;
+						}
+					}
+				}
+			}
+		],
+		life [;
+			Ask, Tell, Show:
+				<<TalkTo self>>;
+		],
+		description [;
+			print "Frank looks like a cross between a bunch of stacked toasters and a phlegmatic
+				English butler. Something tells you it's better not to anger it: Some parts of its
+				anatomy look very much like weapons.^";
+			return 2;
+		],
+	has animate proper switchable transparent;
+
+Object Hallway "Hallway"
+	with
+		description [;
+			if(FlagIsSet(F_STARTED_FIRE))
+				"The walls of the corridor burn fiercely, from the stairs to the west to the room to
+					the south. The heat is suffocating.";
+			"A wide hallway leads from the stairs to the west to another room to the south. There
+				are some dusty doors along the walls, but they have all been nailed shut a long time ago.";
+		],
+		cheap_scenery 'door' 'doors' "Regular doors, but old and worn, with some cobweb on them.",
+		w_to BottomOfStairs,
+		s_to StorageRoom,
+	has light;
+
+Object StorageRoom "Storage Room"
+	with
+		description [;
+			if(FlagIsSet(F_STARTED_FIRE)) "The fire has arrived to the storage room as well,
+				turning the cobwebs and dust to ash. ";
+			print "A large storage room, which is now empty except for cobweb and dust. ";
+			"Some light is coming from the north and west. A smaller, dark passage leads east. There's a
+				yellow sign above the dark passage.";
+		],
+		before [;
+			Go:
+				if(selected_direction==e_to && self hasnt general) {
+					give self general;
+					QuoteBox(quote_darkchamber);
+				}
+		],
+		cheap_scenery
+			'dust' 'cobweb' "Doesn't look like this part of the basement is ever cleaned."
+			'yellow' 'sign' "~Dangerous area! Keep out!~",
+		n_to Hallway,
+		w_to RepairShop,
+		e_to DarkChamber,
+	has light;
+
+Object RepairShop "Repair Shop"
+	with
+		description [;
+			if(FlagIsSet(F_STARTED_FIRE)) "Here, too, the workbench has begun to burn, along with the walls and tools.
+				The only way out is to the east.";
+			"This is a smaller room, with a workbench and various specialized tools. The whole room
+				is quite clean. There's an exit to the east.";
+		],
+		cheap_scenery
+			'bench' 'workbench' "It's an old and worn workbench."
+			'specialized' 'tools' "The tools are for repairing books, you can tell that much (but not much else than that).",
+		e_to StorageRoom,
+	has light;
+
+Object -> Box "cardboard box"
+	with
+		name 'cardboard' 'box',
+		description "It's an old and worn box, albeit in reasonably good shape. It appears quite sturdy.",
+	has container open;
+
+Object -> -> WildThingsBook "small book"
+	with
+		name 'small' 'book' 'books//p',
+		description "Where the Wild Things Are, by Maurice Sendak.",
+		before [;
+			Open, Close:
+				"The manager just asked you to get the book, not read it.";
+		];
+
+Object DarkChamber "Dark chamber"
+	with
+		description [;
+			if (self hasnt general) {
+				give self general;
+				print "Upon entering the room, two candles on a table light up spontaneously, as if by magic.^^";
+			}
+			if(FlagIsSet(F_STARTED_FIRE))
+				"The table, the book and the candles are now wrapped in fire. Long tongues of fire
+					run down the black-painted walls. The only way out is to the west.";
+			print "This is a very unsettling room. All the walls are painted black, with strange golden
+				symbols. In the middle of the room there is a large round table covered with a black
+				velvet tablecloth. On it rests an immense red ";
+			if (EvilBook has open) print "open";
+			else print "closed";
+			" book. On both sides of the book, two red candles flood the room with the smell of
+				burning wax. The only exit is towards the west.";
+		],
+		cheap_scenery
+			'wall' 'walls' "The walls absorb so much light, it almost looks like the golden symbols float in a void."
+			'strange' 'symbols' "These symbols might be letters in some ancient script. You wouldn't know."
+			'velvet' 'tablecloth' "It's heavy and all black.",
+		w_to StorageRoom,
+	has light;
+
+Object -> Table "table"
+	with
+		name 'large' 'table' 'tablecloth',
+		description "It's a very sturdy wooden table covered with a black velvet tablecloth.",
+	has static scenery;
+
+Object -> EvilBook "red book"
+	with
+		number 0,
+		parse_name [ _w _i;
+			while(true) {
+				_w = NextWordStopped();
+				if(_w == 'immense' or 'thick' or 'heavy' or 'red' or 'leather' or 'book' or 'books//p' ||
+					(_w == 'open' && self has open) || (_w == 'closed' && self hasnt open)) _i++;
+				else
+					break;
+			}
+			return _i;
+		],
+		describe [; rtrue; ],
+		description [;
+			if(FlagIsSet(F_STARTED_FIRE))
+				"The book is on fire! Is it your imagination or do you think you hear a whine
+					coming from it beyond the crackling of the paper?";
+			print "You take an uneasy glance at the thick, heavy book bound in red leather. You have
+				the feeling that there is something profoundly evil in it. ";
+			if(self has open)
+				"It is now open, revealing pages richly written in meticulous calligraphy. A few
+					words seem to stand out from the rest.";
+			else
+				"In a profusely ornamented typography, you can read on its closed cover the words ~Summone daemoniorum~.";
+		],
+		before [;
+			Take:
+				"You try to lift it off the table, but you're surprised at how incredibly heavy
+					it is. You feel unable to move it an inch.";
+			Burn:
+				if(second==Candles or 0) {
+					if(FlagIsSet(F_STARTED_FIRE)) {
+						"But it's already burning! You need to get out of the building immediately.";
+					} else {
+						SetFlag(F_STARTED_FIRE);
+						Achieved(TASK_BURN_BOOK);
+						StartDaemon(self);
+						remove Manager;
+						scope_modified = true;
+						"Without a moment's hesitation, you tear out one of the pages and burn it in a
+							candle. With the page burning, you set fire to the rest of the book.
+							^^The fire spreads from the book to the room at full speed! Before you can
+							believe it, the black walls burn with a fire that can't be natural. What
+							kind of evil magic is this?";
+					}
+				}
+		],
+		daemon [;
+			switch(++self.number) {
+				2:
+					if(location==DarkChamber)
+						"^As the flames rise higher, the wooden ceiling catches fire too.";
+					else
+						"^The sound of the fire in the dark chamber suddenly gets more intense.";
+				6:
+					if(location==Library or TopOfStairs)
+						"^Flames emerge from the floor in one corner and quickly start to spread along the walls.";
+					else
+						"It is now getting unbearably hot down here.";
+				8:
+					if(location==Library or TopOfStairs)
+						"^Flames are all around you now. You should still be able to reach the exit though.";
+				11:
+					deadflag=4;
+					"The flames cover all the exits! The fire hovers around you with unnatural ferocity. When
+						you're short of breath and the heat makes you lose consciousness, the last thing you
+						hear is a laugh in the distance...";
+			}
+			if(self.number > 7 && location ~= Library or TopOfStairs) {
+				deadflag = 4;
+				"The heat is too much for you, and you collapse on the floor. When you're short of breath and
+					the heat makes you lose consciousness, the last thing you hear is a laugh in the distance...";
+			}
+		],
+		add_to_scope [;
+			if(self has open)
+				PlaceInScope(Words);
+		],
+	has openable transparent static;
+
+Object -> Candles "candles"
+	with
+		description "Two red candles, burning on both sides of the book.",
+		describe [; rtrue; ],
+		article "a pair of",
+		name 'candle' 'candles',
+		before [;
+			Take:
+				"The candles won't budge.";
+			Burn:
+				"The candles are already burning.";
+		],
+	has pluralname static;
+
+Object Words "words"
+	with
+		name 'creepy' 'letters' 'word' 'words',
+		before [;
+			Examine:
+				deadflag = 3;
+				"After a few seconds of struggling with the ancient calligraphy, you can make out the
+					words and read them out loud: ~KLAATU BARADA NIKTO~^^
+					Suddenly, a tremor starts to be felt from the ground, spreading through the walls.
+					You feel a chill on your back and turn around. You can't believe what you see...^^
+					The floor of the room has been transformed into an infinitely deep sinkhole with
+					black stone walls. Scaling the walls, you can see dozens... No, hundreds!
+					of bluish-skinned, red-eyed creatures, staring at you with predatory hunger.^^
+					They're going to come out. And you have set them free.";
+		];
+
+! ====================================
+! Finally, the Initialise routine.
+! ====================================
+
+[Initialise;
+	lookmode = 2; ! Verbose by default
+	"^^The search for a job can be arduous for a young person like you, with no experience or contacts and
+		a newcomer to the city. That's why when you had that newspaper in your hands yesterday and read
+		the ad (~young, inexperienced bookstore assistant needed~) you didn't hesitate for a second.
+		^^However, now that you are walking down the gloomy streets of the neighbourhood where your future
+		job resides, you wonder if you were not too quick to accept...^";
+];

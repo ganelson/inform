@@ -1,0 +1,22 @@
+Include "Parser";
+Include "VerbLib";
+
+Object Start "Starting Point"
+    with    description
+                "An uninteresting room.",
+	with before [;
+		Jump:
+			box
+				"   This is a test"
+				"of the box quotation"
+				"      feature.";
+			"Boing.";
+	],
+            has light;
+
+[ Initialise;
+    location = Start;
+];
+
+Include "Grammar";
+

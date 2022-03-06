@@ -1,0 +1,28 @@
+#ifdef EARLYDEF;
+Version 3;
+#endif;
+
+#ifdef TRYDICT3;
+Dictionary 'foo' 1 2;
+#endif;
+
+#ifdef TRYVERB;
+[ XyzzySub; ];
+Verb 'xyzzy' * 'foo' -> Xyzzy;
+#endif;
+
+[ Main wd1 wd2;
+	wd1 = 'hello';
+	wd2 = 'there';
+	print "DICT_ENTRY_BYTE_LENGTH is ", DICT_ENTRY_BYTES, "^";
+	print (address) wd1, " ", (address) wd2, "^";
+
+	#ifdef TRYPAR3;
+	wd1 = #dict_par3;
+	#endif;
+];
+
+#ifdef LATEDEF;
+Version 3;
+#endif;
+

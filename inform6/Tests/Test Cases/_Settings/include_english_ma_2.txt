@@ -1,0 +1,1 @@
++include_path=inform6/Tests/include/i6lib-611 -u $MAX_ABBREVS=2
