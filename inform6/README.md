@@ -152,11 +152,6 @@ This test suite is a proper superset of the original, but please note:
 cannot cope with the quantity of text in question, and would halt with a fatal
 error. (But the test still checks the story file's md5.)
 
-2. For reasons which are currently unclear, dumb-glulxe seems to have difficulty
-with max_dynamic_strings_test_at63_mds_64-G, max_static_data_test_mqs_8001-G
-and max_dynamic_strings_test_str64_mds_65-G. Execution of those is similarly
-skipped.
-
-3. The two -k debugfile tests of Advent and the module compilation tests are
+2. The two -k debugfile tests of Advent and the module compilation tests are
 currently omitted. These are, barring accidents, the only aspects of any test
 not faithfully reproduced from the original.

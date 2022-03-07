@@ -44,16 +44,6 @@
 	if: $CASE large_opcode_text_test
 		set: $EXECUTE = 0
 	endif
-	! similarly, glulxe does not like these: "This is neither a Glulx game file nor a Blorb file which contains one."
-	if: $CASE max_dynamic_strings_test_at63_mds_64-G
-		set: $EXECUTE = 0
-	endif
-	if: $CASE max_static_data_test_mqs_8001-G
-		set: $EXECUTE = 0
-	endif
-	if: $CASE max_dynamic_strings_test_str64_mds_65-G
-		set: $EXECUTE = 0
-	endif
 
 	mkdir: $PATH/_Story_File_Actual
 	mkdir: $PATH/_Console_Actual
