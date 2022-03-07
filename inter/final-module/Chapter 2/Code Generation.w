@@ -133,13 +133,13 @@ void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 			break;
 		}
 		case INSTANCE_IST: {
-			inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_TYPENAME_IFLD);
+			inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
 			ADD_TO_LINKED_LIST(inst_name, inter_symbol, gen->instances);
 			break;
 		}
 		case TYPENAME_IST: {
-			inter_symbol *kind_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
-			ADD_TO_LINKED_LIST(kind_name, inter_symbol, gen->kinds);
+			inter_symbol *typename = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_TYPENAME_IFLD);
+			ADD_TO_LINKED_LIST(typename, inter_symbol, gen->kinds);
 			break;
 		}
 	}

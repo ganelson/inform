@@ -399,13 +399,18 @@ inter_error_message *TextualInter::parse_literal_text(text_stream *parsed_text,
 				default: E = InterErrors::plain(I"no such backslash escape", eloc); break;
 			}
 		}
-		if (ConstantInstruction::char_acceptable(c) == FALSE)
+		if (TextualInter::char_acceptable(c) == FALSE)
 			E = InterErrors::quoted(I"bad character in text", S, eloc);
 		PUT_TO(parsed_text, c);
 		literal_mode = FALSE;
 	}
 	if (E) Str::clear(parsed_text);
 	return E;
+}
+
+int TextualInter::char_acceptable(int c) {
+	if ((c < 0x20) && (c != 0x09) && (c != 0x0a)) return FALSE;
+	return TRUE;
 }
 
 @h Notation for value pairs.

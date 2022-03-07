@@ -36,36 +36,36 @@ Chapter 3: Their Instructions
 	Inter Errors
 
 Chapter 4: Void Constructs
-	The Nop Construct
-	The Comment Construct
-	The Pragma Construct
-	The Link Construct
 	The Append Construct
-	The PackageType Construct
-	The Package Construct
-	The Typename Construct
-	The DefaultValue Construct
-	The Variable Construct
+	The Comment Construct
 	The Constant Construct
+	The DefaultValue Construct
 	The Instance Construct
+	The Link Construct
+	The Nop Construct
+	The Package Construct
+	The PackageType Construct
+	The Permission Construct
+	The Pragma Construct
+	The Primitive Construct
 	The Property Construct
 	The PropertyValue Construct
-	The Permission Construct
-	The Primitive Construct
+	The Typename Construct
+	The Variable Construct
 
 Chapter 5: Code Constructs
-	The Label Construct
-	The Local Construct
-	The Inv Construct
-	The Ref Construct
-	The Val Construct
-	The Lab Construct
 	The Assembly Construct
+	The Cast Construct
 	The Code Construct
 	The Evaluation Construct
+	The Inv Construct
+	The Lab Construct
+	The Label Construct
+	The Local Construct
+	The Ref Construct
 	The Reference Construct
-	The Cast Construct
 	The Splat Construct
+	The Val Construct
 
 Chapter 6: Pseudo-Constructs
 	The Plug Construct

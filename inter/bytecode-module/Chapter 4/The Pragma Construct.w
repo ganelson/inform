@@ -47,7 +47,7 @@ void PragmaInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 				default: { *E = InterErrors::plain(I"no such backslash escape", eloc); return; }
 			}
 		}
-		if (ConstantInstruction::char_acceptable(c) == FALSE) { *E = InterErrors::quoted(I"bad character in text", S, eloc); return; }
+		if (TextualInter::char_acceptable(c) == FALSE) { *E = InterErrors::quoted(I"bad character in text", S, eloc); return; }
 		PUT_TO(InterWarehouse::get_text(InterBookmark::warehouse(IBM), ID), c);
 		literal_mode = FALSE;
 	}

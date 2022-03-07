@@ -130,176 +130,150 @@ void ConstantInstruction::verify(inter_construct *IC, inter_tree_node *P,
 	}
 }
 
-@
+@h Creating from textual Inter syntax.
 
 =
-void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	text_stream *kind_text = NULL, *name_text = ilp->mr.exp[0];
-	match_results mr3 = Regexp::create_mr();
-	if (Regexp::match(&mr3, name_text, L"%((%c+)%) (%c+)")) {
-		kind_text = mr3.exp[0];
-		name_text = mr3.exp[1];
-	}
+void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
+	inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
+	text_stream *name_text = ilp->mr.exp[0], *value_text = ilp->mr.exp[1];
 
-	inter_type con_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, kind_text, E);
-	if (*E) return;
-
-	inter_symbol *con_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), name_text, E);
+	inter_type con_type;
+	inter_symbol *con_name = NULL;
+	@<Parse the type and name@>;
 	if (*E) return;
 
 	SymbolAnnotation::copy_set_to_symbol(&(ilp->set), con_name);
 
-	text_stream *S = ilp->mr.exp[1];
+	inter_pair *pairs = NULL;
+	text_stream **tokens = NULL;
+	int fmt = CONST_LIST_FORMAT_NONE;
+	int capacity = 0, token_count = 0;
+	text_stream *S = value_text;
+	@<Tokenise the value@>;
 
+	if (S) @<A single-token constant@>
+	else @<A list-of-tokens constant@>
+
+	if (token_count > 0) {
+		Memory::I7_free(pairs, INTER_SYMBOLS_MREASON, capacity);
+		Memory::I7_free(tokens, INTER_SYMBOLS_MREASON, capacity);
+	}
+}
+
+@<Parse the type and name@> =
+	text_stream *kind_text = NULL;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, name_text, L"%((%c+)%) (%c+)")) {
+		kind_text = mr.exp[0];
+		name_text = mr.exp[1];
+	}
+	con_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, kind_text, E);
+	if (*E == NULL)
+		con_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), name_text, E);
+	Regexp::dispose_of(&mr);
+
+@<Tokenise the value@> =
 	match_results mr2 = Regexp::create_mr();
-	inter_ti op = 0;
-	if (Regexp::match(&mr2, S, L"sum{ (%c*) }")) op = CONST_LIST_FORMAT_SUM;
-	else if (Regexp::match(&mr2, S, L"product{ (%c*) }")) op = CONST_LIST_FORMAT_PRODUCT;
-	else if (Regexp::match(&mr2, S, L"difference{ (%c*) }")) op = CONST_LIST_FORMAT_DIFFERENCE;
-	else if (Regexp::match(&mr2, S, L"quotient{ (%c*) }")) op = CONST_LIST_FORMAT_QUOTIENT;
-	if (op != 0) {
-		inter_tree_node *P =
-			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), op, eloc, (inter_ti) ilp->indent_level);
-		*E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
-		if (*E) return;
+	if (Regexp::match(&mr2, S, L"sum{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_SUM;
+	else if (Regexp::match(&mr2, S, L"product{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_PRODUCT;
+	else if (Regexp::match(&mr2, S, L"difference{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_DIFFERENCE;
+	else if (Regexp::match(&mr2, S, L"quotient{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_QUOTIENT;
+	else if (Regexp::match(&mr2, S, L"{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_COLLECTION;
+	else if (Regexp::match(&mr2, S, L"struct{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_STRUCT;
+
+	if (fmt != CONST_LIST_FORMAT_NONE) {
+		S = NULL;
 		text_stream *conts = mr2.exp[0];
 		match_results mr3 = Regexp::create_mr();
-		while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-			if (ConstantInstruction::append(ilp->line, eloc, IBM, con_type, P, mr3.exp[0], E) == FALSE)
-				return;
+		while (Regexp::match(&mr3, conts, L"(%c+?), *(%c+)")) {
+			@<Add a token@>;
 			Str::copy(conts, mr3.exp[1]);
 		}
-		if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-			if (ConstantInstruction::append(ilp->line, eloc, IBM, con_type, P, mr3.exp[0], E) == FALSE)
-				return;
-		}
-		NodePlacement::move_to_moving_bookmark(P, IBM);
-		return;
+		if (Regexp::match(&mr3, conts, L" *(%c+?) *")) @<Add a token@>;
+		Regexp::dispose_of(&mr3);
 	}
 
-	if (Regexp::match(&mr2, S, L"{ }")) {
-		inter_ti form = CONST_LIST_FORMAT_COLLECTION;
-		inter_tree_node *P =
-			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), form, eloc, (inter_ti) ilp->indent_level);
-		*E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
-		if (*E) return;
-		NodePlacement::move_to_moving_bookmark(P, IBM);
-		return;
+@<Add a token@> =
+	if (token_count >= capacity) {
+		int new_size = 16;
+		while (token_count >= new_size) new_size = new_size * 4;
+		inter_pair *enlarged_pairs = (inter_pair *)
+			Memory::calloc(new_size, sizeof(inter_pair), INTER_SYMBOLS_MREASON);
+		text_stream **enlarged_tokens = (text_stream **)
+			Memory::calloc(new_size, sizeof(text_stream *), INTER_SYMBOLS_MREASON);
+		for (int i=0; i<new_size; i++)
+			if (i < capacity) {
+				enlarged_pairs[i] = pairs[i];
+				enlarged_tokens[i] = tokens[i];
+			} else {
+				enlarged_pairs[i] = InterValuePairs::undef();
+				enlarged_tokens[i] = NULL;
+			}
+		if (capacity > 0) {
+			Memory::I7_free(pairs, INTER_SYMBOLS_MREASON, capacity);
+			Memory::I7_free(tokens, INTER_SYMBOLS_MREASON, capacity);
+		}
+		capacity = new_size;
+		pairs = enlarged_pairs;
+		tokens = enlarged_tokens;
 	}
+	pairs[token_count] = InterValuePairs::undef();
+	tokens[token_count++] = Str::duplicate(mr3.exp[0]);
 
-	if (Regexp::match(&mr2, S, L"{ (%c*) }")) {
-		inter_type conts_type = InterTypes::type_operand(con_type, 0);
-		inter_ti form = CONST_LIST_FORMAT_COLLECTION;
-		inter_tree_node *P =
-			Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), form, eloc, (inter_ti) ilp->indent_level);
-		*E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
-		if (*E) return;
-		text_stream *conts = mr2.exp[0];
-		match_results mr3 = Regexp::create_mr();
-		while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-			if (ConstantInstruction::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
-				return;
-			Str::copy(conts, mr3.exp[1]);
-		}
-		if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-			if (ConstantInstruction::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
-				return;
-		}
-		NodePlacement::move_to_moving_bookmark(P, IBM);
-		return;
-	}
-
-	if (Regexp::match(&mr2, S, L"struct{ (%c*) }")) {
-		inter_tree_node *P =
-			 Inode::new_with_3_data_fields(IBM, CONSTANT_IST, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, con_name), InterTypes::to_TID_at(IBM, con_type), CONST_LIST_FORMAT_STRUCT, eloc, (inter_ti) ilp->indent_level);
-		int arity = InterTypes::type_arity(con_type);
-		int counter = 0;
-		text_stream *conts = mr2.exp[0];
-		match_results mr3 = Regexp::create_mr();
-		while (Regexp::match(&mr3, conts, L"(%c*?), (%c+)")) {
-			inter_type conts_type = InterTypes::type_operand(con_type, counter++);
-			if (ConstantInstruction::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
-				return;
-			Str::copy(conts, mr3.exp[1]);
-		}
-		if (Regexp::match(&mr3, conts, L" *(%c*?) *")) {
-			inter_type conts_type = InterTypes::type_operand(con_type, counter++);
-			if (ConstantInstruction::append(ilp->line, eloc, IBM, conts_type, P, mr3.exp[0], E) == FALSE)
-				return;
-		}
-		if (counter != arity)
-			{ *E = InterErrors::quoted(I"wrong size", S, eloc); return; }
-		*E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (*E) return;
-		NodePlacement::move_to_moving_bookmark(P, IBM);
-		return;
-	}
-
+@<A single-token constant@> =
 	inter_pair val = InterValuePairs::undef();
 	*E = TextualInter::parse_pair(ilp->line, eloc, IBM, con_type, S, &val);
-	if (*E) return;
+	if (*E == NULL)
+		*E = ConstantInstruction::new(IBM, con_name, con_type, val,
+			(inter_ti) ilp->indent_level, eloc);
 
-	*E = ConstantInstruction::new(IBM, con_name, con_type, val, (inter_ti) ilp->indent_level, eloc);
-}
+@<A list-of-tokens constant@> =
+	for (int i=0; i<token_count; i++) {
+		inter_type term_type = con_type;
+		if (fmt == CONST_LIST_FORMAT_COLLECTION)
+			term_type = InterTypes::type_operand(con_type, 0);
+		if (fmt == CONST_LIST_FORMAT_STRUCT)
+			term_type = InterTypes::type_operand(con_type, i);
+		*E = TextualInter::parse_pair(ilp->line, eloc, IBM, term_type, tokens[i], &(pairs[i]));
+		if (*E) break;
+	}
+	if (*E == NULL)
+		*E = ConstantInstruction::new_list(IBM, con_name, con_type, fmt, token_count, pairs,
+			(inter_ti) ilp->indent_level, eloc);
 
-int ConstantInstruction::append(text_stream *line, inter_error_location *eloc, inter_bookmark *IBM, inter_type conts_type, inter_tree_node *P, text_stream *S, inter_error_message **E) {
-	*E = NULL;
-	inter_pair val = InterValuePairs::undef();
-	*E = TextualInter::parse_pair(line, eloc, IBM, conts_type, S, &val);
-	if (*E) return FALSE;
-	Inode::extend_instruction_by(P, 2);
-	InterValuePairs::set(P, P->W.extent-2, val);
-	return TRUE;
-}
+@h Writing to textual Inter syntax.
 
-void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
+=
+void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
+	inter_error_message **E) {
 	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	int hex = FALSE;
 	if (SymbolAnnotation::get_b(con_name, HEX_IANN)) hex = TRUE;
-	if (con_name) {
-		WRITE("constant ");
-		TextualInter::write_optional_type_marker(OUT, P, TYPE_CONST_IFLD);
-		WRITE("%S = ", InterSymbol::identifier(con_name));
-		switch (P->W.instruction[FORMAT_CONST_IFLD]) {
-			case CONST_LIST_FORMAT_NONE:
-				TextualInter::write_pair(OUT, P, InterValuePairs::get(P, DATA_CONST_IFLD), hex);
-				break;
-			case CONST_LIST_FORMAT_SUM:			
-			case CONST_LIST_FORMAT_PRODUCT:
-			case CONST_LIST_FORMAT_DIFFERENCE:
-			case CONST_LIST_FORMAT_QUOTIENT:
-			case CONST_LIST_FORMAT_COLLECTION: {
-				if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_SUM) WRITE("sum");
-				if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_PRODUCT) WRITE("product");
-				if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_DIFFERENCE) WRITE("difference");
-				if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_QUOTIENT) WRITE("quotient");
-				WRITE("{");
-				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-					if (i > DATA_CONST_IFLD) WRITE(",");
-					WRITE(" ");
-					TextualInter::write_pair(OUT, P, InterValuePairs::get(P, i), hex);
-				}
-				WRITE(" }");
-				break;
-			}
-			case CONST_LIST_FORMAT_STRUCT: {
-				WRITE("struct{");
-				for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-					if (i > DATA_CONST_IFLD) WRITE(",");
-					WRITE(" ");
-					TextualInter::write_pair(OUT, P, InterValuePairs::get(P, i), hex);
-				}
-				WRITE(" }");
-				break;
-			}
-		}
-		SymbolAnnotation::write_annotations(OUT, P, con_name);
-	} else {
-		*E = Inode::error(P, I"constant can't be written", NULL);
-		return;
+	WRITE("constant ");
+	TextualInter::write_optional_type_marker(OUT, P, TYPE_CONST_IFLD);
+	WRITE("%S = ", InterSymbol::identifier(con_name));
+	inter_ti fmt = P->W.instruction[FORMAT_CONST_IFLD];
+	switch (fmt) {
+		case CONST_LIST_FORMAT_SUM:        WRITE("sum"); break;
+		case CONST_LIST_FORMAT_PRODUCT:    WRITE("product"); break;
+		case CONST_LIST_FORMAT_DIFFERENCE: WRITE("difference"); break;
+		case CONST_LIST_FORMAT_QUOTIENT:   WRITE("quotient"); break;
+		case CONST_LIST_FORMAT_STRUCT:     WRITE("struct"); break;
 	}
+	if (fmt != CONST_LIST_FORMAT_NONE) WRITE("{");
+	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+		if (i > DATA_CONST_IFLD) WRITE(",");
+		if (fmt != CONST_LIST_FORMAT_NONE) WRITE(" ");
+		TextualInter::write_pair(OUT, P, InterValuePairs::get(P, i), hex);
+	}
+	if (fmt != CONST_LIST_FORMAT_NONE) WRITE(" }");
+	SymbolAnnotation::write_annotations(OUT, P, con_name);
 }
 
-inter_package *ConstantInstruction::code_block(inter_symbol *con_symbol) {
+@h Constants identifying function bodies.
+
+=
+inter_package *ConstantInstruction::function_body_to_package(inter_symbol *con_symbol) {
 	if (con_symbol == NULL) return NULL;
 	inter_tree_node *D = InterSymbol::definition(con_symbol);
 	if (D == NULL) return NULL;
@@ -309,21 +283,30 @@ inter_package *ConstantInstruction::code_block(inter_symbol *con_symbol) {
 	return InterValuePairs::to_package(Inode::tree(D), val);
 }
 
-int ConstantInstruction::is_routine(inter_symbol *con_symbol) {
-	if (ConstantInstruction::code_block(con_symbol)) return TRUE;
+int ConstantInstruction::is_function_body(inter_symbol *con_symbol) {
+	if (ConstantInstruction::function_body_to_package(con_symbol)) return TRUE;
 	return FALSE;
 }
 
-inter_symbols_table *ConstantInstruction::local_symbols(inter_symbol *con_symbol) {
-	return InterPackage::scope(ConstantInstruction::code_block(con_symbol));
-}
+@h Definitional depth of a constant.
+Constants given explicit values have depth 1. Constants defined as equal to
+other constants have depth 1 more than those other constants. Constants equal
+to lists have depth 1 more than the sum of the depths of the values in the
+lists. For example, if:
+= (text as Inter)
+	constant x = 23
+	constant y = x
+	constant z = { x, y, 17 }
+=
+then |x| has depth 1, |y| has depth 1+1 = 2, and |z| has depth 1+(1+2+1) = 5.
+It is a requirement that every constant must always have finite depth. The
+point of this is to guarantee that if constant declarations are written in
+ascending order of depth then no definition will refer to a constant yet to
+be defined.
 
-int ConstantInstruction::char_acceptable(int c) {
-	if ((c < 0x20) && (c != 0x09) && (c != 0x0a)) return FALSE;
-	return TRUE;
-}
-
+=
 int ConstantInstruction::constant_depth(inter_symbol *con) {
+	if (con == NULL) return 1;
 	LOG_INDENT;
 	int d = ConstantInstruction::constant_depth_r(con);
 	LOGIF(CONSTANT_DEPTH_CALCULATION, "%S has depth %d\n", InterSymbol::identifier(con), d);
@@ -331,22 +314,9 @@ int ConstantInstruction::constant_depth(inter_symbol *con) {
 	return d;
 }
 int ConstantInstruction::constant_depth_r(inter_symbol *con) {
-	if (con == NULL) return 1;
+	int total = 1;
 	inter_tree_node *D = InterSymbol::definition(con);
-	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return 1;
-	if (D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE) {
-		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
-		if (InterValuePairs::is_symbolic(val)) {
-			inter_symbol *alias = InterValuePairs::to_symbol_at(val, D);
-			return ConstantInstruction::constant_depth(alias) + 1;
-		}
-		return 1;
-	}
-	if ((D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_SUM) ||
-		(D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_PRODUCT) ||
-		(D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_DIFFERENCE) ||
-		(D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_QUOTIENT)) {
-		int total = 0;
+	if ((D) && (D->W.instruction[ID_IFLD] == CONSTANT_IST))
 		for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
 			inter_pair val = InterValuePairs::get(D, i);
 			if (InterValuePairs::is_symbolic(val)) {
@@ -354,47 +324,20 @@ int ConstantInstruction::constant_depth_r(inter_symbol *con) {
 				total += ConstantInstruction::constant_depth(alias);
 			} else total++;
 		}
-		return 1 + total;
-	}
-	return 1;
+	return total;
 }
 
-inter_ti ConstantInstruction::evaluate(inter_symbols_table *T, inter_pair val) {
-	if (InterValuePairs::is_number(val)) return InterValuePairs::to_number(val);
-	if (InterValuePairs::is_symbolic(val)) {
-		inter_symbol *aliased = InterValuePairs::to_symbol(val, T);
-		if (aliased == NULL) internal_error("bad aliased symbol");
-		inter_tree_node *D = aliased->definition;
-		if (D == NULL) internal_error("undefined symbol");
-		switch (D->W.instruction[FORMAT_CONST_IFLD]) {
-			case CONST_LIST_FORMAT_NONE: {
-				inter_pair dval = InterValuePairs::get(D, DATA_CONST_IFLD);
-				inter_ti e = ConstantInstruction::evaluate(InterPackage::scope_of(D), dval);
-				return e;
-			}
-			case CONST_LIST_FORMAT_SUM:
-			case CONST_LIST_FORMAT_PRODUCT:
-			case CONST_LIST_FORMAT_DIFFERENCE:
-			case CONST_LIST_FORMAT_QUOTIENT: {
-				inter_ti result = 0;
-				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
-					inter_pair operand = InterValuePairs::get(D, i);
-					inter_ti extra = ConstantInstruction::evaluate(InterPackage::scope_of(D), operand);
-					if (i == DATA_CONST_IFLD) result = extra;
-					else {
-						if (D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_SUM) result = result + extra;
-						if (D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_PRODUCT) result = result * extra;
-						if (D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_DIFFERENCE) result = result - extra;
-						if (D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_QUOTIENT) result = result / extra;
-					}
-				}
-				return result;
-			}
-		}
-	}
-	return 0;
-}
+@h Direct evaluation.
+Some numerical constants can be evaluated at compile-time: for example, given
+= (text as Inter)
+	constant x = 23
+	constant y = x + 3
+=
+the following function would return 23 and 26 on |x| and |y| respectively. On
+anything non-numerical the function aims to return 0, but this should probably
+not be relied on.
 
+=
 int ConstantInstruction::evaluate_to_int(inter_symbol *S) {
 	inter_tree_node *P = InterSymbol::definition(S);
 	if ((P) &&
@@ -412,6 +355,47 @@ int ConstantInstruction::evaluate_to_int(inter_symbol *S) {
 	return -1;
 }
 
+inter_ti ConstantInstruction::evaluate(inter_symbols_table *T, inter_pair val) {
+	if (InterValuePairs::is_number(val)) return InterValuePairs::to_number(val);
+	if (InterValuePairs::is_symbolic(val)) {
+		inter_symbol *aliased = InterValuePairs::to_symbol(val, T);
+		if (aliased == NULL) internal_error("bad aliased symbol");
+		inter_tree_node *D = aliased->definition;
+		if (D == NULL) internal_error("undefined symbol");
+		inter_ti fmt = D->W.instruction[FORMAT_CONST_IFLD];
+		switch (fmt) {
+			case CONST_LIST_FORMAT_NONE: {
+				inter_pair dval = InterValuePairs::get(D, DATA_CONST_IFLD);
+				inter_ti e = ConstantInstruction::evaluate(InterPackage::scope_of(D), dval);
+				return e;
+			}
+			case CONST_LIST_FORMAT_SUM:
+			case CONST_LIST_FORMAT_PRODUCT:
+			case CONST_LIST_FORMAT_DIFFERENCE:
+			case CONST_LIST_FORMAT_QUOTIENT: {
+				inter_ti result = 0;
+				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
+					inter_pair operand = InterValuePairs::get(D, i);
+					inter_ti extra = ConstantInstruction::evaluate(InterPackage::scope_of(D), operand);
+					if (i == DATA_CONST_IFLD) result = extra;
+					else {
+						if (fmt == CONST_LIST_FORMAT_SUM) result = result + extra;
+						if (fmt == CONST_LIST_FORMAT_PRODUCT) result = result * extra;
+						if (fmt == CONST_LIST_FORMAT_DIFFERENCE) result = result - extra;
+						if (fmt == CONST_LIST_FORMAT_QUOTIENT) result = result / extra;
+					}
+				}
+				return result;
+			}
+		}
+	}
+	return 0;
+}
+
+@h Direct modification.
+We can even change the value of a numerical constant.
+
+=
 int ConstantInstruction::set_int(inter_symbol *S, int N) {
 	inter_tree_node *P = InterSymbol::definition(S);
 	if ((P) &&

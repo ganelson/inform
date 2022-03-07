@@ -57,7 +57,7 @@ void InvInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 			*E = InvInstruction::new_primitive(IBM, invoked_name, (inter_ti) ilp->indent_level, eloc);
 			return;
 		case CONSTANT_IST:
-			if (ConstantInstruction::is_routine(invoked_name)) {
+			if (ConstantInstruction::is_function_body(invoked_name)) {
 				*E = InvInstruction::new_call(IBM, invoked_name, (inter_ti) ilp->indent_level, eloc);
 				return;
 			}

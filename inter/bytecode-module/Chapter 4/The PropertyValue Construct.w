@@ -78,7 +78,7 @@ int PropertyValueInstruction::permitted(inter_tree_node *F, inter_package *pack,
 	}
 	inter_symbol *inst_kind;
 	if (TypenameInstruction::is(owner)) inst_kind = TypenameInstruction::super(owner);
-	else inst_kind = InstanceInstruction::kind_of(owner);
+	else inst_kind = InstanceInstruction::type(owner);
 	while (inst_kind) {
 		inter_node_list *FL =
 			Inode::ID_to_frame_list(F, TypenameInstruction::permissions_list(inst_kind));

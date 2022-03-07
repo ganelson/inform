@@ -229,7 +229,7 @@ can be given properties, even when other objects of the same kind may lack them.
 @<List any individual instance with an explicit permission@> =
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order)
-		if (VanillaObjects::is_kind_of_object(gen, InstanceInstruction::kind_of(inst_s))) {
+		if (VanillaObjects::is_kind_of_object(gen, InstanceInstruction::type(inst_s))) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
 				inter_symbol *owner_s =
@@ -321,7 +321,7 @@ so we use "marks" on those already done.
 @<Declare properties which only some instances of this kind of value can have@> =
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
-		if (TypenameInstruction::is_a(InstanceInstruction::kind_of(inst_s), kind_s)) {
+		if (TypenameInstruction::is_a(InstanceInstruction::type(inst_s), kind_s)) {
 			inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 				InstanceInstruction::permissions_list(inst_s));
 			@<Work through this node list of permissions@>;
@@ -382,7 +382,7 @@ number of instances, and is worth it for simplicity and speed.
 	Generators::array_entry(gen, I"0", TABLE_ARRAY_FORMAT);
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
-		if (TypenameInstruction::is_a(InstanceInstruction::kind_of(inst_s), kind_s)) {
+		if (TypenameInstruction::is_a(InstanceInstruction::type(inst_s), kind_s)) {
 			int found = 0;
 			inter_node_list *PVL =
 				Inode::ID_to_frame_list(X,
@@ -442,11 +442,12 @@ was all taken care of with the sticks of property values already declared.
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
 		inter_tree_node *P = InterSymbol::definition(inst_s);
-		inter_symbol *inst_kind = InterSymbolsTable::symbol_from_ID_at_node(P, KIND_INST_IFLD);
+		inter_symbol *inst_kind = InstanceInstruction::type(inst_s);
 		int N = -1;
 		inter_symbol *object_kind = RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM);
 		if ((object_kind == NULL) || (TypenameInstruction::is_a(inst_kind, object_kind) == FALSE))
-			N = (int) (P->W.instruction[VAL2_INST_IFLD]);
+			N = (int) InterValuePairs::to_number(
+				InstanceInstruction::enumerated_value(inst_s));	
 		segmentation_pos saved;
 		Generators::declare_instance(gen, inst_s, inst_kind, N, &saved);
 		if (TypenameInstruction::is_a(inst_kind, RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM))) {
@@ -531,7 +532,7 @@ int VanillaObjects::value_kind_with_properties(code_generation *gen, inter_symbo
 	if (InterNodeList::empty(FL) == FALSE) return TRUE;
 	inter_symbol *inst_s;
 	LOOP_OVER_LINKED_LIST(inst_s, inter_symbol, gen->instances_in_declaration_order) {
-		if (TypenameInstruction::is_a(InstanceInstruction::kind_of(inst_s), kind_s)) {
+		if (TypenameInstruction::is_a(InstanceInstruction::type(inst_s), kind_s)) {
 			inter_node_list *FL = InterWarehouse::get_node_list(InterTree::warehouse(I),
 				InstanceInstruction::permissions_list(inst_s));
 			if (InterNodeList::empty(FL) == FALSE) return TRUE;
@@ -559,7 +560,7 @@ int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *pr
 		inter_symbol *owner_kind_s = NULL;
 		inter_tree_node *D = InterSymbol::definition(owner_s);
 		if ((D) && (D->W.instruction[ID_IFLD] == INSTANCE_IST)) {
-			owner_kind_s = InstanceInstruction::kind_of(owner_s);
+			owner_kind_s = InstanceInstruction::type(owner_s);
 		} else {
 			owner_kind_s = owner_s;
 		}

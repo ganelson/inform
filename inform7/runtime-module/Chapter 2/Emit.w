@@ -146,8 +146,7 @@ void Emit::ensure_defaultvalue(kind *K) {
 	if (InterValuePairs::is_undef(def_val) == FALSE) {
 		packaging_state save = Packaging::enter(RTKindConstructors::kind_package(K));
 		Produce::guard(DefaultValueInstruction::new(Emit::at(),
-			Produce::kind_to_TID(Emit::at(), K), def_val,
-			Emit::baseline(), NULL));
+			Produce::kind_to_symbol(K), def_val, Emit::baseline(), NULL));
 		Packaging::exit(Emit::tree(), save);
 	}
 }
@@ -287,8 +286,8 @@ void Emit::instance(inter_name *inst_iname, kind *K, int v) {
 	packaging_state save = Packaging::enter_home_of(inst_iname);
 	inter_symbol *inst_s = InterNames::to_symbol(inst_iname);
 	inter_pair val = v ? InterValuePairs::number((inter_ti) v) : InterValuePairs::undef();
-	Produce::guard(InstanceInstruction::new(Emit::at(), Emit::symbol_id(inst_s),
-		Produce::kind_to_TID(Emit::at(), K), val, Emit::baseline(), NULL));
+	Produce::guard(InstanceInstruction::new(Emit::at(), inst_s,
+		Produce::kind_to_symbol(K), val, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 

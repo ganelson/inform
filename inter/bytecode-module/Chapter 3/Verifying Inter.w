@@ -212,6 +212,17 @@ inter_error_message *VerifyingInter::text_field(inter_package *owner, inter_tree
 	return Inode::error(P, I"not a valid text ID", NULL);
 }
 
+@ And a node list ID:
+
+=
+inter_error_message *VerifyingInter::node_list_field(inter_package *owner, inter_tree_node *P,
+	int field) {
+	inter_ti text_ID = P->W.instruction[field];
+	inter_warehouse *W = InterTree::warehouse(InterPackage::tree(owner));
+	if (InterWarehouse::known_type_code(W, text_ID) == NODE_LIST_IRSRC) return NULL;
+	return Inode::error(P, I"not a valid node list ID", NULL);
+}
+
 @ Finally, two consecutive fields which purportedly hold a valid data pair in
 the context of the current package:
 

@@ -382,7 +382,7 @@ failing; so it doesn't terminate the following of its rulebook.
 	EmitCode::down();
 	if (acl->substituted_rule) {
 		inter_name *subbed = RTRules::iname(acl->substituted_rule);
-		if (ConstantInstruction::is_routine(InterNames::to_symbol(subbed)) == FALSE) {
+		if (ConstantInstruction::is_function_body(InterNames::to_symbol(subbed)) == FALSE) {
 			EmitCode::val_number(0);
 		} else {
 			EmitCode::call(subbed);
