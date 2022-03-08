@@ -51,9 +51,9 @@ It's into this module that the resulting |SPLAT_IST| nodes will be put.
 	step->pipeline->ephemera.assimilation_modules[step->tree_argument] = module_pack;
 
 @ The stage |parse-insertions| does the same thing, but on a much smaller scale,
-and reading raw I6T source code from |LINK_IST| nodes in the Inter tree rather
+and reading raw I6T source code from |INSERT_IST| nodes in the Inter tree rather
 than from an external file. Speed is not important here either, but only because
-there will only be a few |LINK_IST| nodes to deal with, and with not much code
+there will only be a few |INSERT_IST| nodes to deal with, and with not much code
 in them. They arise from low-level Inform 7 features such as
 = (text as Inform 7)
 Include (-
@@ -63,7 +63,7 @@ Include (-
 -).
 =
 The //inform7// code does not contain a compiler from I6T down to Inter, so
-it can only leave us these unparsed fragments as |LINK_IST| nodes. We take
+it can only leave us these unparsed fragments as |INSERT_IST| nodes. We take
 it from there.
 
 =
@@ -71,12 +71,12 @@ int ParsingStages::run_parse_insertions(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
-	InterTree::traverse(I, ParsingStages::visit_insertions, &docket, NULL, LINK_IST);
+	InterTree::traverse(I, ParsingStages::visit_insertions, &docket, NULL, INSERT_IST);
 	return TRUE;
 }
 
 void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *state) {
-	text_stream *insertion = Inode::ID_to_text(P, P->W.instruction[TO_RAW_LINK_IFLD]);
+	text_stream *insertion = InsertInstruction::insertion(P);
 	simple_tangle_docket *docket = (simple_tangle_docket *) state;
 	inter_bookmark here = InterBookmark::after_this_node(P);
 	docket->state = (void *) &here;

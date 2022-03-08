@@ -23,6 +23,11 @@ However, we continue to parse the old syntax, so:
 @d WHEN_DEFINING_INC 3		/* as part of an Object or Class definition */
 @d AS_PREFORM_INC 4 		/* include it not as I6, but as Preform grammar */
 
+@d BEFORE_LINK_STAGE 1
+@d INSTEAD_LINK_STAGE 2
+@d AFTER_LINK_STAGE 3
+@d EARLY_LINK_STAGE 4
+
 =
 int inclusion_side, section_inclusion_wn, segment_inclusion_wn;
 

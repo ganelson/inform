@@ -270,7 +270,7 @@ where the symbol name begins with the magic character |^|. For example:
 Metadata constants compile to nothing, and cannot be equated to symbols in
 other packages, nor vice versa.
 
-@h Append and Link.
+@h Append and Insert.
 Two rather ugly constructs are currently needed in order to implement very
 low-level features of Inform 7, at points in I7's design where the normally
 subterranean presence of Inform 6 pokes up above the surface:
@@ -285,12 +285,9 @@ results in the following inter being generated:
 = (text as Inter)
 	append K4_door " has door, \n"
 =
-|link STAGE "SEGMENT" "PART" "CONTENT" "OTHER"| tells Inter that it needs
-to make an alteration to the Inform 6 code inside the I6T template file
-|SEGMENT|, at heading |PART|; the |STAGE| must be one of |early|, |before|,
-|instead| or |after|. For example:
+|insert "CONTENT"| tells Inter that it needs to add this raw I6 material:
 = (text as Inter)
-	link after "Output.i6t" "I6 Inclusions" "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n" ""
+	insert "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n"
 =
 @h Nop.
 The "nop" statement has no textual representation. It does nothing, and exists

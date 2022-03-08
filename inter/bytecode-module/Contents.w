@@ -40,8 +40,8 @@ Chapter 4: Void Constructs
 	The Comment Construct
 	The Constant Construct
 	The DefaultValue Construct
+	The Insert Construct
 	The Instance Construct
-	The Link Construct
 	The Nop Construct
 	The Package Construct
 	The PackageType Construct

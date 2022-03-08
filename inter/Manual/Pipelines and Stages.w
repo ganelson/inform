@@ -315,13 +315,13 @@ a variable which does not exist then no error is produced, and nothing is done.
 For the implementation, see //final: Code Generation//.
 
 @ |parse-insertions|.
-This looks for |LINK_IST| nodes in the tree, a small number of which may have
+This looks for |INSERT_IST| nodes in the tree, a small number of which may have
 been created by the //inform7// compiler in response to uses of |Include (- ... -)|.
 These can hold arbitrarily long runs of Inform 6-syntax source code, and what
 |parse-insertions| does is to break then up into splats, one for each statement
 or directive. Those won't be much use as they stand, but see |compile-splats|.
 
-When this completes, no |LINK_IST| nodes remain in the tree.
+When this completes, no |INSERT_IST| nodes remain in the tree.
 
 For the implementation, see //pipeline: Parsing Stages//.
 

@@ -298,7 +298,7 @@ These are constructs used for instructions outside function bodies:
 @e CONSTANT_IST
 @e DEFAULTVALUE_IST
 @e INSTANCE_IST
-@e LINK_IST
+@e INSERT_IST
 @e NOP_IST
 @e PACKAGE_IST
 @e PACKAGETYPE_IST
@@ -382,7 +382,7 @@ void InterInstruction::create_language(void) {
 	SocketInstruction::define_construct();
 	VersionInstruction::define_construct();
 	PragmaInstruction::define_construct();
-	LinkInstruction::define_construct();
+	InsertInstruction::define_construct();
 	AppendInstruction::define_construct();
 	TypenameInstruction::define_construct();
 	DefaultValueInstruction::define_construct();

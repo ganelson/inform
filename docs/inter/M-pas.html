@@ -466,14 +466,14 @@ a variable which does not exist then no error is produced, and nothing is done.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b><span class="extract"><span class="extract-syntax">parse-insertions</span></span>.
-This looks for <span class="extract"><span class="extract-syntax">LINK_IST</span></span> nodes in the tree, a small number of which may have
+This looks for <span class="extract"><span class="extract-syntax">INSERT_IST</span></span> nodes in the tree, a small number of which may have
 been created by the <a href="../inform7/index.html" class="internal">inform7</a> compiler in response to uses of <span class="extract"><span class="extract-syntax">Include (- ... -)</span></span>.
 These can hold arbitrarily long runs of Inform 6-syntax source code, and what
 <span class="extract"><span class="extract-syntax">parse-insertions</span></span> does is to break then up into splats, one for each statement
 or directive. Those won't be much use as they stand, but see <span class="extract"><span class="extract-syntax">compile-splats</span></span>.
 </p>
 
-<p class="commentary">When this completes, no <span class="extract"><span class="extract-syntax">LINK_IST</span></span> nodes remain in the tree.
+<p class="commentary">When this completes, no <span class="extract"><span class="extract-syntax">INSERT_IST</span></span> nodes remain in the tree.
 </p>
 
 <p class="commentary">For the implementation, see <a href="../pipeline-module/3-ps.html" class="internal">Parsing Stages (in pipeline)</a>.

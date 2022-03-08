@@ -17,7 +17,7 @@ void DefaultValueInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |comment| instruction is laid out with the two
+In bytecode, the frame of an |defaultvalue| instruction is laid out with the two
 compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 
 @d TYPE_DEF_IFLD 2

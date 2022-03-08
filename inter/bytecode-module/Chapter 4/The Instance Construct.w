@@ -19,7 +19,7 @@ void InstanceInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |comment| instruction is laid out with the two
+In bytecode, the frame of an |instance| instruction is laid out with the two
 compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 
 @d DEFN_INST_IFLD 2

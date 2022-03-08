@@ -365,26 +365,14 @@ void Emit::function(inter_name *fn_iname, kind *K, inter_package *block) {
 These should be used as little as possible, and perhaps it may one day be possible
 to abolish them altogether. They insert direct kit material (i.e. paraphrased Inter
 code written out as plain text in Inform 6 notation) into bytecode; this is then
-assimilating during linking.
+assimilating during linking. Note that only the raw i6 is actually carried over
+into bytecode; everything else specified in those old-fashioned I7 sentences
+about where to include the code is ignored.
 
 =
 void Emit::intervention(int stage, text_stream *segment, text_stream *part,
 	text_stream *i6, text_stream *seg) {
-	inter_warehouse *warehouse = Emit::warehouse();
-	inter_ti ID1 = InterWarehouse::create_text(warehouse, Emit::package());
-	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID1), segment);
-
-	inter_ti ID2 = InterWarehouse::create_text(warehouse, Emit::package());
-	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID2), part);
-
-	inter_ti ID3 = InterWarehouse::create_text(warehouse, Emit::package());
-	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID3), i6);
-
-	inter_ti ID4 = InterWarehouse::create_text(warehouse, Emit::package());
-	Str::copy(InterWarehouse::get_text(Emit::warehouse(), ID4), seg);
-
-	Produce::guard(LinkInstruction::new(Emit::at(), (inter_ti) stage,
-		ID1, ID2, ID3, ID4, Emit::baseline(), NULL));
+	Produce::guard(InsertInstruction::new(Emit::at(), i6, Emit::baseline(), NULL));
 }
 
 @ And this is a similarly inelegant construction:
