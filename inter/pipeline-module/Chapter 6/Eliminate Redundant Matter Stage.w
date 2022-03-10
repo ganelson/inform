@@ -41,7 +41,7 @@ be included.
 void EliminateRedundantMatterStage::preserver(inter_tree *I, inter_tree_node *P, void *state) {
 	pipeline_step *step = (pipeline_step *) state;
 	inter_package *pack = PackageInstruction::at_this_head(P);
-	inter_symbol *ptype = PackageInstruction::type(pack);
+	inter_symbol *ptype = InterPackage::type(pack);
 	if (ptype == RunningPipelines::get_symbol(step, command_ptype_RPSYM))
 		EliminateRedundantMatterStage::preserve(pack, step, NULL, I"it's a _command package");
 	else if (ptype == RunningPipelines::get_symbol(step, property_ptype_RPSYM)) {
@@ -101,7 +101,7 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 
 @<If you need a function or action, you need its internal resources@> =
 	text_stream *rationale = NULL;
-	inter_symbol *ptype = PackageInstruction::type(pack);
+	inter_symbol *ptype = InterPackage::type(pack);
 	if (ptype == RunningPipelines::get_symbol(step, function_ptype_RPSYM)) 
 		rationale = I"it's a _function block";
 	if (ptype == RunningPipelines::get_symbol(step, action_ptype_RPSYM))
@@ -123,7 +123,7 @@ void EliminateRedundantMatterStage::destroyer(inter_tree *I, inter_tree_node *P,
 	inter_package *pack = PackageInstruction::at_this_head(P);
 	if ((pack) && ((pack->package_flags & USED_PACKAGE_FLAG) == 0)) {
 		LOGIF(ELIMINATION, "Striking unused package $6 (type %S)\n",
-			pack, InterSymbol::identifier(PackageInstruction::type(pack)));
+			pack, InterSymbol::identifier(InterPackage::type(pack)));
 		NodePlacement::remove(P);
 	}
 }

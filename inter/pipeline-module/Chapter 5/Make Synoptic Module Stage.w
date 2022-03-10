@@ -185,7 +185,7 @@ void MakeSynopticModuleStage::visitor(inter_tree *I, inter_tree_node *P, void *s
 	}
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
 		inter_package *pack = PackageInstruction::at_this_head(P);
-		inter_symbol *ptype = PackageInstruction::type(pack);
+		inter_symbol *ptype = InterPackage::type(pack);
 		tree_inventory_item *item;
 		LOOP_OVER_LINKED_LIST(item, tree_inventory_item, inv->items)
 			if (ptype == item->required_ptype) {
@@ -252,7 +252,7 @@ inter_package *MakeSynopticModuleStage::module_containing(inter_tree_node *P) {
 	inter_package *pack = InterPackage::container(P);
 	inter_tree *I = InterPackage::tree(pack);
 	while (pack) {
-		inter_symbol *ptype = PackageInstruction::type(pack);
+		inter_symbol *ptype = InterPackage::type(pack);
 		if (ptype == LargeScale::package_type(I, I"_module")) return pack;
 		pack = InterPackage::parent(pack);
 	}

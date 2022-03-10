@@ -30,7 +30,7 @@ void BehaviourElement::render(OUTPUT_STREAM, index_session *session) {
 			LOOP_THROUGH_INTER_CHILDREN(C, D) {
 				if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
 					inter_package *entry = PackageInstruction::at_this_head(C);
-					if (PackageInstruction::type(entry) ==
+					if (InterPackage::type(entry) ==
 						LargeScale::package_type(I, I"_named_action_pattern_entry")) {
 						text_stream *text = Metadata::optional_textual(entry, I"^text");
 						HTML_TAG("br");

@@ -19,7 +19,7 @@ void InsertInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |link| instruction is laid out with the two
+In bytecode, the frame of an |insert| instruction is laid out with the two
 compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 
 @d TEXT_INSERT_IFLD 2
@@ -32,7 +32,7 @@ inter_error_message *InsertInstruction::new(inter_bookmark *IBM,
 	inter_ti ID = InterWarehouse::create_text(warehouse, pack);
 	Str::copy(InterWarehouse::get_text(warehouse, ID), text);
 	inter_tree_node *P = Inode::new_with_1_data_field(IBM, INSERT_IST,
-		/* TEXT_INSERT_IFLD */ ID,
+		/* TEXT_INSERT_IFLD: */ ID,
 		eloc, level);
 	inter_error_message *E = VerifyingInter::instruction(pack, P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);

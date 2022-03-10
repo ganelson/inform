@@ -288,7 +288,7 @@ are given in terms of declarations in the origin tree, and have to be transferre
 to matching declarations in the destination.
 
 @<Correct the reference to this package type@> =
-	inter_symbol *original_ptype = PackageInstruction::read_type(det->origin_tree, P);
+	inter_symbol *original_ptype = PackageInstruction::get_type_of(det->origin_tree, P);
 	inter_symbol *equivalent_ptype = Transmigration::known_equivalent(original_ptype);
 	if (equivalent_ptype == NULL) {
 		equivalent_ptype = InterSymbolsTable::symbol_from_name(
@@ -296,7 +296,7 @@ to matching declarations in the destination.
 		if (equivalent_ptype == NULL) @<Duplicate this package type@>;
 		Transmigration::learn_equivalent(original_ptype, equivalent_ptype);
 	}
-	PackageInstruction::write_type(det->destination_tree, P, equivalent_ptype);
+	PackageInstruction::set_type(det->destination_tree, P, equivalent_ptype);
 
 @<Duplicate this package type@> =
 	equivalent_ptype = InterSymbolsTable::symbol_from_name_creating(

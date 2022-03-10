@@ -26,7 +26,7 @@ void InvTarget::inv_to(OUTPUT_STREAM, inter_tree *I) {
 void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	text_stream *OUT = (text_stream *) state;
 	inter_package *from = PackageInstruction::at_this_head(P);
-	inter_symbol *ptype = PackageInstruction::type(from);
+	inter_symbol *ptype = InterPackage::type(from);
 	if (Str::eq(InterSymbol::identifier(ptype), I"_module")) {
 		@<Produce a heading for a module package@>;
 	} else if (Str::eq(InterSymbol::identifier(ptype), I"_submodule")) {
@@ -60,14 +60,14 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 @<Inventory this subpackage of a submodule@> =
 	inter_package *R = PackageInstruction::at_this_head(C);
 	if (InterPackage::get_flag(R, MARK_PACKAGE_FLAG)) continue;
-	inter_symbol *ptype = PackageInstruction::type(R);
+	inter_symbol *ptype = InterPackage::type(R);
 	OUTDENT;
 	WRITE("  %S ", InterSymbol::identifier(ptype));
 	int N = 0;
 	LOOP_THROUGH_INTER_CHILDREN(D, P) {
 		if (D->W.instruction[ID_IFLD] == PACKAGE_IST) {
 			inter_package *R2 = PackageInstruction::at_this_head(D);
-			if (PackageInstruction::type(R2) == ptype) N++;
+			if (InterPackage::type(R2) == ptype) N++;
 		}
 	}
 	WRITE("x %d: ", N);
@@ -77,7 +77,7 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	LOOP_THROUGH_INTER_CHILDREN(D, P) {
 		if (D->W.instruction[ID_IFLD] == PACKAGE_IST) {
 			inter_package *R2 = PackageInstruction::at_this_head(D);
-			if (PackageInstruction::type(R2) == ptype) {
+			if (InterPackage::type(R2) == ptype) {
 				text_stream *name = Metadata::optional_textual(R2, I"^name");
 				if (name == NULL) name = InterPackage::name(R2);
 				if ((pos > 0) && (first == FALSE)) WRITE(", ");

@@ -240,7 +240,7 @@ a package.
 		LOOP_THROUGH_INTER_CHILDREN(C, InterPackage::head(pack))
 			if ((C->W.instruction[ID_IFLD] == PACKAGE_IST) &&
 				(entry = PackageInstruction::at_this_head(C)) &&
-				(PackageInstruction::type(entry) == pack##wanted))
+				(InterPackage::type(entry) == pack##wanted))
 
 @ As a demonstration of this in action:
 

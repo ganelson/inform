@@ -52,7 +52,7 @@ to exist already, and that has to be allocated. So instead you could call
 //InterWarehouse::create_package//, which calls this. But in fact what you
 should really do is just to generate a |PACKAGE_IST| instruction, because
 the package needs its head node too: everything will then automatically work.
-See //PackageInstruction::new_package// for how to do that.
+See //PackageInstruction::new// for how to do that.
 
 =
 inter_package *InterPackage::new(inter_tree *I, inter_ti n) {
@@ -134,6 +134,15 @@ text_stream *InterPackage::name(inter_package *pack) {
 		if (S) return InterSymbol::identifier(S);
 	}
 	return NULL;
+}
+
+@h Type.
+
+=
+inter_symbol *InterPackage::type(inter_package *pack) {
+	if (pack == NULL) return NULL;
+	inter_tree_node *D = pack->package_head;
+	return PackageInstruction::get_type_of(Inode::tree(D), D);
 }
 
 @h Scope.

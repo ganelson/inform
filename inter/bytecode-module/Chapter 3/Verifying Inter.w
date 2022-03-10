@@ -207,7 +207,7 @@ inter_error_message *VerifyingInter::TID_field(inter_package *owner, inter_tree_
 inter_error_message *VerifyingInter::text_field(inter_package *owner, inter_tree_node *P,
 	int field) {
 	inter_ti text_ID = P->W.instruction[field];
-	inter_warehouse *W = InterTree::warehouse(InterPackage::tree(owner));
+	inter_warehouse *W = InterTree::warehouse(Inode::tree(P));
 	if (InterWarehouse::known_type_code(W, text_ID) == TEXT_IRSRC) return NULL;
 	return Inode::error(P, I"not a valid text ID", NULL);
 }
@@ -218,9 +218,31 @@ inter_error_message *VerifyingInter::text_field(inter_package *owner, inter_tree
 inter_error_message *VerifyingInter::node_list_field(inter_package *owner, inter_tree_node *P,
 	int field) {
 	inter_ti text_ID = P->W.instruction[field];
-	inter_warehouse *W = InterTree::warehouse(InterPackage::tree(owner));
+	inter_warehouse *W = InterTree::warehouse(Inode::tree(P));
 	if (InterWarehouse::known_type_code(W, text_ID) == NODE_LIST_IRSRC) return NULL;
 	return Inode::error(P, I"not a valid node list ID", NULL);
+}
+
+@ And a symbols table ID:
+
+=
+inter_error_message *VerifyingInter::symbols_table_field(inter_package *owner,
+	inter_tree_node *P, int field) {
+	inter_ti text_ID = P->W.instruction[field];
+	inter_warehouse *W = InterTree::warehouse(Inode::tree(P));
+	if (InterWarehouse::known_type_code(W, text_ID) == SYMBOLS_TABLE_IRSRC) return NULL;
+	return Inode::error(P, I"not a valid symbols table ID", NULL);
+}
+
+@ And a package ID:
+
+=
+inter_error_message *VerifyingInter::package_field(inter_package *owner,
+	inter_tree_node *P, int field) {
+	inter_ti text_ID = P->W.instruction[field];
+	inter_warehouse *W = InterTree::warehouse(Inode::tree(P));
+	if (InterWarehouse::known_type_code(W, text_ID) == PACKAGE_REF_IRSRC) return NULL;
+	return Inode::error(P, I"not a valid package ID", NULL);
 }
 
 @ Finally, two consecutive fields which purportedly hold a valid data pair in

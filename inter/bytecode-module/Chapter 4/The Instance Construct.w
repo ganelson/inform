@@ -35,12 +35,12 @@ inter_error_message *InstanceInstruction::new(inter_bookmark *IBM, inter_symbol 
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 	inter_package *pack = InterBookmark::package(IBM);
 	inter_tree_node *P = Inode::new_with_6_data_fields(IBM, INSTANCE_IST,
-		/* DEFN_INST_IFLD */      InterSymbolsTable::id_from_symbol_at_bookmark(IBM, S),
-		/* TYPE_INST_IFLD */      InterSymbolsTable::id_from_symbol_at_bookmark(IBM, typename),
-		/* VAL1_INST_IFLD */      InterValuePairs::to_word1(val),
-		/* VAL2_INST_IFLD */      InterValuePairs::to_word2(val),
-		/* PROP_LIST_INST_IFLD */ InterWarehouse::create_node_list(warehouse, pack),
-		/* PERM_LIST_INST_IFLD */ InterWarehouse::create_node_list(warehouse, pack),
+		/* DEFN_INST_IFLD: */      InterSymbolsTable::id_from_symbol_at_bookmark(IBM, S),
+		/* TYPE_INST_IFLD: */      InterSymbolsTable::id_from_symbol_at_bookmark(IBM, typename),
+		/* VAL1_INST_IFLD: */      InterValuePairs::to_word1(val),
+		/* VAL2_INST_IFLD: */      InterValuePairs::to_word2(val),
+		/* PROP_LIST_INST_IFLD: */ InterWarehouse::create_node_list(warehouse, pack),
+		/* PERM_LIST_INST_IFLD: */ InterWarehouse::create_node_list(warehouse, pack),
 		eloc, level);
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;

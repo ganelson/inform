@@ -347,7 +347,7 @@ inter_package *Produce::make_and_set_package(inter_tree *I, inter_name *iname,
 	inter_package *P = NULL;
 	TEMPORARY_TEXT(textual_name)
 	WRITE_TO(textual_name, "%n", iname);
-	Produce::guard(PackageInstruction::new_package_named(Packaging::at(I), textual_name, TRUE,
+	Produce::guard(PackageInstruction::new(Packaging::at(I), textual_name, TRUE,
 		ptype, Produce::baseline(Packaging::at(I)), NULL, &P));
 	DISCARD_TEXT(textual_name)
 	if (P) InterBookmark::move_into_package(Packaging::at(I), P);
@@ -361,7 +361,7 @@ is created at the level below that in |IBM|.
 inter_package *Produce::make_subpackage(inter_bookmark *IBM,
 	text_stream *name, inter_symbol *ptype) {
 	inter_package *P = NULL;
-	Produce::guard(PackageInstruction::new_package_named(IBM, name, TRUE,
+	Produce::guard(PackageInstruction::new(IBM, name, TRUE,
 		ptype, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL, &P));
 	return P;
 }

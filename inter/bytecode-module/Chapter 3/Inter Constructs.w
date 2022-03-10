@@ -484,7 +484,7 @@ inter_error_message *InterInstruction::write_construct_text_allowing_nop(OUTPUT_
 	for (inter_ti L=0; L<P->W.instruction[LEVEL_IFLD]; L++) WRITE("\t");
 	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
 	WRITE("\n");
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) PackageInstruction::write_symbols(OUT, P);
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) PackageInstruction::write_plugs_and_sockets(OUT, P);
 	return E;
 }
 
