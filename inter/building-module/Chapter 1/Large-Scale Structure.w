@@ -410,11 +410,8 @@ There's very little to say here:
 
 =
 void LargeScale::emit_pragma(inter_tree *I, text_stream *target, text_stream *content) {
-	inter_ti ID = InterWarehouse::create_text(InterTree::warehouse(I), InterTree::root_package(I));
-	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), ID), content);
-	inter_symbol *target_name =
-		InterSymbolsTable::symbol_from_name_creating(InterTree::global_scope(I), target);
-	Produce::guard(PragmaInstruction::new(&(I->site.strdata.pragmas_bookmark), target_name, ID, 0, NULL));
+	Produce::guard(PragmaInstruction::new(&(I->site.strdata.pragmas_bookmark),
+		target, content, 0, NULL));
 }
 
 @h Package types.

@@ -263,7 +263,7 @@ the root package of the origin.
 		InterSymbolsTable::id_from_symbol(det->destination_tree, NULL, equivalent_primitive),
 		NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
-	for (int i=CAT_PRIM_IFLD; i<old_D->W.extent; i++) {
+	for (int i=SIGNATURE_PRIM_IFLD; i<old_D->W.extent; i++) {
 		Inode::extend_instruction_by(D, 1);
 		D->W.instruction[i] = old_D->W.instruction[i];
 	}

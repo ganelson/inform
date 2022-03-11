@@ -320,22 +320,12 @@ void Emit::property(inter_name *prop_iname, kind *K) {
 	Packaging::exit(Emit::tree(), save);
 }
 
-int ppi7_counter = 0;
-void Emit::permission(property *prn, inter_symbol *owner_name,
-	inter_name *storage_iname) {
+void Emit::permission(property *prn, inter_symbol *owner_s, inter_name *storage_iname) {
 	inter_name *prop_iname = RTProperties::iname(prn);
 	inter_symbol *store_s = (storage_iname)?InterNames::to_symbol(storage_iname):NULL;
 	inter_symbol *prop_s = InterNames::to_symbol(prop_iname);
-	inter_error_message *E = NULL;
-	TEMPORARY_TEXT(ident)
-	WRITE_TO(ident, "pp_i7_%d", ppi7_counter++);
-	inter_symbol *pp_s =
-		TextualInter::new_symbol(NULL, InterBookmark::scope(Emit::at()), ident, &E);
-	DISCARD_TEXT(ident)
-	Produce::guard(E);
-	Produce::guard(PermissionInstruction::new(Emit::at(),
-		Emit::symbol_id(prop_s), Emit::symbol_id(owner_name), Emit::symbol_id(pp_s),
-		(store_s)?(Emit::symbol_id(store_s)):0, Emit::baseline(), NULL));
+	Produce::guard(PermissionInstruction::new(Emit::at(), prop_s, owner_s, store_s,
+		Emit::baseline(), NULL));
 }
 
 @h Property values.

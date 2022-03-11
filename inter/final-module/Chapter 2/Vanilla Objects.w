@@ -216,8 +216,7 @@ assimilated properties never do have.
 		if (VanillaObjects::is_kind_of_object(gen, kind_s)) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_s =
-					InterSymbolsTable::symbol_from_ID_at_node(X, OWNER_PERM_IFLD);
+				inter_symbol *owner_s = PermissionInstruction::owner(X);
 				if (owner_s == kind_s)
 					Generators::symbol_array_entry(gen, kind_s, WORD_ARRAY_FORMAT);
 			}
@@ -232,8 +231,7 @@ can be given properties, even when other objects of the same kind may lack them.
 		if (VanillaObjects::is_kind_of_object(gen, InstanceInstruction::type(inst_s))) {
 			inter_tree_node *X;
 			LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-				inter_symbol *owner_s =
-					InterSymbolsTable::symbol_from_ID_at_node(X, OWNER_PERM_IFLD);
+				inter_symbol *owner_s = PermissionInstruction::owner(X);
 				if (owner_s == inst_s)
 					Generators::symbol_array_entry(gen, inst_s, WORD_ARRAY_FORMAT);
 			}
@@ -248,8 +246,7 @@ not as wasteful as it looks.)
 @<List all top-level kinds if "object" itself has an explicit permission@> =
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, EVL) {
-		inter_symbol *owner_s =
-			InterSymbolsTable::symbol_from_ID_at_node(X, OWNER_PERM_IFLD);
+		inter_symbol *owner_s = PermissionInstruction::owner(X);
 		if (owner_s == RunningPipelines::get_symbol(gen->from_step, object_kind_RPSYM)) {
 			Generators::mangled_array_entry(gen, I"K0_kind", WORD_ARRAY_FORMAT);
 			inter_symbol *kind_s;
@@ -331,7 +328,7 @@ so we use "marks" on those already done.
 @<Work through this node list of permissions@> =
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PERM_IFLD);
+		inter_symbol *prop_name = PermissionInstruction::property(X);
 		if (prop_name == NULL) internal_error("no property");
 		if (CodeGen::marked(prop_name) == FALSE) {
 			CodeGen::mark(prop_name);
@@ -357,9 +354,8 @@ by table, no sticks exist and we must compile them.
 
 @<Assign the property values for this property@> =
 	text_stream *ident = NULL;
-	if (X->W.instruction[STORAGE_PERM_IFLD]) {
-		inter_symbol *store = InterSymbolsTable::symbol_from_ID_at_node(X, STORAGE_PERM_IFLD);
-		if (store == NULL) internal_error("bad PP in inter");
+	inter_symbol *store = PermissionInstruction::storage(X);
+	if (store) {
 		ident = InterSymbol::trans(store);
 	} else {
 		ident = Str::new();
@@ -554,8 +550,7 @@ int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *pr
 	if (PL == NULL) internal_error("no permissions list");
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, PL) {
-		inter_symbol *owner_s = InterSymbolsTable::symbol_from_ID(
-			InterPackage::scope_of(X), X->W.instruction[OWNER_PERM_IFLD]);
+		inter_symbol *owner_s = PermissionInstruction::owner(X);
 		if (owner_s == NULL) internal_error("bad owner");
 		inter_symbol *owner_kind_s = NULL;
 		inter_tree_node *D = InterSymbol::definition(owner_s);

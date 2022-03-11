@@ -72,7 +72,7 @@ int PropertyValueInstruction::permitted(inter_tree_node *F, inter_package *pack,
 	inter_node_list *FL = Inode::ID_to_frame_list(F, plist_ID);
 	inter_tree_node *X;
 	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_allowed = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PERM_IFLD);
+		inter_symbol *prop_allowed = PermissionInstruction::property(X);
 		if (prop_allowed == prop_name)
 			return TRUE;
 	}
@@ -85,7 +85,7 @@ int PropertyValueInstruction::permitted(inter_tree_node *F, inter_package *pack,
 		if (FL == NULL) internal_error("no permissions list");
 		inter_tree_node *X;
 		LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-			inter_symbol *prop_allowed = InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PERM_IFLD);
+			inter_symbol *prop_allowed = PermissionInstruction::property(X);
 			if (prop_allowed == prop_name)
 				return TRUE;
 		}

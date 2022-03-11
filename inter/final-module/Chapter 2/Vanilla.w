@@ -33,11 +33,8 @@ can act on them or ignore them as it pleases.
 @ =
 void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
-	inter_symbol *target_s = InterSymbolsTable::symbol_from_ID_at_node(P, TARGET_PRAGMA_IFLD);
-	if (target_s == NULL) internal_error("bad pragma");
-	inter_ti ID = P->W.instruction[TEXT_PRAGMA_IFLD];
-	text_stream *S = Inode::ID_to_text(P, ID);
-	Generators::offer_pragma(gen, P, InterSymbol::identifier(target_s), S);
+	Generators::offer_pragma(gen, P,
+		PragmaInstruction::target(P), PragmaInstruction::content(P));
 }
 
 @<General traverse@> =

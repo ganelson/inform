@@ -1029,18 +1029,18 @@ package main _plain
 			constant (int32) START_OBJECT_INIS = 1
 			constant (int32) START_ROOM_INIS = 2
 			constant (int32) START_TIME_INIS = 3
-			link early "" "" " Constant DynamicMemoryAllocation = 8192; " ""
+			insert " Constant DynamicMemoryAllocation = 8192; "
 			package constants _submodule
 				package DynamicMemoryAllocation_con _plain
 					constant DynamicMemoryAllocation = 8192 __assimilated
-			link early "" "" " Constant TEXT_TY_BufferSize = 1024+3; " ""
+			insert " Constant TEXT_TY_BufferSize = 1024+3; "
 			package constants_1 _submodule
 				package TEXT_TY_BufferSize_con _plain
 					constant Computed_Constant_Value_0 = 1024 __translation="Computed_Constant_Value_0_U1"
 					constant Computed_Constant_Value_1 = 3 __translation="Computed_Constant_Value_1_U1"
 					constant Computed_Constant_Value_2 = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 } __translation="Computed_Constant_Value_2_U1"
 					constant TEXT_TY_BufferSize = Computed_Constant_Value_2 __assimilated
-			link early "" "" " Constant MAX_FIGURE_THUMBNAILS_IN_INDEX = 50; " ""
+			insert " Constant MAX_FIGURE_THUMBNAILS_IN_INDEX = 50; "
 			package constants_2 _submodule
 				package MAX_FIGURE_THUMBNAILS_IN_INDEX_con _plain
 					constant MAX_FIGURE_THUMBNAILS_IN_INDEX = 50 __assimilated
@@ -27987,7 +27987,7 @@ package main _plain
 			constant (int32) KIT_CONFIGURATION_BITMAP = 0
 			constant (int32) KIT_CONFIGURATION_LOOKMODE = 2
 			constant (text) I7_VERSION_NUMBER = "10.1.0"
-			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U47"
+			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U53"
 			constant (text) ^virtual_machine = "C/32d/v1/no-main"
 			constant (text) ^virtual_machine_icon = "vm_glulx.png"
 			constant (text) ^language_elements_used = "core, naming, instance counting, glulx external files"
