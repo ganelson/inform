@@ -125,7 +125,7 @@ void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 			break;
 		}
 		case PROPERTY_IST: {
-			inter_symbol *prop_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PROP_IFLD);
+			inter_symbol *prop_name = PropertyInstruction::property(P);
 			if (SymbolAnnotation::get_b(prop_name, ASSIMILATED_IANN))
 				ADD_TO_LINKED_LIST(prop_name, inter_symbol, gen->assimilated_properties);
 			else
@@ -133,7 +133,7 @@ void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 			break;
 		}
 		case INSTANCE_IST: {
-			inter_symbol *inst_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
+			inter_symbol *inst_name = InstanceInstruction::instance(P);
 			ADD_TO_LINKED_LIST(inst_name, inter_symbol, gen->instances);
 			break;
 		}

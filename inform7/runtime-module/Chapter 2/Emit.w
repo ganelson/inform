@@ -315,8 +315,7 @@ void Emit::property(inter_name *prop_iname, kind *K) {
 	inter_type type = InterTypes::unchecked();
 	if ((K) && (K != K_value))
 		type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
-	Produce::guard(PropertyInstruction::new(Emit::at(),
-		Emit::symbol_id(prop_s), type, Emit::baseline(), NULL));
+	Produce::guard(PropertyInstruction::new(Emit::at(), prop_s, type, Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 }
 
@@ -334,8 +333,8 @@ void Emit::permission(property *prn, inter_symbol *owner_s, inter_name *storage_
 void Emit::propertyvalue(property *P, inter_name *owner, inter_pair val) {
 	inter_symbol *prop_s = InterNames::to_symbol(RTProperties::iname(P));
 	inter_symbol *owner_s = InterNames::to_symbol(owner);
-	Produce::guard(PropertyValueInstruction::new(Emit::at(), Emit::symbol_id(prop_s),
-		Emit::symbol_id(owner_s), val, Emit::baseline(), NULL));
+	Produce::guard(PropertyValueInstruction::new(Emit::at(), prop_s, owner_s, val,
+		Emit::baseline(), NULL));
 }
 
 @h Private, keep out.

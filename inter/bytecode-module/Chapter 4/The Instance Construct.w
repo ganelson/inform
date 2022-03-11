@@ -81,7 +81,7 @@ void InstanceInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_
 	*E = VerifyingInter::data_pair_fields(owner, P, VAL1_INST_IFLD, inst_type);
 	if (*E) return;
 
-	inter_symbol *instance_s = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
+	inter_symbol *instance_s = InstanceInstruction::instance(P);
 	TypenameInstruction::new_instance(typename_s, instance_s);
 }
 
@@ -128,7 +128,7 @@ void InstanceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 =
 void InstanceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
 	inter_error_message **E) {
-	inter_symbol *instance_s = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
+	inter_symbol *instance_s = InstanceInstruction::instance(P);
 	inter_symbol *typename_s = InterSymbolsTable::symbol_from_ID_at_node(P, TYPE_INST_IFLD);
 	WRITE("instance %S %S = ", InterSymbol::identifier(instance_s), InterSymbol::identifier(typename_s));
 	TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_INST_IFLD), FALSE);
@@ -138,6 +138,12 @@ void InstanceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 @h Access functions.
 
 =
+inter_symbol *InstanceInstruction::instance(inter_tree_node *P) {
+	if (P == NULL) return NULL;
+	if (P->W.instruction[ID_IFLD] != INSTANCE_IST) return NULL;
+	return InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
+}
+
 int InstanceInstruction::is(inter_symbol *instance_s) {
 	if (instance_s == NULL) return FALSE;
 	inter_tree_node *D = InterSymbol::definition(instance_s);
@@ -146,7 +152,7 @@ int InstanceInstruction::is(inter_symbol *instance_s) {
 	return FALSE;
 }
 
-inter_symbol *InstanceInstruction::type(inter_symbol *instance_s) {
+inter_symbol *InstanceInstruction::typename(inter_symbol *instance_s) {
 	return InterTypes::type_name(InterTypes::of_symbol(instance_s));
 }
 
@@ -157,16 +163,16 @@ inter_pair InstanceInstruction::enumerated_value(inter_symbol *instance_s) {
 	return InterValuePairs::get(D, VAL1_INST_IFLD);
 }
 
-inter_ti InstanceInstruction::permissions_list(inter_symbol *instance_s) {
-	if (instance_s == NULL) return 0;
+inter_node_list *InstanceInstruction::permissions_list(inter_symbol *instance_s) {
+	if (instance_s == NULL) return NULL;
 	inter_tree_node *D = InterSymbol::definition(instance_s);
-	if (D == NULL) return 0;
-	return D->W.instruction[PERM_LIST_INST_IFLD];
+	if (D == NULL) return NULL;
+	return Inode::ID_to_frame_list(D, D->W.instruction[PERM_LIST_INST_IFLD]);
 }
 
-inter_ti InstanceInstruction::properties_list(inter_symbol *instance_s) {
-	if (instance_s == NULL) return 0;
+inter_node_list *InstanceInstruction::properties_list(inter_symbol *instance_s) {
+	if (instance_s == NULL) return NULL;
 	inter_tree_node *D = InterSymbol::definition(instance_s);
-	if (D == NULL) return 0;
-	return D->W.instruction[PROP_LIST_INST_IFLD];
+	if (D == NULL) return NULL;
+	return Inode::ID_to_frame_list(D, D->W.instruction[PROP_LIST_INST_IFLD]);
 }

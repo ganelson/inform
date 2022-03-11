@@ -353,15 +353,12 @@ not already there.
 		InterTypes::unchecked(), val, B, NULL));
 
 @<Make a general property in Inter@> =
-	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(PropertyInstruction::new(IBM, MID,
-		InterTypes::unchecked(), B, NULL));
+	Produce::guard(PropertyInstruction::new(IBM, made_s, InterTypes::unchecked(), B, NULL));
 
 @<Make an either-or property in Inter@> =
-	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(PropertyInstruction::new(IBM, MID,
+	Produce::guard(PropertyInstruction::new(IBM, made_s,
 		InterTypes::from_constructor_code(INT2_ITCONC), B, NULL));
 
 @ A typical Inform 6 array declaration looks like this:

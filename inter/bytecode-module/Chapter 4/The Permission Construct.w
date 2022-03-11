@@ -69,9 +69,9 @@ void PermissionInstruction::verify(inter_construct *IC, inter_tree_node *P,
 			*E = Inode::error(P, I"property permission for non-enumerated kind", NULL);
 			return;
 		}
-		FL = Inode::ID_to_frame_list(P, TypenameInstruction::permissions_list(owner_s));
+		FL = TypenameInstruction::permissions_list(owner_s);
 	} else if (InstanceInstruction::is(owner_s)) {
-		FL = Inode::ID_to_frame_list(P, InstanceInstruction::permissions_list(owner_s));
+		FL = InstanceInstruction::permissions_list(owner_s);
 	} else {
 		*E = Inode::error(P, I"property permission for impossible owner", NULL);
 		return;
@@ -122,13 +122,9 @@ void PermissionInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 				owner_name, eloc);
 			return;
 		}
-		FL = InterWarehouse::get_node_list(
-				InterBookmark::warehouse(IBM),
-				TypenameInstruction::permissions_list(owner_s));
+		FL = TypenameInstruction::permissions_list(owner_s);
 	} else if (InstanceInstruction::is(owner_s)) {
-		FL = InterWarehouse::get_node_list(
-				InterBookmark::warehouse(IBM),
-				InstanceInstruction::permissions_list(owner_s));
+		FL = InstanceInstruction::permissions_list(owner_s);
 	} else {
 		*E = InterErrors::quoted(I"not an instance or enumerated kind",
 			owner_name, eloc);

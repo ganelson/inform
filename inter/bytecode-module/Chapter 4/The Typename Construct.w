@@ -116,18 +116,18 @@ void TypenameInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_
 	}
 }
 
-inter_ti TypenameInstruction::permissions_list(inter_symbol *typename_s) {
-	if (typename_s == NULL) return 0;
+inter_node_list *TypenameInstruction::permissions_list(inter_symbol *typename_s) {
+	if (typename_s == NULL) return NULL;
 	inter_tree_node *D = InterSymbol::definition(typename_s);
-	if (D == NULL) return 0;
-	return D->W.instruction[PERM_LIST_TYPENAME_IFLD];
+	if (D == NULL) return NULL;
+	return Inode::ID_to_frame_list(D, D->W.instruction[PERM_LIST_TYPENAME_IFLD]);
 }
 
-inter_ti TypenameInstruction::properties_list(inter_symbol *inst_name) {
-	if (inst_name == NULL) return 0;
-	inter_tree_node *D = InterSymbol::definition(inst_name);
-	if (D == NULL) return 0;
-	return D->W.instruction[PLIST_TYPENAME_IFLD];
+inter_node_list *TypenameInstruction::properties_list(inter_symbol *inst_s) {
+	if (inst_s == NULL) return NULL;
+	inter_tree_node *D = InterSymbol::definition(inst_s);
+	if (D == NULL) return NULL;
+	return Inode::ID_to_frame_list(D, D->W.instruction[PLIST_TYPENAME_IFLD]);
 }
 
 void TypenameInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
