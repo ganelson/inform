@@ -120,7 +120,7 @@ void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	switch (P->W.instruction[ID_IFLD]) {
 		case VARIABLE_IST: {
-			inter_symbol *var_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_VAR_IFLD);
+			inter_symbol *var_name = VariableInstruction::variable(P);
 			ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);
 			break;
 		}

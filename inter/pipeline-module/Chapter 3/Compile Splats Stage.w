@@ -341,20 +341,20 @@ not already there.
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_pair val = InterValuePairs::undef();
 	@<Assimilate a value@>;
-	Produce::guard(ConstantInstruction::new(IBM, made_s,
-		InterTypes::unchecked(), val, B, NULL));
+	Produce::guard(ConstantInstruction::new(IBM, made_s, InterTypes::unchecked(),
+		val, B, NULL));
 
 @<Make a global variable in Inter@> =
-	inter_ti MID = InterSymbolsTable::id_from_symbol(I, InterBookmark::package(IBM), made_s);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_pair val = InterValuePairs::undef();
 	@<Assimilate a value@>;
-	Produce::guard(VariableInstruction::new(IBM, MID,
-		InterTypes::unchecked(), val, B, NULL));
+	Produce::guard(VariableInstruction::new(IBM, made_s, InterTypes::unchecked(),
+		val, B, NULL));
 
 @<Make a general property in Inter@> =
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(PropertyInstruction::new(IBM, made_s, InterTypes::unchecked(), B, NULL));
+	Produce::guard(PropertyInstruction::new(IBM, made_s, InterTypes::unchecked(),
+		B, NULL));
 
 @<Make an either-or property in Inter@> =
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;

@@ -2,8 +2,8 @@
 
 Defining the typename construct.
 
-@
-
+@h Definition.
+For what this does and why it is used, see //inter: Textual Inter//.
 
 =
 void TypenameInstruction::define_construct(void) {

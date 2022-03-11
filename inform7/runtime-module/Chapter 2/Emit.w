@@ -300,8 +300,8 @@ inter_symbol *Emit::variable(inter_name *var_iname, kind *K, inter_pair val) {
 	inter_type type = InterTypes::unchecked();
 	if ((K) && (K != K_value))
 		type = InterTypes::from_type_name(Produce::kind_to_symbol(K));
-	Produce::guard(VariableInstruction::new(Emit::at(),
-		Emit::symbol_id(var_s), type, val, Emit::baseline(), NULL));
+	Produce::guard(VariableInstruction::new(Emit::at(), var_s, type, val,
+		Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return var_s;
 }
