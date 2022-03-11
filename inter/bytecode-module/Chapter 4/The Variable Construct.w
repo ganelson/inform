@@ -14,6 +14,7 @@ void VariableInstruction::define_construct(void) {
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	InterInstruction::permit(IC, CAN_HAVE_ANNOTATIONS_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, VariableInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, VariableInstruction::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, VariableInstruction::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, VariableInstruction::write);
 }
@@ -31,7 +32,7 @@ compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 inter_error_message *VariableInstruction::new(inter_bookmark *IBM, inter_symbol *var_s,
 	inter_type var_type, inter_pair val, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, VARIABLE_IST,
-		/* DEFN_VAR_IFLD: */ InterSymbolsTable::id_from_symbol_at_bookmark(IBM, var_s),
+		/* DEFN_VAR_IFLD: */ InterSymbolsTable::id_at_bookmark(IBM, var_s),
 		/* TYPE_VAR_IFLD: */ InterTypes::to_TID_at(IBM, var_type),
 		/* VAL1_VAR_IFLD: */ InterValuePairs::to_word1(val),
 		/* VAL2_VAR_IFLD: */ InterValuePairs::to_word2(val),
@@ -40,6 +41,12 @@ inter_error_message *VariableInstruction::new(inter_bookmark *IBM, inter_symbol 
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
+}
+
+void VariableInstruction::transpose(inter_construct *IC, inter_tree_node *P,
+	inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
+	InterValuePairs::set(P, VAL1_PVAL_IFLD,
+		InterValuePairs::transpose(InterValuePairs::get(P, VAL1_PVAL_IFLD), grid, grid_extent, E));
 }
 
 @ Verification consists only of sanity checks.

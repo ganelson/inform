@@ -298,7 +298,7 @@ inter_ti InterTypes::to_TID(inter_symbols_table *T, inter_type type) {
 
 inter_ti InterTypes::to_TID_at(inter_bookmark *IBM, inter_type type) {
 	if (type.type_name)
-		return InterSymbolsTable::id_from_symbol_at_bookmark(IBM, type.type_name);
+		return InterSymbolsTable::id_at_bookmark(IBM, type.type_name);
 	return type.underlying_constructor;
 }
 

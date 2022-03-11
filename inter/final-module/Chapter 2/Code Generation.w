@@ -138,7 +138,7 @@ void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 			break;
 		}
 		case TYPENAME_IST: {
-			inter_symbol *typename = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_TYPENAME_IFLD);
+			inter_symbol *typename = TypenameInstruction::typename(P);
 			ADD_TO_LINKED_LIST(typename, inter_symbol, gen->kinds);
 			break;
 		}

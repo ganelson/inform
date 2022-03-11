@@ -67,41 +67,38 @@ base data type matches this".
 	unchecked_kind_symbol =
 		InterSymbolsTable::create_with_unique_name(
 			InterBookmark::scope(&in_generic_kinds), I"K_unchecked");
-	TypenameInstruction::new(&in_generic_kinds,
-		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, unchecked_kind_symbol),
-		UNCHECKED_ITCONC, 0, 0, NULL,
+	TypenameInstruction::new(&in_generic_kinds, unchecked_kind_symbol,
+		UNCHECKED_ITCONC, NULL, 0, NULL,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
 @ And this expresses the idea of "any sort of function":
 
 @<Create the unchecked function kind@> =
 	inter_ti operands[2];
-	operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(
+	operands[0] = InterSymbolsTable::id_at_bookmark(
 		&in_generic_kinds, unchecked_kind_symbol);
-	operands[1] = InterSymbolsTable::id_from_symbol_at_bookmark(
+	operands[1] = InterSymbolsTable::id_at_bookmark(
 		&in_generic_kinds, unchecked_kind_symbol);
 	inter_symbol *unchecked_function_symbol =
 		InterSymbolsTable::create_with_unique_name(
 			InterBookmark::scope(&in_generic_kinds), I"K_unchecked_function");
-	TypenameInstruction::new(&in_generic_kinds,
-		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, unchecked_function_symbol),
-		FUNCTION_ITCONC, 0, 2, operands,
+	TypenameInstruction::new(&in_generic_kinds, unchecked_function_symbol,
+		FUNCTION_ITCONC, NULL, 2, operands,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
 @ And "any sort of list":
 
 @<Create the unchecked list kind@> =
 	inter_ti operands[2];
-	operands[0] = InterSymbolsTable::id_from_symbol_at_bookmark(
+	operands[0] = InterSymbolsTable::id_at_bookmark(
 		&in_generic_kinds, unchecked_kind_symbol);
-	operands[1] = InterSymbolsTable::id_from_symbol_at_bookmark(
+	operands[1] = InterSymbolsTable::id_at_bookmark(
 		&in_generic_kinds, unchecked_kind_symbol);
 	inter_symbol *unchecked_list_symbol =
 		InterSymbolsTable::create_with_unique_name(
 			InterBookmark::scope(&in_generic_kinds), I"K_unchecked_list");
-	TypenameInstruction::new(&in_generic_kinds,
-		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, unchecked_list_symbol),
-		LIST_ITCONC, 0, 1, operands,
+	TypenameInstruction::new(&in_generic_kinds, unchecked_list_symbol,
+		LIST_ITCONC, NULL, 1, operands,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
 @ It's safe to say that we are likely to need these, too. (Note that they do not
@@ -112,8 +109,7 @@ end up being basically the same thing.)
 	inter_symbol *integer_kind_symbol =
 		InterSymbolsTable::create_with_unique_name(
 			InterBookmark::scope(&in_generic_kinds), I"K_int32");
-	TypenameInstruction::new(&in_generic_kinds,
-		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, integer_kind_symbol),
+	TypenameInstruction::new(&in_generic_kinds, integer_kind_symbol,
 		INT32_ITCONC, 0, 0, NULL,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
@@ -121,16 +117,14 @@ end up being basically the same thing.)
 	inter_symbol *boolean_kind_symbol =
 		InterSymbolsTable::create_with_unique_name(
 			InterBookmark::scope(&in_generic_kinds), I"K_int2");
-	TypenameInstruction::new(&in_generic_kinds,
-		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, boolean_kind_symbol),
-		INT2_ITCONC, 0, 0, NULL,
+	TypenameInstruction::new(&in_generic_kinds, boolean_kind_symbol,
+		INT2_ITCONC, NULL, 0, NULL,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);
 
 @<Create the string kind@> =
 	inter_symbol *string_kind_symbol =
 		InterSymbolsTable::create_with_unique_name(
 			InterBookmark::scope(&in_generic_kinds), I"K_string");
-	TypenameInstruction::new(&in_generic_kinds,
-		InterSymbolsTable::id_from_symbol(I, generic_kinds_p, string_kind_symbol),
-		TEXT_ITCONC, 0, 0, NULL,
+	TypenameInstruction::new(&in_generic_kinds, string_kind_symbol,
+		TEXT_ITCONC, NULL, 0, NULL,
 		(inter_ti) InterBookmark::baseline(&in_generic_kinds) + 1, NULL);

@@ -76,7 +76,7 @@ inter_error_message *InvInstruction::new_primitive(inter_bookmark *IBM, inter_sy
 }
 
 inter_error_message *InvInstruction::new_call(inter_bookmark *IBM, inter_symbol *invoked_name, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_ROUTINE, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, invoked_name), eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, INV_IST, 0, INVOKED_ROUTINE, InterSymbolsTable::id_at_bookmark(IBM, invoked_name), eloc, (inter_ti) level);
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);

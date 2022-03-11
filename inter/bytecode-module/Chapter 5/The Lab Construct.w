@@ -43,7 +43,7 @@ void LabInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 }
 
 inter_error_message *LabInstruction::new(inter_bookmark *IBM, inter_symbol *label, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, LAB_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, label), eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, LAB_IST, 0, InterSymbolsTable::id_at_bookmark(IBM, label), eloc, (inter_ti) level);
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

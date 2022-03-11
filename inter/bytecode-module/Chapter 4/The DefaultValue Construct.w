@@ -28,7 +28,7 @@ compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 inter_error_message *DefaultValueInstruction::new(inter_bookmark *IBM,
 	inter_symbol *typename, inter_pair val, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, DEFAULTVALUE_IST,
-		/* TYPE_DEF_IFLD: */ InterSymbolsTable::id_from_symbol_at_bookmark(IBM, typename),
+		/* TYPE_DEF_IFLD: */ InterSymbolsTable::id_at_bookmark(IBM, typename),
 		/* VAL1_DEF_IFLD: */ InterValuePairs::to_word1(val),
 		/* VAL2_DEF_IFLD: */ InterValuePairs::to_word2(val),
 		eloc, level);

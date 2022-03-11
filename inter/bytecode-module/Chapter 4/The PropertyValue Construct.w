@@ -12,6 +12,7 @@ void PropertyValueInstruction::define_construct(void) {
 	InterInstruction::fix_instruction_length_between(IC, 6, 6);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PropertyValueInstruction::read);
+	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, PropertyValueInstruction::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PropertyValueInstruction::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, PropertyValueInstruction::write);
 }
@@ -30,8 +31,8 @@ inter_error_message *PropertyValueInstruction::new(inter_bookmark *IBM,
 	inter_symbol *prop_s, inter_symbol *owner_s, inter_pair val, inter_ti level,
 	inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, PROPERTYVALUE_IST,
-		/* PROP_PVAL_IFLD: */  InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_s),
-		/* OWNER_PVAL_IFLD: */ InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_s),
+		/* PROP_PVAL_IFLD: */  InterSymbolsTable::id_at_bookmark(IBM, prop_s),
+		/* OWNER_PVAL_IFLD: */ InterSymbolsTable::id_at_bookmark(IBM, owner_s),
 		/* VAL1_PVAL_IFLD: */  InterValuePairs::to_word1(val),
 		/* VAL2_PVAL_IFLD: */  InterValuePairs::to_word2(val),
 		eloc, level);
@@ -39,6 +40,12 @@ inter_error_message *PropertyValueInstruction::new(inter_bookmark *IBM,
 	if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;
+}
+
+void PropertyValueInstruction::transpose(inter_construct *IC, inter_tree_node *P,
+	inter_ti *grid, inter_ti grid_extent, inter_error_message **E) {
+	InterValuePairs::set(P, VAL1_PVAL_IFLD,
+		InterValuePairs::transpose(InterValuePairs::get(P, VAL1_PVAL_IFLD), grid, grid_extent, E));
 }
 
 @ Verification begins with sanity checks, but then also adds the new property

@@ -37,7 +37,7 @@ inter_error_message *PrimitiveInstruction::new(inter_bookmark *IBM, inter_symbol
 	text_stream *from, text_stream *to, inter_ti level, inter_error_location *eloc) {
 
 	inter_tree_node *F = Inode::new_with_1_data_field(IBM, PRIMITIVE_IST,
-		/* DEFN_PRIM_IFLD: */ InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prim_name),
+		/* DEFN_PRIM_IFLD: */ InterSymbolsTable::id_at_bookmark(IBM, prim_name),
 		eloc, level);
 
 	inter_error_message *E = NULL;

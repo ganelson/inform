@@ -37,7 +37,7 @@ The simplest version, though, has a single value. The length is then 7 words.
 inter_error_message *ConstantInstruction::new(inter_bookmark *IBM, inter_symbol *S,
 	inter_type type, inter_pair val, inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_5_data_fields(IBM, CONSTANT_IST,
-		/* DEFN_CONST_IFLD: */   InterSymbolsTable::id_from_symbol_at_bookmark(IBM, S),
+		/* DEFN_CONST_IFLD: */   InterSymbolsTable::id_at_bookmark(IBM, S),
 		/* TYPE_CONST_IFLD: */   InterTypes::to_TID_at(IBM, type),
 		/* FORMAT_CONST_IFLD: */ CONST_LIST_FORMAT_NONE,
 		/* DATA_CONST_IFLD: */   InterValuePairs::to_word1(val),
@@ -68,7 +68,7 @@ inter_error_message *ConstantInstruction::new_list(inter_bookmark *IBM, inter_sy
 	inter_error_location *eloc) {
 	if (format == CONST_LIST_FORMAT_NONE) internal_error("not a list");
 	inter_tree_node *AP = Inode::new_with_3_data_fields(IBM, CONSTANT_IST,
-		/* DEFN_CONST_IFLD: */   InterSymbolsTable::id_from_symbol_at_bookmark(IBM, S),
+		/* DEFN_CONST_IFLD: */   InterSymbolsTable::id_at_bookmark(IBM, S),
 		/* TYPE_CONST_IFLD: */   InterTypes::to_TID_at(IBM, type),
 		/* FORMAT_CONST_IFLD: */ (inter_ti) format,
 		eloc, level);

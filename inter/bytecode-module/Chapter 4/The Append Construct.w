@@ -29,7 +29,7 @@ compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 inter_error_message *AppendInstruction::new(inter_bookmark *IBM, inter_symbol *S,
 	text_stream *append_text, inter_ti level, struct inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_2_data_fields(IBM, APPEND_IST,
-		/* SYMBOL_APPEND_IFLD:  */ InterSymbolsTable::id_from_symbol_at_bookmark(IBM, S), 
+		/* SYMBOL_APPEND_IFLD:  */ InterSymbolsTable::id_at_bookmark(IBM, S), 
 		/* CONTENT_APPEND_IFLD: */ InterWarehouse::create_text_at(IBM, append_text),
 		eloc, level);
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P);

@@ -26,7 +26,7 @@ compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 inter_error_message *PackageTypeInstruction::new(inter_bookmark *IBM, inter_symbol *ptype,
 	inter_ti level, inter_error_location *eloc) {
 	inter_tree_node *P = Inode::new_with_1_data_field(IBM, PACKAGETYPE_IST,
-		/* DEFN_PTYPE_IFLD: */ InterSymbolsTable::id_from_symbol_at_bookmark(IBM, ptype),
+		/* DEFN_PTYPE_IFLD: */ InterSymbolsTable::id_at_bookmark(IBM, ptype),
 		eloc, level);
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;

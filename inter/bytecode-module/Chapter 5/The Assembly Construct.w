@@ -1,6 +1,6 @@
-[AssemblyInstruction::] The Lab Construct.
+[AssemblyInstruction::] The Assembly Construct.
 
-Defining the Lab construct.
+Defining the assembly construct.
 
 @
 

@@ -33,7 +33,7 @@ inter_error_message *PropertyInstruction::new(inter_bookmark *IBM, inter_symbol 
 	inter_package *pack = InterBookmark::package(IBM);
 	inter_warehouse *warehouse = InterBookmark::warehouse(IBM);
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PROPERTY_IST,
-		/* DEFN_PROP_IFLD: */      InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_s),
+		/* DEFN_PROP_IFLD: */      InterSymbolsTable::id_at_bookmark(IBM, prop_s),
 		/* TYPE_PROP_IFLD: */      InterTypes::to_TID_at(IBM, prop_type),
 		/* PERM_LIST_PROP_IFLD: */ InterWarehouse::create_node_list(warehouse, pack),
 		eloc, level);

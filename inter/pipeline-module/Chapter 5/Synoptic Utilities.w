@@ -93,7 +93,7 @@ void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname
 	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Packaging::at(I)),
 		InterTypes::from_constructor_code(LIST_ITCONC));
 	synoptic_array_node = Inode::new_with_3_data_fields(Packaging::at(I), CONSTANT_IST,
-		 InterSymbolsTable::id_from_symbol_at_bookmark(Packaging::at(I), con_s),
+		 InterSymbolsTable::id_at_bookmark(Packaging::at(I), con_s),
 		 TID, CONST_LIST_FORMAT_COLLECTION, NULL, 
 		 (inter_ti) InterBookmark::baseline(Packaging::at(I)) + 1);
 }

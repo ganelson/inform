@@ -25,7 +25,7 @@ inter_tree *Emit::tree(void) {
 }
 
 inter_ti Emit::symbol_id(inter_symbol *S) {
-	return InterSymbolsTable::id_from_symbol_at_bookmark(Emit::at(), S);
+	return InterSymbolsTable::id_at_bookmark(Emit::at(), S);
 }
 
 inter_warehouse *Emit::warehouse(void) {
@@ -102,29 +102,17 @@ void Emit::kind(inter_name *iname, inter_name *super,
 	inter_ti constructor, int arity, kind **operand_kinds) {
 	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *S = InterNames::to_symbol(iname);
-	inter_ti SID = 0;
-	if (S) SID = Emit::symbol_id(S);
 	inter_symbol *SS = (super)?InterNames::to_symbol(super):NULL;
-	inter_ti SUP = 0;
-	if (SS) SUP = Emit::symbol_id(SS);
 	inter_ti operands[MAX_KIND_ARITY];
 	if (arity > MAX_KIND_ARITY) internal_error("kind arity too high");
 	for (int i=0; i<arity; i++) {
 		if ((operand_kinds[i] == K_nil) || (operand_kinds[i] == K_void)) operands[i] = 0;
 		else operands[i] = Produce::kind_to_TID(Emit::at(), operand_kinds[i]);
 	}
-	Emit::kind_inner(SID, SUP, constructor, arity, operands);
+	Produce::guard(TypenameInstruction::new(Emit::at(), S, constructor, SS, arity,
+		operands, Emit::baseline(), NULL));
 	InterNames::to_symbol(iname);
 	Packaging::exit(Emit::tree(), save);
-}
-
-@ The above both use:
-
-=
-void Emit::kind_inner(inter_ti SID, inter_ti SUP,
-	inter_ti constructor, int arity, inter_ti *operands) {
-	Produce::guard(TypenameInstruction::new(Emit::at(), SID, constructor, SUP, arity,
-		operands, Emit::baseline(), NULL));
 }
 
 @ Default values for kinds are emitted thus. This is inefficient and maybe ought

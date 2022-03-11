@@ -41,7 +41,7 @@ void CastInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 }
 
 inter_error_message *CastInstruction::new(inter_bookmark *IBM, inter_symbol *from_kind, inter_symbol *to_kind, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, CAST_IST, 0, InterSymbolsTable::id_from_symbol_at_bookmark(IBM, to_kind), InterSymbolsTable::id_from_symbol_at_bookmark(IBM, from_kind), eloc, (inter_ti) level);
+	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, CAST_IST, 0, InterSymbolsTable::id_at_bookmark(IBM, to_kind), InterSymbolsTable::id_at_bookmark(IBM, from_kind), eloc, (inter_ti) level);
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P); if (E) return E;
 	NodePlacement::move_to_moving_bookmark(P, IBM);
 	return NULL;

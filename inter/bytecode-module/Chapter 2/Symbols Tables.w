@@ -423,7 +423,7 @@ them on a package-by-package basis, so it is an error to call this function if
 @ The same operation, but the local context expressed differently:
 
 =
-inter_ti InterSymbolsTable::id_from_symbol_at_bookmark(inter_bookmark *IBM,
+inter_ti InterSymbolsTable::id_at_bookmark(inter_bookmark *IBM,
 	inter_symbol *S) {
 	return InterSymbolsTable::id_from_symbol(InterBookmark::tree(IBM),
 		InterBookmark::package(IBM), S);

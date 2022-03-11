@@ -1044,7 +1044,7 @@ inter_symbol *CompileSplatsStage::compute_binary_op(inter_ti op, pipeline_step *
 	inter_bookmark *IBM, inter_symbol *i1, inter_symbol *i2) {
 	inter_package *pack = InterBookmark::package(IBM);
 	inter_symbol *result_s = CompileSplatsStage::new_ccv_symbol(pack);
-	inter_ti MID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, result_s);
+	inter_ti MID = InterSymbolsTable::id_at_bookmark(IBM, result_s);
 	inter_ti KID = InterTypes::to_TID(InterBookmark::scope(IBM), InterTypes::unchecked());
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_tree_node *pair_list =

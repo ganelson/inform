@@ -29,10 +29,10 @@ inter_error_message *PermissionInstruction::new(inter_bookmark *IBM, inter_symbo
 	inter_symbol *owner_s, inter_symbol *storage_s, inter_ti level,
 	inter_error_location *eloc) {
 	inter_ti SID = 0;
-	if (storage_s) SID = InterSymbolsTable::id_from_symbol_at_bookmark(IBM, storage_s);
+	if (storage_s) SID = InterSymbolsTable::id_at_bookmark(IBM, storage_s);
 	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, PERMISSION_IST,
-		/* PROP_PERM_IFLD: */    InterSymbolsTable::id_from_symbol_at_bookmark(IBM, prop_s),
-		/* OWNER_PERM_IFLD: */   InterSymbolsTable::id_from_symbol_at_bookmark(IBM, owner_s),
+		/* PROP_PERM_IFLD: */    InterSymbolsTable::id_at_bookmark(IBM, prop_s),
+		/* OWNER_PERM_IFLD: */   InterSymbolsTable::id_at_bookmark(IBM, owner_s),
 		/* STORAGE_PERM_IFLD: */ SID,
 		eloc, level);
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P);

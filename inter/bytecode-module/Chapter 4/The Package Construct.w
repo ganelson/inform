@@ -74,7 +74,7 @@ inter_error_message *PackageInstruction::new_inner(inter_bookmark *IBM,
 		TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), name_text, &E);
 	if (E) return E;
 	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, PACKAGE_IST,
-		/* DEFN_PACKAGE_IFLD: */    InterSymbolsTable::id_from_symbol_at_bookmark(IBM, package_name),
+		/* DEFN_PACKAGE_IFLD: */    InterSymbolsTable::id_at_bookmark(IBM, package_name),
 		/* PTYPE_PACKAGE_IFLD: */   InterSymbolsTable::id_from_symbol(I, NULL, ptype_name),
 		/* SYMBOLS_PACKAGE_IFLD: */ STID,
 		/* PID_PACKAGE_IFLD: */     0, /* but see just below... */
