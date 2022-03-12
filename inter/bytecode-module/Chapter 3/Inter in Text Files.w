@@ -679,3 +679,12 @@ void TextualInter::write_optional_type_marker(OUTPUT_STREAM, inter_tree_node *P,
 		WRITE("("); InterTypes::write_type(OUT, type); WRITE(") ");
 	}
 }
+
+void TextualInter::write_compulsory_type_marker(OUTPUT_STREAM, inter_tree_node *P, int field) {
+	inter_type type = InterTypes::from_TID_in_field(P, field);
+	if (type.type_name) {
+		TextualInter::write_symbol_from(OUT, P, field);
+	} else if (InterTypes::is_unchecked(type) == FALSE) {
+		InterTypes::write_type(OUT, type);
+	}
+}

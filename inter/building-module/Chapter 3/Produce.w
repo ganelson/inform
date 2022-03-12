@@ -546,9 +546,9 @@ present, and is more of a placeholder than anything else.
 
 =
 void Produce::cast(inter_tree *I, kind *F, kind *T) {
-	inter_symbol *F_s = Produce::kind_to_symbol(F);
-	inter_symbol *T_s = Produce::kind_to_symbol(T);
-	Produce::guard(CastInstruction::new(Produce::at(I), F_s, T_s,
+	inter_type F_t = Produce::kind_to_type(F);
+	inter_type T_t = Produce::kind_to_type(T);
+	Produce::guard(CastInstruction::new(Produce::at(I), F_t, T_t,
 		(inter_ti) Produce::level(I), NULL));
 }
 
