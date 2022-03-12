@@ -496,8 +496,8 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	inter_tree_node *X, inter_tree_node *Y, int depth) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (Y->W.instruction[ID_IFLD] == INV_IST) {
-		if (Y->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
-			inter_symbol *prim = InvInstruction::invokee(Y);
+		if (Y->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH) {
+			inter_symbol *prim = InvInstruction::primitive(Y);
 			inter_ti ybip = Primitives::to_BIP(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
 				if (depth == 0) { WRITE("((or_tmp_var = "); Vanilla::node(gen, X); WRITE(") && (("); }
@@ -610,8 +610,9 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 @<Generate primitive for objectloop@> =
 	int in_flag = FALSE;
 	inter_tree_node *U = InterTree::third_child(P);
-	if ((U->W.instruction[ID_IFLD] == INV_IST) && (U->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
-		inter_symbol *prim = InvInstruction::invokee(U);
+	if ((U->W.instruction[ID_IFLD] == INV_IST) &&
+		(U->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH)) {
+		inter_symbol *prim = InvInstruction::primitive(U);
 		if ((prim) && (Primitives::to_BIP(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 

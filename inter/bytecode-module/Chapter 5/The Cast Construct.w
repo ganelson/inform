@@ -20,7 +20,7 @@ void CastInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |typename| instruction is laid out with the two
+In bytecode, the frame of a |cast| instruction is laid out with the two
 compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 
 @d TO_KIND_CAST_IFLD 2

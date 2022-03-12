@@ -60,8 +60,8 @@ int ReferenceInstruction::node_is_ref_to(inter_tree *I, inter_tree_node *P, inte
 		reffed = TRUE;
 	}
 	if (P->W.instruction[ID_IFLD] == INV_IST) {
-		if (P->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
-			inter_symbol *prim = InvInstruction::invokee(P);
+		if (P->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH) {
+			inter_symbol *prim = InvInstruction::primitive(P);
 			inter_ti bip = Primitives::to_BIP(I, prim);
 			if ((bip == seek_bip) && (reffed)) return TRUE;
 		}

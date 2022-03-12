@@ -63,8 +63,8 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		int iden[2] = { -1, -1 };
 		if ((F->W.instruction[ID_IFLD] == INV_IST) &&
-			(F->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
-			inter_symbol *prim = InvInstruction::invokee(F);
+			(F->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH)) {
+			inter_symbol *prim = InvInstruction::primitive(F);
 			if (Primitives::to_BIP(P->tree, prim) == OR_BIP)     { iden[1] = 0; }
 			if (Primitives::to_BIP(P->tree, prim) == AND_BIP)    { iden[1] = 1; }
 			if (Primitives::to_BIP(P->tree, prim) == PLUS_BIP)   { iden[0] = 0; iden[1] = 0; }

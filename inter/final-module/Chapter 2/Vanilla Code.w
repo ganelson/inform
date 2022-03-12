@@ -38,8 +38,7 @@ These we offer to the generator to deal with as it likes:
 =
 void VanillaCode::label(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = InterPackage::container(P);
-	inter_symbol *lab_name =
-		InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LABEL_IFLD]);
+	inter_symbol *lab_name = LabelInstruction::label_symbol(P);
 	Generators::place_label(gen, InterSymbol::identifier(lab_name));
 }
 
@@ -53,20 +52,20 @@ void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 	int void_context = FALSE;
 	if (Inode::get_level(P) == gen->void_level) void_context = TRUE;
 	switch (P->W.instruction[METHOD_INV_IFLD]) {
-		case INVOKED_PRIMITIVE: @<Invoke a primitive@>; break;
-		case INVOKED_ROUTINE: @<Invoke a function@>; break;
-		case INVOKED_OPCODE: @<Invoke an assembly-language opcode@>; break;
+		case PRIMITIVE_INVMETH: @<Invoke a primitive@>; break;
+		case FUNCTION_INVMETH: @<Invoke a function@>; break;
+		case OPCODE_INVMETH: @<Invoke an assembly-language opcode@>; break;
 		default: internal_error("unknown invocation method");
 	}
 }
 
 @<Invoke a primitive@> =
-	inter_symbol *primitive_s = InvInstruction::invokee(P);
+	inter_symbol *primitive_s = InvInstruction::primitive(P);
 	if (primitive_s == NULL) internal_error("no primitive");
 	Generators::invoke_primitive(gen, primitive_s, P, void_context);
 
 @<Invoke a function@> =
-	inter_symbol *function_s = InvInstruction::invokee(P);
+	inter_symbol *function_s = InvInstruction::function(P);
 	if (function_s == NULL) internal_error("no function");
 	VanillaFunctions::invoke_function(gen, function_s, P, void_context);
 
@@ -134,8 +133,7 @@ function body.
 =
 void VanillaCode::lab(code_generation *gen, inter_tree_node *P) {
 	inter_package *pack = InterPackage::container(P);
-	inter_symbol *label_s =
-		InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[LABEL_LAB_IFLD]);
+	inter_symbol *label_s = LabInstruction::label_symbol(P);
 	if (label_s == NULL) internal_error("unknown label in lab in Inter tree");
 	Generators::evaluate_label(gen, InterSymbol::identifier(label_s));
 }

@@ -18,7 +18,7 @@ void AssemblyInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |typename| instruction is laid out with the two
+In bytecode, the frame of an |assembly| instruction is laid out with the two
 compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
 
 @d WHICH_ASSEMBLY_IFLD 2

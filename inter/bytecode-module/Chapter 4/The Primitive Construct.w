@@ -142,14 +142,18 @@ inter_ti PrimitiveInstruction::read_category(inter_error_location *eloc, text_st
 }
 
 void PrimitiveInstruction::write_category(OUTPUT_STREAM, inter_ti cat) {
+	WRITE("%s", PrimitiveInstruction::cat_name(cat));
+}
+
+char *PrimitiveInstruction::cat_name(inter_ti cat) {
 	switch (cat) {
-		case VAL_PRIM_CAT: WRITE("val"); break;
-		case REF_PRIM_CAT: WRITE("ref"); break;
-		case LAB_PRIM_CAT: WRITE("lab"); break;
-		case CODE_PRIM_CAT: WRITE("code"); break;
-		case 0: WRITE("void"); break;
-		default: internal_error("bad category");
+		case REF_PRIM_CAT: return "ref";
+		case VAL_PRIM_CAT: return "val";
+		case LAB_PRIM_CAT: return "lab";
+		case CODE_PRIM_CAT: return "code";
+		case 0: return "void";
 	}
+	return "<unknown>";
 }
 
 int PrimitiveInstruction::category_is_valid(inter_ti cat) {

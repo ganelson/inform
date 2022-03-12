@@ -215,7 +215,10 @@ existing socket here.)
 @ Okay, so now for the first cross-referencing fix. The following function traverses
 every node inside the |migrant| tree. The first thing to do is to correct |P->tree|,
 which records, for every node, the tree to which it belongs: this is why the traverse
-needs to visit every node inside |migrant| (including its own head node).
+needs to visit every node inside |migrant| (including its own head node). But we
+need to work out the |primitive| invoked first, because the interpretation of the
+bytecode in the invocation depends on |P->tree|, and will give a meaningful
+answer only if |P->tree| is still its original value.
 
 But then there are only two cases of interest: primitive invocations, and package
 head nodes.
@@ -223,8 +226,8 @@ head nodes.
 =
 void Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, void *state) {
 	transmigration_details *det = (transmigration_details *) state;
+	inter_symbol *primitive = InvInstruction::primitive(P);
 	P->tree = I;
-	inter_symbol *primitive = InvInstruction::read_primitive(det->origin_tree, P);
 	if (primitive)
 		@<Transfer from a primitive in the origin tree to one in the destination@>;
 	if (P->W.instruction[ID_IFLD] == PACKAGE_IST)

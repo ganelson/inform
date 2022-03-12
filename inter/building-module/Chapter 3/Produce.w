@@ -416,10 +416,8 @@ void Produce::pull(inter_tree *I, inter_name *iname) {
 =
 void Produce::inv_assembly(inter_tree *I, text_stream *opcode) {
 	inter_bookmark *IBM = Produce::at(I);
-	inter_ti SID = InterWarehouse::create_text(InterTree::warehouse(I),
-		InterBookmark::package(IBM));
-	Str::copy(InterWarehouse::get_text(InterTree::warehouse(I), SID), opcode);
-	Produce::guard(InvInstruction::new_assembly(IBM, SID, (inter_ti) Produce::level(I), NULL));
+	Produce::guard(InvInstruction::new_assembly(IBM, opcode,
+		(inter_ti) Produce::level(I), NULL));
 }
 
 @ The "assembly marker" punctuation can be placed thus:
@@ -433,7 +431,7 @@ void Produce::assembly_marker(inter_tree *I, inter_ti which) {
 
 =
 void Produce::inv_call_symbol(inter_tree *I, inter_symbol *fn_s) {
-	Produce::guard(InvInstruction::new_call(Produce::at(I), fn_s,
+	Produce::guard(InvInstruction::new_function_call(Produce::at(I), fn_s,
 		(inter_ti) Produce::level(I), NULL));
 }
 

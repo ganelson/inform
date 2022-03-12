@@ -111,8 +111,8 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	int in_flag = FALSE;
 	inter_tree_node *U = InterTree::third_child(P);
 	if ((U->W.instruction[ID_IFLD] == INV_IST) &&
-		(U->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE)) {
-		inter_symbol *prim = InvInstruction::invokee(U);
+		(U->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH)) {
+		inter_symbol *prim = InvInstruction::primitive(U);
 		if ((prim) && (Primitives::to_BIP(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 
@@ -165,8 +165,8 @@ becomes |case 3: case 7:|.
 @ =
 void CProgramControl::caser(code_generation *gen, inter_tree_node *X) {
 	if (X->W.instruction[ID_IFLD] == INV_IST) {
-		if (X->W.instruction[METHOD_INV_IFLD] == INVOKED_PRIMITIVE) {
-			inter_symbol *prim = InvInstruction::invokee(X);
+		if (X->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH) {
+			inter_symbol *prim = InvInstruction::primitive(X);
 			inter_ti xbip = Primitives::to_BIP(gen->from, prim);
 			if (xbip == ALTERNATIVECASE_BIP) {
 				CProgramControl::caser(gen, InterTree::first_child(X));
