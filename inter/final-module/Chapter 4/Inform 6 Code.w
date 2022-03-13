@@ -397,7 +397,7 @@ function called |_final_change_property|.
 	inter_tree_node *VP = InterTree::second_child(P);
 	int set = NOT_APPLICABLE;
 	if (VP->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_pair val = InterValuePairs::get(VP, VAL1_VAL_IFLD);
+		inter_pair val = ValInstruction::value(VP);
 		if (InterValuePairs::is_number(val)) {
 			if (InterValuePairs::is_zero(val)) set = FALSE;
 			else if (InterValuePairs::is_one(val)) set = TRUE;
@@ -496,7 +496,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	inter_tree_node *X, inter_tree_node *Y, int depth) {
 	text_stream *OUT = CodeGen::current(gen);
 	if (Y->W.instruction[ID_IFLD] == INV_IST) {
-		if (Y->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH) {
+		if (InvInstruction::method(Y) == PRIMITIVE_INVMETH) {
 			inter_symbol *prim = InvInstruction::primitive(Y);
 			inter_ti ybip = Primitives::to_BIP(gen->from, prim);
 			if (ybip == ALTERNATIVE_BIP) {
@@ -556,7 +556,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	int rboolean = NOT_APPLICABLE;
 	inter_tree_node *V = InterTree::first_child(P);
 	if (V->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_pair val = InterValuePairs::get(V, VAL1_VAL_IFLD);
+		inter_pair val = ValInstruction::value(V);
 		if (InterValuePairs::is_zero(val)) rboolean = FALSE;
 		else if (InterValuePairs::is_one(val)) rboolean = TRUE;
 	}
@@ -595,8 +595,8 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	WRITE("for (");
 	inter_tree_node *INIT = InterTree::first_child(P);
 	if (!((INIT->W.instruction[ID_IFLD] == VAL_IST) &&
-		(InterValuePairs::is_number(InterValuePairs::get(INIT, VAL1_VAL_IFLD))) &&
-		(InterValuePairs::to_number(InterValuePairs::get(INIT, VAL1_VAL_IFLD)) == 1)))
+		(InterValuePairs::is_number(ValInstruction::value(INIT))) &&
+		(InterValuePairs::to_number(ValInstruction::value(INIT)) == 1)))
 			VNODE_1C;
 	WRITE(":"); VNODE_2C;
 	WRITE(":");
@@ -611,7 +611,7 @@ void I6TargetCode::eval_property_list(code_generation *gen, inter_tree_node *K,
 	int in_flag = FALSE;
 	inter_tree_node *U = InterTree::third_child(P);
 	if ((U->W.instruction[ID_IFLD] == INV_IST) &&
-		(U->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH)) {
+		(InvInstruction::method(U) == PRIMITIVE_INVMETH)) {
 		inter_symbol *prim = InvInstruction::primitive(U);
 		if ((prim) && (Primitives::to_BIP(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
@@ -750,7 +750,7 @@ See //Vanilla Objects// for more on inner names.
 text_stream *I6TargetCode::inner_name(code_generation *gen, inter_tree_node *prop_node) {
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_pair val = InterValuePairs::get(prop_node, VAL1_VAL_IFLD);
+		inter_pair val = ValInstruction::value(prop_node);
 		if (InterValuePairs::is_symbolic(val))
 			prop_symbol = InterValuePairs::to_symbol_at(val, prop_node);
 	}
@@ -788,7 +788,7 @@ int I6TargetCode::pval_case(inter_tree_node *P) {
 int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *prop_node) {
 	inter_symbol *kind_symbol = NULL;
 	if (kind_node->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_pair val = InterValuePairs::get(kind_node, VAL1_VAL_IFLD);
+		inter_pair val = ValInstruction::value(kind_node);
 		if (InterValuePairs::is_symbolic(val))
 			kind_symbol = InterValuePairs::to_symbol_at(val, kind_node);
 	}
@@ -797,7 +797,7 @@ int I6TargetCode::pval_case_inner(inter_tree_node *kind_node, inter_tree_node *p
 
 	inter_symbol *prop_symbol = NULL;
 	if (prop_node->W.instruction[ID_IFLD] == VAL_IST) {
-		inter_pair val = InterValuePairs::get(prop_node, VAL1_VAL_IFLD);
+		inter_pair val = ValInstruction::value(prop_node);
 		if (InterValuePairs::is_symbolic(val))
 			prop_symbol = InterValuePairs::to_symbol_at(val, prop_node);
 	}

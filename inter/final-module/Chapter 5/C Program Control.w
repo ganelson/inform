@@ -95,8 +95,8 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	WRITE("for (");
 	inter_tree_node *INIT = InterTree::first_child(P);
 	if (!((INIT->W.instruction[ID_IFLD] == VAL_IST) &&
-		(InterValuePairs::is_number(InterValuePairs::get(INIT, VAL1_VAL_IFLD))) &&
-		(InterValuePairs::to_number(InterValuePairs::get(INIT, VAL1_VAL_IFLD)) == 1)))
+		(InterValuePairs::is_number(ValInstruction::value(INIT))) &&
+		(InterValuePairs::to_number(ValInstruction::value(INIT)) == 1)))
 			VNODE_1C;
 	WRITE(";"); VNODE_2C;
 	WRITE(";");
@@ -111,7 +111,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	int in_flag = FALSE;
 	inter_tree_node *U = InterTree::third_child(P);
 	if ((U->W.instruction[ID_IFLD] == INV_IST) &&
-		(U->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH)) {
+		(InvInstruction::method(U) == PRIMITIVE_INVMETH)) {
 		inter_symbol *prim = InvInstruction::primitive(U);
 		if ((prim) && (Primitives::to_BIP(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
@@ -165,7 +165,7 @@ becomes |case 3: case 7:|.
 @ =
 void CProgramControl::caser(code_generation *gen, inter_tree_node *X) {
 	if (X->W.instruction[ID_IFLD] == INV_IST) {
-		if (X->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH) {
+		if (InvInstruction::method(X) == PRIMITIVE_INVMETH) {
 			inter_symbol *prim = InvInstruction::primitive(X);
 			inter_ti xbip = Primitives::to_BIP(gen->from, prim);
 			if (xbip == ALTERNATIVECASE_BIP) {

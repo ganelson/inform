@@ -67,8 +67,7 @@ void InsertInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 @h Writing to textual Inter syntax.
 
 =
-void InsertInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void InsertInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	text_stream *insertion = InsertInstruction::insertion(P);
 	WRITE("insert ");
 	TextualInter::write_text(OUT, insertion);

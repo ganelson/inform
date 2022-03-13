@@ -150,8 +150,7 @@ void TypenameInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @h Writing to textual Inter syntax.
 
 =
-void TypenameInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void TypenameInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *typename_s = TypenameInstruction::typename(P);
 	WRITE("typename %S ", InterSymbol::identifier(typename_s));
 	inter_symbol *super = TypenameInstruction::super(typename_s);

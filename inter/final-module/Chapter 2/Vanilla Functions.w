@@ -121,9 +121,7 @@ in some way by the generator. (As indeed the C generator does, mangling this to
 void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
 	vanilla_function *vf) {
 	if (P->W.instruction[ID_IFLD] == LOCAL_IST) {
-		inter_package *pack = InterPackage::container(P);
-		inter_symbol *local_s =
-			InterSymbolsTable::symbol_from_ID_in_package(pack, P->W.instruction[DEFN_LOCAL_IFLD]);
+		inter_symbol *local_s = LocalInstruction::variable(P);
 		ADD_TO_LINKED_LIST(InterSymbol::trans(local_s), text_stream, vf->locals);
 		if (Str::eq(InterSymbol::identifier(local_s), I"_vararg_count"))
 			vf->takes_variable_arguments = TRUE;

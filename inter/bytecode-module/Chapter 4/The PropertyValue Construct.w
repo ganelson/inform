@@ -155,8 +155,7 @@ inter_symbol *PropertyValueInstruction::parse_owner(inter_error_location *eloc,
 @h Writing to textual Inter syntax.
 
 =
-void PropertyValueInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void PropertyValueInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *prop_s = PropertyValueInstruction::property(P);
 	inter_symbol *owner_s = PropertyValueInstruction::owner(P);
 	WRITE("propertyvalue %S %S = ",

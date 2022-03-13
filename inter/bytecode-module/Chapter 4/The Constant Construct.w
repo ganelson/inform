@@ -244,8 +244,7 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @h Writing to textual Inter syntax.
 
 =
-void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	int hex = FALSE;
 	if (SymbolAnnotation::get_b(con_name, HEX_IANN)) hex = TRUE;

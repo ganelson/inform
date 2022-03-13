@@ -58,9 +58,8 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 		DetectIndirectCallsStage::traverse_code_tree(F, step);
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P)
 		if ((F->W.instruction[ID_IFLD] == INV_IST) &&
-			(F->W.instruction[METHOD_INV_IFLD] == FUNCTION_INVMETH)) {
-			inter_symbol *var =
-				InterSymbolsTable::symbol_from_ID_at_node(F, INVOKEE_INV_IFLD);
+			(InvInstruction::method(F) == FUNCTION_INVMETH)) {
+			inter_symbol *var = InvInstruction::function(F);
 			if (var == NULL) internal_error("bad invocation");
 			inter_tree_node *D = var->definition;
 			if ((D) && (D->W.instruction[ID_IFLD] == VARIABLE_IST))
@@ -74,13 +73,11 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 	@<Insert the variable as the new first argument@>;
 
 @<Change to be an invocation of a primitive@> =
-	F->W.instruction[METHOD_INV_IFLD] = PRIMITIVE_INVMETH;
 	int arity = 0;
 	LOOP_THROUGH_INTER_CHILDREN(X, F) arity++;
 	inter_ti prim = Primitives::BIP_for_indirect_call_returning_value(arity);
 	inter_symbol *prim_s = Primitives::from_BIP(I, prim);
-	F->W.instruction[INVOKEE_INV_IFLD] =
-		InterSymbolsTable::id_from_global_symbol(Inode::tree(F), prim_s);
+	InvInstruction::write_primitive(I, F, prim_s);
 
 @<Insert the variable as the new first argument@> =
 	inter_bookmark IBM = InterBookmark::first_child_of(F);

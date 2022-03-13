@@ -127,8 +127,7 @@ generated name. So a splat is not quite generator-independent after all.
 void Vanilla::splat(code_generation *gen, inter_tree_node *P) {
 	text_stream *OUT = CodeGen::current(gen);
 	inter_tree *I = gen->from;
-	text_stream *S =
-		InterWarehouse::get_text(InterTree::warehouse(I), P->W.instruction[MATTER_SPLAT_IFLD]);
+	text_stream *S = SplatInstruction::splatter(P);
 	Vanilla::splat_matter(OUT, I, S);
 }
 

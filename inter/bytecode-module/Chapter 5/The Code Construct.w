@@ -63,7 +63,6 @@ void CodeInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 @h Writing to textual Inter syntax.
 
 =
-void CodeInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void CodeInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	WRITE("code");
 }

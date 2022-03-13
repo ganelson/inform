@@ -8,14 +8,14 @@ have produced a sequence of |SPLAT_IST| nodes corresponding to directives,
 and some of those will be conditional compilation directives. For example,
 we might see a sequence like this:
 = (text)
-	IFDEF_I6DIR
-	ROUTINE_I6DIR
-	IFNOT_I6DIR
-	ARRAY_I6DIR
-	ROUTINE_I6DIR
-	ENDIF_I6DIR
+	IFDEF_PLM
+	ROUTINE_PLM
+	IFNOT_PLM
+	ARRAY_PLM
+	ROUTINE_PLM
+	ENDIF_PLM
 =
-Clearly this either means a function (the first |ROUTINE_I6DIR|), or a different
+Clearly this either means a function (the first |ROUTINE_PLM|), or a different
 function plus an array. We have to decide that now, because optimisation, code
 generation and so on need to know exactly what they are dealing with.
 
@@ -26,16 +26,16 @@ debugging is enabled. And we do know the architecture now. (This is why a kit
 has a different binary form for each different architecture supported.) So this
 stage collapses the above to either:
 = (text)
-	ROUTINE_I6DIR
+	ROUTINE_PLM
 =
 or:
 = (text)
-	ARRAY_I6DIR
-	ROUTINE_I6DIR
+	ARRAY_PLM
+	ROUTINE_PLM
 =
-depending on which way the |IFDEF_I6DIR| comes out. At the end of this stage,
-then, none of the directives |IFDEF_I6DIR|, |IFNDEF_I6DIR|, |IFTRUE_I6DIR|,
-|IFNOT_I6DIR| or |ENDIF_I6DIR| appear anywhere in the tree, and all compilation
+depending on which way the |IFDEF_PLM| comes out. At the end of this stage,
+then, none of the directives |IFDEF_PLM|, |IFNDEF_PLM|, |IFTRUE_PLM|,
+|IFNOT_PLM| or |ENDIF_PLM| appear anywhere in the tree, and all compilation
 is therefore unconditional.
 
 =
@@ -86,21 +86,21 @@ void ResolveConditionalsStage::visitor(inter_tree *I, inter_tree_node *P, void *
 	int compile_this = TRUE;
 	for (int i=0; i<state->cc_sp; i++) if (state->cc_stack[i] == FALSE) compile_this = FALSE;
 	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
-		text_stream *S = Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]);
-		switch (P->W.instruction[PLM_SPLAT_IFLD]) {
-			case CONSTANT_I6DIR:
-			case GLOBAL_I6DIR:
-			case ARRAY_I6DIR:
-			case ROUTINE_I6DIR:
-			case DEFAULT_I6DIR:
-			case STUB_I6DIR:
+		text_stream *S = SplatInstruction::splatter(P);
+		switch (SplatInstruction::plm(P)) {
+			case CONSTANT_PLM:
+			case GLOBAL_PLM:
+			case ARRAY_PLM:
+			case ROUTINE_PLM:
+			case DEFAULT_PLM:
+			case STUB_PLM:
 				@<Symbol definition@>;
 				break;
-			case IFDEF_I6DIR: @<Deal with an IFDEF@>; break;
-			case IFNDEF_I6DIR: @<Deal with an IFNDEF@>; break;
-			case IFTRUE_I6DIR: @<Deal with an IFTRUE@>; break;
-			case IFNOT_I6DIR: @<Deal with an IFNOT@>; break;
-			case ENDIF_I6DIR: @<Deal with an ENDIF@>; break;
+			case IFDEF_PLM: @<Deal with an IFDEF@>; break;
+			case IFNDEF_PLM: @<Deal with an IFNDEF@>; break;
+			case IFTRUE_PLM: @<Deal with an IFTRUE@>; break;
+			case IFNOT_PLM: @<Deal with an IFNOT@>; break;
+			case ENDIF_PLM: @<Deal with an ENDIF@>; break;
 		}
 	}
 	if (compile_this == FALSE) NodePlacement::remove(P);

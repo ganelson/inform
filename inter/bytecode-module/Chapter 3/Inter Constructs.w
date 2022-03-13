@@ -469,7 +469,7 @@ handled differently by each construct.
 
 =
 VOID_METHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT,
-	inter_tree_node *P, inter_error_message **E)
+	inter_tree_node *P)
 
 inter_error_message *InterInstruction::write_construct_text(OUTPUT_STREAM, inter_tree_node *P) {
 	if (P->W.instruction[ID_IFLD] == NOP_IST) return NULL;
@@ -482,10 +482,11 @@ inter_error_message *InterInstruction::write_construct_text_allowing_nop(OUTPUT_
 	inter_error_message *E = InterInstruction::get_construct(P, &IC);
 	if (E) return E;
 	for (inter_ti L=0; L<P->W.instruction[LEVEL_IFLD]; L++) WRITE("\t");
-	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P, &E);
+	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P);
 	WRITE("\n");
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) PackageInstruction::write_plugs_and_sockets(OUT, P);
-	return E;
+	if (P->W.instruction[ID_IFLD] == PACKAGE_IST)
+		PackageInstruction::write_plugs_and_sockets(OUT, P);
+	return NULL;
 }
 
 @ A much less elegant presentation is just to dump the hexadecimal bytecode,

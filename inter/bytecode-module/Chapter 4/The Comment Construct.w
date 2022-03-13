@@ -67,8 +67,7 @@ void CommentInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_li
 The empty comment is printed back as a blank line, rather than a lone |#|.
 
 =
-void CommentInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void CommentInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	text_stream *S = Inode::ID_to_text(P, P->W.instruction[TEXT_COMMENT_IFLD]);
 	if (Str::len(S) > 0) WRITE("#%S", S);
 }

@@ -2,7 +2,8 @@
 
 Defining the socket construct.
 
-@
+@ This is a pseudo-construct: it looks like an instruction in textual Inter
+syntax, but specifies something else, and does not result in an |inter_tree_node|.
 
 =
 void SocketInstruction::define_construct(void) {
@@ -10,72 +11,51 @@ void SocketInstruction::define_construct(void) {
 	InterInstruction::specify_syntax(IC, I"socket IDENTIFIER TOKENS");
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, SocketInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, SocketInstruction::verify);
-	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, SocketInstruction::write);
 	InterInstruction::allow_in_depth_range(IC, 0, 1);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 }
 
-void SocketInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	inter_package *routine = InterBookmark::package(IBM);
+void SocketInstruction::verify(inter_construct *IC, inter_tree_node *P,
+	inter_package *owner, inter_error_message **E) {
+	*E = Inode::error(P, I"SOCKET_IST structures cannot exist", NULL);
+}
 
-	text_stream *symbol_name = ilp->mr.exp[0];
+@ What it does is to specify a symbol which is a socket in the current tree:
+this results in an entry in the symbols table for the current package (which
+will always be |/main/connectors|, in fact) but not an instruction.
+
+For how these are printed back, see //PlugInstruction::write_declaration//,
+which handles both plugs and sockets.
+
+=
+void SocketInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp,
+	inter_error_location *eloc, inter_error_message **E) {
+	text_stream *symbol_text = ilp->mr.exp[0];
+	text_stream *equate_text = ilp->mr.exp[1];
+
+	inter_tree *I = InterBookmark::tree(IBM);
+	inter_symbols_table *T = InterBookmark::scope(IBM);
+	inter_symbol *socket_s = TextualInter::new_symbol(eloc, T, symbol_text, E);
+	if (*E) return;
+
 	text_stream *equate_name = NULL;
-	match_results mr2 = Regexp::create_mr();
-	if (Regexp::match(&mr2, ilp->mr.exp[1], L"~~> \"(%C+)\"")) {
-		*E = InterErrors::plain(I"a socket cannot wire to a name", eloc); return;
-	} else if (Regexp::match(&mr2, ilp->mr.exp[1], L"~~> (%C+)")) {
-		equate_name = mr2.exp[0];
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, equate_text, L"~~> \"(%C+)\"")) {
+		*E = InterErrors::plain(I"a socket cannot wire to a name", eloc);
+		return;
+	} else if (Regexp::match(&mr, equate_text, L"~~> (%C+)")) {
+		equate_name = mr.exp[0];
 	} else {
+		Regexp::dispose_of(&mr);
 		*E = InterErrors::plain(I"bad socket syntax", eloc); return;
 	}
 
-	inter_symbol *name_name = NULL;
-	inter_ti level = 0;
-	if (routine) {
-		inter_symbols_table *locals = InterPackage::scope(routine);
-		if (locals == NULL) { *E = InterErrors::plain(I"function has no symbols table", eloc); return; }
-		name_name = TextualInter::new_symbol(eloc, locals, symbol_name, E);
-		if (*E) return;
-		inter_symbol *eq = InterSymbolsTable::URL_to_symbol(InterBookmark::tree(IBM), equate_name);
-		if (eq == NULL) eq = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), equate_name);
-		if (eq == NULL) {
-			InterSymbol::make_socket(name_name);
-			Wiring::wire_to_name(name_name, equate_name);
-		} else {
-			Wiring::make_socket_to(name_name, eq);
-		}
-		level = (inter_ti) ilp->indent_level;
+	inter_symbol *eq = InterSymbolsTable::URL_to_symbol(I, equate_name);
+	if (eq == NULL) {
+		InterSymbol::make_socket(socket_s);
+		Wiring::wire_to_name(socket_s, equate_name);
 	} else {
-		*E = InterErrors::plain(I"sockets can exist only in the connectors package", eloc); return;
+		Wiring::make_socket_to(socket_s, eq);
 	}
-}
-
-void SocketInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_package *owner, inter_error_message **E) {
-	internal_error("SOCKET_IST structures cannot exist");
-}
-
-void SocketInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P, inter_error_message **E) {
-	internal_error("SOCKET_IST structures cannot exist");
-}
-
-@ The following writes a valid line of textual Inter to declare a plug or socket,
-appearing at level |N| in the hierarchy.
-
-=
-void SocketInstruction::write_declaration(OUTPUT_STREAM, inter_symbol *S, int N) {
-	for (int L=0; L<N; L++) WRITE("\t");
-	switch (InterSymbol::get_type(S)) {
-		case PLUG_ISYMT:   WRITE("plug"); break;
-		case SOCKET_ISYMT: WRITE("socket"); break;
-		default: internal_error("not a connector"); break;
-	}
-	WRITE(" %S", InterSymbol::identifier(S));
-	if (Wiring::is_wired_to_name(S)) {
-		WRITE(" ~~> \"%S\"", Wiring::wired_to_name(S));
-	} else if (Wiring::is_wired(S)) {
-		WRITE(" ~~> ");
-		InterSymbolsTable::write_symbol_URL(OUT, Wiring::wired_to(S));
-	} else {
-		WRITE(" ?");
-	}
+	Regexp::dispose_of(&mr);
 }

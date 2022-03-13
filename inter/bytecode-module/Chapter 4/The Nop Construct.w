@@ -36,7 +36,6 @@ The |nop| construct is not expressible in textual Inter, but can be printed out
 all the same, purely so that a stack backtrace will show it.
 
 =
-void NopInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void NopInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	WRITE("nop");
 }

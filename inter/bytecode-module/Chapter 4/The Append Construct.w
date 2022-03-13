@@ -77,8 +77,7 @@ void AppendInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 @h Writing to textual Inter syntax.
 
 =
-void AppendInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void AppendInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *S = InterSymbolsTable::symbol_from_ID_at_node(P, SYMBOL_APPEND_IFLD);
 	text_stream *content = Inode::ID_to_text(P, P->W.instruction[CONTENT_APPEND_IFLD]);
 	WRITE("append %S ", InterSymbol::identifier(S));

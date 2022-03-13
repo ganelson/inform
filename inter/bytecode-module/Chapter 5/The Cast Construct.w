@@ -89,8 +89,7 @@ void CastInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_
 @h Writing to textual Inter syntax.
 
 =
-void CastInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void CastInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	WRITE("cast ");
 	TextualInter::write_compulsory_type_marker(OUT, P, TO_KIND_CAST_IFLD);
 	WRITE(" <- ");

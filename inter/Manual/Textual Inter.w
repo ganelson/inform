@@ -245,10 +245,10 @@ for symbols with various meanings, and that set will be covered later.
 The special statement |splat "TEXT"| or |splat ANNOTATION "TEXT"| allows
 raw Inform 6 code (or potentially raw code for any language) to be included
 verbatim in inter. Splat is not a respectful term, and nor does it deserve
-one. The annotation can be any of: |IFDEF_I6DIR|, |IFNDEF_I6DIR|, |IFNOT_I6DIR|,
-|ENDIF_I6DIR|, |IFTRUE_I6DIR|, |CONSTANT_I6DIR|, |ARRAY_I6DIR|, |GLOBAL_I6DIR|,
-|STUB_I6DIR|, |ROUTINE_I6DIR|, |ATTRIBUTE_I6DIR|, |PROPERTY_I6DIR|, |VERB_I6DIR|,
-|FAKEACTION_I6DIR|, |OBJECT_I6DIR|, |DEFAULT_I6DIR|, |MYSTERY_I6DIR|.
+one. The annotation can be any of: |IFDEF_PLM|, |IFNDEF_PLM|, |IFNOT_PLM|,
+|ENDIF_PLM|, |IFTRUE_PLM|, |CONSTANT_PLM|, |ARRAY_PLM|, |GLOBAL_PLM|,
+|STUB_PLM|, |ROUTINE_PLM|, |ATTRIBUTE_PLM|, |PROPERTY_PLM|, |VERB_PLM|,
+|FAKEACTION_PLM|, |OBJECT_PLM|, |DEFAULT_PLM|, |MYSTERY_PLM|.
 
 Convention. Inform creates no splats, except as needed to convert
 Inform 6 template code into inter, in the code-generator.

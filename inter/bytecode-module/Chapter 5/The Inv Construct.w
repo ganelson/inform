@@ -277,9 +277,8 @@ void InvInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 @h Writing to textual Inter syntax.
 
 =
-void InvInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
-	switch (P->W.instruction[METHOD_INV_IFLD]) {
+void InvInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
+	switch (InvInstruction::method(P)) {
 		case PRIMITIVE_INVMETH:
 			WRITE("inv %S", InterSymbol::identifier(InvInstruction::primitive(P)));
 			break;
@@ -296,27 +295,39 @@ void InvInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *
 @h Access functions.
 
 =
+inter_ti InvInstruction::method(inter_tree_node *P) {
+	if (P->W.instruction[ID_IFLD] == INV_IST) return P->W.instruction[METHOD_INV_IFLD];
+	return 0;
+}
+
 inter_symbol *InvInstruction::function(inter_tree_node *P) {
 	if ((P->W.instruction[ID_IFLD] == INV_IST) &&
-		(P->W.instruction[METHOD_INV_IFLD] == FUNCTION_INVMETH))
+		(InvInstruction::method(P) == FUNCTION_INVMETH))
 		return InterSymbolsTable::symbol_from_ID_at_node(P, INVOKEE_INV_IFLD);
 	return NULL;
 }
 
 inter_symbol *InvInstruction::primitive(inter_tree_node *P) {
 	if ((P->W.instruction[ID_IFLD] == INV_IST) &&
-		(P->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH))
+		(InvInstruction::method(P) == PRIMITIVE_INVMETH))
 		return InterSymbolsTable::global_symbol_from_ID_at_node(P, INVOKEE_INV_IFLD);
 	return NULL;
 }
 
-@ In //Transmigration//, it's necessary to change primitive invocations so that
-they refer to primitives in the destination tree, not the origin. So:
+text_stream *InvInstruction::opcode(inter_tree_node *P) {
+	if ((P->W.instruction[ID_IFLD] == INV_IST) &&
+		(InvInstruction::method(P) == OPCODE_INVMETH))
+		return Inode::ID_to_text(P, P->W.instruction[INVOKEE_INV_IFLD]);
+	return NULL;
+}
+
+@ In //Transmigration// and for various other reasons, it's necessary to change
+an invocation into a primitive, or a different primitive. So:
 
 =
 void InvInstruction::write_primitive(inter_tree *I, inter_tree_node *P, inter_symbol *prim) {
-	if ((P->W.instruction[ID_IFLD] == INV_IST) &&
-		(P->W.instruction[METHOD_INV_IFLD] == PRIMITIVE_INVMETH))
+	if (P->W.instruction[ID_IFLD] == INV_IST) {
+		P->W.instruction[METHOD_INV_IFLD] = PRIMITIVE_INVMETH;
 		P->W.instruction[INVOKEE_INV_IFLD] = InterSymbolsTable::id_from_symbol(I, NULL, prim);
-	else internal_error("wrote primitive to non-primitive invocation");
+	} else internal_error("wrote primitive to non-invocation");
 }

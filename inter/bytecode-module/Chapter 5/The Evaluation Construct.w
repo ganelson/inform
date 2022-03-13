@@ -61,7 +61,6 @@ void EvaluationInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @h Writing to textual Inter syntax.
 
 =
-void EvaluationInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void EvaluationInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	WRITE("evaluation");
 }

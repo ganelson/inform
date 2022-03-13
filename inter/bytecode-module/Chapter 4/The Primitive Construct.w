@@ -108,8 +108,7 @@ void PrimitiveInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @h Writing to textual Inter syntax.
 
 =
-void PrimitiveInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void PrimitiveInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *prim_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PRIM_IFLD);
 	WRITE("primitive %S", InterSymbol::identifier(prim_name));
 	for (int i=SIGNATURE_PRIM_IFLD; i<P->W.extent-1; i++) {

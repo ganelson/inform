@@ -73,8 +73,7 @@ void PragmaInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_lin
 @h Writing to textual Inter syntax.
 
 =
-void PragmaInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void PragmaInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	WRITE("pragma %S ", PragmaInstruction::target(P));
 	TextualInter::write_text(OUT, PragmaInstruction::content(P));
 }

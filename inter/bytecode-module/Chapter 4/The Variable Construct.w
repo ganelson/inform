@@ -92,8 +92,7 @@ void VariableInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @h Writing to textual Inter syntax.
 
 =
-void VariableInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void VariableInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *var_s = VariableInstruction::variable(P);
 	WRITE("variable ");
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_VAR_IFLD);

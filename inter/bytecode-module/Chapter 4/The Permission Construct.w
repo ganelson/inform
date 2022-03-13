@@ -149,8 +149,7 @@ void PermissionInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @h Writing to textual Inter syntax.
 
 =
-void PermissionInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void PermissionInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *prop_s = PermissionInstruction::property(P);
 	inter_symbol *owner_s = PermissionInstruction::owner(P);
 	inter_symbol *storage_s = PermissionInstruction::storage(P);

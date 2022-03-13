@@ -69,8 +69,7 @@ void DefaultValueInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @h Writing to textual Inter syntax.
 
 =
-void DefaultValueInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void DefaultValueInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *typename = InterSymbolsTable::symbol_from_ID_at_node(P, TYPE_DEF_IFLD);
 	WRITE("defaultvalue %S = ", InterSymbol::identifier(typename));
 	TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_DEF_IFLD), FALSE);

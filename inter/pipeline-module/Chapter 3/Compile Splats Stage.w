@@ -9,12 +9,12 @@ We expect that |resolve-conditional-compilation| has already run, so that the
 splats in the tree represent directives which all have definite effect. With
 the conditional compilation splats gone, we are left with these:
 = (text)
-ARRAY_I6DIR         ATTRIBUTE_I6DIR     CONSTANT_I6DIR      DEFAULT_I6DIR
-FAKEACTION_I6DIR    GLOBAL_I6DIR        OBJECT_I6DIR        PROPERTY_I6DIR
-ROUTINE_I6DIR       STUB_I6DIR          VERB_I6DIR
+ARRAY_PLM         ATTRIBUTE_PLM     CONSTANT_PLM      DEFAULT_PLM
+FAKEACTION_PLM    GLOBAL_PLM        OBJECT_PLM        PROPERTY_PLM
+ROUTINE_PLM       STUB_PLM          VERB_PLM
 =
 And we must turn those into splatless Inter code with the same effect. In some
-cases, notably |ROUTINE_I6DIR| which contains an entire Inform 6-notation
+cases, notably |ROUTINE_PLM| which contains an entire Inform 6-notation
 function definition, that is quite a lot of work.
 
 =
@@ -24,9 +24,9 @@ void CompileSplatsStage::create_pipeline_stage(void) {
 
 @ We divide the task up into three traverses:
 
-(1) |PROPERTY_I6DIR|, |ATTRIBUTE_I6DIR|, |ROUTINE_I6DIR|, |STUB_I6DIR|;
-(2) |DEFAULT_I6DIR|, |CONSTANT_I6DIR|, |FAKEACTION_I6DIR|, |OBJECT_I6DIR|, |VERB_I6DIR|, |ARRAY_I6DIR|;
-(3) |GLOBAL_I6DIR|.
+(1) |PROPERTY_PLM|, |ATTRIBUTE_PLM|, |ROUTINE_PLM|, |STUB_PLM|;
+(2) |DEFAULT_PLM|, |CONSTANT_PLM|, |FAKEACTION_PLM|, |OBJECT_PLM|, |VERB_PLM|, |ARRAY_PLM|;
+(3) |GLOBAL_PLM|.
 
 =
 int CompileSplatsStage::run(pipeline_step *step) {
@@ -72,14 +72,14 @@ void CompileSplatsStage::visitor1(inter_tree *I, inter_tree_node *P, void *state
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
 	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
-		inter_ti directive = P->W.instruction[PLM_SPLAT_IFLD];
+		inter_ti directive = SplatInstruction::plm(P);
 		switch (directive) {
-			case PROPERTY_I6DIR:
-			case ATTRIBUTE_I6DIR:
+			case PROPERTY_PLM:
+			case ATTRIBUTE_PLM:
 				@<Assimilate definition@>;
 				break;
-			case ROUTINE_I6DIR:
-			case STUB_I6DIR:
+			case ROUTINE_PLM:
+			case STUB_PLM:
 				@<Assimilate routine@>;
 				break;
 		}
@@ -96,14 +96,14 @@ void CompileSplatsStage::visitor2(inter_tree *I, inter_tree_node *P, void *state
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
 	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
-		inter_ti directive = P->W.instruction[PLM_SPLAT_IFLD];
+		inter_ti directive = SplatInstruction::plm(P);
 		switch (directive) {
-			case ARRAY_I6DIR:
-			case DEFAULT_I6DIR:
-			case CONSTANT_I6DIR:
-			case FAKEACTION_I6DIR:
-			case OBJECT_I6DIR:
-			case VERB_I6DIR:
+			case ARRAY_PLM:
+			case DEFAULT_PLM:
+			case CONSTANT_PLM:
+			case FAKEACTION_PLM:
+			case OBJECT_PLM:
+			case VERB_PLM:
 				@<Assimilate definition@>;
 				break;
 		}
@@ -120,9 +120,9 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
 	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
-		inter_ti directive = P->W.instruction[PLM_SPLAT_IFLD];
+		inter_ti directive = SplatInstruction::plm(P);
 		switch (directive) {
-			case GLOBAL_I6DIR:
+			case GLOBAL_PLM:
 				@<Assimilate definition@>;
 				break;
 		}
@@ -156,12 +156,12 @@ keyword |Constant| or similar. Note that an |Object| declaration does not
 meaningfully have a value, even though a third token is present.
 
 @<Parse text of splat for identifier and value@> =
-	text_stream *S = Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]);
-	if (directive == VERB_I6DIR) {
+	text_stream *S = SplatInstruction::splatter(P);
+	if (directive == VERB_PLM) {
 		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *;%c*")) {
 			identifier = I"assim_gv"; value = mr.exp[0];
 		} else {
-			LOG("Unable to parse start of VERB_I6DIR: '%S'\n", S); proceed = FALSE;
+			LOG("Unable to parse start of VERB_PLM: '%S'\n", S); proceed = FALSE;
 		}
 	} else {
 		if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(--> *%c*?) *;%c*")) {
@@ -177,7 +177,7 @@ meaningfully have a value, even though a third token is present.
 		} else {
 			LOG("Unable to parse start of constant: '%S'\n", S); proceed = FALSE;
 		}
-		if (directive == OBJECT_I6DIR) value = NULL;
+		if (directive == OBJECT_PLM) value = NULL;
 	}
 	Str::trim_all_white_space_at_end(identifier);
 
@@ -186,7 +186,7 @@ in the form |Fake_Action ##Bake|, but are not. The constant created by |Fake_Act
 is nevertheless |##Bake|, so we take care of that here.
 
 @<Insert sharps in front of fake action identifiers@> =
-	if (directive == FAKEACTION_I6DIR) {
+	if (directive == FAKEACTION_PLM) {
 		text_stream *old = identifier;
 		identifier = Str::new();
 		WRITE_TO(identifier, "##%S", old);
@@ -207,9 +207,9 @@ have been removed from the tree by the |resolve-conditional-compilation| stage.
 But in fact it's easier to handle it here.
 
 @<Perhaps compile something from this splat@> =
-	if (directive == DEFAULT_I6DIR) {
+	if (directive == DEFAULT_PLM) {
 		if (Wiring::find_socket(I, identifier) == NULL) {
-			directive = CONSTANT_I6DIR;
+			directive = CONSTANT_PLM;
 			@<Definitely compile something from this splat@>;
 		}
 	} else {
@@ -218,8 +218,8 @@ But in fact it's easier to handle it here.
 
 @ So if we're here, we have reduced the possibilities to:
 = (text)
-ARRAY_I6DIR         ATTRIBUTE_I6DIR     CONSTANT_I6DIR      FAKEACTION_I6DIR
-GLOBAL_I6DIR        OBJECT_I6DIR        PROPERTY_I6DIR		VERB_I6DIR
+ARRAY_PLM         ATTRIBUTE_PLM     CONSTANT_PLM      FAKEACTION_PLM
+GLOBAL_PLM        OBJECT_PLM        PROPERTY_PLM		VERB_PLM
 =
 We basically do the same thing in all of these cases: decide where to put
 the result, declare a symbol for it, and then define that symbol.
@@ -230,7 +230,7 @@ the result, declare a symbol for it, and then define that symbol.
 
 	inter_symbol *made_s;
 	@<Declare the Inter symbol for what we will shortly make@>;
-	if ((directive == ATTRIBUTE_I6DIR) || (directive == PROPERTY_I6DIR))
+	if ((directive == ATTRIBUTE_PLM) || (directive == PROPERTY_PLM))
 	    @<Declare a property ID symbol to go with it@>;
 	
 	@<Make a definition for made_s@>;
@@ -256,19 +256,19 @@ definitions are not so simple.
 
 @<Work out what submodule to put this new material into@> =
 	switch (directive) {
-		case VERB_I6DIR:
+		case VERB_PLM:
 			subpackage_type = RunningPipelines::get_symbol(step, command_ptype_RPSYM);
 			submodule_name = I"commands"; suffix = NULL; break;
-		case ARRAY_I6DIR:
+		case ARRAY_PLM:
 			submodule_name = I"arrays"; suffix = I"arr"; break;
-		case CONSTANT_I6DIR:
-		case FAKEACTION_I6DIR:
-		case OBJECT_I6DIR:
+		case CONSTANT_PLM:
+		case FAKEACTION_PLM:
+		case OBJECT_PLM:
 			submodule_name = I"constants"; suffix = I"con"; break;
-		case GLOBAL_I6DIR:
+		case GLOBAL_PLM:
 			submodule_name = I"variables"; suffix = I"var"; break;
-		case ATTRIBUTE_I6DIR:
-		case PROPERTY_I6DIR:
+		case ATTRIBUTE_PLM:
+		case PROPERTY_PLM:
 			subpackage_type = RunningPipelines::get_symbol(step, property_ptype_RPSYM);
 			submodule_name = I"properties"; suffix = I"prop"; break;
 	}
@@ -301,10 +301,10 @@ not already there.
 		Wiring::wire_to(made_s, NULL);
 	}
 	SymbolAnnotation::set_b(made_s, ASSIMILATED_IANN, 1);
-	if (directive == FAKEACTION_I6DIR) SymbolAnnotation::set_b(made_s, FAKE_ACTION_IANN, TRUE);
-	if (directive == OBJECT_I6DIR) SymbolAnnotation::set_b(made_s, OBJECT_IANN, TRUE);
-	if (directive == ATTRIBUTE_I6DIR) SymbolAnnotation::set_b(made_s, EITHER_OR_IANN, TRUE);
-	if (directive == VERB_I6DIR) InterSymbol::set_flag(made_s, MAKE_NAME_UNIQUE_ISYMF);
+	if (directive == FAKEACTION_PLM) SymbolAnnotation::set_b(made_s, FAKE_ACTION_IANN, TRUE);
+	if (directive == OBJECT_PLM) SymbolAnnotation::set_b(made_s, OBJECT_IANN, TRUE);
+	if (directive == ATTRIBUTE_PLM) SymbolAnnotation::set_b(made_s, EITHER_OR_IANN, TRUE);
+	if (directive == VERB_PLM) InterSymbol::set_flag(made_s, MAKE_NAME_UNIQUE_ISYMF);
 
 @<Declare a property ID symbol to go with it@> =
 	inter_bookmark *IBM = &content_at;
@@ -317,22 +317,22 @@ not already there.
 @<Make a definition for made_s@> =
 	inter_bookmark *IBM = &content_at;
 	switch (directive) {
-		case CONSTANT_I6DIR:
-		case FAKEACTION_I6DIR:
-		case OBJECT_I6DIR:
+		case CONSTANT_PLM:
+		case FAKEACTION_PLM:
+		case OBJECT_PLM:
 			@<Make a scalar constant in Inter@>;
 			break;
-		case GLOBAL_I6DIR:
+		case GLOBAL_PLM:
 			@<Make a global variable in Inter@>;
 			break;
-		case PROPERTY_I6DIR:
+		case PROPERTY_PLM:
 			@<Make a general property in Inter@>;
 			break;
-		case ATTRIBUTE_I6DIR:
+		case ATTRIBUTE_PLM:
 			@<Make an either-or property in Inter@>;
 			break;
-		case VERB_I6DIR:
-		case ARRAY_I6DIR:
+		case VERB_PLM:
+		case ARRAY_PLM:
 		    @<Make a list constant in Inter@>;
 			break;
 	}
@@ -377,7 +377,7 @@ not already there.
 
 	inter_pair val_pile[MAX_ASSIMILATED_ARRAY_ENTRIES];
 	int no_assimilated_array_entries = 0;
-	if (directive == ARRAY_I6DIR)
+	if (directive == ARRAY_PLM)
 		@<Compile the string of array contents into the pile of values@>
 	else
 		@<Compile the string of command grammar contents into the pile of values@>;
@@ -393,7 +393,7 @@ first to work out which of the several array formats this is (|TABLEARRAY_IANN|
 in this instance), then the contents |2 (-56) 17 "hey, I am typeless" ' '|.
 
 @<Work out the format of the array and the string of contents@> =
-	if (directive == ARRAY_I6DIR) {
+	if (directive == ARRAY_PLM) {
 		if (Regexp::match(&mr, value, L" *--> *(%c*?) *")) {
 			conts = mr.exp[0]; annot = INVALID_IANN;
 		} else if (Regexp::match(&mr, value, L" *-> *(%c*?) *")) {
@@ -546,7 +546,7 @@ equating it to a function definition elsewhere.
 @<Assimilate a value@> =
 	if (Str::len(value) > 0) {
 		val = CompileSplatsStage::value(step, IBM, value,
-			(directive == VERB_I6DIR)?TRUE:FALSE);
+			(directive == VERB_PLM)?TRUE:FALSE);
 	} else {
 		val = InterValuePairs::number(0);
 	}
@@ -589,15 +589,15 @@ in this section.
 @<Assimilate routine@> =
 	text_stream *identifier = NULL, *local_var_names = NULL, *body = NULL;
 	match_results mr = Regexp::create_mr();
-	if (P->W.instruction[PLM_SPLAT_IFLD] == ROUTINE_I6DIR) @<Parse the routine header@>;
-	if (P->W.instruction[PLM_SPLAT_IFLD] == STUB_I6DIR) @<Parse the stub directive@>;
+	if (SplatInstruction::plm(P) == ROUTINE_PLM) @<Parse the routine header@>;
+	if (SplatInstruction::plm(P) == STUB_PLM) @<Parse the stub directive@>;
 	if (identifier) {
 		@<Turn this into a function package@>;
 		NodePlacement::remove(P);
 	}
 
 @<Parse the routine header@> =
-	text_stream *S = Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]);
+	text_stream *S = SplatInstruction::splatter(P);
 	if (Regexp::match(&mr, S, L" *%[ *(%i+) *; *(%c*)")) {
 		identifier = mr.exp[0]; body = mr.exp[1];
 	} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {
@@ -626,7 +626,7 @@ provided. So this is no longer a useful directive, and it continues to be
 supported only to avoid throwing errors.
 
 @<Parse the stub directive@> =
-	text_stream *S = Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]);
+	text_stream *S = SplatInstruction::splatter(P);
 	if (Regexp::match(&mr, S, L" *%C+ *(%i+) (%d+);%c*")) {
 		identifier = mr.exp[0];
 		local_var_names = Str::new();

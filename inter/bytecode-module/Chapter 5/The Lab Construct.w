@@ -75,8 +75,7 @@ void LabInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 @h Writing to textual Inter syntax.
 
 =
-void LabInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void LabInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *label_s = LabInstruction::label_symbol(P);
 	WRITE("lab %S", InterSymbol::identifier(label_s));
 }

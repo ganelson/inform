@@ -78,8 +78,7 @@ void LabelInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line
 @h Writing to textual Inter syntax.
 
 =
-void LabelInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void LabelInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *label_s = LabelInstruction::label_symbol(P);
 	WRITE("%S", InterSymbol::identifier(label_s));
 }

@@ -78,8 +78,7 @@ void AssemblyInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @h Writing to textual Inter syntax.
 
 =
-void AssemblyInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void AssemblyInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_ti which = AssemblyInstruction::which_marker(P);
 	switch (which) {
 		case ASM_ARROW_ASMMARKER:      WRITE("assembly store_to"); break;

@@ -37,7 +37,6 @@ These we offer to the generator to deal with as it likes:
 
 =
 void VanillaCode::label(code_generation *gen, inter_tree_node *P) {
-	inter_package *pack = InterPackage::container(P);
 	inter_symbol *lab_name = LabelInstruction::label_symbol(P);
 	Generators::place_label(gen, InterSymbol::identifier(lab_name));
 }
@@ -51,7 +50,7 @@ language, can only in fact occur in void context, but we won't assume that here.
 void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 	int void_context = FALSE;
 	if (Inode::get_level(P) == gen->void_level) void_context = TRUE;
-	switch (P->W.instruction[METHOD_INV_IFLD]) {
+	switch (InvInstruction::method(P)) {
 		case PRIMITIVE_INVMETH: @<Invoke a primitive@>; break;
 		case FUNCTION_INVMETH: @<Invoke a function@>; break;
 		case OPCODE_INVMETH: @<Invoke an assembly-language opcode@>; break;
@@ -70,8 +69,7 @@ void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 	VanillaFunctions::invoke_function(gen, function_s, P, void_context);
 
 @<Invoke an assembly-language opcode@> =
-	inter_ti ID = P->W.instruction[INVOKEE_INV_IFLD];
-	text_stream *opcode_name = Inode::ID_to_text(P, ID);
+	text_stream *opcode_name = InvInstruction::opcode(P);
 	inter_tree_node *operands[MAX_OPERANDS_IN_INTER_ASSEMBLY], *label = NULL;
 	int operand_count = 0;
 	int label_sense = NOT_APPLICABLE;
@@ -110,7 +108,9 @@ a variable here.
 
 =
 void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) {
-	inter_pair val = InterValuePairs::get(P, VAL1_VAL_IFLD);
+	inter_pair val = InterValuePairs::undef();
+	if (P->W.instruction[ID_IFLD] == VAL_IST) val = ValInstruction::value(P);
+	if (P->W.instruction[ID_IFLD] == REF_IST) val = RefInstruction::value(P);
 	if (InterValuePairs::is_symbolic(val)) {
 		inter_symbol *named_s = InterValuePairs::to_symbol_at(val, P);
 		if ((Str::eq(InterSymbol::trans(named_s), I"self")) ||
@@ -132,7 +132,6 @@ function body.
 
 =
 void VanillaCode::lab(code_generation *gen, inter_tree_node *P) {
-	inter_package *pack = InterPackage::container(P);
 	inter_symbol *label_s = LabInstruction::label_symbol(P);
 	if (label_s == NULL) internal_error("unknown label in lab in Inter tree");
 	Generators::evaluate_label(gen, InterSymbol::identifier(label_s));

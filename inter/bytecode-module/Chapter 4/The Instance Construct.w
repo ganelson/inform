@@ -128,8 +128,7 @@ void InstanceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 @h Writing to textual Inter syntax.
 
 =
-void InstanceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void InstanceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *instance_s = InstanceInstruction::instance(P);
 	inter_symbol *typename_s = InterSymbolsTable::symbol_from_ID_at_node(P, TYPE_INST_IFLD);
 	WRITE("instance %S %S = ", InterSymbol::identifier(instance_s), InterSymbol::identifier(typename_s));

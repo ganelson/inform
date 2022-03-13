@@ -259,15 +259,10 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 	if (Str::len(R) > 0) {
 		inter_ti I6_dir = 0;
 		@<Find directive@>;
-		if (I6_dir != WHITESPACE_I6DIR) {
+		if (I6_dir != WHITESPACE_PLM) {
 			inter_bookmark *IBM = (inter_bookmark *) docket->state;
 			PUT_TO(R, '\n');
-			inter_ti SID = InterWarehouse::create_text(
-				InterBookmark::warehouse(IBM), InterBookmark::package(IBM));
-			text_stream *textual_storage =
-				InterWarehouse::get_text(InterBookmark::warehouse(IBM), SID);
-			Str::copy(textual_storage, R);
-			Produce::guard(SplatInstruction::new(IBM, SID, I6_dir,
+			Produce::guard(SplatInstruction::new(IBM, R, I6_dir,
 				(inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
 		}
 		Str::clear(R);
@@ -275,36 +270,36 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 }
 
 @ A |SPLAT_IST| node should record which sort of Inform 6 directive it contains,
-assuming we know that. We will recognise only the following set, and use |MYSTERY_I6DIR|
+assuming we know that. We will recognise only the following set, and use |MYSTERY_PLM|
 for anything else. If the splat doesn't appear to be a directive at all, we leave
 the directive type as 0.
 
 @<Find directive@> =
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, R, L" *(%C+) *(%c*);%c*")) {
-		     if (Str::eq_insensitive(mr.exp[0], I"#ifdef"))      I6_dir = IFDEF_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"#ifndef"))     I6_dir = IFNDEF_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"#iftrue"))     I6_dir = IFTRUE_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"#ifnot"))      I6_dir = IFNOT_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"#endif"))      I6_dir = ENDIF_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"#stub"))       I6_dir = STUB_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"Constant"))    I6_dir = CONSTANT_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"Global"))      I6_dir = GLOBAL_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"Array"))       I6_dir = ARRAY_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"["))           I6_dir = ROUTINE_I6DIR;
+		     if (Str::eq_insensitive(mr.exp[0], I"#ifdef"))      I6_dir = IFDEF_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"#ifndef"))     I6_dir = IFNDEF_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"#iftrue"))     I6_dir = IFTRUE_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"#ifnot"))      I6_dir = IFNOT_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"#endif"))      I6_dir = ENDIF_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"#stub"))       I6_dir = STUB_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Constant"))    I6_dir = CONSTANT_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Global"))      I6_dir = GLOBAL_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Array"))       I6_dir = ARRAY_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"["))           I6_dir = ROUTINE_PLM;
 
-		else if (Str::eq_insensitive(mr.exp[0], I"Attribute"))   I6_dir = ATTRIBUTE_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"Property"))    I6_dir = PROPERTY_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"Verb"))        I6_dir = VERB_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"Fake_action")) I6_dir = FAKEACTION_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"Object"))      I6_dir = OBJECT_I6DIR;
-		else if (Str::eq_insensitive(mr.exp[0], I"Default"))     I6_dir = DEFAULT_I6DIR;
-		else I6_dir = MYSTERY_I6DIR;
+		else if (Str::eq_insensitive(mr.exp[0], I"Attribute"))   I6_dir = ATTRIBUTE_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Property"))    I6_dir = PROPERTY_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Verb"))        I6_dir = VERB_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Fake_action")) I6_dir = FAKEACTION_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Object"))      I6_dir = OBJECT_PLM;
+		else if (Str::eq_insensitive(mr.exp[0], I"Default"))     I6_dir = DEFAULT_PLM;
+		else I6_dir = MYSTERY_PLM;
 	} else {
-		int I6_dir = WHITESPACE_I6DIR;
+		I6_dir = WHITESPACE_PLM;
 		LOOP_THROUGH_TEXT(pos, R)
 			if (Characters::is_whitespace(Str::get(pos)) == FALSE)
-				I6_dir = 0;
+				I6_dir = MYSTERY_PLM;
 	}
 	Regexp::dispose_of(&mr);
 

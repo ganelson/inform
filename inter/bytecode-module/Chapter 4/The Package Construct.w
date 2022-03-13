@@ -163,8 +163,7 @@ void PackageInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_li
 @h Writing to textual Inter syntax.
 
 =
-void PackageInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P,
-	inter_error_message **E) {
+void PackageInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_package *pack = PackageInstruction::at_this_head(P);
 	inter_symbol *ptype_name =
 		InterSymbolsTable::global_symbol_from_ID_at_node(P, PTYPE_PACKAGE_IFLD);
