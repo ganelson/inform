@@ -43,7 +43,7 @@ int EliminateRedundantOperationsStage::run(pipeline_step *step) {
 }
 
 void EliminateRedundantOperationsStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
+	if (Inode::is(P, PACKAGE_IST)) {
 		inter_package *pack = PackageInstruction::at_this_head(P);
 		if (InterPackage::is_a_function_body(pack)) {
 			inter_tree_node *D = InterPackage::head(pack);
@@ -62,7 +62,7 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 	}
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P) {
 		int iden[2] = { -1, -1 };
-		if ((F->W.instruction[ID_IFLD] == INV_IST) &&
+		if ((Inode::is(F, INV_IST)) &&
 			(InvInstruction::method(F) == PRIMITIVE_INVMETH)) {
 			inter_symbol *prim = InvInstruction::primitive(F);
 			if (Primitives::to_BIP(P->tree, prim) == OR_BIP)     { iden[1] = 0; }
@@ -82,7 +82,7 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 	operands[1] = InterTree::second_child(F);
 	if ((operands[0]) && (operands[1])) {
 		for (int i = 0; i < 2; i++) {
-			if ((iden[i] >= 0) && (operands[i]->W.instruction[ID_IFLD] == VAL_IST)) {
+			if ((iden[i] >= 0) && (Inode::is(operands[i], VAL_IST))) {
 				inter_pair val = ValInstruction::value(operands[i]);
 				if ((InterValuePairs::is_number(val)) &&
 					(InterValuePairs::to_number(val) == (inter_ti) iden[i])) {

@@ -23,10 +23,10 @@ void CommentInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |comment| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of an |comment| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d TEXT_COMMENT_IFLD 2
+@d TEXT_COMMENT_IFLD (DATA_IFLD + 0)
 
 =
 inter_error_message *CommentInstruction::new(inter_bookmark *IBM, text_stream *commentary,

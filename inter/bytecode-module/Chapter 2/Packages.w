@@ -173,7 +173,7 @@ inter_symbol *InterPackage::find_symbol_slowly(inter_package *P, text_stream *S)
 	if (found) return found;
 	inter_tree_node *D = InterPackage::head(P);
 	LOOP_THROUGH_INTER_CHILDREN(C, D) {
-		if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
+		if (Inode::is(C, PACKAGE_IST)) {
 			inter_package *Q = PackageInstruction::at_this_head(C);
 			found = InterPackage::find_symbol_slowly(Q, S);
 			if (found) return found;

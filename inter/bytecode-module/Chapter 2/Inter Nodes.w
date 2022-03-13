@@ -354,9 +354,26 @@ void Inode::extend_instruction_by(inter_tree_node *F, inter_ti by) {
 	if (by > 0) F->W = InterWarehouse::enlarge_floor_space(F->W, by);
 }
 
-@ Every instruction has a level:
+@ Every instruction has its identity and a level:
 
 =
+int Inode::is(inter_tree_node *P, inter_ti construct_ID) {
+	if (P == NULL) return FALSE;
+	if (P->W.instruction[ID_IFLD] == construct_ID) return TRUE;
+	return FALSE;
+}
+
+int Inode::isnt(inter_tree_node *P, inter_ti construct_ID) {
+	if (P == NULL) return TRUE;
+	if (P->W.instruction[ID_IFLD] == construct_ID) return FALSE;
+	return TRUE;
+}
+
+inter_ti Inode::get_construct_ID(inter_tree_node *P) {
+	if (P == NULL) return 0;
+	return P->W.instruction[ID_IFLD];
+}
+
 int Inode::get_level(inter_tree_node *P) {
 	if (P == NULL) return 0;
 	return (int) P->W.instruction[LEVEL_IFLD];

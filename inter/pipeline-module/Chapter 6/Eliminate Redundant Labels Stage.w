@@ -82,7 +82,7 @@ void EliminateRedundantLabelsStage::traverse_code_tree(inter_tree_node *P) {
 We look for such lines.
 
 @<Examine a line of code in the function@> =
-	if (F->W.instruction[ID_IFLD] == LAB_IST) {
+	if (Inode::is(F, LAB_IST)) {
 		inter_symbol *lab = LabInstruction::label_symbol(F);
 		InterSymbol::set_flag(lab, USED_MARK_ISYMF);
 	}

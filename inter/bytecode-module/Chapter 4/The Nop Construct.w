@@ -18,7 +18,7 @@ void NopInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a |nop| instruction consists only of the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|.
+compulsory words -- see //Inter Nodes//.
 
 =
 inter_error_message *NopInstruction::new(inter_bookmark *IBM, inter_ti level,

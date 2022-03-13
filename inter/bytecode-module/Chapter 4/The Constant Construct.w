@@ -20,18 +20,18 @@ void ConstantInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |comment| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by these fields. Note
+In bytecode, the frame of an |comment| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by these fields. Note
 that the data then occupies a varying number of further data pairs, depending on
 the value of |FORMAT_CONST_IFLD|. As a result, the length of a |constant|
 instruction can be any odd number of words from 5 upwards.
 
 The simplest version, though, has a single value. The length is then 7 words.
 
-@d DEFN_CONST_IFLD 2
-@d TYPE_CONST_IFLD 3
-@d FORMAT_CONST_IFLD 4
-@d DATA_CONST_IFLD 5
+@d DEFN_CONST_IFLD   (DATA_IFLD + 0)
+@d TYPE_CONST_IFLD   (DATA_IFLD + 1)
+@d FORMAT_CONST_IFLD (DATA_IFLD + 2)
+@d DATA_CONST_IFLD   (DATA_IFLD + 3)
 
 =
 inter_error_message *ConstantInstruction::new(inter_bookmark *IBM, inter_symbol *S,
@@ -276,7 +276,7 @@ inter_package *ConstantInstruction::function_body_to_package(inter_symbol *con_s
 	if (con_symbol == NULL) return NULL;
 	inter_tree_node *D = InterSymbol::definition(con_symbol);
 	if (D == NULL) return NULL;
-	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return NULL;
+	if (Inode::isnt(D, CONSTANT_IST)) return NULL;
 	if (D->W.instruction[FORMAT_CONST_IFLD] != CONST_LIST_FORMAT_NONE) return NULL;
 	inter_pair val = ConstantInstruction::constant(D);
 	return InterValuePairs::to_package(Inode::tree(D), val);
@@ -291,34 +291,34 @@ int ConstantInstruction::is_function_body(inter_symbol *con_symbol) {
 
 =
 inter_ti ConstantInstruction::list_format(inter_tree_node *P) {
-	if ((P) && (P->W.instruction[ID_IFLD] == CONSTANT_IST))
+	if (Inode::is(P, CONSTANT_IST))
 		return P->W.instruction[FORMAT_CONST_IFLD];
 	return CONST_LIST_FORMAT_NONE;
 }
 
 inter_pair ConstantInstruction::constant(inter_tree_node *P) {
-	if ((P) && (P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
+	if ((Inode::is(P, CONSTANT_IST)) &&
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE))
 		return InterValuePairs::get(P, DATA_CONST_IFLD);
 	return InterValuePairs::undef();
 }
 
 void ConstantInstruction::set_constant(inter_tree_node *P, inter_pair val) {
-	if ((P) && (P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
+	if ((Inode::is(P, CONSTANT_IST)) &&
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE))
 		InterValuePairs::set(P, DATA_CONST_IFLD, val);
 	else internal_error("tried to set value for non-constant");
 }
 
 int ConstantInstruction::list_len(inter_tree_node *P) {
-	if ((P == NULL) || (P->W.instruction[ID_IFLD] != CONSTANT_IST) ||
+	if ((P == NULL) || (Inode::isnt(P, CONSTANT_IST)) ||
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE))
 		return 0;
 	return (P->W.extent - DATA_CONST_IFLD)/2;
 }
 
 inter_pair ConstantInstruction::list_entry(inter_tree_node *P, int i) {
-	if ((P == NULL) || (P->W.instruction[ID_IFLD] != CONSTANT_IST) ||
+	if ((P == NULL) || (Inode::isnt(P, CONSTANT_IST)) ||
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE))
 		return InterValuePairs::undef();
 	int field = DATA_CONST_IFLD + i*2;
@@ -354,7 +354,7 @@ int ConstantInstruction::constant_depth(inter_symbol *con) {
 int ConstantInstruction::constant_depth_r(inter_symbol *con) {
 	int total = 1;
 	inter_tree_node *D = InterSymbol::definition(con);
-	if ((D) && (D->W.instruction[ID_IFLD] == CONSTANT_IST))
+	if ((Inode::is(D, CONSTANT_IST)))
 		for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
 			inter_pair val = InterValuePairs::get(D, i);
 			if (InterValuePairs::is_symbolic(val)) {
@@ -378,8 +378,7 @@ not be relied on.
 =
 int ConstantInstruction::evaluate_to_int(inter_symbol *S) {
 	inter_tree_node *P = InterSymbol::definition(S);
-	if ((P) &&
-		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
+	if ((Inode::is(P, CONSTANT_IST)) &&
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE)) {
 		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
 		if (InterValuePairs::is_number(val))
@@ -437,8 +436,7 @@ We can even change the value of a numerical constant.
 =
 int ConstantInstruction::set_int(inter_symbol *S, int N) {
 	inter_tree_node *P = InterSymbol::definition(S);
-	if ((P) &&
-		(P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
+	if ((Inode::is(P, CONSTANT_IST)) &&
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE)) {
 		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
 		if (InterValuePairs::is_number(val)) {

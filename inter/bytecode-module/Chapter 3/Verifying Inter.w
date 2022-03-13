@@ -126,7 +126,7 @@ inter_error_message *VerifyingInter::SID(inter_package *owner, inter_tree_node *
 	if (InterSymbol::misc_but_undefined(S)) return NULL;
 	if (D == NULL) return Inode::error(P, I"undefined symbol", InterSymbol::identifier(S));
 	if ((construct != INVALID_IST) &&
-		(D->W.instruction[ID_IFLD] != construct) &&
+		(Inode::isnt(D, construct)) &&
 		(InterSymbol::defined_elsewhere(S) == FALSE) &&
 		(InterSymbol::misc_but_undefined(S) == FALSE))
 		return Inode::error(P, I"symbol of wrong type", InterSymbol::identifier(S));
@@ -146,7 +146,7 @@ inter_error_message *VerifyingInter::GSID_field(inter_tree_node *P, int field,
 	if (InterSymbol::defined_elsewhere(S)) return NULL;
 	if (InterSymbol::misc_but_undefined(S)) return NULL;
 	if (D == NULL) return Inode::error(P, I"undefined global symbol", InterSymbol::identifier(S));
-	if ((D->W.instruction[ID_IFLD] != construct) &&
+	if ((Inode::isnt(D, construct)) &&
 		(InterSymbol::defined_elsewhere(S) == FALSE) &&
 		(InterSymbol::misc_but_undefined(S) == FALSE))
 		return Inode::error(P, I"global symbol of wrong type", InterSymbol::identifier(S));
@@ -169,9 +169,9 @@ inter_error_message *VerifyingInter::POID_field(inter_package *owner, inter_tree
 	if (InterSymbol::misc_but_undefined(S)) return NULL;
 	if (D == NULL)
 		return Inode::error(P, I"undefined property-owner symbol", InterSymbol::identifier(S));
-	if ((D->W.instruction[ID_IFLD] != TYPENAME_IST) &&
+	if ((Inode::isnt(D, TYPENAME_IST)) &&
 		(InterSymbol::defined_elsewhere(S) == FALSE) &&
-		(D->W.instruction[ID_IFLD] != INSTANCE_IST) &&
+		(Inode::isnt(D, INSTANCE_IST)) &&
 		(InterSymbol::misc_but_undefined(S) == FALSE))
 			return Inode::error(P, I"property-owner symbol of wrong type",
 				InterSymbol::identifier(S));

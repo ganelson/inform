@@ -38,7 +38,7 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 			INDENT;
 			InterPackage::unmark_all();
 			LOOP_THROUGH_INTER_CHILDREN(C, P)
-				if (C->W.instruction[ID_IFLD] == PACKAGE_IST)
+				if (Inode::is(C, PACKAGE_IST))
 					@<Inventory this subpackage of a submodule@>;
 			InterPackage::unmark_all();
 			OUTDENT;
@@ -65,7 +65,7 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	WRITE("  %S ", InterSymbol::identifier(ptype));
 	int N = 0;
 	LOOP_THROUGH_INTER_CHILDREN(D, P) {
-		if (D->W.instruction[ID_IFLD] == PACKAGE_IST) {
+		if (Inode::is(D, PACKAGE_IST)) {
 			inter_package *R2 = PackageInstruction::at_this_head(D);
 			if (InterPackage::type(R2) == ptype) N++;
 		}
@@ -75,7 +75,7 @@ void InvTarget::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	int pos = Str::len(InterSymbol::identifier(ptype)) + 7;
 	int first = TRUE;
 	LOOP_THROUGH_INTER_CHILDREN(D, P) {
-		if (D->W.instruction[ID_IFLD] == PACKAGE_IST) {
+		if (Inode::is(D, PACKAGE_IST)) {
 			inter_package *R2 = PackageInstruction::at_this_head(D);
 			if (InterPackage::type(R2) == ptype) {
 				text_stream *name = Metadata::optional_textual(R2, I"^name");

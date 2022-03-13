@@ -57,12 +57,12 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P)
 		DetectIndirectCallsStage::traverse_code_tree(F, step);
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(F, P)
-		if ((F->W.instruction[ID_IFLD] == INV_IST) &&
+		if ((Inode::is(F, INV_IST)) &&
 			(InvInstruction::method(F) == FUNCTION_INVMETH)) {
 			inter_symbol *var = InvInstruction::function(F);
 			if (var == NULL) internal_error("bad invocation");
 			inter_tree_node *D = var->definition;
-			if ((D) && (D->W.instruction[ID_IFLD] == VARIABLE_IST))
+			if (Inode::is(D, VARIABLE_IST))
 				@<This is an invocation of a variable not a function@>;
 		}
 }
@@ -82,5 +82,4 @@ void DetectIndirectCallsStage::traverse_code_tree(inter_tree_node *P, pipeline_s
 @<Insert the variable as the new first argument@> =
 	inter_bookmark IBM = InterBookmark::first_child_of(F);
 	inter_pair val = InterValuePairs::symbolic(&IBM, var);
-	ValInstruction::new(&IBM, InterTypes::unchecked(),
-		(int) F->W.instruction[LEVEL_IFLD] + 1, val, NULL); 
+	ValInstruction::new(&IBM, InterTypes::unchecked(), Inode::get_level(F) + 1, val, NULL); 

@@ -20,13 +20,13 @@ void VariableInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |propertyvalue| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |propertyvalue| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d DEFN_VAR_IFLD 2
-@d TYPE_VAR_IFLD 3
-@d VAL1_VAR_IFLD 4
-@d VAL2_VAR_IFLD 5
+@d DEFN_VAR_IFLD (DATA_IFLD + 0)
+@d TYPE_VAR_IFLD (DATA_IFLD + 1)
+@d VAL1_VAR_IFLD (DATA_IFLD + 2)
+@d VAL2_VAR_IFLD (DATA_IFLD + 3)
 
 =
 inter_error_message *VariableInstruction::new(inter_bookmark *IBM, inter_symbol *var_s,
@@ -106,12 +106,12 @@ void VariableInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 =
 inter_symbol *VariableInstruction::variable(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != VARIABLE_IST) return NULL;
+	if (Inode::isnt(P, VARIABLE_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_VAR_IFLD);
 }
 
 inter_pair VariableInstruction::value(inter_tree_node *P) {
 	if (P == NULL) return InterValuePairs::undef();
-	if (P->W.instruction[ID_IFLD] != VARIABLE_IST) return InterValuePairs::undef();
+	if (Inode::isnt(P, VARIABLE_IST)) return InterValuePairs::undef();
 	return InterValuePairs::get(P, VAL1_VAR_IFLD);
 }

@@ -19,10 +19,10 @@ void InsertInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |insert| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of an |insert| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d TEXT_INSERT_IFLD 2
+@d TEXT_INSERT_IFLD (DATA_IFLD + 0)
 
 =
 inter_error_message *InsertInstruction::new(inter_bookmark *IBM,
@@ -78,6 +78,6 @@ void InsertInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_nod
 =
 text_stream *InsertInstruction::insertion(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != INSERT_IST) return NULL;
+	if (Inode::isnt(P, INSERT_IST)) return NULL;
 	return Inode::ID_to_text(P, P->W.instruction[TEXT_INSERT_IFLD]);
 }

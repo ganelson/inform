@@ -19,15 +19,15 @@ void InstanceInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |instance| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of an |instance| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d DEFN_INST_IFLD 2
-@d TYPE_INST_IFLD 3
-@d VAL1_INST_IFLD 4
-@d VAL2_INST_IFLD 5
-@d PROP_LIST_INST_IFLD 6
-@d PERM_LIST_INST_IFLD 7
+@d DEFN_INST_IFLD      (DATA_IFLD + 0)
+@d TYPE_INST_IFLD      (DATA_IFLD + 1)
+@d VAL1_INST_IFLD      (DATA_IFLD + 2)
+@d VAL2_INST_IFLD      (DATA_IFLD + 3)
+@d PROP_LIST_INST_IFLD (DATA_IFLD + 4)
+@d PERM_LIST_INST_IFLD (DATA_IFLD + 5)
 
 =
 inter_error_message *InstanceInstruction::new(inter_bookmark *IBM, inter_symbol *S,
@@ -141,15 +141,14 @@ void InstanceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 =
 inter_symbol *InstanceInstruction::instance(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != INSTANCE_IST) return NULL;
+	if (Inode::isnt(P, INSTANCE_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_INST_IFLD);
 }
 
 int InstanceInstruction::is(inter_symbol *instance_s) {
 	if (instance_s == NULL) return FALSE;
 	inter_tree_node *D = InterSymbol::definition(instance_s);
-	if (D == NULL) return FALSE;
-	if (D->W.instruction[ID_IFLD] == INSTANCE_IST) return TRUE;
+	if (Inode::is(D, INSTANCE_IST)) return TRUE;
 	return FALSE;
 }
 

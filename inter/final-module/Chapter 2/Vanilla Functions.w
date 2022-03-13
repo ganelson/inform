@@ -120,7 +120,7 @@ in some way by the generator. (As indeed the C generator does, mangling this to
 =
 void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
 	vanilla_function *vf) {
-	if (P->W.instruction[ID_IFLD] == LOCAL_IST) {
+	if (Inode::is(P, LOCAL_IST)) {
 		inter_symbol *local_s = LocalInstruction::variable(P);
 		ADD_TO_LINKED_LIST(InterSymbol::trans(local_s), text_stream, vf->locals);
 		if (Str::eq(InterSymbol::identifier(local_s), I"_vararg_count"))
@@ -141,7 +141,7 @@ void VanillaFunctions::declare_function(code_generation *gen, inter_symbol *fn_s
 void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 	inter_tree_node *P, int void_context) {
 	inter_tree_node *D = fn_s->definition;
-	if ((D) && (D->W.instruction[ID_IFLD] == CONSTANT_IST) &&
+	if ((Inode::is(D, CONSTANT_IST)) &&
 		(ConstantInstruction::list_format(D) == CONST_LIST_FORMAT_NONE)) {
 		inter_pair val = ConstantInstruction::constant(D);
 		if (InterValuePairs::is_symbolic(val)) {

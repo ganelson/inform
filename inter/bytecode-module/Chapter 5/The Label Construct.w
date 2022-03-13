@@ -20,10 +20,10 @@ void LabelInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |label| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |label| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d DEFN_LABEL_IFLD 2
+@d DEFN_LABEL_IFLD (DATA_IFLD + 0)
 
 =
 inter_error_message *LabelInstruction::new(inter_bookmark *IBM, inter_symbol *lab_name,
@@ -46,10 +46,6 @@ void LabelInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_pac
 	if (InterSymbol::is_label(lab_name) == FALSE) {
 		*E = Inode::error(P, I"not a label",
 			(lab_name)?(InterSymbol::identifier(lab_name)):NULL);
-		return;
-	}
-	if (P->W.instruction[LEVEL_IFLD] < 1) {
-		*E = Inode::error(P, I"label with bad level", NULL);
 		return;
 	}
 }
@@ -88,6 +84,6 @@ void LabelInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 =
 inter_symbol *LabelInstruction::label_symbol(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != LABEL_IST) return NULL;
+	if (Inode::isnt(P, LABEL_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_LABEL_IFLD);
 }

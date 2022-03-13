@@ -191,8 +191,8 @@ void InterTree::traverse_root_only(inter_tree *from,
 	void *state, int filter) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(P, from->root_node) {
 		if ((filter == 0) ||
-			((filter > 0) && (P->W.instruction[ID_IFLD] == (inter_ti) filter)) ||
-			((filter < 0) && (P->W.instruction[ID_IFLD] != (inter_ti) -filter)))
+			((filter > 0) && (Inode::is(P, (inter_ti) filter))) ||
+			((filter < 0) && (Inode::isnt(P, (inter_ti) -filter))))
 			(*visitor)(from, P, state);
 	}
 }
@@ -212,8 +212,8 @@ void InterTree::traverse(inter_tree *from,
 	if (mp) {
 		inter_tree_node *D = InterPackage::head(mp);
 		if ((filter == 0) ||
-			((filter > 0) && (D->W.instruction[ID_IFLD] == (inter_ti) filter)) ||
-			((filter < 0) && (D->W.instruction[ID_IFLD] != (inter_ti) -filter)))
+			((filter > 0) && (Inode::is(D, (inter_ti) filter))) ||
+			((filter < 0) && (Inode::isnt(D, (inter_ti) -filter))))
 			(*visitor)(from, D, state);
 		InterTree::traverse_r(from, D, visitor, state, filter);
 	}
@@ -223,8 +223,8 @@ void InterTree::traverse_r(inter_tree *from, inter_tree_node *P,
 	void *state, int filter) {
 	PROTECTED_LOOP_THROUGH_INTER_CHILDREN(C, P) {
 		if ((filter == 0) ||
-			((filter > 0) && (C->W.instruction[ID_IFLD] == (inter_ti) filter)) ||
-			((filter < 0) && (C->W.instruction[ID_IFLD] != (inter_ti) -filter)))
+			((filter > 0) && (Inode::is(C, (inter_ti) filter))) ||
+			((filter < 0) && (Inode::isnt(C, (inter_ti) -filter))))
 			(*visitor)(from, C, state);
 		InterTree::traverse_r(from, C, visitor, state, filter);
 	}
@@ -238,7 +238,7 @@ a package.
 		(pack)?(LargeScale::package_type(pack->package_head->tree, ptype)):NULL;
 	if (pack)
 		LOOP_THROUGH_INTER_CHILDREN(C, InterPackage::head(pack))
-			if ((C->W.instruction[ID_IFLD] == PACKAGE_IST) &&
+			if ((Inode::is(C, PACKAGE_IST)) &&
 				(entry = PackageInstruction::at_this_head(C)) &&
 				(InterPackage::type(entry) == pack##wanted))
 

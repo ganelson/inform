@@ -17,12 +17,12 @@ void DefaultValueInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |defaultvalue| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of an |defaultvalue| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d TYPE_DEF_IFLD 2
-@d VAL1_DEF_IFLD 3
-@d VAL2_DEF_IFLD 4
+@d TYPE_DEF_IFLD (DATA_IFLD + 0)
+@d VAL1_DEF_IFLD (DATA_IFLD + 1)
+@d VAL2_DEF_IFLD (DATA_IFLD + 2)
 
 =
 inter_error_message *DefaultValueInstruction::new(inter_bookmark *IBM,

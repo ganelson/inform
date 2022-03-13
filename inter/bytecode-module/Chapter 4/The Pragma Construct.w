@@ -18,11 +18,11 @@ void PragmaInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |pragma| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |pragma| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d TARGET_PRAGMA_IFLD 2
-@d TEXT_PRAGMA_IFLD 3
+@d TARGET_PRAGMA_IFLD (DATA_IFLD + 0)
+@d TEXT_PRAGMA_IFLD   (DATA_IFLD + 1)
 
 =
 inter_error_message *PragmaInstruction::new(inter_bookmark *IBM, text_stream *target_name,
@@ -83,12 +83,12 @@ void PragmaInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_nod
 =
 text_stream *PragmaInstruction::target(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != PRAGMA_IST) return NULL;
+	if (Inode::isnt(P, PRAGMA_IST)) return NULL;
 	return Inode::ID_to_text(P, P->W.instruction[TARGET_PRAGMA_IFLD]);
 }
 
 text_stream *PragmaInstruction::content(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != PRAGMA_IST) return NULL;
+	if (Inode::isnt(P, PRAGMA_IST)) return NULL;
 	return Inode::ID_to_text(P, P->W.instruction[TEXT_PRAGMA_IFLD]);
 }

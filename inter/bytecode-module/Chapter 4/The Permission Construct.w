@@ -17,12 +17,12 @@ void PermissionInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |permission| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |permission| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d PROP_PERM_IFLD 2
-@d OWNER_PERM_IFLD 3
-@d STORAGE_PERM_IFLD 4
+@d PROP_PERM_IFLD    (DATA_IFLD + 0)
+@d OWNER_PERM_IFLD   (DATA_IFLD + 1)
+@d STORAGE_PERM_IFLD (DATA_IFLD + 2)
 
 =
 inter_error_message *PermissionInstruction::new(inter_bookmark *IBM, inter_symbol *prop_s,
@@ -163,19 +163,19 @@ void PermissionInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree
 =
 inter_symbol *PermissionInstruction::property(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != PERMISSION_IST) return NULL;
+	if (Inode::isnt(P, PERMISSION_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, PROP_PERM_IFLD);
 }
 
 inter_symbol *PermissionInstruction::owner(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != PERMISSION_IST) return NULL;
+	if (Inode::isnt(P, PERMISSION_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, OWNER_PERM_IFLD);
 }
 
 inter_symbol *PermissionInstruction::storage(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != PERMISSION_IST) return NULL;
+	if (Inode::isnt(P, PERMISSION_IST)) return NULL;
 	if (P->W.instruction[STORAGE_PERM_IFLD] == 0) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, STORAGE_PERM_IFLD);
 }

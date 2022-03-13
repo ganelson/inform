@@ -19,11 +19,11 @@ void LocalInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |local| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |local| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d DEFN_LOCAL_IFLD 2
-@d TYPE_LOCAL_IFLD 3
+@d DEFN_LOCAL_IFLD (DATA_IFLD + 0)
+@d TYPE_LOCAL_IFLD (DATA_IFLD + 1)
 
 =
 inter_error_message *LocalInstruction::new(inter_bookmark *IBM, inter_symbol *variable_s,
@@ -85,6 +85,6 @@ void LocalInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 =
 inter_symbol *LocalInstruction::variable(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != LOCAL_IST) return NULL;
+	if (Inode::isnt(P, LOCAL_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_LOCAL_IFLD);
 }

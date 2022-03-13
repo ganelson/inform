@@ -20,11 +20,11 @@ void CastInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |cast| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |cast| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d TO_KIND_CAST_IFLD 2
-@d FROM_KIND_CAST_IFLD 3
+@d TO_KIND_CAST_IFLD   (DATA_IFLD + 0)
+@d FROM_KIND_CAST_IFLD (DATA_IFLD + 1)
 
 =
 inter_error_message *CastInstruction::new(inter_bookmark *IBM, inter_type from_type,

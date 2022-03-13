@@ -108,12 +108,11 @@ void EliminateRedundantMatterStage::preserve(inter_package *pack, pipeline_step 
 		rationale = I"it's an _action subpackage";
 	if (rationale) {
 		inter_tree_node *D = InterPackage::head(pack);
-		LOOP_THROUGH_INTER_CHILDREN(C, D) {
-			if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
+		LOOP_THROUGH_INTER_CHILDREN(C, D)
+			if (Inode::is(C, PACKAGE_IST)) {
 				inter_package *P = PackageInstruction::at_this_head(C);
 				EliminateRedundantMatterStage::preserve(P, step, pack, rationale);
 			}
-		}
 	}
 
 @ Whatever has not been preserved, is now destroyed.

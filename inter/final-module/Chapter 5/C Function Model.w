@@ -556,7 +556,7 @@ int CFunctionModel::invoke_primitive(code_generation *gen, inter_ti bip, inter_t
 
 @<Generate primitive for externalcall@> =
 	inter_tree_node *N = InterTree::first_child(P);
-	if ((N) && (N->W.instruction[ID_IFLD] == VAL_IST)) {
+	if (Inode::is(N, VAL_IST)) {
 		inter_pair val = ValInstruction::value(N);
 		if (InterValuePairs::is_text(val)) {
 			text_stream *text = InterValuePairs::to_text(gen->from, val);

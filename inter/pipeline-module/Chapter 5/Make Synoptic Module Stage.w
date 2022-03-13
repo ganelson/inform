@@ -177,13 +177,13 @@ tree_inventory *MakeSynopticModuleStage::take_inventory(inter_tree *I) {
 
 void MakeSynopticModuleStage::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	tree_inventory *inv = (tree_inventory *) state;
-	if (P->W.instruction[ID_IFLD] == CONSTANT_IST) {
+	if (Inode::is(P, CONSTANT_IST)) {
 		inter_symbol *con_s =
 			InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 		if (SymbolAnnotation::get_b(con_s, TEXT_LITERAL_IANN))
 			InterNodeList::array_add(inv->text_nodes, P);
 	}
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
+	if (Inode::is(P, PACKAGE_IST)) {
 		inter_package *pack = PackageInstruction::at_this_head(P);
 		inter_symbol *ptype = InterPackage::type(pack);
 		tree_inventory_item *item;

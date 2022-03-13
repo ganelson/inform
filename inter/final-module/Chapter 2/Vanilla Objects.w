@@ -541,7 +541,7 @@ int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *pr
 		if (owner_s == NULL) internal_error("bad owner");
 		inter_symbol *owner_kind_s = NULL;
 		inter_tree_node *D = InterSymbol::definition(owner_s);
-		if ((D) && (D->W.instruction[ID_IFLD] == INSTANCE_IST)) {
+		if (Inode::is(D, INSTANCE_IST)) {
 			owner_kind_s = InstanceInstruction::typename(owner_s);
 		} else {
 			owner_kind_s = owner_s;

@@ -227,7 +227,8 @@ inter_bookmark NodePlacement::to_position(inter_tree_node *C, inter_bookmark IBM
 
 @<Nodes placed after may need to bubble up or down@> =
 	inter_tree_node *R = IBM.R;
-	inter_ti C_level = C->W.instruction[LEVEL_IFLD], R_level = R->W.instruction[LEVEL_IFLD];
+	inter_ti C_level = (inter_ti) Inode::get_level(C);
+	inter_ti R_level = (inter_ti) Inode::get_level(R);
 	while (C_level < R_level) {
 		R = InterTree::parent(R);
 		R_level--;

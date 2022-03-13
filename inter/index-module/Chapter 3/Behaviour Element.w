@@ -28,7 +28,7 @@ void BehaviourElement::render(OUTPUT_STREAM, index_session *session) {
 			Localisation::italic(OUT, LD, I"Index.Elements.Bh.Defined");
 			inter_tree_node *D = InterPackage::head(pack);
 			LOOP_THROUGH_INTER_CHILDREN(C, D) {
-				if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
+				if (Inode::is(C, PACKAGE_IST)) {
 					inter_package *entry = PackageInstruction::at_this_head(C);
 					if (InterPackage::type(entry) ==
 						LargeScale::package_type(I, I"_named_action_pattern_entry")) {

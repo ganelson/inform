@@ -21,11 +21,11 @@ void SplatInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |splat| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |splat| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d MATTER_SPLAT_IFLD 2
-@d PLM_SPLAT_IFLD 3
+@d MATTER_SPLAT_IFLD (DATA_IFLD + 0)
+@d PLM_SPLAT_IFLD    (DATA_IFLD + 1)
 
 =
 inter_error_message *SplatInstruction::new(inter_bookmark *IBM, text_stream *splatter,
@@ -92,13 +92,13 @@ void SplatInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 =
 inter_ti SplatInstruction::plm(inter_tree_node *P) {
 	if (P == NULL) return 0;
-	if (P->W.instruction[ID_IFLD] != SPLAT_IST) return 0;
+	if (Inode::isnt(P, SPLAT_IST)) return 0;
 	return P->W.instruction[PLM_SPLAT_IFLD];
 }
 
 text_stream *SplatInstruction::splatter(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != SPLAT_IST) return NULL;
+	if (Inode::isnt(P, SPLAT_IST)) return NULL;
 	return Inode::ID_to_text(P, P->W.instruction[MATTER_SPLAT_IFLD]);
 }
 

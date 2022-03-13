@@ -65,13 +65,13 @@ is being compiled.
 void CompileSplatsStage::visitor1(inter_tree *I, inter_tree_node *P, void *state) {
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
+	if (Inode::is(P, PACKAGE_IST)) {
 		inter_package *pack = PackageInstruction::at_this_head(P);
 		inter_symbol *ptype = InterPackage::type(pack);
 		if (Str::eq(InterSymbol::identifier(ptype), I"_module"))
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
-	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
+	if (Inode::is(P, SPLAT_IST)) {
 		inter_ti directive = SplatInstruction::plm(P);
 		switch (directive) {
 			case PROPERTY_PLM:
@@ -89,13 +89,13 @@ void CompileSplatsStage::visitor1(inter_tree *I, inter_tree_node *P, void *state
 void CompileSplatsStage::visitor2(inter_tree *I, inter_tree_node *P, void *state) {
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
+	if (Inode::is(P, PACKAGE_IST)) {
 		inter_package *pack = PackageInstruction::at_this_head(P);
 		inter_symbol *ptype = InterPackage::type(pack);
 		if (Str::eq(InterSymbol::identifier(ptype), I"_module"))
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
-	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
+	if (Inode::is(P, SPLAT_IST)) {
 		inter_ti directive = SplatInstruction::plm(P);
 		switch (directive) {
 			case ARRAY_PLM:
@@ -113,13 +113,13 @@ void CompileSplatsStage::visitor2(inter_tree *I, inter_tree_node *P, void *state
 void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state) {
 	compile_splats_state *css = (compile_splats_state *) state;
 	pipeline_step *step = css->from_step;
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
+	if (Inode::is(P, PACKAGE_IST)) {
 		inter_package *pack = PackageInstruction::at_this_head(P);
 		inter_symbol *ptype = InterPackage::type(pack);
 		if (Str::eq(InterSymbol::identifier(ptype), I"_module"))
 			step->pipeline->ephemera.assimilation_modules[step->tree_argument] = pack;
 	}
-	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
+	if (Inode::is(P, SPLAT_IST)) {
 		inter_ti directive = SplatInstruction::plm(P);
 		switch (directive) {
 			case GLOBAL_PLM:

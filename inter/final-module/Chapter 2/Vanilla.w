@@ -49,7 +49,7 @@ void Vanilla::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
 	inter_package *outer = InterPackage::container(P);
 	if ((outer == NULL) || (InterPackage::is_a_function_body(outer) == FALSE)) {
-		switch (P->W.instruction[ID_IFLD]) {
+		switch (Inode::get_construct_ID(P)) {
 			case CONSTANT_IST:
 			case VARIABLE_IST:
 			case SPLAT_IST:
@@ -82,7 +82,7 @@ It is so often used recursively that the following abbreviation macros are helpf
 
 =
 void Vanilla::node(code_generation *gen, inter_tree_node *P) {
-	switch (P->W.instruction[ID_IFLD]) {
+	switch (Inode::get_construct_ID(P)) {
 		case CONSTANT_IST:      VanillaConstants::constant(gen, P); break;
 
 		case LABEL_IST:         VanillaCode::label(gen, P); break;

@@ -18,10 +18,10 @@ void AssemblyInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |assembly| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of an |assembly| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d WHICH_ASSEMBLY_IFLD 2
+@d WHICH_ASSEMBLY_IFLD (DATA_IFLD + 0)
 
 =
 inter_error_message *AssemblyInstruction::new(inter_bookmark *IBM, inter_ti which,

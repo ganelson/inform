@@ -18,12 +18,12 @@ void RefInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |ref| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |ref| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d TYPE_REF_IFLD 2
-@d VAL1_REF_IFLD 3
-@d VAL2_REF_IFLD 4
+@d TYPE_REF_IFLD (DATA_IFLD + 0)
+@d VAL1_REF_IFLD (DATA_IFLD + 1)
+@d VAL2_REF_IFLD (DATA_IFLD + 2)
 
 =
 inter_error_message *RefInstruction::new(inter_bookmark *IBM, inter_type ref_type,
@@ -86,6 +86,6 @@ void RefInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *
 =
 inter_pair RefInstruction::value(inter_tree_node *P) {
 	if (P == NULL) return InterValuePairs::undef();
-	if (P->W.instruction[ID_IFLD] != REF_IST) return InterValuePairs::undef();
+	if (Inode::isnt(P, REF_IST)) return InterValuePairs::undef();
 	return InterValuePairs::get(P, VAL1_REF_IFLD);
 }

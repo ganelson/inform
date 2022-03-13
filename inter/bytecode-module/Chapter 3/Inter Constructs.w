@@ -181,7 +181,7 @@ void InterInstruction::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_
 				InterErrors::issue(E);
 				InterErrors::backtrace(STDERR, C);
 			}
-			inter_ti level = C->W.instruction[LEVEL_IFLD];
+			inter_ti level = (inter_ti) Inode::get_level(C);
 			inter_ti level_in_package = level;
 			if (tls->package) level_in_package -= tls->package_level;
 
@@ -193,7 +193,7 @@ void InterInstruction::tree_lint_r(inter_tree *I, inter_tree_node *P, tree_lint_
 					IC->construct_name, level_in_package, IC->min_level, IC->max_level);
 				InterErrors::issue(InterErrors::plain(M, eloc));
 			}
-			if (C->W.instruction[ID_IFLD] == PACKAGE_IST) {
+			if (Inode::is(C, PACKAGE_IST)) {
 				tree_lint_state inner_tls;
 				inner_tls.package = PackageInstruction::at_this_head(C);
 				inner_tls.package_level = level + 1;
@@ -363,7 +363,7 @@ inter_construct *InterInstruction::get_construct_for_ID(inter_ti ID) {
 =
 inter_error_message *InterInstruction::get_construct(inter_tree_node *P, inter_construct **to) {
 	if (P == NULL) return Inode::error(P, I"invalid node", NULL);
-	inter_construct *IC = InterInstruction::get_construct_for_ID(P->W.instruction[ID_IFLD]);
+	inter_construct *IC = InterInstruction::get_construct_for_ID(Inode::get_construct_ID(P));
 	if (IC == NULL) return Inode::error(P, I"no such construct", NULL);
 	if (to) *to = IC;
 	return NULL;
@@ -472,7 +472,7 @@ VOID_METHOD_TYPE(CONSTRUCT_WRITE_MTID, inter_construct *IC, text_stream *OUT,
 	inter_tree_node *P)
 
 inter_error_message *InterInstruction::write_construct_text(OUTPUT_STREAM, inter_tree_node *P) {
-	if (P->W.instruction[ID_IFLD] == NOP_IST) return NULL;
+	if (Inode::is(P, NOP_IST)) return NULL;
 	return InterInstruction::write_construct_text_allowing_nop(OUT, P);
 }
 
@@ -481,10 +481,10 @@ inter_error_message *InterInstruction::write_construct_text_allowing_nop(OUTPUT_
 	inter_construct *IC = NULL;
 	inter_error_message *E = InterInstruction::get_construct(P, &IC);
 	if (E) return E;
-	for (inter_ti L=0; L<P->W.instruction[LEVEL_IFLD]; L++) WRITE("\t");
+	for (inter_ti L=0; L<(inter_ti) Inode::get_level(P); L++) WRITE("\t");
 	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P);
 	WRITE("\n");
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST)
+	if (Inode::is(P, PACKAGE_IST))
 		PackageInstruction::write_plugs_and_sockets(OUT, P);
 	return NULL;
 }

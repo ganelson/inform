@@ -20,12 +20,12 @@ void PropertyInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |property| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |property| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d DEFN_PROP_IFLD 2
-@d TYPE_PROP_IFLD 3
-@d PERM_LIST_PROP_IFLD 4
+@d DEFN_PROP_IFLD      (DATA_IFLD + 0)
+@d TYPE_PROP_IFLD      (DATA_IFLD + 1)
+@d PERM_LIST_PROP_IFLD (DATA_IFLD + 2)
 
 =
 inter_error_message *PropertyInstruction::new(inter_bookmark *IBM, inter_symbol *prop_s,
@@ -97,7 +97,7 @@ void PropertyInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 =
 inter_symbol *PropertyInstruction::property(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != PROPERTY_IST) return NULL;
+	if (Inode::isnt(P, PROPERTY_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PROP_IFLD);
 }
 

@@ -118,7 +118,7 @@ code_generation *CodeGen::new_generation(pipeline_step *step, filename *F,
 @ =
 void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
-	switch (P->W.instruction[ID_IFLD]) {
+	switch (Inode::get_construct_ID(P)) {
 		case VARIABLE_IST: {
 			inter_symbol *var_name = VariableInstruction::variable(P);
 			ADD_TO_LINKED_LIST(var_name, inter_symbol, gen->global_variables);

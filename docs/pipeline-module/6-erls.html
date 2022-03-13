@@ -178,7 +178,7 @@ We look for such lines.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">F</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">W</span><span class="plain-syntax">.</span><span class="identifier-syntax">instruction</span><span class="plain-syntax">[</span><span class="identifier-syntax">ID_IFLD</span><span class="plain-syntax">] == </span><span class="identifier-syntax">LAB_IST</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Inode::is</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="identifier-syntax">LAB_IST</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lab</span><span class="plain-syntax"> = </span><span class="identifier-syntax">LabInstruction::label_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">InterSymbol::set_flag</span><span class="plain-syntax">(</span><span class="identifier-syntax">lab</span><span class="plain-syntax">, </span><span class="identifier-syntax">USED_MARK_ISYMF</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>

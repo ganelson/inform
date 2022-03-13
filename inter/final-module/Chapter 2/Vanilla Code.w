@@ -85,13 +85,13 @@ need to.
 
 @<Scan the operands@> =
 	LOOP_THROUGH_INTER_CHILDREN(F, P) {
-		if (F->W.instruction[ID_IFLD] == ASSEMBLY_IST) {
+		if (Inode::is(F, ASSEMBLY_IST)) {
 			if (AssemblyInstruction::which_marker(F) == ASM_NEG_ASMMARKER) {
 				label_sense = FALSE;
 				continue;
 			}
 		}
-		if (F->W.instruction[ID_IFLD] == LAB_IST) {
+		if (Inode::is(F, LAB_IST)) {
 			if (label_sense == NOT_APPLICABLE) label_sense = TRUE;
 			label = F; continue;
 		}
@@ -109,13 +109,12 @@ a variable here.
 =
 void VanillaCode::val_or_ref(code_generation *gen, inter_tree_node *P, int ref) {
 	inter_pair val = InterValuePairs::undef();
-	if (P->W.instruction[ID_IFLD] == VAL_IST) val = ValInstruction::value(P);
-	if (P->W.instruction[ID_IFLD] == REF_IST) val = RefInstruction::value(P);
+	if (Inode::is(P, VAL_IST)) val = ValInstruction::value(P);
+	if (Inode::is(P, REF_IST)) val = RefInstruction::value(P);
 	if (InterValuePairs::is_symbolic(val)) {
 		inter_symbol *named_s = InterValuePairs::to_symbol_at(val, P);
 		if ((Str::eq(InterSymbol::trans(named_s), I"self")) ||
-			((named_s->definition) &&
-				(named_s->definition->W.instruction[ID_IFLD] == VARIABLE_IST))) {
+			(Inode::is(named_s->definition, VARIABLE_IST))) {
 			Generators::evaluate_variable(gen, named_s, ref);
 		} else {
 			Generators::compile_literal_symbol(gen, named_s);

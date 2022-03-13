@@ -82,13 +82,13 @@ and in the destination tree afterwards.
 	det.insertion_point = InterBookmark::at_end_of_this_package(destination);
 	inter_tree_node *prims = NULL;
 	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
-		if (F->W.instruction[ID_IFLD] == PRIMITIVE_IST)
+		if (Inode::is(F, PRIMITIVE_IST))
 			prims = F;
 	if (prims == NULL) internal_error("destination has no primitives");
 	det.primitives_point = InterBookmark::after_this_node(prims);
 	inter_tree_node *ptypes = NULL;
 	LOOP_THROUGH_INTER_CHILDREN(F, destination->package_head->tree->root_node)
-		if (F->W.instruction[ID_IFLD] == PACKAGETYPE_IST)
+		if (Inode::is(F, PACKAGETYPE_IST))
 			ptypes = F;
 	if (ptypes == NULL) internal_error("destination has no package types");
 	det.ptypes_point = InterBookmark::after_this_node(ptypes);
@@ -230,7 +230,7 @@ void Transmigration::correct_migrant(inter_tree *I, inter_tree_node *P, void *st
 	P->tree = I;
 	if (primitive)
 		@<Transfer from a primitive in the origin tree to one in the destination@>;
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST)
+	if (Inode::is(P, PACKAGE_IST))
 		@<This is the headnode of a subpackage of migrant@>;
 }
 
@@ -389,7 +389,7 @@ those separately (see above).
 =
 void Transmigration::correct_origin(inter_tree *I, inter_tree_node *P, void *state) {
 	transmigration_details *det = (transmigration_details *) state;
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST) {
+	if (Inode::is(P, PACKAGE_IST)) {
 		inter_package *pack = PackageInstruction::at_this_head(P);
 		if (InterPackage::is_a_linkage_package(pack) == FALSE) {
 			inter_symbols_table *T = InterPackage::scope(pack);

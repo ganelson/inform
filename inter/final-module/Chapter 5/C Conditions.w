@@ -75,7 +75,7 @@ the latter would be universally true, which is useless.
 =
 void CConditions::comparison_r(code_generation *gen,
 	inter_ti bip, inter_tree_node *K, inter_tree_node *X, inter_tree_node *Y, int depth) {
-	if (Y->W.instruction[ID_IFLD] == INV_IST) {
+	if (Inode::is(Y, INV_IST)) {
 		if (InvInstruction::method(Y) == PRIMITIVE_INVMETH) {
 			inter_symbol *prim = InvInstruction::primitive(Y);
 			inter_ti ybip = Primitives::to_BIP(gen->from, prim);

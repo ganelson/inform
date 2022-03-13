@@ -85,7 +85,7 @@ void ResolveConditionalsStage::visitor(inter_tree *I, inter_tree_node *P, void *
 	rcc_state *state = (rcc_state *) v_state;
 	int compile_this = TRUE;
 	for (int i=0; i<state->cc_sp; i++) if (state->cc_stack[i] == FALSE) compile_this = FALSE;
-	if (P->W.instruction[ID_IFLD] == SPLAT_IST) {
+	if (Inode::is(P, SPLAT_IST)) {
 		text_stream *S = SplatInstruction::splatter(P);
 		switch (SplatInstruction::plm(P)) {
 			case CONSTANT_PLM:

@@ -19,18 +19,18 @@ void TypenameInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |typename| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by these. The eventual
+In bytecode, the frame of a |typename| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by these. The eventual
 length is flexible: there can be any number of operands from 0 upwards.
 
-@d DEFN_TYPENAME_IFLD 2
-@d ENUM_RANGE_TYPENAME_IFLD 3
-@d NO_INSTANCES_TYPENAME_IFLD 4
-@d SUPER_TYPENAME_IFLD 5
-@d PERM_LIST_TYPENAME_IFLD 6
-@d PLIST_TYPENAME_IFLD 7
-@d CONSTRUCTOR_TYPENAME_IFLD 8
-@d OPERANDS_TYPENAME_IFLD 9
+@d DEFN_TYPENAME_IFLD         (DATA_IFLD + 0)
+@d ENUM_RANGE_TYPENAME_IFLD   (DATA_IFLD + 1)
+@d NO_INSTANCES_TYPENAME_IFLD (DATA_IFLD + 2)
+@d SUPER_TYPENAME_IFLD        (DATA_IFLD + 3)
+@d PERM_LIST_TYPENAME_IFLD    (DATA_IFLD + 4)
+@d PLIST_TYPENAME_IFLD        (DATA_IFLD + 5)
+@d CONSTRUCTOR_TYPENAME_IFLD  (DATA_IFLD + 6)
+@d OPERANDS_TYPENAME_IFLD     (DATA_IFLD + 7)
 
 =
 inter_error_message *TypenameInstruction::new(inter_bookmark *IBM, inter_symbol *typename_s,
@@ -168,7 +168,7 @@ void TypenameInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 =
 inter_symbol *TypenameInstruction::typename(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != TYPENAME_IST) return NULL;
+	if (Inode::isnt(P, TYPENAME_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_TYPENAME_IFLD);
 }
 
@@ -255,8 +255,7 @@ int TypenameInstruction::instance_count(inter_symbol *typename_s) {
 int TypenameInstruction::is(inter_symbol *typename_s) {
 	if (typename_s == NULL) return FALSE;
 	inter_tree_node *D = InterSymbol::definition(typename_s);
-	if (D == NULL) return FALSE;
-	if (D->W.instruction[ID_IFLD] == TYPENAME_IST) return TRUE;
+	if (Inode::is(D, TYPENAME_IST)) return TRUE;
 	return FALSE;
 }
 

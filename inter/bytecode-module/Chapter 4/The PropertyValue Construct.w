@@ -18,13 +18,13 @@ void PropertyValueInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |propertyvalue| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |propertyvalue| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d PROP_PVAL_IFLD 2
-@d OWNER_PVAL_IFLD 3
-@d VAL1_PVAL_IFLD 4
-@d VAL2_PVAL_IFLD 5
+@d PROP_PVAL_IFLD  (DATA_IFLD + 0)
+@d OWNER_PVAL_IFLD (DATA_IFLD + 1)
+@d VAL1_PVAL_IFLD  (DATA_IFLD + 2)
+@d VAL2_PVAL_IFLD  (DATA_IFLD + 3)
 
 =
 inter_error_message *PropertyValueInstruction::new(inter_bookmark *IBM,
@@ -144,8 +144,8 @@ inter_symbol *PropertyValueInstruction::parse_owner(inter_error_location *eloc,
 		*E = InterErrors::quoted(I"undefined symbol", name, eloc);
 		return NULL;
 	}
-	if ((D->W.instruction[ID_IFLD] != TYPENAME_IST) &&
-		(D->W.instruction[ID_IFLD] != INSTANCE_IST)) {
+	if ((Inode::isnt(D, TYPENAME_IST)) &&
+		(Inode::isnt(D, INSTANCE_IST))) {
 		*E = InterErrors::quoted(I"owner not an instance or enumerated type", name, eloc);
 		return NULL;
 	}
@@ -168,18 +168,18 @@ void PropertyValueInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_t
 =
 inter_symbol *PropertyValueInstruction::property(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != PROPERTYVALUE_IST) return NULL;
+	if (Inode::isnt(P, PROPERTYVALUE_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, PROP_PVAL_IFLD);
 }
 
 inter_symbol *PropertyValueInstruction::owner(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != PROPERTYVALUE_IST) return NULL;
+	if (Inode::isnt(P, PROPERTYVALUE_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, OWNER_PVAL_IFLD);
 }
 
 inter_pair PropertyValueInstruction::value(inter_tree_node *P) {
 	if (P == NULL) return InterValuePairs::undef();
-	if (P->W.instruction[ID_IFLD] != PROPERTYVALUE_IST) return InterValuePairs::undef();
+	if (Inode::isnt(P, PROPERTYVALUE_IST)) return InterValuePairs::undef();
 	return InterValuePairs::get(P, VAL1_PVAL_IFLD);
 }

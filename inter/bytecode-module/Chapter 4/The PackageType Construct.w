@@ -17,10 +17,10 @@ void PackageTypeInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |packagetype| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |packagetype| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d DEFN_PTYPE_IFLD 2
+@d DEFN_PTYPE_IFLD (DATA_IFLD + 0)
 
 =
 inter_error_message *PackageTypeInstruction::new(inter_bookmark *IBM, inter_symbol *ptype,

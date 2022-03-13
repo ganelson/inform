@@ -21,11 +21,11 @@ void InvInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |inv| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of an |inv| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d METHOD_INV_IFLD 2
-@d INVOKEE_INV_IFLD 3
+@d METHOD_INV_IFLD  (DATA_IFLD + 0)
+@d INVOKEE_INV_IFLD (DATA_IFLD + 1)
 
 @ It's arguably the case that |inv| is three instructions, not one, but it is
 also arguable the other way, and here we are. The |METHOD_INV_IFLD| indicates
@@ -296,26 +296,26 @@ void InvInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *
 
 =
 inter_ti InvInstruction::method(inter_tree_node *P) {
-	if (P->W.instruction[ID_IFLD] == INV_IST) return P->W.instruction[METHOD_INV_IFLD];
+	if (Inode::is(P, INV_IST)) return P->W.instruction[METHOD_INV_IFLD];
 	return 0;
 }
 
 inter_symbol *InvInstruction::function(inter_tree_node *P) {
-	if ((P->W.instruction[ID_IFLD] == INV_IST) &&
+	if ((Inode::is(P, INV_IST)) &&
 		(InvInstruction::method(P) == FUNCTION_INVMETH))
 		return InterSymbolsTable::symbol_from_ID_at_node(P, INVOKEE_INV_IFLD);
 	return NULL;
 }
 
 inter_symbol *InvInstruction::primitive(inter_tree_node *P) {
-	if ((P->W.instruction[ID_IFLD] == INV_IST) &&
+	if ((Inode::is(P, INV_IST)) &&
 		(InvInstruction::method(P) == PRIMITIVE_INVMETH))
 		return InterSymbolsTable::global_symbol_from_ID_at_node(P, INVOKEE_INV_IFLD);
 	return NULL;
 }
 
 text_stream *InvInstruction::opcode(inter_tree_node *P) {
-	if ((P->W.instruction[ID_IFLD] == INV_IST) &&
+	if ((Inode::is(P, INV_IST)) &&
 		(InvInstruction::method(P) == OPCODE_INVMETH))
 		return Inode::ID_to_text(P, P->W.instruction[INVOKEE_INV_IFLD]);
 	return NULL;
@@ -326,7 +326,7 @@ an invocation into a primitive, or a different primitive. So:
 
 =
 void InvInstruction::write_primitive(inter_tree *I, inter_tree_node *P, inter_symbol *prim) {
-	if (P->W.instruction[ID_IFLD] == INV_IST) {
+	if (Inode::is(P, INV_IST)) {
 		P->W.instruction[METHOD_INV_IFLD] = PRIMITIVE_INVMETH;
 		P->W.instruction[INVOKEE_INV_IFLD] = InterSymbolsTable::id_from_symbol(I, NULL, prim);
 	} else internal_error("wrote primitive to non-invocation");

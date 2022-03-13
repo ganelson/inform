@@ -229,7 +229,7 @@ But it really doesn't need to catch every possible error; this is Inter, not Inf
 	if (D == NULL) {
 		*E = InterErrors::quoted(I"undefined symbol", name, eloc); return NULL;
 	}
-	if ((D->W.instruction[ID_IFLD] != construct) &&
+	if ((Inode::isnt(D, construct)) &&
 		(InterSymbol::misc_but_undefined(S) == FALSE)) {
 		*E = InterErrors::quoted(I"symbol of wrong type", name, eloc); return NULL;
 	}

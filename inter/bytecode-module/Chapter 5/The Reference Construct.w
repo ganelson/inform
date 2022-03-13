@@ -20,7 +20,7 @@ void ReferenceInstruction::define_construct(void) {
 
 @h Instructions.
 In bytecode, the frame of a |reference| instruction is laid out with just the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|.
+compulsory words -- see //Inter Nodes//.
 
 =
 inter_error_message *ReferenceInstruction::new(inter_bookmark *IBM, int level,
@@ -79,11 +79,11 @@ by being called with |seek_bip| equal to |PROPERTYVALUE_BIP|.
 int ReferenceInstruction::node_is_ref_to(inter_tree *I, inter_tree_node *P,
 	inter_ti seek_bip) {
 	int reffed = FALSE;
-	while (P->W.instruction[ID_IFLD] == REFERENCE_IST) {
+	while (Inode::is(P, REFERENCE_IST)) {
 		P = InterTree::first_child(P);
 		reffed = TRUE;
 	}
-	if (P->W.instruction[ID_IFLD] == INV_IST) {
+	if (Inode::is(P, INV_IST)) {
 		if (InvInstruction::method(P) == PRIMITIVE_INVMETH) {
 			inter_symbol *prim = InvInstruction::primitive(P);
 			inter_ti bip = Primitives::to_BIP(I, prim);

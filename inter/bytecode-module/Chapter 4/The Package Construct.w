@@ -22,13 +22,13 @@ void PackageInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |package| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |package| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d DEFN_PACKAGE_IFLD 2
-@d PTYPE_PACKAGE_IFLD 3
-@d SYMBOLS_PACKAGE_IFLD 4
-@d PID_PACKAGE_IFLD 5
+@d DEFN_PACKAGE_IFLD    (DATA_IFLD + 0)
+@d PTYPE_PACKAGE_IFLD   (DATA_IFLD + 1)
+@d SYMBOLS_PACKAGE_IFLD (DATA_IFLD + 2)
+@d PID_PACKAGE_IFLD     (DATA_IFLD + 3)
 
 @ If you try to create uniquely-named subpackages all called |bag| inside the
 same package, you'll get |bag|, then |bag_1|, |bag_2|, and so on.
@@ -179,7 +179,7 @@ inter_error_message *PackageInstruction::write_plugs_and_sockets(OUTPUT_STREAM,
 	inter_package *pack = PackageInstruction::at_this_head(P);
 	if (pack) {
 		inter_symbols_table *locals = InterPackage::scope(pack);
-		int L = (int) (P->W.instruction[LEVEL_IFLD] + 1);
+		int L = Inode::get_level(P) + 1;
 		LOOP_OVER_SYMBOLS_TABLE(S, locals) {
 			if (InterSymbol::is_plug(S)) {
 				PlugInstruction::write_declaration(OUT, S, L);
@@ -204,7 +204,7 @@ int PackageInstruction::is(inter_symbol *package_name) {
 	if (package_name == NULL) return FALSE;
 	inter_tree_node *D = InterSymbol::definition(package_name);
 	if (D == NULL) return FALSE;
-	if (D->W.instruction[ID_IFLD] != PACKAGE_IST) return FALSE;
+	if (Inode::isnt(D, PACKAGE_IST)) return FALSE;
 	return TRUE;
 }
 
@@ -217,7 +217,7 @@ inter_package *PackageInstruction::which(inter_symbol *package_name) {
 
 inter_package *PackageInstruction::at_this_head(inter_tree_node *D) {
 	if (D == NULL) return NULL;
-	if (D->W.instruction[ID_IFLD] != PACKAGE_IST) return NULL;
+	if (Inode::isnt(D, PACKAGE_IST)) return NULL;
 	return Inode::ID_to_package(D, D->W.instruction[PID_PACKAGE_IFLD]);
 }
 
@@ -233,7 +233,7 @@ inter_symbol *PackageInstruction::name_symbol(inter_package *pack) {
 
 =
 inter_symbol *PackageInstruction::get_type_of(inter_tree *I, inter_tree_node *P) {
-	if ((P) && (P->W.instruction[ID_IFLD] == PACKAGE_IST))
+	if (Inode::is(P, PACKAGE_IST))
 		return InterSymbolsTable::symbol_from_ID(
 			InterTree::global_scope(I), P->W.instruction[PTYPE_PACKAGE_IFLD]);
 	return NULL;
@@ -244,7 +244,7 @@ are needed. (There's no other reason.)
 
 =
 void PackageInstruction::set_type(inter_tree *I, inter_tree_node *P, inter_symbol *ptype) {
-	if (P->W.instruction[ID_IFLD] == PACKAGE_IST)
+	if (Inode::is(P, PACKAGE_IST))
 		P->W.instruction[PTYPE_PACKAGE_IFLD] = InterSymbolsTable::id_from_symbol(I, NULL, ptype);
 	else internal_error("wrote primitive to non-primitive invocation");
 }

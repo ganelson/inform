@@ -19,12 +19,12 @@ void ValInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |val| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of a |val| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d TYPE_VAL_IFLD 2
-@d VAL1_VAL_IFLD 3
-@d VAL2_VAL_IFLD 4
+@d TYPE_VAL_IFLD (DATA_IFLD + 0)
+@d VAL1_VAL_IFLD (DATA_IFLD + 1)
+@d VAL2_VAL_IFLD (DATA_IFLD + 2)
 
 =
 inter_error_message *ValInstruction::new(inter_bookmark *IBM, inter_type val_type,
@@ -104,6 +104,6 @@ void ValInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *
 =
 inter_pair ValInstruction::value(inter_tree_node *P) {
 	if (P == NULL) return InterValuePairs::undef();
-	if (P->W.instruction[ID_IFLD] != VAL_IST) return InterValuePairs::undef();
+	if (Inode::isnt(P, VAL_IST)) return InterValuePairs::undef();
 	return InterValuePairs::get(P, VAL1_VAL_IFLD);
 }

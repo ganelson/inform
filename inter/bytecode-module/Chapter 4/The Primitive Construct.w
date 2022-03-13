@@ -18,8 +18,8 @@ void PrimitiveInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of a |primitive| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by a variable number of
+In bytecode, the frame of a |primitive| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by a variable number of
 words depending on the length of the signature.
 
 Note that |cat1 cat2 ... catN -> result| takes N+1 words, one for each primitive
@@ -29,8 +29,8 @@ it is the result: the result is always stored.) It follows that the shortest
 possible signature, say |void -> void|, occupies 1 word, so the minimum extent of
 a |primitive| instruction is 4.
 
-@d DEFN_PRIM_IFLD 2
-@d SIGNATURE_PRIM_IFLD 3
+@d DEFN_PRIM_IFLD      (DATA_IFLD + 0)
+@d SIGNATURE_PRIM_IFLD (DATA_IFLD + 1)
 
 =
 inter_error_message *PrimitiveInstruction::new(inter_bookmark *IBM, inter_symbol *prim_name, 
@@ -192,6 +192,6 @@ inter_ti PrimitiveInstruction::result_category(inter_symbol *prim) {
 
 inter_symbol *PrimitiveInstruction::primitive(inter_tree_node *P) {
 	if (P == NULL) return NULL;
-	if (P->W.instruction[ID_IFLD] != PRIMITIVE_IST) return NULL;
+	if (Inode::isnt(P, PRIMITIVE_IST)) return NULL;
 	return InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_PRIM_IFLD);
 }

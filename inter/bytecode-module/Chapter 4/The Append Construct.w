@@ -19,11 +19,11 @@ void AppendInstruction::define_construct(void) {
 }
 
 @h Instructions.
-In bytecode, the frame of an |append| instruction is laid out with the two
-compulsory words |ID_IFLD| and |LEVEL_IFLD|, followed by:
+In bytecode, the frame of an |append| instruction is laid out with the
+compulsory words -- see //Inter Nodes// -- followed by:
 
-@d SYMBOL_APPEND_IFLD 2
-@d CONTENT_APPEND_IFLD 3
+@d SYMBOL_APPEND_IFLD  (DATA_IFLD + 0)
+@d CONTENT_APPEND_IFLD (DATA_IFLD + 1)
 
 =
 inter_error_message *AppendInstruction::new(inter_bookmark *IBM, inter_symbol *S,
