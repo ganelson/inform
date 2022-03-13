@@ -220,16 +220,16 @@ void FauxInstances::make_faux(index_session *session) {
 	inter_tree_node *P = Metadata::optional_list(pack, I"^map");
 	if (P) {
 		for (int i=0; i<MAX_DIRECTIONS; i++) {
-			int offset = DATA_CONST_IFLD + 4*i;
-			if (offset >= P->W.extent) break;
-			inter_pair val = InterValuePairs::get(P, offset);
+			int offset = 2*i;
+			if (offset >= ConstantInstruction::list_len(P)) break;
+			inter_pair val = ConstantInstruction::list_entry(P, offset);
 			if (InterValuePairs::is_symbolic(val)) {
 				inter_symbol *S = InterValuePairs::to_symbol_in(val, pack);
 				if (S == NULL) internal_error("malformed map metadata");
 				I->fimd.exits[i] = FauxInstances::symbol_to_faux_instance(faux_set, S);
 			} else if (InterValuePairs::is_zero(val) == FALSE)
 				internal_error("malformed map metadata");
-			inter_pair val2 = InterValuePairs::get(P, offset+2);
+			inter_pair val2 = ConstantInstruction::list_entry(P, offset+1);
 			if (InterValuePairs::is_number(val2) == FALSE)
 				internal_error("malformed map metadata");
 			inter_ti N = InterValuePairs::to_number(val2);
@@ -240,9 +240,8 @@ void FauxInstances::make_faux(index_session *session) {
 @<Cross-reference backdrop locations@> =
 	inter_tree_node *P = Metadata::optional_list(pack, I"^backdrop_presences");
 	if (P) {
-		int offset = DATA_CONST_IFLD;
-		while (offset < P->W.extent) {
-			inter_pair val = InterValuePairs::get(P, offset);
+		for (int i=0; i<ConstantInstruction::list_len(P); i++) {
+			inter_pair val = ConstantInstruction::list_entry(P, i);
 			if (InterValuePairs::is_symbolic(val)) {
 				inter_symbol *S =
 					InterValuePairs::to_symbol_in(val, pack);
@@ -250,7 +249,6 @@ void FauxInstances::make_faux(index_session *session) {
 				faux_instance *FL = FauxInstances::symbol_to_faux_instance(faux_set, S);
 				ADD_TO_LINKED_LIST(I, faux_instance, FL->backdrop_presences);
 			} else internal_error("malformed backdrop metadata");
-			offset += 2;
 		}
 	}
 

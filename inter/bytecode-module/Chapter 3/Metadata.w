@@ -58,8 +58,8 @@ inter_ti Metadata::read_optional_numeric(inter_package *pack, text_stream *key) 
 }
 
 @<Extract the numeric value@> =
-	if (D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE) {
-		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+	if (ConstantInstruction::list_format(D) == CONST_LIST_FORMAT_NONE) {
+		inter_pair val = ConstantInstruction::constant(D);
 		if (InterValuePairs::is_number(val) == FALSE)
 			Metadata::err("not numeric", pack, key);
 		return InterValuePairs::to_number(val);
@@ -83,8 +83,8 @@ inter_symbol *Metadata::optional_symbol(inter_package *pack, text_stream *key) {
 }
 
 @<Extract the symbolic value@> =
-	if ((D) && (D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE)) {
-		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+	if ((D) && (ConstantInstruction::list_format(D) == CONST_LIST_FORMAT_NONE)) {
+		inter_pair val = ConstantInstruction::constant(D);
 		if (InterValuePairs::is_symbolic(val) == FALSE)
 			Metadata::err("not symbolic", pack, key);
 		return InterValuePairs::to_symbol_in(val, pack);
@@ -107,8 +107,8 @@ text_stream *Metadata::optional_textual(inter_package *pack, text_stream *key) {
 }
 
 @<Extract the textual value@> =
-	if (D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE) {
-		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+	if (ConstantInstruction::list_format(D) == CONST_LIST_FORMAT_NONE) {
+		inter_pair val = ConstantInstruction::constant(D);
 		if (InterValuePairs::is_text(val) == FALSE)
 			Metadata::err("not textual", pack, key);
 		return InterValuePairs::to_text(InterPackage::tree(pack), val);
@@ -120,7 +120,8 @@ must then be extracted):
 =
 inter_tree_node *Metadata::optional_list(inter_package *pack, text_stream *key) {
 	inter_tree_node *D = Metadata::value_node(pack, key);
-	if ((D) && (D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_COLLECTION)) return D;
+	if ((D) && (ConstantInstruction::list_format(D) == CONST_LIST_FORMAT_COLLECTION))
+		return D;
 	return NULL;
 }
 

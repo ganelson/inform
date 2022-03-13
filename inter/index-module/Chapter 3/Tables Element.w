@@ -122,7 +122,7 @@ Rules, which of course are always present. So these are hidden by default.
 @<Produce a row for this table usage@> =
 	inter_tree_node *ID = Synoptic::get_definition(usage_pack, I"column_identity");
 	inter_symbol *id_s = NULL;
-	inter_pair val = InterValuePairs::get(ID, DATA_CONST_IFLD);
+	inter_pair val = ConstantInstruction::constant(ID);
 	if (InterValuePairs::is_symbolic(val))
 		id_s = InterValuePairs::to_symbol_in(val, usage_pack);
 	if (id_s == NULL) internal_error("column_identity not specified");

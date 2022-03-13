@@ -23,8 +23,7 @@ so we change the values of these constants accordingly.
 		inter_package *pack =
 			PackageInstruction::at_this_head(inv->extension_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"extension_id");
-		InterValuePairs::set(D, DATA_CONST_IFLD,
-			InterValuePairs::number((inter_ti) i+1));
+		ConstantInstruction::set_constant(D, InterValuePairs::number((inter_ti) i+1));
 	}
 
 @ Now we compile three functions, each of which simply prints credits out.

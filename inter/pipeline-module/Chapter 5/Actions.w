@@ -32,9 +32,9 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 		inter_package *pack =
 			PackageInstruction::at_this_head(inv->action_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"action_id");
-		InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) i));
+		ConstantInstruction::set_constant(D, InterValuePairs::number((inter_ti) i));
 		D = Synoptic::get_optional_definition(pack, I"var_id");
-		if (D) InterValuePairs::set(D, DATA_CONST_IFLD,
+		if (D) ConstantInstruction::set_constant(D,
 			InterValuePairs::number((inter_ti) i+20000));
 	}
 

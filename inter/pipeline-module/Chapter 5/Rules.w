@@ -37,7 +37,7 @@ so we change the values of these constants accordingly.
 		inter_package *pack =
 			PackageInstruction::at_this_head(inv->rulebook_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"rulebook_id");
-		InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) i));
+		ConstantInstruction::set_constant(D, InterValuePairs::number((inter_ti) i));
 	}
 
 @<Define NUMBER_RULEBOOKS_CREATED@> =

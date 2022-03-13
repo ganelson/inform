@@ -49,8 +49,8 @@ void ReconcileVerbsStage::visitor(inter_tree *I, inter_tree_node *P, void *v_VL)
 	}
 
 @<Attend to the verb@> =
-	if (P->W.extent > DATA_CONST_IFLD+1) {
-		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+	if (ConstantInstruction::list_len(P) > 0) {
+		inter_pair val = ConstantInstruction::list_entry(P, 0);
 		if (InterValuePairs::is_dword(val)) {
 			text_stream *word_text = InterValuePairs::to_dictionary_word(I, val);
 			if (Dictionaries::find(observed_verbs, word_text)) {

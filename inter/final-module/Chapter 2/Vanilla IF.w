@@ -220,9 +220,9 @@ followed by a token indicating the action resulting from the line; the
 its nouns exchanged.
 
 @<Find the resulting actions and reversal states for each grammar line@> =
-	int lines = 0;
-	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-		inter_symbol *S = VanillaIF::get_symbol(gen, P, InterValuePairs::get(P, i));
+	int lines = 0, extent = ConstantInstruction::list_len(P);
+	for (int i=0; i<extent; i++) {
+		inter_symbol *S = VanillaIF::get_symbol(gen, P, ConstantInstruction::list_entry(P, i));
 		if (S) {
 			if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_DIVIDER")) {
 				if (lines >= MAX_LINES_IN_VANILLA_GRAMMAR)
@@ -233,7 +233,7 @@ its nouns exchanged.
 			}
 			if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_RESULT")) {
 				line_actions[lines-1] =
-					VanillaIF::get_symbol(gen, P, InterValuePairs::get(P, i+2));
+					VanillaIF::get_symbol(gen, P, ConstantInstruction::list_entry(P, i+1));
 			}
 			if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_REVERSE"))
 				line_reverse[lines-1] = TRUE;
@@ -247,9 +247,9 @@ its nouns exchanged.
 	VanillaIF::grammar_byte(gen, line_count); /* no grammar lines */
 
 	int reading_command_verbs = TRUE, synonyms = 0, line_started = FALSE;
-	int lines = 0;
-	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-		inter_pair val = InterValuePairs::get(P, i);
+	int lines = 0, extent = ConstantInstruction::list_len(P);
+	for (int i=0; i<extent; i++) {
+		inter_pair val = ConstantInstruction::list_entry(P, i);
 		if (reading_command_verbs) @<Read this as a command verb@>
 		else @<Read this as part of a grammar line@>;
 	}
@@ -266,7 +266,7 @@ its nouns exchanged.
 	} else {
 		inter_symbol *S = VanillaIF::get_symbol(gen, P, val);
 		if ((S) && (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_DIVIDER"))) {
-			reading_command_verbs = FALSE; i -= 2;
+			reading_command_verbs = FALSE; i--;
 		}
 	}
 
@@ -286,13 +286,13 @@ like |'fish' / 'fowl' / 'chalk'|, where |'fish'| has a slash after but not befor
 |'fowl'| has both, and |'chalk'| before but not after.
 
 @<Add the slash before and slash after bits to token_metadata@> =
-	if (i > DATA_CONST_IFLD) {
-		inter_symbol *S_before = VanillaIF::get_symbol(gen, P, InterValuePairs::get(P, i-2));
+	if (i > 0) {
+		inter_symbol *S_before = VanillaIF::get_symbol(gen, P, ConstantInstruction::list_entry(P, i-1));
 		if ((S_before) && (Str::eq(InterSymbol::identifier(S_before), I"VERB_DIRECTIVE_SLASH")))
 			token_metadata += 0x10;
 	}
-	if (i+2 < P->W.extent) {
-		inter_symbol *S_after = VanillaIF::get_symbol(gen, P, InterValuePairs::get(P, i+2));
+	if (i+1 < extent) {
+		inter_symbol *S_after = VanillaIF::get_symbol(gen, P, ConstantInstruction::list_entry(P, i+1));
 		if ((S_after) && (Str::eq(InterSymbol::identifier(S_after), I"VERB_DIRECTIVE_SLASH")))
 			token_metadata += 0x20;
 	}
@@ -308,7 +308,7 @@ like |'fish' / 'fowl' / 'chalk'|, where |'fish'| has a slash after but not befor
 		continue;
 	}
 	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_RESULT")) {
-		i += 2; /* Skip the result action */
+		i++; /* Skip the result action */
 		continue;
 	}
 	@<Handle the 10 built-in tokens@>;

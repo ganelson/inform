@@ -141,9 +141,9 @@ they were any other arrays. Here goes:
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Verb ");
 	if (SymbolAnnotation::get_b(array_s, METAVERB_IANN)) WRITE("meta ");
-	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+	for (int i=0; i<ConstantInstruction::list_len(P); i++) {
 		WRITE(" ");
-		inter_pair val = InterValuePairs::get(P, i);
+		inter_pair val = ConstantInstruction::list_entry(P, i);
 		if (InterValuePairs::is_symbolic(val)) {
 			inter_symbol *A = InterValuePairs::to_symbol_at(val, P);
 			if (A == NULL) internal_error("bad aliased symbol");

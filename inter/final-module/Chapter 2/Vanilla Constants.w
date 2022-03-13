@@ -24,7 +24,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 			@<Declare this constant as a function@>;
 		} else if (Str::eq(InterSymbol::identifier(con_name), I"UUID_ARRAY")) {
 			@<Declare this constant as the special UUID string array@>;
-		} else switch (P->W.instruction[FORMAT_CONST_IFLD]) {
+		} else switch (ConstantInstruction::list_format(P)) {
 			case CONST_LIST_FORMAT_NONE: @<Declare this as an explicit constant@>; break;
 			case CONST_LIST_FORMAT_COLLECTION: @<Declare this as a list constant@>; break;
 			case CONST_LIST_FORMAT_SUM:
@@ -59,7 +59,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 	VanillaFunctions::declare_function(gen, con_name);
 
 @<Declare this constant as the special UUID string array@> =
-	inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+	inter_pair val = ConstantInstruction::constant(P);
 	text_stream *S = InterValuePairs::to_text(Inode::tree(P), val);
 	segmentation_pos saved;
 	TEMPORARY_TEXT(content)
@@ -91,12 +91,10 @@ byte entries | BYTE_ARRAY_FORMAT             | BUFFER_ARRAY_FORMAT
 word entries | WORD_ARRAY_FORMAT             | TABLE_ARRAY_FORMAT
 -------------+-------------------------------+-----------------------------------------------
 =
-In most cases, the entries in the list are then given in value pairs from |DATA_CONST_IFLD|
-to the end of the frame. However:
-(*) if an array assimilated from a kit has exactly one purported entry, then in
-fact this should be interpreted as being that many blank entries. This number
+Note that if an array assimilated from a kit has exactly one purported entry, then
+in fact this should be interpreted as being that many blank entries. This number
 must however be carefully evaluated, as it may be another constant name rather
-than a literal, or may even be computed. 
+than a literal, or may even be computed.
 
 @<Declare this as a list constant@> =
 	int format = WORD_ARRAY_FORMAT;
@@ -105,11 +103,11 @@ than a literal, or may even be computed.
 	if (SymbolAnnotation::get_b(con_name, BUFFERARRAY_IANN)) format = BUFFER_ARRAY_FORMAT;
 
 	int zero_count = -1;
-	int entry_count = (int) (P->W.extent - DATA_CONST_IFLD)/2;
+	int entry_count = ConstantInstruction::list_len(P);
 	if ((entry_count == 1) &&
 		((SymbolAnnotation::get_b(con_name, ASSIMILATED_IANN)) ||
 			(SymbolAnnotation::get_b(con_name, EXTENT_IANN)))) {
-		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+		inter_pair val = ConstantInstruction::list_entry(P, 0);
 		zero_count = (int) ConstantInstruction::evaluate(InterPackage::scope_of(P), val);
 	}
 
@@ -117,10 +115,10 @@ than a literal, or may even be computed.
 	if (Generators::begin_array(gen, InterSymbol::trans(con_name), con_name, P,
 		format, zero_count, &saved)) {
 		if (zero_count == -1) {
-			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
+			for (int i=0; i<entry_count; i++) {
 				TEMPORARY_TEXT(entry)
 				CodeGen::select_temporary(gen, entry);
-				CodeGen::pair(gen, P, InterValuePairs::get(P, i));
+				CodeGen::pair(gen, P, ConstantInstruction::list_entry(P, i));
 				CodeGen::deselect_temporary(gen);
 				Generators::array_entry(gen, entry, format);
 				DISCARD_TEXT(entry)
@@ -133,7 +131,7 @@ than a literal, or may even be computed.
 	Generators::declare_constant(gen, con_name, COMPUTED_GDCFORM, NULL);
 
 @<Declare this as an explicit constant@> =
-	inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+	inter_pair val = ConstantInstruction::constant(P);
 	if (InterValuePairs::is_text(val)) {
 		text_stream *S = InterValuePairs::to_text(Inode::tree(P), val);
 		VanillaConstants::defer_declaring_literal_text(gen, S, con_name);
@@ -171,7 +169,7 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 			}
 			break;
 		case DATA_GDCFORM: {
-			inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
+			inter_pair val = ConstantInstruction::constant(P);
 			if ((InterValuePairs::is_number(val)) &&
 				(SymbolAnnotation::get_b(con_name, HEX_IANN))) {
 				inter_ti N = InterValuePairs::to_number(val);
@@ -183,15 +181,17 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 		}
 		case COMPUTED_GDCFORM: {
 			WRITE("(");
-			for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
-				if (i>DATA_CONST_IFLD) {
-					if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_SUM) WRITE(" + ");
-					if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_PRODUCT) WRITE(" * ");
-					if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_DIFFERENCE) WRITE(" - ");
-					if (P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_QUOTIENT) WRITE(" / ");
+			for (int i=0; i<ConstantInstruction::list_len(P); i++) {
+				if (i>0) {
+					switch (ConstantInstruction::list_format(P)) {
+						case CONST_LIST_FORMAT_SUM:        WRITE(" + "); break;
+						case CONST_LIST_FORMAT_PRODUCT:    WRITE(" * "); break;
+						case CONST_LIST_FORMAT_DIFFERENCE: WRITE(" - "); break;
+						case CONST_LIST_FORMAT_QUOTIENT:   WRITE(" / "); break;
+					}
 				}
 				int bracket = TRUE;
-				inter_pair operand = InterValuePairs::get(P, i);
+				inter_pair operand = ConstantInstruction::list_entry(P, i);
 				if ((InterValuePairs::is_number(operand)) ||
 					(InterValuePairs::is_symbolic(operand))) bracket = FALSE;
 				if (bracket) WRITE("(");

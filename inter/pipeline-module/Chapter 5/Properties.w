@@ -20,7 +20,7 @@ so we change the values of these constants accordingly.
 	for (int i=0; i<InterNodeList::array_len(inv->property_nodes); i++) {
 		inter_package *pack = PackageInstruction::at_this_head(inv->property_nodes->list[i].node);
 		inter_tree_node *D = Synoptic::get_definition(pack, I"property_id");
-		InterValuePairs::set(D, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) i));
+		ConstantInstruction::set_constant(D, InterValuePairs::number((inter_ti) i));
 	}
 
 @<Define CCOUNT_PROPERTY@> =

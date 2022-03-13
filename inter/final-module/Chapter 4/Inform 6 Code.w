@@ -705,9 +705,9 @@ a constant 1, 2 or 3, or else plain roman is all you get.
 	case STYLE_BIP: {
 		inter_tree_node *N = InterTree::first_child(P);
 		if ((N->W.instruction[ID_IFLD] == CONSTANT_IST) &&
-			(N->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE)) {
-			inter_ti val2 = N->W.instruction[DATA_CONST_IFLD + 1];
-			switch (val2) {
+			(ConstantInstruction::list_format(N) == CONST_LIST_FORMAT_NONE)) {
+			inter_ti style = InterValuePairs::to_number(ConstantInstruction::constant(N));
+			switch (style) {
 				case 1: WRITE("style bold"); break;
 				case 2: WRITE("style underline"); break;
 				case 3: WRITE("style reverse"); break;

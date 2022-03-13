@@ -278,13 +278,52 @@ inter_package *ConstantInstruction::function_body_to_package(inter_symbol *con_s
 	if (D == NULL) return NULL;
 	if (D->W.instruction[ID_IFLD] != CONSTANT_IST) return NULL;
 	if (D->W.instruction[FORMAT_CONST_IFLD] != CONST_LIST_FORMAT_NONE) return NULL;
-	inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+	inter_pair val = ConstantInstruction::constant(D);
 	return InterValuePairs::to_package(Inode::tree(D), val);
 }
 
 int ConstantInstruction::is_function_body(inter_symbol *con_symbol) {
 	if (ConstantInstruction::function_body_to_package(con_symbol)) return TRUE;
 	return FALSE;
+}
+
+@h Access functions.
+
+=
+inter_ti ConstantInstruction::list_format(inter_tree_node *P) {
+	if ((P) && (P->W.instruction[ID_IFLD] == CONSTANT_IST))
+		return P->W.instruction[FORMAT_CONST_IFLD];
+	return CONST_LIST_FORMAT_NONE;
+}
+
+inter_pair ConstantInstruction::constant(inter_tree_node *P) {
+	if ((P) && (P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
+		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE))
+		return InterValuePairs::get(P, DATA_CONST_IFLD);
+	return InterValuePairs::undef();
+}
+
+void ConstantInstruction::set_constant(inter_tree_node *P, inter_pair val) {
+	if ((P) && (P->W.instruction[ID_IFLD] == CONSTANT_IST) &&
+		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE))
+		InterValuePairs::set(P, DATA_CONST_IFLD, val);
+	else internal_error("tried to set value for non-constant");
+}
+
+int ConstantInstruction::list_len(inter_tree_node *P) {
+	if ((P == NULL) || (P->W.instruction[ID_IFLD] != CONSTANT_IST) ||
+		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE))
+		return 0;
+	return (P->W.extent - DATA_CONST_IFLD)/2;
+}
+
+inter_pair ConstantInstruction::list_entry(inter_tree_node *P, int i) {
+	if ((P == NULL) || (P->W.instruction[ID_IFLD] != CONSTANT_IST) ||
+		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE))
+		return InterValuePairs::undef();
+	int field = DATA_CONST_IFLD + i*2;
+	if (field >= P->W.extent) InterValuePairs::undef();
+	return InterValuePairs::get(P, field);
 }
 
 @h Definitional depth of a constant.
@@ -364,7 +403,7 @@ inter_ti ConstantInstruction::evaluate(inter_symbols_table *T, inter_pair val) {
 		inter_ti fmt = D->W.instruction[FORMAT_CONST_IFLD];
 		switch (fmt) {
 			case CONST_LIST_FORMAT_NONE: {
-				inter_pair dval = InterValuePairs::get(D, DATA_CONST_IFLD);
+				inter_pair dval = ConstantInstruction::constant(D);
 				inter_ti e = ConstantInstruction::evaluate(InterPackage::scope_of(D), dval);
 				return e;
 			}
@@ -375,7 +414,8 @@ inter_ti ConstantInstruction::evaluate(inter_symbols_table *T, inter_pair val) {
 				inter_ti result = 0;
 				for (int i=DATA_CONST_IFLD; i<D->W.extent; i=i+2) {
 					inter_pair operand = InterValuePairs::get(D, i);
-					inter_ti extra = ConstantInstruction::evaluate(InterPackage::scope_of(D), operand);
+					inter_ti extra =
+						ConstantInstruction::evaluate(InterPackage::scope_of(D), operand);
 					if (i == DATA_CONST_IFLD) result = extra;
 					else {
 						if (fmt == CONST_LIST_FORMAT_SUM) result = result + extra;
@@ -402,7 +442,7 @@ int ConstantInstruction::set_int(inter_symbol *S, int N) {
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE)) {
 		inter_pair val = InterValuePairs::get(P, DATA_CONST_IFLD);
 		if (InterValuePairs::is_number(val)) {
-			InterValuePairs::set(P, DATA_CONST_IFLD, InterValuePairs::number((inter_ti) N));
+			ConstantInstruction::set_constant(P, InterValuePairs::number((inter_ti) N));
 			return TRUE;
 		}
 		if (InterValuePairs::is_symbolic(val)) {

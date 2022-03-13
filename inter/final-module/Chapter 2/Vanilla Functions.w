@@ -142,8 +142,8 @@ void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 	inter_tree_node *P, int void_context) {
 	inter_tree_node *D = fn_s->definition;
 	if ((D) && (D->W.instruction[ID_IFLD] == CONSTANT_IST) &&
-		(D->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE)) {
-		inter_pair val = InterValuePairs::get(D, DATA_CONST_IFLD);
+		(ConstantInstruction::list_format(D) == CONST_LIST_FORMAT_NONE)) {
+		inter_pair val = ConstantInstruction::constant(D);
 		if (InterValuePairs::is_symbolic(val)) {
 			inter_symbol *S = InterValuePairs::to_symbol_at(val, D);
 			if (S) fn_s = S;
