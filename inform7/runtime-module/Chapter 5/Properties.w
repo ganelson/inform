@@ -179,8 +179,6 @@ void RTProperties::compile(void) {
 			(prn->compilation_data.store_in_negation)) continue;
 		kind *K = Properties::kind_of_contents(prn);
 		if (K == NULL) internal_error("kindless property");
-		Emit::ensure_defaultvalue(K);
-
 		package_request *pack = RTProperties::package(prn);
 		inter_name *iname = RTProperties::iname(prn);
 		@<Declare the property to Inter@>;

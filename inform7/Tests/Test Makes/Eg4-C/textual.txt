@@ -1045,8 +1045,6 @@ package main _plain
 				package MAX_FIGURE_THUMBNAILS_IN_INDEX_con _plain
 					constant MAX_FIGURE_THUMBNAILS_IN_INDEX = 50 __assimilated
 			constant (int32) DONE_INIS = 4
-			package block_constant1 _block_constant
-				constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U1"
 		package relations _submodule
 			constant (int32) RELS_SYMMETRIC = 32768
 			constant (int32) RELS_EQUIVALENCE = 16384
@@ -1630,13 +1628,13 @@ package main _plain
 				propertyvalue P_proper_named K_object = 0
 				propertyvalue P_printed_name K_object = /main/generic/kinds/kind1/block_constant1/bc
 				package block_constant1 _block_constant
-					constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U2"
+					constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U1"
 				propertyvalue P_printed_plural_name K_object = /main/generic/kinds/kind1/block_constant2/bc
 				package block_constant2 _block_constant
-					constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U3"
+					constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U2"
 				propertyvalue P_indefinite_article K_object = /main/generic/kinds/kind1/block_constant3/bc
 				package block_constant3 _block_constant
-					constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U4"
+					constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U3"
 				propertyvalue P_ambiguously_plural K_object = 0
 				constant cap_short_name = /main/basic_inform_by_graham_nelson/properties/property4/P_printed_name
 			package kind2 _kind
@@ -1685,7 +1683,6 @@ package main _plain
 					constant ^conformed_to = /main/generic/kinds/kind20/kind_ref __translation="^conformed_to_U6"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U2"
 				constant (text) ^inferences = "" __translation="^inferences_U2"
-				defaultvalue K_number = 0
 			package kind3 _kind
 				constant (text) ^name = "real number" __translation="^name_U36"
 				typename K_real_number = int32 __translation="K_real_number" __source_order=2
@@ -1775,7 +1772,6 @@ package main _plain
 					constant ^conformed_to = /main/generic/kinds/kind19/kind_ref __translation="^conformed_to_U14"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U4"
 				constant (text) ^inferences = "" __translation="^inferences_U4"
-				defaultvalue K_truth_state = 0
 			package kind5 _kind
 				constant (text) ^name = "text" __translation="^name_U38"
 				typename K_text = text __translation="K_text" __source_order=4
@@ -1813,7 +1809,6 @@ package main _plain
 					constant ^conformed_to = /main/generic/kinds/kind18/kind_ref __translation="^conformed_to_U16"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U5"
 				constant (text) ^inferences = "" __translation="^inferences_U5"
-				defaultvalue K_text = ^is_base
 			package kind6 _kind
 				constant (text) ^name = "snippet" __translation="^name_U39"
 				typename K_snippet = int32 __translation="K_snippet" __source_order=5
@@ -15012,7 +15007,6 @@ package main _plain
 					constant ^conformed_to = /main/generic/kinds/kind22/kind_ref __translation="^conformed_to_U95"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U62"
 				constant (text) ^inferences = "" __translation="^inferences_U40"
-				defaultvalue K_narrative_viewpoint = ^is_object
 			package kind3 _kind
 				constant (text) ^name = "grammatical case" __translation="^name_U184"
 				constant (int32) ^at = 25440 __translation="^at_U169"

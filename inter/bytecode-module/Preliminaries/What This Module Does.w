@@ -123,13 +123,13 @@ constant called |pi|, then the definition will occupy an Inter instruction
 inside the package, and the identifier name |pi| will be an //inter_symbol//
 recorded in its //inter_symbols_table//.
 = (text as BoxArt)
-    +-------------------------+ 
-    | Package X               | 
-    |                         | 
-    | pi                      |
-    | .....                   |
-    | constant K_int32 pi = 3 |
-    +-------------------------+
+    +-----------------+ 
+    | Package X       | 
+    |                 | 
+    | pi              |
+    | .....           |
+    | constant pi = 3 |
+    +-----------------+
 =
 The symbols table for the root package is special, and represents global
 meanings accessible everywhere. But they are used only for concepts needed
@@ -156,7 +156,7 @@ in another:[1] see //The Wiring//. We write |S ~~> T| if the symbol |S| is "wire
     |                 |        |                               |
     |  earth ~~~~~~~~~~~~~~~~~~~~> earth                       |
     +-----------------+        | .....                         |
-                               | variable K_int32 earth = 7    |
+                               | variable earth = 7            |
                                +-------------------------------+
 =
 In this example, the symbol |earth| in package |X| is undefined. Instead it is

@@ -39,7 +39,6 @@ Chapter 4: Void Constructs
 	The Append Construct
 	The Comment Construct
 	The Constant Construct
-	The DefaultValue Construct
 	The Insert Construct
 	The Instance Construct
 	The Nop Construct

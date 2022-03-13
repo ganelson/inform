@@ -136,14 +136,6 @@ oddball expressions in the template code which the code generator can't
 Inform generates |undef| values to represent missing entries in tables,
 but otherwise makes no use of them.
 
-@ Kinds have "default values": if some piece of storage has to hold a value
-of kind |K|, but that value is not specified, then the default is used.
-For example, the default |int32| is zero.
-
-This can be controlled using |defaultvalue KIND = VALUE|. For example,
-= (text as Inter)
-	defaultvalue K_boolean = 0
-
 @h Enumerations and instances.
 As noted above, some kinds marked as |enum| are enumerated. This means
 that they can have only a finite number of possible values, each of which

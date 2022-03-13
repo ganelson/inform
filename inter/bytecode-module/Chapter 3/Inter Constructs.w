@@ -296,7 +296,6 @@ These are constructs used for instructions outside function bodies:
 @e APPEND_IST
 @e COMMENT_IST
 @e CONSTANT_IST
-@e DEFAULTVALUE_IST
 @e INSTANCE_IST
 @e INSERT_IST
 @e NOP_IST
@@ -385,7 +384,6 @@ void InterInstruction::create_language(void) {
 	InsertInstruction::define_construct();
 	AppendInstruction::define_construct();
 	TypenameInstruction::define_construct();
-	DefaultValueInstruction::define_construct();
 	ConstantInstruction::define_construct();
 	InstanceInstruction::define_construct();
 	VariableInstruction::define_construct();

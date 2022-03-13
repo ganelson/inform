@@ -207,13 +207,13 @@ recorded in its <a href="2-st.html#SP1" class="internal">inter_symbols_table</a>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    +-------------------------+</span>
-<span class="plain-syntax">    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">               |</span>
-<span class="plain-syntax">    |                         |</span>
-<span class="plain-syntax">    | </span><span class="element-syntax">pi</span><span class="plain-syntax">                      |</span>
-<span class="plain-syntax">    | .....                   |</span>
-<span class="plain-syntax">    | </span><span class="element-syntax">constant</span><span class="plain-syntax"> </span><span class="element-syntax">K_int32</span><span class="plain-syntax"> </span><span class="element-syntax">pi</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax"> |</span>
-<span class="plain-syntax">    +-------------------------+</span>
+<span class="plain-syntax">    +-----------------+</span>
+<span class="plain-syntax">    | </span><span class="element-syntax">Package</span><span class="plain-syntax"> </span><span class="element-syntax">X</span><span class="plain-syntax">       |</span>
+<span class="plain-syntax">    |                 |</span>
+<span class="plain-syntax">    | </span><span class="element-syntax">pi</span><span class="plain-syntax">              |</span>
+<span class="plain-syntax">    | .....           |</span>
+<span class="plain-syntax">    | </span><span class="element-syntax">constant</span><span class="plain-syntax"> </span><span class="element-syntax">pi</span><span class="plain-syntax"> = </span><span class="constant-syntax">3</span><span class="plain-syntax"> |</span>
+<span class="plain-syntax">    +-----------------+</span>
 </pre>
 <p class="commentary">The symbols table for the root package is special, and represents global
 meanings accessible everywhere. But they are used only for concepts needed
@@ -245,7 +245,7 @@ in another:<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> see <a h
 <span class="plain-syntax">    |                 |        |                               |</span>
 <span class="plain-syntax">    |  </span><span class="element-syntax">earth</span><span class="plain-syntax"> ~~~~~~~~~~~~~~~~~~~~&gt; </span><span class="element-syntax">earth</span><span class="plain-syntax">                       |</span>
 <span class="plain-syntax">    +-----------------+        | .....                         |</span>
-<span class="plain-syntax">                               | </span><span class="element-syntax">variable</span><span class="plain-syntax"> </span><span class="element-syntax">K_int32</span><span class="plain-syntax"> </span><span class="element-syntax">earth</span><span class="plain-syntax"> = </span><span class="constant-syntax">7</span><span class="plain-syntax">    |</span>
+<span class="plain-syntax">                               | </span><span class="element-syntax">variable</span><span class="plain-syntax"> </span><span class="element-syntax">earth</span><span class="plain-syntax"> = </span><span class="constant-syntax">7</span><span class="plain-syntax">            |</span>
 <span class="plain-syntax">                               +-------------------------------+</span>
 </pre>
 <p class="commentary">In this example, the symbol <span class="extract"><span class="extract-syntax">earth</span></span> in package <span class="extract"><span class="extract-syntax">X</span></span> is undefined. Instead it is

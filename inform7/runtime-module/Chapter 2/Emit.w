@@ -115,30 +115,6 @@ void Emit::kind(inter_name *iname, inter_name *super,
 	Packaging::exit(Emit::tree(), save);
 }
 
-@ Default values for kinds are emitted thus. This is inefficient and maybe ought
-to be replaced by a hash, but the list is short and the function is called
-so little that it probably makes little difference.
-
-=
-linked_list *default_values_written = NULL;
-
-void Emit::ensure_defaultvalue(kind *K) {
-	if (K == K_value) return;
-	if (default_values_written == NULL) default_values_written = NEW_LINKED_LIST(kind);
-	kind *L;
-	LOOP_OVER_LINKED_LIST(L, kind, default_values_written)
-		if (Kinds::eq(K, L))
-			return;
-	ADD_TO_LINKED_LIST(K, kind, default_values_written);
-	inter_pair def_val = DefaultValues::to_value_pair(K);
-	if (InterValuePairs::is_undef(def_val) == FALSE) {
-		packaging_state save = Packaging::enter(RTKindConstructors::kind_package(K));
-		Produce::guard(DefaultValueInstruction::new(Emit::at(),
-			Produce::kind_to_symbol(K), def_val, Emit::baseline(), NULL));
-		Packaging::exit(Emit::tree(), save);
-	}
-}
-
 @h Pragmas.
 The Inter language allows pragmas, or code-generation hints, to be passed
 through. These are specific to the target of compilation, and can be ignored

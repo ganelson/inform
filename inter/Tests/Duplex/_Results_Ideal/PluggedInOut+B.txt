@@ -15,7 +15,6 @@ pragma target_I6 "$MAX_STATIC_DATA=180000"
 package main _plain
 	typename K_number = int32
 	typename K_truth_state = int2
-	defaultvalue K_number = 47
 	variable (K_number) V_banana = 100
 	constant (K_number) C_death = -5
 	constant (K_number) C_taxes = 14
