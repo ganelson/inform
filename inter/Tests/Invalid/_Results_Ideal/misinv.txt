@@ -4,37 +4,37 @@ inter: inter/Tests/Invalid/misinv.intert, line 27: value 'x' has type K_colour w
 >--> ref (/main/K_number) x
 inter: inter/Tests/Invalid/misinv.intert, line 19: this inv of !increment should have 1 argument(s), but has 0
  1.    package main _plain
- 2.    	package R_101_B _code
+ 2.    	package R_101 _code
  3.    		code
  4. ** 			inv !increment
 inter: inter/Tests/Invalid/misinv.intert, line 22: operand 2 of inv 'R_102' should be val, but this is ref
  1.    package main _plain
- 2.    	package R_101_B _code
+ 2.    	package R_101 _code
  3.    		code
  4. ** 			inv /main/R_102
  5.    				val (/main/K_number) 12
  5.    				ref S_stuff
 inter: inter/Tests/Invalid/misinv.intert, line 24: operand 1 of inv '!increment' should be ref, but this is val
  1.    package main _plain
- 2.    	package R_101_B _code
+ 2.    	package R_101 _code
  3.    		code
  4. ** 			inv !increment
  5.    				val (/main/K_number) 2
 inter: inter/Tests/Invalid/misinv.intert, line 26: operand 1 of inv 'R_101' should be val, but this is void
  1.    package main _plain
- 2.    	package R_101_B _code
+ 2.    	package R_101 _code
  3.    		code
  4. ** 			inv /main/R_101
  5.    				inv !increment
 inter: inter/Tests/Invalid/misinv.intert, line 26: this inv of !increment should have 1 argument(s), but has 0
  1.    package main _plain
- 2.    	package R_101_B _code
+ 2.    	package R_101 _code
  3.    		code
  4.    			inv /main/R_101
  5. ** 				inv !increment
 inter: inter/Tests/Invalid/misinv.intert, line 12: symbol undefined in package: 'S_stuff'
-inter: inter/Tests/Invalid/misinv.intert, line 32: this inv of !increment should have 1 argument(s), but has 0
+inter: inter/Tests/Invalid/misinv.intert, line 31: this inv of !increment should have 1 argument(s), but has 0
  1.    package main _plain
- 2.    	package R_101_A _code
+ 2.    	package R_102 _code
  3.    		code
  4. ** 			inv !increment

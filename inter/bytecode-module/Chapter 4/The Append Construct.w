@@ -10,7 +10,7 @@ But please use it as little as possible: in an ideal world it would be abolished
 void AppendInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(APPEND_IST, I"append");
 	InterInstruction::specify_syntax(IC, I"append IDENTIFIER TEXT");
-	InterInstruction::fix_instruction_length_between(IC, 4, 4);
+	InterInstruction::data_extent_always(IC, 2);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, AppendInstruction::verify);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, AppendInstruction::transpose);

@@ -12,16 +12,15 @@ so generators can if they choose ignore this.
 
 =
 void VanillaFunctions::predeclare_functions(code_generation *gen) {
-	InterTree::traverse(gen->from, VanillaFunctions::predeclare_this, gen, NULL, CONSTANT_IST);
+	InterTree::traverse(gen->from, VanillaFunctions::predeclare_this, gen, NULL, PACKAGE_IST);
 }
 
 @ =
 void VanillaFunctions::predeclare_this(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
-	inter_symbol *constant_s =
-		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-	if (ConstantInstruction::is_function_body(constant_s)) {
-		vanilla_function *vf = VanillaFunctions::new(gen, constant_s);
+	inter_symbol *fn_s = PackageInstruction::name_symbol(PackageInstruction::at_this_head(P));
+	if (PackageInstruction::is_function(fn_s)) {
+		vanilla_function *vf = VanillaFunctions::new(gen, fn_s);
 		Generators::predeclare_function(gen, vf);
 	}
 }
@@ -100,7 +99,7 @@ vanilla_function *VanillaFunctions::new(code_generation *gen, inter_symbol *fn_s
 	vf->identifier = Str::duplicate(InterSymbol::trans(fn_s));
 	vf->locals = NEW_LINKED_LIST(text_stream);
 	vf->phrase_syntax = Str::duplicate(i7_syntax);
-	inter_package *code_block = ConstantInstruction::function_body_to_package(fn_s);
+	inter_package *code_block = PackageInstruction::which(fn_s);
 	vf->function_body = InterPackage::head(code_block);
 	fn_s->translation_data = STORE_POINTER_vanilla_function(vf);
 	VanillaFunctions::seek_locals(gen, vf->function_body, vf);

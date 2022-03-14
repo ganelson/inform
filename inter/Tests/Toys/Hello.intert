@@ -1,7 +1,6 @@
 package main _plain
-	package Main_B _code
+	package Main _code
 		code
 			inv !enableprinting
 			inv !print
 				val "Hello, world.\n"
-	constant Main = function Main_B

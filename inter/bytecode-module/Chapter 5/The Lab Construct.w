@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void LabInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(LAB_IST, I"lab");
 	InterInstruction::specify_syntax(IC, I"lab .IDENTIFIER");
-	InterInstruction::fix_instruction_length_between(IC, 3, 3);
+	InterInstruction::data_extent_always(IC, 1);
 	InterInstruction::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterInstruction::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, LabInstruction::read);

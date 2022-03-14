@@ -196,10 +196,7 @@ inter_package *Produce::function_body(inter_tree *I, packaging_state *save, inte
 		}
 	}
 
-	inter_name *block_iname = NULL;
-	if (Packaging::housed_in_function(I, iname))
-		block_iname = Packaging::make_iname_within(InterNames::location(iname), I"block");
-	else internal_error("routine outside function package");
+	inter_name *block_iname = iname;
 	inter_bookmark save_ib = InterBookmark::snapshot(Packaging::at(I));
 	Produce::set_function(I,
 		Produce::make_and_set_package(I, block_iname, LargeScale::package_type(I, I"_code")));
@@ -347,7 +344,8 @@ inter_package *Produce::make_and_set_package(inter_tree *I, inter_name *iname,
 	inter_package *P = NULL;
 	TEMPORARY_TEXT(textual_name)
 	WRITE_TO(textual_name, "%n", iname);
-	Produce::guard(PackageInstruction::new(Packaging::at(I), textual_name, TRUE,
+	Produce::guard(PackageInstruction::new(Packaging::at(I), textual_name,
+		InterTypes::unchecked(), TRUE,
 		ptype, Produce::baseline(Packaging::at(I)), NULL, &P));
 	DISCARD_TEXT(textual_name)
 	if (P) InterBookmark::move_into_package(Packaging::at(I), P);
@@ -361,7 +359,7 @@ is created at the level below that in |IBM|.
 inter_package *Produce::make_subpackage(inter_bookmark *IBM,
 	text_stream *name, inter_symbol *ptype) {
 	inter_package *P = NULL;
-	Produce::guard(PackageInstruction::new(IBM, name, TRUE,
+	Produce::guard(PackageInstruction::new(IBM, name, InterTypes::unchecked(), TRUE,
 		ptype, (inter_ti) InterBookmark::baseline(IBM) + 1, NULL, &P));
 	return P;
 }

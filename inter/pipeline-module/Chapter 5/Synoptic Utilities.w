@@ -67,10 +67,6 @@ void Synoptic::begin_function(inter_tree *I, inter_name *iname) {
 }
 void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *iname) {
 	Produce::end_function_body(I);
-	inter_symbol *fn_s = InterNames::to_symbol(iname);
-	Produce::guard(ConstantInstruction::new(Packaging::at(I), fn_s,
-		InterTypes::unchecked(), InterValuePairs::functional(synoptic_fn_package),
-		Produce::baseline(Packaging::at(I)), NULL));
 	Packaging::exit(I, synoptic_fn_ps);
 }
 

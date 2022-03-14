@@ -182,8 +182,6 @@ void Functions::end(packaging_state save) {
 	LocalVariableSlates::declare_all(frame);
 	Produce::end_function_body(Emit::tree());
 
-	Emit::function(kernel_name?kernel_name:public_name, F_kind, current_function.into_package);
-
 	if (kernel_name) @<Compile an outer shell function with the public-facing name@>;
 
 	CodeBlocks::end_code_blocks();
@@ -203,8 +201,13 @@ void Functions::end(packaging_state save) {
 @<Compile an outer shell function with the public-facing name@> =
 	int returns_block_value =
 		Kinds::Behaviour::uses_block_values(frame->kind_returned);
+	inter_symbol *kernel_s = InterNames::to_symbol(kernel_name);
+	inter_symbol *public_s = InterNames::to_symbol(public_name);
+	inter_package *kernel_package = PackageInstruction::which(public_s);
+	PackageInstruction::set_name_symbol(kernel_package, kernel_s);
+	PackageInstruction::set_data_type(kernel_package, InterTypes::unchecked());
 
-	inter_package *block_package = Produce::function_body(Emit::tree(), NULL, public_name);
+	inter_package *shell_package = Produce::function_body(Emit::tree(), NULL, public_name);
 	inter_symbol *rv_symbol = NULL;
 	@<Compile I6 locals for the outer shell@>;
 	@<Compile some setup code to make ready for the kernel@>;
@@ -212,7 +215,9 @@ void Functions::end(packaging_state save) {
 	@<Compile some teardown code now that the kernel has finished@>;
 	@<Compile a return from the outer shell@>;
 	Produce::end_function_body(Emit::tree());
-	Emit::function(public_name, F_kind, block_package);
+
+	PackageInstruction::set_name_symbol(shell_package, public_s);
+	PackageInstruction::set_data_type(shell_package, Produce::kind_to_type(F_kind));
 
 @ Suppose the function has to return a list. Then the function is compiled
 with an extra first parameter (called |I7RBLK|), which is a pointer to the

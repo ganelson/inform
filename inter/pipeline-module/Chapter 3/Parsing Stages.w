@@ -46,8 +46,8 @@ It's into this module that the resulting |SPLAT_IST| nodes will be put.
 	inter_bookmark IBM = InterBookmark::at_end_of_this_package(main_package);
 	inter_symbol *module_name = LargeScale::package_type(I, I"_module");
 	inter_package *module_pack = NULL;
-	Produce::guard(PackageInstruction::new(&IBM, step->step_argument, FALSE,
-		module_name, 1, NULL, &module_pack));
+	Produce::guard(PackageInstruction::new(&IBM, step->step_argument,
+		InterTypes::unchecked(), FALSE, module_name, 1, NULL, &module_pack));
 	step->pipeline->ephemera.assimilation_modules[step->tree_argument] = module_pack;
 
 @ The stage |parse-insertions| does the same thing, but on a much smaller scale,

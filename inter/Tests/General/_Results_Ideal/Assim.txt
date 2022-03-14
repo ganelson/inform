@@ -24,13 +24,12 @@ package main _plain
 			package Bydger_con _plain
 				constant Bydger = 777 __assimilated
 		package Falsity_fn _function
-			package Falsity_B _code
+			package Falsity _code
 				code
 					inv !return
 						val 0
-			constant (function unchecked -> unchecked) Falsity = function Falsity_B __assimilated
 		package Demo_fn _function
-			package Demo_B _code
+			package Demo _code
 				local x
 				local y
 				code
@@ -38,7 +37,6 @@ package main _plain
 						inv !plus
 							val x
 							val y
-			constant (function unchecked -> unchecked) Demo = function Demo_B __assimilated
 		package arrays _submodule
 			package XA_arr _plain
 				constant (list of unchecked) XA = { 2, 4, 56 } __assimilated
@@ -59,19 +57,17 @@ package main _plain
 			package nitwit_var _plain
 				variable nitwit = 2 __assimilated
 		package Banana_fn _function
-			package Banana_B _code
+			package Banana _code
 				local x1
 				local x2
 				code
 					inv !return
 						val 0
-			constant (function unchecked -> unchecked) Banana = function Banana_B __assimilated
 		package Peach_fn _function
-			package Peach_B _code
+			package Peach _code
 				code
 					inv !return
 						val 0
-			constant (function unchecked -> unchecked) Peach = function Peach_B __assimilated
 		package marmorial_prop _property
 			constant property_id = 0
 			property (int2) marmorial __assimilated __either_or

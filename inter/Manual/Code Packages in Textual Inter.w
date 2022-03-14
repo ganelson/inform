@@ -11,7 +11,7 @@ is |_code|.
 
 Note that |package| is a data statement, not a code statement, and it follows
 that there is no way for a code package to contain sub-packages. Conceptually,
-a code package is a single executable function.
+a code package is a single function body.
 
 @h Local variables.
 The statement |local NAME KIND| gives the code package a local variable;

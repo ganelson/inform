@@ -10,7 +10,7 @@ void LabelInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(LABEL_IST, I"label");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_LABEL_IFLD, -1);
 	InterInstruction::specify_syntax(IC, I".IDENTIFIER");
-	InterInstruction::fix_instruction_length_between(IC, 3, 3);
+	InterInstruction::data_extent_always(IC, 1);
 	InterInstruction::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterInstruction::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterInstruction::permit(IC, CAN_HAVE_CHILDREN_ICUP);

@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void CastInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(CAST_IST, I"cast");
 	InterInstruction::specify_syntax(IC, I"cast IDENTIFIER <- IDENTIFIER");
-	InterInstruction::fix_instruction_length_between(IC, 4, 4);
+	InterInstruction::data_extent_always(IC, 2);
 	InterInstruction::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterInstruction::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterInstruction::permit(IC, CAN_HAVE_CHILDREN_ICUP);

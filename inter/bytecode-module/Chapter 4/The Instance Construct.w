@@ -10,7 +10,7 @@ void InstanceInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(INSTANCE_IST, I"instance");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_INST_IFLD, TYPE_INST_IFLD);
 	InterInstruction::specify_syntax(IC, I"instance IDENTIFIER TOKENS");
-	InterInstruction::fix_instruction_length_between(IC, 8, 8);
+	InterInstruction::data_extent_always(IC, 6);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, InstanceInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, InstanceInstruction::transpose);

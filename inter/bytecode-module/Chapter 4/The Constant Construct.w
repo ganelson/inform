@@ -10,7 +10,7 @@ void ConstantInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(CONSTANT_IST, I"constant");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_CONST_IFLD, TYPE_CONST_IFLD);
 	InterInstruction::specify_syntax(IC, I"constant TOKENS = TOKENS");
-	InterInstruction::fix_instruction_length_between(IC, 5, UNLIMITED_INSTRUCTION_FRAME_LENGTH);
+	InterInstruction::data_extent_at_least(IC, 3);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	InterInstruction::permit(IC, CAN_HAVE_ANNOTATIONS_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, ConstantInstruction::read);
@@ -267,24 +267,6 @@ void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	}
 	if (fmt != CONST_LIST_FORMAT_NONE) WRITE(" }");
 	SymbolAnnotation::write_annotations(OUT, P, con_name);
-}
-
-@h Constants identifying function bodies.
-
-=
-inter_package *ConstantInstruction::function_body_to_package(inter_symbol *con_symbol) {
-	if (con_symbol == NULL) return NULL;
-	inter_tree_node *D = InterSymbol::definition(con_symbol);
-	if (D == NULL) return NULL;
-	if (Inode::isnt(D, CONSTANT_IST)) return NULL;
-	if (D->W.instruction[FORMAT_CONST_IFLD] != CONST_LIST_FORMAT_NONE) return NULL;
-	inter_pair val = ConstantInstruction::constant(D);
-	return InterValuePairs::to_package(Inode::tree(D), val);
-}
-
-int ConstantInstruction::is_function_body(inter_symbol *con_symbol) {
-	if (ConstantInstruction::function_body_to_package(con_symbol)) return TRUE;
-	return FALSE;
 }
 
 @h Access functions.

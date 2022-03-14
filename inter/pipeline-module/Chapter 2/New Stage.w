@@ -17,11 +17,11 @@ int NewStage::run(pipeline_step *step) {
 	inter_package *main_p = LargeScale::main_package(I);
 	inter_bookmark in_main = InterBookmark::at_end_of_this_package(main_p);
 	inter_package *generic_p = NULL, *generic_kinds_p = NULL;
-	Produce::guard(PackageInstruction::new(&in_main, I"generic", FALSE,
-		LargeScale::package_type(I, I"_module"), 1, NULL, &generic_p));
+	Produce::guard(PackageInstruction::new(&in_main, I"generic", InterTypes::unchecked(),
+		FALSE, LargeScale::package_type(I, I"_module"), 1, NULL, &generic_p));
 	inter_bookmark in_generic = InterBookmark::at_end_of_this_package(generic_p);
-	Produce::guard(PackageInstruction::new(&in_generic, I"kinds", FALSE,
-		LargeScale::package_type(I, I"_submodule"), 2, NULL, &generic_kinds_p));
+	Produce::guard(PackageInstruction::new(&in_generic, I"kinds", InterTypes::unchecked(),
+		FALSE, LargeScale::package_type(I, I"_submodule"), 2, NULL, &generic_kinds_p));
 	inter_bookmark in_generic_kinds = InterBookmark::at_end_of_this_package(generic_kinds_p);
 
 	inter_symbol *unchecked_kind_symbol = NULL;

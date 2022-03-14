@@ -7,7 +7,7 @@ primitive !goto lab -> void
 package main _plain
 	typename K_number = int32
 	typename K_func = function K_number -> K_number
-	package R_101_B _code
+	package (K_func) R_101 _code
 		local (/main/K_number) x __argument
 		code
 			.begin
@@ -16,4 +16,3 @@ package main _plain
 				code
 					inv !goto
 						lab .begin
-	constant (K_func) R_101 = function R_101_B

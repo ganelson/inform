@@ -1,7 +1,7 @@
 package main _plain
 	typename K_number = int32
 	typename K_phrase_number____nothing = function K_number -> void
-	package MyRoutine_B _code
+	package MyRoutine _code
 		local (/main/K_number) x
 		local (/main/K_number) y
 		code
@@ -19,4 +19,3 @@ package main _plain
 				inv !modulo
 					val (/main/K_number) x
 					val (/main/K_number) y
-	constant (K_phrase_number____nothing) MyRoutine = function MyRoutine_B

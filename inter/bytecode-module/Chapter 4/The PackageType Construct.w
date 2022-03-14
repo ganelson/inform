@@ -10,7 +10,7 @@ void PackageTypeInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(PACKAGETYPE_IST, I"packagetype");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_PTYPE_IFLD, -1);
 	InterInstruction::specify_syntax(IC, I"packagetype _IDENTIFIER");
-	InterInstruction::fix_instruction_length_between(IC, 3, 3);
+	InterInstruction::data_extent_always(IC, 1);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PackageTypeInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, PackageTypeInstruction::write);
 	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);

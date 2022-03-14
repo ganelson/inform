@@ -28,7 +28,6 @@ existing Inter binary files, necessitating a bump of //The Inter Version//.
 @e DWORD_IVAL
 @e PDWORD_IVAL
 @e SYMBOLIC_IVAL
-@e FUNCTIONAL_IVAL
 @e GLOB_IVAL
 @e UNDEF_IVAL
 
@@ -282,31 +281,6 @@ int InterValuePairs::is_symbolic(inter_pair pair) {
 	return FALSE;
 }
 
-@h Functional pairs.
-These represent function bodies.
-
-=
-inter_pair InterValuePairs::functional(inter_package *pack) {
-	inter_pair pair;
-	pair.data_format = FUNCTIONAL_IVAL;
-	pair.data_content = InterPackage::warehouse_ID(pack);
-	return pair;
-}
-
-inter_package *InterValuePairs::to_package(inter_tree *I, inter_pair pair) {
-	if (InterValuePairs::is_functional(pair))
-		return InterWarehouse::get_package(InterTree::warehouse(I), pair.data_content);
-	return NULL;
-}
-
-@ Testing:
-
-=
-int InterValuePairs::is_functional(inter_pair pair) {
-	if (pair.data_format == FUNCTIONAL_IVAL) return TRUE;
-	return FALSE;
-}
-
 @h Glob pairs.
 Globs are a desperation measure. They represent a value, but which is expressed
 in terms of raw source code which will produce that value. For instance, if you
@@ -405,7 +379,6 @@ in from a binary Inter file (because in that process, resource ID numbers change
 inter_pair InterValuePairs::transpose(inter_pair pair, inter_ti *grid, inter_ti grid_extent,
 	inter_error_message **E) {
 	switch (pair.data_format) {
-		case FUNCTIONAL_IVAL:
 		case DWORD_IVAL:
 		case PDWORD_IVAL:
 		case TEXTUAL_IVAL:
@@ -430,7 +403,6 @@ inter_error_message *InterValuePairs::verify(inter_package *owner, inter_tree_no
 	switch (pair.data_format) {
 		case NUMERIC_IVAL: @<Check this is in range for the type@>;
 		case SYMBOLIC_IVAL: @<Check this is reasonable, if we know what it is yet@>;
-		case FUNCTIONAL_IVAL:
 		case DWORD_IVAL:
 		case PDWORD_IVAL:
 		case TEXTUAL_IVAL:

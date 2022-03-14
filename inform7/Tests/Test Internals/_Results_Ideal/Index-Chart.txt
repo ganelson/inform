@@ -852,7 +852,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            phrase K -> L&nbsp;<a href=#A2082><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            phrase K -> L&nbsp;<a href=#A2175><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             <i>always the default value of L</i>
@@ -1252,7 +1252,7 @@ When made with the Glulx setting, an Inform project can include sound effects or
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 A flexible-length list of values, where all of the items have to have the same kind of value as each other - for instance, a list of rooms, or a list of lists of numbers. The empty list, with no items yet, is written { }, and a list with items in is written with commas dividing them - say {2, 5, 9}.<br>
 </p>
-<p class="halftightin1"><a name=A46></a><b>phrase K -> L</b> (<i>plural</i> phrases K -> L)</p>
+<p class="halftightin1"><a name=A54></a><b>phrase K -> L</b> (<i>plural</i> phrases K -> L)</p>
 <p class="tightin1"><i>contravariant in K, covariant in L&nbsp;<a href=#contra>><img border=0 src=inform:/doc_images/shelp.png></a></i></p>
 <p class="tightin1"><i>Matches:</i> value, sayable value<br>
 </p>

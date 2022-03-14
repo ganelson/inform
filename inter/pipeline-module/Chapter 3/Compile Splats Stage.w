@@ -644,7 +644,7 @@ The following makes two packages:
 (a) The "outer package", |/main/HypotheticalKit/functions/Example_fn|, which
 holds all resources other than code needed by the function; and within it
 
-(b) The "inner package", |/main/HypotheticalKit/functions/Example_fn/Example_B|,
+(b) The "inner package", |/main/HypotheticalKit/functions/Example_fn/Example|,
 which contains the actual code.
 
 These have package types |_function| and |_code| respectively.
@@ -655,7 +655,6 @@ These have package types |_function| and |_code| respectively.
 	inter_package *OP, *IP; /* outer and inner packages */
 	@<Create the outer function package@>;
 	@<Create an inner package for the code@>;
-	@<Create a symbol for calling the function@>;
 
 @<Create the outer function package@> =
 	inter_symbol *fnt = RunningPipelines::get_symbol(step, function_ptype_RPSYM);
@@ -667,11 +666,11 @@ These have package types |_function| and |_code| respectively.
 
 @<Create an inner package for the code@> =
 	InterBookmark::move_into_package(IBM, OP);
-	TEMPORARY_TEXT(bname)
-	WRITE_TO(bname, "%S_B", identifier);
-	IP = Produce::make_subpackage(IBM, bname,
+	IP = Produce::make_subpackage(IBM, identifier,
 		RunningPipelines::get_symbol(step, code_ptype_RPSYM));
-	DISCARD_TEXT(bname)
+	if (Wiring::find_socket(InterBookmark::tree(IBM), identifier) == NULL)
+		Wiring::socket(InterBookmark::tree(IBM), identifier,
+			PackageInstruction::name_symbol(IP));
 	inter_bookmark inner_save = InterBookmark::snapshot(IBM);
 	InterBookmark::move_into_package(IBM, IP);
 	inter_bookmark block_bookmark = InterBookmark::snapshot(IBM);
@@ -705,15 +704,6 @@ These have package types |_function| and |_code| respectively.
 	Str::truncate(body, L);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark, identifier);
-
-@<Create a symbol for calling the function@> =
-	inter_symbol *function_name_s =
-		CompileSplatsStage::make_socketed_symbol(IBM, identifier);
-	SymbolAnnotation::set_b(function_name_s, ASSIMILATED_IANN, 1);
-	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	Produce::guard(ConstantInstruction::new(IBM, function_name_s,
-		InterTypes::from_constructor_code(FUNCTION_ITCONC),
-		InterValuePairs::functional(IP), B, NULL));
 
 @h Plumbing.
 Some convenient Inter utilities.
@@ -937,6 +927,9 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 			if (SymbolAnnotation::get_b(symb, SCOPE_FILTER_IANN) == FALSE)
 				SymbolAnnotation::set_b(symb, SCOPE_FILTER_IANN, TRUE);
 			return InterValuePairs::symbolic(IBM, symb);
+		} else {
+			PipelineErrors::kit_error("unknown scope routine", S);
+			return InterValuePairs::number(1);
 		}
 	}
 	if (Regexp::match(&mr, S, L"noun=(%i+)")) {
@@ -945,6 +938,9 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 			if (SymbolAnnotation::get_b(symb, NOUN_FILTER_IANN) == FALSE)
 				SymbolAnnotation::set_b(symb, NOUN_FILTER_IANN, TRUE);
 			return InterValuePairs::symbolic(IBM, symb);
+		} else {
+			PipelineErrors::kit_error("unknown noun routine", S);
+			return InterValuePairs::number(1);
 		}
 	}
 
@@ -979,8 +975,10 @@ before they are needed.
 	inter_schema *sch = ParsingSchemas::from_text(S);
 	inter_symbol *result_s =
 		CompileSplatsStage::compute_r(step, IBM, sch->node_tree);
-	if (result_s == NULL)
+	if (result_s == NULL) {
 		PipelineErrors::kit_error("Inform 6 constant in kit too complex", S);
+		return InterValuePairs::number(1);
+	}
 	return InterValuePairs::symbolic(IBM, result_s);
 
 @ So this is the recursion. Note that we calculate $-x$ as $0 - x$, thus

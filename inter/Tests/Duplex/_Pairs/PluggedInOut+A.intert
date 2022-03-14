@@ -9,7 +9,7 @@ package main _plain
 	typename K_number = int32
 	typename K_func = function K_number -> K_number
 	package my_fn _plain
-		package R_101_B _code
+		package (/main/K_func) R_101 _code
 			local (/main/K_number) x __argument
 			code
 				.begin
@@ -18,7 +18,6 @@ package main _plain
 					code
 						inv !goto
 							lab .begin
-		constant (/main/K_func) R_101 = function R_101_B
 		constant (/main/K_number) secret = 7
 		constant (/main/K_number) tricksy = /main/connectors/plug00002
 	constant (K_number) awkward = /main/my_fn/secret

@@ -20,8 +20,6 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 			@<Ignore this constant as part of the veneer@>;
 		} else if (SymbolAnnotation::get_b(con_name, OBJECT_IANN)) {
 			@<Declare this constant as a pseudo-object@>;
-		} else if (ConstantInstruction::is_function_body(con_name)) {
-			@<Declare this constant as a function@>;
 		} else if (Str::eq(InterSymbol::identifier(con_name), I"UUID_ARRAY")) {
 			@<Declare this constant as the special UUID string array@>;
 		} else switch (ConstantInstruction::list_format(P)) {
@@ -54,9 +52,6 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 
 @<Declare this constant as a pseudo-object@> =
 	Generators::pseudo_object(gen, InterSymbol::trans(con_name));
-
-@<Declare this constant as a function@> =
-	VanillaFunctions::declare_function(gen, con_name);
 
 @<Declare this constant as the special UUID string array@> =
 	inter_pair val = ConstantInstruction::constant(P);

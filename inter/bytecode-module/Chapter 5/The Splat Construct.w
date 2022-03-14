@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void SplatInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(SPLAT_IST, I"splat");
 	InterInstruction::specify_syntax(IC, I"splat OPTIONALIDENTIFIER TEXT");
-	InterInstruction::fix_instruction_length_between(IC, 4, 4);
+	InterInstruction::data_extent_always(IC, 2);
 	InterInstruction::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);

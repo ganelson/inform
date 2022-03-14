@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void InvInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(INV_IST, I"inv");
 	InterInstruction::specify_syntax(IC, I"inv TOKEN");
-	InterInstruction::fix_instruction_length_between(IC, 4, 4);
+	InterInstruction::data_extent_always(IC, 2);
 	InterInstruction::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterInstruction::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterInstruction::permit(IC, CAN_HAVE_CHILDREN_ICUP);
@@ -94,7 +94,7 @@ void InvInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_packa
 			if (*E) return;
 			break;
 		case FUNCTION_INVMETH:
-			*E = VerifyingInter::SID_field(owner, P, INVOKEE_INV_IFLD, CONSTANT_IST);
+			*E = VerifyingInter::SID_field(owner, P, INVOKEE_INV_IFLD, INVALID_IST);
 			if (*E) return;
 			break;
 		default:
@@ -266,7 +266,7 @@ void InvInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 		*E = InterErrors::quoted(I"'inv' on unknown function", invoked_text, eloc);
 	} else if ((InterSymbol::defined_elsewhere(function_s)) ||
 		(InterSymbol::misc_but_undefined(function_s)) ||
-		(ConstantInstruction::is_function_body(function_s))) {
+		(PackageInstruction::is_function(function_s))) {
 		*E = InvInstruction::new_function_call(IBM, function_s,
 			(inter_ti) ilp->indent_level, eloc);
 	} else {

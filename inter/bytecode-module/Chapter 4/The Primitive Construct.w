@@ -10,7 +10,7 @@ void PrimitiveInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(PRIMITIVE_IST, I"primitive");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_PRIM_IFLD, -1);
 	InterInstruction::specify_syntax(IC, I"primitive !IDENTIFIER TOKENS -> TOKEN");
-	InterInstruction::fix_instruction_length_between(IC, 4, UNLIMITED_INSTRUCTION_FRAME_LENGTH);
+	InterInstruction::data_extent_at_least(IC, 2);
 	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PrimitiveInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PrimitiveInstruction::verify);

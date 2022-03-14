@@ -70,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">bytecode</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the bytecode module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. What is intermediate about inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. Packages</a></li><li><a href="P-wtmd.html#SP5">&#167;5. Symbols</a></li><li><a href="P-wtmd.html#SP9">&#167;9. The warehouse and the building site</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Nodes and instructions</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. What is intermediate about inter</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Reading and writing Inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. What textual Inter looks like</a></li><li><a href="P-wtmd.html#SP5">&#167;5. What binary Inter looks like</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Data and types stored within bytecode</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Symbols</a></li><li><a href="P-wtmd.html#SP9">&#167;9. What memory Inter looks like</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Nodes and instructions</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Wiring</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The bytecode module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -87,10 +87,7 @@ uses a module of utility functions called <a href="../../../inweb/docs/foundatio
 For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. What is intermediate about inter. </b>This module is concerned with managing the <a href="2-it.html#SP1" class="internal">inter_tree</a> data structure in
-memory, and with reading and writing it from and to the filing system. Because
-this data structure can live in files outside of memory, we need to worry about
-whether its design changes over time: see <a href="1-tiv.html" class="internal">The Inter Version</a> for the issues
-arising over that.
+memory, and with reading and writing it from and to the filing system.
 </p>
 
 <p class="commentary">An Inter tree is an expression of a single program. It's an intermediate state
@@ -149,44 +146,118 @@ not directly to represent the source text.
 used as a back-end by C#, has quite low-level bytecode but stores it in a
 highly structured object-oriented way.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Inter trees can be saved out as files in either binary or textual form;
-binary form being much faster to load back in, textual much easier to read
-and check over.
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Reading and writing Inter. </b>Inter code can be written out to a file and read back in, in two formats:
+see <a href="3-iibf.html" class="internal">Inter in Binary Files</a> and <a href="3-iitf.html" class="internal">Inter in Text Files</a>. The <a href="../inter/index.html" class="internal">inter</a> tool
+can convert freely between them:
 </p>
 
-<p class="commentary">It is even possible to write Inter programs by hand, using a text editor. To
-get a sense of what that looks like, see the manual <a href="../inter/M-ti.html" class="internal">Textual Inter (in inter)</a>.
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">  </span><span class="element-syntax">textual</span><span class="plain-syntax">                                  </span><span class="element-syntax">textual</span>
+<span class="plain-syntax">  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span>
+<span class="plain-syntax">              \                     /</span>
+<span class="plain-syntax">               \                   /</span>
+<span class="plain-syntax">                ----&gt;  </span><span class="element-syntax">memory</span><span class="plain-syntax">  ----</span>
+<span class="plain-syntax">               /       </span><span class="element-syntax">inter</span><span class="plain-syntax">       \</span>
+<span class="plain-syntax">  </span><span class="element-syntax">binary</span><span class="plain-syntax">      /                     \      </span><span class="element-syntax">binary</span>
+<span class="plain-syntax">  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span>
+</pre>
+<p class="commentary">Textual Inter is human-readable, but binary Inter loads quickly. Either form,
+as stored on an external file whose provenance we do not know, has to be treated
+as suspect:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Packages. </b>The main organising idea of Inter trees is the <a href="2-pck.html#SP2" class="internal">inter_package</a>. <a href="2-pck.html" class="internal">Packages</a> are
+<ul class="items"><li>&#9679; Textual Inter might have been written by a human who blundered.
+</li><li>&#9679; Binary Inter might have been wrongly constructed by some compiler with
+a bug in it.
+</li><li>&#9679; Binary Inter might have been maliciously constructed to crash us.
+</li><li>&#9679; Either form might be left over from a previous version of the Inform tool
+chain when the specification of the Inter language was slightly different.
+</li></ul>
+<p class="commentary">So we go to some trouble to verify the syntactic correctness of what is read
+in, and use a shared system of <a href="3-ie.html" class="internal">Inter Errors</a> to report defects. All binary
+Inter files are marked with an explicit version number for the version of Inter
+they were constructed by. Textual Inter files can also be so marked, but this is
+optional, because there is a good chance the textual syntax will not have been
+changed. See <a href="1-tiv.html" class="internal">The Inter Version</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. What textual Inter looks like. </b>There is a manual for writing <a href="../inter/M-ti.html" class="internal">Textual Inter (in inter)</a>, and this may now be
+worth skimming through. But here is a minimal example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">package</span><span class="plain-syntax"> main _plain</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">package</span><span class="plain-syntax"> Main _code</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">code</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span>
+</pre>
+<p class="commentary">If we read this in and then write it out again, we find, perhaps surprisingly,
+four extra instructions:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">packagetype</span><span class="plain-syntax"> _plain</span>
+<span class="reserved-syntax">packagetype</span><span class="plain-syntax"> _code</span>
+<span class="reserved-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span><span class="plain-syntax"> </span><span class="reserved-syntax">void</span><span class="plain-syntax"> -&gt; </span><span class="reserved-syntax">void</span>
+<span class="reserved-syntax">primitive</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span><span class="plain-syntax"> </span><span class="reserved-syntax">val</span><span class="plain-syntax"> -&gt; </span><span class="reserved-syntax">void</span>
+<span class="reserved-syntax">package</span><span class="plain-syntax"> main _plain</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">package</span><span class="plain-syntax"> Main _code</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">code</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!enableprinting</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">inv</span><span class="plain-syntax"> </span><span class="function-syntax">!print</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">val</span><span class="plain-syntax"> </span><span class="string-syntax">"Hello, world.\n"</span>
+</pre>
+<p class="commentary">This is because <span class="extract"><span class="extract-syntax">packagetype</span></span> and <span class="extract"><span class="extract-syntax">primitive</span></span> instructions are optional in textual
+Inter. When we read <span class="extract"><span class="extract-syntax">package Main _code</span></span>, for example, we deduce that a <span class="extract"><span class="extract-syntax">_code</span></span>
+package type is needed, and so we automatically declare it if it is not there
+already; and similarly for any primitive like <span class="extract"><span class="extract-syntax">!enableprinting</span></span>, provided that
+it is one of those in the standard set. (See <a href="../building-module/1-ip.html" class="internal">Inter Primitives (in building)</a>.)
+Nevertheless, those instructions are part of the program, which is why they
+are printed out when we write it back as textual Inter.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">packagetype</span></span>, <span class="extract"><span class="extract-syntax">primitive</span></span>, <span class="extract"><span class="extract-syntax">package</span></span>, <span class="extract"><span class="extract-syntax">code</span></span>, <span class="extract"><span class="extract-syntax">inv</span></span> and so on are all examples
+of <a href="3-ic.html" class="internal">Inter Constructs</a>. Each has its own textual syntax. Most constructs give
+rise to instructions &mdash; for example, every line using the <span class="extract"><span class="extract-syntax">val</span></span> construct
+results in a single <span class="extract"><span class="extract-syntax">VAL_IST</span></span> instruction in the program &mdash; but just a few
+"pseudo-constructs" such as <span class="extract"><span class="extract-syntax">version</span></span> specify something else.
+</p>
+
+<p class="commentary">So it is not true that lines in textual Inter correspond exactly to the
+instructions in a program, but it's very nearly true.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. What binary Inter looks like. </b>The "hello world" program above would occupy a single <a href="2-it.html#SP1" class="internal">inter_tree</a> once loaded
+in to memory.
+</p>
+
+<p class="commentary">The main organising idea of Inter trees is the <a href="2-pck.html#SP2" class="internal">inter_package</a>. <a href="2-pck.html" class="internal">Packages</a> are
 like nested boxes: each one can hold either more packages, or Inter instructions
-providing code or data, or both.
-</p>
-
-<p class="commentary">Each package has a name, and its location can be identified by a "URL". For
-example, <span class="extract"><span class="extract-syntax">/main/BasicInformKit/properties</span></span> means "the package <span class="extract"><span class="extract-syntax">properties</span></span>
-inside the package <span class="extract"><span class="extract-syntax">BasicInformKit</span></span> inside the package <span class="extract"><span class="extract-syntax">main</span></span>".
+providing code or data, or both. In the case of "hello world":
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">....................................................</span>
 <span class="plain-syntax">.  </span><span class="element-syntax">top</span><span class="plain-syntax">-</span><span class="element-syntax">level</span><span class="plain-syntax"> </span><span class="element-syntax">material</span><span class="plain-syntax">                              .</span>
 <span class="plain-syntax">.  +--------------------------------------------+  .</span>
-<span class="plain-syntax">.  | /</span><span class="element-syntax">main</span><span class="plain-syntax">                                      |  .</span>
+<span class="plain-syntax">.  | /</span><span class="element-syntax">main</span><span class="plain-syntax">                               </span><span class="element-syntax">_plain</span><span class="plain-syntax"> |  .</span>
 <span class="plain-syntax">.  |   +-------------------------------------+  |  .</span>
-<span class="plain-syntax">.  |   | /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">                |  |  .</span>
-<span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
-<span class="plain-syntax">.  |   | | /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">/</span><span class="element-syntax">variables</span><span class="plain-syntax">  | |  |  .</span>
-<span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
-<span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
-<span class="plain-syntax">.  |   | | /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">BasicInformKit</span><span class="plain-syntax">/</span><span class="element-syntax">properties</span><span class="plain-syntax"> | |  |  .</span>
-<span class="plain-syntax">.  |   | +---------------------------------+ |  |  .</span>
-<span class="plain-syntax">.  |   | ...                                 |  |  .</span>
+<span class="plain-syntax">.  |   | /</span><span class="element-syntax">main</span><span class="plain-syntax">/</span><span class="element-syntax">Main</span><span class="plain-syntax">                    </span><span class="element-syntax">_code</span><span class="plain-syntax"> |  |  .</span>
+<span class="plain-syntax">.  |   | </span><span class="element-syntax">code</span><span class="plain-syntax"> </span><span class="element-syntax">in</span><span class="plain-syntax"> </span><span class="element-syntax">the</span><span class="plain-syntax"> </span><span class="element-syntax">Main</span><span class="plain-syntax"> </span><span class="element-syntax">function</span><span class="plain-syntax">           |  |  .</span>
 <span class="plain-syntax">.  |   +-------------------------------------+  |  .</span>
-<span class="plain-syntax">.  |   ...                                      |  .</span>
 <span class="plain-syntax">.  +--------------------------------------------+  .</span>
 <span class="plain-syntax">....................................................</span>
 </pre>
+<p class="commentary">Each package has a name, and its location can be identified by a "URL". For
+example, <span class="extract"><span class="extract-syntax">/main/BasicInformKit/properties</span></span> means "the package <span class="extract"><span class="extract-syntax">properties</span></span>
+inside the package <span class="extract"><span class="extract-syntax">BasicInformKit</span></span> inside the package <span class="extract"><span class="extract-syntax">main</span></span>". Every package
+also as a "package type". (This is not the same thing as a data type.) <span class="extract"><span class="extract-syntax">main</span></span>
+always has type <span class="extract"><span class="extract-syntax">_plain</span></span>; any package holding a function body has type <span class="extract"><span class="extract-syntax">_code</span></span>.
+All package types begin with an underscore <span class="extract"><span class="extract-syntax">_</span></span>.
+</p>
+
 <p class="commentary">Material at the root level is implemented as if it were in a special package
 called the "root package" (the dotted box around everything in the diagram),
 which has the empty name and thus the URL <span class="extract"><span class="extract-syntax">/</span></span>. But this is not really a
@@ -198,12 +269,77 @@ packages, see the <a href="../building-module/index.html" class="internal">build
 simply provide infrastructure allowing pretty general hierarchies to be made.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Symbols. </b>Packages provide <a href="2-st.html" class="internal">Symbols Tables</a>: in fact, each package has its own
-symbols table, which records identifier names and their meanings
-within that package. For example, if a package <span class="extract"><span class="extract-syntax">X</span></span> contains a definition of a
-constant called <span class="extract"><span class="extract-syntax">pi</span></span>, then the definition will occupy an Inter instruction
-inside the package, and the identifier name <span class="extract"><span class="extract-syntax">pi</span></span> will be an <a href="2-sym.html#SP1" class="internal">inter_symbol</a>
-recorded in its <a href="2-st.html#SP1" class="internal">inter_symbols_table</a>.
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6. Data and types stored within bytecode. </b>Each instruction occupies a sequence of words called bytecode,<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> called its
+"frame": see <a href="2-in.html" class="internal">Inter Nodes</a>. The opening word identifies which construct is
+used: for example, if this is <span class="extract"><span class="extract-syntax">PACKAGE_IST</span></span> then the instruction is a <span class="extract"><span class="extract-syntax">package</span></span>.
+What the remaining words mean depends on the construct, but here are some
+typical ingredients:
+</p>
+
+<ul class="items"><li>&#9679; Many constructs &mdash; <span class="extract"><span class="extract-syntax">constant</span></span>, for example &mdash; define a new symbol.
+If so, the symbol ID &mdash; or SID &mdash; will be stored in one of the words;
+this is the ID of the symbol in the <a href="2-st.html#SP1" class="internal">inter_symbols_table</a> belonging
+to the package containing the instruction. Some constructs also contain
+SIDs for other reasons: for example, <span class="extract"><span class="extract-syntax">propertyvalue</span></span> needs to store the
+SID of the property whose value is being recorded.
+</li><li>&#9679; Values in Inter occupy two consecutive words of bytecode, and these
+are called "pairs": see <a href="3-ivp.html" class="internal">Inter Value Pairs</a>.
+</li><li>&#9679; Some constructs also need to store a type ID, or TID. See <a href="3-idt.html" class="internal">Inter Data Types</a>.
+</li></ul>
+<p class="commentary">With both values and types, we need to be able to express an enormous range
+of possibilities. This seems impossible. For example, how can we fit the list
+<span class="extract"><span class="extract-syntax">{2, 3, 5, 7, 11, 13, 17, 19}</span></span> in two words, or the type <span class="extract"><span class="extract-syntax">function int32 int2 -&gt; void</span></span>
+in just one?
+</p>
+
+<p class="commentary">In both cases the solution is the same: to use <span class="extract"><span class="extract-syntax">constant</span></span> or <span class="extract"><span class="extract-syntax">typename</span></span> to
+assign a symbol to anything complicated, and then refer to that symbol. For
+example, we can't have this:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">val</span><span class="plain-syntax"> (</span><span class="reserved-syntax">list</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="reserved-syntax">int32</span><span class="plain-syntax">) { </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">5</span><span class="plain-syntax">, </span><span class="constant-syntax">7</span><span class="plain-syntax">, </span><span class="constant-syntax">11</span><span class="plain-syntax">, </span><span class="constant-syntax">13</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">, </span><span class="constant-syntax">19</span><span class="plain-syntax"> }</span>
+</pre>
+<p class="commentary">because both the type and the value are too complicated. But we can have:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    typename list_of_integers = </span><span class="reserved-syntax">list</span><span class="plain-syntax"> </span><span class="reserved-syntax">of</span><span class="plain-syntax"> </span><span class="reserved-syntax">int32</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> (list_of_integers) primes = { </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">3</span><span class="plain-syntax">, </span><span class="constant-syntax">5</span><span class="plain-syntax">, </span><span class="constant-syntax">7</span><span class="plain-syntax">, </span><span class="constant-syntax">11</span><span class="plain-syntax">, </span><span class="constant-syntax">13</span><span class="plain-syntax">, </span><span class="constant-syntax">17</span><span class="plain-syntax">, </span><span class="constant-syntax">19</span><span class="plain-syntax"> }</span>
+<span class="plain-syntax">    ...</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">val</span><span class="plain-syntax"> (list_of_integers) primes</span>
+</pre>
+<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> The term "bytecode" is a misnomer, since this is word-based, not byte-based.
+But it is traditional and seems to have been used as far back as the mid-1960s.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Constants are useful also for providing metadata about the program. This
+is not simply commentary: what makes it "meta" is that it does not literally
+compile into the final output. For example:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> lucky_number = </span><span class="constant-syntax">7</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> ^special_constant = lucky_number</span>
+</pre>
+<p class="commentary">Here <span class="extract"><span class="extract-syntax">lucky_number</span></span> can be used in the program whenever a value is needed. But
+<span class="extract"><span class="extract-syntax">^special_constant</span></span>, whose name begins with the magic metadata caret <span class="extract"><span class="extract-syntax">^</span></span>, cannot
+be used as a value. Instead, the idea is that it communicates something to the
+code-generation code in <a href="../pipeline-module/index.html" class="internal">pipeline</a> and <a href="../final-module/index.html" class="internal">final</a> &mdash; indicating the significance,
+purpose or origins of something in the program. (<a href="../inform7/index.html" class="internal">inform7</a> produces a lot
+of metadata like this.)
+</p>
+
+<p class="commentary">See <a href="3-mtd.html" class="internal">Metadata</a> for functions to access this metadata.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Symbols. </b>Names of constants, packages, primitives and so on are all examples of "symbols".
+</p>
+
+<p class="commentary">Packages provide <a href="2-st.html" class="internal">Symbols Tables</a>: in fact, each package has its own symbols
+table, recording symbols and their meanings within that package. For example,
+if a package <span class="extract"><span class="extract-syntax">X</span></span> contains a definition of a constant called <span class="extract"><span class="extract-syntax">pi</span></span>, then the
+definition will occupy an Inter instruction inside the package, and the
+identifier name <span class="extract"><span class="extract-syntax">pi</span></span> will be an <a href="2-sym.html#SP1" class="internal">inter_symbol</a> recorded in its <a href="2-st.html#SP1" class="internal">inter_symbols_table</a>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -228,14 +364,109 @@ in several types, see <a href="2-sym.html#SP5" class="internal">InterSymbol::get
 see <a href="2-sym.html#SP6" class="internal">InterSymbol::get_flag</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>The bytecode in a package can only refer to resources using symbols in that
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. What memory Inter looks like. </b>Inter code stored in memory is not simply a binary copy of what the same thing
+would be if stored in a binary Inter file: it is very heavily cross-referenced
+for rapid access, editing and rearrangement.
+</p>
+
+<p class="commentary">There is a lot of memory to be managed here: Inter trees can be huge, though
+there are never more than one or two in memory at once.
+</p>
+
+<p class="commentary">In particular, each <a href="2-it.html#SP1" class="internal">inter_tree</a> structure contains two pools of data
+besides the actual tree:<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup>
+</p>
+
+<ul class="items"><li>(a) A "building site", which contains workspace data needed by the <a href="../building-module/index.html" class="internal">building</a>
+module. <a href="../building-module/index.html" class="internal">building</a> is essentially a piece of middleware sitting on top of
+this one, and making it easier for the compilers to use our facilities. We
+will ignore the building site completely here: it's not our problem.
+</li><li>(b) A "warehouse", which very much is our problem: see <a href="2-tw.html" class="internal">The Warehouse</a>.
+This provides storage for strings, symbols tables and the like, assigning each
+one an ID number. Resource number 178, for example, might be a <span class="extract"><span class="extract-syntax">text_stream</span></span>
+which is the content of some text literal in a function, while 179 might be
+an <a href="2-st.html#SP1" class="internal">inter_symbols_table</a> belonging to some package.
+</li></ul>
+<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> In real-life botany, trees do not have building sites or warehouses, but
+mixing some metaphors cannot really be helped. Trees in nature do not grow
+the way they do in computer science.
+<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Nodes and instructions. </b>Each node in an Inter tree represents a single Inter instruction,<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> details of
+which are stored as a stretch of bytecode in memory.
+</p>
+
+<p class="commentary">This use of both a tree and also a mass of binary bytecode is an attempt to
+have our cake and eat it. The tree structure makes it quick and easy to splice,
+cut and reorder code; the binary bytecode storage is quick to load from a file.
+Still, the result is an unusual hybrid of a data structure.
+</p>
+
+<p class="commentary">For example, the tree might start out like this:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                            ... </span><span class="constant-syntax">102</span><span class="plain-syntax"> </span><span class="constant-syntax">103</span><span class="plain-syntax"> </span><span class="constant-syntax">104</span><span class="plain-syntax"> </span><span class="constant-syntax">105</span><span class="plain-syntax"> </span><span class="constant-syntax">106</span><span class="plain-syntax"> </span><span class="constant-syntax">107</span><span class="plain-syntax"> </span><span class="constant-syntax">108</span><span class="plain-syntax"> </span><span class="constant-syntax">109</span><span class="plain-syntax"> ...</span>
+<span class="plain-syntax">    </span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]</span>
+<span class="plain-syntax">        </span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]</span>
+<span class="plain-syntax">        </span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]</span>
+</pre>
+<p class="commentary">Here <span class="extract"><span class="extract-syntax">node1</span></span> represents an instruction, with the details stored at bytecode
+locations 103 to 105; <span class="extract"><span class="extract-syntax">node2</span></span> points to bytecode at 106 to 107, and so on.
+But then we could decide, when optimising code, that we want instructions
+<span class="extract"><span class="extract-syntax">node2</span></span> and <span class="extract"><span class="extract-syntax">node3</span></span> performed the other way round. Simple amendments to
+the tree structure achieve this without needing to edit the bytecode:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                            ... </span><span class="constant-syntax">102</span><span class="plain-syntax"> </span><span class="constant-syntax">103</span><span class="plain-syntax"> </span><span class="constant-syntax">104</span><span class="plain-syntax"> </span><span class="constant-syntax">105</span><span class="plain-syntax"> </span><span class="constant-syntax">106</span><span class="plain-syntax"> </span><span class="constant-syntax">107</span><span class="plain-syntax"> </span><span class="constant-syntax">108</span><span class="plain-syntax"> </span><span class="constant-syntax">109</span><span class="plain-syntax"> ...</span>
+<span class="plain-syntax">    </span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]</span>
+<span class="plain-syntax">        </span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]</span>
+<span class="plain-syntax">        </span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]</span>
+</pre>
+<p class="commentary">Indeed, we could decide that the instruction at <span class="extract"><span class="extract-syntax">node2</span></span> is redundant and cut it:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">                            ... 102 103 104 105 106 107 108 109 ...</span>
+<span class="plain-syntax">    node1  -----------------------&gt; [.........]</span>
+<span class="plain-syntax">        node3  ---------------------------------------&gt; [.........]</span>
+</pre>
+<p class="commentary">It doesn't matter that the resulting bytecode storage is all mixed up in
+sequencing; the tree is what gives us the sequence of instructions, and the
+order of words in bytecode memory is only significant within a single
+instruction.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> Well, except for the root node, which has no real meaning. But there is
+only one of those.
+<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>As these diagrams suggest, we can generate Inter instructions quite flexibly,
+and are under no obligation to do so in sequence or all at once. (Indeed, we
+can add entirely new instructions in the linking process or when optimising
+code.)
+</p>
+
+<p class="commentary">So it is very useful to have a way to keep "bookmarks" in the tree, as positions
+where we are currently writing code, and might want to return to. For this
+purpose, we have the <a href="2-bkm.html#SP1" class="internal">inter_bookmark</a> type, which can represent any feasible
+write position in the tree. (This is not the same thing as representing any
+existing node in the tree: see <a href="2-bkm.html" class="internal">Bookmarks</a> for more.)
+</p>
+
+<p class="commentary">And this in turn allows for a simple API for <a href="2-np.html" class="internal">Node Placement</a>, allowing us
+to move or remove nodes in the tree, and to keep track of cursor-like moving
+bookmark positions when we generate a stream of new nodes and place them one
+after another.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Wiring. </b>The bytecode in a package can only refer to resources using symbols in that
 same package. On the face of it, that means packages are so well sealed up
 that they might as well all be independent programs, unable to see each other's
 variables, constants and functions.
 </p>
 
 <p class="commentary">But that is not true because symbols in one package can be "wired" to symbols
-in another:<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> see <a href="2-tw2.html" class="internal">The Wiring</a>. We write <span class="extract"><span class="extract-syntax">S ~~&gt; T</span></span> if the symbol <span class="extract"><span class="extract-syntax">S</span></span> is "wired to"
+in another:<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> see <a href="2-tw2.html" class="internal">The Wiring</a>. We write <span class="extract"><span class="extract-syntax">S ~~&gt; T</span></span> if the symbol <span class="extract"><span class="extract-syntax">S</span></span> is "wired to"
 <span class="extract"><span class="extract-syntax">T</span></span>, and we understand this as meaning that <span class="extract"><span class="extract-syntax">S</span></span> means whatever <span class="extract"><span class="extract-syntax">T</span></span> does.
 </p>
 
@@ -262,11 +493,11 @@ then have to look up <span class="extract"><span class="extract-syntax">T</span>
 would be no good to find instead "<span class="extract"><span class="extract-syntax">T</span></span>, see <span class="extract"><span class="extract-syntax">S</span></span>".
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> There are fleeting exceptional cases when a symbol can be wired to another
+<ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> There are fleeting exceptional cases when a symbol can be wired to another
 symbol in the same package, but those occur only with sockets and plugs in the
 special connectors package, and only temporarily even then.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Special symbols called plugs and sockets are used to import or export meanings
+<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Special symbols called plugs and sockets are used to import or export meanings
 from one tree of Inter code to a potential other tree, which will be "linked"
 into it later on.
 </p>
@@ -283,7 +514,7 @@ imports from and exports to the other.
 <span class="plain-syntax">    .                   . &lt;~~~~~~~~ .                     .</span>
 <span class="plain-syntax">    .....................           .......................</span>
 </pre>
-<p class="commentary">It would be chaotic<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> to allow random symbols in packages all over each tree
+<p class="commentary">It would be chaotic<sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> to allow random symbols in packages all over each tree
 to be wired directly to symbols in the other. Instead, every tree has a sort
 of embassy package <span class="extract"><span class="extract-syntax">/main/connectors</span></span> (a package called <span class="extract"><span class="extract-syntax">connectors</span></span> which is
 a subpackage of <span class="extract"><span class="extract-syntax">main</span></span>) which acts as an intermediary.
@@ -310,9 +541,9 @@ and everything it offers to the outside (sockets).
 <p class="commentary">For further zany ASCII-art like this, see <a href="2-tw2.html" class="internal">The Wiring</a>.
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> And also slow, and prone to namespace collisions.
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>It is not literally the case that plugs in one tree are wired to sockets in
+<ul class="footnotetexts"><li class="footnote" id="fn:7"><p class="inwebfootnote"><sup id="fnref:7"><a href="#fn:7" rel="footnote">7</a></sup> And also slow, and prone to namespace collisions.
+<a href="#fnref:7" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>It is not literally the case that plugs in one tree are wired to sockets in
 another, as the diagram above suggests. The actual wiring-together occurs only
 when (part of) one tree is merged into another, in what is called <a href="2-trn.html" class="internal">Transmigration</a>.
 </p>
@@ -369,96 +600,6 @@ to meanings in BasicInformKit can now connect to the relevant sockets.
 package in each tree just makes some definitions establishing the size of
 integers, and so on, and for these two trees whose definitions will just be
 duplicates of each other.)
-</p>
-
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. The warehouse and the building site. </b>There is a lot of memory to be managed here: Inter trees can be huge, though
-there are never more than one or two in memory at once.
-</p>
-
-<p class="commentary">In particular, each <a href="2-it.html#SP1" class="internal">inter_tree</a> structure contains two pools of data
-besides the actual tree:<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
-</p>
-
-<ul class="items"><li>(a) A "building site", which contains workspace data needed by the <a href="../building-module/index.html" class="internal">building</a>
-module. <a href="../building-module/index.html" class="internal">building</a> is essentially a piece of middleware sitting on top of
-this one, and making it easier for the compilers to use our facilities. We
-will ignore the building site completely here: it's not our problem.
-</li><li>(b) A "warehouse", which very much is our problem: see <a href="2-tw.html" class="internal">The Warehouse</a>.
-This provides storage for strings, symbols tables and the like, assigning each
-one an ID number. Resource number 178, for example, might be a <span class="extract"><span class="extract-syntax">text_stream</span></span>
-which is the content of some text literal in a function, while 179 might be
-an <a href="2-st.html#SP1" class="internal">inter_symbols_table</a> belonging to some package.
-</li></ul>
-<ul class="footnotetexts"><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> In real-life botany, trees do not have building sites or warehouses, but
-mixing some metaphors cannot really be helped. Trees in nature do not grow
-the way they do in computer science.
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Nodes and instructions. </b>Each node in an Inter tree represents a single Inter instruction,<sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> details of
-which are stored as a stretch of bytecode in memory.
-</p>
-
-<p class="commentary">This use of both a tree and also a mass of binary bytecode is an attempt to
-have our cake and eat it. The tree structure makes it quick and easy to splice,
-cut and reorder code; the binary bytecode storage is quick to load from a file.
-Still, the result is an unusual hybrid of a data structure.
-</p>
-
-<p class="commentary">For example, the tree might start out like this:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            ... </span><span class="constant-syntax">102</span><span class="plain-syntax"> </span><span class="constant-syntax">103</span><span class="plain-syntax"> </span><span class="constant-syntax">104</span><span class="plain-syntax"> </span><span class="constant-syntax">105</span><span class="plain-syntax"> </span><span class="constant-syntax">106</span><span class="plain-syntax"> </span><span class="constant-syntax">107</span><span class="plain-syntax"> </span><span class="constant-syntax">108</span><span class="plain-syntax"> </span><span class="constant-syntax">109</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    </span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]</span>
-<span class="plain-syntax">        </span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]</span>
-<span class="plain-syntax">        </span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]</span>
-</pre>
-<p class="commentary">Here <span class="extract"><span class="extract-syntax">node1</span></span> represents an instruction, with the details stored at bytecode
-locations 103 to 105; <span class="extract"><span class="extract-syntax">node2</span></span> points to bytecode at 106 to 107, and so on.
-But then we could decide, when optimising code, that we want instructions
-<span class="extract"><span class="extract-syntax">node2</span></span> and <span class="extract"><span class="extract-syntax">node3</span></span> performed the other way round. Simple amendments to
-the tree structure achieve this without needing to edit the bytecode:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            ... </span><span class="constant-syntax">102</span><span class="plain-syntax"> </span><span class="constant-syntax">103</span><span class="plain-syntax"> </span><span class="constant-syntax">104</span><span class="plain-syntax"> </span><span class="constant-syntax">105</span><span class="plain-syntax"> </span><span class="constant-syntax">106</span><span class="plain-syntax"> </span><span class="constant-syntax">107</span><span class="plain-syntax"> </span><span class="constant-syntax">108</span><span class="plain-syntax"> </span><span class="constant-syntax">109</span><span class="plain-syntax"> ...</span>
-<span class="plain-syntax">    </span><span class="element-syntax">node1</span><span class="plain-syntax">  -----------------------&gt; [.........]</span>
-<span class="plain-syntax">        </span><span class="element-syntax">node3</span><span class="plain-syntax">  ---------------------------------------&gt; [.........]</span>
-<span class="plain-syntax">        </span><span class="element-syntax">node2</span><span class="plain-syntax">  -------------------------------&gt; [.....]</span>
-</pre>
-<p class="commentary">Indeed, we could decide that the instruction at <span class="extract"><span class="extract-syntax">node2</span></span> is redundant and cut it:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">                            ... 102 103 104 105 106 107 108 109 ...</span>
-<span class="plain-syntax">    node1  -----------------------&gt; [.........]</span>
-<span class="plain-syntax">        node3  ---------------------------------------&gt; [.........]</span>
-</pre>
-<p class="commentary">It doesn't matter that the resulting bytecode storage is all mixed up in
-sequencing; the tree is what gives us the sequence of instructions, and the
-order of words in bytecode memory is only significant within a single
-instruction.
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:6"><p class="inwebfootnote"><sup id="fnref:6"><a href="#fn:6" rel="footnote">6</a></sup> Well, except for the root node, which has no real meaning. But there is
-only one of those.
-<a href="#fnref:6" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>As these diagrams suggest, we can generate Inter instructions quite flexibly,
-and are under no obligation to do so in sequence or all at once. (Indeed, we
-can add entirely new instructions in the linking process or when optimising
-code.)
-</p>
-
-<p class="commentary">So it is very useful to have a way to keep "bookmarks" in the tree, as positions
-where we are currently writing code, and might want to return to. For this
-purpose, we have the <a href="2-bkm.html#SP1" class="internal">inter_bookmark</a> type, which can represent any feasible
-write position in the tree. (This is not the same thing as representing any
-existing node in the tree: see <a href="2-bkm.html" class="internal">Bookmarks</a> for more.)
-</p>
-
-<p class="commentary">And this in turn allows for a simple API for <a href="2-np.html" class="internal">Node Placement</a>, allowing us
-to move or remove nodes in the tree, and to keep track of cursor-like moving
-bookmark positions when we generate a stream of new nodes and place them one
-after another.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

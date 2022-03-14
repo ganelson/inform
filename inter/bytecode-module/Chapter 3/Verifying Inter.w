@@ -128,8 +128,12 @@ inter_error_message *VerifyingInter::SID(inter_package *owner, inter_tree_node *
 	if ((construct != INVALID_IST) &&
 		(Inode::isnt(D, construct)) &&
 		(InterSymbol::defined_elsewhere(S) == FALSE) &&
-		(InterSymbol::misc_but_undefined(S) == FALSE))
-		return Inode::error(P, I"symbol of wrong type", InterSymbol::identifier(S));
+		(InterSymbol::misc_but_undefined(S) == FALSE)) {
+		text_stream *err = Str::new();
+		WRITE_TO(err, "symbol has type %d not %d: ", Inode::get_construct_ID(D), construct);
+		InterSymbolsTable::write_symbol_URL(err, S);
+		return Inode::error(P, err, InterSymbol::identifier(S));
+	}
 	return NULL;
 }
 

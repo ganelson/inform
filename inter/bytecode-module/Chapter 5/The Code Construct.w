@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void CodeInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(CODE_IST, I"code");
 	InterInstruction::specify_syntax(IC, I"code");
-	InterInstruction::fix_instruction_length_between(IC, 2, 2);
+	InterInstruction::data_extent_always(IC, 0);
 	InterInstruction::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterInstruction::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	InterInstruction::permit(IC, CAN_HAVE_CHILDREN_ICUP);

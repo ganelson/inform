@@ -231,7 +231,10 @@ But it really doesn't need to catch every possible error; this is Inter, not Inf
 	}
 	if ((Inode::isnt(D, construct)) &&
 		(InterSymbol::misc_but_undefined(S) == FALSE)) {
-		*E = InterErrors::quoted(I"symbol of wrong type", name, eloc); return NULL;
+		text_stream *err = Str::new();
+		WRITE_TO(err, "symbol has type %d not %d: ", Inode::get_construct_ID(D), construct);
+		InterSymbolsTable::write_symbol_URL(err, S);
+		*E = InterErrors::quoted(err, name, eloc); return NULL;
 	}
 
 @ This simpler version checks the global symbols for the tree, rather than the local
@@ -430,7 +433,6 @@ void TextualInter::write_pair(OUTPUT_STREAM, inter_tree_node *P, inter_pair pair
 	else if (InterValuePairs::is_glob(pair))           @<Print glob syntax@>
 	else if (InterValuePairs::is_undef(pair))          @<Print undef syntax@>
 	else if (InterValuePairs::is_symbolic(pair))       @<Print symbol name syntax@>
-	else if (InterValuePairs::is_functional(pair))     @<Print function name syntax@>
 	else WRITE("<invalid-value-type>");
 }
 
@@ -469,7 +471,6 @@ inter_error_message *TextualInter::parse_pair(text_stream *line, inter_error_loc
 	@<Parse plural dword syntax@>;
 	@<Parse glob syntax@>;
 	@<Parse symbol name syntax@>;
-	@<Parse function name syntax@>;
 	@<Parse undef syntax@>;
 
 	return InterErrors::quoted(I"unrecognised value", S, eloc);
@@ -636,22 +637,6 @@ one above.
 	if (E) return E;
 	*pair = InterValuePairs::symbolic(IBM, symb);
 	return NULL;
-
-@ Function bodies.
-
-@<Print function name syntax@> =
-	WRITE("function %S",
-		InterPackage::name(InterValuePairs::to_package(I, pair)));
-
-@<Parse function name syntax@> =
-	if (Str::begins_with_wide_string(S, L"function ")) {
-		TEMPORARY_TEXT(fname)
-		Str::substr(fname, Str::at(S, 9), Str::end(S));
-		inter_package *block = InterPackage::from_name(InterBookmark::package(IBM), fname);
-		*pair = InterValuePairs::functional(block);
-		DISCARD_TEXT(fname)
-		return NULL;
-	}
 
 @ Note that the undef syntax is not a valid identifier, since it begins |!|.
 This choice of character is meant to give it a dangerous aspect.

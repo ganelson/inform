@@ -10,7 +10,7 @@ void TypenameInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(TYPENAME_IST, I"typename");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_TYPENAME_IFLD, -1);
 	InterInstruction::specify_syntax(IC, I"typename IDENTIFIER TOKEN TOKENS");
-	InterInstruction::fix_instruction_length_between(IC, 9, UNLIMITED_INSTRUCTION_FRAME_LENGTH);
+	InterInstruction::data_extent_at_least(IC, 7);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, TypenameInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, TypenameInstruction::transpose);

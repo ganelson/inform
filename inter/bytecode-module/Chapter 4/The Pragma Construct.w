@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void PragmaInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(PRAGMA_IST, I"pragma");
 	InterInstruction::specify_syntax(IC, I"pragma IDENTIFIER TEXT");
-	InterInstruction::fix_instruction_length_between(IC, 4, 4);
+	InterInstruction::data_extent_always(IC, 2);
 	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PragmaInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, PragmaInstruction::transpose);

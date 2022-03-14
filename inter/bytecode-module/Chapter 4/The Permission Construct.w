@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void PermissionInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(PERMISSION_IST, I"permission");
 	InterInstruction::specify_syntax(IC, I"permission IDENTIFIER IDENTIFIER OPTIONALIDENTIFIER");
-	InterInstruction::fix_instruction_length_between(IC, 5, 5);
+	InterInstruction::data_extent_always(IC, 3);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PermissionInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PermissionInstruction::verify);

@@ -301,19 +301,6 @@ void Emit::propertyvalue(property *P, inter_name *owner, inter_pair val) {
 		Emit::baseline(), NULL));
 }
 
-@h Private, keep out.
-The following should be called only by //imperative: Functions//, which provides
-the real API for starting and ending functions.
-
-=
-void Emit::function(inter_name *fn_iname, kind *K, inter_package *block) {
-	if (Emit::at() == NULL) internal_error("no inter repository");
-	inter_symbol *fn_s = InterNames::to_symbol(fn_iname);
-	Produce::guard(ConstantInstruction::new(Emit::at(), fn_s,
-		Produce::kind_to_type(K), InterValuePairs::functional(block),
-		Emit::baseline(), NULL));
-}
-
 @h Interventions.
 These should be used as little as possible, and perhaps it may one day be possible
 to abolish them altogether. They insert direct kit material (i.e. paraphrased Inter

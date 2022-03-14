@@ -4,38 +4,43 @@ A specification of the inter language, as written out in text file form.
 
 @h Textual, Binary, Memory.
 Inter code has three representations: as a binary file, as a textual file,
-and in memory -- a sort of cross-referenced form of binary. For speed, the
-Inform compiler generates memory inter directly, and code-generates from
-that, so that the inter is normally never written out to disc. When Inter
-performs a conversion, it loads (say) textual inter into memory inter, then
-writes that out as binary inter.
+and in memory -- a sort of cross-referenced form of binary. Binary or
+textual inter files can be read in as memory inter, and memory inter can
+be written out as either binary or textual files. Any inter program can
+faithfully be represented in any of these forms.
 
-The following specification covers the inter language in its textual form:
-a UTF-8 encoded text file which conventionally takes the file extension
-".intert".
+In its textual form, Inter could conceivably be used as a programming
+language, albeit a low-level and verbose one. But its real purpose is to
+assist testing and debugging of the Inform tool-chain. We can write test
+cases in textual Inter to see if inter works; or we can write out memory
+inter to the debugging log to see if inform7 works.
 
-It should be stressed that inter is designed for inspection -- that is, for
-people to be able to read. It's not intended as a programming language for
-humans to write: the code is verbose and low-level. The idea is that inter
-code will be written by programs (such as Inform), but that this code will
-be possible for humans to check.
+Here is Hello World:
+= (text as Inter)
+package main _plain
+	package Main _code
+		code
+			inv !enableprinting
+			inv !print
+				val "Hello, world.\n"
+=
 
-Like assembly language, inter code is line-based: each line is a "statement".
-Lines can be of arbitrary length. A line beginning with a |#| (in column 1) is
+@ A textual inter file is a UTF-8 encoded text file which conventionally takes
+the file extension ".intert". Like assembly language, inter code is line-based:
+each line makes a single use of a "construct" like |package| or |code|. Lines
+can be of arbitrary length. A line beginning with a |#| (in column 1) is
 a comment, and blank lines are ignored.
-
-The term "name" below means a string of one or more English upper or lower
-case letters, underscores, or digits, except that it must not begin with
-a digit.
 
 As in Python, indentation from the left margin is highly significant, and
 should be in the form of tab characters.
 
-Inform follows certain conventions in the inter that it writes, but these
-conventions are not part of the specification, and may change. Any paragraph
-below which begins with "Convention" records the current practice.
+Most identifiers consist of a string of one or more English upper or lower
+case letters, underscores, or digits, except that it must not begin with
+a digit. Identifier lengths are unlimited. A few identifiers of special sorts
+begin with a special character to mark them out as special: |!enableprinting|,
+for example, is a "primitive", marked with a |!|.
 
-There are three forms of statement: global statements, data statements, and
+@ There are three forms of statement: global statements, data statements, and
 code statements. We will take these in turn.
 
 @h Global statements.

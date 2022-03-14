@@ -1,0 +1,14 @@
+package main _plain
+	package OtherFunction _code
+		code
+			inv !print
+				val "Hello from the OtherFunction.\n"
+	package Main _code
+		code
+			inv !enableprinting
+			inv /main/OtherFunction
+			inv /main/OtherOtherFunction
+	package OtherOtherFunction _code
+		code
+			inv !print
+				val "Hello from the OtherOtherFunction.\n"

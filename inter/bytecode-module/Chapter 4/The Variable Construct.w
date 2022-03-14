@@ -10,7 +10,7 @@ void VariableInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(VARIABLE_IST, I"variable");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_VAR_IFLD, TYPE_VAR_IFLD);
 	InterInstruction::specify_syntax(IC, I"variable TOKENS = TOKENS");
-	InterInstruction::fix_instruction_length_between(IC, 6, 6);
+	InterInstruction::data_extent_always(IC, 4);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	InterInstruction::permit(IC, CAN_HAVE_ANNOTATIONS_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, VariableInstruction::read);

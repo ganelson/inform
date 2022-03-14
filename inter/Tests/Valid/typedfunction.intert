@@ -1,0 +1,21 @@
+packagetype _plain
+packagetype _code
+primitive !enableprinting void -> void
+primitive !print val -> void
+primitive !printnumber val -> void
+package main _plain
+	package Main _code
+		code
+			inv !enableprinting
+			inv /main/OtherFunction
+				val (int32) 17
+	typename fiv = function int32 -> void
+	package (fiv) OtherFunction _code
+		local (int32) argument
+		code
+			inv !print
+				val "My argument was: "
+			inv !printnumber
+				val (int32) argument
+			inv !print
+				val ".\n"

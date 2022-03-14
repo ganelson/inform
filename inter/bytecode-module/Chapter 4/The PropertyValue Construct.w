@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void PropertyValueInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(PROPERTYVALUE_IST, I"propertyvalue");
 	InterInstruction::specify_syntax(IC, I"propertyvalue IDENTIFIER IDENTIFIER = TOKENS");
-	InterInstruction::fix_instruction_length_between(IC, 6, 6);
+	InterInstruction::data_extent_always(IC, 4);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PropertyValueInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, PropertyValueInstruction::transpose);

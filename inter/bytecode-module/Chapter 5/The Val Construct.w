@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void ValInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(VAL_IST, I"val");
 	InterInstruction::specify_syntax(IC, I"val TOKENS");
-	InterInstruction::fix_instruction_length_between(IC, 5, 5);
+	InterInstruction::data_extent_always(IC, 3);
 	InterInstruction::allow_in_depth_range(IC, 1, INFINITELY_DEEP);
 	InterInstruction::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, ValInstruction::read);

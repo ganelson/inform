@@ -39,24 +39,31 @@ void Vanilla::pragma(inter_tree *I, inter_tree_node *P, void *state) {
 
 @<General traverse@> =
 	gen->void_level = -1;
-	InterTree::traverse(gen->from, Vanilla::iterate, gen, NULL, -PACKAGE_IST);
+	InterTree::traverse(gen->from, Vanilla::iterate, gen, NULL, 0);
 
 @ This looks for the top level of packages which are not the code-body of
 functions, and calls //Vanilla::node// to recurse downwards through them.
+En route we also spot the functions, and declare those.
 
 =
 void Vanilla::iterate(inter_tree *I, inter_tree_node *P, void *state) {
 	code_generation *gen = (code_generation *) state;
-	inter_package *outer = InterPackage::container(P);
-	if ((outer == NULL) || (InterPackage::is_a_function_body(outer) == FALSE)) {
-		switch (Inode::get_construct_ID(P)) {
-			case CONSTANT_IST:
-			case VARIABLE_IST:
-			case SPLAT_IST:
-			case INSTANCE_IST:
-			case PROPERTYVALUE_IST:
-				Vanilla::node(gen, P);
-				break;
+	if (Inode::is(P, PACKAGE_IST)) {
+		inter_package *pack = PackageInstruction::at_this_head(P);
+		if (InterPackage::is_a_function_body(pack))
+			VanillaFunctions::declare_function(gen, PackageInstruction::name_symbol(pack));
+	} else {
+		inter_package *outer = InterPackage::container(P);
+		if ((outer == NULL) || (InterPackage::is_a_function_body(outer) == FALSE)) {
+			switch (Inode::get_construct_ID(P)) {
+				case CONSTANT_IST:
+				case VARIABLE_IST:
+				case SPLAT_IST:
+				case INSTANCE_IST:
+				case PROPERTYVALUE_IST:
+					Vanilla::node(gen, P);
+					break;
+			}
 		}
 	}
 }

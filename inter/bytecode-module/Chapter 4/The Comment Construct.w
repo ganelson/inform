@@ -11,7 +11,7 @@ or execution of a program.
 void CommentInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(COMMENT_IST, I"comment");
 	InterInstruction::specify_syntax(IC, I"#ANY");
-	InterInstruction::fix_instruction_length_between(IC, 3, 3);
+	InterInstruction::data_extent_always(IC, 1);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, CommentInstruction::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, CommentInstruction::verify);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, CommentInstruction::read);

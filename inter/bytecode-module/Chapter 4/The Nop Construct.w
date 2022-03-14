@@ -8,7 +8,7 @@ This instruction does nothing at all.
 =
 void NopInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(NOP_IST, I"nop");
-	InterInstruction::fix_instruction_length_between(IC, 2, 2);
+	InterInstruction::data_extent_always(IC, 0);
 	InterInstruction::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);

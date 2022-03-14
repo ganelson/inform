@@ -37,7 +37,7 @@ inter_construct *InterInstruction::create_construct(inter_ti ID, text_stream *na
 	IC->min_level = 0;
 	IC->max_level = 0;
 	IC->usage_permissions = INSIDE_PLAIN_PACKAGE_ICUP;
-	IC->min_extent = 1; IC->max_extent = UNLIMITED_INSTRUCTION_FRAME_LENGTH;
+	InterInstruction::data_extent_at_least(IC, 0);
 
 	IC->symbol_defn_field = -1;
 	IC->TID_field = -1;
@@ -89,12 +89,15 @@ void InterInstruction::allow_in_depth_range(inter_construct *IC, int l1, int l2)
 @ The instruction can be constrained to have a given length, in terms of the
 number of words of bytecode it occupies:
 
-@d UNLIMITED_INSTRUCTION_FRAME_LENGTH 0x7fffffff
-
 =
-void InterInstruction::fix_instruction_length_between(inter_construct *IC, int l1, int l2) {
-	IC->min_extent = l1;
-	IC->max_extent = l2;
+void InterInstruction::data_extent_always(inter_construct *IC, int l) {
+	IC->min_extent = l + DATA_IFLD;
+	IC->max_extent = l + DATA_IFLD;
+}
+
+void InterInstruction::data_extent_at_least(inter_construct *IC, int l) {
+	IC->min_extent = l + DATA_IFLD;
+	IC->max_extent = 0x7fffffff; /* i.e., unlimited */
 }
 
 @ So here is the code to police those restrictions. First, for a node already
