@@ -1593,14 +1593,7 @@ references for them. (Other kinds do not have Inter class references.)
 =
 void CSIInline::from_source_text(value_holster *VH, text_stream *p, void *opaque_state,
 	int prim_cat) {
-	if ((VH->vhmode_wanted == INTER_VOID_VHMODE) && (prim_cat != REF_PRIM_CAT)) {
-		Produce::evaluation(Emit::tree());
-		EmitCode::down();
-	}
 	CSIInline::eval_bracket_plus(VH, Feeds::feed_text(p), prim_cat);
-	if ((VH->vhmode_wanted == INTER_VOID_VHMODE) && (prim_cat != REF_PRIM_CAT)) {
-		EmitCode::up();
-	}
 }
 
 @ This case, where orthodox compilation is happening, is more tolerable. Run the

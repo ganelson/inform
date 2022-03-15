@@ -20,6 +20,7 @@ invalidate existing Inter binary files, necessitating a bump of //The Inter Vers
 @e INT16_ITCONC
 @e INT8_ITCONC
 @e INT2_ITCONC
+@e REAL_ITCONC
 @e TEXT_ITCONC
 @e ENUM_ITCONC
 @e LIST_ITCONC
@@ -71,6 +72,7 @@ void InterTypes::initialise_constructors(void) {
 	InterTypes::init_con(INT16_ITCONC,       I"int16",            -32768,      32767, FALSE,  TRUE, 0);
 	InterTypes::init_con(INT8_ITCONC,        I"int8",               -128,        127, FALSE,  TRUE, 0);
 	InterTypes::init_con(INT2_ITCONC,        I"int2",                  0,          1, FALSE,  TRUE, 0);
+	InterTypes::init_con(REAL_ITCONC,        I"real",        -2147483648, 2147483647, FALSE,  TRUE, 0);
 	InterTypes::init_con(TEXT_ITCONC,        I"text",        -2147483648, 2147483647, FALSE,  TRUE, 0);
 	InterTypes::init_con(ENUM_ITCONC,        I"enum",                  0, 2147483647,  TRUE,  TRUE, 0);
 	InterTypes::init_con(LIST_ITCONC,        I"list",        -2147483648, 2147483647, FALSE, FALSE, 1);
@@ -375,6 +377,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	@<Parse rulebook syntax@>;
 	@<Parse list syntax@>;
 	@<Parse column syntax@>;
+	@<Parse table syntax@>;
 	@<Parse description syntax@>;
 	@<Parse relation syntax@>;
 	@<Parse rule or function syntax@>;
@@ -407,6 +410,15 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 @<Parse column syntax@> =
 	if (Regexp::match(&mr, text, L"column of (%C+)")) {
 		results->constructor_code = COLUMN_ITCONC;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
+		InterTypes::add_operand_to_isstd(results, T, conts_type);
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+
+@<Parse table syntax@> =
+	if (Regexp::match(&mr, text, L"table of (%C+)")) {
+		results->constructor_code = TABLE_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
 		Regexp::dispose_of(&mr);

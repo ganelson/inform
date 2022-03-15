@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void InstanceInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(INSTANCE_IST, I"instance");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_INST_IFLD, TYPE_INST_IFLD);
-	InterInstruction::specify_syntax(IC, I"instance IDENTIFIER TOKENS");
+	InterInstruction::specify_syntax(IC, I"instance TOKEN TOKENS");
 	InterInstruction::data_extent_always(IC, 6);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, InstanceInstruction::read);
@@ -92,38 +92,42 @@ void InstanceInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_
 =
 void InstanceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_parse *ilp,
 	inter_error_location *eloc, inter_error_message **E) {
-	inter_symbol *instance_s =
-		TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), ilp->mr.exp[0], E);
-	if (*E) return;
+	text_stream *type_text = ilp->mr.exp[0];
+	text_stream *instance_text = ilp->mr.exp[1];
+	
+	inter_type inst_type = InterTypes::unchecked();
+	@<Find the enumerated type this will belong to@>;
 
-	inter_symbol *typename_s = NULL;
+	inter_symbol *instance_s = NULL;
 	inter_pair val = InterValuePairs::undef();
-	@<Parse the typename and enumerated value, if given@>;
-	if (*E) return;
+	@<Find the instance name and enumerated value, if given@>;
 
-	inter_type inst_type = InterTypes::from_type_name(typename_s);
-	if (InterTypes::is_enumerated(inst_type) == FALSE) {
-		*E = InterErrors::quoted(I"not a kind which has instances", ilp->mr.exp[1], eloc);
-		return;
-	}
-
-	*E = InstanceInstruction::new(IBM, instance_s, typename_s, val,
-		(inter_ti) ilp->indent_level, eloc);
+	*E = InstanceInstruction::new(IBM, instance_s, InterTypes::type_name(inst_type),
+		val, (inter_ti) ilp->indent_level, eloc);
 }
 
-@<Parse the typename and enumerated value, if given@> =
-	text_stream *ktext = ilp->mr.exp[1], *vtext = NULL;
+@<Find the enumerated type this will belong to@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, ktext, L"(%i+) = (%c+)")) {
-		ktext = mr.exp[0]; vtext = mr.exp[1];
-	}
-	typename_s = TextualInter::find_symbol(IBM, eloc, ktext, TYPENAME_IST, E);
-	if ((*E == NULL) && (vtext)) {
-		*E = TextualInter::parse_pair(ilp->line, eloc, IBM, InterTypes::unchecked(),
-			vtext, &val);
-		if (*E) return;
-	}
+	if (Regexp::match(&mr, type_text, L"%((%c+)%)"))
+		inst_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, mr.exp[0], E);
+	if (InterTypes::is_enumerated(inst_type) == FALSE)
+		*E = InterErrors::quoted(I"not an enumerated type", type_text, eloc);
 	Regexp::dispose_of(&mr);
+	if (*E) return;
+
+@<Find the instance name and enumerated value, if given@> =
+	text_stream *value_text = NULL;
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, instance_text, L"(%i+) = (%c+)")) {
+		instance_text = mr.exp[0]; value_text = mr.exp[1];
+	}
+	instance_s =
+		TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), instance_text, E);
+	if ((*E == NULL) && (Str::len(value_text) > 0))
+		*E = TextualInter::parse_pair(ilp->line, eloc, IBM, InterTypes::unchecked(),
+			value_text, &val);
+	Regexp::dispose_of(&mr);
+	if (*E) return;
 
 @h Writing to textual Inter syntax.
 
@@ -131,7 +135,8 @@ void InstanceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 void InstanceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *instance_s = InstanceInstruction::instance(P);
 	inter_symbol *typename_s = InterSymbolsTable::symbol_from_ID_at_node(P, TYPE_INST_IFLD);
-	WRITE("instance %S %S = ", InterSymbol::identifier(instance_s), InterSymbol::identifier(typename_s));
+	WRITE("instance (%S) %S = ",
+		InterSymbol::identifier(typename_s), InterSymbol::identifier(instance_s));
 	TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_INST_IFLD), FALSE);
 	SymbolAnnotation::write_annotations(OUT, P, instance_s);
 }

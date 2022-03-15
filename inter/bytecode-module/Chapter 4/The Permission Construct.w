@@ -8,7 +8,8 @@ For what this does and why it is used, see //inter: Textual Inter//.
 =
 void PermissionInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(PERMISSION_IST, I"permission");
-	InterInstruction::specify_syntax(IC, I"permission IDENTIFIER IDENTIFIER OPTIONALIDENTIFIER");
+	InterInstruction::specify_syntax(IC,
+		I"permission for IDENTIFIER to have IDENTIFIER OPTIONALIDENTIFIER");
 	InterInstruction::data_extent_always(IC, 3);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PermissionInstruction::read);
@@ -99,8 +100,8 @@ messages if we report early.
 =
 void PermissionInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
-	text_stream *prop_name = ilp->mr.exp[0];
-	text_stream *owner_name = ilp->mr.exp[1];
+	text_stream *owner_name = ilp->mr.exp[0];
+	text_stream *prop_name = ilp->mr.exp[1];
 	text_stream *storage_name = ilp->mr.exp[2];
 
 	inter_symbol *prop_s =
@@ -118,7 +119,7 @@ void PermissionInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	inter_node_list *FL;
 	if (TypenameInstruction::is(owner_s)) {
 		if (InterTypes::is_enumerated(InterTypes::from_type_name(owner_s)) == FALSE) {
-			*E = InterErrors::quoted(I"not a kind which can have property values",
+			*E = InterErrors::quoted(I"not a type which can have property values",
 				owner_name, eloc);
 			return;
 		}
@@ -126,7 +127,7 @@ void PermissionInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	} else if (InstanceInstruction::is(owner_s)) {
 		FL = InstanceInstruction::permissions_list(owner_s);
 	} else {
-		*E = InterErrors::quoted(I"not an instance or enumerated kind",
+		*E = InterErrors::quoted(I"not an instance or enumerated type",
 			owner_name, eloc);
 		return;
 	}
@@ -153,7 +154,7 @@ void PermissionInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree
 	inter_symbol *prop_s = PermissionInstruction::property(P);
 	inter_symbol *owner_s = PermissionInstruction::owner(P);
 	inter_symbol *storage_s = PermissionInstruction::storage(P);
-	WRITE("permission %S %S",
+	WRITE("permission for %S to have %S",
 		InterSymbol::identifier(prop_s), InterSymbol::identifier(owner_s));
 	if (storage_s) WRITE(" %S", InterSymbol::identifier(storage_s));
 }

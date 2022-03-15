@@ -21,8 +21,8 @@ package main _plain
 	constant (K_number) gaius = dw"toads"
 	splat "Sing a song of \"six splats\"...\nand don't wait up"
 	typename K_colour = enum
-	instance I_green K_colour = 1
-	instance I_red K_colour = 17
+	instance (K_colour) I_green = 1
+	instance (K_colour) I_red = 17
 	variable (K_colour) V_shade = I_red
 	typename K_list_of_number = list of K_number
 	constant (K_list_of_number) C_primes = { 2, 3, 5, 7, 11, 13, 17, 19 }
@@ -32,14 +32,14 @@ package main _plain
 	constant (K_text) C_complaint = "This is already quite a long test case."
 	constant (K_number) C_raw = glob"SOME_I6_DRIVEL"
 	typename K_odour = enum
-	instance I_citrus K_odour = 5
-	instance I_leather K_odour = 10
+	instance (K_odour) I_citrus = 5
+	instance (K_odour) I_leather = 10
 	property (K_number) P_strength __property_name="strength"
-	permission P_strength K_odour
+	permission for K_odour to have P_strength
 	propertyvalue P_strength I_citrus = 20
 	propertyvalue P_strength I_leather = 7
 	property (K_number) P_lingeringness
-	permission P_lingeringness K_odour
+	permission for K_odour to have P_lingeringness
 	propertyvalue P_lingeringness I_citrus = 1
 	propertyvalue P_lingeringness I_leather = 3
 	propertyvalue P_lingeringness K_odour = 2
@@ -50,13 +50,13 @@ package main _plain
 	constant (K_column_of_colour) C_egtable_col2 = { I_green, !undef, I_red }
 	constant (K_table) C_egtable = { C_egtable_col1, C_egtable_col2 }
 	typename K_object = enum
-	instance I_board K_object = 1
+	instance (K_object) I_board = 1
 	typename K_piece <= K_object
-	instance I_bishop K_piece = 2
-	instance I_rook K_piece = 3
+	instance (K_piece) I_bishop = 2
+	instance (K_piece) I_rook = 3
 	typename K_list_of_objects = list of K_object
 	constant (K_list_of_objects) C_majors = { I_bishop, I_rook }
-	permission P_lingeringness I_bishop
+	permission for I_bishop to have P_lingeringness
 	typename K_func = function K_colour K_number -> K_odour
 	typename K_rule = rule void -> void
 	typename K_rulebook = rulebook of K_rule

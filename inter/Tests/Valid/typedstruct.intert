@@ -1,0 +1,5 @@
+packagetype _plain
+package main _plain
+	typename city_data = struct real real text
+	constant (city_data) L = struct{ r"+51.507", r"-0.1275", "London" }
+	constant (city_data) P = struct{ r"+48.857", r"+2.3522", "Paris" }

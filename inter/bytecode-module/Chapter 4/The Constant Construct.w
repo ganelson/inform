@@ -161,13 +161,13 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 }
 
 @<Parse the type and name@> =
-	text_stream *kind_text = NULL;
+	text_stream *type_text = NULL;
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, name_text, L"%((%c+)%) (%c+)")) {
-		kind_text = mr.exp[0];
+		type_text = mr.exp[0];
 		name_text = mr.exp[1];
 	}
-	con_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, kind_text, E);
+	con_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, type_text, E);
 	if (*E == NULL)
 		con_name = TextualInter::new_symbol(eloc, InterBookmark::scope(IBM), name_text, E);
 	Regexp::dispose_of(&mr);

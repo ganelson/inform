@@ -1599,27 +1599,27 @@ package main _plain
 					constant ^conformed_to = /main/generic/kinds/kind17/kind_ref __translation="^conformed_to_U2"
 				constant (text) ^brief_inferences = "<i>Usually</i> singular-named <i>not</i> plural-named, improper-named <i>not</i> proper-named.<br>\n<i>Usually not</i> ambiguously plural.<br>\n<i>Can have</i> printed name (<i>text</i>), printed plural name (<i>text</i>), indefinite article (<i>text</i>).<br>\n" __translation="^brief_inferences_U1"
 				constant (text) ^inferences = "<i>Usually</i> singular-named <i>not</i> plural-named, improper-named <i>not</i> proper-named.<br>\n<i>Usually not</i> ambiguously plural.<br>\n<i>Can have</i> printed name (<i>text</i>), printed plural name (<i>text</i>), indefinite article (<i>text</i>).<br>\n" __translation="^inferences_U1"
-				permission P_variable_initial_value K_object
-				permission P_printed_name K_object
-				permission P_printed_plural_name K_object
-				permission P_indefinite_article K_object
-				permission P_plural_named K_object
-				permission P_proper_named K_object
-				permission P_ambiguously_plural K_object
-				permission P_vector K_object
-				permission P_kd_count K_object
-				propertyvalue P_plural_named K_object = 0
-				propertyvalue P_proper_named K_object = 0
-				propertyvalue P_printed_name K_object = /main/generic/kinds/kind1/block_constant1/bc
+				permission for P_variable_initial_value to have K_object
+				permission for P_printed_name to have K_object
+				permission for P_printed_plural_name to have K_object
+				permission for P_indefinite_article to have K_object
+				permission for P_plural_named to have K_object
+				permission for P_proper_named to have K_object
+				permission for P_ambiguously_plural to have K_object
+				permission for P_vector to have K_object
+				permission for P_kd_count to have K_object
+				propertyvalue P_plural_named of K_object = 0
+				propertyvalue P_proper_named of K_object = 0
+				propertyvalue P_printed_name of K_object = /main/generic/kinds/kind1/block_constant1/bc
 				package block_constant1 _block_constant
 					constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U1"
-				propertyvalue P_printed_plural_name K_object = /main/generic/kinds/kind1/block_constant2/bc
+				propertyvalue P_printed_plural_name of K_object = /main/generic/kinds/kind1/block_constant2/bc
 				package block_constant2 _block_constant
 					constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U2"
-				propertyvalue P_indefinite_article K_object = /main/generic/kinds/kind1/block_constant3/bc
+				propertyvalue P_indefinite_article of K_object = /main/generic/kinds/kind1/block_constant3/bc
 				package block_constant3 _block_constant
 					constant bc = { /main/BasicInformKit/constants/CONSTANT_PACKED_TEXT_STORAGE_con/CONSTANT_PACKED_TEXT_STORAGE, /main/BasicInformKit/constants/EMPTY_TEXT_PACKED_con/EMPTY_TEXT_PACKED } __translation="bc_U3"
-				propertyvalue P_ambiguously_plural K_object = 0
+				propertyvalue P_ambiguously_plural of K_object = 0
 				constant cap_short_name = /main/basic_inform_by_graham_nelson/properties/property4/P_printed_name
 			package kind2 _kind
 				constant (text) ^name = "number" __translation="^name_U35"
@@ -2432,6 +2432,7 @@ package main _plain
 					constant ^conformed_to = /main/generic/kinds/kind17/kind_ref __translation="^conformed_to_U59"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U23"
 				constant (text) ^inferences = "" __translation="^inferences_U23"
+				typename K_phrase_text_style____noth = function K_text_style -> unchecked __translation="K_phrase_text_style____noth"
 			package kind24 _kind
 				constant (text) ^name = "variable-pointer | k variable-pointer" __translation="^name_U57"
 				constant (int32) kind_ref = 561 __translation="kind_ref_U24"
@@ -5628,7 +5629,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U1"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U38"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U1"
-				instance I_german_language K_natural_language = 1 __declaration_order=0 __translation="I_german_language_U1"
+				instance (K_natural_language) I_german_language = 1 __declaration_order=0 __translation="I_german_language_U1"
 			package instance2 _instance
 				constant (text) ^name = "Italian language" __translation="^name_U100"
 				constant (text) ^printed_name = "Italian language" __translation="^printed_name_U56"
@@ -5643,7 +5644,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U2"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U39"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U2"
-				instance I_italian_language K_natural_language = 2 __declaration_order=1 __translation="I_italian_language_U1"
+				instance (K_natural_language) I_italian_language = 2 __declaration_order=1 __translation="I_italian_language_U1"
 			package instance3 _instance
 				constant (text) ^name = "English language" __translation="^name_U101"
 				constant (text) ^printed_name = "English language" __translation="^printed_name_U57"
@@ -5658,8 +5659,8 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U3"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U40"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U3"
-				instance I_english_language K_natural_language = 3 __declaration_order=2 __translation="I_english_language_U1"
-				propertyvalue P_adaptive_text_viewpoint I_english_language = /main/english_language_by_graham_nelson/instances/instance9/I_first_person_plural
+				instance (K_natural_language) I_english_language = 3 __declaration_order=2 __translation="I_english_language_U1"
+				propertyvalue P_adaptive_text_viewpoint of I_english_language = /main/english_language_by_graham_nelson/instances/instance9/I_first_person_plural
 			package instance4 _instance
 				constant (text) ^name = "French language" __translation="^name_U102"
 				constant (text) ^printed_name = "French language" __translation="^printed_name_U58"
@@ -5674,7 +5675,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U4"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U41"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U4"
-				instance I_french_language K_natural_language = 4 __declaration_order=3 __translation="I_french_language_U1"
+				instance (K_natural_language) I_french_language = 4 __declaration_order=3 __translation="I_french_language_U1"
 			package instance5 _instance
 				constant (text) ^name = "Swedish language" __translation="^name_U103"
 				constant (text) ^printed_name = "Swedish language" __translation="^printed_name_U59"
@@ -5689,7 +5690,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U5"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U42"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U5"
-				instance I_swedish_language K_natural_language = 5 __declaration_order=4 __translation="I_swedish_language_U1"
+				instance (K_natural_language) I_swedish_language = 5 __declaration_order=4 __translation="I_swedish_language_U1"
 			package instance6 _instance
 				constant (text) ^name = "Spanish language" __translation="^name_U104"
 				constant (text) ^printed_name = "Spanish language" __translation="^printed_name_U60"
@@ -5704,7 +5705,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U6"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U43"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U6"
-				instance I_spanish_language K_natural_language = 6 __declaration_order=5 __translation="I_spanish_language_U1"
+				instance (K_natural_language) I_spanish_language = 6 __declaration_order=5 __translation="I_spanish_language_U1"
 		package rulebooks _submodule
 			package rulebook1 _rulebook
 				package run_fn _function
@@ -6164,8 +6165,8 @@ package main _plain
 					constant ^conformed_to = /main/generic/kinds/kind21/kind_ref __translation="^conformed_to_U87"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U44"
 				constant (text) ^inferences = "" __translation="^inferences_U38"
-				permission P_adaptive_text_viewpoint K_natural_language
-				propertyvalue P_adaptive_text_viewpoint K_natural_language = /main/english_language_by_graham_nelson/instances/instance6/I_first_person_singular
+				permission for P_adaptive_text_viewpoint to have K_natural_language
+				propertyvalue P_adaptive_text_viewpoint of K_natural_language = /main/english_language_by_graham_nelson/instances/instance6/I_first_person_singular
 		package variables _submodule
 			package variable1 _variable
 				constant (text) ^name = "language of play" __translation="^name_U125"
@@ -14210,7 +14211,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U7"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U45"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U7"
-				instance I_present_tense K_grammatical_tense = 1 __declaration_order=6 __translation="I_present_tense_U1"
+				instance (K_grammatical_tense) I_present_tense = 1 __declaration_order=6 __translation="I_present_tense_U1"
 			package instance2 _instance
 				constant (text) ^name = "past tense" __translation="^name_U167"
 				constant (text) ^printed_name = "past tense" __translation="^printed_name_U77"
@@ -14225,7 +14226,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U8"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U46"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U8"
-				instance I_past_tense K_grammatical_tense = 2 __declaration_order=7 __translation="I_past_tense_U1"
+				instance (K_grammatical_tense) I_past_tense = 2 __declaration_order=7 __translation="I_past_tense_U1"
 			package instance3 _instance
 				constant (text) ^name = "perfect tense" __translation="^name_U168"
 				constant (text) ^printed_name = "perfect tense" __translation="^printed_name_U78"
@@ -14240,7 +14241,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U9"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U47"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U9"
-				instance I_perfect_tense K_grammatical_tense = 3 __declaration_order=8 __translation="I_perfect_tense_U1"
+				instance (K_grammatical_tense) I_perfect_tense = 3 __declaration_order=8 __translation="I_perfect_tense_U1"
 			package instance4 _instance
 				constant (text) ^name = "past perfect tense" __translation="^name_U169"
 				constant (text) ^printed_name = "past perfect tense" __translation="^printed_name_U79"
@@ -14255,7 +14256,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U10"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U48"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U10"
-				instance I_past_perfect_tense K_grammatical_tense = 4 __declaration_order=9 __translation="I_past_perfect_tense_U1"
+				instance (K_grammatical_tense) I_past_perfect_tense = 4 __declaration_order=9 __translation="I_past_perfect_tense_U1"
 			package instance5 _instance
 				constant (text) ^name = "future tense" __translation="^name_U170"
 				constant (text) ^printed_name = "future tense" __translation="^printed_name_U80"
@@ -14270,7 +14271,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U11"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U49"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U11"
-				instance I_future_tense K_grammatical_tense = 5 __declaration_order=10 __translation="I_future_tense_U1"
+				instance (K_grammatical_tense) I_future_tense = 5 __declaration_order=10 __translation="I_future_tense_U1"
 			package instance6 _instance
 				constant (text) ^name = "first person singular" __translation="^name_U171"
 				constant (text) ^printed_name = "first person singular" __translation="^printed_name_U81"
@@ -14285,7 +14286,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U12"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U50"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U12"
-				instance I_first_person_singular K_narrative_viewpoint = 1 __declaration_order=11 __translation="I_first_person_singular_U1"
+				instance (K_narrative_viewpoint) I_first_person_singular = 1 __declaration_order=11 __translation="I_first_person_singular_U1"
 			package instance7 _instance
 				constant (text) ^name = "second person singular" __translation="^name_U172"
 				constant (text) ^printed_name = "second person singular" __translation="^printed_name_U82"
@@ -14300,7 +14301,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U13"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U51"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U13"
-				instance I_second_person_singular K_narrative_viewpoint = 2 __declaration_order=12 __translation="I_second_person_singular_U1"
+				instance (K_narrative_viewpoint) I_second_person_singular = 2 __declaration_order=12 __translation="I_second_person_singular_U1"
 			package instance8 _instance
 				constant (text) ^name = "third person singular" __translation="^name_U173"
 				constant (text) ^printed_name = "third person singular" __translation="^printed_name_U83"
@@ -14315,7 +14316,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U14"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U52"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U14"
-				instance I_third_person_singular K_narrative_viewpoint = 3 __declaration_order=13 __translation="I_third_person_singular_U1"
+				instance (K_narrative_viewpoint) I_third_person_singular = 3 __declaration_order=13 __translation="I_third_person_singular_U1"
 			package instance9 _instance
 				constant (text) ^name = "first person plural" __translation="^name_U174"
 				constant (text) ^printed_name = "first person plural" __translation="^printed_name_U84"
@@ -14330,7 +14331,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U15"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U53"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U15"
-				instance I_first_person_plural K_narrative_viewpoint = 4 __declaration_order=14 __translation="I_first_person_plural_U1"
+				instance (K_narrative_viewpoint) I_first_person_plural = 4 __declaration_order=14 __translation="I_first_person_plural_U1"
 			package instance10 _instance
 				constant (text) ^name = "second person plural" __translation="^name_U175"
 				constant (text) ^printed_name = "second person plural" __translation="^printed_name_U85"
@@ -14345,7 +14346,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U16"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U54"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U16"
-				instance I_second_person_plural K_narrative_viewpoint = 5 __declaration_order=15 __translation="I_second_person_plural_U1"
+				instance (K_narrative_viewpoint) I_second_person_plural = 5 __declaration_order=15 __translation="I_second_person_plural_U1"
 			package instance11 _instance
 				constant (text) ^name = "third person plural" __translation="^name_U176"
 				constant (text) ^printed_name = "third person plural" __translation="^printed_name_U86"
@@ -14360,7 +14361,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U17"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U55"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U17"
-				instance I_third_person_plural K_narrative_viewpoint = 6 __declaration_order=16 __translation="I_third_person_plural_U1"
+				instance (K_narrative_viewpoint) I_third_person_plural = 6 __declaration_order=16 __translation="I_third_person_plural_U1"
 			package instance12 _instance
 				constant (text) ^name = "nominative" __translation="^name_U177"
 				constant (text) ^printed_name = "nominative" __translation="^printed_name_U87"
@@ -14375,7 +14376,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U18"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U56"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U18"
-				instance I_nominative K_grammatical_case = 1 __declaration_order=17 __translation="I_nominative_U1"
+				instance (K_grammatical_case) I_nominative = 1 __declaration_order=17 __translation="I_nominative_U1"
 			package instance13 _instance
 				constant (text) ^name = "accusative" __translation="^name_U178"
 				constant (text) ^printed_name = "accusative" __translation="^printed_name_U88"
@@ -14390,7 +14391,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U19"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U57"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U19"
-				instance I_accusative K_grammatical_case = 2 __declaration_order=18 __translation="I_accusative_U1"
+				instance (K_grammatical_case) I_accusative = 2 __declaration_order=18 __translation="I_accusative_U1"
 			package instance14 _instance
 				constant (text) ^name = "neuter gender" __translation="^name_U179"
 				constant (text) ^printed_name = "neuter gender" __translation="^printed_name_U89"
@@ -14405,7 +14406,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U20"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U58"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U20"
-				instance I_neuter_gender K_grammatical_gender = 1 __declaration_order=19 __translation="I_neuter_gender_U1"
+				instance (K_grammatical_gender) I_neuter_gender = 1 __declaration_order=19 __translation="I_neuter_gender_U1"
 			package instance15 _instance
 				constant (text) ^name = "masculine gender" __translation="^name_U180"
 				constant (text) ^printed_name = "masculine gender" __translation="^printed_name_U90"
@@ -14420,7 +14421,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U21"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U59"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U21"
-				instance I_masculine_gender K_grammatical_gender = 2 __declaration_order=20 __translation="I_masculine_gender_U1"
+				instance (K_grammatical_gender) I_masculine_gender = 2 __declaration_order=20 __translation="I_masculine_gender_U1"
 			package instance16 _instance
 				constant (text) ^name = "feminine gender" __translation="^name_U181"
 				constant (text) ^printed_name = "feminine gender" __translation="^printed_name_U91"
@@ -14435,7 +14436,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U22"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U60"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U22"
-				instance I_feminine_gender K_grammatical_gender = 3 __declaration_order=21 __translation="I_feminine_gender_U1"
+				instance (K_grammatical_gender) I_feminine_gender = 3 __declaration_order=21 __translation="I_feminine_gender_U1"
 		package kinds _submodule
 			package kind1 _kind
 				constant (text) ^name = "grammatical tense" __translation="^name_U182"
@@ -27357,7 +27358,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U23"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U65"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U23"
-				instance I_decorative K_text_style = 1 __declaration_order=22 __translation="I_decorative_U1"
+				instance (K_text_style) I_decorative = 1 __declaration_order=22 __translation="I_decorative_U1"
 			package instance2 _instance
 				constant (text) ^name = "calligraphic" __translation="^name_U211"
 				constant (text) ^printed_name = "calligraphic" __translation="^printed_name_U97"
@@ -27372,7 +27373,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U24"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U66"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U24"
-				instance I_calligraphic K_text_style = 2 __declaration_order=23 __translation="I_calligraphic_U1"
+				instance (K_text_style) I_calligraphic = 2 __declaration_order=23 __translation="I_calligraphic_U1"
 			package instance3 _instance
 				constant (text) ^name = "enlarged" __translation="^name_U212"
 				constant (text) ^printed_name = "enlarged" __translation="^printed_name_U98"
@@ -27387,7 +27388,7 @@ package main _plain
 				constant (/main/generic/kinds/kind29/K_list_of_values) ^usages = { } __translation="^usages_U25"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U67"
 				constant (text) ^specific_inferences = "" __translation="^specific_inferences_U25"
-				instance I_enlarged K_text_style = 3 __declaration_order=24 __translation="I_enlarged_U1"
+				instance (K_text_style) I_enlarged = 3 __declaration_order=24 __translation="I_enlarged_U1"
 		package kinds _submodule
 			package kind1 _kind
 				constant (text) ^name = "text style" __translation="^name_U213"
@@ -27589,7 +27590,7 @@ package main _plain
 			package phrase2 _to_phrase
 				package request1 _request
 					package phrase_fn _function
-						package call _code
+						package (/main/generic/kinds/kind23/K_phrase_text_style____noth) call _code
 							#T:text style
 							local (/main/source_text/kinds/kind1/K_text_style) t_0 __argument
 							#return value
@@ -27682,7 +27683,7 @@ package main _plain
 			constant (int32) KIT_CONFIGURATION_BITMAP = 0
 			constant (int32) KIT_CONFIGURATION_LOOKMODE = 2
 			constant (text) I7_VERSION_NUMBER = "10.1.0"
-			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U56"
+			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U57"
 			constant (text) ^virtual_machine = "C/32d/v1/no-main"
 			constant (text) ^virtual_machine_icon = "vm_glulx.png"
 			constant (text) ^language_elements_used = "core, naming, instance counting, glulx external files"

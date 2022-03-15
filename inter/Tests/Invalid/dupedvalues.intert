@@ -4,19 +4,19 @@ packagetype _code
 package main _plain
 	typename K_number = int32
 	typename K_odour = enum
-	instance I_citrus K_odour
-	instance I_leather K_odour
+	instance (K_odour) I_citrus
+	instance (K_odour) I_leather
 	property (K_number) P_strength
-	permission P_strength K_odour
+	permission for K_odour to have P_strength
 	propertyvalue P_strength I_citrus = 20
 	propertyvalue P_strength I_leather = 7
 	property (K_number) P_lingeringness
-	permission P_lingeringness K_odour
-	permission P_lingeringness K_odour
+	permission for K_odour to have P_lingeringness
+	permission for K_odour to have P_lingeringness
 	propertyvalue P_lingeringness I_citrus = 1
 	propertyvalue P_lingeringness I_leather = 3
 	propertyvalue P_lingeringness I_leather = 6
-	permission P_lingeringness K_number
+	permission for K_number to have P_lingeringness
 	typename K_colour = enum
-	instance I_green K_colour
+	instance (K_colour) I_green
 	propertyvalue P_lingeringness I_green = 27

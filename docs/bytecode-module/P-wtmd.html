@@ -70,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Inter Modules</a></li><li><a href="index.html">bytecode</a></li><li><a href="index.html#P">Preliminaries</a></li><li><b>What This Module Does</b></li></ul></div>
 <p class="purpose">An overview of the bytecode module's role and abilities.</p>
 
-<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. What is intermediate about inter</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Reading and writing Inter</a></li><li><a href="P-wtmd.html#SP4">&#167;4. What textual Inter looks like</a></li><li><a href="P-wtmd.html#SP5">&#167;5. What binary Inter looks like</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Data and types stored within bytecode</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Symbols</a></li><li><a href="P-wtmd.html#SP9">&#167;9. What memory Inter looks like</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Nodes and instructions</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Wiring</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="P-wtmd.html#SP1">&#167;1. Prerequisites</a></li><li><a href="P-wtmd.html#SP2">&#167;2. What is intermediate about inter</a></li><li><a href="P-wtmd.html#SP3">&#167;3. Textual, Binary, Memory</a></li><li><a href="P-wtmd.html#SP4">&#167;4. What textual Inter looks like</a></li><li><a href="P-wtmd.html#SP5">&#167;5. What binary Inter looks like</a></li><li><a href="P-wtmd.html#SP6">&#167;6. Data and types stored within bytecode</a></li><li><a href="P-wtmd.html#SP8">&#167;8. Symbols</a></li><li><a href="P-wtmd.html#SP9">&#167;9. What memory Inter looks like</a></li><li><a href="P-wtmd.html#SP10">&#167;10. Nodes and instructions</a></li><li><a href="P-wtmd.html#SP12">&#167;12. Wiring</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Prerequisites. </b>The bytecode module is a part of the Inform compiler toolset. It is
 presented as a literate program or "web". Before diving in:
@@ -146,9 +146,11 @@ not directly to represent the source text.
 used as a back-end by C#, has quite low-level bytecode but stores it in a
 highly structured object-oriented way.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Reading and writing Inter. </b>Inter code can be written out to a file and read back in, in two formats:
-see <a href="3-iibf.html" class="internal">Inter in Binary Files</a> and <a href="3-iitf.html" class="internal">Inter in Text Files</a>. The <a href="../inter/index.html" class="internal">inter</a> tool
-can convert freely between them:
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Textual, Binary, Memory. </b>Inter code has three representations: as a binary file, as a textual file,
+and in memory &mdash; a sort of cross-referenced form of binary. Binary or
+textual inter files can be read in as memory inter, and memory inter can
+be written out as either binary or textual files. Any inter program can
+faithfully be represented in any of these forms:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

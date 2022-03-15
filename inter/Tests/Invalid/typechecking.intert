@@ -70,3 +70,13 @@ package main _plain
 	variable (K_int32_to_int32) V32_32 = f2_32
 	variable (K_int32_to_int32) V32_32a = f32_2
 	variable (K_int2_to_int32) V2_32 = f32_32
+	# called function with wrong number of arguments - legal for now
+	package (K_int32_to_int32) doubler _code
+	package testbed _code
+		code
+			inv /main/doubler
+			inv /main/doubler
+				val 7
+			inv /main/doubler
+				val 7
+				val 81

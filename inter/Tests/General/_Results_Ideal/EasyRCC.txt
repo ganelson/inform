@@ -1,8 +1,8 @@
 packagetype _plain
 package main _plain
 	typename K_colour = enum
-	instance I_green K_colour = 1
-	instance I_turquoise K_colour = 17
-	instance I_maroon K_colour = 4002
+	instance (K_colour) I_green = 1
+	instance (K_colour) I_turquoise = 17
+	instance (K_colour) I_maroon = 4002
 	constant (K_colour) wallpaper_shade = I_green
-	instance I_cerise K_colour = 28
+	instance (K_colour) I_cerise = 28

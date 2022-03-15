@@ -7,11 +7,11 @@ package main _plain
 	variable V_apple = 2
 	variable (int32) V_peach = 12
 	typename K_colour = enum
-	instance I_green K_colour
-	instance I_red K_colour
+	instance (K_colour) I_green
+	instance (K_colour) I_red
 	typename K_odour = enum
-	instance I_citrus K_odour
-	instance I_leather K_odour
+	instance (K_odour) I_citrus
+	instance (K_odour) I_leather
 	variable V_overtone = I_citrus
 	constant (K_number) V_drivel = khglkl
 	constant (K_number) C_drivel = khglkl

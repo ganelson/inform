@@ -1,0 +1,24 @@
+package main _plain
+	package Main _code
+		code
+			inv !enableprinting
+			inv !printnumber
+				inv /main/doubler
+					val 13
+			inv !print
+				val "!\n"
+	package doubler _code
+		local x
+		code
+			inv !jump
+				lab .SkipWarning
+			inv !print
+				val "It'll get bigger!\n"
+			.SkipWarning
+			inv !store
+				ref x
+				inv !plus
+					val x
+					val x
+			inv !return
+				val x

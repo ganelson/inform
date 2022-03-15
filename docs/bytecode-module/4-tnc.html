@@ -75,7 +75,17 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="4-tnc.html#SP1">&#167;1. Definition</a></li><li><a href="4-tnc.html#SP2">&#167;2. Instructions</a></li><li><a href="4-tnc.html#SP3">&#167;3. Writing to textual Inter syntax</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Definition. </b>This instruction does nothing at all.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Definition. </b>This instruction does nothing at all, has no textual representation and is
+nevertheless useful when constructing Inter in memory.
+</p>
+
+<p class="commentary">It exists as a convenience used by Inform when it needs to write simultaneously to
+multiple positions within the same node's child list &mdash; the idea being that
+a nop statement acts as a divider. For example, by placing the A write
+position just before a nop N, and the B write position just after, Inform
+will generate A1, A2, A3, ..., N, B1, B2, ..., rather than (say) A1, B1, A2,
+A3, B2, ... The extra N is simply ignored in code generation, so it causes
+no problems to have it.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

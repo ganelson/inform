@@ -69,10 +69,12 @@ not directly to represent the source text.
 used as a back-end by C#, has quite low-level bytecode but stores it in a
 highly structured object-oriented way.
 
-@h Reading and writing Inter.
-Inter code can be written out to a file and read back in, in two formats:
-see //Inter in Binary Files// and //Inter in Text Files//. The //inter// tool
-can convert freely between them:
+@h Textual, Binary, Memory.
+Inter code has three representations: as a binary file, as a textual file,
+and in memory -- a sort of cross-referenced form of binary. Binary or
+textual inter files can be read in as memory inter, and memory inter can
+be written out as either binary or textual files. Any inter program can
+faithfully be represented in any of these forms:
 = (text as BoxArt)
   textual                                  textual
   inter   ---+                       +---> inter

@@ -8,7 +8,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 =
 void PropertyValueInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(PROPERTYVALUE_IST, I"propertyvalue");
-	InterInstruction::specify_syntax(IC, I"propertyvalue IDENTIFIER IDENTIFIER = TOKENS");
+	InterInstruction::specify_syntax(IC, I"propertyvalue IDENTIFIER of IDENTIFIER = TOKENS");
 	InterInstruction::data_extent_always(IC, 4);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PropertyValueInstruction::read);
@@ -158,7 +158,7 @@ inter_symbol *PropertyValueInstruction::parse_owner(inter_error_location *eloc,
 void PropertyValueInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *prop_s = PropertyValueInstruction::property(P);
 	inter_symbol *owner_s = PropertyValueInstruction::owner(P);
-	WRITE("propertyvalue %S %S = ",
+	WRITE("propertyvalue %S of %S = ",
 		InterSymbol::identifier(prop_s), InterSymbol::identifier(owner_s));
 	TextualInter::write_pair(OUT, P, PropertyValueInstruction::value(P), FALSE);
 }

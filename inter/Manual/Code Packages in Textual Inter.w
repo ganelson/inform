@@ -3,254 +3,306 @@ Code Packages in Textual Inter.
 How executable functions are expressed in textual inter programs.
 
 @h Code packages.
-To recap: a file of textual inter has a brief global section at the top, and
-is then a hierarchiy of package definitions. Each package begins with a
-symbols table, but then has contents which depend on its type. This section
-covers the possible contents for a code package, that is, one whose type
-is |_code|.
+To recap from //Textual Inter//: an Inter program is a nested hierarchy of
+packages. Some of those are special |_code| packages which define functions,
+special in several ways:
 
-Note that |package| is a data statement, not a code statement, and it follows
-that there is no way for a code package to contain sub-packages. Conceptually,
-a code package is a single function body.
+(*) Their names can be used as values: that's how functions are called. See
+|inv| below.
 
-@h Local variables.
-The statement |local NAME KIND| gives the code package a local variable;
-the |NAME| must be a private |misc| symbol in the package's symbols table.
-Local variable definitions should be made after the symbols table and before
-the |code| statement. When the function is called at run-time, its
-earliest-defined locals will hold any arguments from the function call.
-So for example, if:
+(*) Their names can optionally have types: see //Data Packages in Textual Inter//
+for details.
+
+(*) They cannot have subpackages. Conceptually, a code package is a single
+function body. Packages are not used for "code blocks", and there are no
+nested functions.
+
+(*) They cannot contain |constant|, |variable|, and similar instructions found
+in data packages. Instead they can only contain the set of instructions which
+are the subject of this section (and which are allowed only in |_code| packages).
+
+@ The basic structure of a function body like this is that it begins with some
+local variable declarations, and then has its actual content inside a |code|
+block, like so:
 = (text as Inter)
-	package Double _code
-	    symbol private misc x
-	    local x K_number
-=
-then a call |Double(6)| would begin executing with |x| equal to 6.
-
-@h Labels.
-Like labels in any assembly language, these are named reference points in the
-code; they are written |NAME|, where |NAME| must be a private |label| symbol
-in the package's symbols table, and must begin with a full stop |.|.
-
-All code packages must contain a "code" node at the top level, which is the
-final statement in the package, and contains the actual body code.
-= (text as Inter)
-	package HelloWorld _code
+	package double _code
+	    local x
 	    code
-	        inv !print
-	            val K_text "Hello World!\n"
+	    	inv !return
+	    		inv !plus
+	    			val x
+	    			val x
 =
-@h Primitive invocations.
-Other than labels and locals, code is a series of "invocations". An invocation
-is a use of either another function, or of a primitive.
+As with its global analogue, |variable|, a |local| instruction can optionally
+specify a type:
+= (text as Inter)
+	local (int32) x
+=
 
-Recall that the global section at the top of the inter file will likely have
-declared a number of primitives, with the notation:
+There can be at most one |code| instruction at the top level. This is incorrect:
 = (text as Inter)
-	primitive PRIMITIVE IN -> OUT
+	package fails _code
+	    code
+	    	inv !enableprinting
+	    code
+	    	inv !print
+	    		val "I am dismal.\n"
 =
-Primitives are, in effect, built-in functions. |IN| can either be |void| or
-can be a list of one or more terms which are all either |ref|, |val|, |lab| or
-|code|. |OUT| can be either |void| or else a single term which is either
-|ref| or |val|. For example,
+and should instead be:
 = (text as Inter)
-	primitive !plus val val -> val
+	package succeeds _code
+	    code
+	    	inv !enableprinting
+	    	inv !print
+	    		val "I am glorious.\n"
 =
-declares that the signature of the primitive |!plus| is |val val -> val|,
-meaning that it takes two values and produces another as result, while
+
+@ Surprisingly, perhaps, it's legal not to have a |code| block at all. This
+function works:
+= (text as Inter)
+	package succeeds _code
+=
+But of course it does nothing. If the return value of such a function is used,
+it will be 0.
+
+@h Contexts.
+At any point inside a function body (except at the very top level), the
+instruction used is expected to have a given "category", decided by the
+"context" at that point. These categories have names:
+
+(*) |code| context. This means an instruction is expected to do something,
+but not produce a resulting value.
+
+(*) |val| context. This means an instruction is expected to produce a value.
+
+(*) |ref| context. This means an instruction is expected to provide a
+"reference" to some storage in the program. For example, it could indicate
+a global variable, or a particular property of some instance.
+
+(*) |lab| context. This means an instruction is expected to indicate a label
+marking a position in that same function.
+
+In a |code| block, the context is initially |code|. For example:
+= (text as Inter)
+	package double _code
+	    local x                             top level has no context
+	    code                                top level has no context
+	    	inv !jump                       context is code
+	    		lab .SkipWarning            context is lab
+	    	inv !print                      context is code
+	    		val "It'll get bigger!\n"   context is val
+	    	.SkipWarning                    context is code
+	    	inv !store                      context is code
+	    		ref x                       context is ref
+	    		inv !plus                   context is val
+	    			val x                   context is val
+	    			val x                   context is val
+	    	inv !return                     context is code
+	    		val x                       context is val
+=
+In this function, the |code| block contains five instructions, each of which
+is read in a |code| context. Each of those then has its own expectations which
+set the context for its child instructions, and so on. For example, |inv !store|
+expects to see two child instructions, the first in |ref| context and the
+second in |val| context.
+
+Those uses of |inv !something| are called "primitive invocations". They are
+like function calls, but where the function is built in to Inter and is not
+itself defined in Inter. Each such has a "signature". For example, the
+internal declaration of |!store| is:
+= (text as Inter)
+	primitive !store ref val -> val
+=
+So its signature is |ref val -> val|. This expresses that its two children
+should be read in |ref| and |val| context, and that its result is a |val|.
+(As in most C-like languages, stores are values in Inter, though in
+practice those values are often thrown away.)
+
+The standard built-in stock of primitive invocations is described in the
+next section, on //Inform Primitives//.
+
+@ How is all this policed? Whereas typechecking of data is often weak in Inter,
+signature checking is taken much more seriously. If the context is |code|, then
+the only legal primitives to invoke are those where the return part of the
+signature is either |void| (no value) or |val| (a value, but which is thrown
+away and ignored, as in most C-like languages). Otherwise, |ref| context
+requires a |ref| result, and similarly for |val| and |lab|.
+
+For example, |!return| has the signature |val -> void|, which makes it legal
+to use in a |code| context as in the above example. But these two attempts
+to use it would both be incorrect:
+= (text as Inter)
+	inv !return
+	inv !printnumber
+		inv !return
+			val 10
+=
+The first fails because it tries to use |!return| as if it were |void -> void|,
+i.e., with no supplied value; the second fails because it tries to use it as if
+it were |val -> val|.
+
+@ Some primitives have |code| as one or more of their arguments. For example:
 = (text as Inter)
 	primitive !ifelse val code code -> void
 =
-says that |!ifelse| consumes a value and two blocks of code, and produces
-nothing. Of course, |!plus| adds the values, whereas |!ifelse| evaluates
-the value and then executes one of the two code blocks depending on
-the result. But the statement |primitive| specifies only names and
-signatures, not meanings.
+This evaluates the first argument (a value), then executes the second argument
+(a code block) if the value is non-zero, or alternatively the third if it is zero.
+There is no result. For example:
+= (text as Inter)
+	inv !ifelse
+		val x
+		code
+			inv !printnumber
+				x
+		code
+			inv !print
+				"I refuse to print zeroes on principle."
+=
 
-The third term type, |lab|, means "the name of a label". This must be an
-explicit name: labels are not values, which is why the signature for
-|!jump| is |primitive !jump lab -> void| and not |primitive !jump val -> void|.
+@ Rather like |code|, which executes a run of instructions as if they were a
+single instruction, |evaluation| makes a run of evaluations. Thus:
+= (text as Inter)
+	inv !printnumber
+		evaluation
+			val 23
+			val -1
+			val 12
+=
+prints just "12". The point of this is that there may be side-effects in the
+earlier evaluations, of course, though there weren't in this example.
 
-The final term type, |ref|, means "a reference to a value", and is in
-effect an lvalue rather than an rvalue: for example,
-= (text as Inter)
-	primitive !pull ref -> void
-=
-is the prototype of a primitive which pulls a value from the stack and
-stores it in whatever is referred to by the |ref| (typically, a variable).
-
-Convention. Inform defines a standard set of around 90 primitives. Although
-their names and prototypes are not part of the inter specification as such,
-you will only be able to use Inter's "compile to I6" feature if those are
-the primitives you use, so in effect this is the standard set. Details of
-these primitives and what they do will appear below.
-
-@ A primitive is invoked by |inv PRIMITIVE|, with any necessary inputs,
-matching the |IN| part of its signature, occurring on subsequent lines
-indented one tab stop in. For example:
-= (text as Inter)
-	inv !plus
-	    val K_number 2
-	    val K_number 2
-=
-would compute |2+2|. This brings up the issue of "context". Code statements
-are always parsed in a given context, the context being what they are
-expected to produce or do. In this example:
-= (text as Inter)
-	inv !print
-	    val K_text "Hello World!\n"
-=
-the invocation of |!print| occurs at the top level of the function, in what
-is called "void" context; but the |val| statement occurs in value context,
-because it appears where the |!print| invocation expects to find a text value.
-It is an error to use a statement in the wrong context. For example, this:
-= (text as Inter)
-	    code
-	        inv !plus
-	            val K_number 2
-	            val K_number 2
-=
-is an error, because it makes no sense to evaluate |!plus| in a void context:
-the sum would just be thrown away unused. The context in which an |inv|
-statement is allowed depends on the |OUT| part of the signature of its
-primitive. Comparing the declarations of |!print| and |!plus|, we see:
-= (text as Inter)
-	primitive !print val -> void
-	primitive !plus val val -> val
-=
-so that |!print| can only be invoked in a void context, and |!plus| in a
-value context.
-
-@h Function invocations.
-The same statement, |inv|, is also used to call functions which are not
-primitive: that is, functions which are defined by code packages.
-
-To do so, though, we need a value identifying the function. This is
-done as follows. Suppose:
-= (text as Inter)
-	kind K_number int32
-	kind K_number_to_number K_number -> K_number
-	package Double_B _code
-	    symbol private misc x
-	    local x K_number
-	    code
-	        inv !return
-	            inv !plus
-	                val K_number x
-	                val K_number x
-	constant Double K_number_to_number = Double_B
-=
-The value |Double| now evaluates to this function, and that's what we
-can invoke. Thus:
-= (text as Inter)
-	inv Double
-	    val K_number 17
-=
-compiles to a function call returning the number 34.
-
-It would not make sense, and is an error, to write |inv Double_B|, because
-|Double_B| is a package name, not a value; and because there is no way to
-know its signature. By contrast, |Double| is indeed a value, and by looking
-at its kind |K_number_to_number|, we can see that the signature for the
-invocation must be |val -> val|.
-
-@h Val and cast.
-As has already been seen in the above examples, |val KIND VALUE| can be
-used in value context to supply an argument for a function or primitive.
-
-In general, inter code has very weak type checking. |val KIND VALUE| forces
-the |VALUE| to conform to the |KIND|, but no check is made on whether
-this kind is appropriate in the current context. For example, the primitive
-|!print| requires its one value to be textual, so that the following:
-= (text as Inter)
-	inv !print
-	    val K_number 7
-=
-has undefined behaviour at run-time. Though a terrible idea, this is valid
-inter code. This code, on the other hand, will throw an error:
-= (text as Inter)
-	inv !print
-	    val K_number "Seven"
-=
-The inter language does nevertheless provide for compilers which want to
-produce much stricter type-checked code, or which need their code-generators
-to compile shim code converting values between kinds. The statement:
-= (text as Inter)
-	cast KIND1 <- KIND2
-=
-is valid only in value context, and marks that a value of |KIND2| needs to
-be interpreted in some way as a value of |KIND1|. For example, one might
-imagine something like this:
-= (text as Inter)
-	inv !times
-	    cast K_number <- K_truth_state
-	        val K_truth_state flag1
-	    cast K_number <- K_truth_state
-	        val K_truth_state flag2
-=
-@h Ref, lab and code.
-Just as |val| supplies a value as needed by a |val| term in an invocation
-signature, so |ref|, |lab| and |code| meet the other possible requirements.
-For example, suppose the following signatures:
-= (text as Inter)
-	primitive !jump lab -> void
-	primitive !pull ref -> val
-	primitive !if val code -> void
-=
-These might be invoked as follows:
-= (text as Inter)
-	inv !jump
-	    lab .end
-=
-Here |.end| is the name of a label in the current function. References to
-labels in other functions are impossible, because label names are all |private|
-to the current symbols table. No kind is mentioned in a |lab| statement
-because labels are not values, and therefore do not have kinds.
-= (text as Inter)
-	inv !pull
-	    ref K_number x
-=
-Here |x| is the name of a variable, but it could be the name of any form of
-storage. On the other hand, |ref K_number 10| would be an error, because it
-isn't possible to write to the number 10: that is an rvalue but not an lvalue.
-= (text as Inter)
-	inv !if
-	    val K_truth_state flag
-	    code
-	        inv !print
-	            val K_text "Yes!"
-=
-compiles to something like |if (flag) { print "Yes!"; }|. The |code| statement
-is similar to a braced code block in a C-like language. Any amount of code
-can appear inside it, indented by one further tab stop; this code is all
-read in void context. There is no such thing as a code block which returns
-a value, and |code| can only be used in code context (i.e. matching the
-signature term |code|), not in value context. If what you need is code to
-return a value, that should be another function.
-
-@h Evaluation and reference.
-Using the mechanisms above, there is no good way to throw away an unwanted
-value: it is an error, for example, to evaluate something in void context.
-That's unfortunate if we want to evaluate something not for its result
-but for a side-effect. To get around that, we have:
-= (text as Inter)
-	evaluation
-	    ...
-=
-|evaluation| causes any number of indented values to be evaluated,
-throwing each result away in turn. In effect, it's a shim which changes
-the context from void context to value context; it tends to generate no code
-in the final program.
-
-|reference| is similarly a shim, but from reference context to value context.
-This is not in general a safe thing to do: consider the consequences of the
-following, for example -
+Another converter, so to speak, is |reference|, but this is much more limited
+in what it is allowed to do.
 = (text as Inter)
 	inv !store
-	    reference
-	        val K_number 7
-	    val K_number 3
+		reference
+			val x
+		val 5
 =
-In general |reference| must only be used where it can be proved that its
-content will compile to an lvalue in the Inform 6 generated. Inform uses it
-as little as possible.
+is exactly equivalent to:
+= (text as Inter)
+	inv !store
+		ref x
+		val 5
+=
+This is not a very useful example: but consider --
+= (text as Inter)
+	inv !store
+		reference
+			inv !propertyvalue
+				val Odessa
+				val area
+		val 5000
+=
+which changes the property |area| for |Odessa| to 5000. The signature of
+|!propertyvalue| is |val val -> val|, and ordinarily it evaluates the property.
+But placed under a |reference|, it becomes a reference to where that property
+is stored, and thus allows the value to be changed with |!store|. This:
+= (text as Inter)
+	inv !store
+		inv !propertyvalue
+			val Odessa
+			val area
+		val 5000
+=
+would by contrast be rejected with an error, as trying to use a |val| in a |ref|
+context.
+
+|reference| cannot be applied to anything other than storage (a local or global
+variable, a memory location or a property value), so for example:
+= (text as Inter)
+	reference
+		val 5
+=
+is meaningless and will be rejected. There is in general no way to make, say,
+a pointer to a function or instance using |reference|. It is much more circumscribed
+than the |&| operator in C.
+
+@h Function calls.
+This seems a good point to say how to make function calls, since it's almost
+exactly the same. This:
+= (text as Inter)
+	inv !printnumber
+		inv double
+			val 10
+=
+prints "20". Note the lack of a |!| in front of the function name: this means
+it is a regular function, not a primitive. 
+
+@ Function calls work in a rather assembly-language-like way, and Inter makes
+much less effort to type-check these for any kind of safety: so beware. It
+allows them to have any of the signatures |void -> val|, |val -> val|,
+|val val -> val|, ... and so on: in other words, they can be called with
+any number of arguments.
+
+In particular, even if a function is declared with a type it is still legal to
+call it with any number of arguments. Again: beware.
+
+Those arguments become the initial values of the local variables. So for
+example, if:
+= (text as Inter)
+	package example _code
+	    local x
+	    local y
+=
+then:
+
+(*) a call with no arguments results in |x| and |y| equal to 0 and 0;
+(*) a call with argument 7 results in |x| and |y| equal to 7 and 0;
+(*) a call with arguments 7 and 81 results in |x| and |y| equal to 7 and 81;
+(*) a call with three or more arguments has undefined results and may crash
+the program altogether.
+
+@h Val, ref, lab and cast.
+We have seen many examples already, but:
+
+(*) |val V| allows us to use any simple value |V| in any |val| context. For
+what is meant by a "simple" value, see //Data Packages in Textual Inter//.
+
+(*) |ref R| allows us to refer to any variable, local or global, in a |ref|
+context.
+
+(*) |lab L| allows us to refer to any label declared somewhere in the current
+function body, in a |lab| context.
+
+@ The |val| and |ref| instructions both allow optional type markers to be placed,
+so for example:
+= (text as Inter)
+	val (int32) x
+	ref (text) y
+=
+Where no type marker is given, the type is always considered |unchecked|.
+
+Types of |val| or |ref| tend not to be checked or looked at anyway, so this
+feature is currently little used. For many primitives, some of which are quite
+polymorphic, it would be difficult to impose a typechecking regime anyway.
+But the ability to mark |val| and |ref| with types is preserved as a hedge
+against potential future developments, when Inter might conceivably be
+tightened up to typecheck explicitly typed values.
+
+Similarly unuseful for the moment is |cast|. This instruction allows us to
+say "consider this value as if it had a different type". For example, if we
+are using an enumerated type |city|, we could read the enumeration values as
+numbers like so:
+= (text as Inter)
+	cast int32 <- city
+		val (city) Odessa
+=
+Right now this is no different from:
+= (text as Inter)
+	val (int32) Odessa
+=
+but we keep |cast| around as a hedge against future developments, in case we
+ever want to typecheck strictly enough that |val (int32) Odessa| is rejected
+as a contradiction in terms.
+
+@h Labels and assembly language.
+Like labels in C, these are named reference points in the code; they are written
+|.NAME|, where |.NAME| must begin with a full stop |.|. Labels are not values;
+they cannot be stored, or computed with, or cast.
+
+They can only be used in a |lab| instruction.
+
+@ |inv @opcode|.
+
+@ |assembly|.

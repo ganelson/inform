@@ -1,0 +1,20 @@
+package main _plain
+	typename city = enum
+	instance (city) Berlin = 3
+	instance (city) Madrid = 5
+	instance (city) Lisbon = 19
+	package Main _code
+		code
+			inv !enableprinting
+			inv !printnumber
+				val /main/Berlin
+			inv !print
+				val "!\n"
+			inv !printnumber
+				val /main/Madrid
+			inv !print
+				val "!\n"
+			inv !printnumber
+				val /main/Lisbon
+			inv !print
+				val "!\n"

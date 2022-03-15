@@ -3,290 +3,472 @@ Data Packages in Textual Inter.
 How static data, variables and constants are expressed in textual inter programs.
 
 @h Data packages.
-To recap: a file of textual inter has a brief global section at the top, and
-is then a hierarchiy of package definitions. Each package begins with a
-symbols table, but then has contents which depend on its type. This section
-covers the possible contents for a data package, that is, one whose type
-is not |_code|. Note that, in particular, the |main| package is always a
-data package, so there must be at least one in the program.
+To recap from //Textual Inter//: an Inter program is a nested hierarchy of
+packages. Some are special |_code| packages which define functions; the rest
+we will call "data packages".[1] Note that the compulsory outer |main| package
+is a data package. The instructions which can appear in data packages are the
+subject of this section.
 
-"Data" is a slightly loose phrase for what data packages contain: it
-includes metadata, and indeed almost anything other than actual executable
-code. Data packages, unlike code packages, can also contain other packages
-(of either sort).
+[1] The term "data" is used rather loosely here. "Anything else packages"
+might be a fairer description.
 
-@h Kinds and values.
-Inter is a very loosely typed language, in the sense that it is possible
-to require that values conform to particular data types. As in Inform, data
-types are called "kinds" in this context (which usefully distinguishes them
-from "types" of packages, a completely different concept).
-
-No kinds are built in: all must be declared before use. However, these
-declarations are able to say something about them, so they aren't entirely
-abstract. The syntax is:
+@h Variable and values.
+The instruction |variable| seems a good place to begin, since it creates an
+easily-understood piece of data. For example:
 = (text as Inter)
-	kind NAME CONTENT
+	variable V_score = 10
 =
-The |NAME|, like all names, goes into the owning package's symbol table;
-other packages wanting to use this kind will have to have an |external|
-symbol pointing to this definition.
+declares a new variable |V_score|, and assigns it the initial value 10. This
+is a global variable, accessible across the whole program.
 
-|CONTENT| must be one of the following:
+@ A number of different notations are allowed as numerical values:
 
-(a) |unchecked|, meaning that absolutely any data can be referred to by this type;
-(b) |int32|, |int16|, |int8|, |int2|, for numerical data stored in these numbers
-of bits (which the program may choose to treat as character values, as flags,
-as signed or unsigned integers. and so on, as it pleases);
-(c) |text|, meaning text;
-(d) |enum|, meaning that data of this kind must be equal to one (and only one)
-of the enumerated constants with this kind;
-(e) |table|, a special sort of data referring to tables made up of columns each
-of which has a different kind;
-(f) |list of K|, meaning that data must be a list, each of whose terms is
-data of kind |K| -- which must be a kind name known to the symbols table
-of the package in which this definition occurs;
-(g) |column of K|, similarly, but for a table column;
-(h) |relation of K1 to K2|, meaning that data must be such a relation, in the
-same sort of sense as in Inform;
-(i) |description of K|, meaning that data must be a description which either
-matches or does not match values of kind |K|;
-(j) |struct|, which is similar to |list of K|, but which has entries which do
-not all have to have the same kind;
-(k) and |routine|, meaning that data must be references to functions.
+(*) A decimal integer, which may begin with a minus sign (and, if so, will be
+stored as twos-complement signed); for example, |-231|.
 
-For example:
-= (text as Inter)
-	constant C_egtable_col1 K_column_of_number = { 1, 4, 9, 16 }
-	kind k_list_of_bool list of k_boolean
-	kind K_grammatical_tense enum
-=
-@ In the remainder of this specification, |VALUE| means either the name of
-a defined |constant| (see below), or else a literal.
-
-A literal |int32|, |int16|, |int8|, or |int2| can be written as any of the
-following:
-(a) a decimal integer which may begin with a minus sign (and, if so, will be
-interpreted as twos-complement signed);
-(b) a hexadecimal imteger prefixed with |0x|, which can write the digits
+(*) A hexadecimal integer prefixed with |0x|, which can write the digits
 |A| to |F| in either upper or lower case form, but cannot take a minus sign;
-(c) a binary integer prefixed with |0b|, which cannot take a minus sign.
+for example, |0x21BC|.
 
-For example, |-231|, |0x21BC| and |0b1001001| are all valid. If the literal
-supplied is too large to fit into the kind, an error is thrown.
+(*) A binary integer prefixed with |0b|, which cannot take a minus sign;
+for example, |0b1001001|.
 
-A literal |list| is writtem in braces: |{ V1, V2, ..., Vn }|, where |V1|, 
-|V2| and so on must all be acceptable literals for the entry kind of the
-list. For example, |{ 2, 3, 5, 7, 11, 13, 17, 19 }|. The same notation is
-also accepted for a |struct|, a |column| or a |table|. For example:
-= (text as Inter)
-	constant C_egtable_col1 K_column_of_number = { 1, 4, 9, 16 }
-	constant C_egtable_col2 K_column_of_colour = { I_green, undef, I_red }
-	constant C_egtable K_table = { C_egtable_col1, C_egtable_col2 }
-=
-A list-like notation can also be used for a "calculated literal". This is
-a single value, but which we may not be able to evaluate at inter generation
-time. For example, if we do not yet know the value of |X|, we can write
-|sum{ X, 1 }| to mean |X+1|. A present, addition is the only operation
-catered for in this way.
+(*) |r"text"| makes a literal real number: the text is required to use the
+same syntax as a literal real number in Inform 6. For example, |r"+1.027E+5"|.
+The |E+n| or |E-n| exponent is optional, but if it is used, a |+| or |-| sign
+is required; similarly, a |+| or |-| sign is required up front. So |r"1.0"|
+and |r"3.7E7"| are both illegal.
 
-A literal |text| is written in double quotes, |"like so"|. All characters
+Note that Inter does not specify the word size, that is, the maximum range
+of integers; many Inter programs are written on the assumption that this will
+be 16-bit and would fail if that assumption were wrong, or vice versa, but
+other Inter programs work fine whichever is the case. Real numbers, however,
+can only be used in 32-bit programs, and even then only have the accuracy
+of |float|, not |double|.
+
+@ There are also several forms of text:
+
+(*) Literal text is written in double quotes, |"like so"|. All characters
 within such text must have Unicode values of 32 or above, except for tab (9),
-writtem |\t|, and newline (10), written |\n|. In addition, |\"| denotes a
+written |\t|, and newline (10), written |\n|. In addition, |\"| denotes a
 literal double-quote, and |\\| a literal backslash, but these are the only
 backslash notations at present allowed.
 
-There are then a number of notations which look like texts, prefixed by
-indicative characters.
-
-|r"text"| makes a literal real number: the text is required to take the
-same form as a literal real number in Inform 6. The result is valid
-for use in an |int32|, where it is interpreted as a float. For example,
-|r"$+1.027E+5"|.
-
-|dw"text"| is meaningful only for interactive fiction, and represents the
+(*) |dw"text"| is meaningful only for interactive fiction, and represents the
 command parser dictionary entry for the word |text|. This is equivalent
-to the Inform 6 constant |'text//'|. |dwp"text"| is the same, but pluralised,
-equivalent to Inform 6 |'text//p'|. Again, these can be stored in an |int32|.
+to the Inform 6 constant |'text//'|.
 
-|&"text"| makes a literal value called a "glob". This is not a respectful
-term, and nor does it deserve one. A glob is a raw Inform 6 expression,
-which can't (easily) be compiled for any other target, but is simply
-copied literally through. Its kind is |unchecked|, so it can be used
-absolutely anywhere.
+(*) |dwp"text"| is the same, but pluralised, equivalent to Inform 6 |'text//p'|.
 
-|^"text"| is not really a value at all, and is called a "divider". This
-is really a form of comment used in the middle of long lists. Thus the
-list |{ 1, 2, ^"predictable start", 3721, -11706 }| is actually a list of four values
-but which should be compiled on two lines with the comment in between:
+@ There are two oddball value notations which should be used as little as possible:
+
+(*) |!undef| makes a special "this is not a value" value.
+
+(*) |glob"raw syntax"| is a feature allowing raw code for the final target
+language to be smuggled into Inter, which is supposedly target-independent.
+For example, |glob"#$magic"| says that the final code-generator should just
+print out |#$magic|, in blind faith that this will mean something, when it
+wants the value in question. Glob is not a respectful term, but this feature
+does not deserve respect, and is not used anywhere in the Inform tool chain.
+
+@h Constant and extended values.
+The instruction |constant| defines a name for a given value. For example:
 = (text as Inter)
-	1, 2, ! predictable start
-	3721, -11706
+	constant SPEED_LIMIT = 70
 =
-(As unnecessary as this feature seems, it does make the code produced by
-Inform look a lot more readable when it finally reaches Inform 6.)
+The name of this constant can then be used wherever a value is needed. Thus:
+= (text as Inter)
+	package main _plain
+		constant SPEED_LIMIT = 70
+		variable V_speed = SPEED_LIMIT
+=
 
-The literal |undef| can be used to mean "this is not a value".
+@ Constants also allow us to write more elaborate values than are normally
+allowed -- so-called "extended values". In particular:
 
-Convention. It is intended that Inform will never make use of globs, but
-at present about 30 globs persist in typical inter produced by Inform.
-None of these are generated by Inform 7 as such: they all arise from the
-oddball expressions in the template code which the code generator can't
-(yet) assimilate.
+(*) A literal |list| is written in braces: |{ V1, V2, ..., Vn }|, where |V1|, 
+|V2| and so on are all (unextended) values. The empty list is |{ }|.
 
-Inform generates |undef| values to represent missing entries in tables,
-but otherwise makes no use of them.
+(*) A structure is written |struct{ V1, V2, ..., Vn }|. The empty |struct|
+is not legal.
+
+(*) Calculated values are written |sum{ V1, V2, ..., Vn }|, and similarly
+for |product{ }|, |difference{ }| and |quotient{ }|. Empty calculated values
+are not legal.
+
+Lists are obviously useful. Here are some examples:
+= (text as Inter)
+	constant squares = { 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 }
+	constant colours = { "red", "green", "blue" }
+	constant lists = { squares, colours }
+=
+The distinction between a |struct| and a |list| is only visible if typechecking
+is used (see below); the expectation is that a list would contain a varying
+number of entries all of the same type, whereas a struct would contain a fixed
+number of entries of perhaps different but predetermined types.
+
+Calculated values are an unusual but very useful feature of Inter. Consider:
+= (text as Inter)
+	constant SPEED_LIMIT = 70
+	constant SAFE_SPEED = difference{ SPEED_LIMIT, 5 }
+=
+This effectively declares that |SAFE_SPEED| will be 65. What makes this useful
+is that when two Inter programs are linked together, |SAFE_SPEED| might be
+declared in one and |SPEED_LIMIT| in the other, and it all works even though
+the compiler of one could see the 70 but not the 5, and the compiler of the
+other could see the 5 but not the 70.
+
+@h URL notation.
+All identifier names are local to their own packages. So, for example, this:
+= (text as Inter)
+	package main _plain
+		package one _plain
+			constant SPEED_LIMIT = 70
+			variable V_speed = SPEED_LIMIT
+		package two _plain
+			variable V_speed = 12
+=
+is a legal Inter program and contains two different variables. But this:
+= (text as Inter)
+	package main _plain
+		package one _plain
+			constant SPEED_LIMIT = 70
+		package two _plain
+			variable V_speed = SPEED_LIMIT
+=
+...does not work. The variable |V_speed| is declared in package |two|, where
+the constant |SPEED_LIMIT| does not exist.
+
+This might seem to make it impossible for material in one package to refer
+to material in any other, but in fact we can, using URL notation:
+= (text as Inter)
+	package main _plain
+		package one _plain
+			constant SPEED_LIMIT = 70
+		package two _plain
+			variable V_speed = /main/one/SPEED_LIMIT
+=
+Here |/main/one/SPEED_LIMIT| is an absolute "URL" of the symbol |SPEED_LIMIT|.
+If we return to the example:
+= (text as Inter)
+	package main _plain
+		package one _plain
+			constant SPEED_LIMIT = 70
+			variable V_speed = SPEED_LIMIT
+		package two _plain
+			variable V_speed = 12
+=
+we see that the two variables have different URLs, |/main/one/V_speed| and
+|/main/two/V_speed|.
+
+@h Metadata constants.
+If constant names begin with the magic character |^| then they represent
+"metadata", describing the program rather than what it does. They are not
+data in the program at all. Thus:
+= (text as Inter)
+	constant ^author = "Jonas Q. Duckling"
+=
+is legal, but:
+= (text as Inter)
+	constant ^author = "Jonas Q. Duckling"
+	variable V_high_scorer = ^author
+=
+is not, because it tries to use a piece of metadata as if it were data.
+
+@h Types in Inter.
+Inter is an exceptionally weakly typed language. It allows the user to choose
+how much type-checking is done.
+
+Inter assigns a type to every constant, variable and so on. But by default those
+types are always a special type called |unchecked|, which means that nothing
+is ever forbidden. This is true even if the type seems obvious:
+= (text as Inter)
+	constant SPEED_LIMIT = 20
+=
+gives |SPEED_LIMIT| the type |unchecked|, not (say) |int32|. If a storage object
+such as a variable has type |unchecked|, then anything can be put into it; and
+conversely an |unchecked| value can always be used in any context.
+
+So if we want a constant or variable to have a type, we must give it explicitly:
+= (text as Inter)
+	constant (int32) SPEED_LIMIT = 20
+	variable (text) WARNING = "Slow down."
+=
+The "type marker" |(int32)|, which is intended to look like the C notation for
+a cast, gives an explicit type. The following, however, will be rejected:
+= (text as Inter)
+	constant (int32) SPEED_LIMIT = 20
+	variable (text) WARNING = SPEED_LIMIT
+=
+This is because |WARNING| has type |text| and cannot hold an |int32|. This is
+typechecking in action, and although you must volunteer for it, it is real.
+By conscientiously applying type markers throughout your program, you can
+use Inter as if it were a typed language.
+
+@ An intentional hole in this type system is that literals which look wrong for
+a given type can often be used as them. This, for instance, is perfectly legal:
+= (text as Inter)
+	constant (text) SPEED_LIMIT = 20
+	variable (int32) WARNING = "Slow down."
+=
+The type of a constant or variable is always either |unchecked| or else is
+exactly what is declared in brackets, regardless of what the value after the
+equals sign looks as if it ought to be. However, a weaker form of checking
+is actually going on under the hood: numerical data has to fit. So for example:
+= (text as Inter)
+	constant (int2) true = 1
+	constant (int2) false = 0
+	constant (int2) dunno = 2
+=
+allows |true| and |false| to be declared, but throws an error on |dunno|,
+because 2 is too large a value to be stored in an |int2|. Even this checking
+can be circumvented with a named constant of type |unchecked|, as here:
+= (text as Inter)
+	constant dangerous = 17432
+	constant (int2) safe = dangerous
+=
+This is allowed, and the result may be unhappy, but the user asked for it.
+
+@ Types are like values in that simple ones can be used directly, but to
+make more complicated ones you need to give them names. The analogous
+instruction to |constant|, which names a value, is |typename|, which names
+a type.
+
+The basic types are very limited: |int2|, |int8|, |int16|, |int32|, |real|
+and |text|. These are all different from each other, except that an |int16|
+can always be used as an |int32| without typechecking errors, but not vice
+versa; and so on for other types of integer.
+
+Note that Inter takes no position on whether or not these are signed; the
+literal |-6| would be written into an |int8|, an |int16| or an |int32| in
+a twos-complement signed way, but Inter treats all these just as bits.
+
+With just five types it really seems only cosmetic to use |typename|:
+= (text as Inter)
+	typename boolean = int2
+	constant (boolean) true = 1
+	variable (boolean) V_flag = true
+	typename truth_state = boolean
+=
+But what brings |typename| into its own is that it allows the writing of
+more complex types. For example:
+= (text as Inter)
+	typename bit_stream = list of int2
+	constant (bit_stream) signal = { 1, 0, 1, 1, 0, 1 }
+	variable (bit_stream) V_buffer = signal
+=
+|list of T| is allowed only for simple types |T|, so |list of list of int32|,
+say, is not allowed: but note that a typename is itself a simple type. So:
+= (text as Inter)
+	typename bit_stream = list of int2
+	typename signal_list = list of bit_stream
+	constant (bit_stream) signal1 = { 1, 0, 1, 1, 0, 1 }
+	constant (bit_stream) signal2 = { }
+	constant (bit_stream) signal3 = { 0, 1, 1 }
+	constant (signal_list) log = { signal1, signal2, signal3 }
+	variable (signal_list) V_buffer = log
+=
+will create a variable whose initial contents are a list of three lists of |int2|
+values.
+
+@ The "type constructions" allowed are as follows:
+
+(*) |list of T| for any simple type or typename |T|;
+
+(*) |function T1 T2 ... Tn -> T| for any simple types |T1|, |T2|, and so on.
+In the special case of no arguments, or no result, the notation |void| is
+used, but |void| is not a type.
+
+(*) |struct T1 T2 ... Tn| for any simple types |T1|, |T2|, and so on. There
+must be at least one of these, so |struct void| is not allowed.
+
+(*) |enum|, for which see below;
+
+(*) and then a raft of constructions convenient for Inform but which Inter
+really knows nothing about: |column of T|, |table of T|, |relation of T1 to T2|,
+|description of T|, |rulebook of T|, and |rule T1 -> T2|. Perhaps these ought
+to work via a general way for users to create new constructors, but for now
+they are hard-wired. They do nothing except to be distinct from each other,
+so that Inform can label its data.
+
+Inter applies the usual rules of covariance and contravariance when matching
+these types. For example:
+
+(*) |list of int2| matches |list of int32| but not vice versa (covariance
+in the entry type);
+
+(*) |function int32 -> void| matches |function int2 -> void| but not vice versa
+(contravariance in argument types);
+
+(*) |function text -> int2| matches |function text -> int32| but not vice versa
+(covariance in result types).
+
+@ This enables us to declare the type of a function. A typed version of |Hello|
+might look like this:
+= (text as Inter)
+package main _plain
+	typename void_function = function void -> void
+	package (void_function) Main _code
+		code
+			inv !enableprinting
+			inv !print
+				val "Hello, world.\n"
+=
+And similarly:
+= (text as Inter)
+	typename ii_i_function = function int32 int32 -> int32
+	package (ii_i_function) gcd _code
+		...
+=
+creates a function called |gcd| whose type is |int32 int32 -> int32|.
+Note that only |_code| packages are allowed to be marked with a type, because
+only |_code| package names are values.
+
+@ As an example of structures:
+= (text as Inter)
+	typename city_data = struct real real text
+	constant (city_data) L = struct{ r"+51.507", r"-0.1275", "London" }
+	constant (city_data) P = struct{ r"+48.857", r"+2.3522", "Paris" }
+=
 
 @h Enumerations and instances.
-As noted above, some kinds marked as |enum| are enumerated. This means
-that they can have only a finite number of possible values, each of which
-is represented in textual inter by a different name.
-
-These values are called "instances" and must also be declared. For example:
+That leaves enumerations, which have the enigmatically concise type |enum|.
+Only a typename can have this type: it may be concise but it is not simple. (So
+|list of enum| is not allowed.) |enum| is special in that each different time
+it is declared, it makes a different type. For example:
 = (text as Inter)
-	kind K_grammatical_tense enum
-	instance I_present_tense K_grammatical_tense
-	instance I_past_tense K_grammatical_tense
+	typename city = enum
+	typename country = enum
+	typename nation = country
 =
-It is also possible to specify numerical values to be used at run-time:
+Here there are two different enumerated types: |city| and another one which
+can be called either |country| or |nation|.
+
+As in many programming languages, an enumerated type is one which can hold only
+a fixed range of values known at compile time: for example, perhaps it can hold
+only the values 1, 2, 3, 4. An unusual feature of Inter is that the declaration
+does not specify these permitted values. Instead, they must be declared
+individually using the |instance| instruction. For example:
 = (text as Inter)
-	instance I_present_tense K_grammatical_tense = 1
+	typename city = enum
+	instance (city) Berlin
+	instance (city) Madrid
+	instance (city) Lisbon
 =
-If so, then such values must all be different (for all instances of that kind).
-Enum values must fit into an |int16|.
+For obvious reasons, the type marker -- in this case |(city)| -- is compulsory,
+not optional as it was for |constant|, |variable| and |package| declarations.
 
-Enumerations, but no other kinds, may have "subkinds", as in this example:
+At runtime, the values representing these instances are guaranteed to be different,
+but we should not assume anything else about those values. The final code-generator
+may choose to number them 1, 2, 3, but it may not. (When enumerations are used by
+the Inform 7 tool-chain for objects, the runtime values will be object IDs in the
+Z-machine or pointers to objects in Glulx or C, for instance.)
+
+If we need specific numerical values (which must be non-negative), we can specify
+that explicitly:
 = (text as Inter)
-	kind K_object enum
-	kind K1_room <= K_object
+	typename city = enum
+	instance (city) Berlin = 1
+	instance (city) Madrid = 17
+	instance (city) Lisbon = 201
 =
-This creates a new |enum| kind |K1_room|. Values of this are a subset of
-the values for its parent, |K_object|: thus, an instance of |K1_room| is
-automatically also an instance of |K_object|. This new subkind can itself
-have subkinds, and so on.
+You should either specify values for all instances of a given enumeration, or none.
 
-@h Properties of instances.
-A "property" is a named value attached to all instances of a given kind,
-and must be created before use with:
+Note that instances do not have to be declared in the same package, or even the
+same program, as the enumeration they belong to.
+
+@h Subtypes.
+Enumerated types, but no others, can be "subtypes". For example:
 = (text as Inter)
-	property NAME KIND
+	typename K_thing = enum
+	typename K_vehicle <= K_thing
+	typename K_tractor <= K_vehicle
 =
-which declares that |NAME| is a property whose value has the given |KIND|;
-however, it doesn't say which kind(s) can have this property, so we also
-have to give one or more "permissions", in the form
+An instance of |K_tractor| is now automatically also an instance of |K_vehicle|,
+but the converse is not necessarily true.
+
+The right-hand side of the |<=| sign is only allowed to be an enumerated typename,
+and a new typename created in this way is, for obvious reasons, also enumerated.
+
+@h Properties.
+Inter supports a simple model of properties and values. (An enumerated typename
+is in effect a class, and this is why instances are so called.)
+
+A property is a set of similarly-named variables belonging, potentially, to
+any number of owners, each having their own value. As with constants and
+variables, properties can optionally have types. For example:
 = (text as Inter)
-	permission NAME KIND
+	property population
+	property (text) motto
 =
-And once that is done, actual values can be assigned with:
+Any instance can in principle have its own copy of any property, and so can
+an enumerated type as a whole. But this is allowed only if an explicit
+permission is granted:
 = (text as Inter)
-	propertyvalue NAME OWNER = VALUE
+	typename city = enum
+	instance (city) Stockholm
+	instance (city) Odessa
+	permission for city to have population
+	permission for Odessa to have motto
 =
-where |OWNER| can either be the name of a whole kind, in which case this sets
-the default value of the property for instances of that kind, or else the name
-of a specific instance, in which case this sets just the property of a single
-thing. In either case, it is an error to do this unless the necessary
-permission has been established.
-
-The given value is just the initial state; at run-time, it can be changed to
-another value (of the same kind).
-
-For example:
+And we can now use the |propertyvalue| instruction to set these:
 = (text as Inter)
-	kind K_object enum
-	kind K_text text
-	property P_printed_name K_text
-	permission P_printed_name K_object
-	propertyvalue P_printed_name K_object = "something"
-	instance I_ball K_object
-	propertyvalue P_printed_name I_ball = "beach ball"
-
-@h Constants.
-A constant definition assigns a name to a given value: where that name is
-used, it evaluates to this value. The syntax is:
-= (text as Inter)
-	constant NAME KIND = VALUE
+	propertyvalue population of Stockholm = 978770
+	propertyvalue population of Odessa = 1015826
+	propertyvalue motto of Odessa = "Pearl of the Black Sea"
 =
-where the value given must itself be a constant or literal, and must conform
-to the given kind. As always, this is conformance only in the very weak
-system of type checking used by Inter: if either the value or the constant
-has an |unchecked| kind, then the test is automatically passed.
 
-For example,
+@ An optional extended form of |permission| is allowed which enables us to say
+that we want the storage for a property to be in a given list. Thus:
 = (text as Inter)
-	kind K_number int32
-	constant favourite_prime K_number = 16339
+	constant population_storage = { 2, 978770, 1015826 }
+	typename city = enum
+	instance (city) Stockholm
+	instance (city) Odessa
+	property population
+	permission for city to have population population_storage
 =
-Constants can have any kind, including enumerated ones, but if so then that
-does not make them instances. For example,
-= (text as Inter)
-	kind K_colour enum
-	instance C_red K_colour
-	instance C_green K_colour
-	constant C_favourite K_colour = C_green
-=
-does not make |C_favourite| a new possible colour: it's only a synonym for
-the existing |C_green|.
+But this is finicky, and has to be set up just right in order to work.[1]
 
-@ If a constant needs to refer to a function, we seem to run into the limitation
-that there's no notation for literal functions. In fact there is, though:
-that's what code packages are. For example,
-= (text as Inter)
-	kind K_number int32
-	kind K_number_to_number K_number -> K_number
-	package R_101_B _code
-	    ...
-	constant R_101 K_number_to_number = R_101_B
-=
-defines the constant |R_101|. Note that |R_101_B| is not a value, because
-package names are not values; but |R_101| on the other hand is a value, and
-can be stored and used at run-time like any other value.
+[1] The feature exists in Inter because of Inform 7's ability to define kinds
+with tables, so that the storage lists are the columns of the table in
+question. Because I7 allows those properties to be modified or read either
+qua properties or qua table entries, we cannot avoid giving Inter a similar
+ability, even though we might prefer not to.
 
-@h Global variables.
-Variables are like properties, except that each exists only as a single
-value, not attached to any instance in particular: it makes no sense to ask
-who the owner is. Variables must be declared as:
-= (text as Inter)
-	variable NAME KIND = VALUE
+@h Append and insert.
+Never use either |append| or |insert|.
 
-The given value is just the initial state; at run-time, it can be changed to
-another value (of the same kind). For example,
-= (text as Inter)
-	variable V_score K_number = 10
+@ Well, okay then. These disreputable constructs exist to implement very
+low-level features of Inform 7, going back to its earliest days as a programming
+language, when people were still writing strange hybrid programs partly in I6.
 
-@h Metadata.
-This provides important semantic markup, even though it has no direct effect on
-the code generated. Metadata is specified by constant definitions, but
-where the symbol name begins with the magic character |^|. For example:
-= (text as Inter)
-	constant ^name = "blue book"
-=
-Metadata constants compile to nothing, and cannot be equated to symbols in
-other packages, nor vice versa.
-
-@h Append and Insert.
-Two rather ugly constructs are currently needed in order to implement very
-low-level features of Inform 7, at points in I7's design where the normally
-subterranean presence of Inform 6 pokes up above the surface:
-
-|append NAME "RAW I6 CODE"| tells Inter to add the given raw code to whatever
-it compiles as the definition (in I6) of whatever the symbol |NAME| refers to.
+|append| attaches raw I6-syntax additions to any instance or enumerated type.
 For example, the I7 source text:
-
->> Include (- has door, -) when defining a door.
-
-results in the following inter being generated:
+= (text as Inform 7)
+Include (- has door, -) when defining a door.
+=
+leads to:
 = (text as Inter)
 	append K4_door " has door, \n"
 =
-|insert "CONTENT"| tells Inter that it needs to add this raw I6 material:
+
+|insert| is simpler, and tells Inter that it needs to add this raw I6-syntax
+material to the program:
 = (text as Inter)
 	insert "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n"
 =
-@h Nop.
-The "nop" statement has no textual representation. It does nothing, and exists
-only as a convenience used by Inform when it needs to write simultaneously to
-multiple positions within the same node's child list -- the idea being that
-a nop statement acts as a divider. For example, by placing the A write
-position just before a nop N, and the B write position just after, Inform
-will generate A1, A2, A3, ..., N, B1, B2, ..., rather than (say) A1, B1, A2,
-A3, B2, ... The extra N is simply ignored in code generation, so it causes
-no problems to have it.
+
+@h Splats.
+And never use |splat| either.
+
+@ Well, okay then. We do in fact temporarily make splats when compiling kit
+source, written in Inform 6 syntax, into Inter. During that process, there are
+times when the source code is only partially digested. Each individual I6-syntax
+directive is converted into a "splat" holding its raw text. But this is then
+later translated into better Inter, and the splat removed again. For details,
+if you really must, see //bytecode: The Splat Construct//.
+
+The name "splat" is chosen as a psychological ploy, to make people feel queasy
+about using this. See also "glob" above, which is the analogous construction
+for values rather than void-context material.
