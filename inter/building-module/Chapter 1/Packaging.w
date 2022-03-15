@@ -142,7 +142,7 @@ void Packaging::initialise_state(inter_tree *I) {
 void Packaging::set_state(inter_tree *I, inter_bookmark *to, package_request *PR) {
 	I->site.spdata.current_state.saved_bookmark = to;
 	while ((PR) && (PR->parent_request) &&
-		(SymbolAnnotation::get_b(PR->eventual_type, ENCLOSING_IANN) == FALSE))
+		(LargeScale::package_type_enclosing(PR->eventual_type) == FALSE))
 		PR = PR->parent_request;
 	I->site.spdata.current_state.saved_enclosure = PR;
 }

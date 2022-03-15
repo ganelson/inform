@@ -439,10 +439,14 @@ inter_symbol *LargeScale::package_type(inter_tree *I, text_stream *name) {
 		ptype = InterSymbolsTable::create_with_unique_name(scope, name);
 		Produce::guard(PackageTypeInstruction::new(
 			&(I->site.strdata.package_types_bookmark), ptype, 0, NULL));
-		if (Str::ne(name, I"_code"))
-			SymbolAnnotation::set_b(ptype, ENCLOSING_IANN, TRUE);
 	}
 	return ptype;
+}
+
+int LargeScale::package_type_enclosing(inter_symbol *ptype) {
+	if (ptype == NULL) return FALSE;
+	if (Str::eq(InterSymbol::identifier(ptype), I"_code")) return FALSE;
+	return TRUE;
 }
 
 @h Outside the packages.

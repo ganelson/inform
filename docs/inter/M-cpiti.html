@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -409,16 +414,143 @@ as a contradiction in terms.
 
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Labels and assembly language. </b>Like labels in C, these are named reference points in the code; they are written
 <span class="extract"><span class="extract-syntax">.NAME</span></span>, where <span class="extract"><span class="extract-syntax">.NAME</span></span> must begin with a full stop <span class="extract"><span class="extract-syntax">.</span></span>. Labels are not values;
-they cannot be stored, or computed with, or cast.
+they cannot be stored, or computed with, or cast. They can only be used in
+a <span class="extract"><span class="extract-syntax">lab</span></span> instruction.
 </p>
 
-<p class="commentary">They can only be used in a <span class="extract"><span class="extract-syntax">lab</span></span> instruction.
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Two uses of <span class="extract"><span class="extract-syntax">inv</span></span> have already been covered: to call an Inter function, and
+to invoke a primitive operation. The third is to execute an "assembly-language
+opcode". What we mean by that is the direct use of the instruction set on the
+target virtual machine we are expecting our program to run on.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b><span class="extract"><span class="extract-syntax">inv @opcode</span></span>.
+<p class="commentary">This has always been a feature of Inform 6 code. For example, some real-number
+arithmetic functions in BasicInformKit are written to use heavy amounts of
+Glulx assembly language, in order to access functionality not present in the
+Inform language itself. Here is a sample:
 </p>
 
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b><span class="extract"><span class="extract-syntax">assembly</span></span>.
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    @</span><span class="identifier-syntax">fdiv</span><span class="plain-syntax"> </span><span class="identifier-syntax">sp</span><span class="plain-syntax"> </span><span class="constant-syntax">$40135D8E</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span><span class="plain-syntax">; </span><span class="comment-syntax">$40135D8E is log(10)</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">floor</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    @</span><span class="identifier-syntax">ftonumn</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span><span class="plain-syntax"> </span><span class="identifier-syntax">expo</span><span class="plain-syntax">;</span>
+</pre>
+<p class="commentary">Those "opcodes" beginning <span class="extract"><span class="extract-syntax">@</span></span> are part of the instruction set for the
+Glulx virtual machine: real number arithmetic is impossible on the smaller
+Z-machine, so we couldn't meaningfully compile this code to that platform,
+and that is just is well because it has a completely different instruction
+set of opcodes from Glulx anyway. Still, there's no denying that Inter code
+using assembly immediately becomes less portable. This is why it is always
+better to use Inter primitives if possible.
+</p>
+
+<p class="commentary">Still, BasicInformKit must be compiled to Inter code somehow. We clearly need to
+deal with those opcodes somehow. The standard Inform-provided kits use two
+different sets of opcodes, as noted: the Z-machine and Glulx instruction sets.
+One conceivable way to deal with this would have been to provide primitives
+equivalent to every opcode in either set (or at least every opcode used in
+the standard Inform kits). But that would hugely increase the set of primitives,
+and also incur a certain amount of awkward repetition.
+</p>
+
+<p class="commentary">Instead, the Inter specification goes to the opposite extreme. It makes no
+assumptions about what assembly opcodes do, or do not, exist. Inter allows
+absolutely anything, and would be quite happy to accept, say, <span class="extract"><span class="extract-syntax">inv @flytothemoon</span></span>,
+even though this opcode does not exist in any known system of assembly language.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
+</p>
+
+<p class="commentary">And so the above is in fact compiled to:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">inv</span><span class="plain-syntax"> @</span><span class="identifier-syntax">fdiv</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">assembly</span><span class="plain-syntax"> </span><span class="identifier-syntax">stack</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="identifier-syntax">x40135D8E</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inv</span><span class="plain-syntax"> @</span><span class="identifier-syntax">floor</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">log10val</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">inv</span><span class="plain-syntax"> @</span><span class="identifier-syntax">ftonumn</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">fexpo</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">expo</span>
+</pre>
+<p class="commentary">And when the <a href="../building-module/index.html" class="internal">building</a> module performed that compilation, it knew nothing
+about <span class="extract"><span class="extract-syntax">@fdiv</span></span> and the rest: it just took on trust that this is meaningful.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> This can actually be useful, since it means people experimenting with new
+hybrid forms of Inform can devise extra opcodes of their own.
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>So, how apparently generous: the Inter specification allows us to invoke
+opcodes with arbitrary names. But that does not, of course, mean that those
+opcodes can be compiled to code which does anything useful. The <a href="../final-module/index.html" class="internal">final</a>
+code-generation module probably won't know what to do with our hypothetical
+<span class="extract"><span class="extract-syntax">@flytothemoon</span></span> opcode.
+</p>
+
+<p class="commentary">In practice, therefore, <a href="../final-module/index.html" class="internal">final</a> knows how to deal with the Z-machine
+instruction set when compiling for Z via Inform 6, and how to deal with the
+Glulx instruction set when compiling either for Glulx via Inform 6 or a
+native executable via a C compiler like <span class="extract"><span class="extract-syntax">clang</span></span>. Any further code-generators
+are also likely to follow Glulx conventions. So: if you really must use
+assembly language in your Inter code, good advice would be &mdash;
+</p>
+
+<ul class="items"><li>(1) Use the Glulx instruction set, for better chances of portability.
+</li><li>(2) Only use those opcodes which are also used in the standard Inform kits
+somewhere, since those will probably be implemented.
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>If we look at this example in more detail:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">inv</span><span class="plain-syntax"> @fdiv</span>
+<span class="plain-syntax">        assembly stack</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">val</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">x40135D8E</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">val</span><span class="plain-syntax"> log10val</span>
+</pre>
+<p class="commentary">we see some general features of assembly language. Inter allows any number
+of child instructions to be supplied &mdash; here, there are three. Since Inter knows
+nothing about the meaning of <span class="extract"><span class="extract-syntax">@fdiv</span></span>, it has no way to know how many are
+expected. They should all be usages of <span class="extract"><span class="extract-syntax">val</span></span>, <span class="extract"><span class="extract-syntax">lab</span></span>, or <span class="extract"><span class="extract-syntax">assembly</span></span>.
+</p>
+
+<p class="commentary"><span class="extract"><span class="extract-syntax">val</span></span> and <span class="extract"><span class="extract-syntax">lab</span></span> we have seen already. <span class="extract"><span class="extract-syntax">assembly</span></span> is a sort of punctuation
+instruction which allows various oddball syntaxes of Z-machine or Glulx
+assembly to be imitated in Inter. There are only seven possible <span class="extract"><span class="extract-syntax">assembly</span></span>
+instructions. Two are very common:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">assembly stack</span></span> is probably the most common, either reading or writing
+to the top of the virtual machine's stack.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">assembly store_to</span></span> indicates that a storage location follows (either
+<span class="extract"><span class="extract-syntax">assembly stack</span></span> or a local or global variable). This is only used in Z-machine
+assembly language; Glulx assembly doesn't have this marker.
+</li></ul>
+<p class="commentary">The other five apply only to "branch instructions", which perform some test
+and then either return from the current function or make a jump to a label
+(a "branch"), depending on the outcome of the test. By default the instruction
+branches on a successful test. But alternatively it can:
+</p>
+
+<ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">assembly branch_if_false</span></span>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">assembly return_true_if_true</span></span>.
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">assembly return_false_if_true</span></span>
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">assembly return_true_if_false</span></span>
+</li><li>&#9679; <span class="extract"><span class="extract-syntax">assembly return_false_if_false</span></span>
+</li></ul>
+<p class="commentary">So for example the Z-machine instruction <span class="extract"><span class="extract-syntax">@random sp -&gt; i;</span></span> compiles to Inter as:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">inv</span><span class="plain-syntax"> @fdiv</span>
+<span class="plain-syntax">        assembly stack</span>
+<span class="plain-syntax">        assembly store_to</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">val</span><span class="plain-syntax"> i</span>
+</pre>
+<p class="commentary">And note the use of <span class="extract"><span class="extract-syntax">val i</span></span>, not <span class="extract"><span class="extract-syntax">ref i</span></span>, even though the variable is being
+written to here. Even Inter's normal rules of category checking do not apply
+to assembly language, the lowest of the low.
 </p>
 
 <nav role="progress"><div class="progresscontainer">

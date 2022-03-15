@@ -299,10 +299,127 @@ as a contradiction in terms.
 @h Labels and assembly language.
 Like labels in C, these are named reference points in the code; they are written
 |.NAME|, where |.NAME| must begin with a full stop |.|. Labels are not values;
-they cannot be stored, or computed with, or cast.
+they cannot be stored, or computed with, or cast. They can only be used in
+a |lab| instruction.
 
-They can only be used in a |lab| instruction.
+@ Two uses of |inv| have already been covered: to call an Inter function, and
+to invoke a primitive operation. The third is to execute an "assembly-language
+opcode". What we mean by that is the direct use of the instruction set on the
+target virtual machine we are expecting our program to run on.
 
-@ |inv @opcode|.
+This has always been a feature of Inform 6 code. For example, some real-number
+arithmetic functions in BasicInformKit are written to use heavy amounts of
+Glulx assembly language, in order to access functionality not present in the
+Inform language itself. Here is a sample:
+= (text as Inform 6)
+	@fdiv sp $40135D8E log10val; ! $40135D8E is log(10)
+	@floor log10val fexpo;
+	@ftonumn fexpo expo;
+=
+Those "opcodes" beginning |@| are part of the instruction set for the
+Glulx virtual machine: real number arithmetic is impossible on the smaller
+Z-machine, so we couldn't meaningfully compile this code to that platform,
+and that is just is well because it has a completely different instruction
+set of opcodes from Glulx anyway. Still, there's no denying that Inter code
+using assembly immediately becomes less portable. This is why it is always
+better to use Inter primitives if possible.
 
-@ |assembly|.
+Still, BasicInformKit must be compiled to Inter code somehow. We clearly need to
+deal with those opcodes somehow. The standard Inform-provided kits use two
+different sets of opcodes, as noted: the Z-machine and Glulx instruction sets.
+One conceivable way to deal with this would have been to provide primitives
+equivalent to every opcode in either set (or at least every opcode used in
+the standard Inform kits). But that would hugely increase the set of primitives,
+and also incur a certain amount of awkward repetition.
+
+Instead, the Inter specification goes to the opposite extreme. It makes no
+assumptions about what assembly opcodes do, or do not, exist. Inter allows
+absolutely anything, and would be quite happy to accept, say, |inv @flytothemoon|,
+even though this opcode does not exist in any known system of assembly language.[1]
+
+And so the above is in fact compiled to:
+= (text as Inform 6)
+	inv @fdiv
+		assembly stack
+		val 0x40135D8E
+		val log10val
+	inv @floor
+		val log10val
+		val fexpo
+	inv @ftonumn
+		val fexpo
+		val expo
+=
+And when the //building// module performed that compilation, it knew nothing
+about |@fdiv| and the rest: it just took on trust that this is meaningful.
+
+[1] This can actually be useful, since it means people experimenting with new
+hybrid forms of Inform can devise extra opcodes of their own.
+
+@ So, how apparently generous: the Inter specification allows us to invoke
+opcodes with arbitrary names. But that does not, of course, mean that those
+opcodes can be compiled to code which does anything useful. The //final//
+code-generation module probably won't know what to do with our hypothetical
+|@flytothemoon| opcode.
+
+In practice, therefore, //final// knows how to deal with the Z-machine
+instruction set when compiling for Z via Inform 6, and how to deal with the
+Glulx instruction set when compiling either for Glulx via Inform 6 or a
+native executable via a C compiler like |clang|. Any further code-generators
+are also likely to follow Glulx conventions. So: if you really must use
+assembly language in your Inter code, good advice would be --
+
+(1) Use the Glulx instruction set, for better chances of portability.
+
+(2) Only use those opcodes which are also used in the standard Inform kits
+somewhere, since those will probably be implemented.
+
+@ If we look at this example in more detail:
+= (text as Inter)
+	inv @fdiv
+		assembly stack
+		val 0x40135D8E
+		val log10val
+=
+we see some general features of assembly language. Inter allows any number
+of child instructions to be supplied -- here, there are three. Since Inter knows
+nothing about the meaning of |@fdiv|, it has no way to know how many are
+expected. They should all be usages of |val|, |lab|, or |assembly|.
+
+|val| and |lab| we have seen already. |assembly| is a sort of punctuation
+instruction which allows various oddball syntaxes of Z-machine or Glulx
+assembly to be imitated in Inter. There are only seven possible |assembly|
+instructions. Two are very common:
+
+(*) |assembly stack| is probably the most common, either reading or writing
+to the top of the virtual machine's stack.
+
+(*) |assembly store_to| indicates that a storage location follows (either
+|assembly stack| or a local or global variable). This is only used in Z-machine
+assembly language; Glulx assembly doesn't have this marker.
+
+The other five apply only to "branch instructions", which perform some test
+and then either return from the current function or make a jump to a label
+(a "branch"), depending on the outcome of the test. By default the instruction
+branches on a successful test. But alternatively it can:
+
+(*) |assembly branch_if_false|.
+
+(*) |assembly return_true_if_true|.
+
+(*) |assembly return_false_if_true|
+
+(*) |assembly return_true_if_false|
+
+(*) |assembly return_false_if_false|
+
+So for example the Z-machine instruction |@random sp -> i;| compiles to Inter as:
+= (text as Inter)
+	inv @fdiv
+		assembly stack
+		assembly store_to
+		val i
+=
+And note the use of |val i|, not |ref i|, even though the variable is being
+written to here. Even Inter's normal rules of category checking do not apply
+to assembly language, the lowest of the low.

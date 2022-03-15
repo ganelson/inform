@@ -69,7 +69,6 @@ The set of annotations used by the Inform tool suite is as follows.
 @e BYTEARRAY_IANN
 @e EITHER_OR_IANN
 @e EXTENT_IANN
-@e ENCLOSING_IANN
 @e FAKE_ACTION_IANN
 @e HEX_IANN
 @e IMPLIED_ARGUMENT_IANN
@@ -111,7 +110,6 @@ void SymbolAnnotation::declare_canonical_annotations(void) {
 	SymbolAnnotation::declare(BUFFERARRAY_IANN,         I"__buffer_array",        BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(BYTEARRAY_IANN,           I"__byte_array",          BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(EITHER_OR_IANN,           I"__either_or",           BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(ENCLOSING_IANN,           I"__enclosing",           BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(EXTENT_IANN,              I"__extent",              BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(FAKE_ACTION_IANN,         I"__fake_action",         BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(HEX_IANN,                 I"__hex",                 BOOLEAN_IATYPE);

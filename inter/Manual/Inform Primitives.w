@@ -2,19 +2,29 @@ Inform Primitives.
 
 The standard set of primitive invocations used within Inform.
 
-@h Status.
-The Inter specification allows for any number of primitive invocations to
-be declared and used; none are built-in or required.
+@h What standard means.
+To recap from //Code Packages in Textual Inter//, primitives are like built-in
+atomic operations. The Inter specification allows for any desired set of
+primitives to be used, provided they are declared. However, in practice
+the //building// module of Inter defines a standard set of 95 or so primitives
+which are used across the Inform tool-chain, and:
 
-The Inform compiler, however, has a set of around 90 different primitives.
-The back end of the compiler can compile those into valid Inform 6 code;
-the front end of the compiler is guaranteed to declare and use only (a
-subset of) those 90. That gives the following set of primitives a
-kind of halfway status: though they are not part of the inter specification,
-for the time being they're the only game in town.
+(*) The front end of the Inform compiler invokes only (a subset of) this
+standard set of primitives.
+(*) The back end guarantees to be able to perform final code-generation to
+any supported platform on the whole of this standard set.
+
+That means the standard set is (for now at least) the only game in town, and
+the following catalogue runs through it. Textual Inter code does not need
+to declare primitives if they belong to this standard set, but the
+declarations they have behind the scenes are all listed below.
+
+(See //building: Inter Primitives// for where in the //inter// source code
+these primitives are defined.)
 
 @h Arithmetic.
-The following are standard integer arithmetic operations:
+The following are standard integer arithmetic operations, using signed
+twos-complement integers:
 
 (a) |primitive !plus val val -> val|. 16 or 32-bit integer addition.
 (b) |primitive !minus val val -> val|. 16 or 32-bit integer subtraction.
@@ -27,8 +37,10 @@ The following are standard integer arithmetic operations:
 In general, the value 0 is false, and all other values are true.
 
 (a) |primitive !not val -> val|. True if the value is false, and vice versa.
-(b) |primitive !and val val -> val|. True if both are true: doesn't evaluate the second if the first is false.
-(c) |primitive !or val val -> val|. True if either is true: doesn't evaluate the second if the first is true.
+(b) |primitive !and val val -> val|. True if both are true: doesn't evaluate the
+second if the first is false.
+(c) |primitive !or val val -> val|. True if either is true: doesn't evaluate the
+second if the first is true.
 
 @h Bitwise operators.
 These differ in that they do not "short circuit", and do not squash values
@@ -48,6 +60,22 @@ integers, it calls a routine in the I6 template.)
 (d) |primitive !ge val val -> val|. 
 (e) |primitive !lt val val -> val|. 
 (f) |primitive !le val val -> val|. 
+
+This is a special operation allowing the comparisons to test for multiple
+possibilities at once. (Old-school Inform 6 users will recognise it as the
+|or| operator.)
+
+(a) |!alternative val val -> val|
+
+For example,
+= (text as Inter)
+	inv !eq
+		val x
+		inv !alternative
+			val 2
+			val 7
+=
+tests whether |x| equals either 2 or 7.
 
 @h Sequential evaluation.
 The reason for the existence of |!ternarysequential| is that it's a convenient
@@ -88,10 +116,15 @@ that should apply across all platforms. Use of any other value is likely to be
 less portable. On C, for example, all other uses of |!style| are (Inform) text
 values which supply names for styles.
 
-Lastly, a primitive for a rum feature of Inform 6 allowing for the display of
+Then there is a primitive for a rum feature of Inform 6 allowing for the display of
 "box quotations" on screen:
 
 (a) |primitive !box val -> void|. 
+
+And another largely pointless primitive for issuing a run of a certain number of
+spaces, for users too lazy to write their own loops:
+
+(a) |primitive !spaces val -> void|.
 
 On some platforms, active steps need to be taken before text can actually appear:
 for example, those using the Glk input/output framework. As a convenience, this
@@ -168,6 +201,20 @@ first value is the function address, and subsequent ones are arguments.
 (k) |primitive !indirect4 val val val val val -> val|. 
 (l) |primitive !indirect5 val val val val val val -> val|. 
 
+@h Message function calls.
+These are the special form of function call from Inform 6 with the syntax
+|a.b()|, |a.b(c)|, |a.b(c, d)| or |a.b(c, d, e)|. In effect, they look up a
+property value which is a function, and call it. But because they have very
+slightly different semantics from indirect function calls, they appear here
+as primitives of their own. Inform 7 never compiles these, but kit assimilation
+may do. To get an idea of how to handle these, see for example
+//final: C Function Model//, which compiles them to C.
+
+(a) |primitive !message0 val val -> val|.
+(b) |primitive !message1 val val val -> val|.
+(c) |primitive !message2 val val val val -> val|.
+(d) |primitive !message3 val val val val val -> val|.
+
 @h External function calls.
 The following calls a function which is not part of the program itself, and
 which is assumed to be provided by code written in a different programming
@@ -191,18 +238,23 @@ being compiled in "debugging mode". (In Inform, that would mean that the
 story file is being made inside the application, or else released in a
 special testing configuration.) While the same effect could be achieved
 using conditional compliation splats, this is much more efficient.
+Similarly for |!ifstrict|, which tests for "strict mode", in which run-time
+checking of program correctness is performed, but at some performance cost.
 
 (a) |primitive !if val code -> void|. 
 (b) |primitive !ifelse val code code -> void|. 
 (c) |primitive !ifdebug code -> void|. 
+(d) |primitive !ifstrict code -> void|. 
 
 There are then several loops.
 
 (a) |primitive !while val code -> void|. Similar to |while| in C.
-(b) |primitive !for val val val code -> void|. Similar to |for| in C.
-(c) |primitive !objectloopx ref val code -> void|. A loop over instances,
+(b) |primitive !do val code -> void|. A do/until loop, where the test of |val|
+comes at the end of each iteration. Note that this is do/until, not do/while.
+(c) |primitive !for val val val code -> void|. Similar to |for| in C.
+(d) |primitive !objectloopx ref val code -> void|. A loop over instances,
 stored in the variable |ref|, of the kind of object |val|.
-(d) |primitive !objectloop ref val val code -> void|. A more general form,
+(e) |primitive !objectloop ref val val code -> void|. A more general form,
 where the secomd |val| is a condition to be evaluated which decides whether
 to execute the code for given |ref| value.
 
@@ -216,6 +268,7 @@ contain only invocations of |!case|, followed optionally by one of |!default|.
 (a) |primitive !switch val code -> void|. 
 (b) |primitive !case val code -> void|. 
 (c) |primitive !default code -> void|. 
+(d) |primitive !alternativecase val val -> val|.
 
 This looks a little baroque, but it works in practice:
 = (text as Inter)
@@ -228,10 +281,12 @@ This looks a little baroque, but it works in practice:
 	                inv !print
 	                    val K_text "One!"
 	        inv !case
-	            val K_number 2
+				inv !alternativecase
+		            val K_number 2
+		            val K_number 7
 	            code
 	                inv !print
-	                    val K_text "Two!"
+	                    val K_text "Either two or seven!"
 	        inv !default
 	            code
 	                inv !print
@@ -250,6 +305,13 @@ supplied value as the result if the function is being executed in a value
 context, and throwing it away if not.
 (b) |primitive !quit void -> void|. Halt the whole program immediately.
 
+This is a sort of termination, too, loading in a fresh program state from a
+file; something which may not be very meaningful in all platforms. Note that
+there is no analogous |!restart| or |!save| primitive: those are handled by
+assembly language instead. This may eventually go, too.
+
+(a) |primitive !restore lab -> void|.
+
 And, lastly, the lowest-level way to travel:
 
 (a) |primitive !jump lab -> void|. Jumo to this label in the current function.
@@ -259,12 +321,13 @@ The following would make no sense in a general-purpose program. Most mirror
 very low-level I6 features. First, the spatial containment object tree:
 
 (a) |primitive !move val val -> void|. Moves first to second (both are objects).
-(b) |primitive !in val val -> val|. Tests if first is in second (both are objects).
-(c) |primitive !notin val val -> val|. Negation of same.
-(d) |primitive !child val -> val|. Finds the child node of an object.
-(e) |primitive !children val -> val|. The number of children: which may be 0.
-(f) |primitive !parent val -> val|. Finds the parent of an object.
-(g) |primitive !sibling val -> val|. Finds the sibling of an object.
+(b) |primitive !remove val -> void|. Removes object from containment tree.
+(c) |primitive !in val val -> val|. Tests if first is in second (both are objects).
+(d) |primitive !notin val val -> val|. Negation of same.
+(e) |primitive !child val -> val|. Finds the child node of an object.
+(f) |primitive !children val -> val|. The number of children: which may be 0.
+(g) |primitive !parent val -> val|. Finds the parent of an object.
+(h) |primitive !sibling val -> val|. Finds the sibling of an object.
 
 Object class membership:
 
