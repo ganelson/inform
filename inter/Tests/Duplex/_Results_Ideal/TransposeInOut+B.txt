@@ -38,14 +38,14 @@ package main _plain
 	instance (K_odour) I_citrus = 5
 	instance (K_odour) I_leather = 10
 	property (K_number) P_strength __property_name="strength"
-	permission P_strength K_odour
-	propertyvalue P_strength I_citrus = 20
-	propertyvalue P_strength I_leather = 7
+	permission for K_odour to have P_strength
+	propertyvalue P_strength of I_citrus = 20
+	propertyvalue P_strength of I_leather = 7
 	property (K_number) P_lingeringness
-	permission P_lingeringness K_odour
-	propertyvalue P_lingeringness I_citrus = 1
-	propertyvalue P_lingeringness I_leather = 3
-	propertyvalue P_lingeringness K_odour = 2
+	permission for K_odour to have P_lingeringness
+	propertyvalue P_lingeringness of I_citrus = 1
+	propertyvalue P_lingeringness of I_leather = 3
+	propertyvalue P_lingeringness of K_odour = 2
 	typename K_table = table
 	typename K_column_of_number = column of K_number
 	typename K_column_of_colour = column of K_colour
@@ -59,7 +59,7 @@ package main _plain
 	instance (K_piece) I_rook = 3
 	typename K_list_of_objects = list of K_object
 	constant (K_list_of_objects) C_majors = { I_bishop, I_rook }
-	permission P_lingeringness I_bishop
+	permission for I_bishop to have P_lingeringness
 	typename K_func = function K_colour K_number -> K_odour
 	typename K_rule = rule void -> void
 	typename K_rulebook = rulebook of K_rule

@@ -12,7 +12,6 @@ void LocalInstruction::define_construct(void) {
 	InterInstruction::specify_syntax(IC, I"local TOKENS");
 	InterInstruction::data_extent_always(IC, 2);
 	InterInstruction::permit(IC, INSIDE_CODE_PACKAGE_ICUP);
-	InterInstruction::permit(IC, CAN_HAVE_ANNOTATIONS_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, LocalInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, LocalInstruction::verify);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, LocalInstruction::write);
@@ -77,7 +76,7 @@ void LocalInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_LOCAL_IFLD);
 	inter_symbol *variable_s = LocalInstruction::variable(P);
 	WRITE("%S", InterSymbol::identifier(variable_s));
-	SymbolAnnotation::write_annotations(OUT, P, variable_s);
+//	SymbolAnnotation::write_annotations(OUT, P, variable_s);
 }
 
 @h Access function.

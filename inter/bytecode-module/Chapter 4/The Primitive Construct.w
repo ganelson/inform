@@ -10,7 +10,7 @@ void PrimitiveInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(PRIMITIVE_IST, I"primitive");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_PRIM_IFLD, -1);
 	InterInstruction::specify_syntax(IC, I"primitive !IDENTIFIER TOKENS -> TOKEN");
-	InterInstruction::data_extent_at_least(IC, 2);
+	InterInstruction::data_extent_at_least(IC, 3);
 	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PrimitiveInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PrimitiveInstruction::verify);
@@ -30,14 +30,16 @@ possible signature, say |void -> void|, occupies 1 word, so the minimum extent o
 a |primitive| instruction is 4.
 
 @d DEFN_PRIM_IFLD      (DATA_IFLD + 0)
-@d SIGNATURE_PRIM_IFLD (DATA_IFLD + 1)
+@d BIP_PRIM_IFLD       (DATA_IFLD + 1)
+@d SIGNATURE_PRIM_IFLD (DATA_IFLD + 2)
 
 =
 inter_error_message *PrimitiveInstruction::new(inter_bookmark *IBM, inter_symbol *prim_name, 
 	text_stream *from, text_stream *to, inter_ti level, inter_error_location *eloc) {
 
-	inter_tree_node *F = Inode::new_with_1_data_field(IBM, PRIMITIVE_IST,
+	inter_tree_node *F = Inode::new_with_2_data_fields(IBM, PRIMITIVE_IST,
 		/* DEFN_PRIM_IFLD: */ InterSymbolsTable::id_at_bookmark(IBM, prim_name),
+		/* BIP_PRIM_IFLD: */ 0,
 		eloc, level);
 
 	inter_error_message *E = NULL;
@@ -71,6 +73,10 @@ inter_error_message *PrimitiveInstruction::new(inter_bookmark *IBM, inter_symbol
 =
 void PrimitiveInstruction::verify(inter_construct *IC, inter_tree_node *P,
 	inter_package *owner, inter_error_message **E) {
+	if (P->W.instruction[BIP_PRIM_IFLD] >= MAX_BIPS) {
+		*E = Inode::error(P, I"primitive with impossible BIP code", NULL);
+		return;
+	}
 	inter_symbol *prim_name = PrimitiveInstruction::primitive(P);
 	if ((prim_name == NULL) ||
 		(Str::get_first_char(InterSymbol::identifier(prim_name)) != '!')) {
@@ -118,6 +124,26 @@ void PrimitiveInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_
 	if (SIGNATURE_PRIM_IFLD == P->W.extent-1) WRITE(" void");
 	WRITE(" -> ");
 	PrimitiveInstruction::write_category(OUT, P->W.instruction[P->W.extent-1]);
+}
+
+@h The BIP.
+The BIP code is a quick index code to identify which primitive is used from the
+standard Inform set (if, indeed, the primitive is from that set: it will be 0
+otherwise).
+
+=
+inter_ti PrimitiveInstruction::get_BIP(inter_symbol *prim) {
+	if (prim == NULL) return 0;
+	inter_tree_node *D = InterSymbol::definition(prim);
+	if (D == NULL) return 0;
+	return D->W.instruction[BIP_PRIM_IFLD];
+}
+
+void PrimitiveInstruction::set_BIP(inter_symbol *prim, inter_ti BIP) {
+	if (prim == NULL) internal_error("no primitive for BIP");
+	inter_tree_node *D = InterSymbol::definition(prim);
+	if (D == NULL) internal_error("undefined primitive for BIP");
+	D->W.instruction[BIP_PRIM_IFLD] = BIP;
 }
 
 @h Primitive categories.

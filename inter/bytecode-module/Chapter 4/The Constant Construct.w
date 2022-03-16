@@ -12,7 +12,6 @@ void ConstantInstruction::define_construct(void) {
 	InterInstruction::specify_syntax(IC, I"constant TOKENS = TOKENS");
 	InterInstruction::data_extent_at_least(IC, 3);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
-	InterInstruction::permit(IC, CAN_HAVE_ANNOTATIONS_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, ConstantInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, ConstantInstruction::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, ConstantInstruction::verify);
@@ -266,7 +265,7 @@ void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 		TextualInter::write_pair(OUT, P, InterValuePairs::get(P, i), hex);
 	}
 	if (fmt != CONST_LIST_FORMAT_NONE) WRITE(" }");
-	SymbolAnnotation::write_annotations(OUT, P, con_name);
+//	SymbolAnnotation::write_annotations(OUT, P, con_name);
 }
 
 @h Access functions.

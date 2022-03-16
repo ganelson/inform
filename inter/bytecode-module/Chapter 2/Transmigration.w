@@ -262,10 +262,11 @@ the root package of the origin.
 @<Duplicate this primitive@> =
 	equivalent_primitive = InterSymbolsTable::symbol_from_name_creating(
 		InterTree::global_scope(det->destination_tree), InterSymbol::identifier(primitive));
-	inter_tree_node *D = Inode::new_with_1_data_field(&(det->primitives_point), PRIMITIVE_IST,
-		InterSymbolsTable::id_from_symbol(det->destination_tree, NULL, equivalent_primitive),
-		NULL, 0);
 	inter_tree_node *old_D = primitive->definition;
+	inter_tree_node *D = Inode::new_with_2_data_fields(&(det->primitives_point), PRIMITIVE_IST,
+		InterSymbolsTable::id_from_symbol(det->destination_tree, NULL, equivalent_primitive),
+		old_D->W.instruction[BIP_PRIM_IFLD],
+		NULL, 0);
 	for (int i=SIGNATURE_PRIM_IFLD; i<old_D->W.extent; i++) {
 		Inode::extend_instruction_by(D, 1);
 		D->W.instruction[i] = old_D->W.instruction[i];

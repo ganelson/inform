@@ -70,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inter</a></li><li><a href="index.html#M">Manual</a></li><li><b>Data Packages in Textual Inter</b></li></ul></div>
 <p class="purpose">How static data, variables and constants are expressed in textual inter programs.</p>
 
-<ul class="toc"><li><a href="M-dpiti.html#SP1">&#167;1. Data packages</a></li><li><a href="M-dpiti.html#SP2">&#167;2. Variable and values</a></li><li><a href="M-dpiti.html#SP6">&#167;6. Constant and extended values</a></li><li><a href="M-dpiti.html#SP8">&#167;8. URL notation</a></li><li><a href="M-dpiti.html#SP9">&#167;9. Metadata constants</a></li><li><a href="M-dpiti.html#SP10">&#167;10. Types in Inter</a></li><li><a href="M-dpiti.html#SP16">&#167;16. Enumerations and instances</a></li><li><a href="M-dpiti.html#SP17">&#167;17. Subtypes</a></li><li><a href="M-dpiti.html#SP18">&#167;18. Properties</a></li><li><a href="M-dpiti.html#SP20">&#167;20. Append and insert</a></li><li><a href="M-dpiti.html#SP22">&#167;22. Splats</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-dpiti.html#SP1">&#167;1. Data packages</a></li><li><a href="M-dpiti.html#SP2">&#167;2. Variable and values</a></li><li><a href="M-dpiti.html#SP6">&#167;6. Constant and extended values</a></li><li><a href="M-dpiti.html#SP8">&#167;8. URL notation</a></li><li><a href="M-dpiti.html#SP9">&#167;9. Annotations</a></li><li><a href="M-dpiti.html#SP10">&#167;10. Metadata constants</a></li><li><a href="M-dpiti.html#SP11">&#167;11. Types in Inter</a></li><li><a href="M-dpiti.html#SP17">&#167;17. Enumerations and instances</a></li><li><a href="M-dpiti.html#SP18">&#167;18. Subtypes</a></li><li><a href="M-dpiti.html#SP19">&#167;19. Properties</a></li><li><a href="M-dpiti.html#SP21">&#167;21. Append and insert</a></li><li><a href="M-dpiti.html#SP23">&#167;23. Splats</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Data packages. </b>To recap from <a href="M-ti.html" class="internal">Textual Inter</a>: an Inter program is a nested hierarchy of
 packages. Some are special <span class="extract"><span class="extract-syntax">_code</span></span> packages which define functions; the rest
@@ -247,7 +247,33 @@ If we return to the example:
 <span class="extract"><span class="extract-syntax">/main/two/V_speed</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Metadata constants. </b>If constant names begin with the magic character <span class="extract"><span class="extract-syntax">^</span></span> then they represent
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Annotations. </b>A few of the defined names in Inter can be "annotated": to be exact, those
+created by <span class="extract"><span class="extract-syntax">constant</span></span>, <span class="extract"><span class="extract-syntax">property</span></span>, <span class="extract"><span class="extract-syntax">variable</span></span> and <span class="extract"><span class="extract-syntax">local</span></span>.
+</p>
+
+<p class="commentary">Many annotations are simply markers temporarily given to these names during
+the compilation process, and they usually do not change the meaning of the
+program. For example, a constant given the annotation <span class="extract"><span class="extract-syntax">_hex</span></span> has its value
+printed out in textual Inter in hexadecimal not decimal. So:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> SPEED_LIMIT = </span><span class="constant-syntax">0</span><span class="plain-syntax">x1ff </span><span class="identifier-syntax">__hex</span>
+</pre>
+<p class="commentary">This tells the code generator that it is more natural to express this value
+as <span class="extract"><span class="extract-syntax">1ff</span></span> hexadecimal rather than 511 decimal.
+</p>
+
+<p class="commentary">Most annotations are either there or not there, like <span class="extract"><span class="extract-syntax">__hex</span></span>. (All annotation
+names begin with a double underscore, <span class="extract"><span class="extract-syntax">__</span></span>.) But some supply a value: for
+example, <span class="extract"><span class="extract-syntax">__priority=17</span></span> would be the syntax to specify this, though <span class="extract"><span class="extract-syntax">__priority</span></span>
+is not in the standard set, as it happens.
+</p>
+
+<p class="commentary">For the list of standard annotation names in use, see <a href="M-ia.html" class="internal">Inform Annotations</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Metadata constants. </b>If constant names begin with the magic character <span class="extract"><span class="extract-syntax">^</span></span> then they represent
 "metadata", describing the program rather than what it does. They are not
 data in the program at all. Thus:
 </p>
@@ -265,7 +291,7 @@ data in the program at all. Thus:
 <p class="commentary">is not, because it tries to use a piece of metadata as if it were data.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Types in Inter. </b>Inter is an exceptionally weakly typed language. It allows the user to choose
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Types in Inter. </b>Inter is an exceptionally weakly typed language. It allows the user to choose
 how much type-checking is done.
 </p>
 
@@ -303,7 +329,7 @@ By conscientiously applying type markers throughout your program, you can
 use Inter as if it were a typed language.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>An intentional hole in this type system is that literals which look wrong for
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>An intentional hole in this type system is that literals which look wrong for
 a given type can often be used as them. This, for instance, is perfectly legal:
 </p>
 
@@ -334,7 +360,7 @@ can be circumvented with a named constant of type <span class="extract"><span cl
 <p class="commentary">This is allowed, and the result may be unhappy, but the user asked for it.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Types are like values in that simple ones can be used directly, but to
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>Types are like values in that simple ones can be used directly, but to
 make more complicated ones you need to give them names. The analogous
 instruction to <span class="extract"><span class="extract-syntax">constant</span></span>, which names a value, is <span class="extract"><span class="extract-syntax">typename</span></span>, which names
 a type.
@@ -386,7 +412,7 @@ say, is not allowed: but note that a typename is itself a simple type. So:
 values.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The "type constructions" allowed are as follows:
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>The "type constructions" allowed are as follows:
 </p>
 
 <ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">list of T</span></span> for any simple type or typename <span class="extract"><span class="extract-syntax">T</span></span>;
@@ -414,7 +440,7 @@ in the entry type);
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">function text -&gt; int2</span></span> matches <span class="extract"><span class="extract-syntax">function text -&gt; int32</span></span> but not vice versa
 (covariance in result types).
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14.  </b>This enables us to declare the type of a function. A typed version of <span class="extract"><span class="extract-syntax">Hello</span></span>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>This enables us to declare the type of a function. A typed version of <span class="extract"><span class="extract-syntax">Hello</span></span>
 might look like this:
 </p>
 
@@ -440,7 +466,7 @@ Note that only <span class="extract"><span class="extract-syntax">_code</span></
 only <span class="extract"><span class="extract-syntax">_code</span></span> package names are values.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>As an example of structures:
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>As an example of structures:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -448,7 +474,7 @@ only <span class="extract"><span class="extract-syntax">_code</span></span> pack
 <span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> (city_data) L = struct{ r</span><span class="string-syntax">"+51.507"</span><span class="plain-syntax">, r</span><span class="string-syntax">"-0.1275"</span><span class="plain-syntax">, </span><span class="string-syntax">"London"</span><span class="plain-syntax"> }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> (city_data) P = struct{ r</span><span class="string-syntax">"+48.857"</span><span class="plain-syntax">, r</span><span class="string-syntax">"+2.3522"</span><span class="plain-syntax">, </span><span class="string-syntax">"Paris"</span><span class="plain-syntax"> }</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Enumerations and instances. </b>That leaves enumerations, which have the enigmatically concise type <span class="extract"><span class="extract-syntax">enum</span></span>.
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Enumerations and instances. </b>That leaves enumerations, which have the enigmatically concise type <span class="extract"><span class="extract-syntax">enum</span></span>.
 Only a typename can have this type: it may be concise but it is not simple. (So
 <span class="extract"><span class="extract-syntax">list of enum</span></span> is not allowed.) <span class="extract"><span class="extract-syntax">enum</span></span> is special in that each different time
 it is declared, it makes a different type. For example:
@@ -504,7 +530,7 @@ that explicitly:
 same program, as the enumeration they belong to.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Subtypes. </b>Enumerated types, but no others, can be "subtypes". For example:
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Subtypes. </b>Enumerated types, but no others, can be "subtypes". For example:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -520,7 +546,7 @@ but the converse is not necessarily true.
 and a new typename created in this way is, for obvious reasons, also enumerated.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Properties. </b>Inter supports a simple model of properties and values. (An enumerated typename
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Properties. </b>Inter supports a simple model of properties and values. (An enumerated typename
 is in effect a class, and this is why instances are so called.)
 </p>
 
@@ -553,7 +579,7 @@ permission is granted:
 <span class="plain-syntax">    </span><span class="reserved-syntax">propertyvalue</span><span class="plain-syntax"> population </span><span class="reserved-syntax">of</span><span class="plain-syntax"> Odessa = </span><span class="constant-syntax">1015826</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">propertyvalue</span><span class="plain-syntax"> motto </span><span class="reserved-syntax">of</span><span class="plain-syntax"> Odessa = </span><span class="string-syntax">"Pearl of the Black Sea"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>An optional extended form of <span class="extract"><span class="extract-syntax">permission</span></span> is allowed which enables us to say
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>An optional extended form of <span class="extract"><span class="extract-syntax">permission</span></span> is allowed which enables us to say
 that we want the storage for a property to be in a given list. Thus:
 </p>
 
@@ -574,10 +600,10 @@ question. Because I7 allows those properties to be modified or read either
 qua properties or qua table entries, we cannot avoid giving Inter a similar
 ability, even though we might prefer not to.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Append and insert. </b>Never use either <span class="extract"><span class="extract-syntax">append</span></span> or <span class="extract"><span class="extract-syntax">insert</span></span>.
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Append and insert. </b>Never use either <span class="extract"><span class="extract-syntax">append</span></span> or <span class="extract"><span class="extract-syntax">insert</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Well, okay then. These disreputable constructs exist to implement very
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Well, okay then. These disreputable constructs exist to implement very
 low-level features of Inform 7, going back to its earliest days as a programming
 language, when people were still writing strange hybrid programs partly in I6.
 </p>
@@ -602,10 +628,10 @@ material to the program:
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    insert </span><span class="string-syntax">"\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Splats. </b>And never use <span class="extract"><span class="extract-syntax">splat</span></span> either.
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Splats. </b>And never use <span class="extract"><span class="extract-syntax">splat</span></span> either.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Well, okay then. We do in fact temporarily make splats when compiling kit
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Well, okay then. We do in fact temporarily make splats when compiling kit
 source, written in Inform 6 syntax, into Inter. During that process, there are
 times when the source code is only partially digested. Each individual I6-syntax
 directive is converted into a "splat" holding its raw text. But this is then

@@ -138,7 +138,7 @@ void InstanceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	WRITE("instance (%S) %S = ",
 		InterSymbol::identifier(typename_s), InterSymbol::identifier(instance_s));
 	TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_INST_IFLD), FALSE);
-	SymbolAnnotation::write_annotations(OUT, P, instance_s);
+//	SymbolAnnotation::write_annotations(OUT, P, instance_s);
 }
 
 @h Access functions.

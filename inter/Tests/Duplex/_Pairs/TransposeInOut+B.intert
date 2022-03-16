@@ -37,13 +37,13 @@ package main _plain
 	instance (K_odour) I_leather = 10
 	property (K_number) P_strength __property_name="strength"
 	permission for K_odour to have P_strength
-	propertyvalue P_strength I_citrus = 20
-	propertyvalue P_strength I_leather = 7
+	propertyvalue P_strength of I_citrus = 20
+	propertyvalue P_strength of I_leather = 7
 	property (K_number) P_lingeringness
 	permission for K_odour to have P_lingeringness
-	propertyvalue P_lingeringness I_citrus = 1
-	propertyvalue P_lingeringness I_leather = 3
-	propertyvalue P_lingeringness K_odour = 2
+	propertyvalue P_lingeringness of I_citrus = 1
+	propertyvalue P_lingeringness of I_leather = 3
+	propertyvalue P_lingeringness of K_odour = 2
 	typename K_table = table
 	typename K_column_of_number = column of K_number
 	typename K_column_of_colour = column of K_colour

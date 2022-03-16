@@ -74,7 +74,6 @@ Those must be explicitly granted when a new construct is created.
 @d INSIDE_PLAIN_PACKAGE_ICUP 2
 @d INSIDE_CODE_PACKAGE_ICUP  4
 @d CAN_HAVE_CHILDREN_ICUP    8
-@d CAN_HAVE_ANNOTATIONS_ICUP 16
 
 =
 void InterInstruction::permit(inter_construct *IC, int usage) {
@@ -484,6 +483,11 @@ inter_error_message *InterInstruction::write_construct_text_allowing_nop(OUTPUT_
 	if (E) return E;
 	for (inter_ti L=0; L<(inter_ti) Inode::get_level(P); L++) WRITE("\t");
 	VOID_METHOD_CALL(IC, CONSTRUCT_WRITE_MTID, OUT, P);
+	if (IC->symbol_defn_field >= 0) {
+		inter_symbol *con_name =
+			InterSymbolsTable::symbol_from_ID_at_node(P, IC->symbol_defn_field);
+		SymbolAnnotation::write_annotations(OUT, P, con_name);
+	}
 	WRITE("\n");
 	if (Inode::is(P, PACKAGE_IST))
 		PackageInstruction::write_plugs_and_sockets(OUT, P);
@@ -523,8 +527,7 @@ inter_error_message *InterInstruction::match(inter_line_parse *ilp, inter_error_
 				inter_error_message *E =
 					InterInstruction::check_level_in_package(IBM, IC, ilp->indent_level, eloc);
 				if (E) return E;
-				if ((SymbolAnnotation::nonempty(&(ilp->set))) &&
-					(InterInstruction::allows(IC, CAN_HAVE_ANNOTATIONS_ICUP) == FALSE))
+				if ((SymbolAnnotation::nonempty(&(ilp->set))) && (IC->symbol_defn_field < 0))
 					return InterErrors::plain(I"__annotations are not allowed", eloc);
 				VOID_METHOD_CALL(IC, CONSTRUCT_READ_MTID, IBM, ilp, eloc, &E);
 				return E;

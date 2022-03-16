@@ -161,6 +161,27 @@ If we return to the example:
 we see that the two variables have different URLs, |/main/one/V_speed| and
 |/main/two/V_speed|.
 
+@h Annotations.
+A few of the defined names in Inter can be "annotated": to be exact, those
+created by |constant|, |property|, |variable| and |local|.
+
+Many annotations are simply markers temporarily given to these names during
+the compilation process, and they usually do not change the meaning of the
+program. For example, a constant given the annotation |_hex| has its value
+printed out in textual Inter in hexadecimal not decimal. So:
+= (text as Inter)
+	constant SPEED_LIMIT = 0x1ff __hex
+=
+This tells the code generator that it is more natural to express this value
+as |1ff| hexadecimal rather than 511 decimal.
+
+Most annotations are either there or not there, like |__hex|. (All annotation
+names begin with a double underscore, |__|.) But some supply a value: for
+example, |__priority=17| would be the syntax to specify this, though |__priority|
+is not in the standard set, as it happens.
+
+For the list of standard annotation names in use, see //Inform Annotations//.
+
 @h Metadata constants.
 If constant names begin with the magic character |^| then they represent
 "metadata", describing the program rather than what it does. They are not

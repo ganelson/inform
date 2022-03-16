@@ -12,7 +12,6 @@ void PropertyInstruction::define_construct(void) {
 	InterInstruction::specify_syntax(IC, I"property TOKENS");
 	InterInstruction::data_extent_always(IC, 3);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
-	InterInstruction::permit(IC, CAN_HAVE_ANNOTATIONS_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PropertyInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, PropertyInstruction::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PropertyInstruction::verify);
@@ -89,7 +88,7 @@ void PropertyInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	WRITE("property ");
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_PROP_IFLD);
 	WRITE("%S", InterSymbol::identifier(prop_name));
-	SymbolAnnotation::write_annotations(OUT, P, prop_name);
+//	SymbolAnnotation::write_annotations(OUT, P, prop_name);
 }
 
 @h Access functions.

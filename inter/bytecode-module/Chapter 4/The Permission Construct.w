@@ -155,7 +155,7 @@ void PermissionInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree
 	inter_symbol *owner_s = PermissionInstruction::owner(P);
 	inter_symbol *storage_s = PermissionInstruction::storage(P);
 	WRITE("permission for %S to have %S",
-		InterSymbol::identifier(prop_s), InterSymbol::identifier(owner_s));
+		InterSymbol::identifier(owner_s), InterSymbol::identifier(prop_s));
 	if (storage_s) WRITE(" %S", InterSymbol::identifier(storage_s));
 }
 

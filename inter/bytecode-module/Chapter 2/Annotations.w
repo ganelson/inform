@@ -84,7 +84,6 @@ The set of annotations used by the Inform tool suite is as follows.
 @e VERBARRAY_IANN
 
 @e ARROW_COUNT_IANN
-@e BIP_CODE_IANN
 @e C_ARRAY_ADDRESS_IANN
 @e DECLARATION_ORDER_IANN
 @e I6_GLOBAL_OFFSET_IANN
@@ -131,7 +130,6 @@ void SymbolAnnotation::declare_canonical_annotations(void) {
 	SymbolAnnotation::declare(TRANSLATION_IANN,         I"__translation",         TEXTUAL_IATYPE);
 
 	SymbolAnnotation::declare(ARROW_COUNT_IANN,         I"__arrow_count",         INTEGER_IATYPE);
-	SymbolAnnotation::declare(BIP_CODE_IANN,            I"__bip",                 INTEGER_IATYPE);
 	SymbolAnnotation::declare(C_ARRAY_ADDRESS_IANN,     I"__array_address",       INTEGER_IATYPE);
 	SymbolAnnotation::declare(DECLARATION_ORDER_IANN,   I"__declaration_order",   INTEGER_IATYPE);
 	SymbolAnnotation::declare(I6_GLOBAL_OFFSET_IANN,    I"__global_offset",       INTEGER_IATYPE);
