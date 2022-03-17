@@ -69,13 +69,11 @@ The set of annotations used by the Inform tool suite is as follows.
 @e FAKE_ACTION_IANN
 @e IMPLIED_ARGUMENT_IANN
 @e INLINE_ARRAY_IANN
-@e METAVERB_IANN
 @e NOUN_FILTER_IANN
 @e OBJECT_IANN
 @e SCOPE_FILTER_IANN
 @e TEXT_LITERAL_IANN
 @e VENEER_IANN
-@e VERBARRAY_IANN
 
 @e ARROW_COUNT_IANN
 @e C_ARRAY_ADDRESS_IANN
@@ -104,13 +102,11 @@ void SymbolAnnotation::declare_canonical_annotations(void) {
 	SymbolAnnotation::declare(FAKE_ACTION_IANN,         I"__fake_action",         BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(IMPLIED_ARGUMENT_IANN,    I"__implied_argument",    BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(INLINE_ARRAY_IANN,        I"__inline_array",        BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(METAVERB_IANN,            I"__meta_verb",           BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(NOUN_FILTER_IANN,         I"__noun_filter",         BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(OBJECT_IANN,              I"__object",              BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(SCOPE_FILTER_IANN,        I"__scope_filter",        BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(TEXT_LITERAL_IANN,        I"__text_literal",        BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(VENEER_IANN,              I"__veneer",              BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(VERBARRAY_IANN,           I"__verb",                BOOLEAN_IATYPE);
 
 	SymbolAnnotation::declare(APPEND_IANN,              I"__append",              TEXTUAL_IATYPE);
 	SymbolAnnotation::declare(INNER_PROPERTY_NAME_IANN, I"__inner_property_name", TEXTUAL_IATYPE);

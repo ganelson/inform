@@ -1000,6 +1000,7 @@ package main _plain
 		package grammar _submodule
 			constant (int32) REPARSE_CODE = 1073741824
 			constant (int32) DICT_WORD_SIZE = 9
+			constant (int32) VERB_DIRECTIVE_META = 1
 			constant (int32) VERB_DIRECTIVE_REVERSE = 1
 			constant (int32) VERB_DIRECTIVE_SLASH = 1
 			constant (int32) VERB_DIRECTIVE_DIVIDER = 1

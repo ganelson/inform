@@ -57,8 +57,7 @@ packaging_state EmitArrays::begin_bounded(inter_name *name, kind *K) {
 
 packaging_state EmitArrays::begin_verb(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_WORDS);
-	InterNames::annotate_b(name, VERBARRAY_IANN, TRUE);
+	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_GRAMMAR);
 	return save;
 }
 

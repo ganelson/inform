@@ -259,7 +259,7 @@ its nouns exchanged.
 	if (InterValuePairs::is_dword(val)) {
 		text_stream *glob_text = InterValuePairs::to_dictionary_word(I, val);
 		vanilla_dword *dw = VanillaIF::text_to_verb_dword(gen, glob_text, verbnum);
-		if (SymbolAnnotation::get_b(array_s, METAVERB_IANN)) dw->meta = TRUE;
+		if (VanillaIF::is_verb_meta(P)) dw->meta = TRUE;
 		synonyms++;
 		if (synonyms == 1) ADD_TO_LINKED_LIST(dw, vanilla_dword, gen->verbs);
 		dw->grammar_table_offset = address;
@@ -430,6 +430,19 @@ inter_symbol *VanillaIF::get_symbol(code_generation *gen, inter_tree_node *P,
 		return S;
 	}
 	return NULL;
+}
+
+@ This looks at the opening of the verb grammar to check for the keyword |meta|:
+
+=
+int VanillaIF::is_verb_meta(inter_tree_node *P) {
+	inter_pair val = ConstantInstruction::list_entry(P, 0);
+	if (InterValuePairs::is_symbolic(val)) {
+		inter_symbol *A = InterValuePairs::to_symbol_at(val, P);
+		if ((A) && (Str::eq(InterSymbol::identifier(A), I"VERB_DIRECTIVE_META")))
+			return TRUE;
+	}
+	return FALSE;
 }
 
 @ Okay then. So the above functions called the following to insert either

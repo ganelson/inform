@@ -371,7 +371,7 @@ not already there.
 @<Make a list constant in Inter@> =
 	match_results mr = Regexp::create_mr();
 	text_stream *conts = NULL;
-	int as_bytes = FALSE, bounded = FALSE;
+	int as_bytes = FALSE, bounded = FALSE, grammatical = FALSE;
 	inter_ti annot = INVALID_IANN;
 	@<Work out the format of the array and the string of contents@>;
 	if (annot != INVALID_IANN) SymbolAnnotation::set_b(made_s, annot, TRUE);
@@ -385,7 +385,9 @@ not already there.
 
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	inter_ti format;
-	if ((no_assimilated_array_entries == 1) && (directive == ARRAY_PLM)) {
+	if (grammatical) {
+		format = CONST_LIST_FORMAT_GRAMMAR;
+	} else if ((no_assimilated_array_entries == 1) && (directive == ARRAY_PLM)) {
 		if (as_bytes) {
 			if (bounded) format = CONST_LIST_FORMAT_B_BYTES_BY_EXTENT;
 			else format = CONST_LIST_FORMAT_BYTES_BY_EXTENT;
@@ -426,7 +428,7 @@ first to work out which of the several array formats this is, then the contents
 			PipelineErrors::kit_error("invalid Inform 6 array declaration", NULL);
 		}
 	} else {
-		conts = value; annot = VERBARRAY_IANN;
+		conts = value; grammatical = TRUE;
 	}
 
 @ The contents text is now tokenised, and each token produces an array entry.
@@ -483,7 +485,9 @@ for the action.
 		if (next_is_action) @<Ensure that a socket exists for this action name@>;
 		next_is_action = FALSE;
 		if ((NT++ == 0) && (Str::eq(value, I"meta"))) {
-			SymbolAnnotation::set_b(made_s, METAVERB_IANN, TRUE);
+			inter_pair val = InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
+				verb_directive_meta_RPSYM, I"VERB_DIRECTIVE_META"));
+			@<Add value to the entry pile@>;
 		} else if (Str::len(value) > 0) {
 			inter_pair val = InterValuePairs::undef();
 			@<Assimilate a value@>;

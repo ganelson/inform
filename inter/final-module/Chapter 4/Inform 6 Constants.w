@@ -121,7 +121,7 @@ case, whereupon Vanilla will lead us through the rest of the declaration.
 int I6TargetConstants::begin_array(code_generator *gtr, code_generation *gen,
 	text_stream *array_name, inter_symbol *array_s, inter_tree_node *P, int format,
 	int zero_count, segmentation_pos *saved) {
-	if ((array_s) && (SymbolAnnotation::get_b(array_s, VERBARRAY_IANN))) {
+	if (ConstantInstruction::list_format(P) == CONST_LIST_FORMAT_GRAMMAR) {
 		@<Write a complete I6 Verb directive@>;
 		return FALSE;
 	} else {
@@ -139,8 +139,7 @@ they were any other arrays. Here goes:
 @<Write a complete I6 Verb directive@> =
 	if (saved) *saved = CodeGen::select(gen, command_grammar_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
-	WRITE("Verb ");
-	if (SymbolAnnotation::get_b(array_s, METAVERB_IANN)) WRITE("meta ");
+	WRITE("Verb");
 	for (int i=0; i<ConstantInstruction::list_len(P); i++) {
 		WRITE(" ");
 		inter_pair val = ConstantInstruction::list_entry(P, i);
@@ -150,7 +149,8 @@ they were any other arrays. Here goes:
 			if (SymbolAnnotation::get_b(A, SCOPE_FILTER_IANN)) WRITE("scope=");
 			if (SymbolAnnotation::get_b(A, NOUN_FILTER_IANN))  WRITE("noun=");
 			text_stream *S = InterSymbol::trans(A);
-			     if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_divider_RPSYM))     WRITE("\n\t*");
+			     if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_meta_RPSYM))        WRITE("meta");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_divider_RPSYM))     WRITE("\n\t*");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_reverse_RPSYM))     WRITE("reverse");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_slash_RPSYM))       WRITE("/");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_result_RPSYM))      WRITE("->");
@@ -170,7 +170,7 @@ they were any other arrays. Here goes:
 			CodeGen::pair(gen, P, val);
 		}
 	}
-	WRITE(";");
+	WRITE(";\n");
 
 @ When an action is named in a |Verb| directive, it appears without its |##| prefix;
 so the following ensures that we write, say,

@@ -30,27 +30,23 @@ int ReconcileVerbsStage::run(pipeline_step *step) {
 
 void ReconcileVerbsStage::visitor(inter_tree *I, inter_tree_node *P, void *v_VL) {
 	linked_list *VL = (linked_list *) v_VL;
-	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-	if (SymbolAnnotation::get_b(con_name, VERBARRAY_IANN))
+	if (ConstantInstruction::list_format(P) == CONST_LIST_FORMAT_GRAMMAR)
 		ADD_TO_LINKED_LIST(P, inter_tree_node, VL);
 }
 
 @<Attend to the command verb definitions, non-meta ones first@> =
 	inter_tree_node *P;
-	LOOP_OVER_LINKED_LIST(P, inter_tree_node, VL) {
-		inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-		if (SymbolAnnotation::get_b(con_name, METAVERB_IANN) == FALSE)
+	LOOP_OVER_LINKED_LIST(P, inter_tree_node, VL)
+		if (VanillaIF::is_verb_meta(P) == FALSE)
 			@<Attend to the verb@>;
-	}
-	LOOP_OVER_LINKED_LIST(P, inter_tree_node, VL) {
-		inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-		if (SymbolAnnotation::get_b(con_name, METAVERB_IANN))
+	LOOP_OVER_LINKED_LIST(P, inter_tree_node, VL)
+		if (VanillaIF::is_verb_meta(P))
 			@<Attend to the verb@>;
-	}
 
 @<Attend to the verb@> =
 	if (ConstantInstruction::list_len(P) > 0) {
 		inter_pair val = ConstantInstruction::list_entry(P, 0);
+		if (VanillaIF::is_verb_meta(P)) val = ConstantInstruction::list_entry(P, 1);
 		if (InterValuePairs::is_dword(val)) {
 			text_stream *word_text = InterValuePairs::to_dictionary_word(I, val);
 			if (Dictionaries::find(observed_verbs, word_text)) {

@@ -84,7 +84,7 @@ int CMemoryModel::begin_array(code_generator *gtr, code_generation *gen,
 	Str::clear(C_GEN_DATA(memdata.array_name));
 	WRITE_TO(C_GEN_DATA(memdata.array_name), "%S", array_name);
 	C_GEN_DATA(memdata.entry_count) = 0;
-	if ((array_s) && (SymbolAnnotation::get_b(array_s, VERBARRAY_IANN)))
+	if (ConstantInstruction::list_format(P) == CONST_LIST_FORMAT_GRAMMAR)
 		@<Short-circuit the usual Vanilla algorithm by compiling the whole array now@>
 	else
 		@<Declare this array in concert with the usual Vanilla algorithm@>;

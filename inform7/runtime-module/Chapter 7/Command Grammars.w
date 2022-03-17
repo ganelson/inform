@@ -17,6 +17,7 @@ void RTCommandGrammars::compile_generic_constants(void) {
 		RTCommandGrammars::grammar_constant(REPARSE_CODE_HL, 0x40000000);
 		RTCommandGrammars::grammar_constant(DICT_WORD_SIZE_HL, 9);
 	}
+	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_META_HL, 1);
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_REVERSE_HL, 1);
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_SLASH_HL, 1);
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_DIVIDER_HL, 1);
