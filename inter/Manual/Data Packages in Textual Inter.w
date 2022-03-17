@@ -162,23 +162,18 @@ we see that the two variables have different URLs, |/main/one/V_speed| and
 |/main/two/V_speed|.
 
 @h Annotations.
-A few of the defined names in Inter can be "annotated": to be exact, those
-created by |constant|, |property|, |variable| and |local|.
+A few of the defined names in Inter can be "annotated".
 
 Many annotations are simply markers temporarily given to these names during
 the compilation process, and they usually do not change the meaning of the
-program. For example, a constant given the annotation |_hex| has its value
-printed out in textual Inter in hexadecimal not decimal. So:
+program. For example, the final C code generator annotates the names of arrays
+with their addresses in (virtual) memory, with the |__array_address| annotation.
+In textual format:
 = (text as Inter)
-	constant SPEED_LIMIT = 0x1ff __hex
+	constant my_array = { 1, 2, 4, 8 } __array_address=7718
 =
-This tells the code generator that it is more natural to express this value
-as |1ff| hexadecimal rather than 511 decimal.
-
-Most annotations are either there or not there, like |__hex|. (All annotation
-names begin with a double underscore, |__|.) But some supply a value: for
-example, |__priority=17| would be the syntax to specify this, though |__priority|
-is not in the standard set, as it happens.
+All annotation names begin with a double underscore, |__|. They do not all
+express a value: some are boolean flags, where no |=...| part is written.
 
 For the list of standard annotation names in use, see //Inform Annotations//.
 

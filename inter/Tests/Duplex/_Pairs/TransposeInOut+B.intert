@@ -17,7 +17,7 @@ package main _plain
 	constant (K_number) C_death = -5
 	constant (K_number) C_taxes = 14
 	variable (K_number) V_anxiety = C_death
-	constant (K_number) C_x = 0x7f2a __hex
+	constant (K_number) C_x = 0x7f2a
 	constant (K_number) cornelius = dw"frogs"
 	constant (K_number) gaius = dw"toads"
 	splat "Sing a song of \"six splats\"...\nand don't wait up"

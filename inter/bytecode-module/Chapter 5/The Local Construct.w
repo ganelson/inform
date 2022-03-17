@@ -76,7 +76,6 @@ void LocalInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_LOCAL_IFLD);
 	inter_symbol *variable_s = LocalInstruction::variable(P);
 	WRITE("%S", InterSymbol::identifier(variable_s));
-//	SymbolAnnotation::write_annotations(OUT, P, variable_s);
 }
 
 @h Access function.

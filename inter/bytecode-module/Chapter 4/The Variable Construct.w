@@ -96,8 +96,7 @@ void VariableInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	WRITE("variable ");
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_VAR_IFLD);
 	WRITE("%S = ", InterSymbol::identifier(var_s));
-	TextualInter::write_pair(OUT, P, VariableInstruction::value(P), FALSE);
-//	SymbolAnnotation::write_annotations(OUT, P, var_s);
+	TextualInter::write_pair(OUT, P, VariableInstruction::value(P));
 }
 
 @h Access functions.

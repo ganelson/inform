@@ -110,12 +110,12 @@ primitive !externalcall val val -> val
 package main _plain
 	package architectural _linkage
 		constant WORDSIZE = 2 __architectural
-		constant NULL = 0xffff __architectural __hex
-		constant WORD_HIGHBIT = 0x8000 __architectural __hex
-		constant WORD_NEXTTOHIGHBIT = 0x4000 __architectural __hex
-		constant IMPROBABLE_VALUE = 0x7fe3 __architectural __hex
+		constant NULL = 0xffff __architectural
+		constant WORD_HIGHBIT = 0x8000 __architectural
+		constant WORD_NEXTTOHIGHBIT = 0x4000 __architectural
+		constant IMPROBABLE_VALUE = 0x7fe3 __architectural
 		constant MAX_POSITIVE_NUMBER = 32767 __architectural
-		constant MIN_NEGATIVE_NUMBER = -32768 __architectural __signed
+		constant MIN_NEGATIVE_NUMBER = -32768 __architectural
 		constant TARGET_ZCODE = 1 __architectural
 		constant DEBUG = 1 __architectural
 	package generic _module

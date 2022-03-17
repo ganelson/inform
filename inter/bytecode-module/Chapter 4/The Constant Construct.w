@@ -245,8 +245,6 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 =
 void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *con_name = InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-	int hex = FALSE;
-	if (SymbolAnnotation::get_b(con_name, HEX_IANN)) hex = TRUE;
 	WRITE("constant ");
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_CONST_IFLD);
 	WRITE("%S = ", InterSymbol::identifier(con_name));
@@ -262,10 +260,9 @@ void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		if (i > DATA_CONST_IFLD) WRITE(",");
 		if (fmt != CONST_LIST_FORMAT_NONE) WRITE(" ");
-		TextualInter::write_pair(OUT, P, InterValuePairs::get(P, i), hex);
+		TextualInter::write_pair(OUT, P, InterValuePairs::get(P, i));
 	}
 	if (fmt != CONST_LIST_FORMAT_NONE) WRITE(" }");
-//	SymbolAnnotation::write_annotations(OUT, P, con_name);
 }
 
 @h Access functions.

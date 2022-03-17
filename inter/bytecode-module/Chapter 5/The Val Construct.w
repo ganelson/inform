@@ -96,7 +96,7 @@ void ValInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 void ValInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	WRITE("val ");
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_VAL_IFLD);
-	TextualInter::write_pair(OUT, P, ValInstruction::value(P), FALSE);
+	TextualInter::write_pair(OUT, P, ValInstruction::value(P));
 }
 
 @h Access function.

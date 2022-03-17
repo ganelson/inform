@@ -134,32 +134,36 @@ it represents an actual number at run-time, the second if not:
 
 =
 inter_name *Emit::numeric_constant(inter_name *con_iname, inter_ti val) {
-	return Emit::numeric_constant_inner(con_iname, val, INT32_ITCONC, INVALID_IANN);
+	return Emit::numeric_constant_inner(con_iname,
+		InterValuePairs::number_in_base(val, 10), INT32_ITCONC);
 }
 
 inter_name *Emit::named_numeric_constant_hex(inter_name *con_iname, inter_ti val) {
-	return Emit::numeric_constant_inner(con_iname, val, INT32_ITCONC, HEX_IANN);
+	return Emit::numeric_constant_inner(con_iname,
+		InterValuePairs::number_in_base(val, 16), INT32_ITCONC);
 }
 
 inter_name *Emit::named_unchecked_constant_hex(inter_name *con_iname, inter_ti val) {
-	return Emit::numeric_constant_inner(con_iname, val, UNCHECKED_ITCONC, HEX_IANN);
+	return Emit::numeric_constant_inner(con_iname,
+		InterValuePairs::number_in_base(val, 16), UNCHECKED_ITCONC);
 }
 
 inter_name *Emit::named_numeric_constant_signed(inter_name *con_iname, int val) {
-	return Emit::numeric_constant_inner(con_iname, (inter_ti) val, INT32_ITCONC, SIGNED_IANN);
+	return Emit::numeric_constant_inner(con_iname,
+		InterValuePairs::signed_number(val), INT32_ITCONC);
 }
 
 inter_name *Emit::unchecked_numeric_constant(inter_name *con_iname, inter_ti val) {
-	return Emit::numeric_constant_inner(con_iname, val, UNCHECKED_ITCONC, INVALID_IANN);
+	return Emit::numeric_constant_inner(con_iname,
+		InterValuePairs::number_in_base(val, 10), UNCHECKED_ITCONC);
 }
 
-inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_ti val,
-	inter_ti constructor_code, inter_ti annotation) {
+inter_name *Emit::numeric_constant_inner(inter_name *con_iname, inter_pair val,
+	inter_ti constructor_code) {
 	packaging_state save = Packaging::enter_home_of(con_iname);
 	inter_symbol *con_s = InterNames::to_symbol(con_iname);
-	if (annotation != INVALID_IANN) SymbolAnnotation::set_b(con_s, annotation, 0);
 	Produce::guard(ConstantInstruction::new(Emit::at(), con_s,
-		InterTypes::from_constructor_code(constructor_code), InterValuePairs::number(val),
+		InterTypes::from_constructor_code(constructor_code), val,
 		Emit::baseline(), NULL));
 	Packaging::exit(Emit::tree(), save);
 	return con_iname;

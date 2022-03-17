@@ -160,7 +160,6 @@ void TypenameInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 		WRITE("= ");
 		InterTypes::write_typename_definition(OUT, typename_s);
 	}
-//	SymbolAnnotation::write_annotations(OUT, P, typename_s);
 }
 
 @h Access functions.

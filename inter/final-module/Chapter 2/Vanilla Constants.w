@@ -163,17 +163,9 @@ void VanillaConstants::definition_value(code_generation *gen, int form,
 				Generators::compile_literal_number(gen, 1, FALSE);
 			}
 			break;
-		case DATA_GDCFORM: {
-			inter_pair val = ConstantInstruction::constant(P);
-			if ((InterValuePairs::is_number(val)) &&
-				(SymbolAnnotation::get_b(con_name, HEX_IANN))) {
-				inter_ti N = InterValuePairs::to_number(val);
-				Generators::compile_literal_number(gen, N, TRUE);
-			} else {
-				CodeGen::pair(gen, P, val);
-			}
+		case DATA_GDCFORM:
+			CodeGen::pair(gen, P, ConstantInstruction::constant(P));
 			break;
-		}
 		case COMPUTED_GDCFORM: {
 			WRITE("(");
 			for (int i=0; i<ConstantInstruction::list_len(P); i++) {

@@ -22,7 +22,10 @@ typedef struct inter_pair {
 @ These are the formats. Note that changing any of these values would invalidate
 existing Inter binary files, necessitating a bump of //The Inter Version//.
 
-@e NUMERIC_IVAL from 0x10000
+@e DECIMAL_IVAL from 0x10000
+@e HEX_IVAL
+@e BINARY_IVAL
+@e SIGNED_IVAL
 @e TEXTUAL_IVAL
 @e REAL_IVAL
 @e DWORD_IVAL
@@ -33,13 +36,35 @@ existing Inter binary files, necessitating a bump of //The Inter Version//.
 
 @h Numeric pairs.
 These can represent any |inter_ti| value, and are used when the data is a
-literal integer.
+literal integer. Note that they express both an integer and also a preferred
+way to print it out -- as decimal, hexadecimal, binary, or signed decimal.
+But these are all numerically equal. They affect only the way in which the
+Inter program is printed to text files, not the meaning of the program.
 
 =
 inter_pair InterValuePairs::number(inter_ti N) {
 	inter_pair pair;
-	pair.data_format = NUMERIC_IVAL;
+	pair.data_format = DECIMAL_IVAL;
 	pair.data_content = N;
+	return pair;
+}
+
+inter_pair InterValuePairs::number_in_base(inter_ti N, int b) {
+	inter_pair pair;
+	switch (b) {
+		case 2: pair.data_format = BINARY_IVAL; break;
+		case 10: pair.data_format = DECIMAL_IVAL; break;
+		case 16: pair.data_format = HEX_IVAL; break;
+		default: internal_error("only bases 2, 10, 16 are supported");
+	}
+	pair.data_content = N;
+	return pair;
+}
+
+inter_pair InterValuePairs::signed_number(int N) {
+	inter_pair pair;
+	pair.data_format = SIGNED_IVAL;
+	pair.data_content = (inter_ti) N;
 	return pair;
 }
 
@@ -64,7 +89,17 @@ inter_pair InterValuePairs::number_from_I6_notation(text_stream *S) {
 }
 
 inter_ti InterValuePairs::to_number(inter_pair pair) {
-	if (pair.data_format == NUMERIC_IVAL) return pair.data_content;
+	if (InterValuePairs::is_number(pair)) return pair.data_content;
+	return 0;
+}
+
+inter_ti InterValuePairs::to_base(inter_pair pair) {
+	switch (pair.data_format) {
+		case DECIMAL_IVAL: return 10;
+		case SIGNED_IVAL: return 10;
+		case HEX_IVAL: return 16;
+		case BINARY_IVAL: return 2;
+	}
 	return 0;
 }
 
@@ -72,18 +107,22 @@ inter_ti InterValuePairs::to_number(inter_pair pair) {
 
 =
 int InterValuePairs::is_number(inter_pair pair) {
-	if (pair.data_format == NUMERIC_IVAL) return TRUE;
+	if ((pair.data_format == DECIMAL_IVAL) ||
+		(pair.data_format == HEX_IVAL) ||
+		(pair.data_format == BINARY_IVAL) ||
+		(pair.data_format == SIGNED_IVAL))
+		return TRUE;
 	return FALSE;
 }
 
 int InterValuePairs::is_one(inter_pair pair) {
-	if ((pair.data_format == NUMERIC_IVAL) &&
+	if ((InterValuePairs::is_number(pair)) &&
 		(pair.data_content == 1)) return TRUE;
 	return FALSE;
 }
 
 int InterValuePairs::is_zero(inter_pair pair) {
-	if ((pair.data_format == NUMERIC_IVAL) &&
+	if ((InterValuePairs::is_number(pair)) &&
 		(pair.data_content == 0)) return TRUE;
 	return FALSE;
 }
@@ -400,8 +439,8 @@ inter_error_message *InterValuePairs::verify(inter_package *owner, inter_tree_no
 	inter_pair pair, inter_type type) {
 	inter_symbols_table *scope = InterPackage::scope(owner);
 	if (scope == NULL) scope = Inode::globals(P);
+	if (InterValuePairs::is_number(pair)) @<Check this is in range for the type@>
 	switch (pair.data_format) {
-		case NUMERIC_IVAL: @<Check this is in range for the type@>;
 		case SYMBOLIC_IVAL: @<Check this is reasonable, if we know what it is yet@>;
 		case DWORD_IVAL:
 		case PDWORD_IVAL:

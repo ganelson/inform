@@ -88,7 +88,6 @@ void PropertyInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	WRITE("property ");
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_PROP_IFLD);
 	WRITE("%S", InterSymbol::identifier(prop_name));
-//	SymbolAnnotation::write_annotations(OUT, P, prop_name);
 }
 
 @h Access functions.

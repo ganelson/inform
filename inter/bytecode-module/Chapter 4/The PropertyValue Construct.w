@@ -160,7 +160,7 @@ void PropertyValueInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_t
 	inter_symbol *owner_s = PropertyValueInstruction::owner(P);
 	WRITE("propertyvalue %S of %S = ",
 		InterSymbol::identifier(prop_s), InterSymbol::identifier(owner_s));
-	TextualInter::write_pair(OUT, P, PropertyValueInstruction::value(P), FALSE);
+	TextualInter::write_pair(OUT, P, PropertyValueInstruction::value(P));
 }
 
 @h Access functions.

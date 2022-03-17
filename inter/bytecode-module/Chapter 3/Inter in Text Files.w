@@ -422,7 +422,7 @@ in an interleaved form, to keep each notation together. Both have a simple
 outer structure:
 
 =
-void TextualInter::write_pair(OUTPUT_STREAM, inter_tree_node *P, inter_pair pair, int hex) {
+void TextualInter::write_pair(OUTPUT_STREAM, inter_tree_node *P, inter_pair pair) {
 	inter_tree *I = Inode::tree(P);
 
 	     if (InterValuePairs::is_number(pair))         @<Print numeric literal syntax@>
@@ -480,8 +480,12 @@ inter_error_message *TextualInter::parse_pair(text_stream *line, inter_error_loc
 or (unsigned) binary, but cannot be printed back in binary.
 
 @<Print numeric literal syntax@> =
-	if (hex) WRITE("0x%x", InterValuePairs::to_number(pair));
-	else WRITE("%d", InterValuePairs::to_number(pair));
+	switch (InterValuePairs::to_base(pair)) {
+		case 10: WRITE("%d", InterValuePairs::to_number(pair)); break;
+		case 2:
+		case 16: WRITE("0x%x", InterValuePairs::to_number(pair)); break;
+		default: WRITE("???"); break;
+	}
 
 @<Parse numeric literal syntax@> =
 	wchar_t c = first_char;
@@ -506,7 +510,8 @@ or (unsigned) binary, but cannot be printed back in binary.
 		N = sign*N;
 		if (InterTypes::literal_is_in_range(N, type_wanted) == FALSE)
 			return InterErrors::quoted(I"value out of range", S, eloc);
-		*pair = InterValuePairs::number((inter_ti) N);
+		if (sign == -1) *pair = InterValuePairs::signed_number((int) N);
+		else *pair = InterValuePairs::number_in_base((inter_ti) N, base);
 		return NULL;
 	}
 

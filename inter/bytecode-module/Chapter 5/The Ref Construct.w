@@ -78,7 +78,7 @@ void RefInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 void RefInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	WRITE("ref ");
 	TextualInter::write_optional_type_marker(OUT, P, TYPE_REF_IFLD);
-	TextualInter::write_pair(OUT, P, RefInstruction::value(P), FALSE);
+	TextualInter::write_pair(OUT, P, RefInstruction::value(P));
 }
 
 @h Access function.
