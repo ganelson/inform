@@ -178,7 +178,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  been B" __translation="^past_perfect_U1"
 				constant (int32) ^at = -1 __translation="^at_U1"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb1"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -416,7 +416,7 @@ package main _plain
 																val "will not be"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U1"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -451,7 +451,7 @@ package main _plain
 				constant (text) ^infinitive = "auxiliary-have" __translation="^infinitive_U2"
 				constant (int32) ^at = -1 __translation="^at_U2"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb1"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -544,7 +544,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  meant B" __translation="^past_perfect_U2"
 				constant (int32) ^at = -1 __translation="^at_U3"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb2"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -674,7 +674,7 @@ package main _plain
 																val "will not mean"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U2"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -714,7 +714,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  done B" __translation="^past_perfect_U3"
 				constant (int32) ^at = -1 __translation="^at_U4"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb3"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -844,7 +844,7 @@ package main _plain
 																val "will not do"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U3"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -876,7 +876,7 @@ package main _plain
 					constant (int32) ^verb_sorting = 22 __translation="^verb_sorting_U3"
 				package form2 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U4"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -908,7 +908,7 @@ package main _plain
 					constant (int32) ^verb_sorting = 25 __translation="^verb_sorting_U4"
 				package form3 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U5"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -940,7 +940,7 @@ package main _plain
 					constant (int32) ^verb_sorting = 26 __translation="^verb_sorting_U5"
 				package form4 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U6"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -1036,25 +1036,25 @@ package main _plain
 					constant MAX_FIGURE_THUMBNAILS_IN_INDEX = 50 __assimilated
 			constant (int32) DONE_INIS = 4
 		package relations _submodule
-			constant (int32) RELS_SYMMETRIC = 32768
-			constant (int32) RELS_EQUIVALENCE = 16384
-			constant (int32) RELS_X_UNIQUE = 8192
-			constant (int32) RELS_Y_UNIQUE = 4096
-			constant (int32) RELS_TEST = 2048
-			constant (int32) RELS_ASSERT_TRUE = 1024
-			constant (int32) RELS_ASSERT_FALSE = 512
-			constant (int32) RELS_SHOW = 256
-			constant (int32) RELS_ROUTE_FIND = 128
-			constant (int32) RELS_ROUTE_FIND_COUNT = 64
-			constant (int32) RELS_LOOKUP_ANY = 8
-			constant (int32) RELS_LOOKUP_ALL_X = 4
-			constant (int32) RELS_LOOKUP_ALL_Y = 2
-			constant (int32) RELS_LIST = 1
-			constant (int32) TTF_sum = 3584
-			constant (int32) REL_BLOCK_HEADER = 101515264
+			constant (int32) RELS_SYMMETRIC = 0x8000
+			constant (int32) RELS_EQUIVALENCE = 0x4000
+			constant (int32) RELS_X_UNIQUE = 0x2000
+			constant (int32) RELS_Y_UNIQUE = 0x1000
+			constant (int32) RELS_TEST = 0x800
+			constant (int32) RELS_ASSERT_TRUE = 0x400
+			constant (int32) RELS_ASSERT_FALSE = 0x200
+			constant (int32) RELS_SHOW = 0x100
+			constant (int32) RELS_ROUTE_FIND = 0x80
+			constant (int32) RELS_ROUTE_FIND_COUNT = 0x40
+			constant (int32) RELS_LOOKUP_ANY = 0x8
+			constant (int32) RELS_LOOKUP_ALL_X = 0x4
+			constant (int32) RELS_LOOKUP_ALL_Y = 0x2
+			constant (int32) RELS_LIST = 0x1
+			constant (int32) TTF_sum = 0xe00
+			constant (int32) REL_BLOCK_HEADER = 0x60d0000
 			package relation1 _relation
 				package handler_fn _function
-					package call _code
+					package call _code __translation="call_U7"
 						local rr __implied_argument
 						local task __implied_argument
 						local X __implied_argument
@@ -1103,7 +1103,7 @@ package main _plain
 				constant (int32) ^at = -1 __translation="^at_U14"
 			package relation2 _relation
 				package handler_fn _function
-					package call _code
+					package call _code __translation="call_U8"
 						local rr __implied_argument
 						local task __implied_argument
 						local X __implied_argument
@@ -1155,7 +1155,7 @@ package main _plain
 				constant (int32) ^at = -1 __translation="^at_U15"
 			package relation3 _relation
 				package handler_fn _function
-					package call _code
+					package call _code __translation="call_U9"
 						local rr __implied_argument
 						local task __implied_argument
 						local X __implied_argument
@@ -1291,7 +1291,7 @@ package main _plain
 				constant (int32) ^at = -1 __translation="^at_U16"
 			package relation4 _relation
 				package handler_fn _function
-					package call _code
+					package call _code __translation="call_U10"
 						local rr __implied_argument
 						local task __implied_argument
 						local X __implied_argument
@@ -1344,7 +1344,7 @@ package main _plain
 				constant (int32) ^at = -1 __translation="^at_U17"
 			package relation5 _relation
 				package handler_fn _function
-					package call _code
+					package call _code __translation="call_U11"
 						local rr __implied_argument
 						local task __implied_argument
 						local X __implied_argument
@@ -1579,7 +1579,7 @@ package main _plain
 				constant ^strong_id = OBJECT_TY __translation="^strong_id_U1"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U1"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U12"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1599,15 +1599,15 @@ package main _plain
 					constant ^conformed_to = /main/generic/kinds/kind17/kind_ref __translation="^conformed_to_U2"
 				constant (text) ^brief_inferences = "<i>Usually</i> singular-named <i>not</i> plural-named, improper-named <i>not</i> proper-named.<br>\n<i>Usually not</i> ambiguously plural.<br>\n<i>Can have</i> printed name (<i>text</i>), printed plural name (<i>text</i>), indefinite article (<i>text</i>).<br>\n" __translation="^brief_inferences_U1"
 				constant (text) ^inferences = "<i>Usually</i> singular-named <i>not</i> plural-named, improper-named <i>not</i> proper-named.<br>\n<i>Usually not</i> ambiguously plural.<br>\n<i>Can have</i> printed name (<i>text</i>), printed plural name (<i>text</i>), indefinite article (<i>text</i>).<br>\n" __translation="^inferences_U1"
-				permission for P_variable_initial_value to have K_object
-				permission for P_printed_name to have K_object
-				permission for P_printed_plural_name to have K_object
-				permission for P_indefinite_article to have K_object
-				permission for P_plural_named to have K_object
-				permission for P_proper_named to have K_object
-				permission for P_ambiguously_plural to have K_object
-				permission for P_vector to have K_object
-				permission for P_kd_count to have K_object
+				permission for K_object to have P_variable_initial_value
+				permission for K_object to have P_printed_name
+				permission for K_object to have P_printed_plural_name
+				permission for K_object to have P_indefinite_article
+				permission for K_object to have P_plural_named
+				permission for K_object to have P_proper_named
+				permission for K_object to have P_ambiguously_plural
+				permission for K_object to have P_vector
+				permission for K_object to have P_kd_count
 				propertyvalue P_plural_named of K_object = 0
 				propertyvalue P_proper_named of K_object = 0
 				propertyvalue P_printed_name of K_object = /main/generic/kinds/kind1/block_constant1/bc
@@ -1639,7 +1639,7 @@ package main _plain
 				constant ^weak_id = NUMBER_TY __translation="^weak_id_U2"
 				constant ^strong_id = NUMBER_TY __translation="^strong_id_U2"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U13"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1685,7 +1685,7 @@ package main _plain
 				constant ^strong_id = REAL_NUMBER_TY __translation="^strong_id_U3"
 				constant ^cmp_fn = /main/BasicInformKit/functions/REAL_NUMBER_TY_Compare_fn/REAL_NUMBER_TY_Compare __translation="^cmp_fn_U2"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U15"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1732,7 +1732,7 @@ package main _plain
 				constant ^strong_id = TRUTH_STATE_TY __translation="^strong_id_U4"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U3"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U17"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1771,7 +1771,7 @@ package main _plain
 				constant ^support_fn = /main/BasicInformKit/functions/TEXT_TY_Support_fn/TEXT_TY_Support __translation="^support_fn_U1"
 				constant ^cmp_fn = /main/BasicInformKit/functions/BlkValueCompare_fn/BlkValueCompare __translation="^cmp_fn_U4"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U18"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1807,7 +1807,7 @@ package main _plain
 				constant ^strong_id = SNIPPET_TY __translation="^strong_id_U6"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U5"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U19"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1841,7 +1841,7 @@ package main _plain
 				constant ^strong_id = UNICODE_CHARACTER_TY __translation="^strong_id_U7"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U6"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U20"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1875,7 +1875,7 @@ package main _plain
 				constant ^strong_id = USE_OPTION_TY __translation="^strong_id_U8"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U7"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U21"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1910,7 +1910,7 @@ package main _plain
 				constant ^strong_id = RESPONSE_TY __translation="^strong_id_U9"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U8"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U22"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1946,7 +1946,7 @@ package main _plain
 				constant ^strong_id = VERB_TY __translation="^strong_id_U10"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U9"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U23"
 						local sk __implied_argument
 						code
 							inv !return
@@ -1982,7 +1982,7 @@ package main _plain
 				constant ^strong_id = TABLE_TY __translation="^strong_id_U11"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U10"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U24"
 						local sk __implied_argument
 						code
 							inv !return
@@ -2017,7 +2017,7 @@ package main _plain
 				constant ^strong_id = EQUATION_TY __translation="^strong_id_U12"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U11"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U25"
 						local sk __implied_argument
 						code
 							inv !return
@@ -2037,7 +2037,7 @@ package main _plain
 				constant (text) ^name = "rulebook outcome" __translation="^name_U46"
 				typename K_rulebook_outcome = int32 __translation="K_rulebook_outcome" __source_order=12
 				package print_fn _function
-					package call _code
+					package call _code __translation="RulebookOutcomePrintingRule"
 						local nro __implied_argument
 						code
 							inv !ifelse
@@ -2065,7 +2065,7 @@ package main _plain
 				constant ^strong_id = RULEBOOK_OUTCOME_TY __translation="^strong_id_U13"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U12"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U26"
 						local sk __implied_argument
 						code
 							inv !return
@@ -2100,14 +2100,14 @@ package main _plain
 				constant ^strong_id = EXTERNAL_FILE_TY __translation="^strong_id_U14"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U13"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U27"
 						local sk __implied_argument
 						code
 							inv !return
 								val 0
 				constant ^mkdef_fn = /main/generic/kinds/kind14/mkdef_fn/call __translation="^mkdef_fn_U14"
 				package print_fn _function
-					package call _code
+					package call _code __translation="PrintExternalFileName"
 						local value __implied_argument
 						code
 							inv !switch
@@ -2122,19 +2122,19 @@ package main _plain
 				constant (int32) ICOUNT_EXTERNAL_FILE = 0
 				constant (int32) ^is_object_1 = 0 __translation="^is_object_1_U14"
 				package decrement_fn _function
-					package call _code
+					package call _code __translation="call_U28"
 						local (/main/generic/kinds/kind14/K_external_file) x __implied_argument
 						code
 							inv !return
 								val (/main/generic/kinds/kind14/K_external_file) x
 				package increment_fn _function
-					package call _code
+					package call _code __translation="call_U29"
 						local (/main/generic/kinds/kind14/K_external_file) x __implied_argument
 						code
 							inv !return
 								val (/main/generic/kinds/kind14/K_external_file) x
 				package ranger_fn _function
-					package call _code
+					package call _code __translation="call_U30"
 						local a __implied_argument
 						local b __implied_argument
 						code
@@ -2585,7 +2585,7 @@ package main _plain
 				constant ^support_fn = /main/BasicInformKit/functions/LIST_OF_TY_Support_fn/LIST_OF_TY_Support __translation="^support_fn_U3"
 				constant ^cmp_fn = /main/BasicInformKit/functions/BlkValueCompare_fn/BlkValueCompare __translation="^cmp_fn_U20"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U31"
 						local sk __implied_argument
 						code
 							inv !return
@@ -2722,7 +2722,7 @@ package main _plain
 				constant ^strong_id = NIL_TY __translation="^strong_id_U34"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U25"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U32"
 						local sk __implied_argument
 						code
 							inv !return
@@ -2780,7 +2780,7 @@ package main _plain
 				constant ^strong_id = VOID_TY __translation="^strong_id_U36"
 				constant ^cmp_fn = /main/BasicInformKit/functions/UnsignedCompare_fn/UnsignedCompare __translation="^cmp_fn_U26"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U33"
 						local sk __implied_argument
 						code
 							inv !return
@@ -2843,7 +2843,7 @@ package main _plain
 	package synoptic _module
 		package actions _submodule
 			package DB_Action_Details_fn _function
-				package call _code
+				package call _code __translation="DB_Action_Details"
 					local act
 					local n
 					local s
@@ -2856,13 +2856,13 @@ package main _plain
 			constant AD_RECORDS = 0
 		package activities _submodule
 			constant (list of unchecked) Activity_after_rulebooks = { /main/basic_inform_by_graham_nelson/activities/activity1/after_rb/rulebook_id, /main/basic_inform_by_graham_nelson/activities/activity2/after_rb/rulebook_id, /main/basic_inform_by_graham_nelson/activities/activity3/after_rb/rulebook_id }
-			constant (list of unchecked) Activity_atb_rulebooks = { 0, 0, 0 } __byte_array
+			constant (list of unchecked) Activity_atb_rulebooks = bytes{ 0, 0, 0 }
 			constant (list of unchecked) Activity_before_rulebooks = { /main/basic_inform_by_graham_nelson/activities/activity1/before_rb/rulebook_id, /main/basic_inform_by_graham_nelson/activities/activity2/before_rb/rulebook_id, /main/basic_inform_by_graham_nelson/activities/activity3/before_rb/rulebook_id }
 			constant (list of unchecked) Activity_for_rulebooks = { /main/basic_inform_by_graham_nelson/activities/activity1/for_rb/rulebook_id, /main/basic_inform_by_graham_nelson/activities/activity2/for_rb/rulebook_id, /main/basic_inform_by_graham_nelson/activities/activity3/for_rb/rulebook_id }
 			constant (list of unchecked) activity_var_creators = { 0, 0, 0 }
 		package chronology _submodule
 			package test_fn _function
-				package call _code
+				package call _code __translation="TestSinglePastState"
 					local past_flag
 					local pt
 					local turn_end
@@ -2876,28 +2876,28 @@ package main _plain
 							val 0
 			constant NO_PAST_TENSE_CONDS = 0
 			constant NO_PAST_TENSE_ACTIONS = 0
-			constant (list of unchecked) TimedEventsTable = { 0, 0 } __table_array
-			constant (list of unchecked) TimedEventTimesTable = { 0, 0 } __table_array
+			constant (list of unchecked) TimedEventsTable = bounded { 0, 0 }
+			constant (list of unchecked) TimedEventTimesTable = bounded { 0, 0 }
 			constant (list of unchecked) PastActionsI6Routines = { 0, 0 }
 		package conjugations _submodule
 			constant (list of unchecked) TableOfVerbs = { /main/basic_inform_by_graham_nelson/conjugations/verb1/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb2/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb3/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb4/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb5/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb6/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb7/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb7/form2/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb8/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb8/form2/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb8/form3/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb9/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb10/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb11/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb11/form2/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb12/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb12/form2/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb13/form1/form_fn/call, /main/basic_inform_by_graham_nelson/conjugations/verb13/form2/form_fn/call, /main/english_language_by_graham_nelson/conjugations/verb1/form1/form_fn/call, /main/english_language_by_graham_nelson/conjugations/verb2/form1/form_fn/call, /main/english_language_by_graham_nelson/conjugations/verb3/form1/form_fn/call, /main/english_language_by_graham_nelson/conjugations/verb4/form1/form_fn/call, /main/english_language_by_graham_nelson/conjugations/verb5/form1/form_fn/call, /main/english_language_by_graham_nelson/conjugations/verb6/form1/form_fn/call, /main/generic/conjugations/verb1/form1/form_fn/call, /main/generic/conjugations/verb2/form1/form_fn/call, /main/generic/conjugations/verb3/form1/form_fn/call, /main/generic/conjugations/verb3/form2/form_fn/call, /main/generic/conjugations/verb3/form3/form_fn/call, /main/generic/conjugations/verb3/form4/form_fn/call, 0 }
 		package extensions _submodule
 			package showextensionversions_fn _function
-				package call _code
+				package call _code __translation="ShowExtensionVersions"
 					code
 						inv !print
 							val "Basic Inform version 1 by Graham Nelson\n"
 						inv !print
 							val "English Language version 1 by Graham Nelson\n"
 			package showfullextensionversions_fn _function
-				package call _code
+				package call _code __translation="ShowFullExtensionVersions"
 					code
 						inv !print
 							val "Basic Inform version 1 by Graham Nelson\n"
 						inv !print
 							val "English Language version 1 by Graham Nelson\n"
 			package showoneextension_fn _function
-				package call _code
+				package call _code __translation="ShowOneExtension"
 					local id
 					code
 						inv !if
@@ -2916,7 +2916,7 @@ package main _plain
 									val "English Language version 1 by Graham Nelson"
 		package instances _submodule
 			package showmeinstancedetails_fn _function
-				package call _code
+				package call _code __translation="ShowMeInstanceDetails"
 					local which
 					local na
 					local t_0
@@ -2925,7 +2925,7 @@ package main _plain
 							val na
 		package kinds _submodule
 			package defaultvalue_fn _function
-				package call _code
+				package call _code __translation="DefaultValueOfKOV"
 					local sk
 					local k
 					code
@@ -3077,13 +3077,13 @@ package main _plain
 						inv !return
 							val 0
 			package defaultvaluefinder_fn _function
-				package call _code
+				package call _code __translation="DefaultValueFinder"
 					local k
 					code
 						inv !return
 							val 0
 			package printkindvaluepair_fn _function
-				package call _code
+				package call _code __translation="PrintKindValuePair"
 					local k
 					local v
 					code
@@ -3314,7 +3314,7 @@ package main _plain
 										inv !printnumber
 											val v
 			package comparison_fn _function
-				package call _code
+				package call _code __translation="KOVComparisonFunction"
 					local k
 					code
 						inv !store
@@ -3462,7 +3462,7 @@ package main _plain
 						inv !return
 							val 0
 			package domainsize_fn _function
-				package call _code
+				package call _code __translation="KOVDomainSize"
 					local k
 					code
 						inv !store
@@ -3505,7 +3505,7 @@ package main _plain
 						inv !return
 							val 0
 			package blockvalue_fn _function
-				package call _code
+				package call _code __translation="KOVIsBlockValue"
 					local k
 					code
 						inv !store
@@ -3538,11 +3538,11 @@ package main _plain
 						inv !return
 							val 0
 			package printkindname_fn _function
-				package call _code
+				package call _code __translation="I7_Kind_Name"
 					local k
 					code
 			package support_fn _function
-				package call _code
+				package call _code __translation="KOVSupportFunction"
 					local k
 					local fail
 					code
@@ -3581,7 +3581,7 @@ package main _plain
 						inv !return
 							val 0
 			package showmekinddetails_fn _function
-				package call _code
+				package call _code __translation="ShowMeKindDetails"
 					local which
 					local na
 					local t_0
@@ -3600,10 +3600,10 @@ package main _plain
 			constant CCOUNT_PROPERTY = 87
 		package relations _submodule
 			package creator_fn _function
-				package call _code
+				package call _code __translation="CreateDynamicRelations"
 					code
 			package iterator_fn _function
-				package call _code
+				package call _code __translation="IterateRelations"
 					local callback
 					code
 						inv !indirect1v
@@ -3622,7 +3622,7 @@ package main _plain
 							val callback
 							val /main/generic/relations/relation5/Rel_Record5
 			package property_fn _function
-				package call _code
+				package call _code __translation="RProperty"
 					local obj
 					local cl
 					local pr
@@ -3648,7 +3648,7 @@ package main _plain
 			constant (list of unchecked) rulebooks_array = { /main/basic_inform_by_graham_nelson/rulebooks/rulebook1/run_fn/call, /main/basic_inform_by_graham_nelson/rulebooks/rulebook2/run_fn/call, /main/basic_inform_by_graham_nelson/activities/activity1/before_rb/run_fn/call, /main/basic_inform_by_graham_nelson/activities/activity1/for_rb/run_fn/call, /main/basic_inform_by_graham_nelson/activities/activity1/after_rb/run_fn/call, /main/basic_inform_by_graham_nelson/activities/activity2/before_rb/run_fn/call, /main/basic_inform_by_graham_nelson/activities/activity2/for_rb/run_fn/call, /main/basic_inform_by_graham_nelson/activities/activity2/after_rb/run_fn/call, /main/basic_inform_by_graham_nelson/activities/activity3/before_rb/run_fn/call, /main/basic_inform_by_graham_nelson/activities/activity3/for_rb/run_fn/call, /main/basic_inform_by_graham_nelson/activities/activity3/after_rb/run_fn/call, 0 }
 		package rules _submodule
 			package print_fn _function
-				package call _code
+				package call _code __translation="RulePrintingRule"
 					local R
 					code
 						inv !ifelse
@@ -3700,7 +3700,7 @@ package main _plain
 									val ")"
 		package responses _submodule
 			package print_fn _function
-				package call _code
+				package call _code __translation="PrintResponse"
 					local R
 					code
 			constant NO_RESPONSES = 0
@@ -3708,10 +3708,10 @@ package main _plain
 			constant (list of unchecked) ResponseDivisions = { 0, 0, 0 }
 		package scenes _submodule
 			package show_scene_status_fn _function
-				package call _code
+				package call _code __translation="ShowSceneStatus"
 					code
 			package detect_scene_change_fn _function
-				package call _code
+				package call _code __translation="DetectSceneChange"
 					local chs
 					code
 						.Again
@@ -3732,7 +3732,7 @@ package main _plain
 							lab .Again
 		package tables _submodule
 			package print_fn _function
-				package call _code
+				package call _code __translation="PrintTableName"
 					local T
 					code
 						inv !switch
@@ -3752,11 +3752,11 @@ package main _plain
 										inv !return
 											val 1
 			constant (list of unchecked) TableOfTables = { /main/BasicInformKit/arrays/TheEmptyTable_arr/TheEmptyTable, 0, 0 }
-			constant (list of unchecked) TB_Blanks = { 0, 0 } __byte_array
+			constant (list of unchecked) TB_Blanks = bytes{ 0, 0 }
 			constant RANKING_TABLE = 0
 		package table_columns _submodule
 			package weak_kind_ID_of_column_entry_fn _function
-				package call _code
+				package call _code __translation="TC_KOV"
 					local tc
 					local unk
 					code
@@ -3767,13 +3767,13 @@ package main _plain
 							val unk
 		package tests _submodule
 			package TestScriptSub_fn _function
-				package call _code
+				package call _code __translation="TestScriptSub"
 					code
 						inv !print
 							val ">--> No test scripts exist for this game.\n"
 		package use_options _submodule
 			package test_fn _function
-				package call _code
+				package call _code __translation="TestUseOption"
 					local UO
 					code
 						inv !if
@@ -3800,7 +3800,7 @@ package main _plain
 						inv !return
 							val 0
 			package print_fn _function
-				package call _code
+				package call _code __translation="PrintUseOption"
 					local UO
 					code
 						inv !switch
@@ -3895,12 +3895,12 @@ package main _plain
 	package connectors _linkage
 	package architectural _linkage
 		constant WORDSIZE = 4 __architectural
-		constant NULL = 0xffffffff __architectural __hex
-		constant WORD_HIGHBIT = 0x80000000 __architectural __hex
-		constant WORD_NEXTTOHIGHBIT = 0x40000000 __architectural __hex
-		constant IMPROBABLE_VALUE = 0xdeadce11 __architectural __hex
+		constant NULL = 0xffffffff __architectural
+		constant WORD_HIGHBIT = 0x80000000 __architectural
+		constant WORD_NEXTTOHIGHBIT = 0x40000000 __architectural
+		constant IMPROBABLE_VALUE = 0xdeadce11 __architectural
 		constant MAX_POSITIVE_NUMBER = 2147483647 __architectural
-		constant MIN_NEGATIVE_NUMBER = -2147483648 __architectural __signed
+		constant MIN_NEGATIVE_NUMBER = -2147483648 __architectural
 		constant TARGET_GLULX = 1 __architectural
 		constant DEBUG = 1 __architectural
 		constant String = 0 __architectural __veneer
@@ -3922,7 +3922,7 @@ package main _plain
 			package adjective1 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U34"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -3943,7 +3943,7 @@ package main _plain
 			package adjective2 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U35"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -3965,7 +3965,7 @@ package main _plain
 			package adjective3 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U36"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -3981,7 +3981,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U37"
 							#:real number
 							local (/main/generic/kinds/kind3/K_real_number) t_0 __argument
 							code
@@ -4004,7 +4004,7 @@ package main _plain
 			package adjective4 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U38"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4020,7 +4020,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U39"
 							#:real number
 							local (/main/generic/kinds/kind3/K_real_number) t_0 __argument
 							code
@@ -4043,7 +4043,7 @@ package main _plain
 			package adjective5 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U40"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4058,7 +4058,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U41"
 							#:table name
 							local (/main/generic/kinds/kind11/K_table_name) t_0 __argument
 							code
@@ -4075,7 +4075,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U42"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4090,7 +4090,7 @@ package main _plain
 									val 0
 				package adjective_task4 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U43"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4105,7 +4105,7 @@ package main _plain
 									val 0
 				package adjective_task5 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U44"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4120,7 +4120,7 @@ package main _plain
 									val 0
 				package adjective_task6 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U45"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4137,7 +4137,7 @@ package main _plain
 									val 0
 				package adjective_task7 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U46"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4153,7 +4153,7 @@ package main _plain
 									val 0
 				package adjective_task8 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U47"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4172,7 +4172,7 @@ package main _plain
 			package adjective6 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U48"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4188,7 +4188,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U49"
 							#:table name
 							local (/main/generic/kinds/kind11/K_table_name) t_0 __argument
 							code
@@ -4206,7 +4206,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U50"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4222,7 +4222,7 @@ package main _plain
 									val 0
 				package adjective_task4 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U51"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4238,7 +4238,7 @@ package main _plain
 									val 0
 				package adjective_task5 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U52"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4254,7 +4254,7 @@ package main _plain
 									val 0
 				package adjective_task6 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U53"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4272,7 +4272,7 @@ package main _plain
 									val 0
 				package adjective_task7 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U54"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4288,7 +4288,7 @@ package main _plain
 									val 0
 				package adjective_task8 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U55"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4307,7 +4307,7 @@ package main _plain
 			package adjective7 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U56"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4325,7 +4325,7 @@ package main _plain
 			package adjective8 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U57"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4344,7 +4344,7 @@ package main _plain
 			package adjective9 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U58"
 							#:table name
 							local (/main/generic/kinds/kind11/K_table_name) t_0 __argument
 							code
@@ -4364,7 +4364,7 @@ package main _plain
 			package adjective10 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U59"
 							#:table name
 							local (/main/generic/kinds/kind11/K_table_name) t_0 __argument
 							code
@@ -4385,7 +4385,7 @@ package main _plain
 			package adjective11 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U60"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4403,7 +4403,7 @@ package main _plain
 			package adjective12 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U61"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4421,7 +4421,7 @@ package main _plain
 			package adjective13 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U62"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4440,7 +4440,7 @@ package main _plain
 			package adjective14 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U63"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4458,7 +4458,7 @@ package main _plain
 			package adjective15 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U64"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4477,7 +4477,7 @@ package main _plain
 			package adjective16 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U65"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4495,7 +4495,7 @@ package main _plain
 			package adjective17 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U66"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4514,7 +4514,7 @@ package main _plain
 			package adjective18 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U67"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4531,7 +4531,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U68"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4547,7 +4547,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U69"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4566,7 +4566,7 @@ package main _plain
 			package adjective19 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U70"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4583,7 +4583,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U71"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4599,7 +4599,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U72"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4618,7 +4618,7 @@ package main _plain
 			package adjective20 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U73"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4635,7 +4635,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U74"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4651,7 +4651,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U75"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4670,7 +4670,7 @@ package main _plain
 			package adjective21 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U76"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4687,7 +4687,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U77"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4703,7 +4703,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U78"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4722,7 +4722,7 @@ package main _plain
 			package adjective22 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U79"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4739,7 +4739,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U80"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4755,7 +4755,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U81"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4774,7 +4774,7 @@ package main _plain
 			package adjective23 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U82"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4791,7 +4791,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U83"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4807,7 +4807,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U84"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4826,7 +4826,7 @@ package main _plain
 			package adjective24 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U85"
 							#:real number
 							local (/main/generic/kinds/kind3/K_real_number) t_0 __argument
 							code
@@ -4855,7 +4855,7 @@ package main _plain
 			package adjective25 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U86"
 							#:real number
 							local (/main/generic/kinds/kind3/K_real_number) t_0 __argument
 							code
@@ -4885,7 +4885,7 @@ package main _plain
 			package adjective26 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U87"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4903,7 +4903,7 @@ package main _plain
 			package adjective27 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U88"
 							#:number
 							local (/main/generic/kinds/kind2/K_number) t_0 __argument
 							code
@@ -4922,7 +4922,7 @@ package main _plain
 			package adjective28 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U89"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -4939,7 +4939,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U90"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -4957,7 +4957,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U91"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -4978,7 +4978,7 @@ package main _plain
 			package adjective29 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U92"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -4997,7 +4997,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U93"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5015,7 +5015,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U94"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5036,7 +5036,7 @@ package main _plain
 			package adjective30 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U95"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5053,7 +5053,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U96"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5071,7 +5071,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U97"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5092,7 +5092,7 @@ package main _plain
 			package adjective31 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U98"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5111,7 +5111,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U99"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5129,7 +5129,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U100"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5150,7 +5150,7 @@ package main _plain
 			package adjective32 _adjective
 				package adjective_task1 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U101"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5167,7 +5167,7 @@ package main _plain
 									val 0
 				package adjective_task2 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U102"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5185,7 +5185,7 @@ package main _plain
 									val 0
 				package adjective_task3 _adjective_task
 					package task_fn _function
-						package call _code
+						package call _code __translation="call_U103"
 							#:object
 							local (/main/generic/kinds/kind1/K_object) t_0 __argument
 							code
@@ -5205,7 +5205,7 @@ package main _plain
 				constant (text) ^index_entry = "(of </i>object<i>) either/or property of </i>object<i>" __translation="^index_entry_U32"
 			package adjective_phrase1 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN1"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5215,7 +5215,7 @@ package main _plain
 								val 0
 			package adjective_phrase2 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN2"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5225,7 +5225,7 @@ package main _plain
 								val 0
 			package adjective_phrase3 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN3"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5235,7 +5235,7 @@ package main _plain
 								val 0
 			package adjective_phrase4 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN4"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5245,7 +5245,7 @@ package main _plain
 								val 0
 			package adjective_phrase5 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN5"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5255,7 +5255,7 @@ package main _plain
 								val 0
 			package adjective_phrase6 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN6"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5265,7 +5265,7 @@ package main _plain
 								val 0
 			package adjective_phrase7 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN7"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5275,7 +5275,7 @@ package main _plain
 								val 0
 			package adjective_phrase8 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN8"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5285,7 +5285,7 @@ package main _plain
 								val 0
 			package adjective_phrase9 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN9"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5295,7 +5295,7 @@ package main _plain
 								val 0
 			package adjective_phrase10 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN10"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5305,7 +5305,7 @@ package main _plain
 								val 0
 			package adjective_phrase11 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN11"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5315,7 +5315,7 @@ package main _plain
 								val 0
 			package adjective_phrase12 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN12"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5325,7 +5325,7 @@ package main _plain
 								val 0
 			package adjective_phrase13 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN13"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5335,7 +5335,7 @@ package main _plain
 								val 0
 			package adjective_phrase14 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN14"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5345,7 +5345,7 @@ package main _plain
 								val 0
 			package adjective_phrase15 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN15"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5355,7 +5355,7 @@ package main _plain
 								val 0
 			package adjective_phrase16 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN16"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5365,7 +5365,7 @@ package main _plain
 								val 0
 			package adjective_phrase17 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN17"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5375,7 +5375,7 @@ package main _plain
 								val 0
 			package adjective_phrase18 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN18"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5385,7 +5385,7 @@ package main _plain
 								val 0
 			package adjective_phrase19 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN19"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5395,7 +5395,7 @@ package main _plain
 								val 0
 			package adjective_phrase20 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN20"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5405,7 +5405,7 @@ package main _plain
 								val 0
 			package adjective_phrase21 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN21"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5415,7 +5415,7 @@ package main _plain
 								val 0
 			package adjective_phrase22 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN22"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5425,7 +5425,7 @@ package main _plain
 								val 0
 			package adjective_phrase23 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN23"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5435,7 +5435,7 @@ package main _plain
 								val 0
 			package adjective_phrase24 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN24"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5445,7 +5445,7 @@ package main _plain
 								val 0
 			package adjective_phrase25 _adjective_phrase
 				package measurement_fn _function
-					package call _code
+					package call _code __translation="ADJDEFN25"
 						#:object
 						local (/main/generic/kinds/kind1/K_object) t_0 __argument
 						code
@@ -5755,7 +5755,7 @@ package main _plain
 					constant (int32) rulebook_id = 2 __translation="rulebook_id_U3"
 				package for_rb _rulebook
 					package run_fn _function
-						package call _code
+						package call _code __translation="call_U107"
 							local forbid_breaks __implied_argument
 							#return value
 							local rv
@@ -5842,7 +5842,7 @@ package main _plain
 					constant (int32) rulebook_id = 5 __translation="rulebook_id_U6"
 				package for_rb _rulebook
 					package run_fn _function
-						package call _code
+						package call _code __translation="call_U110"
 							local forbid_breaks __implied_argument
 							#return value
 							local rv
@@ -5929,7 +5929,7 @@ package main _plain
 					constant (int32) rulebook_id = 8 __translation="rulebook_id_U9"
 				package for_rb _rulebook
 					package run_fn _function
-						package call _code
+						package call _code __translation="call_U113"
 							local forbid_breaks __implied_argument
 							#return value
 							local rv
@@ -6020,14 +6020,14 @@ package main _plain
 				constant ^weak_id = WEAK_ID_39 __translation="^weak_id_U38"
 				constant ^strong_id = WEAK_ID_39 __translation="^strong_id_U38"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U115"
 						local sk __implied_argument
 						code
 							inv !return
 								val /main/basic_inform_by_graham_nelson/instances/instance1/I_german_language
 				constant ^mkdef_fn = /main/basic_inform_by_graham_nelson/kinds/kind1/mkdef_fn/call __translation="^mkdef_fn_U18"
 				package print_fn _function
-					package call _code
+					package call _code __translation="E1"
 						local value __implied_argument
 						code
 							inv !switch
@@ -6072,7 +6072,7 @@ package main _plain
 				constant (int32) ICOUNT_NATURAL_LANGUAGE = 6
 				constant (int32) ^is_object_1 = 0 __translation="^is_object_1_U38"
 				package decrement_fn _function
-					package call _code
+					package call _code __translation="call_U116"
 						local (/main/basic_inform_by_graham_nelson/kinds/kind1/K_natural_language) x __implied_argument
 						code
 							inv !return
@@ -6084,7 +6084,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 6
 										val (/main/generic/kinds/kind2/K_number) 1
 				package increment_fn _function
-					package call _code
+					package call _code __translation="call_U117"
 						local (/main/basic_inform_by_graham_nelson/kinds/kind1/K_natural_language) x __implied_argument
 						code
 							inv !return
@@ -6098,7 +6098,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 6
 										val (/main/generic/kinds/kind2/K_number) 1
 				package ranger_fn _function
-					package call _code
+					package call _code __translation="call_U118"
 						local a __implied_argument
 						local b __implied_argument
 						code
@@ -6165,7 +6165,7 @@ package main _plain
 					constant ^conformed_to = /main/generic/kinds/kind21/kind_ref __translation="^conformed_to_U87"
 				constant (text) ^brief_inferences = "" __translation="^brief_inferences_U44"
 				constant (text) ^inferences = "" __translation="^inferences_U38"
-				permission for P_adaptive_text_viewpoint to have K_natural_language
+				permission for K_natural_language to have P_adaptive_text_viewpoint
 				propertyvalue P_adaptive_text_viewpoint of K_natural_language = /main/english_language_by_graham_nelson/instances/instance6/I_first_person_singular
 		package variables _submodule
 			package variable1 _variable
@@ -6186,7 +6186,7 @@ package main _plain
 			package phrase16 _to_phrase
 				package request1 _request
 					package phrase_fn _function
-						package call _code
+						package call _code __translation="call_U119"
 							code
 								#Request 0: phrase nothing -> nothing
 								#To say no line break -- running on:
@@ -6197,7 +6197,7 @@ package main _plain
 			package phrase84 _to_phrase
 				package request1 _request
 					package phrase_fn _function
-						package call _code
+						package call _code __translation="call_U120"
 							#R:real number
 							local (/main/generic/kinds/kind3/K_real_number) t_0 __argument
 							#x:value
@@ -6225,7 +6225,7 @@ package main _plain
 			package phrase102 _to_phrase
 				package request1 _request
 					package phrase_fn _function
-						package call _code
+						package call _code __translation="call_U121"
 							#R:real number
 							local (/main/generic/kinds/kind3/K_real_number) t_0 __argument
 							#x:value
@@ -6262,7 +6262,7 @@ package main _plain
 			package phrase103 _to_phrase
 				package request1 _request
 					package phrase_fn _function
-						package call _code
+						package call _code __translation="call_U122"
 							#R:real number
 							local (/main/generic/kinds/kind3/K_real_number) t_0 __argument
 							#x:value
@@ -6299,7 +6299,7 @@ package main _plain
 			package phrase104 _to_phrase
 				package request1 _request
 					package phrase_fn _function
-						package call _code
+						package call _code __translation="call_U123"
 							#R:real number
 							local (/main/generic/kinds/kind3/K_real_number) t_0 __argument
 							#x:value
@@ -6409,7 +6409,7 @@ package main _plain
 				constant (text) ^infinitive = "mean" __translation="^infinitive_U5"
 				constant (int32) ^at = 14891 __translation="^at_U70"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb2"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -6542,7 +6542,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U6"
 				constant (int32) ^at = 14901 __translation="^at_U71"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb3"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -6783,7 +6783,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U7"
 				constant (int32) ^at = 14911 __translation="^at_U72"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb4"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -7024,7 +7024,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U8"
 				constant (int32) ^at = 14921 __translation="^at_U73"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb5"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -7265,7 +7265,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U9"
 				constant (int32) ^at = 14941 __translation="^at_U74"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb6"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -7506,7 +7506,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U10"
 				constant (int32) ^at = 14951 __translation="^at_U75"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb7"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -7747,7 +7747,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U11"
 				constant (int32) ^at = 14961 __translation="^at_U76"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb8"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -7988,7 +7988,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U12"
 				constant (int32) ^at = 14971 __translation="^at_U77"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb9"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -8229,7 +8229,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U13"
 				constant (int32) ^at = 15001 __translation="^at_U78"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb10"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -8470,7 +8470,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U14"
 				constant (int32) ^at = 15021 __translation="^at_U79"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb11"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -8717,7 +8717,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  implied B" __translation="^past_perfect_U4"
 				constant (int32) ^at = 15031 __translation="^at_U80"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb4"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -8847,7 +8847,7 @@ package main _plain
 																val "will not imply"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U124"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -8882,7 +8882,7 @@ package main _plain
 				constant (text) ^infinitive = "imply" __translation="^infinitive_U16"
 				constant (int32) ^at = 15041 __translation="^at_U81"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb12"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -9020,7 +9020,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  been  able  to  be B; B had  been  able  to  be  been  by A" __translation="^past_perfect_U5"
 				constant (int32) ^at = 15051 __translation="^at_U82"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb5"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -9154,7 +9154,7 @@ package main _plain
 																val "be"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U125"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -9195,7 +9195,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  been  able  to B" __translation="^past_perfect_U6"
 				constant (int32) ^at = 15051 __translation="^at_U83"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb6"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -10083,7 +10083,7 @@ package main _plain
 																						val (/main/generic/kinds/kind2/K_number) 1
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U126"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -10124,7 +10124,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  had B" __translation="^past_perfect_U7"
 				constant (int32) ^at = 15065 __translation="^at_U84"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb7"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -10254,7 +10254,7 @@ package main _plain
 																val "will not have"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U127"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -10294,7 +10294,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  specified B" __translation="^past_perfect_U8"
 				constant (int32) ^at = 15075 __translation="^at_U85"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb8"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -10424,7 +10424,7 @@ package main _plain
 																val "will not specify"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U128"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -10465,7 +10465,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  related B" __translation="^past_perfect_U9"
 				constant (int32) ^at = 15086 __translation="^at_U86"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb9"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -10595,7 +10595,7 @@ package main _plain
 																val "will not relate"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U129"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -10630,7 +10630,7 @@ package main _plain
 				constant (text) ^infinitive = "relate" __translation="^infinitive_U22"
 				constant (int32) ^at = 15096 __translation="^at_U87"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb13"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -10768,7 +10768,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  substituted B" __translation="^past_perfect_U10"
 				constant (int32) ^at = 15106 __translation="^at_U88"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb10"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -10898,7 +10898,7 @@ package main _plain
 																val "will not substitute"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U130"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -10930,7 +10930,7 @@ package main _plain
 					constant (int32) ^verb_sorting = 18 __translation="^verb_sorting_U13"
 				package form2 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U131"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -10967,7 +10967,7 @@ package main _plain
 				constant (text) ^infinitive = "do" __translation="^infinitive_U24"
 				constant (int32) ^at = 15118 __translation="^at_U89"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb14"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -11100,7 +11100,7 @@ package main _plain
 				constant (text) ^infinitive = "do" __translation="^infinitive_U25"
 				constant (int32) ^at = 15128 __translation="^at_U90"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb15"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -11233,7 +11233,7 @@ package main _plain
 				constant (text) ^infinitive = "do" __translation="^infinitive_U26"
 				constant (int32) ^at = 15140 __translation="^at_U91"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb16"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -11366,7 +11366,7 @@ package main _plain
 				constant (text) ^infinitive = "do" __translation="^infinitive_U27"
 				constant (int32) ^at = 15152 __translation="^at_U92"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb17"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -11504,7 +11504,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  translated B" __translation="^past_perfect_U11"
 				constant (int32) ^at = 15165 __translation="^at_U93"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb11"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -11634,7 +11634,7 @@ package main _plain
 																val "will not translate"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U132"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -11666,7 +11666,7 @@ package main _plain
 					constant (int32) ^verb_sorting = 28 __translation="^verb_sorting_U15"
 				package form2 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U133"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -11700,7 +11700,7 @@ package main _plain
 					constant (int32) ^verb_sorting = 31 __translation="^verb_sorting_U16"
 				package form3 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U134"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -11737,7 +11737,7 @@ package main _plain
 				constant (text) ^infinitive = "translate" __translation="^infinitive_U29"
 				constant (int32) ^at = 15178 __translation="^at_U94"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb18"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -11870,7 +11870,7 @@ package main _plain
 				constant (text) ^infinitive = "translate" __translation="^infinitive_U30"
 				constant (int32) ^at = 15191 __translation="^at_U95"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb19"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -12003,7 +12003,7 @@ package main _plain
 				constant (text) ^infinitive = "translate" __translation="^infinitive_U31"
 				constant (int32) ^at = 15205 __translation="^at_U96"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb20"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -12142,7 +12142,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  provided B" __translation="^past_perfect_U12"
 				constant (int32) ^at = 15217 __translation="^at_U97"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb12"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -12272,7 +12272,7 @@ package main _plain
 																val "will not provide"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U135"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -12312,7 +12312,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  used B" __translation="^past_perfect_U13"
 				constant (int32) ^at = 15227 __translation="^at_U98"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb13"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -12442,7 +12442,7 @@ package main _plain
 																val "will not use"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U136"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -12482,7 +12482,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  included B" __translation="^past_perfect_U14"
 				constant (int32) ^at = 15240 __translation="^at_U99"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb14"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -12612,7 +12612,7 @@ package main _plain
 																val "will not include"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U137"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -12644,7 +12644,7 @@ package main _plain
 					constant (int32) ^verb_sorting = 39 __translation="^verb_sorting_U20"
 				package form2 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U138"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -12684,7 +12684,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  omitted B" __translation="^past_perfect_U15"
 				constant (int32) ^at = 15255 __translation="^at_U100"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb15"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -12814,7 +12814,7 @@ package main _plain
 																val "will not omit"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U139"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -12846,7 +12846,7 @@ package main _plain
 					constant (int32) ^verb_sorting = 43 __translation="^verb_sorting_U22"
 				package form2 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U140"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -12886,7 +12886,7 @@ package main _plain
 				constant (text) ^past_perfect = "A had  tested B" __translation="^past_perfect_U16"
 				constant (int32) ^at = 15270 __translation="^at_U101"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb16"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -13016,7 +13016,7 @@ package main _plain
 																val "will not test"
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U141"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -13048,7 +13048,7 @@ package main _plain
 					constant (int32) ^verb_sorting = 47 __translation="^verb_sorting_U24"
 				package form2 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U142"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -13083,7 +13083,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U37"
 				constant (int32) ^at = 15286 __translation="^at_U102"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb21"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -13324,7 +13324,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U38"
 				constant (int32) ^at = 15297 __translation="^at_U103"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb22"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -13565,7 +13565,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U39"
 				constant (int32) ^at = 15308 __translation="^at_U104"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb23"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -13806,7 +13806,7 @@ package main _plain
 				constant (text) ^infinitive = "be" __translation="^infinitive_U40"
 				constant (int32) ^at = 15319 __translation="^at_U105"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb24"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -14454,14 +14454,14 @@ package main _plain
 				constant ^weak_id = WEAK_ID_40 __translation="^weak_id_U39"
 				constant ^strong_id = WEAK_ID_40 __translation="^strong_id_U39"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U143"
 						local sk __implied_argument
 						code
 							inv !return
 								val /main/english_language_by_graham_nelson/instances/instance1/I_present_tense
 				constant ^mkdef_fn = /main/english_language_by_graham_nelson/kinds/kind1/mkdef_fn/call __translation="^mkdef_fn_U19"
 				package print_fn _function
-					package call _code
+					package call _code __translation="E2"
 						local value __implied_argument
 						code
 							inv !switch
@@ -14501,7 +14501,7 @@ package main _plain
 				constant (int32) ICOUNT_GRAMMATICAL_TENSE = 5
 				constant (int32) ^is_object_1 = 0 __translation="^is_object_1_U39"
 				package decrement_fn _function
-					package call _code
+					package call _code __translation="call_U144"
 						local (/main/english_language_by_graham_nelson/kinds/kind1/K_grammatical_tense) x __implied_argument
 						code
 							inv !return
@@ -14513,7 +14513,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 5
 										val (/main/generic/kinds/kind2/K_number) 1
 				package increment_fn _function
-					package call _code
+					package call _code __translation="call_U145"
 						local (/main/english_language_by_graham_nelson/kinds/kind1/K_grammatical_tense) x __implied_argument
 						code
 							inv !return
@@ -14527,7 +14527,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 5
 										val (/main/generic/kinds/kind2/K_number) 1
 				package ranger_fn _function
-					package call _code
+					package call _code __translation="call_U146"
 						local a __implied_argument
 						local b __implied_argument
 						code
@@ -14610,14 +14610,14 @@ package main _plain
 				constant ^weak_id = WEAK_ID_41 __translation="^weak_id_U40"
 				constant ^strong_id = WEAK_ID_41 __translation="^strong_id_U40"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U147"
 						local sk __implied_argument
 						code
 							inv !return
 								val /main/english_language_by_graham_nelson/instances/instance6/I_first_person_singular
 				constant ^mkdef_fn = /main/english_language_by_graham_nelson/kinds/kind2/mkdef_fn/call __translation="^mkdef_fn_U20"
 				package print_fn _function
-					package call _code
+					package call _code __translation="E3"
 						local value __implied_argument
 						code
 							inv !switch
@@ -14662,7 +14662,7 @@ package main _plain
 				constant (int32) ICOUNT_NARRATIVE_VIEWPOINT = 6
 				constant (int32) ^is_object_1 = 0 __translation="^is_object_1_U40"
 				package decrement_fn _function
-					package call _code
+					package call _code __translation="call_U148"
 						local (/main/english_language_by_graham_nelson/kinds/kind2/K_narrative_viewpoint) x __implied_argument
 						code
 							inv !return
@@ -14674,7 +14674,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 6
 										val (/main/generic/kinds/kind2/K_number) 1
 				package increment_fn _function
-					package call _code
+					package call _code __translation="call_U149"
 						local (/main/english_language_by_graham_nelson/kinds/kind2/K_narrative_viewpoint) x __implied_argument
 						code
 							inv !return
@@ -14688,7 +14688,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 6
 										val (/main/generic/kinds/kind2/K_number) 1
 				package ranger_fn _function
-					package call _code
+					package call _code __translation="call_U150"
 						local a __implied_argument
 						local b __implied_argument
 						code
@@ -14771,14 +14771,14 @@ package main _plain
 				constant ^weak_id = WEAK_ID_42 __translation="^weak_id_U41"
 				constant ^strong_id = WEAK_ID_42 __translation="^strong_id_U41"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U151"
 						local sk __implied_argument
 						code
 							inv !return
 								val /main/english_language_by_graham_nelson/instances/instance12/I_nominative
 				constant ^mkdef_fn = /main/english_language_by_graham_nelson/kinds/kind3/mkdef_fn/call __translation="^mkdef_fn_U21"
 				package print_fn _function
-					package call _code
+					package call _code __translation="E4"
 						local value __implied_argument
 						code
 							inv !switch
@@ -14803,7 +14803,7 @@ package main _plain
 				constant (int32) ICOUNT_GRAMMATICAL_CASE = 2
 				constant (int32) ^is_object_1 = 0 __translation="^is_object_1_U41"
 				package decrement_fn _function
-					package call _code
+					package call _code __translation="call_U152"
 						local (/main/english_language_by_graham_nelson/kinds/kind3/K_grammatical_case) x __implied_argument
 						code
 							inv !return
@@ -14815,7 +14815,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 2
 										val (/main/generic/kinds/kind2/K_number) 1
 				package increment_fn _function
-					package call _code
+					package call _code __translation="call_U153"
 						local (/main/english_language_by_graham_nelson/kinds/kind3/K_grammatical_case) x __implied_argument
 						code
 							inv !return
@@ -14827,7 +14827,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 2
 										val (/main/generic/kinds/kind2/K_number) 1
 				package ranger_fn _function
-					package call _code
+					package call _code __translation="call_U154"
 						local a __implied_argument
 						local b __implied_argument
 						code
@@ -14910,14 +14910,14 @@ package main _plain
 				constant ^weak_id = WEAK_ID_43 __translation="^weak_id_U42"
 				constant ^strong_id = WEAK_ID_43 __translation="^strong_id_U42"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U155"
 						local sk __implied_argument
 						code
 							inv !return
 								val /main/english_language_by_graham_nelson/instances/instance14/I_neuter_gender
 				constant ^mkdef_fn = /main/english_language_by_graham_nelson/kinds/kind4/mkdef_fn/call __translation="^mkdef_fn_U22"
 				package print_fn _function
-					package call _code
+					package call _code __translation="E5"
 						local value __implied_argument
 						code
 							inv !switch
@@ -14947,7 +14947,7 @@ package main _plain
 				constant (int32) ICOUNT_GRAMMATICAL_GENDER = 3
 				constant (int32) ^is_object_1 = 0 __translation="^is_object_1_U42"
 				package decrement_fn _function
-					package call _code
+					package call _code __translation="call_U156"
 						local (/main/english_language_by_graham_nelson/kinds/kind4/K_grammatical_gender) x __implied_argument
 						code
 							inv !return
@@ -14959,7 +14959,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 3
 										val (/main/generic/kinds/kind2/K_number) 1
 				package increment_fn _function
-					package call _code
+					package call _code __translation="call_U157"
 						local (/main/english_language_by_graham_nelson/kinds/kind4/K_grammatical_gender) x __implied_argument
 						code
 							inv !return
@@ -14973,7 +14973,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 3
 										val (/main/generic/kinds/kind2/K_number) 1
 				package ranger_fn _function
-					package call _code
+					package call _code __translation="call_U158"
 						local a __implied_argument
 						local b __implied_argument
 						code
@@ -15069,7 +15069,7 @@ package main _plain
 				constant (text) ^infinitive = "be able to" __translation="^infinitive_U41"
 				constant (int32) ^at = 25167 __translation="^at_U173"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb25"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -15964,7 +15964,7 @@ package main _plain
 				constant (text) ^present_perfect = "A could  have B" __translation="^present_perfect_U17"
 				constant (int32) ^at = 25175 __translation="^at_U174"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb17"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -16852,7 +16852,7 @@ package main _plain
 																						val (/main/generic/kinds/kind2/K_number) 1
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U159"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -16891,7 +16891,7 @@ package main _plain
 				constant (text) ^present_perfect = "A may  have B" __translation="^present_perfect_U18"
 				constant (int32) ^at = 25181 __translation="^at_U175"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb18"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -17779,7 +17779,7 @@ package main _plain
 																						val (/main/generic/kinds/kind2/K_number) 1
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U160"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -17818,7 +17818,7 @@ package main _plain
 				constant (text) ^present_perfect = "A might  have B" __translation="^present_perfect_U19"
 				constant (int32) ^at = 25187 __translation="^at_U176"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb19"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -18706,7 +18706,7 @@ package main _plain
 																						val (/main/generic/kinds/kind2/K_number) 1
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U161"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -18745,7 +18745,7 @@ package main _plain
 				constant (text) ^present_perfect = "A must  have B" __translation="^present_perfect_U20"
 				constant (int32) ^at = 25193 __translation="^at_U177"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb20"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -19633,7 +19633,7 @@ package main _plain
 																						val (/main/generic/kinds/kind2/K_number) 1
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U162"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -19672,7 +19672,7 @@ package main _plain
 				constant (text) ^present_perfect = "A should  have B" __translation="^present_perfect_U21"
 				constant (int32) ^at = 25199 __translation="^at_U178"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb21"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -20560,7 +20560,7 @@ package main _plain
 																						val (/main/generic/kinds/kind2/K_number) 1
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U163"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -20599,7 +20599,7 @@ package main _plain
 				constant (text) ^present_perfect = "A would  have B" __translation="^present_perfect_U22"
 				constant (int32) ^at = 25205 __translation="^at_U179"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb22"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -21487,7 +21487,7 @@ package main _plain
 																						val (/main/generic/kinds/kind2/K_number) 1
 				package form1 _verb_form
 					package form_fn _function
-						package call _code
+						package call _code __translation="call_U164"
 							local fn __implied_argument
 							local vp __implied_argument
 							local t __implied_argument
@@ -21528,7 +21528,7 @@ package main _plain
 				constant (text) ^past_perfect = "A 'd  been B" __translation="^past_perfect_U17"
 				constant (int32) ^at = 25212 __translation="^at_U180"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb23"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -21775,7 +21775,7 @@ package main _plain
 				constant (text) ^past_perfect = "A 'd  had B" __translation="^past_perfect_U18"
 				constant (int32) ^at = 25218 __translation="^at_U181"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb24"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -21914,7 +21914,7 @@ package main _plain
 				constant (text) ^past_perfect = "A hadn't  been B" __translation="^past_perfect_U19"
 				constant (int32) ^at = 25224 __translation="^at_U182"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb25"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -22066,7 +22066,7 @@ package main _plain
 				constant (text) ^past_perfect = "A hadn't  been  able  to B" __translation="^past_perfect_U20"
 				constant (int32) ^at = 25230 __translation="^at_U183"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb26"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -22541,7 +22541,7 @@ package main _plain
 				constant (text) ^present_perfect = "A hadn't B" __translation="^present_perfect_U27"
 				constant (int32) ^at = 25230 __translation="^at_U184"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb27"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -23016,7 +23016,7 @@ package main _plain
 				constant (text) ^present_perfect = "A didn't B" __translation="^present_perfect_U28"
 				constant (int32) ^at = 25236 __translation="^at_U185"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb28"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -23487,7 +23487,7 @@ package main _plain
 				constant (text) ^infinitive = "haven't" __translation="^infinitive_U54"
 				constant (int32) ^at = 25242 __translation="^at_U186"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateModalVerb26"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -23962,7 +23962,7 @@ package main _plain
 				constant (text) ^present_perfect = "A mustn't  have B" __translation="^present_perfect_U29"
 				constant (int32) ^at = 25248 __translation="^at_U187"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb29"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -24437,7 +24437,7 @@ package main _plain
 				constant (text) ^present_perfect = "A mightn't  have B" __translation="^present_perfect_U30"
 				constant (int32) ^at = 25254 __translation="^at_U188"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb30"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -24912,7 +24912,7 @@ package main _plain
 				constant (text) ^present_perfect = "A mayn't  have B" __translation="^present_perfect_U31"
 				constant (int32) ^at = 25260 __translation="^at_U189"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb31"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -25387,7 +25387,7 @@ package main _plain
 				constant (text) ^present_perfect = "A wouldn't  have B" __translation="^present_perfect_U32"
 				constant (int32) ^at = 25266 __translation="^at_U190"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb32"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -25862,7 +25862,7 @@ package main _plain
 				constant (text) ^present_perfect = "A couldn't  have B" __translation="^present_perfect_U33"
 				constant (int32) ^at = 25272 __translation="^at_U191"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb33"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -26337,7 +26337,7 @@ package main _plain
 				constant (text) ^present_perfect = "A shouldn't  have B" __translation="^present_perfect_U34"
 				constant (int32) ^at = 25278 __translation="^at_U192"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb34"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -26812,7 +26812,7 @@ package main _plain
 				constant (text) ^present_perfect = "A wouldn't B" __translation="^present_perfect_U35"
 				constant (int32) ^at = 25284 __translation="^at_U193"
 				package conjugation_fn _function
-					package call _code
+					package call _code __translation="ConjugateVerb35"
 						local fn __implied_argument
 						local vp __implied_argument
 						local t __implied_argument
@@ -27406,14 +27406,14 @@ package main _plain
 				constant ^weak_id = WEAK_ID_44 __translation="^weak_id_U43"
 				constant ^strong_id = WEAK_ID_44 __translation="^strong_id_U43"
 				package mkdef_fn _function
-					package call _code
+					package call _code __translation="call_U165"
 						local sk __implied_argument
 						code
 							inv !return
 								val /main/source_text/instances/instance1/I_decorative
 				constant ^mkdef_fn = /main/source_text/kinds/kind1/mkdef_fn/call __translation="^mkdef_fn_U23"
 				package print_fn _function
-					package call _code
+					package call _code __translation="E6"
 						local value __implied_argument
 						code
 							inv !switch
@@ -27443,7 +27443,7 @@ package main _plain
 				constant (int32) ICOUNT_TEXT_STYLE = 3
 				constant (int32) ^is_object_1 = 0 __translation="^is_object_1_U43"
 				package decrement_fn _function
-					package call _code
+					package call _code __translation="call_U166"
 						local (/main/source_text/kinds/kind1/K_text_style) x __implied_argument
 						code
 							inv !return
@@ -27455,7 +27455,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 3
 										val (/main/generic/kinds/kind2/K_number) 1
 				package increment_fn _function
-					package call _code
+					package call _code __translation="call_U167"
 						local (/main/source_text/kinds/kind1/K_text_style) x __implied_argument
 						code
 							inv !return
@@ -27469,7 +27469,7 @@ package main _plain
 											val (/main/generic/kinds/kind2/K_number) 3
 										val (/main/generic/kinds/kind2/K_number) 1
 				package ranger_fn _function
-					package call _code
+					package call _code __translation="call_U168"
 						local a __implied_argument
 						local b __implied_argument
 						code
@@ -27540,7 +27540,7 @@ package main _plain
 			package phrase1 _to_phrase
 				package request1 _request
 					package phrase_fn _function
-						package call _code
+						package call _code __translation="call_U169"
 							code
 								#Request 5: phrase nothing -> nothing
 								#To begin:
@@ -27590,7 +27590,7 @@ package main _plain
 			package phrase2 _to_phrase
 				package request1 _request
 					package phrase_fn _function
-						package (/main/generic/kinds/kind23/K_phrase_text_style____noth) call _code
+						package (/main/generic/kinds/kind23/K_phrase_text_style____noth) call _code __translation="call_U170"
 							#T:text style
 							local (/main/source_text/kinds/kind1/K_text_style) t_0 __argument
 							#return value
@@ -27618,7 +27618,7 @@ package main _plain
 									ref /main/BasicInformKit/variables/I7SFRAME_var/I7SFRAME
 								inv !return
 									val RV
-						package kernel1 _code
+						package kernel1 _code __translation="kernel1_U1"
 							#T:text style
 							local (/main/source_text/kinds/kind1/K_text_style) t_0 __argument
 							code
@@ -27646,7 +27646,7 @@ package main _plain
 									val (/main/generic/kinds/kind2/K_number) 0
 						package literal1 _literal
 							package ts_fn _function
-								package call _code
+								package call _code __translation="call_U171"
 									#T:text style
 									local (/main/source_text/kinds/kind1/K_text_style) t_0 __argument
 									code
@@ -27683,7 +27683,7 @@ package main _plain
 			constant (int32) KIT_CONFIGURATION_BITMAP = 0
 			constant (int32) KIT_CONFIGURATION_LOOKMODE = 2
 			constant (text) I7_VERSION_NUMBER = "10.1.0"
-			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U57"
+			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U60"
 			constant (text) ^virtual_machine = "C/32d/v1/no-main"
 			constant (text) ^virtual_machine_icon = "vm_glulx.png"
 			constant (text) ^language_elements_used = "core, naming, instance counting, glulx external files"
@@ -28606,7 +28606,7 @@ package main _plain
 				constant (text) ^name = "spatial map workings" __translation="^name_U287"
 				constant (int32) ^used = 0 __translation="^used_U74"
 			package Submain_fn _function
-				package call _code
+				package call _code __translation="Submain"
 					code
 						inv /main/source_text/phrases/phrase1/request1/phrase_fn/call
 			constant (int32) MEMORY_HEAP_SIZE = 32768
@@ -30738,63 +30738,63 @@ package main _plain
 			package TheEmptyTable_arr _plain
 				constant (list of unchecked) TheEmptyTable = { 0, 0 } __assimilated
 			package blockv_stack_arr _plain
-				constant (list of unchecked) blockv_stack = { /main/BasicInformKit/constants/BLOCKV_STACK_SIZE_con/BLOCKV_STACK_SIZE } __assimilated
+				constant (list of unchecked) blockv_stack = list of /main/BasicInformKit/constants/BLOCKV_STACK_SIZE_con/BLOCKV_STACK_SIZE words __assimilated
 			package Protect_I7_Arrays_arr _plain
 				constant (list of unchecked) Protect_I7_Arrays = { 16339, 12345 } __assimilated
 			package I7_SOO_SHUF_arr _plain
-				constant (list of unchecked) I7_SOO_SHUF = { 32 } __assimilated __byte_array
+				constant (list of unchecked) I7_SOO_SHUF = list of 32 bytes __assimilated
 			package gg_event_arr _plain
-				constant (list of unchecked) gg_event = { 4 } __assimilated
+				constant (list of unchecked) gg_event = list of 4 words __assimilated
 			package gg_arguments_arr _plain
-				constant (list of unchecked) gg_arguments = { 28 } __assimilated __buffer_array
+				constant (list of unchecked) gg_arguments = bounded list of 28 bytes __assimilated
 			package buffer_arr _plain
-				constant (list of unchecked) buffer = { /main/BasicInformKit/constants/INPUT_BUFFER_LEN_con/INPUT_BUFFER_LEN } __assimilated __buffer_array
+				constant (list of unchecked) buffer = bounded list of /main/BasicInformKit/constants/INPUT_BUFFER_LEN_con/INPUT_BUFFER_LEN bytes __assimilated
 			package buffer2_arr _plain
-				constant (list of unchecked) buffer2 = { /main/BasicInformKit/constants/INPUT_BUFFER_LEN_con/INPUT_BUFFER_LEN } __assimilated __buffer_array
+				constant (list of unchecked) buffer2 = bounded list of /main/BasicInformKit/constants/INPUT_BUFFER_LEN_con/INPUT_BUFFER_LEN bytes __assimilated
 			package buffer3_arr _plain
-				constant (list of unchecked) buffer3 = { /main/BasicInformKit/constants/INPUT_BUFFER_LEN_con/INPUT_BUFFER_LEN } __assimilated __buffer_array
+				constant (list of unchecked) buffer3 = bounded list of /main/BasicInformKit/constants/INPUT_BUFFER_LEN_con/INPUT_BUFFER_LEN bytes __assimilated
 			package parse_arr _plain
-				constant (list of unchecked) parse = { /main/BasicInformKit/constants/PARSE_BUFFER_LEN_con/PARSE_BUFFER_LEN } __assimilated
+				constant (list of unchecked) parse = list of /main/BasicInformKit/constants/PARSE_BUFFER_LEN_con/PARSE_BUFFER_LEN words __assimilated
 			package parse2_arr _plain
-				constant (list of unchecked) parse2 = { /main/BasicInformKit/constants/PARSE_BUFFER_LEN_con/PARSE_BUFFER_LEN } __assimilated
+				constant (list of unchecked) parse2 = list of /main/BasicInformKit/constants/PARSE_BUFFER_LEN_con/PARSE_BUFFER_LEN words __assimilated
 			package gg_tokenbuf_arr _plain
-				constant (list of unchecked) gg_tokenbuf = { /main/generic/grammar/DICT_WORD_SIZE } __assimilated __byte_array
+				constant (list of unchecked) gg_tokenbuf = list of /main/generic/grammar/DICT_WORD_SIZE bytes __assimilated
 			package AnyToStrArr_arr _plain
 				constant Computed_Constant_Value_14 = 1 __translation="Computed_Constant_Value_14_U1"
 				constant Computed_Constant_Value_15 = sum{ /main/BasicInformKit/constants/GG_ANYTOSTRING_LEN_con/GG_ANYTOSTRING_LEN, Computed_Constant_Value_14 } __translation="Computed_Constant_Value_15_U1"
-				constant (list of unchecked) AnyToStrArr = { Computed_Constant_Value_15 } __assimilated __byte_array
+				constant (list of unchecked) AnyToStrArr = list of Computed_Constant_Value_15 bytes __assimilated
 			package PowersOfTen_arr _plain
 				constant (list of unchecked) PowersOfTen = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 } __assimilated
 			package CheckTableEntryIsBlank_LU_arr _plain
-				constant (list of unchecked) CheckTableEntryIsBlank_LU = { 1, 2, 4, 8, 16, 32, 64, 128 } __assimilated __byte_array
+				constant (list of unchecked) CheckTableEntryIsBlank_LU = bytes{ 1, 2, 4, 8, 16, 32, 64, 128 } __assimilated
 			package CheckTableEntryIsNonBlank_LU_arr _plain
-				constant (list of unchecked) CheckTableEntryIsNonBlank_LU = { 254, 253, 251, 247, 239, 223, 191, 127 } __assimilated __byte_array
+				constant (list of unchecked) CheckTableEntryIsNonBlank_LU = bytes{ 254, 253, 251, 247, 239, 223, 191, 127 } __assimilated
 			package MStack_arr _plain
-				constant (list of unchecked) MStack = { /main/BasicInformKit/constants/MSTACK_SIZE_con/MSTACK_SIZE } __assimilated
+				constant (list of unchecked) MStack = list of /main/BasicInformKit/constants/MSTACK_SIZE_con/MSTACK_SIZE words __assimilated
 			package latest_rule_result_arr _plain
-				constant (list of unchecked) latest_rule_result = { 3 } __assimilated
+				constant (list of unchecked) latest_rule_result = list of 3 words __assimilated
 			package Flex_Heap_arr _plain
 				constant Computed_Constant_Value_24 = 16 __translation="Computed_Constant_Value_24_U1"
 				constant Computed_Constant_Value_25 = sum{ /main/completion/basics/MEMORY_HEAP_SIZE, Computed_Constant_Value_24 } __translation="Computed_Constant_Value_25_U1"
-				constant (list of unchecked) Flex_Heap = { Computed_Constant_Value_25 } __assimilated __byte_array
+				constant (list of unchecked) Flex_Heap = list of Computed_Constant_Value_25 bytes __assimilated
 			package TEXT_TY_Buffers_arr _plain
 				constant Computed_Constant_Value_38 = 2 __translation="Computed_Constant_Value_38_U1"
 				constant Computed_Constant_Value_39 = sum{ /main/generic/interactive_fiction/constants_1/TEXT_TY_BufferSize_con/TEXT_TY_BufferSize, Computed_Constant_Value_38 } __translation="Computed_Constant_Value_39_U1"
 				constant Computed_Constant_Value_40 = product{ Computed_Constant_Value_39, /main/BasicInformKit/constants/TEXT_TY_NoBuffers_con/TEXT_TY_NoBuffers } __translation="Computed_Constant_Value_40_U1"
-				constant (list of unchecked) TEXT_TY_Buffers = { Computed_Constant_Value_40 } __assimilated
+				constant (list of unchecked) TEXT_TY_Buffers = list of Computed_Constant_Value_40 words __assimilated
 			package CharCasingChart0_arr _plain
 				constant (list of unchecked) CharCasingChart0 = { 97, 26, -32, 170, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 181, 1, 743, 186, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 223, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 224, 23, -32, 248, 7, -32, 255, 1, 121, 257, -47, -1, 305, 1, -232, 307, -5, -1, 312, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 314, -15, -1, 329, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 331, -45, -1, 378, -5, -1, 383, 1, -300, 384, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 387, -3, -1, 392, 1, -1, 396, 1, -1, 397, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 402, 1, -1, 405, 1, 97, 409, 1, -1, 410, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 414, 1, 130, 417, -5, -1, 424, 1, -1, 426, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 429, 1, -1, 432, 1, -1, 436, -3, -1, 441, 1, -1, 442, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 445, 1, -1, 446, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 447, 1, 56, 454, 1, -2, 457, 1, -2, 460, 1, -2, 462, -15, -1, 477, 1, -79, 479, -17, -1, 496, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 499, 1, -2, 501, 1, -1, 505, -39, -1, 545, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 547, -17, -1, 564, 3, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 592, 3, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 595, 1, -210, 596, 1, -206, 597, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 598, 2, -205, 600, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 601, 1, -202, 602, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 603, 1, -203, 604, 4, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 608, 1, -205, 609, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 611, 1, -207, 612, 4, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 616, 1, -209, 617, 1, -211, 618, 5, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 623, 1, -211, 624, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 626, 1, -213, 627, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 629, 1, -214, 630, 10, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 640, 1, -218, 641, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 643, 1, -218, 644, 4, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 648, 1, -218, 649, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 650, 2, -217, 652, 6, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 658, 1, -219, 659, 29, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 912, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 940, 1, -38, 941, 3, -37, 944, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 945, 17, -32, 962, 1, -31, 963, 9, -32, 972, 1, -64, 973, 2, -63, 976, 1, -62, 977, 1, -57, 981, 1, -47, 982, 1, -54, 983, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 985, -23, -1, 1008, 1, -86, 1009, 1, -80, 1010, 1, 7, 1011, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 1013, 1, -96, 1016, 1, -1, 1019, 1, -1, 1072, 32, -32, 1104, 16, -80, 1121, -33, -1, 1163, -53, -1, 1218, -13, -1, 1233, -37, -1, 1273, 1, -1, 1281, -15, -1, 1377, 38, -48, 1415, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 7424, 44, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 7522, 10, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 7681, -149, -1, 7830, 5, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 7835, 1, -59, 7841, -89, -1, 7936, 8, 8, 7952, 6, 8, 7968, 8, 8, 7984, 8, 8, 8000, 6, 8, 8016, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8017, 1, 8, 8018, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8019, 1, 8, 8020, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8021, 1, 8, 8022, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8023, 1, 8, 8032, 8, 8, 8048, 2, 74, 8050, 4, 86, 8054, 2, 100, 8056, 2, 128, 8058, 2, 112, 8060, 2, 126, 8064, 8, 8, 8080, 8, 8, 8096, 8, 8, 8112, 2, 8, 8114, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8115, 1, 9, 8116, -3, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8119, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8126, 1, -7205, 8130, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8131, 1, 9, 8132, -3, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8135, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8144, 2, 8, 8146, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8150, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8160, 2, 8, 8162, 3, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8165, 1, 7, 8166, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8178, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8179, 1, 9, 8180, -3, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8183, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8305, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8319, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8458, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8462, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8467, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8495, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8500, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8505, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8509, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8518, 4, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 64256, 7, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 64275, 5, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 65345, 26, -32, 0 } __assimilated
 			package CharCasingChart1_arr _plain
 				constant (list of unchecked) CharCasingChart1 = { 65, 26, 32, 192, 23, 32, 216, 7, 32, 256, -47, 1, 304, 1, -199, 306, -5, 1, 313, -15, 1, 330, -45, 1, 376, 1, -121, 377, -5, 1, 385, 1, 210, 386, -3, 1, 390, 1, 206, 391, 1, 1, 393, 2, 205, 395, 1, 1, 398, 1, 79, 399, 1, 202, 400, 1, 203, 401, 1, 1, 403, 1, 205, 404, 1, 207, 406, 1, 211, 407, 1, 209, 408, 1, 1, 412, 1, 211, 413, 1, 213, 415, 1, 214, 416, -5, 1, 422, 1, 218, 423, 1, 1, 425, 1, 218, 428, 1, 1, 430, 1, 218, 431, 1, 1, 433, 2, 217, 435, -3, 1, 439, 1, 219, 440, 1, 1, 444, 1, 1, 452, 1, 2, 455, 1, 2, 458, 1, 2, 461, -15, 1, 478, -17, 1, 497, 1, 2, 500, 1, 1, 502, 1, -97, 503, 1, -56, 504, -39, 1, 544, 1, -130, 546, -17, 1, 902, 1, 38, 904, 3, 37, 908, 1, 64, 910, 2, 63, 913, 17, 32, 931, 9, 32, 978, 3, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 984, -23, 1, 1012, 1, -60, 1015, 1, 1, 1017, 1, -7, 1018, 1, 1, 1024, 16, 80, 1040, 32, 32, 1120, -33, 1, 1162, -53, 1, 1216, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 1217, -13, 1, 1232, -37, 1, 1272, 1, 1, 1280, -15, 1, 1329, 38, 48, 4256, 38, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 7680, -149, 1, 7840, -89, 1, 7944, 8, -8, 7960, 6, -8, 7976, 8, -8, 7992, 8, -8, 8008, 6, -8, 8025, -7, -8, 8040, 8, -8, 8120, 2, -8, 8122, 2, -74, 8136, 4, -86, 8152, 2, -8, 8154, 2, -100, 8168, 2, -8, 8170, 2, -112, 8172, 1, -7, 8184, 2, -128, 8186, 2, -126, 8450, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8455, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8459, 3, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8464, 3, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8469, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8473, 5, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8484, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8486, 1, -7517, 8488, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8490, 1, -8383, 8491, 1, -8262, 8492, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8496, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8499, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8510, 2, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 8517, 1, /main/BasicInformKit/constants/UNIC_NCT_con/UNIC_NCT, 65313, 26, 32, 0 } __assimilated
 			package RE_PACKET_space_arr _plain
 				constant Computed_Constant_Value_42 = product{ /main/BasicInformKit/constants/RE_MAX_PACKETS_con/RE_MAX_PACKETS, /main/BasicInformKit/constants/RE_PACKET_SIZE_con/RE_PACKET_SIZE } __translation="Computed_Constant_Value_42_U1"
-				constant (list of unchecked) RE_PACKET_space = { Computed_Constant_Value_42 } __assimilated
+				constant (list of unchecked) RE_PACKET_space = list of Computed_Constant_Value_42 words __assimilated
 			package RE_Subexpressions_arr _plain
-				constant (list of unchecked) RE_Subexpressions = { 11 } __assimilated
+				constant (list of unchecked) RE_Subexpressions = list of 11 words __assimilated
 			package Allocated_Match_Vars_arr _plain
-				constant (list of unchecked) Allocated_Match_Vars = { 10 } __assimilated
+				constant (list of unchecked) Allocated_Match_Vars = list of 10 words __assimilated
 			package Subexp_Posns_arr _plain
-				constant (list of unchecked) Subexp_Posns = { 20 } __assimilated
+				constant (list of unchecked) Subexp_Posns = list of 20 words __assimilated
 			package RTP_Buffer_arr _plain
 				constant (list of unchecked) RTP_Buffer = { -1, 0, 0, 0, 0, 0, 0 } __assimilated
 		package functions _submodule
@@ -77552,11 +77552,11 @@ package main _plain
 				constant LanguageContractionForms = 2 __assimilated
 		package arrays _submodule
 			package LanguagePronouns_arr _plain
-				constant (list of unchecked) LanguagePronouns = { dw"it", 568, /main/architectural/NULL, dw"him", 2048, /main/architectural/NULL, dw"her", 1024, /main/architectural/NULL, dw"them", 455, /main/architectural/NULL } __assimilated __table_array
+				constant (list of unchecked) LanguagePronouns = bounded { dw"it", 568, /main/architectural/NULL, dw"him", 2048, /main/architectural/NULL, dw"her", 1024, /main/architectural/NULL, dw"them", 455, /main/architectural/NULL } __assimilated
 			package LanguageDescriptors_arr _plain
-				constant (list of unchecked) LanguageDescriptors = { dw"my", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw"this", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw"these", 455, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw"that", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 1, dw"those", 455, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 1, dw"his", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"him", dw"her", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"her", dw"their", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"them", dw"its", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"it", dw"the", 4095, /main/BasicInformKit/constants/DEFART_PK_con/DEFART_PK, /main/architectural/NULL, dw"a", 3640, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw"an", 3640, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw"some", 455, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw"lit", 4095, /main/BasicInformKit/constants/LIGHTED_PK_con/LIGHTED_PK, /main/architectural/NULL, dw"lighted", 4095, /main/BasicInformKit/constants/LIGHTED_PK_con/LIGHTED_PK, /main/architectural/NULL, dw"unlit", 4095, /main/BasicInformKit/constants/UNLIGHTED_PK_con/UNLIGHTED_PK, /main/architectural/NULL } __assimilated __table_array
+				constant (list of unchecked) LanguageDescriptors = bounded { dw"my", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw"this", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw"these", 455, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 0, dw"that", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 1, dw"those", 455, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, 1, dw"his", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"him", dw"her", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"her", dw"their", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"them", dw"its", 4095, /main/BasicInformKit/constants/POSSESS_PK_con/POSSESS_PK, dw"it", dw"the", 4095, /main/BasicInformKit/constants/DEFART_PK_con/DEFART_PK, /main/architectural/NULL, dw"a", 3640, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw"an", 3640, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw"some", 455, /main/BasicInformKit/constants/INDEFART_PK_con/INDEFART_PK, /main/architectural/NULL, dw"lit", 4095, /main/BasicInformKit/constants/LIGHTED_PK_con/LIGHTED_PK, /main/architectural/NULL, dw"lighted", 4095, /main/BasicInformKit/constants/LIGHTED_PK_con/LIGHTED_PK, /main/architectural/NULL, dw"unlit", 4095, /main/BasicInformKit/constants/UNLIGHTED_PK_con/UNLIGHTED_PK, /main/architectural/NULL } __assimilated
 			package LanguageNumbers_arr _plain
-				constant (list of unchecked) LanguageNumbers = { dw"one", 1, dw"two", 2, dw"three", 3, dw"four", 4, dw"five", 5, dw"six", 6, dw"seven", 7, dw"eight", 8, dw"nine", 9, dw"ten", 10, dw"eleven", 11, dw"twelve", 12, dw"thirteen", 13, dw"fourteen", 14, dw"fifteen", 15, dw"sixteen", 16, dw"seventeen", 17, dw"eighteen", 18, dw"nineteen", 19, dw"twenty", 20, dw"twenty-one", 21, dw"twenty-two", 22, dw"twenty-three", 23, dw"twenty-four", 24, dw"twenty-five", 25, dw"twenty-six", 26, dw"twenty-seven", 27, dw"twenty-eight", 28, dw"twenty-nine", 29, dw"thirty", 30 } __assimilated __table_array
+				constant (list of unchecked) LanguageNumbers = bounded { dw"one", 1, dw"two", 2, dw"three", 3, dw"four", 4, dw"five", 5, dw"six", 6, dw"seven", 7, dw"eight", 8, dw"nine", 9, dw"ten", 10, dw"eleven", 11, dw"twelve", 12, dw"thirteen", 13, dw"fourteen", 14, dw"fifteen", 15, dw"sixteen", 16, dw"seventeen", 17, dw"eighteen", 18, dw"nineteen", 19, dw"twenty", 20, dw"twenty-one", 21, dw"twenty-two", 22, dw"twenty-three", 23, dw"twenty-four", 24, dw"twenty-five", 25, dw"twenty-six", 26, dw"twenty-seven", 27, dw"twenty-eight", 28, dw"twenty-nine", 29, dw"thirty", 30 } __assimilated
 			package LanguageArticles_arr _plain
 				constant (list of unchecked) LanguageArticles = { "The ", "the ", "a ", "The ", "the ", "an ", "The ", "the ", "some ", "The ", "the ", "some " } __assimilated
 			package LanguageGNAsToArticles_arr _plain
@@ -79134,11 +79134,11 @@ package main _plain
 								val /main/BasicInformKit/constants/RTP_CANTEND_con/RTP_CANTEND
 		package arrays _submodule
 			package StorageForShortName_arr _plain
-				constant (list of unchecked) StorageForShortName = { 250 } __assimilated __buffer_array
+				constant (list of unchecked) StorageForShortName = bounded list of 250 bytes __assimilated
 			package activities_stack_arr _plain
-				constant (list of unchecked) activities_stack = { /main/BasicInformExtrasKit/constants/MAX_NESTED_ACTIVITIES_con/MAX_NESTED_ACTIVITIES } __assimilated
+				constant (list of unchecked) activities_stack = list of /main/BasicInformExtrasKit/constants/MAX_NESTED_ACTIVITIES_con/MAX_NESTED_ACTIVITIES words __assimilated
 			package activity_parameters_stack_arr _plain
-				constant (list of unchecked) activity_parameters_stack = { /main/BasicInformExtrasKit/constants/MAX_NESTED_ACTIVITIES_con/MAX_NESTED_ACTIVITIES } __assimilated
+				constant (list of unchecked) activity_parameters_stack = list of /main/BasicInformExtrasKit/constants/MAX_NESTED_ACTIVITIES_con/MAX_NESTED_ACTIVITIES words __assimilated
 		package variables _submodule
 			package caps_mode_var _plain
 				variable caps_mode = 0 __assimilated

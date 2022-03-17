@@ -81,7 +81,7 @@ found at |T-->1|, |T-->2|, ..., |T-->C|.
 	for (int j=0; j<t->no_columns; j++) {
 		@<Compile the inner table array for column j@>;
 	}
-	packaging_state save = EmitArrays::begin_table(RTTables::identifier(t), K_value);
+	packaging_state save = EmitArrays::begin_bounded(RTTables::identifier(t), K_value);
 	for (int j=0; j<t->no_columns; j++) {
 		EmitArrays::iname_entry(RTTables::tcu_iname(&(t->columns[j])));
 	}
@@ -100,7 +100,7 @@ a single bit in the "blanks array" which records whether the cell is blank
 or not.
 
 @<Compile the inner table array for column j@> =
-	packaging_state save = EmitArrays::begin_table(RTTables::tcu_iname(&(t->columns[j])), K_value);
+	packaging_state save = EmitArrays::begin_bounded(RTTables::tcu_iname(&(t->columns[j])), K_value);
 
 	table_column *tc = t->columns[j].column_identity;
 	LOGIF(TABLES, "Compiling column: $C\n", tc);

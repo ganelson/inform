@@ -247,27 +247,21 @@ If we return to the example:
 <span class="extract"><span class="extract-syntax">/main/two/V_speed</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Annotations. </b>A few of the defined names in Inter can be "annotated": to be exact, those
-created by <span class="extract"><span class="extract-syntax">constant</span></span>, <span class="extract"><span class="extract-syntax">property</span></span>, <span class="extract"><span class="extract-syntax">variable</span></span> and <span class="extract"><span class="extract-syntax">local</span></span>.
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Annotations. </b>A few of the defined names in Inter can be "annotated".
 </p>
 
 <p class="commentary">Many annotations are simply markers temporarily given to these names during
 the compilation process, and they usually do not change the meaning of the
-program. For example, a constant given the annotation <span class="extract"><span class="extract-syntax">_hex</span></span> has its value
-printed out in textual Inter in hexadecimal not decimal. So:
+program. For example, the final C code generator annotates the names of arrays
+with their addresses in (virtual) memory, with the <span class="extract"><span class="extract-syntax">__array_address</span></span> annotation.
+In textual format:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> SPEED_LIMIT = </span><span class="constant-syntax">0</span><span class="plain-syntax">x1ff </span><span class="identifier-syntax">__hex</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> my_array = { </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">4</span><span class="plain-syntax">, </span><span class="constant-syntax">8</span><span class="plain-syntax"> } </span><span class="identifier-syntax">__array_address</span><span class="plain-syntax">=7718</span>
 </pre>
-<p class="commentary">This tells the code generator that it is more natural to express this value
-as <span class="extract"><span class="extract-syntax">1ff</span></span> hexadecimal rather than 511 decimal.
-</p>
-
-<p class="commentary">Most annotations are either there or not there, like <span class="extract"><span class="extract-syntax">__hex</span></span>. (All annotation
-names begin with a double underscore, <span class="extract"><span class="extract-syntax">__</span></span>.) But some supply a value: for
-example, <span class="extract"><span class="extract-syntax">__priority=17</span></span> would be the syntax to specify this, though <span class="extract"><span class="extract-syntax">__priority</span></span>
-is not in the standard set, as it happens.
+<p class="commentary">All annotation names begin with a double underscore, <span class="extract"><span class="extract-syntax">__</span></span>. They do not all
+express a value: some are boolean flags, where no <span class="extract"><span class="extract-syntax">=...</span></span> part is written.
 </p>
 
 <p class="commentary">For the list of standard annotation names in use, see <a href="M-ia.html" class="internal">Inform Annotations</a>.

@@ -51,19 +51,59 @@ inter_error_message *ConstantInstruction::new(inter_bookmark *IBM, inter_symbol 
 @ All other forms have a flexible number of data pairs. The number of entries
 can therefore be calculated as half of (the instruction extent minus |DATA_CONST_IFLD|).
 
-Note that the |type| argument here should be that of the list, not of the entries.
-
 @d CONST_LIST_FORMAT_NONE 0
-@d CONST_LIST_FORMAT_COLLECTION 1
-@d CONST_LIST_FORMAT_SUM 2
-@d CONST_LIST_FORMAT_PRODUCT 3
-@d CONST_LIST_FORMAT_DIFFERENCE 4
-@d CONST_LIST_FORMAT_QUOTIENT 5
-@d CONST_LIST_FORMAT_STRUCT 6
+@d CONST_LIST_FORMAT_WORDS 1
+@d CONST_LIST_FORMAT_WORDS_BY_EXTENT 2
+@d CONST_LIST_FORMAT_BYTES 3
+@d CONST_LIST_FORMAT_BYTES_BY_EXTENT 4
+@d CONST_LIST_FORMAT_B_WORDS 5
+@d CONST_LIST_FORMAT_B_WORDS_BY_EXTENT 6
+@d CONST_LIST_FORMAT_B_BYTES 7
+@d CONST_LIST_FORMAT_B_BYTES_BY_EXTENT 8
+@d CONST_LIST_FORMAT_SUM 9
+@d CONST_LIST_FORMAT_PRODUCT 10
+@d CONST_LIST_FORMAT_DIFFERENCE 11
+@d CONST_LIST_FORMAT_QUOTIENT 12
+@d CONST_LIST_FORMAT_STRUCT 13
+
+=
+int ConstantInstruction::is_a_genuine_list_format(inter_ti format) {
+	if ((format >= CONST_LIST_FORMAT_WORDS) &&
+		(format <= CONST_LIST_FORMAT_B_BYTES_BY_EXTENT))
+		return TRUE;
+	return FALSE;
+}
+
+int ConstantInstruction::is_a_byte_format(inter_ti format) {
+	if ((format == CONST_LIST_FORMAT_BYTES) ||
+		(format == CONST_LIST_FORMAT_BYTES_BY_EXTENT) ||
+		(format == CONST_LIST_FORMAT_B_BYTES) ||
+		(format == CONST_LIST_FORMAT_B_BYTES_BY_EXTENT))
+		return TRUE;
+	return FALSE;
+}
+
+int ConstantInstruction::is_a_by_extent_format(inter_ti format) {
+	if ((format == CONST_LIST_FORMAT_WORDS_BY_EXTENT) ||
+		(format == CONST_LIST_FORMAT_BYTES_BY_EXTENT) ||
+		(format == CONST_LIST_FORMAT_B_WORDS_BY_EXTENT) ||
+		(format == CONST_LIST_FORMAT_B_BYTES_BY_EXTENT))
+		return TRUE;
+	return FALSE;
+}
+
+int ConstantInstruction::is_a_bounded_format(inter_ti format) {
+	if ((format >= CONST_LIST_FORMAT_B_WORDS) &&
+		(format <= CONST_LIST_FORMAT_B_BYTES_BY_EXTENT))
+		return TRUE;
+	return FALSE;
+}
+
+@ Note that the |type| argument here should be that of the list, not of the entries.
 
 =
 inter_error_message *ConstantInstruction::new_list(inter_bookmark *IBM, inter_symbol *S,
-	inter_type type, int format, int no_pairs, inter_pair *val_array, inter_ti level,
+	inter_type type, inter_ti format, int no_pairs, inter_pair *val_array, inter_ti level,
 	inter_error_location *eloc) {
 	if (format == CONST_LIST_FORMAT_NONE) internal_error("not a list");
 	inter_tree_node *AP = Inode::new_with_3_data_fields(IBM, CONSTANT_IST,
@@ -120,7 +160,7 @@ void ConstantInstruction::verify(inter_construct *IC, inter_tree_node *P,
 		}
 	} else {
 		inter_type verify_type = type;
-		if (format == CONST_LIST_FORMAT_COLLECTION)
+		if (ConstantInstruction::is_a_genuine_list_format(format))
 			verify_type = InterTypes::type_operand(type, 0);
 		for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 			*E = VerifyingInter::data_pair_fields(owner, P, i, verify_type);
@@ -145,7 +185,7 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 
 	inter_pair *pairs = NULL;
 	text_stream **tokens = NULL;
-	int fmt = CONST_LIST_FORMAT_NONE;
+	inter_ti fmt = CONST_LIST_FORMAT_NONE;
 	int capacity = 0, token_count = 0;
 	text_stream *S = value_text;
 	@<Tokenise the value@>;
@@ -177,9 +217,15 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	else if (Regexp::match(&mr2, S, L"product{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_PRODUCT;
 	else if (Regexp::match(&mr2, S, L"difference{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_DIFFERENCE;
 	else if (Regexp::match(&mr2, S, L"quotient{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_QUOTIENT;
-	else if (Regexp::match(&mr2, S, L"{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_COLLECTION;
+	else if (Regexp::match(&mr2, S, L"{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_WORDS;
+	else if (Regexp::match(&mr2, S, L"bytes{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_BYTES;
+	else if (Regexp::match(&mr2, S, L"list of *(%c*?) bytes")) fmt = CONST_LIST_FORMAT_BYTES_BY_EXTENT;
+	else if (Regexp::match(&mr2, S, L"list of *(%c*?) words")) fmt = CONST_LIST_FORMAT_WORDS_BY_EXTENT;
+	else if (Regexp::match(&mr2, S, L"bounded { *(%c*?) *}")) fmt = CONST_LIST_FORMAT_B_WORDS;
+	else if (Regexp::match(&mr2, S, L"bounded bytes{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_B_BYTES;
+	else if (Regexp::match(&mr2, S, L"bounded list of *(%c*?) bytes")) fmt = CONST_LIST_FORMAT_B_BYTES_BY_EXTENT;
+	else if (Regexp::match(&mr2, S, L"bounded list of *(%c*?) words")) fmt = CONST_LIST_FORMAT_B_WORDS_BY_EXTENT;
 	else if (Regexp::match(&mr2, S, L"struct{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_STRUCT;
-
 	if (fmt != CONST_LIST_FORMAT_NONE) {
 		S = NULL;
 		text_stream *conts = mr2.exp[0];
@@ -229,7 +275,7 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 @<A list-of-tokens constant@> =
 	for (int i=0; i<token_count; i++) {
 		inter_type term_type = con_type;
-		if (fmt == CONST_LIST_FORMAT_COLLECTION)
+		if (ConstantInstruction::is_a_genuine_list_format(fmt))
 			term_type = InterTypes::type_operand(con_type, 0);
 		if (fmt == CONST_LIST_FORMAT_STRUCT)
 			term_type = InterTypes::type_operand(con_type, i);
@@ -250,19 +296,33 @@ void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	WRITE("%S = ", InterSymbol::identifier(con_name));
 	inter_ti fmt = P->W.instruction[FORMAT_CONST_IFLD];
 	switch (fmt) {
-		case CONST_LIST_FORMAT_SUM:        WRITE("sum"); break;
-		case CONST_LIST_FORMAT_PRODUCT:    WRITE("product"); break;
-		case CONST_LIST_FORMAT_DIFFERENCE: WRITE("difference"); break;
-		case CONST_LIST_FORMAT_QUOTIENT:   WRITE("quotient"); break;
-		case CONST_LIST_FORMAT_STRUCT:     WRITE("struct"); break;
+		case CONST_LIST_FORMAT_SUM:               WRITE("sum"); break;
+		case CONST_LIST_FORMAT_PRODUCT:           WRITE("product"); break;
+		case CONST_LIST_FORMAT_DIFFERENCE:        WRITE("difference"); break;
+		case CONST_LIST_FORMAT_QUOTIENT:          WRITE("quotient"); break;
+		case CONST_LIST_FORMAT_STRUCT:            WRITE("struct"); break;
+		case CONST_LIST_FORMAT_BYTES:             WRITE("bytes"); break;
+		case CONST_LIST_FORMAT_WORDS_BY_EXTENT:   WRITE("list of "); break;
+		case CONST_LIST_FORMAT_BYTES_BY_EXTENT:   WRITE("list of "); break;
+		case CONST_LIST_FORMAT_B_WORDS:           WRITE("bounded "); break;
+		case CONST_LIST_FORMAT_B_BYTES:           WRITE("bounded bytes"); break;
+		case CONST_LIST_FORMAT_B_WORDS_BY_EXTENT: WRITE("bounded list of "); break;
+		case CONST_LIST_FORMAT_B_BYTES_BY_EXTENT: WRITE("bounded list of "); break;
 	}
-	if (fmt != CONST_LIST_FORMAT_NONE) WRITE("{");
+	int braced = FALSE;
+	if ((fmt != CONST_LIST_FORMAT_NONE) &&
+		(ConstantInstruction::is_a_by_extent_format(fmt) == FALSE)) braced = TRUE;
+	if (braced) WRITE("{");
 	for (int i=DATA_CONST_IFLD; i<P->W.extent; i=i+2) {
 		if (i > DATA_CONST_IFLD) WRITE(",");
-		if (fmt != CONST_LIST_FORMAT_NONE) WRITE(" ");
+		if (braced) WRITE(" ");
 		TextualInter::write_pair(OUT, P, InterValuePairs::get(P, i));
 	}
-	if (fmt != CONST_LIST_FORMAT_NONE) WRITE(" }");
+	if (braced) WRITE(" }");
+	if (ConstantInstruction::is_a_by_extent_format(fmt)) {
+		if (ConstantInstruction::is_a_byte_format(fmt)) WRITE(" bytes");
+		else WRITE(" words");
+	}
 }
 
 @h Access functions.

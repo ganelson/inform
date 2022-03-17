@@ -84,13 +84,26 @@ inter_tree_node *synoptic_array_node = NULL;
 packaging_state synoptic_array_ps;
 
 void Synoptic::begin_array(inter_tree *I, pipeline_step *step, inter_name *iname) {
+	Synoptic::begin_array_inner(I, step, iname, CONST_LIST_FORMAT_WORDS);
+}
+
+void Synoptic::begin_bounded_array(inter_tree *I, pipeline_step *step, inter_name *iname) {
+	Synoptic::begin_array_inner(I, step, iname, CONST_LIST_FORMAT_B_WORDS);
+}
+
+void Synoptic::begin_byte_array(inter_tree *I, pipeline_step *step, inter_name *iname) {
+	Synoptic::begin_array_inner(I, step, iname, CONST_LIST_FORMAT_BYTES);
+}
+
+void Synoptic::begin_array_inner(inter_tree *I, pipeline_step *step, inter_name *iname,
+	inter_ti format) {
 	synoptic_array_ps = Packaging::enter_home_of(iname);
 	inter_symbol *con_s = InterNames::to_symbol(iname);
 	inter_ti TID = InterTypes::to_TID(InterBookmark::scope(Packaging::at(I)),
 		InterTypes::from_constructor_code(LIST_ITCONC));
 	synoptic_array_node = Inode::new_with_3_data_fields(Packaging::at(I), CONSTANT_IST,
 		 InterSymbolsTable::id_at_bookmark(Packaging::at(I), con_s),
-		 TID, CONST_LIST_FORMAT_COLLECTION, NULL, 
+		 TID, format, NULL, 
 		 (inter_ti) InterBookmark::baseline(Packaging::at(I)) + 1);
 }
 

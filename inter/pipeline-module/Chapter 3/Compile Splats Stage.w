@@ -371,6 +371,7 @@ not already there.
 @<Make a list constant in Inter@> =
 	match_results mr = Regexp::create_mr();
 	text_stream *conts = NULL;
+	int as_bytes = FALSE, bounded = FALSE;
 	inter_ti annot = INVALID_IANN;
 	@<Work out the format of the array and the string of contents@>;
 	if (annot != INVALID_IANN) SymbolAnnotation::set_b(made_s, annot, TRUE);
@@ -383,25 +384,43 @@ not already there.
 		@<Compile the string of command grammar contents into the pile of values@>;
 
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
+	inter_ti format;
+	if ((no_assimilated_array_entries == 1) && (directive == ARRAY_PLM)) {
+		if (as_bytes) {
+			if (bounded) format = CONST_LIST_FORMAT_B_BYTES_BY_EXTENT;
+			else format = CONST_LIST_FORMAT_BYTES_BY_EXTENT;
+		} else {
+			if (bounded) format = CONST_LIST_FORMAT_B_WORDS_BY_EXTENT;
+			else format = CONST_LIST_FORMAT_WORDS_BY_EXTENT;
+		}
+	} else {
+		if (as_bytes) {
+			if (bounded) format = CONST_LIST_FORMAT_B_BYTES;
+			else format = CONST_LIST_FORMAT_BYTES;
+		} else {
+			if (bounded) format = CONST_LIST_FORMAT_B_WORDS;
+			else format = CONST_LIST_FORMAT_WORDS;
+		}
+	}
 	Produce::guard(ConstantInstruction::new_list(IBM, made_s,
-		InterTypes::from_constructor_code(LIST_ITCONC), CONST_LIST_FORMAT_COLLECTION,
+		InterTypes::from_constructor_code(LIST_ITCONC), format,
 		no_assimilated_array_entries, val_pile, B, NULL));
 	Regexp::dispose_of(&mr);
 
 @ At this point |value| is |table 2 (-56) 17 "hey, I am typeless" ' '|. We want
-first to work out which of the several array formats this is (|TABLEARRAY_IANN|
-in this instance), then the contents |2 (-56) 17 "hey, I am typeless" ' '|.
+first to work out which of the several array formats this is, then the contents
+|2 (-56) 17 "hey, I am typeless" ' '|.
 
 @<Work out the format of the array and the string of contents@> =
 	if (directive == ARRAY_PLM) {
 		if (Regexp::match(&mr, value, L" *--> *(%c*?) *")) {
-			conts = mr.exp[0]; annot = INVALID_IANN;
+			conts = mr.exp[0];
 		} else if (Regexp::match(&mr, value, L" *-> *(%c*?) *")) {
-			conts = mr.exp[0]; annot = BYTEARRAY_IANN;
+			conts = mr.exp[0]; as_bytes = TRUE;
 		} else if (Regexp::match(&mr, value, L" *table *(%c*?) *")) {
-			conts = mr.exp[0]; annot = TABLEARRAY_IANN;
+			conts = mr.exp[0]; bounded = TRUE;
 		} else if (Regexp::match(&mr, value, L" *buffer *(%c*?) *")) {
-			conts = mr.exp[0]; annot = BUFFERARRAY_IANN;
+			conts = mr.exp[0]; as_bytes = TRUE; bounded = TRUE;
 		} else {
 			LOG("Identifier = <%S>, Value = <%S>", identifier, value);
 			PipelineErrors::kit_error("invalid Inform 6 array declaration", NULL);

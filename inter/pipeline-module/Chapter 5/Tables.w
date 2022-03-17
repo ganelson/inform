@@ -169,8 +169,7 @@ same ID in each context. (They need to run from 100 upward because numbers 0 to
 
 @<Define TB_BLANKS array@> =
 	inter_name *iname = HierarchyLocations::iname(I, TB_BLANKS_HL);
-	InterNames::annotate_b(iname, BYTEARRAY_IANN, TRUE);
-	Synoptic::begin_array(I, step, iname);
+	Synoptic::begin_byte_array(I, step, iname);
 	inter_ti hwm = 0;
 	for (int i=0; i<InterNodeList::array_len(inv->table_column_usage_nodes); i++) {
 		inter_package *pack =

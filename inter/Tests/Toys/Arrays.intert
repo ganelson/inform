@@ -7,8 +7,8 @@ package main _plain
 	typename K_list_of_values = list of K_unchecked
 	constant (K_number) thirteen = 13
 	constant (K_list_of_values) primes = { 2, 3, 5, "seven", 11, thirteen }
-	constant (K_list_of_values) twins = { 3, 5, 5, 7, 11, 13, 17, 19 } __byte_array
-	constant (K_list_of_values) carmichaels = { 561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841, 29341, 41041, 46657 } __table_array
+	constant (K_list_of_values) twins = bytes{ 3, 5, 5, 7, 11, 13, 17, 19 }
+	constant (K_list_of_values) carmichaels = bounded { 561, 1105, 1729, 2465, 2821, 6601, 8911, 10585, 15841, 29341, 41041, 46657 }
 	constant (K_list_of_values) mutable = { 10, 20, 30 }
 	package Main _code
 		code

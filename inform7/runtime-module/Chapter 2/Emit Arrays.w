@@ -21,33 +21,43 @@ enforced; it's fine to store arbitrary data with |K| being |NULL|.
 =
 packaging_state EmitArrays::begin_word(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE, FALSE);
+	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_WORDS);
+	return save;
+}
+
+packaging_state EmitArrays::begin_word_by_extent(inter_name *name, kind *K) {
+	packaging_state save = Packaging::enter_home_of(name);
+	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_WORDS_BY_EXTENT);
 	return save;
 }
 
 packaging_state EmitArrays::begin_unchecked(inter_name *name) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, NULL, FALSE, TRUE);
+	EmitArrays::begin_inner(name, NULL, TRUE, CONST_LIST_FORMAT_WORDS);
 	return save;
 }
 
 packaging_state EmitArrays::begin_byte(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE, FALSE);
-	InterNames::annotate_b(name, BYTEARRAY_IANN, TRUE);
+	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_BYTES);
 	return save;
 }
 
-packaging_state EmitArrays::begin_table(inter_name *name, kind *K) {
+packaging_state EmitArrays::begin_byte_by_extent(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE, FALSE);
-	InterNames::annotate_b(name, TABLEARRAY_IANN, TRUE);
+	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_BYTES_BY_EXTENT);
+	return save;
+}
+
+packaging_state EmitArrays::begin_bounded(inter_name *name, kind *K) {
+	packaging_state save = Packaging::enter_home_of(name);
+	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_B_WORDS);
 	return save;
 }
 
 packaging_state EmitArrays::begin_verb(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, FALSE, FALSE);
+	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_WORDS);
 	InterNames::annotate_b(name, VERBARRAY_IANN, TRUE);
 	return save;
 }
@@ -64,14 +74,14 @@ to symbols to be defined externally.
 =
 packaging_state EmitArrays::begin_sum_constant(inter_name *name, kind *K) {
 	packaging_state save = Packaging::enter_home_of(name);
-	EmitArrays::begin_inner(name, K, TRUE, FALSE);
+	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_SUM);
 	return save;
 }
 
 @h Fill.
 Next call the following functions to add entries to the array. It's fine to
 mix and match the different sorts of entry: we're not trying to make something
-which would be a typesafe list in I7, so they can be absolutely any data,
+which would be a typesafe list in I7, so they can be absolutely any data.
 
 =
 void EmitArrays::numeric_entry(inter_ti N) {
@@ -156,7 +166,7 @@ nascent_array *EmitArrays::push_new(void) {
 	A->space_used = 0;
 	A->entry_kind = NULL;
 	A->array_name_symbol = NULL;
-	A->array_form = CONST_LIST_FORMAT_COLLECTION;
+	A->array_form = CONST_LIST_FORMAT_WORDS;
 	A->entry_storage = NULL;
 	PUSH_TO_LIFO_STACK(A, nascent_array, emission_array_stack);
 	return A;
@@ -172,12 +182,12 @@ nascent_array *EmitArrays::pull(void) {
 @ The various ways an array can begin all merge into this function:
 
 =
-void EmitArrays::begin_inner(inter_name *N, kind *K, int const_sum, int unchecked) {
+void EmitArrays::begin_inner(inter_name *N, kind *K, int unchecked, inter_ti format) {
 	inter_symbol *symb = InterNames::to_symbol(N);
 	nascent_array *current_A = EmitArrays::push_new();
 	current_A->entry_kind = (unchecked)?NULL:(K?K:K_value);
 	current_A->array_name_symbol = symb;
-	if (const_sum) current_A->array_form = CONST_LIST_FORMAT_SUM;
+	current_A->array_form = format;
 }
 
 @ And the various ways to add an entry merge into this one:
@@ -214,7 +224,7 @@ void EmitArrays::end_inner(void) {
 	inter_ti CID = InterTypes::to_TID(InterBookmark::scope(Emit::at()), InterTypes::unchecked());
 	if (K) {
 		inter_symbol *con_kind = NULL;
-		if (current_A->array_form == CONST_LIST_FORMAT_COLLECTION)
+		if (ConstantInstruction::is_a_genuine_list_format(current_A->array_form))
 			con_kind = Produce::kind_to_symbol(Kinds::unary_con(CON_list_of, K));
 		else
 			con_kind = Produce::kind_to_symbol(K);

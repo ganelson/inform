@@ -46,8 +46,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 
 @<Define ACTIVITY_ATB_RULEBOOKS array@> =
 	inter_name *iname = HierarchyLocations::iname(I, ACTIVITY_ATB_RULEBOOKS_HL);
-	InterNames::annotate_b(iname, BYTEARRAY_IANN, TRUE);
-	Synoptic::begin_array(I, step, iname);
+	Synoptic::begin_byte_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->activity_nodes); i++) {
 		inter_package *pack = PackageInstruction::at_this_head(inv->activity_nodes->list[i].node);
 		inter_ti ubf = Metadata::read_numeric(pack, I"^used_by_future");

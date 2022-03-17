@@ -44,15 +44,15 @@ package main _plain
 				constant Computed_Constant_Value_0 = 71
 				constant Computed_Constant_Value_1 = 3
 				constant Computed_Constant_Value_2 = sum{ Computed_Constant_Value_0, Computed_Constant_Value_1 }
-				constant (list of unchecked) XB = { Computed_Constant_Value_2 } __assimilated
+				constant (list of unchecked) XB = list of Computed_Constant_Value_2 words __assimilated
 			package XC_arr _plain
-				constant (list of unchecked) XC = { 17, 91 } __assimilated __byte_array
+				constant (list of unchecked) XC = bytes{ 17, 91 } __assimilated
 			package XD_arr _plain
-				constant (list of unchecked) XD = { 8, 6 } __assimilated __byte_array
+				constant (list of unchecked) XD = bytes{ 8, 6 } __assimilated
 			package XE_arr _plain
-				constant (list of unchecked) XE = { 2, 3, 4, 5 } __assimilated __table_array
+				constant (list of unchecked) XE = bounded { 2, 3, 4, 5 } __assimilated
 			package XF_arr _plain
-				constant (list of unchecked) XF = { 6, 7, 8, 9 } __assimilated __buffer_array
+				constant (list of unchecked) XF = bounded bytes{ 6, 7, 8, 9 } __assimilated
 		package variables _submodule
 			package nitwit_var _plain
 				variable nitwit = 2 __assimilated

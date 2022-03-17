@@ -120,7 +120,7 @@ must then be extracted):
 =
 inter_tree_node *Metadata::optional_list(inter_package *pack, text_stream *key) {
 	inter_tree_node *D = Metadata::value_node(pack, key);
-	if ((D) && (ConstantInstruction::list_format(D) == CONST_LIST_FORMAT_COLLECTION))
+	if ((D) && (ConstantInstruction::list_format(D) == CONST_LIST_FORMAT_WORDS))
 		return D;
 	return NULL;
 }

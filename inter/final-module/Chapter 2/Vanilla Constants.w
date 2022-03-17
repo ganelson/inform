@@ -24,12 +24,16 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 			@<Declare this constant as the special UUID string array@>;
 		} else switch (ConstantInstruction::list_format(P)) {
 			case CONST_LIST_FORMAT_NONE: @<Declare this as an explicit constant@>; break;
-			case CONST_LIST_FORMAT_COLLECTION: @<Declare this as a list constant@>; break;
 			case CONST_LIST_FORMAT_SUM:
 			case CONST_LIST_FORMAT_PRODUCT:
 			case CONST_LIST_FORMAT_DIFFERENCE:
 			case CONST_LIST_FORMAT_QUOTIENT: @<Declare this as a computed constant@>; break;
-			default: internal_error("ungenerated constant format");
+			default:
+				if (ConstantInstruction::is_a_genuine_list_format(
+					ConstantInstruction::list_format(P))) {
+					@<Declare this as a list constant@>; break;
+				}
+				internal_error("ungenerated constant format");
 		}
 	}
 }
@@ -92,16 +96,22 @@ must however be carefully evaluated, as it may be another constant name rather
 than a literal, or may even be computed.
 
 @<Declare this as a list constant@> =
-	int format = WORD_ARRAY_FORMAT;
-	if (SymbolAnnotation::get_b(con_name, BYTEARRAY_IANN)) format = BYTE_ARRAY_FORMAT;
-	if (SymbolAnnotation::get_b(con_name, TABLEARRAY_IANN)) format = TABLE_ARRAY_FORMAT;
-	if (SymbolAnnotation::get_b(con_name, BUFFERARRAY_IANN)) format = BUFFER_ARRAY_FORMAT;
+	int format;
+	if (ConstantInstruction::is_a_byte_format(ConstantInstruction::list_format(P))) {
+		if (ConstantInstruction::is_a_bounded_format(ConstantInstruction::list_format(P)))
+			format = BUFFER_ARRAY_FORMAT;
+		else
+			format = BYTE_ARRAY_FORMAT;
+	} else {
+		if (ConstantInstruction::is_a_bounded_format(ConstantInstruction::list_format(P)))
+			format = TABLE_ARRAY_FORMAT;
+		else
+			format = WORD_ARRAY_FORMAT;
+	}
 
 	int zero_count = -1;
 	int entry_count = ConstantInstruction::list_len(P);
-	if ((entry_count == 1) &&
-		((SymbolAnnotation::get_b(con_name, ASSIMILATED_IANN)) ||
-			(SymbolAnnotation::get_b(con_name, EXTENT_IANN)))) {
+	if (ConstantInstruction::is_a_by_extent_format(ConstantInstruction::list_format(P))) {
 		inter_pair val = ConstantInstruction::list_entry(P, 0);
 		zero_count = (int) ConstantInstruction::evaluate(InterPackage::scope_of(P), val);
 	}

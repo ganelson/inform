@@ -76,8 +76,7 @@ there are never more than 10000 rules, or 10000 activities, or 10000 actions.)
 
 @<Define ACTIONDATA array@> =
 	inter_name *iname = HierarchyLocations::iname(I, ACTIONDATA_HL);
-	InterNames::annotate_b(iname, TABLEARRAY_IANN, TRUE);
-	Synoptic::begin_array(I, step, iname);
+	Synoptic::begin_bounded_array(I, step, iname);
 	for (int i=0; i<InterNodeList::array_len(inv->action_nodes); i++) {
 		inter_package *pack = PackageInstruction::at_this_head(inv->action_nodes->list[i].node);
 		inter_symbol *double_sharp_s = Metadata::optional_symbol(pack, I"^double_sharp");
