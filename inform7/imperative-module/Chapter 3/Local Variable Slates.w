@@ -418,16 +418,9 @@ void LocalVariableSlates::declare_all_with_purpose(stack_frame *frame, int p) {
 
 inter_symbol *LocalVariableSlates::declare_one(local_variable *lvar) {
 	inter_symbol *S = Produce::local_exists(Emit::tree(), lvar->identifier);
-	if (S) return S;
-
-	inter_ti annot = INVALID_IANN;
-	switch (lvar->lv_purpose) {
-		case TOKEN_CALL_PARAMETER_LV: annot = ARGUMENT_IANN; break;
-		case OTHER_CALL_PARAMETER_LV: annot = IMPLIED_ARGUMENT_IANN; break;
-	}
-	inter_symbol *symb = Produce::local(Emit::tree(), lvar->current_usage.kind_as_declared,
-		lvar->identifier, annot, lvar->comment_on_use);
-	return symb;
+	if (S == NULL) S = Produce::local(Emit::tree(), lvar->current_usage.kind_as_declared,
+		lvar->identifier, INVALID_IANN, lvar->comment_on_use);
+	return S;
 }
 
 @ And this emits a sequence of values for the call parameters:

@@ -140,14 +140,13 @@ they were any other arrays. Here goes:
 	if (saved) *saved = CodeGen::select(gen, command_grammar_I7CGS);
 	text_stream *OUT = CodeGen::current(gen);
 	WRITE("Verb");
+	int marker = NOT_APPLICABLE;
 	for (int i=0; i<ConstantInstruction::list_len(P); i++) {
 		WRITE(" ");
 		inter_pair val = ConstantInstruction::list_entry(P, i);
 		if (InterValuePairs::is_symbolic(val)) {
 			inter_symbol *A = InterValuePairs::to_symbol_at(val, P);
 			if (A == NULL) internal_error("bad aliased symbol");
-			if (SymbolAnnotation::get_b(A, SCOPE_FILTER_IANN)) WRITE("scope=");
-			if (SymbolAnnotation::get_b(A, NOUN_FILTER_IANN))  WRITE("noun=");
 			text_stream *S = InterSymbol::trans(A);
 			     if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_meta_RPSYM))        WRITE("meta");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_divider_RPSYM))     WRITE("\n\t*");
@@ -164,8 +163,15 @@ they were any other arrays. Here goes:
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_creature_RPSYM))    WRITE("creature");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_topic_RPSYM))       WRITE("topic");
 			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_multiexcept_RPSYM)) WRITE("multiexcept");
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_noun_filter_RPSYM)) marker = TRUE;
+			else if (A == RunningPipelines::get_symbol(gen->from_step, verb_directive_scope_filter_RPSYM)) marker = FALSE;
 			else if (Str::begins_with_wide_string(S, L"##")) @<Write without sharps@>
-			else I6TargetConstants::compile_literal_symbol(gtr, gen, A);
+			else {
+				if (marker == FALSE) WRITE("scope=");
+				if (marker == TRUE)  WRITE("noun=");
+				I6TargetConstants::compile_literal_symbol(gtr, gen, A);
+				marker = NOT_APPLICABLE;
+			}
 		} else {
 			CodeGen::pair(gen, P, val);
 		}

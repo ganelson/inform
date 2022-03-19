@@ -8,7 +8,7 @@ package main _plain
 	typename K_number = int32
 	typename K_func = function K_number -> K_number
 	package (K_func) R_101 _code
-		local (/main/K_number) x __argument
+		local (/main/K_number) x
 		code
 			.begin
 			inv !if

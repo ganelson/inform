@@ -485,12 +485,24 @@ for the action.
 		if (next_is_action) @<Ensure that a socket exists for this action name@>;
 		next_is_action = FALSE;
 		if ((NT++ == 0) && (Str::eq(value, I"meta"))) {
-			inter_pair val = InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
-				verb_directive_meta_RPSYM, I"VERB_DIRECTIVE_META"));
+			inter_pair val = InterValuePairs::symbolic(IBM,
+				RunningPipelines::ensure_symbol(step, verb_directive_meta_RPSYM,
+					I"VERB_DIRECTIVE_META"));
 			@<Add value to the entry pile@>;
 		} else if (Str::len(value) > 0) {
-			inter_pair val = InterValuePairs::undef();
-			@<Assimilate a value@>;
+			inter_pair val = InterValuePairs::undef(); int marker = NOT_APPLICABLE;
+			@<Assimilate a value in grammar@>;
+			if (marker == TRUE) {
+				inter_pair val = InterValuePairs::symbolic(IBM,
+					RunningPipelines::ensure_symbol(step, verb_directive_noun_filter_RPSYM,
+						I"VERB_DIRECTIVE_NOUN_FILTER"));
+				@<Add value to the entry pile@>;
+			} else if (marker == FALSE) {
+				inter_pair val = InterValuePairs::symbolic(IBM,
+					RunningPipelines::ensure_symbol(step, verb_directive_scope_filter_RPSYM,
+						I"VERB_DIRECTIVE_SCOPE_FILTER"));
+				@<Add value to the entry pile@>;
+			}
 			@<Add value to the entry pile@>;
 			if (Str::eq(value, I"->")) next_is_action = TRUE;
 		} else finished = TRUE;
@@ -569,7 +581,15 @@ equating it to a function definition elsewhere.
 @<Assimilate a value@> =
 	if (Str::len(value) > 0) {
 		val = CompileSplatsStage::value(step, IBM, value,
-			(directive == VERB_PLM)?TRUE:FALSE);
+			(directive == VERB_PLM)?TRUE:FALSE, NULL);
+	} else {
+		val = InterValuePairs::number(0);
+	}
+
+@<Assimilate a value in grammar@> =
+	if (Str::len(value) > 0) {
+		val = CompileSplatsStage::value(step, IBM, value,
+			(directive == VERB_PLM)?TRUE:FALSE, &marker);
 	} else {
 		val = InterValuePairs::number(0);
 	}
@@ -798,8 +818,8 @@ The flag |Verbal| is set if the expression came from a |Verb| directive, i.e.,
 from command parser grammar: slightly different syntax applies there.
 
 =
-inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, text_stream *S,
-	int Verbal) {
+inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
+	text_stream *S, int Verbal, int *marker) {
 	inter_tree *I = InterBookmark::tree(IBM);
 	int from = 0, to = Str::len(S)-1;
 	if ((Str::get_at(S, from) == '\'') && (Str::get_at(S, to) == '\'')) {
@@ -947,8 +967,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 	if (Regexp::match(&mr, S, L"scope=(%i+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
-			if (SymbolAnnotation::get_b(symb, SCOPE_FILTER_IANN) == FALSE)
-				SymbolAnnotation::set_b(symb, SCOPE_FILTER_IANN, TRUE);
+			if (marker) *marker = FALSE;
 			return InterValuePairs::symbolic(IBM, symb);
 		} else {
 			PipelineErrors::kit_error("unknown scope routine", S);
@@ -958,8 +977,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM, t
 	if (Regexp::match(&mr, S, L"noun=(%i+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
-			if (SymbolAnnotation::get_b(symb, NOUN_FILTER_IANN) == FALSE)
-				SymbolAnnotation::set_b(symb, NOUN_FILTER_IANN, TRUE);
+			if (marker) *marker = TRUE;
 			return InterValuePairs::symbolic(IBM, symb);
 		} else {
 			PipelineErrors::kit_error("unknown noun routine", S);

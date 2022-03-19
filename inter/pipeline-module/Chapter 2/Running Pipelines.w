@@ -220,6 +220,8 @@ move, add or remove some of these symbols.
 @e direction_kind_RPSYM
 
 @e verb_directive_meta_RPSYM
+@e verb_directive_noun_filter_RPSYM
+@e verb_directive_scope_filter_RPSYM
 @e verb_directive_reverse_RPSYM
 @e verb_directive_slash_RPSYM
 @e verb_directive_divider_RPSYM
@@ -289,6 +291,12 @@ inter_symbol *RunningPipelines::get_symbol(pipeline_step *step, int id) {
 			case verb_directive_meta_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_meta_RPSYM] =
 				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_META"); break;
+			case verb_directive_noun_filter_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_noun_filter_RPSYM] =
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_NOUN_FILTER"); break;
+			case verb_directive_scope_filter_RPSYM:
+				step->ephemera.cached_symbols[verb_directive_scope_filter_RPSYM] =
+				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_SCOPE_FILTER"); break;
 			case verb_directive_reverse_RPSYM:
 				step->ephemera.cached_symbols[verb_directive_reverse_RPSYM] =
 				LargeScale::find_symbol_in_tree(I, I"VERB_DIRECTIVE_REVERSE"); break;

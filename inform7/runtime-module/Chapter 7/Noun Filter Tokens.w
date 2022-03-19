@@ -310,22 +310,22 @@ void NounFilterTokens::function_and_filter(noun_filter_token *nft) {
 }
 
 @ And alternatively NFTs become single array entries; but if so, they may need
-to be annotated so that the code generator can understand that they are not like
-other tokens.
+to be prefaced with a marker so that the code generator can understand that they
+are not like other tokens.
 
 =
 void NounFilterTokens::array_entry(noun_filter_token *nft) {
 	inter_name *iname = NounFilterTokens::filter_fn_iname(nft);
 	if (nft) {
-		inter_ti annot = INVALID_IANN;
 		switch (NounFilterTokens::implementation(nft)) {
 			case VIA_GPR_NFTIMP: break;
-			case VIA_SCOPE_FILTER_NFTIMP: annot = SCOPE_FILTER_IANN; break;
-			case VIA_NOUN_FILTER_NFTIMP: annot = NOUN_FILTER_IANN; break;
+			case VIA_SCOPE_FILTER_NFTIMP:
+				EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_SCOPE_FILTER_HL));
+				break;
+			case VIA_NOUN_FILTER_NFTIMP:
+				EmitArrays::iname_entry(Hierarchy::find(VERB_DIRECTIVE_NOUN_FILTER_HL));
+				break;
 		}
-		if ((annot != INVALID_IANN) &&
-			(InterNames::read_annotation_b(iname, annot) == FALSE))
-			InterNames::annotate_b(iname, annot, TRUE);
 		EmitArrays::iname_entry(iname);
 	}
 }

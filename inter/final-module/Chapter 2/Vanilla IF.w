@@ -246,7 +246,8 @@ its nouns exchanged.
 	int address = LinkedLists::len(gen->verb_grammar);
 	VanillaIF::grammar_byte(gen, line_count); /* no grammar lines */
 
-	int reading_command_verbs = TRUE, synonyms = 0, line_started = FALSE;
+	int reading_command_verbs = TRUE, synonyms = 0, line_started = FALSE,
+		filter = NOT_APPLICABLE;
 	int lines = 0, extent = ConstantInstruction::list_len(P);
 	for (int i=0; i<extent; i++) {
 		inter_pair val = ConstantInstruction::list_entry(P, i);
@@ -393,14 +394,21 @@ The opening byte gives some metadata bits, and then there's a word.
 @ Again, five bytes: one byte metadata, one word value.
 
 @<Handle a noun filter, a scope filter or similar@> =
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_NOUN_FILTER")) {
+		filter = TRUE; continue;
+	}
+	if (Str::eq(InterSymbol::identifier(S), I"VERB_DIRECTIVE_SCOPE_FILTER")) {
+		filter = FALSE; continue;
+	}
 	int bc = 0x86;				
-	if (SymbolAnnotation::get_b(S, SCOPE_FILTER_IANN)) bc = 0x85;
-	if (SymbolAnnotation::get_b(S, NOUN_FILTER_IANN))  bc = 0x83;
+	if (filter == FALSE) bc = 0x85;
+	if (filter == TRUE)  bc = 0x83;
 	VanillaIF::grammar_byte(gen, bc + token_metadata);
 	TEMPORARY_TEXT(MG)
 	Generators::mangle(gen, MG, InterSymbol::trans(S));
 	VanillaIF::grammar_word_textual(gen, MG);
 	DISCARD_TEXT(MG)
+	filter = NOT_APPLICABLE;
 
 @<Read this dictionary word as part of a grammar line@> =
 	text_stream *glob_text = InterValuePairs::to_dictionary_word(I, val);

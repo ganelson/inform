@@ -67,7 +67,7 @@ package main _plain
 	constant (K_rulebook) RB_after = { R_after1, R_after2 }
 	typename K_colour____colour = function K_colour -> K_colour
 	package (K_colour____colour) R_101 _code
-		local (/main/K_colour) x __argument
+		local (/main/K_colour) x
 		code
 			inv /main/R_102
 				val (/main/K_colour) /main/I_green
@@ -79,7 +79,7 @@ package main _plain
 						val (/main/K_number) 1
 					val (/main/K_truth_state) glob"a b"
 	package (K_colour____colour) R_102 _code
-		local (/main/K_colour) x __argument
+		local (/main/K_colour) x
 		code
 			inv !return
 				val (/main/K_colour) /main/I_red

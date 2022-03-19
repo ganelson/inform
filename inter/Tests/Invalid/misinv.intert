@@ -10,7 +10,7 @@ package main _plain
 	typename K_stuff = struct K_number K_colour K_odour
 	typename K_colour____colour = function K_colour -> K_colour
 	package R_101 _code
-		local (/main/K_colour) x __argument
+		local (/main/K_colour) x
 		code
 			val (/main/K_number) 3
 			inv !jump
@@ -26,7 +26,7 @@ package main _plain
 				inv !increment
 					ref (/main/K_number) x
 	package R_102 _code
-		local (/main/K_colour) x __argument
+		local (/main/K_colour) x
 		code
 			inv !increment
 			inv /main/R_101

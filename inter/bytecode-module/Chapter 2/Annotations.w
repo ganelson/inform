@@ -63,15 +63,11 @@ The set of annotations used by the Inform tool suite is as follows.
 
 @e ACTION_IANN
 @e ARCHITECTURAL_IANN
-@e ARGUMENT_IANN
 @e ASSIMILATED_IANN
 @e EITHER_OR_IANN
 @e FAKE_ACTION_IANN
-@e IMPLIED_ARGUMENT_IANN
 @e INLINE_ARRAY_IANN
-@e NOUN_FILTER_IANN
 @e OBJECT_IANN
-@e SCOPE_FILTER_IANN
 @e TEXT_LITERAL_IANN
 @e VENEER_IANN
 
@@ -96,15 +92,11 @@ void SymbolAnnotation::declare_canonical_annotations(void) {
 
 	SymbolAnnotation::declare(ACTION_IANN,              I"__action",              BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(ARCHITECTURAL_IANN,       I"__architectural",       BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(ARGUMENT_IANN,            I"__argument",            BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(ASSIMILATED_IANN,         I"__assimilated",         BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(EITHER_OR_IANN,           I"__either_or",           BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(FAKE_ACTION_IANN,         I"__fake_action",         BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(IMPLIED_ARGUMENT_IANN,    I"__implied_argument",    BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(INLINE_ARRAY_IANN,        I"__inline_array",        BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(NOUN_FILTER_IANN,         I"__noun_filter",         BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(OBJECT_IANN,              I"__object",              BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(SCOPE_FILTER_IANN,        I"__scope_filter",        BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(TEXT_LITERAL_IANN,        I"__text_literal",        BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(VENEER_IANN,              I"__veneer",              BOOLEAN_IATYPE);
 
