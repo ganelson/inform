@@ -68,11 +68,11 @@ this will be executed on the first |"apple"|, on |"banana"| and the first
 
 @ This is run on every P in the list. It begins as, for example,
 = (text as Inter)
-	constant whatever K_unchecked = "banana" __text_literal
+	constant (text_literal) whatever = "banana"
 =
 and becomes:
 = (text as Inter)
-	constant whatever K_unchecked = ref_to_text
+	constant whatever = ref_to_text
 =
 where |ref_text_2| in the current package is equated to |alphabetised_text_1|
 in |texts|.
@@ -83,10 +83,7 @@ in |texts|.
 	Wiring::wire_to(ref_s, latest_s);
 	inter_pair val = InterValuePairs::symbolic_in(InterPackage::container(P), ref_s);
 	ConstantInstruction::set_constant(P, val);
-
-	inter_symbol *con_name =
-		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-	SymbolAnnotation::set_b(con_name, TEXT_LITERAL_IANN, FALSE);
+	ConstantInstruction::set_type(P, InterTypes::unchecked());
 
 @ Here we extract the actual text from a node defining a constant literal text,
 and use that to define a sorting function on nodes:

@@ -91,9 +91,8 @@ inter_name *TextLiterals::to_value_inner(wording W, int unesc) {
 		return TextLiterals::default_text();
 
 	inter_name *content_iname = Enclosures::new_iname(LITERALS_HAP, TEXT_LITERAL_HL);
-	InterNames::annotate_b(content_iname, TEXT_LITERAL_IANN, TRUE);
 	if (Task::wraps_existing_storyfile()) {
-		Emit::text_constant(content_iname, I"--");
+		Emit::text_constant_literal(content_iname, I"--");
 	} else {
 		TEMPORARY_TEXT(TLT)
 		int options = CT_DEQUOTE;
@@ -105,7 +104,7 @@ inter_name *TextLiterals::to_value_inner(wording W, int unesc) {
 			}
 		}
 		TranscodeText::from_wide_string(TLT, Lexer::word_text(w1), options);
-		Emit::text_constant(content_iname, TLT);
+		Emit::text_constant_literal(content_iname, TLT);
 		DISCARD_TEXT(TLT)
 	}
 

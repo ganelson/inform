@@ -2861,6 +2861,7 @@ package main _plain
 				constant (text) ^name = "KD_Count" __translation="^name_U72"
 				constant (int32) ^source_order = 13 __translation="^source_order_U16"
 				constant (int32) property_id = 11 __translation="property_id_U2"
+		typename text_literal = struct int32 unchecked
 	package synoptic _module
 		package actions _submodule
 			package DB_Action_Details_fn _function
@@ -27751,7 +27752,7 @@ package main _plain
 			constant (int32) KIT_CONFIGURATION_BITMAP = 0
 			constant (int32) KIT_CONFIGURATION_LOOKMODE = 2
 			constant (text) I7_VERSION_NUMBER = "10.1.0"
-			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U61"
+			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U62"
 			constant (text) ^virtual_machine = "C/32d/v1/no-main"
 			constant (text) ^virtual_machine_icon = "vm_glulx.png"
 			constant (text) ^language_elements_used = "core, naming, instance counting, glulx external files"

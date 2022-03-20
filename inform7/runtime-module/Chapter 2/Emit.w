@@ -181,6 +181,15 @@ void Emit::text_constant(inter_name *con_iname, text_stream *contents) {
 	Packaging::exit(Emit::tree(), save);
 }
 
+void Emit::text_constant_literal(inter_name *con_iname, text_stream *contents) {
+	packaging_state save = Packaging::enter_home_of(con_iname);
+	inter_symbol *con_s = InterNames::to_symbol(con_iname);
+	Produce::guard(ConstantInstruction::new(Emit::at(), con_s,
+		LargeScale::text_literal_type(Emit::tree()),
+		InterValuePairs::from_text(Emit::at(), contents), Emit::baseline(), NULL));
+	Packaging::exit(Emit::tree(), save);
+}
+
 @ And equating one constant to another named constant:
 
 =

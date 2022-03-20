@@ -51,9 +51,8 @@ inter_symbol *Synoptic::new_symbol(inter_package *pack, text_stream *name) {
 =
 void Synoptic::textual_constant(inter_tree *I, pipeline_step *step,
 	inter_symbol *con_s, text_stream *S, inter_bookmark *IBM) {
-	SymbolAnnotation::set_b(con_s, TEXT_LITERAL_IANN, TRUE);
 	Produce::guard(ConstantInstruction::new(IBM, con_s,
-		InterTypes::unchecked(), InterValuePairs::from_text(IBM, S),
+		LargeScale::text_literal_type(I), InterValuePairs::from_text(IBM, S),
 		(inter_ti) InterBookmark::baseline(IBM) + 1, NULL));
 }
 

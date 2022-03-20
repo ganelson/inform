@@ -118,11 +118,3 @@ package main _plain
 		constant MIN_NEGATIVE_NUMBER = -32768 __architectural
 		constant TARGET_ZCODE = 1 __architectural
 		constant DEBUG = 1 __architectural
-	package generic _module
-		package kinds _submodule
-			typename K_unchecked = unchecked
-			typename K_unchecked_function = function K_unchecked -> K_unchecked
-			typename K_unchecked_list = list of K_unchecked
-			typename K_int32 = int32
-			typename K_int2 = int2
-			typename K_string = text

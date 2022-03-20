@@ -351,6 +351,11 @@ void ConstantInstruction::set_constant(inter_tree_node *P, inter_pair val) {
 	else internal_error("tried to set value for non-constant");
 }
 
+void ConstantInstruction::set_type(inter_tree_node *P, inter_type type) {
+	P->W.instruction[TYPE_CONST_IFLD] =
+		InterTypes::to_TID(InterPackage::scope(Inode::get_package(P)), type);
+}
+
 int ConstantInstruction::list_len(inter_tree_node *P) {
 	if ((P == NULL) || (Inode::isnt(P, CONSTANT_IST)) ||
 		(P->W.instruction[FORMAT_CONST_IFLD] == CONST_LIST_FORMAT_NONE))

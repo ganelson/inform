@@ -70,7 +70,7 @@ package main _plain
 						val 0
 		package marmorial_prop _property
 			constant property_id = 0
-			property (int2) marmorial __assimilated __either_or
+			property (int2) marmorial __assimilated
 		package density_prop _property
 			constant property_id = 0
 			property density __assimilated

@@ -180,7 +180,9 @@ void MakeSynopticModuleStage::visitor(inter_tree *I, inter_tree_node *P, void *s
 	if (Inode::is(P, CONSTANT_IST)) {
 		inter_symbol *con_s =
 			InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
-		if (SymbolAnnotation::get_b(con_s, TEXT_LITERAL_IANN))
+		inter_type type = InterTypes::of_symbol(con_s);
+		if (InterTypes::type_name(type) ==
+			InterTypes::type_name(LargeScale::text_literal_type(I)))
 			InterNodeList::array_add(inv->text_nodes, P);
 	}
 	if (Inode::is(P, PACKAGE_IST)) {

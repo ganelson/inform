@@ -26,6 +26,8 @@ typedef struct site_structure_data {
 	struct inter_bookmark package_types_bookmark;
 
 	struct dictionary *modules_indexed_by_name; /* of |module_request| */
+	
+	struct inter_symbol *text_literal_s;
 } site_structure_data;
 
 @ =
@@ -46,6 +48,8 @@ void LargeScale::clear_site_data(inter_tree *I) {
 	B->strdata.package_types_bookmark = InterBookmark::at_start_of_this_repository(I);
 
 	B->strdata.modules_indexed_by_name = Dictionaries::new(32, FALSE);
+	
+	B->strdata.text_literal_s = NULL;
 }
 
 @ The three special packages |main|, |connectors| and |architectural| will be
@@ -479,4 +483,31 @@ void LargeScale::begin_new_tree(inter_tree *I) {
 	LargeScale::package_type(I, I"_linkage"); // And this the third
 
 	Packaging::enter(LargeScale::main_request(I)); // Which we never exit
+}
+
+@h Convenient types.
+This structure is used for text literals, which are two-word data structures.
+The necessary typename is created on demand: this amounts to writing
+|typename text_literal struct int32 unchecked|.
+
+=
+inter_type LargeScale::text_literal_type(inter_tree *I) {
+	inter_symbol *text_literal_s = I->site.strdata.text_literal_s;
+	if (text_literal_s == NULL) {
+		inter_package *pack = InterPackage::from_URL(I, I"/main/generic");
+		if (pack == NULL) internal_error("no main/generic");
+		inter_bookmark in_generic = InterBookmark::at_end_of_this_package(pack);
+		inter_ti operands[2];
+		operands[0] = InterTypes::to_TID_at(&in_generic,
+			InterTypes::from_constructor_code(INT32_ITCONC));
+		operands[1] = InterTypes::to_TID_at(&in_generic, InterTypes::unchecked());
+		text_literal_s =
+			InterSymbolsTable::create_with_unique_name(
+				InterBookmark::scope(&in_generic), I"text_literal");
+		TypenameInstruction::new(&in_generic, text_literal_s,
+			STRUCT_ITCONC, NULL, 2, operands,
+			(inter_ti) InterBookmark::baseline(&in_generic) + 1, NULL);
+		I->site.strdata.text_literal_s = text_literal_s;
+	}
+	return InterTypes::from_type_name(text_literal_s);
 }
