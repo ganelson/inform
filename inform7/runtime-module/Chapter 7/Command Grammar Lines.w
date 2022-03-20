@@ -391,7 +391,6 @@ void RTCommandGrammarLines::MistakeActionSub(void) {
 	
 	inter_name *ma_iname = Hierarchy::find(MISTAKEACTION_HL);
 	Emit::unchecked_numeric_constant(ma_iname, 10000);
-	InterNames::annotate_b(ma_iname, ACTION_IANN, 1);
 	Hierarchy::make_available(ma_iname);
 }
 

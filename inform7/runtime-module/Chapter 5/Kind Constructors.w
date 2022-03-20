@@ -661,7 +661,7 @@ void RTKindConstructors::compile(void) {
 		@<Compile data support functions@>;
 		
 		if (kc->compilation_data.declaration_sequence_number >= 0)
-			InterNames::annotate_i(RTKindDeclarations::iname(K), DECLARATION_ORDER_IANN,
+			Hierarchy::apply_metadata_from_number(pack, KIND_DECLARATION_ORDER_MD_HL,
 				(inter_ti) kc->compilation_data.declaration_sequence_number);
 
 		if ((Kinds::Behaviour::is_quasinumerical(K)) && (Kinds::is_intermediate(K) == FALSE)) {

@@ -419,7 +419,7 @@ void LocalVariableSlates::declare_all_with_purpose(stack_frame *frame, int p) {
 inter_symbol *LocalVariableSlates::declare_one(local_variable *lvar) {
 	inter_symbol *S = Produce::local_exists(Emit::tree(), lvar->identifier);
 	if (S == NULL) S = Produce::local(Emit::tree(), lvar->current_usage.kind_as_declared,
-		lvar->identifier, INVALID_IANN, lvar->comment_on_use);
+		lvar->identifier, lvar->comment_on_use);
 	return S;
 }
 

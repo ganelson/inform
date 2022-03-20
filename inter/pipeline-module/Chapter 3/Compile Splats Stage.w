@@ -303,7 +303,6 @@ not already there.
 	SymbolAnnotation::set_b(made_s, ASSIMILATED_IANN, 1);
 	if (directive == FAKEACTION_PLM) SymbolAnnotation::set_b(made_s, FAKE_ACTION_IANN, TRUE);
 	if (directive == OBJECT_PLM) SymbolAnnotation::set_b(made_s, OBJECT_IANN, TRUE);
-	if (directive == ATTRIBUTE_PLM) SymbolAnnotation::set_b(made_s, EITHER_OR_IANN, TRUE);
 	if (directive == VERB_PLM) InterSymbol::set_flag(made_s, MAKE_NAME_UNIQUE_ISYMF);
 
 @<Declare a property ID symbol to go with it@> =
@@ -559,7 +558,6 @@ in other compilation units. So we create |action_id| equal just to 0 for now.
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	Produce::guard(ConstantInstruction::new(IBM, action_s,
 		InterTypes::unchecked(), InterValuePairs::number(10000), B, NULL));
-	SymbolAnnotation::set_b(action_s, ACTION_IANN, 1);
 
 @ The Inter convention is that an action package should contain a function
 to carry it out; for |##ScriptOn|, this would be called |ScriptOnSub|. In fact

@@ -89,14 +89,37 @@ allowed -- so-called "extended values". In particular:
 (*) A literal |list| is written in braces: |{ V1, V2, ..., Vn }|, where |V1|, 
 |V2| and so on are all (unextended) values. The empty list is |{ }|.
 
+(*) A list of bytes, rather than words, is written |bytes{ V1, V2, ..., Vn}|,
+in the same way.
+
+(*) Either sort of list can be given with an extent instead. |list of N words|
+or |list of N bytes| constructs a list of |N| zero entries. This is not simply
+an abbreviation for typing something like |{ 0, 0, 0, 0, 0, 0, 0, 0 }|, because |N|
+does not have to be a literal number -- it can be a named symbol defined elsewhere,
+or even defined in a different Inter tree to be linked in later.
+
+(*) Prefixing either sort of list with the keyword |bounded| tells Inter that
+the first entry (i.e., at index 0) should be the number of entries, not counting
+that first entry. (This number is the list's "bound".) Thus |bounded { 70, 15 }|
+is equivalent to |{ 2, 70, 15 }|, and |bounded list of 50 bytes| produces a list
+of 51 bytes, the first being 50, the next fifty all being 0.
+
 (*) A structure is written |struct{ V1, V2, ..., Vn }|. The empty |struct|
-is not legal.
+is not legal, and the keyword |bounded| cannot be used.
 
 (*) Calculated values are written |sum{ V1, V2, ..., Vn }|, and similarly
 for |product{ }|, |difference{ }| and |quotient{ }|. Empty calculated values
 are not legal.
 
-Lists are obviously useful. Here are some examples:
+@ Readers with experience of Inform 6 will recognise that |{ ... }| and |bytes{ ... }|
+correspond to I6's |Array -->| and |Array ->| respectively, that |bounded { ... }|
+and |bounded bytes{ ... }| correspond to |Array table| and |Array buffer|, and
+that |list of N words| and |list of N bytes| correspond to |Array --> N| and
+|Array -> N|. Note, however, that Inter does not suffer from the ambiguity of
+Inform 6's old syntax here. The Inter list |{ 20 }| is unambiguously a one-entry
+list whose one entry is 20; it is quite different from |list of 20 words|.
+
+@ Lists are obviously useful. Here are some examples:
 = (text as Inter)
 	constant squares = { 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 }
 	constant colours = { "red", "green", "blue" }
@@ -107,7 +130,7 @@ is used (see below); the expectation is that a list would contain a varying
 number of entries all of the same type, whereas a struct would contain a fixed
 number of entries of perhaps different but predetermined types.
 
-Calculated values are an unusual but very useful feature of Inter. Consider:
+@ Calculated values are an unusual but very useful feature of Inter. Consider:
 = (text as Inter)
 	constant SPEED_LIMIT = 70
 	constant SAFE_SPEED = difference{ SPEED_LIMIT, 5 }

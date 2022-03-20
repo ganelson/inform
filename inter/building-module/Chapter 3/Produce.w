@@ -607,19 +607,17 @@ void Produce::lab(inter_tree *I, inter_symbol *L) {
 
 @ Now for local variables.
 
-Note that this function is not intended as the way high-level coce in //inform7//
+Note that this function is not intended as the way high-level code in //inform7//
 should create a local variable: see //imperative: Local Variables// for that.
 This function is at a lower level -- it does the necessary Inter business, but
 doesn't add the name tp the current stack frame in //inform7//.
 
 =
-inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname,
-	inter_ti annot, text_stream *comm) {
+inter_symbol *Produce::local(inter_tree *I, kind *K, text_stream *lname, text_stream *comm) {
 	if (I->site.sprdata.current_inter_function == NULL)
 		internal_error("local variable emitted outside function");
 	if (K == NULL) K = K_value;
 	inter_symbol *local_s = Produce::new_local_symbol(I, lname);
-	if (annot != INVALID_IANN) SymbolAnnotation::set_b(local_s, annot, TRUE);
 	InterSymbol::make_local(local_s);
 	inter_bookmark *locals_at = &(I->site.sprdata.function_locals_bookmark);
 	if ((comm) && (Str::len(comm) > 0))

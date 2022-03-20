@@ -37,7 +37,7 @@ package main _plain
 	typename K_odour = enum
 	instance (K_odour) I_citrus = 5
 	instance (K_odour) I_leather = 10
-	property (K_number) P_strength __property_name="strength"
+	property (K_number) P_strength
 	permission for K_odour to have P_strength
 	propertyvalue P_strength of I_citrus = 20
 	propertyvalue P_strength of I_leather = 7

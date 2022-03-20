@@ -119,7 +119,8 @@ void RTKindDeclarations::declare_base_kinds(void) {
 		if (RTKindDeclarations::base_represented_in_Inter(K)) {
 			RTKindDeclarations::declare_base_kind(K);
 			inter_name *iname = RTKindDeclarations::iname(K);
-			InterNames::annotate_i(iname, SOURCE_ORDER_IANN, c++);
+			package_request *req = InterNames::location(iname);
+			Hierarchy::apply_metadata_from_number(req, KIND_SOURCE_ORDER_MD_HL, c++);
 		}
 }
 

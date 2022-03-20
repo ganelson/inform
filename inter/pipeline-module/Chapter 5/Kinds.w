@@ -469,7 +469,7 @@ kind number 4, so it occupies record 4 in this array -- words 8 and 9. Word
 	}
 	
 	linked_list *ordered_L = NEW_LINKED_LIST(inter_symbol);
-	CodeGen::sort_symbol_list(ordered_L, L, CodeGen::in_source_order);
+	CodeGen::sort_symbol_list(ordered_L, L, CodeGen::in_source_md_order);
 	int i = 1;
 	inter_symbol *kind_name;
 	LOOP_OVER_LINKED_LIST(kind_name, inter_symbol, ordered_L)

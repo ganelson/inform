@@ -61,26 +61,20 @@ The set of annotations used by the Inform tool suite is as follows.
 
 @e INVALID_IANN from 0
 
-@e ACTION_IANN
 @e ARCHITECTURAL_IANN
 @e ASSIMILATED_IANN
-@e EITHER_OR_IANN
 @e FAKE_ACTION_IANN
 @e INLINE_ARRAY_IANN
 @e OBJECT_IANN
 @e TEXT_LITERAL_IANN
 @e VENEER_IANN
 
-@e ARROW_COUNT_IANN
 @e C_ARRAY_ADDRESS_IANN
-@e DECLARATION_ORDER_IANN
 @e I6_GLOBAL_OFFSET_IANN
 @e OBJECT_KIND_COUNTER_IANN
-@e SOURCE_ORDER_IANN
 
 @e APPEND_IANN
 @e INNER_PROPERTY_NAME_IANN
-@e PROPERTY_NAME_IANN
 @e TRANSLATION_IANN
 
 @ The special annotation |__invalid|, with ID |INVALID_IANN|, is never given to
@@ -90,10 +84,8 @@ any symbol: it's used to mean "do not make an annotation".
 void SymbolAnnotation::declare_canonical_annotations(void) {
 	SymbolAnnotation::declare(INVALID_IANN,  I"__invalid", INTEGER_IATYPE);
 
-	SymbolAnnotation::declare(ACTION_IANN,              I"__action",              BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(ARCHITECTURAL_IANN,       I"__architectural",       BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(ASSIMILATED_IANN,         I"__assimilated",         BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(EITHER_OR_IANN,           I"__either_or",           BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(FAKE_ACTION_IANN,         I"__fake_action",         BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(INLINE_ARRAY_IANN,        I"__inline_array",        BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(OBJECT_IANN,              I"__object",              BOOLEAN_IATYPE);
@@ -102,15 +94,11 @@ void SymbolAnnotation::declare_canonical_annotations(void) {
 
 	SymbolAnnotation::declare(APPEND_IANN,              I"__append",              TEXTUAL_IATYPE);
 	SymbolAnnotation::declare(INNER_PROPERTY_NAME_IANN, I"__inner_property_name", TEXTUAL_IATYPE);
-	SymbolAnnotation::declare(PROPERTY_NAME_IANN,       I"__property_name",       TEXTUAL_IATYPE);
 	SymbolAnnotation::declare(TRANSLATION_IANN,         I"__translation",         TEXTUAL_IATYPE);
 
-	SymbolAnnotation::declare(ARROW_COUNT_IANN,         I"__arrow_count",         INTEGER_IATYPE);
 	SymbolAnnotation::declare(C_ARRAY_ADDRESS_IANN,     I"__array_address",       INTEGER_IATYPE);
-	SymbolAnnotation::declare(DECLARATION_ORDER_IANN,   I"__declaration_order",   INTEGER_IATYPE);
 	SymbolAnnotation::declare(I6_GLOBAL_OFFSET_IANN,    I"__global_offset",       INTEGER_IATYPE);
 	SymbolAnnotation::declare(OBJECT_KIND_COUNTER_IANN, I"__object_kind_counter", INTEGER_IATYPE);
-	SymbolAnnotation::declare(SOURCE_ORDER_IANN,        I"__source_order",        INTEGER_IATYPE);
 }
 
 @ This is printed when //inter// is run with the |-annotations| switch.

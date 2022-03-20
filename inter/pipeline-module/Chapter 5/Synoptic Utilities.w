@@ -74,7 +74,7 @@ void Synoptic::end_function(inter_tree *I, pipeline_step *step, inter_name *inam
 
 =
 inter_symbol *Synoptic::local(inter_tree *I, text_stream *name, text_stream *comment) {
-	return Produce::local(I, K_value, name, INVALID_IANN, comment);
+	return Produce::local(I, K_value, name, comment);
 }
 
 @h Making arrays.

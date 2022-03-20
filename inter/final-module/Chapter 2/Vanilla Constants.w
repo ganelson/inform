@@ -12,10 +12,11 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 		InterSymbolsTable::symbol_from_ID_at_node(P, DEFN_CONST_IFLD);
 	if (con_name == NULL) internal_error("no constant");
 	if (InterSymbol::is_metadata_key(con_name) == FALSE) {
-		if (SymbolAnnotation::get_b(con_name, ACTION_IANN) == 1)  {
-			@<Declare this constant as an action name@>;
-		} else if (SymbolAnnotation::get_b(con_name, FAKE_ACTION_IANN)) {
+		text_stream *S = InterSymbol::identifier(con_name);
+		if (SymbolAnnotation::get_b(con_name, FAKE_ACTION_IANN)) {
 			@<Declare this constant as a fake action name@>;
+		} else if (Str::prefix_eq(S, I"##", 2))  {
+			@<Declare this constant as an action name@>;
 		} else if (SymbolAnnotation::get_b(con_name, VENEER_IANN)) {
 			@<Ignore this constant as part of the veneer@>;
 		} else if (SymbolAnnotation::get_b(con_name, OBJECT_IANN)) {

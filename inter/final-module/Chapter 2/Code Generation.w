@@ -111,9 +111,9 @@ code_generation *CodeGen::new_generation(pipeline_step *step, filename *F,
 @<Traverse for global bric-a-brac@> =
 	InterTree::traverse(gen->from, CodeGen::gather_up, gen, NULL, 0);
 	CodeGen::sort_symbol_list(gen->kinds_in_declaration_order, gen->kinds,
-		CodeGen::in_declaration_order);
+		CodeGen::in_declaration_md_order);
 	CodeGen::sort_symbol_list(gen->instances_in_declaration_order, gen->instances,
-		CodeGen::in_declaration_order);
+		CodeGen::in_declaration_md_order);
 
 @ =
 void CodeGen::gather_up(inter_tree *I, inter_tree_node *P, void *state) {
@@ -160,12 +160,13 @@ void CodeGen::sort_symbol_list(linked_list *to_L, linked_list *L,
 	}
 }
 
-int CodeGen::in_source_order(const void *elem1, const void *elem2) {
-	return CodeGen::in_annotation_order(elem1, elem2, SOURCE_ORDER_IANN);
-}
-int CodeGen::in_declaration_order(const void *elem1, const void *elem2) {
-	return CodeGen::in_annotation_order(elem1, elem2, DECLARATION_ORDER_IANN);
-}
+@h Sorting by annotation value.
+We stopped doing this in March 2022, but the function seems worth keeping around.
+It provides a criterion for sorting a list of symbols by looking at the values
+of a numerical annotation, with symbols not having that annotation pushed to
+the back.
+
+=
 int CodeGen::in_annotation_order(const void *elem1, const void *elem2, inter_ti annot) {
 	const inter_symbol **e1 = (const inter_symbol **) elem1;
 	const inter_symbol **e2 = (const inter_symbol **) elem2;
@@ -179,6 +180,34 @@ int CodeGen::in_annotation_order(const void *elem1, const void *elem2, inter_ti 
 int CodeGen::sequence_number(const inter_symbol *kind_name, inter_ti annot) {
 	int N = SymbolAnnotation::get_i(kind_name, annot);
 	if (N >= 0) return N;
+	return 100000000;
+}
+
+@h Sorting by metadata value.
+The preferred alternative is to sort by the value of a metadata key present in
+the same packages as the symbols:
+
+=
+int CodeGen::in_source_md_order(const void *elem1, const void *elem2) {
+	return CodeGen::in_md_order(elem1, elem2, I"^source_order");
+}
+int CodeGen::in_declaration_md_order(const void *elem1, const void *elem2) {
+	return CodeGen::in_md_order(elem1, elem2, I"^declaration_order");
+}
+int CodeGen::in_md_order(const void *elem1, const void *elem2, text_stream *key) {
+	const inter_symbol **e1 = (const inter_symbol **) elem1;
+	const inter_symbol **e2 = (const inter_symbol **) elem2;
+	if ((*e1 == NULL) || (*e2 == NULL))
+		internal_error("Disaster while sorting kinds");
+	int s1 = CodeGen::md_number(*e1, key);
+	int s2 = CodeGen::md_number(*e2, key);
+	if (s1 != s2) return s1-s2;
+	return InterSymbol::sort_number(*e1) - InterSymbol::sort_number(*e2);
+}
+int CodeGen::md_number(const inter_symbol *owner_name, text_stream *key) {
+	inter_package *pack = InterSymbol::package((inter_symbol *) owner_name);
+	if (Metadata::exists(pack, key))
+		return (int) Metadata::read_optional_numeric(pack, key);
 	return 100000000;
 }
 

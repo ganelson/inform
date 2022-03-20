@@ -68,7 +68,7 @@ this will be executed on the first |"apple"|, on |"banana"| and the first
 
 @ This is run on every P in the list. It begins as, for example,
 = (text as Inter)
-	constant whatever K_unchecked = "banana" __text_literal=1
+	constant whatever K_unchecked = "banana" __text_literal
 =
 and becomes:
 = (text as Inter)

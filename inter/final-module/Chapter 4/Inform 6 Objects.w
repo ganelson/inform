@@ -72,8 +72,8 @@ to the same number as |edible|. So word 0 is certainly necessary.
 
 =
 void I6TargetObjects::declare_property(code_generator *gtr, code_generation *gen,
-	inter_symbol *prop_name, linked_list *all_forms) {
-	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
+	inter_symbol *prop_s, linked_list *all_forms) {
+	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_s);
 
 	int originated_in_a_kit = FALSE;
 	@<Find whether this property has been assimilated from a kit@>;
@@ -99,7 +99,7 @@ that definition to be the true one.
 			originated_in_a_kit = TRUE;
 
 @<Decide whether to store this in a VM-attribute@> =
-	if (SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN)) {
+	if (VanillaObjects::is_either_or_property(prop_s)) {
 		store_in_VM_attribute = NOT_APPLICABLE;
 		@<Any either/or property which can belong to a value instance is ineligible@>;
 		@<An either/or property coming from a kit must be chosen@>;
@@ -303,8 +303,7 @@ void I6TargetObjects::declare_instance(code_generator *gtr,
 @ Each instance of a kind of object becomes a VM-object:
 
 @<An object instance@> =
-	int c = SymbolAnnotation::get_i(inst_s, ARROW_COUNT_IANN);
-	if (c < 0) c = 0;
+	int c = VanillaObjects::spatial_depth(inst_s);
 	int is_dir = FALSE;
 	inter_symbol *K_direction =
 		RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM);
@@ -359,10 +358,10 @@ void I6TargetObjects::VM_object_header(code_generation *gen, text_stream *class_
 	if (is_dir) WRITE(" Compass");
 }
 
-void I6TargetObjects::VM_property(code_generation *gen, inter_symbol *prop_name, text_stream *val) {
+void I6TargetObjects::VM_property(code_generation *gen, inter_symbol *prop_s, text_stream *val) {
 	text_stream *OUT = CodeGen::current(gen);
-	text_stream *property_name = VanillaObjects::inner_property_name(gen, prop_name);
-	if (InterSymbol::get_flag(prop_name, ATTRIBUTE_MARK_ISYMF)) {
+	text_stream *property_name = VanillaObjects::inner_property_name(gen, prop_s);
+	if (InterSymbol::get_flag(prop_s, ATTRIBUTE_MARK_ISYMF)) {
 		if (Str::eq(val, I"0")) WRITE("    has ~%S\n", property_name);
 		else WRITE("    has %S\n", property_name);
 	} else {
@@ -405,7 +404,7 @@ we must use the pecualiar I6 syntax here to get the right outcome.
 
 =
 void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
-	inter_symbol *prop_name, inter_pair pair, inter_tree_node *X) {
+	inter_symbol *prop_s, inter_pair pair, inter_tree_node *X) {
 	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, val);
 	int inline_this = FALSE;
@@ -423,7 +422,7 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	}
 	if (inline_this == FALSE) CodeGen::pair(gen, X, pair);
 	CodeGen::deselect_temporary(gen);
-	I6TargetObjects::VM_property(gen, prop_name, val);
+	I6TargetObjects::VM_property(gen, prop_s, val);
 	DISCARD_TEXT(val)
 }
 
@@ -432,8 +431,8 @@ of a value kind. (An array which is not inline.)
 
 =
 void I6TargetObjects::assign_properties(code_generator *gtr, code_generation *gen,
-	inter_symbol *kind_name, inter_symbol *prop_name, text_stream *array) {
-	I6TargetObjects::VM_property(gen, prop_name, array);
+	inter_symbol *kind_name, inter_symbol *prop_s, text_stream *array) {
+	I6TargetObjects::VM_property(gen, prop_s, array);
 }
 
 @h A few resources.

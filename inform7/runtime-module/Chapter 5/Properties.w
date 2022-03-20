@@ -184,7 +184,6 @@ void RTProperties::compile(void) {
 		@<Declare the property to Inter@>;
 		@<Compile the property name metadata@>;
 		@<Compile the property ID@>;
-		@<Annotate the property iname@>;
 	}
 }
 
@@ -196,22 +195,14 @@ void RTProperties::compile(void) {
 		Hierarchy::apply_metadata_from_wording(pack, PROPERTY_NAME_MD_HL, prn->name);
 	else
 		Hierarchy::apply_metadata(pack, PROPERTY_NAME_MD_HL, InterNames::get_translation(iname));
+	Hierarchy::apply_metadata_from_number(pack, PROPERTY_ORDER_MD_HL,
+		(inter_ti) prn->allocation_id);
 
 @ A unique set of values is imposed here during linking.
 
 @<Compile the property ID@> =
 	inter_name *id_iname = Hierarchy::make_iname_in(PROPERTY_ID_HL, pack);
 	Emit::numeric_constant(id_iname, 0); /* a placeholder */
-
-@ These provide hints to the code-generator, but should possibly be done as
-package metadata instead?
-
-@<Annotate the property iname@> =
-	InterNames::annotate_i(iname, SOURCE_ORDER_IANN, (inter_ti) prn->allocation_id);
-	if (Properties::is_either_or(prn))
-		InterNames::annotate_b(RTProperties::iname(prn), EITHER_OR_IANN, TRUE);
-	if (Wordings::nonempty(prn->name))
-		InterNames::annotate_w(RTProperties::iname(prn), PROPERTY_NAME_IANN, prn->name);
 
 @h Non-typesafe 0.
 When a property is used to store certain forms of relation, it then needs

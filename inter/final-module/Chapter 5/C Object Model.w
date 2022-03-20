@@ -389,8 +389,7 @@ void CObjectModel::declare_instance(code_generator *gtr, code_generation *gen,
 }
 
 @<Declare an object instance@> =
-	int c = SymbolAnnotation::get_i(inst_s, ARROW_COUNT_IANN);
-	if (c < 0) c = 0;
+	int c = VanillaObjects::spatial_depth(inst_s);
 	int is_dir = TypenameInstruction::is_a(kind_s,
 		RunningPipelines::get_symbol(gen->from_step, direction_kind_RPSYM));
 	C_property_owner *owner = CObjectModel::new_runtime_object(gtr, gen,
@@ -485,12 +484,11 @@ C_property *CObjectModel::existing_property_by_name(code_generation *gen,
 
 =
 void CObjectModel::declare_property(code_generator *gtr, code_generation *gen,
-	inter_symbol *prop_name, linked_list *all_forms) {
-	text_stream *name = InterSymbol::trans(prop_name);
-	int either_or = FALSE;
-	if (SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN)) either_or = TRUE;
+	inter_symbol *prop_s, linked_list *all_forms) {
+	text_stream *name = InterSymbol::trans(prop_s);
+	int either_or = VanillaObjects::is_either_or_property(prop_s);
 	C_property *cp = CObjectModel::property_by_name(gen, name, either_or);
-	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_name);
+	text_stream *inner_name = VanillaObjects::inner_property_name(gen, prop_s);
 
 	@<Define the inner name as a constant@>;
 	@<Make the opening two metadata array entries required by Vanilla@>;
@@ -524,9 +522,9 @@ But the second entry is the inner property, as with Inform 6.
 
 @<Define the property name in the symbols header file too@> =
 	text_stream *pname = Metadata::optional_textual(
-		InterPackage::container(prop_name->definition), I"^name");
+		InterPackage::container(prop_s->definition), I"^name");
 	if (Str::len(pname) > 0) {
-		int A = SymbolAnnotation::get_i(prop_name, C_ARRAY_ADDRESS_IANN);
+		int A = SymbolAnnotation::get_i(prop_s, C_ARRAY_ADDRESS_IANN);
 		if (A > 0) {
 			segmentation_pos saved = CodeGen::select(gen, c_property_symbols_I7CGS);
 			text_stream *OUT = CodeGen::current(gen);
@@ -541,7 +539,7 @@ Vabilla calls this to assign a property to a single owner:
 
 =
 void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
-	inter_symbol *prop_name, inter_pair pair, inter_tree_node *X) {
+	inter_symbol *prop_s, inter_pair pair, inter_tree_node *X) {
 
 	int inline_this = FALSE;
 	if (InterValuePairs::is_symbolic(pair)) {
@@ -556,7 +554,7 @@ void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
 	CodeGen::deselect_temporary(gen);
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
 	C_property *prop = CObjectModel::existing_property_by_name(gen,
-		InterSymbol::trans(prop_name));
+		InterSymbol::trans(prop_s));
 	CObjectModel::assign_one_prop(gen, owner, prop, val, inline_this);
 	DISCARD_TEXT(val)
 }
@@ -566,12 +564,12 @@ instances of a single enumerated kind:
 
 =
 void CObjectModel::assign_properties(code_generator *gtr, code_generation *gen,
-	inter_symbol *kind_s, inter_symbol *prop_name, text_stream *array) {
+	inter_symbol *kind_s, inter_symbol *prop_s, text_stream *array) {
 	TEMPORARY_TEXT(mgl)
 	Generators::mangle(gen, mgl, array);
 	C_property_owner *owner = C_GEN_DATA(objdata.current_owner);
 	C_property *prop = CObjectModel::existing_property_by_name(gen,
-		InterSymbol::trans(prop_name));
+		InterSymbol::trans(prop_s));
 	CObjectModel::assign_one_prop(gen, owner, prop, mgl, FALSE);
 	DISCARD_TEXT(mgl)
 }

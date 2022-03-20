@@ -119,7 +119,7 @@ altered.
 	if (Dictionaries::find(first_with_name, name) == NULL) {
 		LOGIF(PROPERTY_ALLOCATION, "! NEW name=%S   sname=%S   eor=%d   assim=%d\n",
 			name, InterSymbol::identifier(prop_name),
-			SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN),
+			VanillaObjects::is_either_or_property(prop_name),
 			SymbolAnnotation::get_b(prop_name, ASSIMILATED_IANN));
 		inner_name = Str::duplicate(name);
 		Dictionaries::create(first_with_name, inner_name);
@@ -130,7 +130,7 @@ altered.
 	} else {
 		LOGIF(PROPERTY_ALLOCATION, "! OLD name=%S   sname=%S   eor=%d   assim=%d\n",
 			name, InterSymbol::identifier(prop_name),
-			SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN),
+			VanillaObjects::is_either_or_property(prop_name),
 			SymbolAnnotation::get_b(prop_name, ASSIMILATED_IANN));
 		inter_symbol *existing_prop_name = 
 			(inter_symbol *) Dictionaries::read_value(first_with_name, name);
@@ -163,7 +163,7 @@ generator wants.
 	Generators::end_array(gen, WORD_ARRAY_FORMAT, -1, &saved);
 
 @<Write the either-or flag@> =
-	if (SymbolAnnotation::get_b(prop_name, EITHER_OR_IANN))
+	if (VanillaObjects::is_either_or_property(prop_name))
 		Generators::array_entry(gen, I"1", WORD_ARRAY_FORMAT);
 	else
 		Generators::array_entry(gen, I"0", WORD_ARRAY_FORMAT);
@@ -174,8 +174,8 @@ because that will come from an I7 source text definition.
 @<Write the property name in double quotes@> =
 	inter_symbol *last_prop_name = 
 		(inter_symbol *) Dictionaries::read_value(last_with_name, name);
-	inter_tree *I = gen->from;
-	text_stream *pname = SymbolAnnotation::get_t(last_prop_name, I, PROPERTY_NAME_IANN);
+	text_stream *pname =
+		Metadata::optional_textual(InterSymbol::package(last_prop_name), I"^name");
 	if (pname == NULL) pname = I"<nameless>";
 	TEMPORARY_TEXT(entry)
 	CodeGen::select_temporary(gen, entry);
@@ -550,4 +550,24 @@ int VanillaObjects::is_property_of_values(code_generation *gen, inter_symbol *pr
 			return TRUE;
 	}
 	return FALSE;
+}
+
+@ |TRUE| for an either-or property.
+
+=
+int VanillaObjects::is_either_or_property(inter_symbol *prop_s) {
+	inter_type type = InterTypes::of_symbol(prop_s);
+	if (InterTypes::constructor_code(type) == INT2_ITCONC) return TRUE;
+	return FALSE;
+}
+
+@ The spatial depth is a piece of metadata attached to an instance which gives
+its depth in the containment tree. This is meaningful only in interactive fiction
+projects. For example, a map in a crate in an Attic room will have a spatial
+depth of 2: the crate will have depth 1, the room depth 0.
+
+=
+int VanillaObjects::spatial_depth(inter_symbol *inst_s) {
+	inter_package *pack = InterSymbol::package(inst_s);
+	return (int) Metadata::read_optional_numeric(pack, I"^spatial_depth");
 }
