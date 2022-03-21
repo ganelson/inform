@@ -23,6 +23,10 @@ package main _plain
 				constant Budger = 32738 __assimilated
 			package Bydger_con _plain
 				constant Bydger = 777 __assimilated
+			package ##PluralFound_con _plain
+				constant ##PluralFound = 0 __assimilated __fake_action
+			package thedark_con _plain
+				constant thedark = 0 __assimilated __object
 		package Falsity_fn _function
 			package Falsity _code
 				code

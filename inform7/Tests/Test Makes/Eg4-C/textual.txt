@@ -3916,21 +3916,15 @@ package main _plain
 			constant NO_USE_OPTIONS = 17
 	package connectors _linkage
 	package architectural _linkage
-		constant WORDSIZE = 4 __architectural
-		constant NULL = 0xffffffff __architectural
-		constant WORD_HIGHBIT = 0x80000000 __architectural
-		constant WORD_NEXTTOHIGHBIT = 0x40000000 __architectural
-		constant IMPROBABLE_VALUE = 0xdeadce11 __architectural
-		constant MAX_POSITIVE_NUMBER = 2147483647 __architectural
-		constant MIN_NEGATIVE_NUMBER = -2147483648 __architectural
-		constant TARGET_GLULX = 1 __architectural
-		constant DEBUG = 1 __architectural
-		constant String = 0 __architectural __veneer
-		constant Routine = 0 __architectural __veneer
-		constant Object = 0 __architectural __veneer
-		constant Class = 0 __architectural __veneer
-		constant #dictionary_table = 0 __architectural __veneer
-		constant #grammar_table = 0 __architectural __veneer
+		constant WORDSIZE = 4
+		constant NULL = 0xffffffff
+		constant WORD_HIGHBIT = 0x80000000
+		constant WORD_NEXTTOHIGHBIT = 0x40000000
+		constant IMPROBABLE_VALUE = 0xdeadce11
+		constant MAX_POSITIVE_NUMBER = 2147483647
+		constant MIN_NEGATIVE_NUMBER = -2147483648
+		constant TARGET_GLULX = 1
+		constant DEBUG = 1
 	package basic_inform_by_graham_nelson _module
 		constant (int32) ^category = 3 __translation="^category_U1"
 		constant (text) ^author = "Graham Nelson" __translation="^author_U1"

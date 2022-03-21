@@ -2,14 +2,6 @@
 packagetype _plain
 packagetype _code
 packagetype _linkage
-packagetype _module
-packagetype _submodule
-packagetype _function
-packagetype _action
-packagetype _command
-packagetype _property
-packagetype _to_phrase
-packagetype _response
 #Pragmas:
 #Primitives:
 primitive !plus val val -> val
@@ -109,12 +101,12 @@ primitive !message3 val val val val val -> val
 primitive !externalcall val val -> val
 package main _plain
 	package architectural _linkage
-		constant WORDSIZE = 2 __architectural
-		constant NULL = 0xffff __architectural
-		constant WORD_HIGHBIT = 0x8000 __architectural
-		constant WORD_NEXTTOHIGHBIT = 0x4000 __architectural
-		constant IMPROBABLE_VALUE = 0x7fe3 __architectural
-		constant MAX_POSITIVE_NUMBER = 32767 __architectural
-		constant MIN_NEGATIVE_NUMBER = -32768 __architectural
-		constant TARGET_ZCODE = 1 __architectural
-		constant DEBUG = 1 __architectural
+		constant WORDSIZE = 2
+		constant NULL = 0xffff
+		constant WORD_HIGHBIT = 0x8000
+		constant WORD_NEXTTOHIGHBIT = 0x4000
+		constant IMPROBABLE_VALUE = 0x7fe3
+		constant MAX_POSITIVE_NUMBER = 32767
+		constant MIN_NEGATIVE_NUMBER = -32768
+		constant TARGET_ZCODE = 1
+		constant DEBUG = 1

@@ -61,12 +61,9 @@ The set of annotations used by the Inform tool suite is as follows.
 
 @e INVALID_IANN from 0
 
-@e ARCHITECTURAL_IANN
 @e ASSIMILATED_IANN
 @e FAKE_ACTION_IANN
-@e INLINE_ARRAY_IANN
 @e OBJECT_IANN
-@e VENEER_IANN
 
 @e C_ARRAY_ADDRESS_IANN
 @e I6_GLOBAL_OFFSET_IANN
@@ -83,12 +80,9 @@ any symbol: it's used to mean "do not make an annotation".
 void SymbolAnnotation::declare_canonical_annotations(void) {
 	SymbolAnnotation::declare(INVALID_IANN,  I"__invalid", INTEGER_IATYPE);
 
-	SymbolAnnotation::declare(ARCHITECTURAL_IANN,       I"__architectural",       BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(ASSIMILATED_IANN,         I"__assimilated",         BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(FAKE_ACTION_IANN,         I"__fake_action",         BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(INLINE_ARRAY_IANN,        I"__inline_array",        BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(OBJECT_IANN,              I"__object",              BOOLEAN_IATYPE);
-	SymbolAnnotation::declare(VENEER_IANN,              I"__veneer",              BOOLEAN_IATYPE);
 
 	SymbolAnnotation::declare(APPEND_IANN,              I"__append",              TEXTUAL_IATYPE);
 	SymbolAnnotation::declare(INNER_PROPERTY_NAME_IANN, I"__inner_property_name", TEXTUAL_IATYPE);

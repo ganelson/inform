@@ -24,3 +24,5 @@ package main _plain
 		splat STUB "#Stub Peach 0;\n"
 		splat ATTRIBUTE "Attribute marmorial;\n"
 		splat PROPERTY "Property density;\n"
+		splat FAKEACTION "Fake_action PluralFound;\n"
+		splat OBJECT "Object thedark \"(darkness object)\";\n"

@@ -61,6 +61,12 @@ packaging_state EmitArrays::begin_verb(inter_name *name, kind *K) {
 	return save;
 }
 
+packaging_state EmitArrays::begin_inline(inter_name *name, kind *K) {
+	packaging_state save = Packaging::enter_home_of(name);
+	EmitArrays::begin_inner(name, K, FALSE, CONST_LIST_FORMAT_INLINE);
+	return save;
+}
+
 @ Sum constants are not really arrays at all, but for difficult reasons to
 do with linking we store them as such for now. The idea is that we want a
 constant like |CONST1 + CONST2 + CONST3|, in circumstances where we don't

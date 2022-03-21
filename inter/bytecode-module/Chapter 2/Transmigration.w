@@ -326,7 +326,7 @@ there are three bad possibilities:
 	LOOP_OVER_SYMBOLS_TABLE(S, T) {
 		if (Wiring::is_wired(S)) {
 			inter_symbol *target = Wiring::cable_end(S);
-			if (SymbolAnnotation::get_b(target, ARCHITECTURAL_IANN))
+			if (pack == LargeScale::architecture_package(I))
 				@<S is wired to an architectural symbol in the origin tree@>
 			else if (InterSymbol::is_plug(target))
 				@<S is wired to a loose plug in the origin tree@>

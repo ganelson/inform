@@ -70,7 +70,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inter</a></li><li><a href="index.html#M">Manual</a></li><li><b>Data Packages in Textual Inter</b></li></ul></div>
 <p class="purpose">How static data, variables and constants are expressed in textual inter programs.</p>
 
-<ul class="toc"><li><a href="M-dpiti.html#SP1">&#167;1. Data packages</a></li><li><a href="M-dpiti.html#SP2">&#167;2. Variable and values</a></li><li><a href="M-dpiti.html#SP6">&#167;6. Constant and extended values</a></li><li><a href="M-dpiti.html#SP11">&#167;11. URL notation</a></li><li><a href="M-dpiti.html#SP12">&#167;12. Annotations</a></li><li><a href="M-dpiti.html#SP13">&#167;13. Metadata constants</a></li><li><a href="M-dpiti.html#SP14">&#167;14. Types in Inter</a></li><li><a href="M-dpiti.html#SP20">&#167;20. Enumerations and instances</a></li><li><a href="M-dpiti.html#SP21">&#167;21. Subtypes</a></li><li><a href="M-dpiti.html#SP22">&#167;22. Properties</a></li><li><a href="M-dpiti.html#SP24">&#167;24. Append and insert</a></li><li><a href="M-dpiti.html#SP26">&#167;26. Splats</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-dpiti.html#SP1">&#167;1. Data packages</a></li><li><a href="M-dpiti.html#SP2">&#167;2. Variable and values</a></li><li><a href="M-dpiti.html#SP6">&#167;6. Constant and extended values</a></li><li><a href="M-dpiti.html#SP11">&#167;11. URL notation</a></li><li><a href="M-dpiti.html#SP12">&#167;12. Annotations</a></li><li><a href="M-dpiti.html#SP13">&#167;13. Metadata constants</a></li><li><a href="M-dpiti.html#SP14">&#167;14. Types in Inter</a></li><li><a href="M-dpiti.html#SP20">&#167;20. Enumerations and instances</a></li><li><a href="M-dpiti.html#SP21">&#167;21. Subtypes</a></li><li><a href="M-dpiti.html#SP22">&#167;22. Properties</a></li><li><a href="M-dpiti.html#SP24">&#167;24. Insert</a></li><li><a href="M-dpiti.html#SP26">&#167;26. Splats</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Data packages. </b>To recap from <a href="M-ti.html" class="internal">Textual Inter</a>: an Inter program is a nested hierarchy of
 packages. Some are special <span class="extract"><span class="extract-syntax">_code</span></span> packages which define functions; the rest
@@ -178,6 +178,11 @@ is not legal, and the keyword <span class="extract"><span class="extract-syntax"
 </li><li>&#9679; Calculated values are written <span class="extract"><span class="extract-syntax">sum{ V1, V2, ..., Vn }</span></span>, and similarly
 for <span class="extract"><span class="extract-syntax">product{ }</span></span>, <span class="extract"><span class="extract-syntax">difference{ }</span></span> and <span class="extract"><span class="extract-syntax">quotient{ }</span></span>. Empty calculated values
 are not legal.
+</li><li>&#9679; Finally, two special forms of list which are used only in interactive fiction
+projects, and whose semantics are identical to regular lists except for the special
+ways they are compiled: <span class="extract"><span class="extract-syntax">grammar{ ... }</span></span> makes a list which is the command-parser
+grammar for a command verb, and <span class="extract"><span class="extract-syntax">inline{ ... }</span></span> makes a list which is to be the
+value of a property compiled "inline".
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Readers with experience of Inform 6 will recognise that <span class="extract"><span class="extract-syntax">{ ... }</span></span> and <span class="extract"><span class="extract-syntax">bytes{ ... }</span></span>
 correspond to I6's <span class="extract"><span class="extract-syntax">Array --&gt;</span></span> and <span class="extract"><span class="extract-syntax">Array -&gt;</span></span> respectively, that <span class="extract"><span class="extract-syntax">bounded { ... }</span></span>
@@ -615,29 +620,16 @@ question. Because I7 allows those properties to be modified or read either
 qua properties or qua table entries, we cannot avoid giving Inter a similar
 ability, even though we might prefer not to.
 <a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Append and insert. </b>Never use either <span class="extract"><span class="extract-syntax">append</span></span> or <span class="extract"><span class="extract-syntax">insert</span></span>.
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Insert. </b>Never use <span class="extract"><span class="extract-syntax">insert</span></span>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>Well, okay then. These disreputable constructs exist to implement very
-low-level features of Inform 7, going back to its earliest days as a programming
-language, when people were still writing strange hybrid programs partly in I6.
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>Well, okay then. This exists to implement very low-level features of Inform 7,
+going back to its earliest days as a programming language, when people were
+still writing strange hybrid programs partly in I6.
 </p>
 
-<p class="commentary"><span class="extract"><span class="extract-syntax">append</span></span> attaches raw I6-syntax additions to any instance or enumerated type.
-For example, the I7 source text:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">Include</span><span class="plain-syntax"> (- </span><span class="identifier-syntax">has</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax">, -) </span><span class="identifier-syntax">when</span><span class="plain-syntax"> </span><span class="identifier-syntax">defining</span><span class="plain-syntax"> </span><span class="identifier-syntax">a</span><span class="plain-syntax"> </span><span class="identifier-syntax">door</span><span class="plain-syntax">.</span>
-</pre>
-<p class="commentary">leads to:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">append</span><span class="plain-syntax"> K4_door </span><span class="string-syntax">" has door, \n"</span>
-</pre>
-<p class="commentary"><span class="extract"><span class="extract-syntax">insert</span></span> is simpler, and tells Inter that it needs to add this raw I6-syntax
-material to the program:
+<p class="commentary"><span class="extract"><span class="extract-syntax">insert</span></span> tells Inter that it needs to add this raw I6-syntax material to the
+program:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

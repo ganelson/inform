@@ -17,7 +17,7 @@ void VanillaConstants::constant(code_generation *gen, inter_tree_node *P) {
 			@<Declare this constant as a fake action name@>;
 		} else if (Str::prefix_eq(S, I"##", 2))  {
 			@<Declare this constant as an action name@>;
-		} else if (SymbolAnnotation::get_b(con_name, VENEER_IANN)) {
+		} else if (LargeScale::is_veneer_symbol(con_name)) {
 			@<Ignore this constant as part of the veneer@>;
 		} else if (SymbolAnnotation::get_b(con_name, OBJECT_IANN)) {
 			@<Declare this constant as a pseudo-object@>;

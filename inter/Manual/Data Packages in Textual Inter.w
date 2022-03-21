@@ -111,6 +111,12 @@ is not legal, and the keyword |bounded| cannot be used.
 for |product{ }|, |difference{ }| and |quotient{ }|. Empty calculated values
 are not legal.
 
+(*) Finally, two special forms of list which are used only in interactive fiction
+projects, and whose semantics are identical to regular lists except for the special
+ways they are compiled: |grammar{ ... }| makes a list which is the command-parser
+grammar for a command verb, and |inline{ ... }| makes a list which is to be the
+value of a property compiled "inline".
+
 @ Readers with experience of Inform 6 will recognise that |{ ... }| and |bytes{ ... }|
 correspond to I6's |Array -->| and |Array ->| respectively, that |bounded { ... }|
 and |bounded bytes{ ... }| correspond to |Array table| and |Array buffer|, and
@@ -475,25 +481,15 @@ question. Because I7 allows those properties to be modified or read either
 qua properties or qua table entries, we cannot avoid giving Inter a similar
 ability, even though we might prefer not to.
 
-@h Append and insert.
-Never use either |append| or |insert|.
+@h Insert.
+Never use |insert|.
 
-@ Well, okay then. These disreputable constructs exist to implement very
-low-level features of Inform 7, going back to its earliest days as a programming
-language, when people were still writing strange hybrid programs partly in I6.
+@ Well, okay then. This exists to implement very low-level features of Inform 7,
+going back to its earliest days as a programming language, when people were
+still writing strange hybrid programs partly in I6.
 
-|append| attaches raw I6-syntax additions to any instance or enumerated type.
-For example, the I7 source text:
-= (text as Inform 7)
-Include (- has door, -) when defining a door.
-=
-leads to:
-= (text as Inter)
-	append K4_door " has door, \n"
-=
-
-|insert| is simpler, and tells Inter that it needs to add this raw I6-syntax
-material to the program:
+|insert| tells Inter that it needs to add this raw I6-syntax material to the
+program:
 = (text as Inter)
 	insert "\n[ LITTLE_USED_DO_NOTHING_R; rfalse; ];\n"
 =

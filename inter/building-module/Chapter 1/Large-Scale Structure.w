@@ -182,10 +182,6 @@ not, in fact, all constants -- |self| is a variable at runtime -- but again,
 it's for the code-generator to define them as it would like, on a platform
 by platform basis.
 
-Such symbols are the only ones given the |VENEER_IANN| annotation; the term
-veneer alludes to Inform 6's practice of creating a few built-in definitions
-which form the "veneer" of the story file it is generating.
-
 For speed, the names of the permitted veneer symbols are stored in a dictionary.
 (This may not in fact be worth the overhead any longer: at one time there were
 many more of these.)
@@ -198,24 +194,38 @@ inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *
 	inter_symbols_table *tab = InterPackage::scope(arch);
 	inter_symbol *S = InterSymbolsTable::symbol_from_name(tab, N);
 	if (S == NULL) {
-		if (create_these_architectural_symbols_on_demand == NULL) {
-			create_these_architectural_symbols_on_demand = Dictionaries::new(16, TRUE);
-			Dictionaries::create(create_these_architectural_symbols_on_demand, I"#dictionary_table");
-			Dictionaries::create(create_these_architectural_symbols_on_demand, I"#actions_table");
-			Dictionaries::create(create_these_architectural_symbols_on_demand, I"#grammar_table");
-			Dictionaries::create(create_these_architectural_symbols_on_demand, I"self");
-			Dictionaries::create(create_these_architectural_symbols_on_demand, I"Routine");
-			Dictionaries::create(create_these_architectural_symbols_on_demand, I"String");
-			Dictionaries::create(create_these_architectural_symbols_on_demand, I"Class");
-			Dictionaries::create(create_these_architectural_symbols_on_demand, I"Object");
-		}
+		@<Ensure the on-demand dictionary exists@>;
 		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N)) {
 			S = LargeScale::arch_constant_dec(I, N, InterTypes::unchecked(), 0);			
-			SymbolAnnotation::set_b(S, VENEER_IANN, TRUE);
 		}	
 	}	
 	return S;
 }
+
+int LargeScale::is_veneer_symbol(inter_symbol *con_name) {
+	if (con_name == NULL) return FALSE;
+	inter_tree_node *D = con_name->definition;
+	if (D == NULL) return FALSE;
+	if (Inode::get_package(D) == LargeScale::architecture_package(Inode::tree(D))) {
+		text_stream *N = InterSymbol::identifier(con_name);
+		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N))
+			return TRUE;
+	}
+	return FALSE;
+}
+
+@<Ensure the on-demand dictionary exists@> =
+	if (create_these_architectural_symbols_on_demand == NULL) {
+		create_these_architectural_symbols_on_demand = Dictionaries::new(16, TRUE);
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"#dictionary_table");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"#actions_table");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"#grammar_table");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"self");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"Routine");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"String");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"Class");
+		Dictionaries::create(create_these_architectural_symbols_on_demand, I"Object");
+	}
 
 @ The other architectural constants are the ones depending on the architecture
 being compiled to. These always exist, and their values are known at compile time.
@@ -279,7 +289,6 @@ inter_symbol *LargeScale::arch_constant(inter_tree *I, text_stream *N,
 	inter_package *arch = LargeScale::architecture_package(I);
 	inter_symbols_table *tab = InterPackage::scope(arch);
 	inter_symbol *S = InterSymbolsTable::symbol_from_name_creating(tab, N);
-	SymbolAnnotation::set_b(S, ARCHITECTURAL_IANN, TRUE);
 	inter_bookmark *IBM = &(I->site.strdata.architecture_bookmark);
 	Produce::guard(ConstantInstruction::new(IBM, S, type, val,
 		(inter_ti) InterBookmark::baseline(IBM) + 1, NULL));

@@ -332,9 +332,7 @@ void Emit::intervention(int stage, text_stream *segment, text_stream *part,
 
 =
 void Emit::append(inter_name *iname, text_stream *text) {
-	LOG("Append '%S'\n", text);
-	packaging_state save = Packaging::enter_home_of(iname);
 	inter_symbol *symbol = InterNames::to_symbol(iname);
-	Produce::guard(AppendInstruction::new(Emit::at(), symbol, text, Emit::baseline(), NULL));
-	Packaging::exit(Emit::tree(), save);
+	SymbolAnnotation::set_t(InterPackage::tree(InterSymbol::package(symbol)),
+		InterSymbol::package(symbol), symbol, APPEND_IANN, text);
 }

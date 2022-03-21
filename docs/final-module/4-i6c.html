@@ -127,14 +127,14 @@ single values. These are, for some reason, called "inline arrays". The I6
 generator is going to take advantage of this feature: if it sees that a
 property is actually an address of a small array, it will compile that array
 directly into the body of the relevant object or class declaration. It therefore
-does not need to declre the name of this small array, and so &mdash;
+does not need to declare the name of this small array, and so &mdash;
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Leave undeclared any array used as a value of a property</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">const_s</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">SymbolAnnotation::get_b</span><span class="plain-syntax">(</span><span class="identifier-syntax">const_s</span><span class="plain-syntax">, </span><span class="identifier-syntax">INLINE_ARRAY_IANN</span><span class="plain-syntax">)))</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ConstantInstruction::is_inline</span><span class="plain-syntax">(</span><span class="identifier-syntax">const_s</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-i6c.html#SP2">&#167;2</a>.</li></ul>

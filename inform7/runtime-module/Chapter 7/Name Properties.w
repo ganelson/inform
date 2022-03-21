@@ -70,7 +70,7 @@ inherit from classes. The concept of additive properties does not exist in Inter
 parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 	int from_kind) {
 	inter_name *name_array = Name::get_name_array_iname(I->as_subject);
-	packaging_state save = EmitArrays::begin_word(name_array, K_value);
+	packaging_state save = EmitArrays::begin_inline(name_array, K_value);
 
 	LOOP_THROUGH_WORDING(j, W) {
 		vocabulary_entry *ve = Lexer::word(j);
@@ -112,6 +112,5 @@ parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 	}
 
 	EmitArrays::end(save);
-	InterNames::annotate_b(name_array, INLINE_ARRAY_IANN, TRUE);
 	return Rvalues::from_iname(name_array);
 }

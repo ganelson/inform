@@ -61,16 +61,17 @@ can therefore be calculated as half of (the instruction extent minus |DATA_CONST
 @d CONST_LIST_FORMAT_B_BYTES 7
 @d CONST_LIST_FORMAT_B_BYTES_BY_EXTENT 8
 @d CONST_LIST_FORMAT_GRAMMAR 9
-@d CONST_LIST_FORMAT_SUM 10
-@d CONST_LIST_FORMAT_PRODUCT 11
-@d CONST_LIST_FORMAT_DIFFERENCE 12
-@d CONST_LIST_FORMAT_QUOTIENT 13
-@d CONST_LIST_FORMAT_STRUCT 14
+@d CONST_LIST_FORMAT_INLINE 10
+@d CONST_LIST_FORMAT_SUM 11
+@d CONST_LIST_FORMAT_PRODUCT 12
+@d CONST_LIST_FORMAT_DIFFERENCE 13
+@d CONST_LIST_FORMAT_QUOTIENT 14
+@d CONST_LIST_FORMAT_STRUCT 15
 
 =
 int ConstantInstruction::is_a_genuine_list_format(inter_ti format) {
 	if ((format >= CONST_LIST_FORMAT_WORDS) &&
-		(format <= CONST_LIST_FORMAT_GRAMMAR))
+		(format <= CONST_LIST_FORMAT_INLINE))
 		return TRUE;
 	return FALSE;
 }
@@ -219,6 +220,7 @@ void ConstantInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	else if (Regexp::match(&mr2, S, L"difference{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_DIFFERENCE;
 	else if (Regexp::match(&mr2, S, L"quotient{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_QUOTIENT;
 	else if (Regexp::match(&mr2, S, L"grammar{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_GRAMMAR;
+	else if (Regexp::match(&mr2, S, L"inline{ *(%c*) *}")) fmt = CONST_LIST_FORMAT_INLINE;
 	else if (Regexp::match(&mr2, S, L"{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_WORDS;
 	else if (Regexp::match(&mr2, S, L"bytes{ *(%c*?) *}")) fmt = CONST_LIST_FORMAT_BYTES;
 	else if (Regexp::match(&mr2, S, L"list of *(%c*?) bytes")) fmt = CONST_LIST_FORMAT_BYTES_BY_EXTENT;
@@ -303,6 +305,7 @@ void ConstantInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 		case CONST_LIST_FORMAT_DIFFERENCE:        WRITE("difference"); break;
 		case CONST_LIST_FORMAT_QUOTIENT:          WRITE("quotient"); break;
 		case CONST_LIST_FORMAT_GRAMMAR:           WRITE("grammar"); break;
+		case CONST_LIST_FORMAT_INLINE:            WRITE("inline"); break;
 		case CONST_LIST_FORMAT_STRUCT:            WRITE("struct"); break;
 		case CONST_LIST_FORMAT_BYTES:             WRITE("bytes"); break;
 		case CONST_LIST_FORMAT_WORDS_BY_EXTENT:   WRITE("list of "); break;
@@ -370,6 +373,14 @@ inter_pair ConstantInstruction::list_entry(inter_tree_node *P, int i) {
 	int field = DATA_CONST_IFLD + i*2;
 	if (field >= P->W.extent) InterValuePairs::undef();
 	return InterValuePairs::get(P, field);
+}
+
+int ConstantInstruction::is_inline(inter_symbol *const_s) {
+	if ((const_s) && (const_s->definition) &&
+		(ConstantInstruction::list_format(const_s->definition) ==
+			CONST_LIST_FORMAT_INLINE))
+		return TRUE;
+	return FALSE;
 }
 
 @h Definitional depth of a constant.

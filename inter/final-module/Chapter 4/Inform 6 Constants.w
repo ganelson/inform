@@ -52,10 +52,10 @@ single values. These are, for some reason, called "inline arrays". The I6
 generator is going to take advantage of this feature: if it sees that a
 property is actually an address of a small array, it will compile that array
 directly into the body of the relevant object or class declaration. It therefore
-does not need to declre the name of this small array, and so --
+does not need to declare the name of this small array, and so --
 
 @<Leave undeclared any array used as a value of a property@> =
-	if ((const_s) && (SymbolAnnotation::get_b(const_s, INLINE_ARRAY_IANN)))
+	if (ConstantInstruction::is_inline(const_s))
 		return;
 
 @ We cannot declare these constants because they exist automatically, and

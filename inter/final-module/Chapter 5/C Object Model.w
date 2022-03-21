@@ -544,10 +544,8 @@ void CObjectModel::assign_property(code_generator *gtr, code_generation *gen,
 	int inline_this = FALSE;
 	if (InterValuePairs::is_symbolic(pair)) {
 		inter_symbol *S = InterValuePairs::to_symbol_at(pair, X);
-		if ((S) && (SymbolAnnotation::get_b(S, INLINE_ARRAY_IANN)))
-			inline_this = TRUE;
-	}	
-
+		if (ConstantInstruction::is_inline(S)) inline_this = TRUE;
+	}
 	TEMPORARY_TEXT(val)
 	CodeGen::select_temporary(gen, val);
 	CodeGen::pair(gen, X, pair);

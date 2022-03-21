@@ -36,7 +36,6 @@ Chapter 3: Their Instructions
 	Inter Errors
 
 Chapter 4: Void Constructs
-	The Append Construct
 	The Comment Construct
 	The Constant Construct
 	The Insert Construct

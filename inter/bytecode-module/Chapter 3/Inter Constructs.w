@@ -295,7 +295,6 @@ bump of //The Inter Version//.
 
 These are constructs used for instructions outside function bodies:
 
-@e APPEND_IST
 @e COMMENT_IST
 @e CONSTANT_IST
 @e INSTANCE_IST
@@ -384,7 +383,6 @@ void InterInstruction::create_language(void) {
 	VersionInstruction::define_construct();
 	PragmaInstruction::define_construct();
 	InsertInstruction::define_construct();
-	AppendInstruction::define_construct();
 	TypenameInstruction::define_construct();
 	ConstantInstruction::define_construct();
 	InstanceInstruction::define_construct();

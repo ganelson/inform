@@ -410,7 +410,7 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 	int inline_this = FALSE;
 	if (InterValuePairs::is_symbolic(pair)) {
 		inter_symbol *S = InterValuePairs::to_symbol_at(pair, X);
-		if ((S) && (SymbolAnnotation::get_b(S, INLINE_ARRAY_IANN))) {
+		if (ConstantInstruction::is_inline(S)) {
 			inter_tree_node *P = InterSymbol::definition(S);
 			text_stream *OUT = CodeGen::current(gen);
 			for (int i=0; i<ConstantInstruction::list_len(P); i++) {
@@ -420,6 +420,7 @@ void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
 			inline_this = TRUE;
 		}
 	}
+
 	if (inline_this == FALSE) CodeGen::pair(gen, X, pair);
 	CodeGen::deselect_temporary(gen);
 	I6TargetObjects::VM_property(gen, prop_s, val);
