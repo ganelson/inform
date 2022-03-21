@@ -418,8 +418,9 @@ annotation |_translation|:
 =
 void InterSymbol::set_translate(inter_symbol *S, text_stream *identifier) {
 	if (S == NULL) internal_error("no symbol");
-	SymbolAnnotation::set_t(InterPackage::tree(InterSymbol::package(S)),
-		InterSymbol::package(S), S, TRANSLATION_IANN, identifier);
+	if (InterSymbol::is_metadata_key(S) == FALSE)
+		SymbolAnnotation::set_t(InterPackage::tree(InterSymbol::package(S)),
+			InterSymbol::package(S), S, TRANSLATION_IANN, identifier);
 }
 
 text_stream *InterSymbol::get_translate(inter_symbol *S) {
