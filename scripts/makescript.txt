@@ -365,11 +365,13 @@ diagrams:
 	cp -f inform7/Tests/Test\ Internals/_Results_Ideal/Refine*.txt inform7/assertions-module/Figures
 	cp -f services/kinds-test/Tests/Test\ Cases/_Results_Ideal/*.txt services/kinds-module/Figures
 	cp -f services/calculus-test/Tests/Test\ Cases/_Results_Ideal/*.txt services/calculus-module/Figures
+	cp -f inform7/Internal/Pipelines/compile.interpipeline inter/Figures
 	cp -f inform7/Internal/Pipelines/compile.interpipeline inter/pipeline-module/Figures
 	cp -f inform7/Internal/Pipelines/assimilate.interpipeline inter/pipeline-module/Figures
 	cp -f inform7/Internal/Pipelines/link.interpipeline inter/pipeline-module/Figures
 	cp -f inform7/Internal/Pipelines/optimise.interpipeline inter/pipeline-module/Figures
 	cp -f inform7/Internal/Pipelines/build-kit.interpipeline inter/pipeline-module/Figures
+	$(INTERX) -help >inter/Figures/help.txt
 
 {repeat-tools-block:ctools}
 .PHONY: @PAGES

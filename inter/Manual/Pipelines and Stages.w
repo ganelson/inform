@@ -2,21 +2,20 @@ Pipelines and Stages.
 
 Sequences of named code-generation stages are called pipelines.
 
-@h Stages and descriptions.
-A processing stage is a step in code generation which acts on a tree
-of inter in memory. Some stages change, add to or edit down that code, while
-others leave it untouched but output a file based on it.
+@h Stages and pipelines.
+Inter has a pipeline design, meaning that it expects to work on Inter trees by
+running a series of modifying "steps", one at a time.
+= (text as BoxArt)
+T --------> T --------> T --------> ... --------> T
+   step 1      step 2      step 3   ...  step N
+=
+The Inter tree |T| starts out empty, and at the end it is thrown away. So any
+useful pipeline will begin by loading something in (usually as step 1), and
+end by producing some useful output (usually in its last step or steps).
 
-Each stage can see an entire tree of inter code at a time, and is
-not restricted to working through it in sequence.
-
-Stages are named, which are written without spaces, and conventionally use
-hyphens: for example, |resolve-conditional-compilation|. Where a filename has
-to be supplied, it appears after a colon. Thus |generate-inter:my.intert|
-is a valid stage description.
-
-A "pipeline" is a list of stage descriptions. If the pipeline is spelled
-out textually on the command line, then commas are used to divide the stages:
+@ Formally, a pipeline is a list of steps, with each step being a usage of
+a "stage". If a pipeline is spelled out textually on the Inter command line,
+then commas are used to divide the stages:
 = (text as ConsoleText)
 	$ inter/Tangled/inter -pipeline-text 'plugh, xyzzy, plover'
 =
@@ -26,7 +25,7 @@ If the pipeline is in an external file, we would instead write:
 =
 and the file |mypl.interpipeline| would have one stage listed on each line,
 so that the commas are not needed:
-= (text)
+= (text as Inter Pipeline)
 	plugh
 	xyzzy
 	plover
@@ -80,7 +79,7 @@ effect is that any useful pipeline for Inform will begin and end thus:
 In addition, the "domain" is set to the directory containing the |*out|
 file.
 
-To Inbuild and Inform, pipelines are resources in their own right, rather
+@ To Inbuild and Inform, pipelines are resources in their own right, rather
 like extensions or kits. So, for example, the standard distribution includes
 = (text)
 	inform7/Internal/Pipelines/compile.interpipeline
@@ -127,9 +126,11 @@ Note that Inbuild and Inform 7 respond to all three of |-pipeline|,
 last two. (It can't find pipelines by name because it doesn't contain the
 supervisor module for sorting out resources.)
 
+@ For more on this, see //pipeline: What This Module Does//.
+
 @h Syntax of pipeline descriptions.
-Pipelines are, roughly speaking, just lists of steps. Each step occupies
-a single line: blank lines are ignored, and so are lines whose first non-white-space
+Pipelines are, roughly speaking, just lists of steps. Each step occupies a single
+line: blank lines are ignored, and so are lines whose first non-white-space
 character is a |!|, which are considered comments.
 
 A step description is often as simple as being the name of a stage, but
@@ -185,6 +186,15 @@ often in fact given as variables, whose names start with an asterisk |*|.
 Variables have to be set in advance, either at the command line (see above)
 or by the tool calling for the pipeline to be run, e.g., the //supervisor//
 module inside Inform 7.
+
+@ Pipelines can also include each other. For example, the step:
+= (text as Inter Pipeline)
+	run pipeline assimilate
+=
+causes the whole |assimilate| pipeline to be run at that point. Indeed, Inform 7's
+main pipeline |compile| uses this to break its task into subtasks:
+
+= (text from Figures/compile.interpipeline as Inter Pipeline)
 
 @h Dictionary of stages.
 The following gives a brief guide to the available stages, in alphabetical
@@ -358,17 +368,17 @@ symbols are defined, or looks at their values, and deletes sections of code not
 to be compiled. At the end of this stage, there are no conditional compilation
 splats left in the tree. For example:
 = (text as Inter)
-	constant MAGIC K_number = 12345
+	constant (int32) MAGIC = 12345
 	splat IFTRUE &"#iftrue MAGIC == 12345;\n"
-	constant WIZARD K_number = 5
+	constant (int32) WIZARD = 5
 	splat IFNOT &"#ifnot;\n"
-	constant MUGGLE K_number = 0
+	constant (int32) MUGGLE = 0
 	splat ENDIF &"#endif;\n"
 =
 is resolved to:
 = (text as Inter)
-	constant MAGIC K_number = 12345
-	constant WIZARD K_number = 5
+	constant (int32) MAGIC = 12345
+	constant (int32) WIZARD = 5
 =
 
 For the implementation, see //pipeline: Resolve Conditional Compilation Stage//.
@@ -388,10 +398,5 @@ The special stage |stop| halts processing of the pipeline midway. At present
 this is only useful for making experimental edits to pipeline descriptions
 to see what just the first half does, without deleting the second half of
 the description.
-
-For the implementation, see //pipeline: Read, Move, Stop Stages//.
-
-@ |wipe|.
-Empties a tree slot, freeing it up to be used again.
 
 For the implementation, see //pipeline: Read, Move, Stop Stages//.
