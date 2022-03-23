@@ -53,7 +53,7 @@ int Sequence::carry_out(int debugging) {
 	@<Generate inter, part 5@>
 	@<Generate index and bibliographic file@>;
 	if (problem_count == 0) Sequence::throw_error_if_subtasks_remain();
-	Task::advance_stage_to(FINISHED_CSEQ, I"Ccmplete", -1, debugging, sequence_timer);
+	Task::advance_stage_to(FINISHED_CSEQ, I"Complete", -1, debugging, sequence_timer);
 	Str::clear(current_sequence_bench);
 	int cpu_time_used = Time::stop_stopwatch(sequence_timer);
 	LOG("Compile CPU time: %d centiseconds\n", cpu_time_used);
@@ -243,6 +243,7 @@ here, which only happens when special runs are made for compiler testing.
 	BENCH(Rules::check_response_usages)
 	BENCH(LocalParking::compile_array)
 	BENCH(RTBibliographicData::IFID_text)
+	BENCH(Sequence::lint_inter)
 
 @<Generate index and bibliographic file@> =
 	Task::advance_stage_to(BIBLIOGRAPHIC_CSEQ, I"Bibliographic work",
@@ -474,4 +475,11 @@ void Sequence::write_from(OUTPUT_STREAM, compilation_subtask *t) {
 void Sequence::write_task(OUTPUT_STREAM, compilation_subtask *t) {
 	if (t == NULL) WRITE("[NULL]\n");
 	else WRITE("[%d] %S\n", t->allocation_id, t->description);
+}
+
+@ The final step is to verify that the Inter we have produced is correct:
+
+=
+void Sequence::lint_inter(void) {
+	InterInstruction::tree_lint(Emit::tree());
 }

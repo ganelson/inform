@@ -178,7 +178,6 @@ inter_name *RTKindConstructors::get_kind_GPR_iname(kind *K) {
 inter_name *RTKindConstructors::get_exp_kind_GPR_iname(kind *K) {
 	inter_name *GPR = NULL;
 	text_stream *GPR_fn_identifier = RTKindConstructors::get_explicit_I6_GPR(K);
-	LOG("Looking for %u: %S\n", K, GPR_fn_identifier);
 	if (Str::len(GPR_fn_identifier) > 0)
 		GPR = HierarchyLocations::find_by_name(Emit::tree(), GPR_fn_identifier);
 	else

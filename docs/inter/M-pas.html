@@ -545,19 +545,19 @@ splats left in the tree. For example:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> MAGIC </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">12345</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int32</span><span class="plain-syntax">) MAGIC = </span><span class="constant-syntax">12345</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">splat</span><span class="plain-syntax"> IFTRUE &amp;</span><span class="string-syntax">"#iftrue MAGIC == 12345;\n"</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> WIZARD </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">5</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int32</span><span class="plain-syntax">) WIZARD = </span><span class="constant-syntax">5</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">splat</span><span class="plain-syntax"> IFNOT &amp;</span><span class="string-syntax">"#ifnot;\n"</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> MUGGLE </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int32</span><span class="plain-syntax">) MUGGLE = </span><span class="constant-syntax">0</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">splat</span><span class="plain-syntax"> ENDIF &amp;</span><span class="string-syntax">"#endif;\n"</span>
 </pre>
 <p class="commentary">is resolved to:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> MAGIC </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">12345</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> WIZARD </span><span class="identifier-syntax">K_number</span><span class="plain-syntax"> = </span><span class="constant-syntax">5</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int32</span><span class="plain-syntax">) MAGIC = </span><span class="constant-syntax">12345</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">constant</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int32</span><span class="plain-syntax">) WIZARD = </span><span class="constant-syntax">5</span>
 </pre>
 <p class="commentary">For the implementation, see <a href="../pipeline-module/3-rccs.html" class="internal">Resolve Conditional Compilation Stage (in pipeline)</a>.
 </p>

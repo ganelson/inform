@@ -17,8 +17,8 @@ void TextualInter::read(inter_tree *I, filename *F) {
 	TextFiles::read(F, FALSE, "can't open inter file", FALSE,
 		TextualInter::read_line, 0, &irl);
 	TextualInter::resolve_forward_references(I);
-	InterInstruction::tree_lint(I);
 	Primitives::index_primitives_in_tree(I);
+	InterInstruction::tree_lint(I);
 }
 
 @ This fussy little mechanism passes each line of the text file to

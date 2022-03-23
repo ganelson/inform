@@ -245,6 +245,7 @@ void BinaryInter::read(inter_tree *I, filename *F) {
 	if (grid) Memory::I7_array_free(grid, INTER_BYTECODE_MREASON,
 		(int) grid_extent, sizeof(inter_ti));
 	Primitives::index_primitives_in_tree(I);
+	InterInstruction::tree_lint(I);
 	BinaryFiles::close(fh);
 }
 

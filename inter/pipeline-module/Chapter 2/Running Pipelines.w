@@ -110,8 +110,6 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	if (I == NULL) {
 		PipelineErrors::error(step, "no Inter tree to apply this step to");
 		active = FALSE;
-	} else {
-		InterInstruction::tree_lint(I);
 	}
 	step->ephemera.tree = I;
 	step->ephemera.pipeline = S;
