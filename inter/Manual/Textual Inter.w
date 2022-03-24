@@ -103,7 +103,7 @@ use semantically meaningful type names like |_adjective|. Only two package
 types are special: |_code|, which as we have seen marks that a package is a
 function, and |_linkage|, which is used only for a special package called
 |connectors|. Stand-alone programs never contain that package: see
-//bytecode: What This Module Does// for an explanation of what it is for.
+//bytecode// for an explanation of what it is for.
 
 @ |primitive !PRIMITIVE SIGNATURE| declares that a primitive invocation of
 this name and signature can be used in the program. Primitives occur only

@@ -2,38 +2,34 @@ Pipelines and Stages.
 
 Sequences of named code-generation stages are called pipelines.
 
-@h Stages and pipelines.
-Inter has a pipeline design, meaning that it expects to work on Inter trees by
-running a series of modifying "steps", one at a time.
-= (text as BoxArt)
-T --------> T --------> T --------> ... --------> T
-   step 1      step 2      step 3   ...  step N
-=
-The Inter tree |T| starts out empty, and at the end it is thrown away. So any
-useful pipeline will begin by loading something in (usually as step 1), and
-end by producing some useful output (usually in its last step or steps).
+@h Variables and filenames.
+For an introduction to pipelines, first read the section //Using Inter//.
 
-@ Formally, a pipeline is a list of steps, with each step being a usage of
-a "stage". If a pipeline is spelled out textually on the Inter command line,
-then commas are used to divide the stages:
-= (text as ConsoleText)
-	$ inter/Tangled/inter -pipeline-text 'plugh, xyzzy, plover'
-=
-If the pipeline is in an external file, we would instead write:
-= (text as ConsoleText)
-	$ inter/Tangled/inter -pipeline-file mypl.interpipeline
-=
-and the file |mypl.interpipeline| would have one stage listed on each line,
-so that the commas are not needed:
-= (text as Inter Pipeline)
-	plugh
-	xyzzy
-	plover
+In that section, two variables |*in| and |*out| appeared, but no others.
+Those were automatically set as needed: |*in| was the file specified first
+in the command, while |*out| was the value of the |-o| output file switch.
 
-@ A pipeline description can make use of "variables". These hold only text,
-and generally represent filenames. Variable names begin with a star |*|.
-The pipeline cannot create variables: instead, the user of the pipeline has
-to make them before use. For example,
+In fact, though, any number of variables can be set at the command line.
+|-variable '*magicword=zooge'|, for example, creates the variable |*magicword|
+and sets its initial value to "zooge".
+
+Of course, this has no practical effect unless the pipeline we are running
+makes use of such a variable. But we might imagine running:
+= (text as ConsoleText)
+	$ inter/Tangled/inter my.intert -pipeline-file mypl.interpipeline -variable '*textual=v1.intert' -variable '*binary=v2.interb'
+=
+where |mypl.interpipeline| reads:
+= (text)
+read <- *in
+generate text -> *textual
+generate binary -> *binary
+=
+This will then write out the same Inter program in two different formats, to
+two different files.
+
+@ Variables hold only text, and generally represent filenames. Variable names
+begin with a star |*|. When a pipeline runs, the value of a variable is
+substituted for its name. For example,
 = (text as ConsoleText)
 	$ inter/Tangled/inter -variable '*X=ex/why' -pipeline-file mypl.interpipeline
 =
@@ -51,11 +47,14 @@ description are interpreted as follows:
 
 (a) If a filename contains a slash character, it is considered a literal
 filename.
-(b) If not, it is considered to be a leafname inside the "domain" directory.
+(b) If the filename is just |-|, it is considered to mean the console, that
+is, what in Unix is usually called |stdout|. In other words, output is printed
+rather than saved.
+(c) If not, it is considered to be a leafname inside the "domain" directory.
 By default this is the current working directory, but using |-domain| at
 the Inter command line changes that.
 
-The special variable |*log|, which always exists, means the debugging log.
+@ The special variable |*log|, which always exists, means the debugging log.
 A command to write a text file to |*log| is interpreted instead to mean
 "spool the output you would otherwise write to the debugging log instead".
 For example,
@@ -63,23 +62,7 @@ For example,
 	generate inventory -> *log
 
 @h Pipelines run by Inform.
-As the above implies, Inter pipelines normally begin with a clean slate:
-no trees, no variables. 
-
-When a pipeline is being run by the main Inform 7 compiler, however,
-two variables are created in advance. |*in| is set to the Inter code
-which Inform has generated on the current run, and |*out| is set to the
-filename to which final code needs to be generated. The practical
-effect is that any useful pipeline for Inform will begin and end thus:
-= (text as Inter Pipeline)
-	read <- *in
-	...
-	generate -> *out
-=
-In addition, the "domain" is set to the directory containing the |*out|
-file.
-
-@ To Inbuild and Inform, pipelines are resources in their own right, rather
+To Inbuild and Inform, pipelines are resources in their own right, rather
 like extensions or kits. So, for example, the standard distribution includes
 = (text)
 	inform7/Internal/Pipelines/compile.interpipeline
@@ -126,8 +109,6 @@ Note that Inbuild and Inform 7 respond to all three of |-pipeline|,
 last two. (It can't find pipelines by name because it doesn't contain the
 supervisor module for sorting out resources.)
 
-@ For more on this, see //pipeline: What This Module Does//.
-
 @h Syntax of pipeline descriptions.
 Pipelines are, roughly speaking, just lists of steps. Each step occupies a single
 line: blank lines are ignored, and so are lines whose first non-white-space
@@ -165,7 +146,7 @@ The |[TREE]| is optional. For example:
 	read 2 <- *in
 	generate 3 -> *out
 =
-Pipeline descriptios allow us to manage up to 10 different Inter trees, and
+Pipeline descriptions allow us to manage up to 10 different Inter trees, and
 these are called |0| to |9|. These are all initially empty. Any stage which
 doesn't specify a tree is considered to apply to |0|; so pipelines often never
 mention the digits |0| to |9| at all because they always work inside |0|.

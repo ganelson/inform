@@ -12,12 +12,13 @@ pathname *path_to_inter = NULL;
 pathname *kit_to_build = NULL;
 pathname *domain_path = NULL;
 linked_list *inter_file_list = NULL; /* of |filename| */
-filename *output_textually = NULL;
-filename *output_binarily = NULL;
+filename *output_file = NULL;
 dictionary *pipeline_vars = NULL;
 filename *pipeline_as_file = NULL;
 text_stream *pipeline_as_text = NULL;
 pathname *internal_path = NULL;
+text_stream *output_format = NULL; /* for any |-o| output */
+int tracing = FALSE;
 
 void Main::add_pipeline_variable(text_stream *name, text_stream *value) {
 	Str::copy(Dictionaries::create_text(pipeline_vars, name), value);
@@ -43,11 +44,8 @@ int main(int argc, char **argv) {
     @<Start up the modules@>;
 	@<Begin with an empty file list and variables dictionary@>;
 	@<Read the command line@>;
-	if (kit_to_build) @<Set up a pipeline for kit-building@>;
-	if ((pipeline_as_file) || (pipeline_as_text))
-		@<Run the pipeline@>
-	else
-		@<Read the list of inter files, and perhaps transcode them@>;
+	if (kit_to_build) @<Select the build-kit pipeline@>;
+	@<Run the pipeline@>;
 	@<Shut down the modules@>;
 	if (Errors::have_occurred()) return 1;
 	return 0;
@@ -67,12 +65,7 @@ int main(int argc, char **argv) {
 	pipeline_vars = ParsingPipelines::basic_dictionary(I"output.i6");
 	internal_path = Pathnames::from_text(I"inform7/Internal");
 
-@ This pipeline is supplied built in to the installation of |inter|. In fact,
-it only ever writes the binary form of the code it produces, so only |*out|
-is used. But at times in the past it has been useful to debug with the text
-form, which would be written to |*outt|.
-
-@<Set up a pipeline for kit-building@> =
+@<Select the build-kit pipeline@> =
 	inter_architecture *A = PipelineModule::get_architecture();
 	if (A == NULL) Errors::fatal("no -architecture given");
 
@@ -84,41 +77,48 @@ form, which would be written to |*outt|.
 		Pathnames::directory_name(kit_to_build));
 	Main::add_pipeline_variable_from_filename(I"*out",
 		Architectures::canonical_binary(kit_to_build, A));
-	Main::add_pipeline_variable_from_filename(I"*outt",
-		Architectures::canonical_textual(kit_to_build, A));
 
 @<Run the pipeline@> =
-	if (LinkedLists::len(inter_file_list) > 0)
-		Errors::fatal("-pipeline-text and -pipeline-file cannot be combined with inter files");
 	if ((pipeline_as_file) && (pipeline_as_text))
 		Errors::fatal("-pipeline-text and -pipeline-file are mutually exclusive");
-	inter_pipeline *SS;
-	if (pipeline_as_file)
-		SS = ParsingPipelines::from_file(pipeline_as_file, pipeline_vars, NULL);
-	else
-		SS = ParsingPipelines::from_text(pipeline_as_text, pipeline_vars);
-	linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);
-	if (SS) RunningPipelines::run(domain_path, SS, NULL, kit_to_build, requirements_list, NULL);
-	else Errors::fatal("pipeline could not be parsed");
+	if (Str::len(output_format) == 0) output_format = I"Text";
+	target_vm *VM = TargetVMs::find(output_format);
+	if (VM == NULL) Errors::fatal("unrecognised compilation -format");
+	PipelineModule::set_architecture(
+		Architectures::to_codename(TargetVMs::get_architecture(VM)));
 
-@<Read the list of inter files, and perhaps transcode them@> =
 	inter_tree *I = InterTree::new();
-	filename *F;
-	LOOP_OVER_LINKED_LIST(F, filename, inter_file_list) {
-		if (BinaryInter::test_file(F))
-			BinaryInter::read(I, F);
-		else
-			TextualInter::read(I, F);
+	if (LinkedLists::len(inter_file_list) > 0) {
+		if (LinkedLists::len(inter_file_list) > 1)
+			Errors::fatal("only one file of Inter can be supplied");
+		filename *F;
+		LOOP_OVER_LINKED_LIST(F, filename, inter_file_list)
+			Main::add_pipeline_variable_from_filename(I"*in", F);
 	}
-	if (output_textually) {
-		text_stream C_struct; text_stream *OUT = &C_struct;
-		if (STREAM_OPEN_TO_FILE(OUT, output_textually, UTF8_ENC) == FALSE)
-			Errors::fatal_with_file("unable to open textual inter file for output: %f",
-				output_textually);
-		TextualInter::write(OUT, I, NULL);
-		STREAM_CLOSE(OUT);
+	if (output_file) {
+		Main::add_pipeline_variable_from_filename(I"*out", output_file);
 	}
-	if (output_binarily) BinaryInter::write(output_binarily, I);
+	inter_pipeline *SS = NULL;
+	@<Compile the pipeline@>;
+	if (SS) {
+		linked_list *req_list = NEW_LINKED_LIST(attachment_instruction);
+		RunningPipelines::run(domain_path, SS, I, kit_to_build, req_list, VM, tracing);
+	}
+
+@<Compile the pipeline@> =
+	if (pipeline_as_file) {
+		SS = ParsingPipelines::from_file(pipeline_as_file, pipeline_vars, NULL);
+		if (SS == NULL) Errors::fatal("pipeline could not be parsed");
+	} else if (pipeline_as_text) {
+		SS = ParsingPipelines::from_text(pipeline_as_text, pipeline_vars);
+		if (SS == NULL) Errors::fatal("pipeline could not be parsed");
+	} else if (output_file) {
+		SS = ParsingPipelines::from_text(I"read <- *in, generate -> *out", pipeline_vars);
+		if (SS == NULL) Errors::fatal("pipeline could not be parsed");
+	} else if (LinkedLists::len(inter_file_list) > 0) {
+		SS = ParsingPipelines::from_text(I"read <- *in", pipeline_vars);
+		if (SS == NULL) Errors::fatal("pipeline could not be parsed");
+	}
 
 @<Shut down the modules@> =
 	BytecodeModule::end();
@@ -133,8 +133,6 @@ form, which would be written to |*outt|.
 
 @d PROGRAM_NAME "inter"
 
-@e TEXTUAL_CLSW
-@e BINARY_CLSW
 @e PIPELINE_CLSW
 @e PIPELINE_FILE_CLSW
 @e PIPELINE_VARIABLE_CLSW
@@ -145,16 +143,19 @@ form, which would be written to |*outt|.
 @e CONSTRUCTS_CLSW
 @e ANNOTATIONS_CLSW
 @e PRIMITIVES_CLSW
+@e FORMAT_CLSW
+@e O_CLSW
+@e TRACE_CLSW
 
 @<Read the command line@> =
 	CommandLine::declare_heading(
 		L"[[Purpose]]\n\n"
 		L"usage: inter file1 file2 ... [options]\n");
 
-	CommandLine::declare_switch(TEXTUAL_CLSW, L"textual", 2,
-		L"write to file X in textual format");
-	CommandLine::declare_switch(BINARY_CLSW, L"binary", 2,
-		L"write to file X in binary format");
+	CommandLine::declare_switch(O_CLSW, L"o", 2,
+		L"code-generate to file X");
+	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
+		L"code-generate -o output to format X (default is Text)");
 	CommandLine::declare_switch(PIPELINE_CLSW, L"pipeline-text", 2,
 		L"specify pipeline textually, with X being a comma-separated list of stages");
 	CommandLine::declare_switch(PIPELINE_FILE_CLSW, L"pipeline-file", 2,
@@ -175,7 +176,9 @@ form, which would be written to |*outt|.
 		L"print out table of all symbol annotations in the Inter language");
 	CommandLine::declare_switch(PRIMITIVES_CLSW, L"primitives", 1,
 		L"print out table of all primitive invocations in the Inter language");
-		
+	CommandLine::declare_boolean_switch(TRACE_CLSW, L"trace", 1,
+		L"print out all pipeline steps as they are followed", FALSE);
+
 	CommandLine::read(argc, argv, NULL, &Main::respond, &Main::add_file);
 
 	path_to_inter = Pathnames::installation_path("INTER_PATH", I"inter");
@@ -183,8 +186,8 @@ form, which would be written to |*outt|.
 @ =
 void Main::respond(int id, int val, text_stream *arg, void *state) {
 	switch (id) {
-		case TEXTUAL_CLSW: output_textually = Filenames::from_text(arg); break;
-		case BINARY_CLSW: output_binarily = Filenames::from_text(arg); break;
+		case O_CLSW: output_file = Filenames::from_text(arg); break;
+		case FORMAT_CLSW: output_format = Str::duplicate(arg); break;
 		case PIPELINE_CLSW: pipeline_as_text = Str::duplicate(arg); break;
 		case PIPELINE_FILE_CLSW: pipeline_as_file = Filenames::from_text(arg); break;
 		case PIPELINE_VARIABLE_CLSW: @<Add a pipeline variable to the dictionary@>; break;
@@ -198,6 +201,7 @@ void Main::respond(int id, int val, text_stream *arg, void *state) {
 		case CONSTRUCTS_CLSW:  InterInstruction::show_constructs(STDOUT); break;
 		case ANNOTATIONS_CLSW: SymbolAnnotation::show_annotations(STDOUT); break;
 		case PRIMITIVES_CLSW:  Primitives::show_primitives(STDOUT); break;
+		case TRACE_CLSW: tracing = (val)?TRUE:FALSE; break;
 	}
 }
 

@@ -30,10 +30,39 @@ void TargetVMs::create(void) {
 	TargetVMs::new(Architectures::from_codename(I"32d"), I"Inform6",
 		VersionNumbers::from_text(I"3.1.2"), I"i6", I"ulx", I"gblorb", I"Quixe", NULL);
 
+	/* hat tip: modesty forbids */
+	TargetVMs::new(Architectures::from_codename(I"16"), I"Binary",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"16d"), I"Binary",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"32"), I"Binary",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"32d"), I"Binary",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+
+	TargetVMs::new(Architectures::from_codename(I"16"), I"Text",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"16d"), I"Text",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"32"), I"Text",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"32d"), I"Text",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+
 	/* C support added September 2021 */
 	TargetVMs::new(Architectures::from_codename(I"32"), I"C",
 		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
 	TargetVMs::new(Architectures::from_codename(I"32d"), I"C",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+
+	/* Inventory support added March 2022 */
+	TargetVMs::new(Architectures::from_codename(I"16"), I"Inventory",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"16d"), I"Inventory",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"32"), I"Inventory",
+		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
+	TargetVMs::new(Architectures::from_codename(I"32d"), I"Inventory",
 		VersionNumbers::from_text(I"1"), I"c", I"", I"", I"", NULL);
 }
 

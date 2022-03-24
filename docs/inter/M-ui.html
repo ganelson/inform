@@ -12,6 +12,11 @@
 <link href="../docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
+<script src="http://code.jquery.com/jquery-1.12.4.min.js"
+	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+
+<script src="../docs-assets/Bigfoot.js"></script>
+<link href="../docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="../docs-assets/ConsoleText-Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
@@ -66,24 +71,61 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../compiler.html">Compiler Tools</a></li><li><a href="index.html">inter</a></li><li><a href="index.html#M">Manual</a></li><li><b>Using Inter</b></li></ul></div>
 <p class="purpose">Using Inter at the command line.</p>
 
-<ul class="toc"><li><a href="M-ui.html#SP1">&#167;1. What Inter does</a></li><li><a href="M-ui.html#SP2">&#167;2. Command-line usage</a></li><li><a href="M-ui.html#SP5">&#167;5. Assimilation</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-ui.html#SP1">&#167;1. What Inter does</a></li><li><a href="M-ui.html#SP3">&#167;3. Verify only</a></li><li><a href="M-ui.html#SP4">&#167;4. Format conversion</a></li><li><a href="M-ui.html#SP5">&#167;5. Running a pipeline</a></li><li><a href="M-ui.html#SP9">&#167;9. Assimilation</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. What Inter does. </b>The command-line executable Inter packages up the back end of the Inform 7
-compiler into a stand-alone tool, and enables that back end to be used more
-flexibly. For example, it can read or write either textual or binary inter
-code, and can convert between them. It can also perform any of the numerous
-code-generation stages on the code it reads, in any sequence. In short, it
-aims to be a Swiss Army knife for inter code.
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. What Inter does. </b>"Inter" is the intermediate representation of a program used in the Inform
+compiler toolchain. Most compilers have one of these: for example, Microsoft
+compilers mostly use "CIL" (common intermediate language), while <span class="extract"><span class="extract-syntax">gcc</span></span> uses
+something called GIMPLE, and so on. See <a href="../bytecode-module/index.html" class="internal">bytecode</a> for a longer discussion
+of what motivates the design of Inter.
 </p>
 
-<p class="commentary">Because of that, it's possible to test code-generation stages individually:
-we can read in some inter code from a text file, perform a single stage on
-it, and write it out as text again. This gives us a very helpful window into
-what Inform is doing; it also provides a test-bed for future optimisation,
-or for future applications of inter code.
+<p class="commentary">The practical effect is that the back end of the Inform compiler deals only
+with Inter code. This back end exists as part of the executable <a href="../inform7/index.html" class="internal">inform7</a>,
+but also as a stand-alone program called <a href="index.html" class="internal">inter</a>, which comes with its
+own command-line interface. Whereas <a href="../inform7/index.html" class="internal">inform7</a> has a specific task to perform
+and uses Inter code only as a means to an end, <a href="index.html" class="internal">inter</a> is designed to be
+as flexible as possible.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Command-line usage. </b>If you have compiled the standard distribution of the command-line tools
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Inter code can exist in memory, or in a human-readable text file, or in a
+rapid-access binary file. The tool <a href="index.html" class="internal">inter</a> can convert between these formats:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">  </span><span class="element-syntax">textual</span><span class="plain-syntax">                                  </span><span class="element-syntax">textual</span>
+<span class="plain-syntax">  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span>
+<span class="plain-syntax">              \                     /</span>
+<span class="plain-syntax">               \                   /</span>
+<span class="plain-syntax">                ----&gt;  </span><span class="element-syntax">memory</span><span class="plain-syntax">  ----</span>
+<span class="plain-syntax">               /       </span><span class="element-syntax">inter</span><span class="plain-syntax">       \</span>
+<span class="plain-syntax">  </span><span class="element-syntax">binary</span><span class="plain-syntax">      /                     \      </span><span class="element-syntax">binary</span>
+<span class="plain-syntax">  </span><span class="element-syntax">inter</span><span class="plain-syntax">   ---+                       +---&gt; </span><span class="element-syntax">inter</span>
+</pre>
+<p class="commentary">However, Inter can do much more than simply convert between these forms. It
+has a "pipeline" design, meaning that it can run memory inter through any
+desired series of compilation stages, one at a time:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="element-syntax">T</span><span class="plain-syntax"> --------&gt; </span><span class="element-syntax">T</span><span class="plain-syntax"> --------&gt; </span><span class="element-syntax">T</span><span class="plain-syntax"> --------&gt; ... --------&gt; </span><span class="element-syntax">T</span>
+<span class="plain-syntax">       </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">      </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">      </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="constant-syntax">3</span><span class="plain-syntax">   ...  </span><span class="element-syntax">step</span><span class="plain-syntax"> </span><span class="element-syntax">N</span>
+</pre>
+<p class="commentary">The Inter tree <span class="extract"><span class="extract-syntax">T</span></span> starts out empty,<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> and at the end it is thrown away. So any
+useful pipeline will begin by loading something in (usually as step 1), and
+end by producing some useful output (usually in its last step or steps).
+</p>
+
+<p class="commentary">The advantage of this design is that it enables us to build what amount to
+entirely different compilers, just by using different pipelines &mdash; see
+"assimilation" below for an example of a pipeline very different to the one
+used in normal Inform 7 compilations. Pipelines also allow us to test existing
+or proposed code-generation stages individually.
+</p>
+
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Programs in Inter format are called "Inter trees".
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Verify only. </b>If you have compiled the standard distribution of the command-line tools
 for Inform then the Inter executable will be at <span class="extract"><span class="extract-syntax">inter/Tangled/inter</span></span>.
 </p>
 
@@ -105,66 +147,142 @@ have the filename extension <span class="extract"><span class="ConsoleText-extra
 not how Inter decides.)
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>In the second mode, Inter converts from textual to binary form or vice
-versa. The option <span class="extract"><span class="ConsoleText-extract-syntax">-binary X</span></span> writes a binary form of the inter to file <span class="extract"><span class="ConsoleText-extract-syntax">X</span></span>,
-and <span class="extract"><span class="ConsoleText-extract-syntax">-textual X</span></span> writes a text form. So, for example,
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Format conversion. </b>In the second mode, Inter not only loads (and verifies) the named file, but
+then converts it to a different format and writes that out. For example,
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -binary</span><span class="ConsoleText-plain-syntax"> my.interb</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=binary</span>
 </pre>
-<p class="commentary">converts <span class="extract"><span class="ConsoleText-extract-syntax">my.intert</span></span> (a textual inter file) to its binary equivalent
-<span class="extract"><span class="ConsoleText-extract-syntax">my.interb</span></span>, and conversely:
+<p class="commentary">converts <span class="extract"><span class="ConsoleText-extract-syntax">my.intert</span></span> (a textual inter file) to its binary equivalent <span class="extract"><span class="ConsoleText-extract-syntax">my.interb</span></span>,
+and conversely:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -textual</span><span class="ConsoleText-plain-syntax"> my.intert</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=text</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>In the third and most flexible mode, Inter runs the supplied code through
-a pipeline of processing stages. The pipeline, which must contain at least
-one stage, can be quite elaborate (see later), but for example:
+<p class="commentary">Two parameters must be specified: <span class="extract"><span class="ConsoleText-extract-syntax">-o</span></span> giving the output file, and <span class="extract"><span class="ConsoleText-extract-syntax">-format=F</span></span>
+to say what format <span class="extract"><span class="ConsoleText-extract-syntax">F</span></span> this should have. Formats are in the same notation as
+those used by <a href="../inbuild/index.html" class="internal">inbuild</a>, which similarly supports <span class="extract"><span class="ConsoleText-extract-syntax">-o</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">-format</span></span>.
+In fact, <span class="extract"><span class="ConsoleText-extract-syntax">-format=text</span></span> is the default.
 </p>
 
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    read </span><span class="reserved-syntax">&lt;-</span><span class="plain-syntax"> myfile.inter, resolve-conditional-compilation, generate inform6 </span><span class="reserved-syntax">-&gt;</span><span class="plain-syntax"> myfile.i6</span>
-</pre>
-<p class="commentary">is a valid three-stage pipeline. The command to do this is then:
+<p class="commentary">To take an elaborate example,
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -pipeline-text</span><span class="ConsoleText-plain-syntax"> 'PIPELINE'</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=C/32d/nomain</span>
 </pre>
-<p class="commentary">where <span class="extract"><span class="ConsoleText-extract-syntax">PIPELINE</span></span> is a textual description like the one above. In practice,
-it may not be convenient to spell the pipeline out on the command line, so
-one can also put it into a text file:
+<p class="commentary">generates a 32-bit-word, debugging-enabled ANSI C program from the Inter tree
+in <span class="extract"><span class="ConsoleText-extract-syntax">my.interb</span></span>, with no <span class="extract"><span class="ConsoleText-extract-syntax">main</span></span> function included in it.
+</p>
+
+<p class="commentary">As a special case, if <span class="extract"><span class="ConsoleText-extract-syntax">-o</span></span> is given just as <span class="extract"><span class="ConsoleText-extract-syntax">-</span></span>, then the output is printed
+to the console rather than to a file.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Running a pipeline. </b>If we specify <span class="extract"><span class="ConsoleText-extract-syntax">-trace</span></span> as a command-line switch, Inter prints out every step
+of the pipeline(s) it is following. This reveals that even the simple commands
+above are, in fact, running pipelines, albeit short ones:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -trace</span>
+<span class="ConsoleText-plain-syntax">    step 1/1: read &lt;- my.intert</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.interb</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=binary</span><span class="ConsoleText-identifier-syntax"> -trace</span>
+<span class="ConsoleText-plain-syntax">    step 1/2: read &lt;- my.intert</span>
+<span class="ConsoleText-plain-syntax">    step 2/2: generate binary -&gt; my.interb</span>
+</pre>
+<p class="commentary">As this shows, a one or two-step pipeline was running:
+</p>
+
+<ul class="items"><li>(1) The first step used the <span class="extract"><span class="ConsoleText-extract-syntax">read</span></span> compilation stage, which reads some Inter
+code into memory. Here, it comes from the file <span class="extract"><span class="ConsoleText-extract-syntax">my.intert</span></span>.
+</li><li>(2) The second step used the <span class="extract"><span class="ConsoleText-extract-syntax">generate</span></span> stage, which writes out Inter code
+in the format of one's choice &mdash; here "binary".
+</li></ul>
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>However, we don't have to use this default pipeline. <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline-text 'PIPELINE'</span></span>
+reads in a textual description of the pipeline to follow, with the steps divided
+by commas. The examples above used a pipeline which in this notation would
+be written as:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    -pipeline-text 'read &lt;- *in, generate -&gt; *out'</span>
+</pre>
+<p class="commentary"><span class="extract"><span class="ConsoleText-extract-syntax">*in</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">*out</span></span> are examples of "pipeline variables". <span class="extract"><span class="ConsoleText-extract-syntax">*in</span></span> is the filename
+of whatever file is to be read in, and <span class="extract"><span class="ConsoleText-extract-syntax">*out</span></span> is whatever was specified by <span class="extract"><span class="ConsoleText-extract-syntax">-o</span></span>
+at the command line, or in other words, the filename to write the output to.
+</p>
+
+<p class="commentary">This is not quite the smallest possible pipeline. Consider:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -pipeline-text</span><span class="ConsoleText-plain-syntax"> 'new, generate -&gt; *out'</span><span class="ConsoleText-identifier-syntax"> -trace</span>
+<span class="ConsoleText-plain-syntax">    step 1/2: new</span>
+<span class="ConsoleText-plain-syntax">    step 2/2: generate text -&gt; my.intert</span>
+</pre>
+<p class="commentary">Here we didn't specify any Inter file to read in, so <span class="extract"><span class="ConsoleText-extract-syntax">*in</span></span> does not appear.
+Instead wevbegan the pipeline with the <span class="extract"><span class="ConsoleText-extract-syntax">new</span></span> compilation stage, which creates
+a minimal Inter program from nothing.
+</p>
+
+<p class="commentary">Even three-step pipelines can be very useful. For example:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> my.intert</span><span class="ConsoleText-identifier-syntax"> -pipeline-text</span><span class="ConsoleText-plain-syntax"> 'read &lt;- *in, eliminate-redundant-labels, generate -&gt; *out'</span><span class="ConsoleText-identifier-syntax"> -trace</span>
+<span class="ConsoleText-plain-syntax">    step 1/3: read &lt;- my.intert</span>
+<span class="ConsoleText-plain-syntax">    step 2/3: eliminate-redundant-labels</span>
+<span class="ConsoleText-plain-syntax">    step 3/3: generate text -&gt; my.intert</span>
+</pre>
+<p class="commentary">This could be used to test that the <span class="extract"><span class="ConsoleText-extract-syntax">eliminate-redundant-labels</span></span> compilation
+stage is working as it should. We can feed our choice of Inter code into it,
+and examine its direct output, in isolation from the working of the rest of
+the compiler (and, of course, more quickly).
+</p>
+
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>In practice, it becomes cumbersome to spell the pipeline out longhand on
+the command line, so we can also put it into a text file:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -pipeline-file</span><span class="ConsoleText-plain-syntax"> mypl.interpipeline</span>
 </pre>
-<p class="commentary">Pipelines can contain variables, and their values can be set at the command
-line with e.g.:
+<p class="commentary">It's not allowed to specify both <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline-file</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline-text</span></span>.
+The text file, however, specifies pipelines with one step on each line, not
+using commas. So <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline-text 'read &lt;- *in, eliminate-redundant-labels, generate -&gt; *out'</span></span>
+is equivalent to <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline-file</span></span> with the file:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    -variable '*out=myfile.i6'</span>
+<span class="plain-syntax">read &lt;- *in</span>
+<span class="plain-syntax">eliminate-redundant-labels</span>
+<span class="plain-syntax">generate -&gt; *out</span>
 </pre>
-<p class="commentary">It is also possible to set the default directory for reading and writing files:
+<p class="commentary">For more on how to write and use pipeline files, see <a href="M-pas.html" class="internal">Pipelines and Stages</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>In general, filenames follow the usual Unix conventions: they are taken as
+relative to the current working directory, unless given as absolute filenames
+beginning with <span class="extract"><span class="extract-syntax">/</span></span>. But we can also set a "default directory" to take the
+place of the CWD, using <span class="extract"><span class="extract-syntax">-domain</span></span>:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    -domain D</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Assimilation. </b>Inform makes use of what are called "kits" of pre-compiled Inter code:
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Assimilation. </b>Inform makes use of what are called "kits" of pre-compiled Inter code:
 for example, <span class="extract"><span class="extract-syntax">CommandParserKit</span></span> contains code for the traditional interactive
-fiction command parser. For speed, Inter loads these as binary Inter, but
-that means they have to be compiled from time to time. This is called
-"assimilation".
+fiction command parser. That pre-compilation is called "assimilation", and
+is performed by the <a href="index.html" class="internal">inter</a> tool alone: it does not require, or use, the
+bulk of the <a href="../inform7/index.html" class="internal">inform7</a> compiler.
 </p>
 
-<p class="commentary">The source code for these could in priniple be textual Inter, but that's too
+<p class="commentary">The source code for a kit could in principle be textual Inter, but that's too
 verbose to write comfortably. In practice we use Inform 6 code as a notation,
-and therefore assimilation is really a cross-compilation from I6 to Inter.
+and therefore assimilation is really compilation from I6 to Inter.
 </p>
 
 <p class="commentary">Kits are like so-called "fat binaries", in that they contain binary Inter
@@ -174,9 +292,14 @@ which is wanted. For example:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 16</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> K</span>
-<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 32d</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> K</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 16</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> inform7/Internal/Inter/BasicInformKit</span>
+<span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inter/Tangled/inter</span><span class="ConsoleText-identifier-syntax"> -architecture</span><span class="ConsoleText-plain-syntax"> 32d</span><span class="ConsoleText-identifier-syntax"> -build-kit</span><span class="ConsoleText-plain-syntax"> inform7/Internal/Inter/BasicInformKit</span>
 </pre>
+<p class="commentary">At present there are four architectures: <span class="extract"><span class="ConsoleText-extract-syntax">16</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">16d</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">32</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">32d</span></span>.
+Note that an architecture is not the same thing as a format: it specifies
+only the word size (16 or 32 bit) and the presence, or not, of debugging data.
+</p>
+
 <p class="commentary">Incrementally building kits as needed could be done with something like
 the Unix tool <span class="extract"><span class="ConsoleText-extract-syntax">make</span></span>, but in fact Inbuild has this ability: the command
 </p>
@@ -184,7 +307,7 @@ the Unix tool <span class="extract"><span class="ConsoleText-extract-syntax">mak
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -build</span><span class="ConsoleText-plain-syntax"> K</span>
 </pre>
-<p class="commentary">looks at the kit, works out which architectures need rebuilding, and
+<p class="commentary">looks at the kit <span class="extract"><span class="ConsoleText-extract-syntax">K</span></span>, works out which architectures need rebuilding, and
 then issues commands like the above to instruct <span class="extract"><span class="ConsoleText-extract-syntax">inter</span></span> to do so. Indeed,
 multiple kits can be managed with a single command:
 </p>
@@ -192,6 +315,23 @@ multiple kits can be managed with a single command:
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -build -contents-of</span><span class="ConsoleText-plain-syntax"> inform7/Internal/Inter</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>Under the hood, assimilation is just another use of pipeline processing. If we
+run one of these <span class="extract"><span class="ConsoleText-extract-syntax">-build-kit</span></span> commands with <span class="extract"><span class="ConsoleText-extract-syntax">-trace</span></span> switched on, we see
+something like this:
+</p>
+
+<pre class="ConsoleText-displayed-code all-displayed-code code-font">
+<span class="ConsoleText-plain-syntax">step 1/6: new</span>
+<span class="ConsoleText-plain-syntax">step 2/6: load-kit-source &lt;- BasicInformKit</span>
+<span class="ConsoleText-plain-syntax">step 3/6: parse-insertions</span>
+<span class="ConsoleText-plain-syntax">step 4/6: resolve-conditional-compilation</span>
+<span class="ConsoleText-plain-syntax">step 5/6: compile-splats</span>
+<span class="ConsoleText-plain-syntax">step 6/6: generate binary -&gt; inform7/Internal/Inter/BasicInformKit/arch-32.interb</span>
+</pre>
+<p class="commentary">This is in fact the result of running a pipeline file called <span class="extract"><span class="ConsoleText-extract-syntax">build-kit.interpipeline</span></span>
+which is included in the standard Inter distribution.
+</p>
+
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprevoff">&#10094;</li><li class="progresscurrentchapter">M</li><li class="progresscurrent">ui</li><li class="progresssection"><a href="M-ti.html">ti</a></li><li class="progresssection"><a href="M-dpiti.html">dpiti</a></li><li class="progresssection"><a href="M-cpiti.html">cpiti</a></li><li class="progresssection"><a href="M-ip.html">ip</a></li><li class="progresssection"><a href="M-ia.html">ia</a></li><li class="progresssection"><a href="M-io.html">io</a></li><li class="progresssection"><a href="M-pas.html">pas</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-ti.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

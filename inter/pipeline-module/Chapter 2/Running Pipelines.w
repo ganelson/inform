@@ -61,7 +61,7 @@ steps in turn, timing how long each one took us.
 pipeline_step *currently_running_pipeline_step = NULL;
 
 void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
-	pathname *the_kit, linked_list *requirements_list, target_vm *VM) {
+	pathname *the_kit, linked_list *requirements_list, target_vm *VM, int tracing) {
 	if (S == NULL) return;
 	if (I) S->ephemera.memory_repository = I;
 	stopwatch_timer *within = NULL;
@@ -89,9 +89,10 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 	@<Prepare ephemeral data for this step@>;
 	Time::stop_stopwatch(prep_timer);
 	TEMPORARY_TEXT(STAGE_NAME)
-	WRITE_TO(STAGE_NAME, "inter step %d/%d: ", ++step_count, step_total);
+	WRITE_TO(STAGE_NAME, "step %d/%d: ", ++step_count, step_total);
 	ParsingPipelines::write_step(STAGE_NAME, step);
 	Log::new_stage(STAGE_NAME);
+	if (tracing) WRITE_TO(STDOUT, "%S\n", STAGE_NAME);
 	stopwatch_timer *step_timer =
 		Time::start_stopwatch(pipeline_timer, STAGE_NAME);
 	DISCARD_TEXT(STAGE_NAME)
@@ -144,6 +145,9 @@ void RunningPipelines::run(pathname *P, inter_pipeline *S, inter_tree *I,
 		} else {
 			if (Str::eq(step->step_argument, I"*log")) {
 				step->ephemera.to_stream = DL;
+				@<Call the stage execution function@>;
+			} else if (Str::eq(step->step_argument, I"-")) {
+				step->ephemera.to_stream = STDOUT;
 				@<Call the stage execution function@>;
 			} else {
 				@<Work out the filename@>;

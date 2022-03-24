@@ -116,7 +116,7 @@ better way to choose a virtual machine to compile to.
 	CommandLine::declare_boolean_switch(RELEASE_CLSW, L"release", 1,
 		L"compile a version suitable for a Release build", FALSE);
 	CommandLine::declare_textual_switch(FORMAT_CLSW, L"format", 1,
-		L"compile I6 code suitable for the virtual machine X");
+		L"compile to the format X (default is Inform6/32)");
 	CommandLine::declare_switch(SOURCE_CLSW, L"source", 2,
 		L"use file X as the Inform source text");
 	CommandLine::declare_switch(O_CLSW, L"o", 2,
@@ -182,7 +182,7 @@ dictionary *pipeline_vars = NULL;
 pathname *shared_transient_resources = NULL;
 int this_is_a_debug_compile = FALSE; /* Destined to be compiled with debug features */
 int this_is_a_release_compile = FALSE; /* Omit sections of source text marked not for release */
-text_stream *story_filename_extension = NULL; /* What story file we will eventually have */
+text_stream *output_format = NULL; /* What story file we will eventually have */
 int census_mode = FALSE; /* Running only to update extension documentation */
 int rng_seed_at_start_of_play = 0; /* The seed value, or 0 if not seeded */
 
@@ -217,7 +217,7 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	switch (id) {
 		case DEBUG_CLSW: this_is_a_debug_compile = val; break;
-		case FORMAT_CLSW: story_filename_extension = Str::duplicate(arg); break;
+		case FORMAT_CLSW: output_format = Str::duplicate(arg); break;
 		case RELEASE_CLSW: this_is_a_release_compile = val; break;
 		case NEST_CLSW:
 			Supervisor::add_nest(Pathnames::from_text(arg), GENERIC_NEST_TAG); break;
@@ -316,7 +316,7 @@ void Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
 line, which is why we couldn't work this out earlier:
 
 @<Find the virtual machine@> =
-	text_stream *ext = story_filename_extension;
+	text_stream *ext = output_format;
 	int with_debugging = FALSE;
 	if ((this_is_a_release_compile == FALSE) || (this_is_a_debug_compile))
 		with_debugging = TRUE;
