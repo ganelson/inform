@@ -90,6 +90,7 @@ usages in a sentence.
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">verb_conjugation</span><span class="plain-syntax"> *</span><span class="identifier-syntax">conjugation</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_form</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">base_form</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VERB_COMPILATION_LINGUISTICS_CALLBACK</span>
@@ -141,6 +142,7 @@ instead of a word: for example, the <span class="extract"><span class="extract-s
 <span class="plain-syntax">    </span><span class="reserved-syntax">verb</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">conjugation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_form</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">base_form</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VERB_COMPILATION_LINGUISTICS_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">VERB_COMPILATION_LINGUISTICS_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
@@ -245,6 +247,7 @@ form usages can be legal for the same form, this is a bitmap:
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">word_assemblage</span><span class="plain-syntax"> </span><span class="identifier-syntax">neg_reference_text</span><span class="plain-syntax">; </span><span class="comment-syntax"> e.g. "do not translate into"</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list_of_senses</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_meaning</span><span class="plain-syntax"> *</span><span class="identifier-syntax">first_unspecial_meaning</span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">next_form</span><span class="plain-syntax">; </span><span class="comment-syntax"> within the linked list for the verb</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">linguistic_stock_item</span><span class="plain-syntax"> *</span><span class="identifier-syntax">in_stock</span><span class="plain-syntax">;</span>
@@ -256,7 +259,7 @@ form usages can be legal for the same form, this is a bitmap:
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">verb_form</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure verb_form is accessed in 2/adj, 2/art, 2/daq, 2/nns, 2/prn, 3/vm, 3/vu, 3/prp, 4/vp and here.</li></ul>
+<ul class="endnotetexts"><li>The structure verb_form is accessed in 2/adj, 2/art, 2/daq, 2/nns, 2/prn, 3/vu, 3/prp, 4/vp and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Verb forms are also a grammatical category:
 </p>
 
@@ -297,17 +300,21 @@ can be joined into a linked list. Verb meanings are described elsewhere.
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure verb_sense is accessed in 3/vm, 3/vu, 3/prp, 4/vp and here.</li></ul>
+<ul class="endnotetexts"><li>The structure verb_sense is accessed in 3/vu, 3/prp, 4/vp and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11. Creating forms and senses. </b>Forms are stored in a linked list, and are uniquely identified by the triplet
-of verb and two prepositions:
+of verb and two prepositions.
+</p>
+
+<p class="commentary">The base form is by definition the one where no prepositions are used. We could
+therefore find that base form by calling <span class="extract"><span class="extract-syntax">Verbs::find_form(V, NULL, NULL)</span></span>,
+but instead we cache this result in <span class="extract"><span class="extract-syntax">V-&gt;base_form</span></span> for speed: profiling shows
+that Inform otherwise spends nearly 1% of its entire running time making that
+innocent-looking call.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="function-syntax">Verbs::base_form</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">Verbs::base_form</span></span>:<br/>Verb Meanings - <a href="3-vm.html#SP7">&#167;7</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">verb</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_form</span><span class="plain-syntax">; </span><span class="identifier-syntax">vf</span><span class="plain-syntax">; </span><span class="identifier-syntax">vf</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_form</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">preposition</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">second_clause_preposition</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">vf</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">base_form</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -329,7 +336,7 @@ of verb and two prepositions:
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">VERB_FORMS</span><span class="plain-syntax">, </span><span class="string-syntax">"  Adding form: $w + $p + $p = $y\n"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">prep</span><span class="plain-syntax">, </span><span class="identifier-syntax">second_prep</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">vm</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><a href="3-vm.html#SP9" class="function-link"><span class="function-syntax">VerbMeanings::set_where_assigned</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">vm</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="3-vm.html#SP8" class="function-link"><span class="function-syntax">VerbMeanings::set_where_assigned</span></a><span class="plain-syntax">(&amp;</span><span class="identifier-syntax">vm</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">V</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"added form to null verb"</span><span class="plain-syntax">);</span>
 
@@ -355,6 +362,7 @@ of verb and two prepositions:
 <span class="plain-syntax">        </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">form_structures</span><span class="plain-syntax"> = </span><span class="identifier-syntax">form_structs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">list_of_senses</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_form</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_unspecial_meaning</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">vf</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
@@ -430,6 +438,7 @@ in a canonical verbal form. For example, "translate into <span class="extract"><
 <span class="plain-syntax">        </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_form</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_form</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_form</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vf</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">prep</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">second_prep</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">base_form</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vf</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vrb.html#SP12_1">&#167;12.1</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP12_2" class="paragraph-anchor"></a><b>&#167;12.2.  </b>A new sense is normally just added to the end of the list of senses for
@@ -447,14 +456,47 @@ we overwrite that with the new (presumably meaningful) one.
 <span class="plain-syntax">        </span><span class="identifier-syntax">prev</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vs</span><span class="plain-syntax">; </span><span class="identifier-syntax">vs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_sense</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vs</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">vs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vm</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vm</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_sense</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">prev</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">list_of_senses</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">prev</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_sense</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vs</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-vm.html#SP10" class="function-link"><span class="function-syntax">VerbMeanings::get_special_meaning</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vm</span><span class="plain-syntax">)) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_unspecial_meaning</span><span class="plain-syntax"> = &amp;(</span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vm</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_unspecial_meaning</span><span class="plain-syntax"> == &amp;(</span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vm</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_unspecial_meaning</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-vrb.html#SP12">&#167;12</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>The following function may seem curious &mdash; what's so great about the first
+regular sense of a verb? The answer is that Inform generally gives a verb at
+most one regular sense.
+</p>
+
+<p class="commentary">We cache the result in <span class="extract"><span class="extract-syntax">vf-&gt;first_unspecial_meaning</span></span> for speed, because profiling
+of <a href="../inform7/index.html" class="internal">inform7</a> suggests this is worth it, but retain the uncached algorithm as
+well in case we suspect bugs in future.
+</p>
+
+<pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">CACHE_FIRST_UNSPECIAL_MEANING</span>
+</pre>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">verb_meaning</span><span class="plain-syntax"> *</span><span class="function-syntax">Verbs::first_unspecial_meaning_of_verb_form</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Verbs::first_unspecial_meaning_of_verb_form</span></span>:<br/>Verb Meanings - <a href="3-vm.html#SP7">&#167;7</a>, <a href="3-vm.html#SP9">&#167;9</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">verb_form</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vf</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vf</span><span class="plain-syntax">)  {</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="constant-syntax">CACHE_FIRST_UNSPECIAL_MEANING</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">first_unspecial_meaning</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="constant-syntax">CACHE_FIRST_UNSPECIAL_MEANING</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">verb_sense</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vf</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">list_of_senses</span><span class="plain-syntax">; </span><span class="identifier-syntax">vs</span><span class="plain-syntax">; </span><span class="identifier-syntax">vs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_sense</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="3-vm.html#SP10" class="function-link"><span class="function-syntax">VerbMeanings::get_special_meaning</span></a><span class="plain-syntax">(&amp;(</span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vm</span><span class="plain-syntax">)) == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">vs</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">vm</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="2-prn.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-lm.html">1</a></li><li class="progresschapter"><a href="2-adj.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresscurrent">vrb</li><li class="progresssection"><a href="3-vm.html">vm</a></li><li class="progresssection"><a href="3-sm.html">sm</a></li><li class="progresssection"><a href="3-vu.html">vu</a></li><li class="progresssection"><a href="3-prp.html">prp</a></li><li class="progresssection"><a href="3-aoc.html">aoc</a></li><li class="progresssection"><a href="3-apoo.html">apoo</a></li><li class="progresschapter"><a href="4-np.html">4</a></li><li class="progressnext"><a href="3-vm.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

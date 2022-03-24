@@ -252,7 +252,7 @@ void RTVerbs::vc_compilation_agent(compilation_subtask *t) {
 
 	verb *vi = vc->vc_conjugates;
 	verb_meaning *vm =
-		(vi)?VerbMeanings::first_unspecial_meaning_of_verb_form(Verbs::base_form(vi)):NULL;
+		(vi)?Verbs::first_unspecial_meaning_of_verb_form(Verbs::base_form(vi)):NULL;
 	binary_predicate *meaning = VerbMeanings::get_regular_meaning(vm);
 	inter_name *rel_iname = RTRelations::default_iname();
 	if (meaning) rel_iname = RTRelations::iname(meaning);

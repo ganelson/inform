@@ -16,6 +16,7 @@ usages in a sentence.
 typedef struct verb {
 	struct verb_conjugation *conjugation;
 	struct verb_form *first_form;
+	struct verb_form *base_form;
 	struct linguistic_stock_item *in_stock;
 
 	#ifdef VERB_COMPILATION_LINGUISTICS_CALLBACK
@@ -63,6 +64,7 @@ verb *Verbs::new_verb(verb_conjugation *vc, int cop) {
 	verb *V = CREATE(verb);
 	V->conjugation = vc;
 	V->first_form = NULL;
+	V->base_form = NULL;
 	#ifdef VERB_COMPILATION_LINGUISTICS_CALLBACK
 	VERB_COMPILATION_LINGUISTICS_CALLBACK(V);
 	#endif
@@ -154,6 +156,7 @@ typedef struct verb_form {
 	struct word_assemblage neg_reference_text; /* e.g. "do not translate into" */
 
 	struct verb_sense *list_of_senses;
+	struct verb_meaning *first_unspecial_meaning;
 
 	struct verb_form *next_form; /* within the linked list for the verb */
 	struct linguistic_stock_item *in_stock;
@@ -205,14 +208,17 @@ typedef struct verb_sense {
 
 @h Creating forms and senses.
 Forms are stored in a linked list, and are uniquely identified by the triplet
-of verb and two prepositions:
+of verb and two prepositions.
+
+The base form is by definition the one where no prepositions are used. We could
+therefore find that base form by calling |Verbs::find_form(V, NULL, NULL)|,
+but instead we cache this result in |V->base_form| for speed: profiling shows
+that Inform otherwise spends nearly 1% of its entire running time making that
+innocent-looking call.
 
 =
 verb_form *Verbs::base_form(verb *V) {
-	if (V)
-		for (verb_form *vf = V->first_form; vf; vf = vf->next_form)
-			if ((vf->preposition == NULL) && (vf->second_clause_preposition == NULL))
-				return vf;
+	if (V) return V->base_form;
 	return NULL;
 }
 
@@ -256,6 +262,7 @@ void Verbs::add_form(verb *V, preposition *prep,
 		vf->form_structures = form_structs;
 		vf->list_of_senses = NULL;
 		vf->next_form = NULL;
+		vf->first_unspecial_meaning = NULL;
 		#ifdef VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK
 		VERB_FORM_COMPILATION_LINGUISTICS_CALLBACK(vf);
 		#endif
@@ -321,6 +328,7 @@ in a canonical verbal form. For example, "translate into |+| as".
 		vf->next_form = prev->next_form;
 		prev->next_form = vf;
 	}
+	if ((prep == NULL) && (second_prep == NULL)) V->base_form = vf;
 
 @ A new sense is normally just added to the end of the list of senses for
 the given form, except that if there's a meaningless sense present already,
@@ -333,9 +341,40 @@ we overwrite that with the new (presumably meaningful) one.
 		prev = vs; vs = vs->next_sense;
 	}
 	if (vs == NULL) {
-		verb_sense *vs = CREATE(verb_sense);
+		vs = CREATE(verb_sense);
 		vs->vm = vm;
 		vs->next_sense = NULL;
 		if (prev == NULL) vf->list_of_senses = vs;
 		else prev->next_sense = vs;
 	}
+	if (VerbMeanings::get_special_meaning(&(vs->vm)) == NULL) {
+		vf->first_unspecial_meaning = &(vs->vm);
+	} else {
+		if (vf->first_unspecial_meaning == &(vs->vm))
+			vf->first_unspecial_meaning = NULL;
+	}
+
+@ The following function may seem curious -- what's so great about the first
+regular sense of a verb? The answer is that Inform generally gives a verb at
+most one regular sense.
+
+We cache the result in |vf->first_unspecial_meaning| for speed, because profiling
+of //inform7// suggests this is worth it, but retain the uncached algorithm as
+well in case we suspect bugs in future.
+
+@d CACHE_FIRST_UNSPECIAL_MEANING
+
+=
+verb_meaning *Verbs::first_unspecial_meaning_of_verb_form(verb_form *vf) {
+	if (vf)  {
+		#ifdef CACHE_FIRST_UNSPECIAL_MEANING
+		return vf->first_unspecial_meaning;
+		#endif
+		#ifndef CACHE_FIRST_UNSPECIAL_MEANING
+		for (verb_sense *vs = vf->list_of_senses; vs; vs = vs->next_sense)
+			if (VerbMeanings::get_special_meaning(&(vs->vm)) == NULL)
+				return &(vs->vm);
+		#endif
+	}
+	return NULL;
+}

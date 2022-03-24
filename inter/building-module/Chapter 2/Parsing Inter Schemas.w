@@ -42,7 +42,7 @@ inter_schema *ParsingSchemas::from_i6s(text_stream *from,
 		i6s_inter_schema_cache = Dictionaries::new(512, FALSE);
 	}
 	dict_entry *de = Dictionaries::find(i6s_inter_schema_cache, from);
-	if (de) return (inter_schema *) Dictionaries::read_value(i6s_inter_schema_cache, from);
+	if (de) return (inter_schema *) Dictionaries::value_for_entry(de);
 
 	inter_schema *result = ParsingSchemas::back_end(from, TRUE,
 		no_quoted_inames, quoted_inames);

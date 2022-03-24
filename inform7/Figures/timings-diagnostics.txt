@@ -1,33 +1,34 @@
 100.0% in inform7 run
-     66.3% in compilation to Inter
-         47.6% in //Sequence::undertake_queued_tasks//
-          4.2% in //MajorNodes::pre_pass//
-          3.1% in //MajorNodes::pass_1//
-          1.8% in //RTPhrasebook::compile_entries//
-          1.6% in //ImperativeDefinitions::assess_all//
-          1.3% in //RTKindConstructors::compile//
-          0.8% in //Sequence::lint_inter//
+     69.0% in compilation to Inter
+         48.1% in //Sequence::undertake_queued_tasks//
+          4.6% in //MajorNodes::pre_pass//
+          3.5% in //MajorNodes::pass_1//
+          2.3% in //RTPhrasebook::compile_entries//
+          1.8% in //ImperativeDefinitions::assess_all//
+          1.4% in //RTKindConstructors::compile//
+          0.9% in //Sequence::lint_inter//
           0.5% in //ImperativeDefinitions::compile_first_block//
           0.5% in //MajorNodes::pass_2//
           0.5% in //Sequence::undertake_queued_tasks//
-          0.5% in //Sequence::undertake_queued_tasks//
           0.5% in //World::stage_V//
+          0.3% in //Sequence::undertake_queued_tasks//
           0.1% in //CompletionModule::compile//
           0.1% in //InferenceSubjects::emit_all//
           0.1% in //RTKindConstructors::compile_permissions//
           0.1% in //Task::make_built_in_kind_constructors//
           0.1% in //World::stages_II_and_III//
-          2.2% not specifically accounted for
-     31.3% in running Inter pipeline
-         11.9% in inter step 6/14: make-synoptic-module
-          9.2% in inter step 14/14: generate inform6 -> auto.inf
-          5.7% in inter step 5/14: load-binary-kits
-          1.8% in inter step 9/14: make-identifiers-unique
+          2.6% not specifically accounted for
+     28.4% in running Inter pipeline
+         10.1% in inter step 14/14: generate inform6 -> auto.inf
+          7.3% in inter step 5/14: load-binary-kits
+          6.2% in inter step 6/14: make-synoptic-module
+          1.4% in inter step 9/14: make-identifiers-unique
           0.3% in inter step 12/14: eliminate-redundant-operations
           0.3% in inter step 4/14: compile-splats
           0.3% in inter step 7/14: shorten-wiring
+          0.3% in inter step 8/14: detect-indirect-calls
+          0.1% in inter step 10/14: reconcile-verbs
           0.1% in inter step 11/14: eliminate-redundant-labels
-          0.1% in inter step 8/14: detect-indirect-calls
-          1.2% not specifically accounted for
-      2.0% in supervisor
+          1.3% not specifically accounted for
+      2.2% in supervisor
       0.4% not specifically accounted for

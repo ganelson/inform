@@ -176,7 +176,7 @@ cleared.)
 
 		if (meaning_given) {
 			verb_meaning *current =
-				VerbMeanings::first_unspecial_meaning_of_verb_form(
+				Verbs::first_unspecial_meaning_of_verb_form(
 					Verbs::find_form(vi, prep, second_prep));
 			if (VerbMeanings::is_meaningless(current) == FALSE) {
 				LOG("Currently $w means $y\n", vi, current);
@@ -249,7 +249,7 @@ now absolutely any non-empty word range is accepted as the property name.
 
 @<Use verb infinitive as shorthand@> =
 	verb_form *vf = RP[1];
-	verb_meaning *vm = VerbMeanings::first_unspecial_meaning_of_verb_form(vf);
+	verb_meaning *vm = Verbs::first_unspecial_meaning_of_verb_form(vf);
 	if (vm) {
 		==> { VM_VERBM, vm };
 	} else {

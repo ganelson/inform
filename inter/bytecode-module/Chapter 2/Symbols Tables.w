@@ -120,7 +120,7 @@ inter_symbol *InterSymbolsTable::search_inner(inter_symbols_table *T, text_strea
 			}
 	} else {	
 		dict_entry *de = Dictionaries::find(T->symbols_dictionary, name);
-		if (de) S = (inter_symbol *) Dictionaries::read_value(T->symbols_dictionary, name);
+		if (de) S = (inter_symbol *) Dictionaries::value_for_entry(de);
 	}
 	if (S) {
 		if (wire_following) S = Wiring::cable_end(S);

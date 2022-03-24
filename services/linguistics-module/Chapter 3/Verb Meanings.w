@@ -104,23 +104,10 @@ verb_meaning VerbMeanings::indirected(verb *from, int reversed) {
 =
 verb_meaning *VerbMeanings::follow_indirection(verb_meaning *vm) {
 	if ((vm) && (vm->take_meaning_from))
-		return VerbMeanings::first_unspecial_meaning_of_verb_form(
+		return Verbs::first_unspecial_meaning_of_verb_form(
 			Verbs::base_form(
 				vm->take_meaning_from));
 	return vm;
-}
-
-@ The following function may seem curious -- what's so great about the first
-regular sense of a verb? The answer is that Inform generally gives a verb at
-most one regular sense.
-
-=
-verb_meaning *VerbMeanings::first_unspecial_meaning_of_verb_form(verb_form *vf) {
-	if (vf)
-		for (verb_sense *vs = vf->list_of_senses; vs; vs = vs->next_sense)
-			if (VerbMeanings::get_special_meaning(&(vs->vm)) == NULL)
-				return &(vs->vm);
-	return NULL;
 }
 
 @h Recording where assigned.
@@ -154,7 +141,7 @@ VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::get_regular_meaning(verb_meaning *v
 
 VERB_MEANING_LINGUISTICS_TYPE *VerbMeanings::get_regular_meaning_of_form(verb_form *vf) {
 	return VerbMeanings::get_regular_meaning(
-		VerbMeanings::first_unspecial_meaning_of_verb_form(vf));
+		Verbs::first_unspecial_meaning_of_verb_form(vf));
 }
 
 @h The special meaning.

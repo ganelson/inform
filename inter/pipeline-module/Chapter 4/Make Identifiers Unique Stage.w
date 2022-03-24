@@ -83,8 +83,9 @@ void MakeIdentifiersUniqueStage::visitor(inter_tree *I, inter_tree_node *P, void
 @<Give this symbol a unique translation@> =
 	text_stream *N = InterSymbol::identifier(S);
 	uniqueness_count *U = NULL;
-	if (Dictionaries::find(D, N)) {
-		U = (uniqueness_count *) Dictionaries::read_value(D, N);
+	dict_entry *de = Dictionaries::find(D, N);
+	if (de) {
+		U = (uniqueness_count *) Dictionaries::value_for_entry(de);
 	} else {
 		U = CREATE(uniqueness_count);
 		U->count = 0;
