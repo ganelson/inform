@@ -15,6 +15,7 @@ void InstanceInstruction::define_construct(void) {
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, InstanceInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, InstanceInstruction::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, InstanceInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_XREF_MTID, InstanceInstruction::xref);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, InstanceInstruction::write);
 }
 
@@ -69,7 +70,10 @@ void InstanceInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_
 	if (*E) return;
 	*E = VerifyingInter::node_list_field(owner, P, PERM_LIST_INST_IFLD);
 	if (*E) return;
+}
 
+void InstanceInstruction::xref(inter_construct *IC, inter_tree_node *P,
+	inter_error_message **E) {
 	inter_symbol *typename_s = InterSymbolsTable::symbol_from_ID_at_node(P, TYPE_INST_IFLD);
 	inter_type inst_type = InterTypes::from_type_name(typename_s);
 	if (InterTypes::is_enumerated(inst_type)) {
@@ -79,7 +83,7 @@ void InstanceInstruction::verify(inter_construct *IC, inter_tree_node *P, inter_
 	} else {
 		*E = Inode::error(P, I"not a kind which has instances", NULL); return;
 	}
-
+	inter_package *owner = Inode::get_package(P);
 	*E = VerifyingInter::data_pair_fields(owner, P, VAL1_INST_IFLD, inst_type);
 	if (*E) return;
 

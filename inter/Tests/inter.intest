@@ -19,11 +19,11 @@
 	mkdir: $PATH/_Binary
 	mkdir: $PATH/_Console
 
-	debugger: lldb -f inter/Tangled/inter -- $O -binary $B -crash
-	step: inter/Tangled/inter $O -binary $B >$T 2>&1
+	debugger: lldb -f inter/Tangled/inter -- $O -format=binary -o $B -crash
+	step: inter/Tangled/inter $O -format=binary -o $B >$T 2>&1
 	or: 'produced errors in inter' $T
 
-	step: inter/Tangled/inter $B -textual $A >$T 2>&1
+	step: inter/Tangled/inter $B -format=text -o $A >$T 2>&1
 	or: 'produced errors in inter' $T
 
 	show: $A

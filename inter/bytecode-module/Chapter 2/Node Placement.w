@@ -242,5 +242,18 @@ inter_bookmark NodePlacement::to_position(inter_tree_node *C, inter_bookmark IBM
 		else
 			return InterBookmark::last_child_of(R);
 	} else {
+		WRITE_TO(STDERR, "C level: %d, R level: %d\n", C_level, R_level);
+		InterErrors::backtrace(STDERR, R);
 		internal_error("bubbled down off of tree"); /* see above for why */
 	}
+
+@h Level correction.
+When material is moved around in code optimisation, the level markers on the
+nodes (which cache the tree depth) can become incorrect. So:
+
+=
+void NodePlacement::set_levels(inter_tree_node *P, int L) {
+	Inode::set_level(P, L);
+	LOOP_THROUGH_INTER_CHILDREN(C, P)
+		NodePlacement::set_levels(C, L+1);
+}

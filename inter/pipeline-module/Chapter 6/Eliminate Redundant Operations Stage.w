@@ -89,6 +89,7 @@ void EliminateRedundantOperationsStage::traverse_code_tree(inter_tree_node *P) {
 					redundant_operations_removed++;
 					NodePlacement::remove(operands[i]);
 					NodePlacement::move_to(operands[1-i], InterBookmark::immediately_after(F));
+					NodePlacement::set_levels(operands[1-i], Inode::get_level(F));
 					NodePlacement::remove(F);
 					break;
 				}

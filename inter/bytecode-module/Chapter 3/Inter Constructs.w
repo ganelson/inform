@@ -449,6 +449,9 @@ inter_error_message *InterInstruction::verify(inter_package *owner,
 	inter_construct *IC, inter_tree_node *P) {
 	inter_error_message *E = NULL;
 	VOID_METHOD_CALL(IC, CONSTRUCT_VERIFY_MTID, P, owner, &E);
+	if (E) return E;
+	if (Inode::tree(P)->cross_referencing_suspended == FALSE)
+		E = InterInstruction::xref(P);
 	return E;
 }
 
@@ -456,7 +459,28 @@ inter_error_message *InterInstruction::verify_children(inter_tree_node *P) {
 	inter_construct *IC = NULL;
 	inter_error_message *E = InterInstruction::get_construct(P, &IC);
 	if (E) return E;
+	int PL = Inode::get_level(P);
+	LOOP_THROUGH_INTER_CHILDREN(C, P)
+		if (Inode::get_level(C) != PL + 1)
+			return Inode::error(P, I"child node has incorrect level", NULL);
 	VOID_METHOD_CALL(IC, CONSTRUCT_VERIFY_CHILDREN_MTID, P, &E);
+	return E;
+}
+
+@ A second round of verification then happens when the whole of an Inter tree
+has been read in from an external file.
+
+@e CONSTRUCT_XREF_MTID
+
+=
+VOID_METHOD_TYPE(CONSTRUCT_XREF_MTID, inter_construct *IC, inter_tree_node *P,
+	inter_error_message **E)
+
+inter_error_message *InterInstruction::xref(inter_tree_node *P) {
+	inter_error_message *E = NULL;
+	inter_construct *IC = NULL;
+	InterInstruction::get_construct(P, &IC);
+	VOID_METHOD_CALL(IC, CONSTRUCT_XREF_MTID, P, &E);
 	return E;
 }
 

@@ -379,6 +379,11 @@ int Inode::get_level(inter_tree_node *P) {
 	return (int) P->W.instruction[LEVEL_IFLD];
 }
 
+void Inode::set_level(inter_tree_node *P, int L) {
+	if (P == NULL) internal_error("no node");
+	P->W.instruction[LEVEL_IFLD] = (inter_ti) L;
+}
+
 @h Interpreting values stored in bytecode.
 The data stored in the fields above may represent strings, symbols and the like,
 but it's just stored in what amounts to an array of unsigned integers: what is

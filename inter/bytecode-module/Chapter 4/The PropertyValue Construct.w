@@ -14,6 +14,7 @@ void PropertyValueInstruction::define_construct(void) {
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PropertyValueInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_TRANSPOSE_MTID, PropertyValueInstruction::transpose);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PropertyValueInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_XREF_MTID, PropertyValueInstruction::xref);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, PropertyValueInstruction::write);
 }
 
@@ -58,16 +59,20 @@ void PropertyValueInstruction::verify(inter_construct *IC, inter_tree_node *P,
 	if (*E) return;
 	*E = VerifyingInter::POID_field(owner, P, OWNER_PVAL_IFLD);
 	if (*E) return;
+}
 
+void PropertyValueInstruction::xref(inter_construct *IC, inter_tree_node *P,
+	inter_error_message **E) {
 	inter_symbol *prop_s = PropertyValueInstruction::property(P);
+	inter_package *owner = Inode::get_package(P);
 	*E = VerifyingInter::data_pair_fields(owner, P, VAL1_PVAL_IFLD, InterTypes::unchecked());
 	if (*E) return;
 
 	inter_symbol *owner_s = PropertyValueInstruction::owner(P);
 
-	if (PropertyValueInstruction::permitted(P, owner, owner_s, prop_s) == FALSE) {
+	if (PropertyValueInstruction::permitted(owner_s, prop_s) == FALSE) {
 		text_stream *err = Str::new();
-		WRITE_TO(err, "no permission for '%S' have this property",
+		WRITE_TO(err, "no permission for '%S' to have this property",
 			InterSymbol::identifier(owner_s));
 		*E = Inode::error(P, err, InterSymbol::identifier(prop_s));
 		return;
@@ -88,8 +93,7 @@ void PropertyValueInstruction::verify(inter_construct *IC, inter_tree_node *P,
 	InterNodeList::add(FL, P);
 }
 
-int PropertyValueInstruction::permitted(inter_tree_node *F, inter_package *pack,
-	inter_symbol *owner, inter_symbol *prop_s) {
+int PropertyValueInstruction::permitted(inter_symbol *owner, inter_symbol *prop_s) {
 	if (InstanceInstruction::is(owner)) {
 		inter_node_list *FL = InstanceInstruction::permissions_list(owner);
 		inter_tree_node *X;

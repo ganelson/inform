@@ -3,4 +3,4 @@ inter: inter/Tests/Invalid/dupedvalues.intert, line 15: permission already given
 inter: inter/Tests/Invalid/dupedvalues.intert, line 18: duplicate property value
 inter: inter/Tests/Invalid/dupedvalues.intert, line 19: not a type which can have property values: 'K_number'
 >--> permission for K_number to have P_lingeringness
-inter: inter/Tests/Invalid/dupedvalues.intert, line 22: no permission for 'I_green' have this property: 'P_lingeringness'
+inter: inter/Tests/Invalid/dupedvalues.intert, line 22: no permission for 'I_green' to have this property: 'P_lingeringness'

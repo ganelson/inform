@@ -84,8 +84,10 @@ int main(int argc, char **argv) {
 	if (Str::len(output_format) == 0) output_format = I"Text";
 	target_vm *VM = TargetVMs::find(output_format);
 	if (VM == NULL) Errors::fatal("unrecognised compilation -format");
-	PipelineModule::set_architecture(
-		Architectures::to_codename(TargetVMs::get_architecture(VM)));
+	inter_architecture *A = PipelineModule::get_architecture();
+	if (A == NULL)
+		PipelineModule::set_architecture(
+			Architectures::to_codename(TargetVMs::get_architecture(VM)));
 
 	inter_tree *I = InterTree::new();
 	if (LinkedLists::len(inter_file_list) > 0) {

@@ -17,6 +17,7 @@ typedef struct inter_tree {
 	unsigned int history_bits;
 	struct building_site site;
 	struct filename *blame_errors_on_this_file;
+	int cross_referencing_suspended;
 	CLASS_DEFINITION
 } inter_tree;
 
@@ -30,6 +31,7 @@ inter_tree *InterTree::new(void) {
 	@<Make the root node and the root package@>;
 	I->history_bits = 0;
 	I->blame_errors_on_this_file = NULL;
+	I->cross_referencing_suspended = FALSE;
 	InterTree::set_history(I, CREATED_ITHBIT);
 	BuildingModule::clear_data(I);
 	return I;

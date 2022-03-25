@@ -14,6 +14,7 @@ void PermissionInstruction::define_construct(void) {
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, PermissionInstruction::read);
 	METHOD_ADD(IC, CONSTRUCT_VERIFY_MTID, PermissionInstruction::verify);
+	METHOD_ADD(IC, CONSTRUCT_XREF_MTID, PermissionInstruction::xref);
 	METHOD_ADD(IC, CONSTRUCT_WRITE_MTID, PermissionInstruction::write);
 }
 
@@ -61,6 +62,10 @@ void PermissionInstruction::verify(inter_construct *IC, inter_tree_node *P,
 		*E = VerifyingInter::SID_field(owner, P, STORAGE_PERM_IFLD, CONSTANT_IST);
 		if (*E) return;
 	}
+}
+
+void PermissionInstruction::xref(inter_construct *IC, inter_tree_node *P,
+	inter_error_message **E) {
 	inter_symbol *prop_s = InterSymbolsTable::symbol_from_ID_at_node(P, PROP_PERM_IFLD);
 	inter_symbol *owner_s = InterSymbolsTable::symbol_from_ID_at_node(P, OWNER_PERM_IFLD);
 
@@ -90,6 +95,10 @@ void PermissionInstruction::verify(inter_construct *IC, inter_tree_node *P,
 	InterNodeList::add(FL, P);
 
 	FL = Inode::ID_to_frame_list(P, PropertyInstruction::permissions_list(prop_s));
+	if (FL == NULL) {
+		*E = Inode::error(P, I"property permission for property without list", NULL);
+		return;
+	}
 	InterNodeList::add(FL, P);
 }
 
