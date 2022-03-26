@@ -103,8 +103,6 @@ void PermissionInstruction::xref(inter_construct *IC, inter_tree_node *P,
 }
 
 @h Creating from textual Inter syntax.
-Some of the checking here is also done by verification, but we get better error
-messages if we report early.
 
 =
 void PermissionInstruction::read(inter_construct *IC, inter_bookmark *IBM,
@@ -123,33 +121,6 @@ void PermissionInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	if (Str::len(storage_name) > 0) {
 		store = TextualInter::find_symbol(IBM, eloc, storage_name, CONSTANT_IST, E);
 		if (*E) return;
-	}
-
-	inter_node_list *FL;
-	if (TypenameInstruction::is(owner_s)) {
-		if (InterTypes::is_enumerated(InterTypes::from_type_name(owner_s)) == FALSE) {
-			*E = InterErrors::quoted(I"not a type which can have property values",
-				owner_name, eloc);
-			return;
-		}
-		FL = TypenameInstruction::permissions_list(owner_s);
-	} else if (InstanceInstruction::is(owner_s)) {
-		FL = InstanceInstruction::permissions_list(owner_s);
-	} else {
-		*E = InterErrors::quoted(I"not an instance or enumerated type",
-			owner_name, eloc);
-		return;
-	}
-	if (FL == NULL) internal_error("no permissions list");
-
-	inter_tree_node *X;
-	LOOP_THROUGH_INTER_NODE_LIST(X, FL) {
-		inter_symbol *prop_allowed =
-			InterSymbolsTable::symbol_from_ID_at_node(X, PROP_PERM_IFLD);
-		if (prop_allowed == prop_s) {
-			*E = InterErrors::quoted(I"permission already given", prop_name, eloc);
-			return;
-		}
 	}
 
 	*E = PermissionInstruction::new(IBM, prop_s, owner_s, store,

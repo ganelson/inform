@@ -538,7 +538,11 @@ inter_type InterTypes::parse_simple(inter_symbols_table *T, inter_error_location
 			InterTypes::dispose_of_isstd(&parsed_description);
 			return type;
 		}
-		if (parsed_description.arity > 0)  {
+		int over_complex = FALSE;
+		for (int i=0; i<parsed_description.arity; i++)
+			if (parsed_description.operand_TIDs[i] != UNCHECKED_ITCONC)
+				over_complex = TRUE;
+		if (over_complex)  {
 			InterTypes::dispose_of_isstd(&parsed_description);
 			*E = InterErrors::quoted(I"type too complex", text, eloc);
 			return InterTypes::unchecked();

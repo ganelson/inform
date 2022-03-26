@@ -67,7 +67,6 @@ void PropertyValueInstruction::xref(inter_construct *IC, inter_tree_node *P,
 	inter_package *owner = Inode::get_package(P);
 	*E = VerifyingInter::data_pair_fields(owner, P, VAL1_PVAL_IFLD, InterTypes::unchecked());
 	if (*E) return;
-
 	inter_symbol *owner_s = PropertyValueInstruction::owner(P);
 
 	if (PropertyValueInstruction::permitted(owner_s, prop_s) == FALSE) {

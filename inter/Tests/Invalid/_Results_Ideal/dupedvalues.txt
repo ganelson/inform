@@ -1,6 +1,4 @@
-inter: inter/Tests/Invalid/dupedvalues.intert, line 15: permission already given: 'P_lingeringness'
->--> permission for K_odour to have P_lingeringness
+inter: inter/Tests/Invalid/dupedvalues.intert, line 15: duplicate permission: 'P_lingeringness'
+inter: inter/Tests/Invalid/dupedvalues.intert, line 19: property permission for non-enumerated kind
 inter: inter/Tests/Invalid/dupedvalues.intert, line 18: duplicate property value
-inter: inter/Tests/Invalid/dupedvalues.intert, line 19: not a type which can have property values: 'K_number'
->--> permission for K_number to have P_lingeringness
 inter: inter/Tests/Invalid/dupedvalues.intert, line 22: no permission for 'I_green' to have this property: 'P_lingeringness'

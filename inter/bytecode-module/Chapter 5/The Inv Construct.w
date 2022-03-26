@@ -264,13 +264,9 @@ void InvInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_line_p
 	inter_symbol *function_s = TextualInter::find_symbol(IBM, eloc, invoked_text, 0, E);
 	if (function_s == NULL) {
 		*E = InterErrors::quoted(I"'inv' on unknown function", invoked_text, eloc);
-	} else if ((InterSymbol::defined_elsewhere(function_s)) ||
-		(InterSymbol::misc_but_undefined(function_s)) ||
-		(PackageInstruction::is_function(function_s))) {
+	} else {
 		*E = InvInstruction::new_function_call(IBM, function_s,
 			(inter_ti) ilp->indent_level, eloc);
-	} else {
-		*E = InterErrors::quoted(I"not a function or primitive", invoked_text, eloc);
 	}
 	return;
 

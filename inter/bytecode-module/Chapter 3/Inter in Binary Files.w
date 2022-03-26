@@ -241,20 +241,14 @@ void BinaryInter::read(inter_tree *I, filename *F) {
 	inter_warehouse *warehouse = InterTree::warehouse(I);
 	inter_ti *grid = NULL;
 	inter_ti grid_extent = 0;
-	I->cross_referencing_suspended = TRUE;
+	InterInstruction::suspend_cross_referencing(I);
 	@<Read the content@>;
 	if (grid) Memory::I7_array_free(grid, INTER_BYTECODE_MREASON,
 		(int) grid_extent, sizeof(inter_ti));
 	Primitives::index_primitives_in_tree(I);
-	I->cross_referencing_suspended = FALSE;
-	InterTree::traverse(I, BinaryInter::xref, NULL, NULL, PERMISSION_IST);
-	InterTree::traverse(I, BinaryInter::xref, NULL, NULL, -PERMISSION_IST);
+	InterInstruction::resume_cross_referencing(I);
 	InterInstruction::tree_lint(I);
 	BinaryFiles::close(fh);
-}
-
-void BinaryInter::xref(inter_tree *I, inter_tree_node *P, void *state) {
-	Produce::guard(InterInstruction::xref(P));
 }
 
 void BinaryInter::write(filename *F, inter_tree *I) {

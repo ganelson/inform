@@ -10,6 +10,7 @@ tree |I|.
 =
 void TextualInter::read(inter_tree *I, filename *F) {
 	LOGIF(INTER_FILE_READ, "Reading textual inter file %f\n", F);
+	InterInstruction::suspend_cross_referencing(I);
 	irl_state irl;
 	irl.no_blank_lines_stacked = 0;
 	inter_bookmark IBM = InterBookmark::at_start_of_this_repository(I);
@@ -18,6 +19,7 @@ void TextualInter::read(inter_tree *I, filename *F) {
 		TextualInter::read_line, 0, &irl);
 	TextualInter::resolve_forward_references(I);
 	Primitives::index_primitives_in_tree(I);
+	InterInstruction::resume_cross_referencing(I);
 	InterInstruction::tree_lint(I);
 }
 
@@ -458,7 +460,7 @@ inter_error_message *TextualInter::parse_pair(text_stream *line, inter_error_loc
 			if (Str::get_at(S, i) == '"') {
 				quoted_from = i+1;
 				quoted_to = Str::len(S)-2;
-				if (quoted_from > quoted_to)
+				if (quoted_from > quoted_to+1)
 					return InterErrors::quoted(I"mismatched quotes", S, eloc);
 				break;
 			}

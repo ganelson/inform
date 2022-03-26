@@ -468,7 +468,13 @@ inter_error_message *InterInstruction::verify_children(inter_tree_node *P) {
 }
 
 @ A second round of verification then happens when the whole of an Inter tree
-has been read in from an external file.
+has been read in from an external file. This enables us to cope with a situation
+where property permissions occur before the properties or owners they permit,
+or where property values occur before the permissions which allow them.
+
+Note that this system is opt-in, and is used only when Inter is being read from
+a file: when Inter is being generated in memory, cross-referencing happens
+immediately.
 
 @e CONSTRUCT_XREF_MTID
 
@@ -482,6 +488,21 @@ inter_error_message *InterInstruction::xref(inter_tree_node *P) {
 	InterInstruction::get_construct(P, &IC);
 	VOID_METHOD_CALL(IC, CONSTRUCT_XREF_MTID, P, &E);
 	return E;
+}
+
+void InterInstruction::suspend_cross_referencing(inter_tree *I) {
+	I->cross_referencing_suspended = TRUE;
+}
+
+void InterInstruction::resume_cross_referencing(inter_tree *I) {
+	I->cross_referencing_suspended = FALSE;
+	InterTree::traverse(I, InterInstruction::xref_node, NULL, NULL, PERMISSION_IST);
+	InterTree::traverse(I, InterInstruction::xref_node, NULL, NULL, -PERMISSION_IST);
+}
+
+void InterInstruction::xref_node(inter_tree *I, inter_tree_node *P, void *state) {
+	inter_error_message *E = InterInstruction::xref(P);
+	if (E) InterErrors::issue(E);
 }
 
 @ This method writes out an instruction in textual Inter format, and this is
