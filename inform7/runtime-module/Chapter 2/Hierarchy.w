@@ -166,7 +166,7 @@ void Hierarchy::establish(void) {
 	H_BEGIN_DECLARATIONS
 	@<Establish locations for material created by the compiler@>;
 	@<Establish locations for material expected to be added by linking@>;
-	@<Prevent arcbitectural symbols from being doubly defined@>;
+	@<Prevent architectural symbols from being doubly defined@>;
 	H_END_DECLARATIONS
 }
 
@@ -199,7 +199,7 @@ void Hierarchy::establish(void) {
 	@<The rest@>;
 
 @<Establish locations for material expected to be added by linking@> =
-	@<Establish architecturak resources@>;
+	@<Establish architectural resources@>;
 
 @h Basics.
 
@@ -1950,7 +1950,7 @@ ones which the //inform7//-compiled code needs to refer to.
 @e MAX_POSITIVE_NUMBER_HL
 @e MIN_NEGATIVE_NUMBER_HL
 
-@<Establish architecturak resources@> =
+@<Establish architectural resources@> =
 	H_BEGIN(LocationRequirements::architectural_package(I))
 		H_C_T(SELF_HL,                        I"self")
 		H_C_T(NULL_HL,                        I"NULL")
@@ -1963,8 +1963,9 @@ anyway, we need to make sure that a call to |Hierarchy::find| does not
 create a duplicate with a name like |NULL_1|. This is a race condition, and
 the easiest way to avoid it is to force the issue now:
 
-@<Prevent arcbitectural symbols from being doubly defined@> =
-	InterNames::to_symbol(Hierarchy::find(SELF_HL));
+@<Prevent architectural symbols from being doubly defined@> =
+	inter_name *self_iname = Hierarchy::find(SELF_HL);
+	self_iname->symbol = LargeScale::find_architectural_symbol(I, I"self");
 	InterNames::to_symbol(Hierarchy::find(MAX_POSITIVE_NUMBER_HL));
 	InterNames::to_symbol(Hierarchy::find(MIN_NEGATIVE_NUMBER_HL));
 	InterNames::to_symbol(Hierarchy::find(NULL_HL));

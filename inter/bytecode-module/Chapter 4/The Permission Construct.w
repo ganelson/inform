@@ -131,12 +131,14 @@ void PermissionInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 
 =
 void PermissionInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
-	inter_symbol *prop_s = PermissionInstruction::property(P);
-	inter_symbol *owner_s = PermissionInstruction::owner(P);
-	inter_symbol *storage_s = PermissionInstruction::storage(P);
-	WRITE("permission for %S to have %S",
-		InterSymbol::identifier(owner_s), InterSymbol::identifier(prop_s));
-	if (storage_s) WRITE(" %S", InterSymbol::identifier(storage_s));
+	WRITE("permission for ");
+	TextualInter::write_symbol_from(OUT, P, OWNER_PERM_IFLD);
+	WRITE(" to have ");
+	TextualInter::write_symbol_from(OUT, P, PROP_PERM_IFLD);
+	if (PermissionInstruction::storage(P)) {
+		WRITE(" ");
+		TextualInter::write_symbol_from(OUT, P, STORAGE_PERM_IFLD);
+	}
 }
 
 @h Access functions.

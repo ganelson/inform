@@ -159,10 +159,11 @@ inter_symbol *PropertyValueInstruction::parse_owner(inter_error_location *eloc,
 
 =
 void PropertyValueInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
-	inter_symbol *prop_s = PropertyValueInstruction::property(P);
-	inter_symbol *owner_s = PropertyValueInstruction::owner(P);
-	WRITE("propertyvalue %S of %S = ",
-		InterSymbol::identifier(prop_s), InterSymbol::identifier(owner_s));
+	WRITE("propertyvalue ");
+	TextualInter::write_symbol_from(OUT, P, PROP_PVAL_IFLD);
+	WRITE(" of ");
+	TextualInter::write_symbol_from(OUT, P, OWNER_PVAL_IFLD);
+	WRITE(" = ");
 	TextualInter::write_pair(OUT, P, PropertyValueInstruction::value(P));
 }
 

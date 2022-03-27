@@ -9,7 +9,7 @@ For what this does and why it is used, see //inter: Textual Inter//.
 void ConstantInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(CONSTANT_IST, I"constant");
 	InterInstruction::defines_symbol_in_fields(IC, DEFN_CONST_IFLD, TYPE_CONST_IFLD);
-	InterInstruction::specify_syntax(IC, I"constant TOKENS = TOKENS");
+	InterInstruction::specify_syntax(IC, I"constant MINTOKENS = TOKENS");
 	InterInstruction::data_extent_at_least(IC, 3);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
 	METHOD_ADD(IC, CONSTRUCT_READ_MTID, ConstantInstruction::read);

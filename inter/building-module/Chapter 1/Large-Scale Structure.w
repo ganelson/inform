@@ -195,21 +195,21 @@ inter_symbol *LargeScale::find_architectural_symbol(inter_tree *I, text_stream *
 	inter_symbol *S = InterSymbolsTable::symbol_from_name(tab, N);
 	if (S == NULL) {
 		@<Ensure the on-demand dictionary exists@>;
-		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N)) {
-			S = LargeScale::arch_constant_dec(I, N, InterTypes::unchecked(), 0);			
-		}	
+		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N))
+			S = LargeScale::arch_constant_dec(I, N, InterTypes::unchecked(), 0);
 	}	
 	return S;
 }
 
 int LargeScale::is_veneer_symbol(inter_symbol *con_name) {
-	if (con_name == NULL) return FALSE;
-	inter_tree_node *D = con_name->definition;
-	if (D == NULL) return FALSE;
-	if (Inode::get_package(D) == LargeScale::architecture_package(Inode::tree(D))) {
-		text_stream *N = InterSymbol::identifier(con_name);
-		if (Dictionaries::find(create_these_architectural_symbols_on_demand, N))
-			return TRUE;
+	if (con_name) {
+		inter_package *home = InterSymbol::package(con_name);
+		inter_tree *I = InterPackage::tree(home);
+		if (home == LargeScale::architecture_package(I)) {
+			text_stream *N = InterSymbol::identifier(con_name);
+			if (Dictionaries::find(create_these_architectural_symbols_on_demand, N))
+				return TRUE;
+		}
 	}
 	return FALSE;
 }

@@ -562,7 +562,7 @@ just print that name, |K_whatever|.
 =
 void InterTypes::write_type(OUTPUT_STREAM, inter_type type) {
 	if (type.type_name) {
-		TextualInter::write_symbol(OUT, type.type_name);
+		InterSymbolsTable::write_symbol_URL(OUT, type.type_name);
 	} else {
 		InterTypes::write_type_longhand(OUT, type);
 	}
@@ -629,6 +629,13 @@ int InterTypes::is_enumerated(inter_type type) {
 int InterTypes::literal_is_in_range(long long int N, inter_type type) {
 	inter_type_constructor *itc = InterTypes::constructor(type);
 	if ((N < itc->min_value) || (N > itc->max_value)) return FALSE;
+	return TRUE;
+}
+
+
+int InterTypes::unsigned_literal_is_in_range(long long int N, inter_type type) {
+	inter_type_constructor *itc = InterTypes::constructor(type);
+	if ((N < 0) || (N > itc->max_value - itc->min_value)) return FALSE;
 	return TRUE;
 }
 

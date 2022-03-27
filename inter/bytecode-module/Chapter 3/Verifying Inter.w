@@ -124,11 +124,7 @@ inter_error_message *VerifyingInter::SID(inter_package *owner, inter_tree_node *
 	inter_tree_node *D = InterSymbol::definition(S);
 	if (InterSymbol::defined_elsewhere(S)) return NULL;
 	if (InterSymbol::misc_but_undefined(S)) return NULL;
-	if (D == NULL) return Inode::error(P, I"undefined symbol", InterSymbol::identifier(S));
-	if ((construct != INVALID_IST) &&
-		(Inode::isnt(D, construct)) &&
-		(InterSymbol::defined_elsewhere(S) == FALSE) &&
-		(InterSymbol::misc_but_undefined(S) == FALSE)) {
+	if ((construct != INVALID_IST) && (D) && (Inode::isnt(D, construct))) {
 		text_stream *err = Str::new();
 		WRITE_TO(err, "symbol has type %d not %d: ", Inode::get_construct_ID(D), construct);
 		InterSymbolsTable::write_symbol_URL(err, S);

@@ -114,8 +114,6 @@ void InstanceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, type_text, L"%((%c+)%)"))
 		inst_type = InterTypes::parse_simple(InterBookmark::scope(IBM), eloc, mr.exp[0], E);
-	if (InterTypes::is_enumerated(inst_type) == FALSE)
-		*E = InterErrors::quoted(I"not an enumerated type", type_text, eloc);
 	Regexp::dispose_of(&mr);
 	if (*E) return;
 
@@ -138,9 +136,9 @@ void InstanceInstruction::read(inter_construct *IC, inter_bookmark *IBM, inter_l
 =
 void InstanceInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node *P) {
 	inter_symbol *instance_s = InstanceInstruction::instance(P);
-	inter_symbol *typename_s = InterSymbolsTable::symbol_from_ID_at_node(P, TYPE_INST_IFLD);
-	WRITE("instance (%S) %S = ",
-		InterSymbol::identifier(typename_s), InterSymbol::identifier(instance_s));
+	WRITE("instance (");
+	TextualInter::write_symbol_from(OUT, P, TYPE_INST_IFLD);
+	WRITE(") %S = ", InterSymbol::identifier(instance_s));
 	TextualInter::write_pair(OUT, P, InterValuePairs::get(P, VAL1_INST_IFLD));
 }
 

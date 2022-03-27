@@ -219,20 +219,17 @@ resolve forward references at the end of the parsing process -- see below.
 			Wiring::wire_to_name(S, name);
 		}
 		DISCARD_TEXT(leaf)
+		return S;
 	}
 
 @ This check is not foolproof. In particular, it is fooled by forward references.
 But it really doesn't need to catch every possible error; this is Inter, not Inform.
 
 @<Check that it is defined by the correct construct@> =
-	inter_tree_node *D = InterSymbol::definition(S);
 	if (InterSymbol::defined_elsewhere(S)) return S;
 	if (InterSymbol::misc_but_undefined(S)) return S;
-	if (D == NULL) {
-		*E = InterErrors::quoted(I"undefined symbol", name, eloc); return NULL;
-	}
-	if ((Inode::isnt(D, construct)) &&
-		(InterSymbol::misc_but_undefined(S) == FALSE)) {
+	inter_tree_node *D = InterSymbol::definition(S);
+	if ((D) && (Inode::isnt(D, construct))) {
 		text_stream *err = Str::new();
 		WRITE_TO(err, "symbol has type %d not %d: ", Inode::get_construct_ID(D), construct);
 		InterSymbolsTable::write_symbol_URL(err, S);
@@ -446,7 +443,7 @@ inter_error_message *TextualInter::parse_pair(text_stream *line, inter_error_loc
 	wchar_t first_char = Str::get_first_char(S);
 	wchar_t last_char = Str::get_last_char(S);
 	int is_identifier = FALSE;
-	if (Characters::isalpha(first_char)) {
+	if ((Characters::isalpha(first_char)) || (first_char == '_')) {
 		is_identifier = TRUE;
 		LOOP_THROUGH_TEXT(pos, S)
 			if ((Characters::isalpha(Str::get(pos)) == FALSE) &&
@@ -465,6 +462,7 @@ inter_error_message *TextualInter::parse_pair(text_stream *line, inter_error_loc
 				break;
 			}
 	}
+	if ((Str::get_at(S, 0) == '#') && (Str::get_at(S, 1) == '#')) is_identifier = TRUE;
 
 	@<Parse numeric literal syntax@>;
 	@<Parse text literal syntax@>;
@@ -510,8 +508,13 @@ or (unsigned) binary, but cannot be printed back in binary.
 			if (pos.index > 34) return InterErrors::quoted(I"value out of range", S, eloc);
 		}
 		N = sign*N;
-		if (InterTypes::literal_is_in_range(N, type_wanted) == FALSE)
-			return InterErrors::quoted(I"value out of range", S, eloc);
+		if (base == 10) {
+			if (InterTypes::literal_is_in_range(N, type_wanted) == FALSE)
+				return InterErrors::quoted(I"value out of range", S, eloc);
+		} else {
+			if (InterTypes::unsigned_literal_is_in_range(N, type_wanted) == FALSE)
+				return InterErrors::quoted(I"value out of range", S, eloc);
+		}
 		if (sign == -1) *pair = InterValuePairs::signed_number((int) N);
 		else *pair = InterValuePairs::number_in_base((inter_ti) N, base);
 		return NULL;
@@ -637,8 +640,6 @@ one above.
 	}
 
 @<Use this symb as the result@> =
-	if ((InterTypes::is_enumerated(type_wanted)) && (InterSymbol::is_defined(symb) == FALSE))
-		return InterErrors::quoted(I"undefined symbol", S, eloc);
 	inter_type symbol_type = InterTypes::of_symbol(symb);
 	inter_error_message *E = InterTypes::can_be_used_as(symbol_type, type_wanted, S, eloc);
 	if (E) return E;

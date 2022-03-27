@@ -155,7 +155,8 @@ void TypenameInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_n
 	WRITE("typename %S ", InterSymbol::identifier(typename_s));
 	inter_symbol *super = TypenameInstruction::super(typename_s);
 	if (super) {
-		WRITE("<= %S", InterSymbol::identifier(super));
+		WRITE("<= ");
+		TextualInter::write_symbol_from(OUT, P, SUPER_TYPENAME_IFLD);
 	} else {
 		WRITE("= ");
 		InterTypes::write_typename_definition(OUT, typename_s);

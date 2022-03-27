@@ -191,3 +191,14 @@ The "shell" function, |call|, creates a stack frame and then calls the "kernel"
 function, which does the actual work; when that returns to the "shell", the
 stack frame is disposed of again. This is all transparent to the user, who
 simply calls |call| and doesn't need to know which mechanism is in play.
+
+@h Looking at the Inter produced.
+The following commands produce the final state of the Inter code for the test
+case |Acidity|, in binary and textual form:
+= (text as ConsoleText)
+$ 'inform7/Tangled/inform7' -source inform7/Tests/Test\ Cases/Acidity.txt -o Acidity.interb -format=binary
+$ 'inform7/Tangled/inform7' -source inform7/Tests/Test\ Cases/Acidity.txt -o Acidity.intert -format=text
+=
+Be warned that they are large: they have several large kits linked into them
+by the time they have reached this final state, and thus contain many modules.
+|Acidity.intert| runs to about 250,000 lines of textual Inter.

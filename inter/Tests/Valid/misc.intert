@@ -20,6 +20,7 @@ package main _plain
 	constant (K_number) cornelius = dw"frogs"
 	constant (K_number) gaius = dw"toads"
 	constant emptytext = ""
+	constant IMPROBABLE_VALUE = 0xdeadce11
 	splat "Sing a song of \"six splats\"...\nand don't wait up"
 	typename K_colour = enum
 	instance (K_colour) I_green = 1
@@ -85,3 +86,14 @@ package main _plain
 			inv !return
 				val (/main/K_colour) /main/I_red
 	constant (K_number) amount = sum{ 2, C_taxes }
+	package glk_buffer_to_upper_case_uni _code
+		local _vararg_count
+		local ret
+		code
+			inv @glk
+				val 289
+				val _vararg_count
+				val ret
+			inv !return
+				val ret
+	constant (text) ^text = "A = B"

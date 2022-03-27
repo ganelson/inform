@@ -256,6 +256,8 @@ void InterInstruction::specify_syntax(inter_construct *IC, text_stream *syntax) 
 			i += 5; WRITE_TO(regexp, "(%%d+)");
 		} else if (Str::includes_wide_string_at(syntax, L"TOKENS", i)) {
 			i += 5; WRITE_TO(regexp, "(%%c+)");
+		} else if (Str::includes_wide_string_at(syntax, L"MINTOKENS", i)) {
+			i += 8; WRITE_TO(regexp, "(%%c+?)");
 		} else if (Str::includes_wide_string_at(syntax, L"TOKEN", i)) {
 			i += 4; WRITE_TO(regexp, "(%%C+)");
 		} else if (Str::includes_wide_string_at(syntax, L"TEXT", i)) {
