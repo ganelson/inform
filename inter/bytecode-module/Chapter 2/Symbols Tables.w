@@ -488,6 +488,33 @@ inter_symbol *InterSymbolsTable::URL_to_symbol(inter_tree *I, text_stream *URL) 
 	return InterSymbolsTable::symbol_from_name(InterTree::global_scope(I), URL);
 }
 
+@ This variation creates a wired symbol in |T| to the given URL if there is
+currently nothing at that URL; it is used when reading in textual Inter files,
+as a way of handling forward references.
+
+=
+inter_symbol *InterSymbolsTable::wire_to_URL(inter_tree *I, text_stream *URL,
+	inter_symbols_table *T) {
+	inter_symbol *S = InterSymbolsTable::URL_to_symbol(I, URL);
+	if (S == NULL) {
+		TEMPORARY_TEXT(leaf)
+		LOOP_THROUGH_TEXT(pos, URL) {
+			wchar_t c = Str::get(pos);
+			if (c == '/') Str::clear(leaf);
+			else PUT_TO(leaf, c);
+		}
+		if (Str::len(leaf) == 0) return NULL;
+		S = InterSymbolsTable::symbol_from_name(T, leaf);
+		if (!((S) && (Wiring::is_wired_to_name(S)) &&
+			(Str::eq(Wiring::wired_to_name(S), URL)))) {			
+			S = InterSymbolsTable::create_with_unique_name(T, leaf);
+			Wiring::wire_to_name(S, URL);
+		}
+		DISCARD_TEXT(leaf)
+	}
+	return S;
+}
+
 @h Striking out symbols.
 This is a desperation measure. The tree may be full of references to |S| made
 by its ID: those IDs will then fail to resolve if the array entry for |S| has

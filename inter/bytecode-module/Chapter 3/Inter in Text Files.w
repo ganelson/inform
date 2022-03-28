@@ -611,23 +611,7 @@ one above.
 
 @<Parse symbol name syntax@> =
 	if (first_char == '/') {
-		inter_symbol *symb = InterSymbolsTable::URL_to_symbol(I, S);
-		if (symb == NULL) {
-			TEMPORARY_TEXT(leaf)
-			LOOP_THROUGH_TEXT(pos, S) {
-				wchar_t c = Str::get(pos);
-				if (c == '/') Str::clear(leaf);
-				else PUT_TO(leaf, c);
-			}
-			if (Str::len(leaf) == 0) return InterErrors::quoted(I"URL ends in '/'", S, eloc);
-			symb = InterSymbolsTable::symbol_from_name(InterBookmark::scope(IBM), leaf);
-			if (!((symb) && (Wiring::is_wired_to_name(symb)) &&
-				(Str::eq(Wiring::wired_to_name(symb), S)))) {			
-				symb = InterSymbolsTable::create_with_unique_name(InterBookmark::scope(IBM), leaf);
-				Wiring::wire_to_name(symb, S);
-			}
-			DISCARD_TEXT(leaf)
-		}
+		inter_symbol *symb = InterSymbolsTable::wire_to_URL(I, S, InterBookmark::scope(IBM));
 		@<Use this symb as the result@>;
 	}
 	if (is_identifier) {

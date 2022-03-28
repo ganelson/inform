@@ -26,7 +26,7 @@ package main _plain
 	instance (K_colour) I_green = 1
 	instance (K_colour) I_red = 17
 	variable (K_colour) V_shade = I_red
-	typename K_list_of_number = list of K_number
+	typename K_list_of_number = list of /main/K_number
 	constant (K_list_of_number) C_primes = { 2, 3, 5, 7, 11, 13, 17, 19 }
 	constant (K_list_of_number) C_concealed = C_primes
 	variable (K_list_of_number) V_watch_list = C_concealed
@@ -46,8 +46,8 @@ package main _plain
 	propertyvalue P_lingeringness of I_leather = 3
 	propertyvalue P_lingeringness of K_odour = 2
 	typename K_table = table
-	typename K_column_of_number = column of K_number
-	typename K_column_of_colour = column of K_colour
+	typename K_column_of_number = column of /main/K_number
+	typename K_column_of_colour = column of /main/K_colour
 	constant (K_column_of_number) C_egtable_col1 = { 1, 4, 9, 16 }
 	constant (K_column_of_colour) C_egtable_col2 = { I_green, !undef, I_red }
 	constant (K_table) C_egtable = { C_egtable_col1, C_egtable_col2 }
@@ -56,18 +56,18 @@ package main _plain
 	typename K_piece <= K_object
 	instance (K_piece) I_bishop = 2
 	instance (K_piece) I_rook = 3
-	typename K_list_of_objects = list of K_object
+	typename K_list_of_objects = list of /main/K_object
 	constant (K_list_of_objects) C_majors = { I_bishop, I_rook }
 	permission for I_bishop to have P_lingeringness
-	typename K_func = function K_colour K_number -> K_odour
+	typename K_func = function /main/K_colour /main/K_number -> /main/K_odour
 	typename K_rule = rule void -> void
-	typename K_rulebook = rulebook of K_rule
-	typename K_stuff = struct K_number K_colour K_odour
+	typename K_rulebook = rulebook of /main/K_rule
+	typename K_stuff = struct /main/K_number /main/K_colour /main/K_odour
 	constant (K_stuff) S_stuff = struct{ 5, I_red, I_citrus }
 	package (K_rule) R_after1 _code
 	package (K_rule) R_after2 _code
 	constant (K_rulebook) RB_after = { R_after1, R_after2 }
-	typename K_colour____colour = function K_colour -> K_colour
+	typename K_colour____colour = function /main/K_colour -> /main/K_colour
 	package (K_colour____colour) R_101 _code
 		local (/main/K_colour) x
 		code

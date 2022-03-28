@@ -7,7 +7,7 @@ primitive !goto lab -> void
 
 package main _plain
 	typename K_number = int32
-	typename K_func = function K_number -> K_number
+	typename K_func = function /main/K_number -> /main/K_number
 	#Transmigration removed my_fn here
 	constant (K_number) awkward = /main/my_fn/secret
 	constant (K_number) troublesome = 12

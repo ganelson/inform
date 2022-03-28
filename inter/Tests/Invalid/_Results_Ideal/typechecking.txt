@@ -16,13 +16,13 @@ inter: inter/Tests/Invalid/typechecking.intert, line 32: 'void' cannot be used a
 >--> constant (void) emptiness = 0
 inter: inter/Tests/Invalid/typechecking.intert, line 33: 'void' cannot be used as a type: 'void'
 >--> typename K_vacuity = void
-inter: inter/Tests/Invalid/typechecking.intert, line 39: value 'L32' has type K_list_of_int32 which is not a K_list_of_int2
+inter: inter/Tests/Invalid/typechecking.intert, line 39: value 'L32' has type /main/K_list_of_int32 which is not a /main/K_list_of_int2
 >--> variable (K_list_of_int2) V2 = L32
-inter: inter/Tests/Invalid/typechecking.intert, line 46: value 'LL32' has type K_lli32 which is not a K_lli2
+inter: inter/Tests/Invalid/typechecking.intert, line 46: value 'LL32' has type /main/K_lli32 which is not a /main/K_lli2
 >--> variable (K_lli2) VV2 = LL32
-inter: inter/Tests/Invalid/typechecking.intert, line 54: value 'R32' has type K_r32 which is not a K_r2
+inter: inter/Tests/Invalid/typechecking.intert, line 54: value 'R32' has type /main/K_r32 which is not a /main/K_r2
 >--> variable (K_r2) VR2 = R32
-inter: inter/Tests/Invalid/typechecking.intert, line 61: value 'righty' has type K_righthanded which is not a K_lefthanded
+inter: inter/Tests/Invalid/typechecking.intert, line 61: value 'righty' has type /main/K_righthanded which is not a /main/K_lefthanded
 >--> variable (K_lefthanded) VSL = righty
-inter: inter/Tests/Invalid/typechecking.intert, line 70: value 'f2_32' has type K_int2_to_int32 which is not a K_int32_to_int32
+inter: inter/Tests/Invalid/typechecking.intert, line 70: value 'f2_32' has type /main/K_int2_to_int32 which is not a /main/K_int32_to_int32
 >--> variable (K_int32_to_int32) V32_32 = f2_32

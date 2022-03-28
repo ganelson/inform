@@ -6,7 +6,7 @@ primitive !goto lab -> void
 
 package main _plain
 	typename K_number = int32
-	typename K_func = function K_number -> K_number
+	typename K_func = function /main/K_number -> /main/K_number
 	package (K_func) R_101 _code
 		local (/main/K_number) x
 		code

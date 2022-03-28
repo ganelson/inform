@@ -450,8 +450,8 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse rule or function syntax@> =
-	if ((Regexp::match(&mr, text, L"(function) (%c+) -> (%i+)")) ||
-		(Regexp::match(&mr, text, L"(rule) (%c+) -> (%i+)"))) {
+	if ((Regexp::match(&mr, text, L"(function) (%c+?) -> (%c+)")) ||
+		(Regexp::match(&mr, text, L"(rule) (%c+?) -> (%c+)"))) {
 		if (Str::eq(mr.exp[0], I"function")) results->constructor_code = FUNCTION_ITCONC;
 		else results->constructor_code = RULE_ITCONC;
 		text_stream *from = mr.exp[1];
@@ -508,10 +508,18 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	}
 
 @<Parse bare typename syntax@> =
-	inter_symbol *K = TextualInter::find_symbol_in_table(T, eloc, text, TYPENAME_IST, &E);
-	if (K) {
+	inter_symbol *typename_s = NULL;
+	if (Str::get_first_char(text) == '/') {
+		typename_s = InterSymbolsTable::wire_to_URL(
+			InterPackage::tree(InterSymbolsTable::package(T)), text, T);
+		if (typename_s == NULL)
+			return InterErrors::quoted(I"no typename at this URL", text, eloc);
+	} else {
+		typename_s = TextualInter::find_symbol_in_table(T, eloc, text, TYPENAME_IST, &E);
+	}
+	if (typename_s) {
 		results->constructor_code = EQUATED_ITCONC;
-		InterTypes::add_operand_to_isstd(results, T, InterTypes::from_type_name(K));
+		InterTypes::add_operand_to_isstd(results, T, InterTypes::from_type_name(typename_s));
 		Regexp::dispose_of(&mr);
 		return NULL;
 	}
