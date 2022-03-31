@@ -199,6 +199,13 @@ case |Acidity|, in binary and textual form:
 $ 'inform7/Tangled/inform7' -source inform7/Tests/Test\ Cases/Acidity.txt -o Acidity.interb -format=binary
 $ 'inform7/Tangled/inform7' -source inform7/Tests/Test\ Cases/Acidity.txt -o Acidity.intert -format=text
 =
-Be warned that they are large: they have several large kits linked into them
+Be warned that these are large: they have several large kits linked into them
 by the time they have reached this final state, and thus contain many modules.
 |Acidity.intert| runs to about 250,000 lines of textual Inter.
+
+It's also possible to access the Inter output by the top half of //inform7//
+before it passes through any linking process: simply add |-pipeline unlinked|.
+Unlike the default pipeline |-pipeline compile|, |unlinked| just saves out
+the Inter straight to an external file. (Of course, saving out unlinked Inter
+to a format like Inform 6 will not produce viable code: linking is done for
+a reason.)

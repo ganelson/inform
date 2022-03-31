@@ -59,7 +59,7 @@ project bundle with a pathname like |Counterfeit Monkey.inform|. We go
 through a little dance with |Supervisor::optioneering_complete| to ensure that
 if a project is already in the target list, Inbuild will use that; and if not,
 but the user has specified a project to Inbuild already with |-project| (a
-command-line option recognised by |inbuild| but not by us), then we add that
+command-line option recognised by |inform7| but not by us), then we add that
 to the target list. Tne net result is that however the user indicates interest
 in an Inform project bundle, it becomes both the Inbuild current project, and
 also a member of our target list. It follows that we cannot have two project

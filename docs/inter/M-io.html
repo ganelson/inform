@@ -280,9 +280,17 @@ case <span class="extract"><span class="extract-syntax">Acidity</span></span>, i
 <span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">'inform7/Tangled/inform7'</span><span class="ConsoleText-identifier-syntax"> -source</span><span class="ConsoleText-plain-syntax"> inform7/Tests/Test\ Cases/Acidity.txt</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> Acidity.interb</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=binary</span>
 <span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">'inform7/Tangled/inform7'</span><span class="ConsoleText-identifier-syntax"> -source</span><span class="ConsoleText-plain-syntax"> inform7/Tests/Test\ Cases/Acidity.txt</span><span class="ConsoleText-identifier-syntax"> -o</span><span class="ConsoleText-plain-syntax"> Acidity.intert</span><span class="ConsoleText-identifier-syntax"> -format</span><span class="ConsoleText-plain-syntax">=text</span>
 </pre>
-<p class="commentary">Be warned that they are large: they have several large kits linked into them
+<p class="commentary">Be warned that these are large: they have several large kits linked into them
 by the time they have reached this final state, and thus contain many modules.
 <span class="extract"><span class="ConsoleText-extract-syntax">Acidity.intert</span></span> runs to about 250,000 lines of textual Inter.
+</p>
+
+<p class="commentary">It's also possible to access the Inter output by the top half of <a href="../inform7/index.html" class="internal">inform7</a>
+before it passes through any linking process: simply add <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline unlinked</span></span>.
+Unlike the default pipeline <span class="extract"><span class="ConsoleText-extract-syntax">-pipeline compile</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">unlinked</span></span> just saves out
+the Inter straight to an external file. (Of course, saving out unlinked Inter
+to a format like Inform 6 will not produce viable code: linking is done for
+a reason.)
 </p>
 
 <nav role="progress"><div class="progresscontainer">
