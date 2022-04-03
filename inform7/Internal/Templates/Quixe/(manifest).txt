@@ -9,7 +9,7 @@
 ! of the play page:
 
 [INTERPRETERVERSION]
-Quixe for Inform 7 (v. 2.1.2)
+Quixe for Inform 7 (v. 2.2.0)
 []
 
 [INTERPRETERURL]
@@ -46,7 +46,7 @@ g
 [INTERPRETERHEAD]
 <link rel="stylesheet" href="interpreter/glkote.css" type="text/css">
 <link rel="stylesheet" href="interpreter/dialog.css" type="text/css">
-<script src="interpreter/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="interpreter/jquery-1.12.4.min.js" type="text/javascript"></script>
 <script src="interpreter/glkote.min.js" type="text/javascript"></script>
 <script src="interpreter/quixe.min.js" type="text/javascript"></script>
 
@@ -56,6 +56,7 @@ g
 game_options = {
   image_info_map: 'StaticImageInfo',  // image data is here, not in blorb
   use_query_story: false,
+  log_execution_time: true,
   set_page_title: false,
   inspacing: 0,     // gap between windows
   outspacing: 0     // gap between windows and edge of gameport
@@ -111,7 +112,7 @@ $(document).ready(function() {
 ! Non-comment lines are the names of files which are copied across when the
 ! release is made. Anything not listed here won't be copied.
 
-jquery-1.11.2.min.js
+jquery-1.12.4.min.js
 glkote.min.js
 quixe.min.js
 dialog.css
