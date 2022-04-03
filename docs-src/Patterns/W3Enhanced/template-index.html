@@ -1,0 +1,71 @@
+<html>
+	<head>
+		<title>[[Title]]</title>
+		[[Plugins]]
+	</head>
+	<body class="commentary-font">
+		<nav role="navigation">
+		[[Navigation]]
+		</nav>
+		<main role="main">
+		<ul class="crumbs">[[Breadcrumbs]]<li><b>[[Title]]</b></li></ul>
+		<p class="purpose">[[Purpose]] This is version [[Version Number]].</p>
+		<hr>
+		<div class="contentspage">
+[[If Chapters]]
+			<ul class="chapterlist">
+	[[Repeat Chapter]]
+				<li>
+					<p class="chapterentry"><a name="[[Chapter Code]]"></a>
+						<span class="chaptertitle">[[Chapter Title]]</span></p>
+[[If Chapter Purpose]]
+					<p class="chapterpurpose">[[Chapter Purpose]]</p>
+[[End If]]
+					<ul class="sectionlist">
+		[[Repeat Section]]
+						<li>
+							<p class="sectionentry"><a href="[[Section Page]]">
+								<spon class="sectiontitle">[[Section Title]]</span></a> -
+							<span class="sectionpurpose">[[Section Purpose]]</span></p>
+						</li>
+		[[End Repeat]]
+					</ul>
+				</li>
+	[[End Repeat]]
+			</ul>
+[[Else]]
+	[[Repeat Chapter]]
+			<ul class="chapterlist">
+		[[Repeat Section]]
+				<li>
+					<p class="chapterentry"><a href="[[Section Page]]">
+					<spon class="sectiontitle">[[Section Title]]</span></a> -
+					<span class="sectionpurpose">[[Section Purpose]]</span></p>
+				</li>
+		[[End Repeat]]
+			</ul>
+	[[End Repeat]]
+[[End If]]
+[[If Modules]]
+		<hr>
+		<p class="purpose">This program also incorporates the following web(s) as module(s):</p>
+		<ul class="chapterlist">
+		[[Repeat Module]]
+			<li>
+				<p class="moduleentry">
+			[[If Module Page]]
+					<a href="[[Module Page]]"><spon class="sectiontitle">[[Module Title]]</span></a>
+			[[Else]]
+					<spon class="sectiontitle">[[Module Title]]</span>
+			[[End If]]
+					- <span class="sectionpurpose">[[Module Purpose]]</span></p>
+			</li>
+		[[End Repeat]]
+		</ul>
+[[End If]]
+		</div>
+		<hr>
+		<p class="purpose">Powered by <a href="https://github.com/ganelson/inweb">Inweb</a>.</p>
+		</main>
+	</body>
+</html>

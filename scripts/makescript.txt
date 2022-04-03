@@ -371,6 +371,8 @@ diagrams:
 	cp -f inform7/Internal/Pipelines/link.interpipeline inter/pipeline-module/Figures
 	cp -f inform7/Internal/Pipelines/optimise.interpipeline inter/pipeline-module/Figures
 	cp -f inform7/Internal/Pipelines/build-kit.interpipeline inter/pipeline-module/Figures
+	$(INBUILDX) -help >inbuild/Figures/help.txt
+	$(INFORM7X) -help >inform7/Figures/help.txt
 	$(INTERX) -help >inter/Figures/help.txt
 
 {repeat-tools-block:ctools}
@@ -434,13 +436,19 @@ docs/$(@LEAF)-module/index.html: {dependent-files-for-module}@
 {end-block}
 
 .PHONY: prepages
-prepages: diagnostics docs/index.html docs/compiler.html docs/extensions.html docs/other.html docs/units.html
+prepages: diagnostics docs/index.html docs/compiler.html docs/extensions.html docs/other.html docs/units.html docs/services.html docs/inform6.html
 
 docs/index.html: docs-src/index.inweb docs-src/nav.html
 	$(INWEBX) -colony $(COLONY) -member overview -weave
 
 docs/compiler.html: docs-src/compiler.inweb docs-src/navc.html
 	$(INWEBX) -colony $(COLONY) -member compiler -weave
+
+docs/services.html: docs-src/services.inweb docs-src/navc.html
+	$(INWEBX) -colony $(COLONY) -member services -weave
+
+docs/inform6.html: docs-src/inform6.inweb docs-src/navc.html
+	$(INWEBX) -colony $(COLONY) -member inform6 -weave
 
 docs/extensions.html: docs-src/extensions.inweb docs-src/navk.html
 	$(INWEBX) -colony $(COLONY) -member extensions -weave
@@ -456,6 +464,8 @@ forceprepages: diagnostics
 	rm -f docs/*.html
 	$(INWEBX) -colony $(COLONY) -member overview -weave
 	$(INWEBX) -colony $(COLONY) -member compiler -weave
+	$(INWEBX) -colony $(COLONY) -member services -weave
+	$(INWEBX) -colony $(COLONY) -member inform6 -weave
 	$(INWEBX) -colony $(COLONY) -member extensions -weave
 	$(INWEBX) -colony $(COLONY) -member other -weave
 	$(INWEBX) -colony $(COLONY) -member units -weave

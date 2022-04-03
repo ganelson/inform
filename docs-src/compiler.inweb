@@ -1,33 +1,57 @@
-Title: The Inform 7 compiler
+Title: Structure of the Inform 7 compiler
 Author: Graham Nelson
 
-@ The task of Inform to take natural-language source text, merged from the
-author's main source and some "extensions"; to compile that to an intermediate
-format called Inter; merge once again with pre-compiled libraries of Inter
-called "kits"; and then translate the result to a program which a
-more orthodox compiler can take the rest of the way. Because Inform 7 generates
-code for another compiler, rather than directly making an executable itself,
-it is properly speaking a "transpiler".
+@ The core Inform compiler, the tool called //inform7//, combines natural-language
+source text, including natural-language extensions, with kits of so-called Inter
+code to make the instructions for making a playable story. Further tools are
+needed to turn such instructions into that story -- perhaps as
 
-For two decades that second compiler was always the roughly C-like Inform 6, a
-sturdy 1990s tool for generating interactive fiction "story files" which, after
-processing with the //inblorb// tool, can then be played in a web browser or
-with an "interpreter". In 2021, limited support was added for transpiling a
-general, non-IF-specific form of the language called Basic Inform to ANSI C.
-This can be compiled into more general executable programs using Clang, gcc,
-or other standard C compilers.
+(*) a page in a web browser, where the story runs as JavaScript, using //inform6//
+and then //inblorb//, other tools in the Inform toolchain;
+
+(*) a "story file" which an app called an "interpreter" plays through, using
+//inform6// alone; or
+
+(*) an executable program which can be run on the command line, using a standard
+C compiler such as |clang| or |gcc|.
+
+@ The compiler runs in Stages, numbered 1 to 7, and each contains many sub-tasks.
+But like most compilers, it can be summarised as turning its input first into
+an AST or "abstract syntax tree"[1] and then into an "intermediate representation",
+which in our case is called Inter. Kits have been compiled in advance by a different
+flow path, directly into Inter. A weak form[2] of linker inside the Inform compiler
+loads and combines those pre-compiled Inter files with the main body, and so
+completes an intermediate representation for the story. This can then be optimised and
+turned into various choices of output.
+
+Inform 7 presents as three command-line tools, not one: //inbuild//, //inform7//
+and //inter//. Really, though, they are three points of access to the same code
+base. //inbuild// contains Stage 1 as a stand-alone tool, //inter// contains Stages
+5 to 7 as a stand-alone tool, and //inform7// is the entire compiler (Stages 1 to 7)
+in one. Each tool has its own CLI (or "command-line interface"): see
+//inbuild: Manual//, //inform7: Manual//, //inter: Manual// and
+//inbuild: Reference Card//, //inform7: Reference Card//, //inter: Reference Card//.
+
+[1] Though in this source we usually call it an "annotated syntax tree" or simply
+"syntax tree" to avoid the issue of whether it is concrete or abstract.
+
+[2] Weak in that the //inter// tool can link any number of kits to a source text,
+but not a source text to a source text.
+
+@ The flow of data looks like so, with time running downwards on the page. Dotted
+arrows are where work is done by tools other than //inform7//:
 = (hyperlinked text as BoxArt)
-							 main source text    extension source texts
-									  \           /
-									   \         /  INFORM7 Stage 1 or INBUILD
-										\       /
-										\|/   \|/
-									   syntax tree
-				 	   kit sources          |
-					(in Inform 6 code)      |  INFORM7 Stages 2 to 5
-				  INTER     |               |
-			 			   \|/             \|/ 
-			precompiled Inter trees     Inter tree
+	kit sources			 main source text    extension source texts
+  (in Inform 6 code)				  \           /
+		|							   \         /  INFORM7 Stage 1 or INBUILD
+		| INTER							\       /
+	   \|/								\|/   \|/
+	precompiled  				       syntax tree
+	Inter trees			 	                |
+		.			                        |  INFORM7 Stages 2 to 5
+		.		                            |
+		. .	. . . . . precompiled          \|/ 
+			          Inter trees      Inter tree
                             \              /
 							 \            /  INFORM7 Stage 6 or INTER
 							 \|/        \|/
@@ -36,19 +60,19 @@ or other standard C compilers.
                            /        |        \   INFORM7 Stage 7 or INTER
 		                 \|/       \|/       \|/
 		         Inform 6 code   C code     index mini-website
-		                  |         |
-		         INFORM6  |         |  CLANG or GCC
-		                 \|/       \|/
+		                  :         :
+		         INFORM6  :         :  CLANG or GCC
+		                 \:/       \:/
 		           story file   executable
-		                  |
-		         INBLORB  |
-    		             \|/
+		                  :
+		         INBLORB  :
+    		             \:/
         		 playable website
 =
 
-@ The Inform 7 transpiler, then, occupies the top two-thirds of the above diagram.
-Broadly speaking, it runs in seven stages, and the code for each stage is made
-up of one or more "modules", as follows:
+@ The source code is divided up into "modules", each of which is a literate
+program or web in its own right. Most modules are used mostly in particular
+stages of the compilation, which are as follows:
 (*) Stage 1. A build manager called //supervisor// gathers what must be compiled.
 (*) Stage 2. //core// organises compilation of a single Inform project,
 doing little except to co-ordinate the other modules.
@@ -65,15 +89,8 @@ more of a layer than a stage, providing services to Stages 4, 6 and 7.
 (*) Stage 7. //final// generates final code and //index// generates human-readable
 Index pages, which forn a small website about the project.
 
-Inform 7 presents as three command-line tools, not one: //inbuild//, //inform7//
-and //inter//. Really, though, they are three points of access to the same code
-base. //inbuild// contains Stage 1 as a stand-alone tool, //inter// contains Stages
-5 to 7 as a stand-alone tool, and //inform7// is the entire compiler (Stages 1 to 7)
-in one. Each tool has its own CLI (or "command-line interface"): see
-//inbuild: Manual//, //inform7: Manual//, //inter: Manual// and
-//inbuild: Reference Card//, //inform7: Reference Card//, //inter: Reference Card//.
-
-The full breakdown of these three tools into modules is as follows:
+The full breakdown of the three tools //inbuild//, //inform7// and //inter//
+into modules is as follows:
 = (hyperlinked text as BoxArt)
         INBUILD                  INFORM7                   INTER     
     +-------------+          +-------------+          +-------------+    
@@ -123,17 +140,6 @@ The full breakdown of these three tools into modules is as follows:
 |                           (standard C library)                        |
 +-----------------------------------------------------------------------+
 =
-Note that all three tools use a "services" library, made up of a variety of modules
-providing services useful for natural language-based programs. At one time this
-was going to be called "Second Foundation" or possibly "Foundation and Empire",
-because there is also //foundation// underneath, a library of utility functions
-provided by //inweb//.
-
-@ That's a lot: for code-spelunkers, this is quite the limestone hillside of
-potential points of entry. Where to begin? Here are some suggested entrances:
-(a) See //supervisor: What This Module Does// for an overview of the
-build-management process.
-(b) Or take that on trust, and see //core: What This Module Does// for
-an overview of how Inform 7 basically works.
-(c) If you're more interested in the low-level representation of Inter code,
-and how to generate from it, see //bytecode: What This Module Does//.
+Note that all three tools use a //services// library, made up of a variety of modules
+providing services useful for natural language-based programs, and also the
+//foundation// library of utility functions provided by //inweb//.

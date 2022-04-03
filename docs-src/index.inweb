@@ -1,33 +1,26 @@
-Title: Overview
+Title: Inform: The Program
 Author: Graham Nelson
+Paragraph Numbers Visibility: Off
 
-@ This is the home page for the source code for the Inform 7 programming
-language. For the language itself, its documentation, and downloads of the
-apps for different platforms, see: http://www.inform7.com
+@ Inform is a programming language used for interactive fiction and other creative
+purposes. Most users engage with it as an app on their devices: there are apps
+for MacOS, Windows, Linux and Android, but in the centre of each is the same
+core compiler and software.
 
-Almost everything here is a "web", or "literate program", powered by //inweb//.
-Those new to literate programming may want first to try the modest examples
-there (say, //goldbach//), and skim the //inweb// manual.
+(*) For user documentation, and downloads of the apps, go to the Inform home page
+at: http://www.inform7.com
 
-These pages host "woven", human-readable, forms of the source and are intended
-for browsing. To obtain and build the software, or to see resources which
-are not webs and thus not here, see: https://github.com/ganelson/inform
+(*) To download the source for the core compiler, build it, and run it at the command
+line rather than through the apps, go to the main GitHub repository
+at: https://github.com/ganelson/inform
 
-@ The Inform 7 compiler comes with a large penumbra of supporting resources,
-so there are around 50 webs in this repository:
-(a) The compiler is built from around 20 modules, plus three front-end command
-line tools controlling them. See //compiler// for a map.
-(b) See //other// for command-line tools useful for building or working with
-Inform, but not involving compilation: //inblorb//, a packager; //indoc//, to
-format documentation; //inpolicy//, a lint-like tool for checking Inform's
-source code; and //inrtps//, to format run-time problem messages.
-(c) The extensions "Basic Inform" (//basic_inform//) and "Standard Rules"
-(//standard_rules//), together with a number of "kits" of precompiled Inter
-code: see //extensions//.
-(d) Small unit-test tools to exercise the modules mentioned in (a): see //units//.
+(*) Inform is a set of "literate programs", written as "webs" of
+source code designed to be read by humans (in "woven" form), as well as
+executed by computers (in "tangled" form). For more on literate programming,
+go to the tool used by the Inform project: //inweb//
 
-@ Three webs are conspicuously missing, but only because they are on similar
-mini-websites on other Github repositories:
-(a) //inweb// itself, and its function library, //foundation//, which all of
-the Inform tools use;
-(b) the testing utility //intest//, which has a repository of its own.
+@ Inform is not a single program. There are around 50 webs in all, together
+with some images, PDF files, sets of test cases, documentation, and so on.
+This page is intended as a jumping-off point to navigate these.
+
+= (html panels.html)

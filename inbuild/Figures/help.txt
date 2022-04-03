@@ -21,10 +21,12 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -use-needs           show all the extensions, kits and so on needed to use
 
 for translating Inform source text to Inter:
+  -basic             use Basic Inform language (same as -kit BasicInformKit)
   -case X            make any source links refer to the source in extension example X
   -census            perform an extensions census (default is -no-census)
   -debug             compile with debugging features even on a Release (default is -no-debug)
-  -format=X          compile I6 code suitable for the virtual machine X
+  -format=X          compile to the format X (default is Inform6/32)
+  -o X               use file X as the compiled output (not for use with -project)
   -project X         work within the Inform project X
   -release           compile a version suitable for a Release build (default is -no-release)
   -rng               fix the random number generator of the story file (for testing) (default is -no-rng)
@@ -46,5 +48,6 @@ for tweaking code generation from Inter:
 -crash               intentionally crash on internal errors, for backtracing (default is -no-crash)
 -fixtime             pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
 -help                print this help information
+-locale X            set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
 -log X               write the debugging log to include diagnostics on X
 -version             print out version number

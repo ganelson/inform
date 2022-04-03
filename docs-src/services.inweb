@@ -1,0 +1,170 @@
+Title: Services and their unit tests
+Author: Graham Nelson
+
+@ The programs in the Inform toolchain need a variety of services beyond those
+provided by our standard library //foundation//. The latter offers basics such
+as memory allocation, linked lists, string manipulation and so on, but the
+Inform tools need much more than that.
+
+The services layer of Inform[1] is structured as a set of modules. They can be
+(and are) used by other tools besides the main //inform7// compiler, and in
+particular most of the services come with unit-testing tools: small stand-alone
+executables which enable the workings of the service in question to be tested
+in isolation from the rest of the Inform toolchain.
+
+To some extent a tool can include just those modules it needs, but there are
+dependencies between them: for example, //linguistics// requires //syntax//,
+which in turn requires //words//. Each service has a section of documentation
+called "How To Include This Module", explaining its needs.
+
+[1] At one time this was going to be called Second Foundation, or perhaps
+Foundation and Empire.
+
+@ The //words// module provides for natural-language text to be read in,
+and then broken up into words and punctuation marks. Usefully efficient ways
+to refer to fragments of this text, such as |wording| and |word_assemblage|,
+are also provided. Much of this is simple book-keeping, but the words module
+also provides the "Preform" system for parsing text against simple grammars.
+Preform powers the lexical/syntax analysis phases of Inform.
+
+(*) Contents page of web: //words//.
+
+(*) Detailed overview: //words: What This Module Does//.
+
+(*) Usage instructions: //words: How To Include This Module//.
+
+(*) Unit test tool here: //words-test//.
+
+(*) A manual for writing Preform grammars: //words: About Preform//.
+
+@ The //lexicon// module provides a way to store and look up meanings of
+multi-word phrases such as "brass plaque" or "red silk jacket". This is the
+equivalent, in a natural-language context, of a symbols table in a more
+conventional compiler. Speed is critical and some novel algorithms are used.
+
+(*) Contents page of web: //lexicon//.
+
+(*) Detailed overview: //lexicon: What This Module Does//.
+
+(*) Usage instructions: //lexicon: How To Include This Module//.
+
+@ The //calculus// module allows logical propositions to be stored and
+simplified. The word "calculus" is used here in the sense of predicate
+calculus with equality, a standard system for mathematical logic, and is
+nothing to do with derivatives or integrals.
+
+(*) Contents page of web: //calculus//.
+
+(*) Detailed overview: //calculus: What This Module Does//.
+
+(*) Usage instructions: //calculus: How To Include This Module//.
+
+(*) Unit test tool here: //calculus-test//.
+
+@ //syntax// is a relatively small module, which manages annotated syntax trees.
+It provides only basic facilities for making and annotating ASTs, but also
+contains the sentence-breaking algorithm, turning a stream of words into a
+rudimentary AST.
+
+This is really part one of a two-part story, the second being //linguistics//.
+Together these define the AST for the Inform 7 language.
+
+(*) Contents page of web: //syntax//.
+
+(*) Detailed overview: //syntax: What This Module Does//.
+
+(*) Usage instructions: //syntax: How To Include This Module//.
+
+(*) Unit test tool here: //syntax-test//.
+
+@ The //linguistics// module manages grammatical categories such as verbs,
+adjectives, determiners and so on, and uses the annotated syntax trees of
+the //syntax// module to diagram sentences.
+
+This is really part two of a two-part story, the first being //syntax//.
+Together these define the AST for the Inform 7 language.
+
+(*) Contents page of web: //linguistics//.
+
+(*) Detailed overview: //linguistics: What This Module Does//.
+
+(*) Usage instructions: //linguistics: How To Include This Module//.
+
+(*) Unit test tool here: //linguistics-test//.
+
+(*) A description of the result: //linguistics: About Sentence Diagrams//.
+
+@ The //inflections// module provides ways to recognise or generate inflected
+forms of words: for example, "fig" becoming "figs", "ox" becoming "oxen",
+"box" becoming "boxes", and "sheep" becoming "sheep" are all inflections to
+make the plural of an English noun.[1] And similarly for inflected verb forms
+such as "starting", "starts" and "start"; or adjectival inflections such as
+those used to generate comparatives and superlatives -- "large" to "larger"
+or "largest".
+
+(*) Contents page of web: //inflections//.
+
+(*) Detailed overview: //inflections: What This Module Does//.
+
+(*) Usage instructions: //inflections: How To Include This Module//.
+
+(*) Unit test tool here: //inflections-test//.
+
+[1] A full implementation of Conway's pluralisation algorithm can be found in
+this module, and is one of Inform's more picturesque corners.
+
+@ The //kinds// module provides a basic type system for an Inform-like language.[1]
+Note that this does not contain the Inform typechecker, which can be found in
+the main compiler (at //values: Dash//); but it does contain code to test
+whether or not values of one kind conform to another kind, which is a key part
+of the typechecking process.
+
+(*) Contents page of web: //kinds//.
+
+(*) Detailed overview: //kinds: What This Module Does//.
+
+(*) Usage instructions: //kinds: How To Include This Module//.
+
+(*) Unit test tool here: //kinds-test//.
+
+(*) A manual for "Neptune", the mini-language used by kits to create fundamental
+kinds and kind constructors: //kinds: A Brief Guide to Neptune//.
+
+[1] Following traditional Inform practice, the term "kind" is used instead of the
+more conventional computer-science word "type".
+
+@ The //arch// module is a way to represent the possible code-generation
+"architectures" supported in the Inform toolchain. For example, "32-bit words
+with debugging enabled" is an architecture.
+
+(*) Contents page of web: //arch//.
+
+(*) Detailed overview: //arch: What This Module Does//.
+
+(*) Usage instructions: //arch: How To Include This Module//.
+
+(*) Unit test tool here: //arch-test//.
+
+@ The //problems// module is a simple system for producing HTML-page-style
+error messages, such as the Problems issued by the Inform compiler.[1]
+
+(*) Contents page of web: //problems//.
+
+(*) Detailed overview: //problems: What This Module Does//.
+
+(*) Usage instructions: //problems: How To Include This Module//.
+
+(*) Unit test tool here: //problems-test//.
+
+[1] Arguably it's not really of any wider application and shouldn't have been
+made a module at all, but never mind.
+
+@ The //html// module contains tools for generating non-standard features of HTML
+needed by the files made by Inform, such as clickable links to the source text.
+
+(*) Contents page of web: //html//.
+
+(*) Detailed overview: //html: What This Module Does//. This section includes a
+description of the custom Inform-app-only URL schemas |inform:| and |source:|.
+
+(*) Usage instructions: //html: How To Include This Module//.

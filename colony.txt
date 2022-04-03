@@ -1,13 +1,16 @@
 assets: docs/docs-assets
 navigation: docs-src/nav.html
-pattern: GitHubPages
+pattern: W3Enhanced
 
 breadcrumbs: none
 web: "overview" at "docs-src/index.inweb" in "docs"
 
+pattern: GitHubPages
 navigation: docs-src/navc.html
 breadcrumbs: "Home: //overview//"
 web: "compiler" at "docs-src/compiler.inweb" in "docs"
+web: "services" at "docs-src/services.inweb" in "docs"
+web: "inform6" at "docs-src/inform6.inweb" in "docs"
 breadcrumbs: "Home: //overview//" > "Compiler Tools: //compiler//"
 home: docs
 
@@ -31,7 +34,7 @@ module: "building" at "inter/building-module" in "docs/building-module"
 module: "pipeline" at "inter/pipeline-module" in "docs/pipeline-module"
 module: "final" at "inter/final-module" in "docs/final-module"
 module: "index" at "inter/index-module" in "docs/index-module"
-breadcrumbs: "Home: //overview//" > "Services: //compiler//"
+breadcrumbs: "Home: //overview//" > "Services: //services//"
 module: "arch" at "services/arch-module" in "docs/arch-module"
 module: "syntax" at "services/syntax-module" in "docs/syntax-module"
 module: "words" at "services/words-module" in "docs/words-module"
@@ -68,7 +71,7 @@ web: "inpolicy" at "inpolicy" in "docs/inpolicy"
 navigation: docs-src/navu.html
 breadcrumbs: "Home: //overview//"
 web: "units" at "docs-src/units.inweb" in "docs"
-breadcrumbs: "Home: //overview//" > "Unit Test Tools: //units//"
+breadcrumbs: "Home: //overview//" > "Services: //services//"
 web: "arch-test" at "services/arch-test" in "docs/arch-test"
 web: "building-test" at "inter/building-test" in "docs/building-test"
 web: "inflections-test" at "services/inflections-test" in "docs/inflections-test"
