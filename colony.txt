@@ -1,25 +1,32 @@
 assets: docs/docs-assets
 navigation: docs-src/nav.html
-pattern: W3Enhanced
 
 breadcrumbs: none
+pattern: W3Enhanced
 web: "overview" at "docs-src/index.inweb" in "docs"
-
+web: "extensions" at "docs-src/extensions.inweb" in "docs"
+web: "kits" at "docs-src/kits.inweb" in "docs"
 pattern: GitHubPages
-navigation: docs-src/navc.html
 breadcrumbs: "Home: //overview//"
-web: "compiler" at "docs-src/compiler.inweb" in "docs"
+web: "structure" at "docs-src/structure.inweb" in "docs"
 web: "services" at "docs-src/services.inweb" in "docs"
 web: "inform6" at "docs-src/inform6.inweb" in "docs"
-breadcrumbs: "Home: //overview//" > "Compiler Tools: //compiler//"
-home: docs
+web: "inform7n" at "docs-src/inform7n.inweb" in "docs"
+web: "inbuildn" at "docs-src/inbuildn.inweb" in "docs"
+web: "intern" at "docs-src/intern.inweb" in "docs"
+web: "inblorbn" at "docs-src/inblorbn.inweb" in "docs"
+web: "indocn" at "docs-src/indocn.inweb" in "docs"
+web: "inrtpsn" at "docs-src/inrtpsn.inweb" in "docs"
+web: "inpolicyn" at "docs-src/inpolicyn.inweb" in "docs"
 
+breadcrumbs: "Home: //overview//"
+home: docs
 web: "inform7" at "inform7" in "docs/inform7"
 web: "inter" at "inter" in "docs/inter"
 web: "inbuild" at "inbuild" in "docs/inbuild"
-breadcrumbs: "Home: //overview//" > "Inbuild Modules: //compiler//"
+breadcrumbs: "Home: //overview//" > "Inbuild Modules: //inbuildn//"
 module: "supervisor" at "inbuild/supervisor-module" in "docs/supervisor-module"
-breadcrumbs: "Home: //overview//" > "Inform7: //compiler//"
+breadcrumbs: "Home: //overview//" > "Inform7: //inform7n//"
 module: "core" at "inform7/core-module" in "docs/core-module"
 module: "assertions" at "inform7/assertions-module" in "docs/assertions-module"
 module: "values" at "inform7/values-module" in "docs/values-module"
@@ -28,7 +35,7 @@ module: "imperative" at "inform7/imperative-module" in "docs/imperative-module"
 module: "runtime" at "inform7/runtime-module" in "docs/runtime-module"
 module: "if" at "inform7/if-module" in "docs/if-module"
 module: "multimedia" at "inform7/multimedia-module" in "docs/multimedia-module"
-breadcrumbs: "Home: //overview//" > "Inter Modules: //compiler//"
+breadcrumbs: "Home: //overview//" > "Inter Modules: //intern//"
 module: "bytecode" at "inter/bytecode-module" in "docs/bytecode-module"
 module: "building" at "inter/building-module" in "docs/building-module"
 module: "pipeline" at "inter/pipeline-module" in "docs/pipeline-module"
@@ -46,9 +53,6 @@ module: "calculus" at "services/calculus-module" in "docs/calculus-module"
 module: "linguistics" at "services/linguistics-module" in "docs/linguistics-module"
 module: "problems" at "services/problems-module" in "docs/problems-module"
 
-navigation: docs-src/navk.html
-breadcrumbs: "Home: //overview//"
-web: "extensions" at "docs-src/extensions.inweb" in "docs"
 breadcrumbs: "Home: //overview//" > "Extensions: //extensions//"
 web: "basic_inform" at "inform7/extensions/basic_inform" in "docs/basic_inform"
 web: "standard_rules" at "inform7/extensions/standard_rules" in "docs/standard_rules"
@@ -59,18 +63,12 @@ web: "CommandParserKit" at "inform7/Internal/Inter/CommandParserKit" in "docs/Co
 web: "BasicInformKit" at "inform7/Internal/Inter/BasicInformKit" in "docs/BasicInformKit"
 web: "BasicInformExtrasKit" at "inform7/Internal/Inter/BasicInformExtrasKit" in "docs/BasicInformExtrasKit"
 
-navigation: docs-src/navo.html
 breadcrumbs: "Home: //overview//"
-web: "other" at "docs-src/other.inweb" in "docs"
-breadcrumbs: "Home: //overview//" > "Other Tools: //other//"
 web: "inblorb" at "inblorb" in "docs/inblorb"
 web: "indoc" at "indoc" in "docs/indoc"
 web: "inrtps" at "inrtps" in "docs/inrtps"
 web: "inpolicy" at "inpolicy" in "docs/inpolicy"
 
-navigation: docs-src/navu.html
-breadcrumbs: "Home: //overview//"
-web: "units" at "docs-src/units.inweb" in "docs"
 breadcrumbs: "Home: //overview//" > "Services: //services//"
 web: "arch-test" at "services/arch-test" in "docs/arch-test"
 web: "building-test" at "inter/building-test" in "docs/building-test"

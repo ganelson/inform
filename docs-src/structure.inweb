@@ -1,0 +1,133 @@
+Title: Structure of the Inform 7 compiler
+Author: Graham Nelson
+
+@ The core Inform compiler combines natural-language source text, including
+natural-language extensions, and precompiled "kits" in order to make the
+instructions for making a playable story. Inform is internally divided into
+Stages, numbered 1 to 7:[1]
+(1) Build management: gathering up what must be compiled and reading it in as
+an annotated syntax tree, or "AST".[2]
+(2) Queueing and organising work which will be done by stages 3 to 5.
+(3) Turning assertion sentences -- "Peter is a man", "The tally is a number
+that varies" -- into a world model of variables, kinds, instances and properties.
+Values and typechecking are also managed here. Phrases and rules are identified,
+but their bodies are ignored for the moment.
+(4) The world model, phrases and rules identified by stage (3) are now compiled
+to an Intermediate Representation, or "IR", another sort of tree known as Inter.
+This is done by calling down to the API provided by...
+(5) ... which is more a layer than a stage: it's a comprehensive system for
+building Inter code, and could conceivably be used by other compilers too.
+(6) A "pipeline" of transformations on the Inter code improves it. A weak form
+of linker[3] joins on precompiled Inter code from "kits" such as BasicInformKit
+or WorldModelKit.
+(7) The finished Inter tree is then code-generated to form our output, which
+can be in several different formats, and an Index mini-website about it is made.
+For most users of the Inform app, the format will be Inform 6, and further
+command-line tools //inform6// and //inblorb// then turn that into a "story
+file" and then a Javascript-running web page; but for some command-line users,
+the format is C and a compiler like |clang| is then used to make an executable.
+
+[1] These slightly overlap in chronological order, so maybe Level would be a
+better name than Stage, but then again they do mostly happen in sequence.
+
+[2] AST normally stands for "abstract syntax tree" but we prefer "annotated",
+skirting the issue of exactly how abstract vs concrete it is.
+
+[3] Weak in that the //inter// tool can link any number of kits to a source text,
+but not a source text to a source text.
+
+@ These seven stages form a single code base but are packaged up into three
+command-line tools, not one:
+(*) |inbuild| is Stage 1 as a stand-alone tool: see //this description -> inbuildn//.
+(*) |inform7| is Stages 1 to 7 as an all-in-one: see //this description -> inform7n//
+of the part unique to it, Stages 2 to 4.
+(*) |inter| is Stages 5 to 7 as a stand-alone tool: see //this description -> intern//.
+
+All three tools also use a large library of //services//: everything from
+inflecting words to simplifying logical propositions.
+
+@ The flow of data looks like so, with time running downwards on the page:
+= (hyperlinked text as BoxArt)
+	kit sources			
+  (in Inform 6 code)	
+		|				
+		| INTER			
+	   \|/				
+	precompiled  		
+	Inter trees			
+	    .     			 main source text    extension source texts
+	    .     						  \           /
+	    .     						   \         /  INFORM7 Stage 1 or INBUILD
+	    .     							\       /
+	    .     							\|/   \|/
+	    .     					       syntax tree
+	    .     			 	                |
+		.			                        |  INFORM7 Stages 2 to 4/5
+		.		                            |
+		. .	. . . . . precompiled          \|/ 
+			          Inter trees      Inter tree
+                            \              /
+							 \            /  INFORM7 Stage 6 or INTER
+							 \|/        \|/
+						single linked Inter tree
+		                    /       |       \
+                           /        |        \   INFORM7 Stage 7 or INTER
+		                 \|/       \|/       \|/
+		         Inform 6 code   C code     index mini-website
+		                  :         :
+		         INFORM6  :         :  CLANG or GCC
+		                 \:/       \:/
+		           story file   executable
+		                  :
+		         INBLORB  :
+    		             \:/
+        		 playable website
+=
+
+@ The code base is subdivided into "modules". There are around 30, from five sources:
+(*) A set of //services//, which are libraries of code providing features useful
+to programs dealing with natural language.
+(*) Those //owned by Inbuild -> inbuildn//.
+(*) Those //owned by Inform7 -> inform7n//.
+(*) Those //owned by Inter -> intern//.
+(*) The //foundation// library for memory-management, string handling and so
+on, which is a module held in the //inweb// repository rather than here.
+
+@ The full breakdown of the three compiler tools into modules is as follows.
+An |o| means that the tool is the owner of the module in question; a |x| means
+that it imports the module from somewhere else.
+
+= (hyperlinked text as BoxArt)
+WEB                 ACTIVE STAGES   INWEB    SERVICES    INBUILD     INFORM7     INTER     
+//inbuild// cli         Before            -         -           o           -          -
+//inform7// cli         Before            -         -           -           o          -
+//inter// cli           Before            -         -           -           -          o
+//supervisor// module   Stage 1           -         -           o           x          -
+//core// module         Stage 2           -         -           -           o          -
+//assertions// module   Stage 3           -         -           -           o          -
+//values// module       Stage 3           -         -           -           o          -
+//knowledge// module    Stage 3           -         -           -           o          -
+//if// module           Stage 3           -         -           -           o          -
+//multimedia// module   Stage 3           -         -           -           o          -
+//imperative// module   Stage 4           -         -           -           o          -
+//runtime// module      Stage 4           -         -           -           o          -
+//bytecode// module     Stage 5           -         -           -           x          o
+//building// module     Stage 5           -         -           -           x          o
+//pipeline// module     Stage 6           -         -           -           x          o
+//final// module        Stage 7           -         -           -           x          o
+//index// module        Stage 7           -         -           -           x          o
+//linguistics// service Throughout        -         o           -           x          -
+//calculus// service    Throughout        -         o           -           x          -
+//kinds// service       Throughout        -         o           -           x          -
+//lexicon// service     Throughout        -         o           -           x          -
+//inflections// service Throughout        -         o           -           x          -
+//problems// service    Throughout        -         o           -           x          -
+//syntax// service      Throughout        -         o           x           x          -
+//words// service       Throughout        -         o           x           x          x
+//arch// service        Throughout        -         o           x           x          x
+//html// service        Throughout        -         o           x           x          x
+//foundation// library  Throughout        o         -           x           x          x
+=
+The executables otherwise contain only a few POSIX or Windows-related functions
+for file and directory handling, and functions from the standard C library.
+There are, therefore, no external dependencies.

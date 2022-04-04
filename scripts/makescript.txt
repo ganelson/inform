@@ -341,7 +341,7 @@ commit:
 # -----------------------------------------------------------------------------
 
 .PHONY: pages
-pages: icon readmepage diagrams prepages {repeat-tools-span}@PAGES{end-span} \
+pages: diagnostics icon readmepage diagrams prepages {repeat-tools-span}@PAGES{end-span} \
 	{repeat-modules-span}@MPAGES{end-span} morepages
 
 .PHONY: icon
@@ -351,7 +351,7 @@ icon:
 	cp -f docs-src/Inform.png docs/docs-assets
 
 .PHONY: forcepages
-forcepages: readmepage diagrams forceprepages {repeat-tools-span}@FORCEPAGES{end-span} \
+forcepages: diagnostics readmepage diagrams forceprepages {repeat-tools-span}@FORCEPAGES{end-span} \
 	{repeat-modules-span}@FORCEMPAGES{end-span} forcemorepages
 
 .PHONY: readmepage
@@ -436,39 +436,63 @@ docs/$(@LEAF)-module/index.html: {dependent-files-for-module}@
 {end-block}
 
 .PHONY: prepages
-prepages: diagnostics docs/index.html docs/compiler.html docs/extensions.html docs/other.html docs/units.html docs/services.html docs/inform6.html
+prepages: docs/index.html docs/structure.html docs/extensions.html docs/kits.html docs/services.html docs/inform6.html docs/inbuildn.html docs/inform7n.html docs/intern.html docs/inblorbn.html docs/indocn.html docs/inrtpsn.html docs/inpolicyn.html
 
 docs/index.html: docs-src/index.inweb docs-src/nav.html
 	$(INWEBX) -colony $(COLONY) -member overview -weave
 
-docs/compiler.html: docs-src/compiler.inweb docs-src/navc.html
-	$(INWEBX) -colony $(COLONY) -member compiler -weave
+docs/structure.html: docs-src/structure.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member structure -weave
 
-docs/services.html: docs-src/services.inweb docs-src/navc.html
+docs/inbuildn.html: docs-src/inbuildn.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member inbuildn -weave
+
+docs/inform7n.html: docs-src/inform7n.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member inform7n -weave
+
+docs/intern.html: docs-src/intern.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member intern -weave
+
+docs/inblorbn.html: docs-src/inblorbn.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member inblorbn -weave
+
+docs/indocn.html: docs-src/indocn.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member indocn -weave
+
+docs/inrtpsn.html: docs-src/inrtpsn.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member inrtpsn -weave
+
+docs/inpolicyn.html: docs-src/inpolicyn.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member inpolicyn -weave
+
+docs/services.html: docs-src/services.inweb docs-src/nav.html
 	$(INWEBX) -colony $(COLONY) -member services -weave
 
-docs/inform6.html: docs-src/inform6.inweb docs-src/navc.html
+docs/inform6.html: docs-src/inform6.inweb docs-src/nav.html
 	$(INWEBX) -colony $(COLONY) -member inform6 -weave
 
-docs/extensions.html: docs-src/extensions.inweb docs-src/navk.html
+docs/extensions.html: docs-src/extensions.inweb docs-src/nav.html
 	$(INWEBX) -colony $(COLONY) -member extensions -weave
 
-docs/other.html: docs-src/other.inweb docs-src/navo.html
-	$(INWEBX) -colony $(COLONY) -member other -weave
-
-docs/units.html: docs-src/units.inweb docs-src/navu.html
-	$(INWEBX) -colony $(COLONY) -member units -weave
+docs/kits.html: docs-src/kits.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member kits -weave
 
 .PHONY: forceprepages
-forceprepages: diagnostics
+forceprepages:
 	rm -f docs/*.html
 	$(INWEBX) -colony $(COLONY) -member overview -weave
-	$(INWEBX) -colony $(COLONY) -member compiler -weave
+	$(INWEBX) -colony $(COLONY) -member structure -weave
+	$(INWEBX) -colony $(COLONY) -member inbuildn -weave
+	$(INWEBX) -colony $(COLONY) -member inform7n -weave
+	$(INWEBX) -colony $(COLONY) -member intern -weave
+	$(INWEBX) -colony $(COLONY) -member inblorbn -weave
+	$(INWEBX) -colony $(COLONY) -member indocn -weave
+	$(INWEBX) -colony $(COLONY) -member inrtpsn -weave
+	$(INWEBX) -colony $(COLONY) -member inpolicyn -weave
 	$(INWEBX) -colony $(COLONY) -member services -weave
 	$(INWEBX) -colony $(COLONY) -member inform6 -weave
 	$(INWEBX) -colony $(COLONY) -member extensions -weave
-	$(INWEBX) -colony $(COLONY) -member other -weave
-	$(INWEBX) -colony $(COLONY) -member units -weave
+	$(INWEBX) -colony $(COLONY) -member kits -weave
 
 .PHONY: diagnostics
 diagnostics:

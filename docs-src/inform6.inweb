@@ -1,9 +1,9 @@
-Title: A note about Inform 6
+Title: Navigation page for Inform 6
 Author: Graham Nelson
 
 @ The Inform system of today sometimes uses the Inform system of yesteryear,
 |inform6|, as a final stage of compilation, a stage largely invisible to end
-users of the Inform apps. See //compiler// for a diagram of how the tools
+users of the Inform apps. See //structure// for a diagram of how the tools
 are combined in use.
 
 Inform 6 is a C-like language designed to be compiled to the specialist Z-machine

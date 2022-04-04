@@ -1,0 +1,21 @@
+Title: Navigation page for Inpolicy
+Author: Graham Nelson
+
+@ Inpolicy is not part of the main Inform compiler and is not shipped inside the
+Inform apps. Instead, it's used as a stand-alone command-line tool by the
+maintainers of Inform: it is a lint-like tool for checking that the Inform
+source code complies with some self-imposed social norms. At present it's
+fairly minimal, but does a useful job in checking whether problem messages
+are covered by test cases.
+
+At present, there's no formal style guide for the source code in this
+repository. There probably ought to be one, and when that happens, Inpolicy
+should probably check compliance with it.
+
+Inpolicy is a small literate program, and is not divided into modules.
+
+(*) The contents page for the Inpolicy web is here: //inpolicy//.
+
+(*) See //inpolicy: Manual// and //inpolicy: Reference Card// for usage.
+
+@ Inpolicy contains the basic //foundation// library, but none of the //services//.

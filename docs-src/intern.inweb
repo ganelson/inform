@@ -1,0 +1,107 @@
+Title: Navigation page for Inter
+Author: Graham Nelson
+
+@ Inter is Stages 6 and 7 of the core Inform compiler, but can also be run as a
+stand-alone tool. See //structure// for the bigger picture: Inter handles
+only these parts of the compilation flow --
+= (hyperlinked text as BoxArt)
+	kit sources		
+  (in Inform 6 code)
+		|			
+		| INTER		
+	   \|/			
+	precompiled  	
+	Inter trees		
+		.			
+		.		    
+		. .	. . . . . precompiled      Inter tree
+			          Inter trees      from inform7
+                            \              /
+							 \            /  INFORM7 Stage 6 or INTER
+							 \|/        \|/
+						single linked Inter tree
+		                    /       |       \
+                           /        |        \   INFORM7 Stage 7 or INTER
+		                 \|/       \|/       \|/
+		         Inform 6 code   C code     index mini-website
+=
+Used as a stand-alone tool at the command line, however, Inter is more
+flexible and interesting. See the //inter: Manual// and //inter: Reference Card//.
+
+(*) The contents page for the Inter web is here: //inter//.
+
+(*) The command-line interface for Inter as a stand-alone tool is implemented
+at //inter: Main//.
+
+(*) The //inter: Manual// contains a full description of the intermediate format
+"Inter", regarded as a language in its own right.
+
+@ The //bytecode// module provides a low-level API for creating Inter code in
+memory, including definitions of every Inter construct, together with reading
+and writing Inter to either binary or text files. This is also where references
+between one tree and another ("plugs" and "sockets") are managed, and where
+"transmigration", moving code from one Inter tree to another, is done.
+
+(*) Contents page of web: //bytecode//.
+
+(*) Detailed overview: //bytecode: What This Module Does//.
+
+(*) For details of how binary Inter files are currently formatted, see
+//bytecode: Inter in Binary Files//.
+
+@ The //building// module sits on top of //bytecode// and provides much more
+powerful facilities for constructing Inter in memory: in particular allowing
+for out-of-sequence construction which follows hierarchical location maps
+made in advance. The central stages of the Inform 7 compiler generate Inter
+using the //building// API, and not by calling //bytecode// directly.
+
+//building// also contains what amounts to a pocket-sized Inform 6 compiler
+of its own. It can read code in the Inform 6 programming language's syntax
+and turn that into an |inter_schema| -- in effect, an AST for Inform 6, which
+is a language so different from Inform 7 that they cannot sensibly have the
+same AST format. But they can indeed share Inter as an intermediate representation
+or IR, and they do. //building// contains the code which converts |inter_schema|
+trees to Inter, a process called "assimilation", and this is the main step in
+building a kit like //BasicInformKit// from its source.
+
+(*) Contents page of web: //building//.
+
+(*) Detailed overview: //building: What This Module Does//.
+
+@ The //pipeline// module provides a flexible processing pipeline for performing
+transformations on trees of Inter code. Steps in such pipelines may include
+linking trees together, or transmigrating material between them, or performing
+peephole optimisation, and so on. The design here is intended to make it easy
+for people to tinker, and to add new, experimental processing steps as Inform
+develops.
+
+(*) Contents page of web: //pipeline//.
+
+(*) Detailed overview: //pipeline: What This Module Does//.
+
+(*) For documentation of the mini-language used to specify new pipelines, see
+the Inter manual at //inter: Pipelines and Stages//.
+
+@ The //final// module provides for what is usually the final step of a pipeline:
+the last step of code-generation, when the final output of Inform is written to
+some text file. For example, it might output a C or Inform 6 program. //final//
+is designed to allow for new output formats to be added as Inform develops; in
+particular it contains a "vanilla" algorithm for code-generating Inter trees
+to vaguely C-like, procedural languages, and this is used both for C and for
+Inform 6.
+
+(*) Contents page of web: //final//.
+
+(*) Detailed overview: //final: What This Module Does//.
+
+@ The //index// module generates the mini-website called the Index for an Inform 7
+project, familiar to all users of the Inform app. Note that this is done from the
+Inter tree alone; all information about the program which is needed to draw up
+the Index is present in the Inter tree in the form of metadata constants.
+
+(*) Contents page of web: //index//.
+
+(*) Detailed overview: //index: What This Module Does//.
+
+@ Inter also contains the basic //foundation// library and some //services//
+modules: specifically, //words//, //html// and //arch//.

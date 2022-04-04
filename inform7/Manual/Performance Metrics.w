@@ -39,11 +39,11 @@ The unabridged grammar is here:
 = (download preform-diagnostics.txt "Preform diagnostics file")
 
 @h Syntax tree.
-A full printout of the syntax tree (see //syntax: What This Module Does//)
-is a roughly 20,000-line text file, and again is too long to quote in full.
-This is a summary, showing just the portion of tree from the main source text,
-that is, with the content of extensions excluded, and with the content of
-|IMPERATIVE_NT| also cut. It still makes for a lengthy read:
+A full printout of the syntax tree is a roughly 20,000-line text file, and again
+is too long to quote in full. This is a summary, showing just the portion of
+tree from the main source text, that is, with the content of extensions
+excluded, and with the content of |IMPERATIVE_NT| also cut. It still makes
+for a lengthy read:
 
 = (undisplayed text from Figures/syntax-summary.txt)
 

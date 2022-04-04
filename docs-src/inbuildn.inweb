@@ -1,0 +1,39 @@
+Title: Navigation page for Inbuild
+Author: Graham Nelson
+
+@ Inbuild is Stage 1 of the core Inform compiler, but can also be run as a
+stand-alone tool. See //structure// for the bigger picture: Inbuild handles
+only this part of the compilation flow --
+= (hyperlinked text as BoxArt)
+	main source text   extension source texts
+  		  \           /
+		   \         /  INFORM7 Stage 1 or INBUILD
+			\       /
+			\|/   \|/
+	       syntax tree
+=
+Used as a stand-alone tool at the command line, however, Inbuild is more
+flexible and interesting. See the //inbuild: Manual// and //inbuild: Reference Card//.
+
+(*) The contents page for the Inbuild web is here: //inbuild//.
+
+(*) The command-line interface for Inbuild as a stand-alone tool is implemented
+at //inbuild: Main//.
+
+@ The //supervisor// module does all of the real work. Given a project to build,
+it decides what resources are needed -- for example, extensions or kits -- and
+forms a dependency graph between them. It then attempts to traverse that graph,
+building each resource in turn as necessary.
+
+To do all this, //supervisor// must also be a filing clerk, managing "nests" of
+resources and worrying about semantic version numbers. Since that requires looking
+at source text for extensions and Inform projects, the supervisor is therefore
+also the part of Inform which uses the //syntax// service to read text in to
+the syntax tree.
+
+(*) Contents page of web: //supervisor//.
+
+(*) Detailed overview: //supervisor: What This Module Does//.
+
+@ Inbuild also contains the basic //foundation// library and some //services//
+modules: specifically, //words//, //syntax//, //html// and //arch//.

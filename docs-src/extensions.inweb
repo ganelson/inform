@@ -1,42 +1,26 @@
-Title: Extensions and Kits
+Title: Extensions
 Author: Graham Nelson
 
-@h Extensions.
-An "extension" is a supplementary piece of Inform 7 source text. Inform
+@ An "extension" is a supplementary piece of Inform 7 source text. Inform
 programs sometimes explicitly ask for these, with sentences like so:
 
 >> Include Locksmith by Emily Short.
 
-Their presence can also be implicitly required by the use of certain kits.
-For example, if //BasicInformKit// is used (and it always is), then the
-extension Basic Inform by Graham Nelson (//basic_inform//) is auto-included.
-Similarly, use of either //WorldModelKit// or //CommandParserKit// mandates
-the inclusion of the Standard Rules for interactive fiction (//standard_rules//).
+The standard Inform installation comes with several optional-use extensions,
+"Locksmith" being one of them, in fact, but most are straightforward files
+of Inform 7 text and they are not presented here as literate programs.
 
-The Inform GUI apps come with numerous other built-in extensions besides these
-two, but all are smaller and easier to read, and they are not provided as webs.
-See: https://github.com/ganelson/inform
+(*) They can be found instead at: //https://github.com/ganelson/inform/inform7/Internal/Extensions/
 
-@h Kits.
-The middle phase of the Inform 7 compiler turns source text into a low-level
-abstract program in a format called inter. The final phase merges this with
-pre-compiled inter libraries called "kits".
+@ Two extensions are fundamental to Inform, in the sense that it cannot function
+without them. Every project always includes Basic Inform, which sets up the
+rudiments of the language itself. Every non-basic project also includes the
+Standard Rules, which provides a rich simulated environment for interactive
+fiction. Both of these are presented here as literate programs:
 
-Every source text needs a kit called //BasicInformKit//, and a kit associated
-with the natural language it will eventually read or write, such as
-//EnglishLanguageKit//; but then one of two things can happen:
-(a) If the user explicitly declares other kits to use, those are used;
-(b) Otherwise, //WorldModelKit// and //CommandParserKit// are used;
-(c) If neither //WorldModelKit// nor //CommandParserKit// is used, then
-//BasicInformExtrasKit// is used.
+= (html panels_exts.html)
 
-In effect, Inform by default assumes it is making an interactive fiction
-of some kind, and must be explicitly told if it's to make a "basic" program
-with no world model or command parser.
-
-@ Each kit is a web. Inter code is highly verbose, very low-level and not at
-all legible, so these webs do not contain textual Inter code: instead, they
-are written in Inform 6 syntax. The //inter// tool then converts these to
-binary inter code in a process called "assimilation". This means that to
-create or edit kits, you need to be able to write Inform 6 code, but it's a
-simple C-like language to learn if all you're doing is writing functions.
+@ Historical note: What used to be a single "Standard Rules" extension, in
+releases of Inform before 2022, has now been divided up into two. The new
+"Standard Rules" contains only IF-related material, while "Basic Inform"
+contains the part which used to set up the language itself.

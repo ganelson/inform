@@ -1,0 +1,122 @@
+Title: Navigation page for Inform7
+Author: Graham Nelson
+
+@ The inform7 tool is the active part of the Inform apps familiar to end users,
+but it can also be run as a command-line tool outside of the app. See the
+//inform7: Manual// and //inform7: Reference Card//.
+
+(*) The contents page for the inform7 web is here: //inform7//.
+
+(*) The command-line interface for Inform as a stand-alone tool is implemented
+at //inform7: Main//.
+
+Note that the inform7 is the largest of the three compiler tools, since it
+contains the other two tools in their entirety.[1] See //inbuildn// and
+//intern// for details of those. But inform7 also contains modules of its own
+which are not found elsewhere, and those are the ones described on this page.
+See //structure// for the bigger picture: the modules unique to inform7 perform
+just one simple-looking part of the compilation flow diagram --
+= (hyperlinked text as BoxArt)
+	syntax tree
+		|
+		|  INFORM7 Stages 2 to 4/5
+		|
+	   \|/ 
+	Inter tree
+=
+
+[1] Or at least, all except for their command-line interfaces.
+
+@ The //core// module is an organiser of what happens during Stages 2 to 5,
+which involve very many sub-stages. It includes a form of scheduler, queueing
+up individual tasks; it provides general mechanisms for issuing problem messages;
+and also a "plugin" architecture enabling language features to be added. Most
+Inform users think of rooms, map connections and so on as being built in to
+the language itself, but internally we take the view that there is a purist
+Basic Inform language dealing only in data, and then a set of plugins to add
+domain-specific gadgets to that language.
+
+(*) Contents page of web: //core//.
+
+(*) Detailed overview: //core: What This Module Does//.
+
+@ The //assertions// module looks at sentences in the source text outside of
+rules/phrases: often copular sentences like "X is a number which varies",
+but also imperative forms like "Understand ... as ..." or rule/phrase headers
+such as "To ...:".
+
+(*) Contents page of web: //assertions//.
+
+(*) Detailed overview: //assertions: What This Module Does//.
+
+@ The //values// module parses descriptions of values and their kinds, and
+contains in particular the "S-parser" (parsing fragments of the AST called
+"specifications"), and the Inform typechecker, a behemoth of an algorithm
+called "Dash". Typechecking in Inform is quite unlike that used in most
+programming languages, partly because types are often only implied in the
+language, partly because natural language blurs lines between values and types
+considerably in any case.
+
+(*) Contents page of web: //values//.
+
+(*) Detailed overview: //values: What This Module Does//.
+
+@ The //knowledge// module manages variables, properties, instances and so
+forth, and stores knowledge of differing certainty about their values in the
+form of "inferences".
+
+(*) Contents page of web: //knowledge//.
+
+(*) Detailed overview: //knowledge: What This Module Does//.
+
+@ The //imperative// module is almost a compiler-within-a-compiler, since it
+parses and generates Inter code from the bodies of phrase and rule definitions.
+More modern compiler-concepts such as closures and generics do make tiny
+appearances here, but really it's an old-school imperative compiler.
+
+(*) Contents page of web: //imperative//.
+
+(*) Detailed overview: //imperative: What This Module Does//.
+
+@ The //runtime// module generates Inter code for everything other than
+functions. This can be quite elaborate: whereas, say, a global variable in
+Inform is likely to need only a single Inter instruction, something like
+a various-to-various relation may need a large body of Inter arrays,
+properties or active code in order to function at runtime. //runtime// also
+writes copious and diligent metadata into the Inter tree, so that the index
+can later be generated, and to make the tree more fathomable to the code
+generator (or other pipeline stages) later on.
+
+While it contains no tricky or controversial algorithms, this is in some ways the
+least satisfactory module in Inform, because it remains undecided exactly what
+developments in linking together Inform source text may follow. Developers
+should probably not assume that the conventions used by //runtime// are stable,
+for the moment.[1]
+
+(*) Contents page of web: //runtime//.
+
+(*) Detailed overview: //runtime: What This Module Does//.
+
+[1] If we ever do go down the road of a full-on linker, issues like this would
+be part of what is nowadays called "ABI stability".
+
+@ The //if// module consists of an extensive suite of plugins (see |core|
+above) to add interactive fiction features to the Basic Inform language.
+Support for scenes, a spatial map, a protagonist character, and so on are
+all to be found here.
+
+(*) Contents page of web: //if//.
+
+(*) Detailed overview: //if: What This Module Does//.
+
+@ The //multimedia// module consists of a few plugins (see |core| above)
+to add images, sound files and external file-handling to the Basic Inform
+language.
+
+(*) Contents page of web: //multimedia//.
+
+(*) Detailed overview: //multimedia: What This Module Does//.
+
+@ As noted above, inform7 contains many other modules: all of those from
+//intern//, all of those from //inbuildn//, and all of the //services//,
+together with the ubiquitous //foundation// library.

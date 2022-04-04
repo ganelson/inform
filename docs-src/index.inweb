@@ -3,24 +3,26 @@ Author: Graham Nelson
 Paragraph Numbers Visibility: Off
 
 @ Inform is a programming language used for interactive fiction and other creative
-purposes. Most users engage with it as an app on their devices: there are apps
-for MacOS, Windows, Linux and Android, but in the centre of each is the same
-core compiler and software.
-
-(*) For user documentation, and downloads of the apps, go to the Inform home page
+purposes. For user documentation, and downloads of the apps, go to the Inform home page
 at: http://www.inform7.com
 
-(*) To download the source for the core compiler, build it, and run it at the command
-line rather than through the apps, go to the main GitHub repository
-at: https://github.com/ganelson/inform
+Most users engage with Inform as an app on their devices: there are apps
+for MacOS, Windows, Linux and Android, but in the centre of each is the same
+core compiler and software. This website is part of the Github repository for
+that core, which is written as a "literate program", meaning that it is compiled
+both to a "woven", human-readable version as well as a "tangled",
+computer-executable version. You are now reading the woven version. For more on
+literate programming, go to the tool used by the Inform project: //inweb//
 
-(*) Inform is a set of "literate programs", written as "webs" of
-source code designed to be read by humans (in "woven" form), as well as
-executed by computers (in "tangled" form). For more on literate programming,
-go to the tool used by the Inform project: //inweb//
+Like all complex software systems, Inform is an assemblage of many individual
+programs, images, PDF files, sets of test cases, documentation, and so on.
+This page is intended as a jumping-off point for browsing the source code and
+technical documentation: it doesn't list every last thing.
 
-@ Inform is not a single program. There are around 50 webs in all, together
-with some images, PDF files, sets of test cases, documentation, and so on.
-This page is intended as a jumping-off point to navigate these.
+(*) At the heart of Inform are the first four links below, making up its main
+compiler. See //structure// for how they fit together.
 
-= (html panels.html)
+(*) Several important //kits// and //extensions// used by Inform are also written as
+literate programs.
+
+= (html panels_tools.html)
