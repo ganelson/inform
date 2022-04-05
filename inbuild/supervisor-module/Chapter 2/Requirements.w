@@ -186,3 +186,26 @@ int Requirements::meets(inbuild_edition *edition, inbuild_requirement *req) {
 	}
 	return VersionNumberRanges::in_range(edition->version, req->version_range);
 }
+
+@ This is a very weak form of testing that requirement |A| is stronger than
+requirement |B| concerning the same work; it only catches the case where |B|
+imposes no version constraints.
+
+=
+int Requirements::trumps(inbuild_requirement *A, inbuild_requirement *B) {
+	if (B == NULL) return TRUE;
+	if (A == NULL) return FALSE;
+	if (B->work) {
+		if (B->work->genre)
+			if (B->work->genre != A->work->genre)
+				return FALSE;
+		if (Str::len(B->work->title) > 0)
+			if (Str::ne_insensitive(B->work->title, A->work->title))
+				return FALSE;
+		if (Str::len(B->work->author_name) > 0)
+			if (Str::ne_insensitive(B->work->author_name, A->work->author_name))
+				return FALSE;
+	}
+	if (VersionNumberRanges::is_any_range(B->version_range)) return TRUE;
+	return FALSE;
+}

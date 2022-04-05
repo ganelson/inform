@@ -16,11 +16,6 @@
 <link href="docs-assets/Navigation.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="docs-assets/Fonts.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="docs-assets/Base.css" rel="stylesheet" rev="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.12.4.min.js"
-	integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-
-<script src="docs-assets/Bigfoot.js"></script>
-<link href="docs-assets/Bigfoot.css" rel="stylesheet" rev="stylesheet" type="text/css">
 <link href="docs-assets/Colours.css" rel="stylesheet" rev="stylesheet" type="text/css">
 		
 	</head>
@@ -58,62 +53,28 @@
 <div class="breadcrumbs">
     <ul class="crumbs"><li><b>Kits</b></li></ul></div>
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>Whereas <a href="extensions.html" class="internal">extensions</a> are a familiar concept to most Inform users, "kits" are
-not. They provide what can be large bodies of pre-compiled material.
+not. They provide what can be large bodies of pre-compiled material. As with
+extensions, different projects may use different sets of kits, but some are
+compulsory, and others nearly so. For an English-language work of interactive
+fiction being made with the Inform apps, the kits will be:
 </p>
 
-<p class="commentary">Every Inform project needs a kit called <a href="BasicInformKit/index.html" class="internal">BasicInformKit</a>, and a kit associated
-with the natural language it will eventually read or write, such as
-<a href="EnglishLanguageKit/index.html" class="internal">EnglishLanguageKit</a>. After that, one of two things can happen:
-</p>
-
-<ul class="items"><li>(a) If the user explicitly declares other kits to use, those are used &mdash; see
-the <span class="extract"><span class="extract-syntax">-kit</span></span> command-line switch present in both <a href="inbuild/index.html" class="internal">inbuild</a> and <a href="inform7/index.html" class="internal">inform7</a>;
-</li><li>(b) Otherwise, if the <span class="extract"><span class="extract-syntax">-basic</span></span> switch is used at the command line, or equivalently
-if a user of the app ticks the "Basic Inform" checkbox on Project Settings,
-then no other kits are present;
-</li><li>(c) Otherwise, <a href="WorldModelKit/index.html" class="internal">WorldModelKit</a> and <a href="CommandParserKit/index.html" class="internal">CommandParserKit</a> are both used;
-</li><li>(d) Whichever of (a) to (c) happened, if neither <a href="WorldModelKit/index.html" class="internal">WorldModelKit</a> nor
-<a href="CommandParserKit/index.html" class="internal">CommandParserKit</a> is used, then <a href="BasicInformExtrasKit/index.html" class="internal">BasicInformExtrasKit</a> is used.
-</li></ul>
-<p class="commentary">In effect, Inform by default assumes it is making an interactive fiction
-of some kind, and must be explicitly told if it's to make a "basic" program
-with no world model or command parser.
-</p>
-
-<p class="commentary">In practice this leads to two default configurations:
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit</span>
+</pre>
+<p class="commentary">However, if the "Basic Inform" checkbox is ticked on the Settings panel for
+the project, the kits will instead be:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">BasicInformKit + EnglishLanguageKit + BasicInformExtrasKit</span>
-<span class="plain-syntax">BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit</span>
 </pre>
-<p class="commentary">See <a href="inbuild/M-ui.html" class="internal">Manual (in inbuild)</a> for where the compiler expects to find kits.
+<p class="commentary">And these are also the defaults when Inform projects are compiled from the command
+line, with the optional <span class="extract"><span class="extract-syntax">-basic</span></span> switch forcing us into the second case.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Use of a kit can implicitly include an associated extension: for example, if
-<a href="BasicInformKit/index.html" class="internal">BasicInformKit</a> is used (and it always is), then the extension Basic Inform
-by Graham Nelson is auto-included. Similarly, use of either <a href="WorldModelKit/index.html" class="internal">WorldModelKit</a>
-or <a href="CommandParserKit/index.html" class="internal">CommandParserKit</a> mandates inclusion of the Standard Rules.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
-Kits can also force each other to be present: for example, use of <a href="CommandParserKit/index.html" class="internal">CommandParserKit</a>
-forces <a href="WorldModelKit/index.html" class="internal">WorldModelKit</a> to be present, but not vice versa.
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> This in fact is the mechanism by which Inform decides which extensions
-should be implicitly included.
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>The source code for a kit is a web. Inter code is highly verbose, very low-level
-and not at all legible, so these webs do not contain textual Inter code: instead,
-they are written in Inform 6 syntax.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> This means that to create or edit kits,
-you need to be able to write Inform 6 code, but it's a very simple language to
-learn if all you're doing is writing functions.
-</p>
-
-<p class="commentary">Though kits may be written in what looks like Inform 6 syntax, they are not
-compiled by the <a href="inform6.html" class="internal">inform6</a> compiler. Instead, they are "assimilated" by <a href="inter/index.html" class="internal">inter</a>.
-For details, see <a href="inter/M-ui.html" class="internal">Using Inter (in inter)</a>. Or the process can conveniently be done
-as needed by the build-manager <a href="inbuild/index.html" class="internal">inbuild</a>; in fact, using <a href="inbuild/index.html" class="internal">inbuild</a> to make an
-Inform project which needs a kit will automatically cause that kit to be built
-before anything else is done.
+<p class="commentary">It is possible to create new kits, and to choose different selections of kits
+to include. For documentation on how, see <a href="inbuild/M-agtk.html" class="internal">A Guide to Kits (in inbuild)</a>.
 </p>
 
 <div class="inweb-extract">
@@ -122,13 +83,13 @@ before anything else is done.
           <a href="BasicInformKit/index.html"><img src="docs-assets/kit.jpg" alt="BasicInformKit" style="width:100%"></a>
           <h3><a href="BasicInformKit/index.html">BasicInformKit</a></h3>
           <p>A kit of Inter code providing runtime support for all programs written
-          with Inform. Included with the apps in precompiled form.</p>
+          with Inform.</p>
         </div>
         <div class="w3-quarter">
           <a href="BasicInformExtrasKit/index.html"><img src="docs-assets/kit.jpg" alt="BasicInformExtrasKit" style="width:100%"></a>
           <h3><a href="BasicInformExtrasKit/index.html">BasicInformExtrasKit</a></h3>
           <p>A kit of Inter code providing runtime support for all programs not using
-          WorldModelKit. Included with the apps in precompiled form.</p>
+          WorldModelKit.</p>
         </div>
         <div class="w3-quarter">
           <a href="EnglishLanguageKit/index.html"><img src="docs-assets/kit.jpg" alt="EnglishLanguageKit" style="width:100%"></a>
@@ -142,24 +103,16 @@ before anything else is done.
           <a href="WorldModelKit/index.html"><img src="docs-assets/ifkit.jpg" alt="WorldModelKit" style="width:100%"></a>
           <h3><a href="WorldModelKit/index.html">WorldModelKit</a></h3>
           <p>A kit of Inter code providing runtime support for interactive fiction
-          projects with a simulated world. Included with the apps in precompiled form.</p>
+          projects with a simulated world.</p>
         </div>
         <div class="w3-quarter">
           <a href="CommandParserKit/index.html"><img src="docs-assets/ifkit.jpg" alt="CommandParserKit" style="width:100%"></a>
           <h3><a href="CommandParserKit/index.html">CommandParserKit</a></h3>
           <p>A kit of Inter code providing runtime support for interactive fiction
-          projects with a command parser interface. Included with the apps in precompiled form.</p>
+          projects with a command parser interface.</p>
         </div>
       </div>
 </div>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> Very, very nearly. There are a handful of highly obscure or obsolete usages
-which are not allowed.
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Kits are a much more structured version of what, in pre-2016 Inform, was done
-with so-called "I6 template files", which tended to have names like <span class="extract"><span class="extract-syntax">Whatever.i6t</span></span>.
-Those do not exist any more.
-</p>
 
 <!--End of weave-->
 

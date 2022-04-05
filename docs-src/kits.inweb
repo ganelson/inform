@@ -2,60 +2,22 @@ Title: Kits
 Author: Graham Nelson
 
 @ Whereas //extensions// are a familiar concept to most Inform users, "kits" are
-not. They provide what can be large bodies of pre-compiled material.
-
-Every Inform project needs a kit called //BasicInformKit//, and a kit associated
-with the natural language it will eventually read or write, such as
-//EnglishLanguageKit//. After that, one of two things can happen:
-(a) If the user explicitly declares other kits to use, those are used -- see
-the |-kit| command-line switch present in both //inbuild// and //inform7//;
-(b) Otherwise, if the |-basic| switch is used at the command line, or equivalently
-if a user of the app ticks the "Basic Inform" checkbox on Project Settings,
-then no other kits are present;
-(c) Otherwise, //WorldModelKit// and //CommandParserKit// are both used;
-(d) Whichever of (a) to (c) happened, if neither //WorldModelKit// nor
-//CommandParserKit// is used, then //BasicInformExtrasKit// is used.
-
-In effect, Inform by default assumes it is making an interactive fiction
-of some kind, and must be explicitly told if it's to make a "basic" program
-with no world model or command parser.
-
-In practice this leads to two default configurations:
+not. They provide what can be large bodies of pre-compiled material. As with
+extensions, different projects may use different sets of kits, but some are
+compulsory, and others nearly so. For an English-language work of interactive
+fiction being made with the Inform apps, the kits will be:
 = (text)
-BasicInformKit + EnglishLanguageKit + BasicInformExtrasKit
 BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit
 =
+However, if the "Basic Inform" checkbox is ticked on the Settings panel for
+the project, the kits will instead be:
+= (text)
+BasicInformKit + EnglishLanguageKit + BasicInformExtrasKit
+=
+And these are also the defaults when Inform projects are compiled from the command
+line, with the optional |-basic| switch forcing us into the second case.
 
-See //inbuild: Manual// for where the compiler expects to find kits.
-
-@ Use of a kit can implicitly include an associated extension: for example, if
-//BasicInformKit// is used (and it always is), then the extension Basic Inform
-by Graham Nelson is auto-included. Similarly, use of either //WorldModelKit//
-or //CommandParserKit// mandates inclusion of the Standard Rules.[1]
-Kits can also force each other to be present: for example, use of //CommandParserKit//
-forces //WorldModelKit// to be present, but not vice versa.
-
-[1] This in fact is the mechanism by which Inform decides which extensions
-should be implicitly included.
-
-@ The source code for a kit is a web. Inter code is highly verbose, very low-level
-and not at all legible, so these webs do not contain textual Inter code: instead,
-they are written in Inform 6 syntax.[1] This means that to create or edit kits,
-you need to be able to write Inform 6 code, but it's a very simple language to
-learn if all you're doing is writing functions.
-
-Though kits may be written in what looks like Inform 6 syntax, they are not
-compiled by the //inform6// compiler. Instead, they are "assimilated" by //inter//.
-For details, see //inter: Using Inter//. Or the process can conveniently be done
-as needed by the build-manager //inbuild//; in fact, using //inbuild// to make an
-Inform project which needs a kit will automatically cause that kit to be built
-before anything else is done.
+It is possible to create new kits, and to choose different selections of kits
+to include. For documentation on how, see //inbuild: A Guide to Kits//.
 
 = (html panels_kits.html)
-
-[1] Very, very nearly. There are a handful of highly obscure or obsolete usages
-which are not allowed.
-
-@ Kits are a much more structured version of what, in pre-2016 Inform, was done
-with so-called "I6 template files", which tended to have names like |Whatever.i6t|.
-Those do not exist any more.

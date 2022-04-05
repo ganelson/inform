@@ -669,6 +669,9 @@ void Projects::graph_dependent_kit(inform_project *proj,
 	build_vertex *KV = kd->kit->as_copy->vertex;
 	if (use) Graphs::need_this_to_use(V, KV);
 	else Graphs::need_this_to_build(V, KV);
+	inbuild_requirement *req;
+	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, kd->kit->extensions)
+		Kits::add_extension_dependency(KV, req);
 	kit_dependency *kd2;
 	LOOP_OVER_LINKED_LIST(kd2, kit_dependency, proj->kits_to_include)
 		if ((kd2->because_of_kit == kd->kit) && (kd2->because_of_language == NULL))

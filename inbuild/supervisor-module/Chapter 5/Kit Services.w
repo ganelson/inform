@@ -184,7 +184,7 @@ inform_kit *Kits::find_by_name(text_stream *name, linked_list *nest_list) {
 	inbuild_requirement *req =
 		Requirements::any_version_of(Works::new(kit_genre, name, I""));
 	inbuild_search_result *R = Nests::search_for_best(req, nest_list);
-	if (R == NULL) Errors::fatal_with_text("cannot find kit", name);
+	if (R == NULL) Errors::fatal_with_text("cannot find kit '%S'", name);
 	inbuild_copy *C = R->copy;
 	return KitManager::from_copy(C);
 }
@@ -387,7 +387,7 @@ void Kits::construct_graph(inform_kit *K) {
 
 	inbuild_requirement *req;
 	LOOP_OVER_LINKED_LIST(req, inbuild_requirement, K->extensions)
-		@<Add use edges from the kit vertex to each extension it asks to include@>;
+		Kits::add_extension_dependency(KV, req);
 }
 
 @<Add build edges to the binaries for each architecture@> =
@@ -422,16 +422,37 @@ extension we have already read in, we can place a use edge to its existing
 build vertex. If not, the best we can do is a use edge to a requirement
 vertex, i.e., to a vertex meaning "we would like Locksmith but can't find it".
 
-@<Add use edges from the kit vertex to each extension it asks to include@> =
-	int found = FALSE;
+=
+void Kits::add_extension_dependency(build_vertex *KV, inbuild_requirement *req) {
+	build_vertex *RV = NULL;
 	inform_extension *E;
 	LOOP_OVER(E, inform_extension)
 		if (Requirements::meets(E->as_copy->edition, req)) {
-			Graphs::need_this_to_use(KV, E->as_copy->vertex);
-			found = TRUE;
+			RV = E->as_copy->vertex;
+			build_vertex *V;
+			int N = 0;
+			LOOP_OVER_LINKED_LIST(V, build_vertex, KV->use_edges) {
+				if ((V->type == REQUIREMENT_VERTEX) &&
+					(Requirements::meets(E->as_copy->edition, V->as_requirement))) {
+					LinkedLists::delete(N, KV->use_edges);
+					break;
+				}
+				N++;
+			}
 			break;
 		}
-	if (found == FALSE) {
-		build_vertex *RV = Graphs::req_vertex(req);
-		Graphs::need_this_to_use(KV, RV);
+	if (RV == NULL) {
+		build_vertex *V;
+		int N = 0;
+		LOOP_OVER_LINKED_LIST(V, build_vertex, KV->use_edges) {
+			if ((V->type == REQUIREMENT_VERTEX) &&
+				(Requirements::trumps(req, V->as_requirement))) {
+				LinkedLists::delete(N, KV->use_edges);
+				break;
+			}
+			N++;
+		}
+		RV = Graphs::req_vertex(req);
 	}
+	Graphs::need_this_to_use(KV, RV);
+}

@@ -1,18 +1,46 @@
 'for all': for all:
-    Z-Machine version 5
-    Z-Machine version 5 with debugging
-    Z-Machine version 8
-    Z-Machine version 8 with debugging
-    Glulx version 3.1.2
-    Glulx version 3.1.2 with debugging
+    Inform6/16/v5
+    Inform6/16d/v5
+    Inform6/16/v8
+    Inform6/16d/v8
+    Inform6/32/v3.1.2
+    Inform6/32d/v3.1.2
+    Binary/16/v1
+    Binary/16d/v1
+    Binary/32/v1
+    Binary/32d/v1
+    Text/16/v1
+    Text/16d/v1
+    Text/32/v1
+    Text/32d/v1
+    C/32/v1
+    C/32d/v1
+    Inventory/16/v1
+    Inventory/16d/v1
+    Inventory/32/v1
+    Inventory/32d/v1
 
 'all': for all:
-    Z-Machine version 5
-    Z-Machine version 5 with debugging
-    Z-Machine version 8
-    Z-Machine version 8 with debugging
-    Glulx version 3.1.2
-    Glulx version 3.1.2 with debugging
+    Inform6/16/v5
+    Inform6/16d/v5
+    Inform6/16/v8
+    Inform6/16d/v8
+    Inform6/32/v3.1.2
+    Inform6/32d/v3.1.2
+    Binary/16/v1
+    Binary/16d/v1
+    Binary/32/v1
+    Binary/32d/v1
+    Text/16/v1
+    Text/16d/v1
+    Text/32/v1
+    Text/32d/v1
+    C/32/v1
+    C/32d/v1
+    Inventory/16/v1
+    Inventory/16d/v1
+    Inventory/32/v1
+    Inventory/32d/v1
 
 'not for all': not a valid compatibility specification
 
@@ -26,59 +54,97 @@
 
 'not none': not a valid compatibility specification
 
-'for 16-bit with debugging': for Z-Machine version 5 with debugging or Z-Machine version 8 with debugging:
-    Z-Machine version 5 with debugging
-    Z-Machine version 8 with debugging
+'for 16-bit with debugging': for Inform6/16d/v5, Inform6/16d/v8, Binary/16d/v1, Text/16d/v1 or Inventory/16d/v1:
+    Inform6/16d/v5
+    Inform6/16d/v8
+    Binary/16d/v1
+    Text/16d/v1
+    Inventory/16d/v1
 
-'not for 32-bit': not for Glulx version 3.1.2 or Glulx version 3.1.2 with debugging:
-    Z-Machine version 5
-    Z-Machine version 5 with debugging
-    Z-Machine version 8
-    Z-Machine version 8 with debugging
+'not for 32-bit': not for Inform6/32/v3.1.2, Inform6/32d/v3.1.2, Binary/32/v1, Binary/32d/v1, Text/32/v1, Text/32d/v1, C/32/v1, C/32d/v1, Inventory/32/v1 or Inventory/32d/v1:
+    Inform6/16/v5
+    Inform6/16d/v5
+    Inform6/16/v8
+    Inform6/16d/v8
+    Binary/16/v1
+    Binary/16d/v1
+    Text/16/v1
+    Text/16d/v1
+    Inventory/16/v1
+    Inventory/16d/v1
 
-'for 16-bit with debugging or 32-bit with debugging': for Z-Machine version 5 with debugging, Z-Machine version 8 with debugging or Glulx version 3.1.2 with debugging:
-    Z-Machine version 5 with debugging
-    Z-Machine version 8 with debugging
-    Glulx version 3.1.2 with debugging
+'for 16-bit with debugging or 32-bit with debugging': for Inform6/16d/v5, Inform6/16d/v8, Binary/16d/v1, Text/16d/v1, Inventory/16d/v1, Inform6/32d/v3.1.2, Binary/32d/v1, Text/32d/v1, C/32d/v1 or Inventory/32d/v1:
+    Inform6/16d/v5
+    Inform6/16d/v8
+    Inform6/32d/v3.1.2
+    Binary/16d/v1
+    Binary/32d/v1
+    Text/16d/v1
+    Text/32d/v1
+    C/32d/v1
+    Inventory/16d/v1
+    Inventory/32d/v1
 
-'not for 32-bit or 16-bit': not for Glulx version 3.1.2, Glulx version 3.1.2 with debugging, Z-Machine version 5, Z-Machine version 5 with debugging, Z-Machine version 8 or Z-Machine version 8 with debugging:
+'not for 32-bit or 16-bit': not for Inform6/32/v3.1.2, Inform6/32d/v3.1.2, Binary/32/v1, Binary/32d/v1, Text/32/v1, Text/32d/v1, C/32/v1, C/32d/v1, Inventory/32/v1, Inventory/32d/v1, Inform6/16/v5, Inform6/16d/v5, Inform6/16/v8, Inform6/16d/v8, Binary/16/v1, Binary/16d/v1, Text/16/v1, Text/16d/v1, Inventory/16/v1 or Inventory/16d/v1:
 
-'for 16-bit with debugging, 32-bit with debugging or 32-bit': for Z-Machine version 5 with debugging, Z-Machine version 8 with debugging, Glulx version 3.1.2 with debugging or Glulx version 3.1.2:
-    Z-Machine version 5 with debugging
-    Z-Machine version 8 with debugging
-    Glulx version 3.1.2
-    Glulx version 3.1.2 with debugging
+'for 16-bit with debugging, 32-bit with debugging or 32-bit': for Inform6/16d/v5, Inform6/16d/v8, Binary/16d/v1, Text/16d/v1, Inventory/16d/v1, Inform6/32d/v3.1.2, Binary/32d/v1, Text/32d/v1, C/32d/v1, Inventory/32d/v1, Inform6/32/v3.1.2, Binary/32/v1, Text/32/v1, C/32/v1 or Inventory/32/v1:
+    Inform6/16d/v5
+    Inform6/16d/v8
+    Inform6/32/v3.1.2
+    Inform6/32d/v3.1.2
+    Binary/16d/v1
+    Binary/32/v1
+    Binary/32d/v1
+    Text/16d/v1
+    Text/32/v1
+    Text/32d/v1
+    C/32/v1
+    C/32d/v1
+    Inventory/16d/v1
+    Inventory/32/v1
+    Inventory/32d/v1
 
-'not for 16-bit with debugging, 32-bit with debugging or 32-bit': not for Z-Machine version 5 with debugging, Z-Machine version 8 with debugging, Glulx version 3.1.2 with debugging or Glulx version 3.1.2:
-    Z-Machine version 5
-    Z-Machine version 8
+'not for 16-bit with debugging, 32-bit with debugging or 32-bit': not for Inform6/16d/v5, Inform6/16d/v8, Binary/16d/v1, Text/16d/v1, Inventory/16d/v1, Inform6/32d/v3.1.2, Binary/32d/v1, Text/32d/v1, C/32d/v1, Inventory/32d/v1, Inform6/32/v3.1.2, Binary/32/v1, Text/32/v1, C/32/v1 or Inventory/32/v1:
+    Inform6/16/v5
+    Inform6/16/v8
+    Binary/16/v1
+    Text/16/v1
+    Inventory/16/v1
 
-'for glulx': for Glulx version 3.1.2 or Glulx version 3.1.2 with debugging:
-    Glulx version 3.1.2
-    Glulx version 3.1.2 with debugging
+'for glulx': for Inform6/32/v3.1.2, Inform6/32d/v3.1.2, Binary/32/v1, Binary/32d/v1, Text/32/v1, Text/32d/v1, C/32/v1, C/32d/v1, Inventory/32/v1 or Inventory/32d/v1:
+    Inform6/32/v3.1.2
+    Inform6/32d/v3.1.2
+    Binary/32/v1
+    Binary/32d/v1
+    Text/32/v1
+    Text/32d/v1
+    C/32/v1
+    C/32d/v1
+    Inventory/32/v1
+    Inventory/32d/v1
 
-'for glulx or z-machine version 8': for Z-Machine version 8 or Z-Machine version 8 with debugging:
-    Z-Machine version 8
-    Z-Machine version 8 with debugging
+'for glulx or z-machine version 8': not a valid compatibility specification
 
-'for glulx without debugging': for Glulx version 3.1.2:
-    Glulx version 3.1.2
+'for glulx without debugging': for Inform6/32/v3.1.2, Binary/32/v1, Text/32/v1, C/32/v1 or Inventory/32/v1:
+    Inform6/32/v3.1.2
+    Binary/32/v1
+    Text/32/v1
+    C/32/v1
+    Inventory/32/v1
 
-'for z-machine version 8': for Z-Machine version 8 or Z-Machine version 8 with debugging:
-    Z-Machine version 8
-    Z-Machine version 8 with debugging
+'for z-machine version 8': not a valid compatibility specification
 
-'for z-machine version 5 with debugging': for Z-Machine version 5 with debugging:
-    Z-Machine version 5 with debugging
+'for z-machine version 5 with debugging': not a valid compatibility specification
 
-'for z-machine version 8, or Glulx without debugging': for Z-Machine version 8, Z-Machine version 8 with debugging or Glulx version 3.1.2:
-    Z-Machine version 8
-    Z-Machine version 8 with debugging
-    Glulx version 3.1.2
+'for z-machine version 8, or Glulx without debugging': not a valid compatibility specification
 
-'for z-machine version 5 or 8': for Z-Machine version 5, Z-Machine version 5 with debugging, Z-Machine version 8 or Z-Machine version 8 with debugging:
-    Z-Machine version 5
-    Z-Machine version 5 with debugging
-    Z-Machine version 8
-    Z-Machine version 8 with debugging
+'for z-machine version 5 or 8': not a valid compatibility specification
+
+'for C': for C/32/v1 or C/32d/v1:
+    C/32/v1
+    C/32d/v1
+
+'for Inform6 version 8': for Inform6/16/v8 or Inform6/16d/v8:
+    Inform6/16/v8
+    Inform6/16d/v8
 

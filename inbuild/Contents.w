@@ -15,6 +15,7 @@ Import: supervisor
 
 Manual
 	Using Inbuild
+	A Guide to Kits
 	Reference Card
 
 Chapter 1: Outside of inform7

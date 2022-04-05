@@ -81,6 +81,10 @@ int PipelineModule::set_architecture(text_stream *name) {
 	return FALSE;
 }
 
+void PipelineModule::set_architecture_to(inter_architecture *A) {
+	architecture_set_at_command_line = A;
+}
+
 inter_architecture *PipelineModule::get_architecture(void) {
 	return architecture_set_at_command_line;
 }

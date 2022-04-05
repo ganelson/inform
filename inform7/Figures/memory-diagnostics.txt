@@ -1,6 +1,6 @@
 Total memory consumption was 126308K = 123 MB
 
- ---- was used for 2006043 objects, in 360816 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2008043 objects, in 360818 frames in 0 x 800K = 0K = 0 MB:
 
     32.3%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     18.9%  text_stream_array                        4342 x 100 = 434200 objects, 24454144 bytes
@@ -63,6 +63,7 @@ Total memory consumption was 126308K = 123 MB
      ----  label_namespace                          1468 objects, 70464 bytes
      ----  rulebook                                 407 objects, 68376 bytes
      ----  spatial_data                             670 objects, 64320 bytes
+     ----  linked_list_item_array                   4 x 1000 = 4000 objects, 64128 bytes
      ----  kind_macro_definition                    9 objects, 62280 bytes
      ----  booking                                  860 objects, 61920 bytes
      ----  scenes_rcd_data                          1882 objects, 60224 bytes
@@ -86,7 +87,6 @@ Total memory consumption was 126308K = 123 MB
      ----  production_list                          617 objects, 34552 bytes
      ----  counting_data                            670 objects, 32160 bytes
      ----  regions_data                             670 objects, 32160 bytes
-     ----  linked_list_item_array                   2 x 1000 = 2000 objects, 32064 bytes
      ----  HTML_tag_array                           1 x 1000 objects, 32032 bytes
      ----  property_permission                      96 objects, 31488 bytes
      ----  stack_frame_box                          304 objects, 29184 bytes
@@ -255,5 +255,5 @@ Total memory consumption was 126308K = 123 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      0.2%  emitter array storage                    279776 bytes in 1995 claims
 
--140.-5% was overhead - -181824128 bytes = -177562K = -173 MB
+-140.-6% was overhead - -181856192 bytes = -177593K = -173 MB
 

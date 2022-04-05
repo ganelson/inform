@@ -78,9 +78,12 @@ int InterSkill::build_kit_internally(build_skill *skill, build_step *S,
 	inter_pipeline *SS =
 		ParsingPipelines::from_file(pipeline_as_file, pipeline_vars, search_list);
 	if (SS) {
+		inter_architecture *saved_A = PipelineModule::get_architecture();
+		PipelineModule::set_architecture_to(A);
 		linked_list *requirements_list = NEW_LINKED_LIST(attachment_instruction);
 		RunningPipelines::run(NULL, SS, NULL, S->associated_copy->location_if_path,
 			requirements_list, S->for_vm, FALSE);
+		PipelineModule::set_architecture_to(saved_A);
 		return TRUE;
 	} else {
 		Errors::nowhere("build-kit pipeline could not be parsed");

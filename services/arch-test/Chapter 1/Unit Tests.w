@@ -25,6 +25,8 @@ void Unit::test_compatibility(OUTPUT_STREAM) {
 	Unit::test_one(OUT, I"for z-machine version 5 with debugging");
 	Unit::test_one(OUT, I"for z-machine version 8, or Glulx without debugging");
 	Unit::test_one(OUT, I"for z-machine version 5 or 8");
+	Unit::test_one(OUT, I"for C");
+	Unit::test_one(OUT, I"for Inform6 version 8");
 }
 
 void Unit::test_one(OUTPUT_STREAM, text_stream *test) {
