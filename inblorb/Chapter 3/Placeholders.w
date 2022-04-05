@@ -47,7 +47,9 @@ void Placeholders::initialise(void) {
 	Placeholders::set_to(I"OTHERCREDITS", I"", 0);
 	Placeholders::set_to(I"BLURB", I"", 0);
 	Placeholders::set_to(I"TEMPLATE", I"Standard", 0);
-	Placeholders::set_to(I"GENERATOR", I"inblorb [[Build Number]]", 0);
+	text_stream *V = Str::new();
+	WRITE_TO(V, "inblorb [[Version Number]]");
+	Placeholders::set_to(I"GENERATOR", V, 0);
 	Placeholders::set_to(I"BASE64_TOP", I"", 0);
 	Placeholders::set_to(I"BASE64_TAIL", I"", 0);
 	Placeholders::set_to(I"JAVASCRIPTPRELUDE", Str::literal(JAVASCRIPT_PRELUDE), 0);

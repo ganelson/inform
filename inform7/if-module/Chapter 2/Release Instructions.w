@@ -314,7 +314,7 @@ void ReleaseInstructions::handle_release_declaration_inner(parse_node *p) {
 			wording TW = GET_RW(<release-sentence-object>, 1);
 			Word::dequote(Wordings::first_wn(TW));
 			my_instructions->interpreter_template_leafname = Str::new();
-			WRITE_TO(my_instructions->interpreter_template_leafname, "%W", Wordings::first_wn(TW));
+			WRITE_TO(my_instructions->interpreter_template_leafname, "%W", TW);
 			my_instructions->release_interpreter = TRUE; my_instructions->release_website = TRUE;
 			break;
 		}

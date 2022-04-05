@@ -290,7 +290,7 @@ void Requests::read_requested_ifile(text_stream *manifestline, text_file_positio
 	if (cp_written == FALSE) { cp_written = TRUE; current_placeholder = Str::new(); }
 	match_results mr = Regexp::create_mr();
 	if (Regexp::match(&mr, manifestline, L" *(%c*?) *")) Str::copy(manifestline, mr.exp[0]);
-	if (Regexp::match(&mr, manifestline, L"%[(%c+)%]"))
+	if (Regexp::match(&mr, manifestline, L"%[(%c*)%]"))
 		Str::copy(current_placeholder, mr.exp[0]);
 	else if (Str::len(current_placeholder) == 0)
 		@<We're outside placeholder mode, so it's a comment or a manifested filename@>
@@ -304,7 +304,8 @@ character |!| are skipped.
 
 @<We're outside placeholder mode, so it's a comment or a manifested filename@> =
 	if ((Str::len(manifestline) == 0) || (Str::get_first_char(manifestline) == '!')) return;
-	Requests::release_file_into_website(manifestline, Placeholders::read(I"INTERPRETER"), I"interpreter");
+	Requests::release_file_into_website(manifestline,
+		Placeholders::read(I"INTERPRETER"), I"interpreter");
 
 @ Line breaks are included between lines, though not at the end of the final
 line, so that a one-line definition like the example above contains no line
@@ -312,7 +313,7 @@ break. White space is stripped out at the left and right hand edges of
 each line.
 
 @<We're inside placeholder mode, so it's content to be spooled into the named placeholder@> =
-	if (Str::eq_wide_string(current_placeholder, L"INTERPRETERVM") == 0)
+	if (Str::eq(current_placeholder, I"INTERPRETERVM"))
 		@<Check the value being given against the actual VM we're blorbing up@>;
 	if (Placeholders::read(current_placeholder))
 		Placeholders::append_to(current_placeholder, I"\n");

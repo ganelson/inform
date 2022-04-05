@@ -211,8 +211,10 @@ I7 uses Inblorb, but it's traditional for blorbing programs to do this.
 
 =
 void Main::print_banner(void) {
-	text_stream *ver = I"inblorb [[Build Number]]";
-	if (fix_time_mode) ver = I"inblorb 99.99";
+	text_stream *ver = Str::new();
+	WRITE_TO(ver, "inblorb ");
+	if (fix_time_mode) WRITE_TO(ver, "99.99");
+	else WRITE_TO(ver, "[[Version Number]]");
 	PRINT("! %S [executing on %S at %S]\n",
 		ver, Placeholders::read(I"DATESTAMP"), Placeholders::read(I"TIMESTAMP"));
 	PRINT("! The blorb spell (safely protect a small object ");

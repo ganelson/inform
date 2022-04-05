@@ -9,7 +9,7 @@
 ! of the play page:
 
 [INTERPRETERVERSION]
-Parchment for Inform 7 (2015-09-25)
+Parchment for Inform 7 (2022.01)
 []
 
 [INTERPRETERURL]
@@ -24,7 +24,7 @@ https://github.com/curiousdannii/parchment
 ! are legal; note lower case.
 
 [INTERPRETERVM]
-z
+gz
 []
 
 ! [INTERPRETERHEAD] provides code to go into the <head> ... </head> of the
@@ -44,30 +44,33 @@ z
 ! to be) "story.zblorb.js".
 
 [INTERPRETERHEAD]
-	<script src="interpreter/jquery.min.js"></script>
-	<script src="interpreter/parchment.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="interpreter/parchment.min.css">
-	<script>
-		parchment_options = {
-			default_story: [ "interpreter/[ENCODEDSTORYFILE]" ],
-			lib_path: 'interpreter/',
-			lock_options: 1,
-			lock_story: 1,
-			page_title: 0
-		};
-	</script>
+    <link rel="stylesheet" href="interpreter/parchment.css" type="text/css">
+    <script src="interpreter/jquery.min.js"></script>
+    <script src="interpreter/main.js"></script>
+    <script src="interpreter/ie.js" nomodule></script>
+    <script src="interpreter/resourcemap.js" type="text/javascript"></script>
+    <script>
+        parchment_options = {
+            default_story: [ "interpreter/[ENCODEDSTORYFILE]" ],
+            lib_path: 'interpreter/',
+        };
+    </script>
 []
 
 ! [INTERPRETERBODY] provides the part of the page where the window
 ! or gadget actually appears.
 
 [INTERPRETERBODY]
-<div id="about">
-	<h1>Parchment</h1>
-	<p>is an interpreter for Interactive Fiction. <a href="http://parchment.googlecode.com">Find out more.</a></p>
-	<noscript><p>Parchment requires Javascript. Please enable it in your browser.</p></noscript>
-</div>
-<div id="parchment"></div>
+        <div id="windowport">
+            <noscript>
+                <p>You'll need to turn on Javascript in your web browser to play this game.</p>
+            </noscript>
+        </div>
+        <div id="loadingpane">
+            <img src="interpreter/waiting.gif" alt="LOADING"><br>
+            <em>&nbsp;&nbsp;&nbsp;Loading...</em>
+        </div>
+        <div id="errorpane" style="display:none;"><div id="errorcontent">...</div></div>
 []
 
 ! The following footnote is added to the small print about how to play IF
@@ -98,7 +101,11 @@ processBase64Zcode('
 ! Non-comment lines are the names of files which are copied across when the
 ! release is made. Anything not listed here won't be copied.
 
+ie.js
 jquery.min.js
-parchment.min.css
-parchment.min.js
-zvm.min.js
+main.js
+parchment.css
+resourcemap.js
+quixe.js
+waiting.gif
+zvm.js

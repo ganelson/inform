@@ -13,15 +13,6 @@ Inform is often assigned material for courses on digital narrative).
 It has several times ranked in the top 100 most influential programming
 languages according to the TIOBE index.
 
-The architecture is as follows. The "front end" of Inform7 turns natural
-language source text into an intermediate representation called "Inter".
-The "back end", which can also be compiled as an independent tool also
-called Inter, performs code generation to turn inter into Inform 6 code.
-Inform 6, the final form of the original Inform project (1993-2001), then
-compiles this to a "story file" for one of two virtual machines, "Glulx"
-or "the Z-machine". On a release compilation, a further tool called Inblorb
-packages this up as a stand-alone website or download.
-
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
 enabled yet. As a result links marked &#9733; below lead only to raw HTML
@@ -160,8 +151,7 @@ Inform UI applications, and to Inform websites:
 * resources/Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app. Inform 7
 
 Finally, the "retrospective" directory holds ANSI C source and resources needed
-to build (some) previous versions of Inform 7. At present, this is only sketchily
-put together.
+to build (some) previous versions of Inform 7.
 
 ### Resources copied here from elsewhere
 
@@ -177,7 +167,7 @@ be accepted. (Note that these are not git submodules.)
 * inblorb/Tests/Assistants/blorblib - Code for examining blorb files, including blorbscan, used here for validating inblorb's output in tests. - version 1.0.2 - by [Andrew Plotkin](https://github.com/erkyrath), but not currently elsewhere on Github
 
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
-	* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2015-09-25)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
+	* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.01)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
 	* inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.0)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
 	* inform7/Internal/Templates/Vorple - Multimedia in Javascript - __Vorple__ - from [https://github.com/vorple/inform7], maintained by [Juhana Leinonen](https://github.com/vorple)
 
@@ -193,7 +183,7 @@ be accepted. (Note that these are not git submodules.)
 
 ### Other files and folders in this repository
 
-* docs - Woven forms of the webs, for serving by GitHub Pages (**not yet added**)
+* docs - Woven forms of the webs, for serving by GitHub Pages
 * scripts/gitignorescript.txt - Inweb uses this to generate the .gitignore file at the root of the repository
 * scripts/makescript.txt - Inweb uses this to generate a makefile at the root of the repository
 * scripts/READMEscript.txt - Inpolicy uses this to generate the README.md file for the repository
