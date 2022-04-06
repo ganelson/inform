@@ -1,0 +1,4 @@
+Place is a room.
+Understand "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+	"N", "O","P","Q","R","S","T","U","V","W","X","Y","Z","AA","AB","AC","AD"
+	and "AE" as Place.

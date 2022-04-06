@@ -41,7 +41,9 @@ function togglePopup(material_id) {
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 <li><a href="../inrtpsn.html">inrtps</a></li>
-<li><a href="../extensions.html">extensions and kits</a></li>
+</ul><h2>Resources</h2><ul>
+<li><a href="../extensions.html">extensions</a></li>
+<li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -101,7 +103,8 @@ faster for the command parser to deal with, and saves a few bytes at runtime.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">RTCommandGrammarLines::list_take_out_one_word_grammar</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">RTCommandGrammarLines::list_take_out_one_word_grammar</span></span>:<br/>Name Properties - <a href="7-np.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">RTCommandGrammarLines::list_take_out_one_word_grammar</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">RTCommandGrammarLines::list_take_out_one_word_grammar</span></span>:<br/>Name Properties - <a href="7-np.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">command_grammar</span><span class="plain-syntax"> *</span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">entries_made</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">cg_is</span><span class="plain-syntax"> != </span><span class="identifier-syntax">CG_IS_SUBJECT</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"One-word optimisation applies only to CG_IS_SUBJECT"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_UNSORTED_CG_LINES</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgl</span><span class="plain-syntax">, </span><span class="identifier-syntax">cg</span><span class="plain-syntax">) {</span>
@@ -109,11 +112,12 @@ faster for the command parser to deal with, and saves a few bytes at runtime.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wn</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">, </span><span class="string-syntax">"%w"</span><span class="plain-syntax">, </span><span class="identifier-syntax">Lexer::word_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">wn</span><span class="plain-syntax">));</span>
-<span class="plain-syntax">            </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::dword_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::dword_entry</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">); </span><span class="identifier-syntax">entries_made</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">content</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">compilation_data</span><span class="plain-syntax">.</span><span class="element-syntax">suppress_compilation</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">entries_made</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>These inames are used only by two special forms of CG line: see below. For the

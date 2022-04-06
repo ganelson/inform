@@ -42,7 +42,8 @@ content from |parse_name| to |name|, an optimisation which is just a little
 faster for the command parser to deal with, and saves a few bytes at runtime.
 
 =
-void RTCommandGrammarLines::list_take_out_one_word_grammar(command_grammar *cg) {
+int RTCommandGrammarLines::list_take_out_one_word_grammar(command_grammar *cg) {
+	int entries_made = 0;
 	if (cg->cg_is != CG_IS_SUBJECT)
 		internal_error("One-word optimisation applies only to CG_IS_SUBJECT");
 	LOOP_THROUGH_UNSORTED_CG_LINES(cgl, cg) {
@@ -50,11 +51,12 @@ void RTCommandGrammarLines::list_take_out_one_word_grammar(command_grammar *cg) 
 		if (wn >= 0) {
 			TEMPORARY_TEXT(content)
 			WRITE_TO(content, "%w", Lexer::word_text(wn));
-			EmitArrays::dword_entry(content);
+			EmitArrays::dword_entry(content); entries_made++;
 			DISCARD_TEXT(content)
 			cgl->compilation_data.suppress_compilation = TRUE;
 		}
 	}
+	return entries_made;
 }
 
 @ These inames are used only by two special forms of CG line: see below. For the

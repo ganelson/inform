@@ -71,6 +71,7 @@ parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 	int from_kind) {
 	inter_name *name_array = Name::get_name_array_iname(I->as_subject);
 	packaging_state save = EmitArrays::begin_inline(name_array, K_value);
+	int entry_count = 0;
 
 	LOOP_THROUGH_WORDING(j, W) {
 		vocabulary_entry *ve = Lexer::word(j);
@@ -80,7 +81,7 @@ parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 		wchar_t *p = Vocabulary::get_exemplar(ve, FALSE);
 		TEMPORARY_TEXT(content)
 		WRITE_TO(content, "%w", p);
-		EmitArrays::dword_entry(content);
+		EmitArrays::dword_entry(content); entry_count++;
 		DISCARD_TEXT(content)
 	}
 	if (from_kind)
@@ -92,23 +93,34 @@ parse_node *Name::name_property_array(instance *I, wording W, wording PW,
 			if (additional) {
 				TEMPORARY_TEXT(content)
 				WRITE_TO(content, "%w", Lexer::word_text(j));
-				EmitArrays::plural_dword_entry(content);
+				EmitArrays::plural_dword_entry(content); entry_count++;
 				DISCARD_TEXT(content)
 			}
 		}
 
 	if (PARSING_DATA(I)->understand_as_this_subject)
-		RTCommandGrammarLines::list_take_out_one_word_grammar(
-			PARSING_DATA(I)->understand_as_this_subject);
+		entry_count +=
+			RTCommandGrammarLines::list_take_out_one_word_grammar(
+				PARSING_DATA(I)->understand_as_this_subject);
 
 	inference_subject *infs;
 	for (infs = KindSubjects::from_kind(Instances::to_kind(I));
 		infs; infs = InferenceSubjects::narrowest_broader_subject(infs)) {
 		if (PARSING_DATA_FOR_SUBJ(infs)) {
 			if (PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject)
-				RTCommandGrammarLines::list_take_out_one_word_grammar(
-					PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject);
+				entry_count +=
+					RTCommandGrammarLines::list_take_out_one_word_grammar(
+						PARSING_DATA_FOR_SUBJ(infs)->understand_as_this_subject);
 		}
+	}
+
+	if ((entry_count >= 32) && (TargetVMs::is_16_bit(Task::vm()))) {
+		current_sentence = Instances::get_creating_sentence(I);
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TooManySynonymWords),
+			"either this has a very long name, or too many uses of "
+			"'understand ... as ...' have been made for the same thing",
+			"exceeding the limit of 32. (This limit can be removed by "
+			"switching the project to Glulx in the Settings.)");
 	}
 
 	EmitArrays::end(save);
