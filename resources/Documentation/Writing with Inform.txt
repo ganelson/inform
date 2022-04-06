@@ -12676,7 +12676,7 @@ This converts the player's command to text, which is then manipulated by searchi
 
 <b>2. The default behaviour.</b> To print text such as "(first taking the Moroccan overcoat)" and then silently try taking the object in question (the overcoat). If the take succeeds, the silence means that nothing else is printed: if it fails, it will say why.
 
-No matter what rules are written for this activity, it is impossible to use it to allow the action to go ahead even without the item. The activity allows us to change how, or if, an implicit take will happen, but not to change the consequences of failure. (To do that, we would need to say that "The ignore the carrying requirements rule does nothing", but this kind of unstitching of the action machinery needs to be done with caution.)
+No matter what rules are written for this activity, it is impossible to use it to allow the action to go ahead even without the item. The activity allows us to change how, or if, an implicit take will happen, but not to change the consequences of failure. (To do that, we would need to say that "The carrying requirements rule does nothing", but this kind of unstitching of the action machinery needs to be done with caution.)
 
 <b>3. Examples.</b> (a) Forbidding implicit takes for certain dangerous items. (This seems especially fair if taking such items might cause death: the player will not wish to be killed on the strength only of our guess as to what he might be intending to do.)
 
