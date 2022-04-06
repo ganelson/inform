@@ -23,12 +23,12 @@ Notice that the following two scenarios do not have the same effect:
 
 	The player carries a can of mace and a roll of duct tape.
 	
-	Instead of doing something other than examining something in the presence of the Capricorn Killer:
+	Instead of doing something other than examining with something in the presence of the Capricorn Killer:
 		say "You dare not attempt it!"
 
 	Test me with "x me / x killer / touch killer / smell mace".
 	
-But notice that because we specified "examining something", actions that take no object (like sing) are still not affected. 
+But notice that because we specified "with something", actions that take no object (like sing) are still not affected. 
 
 The most strict statement would be
 	
