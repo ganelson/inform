@@ -14530,9 +14530,9 @@ A special word about the constant list "{ }". This means the list with no entrie
 
 then Inform will produce a problem message, because it cannot tell what sort of list M will be: a list of numbers, or texts, or times, or...? On the other hand, writing
 
-	let M be { };
+	now M is { };
 
-is fine provided that M already exists, and then does the obvious thing - empties M. Similarly, a table column in which every entry is "{ }" produces a problem message unless the heading for that column spells out the kind of value stored within it: for instance, "ingredients (list of texts)".
+is fine if M already exists, and then does the obvious thing - empties M. Similarly, a table column in which every entry is "{ }" produces a problem message unless the heading for that column spells out the kind of value stored within it: for instance, "ingredients (list of texts)".
 
 All of this is a notation for constant lists only, not some sort of gluing-things-together operation. So this, for instance:
 
