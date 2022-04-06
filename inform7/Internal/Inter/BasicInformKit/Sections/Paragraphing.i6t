@@ -247,9 +247,15 @@ whatever is the current language of play.
 =
 [ EnglishNumber n; LanguageNumber(n); ];
 
-
 [ LanguageNumber n f;
     if (n == 0)    { print "zero"; rfalse; }
+	if (n == MIN_NEGATIVE_NUMBER) {
+#Iftrue (WORDSIZE == 4);
+		print "minus two billion"; n = 147483648; f = 1;
+#Ifnot;
+		print "minus thirty-two thousand"; n = 768; f = 1;
+#Endif;
+	}
     if (n < 0)     { print "minus "; n = -n; }
 #Iftrue (WORDSIZE == 4);
     if (n >= 1000000000) {

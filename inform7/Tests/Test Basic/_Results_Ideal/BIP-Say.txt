@@ -3,3 +3,6 @@
   17 doors.
   four ladders.
   one way out.
+  The minimum integer is almost -32767, which is minus thirty-two thousand, seven hundred and sixty-seven.
+  The minimum integer actually is -32768, which is minus thirty-two thousand, seven hundred and sixty-eight.
+  But the maximum integer is 32767, which is thirty-two thousand, seven hundred and sixty-seven.

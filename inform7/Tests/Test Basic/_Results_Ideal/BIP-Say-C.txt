@@ -3,3 +3,6 @@ fish and fowl!
 17 doors.
 four ladders.
 one way out.
+The minimum integer is almost -2147483647, which is minus two billion, one hundred and forty-seven million, four hundred and eighty-three thousand, six hundred and forty-seven.
+The minimum integer actually is -2147483648, which is minus two billion, one hundred and forty-seven million, four hundred and eighty-three thousand, six hundred and forty-eight.
+But the maximum integer is 2147483647, which is two billion, one hundred and forty-seven million, four hundred and eighty-three thousand, six hundred and forty-seven.
