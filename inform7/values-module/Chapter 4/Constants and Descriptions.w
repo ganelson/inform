@@ -518,13 +518,15 @@ except that the noun is optional. The only difference is right at the bottom.
 				"is carried' isn't allowed - if it's the X-Ray Zapper, "
 				"then call it that.");
 		}
-	} else {
+	} else if (Specifications::is_description(p)) {
 		if (Frames::current_stack_frame()) {
 			wording C = Node::get_text(c);
 			Descriptions::attach_calling(p, C);
 			kind *K = Specifications::to_kind(p);
 			LocalVariables::ensure_calling(C, K);
 		}
+	} else {
+		==> { fail };
 	}
 	==> { -, p };
 

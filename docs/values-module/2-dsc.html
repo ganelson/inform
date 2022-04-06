@@ -55,7 +55,9 @@ function togglePopup(material_id) {
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 <li><a href="../inrtpsn.html">inrtps</a></li>
-<li><a href="../extensions.html">extensions and kits</a></li>
+</ul><h2>Resources</h2><ul>
+<li><a href="../extensions.html">extensions</a></li>
+<li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -86,7 +88,10 @@ proposition \(\phi(x)\) with one free variable \(x\) expected to range over \(K\
 
 <span class="identifier-syntax">pcalc_prop</span><span class="plain-syntax"> *</span><span class="function-syntax">Descriptions::to_proposition</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Descriptions::to_proposition</span></span>:<br/><a href="2-dsc.html#SP3">&#167;3</a>, <a href="2-dsc.html#SP4">&#167;4</a>, <a href="2-dsc.html#SP5">&#167;5</a>, <a href="2-dsc.html#SP6">&#167;6</a>, <a href="2-dsc.html#SP7">&#167;7</a>, <a href="2-dsc.html#SP8">&#167;8</a>, <a href="2-dsc.html#SP9">&#167;9</a>, <a href="2-dsc.html#SP10">&#167;10</a>, <a href="2-dsc.html#SP12_1">&#167;12.1</a><br/>Specifications - <a href="2-spc.html#SP4">&#167;4</a><br/>Dash - <a href="5-dsh.html#SP24">&#167;24</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-spc.html#SP3" class="function-link"><span class="function-syntax">Specifications::is_description</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">)) </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> = </span><span class="identifier-syntax">spec</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"tried to extract proposition from non-description"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Spec: $P\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"tried to extract proposition from non-description"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-rvl.html#SP21" class="function-link"><span class="function-syntax">Rvalues::is_CONSTANT_construction</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">, </span><span class="identifier-syntax">CON_description</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-spc.html#SP4" class="function-link"><span class="function-syntax">Specifications::to_proposition</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>

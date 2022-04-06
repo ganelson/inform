@@ -42,7 +42,9 @@ function togglePopup(material_id) {
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 <li><a href="../inrtpsn.html">inrtps</a></li>
-<li><a href="../extensions.html">extensions and kits</a></li>
+</ul><h2>Resources</h2><ul>
+<li><a href="../extensions.html">extensions</a></li>
+<li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -670,13 +672,15 @@ except that the noun is optional. The only difference is right at the bottom.
 <span class="plain-syntax">                </span><span class="string-syntax">"is carried' isn't allowed - if it's the X-Ray Zapper, "</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"then call it that."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
-<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-spc.html#SP3" class="function-link"><span class="function-syntax">Specifications::is_description</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Frames::current_stack_frame</span><span class="plain-syntax">()) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">C</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><a href="2-dsc.html#SP10" class="function-link"><span class="function-syntax">Descriptions::attach_calling</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">C</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><a href="2-spc.html#SP1" class="function-link"><span class="function-syntax">Specifications::to_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">LocalVariables::ensure_calling</span><span class="plain-syntax">(</span><span class="identifier-syntax">C</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        ==&gt; { </span><span class="identifier-syntax">fail</span><span class="plain-syntax"> };</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    ==&gt; { -, </span><span class="identifier-syntax">p</span><span class="plain-syntax"> };</span>
 </pre>

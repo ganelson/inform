@@ -17,7 +17,10 @@ parse_node *Descriptions::from_proposition(pcalc_prop *prop, wording W) {
 
 pcalc_prop *Descriptions::to_proposition(parse_node *spec) {
 	if (Specifications::is_description(spec)) spec = spec->down;
-	else internal_error("tried to extract proposition from non-description");
+	else {
+		LOG("Spec: $P\n", spec);
+		internal_error("tried to extract proposition from non-description");
+	}
 	if (Rvalues::is_CONSTANT_construction(spec, CON_description))
 		return Specifications::to_proposition(spec);
 	return NULL;
