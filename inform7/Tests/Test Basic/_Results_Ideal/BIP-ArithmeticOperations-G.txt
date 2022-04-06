@@ -67,3 +67,5 @@
 "6 x 10^23 to the nearest whole number" = number: 2147483647
 "pi to the power 4" = real number: 97.4091
 "pi * pi * pi * pi" = real number: 97.4091
+"2 times holdings" = cash-value: $7.00
+"2.7 times holdings" = cash-value: $9.45

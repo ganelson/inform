@@ -23,19 +23,28 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 	parse_node *Y, equation_node *EY, kind *KY) {
 	int binary = TRUE;
 	if (Kinds::Dimensions::arithmetic_op_is_unary(op)) binary = FALSE;
-	int use_fp = FALSE, promote_X = FALSE, promote_Y = FALSE, reduce_modulo_1440 = FALSE;
+	int use_fp = FALSE, promote_X = FALSE, promote_Y = FALSE, demote_result = FALSE,
+		reduce_modulo_1440 = FALSE;
+	kind *KR = Kinds::Dimensions::arithmetic_on_kinds(KX, KY, op);
 	if ((KX) && (KY)) {
 		#ifdef IF_MODULE
-		kind *KR = Kinds::Dimensions::arithmetic_on_kinds(KX, KY, op);
 		kind *KT = TimesOfDay::kind();
 		if ((KT) && (Kinds::eq(KR, KT))) reduce_modulo_1440 = TRUE;
 		#endif
+		if (((Kinds::FloatingPoint::uses_floating_point(KX)) ||
+				(Kinds::FloatingPoint::uses_floating_point(KY)))
+			&& (Kinds::FloatingPoint::uses_floating_point(KR) == FALSE)
+			&& ((op == TIMES_OPERATION) || (op == DIVIDE_OPERATION)))
+			demote_result = TRUE;
 	}
 	@<Choose which form of arithmetic and promotion@>;
 	@<Optimise promotions from number to real number@>;
 	if (reduce_modulo_1440) {
 		EmitCode::call(Hierarchy::find(NUMBER_TY_TO_TIME_TY_HL));
 		EmitCode::down();
+	}
+	if (demote_result) {
+		Kinds::FloatingPoint::begin_deflotation_emit(KR);
 	}
 	switch (op) {
 		case EQUALS_OPERATION: @<Emit set-equals@>; break;
@@ -57,6 +66,7 @@ void Kinds::Compile::perform_arithmetic_emit(int op, equation *eqn,
 				"suggesting a problem with some inline definition.");
 			break;
 	}
+	if (demote_result) Kinds::FloatingPoint::end_deflotation_emit(KR);
 	if (reduce_modulo_1440) EmitCode::up();
 }
 

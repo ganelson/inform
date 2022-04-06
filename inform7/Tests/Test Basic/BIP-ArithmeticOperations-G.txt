@@ -11,6 +11,10 @@ A length times a length specifies an area.
 
 A fruit has a length. An apple has length 1m. A pear has length 6m. An orange has length 3m.
 
+Cash-value is a kind of value. $1.99 specifies a cash-value.
+
+Holdings is a cash-value that varies. Holdings is $3.50.
+
 To begin:
 	showme 2 + 3;
 	showme 2 plus -3;
@@ -81,3 +85,5 @@ To begin:
 	showme 6 x 10^23 to the nearest whole number;
 	showme pi to the power 4;
 	showme pi * pi * pi * pi;
+	showme 2 times holdings;
+	showme 2.7 times holdings;
