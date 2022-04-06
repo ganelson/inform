@@ -4890,7 +4890,8 @@ It can also be helpful to count things with no particular location, like so:
 
 For instance:
 
-	When play begins, change the right hand status line to "Explored: [number of visited rooms]/[number of rooms]".
+	When play begins:
+		now the right hand status line is "Explored: [number of visited rooms]/[number of rooms]".
 
 Provided that the possible range is finite, we can also use "number of" to count values which match a description. For instance:
 

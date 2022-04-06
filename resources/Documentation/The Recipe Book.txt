@@ -476,7 +476,8 @@ Out of doors, nature is seldom still. Clouds scull by at random, as in <b>Weathe
 
 A story that makes heavy use of time may want to give the player a hint that time is important - and an easy way to keep track of how it's going - by adding the current time to the status line, instead of the score. To do this, we would write
 
-	When play begins: change the right hand status line to "[time of day]".
+	When play begins:
+		now the right hand status line is "[time of day]".
 
 All else being equal, time passes at a rate of one minute per turn. But this need not be so: we can imagine a story where turns take much less time, or much more; or a story in which the passage of time was sometimes suspended, or one in which different actions required different amounts of time to perform.
 
@@ -2641,7 +2642,8 @@ The status line is the reverse-coloured bar along the top of the window during p
 
 The status line is ordinarily printed from two named pieces of text, the "left hand status line" and the "right hand status line". These can be changed during play, so for instance,
 
-	When play begins, change the right hand status line to "Time: [time of day]".
+	When play begins:
+		now the right hand status line is "Time: [time of day]".
 
 The examples below offer miscellaneous alternatives, and are fairly self-descriptive.
 
