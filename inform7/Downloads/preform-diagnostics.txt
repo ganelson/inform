@@ -551,6 +551,8 @@
 
 <en-trie-plural-irregular-inflections> nti 31 constraint CS = {31} extremes [2, 2]
     English:
+        *human humans 
+          constraint CS = {31} extremes [2, 2]
         *man 3men 
           constraint CS = {31} extremes [2, 2]
         *blouse 2ses 

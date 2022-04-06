@@ -34,7 +34,9 @@
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 <li><a href="../inrtpsn.html">inrtps</a></li>
-<li><a href="../extensions.html">extensions and kits</a></li>
+</ul><h2>Resources</h2><ul>
+<li><a href="../extensions.html">extensions</a></li>
+<li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -367,12 +369,14 @@ from archaisms.
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>Step 5. Now we reach a batch of irregular but fairly general inflected
 endings; for example, protozoon to protozoa, or metamorphosis to metamorphoses.
-Note that we differ from Conway in pluralizing blouse as blouses, not blice.
+Note that we differ from Conway in pluralizing blouse as blouses, not blice,
+and human as humans, not humen.
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;en-trie-plural-irregular-inflections&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*man</span><span class="Preform-plain-syntax">            </span><span class="Preform-constant-syntax">3men</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">            </span><span class="Preform-comment-syntax"> Step 5 begins here</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*human</span><span class="Preform-plain-syntax">          </span><span class="Preform-constant-syntax">humans</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">           </span><span class="Preform-comment-syntax"> Step 5 begins here</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*man</span><span class="Preform-plain-syntax">            </span><span class="Preform-constant-syntax">3men</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*blouse</span><span class="Preform-plain-syntax">         </span><span class="Preform-constant-syntax">2ses</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*louse</span><span class="Preform-plain-syntax">          </span><span class="Preform-constant-syntax">5lice</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">*mouse</span><span class="Preform-plain-syntax">          </span><span class="Preform-constant-syntax">5mice</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>

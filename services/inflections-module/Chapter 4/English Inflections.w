@@ -300,11 +300,13 @@ from archaisms.
 
 @ Step 5. Now we reach a batch of irregular but fairly general inflected
 endings; for example, protozoon to protozoa, or metamorphosis to metamorphoses.
-Note that we differ from Conway in pluralizing blouse as blouses, not blice.
+Note that we differ from Conway in pluralizing blouse as blouses, not blice,
+and human as humans, not humen.
 
 =
 <en-trie-plural-irregular-inflections> ::=
-	*man            3men |            /* Step 5 begins here */
+	*human          humans |           /* Step 5 begins here */
+	*man            3men | 
 	*blouse         2ses |
 	*louse          5lice |
 	*mouse          5mice |
