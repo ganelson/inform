@@ -54,6 +54,9 @@ void Placeholders::initialise(void) {
 	Placeholders::set_to(I"BASE64_TAIL", I"", 0);
 	Placeholders::set_to(I"JAVASCRIPTPRELUDE", Str::literal(JAVASCRIPT_PRELUDE), 0);
 	Placeholders::set_to(I"FONTTAG", Str::literal(FONT_TAG), 0);
+	Placeholders::set_to(I"MATERIALSFOLDERPATHOPEN", I"", 0);
+	Placeholders::set_to(I"MATERIALSFOLDERPATHFILE", I"", 0);
+	Placeholders::set_to(I"BLURB", I"", 0);
 
 	Main::initialise_time_variables();
 }

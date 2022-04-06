@@ -317,7 +317,8 @@ copied in |text1|, |num1|, ..., accordingly.
 		case template_path_COMMAND: Templates::new_path(Pathnames::from_text(text1)); break;
 		case website_COMMAND: Requests::request_1(WEBSITE_REQ, text1, FALSE); break;
 
-		default: BlorbErrors::error_1S("***", command); BlorbErrors::fatal("*** command unimplemented ***\n");
+		default: BlorbErrors::error_1S("***", command);
+			BlorbErrors::fatal("*** command unimplemented ***\n");
 	}
 
 @ We only ever set the frontispiece as resource number 1, since Inform
@@ -363,7 +364,7 @@ reasons these need to be manipulated to deal with awkward characters.
 		I"MATERIALSFOLDERPATHFILE",
 		I"MATERIALSFOLDERPATH");
 
-@ And here that very "qualification" routine. The placeholder |original| contains
+@ And here is that very "qualification" routine. The placeholder |original| contains
 the pathname to a folder, a pathname which might contain spaces or backslashes,
 and which needs to be quoted as a literal Javascript string supplied to
 either the function |openUrl| or the function |fileUrl|. Depending on the
@@ -375,7 +376,8 @@ void Parser::qualify_placeholder(text_stream *openUrl_path, text_stream *fileUrl
 	text_stream *original) {
 	text_stream *OU = Placeholders::read(openUrl_path);
 	text_stream *FU = Placeholders::read(fileUrl_path);
-	LOOP_THROUGH_TEXT(P, original) {
+	text_stream *U = Placeholders::read(original);
+	LOOP_THROUGH_TEXT(P, U) {
 		int c = Str::get(P);
 		if (c == ' ') {
 			if (escape_openUrl) WRITE_TO(OU, "%%2520");

@@ -664,7 +664,8 @@ per segment, where we realise that we've gone too far).
 @<Read the source text and feed it one line at a time to the line-writer@> =
 	text_file_position *start = NULL;
 	if (segment_being_written) @<Start from just the right place in the source file@>;
-	TextFiles::read(source_text, FALSE, "can't open source text", TRUE, Websites::source_write_iterator, start, NULL);
+	TextFiles::read(source_text, FALSE, "can't open source text", TRUE,
+		Websites::source_write_iterator, start, NULL);
 
 @ The following simulates the effect of running through the uninteresting lines
 before the segment begins:
@@ -770,7 +771,9 @@ the line, then indent it suitably, then typeset it character by character.
 	@<The top line of the preface or any segment is in bold@>;
 	@<Any heading line is in bold@>;
 
-	if ((tabulate) && (quoted_matter == FALSE)) { WRITE_TO(SPAGE, "<tr>"); Websites::open_table_cell(SPAGE); }
+	if ((tabulate) && (quoted_matter == FALSE)) {
+		WRITE_TO(SPAGE, "<tr>"); Websites::open_table_cell(SPAGE);
+	}
 
 	int start = 0;
 
@@ -792,11 +795,13 @@ the line, then indent it suitably, then typeset it character by character.
 		@<Begin typographic embellishments@>;
 		@<The documentation requires some corrections@>;
 
-		for (int i=start, L=Str::len(line); i<L; i++) @<Typeset a single character of the source text@>;
+		for (int i=start, L=Str::len(line); i<L; i++)
+			@<Typeset a single character of the source text@>;
 
 		@<End typographic embellishments@>;
-		if ((tabulate) && (quoted_matter == FALSE)) { Websites::close_table_cell(SPAGE); WRITE_TO(SPAGE, "</tr>\n"); }
-		else Websites::close_code_paragraph(SPAGE);
+		if ((tabulate) && (quoted_matter == FALSE)) {
+			Websites::close_table_cell(SPAGE); WRITE_TO(SPAGE, "</tr>\n");
+		} else Websites::close_code_paragraph(SPAGE);
 		if (quoted_matter == FALSE) carry_over_indentation = -1;
 	}
 
@@ -867,7 +872,8 @@ loop also doesn't make our algorithm $O(N^2)$.
 
 @<The documentation requires some corrections@> =
 	if ((comment_nesting == 0) && (quoted_matter == FALSE) && (i6_matter == FALSE) &&
-		(Str::get_at(line, start) == '*') && (Str::get_at(line, start+1) == ':') && (Str::get_at(line, start+2) == ' '))
+		(Str::get_at(line, start) == '*') && (Str::get_at(line, start+1) == ':') &&
+		(Str::get_at(line, start+2) == ' '))
 		start += 3;
 	if (line_count == position_of_documentation_bar) Str::copy(line, I"Documentation");
 

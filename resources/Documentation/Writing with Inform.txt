@@ -16617,7 +16617,11 @@ To make such a page, we must:
 
 This automatically releases along with a website as well, since we need the website in order to house the new page, which will be called "play.html". This page will be bundled up with a customised copy of a story file interpreter coded in Javascript - in effect, a program for a web browser to follow - and a suitably encoded version of the story file. The practical effect should be that anyone visiting the page with any modern browser can just play.
 
-Inform ships with the "Parchment" and "Quixe" interpreters built in, one intended for each of the story file formats it can output - so by default Inform uses Parchment if the format (on the project's Settings panel) is set to Z-code, and Quixe if the format is Glulx. But Inform also supports the use of any other interpreter the author wants to try (including, for instance, later versions of Parchment or Quixe than the built-in ones). If we have access to an exotic Javascript-based interpreter called, let's say, "Urbzig", then we can install it by putting it into the "Templates" subfolder of the ".materials" folder for the project, and then ask for it to be used instead of "Parchment" like so:
+Inform ships with the "Parchment" and "Quixe" interpreters built in. By default Inform will use Parchment if the format (on the project's Settings panel) is set to Z-code, and Quixe if the format is Glulx. In fact, though, Parchment works with either format, and some users prefer using it. If we want to have Parchment even for a Glulx project, we can write:
+
+	Release along with the "Parchment" interpreter.
+
+...and that's just what will happen. In fact, Inform also supports the use of any other interpreter the author wants to try. If we have access to an exotic Javascript-based interpreter called, let's say, "Urbzig", then we can install it by putting it into the "Templates" subfolder of the ".materials" folder for the project:
 
 	Release along with the "Urbzig" interpreter.
 

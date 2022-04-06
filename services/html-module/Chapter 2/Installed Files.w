@@ -35,7 +35,7 @@ filename *InstalledFiles::filename(int ires) {
 		case INTRO_POSTCARD_IRES: 
 				return Filenames::in(misc, I"Postcard.pdf");
 		case LARGE_DEFAULT_COVER_ART_IRES: 
-				return Filenames::in(misc, I"Cover.jpg");
+				return Filenames::in(misc, I"DefaultCover.jpg");
 		case SMALL_DEFAULT_COVER_ART_IRES: 
 				return Filenames::in(misc, I"Small Cover.jpg");
 
