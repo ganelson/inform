@@ -5060,11 +5060,11 @@ substituting whatever number we feel is appropriate. We should be careful not to
 
 The player may simply take the trophy, drop it again, take it again, ... and win five points every time around. We can prevent this by phrasing the rule more carefully:
 
-	After taking the trophy when the trophy is not handled:
+	After taking the trophy when the trophy was not handled:
 		increase the score by 5;
 		say "Well done!"
 
-Rather than being an open-ended scoring system, IF normally has a maximum possible score, which can be specified with a sentence like so:
+("Was handled", not "is handled", because this rule happens after the trophy has been taken - so by the time this rule has been considered, the trophy is always handled.) Rather than being an open-ended scoring system, IF normally has a maximum possible score, which can be specified with a sentence like so:
 
 	The maximum score is 10.
 
