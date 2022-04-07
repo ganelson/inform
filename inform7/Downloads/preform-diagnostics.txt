@@ -4764,19 +4764,19 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<optional-article> hits 82848/165696 nti 21 constraint (none) extremes [1, infinity)
+<optional-article> hits 82874/165748 nti 21 constraint (none) extremes [1, infinity)
     English:
         <article> {...} 
-          (hits 16030/47384) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 16031/47394) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 66818/66818) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 66843/66843) (matched long text) constraint (none) extremes [1, infinity)
 
 <compulsory-article> nti 22 constraint (none) extremes [2, infinity)
     English:
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16496/98852 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16497/98872 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article> internal hits 20305/236410 nti r2 constraint (none) extremes [1, 1]
 
@@ -7981,6 +7981,8 @@
           (hits 3/795) (matched: 'smelling') constraint (none) extremes [1, infinity)
         <s-description> 
           (hits 27/792) (matched long text) constraint (none) extremes [1, infinity)
+        <s-object-instance> 
+          (hits 0/26) constraint CW = {r2, r4} extremes [1, infinity)
 
 <s-descriptive-type-expression-uncached> hits 1253/3020 nti 17 constraint (none) extremes [1, infinity)
     English:
@@ -8416,7 +8418,7 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<s-object-instance> internal hits 1168/4912 nti r4 constraint CW = {r2, r4} extremes [1, infinity)
+<s-object-instance> internal hits 1168/4964 nti r4 constraint CW = {r2, r4} extremes [1, infinity)
 
 <s-non-object-instance> internal hits 4/252 nti 23 constraint (none) extremes [1, infinity)
 

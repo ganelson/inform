@@ -119,6 +119,12 @@ consider a value and not a type at all:
 type representing only its own value.
 </p>
 
+<p class="commentary">The final use of &lt;s-object-instance&gt; here catches hardly any cases, but is
+needed for a handful of object names which ambiguously look like uses of
+ordinal determiners. For example, a room called "24th Street" might be misread
+otherwise as the 24th "Street".
+</p>
+
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-type-expression-uncached&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;s-type-expression-unarticled&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">   </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 2 }</span>
@@ -132,7 +138,8 @@ type representing only its own value.
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-constant-value&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-desc-uncomposite&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-action-pattern-as-value&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-description&gt;</span><span class="Preform-plain-syntax">                              </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-description&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-object-instance&gt;</span><span class="Preform-plain-syntax">                          </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Note that a list of adjectives with no noun does not qualify as a type

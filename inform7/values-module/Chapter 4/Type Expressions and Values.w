@@ -51,6 +51,11 @@ gives a definition to be used only where the second parameter evaluates to
 11. In this way any constant value is regarded as being a type -- the narrow
 type representing only its own value.
 
+The final use of <s-object-instance> here catches hardly any cases, but is
+needed for a handful of object names which ambiguously look like uses of
+ordinal determiners. For example, a room called "24th Street" might be misread
+otherwise as the 24th "Street".
+
 =
 <s-type-expression-uncached> ::=
 	<article> <s-type-expression-unarticled> |   ==> { pass 2 }
@@ -64,7 +69,8 @@ type representing only its own value.
 	<s-constant-value> |                         ==> { pass 1 }
 	<s-desc-uncomposite> |                       ==> { pass 1 }
 	<s-action-pattern-as-value> |                ==> { pass 1 }
-	<s-description>                              ==> { pass 1 }
+	<s-description> |                            ==> { pass 1 }
+	<s-object-instance>                          ==> { pass 1 }
 
 @ Note that a list of adjectives with no noun does not qualify as a type
 expression. It looks as if it never should, on the face of it -- "opaque"
