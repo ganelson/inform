@@ -3277,13 +3277,16 @@ The two ways of starting up the scope machinery other than via the parser
 code above.
 
 =
-[ TestScope obj act a al sr x y;
+[ TestScope obj act a al sr ss st x y;
     x = parser_one; y = parser_two;
     parser_one = obj; parser_two = 0; a = actor; al = actors_location;
+    ss = scope_stage; st = scope_token;
+    scope_stage = 0; scope_token = 0;
     sr = scope_reason; scope_reason = TESTSCOPE_REASON;
     if (act == 0) actor = player; else actor = act;
     actors_location = ScopeCeiling(actor);
     SearchScope(actors_location, actor, 0); scope_reason = sr; actor = a;
+    scope_stage = ss; scope_token = st;
     actors_location = al; parser_one = x; x = parser_two; parser_two = y;
     return x;
 ];
