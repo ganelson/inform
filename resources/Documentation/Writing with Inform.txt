@@ -16513,7 +16513,7 @@ It is also possible to supply a feelie which is not a single file, but is a mini
 
 	Release along with a file of "Baltrazar's Guide to Magic" called "Guide".
 
-The absence of a file extension on the filename "Guide" tells Inform that the feelie in question is a mini-website: it is expected to sit inside a folder called "Guide", with its home page being "Guide/index.html".
+The absence of a file extension on the filename "Guide" tells Inform that the feelie in question is a mini-website: it is expected to sit inside a folder called "Guide", with its home page being "Guide/index.html". However, a mini-website like this must be created by hand: Inform does not copy it into place, it only creates links to the place where it ought to be put.
 
 We have seen that Inform takes the story file, which is analogous to the pages of a book, and places it into a Blorb archive, analogous to the binding. These new additional files are not placed in the Blorb, because that would make the Blorb archive rather large (and would hide them from the player, which defeats the purpose). But references to them do appear in the Blorb, so that any interpreter playing the Blorb would be able to tell that there are supposed to be additional files available. Similarly, references are entered onto the library card.
 
