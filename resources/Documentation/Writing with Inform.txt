@@ -9482,7 +9482,7 @@ will store only whole numbers of kilograms (unless clever scaling tricks are use
 
 	1.0 kg specifies a weight.
 
-Here Inform can see from the decimal point in the prototype number that real numbers will be involved. We can still write "8000kg", but we can now also write "1.9885 x 10^30 kg" (the mass of the Sun) or "9.109383 x 10^−31 kg" (the mass of an electron). On the other hand, any calculations we do will be limited in accuracy to about 6 to 9 decimal places, exactly as for real numbers.
+Here Inform can see from the ".0" in the prototype number that real numbers will be involved. (It needs to be ".0" not, say, ".5" because that could be read as a different sort of notation.) We can still write "8000kg", but we can now also write "1.9885 x 10^30 kg" (the mass of the Sun) or "9.109383 x 10^−31 kg" (the mass of an electron). On the other hand, any calculations we do will be limited in accuracy to about 6 to 9 decimal places, exactly as for real numbers.
 
 <b>By default we can only write positive values when whole numbers are used.</b> Sometimes it is unnatural to write negative values, and so Inform will issue a Problem message if this is tried - for instance, Inform would not allow us to write a weight of -4 kg. (This doesn't mean that arithmetic on units is forbidden to get a negative result: we may want to work out the difference between two weights. Inform's Problem message is simply to try to prevent the accidental writing of incorrect values.) If we do want the ability to write negative values in the source text, we signal that in the notation itself:
 
