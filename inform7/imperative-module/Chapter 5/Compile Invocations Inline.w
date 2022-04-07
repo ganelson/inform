@@ -73,10 +73,17 @@ int CSIInline::csi_inline(value_holster *VH, parse_node *inv, source_location *w
 	@<Create any new local variables explicitly called for@>;
 	CSIInline::from_schema(idb->head_of_defn->at,
 		CompileImperativeDefn::get_front_schema(idb), &CSIS);
-	if (IDTypeData::block_follows(idb))
-		CodeBlocks::attach_back_schema(CompileImperativeDefn::get_back_schema(idb), CSIS);
-	else
+	if (IDTypeData::block_follows(idb)) {
+		if (CodeBlocks::attach_back_schema(
+			CompileImperativeDefn::get_back_schema(idb), CSIS) == FALSE) {
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_LoopWithoutBody),
+				"there doesn't seem to be any body to this phrase",
+				"in the way that a 'repeat', 'if' or 'while' is expected to have.");
+		}
+	} else {
 		@<Release any my-variables created inline@>;
+	}
 	return idb->compilation_data.inline_mor;
 }
 

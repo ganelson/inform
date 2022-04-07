@@ -134,7 +134,7 @@ void CodeBlocks::beginning_block_phrase(control_structure_phrase *csp) {
 		CodeBlocks::pop_stack();
 	}
 	CodeBlocks::prepush_stack();
-	@<Construct the next phrase block@>;
+	if (block_being_opened) @<Construct the next phrase block@>;
 }
 
 @ In the case of a repeat through a Table, we need to create two loop
@@ -153,12 +153,16 @@ the loop begins, and pull them again when it finishes.
 @ Slightly later on, we know these:
 
 =
-void CodeBlocks::attach_back_schema(inter_schema *I, csi_state CSIS) {
-	block_being_opened->switch_val = NULL;
-	if (Invocations::get_no_tokens(CSIS.inv) > 0)
-		block_being_opened->switch_val = CSIS.tokens->token_vals[0];
-	block_being_opened->tail_schema = I;
-	block_being_opened->compilation_state = CSIS;
+int CodeBlocks::attach_back_schema(inter_schema *I, csi_state CSIS) {
+	if (block_being_opened) {
+		block_being_opened->switch_val = NULL;
+		if (Invocations::get_no_tokens(CSIS.inv) > 0)
+			block_being_opened->switch_val = CSIS.tokens->token_vals[0];
+		block_being_opened->tail_schema = I;
+		block_being_opened->compilation_state = CSIS;
+		return TRUE;
+	}
+	return FALSE;
 }
 
 @ At this next stage, the preliminary code for the loop (if it's a loop)

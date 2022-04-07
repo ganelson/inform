@@ -1,0 +1,11 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 73 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
+Problem__ PM_LoopWithoutBody
+  >--> You wrote 'repeat with I running from 1 to the number of rows in the
+    Table of Explanations' (source text, line 8): but there doesn't seem to be
+    any body to this phrase, in the way that a 'repeat', 'if' or 'while' is
+    expected to have.
+Inform 7 has finished.

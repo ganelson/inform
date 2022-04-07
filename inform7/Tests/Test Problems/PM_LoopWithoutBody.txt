@@ -1,0 +1,16 @@
+Lab is a room.
+
+Explaining is an action out of world applying to one topic.
+Understand "explain [text]" as explaining.
+
+Report explaining:
+	let L be the topic understood;
+	repeat with I running from 1 to the number of rows in the Table of Explanations;
+	choose row I in the Table of Explanations;
+	if there is a subject entry:
+		if L is the subject entry:
+			say "Explanation here."
+				
+Table of Explanations
+subject (text)
+"bug"
