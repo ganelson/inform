@@ -586,15 +586,24 @@ void Understand::property_block(property *pr, int level, inference_subject *subj
 		(Str::len(RTKindConstructors::get_recognition_only_GPR(ValueProperties::kind(pr))) == 0) &&
 		((Kinds::Behaviour::is_object(ValueProperties::kind(pr))) ||
 			(RTKindConstructors::request_I6_GPR(ValueProperties::kind(pr)) == FALSE))) {
-		StandardProblems::sentence_problem(Task::syntax_tree(),
-			_p_(PM_BadReferringProperty),
-			"that property is of a kind which I can't recognise in "
-			"typed commands",
-			"so that it cannot be understand as describing or referring to "
-			"something. I can understand either/or properties, properties "
-			"with a limited list of named possible values, numbers, times "
-			"of day, or units; but certain built-into-Inform kinds of value "
-			"(like snippet or rulebook, for instance) I can't use.");
+		if (Kinds::Behaviour::is_object(ValueProperties::kind(pr)))
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_ThingReferringProperty),
+				"the value of that property is itself a kind of object",
+				"so that it cannot be understand as describing or referring to "
+				"something. I can understand either/or properties, properties "
+				"with a limited list of named possible values, numbers, times "
+				"of day, or units.");
+		else
+			StandardProblems::sentence_problem(Task::syntax_tree(),
+				_p_(PM_BadReferringProperty),
+				"that property is of a kind which I can't recognise in "
+				"typed commands",
+				"so that it cannot be understand as describing or referring to "
+				"something. I can understand either/or properties, properties "
+				"with a limited list of named possible values, numbers, times "
+				"of day, or units; but certain built-into-Inform kinds of value "
+				"(like snippet or rulebook, for instance) I can't use.");
 	}
 	if (Visibility::set(pr, subj, level, WHENW) == FALSE) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
