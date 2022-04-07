@@ -151,8 +151,8 @@ When we generate a website, we need to copy the auxiliary files into it
 =
 void Links::request_copy_of_auxiliaries(void) {
 	auxiliary_file *aux;
-	LOOP_OVER(aux, auxiliary_file)
-		if (Str::eq(aux->format, I"link")) {
+	LOOP_OVER(aux, auxiliary_file) {
+		if (Str::ne(aux->format, I"link")) {
 			if (verbose_mode)
 				PRINT("! COPY <%f> as <%S>\n", aux->full_filename, aux->aux_leafname);
 			TEMPORARY_TEXT(as_text)
@@ -160,4 +160,5 @@ void Links::request_copy_of_auxiliaries(void) {
 			Requests::request_copy(as_text, aux->aux_leafname, aux->aux_subfolder);
 			DISCARD_TEXT(as_text)
 		}
+	}
 }

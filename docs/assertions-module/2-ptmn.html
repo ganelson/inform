@@ -287,7 +287,12 @@ returns <span class="extract"><span class="extract-syntax">TRUE</span></span> if
 </p>
 
 <p class="commentary">After that, there are two cases: existential sentences (such as "there are
-two cases") and all others (such as "regular meaning are more subtle").
+two cases") and all others (such as "regular meanings are more subtle").
+</p>
+
+<p class="commentary">The trickiest form is "There is a container with carrying capacity 30", say,
+which equates <span class="extract"><span class="extract-syntax">DEFECTIVE_NOUN_NT</span></span> with <span class="extract"><span class="extract-syntax">WITH_NT</span></span>. This is somehow both cases
+at once, and we have to perform both an existential assertion and a coupling.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Act on regular meaning</span><span class="named-paragraph-number">3.1.2.3</span></span><span class="comment-syntax"> =</span>
@@ -300,7 +305,14 @@ two cases") and all others (such as "regular meaning are more subtle").
 <span class="plain-syntax">        (</span><a href="4-rpt.html#SP8" class="function-link"><span class="function-syntax">Refiner::refine_coupling</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">) == </span><span class="identifier-syntax">DEFECTIVE_NOUN_NT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><a href="4-ass.html#SP1" class="function-link"><span class="function-syntax">Assertions::make_existential</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><a href="2-ar.html#SP3" class="function-link"><span class="function-syntax">Anaphora::change_discussion_from_coupling</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Node::get_type</span><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">) == </span><span class="identifier-syntax">WITH_NT</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">px</span><span class="plain-syntax"> = </span><span class="identifier-syntax">py</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">py</span><span class="plain-syntax"> = </span><span class="identifier-syntax">py</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><a href="4-ass.html#SP6" class="function-link"><span class="function-syntax">Assertions::make_coupling</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><a href="2-ar.html#SP3" class="function-link"><span class="function-syntax">Anaphora::change_discussion_from_coupling</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">                </span><a href="2-ar.html#SP3" class="function-link"><span class="function-syntax">Anaphora::change_discussion_from_coupling</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">py</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            }</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><a href="4-ass.html#SP6" class="function-link"><span class="function-syntax">Assertions::make_coupling</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><a href="2-ar.html#SP3" class="function-link"><span class="function-syntax">Anaphora::change_discussion_from_coupling</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">py</span><span class="plain-syntax">);</span>
