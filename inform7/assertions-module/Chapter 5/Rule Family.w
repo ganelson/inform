@@ -586,6 +586,7 @@ parser, recording how it most recently failed.
 		"is '%2'. %3 did not make sense as a description of an action.");
 	@<See if it starts with a valid action name, at least@>;
 	@<See if this might be a when-for confusion@>;
+	@<See if this might be an it-something confusion@>;
 	@<Break down the action list and say which are okay@>;
 	Problems::issue_problem_segment(
 		" I am unable to place this rule into any rulebook.");
@@ -614,6 +615,23 @@ parser, recording how it most recently failed.
 			Problems::issue_problem_segment(
 				" (I wonder if this might be because '%3', which looks like a condition "
 				"on the timing, is the wrong side of the 'when...' clause?)");
+		}
+	}
+
+@<See if this might be an it-something confusion@> =
+	action_name *an;
+	LOOP_OVER(an, action_name) {
+		wording N = ActionNameNames::tensed(an, IS_TENSE);
+		if ((ActionSemantics::max_parameters(an) > 1) &&
+			((Wordings::length(rfd->applicability) >= Wordings::length(N)) &&
+				(Wordings::match(N,
+					Wordings::truncate(rfd->applicability, Wordings::length(N)))))) {
+			Problems::quote_wording(3, ActionNameNames::tensed(an, IS_TENSE));
+			Problems::issue_problem_segment(
+				" (I notice that there's an action called '%3': the 'it' in the name "
+				"is meant to be where something is specified about the first thing "
+				"it acts on. Try using 'something' rather than 'it'?)");
+			break;
 		}
 	}
 

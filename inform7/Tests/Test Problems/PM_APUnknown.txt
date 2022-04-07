@@ -14,3 +14,7 @@ The rong of pillows is scenery in the Intro Middle.
 
 Instead of stood using the rong of pillows, say "They are all
 smooshy and that makes them too hard to pull up on."
+
+Instead of putting it on: say "Grunt."
+
+Instead of putting it on when Burrow is a room: say "Grunt."

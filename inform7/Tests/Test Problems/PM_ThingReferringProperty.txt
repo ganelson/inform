@@ -1,0 +1,7 @@
+Lab is a room.
+
+A marker is a kind of thing. A marker has a thing called the markee.
+
+Understand the markee property as referring to a marker.
+
+The rock is a thing in the lab. The rockmarker is a marker in the Lab. The markee of the rockmarker is the rock.

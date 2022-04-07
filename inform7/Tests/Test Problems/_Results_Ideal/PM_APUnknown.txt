@@ -1,7 +1,8 @@
-Inform 7 build 6L26 has started.
-I've now read your source text, which is 86 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 105 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
 Problem__ PM_APUnknown
   >--> You wrote 'Instead of going arfle barfle gloop while Burrow is dark' (source
     text, line 3), which seems to introduce a rule taking effect only if the
@@ -13,4 +14,21 @@ Problem__ PM_APWithBadWhen
     (source text, line 5), which seems to introduce a rule taking effect only
     'when spoliation obviates'. But this condition did not make sense, so I am
     unable to accept this rule.
-Inform 7 has finished: 19 centiseconds used.
+Problem__ PM_APUnknown
+  >--> You wrote 'Instead of putting it on' (source text, line 18), which seems
+    to introduce a rule taking effect only if the action is 'putting it on'.
+    But that did not make sense as a description of an action. (I notice that
+    there's an action called 'Putting it on': the 'it' in the name is meant to
+    be where something is specified about the first thing it acts on. Try using
+    'something' rather than 'it'?) I am unable to place this rule into any
+    rulebook.
+Problem__ PM_APUnknown
+  >--> You wrote 'Instead of putting it on when Burrow is a room' (source text, line 20),
+    which seems to introduce a rule taking effect only if the action is
+    'putting it on when Burrow is a room'. The part after 'when' (or 'while')
+    was fine, but the earlier words did not make sense as a description of an
+    action. (I notice that there's an action called 'Putting it on': the 'it'
+    in the name is meant to be where something is specified about the first
+    thing it acts on. Try using 'something' rather than 'it'?) I am unable to
+    place this rule into any rulebook.
+Inform 7 has finished.
