@@ -1053,16 +1053,13 @@ light to the Dark Room.")
     statuswin_cursize = 0;
     gg_foregroundchan = 0;
     gg_backgroundchan = 0;
-    #Ifdef DEBUG;
     gg_commandstr = 0;
     gg_command_reading = false;
-    #Endif; ! DEBUG
     ! Also tell the game to clear its object references.
     IdentifyGlkObject(0);
 
     id = glk_stream_iterate(0, gg_arguments);
     while (id) {
-	    #ifdef DEBUG;
         switch (gg_arguments-->0) {
             GG_SAVESTR_ROCK: gg_savestr = id;
             GG_SCRIPTSTR_ROCK: gg_scriptstr = id;
@@ -1072,13 +1069,6 @@ light to the Dark Room.")
                                  gg_command_reading = true;
             default: IdentifyGlkObject(1, 1, id, gg_arguments-->0);
         }
-        #ifnot;
-        switch (gg_arguments-->0) {
-            GG_SAVESTR_ROCK: gg_savestr = id;
-            GG_SCRIPTSTR_ROCK: gg_scriptstr = id;
-            default: IdentifyGlkObject(1, 1, id, gg_arguments-->0);
-        }
-        #endif;
         id = glk_stream_iterate(id, gg_arguments);
     }
 
