@@ -33,7 +33,9 @@
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 <li><a href="../inrtpsn.html">inrtps</a></li>
-<li><a href="../extensions.html">extensions and kits</a></li>
+</ul><h2>Resources</h2><ul>
+<li><a href="../extensions.html">extensions</a></li>
+<li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -351,9 +353,9 @@ indefinite singular depends on the text of the object's name.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">obj</span><span class="plain-syntax"> </span><span class="reserved-syntax">provides</span><span class="plain-syntax"> </span><span class="identifier-syntax">articles</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">artval</span><span class="plain-syntax">=(</span><span class="identifier-syntax">obj</span><span class="plain-syntax">.&amp;</span><span class="identifier-syntax">articles</span><span class="plain-syntax">)--&gt;(</span><span class="identifier-syntax">acode</span><span class="plain-syntax">+</span><span class="identifier-syntax">short_name_case</span><span class="plain-syntax">*</span><span class="identifier-syntax">LanguageCases</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">capitalise</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Cap</span><span class="plain-syntax">) </span><span class="identifier-syntax">artval</span><span class="plain-syntax">, </span><span class="string-syntax">" "</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Cap</span><span class="plain-syntax">) </span><span class="identifier-syntax">artval</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">artval</span><span class="plain-syntax">, </span><span class="string-syntax">" "</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="reserved-syntax">string</span><span class="plain-syntax">) </span><span class="identifier-syntax">artval</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pluralise</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">print</span><span class="plain-syntax"> (</span><span class="identifier-syntax">PSN__</span><span class="plain-syntax">) </span><span class="identifier-syntax">obj</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>

@@ -78285,13 +78285,9 @@ package main _plain
 									code
 										inv /main/BasicInformExtrasKit/functions/Cap_fn/Cap
 											val artval
-										inv !print
-											val " "
 									code
 										inv !printstring
 											val artval
-										inv !print
-											val " "
 								inv !if
 									val pluralise
 									code

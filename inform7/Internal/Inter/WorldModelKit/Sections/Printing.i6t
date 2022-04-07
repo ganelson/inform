@@ -301,9 +301,9 @@ Global short_name_case;
     if (obj provides articles) {
         artval=(obj.&articles)-->(acode+short_name_case*LanguageCases);
         if (capitalise)
-            print (Cap) artval, " ";
+            print (Cap) artval;
         else
-            print (string) artval, " ";
+            print (string) artval;
         if (pluralise) return;
         print (PSN__) obj; return;
     }
