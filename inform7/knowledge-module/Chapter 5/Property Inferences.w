@@ -103,6 +103,8 @@ int PropertyInferences::explain_contradiction(inference_family *f, inference *A,
 	inference *B, int similarity, inference_subject *subj) {
 	property_inference_data *A_data = RETRIEVE_POINTER_property_inference_data(A->data);
 	property_inference_data *B_data = RETRIEVE_POINTER_property_inference_data(B->data);
+	LOG("A = $I\nB = $I\n", A, B);
+	current_sentence = B->inferred_from;
 	if (B_data->inferred_property == P_variable_initial_value) {
 		StandardProblems::two_sentences_problem(_p_(PM_VariableContradiction),
 			A->inferred_from,

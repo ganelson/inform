@@ -1027,6 +1027,7 @@ the absence of other information.)
 				}
 			}
 		if (portable) {
+			current_sentence = Instances::get_creating_sentence(I);
 			EitherOrProperties::assert(
 				P_fixed_in_place, Instances::as_subject(I), FALSE, CERTAIN_CE);
 		}
