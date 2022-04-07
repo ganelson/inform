@@ -12452,7 +12452,8 @@ It's best to avoid situations where an item has a locale priority which is highe
 
 <b>3. Examples.</b> (a) We very rarely want to forbid the player to refer to things close at hand, but often want to allow references to distant ones. For instance, a mirage of something which is not present at all:
 
-	After deciding the scope of the player while in the Shrine: place the holy grail in scope.
+	After deciding the scope of the player while the location is the Shrine:
+		place the holy grail in scope. 
 
 Two different phrases enable us to place unusual items in scope:
 
