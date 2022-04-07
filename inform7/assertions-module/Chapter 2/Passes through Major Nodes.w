@@ -192,7 +192,11 @@ identifying unparsed noun phrases. //Refiner::refine_coupling//
 returns |TRUE| if it succeeds in this.
 
 After that, there are two cases: existential sentences (such as "there are
-two cases") and all others (such as "regular meaning are more subtle").
+two cases") and all others (such as "regular meanings are more subtle").
+
+The trickiest form is "There is a container with carrying capacity 30", say,
+which equates |DEFECTIVE_NOUN_NT| with |WITH_NT|. This is somehow both cases
+at once, and we have to perform both an existential assertion and a coupling.
 
 @<Act on regular meaning@> =
 	parse_node *px = p->down->next;
@@ -201,7 +205,14 @@ two cases") and all others (such as "regular meaning are more subtle").
 		(Refiner::refine_coupling(px, py, FALSE))) {
 		if (Node::get_type(px) == DEFECTIVE_NOUN_NT) {
 			Assertions::make_existential(py);
-			Anaphora::change_discussion_from_coupling(py, py);
+			if (Node::get_type(py) == WITH_NT) {
+				px = py->down;
+				py = py->down->next;
+				Assertions::make_coupling(px, py);
+				Anaphora::change_discussion_from_coupling(px, py);
+			} else {
+				Anaphora::change_discussion_from_coupling(py, py);
+			}
 		} else {
 			Assertions::make_coupling(px, py);
 			Anaphora::change_discussion_from_coupling(px, py);
