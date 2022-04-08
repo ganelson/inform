@@ -99,8 +99,7 @@ isn't set up to allow more, so this error is not easy to generate.
 		if (proj) Problems::fatal("Multiple projects given on the command line");
 		proj = P;
 	}
-	if (proj == NULL) Problems::fatal("Nothing to compile");
-	if (proj->stand_alone) {
+	if ((proj) && (proj->stand_alone)) {
 		if (index_explicitly_set == FALSE)
 			Task::disable_or_enable_index(TRUE); /* disable it */
 		if (problems_explicitly_set == FALSE)
@@ -118,30 +117,32 @@ This folder will usually be the |Build| subfolder of the project folder,
 but we won't assume that. Remember, //supervisor// knows best.
 
 @<Open the debugging log and the problems report@> =
-	if ((proj->stand_alone == FALSE) || (Log::get_debug_log_filename())) {
-		pathname *build_folder = Projects::build_path(proj);
-		if (Pathnames::create_in_file_system(build_folder) == 0)
-			Problems::fatal(
-				"Unable to create Build folder for project: is it read-only?");
-
-		filename *DF = Filenames::in(build_folder, I"Debug log.txt");
-		Log::set_debug_log_filename(DF);
+	if (((proj) && (proj->stand_alone == FALSE)) || (Log::get_debug_log_filename())) {
+		if (proj) {
+			pathname *build_folder = Projects::build_path(proj);
+			if (Pathnames::create_in_file_system(build_folder) == 0)
+				Problems::fatal(
+					"Unable to create Build folder for project: is it read-only?");
+			filename *DF = Filenames::in(build_folder, I"Debug log.txt");
+			Log::set_debug_log_filename(DF);
+		}
 		Log::open();
 		LOG("inform7 was called as:");
 		for (int i=0; i<argc; i++) LOG(" %s", argv[i]);
 		LOG("\n");
 		CommandLine::play_back_log();
 	}
+	if (proj) {
+		if (Task::problems_enabled()) {
+			pathname *build_folder = Projects::build_path(proj);
+			filename *PF = Filenames::in(build_folder, I"Problems.html");
+			StandardProblems::start_problems_report(PF);
+		} else {
+			StandardProblems::start_problems_report(NULL);
+		}
 
-	if (Task::problems_enabled()) {
-		pathname *build_folder = Projects::build_path(proj);
-		filename *PF = Filenames::in(build_folder, I"Problems.html");
-		StandardProblems::start_problems_report(PF);
-	} else {
-		StandardProblems::start_problems_report(NULL);
+		HTML::set_link_abbreviation_path(Projects::path(proj));
 	}
-
-	HTML::set_link_abbreviation_path(Projects::path(proj));
 
 @ Telemetry is not as sinister as it sounds: the app isn't sending data out
 on the Internet, only (if requested) logging what it's doing to a local file.
