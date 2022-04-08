@@ -87,7 +87,7 @@ int Localisation::stock_from_file(filename *localisation_file, localisation_dict
 	}
 	int col = 1, line = 1, nwsol = FALSE; /* "non white space on line" */
 	unicode_file_buffer ufb = TextFiles::create_ufb();
-	wchar_t cr;
+	int cr; /* note that on some platforms |wchar_t| is unable to hold |EOF| */
 	TEMPORARY_TEXT(key)
 	TEMPORARY_TEXT(value)
 	do {
