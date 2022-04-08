@@ -41,7 +41,9 @@ function togglePopup(material_id) {
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 <li><a href="../inrtpsn.html">inrtps</a></li>
-<li><a href="../extensions.html">extensions and kits</a></li>
+</ul><h2>Resources</h2><ul>
+<li><a href="../extensions.html">extensions</a></li>
+<li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -162,6 +164,8 @@ and properties which store the state of certain relations.
 <span class="plain-syntax">    </span><span class="reserved-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">similarity</span><span class="plain-syntax">, </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">subj</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">property_inference_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">A_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_property_inference_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">data</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">property_inference_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">B_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RETRIEVE_POINTER_property_inference_data</span><span class="plain-syntax">(</span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">data</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"A = $I\nB = $I\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">A</span><span class="plain-syntax">, </span><span class="identifier-syntax">B</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">B</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inferred_from</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">B_data</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inferred_property</span><span class="plain-syntax"> == </span><span class="identifier-syntax">P_variable_initial_value</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::two_sentences_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_VariableContradiction</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">A</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">inferred_from</span><span class="plain-syntax">,</span>

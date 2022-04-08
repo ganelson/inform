@@ -544,7 +544,6 @@ context of a proper noun, as in "some tea", because it may be confusion of
 			Descriptions::quantify(p,
 				quant, Annotations::read_int(annotation, quantification_parameter_ANNOT));
 		} else if (!((quant == exists_quantifier) && (Node::is(p, CONSTANT_NT)))) {
-//			p = Specifications::new_UNKNOWN(W);
 			==> { fail };
 		}
 	}

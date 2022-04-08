@@ -13,8 +13,8 @@ release to "/Users/gnelson/Natural Inform/intest/Workspace/T2/Example.materials/
 storyfile leafname "Mansfield Perk.zblorb"
 storyfile "/Users/gnelson/Natural Inform/intest/Workspace/T2/Example.inform/Build/output.z8" include
 ifiction "/Users/gnelson/Natural Inform/intest/Workspace/T2/Example.inform/Metadata.iFiction" include
-cover "inform7/Internal/Miscellany/Cover.jpg"
-picture 1 "inform7/Internal/Miscellany/Cover.jpg"
+cover "inform7/Internal/Miscellany/DefaultCover.jpg"
+picture 1 "inform7/Internal/Miscellany/DefaultCover.jpg"
 
 ! Placeholder variables
 
