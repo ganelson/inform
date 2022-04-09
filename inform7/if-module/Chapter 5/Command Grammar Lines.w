@@ -269,6 +269,8 @@ void CGLines::slash(command_grammar *cg) {
 		@<Annotate the CG tokens with slash-class and slash-dash-dash@>;
 		@<Throw a problem if slash has been used with non-literal tokens@>;
 		@<Calculate the lexeme count@>;
+		if ((cg->cg_is != CG_IS_COMMAND) &&
+			(cg->cg_is != CG_IS_TOKEN)) @<Disallow a potentially empty line@>;
 	}
 }
 
@@ -366,6 +368,37 @@ lexemes              +--+   +-------+   +---------+
 				cgt = cgt->next_token;
 		cgl->lexeme_count++;
 	}
+
+@ The following catches grammar such as:
+= (text as Inform 7)
+Understand "Prof/--" as Professor Zaphier.
+=
+which would otherwise compile fine, but lead to a hang of the story file when
+attempting to recognise Zaphier's name.
+
+@<Disallow a potentially empty line@> =
+	int possibly_empty = TRUE;
+	LOOP_THROUGH_CG_TOKENS(cgt, cgl) {
+		int i = cgt->slash_class;
+		if (i == 0) possibly_empty = FALSE;
+		else {
+			int dashdashed = FALSE;
+			while (TRUE) {
+				if (cgt->slash_dash_dash) dashdashed = TRUE;
+				if ((cgt->next_token) &&
+					(cgt->next_token->slash_class == i)) cgt = cgt->next_token;
+				else break;
+			}
+			if (dashdashed == FALSE) possibly_empty = FALSE;
+		}
+	}
+	if (possibly_empty)
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_EmptyUnderstandLine),
+			"the optional '--' word has been used here in such a way that it "
+			"would be possible for a completely empty phrase to be understood "
+			"in this context",
+			"but that isn't allowed.");
 
 @h Determining the line.
 Here the aim is to find the //determination_type// of a CGL. Sneakily, though,

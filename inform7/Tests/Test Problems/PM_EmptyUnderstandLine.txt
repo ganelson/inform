@@ -1,0 +1,5 @@
+The School for Gifted Kiddies is a room.
+
+Professor Zaphier is in the School.
+
+Understand "Prof/--" as Professor Zaphier.
