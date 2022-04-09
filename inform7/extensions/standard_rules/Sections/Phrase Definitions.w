@@ -397,10 +397,10 @@ To end the story finally
 	(- deadflag=3; story_complete=true; -).
 To end the story saying (finale - text)
 	(documented at ph_endsaying):
-	(- deadflag={-by-reference:finale}; story_complete=false; -).
+	(- deadflag={-by-reference:finale}; BlkValueIncRefCountPrimitive(deadflag); story_complete=false; -).
 To end the story finally saying (finale - text)
 	(documented at ph_endfinallysaying):
-	(- deadflag={-by-reference:finale}; story_complete=true; -).
+	(- deadflag={-by-reference:finale}; BlkValueIncRefCountPrimitive(deadflag); story_complete=true; -).
 To decide whether the story has ended
 	(documented at ph_ended):
 	(- (deadflag~=0) -).
