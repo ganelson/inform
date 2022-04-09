@@ -22,7 +22,9 @@ Global EarlyInTurnSequence;
 Global IterationsOfTurnSequence;
 
 [ Main;
+	say__pc = say__pc | PARA_NORULEBOOKBREAKS;
 	FollowRulebook(STARTUP_RB);
+	say__pc = 0;
 	while (true) {
 		while (deadflag == false) {
 			EarlyInTurnSequence = true;
