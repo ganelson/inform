@@ -14169,6 +14169,14 @@ On the other hand, looking back at the phrase example:
 
 What's going on here is this: Inform substitutes text immediately if it contains references to a temporary value such as "T", and otherwise only if it needs to access the contents. This is why "[time of day]" isn't substituted until we need to print it out (or, say, access the third character): "time of day" is a value which always exists, not a temporary one.
 
+Another case where that might be important is if we want to set a text to an elaborated version of itself. For example, suppose there is a variable (not a temporary one) called "the accumulated tally", and consider this:
+
+	now the accumulated tally is "[the accumulated tally]X";
+
+The intention of the writer here was to add an "X" each time this happens. But the result is a hang, because what it actually means is that accumulated tally can only be printed if the accumulated tally is printed first... an infinite regress. The safe way to do this would be:
+
+	now the accumulated tally is the substituted form of "[the accumulated tally]X";
+
 Using the adjectives "substituted" and "unsubstituted", it's always possible to test whether a given text is in either state, should this ever be useful. For example,
 
 	now the left hand status line is "[time of day]";
