@@ -83,6 +83,7 @@ void AlphabeticElement::note(OUTPUT_STREAM, text_stream *key, localisation_dicti
 	WRITE_TO(full, "Index.Elements.A2.%S", key);
 	Localisation::italic(OUT, LD, full);
 	DISCARD_TEXT(full)
+	WRITE(" ");
 }
 
 @ This comparison function sorts actions in alphabetical order of name; by
