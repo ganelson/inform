@@ -31,6 +31,10 @@ retrospective/*/ni
 retrospective/*/*.o
 retrospective/makefile
 
+inform7/Tests/Test Cases/temp.txt
+inform7/Tests/Test Cases/temp-G.txt
+inform7/Figures/*-diagnostics.txt
+
 inbuild/*-test/Tests/Test Cases/_Results_Actual/
 inform7/*-test/Tests/Test Cases/_Results_Actual/
 services/*-test/Tests/Test Cases/_Results_Actual/
