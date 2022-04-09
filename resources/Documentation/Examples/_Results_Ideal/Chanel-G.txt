@@ -1,9 +1,10 @@
 
 
 
+
 Chanel Version 1
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Place Vendôme
 Fashion fades, only style remains the same (Coco Chanel). And this elegant drawing-room, once a milliner's shop, is a case in point.

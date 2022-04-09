@@ -1,9 +1,10 @@
 
 
 
+
 The Fourth Body
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Damp Hillside
 It is just after dawn: among the trees there is misty and pale blue light. The only saturated color in view is the orange-and-yellow jacket of Detective Havers. She is trying unsuccessfully to light a cigarette. 

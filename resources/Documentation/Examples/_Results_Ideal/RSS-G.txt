@@ -1,9 +1,10 @@
 
 
 
+
 Flathead News Network
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Newsroom
 This is the secret nerve-centre of FNN, the Flathead News Network.

@@ -1,9 +1,10 @@
 
 
 
+
 The Fifth Body
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Vestry
 Detective Havers hangs back by the door: the forensics expert is not finished with a preliminary examination of the body. From here you can't see much, except that the expert has peeled back and laid to one side a liturgical vestment that someone at the church used to cover the corpse until the police came. What was once a cream silk with festive Easter embroidery is now stained with blood-colored handprints.

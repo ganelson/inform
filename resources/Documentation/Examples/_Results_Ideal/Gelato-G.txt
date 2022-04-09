@@ -1,11 +1,12 @@
 
 
 
+
 Gelato's Syndrome. It's struck, and it's struck hard. In these sticky summer months, there's no telling who will contract the disease next.
 
 Patient Zero
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Alfred Cralle Pool Hall
 The town's most popular gathering-place, the pool hall is decorated in honor of the inventor of the ice cream scoop.

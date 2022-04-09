@@ -1,9 +1,10 @@
 
 
 
+
 M. Melmoth's Duel
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Saint-Germain-des-Prés
 Haunt of artists, of the coffee-drinking sort, and of cafés, of the artist-haunted sort, you once again find yourself outside M. Melmoth's hotel. Today crowds of vulgar children play chase around the lampposts, and you long to be indoors.

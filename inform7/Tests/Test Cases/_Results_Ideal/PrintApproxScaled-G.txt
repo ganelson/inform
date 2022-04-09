@@ -1,6 +1,7 @@
 
 
 
+
 1.5 hr = 1.5 hr = 5400.0s = 90.0 min.
 1.5 hr = 1.5 hr = 5400.0s = 90.0 min = 1.5 hr = 0.0625 days.
 90s = 1.5 min = 90.0s = 1.5 min = 0.025 hr = 0.00104 days.
@@ -14,7 +15,7 @@
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Lab
 

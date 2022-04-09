@@ -24,7 +24,7 @@ Global IterationsOfTurnSequence;
 [ Main;
 	say__pc = say__pc | PARA_NORULEBOOKBREAKS;
 	FollowRulebook(STARTUP_RB);
-	say__pc = 0;
+	if (say__pc & PARA_NORULEBOOKBREAKS) say__pc = say__pc - PARA_NORULEBOOKBREAKS;
 	while (true) {
 		while (deadflag == false) {
 			EarlyInTurnSequence = true;
@@ -48,6 +48,8 @@ space the opening text better.
 [ VIRTUAL_MACHINE_STARTUP_R;
 	CarryOutActivity(STARTING_VIRTUAL_MACHINE_ACT);
 	VM_Initialise();
+	! It is now safe for the paragraph breaking between rules mechanism to work
+	if (say__pc & PARA_NORULEBOOKBREAKS) say__pc = say__pc - PARA_NORULEBOOKBREAKS;
 	print "^^^";
 	rfalse;
 ];

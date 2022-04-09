@@ -1,11 +1,12 @@
 
 
 
+
 Sir Arthur Evans, hero and archeologist, invites you to explore...
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 210919 / Inform 7 v10.1.0 / D
+Release 1 / Serial number 220409 / Inform 7 v10.1.0 / D
 
 Jarn Mound
 You can see a Linear B tablet here.

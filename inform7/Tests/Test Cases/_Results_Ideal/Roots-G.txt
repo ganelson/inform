@@ -1,6 +1,7 @@
 
 
 
+
 The time is about 9:00 am.
 2174 to the nearest 25 is 2175.
 51.82m to the nearest 3m is 51m.
@@ -14,7 +15,7 @@ cubing which gives 229194cc.
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Laboratory
 

@@ -1,6 +1,7 @@
 
 
 
+
 "ceiling of pi" = real number: 4.0
 "ceiling of -16.315" = real number: -16.0
 "floor of pi" = real number: 3.0
@@ -160,7 +161,7 @@ cosh x = 2: "x" = real number: 1.31696
 
 Welcome
 An Interactive Fiction
-Release 1 / Serial number 160428 / Inform 7 build 9Z99 (I6/v6.34 lib 6/12N) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Laboratory
 

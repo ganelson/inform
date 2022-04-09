@@ -1,9 +1,10 @@
 
 
 
+
 Alias
 An Interactive Fiction
-Release 1 / Serial number 150512 / Inform 7 build 6M22 (I6/v6.33 lib 6/12N) SD
+Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
 
 Senator's Junior Suite
 The Senator appears, unfortunately, to have very precise habits: little in the room has been moved from its usual place; the trash can is empty; the bed has been remade. There may in fact be nothing to find here.

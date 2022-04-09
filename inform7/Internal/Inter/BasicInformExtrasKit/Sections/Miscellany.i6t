@@ -303,16 +303,10 @@ The routines accessible from outside this segment.
 ];
 
 [ GetGNAOfObject obj case gender;
-!    if (obj hasnt animate) case = 6;
-!    if (obj has male) gender = male;
-!    if (obj has female) gender = female;
-!    if (obj has neuter) gender = neuter;
     if (gender == 0) {
         if (case == 0) gender = LanguageAnimateGender;
         else gender = LanguageInanimateGender;
     }
-!    if (gender == female)   case = case + 1;
-!    if (gender == neuter)   case = case + 2;
     if (obj has pluralname) case = case + 3;
     return case;
 ];

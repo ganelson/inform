@@ -1,6 +1,7 @@
 
 
 
+
 Welcome
 An Interactive Fiction
 Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
@@ -666,8 +667,5 @@ You are carrying:
     a picnic basket
     a plastic daisy
 
->** 
-I beg your pardon?
-
->
-<end of input>
+>** quit
+Are you sure you want to quit? ** y

@@ -1,6 +1,7 @@
 
 
 
+
 Welcome
 An Interactive Fiction
 Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
@@ -355,6 +356,47 @@ Clark Gable picks up the bone.
 You see nothing special about Clark Gable.
 
 [examining Clark Gable - succeeded]
+
+>** showme
+Sound Stage - room
+    Clark Gable - man
+        Clark Gable's hand (part of Clark Gable) - hand
+        bone
+        swagger stick
+        briefcase - player's holdall
+            handle (part of briefcase)
+            signed contract
+        fedora (worn)
+        pair of pants (worn)
+        tray - supporter
+        chocolate underwear (worn)
+    yourself - person
+        your hand (part of yourself) - hand
+        frilly bag - player's holdall
+            strap (part of frilly bag)
+            Variety Magazine
+            clipboard - supporter
+            tent - open container
+            small key
+        sparkly scarf (worn)
+        slinky dress (worn)
+        licorice choker (worn)
+    stage door - locked door
+    cage - transparent open container
+        lion - animal
+            lion's hand (part of lion) - hand
+        seat - supporter
+        chains
+    foam boulder
+    automobile - vehicle
+        steering wheel (part of automobile)
+        trunk (part of automobile) - closed container
+        ignition (part of automobile) - device
+    dais - supporter
+        folding chair - supporter
+        canvas deckchair - supporter
+        rubber mat
+    boom microphone
 
 >** look
 [looking]
@@ -4730,8 +4772,6 @@ There is no reply.
 There is no reply.
 [answering Clark Gable that "undo pants" - succeeded]
 
->** 
-I beg your pardon?
-
->
-<end of input>
+>** quit
+[quitting the game]
+Are you sure you want to quit? ** y
