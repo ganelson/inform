@@ -89,7 +89,6 @@ int Task::carry_out(build_step *S) {
 	DefaultLanguage::set(Projects::get_language_of_syntax(project));
 
 	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
-	inform7_task = NULL;
 	return rv;
 }
 
@@ -450,29 +449,17 @@ int Task::problems_enabled(void) {
 @ And so, finally, the following triggers the indexing process.
 
 =
-index_session *Task::index_session(inter_tree *I, inform_project *project) {
-	index_session *session = Indexing::open_session(I);
-	inform_language *E = Languages::find_for(I"English", Projects::nest_list(project));
-	inform_language *L = Projects::get_language_of_index(project);
-	if (E != L)
-		Indexing::localise(session,
-			Filenames::in(Languages::path_to_bundle(E), I"Index.txt"));
-	Indexing::localise(session,
-		Filenames::in(Languages::path_to_bundle(L), I"Index.txt"));
-	return session;
+int inform7_index_requirements = 0;
+void Task::specify_index_requirements(void) {
+	inform7_index_requirements = 0;
+	if (do_not_generate_index == FALSE)
+		inform7_index_requirements |= INDEX_REQUIRED_BIT;
+	if (do_not_update_census == FALSE)
+		inform7_index_requirements |= CENSUS_UPDATE_REQUIRED_BIT;
+	if (write_EPS_format_map)
+		inform7_index_requirements |= EPS_MAP_REQUIRED_BIT;
 }
 
-void Task::produce_index(void) {
-	inform_project *project = Task::project();
-	if ((do_not_generate_index == FALSE) || (write_EPS_format_map)) {
-		index_session *session = Task::index_session(Emit::tree(), project);
-		if (do_not_generate_index == FALSE) {
-			Indexing::generate_index_website(session, Projects::index_structure(project));
-			if (do_not_update_census == FALSE)
-				ExtensionWebsite::index_after_compilation(Task::project());
-		}
-		if (write_EPS_format_map)
-			Indexing::generate_EPS_map(session, Task::epsmap_file(), NULL);
-		Indexing::close_session(session);
-	}
+int Task::get_index_requirements(void) {
+	return inform7_index_requirements;
 }

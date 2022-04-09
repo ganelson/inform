@@ -15,6 +15,9 @@ void GroupedElement::render(OUTPUT_STREAM, index_session *session) {
 	text_stream *current_subarea = I"___no_sub_area___";
 	inter_package *an_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
+		inter_ti assim = Metadata::read_optional_numeric(an_pack, I"^action_assimilated");
+		if (assim) continue;
+		inter_ti id = Metadata::read_numeric(an_pack, I"action_id");
 		text_stream *this_area = Metadata::optional_textual(an_pack, I"^index_heading");
 		int suppress_comma = FALSE;
 		if (Str::eq(this_area, current_area) == FALSE) {
@@ -43,7 +46,7 @@ void GroupedElement::render(OUTPUT_STREAM, index_session *session) {
 		WRITE("%S", Metadata::optional_textual(an_pack, I"^name"));
 		if (oow) HTML::end_colour(OUT);
 		IndexUtilities::link_package(OUT, an_pack);
-		IndexUtilities::detail_link(OUT, "A", i, FALSE);
+		IndexUtilities::detail_link(OUT, "A", (int) id, TRUE);
 		f = TRUE;
 	}
 	if (f) HTML_CLOSE("p");
@@ -61,8 +64,11 @@ void GroupedElement::detail_pages(index_session *session) {
 
 	inter_package *an_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
+		inter_ti assim = Metadata::read_optional_numeric(an_pack, I"^action_assimilated");
+		if (assim) continue;
+		inter_ti id = Metadata::read_numeric(an_pack, I"action_id");
 		text_stream index_file_struct; text_stream *OUT = &index_file_struct;
-		InterpretIndex::open_file(OUT, NULL, I"A.html", I"<Actions", i, session);
+		InterpretIndex::open_file(OUT, NULL, I"A.html", I"<Actions", (int) id, session);
 		@<Write details page for the action@>;
 		InterpretIndex::close_index_file(OUT);
 	}
@@ -95,7 +101,8 @@ void GroupedElement::detail_pages(index_session *session) {
 			if (j == i) WRITE("<b>");
 			WRITE("%S", Metadata::optional_textual(an2_pack, I"^name"));
 			if (j == i) WRITE("</b>");
-			if (j != i) IndexUtilities::detail_link(OUT, "A", j, FALSE);
+			if (j != i) IndexUtilities::detail_link(OUT, "A",
+				(int) Metadata::read_numeric(an2_pack, I"action_id"), FALSE);
 		}
 	}
 	HTML_CLOSE("p");

@@ -552,6 +552,11 @@ in other compilation units. So we create |action_id| equal just to 0 for now.
 	Produce::guard(ConstantInstruction::new(IBM, action_id_s,
 		InterTypes::unchecked(), InterValuePairs::number(0), B, NULL));
 	InterSymbol::set_flag(action_id_s, MAKE_NAME_UNIQUE_ISYMF);
+	inter_symbol *assim_s = InterSymbolsTable::create_with_unique_name(
+		InterBookmark::scope(IBM), I"^action_assimilated");
+	B = (inter_ti) InterBookmark::baseline(IBM) + 1;
+	Produce::guard(ConstantInstruction::new(IBM, assim_s,
+		InterTypes::unchecked(), InterValuePairs::number(1), B, NULL));
 
 @<Make the actual double-sharped action symbol@> =
 	inter_symbol *action_s = CompileSplatsStage::make_socketed_symbol(IBM, value);

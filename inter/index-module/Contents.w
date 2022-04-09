@@ -9,6 +9,7 @@ Preliminaries
 
 Chapter 1: Starting Up
 	Index Module
+	Index Stage
 	Indexing API
 
 Chapter 2: Utilities

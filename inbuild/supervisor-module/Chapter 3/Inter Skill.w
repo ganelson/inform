@@ -111,6 +111,8 @@ Recall that the |inter_pipeline_name| is managed in Inbuild Control, but that
 it defaults to |compile|.
 
 =
+inform_project *interskill_associated_project = NULL;
+
 int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	build_methodology *BM, linked_list *search_list) {
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
@@ -118,6 +120,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	if (project == NULL) internal_error("no project");
 	#ifdef PIPELINE_MODULE
 	clock_t back_end = clock();
+	interskill_associated_project = project;
 	PipelineModule::set_architecture(
 		Architectures::to_codename(
 			TargetVMs::get_architecture(S->for_vm)));
@@ -145,6 +148,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	}
 	RunningPipelines::run(Filenames::up(S->vertex->as_file), pipeline, Emit::tree(), NULL,
 		Projects::list_of_attachment_instructions(project), S->for_vm, FALSE);
+
 	LOG("Back end elapsed time: %dcs\n",
 		((int) (clock() - back_end)) / (CLOCKS_PER_SEC/100));
 	#ifdef CORE_MODULE
@@ -155,4 +159,9 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	#ifndef CORE_MODULE
 	return FALSE;
 	#endif
+	interskill_associated_project = NULL;
+}
+
+inform_project *InterSkill::get_associated_project(void) {
+	return interskill_associated_project;
 }

@@ -9,3 +9,4 @@ run pipeline optimise
 optionally-generate text -> *tout
 
 generate -> *out
+index

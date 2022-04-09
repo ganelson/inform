@@ -20,7 +20,10 @@ void AlphabeticElement::render(OUTPUT_STREAM, index_session *session) {
 	HTML::end_html_row(OUT);
 	inter_package *an_pack;
 	LOOP_OVER_INVENTORY_PACKAGES(an_pack, i, inv->action_nodes) {
-		inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
+		inter_ti assim = Metadata::read_optional_numeric(an_pack, I"^action_assimilated");
+		if (assim) continue;
+		inter_ti id = Metadata::read_numeric(an_pack, I"action_id");
+		inter_ti oow = Metadata::read_numeric(an_pack, I"^out_of_world");
 		inter_ti requires_light = Metadata::read_numeric(an_pack, I"^requires_light");
 		inter_ti can_have_noun = Metadata::read_numeric(an_pack, I"^can_have_noun");
 		inter_ti can_have_second = Metadata::read_numeric(an_pack, I"^can_have_second");
@@ -44,8 +47,8 @@ void AlphabeticElement::render(OUTPUT_STREAM, index_session *session) {
 	if (oow) HTML::begin_colour(OUT, I"800000");
 	WRITE("%S", Metadata::optional_textual(an_pack, I"^name"));
 	if (oow) HTML::end_colour(OUT);
-	IndexUtilities::detail_link(OUT, "A", i, TRUE);
-	if (requires_light) AlphabeticElement::note(OUT, I"Light", LD);
+	IndexUtilities::detail_link(OUT, "A", (int) id, TRUE);
+	if (requires_light) { WRITE(" "); AlphabeticElement::note(OUT, I"Light", LD); }
 
 @<Noun column@> =
 	if (can_have_noun == 0) {

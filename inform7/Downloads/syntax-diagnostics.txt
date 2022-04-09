@@ -16011,10 +16011,10 @@ ROOT_NT
                                     INVOCATION_LIST_NT'(-  deadflag=3; story_complete=true; ' {unit: 2}
                             IMPERATIVE_NT'to end the story saying ( finale - text ) ( documented at ph' {unit: 2} {imperative definition: 704}
                                 CODE_BLOCK_NT
-                                    INVOCATION_LIST_NT'(-  deadflag={-by-reference:finale}; story_complete=false; ' {unit: 2}
+                                    INVOCATION_LIST_NT'(-  deadflag={-by-reference:finale}; BlkValueIncRefCountPrim' {unit: 2}
                             IMPERATIVE_NT'to end the story finally saying ( finale - text ) ( document' {unit: 2} {imperative definition: 705}
                                 CODE_BLOCK_NT
-                                    INVOCATION_LIST_NT'(-  deadflag={-by-reference:finale}; story_complete=true; ' {unit: 2}
+                                    INVOCATION_LIST_NT'(-  deadflag={-by-reference:finale}; BlkValueIncRefCountPrim' {unit: 2}
                             IMPERATIVE_NT'to decide whether the story has ended ( documented at ph_end' {unit: 2} {imperative definition: 706}
                                 CODE_BLOCK_NT
                                     INVOCATION_LIST_NT'(-  (deadflag~=0) ' {unit: 2}

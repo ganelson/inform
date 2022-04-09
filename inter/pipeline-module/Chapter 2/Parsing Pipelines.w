@@ -349,6 +349,7 @@ pipeline_stage *ParsingPipelines::parse_stage(text_stream *from) {
 		ResolveConditionalsStage::create_pipeline_stage();
 		ReconcileVerbsStage::create_pipeline_stage();
 		MakeIdentifiersUniqueStage::create_pipeline_stage();
+		IndexStage::create_pipeline_stage();
 	}	
 	pipeline_stage *stage;
 	LOOP_OVER(stage, pipeline_stage)

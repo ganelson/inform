@@ -219,14 +219,14 @@ void InternalTests::perform_ing_internal_test(OUTPUT_STREAM,
 
 void InternalTests::perform_index_internal_test(OUTPUT_STREAM,
 	struct internal_test_case *itc) {
-	index_session *session = Task::index_session(Emit::tree(), Task::project());
+	index_session *session = IndexStage::index_session_for(Emit::tree(), Task::project());
 	Indexing::generate_one_element(session, OUT, itc->text_supplying_the_case);
 	Indexing::close_session(session);
 }
 
 void InternalTests::perform_EPS_map_internal_test(OUTPUT_STREAM,
 	struct internal_test_case *itc) {
-	index_session *session = Task::index_session(Emit::tree(), Task::project());
+	index_session *session = IndexStage::index_session_for(Emit::tree(), Task::project());
 	Indexing::generate_EPS_map(session, NULL, OUT);
 	Indexing::close_session(session);
 }

@@ -253,7 +253,7 @@ here, which only happens when special runs are made for compiler testing.
 		int tests_run = InternalTests::run(2);
 		if (tests_run > 0) exit(0);
 	}
-	BENCH(Task::produce_index);
+	BENCH(Task::specify_index_requirements);
 
 @ We will define just one of the above steps here, because it works in a way
 which breaks the pattern of doing everything just once. For one thing, it's
