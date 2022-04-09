@@ -2428,7 +2428,7 @@ cases followed by two general rules.
 	daring          dared |
 	daydreaming     daydreamed |
 	dealing         dealt |
-	diging          dug |
+	digging         dug |
 	dighting        dighted |
 	disproving      disproved |
 	diving          dived |
