@@ -447,6 +447,7 @@ void RuleFamily::visit_to_parse_placements(parse_node *p) {
 =
 int NAP_problem_explained = FALSE; /* pertains to Named Action Patterns */
 int issuing_ANL_problem = FALSE; /* pertains to Action Name Lists */
+int defective_ANL_clauses = 0; /* ditto */
 
 void RuleFamily::to_rcd(imperative_defn_family *self, imperative_defn *id,
 	id_runtime_context_data *rcd) {
@@ -466,7 +467,9 @@ whichever way works.
 
 @<Parse the applicability text into the PHRCD@> =
 	if (Rulebooks::action_focus(rfd->owning_rulebook)) {
+		parse_node *save_cs = current_sentence;
 		ActionRules::set_ap(rcd, ActionPatterns::parse_action_based(rfd->applicability));
+		current_sentence = save_cs;
 		if (ActionRules::get_ap(rcd) == NULL) @<Issue a problem message for a bad action@>;
 	} else {
 		kind *pk = Rulebooks::get_focus_kind(rfd->owning_rulebook);
@@ -656,6 +659,8 @@ parser, recording how it most recently failed.
 				" Looking at this as a list of alternative actions: ");
 		issuing_ANL_problem = TRUE; NAP_problem_explained = FALSE;
 		<anl-diagnosis>(rfd->applicability);
+		if (defective_ANL_clauses == 0)
+			Problems::issue_problem_segment(" but the combination was ambiguous,");
 		Problems::issue_problem_segment(" so");
 	}
 
@@ -752,6 +757,7 @@ might have gone wrong.
 
 @<Diagnose problem with this ANL entry@> =
 	if ((issuing_ANL_problem) && (!preform_lookahead_mode)) {
+		defective_ANL_clauses++;
 		Problems::quote_wording(4, W);
 		if (<action-pattern>(W) == FALSE) {
 			Problems::issue_problem_segment("'%4' did not make sense; ");
@@ -789,6 +795,7 @@ might have gone wrong.
 				"which isn't allowed in a list like this; ");
 			return TRUE;
 		}
+		defective_ANL_clauses--;
 		Problems::issue_problem_segment("'%4' was okay; ");
 	}
 	==> { 1, - };
