@@ -687,6 +687,7 @@ action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 @<Something except X with@> =
 	anl_entry *entry = RP[1];
 	if ((entry == NULL) ||
+		(entry->item.action_listed == NULL) ||
 		(ActionSemantics::can_have_noun(entry->item.action_listed) == FALSE)) {
 		==> { fail production };
 	}
