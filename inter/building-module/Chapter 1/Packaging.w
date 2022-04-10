@@ -216,6 +216,7 @@ packaging_state Packaging::enter_home_of(inter_name *N) {
 }
 
 packaging_state Packaging::enter(package_request *R) {
+	if (R == NULL) internal_error("no such package request");
 	LOGIF(PACKAGING, "Entering $X\n", R);
 	packaging_state save = R->tree->site.spdata.current_state;
 	Packaging::incarnate(R);

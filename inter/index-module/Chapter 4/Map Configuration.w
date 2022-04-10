@@ -126,7 +126,6 @@ int ConfigureIndexMap::get_map_variable_index(text_stream *name, index_session *
 	if (s < 0) {
 		LOG("Tried to look up <%S>\n", name);
 		internal_error("looked up non-existent map variable");
-		s = 0;
 	}
 	return s;
 }
