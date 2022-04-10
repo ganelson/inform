@@ -3,7 +3,7 @@
 
 -set CCOMPILER 'set-me-to-some-c-compiler-please'
 -set CLINKER 'set-me-to-some-c-linker-please'
--if MacOS -set CCOMPILER 'clang -g -std=c99 -ferror-limit=10000 -Wno-unused-value -c'
+-if MacOS -set CCOMPILER 'clang -g -std=c11 -ferror-limit=10000 -Wno-unused-value -c'
 -if MacOS -set CLINKER   'clang -g -ferror-limit=10000'
 
 -case			[Diagnostics] 'inform7/Tests/GenerateDiagnostics-G.txt'
