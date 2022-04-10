@@ -1,0 +1,9 @@
+Foo is a room.
+Use blurble of at least 0 translates as (- Constant BLURBLE = {N}; -).
+Use blah of at least -10 translates as (- Constant BLAH = {N}; -).
+Include (-
+	[ foo2 x; x = BLURBLE; ];
+-).
+Include (-
+	[ foo x; x = BLAH; ];
+-).

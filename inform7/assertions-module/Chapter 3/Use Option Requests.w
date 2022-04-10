@@ -51,12 +51,20 @@ option name is taken from the |...| or |###| as appropriate:
 	... language index                             ==> { TRUE, - }
 
 <use-memory-setting> ::=
-	### of <cardinal-number-unlimited>             ==> { R[1], - }
+	### of <cardinal-number-unlimited>             ==> @<Validate the at-least setting@>
 
 <use-setting> ::=
-	... of at least <cardinal-number-unlimited> |  ==> { R[1], - }
+	... of at least <cardinal-number-unlimited> |  ==> @<Validate the at-least setting@>
 	<definite-article> ...	|                      ==> { -1, - }
 	...                                            ==> { -1, - }
+
+@<Validate the at-least setting@> =
+	if (R[1] < 0)
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_UseOptionAtLeastNegative),
+			"the minimum possible value is not allowed to be negative",
+			"since it describes a quantity which must be 0 or more");
+	==> { R[1], - }
 
 @<Set a single use option@> =
 	wording S = Node::get_text(p);

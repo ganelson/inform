@@ -85,7 +85,7 @@ typedef struct use_option {
 	uo->name = GET_RW(<use-setting>, 1);
 	uo->expansion = OP;
 	uo->option_used = FALSE;
-	uo->minimum_setting_value = (N > 0) ? N : -1;
+	uo->minimum_setting_value = (N >= 0) ? N : -1;
 	uo->source_file_scoped = FALSE;
 	uo->notable_option_code = -1;
 	if (<notable-use-option-name>(uo->name)) uo->notable_option_code = <<r>>;
