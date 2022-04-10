@@ -683,9 +683,13 @@ must either completely contain another region, or else have no overlap with it.)
 					rtrue;
 		rfalse;
 	}
-	if (~~(obj ofclass K1_room)) obj = LocationOf(obj);
-	if (obj == nothing) rfalse;
-	o = obj.map_region;
+	if (obj ofclass K9_region) {
+		o = obj;
+	} else {
+		if (~~(obj ofclass K1_room)) obj = LocationOf(obj);
+		if (obj == nothing) rfalse;
+		o = obj.map_region;
+	}
 	while (o) {
 		if (o == region) rtrue;
 		o = parent(o);
