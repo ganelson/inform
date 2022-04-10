@@ -165,7 +165,6 @@ int ActionsPlugin::new_action_SMF(int task, parse_node *V, wording *NPs) {
 }
 
 @<Check that this validly declares an action@> =
-LOG("Checking %W\n", OW);
 	if (<new-action-sentence-object>(OW)) {
 		if (<<r>> == FALSE) return FALSE;
 		parse_node *O = <<rp>>;
