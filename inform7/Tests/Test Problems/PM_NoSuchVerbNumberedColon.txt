@@ -1,0 +1,5 @@
+Lab is a room.
+
+To (X - a number) be praised!: say X.
+
+To recite a hymn to 3: 3 be praised!.

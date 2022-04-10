@@ -209,6 +209,7 @@ this, a problem message of some kind will certainly result.
 	before/every/after/when/instead/check/carry/report ... | ==> @<Issue PM_RuleWithoutColon problem@>
 	if ... |												 ==> @<Issue PM_IfOutsidePhrase problem@>
 	... , ... |												 ==> @<Issue PM_NoSuchVerbComma problem@>
+	... <cardinal-number> : <cardinal-number> ... |          ==> @<Issue PM_NoSuchVerbNumberedColon problem@>
 	...														 ==> @<Issue PM_NoSuchVerb problem@>
 
 <no-primary-verb-diagnosis-tail> ::=
@@ -248,6 +249,19 @@ this, a problem message of some kind will certainly result.
 		"After rules. I mention all this in case you meant this sentence "
 		"as a rule in some rulebook, but used a comma where there should "
 		"have been a colon ':'?)");
+	Problems::issue_problem_end();
+
+@<Issue PM_NoSuchVerbNumberedColon problem@> =
+	Problems::quote_source(1, current_sentence);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NoSuchVerbNumberedColon));
+	Problems::issue_problem_segment(
+		"In the sentence %1, I can't find a verb that I know how to deal with. "
+		"I notice there's a colon ':' with a number either side of it - this might "
+		"have led to confusion because the usual convention that ':' divides a "
+		"rule or phrase from its definition does not apply in this case, to avoid "
+		"potential confusion with times of day like '2:15 PM'. If you put a line "
+		"break after the ':' and before the second number, though, you can make "
+		"sure I'm definitely reading it as punctuation.");
 	Problems::issue_problem_end();
 
 @<Issue PM_NoSuchVerb problem@> =
