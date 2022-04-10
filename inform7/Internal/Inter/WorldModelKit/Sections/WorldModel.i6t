@@ -653,6 +653,7 @@ doors.
 
 =
 [ TestAdjacency R1 R2 i row;
+	if ((R1 == nothing) || (R2 == nothing)) rfalse;
 	if (R1 ofclass K9_region) RunTimeProblem(RTP_REGIONSNOTADJACENT, R1);
 	else if (R2 ofclass K9_region) RunTimeProblem(RTP_REGIONSNOTADJACENT, R2);
 	row = (R1.IK1_Count)*No_Directions;
