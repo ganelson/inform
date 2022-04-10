@@ -1,3 +1,6 @@
+-set RUNEPUBCHECK 0
+-if macos -set RUNEPUBCHECK 1
+
 -cases indoc/Tests/Targets
 
 -recipe
@@ -19,8 +22,10 @@
 		match folder: $A/ePub $I/ePub
 		or: 'Actual output did not match blessed output'
 
-		step: java -jar indoc/Tests/Assistants/epubcheck-4.0.1/epubcheck.jar 'indoc/Tests/Targets/ebook-Actual/The Indoc Test Case Book.epub' >$WORK/epub_report.txt 2>&1
-		or: 'The ebook failed to verify through epubcheck' $WORK/epub_report.txt
+		if: $$RUNEPUBCHECK 1
+			step: java -jar indoc/Tests/Assistants/epubcheck-4.0.1/epubcheck.jar 'indoc/Tests/Targets/ebook-Actual/The Indoc Test Case Book.epub' >$WORK/epub_report.txt 2>&1
+			or: 'The ebook failed to verify through epubcheck' $WORK/epub_report.txt
+		endif
 	else
 		match folder: $A $I
 		or: 'Actual output did not match blessed output'	
