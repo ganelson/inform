@@ -138,7 +138,7 @@ simple routine, but some are run by calling the three subroutines independently.
 		MStack_DestroyAVVars(A);
 		return rv;
 	}
-	return RunTimeProblem(RTP_CANTABANDON);
+	return RunTimeProblem(RTP_CANTEND);
 ];
 
 @h Abandon.
@@ -153,5 +153,5 @@ activity must be being run by calling the three stages individually, and
 		MStack_DestroyAVVars(A);
 		return;
 	}
-	return RunTimeProblem(RTP_CANTEND);
+	return RunTimeProblem(RTP_CANTABANDON);
 ];
