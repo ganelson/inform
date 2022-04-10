@@ -1,0 +1,3 @@
+Foo is a room.
+Quog is a room that varies.
+The player is in Quog.

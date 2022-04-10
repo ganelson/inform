@@ -1,0 +1,11 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 15 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
+Problem__ PM_UndefinedContainment
+  >--> You wrote 'Quog is in the player' (source text, line 3): but this asks
+    to put something whose identity I don't know inside something else, and the
+    reason I don't know that identity is that it isn't either a name of a room
+    or thing, or of a constant or variable set to a room or thing.
+Inform 7 has finished.

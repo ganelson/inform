@@ -196,6 +196,20 @@ int SpatialRelations::assert(bp_family *self, binary_predicate *bp,
 			@<Assert the worn and wearable properties@>;
 		return TRUE;
 	}
+	if (I1 == NULL) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UndefinedContainment),
+			"this asks to put something whose identity I don't know inside something else",
+			"and the reason I don't know that identity is that it isn't either a name "
+			"of a room or thing, or of a constant or variable set to a room or thing.");
+		return TRUE;
+	}
+	if (I0 == NULL) {
+		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UndefinedContainment2),
+			"this asks to put something inside something else whose identity I don't know",
+			"and the reason I don't know that identity is that it isn't either a name "
+			"of a room or thing, or of a constant or variable set to a room or thing.");
+		return TRUE;
+	}
 
 	return FALSE;
 }
