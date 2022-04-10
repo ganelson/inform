@@ -453,6 +453,12 @@ so this is what we set |M| to.
 			double k = sc->real_scalar;
 			sc->real_M = B*k;
 		}
+	} else if (sc->scaling_mode == LP_SCALED_AT) {
+		if (sc->use_integer_scaling) {
+			sc->int_M = benchmark_sc->int_M;
+		} else {
+			sc->real_M = benchmark_sc->real_M;
+		}
 	}
 
 @h Enlarging and contracting.

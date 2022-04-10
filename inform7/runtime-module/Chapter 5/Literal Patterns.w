@@ -102,14 +102,14 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 			EmitCode::up();
 		}
 		switch (lp->lp_tokens[tc].lpt_type) {
-			case WORD_LPT: @<Compile I6 code to print a fixed word token within a literal pattern@>; break;
-			case CHARACTER_LPT: @<Compile I6 code to print a character token within a literal pattern@>; break;
-			case ELEMENT_LPT: @<Compile I6 code to print an element token within a literal pattern@>; break;
+			case WORD_LPT: @<Compile Inter to print a fixed word token within a literal pattern@>; break;
+			case CHARACTER_LPT: @<Compile Inter to print a character token within a literal pattern@>; break;
+			case ELEMENT_LPT: @<Compile Inter to print an element token within a literal pattern@>; break;
 			default: internal_error("unknown literal pattern token type");
 		}
 	}
 
-@<Compile I6 code to print a fixed word token within a literal pattern@> =
+@<Compile Inter to print a fixed word token within a literal pattern@> =
 	TEMPORARY_TEXT(T)
 	TranscodeText::from_wide_string(T, Lexer::word_raw_text(lp->lp_tokens[tc].token_wn), CT_RAW);
 	EmitCode::inv(PRINT_BIP);
@@ -118,7 +118,7 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 	EmitCode::up();
 	DISCARD_TEXT(T)
 
-@<Compile I6 code to print a character token within a literal pattern@> =
+@<Compile Inter to print a character token within a literal pattern@> =
 	TEMPORARY_TEXT(T)
 	TEMPORARY_TEXT(tiny_string)
 	PUT_TO(tiny_string, (int) lp->lp_tokens[tc].token_char);
@@ -130,7 +130,7 @@ void RTLiteralPatterns::compilation_agent(compilation_subtask *t) {
 	EmitCode::up();
 	DISCARD_TEXT(T)
 
-@<Compile I6 code to print an element token within a literal pattern@> =
+@<Compile Inter to print an element token within a literal pattern@> =
 	literal_pattern_element *lpe = &(lp->lp_elements[ec]);
 	if (lpe->element_optional)
 		@<Truncate the printed form here if subsequent numerical parts are zero@>;
@@ -383,9 +383,9 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::up();
 
 		switch (lp->lp_tokens[tc].lpt_type) {
-			case WORD_LPT: @<Compile I6 code to match a fixed word token within a literal pattern@>; break;
-			case CHARACTER_LPT: @<Compile I6 code to match a character token within a literal pattern@>; break;
-			case ELEMENT_LPT: @<Compile I6 code to match an element token within a literal pattern@>; break;
+			case WORD_LPT: @<Compile Inter to match a fixed word token within a literal pattern@>; break;
+			case CHARACTER_LPT: @<Compile Inter to match a character token within a literal pattern@>; break;
+			case ELEMENT_LPT: @<Compile Inter to match an element token within a literal pattern@>; break;
 			default: internal_error("unknown literal pattern token type");
 		}
 	}
@@ -480,7 +480,7 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_NUMBER_HL));
 	EmitCode::up();
 
-@<Compile I6 code to match a fixed word token within a literal pattern@> =
+@<Compile Inter to match a fixed word token within a literal pattern@> =
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();
 		EmitCode::val_symbol(K_value, gprk.mid_word_s);
@@ -517,8 +517,8 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::ref_iname(K_value, Hierarchy::find(WN_HL));
 	EmitCode::up();
 
-@<Compile I6 code to match a character token within a literal pattern@> =
-	@<Compile I6 code to enter mid-word parsing if not already in it@>;
+@<Compile Inter to match a character token within a literal pattern@> =
+	@<Compile Inter to enter mid-word parsing if not already in it@>;
 	wchar_t lower_form = Characters::tolower(lp->lp_tokens[tc].token_char);
 	wchar_t upper_form = Characters::toupper(lp->lp_tokens[tc].token_char);
 
@@ -562,10 +562,10 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::up();
 	EmitCode::up();
 
-	@<Compile I6 code to exit mid-word parsing if at end of a word@>;
+	@<Compile Inter to exit mid-word parsing if at end of a word@>;
 
-@<Compile I6 code to match an element token within a literal pattern@> =
-	@<Compile I6 code to enter mid-word parsing if not already in it@>;
+@<Compile Inter to match an element token within a literal pattern@> =
+	@<Compile Inter to enter mid-word parsing if not already in it@>;
 	literal_pattern_element *lpe = &(lp->lp_elements[ec++]);
 	if (ec == 1) {
 		EmitCode::inv(STORE_BIP);
@@ -607,12 +607,12 @@ sets the |parsed_number| global to the value matched.
 	EmitCode::up();
 
 	if (Kinds::FloatingPoint::uses_floating_point(lp->kind_specified))
-		@<Compile I6 code to match a real number here@>
+		@<Compile Inter to match a real number here@>
 	else
-		@<Compile I6 code to match an integer here@>;
-	@<Compile I6 code to exit mid-word parsing if at end of a word@>;
+		@<Compile Inter to match an integer here@>;
+	@<Compile Inter to exit mid-word parsing if at end of a word@>;
 
-@<Compile I6 code to match a real number here@> =
+@<Compile Inter to match a real number here@> =
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_symbol(K_value, gprk.f_s);
@@ -702,7 +702,7 @@ sets the |parsed_number| global to the value matched.
 					EmitCode::down();
 						EmitCode::ref_symbol(K_value, gprk.wpos_s);
 					EmitCode::up();
-					@<Compile I6 code to enter mid-word parsing if not already in it@>;
+					@<Compile Inter to enter mid-word parsing if not already in it@>;
 					@<March forwards through decimal digits@>;
 				EmitCode::up();
 			EmitCode::up();
@@ -738,7 +738,7 @@ sets the |parsed_number| global to the value matched.
 				EmitCode::ref_symbol(K_value, gprk.mid_word_s);
 				EmitCode::val_false();
 			EmitCode::up();
-			@<Compile I6 code to enter mid-word parsing if not already in it@>;
+			@<Compile Inter to enter mid-word parsing if not already in it@>;
 		EmitCode::up();
 	EmitCode::up();
 
@@ -804,7 +804,7 @@ sets the |parsed_number| global to the value matched.
 						EmitCode::ref_symbol(K_value, gprk.mid_word_s);
 						EmitCode::val_false();
 					EmitCode::up();
-					@<Compile I6 code to enter mid-word parsing if not already in it@>;
+					@<Compile Inter to enter mid-word parsing if not already in it@>;
 				EmitCode::up();
 			EmitCode::up();
 
@@ -1025,7 +1025,7 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::up();
 	EmitCode::up();
 
-@<Compile I6 code to match an integer here@> =
+@<Compile Inter to match an integer here@> =
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_symbol(K_value, gprk.tot_s);
@@ -1181,7 +1181,7 @@ sets the |parsed_number| global to the value matched.
 							EmitCode::ref_symbol(K_value, gprk.mid_word_s);
 							EmitCode::val_false();
 						EmitCode::up();
-						@<Compile I6 code to enter mid-word parsing if not already in it@>;
+						@<Compile Inter to enter mid-word parsing if not already in it@>;
 						EmitCode::inv(STORE_BIP);
 						EmitCode::down();
 							EmitCode::ref_symbol(K_value, gprk.x_s);
@@ -1271,7 +1271,7 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::up();
 	}
 
-@<Compile I6 code to enter mid-word parsing if not already in it@> =
+@<Compile Inter to enter mid-word parsing if not already in it@> =
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();
 		EmitCode::inv(EQ_BIP);
@@ -1310,7 +1310,7 @@ sets the |parsed_number| global to the value matched.
 		EmitCode::up();
 	EmitCode::up();
 
-@<Compile I6 code to exit mid-word parsing if at end of a word@> =
+@<Compile Inter to exit mid-word parsing if at end of a word@> =
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();
 		EmitCode::inv(EQ_BIP);

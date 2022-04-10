@@ -17,19 +17,19 @@ You can see a cannon ball and a feather here.
 Taken.
 
 >[2] drop it from 1m
-You let go the cannon ball from a height of 1m, and, subject to a downward force of 19.614N, it falls. 45 seconds later, this mass of 2kg hits the floor at 4.42 m/s with a kinetic energy of 19.53J.
+You let go the cannon ball from a height of 1m, and, subject to a downward force of 19.614N, it falls. 0.45s later, this mass of 2kg hits the floor at 4.42 m/s with a kinetic energy of 19.53J.
 
 >[3] get ball
 Taken.
 
 >[4] drop it from 2m
-You let go the cannon ball from a height of 2m, and, subject to a downward force of 19.614N, it falls. 63 seconds later, this mass of 2kg hits the floor at 6.26 m/s with a kinetic energy of 39.18J.
+You let go the cannon ball from a height of 2m, and, subject to a downward force of 19.614N, it falls. 0.63s later, this mass of 2kg hits the floor at 6.26 m/s with a kinetic energy of 39.18J.
 
 >[5] get ball
 Taken.
 
 >[6] drop it from 3m
-You let go the cannon ball from a height of 3m, and, subject to a downward force of 19.614N, it falls. 78 seconds later, this mass of 2kg hits the floor at 7.67 m/s with a kinetic energy of 58.82J.
+You let go the cannon ball from a height of 3m, and, subject to a downward force of 19.614N, it falls. 0.78s later, this mass of 2kg hits the floor at 7.67 m/s with a kinetic energy of 58.82J.
 
 This is not doing either the floor or your ears any favours.
 
@@ -58,6 +58,6 @@ A reddish-lit room with steel walls, whose only exit is the teleport corridor to
 You let go the cannon ball from a height of 3m, and, subject to a downward force of 7.38N, it falls. 1.27s later, this mass of 2kg hits the floor at 4.7 m/s with a kinetic energy of 22.09J.
 
 >[14] drop feather from 3m
-You let go the feather from a height of 3m, and, subject to a downward force of 36 Newtons, it falls. 1.25s later, this mass of 10g hits the floor at 4.64 m/s with a kinetic energy of 107mJ.
+You let go the feather from a height of 3m, and, subject to a downward force of 0.036N, it falls. 1.25s later, this mass of 10g hits the floor at 4.64 m/s with a kinetic energy of 107mJ.
 
 >Are you sure you want to quit? 

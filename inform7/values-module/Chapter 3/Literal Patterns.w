@@ -227,8 +227,8 @@ equivalent to an exact value.
 	literal_pattern *lp;
 	scaling_transformation *benchmark_sc = NULL;
 	for (lp = list_head; lp; lp = lp->next_for_this_kind)
-		if (lp->benchmark) benchmark_sc = &(lp->scaling);
-
+		if (lp->benchmark)
+			benchmark_sc = &(lp->scaling);
 	int rescale_factor = Kinds::Scalings::determine_M(&(new_lp->scaling), benchmark_sc,
 		FALSE, new_lp->equivalent_unit, new_lp->primary_alternative);
 	if (rescale_factor != 1)
@@ -236,7 +236,6 @@ equivalent to an exact value.
 			if ((lp != new_lp) && (lp->equivalent_unit == FALSE))
 				lp->scaling =
 					Kinds::Scalings::enlarge(lp->scaling, rescale_factor);
-
 	list_head = LiteralPatterns::lp_list_add_inner(list_head, new_lp);
 
 	if ((TargetVMs::is_16_bit(Task::vm())) && (PM_ZMachineOverflow2_issued == FALSE))
