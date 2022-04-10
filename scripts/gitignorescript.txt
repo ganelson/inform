@@ -39,5 +39,8 @@ inbuild/*-test/Tests/Test Cases/_Results_Actual/
 inform7/*-test/Tests/Test Cases/_Results_Actual/
 services/*-test/Tests/Test Cases/_Results_Actual/
 services/*-test/Tests/Test Diagrams/_Results_Actual/
+inter/*-test/*.mk
 services/*-test/*.mk
+inform6/inform6.mk
+retrospective/makefile
 rsync.log
