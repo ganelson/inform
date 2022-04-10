@@ -47,7 +47,7 @@ Now, in order to let the player view these footnotes, we'll need to parse number
 
 	Check looking up a footnote:
 		if the number understood > footnotes mentioned, say "You haven't seen any such footnote." instead;
-		if the number understood < 1, say "Footnotes are numbered from 1."
+		if the number understood < 1, say "Footnotes are numbered from 1." instead.
 	
 	Carry out looking up a footnote:
 		choose row with assignment of number understood in the Table of Footnotes;
