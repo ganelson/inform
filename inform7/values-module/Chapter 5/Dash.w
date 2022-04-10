@@ -828,8 +828,26 @@ later rules can override earlier ones but still make use of them.
 	for (int i=0; i<no_of_possible_readings; i++)
 		LOGIF(MATCHING, "Possibility (P%d) $e\n", i, list_of_possible_readings[i]);
 
+@ In general, it's not great for typecheckers in compilers to put an upper bound
+on complexity, because although human-written code seldom hits such maxima, there's
+always the possibility of mechanically-generated code which does. On the other hand,
+the result of that doctrine is that a lot of modern compilers (Swift, for example)
+slow to a painful crawl and allocate gigabytes of memory trying to understand
+strange type constraints in two or three lines of code. So, for now at least,
+let's be pragmatic.
+
 @<Add this reading to the list of test cases@> =
-	if (no_of_possible_readings >= MAX_INVOCATIONS_PER_PHRASE) internal_error("overrun");
+	if (no_of_possible_readings >= MAX_INVOCATIONS_PER_PHRASE) {
+		THIS_IS_AN_ORDINARY_PROBLEM;
+		Problems::quote_wording(1, Node::get_text(p));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AmbiguitiesTooDeep));
+		Problems::issue_problem_segment(
+			"The phrase %1 is too complicated for me to disentangle without "
+			"running very, very slowly as I check many ambiguities in it. There "
+			"ought to be some way to simplify things for me?");
+		Problems::issue_problem_end();
+		return NEVER_MATCH;
+	}
 	list_of_possible_readings[no_of_possible_readings++] = alt;
 	Dash::clear_flags(alt);
 

@@ -1,0 +1,23 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 55 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
+Problem__ PM_AmbiguitiesTooDeep
+  >--> The phrase a room encloses a room that encloses a room that encloses a
+    room that encloses a room that encloses a room that encloses a room that
+    encloses a room that encloses a room that encloses a room that encloses a
+    room that encloses a room is too complicated for me to disentangle without
+    running very, very slowly as I check many ambiguities in it. There ought to
+    be some way to simplify things for me?
+    I was trying to match this phrase:
+      if (a room encloses a room that encloses a room that encloses a room that
+    encloses a room that encloses a room that encloses a room that encloses a
+    room that encloses a room that encloses a room that encloses a room that
+    encloses a room - a condition): 
+    I recognised:
+    a room encloses a room that encloses a room that encloses a room that
+    encloses a room that encloses a room that encloses a room that encloses a
+    room that encloses a room that encloses a room that encloses a room that
+    encloses a room = a condition
+Inform 7 has finished.
