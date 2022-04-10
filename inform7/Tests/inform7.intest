@@ -1,9 +1,14 @@
 -set extensions_testing_area     	'inform7/Tests/Test Extensions'
 -set hash_cache						'inform7/Tests/hashes.intest'
 
+-set CCOMPILER 'set-me-to-some-c-compiler-please'
+-set CLINKER 'set-me-to-some-c-linker-please'
+-if MacOS -set CCOMPILER 'clang -g -std=c99 -ferror-limit=10000 -Wno-unused-value -c'
+-if MacOS -set CLINKER   'clang -g -ferror-limit=10000'
+
 -case			[Diagnostics] 'inform7/Tests/GenerateDiagnostics-G.txt'
 -cases			[Main] 'inform7/Tests/Test Cases'
--if osx -cases	[Release] 'inform7/Tests/Test Releases'
+-if macos -cases [Release] 'inform7/Tests/Test Releases'
 -cases			[Basic] 'inform7/Tests/Test Basic'
 -cases			[Internal] 'inform7/Tests/Test Internals'
 -cases			[Make] 'inform7/Tests/Test Makes'
@@ -119,10 +124,10 @@
 		set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
 		set: $STORYFILE = $WORK/Example.inform/Build/final
 
-		step: clang -g -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -Wno-unused-value -I $I7CLIB >$CCCONSOLE 2>&1
+		step: `$$CCOMPILER -o $OFILE $COUT -I $I7CLIB >$CCCONSOLE 2>&1
 		or: 'failed to compile C' $CCCONSOLE
 
-		step: clang -g -o $STORYFILE $OFILE -ferror-limit=10000 >$LINKCONSOLE 2>&1
+		step: `$$CLINKER -o $STORYFILE $OFILE >$LINKCONSOLE 2>&1
 		or: 'failed to link C' $LINKCONSOLE
 	
 		set: $A = $PATH/_Results_Actual/$CASE.txt
@@ -281,10 +286,10 @@
 		set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
 		set: $STORYFILE = $WORK/Example.inform/Build/final
 
-		step: clang -g -std=c99 -c -o $OFILE $COUT -ferror-limit=10000 -I $I7CLIB >$CCCONSOLE 2>&1
+		step: `$$CCOMPILER -o $OFILE $COUT -I $I7CLIB >$CCCONSOLE 2>&1
 		or: 'failed to compile C' $CCCONSOLE
 
-		step: clang -g -o $STORYFILE $OFILE -ferror-limit=10000 >$LINKCONSOLE 2>&1
+		step: `$$CLINKER -o $STORYFILE $OFILE >$LINKCONSOLE 2>&1
 		or: 'failed to link C' $LINKCONSOLE
 	
 		set: $A = $PATH/_Results_Actual/$CASE.txt
@@ -406,7 +411,7 @@
 
 	set: $I7 = inform7/Tangled/inform7
 	set: $INTERNAL = inform7/Internal
-	set: $WORKSPACE = intest/Workspace
+	set: $WORKSPACE = ../intest/Workspace
 
 	set: $VM = G
 	if: $CASE %c*-Z
