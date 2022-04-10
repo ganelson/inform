@@ -165,6 +165,7 @@ int ActionsPlugin::new_action_SMF(int task, parse_node *V, wording *NPs) {
 }
 
 @<Check that this validly declares an action@> =
+LOG("Checking %W\n", OW);
 	if (<new-action-sentence-object>(OW)) {
 		if (<<r>> == FALSE) return FALSE;
 		parse_node *O = <<rp>>;
@@ -184,6 +185,7 @@ as an instance of "... is an action ...", creating a new action.
 	<new-action-sentence-object-unarticled>							==> { pass 1 }
 
 <new-action-sentence-object-unarticled> ::=
+	action based ... |                  ==> { FALSE, NULL }
 	action <nounphrase-actionable> |    ==> { TRUE, RP[1] }
 	action								==> @<Issue PM_BadActionDeclaration problem@>
 
