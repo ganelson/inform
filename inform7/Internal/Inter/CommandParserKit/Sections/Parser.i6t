@@ -3083,7 +3083,6 @@ the preposition |n|.)
 	if ((from ~= 0) && (from == pcount-1) &&
 		(pattern-->from > 1) && (pattern-->from < REPARSE_CODE))
 			singleton_noun = true;
-
 	if (singleton_noun) {
 		BeginActivity(CLARIFYING_PARSERS_CHOICE_ACT, pattern-->from);
 		if (ForActivity(CLARIFYING_PARSERS_CHOICE_ACT, pattern-->from) == 0) {
