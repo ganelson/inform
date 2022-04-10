@@ -1556,6 +1556,7 @@ void Hierarchy::establish(void) {
 @e RULE_INDEX_NUMBER_MD_HL
 @e BRULE_AT_MD_HL
 @e RULE_DURING_MD_HL
+@e RULE_DURING_TEXT_MD_HL
 @e RULE_ACTION_RELEVANCES_HAP
 @e RULE_ACTION_RELEVANCE_MD_HL
 @e RULEBOOK_PLACEMENTS_HAP
@@ -1605,6 +1606,7 @@ void Hierarchy::establish(void) {
 				H_C_U(RULE_INDEX_NUMBER_MD_HL,         I"^index_number")
 				H_C_U(BRULE_AT_MD_HL,                  I"^at")
 				H_C_U(RULE_DURING_MD_HL,               I"^during")
+				H_C_U(RULE_DURING_TEXT_MD_HL,          I"^during_text")
 				H_BEGIN_AP(RULE_ACTION_RELEVANCES_HAP, I"relevant_action", I"_relevant_action")
 					H_C_U(RULE_ACTION_RELEVANCE_MD_HL, I"^action")
 				H_END

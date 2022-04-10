@@ -653,5 +653,13 @@ scene *Scenes::rcd_scene(id_runtime_context_data *idrcd) {
 	return NULL;
 }
 
+@ And this is used to make metadata for indexing.
 
-
+=
+wording Scenes::during_wording(id_runtime_context_data *idrcd) {
+	if (idrcd) {
+		scenes_rcd_data *srcd = RCD_PLUGIN_DATA(scenes, idrcd);
+		if (srcd) return Node::get_text(srcd->during_scene);
+	}
+	return EMPTY_WORDING;
+}

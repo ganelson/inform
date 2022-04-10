@@ -290,6 +290,7 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	text_stream *italicised_text = Metadata::optional_textual(R, I"^index_name");
 	text_stream *first_line = Metadata::optional_textual(R, I"^first_line");
 	if (Str::len(italicised_text) > 0) @<Index the italicised text to do with the rule@>;
+	@<Index the during condition@>;
 	if (Str::len(name) > 0) @<Index the rule name along with Javascript buttons@>;
 	if ((Str::len(italicised_text) == 0) &&
 		(Str::len(name) == 0) && (Str::len(first_line) > 0))
@@ -301,14 +302,23 @@ int IndexRules::index_rule(OUTPUT_STREAM, inter_tree *I, inter_package *R,
 	return no_responses_indexed;
 }
 
-@<Index the italicised text to do with the rule@> =
-	WRITE("<i>%S", italicised_text);
+@<Index the during condition@> =
 	if (rc.scene_context) {
-		WRITE(" ");
+		WRITE("<i>");
 		Localisation::roman_t(OUT, LD, I"Index.Elements.RS.During",
 			FauxScenes::scene_name(rc.scene_context));
+		WRITE("</i>&nbsp;&nbsp;");
+	} else {
+		text_stream *during_text = Metadata::optional_textual(R, I"^during_text");
+		if (Str::len(during_text) > 0) {
+			WRITE("<i>");
+			Localisation::roman_t(OUT, LD, I"Index.Elements.RS.During", during_text);
+			WRITE("</i>&nbsp;&nbsp;");
+		}
 	}
-	WRITE("</i>&nbsp;&nbsp;");
+	
+@<Index the italicised text to do with the rule@> =
+	WRITE("<i>%S</i>&nbsp;&nbsp;", italicised_text);
 
 @
 

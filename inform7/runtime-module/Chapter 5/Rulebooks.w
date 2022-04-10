@@ -186,6 +186,9 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 			scene *during_scene = Scenes::rcd_scene(phrcd);
 			if (during_scene) Hierarchy::apply_metadata_from_iname(EP, RULE_DURING_MD_HL,
 				RTInstances::value_iname(during_scene->as_instance));
+			wording W = Scenes::during_wording(phrcd);
+			if (Wordings::nonempty(W))
+				Hierarchy::apply_metadata_from_raw_wording(EP, RULE_DURING_TEXT_MD_HL, W);
 			action_name *an;
 			LOOP_OVER(an, action_name) {
 				if (ActionRules::within_action_context(phrcd, an)) {
