@@ -1121,13 +1121,9 @@ void ImperativeSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) 
 	TextSubstitutions::it_is_not_worth_adding();
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TSWithComma),
 		"a substitution contains a comma ','",
-		"which is against the rules, because 'say' is a special phrase in which the comma "
-		"divides items in a list of things to say, and so it loses its ordinary meanings. "
-		"Because of this, no text substitution can contain a comma. "
-		"(If you're trying to use a value produced by a phrase with a phrase "
-		"option - say 'the best route from A to B, using even locked doors' - "
-		"you'll need to put this in a 'let' variable first and then say that, "
-		"or else define a better text substitution to do the job for you.)");
+		"which is (for obscure reasons) against the rules for text substitutions. "
+		"(You may be able to get around this by placing the phrase containing the "
+		"comma in round brackets '(' and ')', which reduces the risk of ambiguity.)");
 	TextSubstitutions::it_is_worth_adding();
 	return;
 
