@@ -17730,6 +17730,22 @@ The idea is that typing one single command, TEST ME, into the resulting story sh
 
 When an extension contains more than one example, they should be given in order of asterisk rating, that is, starting with the * examples, then the ** examples, and so on up.
 
+Extension documentation can provide "paste" buttons, much like the examples in this book. For example:
+
+	Here is a sample -
+	
+		*: "Coriander"
+		
+		Include Herbs by Charlotte Quirke.
+		
+		The Herb Marketing Centre is a room.
+	
+	If we want to add some content -
+	
+		The coriander is a herb. Understand "cilantro" as the coriander.
+
+Note that the paste button, denoted "*:", pastes in the text following it, but only as far as the next paragraph of unindented documentation - here, the one beginning "If we...". (But of course, an extension can have multiple paste buttons if desired.)
+
 [x] Implications {PM_ImplicationCertain} {PM_ImplicationValueProperty}
 
 ^^{properties: implications}
