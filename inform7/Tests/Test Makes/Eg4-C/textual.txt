@@ -27753,7 +27753,7 @@ package main _plain
 			constant (int32) KIT_CONFIGURATION_BITMAP = 0
 			constant (int32) KIT_CONFIGURATION_LOOKMODE = 2
 			constant (text) I7_VERSION_NUMBER = "10.1.0"
-			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U78"
+			constant (text) I7_FULL_VERSION_NUMBER = "10.1.0-alpha.1+6U79"
 			constant (text) ^virtual_machine = "C/32d/v1/no-main"
 			constant (text) ^virtual_machine_icon = "vm_glulx.png"
 			constant (text) ^language_elements_used = "core, naming, instance counting, glulx external files"
@@ -79177,7 +79177,7 @@ package main _plain
 									val rv
 						inv !return
 							inv /main/BasicInformKit/functions/RunTimeProblem_fn/RunTimeProblem
-								val /main/BasicInformKit/constants/RTP_CANTABANDON_con/RTP_CANTABANDON
+								val /main/BasicInformKit/constants/RTP_CANTEND_con/RTP_CANTEND
 			package AbandonActivity_fn _function
 				package AbandonActivity _code
 					local A
@@ -79206,7 +79206,7 @@ package main _plain
 									val 1
 						inv !return
 							inv /main/BasicInformKit/functions/RunTimeProblem_fn/RunTimeProblem
-								val /main/BasicInformKit/constants/RTP_CANTEND_con/RTP_CANTEND
+								val /main/BasicInformKit/constants/RTP_CANTABANDON_con/RTP_CANTABANDON
 		package arrays _submodule
 			package StorageForShortName_arr _plain
 				constant (list of unchecked) StorageForShortName = bounded list of 250 bytes __assimilated

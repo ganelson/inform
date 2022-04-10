@@ -770,8 +770,10 @@ which cannot be asserted true or false.
 =
 [ TestConcealment A B;
 	if (A ofclass K2_thing && B ofclass K2_thing) {
-		particular_possession = B;
-		if (CarryOutActivity(DECIDING_CONCEALED_POSSESS_ACT, A)) rtrue;
+		if (IndirectlyContains(A, B)) {
+			particular_possession = B;
+			if (CarryOutActivity(DECIDING_CONCEALED_POSSESS_ACT, A)) rtrue;
+		}
 	}
 	rfalse;
 ];
