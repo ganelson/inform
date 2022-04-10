@@ -36,11 +36,12 @@ again for short periods of time:
 int formal_par_vars_made = FALSE;
 nonlocal_variable *formal_par_VAR[8];
 nonlocal_variable *TemporaryVariables::formal_parameter(int i) {
+	if (i >= 8) internal_error("too many formal parameter variables");
 	if (formal_par_vars_made == FALSE) {
-		for (int i=0; i<8; i++) {
-			formal_par_VAR[i] = NonlocalVariables::new(EMPTY_WORDING, K_object, NULL);
-			RTVariables::set_hierarchy_location(formal_par_VAR[i], 
-				TemporaryVariables::hl_of_formal_parameter(i));
+		for (int j=0; j<8; j++) {
+			formal_par_VAR[j] = NonlocalVariables::new(EMPTY_WORDING, K_object, NULL);
+			RTVariables::set_hierarchy_location(formal_par_VAR[j], 
+				TemporaryVariables::hl_of_formal_parameter(j));
 		}
 		formal_par_vars_made = TRUE;
 	}

@@ -84,8 +84,8 @@ void DeferredPropositions::compile(pcalc_prop_deferral *pdef) {
 
 	@<Simplify the proposition by flipping negated quantifiers, if possible@>;
 
-	LOGIF(PREDICATE_CALCULUS, "Compiling deferred proposition: %d: reason %d: $D\n",
-		pdef->allocation_id, pdef->reason, proposition);
+	LOGIF(PREDICATE_CALCULUS, "Compiling %n as deferred proposition: %d: reason %d: $D\n",
+		pdef->ppd_iname, pdef->allocation_id, pdef->reason, proposition);
 
 	packaging_state save = Functions::begin(pdef->ppd_iname);
 

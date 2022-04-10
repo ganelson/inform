@@ -1,0 +1,25 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 86 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
+Problem__ PM_CinderOverflow
+  >--> You wrote 'if every room encloses a thing that is A0 that is A1 that is
+    A2 that is A3 that is A4 that is A5 that is A6 that is A7 that is A8' (source
+    text, line 12): but this complicated condition makes use of too many
+    temporary values, and will have to be simplified.
+Problem__ PM_TooManyLocals
+  >--> You wrote 'if every room encloses a thing that is A0 that is A1 that is
+    A2 that is A3 that is A4 that is A5 that is A6 that is A7 that is A8' (source
+    text, line 12): but there are too many temporarily-named values in this
+    phrase, which may be a sign that it is complicated enough to need breaking
+    up into smaller phrases making use of each other. The limit is 15 at a time
+    for a Z-machine project (see the Settings) and 256 at a time for Glulx.
+    That has to include both values created in the declaration of a phrase
+    (e.g. the 'N' in 'To deduct (N - a number) points: ...', or the 'watcher'
+    in 'Instead of taking something in the presence of a man (called the
+    watcher): ...'), and also values created with 'let' or 'repeat' (each
+    'repeat' loop claiming two such values) - not to mention one or two values
+    occasionally needed to work with Tables. Because of all this, it's best to
+    keep the complexity to a minimum within any single phrase.
+Inform 7 has finished.

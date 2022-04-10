@@ -1,0 +1,12 @@
+Foo is a room.
+To zog:
+	let A0 be the player;
+	let A1 be the player;
+	let A2 be the player;
+	let A3 be the player;
+	let A4 be the player;
+	let A5 be the player;
+	let A6 be the player;
+	let A7 be the player;
+	let A8 be the player;
+	if every room encloses a thing that is A0 that is A1 that is A2 that is A3 that is A4 that is A5 that is A6 that is A7 that is A8, do nothing.

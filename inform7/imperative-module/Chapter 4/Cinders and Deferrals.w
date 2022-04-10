@@ -68,23 +68,34 @@ sets the kinds of the cinder values in the deferred function.
 int Cinders::compile_cindered_values(pcalc_prop *prop, pcalc_prop_deferral *pdef) {
 	pcalc_prop_deferral *save_current_pdef = current_pdef;
 	current_pdef = pdef;
-	int N = 0;
+	int N = 0, overflowed = FALSE;
 	TRAVERSE_VARIABLE(atom);
 	TRAVERSE_PROPOSITION(atom, prop)
 		for (int i=0; i<atom->arity; i++)
-			N = Cinders::compile_cindered_value_in_term(&(atom->terms[i]), N);
+			N = Cinders::compile_cindered_value_in_term(&(atom->terms[i]), N, &overflowed);
 	current_pdef = save_current_pdef;
+	if (overflowed) {
+		current_sentence = pdef->deferred_from;
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_CinderOverflow),
+			"this complicated condition makes use of too many temporary values",
+			"and will have to be simplified.");
+	}
 	return N;
 }
 
-int Cinders::compile_cindered_value_in_term(pcalc_term *pt, int N) {
+int Cinders::compile_cindered_value_in_term(pcalc_term *pt, int N, int *overflowed) {
 	if (pt->function)
-		return Cinders::compile_cindered_value_in_term(&(pt->function->fn_of), N);
+		return Cinders::compile_cindered_value_in_term(&(pt->function->fn_of), N, overflowed);
 	if (pt->constant) {
 		if (Cinders::needs_to_be_cindered(pt->constant)) {
-			pt->cinder = N++;
-			CompileValues::to_code_val(pt->constant);
-			current_pdef->cinder_kinds[pt->cinder] = Specifications::to_kind(pt->constant);
+			if (N >= MAX_CINDERS_PER_DEFERRAL) {
+				*overflowed = TRUE;
+			} else {
+				pt->cinder = N++;
+				CompileValues::to_code_val(pt->constant);
+				current_pdef->cinder_kinds[pt->cinder] = Specifications::to_kind(pt->constant);
+			}
 		} else {
 			pt->cinder = -1;
 		}
@@ -146,6 +157,8 @@ kind *Cinders::kind_of_term(pcalc_term pt) {
 		if (pt.cinder >= 0) {
 			if (current_pdef == NULL)
 				internal_error("cindered term outside of deferral");
+			if (pt.cinder >= MAX_CINDERS_PER_DEFERRAL)
+				internal_error("cinder out of range");
 			return current_pdef->cinder_kinds[pt.cinder];
 		}
 		if (Specifications::is_phrasal(pt.constant))

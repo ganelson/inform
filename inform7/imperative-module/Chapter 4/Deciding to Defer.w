@@ -21,13 +21,15 @@ at runtime.
 
 @d MULTIPURPOSE_DEFER 100  /* potentially any of the above */
 
+@d MAX_CINDERS_PER_DEFERRAL 16
+
 =
 typedef struct pcalc_prop_deferral {
 	int reason; /* what we intend to do with it: one of the |*_DEFER| values above */
 	struct pcalc_prop *proposition_to_defer;
 	struct parse_node *deferred_from; /* remember where it came from, for Problem reports */
 	struct general_pointer defn_ref; /* sometimes we must remember other things too */
-	struct kind *cinder_kinds[16]; /* the kinds of value being cindered (see below) */
+	struct kind *cinder_kinds[MAX_CINDERS_PER_DEFERRAL]; /* the kinds of value being cindered (see below) */
 	struct inter_name *ppd_iname; /* function to implement this */
 	struct inter_name *rtp_iname; /* compile a string of the origin text for run-time problems? */
 	CLASS_DEFINITION
