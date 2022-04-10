@@ -53,7 +53,7 @@
    [line 0 token 1 word 2 : noun]
     [Object list from word 2]
     [Calling NounDomain on location and actor]
-     [NounDomain called at word 3
+     [NounDomain called at word 3 (domain1 Home, domain2 yourself)
      seeking indefinite object:
      number wanted: 0
      most likely GNAs of names: 4095
@@ -62,7 +62,7 @@
      [ND made 1 matches]
     [ND returned yourself]
     [Calling NounDomain on location and actor]
-     [NounDomain called at word 2
+     [NounDomain called at word 2 (domain1 Home, domain2 yourself)
      seeking definite object
       Trying the north at word 2
   Parse_name called

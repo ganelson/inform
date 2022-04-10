@@ -589,7 +589,7 @@ Get the input, do OOPS and AGAIN.
     ! Re-tokenise:
     VM_Tokenise(buffer,parse);
 
-    num_words = WordCount(); players_command = 100 + num_words;
+    num_words = WordCount(); players_command = 100 + num_words; token_filter = 0;
 
     k=0;
     #Ifdef DEBUG;
@@ -636,10 +636,8 @@ Get the input, do OOPS and AGAIN.
     ! Begin from what we currently think is the verb word
 
   .BeginCommand;
-
     wn = verb_wordnum;
     verb_word = NextWordStopped();
-
     ! If there's no input here, we must have something like "person,".
 
     if (verb_word == -1) {
@@ -719,7 +717,6 @@ Is the command a direction name, and so an implicit GO? If so, go to (K).
     ! or the name of someone to talk to
 
     if (verb_word == 0 || ((verb_word->#dict_par1) & 1) == 0) {
-
         ! So is the first word an object contained in the special object "compass"
         ! (i.e., a direction)?  This needs use of NounDomain, a routine which
         ! does the object matching, returning the object number, or 0 if none found,
@@ -767,7 +764,6 @@ Is anyone being addressed?
 	! advanced past a comma.  (A comma is a word all on its own in the table.)
 
 	.Conversation;
-
 	j = wn - 1;
 
 	! Use NounDomain (in the context of "animate creature") to see if the
@@ -775,7 +771,7 @@ Is anyone being addressed?
 
 	wn = 1; lookahead = HELD_TOKEN;
 	scope_reason = TALKING_REASON;
-	l = NounDomain(player,actors_location,6);
+	l = NounDomain(player, actors_location, CREATURE_TOKEN);
 	scope_reason = PARSING_REASON;
 	if (l == REPARSE_CODE) jump ReParse;
 	if (l == 0) {
@@ -2120,7 +2116,8 @@ because we want to allow duplicates).
 	first_word i j k l answer_words marker;
     #Ifdef DEBUG;
     if (parser_trace >= 4) {
-        print "   [NounDomain called at word ", wn, "^";
+        print "   [NounDomain called at word ", wn,
+        	" (domain1 ", (name) domain1, ", domain2 ", (name) domain2, ")^";
         print "   ";
         if (indef_mode) {
             print "seeking indefinite object: ";
@@ -3505,7 +3502,6 @@ cases, we pass the job down to |TryGivenObject|.
 =
 [ MatchTextAgainstObject item i;
     if (token_filter ~= 0 && ConsultNounFilterToken(item) == 0) return;
-
 	if (match_from <= num_words) { ! If there's any text to match, that is
 		wn = match_from;
 		i = NounWord();
