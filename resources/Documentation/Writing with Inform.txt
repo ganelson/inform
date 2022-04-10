@@ -11903,7 +11903,7 @@ In general a rule for deciding the concealed possessions of something will decid
 ^^{names: printing the name of something+activity+}
 ^^{printed name of (object)+prop+} ^^{printed name of (object)+propcat+}
 
-<b>1. When it happens.</b> Whenever the name of a thing or room is printed.
+<b>1. When it happens.</b> Whenever the name of a thing or room is printed, either as part of text visible to the player, or sometimes internally in order to determine something about that name.
 
 <b>2. The default behaviour.</b> For items other than the current player, the "printed name" property is printed out; but for the current player, "you" or "yourself" is printed. (That doesn't necessarily mean that the "printed name" of the player is never used. Suppose there are two people, Alice and Bob, and the narrative switches between them: when Alice is the player, she appears as "yourself" but Bob is "Bob"; but when Bob is the player, he is "yourself" and Alice is "Alice".)
 
