@@ -105,6 +105,8 @@
 		pass: 'passed'
 	endif
 
+	step: rm -f notebook.glkdata prefs.glkdata barbara.glkdata
+
 	! And then the general case.
 
 	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
@@ -141,6 +143,8 @@
 		match text: $A $I
 		or: 'C program misbehaved'
 
+		step: rm -f notebook.glkdata prefs.glkdata barbara.glkdata
+
 		pass: 'passed'
 	else
 		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -crash-all
@@ -175,6 +179,8 @@
 			match frotz transcript: $A $I
 			or: 'played incorrectly'
 		endif
+
+		step: rm -f notebook.glkdata prefs.glkdata barbara.glkdata
 
 		pass: 'passed'
 	endif

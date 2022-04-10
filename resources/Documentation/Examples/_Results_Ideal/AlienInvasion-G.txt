@@ -2,8 +2,6 @@
 
 
 
-(The current puzzle difficulty is set to easy.)
-
 Alien Invasion Part 23
 An Interactive Fiction
 Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
