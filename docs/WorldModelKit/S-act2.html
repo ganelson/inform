@@ -202,7 +202,7 @@ yet the current action.
 <span class="plain-syntax">        </span><span class="identifier-syntax">MStack_DestroyAVVars</span><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">rv</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_CANTABANDON</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_CANTEND</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Abandon. </b>For (very) rare cases where an activity must be abandoned midway; such an
@@ -217,7 +217,7 @@ activity must be being run by calling the three stages individually, and
 <span class="plain-syntax">        </span><span class="identifier-syntax">MStack_DestroyAVVars</span><span class="plain-syntax">(</span><span class="identifier-syntax">A</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_CANTEND</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">RunTimeProblem</span><span class="plain-syntax">(</span><span class="identifier-syntax">RTP_CANTABANDON</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

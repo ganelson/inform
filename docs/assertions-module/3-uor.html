@@ -99,10 +99,10 @@ articled lists:
 <span class="plain-syntax">        </span><a href="3-uor.html#SP2" class="function-link"><span class="function-syntax">UseOptions::set_use_options</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">down</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_2" class="named-paragraph-link"><span class="named-paragraph">Set a single use option</span><span class="named-paragraph-number">2.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_1" class="named-paragraph-link"><span class="named-paragraph">Set a single use option</span><span class="named-paragraph-number">2.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b>Each of the entries in this list must match the following; the text of the
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>Each of the entries in this list must match the following; the text of the
 option name is taken from the <span class="extract"><span class="extract-syntax">...</span></span> or <span class="extract"><span class="extract-syntax">###</span></span> as appropriate:
 </p>
 
@@ -114,33 +114,45 @@ option name is taken from the <span class="extract"><span class="extract-syntax"
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">language</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">index</span><span class="Preform-plain-syntax">                             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, - }</span>
 
 <span class="Preform-function-syntax">&lt;use-memory-setting&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number-unlimited&gt;</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { R[1], - }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">###</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number-unlimited&gt;</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Validate the at-least setting</span><span class="named-paragraph-number">3.1</span></a></span>
 
 <span class="Preform-function-syntax">&lt;use-setting&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">least</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number-unlimited&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { R[1], - }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">of</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">at</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">least</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number-unlimited&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP3_1" class="named-paragraph-link"><span class="named-paragraph">Validate the at-least setting</span><span class="named-paragraph-number">3.1</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;definite-article&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                      </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -1, - }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">                                            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -1, - }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2" class="paragraph-anchor"></a><b>&#167;2.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set a single use option</span><span class="named-paragraph-number">2.2</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP3_1" class="paragraph-anchor"></a><b>&#167;3.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Validate the at-least setting</span><span class="named-paragraph-number">3.1</span></span><span class="Preform-comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">R</span><span class="plain-syntax">[1] &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_UseOptionAtLeastNegative</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"the minimum possible value is not allowed to be negative"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"since it describes a quantity which must be 0 or more"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">R</span><span class="plain-syntax">[1], - }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP3">&#167;3</a> (twice).</li></ul>
+<p class="commentary firstcommentary"><a id="SP2_1" class="paragraph-anchor"></a><b>&#167;2.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set a single use option</span><span class="named-paragraph-number">2.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">S</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;use-inter-pipeline&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_2_1" class="named-paragraph-link"><span class="named-paragraph">Set the pipeline given in this word range</span><span class="named-paragraph-number">2.2.1</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_1_1" class="named-paragraph-link"><span class="named-paragraph">Set the pipeline given in this word range</span><span class="named-paragraph-number">2.1.1</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;use-index-language&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_2_2" class="named-paragraph-link"><span class="named-paragraph">Set index language</span><span class="named-paragraph-number">2.2.2</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_1_2" class="named-paragraph-link"><span class="named-paragraph">Set index language</span><span class="named-paragraph-number">2.1.2</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;use-memory-setting&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_2_3" class="named-paragraph-link"><span class="named-paragraph">Set a memory setting</span><span class="named-paragraph-number">2.2.3</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_1_3" class="named-paragraph-link"><span class="named-paragraph">Set a memory setting</span><span class="named-paragraph-number">2.1.3</span></a></span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;use-setting&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">S</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_2_4" class="named-paragraph-link"><span class="named-paragraph">Set the option given in this word range</span><span class="named-paragraph-number">2.2.4</span></a></span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-uor.html#SP2_1_4" class="named-paragraph-link"><span class="named-paragraph">Set the option given in this word range</span><span class="named-paragraph-number">2.1.4</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP2">&#167;2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_1" class="paragraph-anchor"></a><b>&#167;2.2.1.  </b>This is an undocumented feature used during the transition from I6 to Inter:
+<p class="commentary firstcommentary"><a id="SP2_1_1" class="paragraph-anchor"></a><b>&#167;2.1.1.  </b>This is an undocumented feature used during the transition from I6 to Inter:
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the pipeline given in this word range</span><span class="named-paragraph-number">2.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the pipeline given in this word range</span><span class="named-paragraph-number">2.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -154,12 +166,12 @@ option name is taken from the <span class="extract"><span class="extract-syntax"
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP2_2">&#167;2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_2" class="paragraph-anchor"></a><b>&#167;2.2.2.  </b>This is a somewhat experimental feature, too. For now, it is a deliberate
+<ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP2_1">&#167;2.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2_1_2" class="paragraph-anchor"></a><b>&#167;2.1.2.  </b>This is a somewhat experimental feature, too. For now, it is a deliberate
 choice to fail silently if no such language is available.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set index language</span><span class="named-paragraph-number">2.2.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set index language</span><span class="named-paragraph-number">2.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -171,8 +183,8 @@ choice to fail silently if no such language is available.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">) </span><span class="identifier-syntax">Projects::set_language_of_index</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::project</span><span class="plain-syntax">(), </span><span class="identifier-syntax">L</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Cannot find language %S: ignoring use option\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP2_2">&#167;2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_3" class="paragraph-anchor"></a><b>&#167;2.2.3.  </b>ICL, the "Inform 6 control language", is a set of a pragma-like settings for
+<ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP2_1">&#167;2.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2_1_3" class="paragraph-anchor"></a><b>&#167;2.1.3.  </b>ICL, the "Inform 6 control language", is a set of a pragma-like settings for
 the I6 compiler. Of course, in the age in Inter, those might well be ignored,
 since the compiler next down the chain may no longer be I6.
 </p>
@@ -180,7 +192,7 @@ since the compiler next down the chain may no longer be I6.
 <p class="commentary">See <a href="../runtime-module/3-uo.html" class="internal">Use Options (in runtime)</a> for what happens to these.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set a memory setting</span><span class="named-paragraph-number">2.2.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set a memory setting</span><span class="named-paragraph-number">2.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -196,11 +208,11 @@ since the compiler next down the chain may no longer be I6.
 <span class="plain-syntax">    </span><a href="3-nuor.html#SP7" class="function-link"><span class="function-syntax">NewUseOptions::memory_setting</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">icl_identifier</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">icl_identifier</span><span class="plain-syntax">)</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP2_2">&#167;2.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2_2_4" class="paragraph-anchor"></a><b>&#167;2.2.4.  </b>Whereas thus is the standard use option syntax:
+<ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP2_1">&#167;2.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP2_1_4" class="paragraph-anchor"></a><b>&#167;2.1.4.  </b>Whereas thus is the standard use option syntax:
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the option given in this word range</span><span class="named-paragraph-number">2.2.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Set the option given in this word range</span><span class="named-paragraph-number">2.1.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -217,7 +229,7 @@ since the compiler next down the chain may no longer be I6.
 <span class="plain-syntax">            </span><span class="string-syntax">"and needs to be one of the ones listed in the documentation."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP2_2">&#167;2.2</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="3-uor.html#SP2_1">&#167;2.1</a>.</li></ul>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="3-nuor.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresschapter"><a href="2-bv.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-dlr.html">dlr</a></li><li class="progresssection"><a href="3-pr.html">pr</a></li><li class="progresssection"><a href="3-tr.html">tr</a></li><li class="progresssection"><a href="3-nuor.html">nuor</a></li><li class="progresscurrent">uor</li><li class="progresssection"><a href="3-tr2.html">tr2</a></li><li class="progresssection"><a href="3-dbtr.html">dbtr</a></li><li class="progresssection"><a href="3-rpr.html">rpr</a></li><li class="progresssection"><a href="3-nar.html">nar</a></li><li class="progresssection"><a href="3-nlpr.html">nlpr</a></li><li class="progresssection"><a href="3-nrr.html">nrr</a></li><li class="progresssection"><a href="3-npr.html">npr</a></li><li class="progresssection"><a href="3-nvr.html">nvr</a></li><li class="progresssection"><a href="3-nar2.html">nar2</a></li><li class="progresssection"><a href="3-ir.html">ir</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresschapter"><a href="5-id.html">5</a></li><li class="progresschapter"><a href="6-rls.html">6</a></li><li class="progresschapter"><a href="7-tc.html">7</a></li><li class="progresschapter"><a href="8-kpr.html">8</a></li><li class="progressnext"><a href="3-tr2.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

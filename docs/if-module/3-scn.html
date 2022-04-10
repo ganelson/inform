@@ -822,8 +822,18 @@ extracts a single specified scene if there is one:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>And this is used to make metadata for indexing.
+</p>
 
-
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::during_wording</span><span class="plain-syntax">(</span><span class="identifier-syntax">id_runtime_context_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idrcd</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">idrcd</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">scenes_rcd_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">srcd</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RCD_PLUGIN_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">scenes</span><span class="plain-syntax">, </span><span class="identifier-syntax">idrcd</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">srcd</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">srcd</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">during_scene</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="3-tr.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-bd.html">2</a></li><li class="progresscurrentchapter">3</li><li class="progresssection"><a href="3-sm.html">sm</a></li><li class="progresssection"><a href="3-enah.html">enah</a></li><li class="progresssection"><a href="3-sr.html">sr</a></li><li class="progresssection"><a href="3-si.html">si</a></li><li class="progresssection"><a href="3-prs.html">prs</a></li><li class="progresssection"><a href="3-tp.html">tp</a></li><li class="progresssection"><a href="3-dvc.html">dvc</a></li><li class="progresssection"><a href="3-bck.html">bck</a></li><li class="progresssection"><a href="3-rgn.html">rgn</a></li><li class="progresssection"><a href="3-tm.html">tm</a></li><li class="progresssection"><a href="3-mcr.html">mcr</a></li><li class="progresssection"><a href="3-tr.html">tr</a></li><li class="progresscurrent">scn</li><li class="progresssection"><a href="3-ts.html">ts</a></li><li class="progresssection"><a href="3-mhr.html">mhr</a></li><li class="progresschapter"><a href="4-ap.html">4</a></li><li class="progresschapter"><a href="5-pp.html">5</a></li><li class="progressnext"><a href="3-ts.html">&#10095;</a></li></ul></div>

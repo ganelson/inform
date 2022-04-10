@@ -379,6 +379,8 @@ this purpose, so:
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP15_1" class="named-paragraph-link"><span class="named-paragraph">Annotate the CG tokens with slash-class and slash-dash-dash</span><span class="named-paragraph-number">15.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP15_2" class="named-paragraph-link"><span class="named-paragraph">Throw a problem if slash has been used with non-literal tokens</span><span class="named-paragraph-number">15.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP15_3" class="named-paragraph-link"><span class="named-paragraph">Calculate the lexeme count</span><span class="named-paragraph-number">15.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_is</span><span class="plain-syntax"> != </span><span class="constant-syntax">CG_IS_COMMAND</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">            (</span><span class="identifier-syntax">cg</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">cg_is</span><span class="plain-syntax"> != </span><span class="constant-syntax">CG_IS_TOKEN</span><span class="plain-syntax">)) </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP15_4" class="named-paragraph-link"><span class="named-paragraph">Disallow a potentially empty line</span><span class="named-paragraph-number">15.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -498,6 +500,44 @@ of groups arising from the calculations just done. In this example there are 4:
 <span class="plain-syntax">                </span><span class="identifier-syntax">cgt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_token</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">lexeme_count</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP15">&#167;15</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP15_4" class="paragraph-anchor"></a><b>&#167;15.4.  </b>The following catches grammar such as:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">Understand</span><span class="plain-syntax"> </span><span class="string-syntax">"Prof/--"</span><span class="plain-syntax"> </span><span class="identifier-syntax">as</span><span class="plain-syntax"> </span><span class="identifier-syntax">Professor</span><span class="plain-syntax"> </span><span class="identifier-syntax">Zaphier</span><span class="plain-syntax">.</span>
+</pre>
+<p class="commentary">which would otherwise compile fine, but lead to a hang of the story file when
+attempting to recognise Zaphier's name.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Disallow a potentially empty line</span><span class="named-paragraph-number">15.4</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">possibly_empty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_THROUGH_CG_TOKENS</span><span class="plain-syntax">(</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">, </span><span class="identifier-syntax">cgl</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">slash_class</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">i</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">possibly_empty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">dashdashed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">slash_dash_dash</span><span class="plain-syntax">) </span><span class="identifier-syntax">dashdashed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_token</span><span class="plain-syntax">) &amp;&amp;</span>
+<span class="plain-syntax">                    (</span><span class="identifier-syntax">cgt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_token</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">slash_class</span><span class="plain-syntax"> == </span><span class="identifier-syntax">i</span><span class="plain-syntax">)) </span><span class="identifier-syntax">cgt</span><span class="plain-syntax"> = </span><span class="identifier-syntax">cgt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next_token</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">dashdashed</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="identifier-syntax">possibly_empty</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">possibly_empty</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_EmptyUnderstandLine</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"the optional '--' word has been used here in such a way that it "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"would be possible for a completely empty phrase to be understood "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"in this context"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"but that isn't allowed."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-cgl.html#SP15">&#167;15</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Determining the line. </b>Here the aim is to find the <a href="5-dt.html#SP1" class="internal">determination_type</a> of a CGL. Sneakily, though,

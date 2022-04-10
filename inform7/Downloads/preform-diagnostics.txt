@@ -3720,7 +3720,7 @@
           constraint CS = {11} extremes [2, 2]
         dealing dealt 
           constraint CS = {11} extremes [2, 2]
-        diging dug 
+        digging dug 
           constraint CS = {11} extremes [2, 2]
         dighting dighted 
           constraint CS = {11} extremes [2, 2]
@@ -5872,6 +5872,8 @@
           constraint DS = {15} extremes [2, infinity)
         {...} , {...} 
           constraint DS = {15} extremes [3, infinity)
+        {...} <cardinal-number> : <cardinal-number> {...} 
+          constraint DS = {15} extremes [5, infinity)
         {...} 
           constraint (none) extremes [1, infinity)
 

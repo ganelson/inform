@@ -496,9 +496,6 @@
 	mkdir: $WORK/Transient
 	step: find $WORK/Transient -mindepth 1 -delete
 
-	mkdir: $PATH/_Results_Actual
-	mkdir: $PATH/_Results_Ideal
-
 	set: $PIPELINE = 
 	set: $DIAGS = inform7/Figures
 	
@@ -507,6 +504,8 @@
 	step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -diagnostics $DIAGS >$I7CONSOLE 2>&1
 	or: 'failed with Problem message(s)' $I7CONSOLE
 	show: $I7CONSOLE
+
+	pass: 'passed'
 -end
 
 -recipe [Make]

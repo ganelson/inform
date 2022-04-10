@@ -1076,11 +1076,30 @@ later rules can override earlier ones but still make use of them.
 <span class="plain-syntax">        </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"Possibility (P%d) $e\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">, </span><span class="identifier-syntax">list_of_possible_readings</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">]);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP10_9_2">&#167;10.9.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10_9_2_1_1" class="paragraph-anchor"></a><b>&#167;10.9.2.1.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add this reading to the list of test cases</span><span class="named-paragraph-number">10.9.2.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP10_9_2_1_1" class="paragraph-anchor"></a><b>&#167;10.9.2.1.1.  </b>In general, it's not great for typecheckers in compilers to put an upper bound
+on complexity, because although human-written code seldom hits such maxima, there's
+always the possibility of mechanically-generated code which does. On the other hand,
+the result of that doctrine is that a lot of modern compilers (Swift, for example)
+slow to a painful crawl and allocate gigabytes of memory trying to understand
+strange type constraints in two or three lines of code. So, for now at least,
+let's be pragmatic.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Add this reading to the list of test cases</span><span class="named-paragraph-number">10.9.2.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">no_of_possible_readings</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">MAX_INVOCATIONS_PER_PHRASE</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"overrun"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">no_of_possible_readings</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">MAX_INVOCATIONS_PER_PHRASE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="constant-syntax">THIS_IS_AN_ORDINARY_PROBLEM</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_AmbiguitiesTooDeep</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"The phrase %1 is too complicated for me to disentangle without "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"running very, very slowly as I check many ambiguities in it. There "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"ought to be some way to simplify things for me?"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEVER_MATCH</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">list_of_possible_readings</span><span class="plain-syntax">[</span><span class="identifier-syntax">no_of_possible_readings</span><span class="plain-syntax">++] = </span><span class="identifier-syntax">alt</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="5-dsh.html#SP22" class="function-link"><span class="function-syntax">Dash::clear_flags</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">alt</span><span class="plain-syntax">);</span>
 </pre>
