@@ -1,0 +1,4 @@
+There is room.
+
+Figure null is the file "".
+Figure nearly null is the file "  ".

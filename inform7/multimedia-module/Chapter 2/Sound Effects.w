@@ -96,8 +96,14 @@ void Sounds::register_sound(wording W, wording FN) {
 		int id = Task::get_next_free_blorb_resource_ID();
 		TEMPORARY_TEXT(leaf)
 		WRITE_TO(leaf, "%N", wn);
-		DISCARD_TEXT(leaf)
+		if (Str::is_whitespace(leaf)) {
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_SoundWhiteSpace),
+				"this is not a filename I can use",
+				"because it is either empty or contains only spaces.");
+			return;
+		}
 		filename *sound_file = Filenames::in(Task::sounds_path(), leaf);
+		DISCARD_TEXT(leaf)
 		Sounds::sounds_create(W, id, sound_file, <<alttext>>);
 		LOGIF(MULTIMEDIA_CREATIONS,
 			"Created sound effect <%W> = filename '%N' = resource ID %d\n", W, wn, id);

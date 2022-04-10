@@ -103,9 +103,15 @@ void Figures::register_figure(wording W, wording FN) {
 		if (wn >= 0) id = Task::get_next_free_blorb_resource_ID();
 		TEMPORARY_TEXT(leaf)
 		WRITE_TO(leaf, "%N", wn);
-		DISCARD_TEXT(leaf)
+		if ((wn >= 0) && (Str::is_whitespace(leaf))) {
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_FigureWhiteSpace),
+				"this is not a filename I can use",
+				"because it is either empty or contains only spaces.");
+			return;
+		}
 		filename *figure_file = NULL;
 		if (wn >= 0) figure_file = Filenames::in(Task::figures_path(), leaf);
+		DISCARD_TEXT(leaf)
 		Figures::figures_create(W, id, figure_file, <<alttext>>);
 		LOGIF(MULTIMEDIA_CREATIONS, "Created figure <%W> = filename '%f' = resource ID %d\n",
 			W, figure_file, id);

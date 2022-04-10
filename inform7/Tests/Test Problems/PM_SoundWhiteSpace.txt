@@ -1,0 +1,4 @@
+There is room.
+
+Sound null is the file "".
+Sound nearly null is the file " ".
