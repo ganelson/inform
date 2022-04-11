@@ -319,7 +319,7 @@ int Vocabulary::hash_code_from_word(wchar_t *text) {
     wchar_t *p = text;
     switch(*p) {
     	case '-': if (p[1] == 0) break; /* an isolated minus sign is an ordinary word */
-    		/* and otherwise fall into... */
+    		/* and otherwise fall through to... */
     	case '0': case '1': case '2': case '3': case '4':
     	case '5': case '6': case '7': case '8': case '9':
     		/* the first character may prove to be the start of a number: is this true? */

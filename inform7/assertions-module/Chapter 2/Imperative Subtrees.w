@@ -1105,6 +1105,7 @@ void ImperativeSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) 
 			case '[': sqb++; if (sqb > 1) @<Issue problem message for nested substitution@>; break;
 			case ']': sqb--; if (sqb < 0) @<Issue problem message for unopened substitution@>; break;
 			case ':': if ((k>0) && (Characters::isdigit(p[k-1])) && (Characters::isdigit(p[k+1]))) break;
+                /* fall through */
 			case ';':
 				if (sqb > 0) @<Issue PM_TSWithPunctuation problem@>;
 				break;
