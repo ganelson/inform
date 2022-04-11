@@ -1,0 +1,14 @@
+Lab is a room.
+
+Fooing is an action applying to one topic.
+Understand "foo [text]" as fooing.  
+
+Check fooing:
+	if there is a token of the topic understood in the Table of Foo:
+		say "There is."
+
+Table of Foo
+token (text)
+"blah"
+
+Test me with "foo blah".

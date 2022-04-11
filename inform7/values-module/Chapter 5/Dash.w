@@ -1997,6 +1997,24 @@ a property when recovering from other problems.
 				"since the entry is taken from something which isn't a table.");
 			return NEVER_MATCH;
 		}
+		if ((K_snippet) &&
+			(Kinds::eq(key_kind, K_snippet)) && (Kinds::eq(col_contents_kind, K_text))) {
+			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_kind(2, col_contents_kind);
+			Problems::quote_kind(3, key_kind);
+			Problems::quote_wording(4, Node::get_text(p->down->next->next));
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableCorrFruitless2));
+			Problems::issue_problem_segment(
+				"In the sentence %1, you seem to be looking up a corresponding "
+				"entry in a table: but you're looking up a snippet of a command "
+				"(%3) in a column of text. Although those look the same, they "
+				"really aren't, and no match can be made. (You might be able to "
+				"fix matters by converting the snippet to text, say writing '\"[%4]\"' "
+				"in place of '%4'.)");
+			Problems::issue_problem_end();
+			return NEVER_MATCH;
+		}
 		if (Kinds::compatible(key_kind, col_contents_kind) == NEVER_MATCH) {
 			THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM;
 			Problems::quote_source(1, current_sentence);
