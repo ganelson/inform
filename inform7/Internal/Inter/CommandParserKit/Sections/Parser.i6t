@@ -1324,10 +1324,15 @@ Print best possible error message.
 
     if (etype == STUCK_PE) {    PARSER_ERROR_INTERNAL_RM('A'); new_line; oops_from = 1; }
     if (etype == UPTO_PE) {
-    	if (inferred_go) PARSER_ERROR_INTERNAL_RM('C');
-    	else PARSER_ERROR_INTERNAL_RM('B');
         for (m=0 : m<32 : m++) pattern-->m = pattern2-->m;
-        pcount = pcount2; PrintCommand(0);
+        pcount = pcount2;
+    	if (inferred_go) {
+    		PARSER_ERROR_INTERNAL_RM('C');
+    		print (name) parser_results-->INP1_PRES;
+    	} else {
+    		PARSER_ERROR_INTERNAL_RM('B');
+        	PrintCommand(0);
+        }
         print ".^";
     }
     if (etype == NUMBER_PE) {   PARSER_ERROR_INTERNAL_RM('D'); new_line; }
