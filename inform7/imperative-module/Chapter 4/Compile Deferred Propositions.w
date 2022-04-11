@@ -23,6 +23,8 @@ void DeferredPropositions::compile_comment_about_deferral_reason(int reason) {
 			EmitCode::comment(I"How many x satisfy this?"); break;
 		case TOTAL_DEFER:
 			EmitCode::comment(I"Find a total property value over all x satisfying:"); break;
+		case TOTAL_REAL_DEFER:
+			EmitCode::comment(I"Find a total real property value over all x satisfying:"); break;
 		case RANDOM_OF_DEFER:
 			EmitCode::comment(I"Find a random x satisfying:"); break;
 		case MULTIPURPOSE_DEFER:
@@ -243,8 +245,12 @@ possibility.
 						case NUMBER_OF_DUSAGE: reason = NUMBER_OF_DEFER; break;
 						case RANDOM_OF_DUSAGE: reason = RANDOM_OF_DEFER; break;
 						case TOTAL_DUSAGE: reason = TOTAL_DEFER; break;
+						case TOTAL_REAL_DUSAGE: reason = TOTAL_REAL_DEFER; break;
 						case EXTREMAL_DUSAGE: reason = EXTREMAL_DEFER; break;
 					}
+					if ((use == TOTAL_REAL_DUSAGE) &&
+						(TargetVMs::supports_floating_point(Task::vm()) == FALSE))
+						continue;
 					EmitCode::inv(CASE_BIP);
 					EmitCode::down();
 						EmitCode::val_number((inter_ti) use);
@@ -285,6 +291,7 @@ and at the end of the search it performs |return counter|.
 		case NUMBER_OF_DEFER: @<Initialisation before NUMBER search@>; break;
 		case LIST_OF_DEFER: @<Initialisation before LIST search@>; break;
 		case TOTAL_DEFER: @<Initialisation before TOTAL search@>; break;
+		case TOTAL_REAL_DEFER: @<Initialisation before TOTAL REAL search@>; break;
 		case RANDOM_OF_DEFER: @<Initialisation before RANDOM search@>; break;
 	}
 	@<Compile code to search for valid combinations of variables@>;
@@ -302,6 +309,7 @@ and at the end of the search it performs |return counter|.
 		case NUMBER_OF_DEFER: @<Winding-up after NUMBER search@>; break;
 		case LIST_OF_DEFER: @<Winding-up after LIST search@>; break;
 		case TOTAL_DEFER: @<Winding-up after TOTAL search@>; break;
+		case TOTAL_REAL_DEFER: @<Winding-up after TOTAL REAL search@>; break;
 		case RANDOM_OF_DEFER: @<Winding-up after RANDOM search@>; break;
 	}
 
@@ -486,6 +494,7 @@ example. (See below.)
 		case NUMBER_OF_DEFER: @<Act on successful match in NUMBER search@>; break;
 		case LIST_OF_DEFER: @<Act on successful match in LIST search@>; break;
 		case TOTAL_DEFER: @<Act on successful match in TOTAL search@>; break;
+		case TOTAL_REAL_DEFER: @<Act on successful match in TOTAL REAL search@>; break;
 		case RANDOM_OF_DEFER: @<Act on successful match in RANDOM search@>; break;
 	}
 
@@ -893,6 +902,9 @@ In some of the cases, additional local variables are needed within the
 			case TOTAL_DEFER:
 				total_s = LocalVariables::new_internal_as_symbol(I"total");
 				break;
+			case TOTAL_REAL_DEFER:
+				total_s = LocalVariables::new_internal_as_symbol(I"total");
+				break;
 			case LIST_OF_DEFER:
 				counter_s = LocalVariables::new_internal_as_symbol(I"counter");
 				total_s = LocalVariables::new_internal_as_symbol(I"total");
@@ -1215,6 +1227,10 @@ in the domain $\lbrace x\mid \phi(x)\rbrace$.
 	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
 		proposition, FALSE, FALSE, pdef);
 
+@<Initialisation before TOTAL REAL search@> =
+	proposition = DeferredPropositions::compile_loop_header(0, var_ix_lv[0],
+		proposition, FALSE, FALSE, pdef);
+
 @ The only wrinkle here is the way the compiled code knows which property it
 should be totalling. If we know that ourselves, we can compile in a direct
 reference. But if we are compiling a multipurpose deferred proposition, then
@@ -1246,7 +1262,37 @@ which until runtime -- when its identity will be found in the Inter variable
 
 	@<Jump to next outer loop for this reason@>;
 
+@<Act on successful match in TOTAL REAL search@> =
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, total_s);
+		EmitCode::call(Hierarchy::find(REAL_NUMBER_TY_PLUS_HL));
+		EmitCode::down();
+			EmitCode::val_symbol(K_value, total_s);
+			EmitCode::inv(PROPERTYVALUE_BIP);
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTKindIDs::weak_iname(K_object));
+				EmitCode::val_symbol(K_value, var_s[0]);
+				if (multipurpose_function) {
+					EmitCode::val_iname(K_value,
+						Hierarchy::find(PROPERTY_TO_BE_TOTALLED_HL));
+				} else {
+					prn = RETRIEVE_POINTER_property(pdef->defn_ref);
+					EmitCode::val_iname(K_value, RTProperties::iname(prn));
+				}
+			EmitCode::up();
+		EmitCode::up();
+	EmitCode::up();
+
+	@<Jump to next outer loop for this reason@>;
+
 @<Winding-up after TOTAL search@> =
+	EmitCode::inv(RETURN_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, total_s);
+	EmitCode::up();
+
+@<Winding-up after TOTAL REAL search@> =
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_symbol(K_value, total_s);

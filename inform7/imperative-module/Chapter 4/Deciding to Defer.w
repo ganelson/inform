@@ -16,8 +16,9 @@ at runtime.
 @d LOOP_DOMAIN_DEFER 4     /* "repeat with I running through X" */
 @d NUMBER_OF_DEFER 5       /* "the number of X" */
 @d TOTAL_DEFER 6           /* "the total P of X" */
-@d RANDOM_OF_DEFER 7       /* "a random X" */
-@d LIST_OF_DEFER 8         /* "the list of X" */
+@d TOTAL_REAL_DEFER 7      /* "the total P of X" */
+@d RANDOM_OF_DEFER 8       /* "a random X" */
+@d LIST_OF_DEFER 9         /* "the list of X" */
 
 @d MULTIPURPOSE_DEFER 100  /* potentially any of the above */
 
@@ -378,8 +379,9 @@ states, times of day, and so on).
 @d NUMBER_OF_DUSAGE -3   /* return the number of $w$ such that $\phi(w)$ */
 @d RANDOM_OF_DUSAGE -4   /* return a random $w$ such that $\phi(w)$, or 0 if none exists */
 @d TOTAL_DUSAGE -5       /* return the total value of a property among $w$ such that $\phi(w)$ */
-@d EXTREMAL_DUSAGE -6    /* return the maximal property value among such $w$ */
-@d LIST_OF_DUSAGE -7     /* return the list of $w$ such that $\phi(w)$ */
+@d TOTAL_REAL_DUSAGE -6  /* the same, but using real arithmetic */
+@d EXTREMAL_DUSAGE -7    /* return the maximal property value among such $w$ */
+@d LIST_OF_DUSAGE -8     /* return the list of $w$ such that $\phi(w)$ */
 
 @ Multi-purpose description routines are pretty dandy, then, but they have
 one big drawback: they can't be passed cinders, because they might be called
@@ -553,6 +555,15 @@ int Deferrals::has_finite_domain(kind *K) {
 =
 int Deferrals::defer_total_of_matches(property *prn, parse_node *spec) {
 	if (prn == NULL) internal_error("total of on non-property");
+	kind *K = ValueProperties::kind(prn);
+	int reason, usage;
+	if (Kinds::FloatingPoint::uses_floating_point(K)) {
+		reason = TOTAL_REAL_DEFER;
+		usage = TOTAL_REAL_DUSAGE;
+	} else {
+		reason = TOTAL_DEFER;
+		usage = TOTAL_DUSAGE;
+	}
 	if (Deferrals::spec_is_variable_of_kind_description(spec)) {
 		EmitCode::inv(SEQUENTIAL_BIP);
 		EmitCode::down();
@@ -565,15 +576,14 @@ int Deferrals::defer_total_of_matches(property *prn, parse_node *spec) {
 			EmitCode::inv(INDIRECT1_BIP);
 			EmitCode::down();
 				CompileValues::to_code_val(spec);
-				EmitCode::val_number((inter_ti) TOTAL_DUSAGE);
+				EmitCode::val_number((inter_ti) usage);
 			EmitCode::up();
 		EmitCode::up();
 	} else {
 		pcalc_prop *prop = SentencePropositions::from_spec(spec);
 		CompilePropositions::verify_descriptive(prop,
 			"a total property value for things matching a description", spec);
-		Deferrals::call_deferred_fn(prop, TOTAL_DEFER,
-			STORE_POINTER_property(prn), NULL);
+		Deferrals::call_deferred_fn(prop, reason, STORE_POINTER_property(prn), NULL);
 	}
 	return TRUE;
 }
