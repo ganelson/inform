@@ -106,13 +106,12 @@ more elaborate:
 <test-case-circumstance-list> ::=
 	... |                                                     ==> { lookahead }
 	<test-case-circumstance-list> <test-case-circumstance> |  ==> { 0, - }
-	<test-case-circumstance>                                  ==> { 0, - }
+	<test-case-circumstance> |                                ==> { 0, - }
+	...                                                       ==> @<Issue PM_TestBadRequirements problem@>
 
 <test-case-circumstance> ::=
 	in <instance-of-object> |             ==> @<Add in-test requirement@>
-	in ... |                              ==> @<Issue PM_TestBadRequirements problem@>
 	holding/and/, <instance-of-object> |  ==> @<Add holding requirement@>
-	holding/and/, ... |                   ==> @<Issue PM_TestBadRequirements problem@>
 	with ...                              ==> @<Issue PM_TestDoubleWith problem@>
 
 @<Add script@> =
