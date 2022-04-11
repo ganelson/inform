@@ -25,7 +25,7 @@ moves an object to a new position in the object tree.
 [ XAbstractSub;
     if (XTestMove(noun, second)) return;
     move noun to second;
-    "[Abstracted.]";
+    say__p = 1; "[Abstracted.]";
 ];
 
 [ XTestMove obj dest;
