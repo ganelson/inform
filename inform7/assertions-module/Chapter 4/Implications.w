@@ -16,6 +16,7 @@ description only, whereas B could be any subtree of an assertion.
 typedef struct implication {
 	struct pcalc_prop *if_proposition; /* which objects are affected */
 	struct parse_node *then_pn; /* what assertion is implied about them */
+	struct parse_node *where_declared;
 	int implied_likelihood; /* with what certainty level */
 	CLASS_DEFINITION
 } implication;
@@ -63,6 +64,7 @@ void Assertions::Implications::new(parse_node *px, parse_node *py) {
 	imp->if_proposition = premiss;
 	imp->then_pn = py;
 	imp->implied_likelihood = prevailing_mood;
+	imp->where_declared = current_sentence;
 	ADD_TO_LINKED_LIST(imp, implication, InferenceSubjects::get_implications(premiss_kind));
 
 	LOGIF(IMPLICATIONS, "Forming implication for $j: $D implies\n  $T",
@@ -264,5 +266,6 @@ int Assertions::Implications::check_implications_of(inference_subject *domain,
 	} else {
 		prop = Propositions::concatenate(prop, AdjectivalPredicates::new_atom_on_x(aph, FALSE));
 	}
+	current_sentence = imp->where_declared;
 	Assert::true_about(prop, candidate, CERTAIN_CE);
 	return TRUE;

@@ -1027,7 +1027,7 @@ the absence of other information.)
 				}
 			}
 		if (portable) {
-			current_sentence = Instances::get_creating_sentence(I);
+			current_sentence = SPATIAL_DATA(I)->progenitor_set_at;
 			EitherOrProperties::assert(
 				P_fixed_in_place, Instances::as_subject(I), FALSE, CERTAIN_CE);
 		}
