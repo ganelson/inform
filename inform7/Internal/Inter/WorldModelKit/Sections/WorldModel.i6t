@@ -228,6 +228,11 @@ Note that |MakePart| removes the part-to-be from the object tree before
 attaching it: it cannot, of course, be the core of the resulting object.
 
 =
+[ PartOf P;
+	if (P ofclass K2_thing) return P.component_parent;
+	return nothing;
+];
+
 [ MakePart P Of First;
 	if (P == player) return RunTimeProblem(RTP_CANTMAKEPART, Of);
 	if (parent(P)) remove P; give P ~worn;

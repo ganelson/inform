@@ -73,7 +73,7 @@ a union of the others, and therefore includes incorporation.)
 	R_incorporation =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new_full(infs_thing, NULL, EMPTY_WORDING,
-				Calculus::Schemas::new("(*1.component_parent)")),
+				Calculus::Schemas::new("PartOf(*1)")),
 			BPTerms::new(infs_thing),
 			I"incorporates", I"is-part-of",
 			Calculus::Schemas::new("MakePart(*2,*1)"), NULL,

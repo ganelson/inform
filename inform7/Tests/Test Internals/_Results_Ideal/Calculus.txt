@@ -510,7 +510,7 @@ Scenery as a noun
 << scenery(<ContainerOf(*1) : 'the box'>) >>
 
 2. all of the scenery parts of Peter are in the Laboratory
-<< ForAll x IN< thing(x) & scenery(x) & ('peter' == <(*1.component_parent) : x>) IN> : ('the laboratory' == <ContainerOf(*1) : x>) >>
+<< ForAll x IN< thing(x) & scenery(x) & ('peter' == <PartOf(*1) : x>) IN> : ('the laboratory' == <ContainerOf(*1) : x>) >>
 x - object. 
 
 
