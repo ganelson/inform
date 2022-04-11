@@ -147,7 +147,7 @@ kind *Latticework::j_or_m(kind *K1, kind *K2, int direction) {
 	int a2 = KindConstructors::arity(K2->construct);
 	if ((a1 > 0) || (a2 > 0)) {
 		if (K2->construct != con) return K_value;
-		kind *ka[MAX_KIND_CONSTRUCTION_ARITY];
+		kind *ka[MAX_KIND_CONSTRUCTION_ARITY] = { NULL, };
 		for (int i=0; i<a1; i++)
 			if (con->variance[i] == COVARIANT)
 				ka[i] = Latticework::j_or_m(K1->kc_args[i], K2->kc_args[i], direction);
