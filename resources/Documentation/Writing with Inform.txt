@@ -8597,7 +8597,7 @@ Lastly, how about:
 
 This time we want:
 
-	"[regarding the noun][Possessive] height is just too great."
+	"[regarding the noun][Possessive] height [are] just too great."
 
 which might adapt to, say,
 
