@@ -15473,11 +15473,12 @@ To get the full effect of filtering, we probably need to define an adjective or 
 
 	Definition: a text (called T) is lengthy if the number of characters in it is greater than 6.
 
-We can then write:
+We can then write, for example:
 
-	filter to lengthy texts of spelling out applied to {15, 2, 20, 29, -4}
+	let L be the filter to lengthy texts of spelling out applied to {15, 2, 20, 29, -4};
+	showme L;
 
-which produces {"fifteen", "twenty-nine", "minus four"}.
+which produces the list {"fifteen", "twenty-nine", "minus four"}.
 
 Lastly, reduction. In order to combine a whole list of values, we need a phrase to combine any two. Here are some samples:
 
