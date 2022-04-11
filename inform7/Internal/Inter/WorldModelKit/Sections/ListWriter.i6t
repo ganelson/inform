@@ -450,7 +450,7 @@ objects which in all other circumstances never have children in the tree.
 
 #Ifdef DBLW;
 [ DiagnoseSortList obj memb;
-    for (memb=child(obj): memb~=nothing: memb=sibling(memb)) print memb, " --> "; new_line;
+    for (memb=obj: memb~=nothing: memb=sibling(memb)) print memb, " --> "; new_line;
 ];
 #Endif;
 
