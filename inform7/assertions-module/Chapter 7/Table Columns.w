@@ -183,6 +183,7 @@ what looks like text into grammar for parsing.
 =
 <table-column-heading> ::=
 	( *** ) |                               ==> @<Issue PM_TableColumnBracketed problem@>
+	topic ( ... ) |                         ==> @<Issue PM_TopicText problem@>
 	<s-table-column-name> ( {...} ) |       ==> { EXISTING_TC, RP[1] }
 	<table-column-heading-bare> ( {...} ) | ==> { (R[1] == NEW_TC_PROBLEM)?R[1]:NEW_TC, - }
 	<s-table-column-name> |                 ==> { EXISTING_TC_WITHOUT_KIND, RP[1] }
@@ -209,6 +210,13 @@ what looks like text into grammar for parsing.
 		table_being_examined, NULL, table_cell_node,
 		"In %1, the column name %3 cannot be used, because it already means "
 		"something else.");
+	==> { NEW_TC_PROBLEM, - };
+
+@<Issue PM_TopicText problem@> =
+	StandardProblems::table_problem(_p_(PM_TopicText),
+		table_being_examined, NULL, table_cell_node,
+		"In %1, the column name 'topic' is not allowed to have a clarifying kind "
+		"in brackets after it. Just say 'topic' and leave it at that.");
 	==> { NEW_TC_PROBLEM, - };
 
 @<Issue PM_TableColumnBracketed problem@> =

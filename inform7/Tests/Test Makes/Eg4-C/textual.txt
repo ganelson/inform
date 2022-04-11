@@ -1516,7 +1516,7 @@ package main _plain
 				constant (int32) relation_id = 29 __translation="relation_id_U23"
 				constant (text) ^term0 = "object"
 				constant (text) ^term1 = "number"
-				constant (int32) ^at = 14885
+				constant (int32) ^at = 14890
 			package relation24 _relation
 				constant (int32) relation_id = 30 __translation="relation_id_U24"
 				constant (text) ^name = "same-variable-initial-value-as"
@@ -5581,7 +5581,7 @@ package main _plain
 				constant (text) ^name = "dynamic memory allocation"
 				constant (text) ^printed_name = "dynamic memory allocation option [8192]"
 				constant (int32) ^source_file_scoped = 0
-				constant (int32) ^at = 15536
+				constant (int32) ^at = 15541
 				constant ^used_in_extension = /main/basic_inform_by_graham_nelson/extension_id
 				constant (int32) ^minimum = 8192
 			package use_option16 _use_option
@@ -5651,8 +5651,8 @@ package main _plain
 				constant (text) ^name = "German language"
 				constant (text) ^printed_name = "German language"
 				constant (text) ^abbreviation = "GL"
-				constant (int32) ^at = 15782
-				constant (int32) ^kind_set_at = 15782
+				constant (int32) ^at = 15787
+				constant (int32) ^kind_set_at = 15787
 				constant ^value = I_german_language
 				constant (text) ^index_kind = "natural language"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; natural language"
@@ -5667,8 +5667,8 @@ package main _plain
 				constant (text) ^name = "Italian language"
 				constant (text) ^printed_name = "Italian language"
 				constant (text) ^abbreviation = "IL"
-				constant (int32) ^at = 15782
-				constant (int32) ^kind_set_at = 15782
+				constant (int32) ^at = 15787
+				constant (int32) ^kind_set_at = 15787
 				constant ^value = I_italian_language
 				constant (text) ^index_kind = "natural language"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; natural language"
@@ -5683,8 +5683,8 @@ package main _plain
 				constant (text) ^name = "English language"
 				constant (text) ^printed_name = "English language"
 				constant (text) ^abbreviation = "EL"
-				constant (int32) ^at = 15782
-				constant (int32) ^kind_set_at = 15782
+				constant (int32) ^at = 15787
+				constant (int32) ^kind_set_at = 15787
 				constant ^value = I_english_language
 				constant (text) ^index_kind = "natural language"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; natural language"
@@ -5700,8 +5700,8 @@ package main _plain
 				constant (text) ^name = "French language"
 				constant (text) ^printed_name = "French language"
 				constant (text) ^abbreviation = "FL"
-				constant (int32) ^at = 15782
-				constant (int32) ^kind_set_at = 15782
+				constant (int32) ^at = 15787
+				constant (int32) ^kind_set_at = 15787
 				constant ^value = I_french_language
 				constant (text) ^index_kind = "natural language"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; natural language"
@@ -5716,8 +5716,8 @@ package main _plain
 				constant (text) ^name = "Swedish language"
 				constant (text) ^printed_name = "Swedish language"
 				constant (text) ^abbreviation = "SL"
-				constant (int32) ^at = 15782
-				constant (int32) ^kind_set_at = 15782
+				constant (int32) ^at = 15787
+				constant (int32) ^kind_set_at = 15787
 				constant ^value = I_swedish_language
 				constant (text) ^index_kind = "natural language"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; natural language"
@@ -5732,8 +5732,8 @@ package main _plain
 				constant (text) ^name = "Spanish language"
 				constant (text) ^printed_name = "Spanish language"
 				constant (text) ^abbreviation = "SL"
-				constant (int32) ^at = 15782
-				constant (int32) ^kind_set_at = 15782
+				constant (int32) ^at = 15787
+				constant (int32) ^kind_set_at = 15787
 				constant ^value = I_spanish_language
 				constant (text) ^index_kind = "natural language"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; natural language"
@@ -5753,7 +5753,7 @@ package main _plain
 				constant ^run_fn = /main/basic_inform_by_graham_nelson/rulebooks/rulebook1/run_fn/call
 				constant (text) ^index_id = "startup"
 				constant (text) ^focus = "Startup rulebook"
-				constant (int32) ^at = 15821
+				constant (int32) ^at = 15826
 				constant (int32) ^automatically_generated = 0
 				package outcome1 _rulebook_outcome
 					constant (text) ^text = "allow startup"
@@ -5770,7 +5770,7 @@ package main _plain
 				constant ^run_fn = /main/basic_inform_by_graham_nelson/rulebooks/rulebook2/run_fn/call
 				constant (text) ^index_id = "shutdown"
 				constant (text) ^focus = "Shutdown rulebook"
-				constant (int32) ^at = 15843
+				constant (int32) ^at = 15848
 				constant (int32) ^automatically_generated = 0
 				constant (int32) rulebook_id = 1 __translation="rulebook_id_U2"
 			package rulebook_outcome1 _outcome
@@ -5788,7 +5788,7 @@ package main _plain
 					constant (text) ^printed_name = "before starting the virtual machine rulebook"
 					constant ^run_fn = /main/basic_inform_by_graham_nelson/activities/activity1/before_rb/run_fn/call
 					constant (text) ^focus = "before starting the virtual machine rulebook"
-					constant (int32) ^at = 31945
+					constant (int32) ^at = 31950
 					constant (int32) ^automatically_generated = 1
 					constant (int32) rulebook_id = 2 __translation="rulebook_id_U3"
 				package for_rb _rulebook
@@ -5834,7 +5834,7 @@ package main _plain
 					constant (text) ^printed_name = "for starting the virtual machine rulebook"
 					constant ^run_fn = /main/basic_inform_by_graham_nelson/activities/activity1/for_rb/run_fn/call
 					constant (text) ^focus = "for starting the virtual machine rulebook"
-					constant (int32) ^at = 31996
+					constant (int32) ^at = 32001
 					constant (int32) ^automatically_generated = 1
 					package entry1 _rulebook_entry
 						constant ^rule = /main/basic_inform_by_graham_nelson/rules/rule1/anchor
@@ -5852,13 +5852,13 @@ package main _plain
 					constant (text) ^printed_name = "after starting the virtual machine rulebook"
 					constant ^run_fn = /main/basic_inform_by_graham_nelson/activities/activity1/after_rb/run_fn/call
 					constant (text) ^focus = "after starting the virtual machine rulebook"
-					constant (int32) ^at = 32047
+					constant (int32) ^at = 32052
 					constant (int32) ^automatically_generated = 1
 					constant (int32) rulebook_id = 4 __translation="rulebook_id_U5"
 				constant (int32) activity_id = 0 __translation="activity_id_U1"
 				constant V1_starting_the_virtual_mach = activity_id __translation="V1_starting_the_virtual_mach"
 				constant (text) ^name = "starting the virtual machine"
-				constant (int32) ^at = 15850
+				constant (int32) ^at = 15855
 				constant ^before_rulebook = /main/basic_inform_by_graham_nelson/activities/activity1/before_rb/rulebook_id
 				constant ^for_rulebook = /main/basic_inform_by_graham_nelson/activities/activity1/for_rb/rulebook_id
 				constant ^after_rulebook = /main/basic_inform_by_graham_nelson/activities/activity1/after_rb/rulebook_id
@@ -5875,7 +5875,7 @@ package main _plain
 					constant (text) ^printed_name = "before printing the name rulebook"
 					constant ^run_fn = /main/basic_inform_by_graham_nelson/activities/activity2/before_rb/run_fn/call
 					constant (text) ^focus = "before printing the name rulebook"
-					constant (int32) ^at = 32124
+					constant (int32) ^at = 32129
 					constant (int32) ^automatically_generated = 1
 					constant (int32) rulebook_id = 5 __translation="rulebook_id_U6"
 				package for_rb _rulebook
@@ -5921,7 +5921,7 @@ package main _plain
 					constant (text) ^printed_name = "for printing the name rulebook"
 					constant ^run_fn = /main/basic_inform_by_graham_nelson/activities/activity2/for_rb/run_fn/call
 					constant (text) ^focus = "for printing the name rulebook"
-					constant (int32) ^at = 32166
+					constant (int32) ^at = 32171
 					constant (int32) ^automatically_generated = 1
 					package entry1 _rulebook_entry
 						constant ^rule = /main/basic_inform_by_graham_nelson/rules/rule2/anchor
@@ -5939,13 +5939,13 @@ package main _plain
 					constant (text) ^printed_name = "after printing the name rulebook"
 					constant ^run_fn = /main/basic_inform_by_graham_nelson/activities/activity2/after_rb/run_fn/call
 					constant (text) ^focus = "after printing the name rulebook"
-					constant (int32) ^at = 32208
+					constant (int32) ^at = 32213
 					constant (int32) ^automatically_generated = 1
 					constant (int32) rulebook_id = 7 __translation="rulebook_id_U8"
 				constant (int32) activity_id = 1 __translation="activity_id_U2"
 				constant V2_printing_the_name = activity_id __translation="V2_printing_the_name"
 				constant (text) ^name = "printing the name"
-				constant (int32) ^at = 15890
+				constant (int32) ^at = 15895
 				constant ^before_rulebook = /main/basic_inform_by_graham_nelson/activities/activity2/before_rb/rulebook_id
 				constant ^for_rulebook = /main/basic_inform_by_graham_nelson/activities/activity2/for_rb/rulebook_id
 				constant ^after_rulebook = /main/basic_inform_by_graham_nelson/activities/activity2/after_rb/rulebook_id
@@ -5962,7 +5962,7 @@ package main _plain
 					constant (text) ^printed_name = "before printing the plural name rulebook"
 					constant ^run_fn = /main/basic_inform_by_graham_nelson/activities/activity3/before_rb/run_fn/call
 					constant (text) ^focus = "before printing the plural name rulebook"
-					constant (int32) ^at = 32281
+					constant (int32) ^at = 32286
 					constant (int32) ^automatically_generated = 1
 					constant (int32) rulebook_id = 8 __translation="rulebook_id_U9"
 				package for_rb _rulebook
@@ -6008,7 +6008,7 @@ package main _plain
 					constant (text) ^printed_name = "for printing the plural name rulebook"
 					constant ^run_fn = /main/basic_inform_by_graham_nelson/activities/activity3/for_rb/run_fn/call
 					constant (text) ^focus = "for printing the plural name rulebook"
-					constant (int32) ^at = 32332
+					constant (int32) ^at = 32337
 					constant (int32) ^automatically_generated = 1
 					package entry1 _rulebook_entry
 						constant ^rule = /main/basic_inform_by_graham_nelson/rules/rule3/anchor
@@ -6026,13 +6026,13 @@ package main _plain
 					constant (text) ^printed_name = "after printing the plural name rulebook"
 					constant ^run_fn = /main/basic_inform_by_graham_nelson/activities/activity3/after_rb/run_fn/call
 					constant (text) ^focus = "after printing the plural name rulebook"
-					constant (int32) ^at = 32383
+					constant (int32) ^at = 32388
 					constant (int32) ^automatically_generated = 1
 					constant (int32) rulebook_id = 10 __translation="rulebook_id_U11"
 				constant (int32) activity_id = 2 __translation="activity_id_U3"
 				constant V3_printing_the_plural_name = activity_id __translation="V3_printing_the_plural_name"
 				constant (text) ^name = "printing the plural name"
-				constant (int32) ^at = 15933
+				constant (int32) ^at = 15938
 				constant ^before_rulebook = /main/basic_inform_by_graham_nelson/activities/activity3/before_rb/rulebook_id
 				constant ^for_rulebook = /main/basic_inform_by_graham_nelson/activities/activity3/for_rb/rulebook_id
 				constant ^after_rulebook = /main/basic_inform_by_graham_nelson/activities/activity3/after_rb/rulebook_id
@@ -6044,7 +6044,7 @@ package main _plain
 		package kinds _submodule
 			package kind1 _kind
 				constant (text) ^name = "natural language"
-				constant (int32) ^at = 15782
+				constant (int32) ^at = 15787
 				typename K_natural_language = enum __translation="K_natural_language"
 				constant (int32) ^source_order = 14
 				constant (int32) kind_ref = 561 __translation="kind_ref_U38"
@@ -6210,14 +6210,14 @@ package main _plain
 		package variables _submodule
 			package variable1 _variable
 				constant (text) ^name = "language of play"
-				constant (int32) ^at = 15792
+				constant (int32) ^at = 15797
 				constant ^heading = /main/completion/basics/heading6/id
 				constant (int32) ^indexable = 1
 				constant (text) ^contents = "natural language"
 				variable (/main/basic_inform_by_graham_nelson/kinds/kind1/K_natural_language) V1_language_of_play = /main/basic_inform_by_graham_nelson/instances/instance3/I_english_language __translation="V1_language_of_play"
 			package variable2 _variable
 				constant (text) ^name = "parameter-object"
-				constant (int32) ^at = 15804
+				constant (int32) ^at = 15809
 				constant ^heading = /main/completion/basics/heading6/id
 				constant (int32) ^indexable = 1
 				constant (text) ^contents = "object"
@@ -6423,8 +6423,8 @@ package main _plain
 			package phrase101 _to_phrase
 				package closure1 _closure
 					constant (/main/generic/kinds/kind29/K_list_of_values) closure_data = { /main/generic/kinds/derived_kind1/DK1_phrase_real_number____re, /main/BasicInformKit/functions/REAL_NUMBER_TY_Tanh_fn/REAL_NUMBER_TY_Tanh, "tanh function" } __translation="closure_data_U20"
-		constant (int32) ^at = 14887
-		constant (int32) ^included_at = 14791
+		constant (int32) ^at = 14892
+		constant (int32) ^included_at = 14796
 		constant (int32) ^auto_included = 1
 		constant (int32) ^standard = 1
 		package rules _submodule
@@ -6447,7 +6447,7 @@ package main _plain
 			package modal_verb1 _modal_verb
 				constant (text) ^name = "means (modal)"
 				constant (text) ^infinitive = "mean"
-				constant (int32) ^at = 14906
+				constant (int32) ^at = 14911
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb2"
 						local fn
@@ -6580,7 +6580,7 @@ package main _plain
 			package modal_verb2 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 14916
+				constant (int32) ^at = 14921
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb3"
 						local fn
@@ -6821,7 +6821,7 @@ package main _plain
 			package modal_verb3 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 14926
+				constant (int32) ^at = 14931
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb4"
 						local fn
@@ -7062,7 +7062,7 @@ package main _plain
 			package modal_verb4 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 14936
+				constant (int32) ^at = 14941
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb5"
 						local fn
@@ -7303,7 +7303,7 @@ package main _plain
 			package modal_verb5 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 14956
+				constant (int32) ^at = 14961
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb6"
 						local fn
@@ -7544,7 +7544,7 @@ package main _plain
 			package modal_verb6 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 14966
+				constant (int32) ^at = 14971
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb7"
 						local fn
@@ -7785,7 +7785,7 @@ package main _plain
 			package modal_verb7 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 14976
+				constant (int32) ^at = 14981
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb8"
 						local fn
@@ -8026,7 +8026,7 @@ package main _plain
 			package modal_verb8 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 14986
+				constant (int32) ^at = 14991
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb9"
 						local fn
@@ -8267,7 +8267,7 @@ package main _plain
 			package modal_verb9 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 15016
+				constant (int32) ^at = 15021
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb10"
 						local fn
@@ -8508,7 +8508,7 @@ package main _plain
 			package modal_verb10 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 15036
+				constant (int32) ^at = 15041
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb11"
 						local fn
@@ -8755,7 +8755,7 @@ package main _plain
 				constant (text) ^past = "A implied B"
 				constant (text) ^present_perfect = "A has  implied B; A have  implied B"
 				constant (text) ^past_perfect = "A had  implied B"
-				constant (int32) ^at = 15046
+				constant (int32) ^at = 15051
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb4"
 						local fn
@@ -8920,7 +8920,7 @@ package main _plain
 			package modal_verb11 _modal_verb
 				constant (text) ^name = "implies (modal)"
 				constant (text) ^infinitive = "imply"
-				constant (int32) ^at = 15056
+				constant (int32) ^at = 15061
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb12"
 						local fn
@@ -9058,7 +9058,7 @@ package main _plain
 				constant (text) ^past = "A could  be B; B could  be  been  by A"
 				constant (text) ^present_perfect = "A has  been  able  to  be B; A have  been  able  to  be B; B has  been  able  to  be  been  by A; B have  been  able  to  be  been  by A"
 				constant (text) ^past_perfect = "A had  been  able  to  be B; B had  been  able  to  be  been  by A"
-				constant (int32) ^at = 15066
+				constant (int32) ^at = 15071
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb5"
 						local fn
@@ -9233,7 +9233,7 @@ package main _plain
 				constant (text) ^past = "A could B"
 				constant (text) ^present_perfect = "A has  been  able  to B; A have  been  able  to B"
 				constant (text) ^past_perfect = "A had  been  able  to B"
-				constant (int32) ^at = 15066
+				constant (int32) ^at = 15071
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb6"
 						local fn
@@ -10162,7 +10162,7 @@ package main _plain
 				constant (text) ^past = "A had B"
 				constant (text) ^present_perfect = "A has  had B; A have  had B"
 				constant (text) ^past_perfect = "A had  had B"
-				constant (int32) ^at = 15080
+				constant (int32) ^at = 15085
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb7"
 						local fn
@@ -10332,7 +10332,7 @@ package main _plain
 				constant (text) ^past = "A specified B"
 				constant (text) ^present_perfect = "A has  specified B; A have  specified B"
 				constant (text) ^past_perfect = "A had  specified B"
-				constant (int32) ^at = 15090
+				constant (int32) ^at = 15095
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb8"
 						local fn
@@ -10503,7 +10503,7 @@ package main _plain
 				constant (text) ^past = "A related B"
 				constant (text) ^present_perfect = "A has  related B; A have  related B"
 				constant (text) ^past_perfect = "A had  related B"
-				constant (int32) ^at = 15101
+				constant (int32) ^at = 15106
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb9"
 						local fn
@@ -10668,7 +10668,7 @@ package main _plain
 			package modal_verb12 _modal_verb
 				constant (text) ^name = "relates (modal)"
 				constant (text) ^infinitive = "relate"
-				constant (int32) ^at = 15111
+				constant (int32) ^at = 15116
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb13"
 						local fn
@@ -10806,7 +10806,7 @@ package main _plain
 				constant (text) ^past = "A substituted B"
 				constant (text) ^present_perfect = "A has  substituted B; A have  substituted B"
 				constant (text) ^past_perfect = "A had  substituted B"
-				constant (int32) ^at = 15121
+				constant (int32) ^at = 15126
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb10"
 						local fn
@@ -11005,7 +11005,7 @@ package main _plain
 			package modal_verb13 _modal_verb
 				constant (text) ^name = "does (modal)"
 				constant (text) ^infinitive = "do"
-				constant (int32) ^at = 15133
+				constant (int32) ^at = 15138
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb14"
 						local fn
@@ -11138,7 +11138,7 @@ package main _plain
 			package modal_verb14 _modal_verb
 				constant (text) ^name = "does (modal)"
 				constant (text) ^infinitive = "do"
-				constant (int32) ^at = 15143
+				constant (int32) ^at = 15148
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb15"
 						local fn
@@ -11271,7 +11271,7 @@ package main _plain
 			package modal_verb15 _modal_verb
 				constant (text) ^name = "does (modal)"
 				constant (text) ^infinitive = "do"
-				constant (int32) ^at = 15155
+				constant (int32) ^at = 15160
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb16"
 						local fn
@@ -11404,7 +11404,7 @@ package main _plain
 			package modal_verb16 _modal_verb
 				constant (text) ^name = "does (modal)"
 				constant (text) ^infinitive = "do"
-				constant (int32) ^at = 15167
+				constant (int32) ^at = 15172
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb17"
 						local fn
@@ -11542,7 +11542,7 @@ package main _plain
 				constant (text) ^past = "A translated B"
 				constant (text) ^present_perfect = "A has  translated B; A have  translated B"
 				constant (text) ^past_perfect = "A had  translated B"
-				constant (int32) ^at = 15180
+				constant (int32) ^at = 15185
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb11"
 						local fn
@@ -11775,7 +11775,7 @@ package main _plain
 			package modal_verb17 _modal_verb
 				constant (text) ^name = "translates (modal)"
 				constant (text) ^infinitive = "translate"
-				constant (int32) ^at = 15193
+				constant (int32) ^at = 15198
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb18"
 						local fn
@@ -11908,7 +11908,7 @@ package main _plain
 			package modal_verb18 _modal_verb
 				constant (text) ^name = "translates (modal)"
 				constant (text) ^infinitive = "translate"
-				constant (int32) ^at = 15206
+				constant (int32) ^at = 15211
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb19"
 						local fn
@@ -12041,7 +12041,7 @@ package main _plain
 			package modal_verb19 _modal_verb
 				constant (text) ^name = "translates (modal)"
 				constant (text) ^infinitive = "translate"
-				constant (int32) ^at = 15220
+				constant (int32) ^at = 15225
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb20"
 						local fn
@@ -12180,7 +12180,7 @@ package main _plain
 				constant (text) ^past = "A provided B"
 				constant (text) ^present_perfect = "A has  provided B; A have  provided B"
 				constant (text) ^past_perfect = "A had  provided B"
-				constant (int32) ^at = 15232
+				constant (int32) ^at = 15237
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb12"
 						local fn
@@ -12350,7 +12350,7 @@ package main _plain
 				constant (text) ^past = "A used B"
 				constant (text) ^present_perfect = "A has  used B; A have  used B"
 				constant (text) ^past_perfect = "A had  used B"
-				constant (int32) ^at = 15242
+				constant (int32) ^at = 15247
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb13"
 						local fn
@@ -12520,7 +12520,7 @@ package main _plain
 				constant (text) ^past = "A included B"
 				constant (text) ^present_perfect = "A has  included B; A have  included B"
 				constant (text) ^past_perfect = "A had  included B"
-				constant (int32) ^at = 15255
+				constant (int32) ^at = 15260
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb14"
 						local fn
@@ -12722,7 +12722,7 @@ package main _plain
 				constant (text) ^past = "A omitted B"
 				constant (text) ^present_perfect = "A has  omitted B; A have  omitted B"
 				constant (text) ^past_perfect = "A had  omitted B"
-				constant (int32) ^at = 15270
+				constant (int32) ^at = 15275
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb15"
 						local fn
@@ -12924,7 +12924,7 @@ package main _plain
 				constant (text) ^past = "A tested B"
 				constant (text) ^present_perfect = "A has  tested B; A have  tested B"
 				constant (text) ^past_perfect = "A had  tested B"
-				constant (int32) ^at = 15285
+				constant (int32) ^at = 15290
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb16"
 						local fn
@@ -13121,7 +13121,7 @@ package main _plain
 			package modal_verb20 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 15301
+				constant (int32) ^at = 15306
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb21"
 						local fn
@@ -13362,7 +13362,7 @@ package main _plain
 			package modal_verb21 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 15312
+				constant (int32) ^at = 15317
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb22"
 						local fn
@@ -13603,7 +13603,7 @@ package main _plain
 			package modal_verb22 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 15323
+				constant (int32) ^at = 15328
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb23"
 						local fn
@@ -13844,7 +13844,7 @@ package main _plain
 			package modal_verb23 _modal_verb
 				constant (text) ^name = "is (modal)"
 				constant (text) ^infinitive = "be"
-				constant (int32) ^at = 15334
+				constant (int32) ^at = 15339
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb24"
 						local fn
@@ -14084,149 +14084,149 @@ package main _plain
 																val "will not be"
 			package preposition1 _preposition
 				constant (text) ^text = "implied by"
-				constant (int32) ^at = 15046
+				constant (int32) ^at = 15051
 			package preposition2 _preposition
 				constant (text) ^text = "implying"
-				constant (int32) ^at = 15046
+				constant (int32) ^at = 15051
 			package preposition3 _preposition
 				constant (text) ^text = "being able to be"
-				constant (int32) ^at = 15066
+				constant (int32) ^at = 15071
 			package preposition4 _preposition
 				constant (text) ^text = "had by"
-				constant (int32) ^at = 15080
+				constant (int32) ^at = 15085
 			package preposition5 _preposition
 				constant (text) ^text = "having"
-				constant (int32) ^at = 15080
+				constant (int32) ^at = 15085
 			package preposition6 _preposition
 				constant (text) ^text = "specified by"
-				constant (int32) ^at = 15090
+				constant (int32) ^at = 15095
 			package preposition7 _preposition
 				constant (text) ^text = "specifying"
-				constant (int32) ^at = 15090
+				constant (int32) ^at = 15095
 			package preposition8 _preposition
 				constant (text) ^text = "related by"
-				constant (int32) ^at = 15101
+				constant (int32) ^at = 15106
 			package preposition9 _preposition
 				constant (text) ^text = "relating"
-				constant (int32) ^at = 15101
+				constant (int32) ^at = 15106
 			package preposition10 _preposition
 				constant (text) ^text = "substituted by"
-				constant (int32) ^at = 15121
+				constant (int32) ^at = 15126
 			package preposition11 _preposition
 				constant (text) ^text = "substituting"
-				constant (int32) ^at = 15121
+				constant (int32) ^at = 15126
 			package preposition12 _preposition
 				constant (text) ^text = "for"
-				constant (int32) ^at = 15121
+				constant (int32) ^at = 15126
 			package preposition13 _preposition
 				constant (text) ^text = "done by"
-				constant (int32) ^at = 15133
+				constant (int32) ^at = 15138
 			package preposition14 _preposition
 				constant (text) ^text = "doing"
-				constant (int32) ^at = 15133
+				constant (int32) ^at = 15138
 			package preposition15 _preposition
 				constant (text) ^text = "if"
-				constant (int32) ^at = 15143
+				constant (int32) ^at = 15148
 			package preposition16 _preposition
 				constant (text) ^text = "when"
-				constant (int32) ^at = 15155
+				constant (int32) ^at = 15160
 			package preposition17 _preposition
 				constant (text) ^text = "unless"
-				constant (int32) ^at = 15167
+				constant (int32) ^at = 15172
 			package preposition18 _preposition
 				constant (text) ^text = "translated by"
-				constant (int32) ^at = 15180
+				constant (int32) ^at = 15185
 			package preposition19 _preposition
 				constant (text) ^text = "translating"
-				constant (int32) ^at = 15180
+				constant (int32) ^at = 15185
 			package preposition20 _preposition
 				constant (text) ^text = "into"
-				constant (int32) ^at = 15180
+				constant (int32) ^at = 15185
 			package preposition21 _preposition
 				constant (text) ^text = "as"
-				constant (int32) ^at = 15180
+				constant (int32) ^at = 15185
 			package preposition22 _preposition
 				constant (text) ^text = "provided by"
-				constant (int32) ^at = 15232
+				constant (int32) ^at = 15237
 			package preposition23 _preposition
 				constant (text) ^text = "providing"
-				constant (int32) ^at = 15232
+				constant (int32) ^at = 15237
 			package preposition24 _preposition
 				constant (text) ^text = "used by"
-				constant (int32) ^at = 15242
+				constant (int32) ^at = 15247
 			package preposition25 _preposition
 				constant (text) ^text = "using"
-				constant (int32) ^at = 15242
+				constant (int32) ^at = 15247
 			package preposition26 _preposition
 				constant (text) ^text = "included by"
-				constant (int32) ^at = 15255
+				constant (int32) ^at = 15260
 			package preposition27 _preposition
 				constant (text) ^text = "including"
-				constant (int32) ^at = 15255
+				constant (int32) ^at = 15260
 			package preposition28 _preposition
 				constant (text) ^text = "in"
-				constant (int32) ^at = 15255
+				constant (int32) ^at = 15260
 			package preposition29 _preposition
 				constant (text) ^text = "omitted by"
-				constant (int32) ^at = 15270
+				constant (int32) ^at = 15275
 			package preposition30 _preposition
 				constant (text) ^text = "omitting"
-				constant (int32) ^at = 15270
+				constant (int32) ^at = 15275
 			package preposition31 _preposition
 				constant (text) ^text = "from"
-				constant (int32) ^at = 15270
+				constant (int32) ^at = 15275
 			package preposition32 _preposition
 				constant (text) ^text = "tested by"
-				constant (int32) ^at = 15285
+				constant (int32) ^at = 15290
 			package preposition33 _preposition
 				constant (text) ^text = "testing"
-				constant (int32) ^at = 15285
+				constant (int32) ^at = 15290
 			package preposition34 _preposition
 				constant (text) ^text = "with"
-				constant (int32) ^at = 15285
+				constant (int32) ^at = 15290
 			package preposition35 _preposition
 				constant (text) ^text = "greater than"
-				constant (int32) ^at = 15301
+				constant (int32) ^at = 15306
 			package preposition36 _preposition
 				constant (text) ^text = "less than"
-				constant (int32) ^at = 15312
+				constant (int32) ^at = 15317
 			package preposition37 _preposition
 				constant (text) ^text = "at least"
-				constant (int32) ^at = 15323
+				constant (int32) ^at = 15328
 			package preposition38 _preposition
 				constant (text) ^text = "at most"
-				constant (int32) ^at = 15334
+				constant (int32) ^at = 15339
 		package relations _submodule
 			package relation1 _relation
 				constant (int32) relation_id = 0 __translation="relation_id_U32"
 				constant (text) ^term0 = "object"
 				constant (text) ^term1 = "value"
-				constant (int32) ^at = 15628
+				constant (int32) ^at = 15633
 			package relation2 _relation
 				constant (int32) relation_id = 1 __translation="relation_id_U33"
 				constant (text) ^term0 = "object"
 				constant (text) ^term1 = "text"
-				constant (int32) ^at = 15639
+				constant (int32) ^at = 15644
 			package relation3 _relation
 				constant (int32) relation_id = 2 __translation="relation_id_U34"
 				constant (text) ^term0 = "object"
 				constant (text) ^term1 = "text"
-				constant (int32) ^at = 15647
+				constant (int32) ^at = 15652
 			package relation4 _relation
 				constant (int32) relation_id = 3 __translation="relation_id_U35"
 				constant (text) ^term0 = "object"
 				constant (text) ^term1 = "--"
-				constant (int32) ^at = 15657
+				constant (int32) ^at = 15662
 			package relation5 _relation
 				constant (int32) relation_id = 4 __translation="relation_id_U36"
 				constant (text) ^term0 = "object"
 				constant (text) ^term1 = "--"
-				constant (int32) ^at = 15666
+				constant (int32) ^at = 15671
 			package relation6 _relation
 				constant (int32) relation_id = 5 __translation="relation_id_U37"
 				constant (text) ^term0 = "object"
 				constant (text) ^term1 = "--"
-				constant (int32) ^at = 15676
+				constant (int32) ^at = 15681
 	package english_language_by_graham_nelson _module
 		constant (int32) ^category = 2
 		constant (text) ^author = "Graham Nelson"
@@ -14241,8 +14241,8 @@ package main _plain
 				constant (text) ^name = "present tense"
 				constant (text) ^printed_name = "present tense"
 				constant (text) ^abbreviation = "PT"
-				constant (int32) ^at = 25367
-				constant (int32) ^kind_set_at = 25367
+				constant (int32) ^at = 25372
+				constant (int32) ^kind_set_at = 25372
 				constant ^value = I_present_tense
 				constant (text) ^index_kind = "grammatical tense"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical tense"
@@ -14257,8 +14257,8 @@ package main _plain
 				constant (text) ^name = "past tense"
 				constant (text) ^printed_name = "past tense"
 				constant (text) ^abbreviation = "PT"
-				constant (int32) ^at = 25367
-				constant (int32) ^kind_set_at = 25367
+				constant (int32) ^at = 25372
+				constant (int32) ^kind_set_at = 25372
 				constant ^value = I_past_tense
 				constant (text) ^index_kind = "grammatical tense"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical tense"
@@ -14273,8 +14273,8 @@ package main _plain
 				constant (text) ^name = "perfect tense"
 				constant (text) ^printed_name = "perfect tense"
 				constant (text) ^abbreviation = "PT"
-				constant (int32) ^at = 25367
-				constant (int32) ^kind_set_at = 25367
+				constant (int32) ^at = 25372
+				constant (int32) ^kind_set_at = 25372
 				constant ^value = I_perfect_tense
 				constant (text) ^index_kind = "grammatical tense"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical tense"
@@ -14289,8 +14289,8 @@ package main _plain
 				constant (text) ^name = "past perfect tense"
 				constant (text) ^printed_name = "past perfect tense"
 				constant (text) ^abbreviation = "PP"
-				constant (int32) ^at = 25367
-				constant (int32) ^kind_set_at = 25367
+				constant (int32) ^at = 25372
+				constant (int32) ^kind_set_at = 25372
 				constant ^value = I_past_perfect_tense
 				constant (text) ^index_kind = "grammatical tense"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical tense"
@@ -14305,8 +14305,8 @@ package main _plain
 				constant (text) ^name = "future tense"
 				constant (text) ^printed_name = "future tense"
 				constant (text) ^abbreviation = "FT"
-				constant (int32) ^at = 25367
-				constant (int32) ^kind_set_at = 25367
+				constant (int32) ^at = 25372
+				constant (int32) ^kind_set_at = 25372
 				constant ^value = I_future_tense
 				constant (text) ^index_kind = "grammatical tense"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical tense"
@@ -14321,8 +14321,8 @@ package main _plain
 				constant (text) ^name = "first person singular"
 				constant (text) ^printed_name = "first person singular"
 				constant (text) ^abbreviation = "FP"
-				constant (int32) ^at = 25397
-				constant (int32) ^kind_set_at = 25397
+				constant (int32) ^at = 25402
+				constant (int32) ^kind_set_at = 25402
 				constant ^value = I_first_person_singular
 				constant (text) ^index_kind = "narrative viewpoint"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; narrative viewpoint"
@@ -14337,8 +14337,8 @@ package main _plain
 				constant (text) ^name = "second person singular"
 				constant (text) ^printed_name = "second person singular"
 				constant (text) ^abbreviation = "SP"
-				constant (int32) ^at = 25397
-				constant (int32) ^kind_set_at = 25397
+				constant (int32) ^at = 25402
+				constant (int32) ^kind_set_at = 25402
 				constant ^value = I_second_person_singular
 				constant (text) ^index_kind = "narrative viewpoint"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; narrative viewpoint"
@@ -14353,8 +14353,8 @@ package main _plain
 				constant (text) ^name = "third person singular"
 				constant (text) ^printed_name = "third person singular"
 				constant (text) ^abbreviation = "TP"
-				constant (int32) ^at = 25397
-				constant (int32) ^kind_set_at = 25397
+				constant (int32) ^at = 25402
+				constant (int32) ^kind_set_at = 25402
 				constant ^value = I_third_person_singular
 				constant (text) ^index_kind = "narrative viewpoint"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; narrative viewpoint"
@@ -14369,8 +14369,8 @@ package main _plain
 				constant (text) ^name = "first person plural"
 				constant (text) ^printed_name = "first person plural"
 				constant (text) ^abbreviation = "FP"
-				constant (int32) ^at = 25397
-				constant (int32) ^kind_set_at = 25397
+				constant (int32) ^at = 25402
+				constant (int32) ^kind_set_at = 25402
 				constant ^value = I_first_person_plural
 				constant (text) ^index_kind = "narrative viewpoint"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; narrative viewpoint"
@@ -14385,8 +14385,8 @@ package main _plain
 				constant (text) ^name = "second person plural"
 				constant (text) ^printed_name = "second person plural"
 				constant (text) ^abbreviation = "SP"
-				constant (int32) ^at = 25397
-				constant (int32) ^kind_set_at = 25397
+				constant (int32) ^at = 25402
+				constant (int32) ^kind_set_at = 25402
 				constant ^value = I_second_person_plural
 				constant (text) ^index_kind = "narrative viewpoint"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; narrative viewpoint"
@@ -14401,8 +14401,8 @@ package main _plain
 				constant (text) ^name = "third person plural"
 				constant (text) ^printed_name = "third person plural"
 				constant (text) ^abbreviation = "TP"
-				constant (int32) ^at = 25397
-				constant (int32) ^kind_set_at = 25397
+				constant (int32) ^at = 25402
+				constant (int32) ^kind_set_at = 25402
 				constant ^value = I_third_person_plural
 				constant (text) ^index_kind = "narrative viewpoint"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; narrative viewpoint"
@@ -14417,8 +14417,8 @@ package main _plain
 				constant (text) ^name = "nominative"
 				constant (text) ^printed_name = "nominative"
 				constant (text) ^abbreviation = "Nm"
-				constant (int32) ^at = 25464
-				constant (int32) ^kind_set_at = 25464
+				constant (int32) ^at = 25469
+				constant (int32) ^kind_set_at = 25469
 				constant ^value = I_nominative
 				constant (text) ^index_kind = "grammatical case"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical case"
@@ -14433,8 +14433,8 @@ package main _plain
 				constant (text) ^name = "accusative"
 				constant (text) ^printed_name = "accusative"
 				constant (text) ^abbreviation = "Ac"
-				constant (int32) ^at = 25464
-				constant (int32) ^kind_set_at = 25464
+				constant (int32) ^at = 25469
+				constant (int32) ^kind_set_at = 25469
 				constant ^value = I_accusative
 				constant (text) ^index_kind = "grammatical case"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical case"
@@ -14449,8 +14449,8 @@ package main _plain
 				constant (text) ^name = "neuter gender"
 				constant (text) ^printed_name = "neuter gender"
 				constant (text) ^abbreviation = "NG"
-				constant (int32) ^at = 25482
-				constant (int32) ^kind_set_at = 25482
+				constant (int32) ^at = 25487
+				constant (int32) ^kind_set_at = 25487
 				constant ^value = I_neuter_gender
 				constant (text) ^index_kind = "grammatical gender"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical gender"
@@ -14465,8 +14465,8 @@ package main _plain
 				constant (text) ^name = "masculine gender"
 				constant (text) ^printed_name = "masculine gender"
 				constant (text) ^abbreviation = "MG"
-				constant (int32) ^at = 25482
-				constant (int32) ^kind_set_at = 25482
+				constant (int32) ^at = 25487
+				constant (int32) ^kind_set_at = 25487
 				constant ^value = I_masculine_gender
 				constant (text) ^index_kind = "grammatical gender"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical gender"
@@ -14481,8 +14481,8 @@ package main _plain
 				constant (text) ^name = "feminine gender"
 				constant (text) ^printed_name = "feminine gender"
 				constant (text) ^abbreviation = "FG"
-				constant (int32) ^at = 25482
-				constant (int32) ^kind_set_at = 25482
+				constant (int32) ^at = 25487
+				constant (int32) ^kind_set_at = 25487
 				constant ^value = I_feminine_gender
 				constant (text) ^index_kind = "grammatical gender"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; grammatical gender"
@@ -14496,7 +14496,7 @@ package main _plain
 		package kinds _submodule
 			package kind1 _kind
 				constant (text) ^name = "grammatical tense"
-				constant (int32) ^at = 25358
+				constant (int32) ^at = 25363
 				typename K_grammatical_tense = enum __translation="K_grammatical_tense"
 				constant (int32) ^source_order = 15
 				constant (int32) kind_ref = 561 __translation="kind_ref_U39"
@@ -14654,7 +14654,7 @@ package main _plain
 				constant (text) ^inferences = ""
 			package kind2 _kind
 				constant (text) ^name = "narrative viewpoint"
-				constant (int32) ^at = 25388
+				constant (int32) ^at = 25393
 				typename K_narrative_viewpoint = enum __translation="K_narrative_viewpoint"
 				constant (int32) ^source_order = 16
 				constant (int32) kind_ref = 561 __translation="kind_ref_U40"
@@ -14817,7 +14817,7 @@ package main _plain
 				constant (text) ^inferences = ""
 			package kind3 _kind
 				constant (text) ^name = "grammatical case"
-				constant (int32) ^at = 25455
+				constant (int32) ^at = 25460
 				typename K_grammatical_case = enum __translation="K_grammatical_case"
 				constant (int32) ^source_order = 17
 				constant (int32) kind_ref = 561 __translation="kind_ref_U41"
@@ -14958,7 +14958,7 @@ package main _plain
 				constant (text) ^inferences = ""
 			package kind4 _kind
 				constant (text) ^name = "grammatical gender"
-				constant (int32) ^at = 25473
+				constant (int32) ^at = 25478
 				typename K_grammatical_gender = enum __translation="K_grammatical_gender"
 				constant (int32) ^source_order = 18
 				constant (int32) kind_ref = 561 __translation="kind_ref_U42"
@@ -15113,26 +15113,26 @@ package main _plain
 		package variables _submodule
 			package variable1 _variable
 				constant (text) ^name = "story tense"
-				constant (int32) ^at = 25497
+				constant (int32) ^at = 25502
 				constant ^heading = /main/completion/basics/heading69/id
 				constant (int32) ^indexable = 1
 				constant (text) ^contents = "grammatical tense"
 				constant ^counterpart = /main/BasicInformKit/variables/story_tense_var/story_tense
 			package variable2 _variable
 				constant (text) ^name = "story viewpoint"
-				constant (int32) ^at = 25517
+				constant (int32) ^at = 25522
 				constant ^heading = /main/completion/basics/heading69/id
 				constant (int32) ^indexable = 1
 				constant (text) ^contents = "narrative viewpoint"
 				constant ^counterpart = /main/BasicInformKit/variables/story_viewpoint_var/story_viewpoint
-		constant (int32) ^at = 25155
-		constant (int32) ^included_at = 14799
+		constant (int32) ^at = 25160
+		constant (int32) ^included_at = 14804
 		constant (int32) ^auto_included = 1
 		package conjugations _submodule
 			package modal_verb1 _modal_verb
 				constant (text) ^name = "can (modal)"
 				constant (text) ^infinitive = "be able to"
-				constant (int32) ^at = 25182
+				constant (int32) ^at = 25187
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb25"
 						local fn
@@ -16027,7 +16027,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A could B"
 				constant (text) ^present_perfect = "A could  have B"
-				constant (int32) ^at = 25190
+				constant (int32) ^at = 25195
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb17"
 						local fn
@@ -16954,7 +16954,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A may B"
 				constant (text) ^present_perfect = "A may  have B"
-				constant (int32) ^at = 25196
+				constant (int32) ^at = 25201
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb18"
 						local fn
@@ -17881,7 +17881,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A might B"
 				constant (text) ^present_perfect = "A might  have B"
-				constant (int32) ^at = 25202
+				constant (int32) ^at = 25207
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb19"
 						local fn
@@ -18808,7 +18808,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A must B"
 				constant (text) ^present_perfect = "A must  have B"
-				constant (int32) ^at = 25208
+				constant (int32) ^at = 25213
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb20"
 						local fn
@@ -19735,7 +19735,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A should B"
 				constant (text) ^present_perfect = "A should  have B"
-				constant (int32) ^at = 25214
+				constant (int32) ^at = 25219
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb21"
 						local fn
@@ -20662,7 +20662,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A would B"
 				constant (text) ^present_perfect = "A would  have B"
-				constant (int32) ^at = 25220
+				constant (int32) ^at = 25225
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb22"
 						local fn
@@ -21591,7 +21591,7 @@ package main _plain
 				constant (text) ^past = "A was B; A were B"
 				constant (text) ^present_perfect = "A 's  been B; A 've  been B"
 				constant (text) ^past_perfect = "A 'd  been B"
-				constant (int32) ^at = 25227
+				constant (int32) ^at = 25232
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb23"
 						local fn
@@ -21838,7 +21838,7 @@ package main _plain
 				constant (text) ^past = "A had B"
 				constant (text) ^present_perfect = "A 's  had B; A 've  had B"
 				constant (text) ^past_perfect = "A 'd  had B"
-				constant (int32) ^at = 25233
+				constant (int32) ^at = 25238
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb24"
 						local fn
@@ -21977,7 +21977,7 @@ package main _plain
 				constant (text) ^past = "A wasn't B; A weren't B"
 				constant (text) ^present_perfect = "A hasn't  been B; A haven't  been B"
 				constant (text) ^past_perfect = "A hadn't  been B"
-				constant (int32) ^at = 25239
+				constant (int32) ^at = 25244
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb25"
 						local fn
@@ -22129,7 +22129,7 @@ package main _plain
 				constant (text) ^past = "A couldn't B"
 				constant (text) ^present_perfect = "A hasn't  been  able  to B; A haven't  been  able  to B"
 				constant (text) ^past_perfect = "A hadn't  been  able  to B"
-				constant (int32) ^at = 25245
+				constant (int32) ^at = 25250
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb26"
 						local fn
@@ -22604,7 +22604,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A hasn't B; A haven't B"
 				constant (text) ^present_perfect = "A hadn't B"
-				constant (int32) ^at = 25245
+				constant (int32) ^at = 25250
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb27"
 						local fn
@@ -23079,7 +23079,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A doesn't B; A don't B"
 				constant (text) ^present_perfect = "A didn't B"
-				constant (int32) ^at = 25251
+				constant (int32) ^at = 25256
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb28"
 						local fn
@@ -23550,7 +23550,7 @@ package main _plain
 			package modal_verb2 _modal_verb
 				constant (text) ^name = "hasn't (modal)"
 				constant (text) ^infinitive = "haven't"
-				constant (int32) ^at = 25257
+				constant (int32) ^at = 25262
 				package conjugation_fn _function
 					package call _code __translation="ConjugateModalVerb26"
 						local fn
@@ -24025,7 +24025,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A mustn't B"
 				constant (text) ^present_perfect = "A mustn't  have B"
-				constant (int32) ^at = 25263
+				constant (int32) ^at = 25268
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb29"
 						local fn
@@ -24500,7 +24500,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A mightn't B"
 				constant (text) ^present_perfect = "A mightn't  have B"
-				constant (int32) ^at = 25269
+				constant (int32) ^at = 25274
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb30"
 						local fn
@@ -24975,7 +24975,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A mayn't B"
 				constant (text) ^present_perfect = "A mayn't  have B"
-				constant (int32) ^at = 25275
+				constant (int32) ^at = 25280
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb31"
 						local fn
@@ -25450,7 +25450,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A wouldn't B"
 				constant (text) ^present_perfect = "A wouldn't  have B"
-				constant (int32) ^at = 25281
+				constant (int32) ^at = 25286
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb32"
 						local fn
@@ -25925,7 +25925,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A couldn't B"
 				constant (text) ^present_perfect = "A couldn't  have B"
-				constant (int32) ^at = 25287
+				constant (int32) ^at = 25292
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb33"
 						local fn
@@ -26400,7 +26400,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A shouldn't B"
 				constant (text) ^present_perfect = "A shouldn't  have B"
-				constant (int32) ^at = 25293
+				constant (int32) ^at = 25298
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb34"
 						local fn
@@ -26875,7 +26875,7 @@ package main _plain
 				constant (text) ^meaning = "&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title=\"English Language by Graham Nelson\" style=\"text-decoration: none\"><img border=0 src=inform:/doc_images/Revealext.png></a>"
 				constant (text) ^present = "A won't B"
 				constant (text) ^present_perfect = "A wouldn't B"
-				constant (int32) ^at = 25299
+				constant (int32) ^at = 25304
 				package conjugation_fn _function
 					package call _code __translation="ConjugateVerb35"
 						local fn
@@ -27345,67 +27345,67 @@ package main _plain
 												code
 			package preposition1 _preposition
 				constant (text) ^text = "being able to"
-				constant (int32) ^at = 25182
+				constant (int32) ^at = 25187
 			package preposition2 _preposition
 				constant (text) ^text = "coulding"
-				constant (int32) ^at = 25190
+				constant (int32) ^at = 25195
 			package preposition3 _preposition
 				constant (text) ^text = "maying"
-				constant (int32) ^at = 25196
+				constant (int32) ^at = 25201
 			package preposition4 _preposition
 				constant (text) ^text = "mighting"
-				constant (int32) ^at = 25202
+				constant (int32) ^at = 25207
 			package preposition5 _preposition
 				constant (text) ^text = "musting"
-				constant (int32) ^at = 25208
+				constant (int32) ^at = 25213
 			package preposition6 _preposition
 				constant (text) ^text = "shoulding"
-				constant (int32) ^at = 25214
+				constant (int32) ^at = 25219
 			package preposition7 _preposition
 				constant (text) ^text = "woulding"
-				constant (int32) ^at = 25220
+				constant (int32) ^at = 25225
 			package preposition8 _preposition
 				constant (text) ^text = "being"
-				constant (int32) ^at = 25227
+				constant (int32) ^at = 25232
 			package preposition9 _preposition
 				constant (text) ^text = "aren'ting"
-				constant (int32) ^at = 25239
+				constant (int32) ^at = 25244
 			package preposition10 _preposition
 				constant (text) ^text = "can'ting"
-				constant (int32) ^at = 25245
+				constant (int32) ^at = 25250
 			package preposition11 _preposition
 				constant (text) ^text = "don'ting"
-				constant (int32) ^at = 25251
+				constant (int32) ^at = 25256
 			package preposition12 _preposition
 				constant (text) ^text = "haven'ting"
-				constant (int32) ^at = 25257
+				constant (int32) ^at = 25262
 			package preposition13 _preposition
 				constant (text) ^text = "mustn'ting"
-				constant (int32) ^at = 25263
+				constant (int32) ^at = 25268
 			package preposition14 _preposition
 				constant (text) ^text = "mightn'ting"
-				constant (int32) ^at = 25269
+				constant (int32) ^at = 25274
 			package preposition15 _preposition
 				constant (text) ^text = "mayn'ting"
-				constant (int32) ^at = 25275
+				constant (int32) ^at = 25280
 			package preposition16 _preposition
 				constant (text) ^text = "wouldn'ting"
-				constant (int32) ^at = 25281
+				constant (int32) ^at = 25286
 			package preposition17 _preposition
 				constant (text) ^text = "couldn'ting"
-				constant (int32) ^at = 25287
+				constant (int32) ^at = 25292
 			package preposition18 _preposition
 				constant (text) ^text = "shouldn'ting"
-				constant (int32) ^at = 25293
+				constant (int32) ^at = 25298
 			package preposition19 _preposition
 				constant (text) ^text = "won'ting"
-				constant (int32) ^at = 25299
+				constant (int32) ^at = 25304
 		package relations _submodule
 			package relation1 _relation
 				constant (int32) relation_id = 6 __translation="relation_id_U38"
 				constant (text) ^term0 = "object"
 				constant (text) ^term1 = "--"
-				constant (int32) ^at = 25427
+				constant (int32) ^at = 25432
 	package source_text _module
 		constant (int32) ^category = 1
 		package instances _submodule
@@ -27413,8 +27413,8 @@ package main _plain
 				constant (text) ^name = "decorative"
 				constant (text) ^printed_name = "decorative"
 				constant (text) ^abbreviation = "Dc"
-				constant (int32) ^at = 14825
-				constant (int32) ^kind_set_at = 14825
+				constant (int32) ^at = 14830
+				constant (int32) ^kind_set_at = 14830
 				constant ^value = I_decorative
 				constant (text) ^index_kind = "text style"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; text style"
@@ -27429,8 +27429,8 @@ package main _plain
 				constant (text) ^name = "calligraphic"
 				constant (text) ^printed_name = "calligraphic"
 				constant (text) ^abbreviation = "Cl"
-				constant (int32) ^at = 14825
-				constant (int32) ^kind_set_at = 14825
+				constant (int32) ^at = 14830
+				constant (int32) ^kind_set_at = 14830
 				constant ^value = I_calligraphic
 				constant (text) ^index_kind = "text style"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; text style"
@@ -27445,8 +27445,8 @@ package main _plain
 				constant (text) ^name = "enlarged"
 				constant (text) ^printed_name = "enlarged"
 				constant (text) ^abbreviation = "En"
-				constant (int32) ^at = 14825
-				constant (int32) ^kind_set_at = 14825
+				constant (int32) ^at = 14830
+				constant (int32) ^kind_set_at = 14830
 				constant ^value = I_enlarged
 				constant (text) ^index_kind = "text style"
 				constant (text) ^index_kind_chain = "value &gt;  &gt; sayable value &gt; understandable value &gt; enumerated value &gt; text style"
@@ -27460,7 +27460,7 @@ package main _plain
 		package kinds _submodule
 			package kind1 _kind
 				constant (text) ^name = "text style"
-				constant (int32) ^at = 14816
+				constant (int32) ^at = 14821
 				typename K_text_style = enum __translation="K_text_style"
 				constant (int32) ^source_order = 19
 				constant (int32) kind_ref = 561 __translation="kind_ref_U43"
@@ -27790,7 +27790,7 @@ package main _plain
 			package heading5 _heading
 				constant (int32) id = 561 __translation="id_U5"
 				constant (text) ^text = "Part One - Preamble"
-				constant (int32) ^at = 14901
+				constant (int32) ^at = 14906
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Part One"
 				constant (text) ^part2 = "Preamble"
@@ -27800,7 +27800,7 @@ package main _plain
 			package heading6 _heading
 				constant (int32) id = 561 __translation="id_U6"
 				constant (text) ^text = "Part Two - Miscellaneous Definitions"
-				constant (int32) ^at = 15622
+				constant (int32) ^at = 15627
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Part Two"
 				constant (text) ^part2 = "Miscellaneous Definitions"
@@ -27810,7 +27810,7 @@ package main _plain
 			package heading7 _heading
 				constant (int32) id = 561 __translation="id_U7"
 				constant (text) ^text = "Part Three - Phrasebook"
-				constant (int32) ^at = 15983
+				constant (int32) ^at = 15988
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Part Three"
 				constant (text) ^part2 = "Phrasebook"
@@ -27820,7 +27820,7 @@ package main _plain
 			package heading8 _heading
 				constant (int32) id = 561 __translation="id_U8"
 				constant (text) ^text = "Chapter 1 - Saying"
-				constant (int32) ^at = 15988
+				constant (int32) ^at = 15993
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 1"
 				constant (text) ^part2 = "Saying"
@@ -27830,7 +27830,7 @@ package main _plain
 			package heading9 _heading
 				constant (int32) id = 561 __translation="id_U9"
 				constant (text) ^text = "Section 1 - Saying Values"
-				constant (int32) ^at = 15993
+				constant (int32) ^at = 15998
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Saying Values"
@@ -27840,7 +27840,7 @@ package main _plain
 			package heading10 _heading
 				constant (int32) id = 561 __translation="id_U10"
 				constant (text) ^text = "Section 2 - Saying Names"
-				constant (int32) ^at = 16067
+				constant (int32) ^at = 16072
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Saying Names"
@@ -27850,7 +27850,7 @@ package main _plain
 			package heading11 _heading
 				constant (int32) id = 561 __translation="id_U11"
 				constant (text) ^text = "Section 3 - Saying Special Characters"
-				constant (int32) ^at = 16176
+				constant (int32) ^at = 16181
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "Saying Special Characters"
@@ -27860,7 +27860,7 @@ package main _plain
 			package heading12 _heading
 				constant (int32) id = 561 __translation="id_U12"
 				constant (text) ^text = "Section 4 - Saying Line and Paragraph Breaks"
-				constant (int32) ^at = 16246
+				constant (int32) ^at = 16251
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 4"
 				constant (text) ^part2 = "Saying Line and Paragraph Breaks"
@@ -27870,7 +27870,7 @@ package main _plain
 			package heading13 _heading
 				constant (int32) id = 561 __translation="id_U13"
 				constant (text) ^text = "Section 5 - Saying If and Otherwise"
-				constant (int32) ^at = 16356
+				constant (int32) ^at = 16361
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 5"
 				constant (text) ^part2 = "Saying If and Otherwise"
@@ -27880,7 +27880,7 @@ package main _plain
 			package heading14 _heading
 				constant (int32) id = 561 __translation="id_U14"
 				constant (text) ^text = "Section 6 - Saying one of"
-				constant (int32) ^at = 16485
+				constant (int32) ^at = 16490
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 6"
 				constant (text) ^part2 = "Saying one of"
@@ -27890,7 +27890,7 @@ package main _plain
 			package heading15 _heading
 				constant (int32) id = 561 __translation="id_U15"
 				constant (text) ^text = "Section 7 - Saying Fonts and Visual Effects"
-				constant (int32) ^at = 16732
+				constant (int32) ^at = 16737
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 7"
 				constant (text) ^part2 = "Saying Fonts and Visual Effects"
@@ -27900,7 +27900,7 @@ package main _plain
 			package heading16 _heading
 				constant (int32) id = 561 __translation="id_U16"
 				constant (text) ^text = "Section 8 - Saying Lists of Values"
-				constant (int32) ^at = 16824
+				constant (int32) ^at = 16829
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 8"
 				constant (text) ^part2 = "Saying Lists of Values"
@@ -27910,7 +27910,7 @@ package main _plain
 			package heading17 _heading
 				constant (int32) id = 561 __translation="id_U17"
 				constant (text) ^text = "Chapter 2 - Conditions and Variables"
-				constant (int32) ^at = 16899
+				constant (int32) ^at = 16904
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 2"
 				constant (text) ^part2 = "Conditions and Variables"
@@ -27920,7 +27920,7 @@ package main _plain
 			package heading18 _heading
 				constant (int32) id = 561 __translation="id_U18"
 				constant (text) ^text = "Section 1 - Conditions"
-				constant (int32) ^at = 16906
+				constant (int32) ^at = 16911
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Conditions"
@@ -27930,7 +27930,7 @@ package main _plain
 			package heading19 _heading
 				constant (int32) id = 561 __translation="id_U19"
 				constant (text) ^text = "Section 2 - Assigning Temporary Variables"
-				constant (int32) ^at = 16951
+				constant (int32) ^at = 16956
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Assigning Temporary Variables"
@@ -27940,7 +27940,7 @@ package main _plain
 			package heading20 _heading
 				constant (int32) id = 561 __translation="id_U20"
 				constant (text) ^text = "Section 3 - Increase and Decrease"
-				constant (int32) ^at = 17136
+				constant (int32) ^at = 17141
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "Increase and Decrease"
@@ -27950,7 +27950,7 @@ package main _plain
 			package heading21 _heading
 				constant (int32) id = 561 __translation="id_U21"
 				constant (text) ^text = "Chapter 2 - Arithmetic"
-				constant (int32) ^at = 17228
+				constant (int32) ^at = 17233
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 2"
 				constant (text) ^part2 = "Arithmetic"
@@ -27960,7 +27960,7 @@ package main _plain
 			package heading22 _heading
 				constant (int32) id = 561 __translation="id_U22"
 				constant (text) ^text = "Section 1 - Arithmetic Operations"
-				constant (int32) ^at = 17233
+				constant (int32) ^at = 17238
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Arithmetic Operations"
@@ -27970,7 +27970,7 @@ package main _plain
 			package heading23 _heading
 				constant (int32) id = 561 __translation="id_U23"
 				constant (text) ^text = "Section 2 - Saying Real Numbers (not for Z-machine)"
-				constant (int32) ^at = 17707
+				constant (int32) ^at = 17712
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Saying Real Numbers (not for Z-machine)"
@@ -27980,7 +27980,7 @@ package main _plain
 			package heading24 _heading
 				constant (int32) id = 561 __translation="id_U24"
 				constant (text) ^text = "Section 3 - Real Arithmetic (not for Z-machine)"
-				constant (int32) ^at = 17846
+				constant (int32) ^at = 17851
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "Real Arithmetic (not for Z-machine)"
@@ -27990,7 +27990,7 @@ package main _plain
 			package heading25 _heading
 				constant (int32) id = 561 __translation="id_U25"
 				constant (text) ^text = "Section 4 - Exponential Functions (not for Z-machine)"
-				constant (int32) ^at = 18102
+				constant (int32) ^at = 18107
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 4"
 				constant (text) ^part2 = "Exponential Functions (not for Z-machine)"
@@ -28000,7 +28000,7 @@ package main _plain
 			package heading26 _heading
 				constant (int32) id = 561 __translation="id_U26"
 				constant (text) ^text = "Section 5 - Trigonometric Functions (not for Z-machine)"
-				constant (int32) ^at = 18250
+				constant (int32) ^at = 18255
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 5"
 				constant (text) ^part2 = "Trigonometric Functions (not for Z-machine)"
@@ -28010,7 +28010,7 @@ package main _plain
 			package heading27 _heading
 				constant (int32) id = 561 __translation="id_U27"
 				constant (text) ^text = "Section 6 - Trigonometric Functions (not for Z-machine)"
-				constant (int32) ^at = 18496
+				constant (int32) ^at = 18501
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 6"
 				constant (text) ^part2 = "Trigonometric Functions (not for Z-machine)"
@@ -28020,7 +28020,7 @@ package main _plain
 			package heading28 _heading
 				constant (int32) id = 561 __translation="id_U28"
 				constant (text) ^text = "Chapter 3 - Control"
-				constant (int32) ^at = 18803
+				constant (int32) ^at = 18808
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 3"
 				constant (text) ^part2 = "Control"
@@ -28030,7 +28030,7 @@ package main _plain
 			package heading29 _heading
 				constant (int32) id = 561 __translation="id_U29"
 				constant (text) ^text = "Section 1 - Deciding Outcomes"
-				constant (int32) ^at = 18808
+				constant (int32) ^at = 18813
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Deciding Outcomes"
@@ -28040,7 +28040,7 @@ package main _plain
 			package heading30 _heading
 				constant (int32) id = 561 __translation="id_U30"
 				constant (text) ^text = "Section 2 - If and Unless"
-				constant (int32) ^at = 18885
+				constant (int32) ^at = 18890
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "If and Unless"
@@ -28050,7 +28050,7 @@ package main _plain
 			package heading31 _heading
 				constant (int32) id = 561 __translation="id_U31"
 				constant (text) ^text = "Section 3 - While and Repeat"
-				constant (int32) ^at = 18967
+				constant (int32) ^at = 18972
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "While and Repeat"
@@ -28060,7 +28060,7 @@ package main _plain
 			package heading32 _heading
 				constant (int32) id = 561 __translation="id_U32"
 				constant (text) ^text = "Section 4 - Loop Flow"
-				constant (int32) ^at = 19252
+				constant (int32) ^at = 19257
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 4"
 				constant (text) ^part2 = "Loop Flow"
@@ -28070,7 +28070,7 @@ package main _plain
 			package heading33 _heading
 				constant (int32) id = 561 __translation="id_U33"
 				constant (text) ^text = "Chapter 4 - Values"
-				constant (int32) ^at = 19287
+				constant (int32) ^at = 19292
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 4"
 				constant (text) ^part2 = "Values"
@@ -28080,7 +28080,7 @@ package main _plain
 			package heading34 _heading
 				constant (int32) id = 561 __translation="id_U34"
 				constant (text) ^text = "Section 1 - Enumerations"
-				constant (int32) ^at = 19292
+				constant (int32) ^at = 19297
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Enumerations"
@@ -28090,7 +28090,7 @@ package main _plain
 			package heading35 _heading
 				constant (int32) id = 561 __translation="id_U35"
 				constant (text) ^text = "Section 2 - Randomness"
-				constant (int32) ^at = 19445
+				constant (int32) ^at = 19450
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Randomness"
@@ -28100,7 +28100,7 @@ package main _plain
 			package heading36 _heading
 				constant (int32) id = 561 __translation="id_U36"
 				constant (text) ^text = "Section 3 - Default Values"
-				constant (int32) ^at = 19681
+				constant (int32) ^at = 19686
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "Default Values"
@@ -28110,7 +28110,7 @@ package main _plain
 			package heading37 _heading
 				constant (int32) id = 561 __translation="id_U37"
 				constant (text) ^text = "Chapter 5 - Text"
-				constant (int32) ^at = 19718
+				constant (int32) ^at = 19723
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 5"
 				constant (text) ^part2 = "Text"
@@ -28120,7 +28120,7 @@ package main _plain
 			package heading38 _heading
 				constant (int32) id = 561 __translation="id_U38"
 				constant (text) ^text = "Section 1 - Breaking down text"
-				constant (int32) ^at = 19723
+				constant (int32) ^at = 19728
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Breaking down text"
@@ -28130,7 +28130,7 @@ package main _plain
 			package heading39 _heading
 				constant (int32) id = 561 __translation="id_U39"
 				constant (text) ^text = "Section 2 - Matching and Replacing"
-				constant (int32) ^at = 20072
+				constant (int32) ^at = 20077
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Matching and Replacing"
@@ -28140,7 +28140,7 @@ package main _plain
 			package heading40 _heading
 				constant (int32) id = 561 __translation="id_U40"
 				constant (text) ^text = "Section 3 - Regular Expressions"
-				constant (int32) ^at = 20454
+				constant (int32) ^at = 20459
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "Regular Expressions"
@@ -28150,7 +28150,7 @@ package main _plain
 			package heading41 _heading
 				constant (int32) id = 561 __translation="id_U41"
 				constant (text) ^text = "Section 4 - Casing of Text"
-				constant (int32) ^at = 20629
+				constant (int32) ^at = 20634
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 4"
 				constant (text) ^part2 = "Casing of Text"
@@ -28160,7 +28160,7 @@ package main _plain
 			package heading42 _heading
 				constant (int32) id = 561 __translation="id_U42"
 				constant (text) ^text = "Section 5 - Adaptive Text"
-				constant (int32) ^at = 20767
+				constant (int32) ^at = 20772
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 5"
 				constant (text) ^part2 = "Adaptive Text"
@@ -28170,7 +28170,7 @@ package main _plain
 			package heading43 _heading
 				constant (int32) id = 561 __translation="id_U43"
 				constant (text) ^text = "Chapter 6 - Data Structures"
-				constant (int32) ^at = 21046
+				constant (int32) ^at = 21051
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 6"
 				constant (text) ^part2 = "Data Structures"
@@ -28180,7 +28180,7 @@ package main _plain
 			package heading44 _heading
 				constant (int32) id = 561 __translation="id_U44"
 				constant (text) ^text = "Section 1 - Tables"
-				constant (int32) ^at = 21052
+				constant (int32) ^at = 21057
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Tables"
@@ -28190,7 +28190,7 @@ package main _plain
 			package heading45 _heading
 				constant (int32) id = 561 __translation="id_U45"
 				constant (text) ^text = "Section 2 - Sorting Tables"
-				constant (int32) ^at = 21440
+				constant (int32) ^at = 21445
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Sorting Tables"
@@ -28200,7 +28200,7 @@ package main _plain
 			package heading46 _heading
 				constant (int32) id = 561 __translation="id_U46"
 				constant (text) ^text = "Section 3 - Lists"
-				constant (int32) ^at = 21518
+				constant (int32) ^at = 21523
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "Lists"
@@ -28210,7 +28210,7 @@ package main _plain
 			package heading47 _heading
 				constant (int32) id = 561 __translation="id_U47"
 				constant (text) ^text = "Section 4 - Length of lists"
-				constant (int32) ^at = 21886
+				constant (int32) ^at = 21891
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 4"
 				constant (text) ^part2 = "Length of lists"
@@ -28220,7 +28220,7 @@ package main _plain
 			package heading48 _heading
 				constant (int32) id = 561 __translation="id_U48"
 				constant (text) ^text = "Section 5 - List operations"
-				constant (int32) ^at = 22061
+				constant (int32) ^at = 22066
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 5"
 				constant (text) ^part2 = "List operations"
@@ -28230,7 +28230,7 @@ package main _plain
 			package heading49 _heading
 				constant (int32) id = 561 __translation="id_U49"
 				constant (text) ^text = "Section 6 - Relations"
-				constant (int32) ^at = 22242
+				constant (int32) ^at = 22247
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 6"
 				constant (text) ^part2 = "Relations"
@@ -28240,7 +28240,7 @@ package main _plain
 			package heading50 _heading
 				constant (int32) id = 561 __translation="id_U50"
 				constant (text) ^text = "Chapter 7 - Functional Programming"
-				constant (int32) ^at = 22822
+				constant (int32) ^at = 22827
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 7"
 				constant (text) ^part2 = "Functional Programming"
@@ -28250,7 +28250,7 @@ package main _plain
 			package heading51 _heading
 				constant (int32) id = 561 __translation="id_U51"
 				constant (text) ^text = "Section 1 - Applying Functions"
-				constant (int32) ^at = 22828
+				constant (int32) ^at = 22833
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Applying Functions"
@@ -28260,7 +28260,7 @@ package main _plain
 			package heading52 _heading
 				constant (int32) id = 561 __translation="id_U52"
 				constant (text) ^text = "Section 2 - Working with Lists"
-				constant (int32) ^at = 23185
+				constant (int32) ^at = 23190
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Working with Lists"
@@ -28270,7 +28270,7 @@ package main _plain
 			package heading53 _heading
 				constant (int32) id = 561 __translation="id_U53"
 				constant (text) ^text = "Chapter 8 - Rulebooks and Activities"
-				constant (int32) ^at = 23448
+				constant (int32) ^at = 23453
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 8"
 				constant (text) ^part2 = "Rulebooks and Activities"
@@ -28280,7 +28280,7 @@ package main _plain
 			package heading54 _heading
 				constant (int32) id = 561 __translation="id_U54"
 				constant (text) ^text = "Section 1 - Carrying out Activities"
-				constant (int32) ^at = 23455
+				constant (int32) ^at = 23460
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Carrying out Activities"
@@ -28290,7 +28290,7 @@ package main _plain
 			package heading55 _heading
 				constant (int32) id = 561 __translation="id_U55"
 				constant (text) ^text = "Section 2 - Advanced Activities"
-				constant (int32) ^at = 23531
+				constant (int32) ^at = 23536
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Advanced Activities"
@@ -28300,7 +28300,7 @@ package main _plain
 			package heading56 _heading
 				constant (int32) id = 561 __translation="id_U56"
 				constant (text) ^text = "Section 3 - Following Rules"
-				constant (int32) ^at = 23734
+				constant (int32) ^at = 23739
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "Following Rules"
@@ -28310,7 +28310,7 @@ package main _plain
 			package heading57 _heading
 				constant (int32) id = 561 __translation="id_U57"
 				constant (text) ^text = "Section 4 - Success and Failure"
-				constant (int32) ^at = 24003
+				constant (int32) ^at = 24008
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 4"
 				constant (text) ^part2 = "Success and Failure"
@@ -28320,7 +28320,7 @@ package main _plain
 			package heading58 _heading
 				constant (int32) id = 561 __translation="id_U58"
 				constant (text) ^text = "Chapter 9 - External Files (not for Z-machine)"
-				constant (int32) ^at = 24132
+				constant (int32) ^at = 24137
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Chapter 9"
 				constant (text) ^part2 = "External Files (not for Z-machine)"
@@ -28330,7 +28330,7 @@ package main _plain
 			package heading59 _heading
 				constant (int32) id = 561 __translation="id_U59"
 				constant (text) ^text = "Section 1 - Files of Text"
-				constant (int32) ^at = 24143
+				constant (int32) ^at = 24148
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Files of Text"
@@ -28340,7 +28340,7 @@ package main _plain
 			package heading60 _heading
 				constant (int32) id = 561 __translation="id_U60"
 				constant (text) ^text = "Section 2 - Files of Data"
-				constant (int32) ^at = 24216
+				constant (int32) ^at = 24221
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Files of Data"
@@ -28350,7 +28350,7 @@ package main _plain
 			package heading61 _heading
 				constant (int32) id = 561 __translation="id_U61"
 				constant (text) ^text = "Section 3 - File Handling"
-				constant (int32) ^at = 24272
+				constant (int32) ^at = 24277
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "File Handling"
@@ -28360,7 +28360,7 @@ package main _plain
 			package heading62 _heading
 				constant (int32) id = 561 __translation="id_U62"
 				constant (text) ^text = "Part Four - Adjectival Definitions"
-				constant (int32) ^at = 24362
+				constant (int32) ^at = 24367
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Part Four"
 				constant (text) ^part2 = "Adjectival Definitions"
@@ -28370,7 +28370,7 @@ package main _plain
 			package heading63 _heading
 				constant (int32) id = 561 __translation="id_U63"
 				constant (text) ^text = "Section 1 - Miscellaneous Useful Adjectives"
-				constant (int32) ^at = 24368
+				constant (int32) ^at = 24373
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Miscellaneous Useful Adjectives"
@@ -28380,7 +28380,7 @@ package main _plain
 			package heading64 _heading
 				constant (int32) id = 561 __translation="id_U64"
 				constant (text) ^text = "Section 2 - Adjectives for Relations"
-				constant (int32) ^at = 24727
+				constant (int32) ^at = 24732
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Adjectives for Relations"
@@ -28390,7 +28390,7 @@ package main _plain
 			package heading65 _heading
 				constant (int32) id = 561 __translation="id_U65"
 				constant (text) ^text = "Section 3 - Adjectives for Real Numbers (not for Z-machine)"
-				constant (int32) ^at = 25007
+				constant (int32) ^at = 25012
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "Adjectives for Real Numbers (not for Z-machine)"
@@ -28406,7 +28406,7 @@ package main _plain
 			package heading67 _heading
 				constant (int32) id = 561 __translation="id_U67"
 				constant (text) ^text = "Section 1 - Modal verbs and contractions"
-				constant (int32) ^at = 25174
+				constant (int32) ^at = 25179
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Modal verbs and contractions"
@@ -28416,7 +28416,7 @@ package main _plain
 			package heading68 _heading
 				constant (int32) id = 561 __translation="id_U68"
 				constant (text) ^text = "Section 2 - Fallback definitions (not for interactive fiction language element)"
-				constant (int32) ^at = 25306
+				constant (int32) ^at = 25311
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Fallback definitions (not for interactive fiction language element)"
@@ -28426,7 +28426,7 @@ package main _plain
 			package heading69 _heading
 				constant (int32) id = 561 __translation="id_U69"
 				constant (text) ^text = "Section 1 - Grammatical definitions"
-				constant (int32) ^at = 25330
+				constant (int32) ^at = 25335
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 1"
 				constant (text) ^part2 = "Grammatical definitions"
@@ -28436,7 +28436,7 @@ package main _plain
 			package heading70 _heading
 				constant (int32) id = 561 __translation="id_U70"
 				constant (text) ^text = "Section 2 - Saying pronouns (for interactive fiction language element only)"
-				constant (int32) ^at = 25606
+				constant (int32) ^at = 25611
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 2"
 				constant (text) ^part2 = "Saying pronouns (for interactive fiction language element only)"
@@ -28446,7 +28446,7 @@ package main _plain
 			package heading71 _heading
 				constant (int32) id = 561 __translation="id_U71"
 				constant (text) ^text = "Section 3 - Further pronouns (for interactive fiction language element only)"
-				constant (int32) ^at = 26590
+				constant (int32) ^at = 26595
 				constant (int32) ^parts = 2
 				constant (text) ^part1 = "Section 3"
 				constant (text) ^part2 = "Further pronouns (for interactive fiction language element only)"

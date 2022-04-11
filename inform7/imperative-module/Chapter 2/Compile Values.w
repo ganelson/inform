@@ -200,10 +200,12 @@ at runtime, which extends the range of promotions we can make.
 =
 parse_node *CompileValues::cast_nonconstant(parse_node *value, kind *K_wanted,
 	int *down) {
-	value = CompileValues::cast_constant(value, K_wanted);
-	kind *K_found = Specifications::to_kind(value);
-	CompileValues::note_that_kind_is_used(K_found);
-	EmitCode::casting_call(K_found, K_wanted, down);
+	if (Node::is(value, TABLE_ENTRY_NT) == FALSE) {
+		value = CompileValues::cast_constant(value, K_wanted);
+		kind *K_found = Specifications::to_kind(value);
+		CompileValues::note_that_kind_is_used(K_found);
+		EmitCode::casting_call(K_found, K_wanted, down);
+	}
 	return value;
 }
 

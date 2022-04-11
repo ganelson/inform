@@ -1,0 +1,5 @@
+Kitchen is a room.
+
+Table of Inventory
+topic (text)
+"x"
