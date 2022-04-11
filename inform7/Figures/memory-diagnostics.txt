@@ -1,4 +1,4 @@
-Total memory consumption was 126314K = 123 MB
+Total memory consumption was 126319K = 123 MB
 
  ---- was used for 2008185 objects, in 360861 frames in 0 x 800K = 0K = 0 MB:
 
@@ -237,7 +237,7 @@ Total memory consumption was 126314K = 123 MB
 
 100.0% was used for memory not allocated for objects:
 
-    59.2%  text stream storage                      76632712 bytes in 452254 claims
+    59.2%  text stream storage                      76637280 bytes in 452265 claims
      3.5%  dictionary storage                       4544512 bytes in 6619 claims
      ----  sorting                                  744 bytes in 3 claims
      5.5%  source text                              7200000 bytes in 3 claims
@@ -255,5 +255,5 @@ Total memory consumption was 126314K = 123 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      0.2%  emitter array storage                    279776 bytes in 1995 claims
 
--140.-6% was overhead - -181862792 bytes = -177600K = -173 MB
+-140.-5% was overhead - -181862792 bytes = -177600K = -173 MB
 

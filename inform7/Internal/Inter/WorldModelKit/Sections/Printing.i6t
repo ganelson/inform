@@ -353,59 +353,61 @@ Global short_name_case;
 The routines accessible from outside this segment.
 
 =
-[ IndefArt obj i;
+[ IndefArt obj i s;
 	if (obj == 0) { LIST_WRITER_INTERNAL_RM('Y'); rtrue; }
-    i = indef_mode; indef_mode = true;
-    if (obj has proper) { indef_mode = NULL; print (PSN__) obj; indef_mode = i; return; }
+    i = indef_mode; indef_mode = true; s = self; self = obj;
+    if (obj has proper) { indef_mode = NULL; print (PSN__) obj; indef_mode = i; self = s; return; }
     if ((obj provides article) && (TEXT_TY_Compare(obj.article, EMPTY_TEXT_VALUE) ~= 0)) {
-        PrintOrRun(obj, article, true); print " ", (PSN__) obj; indef_mode = i;
+        PrintOrRun(obj, article, true); print " ", (PSN__) obj; indef_mode = i; self = s;
         return;
     }
-    PrefaceByArticle(obj, 2); indef_mode = i;
+    PrefaceByArticle(obj, 2); indef_mode = i; self = s;
 ];
 
-[ CIndefArt obj i;
+[ CIndefArt obj i s;
 	if (obj == 0) { LIST_WRITER_INTERNAL_RM('X'); rtrue; }
-    i = indef_mode; indef_mode = true;
+    i = indef_mode; indef_mode = true; s = self; self = obj;
     if (obj has proper) {
     	indef_mode = NULL;
 		caps_mode = true;
     	print (PSN__) obj;
     	indef_mode = i;
     	caps_mode = false;
+    	self = s;
     	return;
     }
     if ((obj provides article) && (TEXT_TY_Compare(obj.article, EMPTY_TEXT_VALUE) ~= 0)) {
-        TEXT_TY_Say_Capitalised(obj.article); print " ", (PSN__) obj; indef_mode = i;
+        TEXT_TY_Say_Capitalised(obj.article); print " ", (PSN__) obj; indef_mode = i; self = s;
         return;
     }
-    PrefaceByArticle(obj, 2, 0, 1); indef_mode = i;
+    PrefaceByArticle(obj, 2, 0, 1); indef_mode = i; self = s;
 ];
 
-[ DefArt obj i;
-    i = indef_mode; indef_mode = false;
+[ DefArt obj i s;
+    i = indef_mode; indef_mode = false; s = self; self = obj;
     if ((~~obj ofclass Object) || obj has proper) {
-        indef_mode = NULL; print (PSN__) obj; indef_mode = i;
+        indef_mode = NULL; print (PSN__) obj; indef_mode = i; self = s;
         return;
     }
-    PrefaceByArticle(obj, 1); indef_mode = i;
+    PrefaceByArticle(obj, 1); indef_mode = i; self = s;
 ];
 
-[ CDefArt obj i;
-    i = indef_mode; indef_mode = false;
+[ CDefArt obj i s;
+    i = indef_mode; indef_mode = false; s = self; self = obj;
     if ((obj ofclass Object) && (obj has proper || obj == player)) {
     	indef_mode = NULL;
     	caps_mode = true;
     	print (PSN__) obj;
     	indef_mode = i;
     	caps_mode = false;
+    	self = s;
     	return;
     }
     if ((~~obj ofclass Object) || obj has proper) {
-        indef_mode = NULL; print (PSN__) obj; indef_mode = i;
+        indef_mode = NULL; print (PSN__) obj; indef_mode = i; self = s;
         return;
     }
-    PrefaceByArticle(obj, 0); indef_mode = i;
+    PrefaceByArticle(obj, 0); indef_mode = i; self = s;
 ];
 
 @h Standard Response Issuing Rule.
