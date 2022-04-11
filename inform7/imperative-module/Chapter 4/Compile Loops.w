@@ -148,13 +148,16 @@ We can optimise out the "if" part in the case when $\phi(x) = {\it kind}_K(x)$.
 		"but this is not allowed. (Sorry: it's too hard to get right.)");
 
 @<Issue bad repeat domain problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadRepeatDomain),
-		"this describes a collection of values which can't be repeated through",
-		"because the possible range is too large (or has no sensible ordering). "
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_kind(2, K);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadRepeatDomain));
+	Problems::issue_problem_segment(
+		"In %1, you seem to want to repeat through all possible values which have "
+		"the kind '%2', and there are just too many of those. "
 		"For instance, you can 'repeat with D running through doors' because "
-		"there are only a small number of doors and they can be put in order "
-		"of creation. But you can't 'repeat with N running through numbers' "
-		"because numbers are without end.");
+		"there are only a small number of doors, but you can't 'repeat with N "
+		"running through numbers' because numbers are without end.");
+	Problems::issue_problem_end();
 
 @ Here we compile code to call |D(v)|, on the variable |fromv|, or |D(0)| if
 |fromv| is |NULL|. As in //Deciding to Defer//, we are forced to call |D| as

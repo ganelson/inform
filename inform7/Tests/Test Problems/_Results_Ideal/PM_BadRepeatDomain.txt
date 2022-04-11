@@ -1,13 +1,13 @@
-Inform 7 build 6L48 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 15 words long.
-I've also read Standard Rules by Graham Nelson, which is 42569 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
 Problem__ PM_BadRepeatDomain
-  >--> You wrote 'repeat with X running through numbers' (source text, line 4):
-    but this describes a collection of values which can't be repeated through,
-    because the possible range is too large (or has no sensible ordering). For
-    instance, you can 'repeat with D running through doors' because there are
-    only a small number of doors and they can be put in order of creation. But
-    you can't 'repeat with N running through numbers' because numbers are
-    without end.
-Inform 7 has finished: 50 centiseconds used.
+  >--> In 'repeat with X running through numbers' (source text, line 4), you
+    seem to want to repeat through all possible values which have the kind 'a
+    number', and there are just too many of those. For instance, you can
+    'repeat with D running through doors' because there are only a small number
+    of doors, but you can't 'repeat with N running through numbers' because
+    numbers are without end.
+Inform 7 has finished.
