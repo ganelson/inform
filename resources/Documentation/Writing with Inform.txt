@@ -2695,6 +2695,14 @@ This room description has two possible forms: "Ah, the unknown cell. ", at first
 
 allowing no space after "unknown cell."
 
+When varying descriptions are being given for kinds of rooms or things, it can be useful to make use of a special value called "item described", which refers to the particular one being looked at right now. For example:
+
+	A musical instrument is a kind of thing. The tuba and the xylophone are musical instruments. The description of a musical instrument is usually "An especially shiny, well-tuned [item described]."
+
+The tuba now has the description "An especially shiny, well-tuned tuba.", and similarly for the xylophone.
+
+The "item described" value can similarly be used in any textual property of a room or thing, and in particular can be used with the "initial appearance" and "printed name" properties, which are also forms of description.
+
 [x] Text with random alternatives {PM_ComplicatedSayStructure} {PM_ComplicatedSayStructure2} {PM_ComplicatedSayStructure5} {PM_ComplicatedSayStructure4} {PM_ComplicatedSayStructure3}
 
 ^^{text substitutions: random variations}
