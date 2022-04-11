@@ -1,0 +1,12 @@
+Lab is a room.
+
+A prog is a kind of value. 
+The progs are unstarted, progressing, completed.
+A person has a prog.
+The threshold is a prog that varies.
+The threshold is progressing.
+
+When play begins:
+	showme the threshold;
+	now the threshold is completed;
+	showme the threshold.

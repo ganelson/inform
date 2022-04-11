@@ -1036,6 +1036,13 @@ in this case.
 
 @<Case 29 - COMMON NOUN, PROPER NOUN vs ADJECTIVE@> =
 	Refiner::turn_player_to_yourself(px);
+	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
+		(Lvalues::get_nonlocal_variable_if_any(Node::get_evaluation(px)))) {
+		if (Refiner::nominalise_adjective(py)) {
+			Assertions::make_coupling(px, py);
+			return;
+		}
+	}
 	if (global_pass_state.pass == 2) Assertions::PropertyKnowledge::assert_property_list(px, py);
 
 @h Case 30. I am in two minds about the next nit-picking error message.
