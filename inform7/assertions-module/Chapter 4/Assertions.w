@@ -1883,8 +1883,8 @@ void Assertions::issue_value_equation_problem(parse_node *px, parse_node *py) {
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_CantUncreate));
 		Problems::issue_problem_segment(
 			"In order to act on %2, I seem to need to give "
-			"a new meaning to '%1', something which was created by the earlier "
-			"sentence %3. That must be wrong somehow: I'm guessing that there "
+			"a new meaning to '%1', which currently means something created by the "
+			"earlier sentence %3. That must be wrong, so I'm guessing that there "
 			"is an accidental clash of names. This sometimes happens when "
 			"adjectives are being made after objects whose names include them: "
 			"for instance, defining 'big' as an adjective after having already "

@@ -1,15 +1,16 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 64 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
 Problem__ PM_CantUncreate
   >--> In order to act on 'The winch switch states are lock, free, reel in, run
     out' (source text, line 3), I seem to need to give a new meaning to 'lock',
-    something which was created by the earlier sentence 'The lock is scenery in
-    the Service Area' (source text, line 2). That must be wrong somehow: I'm
-    guessing that there is an accidental clash of names. This sometimes happens
-    when adjectives are being made after objects whose names include them: for
-    instance, defining 'big' as an adjective after having already made a 'big
-    top'. The simplest way to avoid this is to define the adjectives in
-    question first.
-Inform 7 has finished: 17 centiseconds used.
+    which currently means something created by the earlier sentence 'The lock
+    is scenery in the Service Area' (source text, line 2). That must be wrong,
+    so I'm guessing that there is an accidental clash of names. This sometimes
+    happens when adjectives are being made after objects whose names include
+    them: for instance, defining 'big' as an adjective after having already
+    made a 'big top'. The simplest way to avoid this is to define the
+    adjectives in question first.
+Inform 7 has finished.
