@@ -1,0 +1,10 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 27 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
+Problem__ PM_LateRightTermWrongKind
+  >--> You wrote 'The player quogs Foo' (source text, line 4), but I think the
+    kind of Foo is a room, and not a thing, which is what this relationship
+    would need it to be. (It relates a thing to a thing.)
+Inform 7 has finished.

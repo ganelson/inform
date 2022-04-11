@@ -80,6 +80,7 @@ void World::stage_IV(void) {
 		InferenceSubjects::check_model(infs);
 		@<Check that properties are permitted@>;
 		@<Check that properties are not contradictory@>;
+		@<Check that relations are permitted@>;
 	}
 	World::ask_plugins_at_stage(WORLD_STAGE_IV);
 }
@@ -191,6 +192,61 @@ about the Portal, to stand.
 		"therefore has to have two contradictory states of the same property at once",
 		"which is impossible. When a kind's definition says that something is 'always' "
 		"true, there is no way to override that for particular things of the kind.");
+
+@ This is a last line of defence. Suppose we define "to connect to" as a relation
+between things and things, and then write "X connects to Y". Inform must clearly
+check that X and Y are both things. It does indeed make some checks along those
+lines earlier on in compilation, but there are objects whose kinds are not known
+until model completion time -- in particular, there can be objects which might
+be things or might be rooms, so that we cannot know if "X connects to Y" is
+legal until after the model is completed.
+
+But that's now! And so we make one last check, just in case.
+
+@<Check that relations are permitted@> =
+	inference *inf;
+	POSITIVE_KNOWLEDGE_LOOP(inf, infs, relation_inf) {
+		binary_predicate *bp = RelationSubjects::to_bp(infs);
+		inference_subject *left_infs = NULL;
+		inference_subject *right_infs = NULL;
+		RelationInferences::get_term_subjects(inf, &left_infs, &right_infs);
+		instance *left_instance = InstanceSubjects::to_instance(left_infs);
+		instance *right_instance = InstanceSubjects::to_instance(right_infs);
+		kind *left_kind = Instances::to_kind(left_instance);
+		kind *right_kind = Instances::to_kind(right_instance);
+		kind *left_needed_kind = BinaryPredicates::term_kind(bp, 0);
+		kind *right_needed_kind = BinaryPredicates::term_kind(bp, 1);
+		if ((left_instance) && (Kinds::conforms_to(left_kind, left_needed_kind) == FALSE)) {
+			current_sentence = Inferences::where_inferred(inf);
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_object(2, left_instance);
+			Problems::quote_kind(3, left_kind);
+			Problems::quote_kind(4, left_needed_kind);
+			Problems::quote_kind(5, right_needed_kind);
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_LateLeftTermWrongKind));
+			Problems::issue_problem_segment(
+				"You wrote %1, but I think the kind of %2 is %3, and not %4, "
+				"which is what this relationship would need it to be. (It "
+				"relates %4 to %5.)");
+			Problems::issue_problem_end();
+		}
+		if ((right_instance) && (Kinds::conforms_to(right_kind, right_needed_kind) == FALSE)) {
+			current_sentence = Inferences::where_inferred(inf);
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_object(2, right_instance);
+			Problems::quote_kind(3, right_kind);
+			Problems::quote_kind(4, left_needed_kind);
+			Problems::quote_kind(5, right_needed_kind);
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_LateRightTermWrongKind));
+			Problems::issue_problem_segment(
+				"You wrote %1, but I think the kind of %2 is %3, and not %5, "
+				"which is what this relationship would need it to be. (It "
+				"relates %4 to %5.)");
+			Problems::issue_problem_end();
+		}
+	}
 
 @h Stage V.
 A final chance to add properties which may assist the run-time implementation

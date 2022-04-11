@@ -1,0 +1,4 @@
+Foo is a room. Boz is a room.
+Quoggle relates various things to various things.
+The verb to quog means the quoggle relation.
+Boz quogs the player.
