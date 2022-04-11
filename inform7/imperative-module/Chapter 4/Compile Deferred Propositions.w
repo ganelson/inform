@@ -484,6 +484,7 @@ example. (See below.)
 		case FILTER_DEFER:
 			EmitCode::inv(POSTINCREMENT_BIP);
 			EmitCode::down();
+				if (Q_sp <= 0) internal_error("Q stack underflow");
 				EmitCode::ref_symbol(K_value, qcn_s[Q_sp-1]);
 			EmitCode::up();
 			break;
