@@ -8490,9 +8490,9 @@ The capitalised and uncapitalised versions are identical except, of course, that
 
 	"[We] [carry] the Queen's warrant."
 	"The birds drop pebbles on [us]. Right on [our] heads!"
-	"[Ours] [are] the burdens of office, which [we] take on [ourselves]."
+	"[Ours] are the burdens of office, which [we] take on [ourselves]."
 
-Notice that all five of these forms are differently worded, in English. That's the reason why we use the plural to write them - the traditional second person plural forms would be "you", "you", "your", "yours" and "yourself", so we wouldn't know if "[you]" was supposed to be the subject or the object of the verb. So the convention with all of these adaptive forms is that we use "we" and its variations. (That's also why the verbs are written in the plural - "[are]", not "[is]"; "[carry]", not "[carries]".)
+Notice that all five of these forms are differently worded, in English. That's the reason why we use the plural to write them - the traditional second person plural forms would be "you", "you", "your", "yours" and "yourself", so we wouldn't know if "[you]" was supposed to be the subject or the object of the verb. So the convention with all of these adaptive forms is that we use "we" and its variations. (That's also why the verbs are written in the plural - "[carry]", not "[carries]".)
 
 [x] Adapting text referring to other things
 
