@@ -2803,6 +2803,12 @@ This is exactly equivalent to
 but easier to read.
 {end}
 
+Something to watch out for is that texts are sometimes being printed internally for purposes other than actual output which the player can see, and this is particularly true of names. For example:
+
+	Before printing the name of the traffic signal: say "[one of]green[or]amber[or]red[cycling] ".
+
+This looks good for some purposes, but may not cycle in the sequence expected, and can result in incorrect indefinite articles being printed -- "an red traffic signal", for example. What's happening is that the name is being printed internally to see whether it begins with a vowel; that prints "amber traffic signal", but invisibly to us, and since this does begin with a vowel, "an" is visibly printed; then the name is visibly printed, but now it has changed to "red traffic signal", and so the result on screen is "an red traffic signal". There are many ways to avoid this (for example, to give the traffic signal a state which changes every turn, not every time the name is printed), but it's a trap to look out for.
+
 [x] Line breaks and paragraph breaks
 
 ^^{line breaks}
