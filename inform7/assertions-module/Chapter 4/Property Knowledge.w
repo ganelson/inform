@@ -16,7 +16,7 @@ void Assertions::PropertyKnowledge::initialise_global_variable(nonlocal_variable
 }
 
 @h Asserting properties, three different ways.
-In these three alternative routines, we can assert that a given owner -- specified
+In these three alternative functions, we can assert that a given owner -- specified
 either as an object, a value or a subtree -- should have
 
 (a) a given single property equal to a value given as a subtree,
@@ -108,7 +108,8 @@ It's used both above and by the tree-conversion code in the predicate
 calculus engine.
 
 Here there's no need to perform any typechecking; all of that is done by
-the proposition machinery.
+the proposition machinery. But we do look for empty lists, whose implied kind
+can only be deduced from a wider context than that proposition describes.
 
 =
 parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(property *prn, parse_node *py) {
@@ -122,11 +123,24 @@ parse_node *Assertions::PropertyKnowledge::property_value_from_property_subtree(
 		Node::get_evaluation(py));
 	kind *property_kind = ValueProperties::kind(prn);
 
+	@<Cast the empty list to whatever kind of list is expected@>;
+
 	if ((Specifications::is_value(val)) && (Node::is(val, CONSTANT_NT) == FALSE))
 		@<Issue a problem for a property value which isn't a constant@>;
 
 	return val;
 }
+
+@<Cast the empty list to whatever kind of list is expected@> =
+	kind *constant_kind = Specifications::to_kind(val);
+	if ((Kinds::get_construct(constant_kind) == CON_list_of) &&
+		(Kinds::eq(Kinds::unary_construction_material(constant_kind), K_nil)) &&
+		(Lists::length_of_ll(Node::get_text(val)) == 0) &&
+		(Kinds::get_construct(property_kind) == CON_list_of)) {
+		Lists::set_kind_of_list_at(Node::get_text(val), property_kind);
+		Node::set_kind_of_value(val, property_kind);
+		constant_kind = property_kind;
+	}
 
 @<Issue a problem, as this uses a bare adjective as if a value-property@> =
 	Problems::quote_source(1, current_sentence);

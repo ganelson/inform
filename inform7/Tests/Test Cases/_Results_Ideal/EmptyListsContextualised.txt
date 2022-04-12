@@ -1,0 +1,21 @@
+   Kitchen
+  Caress"foo" = list of things: {apple, pear}
+  Foo: apple and pear.
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  
+  Kitchen
+  You can see an apple and a pear here.
+  
+> >   Kitchen
+  (Testing.)
+  
+  >[1] touch apple
+  You have touched apple.
+  
+  >[2] touch pear
+  You have touched apple and pear.
+  
+> >

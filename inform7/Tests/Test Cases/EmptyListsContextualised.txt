@@ -1,0 +1,20 @@
+The Kitchen is a room.
+The apple is a thing in the Kitchen. The pear is a thing in the Kitchen.
+
+Foo is a list of things that varies. Foo is initially {}.
+
+A person has a list of things called touched-list. 
+The touched-list of a person is usually {}.
+
+When play begins:
+	say "Caress";
+	add the apple to foo;
+	add the pear to foo;
+	showme foo;
+	say "Foo: [foo].";
+
+Instead of touching:
+	add the noun to the touched-list of the player;
+	say "You have touched [touched-list of the player].";
+
+Test me with "touch apple / touch pear".

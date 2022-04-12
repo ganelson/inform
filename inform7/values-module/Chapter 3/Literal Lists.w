@@ -49,6 +49,7 @@ typedef struct literal_list {
 
 	struct kind *entry_kind; /* i.e., of the entries, not the list */
 	int kinds_known_to_be_inconsistent; /* problem(s) thrown when parsing these */
+	int explicitly_cast; /* has reading a wider context determined the kind? */
 	struct llist_entry *first_llist_entry; /* linked list of contents */
 
 	struct package_request *ll_package; /* which will be the enclosure for... */
@@ -77,6 +78,7 @@ literal_list *Lists::empty_literal(wording W) {
 	ll->kinds_known_to_be_inconsistent = FALSE;
 	ll->ll_iname = NULL;
 	ll->first_llist_entry = NULL;
+	ll->explicitly_cast = FALSE;
 	ll->list_text = NULL;
 	ll->ll_package = Emit::current_enclosure();
 	TheHeap::ensure_basic_heap_present();
@@ -124,6 +126,7 @@ which happens to be a malformed list.
 
 =
 kind *Lists::kind_of_ll(literal_list *ll, int issue_problems) {
+	if (ll->explicitly_cast) return Kinds::unary_con(CON_list_of, ll->entry_kind);
 	parse_node *cs = current_sentence;
 	if (issue_problems) {
 		if (ll->list_text == NULL)
@@ -238,4 +241,28 @@ void Lists::check_one(wording W) {
 	int incipit = Wordings::first_wn(W);
 	literal_list *ll = Lists::find_literal(incipit+1);
 	if (ll) Lists::kind_of_ll(ll, TRUE);
+}
+
+@ The interpretation of an empty list at a given position in the source is
+sometimes set by the assertion machinery, so we also need:
+
+=
+void Lists::set_kind_of_list_at(wording W, kind *K) {
+	if (Kinds::get_construct(K) != CON_list_of) internal_error("not a list kind");
+	int incipit = Wordings::first_wn(W);
+	literal_list *ll = Lists::find_literal(incipit+1);
+	if (ll) ll->entry_kind = Kinds::unary_construction_material(K);
+	else internal_error("no list appears at this point");
+	ll->explicitly_cast = TRUE;
+}
+
+int Lists::length_of_ll(wording W) {
+	int incipit = Wordings::first_wn(W);
+	literal_list *ll = Lists::find_literal(incipit+1);
+	if (ll == NULL) internal_error("no list appears at this point");
+	int count = 0;
+	llist_entry *lle;
+	for (lle = ll->first_llist_entry; lle; lle = lle->next_llist_entry)
+		count++;
+	return count;
 }

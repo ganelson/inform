@@ -108,6 +108,8 @@ int VariableSubjects::typecheck_initial_value(nonlocal_variable *nlv, parse_node
 	kind *kind_as_declared = NonlocalVariables::kind(nlv);
 	kind *constant_kind = Specifications::to_kind(val);
 
+	@<Cast the empty list to whatever kind of list is expected@>;
+
 	int outcome = Kinds::compatible(constant_kind, kind_as_declared);
 
 	int throw_problem = FALSE;
@@ -117,6 +119,16 @@ int VariableSubjects::typecheck_initial_value(nonlocal_variable *nlv, parse_node
 		@<The value doesn't match the kind of the variable@>;
 	return TRUE;
 }
+
+@<Cast the empty list to whatever kind of list is expected@> =
+	if ((Kinds::get_construct(constant_kind) == CON_list_of) &&
+		(Kinds::eq(Kinds::unary_construction_material(constant_kind), K_nil)) &&
+		(Lists::length_of_ll(Node::get_text(val)) == 0) &&
+		(Kinds::get_construct(kind_as_declared) == CON_list_of)) {
+		Lists::set_kind_of_list_at(Node::get_text(val), kind_as_declared);
+		Node::set_kind_of_value(val, kind_as_declared);
+		constant_kind = kind_as_declared;
+	}
 
 @<The value doesn't match the kind of the variable@> =
 	LOG("Variable: %u; constant: %u\n", kind_as_declared, constant_kind);

@@ -383,12 +383,7 @@ trim away that "who" from the end of the |SW|.
 				VW = Wordings::up_to(TW, Wordings::first_wn(OW) - 1);
 				usage_succeeds = TRUE;
 			}
-		if (usage_succeeds == FALSE) {
-			if (VerbPhrases::tracing(SEEK_VP_TRACE))
-				LOG("$w + $p + $p : failed for lack of '$p'\n",
-					vi, prep1, prep2, req1);
-			continue;
-		}
+		if (usage_succeeds == FALSE) continue;
 	}
 
 	if (req2) {
@@ -407,12 +402,7 @@ trim away that "who" from the end of the |SW|.
 			OW = Wordings::from(OW, found + WordAssemblages::length(&(req2->prep_text)));
 			usage_succeeds = TRUE;
 		}
-		if (usage_succeeds == FALSE) {
-			if (VerbPhrases::tracing(SEEK_VP_TRACE))
-				LOG("$w + $p + $p : failed for lack of '$p'\n",
-					vi, prep1, prep2, req2);
-			continue;
-		}
+		if (usage_succeeds == FALSE) continue;
 	}
 
 @ Now we're getting somewhere. The verb and any prepositions required by this
