@@ -190,7 +190,7 @@ typedef struct i7_property_set {
 	i7word_t address[I7_MAX_PROPERTY_IDS];
 	i7word_t len[I7_MAX_PROPERTY_IDS];
 } i7_property_set;
-i7_property_set i7_properties[];
+extern i7_property_set i7_properties[];
 
 i7word_t i7_prop_addr(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
 i7word_t i7_prop_len(i7process_t *proc, i7word_t K, i7word_t obj, i7word_t pr);
