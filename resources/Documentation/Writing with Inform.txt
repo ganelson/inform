@@ -17965,6 +17965,8 @@ then instead the I6 inclusion becomes:
 
 The I6 constant MAX_PRESENTED_FOOTNOTES can then be used as the size of an array, for instance.
 
+Finally, note that it is legal to define the same use option more than once, but only if it has exactly the same meaning each time it is defined. (This is allowed so that multiple extensions all needing the same definition can safely make it, and still be used together.)
+
 [x] Longer extracts of Inform 6 code
 
 ^^{Inform 6 inclusions: long sections of code}

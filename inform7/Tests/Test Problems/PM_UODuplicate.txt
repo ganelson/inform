@@ -1,0 +1,4 @@
+Home is a room.
+
+Use sequential action translates as (- Constant SEQUENTIAL_ACTION; -).
+Use sequential action translates as (- Constant ASEQUENTIAL_ACTION; -). 

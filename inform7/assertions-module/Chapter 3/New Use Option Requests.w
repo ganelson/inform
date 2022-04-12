@@ -79,22 +79,38 @@ typedef struct use_option {
 	wording SP = Node::get_text(V->next);
 	wording OP = Node::get_text(V->next->next);
 	<use-setting>(SP); /* always passes */
-	int N = <<r>>;
+	int N = <<r>>; if (N < 0) N = -1;
 
-	use_option *uo = CREATE(use_option);
-	uo->name = GET_RW(<use-setting>, 1);
-	uo->expansion = OP;
-	uo->option_used = FALSE;
-	uo->minimum_setting_value = (N >= 0) ? N : -1;
-	uo->source_file_scoped = FALSE;
-	uo->notable_option_code = -1;
-	if (<notable-use-option-name>(uo->name)) uo->notable_option_code = <<r>>;
-	if (uo->notable_option_code == AUTHORIAL_MODESTY_UO) uo->source_file_scoped = TRUE;
-	uo->where_used = NULL;
-	uo->where_created = current_sentence;
-	uo->compilation_data = RTUseOptions::new_compilation_data(uo);
-	Nouns::new_proper_noun(uo->name, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
-		MISCELLANEOUS_MC, Rvalues::from_use_option(uo), Task::language_of_syntax());
+	wording UOW = GET_RW(<use-setting>, 1);
+	use_option *existing_uo = NewUseOptions::parse_uo(UOW);
+	if (existing_uo) {
+		if ((Wordings::match(OP, existing_uo->expansion) == FALSE) ||
+			(N != existing_uo->minimum_setting_value)) {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, UOW);
+			Problems::quote_source(3, existing_uo->where_created);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UODuplicate));
+			Problems::issue_problem_segment(
+				"In %1, you define a use option '%2', but that has already been "
+				"defined, and with a different meaning: %3.");
+			Problems::issue_problem_end();
+		}
+	} else {
+		use_option *uo = CREATE(use_option);
+		uo->name = UOW;
+		uo->expansion = OP;
+		uo->option_used = FALSE;
+		uo->minimum_setting_value = N;
+		uo->source_file_scoped = FALSE;
+		uo->notable_option_code = -1;
+		if (<notable-use-option-name>(uo->name)) uo->notable_option_code = <<r>>;
+		if (uo->notable_option_code == AUTHORIAL_MODESTY_UO) uo->source_file_scoped = TRUE;
+		uo->where_used = NULL;
+		uo->where_created = current_sentence;
+		uo->compilation_data = RTUseOptions::new_compilation_data(uo);
+		Nouns::new_proper_noun(uo->name, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT,
+			MISCELLANEOUS_MC, Rvalues::from_use_option(uo), Task::language_of_syntax());
+	}
 
 @ Having registered the use option names as miscellaneous, we need to parse
 them back that way too:
