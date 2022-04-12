@@ -852,7 +852,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            phrase K -> L&nbsp;<a href=#A2175><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            phrase K -> L&nbsp;<a href=#A2177><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             <i>always the default value of L</i>
@@ -860,7 +860,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#808080'></span>relation<span style='color:#808080'> of K</span>&nbsp;<a href=#A2180><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#808080'></span>relation<span style='color:#808080'> of K</span>&nbsp;<a href=#A2182><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             <i>a relation never holding</i>
@@ -868,7 +868,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#808080'>K based</span> rule<span style='color:#808080'> producing L</span>&nbsp;<a href=inform:/doc327.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2183><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#808080'>K based</span> rule<span style='color:#808080'> producing L</span>&nbsp;<a href=inform:/doc327.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2185><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             the little-used do nothing rule
@@ -876,7 +876,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#808080'>K based</span> rulebook<span style='color:#808080'> producing L</span>&nbsp;<a href=inform:/doc327.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2186><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#808080'>K based</span> rulebook<span style='color:#808080'> producing L</span>&nbsp;<a href=inform:/doc327.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2188><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             the action-processing rules
@@ -884,7 +884,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#808080'></span>activity<span style='color:#808080'> on K</span>&nbsp;<a href=inform:/doc287.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2189><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#808080'></span>activity<span style='color:#808080'> on K</span>&nbsp;<a href=inform:/doc287.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2191><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             printing the name
@@ -892,7 +892,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            description of K&nbsp;<a href=inform:/doc364.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2195><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            description of K&nbsp;<a href=inform:/doc364.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2197><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             <i>matching nothing</i>
@@ -900,7 +900,7 @@
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#808080'>K valued</span> property<span style='color:#808080'></span>&nbsp;<a href=#A2197><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#808080'>K valued</span> property<span style='color:#808080'></span>&nbsp;<a href=#A2199><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             --
@@ -908,7 +908,7 @@
     </tr>
     <tr bgcolor="#f0f0ff">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#808080'>K valued</span> table<span style='color:#808080'></span> column<span style='color:#808080'></span>&nbsp;<a href=#A2199><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style='color:#808080'>K valued</span> table<span style='color:#808080'></span> column<span style='color:#808080'></span>&nbsp;<a href=#A2201><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top" colspan="4">
             --

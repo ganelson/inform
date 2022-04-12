@@ -422,12 +422,11 @@ Check an actor inserting something into (this is the convert insert to drop wher
 	if the second noun is down or the actor is in the second noun,
 		convert to the dropping action on the noun.
 
-Check an actor inserting something into (this is the can't insert what's not held rule):
-	if the actor is carrying the noun, continue the action;
-	if the actor is wearing the noun, continue the action;
-	carry out the implicitly taking activity with the noun;
-	if the actor is carrying the noun, continue the action;
-	stop the action.
+Check an actor inserting something into (this is the can't insert what's already inserted rule):
+	if the noun is in the second noun:
+		if the actor is the player:
+			say "[The second noun] [are] already there." (A);
+		stop the action.
 
 Check an actor inserting something into (this is the can't insert something into itself rule):
 	let the noun-CPC be the component parts core of the noun;
@@ -437,6 +436,13 @@ Check an actor inserting something into (this is the can't insert something into
 		if the actor is the player:
 			say "[We] [can't put] something inside itself." (A);
 		stop the action.
+
+Check an actor inserting something into (this is the can't insert what's not held rule):
+	if the actor is carrying the noun, continue the action;
+	if the actor is wearing the noun, continue the action;
+	carry out the implicitly taking activity with the noun;
+	if the actor is carrying the noun, continue the action;
+	stop the action.
 
 Check an actor inserting something into (this is the can't insert into closed containers rule):
 	if the second noun is a closed container:

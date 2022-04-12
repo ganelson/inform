@@ -351,8 +351,7 @@ You can't put something inside itself.
 
 >** put kangaroo in pouch
 (the mother kangaroo in the pouch)
-(first taking the mother kangaroo)
-I don't suppose the mother kangaroo would care for that.
+You can't put something inside itself.
 
 >** open glass door
 You open the glass door.
