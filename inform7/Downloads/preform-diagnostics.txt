@@ -5048,7 +5048,7 @@
 <np-existential> hits 33/108264 nti 21 constraint CS = {21} extremes [1, 1]
     English:
         there 
-          (hits 33/132) (matched: 'there') constraint CS = {21} extremes [1, 1]
+          (hits 33/133) (matched: 'there') constraint CS = {21} extremes [1, 1]
 
 <np-articled> hits 2082/4164 nti 14 constraint (none) extremes [1, infinity)
     English:
@@ -6138,16 +6138,14 @@
           constraint DS = {14} extremes [3, infinity)
         <test-case-circumstance> 
           constraint DS = {14} extremes [2, infinity)
+        {...} 
+          constraint (none) extremes [1, infinity)
 
 <test-case-circumstance> nti 14 constraint DS = {14} extremes [2, infinity)
     English:
         in <instance-of-object> 
           constraint DS = {14} extremes [2, infinity)
-        in {...} 
-          constraint DS = {14} extremes [2, infinity)
         holding/and/, <instance-of-object> 
-          constraint DS = {14} extremes [2, infinity)
-        holding/and/, {...} 
           constraint DS = {14} extremes [2, infinity)
         with {...} 
           constraint DS = {14} extremes [2, infinity)
@@ -7407,6 +7405,8 @@
     English:
         ( {***} ) 
           (hits 0/3) constraint DS = {21} extremes [2, infinity)
+        topic ( {...} ) 
+          (hits 0/2) constraint DS = {21} extremes [4, infinity)
         <s-table-column-name> ( {...} ) 
           (hits 0/2) constraint DS = {21} extremes [4, infinity)
         <table-column-heading-bare> ( {...} ) 
@@ -7965,9 +7965,9 @@
 <s-type-expression-unarticled> hits 3126/7782 nti 23 constraint (none) extremes [1, infinity)
     English:
         <s-variable-scope> variable/variables 
-          (hits 2/633) (matched: 'text variables') constraint DS = {23} extremes [2, infinity)
+          (hits 2/636) (matched: 'text variables') constraint DS = {23} extremes [2, infinity)
         <s-variable-scope> that/which vary/varies 
-          (hits 59/430) (matched: 'action name based rule producing nothing that varies') constraint DS = {23} extremes [3, infinity)
+          (hits 59/433) (matched: 'action name based rule producing nothing that varies') constraint DS = {23} extremes [3, infinity)
         <k-kind> 
           (hits 2442/3830) (matched long text) constraint (none) extremes [1, infinity)
         <s-literal> 
@@ -9068,6 +9068,8 @@
 
 <new-action-sentence-object-unarticled> hits 90/920 nti 23 constraint DS = {23} extremes [1, infinity)
     English:
+        action based {...} 
+          (hits 0/397) constraint DS = {23} extremes [3, infinity)
         action <nounphrase-actionable> 
           (hits 90/460) (matched long text) constraint DS = {23} extremes [1, infinity)
         action 
@@ -9842,9 +9844,9 @@
         <definite-article> <external-file-sentence-subject> 
           (hits 0/509) constraint (none) extremes [2, infinity)
         text <external-file-name> 
-          (hits 0/231) constraint DS = {20, 21} extremes [3, infinity)
+          (hits 0/232) constraint DS = {20, 21} extremes [3, infinity)
         binary <external-file-name> 
-          (hits 0/231) constraint DS = {20, 21} extremes [3, infinity)
+          (hits 0/232) constraint DS = {20, 21} extremes [3, infinity)
         <external-file-name> 
           (hits 0/263) constraint DS = {20} extremes [2, infinity)
 

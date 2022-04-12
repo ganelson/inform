@@ -1024,14 +1024,14 @@ ROOT_NT
                 X_OF_Y_NT'conversation of a person' {definite 'the' n/m/f s/p nom/acc} {refined}
                     COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: << kind=person(x) >>} {eval: TEST_VALUE_NT}
                     PROPER_NOUN_NT'conversation' {refined} {eval: CONSTANT_NT {kind: table names valued property} {property: 'conversation'=table name}}
-                PROPER_NOUN_NT'table of general chitchat' {refined} {eval: CONSTANT_NT'table of general chitchat' {kind: table name} {table: table_data}{meaning: {table of general chitchat = TABLE_MC}}}
+                PROPER_NOUN_NT'table of general chitchat' {refined} {eval: CONSTANT_NT'table of general chitchat' {kind: table name} {table: table_data} {meaning: {table of general chitchat = TABLE_MC}}}
             TABLE_NT'table of general chitchat topic reply summary turn stamp cha' {unit: 4}
             SENTENCE_NT'the conversation of vanessa is the table of vanessa chatter' {unit: 4} {classified} {interpretation of subject: infs'person'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                 X_OF_Y_NT'conversation of vanessa' {definite 'the' n/m/f s/p nom/acc} {refined}
                     PROPER_NOUN_NT'vanessa' {refined} {refers: infs'vanessa'} {eval: CONSTANT_NT'vanessa' {kind: woman} {instance: I129'vanessa'} {enumeration: 0}}
                     PROPER_NOUN_NT'conversation' {refined} {eval: CONSTANT_NT {kind: table names valued property} {property: 'conversation'=table name}}
-                PROPER_NOUN_NT'table of vanessa chatter' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'table of vanessa chatter' {kind: table name} {table: table_data}{meaning: {table of vanessa chatter = TABLE_MC}}}
+                PROPER_NOUN_NT'table of vanessa chatter' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'table of vanessa chatter' {kind: table name} {table: table_data} {meaning: {table of vanessa chatter = TABLE_MC}}}
             TABLE_NT'table of vanessa chatter topic reply summary turn stamp char' {unit: 4}
             IMPERATIVE_NT'after reading a command' {unit: 4} {imperative definition: 923}
         HEADING_NT'section 6 - movement description' {heading 5} {under: H5'section 6 - movement description'} {unit: 4}
@@ -1110,7 +1110,7 @@ ROOT_NT
                 COMMON_NOUN_NT'number that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: << kind=numbers variable-pointer(x) >>} {eval: TEST_VALUE_NT}
             SENTENCE_NT'group size is 1' {unit: 4} {classified} {interpretation of subject: infs'door'}
                 VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
-                PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}{meaning: {group size = VARIABLE_MC}}}
+                PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number} {meaning: {group size = VARIABLE_MC}}}
                 PROPER_NOUN_NT'1' {refined} {eval: CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}}
             IMPERATIVE_NT'to clear marked people' {unit: 4} {imperative definition: 933}
             IMPERATIVE_NT'before listing nondescript items' {unit: 4} {imperative definition: 934}

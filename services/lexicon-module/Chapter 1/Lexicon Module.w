@@ -46,7 +46,7 @@ MAKE_ANNOTATION_FUNCTIONS(meaning, excerpt_meaning)
 @ =
 void LexiconModule::write_meaning_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_meaning(p)) {
-		WRITE("{meaning: ");
+		WRITE(" {meaning: ");
 		ExcerptMeanings::log(OUT, Node::get_meaning(p));
 		WRITE("}");
 	}

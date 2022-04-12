@@ -630,25 +630,30 @@ void IDTypeData::log_inline_details(inline_details id) {
 
 @ =
 void IDTypeData::make_inline(id_type_data *idtd) {
+	if (idtd == NULL) internal_error("null idtd");
 	idtd->as_inline.invoked_inline_not_as_call = TRUE;
 }
 
 int IDTypeData::invoked_inline(id_body *idb) {
+	if (idb == NULL) return FALSE;
 	return idb->type_data.as_inline.invoked_inline_not_as_call;
 }
 
 @ =
 int IDTypeData::is_a_let_assignment(id_body *idb) {
+	if (idb == NULL) return FALSE;
 	if (idb->type_data.as_inline.let_phrase == ASSIGNMENT_LET_PHRASE) return TRUE;
 	return FALSE;
 }
 
 int IDTypeData::is_a_let_equation(id_body *idb) {
+	if (idb == NULL) return FALSE;
 	if (idb->type_data.as_inline.let_phrase == EQUATION_LET_PHRASE) return TRUE;
 	return FALSE;
 }
 
 int IDTypeData::arithmetic_operation(id_body *idb) {
+	if (idb == NULL) return -1;
 	return idb->type_data.as_inline.arithmetical_operation;
 }
 
@@ -659,6 +664,7 @@ int IDTypeData::is_arithmetic_phrase(id_body *idb) {
 }
 
 int IDTypeData::is_assignment_phrase(id_body *idb) {
+	if (idb == NULL) return FALSE;
 	return idb->type_data.as_inline.assignment_phrase;
 }
 
@@ -668,6 +674,7 @@ wchar_t *IDTypeData::only_in(id_body *idb) {
 }
 
 int IDTypeData::block_follows(id_body *idb) {
+	if (idb == NULL) return FALSE;
 	return idb->type_data.as_inline.block_follows;
 }
 

@@ -193,6 +193,7 @@ int Dash::check_value_silently(parse_node *p, kind *K) {
 
 int Dash::check_invl(parse_node *p) {
 	LOGIF(MATCHING, "Dash (1): invocation list '%W'\n", Node::get_text(p));
+	LOGIF(MATCHING, "p = $T\n", p);
 	return Dash::funnel_to_level_2(p, FALSE);
 }
 
@@ -365,27 +366,27 @@ from a text substitution.)
 			@<Produce the token for a phrase deciding a value@>
 		else
 			@<Produce the token for a constant rvalue@>;
-	} else Problems::issue_problem_segment("%1 = <i>%2</i>");
+	} else Problems::issue_problem_segment("%1 = %2");
 	Problems::issue_problem_end();
 
 @<Produce the token for an lvalue@> =
-	Problems::issue_problem_segment("%1 = <i>%2</i>, holding <i>%3</i>");
+	Problems::issue_problem_segment("%1 = %2, holding %3");
 
 @<Produce the token for a phrase deciding a value@> =
-	char *seg = "%1 = an instruction to work out <i>%3</i>";
+	char *seg = "%1 = an instruction to work out %3";
 	if (K == NULL) seg = "%1 = a phrase";
 	parse_node *found_invl = itpt->as_parsed->down;
 	parse_node *inv;
 	LOOP_THROUGH_ALTERNATIVES(inv, found_invl) {
 		LOG("$e\n", inv);
 		if (Dash::reading_passed(inv) == FALSE) {
-			seg = "%1 = an instruction I think should work out <i>%3</i>, "
+			seg = "%1 = an instruction I think should work out %3, "
 				"but which I can't make sense of";
 			for (int i=0; i<Invocations::get_no_tokens(inv); i++) {
 				parse_node *tok = Invocations::get_token_as_parsed(inv, i);
 				if (Node::is(tok, UNKNOWN_NT)) {
 					Problems::quote_wording(4, Node::get_text(tok));
-					seg = "%1 = an instruction I think should work out <i>%3</i>, "
+					seg = "%1 = an instruction I think should work out %3, "
 						"but which I can't perform because '%4' doesn't make sense here";
 					break;
 				}
@@ -395,13 +396,13 @@ from a text substitution.)
 	Problems::issue_problem_segment(seg);
 
 @<Produce the token for a constant rvalue@> =
-	char *seg = "%1 = <i>%3</i>";
+	char *seg = "%1 = %3";
 	if (Rvalues::is_CONSTANT_construction(itpt->as_parsed, CON_property)) {
 		property *prn = Node::get_constant_property(itpt->as_parsed);
 		if (Properties::is_value_property(prn)) {
 			binary_predicate *bp = ValueProperties::get_stored_relation(prn);
 			if (bp) {
-				seg = "%1 = <i>%3</i>, which is used to store %4, "
+				seg = "%1 = %3, which is used to store %4, "
 					"but is not the same thing as the relation itself";
 				Problems::quote_relation(4, bp);
 			}
@@ -927,6 +928,16 @@ checking.
 	LOGIF(MATCHING, "Winnow %s from $T\n",
 		(invocational)?"invocationally":"regularly", Dash_ambiguity_list);
 
+	if (invocational) {
+		int dubious = FALSE;
+		for (int ref = 0; ref<no_of_possible_readings; ref++) {
+			parse_node *inv = list_of_possible_readings[ref];
+			if (Node::is(inv, INVOCATION_NT) == FALSE)
+				dubious = TRUE;
+		}
+		if (dubious) @<Issue the dubious ambiguity problem message@>;
+	}
+
 	if (invocational) Dash_ambiguity_list->down = NULL;
 
 	parse_node *last_survivor = NULL;
@@ -963,6 +974,21 @@ checking.
 	}
 	LOGIF(MATCHING, "After winnowing, CS is $T\n", current_sentence);
 
+@ This is a last-throw-of-the-dice problem message, designed to pick up just
+a few really awkward ambiguities which have been missed elsewhere in the parser
+or in Dash.
+
+@<Issue the dubious ambiguity problem message@> =
+	THIS_IS_AN_ORDINARY_PROBLEM;
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_number(2, &no_of_possible_readings);
+	Problems::quote_wording(3, Node::get_text(list_of_possible_readings[0]));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_DubiousAmbiguity));
+	Problems::issue_problem_segment(
+		"The phrase %1 is ambiguous in a way that I can't sort out. "
+		"I can see %2 different meanings of '%3', and no good way to choose.");
+	Problems::issue_problem_end();
+	return NEVER_MATCH;
 
 @ This is another sort of error which couldn't happen with a conventional
 programming language -- in C, for instance, it's syntactically obvious

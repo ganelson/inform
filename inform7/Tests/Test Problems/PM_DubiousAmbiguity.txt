@@ -1,0 +1,17 @@
+r1 is a room.
+
+when play begins:
+	showme table of nondup;
+	showme table of dup1.
+
+table of dup1 - x
+rm
+r1
+
+table of dup1 - y
+rm
+r1
+
+table of nondup - z
+rm
+r1

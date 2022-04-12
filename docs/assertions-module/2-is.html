@@ -1453,13 +1453,9 @@ annotations to them.
 <span class="plain-syntax">    </span><span class="identifier-syntax">TextSubstitutions::it_is_not_worth_adding</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TSWithComma</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"a substitution contains a comma ','"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"which is against the rules, because 'say' is a special phrase in which the comma "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"divides items in a list of things to say, and so it loses its ordinary meanings. "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"Because of this, no text substitution can contain a comma. "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"(If you're trying to use a value produced by a phrase with a phrase "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"option - say 'the best route from A to B, using even locked doors' - "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"you'll need to put this in a 'let' variable first and then say that, "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"or else define a better text substitution to do the job for you.)"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"which is (for obscure reasons) against the rules for text substitutions. "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"(You may be able to get around this by placing the phrase containing the "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"comma in round brackets '(' and ')', which reduces the risk of ambiguity.)"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">TextSubstitutions::it_is_worth_adding</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax">;</span>
 </pre>

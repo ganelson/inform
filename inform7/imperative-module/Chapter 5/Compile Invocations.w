@@ -5,7 +5,7 @@ Generating code to perform an invocation.
 @h Upper level: compiling from whole lists.
 Here, we are given an invocation list |invl|, and we must generate Inter code
 to carry it out. The code in this section does some complicated things; the
-test grpup |:invocations| may be helpful when maintaining it.
+test group |:invocations| may be helpful when maintaining it.
 
 =
 void CompileInvocations::list(value_holster *VH, parse_node *invl, wording W,

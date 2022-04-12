@@ -1,7 +1,8 @@
-Inform 7 build 6L64 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 22 words long.
-I've also read Standard Rules by Graham Nelson, which is 42486 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32092 words long.
 Problem__ PM_EitherOrAsValue
   >--> In the sentence 'decrease the lighted of the NI School for Typing by 1' (source
     text, line 4), it looks as if you intend 'lighted of the NI School for
@@ -11,6 +12,6 @@ Problem__ PM_EitherOrAsValue
       decrease (lighted of the ni school for typing - a stored value) by (1 -
     value) 
     I recognised:
-    lighted of the ni school for typing = a property whose value is a
-    nothing, holding a value
-Inform 7 has finished: 48 centiseconds used.
+    lighted of the ni school for typing = a property whose value is a nothing,
+    holding a value
+Inform 7 has finished.

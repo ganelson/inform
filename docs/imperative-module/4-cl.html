@@ -249,13 +249,16 @@ the idea is roughly:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadRepeatDomain</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"this describes a collection of values which can't be repeated through"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"because the possible range is too large (or has no sensible ordering). "</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadRepeatDomain</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"In %1, you seem to want to repeat through all possible values which have "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"the kind '%2', and there are just too many of those. "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"For instance, you can 'repeat with D running through doors' because "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"there are only a small number of doors and they can be put in order "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"of creation. But you can't 'repeat with N running through numbers' "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"because numbers are without end."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"there are only a small number of doors, but you can't 'repeat with N "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"running through numbers' because numbers are without end."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-cl.html#SP1">&#167;1</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Here we compile code to call <span class="extract"><span class="extract-syntax">D(v)</span></span>, on the variable <span class="extract"><span class="extract-syntax">fromv</span></span>, or <span class="extract"><span class="extract-syntax">D(0)</span></span> if

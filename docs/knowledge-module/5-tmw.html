@@ -139,6 +139,7 @@ may be added.
 <span class="plain-syntax">        </span><a href="4-is.html#SP24" class="function-link"><span class="function-syntax">InferenceSubjects::check_model</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-tmw.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Check that properties are permitted</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-tmw.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Check that properties are not contradictory</span><span class="named-paragraph-number">4.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-tmw.html#SP4_3" class="named-paragraph-link"><span class="named-paragraph">Check that relations are permitted</span><span class="named-paragraph-number">4.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="5-tmw.html#SP1" class="function-link"><span class="function-syntax">World::ask_plugins_at_stage</span></a><span class="plain-syntax">(</span><span class="constant-syntax">WORLD_STAGE_IV</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
@@ -282,6 +283,67 @@ about the Portal, to stand.
 <span class="plain-syntax">        </span><span class="string-syntax">"true, there is no way to override that for particular things of the kind."</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-tmw.html#SP4_2_1_1">&#167;4.2.1.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b>This is a last line of defence. Suppose we define "to connect to" as a relation
+between things and things, and then write "X connects to Y". Inform must clearly
+check that X and Y are both things. It does indeed make some checks along those
+lines earlier on in compilation, but there are objects whose kinds are not known
+until model completion time &mdash; in particular, there can be objects which might
+be things or might be rooms, so that we cannot know if "X connects to Y" is
+legal until after the model is completed.
+</p>
+
+<p class="commentary">But that's now! And so we make one last check, just in case.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Check that relations are permitted</span><span class="named-paragraph-number">4.3</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">inference</span><span class="plain-syntax"> *</span><span class="identifier-syntax">inf</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">POSITIVE_KNOWLEDGE_LOOP</span><span class="plain-syntax">(</span><span class="identifier-syntax">inf</span><span class="plain-syntax">, </span><span class="identifier-syntax">infs</span><span class="plain-syntax">, </span><span class="identifier-syntax">relation_inf</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bp</span><span class="plain-syntax"> = </span><a href="4-rs.html#SP1" class="function-link"><span class="function-syntax">RelationSubjects::to_bp</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">infs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">left_infs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">inference_subject</span><span class="plain-syntax"> *</span><span class="identifier-syntax">right_infs</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><a href="5-ri.html#SP7" class="function-link"><span class="function-syntax">RelationInferences::get_term_subjects</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inf</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">left_infs</span><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">right_infs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">left_instance</span><span class="plain-syntax"> = </span><a href="4-is2.html#SP1" class="function-link"><span class="function-syntax">InstanceSubjects::to_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">left_infs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">right_instance</span><span class="plain-syntax"> = </span><a href="4-is2.html#SP1" class="function-link"><span class="function-syntax">InstanceSubjects::to_instance</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">right_infs</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">left_kind</span><span class="plain-syntax"> = </span><a href="2-ins.html#SP10" class="function-link"><span class="function-syntax">Instances::to_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">left_instance</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">right_kind</span><span class="plain-syntax"> = </span><a href="2-ins.html#SP10" class="function-link"><span class="function-syntax">Instances::to_kind</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">right_instance</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">left_needed_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BinaryPredicates::term_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">right_needed_kind</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BinaryPredicates::term_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">bp</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">left_instance</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Kinds::conforms_to</span><span class="plain-syntax">(</span><span class="identifier-syntax">left_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">left_needed_kind</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><a href="5-inf.html#SP3" class="function-link"><span class="function-syntax">Inferences::where_inferred</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inf</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_object</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">left_instance</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(3, </span><span class="identifier-syntax">left_kind</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(4, </span><span class="identifier-syntax">left_needed_kind</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(5, </span><span class="identifier-syntax">right_needed_kind</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_LateLeftTermWrongKind</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"You wrote %1, but I think the kind of %2 is %3, and not %4, "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"which is what this relationship would need it to be. (It "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"relates %4 to %5.)"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">right_instance</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Kinds::conforms_to</span><span class="plain-syntax">(</span><span class="identifier-syntax">right_kind</span><span class="plain-syntax">, </span><span class="identifier-syntax">right_needed_kind</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><a href="5-inf.html#SP3" class="function-link"><span class="function-syntax">Inferences::where_inferred</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">inf</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_object</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">right_instance</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(3, </span><span class="identifier-syntax">right_kind</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(4, </span><span class="identifier-syntax">left_needed_kind</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(5, </span><span class="identifier-syntax">right_needed_kind</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_LateRightTermWrongKind</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"You wrote %1, but I think the kind of %2 is %3, and not %5, "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"which is what this relationship would need it to be. (It "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"relates %4 to %5.)"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="5-tmw.html#SP4">&#167;4</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Stage V. </b>A final chance to add properties which may assist the run-time implementation
 of whatever a plugin is concerned with, but which is not allowed to make
 changes to the model as it would be understood by the author.
