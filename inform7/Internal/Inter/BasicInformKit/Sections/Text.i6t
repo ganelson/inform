@@ -586,10 +586,9 @@ Constant ACCEPTEDPN_BRM = 6;
 	return r;
 ];
 [ TEXT_TY_BlobAccessI txt blobtype ctxt wanted rtxt
-	brm oldbrm ch i dsize csize blobcount gp cl j;
+	brm oldbrm ch i dsize blobcount gp cl j;
 	dsize = BlkValueLBCapacity(txt);
-	if (ctxt) csize = BlkValueLBCapacity(ctxt);
-	else if (rtxt) "*** rtxt without ctxt ***";
+	if ((rtxt) && (ctxt == 0)) "*** rtxt without ctxt ***";
 	brm = WS_BRM;
 	for (i=0:i<dsize:i++) {
 		ch = BlkValueRead(txt, i);
@@ -670,39 +669,43 @@ Constant ACCEPTEDPN_BRM = 6;
 			if (oldbrm ~= brm) blobcount++;
 			if ((ctxt) && (blobcount == wanted)) {
 				if (rtxt) {
+					if (cl+1 >= BlkValueLBCapacity(ctxt)) {
+						if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
+					}
 					BlkValueWrite(ctxt, cl, 0);
 					TEXT_TY_Concatenate(ctxt, rtxt, CHR_BLOB);
-					csize = BlkValueLBCapacity(ctxt);
 					cl = TEXT_TY_CharacterLength(ctxt);
 					if (brm == ACCEPTED_BRM) brm = ACCEPTEDN_BRM;
 					if (brm == ACCEPTEDP_BRM) brm = ACCEPTEDPN_BRM;
 				} else {
-					if (cl+1 >= csize) {
+					if (cl+1 >= BlkValueLBCapacity(ctxt)) {
 						if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
-						csize = BlkValueLBCapacity(ctxt);
 					}
 					BlkValueWrite(ctxt, cl++, ch);
 				}
 			} else {
 				if (rtxt) {
-					if (cl+1 >= csize) {
+					if (cl+1 >= BlkValueLBCapacity(ctxt)) {
 						if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
-						csize = BlkValueLBCapacity(ctxt);
 					}
 					BlkValueWrite(ctxt, cl++, ch);
 				}
 			}
 		} else {
 			if ((rtxt) && (brm ~= ACCEPTEDN_BRM or ACCEPTEDPN_BRM)) {
-				if (cl+1 >= csize) {
+				if (cl+1 >= BlkValueLBCapacity(ctxt)) {
 					if (BlkValueSetLBCapacity(ctxt, 2*cl) == false) break;
-					csize = BlkValueLBCapacity(ctxt);
 				}
 				BlkValueWrite(ctxt, cl++, ch);
 			}
 		}
 	}
-	if (ctxt) BlkValueWrite(ctxt, cl++, 0);
+	if (ctxt) {
+		if (cl+1 >= BlkValueLBCapacity(ctxt)) {
+			BlkValueSetLBCapacity(ctxt, 2*cl);
+		}
+		BlkValueWrite(ctxt, cl++, 0);
+	}
 	return blobcount;
 ];
 
