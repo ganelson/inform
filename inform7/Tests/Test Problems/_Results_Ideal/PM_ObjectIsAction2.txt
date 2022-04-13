@@ -1,0 +1,11 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 9 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32132 words long.
+Problem__ PM_ObjectIsAction2
+  >--> You wrote 'Zog is initially examining yourself' (source text, line 2):
+    but you need to add 'the action of' after 'initially', in order to clarify
+    that you mean this sentence to set a variable to an action (if in fact
+    that's what you mean to do!).
+Inform 7 has finished.

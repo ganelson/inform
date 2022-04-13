@@ -1093,12 +1093,20 @@ opera about a dog, "Collared Is Bowser".)
 			"and it would only confuse things if we used it for a value as well.");
 		Problems::issue_problem_end();
 	} else {
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsAction),
-			"that is putting the definition back to front",
-			"since I need these categorisations of actions to take the form 'Kissing a "
-			"woman is love', not 'Love is kissing a woman'. (This is really because it "
-			"is better style: love might be many other things too, and we don't want to "
-			"imply that the present definition is all-inclusive.)");
+		parse_node *v = current_sentence->down;
+		if ((Node::is(v, VERB_NT)) &&
+			(Annotations::read_int(v, verbal_certainty_ANNOT) == INITIALLY_CE))
+			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsAction2),
+				"you need to add 'the action of' after 'initially'",
+				"in order to clarify that you mean this sentence to set a variable "
+				"to an action (if in fact that's what you mean to do!).");
+		else
+			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsAction),
+				"that is putting the definition back to front",
+				"since I need these categorisations of actions to take the form 'Kissing a "
+				"woman is love', not 'Love is kissing a woman'. (This is really because it "
+				"is better style: love might be many other things too, and we don't want to "
+				"imply that the present definition is all-inclusive.)");
 	}
 
 @h Case 33. "Every K is every L."

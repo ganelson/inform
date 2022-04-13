@@ -1,0 +1,2 @@
+Foo is a room.
+Zog is initially examining yourself.
