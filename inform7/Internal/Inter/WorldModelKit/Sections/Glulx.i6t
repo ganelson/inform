@@ -170,13 +170,19 @@ opcode, and so Glulx followed suit.
 [ SWITCH_TRANSCRIPT_ON_R;
 	if (actor ~= player) rfalse;
 	if (gg_scriptstr ~= 0) { SWITCH_TRANSCRIPT_ON_RM('A'); new_line; rtrue; }
+	.S2Failed;
 	if (gg_scriptfref == 0) {
 		gg_scriptfref = glk_fileref_create_by_prompt($102, $05, GG_SCRIPTFREF_ROCK);
 		if (gg_scriptfref == 0) jump S1Failed;
 	}
 	! stream_open_file
 	gg_scriptstr = glk_stream_open_file(gg_scriptfref, $05, GG_SCRIPTSTR_ROCK);
-	if (gg_scriptstr == 0) jump S1Failed;
+	if (gg_scriptstr == 0) {
+		! Could not open selected file; select again
+		glk_fileref_destroy(gg_scriptfref);
+		gg_scriptfref = 0;
+		jump S2Failed;
+	}
 	glk_window_set_echo_stream(gg_mainwin, gg_scriptstr);
 	SWITCH_TRANSCRIPT_ON_RM('B'); new_line;
 	VersionSub();
