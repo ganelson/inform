@@ -31,7 +31,6 @@ Appraisal == OMIT
 	12. Complete playable scenario
 	
 	*INFORMATION ONLY
-	Backus-Naur form for rules
 	Formal syntax of sentences
 	Mathematical view of relations
 	Graph-theory view of relations
