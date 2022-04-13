@@ -2334,7 +2334,7 @@ void SpatialMap::explode_submap(connected_submap *sub) {
 		initial_spending = session->calc.drognas_spent;
 	LOGIF(SPATIAL_MAP, "\nTACTIC: Exploding submap %d: initial heat %d\n",
 		sub->allocation_id, sub->heat);
-	int keep_trying = TRUE, moves = 0;
+	int keep_trying = TRUE, moves = 0, explosion_distance = MAX_EXPLOSION_DISTANCE;
 	while (keep_trying) {
 		keep_trying = FALSE;
 		faux_instance *R;
@@ -2344,20 +2344,25 @@ void SpatialMap::explode_submap(connected_submap *sub) {
 				LOGIF(SPATIAL_MAP, "Collision: pushing %S away\n",
 					FauxInstances::get_name(R));
 				int x, y, coldest = FUSION_POINT;
-				vector Coldest = Geometry::vec(MAX_EXPLOSION_DISTANCE + 1, 0, 0);
-				for (x = -MAX_EXPLOSION_DISTANCE; x<=MAX_EXPLOSION_DISTANCE; x++)
-					for (y = -MAX_EXPLOSION_DISTANCE; y<=MAX_EXPLOSION_DISTANCE; y++)
-						if ((x != 0) || (y != 0)) {
-							vector V = Geometry::vec_plus(At, Geometry::vec(x, y, 0));
+				vector Coldest = Geometry::vec(explosion_distance + 1, 0, 0);
+				for (x = -explosion_distance; x<=explosion_distance; x++)
+					for (y = -explosion_distance; y<=explosion_distance; y++) {
+						vector V = Geometry::vec_plus(At, Geometry::vec(x, y, 0));
+						if ((V.x != 0) || (V.y != 0)) {
 							if (SpatialMap::occupied_in_submap(sub, V) == 0) {
 								SpatialMap::move_room_to(R, V, session);
 								int h = SpatialMap::find_submap_heat(sub);
 								if (h < coldest) { Coldest = V; coldest = h; }
 							}
 						}
-				SpatialMap::move_room_to(R, Geometry::vec_plus(At, Coldest), session);
-				LOGIF(SPATIAL_MAP, "Moving %S to blank offset (%d,%d,%d) for heat %d\n",
-					FauxInstances::get_name(R), Coldest.x, Coldest.y, Coldest.z, coldest);
+					}
+				if (coldest < FUSION_POINT) {
+					SpatialMap::move_room_to(R, Geometry::vec_plus(At, Coldest), session);
+					LOGIF(SPATIAL_MAP, "Moving %S to blank offset (%d,%d,%d) for heat %d\n",
+						FauxInstances::get_name(R), Coldest.x, Coldest.y, Coldest.z, coldest);
+				} else {
+					explosion_distance++;
+				}
 				keep_trying = TRUE;
 				moves++;
 				break;
