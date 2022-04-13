@@ -94,7 +94,8 @@ We also need to make sure that the rope can be interacted with properly even whe
 	A reaching inside rule:
 		if the noun is a rope:
 			let the anchor be a random visible thing stuck to the noun;
-			if the anchor is touchable, allow access.
+			if the anchor is not the noun:
+				if the anchor is touchable, allow access.
 
 Now tying:
 
