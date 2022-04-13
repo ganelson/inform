@@ -5806,6 +5806,13 @@ package main _plain
 								inv !store
 									ref /main/BasicInformKit/variables/parameter_value_var/parameter_value
 									val p
+								inv !if
+									val (/main/generic/kinds/kind2/K_number) /main/BasicInformKit/variables/debug_rules_var/debug_rules
+									code
+										inv /main/BasicInformKit/functions/DB_Rule_fn/DB_Rule
+											val /main/BasicInformKit/functions/FINAL_CODE_STARTUP_R_fn/FINAL_CODE_STARTUP_R
+											val (/main/generic/kinds/kind2/K_number) 0
+											val (/main/generic/kinds/kind2/K_number) 0
 								inv !store
 									ref rv
 									inv !indirect0
@@ -5893,6 +5900,13 @@ package main _plain
 								inv !store
 									ref /main/BasicInformKit/variables/parameter_value_var/parameter_value
 									val p
+								inv !if
+									val (/main/generic/kinds/kind2/K_number) /main/BasicInformKit/variables/debug_rules_var/debug_rules
+									code
+										inv /main/BasicInformKit/functions/DB_Rule_fn/DB_Rule
+											val /main/BasicInformExtrasKit/functions/STANDARD_NAME_PRINTING_R_fn/STANDARD_NAME_PRINTING_R
+											val (/main/generic/kinds/kind2/K_number) 0
+											val (/main/generic/kinds/kind2/K_number) 0
 								inv !store
 									ref rv
 									inv !indirect0
@@ -5980,6 +5994,13 @@ package main _plain
 								inv !store
 									ref /main/BasicInformKit/variables/parameter_value_var/parameter_value
 									val p
+								inv !if
+									val (/main/generic/kinds/kind2/K_number) /main/BasicInformKit/variables/debug_rules_var/debug_rules
+									code
+										inv /main/BasicInformKit/functions/DB_Rule_fn/DB_Rule
+											val /main/BasicInformExtrasKit/functions/STANDARD_PLURAL_NAME_PRINTING_R_fn/STANDARD_PLURAL_NAME_PRINTING_R
+											val (/main/generic/kinds/kind2/K_number) 0
+											val (/main/generic/kinds/kind2/K_number) 0
 								inv !store
 									ref rv
 									inv !indirect0

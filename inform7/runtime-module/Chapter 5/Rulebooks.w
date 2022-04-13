@@ -362,6 +362,23 @@ than once for each rule.
 			EmitCode::val_symbol(K_value, p_s);
 		EmitCode::up();
 	}
+
+	if (RTRules::is_foreign(RuleBookings::get_rule(br))) {
+		EmitCode::inv(IF_BIP);
+		EmitCode::down();
+			EmitCode::val_iname(K_number, Hierarchy::find(DEBUG_RULES_HL));
+			EmitCode::code();
+			EmitCode::down();
+				EmitCode::call(Hierarchy::find(DB_RULE_HL));
+				EmitCode::down();
+					CompileValues::to_code_val(spec);
+					EmitCode::val_number(0);
+					EmitCode::val_number(0);
+				EmitCode::up();
+			EmitCode::up();
+		EmitCode::up();
+	}
+
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_symbol(K_value, rv_s);
