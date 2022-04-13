@@ -357,8 +357,8 @@ and "17" can be equal as texts if X is 17.
 	if (fl && fr) {
 		if ((left_txt-->1 ofclass String) && (right_txt-->1 ofclass String))
 			return left_txt-->1 - right_txt-->1;
-		if ((left_txt-->1 ofclass Routine) && (right_txt-->1 ofclass Routine))
-			return left_txt-->1 - right_txt-->1;
+ 		if ((left_txt-->1 ofclass Routine) && (right_txt-->1 ofclass Routine))
+			if (left_txt-->1 == right_txt-->1) return 0;
 		cpl = left_txt-->0; cl = TEXT_TY_Temporarily_Transmute(left_txt);
 		cpr = right_txt-->0; cr = TEXT_TY_Temporarily_Transmute(right_txt);
 	} else if (fl) {
