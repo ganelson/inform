@@ -201,9 +201,12 @@ void Chronology::compile_action_bitmap_test(action_pattern *ap) {
 	else {
 		anl_item *item = ActionNameLists::first_item(ap->action_list);
 		if (L >= 2) bad_form = TRUE;
-		if (ActionSemantics::can_be_compiled_in_past_tense(item->action_listed) == FALSE)
-			bad_form = TRUE;
-		EmitCode::val_iname(K_value, RTActions::double_sharp(item->action_listed));
+		if (item->action_listed == NULL) bad_form = TRUE;
+		else {
+			if (ActionSemantics::can_be_compiled_in_past_tense(item->action_listed) == FALSE)
+				bad_form = TRUE;
+			EmitCode::val_iname(K_value, RTActions::double_sharp(item->action_listed));
+		}
 	}
 	EmitCode::up();
 	if (APClauses::viable_in_past_tense(ap) == FALSE) bad_form = TRUE;
