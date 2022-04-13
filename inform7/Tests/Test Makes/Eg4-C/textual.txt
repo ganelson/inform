@@ -49450,6 +49450,30 @@ package main _plain
 												inv !lookup
 													val right_txt
 													val 1
+								inv !if
+									inv !and
+										inv !ofclass
+											inv !lookup
+												val left_txt
+												val 1
+											val /main/architectural/Routine
+										inv !ofclass
+											inv !lookup
+												val right_txt
+												val 1
+											val /main/architectural/Routine
+									code
+										inv !if
+											inv !eq
+												inv !lookup
+													val left_txt
+													val 1
+												inv !lookup
+													val right_txt
+													val 1
+											code
+												inv !return
+													val 0
 								inv !store
 									reference
 										val cpl
@@ -50090,7 +50114,6 @@ package main _plain
 					local ch
 					local i
 					local dsize
-					local csize
 					local blobcount
 					local gp
 					local cl
@@ -50101,23 +50124,18 @@ package main _plain
 								val dsize
 							inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
 								val txt
-						inv !ifelse
-							val ctxt
+						inv !if
+							inv !and
+								val rtxt
+								inv !eq
+									val ctxt
+									val 0
 							code
-								inv !store
-									reference
-										val csize
-									inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
-										val ctxt
-							code
-								inv !if
-									val rtxt
-									code
-										inv !print
-											val "*** rtxt without ctxt ***"
-										inv !printnl
-										inv !return
-											val 1
+								inv !print
+									val "*** rtxt without ctxt ***"
+								inv !printnl
+								inv !return
+									val 1
 						inv !store
 							reference
 								val brm
@@ -50523,6 +50541,24 @@ package main _plain
 												inv !ifelse
 													val rtxt
 													code
+														inv !if
+															inv !ge
+																inv !plus
+																	val cl
+																	val 1
+																inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
+																	val ctxt
+															code
+																inv !if
+																	inv !eq
+																		inv /main/BasicInformKit/functions/BlkValueSetLBCapacity_fn/BlkValueSetLBCapacity
+																			val ctxt
+																			inv !times
+																				val 2
+																				val cl
+																		val 0
+																	code
+																		inv !break
 														inv /main/BasicInformKit/functions/BlkValueWrite_fn/BlkValueWrite
 															val ctxt
 															val cl
@@ -50531,11 +50567,6 @@ package main _plain
 															val ctxt
 															val rtxt
 															val /main/BasicInformKit/constants/CHR_BLOB_con/CHR_BLOB
-														inv !store
-															reference
-																val csize
-															inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
-																val ctxt
 														inv !store
 															reference
 																val cl
@@ -50565,7 +50596,8 @@ package main _plain
 																inv !plus
 																	val cl
 																	val 1
-																val csize
+																inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
+																	val ctxt
 															code
 																inv !if
 																	inv !eq
@@ -50577,11 +50609,6 @@ package main _plain
 																		val 0
 																	code
 																		inv !break
-																inv !store
-																	reference
-																		val csize
-																	inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
-																		val ctxt
 														inv /main/BasicInformKit/functions/BlkValueWrite_fn/BlkValueWrite
 															val ctxt
 															inv !postincrement
@@ -50597,7 +50624,8 @@ package main _plain
 																inv !plus
 																	val cl
 																	val 1
-																val csize
+																inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
+																	val ctxt
 															code
 																inv !if
 																	inv !eq
@@ -50609,11 +50637,6 @@ package main _plain
 																		val 0
 																	code
 																		inv !break
-																inv !store
-																	reference
-																		val csize
-																	inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
-																		val ctxt
 														inv /main/BasicInformKit/functions/BlkValueWrite_fn/BlkValueWrite
 															val ctxt
 															inv !postincrement
@@ -50635,7 +50658,8 @@ package main _plain
 														inv !plus
 															val cl
 															val 1
-														val csize
+														inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
+															val ctxt
 													code
 														inv !if
 															inv !eq
@@ -50647,11 +50671,6 @@ package main _plain
 																val 0
 															code
 																inv !break
-														inv !store
-															reference
-																val csize
-															inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
-																val ctxt
 												inv /main/BasicInformKit/functions/BlkValueWrite_fn/BlkValueWrite
 													val ctxt
 													inv !postincrement
@@ -50661,6 +50680,19 @@ package main _plain
 						inv !if
 							val ctxt
 							code
+								inv !if
+									inv !ge
+										inv !plus
+											val cl
+											val 1
+										inv /main/BasicInformKit/functions/BlkValueLBCapacity_fn/BlkValueLBCapacity
+											val ctxt
+									code
+										inv /main/BasicInformKit/functions/BlkValueSetLBCapacity_fn/BlkValueSetLBCapacity
+											val ctxt
+											inv !times
+												val 2
+												val cl
 								inv /main/BasicInformKit/functions/BlkValueWrite_fn/BlkValueWrite
 									val ctxt
 									inv !postincrement

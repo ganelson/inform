@@ -535,6 +535,7 @@ void CoreSyntax::grant_L3_permissions(void) {
 	Annotations::allow_for_category(L3_NCAT, subject_ANNOT);
 	Annotations::allow_for_category(L3_NCAT, explicit_gender_marker_ANNOT);
 	Annotations::allow(ADJECTIVE_NT, predicate_ANNOT);
+	Annotations::allow(ADJECTIVE_NT, multiplicity_ANNOT);
 	Annotations::allow(VERB_NT, category_of_I6_translation_ANNOT);
 	Annotations::allow(VERB_NT, rule_placement_sense_ANNOT);
 	Annotations::allow(COMMON_NOUN_NT, creation_site_ANNOT);

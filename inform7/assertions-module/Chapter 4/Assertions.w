@@ -253,12 +253,15 @@ void Assertions::make_assertion_recursive_inner(parse_node *px, parse_node *py) 
 		((Node::get_type(py) == COMMON_NOUN_NT)
 		&& (Node::get_evaluation(py)) && (Annotations::read_int(py, multiplicity_ANNOT) > 1)
 		&& (Node::get_type(px) != RELATIONSHIP_NT))) {
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultiplyVague),
-			"multiple objects can only be put into relationships",
-			"by saying something like 'In the Drawing Room are two women.', "
-			"and all other assertions with multiple objects are disallowed: "
-			"so 'Three doors are open.' is rejected - I can't tell which three.");
-		return;
+		if (Node::get_implicit_in_creation_of(current_sentence) == NULL) {
+			LOG("px = $T\npy=$T\n", px, py);
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_MultiplyVague),
+				"multiple objects can only be put into relationships",
+				"by saying something like 'In the Drawing Room are two women.', "
+				"and all other assertions with multiple objects are disallowed: "
+				"so 'Three doors are open.' is rejected - I can't tell which three.");
+			return;
+		}
 	}
 
 @ The case names here are systematic and were constructed from the above

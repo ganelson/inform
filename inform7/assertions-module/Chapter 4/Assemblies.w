@@ -133,7 +133,7 @@ void Assertions::Assemblies::make_generalisation(parse_node *look_for, parse_nod
 
 	Annotations::write_int(current_sentence, you_can_ignore_ANNOT, TRUE);
 
-	LOGIF(ASSEMBLIES, "New generalisation made concerning $j:\nLook for: $T\nMake: $T\n",
+	LOGIF(ASSEMBLIES, "Assembly on $j:\n- - - -\nLook for: $T\nMake: $T- - - -\n\n",
 		k, g->look_for, g->what_to_make);
 
 	Assertions::Assemblies::ensure_all_generalisations_made(k);
@@ -331,7 +331,7 @@ void Assertions::Assemblies::satisfies_generalisation(inference_subject *infs, g
 	global_pass_state.assembly_position = new_sentence;
 
 	LOGIF(ASSEMBLIES,
-		"Subject $j satisfies generalisation %d (from $j), making sentence:\n$T",
+		"Subject $j satisfies generalisation %d (from $j), making sentence:\n$T\n",
 		infs, g->allocation_id, infs_k, new_sentence);
 }
 
