@@ -85,7 +85,7 @@ Our new action is also a perfect place to use an action variable: we're going to
 
 	Carry out an actor attacking something with something (this is the standard attacking it with a weapon rule):
 		decrease the current hit points of the noun by the damage inflicted;
-		if the noun is dead:
+		if the noun is dead and the noun is not the player:
 			now the noun is nowhere. 
 	
 Though our checks and carry-out rules are similar regardless of who is acting, we're going to want actions to be described differently for different actors, so we'll use separate "report attacking" and "report someone attacking" rules. We'll also make some special cases for when the character has died as a result of the attack:
