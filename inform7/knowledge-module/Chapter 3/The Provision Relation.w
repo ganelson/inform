@@ -55,8 +55,8 @@ int ProvisionRelation::typecheck(bp_family *self, binary_predicate *bp,
 	StandardProblems::tcp_problem(_p_(PM_BadProvides), tck,
 		"that asks whether something provides something, and in Inform 'to provide' "
 		"means that an object (or value) has a property attached - for instance, "
-		"containers provide the property 'carrying capacity'. Here, though, we have "
-		"%4 rather than the name of a property.");
+		"containers provide the property 'carrying capacity'. Here, though, what "
+		"comes after 'provides' is %4 rather than the name of a property.");
 	return NEVER_MATCH;
 }
 

@@ -1,12 +1,13 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 8 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32132 words long.
 Problem__ PM_BadProvides
   >--> In the sentence 'The player provides 10' (source text, line 3), it looks
     as if you intend 'The player provides 10' to be asserting something, but
     that asks whether something provides something, and in Inform 'to provide'
     means that an object (or value) has a property attached - for instance,
-    containers provide the property 'carrying capacity'. Here, though, we have
-    a number rather than the name of a property.
-Inform 7 has finished: 16 centiseconds used.
+    containers provide the property 'carrying capacity'. Here, though, what
+    comes after 'provides' is a number rather than the name of a property.
+Inform 7 has finished.
