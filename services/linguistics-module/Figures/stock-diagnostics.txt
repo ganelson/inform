@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
-noun: 2380 items
+noun: 2381 items
 pronoun: 8 items
 preposition: 273 items
 determiner: 22 items
 verb: 108 items
 verb_form: 386 items
-total in all categories: 3316
+total in all categories: 3317
 
 adjective: 'even'
 adjective: 'odd'
@@ -384,8 +384,9 @@ noun: proper: 'standard putting rule'
 noun: proper: 'concise report putting rule'
 noun: proper: 'standard report putting rule'
 noun: proper: 'convert insert to drop where possible rule'
-noun: proper: 'can't insert what's not held rule'
+noun: proper: 'can't insert what's already inserted rule'
 noun: proper: 'can't insert something into itself rule'
+noun: proper: 'can't insert what's not held rule'
 noun: proper: 'can't insert into closed containers rule'
 noun: proper: 'can't insert into what's not a container rule'
 noun: proper: 'can't insert clothes being worn rule'

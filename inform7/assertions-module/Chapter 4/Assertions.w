@@ -1038,6 +1038,10 @@ in this case.
 >> The desk is fixed in place. A container is usually fixed in place.
 
 @<Case 29 - COMMON NOUN, PROPER NOUN vs ADJECTIVE@> =
+	if (Annotations::read_int(current_sentence->down, sentence_is_existential_ANNOT)) {
+		Assertions::Creator::convert_instance_to_nounphrase(px, NULL);
+		Annotations::write_int(current_sentence->down, sentence_is_existential_ANNOT, FALSE);
+	}
 	Refiner::turn_player_to_yourself(px);
 	if ((Node::get_type(px) == PROPER_NOUN_NT) &&
 		(Lvalues::get_nonlocal_variable_if_any(Node::get_evaluation(px)))) {

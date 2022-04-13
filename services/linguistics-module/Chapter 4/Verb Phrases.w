@@ -113,7 +113,7 @@ int VerbPhrases::seek(wording W, int *X, void **XP, int existential_OP_edge,
 	}
 	int rv = VerbPhrases::seek_inner(W, X, XP, existential_OP_edge, detect_occurrences);
 	if (VerbPhrases::tracing(SEEK_VP_TRACE)) {
-		LOG_OUTDENT; if (rv) LOG("Seek succeeded\n"); else LOG("Seek failed\n");
+		LOG_OUTDENT; if (rv) LOG("Seek succeeded: $T\n", *XP); else LOG("Seek failed\n");
 	}
 	return rv;
 }
@@ -351,7 +351,10 @@ who is in the Dining Room" (note the additional "is"), it would.
 		LOG_INDENT; 
 		int rv = VerbPhrases::seek(OW, X, XP, last_preposition_position, detect_occurrences);
 		LOG_OUTDENT; 
-		if (rv) return rv;
+		if (rv) {
+			Annotations::write_int(*XP, sentence_is_existential_ANNOT, TRUE);
+			return rv;
+		}
 		existential = TRUE; structures = SVOO_FS_BIT; req1 = NULL; req2 = prep1;
 	}
 
@@ -364,8 +367,6 @@ trim away that "who" from the end of the |SW|.
 	if (existential_OP_edge > 0) /* i.e., if we have recursed */
 		if (<pre-verb-rc-marker>(SW)) { /* there is indeed a "which" at the end of |SW| */
 			SW = GET_RW(<pre-verb-rc-marker>, 1); /* so trim it off */
-			if (VerbPhrases::tracing(SEEK_VP_TRACE))
-				LOG("Trimmed to: (%W) $w (%W)\n", SW, vi, OW);
 		}
 
 @ This part at least is boringly straightforward.

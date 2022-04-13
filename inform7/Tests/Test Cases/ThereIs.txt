@@ -13,6 +13,8 @@ incriminates Mr Darcy. There is a fishing rod incriminating Mr Darcy.
 
 There is a woman.
 
+There is a room which is dark.
+
 Test me with "showme / showme Shadow / relations / z / get axe / z / get
 coin from crate / put axe in box / put coin in box / z / get all from box /
 z / jump / z".
@@ -44,4 +46,5 @@ Instead of waiting:
 	if something incriminates Mr Darcy, say "Something incriminates Mr Darcy.";
 	if there is something incriminating Mr Darcy, say "There is something incriminating Mr Darcy.";
 	if nothing incriminates Mr Darcy, say "Nothing incriminates Mr Darcy.";
-	if there is nothing incriminating Mr Darcy, say "There is nothing incriminating Mr Darcy."
+	if there is nothing incriminating Mr Darcy, say "There is nothing incriminating Mr Darcy.";
+	say "There are [number of rooms] rooms, of which [number of lighted rooms] lighted.";
