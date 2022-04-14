@@ -194,8 +194,8 @@ text_substitution *TextSubstitutions::new_text_substitution(wording W,
 	Sequence::queue(&TextSubstitutions::compilation_agent,
 		STORE_POINTER_text_substitution(ts), desc);
 
-	LOGIF(TEXT_SUBSTITUTIONS, "Requesting text routine %d %08x %W %08x\n",
-		ts->allocation_id, (int) frame, W, R);
+	LOGIF(TEXT_SUBSTITUTIONS, "Requesting text routine %d for %W, R = %d\n",
+		ts->allocation_id, W, (R)?(R->allocation_id):(-1));
 	return ts;
 }
 
@@ -225,8 +225,8 @@ frame creating this text substitution to the stack frame compiling it.
 =
 text_substitution *current_ts_being_compiled = NULL;
 int TextSubstitutions::compile_function(text_substitution *ts) {
-	LOGIF(TEXT_SUBSTITUTIONS, "Compiling text routine %d %08x %W\n",
-		ts->allocation_id, (int) (ts->using_frame), ts->unsubstituted_text);
+	LOGIF(TEXT_SUBSTITUTIONS, "Compiling text routine %d %W\n", ts->allocation_id,
+		ts->unsubstituted_text);
 
 	current_ts_being_compiled = ts;
 	packaging_state save = Functions::begin(ts->ts_function_iname);

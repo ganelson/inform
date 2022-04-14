@@ -753,7 +753,7 @@ void CoreSyntax::write_say_adjective_ANNOT(text_stream *OUT, parse_node *p) {
 }
 void CoreSyntax::write_say_verb_ANNOT(text_stream *OUT, parse_node *p) {
 	verb_conjugation *vc = Node::get_say_verb(p);
-	if (vc) WRITE(" {say verb: %A}", vc->infinitive);
+	if (vc) WRITE(" {say verb: %A}", &(vc->infinitive));
 }
 void CoreSyntax::write_say_verb_negated_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, say_verb_negated_ANNOT) > 0)

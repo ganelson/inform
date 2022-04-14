@@ -57,6 +57,7 @@
   There are at least three things in the box.
   Something incriminates Mr Darcy.
   There is something incriminating Mr Darcy.
+  There are 3 rooms, of which 2 lighted.
   
   >[5] get axe
   Taken.
@@ -73,6 +74,7 @@
   There are fewer than three things in the box.
   Something incriminates Mr Darcy.
   There is something incriminating Mr Darcy.
+  There are 3 rooms, of which 2 lighted.
   
   >[7] get coin from crate
   Taken.
@@ -97,6 +99,7 @@
   There are at least three things in the box.
   Something incriminates Mr Darcy.
   There is something incriminating Mr Darcy.
+  There are 3 rooms, of which 2 lighted.
   
   >[11] get all from box
   coin: Taken.
@@ -115,6 +118,7 @@
   There are fewer than three things in the box.
   Something incriminates Mr Darcy.
   There is something incriminating Mr Darcy.
+  There are 3 rooms, of which 2 lighted.
   
   >[13] jump
   By jumping, you destroy the evidence.
@@ -130,5 +134,6 @@
   There are fewer than three things in the box.
   Nothing incriminates Mr Darcy.
   There is nothing incriminating Mr Darcy.
+  There are 3 rooms, of which 2 lighted.
   
 > >
