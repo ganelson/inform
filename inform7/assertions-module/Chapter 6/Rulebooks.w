@@ -375,8 +375,8 @@ void Rulebooks::add_variable(rulebook *B, parse_node *cnode) {
 		Problems::issue_problem_segment(
 			"You wrote %1, which I am reading as a request to make a new named variable "
 			"for a rulebook - a value associated with a rulebook and which has a name. "
-			"The request seems to say that the name in question is '%2', but I'd prefer "
-			"to avoid 'and', 'or', 'with', or 'having' in such names, please.");
+			"The request seems to say that the name in question is '%2', but I'd prefer to "
+			"avoid punctuation marks, 'and', 'or', 'with', or 'having' in such names, please.");
 		Problems::issue_problem_end();
 		return;
 	}
