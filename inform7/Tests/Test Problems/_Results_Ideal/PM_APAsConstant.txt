@@ -1,0 +1,13 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 9 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32132 words long.
+Problem__ PM_APAsConstant
+  >--> You wrote 'taking' (source text, line 5): but this is a description of
+    an action which is too vague to be used as a constant value, and should
+    either be something like 'taking action' (for the action in the abstract)
+    or 'taking the beach ball' (for a definitely specific action), but not
+    something like 'taking' or 'taking a container' which refer to a whole
+    collection of possible actions.
+Inform 7 has finished.
