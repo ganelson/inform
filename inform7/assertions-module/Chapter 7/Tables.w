@@ -329,14 +329,28 @@ void Tables::create_table(parse_node *PN) {
 			t->table_name_text = GET_RW(<table-new-name>, 2);
 			break;
 	}
+	
+	if ((Wordings::length(t->table_no_text) > 24) ||
+		(Wordings::length(t->table_name_text) > 24)) {
+		if (Wordings::length(t->table_no_text) > 24)
+			Problems::quote_wording_as_source(1, t->table_no_text);
+		else 
+			Problems::quote_wording_as_source(1, t->table_name_text);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableNameTooLong));
+		Problems::issue_problem_segment(
+			"This table has been called %1, but that's just too much text. Tables "
+			"really don't need names longer than 20 words.");
+		Problems::issue_problem_end();
+		DESTROY(t, table);
+		return;
+	}
 
 @ Practical experience showed that the following restriction was wise:
 
 @<Require the table name not to tread on some other value@> =
 	if (<s-type-expression-or-value>(t->table_name_text)) {
 		Problems::quote_wording_as_source(1, t->table_name_text);
-		StandardProblems::handmade_problem(Task::syntax_tree(),
-			_p_(PM_TableNameAmbiguous));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_TableNameAmbiguous));
 		Problems::issue_problem_segment(
 			"The table name %1 will have to be disallowed as it is text which "
 			"already has a meaning to Inform. For instance, creating the 'Table "
