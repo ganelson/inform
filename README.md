@@ -167,7 +167,7 @@ be accepted. (Note that these are not git submodules.)
 * inblorb/Tests/Assistants/blorblib - Code for examining blorb files, including blorbscan, used here for validating inblorb's output in tests. - version 1.0.2 - by [Andrew Plotkin](https://github.com/erkyrath), but not currently elsewhere on Github
 
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
-	* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.01)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
+	* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.4)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
 	* inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.0)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
 	* inform7/Internal/Templates/Vorple - Multimedia in Javascript - __Vorple__ - from [https://github.com/vorple/inform7], maintained by [Juhana Leinonen](https://github.com/vorple)
 
