@@ -110,8 +110,10 @@ even numbers", becomes rather "is an even number".
 
 =
 parse_node *Descriptions::to_rvalue(parse_node *spec) {
-	if (Specifications::is_description(spec) == FALSE) internal_error("not a description");
-
+	if (Rvalues::is_CONSTANT_construction(spec, CON_description)) return spec;
+	if (Specifications::is_description(spec) == FALSE) {
+		LOG("$T\n", spec); internal_error("not a description");
+	}
 	pcalc_prop *prop = Propositions::copy(
 		Descriptions::to_proposition(spec));
 	if (prop) {
