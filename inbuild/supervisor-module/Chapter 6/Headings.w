@@ -667,12 +667,13 @@ void Headings::excise_material_under(parse_node_tree *T, inbuild_copy *C,
 	}
 
 	Headings::suppress_dependencies(hpn);
-	if (transfer_to) SyntaxTree::graft(T, hpn->down, transfer_to);
+	if ((transfer_to) && (hpn->down)) SyntaxTree::graft(T, hpn->down, transfer_to);
 	hpn->down = NULL;
 }
 
 @ =
 heading *Headings::find_dependent_heading(parse_node *pn) {
+	if (pn == NULL) return NULL;
 	if (Node::get_type(pn) == HEADING_NT) {
 		heading *h = Headings::from_node(pn);
 		if ((h) && (Wordings::nonempty(h->in_place_of_text))) return h;
