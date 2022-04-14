@@ -60,7 +60,7 @@ the problem message test cases, so we observe them.
 void Coverage::which_problems_have_test_cases(void) {
 	filename *CAT = Filenames::in(path_to_inpolicy_workspace, I"cases.txt");
 	TEMPORARY_TEXT(COMMAND)
-	WRITE_TO(COMMAND, "../intest/Tangled/intest inform7 -catalogue ");
+	WRITE_TO(COMMAND, "..%cintest%cTangled%cintest inform7 -catalogue ", FOLDER_SEPARATOR, FOLDER_SEPARATOR, FOLDER_SEPARATOR);
 	Shell::redirect(COMMAND, CAT);
 	if (Shell::run(COMMAND)) Errors::fatal("can't run intest to harvest cases");
 	DISCARD_TEXT(COMMAND)
