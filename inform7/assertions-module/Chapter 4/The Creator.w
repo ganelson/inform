@@ -414,13 +414,17 @@ it handles crashes correctly.
 		"a room with printed name \"A\".')");
 
 @<Issue PM_NameWithBrackets problem@> =
-		StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NameWithBrackets),
-			"this seems to give something a name which contains brackets '(' or ')'",
-			"which is not allowed since the potential for confusion with other uses "
-			"for brackets in Inform source text is too high. (If you need, say, a "
-			"room which the player sees as 'Fillmore (West)', you can get this "
-			"effect with: 'Fillmore West is a room with printed name \"Fillmore "
-			"(West)\".')");
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, W);
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NameWithBrackets));
+	Problems::issue_problem_segment(
+		"The sentence %1 seems to give something the name '%2', but that name "
+		"contains brackets '(' or ')', which is not allowed since the potential "
+		"for confusion with other uses for brackets in Inform source text is too "
+		"high. (If you need, say, a room which the player sees as 'Fillmore (West)', "
+		"you can get this effect with: 'Fillmore West is a room with printed name "
+		"\"Fillmore (West)\".')");
+	Problems::issue_problem_end();
 
 @<Issue PM_Crash1 problem@> =
 	WRITE_TO(STDERR, "*** Exit(1) requested for testing purposes ***\n");
