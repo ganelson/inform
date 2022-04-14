@@ -509,7 +509,7 @@ void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
 	i7_fatal_exit(proc);
 }
 void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y) {
-	uint32_t rawvalue = ((random() << 16) ^ random());
+	uint32_t rawvalue = ((rand() << 16) ^ rand());
 	uint32_t value;
 	if (x == 0) value = rawvalue;
 	else if (x >= 1) value = rawvalue % (uint32_t) (x);
@@ -521,7 +521,7 @@ void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
 	uint32_t seed;
 	*((i7word_t *) &seed) = s;
 	if (seed == 0) seed = time(NULL);
-	srandom(seed);
+	srand(seed);
 }
 
 i7word_t i7_random(i7process_t *proc, i7word_t x) {

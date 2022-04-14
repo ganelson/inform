@@ -1,3 +1,12 @@
+-set CCOMPILER 'set-me-to-some-c-compiler-please'
+-set CLINKER 'set-me-to-some-c-linker-please'
+-set EXESUFFIX ''
+-if MacOS -set CCOMPILER 'clang -g -std=c11 -ferror-limit=10000 -Wno-unused-value -c'
+-if MacOS -set CLINKER   'clang -g -ferror-limit=10000'
+-if Windows -set CCOMPILER 'x86_64-w64-mingw32-clang -g -std=c11 -ferror-limit=10000 -Wno-unused-value -c'
+-if Windows -set CLINKER   'x86_64-w64-mingw32-clang -g -ferror-limit=10000'
+-if Windows -set EXESUFFIX '.exe'
+
 -cases [Valid] 'inter/Tests/Valid'
 -cases [Invalid] 'inter/Tests/Invalid'
 -cases [General] 'inter/Tests/General'
@@ -165,7 +174,7 @@
 	set: $OC = $PATH/_C_Object_Code/$CASE.o
 	set: $CTC = $PATH/_C_Console/compile-$CASE.txt
 	set: $LTC = $PATH/_C_Console/link-$CASE.txt
-	set: $XC = $PATH/_C_Object_Code/$CASE
+	set: $XC = $PATH/_C_Object_Code/$CASE$$EXESUFFIX
 	set: $AOC = $PATH/_C_Output_Actual/$CASE.txt
 	set: $AIC = $PATH/_C_Output_Ideal/$CASE.txt
 
@@ -186,10 +195,10 @@
 	step: inter/Tangled/inter -architecture 32d -variable *in=$O -variable *out=$AC -pipeline-file $PC >$TC 2>&1
 	or: 'failed to produce output' $T
 
-	step: clang -std=c99 -c -o $OC $AC -I $I7CLIB >$CTC 2>&1
+	step: `$$CCOMPILER -o $OC $AC -I $I7CLIB >$CTC 2>&1
 	or: 'failed to compile C' $CTC
 
-	step: clang -g -o $XC $OC >$LTC 2>&1
+	step: `$$CLINKER -o $XC $OC >$LTC 2>&1
 	or: 'failed to link C' $LTC
 	
 	step: $XC >$AOC 2>&1
@@ -210,7 +219,7 @@
 	set: $INTNAME		= dumb-glulxe
 	set: $INTOPTIONS	= -u -q
 
-	step: $INT `$INTOPTIONS $X </dev/null >$AO 2>&1
+	step: $INT `$INTOPTIONS $X >$AO 2>&1
 	or: 'unable to run $INTNAME (do you need to make interpreters?)'
 
 	match text: $AO $AI
