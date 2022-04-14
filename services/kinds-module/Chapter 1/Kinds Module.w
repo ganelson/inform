@@ -86,6 +86,7 @@ to some routine of her own, gazumping this one.
 @e DimensionsInconsistent_KINDERROR
 @e KindUnalterable_KINDERROR
 @e KindsCircular_KINDERROR
+@e KindsCircular2_KINDERROR
 @e LPCantScaleYet_KINDERROR
 @e LPCantScaleTwice_KINDERROR
 @e NeptuneError_KINDERROR
@@ -121,6 +122,9 @@ void KindsModule::problem_handler(int err_no, parse_node *pn, text_stream *E,
 			break;
 		case KindsCircular_KINDERROR:
 			Errors::with_text("making this subkind would lead to a circularity: %S", text);
+			break;
+		case KindsCircular2_KINDERROR:
+			Errors::with_text("making this subkind would a kind being its own subkind: %S", text);
 			break;
 		case LPCantScaleYet_KINDERROR:
 			Errors::with_text("tries to scale a value with no point of reference: %S", text);

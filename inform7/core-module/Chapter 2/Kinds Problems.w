@@ -71,6 +71,17 @@ void KindsProblems::kinds_problem_handler(int err_no, parse_node *pn, text_strea
 				"other.");
 			Problems::issue_problem_end();
 			break;
+		case KindsCircular2_KINDERROR:
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_source(2, pn);
+			Problems::quote_kind(3, K1);
+			Problems::quote_kind(4, K2);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_KindsCircular2));
+			Problems::issue_problem_segment(
+				"You wrote %1, but that seems to make %3 a kind of itself, which "
+				"cannot make sense.");
+			Problems::issue_problem_end();
+			break;
 		case LPCantScaleYet_KINDERROR:
 			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_LPCantScaleYet),
 				"this tries to scale up or down a value which so far has no point of "

@@ -196,6 +196,7 @@ slightly odd kind |K_rulebook_outcome|.
 
 =
 void FocusAndOutcome::fresh_outcome(outcomes *outs, wording OW, int koo, int def) {
+	if (Assertions::Creator::vet_name_for_noun(OW) == FALSE) return;
 	if (def) {
 		if (outs->default_named_outcome) {
 			StandardProblems::sentence_problem(Task::syntax_tree(),

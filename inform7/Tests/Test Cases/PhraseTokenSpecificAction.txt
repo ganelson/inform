@@ -1,0 +1,8 @@
+Foo is a room.
+To clomp (Z - looking): say "Clomp!".
+
+When play begins:
+	let Z be the action of looking;
+	clomp Z;
+	let Z be the action of examining the player;
+	clomp Z;

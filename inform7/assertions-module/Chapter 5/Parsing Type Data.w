@@ -400,9 +400,10 @@ void ParsingIDTypeData::phtd_main_prototype(id_type_data *idtd) {
 	}
 
 @<Phrase tokens cannot be quantified@> =
-	if (Node::is(spec, TEST_VALUE_NT)) {
+	if (Specifications::is_description(spec)) {
 		pcalc_prop *prop = Descriptions::to_proposition(spec);
 		if (Binding::number_free(prop) != 1) {
+			LOG("Spec is: $T\nProposition is: $D\n", spec, prop);
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, Node::get_text(spec));
 			StandardProblems::handmade_problem(Task::syntax_tree(),
@@ -416,7 +417,7 @@ void ParsingIDTypeData::phtd_main_prototype(id_type_data *idtd) {
 			Problems::issue_problem_end();
 			return;
 		}
-	}
+	} else if (Node::is(spec, TEST_VALUE_NT)) spec = spec->down;
 
 @<Sort out the kind variables in this declaration@> =
 	int i, t = 0;
