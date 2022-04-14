@@ -1,4 +1,4 @@
-Version 12 of Locksmith by Emily Short begins here.
+Version 13 of Locksmith by Emily Short begins here.
 
 "Implicit handling of doors and containers so that lock manipulation is automatic if the player has the necessary keys."
 
@@ -65,10 +65,10 @@ Part 1 - The matching key rule
 This is the need a matching key rule:
 	if the person asked encloses something (called item) which unlocks the noun:
 		now the second noun is the item;
-		abide by the must have accessible the second noun rule;
+		abide by the second noun must be accessible rule;
 	otherwise if a visible passkey (called item) unbolts the noun: 
 		now the second noun is the item;
-		abide by the must have accessible the second noun rule;
+		abide by the second noun must be accessible rule;
 	otherwise:
 		if the player is the person asked, say "[key-refusal for noun]";
 		stop the action.
@@ -103,7 +103,7 @@ unlocking it with. Understand "open [a lockable thing] with [something]" as
 unlocking it with.
 
 Check unlocking it with (this is the must be able to reach the key rule):
-	abide by the must have accessible the second noun rule.
+	abide by the second noun must be accessible rule.
 
 The right second rule is listed instead of the can't unlock without the
 correct key rule in the check unlocking it with rulebook.
@@ -146,7 +146,7 @@ thing] with [something]" as locking it with. Understand "lock [a lockable
 thing] with [something]" as locking it with.
 
 Check locking it with:
-	abide by the must have accessible the second noun rule.
+	abide by the second noun must be accessible rule.
 
 The right second rule is listed instead of the can't lock without the correct
 key rule in the check locking it with rulebook.
@@ -262,7 +262,7 @@ This is the must hold the second noun rule:
 	if the person asked does not have the second noun, stop the action;
 	make no decision.
 
-This is the must have accessible the noun rule:
+This is the noun must be accessible rule:
 	if the noun is not key-accessible:
 		if the noun is on a keychain (called the containing keychain), now the noun is the containing keychain;
 		follow the noun autotaking rule;
@@ -272,7 +272,7 @@ This is the must have accessible the noun rule:
 		stop the action;
 	make no decision.
 
-This is the must have accessible the second noun rule:
+This is the second noun must be accessible rule:
 	if the second noun is not key-accessible:
 		let the held second noun be the second noun;
 		if the second noun is on a keychain (called the containing keychain),

@@ -125,7 +125,7 @@ The inform7 subtree further contains these primary resources:
 	* inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x - __4__
 	* inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x - __5/140516__
 	* inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x - ____
-	* inform7/Internal/Extensions/Emily Short/Locksmith.i7x - __12__
+	* inform7/Internal/Extensions/Emily Short/Locksmith.i7x - __13__
 	* inform7/Internal/Extensions/Emily Short/Menus.i7x - __3__
 	* inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x - __5__
 	* inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x - ____

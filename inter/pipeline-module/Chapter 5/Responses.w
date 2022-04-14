@@ -111,7 +111,7 @@ code is less limited.
 	for (int i=0; i<InterNodeList::array_len(inv->response_nodes); i++) {
 		inter_package *pack = PackageInstruction::at_this_head(inv->response_nodes->list[i].node);
 		inter_ti m = Metadata::read_numeric(pack, I"^marker");
-		inter_symbol *rule_s = Metadata::required_symbol(pack, I"^value");
+		inter_symbol *rule_s = Metadata::required_symbol(pack, I"^rule");
 		Produce::inv_primitive(I, IF_BIP);
 		Produce::down(I);
 			Produce::inv_primitive(I, EQ_BIP);
