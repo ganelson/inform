@@ -73694,6 +73694,7 @@ package main _plain
 					local x
 					local relation_property
 					local t
+					local tr
 					local N
 					local obj1
 					local obj2
@@ -73714,9 +73715,12 @@ package main _plain
 								val 0
 						inv !store
 							reference
-								val N
-							inv /main/synoptic/kinds/domainsize_fn/call
-								val t
+								val tr
+							inv /main/BasicInformKit/functions/KindBaseTerm_fn/KindBaseTerm
+								inv /main/BasicInformKit/functions/RlnGetF_fn/RlnGetF
+									val relation
+									val /main/BasicInformKit/constants/RR_KIND_con/RR_KIND
+								val 1
 						inv !ifelse
 							inv !eq
 								val t
@@ -73779,11 +73783,17 @@ package main _plain
 											code
 												inv !print
 													val "  >=>  "
-										inv /main/BasicInformExtrasKit/functions/DefArt_fn/DefArt
+										inv /main/synoptic/kinds/printkindvaluepair_fn/call
+											val tr
 											val obj2
 										inv !print
 											val "\n"
 							code
+								inv !store
+									reference
+										val N
+									inv /main/synoptic/kinds/domainsize_fn/call
+										val t
 								inv !for
 									inv !store
 										reference
@@ -73846,7 +73856,7 @@ package main _plain
 												inv !print
 													val "  >=>  "
 										inv /main/synoptic/kinds/printkindvaluepair_fn/call
-											val t
+											val tr
 											val obj2
 										inv !print
 											val "\n"

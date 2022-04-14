@@ -367,8 +367,8 @@ ROOT_NT
             IMPERATIVE_NT'report injecting it with' {unit: 4} {imperative definition: 863}
         HEADING_NT'section 3 - geography' {heading 5} {under: H5'section 3 - geography'} {unit: 4}
             INCLUSION_NT'include locksmith by emily short' {unit: 4}
-                HEADING_NT'version 12 of locksmith by emily short begins here' {heading 0} {under: H0'version 12 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v12 } {unit: 3}
-                    BEGINHERE_NT'version 12 of locksmith by emily short' {unit: 3}
+                HEADING_NT'version 13 of locksmith by emily short begins here' {heading 0} {under: H0'version 13 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v13 } {unit: 3}
+                    BEGINHERE_NT'version 13 of locksmith by emily short' {unit: 3}
                     ...
             SENTENCE_NT'understand "go to/toward/into [any room]" as going toward' {unit: 4} {classified}
                 VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}

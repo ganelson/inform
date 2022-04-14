@@ -588,13 +588,17 @@ it handles crashes correctly.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NameWithBrackets</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"this seems to give something a name which contains brackets '(' or ')'"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"which is not allowed since the potential for confusion with other uses "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"for brackets in Inform source text is too high. (If you need, say, a "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"room which the player sees as 'Fillmore (West)', you can get this "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"effect with: 'Fillmore West is a room with printed name \"Fillmore "</span>
-<span class="plain-syntax">            </span><span class="string-syntax">"(West)\".')"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NameWithBrackets</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"The sentence %1 seems to give something the name '%2', but that name "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"contains brackets '(' or ')', which is not allowed since the potential "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"for confusion with other uses for brackets in Inform source text is too "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"high. (If you need, say, a room which the player sees as 'Fillmore (West)', "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"you can get this effect with: 'Fillmore West is a room with printed name "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"\"Fillmore (West)\".')"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-tc.html#SP5">&#167;5</a> (three times).</li></ul>
 <p class="commentary firstcommentary"><a id="SP5_3" class="paragraph-anchor"></a><b>&#167;5.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_Crash1 problem</span><span class="named-paragraph-number">5.3</span></span><span class="comment-syntax"> =</span>
@@ -1318,7 +1322,7 @@ For example, property names can't be unsuitable, but they can be unfortunate.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Creator::vet_name_for_noun</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Assertions::Creator::vet_name_for_noun</span></span>:<br/>Pluralisation Requests - <a href="3-pr.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Assertions::Creator::vet_name_for_noun</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Assertions::Creator::vet_name_for_noun</span></span>:<br/>Pluralisation Requests - <a href="3-pr.html#SP2">&#167;2</a><br/>Focus and Outcome - <a href="6-fao.html#SP10">&#167;10</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;unfortunate-name&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NameBestAvoided</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"this is a name which is best avoided"</span><span class="plain-syntax">,</span>

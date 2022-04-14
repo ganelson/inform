@@ -41,7 +41,9 @@ function togglePopup(material_id) {
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 <li><a href="../inrtpsn.html">inrtps</a></li>
-<li><a href="../extensions.html">extensions and kits</a></li>
+</ul><h2>Resources</h2><ul>
+<li><a href="../extensions.html">extensions</a></li>
+<li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -174,6 +176,7 @@ frequently, since it consumes memory:
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">WordAssemblages::writer</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">WordAssemblages::writer</span></span>:<br/>Words Module - <a href="1-wm.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> *</span><span class="identifier-syntax">format_string</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">vW</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">vW</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) { </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;null-assemblage&gt;"</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">word_assemblage</span><span class="plain-syntax"> *</span><span class="identifier-syntax">wa</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">word_assemblage</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">vW</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">wa</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="function-syntax">&lt;wa-&gt;</span><span class="element-syntax">no_indiv_words</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>

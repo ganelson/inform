@@ -3549,7 +3549,7 @@ ROOT_NT
                                                                             CONSTANT_NT'"that"' {kind: text}
                             CODE_BLOCK_NT'say "['re]"' {control structure: SAY}
                                 INVOCATION_LIST_SAY_NT''re'
-                                    INVOCATION_NT''re' {say verb: } {say verb: }
+                                    INVOCATION_NT''re' {say verb: 're} {say verb: 're}
                     IMPERATIVE_NT'to say they're' {unit: 1} {imperative definition: 347}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'let the item be the prior named object' {unit: 1} {indent: 1}
@@ -3618,7 +3618,7 @@ ROOT_NT
                                                                             CONSTANT_NT'"That"' {kind: text}
                             CODE_BLOCK_NT'say "['re]"' {control structure: SAY}
                                 INVOCATION_LIST_SAY_NT''re'
-                                    INVOCATION_NT''re' {say verb: } {say verb: }
+                                    INVOCATION_NT''re' {say verb: 're} {say verb: 're}
                     IMPERATIVE_NT'to say it' {unit: 1} {imperative definition: 348}
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT'say "[regarding nothing]It"' {control structure: SAY}
@@ -3675,7 +3675,7 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'"It"' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"It"' {kind: text}
                                 INVOCATION_LIST_SAY_NT''re'
-                                    INVOCATION_NT''re' {say verb: } {say verb: }
+                                    INVOCATION_NT''re' {say verb: 're} {say verb: 're}
                     IMPERATIVE_NT'to say there's' {unit: 1} {imperative definition: 353}
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT'say "[regarding nothing]There['re]"' {control structure: SAY}
@@ -3688,7 +3688,7 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'"There"' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"There"' {kind: text}
                                 INVOCATION_LIST_SAY_NT''re'
-                                    INVOCATION_NT''re' {say verb: } {say verb: }
+                                    INVOCATION_NT''re' {say verb: 're} {say verb: 're}
                     IMPERATIVE_NT'to say it's' {unit: 1} {imperative definition: 354}
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT'say "[regarding nothing]it['re]"' {control structure: SAY}
@@ -3701,7 +3701,7 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'"it"' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"it"' {kind: text}
                                 INVOCATION_LIST_SAY_NT''re'
-                                    INVOCATION_NT''re' {say verb: } {say verb: }
+                                    INVOCATION_NT''re' {say verb: 're} {say verb: 're}
                     IMPERATIVE_NT'to say there's' {unit: 1} {imperative definition: 355}
                         CODE_BLOCK_NT
                             CODE_BLOCK_NT'say "[regarding nothing]there['re]"' {control structure: SAY}
@@ -3714,7 +3714,7 @@ ROOT_NT
                                         RVALUE_CONTEXT_NT'"there"' {token to be parsed against: TEST_VALUE_NT} {required: sayable value}
                                             CONSTANT_NT'"there"' {kind: text}
                                 INVOCATION_LIST_SAY_NT''re'
-                                    INVOCATION_NT''re' {say verb: } {say verb: }
+                                    INVOCATION_NT''re' {say verb: 're} {say verb: 're}
                     IMPERATIVE_NT'to say possessive' {unit: 1} {imperative definition: 356}
                         CODE_BLOCK_NT
                             INVOCATION_LIST_NT'let the item be the prior named object' {unit: 1} {indent: 1}
@@ -17634,8 +17634,8 @@ ROOT_NT
                                     CONSTANT_NT'", who is now cured (but could easily be reinfected)."' {kind: text}
         HEADING_NT'section 3 - geography' {heading 5} {under: H5'section 3 - geography'} {unit: 4}
             INCLUSION_NT'include locksmith by emily short' {unit: 4}
-                HEADING_NT'version 12 of locksmith by emily short begins here' {heading 0} {under: H0'version 12 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v12 } {unit: 3}
-                    BEGINHERE_NT'version 12 of locksmith by emily short' {unit: 3}
+                HEADING_NT'version 13 of locksmith by emily short begins here' {heading 0} {under: H0'version 13 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v13 } {unit: 3}
+                    BEGINHERE_NT'version 13 of locksmith by emily short' {unit: 3}
                     SENTENCE_NT'Implicit handling of doors and containers so that lock manip' {unit: 3} {classified}
                     SENTENCE_NT'use authorial modesty' {unit: 3} {classified}
                         VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}
@@ -17848,10 +17848,10 @@ ROOT_NT
                                         CODE_BLOCK_NT
                                             INVOCATION_LIST_NT'now the second noun is the item' {unit: 3} {indent: 2} {control structure: NOW}
                                                 CONDITION_CONTEXT_NT'the second noun is the item'
-                                            INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3} {indent: 2}
-                                                INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
-                                                    RVALUE_CONTEXT_NT'must have accessible the second noun rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
-                                                        CONSTANT_NT'must have accessible the second noun rule' {kind: rule} {rule: must have accessible the second noun rule} {meaning: {must have accessible the second noun rule = MISCELLANEOUS_MC}}
+                                            INVOCATION_LIST_NT'abide by the second noun must be accessible rule' {unit: 3} {indent: 2}
+                                                INVOCATION_NT'abide by the second noun must be accessible rule' {phrase invoked: <no-inter-name>}
+                                                    RVALUE_CONTEXT_NT'second noun must be accessible rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
+                                                        CONSTANT_NT'second noun must be accessible rule' {kind: rule} {rule: second noun must be accessible rule} {meaning: {second noun must be accessible rule = MISCELLANEOUS_MC}}
                                         CODE_BLOCK_NT'otherwise' {control structure: O}
                                             CODE_BLOCK_NT {control structure: IF}
                                                 INVOCATION_LIST_NT'if a visible passkey ( called item ) unbolts the noun' {colon_block_command} {indent: 1}
@@ -17861,10 +17861,10 @@ ROOT_NT
                                                 CODE_BLOCK_NT
                                                     INVOCATION_LIST_NT'now the second noun is the item' {unit: 3} {indent: 2} {control structure: NOW}
                                                         CONDITION_CONTEXT_NT'the second noun is the item'
-                                                    INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3} {indent: 2}
-                                                        INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
-                                                            RVALUE_CONTEXT_NT'must have accessible the second noun rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
-                                                                CONSTANT_NT'must have accessible the second noun rule' {kind: rule} {rule: must have accessible the second noun rule} {meaning: {must have accessible the second noun rule = MISCELLANEOUS_MC}}
+                                                    INVOCATION_LIST_NT'abide by the second noun must be accessible rule' {unit: 3} {indent: 2}
+                                                        INVOCATION_NT'abide by the second noun must be accessible rule' {phrase invoked: <no-inter-name>}
+                                                            RVALUE_CONTEXT_NT'second noun must be accessible rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
+                                                                CONSTANT_NT'second noun must be accessible rule' {kind: rule} {rule: second noun must be accessible rule} {meaning: {second noun must be accessible rule = MISCELLANEOUS_MC}}
                                                 CODE_BLOCK_NT'otherwise' {colon_block_command} {indent: 1} {control structure: O}
                                                     CODE_BLOCK_NT {control structure: IF}
                                                         INVOCATION_LIST_NT'if the player is the person asked' {unit: 3} {indent: 2} {colon_block_command}
@@ -17963,10 +17963,10 @@ ROOT_NT
                                     UNPARSED_NOUN_NT'unlocking it with'
                                 IMPERATIVE_NT'check unlocking it with ( this is the must be able to reach ' {unit: 3} {imperative definition: 876}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3}
-                                            INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
-                                                RVALUE_CONTEXT_NT'must have accessible the second noun rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
-                                                    CONSTANT_NT'must have accessible the second noun rule' {kind: rule} {rule: must have accessible the second noun rule} {meaning: {must have accessible the second noun rule = MISCELLANEOUS_MC}}
+                                        INVOCATION_LIST_NT'abide by the second noun must be accessible rule' {unit: 3}
+                                            INVOCATION_NT'abide by the second noun must be accessible rule' {phrase invoked: <no-inter-name>}
+                                                RVALUE_CONTEXT_NT'second noun must be accessible rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
+                                                    CONSTANT_NT'second noun must be accessible rule' {kind: rule} {rule: second noun must be accessible rule} {meaning: {second noun must be accessible rule = MISCELLANEOUS_MC}}
                                 SENTENCE_NT'the right second rule is listed instead of the can't unlock ' {unit: 3} {classified}
                                     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: positive} {special meaning: rule-listed-in}
                                     UNPARSED_NOUN_NT'the right second rule'
@@ -18081,10 +18081,10 @@ ROOT_NT
                                     UNPARSED_NOUN_NT'locking it with'
                                 IMPERATIVE_NT'check locking it with' {unit: 3} {imperative definition: 880}
                                     CODE_BLOCK_NT
-                                        INVOCATION_LIST_NT'abide by the must have accessible the second noun rule' {unit: 3}
-                                            INVOCATION_NT'abide by the must have accessible the second noun rule' {phrase invoked: <no-inter-name>}
-                                                RVALUE_CONTEXT_NT'must have accessible the second noun rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
-                                                    CONSTANT_NT'must have accessible the second noun rule' {kind: rule} {rule: must have accessible the second noun rule} {meaning: {must have accessible the second noun rule = MISCELLANEOUS_MC}}
+                                        INVOCATION_LIST_NT'abide by the second noun must be accessible rule' {unit: 3}
+                                            INVOCATION_NT'abide by the second noun must be accessible rule' {phrase invoked: <no-inter-name>}
+                                                RVALUE_CONTEXT_NT'second noun must be accessible rule' {token to be parsed against: TEST_VALUE_NT'a rule'} {required: rule}
+                                                    CONSTANT_NT'second noun must be accessible rule' {kind: rule} {rule: second noun must be accessible rule} {meaning: {second noun must be accessible rule = MISCELLANEOUS_MC}}
                                 SENTENCE_NT'the right second rule is listed instead of the can't lock wi' {unit: 3} {classified}
                                     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: positive} {special meaning: rule-listed-in}
                                     UNPARSED_NOUN_NT'the right second rule'
@@ -18393,7 +18393,7 @@ ROOT_NT
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
                                 INVOCATION_LIST_NT'make no decision' {unit: 3}
                                     INVOCATION_NT'make no decision' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'this is the must have accessible the noun rule' {unit: 3} {imperative definition: 897}
+                        IMPERATIVE_NT'this is the noun must be accessible rule' {unit: 3} {imperative definition: 897}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the noun is not key-accessible' {colon_block_command} {unit: 3} {indent: 1}
@@ -18434,7 +18434,7 @@ ROOT_NT
                                             INVOCATION_NT'stop the action' {phrase invoked: <no-inter-name>}
                                 INVOCATION_LIST_NT'make no decision' {unit: 3} {indent: 1}
                                     INVOCATION_NT'make no decision' {phrase invoked: <no-inter-name>}
-                        IMPERATIVE_NT'this is the must have accessible the second noun rule' {unit: 3} {imperative definition: 898}
+                        IMPERATIVE_NT'this is the second noun must be accessible rule' {unit: 3} {imperative definition: 898}
                             CODE_BLOCK_NT
                                 CODE_BLOCK_NT {control structure: IF}
                                     INVOCATION_LIST_NT'if the second noun is not key-accessible' {colon_block_command} {unit: 3} {indent: 1}

@@ -45,7 +45,7 @@
   Affinity relates one colour to another:
     red  ==  green
   Disaffinity relates one thing to another:
-    You  ==  the fish
+    You  ==  fish
   Afterness relates one thing to one thing:
     C  >=>  B
     D  >=>  C
@@ -64,7 +64,7 @@
   
   >[9] relations
   Disaffinity relates one thing to another:
-    You  ==  the fish
+    You  ==  fish
   Afterness relates one thing to one thing:
     C  >=>  B
     D  >=>  C

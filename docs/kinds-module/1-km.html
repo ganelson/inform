@@ -147,6 +147,7 @@ to some routine of her own, gazumping this one.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">DimensionsInconsistent_KINDERROR</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">KindUnalterable_KINDERROR</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">KindsCircular_KINDERROR</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">KindsCircular2_KINDERROR</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">LPCantScaleYet_KINDERROR</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">LPCantScaleTwice_KINDERROR</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">NeptuneError_KINDERROR</span>
@@ -182,6 +183,9 @@ to some routine of her own, gazumping this one.
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">KindsCircular_KINDERROR:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Errors::with_text</span><span class="plain-syntax">(</span><span class="string-syntax">"making this subkind would lead to a circularity: %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">KindsCircular2_KINDERROR:</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Errors::with_text</span><span class="plain-syntax">(</span><span class="string-syntax">"making this subkind would a kind being its own subkind: %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">LPCantScaleYet_KINDERROR:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Errors::with_text</span><span class="plain-syntax">(</span><span class="string-syntax">"tries to scale a value with no point of reference: %S"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
