@@ -190,8 +190,10 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_REGION_MD_HL, 1);
 	if (Map::object_is_a_direction(I)) {
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_DIRECTION_MD_HL, 1);
-		Hierarchy::apply_metadata_from_iname(pack, INSTANCE_OPPOSITE_DIRECTION_MD_HL,
-			RTInstances::value_iname(Map::get_value_of_opposite_property(I)));
+		if (Map::get_value_of_opposite_property(I)) {
+			Hierarchy::apply_metadata_from_iname(pack, INSTANCE_OPPOSITE_DIRECTION_MD_HL,
+				RTInstances::value_iname(Map::get_value_of_opposite_property(I)));
+		}
 	}
 	if (Backdrops::object_is_a_backdrop(I))
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_BACKDROP_MD_HL, 1);
