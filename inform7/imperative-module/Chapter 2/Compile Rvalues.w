@@ -247,6 +247,16 @@ int CompileRvalues::action_kinds(value_holster *VH, kind *K, parse_node *value) 
 		return TRUE;
 	}
 	if (Kinds::eq(K, K_description_of_action)) {
+		if (CompileValues::compiling_in_constant_mode()) {
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_APAsConstant),
+				"this is a description of an action which is too vague to be used "
+				"as a constant value",
+				"and should either be something like 'taking action' (for the action "
+				"in the abstract) or 'taking the beach ball' (for a definitely "
+				"specific action), but not something like 'taking' or 'taking a "
+				"container' which refer to a whole collection of possible actions.");
+			return TRUE;
+		}
 		action_pattern *ap = Node::get_constant_action_pattern(value);
 		RTActionPatterns::compile_pattern_match(ap);
 		return TRUE;
