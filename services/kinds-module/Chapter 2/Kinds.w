@@ -498,6 +498,12 @@ void Kinds::make_subkind(kind *sub, kind *super) {
 }
 
 void Kinds::make_subkind_inner(kind *sub, kind *super) {
+	if (Kinds::eq(super, sub)) {
+		if (problem_count == 0)
+			KindsModule::problem_handler(KindsCircular2_KINDERROR,
+				Kinds::Behaviour::get_superkind_set_at(sub), NULL, super, sub);
+		return;
+	}
 	kind *K = super;
 	while (K) {
 		if (Kinds::eq(K, sub)) {
