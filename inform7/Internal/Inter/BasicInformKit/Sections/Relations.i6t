@@ -428,10 +428,10 @@ implements the RELATIONS testing command. Speed is unimportant here.
 @h Show One to One.
 
 =
-[ Relation_ShowOtoO relation sym x relation_property t N obj1 obj2;
+[ Relation_ShowOtoO relation sym x relation_property t tr N obj1 obj2;
 	relation_property = RlnGetF(relation, RR_STORAGE);
 	t = KindBaseTerm(RlnGetF(relation, RR_KIND), 0); ! Kind of left term
-	N = KOVDomainSize(t);
+	tr = KindBaseTerm(RlnGetF(relation, RR_KIND), 1); ! Kind of right term
 	if (t == OBJECT_TY) {
 		objectloop (obj1 provides relation_property) {
 			obj2 = obj1.relation_property;
@@ -440,9 +440,11 @@ implements the RELATIONS testing command. Speed is unimportant here.
 			if (x == 0) { print (string) RlnGetF(relation, RR_DESCRIPTION), ":^"; x=1; }
 			print "  ", (The) obj1;
 			if (sym) print "  ==  "; else print "  >=>  ";
-			print (the) obj2, "^";
+			PrintKindValuePair(tr, obj2);
+			print "^";
 		}
 	} else {
+		N = KOVDomainSize(t);
 		for (obj1=1: obj1<=N: obj1++) {
 			obj2 = GProperty(t, obj1, relation_property);
 			if (sym && obj2 < obj1) continue;
@@ -451,7 +453,7 @@ implements the RELATIONS testing command. Speed is unimportant here.
 			print "  ";
 			PrintKindValuePair(t, obj1);
 			if (sym) print "  ==  "; else print "  >=>  ";
-			PrintKindValuePair(t, obj2);
+			PrintKindValuePair(tr, obj2);
 			print "^";
 		}
 	}
