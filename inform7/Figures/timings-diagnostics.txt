@@ -1,6 +1,6 @@
 100.0% in inform7 run
-     68.3% in compilation to Inter
-         47.8% in //Sequence::undertake_queued_tasks//
+     68.4% in compilation to Inter
+         47.9% in //Sequence::undertake_queued_tasks//
           4.6% in //MajorNodes::pre_pass//
           3.3% in //MajorNodes::pass_1//
           2.4% in //RTPhrasebook::compile_entries//
@@ -21,7 +21,7 @@
           2.0% not specifically accounted for
      28.9% in running Inter pipeline
          10.1% in step 14/15: generate inform6 -> auto.inf
-          7.4% in step 5/15: load-binary-kits
+          7.5% in step 5/15: load-binary-kits
           6.7% in step 6/15: make-synoptic-module
           1.5% in step 9/15: make-identifiers-unique
           0.4% in step 12/15: eliminate-redundant-operations
@@ -32,6 +32,6 @@
           0.1% in step 10/15: reconcile-verbs
           0.1% in step 2/15: parse-insertions
           0.1% in step 3/15: resolve-conditional-compilation
-          0.7% not specifically accounted for
-      2.3% in supervisor
+          0.6% not specifically accounted for
+      2.2% in supervisor
       0.4% not specifically accounted for

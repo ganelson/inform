@@ -1290,18 +1290,14 @@ fake action |##NotUnderstood| does not exist.
             verb_wordnum = usual_grammar_after;
             jump AlmostReParse;
         }
-        wn = verb_wordnum;
-        special_word = NextWord();
-        if (special_word == comma_word) {
-            special_word = NextWord();
-            verb_wordnum++;
-        }
+        wn = 1;
+        while ((wn <= num_words) && (NextWord() ~= comma_word)) ;
         parser_results-->ACTION_PRES = ##Answer;
         parser_results-->NO_INPS_PRES = 2;
         parser_results-->INP1_PRES = actor;
         parser_results-->INP2_PRES = 1; special_number1 = special_word;
         actor = player;
-        consult_from = verb_wordnum; consult_words = num_words-consult_from+1;
+        consult_from = wn; consult_words = num_words-consult_from+1;
         rtrue;
     }
 
