@@ -140,7 +140,6 @@ should be set if and only if a change has been made to the proposition.
 logged as just |<< >>|.
 
 =
-int log_addresses = FALSE;
 void Propositions::log(pcalc_prop *prop) {
 	Propositions::write(DL, prop);
 }
@@ -150,7 +149,6 @@ void Propositions::write(OUTPUT_STREAM, pcalc_prop *prop) {
 	TRAVERSE_PROPOSITION(p, prop) {
 		char *bridge = Propositions::debugging_log_text_between(p_prev, p);
 		if (bridge[0]) WRITE("%s ", bridge);
-		if (log_addresses) WRITE("%08x=", (unsigned int) p);
 		Atoms::write(OUT, p);
 		WRITE(" ");
 	}
@@ -342,7 +340,6 @@ pcalc_prop *Propositions::conjoin(pcalc_prop *existing_body, pcalc_prop *tail) {
 
 @<Report failure to log@> =
 	LOG("Seriously misguided attempt to conjoin propositions:\n");
-	log_addresses = TRUE;
 	LOG("Existing body: $D\n", existing_body);
 	LOG("Tail:          $D\n", tail);
 

@@ -111,6 +111,7 @@ int WordAssemblages::nonempty(word_assemblage wa1) {
 }
 
 void WordAssemblages::writer(OUTPUT_STREAM, char *format_string, void *vW) {
+	if (vW == NULL) { WRITE("<null-assemblage>"); return; }
 	word_assemblage *wa = (word_assemblage *) vW;
 	if (wa)
 		for (int i=0; i<wa->no_indiv_words; i++) {
