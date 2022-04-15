@@ -1,7 +1,7 @@
    Exits:  N W                                                                                                                                                                                                            Exhibition Room
   Chapter 17: Vanity
   An Interactive Fiction by Emily Short
-  Release 1 / Serial number 150831 / Inform 7 build 6M54 (I6/v6.33 lib 6/12N) SD
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
   
   Exhibition Room
   You can see Venus, Cupid, Folly and Time, The Ambassadors, the tiles X, Y, and Z from a Scrabble set, and a bench here.
@@ -73,15 +73,31 @@
   
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** take all from platter
-  There are none at all available!
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Sprite: Taken.
+  Sprite: Taken.
+  root beer: Taken.
+  root beer: Taken.
+  root beer: Taken.
+  ginger ale: Taken.
+  ginger ale: Taken.
+  ginger ale: Taken.
+  ginger ale: Taken.
+  ginger ale: Taken.
   
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** x platter
-  On the platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) are seventeen drinks (seven Cokes, two Sprites, three root beers, and five ginger ales).
+  You see nothing special about the empty platter.
   
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** take root beer
-  Taken.
+  You already have that.
   
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** look
@@ -91,16 +107,36 @@
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** i
   You are carrying:
-    a root beer
+    seventeen drinks:
+      five ginger ales
+      three root beers
+      two Sprites
+      seven Cokes
     the tiles Z, Y, and X from a Scrabble set
-    a platter supporting sixteen drinks (the seven Cokes, the two Sprites, the two root beers, and the five ginger ales)
+    an empty platter
     a souvenir hat
     a corkscrew
     a skeleton key
   
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** put all on platter
+  ginger ale: Done.
+  ginger ale: Done.
+  ginger ale: Done.
+  ginger ale: Done.
+  ginger ale: Done.
   root beer: Done.
+  root beer: Done.
+  root beer: Done.
+  Sprite: Done.
+  Sprite: Done.
+  Coke: Done.
+  Coke: Done.
+  Coke: Done.
+  Coke: Done.
+  Coke: Done.
+  Coke: Done.
+  Coke: Done.
   tile Z from a Scrabble set: Done.
   tile Y from a Scrabble set: Done.
   tile X from a Scrabble set: Done.
@@ -111,7 +147,7 @@
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** i
   You are carrying:
-    a platter supporting the skeleton key, the corkscrew, the souvenir hat, the tiles X, Y, and Z from a Scrabble set, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+    a platter supporting the skeleton key, the corkscrew, the souvenir hat, the tiles X, Y, and Z from a Scrabble set, and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
   
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** drop platter
@@ -124,7 +160,7 @@
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** look
   Exhibition Room
-  You can see a platter supporting the skeleton key, the dangerous corkscrew, the souvenir hat, the tiles X, Y, and Z from a Scrabble set, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales), Venus, Cupid, Folly and Time, The Ambassadors, and a bench here.
+  You can see a platter supporting the skeleton key, the dangerous corkscrew, the souvenir hat, the tiles X, Y, and Z from a Scrabble set, and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales), Venus, Cupid, Folly and Time, The Ambassadors, and a bench here.
   
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** take key and corkscrew and tiles
@@ -157,7 +193,7 @@
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
   ** i
   You are carrying:
-    a platter supporting the souvenir hat and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+    a platter supporting the souvenir hat and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
     the tiles Z, Y, and X from a Scrabble set
     a corkscrew
     a skeleton key
@@ -170,7 +206,7 @@
   ** i
   You are carrying:
     a souvenir hat
-    a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+    a platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
     the tiles Z, Y, and X from a Scrabble set
     a corkscrew
     a skeleton key
@@ -183,7 +219,7 @@
   ** i
   You are carrying:
     a souvenir hat (being worn)
-    a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+    a platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
     the tiles Z, Y, and X from a Scrabble set
     a corkscrew
     a skeleton key
@@ -203,7 +239,7 @@
   ** i
   You are carrying:
     a souvenir hat (being worn)
-    a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales)
+    a platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
     the tiles Z and X from a Scrabble set
     a corkscrew
     a skeleton key
@@ -278,14 +314,14 @@
   ** i
   You are carrying:
     a souvenir hat (being worn)
-    a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    a platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) (in paint)
     the tiles Z (in paint) and X (in paint) from a Scrabble set
     a corkscrew (in paint)
     a skeleton key (in paint)
   
 > >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
   ** drop all
-  platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint): Dropped.
+  platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) (in paint): Dropped.
   tile Z (in paint) from a Scrabble set: Dropped.
   tile X (in paint) from a Scrabble set: Dropped.
   corkscrew (in paint): Dropped.
@@ -300,7 +336,7 @@
   
   You redirect your attention to more pleasant things. The shining ball in the hand of Venus. The mask on the floor. Cupid's ruddy cheek, smoother than mortal flesh could be.
   
-  Sketched on the floorare a skeleton key, a dangerous corkscrew, the tiles X and Z from a Scrabble set, a platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales), and a mask.
+  Sketched on the floorare a skeleton key, a dangerous corkscrew, the tiles X and Z from a Scrabble set, a platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales), and a mask.
   
 > >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
   ** take all
@@ -308,18 +344,18 @@
   corkscrew: Taken.
   tile X from a Scrabble set: Taken.
   tile Z from a Scrabble set: Taken.
-  platter supporting seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales): Taken.
+  platter supporting seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales): Taken.
   mask: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Coke: Taken.
+  Sprite: Taken.
+  Sprite: Taken.
   root beer: Taken.
-  Coke: Taken.
-  Coke: Taken.
-  Coke: Taken.
-  Coke: Taken.
-  Coke: Taken.
-  Coke: Taken.
-  Coke: Taken.
-  Sprite: Taken.
-  Sprite: Taken.
   root beer: Taken.
   root beer: Taken.
   ginger ale: Taken.
@@ -452,15 +488,15 @@
   ginger ale (in paint): Done.
   ginger ale (in paint): Done.
   root beer (in paint): Done.
-  Sprite (in paint): Done.
-  Sprite (in paint): Done.
-  Coke (in paint): Done.
-  Coke (in paint): Done.
-  Coke (in paint): Done.
-  Coke (in paint): Done.
-  Coke (in paint): Done.
-  Coke (in paint): Done.
   root beer (in paint): Done.
+  Sprite (in paint): Done.
+  Sprite (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
+  Coke (in paint): Done.
   mask (in paint): Done.
   tile Z (in paint) from a Scrabble set: Done.
   tile X (in paint) from a Scrabble set: Done.
@@ -469,7 +505,7 @@
 > >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
   ** i
   You are carrying:
-    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) (in paint)
     a souvenir hat (being worn)
   
 > >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
@@ -492,7 +528,7 @@
 > >   Bronzino Interior                                                                                                                                                                                                      Room: 1/2
   ** i
   You are carrying:
-    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) (in paint)
     a souvenir hat (being worn)
   
 > >   Exits:  N W                                                                                                                                                                                                            Exhibition Room
@@ -543,7 +579,7 @@
   ** i
   You are carrying:
     a skull (in paint)
-    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) (in paint)
     a souvenir hat (being worn)
   
 > >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
@@ -562,7 +598,7 @@
   ** i
   You are carrying:
     a skull (in paint)
-    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the three root beers, the seven Cokes, the two Sprites, and the five ginger ales) (in paint)
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) (in paint)
     a souvenir hat (being worn)
   
 > >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
@@ -579,7 +615,7 @@
   
 > >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
   ** drop platter
-  The platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the three root beers, the two Sprites, and the five ginger ales) are already here.
+  The platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) are already here.
   
 > >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
   ** put coke on platter
@@ -593,7 +629,7 @@
 > >   Holbein Interior                                                                                                                                                                                                       Room: 2/2
   ** i
   You are carrying:
-    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the three root beers, the two Sprites, and the five ginger ales) (in paint)
+    a platter supporting the skeleton key, the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales) (in paint)
     a skull (in paint)
     a souvenir hat (being worn)
   
@@ -708,7 +744,7 @@
     a broom
     Jolt
     a skeleton key
-    a platter supporting the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the three root beers, the two Sprites, and the five ginger ales)
+    a platter supporting the tiles X and Z from a Scrabble set, the mask, the corkscrew, and seventeen drinks (the seven Cokes, the two Sprites, the three root beers, and the five ginger ales)
     a skull
     a souvenir hat (being worn)
   

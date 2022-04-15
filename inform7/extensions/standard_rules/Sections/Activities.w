@@ -154,8 +154,8 @@ Rule for deciding whether all includes fixed in place things while taking or
 	taking off or removing (this is the exclude fixed in place things from
 	take all rule): it does not.
 Rule for deciding whether all includes things enclosed by the person reaching
-	while taking or taking off or removing (this is the exclude indirect
-	possessions from take all rule): it does not.
+	while taking or taking off (this is the exclude indirect possessions from
+	take all rule): it does not.
 Rule for deciding whether all includes a person while dropping or throwing
 	or inserting or putting (this is the exclude people from drop all rule):
 	it does not.
