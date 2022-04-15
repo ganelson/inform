@@ -11,6 +11,7 @@ i7state_t i7_new_state(void) {
 	S.stack_pointer = 0;
 	S.object_tree_parent = NULL; S.object_tree_child = NULL; S.object_tree_sibling = NULL;
 	S.variables = NULL;
+	S.seed = i7_initial_rng_seed();
 	return S;
 }
 
@@ -508,8 +509,23 @@ void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
 	printf("Unimplemented: i7_opcode_mfree.\n");
 	i7_fatal_exit(proc);
 }
+i7rngseed_t i7_initial_rng_seed(void) {
+	i7rngseed_t seed;
+	seed.A = 1;
+	seed.interval = 0;
+	seed.counter = 0;
+	return seed;
+}
+
 void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y) {
-	uint32_t rawvalue = ((rand() << 16) ^ rand());
+	uint32_t rawvalue = 0;
+	if (proc->state.seed.interval != 0) {
+	    rawvalue = proc->state.seed.counter++;
+	    if (proc->state.seed.counter == proc->state.seed.interval) proc->state.seed.counter = 0;
+	} else {
+	    proc->state.seed.A = 0x015a4e35L * proc->state.seed.A + 1;
+	    rawvalue = (proc->state.seed.A >> 16) & 0x7fff;
+	}
 	uint32_t value;
 	if (x == 0) value = rawvalue;
 	else if (x >= 1) value = rawvalue % (uint32_t) (x);
@@ -518,10 +534,16 @@ void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y) {
 }
 
 void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
-	uint32_t seed;
-	*((i7word_t *) &seed) = s;
-	if (seed == 0) seed = time(NULL);
-	srand(seed);
+    if (s == 0) {
+		proc->state.seed.A = (uint32_t) time(NULL);
+		proc->state.seed.interval = 0;
+    } else if (s < 1000) {
+		proc->state.seed.interval = s;
+		proc->state.seed.counter = 0;
+    } else {
+		proc->state.seed.A = s;
+		proc->state.seed.interval = 0;
+    }
 }
 
 i7word_t i7_random(i7process_t *proc, i7word_t x) {

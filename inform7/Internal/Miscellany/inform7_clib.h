@@ -20,6 +20,12 @@ typedef float i7float_t;
 #define I7_ASM_STACK_CAPACITY 128
 #define I7_TMP_STORAGE_CAPACITY 128
 
+typedef struct i7rngseed_t {
+	uint32_t A;
+	uint32_t interval;
+	uint32_t counter;
+} i7rngseed_t;
+
 typedef struct i7state_t {
 	i7byte_t *memory;
 	i7word_t himem;
@@ -31,6 +37,7 @@ typedef struct i7state_t {
 	i7word_t *variables;
 	i7word_t tmp[I7_TMP_STORAGE_CAPACITY];
 	i7word_t current_output_stream_ID;
+	struct i7rngseed_t seed;
 } i7state_t;
 typedef struct i7snapshot_t {
 	int valid;
@@ -140,6 +147,7 @@ void i7_opcode_mcopy(i7process_t *proc, i7word_t x, i7word_t y, i7word_t z);
 void i7_opcode_mzero(i7process_t *proc, i7word_t x, i7word_t y);
 void i7_opcode_malloc(i7process_t *proc, i7word_t x, i7word_t y);
 void i7_opcode_mfree(i7process_t *proc, i7word_t x);
+i7rngseed_t i7_initial_rng_seed(void);
 void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_setrandom(i7process_t *proc, i7word_t s);
 i7word_t i7_random(i7process_t *proc, i7word_t x);

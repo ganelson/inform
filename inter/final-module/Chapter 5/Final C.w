@@ -363,6 +363,12 @@ a single Inter primitive or assembly opcode.
 #define I7_ASM_STACK_CAPACITY 128
 #define I7_TMP_STORAGE_CAPACITY 128
 
+typedef struct i7rngseed_t {
+	uint32_t A;
+	uint32_t interval;
+	uint32_t counter;
+} i7rngseed_t;
+
 typedef struct i7state_t {
 	i7byte_t *memory;
 	i7word_t himem;
@@ -374,6 +380,7 @@ typedef struct i7state_t {
 	i7word_t *variables;
 	i7word_t tmp[I7_TMP_STORAGE_CAPACITY];
 	i7word_t current_output_stream_ID;
+	struct i7rngseed_t seed;
 } i7state_t;
 =
 
@@ -429,6 +436,7 @@ i7state_t i7_new_state(void) {
 	S.stack_pointer = 0;
 	S.object_tree_parent = NULL; S.object_tree_child = NULL; S.object_tree_sibling = NULL;
 	S.variables = NULL;
+	S.seed = i7_initial_rng_seed();
 	return S;
 }
 

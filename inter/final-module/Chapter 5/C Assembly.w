@@ -737,15 +737,38 @@ void i7_opcode_mfree(i7process_t *proc, i7word_t x) {
 Note that the |random(...)| function built in to Inform is just a name for the
 |@random| opcode, so we define that here too.
 
+We have no convincing need for a statistically good random number algorithm,
+but we do want cross-platform consistency in order that the test suite for Inform
+should behave equivalently on MacOS, Linux and Windows -- at least when the
+generator is seeded with the same value. To that end, we borrow the algorithm
+used by the |frotz| Z-machine interpreter, which in turn is based on suggestions
+in the Z-machine standards document.
+
 = (text to inform7_clib.h)
+i7rngseed_t i7_initial_rng_seed(void);
 void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y);
 void i7_opcode_setrandom(i7process_t *proc, i7word_t s);
 i7word_t i7_random(i7process_t *proc, i7word_t x);
 =
 
 = (text to inform7_clib.c)
+i7rngseed_t i7_initial_rng_seed(void) {
+	i7rngseed_t seed;
+	seed.A = 1;
+	seed.interval = 0;
+	seed.counter = 0;
+	return seed;
+}
+
 void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y) {
-	uint32_t rawvalue = ((rand() << 16) ^ rand());
+	uint32_t rawvalue = 0;
+	if (proc->state.seed.interval != 0) {
+	    rawvalue = proc->state.seed.counter++;
+	    if (proc->state.seed.counter == proc->state.seed.interval) proc->state.seed.counter = 0;
+	} else {
+	    proc->state.seed.A = 0x015a4e35L * proc->state.seed.A + 1;
+	    rawvalue = (proc->state.seed.A >> 16) & 0x7fff;
+	}
 	uint32_t value;
 	if (x == 0) value = rawvalue;
 	else if (x >= 1) value = rawvalue % (uint32_t) (x);
@@ -754,10 +777,16 @@ void i7_opcode_random(i7process_t *proc, i7word_t x, i7word_t *y) {
 }
 
 void i7_opcode_setrandom(i7process_t *proc, i7word_t s) {
-	uint32_t seed;
-	*((i7word_t *) &seed) = s;
-	if (seed == 0) seed = time(NULL);
-	srand(seed);
+    if (s == 0) {
+		proc->state.seed.A = (uint32_t) time(NULL);
+		proc->state.seed.interval = 0;
+    } else if (s < 1000) {
+		proc->state.seed.interval = s;
+		proc->state.seed.counter = 0;
+    } else {
+		proc->state.seed.A = s;
+		proc->state.seed.interval = 0;
+    }
 }
 
 i7word_t i7_random(i7process_t *proc, i7word_t x) {
