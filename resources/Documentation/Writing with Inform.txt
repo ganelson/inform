@@ -16653,20 +16653,13 @@ Inform ships with the "Parchment" and "Quixe" interpreters built in. By default 
 [x] Using Inform with Vorple
 
 ^^{Vorple system+ext+} ^^{extensions: specific extensions: Vorple system}
-^^{Glulx: no support for Vorple}
 ^^{release along with...+assert+: `an interpreter}
 
 "Vorple" is an innovative system by ^{@Juhana Leinonen} for allowing web-based Inform stories to make use of web controls and other gadgets. Using Vorple, a story can in principle have an entirely different user interface, and can make much better use of CSS styling, interface to Javascript libraries, and so on.
 
-At time of writing, "Vorple" is limited to Z-machine stories only, but it's hoped to bring it to Glulx stories too by 2015. Further information can be found at its home page:
+Vorple has seen rapid development. In its early days it was included as part of the Inform app, but it has now evolved into a dynamic project which is better served by its own website than from here:
 
 	http://vorple-if.com
-
-In the mean time, users can get started with Vorple by downloading the Vorple extensions (available on the Public Library), and by using the release instruction:
-
-	Release along with the "Vorple" interpreter.
-
-which is included with the current build of Inform.
 
 [x] Website templates
 

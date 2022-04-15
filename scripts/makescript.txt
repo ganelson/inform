@@ -758,7 +758,6 @@ $(INTERNALEXEMPLUM): \
 		inform7/Internal/Templates/Parchment/[A-Za-z]*.* \
 		inform7/Internal/Templates/Quixe/[A-Za-z]*.* \
 		inform7/Internal/Templates/Classic/[A-Za-z]*.* \
-		inform7/Internal/Templates/Vorple/[A-Za-z]*.* \
 		inform7/Internal/Templates/Standard/[A-Za-z]*.*
 	$(call transfer-internal-tree)
 
@@ -788,8 +787,6 @@ define transfer-internal-tree
 	rm -f $(INTERNAL)/Templates/Parchment/*
 	mkdir -p "$(INTERNAL)/Templates/Quixe"
 	rm -f $(INTERNAL)/Templates/Quixe/*
-	mkdir -p "$(INTERNAL)/Templates/Vorple"
-	rm -f $(INTERNAL)/Templates/Vorple/*
 	cp -R -f inform7/Internal/Templates $(INTERNAL)/Templates/..
 	mkdir -p "$(INTERNAL)/Miscellany"
 	rm -f $(INTERNAL)/Miscellany/*

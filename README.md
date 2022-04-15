@@ -169,7 +169,7 @@ be accepted. (Note that these are not git submodules.)
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 	* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.4)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
 	* inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.0)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
-	* inform7/Internal/Templates/Vorple - Multimedia in Javascript - __Vorple__ - from [https://github.com/vorple/inform7], maintained by [Juhana Leinonen](https://github.com/vorple)
+	* inform7/Internal/Templates/Vorple - Multimedia in Javascript - ____ - from [https://github.com/vorple/inform7], maintained by [Juhana Leinonen](https://github.com/vorple)
 
 ### Binary resources (such as image files)
 
