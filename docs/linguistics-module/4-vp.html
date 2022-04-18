@@ -41,6 +41,7 @@ function togglePopup(material_id) {
 <li><a href="../inform7n.html">inform7</a></li>
 <li><a href="../intern.html">inter</a></li>
 <li><a href="../services.html">services</a></li>
+<li><a href="../secrets.html">secrets</a></li>
 </ul><h2>Other Tools</h2><ul>
 <li><a href="../inblorbn.html">inblorb</a></li>
 <li><a href="../indocn.html">indoc</a></li>
@@ -160,16 +161,9 @@ too complicated to maintain once VSO verbs were added to the grammar.
 <span class="plain-syntax">    viability map of 'beth is a sailor':</span>
 <span class="plain-syntax">    -- is[1] -- -- </span>
 <span class="plain-syntax">    Found usage, pass 1 tier 2: (beth) be(0) (a sailor)</span>
-<span class="plain-syntax">    be(0) + had by + ___ : failed for lack of 'had by'</span>
-<span class="plain-syntax">    be(0) + carried by + ___ : failed for lack of 'carried by'</span>
-<span class="plain-syntax">    be(0) + known by + ___ : failed for lack of 'known by'</span>
-<span class="plain-syntax">    be(0) + having + ___ : failed for lack of 'having'</span>
-<span class="plain-syntax">    be(0) + carrying + ___ : failed for lack of 'carrying'</span>
-<span class="plain-syntax">    be(0) + knowing + ___ : failed for lack of 'knowing'</span>
-<span class="plain-syntax">    be(0) + on + ___ : failed for lack of 'on'</span>
-<span class="plain-syntax">    be(0) + under + ___ : failed for lack of 'under'</span>
 <span class="plain-syntax">    Accepted as be(0) + ___ + ___</span>
-<span class="plain-syntax">Seek succeeded</span>
+<span class="plain-syntax">Seek succeeded: VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
+
 <span class="plain-syntax">Sentence subtree:</span>
 <span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">    UNPARSED_NOUN_NT'beth'</span>
@@ -178,9 +172,9 @@ too complicated to maintain once VSO verbs were added to the grammar.
 <span class="plain-syntax">    viability map of 'a ming vase is carried by anna':</span>
 <span class="plain-syntax">    -- -- -- is[1] carried[1] -- -- </span>
 <span class="plain-syntax">    Found usage, pass 1 tier 2: (a ming vase) be(0) (carried by anna)</span>
-<span class="plain-syntax">    be(0) + had by + ___ : failed for lack of 'had by'</span>
 <span class="plain-syntax">    Accepted as be(0) + carried by + ___</span>
-<span class="plain-syntax">Seek succeeded</span>
+<span class="plain-syntax">Seek succeeded: VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve} {prep1: carried by}</span>
+
 <span class="plain-syntax">Sentence subtree:</span>
 <span class="plain-syntax">    VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve} {prep1: carried by}</span>
 <span class="plain-syntax">    UNPARSED_NOUN_NT'ming vase' {indefinite 'a' n/m/f nom/acc s}</span>
@@ -207,24 +201,13 @@ preposition.
 <span class="plain-syntax">            viability map of 'a ming vase which is on the table':</span>
 <span class="plain-syntax">            -- -- -- -- is[1] -- -- -- </span>
 <span class="plain-syntax">            Found usage, pass 1 tier 2: (a ming vase which) be(0) (on the table)</span>
-<span class="plain-syntax">            Trimmed to: (a ming vase) be(0) (on the table)</span>
-<span class="plain-syntax">            be(0) + had by + ___ : failed for lack of 'had by'</span>
-<span class="plain-syntax">            Trimmed to: (a ming vase) be(0) (on the table)</span>
-<span class="plain-syntax">            be(0) + carried by + ___ : failed for lack of 'carried by'</span>
-<span class="plain-syntax">            Trimmed to: (a ming vase) be(0) (on the table)</span>
-<span class="plain-syntax">            be(0) + known by + ___ : failed for lack of 'known by'</span>
-<span class="plain-syntax">            Trimmed to: (a ming vase) be(0) (on the table)</span>
-<span class="plain-syntax">            be(0) + having + ___ : failed for lack of 'having'</span>
-<span class="plain-syntax">            Trimmed to: (a ming vase) be(0) (on the table)</span>
-<span class="plain-syntax">            be(0) + carrying + ___ : failed for lack of 'carrying'</span>
-<span class="plain-syntax">            Trimmed to: (a ming vase) be(0) (on the table)</span>
-<span class="plain-syntax">            be(0) + knowing + ___ : failed for lack of 'knowing'</span>
-<span class="plain-syntax">            Trimmed to: (a ming vase) be(0) (on the table)</span>
 <span class="plain-syntax">            Accepted as be(0) + on + ___</span>
-<span class="plain-syntax">        Seek succeeded</span>
-<span class="plain-syntax">Seek succeeded</span>
+<span class="plain-syntax">        Seek succeeded: VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on}</span>
+
+<span class="plain-syntax">Seek succeeded: VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on} {existential}</span>
+
 <span class="plain-syntax">Sentence subtree:</span>
-<span class="plain-syntax">    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on}</span>
+<span class="plain-syntax">    VERB_NT'is on' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on} {existential}</span>
 <span class="plain-syntax">    UNPARSED_NOUN_NT'ming vase' {indefinite 'a' n/m/f nom/acc s}</span>
 <span class="plain-syntax">    RELATIONSHIP_NT'is on' {meaning: carries}</span>
 <span class="plain-syntax">        UNPARSED_NOUN_NT'table' {definite 'the' n/m/f s/p nom/acc}</span>
@@ -242,38 +225,33 @@ so that we have to soldier on regardless:
 <span class="plain-syntax">            viability map of 'a ming vase on the table called the table of having':</span>
 <span class="plain-syntax">            -- -- -- -- -- -- -- -- -- -- -- </span>
 <span class="plain-syntax">        Seek failed</span>
-<span class="plain-syntax">    be(0) + had by + ___ : failed for lack of 'had by'</span>
 <span class="plain-syntax">        Seek verb in: a ming vase on the table | called the table of having</span>
 <span class="plain-syntax">            viability map of 'a ming vase on the table called the table of having':</span>
 <span class="plain-syntax">            -- -- -- -- -- -- -- -- -- -- -- </span>
 <span class="plain-syntax">        Seek failed</span>
-<span class="plain-syntax">    be(0) + carried by + ___ : failed for lack of 'carried by'</span>
 <span class="plain-syntax">        Seek verb in: a ming vase on the table | called the table of having</span>
 <span class="plain-syntax">            viability map of 'a ming vase on the table called the table of having':</span>
 <span class="plain-syntax">            -- -- -- -- -- -- -- -- -- -- -- </span>
 <span class="plain-syntax">        Seek failed</span>
-<span class="plain-syntax">    be(0) + known by + ___ : failed for lack of 'known by'</span>
 <span class="plain-syntax">        Seek verb in: a ming vase on the table | called the table of having</span>
 <span class="plain-syntax">            viability map of 'a ming vase on the table called the table of having':</span>
 <span class="plain-syntax">            -- -- -- -- -- -- -- -- -- -- -- </span>
 <span class="plain-syntax">        Seek failed</span>
-<span class="plain-syntax">    be(0) + having + ___ : failed for lack of 'having'</span>
 <span class="plain-syntax">        Seek verb in: a ming vase on the table | called the table of having</span>
 <span class="plain-syntax">            viability map of 'a ming vase on the table called the table of having':</span>
 <span class="plain-syntax">            -- -- -- -- -- -- -- -- -- -- -- </span>
 <span class="plain-syntax">        Seek failed</span>
-<span class="plain-syntax">    be(0) + carrying + ___ : failed for lack of 'carrying'</span>
 <span class="plain-syntax">        Seek verb in: a ming vase on the table | called the table of having</span>
 <span class="plain-syntax">            viability map of 'a ming vase on the table called the table of having':</span>
 <span class="plain-syntax">            -- -- -- -- -- -- -- -- -- -- -- </span>
 <span class="plain-syntax">        Seek failed</span>
-<span class="plain-syntax">    be(0) + knowing + ___ : failed for lack of 'knowing'</span>
 <span class="plain-syntax">        Seek verb in: a ming vase on the table | called the table of having</span>
 <span class="plain-syntax">            viability map of 'a ming vase on the table called the table of having':</span>
 <span class="plain-syntax">            -- -- -- -- -- -- -- -- -- -- -- </span>
 <span class="plain-syntax">        Seek failed</span>
 <span class="plain-syntax">    Accepted as be(0) + on + ___</span>
-<span class="plain-syntax">Seek succeeded</span>
+<span class="plain-syntax">Seek succeeded: VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on} {existential}</span>
+
 <span class="plain-syntax">Sentence subtree:</span>
 <span class="plain-syntax">    VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {prep1: on} {existential}</span>
 <span class="plain-syntax">    UNPARSED_NOUN_NT'ming vase' {indefinite 'a' n/m/f nom/acc s}</span>

@@ -69,6 +69,12 @@ parse_node *Functions::line_being_compiled(void) {
 	return NULL;
 }
 
+inter_package *Functions::package_being_compiled(void) {
+	if (function_compilation_is_happening_now)
+		return current_function.into_package;
+	return NULL;
+}
+
 linked_list *Functions::current_label_namespaces(void) {
 	if (function_compilation_is_happening_now) {
 		if (current_function.from_idb)

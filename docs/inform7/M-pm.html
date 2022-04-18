@@ -28,6 +28,7 @@
 <li><a href="../inform7n.html">inform7</a></li>
 <li><a href="../intern.html">inter</a></li>
 <li><a href="../services.html">services</a></li>
+<li><a href="../secrets.html">secrets</a></li>
 </ul><h2>Other Tools</h2><ul>
 <li><a href="../inblorbn.html">inblorb</a></li>
 <li><a href="../indocn.html">indoc</a></li>
@@ -69,38 +70,38 @@ which take more than 1/1000th of the total running time.
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">100.0% in inform7 run</span>
-<span class="plain-syntax">     68.2% in compilation to Inter</span>
-<span class="plain-syntax">         47.9% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
-<span class="plain-syntax">          4.5% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
-<span class="plain-syntax">          3.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
-<span class="plain-syntax">          1.9% in </span><a href="../assertions-module/5-id.html#SP4" class="internal">ImperativeDefinitions::assess_all</a>
-<span class="plain-syntax">          1.9% in </span><a href="../runtime-module/6-pi.html#SP1" class="internal">RTPhrasebook::compile_entries</a>
+<span class="plain-syntax">     69.3% in compilation to Inter</span>
+<span class="plain-syntax">         48.0% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
+<span class="plain-syntax">          4.6% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
+<span class="plain-syntax">          3.5% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
+<span class="plain-syntax">          2.5% in </span><a href="../runtime-module/6-pi.html#SP1" class="internal">RTPhrasebook::compile_entries</a>
+<span class="plain-syntax">          1.7% in </span><a href="../assertions-module/5-id.html#SP4" class="internal">ImperativeDefinitions::assess_all</a>
 <span class="plain-syntax">          1.5% in </span><a href="../runtime-module/5-kc.html#SP10" class="internal">RTKindConstructors::compile</a>
-<span class="plain-syntax">          1.1% in </span><a href="../core-module/1-htc.html#SP12" class="internal">Sequence::lint_inter</a>
-<span class="plain-syntax">          0.5% in </span><a href="../assertions-module/5-id.html#SP5" class="internal">ImperativeDefinitions::compile_first_block</a>
+<span class="plain-syntax">          0.9% in </span><a href="../core-module/1-htc.html#SP12" class="internal">Sequence::lint_inter</a>
 <span class="plain-syntax">          0.5% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_2</a>
 <span class="plain-syntax">          0.5% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
 <span class="plain-syntax">          0.5% in </span><a href="../knowledge-module/5-tmw.html#SP5" class="internal">World::stage_V</a>
+<span class="plain-syntax">          0.3% in </span><a href="../assertions-module/5-id.html#SP5" class="internal">ImperativeDefinitions::compile_first_block</a>
 <span class="plain-syntax">          0.3% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
 <span class="plain-syntax">          0.1% in </span><a href="../runtime-module/3-cm.html#SP1" class="internal">CompletionModule::compile</a>
 <span class="plain-syntax">          0.1% in </span><a href="../knowledge-module/4-is.html#SP27" class="internal">InferenceSubjects::emit_all</a>
 <span class="plain-syntax">          0.1% in </span><a href="../runtime-module/5-kc.html#SP10_7" class="internal">RTKindConstructors::compile_permissions</a>
 <span class="plain-syntax">          0.1% in </span><a href="../core-module/1-wtc.html#SP9" class="internal">Task::make_built_in_kind_constructors</a>
 <span class="plain-syntax">          0.1% in </span><a href="../knowledge-module/5-tmw.html#SP3" class="internal">World::stages_II_and_III</a>
-<span class="plain-syntax">          2.3% not specifically accounted for</span>
-<span class="plain-syntax">     29.0% in running Inter pipeline</span>
-<span class="plain-syntax">         10.6% in step 14/14: generate inform6 -&gt; auto.inf</span>
-<span class="plain-syntax">          7.6% in step 5/14: load-binary-kits</span>
-<span class="plain-syntax">          6.4% in step 6/14: make-synoptic-module</span>
-<span class="plain-syntax">          1.5% in step 9/14: make-identifiers-unique</span>
-<span class="plain-syntax">          0.3% in step 12/14: eliminate-redundant-operations</span>
-<span class="plain-syntax">          0.3% in step 4/14: compile-splats</span>
-<span class="plain-syntax">          0.3% in step 7/14: shorten-wiring</span>
-<span class="plain-syntax">          0.3% in step 8/14: detect-indirect-calls</span>
-<span class="plain-syntax">          0.1% in step 11/14: eliminate-redundant-labels</span>
-<span class="plain-syntax">          1.1% not specifically accounted for</span>
-<span class="plain-syntax">      2.0% in supervisor</span>
-<span class="plain-syntax">      0.6% not specifically accounted for</span>
+<span class="plain-syntax">          2.7% not specifically accounted for</span>
+<span class="plain-syntax">     27.9% in running Inter pipeline</span>
+<span class="plain-syntax">         10.3% in step 14/15: generate inform6 -&gt; auto.inf</span>
+<span class="plain-syntax">          7.8% in step 5/15: load-binary-kits</span>
+<span class="plain-syntax">          5.2% in step 6/15: make-synoptic-module</span>
+<span class="plain-syntax">          1.3% in step 9/15: make-identifiers-unique</span>
+<span class="plain-syntax">          0.3% in step 12/15: eliminate-redundant-operations</span>
+<span class="plain-syntax">          0.3% in step 4/15: compile-splats</span>
+<span class="plain-syntax">          0.3% in step 7/15: shorten-wiring</span>
+<span class="plain-syntax">          0.3% in step 8/15: detect-indirect-calls</span>
+<span class="plain-syntax">          0.1% in step 11/15: eliminate-redundant-labels</span>
+<span class="plain-syntax">          1.4% not specifically accounted for</span>
+<span class="plain-syntax">      2.3% in supervisor</span>
+<span class="plain-syntax">      0.4% not specifically accounted for</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Memory consumption. </b>The following gives some idea of which classes of object have the most
 instances, and also of how Inform's memory tends to be used in practice.
@@ -109,76 +110,76 @@ represent less than 1/1000th of the total.
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">Total memory consumption was 120219K = 117 MB</span>
+<span class="plain-syntax">Total memory consumption was 126227K = 123 MB</span>
 
-<span class="plain-syntax"> ---- was used for 2008048 objects, in 360823 frames in 0 x 800K = 0K = 0 MB:</span>
+<span class="plain-syntax"> ---- was used for 2008640 objects, in 361114 frames in 0 x 800K = 0K = 0 MB:</span>
 
-<span class="plain-syntax">    33.9%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes</span>
-<span class="plain-syntax">    19.8%  text_stream_array                        4342 x 100 = 434200 objects, 24454144 bytes</span>
-<span class="plain-syntax">    19.6%  linked_list                              43296 objects, 24245760 bytes</span>
-<span class="plain-syntax">    11.4%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes</span>
-<span class="plain-syntax">    10.7%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes</span>
-<span class="plain-syntax">     8.4%  parse_node                               129462 objects, 10356960 bytes</span>
-<span class="plain-syntax">     6.0%  verb_conjugation                         160 objects, 7425280 bytes</span>
-<span class="plain-syntax">     4.4%  parse_node_annotation_array              345 x 500 = 172500 objects, 5531040 bytes</span>
-<span class="plain-syntax">     2.7%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes</span>
-<span class="plain-syntax">     2.6%  inter_name_array                         67 x 1000 = 67000 objects, 3218144 bytes</span>
-<span class="plain-syntax">     2.1%  kind_array                               66 x 1000 = 66000 objects, 2642112 bytes</span>
-<span class="plain-syntax">     1.6%  inter_name_generator_array               51 x 1000 = 51000 objects, 2041632 bytes</span>
-<span class="plain-syntax">     1.6%  inter_schema_token                       13926 objects, 2005344 bytes</span>
-<span class="plain-syntax">     1.5%  package_request                          21137 objects, 1860056 bytes</span>
-<span class="plain-syntax">     1.4%  vocabulary_entry_array                   161 x 100 = 16100 objects, 1808352 bytes</span>
-<span class="plain-syntax">     1.2%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes</span>
-<span class="plain-syntax">     1.2%  inter_symbols_table                      26569 objects, 1487864 bytes</span>
-<span class="plain-syntax">     1.1%  i6_schema_array                          23 x 100 = 2300 objects, 1380736 bytes</span>
-<span class="plain-syntax">     1.0%  inter_package                            26569 objects, 1275312 bytes</span>
-<span class="plain-syntax">     1.0%  dict_entry_array                         386 x 100 = 38600 objects, 1247552 bytes</span>
-<span class="plain-syntax">     0.9%  map_data                                 670 objects, 1125600 bytes</span>
-<span class="plain-syntax">     0.8%  id_body                                  941 objects, 1076504 bytes</span>
-<span class="plain-syntax">     0.8%  adjective_meaning                        202 objects, 1000304 bytes</span>
-<span class="plain-syntax">     0.7%  excerpt_meaning                          3100 objects, 967200 bytes</span>
-<span class="plain-syntax">     0.7%  production                               3874 objects, 898768 bytes</span>
-<span class="plain-syntax">     0.7%  ptoken                                   8385 objects, 872040 bytes</span>
-<span class="plain-syntax">     0.7%  grammatical_usage                        3611 objects, 866640 bytes</span>
-<span class="plain-syntax">     0.6%  individual_form                          2561 objects, 860496 bytes</span>
-<span class="plain-syntax">     0.6%  inter_schema_node                        8891 objects, 853536 bytes</span>
-<span class="plain-syntax">     0.5%  unary_predicate_array                    16 x 1000 = 16000 objects, 640512 bytes</span>
+<span class="plain-syntax">    32.3%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes</span>
+<span class="plain-syntax">    18.9%  text_stream_array                        4340 x 100 = 434000 objects, 24442880 bytes</span>
+<span class="plain-syntax">    18.7%  linked_list                              43320 objects, 24259200 bytes</span>
+<span class="plain-syntax">    10.8%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes</span>
+<span class="plain-syntax">    10.2%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes</span>
+<span class="plain-syntax">     8.0%  parse_node                               129584 objects, 10366720 bytes</span>
+<span class="plain-syntax">     5.7%  verb_conjugation                         160 objects, 7425280 bytes</span>
+<span class="plain-syntax">     4.2%  parse_node_annotation_array              346 x 500 = 173000 objects, 5547072 bytes</span>
+<span class="plain-syntax">     2.6%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes</span>
+<span class="plain-syntax">     2.4%  inter_name_array                         67 x 1000 = 67000 objects, 3218144 bytes</span>
+<span class="plain-syntax">     2.0%  kind_array                               66 x 1000 = 66000 objects, 2642112 bytes</span>
+<span class="plain-syntax">     1.5%  inter_name_generator_array               51 x 1000 = 51000 objects, 2041632 bytes</span>
+<span class="plain-syntax">     1.5%  inter_schema_token                       13964 objects, 2010816 bytes</span>
+<span class="plain-syntax">     1.4%  package_request                          21151 objects, 1861288 bytes</span>
+<span class="plain-syntax">     1.3%  vocabulary_entry_array                   161 x 100 = 16100 objects, 1808352 bytes</span>
+<span class="plain-syntax">     1.1%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes</span>
+<span class="plain-syntax">     1.1%  inter_symbols_table                      26588 objects, 1488928 bytes</span>
+<span class="plain-syntax">     1.0%  i6_schema_array                          23 x 100 = 2300 objects, 1380736 bytes</span>
+<span class="plain-syntax">     0.9%  inter_package                            26588 objects, 1276224 bytes</span>
+<span class="plain-syntax">     0.9%  dict_entry_array                         386 x 100 = 38600 objects, 1247552 bytes</span>
+<span class="plain-syntax">     0.8%  map_data                                 670 objects, 1125600 bytes</span>
+<span class="plain-syntax">     0.8%  id_body                                  942 objects, 1077648 bytes</span>
+<span class="plain-syntax">     0.7%  adjective_meaning                        202 objects, 1000304 bytes</span>
+<span class="plain-syntax">     0.7%  excerpt_meaning                          3101 objects, 967512 bytes</span>
+<span class="plain-syntax">     0.6%  production                               3876 objects, 899232 bytes</span>
+<span class="plain-syntax">     0.6%  ptoken                                   8392 objects, 872768 bytes</span>
+<span class="plain-syntax">     0.6%  grammatical_usage                        3612 objects, 866880 bytes</span>
+<span class="plain-syntax">     0.6%  individual_form                          2562 objects, 860832 bytes</span>
+<span class="plain-syntax">     0.6%  inter_schema_node                        8917 objects, 856032 bytes</span>
+<span class="plain-syntax">     0.4%  unary_predicate_array                    16 x 1000 = 16000 objects, 640512 bytes</span>
 <span class="plain-syntax">     0.3%  scan_directory                           112 objects, 462336 bytes</span>
 <span class="plain-syntax">     0.3%  local_variable_array                     47 x 100 = 4700 objects, 452704 bytes</span>
 <span class="plain-syntax">     0.3%  verb_usage                               1128 objects, 388032 bytes</span>
-<span class="plain-syntax">     0.2%  rule                                     469 objects, 367696 bytes</span>
+<span class="plain-syntax">     0.2%  rule                                     470 objects, 368480 bytes</span>
 <span class="plain-syntax">     0.2%  verb_form                                386 objects, 348944 bytes</span>
-<span class="plain-syntax">     0.2%  dictionary                               6619 objects, 317712 bytes</span>
-<span class="plain-syntax">     0.2%  noun                                     2380 objects, 285600 bytes</span>
-<span class="plain-syntax">     0.2%  compilation_subtask                      3346 objects, 267680 bytes</span>
+<span class="plain-syntax">     0.2%  dictionary                               6626 objects, 318048 bytes</span>
+<span class="plain-syntax">     0.2%  noun                                     2381 objects, 285720 bytes</span>
+<span class="plain-syntax">     0.2%  compilation_subtask                      3349 objects, 267920 bytes</span>
 <span class="plain-syntax">     0.2%  inter_annotation_array                   2 x 8192 = 16384 objects, 262208 bytes</span>
 <span class="plain-syntax">     0.2%  inference_subject                        665 objects, 260680 bytes</span>
-<span class="plain-syntax">     0.1%  vanilla_function                         3678 objects, 235392 bytes</span>
+<span class="plain-syntax">     0.1%  vanilla_function                         3682 objects, 235648 bytes</span>
 <span class="plain-syntax">     0.1%  binary_predicate                         321 objects, 169488 bytes</span>
-<span class="plain-syntax">     0.1%  hierarchy_location                       1119 objects, 161136 bytes</span>
-<span class="plain-syntax">     0.1%  linguistic_stock_item                    3316 objects, 159168 bytes</span>
-<span class="plain-syntax">     0.1%  rule_family_data                         400 objects, 147200 bytes</span>
+<span class="plain-syntax">     0.1%  hierarchy_location                       1122 objects, 161568 bytes</span>
+<span class="plain-syntax">     0.1%  linguistic_stock_item                    3317 objects, 159216 bytes</span>
+<span class="plain-syntax">     0.1%  rule_family_data                         401 objects, 147568 bytes</span>
 <span class="plain-syntax">     0.1%  nonterminal                              760 objects, 139840 bytes</span>
-<span class="plain-syntax">     0.1%  nascent_array                            2123 objects, 135872 bytes</span>
+<span class="plain-syntax">     0.1%  nascent_array                            2125 objects, 136000 bytes</span>
 <span class="plain-syntax">     ----  documentation_ref                        1273 objects, 112024 bytes</span>
 <span class="plain-syntax">     ----  inference                                1703 objects, 108992 bytes</span>
-<span class="plain-syntax">     ----  imperative_defn                          1377 objects, 99144 bytes</span>
-<span class="plain-syntax">     ----  noun_usage                               2402 objects, 96080 bytes</span>
+<span class="plain-syntax">     ----  imperative_defn                          1379 objects, 99288 bytes</span>
+<span class="plain-syntax">     ----  noun_usage                               2403 objects, 96120 bytes</span>
 <span class="plain-syntax">     ----  anl_entry_array                          2 x 1000 = 2000 objects, 96064 bytes</span>
 <span class="plain-syntax">     ----  preposition                              273 objects, 87360 bytes</span>
-<span class="plain-syntax">     ----  inter_schema                             1508 objects, 84448 bytes</span>
-<span class="plain-syntax">     ----  lexical_cluster                          2517 objects, 80544 bytes</span>
+<span class="plain-syntax">     ----  inter_schema                             1511 objects, 84616 bytes</span>
+<span class="plain-syntax">     ----  lexical_cluster                          2518 objects, 80576 bytes</span>
 <span class="plain-syntax">     ----  pcalc_term_array                         2 x 1000 = 2000 objects, 80064 bytes</span>
-<span class="plain-syntax">     ----  kind_variable_declaration                1652 objects, 79296 bytes</span>
-<span class="plain-syntax">     ----  inter_tree                               6 objects, 79200 bytes</span>
-<span class="plain-syntax">     ----  label_namespace                          1468 objects, 70464 bytes</span>
+<span class="plain-syntax">     ----  kind_variable_declaration                1655 objects, 79440 bytes</span>
+<span class="plain-syntax">     ----  inter_tree                               6 objects, 79248 bytes</span>
+<span class="plain-syntax">     ----  label_namespace                          1472 objects, 70656 bytes</span>
 <span class="plain-syntax">     ----  rulebook                                 407 objects, 68376 bytes</span>
 <span class="plain-syntax">     ----  spatial_data                             670 objects, 64320 bytes</span>
 <span class="plain-syntax">     ----  linked_list_item_array                   4 x 1000 = 4000 objects, 64128 bytes</span>
 <span class="plain-syntax">     ----  kind_macro_definition                    9 objects, 62280 bytes</span>
-<span class="plain-syntax">     ----  booking                                  860 objects, 61920 bytes</span>
-<span class="plain-syntax">     ----  scenes_rcd_data                          1882 objects, 60224 bytes</span>
-<span class="plain-syntax">     ----  actions_rcd_data                         1882 objects, 60224 bytes</span>
+<span class="plain-syntax">     ----  booking                                  861 objects, 61992 bytes</span>
+<span class="plain-syntax">     ----  actions_rcd_data                         1884 objects, 60288 bytes</span>
+<span class="plain-syntax">     ----  scenes_rcd_data                          1884 objects, 60288 bytes</span>
 <span class="plain-syntax">     ----  command_grammar                          130 objects, 58240 bytes</span>
 <span class="plain-syntax">     ----  kind_constructor                         77 objects, 57904 bytes</span>
 <span class="plain-syntax">     ----  table                                    7 objects, 56672 bytes</span>
@@ -186,9 +187,9 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  cg_line                                  230 objects, 53360 bytes</span>
 <span class="plain-syntax">     ----  cg_token                                 603 objects, 53064 bytes</span>
 <span class="plain-syntax">     ----  property_inference_data                  1315 objects, 52600 bytes</span>
-<span class="plain-syntax">     ----  response_message                         407 objects, 52096 bytes</span>
+<span class="plain-syntax">     ----  response_message                         408 objects, 52224 bytes</span>
 <span class="plain-syntax">     ----  ap_clause_array                          2 x 400 = 800 objects, 51264 bytes</span>
-<span class="plain-syntax">     ----  text_substitution                        436 objects, 41856 bytes</span>
+<span class="plain-syntax">     ----  text_substitution                        437 objects, 41952 bytes</span>
 <span class="plain-syntax">     ----  activity_list_array                      1 x 1000 objects, 40032 bytes</span>
 <span class="plain-syntax">     ----  anl_clause_array                         1 x 1000 objects, 40032 bytes</span>
 <span class="plain-syntax">     ----  to_family_data                           497 objects, 39760 bytes</span>
@@ -200,25 +201,25 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  regions_data                             670 objects, 32160 bytes</span>
 <span class="plain-syntax">     ----  HTML_tag_array                           1 x 1000 objects, 32032 bytes</span>
 <span class="plain-syntax">     ----  property_permission                      96 objects, 31488 bytes</span>
-<span class="plain-syntax">     ----  stack_frame_box                          304 objects, 29184 bytes</span>
+<span class="plain-syntax">     ----  stack_frame_box                          305 objects, 29280 bytes</span>
 <span class="plain-syntax">     ----  verb_sense                               403 objects, 29016 bytes</span>
 <span class="plain-syntax">     ----  action_pattern_array                     7 x 100 = 700 objects, 28224 bytes</span>
 <span class="plain-syntax">     ----  shared_variable_set_array                6 x 100 = 600 objects, 24192 bytes</span>
 <span class="plain-syntax">     ----  backdrops_data                           670 objects, 21440 bytes</span>
 <span class="plain-syntax">     ----  inter_node_list                          654 objects, 20928 bytes</span>
+<span class="plain-syntax">     ----  pipeline_step                            15 objects, 20280 bytes</span>
 <span class="plain-syntax">     ----  action_name                              90 objects, 20160 bytes</span>
 <span class="plain-syntax">     ----  nonlocal_variable                        93 objects, 20088 bytes</span>
 <span class="plain-syntax">     ----  property                                 146 objects, 19856 bytes</span>
-<span class="plain-syntax">     ----  timed_rules_rfd_data                     400 objects, 19200 bytes</span>
-<span class="plain-syntax">     ----  pipeline_step                            14 objects, 18928 bytes</span>
+<span class="plain-syntax">     ----  timed_rules_rfd_data                     401 objects, 19248 bytes</span>
 <span class="plain-syntax">     ----  method                                   374 objects, 17952 bytes</span>
 <span class="plain-syntax">     ----  pcalc_prop_deferral                      86 objects, 17888 bytes</span>
 <span class="plain-syntax">     ----  instance                                 167 objects, 17368 bytes</span>
 <span class="plain-syntax">     ----  parse_node_tree                          20 objects, 17280 bytes</span>
 <span class="plain-syntax">     ----  understanding_reference_array            2 x 100 = 200 objects, 16064 bytes</span>
 <span class="plain-syntax">     ----  to_phrase_request                        59 objects, 16048 bytes</span>
-<span class="plain-syntax">     ----  match_avinue_array                       1 x 1000 objects, 16032 bytes</span>
 <span class="plain-syntax">     ----  action_name_list_array                   1 x 1000 objects, 16032 bytes</span>
+<span class="plain-syntax">     ----  match_avinue_array                       1 x 1000 objects, 16032 bytes</span>
 <span class="plain-syntax">     ----  adjective                                137 objects, 15344 bytes</span>
 <span class="plain-syntax">     ----  generated_segment                        14 objects, 14784 bytes</span>
 <span class="plain-syntax">     ----  booking_list                             407 objects, 13024 bytes</span>
@@ -226,24 +227,24 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  adjective_iname_holder                   320 objects, 12800 bytes</span>
 <span class="plain-syntax">     ----  uniqueness_count                         454 objects, 10896 bytes</span>
 <span class="plain-syntax">     ----  inter_construct                          30 objects, 10320 bytes</span>
-<span class="plain-syntax">     ----  filename                                 250 objects, 10000 bytes</span>
-<span class="plain-syntax">     ----  stopwatch_timer                          112 objects, 8960 bytes</span>
-<span class="plain-syntax">     ----  build_vertex                             64 objects, 7680 bytes</span>
+<span class="plain-syntax">     ----  filename                                 246 objects, 9840 bytes</span>
+<span class="plain-syntax">     ----  stopwatch_timer                          113 objects, 9040 bytes</span>
 <span class="plain-syntax">     ----  equation_node                            68 objects, 7616 bytes</span>
 <span class="plain-syntax">     ----  understanding_item_array                 3 x 100 = 300 objects, 7296 bytes</span>
 <span class="plain-syntax">     ----  shared_variable_array                    1 x 100 objects, 7232 bytes</span>
 <span class="plain-syntax">     ----  determiner                               22 objects, 7216 bytes</span>
+<span class="plain-syntax">     ----  build_vertex                             60 objects, 7200 bytes</span>
 <span class="plain-syntax">     ----  verb                                     108 objects, 6912 bytes</span>
 <span class="plain-syntax">     ----  hierarchy_attachment_point               77 objects, 6776 bytes</span>
-<span class="plain-syntax">     ----  inbuild_work                             105 objects, 6720 bytes</span>
 <span class="plain-syntax">     ----  text_literal_holder                      163 objects, 6520 bytes</span>
-<span class="plain-syntax">     ----  inbuild_copy                             59 objects, 6136 bytes</span>
-<span class="plain-syntax">     ----  inbuild_edition                          78 objects, 5616 bytes</span>
+<span class="plain-syntax">     ----  inbuild_work                             101 objects, 6464 bytes</span>
+<span class="plain-syntax">     ----  inbuild_copy                             55 objects, 5720 bytes</span>
 <span class="plain-syntax">     ----  heading_tree                             20 objects, 5440 bytes</span>
+<span class="plain-syntax">     ----  inbuild_edition                          74 objects, 5328 bytes</span>
 <span class="plain-syntax">     ----  explicit_action_array                    1 x 100 objects, 4832 bytes</span>
 <span class="plain-syntax">     ----  value_property_data                      84 objects, 4704 bytes</span>
 <span class="plain-syntax">     ----  parsing_pp_data                          96 objects, 4608 bytes</span>
-<span class="plain-syntax">     ----  compatibility_specification              90 objects, 4320 bytes</span>
+<span class="plain-syntax">     ----  compatibility_specification              86 objects, 4128 bytes</span>
 <span class="plain-syntax">     ----  command_line_switch                      49 objects, 3920 bytes</span>
 <span class="plain-syntax">     ----  activity                                 35 objects, 3920 bytes</span>
 <span class="plain-syntax">     ----  submodule_request                        94 objects, 3760 bytes</span>
@@ -263,11 +264,11 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes</span>
 <span class="plain-syntax">     ----  equation_symbol                          30 objects, 2400 bytes</span>
 <span class="plain-syntax">     ----  scene                                    1 object, 2096 bytes</span>
-<span class="plain-syntax">     ----  build_script                             64 objects, 2048 bytes</span>
-<span class="plain-syntax">     ----  inform_pipeline                          28 objects, 1792 bytes</span>
+<span class="plain-syntax">     ----  build_script                             60 objects, 1920 bytes</span>
 <span class="plain-syntax">     ----  pronoun_usage                            42 objects, 1680 bytes</span>
 <span class="plain-syntax">     ----  table_contribution_array                 1 x 100 objects, 1632 bytes</span>
 <span class="plain-syntax">     ----  plugin                                   25 objects, 1600 bytes</span>
+<span class="plain-syntax">     ----  inform_pipeline                          24 objects, 1536 bytes</span>
 <span class="plain-syntax">     ----  noun_filter_token                        22 objects, 1408 bytes</span>
 <span class="plain-syntax">     ----  inter_node_array                         34 objects, 1360 bytes</span>
 <span class="plain-syntax">     ----  special_meaning_holder                   33 objects, 1320 bytes</span>
@@ -281,7 +282,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  inbuild_requirement                      25 objects, 1000 bytes</span>
 <span class="plain-syntax">     ----  submodule_identity                       31 objects, 992 bytes</span>
 <span class="plain-syntax">     ----  named_rulebook_outcome                   15 objects, 960 bytes</span>
-<span class="plain-syntax">     ----  pipeline_stage                           19 objects, 912 bytes</span>
+<span class="plain-syntax">     ----  pipeline_stage                           20 objects, 960 bytes</span>
 <span class="plain-syntax">     ----  control_structure_phrase                 12 objects, 864 bytes</span>
 <span class="plain-syntax">     ----  cached_understanding                     21 objects, 840 bytes</span>
 <span class="plain-syntax">     ----  phrase_option_array                      1 x 100 objects, 824 bytes</span>
@@ -289,11 +290,11 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  inbuild_search_result                    18 objects, 720 bytes</span>
 <span class="plain-syntax">     ----  inform_language                          6 objects, 672 bytes</span>
 <span class="plain-syntax">     ----  relation_guard                           5 objects, 640 bytes</span>
+<span class="plain-syntax">     ----  implication                              13 objects, 624 bytes</span>
 <span class="plain-syntax">     ----  code_generation                          1 object, 576 bytes</span>
 <span class="plain-syntax">     ----  inter_warehouse_room                     10 objects, 560 bytes</span>
 <span class="plain-syntax">     ----  rulebook_outcome                         17 objects, 544 bytes</span>
 <span class="plain-syntax">     ----  small_word_set                           11 objects, 528 bytes</span>
-<span class="plain-syntax">     ----  implication                              13 objects, 520 bytes</span>
 <span class="plain-syntax">     ----  inform_kit                               5 objects, 520 bytes</span>
 <span class="plain-syntax">     ----  equation                                 4 objects, 480 bytes</span>
 <span class="plain-syntax">     ----  i6_memory_setting                        14 objects, 448 bytes</span>
@@ -348,25 +349,25 @@ represent less than 1/1000th of the total.
 
 <span class="plain-syntax">100.0% was used for memory not allocated for objects:</span>
 
-<span class="plain-syntax">    57.1%  text stream storage                      70391616 bytes in 451710 claims</span>
-<span class="plain-syntax">     3.6%  dictionary storage                       4544512 bytes in 6619 claims</span>
+<span class="plain-syntax">    59.2%  text stream storage                      76549556 bytes in 451944 claims</span>
+<span class="plain-syntax">     3.5%  dictionary storage                       4541952 bytes in 6626 claims</span>
 <span class="plain-syntax">     ----  sorting                                  744 bytes in 3 claims</span>
-<span class="plain-syntax">     5.8%  source text                              7200000 bytes in 3 claims</span>
-<span class="plain-syntax">     8.7%  source text details                      10800000 bytes in 2 claims</span>
+<span class="plain-syntax">     5.5%  source text                              7200000 bytes in 3 claims</span>
+<span class="plain-syntax">     8.3%  source text details                      10800000 bytes in 2 claims</span>
 <span class="plain-syntax">     0.2%  documentation fragments                  262144 bytes in 1 claim</span>
 <span class="plain-syntax">     ----  linguistic stock array                   81920 bytes in 2 claims</span>
 <span class="plain-syntax">     ----  small word set array                     105600 bytes in 22 claims</span>
-<span class="plain-syntax">     3.6%  inter symbols storage                    4522784 bytes in 27922 claims</span>
-<span class="plain-syntax">    13.6%  inter bytecode storage                   16767472 bytes in 14 claims</span>
-<span class="plain-syntax">     5.0%  inter links storage                      6222976 bytes in 11 claims</span>
+<span class="plain-syntax">     3.4%  inter symbols storage                    4518768 bytes in 27943 claims</span>
+<span class="plain-syntax">    12.9%  inter bytecode storage                   16767696 bytes in 14 claims</span>
+<span class="plain-syntax">     4.8%  inter links storage                      6222976 bytes in 11 claims</span>
 <span class="plain-syntax">     0.1%  inter tree location list storage         191232 bytes in 32 claims</span>
 <span class="plain-syntax">     1.3%  instance-of-kind counting                1695204 bytes in 1 claim</span>
 <span class="plain-syntax">     ----  compilation workspace for objects        21856 bytes in 25 claims</span>
 <span class="plain-syntax">     ----  lists for type-checking invocations      16000 bytes in 1 claim</span>
 <span class="plain-syntax">     ----  code generation workspace for objects    1336 bytes in 4 claims</span>
-<span class="plain-syntax">     0.2%  emitter array storage                    279776 bytes in 1995 claims</span>
+<span class="plain-syntax">     0.2%  emitter array storage                    280032 bytes in 1997 claims</span>
 
-<span class="plain-syntax">-147.-7% was overhead - -181856968 bytes = -177594K = -173 MB</span>
+<span class="plain-syntax">-140.-7% was overhead - -181902792 bytes = -177639K = -173 MB</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Preform grammar. </b>The full annotated description of the Preform grammar (see <a href="../words-module/4-ap.html" class="internal">About Preform (in words)</a>),
 with optimisation details and hit/miss statistics added, is also long: it's
@@ -375,31 +376,31 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;s-literal&gt; hits 2097/23834 nti 14 constraint (none) extremes [1, infinity)</span>
+<span class="plain-syntax">&lt;s-literal&gt; hits 2100/23858 nti 14 constraint (none) extremes [1, infinity)</span>
 <span class="plain-syntax">    English:</span>
 <span class="plain-syntax">        (@1)&lt;cardinal-number&gt;=1 </span>
 <span class="plain-syntax">          (hits 171/171) (matched: '100') constraint CS = {r0} extremes [1, 1]</span>
 <span class="plain-syntax">        (@1)minus (@2)&lt;cardinal-number&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/1806) constraint DS = {14} extremes [2, 2]</span>
+<span class="plain-syntax">          (hits 0/1808) constraint DS = {14} extremes [2, 2]</span>
 <span class="plain-syntax">        (@1)&lt;quoted-text&gt;=1 (@2)( (@3)&lt;response-letter&gt;=2 (@4)) </span>
-<span class="plain-syntax">          (hits 273/830) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {14} extremes [4, 4]</span>
+<span class="plain-syntax">          (hits 274/831) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {14} extremes [4, 4]</span>
 <span class="plain-syntax">        (@1)&lt;quoted-text&gt;=1 </span>
-<span class="plain-syntax">          (hits 1564/5543) (matched: 'Represents geographical locations, both indoor</span>
+<span class="plain-syntax">          (hits 1566/5549) (matched: 'Represents geographical locations, both indoor</span>
 <span class="plain-syntax">        and outdoor, which are not necessarily areas in a building. A player in one</span>
 <span class="plain-syntax">        room is mostly unable to sense, or interact with, anything in a different room.</span>
 <span class="plain-syntax">        Rooms are arranged in a map.') constraint (none) extremes [1, 1]</span>
 <span class="plain-syntax">        &lt;s-literal-real-number&gt;=1 </span>
-<span class="plain-syntax">          (hits 11/9909) (matched: 'plus infinity') constraint (none) extremes [1, infinity)</span>
+<span class="plain-syntax">          (hits 11/9918) (matched: 'plus infinity') constraint (none) extremes [1, infinity)</span>
 <span class="plain-syntax">        (@1)&lt;s-literal-truth-state&gt;=1 </span>
 <span class="plain-syntax">          (hits 78/196) (matched: 'false') constraint CS = {8} extremes [1, 1]</span>
 <span class="plain-syntax">        &lt;s-literal-list&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/3275) constraint DS = {10} extremes [2, infinity)</span>
+<span class="plain-syntax">          (hits 0/3279) constraint DS = {10} extremes [2, infinity)</span>
 <span class="plain-syntax">        (@1)unicode &lt;s-unicode-character&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/4180) constraint DS = {14} extremes [2, infinity)</span>
+<span class="plain-syntax">          (hits 0/4184) constraint DS = {14} extremes [2, infinity)</span>
 <span class="plain-syntax">        &lt;s-literal-time&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/3737) constraint DW = {11, 12, 13} extremes [2, 5]</span>
+<span class="plain-syntax">          (hits 0/3741) constraint DW = {11, 12, 13} extremes [2, 5]</span>
 <span class="plain-syntax">        &lt;s-literal-unit-notation&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/9820) constraint (none) extremes [1, infinity)</span>
+<span class="plain-syntax">          (hits 0/9829) constraint (none) extremes [1, infinity)</span>
 </pre>
 <p class="commentary">The unabridged grammar is here:
 </p>
@@ -409,7 +410,7 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 		<a href="preform-diagnostics.txt" download>
 			<button class="download-button">
 				<img src="../docs-assets/download.png" alt="download icon" height=16 width=16>
-				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 391.3kB)
+				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 391.6kB)
 			</button>
 		</a>
 	</p>
@@ -454,8 +455,8 @@ for a lengthy read:
 <span class="plain-syntax">            VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}</span>
 <span class="plain-syntax">            UNPARSED_NOUN_NT'asking for information'</span>
 <span class="plain-syntax">            UNPARSED_NOUN_NT'out of world'</span>
-<span class="plain-syntax">        IMPERATIVE_NT'carry out asking for information' {unit: 4} {imperative definition: 799}</span>
-<span class="plain-syntax">        IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 800}</span>
+<span class="plain-syntax">        IMPERATIVE_NT'carry out asking for information' {unit: 4} {imperative definition: 800}</span>
+<span class="plain-syntax">        IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 801}</span>
 <span class="plain-syntax">        HEADING_NT'section 1 - errands' {heading 5} {under: H5'section 1 - errands'} {unit: 4}</span>
 <span class="plain-syntax">            SENTENCE_NT'the current actor is a person which varies' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
@@ -465,8 +466,8 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'current owner' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'current owner' {nonlocal: 'current owner'(var)person}} {created here}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'person which varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=people variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 801}</span>
 <span class="plain-syntax">            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 802}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 803}</span>
 <span class="plain-syntax">            SENTENCE_NT'a person can be active or passive' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'a person' {refined} {refers: infs'person'} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
@@ -482,34 +483,34 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'are' {verb 'be' 3p p act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'character movement rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: character movement}} {created here}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: &lt;&lt; kind=rulebook(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'the first character movement rule' {unit: 4} {imperative definition: 803}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'a character movement rule' {unit: 4} {imperative definition: 804}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'the first character movement rule' {unit: 4} {imperative definition: 804}</span>
 <span class="plain-syntax">            IMPERATIVE_NT'a character movement rule' {unit: 4} {imperative definition: 805}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 4} {imperative definition: 806}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 807}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'a character movement rule' {unit: 4} {imperative definition: 806}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to decide whether movement has not yet occurred' {unit: 4} {imperative definition: 807}</span>
 <span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 808}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 809}</span>
 <span class="plain-syntax">            SENTENCE_NT'the shopowner rules is a rulebook' {unit: 4} {classified} {clears pronouns}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'shopowner rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopowner}} {created here}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: &lt;&lt; kind=rulebook(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'a shopowner rule' {unit: 4} {imperative definition: 809}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 4} {imperative definition: 810}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 4} {imperative definition: 811}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'a shopowner rule' {unit: 4} {imperative definition: 812}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'a shopowner rule' {unit: 4} {imperative definition: 810}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone closing a door when the person asked owns the' {unit: 4} {imperative definition: 811}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report vanessa closing the metal door when the metal door is' {unit: 4} {imperative definition: 812}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'a shopowner rule' {unit: 4} {imperative definition: 813}</span>
 <span class="plain-syntax">            SENTENCE_NT'filing is an action applying to one thing' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'filing'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'applying to one thing'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 4} {imperative definition: 813}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out someone filing' {unit: 4} {imperative definition: 814}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone filing' {unit: 4} {imperative definition: 815}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before someone filing something which is not carried by the ' {unit: 4} {imperative definition: 814}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out someone filing' {unit: 4} {imperative definition: 815}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone filing' {unit: 4} {imperative definition: 816}</span>
 <span class="plain-syntax">            SENTENCE_NT'the shopper rules is a rulebook' {unit: 4} {classified} {clears pronouns}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'shopper rules' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT {kind: rulebook} {rulebook: shopper}} {created here}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'rulebook' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values based rulebook producing values'-k} {creation: &lt;&lt; kind=rulebook(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'a shopper rule' {unit: 4} {imperative definition: 816}</span>
 <span class="plain-syntax">            IMPERATIVE_NT'a shopper rule' {unit: 4} {imperative definition: 817}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 818}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'a shopper rule' {unit: 4} {imperative definition: 818}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 819}</span>
 <span class="plain-syntax">            DEFN_CONT_NT'a room is air-conditioned' {unit: 4}</span>
 <span class="plain-syntax">                CODE_BLOCK_NT</span>
 <span class="plain-syntax">                    CODE_BLOCK_NT {control structure: IF}</span>
@@ -567,8 +568,8 @@ for a lengthy read:
 <span class="plain-syntax">                COMMON_NOUN_NT'artwork' {indefinite 'an' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {refers: infs'artwork'} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of thing' {refined} {refers: infs'thing'}</span>
 <span class="plain-syntax">                    COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of an artwork' {unit: 4} {imperative definition: 819}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after printing the name of an artwork' {unit: 4} {imperative definition: 820}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of an artwork' {unit: 4} {imperative definition: 820}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after printing the name of an artwork' {unit: 4} {imperative definition: 821}</span>
 <span class="plain-syntax">            SENTENCE_NT'an artwork can be submitted or reserved' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'an artwork' {refined} {refers: infs'artwork'} {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
@@ -581,49 +582,49 @@ for a lengthy read:
 <span class="plain-syntax">                COMMON_NOUN_NT'book' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=book(x) &gt;&gt;} {refers: infs'book'} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}</span>
 <span class="plain-syntax">                    COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 4} {imperative definition: 821}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving a book' {unit: 4} {imperative definition: 822}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone resolving a book' {unit: 4} {imperative definition: 823}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before listing contents' {unit: 4} {imperative definition: 824}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before grouping together books' {unit: 4} {imperative definition: 825}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before someone resolving a book when the person asked is not' {unit: 4} {imperative definition: 822}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving a book' {unit: 4} {imperative definition: 823}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone resolving a book' {unit: 4} {imperative definition: 824}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before listing contents' {unit: 4} {imperative definition: 825}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before grouping together books' {unit: 4} {imperative definition: 826}</span>
 <span class="plain-syntax">            SENTENCE_NT'a stamped envelope is a kind of thing' {unit: 4} {classified} {interpretation of subject: infs'book'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'stamped envelope' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=stamped envelope(x) &gt;&gt;} {refers: infs'stamped envelope'} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of thing' {refined} {refers: infs'thing'}</span>
 <span class="plain-syntax">                    COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 4} {imperative definition: 826}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 4} {imperative definition: 827}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 4} {imperative definition: 828}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 4} {imperative definition: 829}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before someone resolving a stamped envelope when the person ' {unit: 4} {imperative definition: 827}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving a stamped envelope' {unit: 4} {imperative definition: 828}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone resolving a stamped envelope' {unit: 4} {imperative definition: 829}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'instead of someone resolving a stamped envelope when the per' {unit: 4} {imperative definition: 830}</span>
 <span class="plain-syntax">            SENTENCE_NT'a dvd is a kind of artwork' {unit: 4} {classified} {interpretation of subject: infs'stamped envelope'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'dvd' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=dvd(x) &gt;&gt;} {refers: infs'dvd'} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of artwork' {refined} {refers: infs'artwork'}</span>
 <span class="plain-syntax">                    COMMON_NOUN_NT'artwork' {refined} {refers: infs'artwork'} {creation: &lt;&lt; kind=artwork(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 4} {imperative definition: 830}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 4} {imperative definition: 831}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone resolving a dvd' {unit: 4} {imperative definition: 832}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 4} {imperative definition: 833}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before listing contents' {unit: 4} {imperative definition: 834}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before grouping together dvds' {unit: 4} {imperative definition: 835}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before someone resolving a dvd when the person asked is not ' {unit: 4} {imperative definition: 831}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving a dvd' {unit: 4} {imperative definition: 832}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone resolving a dvd' {unit: 4} {imperative definition: 833}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'instead of someone resolving a dvd when the person asked car' {unit: 4} {imperative definition: 834}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before listing contents' {unit: 4} {imperative definition: 835}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before grouping together dvds' {unit: 4} {imperative definition: 836}</span>
 <span class="plain-syntax">            SENTENCE_NT'approaching is an action applying to one thing' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'approaching'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'applying to one thing'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out someone approaching' {unit: 4} {imperative definition: 836}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out someone approaching' {unit: 4} {imperative definition: 837}</span>
 <span class="plain-syntax">            SENTENCE_NT'a coupon is a kind of thing' {unit: 4} {classified} {interpretation of subject: infs'dvd'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'coupon' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: &lt;&lt; kind=coupon(x) &gt;&gt;} {refers: infs'coupon'} {eval: TEST_VALUE_NT} {created here}</span>
 <span class="plain-syntax">                KIND_NT'kind of thing' {refined} {refers: infs'thing'}</span>
 <span class="plain-syntax">                    COMMON_NOUN_NT'thing' {refined} {refers: infs'thing'} {creation: &lt;&lt; kind=thing(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 4} {imperative definition: 837}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving a coupon' {unit: 4} {imperative definition: 838}</span>
 <span class="plain-syntax">            SENTENCE_NT'the block giving rule is not listed in any rulebook' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {rule placement sense: negative} {special meaning: rule-listed-in}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'the block giving rule'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'in any rulebook'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 4} {imperative definition: 838}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 4} {imperative definition: 839}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 4} {imperative definition: 840}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'check giving something to someone ( this is the block player' {unit: 4} {imperative definition: 839}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before someone resolving a coupon when the person asked is n' {unit: 4} {imperative definition: 840}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after someone giving a coupon to vanessa' {unit: 4} {imperative definition: 841}</span>
 <span class="plain-syntax">            SENTENCE_NT'infection color is a kind of value' {unit: 4} {classified} {interpretation of subject: infs'coupon'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'infection color' {refined} {creation: &lt;&lt; kind=infection color(x) &gt;&gt;} {refers: infs'object'-k} {eval: TEST_VALUE_NT} {created here}</span>
@@ -683,7 +684,7 @@ for a lengthy read:
 <span class="plain-syntax">                                                                                                                AND_NT',' {refined}</span>
 <span class="plain-syntax">                                                                                                                    PROPER_NOUN_NT'saffron silk' {refined} {refers: infs'saffron silk'} {eval: CONSTANT_NT'saffron silk' {kind: infection color} {instance: I86'saffron silk'[infection color]} {enumeration: 25}} {created here}</span>
 <span class="plain-syntax">                                                                                                                    PROPER_NOUN_NT'cookie dough cream' {refined} {refers: infs'cookie dough cream'} {eval: CONSTANT_NT'cookie dough cream' {kind: infection color} {instance: I87'cookie dough cream'[infection color]} {enumeration: 26}} {created here}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to say list of flavors' {unit: 4} {imperative definition: 841}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to say list of flavors' {unit: 4} {imperative definition: 842}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "ask vanessa for [flavored ice cream]" as buying ' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"ask vanessa for [flavored ice cream]"'</span>
@@ -696,8 +697,8 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'buying the flavor'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'applying to one infection color'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'check buying the flavor' {unit: 4} {imperative definition: 842}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out buying the flavor' {unit: 4} {imperative definition: 843}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'check buying the flavor' {unit: 4} {imperative definition: 843}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out buying the flavor' {unit: 4} {imperative definition: 844}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "ice cream" or "cream" or "ice" or "sherbet" or "' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"ice cream" or "cream" or "ice" or "sherbet" or "sorbet"'</span>
@@ -731,12 +732,12 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'the infection color property'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'referring to an ice cream cone'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 4} {imperative definition: 844}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 4} {imperative definition: 845}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 4} {imperative definition: 846}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 4} {imperative definition: 847}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out someone resolving an ice cream cone' {unit: 4} {imperative definition: 845}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'instead of someone eating a fresh ice cream cone' {unit: 4} {imperative definition: 846}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone eating an ice cream cone' {unit: 4} {imperative definition: 847}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of an ice cream cone' {unit: 4} {imperative definition: 848}</span>
 <span class="plain-syntax">        HEADING_NT'section 2 - infection rules' {heading 5} {under: H5'section 2 - infection rules'} {unit: 4}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'this is the infection rule' {unit: 4} {imperative definition: 848}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'this is the infection rule' {unit: 4} {imperative definition: 849}</span>
 <span class="plain-syntax">            SENTENCE_NT'a person can be infected or clean' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'can be' {verb 'be able to be' s/p 3p act IS_TENSE +ve} {special meaning: can-be}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'a person' {refined} {refers: infs'person'} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
@@ -749,11 +750,11 @@ for a lengthy read:
 <span class="plain-syntax">                COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                ALLOWED_NT'has' {refined}</span>
 <span class="plain-syntax">                    UNPARSED_NOUN_NT'infection color' {indefinite 'an' n/m/f nom/acc s} {refined}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 849}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 850}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 850}</span>
 <span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 851}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 852}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 853}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 852}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 853}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'every turn' {unit: 4} {imperative definition: 854}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "sneeze on [something]" as sneezing on' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"sneeze on [something]"'</span>
@@ -762,11 +763,11 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'sneezing on'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'applying to one thing'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'check sneezing on' {unit: 4} {imperative definition: 854}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out sneezing on' {unit: 4} {imperative definition: 855}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out someone sneezing on' {unit: 4} {imperative definition: 856}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report sneezing on' {unit: 4} {imperative definition: 857}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone sneezing on' {unit: 4} {imperative definition: 858}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'check sneezing on' {unit: 4} {imperative definition: 855}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out sneezing on' {unit: 4} {imperative definition: 856}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out someone sneezing on' {unit: 4} {imperative definition: 857}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report sneezing on' {unit: 4} {imperative definition: 858}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone sneezing on' {unit: 4} {imperative definition: 859}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "inject [someone] with [something]" as injecting ' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"inject [someone] with [something]"'</span>
@@ -787,14 +788,14 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'injecting it with'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'applying to two things'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'check injecting it with' {unit: 4} {imperative definition: 859}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out injecting it with' {unit: 4} {imperative definition: 860}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after injecting the player with something' {unit: 4} {imperative definition: 861}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report injecting it with' {unit: 4} {imperative definition: 862}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'check injecting it with' {unit: 4} {imperative definition: 860}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out injecting it with' {unit: 4} {imperative definition: 861}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after injecting the player with something' {unit: 4} {imperative definition: 862}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report injecting it with' {unit: 4} {imperative definition: 863}</span>
 <span class="plain-syntax">        HEADING_NT'section 3 - geography' {heading 5} {under: H5'section 3 - geography'} {unit: 4}</span>
 <span class="plain-syntax">            INCLUSION_NT'include locksmith by emily short' {unit: 4}</span>
-<span class="plain-syntax">                HEADING_NT'version 12 of locksmith by emily short begins here' {heading 0} {under: H0'version 12 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v12 } {unit: 3}</span>
-<span class="plain-syntax">                    BEGINHERE_NT'version 12 of locksmith by emily short' {unit: 3}</span>
+<span class="plain-syntax">                HEADING_NT'version 13 of locksmith by emily short begins here' {heading 0} {under: H0'version 13 of locksmith by emily short begins here'} {includes: Locksmith by Emily Short v13 } {unit: 3}</span>
+<span class="plain-syntax">                    BEGINHERE_NT'version 13 of locksmith by emily short' {unit: 3}</span>
 <span class="plain-syntax">                    ...</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "go to/toward/into [any room]" as going toward' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
@@ -815,9 +816,9 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'going toward'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'applying to one thing'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'check going toward' {unit: 4} {imperative definition: 900}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out going toward' {unit: 4} {imperative definition: 901}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 4} {imperative definition: 902}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'check going toward' {unit: 4} {imperative definition: 901}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out going toward' {unit: 4} {imperative definition: 902}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'instead of waiting when the destination of the player is not' {unit: 4} {imperative definition: 903}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "stop" or "cease" as stopping' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"stop" or "cease"'</span>
@@ -826,11 +827,11 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'stopping'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'applying to nothing'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out stopping' {unit: 4} {imperative definition: 903}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report stopping' {unit: 4} {imperative definition: 904}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 4} {imperative definition: 905}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 4} {imperative definition: 906}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 4} {imperative definition: 907}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out stopping' {unit: 4} {imperative definition: 904}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report stopping' {unit: 4} {imperative definition: 905}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after going to an air-conditioned room' {unit: 4} {imperative definition: 906}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after going from an air-conditioned room' {unit: 4} {imperative definition: 907}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'instead of listening to an air-conditioned room' {unit: 4} {imperative definition: 908}</span>
 <span class="plain-syntax">            SENTENCE_NT'the alfred cralle pool hall is a room' {unit: 4} {classified} {interpretation of subject: infs'person'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'alfred cralle pool hall' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'alfred cralle pool hall'} {eval: CONSTANT_NT'alfred cralle pool hall' {kind: object} {instance: I88'alfred cralle pool hall'} {enumeration: 0}} {created here}</span>
@@ -872,7 +873,7 @@ for a lengthy read:
 <span class="plain-syntax">                    PROPER_NOUN_NT'felt door' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'felt door'} {eval: CONSTANT_NT'felt door' {kind: door} {instance: I90'felt door'} {enumeration: 0}}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'"It has a prominent lock, designed for an old-fashioned key.' {refined} {eval: CONSTANT_NT'"It has a prominent lock, designed for an old-fashioned key.' {kind: text}}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 4} {imperative definition: 908}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after locking a door with something in the presence of an ot' {unit: 4} {imperative definition: 909}</span>
 <span class="plain-syntax">            SENTENCE_NT'nancy johnson memorial square is west of the felt door' {unit: 4} {classified} {interpretation of subject: infs'key to the city'}</span>
 <span class="plain-syntax">                VERB_NT'is west of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: west of}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'nancy johnson memorial square' {refined} {refers: infs'nancy johnson memorial square'} {eval: CONSTANT_NT'nancy johnson memorial square' {kind: object} {instance: I92'nancy johnson memorial square'} {enumeration: 0}} {created here}</span>
@@ -934,8 +935,8 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'slot' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'slot'} {eval: CONSTANT_NT'slot' {kind: object} {instance: I97'slot'} {enumeration: 0}}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'container' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'container'} {creation: &lt;&lt; kind=container(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 4} {imperative definition: 909}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report inserting something into the slot' {unit: 4} {imperative definition: 910}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out inserting something into the slot' {unit: 4} {imperative definition: 910}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report inserting something into the slot' {unit: 4} {imperative definition: 911}</span>
 <span class="plain-syntax">            SENTENCE_NT'hamwi street is northeast of an iron gate' {unit: 4} {classified} {interpretation of subject: infs'slot'}</span>
 <span class="plain-syntax">                VERB_NT'is northeast of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: northeast of}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'hamwi street' {refined} {refers: infs'hamwi street'} {eval: CONSTANT_NT'hamwi street' {kind: object} {instance: I98'hamwi street'} {enumeration: 0}} {created here}</span>
@@ -959,7 +960,7 @@ for a lengthy read:
 <span class="plain-syntax">                AND_NT'and' {refined}</span>
 <span class="plain-syntax">                    ADJECTIVE_NT'lockable' {refined} {predicate: lockable} {creation: &lt;&lt; lockable(x) ^ lockable(x) &gt;&gt;}</span>
 <span class="plain-syntax">                    ADJECTIVE_NT'unlocked' {refined} {predicate: unlocked} {creation: &lt;&lt; unlocked(x) ^ unlocked(x) &gt;&gt;}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 4} {imperative definition: 911}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of the iron gate while not opening ' {unit: 4} {imperative definition: 912}</span>
 <span class="plain-syntax">            SENTENCE_NT'cold comfort ice cream is north of a metal door' {unit: 4} {classified} {interpretation of subject: infs'iron gate'}</span>
 <span class="plain-syntax">                VERB_NT'is north of' {verb 'be' 3p s act IS_TENSE +ve} {prep1: north of}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'cold comfort ice cream' {refined} {refers: infs'cold comfort ice cream'} {eval: CONSTANT_NT'cold comfort ice cream' {kind: object} {instance: I100'cold comfort ice cream'} {enumeration: 0}} {created here}</span>
@@ -1065,8 +1066,8 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"glass"'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'the box'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 4} {imperative definition: 912}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 4} {imperative definition: 913}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'instead of attacking the closed emergency box' {unit: 4} {imperative definition: 913}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'instead of attacking the open emergency box' {unit: 4} {imperative definition: 914}</span>
 <span class="plain-syntax">            SENTENCE_NT'the syringe is in the emergency box' {unit: 4} {classified} {interpretation of subject: infs'emergency box'}</span>
 <span class="plain-syntax">                VERB_NT'is in' {verb 'be' 3p s act IS_TENSE +ve} {prep1: in}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'syringe' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'syringe'} {eval: CONSTANT_NT'syringe' {kind: object} {instance: I109'syringe'} {enumeration: 0}} {created here}</span>
@@ -1169,8 +1170,8 @@ for a lengthy read:
 <span class="plain-syntax">            SENTENCE_NT'use full-length room descriptions' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'use' {verb 'use' 3p p act IS_TENSE +ve} {special meaning: use}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'full-length room descriptions'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after looking in an outdoors room' {unit: 4} {imperative definition: 914}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 915}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after looking in an outdoors room' {unit: 4} {imperative definition: 915}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'definition' {unit: 4} {imperative definition: 916}</span>
 <span class="plain-syntax">            DEFN_CONT_NT'a door is proximate' {unit: 4}</span>
 <span class="plain-syntax">                CODE_BLOCK_NT</span>
 <span class="plain-syntax">                    CODE_BLOCK_NT {control structure: IF}</span>
@@ -1191,7 +1192,7 @@ for a lengthy read:
 <span class="plain-syntax">                                INVOCATION_NT'yes' {phrase invoked: &lt;no-inter-name&gt;}</span>
 <span class="plain-syntax">                    INVOCATION_LIST_NT'no' {unit: 4}</span>
 <span class="plain-syntax">                        INVOCATION_NT'no' {phrase invoked: &lt;no-inter-name&gt;}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 4} {imperative definition: 916}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before exiting when the player is in an indoors room' {unit: 4} {imperative definition: 917}</span>
 <span class="plain-syntax">            SENTENCE_NT'blank is a room' {unit: 4} {classified} {interpretation of subject: infs'key to the city'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'blank' {refined} {refers: infs'blank'} {eval: CONSTANT_NT'blank' {kind: object} {instance: I113'blank'} {enumeration: 0}} {created here}</span>
@@ -1417,15 +1418,15 @@ for a lengthy read:
 <span class="plain-syntax">                PROPER_NOUN_NT'ned' {refined} {refers: infs'ned'} {eval: CONSTANT_NT'ned' {kind: man} {instance: I166'ned'} {enumeration: 0}}</span>
 <span class="plain-syntax">                RELATIONSHIP_NT'owns' {meaning: ownership-r} {refined}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'movie rental' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'movie rental store'} {eval: CONSTANT_NT'movie rental store' {kind: object} {instance: I104'movie rental store'} {enumeration: 0}}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 4} {imperative definition: 917}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after printing the name of someone ( called target ) while l' {unit: 4} {imperative definition: 918}</span>
 <span class="plain-syntax">            SENTENCE_NT'the description of a person is usually "[The noun] [if the n' {unit: 4} {classified} {interpretation of subject: infs'ned'}</span>
 <span class="plain-syntax">                VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'description of a person' {definite 'the' n/m/f s/p nom/acc} {refined}</span>
 <span class="plain-syntax">                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'description' {refined} {eval: CONSTANT_NT {kind: texts valued property} {property: 'description'=text}}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {refined} {eval: CONSTANT_NT'"[The noun] [if the noun is clean]looks healthy[otherwise]is' {kind: text}}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 4} {imperative definition: 918}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 919}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after examining another person who is carrying something' {unit: 4} {imperative definition: 919}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'when play begins' {unit: 4} {imperative definition: 920}</span>
 <span class="plain-syntax">        HEADING_NT'section 5 - conversation' {heading 5} {under: H5'section 5 - conversation'} {unit: 4}</span>
 <span class="plain-syntax">            SENTENCE_NT'a person has a table name called conversation' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
@@ -1434,8 +1435,8 @@ for a lengthy read:
 <span class="plain-syntax">                    PROPERTYCALLED_NT'called'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'table name' {indefinite 'a' n/m/f nom/acc s}</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'conversation'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'instead of asking someone about something' {unit: 4} {imperative definition: 920}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'instead of telling someone about something' {unit: 4} {imperative definition: 921}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'instead of asking someone about something' {unit: 4} {imperative definition: 921}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'instead of telling someone about something' {unit: 4} {imperative definition: 922}</span>
 <span class="plain-syntax">            SENTENCE_NT'understand "recap" or "recall" or "review" as recalling conv' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'understand' {verb 'understand' 3p p act IS_TENSE +ve} {prep2: as} {special meaning: understand-as}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'"recap" or "recall" or "review"'</span>
@@ -1444,22 +1445,22 @@ for a lengthy read:
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve} {special meaning: new-action}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'recalling conversations'</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'applying to nothing'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'carry out recalling conversations' {unit: 4} {imperative definition: 922}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'carry out recalling conversations' {unit: 4} {imperative definition: 923}</span>
 <span class="plain-syntax">            SENTENCE_NT'the conversation of a person is usually table of general chi' {unit: 4} {classified} {interpretation of subject: infs'person'}</span>
 <span class="plain-syntax">                VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'conversation of a person' {definite 'the' n/m/f s/p nom/acc} {refined}</span>
 <span class="plain-syntax">                    COMMON_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'person'} {creation: &lt;&lt; kind=person(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'conversation' {refined} {eval: CONSTANT_NT {kind: table names valued property} {property: 'conversation'=table name}}</span>
-<span class="plain-syntax">                PROPER_NOUN_NT'table of general chitchat' {refined} {eval: CONSTANT_NT'table of general chitchat' {kind: table name} {table: table_data}{meaning: {table of general chitchat = TABLE_MC}}}</span>
+<span class="plain-syntax">                PROPER_NOUN_NT'table of general chitchat' {refined} {eval: CONSTANT_NT'table of general chitchat' {kind: table name} {table: table_data} {meaning: {table of general chitchat = TABLE_MC}}}</span>
 <span class="plain-syntax">            TABLE_NT'table of general chitchat topic reply summary turn stamp cha' {unit: 4}</span>
 <span class="plain-syntax">            SENTENCE_NT'the conversation of vanessa is the table of vanessa chatter' {unit: 4} {classified} {interpretation of subject: infs'person'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                X_OF_Y_NT'conversation of vanessa' {definite 'the' n/m/f s/p nom/acc} {refined}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'vanessa' {refined} {refers: infs'vanessa'} {eval: CONSTANT_NT'vanessa' {kind: woman} {instance: I129'vanessa'} {enumeration: 0}}</span>
 <span class="plain-syntax">                    PROPER_NOUN_NT'conversation' {refined} {eval: CONSTANT_NT {kind: table names valued property} {property: 'conversation'=table name}}</span>
-<span class="plain-syntax">                PROPER_NOUN_NT'table of vanessa chatter' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'table of vanessa chatter' {kind: table name} {table: table_data}{meaning: {table of vanessa chatter = TABLE_MC}}}</span>
+<span class="plain-syntax">                PROPER_NOUN_NT'table of vanessa chatter' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: CONSTANT_NT'table of vanessa chatter' {kind: table name} {table: table_data} {meaning: {table of vanessa chatter = TABLE_MC}}}</span>
 <span class="plain-syntax">            TABLE_NT'table of vanessa chatter topic reply summary turn stamp char' {unit: 4}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'after reading a command' {unit: 4} {imperative definition: 923}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'after reading a command' {unit: 4} {imperative definition: 924}</span>
 <span class="plain-syntax">        HEADING_NT'section 6 - movement description' {heading 5} {under: H5'section 6 - movement description'} {unit: 4}</span>
 <span class="plain-syntax">            SENTENCE_NT'a person has some text called walk style' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
@@ -1506,8 +1507,8 @@ for a lengthy read:
 <span class="plain-syntax">                PROPER_NOUN_NT'"sashay"' {refined} {eval: CONSTANT_NT'"sashay"' {kind: text}}</span>
 <span class="plain-syntax">            TABLE_NT'table of visible exits character second third heading chosen' {unit: 4}</span>
 <span class="plain-syntax">            TABLE_NT'table of visible entrances character second third heading ch' {unit: 4}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 4} {imperative definition: 924}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 4} {imperative definition: 925}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to clear ( current table - a table name )' {unit: 4} {imperative definition: 925}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to tidy departures of ( current table - a table name )' {unit: 4} {imperative definition: 926}</span>
 <span class="plain-syntax">            SENTENCE_NT'a door has a person called last opener' {unit: 4} {classified} {interpretation of subject: infs'person'}</span>
 <span class="plain-syntax">                VERB_NT'has' {verb 'have' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
@@ -1515,42 +1516,42 @@ for a lengthy read:
 <span class="plain-syntax">                    PROPERTYCALLED_NT'called'</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'person' {indefinite 'a' n/m/f nom/acc s}</span>
 <span class="plain-syntax">                        UNPARSED_NOUN_NT'last opener'</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone opening a door' {unit: 4} {imperative definition: 926}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 4} {imperative definition: 927}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone opening a door' {unit: 4} {imperative definition: 927}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone going through a door ( called route )' {unit: 4} {imperative definition: 928}</span>
 <span class="plain-syntax">            SENTENCE_NT'the last thing named is a thing that varies' {unit: 4} {classified} {interpretation of subject: infs'door'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'last thing named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last thing named' {nonlocal: 'last thing named'(var)thing}} {created here}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'thing that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=things variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 4} {imperative definition: 928}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'report someone going a direction' {unit: 4} {imperative definition: 929}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'this is the movement reporting rule' {unit: 4} {imperative definition: 930}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 4} {imperative definition: 931}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of something ( called target ) whic' {unit: 4} {imperative definition: 929}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'report someone going a direction' {unit: 4} {imperative definition: 930}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'this is the movement reporting rule' {unit: 4} {imperative definition: 931}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to generate descriptions from ( current table - a table name' {unit: 4} {imperative definition: 932}</span>
 <span class="plain-syntax">            SENTENCE_NT'the last person named is a person that varies' {unit: 4} {classified} {interpretation of subject: infs'door'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'last person named' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'last person named' {nonlocal: 'last person named'(var)person}} {created here}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'person that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=people variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 4} {imperative definition: 932}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before printing the name of a person ( called target )' {unit: 4} {imperative definition: 933}</span>
 <span class="plain-syntax">            SENTENCE_NT'group size is a number that varies' {unit: 4} {classified} {interpretation of subject: infs'door'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}} {created here}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'number that varies' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'values variable-pointer'-k} {creation: &lt;&lt; kind=numbers variable-pointer(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">            SENTENCE_NT'group size is 1' {unit: 4} {classified} {interpretation of subject: infs'door'}</span>
 <span class="plain-syntax">                VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}</span>
-<span class="plain-syntax">                PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number}{meaning: {group size = VARIABLE_MC}}}</span>
+<span class="plain-syntax">                PROPER_NOUN_NT'group size' {refined} {eval: NONLOCAL_VARIABLE_NT'group size' {nonlocal: 'group size'(var)number} {meaning: {group size = VARIABLE_MC}}}</span>
 <span class="plain-syntax">                PROPER_NOUN_NT'1' {refined} {eval: CONSTANT_NT'1' {kind: number} {explicit literal} {number: 1}}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to clear marked people' {unit: 4} {imperative definition: 933}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'before listing nondescript items' {unit: 4} {imperative definition: 934}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to describe patients' {unit: 4} {imperative definition: 935}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 4} {imperative definition: 936}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 4} {imperative definition: 937}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 4} {imperative definition: 938}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to clear marked people' {unit: 4} {imperative definition: 934}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'before listing nondescript items' {unit: 4} {imperative definition: 935}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to describe patients' {unit: 4} {imperative definition: 936}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to say ( named character - a man ) as pronoun' {unit: 4} {imperative definition: 937}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to say ( named character - a woman ) as pronoun' {unit: 4} {imperative definition: 938}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to say looks as though dipped in for ( index - a number )' {unit: 4} {imperative definition: 939}</span>
 <span class="plain-syntax">            TABLE_NT'table of dipping phrases dipping "looks as though dipped in"' {unit: 4}</span>
 <span class="plain-syntax">            SENTENCE_NT'a door is usually scenery' {unit: 4} {classified} {interpretation of subject: infs'door'}</span>
 <span class="plain-syntax">                VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}</span>
 <span class="plain-syntax">                COMMON_NOUN_NT'door' {indefinite 'a' n/m/f nom/acc s} {refined} {refers: infs'door'} {creation: &lt;&lt; kind=door(x) &gt;&gt;} {eval: TEST_VALUE_NT}</span>
 <span class="plain-syntax">                ADJECTIVE_NT'scenery' {refined} {predicate: scenery} {creation: &lt;&lt; scenery(x) ^ scenery(x) &gt;&gt;}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 4} {imperative definition: 939}</span>
-<span class="plain-syntax">            IMPERATIVE_NT'to say optional comma' {unit: 4} {imperative definition: 940}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to make delimiter ( index - a number ) of ( count - a number' {unit: 4} {imperative definition: 940}</span>
+<span class="plain-syntax">            IMPERATIVE_NT'to say optional comma' {unit: 4} {imperative definition: 941}</span>
 <span class="plain-syntax">            SENTENCE_NT'test me with go to cold comfort / z / z / z / z / ask vaness' {unit: 4} {classified}</span>
 <span class="plain-syntax">                VERB_NT'test' {verb 'test' 3p p act IS_TENSE +ve} {prep2: with} {special meaning: test-with}</span>
 <span class="plain-syntax">                UNPARSED_NOUN_NT'me'</span>

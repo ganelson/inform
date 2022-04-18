@@ -436,7 +436,7 @@ docs/$(@LEAF)-module/index.html: {dependent-files-for-module}@
 {end-block}
 
 .PHONY: prepages
-prepages: docs/index.html docs/structure.html docs/extensions.html docs/kits.html docs/services.html docs/inform6.html docs/inbuildn.html docs/inform7n.html docs/intern.html docs/inblorbn.html docs/indocn.html docs/inrtpsn.html docs/inpolicyn.html
+prepages: docs/index.html docs/structure.html docs/extensions.html docs/kits.html docs/services.html docs/inform6.html docs/inbuildn.html docs/inform7n.html docs/intern.html docs/inblorbn.html docs/indocn.html docs/inrtpsn.html docs/inpolicyn.html docs/secrets.html
 
 docs/index.html: docs-src/index.inweb docs-src/nav.html
 	$(INWEBX) -colony $(COLONY) -member overview -weave
@@ -477,6 +477,9 @@ docs/extensions.html: docs-src/extensions.inweb docs-src/nav.html
 docs/kits.html: docs-src/kits.inweb docs-src/nav.html
 	$(INWEBX) -colony $(COLONY) -member kits -weave
 
+docs/secrets.html: docs-src/secrets.inweb docs-src/nav.html
+	$(INWEBX) -colony $(COLONY) -member secrets -weave
+
 .PHONY: forceprepages
 forceprepages:
 	rm -f docs/*.html
@@ -493,6 +496,7 @@ forceprepages:
 	$(INWEBX) -colony $(COLONY) -member inform6 -weave
 	$(INWEBX) -colony $(COLONY) -member extensions -weave
 	$(INWEBX) -colony $(COLONY) -member kits -weave
+	$(INWEBX) -colony $(COLONY) -member secrets -weave
 
 .PHONY: diagnostics
 diagnostics:

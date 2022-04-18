@@ -2,16 +2,9 @@ Seek verb in: beth is a sailor
     viability map of 'beth is a sailor':
     -- is[1] -- -- 
     Found usage, pass 1 tier 2: (beth) be(0) (a sailor)
-    be(0) + had by + ___ : failed for lack of 'had by'
-    be(0) + carried by + ___ : failed for lack of 'carried by'
-    be(0) + known by + ___ : failed for lack of 'known by'
-    be(0) + having + ___ : failed for lack of 'having'
-    be(0) + carrying + ___ : failed for lack of 'carrying'
-    be(0) + knowing + ___ : failed for lack of 'knowing'
-    be(0) + on + ___ : failed for lack of 'on'
-    be(0) + under + ___ : failed for lack of 'under'
     Accepted as be(0) + ___ + ___
-Seek succeeded
+Seek succeeded: VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
+
 Sentence subtree:
     VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
     UNPARSED_NOUN_NT'beth'
@@ -20,9 +13,9 @@ Seek verb in: a ming vase is carried by anna
     viability map of 'a ming vase is carried by anna':
     -- -- -- is[1] carried[1] -- -- 
     Found usage, pass 1 tier 2: (a ming vase) be(0) (carried by anna)
-    be(0) + had by + ___ : failed for lack of 'had by'
     Accepted as be(0) + carried by + ___
-Seek succeeded
+Seek succeeded: VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve} {prep1: carried by}
+
 Sentence subtree:
     VERB_NT'is carried by' {verb 'be' 3p s act IS_TENSE +ve} {prep1: carried by}
     UNPARSED_NOUN_NT'ming vase' {indefinite 'a' n/m/f nom/acc s}

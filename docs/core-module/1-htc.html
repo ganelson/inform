@@ -40,6 +40,7 @@ function togglePopup(material_id) {
 <li><a href="../inform7n.html">inform7</a></li>
 <li><a href="../intern.html">inter</a></li>
 <li><a href="../services.html">services</a></li>
+<li><a href="../secrets.html">secrets</a></li>
 </ul><h2>Other Tools</h2><ul>
 <li><a href="../inblorbn.html">inblorb</a></li>
 <li><a href="../indocn.html">indoc</a></li>
@@ -380,6 +381,20 @@ here, which only happens when special runs are made for compiler testing.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tests_run</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">exit</span><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">BENCH</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP19" class="function-link"><span class="function-syntax">Task::specify_index_requirements</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Log::aspect_switched_on</span><span class="plain-syntax">(</span><span class="constant-syntax">INTER_DA</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">InterSkill::set_debugging</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Log::aspect_switched_on</span><span class="plain-syntax">(</span><span class="constant-syntax">INFORM_INTER_DA</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">TextualInter::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">L</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Dash::phrases_to_log</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Phrase or rule bodies for which textual Inter was requested by '***':\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pack</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"\n%d. Package at $6:\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">n</span><span class="plain-syntax">++, </span><span class="identifier-syntax">pack</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">TextualInter::write_package</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">pack</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="1-htc.html#SP2">&#167;2</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b>We will define just one of the above steps here, because it works in a way

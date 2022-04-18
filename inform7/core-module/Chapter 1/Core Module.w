@@ -12,6 +12,8 @@ Note that the "core" plugin itself does nothihg except to be a parent to the
 other two; it doesn't even have an activation function.
 
 @e TASK_QUEUE_DA
+@e INTER_DA
+@e INFORM_INTER_DA
 
 =
 plugin *core_plugin, *naming_plugin, *counting_plugin;
@@ -23,6 +25,8 @@ void CoreModule::start(void) {
 	counting_plugin = PluginManager::new(&InstanceCounting::start, I"instance counting", core_plugin);
 
 	Log::declare_aspect(TASK_QUEUE_DA, L"task queue", FALSE, FALSE);
+	Log::declare_aspect(INTER_DA, L"inter", FALSE, FALSE);
+	Log::declare_aspect(INFORM_INTER_DA, L"inform inter", FALSE, FALSE);
 
 	Writers::register_writer_I('B', &CoreModule::writer);
 	CorePreform::set_core_internal_NTIs();

@@ -36,6 +36,7 @@ function togglePopup(material_id) {
 <li><a href="../inform7n.html">inform7</a></li>
 <li><a href="../intern.html">inter</a></li>
 <li><a href="../services.html">services</a></li>
+<li><a href="../secrets.html">secrets</a></li>
 </ul><h2>Other Tools</h2><ul>
 <li><a href="../inblorbn.html">inblorb</a></li>
 <li><a href="../indocn.html">indoc</a></li>
@@ -459,6 +460,12 @@ a single Inter primitive or assembly opcode.
 <span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">I7_ASM_STACK_CAPACITY</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">128</span>
 <span class="Extracts-plain-syntax">#</span><span class="Extracts-identifier-syntax">define</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">I7_TMP_STORAGE_CAPACITY</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-constant-syntax">128</span>
 
+<span class="Extracts-identifier-syntax">typedef</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">struct</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7rngseed_t</span><span class="Extracts-plain-syntax"> {</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">uint32_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">A</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">uint32_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">interval</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">uint32_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">counter</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">} </span><span class="Extracts-identifier-syntax">i7rngseed_t</span><span class="Extracts-plain-syntax">;</span>
+
 <span class="Extracts-identifier-syntax">typedef</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">struct</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7state_t</span><span class="Extracts-plain-syntax"> {</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7byte_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">memory</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">himem</span><span class="Extracts-plain-syntax">;</span>
@@ -470,6 +477,7 @@ a single Inter primitive or assembly opcode.
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> *</span><span class="Extracts-identifier-syntax">variables</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">tmp</span><span class="Extracts-plain-syntax">[</span><span class="Extracts-identifier-syntax">I7_TMP_STORAGE_CAPACITY</span><span class="Extracts-plain-syntax">];</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">i7word_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">current_output_stream_ID</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">struct</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">i7rngseed_t</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">seed</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">} </span><span class="Extracts-identifier-syntax">i7state_t</span><span class="Extracts-plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This is part of the extract file inform7_clib.h.</li></ul>
@@ -532,6 +540,7 @@ so it initially consumes very little memory.
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">stack_pointer</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-constant-syntax">0</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">object_tree_parent</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">NULL</span><span class="Extracts-plain-syntax">; </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">object_tree_child</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">NULL</span><span class="Extracts-plain-syntax">; </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">object_tree_sibling</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">NULL</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">variables</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">NULL</span><span class="Extracts-plain-syntax">;</span>
+<span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">.</span><span class="Extracts-identifier-syntax">seed</span><span class="Extracts-plain-syntax"> = </span><span class="Extracts-identifier-syntax">i7_initial_rng_seed</span><span class="Extracts-plain-syntax">();</span>
 <span class="Extracts-plain-syntax">    </span><span class="Extracts-identifier-syntax">return</span><span class="Extracts-plain-syntax"> </span><span class="Extracts-identifier-syntax">S</span><span class="Extracts-plain-syntax">;</span>
 <span class="Extracts-plain-syntax">}</span>
 

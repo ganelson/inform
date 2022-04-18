@@ -35,6 +35,7 @@ function togglePopup(material_id) {
 <li><a href="../inform7n.html">inform7</a></li>
 <li><a href="../intern.html">inter</a></li>
 <li><a href="../services.html">services</a></li>
+<li><a href="../secrets.html">secrets</a></li>
 </ul><h2>Other Tools</h2><ul>
 <li><a href="../inblorbn.html">inblorb</a></li>
 <li><a href="../indocn.html">indoc</a></li>
@@ -133,6 +134,12 @@ must be called before <a href="3-fnc.html#SP2" class="internal">Functions::begin
 <span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">Functions::line_being_compiled</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">Functions::line_being_compiled</span></span>:<br/>Compile Rvalues - <a href="2-cr.html#SP1_3">&#167;1.3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">function_compilation_is_happening_now</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+
+<span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="function-syntax">Functions::package_being_compiled</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">function_compilation_is_happening_now</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">current_function</span><span class="plain-syntax">.</span><span class="element-syntax">into_package</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 

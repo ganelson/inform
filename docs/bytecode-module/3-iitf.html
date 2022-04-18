@@ -35,13 +35,16 @@ function togglePopup(material_id) {
 <li><a href="../inform7n.html">inform7</a></li>
 <li><a href="../intern.html">inter</a></li>
 <li><a href="../services.html">services</a></li>
+<li><a href="../secrets.html">secrets</a></li>
 </ul><h2>Other Tools</h2><ul>
 <li><a href="../inblorbn.html">inblorb</a></li>
 <li><a href="../indocn.html">indoc</a></li>
 <li><a href="../inform6.html">inform6</a></li>
 <li><a href="../inpolicyn.html">inpolicy</a></li>
 <li><a href="../inrtpsn.html">inrtps</a></li>
-<li><a href="../extensions.html">extensions and kits</a></li>
+</ul><h2>Resources</h2><ul>
+<li><a href="../extensions.html">extensions</a></li>
+<li><a href="../kits.html">kits</a></li>
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
@@ -441,6 +444,13 @@ the filter test.
 <span class="plain-syntax">    </span><span class="identifier-syntax">tws</span><span class="plain-syntax">.</span><span class="element-syntax">filter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">filter</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="2-it.html#SP7" class="function-link"><span class="function-syntax">InterTree::traverse_root_only</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><a href="3-iitf.html#SP9" class="function-link"><span class="function-syntax">TextualInter::visitor</span></a><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tws</span><span class="plain-syntax">, -</span><span class="constant-syntax">PACKAGE_IST</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-it.html#SP8" class="function-link"><span class="function-syntax">InterTree::traverse</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><a href="3-iitf.html#SP9" class="function-link"><span class="function-syntax">TextualInter::visitor</span></a><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tws</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TextualInter::write_package</span><span class="plain-syntax">(</span><span class="identifier-syntax">OUTPUT_STREAM</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pack</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) { </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">"&lt;no-inter&gt;\n"</span><span class="plain-syntax">); </span><span class="reserved-syntax">return</span><span class="plain-syntax">; }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">textual_write_state</span><span class="plain-syntax"> </span><span class="identifier-syntax">tws</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tws</span><span class="plain-syntax">.</span><span class="element-syntax">to</span><span class="plain-syntax"> = </span><span class="identifier-syntax">OUT</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tws</span><span class="plain-syntax">.</span><span class="element-syntax">filter</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><a href="2-it.html#SP8" class="function-link"><span class="function-syntax">InterTree::traverse</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><a href="3-iitf.html#SP9" class="function-link"><span class="function-syntax">TextualInter::visitor</span></a><span class="plain-syntax">, &amp;</span><span class="identifier-syntax">tws</span><span class="plain-syntax">, </span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">TextualInter::visitor</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_tree</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_tree_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">textual_write_state</span><span class="plain-syntax"> *</span><span class="identifier-syntax">tws</span><span class="plain-syntax"> = (</span><span class="reserved-syntax">textual_write_state</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">state</span><span class="plain-syntax">;</span>

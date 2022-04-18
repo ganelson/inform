@@ -50,6 +50,7 @@ MathJax = {
 <li><a href="../inform7n.html">inform7</a></li>
 <li><a href="../intern.html">inter</a></li>
 <li><a href="../services.html">services</a></li>
+<li><a href="../secrets.html">secrets</a></li>
 </ul><h2>Other Tools</h2><ul>
 <li><a href="../inblorbn.html">inblorb</a></li>
 <li><a href="../indocn.html">indoc</a></li>
@@ -4298,12 +4299,22 @@ into treating it as such.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">verbose_checking_state</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">packages_to_log_inter_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Dash::tracing_phrases</span><button class="popup" onclick="togglePopup('usagePopup21')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup21">Usage of <span class="code-font"><span class="function-syntax">Dash::tracing_phrases</span></span>:<br/><a href="5-dsh.html#SP28_1">&#167;28.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">text</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">text</span><span class="plain-syntax">[0])) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">TEMPORARY_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">LT</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">LT</span><span class="plain-syntax">, </span><span class="string-syntax">"%w"</span><span class="plain-syntax">, </span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Log::set_aspect_from_command_line</span><span class="plain-syntax">(</span><span class="identifier-syntax">LT</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_insensitive</span><span class="plain-syntax">(</span><span class="identifier-syntax">LT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"inter"</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax"> *</span><span class="identifier-syntax">pack</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Functions::package_being_compiled</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">pack</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">packages_to_log_inter_from</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                    </span><span class="identifier-syntax">packages_to_log_inter_from</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">inter_package</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">ADD_TO_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">pack</span><span class="plain-syntax">, </span><span class="identifier-syntax">inter_package</span><span class="plain-syntax">, </span><span class="identifier-syntax">packages_to_log_inter_from</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Log::set_aspect_from_command_line</span><span class="plain-syntax">(</span><span class="identifier-syntax">LT</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">LT</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">verbose_checking_state</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
@@ -4316,6 +4327,10 @@ into treating it as such.
 <span class="plain-syntax">            </span><span class="identifier-syntax">Log::set_aspect</span><span class="plain-syntax">(</span><span class="identifier-syntax">LOCAL_VARIABLES_DA</span><span class="plain-syntax">, </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+
+<span class="identifier-syntax">linked_list</span><span class="plain-syntax"> *</span><span class="function-syntax">Dash::phrases_to_log</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">packages_to_log_inter_from</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. Value checking. </b>The following adapts the above test to attempt to match two specifications

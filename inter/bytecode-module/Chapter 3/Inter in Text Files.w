@@ -341,6 +341,13 @@ void TextualInter::write(OUTPUT_STREAM, inter_tree *I, int (*filter)(inter_tree_
 	InterTree::traverse_root_only(I, TextualInter::visitor, &tws, -PACKAGE_IST);
 	InterTree::traverse(I, TextualInter::visitor, &tws, NULL, 0);
 }
+void TextualInter::write_package(OUTPUT_STREAM, inter_tree *I, inter_package *pack) {
+	if (I == NULL) { WRITE("<no-inter>\n"); return; }
+	textual_write_state tws;
+	tws.to = OUT;
+	tws.filter = NULL;
+	InterTree::traverse(I, TextualInter::visitor, &tws, pack, 0);
+}
 void TextualInter::visitor(inter_tree *I, inter_tree_node *P, void *state) {
 	textual_write_state *tws = (textual_write_state *) state;
 	if ((tws->filter) && ((*(tws->filter))(P) == FALSE)) return;

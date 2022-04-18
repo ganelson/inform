@@ -112,6 +112,7 @@ it defaults to |compile|.
 
 =
 inform_project *interskill_associated_project = NULL;
+int interskill_debugging_flag = FALSE;
 
 int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	build_methodology *BM, linked_list *search_list) {
@@ -127,6 +128,8 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 	Str::copy(Dictionaries::create_text(pipeline_vars, I"*in"), I"*memory");
 	Str::copy(Dictionaries::create_text(pipeline_vars, I"*out"),
 		Filenames::get_leafname(S->vertex->as_file));
+	if (interskill_debugging_flag)
+		Str::copy(Dictionaries::create_text(pipeline_vars, I"*tout"), I"*log");
 	
 	filename *F = inter_pipeline_file;
 	if (F == NULL) {
@@ -164,4 +167,8 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 
 inform_project *InterSkill::get_associated_project(void) {
 	return interskill_associated_project;
+}
+
+void InterSkill::set_debugging(void) {
+	interskill_debugging_flag = TRUE;
 }

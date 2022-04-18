@@ -3480,12 +3480,22 @@ int Dash::validate_parameter(parse_node *spec, kind *K) {
 
 =
 int verbose_checking_state = FALSE;
+linked_list *packages_to_log_inter_from = NULL;
 
 void Dash::tracing_phrases(wchar_t *text) {
 	if ((text) && (text[0])) {
 		TEMPORARY_TEXT(LT)
 		WRITE_TO(LT, "%w", text);
-		Log::set_aspect_from_command_line(LT, FALSE);
+		if (Str::eq_insensitive(LT, I"inter")) {
+			inter_package *pack = Functions::package_being_compiled();
+			if (pack) {
+				if (packages_to_log_inter_from == NULL)
+					packages_to_log_inter_from = NEW_LINKED_LIST(inter_package);
+				ADD_TO_LINKED_LIST(pack, inter_package, packages_to_log_inter_from);
+			}
+		} else {
+			Log::set_aspect_from_command_line(LT, FALSE);
+		}
 		DISCARD_TEXT(LT)
 		verbose_checking_state = TRUE;
 	} else {
@@ -3498,6 +3508,10 @@ void Dash::tracing_phrases(wchar_t *text) {
 			Log::set_aspect(LOCAL_VARIABLES_DA, TRUE);
 		}
 	}
+}
+
+linked_list *Dash::phrases_to_log(void) {
+	return packages_to_log_inter_from;
 }
 
 @h Value checking.

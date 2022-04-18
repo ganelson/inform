@@ -254,6 +254,20 @@ here, which only happens when special runs are made for compiler testing.
 		if (tests_run > 0) exit(0);
 	}
 	BENCH(Task::specify_index_requirements);
+	if (Log::aspect_switched_on(INTER_DA))
+		InterSkill::set_debugging();
+	if (Log::aspect_switched_on(INFORM_INTER_DA))
+		TextualInter::write(DL, Emit::tree(), NULL);
+	linked_list *L = Dash::phrases_to_log();
+	if (L) {
+		LOG("Phrase or rule bodies for which textual Inter was requested by '***':\n");
+		int n = 1;
+		inter_package *pack;
+		LOOP_OVER_LINKED_LIST(pack, inter_package, L) {	
+			LOG("\n%d. Package at $6:\n", n++, pack);
+			TextualInter::write_package(DL, Emit::tree(), pack);
+		}
+	}
 
 @ We will define just one of the above steps here, because it works in a way
 which breaks the pattern of doing everything just once. For one thing, it's

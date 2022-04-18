@@ -6,6 +6,7 @@ pattern: W3Enhanced
 web: "overview" at "docs-src/index.inweb" in "docs"
 web: "extensions" at "docs-src/extensions.inweb" in "docs"
 web: "kits" at "docs-src/kits.inweb" in "docs"
+web: "secrets" at "docs-src/secrets.inweb" in "docs"
 pattern: GitHubPages
 breadcrumbs: "Home: //overview//"
 web: "structure" at "docs-src/structure.inweb" in "docs"
