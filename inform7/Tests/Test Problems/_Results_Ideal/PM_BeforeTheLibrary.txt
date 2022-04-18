@@ -1,11 +1,11 @@
-Inform 7 build 6L26 has started.
+Inform 7 v10.1.0 has started.
 I've now read your source text, which is 10 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32130 words long.
 Problem__ PM_BeforeTheLibrary
   >--> You wrote 'Include (- Global whatever = 1; -) before the library' (source
-    text, line 3): but this syntax was withdrawn in January 2008, in favour of
-    a more finely controlled I6 inclusion command. The effect you want can
-    probably be achieved by writing 'after "Definitions.i6t".' instead of
-    'before the library.'
-Inform 7 has finished: 16 centiseconds used.
+    text, line 3): but this syntax was withdrawn in January 2008, but the
+    effect you want can probably be achieved by just deleting the words 'before
+    the library.'
+Inform 7 has finished.

@@ -318,14 +318,12 @@ void Emit::propertyvalue(property *P, inter_name *owner, inter_pair val) {
 These should be used as little as possible, and perhaps it may one day be possible
 to abolish them altogether. They insert direct kit material (i.e. paraphrased Inter
 code written out as plain text in Inform 6 notation) into bytecode; this is then
-assimilating during linking. Note that only the raw i6 is actually carried over
-into bytecode; everything else specified in those old-fashioned I7 sentences
-about where to include the code is ignored.
+assimilating during linking.
 
 =
-void Emit::intervention(int stage, text_stream *segment, text_stream *part,
-	text_stream *i6, text_stream *seg) {
-	Produce::guard(InsertInstruction::new(Emit::at(), i6, Emit::baseline(), NULL));
+void Emit::intervention(text_stream *raw_matter, text_stream *replacing) {
+	Produce::guard(
+		InsertInstruction::new(Emit::at(), raw_matter, replacing, Emit::baseline(), NULL));
 }
 
 @ And this is a similarly inelegant construction:

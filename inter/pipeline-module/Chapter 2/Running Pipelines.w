@@ -11,6 +11,7 @@ typedef struct pipeline_ephemera {
 	struct inter_tree *memory_repository;
 	struct inter_tree *trees[10];
 	struct inter_package *assimilation_modules[10];
+	struct linked_list *replacements_list[10];
 } pipeline_ephemera;
 
 void RunningPipelines::clean_pipeline(inter_pipeline *pl) {
@@ -18,6 +19,7 @@ void RunningPipelines::clean_pipeline(inter_pipeline *pl) {
 	for (int i=0; i<10; i++) {
 		pl->ephemera.trees[i] = NULL;
 		pl->ephemera.assimilation_modules[i] = NULL;
+		pl->ephemera.replacements_list[i] = NEW_LINKED_LIST(text_stream);
 	}
 }
 

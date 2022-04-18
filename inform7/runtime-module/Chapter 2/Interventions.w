@@ -33,8 +33,8 @@ void Interventions::make_all(void) {
 	source_text_intervention *sti;
 	LOOP_OVER(sti, source_text_intervention)
 		if (sti->infs_to_include_with == NULL)
-			Emit::intervention(sti->stage, sti->segment, sti->part,
-				Interventions::expand_bracket_plus(sti->matter), sti->seg);
+			Emit::intervention(Interventions::expand_bracket_plus(sti->matter),
+				sti->replacing);
 }
 
 @ Secondly, here are those which append properties to instance or class declarations:
@@ -51,8 +51,7 @@ void Interventions::make_for_subject(inter_name *iname, inference_subject *infs)
 
 =
 void Interventions::from_use_option(text_stream *S) {
-	Emit::intervention(EARLY_LINK_STAGE, NULL, NULL,
-		Interventions::expand_bracket_plus(S), NULL);
+	Emit::intervention(Interventions::expand_bracket_plus(S), NULL);
 }
 
 @ Not to digress,[1] but the following function has a surprising history. In the

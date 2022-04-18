@@ -17969,7 +17969,7 @@ Finally, note that it is legal to define the same use option more than once, but
 Whole routines, object and class definitions (or any other directives) can be pasted in wholesale using sentences like so:
 
 	Include (-
-	[ MyInform6Routine a b; return a*b; ];
+	[ ExtraFunction a b; return a*b; ];
 	-).
 
 Such inclusions are pasted into the final compiled code at the end of the file, after the I6 grammar has been declared.
@@ -18010,14 +18010,14 @@ is tripped up by the Glulx assembly language opcode "@glk" because this occurs i
 
 	Include (-
 	Global saved_optional_prompt = (+ "!!>" +);
-	-) after "Definitions.i6t".
+	-).
 
 looks as if it will work, but doesn't, for reference-counting reasons we needn't go into; instead you need
 
 	Include (-
 	Array sop_storage --> PACKED_TEXT_STORAGE "!!>";
 	Global saved_optional_prompt = sop_storage;
-	-) after "Definitions.i6t".
+	-).
 
 But it's far better to avoid initialising text variables from I6 entirely. The same problems arise with constant lists.
 
@@ -18086,6 +18086,8 @@ If we need a particular I7 object or kind to end up with a particular I6 name, w
 	The whatsit object translates into I6 as "whatsit".
 	The thingummy kind translates into I6 as "thingummy_class".
 
+WARNING: The "Include (- ... -) when defining ..." usage still works for the moment (except in projects compiled to C at the command line, where it may fail), but it is deprecated and likely to be removed in later versions of Inform. Avoid it if at all possible.
+
 [x] Inform 6 variables, properties, actions, and attributes {PM_TranslatesNonAction} {PM_TranslatesActionAlready} {PM_TranslatedTwice} {PM_TranslatedUnknownCategory} {PM_TranslatedToNonIdentifier} {PM_NonPropertyTranslated} {PM_NonQuantityTranslated} {PM_QuantityTranslatedAlready}
 
 ^^{Inform 6 inclusions: properties}
@@ -18106,7 +18108,7 @@ I7's variables are usually compiled as entries in an array rather than as I6 var
 
 This is a feature provided to help I7 source text to use variables internal to the I6 template code. It can, if really necessary, also be used to give I7 names to entirely new I6-level variables, created like so:
 
-	Include (- Global my_variable = 0; -) after "Definitions.i6t".
+	Include (- Global my_variable = 0; -).
 
 This style of hybrid coding is really not encouraged.
 
@@ -18186,57 +18188,55 @@ Users normally teach these names to Inform by including one of the extensions "U
 
 Nothing restricts this usage to those extensions.
 
-[x] The template layer {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown}
+[x] Overriding definitions in kits {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
 
 ^^{extensions: Inform 6 template layer}
 ^^{Inform 6 inclusions: Inform 6 template layer}
 ^^{templates, Inform 6 template layer}
 
-When Go is clicked, Inform translates the I7 source text into I6 code, but the directly translated code could not survive on its own: it needs a large body of supporting code, also written in I6, to sustain it. (Just as a program like iTunes or Firefox cannot run on a bare machine, but needs an operating system already up and running to support it.) Until 2008, this supporting code was provided by the I6 library, that is, the standard distribution of useful I6 code supplied with distributions of Inform 6.
+When Go is clicked, Inform translates the I7 source text into a large body of so-called "Inter" code: "Inter" is short for "intermediate". Large as this program is, it could not survive on its own: it needs a large body of pre-compiled code, also written in Inter, to sustain it. This additional material is organised in blocks called "kits". Most Inform users never need to know about kits, but for example, a typical Inform project includes kits called BasicInformKit, WorldModelKit and CommandParserKit.
 
-However, the supporting code is now generated from a collection of about 35 "segments" of I6 code which together make up "the template layer". The reason for the term "template" is that the segments are not quite directly copied into I7's output, but instead act as templates from which I7 generates code - the final output contains variations according to what the original source text needs.
+These kits are compiled from what is (nearly) Inform 6-syntax source code, and for the details of that, see the documentation on the low-level tool "inter". While it's absolutely possible for Inform users to create and use their own kits, that's beyond the scope of this book. But what we will cover here is the ability to include just a little extra Inter code - perhaps only a few functions or constants.
 
-Each segment has its own name, which looks like a leafname plus the ".i6t" filename extension (which stands for "I6 template"). Internally, a segment is itself divided up into named parts. For instance, the segment "Relations.i6t" contains a part called "Symmetric One To One Relations" which provides I6 routines for changing and testing such relations. There are more than 600 named parts across the template as a whole; it is quite a large program. An annotated, typeset version of the template - amounting to a roughly 500-page book - is available for download from the Inform website.
+In fact, we have seen the necessary syntax already:
 
-The most powerful use of "Include" allows code to included before, instead of or after any named part or segment in the template. For example:
+	Include (- ... -).
+
+puts the given material "..." into the project. For example:
+
+	Include (-
+		[ ExtraFunction a b; return a*b; ];
+	-).
+
+adds just a single function called "ExtraFunction".
+
+And this works fine, but if we tried the same trick to create a function called "SquareRoot", for example, then the result would be a problem message - because BasicInformKit also defines a function of the same name. This problem message is useful, because it warns us about accidental name clashes.
+
+But what if the name clash was not an accident at all, and what we actually wanted to give our own definition of "SquareRoot", to be used instead of the one in BasicInformKit? This is also possible:
+
+	Include (-
+	[ SquareRoot num;
+		"Nobody cares about square roots, son.";
+	];
+	-) replacing "SquareRoot".
+
+And now whenever square roots are calculated, this snarky text will be printed, and the result will always be rather meaningless. As this example shows, the result of replacing kit definitions can be absolute chaos.
+
+An important historical note: between about 2010 and 2021, kits did not exist, and instead there were "template files" of Inform 6 code which served roughly then same purpose. These had names like "Relations.i6t" or "Mathematics.i6t" and were internally divided into named subsections; and Inform supported syntax like the following:
 
 	Include (- ... -) before "Relations.i6t".
 	Include (- ... -) instead of "Relations.i6t".
 	Include (- ... -) after "Symmetric One To One Relations" in "Relations.i6t".
 
-Multiple such inclusions can be made for the same segment or part. If so, all will take effect in the case of "before" or "after", but for "instead of" only the most recent one takes effect. Inclusions requested before, or after, a segment or part which has been replaced with "instead of" will take effect and appear before or after the code which appears instead of it.
+to allow new material to be placed at oddball positions in the final code. There is now no need to worry about the placement of code - Inform's final code generator manages things so that code-ordering issues do not arise; as a result, the "before" and "after" options are now unnecessary. For now, Inform ignores these usages, and just disregards the "before..." or "after..." parts. But in some later version of Inform they will begin to cause problem messages, so writers of extensions using these syntaxes should now please remove them.
 
-The pre-2008 syntax
+The "instead of" option now cannot work at all, and throws a problem message. The new way to substitute a fresh definition of something built-in is to use the "replacing" notation described above.
 
-	Include (- ... -) before the library.
-
-has been withdrawn; the new syntax
-
-	Include (- ... -) after "Definitions.i6t".
-
-should have the same effect.
-
-Template files are not written in literal I6, but in a marked-up, annotated form of I6 which has special transcription commands embedded into it. These commands should absolutely not be used except in the built-in template files, with one exception:
-
-	{-segment:Flowers.i6t}
-
-places the whole of the template file "Flowers.i6t" in this position. The built-in template does not of course contain "Flowers.i6t", but Inform allows the optional "I6T" subfolder of the ".materials" folder of a project to hold additional or replacement template files. Thus the project "Botanic Gardens.inform" might store:
-
-	Botanic Gardens.materials/I6T/Flowers.i6t
-
-It could even contain:
-
-	Botanic Gardens.materials/I6T/Relations.i6t
-
-in which case this would automatically be used instead of the built-in copy of "Relations.i6t", without any change to the I7 source text being needed. In this way, projects can (if they need to) use partly or entirely customised templates.
-
-One application of this might allow for chunks of I6 code generated by external utilities - Perl scripts, lex and yacc, or other code generators - by compiling those to suitable template files in .materials/I6T and then using an inclusion like
+With the demise of the "template layer", as it was called, another form of so-called "template hacking" has gone with it - the special notation:
 
 	Include (- {-segment:MyStuff.i6t} -).
 
-in the I7 source text.
-
-Template hacking, as it's called, is a last resort. If there is any way to achieve the same ends by writing ordinary I7 source text, then that will always be better. If it is possible to write "Include (- ... -)" without mentioning any segment or part, that's much to be preferred, because it has more chance of continuing to work into the future when the template might have been rewritten.
+to allow a whole extra file of Inform 6 code called "MyStuff.i6t" to be pasted in. The new way to do that is to create a new kit, say MyStuffKit, to hold the material in question. This is not hard to do, but beyond the scope of this book. See the documentation on the low-level Inform tool "inter".
 
 [x] Translating the language of play
 

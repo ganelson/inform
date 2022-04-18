@@ -363,11 +363,11 @@ inter_symbol *Wiring::plug(inter_tree *I, text_stream *wanted) {
 			internal_error("tried to make plug with same name as a socket");
 	} else {
 		plug = InterSymbolsTable::create_with_unique_name(CT, name);
-		DISCARD_TEXT(name)
 		Wiring::make_plug_wanting_identifier(plug, wanted);
 		LOGIF(INTER_CONNECTORS, "Plug $3 ~~> \"%S\"\n",
 			plug, Wiring::name_sought_by_loose_plug(plug));
 	}
+	DISCARD_TEXT(name)
 	return plug;
 }
 

@@ -91,9 +91,11 @@ started in.)
 
 If no such symbol exists, but |create| is set, we then create it. If |ID| is
 zero, we give it the next free symbol ID within the table; otherwise we give
-it exactly the id |ID|. (This is needed when loading binary Inter from a file,
+it exactly the id |ID|. This is needed when loading binary Inter from a file,
 and we need to make sure that we use the same IDs as those expected by that
-binary code.)
+binary code. In that situation, we keep nudging |T->next_free_symbol_ID| upwards
+as required to ensure that it ends up being equal to 1 more than the highest
+symbol ID defined.
 
 =
 inter_symbol *InterSymbolsTable::search_inner(inter_symbols_table *T, text_stream *name,
@@ -129,6 +131,7 @@ inter_symbol *InterSymbolsTable::search_inner(inter_symbols_table *T, text_strea
 
 @<Create a new symbol with this name, and return it@> =
 	if (ID == 0) ID = T->next_free_symbol_ID++;
+	else if (T->next_free_symbol_ID <= ID) T->next_free_symbol_ID = ID+1;
 	inter_symbol *S = InterSymbol::new_for_symbols_table(name, T, ID);
 	@<Add S to the array@>;
 	if (T->symbols_dictionary) {
@@ -170,6 +173,31 @@ inter_symbol *InterSymbolsTable::search_inner(inter_symbols_table *T, text_strea
 		Dictionaries::create(T->symbols_dictionary, InterSymbol::identifier(A));
 		Dictionaries::write_value(T->symbols_dictionary, InterSymbol::identifier(A), (void *) A);
 	}
+
+@h Unnaming a symbol.
+
+=
+int InterSymbolsTable::unname(inter_symbols_table *T, text_stream *name) {
+	if (T->symbols_dictionary) {
+		dict_entry *E = Dictionaries::find(T->symbols_dictionary, name);
+		if (E) {
+			inter_symbol *A = (inter_symbol *) E->value;
+			E->value = NULL;
+			A->identifier = Str::new();
+			WRITE_TO(A->identifier, "nameless__%d", A->symbol_ID);
+			return TRUE;
+		}
+	} else {
+		LOOP_OVER_SYMBOLS_TABLE(A, T) {
+			if (Str::eq(InterSymbol::identifier(A), name)) {
+				A->identifier = Str::new();
+				WRITE_TO(A->identifier, "nameless__%d", A->symbol_ID);
+				return TRUE;
+			}
+		}
+	}
+	return FALSE;
+}
 
 @h From name to symbol.
 Variations on the above then provide an API for looking up the meaning of names

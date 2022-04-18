@@ -22,6 +22,7 @@ However, we continue to parse the old syntax, so:
 @d SECTION_LEVEL_INC 2		/* before, instead of, or after a section of I6 template */
 @d WHEN_DEFINING_INC 3		/* as part of an Object or Class definition */
 @d AS_PREFORM_INC 4 		/* include it not as I6, but as Preform grammar */
+@d REPLACING_INC 5          /* replacing a symbol also defined in some kit */
 
 @d BEFORE_LINK_STAGE 1
 @d INSTEAD_LINK_STAGE 2
@@ -40,13 +41,14 @@ handled here: if we see one, we ignore it.
 	<inclusion-side> {<quoted-text-without-subs>} |     ==> @<Segment@>
 	<inclusion-side> {<quoted-text-without-subs>} in {<quoted-text-without-subs>} | ==> @<Section@>
 	when defining <s-type-expression> |                 ==> { WHEN_DEFINING_INC, RP[1] }
+	replacing {<quoted-text-without-subs>} |            ==> { REPLACING_INC, - }
 	when defining ... |                                 ==> @<Issue PM_WhenDefiningUnknown problem@>
 	before the library |                                ==> @<Issue PM_BeforeTheLibrary problem@>
 	in the preform grammar                              ==> { AS_PREFORM_INC, NULL }
 
 <inclusion-side> ::=
 	before |                                            ==> { BEFORE_LINK_STAGE, - }
-	instead of |                                        ==> { INSTEAD_LINK_STAGE, - }
+	instead of |                                        ==> @<Issue PM_IncludeInsteadOf problem@>
 	after                                               ==> { AFTER_LINK_STAGE, - }
 
 @<Segment@> =
@@ -60,15 +62,22 @@ handled here: if we see one, we ignore it.
 @<Issue PM_WhenDefiningUnknown problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_WhenDefiningUnknown),
 		"I do not understand what definition you're referring to",
-		"so I can't make an Inform 6 inclusion there.");
+		"so I can't make an Inter inclusion there.");
+	==> { SEGMENT_LEVEL_INC, NULL };
+
+@<Issue PM_IncludeInsteadOf problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_IncludeInsteadOf),
+		"this syntax was withdrawn in April 2022",
+		"in favour of a more finely controlled inclusion command. See the manual, "
+		"but you can probably get what you want using 'replacing \"SomeFunctionName\".' "
+		"rather than 'instead of ...'.");
 	==> { SEGMENT_LEVEL_INC, NULL };
 
 @<Issue PM_BeforeTheLibrary problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BeforeTheLibrary),
 		"this syntax was withdrawn in January 2008",
-		"in favour of a more finely controlled I6 inclusion command. The effect "
-		"you want can probably be achieved by writing 'after \"Definitions.i6t\".' "
-		"instead of 'before the library.'");
+		"but the effect you want can probably be achieved by just deleting the "
+		"words 'before the library.'");
 	==> { SEGMENT_LEVEL_INC, NULL };
 
 @ So, then, this function is called on inclusion sentences such as:
@@ -77,6 +86,7 @@ handled here: if we see one, we ignore it.
 
 Those references are now meaningless (I6T files in the sense meant by this
 syntax no longer exist), but we faithfully parse them before ignoring them.
+A later version of Inform will probably produce problem messages on these.
 
 =
 void InterventionRequests::make(parse_node *PN) {
@@ -98,6 +108,8 @@ void InterventionRequests::make(parse_node *PN) {
 					@<It's positioned with respect to a template section@>; break;
 				case WHEN_DEFINING_INC:
 					@<It's positioned in the middle of a class or object definition@>; break;
+				case REPLACING_INC:
+					@<Replace a kit definition with this@>; break;
 				case AS_PREFORM_INC: return;
 			}
 		}
@@ -106,13 +118,13 @@ void InterventionRequests::make(parse_node *PN) {
 }
 
 @<There are no specific instructions about where it goes@> =
-	InterventionRequests::remember(AFTER_LINK_STAGE, NULL, NULL, PN, NULL);
+	InterventionRequests::remember(AFTER_LINK_STAGE, NULL, NULL, PN, NULL, NULL);
 
 @<It's positioned with respect to a template segment@> =
 	Word::dequote(segment_inclusion_wn);
 	TEMPORARY_TEXT(seg)
 	WRITE_TO(seg, "%W", Wordings::one_word(segment_inclusion_wn));
-	InterventionRequests::remember(inclusion_side, seg, NULL, PN, NULL);
+	InterventionRequests::remember(inclusion_side, seg, NULL, PN, NULL, NULL);
 	DISCARD_TEXT(seg)
 
 @<It's positioned with respect to a template section@> =
@@ -122,9 +134,18 @@ void InterventionRequests::make(parse_node *PN) {
 	TEMPORARY_TEXT(seg)
 	WRITE_TO(sec, "%W", Wordings::one_word(section_inclusion_wn));
 	WRITE_TO(seg, "%W", Wordings::one_word(segment_inclusion_wn));
-	InterventionRequests::remember(inclusion_side, seg, sec, PN, NULL);
+	InterventionRequests::remember(inclusion_side, seg, sec, PN, NULL, NULL);
 	DISCARD_TEXT(sec)
 	DISCARD_TEXT(seg)
+
+@<Replace a kit definition with this@> =
+	wording W = GET_RW(<inform6-inclusion-location>, 1);
+	int wn = Wordings::first_wn(W);
+	Word::dequote(wn);
+	TEMPORARY_TEXT(X)
+	WRITE_TO(X, "%W", W);
+	InterventionRequests::remember(AFTER_LINK_STAGE, NULL, NULL, PN, NULL, X);
+	DISCARD_TEXT(X)
 
 @ When it comes to class and object definitions, we don't give the Template
 code instructions; we remember what's needed ourselves:
@@ -137,13 +158,9 @@ code instructions; we remember what's needed ourselves:
 
 @<Issue problem message for bad inclusion instructions@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadI6Inclusion),
-		"this is not a form of I6 code inclusion I recognise",
+		"this is not a form of Inter code inclusion I recognise",
 		"because the clause at the end telling me where to put the code excerpt is not "
-		"one of the possibilities I know. The clause can either be blank (in which case "
-		"I'll find somewhere sensible to put it), or 'when defining' plus the name of "
-		"an object or kind of object, or 'before', 'instead of' or 'after' a double-quoted "
-		"name of a template layer segment, or of a part of one. For instance, "
-		"'before \"Parser.i6t\".' or 'after \"Pronouns\" in \"Language.i6t\".'");
+		"one of the possibilities I know.");
 
 @ These requests are not acted on here, they are simply remembered for later
 action: see //runtime: Interventions//.
@@ -157,6 +174,7 @@ typedef struct source_text_intervention {
 	struct inference_subject *infs_to_include_with;
 	struct text_stream *matter;
 	struct parse_node *where_made;
+	struct text_stream *replacing;
 	CLASS_DEFINITION
 } source_text_intervention;
 
@@ -170,6 +188,7 @@ source_text_intervention *InterventionRequests::new_sti(parse_node *p) {
 	sti->matter = Str::new();
 	WRITE_TO(sti->matter, "%w", sf);
 	sti->seg = NULL;
+	sti->replacing = NULL;
 	return sti;
 }
 
@@ -179,10 +198,11 @@ void InterventionRequests::remember_for_subject(parse_node *p, inference_subject
 }
 
 void InterventionRequests::remember(int stage, text_stream *segment, text_stream *part,
-	parse_node *p, text_stream *seg) {
+	parse_node *p, text_stream *seg, text_stream *rep) {
 	source_text_intervention *sti = InterventionRequests::new_sti(p);
 	sti->stage = stage;
 	sti->segment = Str::duplicate(segment);
 	sti->part = Str::duplicate(part);
 	sti->seg = Str::duplicate(seg);
+	sti->replacing = Str::duplicate(rep);
 }

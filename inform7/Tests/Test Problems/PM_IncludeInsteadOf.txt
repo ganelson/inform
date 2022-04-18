@@ -1,0 +1,7 @@
+The French Kitchen is a room.
+
+Include (-
+[ SquareRoot num;
+	"Nobody cares about square roots, son.";
+];
+-) instead of "Mathematics.i6t".

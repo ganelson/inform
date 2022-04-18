@@ -72,6 +72,7 @@ void ShortenWiringStage::visitor(inter_tree *I, inter_tree_node *P, void *v_stat
 
 @<This is an error, because a loose plug has been used@> =
 	text_stream *N = Wiring::name_sought_by_loose_plug(E);
+	LOG("Loose plug found: $3 ~~> $3: was $3\n", S, Wiring::cable_end(S), E);
 	if (Dictionaries::find(state->bad_plugs, N) == NULL) {
 		Dictionaries::create(state->bad_plugs, N);
 		ADD_TO_LINKED_LIST(N, text_stream, state->bad_plug_names);

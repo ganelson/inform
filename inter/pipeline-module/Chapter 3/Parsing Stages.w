@@ -67,20 +67,34 @@ it can only leave us these unparsed fragments as |INSERT_IST| nodes. We take
 it from there.
 
 =
+typedef struct rpi_state {
+	struct simple_tangle_docket *docket;
+	struct pipeline_step *step;
+} rpi_state;
+
 int ParsingStages::run_parse_insertions(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
-	InterTree::traverse(I, ParsingStages::visit_insertions, &docket, NULL, INSERT_IST);
+	rpi_state rpis;
+	rpis.docket = &docket;
+	rpis.step = step;
+	InterTree::traverse(I, ParsingStages::visit_insertions, &rpis, NULL, INSERT_IST);
 	return TRUE;
 }
 
 void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *state) {
 	text_stream *insertion = InsertInstruction::insertion(P);
-	simple_tangle_docket *docket = (simple_tangle_docket *) state;
+	rpi_state *rpis = (rpi_state *) state;
+	simple_tangle_docket *docket = rpis->docket;
 	inter_bookmark here = InterBookmark::after_this_node(P);
 	docket->state = (void *) &here;
 	SimpleTangler::tangle_text(docket, insertion);
+	text_stream *replacing = InsertInstruction::replacing(P);
+	if (Str::len(replacing) > 0) {
+		linked_list *L = rpis->step->pipeline->ephemera.replacements_list[rpis->step->tree_argument];
+		ADD_TO_LINKED_LIST(replacing, text_stream, L);
+	}
 }
 
 @ So, then, both of those stages rely on making something called an simple

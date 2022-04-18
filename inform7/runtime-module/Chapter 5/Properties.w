@@ -191,10 +191,12 @@ void RTProperties::compile(void) {
 	Emit::property(iname, K);
 
 @<Compile the property name metadata@> =
-	if (Wordings::nonempty(prn->name))
+	if (Wordings::nonempty(prn->name)) {
 		Hierarchy::apply_metadata_from_wording(pack, PROPERTY_NAME_MD_HL, prn->name);
-	else
+	} else {
 		Hierarchy::apply_metadata(pack, PROPERTY_NAME_MD_HL, InterNames::get_translation(iname));
+	}
+	InterSymbol::set_flag(InterNames::to_symbol(iname), PERMIT_NAME_CLASH_ISYMF);
 	Hierarchy::apply_metadata_from_number(pack, PROPERTY_ORDER_MD_HL,
 		(inter_ti) prn->allocation_id);
 

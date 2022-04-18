@@ -15,18 +15,18 @@ So the following gives unique translated names to symbols marked with the
 |MAKE_NAME_UNIQUE_ISYMF| bit. So for example
 = (text)
 	NAME		MAKE_NAME_UNIQUE_ISYMF	TRANSLATION
-	call		TRUE				--
-	call		TRUE				--
-	example		FALSE				--
-	call		TRUE				--
+	call		TRUE				    --
+	call		TRUE			    	--
+	example		FALSE				    --
+	call		TRUE				    --
 =
 will become
 = (text)
 	NAME		MAKE_NAME_UNIQUE_ISYMF	TRANSLATION
-	call		FALSE				call_U1
-	call		FALSE				call_U2
-	example		FALSE				--
-	call		FALSE				call_U3
+	call		FALSE				    call_U1
+	call		FALSE				    call_U2
+	example		FALSE				    --
+	call		FALSE				    call_U3
 =
 Only the translation changes, not the name itself, which remains |call|.
 
