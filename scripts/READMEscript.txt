@@ -193,7 +193,6 @@ be accepted. (Note that these are not git submodules.)
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 @template('inform7/Internal/Templates/Parchment', 'Z-machine in Javascript', 'Dannii Willis', curiousdannii, parchment)
 @template('inform7/Internal/Templates/Quixe', 'Glulx in Javascript', 'Andrew Plotkin', erkyrath, quixe)
-@template('inform7/Internal/Templates/Vorple', 'Multimedia in Javascript', 'Juhana Leinonen', vorple, inform7)
 
 ### Binary resources (such as image files)
 
