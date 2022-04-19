@@ -23,7 +23,7 @@ Eg4-I.o: Eg4-I.c
 	$(CC) -o Eg4-I.o Eg4-I.c
 
 Eg4-I.c: Eg4.i7
-	$(INFORM) -basic -format=C/no-main -o Eg4-I.c Eg4.i7 -variable *tout=textual.txt
+	$(INFORM) -basic -format=C/no-main -o Eg4-I.c Eg4.i7
 
 .PHONY: run
 run: Eg4
