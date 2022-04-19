@@ -125,23 +125,19 @@ void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 
 void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
-	scan_directory *D = Directories::open(P);
-	if (D) {
-		TEMPORARY_TEXT(LEAFNAME)
-		while (Directories::next(D, LEAFNAME)) {
-			if (Platform::is_folder_separator(Str::get_last_char(LEAFNAME))) {
-				Str::delete_last_character(LEAFNAME);
-				if (Str::ne(LEAFNAME, I"Reserved")) {
-					pathname *Q = Pathnames::down(P, LEAFNAME);
-					ExtensionManager::search_nest_for_r(Q, N, req, search_results);
-				}
-			} else {
-				filename *F = Filenames::in(P, LEAFNAME);
-				ExtensionManager::search_nest_for_single_file(F, N, req, search_results);
+	linked_list *L = Directories::listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			Str::delete_last_character(entry);
+			if (Str::ne(entry, I"Reserved")) {
+				pathname *Q = Pathnames::down(P, entry);
+				ExtensionManager::search_nest_for_r(Q, N, req, search_results);
 			}
+		} else {
+			filename *F = Filenames::in(P, entry);
+			ExtensionManager::search_nest_for_single_file(F, N, req, search_results);
 		}
-		DISCARD_TEXT(LEAFNAME)
-		Directories::close(D);
 	}
 }
 

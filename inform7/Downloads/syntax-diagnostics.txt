@@ -1604,7 +1604,7 @@ ROOT_NT
                     SENTENCE_NT'the language of play is usually the english language' {unit: 1} {classified}
                         VERB_NT'is usually' {certainty:likely} {verb 'be' 3p s act IS_TENSE +ve}
                         PROPER_NOUN_NT'language of play' {definite 'the' n/m/f s/p nom/acc} {refined} {eval: NONLOCAL_VARIABLE_NT'language of play' {nonlocal: 'language of play'(var)natural language} {meaning: {language of play = VARIABLE_MC}}}
-                        PROPER_NOUN_NT'english language' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'english language'} {eval: CONSTANT_NT'english language' {kind: natural language} {instance: I2'english language'[natural language]} {enumeration: 0} {meaning: {english language = NAMED_CONSTANT_MC}}}
+                        PROPER_NOUN_NT'english language' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'english language'} {eval: CONSTANT_NT'english language' {kind: natural language} {instance: I0'english language'[natural language]} {enumeration: 0} {meaning: {english language = NAMED_CONSTANT_MC}}}
                     SENTENCE_NT'a grammatical tense is a kind of value' {unit: 1} {classified}
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                         COMMON_NOUN_NT'grammatical tense' {indefinite 'a' n/m/f nom/acc s} {refined} {creation: << kind=grammatical tense(x) >>} {refers: infs'object'-k} {eval: TEST_VALUE_NT} {created here}
@@ -1651,7 +1651,7 @@ ROOT_NT
                     SENTENCE_NT'the adaptive text viewpoint of the english language is first' {unit: 1} {classified} {interpretation of subject: infs'natural language'-k}
                         VERB_NT'is' {verb 'be' 3p s act IS_TENSE +ve}
                         X_OF_Y_NT'adaptive text viewpoint of the english language' {definite 'the' n/m/f s/p nom/acc} {refined}
-                            PROPER_NOUN_NT'english language' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'english language'} {eval: CONSTANT_NT'english language' {kind: natural language} {instance: I2'english language'[natural language]} {enumeration: 0} {meaning: {english language = NAMED_CONSTANT_MC}}}
+                            PROPER_NOUN_NT'english language' {definite 'the' n/m/f s/p nom/acc} {refined} {refers: infs'english language'} {eval: CONSTANT_NT'english language' {kind: natural language} {instance: I0'english language'[natural language]} {enumeration: 0} {meaning: {english language = NAMED_CONSTANT_MC}}}
                             PROPER_NOUN_NT'adaptive text viewpoint' {refined} {eval: CONSTANT_NT {kind: narrative viewpoints valued property} {property: 'adaptive text viewpoint'=narrative viewpoint}}
                         PROPER_NOUN_NT'first person plural' {refined} {refers: infs'first person plural'} {eval: CONSTANT_NT'first person plural' {kind: narrative viewpoint} {instance: I14'first person plural'[narrative viewpoint]} {enumeration: 0} {meaning: {first person plural = NAMED_CONSTANT_MC}}}
                     SENTENCE_NT'a grammatical case is a kind of value' {unit: 1} {classified} {interpretation of subject: infs'natural language'-k}

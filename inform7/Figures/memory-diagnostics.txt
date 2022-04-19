@@ -1,10 +1,10 @@
-Total memory consumption was 129338K = 126 MB
+Total memory consumption was 129371K = 126 MB
 
- ---- was used for 2043445 objects, in 362358 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2043757 objects, in 362472 frames in 0 x 800K = 0K = 0 MB:
 
     31.5%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
-    19.5%  text_stream_array                        4598 x 100 = 459800 objects, 25895936 bytes
-    18.3%  linked_list                              43330 objects, 24264800 bytes
+    19.5%  text_stream_array                        4600 x 100 = 460000 objects, 25907200 bytes
+    18.3%  linked_list                              43442 objects, 24327520 bytes
     10.6%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes
      9.9%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes
      7.8%  parse_node                               129584 objects, 10366720 bytes
@@ -237,9 +237,9 @@ Total memory consumption was 129338K = 126 MB
 
 100.0% was used for memory not allocated for objects:
 
-    59.6%  text stream storage                      79051416 bytes in 477740 claims
+    59.6%  text stream storage                      79084436 bytes in 477957 claims
      3.9%  dictionary storage                       5227008 bytes in 7517 claims
-     ----  sorting                                  744 bytes in 3 claims
+     ----  sorting                                  1448 bytes in 145 claims
      5.4%  source text                              7200000 bytes in 3 claims
      8.1%  source text details                      10800000 bytes in 2 claims
      0.1%  documentation fragments                  262144 bytes in 1 claim
@@ -255,5 +255,5 @@ Total memory consumption was 129338K = 126 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      0.2%  emitter array storage                    280032 bytes in 1997 claims
 
--138.-6% was overhead - -183666616 bytes = -179361K = -175 MB
+-138.-6% was overhead - -183740600 bytes = -179434K = -175 MB
 

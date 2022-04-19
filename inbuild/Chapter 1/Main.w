@@ -232,16 +232,14 @@ void Main::add_search_results_as_targets(text_stream *req_text) {
 }
 
 void Main::add_directory_contents_targets(pathname *P) {
-	scan_directory *D = Directories::open(P);
-	TEMPORARY_TEXT(LEAFNAME)
-	while (Directories::next(D, LEAFNAME)) {
+	linked_list *L = Directories::listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
 		TEMPORARY_TEXT(FILENAME)
-		WRITE_TO(FILENAME, "%p%c%S", P, FOLDER_SEPARATOR, LEAFNAME);
+		WRITE_TO(FILENAME, "%p%c%S", P, FOLDER_SEPARATOR, entry);
 		Main::add_file_or_path_as_target(FILENAME, FALSE);
 		DISCARD_TEXT(FILENAME)
 	}
-	DISCARD_TEXT(LEAFNAME)
-	Directories::close(D);
 }
 
 void Main::add_file_or_path_as_target(text_stream *arg, int throwing_error) {

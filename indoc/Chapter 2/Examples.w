@@ -64,17 +64,14 @@ Inform documentation.
 
 =
 void Examples::scan_examples(void) {
-	scan_directory *dir = Directories::open(indoc_settings->examples_directory);
-	if (dir == NULL) Errors::fatal("can't open examples directory");
-
-	TEMPORARY_TEXT(leafname)
-	while (Directories::next(dir, leafname)) {
-		if (Platform::is_folder_separator(Str::get_last_char(leafname))) continue;
-		filename *exloc = Filenames::in(indoc_settings->examples_directory, leafname);
-		if (Regexp::match(NULL, leafname, L"%(Recipes%)%c*")) @<Scan the Recipe Book catalogue@>
+	linked_list *L = Directories::listing(indoc_settings->examples_directory);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) continue;
+		filename *exloc = Filenames::in(indoc_settings->examples_directory, entry);
+		if (Regexp::match(NULL, entry, L"%(Recipes%)%c*")) @<Scan the Recipe Book catalogue@>
 		else @<Scan a regular example@>;
 	}
-	Directories::close(dir);
 	@<Use the Recipe Book catalogue to place examples in the RB@>;
 	volume *V;
 	LOOP_OVER(V, volume) {

@@ -86,20 +86,16 @@ void PipelineManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
 	if ((req->work->genre) && (req->work->genre != pipeline_genre)) return;
 	pathname *P = PipelineManager::path_within_nest(N);
-	scan_directory *D = Directories::open(P);
-	if (D) {
-		TEMPORARY_TEXT(LEAFNAME)
-		while (Directories::next(D, LEAFNAME)) {
-			if (Platform::is_folder_separator(Str::get_last_char(LEAFNAME)) == FALSE) {
-				filename *F = Filenames::in(P, LEAFNAME);
-				inbuild_copy *C = PipelineManager::claim_file_as_copy(F, NULL);
-				if ((C) && (Requirements::meets(C->edition, req))) {
-					Nests::add_search_result(search_results, N, C, req);
-				}
+	linked_list *L = Directories::listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry)) == FALSE) {
+			filename *F = Filenames::in(P, entry);
+			inbuild_copy *C = PipelineManager::claim_file_as_copy(F, NULL);
+			if ((C) && (Requirements::meets(C->edition, req))) {
+				Nests::add_search_result(search_results, N, C, req);
 			}
 		}
-		DISCARD_TEXT(LEAFNAME)
-		Directories::close(D);
 	}
 }
 

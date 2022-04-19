@@ -105,21 +105,17 @@ requirements.
 void LanguageManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
 	pathname *P = LanguageManager::path_within_nest(N);
-	scan_directory *D = Directories::open(P);
-	if (D) {
-		TEMPORARY_TEXT(LEAFNAME)
-		while (Directories::next(D, LEAFNAME)) {
-			if (Platform::is_folder_separator(Str::get_last_char(LEAFNAME))) {
-				Str::delete_last_character(LEAFNAME);
-				pathname *Q = Pathnames::down(P, LEAFNAME);
-				inbuild_copy *C = LanguageManager::claim_folder_as_copy(Q);
-				if ((C) && (Requirements::meets(C->edition, req))) {
-					Nests::add_search_result(search_results, N, C, req);
-				}
+	linked_list *L = Directories::listing(P);
+	text_stream *entry;
+	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+			Str::delete_last_character(entry);
+			pathname *Q = Pathnames::down(P, entry);
+			inbuild_copy *C = LanguageManager::claim_folder_as_copy(Q);
+			if ((C) && (Requirements::meets(C->edition, req))) {
+				Nests::add_search_result(search_results, N, C, req);
 			}
 		}
-		DISCARD_TEXT(LEAFNAME)
-		Directories::close(D);
 	}
 }
 

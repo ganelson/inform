@@ -76,20 +76,20 @@ the "translated" name is the identifier used for it in the code we generated.)
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    NAME        MAKE_NAME_UNIQUE_ISYMF  TRANSLATION</span>
-<span class="plain-syntax">    call        TRUE                --</span>
-<span class="plain-syntax">    call        TRUE                --</span>
-<span class="plain-syntax">    example     FALSE               --</span>
-<span class="plain-syntax">    call        TRUE                --</span>
+<span class="plain-syntax">    call        TRUE                    --</span>
+<span class="plain-syntax">    call        TRUE                    --</span>
+<span class="plain-syntax">    example     FALSE                   --</span>
+<span class="plain-syntax">    call        TRUE                    --</span>
 </pre>
 <p class="commentary">will become
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    NAME        MAKE_NAME_UNIQUE_ISYMF  TRANSLATION</span>
-<span class="plain-syntax">    call        FALSE               call_U1</span>
-<span class="plain-syntax">    call        FALSE               call_U2</span>
-<span class="plain-syntax">    example     FALSE               --</span>
-<span class="plain-syntax">    call        FALSE               call_U3</span>
+<span class="plain-syntax">    call        FALSE                   call_U1</span>
+<span class="plain-syntax">    call        FALSE                   call_U2</span>
+<span class="plain-syntax">    example     FALSE                   --</span>
+<span class="plain-syntax">    call        FALSE                   call_U3</span>
 </pre>
 <p class="commentary">Only the translation changes, not the name itself, which remains <span class="extract"><span class="extract-syntax">call</span></span>.
 </p>

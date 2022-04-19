@@ -6652,6 +6652,8 @@
           constraint DS = {12, 13} extremes [4, 5]
         when defining <s-type-expression> 
           constraint DS = {13} extremes [3, infinity)
+        replacing {<quoted-text-without-subs>} 
+          constraint DS = {13} extremes [2, 2]
         when defining {...} 
           constraint DS = {13} extremes [3, infinity)
         before the library 

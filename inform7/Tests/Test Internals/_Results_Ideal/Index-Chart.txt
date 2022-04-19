@@ -735,7 +735,7 @@
             natural language [6]&nbsp;<a href=#A1380><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            German language&nbsp;
+            English language&nbsp;
         </td>
         <td align="center" valign="top">
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>&nbsp;
@@ -1228,7 +1228,7 @@ When made with the Glulx setting, an Inform project can include sound effects or
 <hr>
 <p class="halftightin1"><a name=A0></a><b>natural language</b> (<i>plural</i> natural languages)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
-<p class="tightin1"><span style='color:#808080'>German language</span>, <span style='color:#808080'>Italian language</span>, <span style='color:#808080'>English language</span>, <span style='color:#808080'>French language</span>, <span style='color:#808080'>Swedish language</span>, <span style='color:#808080'>Spanish language</span></p>
+<p class="tightin1"><span style='color:#808080'>English language</span>, <span style='color:#808080'>French language</span>, <span style='color:#808080'>German language</span>, <span style='color:#808080'>Italian language</span>, <span style='color:#808080'>Spanish language</span>, <span style='color:#808080'>Swedish language</span></p>
 </p>
 <p class="halftightin1"><a name=A17></a><b>grammatical tense&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a></b> (<i>plural</i> grammatical tenses)</p>
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
