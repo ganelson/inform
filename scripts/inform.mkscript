@@ -1,18 +1,30 @@
+# This is "inform.mkscript", a script used to generate the makefile "makefile"
+# at the root of the "inform" repository. This isn't for making any single
+# executable, but for orchestrating build-like operations across the whole
+# suite of tools included in that repository, so a lot of what it does is to
+# run make recursively on subsidiary makefiles belonging to the individual tools.
+
+# Do not edit "inform/makefile" directly. Instead, edit this script, and then
+# rebuild "inform/makefile" with the command:
+
+# ../inweb/Tangled/inweb -prototype scripts/inform.mkscript -makefile makefile
+
+# (Note that typing "make makers" will remake all of the subsidiary makefiles
+# inside the repository from their scripts, but _not_ this one: we don't want
+# to have a makefile editing itself.)
+
+# See the inweb manual for documentation on the *.mkscript file format, i.e.,
+# the format in which this file is written. But it is essentially just a makefile
+# with a number of special macro and loop features whose syntax involves braces
+# { ... }, so anywhere that you see braces, you're looking at something special
+# to *.mkscript; anything else is straightforward make syntax.
+
 # -----------------------------------------------------------------------------
-# Core Inform makescript - to be turned into a makefile by inweb
+
+# Note that the resulting makefile expects to be used with the current working
+# directory set to "inform". It should then usually be invoked with just "make".
+
 # -----------------------------------------------------------------------------
-# Inform is a suite of software with many components and a full makefile for
-# it would be highly repetitive, and hard to maintain. Instead we use this
-# script for making that makefile; it's human-readable and editable.
-# To perform the translation, run this as a shell command:
-#
-#    $ ../inweb/Tangled/inweb -prototype scripts/makescript.txt -makefile makefile
-#
-# In the syntax of this file, only curly braces {thus} represent special
-# features: everything else is raw makefile syntax, copied directly across.
-# -----------------------------------------------------------------------------
-# The following ensures that basic tools such as CC and LINK have suitable
-# definitions.
 
 {platform-settings}
 
@@ -164,8 +176,8 @@ makers:
 	{repeat-tools-block:all}
 	$(INWEBX) $(@WEB) -makefile $(@MAKER)
 	{end-block}
-	$(INWEBX) -prototype inform6/makescript.txt -makefile inform6/inform6.mk
-	$(INWEBX) -prototype retrospective/makescript.txt -makefile retrospective/makefile
+	$(INWEBX) -prototype inform6/inform6.mkscript -makefile inform6/inform6.mk
+	$(INWEBX) -prototype retrospective/retrospective.mkscript -makefile retrospective/makefile
 
 # -----------------------------------------------------------------------------
 # Target "gitignores"

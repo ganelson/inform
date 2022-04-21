@@ -1,0 +1,48 @@
+# This is "retrospective.mkscript", a script used to generate "retrospective.mk"
+# which is used to build the old-time versions of the Inform tools stored in the
+# "inform/retrospective" directory. Do not edit "retrospective.mk" directly.
+# Instead, edit this script, and then rebuild "retrospective.mk" with the command:
+
+# ../inweb/Tangled/inweb -prototype retrospective/retrospective.mkscript -makefile retrospective/retrospective.mk
+
+# (Or simply type "make makers" to make all of the subsidiary makefiles inside the
+# inform repository, including this one.)
+
+# See the inweb manual for documentation on the *.mkscript file format, i.e.,
+# the format in which this file is written. But it is essentially just a makefile
+# with a number of special macro and loop features whose syntax involves braces
+# { ... }, so anywhere that you see braces, you're looking at something special
+# to *.mkscript; anything else is straightforward make syntax.
+
+# -----------------------------------------------------------------------------
+
+# Note that the resulting makefile expects to be used with the current working
+# directory set to "inform/retrospective". So it can then be invoked just as "make".
+
+# -----------------------------------------------------------------------------
+
+{platform-settings}
+
+{define: retro-targets build: BUILD}
+retrospective/{BUILD}/cBlorb:
+	{compile-indulgently from: retrospective/{BUILD}/cBlorb.c to: retrospective/{BUILD}/cBlorb.o              }
+	{link                from: retrospective/{BUILD}/cBlorb.o to: retrospective/{BUILD}/cBlorb$(EXEEXTENSION) }
+
+retrospective/{BUILD}/ni:
+	{compile-indulgently from: retrospective/{BUILD}/ni.c to: retrospective/{BUILD}/ni.o              }
+	{link                from: retrospective/{BUILD}/ni.o to: retrospective/{BUILD}/ni$(EXEEXTENSION) }
+
+{end-define}
+
+# -----------------------------------------------------------------------------
+
+.PHONY: all
+
+all: \
+	retrospective/6L02/cBlorb retrospective/6L02/ni \
+	retrospective/6L38/cBlorb retrospective/6L38/ni \
+	retrospective/6M62/cBlorb retrospective/6M62/ni
+
+{retro-targets build: 6L02}
+{retro-targets build: 6L38}
+{retro-targets build: 6M62}

@@ -1,0 +1,155 @@
+# This is "inform6.mkscript", a script used to generate the makefile "inform6.mk"
+# used to build the tool "inform6". Do not edit "inform6.mk" directly. Instead,
+# edit this script, and then rebuild "inform6.mk" with the command:
+
+# ../inweb/Tangled/inweb inform6 -makefile inform6/inform6.mk
+
+# (Or simply type "make makers" to make all of the subsidiary makefiles inside the
+# inform repository, including this one.)
+
+# See the inweb manual for documentation on the *.mkscript file format, i.e.,
+# the format in which this file is written. But it is essentially just a makefile
+# with a number of special macro and loop features whose syntax involves braces
+# { ... }, so anywhere that you see braces, you're looking at something special
+# to *.mkscript; anything else is straightforward make syntax.
+
+# -----------------------------------------------------------------------------
+
+# Note that the resulting makefile expects to be used with the current working
+# directory set to "inform", _not_ its subdirectory "inform/inform6". So it
+# should usually be invoked as e.g. "make -f inform6/inform6.mk".
+
+# -----------------------------------------------------------------------------
+
+{platform-settings}
+
+ME = inform6
+INTEST = ../intest/Tangled/intest
+SANDBOX = $(ME)/Inform6
+INTERPRETERS = $(ME)/Tests/Assistants
+
+# Making the program:
+
+I6SOURCE = \
+	$(SANDBOX)/arrays.o $(SANDBOX)/asm.o $(SANDBOX)/bpatch.o $(SANDBOX)/chars.o \
+	$(SANDBOX)/directs.o $(SANDBOX)/errors.o $(SANDBOX)/expressc.o $(SANDBOX)/expressp.o \
+	$(SANDBOX)/files.o $(SANDBOX)/inform.o $(SANDBOX)/lexer.o $(SANDBOX)/linker.o \
+	$(SANDBOX)/memory.o $(SANDBOX)/objects.o $(SANDBOX)/states.o $(SANDBOX)/symbols.o \
+	$(SANDBOX)/syntax.o $(SANDBOX)/tables.o $(SANDBOX)/text.o $(SANDBOX)/veneer.o \
+	$(SANDBOX)/verbs.o
+
+$(ME)/Tangled/$(ME): $(SANDBOX)/*.c $(SANDBOX)/*.h
+	$(call make-me)
+
+.PHONY: force
+force:
+	$(call make-me)
+
+define make-me
+	cd $(SANDBOX); {compile-indulgently from: arrays.c   to: arrays.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: asm.c      to: asm.o      options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: bpatch.c   to: bpatch.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: chars.c    to: chars.o    options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: directs.c  to: directs.o  options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: errors.c   to: errors.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: expressc.c to: expressc.o options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: expressp.c to: expressp.o options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: files.c    to: files.o    options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: inform.c   to: inform.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: lexer.c    to: lexer.o    options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: linker.c   to: linker.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: memory.c   to: memory.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: objects.c  to: objects.o  options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: states.c   to: states.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: symbols.c  to: symbols.o  options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: syntax.c   to: syntax.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: tables.c   to: tables.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: text.c     to: text.o     options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: veneer.c   to: veneer.o   options: -D$(INFORM6OS)}
+	cd $(SANDBOX); {compile-indulgently from: verbs.c    to: verbs.o    options: -D$(INFORM6OS)}
+	{link from: $(I6SOURCE) to: $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
+endef
+
+# Testing the program:
+
+.PHONY: test
+test: $(INTERPRETERS)/dumb-frotz/dumb-frotz $(INTERPRETERS)/dumb-glulx/glulxe/glulxe 
+	$(INTEST) -from $(ME) all
+
+.PHONY: interpreters
+interpreters: $(INTERPRETERS)/dumb-frotz/dumb-frotz $(INTERPRETERS)/dumb-glulx/glulxe/glulxe 
+
+# "dumb-frotz" is a Z-machine interpreter and is used in development to test
+# that story files in Z format perform as intended. It's written in old C,
+# and is dumb in the sense that it uses a dumb terminal.
+
+GLKLIB = libcheapglk.a
+GLKINCLUDEDIR = ../cheapglk
+GLKLIBDIR = ../cheapglk
+GLKMAKEFILE = Make.cheapglk
+
+CHEAPGLK_OBJS =  \
+  cgfref.o cggestal.o cgmisc.o cgstream.o cgstyle.o cgwindow.o cgschan.o \
+  cgunicod.o main.o gi_dispa.o gi_blorb.o cgblorb.o
+
+GLULXE_OBJS = main.o files.o vm.o exec.o float.o funcs.o operand.o string.o glkop.o \
+	heap.o serial.o search.o gestalt.o osdepend.o unixstrt.o accel.o profile.o
+
+CHEAPGLK_HEADERS = cheapglk.h gi_dispa.h
+
+$(INTERPRETERS)/dumb-frotz/dumb-frotz: \
+	$(INTERPRETERS)/dumb-frotz/*.c \
+	$(INTERPRETERS)/dumb-frotz/*.h
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: buffer.c      to: buffer.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: dumb-init.c   to: dumb-init.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: dumb-input.c  to: dumb-input.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: dumb-output.c to: dumb-output.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: dumb-pic.c    to: dumb-pic.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: fastmem.c     to: fastmem.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: files.c       to: files.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: hotkey.c      to: hotkey.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: input.c       to: input.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: math.c        to: math.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: object.c      to: object.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: process.c     to: process.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: random.c      to: random.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: redirect.c    to: redirect.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: screen.c      to: screen.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: sound.c       to: sound.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: stream.c      to: stream.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: table.c       to: table.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: text.c        to: text.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: variable.c    to: variable.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: profiling.c   to: profiling.o}
+	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: main.c        to: main.o}
+	cd $(INTERPRETERS)/dumb-frotz; {link from: *.o to: dumb-frotz$(EXEEXTENSION)}
+
+# "dumb-glulxe" is the analogous thing for Glulx-format story files.
+
+$(INTERPRETERS)/dumb-glulx/glulxe/glulxe: \
+	$(INTERPRETERS)/dumb-glulx/cheapglk/*.c \
+	$(INTERPRETERS)/dumb-glulx/cheapglk/*.h \
+	$(INTERPRETERS)/dumb-glulx/glulxe/*.c \
+	$(INTERPRETERS)/dumb-glulx/glulxe/*.h
+	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make
+	cd $(INTERPRETERS)/dumb-glulx/glulxe; make
+
+# Cleaning up:
+
+.PHONY: clean
+clean:
+	$(call clean-up)
+
+.PHONY: purge
+purge:
+	$(call clean-up)
+	rm -f $(ME)/Tangled/$(ME)
+	rm -f $(INTERPRETERS)/dumb-frotz/dumb-frotz
+	rm -f $(INTERPRETERS)/dumb-glulx/glulxe/glulxe
+
+define clean-up
+	rm -f $(SANDBOX)/*.o
+	rm -f $(INTERPRETERS)/dumb-frotz/*.o
+	rm -f $(INTERPRETERS)/dumb-glulx/glulxe/*.o
+	rm -f $(INTERPRETERS)/dumb-glulx/cheapglk/*.o
+endef

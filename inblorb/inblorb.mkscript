@@ -1,0 +1,73 @@
+# This is "inblorb.mkscript", a script used to generate the makefile "inblorb.mk"
+# used to build the tool "inblorb". Do not edit "inblorb.mk" directly. Instead,
+# edit this script, and then rebuild "inblorb.mk" with the command:
+
+# ../inweb/Tangled/inweb inblorb -makefile inblorb/inblorb.mk
+
+# (Or simply type "make makers" to make all of the subsidiary makefiles inside the
+# inform repository, including this one.)
+
+# See the inweb manual for documentation on the *.mkscript file format, i.e.,
+# the format in which this file is written. But it is essentially just a makefile
+# with a number of special macro and loop features whose syntax involves braces
+# { ... }, so anywhere that you see braces, you're looking at something special
+# to *.mkscript; anything else is straightforward make syntax.
+
+# -----------------------------------------------------------------------------
+
+# Note that the resulting makefile expects to be used with the current working
+# directory set to "inform", _not_ its subdirectory "inform/inblorb". So it
+# should usually be invoked as e.g. "make -f inblorb/inblorb.mk".
+
+# -----------------------------------------------------------------------------
+
+{platform-settings}
+
+{identity-settings}
+
+BLORBLIB = $(ME)/Tests/Assistants/blorblib
+
+# Making the program:
+
+$(ME)/Tangled/$(MYNAME): $(BLORBLIB)/blorbscan {dependent-files}
+	$(call make-me)
+
+.PHONY: force
+force:
+	$(call make-me)
+
+define make-me
+	$(INWEB) $(ME) -tangle
+	{compile from: $(ME)/Tangled/$(ME).c   to:   $(ME)/Tangled/$(ME).o}
+	{link    from: $(ME)/Tangled/$(ME).o   to:   $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
+endef
+
+# Testing the program:
+
+.PHONY: test
+test: $(BLORBLIB)/blorbscan
+	$(INTEST) -from $(ME) all
+
+$(BLORBLIB)/blorbscan: $(BLORBLIB)/*.c $(BLORBLIB)/*.h
+	cd $(BLORBLIB); {compile-indulgently from: blorblib.c to: blorblib.o}
+	cd $(BLORBLIB); {compile-indulgently from: blorbscan.c to: blorbscan.o}
+	cd $(BLORBLIB); {link from: *.o to: blorbscan$(EXEEXTENSION)}
+
+# Cleaning up:
+
+.PHONY: clean
+clean:
+	$(call clean-up)
+
+.PHONY: purge
+purge:
+	$(call clean-up)
+	rm -f $(ME)/Tangled/$(ME)
+	rm -f $(BLORBLIB)/blorbscan
+
+define clean-up
+	rm -f $(ME)/Tangled/*.o
+	rm -f $(ME)/Tangled/*.c
+	rm -f $(ME)/Tangled/*.h
+	rm -f $(BLORBLIB)/*.o
+endef
