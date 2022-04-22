@@ -36,13 +36,14 @@ retrospective/{BUILD}/ni:
 
 # -----------------------------------------------------------------------------
 
+{set name: SUPPORTED_BUILDS value: 6L02, 6L38, 6M62}
+
+# -----------------------------------------------------------------------------
+
 .PHONY: all
 
-all: \
-	retrospective/6L02/cBlorb retrospective/6L02/ni \
-	retrospective/6L38/cBlorb retrospective/6L38/ni \
-	retrospective/6M62/cBlorb retrospective/6M62/ni
+all: {repeat with: BUILD in: {SUPPORTED_BUILDS}}retrospective/{BUILD}/cBlorb retrospective/{BUILD}/ni {end-repeat}
 
-{retro-targets build: 6L02}
-{retro-targets build: 6L38}
-{retro-targets build: 6M62}
+{repeat with: BUILD in: {SUPPORTED_BUILDS}}
+{retro-targets build: {BUILD}}
+{end-repeat}
