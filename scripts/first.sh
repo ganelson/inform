@@ -9,7 +9,7 @@ if ! ( make makers; ) then
 	exit 1
 fi
 echo "(Step 3 of 4: building the tools)"
-if ! ( make; ) then
+if ! ( make force; ) then
 	exit 1
 fi
 echo "(Step 4 of 4: building the virtual machine interpreters)"
