@@ -1,4 +1,0 @@
-{basics}
-
-inpolicy.mk
-Workspace/*.txt

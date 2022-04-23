@@ -58,33 +58,33 @@ INBUILDX = inbuild/Tangled/inbuild
 # root of the core Inform distribution.
 # In the eventual makefile, the symbol NAMEWEB is defined as its location.
 
-{component symbol: WORDS webname: words path: services/words-module set: modules category: module}
-{component symbol: SYNTAX webname: syntax path: services/syntax-module set: modules category: module}
-{component symbol: HTML webname: html path: services/html-module set: modules category: module}
-{component symbol: ARCH webname: arch path: services/arch-module set: modules category: module}
-{component symbol: INFLECTIONS webname: inflections path: services/inflections-module set: modules category: module}
-{component symbol: LEXICON webname: lexicon path: services/lexicon-module set: modules category: module}
-{component symbol: LINGUISTICS webname: linguistics path: services/linguistics-module set: modules category: module}
-{component symbol: PROBLEMS webname: problems path: services/problems-module set: modules category: module}
-{component symbol: KINDS webname: kinds path: services/kinds-module set: modules category: module}
-{component symbol: CALCULUS webname: calculus path: services/calculus-module set: modules category: module}
+{component symbol: WORDS webname: words path: services/words-module set: modules type: module}
+{component symbol: SYNTAX webname: syntax path: services/syntax-module set: modules type: module}
+{component symbol: HTML webname: html path: services/html-module set: modules type: module}
+{component symbol: ARCH webname: arch path: services/arch-module set: modules type: module}
+{component symbol: INFLECTIONS webname: inflections path: services/inflections-module set: modules type: module}
+{component symbol: LEXICON webname: lexicon path: services/lexicon-module set: modules type: module}
+{component symbol: LINGUISTICS webname: linguistics path: services/linguistics-module set: modules type: module}
+{component symbol: PROBLEMS webname: problems path: services/problems-module set: modules type: module}
+{component symbol: KINDS webname: kinds path: services/kinds-module set: modules type: module}
+{component symbol: CALCULUS webname: calculus path: services/calculus-module set: modules type: module}
 
-{component symbol: CORE webname: core path: inform7/core-module set: modules category: module}
-{component symbol: ASSERTIONS webname: assertions path: inform7/assertions-module set: modules category: module}
-{component symbol: KNOWLEDGE webname: knowledge path: inform7/knowledge-module set: modules category: module}
-{component symbol: IMPERATIVE webname: imperative path: inform7/imperative-module set: modules category: module}
-{component symbol: RUNTIME webname: runtime path: inform7/runtime-module set: modules category: module}
-{component symbol: VALUES webname: values path: inform7/values-module set: modules category: module}
-{component symbol: IF webname: if path: inform7/if-module set: modules category: module}
-{component symbol: MULTIMEDIA webname: multimedia path: inform7/multimedia-module set: modules category: module}
+{component symbol: CORE webname: core path: inform7/core-module set: modules type: module}
+{component symbol: ASSERTIONS webname: assertions path: inform7/assertions-module set: modules type: module}
+{component symbol: KNOWLEDGE webname: knowledge path: inform7/knowledge-module set: modules type: module}
+{component symbol: IMPERATIVE webname: imperative path: inform7/imperative-module set: modules type: module}
+{component symbol: RUNTIME webname: runtime path: inform7/runtime-module set: modules type: module}
+{component symbol: VALUES webname: values path: inform7/values-module set: modules type: module}
+{component symbol: IF webname: if path: inform7/if-module set: modules type: module}
+{component symbol: MULTIMEDIA webname: multimedia path: inform7/multimedia-module set: modules type: module}
 
-{component symbol: BYTECODE webname: bytecode path: inter/bytecode-module set: modules category: module}
-{component symbol: BUILDING webname: building path: inter/building-module set: modules category: module}
-{component symbol: PIPELINE webname: pipeline path: inter/pipeline-module set: modules category: module}
-{component symbol: FINAL webname: final path: inter/final-module set: modules category: module}
-{component symbol: INDEX webname: index path: inter/index-module set: modules category: module}
+{component symbol: BYTECODE webname: bytecode path: inter/bytecode-module set: modules type: module}
+{component symbol: BUILDING webname: building path: inter/building-module set: modules type: module}
+{component symbol: PIPELINE webname: pipeline path: inter/pipeline-module set: modules type: module}
+{component symbol: FINAL webname: final path: inter/final-module set: modules type: module}
+{component symbol: INDEX webname: index path: inter/index-module set: modules type: module}
 
-{component symbol: SUPERVISOR webname: supervisor path: inbuild/supervisor-module set: modules category: module}
+{component symbol: SUPERVISOR webname: supervisor path: inbuild/supervisor-module set: modules type: module}
 
 # First, the tools we need to make, using the same declaration notation.
 # In the eventual makefile, the symbol NAMEWEB is the location of NAME;
@@ -92,13 +92,13 @@ INBUILDX = inbuild/Tangled/inbuild
 # the symbol NAMEX is the actual executable which the tool compiles into.
 # After its declaration, we list all modules needed to compile the tool.
 
-{component symbol: INBLORB webname: inblorb path: inblorb set: otools category: tool}
-{component symbol: INDOC webname: indoc path: indoc set: otools category: tool}
-{component symbol: INFORM7 webname: inform7 path: inform7 set: ctools category: tool}
-{component symbol: INPOLICY webname: inpolicy path: inpolicy set: otools category: tool}
-{component symbol: INRTPS webname: inrtps path: inrtps set: otools category: tool}
-{component symbol: INBUILDTOOL webname: inbuild path: inbuild set: ctools category: tool}
-{component symbol: INTERTOOL webname: inter path: inter set: ctools category: tool}
+{component symbol: INBLORB webname: inblorb path: inblorb set: otools type: tool}
+{component symbol: INDOC webname: indoc path: indoc set: otools type: tool}
+{component symbol: INFORM7 webname: inform7 path: inform7 set: ctools type: tool}
+{component symbol: INPOLICY webname: inpolicy path: inpolicy set: otools type: tool}
+{component symbol: INRTPS webname: inrtps path: inrtps set: otools type: tool}
+{component symbol: INBUILDTOOL webname: inbuild path: inbuild set: ctools type: tool}
+{component symbol: INTERTOOL webname: inter path: inter set: ctools type: tool}
 
 # Inform 6 is not a web, so we have to give it special treatment:
 
@@ -106,26 +106,26 @@ INFORM6X = inform6/Tangled/inform6
 
 # While these are also executables, they only provide unit tests for modules:
 
-{component symbol: SYNTAXTEST webname: syntax-test path: services/syntax-test set: utools category: tool}
-{component symbol: WORDSTEST webname: words-test path: services/words-test set: utools category: tool}
-{component symbol: ARCHTEST webname: arch-test path: services/arch-test set: utools category: tool}
-{component symbol: INFLECTIONSTEST webname: inflections-test path: services/inflections-test set: utools category: tool}
-{component symbol: LINGUISTICSTEST webname: linguistics-test path: services/linguistics-test set: utools category: tool}
-{component symbol: KINDSTEST webname: kinds-test path: services/kinds-test set: utools category: tool}
-{component symbol: CALCULUSTEST webname: calculus-test path: services/calculus-test set: utools category: tool}
-{component symbol: PROBLEMSTEST webname: problems-test path: services/problems-test set: utools category: tool}
+{component symbol: SYNTAXTEST webname: syntax-test path: services/syntax-test set: utools type: tool}
+{component symbol: WORDSTEST webname: words-test path: services/words-test set: utools type: tool}
+{component symbol: ARCHTEST webname: arch-test path: services/arch-test set: utools type: tool}
+{component symbol: INFLECTIONSTEST webname: inflections-test path: services/inflections-test set: utools type: tool}
+{component symbol: LINGUISTICSTEST webname: linguistics-test path: services/linguistics-test set: utools type: tool}
+{component symbol: KINDSTEST webname: kinds-test path: services/kinds-test set: utools type: tool}
+{component symbol: CALCULUSTEST webname: calculus-test path: services/calculus-test set: utools type: tool}
+{component symbol: PROBLEMSTEST webname: problems-test path: services/problems-test set: utools type: tool}
 
-{component symbol: BUILDINGTEST webname: building-test path: inter/building-test set: utools category: tool}
+{component symbol: BUILDINGTEST webname: building-test path: inter/building-test set: utools type: tool}
 
 # And here are other webs:
 
-{component symbol: BASICINFORMKIT webname: BasicInformKit path: inform7/Internal/Inter/BasicInformKit set: kits category: web}
-{component symbol: WORLDMODELKIT webname: WorldModelKit path: inform7/Internal/Inter/WorldModelKit set: kits category: web}
-{component symbol: COMMANDPARSERKIT webname: CommandParserKit path: inform7/Internal/Inter/CommandParserKit set: kits category: web}
-{component symbol: BASICINFORMEXTRASKIT webname: BasicInformExtrasKit path: inform7/Internal/Inter/BasicInformExtrasKit set: kits category: web}
-{component symbol: ENGLISHLANGUAGEKIT webname: EnglishLanguageKit path: inform7/Internal/Inter/EnglishLanguageKit set: kits category: web}
-{component symbol: STANDARDRULES webname: standard_rules path: inform7/extensions/standard_rules set: extensions category: web}
-{component symbol: BASICINFORM webname: basic_inform path: inform7/extensions/basic_inform set: extensions category: web}
+{component symbol: BASICINFORMKIT webname: BasicInformKit path: inform7/Internal/Inter/BasicInformKit set: kits type: web}
+{component symbol: WORLDMODELKIT webname: WorldModelKit path: inform7/Internal/Inter/WorldModelKit set: kits type: web}
+{component symbol: COMMANDPARSERKIT webname: CommandParserKit path: inform7/Internal/Inter/CommandParserKit set: kits type: web}
+{component symbol: BASICINFORMEXTRASKIT webname: BasicInformExtrasKit path: inform7/Internal/Inter/BasicInformExtrasKit set: kits type: web}
+{component symbol: ENGLISHLANGUAGEKIT webname: EnglishLanguageKit path: inform7/Internal/Inter/EnglishLanguageKit set: kits type: web}
+{component symbol: STANDARDRULES webname: standard_rules path: inform7/extensions/standard_rules set: extensions type: web}
+{component symbol: BASICINFORM webname: basic_inform path: inform7/extensions/basic_inform set: extensions type: web}
 
 # -----------------------------------------------------------------------------
 # Targets "all" and "force"
@@ -170,9 +170,9 @@ inform7/Tangled/inform7_clib.c: inter/final-module/Chapter\ 5/*.w
 
 .PHONY: makers
 makers:
-	{repeat over: tool}
-	$(INWEBX) $({NAME}WEB) -makefile $({NAME}MAKER)
-	{end-repeat}
+	{components type: tool}
+	$(INWEBX) $({SYMBOL}WEB) -makefile $({SYMBOL}MAKER)
+	{end-components}
 	$(INWEBX) -prototype inform6/inform6.mkscript -makefile inform6/inform6.mk
 	$(INWEBX) -prototype retrospective/retrospective.mkscript -makefile retrospective/makefile
 
@@ -183,11 +183,11 @@ makers:
 
 .PHONY: gitignores
 gitignores:
-	$(INWEBX) -prototype scripts/gitignorescript.txt -gitignore .gitignore
-	{repeat over: tool}
-	$(INWEBX) $({NAME}WEB) -gitignore $({NAME}WEB)/.gitignore
-	{end-repeat}
-	$(INWEBX) -prototype inform6/gitignorescript.txt -gitignore inform6/.gitignore
+	$(INWEBX) -prototype scripts/inform.giscript -gitignore .gitignore
+	{components type: tool}
+	$(INWEBX) $({SYMBOL}WEB) -gitignore $({SYMBOL}WEB)/.gitignore
+	{end-components}
+	$(INWEBX) -prototype inform6/inform6.giscript -gitignore inform6/.gitignore
 
 # -----------------------------------------------------------------------------
 # Target "versions"
@@ -196,9 +196,9 @@ gitignores:
 
 .PHONY: versions
 versions:
-	{repeat over: tool}
-	$({NAME}X) -version
-	{end-repeat}
+	{components type: tool}
+	$({SYMBOL}X) -version
+	{end-components}
 	$(INFORM6X) -V
 
 # -----------------------------------------------------------------------------
@@ -244,13 +244,13 @@ forcekits:
 # Note the use of repeat to make a list: $(INBLORBX) $(INDOCX) ..., etc.
 
 .PHONY: tools
-tools: {repeat over: tool}$({NAME}X) {end-repeat}$(INFORM6X)
+tools: {components type: tool}$({SYMBOL}X) {end-components}$(INFORM6X)
 
-{repeat over: tool}
-$({NAME}X): {dependent-files tool-and-modules: {NAME}}
-	$(MAKE) -f $({NAME}MAKER)
+{components type: tool}
+$({SYMBOL}X): {dependent-files tool-and-modules: {SYMBOL}}
+	$(MAKE) -f $({SYMBOL}MAKER)
 
-{end-repeat}
+{end-components}
 
 # As ever, Inform 6 needs special handling:
 
@@ -275,10 +275,10 @@ retrospective:
 
 .PHONY: forcetools
 forcetools:
-	{repeat over: tool}
-	$(MAKE) -f $({NAME}MAKER) force
+	{components type: tool}
+	$(MAKE) -f $({SYMBOL}MAKER) force
 	$(MAKE) -f inform6/inform6.mk force
-	{end-repeat}
+	{end-components}
 
 # -----------------------------------------------------------------------------
 # Target "check"
@@ -292,9 +292,9 @@ forcetools:
 check:
 	$(MAKE) -f inform6/inform6.mk test
 	$(INPOLICYX) -silence -check-problems
-	{repeat over: tool}
-	$(MAKE) -f $({NAME}MAKER) test
-	{end-repeat}
+	{components type: tool}
+	$(MAKE) -f $({SYMBOL}MAKER) test
+	{end-components}
 
 # -----------------------------------------------------------------------------
 # Target "tangle"
@@ -307,9 +307,9 @@ tangle:
 	$(call tangle-webs)
 
 define tangle-webs
-	{repeat over: tool}
-	$(INWEBX) $({NAME}WEB) -tangle
-	{end-repeat}
+	{components type: tool}
+	$(INWEBX) $({SYMBOL}WEB) -tangle
+	{end-components}
 endef
 
 # -----------------------------------------------------------------------------
@@ -325,9 +325,9 @@ weave:
 	$(call weave-webs)
 
 define weave-webs
-	{repeat over: tool}
-	$(INWEBX) $({NAME}WEB) $(WEAVEOPTS)
-	{end-repeat}
+	{components type: tool}
+	$(INWEBX) $({SYMBOL}WEB) $(WEAVEOPTS)
+	{end-components}
 endef
 
 # -----------------------------------------------------------------------------
@@ -350,8 +350,8 @@ commit:
 # -----------------------------------------------------------------------------
 
 .PHONY: pages
-pages: diagnostics icon readmepage diagrams prepages {repeat over: tool}{NAME}PAGES {end-repeat}\
-	{repeat over: module}{NAME}MPAGES {end-repeat} morepages
+pages: diagnostics icon readmepage diagrams prepages {components type: tool}{SYMBOL}PAGES {end-components}\
+	{components type: module}{SYMBOL}MPAGES {end-components} morepages
 
 .PHONY: icon
 icon:
@@ -360,8 +360,8 @@ icon:
 	cp -f docs-src/Inform.png docs/docs-assets
 
 .PHONY: forcepages
-forcepages: diagnostics readmepage diagrams forceprepages {repeat over: tool}{NAME}FORCEPAGES {end-repeat}\
-	{repeat over: module}{NAME}FORCEMPAGES {end-repeat}forcemorepages
+forcepages: diagnostics readmepage diagrams forceprepages {components type: tool}{SYMBOL}FORCEPAGES {end-components}\
+	{components type: module}{SYMBOL}FORCEMPAGES {end-components}forcemorepages
 
 .PHONY: readmepage
 readmepage:
@@ -384,65 +384,65 @@ diagrams:
 	$(INFORM7X) -help >inform7/Figures/help.txt
 	$(INTERX) -help >inter/Figures/help.txt
 
-{repeat over: tool set: ctools}
-.PHONY: {NAME}PAGES
-{NAME}PAGES: docs/$({NAME}LEAF)/index.html
+{components type: tool set: ctools}
+.PHONY: {SYMBOL}PAGES
+{SYMBOL}PAGES: docs/$({SYMBOL}LEAF)/index.html
 
-docs/$({NAME}LEAF)/index.html: {dependent-files tool: {NAME}}
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-.PHONY: {NAME}FORCEPAGES
-{NAME}FORCEPAGES:
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+.PHONY: {SYMBOL}FORCEPAGES
+{SYMBOL}FORCEPAGES:
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-{end-repeat}
+{end-components}
 
-{repeat over: tool set: otools}
-.PHONY: {NAME}PAGES
-{NAME}PAGES: docs/$({NAME}LEAF)/index.html
+{components type: tool set: otools}
+.PHONY: {SYMBOL}PAGES
+{SYMBOL}PAGES: docs/$({SYMBOL}LEAF)/index.html
 
-docs/$({NAME}LEAF)/index.html: {dependent-files tool: {NAME}}
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-.PHONY: {NAME}FORCEPAGES
-{NAME}FORCEPAGES:
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+.PHONY: {SYMBOL}FORCEPAGES
+{SYMBOL}FORCEPAGES:
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-{end-repeat}
+{end-components}
 
-{repeat over: tool set: utools}
-.PHONY: {NAME}PAGES
-{NAME}PAGES: docs/$({NAME}LEAF)/index.html
+{components type: tool set: utools}
+.PHONY: {SYMBOL}PAGES
+{SYMBOL}PAGES: docs/$({SYMBOL}LEAF)/index.html
 
-docs/$({NAME}LEAF)/index.html: {dependent-files tool-and-modules: {NAME}}
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool-and-modules: {SYMBOL}}
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-.PHONY: {NAME}FORCEPAGES
-{NAME}FORCEPAGES:
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+.PHONY: {SYMBOL}FORCEPAGES
+{SYMBOL}FORCEPAGES:
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-{end-repeat}
+{end-components}
 
-{repeat over: module}
-.PHONY: {NAME}MPAGES
-{NAME}MPAGES: docs/$({NAME}LEAF)-module/index.html
+{components type: module}
+.PHONY: {SYMBOL}MPAGES
+{SYMBOL}MPAGES: docs/$({SYMBOL}LEAF)-module/index.html
 
-docs/$({NAME}LEAF)-module/index.html: {dependent-files module: {NAME}}
-	rm -f docs/$({NAME}LEAF)-module/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+docs/$({SYMBOL}LEAF)-module/index.html: {dependent-files module: {SYMBOL}}
+	rm -f docs/$({SYMBOL}LEAF)-module/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-.PHONY: {NAME}FORCEMPAGES
-{NAME}FORCEMPAGES:
-	rm -f docs/$({NAME}LEAF)-module/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+.PHONY: {SYMBOL}FORCEMPAGES
+{SYMBOL}FORCEMPAGES:
+	rm -f docs/$({SYMBOL}LEAF)-module/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-{end-repeat}
+{end-components}
 
 .PHONY: prepages
 prepages: docs/index.html docs/structure.html docs/extensions.html docs/kits.html docs/services.html docs/inform6.html docs/inbuildn.html docs/inform7n.html docs/intern.html docs/inblorbn.html docs/indocn.html docs/inrtpsn.html docs/inpolicyn.html docs/secrets.html
@@ -520,33 +520,33 @@ diagnostics:
 	rm -f inform7/Figures/stock-diagnostics.txt
 
 .PHONY: morepages
-morepages: {repeat over: web}docs/$({NAME}LEAF)/index.html {end-repeat}
+morepages: {components type: web}docs/$({SYMBOL}LEAF)/index.html {end-components}
 
-{repeat over: web set: kits}
+{components type: web set: kits}
 
-docs/$({NAME}LEAF)/index.html: {dependent-files tool: {NAME}}
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-{end-repeat}
-{repeat over: web set: extensions}
+{end-components}
+{components type: web set: extensions}
 
-docs/$({NAME}LEAF)/index.html: {dependent-files tool: {NAME}}
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
+docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-{end-repeat}
+{end-components}
 	
 .PHONY: forcemorepages
 forcemorepages:
-{repeat over: web set: kits}
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
-{end-repeat}
-{repeat over: web set: extensions}
-	rm -f docs/$({NAME}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({NAME}LEAF) -weave
-{end-repeat}
+{components type: web set: kits}
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
+{end-components}
+{components type: web set: extensions}
+	rm -f docs/$({SYMBOL}LEAF)/*.html
+	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
+{end-components}
 
 # -----------------------------------------------------------------------------
 # Target "clean"
@@ -559,9 +559,9 @@ clean:
 	$(call clean-up)
 
 define clean-up
-	{repeat over: tool}
-	$(MAKE) -f $({NAME}MAKER) clean
-	{end-repeat}
+	{components type: tool}
+	$(MAKE) -f $({SYMBOL}MAKER) clean
+	{end-components}
 	$(MAKE) -f inform6/inform6.mk clean
 endef
 
@@ -576,9 +576,9 @@ purge:
 	$(call purge-up)
 
 define purge-up
-	{repeat over: tool}
-	$(MAKE) -f $({NAME}MAKER) purge
-	{end-repeat}
+	{components type: tool}
+	$(MAKE) -f $({SYMBOL}MAKER) purge
+	{end-components}
 	$(MAKE) -f inform6/inform6.mk purge
 endef
 
