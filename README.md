@@ -75,7 +75,7 @@ something like a helicopter taking off).
 
 **"I can't help feeling that if someone had asked me before the universe began
 how it would turn out, I should have guessed something a bit less like an old
-curiosity shop and a bit more like a formal French garden — an orderly
+curiosity shop and a bit more like a formal French garden - an orderly
 arrangement of straight avenues, circular walks, and geometrically shaped
 trees and hedges."** (Michael Frayn)
 
@@ -148,7 +148,7 @@ Inform UI applications, and to Inform websites:
 * Changes to Inform - A detailed change history of Inform 7. Ebook in Indoc format, stored at path resources/Changes.
 * Writing with Inform and the Inform Recipe Book - The main Inform documentation, as seen in the apps, and in standalone Epubs. Ebook in Indoc format, stored at path resources/Documentation.
 * resources/Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
-* resources/Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app. Inform 7
+* resources/Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app
 
 Finally, the "retrospective" directory holds ANSI C source and resources needed
 to build (some) previous versions of Inform 7.
@@ -183,12 +183,12 @@ be accepted. (Note that these are not git submodules.)
 ### Other files and folders in this repository
 
 * docs - Woven forms of the webs, for serving by GitHub Pages
-* scripts/gitignorescript.txt - Inweb uses this to generate the .gitignore file at the root of the repository
-* scripts/makescript.txt - Inweb uses this to generate a makefile at the root of the repository
-* scripts/READMEscript.txt - Inpolicy uses this to generate the README.md file for the repository
+* scripts/inform.giscript - Inweb uses this to generate the .gitignore file at the root of the repository
+* scripts/inform.mkscript - Inweb uses this to generate the makefile at the root of the repository
+* scripts/inform.rmscript - Inweb uses this to generate the README.md file you are now reading
 
 ### Colophon
 
 This README.mk file was generated automatically by Inweb, and should not
-be edited. To make changes, edit scripts/READMEscript.txt and re-generate.
+be edited. To make changes, edit inform.rmscript and re-generate.
 

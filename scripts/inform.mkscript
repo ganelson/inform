@@ -340,7 +340,7 @@ endef
 .PHONY: commit
 commit:
 	$(INWEBX) -advance-build-file build.txt
-	$(INWEBX) -prototype scripts/READMEscript.txt -write-me README.md
+	$(INWEBX) -prototype scripts/inform.rmscript -write-me README.md
 	git commit -a
 
 # -----------------------------------------------------------------------------
@@ -365,7 +365,7 @@ forcepages: diagnostics readmepage diagrams forceprepages {components type: tool
 
 .PHONY: readmepage
 readmepage:
-	$(INWEBX) -prototype scripts/READMEscript.txt -write-me README.md
+	$(INWEBX) -prototype scripts/inform.rmscript -write-me README.md
 
 .PHONY: diagrams
 diagrams:

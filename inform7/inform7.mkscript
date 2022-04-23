@@ -52,7 +52,7 @@ force:
 define make-me
 	$(INWEB) $(ME) -import-from modules -tangle
 	{compile from: $(ME)/Tangled/$(ME).c to: $(ME)/Tangled/$(ME).o}
-	{link from: $(ME)/Tangled/$(ME).o to: $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
+	{link from:    $(ME)/Tangled/$(ME).o to: $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
 endef
 
 # Testing the program:
