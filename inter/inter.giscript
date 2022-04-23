@@ -1,0 +1,42 @@
+# This is "inter.giscript", a script used to generate the ".gitignore" file
+# in inform/inter. Do not edit ".gitignore" directly. Instead, edit this
+# script, and then rebuild ".gitignore" with the command:
+
+# ../inweb/Tangled/inweb -prototype inter/inter.giscript -gitignore inter/.gitignore
+
+# (Or type "make gitignores", which will remake all of the .gitignore files in
+# this repository from their scripts, including this one.)
+
+{basics}
+
+codegen-module/Woven/
+building-module/Woven/
+inter-module/Woven/
+
+inter.mk
+
+Tests/Invalid/_Results_Actual/
+Tests/General/_Results_Actual/
+Tests/General/_Console/
+Tests/Duplex/_Results_Actual/
+Tests/Duplex/_Console/
+Tests/Duplex/_Binaries/
+Tests/Toys/_C_Results_Actual/
+Tests/Toys/_C_Console/
+Tests/Toys/_I6_Results_Actual/
+Tests/Toys/_I6_Console/
+Tests/Toys/_C_Object_Code/
+Tests/Toys/_C_Output_Actual/
+Tests/Toys/_I6_Object_Code/
+Tests/Toys/_I6_Output_Actual/
+Tests/Kits/_Results_Actual/
+Tests/Kits/_kits/*/*.interb
+Tests/C/_C/
+Tests/C/_Textual/
+Tests/C/_Results_Actual/
+Tests/Valid/_Binary/
+Tests/Valid/_Console/
+Tests/Valid/_Textual/
+Tests/PipelineErrors/_Results_Actual/
+Tests/Units/_Results_Actual/
+building-test/Tests/Test Cases/_Results_Actual/

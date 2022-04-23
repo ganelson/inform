@@ -1,0 +1,23 @@
+# This is "inform6.giscript", a script used to generate the ".gitignore" file
+# in inform/inform6. Do not edit ".gitignore" directly. Instead, edit this
+# script, and then rebuild ".gitignore" with the command:
+
+# ../inweb/Tangled/inweb -prototype inform6/inform6.giscript -gitignore inform6/.gitignore
+
+# (Or type "make gitignores", which will remake all of the .gitignore files in
+# this repository from their scripts, including this one.)
+
+Inform6/*.o
+Tests/intest-history.txt
+Tests/Assistants/dumb-frotz/dumb-frotz
+Tests/Assistants/dumb-frotz/*.o
+Tests/Assistants/dumb-glulx/glulxe/glulxe
+Tests/Assistants/dumb-glulx/cheapglk/*.o
+Tests/Assistants/dumb-glulx/glulxe/*.o
+Tests/Test Cases/_Console_Actual/
+Tests/Test Errors/_Console_Actual/
+Tests/Test Cases/_Story_File_Actual/
+Tests/Test Errors/_Story_File_Actual/
+Tests/Test Cases/_Transcript_Actual/
+Tests/Test Cases/_md5_Actual/
+Tangled/inform6

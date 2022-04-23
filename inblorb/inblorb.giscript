@@ -1,0 +1,17 @@
+# This is "inblorb.giscript", a script used to generate the ".gitignore" file
+# in inform/inblorb. Do not edit ".gitignore" directly. Instead, edit this
+# script, and then rebuild ".gitignore" with the command:
+
+# ../inweb/Tangled/inweb -prototype inblorb/inblorb.giscript -gitignore inblorb/.gitignore
+
+# (Or type "make gitignores", which will remake all of the .gitignore files in
+# this repository from their scripts, including this one.)
+
+{basics}
+
+inblorb.mk
+Tests/Test Cases/_Console_Actual/
+Tests/Test Cases/_Scan_Actual/
+Tests/Test Cases/_Tree_Actual/
+Tests/Assistants/blorblib/blorbscan
+Tests/Assistants/blorblib/*.o

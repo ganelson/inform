@@ -1,0 +1,15 @@
+# This is "inbuild.giscript", a script used to generate the ".gitignore" file
+# in inform/inbuild. Do not edit ".gitignore" directly. Instead, edit this
+# script, and then rebuild ".gitignore" with the command:
+
+# ../inweb/Tangled/inweb -prototype inbuild/inbuild.giscript -gitignore inbuild/.gitignore
+
+# (Or type "make gitignores", which will remake all of the .gitignore files in
+# this repository from their scripts, including this one.)
+
+{basics}
+
+inbuild.mk
+
+Tests/Units/_Results_Actual/
+Tests/Miscellany/_Results_Actual/

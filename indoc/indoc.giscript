@@ -1,0 +1,20 @@
+# This is "indoc.giscript", a script used to generate the ".gitignore" file
+# in inform/indoc. Do not edit ".gitignore" directly. Instead, edit this
+# script, and then rebuild ".gitignore" with the command:
+
+# ../inweb/Tangled/inweb -prototype indoc/indoc.giscript -gitignore indoc/.gitignore
+
+# (Or type "make gitignores", which will remake all of the .gitignore files in
+# this repository from their scripts, including this one.)
+
+{basics}
+
+indoc.mk
+Tests/Basic/Output/
+Tests/Full/Output/
+Tests/Full/Output-C/
+Tests/Targets/ebook-Actual/ePub/
+Tests/Targets/ebook-Actual/
+Tests/Targets/osx_app-Actual/
+Tests/Targets/plain-Actual/
+Tests/Targets/windows_app-Actual/

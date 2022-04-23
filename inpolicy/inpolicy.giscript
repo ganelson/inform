@@ -1,0 +1,13 @@
+# This is "inpolicy.giscript", a script used to generate the ".gitignore" file
+# in inform/inpolicy. Do not edit ".gitignore" directly. Instead, edit this
+# script, and then rebuild ".gitignore" with the command:
+
+# ../inweb/Tangled/inweb -prototype inpolicy/inpolicy.giscript -gitignore inpolicy/.gitignore
+
+# (Or type "make gitignores", which will remake all of the .gitignore files in
+# this repository from their scripts, including this one.)
+
+{basics}
+
+inpolicy.mk
+Workspace/*.txt

@@ -1,0 +1,12 @@
+# This is "inrtps.giscript", a script used to generate the ".gitignore" file
+# in inform/inrtps. Do not edit ".gitignore" directly. Instead, edit this
+# script, and then rebuild ".gitignore" with the command:
+
+# ../inweb/Tangled/inweb -prototype inrtps/inrtps.giscript -gitignore inrtps/.gitignore
+
+# (Or type "make gitignores", which will remake all of the .gitignore files in
+# this repository from their scripts, including this one.)
+
+{basics}
+
+inrtps.mk
