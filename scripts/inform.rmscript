@@ -21,11 +21,11 @@ Inform is itself a literate program, one of the largest in the world. This
 means that a complete presentation of the code, in human-readable form, is
 continuously maintained alongside the code itself. So to read this, along with
 technical documentation and other useful resources, turn to the companion
-web page to this repository: {WEBICON} [Inform: The Program]({GITHUBPAGESLINK}
+web page to this repository: {WEBICON} [Inform: The Program]({GITHUBPAGESLINK})
 
-Writing and presenting Inform as a literate program was far beyond the capabilities
-of existing LP software. A new system for LP called [Inweb](https://github.com/ganelson/inweb)
-has been spun off from Inform, and has its own repository.
+Writing and presenting Inform as a literate program was beyond the capabilities
+of existing LP software, so a new system for LP called Inweb
+has been spun off from Inform, and that has [its own repository](https://github.com/ganelson/inweb).
 
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
@@ -146,7 +146,7 @@ This most important contents of this repository are the source webs for the
 following command-line tools:
 
 {define: tool-with-manual name: PROGRAM version-from: VPROGRAM doc: DOCUMENTATION}
-* {PROGRAM} - v__{bibliographic datum: Version Number of: {VPROGRAM}}__ - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{PROGRAM}/index.html) - [{DOCICON}&nbsp;Documentation]({GITHUBPAGESLINK}/{PROGRAM}/{DOCUMENTATION}.html)<br>{bibliographic datum: Purpose of: {PROGRAM}}
+* {PROGRAM} - __version {bibliographic datum: Version Number of: {VPROGRAM}}__ - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{PROGRAM}/index.html) - [{DOCICON}&nbsp;Documentation]({GITHUBPAGESLINK}/{PROGRAM}/{DOCUMENTATION}.html)<br>{bibliographic datum: Purpose of: {PROGRAM}}
 {end-define}
 {tool-with-manual name: inbuild  version-from: inform7  doc: M-ui}
 {tool-with-manual name: inform7  version-from: inform7  doc: M-cu}
@@ -179,10 +179,9 @@ The following webs are the source for the two most important extensions shipped 
 {end-define}
 {define: extension author: AUTHOR title: TITLE}
 {set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7x}
-* [{TITLE} by {AUTHOR}]({PATH}) - __{bibliographic datum: Version Number of: {PATH}}__
+* [{TITLE} by {AUTHOR}](<{PATH}>) - __v{bibliographic datum: Version Number of: {PATH}}__
 {end-define}
 
-* inform7/Internal/Extensions - Extensions shipped in the Inform apps
 {extension-web web: basic_inform   author: Graham Nelson title: Basic Inform}
 {extension-web web: standard_rules author: Graham Nelson title: Standard Rules}
 
