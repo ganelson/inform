@@ -88,20 +88,19 @@ The curator of the bug tracker is Brian Rushton, and the administrator is
 Hugo Labrande.
 
 Note that Inweb and Intest have their own bug trackers
-([here](https://inform7.atlassian.net/jira/software/c/projects/NWB/issues)
-and [here](https://inform7.atlassian.net/jira/software/c/projects/NTST/issues)).
+([here](https://inform7.atlassian.net/jira/software/c/projects/INWEB/issues)
+and [here](https://inform7.atlassian.net/jira/software/c/projects/INTEST/issues)).
 Please do not report bugs on those to the Inform tracker, or vice versa.
 
 ## Pull Requests and Adding Features
 
 Inform is only just emerging, blinking, into the light of being open-source after
 two decades of private development. It has a mature and well-used feature set,
-so that new or changed functionality requires careful thought. So for the moment,
-its future direction remains in the hands of the original author.
-
-At some point a more formal process may emerge, but for now community discussion
-of possible features is best kept to the IF forum. In particular, please do not
-use the bug trackers to propose new features.
+so that new or changed functionality requires careful thought. For the moment,
+its future direction remains in the hands of the original author. At some point
+a more formal process may emerge, but for now community discussion of possible
+features is best kept to the IF forum. In particular, please do not use the
+bug trackers to propose new features.
 
 Pull requests adding functionality or making any significant changes are therefore
 not likely to be accepted from non-members of the Inform team without prior
@@ -170,8 +169,8 @@ The following webs are the source for the two most important extensions shipped 
 Other extensions shipped with Inform are not presented as webs, but as single files:
 
 {define: extension author: AUTHOR title: TITLE}
-	{set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7x}
-	* [{TITLE} by {AUTHOR}]({PATH}) - __{bibliographic datum: Version Number of: {PATH}}__
+{set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7x}
+* [{TITLE} by {AUTHOR}]({PATH}) - __{bibliographic datum: Version Number of: {PATH}}__
 {end-define}
 {extension author: Emily Short   title: Basic Help Menu}
 {extension author: Emily Short   title: Basic Screen Effects}
@@ -197,8 +196,8 @@ Other extensions shipped with Inform are not presented as webs, but as single fi
 These are templates used by Inform to release story files within a website:
 
 {define: websitetemplate name: NAME purpose: PURPOSE}
-	{set name: PATH value: inform7/Internal/Templates/{NAME}.i7x}
-	* [{NAME}]({PATH}) - {PURPOSE}
+{set name: PATH value: inform7/Internal/Templates/{NAME}.i7x}
+* [{NAME}]({PATH}) - {PURPOSE}
 {end-define}
 {websitetemplate name: Classic  purpose: An older, plainer website}
 {websitetemplate name: Standard purpose: The default, more modern look}
@@ -206,7 +205,7 @@ These are templates used by Inform to release story files within a website:
 These are Javascript interpreters used to release such websites in a form which can play the story files interactively online:
 
 {define: template program: PROGRAM purpose: PURPOSE maintainer: MAINTAINER username: USERNAME repository: REPOSITORY}
-	* {PROGRAM} - {PURPOSE} - __{bibliographic datum: Version Number of: {PROGRAM}}__ - from [https://github.com/{USERNAME}/{REPOSITORY}], maintained by [{MAINTAINER}](https://github.com/{USERNAME})
+* {PROGRAM} - {PURPOSE} - __{bibliographic datum: Version Number of: {PROGRAM}}__ - from [https://github.com/{USERNAME}/{REPOSITORY}], maintained by [{MAINTAINER}](https://github.com/{USERNAME})
 {end-define}
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 {template program: inform7/Internal/Templates/Parchment purpose: Z-machine in Javascript maintainer: Dannii Willis username: curiousdannii repository: parchment}
@@ -217,7 +216,7 @@ These are Javascript interpreters used to release such websites in a form which 
 Two books come with the Inform apps. The source code for these books is in indoc format: the indoc tool makes those into ePubs, mini-websites, or the pseudo-websites inside the apps.
 
 {define: book title: TITLE path: PATH topic: TOPIC}
-* {TITLE} - {TOPIC}. Ebook in Indoc format, stored at path {PATH}.
+* __{TITLE}__ - {TOPIC}. Ebook in Indoc format, stored at path {PATH}.
 {end-define}
 {book title: Changes to Inform                              path: resources/Changes       topic: A detailed change history of Inform 7}
 {book title: Writing with Inform and the Inform Recipe Book path: resources/Documentation topic: The main Inform documentation, as seen in the apps, and in standalone Epubs}

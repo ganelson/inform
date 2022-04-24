@@ -88,20 +88,19 @@ The curator of the bug tracker is Brian Rushton, and the administrator is
 Hugo Labrande.
 
 Note that Inweb and Intest have their own bug trackers
-([here](https://inform7.atlassian.net/jira/software/c/projects/NWB/issues)
-and [here](https://inform7.atlassian.net/jira/software/c/projects/NTST/issues)).
+([here](https://inform7.atlassian.net/jira/software/c/projects/INWEB/issues)
+and [here](https://inform7.atlassian.net/jira/software/c/projects/INTEST/issues)).
 Please do not report bugs on those to the Inform tracker, or vice versa.
 
 ## Pull Requests and Adding Features
 
 Inform is only just emerging, blinking, into the light of being open-source after
 two decades of private development. It has a mature and well-used feature set,
-so that new or changed functionality requires careful thought. So for the moment,
-its future direction remains in the hands of the original author.
-
-At some point a more formal process may emerge, but for now community discussion
-of possible features is best kept to the IF forum. In particular, please do not
-use the bug trackers to propose new features.
+so that new or changed functionality requires careful thought. For the moment,
+its future direction remains in the hands of the original author. At some point
+a more formal process may emerge, but for now community discussion of possible
+features is best kept to the IF forum. In particular, please do not use the
+bug trackers to propose new features.
 
 Pull requests adding functionality or making any significant changes are therefore
 not likely to be accepted from non-members of the Inform team without prior
@@ -160,44 +159,44 @@ The following webs are the source for the two most important extensions shipped 
 
 Other extensions shipped with Inform are not presented as webs, but as single files:
 
-	* [Basic Help Menu by Emily Short](inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x) - ____
-	* [Basic Screen Effects by Emily Short](inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x) - __7/140425__
-	* [Complex Listing by Emily Short](inform7/Internal/Extensions/Emily Short/Complex Listing.i7x) - __9__
-	* [Glulx Entry Points by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x) - __10/140425__
-	* [Glulx Image Centering by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x) - __4__
-	* [Glulx Text Effects by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x) - __5/140516__
-	* [Inanimate Listeners by Emily Short](inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x) - ____
-	* [Locksmith by Emily Short](inform7/Internal/Extensions/Emily Short/Locksmith.i7x) - __13__
-	* [Menus by Emily Short](inform7/Internal/Extensions/Emily Short/Menus.i7x) - __3__
-	* [Punctuation Removal by Emily Short](inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x) - __5__
-	* [Skeleton Keys by Emily Short](inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x) - ____
-	* [Epistemology by Eric Eve](inform7/Internal/Extensions/Eric Eve/Epistemology.i7x) - __9__
-	* [Approximate Metric Units by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x) - __1__
-	* [English Language by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/English Language.i7x) - __1__
-	* [Metric Units by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x) - __2__
-	* [Rideable Vehicles by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x) - __3__
-	* [Unicode Character Names by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x) - ____
-	* [Unicode Full Character Names by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x) - ____
+* [Basic Help Menu by Emily Short](inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x) - ____
+* [Basic Screen Effects by Emily Short](inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x) - __7/140425__
+* [Complex Listing by Emily Short](inform7/Internal/Extensions/Emily Short/Complex Listing.i7x) - __9__
+* [Glulx Entry Points by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x) - __10/140425__
+* [Glulx Image Centering by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x) - __4__
+* [Glulx Text Effects by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x) - __5/140516__
+* [Inanimate Listeners by Emily Short](inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x) - ____
+* [Locksmith by Emily Short](inform7/Internal/Extensions/Emily Short/Locksmith.i7x) - __13__
+* [Menus by Emily Short](inform7/Internal/Extensions/Emily Short/Menus.i7x) - __3__
+* [Punctuation Removal by Emily Short](inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x) - __5__
+* [Skeleton Keys by Emily Short](inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x) - ____
+* [Epistemology by Eric Eve](inform7/Internal/Extensions/Eric Eve/Epistemology.i7x) - __9__
+* [Approximate Metric Units by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x) - __1__
+* [English Language by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/English Language.i7x) - __1__
+* [Metric Units by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x) - __2__
+* [Rideable Vehicles by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x) - __3__
+* [Unicode Character Names by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x) - ____
+* [Unicode Full Character Names by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x) - ____
 
 ### Website templates and interpreters shipped with Inform
 
 These are templates used by Inform to release story files within a website:
 
-	* [Classic](inform7/Internal/Templates/Classic.i7x) - An older, plainer website
-	* [Standard](inform7/Internal/Templates/Standard.i7x) - The default, more modern look
+* [Classic](inform7/Internal/Templates/Classic.i7x) - An older, plainer website
+* [Standard](inform7/Internal/Templates/Standard.i7x) - The default, more modern look
 
 These are Javascript interpreters used to release such websites in a form which can play the story files interactively online:
 
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
-	* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.4)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
-	* inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.0)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
+* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.4)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
+* inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.0)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
 
 ### Documentation shipped with Inform
 
 Two books come with the Inform apps. The source code for these books is in indoc format: the indoc tool makes those into ePubs, mini-websites, or the pseudo-websites inside the apps.
 
-* Changes to Inform - A detailed change history of Inform 7. Ebook in Indoc format, stored at path resources/Changes.
-* Writing with Inform and the Inform Recipe Book - The main Inform documentation, as seen in the apps, and in standalone Epubs. Ebook in Indoc format, stored at path resources/Documentation.
+* __Changes to Inform__ - A detailed change history of Inform 7. Ebook in Indoc format, stored at path resources/Changes.
+* __Writing with Inform and the Inform Recipe Book__ - The main Inform documentation, as seen in the apps, and in standalone Epubs. Ebook in Indoc format, stored at path resources/Documentation.
 
 In addition, there are:
 
