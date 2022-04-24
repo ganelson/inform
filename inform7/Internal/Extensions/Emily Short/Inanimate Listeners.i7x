@@ -1,4 +1,4 @@
-Inanimate Listeners by Emily Short begins here.
+Version 1 of Inanimate Listeners by Emily Short begins here.
 
 "Allows the player to address inanimate objects such as a talking computer, microphone, or telephone in a form such as ASK COMPUTER ABOUT COORDINATES."
 

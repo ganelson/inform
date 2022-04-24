@@ -1,4 +1,4 @@
-Unicode Character Names by Graham Nelson begins here.
+Version 1 of Unicode Character Names by Graham Nelson begins here.
 
 "Defines 2909 names like [unicode Greek small letter gamma] for Latin, Cyrillic, Greek and Hebrew letters, along with currency and other symbols."
 

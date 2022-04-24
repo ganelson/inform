@@ -13,9 +13,23 @@ Inform is often assigned material for courses on digital narrative).
 It has several times ranked in the top 100 most influential programming
 languages according to the TIOBE index.
 
+{set name: GITHUBPAGESLINK value: blob/master/docs}
+{set name: WEBICON value: &#9733;}
+{set name: DOCICON value: &#9654;}
+
+Inform is itself a literate program, one of the largest in the world. This
+means that a complete presentation of the code, in human-readable form, is
+continuously maintained alongside the code itself. So to read this, along with
+technical documentation and other useful resources, turn to the companion
+web page to this repository: {WEBICON} [Inform: The Program]({GITHUBPAGESLINK}
+
+Writing and presenting Inform as a literate program was far beyond the capabilities
+of existing LP software. A new system for LP called [Inweb](https://github.com/ganelson/inweb)
+has been spun off from Inform, and has its own repository.
+
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
-enabled yet. As a result links marked &#9733; below lead only to raw HTML
+enabled yet. As a result links marked {WEBICON} lead only to raw HTML
 source, not to served web pages. They can in the mean time be browsed offline
 as static HTML files stored in "docs".
 
@@ -122,7 +136,7 @@ trees and hedges."** (Michael Frayn)
 
 Inform is not a single program, but an assemblage of programs and resources.
 Some, including the inform7 compiler itself, are "literate programs", also
-called "webs". The notation &#9733; marks these, and links are provided to
+called "webs". The notation {WEBICON} marks these, and links are provided to
 their human-readable forms. (This will be enabled when the repository
 becomes public: GitHub Pages does not work on private repositories.)
 
@@ -131,23 +145,23 @@ becomes public: GitHub Pages does not work on private repositories.)
 This most important contents of this repository are the source webs for the
 following command-line tools:
 
-{define: tool-with-manual name: PROGRAM doc: DOCUMENTATION}
-* {PROGRAM} - {bibliographic datum: Purpose of: {PROGRAM}} - __{bibliographic datum: Version Number of: {PROGRAM}}__ - [&#9733;&nbsp;Web](docs/{PROGRAM}/index.html) - [&#9654;&nbsp;Documentation](docs/{PROGRAM}/{DOCUMENTATION}.html)
+{define: tool-with-manual name: PROGRAM version-from: VPROGRAM doc: DOCUMENTATION}
+* {PROGRAM} - v__{bibliographic datum: Version Number of: {VPROGRAM}}__ - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{PROGRAM}/index.html) - [{DOCICON}&nbsp;Documentation]({GITHUBPAGESLINK}/{PROGRAM}/{DOCUMENTATION}.html)<br>{bibliographic datum: Purpose of: {PROGRAM}}
 {end-define}
-{tool-with-manual name: inform7  doc: M-cu}
-{tool-with-manual name: inblorb  doc: M-ui}
-{tool-with-manual name: inbuild  doc: M-ui}
-{tool-with-manual name: indoc    doc: M-iti}
-{tool-with-manual name: inpolicy doc: M-ui}
-{tool-with-manual name: inrtps   doc: M-ui}
-{tool-with-manual name: inter    doc: M-ui}
+{tool-with-manual name: inbuild  version-from: inform7  doc: M-ui}
+{tool-with-manual name: inform7  version-from: inform7  doc: M-cu}
+{tool-with-manual name: inter    version-from: inform7  doc: M-ui}
+{tool-with-manual name: inblorb  version-from: inblorb  doc: M-ui}
+{tool-with-manual name: indoc    version-from: indoc    doc: M-iti}
+{tool-with-manual name: inpolicy version-from: inpolicy doc: M-ui}
+{tool-with-manual name: inrtps   version-from: inrtps   doc: M-ui}
 
 ### Kits shipped with Inform
 
 The following webs are the source for kits of Inter code shipped with Inform (at the subtree inform7/Internal/Inter). Kits are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
 
 {define: kit name: PROGRAM purpose: PURPOSE}
-* {PROGRAM} - {PURPOSE} - [&#9733;&nbsp;Web](docs/{PROGRAM}/index.html)
+* {PROGRAM} - {PURPOSE} - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{PROGRAM}/index.html)
 {end-define}
 {kit name: BasicInformKit       purpose: Support for Inform as a programming language}
 {kit name: WorldModelKit        purpose: Support for modelling space, time and actions in interactive fiction}
@@ -159,19 +173,21 @@ The following webs are the source for kits of Inter code shipped with Inform (at
 
 The following webs are the source for the two most important extensions shipped with Inform:
 
-* inform7/Internal/Extensions - Extensions shipped in the Inform apps
-{define: extension-web name: PROGRAM}
-* {PROGRAM} - {bibliographic datum: Purpose of: {PROGRAM}} - __{bibliographic datum: Version Number of: {PROGRAM}}__ - [&#9733;&nbsp;Web](docs/{PROGRAM}/index.html)
+{define: extension-web web: WEB author: AUTHOR title: TITLE}
+{set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7x}
+* [{TITLE} by {AUTHOR}](inform7/extensions/{WEB}) - __v{bibliographic datum: Version Number of: {PATH}}__ - [{WEBICON}&nbsp;Web]({GITHUBPAGESLINK}/{WEB}/index.html)
 {end-define}
-{extension-web name: basic_inform}
-{extension-web name: standard_rules}
-
-Other extensions shipped with Inform are not presented as webs, but as single files:
-
 {define: extension author: AUTHOR title: TITLE}
 {set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7x}
 * [{TITLE} by {AUTHOR}]({PATH}) - __{bibliographic datum: Version Number of: {PATH}}__
 {end-define}
+
+* inform7/Internal/Extensions - Extensions shipped in the Inform apps
+{extension-web web: basic_inform   author: Graham Nelson title: Basic Inform}
+{extension-web web: standard_rules author: Graham Nelson title: Standard Rules}
+
+Other extensions shipped with Inform are not presented as webs, but as single files:
+
 {extension author: Emily Short   title: Basic Help Menu}
 {extension author: Emily Short   title: Basic Screen Effects}
 {extension author: Emily Short   title: Complex Listing}

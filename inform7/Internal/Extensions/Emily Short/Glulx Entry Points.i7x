@@ -1,4 +1,4 @@
-Version 10/140425 of Glulx Entry Points (for Glulx only) by Emily Short begins here.
+Version 11 of Glulx Entry Points (for Glulx only) by Emily Short begins here.
 
 "Provides hooks to allow the author to write specialized multimedia behavior that would normally go through HandleGlkEvent. This is a rather dull utility library that will be of most use to authors wanting to write Glulx extensions compatible with other Glulx extensions already in use."
 

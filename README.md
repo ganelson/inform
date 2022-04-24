@@ -13,9 +13,19 @@ Inform is often assigned material for courses on digital narrative).
 It has several times ranked in the top 100 most influential programming
 languages according to the TIOBE index.
 
+Inform is itself a literate program, one of the largest in the world. This
+means that a complete presentation of the code, in human-readable form, is
+continuously maintained alongside the code itself. So to read this, along with
+technical documentation and other useful resources, turn to the companion
+web page to this repository: &#9733; [Inform: The Program](blob/master/docs
+
+Writing and presenting Inform as a literate program was far beyond the capabilities
+of existing LP software. A new system for LP called [Inweb](https://github.com/ganelson/inweb)
+has been spun off from Inform, and has its own repository.
+
 __Disclaimer__. Because this is a private repository (until the next public
 release of Inform, when it will open), its GitHub pages server cannot be
-enabled yet. As a result links marked &#9733; below lead only to raw HTML
+enabled yet. As a result links marked &#9733; lead only to raw HTML
 source, not to served web pages. They can in the mean time be browsed offline
 as static HTML files stored in "docs".
 
@@ -131,52 +141,52 @@ becomes public: GitHub Pages does not work on private repositories.)
 This most important contents of this repository are the source webs for the
 following command-line tools:
 
-* inform7 - The core compiler in a natural-language design system for interactive fiction. - __10.1.0__ - [&#9733;&nbsp;Web](docs/inform7/index.html) - [&#9654;&nbsp;Documentation](docs/inform7/M-cu.html)
-* inblorb - The packaging stage of the Inform 7 system, which releases a story file in the blorbed format. - __4__ - [&#9733;&nbsp;Web](docs/inblorb/index.html) - [&#9654;&nbsp;Documentation](docs/inblorb/M-ui.html)
-* inbuild - A simple build and package manager for the Inform tools. - __1__ - [&#9733;&nbsp;Web](docs/inbuild/index.html) - [&#9654;&nbsp;Documentation](docs/inbuild/M-ui.html)
-* indoc - The documentation-formatter for the Inform 7 system. - __4__ - [&#9733;&nbsp;Web](docs/indoc/index.html) - [&#9654;&nbsp;Documentation](docs/indoc/M-iti.html)
-* inpolicy - A lint-like tool to check up on various policies used in Inform source code. - __1__ - [&#9733;&nbsp;Web](docs/inpolicy/index.html) - [&#9654;&nbsp;Documentation](docs/inpolicy/M-ui.html)
-* inrtps - A generator of HTML pages to show for run-time problem messages in Inform. - __2__ - [&#9733;&nbsp;Web](docs/inrtps/index.html) - [&#9654;&nbsp;Documentation](docs/inrtps/M-ui.html)
-* inter - For handling intermediate Inform code. - __1__ - [&#9733;&nbsp;Web](docs/inter/index.html) - [&#9654;&nbsp;Documentation](docs/inter/M-ui.html)
+* inbuild - v__10.1.0__ - [&#9733;&nbsp;Web](blob/master/docs/inbuild/index.html) - [&#9654;&nbsp;Documentation](blob/master/docs/inbuild/M-ui.html)<br>A simple build and package manager for the Inform tools.
+* inform7 - v__10.1.0__ - [&#9733;&nbsp;Web](blob/master/docs/inform7/index.html) - [&#9654;&nbsp;Documentation](blob/master/docs/inform7/M-cu.html)<br>The core compiler in a natural-language design system for interactive fiction.
+* inter - v__10.1.0__ - [&#9733;&nbsp;Web](blob/master/docs/inter/index.html) - [&#9654;&nbsp;Documentation](blob/master/docs/inter/M-ui.html)<br>For handling intermediate Inform code.
+* inblorb - v__4__ - [&#9733;&nbsp;Web](blob/master/docs/inblorb/index.html) - [&#9654;&nbsp;Documentation](blob/master/docs/inblorb/M-ui.html)<br>The packaging stage of the Inform 7 system, which releases a story file in the blorbed format.
+* indoc - v__4__ - [&#9733;&nbsp;Web](blob/master/docs/indoc/index.html) - [&#9654;&nbsp;Documentation](blob/master/docs/indoc/M-iti.html)<br>The documentation-formatter for the Inform 7 system.
+* inpolicy - v__1__ - [&#9733;&nbsp;Web](blob/master/docs/inpolicy/index.html) - [&#9654;&nbsp;Documentation](blob/master/docs/inpolicy/M-ui.html)<br>A lint-like tool to check up on various policies used in Inform source code.
+* inrtps - v__2__ - [&#9733;&nbsp;Web](blob/master/docs/inrtps/index.html) - [&#9654;&nbsp;Documentation](blob/master/docs/inrtps/M-ui.html)<br>A generator of HTML pages to show for run-time problem messages in Inform.
 
 ### Kits shipped with Inform
 
 The following webs are the source for kits of Inter code shipped with Inform (at the subtree inform7/Internal/Inter). Kits are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
 
-* BasicInformKit - Support for Inform as a programming language - [&#9733;&nbsp;Web](docs/BasicInformKit/index.html)
-* WorldModelKit - Support for modelling space, time and actions in interactive fiction - [&#9733;&nbsp;Web](docs/WorldModelKit/index.html)
-* EnglishLanguageKit - Support for English as the natural language used - [&#9733;&nbsp;Web](docs/EnglishLanguageKit/index.html)
-* CommandParserKit - Support for parsing turn-by-turn commands in interactive fiction - [&#9733;&nbsp;Web](docs/CommandParserKit/index.html)
-* BasicInformExtrasKit - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](docs/BasicInformExtrasKit/index.html)
+* BasicInformKit - Support for Inform as a programming language - [&#9733;&nbsp;Web](blob/master/docs/BasicInformKit/index.html)
+* WorldModelKit - Support for modelling space, time and actions in interactive fiction - [&#9733;&nbsp;Web](blob/master/docs/WorldModelKit/index.html)
+* EnglishLanguageKit - Support for English as the natural language used - [&#9733;&nbsp;Web](blob/master/docs/EnglishLanguageKit/index.html)
+* CommandParserKit - Support for parsing turn-by-turn commands in interactive fiction - [&#9733;&nbsp;Web](blob/master/docs/CommandParserKit/index.html)
+* BasicInformExtrasKit - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](blob/master/docs/BasicInformExtrasKit/index.html)
 
 ### Extensions shipped with Inform
 
 The following webs are the source for the two most important extensions shipped with Inform:
 
 * inform7/Internal/Extensions - Extensions shipped in the Inform apps
-* basic_inform -  - ____ - [&#9733;&nbsp;Web](docs/basic_inform/index.html)
-* standard_rules -  - ____ - [&#9733;&nbsp;Web](docs/standard_rules/index.html)
+* [Basic Inform by Graham Nelson](inform7/extensions/basic_inform) - __v1__ - [&#9733;&nbsp;Web](blob/master/docs/basic_inform/index.html)
+* [Standard Rules by Graham Nelson](inform7/extensions/standard_rules) - __v6__ - [&#9733;&nbsp;Web](blob/master/docs/standard_rules/index.html)
 
 Other extensions shipped with Inform are not presented as webs, but as single files:
 
-* [Basic Help Menu by Emily Short](inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x) - ____
-* [Basic Screen Effects by Emily Short](inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x) - __7/140425__
+* [Basic Help Menu by Emily Short](inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x) - __1__
+* [Basic Screen Effects by Emily Short](inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x) - __8__
 * [Complex Listing by Emily Short](inform7/Internal/Extensions/Emily Short/Complex Listing.i7x) - __9__
-* [Glulx Entry Points by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x) - __10/140425__
+* [Glulx Entry Points by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x) - __11__
 * [Glulx Image Centering by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x) - __4__
-* [Glulx Text Effects by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x) - __5/140516__
-* [Inanimate Listeners by Emily Short](inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x) - ____
+* [Glulx Text Effects by Emily Short](inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x) - __6__
+* [Inanimate Listeners by Emily Short](inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x) - __1__
 * [Locksmith by Emily Short](inform7/Internal/Extensions/Emily Short/Locksmith.i7x) - __13__
 * [Menus by Emily Short](inform7/Internal/Extensions/Emily Short/Menus.i7x) - __3__
 * [Punctuation Removal by Emily Short](inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x) - __5__
-* [Skeleton Keys by Emily Short](inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x) - ____
+* [Skeleton Keys by Emily Short](inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x) - __1__
 * [Epistemology by Eric Eve](inform7/Internal/Extensions/Eric Eve/Epistemology.i7x) - __9__
 * [Approximate Metric Units by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x) - __1__
 * [English Language by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/English Language.i7x) - __1__
 * [Metric Units by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x) - __2__
 * [Rideable Vehicles by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x) - __3__
-* [Unicode Character Names by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x) - ____
-* [Unicode Full Character Names by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x) - ____
+* [Unicode Character Names by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x) - __1__
+* [Unicode Full Character Names by Graham Nelson](inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x) - __1__
 
 ### Website templates and interpreters shipped with Inform
 

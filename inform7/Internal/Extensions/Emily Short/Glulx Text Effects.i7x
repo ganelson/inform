@@ -1,8 +1,8 @@
-Version 5/140516 of Glulx Text Effects (for Glulx only) by Emily Short begins here.
+Version 6 of Glulx Text Effects (for Glulx only) by Emily Short begins here.
 
 "Gives control over text formatting in Glulx."
 
-[ Version 5 was rewritten by Dannii Willis ]
+[ Rewritten by Dannii Willis. ]
 
 Use authorial modesty.
 

@@ -1,4 +1,4 @@
-Unicode Full Character Names by Graham Nelson begins here.
+Version 1 of Unicode Full Character Names by Graham Nelson begins here.
 
 "Defines 12997 names like [unicode Arabic letter hah with three dots above] for the full range of characters named in the Unicode 4.1 standard."
 

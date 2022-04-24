@@ -1,4 +1,4 @@
-Skeleton Keys by Emily Short begins here.
+Version 1 of Skeleton Keys by Emily Short begins here.
 
 Section 1 - Multiple locking (in place of Section 9 - Lockability in Standard Rules by Graham Nelson)
 

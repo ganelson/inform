@@ -1,4 +1,4 @@
-Basic Help Menu by Emily Short begins here.
+Version 1 of Basic Help Menu by Emily Short begins here.
 
 "Provides a HELP command which brings up a menu giving standard instructions about IF."
 

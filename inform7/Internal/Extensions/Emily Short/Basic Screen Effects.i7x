@@ -1,4 +1,4 @@
-Version 7/140425 of Basic Screen Effects by Emily Short begins here.
+Version 8 of Basic Screen Effects by Emily Short begins here.
 
 "Waiting for a keypress; clearing the screen. Also provides facilities for 
 changing the foreground and background colors of text, when using the z-machine.
