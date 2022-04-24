@@ -1,0 +1,39 @@
+# This is a "makescript" used by Inweb to construct a version of the makefile
+# for this using-Inform-with-C example which is likely to work on your platform.
+
+{platform-settings}
+
+# Where inform7 is installed, relative to this directory
+
+INST = ../../..
+INFORM = $(INST)/Tangled/inform7 -silence
+
+# There is one build target: an executable.
+
+.PHONY: all
+all: Eg4
+
+Eg4: Eg4-C.o Eg4-I.o
+	{link from: Eg4-C.o Eg4-I.o to: Eg4$(EXEEXTENSION)}
+
+Eg4-C.o: Eg4.c
+	{compile from: Eg4.c to: Eg4-C.o options: -I $(INST)/Internal/Miscellany}
+
+Eg4-I.o: Eg4-I.c
+	{compile from: Eg4-I.c to: Eg4-I.o options: -I $(INST)/Internal/Miscellany}
+
+Eg4-I.c: Eg4.i7
+	$(INFORM) -basic -format=C/no-main -o Eg4-I.c Eg4.i7
+
+.PHONY: run
+run: Eg4
+	./Eg4
+
+.PHONY: clean
+clean:
+	rm -f Eg4-I.c
+	rm -f *.o
+	rm -f Eg4
+	rm -f actual_output.txt
+	rm -f build_log.txt
+	rm -f inweb_output.txt

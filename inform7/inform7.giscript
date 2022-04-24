@@ -43,6 +43,7 @@ Tests/Test Externals/_Build/
 Tests/Test Externals/_Executables/
 Tests/Test Externals/_Textual/
 Tests/Test Makes/Eg?-C/Eg?
+Tests/Test Makes/Eg?-C/makefile
 Tests/Test Makes/Eg?-C/Eg?-I.[co]
 Tests/Test Makes/Eg?-C/Eg?-C.o
 Tests/Test Makes/Eg?-C/actual_output.txt
