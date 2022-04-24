@@ -277,8 +277,8 @@ retrospective:
 forcetools:
 	{components type: tool}
 	$(MAKE) -f $({SYMBOL}MAKER) force
-	$(MAKE) -f inform6/inform6.mk force
 	{end-components}
+	$(MAKE) -f inform6/inform6.mk force
 
 # -----------------------------------------------------------------------------
 # Target "check"
