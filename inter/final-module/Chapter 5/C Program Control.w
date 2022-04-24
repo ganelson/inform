@@ -116,7 +116,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 		if ((prim) && (Primitives::to_BIP(I, prim) == IN_BIP)) in_flag = TRUE;
 	}
 
-	WRITE("for (i7word_t "); VNODE_1C;
+	WRITE("for ("); VNODE_1C;
 	WRITE(" = 1; "); VNODE_1C;
 	WRITE(" < i7_max_objects; "); VNODE_1C;
 	WRITE("++) ");
@@ -130,7 +130,7 @@ int CProgramControl::compile_control_primitive(code_generation *gen, inter_ti bi
 	suppress_terminal_semicolon = TRUE;
 
 @<Generate primitive for objectloopx@> =
-	WRITE("for (i7word_t "); VNODE_1C;
+	WRITE("for ("); VNODE_1C;
 	WRITE(" = 1; "); VNODE_1C;
 	WRITE(" < i7_max_objects; "); VNODE_1C;
 	WRITE("++) ");

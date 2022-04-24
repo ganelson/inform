@@ -13,7 +13,7 @@ Inform is often assigned material for courses on digital narrative).
 It has several times ranked in the top 100 most influential programming
 languages according to the TIOBE index.
 
-{set name: GITHUBPAGESLINK value: blob/master/docs}
+{set name: GITHUBPAGESLINK value: docs}
 {set name: WEBICON value: &#9733;}
 {set name: DOCICON value: &#9654;}
 
