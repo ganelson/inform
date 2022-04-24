@@ -19,7 +19,7 @@ enabled yet. As a result links marked &#9733; below lead only to raw HTML
 source, not to served web pages. They can in the mean time be browsed offline
 as static HTML files stored in "docs".
 
-## Licence
+## Licence and copyright
 
 Except as noted, copyright in material in this repository (the "Package") is
 held by Graham Nelson (the "Author"), who retains copyright so that there is
@@ -35,6 +35,13 @@ such story files are not derivative works of Inform and do not inherit the
 Artistic License 2.0 as an obligation. (This further grant follows the
 practice of projects like bison, which also copy substantial code into
 their outputs.)
+
+A condition of any pull-request being made (i.e., to make suggested amendments
+to this software) is that, if the request is accepted, copyright on any contribution
+made by it immediately transfers to the project's copyright-holder, Graham Nelson.
+This is in order that there can be clear ownership. It does not apply to the
+programs duplicated here from other repositories (such as dumb-frotz) or to the
+Inform GUI apps: those have their own copyrights and licences.
 
 ## Repositories
 
@@ -67,9 +74,44 @@ Make a directory in which to work: let's call this "work". Then:
 * Run a single test case: "../intest/Tangled/intest inform7 -show Acidity".
 
 If that passes, probably all is well. The definitive test is "make check",
-which runs nearly 2000 cases through the executables, but takes 10 minutes
+which runs nearly 2500 cases through the executables, but takes 10 minutes
 on an 8-core desktop and half an hour on a 4-core laptop (which will sound
 something like a helicopter taking off).
+
+## Reporting Issues
+
+The old Inform bug tracker, powered by Mantis, has now closed, and its issues
+and comments have been migrated to the new one, powered by Jira and hosted
+[at the Atlassian website](https://inform7.atlassian.net/jira/software/c/projects/I7/issues).
+
+The curator of the bug tracker is Brian Rushton, and the administrator is
+Hugo Labrande.
+
+Note that Inweb and Intest have their own bug trackers
+([here](https://inform7.atlassian.net/jira/software/c/projects/NWB/issues)
+and [here](https://inform7.atlassian.net/jira/software/c/projects/NTST/issues)).
+Please do not report bugs on those to the Inform tracker, or vice versa.
+
+## Pull Requests and Adding Features
+
+Inform is only just emerging, blinking, into the light of being open-source after
+two decades of private development. It has a mature and well-used feature set,
+so that new or changed functionality requires careful thought. So for the moment,
+its future direction remains in the hands of the original author.
+
+At some point a more formal process may emerge, but for now community discussion
+of possible features is best kept to the IF forum. In particular, please do not
+use the bug trackers to propose new features.
+
+Pull requests adding functionality or making any significant changes are therefore
+not likely to be accepted from non-members of the Inform team without prior
+agreement, unless they are clear-cut bug fixes or corrections of typos, broken
+links, or similar. See also the note about copyright above.
+
+The Inform licence is highly permissive, and forks which develop in quite different
+ways are entirely within the rules. (But one of the few requirements of the
+Artistic Licence is that such forks be given a name which is not simply "Inform 7",
+to avoid confusion.)
 
 ## Inventory
 
@@ -85,108 +127,83 @@ called "webs". The notation &#9733; marks these, and links are provided to
 their human-readable forms. (This will be enabled when the repository
 becomes public: GitHub Pages does not work on private repositories.)
 
-### Resources for which this is the primary repository
+### Source for command-line tools
 
-This repository is where development is done on the following executables:
+This most important contents of this repository are the source webs for the
+following command-line tools:
 
-{define: primary program: PROGRAM}
-* {PROGRAM} - {bibliographic datum: Purpose of: {PROGRAM}} - __{bibliographic datum: Version Number of: {PROGRAM}}__ - [&#9733;&nbsp;Web](docs/{PROGRAM}/index.html)
-{end-define}
-{define: primaryd program: PROGRAM doc: DOCUMENTATION}
+{define: tool-with-manual name: PROGRAM doc: DOCUMENTATION}
 * {PROGRAM} - {bibliographic datum: Purpose of: {PROGRAM}} - __{bibliographic datum: Version Number of: {PROGRAM}}__ - [&#9733;&nbsp;Web](docs/{PROGRAM}/index.html) - [&#9654;&nbsp;Documentation](docs/{PROGRAM}/{DOCUMENTATION}.html)
 {end-define}
-{define: primaryl program: PROGRAM purpose: PURPOSE}
+{tool-with-manual name: inform7  doc: M-cu}
+{tool-with-manual name: inblorb  doc: M-ui}
+{tool-with-manual name: inbuild  doc: M-ui}
+{tool-with-manual name: indoc    doc: M-iti}
+{tool-with-manual name: inpolicy doc: M-ui}
+{tool-with-manual name: inrtps   doc: M-ui}
+{tool-with-manual name: inter    doc: M-ui}
+
+### Kits shipped with Inform
+
+The following webs are the source for kits of Inter code shipped with Inform (at the subtree inform7/Internal/Inter). Kits are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
+
+{define: kit name: PROGRAM purpose: PURPOSE}
 * {PROGRAM} - {PURPOSE} - [&#9733;&nbsp;Web](docs/{PROGRAM}/index.html)
 {end-define}
-{define: book title: TITLE path: PATH topic: TOPIC}
-* {TITLE} - {TOPIC}. Ebook in Indoc format, stored at path {PATH}.
+{kit name: BasicInformKit       purpose: Support for Inform as a programming language}
+{kit name: WorldModelKit        purpose: Support for modelling space, time and actions in interactive fiction}
+{kit name: EnglishLanguageKit   purpose: Support for English as the natural language used}
+{kit name: CommandParserKit     purpose: Support for parsing turn-by-turn commands in interactive fiction}
+{kit name: BasicInformExtrasKit purpose: Additional support needed only if the Standard Rules are not used}
+
+### Extensions shipped with Inform
+
+The following webs are the source for the two most important extensions shipped with Inform:
+
+* inform7/Internal/Extensions - Extensions shipped in the Inform apps
+{define: extension-web name: PROGRAM}
+* {PROGRAM} - {bibliographic datum: Purpose of: {PROGRAM}} - __{bibliographic datum: Version Number of: {PROGRAM}}__ - [&#9733;&nbsp;Web](docs/{PROGRAM}/index.html)
 {end-define}
-{define: extension path: PATH}
-	* {PATH} - __{bibliographic datum: Version Number of: {PATH}}__
+{extension-web name: basic_inform}
+{extension-web name: standard_rules}
+
+Other extensions shipped with Inform are not presented as webs, but as single files:
+
+{define: extension author: AUTHOR title: TITLE}
+	{set name: PATH value: inform7/Internal/Extensions/{AUTHOR}/{TITLE}.i7x}
+	* [{TITLE} by {AUTHOR}]({PATH}) - __{bibliographic datum: Version Number of: {PATH}}__
 {end-define}
+{extension author: Emily Short   title: Basic Help Menu}
+{extension author: Emily Short   title: Basic Screen Effects}
+{extension author: Emily Short   title: Complex Listing}
+{extension author: Emily Short   title: Glulx Entry Points}
+{extension author: Emily Short   title: Glulx Image Centering}
+{extension author: Emily Short   title: Glulx Text Effects}
+{extension author: Emily Short   title: Inanimate Listeners}
+{extension author: Emily Short   title: Locksmith}
+{extension author: Emily Short   title: Menus}
+{extension author: Emily Short   title: Punctuation Removal}
+{extension author: Emily Short   title: Skeleton Keys}
+{extension author: Eric Eve      title: Epistemology}
+{extension author: Graham Nelson title: Approximate Metric Units}
+{extension author: Graham Nelson title: English Language}
+{extension author: Graham Nelson title: Metric Units}
+{extension author: Graham Nelson title: Rideable Vehicles}
+{extension author: Graham Nelson title: Unicode Character Names}
+{extension author: Graham Nelson title: Unicode Full Character Names}
 
-{primaryd program: inform7 doc: M-cu}
-	* its modules [&#9733;&nbsp;inflections](docs/inflections-module/index.html), [&#9733;&nbsp;problems](docs/problems-module/index.html), [&#9733;&nbsp;linguistics](docs/linguistics-module/index.html), [&#9733;&nbsp;kinds](docs/kinds-module/index.html), [&#9733;&nbsp;core](docs/core-module/index.html), [&#9733;&nbsp;if](docs/if-module/index.html), [&#9733;&nbsp;multimedia](docs/multimedia-module/index.html), [&#9733;&nbsp;index](docs/index-module/index.html)
-	* their unit test executables [&#9733;&nbsp;inflections-test](docs/inflections-test/index.html), [&#9733;&nbsp;problems-test](docs/problems-test/index.html), [&#9733;&nbsp;linguistics-test](docs/linguistics-test/index.html), [&#9733;&nbsp;kinds-test](docs/kinds-test/index.html)
-{primaryd program: inblorb doc: M-ui}
-{primaryd program: inbuild doc: M-ui}
-	* its modules [&#9733;&nbsp;inbuild](docs/inbuild-module/index.html), [&#9733;&nbsp;arch](docs/arch-module/index.html), [&#9733;&nbsp;html](docs/html-module/index.html), [&#9733;&nbsp;words](docs/words-module/index.html), [&#9733;&nbsp;syntax](docs/syntax-module/index.html)
-	* two unit test executables [&#9733;&nbsp;words-test](docs/words-test/index.html), [&#9733;&nbsp;syntax-test](docs/syntax-test/index.html)
-{primaryd program: indoc doc: M-iti}
-{primaryd program: inpolicy doc: M-ui}
-{primaryd program: inrtps doc: M-ui}
-{primaryd program: inter doc: M-ui}
-	* its modules [&#9733;&nbsp;inter](docs/inter-module/index.html), [&#9733;&nbsp;codegen](docs/codegen-module/index.html)
+### Website templates and interpreters shipped with Inform
 
-Two webs give detailed expositions of the most important built-in Inform extensions (at the subtree inform7/extensions):
+These are templates used by Inform to release story files within a website:
 
-{primary program: basic_inform}
-{primary program: standard_rules}
-
-This repository also contains kits of Inter code (at the subtree inform7/Internal/Inter). These are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
-
-{primaryl program: BasicInformKit purpose: Support for Inform as a programming language}
-{primaryl program: WorldModelKit purpose: Support for modelling space, time and actions in interactive fiction}
-{primaryl program: EnglishLanguageKit purpose: Support for English as the natural language used}
-{primaryl program: CommandParserKit purpose: Support for parsing turn-by-turn commands in interactive fiction}
-{primaryl program: BasicInformExtrasKit purpose: Additional support needed only if the Standard Rules are not used}
-
-The inform7 subtree further contains these primary resources:
-
-* inform7/Internal/Extensions - Libraries of code. Inform 7
-{extension path: inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Complex Listing.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Locksmith.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Menus.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Punctuation Removal.i7x}
-{extension path: inform7/Internal/Extensions/Emily Short/Skeleton Keys.i7x}
-{extension path: inform7/Internal/Extensions/Eric Eve/Epistemology.i7x}
-{extension path: inform7/Internal/Extensions/Graham Nelson/Approximate Metric Units.i7x}
-{extension path: inform7/Internal/Extensions/Graham Nelson/English Language.i7x}
-{extension path: inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x}
-{extension path: inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x}
-{extension path: inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x}
-{extension path: inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x}
-* inform7/Internal/HTML - Files needed for generating extension documentation and the like
-* inform7/Internal/Languages - Natural language definition bundles
-* inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
-{define: itemplate program: PROGRAM purpose: PURPOSE}
-	* {PROGRAM} - {PURPOSE} - __{bibliographic datum: Version Number of: {PROGRAM}}__
+{define: websitetemplate name: NAME purpose: PURPOSE}
+	{set name: PATH value: inform7/Internal/Templates/{NAME}.i7x}
+	* [{NAME}]({PATH}) - {PURPOSE}
 {end-define}
-{itemplate program: inform7/Internal/Templates/Classic purpose: An older, plainer website}
-{itemplate program: inform7/Internal/Templates/Standard purpose: The default, more modern look}
+{websitetemplate name: Classic  purpose: An older, plainer website}
+{websitetemplate name: Standard purpose: The default, more modern look}
 
-The "resources" directory holds a number of non-executable items of use to the
-Inform UI applications, and to Inform websites:
-
-{book title: Changes to Inform path: resources/Changes topic: A detailed change history of Inform 7}
-{book title: Writing with Inform and the Inform Recipe Book path: resources/Documentation topic: The main Inform documentation, as seen in the apps, and in standalone Epubs}
-* resources/Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
-* resources/Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app
-
-Finally, the "retrospective" directory holds ANSI C source and resources needed
-to build (some) previous versions of Inform 7.
-
-### Resources copied here from elsewhere
-
-Stable versions of the following are periodically copied into this repository,
-but this is not where development on them is done, and no pull requests will
-be accepted. (Note that these are not git submodules.)
-
-{define: secondary program: PROGRAM purpose: PURPOSE maintainer: MAINTAINER username: USERNAME repository: REPOSITORY}
-* {PROGRAM} - {PURPOSE} - __{bibliographic datum: Version Number of: {PROGRAM}}__ - from [https://github.com/{USERNAME}/{REPOSITORY}], maintained by [{MAINTAINER}](https://github.com/{USERNAME})
-{end-define}
-{secondary program: inform6 purpose: The Inform 6 compiler (used by I7 as a code generator). maintainer: David Kinder username: DavidKinder repository: Inform6}
-	* inform6/Tests/Assistants/dumb-frotz - A dumb-terminal Z-machine interpreter. - unversioned: modified from [Alembic Petrofsky's 1998 Teletype port of Frotz](https://github.com/sussman/ircbot-collection/tree/master/dumb-frotz)
-	* inform6/Tests/Assistants/dumb-glulx/glulxe - A dumb-terminal Glulx interpreter. - __{bibliographic datum: Version Number of: inform6/Tests/Assistants/dumb-glulx/glulxe}__ - [erkyrath/glulxe](https://github.com/erkyrath/glulxe), maintained by [Andrew Plotkin](https://github.com/erkyrath)
-	* inform6/Tests/Assistants/dumb-glulx/cheapglk - A basic Glk implementation to support dumb-glulxe. - __{bibliographic datum: Version Number of: inform6/Tests/Assistants/dumb-glulx/cheapglk}__ - [erkyrath/cheapglk](https://github.com/erkyrath/cheapglk), maintained by [Andrew Plotkin](https://github.com/erkyrath)
-
-* inblorb/Tests/Assistants/blorblib - Code for examining blorb files, including blorbscan, used here for validating inblorb's output in tests. - version 1.0.2 - by [Andrew Plotkin](https://github.com/erkyrath), but not currently elsewhere on Github
+These are Javascript interpreters used to release such websites in a form which can play the story files interactively online:
 
 {define: template program: PROGRAM purpose: PURPOSE maintainer: MAINTAINER username: USERNAME repository: REPOSITORY}
 	* {PROGRAM} - {PURPOSE} - __{bibliographic datum: Version Number of: {PROGRAM}}__ - from [https://github.com/{USERNAME}/{REPOSITORY}], maintained by [{MAINTAINER}](https://github.com/{USERNAME})
@@ -194,6 +211,44 @@ be accepted. (Note that these are not git submodules.)
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
 {template program: inform7/Internal/Templates/Parchment purpose: Z-machine in Javascript maintainer: Dannii Willis username: curiousdannii repository: parchment}
 {template program: inform7/Internal/Templates/Quixe purpose: Glulx in Javascript maintainer: Andrew Plotkin username: erkyrath repository: quixe}
+
+### Documentation shipped with Inform
+
+Two books come with the Inform apps. The source code for these books is in indoc format: the indoc tool makes those into ePubs, mini-websites, or the pseudo-websites inside the apps.
+
+{define: book title: TITLE path: PATH topic: TOPIC}
+* {TITLE} - {TOPIC}. Ebook in Indoc format, stored at path {PATH}.
+{end-define}
+{book title: Changes to Inform                              path: resources/Changes       topic: A detailed change history of Inform 7}
+{book title: Writing with Inform and the Inform Recipe Book path: resources/Documentation topic: The main Inform documentation, as seen in the apps, and in standalone Epubs}
+
+In addition, there are:
+
+* resources/Outcome Pages - Inrtps uses these to generate HTML outcome pages (such as those showing Problem messages in the app)
+* resources/Sample Projects - Two small interactive fictions, 'Disenchantment Bay' and 'Onyx', presented as samples in the app
+
+### Retrospective builds of Inform
+
+New in 2022 is the ability for apps to use past instead of present versions of the
+core Inform software when compiling a project. This means the core software distribution
+needs to contain some form of those past versions - at minimum, the extensions and
+compiler tools for (say) versions 9.1, 9.2 and 9.3.
+
+That material is held in the "retrospective" directory. Note that documentation
+from past versions (e.g., past versions of "Writing with Inform") is not included.
+
+### Resources copied here from elsewhere
+
+Stable versions of the following are periodically copied into this repository,
+but this is not where development on them is done, and no pull requests will
+be accepted. (Note that these are not git submodules.)
+
+* inform6 - The Inform 6 compiler (used by I7 as a code generator). - __{bibliographic datum: Version Number of: inform6}__ - from [https://github.com/DavidKinder/Inform6], maintained by [David Kinder](https://github.com/DavidKinder)
+	* inform6/Tests/Assistants/dumb-frotz - A dumb-terminal Z-machine interpreter. - unversioned: modified from [Alembic Petrofsky's 1998 Teletype port of Frotz](https://github.com/sussman/ircbot-collection/tree/master/dumb-frotz)
+	* inform6/Tests/Assistants/dumb-glulx/glulxe - A dumb-terminal Glulx interpreter. - __{bibliographic datum: Version Number of: inform6/Tests/Assistants/dumb-glulx/glulxe}__ - [erkyrath/glulxe](https://github.com/erkyrath/glulxe), maintained by [Andrew Plotkin](https://github.com/erkyrath)
+	* inform6/Tests/Assistants/dumb-glulx/cheapglk - A basic Glk implementation to support dumb-glulxe. - __{bibliographic datum: Version Number of: inform6/Tests/Assistants/dumb-glulx/cheapglk}__ - [erkyrath/cheapglk](https://github.com/erkyrath/cheapglk), maintained by [Andrew Plotkin](https://github.com/erkyrath)
+
+* inblorb/Tests/Assistants/blorblib - Code for examining blorb files, including blorbscan, used here for validating inblorb's output in tests. - version 1.0.2 - by [Andrew Plotkin](https://github.com/erkyrath), but not currently elsewhere on Github
 
 ### Binary resources (such as image files)
 
