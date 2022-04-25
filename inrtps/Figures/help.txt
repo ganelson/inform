@@ -8,5 +8,6 @@ usage: inrtps from-folder to-folder [options]
 -crash           intentionally crash on internal errors, for backtracing (default is -no-crash)
 -fixtime         pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
 -help            print this help information
+-locale X        set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
 -log X           write the debugging log to include diagnostics on X
 -version         print out version number

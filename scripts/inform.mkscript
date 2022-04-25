@@ -25,161 +25,218 @@
 # directory set to "inform". It should then usually be invoked with just "make".
 
 # -----------------------------------------------------------------------------
+# Platform (operating system) dependencies
+# -----------------------------------------------------------------------------
+
+# This tells Inweb to incorporate settings for your platform (macos, windows,
+# linux, etc.), as set when Inweb was installed.
 
 {platform-settings}
 
-# The colony file for this collection of webs contains information about their
-# paths, where they are woven to, and so on
+# There is, however, another piece of platform dependency. We want a makefile
+# which is capable of "integrating" the Inform toolchain and other resources
+# into a UI app (say, the MacOS "Inform.app"), which basically means copying
+# a lot of files into place in some hierarchy somewhere. Those hierarchies
+# have different locations and naming conventions on the different platforms;
+# and the inform repository should not be the place to set those.
+
+# So, then, each platform provides its own "make-integration-settings.mk" file,
+# which - if used - should be placed in the directory just outside "inform".
+# This is all optional, and command-line users need not have such a file:
+# note that the make syntax "-include" means "load this file if it exists but
+# continue without any errors if it does not".
+
+# If the file does exist, it will define the symbol INTEGRATION, and make a
+# set of other definitions as well, which we will make use of below.
+
+-include ../make-integration-settings.mk
+
+# Note that if you are an app-maker wanting to make a release build of your
+# app, always "make" first, and then "make forceintegration". (This ensures
+# all resources are copied from the repository into your app, and doesn't
+# try to do anything clever about working out the minimum necessary copy.)
+
+# -----------------------------------------------------------------------------
+# Where to find webs in this repository
+# -----------------------------------------------------------------------------
+# The makefile needs to deal with many "literate programs" at various places
+# in the repository. A sort of roster of these, called a "colony file", is here:
 
 COLONY = colony.txt
+
+# We will also make use of two webs outside the inform repository, from our
+# sidekick projects intest and inweb, which must both also be installed in order
+# to test and build inform:
 
 INTEST = ../intest/Tangled/intest
 INTESTX = ../intest/Tangled/intest
 INTESTWEB = ../intest
+
 INWEB = ../inweb/Tangled/inweb
 INWEBX = ../inweb/Tangled/inweb
-INTERX = inter/Tangled/inter
-INBUILDX = inbuild/Tangled/inbuild
+INWEBWEB = ../inweb
 
-# The "-" at the front here tells make to load this file if it exists, and
-# continue otherwise. If it does exist, it will define the symbol INTEGRATION.
-# That signals that the user wants to integrate the intools into the UI app;
-# if it's not defined, the user is just playing with the intools in isolation.
-# (Different versions of this file are needed on different operating systems.)
+# But the inform repository creates many other webs itself, and those can be
+# divided into three: tools (executable code), modules (used to make tools),
+# and miscellaneous webs (making something other than executable code). These
+# are collectively called "components" below, and we now declare them all,
+# beginning with the modules.
 
--include ../make-integration-settings.mk
+{component type: module symbol: WORDS       webname: words       path: services/words-module       set: modules}
+{component type: module symbol: SYNTAX      webname: syntax      path: services/syntax-module      set: modules}
+{component type: module symbol: HTML        webname: html        path: services/html-module        set: modules}
+{component type: module symbol: ARCH        webname: arch        path: services/arch-module        set: modules}
+{component type: module symbol: INFLECTIONS webname: inflections path: services/inflections-module set: modules}
+{component type: module symbol: LEXICON     webname: lexicon     path: services/lexicon-module     set: modules}
+{component type: module symbol: LINGUISTICS webname: linguistics path: services/linguistics-module set: modules}
+{component type: module symbol: PROBLEMS    webname: problems    path: services/problems-module    set: modules}
+{component type: module symbol: KINDS       webname: kinds       path: services/kinds-module       set: modules}
+{component type: module symbol: CALCULUS    webname: calculus    path: services/calculus-module    set: modules}
 
-# -----------------------------------------------------------------------------
-# Most components of Inform are C programs written as literate-programming
-# webs, making use of shared libraries of code called modules. We list them.
+{component type: module symbol: CORE        webname: core        path: inform7/core-module         set: modules}
+{component type: module symbol: ASSERTIONS  webname: assertions  path: inform7/assertions-module   set: modules}
+{component type: module symbol: KNOWLEDGE   webname: knowledge   path: inform7/knowledge-module    set: modules}
+{component type: module symbol: IMPERATIVE  webname: imperative  path: inform7/imperative-module   set: modules}
+{component type: module symbol: RUNTIME     webname: runtime     path: inform7/runtime-module      set: modules}
+{component type: module symbol: VALUES      webname: values      path: inform7/values-module       set: modules}
+{component type: module symbol: IF          webname: if          path: inform7/if-module           set: modules}
+{component type: module symbol: MULTIMEDIA  webname: multimedia  path: inform7/multimedia-module   set: modules}
 
-# Each module in turn is defined by a symbol name such as NAME, a tool name
-# (usually the same but in lower case), and lastly a location relative to the
-# root of the core Inform distribution.
-# In the eventual makefile, the symbol NAMEWEB is defined as its location.
+{component type: module symbol: BYTECODE    webname: bytecode    path: inter/bytecode-module       set: modules}
+{component type: module symbol: BUILDING    webname: building    path: inter/building-module       set: modules}
+{component type: module symbol: PIPELINE    webname: pipeline    path: inter/pipeline-module       set: modules}
+{component type: module symbol: FINAL       webname: final       path: inter/final-module          set: modules}
+{component type: module symbol: INDEX       webname: index       path: inter/index-module          set: modules}
 
-{component symbol: WORDS webname: words path: services/words-module set: modules type: module}
-{component symbol: SYNTAX webname: syntax path: services/syntax-module set: modules type: module}
-{component symbol: HTML webname: html path: services/html-module set: modules type: module}
-{component symbol: ARCH webname: arch path: services/arch-module set: modules type: module}
-{component symbol: INFLECTIONS webname: inflections path: services/inflections-module set: modules type: module}
-{component symbol: LEXICON webname: lexicon path: services/lexicon-module set: modules type: module}
-{component symbol: LINGUISTICS webname: linguistics path: services/linguistics-module set: modules type: module}
-{component symbol: PROBLEMS webname: problems path: services/problems-module set: modules type: module}
-{component symbol: KINDS webname: kinds path: services/kinds-module set: modules type: module}
-{component symbol: CALCULUS webname: calculus path: services/calculus-module set: modules type: module}
+{component type: module symbol: SUPERVISOR  webname: supervisor  path: inbuild/supervisor-module   set: modules}
 
-{component symbol: CORE webname: core path: inform7/core-module set: modules type: module}
-{component symbol: ASSERTIONS webname: assertions path: inform7/assertions-module set: modules type: module}
-{component symbol: KNOWLEDGE webname: knowledge path: inform7/knowledge-module set: modules type: module}
-{component symbol: IMPERATIVE webname: imperative path: inform7/imperative-module set: modules type: module}
-{component symbol: RUNTIME webname: runtime path: inform7/runtime-module set: modules type: module}
-{component symbol: VALUES webname: values path: inform7/values-module set: modules type: module}
-{component symbol: IF webname: if path: inform7/if-module set: modules type: module}
-{component symbol: MULTIMEDIA webname: multimedia path: inform7/multimedia-module set: modules type: module}
+# Next the tools. Note that to each symbol (say, NAME) the following will write
+# makefile variable definitions of NAMEWEB, its location; NAMEMAKER, the make
+# file for the tool; and NAMEX, the actual executable which will be compiled.
 
-{component symbol: BYTECODE webname: bytecode path: inter/bytecode-module set: modules type: module}
-{component symbol: BUILDING webname: building path: inter/building-module set: modules type: module}
-{component symbol: PIPELINE webname: pipeline path: inter/pipeline-module set: modules type: module}
-{component symbol: FINAL webname: final path: inter/final-module set: modules type: module}
-{component symbol: INDEX webname: index path: inter/index-module set: modules type: module}
+# There are two sets here: the "ctools" are the compiler tools, all made from the
+# same inform7 code-base but in different ways; the "otools" are other tools.
 
-{component symbol: SUPERVISOR webname: supervisor path: inbuild/supervisor-module set: modules type: module}
+{component type: tool   symbol: INBLORB   webname: inblorb     path: inblorb   set: otools}
+{component type: tool   symbol: INDOC     webname: indoc       path: indoc     set: otools}
+{component type: tool   symbol: INFORM7   webname: inform7     path: inform7   set: ctools}
+{component type: tool   symbol: INPOLICY  webname: inpolicy    path: inpolicy  set: otools}
+{component type: tool   symbol: INRTPS    webname: inrtps      path: inrtps    set: otools}
+{component type: tool   symbol: INBUILD   webname: inbuild     path: inbuild   set: ctools}
+{component type: tool   symbol: INTER     webname: inter       path: inter     set: ctools}
 
-# First, the tools we need to make, using the same declaration notation.
-# In the eventual makefile, the symbol NAMEWEB is the location of NAME;
-# the symbol NAMEMAKER is the individual make file for the tool; and
-# the symbol NAMEX is the actual executable which the tool compiles into.
-# After its declaration, we list all modules needed to compile the tool.
-
-{component symbol: INBLORB webname: inblorb path: inblorb set: otools type: tool}
-{component symbol: INDOC webname: indoc path: indoc set: otools type: tool}
-{component symbol: INFORM7 webname: inform7 path: inform7 set: ctools type: tool}
-{component symbol: INPOLICY webname: inpolicy path: inpolicy set: otools type: tool}
-{component symbol: INRTPS webname: inrtps path: inrtps set: otools type: tool}
-{component symbol: INBUILDTOOL webname: inbuild path: inbuild set: ctools type: tool}
-{component symbol: INTERTOOL webname: inter path: inter set: ctools type: tool}
-
-# Inform 6 is not a web, so we have to give it special treatment:
+# Because Inform 6 is not a web, we have to give it special treatment, and define
+# its executable location INFORM6X manually. (The directory holding it will be
+# called INFORM6WEB for consistency, even though it is not actually a web.)
 
 INFORM6X = inform6/Tangled/inform6
+INFORM6WEB = inform6
 
-# While these are also executables, they only provide unit tests for modules:
+# The "utools" set of executables provides unit testing for modules:
 
-{component symbol: SYNTAXTEST webname: syntax-test path: services/syntax-test set: utools type: tool}
-{component symbol: WORDSTEST webname: words-test path: services/words-test set: utools type: tool}
-{component symbol: ARCHTEST webname: arch-test path: services/arch-test set: utools type: tool}
-{component symbol: INFLECTIONSTEST webname: inflections-test path: services/inflections-test set: utools type: tool}
-{component symbol: LINGUISTICSTEST webname: linguistics-test path: services/linguistics-test set: utools type: tool}
-{component symbol: KINDSTEST webname: kinds-test path: services/kinds-test set: utools type: tool}
-{component symbol: CALCULUSTEST webname: calculus-test path: services/calculus-test set: utools type: tool}
-{component symbol: PROBLEMSTEST webname: problems-test path: services/problems-test set: utools type: tool}
+{component type: tool   symbol: SYNTAXTEST      webname: syntax-test        path: services/syntax-test      set: utools}
+{component type: tool   symbol: WORDSTEST       webname: words-test         path: services/words-test       set: utools}
+{component type: tool   symbol: ARCHTEST        webname: arch-test          path: services/arch-test        set: utools}
+{component type: tool   symbol: INFLECTIONSTEST webname: inflections-test   path: services/inflections-test set: utools}
+{component type: tool   symbol: LINGUISTICSTEST webname: linguistics-test   path: services/linguistics-test set: utools}
+{component type: tool   symbol: KINDSTEST       webname: kinds-test         path: services/kinds-test       set: utools}
+{component type: tool   symbol: CALCULUSTEST    webname: calculus-test      path: services/calculus-test    set: utools}
+{component type: tool   symbol: PROBLEMSTEST    webname: problems-test      path: services/problems-test    set: utools}
 
-{component symbol: BUILDINGTEST webname: building-test path: inter/building-test set: utools type: tool}
+{component type: tool   symbol: BUILDINGTEST    webname: building-test      path: inter/building-test       set: utools}
 
-# And here are other webs:
+# Then there are webs which make programs other than C executables: kits of Inter
+# code and Inform 7 extensions.
 
-{component symbol: BASICINFORMKIT webname: BasicInformKit path: inform7/Internal/Inter/BasicInformKit set: kits type: web}
-{component symbol: WORLDMODELKIT webname: WorldModelKit path: inform7/Internal/Inter/WorldModelKit set: kits type: web}
-{component symbol: COMMANDPARSERKIT webname: CommandParserKit path: inform7/Internal/Inter/CommandParserKit set: kits type: web}
-{component symbol: BASICINFORMEXTRASKIT webname: BasicInformExtrasKit path: inform7/Internal/Inter/BasicInformExtrasKit set: kits type: web}
-{component symbol: ENGLISHLANGUAGEKIT webname: EnglishLanguageKit path: inform7/Internal/Inter/EnglishLanguageKit set: kits type: web}
-{component symbol: STANDARDRULES webname: standard_rules path: inform7/extensions/standard_rules set: extensions type: web}
-{component symbol: BASICINFORM webname: basic_inform path: inform7/extensions/basic_inform set: extensions type: web}
+{component type: web symbol: BASICINFORMKIT       webname: BasicInformKit       path: inform7/Internal/Inter/BasicInformKit       set: kits}
+{component type: web symbol: WORLDMODELKIT        webname: WorldModelKit        path: inform7/Internal/Inter/WorldModelKit        set: kits}
+{component type: web symbol: COMMANDPARSERKIT     webname: CommandParserKit     path: inform7/Internal/Inter/CommandParserKit     set: kits}
+{component type: web symbol: BASICINFORMEXTRASKIT webname: BasicInformExtrasKit path: inform7/Internal/Inter/BasicInformExtrasKit set: kits}
+{component type: web symbol: ENGLISHLANGUAGEKIT   webname: EnglishLanguageKit   path: inform7/Internal/Inter/EnglishLanguageKit   set: kits}
+
+{component type: web symbol: STANDARDRULES        webname: standard_rules       path: inform7/extensions/standard_rules           set: extensions}
+{component type: web symbol: BASICINFORM          webname: basic_inform         path: inform7/extensions/basic_inform             set: extensions}
+
+# Those extensions, when tangled from these webs, will need to be placed here:
+
+STANDARDRULESTANGLED = $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7x
+BASICINFORMTANGLED =   $(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7x
 
 # -----------------------------------------------------------------------------
 # Targets "all" and "force"
 # -----------------------------------------------------------------------------
 # "make all", the default target, incrementally makes the tools; "make force"
-# makes everything, disregarding all timestamps on files.
+# makes everything, disregarding all timestamps on files. Note that neither
+# one of these performs a "make integration", to push the results of our efforts
+# into a surrounding GUI app (if it is present) - that must be done (if desired)
+# by "make integration" explicitly.
 
 .PHONY: all
-all: tools kits srules localintegration
+all: tools kits extensions localintegration
 
 .PHONY: force
-force: forcetools forcekits forcesrules localintegration
+force: forcetools forcekits forceextensions localintegration
+
+# -----------------------------------------------------------------------------
+# Target "localintegration"
+# -----------------------------------------------------------------------------
+# This is not the same thing as integration into a GUI app. It means taking the
+# side-files tangled from the Inform 7 code base out of the inform7 web and
+# into the places elsewhere in the repository where they are actually needed:
 
 .PHONY: localintegration
 localintegration: \
-	inform7/Internal/Languages/English/Syntax.preform \
-	inform7/Internal/Miscellany/inform7_clib.h \
-	inform7/Internal/Miscellany/inform7_clib.c
+	$(INFORM7WEB)/Internal/Languages/English/Syntax.preform \
+	$(INFORM7WEB)/Internal/Miscellany/inform7_clib.h \
+	$(INFORM7WEB)/Internal/Miscellany/inform7_clib.c
 
-inform7/Internal/Languages/English/Syntax.preform: inform7/Tangled/Syntax.preform
-	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
+# When tangled, the inform7 web most importantly makes inform7.c, of course,
+# but it makes three side files as well: Syntax.preform, a grammar file, and
+# a small C library used when compiling Inform projects to C.
 
-inform7/Internal/Miscellany/inform7_clib.h: inform7/Tangled/inform7_clib.h
-	cp -f 'inform7/Tangled/inform7_clib.h' "inform7/Internal/Miscellany/inform7_clib.h"
+$(INFORM7WEB)/Internal/Languages/English/Syntax.preform: $(INFORM7WEB)/Tangled/Syntax.preform
+	cp -f "$(INFORM7WEB)/Tangled/Syntax.preform" "$(INFORM7WEB)/Internal/Languages/English/Syntax.preform"
 
-inform7/Internal/Miscellany/inform7_clib.c: inform7/Tangled/inform7_clib.c
-	cp -f 'inform7/Tangled/inform7_clib.c' "inform7/Internal/Miscellany/inform7_clib.c"
+$(INFORM7WEB)/Internal/Miscellany/inform7_clib.h: $(INFORM7WEB)/Tangled/inform7_clib.h
+	cp -f "$(INFORM7WEB)/Tangled/inform7_clib.h" "$(INFORM7WEB)/Internal/Miscellany/inform7_clib.h"
 
-inform7/Tangled/inform7_clib.h: inter/final-module/Chapter\ 5/*.w
-	$(INWEBX) $(INTERTOOLWEB) -tangle
+$(INFORM7WEB)/Internal/Miscellany/inform7_clib.c: $(INFORM7WEB)/Tangled/inform7_clib.c
+	cp -f "$(INFORM7WEB)/Tangled/inform7_clib.c" "$(INFORM7WEB)/Internal/Miscellany/inform7_clib.c"
 
-inform7/Tangled/inform7_clib.c: inter/final-module/Chapter\ 5/*.w
-	$(INWEBX) $(INTERTOOLWEB) -tangle
+# It is in fact sufficient to tangle just the inter subset of inform7 to make
+# the two C-library files:
 
-# (Of course those other four phony targets are yet to be defined.)
+$(INFORM7WEB)/Tangled/inform7_clib.h: inter/final-module/Chapter\ 5/*.w
+	$(INWEBX) $(INTERWEB) -tangle
+
+$(INFORM7WEB)/Tangled/inform7_clib.c: inter/final-module/Chapter\ 5/*.w
+	$(INWEBX) $(INTERWEB) -tangle
 
 # -----------------------------------------------------------------------------
 # Target "makers"
 # -----------------------------------------------------------------------------
 # Each individual tool has its own makefile, stored inside its individual web. 
-# "make makers" runs through each tool in turn and creates this makefile.
+# "make makers" runs through each tool in turn and creates them from their
+# respective makescripts. The one makefile we don't make is this one: it really
+# doesn't seem safe for a makefile to run a command which overwrites itself.
+
+# Note that {components type: tool}...{end-components} iterates through all the
+# components given the type "tool" above.
 
 .PHONY: makers
 makers:
 	{components type: tool}
 	$(INWEBX) $({SYMBOL}WEB) -makefile $({SYMBOL}MAKER)
 	{end-components}
-	$(INWEBX) -prototype inform6/inform6.mkscript -makefile inform6/inform6.mk
+	$(INWEBX) -prototype $(INFORM6WEB)/inform6.mkscript -makefile $(INFORM6WEB)/inform6.mk
 	$(INWEBX) -prototype retrospective/retrospective.mkscript -makefile retrospective/makefile
 
 # -----------------------------------------------------------------------------
 # Target "gitignores"
 # -----------------------------------------------------------------------------
-# Each individual web needs its own .gitignore file, and this makes them.
+# Each individual web needs its own .gitignore file, and this makes them. No
+# overwriting issues time, so we do include the .gitignore at the root of the
+# inform repository.
 
 .PHONY: gitignores
 gitignores:
@@ -187,7 +244,7 @@ gitignores:
 	{components type: tool}
 	$(INWEBX) $({SYMBOL}WEB) -gitignore $({SYMBOL}WEB)/.gitignore
 	{end-components}
-	$(INWEBX) -prototype inform6/inform6.giscript -gitignore inform6/.gitignore
+	$(INWEBX) -prototype $(INFORM6WEB)/inform6.giscript -gitignore $(INFORM6WEB)/.gitignore
 
 # -----------------------------------------------------------------------------
 # Target "versions"
@@ -202,40 +259,43 @@ versions:
 	$(INFORM6X) -V
 
 # -----------------------------------------------------------------------------
-# Targets "srules" and "forcesrules"
+# Targets "extensions" and "forceextensions"
 # -----------------------------------------------------------------------------
-# The Standard Rules extension is generated from a web (though it is not a
-# C program), and needs its own individual handling. "make srules" updates
-# this if need be; "make forcesrules" updates it regardless.
+# "make extensions" incrementally re-tangles any extensions defined by webs
+# (such as Basic Inform); "make forceextensions" does so regardless of timestamps.
 
-SRULES = inform7/Internal/Extensions/Graham\ Nelson/Standard\ Rules.i7x
-BINFORM = inform7/Internal/Extensions/Graham\ Nelson/Basic\ Inform.i7x
+{define: tangle-extension name: SYMBOL}
+	$(INWEBX) $({SYMBOL}WEB) -tangle-to $({SYMBOL}TANGLED)
+{end-define}
 
-.PHONY: srules
-srules: $(SRULES)
+.PHONY: extensions
+extensions: {components type: web set: extensions}$({SYMBOL}TANGLED) {end-components}
 
-$(SRULES): inform7/extensions/standard_rules/Contents.w inform7/extensions/standard_rules/Sections/*.w inform7/extensions/basic_inform/Contents.w inform7/extensions/basic_inform/Sections/*.w
-	$(INWEBX) inform7/extensions/standard_rules -tangle-to $(SRULES)
-	$(INWEBX) inform7/extensions/basic_inform -tangle-to $(BINFORM)
+{components type: web set: extensions}
+$({SYMBOL}TANGLED): $({SYMBOL}WEB)/Contents.w $({SYMBOL}WEB)/Sections/*.w
+	{tangle-extension name: SYMBOL}
 
-.PHONY: forcesrules
-forcesrules:
-	$(INWEBX) inform7/extensions/standard_rules -tangle-to $(SRULES)
-	$(INWEBX) inform7/extensions/basic_inform -tangle-to $(BINFORM)
+{end-components}
+
+PHONY: forceextensions
+forceextensions:
+	{components type: web set: extensions}
+	{tangle-extension name: {SYMBOL}}
+	{end-components}
 
 # -----------------------------------------------------------------------------
 # Targets "kits" and "forcekits"
 # -----------------------------------------------------------------------------
-# These are easy because Inbuild performs a make-like service on them; that
-# saves a great deal of messy make code here.
+# These are easier because Inbuild already performs a make-like service on
+# directories of kits; that saves a great deal of messy make code here.
 
 .PHONY: kits
 kits:
-	$(INBUILDX) -build -contents-of inform7/Internal/Inter
+	$(INBUILDX) -build -contents-of $(INFORM7WEB)/Internal/Inter
 
 .PHONY: forcekits
 forcekits:
-	$(INBUILDX) -rebuild -contents-of inform7/Internal/Inter
+	$(INBUILDX) -rebuild -contents-of $(INFORM7WEB)/Internal/Inter
 
 # -----------------------------------------------------------------------------
 # Target "tools"
@@ -254,19 +314,8 @@ $({SYMBOL}X): {dependent-files tool-and-modules: {SYMBOL}}
 
 # As ever, Inform 6 needs special handling:
 
-$(INFORM6X): inform6/Inform6/*.c
-	$(MAKE) -f inform6/inform6.mk
-
-# -----------------------------------------------------------------------------
-# Target "retrospective"
-# -----------------------------------------------------------------------------
-# "make retrospective" builds the back catalogue of old releases of ni and
-# cBlorb, in the retrospective/BBBB directories (where BBBB is the release
-# build code)
-
-.PHONY: retrospective
-retrospective:
-	$(MAKE) -f retrospective/makefile
+$(INFORM6X): $(INFORM6WEB)/Inform6/*.c
+	$(MAKE) -f $(INFORM6WEB)/inform6.mk
 
 # -----------------------------------------------------------------------------
 # Target "forcetools"
@@ -278,57 +327,33 @@ forcetools:
 	{components type: tool}
 	$(MAKE) -f $({SYMBOL}MAKER) force
 	{end-components}
-	$(MAKE) -f inform6/inform6.mk force
+	$(MAKE) -f $(INFORM6WEB)/inform6.mk force
+
+# -----------------------------------------------------------------------------
+# Target "retrospective"
+# -----------------------------------------------------------------------------
+# "make retrospective" builds the back catalogue of old releases, but delegates
+# all the work to a makefile there:
+
+.PHONY: retrospective
+retrospective:
+	$(MAKE) -f retrospective/makefile
 
 # -----------------------------------------------------------------------------
 # Target "check"
 # -----------------------------------------------------------------------------
 # "make check" invites the make file for every tool to run its own tests.
 # I6 must come first, because that guarantees the Z and Glulx interpreters
-# are safely built before we need them.
+# are safely built before we need them (as we will in order to test I7).
 # -----------------------------------------------------------------------------
 
 .PHONY: check
 check:
-	$(MAKE) -f inform6/inform6.mk test
+	$(MAKE) -f $(INFORM6WEB)/inform6.mk test
 	$(INPOLICYX) -silence -check-problems
 	{components type: tool}
 	$(MAKE) -f $({SYMBOL}MAKER) test
 	{end-components}
-
-# -----------------------------------------------------------------------------
-# Target "tangle"
-# -----------------------------------------------------------------------------
-# "make tangle", probably not very useful, tangles each web in turn.
-# -----------------------------------------------------------------------------
-
-.PHONY: tangle
-tangle:
-	$(call tangle-webs)
-
-define tangle-webs
-	{components type: tool}
-	$(INWEBX) $({SYMBOL}WEB) -tangle
-	{end-components}
-endef
-
-# -----------------------------------------------------------------------------
-# Target "weave"
-# -----------------------------------------------------------------------------
-# "make weave" weaves each web in turn.
-# -----------------------------------------------------------------------------
-
-WEAVEOPTS = -weave sections
-
-.PHONY: weave
-weave:
-	$(call weave-webs)
-
-define weave-webs
-	{components type: tool}
-	$(INWEBX) $({SYMBOL}WEB) $(WEAVEOPTS)
-	{end-components}
-endef
 
 # -----------------------------------------------------------------------------
 # Target "commit"
@@ -337,10 +362,14 @@ endef
 # It updates the build code and commits to the repository.
 # -----------------------------------------------------------------------------
 
+{define: update-readme}
+	$(INWEBX) -prototype scripts/inform.rmscript -write-me README.md
+{end-define}
+
 .PHONY: commit
 commit:
 	$(INWEBX) -advance-build-file build.txt
-	$(INWEBX) -prototype scripts/inform.rmscript -write-me README.md
+	{update-readme}
 	git commit -a
 
 # -----------------------------------------------------------------------------
@@ -350,8 +379,19 @@ commit:
 # -----------------------------------------------------------------------------
 
 .PHONY: pages
-pages: diagnostics icon readmepage diagrams prepages {components type: tool}{SYMBOL}PAGES {end-components}\
-	{components type: module}{SYMBOL}MPAGES {end-components} morepages
+pages: readmepage icon diagnostics diagrams navigationpages \
+	{components type: tool}{SYMBOL}PAGES {end-components} \
+	{components type: module}{SYMBOL}PAGES {end-components} \
+	{components type: web}{SYMBOL}PAGES {end-components}
+
+.PHONY: forcepages
+forcepages: readmepage icon diagnostics diagrams forcenavigationpages \
+	{components type: tool}{SYMBOL}FORCEPAGES {end-components} \
+	{components type: module}{SYMBOL}FORCEPAGES {end-components} \
+	{components type: web}{SYMBOL}FORCEPAGES {end-components}
+
+# -----------------------------------------------------------------------------
+# Just one lonely icon file!
 
 .PHONY: icon
 icon:
@@ -359,246 +399,184 @@ icon:
 	mkdir -p docs/docs-assets
 	cp -f docs-src/Inform.png docs/docs-assets
 
-.PHONY: forcepages
-forcepages: diagnostics readmepage diagrams forceprepages {components type: tool}{SYMBOL}FORCEPAGES {end-components}\
-	{components type: module}{SYMBOL}FORCEMPAGES {end-components}forcemorepages
+# -----------------------------------------------------------------------------
+# See the "make commit" target above.
 
 .PHONY: readmepage
 readmepage:
-	$(INWEBX) -prototype scripts/inform.rmscript -write-me README.md
+	{update-readme}
+
+# -----------------------------------------------------------------------------
+# A number of diagrams in the woven form of our webs are automatically created,
+# so that they will always be correct to the current state of Inform. The following
+# copies them into place in the relevant Figures folders; or, in the case of -help
+# listings of command-line settings, creates them in place.
+
+{define: copy-diagram file: FILE into: WEB}
+	cp -f {FILE} $({WEB})/Figures
+{end-define}
+{define: update-reference-card for: TOOL}
+	$({TOOL}X) -help >$({TOOL}WEB)/Figures/help.txt
+{end-define}
 
 .PHONY: diagrams
 diagrams:
-	cp -f services/linguistics-test/Tests/Test\ Diagrams/_Results_Ideal/*.txt services/linguistics-module/Figures
-	cp -f services/linguistics-test/Tests/vocabulary.txt services/linguistics-module/Figures
-	cp -f inform7/Tests/Test\ Internals/_Results_Ideal/Refine*.txt inform7/assertions-module/Figures
-	cp -f services/kinds-test/Tests/Test\ Cases/_Results_Ideal/*.txt services/kinds-module/Figures
-	cp -f services/calculus-test/Tests/Test\ Cases/_Results_Ideal/*.txt services/calculus-module/Figures
-	cp -f inform7/Internal/Pipelines/compile.interpipeline inter/Figures
-	cp -f inform7/Internal/Pipelines/compile.interpipeline inter/pipeline-module/Figures
-	cp -f inform7/Internal/Pipelines/assimilate.interpipeline inter/pipeline-module/Figures
-	cp -f inform7/Internal/Pipelines/link.interpipeline inter/pipeline-module/Figures
-	cp -f inform7/Internal/Pipelines/optimise.interpipeline inter/pipeline-module/Figures
-	cp -f inform7/Internal/Pipelines/build-kit.interpipeline inter/pipeline-module/Figures
-	$(INBUILDX) -help >inbuild/Figures/help.txt
-	$(INFORM7X) -help >inform7/Figures/help.txt
-	$(INTERX) -help >inter/Figures/help.txt
+	{copy-diagram file: $(LINGUISTICSTESTWEB)/Tests/Test\ Diagrams/_Results_Ideal/*.txt into: LINGUISTICSWEB}
+	{copy-diagram file: $(LINGUISTICSTESTWEB)/Tests/vocabulary.txt                      into: LINGUISTICSWEB}
+	{copy-diagram file: $(INFORM7WEB)/Tests/Test\ Internals/_Results_Ideal/Refine*.txt  into: ASSERTIONSWEB}
+	{copy-diagram file: $(KINDSTESTWEB)/Tests/Test\ Cases/_Results_Ideal/*.txt          into: KINDSWEB}
+	{copy-diagram file: $(CALCULUSTESTWEB)/Tests/Test\ Cases/_Results_Ideal/*.txt       into: CALCULUSWEB}
+	{copy-diagram file: $(INFORM7WEB)/Internal/Pipelines/compile.interpipeline          into: INTERWEB}
+	{copy-diagram file: $(INFORM7WEB)/Internal/Pipelines/compile.interpipeline          into: PIPELINEWEB}
+	{copy-diagram file: $(INFORM7WEB)/Internal/Pipelines/assimilate.interpipeline       into: PIPELINEWEB}
+	{copy-diagram file: $(INFORM7WEB)/Internal/Pipelines/link.interpipeline             into: PIPELINEWEB}
+	{copy-diagram file: $(INFORM7WEB)/Internal/Pipelines/optimise.interpipeline         into: PIPELINEWEB}
+	{copy-diagram file: $(INFORM7WEB)/Internal/Pipelines/build-kit.interpipeline        into: PIPELINEWEB}
+	{components type: tool set: ctools}
+	{update-reference-card for: {SYMBOL}}
+	{end-components}
+	{components type: tool set: otools}
+	{update-reference-card for: {SYMBOL}}
+	{end-components}
 
-{components type: tool set: ctools}
-.PHONY: {SYMBOL}PAGES
-{SYMBOL}PAGES: docs/$({SYMBOL}LEAF)/index.html
+# -----------------------------------------------------------------------------
+# "Diagnostics" are files produced by inform7 to measure its own performance when
+# running in a special mode, as it does when intest runs the test GenerateDiagnostics-G.
+# We need first to run that test; then the diagnostics files will all be in the
+# $(INFORM7WEB)/Figures directory; but in some cases that is not where we want them, so
+# we need to move those on to their proper homes.
 
-docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
-	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
-
-.PHONY: {SYMBOL}FORCEPAGES
-{SYMBOL}FORCEPAGES:
-	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
-
-{end-components}
-
-{components type: tool set: otools}
-.PHONY: {SYMBOL}PAGES
-{SYMBOL}PAGES: docs/$({SYMBOL}LEAF)/index.html
-
-docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
-	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
-
-.PHONY: {SYMBOL}FORCEPAGES
-{SYMBOL}FORCEPAGES:
-	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
-
-{end-components}
-
-{components type: tool set: utools}
-.PHONY: {SYMBOL}PAGES
-{SYMBOL}PAGES: docs/$({SYMBOL}LEAF)/index.html
-
-docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool-and-modules: {SYMBOL}}
-	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
-
-.PHONY: {SYMBOL}FORCEPAGES
-{SYMBOL}FORCEPAGES:
-	rm -f docs/$({SYMBOL}LEAF)/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
-
-{end-components}
-
-{components type: module}
-.PHONY: {SYMBOL}MPAGES
-{SYMBOL}MPAGES: docs/$({SYMBOL}LEAF)-module/index.html
-
-docs/$({SYMBOL}LEAF)-module/index.html: {dependent-files module: {SYMBOL}}
-	rm -f docs/$({SYMBOL}LEAF)-module/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
-
-.PHONY: {SYMBOL}FORCEMPAGES
-{SYMBOL}FORCEMPAGES:
-	rm -f docs/$({SYMBOL}LEAF)-module/*.html
-	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
-
-{end-components}
-
-.PHONY: prepages
-prepages: docs/index.html docs/structure.html docs/extensions.html docs/kits.html docs/services.html docs/inform6.html docs/inbuildn.html docs/inform7n.html docs/intern.html docs/inblorbn.html docs/indocn.html docs/inrtpsn.html docs/inpolicyn.html docs/secrets.html
-
-docs/index.html: docs-src/index.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member overview -weave
-
-docs/structure.html: docs-src/structure.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member structure -weave
-
-docs/inbuildn.html: docs-src/inbuildn.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member inbuildn -weave
-
-docs/inform7n.html: docs-src/inform7n.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member inform7n -weave
-
-docs/intern.html: docs-src/intern.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member intern -weave
-
-docs/inblorbn.html: docs-src/inblorbn.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member inblorbn -weave
-
-docs/indocn.html: docs-src/indocn.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member indocn -weave
-
-docs/inrtpsn.html: docs-src/inrtpsn.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member inrtpsn -weave
-
-docs/inpolicyn.html: docs-src/inpolicyn.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member inpolicyn -weave
-
-docs/services.html: docs-src/services.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member services -weave
-
-docs/inform6.html: docs-src/inform6.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member inform6 -weave
-
-docs/extensions.html: docs-src/extensions.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member extensions -weave
-
-docs/kits.html: docs-src/kits.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member kits -weave
-
-docs/secrets.html: docs-src/secrets.inweb docs-src/nav.html
-	$(INWEBX) -colony $(COLONY) -member secrets -weave
-
-.PHONY: forceprepages
-forceprepages:
-	rm -f docs/*.html
-	$(INWEBX) -colony $(COLONY) -member overview -weave
-	$(INWEBX) -colony $(COLONY) -member structure -weave
-	$(INWEBX) -colony $(COLONY) -member inbuildn -weave
-	$(INWEBX) -colony $(COLONY) -member inform7n -weave
-	$(INWEBX) -colony $(COLONY) -member intern -weave
-	$(INWEBX) -colony $(COLONY) -member inblorbn -weave
-	$(INWEBX) -colony $(COLONY) -member indocn -weave
-	$(INWEBX) -colony $(COLONY) -member inrtpsn -weave
-	$(INWEBX) -colony $(COLONY) -member inpolicyn -weave
-	$(INWEBX) -colony $(COLONY) -member services -weave
-	$(INWEBX) -colony $(COLONY) -member inform6 -weave
-	$(INWEBX) -colony $(COLONY) -member extensions -weave
-	$(INWEBX) -colony $(COLONY) -member kits -weave
-	$(INWEBX) -colony $(COLONY) -member secrets -weave
+{define: copy-download file: FILE into: WEB}
+	cp -f {FILE} $({WEB})/Downloads
+{end-define}
 
 .PHONY: diagnostics
 diagnostics:
 	$(INTESTX) inform7 GenerateDiagnostics-G
-	cp -f inform7/Figures/syntax-diagnostics.txt inform7/Downloads/syntax-diagnostics.txt
-	rm -f inform7/Figures/syntax-diagnostics.txt
-	cp -f inform7/Figures/preform-diagnostics.txt inform7/Downloads/preform-diagnostics.txt
-	rm -f inform7/Figures/preform-diagnostics.txt
-	cp -f inform7/Figures/excerpts-diagnostics.txt services/lexicon-module/Figures/excerpts-diagnostics.txt
-	rm -f inform7/Figures/excerpts-diagnostics.txt
-	cp -f inform7/Figures/stock-diagnostics.txt services/linguistics-module/Figures/stock-diagnostics.txt
-	rm -f inform7/Figures/stock-diagnostics.txt
+	{copy-download file: $(INFORM7WEB)/Figures/excerpts-diagnostics.txt into: INFORM7WEB}
+	rm -f $(INFORM7WEB)/Figures/syntax-diagnostics.txt
+	{copy-download file: $(INFORM7WEB)/Figures/preform-diagnostics.txt  into: INFORM7WEB}
+	rm -f $(INFORM7WEB)/Figures/preform-diagnostics.txt
+	{copy-diagram file: $(INFORM7WEB)/Figures/excerpts-diagnostics.txt  into: LEXICONWEB}
+	rm -f $(INFORM7WEB)/Figures/excerpts-diagnostics.txt
+	{copy-diagram file: $(INFORM7WEB)/Figures/stock-diagnostics.txt     into: LINGUISTICSWEB}
+	rm -f $(INFORM7WEB)/Figures/stock-diagnostics.txt
 
-.PHONY: morepages
-morepages: {components type: web}docs/$({SYMBOL}LEAF)/index.html {end-components}
+# -----------------------------------------------------------------------------
+# These are the special pages at the top of the mini-website, which act as
+# navigation points into the interior. They are each little one-file webs in
+# their own right, designed just for weaving, not tangling.
 
-{components type: web set: kits}
+# Annoyingly, we can't put overview into this list, because it weaves to a
+# file called index.html, not overview.html; and we can't rename overview as
+# "index" because that would be a name clash with the "index" module of I7,
+# which is already a web in the colony file.
+
+{set name: NAVIGATIONPAGES value: structure, extensions, kits, services, inform6, inbuildn, inform7n, intern, inblorbn, indocn, inrtpsn, inpolicyn, secrets}
+
+{define: weave-one page: PAGE}
+	$(INWEBX) -colony $(COLONY) -member {PAGE} -weave
+{end-define}
+
+.PHONY: navigationpages
+navigationpages: docs/index.html {repeat with: PAGE in: {NAVIGATIONPAGES}}docs/{PAGE}.html {end-repeat}
+
+docs/index.html: docs-src/overview.inweb docs-src/nav.html
+	{weave-one page: overview}
+
+{repeat with: PAGE in: {NAVIGATIONPAGES}}
+docs/{PAGE}.html: docs-src/{PAGE}.inweb docs-src/nav.html
+	{weave-one page: {PAGE}}
+
+{end-repeat}
+
+.PHONY: forcenavigationpages
+forcenavigationpages:
+	rm -f docs/*.html
+	{weave-one page: overview}
+	{repeat with: PAGE in: {NAVIGATIONPAGES}}
+	{weave-one page: {PAGE}}
+	{end-repeat}
+
+# -----------------------------------------------------------------------------
+# Now we have to weave each of the webs for the many component parts. For the
+# the web SYMBOL, the following defines two phony targets, SYMBOLPAGES and
+# SYMBOLFORCEPAGES. The first weaves the web only if the source has changed
+# since the last time; the second weaves it regardless.
+
+{define: weave-target component: SYMBOL}
+.PHONY: {SYMBOL}PAGES
+{SYMBOL}PAGES: docs/$({SYMBOL}LEAF)/index.html
 
 docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
 	rm -f docs/$({SYMBOL}LEAF)/*.html
 	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-{end-components}
-{components type: web set: extensions}
-
-docs/$({SYMBOL}LEAF)/index.html: {dependent-files tool: {SYMBOL}}
+.PHONY: {SYMBOL}FORCEPAGES
+{SYMBOL}FORCEPAGES:
 	rm -f docs/$({SYMBOL}LEAF)/*.html
 	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
 
-{end-components}
-	
-.PHONY: forcemorepages
-forcemorepages:
-{components type: web set: kits}
+{end-define}
+
+{define: weave-module-target component: SYMBOL}
+.PHONY: {SYMBOL}PAGES
+{SYMBOL}PAGES: docs/$({SYMBOL}LEAF)/index.html
+
+docs/$({SYMBOL}LEAF)/index.html: {dependent-files module: {SYMBOL}}
 	rm -f docs/$({SYMBOL}LEAF)/*.html
 	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
-{end-components}
-{components type: web set: extensions}
+
+.PHONY: {SYMBOL}FORCEPAGES
+{SYMBOL}FORCEPAGES:
 	rm -f docs/$({SYMBOL}LEAF)/*.html
 	$(INWEBX) -colony $(COLONY) -member $({SYMBOL}LEAF) -weave
+
+{end-define}
+
+# And using that:
+
+{components type: tool}
+{weave-target component: {SYMBOL}}
+{end-components}
+{components type: module}
+{weave-module-target component: {SYMBOL}}
+{end-components}
+{components type: web}
+{weave-target component: {SYMBOL}}
 {end-components}
 
 # -----------------------------------------------------------------------------
-# Target "clean"
+# Targets "clean" and "purge"
 # -----------------------------------------------------------------------------
-# "make clean" removes inessential files from the Inform source hierarchy
+# "make clean" removes some inessential files from the Inform source hierarchy;
+# "make purge" also removes binaries
 # -----------------------------------------------------------------------------
+
+{define: ask-each-tool-makefile to: TARGET}
+	{components type: tool}
+	$(MAKE) -f $({SYMBOL}MAKER) {TARGET}
+	{end-components}
+	$(MAKE) -f $(INFORM6WEB)/inform6.mk {TARGET}
+{end-define}
 
 .PHONY: clean
 clean:
-	$(call clean-up)
-
-define clean-up
-	{components type: tool}
-	$(MAKE) -f $({SYMBOL}MAKER) clean
-	{end-components}
-	$(MAKE) -f inform6/inform6.mk clean
-endef
-
-# -----------------------------------------------------------------------------
-# Target "purge"
-# -----------------------------------------------------------------------------
-# "make purge" cleans, but also removes binaries
-# -----------------------------------------------------------------------------
+	{ask-each-tool-makefile to: clean}
 
 .PHONY: purge
 purge:
-	$(call purge-up)
-
-define purge-up
-	{components type: tool}
-	$(MAKE) -f $({SYMBOL}MAKER) purge
-	{end-components}
-	$(MAKE) -f inform6/inform6.mk purge
-endef
+	{ask-each-tool-makefile to: purge}
 
 # -----------------------------------------------------------------------------
 # Target "ebooks"
 # -----------------------------------------------------------------------------
-# "make ebooks" generates the two Inform ebook files in EPUB format.
+# "make ebooks" generates the two Inform ebook files in ePub format.
 # One combines the manuals Writing with Inform and The Inform Recipe Book into
 # a single volume, while the other holds the collected change logs.
 # -----------------------------------------------------------------------------
 
-.PHONY: ebooks
-ebooks:
-	$(call clean-ebooks)
-	$(INDOCX) -from resources/Documentation ebook
-	$(call clean-ebooks)
-	$(INDOCX) -from resources/Changes ebook
-	$(call clean-ebooks)
-
-define clean-ebooks
+{define: clean-ebooks}
 	rm -f resources/Documentation/Output/OEBPS/images/*
 	rm -f resources/Documentation/Output/OEBPS/*.*
 	rm -f resources/Documentation/Output/META-INF/container.xml
@@ -609,173 +587,146 @@ define clean-ebooks
 	rm -f resources/Changes/Output/META-INF/container.xml
 	rm -f resources/Changes/Output/mimetype
 	rm -f resources/Changes/Output/*.*
-endef
+{end-define}
+
+{set name: EBOOKSLIST value: Documentation, Changes}
+
+.PHONY: ebooks
+ebooks:
+	$(call clean-ebooks)
+	{repeat with: EBOOK in: {EBOOKSLIST}}
+	$(INDOCX) -from resources/{EBOOK} ebook
+	$(call clean-ebooks)
+	{end-repeat}
+
+# =============================================================================
+# From here on, everything is to do with integration: that is, with copying files
+# from the inform repository (after all is built) into a GUI app. Command-line
+# hackers will therefore not use these make targets.
+
+# The rest of the file is inside "ifdef BUILTINCOMPS ... endif", which is in
+# effect a test of whether any make-integration-settings.mk has been provided:
+# that file has to define this symbol (see below), and the symbol will not
+# otherwise have been defined.
+
+ifdef BUILTINCOMPS
 
 # -----------------------------------------------------------------------------
 # Targets "integration" and "forceintegration"
 # -----------------------------------------------------------------------------
-# This copies material into the user interface application.
-# -----------------------------------------------------------------------------
-ifdef BUILTINCOMPS
-
-INTOOLSBUILTIN = \
-	$(BUILTINCOMPS)/$(INBLORBNAME) \
-	$(BUILTINCOMPS)/$(INFORM6NAME) \
-	$(BUILTINCOMPS)/$(INFORM7NAME) \
-	$(BUILTINCOMPS)/$(INTESTNAME)
-
-SRULESINPLACE = $(INTERNAL)/Extensions/Graham\ Nelson/Standard\ Rules.i7x
-BINFORMINPLACE = $(INTERNAL)/Extensions/Graham\ Nelson/Basic\ Inform.i7x
-INTERNALEXEMPLUM = $(INTERNAL)/Miscellany/Cover.jpg
-INTERNALEXEMPLUMFROM = inform7/Internal/Miscellany/Cover.jpg
-IMAGESEXEMPLUM = $(BUILTINHTML)/doc_images/help.png
-IMAGESEXEMPLUMFROM = resources/Imagery/doc_images/help.png
-DOCEXEMPLUM = $(BUILTINHTMLINNER)/index.html
-RTPEXEMPLUM = $(BUILTINHTMLINNER)/RTP_P1.html
 
 .PHONY: integration
 integration: \
-		$(INTOOLSBUILTIN) \
-		$(INTERNAL)/Languages/English/Syntax.preform \
-		$(INTERNAL)/Miscellany/Standard.indext \
-		$(INTERNAL)/Miscellany/Basic.indext \
-		$(INTERNAL)/Languages/English/Index.txt \
-		$(INTERNAL)/Languages/French/Index.txt \
-		$(SRULESINPLACE) \
-		$(BINFORMINPLACE) \
-		kitsintegration \
-		$(DOCEXEMPLUM) \
-		$(INTERNALEXEMPLUM) \
-		$(IMAGESEXEMPLUM) \
-		$(RTPEXEMPLUM)
-
-.PHONY: kitsintegration
-kitsintegration:
-	$(call transfer-kits)
+		transfertools \
+		transferpreform \
+		transferindext \
+		transferkits \
+		transferinternals \
+		transferdocumentation \
+		transferoutcomepages
 
 .PHONY: forceintegration
-forceintegration:
-	$(call transfer-intools)
-	$(call transfer-preform)
-	$(call transfer-standard-rules)
-	$(call transfer-kits)
-	$(call transfer-internal-tree)
-	$(call transfer-images)
-	$(call make-inapp-documentation)
-	$(call make-inapp-outcome-pages)
+forceintegration: \
+		forcetransfertools \
+		forcetransferpreform \
+		forcetransferindext \
+		forcetransferkits \
+		forcetransferextensions \
+		forcetransferlanguages \
+		forcetransferimages \
+		forcetransferotherinternals \
+		forcetransferdocumentation \
+		forcetransferoutcomepages
 
-# (a) Copying necessary intools into the app
+# -----------------------------------------------------------------------------
+# Copying part of the Inform toolchain into the app
 
-# Only the following intools are present in the UI app at run-time: inblorb,
-# inform6, inform7, intest. All can have different names there.
+# The UI apps do not contain all of the intools: for example, they do not need
+# indoc or inpolicy, which are run only at the command line. They do have these:
 
-$(BUILTINCOMPS)/$(INBLORBNAME): $(INBLORBX)
+{set name: TOOLSINAPPS value: INBLORB, INFORM6, INFORM7, INTEST}
+
+# The make-integration-settings.mk file is expected to have defined the symbols
+# INBLORBNAME, INFORM6NAME, etc., as the leafnames these executables should be
+# given when they are copied into the app: so, for example, if they want to call
+# the "inform7" compiler by its old name, "ni", they can do so with INFORM7NAME = ni,
+# and similarly if they want to call "inblorb" by its old name "cblorb".
+
+# make-integration-settings.mk must also have set BUILTINCOMPS to the path for
+# the built-in compiler tools.
+
+{define: transfer-tool name: SYMBOL}
 	mkdir -p $(BUILTINCOMPS)
-	cp -f $(INBLORBX) $(BUILTINCOMPS)/$(INBLORBNAME)
+	cp -f $({SYMBOL}X) $(BUILTINCOMPS)/$({SYMBOL}NAME)
+{end-define}
 
-$(BUILTINCOMPS)/$(INFORM6NAME): inform6/Tangled/inform6
-	$(MAKE) -f inform6/inform6.mk
-	mkdir -p $(BUILTINCOMPS)
-	cp -f $(INFORM6X) $(BUILTINCOMPS)/$(INFORM6NAME)
+.PHONY: transfertools
+transfertools: {repeat with: SYMBOL in: {TOOLSINAPPS}}$(BUILTINCOMPS)/$({SYMBOL}NAME) {end-repeat}
 
-$(BUILTINCOMPS)/$(INFORM7NAME): $(INFORM7WEB)/Tangled/inform7
-	$(MAKE) -f $(INFORM7MAKER)
-	mkdir -p $(BUILTINCOMPS)
-	cp -f $(INFORM7X) $(BUILTINCOMPS)/$(INFORM7NAME)
+{repeat with: SYMBOL in: {TOOLSINAPPS}}
+$(BUILTINCOMPS)/{SYMBOL}: $({SYMBOL}X)
+	{transfer-tool name: {SYMBOL}}
 
-$(BUILTINCOMPS)/intest: $(INTESTWEB)/Tangled/intest
-	cd ..; $(MAKE) -f intest/intest.mk; cd inform
-	mkdir -p $(BUILTINCOMPS)
-	cp -f $(INTESTWEB)/Tangled/intest $(BUILTINCOMPS)/intest
+{end-repeat}
 
-define transfer-intools
-	mkdir -p $(BUILTINCOMPS)
-	cp -f $(INBLORBX) $(BUILTINCOMPS)/$(INBLORBNAME)
-	cp -f $(INFORM6X) $(BUILTINCOMPS)/$(INFORM6NAME)
-	cp -f $(INFORM7X) $(BUILTINCOMPS)/$(INFORM7NAME)
-	cp -f $(INTESTX) $(BUILTINCOMPS)/intest
-endef
+.PHONY: forcetransfertools
+forcetransfertools:
+	{repeat with: SYMBOL in: {TOOLSINAPPS}}
+	{transfer-tool name: {SYMBOL}}
+	{end-repeat}
 
-# (b) Copying Preform definition and index things into the app
+# -----------------------------------------------------------------------------
+# Copying the main English-language Preform definition file into the app
 
-$(INTERNAL)/Languages/English/Syntax.preform: $(INFORM7WEB)/Tangled/Syntax.preform
-	$(call transfer-preform)
-	
-$(INFORM7WEB)/Tangled/Syntax.preform:
-	$(MAKE) -f $(INFORM7MAKER)
+.PHONY: transferpreform
+transferpreform: forcetransferpreform
 
-$(INTERNAL)/Miscellany/Standard.indext: inform7/Internal/Miscellany/Standard.indext
-	$(call transfer-preform)
+.PHONY: forcetransferpreform
+forcetransferpreform:
+	mkdir -p "$(INTERNAL)/Languages"
+	mkdir -p "$(INTERNAL)/Languages/English"
+	cp -f "$(INFORM7WEB)/Tangled/Syntax.preform" "$(INTERNAL)/Languages/English/Syntax.preform"
 
-$(INTERNAL)/Miscellany/Basic.indext: inform7/Internal/Miscellany/Basic.indext
-	$(call transfer-preform)
+# -----------------------------------------------------------------------------
+# Copying the indexing structure and localisation files into the app
 
-$(INTERNAL)/Languages/English/Index.txt: inform7/Internal/Languages/English/Index.txt
-	$(call transfer-preform)
+{set name: LOCALISEDINDEXES value: English, French}
 
-$(INTERNAL)/Languages/French/Index.txt: inform7/Internal/Languages/French/Index.txt
-	$(call transfer-preform)
+.PHONY: transferindext
+transferindext: forcetransferindext
 
-define transfer-preform
-	cp -f 'inform7/Tangled/Syntax.preform' "$(INTERNAL)/Languages/English/Syntax.preform"
-	cp -f 'inform7/Tangled/Syntax.preform' "inform7/Internal/Languages/English/Syntax.preform"
-	cp -f 'inform7/Internal/Miscellany/Standard.indext' "$(INTERNAL)/Miscellany/Standard.indext"
-	cp -f 'inform7/Internal/Miscellany/Basic.indext' "$(INTERNAL)/Miscellany/Basic.indext"
-	cp -f 'inform7/Internal/Languages/English/Index.txt' "$(INTERNAL)/Languages/English/Index.txt"
-	cp -f 'inform7/Internal/Languages/French/Index.txt' "$(INTERNAL)/Languages/French/Index.txt"
-endef
+.PHONY: forcetransferindext
+forcetransferindext:
+	cp -f "$(INFORM7WEB)/Internal/Miscellany/Standard.indext" "$(INTERNAL)/Miscellany/Standard.indext"
+	cp -f "$(INFORM7WEB)/Internal/Miscellany/Basic.indext"    "$(INTERNAL)/Miscellany/Basic.indext"
+	{repeat with: LANGUAGE in: {LOCALISEDINDEXES}}
+	mkdir -p "$(INTERNAL)/Languages/{LANGUAGE}"
+	cp -f "$(INFORM7WEB)/Internal/Languages/{LANGUAGE}/Index.txt" "$(INTERNAL)/Languages/{LANGUAGE}/Index.txt"
+	{end-repeat}
 
-# (c) Copying the Standard Rules into the app
+# -----------------------------------------------------------------------------
+# Copying kits (and Inter pipelines) into the app
 
-$(SRULESINPLACE): $(SRULES)
-	$(call transfer-standard-rules)
+# This is easy, because Inbuild provides a convenient sync facility. Note that
+# make-integration-settings.mk is expected to have defined INTERNAL as the
+# directory of resources inside itself which will be supplied to its copy of
+# inform7 on the command line with the -internal switch.
 
-define transfer-standard-rules
-	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
-	cp $(SRULES) $(SRULESINPLACE)
-	$(call transfer-xefs)
-endef
+.PHONY: transferkits
+transferkits: forcetransferkits
 
-$(BINFORMINPLACE): $(BINFORM)
-	$(call transfer-basic-inform)
+.PHONY: forcetransferkits
+forcetransferkits:
+	$(INBUILDX) -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Inter
+	$(INBUILDX) -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Pipelines
 
-define transfer-basic-inform
-	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
-	cp $(BINFORM) $(BINFORMINPLACE)
-	$(call transfer-xefs)
-endef
+# -----------------------------------------------------------------------------
+# Copying extensions into the app
 
-define transfer-xefs
-	mkdir -p "$(INTERNAL)/HTML"
-	cp -f inform7/Internal/HTML/xrefs.txt "$(INTERNAL)/HTML"
-endef
+# And also the documentation cross-referencing file, since that cross-references
+# the Standard Rules and Basic Inform.
 
-# (d) Copying kits and pipelines into the app
-
-define transfer-kits
-	$(INBUILDX) -sync-to $(INTERNAL) -contents-of inform7/Internal/Inter
-	$(INBUILDX) -sync-to $(INTERNAL) -contents-of inform7/Internal/Pipelines
-endef
-
-# (e) Copying internal resources into the app
-
-# The Internal tree also holds built-in extensions, web interpreters and so on.
-# In effect, it's a repository in the UI app of non-executable resources:
-
-$(INTERNALEXEMPLUM): \
-		inform7/Internal/Extensions/Eric\ Eve/[A-Za-z]* \
-		inform7/Internal/Extensions/Emily\ Short/[A-Za-z]* \
-		inform7/Internal/Extensions/Graham\ Nelson/[A-Za-z]* \
-		inform7/Internal/Miscellany/[A-Za-z]*.* \
-		inform7/Internal/HTML/[A-Za-z]*.* \
-		inform7/Internal/Templates/Parchment/[A-Za-z]*.* \
-		inform7/Internal/Templates/Quixe/[A-Za-z]*.* \
-		inform7/Internal/Templates/Classic/[A-Za-z]*.* \
-		inform7/Internal/Templates/Standard/[A-Za-z]*.*
-	$(call transfer-internal-tree)
-
-define transfer-internal-tree
-	touch $(INTERNALEXEMPLUMFROM)
+{define: transfer-extensions}
 	mkdir -p $(INTERNAL)
 	mkdir -p "$(INTERNAL)/Extensions/Eric Eve"
 	rm -f $(INTERNAL)/Extensions/Eric\ Eve/*
@@ -783,83 +734,170 @@ define transfer-internal-tree
 	rm -f $(INTERNAL)/Extensions/Emily\ Short/*
 	mkdir -p "$(INTERNAL)/Extensions/Graham Nelson"
 	rm -f $(INTERNAL)/Extensions/Graham\ Nelson/*
-	cp -R -f inform7/Internal/Extensions $(INTERNAL)/Extensions/..
+	cp -R -f $(INFORM7WEB)/Internal/Extensions $(INTERNAL)/Extensions/..
+	mkdir -p "$(INTERNAL)/HTML"
+	cp -f $(INFORM7WEB)/Internal/HTML/xrefs.txt "$(INTERNAL)/HTML"
+{end-define}
+
+.PHONY: forcetransferextensions
+forcetransferextensions:
+	{transfer-extensions}
+
+# -----------------------------------------------------------------------------
+# Copying language bundles into the app
+
+{define: transfer-languages}
 	mkdir -p "$(INTERNAL)/Languages"
-	mkdir -p "$(INTERNAL)/Languages/English"
-	mkdir -p "$(INTERNAL)/Languages/French"
-	mkdir -p "$(INTERNAL)/Languages/German"
-	mkdir -p "$(INTERNAL)/Languages/Italian"
-	mkdir -p "$(INTERNAL)/Languages/Spanish"
-	cp -R -f inform7/Internal/Languages $(INTERNAL)/Languages/..
+	cp -R -f $(INFORM7WEB)/Internal/Languages $(INTERNAL)/Languages/..
+{end-define}
+
+.PHONY: forcetransferlanguages
+forcetransferlanguages:
+	{transfer-languages}
+
+# -----------------------------------------------------------------------------
+# Copying website templates into the app
+
+{set name: TEMPLATENAMES value: Standard, Classic, Parchment, Quixe}
+
+{define: transfer-templates}
 	mkdir -p "$(INTERNAL)/Templates"
-	mkdir -p "$(INTERNAL)/Templates/Standard"
-	rm -f $(INTERNAL)/Templates/Standard/*
-	mkdir -p "$(INTERNAL)/Templates/Classic"
-	rm -f $(INTERNAL)/Templates/Classic/*
-	mkdir -p "$(INTERNAL)/Templates/Parchment"
-	rm -f $(INTERNAL)/Templates/Parchment/*
-	mkdir -p "$(INTERNAL)/Templates/Quixe"
-	rm -f $(INTERNAL)/Templates/Quixe/*
-	cp -R -f inform7/Internal/Templates $(INTERNAL)/Templates/..
+	{repeat with: INTERPRETER in: {TEMPLATENAMES}}
+	mkdir -p "$(INTERNAL)/Templates/{INTERPRETER}"
+	rm -f $(INTERNAL)/Templates/{INTERPRETER}/*
+	{end-repeat}
+	cp -R -f $(INFORM7WEB)/Internal/Templates $(INTERNAL)/Templates/..
+{end-define}
+
+.PHONY: forcetransfertemplates
+forcetransfertemplates:
+	{transfer-templates}
+
+{define: transfer-other-internals}
 	mkdir -p "$(INTERNAL)/Miscellany"
 	rm -f $(INTERNAL)/Miscellany/*
-	cp -R -f inform7/Internal/Miscellany $(INTERNAL)/Miscellany/..
+	cp -R -f $(INFORM7WEB)/Internal/Miscellany $(INTERNAL)/Miscellany/..
 	mkdir -p "$(INTERNAL)/HTML"
 	rm -f $(INTERNAL)/HTML/*
-	cp -R -f inform7/Internal/HTML $(INTERNAL)/HTML/..
-endef
+	cp -R -f $(INFORM7WEB)/Internal/HTML $(INTERNAL)/HTML/..
+{end-define}
 
-# (f) Copying images into the app
+.PHONY: forcetransferotherinternals
+forcetransferotherinternals:
+	{transfer-other-internals}
 
-$(IMAGESEXEMPLUM): \
-	resources/Imagery/app_images/[A-Za-z]*.* \
-	resources/Imagery/bg_images/[A-Za-z]*.* \
-	resources/Imagery/doc_images/[A-Za-z]*.* \
-	resources/Imagery/map_icons/[A-Za-z]*.* \
-	resources/Imagery/outcome_images/[A-Za-z]*.* \
-	resources/Imagery/scene_icons/[A-Za-z]*.*
-	$(call transfer-images)
+# -----------------------------------------------------------------------------
+# Copying images into the app
 
-define transfer-images
-	touch $(IMAGESEXEMPLUMFROM)
+# Note that make-integration-settings.mk is expected to define BUILTINHTML as
+# the directory which will hold the mini-website formed by the in-app manuals.
+
+{set name: IMAGESETLIST value: bg_images, doc_images, map_icons, outcome_images, scene_icons}
+
+{define: transfer-images}
 	cp -f resources/Imagery/app_images/Welcome*Background.png $(BUILTINHTML)
-	mkdir -p $(BUILTINHTML)/bg_images
-	rm -f $(BUILTINHTML)/bg_images/*
-	cp -f resources/Imagery/bg_images/[A-Za-z]*.* $(BUILTINHTML)/bg_images
-	mkdir -p $(BUILTINHTML)/doc_images
-	rm -f $(BUILTINHTML)/doc_images/*
-	cp -f resources/Imagery/doc_images/[A-Za-z]*.* $(BUILTINHTML)/doc_images
-	mkdir -p $(BUILTINHTML)/map_icons
-	rm -f $(BUILTINHTML)/map_icons/*
-	cp -f resources/Imagery/map_icons/[A-Za-z]*.* $(BUILTINHTML)/map_icons
-	mkdir -p $(BUILTINHTML)/outcome_images
-	rm -f $(BUILTINHTML)/outcome_images/*
-	cp -f resources/Imagery/outcome_images/[A-Za-z]*.* $(BUILTINHTML)/outcome_images
-	mkdir -p $(BUILTINHTML)/scene_icons
-	rm -f $(BUILTINHTML)/scene_icons/*
-	cp -f resources/Imagery/scene_icons/[A-Za-z]*.* $(BUILTINHTML)/scene_icons
-endef
+	{repeat with: SET in: {IMAGESETLIST}}
+	mkdir -p $(BUILTINHTML)/{SET}
+	rm -f $(BUILTINHTML)/{SET}/*
+	cp -f resources/Imagery/{SET}/[A-Za-z]*.* $(BUILTINHTML)/{SET}
+	{end-repeat}
+{end-define}
 
-# (g) Typesetting documentation to HTML inside the app
+.PHONY: forcetransferimages
+forcetransferimages:
+	{transfer-images}
 
-$(DOCEXEMPLUM): resources/Documentation/*.txt resources/Documentation/Examples/*.txt
-	$(call make-inapp-documentation)
+# -----------------------------------------------------------------------------
+# Incrementally copying the internal tree
+# This is super-awkward and probably should be dropped in favour of rsync, but
+# it's only used by "make integration", not by "make forceintegration". It aims
+# to copy only what has changed, out of the extensions, languages, templates,
+# images and miscellany files.
 
-define make-inapp-documentation
+# Basically we use the timestamps on these two files to see whether a sync
+# is now needed. (If it is, INTERNALEXEMPLUMFROM will be copied to INTERNALEXEMPLUM
+# in the process.)
+
+INTERNALEXEMPLUM = $(INTERNAL)/Miscellany/Cover.jpg
+INTERNALEXEMPLUMFROM = $(INFORM7WEB)/Internal/Miscellany/Cover.jpg
+
+.PHONY: transferinternals
+transferinternals: $(INTERNALEXEMPLUM)
+
+$(INTERNALEXEMPLUMFROM):
+	$(INTERNALEXEMPLUM)
+
+$(INTERNALEXEMPLUM): \
+		$(INFORM7WEB)/Internal/Extensions/Eric\ Eve/[A-Za-z]* \
+		$(INFORM7WEB)/Internal/Extensions/Emily\ Short/[A-Za-z]* \
+		$(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/[A-Za-z]* \
+		$(INFORM7WEB)/Internal/Languages/*/about.txt \
+		$(INFORM7WEB)/Internal/Templates/*/*.* \
+		$(INFORM7WEB)/Internal/HTML/[A-Za-z]*.* \
+		{repeat with: INTERPRETER in: {TEMPLATENAMES}}
+		$(INFORM7WEB)/Internal/Templates/{INTERPRETER}/[A-Za-z]*.* \
+		{end-repeat}
+		{repeat with: SET in: {IMAGESETLIST}}
+		resources/Imagery/{SET}/[A-Za-z]*.* \
+		{end-repeat}
+		resources/Imagery/app_images/[A-Za-z]*.* \
+		$(INFORM7WEB)/Internal/Miscellany/[A-Za-z]*.*
+	touch $(INTERNALEXEMPLUMFROM)
+	{transfer-extensions}
+	{transfer-languages}
+	{transfer-templates}
+	{transfer-other-internals}
+	{transfer-images}
+
+# -----------------------------------------------------------------------------
+# Typesetting documentation to HTML inside the app, using indoc
+
+# Note that make-integration-settings.mk is expected to define BUILTINHTMLINNER as
+# the directory which will hold the text pages of the mini-website formed by the
+# in-app manuals. That may or may not be the same as BUILTINHTML, but whatever
+# the relation between the two, the indoc settings for the platform will need to
+# agree with that.
+
+{define: compile-inapp-documentation}
 	mkdir -p "$(INTERNAL)/Documentation"
 	mkdir -p $(BUILTINHTMLINNER)
-	$(INDOCX) -from resources/Documentation -xrefs 'inform7/Internal/HTML/xrefs.txt' $(INDOCOPTS)
-endef
+	$(INDOCX) -from resources/Documentation -xrefs '$(INFORM7WEB)/Internal/HTML/xrefs.txt' $(INDOCOPTS)
+{end-define}
 
-# (h) Typesetting the HTML pages used to display run-time problem messages
+.PHONY: transferdocumentation
+transferdocumentation: $(BUILTINHTMLINNER)/index.html
 
-$(RTPEXEMPLUM): resources/Outcome*Pages/texts.txt resources/Outcome*Pages/*.html
-	$(call make-inapp-outcome-pages)
+$(BUILTINHTMLINNER)/index.html: resources/Documentation/*.txt resources/Documentation/Examples/*.txt
+	{compile-inapp-documentation}
 
-define make-inapp-outcome-pages
+.PHONY: forcetransferdocumentation
+forcetransferdocumentation:
+	{compile-inapp-documentation}
+
+# -----------------------------------------------------------------------------
+# Typesetting the HTML pages used to display run-time problem messages, using inrtps
+
+{define: make-inapp-outcome-pages}
 	$(INRTPSX) resources/Outcome\ Pages $(BUILTINHTMLINNER) $(INRTPSOPTS)
 	cp -f resources/Outcome\ Pages/pl404.html $(BUILTINHTMLINNER)
-endef
+{end-define}
+
+RTPEXEMPLUM = $(BUILTINHTMLINNER)/RTP_P1.html
+
+.PHONY: transferoutcomepages
+transferoutcomepages: $(RTPEXEMPLUM)
+
+$(RTPEXEMPLUM): resources/Outcome*Pages/texts.txt resources/Outcome*Pages/*.html
+	{make-inapp-outcome-pages}
+
+.PHONY: forcetransferoutcomepages
+forcetransferoutcomepages:
+	{make-inapp-outcome-pages}
+
+# =============================================================================
+
+# End of the block which is used only if make-integration-settings.mk is
+# provided
 
 endif
 
