@@ -137,9 +137,9 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 @<Document and dictionary the verbs made in extension@> =
 	int verb_count = 0;
 	verb_conjugation *vc;
-	LOOP_OVER(vc, verb_conjugation)
-		if (Lexer::file_of_origin(Wordings::first_wn(
-			Node::get_text(vc->compilation_data.where_vc_created))) == E->read_into_file) {
+	LOOP_OVER(vc, verb_conjugation) {
+		int wn = Wordings::first_wn(Node::get_text(vc->compilation_data.where_vc_created));
+		if ((wn >= 0) && (Lexer::file_of_origin(wn) == E->read_into_file)) {
 			TEMPORARY_TEXT(entry_text)
 			WRITE_TO(entry_text, "%A", &(vc->infinitive));
 			if (verb_count++ == 0) { HTML_OPEN("p"); WRITE("Verbs: "); } else WRITE(", ");
@@ -147,6 +147,7 @@ void IndexExtensions::document_in_detail(OUTPUT_STREAM, inform_extension *E) {
 			ExtensionDictionary::new_entry(I"verb", E, entry_text);
 			DISCARD_TEXT(entry_text)
 		}
+	}
 	if (verb_count > 0) HTML_CLOSE("p");
 
 @ Adjectival phrases:

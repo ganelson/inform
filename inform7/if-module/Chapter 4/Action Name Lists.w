@@ -125,7 +125,11 @@ void ActionNameLists::remove_entries_marked_for_deletion(action_name_list *list)
 =
 void ActionNameLists::join_to(anl_entry *earlier, anl_entry *later) {
 	if (later == earlier) internal_error("loop");
-	if (ActionNameLists::precedes(later, earlier)) internal_error("misordering");
+	if (ActionNameLists::precedes(later, earlier)) {
+		WRITE_TO(STDERR, "Earlier: "); ActionNameLists::write_entry_briefly(STDERR, earlier); WRITE_TO(STDERR, "\n");
+		WRITE_TO(STDERR, "Later:   "); ActionNameLists::write_entry_briefly(STDERR, later); WRITE_TO(STDERR, "\n");
+		internal_error("misordering");
+	}
 	earlier->next_entry = later;
 }
 
@@ -180,14 +184,49 @@ int ActionNameLists::precedes(anl_entry *e1, anl_entry *e2) {
 	return FALSE;
 }
 
-anl_entry *ActionNameLists::join_entry(anl_entry *further, anl_entry *tail) {
-	if (further == NULL) return tail;
-	if (tail == NULL) return further;
-	anl_entry *entry = tail;
-	while (entry->next_entry != NULL) entry = entry->next_entry;
-	ActionNameLists::join_to(entry, further);
-	return tail;
+@ These lists are never long, so we don't need to worry about running time here.
+
+On entry |main_list| begins a linked list in which each entry //ActionNameLists::precedes//
+the next; while |new_list| can be in any sequence, but must be disjoint from the
+|main_list|, i.e., have no entries in common.
+
+On exit the return value heads a linked list in which each entry precedes the
+next, and which includes exactly the members of the two lists passed to it.
+
+=
+anl_entry *ActionNameLists::join_entries(anl_entry *new_list, anl_entry *main_list) {
+	if (new_list == NULL) return main_list;
+	if (main_list == NULL) return new_list;
+	for (anl_entry *X = new_list; X; X = X->next_entry)
+		for (anl_entry *Y = main_list; Y; Y = Y->next_entry)
+			if (X == Y) internal_error("ANLs not disjoint");
+	anl_entry *new_entry = new_list;
+	while (new_entry) {
+		anl_entry *next_entry = new_entry->next_entry;
+		new_entry->next_entry = NULL;
+		@<Insertion-sort the new entry into the main list@>;
+		new_entry = next_entry;
+	}
+	return main_list;
 }
+
+@<Insertion-sort the new entry into the main list@> =
+	if (ActionNameLists::precedes(new_entry, main_list)) {
+		ActionNameLists::join_to(new_entry, main_list);
+		main_list = new_entry;
+	} else {
+		for (anl_entry *prev = NULL, *pos = main_list; pos; prev = pos, pos = pos->next_entry) {	
+			if (ActionNameLists::precedes(new_entry, pos)) {
+				if (prev) ActionNameLists::join_to(prev, new_entry);
+				ActionNameLists::join_to(new_entry, pos);
+				break;
+			}
+			if (pos->next_entry == NULL) {
+				ActionNameLists::join_to(pos, new_entry);
+				break;
+			}
+		}
+	}
 
 @ When not pruning the list, this macro is useful for working through it:
 
@@ -615,6 +654,16 @@ void ActionNameLists::log_entry_briefly(anl_entry *entry) {
 	}			
 }
 
+void ActionNameLists::write_entry_briefly(OUTPUT_STREAM, anl_entry *entry) {
+	if (entry->item.nap_listed) {
+		WRITE("%W", Nouns::nominative_singular(entry->item.nap_listed->as_noun));
+	} else if (entry->item.action_listed == NULL)
+		WRITE("ANY");
+	else {
+		WRITE("%W", ActionNameNames::tensed(entry->item.action_listed, IS_TENSE));
+	}			
+}
+
 @h Parsing text to an ANL.
 Action name lists arise only for parsing text, and only from the function below; 
 this might match, for example, "doing something other than waiting", or
@@ -698,7 +747,7 @@ action_name_list *ActionNameLists::parse(wording W, int tense, int *sense) {
 
 =
 <anl> ::=
-	<anl-entry> <anl-tail> |  ==> { -, ActionNameLists::join_entry(RP[1], RP[2]) }
+	<anl-entry> <anl-tail> |  ==> { -, ActionNameLists::join_entries(RP[1], RP[2]) }
 	<anl-entry>               ==> { pass 1 }
 
 <anl-tail> ::=
@@ -846,17 +895,7 @@ the structure itself into the results list, and make a fresh structure to be
 the trial entry for future trials.
 
 @<Include the trial entry@> =
-	if (results == NULL) {
-		results = trial_entry;
-	} else {
-		anl_entry *pos = results, *prev = NULL;
-		while ((pos) && (ActionNameLists::precedes(pos, trial_entry)))
-			prev = pos, pos = pos->next_entry;
-		if (prev) ActionNameLists::join_to(prev, trial_entry); else results = trial_entry;
-		anl_entry *last = trial_entry; int n = 1;
-		while ((last) && (last->next_entry)) { n++; last = last->next_entry; }
-		ActionNameLists::join_to(last, pos);
-	}
+	results = ActionNameLists::join_entries(trial_entry, results);
 	trial_entry = ActionNameLists::new_entry_at(EMPTY_WORDING);
 
 @ And now we get to ramification. This is what happens last, when a set of

@@ -146,10 +146,12 @@ pcalc_prop *Binding::vars_map(pcalc_prop *prop, int *renumber_map, pcalc_term *p
 
 void Binding::term_map(pcalc_term *pt, int *renumber_map) {
 	while (pt->function) pt=&(pt->function->fn_of);
-	int nv = renumber_map[pt->variable];
-	if ((pt->variable >= 0) && (nv >= 0)) {
-		if (nv >= 26) internal_error("malformed renumbering map");
-		pt->variable = nv;
+	if (pt->variable >= 0) {
+		int nv = renumber_map[pt->variable];
+		if (nv >= 0) {
+			if (nv >= 26) internal_error("malformed renumbering map");
+			pt->variable = nv;
+		}
 	}
 }
 

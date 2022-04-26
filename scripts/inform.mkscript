@@ -664,7 +664,7 @@ forceintegration: \
 transfertools: {repeat with: SYMBOL in: {TOOLSINAPPS}}$(BUILTINCOMPS)/$({SYMBOL}NAME) {end-repeat}
 
 {repeat with: SYMBOL in: {TOOLSINAPPS}}
-$(BUILTINCOMPS)/{SYMBOL}: $({SYMBOL}X)
+$(BUILTINCOMPS)/$({SYMBOL}NAME): $({SYMBOL}X)
 	{transfer-tool name: {SYMBOL}}
 
 {end-repeat}
