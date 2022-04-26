@@ -117,8 +117,7 @@
 
 	! And then the general case.
 
-	! set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
-	set: $I7CONSOLE = /Users/gnelson/pelican/i7_output_$CASE.txt
+	set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
 	if: $TOC YES
 		mkdir: $PATH/_Textual
 		mkdir: $PATH/_C
