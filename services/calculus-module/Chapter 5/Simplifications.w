@@ -873,15 +873,16 @@ Here |var_to_sub| is $v$ and |var_in_other_term| is $w$, or else they are $-1$
 if no variables are present in their respective terms.
 
 @<Decide if the variable is redundant, and if its value can safely be subbed@> =
-	if ((var_to_sub >= 0)
-		&& (binding_status[var_to_sub] == BOUND_BY_EXISTS)
-		&& (binding_level[var_to_sub] == level))
-			var_is_redundant = TRUE;
+	if (var_to_sub >= 0) {
+		if ((binding_status[var_to_sub] == BOUND_BY_EXISTS)
+			&& (binding_level[var_to_sub] == level))
+				var_is_redundant = TRUE;
 
-	if ((var_in_other_term < 0)
-		|| (binding_status[var_in_other_term] == NOT_BOUND_AT_ALL)
-		|| (binding_sequence[var_in_other_term] < binding_sequence[var_to_sub]))
-			value_can_be_subbed = TRUE;
+		if ((var_in_other_term < 0)
+			|| (binding_status[var_in_other_term] == NOT_BOUND_AT_ALL)
+			|| (binding_sequence[var_in_other_term] < binding_sequence[var_to_sub]))
+				value_can_be_subbed = TRUE;
+	}
 
 @h Simplify non-relation (deduction).
 As a result of the previous simplifications, it fairly often happens that we

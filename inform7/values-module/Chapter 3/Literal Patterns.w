@@ -423,10 +423,13 @@ The |wpos| value $-1$ means that word |wn| has not yet been started.
 			Kinds::Scalings::contract(lp->scaling, matched_scaledown, &loses_accuracy);
 		matched_number = Kinds::Scalings::quanta_to_value(sc, matched_number);
 		if (loses_accuracy) @<Report a problem because not enough accuracy is available@>;
-		long long int max_16_bit = 32767LL, max_32_bit = 2147483647LL;
+		long long int max_16_bit = 32767LL, max_32_bit = 2147483647LL, min_32_bit = -2147483648LL;
 		if (matched_number > max_16_bit) overflow_16_bit_flag = TRUE;
 		if (matched_number > max_32_bit) overflow_32_bit_flag = TRUE;
-		if (sign_used_at) matched_number = -matched_number;
+		if ((sign_used_at) && (overflow_32_bit_flag == FALSE)) {
+			if (matched_number == min_32_bit) overflow_32_bit_flag = TRUE;
+			else matched_number = -matched_number;
+		}
 	} else {
 		#pragma clang diagnostic push
 		#pragma clang diagnostic ignored "-Wsign-conversion"

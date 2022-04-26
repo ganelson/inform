@@ -73,12 +73,15 @@ as used in a typical run of Inform 7 &mdash; see <a href="../inform7/M-pm.html" 
 
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Incidence bits. </b>Each NT is assigned an "incidence bit", but this is generated on demand;
 <span class="extract"><span class="extract-syntax">nt_incidence_bit</span></span> is -1 until it is allocated, and is otherwise an integer in
-which only one bit is set, and always in the lowest 32 bits (since we won't
-assume integers are any larger than that).
+which only one bit is set, and always in the lowest 31 bits (since we won't
+assume integers are any larger than that). We avoid use of bit 32 because
+these are signed integers and <span class="extract"><span class="extract-syntax">1 &lt;&lt; 31</span></span> has undefined behaviour in C;
+compiling <span class="extract"><span class="extract-syntax">-fsanitize=undefined</span></span> produces errors in the function below if it
+is used.
 </p>
 
 <p class="commentary">The lowest 6 bits are reserved &mdash; see <a href="4-ni.html#SP27" class="internal">NTI::give_nt_reserved_incidence_bit</a>
-below &mdash; but bits 7 to 32 are free, and the following function cycles through
+below &mdash; but bits 7 to 31 are free, and the following function cycles through
 those 26 possibilities. Those 26 don't have any semantic significance; they
 simply divide up the nonterminals into 26 different bins of roughly equal
 sizes, in the same sort of way that keys are divided up in hash tables.
@@ -90,7 +93,7 @@ sizes, in the same sort of way that keys are divided up in hash tables.
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">no_req_bits</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">NTI::nt_incidence_bit</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">NTI::nt_incidence_bit</span></span>:<br/><a href="4-ni.html#SP3">&#167;3</a>, <a href="4-ni.html#SP10">&#167;10</a>, <a href="4-ni.html#SP29">&#167;29</a><br/>Instrumentation - <a href="4-ins.html#SP8">&#167;8</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">nonterminal</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nt</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">.</span><span class="element-syntax">nt_incidence_bit</span><span class="plain-syntax"> == -1) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">b</span><span class="plain-syntax"> = </span><span class="constant-syntax">RESERVED_NT_BITS</span><span class="plain-syntax"> + ((</span><span class="identifier-syntax">no_req_bits</span><span class="plain-syntax">++)%(32-</span><span class="constant-syntax">RESERVED_NT_BITS</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">b</span><span class="plain-syntax"> = </span><span class="constant-syntax">RESERVED_NT_BITS</span><span class="plain-syntax"> + ((</span><span class="identifier-syntax">no_req_bits</span><span class="plain-syntax">++)%(31-</span><span class="constant-syntax">RESERVED_NT_BITS</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">.</span><span class="element-syntax">nt_incidence_bit</span><span class="plain-syntax"> = (1 &lt;&lt; </span><span class="identifier-syntax">b</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">nt</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">opt</span><span class="plain-syntax">.</span><span class="element-syntax">nt_incidence_bit</span><span class="plain-syntax">;</span>

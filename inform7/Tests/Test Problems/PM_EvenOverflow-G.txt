@@ -1,6 +1,5 @@
 [This throws problems on all six assignments if compiled to Z-machine,
-but the W and Z assignments should pass on Glulx - this can be tested
-by running intest --glulx.]
+but the W assignment should pass on Glulx.]
 
 Aspect ratio is a kind of value. -16:9 specifies an aspect ratio.
 

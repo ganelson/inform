@@ -13,11 +13,14 @@ as used in a typical run of Inform 7 -- see //inform7: Performance Metrics//.
 @h Incidence bits.
 Each NT is assigned an "incidence bit", but this is generated on demand;
 |nt_incidence_bit| is -1 until it is allocated, and is otherwise an integer in
-which only one bit is set, and always in the lowest 32 bits (since we won't
-assume integers are any larger than that).
+which only one bit is set, and always in the lowest 31 bits (since we won't
+assume integers are any larger than that). We avoid use of bit 32 because
+these are signed integers and |1 << 31| has undefined behaviour in C;
+compiling |-fsanitize=undefined| produces errors in the function below if it
+is used.
 
 The lowest 6 bits are reserved -- see //NTI::give_nt_reserved_incidence_bit//
-below -- but bits 7 to 32 are free, and the following function cycles through
+below -- but bits 7 to 31 are free, and the following function cycles through
 those 26 possibilities. Those 26 don't have any semantic significance; they
 simply divide up the nonterminals into 26 different bins of roughly equal
 sizes, in the same sort of way that keys are divided up in hash tables.
@@ -28,7 +31,7 @@ sizes, in the same sort of way that keys are divided up in hash tables.
 int no_req_bits = 0;
 int NTI::nt_incidence_bit(nonterminal *nt) {
 	if (nt->opt.nt_incidence_bit == -1) {
-		int b = RESERVED_NT_BITS + ((no_req_bits++)%(32-RESERVED_NT_BITS));
+		int b = RESERVED_NT_BITS + ((no_req_bits++)%(31-RESERVED_NT_BITS));
 		nt->opt.nt_incidence_bit = (1 << b);
 	}
 	return nt->opt.nt_incidence_bit;

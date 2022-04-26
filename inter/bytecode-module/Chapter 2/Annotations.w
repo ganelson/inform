@@ -338,7 +338,7 @@ void SymbolAnnotation::write_annotations(OUTPUT_STREAM, inter_tree_node *F, inte
 
 void SymbolAnnotation::write_set(OUTPUT_STREAM, inter_annotation_set *set, inter_tree_node *F) {
 	if (set) {
-		for (int b=1, c=0; c<31; b *= 2, c++)
+		for (int b=1, c=0; c<30; b *= 2, c++)
 			if (set->boolean_annotations & b)
 				SymbolAnnotation::write_annotation(OUT, F, SymbolAnnotation::from_pair((inter_ti) c, TRUE));
 		if (set->other_annotations) {
