@@ -522,7 +522,7 @@ gnome_app {
 	assume_Public_Library = yes
 	declare: GNOME
 	javascript_paste_method = David
-	destination = gnome-inform7/data/Documentation/
+	destination = ../inform7-ide/src/inform/
 }
 
 website {

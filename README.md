@@ -68,7 +68,7 @@ on the Mac App Store. While much of the UI design is the same across all
 platforms, each app has its own code in its own repository. See:
 	* [https://github.com/TobyLobster/Inform](https://github.com/TobyLobster/Inform) for MacOS, maintained by [Toby Nelson](https://github.com/TobyLobster)
 	* [https://github.com/DavidKinder/Windows-Inform7](https://github.com/DavidKinder/Windows-Inform7) for Windows, maintained by [David Kinder](https://github.com/DavidKinder)
-	* [https://github.com/ptomato/gnome-inform7](https://github.com/ptomato/gnome-inform7) for Linux, maintained by [Philip Chimento](https://github.com/ptomato)
+	* [https://github.com/ptomato/inform7-ide](https://github.com/ptomato/inform7-ide) for Linux, maintained by [Philip Chimento](https://github.com/ptomato)
 
 ## Build Instructions
 
