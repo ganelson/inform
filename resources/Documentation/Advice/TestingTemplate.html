@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link href="indoc_WI.css" rel="stylesheet" type="text/css" />
+<title>Testing</title>
+<script type='text/javascript'>
+    function showBlock(id) { if( document.getElementById(id) ) document.getElementById(id).style.display = 'block'; }
+    function hideBlock(id) { if( document.getElementById(id) ) document.getElementById(id).style.display = 'none'; }
+</script>
+</head>
+<body class="paper papertint" onLoad="test();">
+<!-- START IGNORE -->
+
+<div id="welcome"><p>Welcome to the new Testing panel. This combines the old Skein and
+Transcript panels. Like them, it records every play through the story. It helps with testing
+because it compares the text this time with the &quot;blessed&quot; text on previous plays. The panel
+shows oval &quot;knots&quot; representing turns of play.</p></div>
+
+<div id="title"><p><img style="float:left" src="inform:///App/Skein/HelpStoryTitle.png"> The topmost knot is
+the start position, representing the story before any choices are made.</p></div>
+
+<div id="purple"><p><img style="float:left" src="inform:///App/Skein/HelpPurpleKnot.png">
+The purple knot marks the position reached at any given moment in the Story panel.</p></div>
+
+<div id="grey"><p><img style="float:left" src="inform:///App/Skein/HelpGreyKnot.png"> Each
+grey knot represents a command typed in, and the text which resulted. Grey means it's not
+selected: click it to select.</p></div>
+
+<div id="blue"><p><img style="float:left" src="inform:///App/Skein/HelpBlueKnot.png"> A blue
+knot is a grey knot that has been selected. Click it again to unselect.</p></div>
+
+<div id="report"><p>The yellow box shows the text produced the last time the selected (blue
+knot) commands were typed in. The arrows show which command led to what.</p></div>
+
+<div id="tick"><p>Text is automatically compared against an earlier version known to be
+correct, called the &quot;blessed&quot; version.
+
+<p><img style="float:left" src="inform:///App/Skein/Trans-tick-off.png">&nbsp;The tick icon
+is shown if that turn's text failed to match. Green highlighting shows text added since the
+&quot;blessed&quot; version, red highlighting shows text removed. (All green must mean there's no
+&quot;blessed&quot; version, so that all text is new.) If you agree that the current text is correct,
+click the tick icon. If you don't agree, you'll need to rewrite your story to produce
+different text next time.</div>
+
+<div id="cross"><p><img style="float:left" src="inform:///App/Skein/Trans-cross-off.png">
+&nbsp;The cross icon is only shown if that turn's text was correct, that is, if it exactly
+matched the "blessed" version. Click the cross to "curse" the turn - that removes the blessing.</p></div>
+
+<div id="badge"><p><img style="float:left" src="inform:///App/Skein/HelpBadgedBlueKnot.png">
+The red star on a knot means that the text definitely had a &quot;blessed&quot; version but that the
+most recent play failed to match it - so this is a knot where there's a problem.</p></div>
+
+<div id="threads"><p>The black &quot;threads&quot; between the knots show the sequence of play. Time runs
+downwards, so later turns are below earlier ones.</p></div>
+
+<div id="knots"><p>Once a turn is played in the Story panel, by typing in a command, another knot will appear here.</p></div>
+
+<div id="moreknots"><p>As more turns are played in the Story panel, more knots will appear here.</p></div>
+
+<div id="menu"><p><img style="float:left" src="inform:///App/Skein/HelpGreyKnotMenu.png"> Hover the mouse over a knot to see the
+    pop-up menu button for it - clicking this gives more advanced options.</p></div>
+
+<div id="welcomead"><p>In addition to Hide/Show Help, the top of this panel has two buttons for advanced users. Save Transcript
+lets you save out the text from the currently selected thread of play. Play All
+systematically plays through every variation in the diagram, restarting the story
+as needed to do so, so that it tests every knot.</p></div>
+
+<!-- END IGNORE -->
+</body>
+</html>
