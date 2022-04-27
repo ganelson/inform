@@ -17770,15 +17770,17 @@ Implications have not been mentioned up to now since they are only really needed
 ^^{extensions: Inform 6 code in extensions}
 ^^{Standard Rules+ext+} ^^{extensions: specific extensions: Standard Rules}
 
-To return to what was said on the first page of this documentation: Inform 7 (or I7), the current version, is not at all like Inform 6 (or I6). Internally, however, I7 works by translating the source text into an I6 program, so that in a practical sense the current version of Inform actually contains its predecessor.
+The current Inform, "Inform 7", had a low-level precursor unsurprisingly called Inform, which ran through versions 1 to 6. What made Inform 6 low-level was that its style of coding was much more like traditional programming: it reads as a simple form of C, or an elaborate form of assembly-language, but with some interactive fiction tweaks.
 
-The final sections of this chapter show how I6 code can be mixed directly in with I7. The remaining pages will therefore make little or no sense to those who do not already use I6. But for those who do know I6 already, it would be all too easy to write highly hybridised code, constantly mixing I6 and I7. The authors of Inform hope that this will not happen: for almost all purposes, I7 is much more powerful than I6, and fails - when it has to fail - in a way more helpful to the user. Ideally, all I6 content would be confined to extensions (and this may be mandated in future releases of Inform), and even writers of extensions are asked to pare down their usage of I6 to the minimum necessary.
+That language is still used inside today's Inform project as a way to express very low-level operations. What happens to code like that is now very different (it is compiled into Inter, an intermediate-level representation used inside Inform, and no longer by the Inform 6 compiler). But the notation is the same, and the practical effect is that it is as if we are writing I6 code.
+
+The final sections of this chapter show how such I6 code can be mixed directly in with natural-language source text. The remaining pages will therefore make little or no sense to those who do not already know I6 notation, and in any case, such programming is really a last resort - it is always best to write regular source text than to resort to so-called "inclusions" of I6. Ideally, all I6 content would be confined to extensions (and this may be mandated in future releases of Inform), and even writers of extensions are asked to pare down their usage of I6 to the minimum necessary.
 
 The methods for incorporating I6 code into I7 have been designed with this in mind, that is, to encourage people to use I6 in as self-contained a way as possible: in particular to isolate the relatively few functions which need to be written in I6, and to give them natural language expression.
 
-Finally, anyone hacking with I7 for a while is likely to become curious about the Standard Rules file, and to look at the text on which the Inform world model is founded. The file is, of course, no secret, but it can be misleading. For one thing, it appears to have great freedom to set up the world model as it pleases, but in fact the I7 compiler may well crash unless certain things are done just so in the Standard Rules: they depend on each other.
+Finally, anyone hacking with I7 for a while is likely to become curious about the Basic Inform or Standard Rules extensions, and to look at the text which sets up the Inform language and world model. These extensions are, of course, no secret, but can be misleading to read. For one thing, they appear to have great freedom to set up the world model as it pleases, but in fact the I7 compiler may well crash unless certain things are done just so in the Standard Rules: they depend on each other.
 
-Moreover, the Standard Rules use a number of syntaxes which are not documented in this chapter: these are constantly being altered, and it would not be safe to imitate them. Any I6-related syntax which is not documented in this chapter may be removed or changed in effect at any time without warning, for instance in an update of Inform to fix bugs.
+Moreover, the Basic Inform and Standard Rules extensions use a number of syntaxes which are not documented in this chapter: these are constantly being altered, and it would not be safe to imitate them. Any I6-related syntax which is not documented in this chapter may be removed or changed in effect at any time without warning, for instance in an update of Inform to fix bugs.
 
 [x] Defining phrases in Inform 6 {PM_UnendingI6} {PM_InlineTooLong} {PM_InlineRule} {PM_BadInlineExpansion} {PM_BadInlineTag}
 
@@ -18189,7 +18191,7 @@ But what if the name clash was not an accident at all, and what we actually want
 	];
 	-) replacing "SquareRoot".
 
-And now whenever square roots are calculated, this snarky text will be printed, and the result will always be rather meaningless. As this example shows, the result of replacing kit definitions can be absolute chaos.
+And now whenever square roots are calculated, this snarky text will be printed, and the result will always be rather meaningless (since this I6 routine always returns 1). Unless one is very careful, the result of replacing kit definitions can be absolute chaos.
 
 An important historical note: between about 2010 and 2021, kits did not exist, and instead there were "template files" of Inform 6 code which served roughly then same purpose. These had names like "Relations.i6t" or "Mathematics.i6t" and were internally divided into named subsections; and Inform supported syntax like the following:
 
