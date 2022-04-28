@@ -109,7 +109,20 @@ void ActionNameLists::remove_entries_marked_for_deletion(action_name_list *list)
 	if (list) {
 		int pos = -1;
 		for (anl_entry *entry = list->entries, *prev = NULL; entry; entry = entry->next_entry) {
-			if ((entry->marked_for_deletion) || (pos == entry->parsing_data.word_position)) {
+			if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA)) {
+				ActionNameLists::log_entry(entry); LOG(" ");
+			}
+			int delete = FALSE;
+			if (entry->marked_for_deletion) {
+				delete = TRUE;
+				LOGIF(ACTION_PATTERN_PARSING, ": marked, so delete\n");
+			} else if (pos == entry->parsing_data.word_position) {
+				delete = TRUE;
+				LOGIF(ACTION_PATTERN_PARSING, ": fails to advance, so delete\n");
+			} else {
+				LOGIF(ACTION_PATTERN_PARSING, ": retain\n");
+			}
+			if (delete) {
 				if (prev == NULL) list->entries = entry->next_entry;
 				else prev->next_entry = entry->next_entry;
 			} else {
