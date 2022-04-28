@@ -1,6 +1,6 @@
 # Inform 7
 
-v10.1.0-alpha.1+6U92 'Krypton' (27 April 2022)
+v10.1.0-alpha.1+6U93 'Krypton' (28 April 2022)
 
 ## About Inform 7
 
@@ -87,6 +87,10 @@ If that passes, probably all is well. The definitive test is "make check",
 which runs nearly 2500 cases through the executables, but takes 10 minutes
 on an 8-core desktop and half an hour on a 4-core laptop (which will sound
 something like a helicopter taking off).
+
+Current status: All tests should pass on Linux and MacOS, but there are currently
+5 fails on Windows: Ballroom, Santa, Parts-C, SP, Chapter8. These are being
+investigated already, so please do not report as a bug.
 
 ## Reporting Issues
 
