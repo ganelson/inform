@@ -80,7 +80,7 @@ to the value used by the code causing compilation. For example, if the code
 to be compiled is "say 17 in words" then |{something}| here would expand to
 the constant 17. The definition for "To say (val)" is much more complex than
 I6 notation could convey, and so a more complex escape notation is needed,
-|{-say:val:K}|, which tells Inform o compile code which will say |val| with
+|{-say:val:K}|, which tells Inform to compile code which will say |val| with
 whatever method is appropriate to its kind |K|. For documentation on these
 escape notations, see the core Inform source code.
 
