@@ -1,6 +1,6 @@
 # Inform 7
 
-v10.1.0-alpha.1+6U93 'Krypton' (28 April 2022)
+v10.1.0-beta+6U93 'Krypton' (28 April 2022)
 
 ## About Inform 7
 
@@ -17,7 +17,7 @@ Inform is itself a literate program, one of the largest in the world. This
 means that a complete presentation of the code, in human-readable form, is
 continuously maintained alongside the code itself. So to read this, along with
 technical documentation and other useful resources, turn to the companion
-web page to this repository: &#9733; [Inform: The Program](docs)
+web page to this repository: &#9733; [Inform: The Program](https://ganelson.github.io/inform)
 
 Writing and presenting Inform as a literate program was beyond the capabilities
 of existing LP software, so a new system for LP called Inweb
@@ -144,30 +144,30 @@ becomes public: GitHub Pages does not work on private repositories.)
 This most important contents of this repository are the source webs for the
 following command-line tools:
 
-* inbuild - __version 10.1.0__ - [&#9733;&nbsp;Web](docs/inbuild/index.html) - [&#9654;&nbsp;Documentation](docs/inbuild/M-ui.html)<br>A simple build and package manager for the Inform tools.
-* inform7 - __version 10.1.0__ - [&#9733;&nbsp;Web](docs/inform7/index.html) - [&#9654;&nbsp;Documentation](docs/inform7/M-cu.html)<br>The core compiler in a natural-language design system for interactive fiction.
-* inter - __version 10.1.0__ - [&#9733;&nbsp;Web](docs/inter/index.html) - [&#9654;&nbsp;Documentation](docs/inter/M-ui.html)<br>For handling intermediate Inform code.
-* inblorb - __version 4__ - [&#9733;&nbsp;Web](docs/inblorb/index.html) - [&#9654;&nbsp;Documentation](docs/inblorb/M-ui.html)<br>The packaging stage of the Inform 7 system, which releases a story file in the blorbed format.
-* indoc - __version 4__ - [&#9733;&nbsp;Web](docs/indoc/index.html) - [&#9654;&nbsp;Documentation](docs/indoc/M-iti.html)<br>The documentation-formatter for the Inform 7 system.
-* inpolicy - __version 1__ - [&#9733;&nbsp;Web](docs/inpolicy/index.html) - [&#9654;&nbsp;Documentation](docs/inpolicy/M-ui.html)<br>A lint-like tool to check up on various policies used in Inform source code.
-* inrtps - __version 2__ - [&#9733;&nbsp;Web](docs/inrtps/index.html) - [&#9654;&nbsp;Documentation](docs/inrtps/M-ui.html)<br>A generator of HTML pages to show for run-time problem messages in Inform.
+* inbuild - __version 10.1.0__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inbuild/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inbuild/M-ui.html)<br>A simple build and package manager for the Inform tools.
+* inform7 - __version 10.1.0__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inform7/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inform7/M-cu.html)<br>The core compiler in a natural-language design system for interactive fiction.
+* inter - __version 10.1.0__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inter/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inter/M-ui.html)<br>For handling intermediate Inform code.
+* inblorb - __version 4__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inblorb/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inblorb/M-ui.html)<br>The packaging stage of the Inform 7 system, which releases a story file in the blorbed format.
+* indoc - __version 4__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/indoc/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/indoc/M-iti.html)<br>The documentation-formatter for the Inform 7 system.
+* inpolicy - __version 1__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inpolicy/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inpolicy/M-ui.html)<br>A lint-like tool to check up on various policies used in Inform source code.
+* inrtps - __version 2__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inrtps/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inrtps/M-ui.html)<br>A generator of HTML pages to show for run-time problem messages in Inform.
 
 ### Kits shipped with Inform
 
 The following webs are the source for kits of Inter code shipped with Inform (at the subtree inform7/Internal/Inter). Kits are libraries of code needed at run-time, and whose source is written in Inform 6 notation:
 
-* BasicInformKit - Support for Inform as a programming language - [&#9733;&nbsp;Web](docs/BasicInformKit/index.html)
-* WorldModelKit - Support for modelling space, time and actions in interactive fiction - [&#9733;&nbsp;Web](docs/WorldModelKit/index.html)
-* EnglishLanguageKit - Support for English as the natural language used - [&#9733;&nbsp;Web](docs/EnglishLanguageKit/index.html)
-* CommandParserKit - Support for parsing turn-by-turn commands in interactive fiction - [&#9733;&nbsp;Web](docs/CommandParserKit/index.html)
-* BasicInformExtrasKit - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](docs/BasicInformExtrasKit/index.html)
+* BasicInformKit - Support for Inform as a programming language - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/BasicInformKit/index.html)
+* WorldModelKit - Support for modelling space, time and actions in interactive fiction - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/WorldModelKit/index.html)
+* EnglishLanguageKit - Support for English as the natural language used - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/EnglishLanguageKit/index.html)
+* CommandParserKit - Support for parsing turn-by-turn commands in interactive fiction - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/CommandParserKit/index.html)
+* BasicInformExtrasKit - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/BasicInformExtrasKit/index.html)
 
 ### Extensions shipped with Inform
 
 The following webs are the source for the two most important extensions shipped with Inform:
 
-* [Basic Inform by Graham Nelson](inform7/extensions/basic_inform) - __v1__ - [&#9733;&nbsp;Web](docs/basic_inform/index.html)
-* [Standard Rules by Graham Nelson](inform7/extensions/standard_rules) - __v6__ - [&#9733;&nbsp;Web](docs/standard_rules/index.html)
+* [Basic Inform by Graham Nelson](inform7/extensions/basic_inform) - __v1__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/basic_inform/index.html)
+* [Standard Rules by Graham Nelson](inform7/extensions/standard_rules) - __v6__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/standard_rules/index.html)
 
 Other extensions shipped with Inform are not presented as webs, but as single files:
 

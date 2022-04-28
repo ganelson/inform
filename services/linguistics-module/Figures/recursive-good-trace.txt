@@ -1,6 +1,6 @@
 Seek verb in: there is a ming vase which is on the table
     viability map of 'there is a ming vase which is on the table':
-    -- is[1] -- -- -- -- is[1] on[1] -- -- 
+    -- is[1] -- -- -- -- is[1] -- -- -- 
     Found usage, pass 1 tier 2: (there) be(0) (a ming vase which is on the table)
         Seek verb in: a ming vase which is on the table | 
             viability map of 'a ming vase which is on the table':
