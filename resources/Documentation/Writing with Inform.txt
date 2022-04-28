@@ -22,24 +22,26 @@ This new release of Inform ("Inform 7", the seventh major version since 1993) is
 
 Inform 7 is dedicated to ^{@Emily Short} and ^{@Andrew Plotkin}, whose shrewd and sceptical suggestions made a contribution which can hardly be overstated. A long email correspondence with Andrew entirely subverted my original thoughts about natural-language IF, as he convinced me that the "new model" of rule-based IF was a truer foundation; while Emily's wry, witty analysis and how-about-this? cheered me at low moments, besides providing the impetus and often the specifics for a lot of the best ideas.
 
-From the outset, I have thought of Inform 7 as no longer being a command-line compiler, but a compiler in combination with a humanising user interface. All credit for the reference implementation under Mac OS X belongs to ^{@Andrew Hunter}. How simple the metaphor of an interactive book with facing pages may seem, but the coding was an enormous challenge. In 2014 ^{@Toby Nelson}, the author's brother, put months of time into the project by rewriting and modernising the Mac OS X application: sandboxing it for the Mac App Store, giving it a more contemporary design, and much more.
+From the outset, I have thought of Inform 7 as no longer being a command-line compiler, but a compiler in combination with a humanising user interface. All credit for the reference implementation under Mac OS X belongs to ^{@Andrew Hunter}. How simple the metaphor of an interactive book with facing pages may seem, but the coding was an enormous challenge. In 2014 ^{@Toby Nelson}, my brother, put months of time into the project by rewriting and modernising the Mac OS X application: sandboxing it for the Mac App Store, giving it a more contemporary design, and much more. He continues to maintain it today.
 
 Though ^{@David Kinder}'s Windows application does indeed visually follow the OS X original, the two programs were coded independently, and the programming task taken up by David was formidable indeed. ^{@Philip Chimento}'s Gnome-based user interface for Linux became officially part of the project in November 2007, when the first easy-to-install packages for Ubuntu and Fedora were offered. Philip's efforts were particularly generous since the early stages of Inform-for-Linux were so tentative: for many months, we weren't sure how to go about the project, and during that time Philip quietly wrote us a solution. ^{@Adam Thornton} continues to support Inform at the command line on Unix-like systems.
 
-Inform in its widest sense incorporates work by so many people that it's simply impossible to thank all of them, but ^{@Erik Temple}, ^{@Dannii Willis}, ^{@Ron Newcomb}, ^{@Eric Eve} and ^{@Juhana Leinonen} all deserve special mention. More than 250 users have filed patient and careful bug reports, keeping us on the straight and narrow. They're contributors, too.
+Inform in its widest sense incorporates work by so many people that it's simply impossible to thank all of them, but ^{@Erik Temple}, ^{@Dannii Willis}, ^{@Ron Newcomb}, ^{@Eric Eve} and ^{@Juhana Leinonen} all deserve special mention. Many hundreds of users have filed patient and careful bug reports, keeping us on the straight and narrow. They're contributors, too.
 
 It's perhaps surprising that the Inform application gained its first online component only in 2014, but the Public Library of Extensions, and its discussion forum, make a brave step into the modern age. ^{@Mark Musante}, our Extensions librarian, Dannii Willis and ^{@Justin de Vesine} have been a great help in setting this up.
 
+The Inform bug tracker, now hosted on Jira, was set up by ^{@Hugo Labrande}, who migrated a large back database of issues from its Mantis predecessor, and the curator is ^{@Brian Rushton}.
+
 The original development of Inform 7 was a long haul, and I would particularly like to thank ^{@Sonja Kesserich}, ^{@David Cornelson} and other volunteers for their early testing of a then-fragile system. The final months before the Public Beta release of Inform 7 were made more enjoyable, as well as more productive, by fruitful discussions leading to a cross-platform standard for bibliographic data and cover art. ^{@L. Ross Raszewski}, who wrote frighteningly efficient reference software in frighteningly little time; the librarians of the IF-Archive, Andrew Plotkin, David Kinder and ^{@Paul Mazaitis}; and my fellow authors of IF design systems - ^{@Mike Roberts} (of the Text Adventure Development System); ^{@Kent Tessman} (of Hugo); and ^{@Campbell Wild} (of ADRIFT).
 
-{EPUB:}This EPUB edition of the documentation was greatly assisted by excellent advice published by ^{@Liza Daly}, an old friend of Inform's who also helped construct our website.
+{EPUB:}This EPUB edition of the documentation was greatly assisted by excellent advice published by ^{@Liza Daly}, an old friend of Inform's.
 
 [x] The facing pages
 
 ^^{user interface <-- interface <-- IDE interface}
 ^^{user interface: facing pages layout}
 
-{OSX:}This Public Beta of Inform 7 runs on Mac OS X through the graphical user interface created by Andrew Hunter.
+{OSX:}This Public Beta of Inform 7 runs on Mac OS X through the graphical user interface created by Andrew Hunter and Toby Nelson.
 {Windows:}This Public Beta of Inform 7 runs on Windows through the graphical user interface created by David Kinder.
 {Linux:}This Public Beta of Inform 7 runs on Linux through the text-only interface created by Adam Thornton.
 {GNOME:}This Public Beta of Inform 7 runs on Linux through the graphical user interface created by Philip Chimento.
@@ -754,7 +756,7 @@ The ultimate memory-saving device, of course, is the one used by book publishers
 ^^{error messages: abject failures of Inform} ^^{problem messages: abject failures of Inform}
 ^^{inform7.com+web+}
 
-In its present guise, Inform is a young piece of software, and bugs are to be expected from time to time. The most obvious bugs are the ones which Inform catches itself, when it confesses that it has halted in failure, or translated the source text into a program which cannot be compiled further. But sometimes it will also happen that Inform will issue a misleading Problem message, or appear to work normally but to produce a story which does not do what it should have done.
+All software has bugs, and Inform is no exception. The most obvious bugs are the ones which Inform catches itself, when it confesses that it has halted in failure, or translated the source text into a program which cannot be compiled further. But sometimes it will also happen that Inform will issue a misleading Problem message, or appear to work normally but to produce a story which does not do what it should have done.
 
 It is very helpful for users to report faults, so that the program can be improved for everyone else. To report a fault, please first check with the Inform home page to make sure that the version of Inform you have used to detect the fault is the latest version available. You can find the latest versions at
 
@@ -762,11 +764,7 @@ It is very helpful for users to report faults, so that the program can be improv
 
 If the bug is still present in the latest version, please report the bug using Inform's bug tracking database, found at
 
-	http://inform7.com/mantis/
-
-We can search existing bug reports using the search box at 
-
-	http://inform7.com/mantis/view_all_bug_page.php
+	https://inform7.atlassian.net/jira/software/c/projects/I7/issues
 
 It may be that someone else has already identified the bug and even that a workaround for users is suggested. If not, please make an account at the bug tracking system and submit the requested information to help Inform's maintainers track and fix the fault.
 
@@ -17200,81 +17198,64 @@ Inevitably, the settings in the map-maker will fail to get exactly the effect de
 
 So the new work of IF is written, and tested, and has all its bibliographic data and a fancy cover illustration lined up. What next?
 
-There is a thriving community of readers and writers of interactive fiction, and it is sometimes supported by grants from arts foundations and other cultural bodies: there's increasing attention from the academic world, and a general consensus has gradually grown that interactive fiction is a "valid" artistic medium for expression. Like poetry, it is something that a few people like a lot, and which most people can see the point of, even if they don't read it themselves. Over the last thirty years, a few authors have established durable reputations: they give occasional newspaper interviews, and have a very low-key kind of fame. There are competitions, and annual awards ceremonies. Newcomers are always welcome.
+Releasing and gaining attention for independent games – commercial or otherwise – is a big, complex, and constantly changing field, and other online sources will be able to provide more up-to-date information than we can offer here. However, there are some resources, events, and community spaces specifically for authors of interactive fiction and text adventures in particular.
 
-///quilt.jpg///
+First, though, a word about terminology.
 
-With some important exceptions, most works of interactive fiction have never been "published" in the sense of being issued for sale by a for-profit company. For the most part, IF has not been commercially valuable since about 1987. Successful authors of IF generally take the view that while they could, perhaps, make a very modest amount of money from sales, it would be a nuisance to collect and make no meaningful difference to their incomes; it would cut the number of readers, whereas one wants the satisfaction of being read; and besides, the whole culture of IF has always been characterised by giving and sharing. (Inform itself is free.)
+For many years, the phrase "interactive fiction" referred primarily to parser-based games like the ones Inform produces by default. For those games, there has always been an avid hobbyist community, but few sales, and most parser IF writers have not felt that it would be more trouble than it was worth to charge for their games, because the income would be slight relative to the effort of setting up a storefront.
 
-Inform has nevertheless been used to produce commercial works (generally add-ons or bonuses to other games), and users are very welcome to sell works created by Inform with no royalty or requirement for rights clearance. It's also widely used in education, and as a prototyping tool for other kinds of story.
+In recent years, other forms of interactive fiction – those that do not rely on typed input from the player – have experienced a commercial revival. There are a number of commercial game studios that write text-rich, choice-driven stories, especially for a mobile market. 
 
-[x] How a novel is published
+Simultaneously, the communities of interactive fiction readers and players have grown and diversified. Once "the IF community" referred to a specific group of people; now, there are many communities of people who play text-based games, in various formats, with various amounts of overlap. 
 
-Suppose that a (traditional) novel has been delivered to a publisher: the author has handed it over as a pile of twenty chapters of prose, and feels that it is finished. In fact there is much still to do:
+Although it is not a typical tool for choice-based mobile games, Inform has been used to produce commercial works, both parser-based and not. Users are very welcome to sell works created by Inform with no royalty or requirement for rights clearance. It's also widely used in education, and as a prototyping tool for other kinds of stories, such as interactive narratives that will ultimately take another (not text-based) form.
 
-(a) Editing. An editor works through the book, looking for problems in the plot, uneven passages, difficulties of tone and a hundred other nuanced points. The author generally then revises the book and submits again.
+[x] Editing and Quality Assurance
 
-(b) Copy-editing. A copy-editor fixes punctuation errors, awkwardly worded sentences and other low-level problems.
+^^{editing}
+^^{playtesting}
+^^{quality assurance}
 
-(c) Bibliographic data is added.
-
-(d) Printing. The text is given a clean, readable rendition, and no longer looks like a home-made typescript.
-
-(e) Cover art is added. Even unillustrated novels have pictorial covers, and these images are often used to set the tone for the book - they set the reader's frame of mind, so something more is happening than mere marketing.
-
-(f) A back cover blurb is added. This will also find its way into catalogues, onto book trade databases, appear on Amazon.com and so forth. Both a description and a lure, it gives a flavour of the work without actually being any part of it.
-
-(g) Binding. Not only are the inside pages printed, but maps, plates of illustrations, free CDs, fold-out charts, etc., may be tipped in to the binding.
-
-(h) Legal deposit. Copies are lodged with libraries of record, such as the British Library or the Library of Congress, to ensure that the work cannot be lost from cultural history. (In most countries, this is a legal obligation for publishers.)
-
-(i) Shipping. Copies are sent out to bookshops.
-
-(j) Publicity. The author and publisher combine to put out the word, circulate leaflets, put up posters and so forth.
-
-(k) Reviews and awards. Reviews are published, usually stirring up interest in the book. These having been stellar, a few months later the author bashfully accepts a Pulitzer Prize, the Booker or some similar token of cultural esteem.
-
-[x] How interactive fiction is published
-
-^^{IFDB+web+}
 ^^{intfiction forum+web+}
-^^{IF Archive+web+ <-- Archive+web+}
-^^{blorb file}
-^^{bibliographic data}
-^^{story description+biblio+}
 
-If we take the eleven novel-publishing stages of the previous section in order, we find that pretty well the same business goes on for works of IF.
+Authors coming from a literary background may think in terms of editing; people coming from software development and the game industry may think about playtesting and quality assurance. 
 
-(a) Editing. Working with a small number of trusted play-testers, and taking their responses seriously even when inconvenient, will almost always produce an immeasurably better work: not just better functionally, but better artistically, and more enjoyable. Play-testers can usually be recruited by placing an ad on <b>www.intfiction.org/forum</b>.
+Whatever the background, it's good practice to have your work checked by other people before you release it. Other players can identify issues from typos to missing hints to thematic incongruities.
 
-(b) Copy-editing. Play-testers will also pick up small stuff - spelling mistakes, and punctuation errors - but note that Inform for OS X will spell-check our source text on request.
+Play-testers can often be recruited by placing an ad on <b>www.intfiction.org/forum</b>. 
 
-(c) Bibliographic data is added.
+[x] A Page of Its Own
 
-(d) Printing. Clicking Inform's Release button is the equivalent the-die-is-cast moment.
+^^{materials folder: web pages for the story}
+^^{release along with...+assert+: `a website}
+^^{materials folder: web-playable story}
+^^{release along with...+assert+: `an interpreter}
+^^{itch.io}
 
-(e) Cover art is added. As we saw in the previous chapter, Inform can add a cover image as part of the Release process, though it will not itself draw and design that image - like a printer, it expects to be supplied with the original.
+One option for sharing your work with the world is to set up a web page and a copy of the story file on a private web host. That host should ideally be as stable as possible, so that the URL is likely to remain fixed for what might be a long period. Freeware stories have a long period of viability relative to commercial games, which means that players may still be hearing about and checking out a story years after its initial release. A stable address helps everyone with links, and makes it easier for search engines to direct people.
 
-(f) A back cover blurb is added. Inform does indeed allow us to compose such a piece of text and include it with the work's bibliographic data.
+Of course creating a web page involves a little design work, but tools are widely available which make this quite easy nowadays. And as we've seen, Inform can automatically generate web pages and whole small mini-sites to put all the information about a story file into a tidy format, even including the ability to play online.
 
-(g) Binding. The story file, which is akin to the inside pages of a book, is combined with its cover art, bibliographic data, and also with other non-textual materials provided by the author (booklets, sound samples, images, etc.). Inform does much of this automatically, producing a composite object called a "blorb".
+A second approach – instead of or alongside giving the game its own website – is to put it on a distribution platform designed for sharing games.
 
-(h) Legal deposit. The work is uploaded to the IF Archive (<b>www.if-archive.org</b>), whose librarians shelve it in the appropriate section. More on this later.
+One of the most accessible is itch.io. While it's a lot of work to put a game on a mobile app store or on Steam, setting up a storefront at the itch.io site takes only a few minutes. Doing so enables an author to list a game for download, set a price for their work or just to accept donations of the player's choosing. 
 
-(i) Shipping. A work of IF is electronic rather than physical, so nothing is actually moved, but many authors like to put their works on their own websites as well as placing them in the Archive.
+A game on itch.io will still need promotion and other attention if the author hopes to make any significant amount of money, but the barriers to listing something for sale are much lower than they once were. And itch.io can be a viable way to share a game that isn't intended to charge money at all.
 
-(j) Publicity. Authors often announce a new work on IFDB (<b>ifdb.tads.org</b>). Authors often also set up a personal web page about the work. Inform can generate such a web page automatically, as we saw in the chapter about releasing new works.
-
-(k) Reviews and awards. The IF community has competitions and awards in abundance, and several websites gather reviews. It is usually safe to say that a well-written work will not go unnoticed if it is sensibly publicised.
+At the time of this writing, the itch.io platform lists 15,988 games tagged "interactive fiction."
 
 [x] The IF Archive
 
 ^^{IF Archive+web+}
 ^^{IFDB+web+}
 
-Publishing an IF story consists of two steps. One is the technical task of making the story available to players - unless the plan is simply to email it to close friends, that means hosting it somewhere on the Internet. The second is the promotional task of letting people know the work exists, and where to find it.
+Games and interactive works in general tend to become obsolete or unplayable fairly quickly. Many games written for iOS in the mid-2010s, for instance, are already impossible to access. 
 
-It is a community tradition that all serious work is uploaded to the <b>IF Archive</b>, which is IF's answer to a national library. This is a mirrored, stable collection of thousands of interactive fiction games and programming languages, manuals, fanzines, maps, walkthroughs, and other materials. As such, it's likely to stay around even if a personal website goes off-line; it's also the primary resource for people doing scholarship on interactive fiction (and there are a growing number of these).
+Because of the portable underlying format, however, games written in Inform are unusually stable and maintainable. Inform projects written in the early 90s can still be played – indeed, can be played on platforms that did not exist when the games were written. 
+
+If you're interested in the longevity of your project, you may want to submit the final version to the <b>IF Archive</b>.
+
+The Archive is a mirrored, stable collection of thousands of interactive fiction games and programming languages, manuals, fanzines, maps, walkthroughs, and other materials. As such, it's likely to stay around even if a personal website goes off-line; it's also the primary resource for people doing scholarship on interactive fiction (and there are a growing number of these).
 
 The Archive is very much a library, for long-term archiving, rather than a book-store. The catalogue is sober and textual, and there are no visual shop-windows, or posters advertising new titles hot off the press. Newcomers sometimes need practice finding their way around. And the Archive hosts story files (and associated manuals, as appropriate) but not advertising for them - it does not provide web-hosting for authors to set up mini-sites.
 
@@ -17294,18 +17275,6 @@ As with all large libraries, it takes the Archive a little while for new acquisi
 
 Committing a story to the Archive is meant to be permanent. While the maintainers will happily replace older versions of stories with new improved releases, they are less eager to remove stories entirely. If that doesn't seem appealing, or if we do not want our story to be treated as freeware with essentially unlimited distribution, the Archive may not be a good choice. But it is deeply valued by the IF community, and has saved many works which could otherwise easily have been lost forever. Many contributions important in the history of IF were made by people who are now not easy to trace, and whose websites are long gone. But their work lives on.
 
-[x] A Website of Its Own
-
-^^{materials folder: web pages for the story}
-^^{release along with...+assert+: `a website}
-^^{materials folder: web-playable story}
-^^{release along with...+assert+: `an interpreter}
-^^{ifwiki+web+}
-
-While any good story file ought to go into the IF Archive, it's probably wise also to provide an easier-to-use home for the work, by putting up a web page and a copy of the story file on a private web host. That host should ideally be as stable as possible, so that the URL is likely to remain fixed for what might be a long period. Freeware stories have a long period of viability relative to commercial games, which means that players may still be hearing about and checking out a story years after its initial release. A stable address helps everyone with links, and makes it easier for Google to direct people.
-
-Of course creating a web page involves a little design work, but tools are widely available which make this quite easy nowadays. And as we've seen, Inform can automatically generate web pages and whole small mini-sites to put all the information about a story file into a tidy format, even including the ability to play online.
-
 [x] IFDB: The Interactive Fiction Database
 
 ^^{IFDB+web+}
@@ -17319,7 +17288,7 @@ Once the story file has a home online, and a URL (that is, a web address) at whi
 
 the Interactive Fiction Database. Just as the IF Archive is a repository for stories themselves, IFDB is a database containing information about them - titles, authors, locations, solutions, reviews, recommendation lists and more.
 
-The name IFDB echoes the Internet Movie Database (IMDB), but in some ways it is also like the iTunes Music Store. For one thing, it's a shop-window for what's new, with cover art to catch the eye. For another, some interpreters allow players to browse IFDB directly and launch new stories in a single click. This kind of integration is only likely to increase, so story files unregistered on IFDB are likely to be much less visible to players of the future. Promoting IF is all about pulling in impulse players -- people who are passingly interested, but might not try the story if there is any significant work involved is setting it up. This is what IFDB is all about.
+The name IFDB echoes the Internet Movie Database (IMDB), but in some ways it is also like the iTunes Music Store. For one thing, it's a shop-window for what's new, with cover art to catch the eye. For another, IFDB serves as a portal for players to try games directly in their browser. Promoting IF is all about pulling in impulse players -- people who are passingly interested, but might not try the story if there is any significant work involved in setting it up. This is what IFDB is all about.
 
 IFDB is community-editable, like Wikipedia, though editors are required to create an account and log in first -- this is free, of course. A standard form is provided for creating a new record (accessible by selecting the option to add a story listing). More or less the same information that appears on Inform's library card in the Contents index needs to be copied over: there's space for the author name, story title, genre, and so on. IFDB will also ask for an IFID, a code identifying the story uniquely. Inform generates one of these automatically for each project, and it, too, is on the Library Card. It can always be found by typing VERSION into the compiled story and looking at the line that says 
 
@@ -17331,14 +17300,18 @@ The download link should give the most stable URL available. If you have not yet
 
 If you choose to upload your story file to the IF Archive independent of IFDB, then once the story file is safely up at its permanent home on the IF Archive, that is an ideal address to quote here. Otherwise, the URL of the work's own website is best. (Note that the IFDB entry can always be edited later, if the URL moves.)
 
-Commercial works which aren't available as free downloads can be registered on IFDB just the same, and this is almost certainly a good idea.
+Commercial works which aren't available as free downloads can be registered on IFDB just the same, and this is almost certainly a good idea. 
 
-[x] Competitions
+Some awards for interactive fiction, such as the annual XYZZY Awards, require a game to have an IFDB entry as an eligibility requirement.
+
+[x] Competitions, Exhibitions, and Jams
 
 ^^{ifwiki+web+}
 ^^{XYZZY}
+^^{itch.io}
+^^{ProcJam}
 
-One very common way to get players for IF is to enter the story into an IF competition. The annual IF Competition is the most prestigious and has the widest field, but the Spring Thing, the One Room Game Competition and other events also catch people's attention. Entering a competition is a path of least effort for authors promoting their new work, because the competition organizer usually takes care of hosting and archiving submitted stories, promoting the competition as a whole, collecting votes, and encouraging players to post reviews. Different contests have different arrangements. The <b>ifwiki</b> usually posts a list of current and upcoming competitions, as well as lists of results for those recently past, on the front page:
+One very common way to get players for IF is to enter the story into an IF competition. The annual IF Competition, often just called IFComp, is the most prestigious and has the widest field, but the Spring Thing, ParserComp, EctoComp, and other events also catch people's attention. Entering a competition is a path of least effort for authors promoting their new work, because the competition organizer usually takes care of hosting and archiving submitted stories, promoting the competition as a whole, collecting votes, and encouraging players to post reviews. Different contests have different arrangements. The <b>ifwiki</b> usually posts a list of current and upcoming competitions, as well as lists of results for those recently past, on the front page:
 
 	http://www.ifwiki.org
 
@@ -17346,35 +17319,31 @@ Some competitions also have their own websites, at least at the relevant times o
 
 All the same, there are many IF works that aren't cut out for competition release. Competitions tend to be best for short or medium-short works, because judges don't necessarily have time to play a lot of long stories at once, and sometimes this is a condition of entry.
 
-It's also good for publicity to win one of the annual <b>XYZZY Awards</b>. All interactive fiction stories released in a given year are eligible, and authors do not need to do anything to enter. As with the Oscars, though, you can't plan to win: it happens or it doesn't.
+It's also good for publicity to win one of the annual <b>XYZZY Awards</b>. All interactive fiction stories released in a given year are eligible, as long as they are listed on IFDB.
 
-[x] The Gaming Avant-Garde
+Meanwhile, itch.io hosts many jams every year. A small handful of these are specifically intended for interactive fiction or parser-based adventures, but there are many other jams that allow entrants to put up any game with an appropriate theme, regardless of its format. 
 
-The IF community is not the only potential audience for a work of interactive fiction. Some authors have successfully written and pitched IF to other groups -- audiences interested in a particular historical period, role-playing story universe, or web comic, for instance -- and those groups have to be reached through their own community forums and meeting places.
+	https://itch.io/jams
+	
+lists the calendar of everything currently upcoming.
 
-Even if we do write material mostly meant for the existing IF community, that doesn't mean the audience has to stop there. There are a number of independent gaming websites and blogs that feature IF reviews occasionally or regularly. These things change quickly, but at the time of writing, IF is featured with some regularity on:
+Finally, if your project is heavily focused on procedural generation – creating or remixing elements on each playthrough – then it may have a natural home at procjam:
 
-	<b>JayIsGames</b> (www.jayisgames.com): a popular blog devoted to casual games, which occasionally profiles IF. JIG has also developed its own Flash interpreter for z-code games to allow the blog to host interactive fiction without requiring the casual audience to do any downloading. Experience suggests that JIG players are most interested in short IF -- serious or lighthearted, but humor goes over especially well -- and that they prefer very rigorously implemented work where a wide variety of player actions get customized replies. Small, polished gems do well here. JIG accepts story suggestions as well.
+	https://www.procjam.com/
+	
+Procjam is a yearly event to "make something that makes something", and welcomes all kinds of generative projects, whether they are games or not.
 
-	<b>The Independent Gaming Source</b> (www.tigsource.com): occasionally publishes reviews or shorter announcements, and has even hosted an IF-writing competition. It may be worth drawing something to their attention.
+[x] Meetups and Conferences
 
-This is hardly a complete list of gaming blogs with an interest in interactive fiction, just a collection of the most accessible ones, so it's worth doing a little research. One way is to pick a handful of works that coming closest to our own story in design and style, and search for reviews of those works. Where were they reviewed, and where were they well-received? Those venues might be good targets for our own production.
+There are a number of different local groups that get together to play or discuss interactive fiction, including a number that hold remote meetings. Announcements of some of these can be found at 
 
-Finally, there is a constant round of competitions for independent games in general. Unlike IF community competitions, larger indie story comps usually don't require that a story be previously unreleased, only that it have no commercial funding. Some of these competitions offer substantial prizes in cash or computing equipment; some explicitly seek text-based games. Placing as a finalist in such a competition can mean having work displayed at a gaming expo or hosted on a special wesbsite, and this will garner substantial outside press. The field of competitors will be large and serious, but that doesn't mean it's not worth giving it a try.
+	https://intfiction.org/c/general/events/47
 
-This may all be a bit overwhelming. All the publicity options can seem like more work than we want to handle while simultaneously finishing a substantial opus. In fact, we don't have to do it all at once. One sensible approach is to release to the IF community first, and then approach the external websites later with a second or third release that puts a final polish on the story in response to player feedback. That process is even more important for indie gaming competitions. Having a release that's been polished, together with an attractive website, cover art, and maybe even some quotes from IF reviewers, can make a story look much more like a legitimate contender among semi-pro works.
+Joining these groups may provide a context to discuss work in progress, and many are willing to do a group playthrough of games written by group members.
 
-[x] The Digital Literature Community
+There are also a range of conferences that accept talks or presentations about interactive fiction, both academic conferences and conferences adjacent to the game industry. While it is not a complete listing, Emily Short's blog attempts to link upcoming events:
 
-If our work is more a work of digital literature than a game, different venues are appropriate. PlayThisThing may still be interested; JayIsGames probably will not be. Instead, we might want to look at
-
-	<b>GrandTextAuto</b> (http://grandtextauto.soe.ucsc.edu): a group blog about new media and interactive story-telling, which sometimes posts announcements of interactive fiction, especially of the more literary kind.
-
-	<b>The Electronic Literature Organization</b> (http://eliterature.org/): an organization dedicated to preserving all kinds of new media literature. They list a number of events (such as readings open to the public, new media gallery exhibits, etc.) that an IF author could participate in, and they also have a directory of electronic literature, to which we can add our own works.
-
-	<b>Digital Humanities Quarterly</b> (http://www.digitalhumanities.org/dhq/): A scholarly publication, but one that looks at all aspects of digital literature, new media tie-ins for scholarship, etc. DHQ has run several articles about interactive fiction in the past, including ^{@Dennis Jerz}'s ground-breaking research on the writing of the first text adventure, Colossal Cave. DHQ might be open either to hosting a work or to publishing an article about it.
-
-That still leaves out a category of IF -- namely, work written for a popular reading audience, work that isn't trying to be literary but also isn't primarily game-like. There are, at the moment, no ideal venues for promoting such work (that we're aware of), but it's certainly worth pursuing.
+	https://emshort.blog/
 
 [x] A short concluding homily
 
@@ -17801,15 +17770,17 @@ Implications have not been mentioned up to now since they are only really needed
 ^^{extensions: Inform 6 code in extensions}
 ^^{Standard Rules+ext+} ^^{extensions: specific extensions: Standard Rules}
 
-To return to what was said on the first page of this documentation: Inform 7 (or I7), the current version, is not at all like Inform 6 (or I6). Internally, however, I7 works by translating the source text into an I6 program, so that in a practical sense the current version of Inform actually contains its predecessor.
+The current Inform, "Inform 7", had a low-level precursor unsurprisingly called Inform, which ran through versions 1 to 6. What made Inform 6 low-level was that its style of coding was much more like traditional programming: it reads as a simple form of C, or an elaborate form of assembly-language, but with some interactive fiction tweaks.
 
-The final sections of this chapter show how I6 code can be mixed directly in with I7. The remaining pages will therefore make little or no sense to those who do not already use I6. But for those who do know I6 already, it would be all too easy to write highly hybridised code, constantly mixing I6 and I7. The authors of Inform hope that this will not happen: for almost all purposes, I7 is much more powerful than I6, and fails - when it has to fail - in a way more helpful to the user. Ideally, all I6 content would be confined to extensions (and this may be mandated in future releases of Inform), and even writers of extensions are asked to pare down their usage of I6 to the minimum necessary.
+That language is still used inside today's Inform project as a way to express very low-level operations. What happens to code like that is now very different (it is compiled into Inter, an intermediate-level representation used inside Inform, and no longer by the Inform 6 compiler). But the notation is the same, and the practical effect is that it is as if we are writing I6 code.
+
+The final sections of this chapter show how such I6 code can be mixed directly in with natural-language source text. The remaining pages will therefore make little or no sense to those who do not already know I6 notation, and in any case, such programming is really a last resort - it is always best to write regular source text than to resort to so-called "inclusions" of I6. Ideally, all I6 content would be confined to extensions (and this may be mandated in future releases of Inform), and even writers of extensions are asked to pare down their usage of I6 to the minimum necessary.
 
 The methods for incorporating I6 code into I7 have been designed with this in mind, that is, to encourage people to use I6 in as self-contained a way as possible: in particular to isolate the relatively few functions which need to be written in I6, and to give them natural language expression.
 
-Finally, anyone hacking with I7 for a while is likely to become curious about the Standard Rules file, and to look at the text on which the Inform world model is founded. The file is, of course, no secret, but it can be misleading. For one thing, it appears to have great freedom to set up the world model as it pleases, but in fact the I7 compiler may well crash unless certain things are done just so in the Standard Rules: they depend on each other.
+Finally, anyone hacking with I7 for a while is likely to become curious about the Basic Inform or Standard Rules extensions, and to look at the text which sets up the Inform language and world model. These extensions are, of course, no secret, but can be misleading to read. For one thing, they appear to have great freedom to set up the world model as it pleases, but in fact the I7 compiler may well crash unless certain things are done just so in the Standard Rules: they depend on each other.
 
-Moreover, the Standard Rules use a number of syntaxes which are not documented in this chapter: these are constantly being altered, and it would not be safe to imitate them. Any I6-related syntax which is not documented in this chapter may be removed or changed in effect at any time without warning, for instance in an update of Inform to fix bugs.
+Moreover, the Basic Inform and Standard Rules extensions use a number of syntaxes which are not documented in this chapter: these are constantly being altered, and it would not be safe to imitate them. Any I6-related syntax which is not documented in this chapter may be removed or changed in effect at any time without warning, for instance in an update of Inform to fix bugs.
 
 [x] Defining phrases in Inform 6 {PM_UnendingI6} {PM_InlineTooLong} {PM_InlineRule} {PM_BadInlineExpansion} {PM_BadInlineTag}
 
@@ -18220,7 +18191,7 @@ But what if the name clash was not an accident at all, and what we actually want
 	];
 	-) replacing "SquareRoot".
 
-And now whenever square roots are calculated, this snarky text will be printed, and the result will always be rather meaningless. As this example shows, the result of replacing kit definitions can be absolute chaos.
+And now whenever square roots are calculated, this snarky text will be printed, and the result will always be rather meaningless (since this I6 routine always returns 1). Unless one is very careful, the result of replacing kit definitions can be absolute chaos.
 
 An important historical note: between about 2010 and 2021, kits did not exist, and instead there were "template files" of Inform 6 code which served roughly then same purpose. These had names like "Relations.i6t" or "Mathematics.i6t" and were internally divided into named subsections; and Inform supported syntax like the following:
 
