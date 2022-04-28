@@ -623,7 +623,8 @@ integration: \
 		transferkits \
 		transferinternals \
 		transferdocumentation \
-		transferoutcomepages
+		transferoutcomepages \
+		transfertemplates
 
 .PHONY: forceintegration
 forceintegration: \
@@ -636,7 +637,8 @@ forceintegration: \
 		forcetransferimages \
 		forcetransferotherinternals \
 		forcetransferdocumentation \
-		forcetransferoutcomepages
+		forcetransferoutcomepages \
+		forcetransfertemplates
 
 # -----------------------------------------------------------------------------
 # Copying part of the Inform toolchain into the app
@@ -861,7 +863,6 @@ $(INTERNALEXEMPLUM): \
 # agree with that.
 
 {define: compile-inapp-documentation}
-	mkdir -p "$(INTERNAL)/Documentation"
 	mkdir -p $(BUILTINHTMLINNER)
 	$(INDOCX) -from resources/Documentation -xrefs '$(INFORM7WEB)/Internal/HTML/xrefs.txt' $(INDOCOPTS)
 {end-define}
