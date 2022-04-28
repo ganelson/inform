@@ -503,7 +503,7 @@ windows_app {
 	suppress_fonts = yes
 	declare: Windows
 	javascript_paste_method = David
-	destination = ../Build/Documentation/
+	destination = ../../Build/Documentation/
 }
 
 linux_app {
