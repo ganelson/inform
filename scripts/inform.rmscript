@@ -92,6 +92,10 @@ which runs nearly 2500 cases through the executables, but takes 10 minutes
 on an 8-core desktop and half an hour on a 4-core laptop (which will sound
 something like a helicopter taking off).
 
+Current status: All tests should pass on Linux and MacOS, but there are currently
+5 fails on Windows: Ballroom, Santa, Parts-C, SP, Chapter8. These are being
+investigated already, so please do not report as a bug.
+
 ## Reporting Issues
 
 The old Inform bug tracker, powered by Mantis, has now closed, and its issues
