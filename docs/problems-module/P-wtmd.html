@@ -40,8 +40,8 @@
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
+<li><a href="../../../inweb/index.html">inweb</a></li>
+<li><a href="../../../intest/index.html">intest</a></li>
 
 </ul>
 		</nav>
@@ -57,15 +57,15 @@
 presented as a literate program or "web". Before diving in:
 </p>
 
-<ul class="items"><li>(a) It helps to have some experience of reading webs: see <a href="../../../inweb/docs/index.html" class="internal">inweb</a> for more.
+<ul class="items"><li>(a) It helps to have some experience of reading webs: see <a href="../../../inweb/index.html" class="internal">inweb</a> for more.
 </li><li>(b) The module is written in C, in fact ANSI C99, but this is disguised by the
-fact that it uses some extension syntaxes provided by the <a href="../../../inweb/docs/index.html" class="internal">inweb</a> literate
-programming tool, making it a dialect of C called InC. See <a href="../../../inweb/docs/index.html" class="internal">inweb</a> for
+fact that it uses some extension syntaxes provided by the <a href="../../../inweb/index.html" class="internal">inweb</a> literate
+programming tool, making it a dialect of C called InC. See <a href="../../../inweb/index.html" class="internal">inweb</a> for
 full details, but essentially: it's C without predeclarations or header files,
 and where functions have names like <span class="extract"><span class="extract-syntax">Tags::add_by_name</span></span> rather than <span class="extract"><span class="extract-syntax">add_by_name</span></span>.
 </li><li>(c) This module uses other modules drawn from the compiler (see <a href="../structure.html" class="internal">structure</a>), and also
-uses a module of utility functions called <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.
-For more, see <a href="../../../inweb/docs/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
+uses a module of utility functions called <a href="../../../inweb/foundation-module/index.html" class="internal">foundation</a>.
+For more, see <a href="../../../inweb/foundation-module/P-abgtf.html" class="internal">A Brief Guide to Foundation (in foundation)</a>.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Problems and their sigils. </b>The task of this module is to issue error messages which may be lengthy and
 quite verbal in nature, and to produce them attractively to the command line,
@@ -86,7 +86,7 @@ conventions for sigils:
 <ul class="items"><li>(a) A problem which is thought never to be generated has the sigil
 <span class="extract"><span class="extract-syntax">BelievedImpossible</span></span>. Inform is quite defensively coded, so there are several
 dozen of these &mdash; they are safety nets to catch cases we didn't think of.
-</li><li>(b) A problem which either cannot be tested by <a href="../../../intest/docs/index.html" class="internal">intest</a>, or is just
+</li><li>(b) A problem which either cannot be tested by <a href="../../../intest/index.html" class="internal">intest</a>, or is just
 impracticable to do so, has the sigil <span class="extract"><span class="extract-syntax">Untestable</span></span>.
 </li><li>(c) A problem which can be tested, but for which nobody has yet written a
 test case, has the sigil <span class="extract"><span class="extract-syntax">...</span></span>.
@@ -207,7 +207,7 @@ subsequent clarifications to long or complicated problems.
 
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b><a href="2-pl3.html" class="internal">Problems, Level 3</a> contains functions for standardly-shaped problems, then.
 A significant amount of this section also deals with internal errors, that is,
-failed assertions; while <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a> provides the basic system for handling
+failed assertions; while <a href="../../../inweb/foundation-module/index.html" class="internal">foundation</a> provides the basic system for handling
 those &mdash; i.e., print and then exit the program &mdash; <a href="../core-module/index.html" class="internal">core</a> redirects all
 internal errors to <a href="2-pl3.html#SP4" class="internal">StandardProblems::internal_error_fn</a>, which ensures that
 they pass through our problems machinery here, and are thus properly recorded
@@ -260,7 +260,7 @@ which automatically trims excessive quotes for length.
 <a href="2-pl1.html#SP4" class="internal">ProblemBuffer::copy_source_reference</a>: there is a sort of protocol for how
 this is done, with use of the magic <span class="extract"><span class="extract-syntax">SOURCE_REF_CHAR</span></span> which will be
 intercepted later on when the problems file is written out as HTML (see
-<a href="../../../inweb/docs/foundation-module/5-htm.html" class="internal">HTML (in foundation)</a> for details).
+<a href="../../../inweb/foundation-module/5-htm.html" class="internal">HTML (in foundation)</a> for details).
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>When a portion of text has been buffered which Level 2 wants to get shot of,
 it calls down to <a href="2-pl1.html#SP6" class="internal">ProblemBuffer::output_problem_buffer</a> to send this to a

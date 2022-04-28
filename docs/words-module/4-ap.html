@@ -41,8 +41,8 @@
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
+<li><a href="../../../inweb/index.html">inweb</a></li>
+<li><a href="../../../intest/index.html">intest</a></li>
 
 </ul>
 		</nav>
@@ -67,7 +67,7 @@ For example,
 vertical stroke, are possibilities tried in turn. Each "non-terminal", written
 in angle brackets, can in principle match (or not match) against any wording.
 When writing code in InC (the slight extension of C granted by inweb: see
-<a href="../../../inweb/docs/M-tid.html" class="internal">The InC Dialect (in inweb)</a>), this can actually be written as a function call:
+<a href="../../../inweb/M-tid.html" class="internal">The InC Dialect (in inweb)</a>), this can actually be written as a function call:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -111,7 +111,7 @@ modify the underlying grammar used by Inform.
 <p class="commentary">The standard Inform distribution comes with the English Preform: in fact, the
 file is in <span class="extract"><span class="extract-syntax">inform7/Internal/Languages/English/Syntax.preform</span></span>. However,
 this file is not the "original": it is mechanically generated from the source
-code of Inform by <a href="../../../inweb/docs/index.html" class="internal">inweb</a>. For example, the excerpt of grammar might have
+code of Inform by <a href="../../../inweb/index.html" class="internal">inweb</a>. For example, the excerpt of grammar might have
 come from some (hypothetical) source code looking like this:
 </p>
 
@@ -121,7 +121,7 @@ come from some (hypothetical) source code looking like this:
 <span class="Preform-plain-syntax">        </span><span class="Preform-constant-syntax">runner</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">no</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;cardinal-number&gt;</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { FALSE, - }</span>
 </pre>
 <p class="commentary">Definitions like this one are scattered all across the Inform web, in order
-to keep them close to the code which relates to them. <a href="../../../inweb/docs/index.html" class="internal">inweb</a> tears this
+to keep them close to the code which relates to them. <a href="../../../inweb/index.html" class="internal">inweb</a> tears this
 code in half lengthways: the left-hand side goes into the <span class="extract"><span class="Preform-extract-syntax">Syntax.preform</span></span>
 file mentioned above, and is then read into Inform at run-time; and the
 right-hand side, which is essentially C, becomes code which takes action

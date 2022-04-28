@@ -40,8 +40,8 @@
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
+<li><a href="../../../inweb/index.html">inweb</a></li>
+<li><a href="../../../intest/index.html">intest</a></li>
 
 </ul>
 		</nav>
@@ -61,10 +61,10 @@ using <a href="index.html" class="internal">syntax</a>.
 </p>
 
 <p class="commentary">By convention, the modules considered as "services" have no dependencies on
-other modules except for <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a> and other "services" modules.
+other modules except for <a href="../../../inweb/foundation-module/index.html" class="internal">foundation</a> and other "services" modules.
 </p>
 
-<p class="commentary">A tool can import <a href="index.html" class="internal">syntax</a> only if it also imports <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a> and
+<p class="commentary">A tool can import <a href="index.html" class="internal">syntax</a> only if it also imports <a href="../../../inweb/foundation-module/index.html" class="internal">foundation</a> and
 <a href="../words-module/index.html" class="internal">words</a>.
 </p>
 
@@ -81,7 +81,7 @@ module:
 </pre>
 <ul class="items"><li>&#9679; The parent must call <span class="extract"><span class="extract-syntax">SyntaxModule::start()</span></span> just after it starts up, and
 <span class="extract"><span class="extract-syntax">SyntaxModule::end()</span></span> just before it shuts down. (But just after, and just
-before, the corresponding calls to <a href="../../../inweb/docs/foundation-module/index.html" class="internal">foundation</a>.)
+before, the corresponding calls to <a href="../../../inweb/foundation-module/index.html" class="internal">foundation</a>.)
 </li></ul>
 <p class="commentary">But in addition, the parent of <a href="index.html" class="internal">syntax</a> must define some Preform grammar:
 </p>

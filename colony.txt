@@ -83,8 +83,8 @@ web: "words-test" at "services/words-test" in "docs/words-test"
 
 # external to this repository, and here to facilitate cross-links
 
-module: "foundation" at "../inweb/foundation-module" in "../inweb/docs/foundation-module"
-web: "foundation-test" at "../inweb/foundation-test" in "../inweb/docs/foundation-test"
-web: "inweb" at "../inweb" in "../inweb/docs"
-web: "goldbach" at "../inweb/Examples/goldbach" in "../inweb/docs/goldbach"
-web: "intest" at "../intest/docs-src/index.inweb" in "../intest/docs"
+module: "foundation" at "../inweb/foundation-module" in "../inweb/foundation-module"
+web: "foundation-test" at "../inweb/foundation-test" in "../inweb/foundation-test"
+web: "inweb" at "../inweb" in "../inweb"
+web: "goldbach" at "../inweb/Examples/goldbach" in "../inweb/goldbach"
+web: "intest" at "../intest/docs-src/index.inweb" in "../intest"
