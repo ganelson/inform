@@ -481,7 +481,7 @@ diagnostics:
 .PHONY: navigationpages
 navigationpages: docs/index.html {repeat with: PAGE in: {NAVIGATIONPAGES}}docs/{PAGE}.html {end-repeat}
 
-docs/index.html: docs-src/overview.inweb docs-src/nav.html
+docs/index.html: docs-src/index.inweb docs-src/nav.html
 	{weave-one page: overview}
 
 {repeat with: PAGE in: {NAVIGATIONPAGES}}

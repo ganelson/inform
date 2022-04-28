@@ -3,7 +3,7 @@ navigation: docs-src/nav.html
 
 breadcrumbs: none
 pattern: W3Enhanced
-web: "overview" at "docs-src/overview.inweb" in "docs"
+web: "overview" at "docs-src/index.inweb" in "docs"
 web: "extensions" at "docs-src/extensions.inweb" in "docs"
 web: "kits" at "docs-src/kits.inweb" in "docs"
 web: "secrets" at "docs-src/secrets.inweb" in "docs"
