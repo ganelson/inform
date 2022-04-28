@@ -107,10 +107,11 @@ entries which fail to change the word position.
 =
 void ActionNameLists::remove_entries_marked_for_deletion(action_name_list *list) {
 	if (list) {
-		int pos = -1;
+		int pos = -2;
 		for (anl_entry *entry = list->entries, *prev = NULL; entry; entry = entry->next_entry) {
 			if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA)) {
-				ActionNameLists::log_entry(entry); LOG(" ");
+				ActionNameLists::log_entry(entry); LOG(" (wp %d)",
+					entry->parsing_data.word_position);
 			}
 			int delete = FALSE;
 			if (entry->marked_for_deletion) {
