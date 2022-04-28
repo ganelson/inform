@@ -697,7 +697,7 @@ transferindext: forcetransferindext
 
 .PHONY: forcetransferindext
 forcetransferindext:
-    mkdir -p "$(INTERNAL)/Miscellany"
+	mkdir -p "$(INTERNAL)/Miscellany"
 	cp -f "$(INFORM7WEB)/Internal/Miscellany/Standard.indext" "$(INTERNAL)/Miscellany/Standard.indext"
 	cp -f "$(INFORM7WEB)/Internal/Miscellany/Basic.indext"    "$(INTERNAL)/Miscellany/Basic.indext"
 	{repeat with: LANGUAGE in: {LOCALISEDINDEXES}}
@@ -796,7 +796,7 @@ forcetransferotherinternals:
 {set name: IMAGESETLIST value: bg_images, doc_images, map_icons, outcome_images, scene_icons}
 
 {define: transfer-images}
-    mkdir -p $(BUILTINHTML)
+	mkdir -p $(BUILTINHTML)
 	cp -f resources/Imagery/app_images/Welcome*Background.png $(BUILTINHTML)
 	{repeat with: SET in: {IMAGESETLIST}}
 	mkdir -p $(BUILTINHTML)/{SET}
