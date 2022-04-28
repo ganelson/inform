@@ -88,9 +88,7 @@ which runs nearly 2500 cases through the executables, but takes 10 minutes
 on an 8-core desktop and half an hour on a 4-core laptop (which will sound
 something like a helicopter taking off).
 
-Current status: All tests should pass on Linux and MacOS, but there are currently
-5 fails on Windows: Ballroom, Santa, Parts-C, SP, Chapter8. These are being
-investigated already, so please do not report as a bug.
+Current status: All tests should pass on Linux, MacOS and Windows.
 
 ## Reporting Issues
 
@@ -108,13 +106,13 @@ Please do not report bugs on those to the Inform tracker, or vice versa.
 
 ## Pull Requests and Adding Features
 
-Inform is only just emerging, blinking, into the light of being open-source after
-two decades of private development. It has a mature and well-used feature set,
-so that new or changed functionality requires careful thought. For the moment,
-its future direction remains in the hands of the original author. At some point
-a more formal process may emerge, but for now community discussion of possible
-features is best kept to the IF forum. In particular, please do not use the
-bug trackers to propose new features.
+Inform is only just emerging into the light of being open-source, but it is not
+new software. It has a mature and well-used feature set, so that new or changed
+functionality requires careful thought. For the moment, its future direction
+remains in the hands of the original author. At some point a more formal process
+may emerge, but for now community discussion of possible features is best kept
+to the IF forum. In particular, please do not use the bug trackers to propose
+new features.
 
 Pull requests adding functionality or making any significant changes are therefore
 not likely to be accepted from non-members of the Inform team without prior
