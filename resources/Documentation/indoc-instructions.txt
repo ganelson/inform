@@ -525,6 +525,15 @@ gnome_app {
 	destination = ../inform7-ide/src/inform/
 }
 
+gnome_flatpak_app {
+    # HTML documentation installed to a different location for Flatpak builds
+    follow: in-application-instructions.txt
+    assume_Public_Library = yes
+    declare: GNOME
+    javascript_paste_method = David
+    destination = /app/tmp/inform
+}
+
 website {
 	# HTML for the pre-2019 I7 website
 	destination = Website/content/learn/man/
