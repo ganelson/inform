@@ -27,7 +27,7 @@ copyright text to 100MB of uncompressed choral music.
 Our IFF file will consist of a front part and then the chunks, one after
 another, in order of their creation. Every chunk has a type, a 4-character ID
 like |"AUTH"| or |"JPEG"|, specifying what kind of data it holds; some
-chunks are also given resource", " numbers which allow the story file to refer
+chunks are also given resource numbers which allow the story file to refer
 to them as it runs -- the pictures, sound effects and the story file itself
 all have unique resource numbers. (These are called "indexed", because
 references to them appear in a special |RIdx| record in the front part
