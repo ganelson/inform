@@ -659,7 +659,7 @@ than HER or IT). There has to be some convention here, and in a case where
 we don't know our linguistic ground, opting for the least surprising
 behaviour seems wisest.
 
-The Inform compiler automatically applies the either-or prpperty |animate|
+The Inform compiler automatically applies the either-or property |animate|
 and the valued property |before| to a person, giving that value as just
 |NULL|. This allows any person to become the protagonist during play
 (using I6's |ChangePlayer| routine).
