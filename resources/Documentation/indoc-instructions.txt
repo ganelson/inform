@@ -497,12 +497,12 @@ osx_app {
 windows_app {
 	# HTML documentation for the Windows app
 	follow: in-application-instructions.txt
-	follow: windows-css-tweaks.txt
 	assume_Public_Library = yes
 	support_creation = yes
+	retina_images = yes
 	suppress_fonts = yes
 	declare: Windows
-	javascript_paste_method = David
+	javascript_paste_method = Andrew
 	destination = ../../Build/Documentation/
 }
 
