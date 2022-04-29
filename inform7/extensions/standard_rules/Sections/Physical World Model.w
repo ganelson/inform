@@ -59,7 +59,7 @@ Definition: a thing is held if the player is holding it.
 
 @ Animate beings also have the ability to see and touch their surroundings,
 but note that we only model the ability to do these things -- we do not attempt
-to track what they actually do see or touch at any given moment, so there are
+to track what they actually see or touch at any given moment, so there are
 no built-in verbs "to see" or "to touch".
 
 =
@@ -238,7 +238,7 @@ varieties, which is rather a lot, but although some combinations are very
 rare (edible lit pushable between rooms scenery is not met with often)
 this flexibility is helpful in mitigating the rigidity of the kinds
 structure, given that we have single inheritance of kinds. Note that,
-except for "lit", these are all really to do whether and how people
+except for "lit", these are all really to do with whether and how people
 can move things around -- even edibility, which is the ability to be removed
 from the world model entirely.
 
