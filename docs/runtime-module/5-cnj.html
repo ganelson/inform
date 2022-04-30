@@ -59,7 +59,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">runtime</a></li><li><a href="index.html#5">Chapter 5: Provision Submodules</a></li><li><b>Conjugations</b></li></ul></div>
 <p class="purpose">To compile the conjugations submodule for a compilation unit, which contains _verb, _modal_verb and _verb_form packages.</p>
 
-<ul class="toc"><li><a href="5-cnj.html#SP1">&#167;1. The generic/conjugations package</a></li><li><a href="5-cnj.html#SP2">&#167;2. Compilation data for verbs</a></li><li><a href="5-cnj.html#SP5">&#167;5. Compilation data for conjgations</a></li><li><a href="5-cnj.html#SP7">&#167;7. Compilation</a></li><li><a href="5-cnj.html#SP8">&#167;8. Invocation as inflected text</a></li><li><a href="5-cnj.html#SP9">&#167;9. Compilation data for verb forms</a></li><li><a href="5-cnj.html#SP11">&#167;11. Compilation</a></li><li><a href="5-cnj.html#SP13">&#167;13. Utility functions</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-cnj.html#SP1">&#167;1. The generic/conjugations package</a></li><li><a href="5-cnj.html#SP2">&#167;2. Compilation data for verbs</a></li><li><a href="5-cnj.html#SP5">&#167;5. Compilation data for conjugations</a></li><li><a href="5-cnj.html#SP7">&#167;7. Compilation</a></li><li><a href="5-cnj.html#SP8">&#167;8. Invocation as inflected text</a></li><li><a href="5-cnj.html#SP9">&#167;9. Compilation data for verb forms</a></li><li><a href="5-cnj.html#SP11">&#167;11. Compilation</a></li><li><a href="5-cnj.html#SP13">&#167;13. Utility functions</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. The generic/conjugations package. </b>A few constants before we get under way:
 </p>
@@ -119,7 +119,7 @@ conjugation functions. Those have to live somewhere, so they go into free-standi
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="2-hrr.html#SP19" class="function-link"><span class="function-syntax">Hierarchy::local_package_to</span></a><span class="plain-syntax">(</span><span class="constant-syntax">MVERBS_HAP</span><span class="plain-syntax">, </span><span class="identifier-syntax">where</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Compilation data for conjgations. </b>Each <span class="extract"><span class="extract-syntax">verb_conjugation</span></span> object contains this data:
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5. Compilation data for conjugations. </b>Each <span class="extract"><span class="extract-syntax">verb_conjugation</span></span> object contains this data:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">VC_COMPILATION_LINGUISTICS_CALLBACK</span><span class="plain-syntax"> </span><a href="5-cnj.html#SP5" class="function-link"><span class="function-syntax">RTVerbs::initialise_vc</span></a>

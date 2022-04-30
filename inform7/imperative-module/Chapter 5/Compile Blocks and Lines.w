@@ -825,7 +825,7 @@ void CompileBlocksAndLines::verify_say_node_list(parse_node *say_node_list) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_SayOverComplex),
 			"this is too complex a text substitution",
-			"and needs to be simplified. You might find it hel[ful to define a new text "
+			"and needs to be simplified. You might find it helpful to define a new text "
 			"substitution of your own ('To say fiddly details: ...') and then use it "
 			"in this text by including the '[fiddly details]'.");
 		problem_issued = TRUE;

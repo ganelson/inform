@@ -787,7 +787,7 @@ some can never happen. For example,
 <span class="plain-syntax">ask [someone] about [something]</span>
 <span class="plain-syntax">ask [someone] about [text]</span>
 </pre>
-<p class="commentary">have to be that way around, because any comnand which matches the first line
+<p class="commentary">have to be that way around, because any command which matches the first line
 here also matches the second. Putting these lines into order used to be part
 of the craft of the Inform 6 programmer, but it was always difficult to do,
 and Inform 7 aimed to liberate authors from the need to do this. A long
@@ -815,7 +815,7 @@ but not quite.
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_6" class="named-paragraph-link"><span class="named-paragraph">Higher sort bonuses precede lower ones</span><span class="named-paragraph-number">19.6</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_7" class="named-paragraph-link"><span class="named-paragraph">More specific determinations precede less specific ones</span><span class="named-paragraph-number">19.7</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_8" class="named-paragraph-link"><span class="named-paragraph">Conditional readings precede unconditional readings</span><span class="named-paragraph-number">19.8</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_9" class="named-paragraph-link"><span class="named-paragraph">Lines created earlier precede lines creater later in the source text</span><span class="named-paragraph-number">19.9</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="5-cgl.html#SP19_9" class="named-paragraph-link"><span class="named-paragraph">Lines created earlier precede lines created later in the source text</span><span class="named-paragraph-number">19.9</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP19_1" class="paragraph-anchor"></a><b>&#167;19.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Perform some sanity checks</span><span class="named-paragraph-number">19.1</span></span><span class="comment-syntax"> =</span>
@@ -865,7 +865,7 @@ working through a <span class="extract"><span class="extract-syntax">CG_IS_COMMA
 it has to match. If the player has typed TAKE FROG FROM AQUARIUM, the parser
 has to make sense of all of the words. It needs to consider the possibility
 "take [something]" before "take [something] from [something]" because there
-might be an object called "frog fram aquarium".
+might be an object called "frog from aquarium".
 </p>
 
 <p class="commentary">On the other hand, if it is parsing a <span class="extract"><span class="extract-syntax">CG_IS_TOKEN</span></span> grammar, it is trying to
@@ -981,7 +981,7 @@ BBC children's television programme "Vision On" &mdash; so that the command
 TURN ON VISION ON would match both of the alternative CGLs.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Lines created earlier precede lines creater later in the source text</span><span class="named-paragraph-number">19.9</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Lines created earlier precede lines created later in the source text</span><span class="named-paragraph-number">19.9</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
