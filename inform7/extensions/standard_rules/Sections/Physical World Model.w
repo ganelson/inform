@@ -365,7 +365,7 @@ interpretation of words like "inside" which might refer either to the
 Of the rest, N/S, NE/SW, E/W, SE/NW and U/D, it's noteworthy that this
 choice imposes a cubical grid on the world, simply because the compass
 directions are at 45 and 90 degree angles to each other: a hexagonal
-tessalation would be more faithful to distances (it would get rid of the
+tessellation would be more faithful to distances (it would get rid of the
 awkward point that a NE move is root 2 times the length of a N move),
 but in practice the world model doesn't care much about distances, another
 example of its qualitative nature. A further point is that, in a
@@ -659,7 +659,7 @@ than HER or IT). There has to be some convention here, and in a case where
 we don't know our linguistic ground, opting for the least surprising
 behaviour seems wisest.
 
-The Inform compiler automatically applies the either-or prpperty |animate|
+The Inform compiler automatically applies the either-or property |animate|
 and the valued property |before| to a person, giving that value as just
 |NULL|. This allows any person to become the protagonist during play
 (using I6's |ChangePlayer| routine).

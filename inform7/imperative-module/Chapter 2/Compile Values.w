@@ -209,7 +209,7 @@ parse_node *CompileValues::cast_nonconstant(parse_node *value, kind *K_wanted,
 	return value;
 }
 
-@ Certain kinds of value cannot be used on every virtual machine; for examole,
+@ Certain kinds of value cannot be used on every virtual machine; for example,
 the Z-machine does not support real numbers.
 
 =

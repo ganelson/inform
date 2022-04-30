@@ -17,7 +17,7 @@ represented by //explicit_action// objects.
 (*) An "action name" -- not an ideal thing to call it, but traditional -- is the
 type of action involved, taken in isolation: for example, "taking". These can
 also be values at run-time, they have kind |K_action_name|, and they are
-represented in the comoiler by //action_name// objections.
+represented in the compiler by //action_name// objections.
 (*) An "action pattern" is a textual description which matches some actions but
 not others, and can be vague or specific: for example, "wearing or examining
 something". Action patterns become values of the kind |K_description_of_action|.

@@ -10,7 +10,7 @@ which use this module:
 
 @ Like all modules, this one must define a |start| and |end| function.
 
-Note that the "multimedia" plugin itself does nothihg except to be a parent
+Note that the "multimedia" plugin itself does nothing except to be a parent
 to the other three; it doesn't even have an activation function.
 
 @e MULTIMEDIA_CREATIONS_DA

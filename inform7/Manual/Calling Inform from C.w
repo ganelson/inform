@@ -455,7 +455,7 @@ Note that a header file called |inform7_symbols.h| is included. This defines
 useful constants like |i7_A_Take| (for the "taking" action) and |i7_I_Linear_B_tablet|
 (for the object called "Linear B tablet"). But where did this header come from?
 
-The answer is that this file can ootionally be created when //inform7// is
+The answer is that this file can optionally be created when //inform7// is
 generating C. In Example 5 we ran Inform with |-format=C/no-main|; this time
 we use |-format=C/no-main/symbols-header|. This also needs a subtle change to
 the makefile logic; the difference being that |Eg6-C.o| is now dependent on
@@ -477,7 +477,7 @@ Eg6-I.c: Eg6.i7
 
 Anyway, the result of this is:
 = (text as ConsoleText)
-Sir Arthur Evans, hero and archeologist, invites you to explore...
+Sir Arthur Evans, hero and archaeologist, invites you to explore...
 
 Welcome
 An Interactive Fiction

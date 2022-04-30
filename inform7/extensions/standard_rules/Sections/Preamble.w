@@ -36,7 +36,7 @@ The verb to index map with in the imperative means the built-in index-map-with m
 
 @h Use Options.
 In fact, many of the definitions below are handled slightly differently in
-the |srules| template files, to avoid the need for conditional compilatipn
+the |srules| template files, to avoid the need for conditional compilation
 (and thus to enable the template to be assimilated just once); but we
 continue to give them the traditional constant names, for the sake of any
 third-party extensions using these.

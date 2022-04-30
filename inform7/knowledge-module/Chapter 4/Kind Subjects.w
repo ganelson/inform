@@ -94,7 +94,7 @@ void KindSubjects::renew(kind *K, kind *super, wording W) {
 
 @ Even base kinds which do have subjects do not necessarily allow properties
 to be given to their values -- "number", for instance, where you cannot give
-a property to the nunber 6.
+a property to the number 6.
 
 In general a value can have properties if and only if its kind passes this test:
 

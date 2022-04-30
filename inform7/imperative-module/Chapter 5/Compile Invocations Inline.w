@@ -39,7 +39,7 @@ front material before compiling the block, and the back material afterwards.
 
 @ The process of compiling from an inline definition is a little like
 interpreting a program, and a //csi_state// object represents the state of
-tbe (imaginary) computer doing that.
+the (imaginary) computer doing that.
 
 =
 typedef struct csi_state {
@@ -160,7 +160,7 @@ unless a code block is opened: if it is, then they're deallocated when it ends.
 		if (CSIS.my_vars[i])
 			LocalVariableSlates::deallocate_I7_local(CSIS.my_vars[i]);
 
-@ And tbis is what happens when the back part of the definition is finally
+@ And this is what happens when the back part of the definition is finally
 compiled.
 
 =
@@ -179,7 +179,7 @@ the schema, and calls //CSIInline::from_source_text// on any material enclosed
 in |(+ ... +)| notation.
 
 |CSIS| is passed to this function as our "opaque state" -- meaning that it is
-passed through unchanged to our callbach functions, and means that the code
+passed through unchanged to our callback functions, and means that the code
 below can share some private state variables.
 
 =

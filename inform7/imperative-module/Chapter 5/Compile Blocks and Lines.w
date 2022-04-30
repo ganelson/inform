@@ -7,7 +7,7 @@ As this section of code opens, we are looking at the parse tree for the body
 of a rule or phrase definition. A request has been made to compile (a version of)
 this into an Inter function; the stack frame for that has been sorted out, and
 the function begun. Now we must compile the actual code to go into the function;
-the test grpup |:invocations| exercises all of this.
+the test group |:invocations| exercises all of this.
 
 Here is a typical example rule, taken from the Standard Rules:
 = (text as Inform 7)
@@ -21,7 +21,7 @@ Report an actor waiting (this is the standard report waiting rule):
 =
 In the parse tree, this now looks like so:
 = (text)
-IMPERATIVE_NT'report an actor waiting ( this is the standard report waitin'
+IMPERATIVE_NT'report an actor waiting ( this is the standard report waiting'
 	CODE_BLOCK_NT
 		CODE_BLOCK_NT
 			INVOCATION_LIST_NT'if the actor is the player'
@@ -825,7 +825,7 @@ void CompileBlocksAndLines::verify_say_node_list(parse_node *say_node_list) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_SayOverComplex),
 			"this is too complex a text substitution",
-			"and needs to be simplified. You might find it helful to define a new text "
+			"and needs to be simplified. You might find it hel[ful to define a new text "
 			"substitution of your own ('To say fiddly details: ...') and then use it "
 			"in this text by including the '[fiddly details]'.");
 		problem_issued = TRUE;

@@ -73,7 +73,7 @@ as a direction name plus "of", since "below" is not the name of the direction
 	... from
 
 @ Two of the directions are special to mapping, because they have to be parsed
-slighly differently. (These are the English names; there is no need to translate
+slightly differently. (These are the English names; there is no need to translate
 this to other languages.)
 
 =

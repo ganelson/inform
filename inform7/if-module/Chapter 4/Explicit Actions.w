@@ -2,7 +2,7 @@
 
 An exactly specified action is called "explicit".
 
-@ Explicit actions are used inside the compiler whenever we kmow exactly what
+@ Explicit actions are used inside the compiler whenever we know exactly what
 action we are talking about; stored action constants are //explicit_action//
 objects in a thin wrapper -- see //Action Kinds//.
 

@@ -286,7 +286,7 @@ source text description, so that "Mr Beebe" will not be flattened to "mr
 beebe"; but that we take care to reduce the case of "Your nose" (etc.)
 to "your nose", unless it occurs in the name of a room, like "Your Bedroom".
 
-If the "spatial" plugin is inactive, |this_is_a_room| is akways |FALSE|.
+If the "spatial" plugin is inactive, |this_is_a_room| is always |FALSE|.
 
 @<Compose the I6 short-name as a piece of text@> =
 	Naming::compose_words_to_I6_naming_text(textual_value, W, FALSE,

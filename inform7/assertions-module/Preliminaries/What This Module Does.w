@@ -85,7 +85,7 @@ making of the new activity.
 
 @h Regular meanings.
 As noted above, //Assertions::make_coupling// is called on each regular
-assertion: coupling being a lingistic term for placing subject and object into
+assertion: coupling being a linguistic term for placing subject and object into
 a relationship with each other. What it does is to split into cases according to
 the subject and object phrases of a sentence. These can take 12 different forms,
 so there are $12\times 12 = 144$ possible combinations of subject with object,

@@ -80,7 +80,7 @@ inter_name *RTActions::base_iname(action_name *an) {
 @ We actually want the other names to still be related to the base name even
 after a translation; i.e., if an action is translated to |Grab|, then we want
 to have the related names be |##Grab| and |GrabSub|. So translation needs to
-happen early-ish in the run, befpre tbe base iname is generated.
+happen early-ish in the run, before the base iname is generated.
 
 =
 void RTActions::translate(action_name *an, wording W) {

@@ -40,7 +40,7 @@ are equivalent here: permission for one is always permission for the other.
 
 If these were long lists, or searched often, it would be faster to move each
 found permission to the front, thus tending to move frequently-sought properties
-to the start. Pofiling shows that this would save no significant time,
+to the start. Profiling shows that this would save no significant time,
 whereas the unpredictable order might make testing Inform more annoying.
 
 @d LOOP_OVER_PERMISSIONS_FOR_PROPERTY(pp, prn)

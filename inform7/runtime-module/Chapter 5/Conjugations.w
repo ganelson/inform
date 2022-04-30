@@ -58,7 +58,7 @@ package_request *RTVerbs::modal_package(parse_node *where) {
 	return Hierarchy::local_package_to(MVERBS_HAP, where);
 }
 
-@h Compilation data for conjgations.
+@h Compilation data for conjugations.
 Each |verb_conjugation| object contains this data:
 
 @d VC_COMPILATION_LINGUISTICS_CALLBACK RTVerbs::initialise_vc

@@ -359,7 +359,7 @@ int PluginCalls::new_base_kind_notify(kind *K, kind *super, text_stream *d, word
 been created. For example, the figures plugin needs to know this so that it
 can see when a new illustration has been created.
 
-At the time this is called, the exact kind of an instance may not be knowm,
+At the time this is called, the exact kind of an instance may not be known,
 if that instance is an object: so beware of relying on the kind unless you're
 sure you're not dealing with an object.
 

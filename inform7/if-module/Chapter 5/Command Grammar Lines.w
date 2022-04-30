@@ -625,7 +625,7 @@ some can never happen. For example,
 ask [someone] about [something]
 ask [someone] about [text]
 =
-have to be that way around, because any comnand which matches the first line
+have to be that way around, because any command which matches the first line
 here also matches the second. Putting these lines into order used to be part
 of the craft of the Inform 6 programmer, but it was always difficult to do,
 and Inform 7 aimed to liberate authors from the need to do this. A long
@@ -651,7 +651,7 @@ int CGLines::cg_line_must_precede(command_grammar *cg, cg_line *L1, cg_line *L2)
 	@<Higher sort bonuses precede lower ones@>;
 	@<More specific determinations precede less specific ones@>;
 	@<Conditional readings precede unconditional readings@>;
-	@<Lines created earlier precede lines creater later in the source text@>;
+	@<Lines created earlier precede lines created later in the source text@>;
 }
 
 @<Perform some sanity checks@> =
@@ -686,7 +686,7 @@ working through a |CG_IS_COMMAND| grammar -- it always knows how many words
 it has to match. If the player has typed TAKE FROG FROM AQUARIUM, the parser
 has to make sense of all of the words. It needs to consider the possibility
 "take [something]" before "take [something] from [something]" because there
-might be an object called "frog fram aquarium".
+might be an object called "frog from aquarium".
 
 On the other hand, if it is parsing a |CG_IS_TOKEN| grammar, it is trying to
 match as many words as possible from a stream of words that will probably then
@@ -771,6 +771,6 @@ an object has a name like ON VISION ON -- perhaps a book about the antique
 BBC children's television programme "Vision On" -- so that the command
 TURN ON VISION ON would match both of the alternative CGLs.
 
-@<Lines created earlier precede lines creater later in the source text@> =
+@<Lines created earlier precede lines created later in the source text@> =
 	if (L1->allocation_id < L2->allocation_id) return TRUE;
 	return FALSE;

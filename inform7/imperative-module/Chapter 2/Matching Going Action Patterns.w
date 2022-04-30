@@ -53,7 +53,7 @@ ordinarily a direction.)
 
 @ The not-nowhere test is needed for patterns like "going from the Dining Room",
 which we want to match only where there is some destination: i.e., we don't want
-it to match an attemot to go in a direction not available in the map.
+it to match an attempt to go in a direction not available in the map.
 
 @<Compile NOT_NOWHERE_CPMC test@> =
 	EmitCode::inv(NE_BIP);
