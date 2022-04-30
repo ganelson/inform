@@ -45,6 +45,21 @@
     </script>
 </head>
 <body class="paper papertint">
+    <script type="text/javascript">
+        function pasteCode(code) {
+            var myProject = window.Project;
+
+            myProject.selectView('source');
+            myProject.pasteCode(code);
+        }
+    </script>
+    <script type="text/javascript">
+        function createNewProject(code, title) {
+            var myProject = window.Project;
+
+            myProject.createNewProject(title, code);
+        }
+    </script>
 
     <!--SEARCH TITLE "Tertius"-->
     <!--SEARCH SECTION "1.2"-->
