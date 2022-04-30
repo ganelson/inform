@@ -9,8 +9,8 @@ box-sizing: border-box;
 /* The body elements always belong to two classes: "paper" and a tint class */
 
 body.paper {
-font-size: 112.5%;
 	
+	font-size: 100%;
 	line-height: 1.25em;
 	text-align: left;
 	overflow-y: scroll;
