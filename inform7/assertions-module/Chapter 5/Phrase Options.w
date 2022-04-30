@@ -6,11 +6,11 @@ with which the user can choose to invoke a To phrase.
 @h Introduction.
 A "phrase option" is a sort of modifier tacked on to an invocation of a
 phrase; the only modifiers allowed are those declared in that phrase's
-preamble. Phrase pptions are an early feature of Inform 7 going back to a
+preamble. Phrase options are an early feature of Inform 7 going back to a
 time when its priority was to enable the paraphrasing of Inform 6 library
 features (such as the bitmap passed as a parameter to the list-printer).
 
-I now sligjtly regret the existence of phrase options, but above all the
+I now slightly regret the existence of phrase options, but above all the
 comma-based syntax used for them, as here. Brackets would have been better;
 it makes phrase options impossible to use for text substitutions.
 

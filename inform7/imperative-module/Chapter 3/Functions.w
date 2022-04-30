@@ -4,7 +4,7 @@ To compile Inter functions.
 
 @ The code in this section is used throughout the //imperative// and //runtime//
 modules whenever an Inter function needs to be compiled. This will often not be
-a function corresponding to a definition in the soruce text; more often, it will
+a function corresponding to a definition in the source text; more often, it will
 be a support function needed to implement some feature at runtime.
 
 However it happens, every function is compiled using code like so:

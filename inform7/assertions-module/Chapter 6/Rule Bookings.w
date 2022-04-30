@@ -24,7 +24,7 @@ typedef struct booking {
 	int placement; /* one of the |*_PLACEMENT| values above */
 	int place_automatically; /* should this be inserted automatically? */
 
-	struct booking_commentary commentary; /* used omly for indexing and code comments */
+	struct booking_commentary commentary; /* used only for indexing and code comments */
 
 	struct booking *next_booking; /* in its booking list */
 	CLASS_DEFINITION

@@ -349,7 +349,7 @@ By default the story file will be called something like |story.z8|, but
 its leafname is actually declared from the source text of the Inform
 project created to do this wrapping-up. So we need a way to set as well
 as read this filename. Whatever the leafname, though, it lives in the top
-level of materuals.
+level of materials.
 
 =
 int Task::wraps_existing_storyfile(void) {

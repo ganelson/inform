@@ -19,7 +19,7 @@ about the function currently being compiled. In particular:
 (*) what kind of value we should be returning, if anything.
 
 @ Code can only be compiled "inside" a stack frame, and at any given time
-(when code is being comoiled, anyway) there is a "current" frame.
+(when code is being compiled, anyway) there is a "current" frame.
 
 =
 stack_frame *current_frame = NULL;

@@ -22,7 +22,7 @@ Nobody who defines a literal pattern with the word "times" in can expect good
 results anyway, given that "times" will usually be interpreted as
 multiplication when Inform eventually parses such a literal.
 
-@ We create new literal pattenrs during pass 1, which imposes two timing
+@ We create new literal patterns during pass 1, which imposes two timing
 constraints:
 
 (a) The specification sentence must come after the sentence creating the

@@ -8,7 +8,7 @@ Setting up the use of this module.
 
 @ Like all modules, this one must define a |start| and |end| function.
 
-Note that the "core" plugin itself does nothihg except to be a parent to the
+Note that the "core" plugin itself does nothing except to be a parent to the
 other two; it doesn't even have an activation function.
 
 @e TASK_QUEUE_DA

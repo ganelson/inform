@@ -7,7 +7,7 @@ attached.
 Either-or properties may need rather different run-time implementation from
 properties with values, but otherwise they might seem nothing special: why
 not simply regard them as properties holding truth state values? And then
-there would just be obe type of property.
+there would just be one type of property.
 
 The answer is that whereas a computer-science view of the "open" property,
 say, would take exactly this line -- i.e., that it simply holds a truth

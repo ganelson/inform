@@ -344,7 +344,7 @@ in the range |ACTOR_IS_PLAYER_CPMC <= N <= ACTOR_MATCHES_CPMC|, and so on.
 @ This is the easier case: all four ranges of condition must be true, and so
 we compile code equivalent to |ACTION and ACTOR and DETAILS and WHEN|. We
 do it in that order for two reasons: firstly, wrong actions are the commonest
-reasom actions fail to match, and the ACTION tests are quick, so it's efficient
+reason actions fail to match, and the ACTION tests are quick, so it's efficient
 to test that first. (The ACTOR tests are also quick, but usually pass.) Secondly,
 some DETAILS tests will compile non-typesafe code in cases where ACTION would
 not pass, so DETAILS must be compiled after ACTION. Finally, we put WHEN at
@@ -395,7 +395,7 @@ we still have to compile |true|, to ensure that every action will match.
 @ A listwise negated pattern is something like "doing something other than
 examining the box", which matches any action except "examining the box". It
 might seem that this could be negated just as the negation of the positive
-case, but that overlookz the hidden clauses about who the actor is, whether
+case, but that overlooks the hidden clauses about who the actor is, whether
 the action is a request, and so on -- the |ACTOR_CPMCRANGE| -- and any
 condition supplied -- the |WHEN_CPMCRANGE|.
 

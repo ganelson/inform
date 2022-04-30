@@ -43,7 +43,7 @@ produce Inform 6 code. That is not so: they produce Inter code, which
 can then be translated as needed.
 
 Most of the definitions here also have annotations to positions in the
-main Inform dcumentation: for example, |(documented at phs_s)|. This has
+main Inform documentation: for example, |(documented at phs_s)|. This has
 no effect on the code compiled, and is used only when Inform generates
 certain problem messages; if the source text misuses the phrase, the problem
 can then give a reference to the relevant documentation. |phs_s| is a

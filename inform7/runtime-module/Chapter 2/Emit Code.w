@@ -166,7 +166,7 @@ int EmitCode::cast_possible(kind *F, kind *T) {
 }
 
 @ Casts are in many cases implicit, so that nothing need be done, and the
-followimg simply returns |TRUE| to indicate success. But in a few cases, a
+following simply returns |TRUE| to indicate success. But in a few cases, a
 function call must be inserted, with a name like |SNIPPET_TY_to_TEXT_TY|;
 in such cases, this function must exist in the kits somewhere.
 

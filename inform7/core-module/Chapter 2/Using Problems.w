@@ -6,7 +6,7 @@ Interface to the Problems module.
 
 @d PROBLEMS_HTML_EMITTER HTML::put
 
-@ In "silence-is-goldem" mode, we want our Problem messages to look more like
+@ In "silence-is-golden" mode, we want our Problem messages to look more like
 traditional Unix errors, even if they're long ones:
 
 @d FORMAT_CONSOLE_PROBLEMS_CALLBACK Problems::Using::console_format

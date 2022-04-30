@@ -123,7 +123,7 @@ inter_name *RTRules::shell_iname(rule *R) {
 }
 
 @ Note that the response handler function must be made available to the linker,
-because the idea is that the kit function will use it. For examole, the code
+because the idea is that the kit function will use it. For example, the code
 in the kit might read like so:
 = (text as Inform 6)
 [ MY_FOREIGN_R;

@@ -1,6 +1,6 @@
 [EqualitySchemas::] Equality Schemas.
 
-To define how to compile a comparisom of two values.
+To define how to compile a comparison of two values.
 
 @ For most word-value kinds, it's easy to compare two values to see if they are
 equal: all we need is the |==| operator. But for pointer-value kinds, that

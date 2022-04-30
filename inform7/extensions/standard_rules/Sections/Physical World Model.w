@@ -365,7 +365,7 @@ interpretation of words like "inside" which might refer either to the
 Of the rest, N/S, NE/SW, E/W, SE/NW and U/D, it's noteworthy that this
 choice imposes a cubical grid on the world, simply because the compass
 directions are at 45 and 90 degree angles to each other: a hexagonal
-tessalation would be more faithful to distances (it would get rid of the
+tessellation would be more faithful to distances (it would get rid of the
 awkward point that a NE move is root 2 times the length of a N move),
 but in practice the world model doesn't care much about distances, another
 example of its qualitative nature. A further point is that, in a

@@ -1,6 +1,6 @@
 [RTSpatial::] Here, Nowhere and Everywhere.
 
-Almost a Beatles song, but really a set of schemas for compilimg the meaning
+Almost a Beatles song, but really a set of schemas for compiling the meaning
 of the unary predicates here, nowhere and everywhere.
 
 @ Here. In fact, at present "here" predicates are never included in propositions to

@@ -424,7 +424,7 @@ void RTAdjectives::make_adjective_phrase_package(id_body *idb) {
 
 @h Compiling tasks for adjectives defined by I7 or Inter code.
 First, an adjective defined by a condition written in raw Inter code can be
-tested (but not asserted) using a schema, since those are also raw Inter coce.
+tested (but not asserted) using a schema, since those are also raw Inter code.
 All we do is remove the enrobing quotation marks around the condition.
 
 =

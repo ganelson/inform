@@ -153,7 +153,7 @@ void ImperativeDefinitions::compile_first_block(void) {
 
 @h The body.
 During assessment, then, each //imperative_defn// is given a body, which
-is one of these. It reoresents the body of the definition -- that is, the
+is one of these. It represents the body of the definition -- that is, the
 Inform 7 source text written underneath the heading.
 
 =

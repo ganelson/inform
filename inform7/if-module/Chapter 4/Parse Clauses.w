@@ -205,7 +205,7 @@ to typecheck each clause.
 		LOG_OUTDENT;
 	}
 
-@ This is where heterogenous patterns like "dropping a thing or taking a
+@ This is where heterogeneous patterns like "dropping a thing or taking a
 container" are thrown out: only the last-placed action is allowed to have
 clauses.
 

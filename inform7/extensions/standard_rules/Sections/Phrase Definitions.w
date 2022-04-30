@@ -638,7 +638,7 @@ To decide whether player consents
 		(- YesOrNo() -).
 
 @ Support for snippets, which are substrings of the player's command. This
-is a kind of value which doesm't exist in Basic Inform.
+is a kind of value which doesn't exist in Basic Inform.
 
 =
 Section 2 - The player's command
