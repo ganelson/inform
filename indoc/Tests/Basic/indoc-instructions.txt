@@ -233,7 +233,6 @@ osx_app {
 	support_creation = yes
 	retina_images = yes
 	declare: OSX
-	javascript_paste_method = Andrew
 }
 
 windows_app {
@@ -244,7 +243,6 @@ windows_app {
 	retina_images = yes
 	suppress_fonts = yes
 	declare: Windows
-	javascript_paste_method = Andrew
 	destination = ../../Build/Documentation/
 }
 
@@ -253,8 +251,7 @@ linux_app {
 	# This is for command-line Linux, so there's no in-application tweaking
 	declare: Linux
 	assume_Public_Library = yes
-    javascript_paste_method = Andrew
-    destination = i7/Documentation/
+	destination = i7/Documentation/
 	images_copy = no
 }
 
@@ -263,7 +260,6 @@ gnome_app {
 	follow: in-application-instructions.txt
 	assume_Public_Library = yes
 	declare: GNOME
-	javascript_paste_method = David
 	destination = ../inform7-ide/src/inform/
 }
 

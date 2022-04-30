@@ -263,11 +263,6 @@ syntax for Inform phrases.
 whetber Indoc is allowed to compile Javascript, or has to stick to inactive
 HTML.
 
-|javascript_paste_method| can be |none|, |Andrew| or |David|. The default
-is |none|. The difference relates to how "paste Inform source" links are
-implemented inside the Inform application: |Andrew| mode is suitable for
-most platforms, but |David| is needed for Windows.
-
 |link_to_extensions_index| is meaningful only if |html_for_Inform_application|
 is set, and specifies the URL of the Extensions index inside the app.
 

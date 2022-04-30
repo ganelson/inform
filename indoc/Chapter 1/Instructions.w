@@ -67,7 +67,6 @@ typedef struct settings_block {
 	int format; /* one of the |*_FORMAT| values above */
 	int XHTML; /* a flag: relevant only if |HTML_FORMAT| is chosen */
 	int javascript; /* a flag */
-	int javascript_paste_method; /* one of the |PASTEMDDE_*| values above */
 
 	int html_for_Inform_application;
 	int images_copy;
@@ -130,7 +129,6 @@ settings_block *Instructions::clean_slate(void) {
 	settings->format = HTML_FORMAT;
 	settings->XHTML = FALSE;
 	settings->javascript = FALSE;
-	settings->javascript_paste_method = PASTEMODE_none;
 
 	settings->html_for_Inform_application = FALSE;
 	settings->images_copy = FALSE;
@@ -442,12 +440,6 @@ taste). In a multiple-line value, each line is terminated with a newline.
 	else if (Str::eq_wide_string(key, L"inform_definitions_mode")) {
 		settings->inform_definitions_mode = Instructions::set_yn(key, val, tfp); }
 	else if (Str::eq_wide_string(key, L"javascript")) { settings->javascript = Instructions::set_yn(key, val, tfp); }
-	else if (Str::eq_wide_string(key, L"javascript_paste_method")) {
-		if (Str::eq_wide_string(val, L"none")) { settings->javascript_paste_method = PASTEMODE_none; }
-		else if (Str::eq_wide_string(val, L"Andrew")) { settings->javascript_paste_method = PASTEMODE_Andrew; }
-		else if (Str::eq_wide_string(val, L"David")) { settings->javascript_paste_method = PASTEMODE_David; }
-		else Errors::in_text_file("no such Javascript paste mode", tfp);
-	}
 	else if (Str::eq_wide_string(key, L"link_to_extensions_index")) {
 		settings->link_to_extensions_index = Str::duplicate(val); }
 	else if (Str::eq_wide_string(key, L"manifest_leafname")) { settings->manifest_leafname = Str::duplicate(val); }
@@ -481,7 +473,6 @@ taste). In a multiple-line value, each line is terminated with a newline.
 @<Reconcile any conflicting instructions@> =
 	if (settings->wrapper == WRAPPER_epub) {
 		settings->javascript = FALSE;
-		settings->javascript_paste_method = PASTEMODE_none;
 		if (settings->examples_mode == EXMODE_openable_internal) {
 			settings->examples_mode = EXMODE_open_internal;
 		}
@@ -492,9 +483,6 @@ taste). In a multiple-line value, each line is terminated with a newline.
 		settings->XHTML = TRUE;
 		settings->ebook = Epub::new(I"untitled ebook", "");
 	}
-
-	if (settings->javascript_paste_method != PASTEMODE_none)
-		settings->javascript = TRUE;
 
 	if (settings->examples_granularity == SAME_AS_MAIN_GRANULARITY)
 		settings->examples_granularity = settings->granularity;
