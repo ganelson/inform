@@ -5,13 +5,15 @@
 -set CLINKER 'set-me-to-some-c-linker-please'
 -set EXESUFFIX ''
 -set MAKEFLAGS '-s'
+-set LINKFLAGS ''
 -if MacOS -set CCOMPILER 'clang -g -std=c11 -ferror-limit=10000 -Wno-unused-value -c'
 -if MacOS -set CLINKER   'clang -g -ferror-limit=10000'
 -if Windows -set CCOMPILER 'x86_64-w64-mingw32-clang -g -std=c11 -ferror-limit=10000 -Wno-unused-value -c'
 -if Windows -set CLINKER   'x86_64-w64-mingw32-clang -g -ferror-limit=10000'
 -if Windows -set EXESUFFIX '.exe'
 -if linux -set CCOMPILER 'gcc -g -std=c11 -fmax-errors=10000 -c'
--if linux -set CLINKER   'gcc -g -lm'
+-if linux -set CLINKER   'gcc -g'
+-if linux -set LINKFLAGS '-lm -pthread'
 -if linux -set MAKEFLAGS '-s --no-print-directory'
 
 -case			[Diagnostics] 'inform7/Tests/GenerateDiagnostics-G.txt'
@@ -137,7 +139,7 @@
 		step: `$$CCOMPILER -o $OFILE $COUT -I $I7CLIB >$CCCONSOLE 2>&1
 		or: 'failed to compile C' $CCCONSOLE
 
-		step: `$$CLINKER -o $STORYFILE $OFILE >$LINKCONSOLE 2>&1
+		step: `$$CLINKER -o $STORYFILE $OFILE `$$LINKFLAGS >$LINKCONSOLE 2>&1
 		or: 'failed to link C' $LINKCONSOLE
 	
 		set: $A = $PATH/_Results_Actual/$CASE.txt
@@ -303,7 +305,7 @@
 		step: `$$CCOMPILER -o $OFILE $COUT -I $I7CLIB >$CCCONSOLE 2>&1
 		or: 'failed to compile C' $CCCONSOLE
 
-		step: `$$CLINKER -o $STORYFILE $OFILE >$LINKCONSOLE 2>&1
+		step: `$$CLINKER -o $STORYFILE $OFILE `$$LINKFLAGS >$LINKCONSOLE 2>&1
 		or: 'failed to link C' $LINKCONSOLE
 	
 		set: $A = $PATH/_Results_Actual/$CASE.txt
