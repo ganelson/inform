@@ -11,15 +11,10 @@ Inform application.
 
 This is done with Javascript which looks something like this:
 = (text)
-	var myProject = external.Project;
+	var myProject = window.Project;
 	myProject.selectView('source');
 	myProject.pasteCode('Trying Taking Manhattan');
 =
-Thus for Windows: for MacOS, the same code but |window.Project| rather
-than |external.Project|. Several details unfortunately differ on Windows,
-so there are two implementations below: one used if |WINDOWS_JAVASCRIPT| is
-defined, one if not. (See //foundation: Windows Platform// for where this
-is set.)
 
 @ The challenges here are that (a) the code to be pasted may be, say, as much
 as 5K in size, and that (b) it needs to include some special characters,
@@ -77,13 +72,9 @@ void PasteButtons::put_code_char(OUTPUT_STREAM, int c) {
 
 @h Buttons.
 The button is simply an image with a link using the |javascript:| protocol
-to call a suitable function; on Windows we make a one-off script for each
-paste to avoid problems when the code is too long to pass as a Javascript
-argument. (These concerns may now have become obsolete; Windows browsers
-have improved immensely since 2007.)
+to call a suitable function.
 
 =
-int javascript_fn_counter = 1000;
 void PasteButtons::paste_W(OUTPUT_STREAM, wording W) {
 	PasteButtons::paste_inner(OUT, Wordings::first_wn(W), Wordings::last_wn(W), NULL);
 }
@@ -91,31 +82,14 @@ void PasteButtons::paste_text(OUTPUT_STREAM, text_stream *alt_stream) {
 	PasteButtons::paste_inner(OUT, -1, -1, alt_stream);
 }
 void PasteButtons::paste_inner(OUTPUT_STREAM, int from, int to, text_stream *alt_stream) {
-	#ifndef WINDOWS_JAVASCRIPT /* MacOS style, with long function arguments allowed in links */
-		TEMPORARY_TEXT(link)
-		WRITE_TO(link, "href=\"javascript:pasteCode(");
-		PasteButtons::argument(link, from, to, alt_stream);
-		WRITE_TO(link, ")\"");
-		HTML_OPEN_WITH("a", "%S", link);
-		DISCARD_TEXT(link)
-		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/paste.png");
-		HTML_CLOSE("a");
-	#endif
-
-	#ifdef WINDOWS_JAVASCRIPT /* Windows style, with long function arguments in links unreliable */
-		WRITE("<script language=\"JavaScript\">\n");
-		WRITE("function pasteCode%d(code) {\n", javascript_fn_counter); INDENT;
-		WRITE("var myProject = project();\n\n");
-		WRITE("myProject.selectView('source');\n");
-		WRITE("myProject.pasteCode(");
-		OUTDENT; PasteButtons::argument(OUT, from, to, alt_stream);
-		WRITE(");\n");
-		WRITE("}\n");
-		WRITE("</script>\n");
-		HTML_OPEN_WITH("a", "href=\"javascript:pasteCode%d()\"", javascript_fn_counter++);
-		HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/paste.png");
-		HTML_CLOSE("a");
-	#endif
+	TEMPORARY_TEXT(link)
+	WRITE_TO(link, "href=\"javascript:pasteCode(");
+	PasteButtons::argument(link, from, to, alt_stream);
+	WRITE_TO(link, ")\"");
+	HTML_OPEN_WITH("a", "%S", link);
+	DISCARD_TEXT(link)
+	HTML_TAG_WITH("img", "border=0 src=inform:/doc_images/paste.png");
+	HTML_CLOSE("a");
 }
 
 @ In the following, the source of the text can be either a range of words
