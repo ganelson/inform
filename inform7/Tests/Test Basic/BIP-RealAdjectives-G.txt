@@ -14,5 +14,3 @@ To begin:
 	assay R;
 	let R2 be -1.0 divided by 0.0;
 	assay R2;
-	let R3 be the real square root of -1;
-	assay R3;
