@@ -238,7 +238,7 @@ varieties, which is rather a lot, but although some combinations are very
 rare (edible lit pushable between rooms scenery is not met with often)
 this flexibility is helpful in mitigating the rigidity of the kinds
 structure, given that we have single inheritance of kinds. Note that,
-except for "lit", these are all really to do whether and how people
+except for "lit", these are all really to do with whether and how people
 can move things around -- even edibility, which is the ability to be removed
 from the world model entirely.
 
@@ -659,7 +659,7 @@ than HER or IT). There has to be some convention here, and in a case where
 we don't know our linguistic ground, opting for the least surprising
 behaviour seems wisest.
 
-The Inform compiler automatically applies the either-or prpperty |animate|
+The Inform compiler automatically applies the either-or property |animate|
 and the valued property |before| to a person, giving that value as just
 |NULL|. This allows any person to become the protagonist during play
 (using I6's |ChangePlayer| routine).

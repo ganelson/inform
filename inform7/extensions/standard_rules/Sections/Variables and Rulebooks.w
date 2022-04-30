@@ -639,7 +639,7 @@ conditions like "the black door has been open" by continuously measuring
 the present to see if the black door is open now, and making a note for
 future reference if it is. But of course it's impossible for any computer
 to continuously do anything, and besides, Inform has other calls on it.
-What in fact happens is the Inform performs these measurements at "chronology
+What in fact happens is that Inform performs these measurements at "chronology
 points", which are strategic moments during play, and this is one of them.
 
 =

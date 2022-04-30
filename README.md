@@ -1,6 +1,6 @@
 # Inform 7
 
-v10.1.0-beta+6U93 'Krypton' (28 April 2022)
+v10.1.0-beta+6U94 'Krypton' (30 April 2022)
 
 ## About Inform 7
 
@@ -22,12 +22,6 @@ web page to this repository: &#9733; [Inform: The Program](https://ganelson.gith
 Writing and presenting Inform as a literate program was beyond the capabilities
 of existing LP software, so a new system for LP called Inweb
 has been spun off from Inform, and that has [its own repository](https://github.com/ganelson/inweb).
-
-__Disclaimer__. Because this is a private repository (until the next public
-release of Inform, when it will open), its GitHub pages server cannot be
-enabled yet. As a result links marked &#9733; lead only to raw HTML
-source, not to served web pages. They can in the mean time be browsed offline
-as static HTML files stored in "docs".
 
 ## Licence and copyright
 
@@ -136,8 +130,7 @@ trees and hedges."** (Michael Frayn)
 Inform is not a single program, but an assemblage of programs and resources.
 Some, including the inform7 compiler itself, are "literate programs", also
 called "webs". The notation &#9733; marks these, and links are provided to
-their human-readable forms. (This will be enabled when the repository
-becomes public: GitHub Pages does not work on private repositories.)
+their human-readable forms.
 
 ### Source for command-line tools
 
