@@ -273,7 +273,7 @@ extensions: {components type: web set: extensions}$({SYMBOL}TANGLED) {end-compon
 
 {components type: web set: extensions}
 $({SYMBOL}TANGLED): $({SYMBOL}WEB)/Contents.w $({SYMBOL}WEB)/Sections/*.w
-	{tangle-extension name: SYMBOL}
+	{tangle-extension name: {SYMBOL}}
 
 {end-components}
 
@@ -623,8 +623,7 @@ integration: \
 		transferkits \
 		transferinternals \
 		transferdocumentation \
-		transferoutcomepages \
-		transfertemplates
+		transferoutcomepages
 
 .PHONY: forceintegration
 forceintegration: \
