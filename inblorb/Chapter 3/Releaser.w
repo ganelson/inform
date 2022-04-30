@@ -545,7 +545,7 @@ application, called |openUrl|.
 	Placeholders::append_to(ph, I"<p><center>");
 	if (launch_website) {
 		Placeholders::append_to(ph,
-			Str::literal(L"<a href=\"[JAVASCRIPTPRELUDE]"
+			Str::literal(L"<a href=\"javascript:window.Project."
 				"openUrl('file://[**MATERIALSFOLDERPATHOPEN]/Release/index.html')\">"
 				"<img src='inform:/outcome_images/browse.png' border=0></a> home page"));
 	}
@@ -553,7 +553,7 @@ application, called |openUrl|.
 		Placeholders::append_to(ph, I" : ");
 	if (launch_play)
 		Placeholders::append_to(ph,
-			Str::literal(L"<a href=\"[JAVASCRIPTPRELUDE]"
+			Str::literal(L"<a href=\"javascript:window.Project."
 				L"openUrl('file://[**MATERIALSFOLDERPATHOPEN]/Release/play.html')\">"
 				L"<img src='inform:/outcome_images/browse.png' border=0></a> play-in-browser page"));
 	Placeholders::append_to(ph, I"</center></p>");

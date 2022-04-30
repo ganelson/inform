@@ -11,7 +11,6 @@ values here aren't actually correct for any platform as they stand: in the
 
 =
 wchar_t *FONT_TAG = L"size=2"; /* contents of a |<font>| tag */
-wchar_t *JAVASCRIPT_PRELUDE = L"javascript:window.Project."; /* calling prefix */
 int escape_openUrl = FALSE, escape_fileUrl = FALSE;
 int reverse_slash_openUrl = FALSE, reverse_slash_fileUrl = FALSE;
 
@@ -143,18 +142,10 @@ the general public: the results page usually called |StatusCblorb.html|
 (though this depends on how the |status| command is used in the blurb).
 The results page is intended only for viewing within the Inform user
 interface, and it expects to have two Javascript functions available,
-|openUrl| and |fileUrl|. Because the object structure has needed to be
-different for the Windows and OS X user interface implementations of
-Javascript, we abstract the prefix for these function calls into the
-|JAVASCRIPT_PRELUDE|. Thus
-= (text)
-	<a href="***openUrl">...</a>
-=
-causes a link, when clicked, to call the |openUrl| function, where |***|
-is the prelude; similarly for |fileUrl|. The first opens a URL in the local
-operating system's default web browser, the second opens a file (identified
-by a |file:...| URL) in the local operating system. These two URLs may
-need treatment to handle special characters:
+|openUrl| and |fileUrl|. The first opens a URL in the local operating
+system's default web browser, the second opens a file (identified by a
+|file:...| URL) in the local operating system. These two URLs may need
+treatment to handle special characters:
 
 (a) "escaping", where spaces in the URL are escaped to |%2520|, which
 within a Javascript string literal produces |%20|, the standard way to
@@ -170,7 +161,6 @@ since backslashes are escape characters in Javascript literals.
 		escape_openUrl = TRUE; /* we want |openUrl| to escape, and |fileUrl| not to */
 	#endif
 	#ifdef WINDOWS_JAVASCRIPT
-		JAVASCRIPT_PRELUDE = L"javascript:external.Project.";
 		reverse_slash_openUrl = TRUE; reverse_slash_fileUrl = TRUE;
 	#endif
 
