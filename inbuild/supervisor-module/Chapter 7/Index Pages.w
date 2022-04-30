@@ -414,7 +414,7 @@ the usual ones seen in Mac OS X applications such as iTunes.
 	}
 	WRITE("&nbsp;&nbsp;");
 	HTML_OPEN_WITH("span", "class=\"smaller\"");
-	WRITE("%d extension%s", cu+cn, (cu+cn==1)?"":"s");
+	WRITE("(%d extension%s", cu+cn, (cu+cn==1)?"":"s");
 	if ((cu == 0) && (cn == 1)) WRITE(", unused");
 	else if ((cu == 0) && (cn == 2)) WRITE(", both unused");
 	else if ((cu == 0) && (cn > 2)) WRITE(", all unused");
@@ -604,9 +604,18 @@ void ExtensionIndex::write_icons(OUTPUT_STREAM, compatibility_specification *C) 
 		else
 			everything = FALSE;
 	if (something == FALSE) WRITE("none");
-	if (everything == FALSE)
+	else if (everything == FALSE) {
+		WRITE(" ");
+		dictionary *shown_already = Dictionaries::new(16, TRUE);
 		LOOP_OVER(VM, target_vm)
-			if ((Compatibility::test(C, VM)) && (TargetVMs::debug_enabled(VM)))
-				ExtensionIndex::plot_icon(OUT, VM);
+			if (Compatibility::test(C, VM)) {
+				text_stream *icon = VM->VM_image;
+				if (Str::len(icon) > 0) {
+					if (Dictionaries::find(shown_already, icon) == NULL) {
+						ExtensionIndex::plot_icon(OUT, VM);
+						WRITE_TO(Dictionaries::create_text(shown_already, icon), "X");
+					}
+				}
+			}
+	}
 }
-
