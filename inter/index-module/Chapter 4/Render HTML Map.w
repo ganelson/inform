@@ -831,17 +831,11 @@ and south ends.
 	HTML_OPEN("tr");
 	HTML_OPEN("td");
 	HTML::begin_colour(OUT, I"c0c0c0");
-	#ifdef HTML_MAP_FONT_SIZE
-	HTML_OPEN_WITH("span", "style=\"font-size:%dpx;\"", HTML_MAP_FONT_SIZE);
-	#endif
 	HTML_OPEN("center");
 	HTML_OPEN("i");
 	WRITE("%d", y-session->calc.Universe.corner0.y+1);
 	HTML_CLOSE("i");
 	HTML_CLOSE("center");
-	#ifdef HTML_MAP_FONT_SIZE
-	HTML_CLOSE("span");
-	#endif
 	HTML::end_colour(OUT);
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
@@ -981,14 +975,8 @@ void HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass, index
 	if ((pass == 1) && (I == FauxInstances::benchmark(session))) HTML_OPEN("b");
 	TEMPORARY_TEXT(abbrev)
 	WRITE_TO(abbrev, "%S", I->abbrev);
-	#ifdef HTML_MAP_FONT_SIZE
-	HTML_OPEN_WITH("span", "style=\"font-size:%dpx;\"", HTML_MAP_FONT_SIZE);
-	#endif
 	LOOP_THROUGH_TEXT(pos, abbrev)
 		HTML::put(OUT, Str::get(pos));
-	#ifdef HTML_MAP_FONT_SIZE
-	HTML_CLOSE("span");
-	#endif
 	if ((pass == 1) && (I == FauxInstances::benchmark(session))) HTML_CLOSE("b");
 	if (pass == 1) { HTML::end_colour(OUT); HTML_CLOSE("a"); }
 	DISCARD_TEXT(abbrev)
