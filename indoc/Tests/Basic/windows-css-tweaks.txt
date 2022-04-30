@@ -1,3 +1,0 @@
-css: body.paper + {
-	font-size: 112.5%;
-}

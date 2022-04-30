@@ -353,11 +353,7 @@ void HTMLUtilities::paste_script(OUTPUT_STREAM, text_stream *content, int code_n
 	else WRITE("%d(code", code_num);
 	WRITE(") {\n");
 
-	if (indoc_settings->javascript_paste_method == PASTEMODE_Andrew)
-		WRITE("    var myProject = window.Project;\n");
-	if (indoc_settings->javascript_paste_method == PASTEMODE_David)
-		WRITE("    var myProject = external.Project;\n");
-	WRITE("\n");
+	WRITE("    var myProject = window.Project;\n");
 	WRITE("    myProject.selectView('source');\n");
 	WRITE("    myProject.pasteCode(");
 	if (Str::len(content) == 0) { WRITE("code"); }
@@ -373,12 +369,7 @@ void HTMLUtilities::create_script(OUTPUT_STREAM, text_stream *content, int code_
 	else WRITE("%d(code", code_num);
 	WRITE(", title) {\n");
 
-	if (indoc_settings->javascript_paste_method == PASTEMODE_Andrew)
-		WRITE("    var myProject = window.Project;\n");
-	if (indoc_settings->javascript_paste_method == PASTEMODE_David)
-		WRITE("    var myProject = external.Project;\n");
-
-	WRITE("\n");
+	WRITE("    var myProject = window.Project;\n");
 	WRITE("    myProject.createNewProject(");
 	if (Str::len(content) == 0) WRITE("title");
 	else WRITE("'%S'", titling);

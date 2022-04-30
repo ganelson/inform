@@ -490,19 +490,17 @@ osx_app {
 	support_creation = yes
 	retina_images = yes
 	declare: OSX
-	javascript_paste_method = Andrew
 	destination = ../Inform.app/Contents/Resources/English.lproj/
 }
 
 windows_app {
 	# HTML documentation for the Windows app
 	follow: in-application-instructions.txt
-	follow: windows-css-tweaks.txt
 	assume_Public_Library = yes
 	support_creation = yes
+	retina_images = yes
 	suppress_fonts = yes
 	declare: Windows
-	javascript_paste_method = David
 	destination = ../../Build/Documentation/
 }
 
@@ -511,8 +509,7 @@ linux_app {
 	# This is for command-line Linux, so there's no in-application tweaking
 	declare: Linux
 	assume_Public_Library = yes
-    javascript_paste_method = Andrew
-    destination = i7/Documentation/
+	destination = i7/Documentation/
 	images_copy = no
 }
 
@@ -521,17 +518,15 @@ gnome_app {
 	follow: in-application-instructions.txt
 	assume_Public_Library = yes
 	declare: GNOME
-	javascript_paste_method = David
 	destination = ../inform7-ide/src/inform/
 }
 
 gnome_flatpak_app {
-    # HTML documentation installed to a different location for Flatpak builds
-    follow: in-application-instructions.txt
-    assume_Public_Library = yes
-    declare: GNOME
-    javascript_paste_method = David
-    destination = /app/tmp/inform
+	# HTML documentation installed to a different location for Flatpak builds
+	follow: in-application-instructions.txt
+	assume_Public_Library = yes
+	declare: GNOME
+	destination = /app/tmp/inform
 }
 
 website {

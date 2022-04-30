@@ -10,7 +10,6 @@ definitions_filename = definitions.html
 format = HTML
 html_for_Inform_application = no
 javascript = yes
-javascript_paste_method = none
 wrapper = none
 navigation = roadsign
 toc_granularity = 3

@@ -43,7 +43,6 @@ typedef struct formatted_file {
 @ Miscellaneously:
 
 =
-int Javascript_paste_count = 0; /* used to make unique ID numbers for paste icons */
 int index_to_examples = FALSE; /* used to index examples to particular sections */
 int unique_code_pos_counter = 0; /* used to uniquely ID code samples */
 example *code_example = NULL;
@@ -405,15 +404,10 @@ see below.
 	Str::copy(raw, mr.exp[0]);
 	TEMPORARY_TEXT(right)
 	Str::copy(right, mr.exp[1]);
- 	if (indoc_settings->javascript_paste_method == PASTEMODE_none) {
+	if (indoc_settings->javascript == FALSE) {
  		WRITE_TO(raw, "%S", right);
  	} else {
- 		WRITE_TO(raw, "<a href=\"javascript:pasteCode");
-		if (indoc_settings->javascript_paste_method == PASTEMODE_David) {
- 			Javascript_paste_count++;
- 			WRITE_TO(raw, "%d", Javascript_paste_count);
- 		}
- 		WRITE_TO(raw, "(");
+ 		WRITE_TO(raw, "<a href=\"javascript:pasteCode(");
  		TEMPORARY_TEXT(J_text)
  		@<Determine the quoted J-text@>;
  		TEMPORARY_TEXT(titling)
@@ -426,19 +420,15 @@ see below.
  			}
  		}
  		Renderer::apply_Inform_escape_characters(titling);
- 		if (indoc_settings->javascript_paste_method == PASTEMODE_Andrew)
- 			WRITE_TO(raw, "'%S\\n'", J_text);
+ 		WRITE_TO(raw, "'%S\\n'", J_text);
  		WRITE_TO(raw, ")\">");
  		if (indoc_settings->retina_images) HTMLUtilities::image_element_scaled(raw, I"paste@2x.png", 13, 13);
  		else HTMLUtilities::image_element(raw, I"paste.png");
  		WRITE_TO(raw, "</a> ");
  		if ((indoc_settings->support_creation) && (Str::len(titling) > 0)) {
  			WRITE_TO(raw, "<a href=\"javascript:createNewProject");
- 			if (indoc_settings->javascript_paste_method == PASTEMODE_David)
- 				WRITE_TO(raw, "%d", Javascript_paste_count);
  			WRITE_TO(raw, "(");
- 			if (indoc_settings->javascript_paste_method == PASTEMODE_Andrew)
- 				WRITE_TO(raw, "'%S\\n', '%S'", J_text, titling);
+ 			WRITE_TO(raw, "'%S\\n', '%S'", J_text, titling);
  			WRITE_TO(raw, ")\">");
  			if (indoc_settings->retina_images) {
  				HTMLUtilities::image_element_scaled(raw, I"create@2x.png", 26, 13);
@@ -449,11 +439,6 @@ see below.
 			WRITE_TO(raw, "&nbsp;&nbsp; ");
  		}
   		WRITE_TO(raw, "%S", right);
- 		if ((indoc_settings->javascript) &&
- 			(indoc_settings->javascript_paste_method == PASTEMODE_David)) {
- 			HTMLUtilities::paste_script(OUT, J_text, Javascript_paste_count);
- 			HTMLUtilities::create_script(OUT, J_text, Javascript_paste_count, titling);
- 		}
  	}
 
 @ The rawtext is doing something like this:
@@ -717,8 +702,7 @@ with a |<head>| we make ourselves.
  		HTML::end_head(OUT);
  		HTML::begin_body(OUT, I"paper papertint");
  	}
- 	if ((indoc_settings->javascript) &&
- 		(indoc_settings->javascript_paste_method == PASTEMODE_Andrew)) {
+ 	if (indoc_settings->javascript) {
  		HTMLUtilities::paste_script(OUT, NULL, 0);
  		HTMLUtilities::create_script(OUT, NULL, 0, NULL);
  	}
