@@ -221,7 +221,7 @@ building V is itself a use of W, and therefore of X. So we always enable the
 it would be redundant to recreate it.
 
 Note that equal timestamps force rebuilding. File timestamping is quite coarse
-on some systems, so equal timeatamps might only mean that the two files were
+on some systems, so equal timestamps might only mean that the two files were
 created during the same second.
 
 @<Decide based on timestamps@> =

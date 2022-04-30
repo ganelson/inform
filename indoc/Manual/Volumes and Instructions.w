@@ -260,7 +260,7 @@ is cosmetic, and provides extra styling on lines of documentation giving the
 syntax for Inform phrases.
 
 |javascript| can be |yes| or |no|. The default is |yes|. This indicates
-whetber Indoc is allowed to compile Javascript, or has to stick to inactive
+whether Indoc is allowed to compile Javascript, or has to stick to inactive
 HTML.
 
 |javascript_paste_method| can be |none|, |Andrew| or |David|. The default

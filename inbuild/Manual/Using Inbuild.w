@@ -184,13 +184,13 @@ will do: they mean that this is (the best) version Inbuild has access to.
 They're given because two different versions of the same extension might
 make different choices about which other extensions to include. We can say
 that version 3 of Menus wants to have Basic Screen Effects, but maybe someday
-tbere will be a version 4 which doesn't need it.
+there will be a version 4 which doesn't need it.
 
 Another issue to watch out for is that a copy may use different other copies
 when compiled to different virtual machines. For example, an extension can
 contain a heading of material "for Glulx only", and that heading might
 comtain a line which includes another extension X. If so, then we use X on
-Glulx but not on other architectures. We can also flag materual as being for
+Glulx but not on other architectures. We can also flag material as being for
 release only, or for debugging only.
 
 Inbuild accepts the same command-line options as |inform7| does to specify
@@ -230,14 +230,14 @@ but also how to perform that build.
 
 As noted above, not everything needs building. Extensions do not, in particular,
 so running |-build| on one will do nothing. Kits do need building: what this
-does is to "assimilate" the Unform 6-notation source files inside the kit into
+does is to "assimilate" the Inform 6-notation source files inside the kit into
 binary files of Inter, one for each possible architecture.
 
 But building is mostly done with projects. If we run:
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -build Example.inform
 =
-then Inbuild will first build everthing needed to build the Example story
+then Inbuild will first build everything needed to build the Example story
 file, including everything needed to use the things needed to build it, and
 so on; and then will build Example itself. As with the Unix utility |make|,
 this is an incremental process, and looks at the timestamps of files to see
@@ -275,7 +275,7 @@ specify path |P| as the home of the other Intools.
 
 @h Specifying what to act on.
 In all of the examples above, Inbuild is given just one copy to act on.
-(That action may end up invplving lots of other copies, but only one is
+(That action may end up involving lots of other copies, but only one is
 mentioned on the command line.) In fact it's legal to give a list of
 copies to work on, one at a time, except that only one of those copies
 can be an Inform project. Multiple extensions, or kits, are fine.
@@ -341,7 +341,7 @@ Other subdirectories can also exist, and Inbuild ignores those. The above
 five containers hold website templates (used by Inblorb), Inter pipelines,
 kits, language definitions, and extensions. In the case of extensions, where
 there may be very many in total, a further level of subdirectory is used
-for the authpr's name. Thus:
+for the author's name. Thus:
 = (text)
 	Extensions/Emily Short/Locksmith.i7x
 =

@@ -25,8 +25,8 @@ inbuild_nest *Nests::new(pathname *P) {
 }
 
 @ Nests used by the Inform and Inbuild tools are tagged with the following
-comstamts. (There used to be quite a good joke here, but refactoring of the
-code removed its premiss. Literate programming is like that sometimes.)
+constants. (There used to be quite a good joke here, but refactoring of the
+code removed its premise. Literate programming is like that sometimes.)
 
 The sequence of the following enumerated values is very significant --
 see below for why. Lower-tag-numbered origins are better than later ones.

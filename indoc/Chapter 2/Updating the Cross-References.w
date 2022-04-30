@@ -18,7 +18,7 @@ void Updater::add_reference_symbol(text_stream *symbol_name, volume *V, section 
 }
 
 @h Cross-references file.
-Until January 2020, Inform managed cross-references to its dcumentation in a
+Until January 2020, Inform managed cross-references to its documentation in a
 clumsy way, with explicit sentences such as:
 = (text as Indoc)
 	Document kind_person at doc45 "3.17" "Men, women and animals".
