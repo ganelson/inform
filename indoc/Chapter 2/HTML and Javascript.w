@@ -353,7 +353,7 @@ void HTMLUtilities::paste_script(OUTPUT_STREAM, text_stream *content, int code_n
 	else WRITE("%d(code", code_num);
 	WRITE(") {\n");
 
-	WRITE("    var myProject = window.Project;\n");
+	WRITE("    var myProject = window.Project;\n\n");
 	WRITE("    myProject.selectView('source');\n");
 	WRITE("    myProject.pasteCode(");
 	if (Str::len(content) == 0) { WRITE("code"); }
@@ -369,7 +369,7 @@ void HTMLUtilities::create_script(OUTPUT_STREAM, text_stream *content, int code_
 	else WRITE("%d(code", code_num);
 	WRITE(", title) {\n");
 
-	WRITE("    var myProject = window.Project;\n");
+	WRITE("    var myProject = window.Project;\n\n");
 	WRITE("    myProject.createNewProject(");
 	if (Str::len(content) == 0) WRITE("title");
 	else WRITE("'%S'", titling);
