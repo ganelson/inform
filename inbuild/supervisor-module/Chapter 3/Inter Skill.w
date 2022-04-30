@@ -153,7 +153,7 @@ int InterSkill::code_generate_internally(build_skill *skill, build_step *S,
 		Projects::list_of_attachment_instructions(project), S->for_vm, FALSE);
 
 	LOG("Back end elapsed time: %dcs\n",
-		((int) (clock() - back_end)) / (CLOCKS_PER_SEC/100));
+		((int) (clock() - back_end)) / ((int) (CLOCKS_PER_SEC/100)));
 	#ifdef CORE_MODULE
 	Hierarchy::log();
 	return TRUE;
