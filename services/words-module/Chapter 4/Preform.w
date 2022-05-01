@@ -124,7 +124,7 @@ an internal NT, or try all possible productions for a regular one.
 @h Middle level.
 So from here on down we look only at the regular case, where we're parsing the
 text against a production. Recall that a production's NTIC has the "ditto flag"
-if it is the same constraint as the previous productions's NTIC; in which
+if it is the same constraint as the previous production's NTIC; in which
 case we have no need to recompute |violates|.
 
 @<Try to match to a production@> =

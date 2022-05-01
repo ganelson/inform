@@ -428,7 +428,7 @@ int TargetVMs::compatible_with(target_vm *VM, text_stream *token) {
 	return FALSE;
 }
 
-@h Ootions.
+@h Options.
 Final code-generators can call this to see what special requests were made.
 
 =

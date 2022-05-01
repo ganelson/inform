@@ -137,7 +137,7 @@ written as |k| and |l| (note lower case). So, for example, |list of k|.
 
 |terms| is used only for proper constructors. For a unary constructor, it will
 give one term; for binary, two terms, separated by a comma. Each term should
-be |covariant| or |contravariant|, with an ootional keyword after it:
+be |covariant| or |contravariant|, with an optional keyword after it:
 (*) |optional| means that it is legal to name the constructor without naming
 this term. For example, "activity" is a legal way to say "activity on nothing".
 (*) |list| means that it is legal to give a list of kinds here, in brackets

@@ -131,7 +131,7 @@ and |prime(n)|.
 @h Unary predicates.
 The //calculus// module aims to be agnostic about what unary predicates will
 exist. They are grouped into "families" -- see //Unary Predicate Families//
-for details -- which loosely group them by implementation. So, for exanple,
+for details -- which loosely group them by implementation. So, for example,
 Inform has a family of unary predicates in the form |calling='whatever'(x)|
 which assert that |x| represents something of a given name. But //calculus//
 is not concerned with the details. Only one family is built in:

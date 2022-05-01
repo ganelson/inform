@@ -481,7 +481,7 @@ rather than the next number counting upwards; see //About Preform//.
 			"too many tokens on production for nonterminal");
 	}
 
-@ Here we porse what is, to the Lexer, a single word (at word number |wn|),
+@ Here we parse what is, to the Lexer, a single word (at word number |wn|),
 but which might actually be a row of possibilities divided by slashes:
 for example, |onions/shallots|.
 

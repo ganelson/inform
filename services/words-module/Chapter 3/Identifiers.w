@@ -37,7 +37,7 @@ useful for other projects.
 
 The idea here is that we want an identifier based on a natural language
 wording, but which passed the above validity tests, and which does not lead
-tp namespace collisions. Such identifiers are composed in a pattern which
+to namespace collisions. Such identifiers are composed in a pattern which
 uses an identifying letter (e.g., A for Action), a unique ID number
 (preventing name-clashes) and then a truncated alphanumeric-safe form of
 the words used in the textual description, if any. For example, an object
