@@ -76,7 +76,7 @@ error message and return |FALSE|. If this callback is not provided, all non-empt
 names are acceptable. See //Adjectives::declare//.
 
 (*) |ALLOW_VERB_IN_ASSERTIONS_LINGUISTICS_CALLBACK| and |ALLOW_VERB_LINGUISTICS_CALLBACK|
-give the parent control over which forms of verbs are allowed: for examole, //core//
+give the parent control over which forms of verbs are allowed: for example, //core//
 allows them in assertions only in the third person (singular or plural), whereas
 it allows them in any form in non-assertion contexts. See
 //VerbUsages::register_voices_of_verb//.

@@ -151,7 +151,7 @@ void Calculus::Schemas::append(i6_schema *sch, char *fmt, ...) {
 
 @ We recognise only a few escapes here: |%%|, a literal percentage sign; |%d|,
 an integer; |%s|, a C string; |%S|, a text stream; and three which are higher-level:
-(a) |%k| takes a |kind| parameter and exoands to its weak ID;
+(a) |%k| takes a |kind| parameter and expands to its weak ID;
 (b) |%L| takes a |local_variable| and expands to its identifier;
 (c) |%n| takes an |inter_name|, which expands more cautiously in a way which
 stores the actual |inter_name| reference: it is possible for two different

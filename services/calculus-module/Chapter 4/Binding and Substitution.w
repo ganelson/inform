@@ -224,7 +224,7 @@ the conjunction of the two propositions had 26 variables.)
 	if (k == 26) next_unused = 25; else next_unused = k;
 
 @h Getting rid of free variables.
-Propositions with free variables are vague, and Inforn tries to minimise its
+Propositions with free variables are vague, and Inform tries to minimise its
 use of them. Whole verb phrases such as "the tree is in the Courtyard" can in
 general become propositions with no free variables, while descriptions such as
 "open containers which are in lighted rooms" will become propositions in which
@@ -256,7 +256,7 @@ pcalc_prop *Binding::bind_existential(pcalc_prop *prop,
 }
 
 @ The second way is "substitution", for use when we do know the value of the
-free variable we want to remove. We replace every mention of it with sone
+free variable we want to remove. We replace every mention of it with some
 other term: but as we shall see, this is trickier than it seems.
 
 We begin with two utility routines to substitute into the variable "underneath"

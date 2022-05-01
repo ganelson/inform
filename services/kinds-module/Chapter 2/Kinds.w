@@ -535,8 +535,8 @@ void Kinds::mark_vocabulary_as_kind(vocabulary_entry *ve, kind *K) {
 }
 
 @h From context.
-Sometimes we need to kmow the current values of the 26 kind variables, A
-to Z: that depemds on a much wider context than the |kinds| module can see,
+Sometimes we need to know the current values of the 26 kind variables, A
+to Z: that depends on a much wider context than the |kinds| module can see,
 so we need the client to help us. |v| is in the range 1 to 26. Returning
 |NULL| means there is no current meaning; so if the client provides no
 function to tell us, then all variables are permanently unset.

@@ -4,7 +4,7 @@ Lexical clusters are sets of noun or adjective forms, perhaps multiple
 or in multiple languages, which have in common that they share a meaning.
 
 @h Cluster.
-A cluster is a linked list of declensions, annotated with lingistic roles. For
+A cluster is a linked list of declensions, annotated with linguistic roles. For
 example, the cluster of forms for the common noun "man" might be:
 
 >> man (En, neuter singular), men (En, neuter plural), homme (Fr, masculine singular), hommes (Fr, masculine plural)

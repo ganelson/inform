@@ -273,7 +273,7 @@ int Propositions::is_complex(pcalc_prop *prop) {
 }
 
 @h Primitive operations on propositions.
-Now for some basic operations, as shown in the following examoles:
+Now for some basic operations, as shown in the following examples:
 = (text from Figures/operations.txt as REPL)
 
 Note that the conjunction of A and B renamed the variable |x| in B to |y|,

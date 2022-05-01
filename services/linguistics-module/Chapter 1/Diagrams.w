@@ -2,7 +2,7 @@
 
 To specify standard verb-phrase nodes in the parse tree.
 
-@ This section lays out a sort of specification for what we ultinately want
+@ This section lays out a sort of specification for what we ultimately want
 to turn sentences into: i.e., little sentence diagrams made up of parse nodes.
 We do that with the aid of the //syntax// module. So we must first set up
 some new node types:

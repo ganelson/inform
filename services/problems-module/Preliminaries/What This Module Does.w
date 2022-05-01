@@ -127,7 +127,7 @@ text used by //StandardProblems::sentence_problem//.
 =
 Here the punctuation; |%3| is expected to end with a full stop and |%2| not to.
 
-Finally, the escape |%P| means "poragraph break here", and is used for adding
+Finally, the escape |%P| means "paragraph break here", and is used for adding
 subsequent clarifications to long or complicated problems.
 
 @ //Problems, Level 3// contains functions for standardly-shaped problems, then.

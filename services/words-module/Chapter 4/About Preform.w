@@ -87,7 +87,7 @@ pointer results. For example, you could make a very crude calculator with:
 		<cardinal-number> plus <cardinal-number>  ==> { R[1]+R[2], - }
 =
 Here |R[1]+R[2]| produces a result by composition of the two results of
-the <cardinal-number> nontermimal which occurred when parsing the line.
+the <cardinal-number> nonterminal which occurred when parsing the line.
 So, for example, "seven" matches <arithmetic> with result 7, and "two plus
 three" with result 5.
 

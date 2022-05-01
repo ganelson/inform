@@ -225,7 +225,7 @@ small_word_set *Articles::add(small_word_set *sws, nonterminal *nt, article *a) 
 
 @h English articles.
 So, then, these nonterminals are not parsed by Preform but are instead used
-to stock small word sets above. The fornat is the same as the one used in
+to stock small word sets above. The format is the same as the one used in
 //Pronouns//: rows are cases, within which the sequence is neuter singular,
 neuter plural, masculine singular, masculine plural, feminine singular,
 feminine plural. In English, of course, articles hardly inflect at all,

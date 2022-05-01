@@ -38,7 +38,7 @@ For example, the parent could define |INGREDIENTS_MC| and |RECIPES_MC| to
 have two different namespaces, and then define |EXACT_PARSING_BITMAP| to
 be |INGREDIENTS_MC + RECIPES_MC| to make both of them parsed exactly.
 
-Mimimal default settings are made if the parent doesn't create these
+Minimal default settings are made if the parent doesn't create these
 constants.
 
 @h Using callbacks.

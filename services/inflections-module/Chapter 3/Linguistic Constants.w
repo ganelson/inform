@@ -219,9 +219,9 @@ int Lcon::same_but_for_sense(lcon_ti A, lcon_ti B) {
 @h Axes.
 We can think of a combination of the seven grammatical attributes above as
 being like a position in seven-dimensional space, with each being a coordinate
-on one of these sevem axes.
+on one of these seven axes.
 
-In practice, we're oftem interested in only a few of the seven. Nouns, for
+In practice, we're often interested in only a few of the seven. Nouns, for
 instance, do not have tenses; verbs do not have cases. It's convenient to
 represent the seven axes by the following constants, so that an arbitrary
 sum of these can represent a set of things we're interested in:

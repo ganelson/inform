@@ -38,7 +38,7 @@ localisation_dictionary *Localisation::new(void) {
 a typical entry might be |Index.Pages.Kinds.Caption|. At present, we do not
 take advantage of this to make a more efficient search (one could imagine
 a tree structure of dictionaries): we just use these path-like identifiers
-as keys to a single dictionary. If we ever need really large localisatiom
+as keys to a single dictionary. If we ever need really large localisation
 dictionaries, we might revisit this.
 
 =

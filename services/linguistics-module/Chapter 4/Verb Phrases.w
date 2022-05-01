@@ -248,7 +248,7 @@ we might have |TW| being "is in the green bucket".
 	for (verb_usage *vu = tier->tier_contents; vu; vu = vu->next_within_tier)
 		@<Consider whether this usage is being made at this position@>;
 
-@ We must test whether our verb usage appears at the front of |TW|, thougn for
+@ We must test whether our verb usage appears at the front of |TW|, though for
 efficiency's sake we first test whether the verb has a meaning. (There are
 potentially a great many meaningless verbs, because of the way adaptive text
 is handled in Inform.)

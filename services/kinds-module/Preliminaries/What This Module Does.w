@@ -276,7 +276,7 @@ any, results from performing an arithmetic operation.
 traditional usage of "type constructor", but note that Haskell and some other
 functional languages mean something related but different by this.
 
-[2] So, for examole, Inform acts on text like "A weight is a kind of value." by
+[2] So, for example, Inform acts on text like "A weight is a kind of value." by
 calling //Kinds::new_base//.
 
 [3] Inform's built-in kinds like |number| or |text| all come from such files,
