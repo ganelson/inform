@@ -28,9 +28,9 @@ and others still derive new names from existing ones (for example, turning
 typedef struct inter_name_generator {
 	int ingen;
 	struct text_stream *name_stem;
-	int no_generated; /* relevamt only for |MULTIPLE_INGEN| */
-	struct text_stream *derived_prefix; /* relevamt only for |DERIVED_INGEN| */
-	struct text_stream *derived_suffix; /* relevamt only for |DERIVED_INGEN| */
+	int no_generated; /* relevant only for |MULTIPLE_INGEN| */
+	struct text_stream *derived_prefix; /* relevant only for |DERIVED_INGEN| */
+	struct text_stream *derived_suffix; /* relevant only for |DERIVED_INGEN| */
 } inter_name_generator;
 
 inter_name_generator *InterNames::single_use_generator(text_stream *name) {

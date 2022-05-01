@@ -165,7 +165,7 @@ But here it is not:
 	if (Log::aspect_switched_on(RESOLVING_CONDITIONAL_COMPILATION_DA)) LOG_INDENT;
 
 @ The following can test |#Iftrue S == W| only for non-negative integers |W|. It
-woildn't be too hard to test other cases, but we just don't need to. The standard
+wouldn't be too hard to test other cases, but we just don't need to. The standard
 Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE == 2|.
 
 @<Deal with an IFTRUE@> =
@@ -223,7 +223,7 @@ Inform kits use this only to test |#Iftrue WORDSIZE == 4| or |#Iftrue WORDSIZE =
 	}
 	compile_this = FALSE;
 
-@ That just leaves some dull code to tokenise the directive. E.g., the secomd
+@ That just leaves some dull code to tokenise the directive. E.g., the second
 token of |#Iftrue FROG == 2| is |FROG|; the "rest of text" is |FROG == 2|.
 
 @<Extract second token into ident@> =

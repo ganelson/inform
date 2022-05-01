@@ -227,7 +227,7 @@ aren't such a lot of calls to this function, but instead we make just one and
 re-use it.
 
 The mock generator makes no use of segmentation (see below) except for the
-single temporary segement, which is set to |OUT|.
+single temporary segment, which is set to |OUT|.
 
 =
 code_generation *ad_hoc_generation = NULL;
@@ -410,7 +410,7 @@ void CodeGen::deselect_temporary(code_generation *gen) {
 }
 
 @ The following returns the text stream a generator should write to. Note that
-if it has been "temporarily diverted" then the regiular selection is ignored.
+if it has been "temporarily diverted" then the regular selection is ignored.
 
 =
 text_stream *CodeGen::current(code_generation *gen) {

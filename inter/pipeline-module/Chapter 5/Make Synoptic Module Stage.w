@@ -4,7 +4,7 @@ Creating a top-level module of synoptic resources.
 
 @ At this point the tree contains one module for each compilation unit included
 in the link: which is a fancy way of saying, it contains one module for the
-main source text, ohe for each extension, and one each for each kit included.
+main source text, one for each extension, and one each for each kit included.
 
 We now add one final module, |/main/synoptic|, which contains resources compiled
 together from all of the others.

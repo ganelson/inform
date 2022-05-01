@@ -6,7 +6,7 @@ within these trees.
 @ An //inter_tree// expresses a single program: see //What This Module Does//
 for more. At first sight, it's a very small object, but |root_node| leads
 to a massive tree structure, and the |inter_warehouse| and |building_site|
-compoments can also be huge. Note that the latter is managed entirely by
+components can also be huge. Note that the latter is managed entirely by
 the //building// module, but that everything else here is ours.
 
 =

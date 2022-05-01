@@ -1,7 +1,7 @@
 [ParsingStages::] Parsing Stages.
 
 Two stages which accept raw I6-syntax material in the parse tree, either from
-imsertions made using Inform 7's low-level features, or after reading the
+insertions made using Inform 7's low-level features, or after reading the
 source code for a kit.
 
 @ These stages have more in common than first appears. Both convert I6T-syntax

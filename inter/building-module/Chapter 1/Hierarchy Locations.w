@@ -309,7 +309,7 @@ inter_name *HierarchyLocations::derive_iname_in(inter_tree *I, int id, inter_nam
 	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, from, -1, NULL);
 }
 
-@ All of the above use this comman back-end:
+@ All of the above use this command back-end:
 
 =
 inter_name *HierarchyLocations::iip(inter_tree *I, int id, package_request *P,

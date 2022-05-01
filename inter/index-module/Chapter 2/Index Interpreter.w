@@ -18,7 +18,7 @@ element Ar
 element Vl
 =
 declares a new index page with leafname |Kinds.html|, and with the highlight
-colour (in CSS hexadecimal style) |e9cf08|; and then declzres that it contains
+colour (in CSS hexadecimal style) |e9cf08|; and then declares that it contains
 the three elements |Ch|, |Ar| and |Vl|, in that order. Note that this file does
 not contain any user-facing text: all of that comes from //html: Localisation//.
 

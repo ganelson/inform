@@ -23,7 +23,7 @@ example, suppose we have:
 Here the Inter instructions C, D and E are the content of the package, which
 is called "gadgets" and has the type |_paraphernalia|. Instructions A, B, F,
 G , along with the |package| instruction itself, belong to the wider context. The
-symbiol name |^is_electrical| is visible to C, D and E, but not to A, B, F,
+symbol name |^is_electrical| is visible to C, D and E, but not to A, B, F,
 and G: it belongs to the "scope" of the |gadgets| package, and is recorded
 in its private symbols table.
 

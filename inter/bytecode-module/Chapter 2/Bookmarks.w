@@ -22,7 +22,7 @@ typedef struct inter_bookmark {
 	int placement_wrt_R; /* one of the |*_NODEPLACEMENT| values */
 } inter_bookmark;
 
-@ Bookmarks are used to mark positions in an Inter tree, though they are oftem
+@ Bookmarks are used to mark positions in an Inter tree, though they are often
 used in a way which causes them to move forwards through that tree, much as
 a bookmark will migrate through a book as it is slowly read.
 
