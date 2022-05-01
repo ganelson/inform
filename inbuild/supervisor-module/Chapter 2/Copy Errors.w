@@ -211,7 +211,7 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 		case HeadingInPlaceOfUnincluded_SYNERROR:
 			WRITE("heading is in place of an extension not included"); break;
 		case UnequalHeadingInPlaceOf_SYNERROR:
-			WRITE("heading is in place of another heading but of a diffeent level"); break;
+			WRITE("heading is in place of another heading but of a different level"); break;
 		case HeadingInPlaceOfSubordinate_SYNERROR:
 			WRITE("heading is in place of another heading subordinate to itself"); break;
 		case HeadingInPlaceOfUnknown_SYNERROR:

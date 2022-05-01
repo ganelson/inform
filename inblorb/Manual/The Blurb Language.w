@@ -84,7 +84,7 @@ can be set -- including none at all, but if so then commands needing a
 named template, like |website|, can't be used. Inblorb looks for any
 template it needs by trying each template path in turn (the earliest
 defined having the highest priority). The blurb files produced by |inform7|
-in its |-release| mode containa chain of three template paths, for the
+in its |-release| mode contain a chain of three template paths, for the
 individual project folder, the user's library of installed templates, and
 the built-in stock inside the Inform user interface application,
 respectively.

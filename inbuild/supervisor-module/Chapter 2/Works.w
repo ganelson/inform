@@ -4,7 +4,7 @@ To store, hash code and compare title/author pairs used to identify works.
 
 @h Works.
 A "work" is a single artistic or programming creation; for example, the IF
-story Bronze by Emily Short might be a work. Mamy versions of this IF story
+story Bronze by Emily Short might be a work. Many versions of this IF story
 may exist over time, but they will all be versions of the same "work".
 Extensions are also works: for example, Epistemology by Eric Eve is a work.
 
@@ -129,7 +129,7 @@ void Works::write_link_to_HTML_file(OUTPUT_STREAM, inbuild_work *work) {
 }
 
 @ The Inbuild module provides the |%X| escape sequence for printing names of
-works. (The X used to stand for Extension.) |%<X| ptovides an abbreviated form.
+works. (The X used to stand for Extension.) |%<X| provides an abbreviated form.
 
 =
 void Works::writer(OUTPUT_STREAM, char *format_string, void *vE) {

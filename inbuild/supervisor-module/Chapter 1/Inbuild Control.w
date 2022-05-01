@@ -8,7 +8,7 @@ The //supervisor// module provides services to the parent tool.
 This section defines how the parent communicates with us to get everything
 set up correctly. Although nothing at all clever happens in this code, it
 requires careful sequencing to avoid invisible errors coming in because
-function X assumes that function Y has already been called, or perhaos that
+function X assumes that function Y has already been called, or perhaps that
 it never will be again. The //supervisor// module therefore runs through a
 number of named "phases" on its way to reaching fully-operational status,
 at which time the parent can freely use its facilities.
@@ -366,7 +366,7 @@ But among nests three are special, and can hold other things as well.
 
 (a) The "internal" nest is part of the installation of Inform as software.
 It contains, for example, the build-in extensions. But it also contains
-miscellaneous other files needed by Infomr (see below).
+miscellaneous other files needed by Inform (see below).
 
 (b) The "external" nest is the one to which the user installs her own
 selection of extensions, and so on. On most platforms, the external nest

@@ -121,7 +121,7 @@ searching through the nests. //supervisor// does this by creating an
 search engine //Nests::search_for//. This builds a list of //inbuild_search_result//
 objects, each pointing to a new copy which matches the requirement given.
 
-Requirements can be quite flexible, and are converitble to and from text: see
+Requirements can be quite flexible, and are convertible to and from text: see
 //Requirements::from_text// and //Requirements::write//.[2] The crucial function
 here is //Requirements::meets//, which tests whether an edition meets the
 requirement.
