@@ -328,7 +328,7 @@ map connection stripe (3 pixels wide) passes through a cell corner.
 In 2010 it is considered something of a heresy to be still doing web page
 layout using nested tables - supposedly, CSS is now strong enough for all
 our needs - but the map is unusually well suited to a table approach since
-it consists, in the end, of tessalations of rectangles.
+it consists, in the end, of tessellations of rectangles.
 
 Here's the code we will use to create each HTML table.
 

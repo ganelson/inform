@@ -400,7 +400,7 @@ the pair |val1|, |val2| below -- refer to a constant list containing three
 entries (the three dictionary words above). But if we compiled that directly,
 then an attempt to look up the property address |obj.&name| would return the
 address of the address of the array, not the address of the array itself. So
-we must use the pecualiar I6 syntax here to get the right outcome.
+we must use the peculiar I6 syntax here to get the right outcome.
 
 =
 void I6TargetObjects::assign_property(code_generator *gtr, code_generation *gen,
@@ -490,7 +490,7 @@ each enumerative kind, and is indexed by weak kind ID.
 	}
 	CodeGen::deselect(gen, saved);
 
-@ Similarly, the array |value_property_holders| gives the VM-object nunbers for
+@ Similarly, the array |value_property_holders| gives the VM-object numbers for
 the value property holders for each enumerative kind.
 
 @<Compile the value_property_holders array@> =

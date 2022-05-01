@@ -50,7 +50,7 @@ void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch,
 		void *opaque_state, int prim_cat),
 	void *opaque_state) {
 
-	@<Reset tbe write position if we're in the middle of a switch statement@>;
+	@<Reset the write position if we're in the middle of a switch statement@>;
 	@<Recursively deal with conditional compilation@>;
 	@<Traverse the tree, compiling each node@>;
 }
@@ -59,7 +59,7 @@ void EmitInterSchemas::emit(inter_tree *I, value_holster *VH, inter_schema *sch,
 sense only within a switch statement, but where the schema does not itself
 include the |switch| head or tail.
 
-@<Reset tbe write position if we're in the middle of a switch statement@> =
+@<Reset the write position if we're in the middle of a switch statement@> =
 	if (sch->mid_case) Produce::set_level_to_current_code_block_plus(I, 4);
 
 @ The following looks for conditional compilations such as:
@@ -490,7 +490,7 @@ more natural |{ ... }|.
 
 @ Note that conditional directives have already been taken care of, and that
 other Inform 6 directives are not valid inside function bodies, which is the
-omly part of I6 syntax covered by schemas. Therefore:
+only part of I6 syntax covered by schemas. Therefore:
 
 @<Non-conditional directive@> =
 	InterSchemas::throw_error(node, I"misplaced directive");

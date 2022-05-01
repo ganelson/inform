@@ -352,8 +352,8 @@ int InterSymbol::evaluate_to_int(inter_symbol *S) {
 void InterSymbol::set_int(inter_symbol *S, int N) {
 	inter_tree_node *P = InterSymbol::definition(S);
 	if ((Inode::is(P, CONSTANT_IST)) && (ConstantInstruction::set_int(S, N))) return;
-	if (P == NULL) LOG("Synbol $3 is undefined\n", S);
-	LOG("Synbol $3 cannot be set to %d\n", S, N);
+	if (P == NULL) LOG("Symbol $3 is undefined\n", S);
+	LOG("Symbol $3 cannot be set to %d\n", S, N);
 	internal_error("unable to set symbol");
 }
 

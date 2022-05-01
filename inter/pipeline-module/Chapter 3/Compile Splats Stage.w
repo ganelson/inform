@@ -509,7 +509,7 @@ for the action.
 	}
 
 @ So here |value| is something like |##ScriptOn|, an action name. Maybe that has
-already been defined in the kit currently being compiked, in which case a socket
+already been defined in the kit currently being compiled, in which case a socket
 for it already exists; but maybe not, in which case we have to create the
 action. This will be a package at, say, |/main/HypotheticalKit/actions/assim_action_1|
 with three things in it:
@@ -764,7 +764,7 @@ keyword can be linked to.)
 Note that if there is already a socket of the same name, we do not attempt to
 install another one. This will not in practice lead to problems, because the
 identifiers supplied to this function all come from identifiers in Inter kits,
-which have a single global namespace for functoons and variables anyway.
+which have a single global namespace for functions and variables anyway.
 
 =
 inter_symbol *CompileSplatsStage::make_socketed_symbol(inter_bookmark *IBM,

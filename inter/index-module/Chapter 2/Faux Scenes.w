@@ -30,7 +30,7 @@ typedef struct simplified_connector {
 	CLASS_DEFINITION
 } simplified_connector;
 
-@ This three-deck structure of objects matches a similar hiersrchy of Inter
+@ This three-deck structure of objects matches a similar hierarchy of Inter
 packages, where |_scene_connector| packages are inside |_scene_end| packages
 which are inside |_scene| packages.
 
@@ -69,7 +69,7 @@ int FauxScenes::scene_order(const void *ent1, const void *ent2) {
 }
 
 @ The following returns a valid |simplified_scene| for each |_scene| package,
-tpgether with its connectors and ends.
+together with its connectors and ends.
 
 =
 simplified_scene *FauxScenes::simplified(inter_tree *I, inter_package *sc_pack) {
@@ -158,7 +158,7 @@ inter_symbol *FauxScenes::end_rulebook(simplified_end *se) {
 	return Metadata::optional_symbol(se->end_pack, I"^rulebook");
 }
 
-@ A connector leads, of course, to another scene. Determiming that is quite
+@ A connector leads, of course, to another scene. Determining that is quite
 slow, but ww cache the result so that it must only be done once.
 
 =

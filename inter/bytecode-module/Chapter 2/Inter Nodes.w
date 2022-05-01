@@ -6,7 +6,7 @@ tree locations.
 @h Nodes.
 It's essential to be able to walk an Inter tree quickly, while movements
 of nodes within the tree are relatively uncommon. So we provide every
-imaginatble link. Suppose the structure is:
+imaginable link. Suppose the structure is:
 = (text)
 	A
 		B

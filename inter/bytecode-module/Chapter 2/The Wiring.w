@@ -72,7 +72,7 @@ inter_symbol *Wiring::cable_end(inter_symbol *S) {
 }
 
 @ In general, we have no means of following wiring backwards: that is, given
-|B|, we cannpt easily find all the |A| such that |A ~~> B|. What we can do is
+|B|, we cannot easily find all the |A| such that |A ~~> B|. What we can do is
 to say how many such |A| exist, and it's useful to know when this count is 0,
 because then we may be able safely to delete |B| as no longer needed.
 

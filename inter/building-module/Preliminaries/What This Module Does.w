@@ -21,8 +21,8 @@ functions in the //bytecode// module, allowing them to be used with much
 greater ease and consistency.
 
 This module needs plenty of working data, and stashes that data inside the
-|inter_tree| structure it is working on: in a compoment of that structure called
-a //building_site//. Whereas the main data ih an |inter_tree| affects the meaning
+|inter_tree| structure it is working on: in a component of that structure called
+a //building_site//. Whereas the main data in an |inter_tree| affects the meaning
 of the tree, i.e., makes a difference as to what program the tree represents,
 the contents of the //building_site// component are only used to make it, and
 are ignored by the //final// code-generator.

@@ -561,7 +561,7 @@ of that name in the current working directory. Better to do nothing here, and
 let users handle this themselves.
 
 Similar considerations apply to |@restart|. The intention of this opcode is
-essentially to reboot the virtual machime and start over: here, though, we
+essentially to reboot the virtual machine and start over: here, though, we
 have a real machine. It's easy enough to reinitialise the process state,
 but not so simple to restart execution as if from a clean process start.
 

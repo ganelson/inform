@@ -144,7 +144,7 @@ the storage referred to. Values on the stack have unchecked kinds: it's up to
 the author not to pull an inappropriate value.
 
 @h Accessing storage.
-Here the |ref| term is a refernce to a piece of storage: a property of an
+Here the |ref| term is a reference to a piece of storage: a property of an
 instance, or a global variable, or an entry in memory, for example.
 
 (a) |primitive !store ref val -> val|. Put the value in |ref|.
@@ -255,7 +255,7 @@ comes at the end of each iteration. Note that this is do/until, not do/while.
 (d) |primitive !objectloopx ref val code -> void|. A loop over instances,
 stored in the variable |ref|, of the kind of object |val|.
 (e) |primitive !objectloop ref val val code -> void|. A more general form,
-where the secomd |val| is a condition to be evaluated which decides whether
+where the second |val| is a condition to be evaluated which decides whether
 to execute the code for given |ref| value.
 
 A switch statement takes a value, and then executes at most one of an
@@ -314,7 +314,7 @@ assembly language instead. This may eventually go, too.
 
 And, lastly, the lowest-level way to travel:
 
-(a) |primitive !jump lab -> void|. Jumo to this label in the current function.
+(a) |primitive !jump lab -> void|. Jump to this label in the current function.
 
 @h Interactive fiction-only primitives.
 The following would make no sense in a general-purpose program. Most mirror

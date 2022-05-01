@@ -24,7 +24,7 @@ i7float_t i7_decode_float(i7word_t val) {
 }
 =
 
-@ These two functioms allow external C code to read to, or write from, an
+@ These two functions allow external C code to read to, or write from, an
 Inform 7 variable inside a currently running process.
 
 = (text to inform7_clib.h)
