@@ -4120,3 +4120,30 @@ Test: parse schema from:
   * (expr)
     INLINE      -primitive-definition:verbose-checking
 =========
+Test: parse schema from:
+	@log_shift xorshift_seed -3 -> temp;
+	@log_shift xorshift_seed (-3) -> temp;
+
+  * (assembly)
+      * (expr)
+        OPCODE      @log_shift
+      * (expr)
+        IDENTIFIER  xorshift_seed
+      * (expr)
+        NUMBER      -3
+      * (expr)
+        ASM_ARROW   ->
+      * (expr)
+        IDENTIFIER  temp
+  * (assembly)
+      * (expr)
+        OPCODE      @log_shift
+      * (expr)
+        IDENTIFIER  xorshift_seed
+      * (expr)
+        NUMBER      -3
+      * (expr)
+        ASM_ARROW   ->
+      * (expr)
+        IDENTIFIER  temp
+=========

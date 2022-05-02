@@ -40,8 +40,8 @@
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
+<li><a href="../../../inweb/index.html">inweb</a></li>
+<li><a href="../../../intest/index.html">intest</a></li>
 
 </ul>
 		</nav>
@@ -205,7 +205,7 @@ is via the following.
 the storage referred to. Values on the stack have unchecked kinds: it's up to
 the author not to pull an inappropriate value.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Accessing storage. </b>Here the <span class="extract"><span class="extract-syntax">ref</span></span> term is a refernce to a piece of storage: a property of an
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10. Accessing storage. </b>Here the <span class="extract"><span class="extract-syntax">ref</span></span> term is a reference to a piece of storage: a property of an
 instance, or a global variable, or an entry in memory, for example.
 </p>
 
@@ -323,7 +323,7 @@ comes at the end of each iteration. Note that this is do/until, not do/while.
 </li><li>(d) <span class="extract"><span class="extract-syntax">primitive !objectloopx ref val code -&gt; void</span></span>. A loop over instances,
 stored in the variable <span class="extract"><span class="extract-syntax">ref</span></span>, of the kind of object <span class="extract"><span class="extract-syntax">val</span></span>.
 </li><li>(e) <span class="extract"><span class="extract-syntax">primitive !objectloop ref val val code -&gt; void</span></span>. A more general form,
-where the secomd <span class="extract"><span class="extract-syntax">val</span></span> is a condition to be evaluated which decides whether
+where the second <span class="extract"><span class="extract-syntax">val</span></span> is a condition to be evaluated which decides whether
 to execute the code for given <span class="extract"><span class="extract-syntax">ref</span></span> value.
 </li></ul>
 <p class="commentary">A switch statement takes a value, and then executes at most one of an
@@ -389,7 +389,7 @@ assembly language instead. This may eventually go, too.
 <p class="commentary">And, lastly, the lowest-level way to travel:
 </p>
 
-<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !jump lab -&gt; void</span></span>. Jumo to this label in the current function.
+<ul class="items"><li>(a) <span class="extract"><span class="extract-syntax">primitive !jump lab -&gt; void</span></span>. Jump to this label in the current function.
 </li></ul>
 <p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Interactive fiction-only primitives. </b>The following would make no sense in a general-purpose program. Most mirror
 very low-level I6 features. First, the spatial containment object tree:

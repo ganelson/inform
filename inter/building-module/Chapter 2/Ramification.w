@@ -1073,6 +1073,8 @@ to be recognised for what they are.
 		cons->isn_type = ASSEMBLY_ISNT;
 		inter_schema_node *prev_node = NULL;
 		for (inter_schema_token *l = f, *n = l?(l->next):NULL; l; l=n, n=n?(n->next):NULL) {
+			if ((n) && (Str::eq(l->material, I"("))) continue;
+			if ((n) && (Str::eq(l->material, I")"))) continue;
 			if (l->ist_type != WHITE_SPACE_ISTT) {
 				inter_schema_node *new_isn =
 					InterSchemas::new_node(cons->parent_schema, EXPRESSION_ISNT);

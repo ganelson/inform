@@ -112,7 +112,7 @@ It's the caller's responsibility to check for those and act accordingly.
 <span class="plain-syntax">        </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opaque_state</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">prim_cat</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">opaque_state</span><span class="plain-syntax">) {</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-eis.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Reset tbe write position if we're in the middle of a switch statement</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-eis.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Reset the write position if we're in the middle of a switch statement</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-eis.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Recursively deal with conditional compilation</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-eis.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Traverse the tree, compiling each node</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -122,7 +122,7 @@ sense only within a switch statement, but where the schema does not itself
 include the <span class="extract"><span class="extract-syntax">switch</span></span> head or tail.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reset tbe write position if we're in the middle of a switch statement</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Reset the write position if we're in the middle of a switch statement</span><span class="named-paragraph-number">1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -650,7 +650,7 @@ more natural <span class="extract"><span class="extract-syntax">{ ... }</span></
 <ul class="endnotetexts"><li>This code is used in <a href="2-eis.html#SP3_1">&#167;3.1</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3_1_5" class="paragraph-anchor"></a><b>&#167;3.1.5.  </b>Note that conditional directives have already been taken care of, and that
 other Inform 6 directives are not valid inside function bodies, which is the
-omly part of I6 syntax covered by schemas. Therefore:
+only part of I6 syntax covered by schemas. Therefore:
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Non-conditional directive</span><span class="named-paragraph-number">3.1.5</span></span><span class="comment-syntax"> =</span>

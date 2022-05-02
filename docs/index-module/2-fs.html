@@ -89,7 +89,7 @@ annotated.
 <span class="plain-syntax">} </span><span class="reserved-syntax">simplified_connector</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>The structure simplified_scene is accessed in 2/ir, 3/pe2 and here.</li><li>The structure simplified_end is accessed in 3/pe2 and here.</li><li>The structure simplified_connector is accessed in 3/pe2 and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This three-deck structure of objects matches a similar hiersrchy of Inter
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This three-deck structure of objects matches a similar hierarchy of Inter
 packages, where <span class="extract"><span class="extract-syntax">_scene_connector</span></span> packages are inside <span class="extract"><span class="extract-syntax">_scene_end</span></span> packages
 which are inside <span class="extract"><span class="extract-syntax">_scene</span></span> packages.
 </p>
@@ -130,7 +130,7 @@ alphabetical order.
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>The following returns a valid <span class="extract"><span class="extract-syntax">simplified_scene</span></span> for each <span class="extract"><span class="extract-syntax">_scene</span></span> package,
-tpgether with its connectors and ends.
+together with its connectors and ends.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -224,7 +224,7 @@ tpgether with its connectors and ends.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Metadata::optional_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">se</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">end_pack</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"^rulebook"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>A connector leads, of course, to another scene. Determiming that is quite
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>A connector leads, of course, to another scene. Determining that is quite
 slow, but ww cache the result so that it must only be done once.
 </p>
 

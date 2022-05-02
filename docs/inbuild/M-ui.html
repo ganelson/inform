@@ -41,8 +41,8 @@
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
+<li><a href="../../../inweb/index.html">inweb</a></li>
+<li><a href="../../../intest/index.html">intest</a></li>
 
 </ul>
 		</nav>
@@ -266,14 +266,14 @@ will do: they mean that this is (the best) version Inbuild has access to.
 They're given because two different versions of the same extension might
 make different choices about which other extensions to include. We can say
 that version 3 of Menus wants to have Basic Screen Effects, but maybe someday
-tbere will be a version 4 which doesn't need it.
+there will be a version 4 which doesn't need it.
 </p>
 
 <p class="commentary">Another issue to watch out for is that a copy may use different other copies
 when compiled to different virtual machines. For example, an extension can
 contain a heading of material "for Glulx only", and that heading might
 comtain a line which includes another extension X. If so, then we use X on
-Glulx but not on other architectures. We can also flag materual as being for
+Glulx but not on other architectures. We can also flag material as being for
 release only, or for debugging only.
 </p>
 
@@ -327,7 +327,7 @@ but also how to perform that build.
 
 <p class="commentary">As noted above, not everything needs building. Extensions do not, in particular,
 so running <span class="extract"><span class="ConsoleText-extract-syntax">-build</span></span> on one will do nothing. Kits do need building: what this
-does is to "assimilate" the Unform 6-notation source files inside the kit into
+does is to "assimilate" the Inform 6-notation source files inside the kit into
 binary files of Inter, one for each possible architecture.
 </p>
 
@@ -337,7 +337,7 @@ binary files of Inter, one for each possible architecture.
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -build</span><span class="ConsoleText-plain-syntax"> Example.inform</span>
 </pre>
-<p class="commentary">then Inbuild will first build everthing needed to build the Example story
+<p class="commentary">then Inbuild will first build everything needed to build the Example story
 file, including everything needed to use the things needed to build it, and
 so on; and then will build Example itself. As with the Unix utility <span class="extract"><span class="ConsoleText-extract-syntax">make</span></span>,
 this is an incremental process, and looks at the timestamps of files to see
@@ -381,7 +381,7 @@ specify path <span class="extract"><span class="ConsoleText-extract-syntax">P</s
 </p>
 
 <p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Specifying what to act on. </b>In all of the examples above, Inbuild is given just one copy to act on.
-(That action may end up invplving lots of other copies, but only one is
+(That action may end up involving lots of other copies, but only one is
 mentioned on the command line.) In fact it's legal to give a list of
 copies to work on, one at a time, except that only one of those copies
 can be an Inform project. Multiple extensions, or kits, are fine.
@@ -463,7 +463,7 @@ when it's used as an app.
 five containers hold website templates (used by Inblorb), Inter pipelines,
 kits, language definitions, and extensions. In the case of extensions, where
 there may be very many in total, a further level of subdirectory is used
-for the authpr's name. Thus:
+for the author's name. Thus:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

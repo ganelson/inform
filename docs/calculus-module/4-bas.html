@@ -326,7 +326,7 @@ the conjunction of the two propositions had 26 variables.)
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">k</span><span class="plain-syntax"> == </span><span class="constant-syntax">26</span><span class="plain-syntax">) </span><span class="identifier-syntax">next_unused</span><span class="plain-syntax"> = </span><span class="constant-syntax">25</span><span class="plain-syntax">; </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">next_unused</span><span class="plain-syntax"> = </span><span class="identifier-syntax">k</span><span class="plain-syntax">;</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="4-bas.html#SP8">&#167;8</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Getting rid of free variables. </b>Propositions with free variables are vague, and Inforn tries to minimise its
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9. Getting rid of free variables. </b>Propositions with free variables are vague, and Inform tries to minimise its
 use of them. Whole verb phrases such as "the tree is in the Courtyard" can in
 general become propositions with no free variables, while descriptions such as
 "open containers which are in lighted rooms" will become propositions in which
@@ -368,7 +368,7 @@ room", by applying the existential quantifier to anything free.
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The second way is "substitution", for use when we do know the value of the
-free variable we want to remove. We replace every mention of it with sone
+free variable we want to remove. We replace every mention of it with some
 other term: but as we shall see, this is trickier than it seems.
 </p>
 

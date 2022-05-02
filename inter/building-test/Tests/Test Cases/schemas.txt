@@ -1534,3 +1534,8 @@ end
 schema
 	{-primitive-definition:verbose-checking} 
 end
+
+schema
+	@log_shift xorshift_seed -3 -> temp;
+	@log_shift xorshift_seed (-3) -> temp;
+end
