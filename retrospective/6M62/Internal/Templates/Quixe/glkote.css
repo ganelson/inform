@@ -16,14 +16,29 @@
   position: absolute;
   top: 0px;
   width: 100%;
-  background: #FF4040;
-  padding-bottom: 3px;
+  background: #FFA0A0;
+  border-bottom: 3px solid #FF4040;
+}
+
+#errorpane.WarningPane {
+  background: #B0B0FF;
+  border-bottom: 3px solid #6060FF;
+}
+
+#errorpane:hover {
+  background: rgba(255, 160, 160, 0.5);
+  border-bottom: 3px solid rgba(255, 64, 64, 0.3);
+}
+
+#errorpane.WarningPane:hover {
+  background: rgba(176, 176, 255, 0.5);
+  border-bottom: 3px solid rgba(96, 96, 255, 0.3);
 }
 
 #errorcontent {
-  padding: 8px;
+  font-size: 1.1em;
+  padding: 1em;
   text-align: center;
-  background: #FFA0A0;
 }
 
 #loadingpane {
@@ -51,6 +66,7 @@
 }
 
 .BufferLine {
+  white-space: pre-wrap; /* required for spaces to work right */
 }
 
 .GridWindow {
@@ -66,11 +82,25 @@
 }
 
 .InvisibleCursor {
-  /* This provides the padding below the last line of text (and the input
+  /* This is a relic. It used to provide the padding below the last line
+     of text, but now it has no effect. It will go away at some point. */
+  position: relative;
+}
+
+.BufferLine:last-child {
+  /* This provides the margin below the last line of text (and the input
      prompt). Without this, they'd be flush against the bottom of the
      window, which would be ugly. Do not modify this CSS class. */
-  position: relative;
-  padding-bottom: 14px;
+  margin-bottom: 14px;
+}
+
+.HasNoInputField .BufferLine:last-child .BlankLineSpan {
+  /* If the last line in a buffer window is blank, and there is no
+     char/line input occurring, we suppress the blank line in the DOM.
+     (The div still exists, but it has no visible contents, so it
+     collapses.) This aids fixed-height buffer wins which contained
+     exactly the right number of lines. */
+  display: none;
 }
 
 .MorePrompt {
@@ -84,6 +114,17 @@
   padding: 2px 6px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
+}
+
+.PreviousMark {
+  /* This describes the small horizontal mark that appears in a window
+     when it needs paging. */
+  position: absolute;
+  background: #B09888;
+  height: 2px;
+  width: 12px;
+  top: 0px;
+  right: 0px;
 }
 
 .Input {
@@ -137,6 +178,7 @@
 }
 
 .GraphicsWindow canvas {
+  display: block;
   background-color: white;
 }
 
