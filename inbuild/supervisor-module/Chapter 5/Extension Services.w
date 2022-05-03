@@ -120,7 +120,7 @@ by the local |\n| for good measure.
 		if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) break;
 		PUT_TO(titling_line, c);
 	}
-	Works::normalise_casing(titling_line);
+	Works::normalise_casing_mixed(titling_line);
 
 @ In the following, all possible newlines are converted to white space, and
 all white space before a quoted rubric text is ignored. We need to do this
@@ -219,7 +219,7 @@ are immutable, and need to be for the extensions dictionary to work.
 		Copies::attach_error(C,
 			CopyErrors::new_N(EXT_AUTHOR_TOO_LONG_CE, -1, Str::len(claimed_author_name)));
 	C->edition = Editions::new(
-		Works::new(extension_genre, claimed_title, claimed_author_name), V);
+		Works::new_raw(extension_genre, claimed_title, claimed_author_name), V);
 	if (Str::len(reqs) > 0) {
 		compatibility_specification *CS = Compatibility::from_text(reqs);
 		if (CS) C->edition->compatibility = CS;
