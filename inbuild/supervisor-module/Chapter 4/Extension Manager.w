@@ -104,7 +104,9 @@ requirements.
 
 For efficiency's sake, since the nest could contain many hundreds of
 extensions, we narrow down to the author's subfolder if a specific
-author is required.
+author is required. We cannot safely assume that the author's name specified
+in |req| has the same casing as in the subfolder name, so we go about this
+cautiously for the sake of case-sensitive file systems.
 
 Nobody should any longer be storing extension files without the file
 extension |.i7x|, but this was allowed in the early days of Inform 7,
@@ -116,8 +118,18 @@ void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	if ((req->work->genre) && (req->work->genre != extension_genre)) return;
 	pathname *P = ExtensionManager::path_within_nest(N);
 	if (Str::len(req->work->author_name) > 0) {
-		pathname *Q = Pathnames::down(P, req->work->author_name);
-		ExtensionManager::search_nest_for_r(Q, N, req, search_results);
+		linked_list *L = Directories::listing(P);
+		text_stream *entry;
+		LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
+			if (Platform::is_folder_separator(Str::get_last_char(entry))) {
+				Str::delete_last_character(entry);
+				if ((Str::ne(entry, I"Reserved")) &&
+					(Str::eq_insensitive(entry, req->work->author_name))) {
+					pathname *Q = Pathnames::down(P, entry);
+					ExtensionManager::search_nest_for_r(Q, N, req, search_results);
+				}
+			}
+		}
 	} else {
 		ExtensionManager::search_nest_for_r(P, N, req, search_results);
 	}
