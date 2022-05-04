@@ -98,6 +98,24 @@ void Works::normalise_casing(text_stream *p) {
 	}
 }
 
+@ This variant is more forgiving, in that it allows mixed-casing inside a
+word, that is, after the opening letter. So "PDQ Bach" and "Marc DuQuesne"
+would both pass, whereas //Works::normalise_casing// would make them into
+"Pdq Bach" and "Marc Duquesne".
+
+=
+void Works::normalise_casing_mixed(text_stream *p) {
+	int boundary = TRUE;
+	LOOP_THROUGH_TEXT(pos, p) {
+		wchar_t c = Str::get(pos);
+		if (boundary) Str::put(pos, Characters::toupper(c));
+		boundary = FALSE;
+		if (c == ' ') boundary = TRUE;
+		if (c == '-') boundary = TRUE;
+		if (c == '(') boundary = TRUE;
+	}
+}
+
 @h Printing.
 As noted above, the raw forms are used for output.
 
