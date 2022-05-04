@@ -152,7 +152,7 @@ text_stream *Renderer::render_example_body(OUTPUT_STREAM, example *E, volume *V,
 	if (indoc_settings->format == HTML_FORMAT) {
 		TEMPORARY_TEXT(id)
 		WRITE_TO(id, "example%d", E->allocation_id);
-		HTML::begin_div_with_class_and_id_S(OUT, I"egpanel", id, hide);
+		HTML::begin_div_with_class_and_id_S(OUT, I"egpanel", id, hide, __FILE__, __LINE__);
 	}
 	OUT = Rawtext::process_example_rawtext_file(OUT, V, E);
 	if (indoc_settings->format == HTML_FORMAT) {
@@ -375,7 +375,7 @@ convert those to HTML links.
  			if (Str::len(P->par_styles) > 0) {
  				TEMPORARY_TEXT(details)
  				WRITE_TO(details, "class=\"%S\"", P->par_styles);
- 				HTML::open(OUT, "p", details);
+ 				HTML::open(OUT, "p", details, __FILE__, __LINE__);
  				DISCARD_TEXT(details)
  				WRITE("%S", P->par_texts);
 				HTML_CLOSE("p");

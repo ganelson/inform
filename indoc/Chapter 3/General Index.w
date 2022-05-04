@@ -570,7 +570,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 
 		TEMPORARY_TEXT(details)
 		WRITE_TO(details, "class=\"indexentry\" style=\"margin-left: %dem;\"", 4*indent_level);
-		HTML::open(OUT, "p", details);
+		HTML::open(OUT, "p", details, __FILE__, __LINE__);
 		DISCARD_TEXT(details)
 		@<Render the lemma text@>;
 		@<Render the category gloss@>;
@@ -691,7 +691,7 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 		HTML_OPEN_WITH("span", "class=\"indexsee\"");
 		WRITE("see");
 		if (lc > 0) WRITE(" also");
-		WRITE("</span> ");
+		HTML_CLOSE("span");
 		match_results mr2 = Regexp::create_mr();
 		while (Regexp::match(&mr2, seelist, L"(%c*?) *<-- *(%c*)")) {
 			if (sc++ > 0) { WRITE("; "); }

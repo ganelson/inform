@@ -489,7 +489,7 @@ it handles crashes correctly.
 	Problems::issue_problem_end();
 
 @<Issue PM_NameWithText problem@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_NameWithText),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_NameWithText),
 		"this seems to give something a name which contains "
 		"double-quoted text",
 		"which is not allowed. If you do need quotes in a name, one option "
@@ -501,7 +501,7 @@ it handles crashes correctly.
 		"fact it didn't, so that I read the next words as following on.");
 
 @<Issue PM_NameReserved problem@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_NameReserved),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_NameReserved),
 		"this seems to give something a name which is reserved for Inform's "
 		"own internal use",
 		"so is not allowed. There are only a few of these - 'storage', "
@@ -668,7 +668,7 @@ them by asserting propositions to be true; we act directly.
 @ And to wind up, sundry problem messages.
 
 @<Issue a problem for topics that vary@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_NoTopicsThatVary),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_NoTopicsThatVary),
 		"'topics that vary' are not allowed",
 		"that is, a variable is not allowed to have 'topic' as its kind of value. "
 		"(This would cause too much ambiguity with text variables, whose values "
@@ -836,7 +836,7 @@ message says about performance, too.)
 	instance_count = Annotations::read_int(p, multiplicity_ANNOT);
 	if (instance_count < 1) instance_count = 1;
 	if (instance_count > MAX_DUPLICATES_AT_ONCE) {
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_TooManyDuplicates),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_TooManyDuplicates),
 			"at most 100 duplicates can be made at any one time",
 			"so '157 chairs are in the UN General Assembly' will not be allowed. The "
 			"system for handling duplicates during play becomes too slow and awkward "

@@ -185,7 +185,7 @@ int Regions::intervene_in_assertion(parse_node *px, parse_node *py) {
 	}
 	if ((Node::get_type(px) == RELATIONSHIP_NT) &&
 		(Node::get_subject(py) == KindSubjects::from_kind(K_region))) {
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_RegionRelated),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_RegionRelated),
 			"a region cannot be given a specific location",
 			"since it contains what may be many rooms, which may not be "
 			"contiguous and could be scattered about all over. (Sometimes "

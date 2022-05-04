@@ -13,6 +13,7 @@ Chapter 1: Starting Up
 
 Chapter 2: Intranet
 "Non-standard HTML utility functions for generating the Inform app intranets."
+	Inform Pages
 	Source Links
 	Paste Buttons
 	Documentation Renderer

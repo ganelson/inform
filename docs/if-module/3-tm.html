@@ -687,7 +687,7 @@ because, of course, that does set its kind.
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">px</span><span class="plain-syntax">, </span><span class="identifier-syntax">nowhere_ANNOT</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::Using::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">UsingProblems::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NowhereDescribed</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"'nowhere' cannot be made specific"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"and so cannot have specific properties or be of any given kind."</span><span class="plain-syntax">);</span>

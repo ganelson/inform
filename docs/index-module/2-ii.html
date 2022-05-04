@@ -276,10 +276,7 @@ of content:
 <span class="plain-syntax">        </span><span class="identifier-syntax">Errors::fatal_with_file</span><span class="plain-syntax">(</span><span class="string-syntax">"can't open index file"</span><span class="plain-syntax">, </span><span class="identifier-syntax">F</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">    }</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTML::header</span><span class="plain-syntax">(</span><span class="identifier-syntax">IF</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">CSS_FOR_STANDARD_PAGES_IRES</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">InstalledFiles::filename</span><span class="plain-syntax">(</span><span class="identifier-syntax">JAVASCRIPT_FOR_STANDARD_PAGES_IRES</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">        (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">page</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">InformPages::header</span><span class="plain-syntax">(</span><span class="identifier-syntax">IF</span><span class="plain-syntax">, </span><span class="identifier-syntax">title</span><span class="plain-syntax">, </span><span class="identifier-syntax">JAVASCRIPT_FOR_STANDARD_PAGES_IRES</span><span class="plain-syntax">, (</span><span class="reserved-syntax">void</span><span class="plain-syntax"> *) </span><span class="identifier-syntax">page</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="2-iu.html#SP13" class="function-link"><span class="function-syntax">IndexUtilities::clear_page_data</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">session</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">IF</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
@@ -288,7 +285,7 @@ of content:
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">InterpretIndex::close_index_file</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">InterpretIndex::close_index_file</span></span>:<br/><a href="2-ii.html#SP1_2">&#167;1.2</a><br/>Grouped Element - <a href="3-ge2.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ifl</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">HTML::footer</span><span class="plain-syntax">(</span><span class="identifier-syntax">ifl</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">InformPages::footer</span><span class="plain-syntax">(</span><span class="identifier-syntax">ifl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">STREAM_CLOSE</span><span class="plain-syntax">(</span><span class="identifier-syntax">ifl</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>

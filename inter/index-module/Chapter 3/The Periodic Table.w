@@ -32,7 +32,7 @@ with class "rubric"; and an element number like 3, in a DIV with class
 
 Following that is a broad cell, spanning the rest of the table's width,
 which contains text like "Kinds Index". This contains a DIV of class
-"headingbox", inside which is a main heading in a DIV of class "headingtext"
+"headingpanel", inside which is a main heading in a DIV of class "headingtext"
 and text underneath in another of class "headingrubric".
 
 @ So let's generate all of that:
@@ -75,13 +75,15 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 	HTML_TAG_WITH("img", "src='inform:/doc_images/index@2x.png' border=1 width=115 height=115");
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "colspan=\"%d\" style=\"width:100%%;\"", max_elements - 1);
-	HTML_OPEN_WITH("div", "class=\"headingboxhigh\"");
-	HTML_OPEN_WITH("div", "class=\"headingtext\"");
+	HTML_OPEN_WITH("div", "class=\"headingpanellayoutdeeper headingpanel\"");
+	HTML_OPEN_WITH("span", "class=\"headingpaneltext\"");
 	WRITE("Welcome to the Index");
+	HTML_CLOSE("span");
 	HTML_CLOSE("div");
 	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
+	HTML_OPEN_WITH("span", "class=\"headingpanelrubric\"");
 	WRITE("A guide which grows with your project");
-	HTML_CLOSE("div");
+	HTML_CLOSE("span");
 	HTML_CLOSE("div");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
@@ -138,12 +140,16 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 	DISCARD_TEXT(tds)
 	WRITE("\n");
 
-	HTML_OPEN_WITH("div", "class=\"headingbox\"");
+	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanel\"");
 	HTML_OPEN_WITH("div", "class=\"headingtext\"");
+	HTML_OPEN_WITH("span", "class=\"headingpaneltext\"");
 	WRITE("%S", ip->page_title);
+	HTML_CLOSE("span");
 	HTML_CLOSE("div");
 	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
+	HTML_OPEN_WITH("span", "class=\"headingpanelrubric\"");
 	WRITE("%S", ip->page_explanation);
+	HTML_CLOSE("span");
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
 

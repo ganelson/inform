@@ -183,7 +183,7 @@ At the middle part, when the text is over, but before any example cues.
 =
 void Roadsign::roadsign_navigation_middle(navigation_design *self, text_stream *OUT, volume *V, section *S) {
 	HTMLUtilities::ruled_line(OUT);
-	HTML::begin_div_with_class_S(OUT, I"roadsigns");
+	HTML::begin_div_with_class_S(OUT, I"roadsigns", __FILE__, __LINE__);
 	chapter *C = S->in_which_chapter;
 	Roadsign::roadsign_begin(OUT, 0);
 	@<Add home, back and forward directions to the roadsign@>;

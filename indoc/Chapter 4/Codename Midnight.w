@@ -31,7 +31,7 @@ void Midnight::midnight_section_title(navigation_design *self, text_stream *OUT,
 		HTML::comment(OUT, comment);
 		DISCARD_TEXT(comment)
 	}
-	HTML::begin_div_with_class_S(OUT, I"bookheader");
+	HTML::begin_div_with_class_S(OUT, I"bookheader", __FILE__, __LINE__);
 	text_stream *linkleft = NULL;
 	text_stream *linkright = NULL;
 	@<Work out URLs for the preceding and following sections@>;
@@ -74,7 +74,7 @@ bodied. (In a section with no examples, this immediately follows the middle.)
 
 =
 void Midnight::midnight_navigation_bottom(navigation_design *self, text_stream *OUT, volume *V, section *S) {
-	HTML::begin_div_with_class_S(OUT, I"bookfooter");
+	HTML::begin_div_with_class_S(OUT, I"bookfooter", __FILE__, __LINE__);
 	HTML_OPEN_WITH("table", "class=\"fullwidth\"");
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "class=\"footerprevious\"");

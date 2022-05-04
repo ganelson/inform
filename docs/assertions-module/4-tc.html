@@ -692,7 +692,7 @@ it handles crashes correctly.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Using::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NameWithText</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">UsingProblems::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NameWithText</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"this seems to give something a name which contains "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"double-quoted text"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"which is not allowed. If you do need quotes in a name, one option "</span>
@@ -708,7 +708,7 @@ it handles crashes correctly.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Using::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NameReserved</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">UsingProblems::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NameReserved</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"this seems to give something a name which is reserved for Inform's "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"own internal use"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"so is not allowed. There are only a few of these - 'storage', "</span>
@@ -923,7 +923,7 @@ them by asserting propositions to be true; we act directly.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::Using::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NoTopicsThatVary</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">UsingProblems::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NoTopicsThatVary</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"'topics that vary' are not allowed"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"that is, a variable is not allowed to have 'topic' as its kind of value. "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"(This would cause too much ambiguity with text variables, whose values "</span>
@@ -1123,7 +1123,7 @@ message says about performance, too.)
 <span class="plain-syntax">    </span><span class="identifier-syntax">instance_count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Annotations::read_int</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="identifier-syntax">multiplicity_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">instance_count</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">instance_count</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">instance_count</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">MAX_DUPLICATES_AT_ONCE</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::Using::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TooManyDuplicates</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">UsingProblems::assertion_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_TooManyDuplicates</span><span class="plain-syntax">),</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"at most 100 duplicates can be made at any one time"</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"so '157 chairs are in the UN General Assembly' will not be allowed. The "</span>
 <span class="plain-syntax">            </span><span class="string-syntax">"system for handling duplicates during play becomes too slow and awkward "</span>

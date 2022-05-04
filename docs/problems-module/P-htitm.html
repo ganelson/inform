@@ -136,7 +136,11 @@ this to come to anything, it must perform the file-open, and write any header
 material it would like. See <a href="2-pl3.html#SP19" class="internal">StandardProblems::start_problems_report</a>.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b><span class="extract"><span class="extract-syntax">WORDING_FOR_HEADING_NODE_PROBLEMS_CALLBACK</span></span> is called to ask what wording
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b><span class="extract"><span class="extract-syntax">END_PROBLEM_FILE_PROBLEMS_CALLBACK</span></span> is called when <a href="index.html" class="internal">problems</a> wants
+to close this file again. See <a href="2-pl1.html#SP7" class="internal">ProblemBuffer::write_reports</a>.
+</p>
+
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b><span class="extract"><span class="extract-syntax">WORDING_FOR_HEADING_NODE_PROBLEMS_CALLBACK</span></span> is called to ask what wording
 should be used to describe a heading in problem messages. See
 <a href="2-pl2.html#SP3" class="internal">Problems::show_problem_location</a>.
 </p>

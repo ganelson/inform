@@ -375,7 +375,7 @@ other book.
 	HTML_OPEN("tr");
 
 	HTML_OPEN_WITH("td", "class=\"egcellforoval\""); /* The Oval begins */
-	HTML::begin_div_with_class_S(OUT, I"egovalfornumber overstruckimage");
+	HTML::begin_div_with_class_S(OUT, I"egovalfornumber overstruckimage", __FILE__, __LINE__);
 	TEMPORARY_TEXT(url)
 	TEMPORARY_TEXT(onclick)
 	Examples::open_example_url(url, E, V, V, writing_index);
@@ -437,7 +437,7 @@ other book.
 	char *cross_to = "RB"; volume *V_to = volumes[1];
 	if (V->allocation_id == 1) { cross_to = "WI"; V_to = volumes[0]; }
 	HTML::comment(OUT, I"START IGNORE");
-	HTML::begin_div_with_class_S(OUT, I"egovalforxref overstruckimage");
+	HTML::begin_div_with_class_S(OUT, I"egovalforxref overstruckimage", __FILE__, __LINE__);
 	TEMPORARY_TEXT(url)
 	Examples::open_example_url(url, E, V, V_to, writing_index);
 	HTML::begin_link(OUT, url);

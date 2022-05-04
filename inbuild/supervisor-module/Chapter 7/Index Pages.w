@@ -15,12 +15,10 @@ void ExtensionIndex::write(filename *F, int content, extension_census *C) {
 	text_stream *OUT = &HOMEPAGE_struct;
 	if (STREAM_OPEN_TO_FILE(OUT, F, UTF8_ENC) == FALSE) return;
 
-	HTML::header(OUT, I"Extensions",
-		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
-		InstalledFiles::filename(JAVASCRIPT_FOR_EXTENSIONS_IRES), NULL);
+	InformPages::header(OUT, I"Extensions", JAVASCRIPT_FOR_EXTENSIONS_IRES, NULL);
 	@<Write the body of the HTML@>;
+	InformPages::footer(OUT);
 	STREAM_CLOSE(OUT);
-	HTML::footer(OUT);
 }
 
 @<Write the body of the HTML@> =
@@ -30,12 +28,16 @@ void ExtensionIndex::write(filename *F, int content, extension_census *C) {
 		"src='inform:/doc_images/extensions@2x.png' border=0 width=150 height=150");
 	HTML::next_html_column(OUT, 0);
 
-	HTML_OPEN_WITH("div", "class=\"headingboxDark\"");
-	HTML_OPEN_WITH("div", "class=\"headingtextWhite\"");
+	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanelalt\"");
+	HTML_OPEN_WITH("div", "class=\"headingtext\"");
+	HTML_OPEN_WITH("span", "class=\"headingpaneltextalt\"");
 	WRITE("Installed Extensions");
+	HTML_CLOSE("span");
 	HTML_CLOSE("div");
-	HTML_OPEN_WITH("div", "class=\"headingrubricWhite\"");
+	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
+	HTML_OPEN_WITH("span", "class=\"headingpanelrubricalt\"");
 	WRITE("Bundles of extra rules or phrases to extend what Inform can do");
+	HTML_CLOSE("span");
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
 	@<Write the heading details text for the page@>;

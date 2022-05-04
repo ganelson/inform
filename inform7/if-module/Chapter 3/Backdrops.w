@@ -130,7 +130,7 @@ int Backdrops::intervene_in_assertion(parse_node *px, parse_node *py) {
 		(<notable-backdrops-noun-phrases>(Node::get_text(py)))) {
 		inference_subject *left_subject = Node::get_subject(px);
 		if (left_subject == NULL)
-			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ValueEverywhere),
+			UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ValueEverywhere),
 				"'everywhere' can only be used to place individual backdrops",
 				"so although 'The mist is a backdrop. The mist is everywhere.' "
 				"would be fine, 'Corruption is everywhere.' would not.");

@@ -3,31 +3,30 @@
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
-p {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	font-size: 12px;
+.headingpanellayout {
+	position: relative;
+	height: 56px;
+	padding: 0px;
+	white-space:nowrap;
 }
-td {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	font-size: 12px;
+.headingpanellayoutdeeper {
+	position: relative;
+	height: 117px;
+	padding: 0px;
+	white-space:nowrap;
 }
-body {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	font-size: 12px;
+.headingtext {
+	position: absolute;
+	top: -4px;
+	left: -1px;
+	width: 100%;
+	padding: 14px 10px 0px 10px;
 }
-span.smaller {
-	font-size: 80%;
-}
-span.typewritten {
-	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-	font-size: 13px;
-}
-.oval, .oval TD {
-	background-image:url('inform:/doc_images/ovoid.png');
-	color:white;
+.headingrubric {
+	position: absolute;
+	top: 36px;
+	width: 100%;
+	padding: 0px 10px 0px 10px;
 }
 h3.tighter {
 	margin-top: 0px;
@@ -199,95 +198,4 @@ p.hangingin9 {
 	text-indent: -50px;
 	margin-top: 0px;
 	margin-bottom: 1px;
-}
-div.hr {
-	border: 0;
-	width: 100%;
-	color: #707070;
-	background-color: #707070;
-	height: 5px;
-}
-
-.headingbox {
-	position: relative;
-	height: 56px;
-	padding: 0px;
-	white-space:nowrap;
-	background: #eeeeee;  /* grey */
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-}
-.headingboxhigh {
-	position: relative;
-	height: 117px;
-	padding: 0px;
-	white-space:nowrap;
-	background: #eeeeee;  /* grey */
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-}
-.headingboxSucceeded {
-	position: relative;
-	height: 56px;
-	padding: 0px;
-	white-space:nowrap;
-	background: #E6FFE6;  /* green */
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-}
-.headingboxFailed {
-	position: relative;
-	height: 56px;
-	padding: 0px;
-	white-space:nowrap;
-	background: #f69Ca6;  /* red */
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-}
-.headingboxDark {
-	position: relative;
-	height: 56px;
-	padding: 0px;
-	white-space:nowrap;
-	background: #808080;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-}
-.headingtext {
-	position: absolute;
-	top: -4px;
-	left: -1px;
-	width: 100%;
-	color: #222222;
-	padding: 14px 10px 0px 10px;
-	font-size: 20px;
-	font-weight: bold;
-}
-.headingtextWhite {
-	position: absolute;
-	top: -4px;
-	left: -1px;
-	width: 100%;
-	color: #ffffff;
-	padding: 14px 10px 0px 10px;
-	font-size: 20px;
-	font-weight: bold;
-}
-.headingrubric {
-	position: absolute;
-	top: 36px;
-	width: 100%;
-	color: #222222;
-	padding: 0px 10px 0px 10px;
-	font-size: 11px;
-	font-weight: bold;
-}
-.headingrubricWhite {
-	position: absolute;
-	top: 36px;
-	width: 100%;
-	color: #ffffff;
-	padding: 0px 10px 0px 10px;
-	font-size: 11px;
-	font-weight: bold;
 }

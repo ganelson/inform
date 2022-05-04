@@ -214,7 +214,7 @@ that the rest is property name; and otherwise
 @<Divide the property list entry into property name and value text@> =
 	wording W = Articles::remove_the(Node::get_text(p));
 	if (Wordings::empty(W)) {
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(BelievedImpossible),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(BelievedImpossible),
 			"this looked to me as if it might be trying to create something "
 			"which has certain properties",
 			"and that made no sense on investigation. This sometimes happens "
@@ -231,7 +231,7 @@ that the rest is property name; and otherwise
 
 @<Issue a problem message for no-such-property@> =
 	LOG("Failed property list: pname = <%W>; pval = <%W>\n", PW, VW);
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadPropertyList),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BadPropertyList),
 		"this looked to me as if it might be trying to create something "
 		"which has certain properties",
 		"and that made no sense on investigation. This sometimes happens "

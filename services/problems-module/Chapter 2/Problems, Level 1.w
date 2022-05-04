@@ -349,5 +349,12 @@ void ProblemBuffer::write_reports(int disaster_struck) {
 	INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK(disaster_struck, problem_count);
 	problem_count = pc;
 	#endif
-	if (problems_file_active) HTML::end_body(problems_file);
+	if (problems_file_active) {
+		#ifdef END_PROBLEM_FILE_PROBLEMS_CALLBACK
+		END_PROBLEM_FILE_PROBLEMS_CALLBACK(problems_file);
+		#endif
+		#ifndef END_PROBLEM_FILE_PROBLEMS_CALLBACK
+		HTML::footer(problems_file);
+		#endif
+	}
 }
