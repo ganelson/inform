@@ -12491,7 +12491,7 @@ Note that the object in question can be a room, as in this second example.
 
 	{*}The Cloakroom is a room. "This is just a cloakroom, but through a vague, misty mirror-window you can make out the Beyond." After looking in the Cloakroom, say "In the mirror you can see [list of things in the Beyond]."
 
-	After deciding the scope of the player while in the Cloakroom: place the Beyond in scope.
+	After deciding the scope of the player while the location is the Cloakroom: place the Beyond in scope.
 
 	The Beyond is a room. Johnny Depp is a man in the Beyond.
 
