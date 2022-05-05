@@ -104,3 +104,9 @@ nav[role="progress"] ul li a:active {
 nav[role="progress"] ul li a:hover {
     color: #dd2c0d
 }
+
+@media print {
+	nav[role="progress"] {
+		display: none;
+	}
+}

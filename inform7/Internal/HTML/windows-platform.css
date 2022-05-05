@@ -99,3 +99,50 @@ documentation. */
 	background-image:url('inform:/doc_images/ovoid.png');
 	color:white;
 }
+
+/* Now we move on to styling used in the Index pages only: */
+
+/* The periodic table display has "sidebars", usually grey and taller than they
+are wide; they contain no text. */
+
+div.periodictablesidebarcolour {
+	background: #888;
+}
+div.periodictablesidebar:hover {
+	background: #222;
+}
+
+/* The text of the element-abbreviation, such as "Lx" or "Ph", uses: */
+
+span.elementtext {
+	color: #ffffff;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+/* Similarly for the "atomic number" - a single digit - in the top left corner
+of these boxes: */
+
+span.elementnumbertext {
+	color: #ffffff;
+	font-size: 7pt;
+}
+
+/* For the text of the element title, to the right of the element box: */
+
+span.elementtitletext {
+	color: #ffffff;
+	font-size: 9px;
+	font-weight: bold;
+}
+
+/* To get the book-contents-page style leaders on the Contents element of
+   the index to work, these must use the background colour of the body of
+   the page, whatever that is: */
+
+ul.leaders li.leaded span:first-child {
+	background: white;
+}
+ul.leaders li.leaded span + span {
+	background: white;
+}

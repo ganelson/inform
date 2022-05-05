@@ -29,23 +29,15 @@ by default they are a darker grey. */
 
 .headingpanel {
 	background: #eeeeee;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
 }
 .headingpanelsucceeded {
 	background: #E6FFE6;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
 }
 .headingpanelfailed {
 	background: #f69Ca6;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
 }
 .headingpanelalt {
 	background: #808080;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
 }
 
 /* Heading panels have two lines of text: an upper one in a larger size, and a
@@ -61,22 +53,30 @@ lower one in a smaller. Again, the alt versions are meant to contrast.
 
 span.headingpaneltext {
 	color: #222222;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
 	font-size: 20px;
 	font-weight: bold;
 }
 span.headingpaneltextalt {
 	color: #ffffff;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
 	font-size: 20px;
 	font-weight: bold;
 }
 
 span.headingpanelrubric {
 	color: #222222;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
 	font-size: 11px;
 	font-weight: bold;
 }
 span.headingpanelrubricalt {
 	color: #ffffff;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
 	font-size: 11px;
 	font-weight: bold;
 }
@@ -98,4 +98,51 @@ documentation. */
 .oval, .oval td {
 	background-image:url('inform:/doc_images/ovoid.png');
 	color:white;
+}
+
+/* Now we move on to styling used in the Index pages only: */
+
+/* The periodic table display has "sidebars", usually grey and taller than they
+are wide; they contain no text. */
+
+div.periodictablesidebarcolour {
+	background: #888;
+}
+div.periodictablesidebar:hover {
+	background: #222;
+}
+
+/* The text of the element-abbreviation, such as "Lx" or "Ph", uses: */
+
+span.elementtext {
+	color: #ffffff;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+/* Similarly for the "atomic number" - a single digit - in the top left corner
+of these boxes: */
+
+span.elementnumbertext {
+	color: #ffffff;
+	font-size: 7pt;
+}
+
+/* For the text of the element title, to the right of the element box: */
+
+span.elementtitletext {
+	color: #ffffff;
+	font-size: 9px;
+	font-weight: bold;
+}
+
+/* To get the book-contents-page style leaders on the Contents element of
+   the index to work, these must use the background colour of the body of
+   the page, whatever that is: */
+
+ul.leaders li.leaded span:first-child {
+	background: white;
+}
+ul.leaders li.leaded span + span {
+	background: white;
 }

@@ -133,11 +133,19 @@ nav[role="navigation"] h1 {
     margin-top: 0em
 }
 
-main {
-    max-width: 1024px;
-    min-width: 320px;
-    margin-left: 250px;
-    min-height: 100%;
-    height: auto !important;
-    height: 100%
+@media screen {
+	main {
+		max-width: 1024px;
+		min-width: 320px;
+		margin-left: 250px;
+		min-height: 100%;
+		height: auto !important;
+		height: 100%
+	}
+}
+
+@media print {
+	nav[role="navigation"] {
+		display: none;
+	}
 }

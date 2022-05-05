@@ -9,6 +9,12 @@
   user-select: none;
 }
 
+@media print {
+	.popup {
+		display: none;
+	}
+}
+
 /* The actual popup */
 .popup .popuptext {
   visibility: hidden;

@@ -6,6 +6,12 @@ div.breadcrumbs {
 	padding-bottom: 4px;
 }
 
+@media print {
+	div.breadcrumbs {
+		position: static;
+	}
+}
+
 .crumbs {
 	border:1px solid #dedede;
 	height:3em;

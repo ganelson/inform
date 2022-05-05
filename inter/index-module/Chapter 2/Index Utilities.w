@@ -25,17 +25,21 @@ void IndexUtilities::banner_line(OUTPUT_STREAM, index_page *page, int N, text_st
 @<Write the banner mini-element-box@> =
 	int ref = (page)?(page->allocation_id+1):1;
 	HTML_OPEN_WITH("td", "valign=\"top\" align=\"left\"");
-	HTML_OPEN_WITH("div", "id=\"minibox%d_%d\" class=\"smallbox\"", ref, N);
+	HTML_OPEN_WITH("div", "id=\"minibox%d_%d\" class=\"smallelementbox\"", ref, N);
 	TEMPORARY_TEXT(dets)
-	WRITE_TO(dets, "class=\"symbol\" title=\"%S\" ", name);
+	WRITE_TO(dets, "class=\"elementlink\" title=\"%S\" ", name);
 	if (link) WRITE_TO(dets, "href=\"%s\"", link);
 	else WRITE_TO(dets, "href=\"#\" onclick=\"click_element_box('segment%d'); return false;\"", N);
 	HTML_OPEN_WITH("a", "%S", dets);
 	DISCARD_TEXT(dets)
+	HTML_OPEN_WITH("span", "class=\"elementtext\"");
 	WRITE("%S", sym);
+	HTML_CLOSE("span");
 	HTML_CLOSE("a");
-	HTML_OPEN_WITH("div", "class=\"indexno\"");
+	HTML_OPEN_WITH("div", "class=\"elementnumber\"");
+	HTML_OPEN_WITH("span", "class=\"elementnumbertext\"");
 	WRITE("%d\n", N);
+	HTML_CLOSE("span");
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
 	HTML_CLOSE("td");

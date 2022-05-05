@@ -32,7 +32,6 @@ structure file loaded by the //Index Interpreter//, so that's not fixed on every
 run of Inform.
 
 @<Incorporate some CSS@> =
-	HTML::incorporate_CSS(OUT, InstalledFiles::filename(CSS_FOR_INDEX_PAGES_IRES));
 	HTML_OPEN_WITH("style", "type=\"text/css\" media=\"screen, print\"");
 	index_page *ip;
 	linked_list *L = Indexing::get_list_of_pages(session);

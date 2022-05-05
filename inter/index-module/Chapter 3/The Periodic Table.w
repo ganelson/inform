@@ -23,12 +23,12 @@ by a DIV whose class is "sidebar".
 
 The sidebar is followed by a series of cells called the "boxes", one for
 each element in that row's index page. These contain DIVs with the class
-"box" and the ID "boxN_M", where N is the row number, 1 to 7, and M is
+"elementbox" and the ID "boxN_M", where N is the row number, 1 to 7, and M is
 the column number, 1 to E, where E is the number of elements in that row.
 Each box then contains three pieces of text: an abbreviation like Kd,
-in a DIV with class "symbol"; a spelled-out name like Kinds, in a DIV
-with class "rubric"; and an element number like 3, in a DIV with class
-"indexno".
+in a SPAN with class "elementtext"; a spelled-out name like Kinds, in a DIV
+with class "elementtitle"; and an element number like 3, in a DIV with class
+"elementnumber".
 
 Following that is a broad cell, spanning the rest of the table's width,
 which contains text like "Kinds Index". This contains a DIV of class
@@ -93,13 +93,13 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 		HTML_OPEN("tr");
 		HTML_OPEN_WITH("td", "onclick=\"window.location='%S.html'; return false;\"",
 			ip->page_leafname);
-		HTML_OPEN_WITH("div", "class=\"sidebar\"");
+		HTML_OPEN_WITH("div", "class=\"periodictablesidebar periodictablesidebarcolour\"");
 		HTML_CLOSE("div");
 		HTML_CLOSE("td");
 	} else {
 		HTML_OPEN_WITH("tr", "id=\"surround%d\"", ip->allocation_id+1);
 		HTML_OPEN_WITH("td", "onclick=\"window.location='Welcome.html'; return false;\"");
-		HTML_OPEN_WITH("div", "class=\"sidebar\"");
+		HTML_OPEN_WITH("div", "class=\"periodictablesidebar periodictablesidebarcolour\"");
 		HTML_CLOSE("div");
 		HTML_CLOSE("td");
 	}
@@ -112,15 +112,22 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 		HTML_OPEN_WITH("td", "onclick=\"window.location='%S.html?segment%d'; return false;\"",
 			ip->page_leafname, ie->atomic_number);
 	}
-	HTML_OPEN_WITH("div", "id=\"box%d_%d\" class=\"box\"", ip->allocation_id+1, ie->atomic_number);
-	HTML_OPEN_WITH("a", "class=\"symbol\" title=\"%S\" href=\"#\"", ie->element_name);
+	HTML_OPEN_WITH("div", "id=\"box%d_%d\" class=\"elementbox\"",
+		ip->allocation_id+1, ie->atomic_number);
+	HTML_OPEN_WITH("a", "class=\"elementlink\" title=\"%S\" href=\"#\"", ie->element_name);
+	HTML_OPEN_WITH("span", "class=\"elementtext\"");
 	WRITE("%S", ie->chemical_symbol);
+	HTML_CLOSE("span");
 	HTML_CLOSE("a"); WRITE("\n");
-	HTML_OPEN_WITH("div", "class=\"indexno\"");
+	HTML_OPEN_WITH("div", "class=\"elementnumber\"");
+	HTML_OPEN_WITH("span", "class=\"elementnumbertext\"");
 	WRITE("%d", ie->atomic_number);
+	HTML_CLOSE("span");
 	HTML_CLOSE("div");
-	HTML_OPEN_WITH("div", "class=\"rubric\"");
+	HTML_OPEN_WITH("div", "class=\"elementtitle\"");
+	HTML_OPEN_WITH("span", "class=\"elementtitletext\"");
 	WRITE("%S", ie->element_name);
+	HTML_CLOSE("span");
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
 	HTML_CLOSE("td");

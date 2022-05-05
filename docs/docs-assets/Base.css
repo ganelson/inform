@@ -25,8 +25,15 @@ body {
 	-webkit-font-smoothing: antialiased;
 }
 
-a.function-link:link, a.function-link:visited {
-	text-decoration: black solid underline;
+@media screen {
+	a.function-link:link, a.function-link:visited {
+		text-decoration: black solid underline;
+	}
+}
+@media print {
+	a.function-link {
+		text-decoration: none;
+	}
 }
 a.function-link:active, a.function-link:hover {
 	font-weight: 700
