@@ -72,6 +72,9 @@ filename |F| and the stream |P| to open to it. If the callback function wants
 this to come to anything, it must perform the file-open, and write any header
 material it would like. See //StandardProblems::start_problems_report//.
 
+@ |END_PROBLEM_FILE_PROBLEMS_CALLBACK| is called when //problems// wants
+to close this file again. See //ProblemBuffer::write_reports//.
+
 @ |WORDING_FOR_HEADING_NODE_PROBLEMS_CALLBACK| is called to ask what wording
 should be used to describe a heading in problem messages. See
 //Problems::show_problem_location//.

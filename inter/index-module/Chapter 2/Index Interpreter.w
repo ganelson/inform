@@ -187,16 +187,13 @@ text_stream *InterpretIndex::open_file(text_stream *IF,
 		Errors::fatal_with_file("can't open index file", F);
 		#endif
 	}
-	HTML::header(IF, title,
-		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
-		InstalledFiles::filename(JAVASCRIPT_FOR_STANDARD_PAGES_IRES),
-		(void *) page);
+	InformPages::header(IF, title, JAVASCRIPT_FOR_STANDARD_PAGES_IRES, (void *) page);
 	IndexUtilities::clear_page_data(session);
 	return IF;
 }
 
 @ =
 void InterpretIndex::close_index_file(text_stream *ifl) {
-	HTML::footer(ifl);
+	InformPages::footer(ifl);
 	STREAM_CLOSE(ifl);
 }

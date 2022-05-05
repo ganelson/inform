@@ -82,13 +82,11 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 	return 0;
 
 @<Write the actual extension documentation page@> =
-	HTML::header(OUT, I"Extension",
-		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
-		InstalledFiles::filename(JAVASCRIPT_FOR_ONE_EXTENSION_IRES), NULL);
+	InformPages::header(OUT, I"Extension", JAVASCRIPT_FOR_ONE_EXTENSION_IRES, NULL);
 	HTML::incorporate_HTML(OUT,
 		InstalledFiles::filename(EXTENSION_DOCUMENTATION_MODEL_IRES));
 	@<Write documentation for a specific extension into the page@>;
-	HTML::footer(OUT);
+	InformPages::footer(OUT);
 
 @<Write documentation for a specific extension into the page@> =
 	HTML_OPEN("p");

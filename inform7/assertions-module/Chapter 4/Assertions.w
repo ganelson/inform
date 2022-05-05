@@ -403,7 +403,7 @@ at which point it becomes a |PROPER_NOUN_NT| node.)
 >> A container with description "White" is a container with description "Black".
 
 @<Case 4 - WITH on both sides@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_WithIsWith),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_WithIsWith),
 		"you can't say that one general description is another ",
 		"for instance by writing 'A container with carrying capacity 10 is a "
 		"container with description \"Handy.\"'.");
@@ -422,7 +422,7 @@ at which point it becomes a |PROPER_NOUN_NT| node.)
 like properties.
 
 @<Case 6 - X OF Y on both sides@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_XofYisZofW),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_XofYisZofW),
 		"this seems to say two different properties are not simply equal "
 		"but somehow the same thing",
 		"like saying that 'the printed name of the millpond is the "
@@ -433,7 +433,7 @@ like properties.
 @h Case 7.
 
 @<Case 7 - Miscellaneous vs X OF Y@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadXofY),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BadXofY),
 		"this is the wrong way around if you want to specify a property",
 		"like saying that '10 is the score of the platinum pyramid', "
 		"which is poor style. (Though sweet are the uses of adversity.)");
@@ -540,14 +540,14 @@ specifying its edibility.
 	}
 
 @<Don't allow a kind of kind@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_KindOfKindDisallowed),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_KindOfKindDisallowed),
 		"you aren't allowed to make new kinds of kinds",
 		"only kinds of things which already exist. So 'A fox is a kind of animal' "
 		"is fine, but 'A tricky kind is a kind of kind' isn't allowed.");
 	return;
 
 @<Don't allow a kind of everything@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_KindOfEveryDisallowed),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_KindOfEveryDisallowed),
 		"you aren't allowed to make a kind of everything",
 		"or of everything matching a description. 'A badger is a kind of animal' "
 		"is fine, but 'A gene is a kind of every animal' isn't allowed. (Probably "
@@ -555,7 +555,7 @@ specifying its edibility.
 	return;
 
 @<Don't allow a kind declaration to have uncertainty@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_KindUncertainDisallowed),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_KindUncertainDisallowed),
 		"you aren't allowed to make a kind in a way expressing certainty or doubt",
 		"so 'A badger is a kind of animal' is fine, but 'A fungus is usually a "
 		"kind of every animal' isn't allowed, and nor is 'A fern is never a kind "
@@ -602,14 +602,14 @@ further sub-cases later.
 		Assertions::make_coupling(px, py);
 		return;
 	}
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_PeculiarProperty),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_PeculiarProperty),
 		"that is a very peculiar property value",
 		"and ought to be something more definite and explicit.");
 
 @h Case 12.
 
 @<Case 12 - KIND vs PROPERTY LIST, ADJECTIVE, COMMON NOUN, PROPER NOUN@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_KindOfIs),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_KindOfIs),
 		"that seems to say that a new kind is the same as something else",
 		"like saying 'A kind of container is a canister': which ought to be put the "
 		"other way round, 'A canister is a kind of container'.");
@@ -622,7 +622,7 @@ further sub-cases later.
 	if (AdjectiveAmbiguity::has_enumerative_meaning(AdjectivalPredicates::to_adjective(pred))) {
 		property *prn = ValueProperties::obtain(Node::get_text(px->down->next));
 		if (Node::get_type(px->down) == WITH_NT) {
-			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_EOOwnerMutable),
+			UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_EOOwnerMutable),
 				"either/or properties have to be given to clearly identifiable "
 				"owners",
 				"rather than to a collection of owners which might vary during "
@@ -634,7 +634,7 @@ further sub-cases later.
 				Node::get_subject(px->down), py);
 		}
 	} else {
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_NonAdjectivalProperty),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_NonAdjectivalProperty),
 			"that property can't be used adjectivally as a value",
 			"since it is an adjective applying to a thing but is "
 			"not a name from a range of possibilities.");
@@ -658,7 +658,7 @@ further sub-cases later.
 @h Case 16. "Every K is Y" and other oddities.
 
 @<Case 16 - EVERY vs Miscellaneous@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadEvery),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BadEvery),
 		"'every' (or 'always') can't be used in that way",
 		"and should be reserved for sentences like 'A coin is in every room'.");
 
@@ -668,7 +668,7 @@ Even then, of course, "everywhere" implicitly means "in every room",
 not "every room".
 
 @<Case 17 - Miscellaneous vs EVERY@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadEvery2),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BadEvery2),
 		"'every' can't be used in that way",
 		"and should be reserved for sentences like 'A coin is in every room'.");
 
@@ -703,7 +703,7 @@ pretty improbable:
 
 @<Case 19 - ACTION, KIND, PROPERTY LIST, ADJECTIVE vs PROPERTY LIST, ACTION, COMMON NOUN, PROPER NOUN@> =
 	if (Node::get_subject(py))
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ActionEquated),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ActionEquated),
 			"an action can't be the same as a thing",
 			"so my guess is that this is an attempt to categorise an action which went "
 			"wrong because there was already something of that name in existence. For "
@@ -712,7 +712,7 @@ pretty improbable:
 			"actions at once to a named kind of action, like 'Taking and dropping are "
 			"manipulation.' - only one can be named at a time.)");
 	else
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ActionEquated2),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ActionEquated2),
 			"that means something else already",
 			"so it will only confuse things if we use it for a kind of action.");
 
@@ -724,7 +724,7 @@ a spatial location.
 @<Case 20 - Miscellaneous on both sides@> =
 	if (Refiner::turn_player_to_yourself(px)) { Assertions::make_coupling(px, py); return; }
 	if (Refiner::turn_player_to_yourself(py)) { Assertions::make_coupling(px, py); return; }
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_IntangibleRelated),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_IntangibleRelated),
 		"this seems to give a worldly relationship to something intangible",
 		"like saying that 'in the box is a text'. Perhaps it came "
 		"to this because you gave something physical a name which was "
@@ -738,7 +738,7 @@ a spatial location.
 >> The position of the weathervane is east of the church.
 
 @<Case 21 - X OF Y vs RELATIONSHIP@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_XofYRelated),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_XofYRelated),
 		"this seems to say that a property of something is not simply equal "
 		"to what happens at the moment to satisfy some relationship, but "
 		"conceptually the same as that relationship",
@@ -770,7 +770,7 @@ possible to coerce the left side to a noun, we will.
 @h Case 23. And so on.
 
 @<Case 23 - COMMON NOUN vs X OF Y@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_DescriptionIsOther),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_DescriptionIsOther),
 		"this seems to say that a general description is something else",
 		"like saying that 'a door is 20'.");
 
@@ -779,7 +779,7 @@ possible to coerce the left side to a noun, we will.
 >> Taking something is open.
 
 @<Case 24 - ACTION vs ADJECTIVE@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ActionAdjective),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ActionAdjective),
 		"that is already the name of a property",
 		"so it will only confuse things if we use it for a kind of action.");
 
@@ -825,7 +825,7 @@ but not in this context.
 		if (<activity-name-formal>(Node::get_text(px)))
 			Activities::add_variable(av, py->down);
 		else
-			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadActivityRef),
+			UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BadActivityRef),
 				"an activity has to be formally referred to in a way making clear that "
 				"it is indeed a rulebook when we give it named values",
 				"to reduce the risk of ambiguity. So 'The printing the banner text "
@@ -846,7 +846,7 @@ but not in this context.
 		if (<rulebook-name-formal>(Node::get_text(px)))
 			Rulebooks::add_variable(rb, py->down);
 		else
-			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadRulebookRef),
+			UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BadRulebookRef),
 				"a rulebook has to be formally referred to in a way making clear that "
 				"it is indeed a rulebook when we give it named values",
 				"to reduce the risk of ambiguity. So 'The every turn rulebook has a "
@@ -858,14 +858,14 @@ but not in this context.
 	return;
 
 @<Issue the too vague to have properties or variables problem message@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_TooVagueForVariables),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_TooVagueForVariables),
 		"this is too vague a description of the owner of the property",
 		"so that I don't know where to put this. Something like 'A person "
 		"has a number called age' is fine, but 'A kind has a number called "
 		"age' is not. Which kind?");
 
 @<Issue the not allowed to have properties or variables problem message@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_HasNoVariables),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_HasNoVariables),
 		"only an object, kind, rulebook, action or activity can be allowed to have "
 		"properties or variables",
 		"so for instance 'A door has a colour' is fine but not 'A number has a length'.");
@@ -936,7 +936,7 @@ properties) and for kinds (which do, but differently).
 		return;
 	} else if (Node::get_type(px->down) != COMMON_NOUN_NT) {
 		LOG("$T\n", current_sentence);
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_Unspecifiable),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_Unspecifiable),
 			"this tries to set specification text for a particular value",
 			"rather than a kind of value. 'Specification' is a special property used "
 			"only to annotate the Index, and it makes no sense to set this property for "
@@ -948,7 +948,7 @@ properties) and for kinds (which do, but differently).
 	if ((<s-literal>(W)) && (Rvalues::is_CONSTANT_of_kind(<<rp>>, K_text))) {
 		Word::dequote(Wordings::first_wn(W));
 	} else {
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_SpecNotText),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_SpecNotText),
 			"this tries to set a specification to something other than literal quoted text",
 			"which will not work. 'Specification' is a special property used only to "
 			"annotate the Index, and specifically the Kinds index, so it makes no sense to "
@@ -957,7 +957,7 @@ properties) and for kinds (which do, but differently).
 	}
 
 @<Issue a problem message for setting a property of an overspecified object@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_OverspecifiedSpec),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_OverspecifiedSpec),
 		"this tries to set a property for something more complicated than a single thing "
 		"named without qualifications",
 		"and that isn't allowed. For instance, 'The description of the Great Portal is "
@@ -968,7 +968,7 @@ properties) and for kinds (which do, but differently).
 		"substitutions.)");
 
 @<Issue a problem message for setting a property of something never having them@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadInferenceSubject),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BadInferenceSubject),
 		"this tries to set a property for a value which can't have properties",
 		"and that isn't allowed. For instance, 'The description of the Great Portal is "
 		"\"It's open.\"' would be fine, if Great Portal were a room, but 'The description "
@@ -976,7 +976,7 @@ properties) and for kinds (which do, but differently).
 		"properties.");
 
 @<Issue a problem message for setting a property of something not owning one@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_GeneralitySpec),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_GeneralitySpec),
 		"this tries to set a property for a complicated generality of items all at once",
 		"which can lead to ambiguities. For instance, 'The description of an open door "
 		"is \"It's open.\"' is not allowed: if we followed Inform's normal conventions "
@@ -999,7 +999,7 @@ properties) and for kinds (which do, but differently).
 	action_pattern *apy = Node::get_action_meaning(py);
 	if ((apy) && (ActionPatterns::is_named(apy) == FALSE)) {
 		LOG("Actions: $A and $A\n", apx, apy);
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ActionsEquated),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ActionsEquated),
 			"two actions are rather oddly equated here",
 			"which would only make sense if the second were a named pattern of actions "
 			"like (say) 'unseemly behaviour'.");
@@ -1027,7 +1027,7 @@ in this case.
 	}
 	#endif
 
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_RelationsEquated),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_RelationsEquated),
 		"this says that two different relations are the same",
 		"like saying that 'in the box is on the table'. (Sometimes this "
 		"happens if I misinterpret names of places like 'In Prison' or "
@@ -1059,13 +1059,13 @@ opera about a dog, "Collared Is Bowser".)
 
 @<Case 30 - ADJECTIVE vs COMMON NOUN, PROPER NOUN@> =
 	if (Node::get_subject(py))
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_AdjectiveIsObject),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_AdjectiveIsObject),
 			"that seems to say that an adjective is a noun",
 			"like saying 'Open are the doubled doors': which I'm picky about, preferring "
 			"it written the other way about ('The doubled doors are open'). Less poetic, "
 			"but clearer style.");
 	else
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_AdjectiveIsValue),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_AdjectiveIsValue),
 			"that suggests that an adjective has some sort of value",
 			"like saying 'Open is a number' or 'Scenery is 5': but of course an adjective "
 			"represents something which is either true or false.");
@@ -1100,12 +1100,12 @@ opera about a dog, "Collared Is Bowser".)
 		parse_node *v = current_sentence->down;
 		if ((Node::is(v, VERB_NT)) &&
 			(Annotations::read_int(v, verbal_certainty_ANNOT) == INITIALLY_CE))
-			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsAction2),
+			UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsAction2),
 				"you need to add 'the action of' after 'initially'",
 				"in order to clarify that you mean this sentence to set a variable "
 				"to an action (if in fact that's what you mean to do!).");
 		else
-			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsAction),
+			UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsAction),
 				"that is putting the definition back to front",
 				"since I need these categorisations of actions to take the form 'Kissing a "
 				"woman is love', not 'Love is kissing a woman'. (This is really because it "
@@ -1116,7 +1116,7 @@ opera about a dog, "Collared Is Bowser".)
 @h Case 33. "Every K is every L."
 
 @<Case 33 - EVERY on both sides@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_EveryEquated),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_EveryEquated),
 		"I can't do that", "Dave.");
 
 @h Case 34. The "Genevieve" problem message is a finicky stylistic one, and
@@ -1143,7 +1143,7 @@ this ought to be allowed...
 	}
 
 	if (Kinds::Behaviour::is_object(Specifications::to_kind(Node::get_evaluation(px))))
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_KindRelated),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_KindRelated),
 			"something described only by its kind should not be given a "
 			"specific place or role in the world",
 			"to avoid ambiguity. For instance, suppose 'car' is a kind. Then "
@@ -1154,7 +1154,7 @@ this ought to be allowed...
 			"though more specific ones like 'a car called Genevieve is in the "
 			"garage' are fine, as is the reverse, 'In the garage is a car.'");
 	else
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_KOVRelated),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_KOVRelated),
 			"this seems to give a worldly relationship to something intangible",
 			"possibly due to an accidental clash of names between a kind of "
 			"value and something in the real world. "
@@ -1331,7 +1331,7 @@ two whole domains. (We have the "kind of..." syntax instead.)
 
 @<Issue a problem for a namespace clash between a variable name and a kind@> =
 	if (Specifications::is_new_variable_like(Node::get_evaluation(py))) {
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_VarKOVClash),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_VarKOVClash),
 			"the name supplied for this new variable is a piece of text "
 			"which is not available because it has a rival meaning already",
 			"as a result of definitions made elsewhere. (Sometimes these "
@@ -1523,7 +1523,7 @@ the "creation proposition" of Y, and we now assert this to be true about X.
 	@<Silently pass sentences like "The colours are red and blue."@>;
 	if (Kinds::Behaviour::is_object(Specifications::to_kind(Node::get_evaluation(py))))
 		Assertions::issue_value_equation_problem(py, px);
-	else Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_CommonIsProper),
+	else UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_CommonIsProper),
 		"this seems to say that a general description is something else",
 		"like saying that 'a door is 20'.");
 
@@ -1577,7 +1577,7 @@ There is also one case in which an object can be set equal to another object:
 	if (Rvalues::is_object(Node::get_evaluation(py)))
 		@<Otherwise it's just wrong to equate objects@>
 	else if (Rvalues::is_CONSTANT_construction(Node::get_evaluation(py), CON_property))
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsProperty),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ObjectIsProperty),
 			"that seems to say that some object is a property",
 			"like saying 'The brick building is the description': if you want to specify "
 			"the description of the current object, try putting the sentence the other way "
@@ -1596,7 +1596,7 @@ There is also one case in which an object can be set equal to another object:
 
 @<This is a map connection referred to metonymically@> =
 	if (Anaphora::get_current_subject() == NULL) {
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_NoMapOrigin),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_NoMapOrigin),
 			"no location is under discussion to be the origin of this map connection",
 			"so this is like starting with 'North is the Aviary': I can't tell where from.");
 		return;
@@ -1607,7 +1607,7 @@ There is also one case in which an object can be set equal to another object:
 	}
 	if (global_pass_state.pass == 2) {
 		if (target == NULL) {
-			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_MapNonObject),
+			UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_MapNonObject),
 				"this seems to make a map connection to something which is "
 				"not an object",
 				"like saying '20 is north'. This is an odd thing "
@@ -1623,7 +1623,7 @@ There is also one case in which an object can be set equal to another object:
 	Problems::quote_wording(3, Node::get_text(py));
 
 	if (Node::get_subject(px) == Node::get_subject(py))
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ProperIsItself),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ProperIsItself),
 			"this seems to say that something is itself",
 			"like saying 'the coin is the coin'. This is an odd thing "
 			"to say, and makes me think that I've misunderstood you.");
@@ -1669,7 +1669,7 @@ There is also one case in which an object can be set equal to another object:
 		"properties: for instance '%6 is a lighted room' says that something "
 		"called %6 exists and that it is a 'room', which is a kind I know about, "
 		"combined with a property called 'lighted' which I also know about.");
-	Problems::Using::diagnose_further();
+	UsingProblems::diagnose_further();
 	Problems::issue_problem_end();
 
 @ ...that we vary it randomly for fun. The low bits of the current time are not
@@ -1740,7 +1740,7 @@ yet during traverse 1.
 	if (Rvalues::is_CONSTANT_construction(Node::get_evaluation(px), CON_property)) {
 		inference_subject *talking_about = Anaphora::get_current_subject();
 		if (talking_about == NULL)
-			Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_NothingDiscussed),
+			UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_NothingDiscussed),
 				"nothing is under discussion which might have this property",
 				"so this is like starting with 'The description is \"Orange.\"': "
 				"I can't tell what of.");

@@ -559,7 +559,7 @@ indentation implicitly requires it.
 			"to be %2, in case that helps. %P"
 			"This sometimes happens even when the code looks about right, to the eye, if rows "
 			"of spaces have been used to indent phrases instead of tabs.");
-		Problems::Using::diagnose_further();
+		UsingProblems::diagnose_further();
 		Problems::issue_problem_end();
 	}
 

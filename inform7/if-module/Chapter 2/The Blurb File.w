@@ -169,7 +169,6 @@ own credits.
 @<Give instructions about auxiliary files@> =
 	auxiliary_file *af;
 	LOOP_OVER(af, auxiliary_file) {
-	LOG("afftrt %p, trp %p\n", af->folder_to_release_to, Task::release_path());
 		TEMPORARY_TEXT(rel)
 		Pathnames::to_text_relative(rel, af->folder_to_release_to, Task::release_path());
 		WRITE("auxiliary \"%f\" \"%S\" \"%S\"\n",

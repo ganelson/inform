@@ -149,7 +149,7 @@ VOID_METHOD_TYPE(RENDER_EXAMPLE_TOP_MTID, navigation_design *ND, text_stream *OU
 void Nav::render_navigation_example_top(OUTPUT_STREAM, volume *V, section *S) {
 
 	if (indoc_settings->format == HTML_FORMAT) {
-		HTML::begin_div_with_class_S(OUT, I"bookexamples");
+		HTML::begin_div_with_class_S(OUT, I"bookexamples", __FILE__, __LINE__);
 		HTML_OPEN_WITH("p", "class=\"chapterheading\"");
 	}
 

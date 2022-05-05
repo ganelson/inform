@@ -235,7 +235,7 @@ It should be the only thing on its line.
  		if (indoc_settings->format == HTML_FORMAT) {
  			Str::clear(rawl);
  			HTML::hr(rawl, NULL);
- 			HTML::open(rawl, "pre", I"class='changelog'");
+ 			HTML::open(rawl, "pre", I"class='changelog'", __FILE__, __LINE__);
  			suppress_p_tag = TRUE;
  		}
  		filename *cl = Filenames::in(indoc_settings->change_logs_folder, mr2.exp[1]);
@@ -243,7 +243,7 @@ It should be the only thing on its line.
 			TRUE, Rawtext::process_change_log_helper, NULL, rawl);
  		if (indoc_settings->format == HTML_FORMAT) {
  			WRITE_TO(rawl, "\n");
- 			HTML::close(rawl, "pre");
+ 			HTML::close(rawl, "pre", __FILE__, __LINE__);
  		}
  	}
 

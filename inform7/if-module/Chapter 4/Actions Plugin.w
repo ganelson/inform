@@ -196,7 +196,7 @@ as an instance of "... is an action ...", creating a new action.
 	*** variable
 
 @<Issue PM_BadActionDeclaration problem@> =
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BadActionDeclaration),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BadActionDeclaration),
 		"it is not sufficient to say that something is an 'action'",
 		"without giving the necessary details: for example, 'Unclamping "
 		"is an action applying to one thing.'");

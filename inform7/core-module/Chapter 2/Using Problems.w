@@ -1,4 +1,4 @@
-[Problems::Using::] Using Problems.
+[UsingProblems::] Using Problems.
 
 Interface to the Problems module.
 
@@ -9,10 +9,10 @@ Interface to the Problems module.
 @ In "silence-is-golden" mode, we want our Problem messages to look more like
 traditional Unix errors, even if they're long ones:
 
-@d FORMAT_CONSOLE_PROBLEMS_CALLBACK Problems::Using::console_format
+@d FORMAT_CONSOLE_PROBLEMS_CALLBACK UsingProblems::console_format
 
 =
-void Problems::Using::console_format(int *sig_mode, int *break_width, filename **fallback) {
+void UsingProblems::console_format(int *sig_mode, int *break_width, filename **fallback) {
 	if (Main::silence_is_golden()) {
 		*sig_mode = TRUE;
 		*break_width = 10000000; /* i.e., do not word-wrap problem messages at all */
@@ -24,19 +24,22 @@ void Problems::Using::console_format(int *sig_mode, int *break_width, filename *
 @ Inform tops and tails its output of problem messages, and it also prints
 non-problem messages when everything was fine. That all happens here:
 
-@d START_PROBLEM_FILE_PROBLEMS_CALLBACK Problems::Using::start_problems_report
-@d INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK Problems::Using::final_report
+@d START_PROBLEM_FILE_PROBLEMS_CALLBACK UsingProblems::start_problems_report
+@d END_PROBLEM_FILE_PROBLEMS_CALLBACK UsingProblems::end_problems_report
+@d INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK UsingProblems::final_report
 
 =
-void Problems::Using::start_problems_report(filename *F, text_stream *P) {
+void UsingProblems::start_problems_report(filename *F, text_stream *P) {
 	if (STREAM_OPEN_TO_FILE(P, F, UTF8_ENC) == FALSE)
 		Problems::fatal_on_file("Can't open problem log", F);
-	HTML::header(P, I"Translating the Source",
-		InstalledFiles::filename(CSS_FOR_STANDARD_PAGES_IRES),
-		InstalledFiles::filename(JAVASCRIPT_FOR_STANDARD_PAGES_IRES), NULL);
+	InformPages::header(P, I"Translating the Source", JAVASCRIPT_FOR_STANDARD_PAGES_IRES, NULL);
 }
 
-void Problems::Using::final_report(int disaster_struck, int problems_count) {
+void UsingProblems::end_problems_report(OUTPUT_STREAM) {
+	InformPages::footer(OUT);
+}
+
+void UsingProblems::final_report(int disaster_struck, int problems_count) {
 	int total_words = 0;
 
 	if (problem_count > 0) {
@@ -48,7 +51,8 @@ void Problems::Using::final_report(int disaster_struck, int problems_count) {
 		if (problems_file_active) ProblemBuffer::redirect_problem_stream(NULL);
 	} else {
 		int rooms = 0, things = 0;
-		if (problems_file_active) Problems::Using::html_outcome_image(problems_file, "ni_succeeded", "Succeeded");
+		if (problems_file_active)
+			UsingProblems::html_outcome_image(problems_file, "ni_succeeded", "Succeeded");
 		#ifdef IF_MODULE
 		Spatial::get_world_size(&rooms, &things);
 		#endif
@@ -95,7 +99,7 @@ ingratitude of some -- oh, all right.
 			"Problems occurring in translation prevented the game "
 			"from being properly created. (Correct the source text to "
 			"remove these problems and click on Go once again.)");
-	Problems::Using::outcome_image_tail(problems_file);
+	UsingProblems::outcome_image_tail(problems_file);
 
 	text_stream *STATUS = ProgressBar::begin_outcome();
 	if (STATUS) {
@@ -127,7 +131,7 @@ command line -- deserves the truth.
 		"into a world with %1 %2 and %3 %4, and the index has been "
 		"brought up to date.");
 	Problems::issue_problem_end();
-	Problems::Using::outcome_image_tail(problems_file);
+	UsingProblems::outcome_image_tail(problems_file);
 
 	if (telemetry_recording) {
 		Telemetry::ensure_telemetry_file();
@@ -172,17 +176,17 @@ int outcome_image_style = SIDE_OUTCOME_IMAGE_STYLE;
 @ This callback function is called just as the //problems// module is about
 to issue its first problem of the run:
 
-@d FIRST_PROBLEMS_CALLBACK Problems::Using::html_outcome_failed
+@d FIRST_PROBLEMS_CALLBACK UsingProblems::html_outcome_failed
 
 =
-void Problems::Using::html_outcome_failed(OUTPUT_STREAM) {
+void UsingProblems::html_outcome_failed(OUTPUT_STREAM) {
 	if (StandardProblems::internal_errors_have_occurred())
-		Problems::Using::html_outcome_image(problems_file, "ni_failed_badly", "Failed");
+		UsingProblems::html_outcome_image(problems_file, "ni_failed_badly", "Failed");
 	else
-		Problems::Using::html_outcome_image(problems_file, "ni_failed", "Failed");
+		UsingProblems::html_outcome_image(problems_file, "ni_failed", "Failed");
 }
 
-void Problems::Using::html_outcome_image(OUTPUT_STREAM, char *image, char *verdict) {
+void UsingProblems::html_outcome_image(OUTPUT_STREAM, char *image, char *verdict) {
 	char *vn = "";
 	int be_festive = TRUE;
 	if (StandardProblems::internal_errors_have_occurred() == FALSE) be_festive = FALSE;
@@ -218,7 +222,7 @@ void Problems::Using::html_outcome_image(OUTPUT_STREAM, char *image, char *verdi
 	HTML::comment(OUT, I"PROBLEMS BEGIN");
 }
 
-void Problems::Using::outcome_image_tail(OUTPUT_STREAM) {
+void UsingProblems::outcome_image_tail(OUTPUT_STREAM) {
 	if (problems_file_active)
 		if (outcome_image_style == SIDE_OUTCOME_IMAGE_STYLE) {
 			HTML::comment(OUT, I"PROBLEMS END");
@@ -240,7 +244,7 @@ for alternative verbs which might have been intended, and try to produce
 a message which diagnoses the problem rather better.
 
 =
-void Problems::Using::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS,
+void UsingProblems::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS,
 	char *message, char *explanation) {
 	wording RTW = EMPTY_WORDING; /* "rather than" text */
 	ACT_ON_SIGIL
@@ -273,11 +277,11 @@ void Problems::Using::assertion_problem(parse_node_tree *T, SIGIL_ARGUMENTS,
 			" %P(It may help to know that I am reading the primary verb here "
 			"as '%4', not '%5'.)");
 	}
-	Problems::Using::diagnose_further();
+	UsingProblems::diagnose_further();
 	Problems::issue_problem_end();
 }
 
-void Problems::Using::diagnose_further(void) {
+void UsingProblems::diagnose_further(void) {
 	if (current_sentence == NULL) return;
 	if (Wordings::empty(Node::get_text(current_sentence))) return;
 	int sqc = 0;

@@ -192,8 +192,11 @@ in width and a longer text is supplied.
 =
 void IndexUtilities::majuscule_heading(OUTPUT_STREAM, text_stream *display_text, int single_letter) {
 	if (indoc_settings->navigation->simplified_letter_rows) {
-		if (single_letter == 1) { HTML::begin_div_with_class_S(OUT, I"majuscule"); }
-		else { HTML::begin_div_with_class_S(OUT, I"stretchymajuscule"); }
+		if (single_letter == 1) {
+			HTML::begin_div_with_class_S(OUT, I"majuscule", __FILE__, __LINE__);
+		} else {
+			HTML::begin_div_with_class_S(OUT, I"stretchymajuscule", __FILE__, __LINE__);
+		}
 		HTML_OPEN_WITH("span", "class=\"majusculelettering\"");
 		WRITE("%S", display_text);
 		HTML_CLOSE("span");

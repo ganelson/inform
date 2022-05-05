@@ -557,7 +557,7 @@ int Map::intervene_in_assertion(parse_node *px, parse_node *py) {
 			return FALSE;
 		}
 		if (Annotations::read_int(px, nowhere_ANNOT)) {
-			Problems::Using::assertion_problem(Task::syntax_tree(),
+			UsingProblems::assertion_problem(Task::syntax_tree(),
 				_p_(PM_NowhereDescribed),
 				"'nowhere' cannot be made specific",
 				"and so cannot have specific properties or be of any given kind.");

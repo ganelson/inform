@@ -39,7 +39,7 @@ automatically creates it.
 @<This is a leaf containing just a property name@> =
 	if ((<k-kind>(Node::get_text(p))) &&
 		((<<rp>> == K_number) || (<<rp>> == K_text))) {
-		Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_BareProperty),
+		UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_BareProperty),
 			"this would create a property called 'number' or 'text'",
 			"and although bare names of kinds are usually allowed as properties, "
 			"these aren't. Instead, try '... has a number called position.' or "
@@ -59,12 +59,12 @@ automatically creates it.
 	if ((Kinds::eq(K, K_action_name)) ||
 		(Kinds::get_construct(K) == CON_activity) ||
 		(Kinds::get_construct(K) == CON_rulebook))
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ValueCantHaveVProperties2),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ValueCantHaveVProperties2),
 		"this is a kind of value which is not allowed to have properties of its own",
 		"because this would cause confusion with variables, which are more useful in "
 		"most cases. (See the Kinds index for which kinds can have properties.)");
 	else
-	Problems::Using::assertion_problem(Task::syntax_tree(), _p_(PM_ValueCantHaveVProperties),
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_ValueCantHaveVProperties),
 		"this is a kind of value which is not allowed to have properties of its own",
 		"because this would be impossible to store in any sensible way. For instance, "
 		"'A scene has a number called difficulty.' is fine because there are not many "

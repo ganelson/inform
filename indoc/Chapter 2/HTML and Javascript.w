@@ -468,11 +468,11 @@ void HTMLUtilities::defn_unpack(OUTPUT_STREAM, text_stream *given_defn, volume *
 
 @<Rewrite definition as an HTML paragraph of class defnprototype@> =
 	TEMPORARY_TEXT(proto)
-	HTML::open(proto, "p", I"class='defnprototype'");
+	HTML::open(proto, "p", I"class='defnprototype'", __FILE__, __LINE__);
 	/* given alternative wordings, put only the first in boldface */
 	Regexp::replace(defn, L"(%i+?)/(%C+)", L"%0</b>/%1<b>", REP_REPEATING);
 	WRITE_TO(proto, "<b>%S</b>", defn);
-	HTML::close(proto, "p");
+	HTML::close(proto, "p", __FILE__, __LINE__);
 	Str::copy(defn, proto);
 
 @<Set the kind of the result of the phrase in italic, not bold@> =

@@ -32,7 +32,7 @@ void Twilight::twilight_chapter_title(navigation_design *self, text_stream *OUT,
 
 @ =
 void Twilight::twilight_section_title(navigation_design *self, text_stream *OUT, volume *V, chapter *C, section *S) {
-	HTML::begin_div_with_class_S(OUT, I"bookheader");
+	HTML::begin_div_with_class_S(OUT, I"bookheader", __FILE__, __LINE__);
 	HTML_OPEN_WITH("table", "width=\"100%%\"");
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "width=80 valign=\"top\"");
@@ -94,7 +94,7 @@ bodied. (In a section with no examples, this immediately follows the middle.)
 
 =
 void Twilight::twilight_navigation_bottom(navigation_design *self, text_stream *OUT, volume *V, section *S) {
-	HTML::begin_div_with_class_S(OUT, I"bookfooter");
+	HTML::begin_div_with_class_S(OUT, I"bookfooter", __FILE__, __LINE__);
 	HTML_OPEN("p");
 	if (S->previous_section) {
 		HTMLUtilities::general_link(OUT, I"footerlink", S->previous_section->section_URL, I"Previous");

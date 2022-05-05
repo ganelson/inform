@@ -450,7 +450,14 @@ system without an error code.
 <span class="plain-syntax">    </span><span class="identifier-syntax">INFORMATIONAL_ADDENDA_PROBLEMS_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">disaster_struck</span><span class="plain-syntax">, </span><span class="identifier-syntax">problem_count</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">problem_count</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pc</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problems_file_active</span><span class="plain-syntax">) </span><span class="identifier-syntax">HTML::end_body</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">problems_file_active</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">END_PROBLEM_FILE_PROBLEMS_CALLBACK</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">END_PROBLEM_FILE_PROBLEMS_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">ifndef</span><span class="plain-syntax"> </span><span class="identifier-syntax">END_PROBLEM_FILE_PROBLEMS_CALLBACK</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">HTML::footer</span><span class="plain-syntax">(</span><span class="identifier-syntax">problems_file</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        #</span><span class="identifier-syntax">endif</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">

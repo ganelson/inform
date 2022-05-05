@@ -341,7 +341,7 @@ It should be the only thing on its line.
 <span class="string-syntax">        if (indoc_settings-&gt;format == HTML_FORMAT) {</span>
 <span class="string-syntax">            Str::clear(rawl);</span>
 <span class="string-syntax">            HTML::hr(rawl, NULL);</span>
-<span class="string-syntax">            HTML::open(rawl, "</span><span class="identifier-syntax">pre</span><span class="string-syntax">", I"</span><span class="identifier-syntax">class</span><span class="plain-syntax">=</span><span class="character-syntax">'changelog'</span><span class="string-syntax">");</span>
+<span class="string-syntax">            HTML::open(rawl, "</span><span class="identifier-syntax">pre</span><span class="string-syntax">", I"</span><span class="identifier-syntax">class</span><span class="plain-syntax">=</span><span class="character-syntax">'changelog'</span><span class="string-syntax">", __FILE__, __LINE__);</span>
 <span class="string-syntax">            suppress_p_tag = TRUE;</span>
 <span class="string-syntax">        }</span>
 <span class="string-syntax">        filename *cl = Filenames::in(indoc_settings-&gt;change_logs_folder, mr2.exp[1]);</span>
@@ -349,7 +349,7 @@ It should be the only thing on its line.
 <span class="character-syntax">            TRUE, Rawtext::process_change_log_helper, NULL, rawl);</span>
 <span class="character-syntax">        if (indoc_settings-&gt;format == HTML_FORMAT) {</span>
 <span class="character-syntax">            WRITE_TO(rawl, "\n");</span>
-<span class="character-syntax">            HTML::close(rawl, "pre");</span>
+<span class="character-syntax">            HTML::close(rawl, "pre", __FILE__, __LINE__);</span>
 <span class="character-syntax">        }</span>
 <span class="character-syntax">    }</span>
 </pre>

@@ -157,7 +157,7 @@ int VariableSubjects::typecheck_initial_value(nonlocal_variable *nlv, parse_node
 				"I often assume that it's meant to be a new object. So it may "
 				"be that you intended '%3' to be something quite different, "
 				"but I just didn't get it.");
-		Problems::Using::diagnose_further();
+		UsingProblems::diagnose_further();
 		Problems::issue_problem_end();
 	}
 	return FALSE;
