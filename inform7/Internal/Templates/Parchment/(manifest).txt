@@ -9,7 +9,7 @@
 ! of the play page:
 
 [INTERPRETERVERSION]
-Parchment for Inform 7 (2022.4)
+Parchment for Inform 7 (2022.5)
 []
 
 [INTERPRETERURL]
