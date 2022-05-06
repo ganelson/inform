@@ -15487,7 +15487,7 @@ which produces the list {"fifteen", "twenty-nine", "minus four"}.
 Lastly, reduction. In order to combine a whole list of values, we need a phrase to combine any two. Here are some samples:
 
 	To decide what number is the larger of (N - number) and (M - number)
-		(this is maximizing):
+		(this is maximization):
 		if N > M, decide on N;
 		decide on M.
 
