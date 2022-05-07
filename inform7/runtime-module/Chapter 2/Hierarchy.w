@@ -2133,6 +2133,14 @@ void Hierarchy::make_available(inter_name *iname) {
 	Wiring::socket(Emit::tree(), ma_as, S);
 }
 
+void Hierarchy::make_available_one_per_name_only(inter_name *iname) {
+	text_stream *ma_as = InterNames::get_translation(iname);
+	if (Str::len(ma_as) == 0) ma_as = InterNames::to_text(iname);
+	LargeScale::package_type(Emit::tree(), I"_linkage");
+	inter_symbol *S = InterNames::to_symbol(iname);
+	Wiring::socket_one_per_name_only(Emit::tree(), ma_as, S);
+}
+
 @h Adding packages at attachment points.
 Consider the following example piece of declaration:
 = (text as InC)

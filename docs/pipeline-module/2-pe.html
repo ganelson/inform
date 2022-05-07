@@ -202,6 +202,8 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">do_not_locate_problems</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Log::aspect_switched_on</span><span class="plain-syntax">(</span><span class="identifier-syntax">INTER_DA</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">TextualInter::write</span><span class="plain-syntax">(</span><span class="identifier-syntax">DL</span><span class="plain-syntax">, </span><span class="identifier-syntax">Emit::tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-pe.html#SP2">&#167;2</a> (twice).</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Errors in kit source. </b>Errors like this used to be basically failed assertions, but inevitably people

@@ -32,9 +32,11 @@ Firstly, here are the free-standing interventions:
 void Interventions::make_all(void) {
 	source_text_intervention *sti;
 	LOOP_OVER(sti, source_text_intervention)
-		if (sti->infs_to_include_with == NULL)
+		if (sti->infs_to_include_with == NULL) {
+			current_sentence = sti->where_made;
 			Emit::intervention(Interventions::expand_bracket_plus(sti->matter),
 				sti->replacing);
+		}
 }
 
 @ Secondly, here are those which append properties to instance or class declarations:
@@ -43,8 +45,10 @@ void Interventions::make_all(void) {
 void Interventions::make_for_subject(inter_name *iname, inference_subject *infs) {
 	source_text_intervention *sti;
 	LOOP_OVER(sti, source_text_intervention)
-		if (sti->infs_to_include_with == infs)
+		if (sti->infs_to_include_with == infs) {
+			current_sentence = sti->where_made;
 			Emit::append(iname, Interventions::expand_bracket_plus(sti->matter));
+		}
 }
 
 @ Thirdly, from use options:

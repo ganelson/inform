@@ -128,6 +128,8 @@ void PipelineErrors::error_with(pipeline_step *step, char *erm, text_stream *quo
 		}
 	}
 	do_not_locate_problems = FALSE;
+	if (Log::aspect_switched_on(INTER_DA))
+		TextualInter::write(DL, Emit::tree(), NULL);
 
 @h Errors in kit source.
 Errors like this used to be basically failed assertions, but inevitably people
