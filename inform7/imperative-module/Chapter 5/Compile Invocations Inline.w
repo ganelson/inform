@@ -1706,7 +1706,18 @@ void CSIInline::eval_bracket_plus_to_text(text_stream *OUT, wording LW) {
 
 	parse_node *spec = NULL;
 	@<Evaluate the text as a value@>;
-
+	if (Specifications::is_phrasal(spec)) {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, LW);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_PhraseInBracketsPlus));
+		Problems::issue_problem_segment(
+			"In %1, you tried to use '(+' and '+)' to expand to a value computed by a "
+			"phrase, '%2', but these brackets can only be used with constant values.");
+		Problems::issue_problem_end();
+		WRITE("0");
+		return;
+	}
+	
 	inter_pair val = CompileValues::to_pair(spec);
 	if (InterValuePairs::is_symbolic(val)) {
 		PUT(URL_SYMBOL_CHAR);

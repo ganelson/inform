@@ -704,17 +704,13 @@ a constant 1, 2 or 3, or else plain roman is all you get.
 		break;
 	case STYLE_BIP: {
 		inter_tree_node *N = InterTree::first_child(P);
-		if ((Inode::is(N, CONSTANT_IST)) &&
-			(ConstantInstruction::list_format(N) == CONST_LIST_FORMAT_NONE)) {
-			inter_ti style = InterValuePairs::to_number(ConstantInstruction::constant(N));
-			switch (style) {
-				case 1: WRITE("style bold"); break;
-				case 2: WRITE("style underline"); break;
-				case 3: WRITE("style reverse"); break;
-				default: WRITE("style roman");
-			}
-		} else {
-			WRITE("style roman");
+		inter_pair pair = ValInstruction::value(N);
+		inter_ti style = InterValuePairs::to_number(pair);
+		switch (style) {
+			case 1: WRITE("style bold"); break;
+			case 2: WRITE("style underline"); break;
+			case 3: WRITE("style reverse"); break;
+			default: WRITE("style roman");
 		}
 		break;
 	}

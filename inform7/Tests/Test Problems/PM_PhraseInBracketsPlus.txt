@@ -1,0 +1,10 @@
+The lab is a room.
+
+To decide which number is the magic number:
+	(- 35638 -).
+
+Include (-
+[ foo_func x;
+	x = (+ the magic number +);
+];
+-).

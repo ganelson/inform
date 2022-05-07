@@ -153,5 +153,6 @@ made in that second case would be something like
 					PUT_TO(S, Str::get_at(UO, i));
 				}
 			}
+			current_sentence = uo->where_used;
 			Interventions::from_use_option(S);
 		}

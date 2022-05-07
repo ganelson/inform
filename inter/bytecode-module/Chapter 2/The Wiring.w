@@ -300,6 +300,14 @@ be wired to another connector.
 
 =
 inter_symbol *Wiring::socket(inter_tree *I, text_stream *name, inter_symbol *defn) {
+	return Wiring::socket_inner(I, name, defn, FALSE);
+}
+inter_symbol *Wiring::socket_one_per_name_only(inter_tree *I, text_stream *name,
+	inter_symbol *defn) {
+	return Wiring::socket_inner(I, name, defn, TRUE);
+}
+inter_symbol *Wiring::socket_inner(inter_tree *I, text_stream *name, inter_symbol *defn,
+	int allow_multiple_sockets_with_the_same_name) {
 	if (defn == NULL) internal_error("tried to make socket for nothing");
 	if (InterSymbol::is_socket(defn)) {
 		if (I == InterPackage::tree(InterSymbol::package(defn))) {
@@ -324,7 +332,8 @@ inter_symbol *Wiring::socket(inter_tree *I, text_stream *name, inter_symbol *def
 	if (socket) {
 		if (InterSymbol::is_socket(socket) == FALSE)
 			internal_error("tried to make socket with same name as a plug");
-		if (Wiring::wired_to(socket) != defn) {
+		if ((allow_multiple_sockets_with_the_same_name == FALSE) &&
+			(Wiring::wired_to(socket) != defn)) {
 			WRITE_TO(STDERR, "Socket %S has two defns\n", name);
 			InterSymbolsTable::write_symbol_URL(STDERR, Wiring::wired_to(socket));
 			WRITE_TO(STDERR, "\n");

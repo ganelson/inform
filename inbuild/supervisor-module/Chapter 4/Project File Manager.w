@@ -72,6 +72,7 @@ void ProjectFileManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 }
 
 inbuild_copy *ProjectFileManager::claim_file_as_copy(filename *F) {
+	if (TextFiles::exists(F) == FALSE) return NULL;
 	inbuild_copy *C = ProjectFileManager::new_copy(Filenames::get_leafname(F), F);
 	inform_project *proj = ProjectFileManager::from_copy(C);
 	proj->stand_alone = TRUE;

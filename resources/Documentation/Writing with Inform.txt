@@ -2307,7 +2307,7 @@ That concludes our tour through the design of the initial state of a simulated w
 
 But that is about all. There is as yet no element of surprise, no aim or sense of progress to be earned, and no narrative thread. We have painted the backcloth, and laid out the properties, but the actors have yet to take the stage.
 
-[Chapter: Text] Text with substitutions {PM_TSWithComma} {PM_TSWithPunctuation}
+[Chapter: Text] Text with substitutions {PM_TSWithPunctuation}
 
 ^^{text <-- strings of characters}
 ^^{text: displaying}

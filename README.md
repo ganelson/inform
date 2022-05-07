@@ -1,6 +1,6 @@
 # Inform 7
 
-v10.1.0-beta+6U98 'Krypton' (5 May 2022)
+v10.1.0-beta+6U99 'Krypton' (7 May 2022)
 
 ## About Inform 7
 
@@ -193,7 +193,7 @@ These are templates used by Inform to release story files within a website:
 These are Javascript interpreters used to release such websites in a form which can play the story files interactively online:
 
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
-* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.4)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
+* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.5)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
 * inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.0)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
 
 ### Documentation shipped with Inform

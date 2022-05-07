@@ -556,8 +556,13 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 	if (Str::len(project_file_request) > 0)
 		F = Filenames::from_text(project_file_request);
 	if (C == NULL) {
-		if (P) C = ProjectBundleManager::claim_folder_as_copy(P);
-		else if (F) C = ProjectFileManager::claim_file_as_copy(F);
+		if (P) {
+			C = ProjectBundleManager::claim_folder_as_copy(P);
+			if (C == NULL) Errors::fatal("No such Inform project directory");
+		} else if (F) {
+			C = ProjectFileManager::claim_file_as_copy(F);
+			if (C == NULL) Errors::fatal("No such Inform source file");
+		}
 	}
 	inform_project *proj = NULL;
 	if (C) {

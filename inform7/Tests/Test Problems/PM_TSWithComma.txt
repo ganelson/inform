@@ -1,3 +1,0 @@
-Home is a room.
-
-When play begins: say "Hello [,]".

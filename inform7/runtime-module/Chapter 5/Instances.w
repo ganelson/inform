@@ -23,6 +23,7 @@ instance_compilation_data RTInstances::new_compilation_data(instance *I) {
 	icd.declaration_sequence_number = -1;
 	icd.usages = NEW_LINKED_LIST(parse_node);
 	NounIdentifiers::set_iname(I->as_noun, icd.instance_iname);
+	Hierarchy::make_available_one_per_name_only(icd.instance_iname);
 	return icd;
 }
 
