@@ -1088,7 +1088,10 @@ void ImperativeSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) 
 			(Vocabulary::test_flags(Wordings::first_wn(W), TEXTWITHSUBS_MC)) && (depth == 0)) {
 			wchar_t *p = Lexer::word_raw_text(Wordings::first_wn(W));
 			@<Check that substitution does not contain suspicious punctuation@>;
-			wording A = Feeds::feed_C_string_expanding_strings(p);
+			TEMPORARY_TEXT(sub)
+			@<Write a form of the text bracketing substitutions with commas@>;
+			wording A = Feeds::feed_text_expanding_strings(sub);
+			DISCARD_TEXT(sub)
 			if (<verify-expanded-text-substitution>(A))
 				ImperativeSubtrees::unroll_says(cb_node, A, depth+1);
 		} else {
@@ -1099,34 +1102,50 @@ void ImperativeSubtrees::unroll_says(parse_node *cb_node, wording W, int depth) 
 	}
 
 @<Check that substitution does not contain suspicious punctuation@> =
-	int k, sqb = 0;
-	for (k=0; p[k]; k++) {
+	int sqb = 0;
+	for (int k=0; p[k]; k++) {
 		switch (p[k]) {
-			case '[': sqb++; if (sqb > 1) @<Issue problem message for nested substitution@>; break;
-			case ']': sqb--; if (sqb < 0) @<Issue problem message for unopened substitution@>; break;
-			case ':': if ((k>0) && (Characters::isdigit(p[k-1])) && (Characters::isdigit(p[k+1]))) break;
-                /* fall through */
-			case ';':
+			case '[': sqb++;
+				if (sqb > 1) @<Issue problem message for nested substitution@>;
+				break;
+			case ']': sqb--;
+				if (sqb < 0) @<Issue problem message for unopened substitution@>;
+				break;
+			case ':':
+				if ((k>0) &&
+					(Characters::isdigit(p[k-1])) && (Characters::isdigit(p[k+1]))) break;
 				if (sqb > 0) @<Issue PM_TSWithPunctuation problem@>;
 				break;
-			case ',':
-				if (sqb > 0) @<Issue problem message for comma in a substitution@>;
+			case ';':
+				if (sqb > 0) @<Issue PM_TSWithPunctuation problem@>;
 				break;
 		}
 	}
 	if (sqb != 0) @<Issue problem message for unclosed substitution@>;
 
-@ And the more specialised:
+@ A long-standing annoyance in Inform syntax was that commas were not allowed
+inside text substitutions: |"Like [this, that]."| The reason for this was that
+such a text converts to the say phrase |say "Like ", this, that, "."|; so that
+what was intended as a single expression with a comma in |this, that| came out
+as two, |this| then |that|. This arose seldom, but meant that phrases using
+phrase options, which unhappily include a comma in their syntax, could not
+easily be used in substitutions.
 
-@<Issue problem message for comma in a substitution@> =
-	TextSubstitutions::it_is_not_worth_adding();
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_TSWithComma),
-		"a substitution contains a comma ','",
-		"which is (for obscure reasons) against the rules for text substitutions. "
-		"(You may be able to get around this by placing the phrase containing the "
-		"comma in round brackets '(' and ')', which reduces the risk of ambiguity.)");
-	TextSubstitutions::it_is_worth_adding();
-	return;
+The text now converts to |say "Like ", (this, that), "."|, so that a single
+bracketed expression |(this, that)| appears. Thus, round brackets are put
+around the contents of any substitution which contains a comma.
+
+@<Write a form of the text bracketing substitutions with commas@> =
+	for (int k=0, in_ts_with_commas = FALSE; p[k]; k++) {
+		if (p[k] == '[')
+			for (int j=k+1; (p[j]) && (p[j] != ']'); j++)
+				if (p[j] == ',')
+					in_ts_with_commas = TRUE;
+		if ((p[k] == ']') && (in_ts_with_commas)) PUT_TO(sub, ')');
+		PUT_TO(sub, p[k]);
+		if ((p[k] == '[') && (in_ts_with_commas)) PUT_TO(sub, '(');
+		if (p[k] == ']') in_ts_with_commas = FALSE;
+	}
 
 @<Issue problem message for nested substitution@> =
 	TextSubstitutions::it_is_not_worth_adding();
