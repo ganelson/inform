@@ -264,7 +264,6 @@ special to make it work, so this doesn't seem worth the trouble.)
 		PropertyInferences::draw(item, P_wearable, NULL);
 	if (P_worn == NULL) {
 		P_worn = EitherOrProperties::new_nameless(I"worn");
-//		RTProperties::recommend_storing_as_attribute(P_worn, TRUE);
 	}
 	PropertyInferences::draw(item, P_worn, NULL);
 

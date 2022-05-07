@@ -6591,9 +6591,9 @@
 <verb-definition> hits 82/164 nti 17 constraint (none) extremes [1, infinity)
     English:
         reversed <relation-name> relation 
-          (hits 18/53) (matched: 'reversed mapping up relation') constraint DS = {17} extremes [3, infinity)
+          (hits 14/53) (matched: 'reversed containment relation') constraint DS = {17} extremes [3, infinity)
         <relation-name> relation 
-          (hits 29/64) (matched: 'meaning relation') constraint DS = {17} extremes [2, infinity)
+          (hits 33/68) (matched: 'mapping up relation') constraint DS = {17} extremes [2, infinity)
         to <instance-of-infinitive-form> 
           (hits 0/35) constraint DS = {17} extremes [2, infinity)
         {...} property 
