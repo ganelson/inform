@@ -400,7 +400,7 @@ copies of Locksmith around. Inbuild first reduces the list to just those
 whose version lies in the acceptable range. It then applies the following
 rules:
 (1) A copy in the Materials nest takes precedence over all others.
-(2) Otherwise, all other copies take precendence over those in the
+(2) Otherwise, all other copies take precedence over those in the
 internal nest.
 (3) Otherwise, semantic version number rules are used to determine which
 copy had precedence.

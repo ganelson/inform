@@ -1621,7 +1621,7 @@ otherwise convert it from an |OPERATOR_ISTT| to an |IDENTIFIER_ISTT|.
 	}
 	
 @ Well... so actually we have to be a bit more careful about left vs right
-associativity if there are two least-precendence operators both at the top
+associativity if there are two least-precedence operators both at the top
 level, as in the case of |x - y + z| or (horrifically) |x = y = z|.
 
 =
