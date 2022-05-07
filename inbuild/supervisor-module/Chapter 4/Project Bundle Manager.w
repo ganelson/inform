@@ -71,7 +71,10 @@ void ProjectBundleManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 }
 
 inbuild_copy *ProjectBundleManager::claim_folder_as_copy(pathname *P) {
-	return ProjectBundleManager::new_copy(Pathnames::directory_name(P), P);
+	filename *canary = Filenames::in(Pathnames::down(P, I"Source"), I"story.ni");
+	if (TextFiles::exists(canary))
+		return ProjectBundleManager::new_copy(Pathnames::directory_name(P), P);
+	return NULL;
 }
 
 @h Searching.
