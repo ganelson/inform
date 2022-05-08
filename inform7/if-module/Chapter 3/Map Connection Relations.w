@@ -160,15 +160,13 @@ remaining anomalies.
 =
 int MapRelations::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
-	int t;
-	for (t=0; t<2; t++)
+	for (int t=0; t<2; t++)
 		if ((Kinds::compatible(kinds_of_terms[t], K_room) == NEVER_MATCH) &&
 			(Kinds::compatible(kinds_of_terms[t], K_door) == NEVER_MATCH)) {
-		LOG("Term %d is %u but should be a room or door\n", t, kinds_of_terms[t]);
-		TypecheckPropositions::issue_bp_typecheck_error(bp, kinds_of_terms[0],
-			kinds_of_terms[1], tck);
-		return NEVER_MATCH;
-	}
+			TypecheckPropositions::issue_bp_typecheck_error(bp, kinds_of_terms[0],
+				kinds_of_terms[1], tck);
+			return NEVER_MATCH;
+		}
 	return ALWAYS_MATCH;
 }
 
@@ -184,9 +182,8 @@ int MapRelations::assert(bp_family *self, binary_predicate *bp,
 		inference_subject *infs0, parse_node *spec0,
 		inference_subject *infs1, parse_node *spec1) {
 	instance *o_dir = MapRelations::get_mapping_direction(bp);
-	inference_subject *infs_from = infs0;
-	inference_subject *infs_to = infs1;
-
+	inference_subject *infs_to = infs0;
+	inference_subject *infs_from = infs1;
 	SpatialInferences::infer_is_room(infs_from, prevailing_mood);
 	if ((prevailing_mood >= 0) && (infs_to))
 		SpatialInferences::infer_is_room(infs_to, LIKELY_CE);

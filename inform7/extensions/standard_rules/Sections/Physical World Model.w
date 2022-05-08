@@ -413,10 +413,10 @@ Outside has opposite inside. Understand "out" as outside.
 The inside object translates into Inter as "in_obj".
 The outside object translates into Inter as "out_obj".
 
-The verb to be above means the reversed mapping up relation.
-The verb to be mapped above means the reversed mapping up relation.
-The verb to be below means the reversed mapping down relation.
-The verb to be mapped below means the reversed mapping down relation.
+The verb to be above means the mapping up relation.
+The verb to be mapped above means the mapping up relation.
+The verb to be below means the mapping down relation.
+The verb to be mapped below means the mapping down relation.
 
 @h Doors.
 Doors are, literally, a difficult edge case for the world model of IF, since

@@ -65,6 +65,15 @@ pcalc_prop *Propositions::Abstract::to_set_simple_relation(binary_predicate *bp,
 		Terms::new_variable(0), Terms::new_constant(spec));
 }
 
+pcalc_prop *Propositions::Abstract::to_set_simple_relation_transposed(binary_predicate *bp,
+	instance *I) {
+	parse_node *spec;
+	if (I) spec = Rvalues::from_instance(I);
+	else spec = Rvalues::new_nothing_object_constant();
+	return Atoms::binary_PREDICATE_new(bp,
+		Terms::new_constant(spec), Terms::new_variable(0));
+}
+
 pcalc_prop *Propositions::Abstract::to_set_relation(binary_predicate *bp,
 	inference_subject *infs0, parse_node *spec0, inference_subject *infs1, parse_node *spec1) {
 	pcalc_term pt0, pt1;
