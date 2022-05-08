@@ -109,8 +109,11 @@ in |req| has the same casing as in the subfolder name, so we go about this
 cautiously for the sake of case-sensitive file systems.
 
 Nobody should any longer be storing extension files without the file
-extension |.i7x|, but this was allowed in the early days of Inform 7,
-so we'll quietly allow for it.
+extension |.i7x|. This was allowed in the early days of Inform 7, and early
+drafts of inblorb allowed it too, but this caused problems with emacs backup
+files (with filenames ending |~|) being picked up instead of the extension
+files they were backing up. So inblorb now recognises only |.i7x| files as
+extensions.
 
 =
 void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
@@ -155,10 +158,15 @@ void ExtensionManager::search_nest_for_r(pathname *P, inbuild_nest *N,
 
 void ExtensionManager::search_nest_for_single_file(filename *F, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
-	inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
-	if ((C) && (Requirements::meets(C->edition, req))) {
-		Nests::add_search_result(search_results, N, C, req);
+	TEMPORARY_TEXT(fext)
+	Filenames::write_extension(fext, F);
+	if (Str::eq_insensitive(fext, I".i7x")) {
+		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
+		if ((C) && (Requirements::meets(C->edition, req))) {
+			Nests::add_search_result(search_results, N, C, req);
+		}
 	}
+	DISCARD_TEXT(fext)
 }
 
 @h Copying.
