@@ -133,8 +133,8 @@ generated anyway; Inform authors never type them.
 
 =
 <translates-into-unicode-sentence-subject> ::=
-	<unicode-character-name> |     ==> { pass 1 }
-	...                            ==> { -1, - }
+	( ... ) |
+	...
 
 <translates-into-unicode-sentence-object> ::=
 	<cardinal-number-unlimited> |  ==> { UnicodeLiterals::max(R[1]), - }
@@ -156,7 +156,8 @@ generated anyway; Inform authors never type them.
 	int cc = <<r>>;
 
 	<translates-into-unicode-sentence-subject>(SP);
-	if ((<<r>> != -1) && (<<r>> != cc)) {
+	wording CN = GET_RW(<translates-into-unicode-sentence-subject>, 1);
+	if ((<unicode-character-name>(CN)) && (<<r>> != cc)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_UnicodeAlready),
 			"this Unicode character name has already been translated",
@@ -164,7 +165,7 @@ generated anyway; Inform authors never type them.
 		return FALSE;
 	}
 
-	Nouns::new_proper_noun(SP, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT, MISCELLANEOUS_MC,
+	Nouns::new_proper_noun(CN, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT, MISCELLANEOUS_MC,
 		Diagrams::new_PROPER_NOUN(OP), Task::language_of_syntax());
 
 @h Translation into Inter.

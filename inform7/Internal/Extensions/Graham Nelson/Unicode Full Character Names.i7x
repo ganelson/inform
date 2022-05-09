@@ -2702,7 +2702,7 @@ circled ideograph financial translates into Unicode as 12950.
 circled ideograph fire translates into Unicode as 12939.
 circled ideograph five translates into Unicode as 12932.
 circled ideograph four translates into Unicode as 12931.
-circled ideograph have translates into Unicode as 12946.
+(circled ideograph have) translates into Unicode as 12946.
 circled ideograph high translates into Unicode as 12964.
 circled ideograph item translates into Unicode as 12960.
 circled ideograph labor translates into Unicode as 12952.
@@ -9659,7 +9659,7 @@ parenthesized ideograph financial translates into Unicode as 12854.
 parenthesized ideograph fire translates into Unicode as 12843.
 parenthesized ideograph five translates into Unicode as 12836.
 parenthesized ideograph four translates into Unicode as 12835.
-parenthesized ideograph have translates into Unicode as 12850.
+(parenthesized ideograph have) translates into Unicode as 12850.
 parenthesized ideograph labor translates into Unicode as 12856.
 parenthesized ideograph metal translates into Unicode as 12846.
 parenthesized ideograph moon translates into Unicode as 12842.
