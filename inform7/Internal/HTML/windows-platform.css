@@ -29,23 +29,15 @@ by default they are a darker grey. */
 
 .headingpanel {
 	background: #eeeeee;
-	font-family: sans-serif;
-	-webkit-font-smoothing: antialiased;
 }
 .headingpanelsucceeded {
 	background: #E6FFE6;
-	font-family: sans-serif;
-	-webkit-font-smoothing: antialiased;
 }
 .headingpanelfailed {
 	background: #f69Ca6;
-	font-family: sans-serif;
-	-webkit-font-smoothing: antialiased;
 }
 .headingpanelalt {
 	background: #808080;
-	font-family: sans-serif;
-	-webkit-font-smoothing: antialiased;
 }
 
 /* Heading panels have two lines of text: an upper one in a larger size, and a
@@ -61,22 +53,30 @@ lower one in a smaller. Again, the alt versions are meant to contrast.
 
 span.headingpaneltext {
 	color: #222222;
+	font-family: sans-serif;
+	-webkit-font-smoothing: antialiased;
 	font-size: 1.333rem; /* 20/12 * 100/125 */
 	font-weight: bold;
 }
 span.headingpaneltextalt {
 	color: #ffffff;
+	font-family: sans-serif;
+	-webkit-font-smoothing: antialiased;
 	font-size: 1.333rem; /* 20/12 * 100/125 */
 	font-weight: bold;
 }
 
 span.headingpanelrubric {
 	color: #222222;
+	font-family: sans-serif;
+	-webkit-font-smoothing: antialiased;
 	font-size: 0.733rem; /* 11/12 * 100/125 */
 	font-weight: bold;
 }
 span.headingpanelrubricalt {
 	color: #ffffff;
+	font-family: sans-serif;
+	-webkit-font-smoothing: antialiased;
 	font-size: 0.733rem; /* 11/12 * 100/125 */
 	font-weight: bold;
 }
@@ -116,7 +116,7 @@ div.periodictablesidebar:hover {
 
 span.elementtext {
 	color: #ffffff;
-	font-size: 20px;
+	font-size: 1.333rem; /* 20/12 * 100/125 */
 	font-weight: bold;
 }
 
@@ -125,14 +125,14 @@ of these boxes: */
 
 span.elementnumbertext {
 	color: #ffffff;
-	font-size: 7pt;
+	font-size: 0.622rem; /* 7/12 * 96/72 * 100/125 */
 }
 
 /* For the text of the element title, to the right of the element box: */
 
 span.elementtitletext {
 	color: #ffffff;
-	font-size: 9px;
+	font-size: 0.6rem; /* 9/12 * 100/125 */
 	font-weight: bold;
 }
 
