@@ -120,6 +120,7 @@ by the local |\n| for good measure.
 		if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) break;
 		PUT_TO(titling_line, c);
 	}
+	Str::trim_white_space(titling_line);
 	Works::normalise_casing_mixed(titling_line);
 
 @ In the following, all possible newlines are converted to white space, and
