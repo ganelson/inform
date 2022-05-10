@@ -16348,7 +16348,7 @@ Sometimes we get really stuck on a problem and despite all our best efforts cann
 
 Fortunately, Inform has a lively and helpful community of users who are often willing to assist other authors. The easiest way to reach these users is to make a post at the intfiction forum at 
 
-	http://www.intfiction.org/forum
+	https://intfiction.org/
 
 and in particular to post Inform-related problems under the topic Inform 6 and 7 Development. Where possible, it's a good idea to post the example source that is causing trouble, and to make it as short as possible so that prospective helpers will not have to read any more than necessary in order to pinpoint the problem.
 
@@ -17222,7 +17222,7 @@ Authors coming from a literary background may think in terms of editing; people 
 
 Whatever the background, it's good practice to have your work checked by other people before you release it. Other players can identify issues from typos to missing hints to thematic incongruities.
 
-Play-testers can often be recruited by placing an ad on <b>www.intfiction.org/forum</b>. 
+Play-testers can often be recruited by placing an ad on <b>intfiction.org</b>. 
 
 [x] A Page of Its Own
 
