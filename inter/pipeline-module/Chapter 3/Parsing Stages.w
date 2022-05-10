@@ -290,7 +290,9 @@ the directive type as 0.
 
 @<Find directive@> =
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, R, L" *(%C+) *(%c*);%c*")) {
+	if (Regexp::match(&mr, R, L" *(%[) *(%c*);%c*")) {
+		I6_dir = ROUTINE_PLM;
+	} else if (Regexp::match(&mr, R, L" *(%C+) *(%c*);%c*")) {
 		     if (Str::eq_insensitive(mr.exp[0], I"#ifdef"))      I6_dir = IFDEF_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"#ifndef"))     I6_dir = IFNDEF_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"#iftrue"))     I6_dir = IFTRUE_PLM;
@@ -300,7 +302,6 @@ the directive type as 0.
 		else if (Str::eq_insensitive(mr.exp[0], I"Constant"))    I6_dir = CONSTANT_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Global"))      I6_dir = GLOBAL_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Array"))       I6_dir = ARRAY_PLM;
-		else if (Str::eq_insensitive(mr.exp[0], I"["))           I6_dir = ROUTINE_PLM;
 
 		else if (Str::eq_insensitive(mr.exp[0], I"Attribute"))   I6_dir = ATTRIBUTE_PLM;
 		else if (Str::eq_insensitive(mr.exp[0], I"Property"))    I6_dir = PROPERTY_PLM;

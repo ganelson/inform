@@ -443,7 +443,7 @@ changed back again very soon after.
 				(n->expression_tokens->inline_command == combine_ISINC)) argc++;
 			argc++;
 		}
-		inter_ti BIP = Primitives::BIP_for_indirect_call_returning_value(argc);
+		inter_ti BIP = Primitives::BIP_for_indirect_call_returning_value(argc-1);
 		Produce::inv_primitive(I, BIP);
 	}
 

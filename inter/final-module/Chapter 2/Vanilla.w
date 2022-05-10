@@ -113,6 +113,9 @@ void Vanilla::node(code_generation *gen, inter_tree_node *P) {
 		case NOP_IST:           break;
 		case COMMENT_IST:       break;
 
+		case INVALID_IST:       InterErrors::backtrace(DL, P);
+								internal_error("INVALID node type in Inter tree");
+
 		default:
 			InterInstruction::write_construct_text(DL, P);
 			internal_error("unexpected node type in Inter tree");

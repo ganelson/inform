@@ -104,6 +104,12 @@ exist. See //InterInstruction::tree_lint//.
 
 =
 void InterErrors::backtrace(OUTPUT_STREAM, inter_tree_node *F) {
+	if (InterTree::parent(F) == NULL) {
+		WRITE("No backtrace possible because problem node has no parent:\n");
+		InterInstruction::write_construct_text_allowing_nop(OUT, F);
+		return;
+	}
+	WRITE("Backtrace of Inter code ('**' marks the problem node):\n");
 	inter_tree_node *X = F;
 	int n = 0;
 	while (TRUE) {

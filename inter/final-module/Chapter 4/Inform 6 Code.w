@@ -654,7 +654,7 @@ we can treat |INDIRECT0V_BIP| as the same as |INDIRECT0_BIP|, and so on.
 @<Indirect function calls@> =
 	case INDIRECT0_BIP: case INDIRECT0V_BIP:
 	    WRITE("("); VNODE_1C; WRITE(")()"); break;
-	case INDIRECT1_BIP: case INDIRECT1V_BIP:   
+	case INDIRECT1_BIP: case INDIRECT1V_BIP:
 		WRITE("("); VNODE_1C; WRITE(")("); VNODE_2C; WRITE(")"); break;
 	case INDIRECT2_BIP: case INDIRECT2V_BIP:
 		WRITE("("); VNODE_1C; WRITE(")("); VNODE_2C; WRITE(","); VNODE_3C; WRITE(")");
