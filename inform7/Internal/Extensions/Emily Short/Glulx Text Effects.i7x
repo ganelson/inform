@@ -102,39 +102,39 @@ Last before starting the virtual machine (this is the set text styles rule):
 		if there is a reversed entry:
 			set reversed for the style name entry to the reversed entry;
 
-To set the background color for (style - a glulx text style) to (N - a text):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_BackColor, GTE_ConvertColour( {N} ), (+ all-styles +) ); -).
+To set the background color for (gtstyle - a glulx text style) to (N - a text):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_BackColor, GTE_ConvertColour( {N} ), (+ all-styles +) ); -).
 
-To set the color for (style - a glulx text style) to (N - a text):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_TextColor, GTE_ConvertColour( {N} ), (+ all-styles +) ); -).
+To set the color for (gtstyle - a glulx text style) to (N - a text):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_TextColor, GTE_ConvertColour( {N} ), (+ all-styles +) ); -).
 
-To set the first line indentation for (style - a glulx text style) to (N - a number):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_ParaIndentation, {N}, (+ all-styles +) ); -).
+To set the first line indentation for (gtstyle - a glulx text style) to (N - a number):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_ParaIndentation, {N}, (+ all-styles +) ); -).
 
-To set fixed width for (style - a glulx text style) to (N - truth state):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_Proportional, ( {N} + 1 ) % 2, (+ all-styles +) ); -).
+To set fixed width for (gtstyle - a glulx text style) to (N - truth state):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_Proportional, ( {N} + 1 ) % 2, (+ all-styles +) ); -).
 
-To set the font weight for (style - a glulx text style) to (N - a font weight):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_Weight, {N} - 2, (+ all-styles +) ); -).
+To set the font weight for (gtstyle - a glulx text style) to (N - a font weight):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_Weight, {N} - 2, (+ all-styles +) ); -).
 
-To set the indentation for (style - a glulx text style) to (N - a number):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_Indentation, {N}, (+ all-styles +) ); -).
+To set the indentation for (gtstyle - a glulx text style) to (N - a number):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_Indentation, {N}, (+ all-styles +) ); -).
 
-To set italic for (style - a glulx text style) to (N - a truth state):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_Oblique, {N}, (+ all-styles +) ); -).
+To set italic for (gtstyle - a glulx text style) to (N - a truth state):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_Oblique, {N}, (+ all-styles +) ); -).
 
-To set the justification for (style - a glulx text style) to (N - a text justification):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_Justification, {N} - 1, (+ all-styles +) ); -).
+To set the justification for (gtstyle - a glulx text style) to (N - a text justification):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_Justification, {N} - 1, (+ all-styles +) ); -).
 
-To set the relative size for (style - a glulx text style) to (N - a number):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_Size, {N}, (+ all-styles +) ); -).
+To set the relative size for (gtstyle - a glulx text style) to (N - a number):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_Size, {N}, (+ all-styles +) ); -).
 
-To set reversed for (style - a glulx text style) to (N - a truth state):
-	(- GTE_SetStylehint( wintype_TextBuffer, {style}, stylehint_ReverseColor, {N}, (+ all-styles +) ); -).
+To set reversed for (gtstyle - a glulx text style) to (N - a truth state):
+	(- GTE_SetStylehint( wintype_TextBuffer, {gtstyle}, stylehint_ReverseColor, {N}, (+ all-styles +) ); -).
 
 Include (-
-[ GTE_SetStylehint wintype style hint N all_styles i;
-	if ( style == all_styles )
+[ GTE_SetStylehint wintype gtstyle hint N all_styles i;
+	if ( gtstyle == all_styles )
 	{
 		for ( i = 0: i < style_NUMSTYLES : i++ )
 		{
@@ -143,7 +143,7 @@ Include (-
 	}
 	else
 	{
-		glk_stylehint_set( wintype, style - 2, hint, N );
+		glk_stylehint_set( wintype, gtstyle - 2, hint, N );
 	}
 ];
 -).
