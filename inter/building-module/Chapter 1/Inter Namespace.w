@@ -78,11 +78,17 @@ void InterNames::writer(OUTPUT_STREAM, char *format_string, void *vI) {
 	else {
 		if (iname->generated_by == NULL) internal_error("bad inter_name");
 		switch (iname->generated_by->ingen) {
-			case DERIVED_INGEN:
-				WRITE("%S", iname->generated_by->derived_prefix);
-				InterNames::writer(OUT, format_string, iname->derived_from);
-				WRITE("%S", iname->generated_by->derived_suffix);
+			case DERIVED_INGEN: {
+				TEMPORARY_TEXT(original)
+				InterNames::writer(original, format_string, iname->derived_from);
+				Str::truncate(original,
+					30  - Str::len(iname->generated_by->derived_prefix)
+						- Str::len(iname->generated_by->derived_suffix));
+				WRITE("%S%S%S", iname->generated_by->derived_prefix,
+					original, iname->generated_by->derived_suffix);
+				DISCARD_TEXT(original)
 				break;
+			}
 			case UNIQUE_INGEN:
 				WRITE("%S", iname->generated_by->name_stem);
 				break;
@@ -108,8 +114,11 @@ Although most inter names are eventually used to create symbols in the
 Inter hierarchy's symbols table, this does not happen immediately, and
 for some inames it never will.
 
+@d DEFAULT_INAME_TRUNCATION 28
+
 =
-inter_name *InterNames::new(inter_name_generator *F, package_request *R, wording W) {
+inter_name *InterNames::new(inter_name_generator *F, package_request *R, wording W,
+	int truncation) {
 	inter_name *iname = CREATE(inter_name);
 	iname->generated_by = F;
 	iname->unique_number = 0;
@@ -120,13 +129,13 @@ inter_name *InterNames::new(inter_name_generator *F, package_request *R, wording
 		iname->memo = NULL;
 	} else {
 		iname->memo = Str::new();
-		@<Fill the memo with up to 28 characters of text from the given wording@>;
+		@<Fill the memo with up to T characters of text from the given wording@>;
 		@<Ensure that the name, as now extended by the memo, is a legal Inter identifier@>;
 	}
 	return iname;
 }
 
-@<Fill the memo with up to 28 characters of text from the given wording@> =
+@<Fill the memo with up to T characters of text from the given wording@> =
 	int c = 0;
 	LOOP_THROUGH_WORDING(j, W) {
 		/* identifier is at this point 32 chars or fewer in length: add at most 30 more */
@@ -136,7 +145,7 @@ inter_name *InterNames::new(inter_name_generator *F, package_request *R, wording
 		else WRITE_TO(iname->memo, "%N", j);
 		if (Str::len(iname->memo) > 32) break;
 	}
-	Str::truncate(iname->memo, 28); /* it was at worst 62 chars in size, but is now truncated to 28 */
+	Str::truncate(iname->memo, truncation);
 
 @<Ensure that the name, as now extended by the memo, is a legal Inter identifier@> =
 	Identifiers::purify(iname->memo);
@@ -144,7 +153,8 @@ inter_name *InterNames::new(inter_name_generator *F, package_request *R, wording
 	WRITE_TO(NBUFF, "%n", iname);
 	int L = Str::len(NBUFF);
 	DISCARD_TEXT(NBUFF)
-	if (L > 28) Str::truncate(iname->memo, Str::len(iname->memo) - (L - 28));
+	if (L > truncation)
+		Str::truncate(iname->memo, Str::len(iname->memo) - (L - truncation));
 
 @ That creation function should be called only by these, which in turn must
 be called only from within the current chapter. First, the single-shot cases,
@@ -153,12 +163,13 @@ a memo to attach):
 
 =
 inter_name *InterNames::explicitly_named_with_memo(text_stream *name, package_request *R,
-	wording W) {
-	return InterNames::new(InterNames::single_use_generator(name), R, W);
+	wording W, int truncation) {
+	return InterNames::new(InterNames::single_use_generator(name), R, W, truncation);
 }
 
 inter_name *InterNames::explicitly_named(text_stream *name, package_request *R) {
-	return InterNames::explicitly_named_with_memo(name, R, EMPTY_WORDING);
+	return InterNames::explicitly_named_with_memo(name, R, EMPTY_WORDING,
+		DEFAULT_INAME_TRUNCATION);
 }
 
 inter_name *InterNames::explicitly_named_plug(inter_tree *I, text_stream *name) {
@@ -173,7 +184,7 @@ inter_name *InterNames::explicitly_named_plug(inter_tree *I, text_stream *name) 
 inter_name *InterNames::multiple(inter_name_generator *G, package_request *R, wording W) {
 	if (G == NULL) internal_error("no generator");
 	if (G->ingen == UNIQUE_INGEN) internal_error("not a generator name");
-	inter_name *iname = InterNames::new(G, R, W);
+	inter_name *iname = InterNames::new(G, R, W, DEFAULT_INAME_TRUNCATION);
 	if (G->ingen != DERIVED_INGEN) iname->unique_number = ++G->no_generated;
 	return iname;
 }

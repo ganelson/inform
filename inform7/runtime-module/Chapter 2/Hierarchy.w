@@ -2085,6 +2085,9 @@ the reader's convenience.
 inter_name *Hierarchy::make_iname_with_memo(int id, package_request *P, wording W) {
 	return HierarchyLocations::make_iname_with_memo(Emit::tree(), id, P, W);
 }
+inter_name *Hierarchy::make_iname_with_shorter_memo(int id, package_request *P, wording W) {
+	return HierarchyLocations::make_iname_with_shorter_memo(Emit::tree(), id, P, W);
+}
 
 @ And this further elaboration supplies the number to use, in place of the |1|.
 This is needed only for kinds, where the kits expect to find classes called, e.g.,

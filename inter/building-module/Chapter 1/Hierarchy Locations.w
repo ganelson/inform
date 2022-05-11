@@ -240,7 +240,8 @@ will be produced as the compiler makes multiple calls:
 
 =
 inter_name *HierarchyLocations::make_iname_in(inter_tree *I, int id, package_request *P) {
-	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, NULL, -1, NULL);
+	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, NULL, -1, NULL,
+		DEFAULT_INAME_TRUNCATION);
 }
 
 @ That might, say, produce constants with the Inter symbols like so:
@@ -264,7 +265,8 @@ Our three capitals would then translate to |capital_city_U1|, |Lima|, and
 =
 inter_name *HierarchyLocations::make_iname_with_specific_translation(inter_tree *I, int id,
 	text_stream *translation, package_request *P) {
-	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, NULL, -1, translation);
+	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, NULL, -1, translation,
+		DEFAULT_INAME_TRUNCATION);
 }
 
 @ Sometimes we want the name itself to be more meaningful, or at least, more
@@ -282,7 +284,13 @@ call in a different package, with a different wording, might then produce
 =
 inter_name *HierarchyLocations::make_iname_with_memo(inter_tree *I, int id,
 	package_request *P, wording W) {
-	return HierarchyLocations::iip(I, id, P, W, NULL, -1, NULL);
+	return HierarchyLocations::iip(I, id, P, W, NULL, -1, NULL,
+		DEFAULT_INAME_TRUNCATION);
+}
+inter_name *HierarchyLocations::make_iname_with_shorter_memo(inter_tree *I, int id,
+	package_request *P, wording W) {
+	return HierarchyLocations::iip(I, id, P, W, NULL, -1, NULL,
+		DEFAULT_INAME_TRUNCATION - 5);
 }
 
 @ Note that the HL, in this example |COUNTRY_HL|, keeps track of how many of
@@ -293,7 +301,8 @@ for some reason, we can use this variant:
 =
 inter_name *HierarchyLocations::make_iname_with_memo_and_value(inter_tree *I,
 	int id, package_request *P, wording W, int x) {
-	return HierarchyLocations::iip(I, id, P, W, NULL, x, NULL);
+	return HierarchyLocations::iip(I, id, P, W, NULL, x, NULL,
+		DEFAULT_INAME_TRUNCATION);
 }
 
 @ Finally, it's often useful to "derive" a name: to say that a resource in a
@@ -306,14 +315,18 @@ might then produce a name like |C3_uruguay_POP|, derived from the existing iname
 =
 inter_name *HierarchyLocations::derive_iname_in(inter_tree *I, int id, inter_name *from, 
 	package_request *P) {
-	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, from, -1, NULL);
+	return HierarchyLocations::iip(I, id, P, EMPTY_WORDING, from, -1, NULL,
+		DEFAULT_INAME_TRUNCATION);
 }
 
 @ All of the above use this command back-end:
 
+@d DEFAULT_INAME_TRUNCATION 28
+
 =
 inter_name *HierarchyLocations::iip(inter_tree *I, int id, package_request *P,
-	wording W, inter_name *derive_from, int fix, text_stream *imposed_name) {
+	wording W, inter_name *derive_from, int fix, text_stream *imposed_name,
+	int truncation) {
 	hierarchy_location *hl = HierarchyLocations::id_to_HL(I, id);
 
 	@<Verify that the proposed package P meets requirements@>;
@@ -372,11 +385,11 @@ but it is at least policed.
 		iname = Packaging::function(I,
 			InterNames::explicitly_named(hl->function_package_name, P), NULL);
 	} else if (hl->trans.by_imposition) {
-		iname = InterNames::explicitly_named_with_memo(imposed_name, P, W);
+		iname = InterNames::explicitly_named_with_memo(imposed_name, P, W, truncation);
 	} else if (Str::len(hl->access_name) == 0) {
-		iname = InterNames::explicitly_named_with_memo(T, P, W);
+		iname = InterNames::explicitly_named_with_memo(T, P, W, truncation);
 	} else {
-		iname = InterNames::explicitly_named_with_memo(hl->access_name, P, W);
+		iname = InterNames::explicitly_named_with_memo(hl->access_name, P, W, truncation);
 	}
 	if ((Str::len(T) > 0) && (hl->access_name)) InterNames::set_translation(iname, T);
 

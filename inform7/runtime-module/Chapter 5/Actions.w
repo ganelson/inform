@@ -71,7 +71,7 @@ inter_name *RTActions::base_iname(action_name *an) {
 					an->compilation_data.translated_name, RTActions::package(an));
 		else
 			an->compilation_data.an_base_iname =
-				Hierarchy::make_iname_with_memo(ACTION_BASE_NAME_HL,
+				Hierarchy::make_iname_with_shorter_memo(ACTION_BASE_NAME_HL,
 					RTActions::package(an), ActionNameNames::tensed(an, IS_TENSE));
 	}
 	return an->compilation_data.an_base_iname;
@@ -201,7 +201,8 @@ void RTActions::compilation_agent(compilation_subtask *t) {
 	if (Wordings::nonempty(SW))
 		Hierarchy::apply_metadata_from_wording(pack, ACTION_SPECIFICATION_MD_HL, SW);
 	if (an->compilation_data.an_specification_text_word >= 0)
-		Hierarchy::apply_metadata_from_wording(pack, ACTION_DESCRIPTION_MD_HL, Wordings::one_word(an->compilation_data.an_specification_text_word));
+		Hierarchy::apply_metadata_from_wording(pack, ACTION_DESCRIPTION_MD_HL,
+			Wordings::one_word(an->compilation_data.an_specification_text_word));
 
 	heading *definition_area = Headings::of_wording(ActionNameNames::tensed(an, IS_TENSE));
 	inform_extension *this_extension =
