@@ -242,7 +242,6 @@ parse_node *LiteralReals::promote_number_if_necessary(parse_node *value, kind *t
 	if ((Kinds::eq(from, K_number)) && (Kinds::eq(to, K_real_number))) {
 		wording W = Node::get_text(value);
 		if (<s-literal-real-number>(W)) value = <<rp>>;
-		else internal_error("can't parse integer as real");
 	}
 	promoting_reals = s;
 	return value;
