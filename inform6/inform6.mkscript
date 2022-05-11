@@ -46,27 +46,27 @@ force:
 	$(call make-me)
 
 define make-me
-	cd $(SANDBOX); {compile-indulgently from: arrays.c   to: arrays.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: asm.c      to: asm.o      options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: bpatch.c   to: bpatch.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: chars.c    to: chars.o    options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: directs.c  to: directs.o  options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: errors.c   to: errors.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: expressc.c to: expressc.o options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: expressp.c to: expressp.o options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: files.c    to: files.o    options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: inform.c   to: inform.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: lexer.c    to: lexer.o    options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: linker.c   to: linker.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: memory.c   to: memory.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: objects.c  to: objects.o  options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: states.c   to: states.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: symbols.c  to: symbols.o  options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: syntax.c   to: syntax.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: tables.c   to: tables.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: text.c     to: text.o     options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: veneer.c   to: veneer.o   options: -D$(INFORM6OS)}
-	cd $(SANDBOX); {compile-indulgently from: verbs.c    to: verbs.o    options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/arrays.c   to: $(SANDBOX)/arrays.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/asm.c      to: $(SANDBOX)/asm.o      options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/bpatch.c   to: $(SANDBOX)/bpatch.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/chars.c    to: $(SANDBOX)/chars.o    options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/directs.c  to: $(SANDBOX)/directs.o  options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/errors.c   to: $(SANDBOX)/errors.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/expressc.c to: $(SANDBOX)/expressc.o options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/expressp.c to: $(SANDBOX)/expressp.o options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/files.c    to: $(SANDBOX)/files.o    options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/inform.c   to: $(SANDBOX)/inform.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/lexer.c    to: $(SANDBOX)/lexer.o    options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/linker.c   to: $(SANDBOX)/linker.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/memory.c   to: $(SANDBOX)/memory.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/objects.c  to: $(SANDBOX)/objects.o  options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/states.c   to: $(SANDBOX)/states.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/symbols.c  to: $(SANDBOX)/symbols.o  options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/syntax.c   to: $(SANDBOX)/syntax.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/tables.c   to: $(SANDBOX)/tables.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/text.c     to: $(SANDBOX)/text.o     options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/veneer.c   to: $(SANDBOX)/veneer.o   options: -D$(INFORM6OS)}
+	{compile-indulgently from: $(SANDBOX)/verbs.c    to: $(SANDBOX)/verbs.o    options: -D$(INFORM6OS)}
 	{link from: $(I6SOURCE) to: $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
 endef
 
@@ -100,29 +100,29 @@ CHEAPGLK_HEADERS = cheapglk.h gi_dispa.h
 $(INTERPRETERS)/dumb-frotz/dumb-frotz: \
 	$(INTERPRETERS)/dumb-frotz/*.c \
 	$(INTERPRETERS)/dumb-frotz/*.h
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: buffer.c      to: buffer.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: dumb-init.c   to: dumb-init.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: dumb-input.c  to: dumb-input.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: dumb-output.c to: dumb-output.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: dumb-pic.c    to: dumb-pic.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: fastmem.c     to: fastmem.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: files.c       to: files.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: hotkey.c      to: hotkey.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: input.c       to: input.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: math.c        to: math.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: object.c      to: object.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: process.c     to: process.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: random.c      to: random.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: redirect.c    to: redirect.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: screen.c      to: screen.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: sound.c       to: sound.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: stream.c      to: stream.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: table.c       to: table.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: text.c        to: text.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: variable.c    to: variable.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: profiling.c   to: profiling.o}
-	cd $(INTERPRETERS)/dumb-frotz; {compile-indulgently from: main.c        to: main.o}
-	cd $(INTERPRETERS)/dumb-frotz; {link from: *.o to: dumb-frotz$(EXEEXTENSION)}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/buffer.c      to: $(INTERPRETERS)/dumb-frotz/buffer.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/dumb-init.c   to: $(INTERPRETERS)/dumb-frotz/dumb-init.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/dumb-input.c  to: $(INTERPRETERS)/dumb-frotz/dumb-input.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/dumb-output.c to: $(INTERPRETERS)/dumb-frotz/dumb-output.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/dumb-pic.c    to: $(INTERPRETERS)/dumb-frotz/dumb-pic.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/fastmem.c     to: $(INTERPRETERS)/dumb-frotz/fastmem.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/files.c       to: $(INTERPRETERS)/dumb-frotz/files.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/hotkey.c      to: $(INTERPRETERS)/dumb-frotz/hotkey.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/input.c       to: $(INTERPRETERS)/dumb-frotz/input.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/math.c        to: $(INTERPRETERS)/dumb-frotz/math.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/object.c      to: $(INTERPRETERS)/dumb-frotz/object.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/process.c     to: $(INTERPRETERS)/dumb-frotz/process.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/random.c      to: $(INTERPRETERS)/dumb-frotz/random.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/redirect.c    to: $(INTERPRETERS)/dumb-frotz/redirect.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/screen.c      to: $(INTERPRETERS)/dumb-frotz/screen.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/sound.c       to: $(INTERPRETERS)/dumb-frotz/sound.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/stream.c      to: $(INTERPRETERS)/dumb-frotz/stream.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/table.c       to: $(INTERPRETERS)/dumb-frotz/table.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/text.c        to: $(INTERPRETERS)/dumb-frotz/text.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/variable.c    to: $(INTERPRETERS)/dumb-frotz/variable.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/profiling.c   to: $(INTERPRETERS)/dumb-frotz/profiling.o}
+	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/main.c        to: $(INTERPRETERS)/dumb-frotz/main.o}
+	{link from: $(INTERPRETERS)/dumb-frotz/*.o to: $(INTERPRETERS)/dumb-frotz/dumb-frotz$(EXEEXTENSION)}
 
 # "dumb-glulxe" is the analogous thing for Glulx-format story files.
 

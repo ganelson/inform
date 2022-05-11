@@ -49,9 +49,9 @@ test: $(BLORBLIB)/blorbscan
 	$(INTEST) -from $(ME) all
 
 $(BLORBLIB)/blorbscan: $(BLORBLIB)/*.c $(BLORBLIB)/*.h
-	cd $(BLORBLIB); {compile-indulgently from: blorblib.c to: blorblib.o}
-	cd $(BLORBLIB); {compile-indulgently from: blorbscan.c to: blorbscan.o}
-	cd $(BLORBLIB); {link from: *.o to: blorbscan$(EXEEXTENSION)}
+	{compile-indulgently from: $(BLORBLIB)/blorblib.c to: $(BLORBLIB)/blorblib.o}
+	{compile-indulgently from: $(BLORBLIB)/blorbscan.c to: $(BLORBLIB)/blorbscan.o}
+	{link from: $(BLORBLIB)/*.o to: $(BLORBLIB)/blorbscan$(EXEEXTENSION)}
 
 # Cleaning up:
 
