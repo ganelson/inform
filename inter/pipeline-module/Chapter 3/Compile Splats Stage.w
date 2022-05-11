@@ -1256,7 +1256,7 @@ void CompileSplatsStage::report_kit_errors(inter_schema *sch, function_body_requ
 		LOOP_OVER_LINKED_LIST(err, schema_parsing_error, sch->parsing_errors) {
 			TEMPORARY_TEXT(msg)
 			WRITE_TO(msg, "in function '%S': %S", req->identifier, err->message);
-			PipelineErrors::kit_error("kit source error %S", msg);
+			PipelineErrors::kit_error("inform 6 syntax error %S", msg);
 			DISCARD_TEXT(msg)
 		}
 	}

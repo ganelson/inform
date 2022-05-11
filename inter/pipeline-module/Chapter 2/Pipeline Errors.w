@@ -146,11 +146,10 @@ void PipelineErrors::kit_error(char *message, text_stream *quote) {
 	Problems::quote_stream(1, M);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
-		"I ran into a mistake in the source code for a kit: %1. The Inform 6 "
-		"syntax source files for kits are a very low-level part of Inform, "
-		"and errors like this will only occur if the standard installation "
-		"has been amended or damaged, or if you are doing something quite "
-		"unusual.");
+		"My low-level reader of source code reported a mistake - \"%1\"."
+		"%PLow-level material written in Inform 6 syntax occurs either in kits or "
+		"in matter written inside 'Include (- ... -)' in source text, either in "
+		"the main source or in an extension used by it.");
 	Problems::issue_problem_end();
 	DISCARD_TEXT(M)
 	#endif
