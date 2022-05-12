@@ -33,12 +33,10 @@ all have unique resource numbers. (These are called "indexed", because
 references to them appear in a special |RIdx| record in the front part
 of the file -- the "resource index".)
 
-@d MAX_CHUNK_DATA_STORED_IN_MEMORY MAX_FILENAME_LENGTH
-
 =
 typedef struct chunk_metadata {
 	struct filename *chunk_file; /* if the content is stored on disc */
-	unsigned char data_in_memory[MAX_CHUNK_DATA_STORED_IN_MEMORY]; /* if the content is stored in memory */
+	unsigned char *data_in_memory; /* if the content is stored in memory */
 	int length_of_data_in_memory; /* in bytes; or $-1$ if the content is stored on disc */
 	char *chunk_type; /* pointer to a 4-character string */
 	char *index_entry; /* ditto */
@@ -131,8 +129,6 @@ void Writer::add_chunk_to_blorb(char *id, int resource_num, filename *supplied_f
 		BlorbErrors::fatal("tried to complete non-Blorb chunk");
 	if (Writer::index_entry_is_legal(index) == FALSE)
 		BlorbErrors::fatal("tried to include mis-indexed chunk");
-	if (length >= MAX_CHUNK_DATA_STORED_IN_MEMORY)
-		BlorbErrors::fatal("too much chunk data stored in memory");
 
 	current_chunk = CREATE(chunk_metadata);
 
@@ -154,11 +150,12 @@ void Writer::add_chunk_to_blorb(char *id, int resource_num, filename *supplied_f
 
 @<Set the filename for the new chunk@> =
 	if (data) {
+    	current_chunk->data_in_memory = Memory::malloc(length, CHUNK_STORAGE_MREASON);
 		current_chunk->chunk_file = NULL;
 		current_chunk->length_of_data_in_memory = length;
-		int i;
-		for (i=0; i<length; i++) current_chunk->data_in_memory[i] = data[i];
+		for (int i=0; i<length; i++) current_chunk->data_in_memory[i] = data[i];
     } else {
+    	current_chunk->data_in_memory = NULL;
     	current_chunk->chunk_file = supplied_filename;
 		current_chunk->length_of_data_in_memory = -1;
     }
@@ -540,11 +537,11 @@ so they come with ready-made headers.
 @ And sometimes, for shorter things, they are in memory:
 
 @<Copy that many bytes from memory@> =
-	int i;
-	for (i=0; i<bytes_to_copy; i++) {
-		int j = (int) (chunk->data_in_memory[i]);
-		Writer::one_byte(IFF, j);
-	}
+	if (chunk->data_in_memory)
+		for (int i=0; i<bytes_to_copy; i++) {
+			int j = (int) (chunk->data_in_memory[i]);
+			Writer::one_byte(IFF, j);
+		}
 
 @ For debugging purposes only:
 

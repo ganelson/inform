@@ -105,10 +105,12 @@ we need to use the equivalent of traditional <span class="extract"><span class="
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">RDES_MREASON</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">CHUNK_STORAGE_MREASON</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Basics::register_mreasons</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Basics::register_mreasons</span></span>:<br/>Main - <a href="1-mn.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/2-mmr.html#SP22" class="function-link"><span class="function-syntax">Memory::reason_name</span></a><span class="plain-syntax">(</span><span class="constant-syntax">RDES_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"resource descriptions"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/2-mmr.html#SP22" class="function-link"><span class="function-syntax">Memory::reason_name</span></a><span class="plain-syntax">(</span><span class="constant-syntax">CHUNK_STORAGE_MREASON</span><span class="plain-syntax">, </span><span class="string-syntax">"chunk data storage"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
