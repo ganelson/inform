@@ -123,7 +123,7 @@ blurb_command syntaxes[] = {
 	{ "picture N \"filename\"", L"picture (%d+) \"(%q*)\"", NT_OPS, FALSE },
 	{ "picture ID \"filename\"", L"picture (%i+) \"(%q*)\"", TT_OPS, FALSE },
 	{ "picture \"filename\"", L"picture \"(%q*)\"", T_OPS, FALSE },
-	{ "picture N \"filename\" \"alt-text\"", L"picture %d \"(%q*)\" \"(%q*)\"", NTT_OPS, FALSE },
+	{ "picture N \"filename\" \"alt-text\"", L"picture (%d+) \"(%q*)\" \"(%q*)\"", NTT_OPS, FALSE },
 	{ "placeholder [name] = \"text\"", L"placeholder %[(%C+)%] = \"(%q*)\"", TT_OPS, FALSE },
 	{ "project folder \"pathname\"", L"project folder \"(%q*)\"", T_OPS, FALSE },
 	{ "release \"text\"", L"release \"(%q*)\"", T_OPS, FALSE },
@@ -275,7 +275,8 @@ copied in |text1|, |num1|, ..., accordingly.
 		case picture_COMMAND: Writer::picture_chunk(num1, Filenames::from_text(text1), I""); break;
 		case picture_text_COMMAND: Writer::picture_chunk_text(text1, Filenames::from_text(text2)); break;
 		case picture_noid_COMMAND: Writer::picture_chunk_text(I"", Filenames::from_text(text1)); break;
-		case picture_with_alt_text_COMMAND: Writer::picture_chunk(num1, Filenames::from_text(text1), text2); break;
+		case picture_with_alt_text_COMMAND:
+			Writer::picture_chunk(num1, Filenames::from_text(text1), text2); break;
 		case placeholder_COMMAND: Placeholders::set_to(text1, text2, 0); break;
 		case project_folder_COMMAND: project_folder = Pathnames::from_text(text1); break;
 		case release_COMMAND:
