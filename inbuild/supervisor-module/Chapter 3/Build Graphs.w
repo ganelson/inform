@@ -189,21 +189,33 @@ void Graphs::describe_vertex(OUTPUT_STREAM, build_vertex *V) {
 @ A similar but slightly different recursion for |-build-needs| and |-use-needs|.
 
 =
-void Graphs::show_needs(OUTPUT_STREAM, build_vertex *V, int uses_only) {
-	Graphs::show_needs_r(OUT, V, 0, 0, uses_only);
+int unique_graph_scan_count = 1;
+void Graphs::show_needs(OUTPUT_STREAM, build_vertex *V, int uses_only, int paths) {
+	Graphs::show_needs_r(OUT, V, 0, 0, uses_only, paths, unique_graph_scan_count++);
 }
 
 void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,
-	int depth, int true_depth, int uses_only) {
+	int depth, int true_depth, int uses_only, int paths, int scan_count) {
 	if (V->type == COPY_VERTEX) {
-		for (int i=0; i<depth; i++) WRITE("  ");
+		if (paths == FALSE) for (int i=0; i<depth; i++) WRITE("  ");
 		inbuild_copy *C = V->as_copy;
-		WRITE("%S: ", C->edition->work->genre->genre_name);
-		Copies::write_copy(OUT, C); WRITE("\n");
+		if (C->last_scanned != scan_count) {
+			C->last_scanned = scan_count;
+			if (paths) {
+				if (C->location_if_path) WRITE("%p", C->location_if_path);
+				else if (C->location_if_file) WRITE("%f", C->location_if_file);
+				else WRITE("?unlocated");
+				WRITE(" (%S)", C->edition->work->genre->genre_name);
+			} else {
+				WRITE("%S: ", C->edition->work->genre->genre_name);
+				Copies::write_copy(OUT, C);
+			}
+			WRITE("\n");
+		}
 		depth++;
 	}
 	if (V->type == REQUIREMENT_VERTEX) {
-		for (int i=0; i<depth; i++) WRITE("  ");
+		if (paths == FALSE) for (int i=0; i<depth; i++) WRITE("  ");
 		WRITE("missing %S: ", V->as_requirement->work->genre->genre_name);
 		Works::write(OUT, V->as_requirement->work);
 		if (VersionNumberRanges::is_any_range(V->as_requirement->version_range) == FALSE) {
@@ -218,10 +230,10 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,
 	build_vertex *W;
 	if (uses_only == FALSE)
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->build_edges)
-			Graphs::show_needs_r(OUT, W, depth, true_depth+1, uses_only);
+			Graphs::show_needs_r(OUT, W, depth, true_depth+1, uses_only, paths, scan_count);
 	if ((V->type == COPY_VERTEX) && ((true_depth > 0) || (uses_only))) {
 		LOOP_OVER_LINKED_LIST(W, build_vertex, V->use_edges)
-			Graphs::show_needs_r(OUT, W, depth, true_depth+1, uses_only);
+			Graphs::show_needs_r(OUT, W, depth, true_depth+1, uses_only, paths, scan_count);
 	}
 }
 

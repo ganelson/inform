@@ -1,21 +1,21 @@
-inter: kit source error in function 'E1': operator '+' used with 1 not 2 operand(s)
-inter: kit source error in function 'E2': do without until
-inter: kit source error in function 'E3': expected 'on' or 'off' after 'font', not 'whatever'
-inter: kit source error in function 'E4': move without to
-inter: kit source error in function 'E5': 'for' header with too few clauses
-inter: kit source error in function 'E6': 'for' header with too many clauses
-inter: kit source error in function 'E7': unexpected '{ ... }' code block
-inter: kit source error in function 'E8': unexpected '{'
-inter: kit source error in function 'E8': unexpected use of reserved word 'print'
-inter: kit source error in function 'E8': unexpected '}'
-inter: kit source error in function 'E9': no matching '#endif'
-inter: kit source error in function 'E9': misplaced directive
-inter: kit source error in function 'E10': unexpected ','
-inter: kit source error in function 'E11': malformed '#if...'
-inter: kit source error in function 'E11': misplaced directive
-inter: kit source error in function 'E11': misplaced directive
-inter: kit source error in function 'E12': '@something' was unexpected in expression context
-inter: kit source error in function 'E13': too many arguments for call-message
-inter: kit source error in function 'E14': malformed literal number '$ffa0z'
-inter: kit source error in function 'E15': unexpected use of reserved word 'return'
-inter: kit source error in function 'E16': 'objectloop' without visible variable
+inter: inform 6 syntax error in function 'E1': operator '+' used with 1 not 2 operand(s)
+inter: inform 6 syntax error in function 'E2': do without until
+inter: inform 6 syntax error in function 'E3': expected 'on' or 'off' after 'font', not 'whatever'
+inter: inform 6 syntax error in function 'E4': move without to
+inter: inform 6 syntax error in function 'E5': 'for' header with too few clauses
+inter: inform 6 syntax error in function 'E6': 'for' header with too many clauses
+inter: inform 6 syntax error in function 'E7': unexpected '{ ... }' code block
+inter: inform 6 syntax error in function 'E8': unexpected '{'
+inter: inform 6 syntax error in function 'E8': unexpected use of reserved word 'print'
+inter: inform 6 syntax error in function 'E8': unexpected '}'
+inter: inform 6 syntax error in function 'E9': no matching '#endif'
+inter: inform 6 syntax error in function 'E9': misplaced directive
+inter: inform 6 syntax error in function 'E10': unexpected ','
+inter: inform 6 syntax error in function 'E11': malformed '#if...'
+inter: inform 6 syntax error in function 'E11': misplaced directive
+inter: inform 6 syntax error in function 'E11': misplaced directive
+inter: inform 6 syntax error in function 'E12': '@something' was unexpected in expression context
+inter: inform 6 syntax error in function 'E13': too many arguments for call-message
+inter: inform 6 syntax error in function 'E14': malformed literal number '$ffa0z'
+inter: inform 6 syntax error in function 'E15': unexpected use of reserved word 'return'
+inter: inform 6 syntax error in function 'E16': 'objectloop' without visible variable

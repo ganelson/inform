@@ -224,6 +224,12 @@ Inbuild can list missing resources with |-use-missing| and |-build-missing|
 respectively. At present, it has no means of fetching missing resources from
 any central repository.
 
+@ Finally, |-build-locate| and |-use-locate| are identical to |-build-needs|
+and |-use-needs|, except that they print a list of the file system paths at
+which the relevant resources have been found. This can be useful if you're
+managing a complex mass of extensions, and aren't sure (say) which actual copy
+of Xylophones inbuild proposes to use, and from where.
+
 @h Building.
 The graph for a copy tells Inbuild not only what is necessary for a build,
 but also how to perform that build.

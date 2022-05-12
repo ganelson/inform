@@ -69,11 +69,21 @@ error in this case.
 
 @<Complete the list of targets@> =
 	linked_list *L = Main::list_of_targets();
-	inbuild_copy *D = NULL, *C;
+	inbuild_copy *D = NULL, *C; int others_exist = FALSE;
 	LOOP_OVER_LINKED_LIST(C, inbuild_copy, L)
 		if ((C->edition->work->genre == project_bundle_genre) ||
 			(C->edition->work->genre == project_file_genre))
 			D = C;
+		else
+			others_exist = TRUE;
+	if ((others_exist == FALSE) && (D)) {
+		if (D->location_if_path) Supervisor::set_I7_bundle(D->location_if_path);
+		if (D->location_if_file) Supervisor::set_I7_source(D->location_if_file);
+	}
+	if ((LinkedLists::len(unsorted_nest_list) == 0) ||
+		((others_exist == FALSE) && (D)))
+		Supervisor::add_nest(
+			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
 	Supervisor::optioneering_complete(D, FALSE, &Main::load_preform);
 	inform_project *proj;
 	LOOP_OVER(proj, inform_project)
@@ -110,6 +120,8 @@ utility functions in the //supervisor// module, which we call.
 @e GRAPH_TTASK
 @e USE_NEEDS_TTASK
 @e BUILD_NEEDS_TTASK
+@e USE_LOCATE_TTASK
+@e BUILD_LOCATE_TTASK
 @e ARCHIVE_TTASK
 @e ARCHIVE_TO_TTASK
 @e USE_MISSING_TTASK
@@ -123,8 +135,10 @@ utility functions in the //supervisor// module, which we call.
 	switch (inbuild_task) {
 		case INSPECT_TTASK: Copies::inspect(STDOUT, C); break;
 		case GRAPH_TTASK: Copies::show_graph(STDOUT, C); break;
-		case USE_NEEDS_TTASK: Copies::show_needs(STDOUT, C, TRUE); break;
-		case BUILD_NEEDS_TTASK: Copies::show_needs(STDOUT, C, FALSE); break;
+		case USE_NEEDS_TTASK: Copies::show_needs(STDOUT, C, TRUE, FALSE); break;
+		case BUILD_NEEDS_TTASK: Copies::show_needs(STDOUT, C, FALSE, FALSE); break;
+		case USE_LOCATE_TTASK: Copies::show_needs(STDOUT, C, TRUE, TRUE); break;
+		case BUILD_LOCATE_TTASK: Copies::show_needs(STDOUT, C, FALSE, TRUE); break;
 		case ARCHIVE_TTASK: {
 			inform_project *proj;
 			int c = 0;
@@ -282,6 +296,8 @@ other options to the selection defined here.
 @e GRAPH_CLSW
 @e USE_NEEDS_CLSW
 @e BUILD_NEEDS_CLSW
+@e USE_LOCATE_CLSW
+@e BUILD_LOCATE_CLSW
 @e USE_MISSING_CLSW
 @e BUILD_MISSING_CLSW
 @e ARCHIVE_CLSW
@@ -315,6 +331,10 @@ other options to the selection defined here.
 		L"show all the extensions, kits and so on needed to use");
 	CommandLine::declare_switch(BUILD_NEEDS_CLSW, L"build-needs", 1,
 		L"show all the extensions, kits and so on needed to build");
+	CommandLine::declare_switch(USE_LOCATE_CLSW, L"use-locate", 1,
+		L"show file paths of all the extensions, kits and so on needed to use");
+	CommandLine::declare_switch(BUILD_LOCATE_CLSW, L"build-locate", 1,
+		L"show file paths of all the extensions, kits and so on needed to build");
 	CommandLine::declare_switch(USE_MISSING_CLSW, L"use-missing", 1,
 		L"show the extensions, kits and so on which are needed to use but missing");
 	CommandLine::declare_switch(BUILD_MISSING_CLSW, L"build-missing", 1,
@@ -337,10 +357,6 @@ other options to the selection defined here.
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
 
-	if (LinkedLists::len(unsorted_nest_list) == 0)
-		Supervisor::add_nest(
-			Pathnames::from_text(I"inform7/Internal"), INTERNAL_NEST_TAG);
-
 	path_to_inbuild = Pathnames::installation_path("INBUILD_PATH", I"inbuild");
 
 @ Here we handle those options not handled by the //supervisor// module.
@@ -354,6 +370,8 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case GRAPH_CLSW: inbuild_task = GRAPH_TTASK; break;
 		case USE_NEEDS_CLSW: inbuild_task = USE_NEEDS_TTASK; break;
 		case BUILD_NEEDS_CLSW: inbuild_task = BUILD_NEEDS_TTASK; break;
+		case USE_LOCATE_CLSW: inbuild_task = USE_LOCATE_TTASK; break;
+		case BUILD_LOCATE_CLSW: inbuild_task = BUILD_LOCATE_TTASK; break;
 		case ARCHIVE_TO_CLSW:
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			inbuild_task = ARCHIVE_TO_TTASK;

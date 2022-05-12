@@ -229,14 +229,18 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 			shared_transient_resources = Pathnames::from_text(arg); break;
 		case BASIC_CLSW: Supervisor::request_kit(I"BasicInformKit"); break;
 		case KIT_CLSW: Supervisor::request_kit(arg); break;
-		case PROJECT_CLSW:
-			if (Supervisor::set_I7_bundle(arg) == FALSE)
+		case PROJECT_CLSW: {
+			pathname *P = Pathnames::from_text(arg);
+			if (Supervisor::set_I7_bundle(P) == FALSE)
 				Errors::fatal_with_text("can't specify the project twice: '%S'", arg);
 			break;
-		case SOURCE_CLSW:
-			if (Supervisor::set_I7_source(arg) == FALSE)
+		}
+		case SOURCE_CLSW: {
+			filename *F = Filenames::from_text(arg);
+			if (Supervisor::set_I7_source(F) == FALSE)
 				Errors::fatal_with_text("can't specify the source file twice: '%S'", arg);
 			break;
+		}
 		case O_CLSW: transpiled_output_file = Filenames::from_text(arg); break;
 		case CENSUS_CLSW: census_mode = val; break;
 		case PIPELINE_CLSW: inter_pipeline_name = Str::duplicate(arg); break;
@@ -505,13 +509,13 @@ specify a file somewhere else to be the source text. What you can't do is
 specify the bundle twice, or specify the file twice.
 
 =
-text_stream *project_bundle_request = NULL;
-text_stream *project_file_request = NULL;
+pathname *project_bundle_request = NULL;
+filename *project_file_request = NULL;
 
-int Supervisor::set_I7_source(text_stream *loc) {
+int Supervisor::set_I7_source(filename *F) {
 	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
-	if (Str::len(project_file_request) > 0) return FALSE;
-	project_file_request = Str::duplicate(loc);
+	if (project_file_request) return FALSE;
+	project_file_request = F;
 	return TRUE;
 }
 
@@ -522,11 +526,10 @@ of the parent, i.e., it will be |inform7-settings.txt| or |inbuild-settings.txt|
 depending on who's asking.
 
 =
-int Supervisor::set_I7_bundle(text_stream *loc) {
+int Supervisor::set_I7_bundle(pathname *P) {
 	RUN_ONLY_FROM_PHASE(CONFIGURATION_INBUILD_PHASE)
-	if (Str::len(project_bundle_request) > 0) return FALSE;
-	project_bundle_request = Str::duplicate(loc);
-	pathname *P = Pathnames::from_text(project_bundle_request);
+	if (project_bundle_request) return FALSE;
+	project_bundle_request = P;
 	pathname *materials = Projects::materialise_pathname(
 		Pathnames::up(P), Pathnames::directory_name(P));
 	TEMPORARY_TEXT(leaf)
@@ -551,10 +554,8 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 
 	filename *F = NULL; /* result of |-source| at the command line */
 	pathname *P = NULL; /* result of |-project| at the command line */
-	if (Str::len(project_bundle_request) > 0)
-		P = Pathnames::from_text(project_bundle_request);
-	if (Str::len(project_file_request) > 0)
-		F = Filenames::from_text(project_file_request);
+	if (project_bundle_request) P = project_bundle_request;
+	if (project_file_request) F = project_file_request;
 	if (C == NULL) {
 		if (P) {
 			C = ProjectBundleManager::claim_folder_as_copy(P);
@@ -564,8 +565,8 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 			if (C == NULL) Errors::fatal("No such Inform source file");
 		}
 	}
-	inform_project *proj = NULL;
 	if (C) {
+		inform_project *proj = NULL;
 		if (C->edition->work->genre == project_bundle_genre)
 			proj = ProjectBundleManager::from_copy(C);
 		else if (C->edition->work->genre == project_file_genre)

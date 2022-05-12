@@ -1,6 +1,6 @@
-Total memory consumption was 123346K = 120 MB
+Total memory consumption was 123345K = 120 MB
 
- ---- was used for 2044314 objects, in 362633 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2044307 objects, in 362626 frames in 0 x 800K = 0K = 0 MB:
 
     33.1%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     20.5%  text_stream_array                        4603 x 100 = 460300 objects, 25924096 bytes
@@ -112,7 +112,7 @@ Total memory consumption was 123346K = 120 MB
      ----  generated_segment                        14 objects, 14784 bytes
      ----  booking_list                             407 objects, 13024 bytes
      ----  adjective_iname_holder                   320 objects, 12800 bytes
-     ----  pathname                                 315 objects, 12600 bytes
+     ----  pathname                                 308 objects, 12320 bytes
      ----  uniqueness_count                         454 objects, 10896 bytes
      ----  inter_construct                          30 objects, 10320 bytes
      ----  filename                                 253 objects, 10120 bytes
@@ -237,7 +237,7 @@ Total memory consumption was 123346K = 120 MB
 
 100.0% was used for memory not allocated for objects:
 
-    57.7%  text stream storage                      72913788 bytes in 477853 claims
+    57.7%  text stream storage                      72913024 bytes in 477844 claims
      4.1%  dictionary storage                       5227008 bytes in 7517 claims
      ----  sorting                                  1448 bytes in 149 claims
      5.7%  source text                              7200000 bytes in 3 claims
@@ -255,5 +255,5 @@ Total memory consumption was 123346K = 120 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      0.2%  emitter array storage                    280032 bytes in 1997 claims
 
--145.-5% was overhead - -183807864 bytes = -179499K = -175 MB
+-145.-5% was overhead - -183807584 bytes = -179499K = -175 MB
 

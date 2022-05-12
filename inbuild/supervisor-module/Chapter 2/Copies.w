@@ -24,6 +24,7 @@ typedef struct inbuild_copy {
 	struct wording source_text; /* the source text we read, if so */
 	struct inbuild_requirement *found_by; /* if this was claimed in a search */
 	struct linked_list *errors_reading_source_text; /* of |copy_error| */
+	int last_scanned;
 	CLASS_DEFINITION
 } inbuild_copy;
 
@@ -42,6 +43,7 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 	copy->source_text = EMPTY_WORDING;
 	copy->found_by = NULL;
 	copy->errors_reading_source_text = NEW_LINKED_LIST(copy_error);
+	copy->last_scanned = 0;
 	return copy;
 }
 
@@ -193,10 +195,10 @@ void Copies::show_graph(OUTPUT_STREAM, inbuild_copy *C) {
 	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
 	Graphs::describe(OUT, V, TRUE);
 }
-void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
+void Copies::show_needs(OUTPUT_STREAM, inbuild_copy *C, int uses_only, int paths) {
 	build_vertex *V = C->vertex;
 	VOID_METHOD_CALL(C->edition->work->genre, GENRE_BUILDING_SOON_MTID, C, &V);
-	Graphs::show_needs(OUT, C->vertex, uses_only);
+	Graphs::show_needs(OUT, C->vertex, uses_only, paths);
 }
 void Copies::show_missing(OUTPUT_STREAM, inbuild_copy *C, int uses_only) {
 	build_vertex *V = C->vertex;

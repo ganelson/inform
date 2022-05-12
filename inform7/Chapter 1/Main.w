@@ -355,8 +355,11 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 }
 
 void Main::bareword(int id, text_stream *opt, void *state) {
-	if (Supervisor::set_I7_source(opt) == FALSE)
-		Errors::fatal_with_text("unknown command line argument: %S (see -help)", opt);
+	if (Str::is_whitespace(opt) == FALSE) {
+		filename *F = Filenames::from_text(opt);
+		if (Supervisor::set_I7_source(F) == FALSE)
+			Errors::fatal_with_text("unknown command line argument: %S (see -help)", opt);
+	}
 }
 
 int Main::silence_is_golden(void) {
