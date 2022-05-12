@@ -321,8 +321,6 @@ inter_name *HierarchyLocations::derive_iname_in(inter_tree *I, int id, inter_nam
 
 @ All of the above use this command back-end:
 
-@d DEFAULT_INAME_TRUNCATION 28
-
 =
 inter_name *HierarchyLocations::iip(inter_tree *I, int id, package_request *P,
 	wording W, inter_name *derive_from, int fix, text_stream *imposed_name,

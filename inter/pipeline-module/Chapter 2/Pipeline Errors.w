@@ -139,6 +139,8 @@ power tools just lying around, people will eventually pick them up and wonder
 what the red button marked "danger" does.
 
 =
+int pipeline_error_count = 0;
+
 void PipelineErrors::kit_error(char *message, text_stream *quote) {
 	#ifdef PROBLEMS_MODULE
 	TEMPORARY_TEXT(M)
@@ -146,7 +148,7 @@ void PipelineErrors::kit_error(char *message, text_stream *quote) {
 	Problems::quote_stream(1, M);
 	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
 	Problems::issue_problem_segment(
-		"My low-level reader of source code reported a mistake - \"%1\"."
+		"My low-level reader of source code reported a mistake - \"%1\". "
 		"%PLow-level material written in Inform 6 syntax occurs either in kits or "
 		"in matter written inside 'Include (- ... -)' in source text, either in "
 		"the main source or in an extension used by it.");
@@ -156,4 +158,14 @@ void PipelineErrors::kit_error(char *message, text_stream *quote) {
 	#ifndef PROBLEMS_MODULE
 	Errors::with_text(message, quote);
 	#endif
+	pipeline_error_count++;
+}
+
+void PipelineErrors::reset_errors(void) {
+	pipeline_error_count = 0;
+}
+
+int PipelineErrors::errors_occurred(void) {
+	if (pipeline_error_count != 0) return TRUE;
+	return FALSE;
 }

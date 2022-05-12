@@ -30,6 +30,7 @@ void CompileSplatsStage::create_pipeline_stage(void) {
 
 =
 int CompileSplatsStage::run(pipeline_step *step) {
+	PipelineErrors::reset_errors();
 	compile_splats_state css;
 	@<Initialise the CS state@>;
 	inter_tree *I = step->ephemera.tree;
@@ -38,6 +39,7 @@ int CompileSplatsStage::run(pipeline_step *step) {
 	int errors_found = CompileSplatsStage::function_bodies(step, &css, I);
 	if (errors_found) return FALSE;
 	InterTree::traverse(I, CompileSplatsStage::visitor3, &css, NULL, SPLAT_IST);
+	if (PipelineErrors::errors_occurred()) return FALSE;
 	return TRUE;
 }
 
@@ -447,19 +449,24 @@ see why other kits would, either.
 		TEMPORARY_TEXT(value)
 		@<Extract a token@>;
 		if (Str::eq(value, I"+"))
-			PipelineErrors::kit_error("Inform 6 array declaration using operator '+'", NULL);
-		if (Str::eq(value, I"-"))
-			PipelineErrors::kit_error("Inform 6 array declaration using operator '-'", NULL);
-		if (Str::eq(value, I"*"))
-			PipelineErrors::kit_error("Inform 6 array declaration using operator '*'", NULL);
-		if (Str::eq(value, I"/"))
-			PipelineErrors::kit_error("Inform 6 array declaration using operator '/'", NULL);
-
-		if (Str::len(value) > 0) {
-			inter_pair val = InterValuePairs::undef();
-			@<Assimilate a value@>;
-			@<Add value to the entry pile@>;
-		} else finished = TRUE;
+			PipelineErrors::kit_error("Inform 6 array declaration using operator '+' "
+				"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+		else if (Str::eq(value, I"-"))
+			PipelineErrors::kit_error("Inform 6 array declaration using operator '-' "
+				"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+		else if (Str::eq(value, I"*"))
+			PipelineErrors::kit_error("Inform 6 array declaration using operator '*' "
+				"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+		else if (Str::eq(value, I"/"))
+			PipelineErrors::kit_error("Inform 6 array declaration using operator '/' "
+				"(use brackets '(' ... ')' around the size for a calculated array size)", NULL);
+		else {
+			if (Str::len(value) > 0) {
+				inter_pair val = InterValuePairs::undef();
+				@<Assimilate a value@>;
+				@<Add value to the entry pile@>;
+			} else finished = TRUE;
+		}
 		DISCARD_TEXT(value)
 	}
 
