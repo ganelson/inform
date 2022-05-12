@@ -56,8 +56,8 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	@<Compose a name for the unit package this will lead to@>;
 	module_request *M = LargeScale::module_request(Emit::tree(), pname);
 	inter_name *id_iname = NULL;
+	if (ext) id_iname = Hierarchy::make_iname_in(EXTENSION_ID_HL, M->where_found);
 	@<Give M a category@>;
-	if (ext) @<Give M metadata indicating the source extension@>;
 	DISCARD_TEXT(pname)
 
 	compilation_unit *C = CREATE(compilation_unit);
@@ -66,6 +66,8 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 	C->extension = ext;
 	C->extension_id = id_iname;
 	CompilationUnits::join(p, C);
+
+	if (ext) @<Give M metadata indicating the source extension@>;
 
 @<Give M a category@> =
 	inter_ti cat = 1;
@@ -76,7 +78,20 @@ void CompilationUnits::look_for_cu(parse_node *p) {
 @ The extension credit consists of a single line, with name, version number
 and author; together with any "extra credit" asked for by the extension.
 
+For timing reasons, we need to schedule an agent to make this later: that
+allows us to read sentences like "Use authorial modesty" between now and then.
+
 @<Give M metadata indicating the source extension@> =
+	text_stream *desc = Str::new();
+	WRITE_TO(desc, "extension metadata for %S", ext->as_copy->edition->work->raw_title);
+	Sequence::queue(&CompilationUnits::compilation_agent,
+		STORE_POINTER_compilation_unit(C), desc);
+
+@ =
+void CompilationUnits::compilation_agent(compilation_subtask *t) {
+	compilation_unit *CU = RETRIEVE_POINTER_compilation_unit(t->data);
+	inform_extension *ext = CU->extension;
+	module_request *M = CU->to_module;
 	Hierarchy::apply_metadata(M->where_found, EXT_AUTHOR_MD_HL,
 		ext->as_copy->edition->work->raw_author_name);
 	Hierarchy::apply_metadata(M->where_found, EXT_TITLE_MD_HL,
@@ -86,8 +101,7 @@ and author; together with any "extra credit" asked for by the extension.
 	WRITE_TO(V, "%v", &N);
 	Hierarchy::apply_metadata(M->where_found, EXT_VERSION_MD_HL, V);
 	DISCARD_TEXT(V)
-	id_iname = Hierarchy::make_iname_in(EXTENSION_ID_HL, M->where_found);
-	Emit::numeric_constant(id_iname, 0);
+	Emit::numeric_constant(CU->extension_id, 0);
 	TEMPORARY_TEXT(C)
 	WRITE_TO(C, "%S", ext->as_copy->edition->work->raw_title);
 	if (VersionNumbers::is_null(N) == FALSE) WRITE_TO(C, " version %v", &N);
@@ -104,14 +118,16 @@ and author; together with any "extra credit" asked for by the extension.
 	int self_penned = FALSE;
 	if (BibliographicData::story_author_is(the_author_name)) self_penned = TRUE;
 	inter_ti modesty = 1;
-	if ((ext->authorial_modesty == FALSE) &&     /* if (1) extension doesn't ask to be modest */
-		((general_authorial_modesty == FALSE) || /* and (2a) author doesn't ask to be modest, or */
-			(self_penned == FALSE)))             /*     (2b) didn't write this extension */
+	if ((ext->authorial_modesty == FALSE) &&       /* if (1) extension doesn't ask to be modest */
+		(Extensions::is_standard(ext) == FALSE) && /* and (2) it's not e.g. the Standard Rules */
+		((general_authorial_modesty == FALSE) ||   /* and (3a) author doesn't ask to be modest, or */
+			(self_penned == FALSE)))               /*     (3b) didn't write this extension */
 		modesty = 0;
 	Hierarchy::apply_metadata_from_number(M->where_found, EXT_MODESTY_MD_HL, modesty);
 	Hierarchy::apply_metadata_from_number(M->where_found, EXT_WORD_COUNT_MD_HL,
 		(inter_ti) TextFromFiles::total_word_count(ext->read_into_file));
 	DISCARD_TEXT(the_author_name)
+}
 
 @ Here we must find a unique name, valid as an Inter identifier: the code
 compiled from the compilation unit will go into a package of that name.
