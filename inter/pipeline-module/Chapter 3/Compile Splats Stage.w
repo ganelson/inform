@@ -1027,7 +1027,7 @@ before they are needed.
 	inter_symbol *result_s =
 		CompileSplatsStage::compute_r(step, IBM, sch->node_tree);
 	if (result_s == NULL) {
-		PipelineErrors::kit_error("Inform 6 constant in kit too complex", S);
+		PipelineErrors::kit_error("Inform 6 constant too complex", S);
 		return InterValuePairs::number(1);
 	}
 	return InterValuePairs::symbolic(IBM, result_s);
