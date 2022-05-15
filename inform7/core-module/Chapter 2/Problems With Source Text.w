@@ -306,10 +306,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						Problems::quote_source(1, current_sentence);
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BogusExtension));
 						Problems::issue_problem_segment(
-							"I can't find the extension requested by: %1. %P"
-							"You can get hold of extensions which people have made public at "
-							"the Inform website, www.inform7.com, or by using the Public "
-							"Library in the Extensions panel.");
+							"I can't find the extension requested by: %1.");
 						Problems::issue_problem_end();
 						break;
 					case ExtVersionTooLow_SYNERROR:
@@ -319,10 +316,7 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ExtVersionTooLow));
 						Problems::issue_problem_segment(
 							"I can't find the right version of the extension requested by %1 - "
-							"I can only find %2. %P"
-							"You can get hold of extensions which people have made public at "
-							"the Inform website, www.inform7.com, or by using the Public "
-							"Library in the Extensions panel.");
+							"I can only find %2.");
 						Problems::issue_problem_end();
 						break;
 					case ExtVersionMalformed_SYNERROR:
