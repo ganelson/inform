@@ -1106,20 +1106,16 @@ the existing pair $(X, Y)$.
 ];
 
 [ HashCoreLookUp rel kx X  hashv i free mask perturb flags;
-!print "[HCLU rel=", rel, " kx=", kx, " X=", X, ": ";
 	! calculate a hash value for the key
 	hashv = GetHashValue(kx, X);
 	! look in the first expected slot
 	mask = BlkValueRead(rel, RRV_STORAGE);
 	i = hashv & mask;
-!print "hv=", hashv, ", trying ", i;
 	flags = BlkValueRead(rel, RRV_DATA_BASE + 3*i);
 	if (flags == 0) {
-!print " - not found]^";
 		return ~i;
 	}
 	if (HashCoreEntryMatches(rel, i, kx, X)) {
-!print " - found]^";
 		return i;
 	}
 	! not here, keep looking in sequence
@@ -1130,15 +1126,12 @@ the existing pair $(X, Y)$.
 	for (::) {
 		hashv = hashv*5 + perturb + 1;
 		i = hashv & mask;
-!print ", ", i;
 		flags = BlkValueRead(rel, RRV_DATA_BASE + 3*i);
 		if (flags == 0) {
-!print " - not found]^";
 			if (free >= 0) return ~free;
 			return ~i;
 		}
 		if (HashCoreEntryMatches(rel, i, kx, X)) {
-!print " - found]^";
 			return i;
 		}
 		if ((free < 0) && (flags & RRF_DELETED)) free = i;
@@ -1168,7 +1161,7 @@ the existing pair $(X, Y)$.
 			BlkValueWrite(rel, RRV_DATA_BASE+i, 0);
 		! copy entries back from temporary space
 		kov = BlkValueRead(rel, RRV_KIND);
-		kx = KindBaseTerm(kov, 0);
+		kx = KindBaseTerm(kov, 1); ! Was 0
 		for (i=0: i<ext: i++) {
 			F = BlkValueRead(temp, 3*i, true);
 			if (F == 0 || (F & RRF_DELETED)) continue;

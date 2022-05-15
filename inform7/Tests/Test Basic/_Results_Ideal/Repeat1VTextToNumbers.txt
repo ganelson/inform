@@ -1,0 +1,11 @@
+  i: a x: 0.
+  i: b x: 1.
+  i: c x: 2.
+  i: d x: 3.
+  i: e x: 4.
+  i: f x: 5.
+  i: g x: 6.
+  i: h x: 7.
+  i: i x: 8.
+  i: j x: 9.
+  i: k x: 10.
