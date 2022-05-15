@@ -72,7 +72,7 @@ Section 2 - Current action
 The noun -- documented at var_noun -- is an object that varies.
 The second noun is an object that varies.
 The person asked -- documented at var_person_asked -- is an object that varies.
-The reason the action failed -- documented at var_reason -- is an action name
+The reason the action failed -- documented at var_reason -- is an action
 based rule producing nothing that varies.
 The item described is an object that varies.
 

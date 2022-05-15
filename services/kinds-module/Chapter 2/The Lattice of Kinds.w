@@ -331,6 +331,8 @@ and, of course, "value".
 		o = Latticework::construct_compatible(from, to, allow_casts);
 	int i, this_o = NEVER_MATCH, fallen = FALSE;
 	for (i=0; i<arity; i++) {
+		if ((Latticework::vacuous(from->kc_args[i])) && (Latticework::vacuous(to->kc_args[i])))
+			continue;
 		if (KindConstructors::variance(from->construct, i) == COVARIANT)
 			this_o = Latticework::order_relation(from->kc_args[i], to->kc_args[i], allow_casts);
 		else {
@@ -341,8 +343,14 @@ and, of course, "value".
 			case SOMETIMES_MATCH: if (o != NEVER_MATCH) { o = this_o; fallen = TRUE; } break;
 		}
 	}
-	if ((o == fallen) && (to->construct != CON_list_of)) return NEVER_MATCH;
+	if ((fallen) && (to->construct != CON_list_of)) return NEVER_MATCH;
 	return o;
+
+@ =
+int Latticework::vacuous(kind *K) {
+	if ((Kinds::eq(K, K_nil)) || (Kinds::eq(K, K_void))) return TRUE;
+	return FALSE;
+}
 
 @ =
 int Latticework::construct_compatible(kind *from, kind *to, int allow_casts) {

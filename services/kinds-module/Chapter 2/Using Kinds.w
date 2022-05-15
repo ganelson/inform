@@ -36,23 +36,22 @@ void Kinds::Behaviour::set_range_number(kind *K, int r) {
 
 =
 int Kinds::Behaviour::is_object(kind *K) {
-	if ((Kinds::conforms_to(K, K_object)) && (Kinds::eq(K, K_nil) == FALSE) && (Kinds::eq(K, K_void) == FALSE))
+	if ((Kinds::conforms_to(K, K_object)) &&
+		(Kinds::eq(K, K_nil) == FALSE) && (Kinds::eq(K, K_void) == FALSE))
 		return TRUE;
 	return FALSE;
 }
 
 int Kinds::Behaviour::is_subkind_of_object(kind *K) {
 	if ((Kinds::conforms_to(K, K_object)) && (Kinds::eq(K, K_object) == FALSE) &&
-		(Kinds::eq(K, K_nil) == FALSE) &&
-		(Kinds::eq(K, K_void) == FALSE))
+		(Kinds::eq(K, K_nil) == FALSE) && (Kinds::eq(K, K_void) == FALSE))
 		return TRUE;
 	return FALSE;
 }
 
 int Kinds::Behaviour::is_object_of_kind(kind *K, kind *L) {
 	if ((Kinds::conforms_to(K, K_object)) && (Kinds::conforms_to(K, L)) &&
-		(Kinds::eq(K, K_nil) == FALSE) &&
-		(Kinds::eq(K, K_void) == FALSE))
+		(Kinds::eq(K, K_nil) == FALSE) && (Kinds::eq(K, K_void) == FALSE))
 		return TRUE;
 	return FALSE;
 }

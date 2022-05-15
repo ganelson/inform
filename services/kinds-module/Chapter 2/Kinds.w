@@ -615,7 +615,6 @@ int Kinds::compatible(kind *from, kind *to) {
 	if (Kinds::eq(from, to)) return ALWAYS_MATCH;
 
 	LOGIF(KIND_CHECKING, "(Is the kind %u compatible with %u?", from, to);
-
 	switch(Latticework::order_relation(from, to, TRUE)) {
 		case NEVER_MATCH: LOGIF(KIND_CHECKING, " No)\n"); return NEVER_MATCH;
 		case ALWAYS_MATCH: LOGIF(KIND_CHECKING, " Yes)\n"); return ALWAYS_MATCH;
