@@ -316,6 +316,9 @@ the directive type as 0.
 			if (Characters::is_whitespace(Str::get(pos)) == FALSE)
 				I6_dir = MYSTERY_PLM;
 	}
+	if (I6_dir == MYSTERY_PLM)
+		(*(docket->error_callback))(
+			"this Inform 6 directive is not supported in kits or '(-' inclusions: '%S'", R);
 	Regexp::dispose_of(&mr);
 
 @ And that's it: the result of these stages is just to break the I6T source they
