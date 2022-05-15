@@ -31,6 +31,10 @@
 -examples		[Main] resources/Documentation/Examples
 -problems		[Main] 'inform7/Tests/Test Problems'
 
+-singular temp
+-singular temp-G
+-singular GenerateDiagnostics-G
+
 -groups 'inform7/Tests/Groups'
 
 -recipe [Main]
