@@ -356,6 +356,9 @@ void Main::switch(int id, int val, text_stream *arg, void *state) {
 
 void Main::bareword(int id, text_stream *opt, void *state) {
 	if (Str::is_whitespace(opt) == FALSE) {
+		if (Str::get_last_char(opt) == FOLDER_SEPARATOR)
+			Errors::fatal_with_text(
+				"to compile a project in a directory, use '-project %S'", opt);
 		filename *F = Filenames::from_text(opt);
 		if (Supervisor::set_I7_source(F) == FALSE)
 			Errors::fatal_with_text("unknown command line argument: %S (see -help)", opt);

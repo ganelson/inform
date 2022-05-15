@@ -1,6 +1,6 @@
 Total memory consumption was 123345K = 120 MB
 
- ---- was used for 2044307 objects, in 362626 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2044505 objects, in 362824 frames in 0 x 800K = 0K = 0 MB:
 
     33.1%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     20.5%  text_stream_array                        4603 x 100 = 460300 objects, 25924096 bytes
@@ -21,6 +21,7 @@ Total memory consumption was 123345K = 120 MB
      1.1%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes
      1.1%  inter_symbols_table                      26588 objects, 1488928 bytes
      1.0%  i6_schema_array                          23 x 100 = 2300 objects, 1380736 bytes
+     1.0%  scan_directory                           314 objects, 1296192 bytes
      1.0%  inter_package                            26588 objects, 1276224 bytes
      0.8%  map_data                                 670 objects, 1125600 bytes
      0.8%  id_body                                  942 objects, 1077648 bytes
@@ -32,7 +33,6 @@ Total memory consumption was 123345K = 120 MB
      0.6%  individual_form                          2562 objects, 860832 bytes
      0.6%  inter_schema_node                        8920 objects, 856320 bytes
      0.5%  unary_predicate_array                    16 x 1000 = 16000 objects, 640512 bytes
-     0.3%  scan_directory                           116 objects, 478848 bytes
      0.3%  local_variable_array                     47 x 100 = 4700 objects, 452704 bytes
      0.3%  verb_usage                               1128 objects, 388032 bytes
      0.2%  rule                                     470 objects, 368480 bytes
@@ -255,5 +255,5 @@ Total memory consumption was 123345K = 120 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      0.2%  emitter array storage                    280032 bytes in 1997 claims
 
--145.-5% was overhead - -183807584 bytes = -179499K = -175 MB
+-146.-1% was overhead - -184624928 bytes = -180297K = -176 MB
 
