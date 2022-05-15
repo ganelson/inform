@@ -352,7 +352,7 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 @<Compile the metadata array@> =
 	packaging_state save = EmitArrays::begin_unchecked(RTRelations::iname(bp));
 	if (ExplicitRelations::stored_dynamically(bp)) {
-		EmitArrays::numeric_entry((inter_ti) 1); /* meaning one entry, which is 0; to be filled in later */
+		EmitArrays::numeric_entry((inter_ti) 1);
 	} else {
 		TheHeap::emit_block_value_header(BinaryPredicates::kind(bp), FALSE, 8);
 		EmitArrays::null_entry();
@@ -497,7 +497,6 @@ void RTRelations::compilation_agent(compilation_subtask *t) {
 	LocalVariables::declare(Z4_lv);
 
 	annotated_i6_schema asch; i6_schema *i6s = NULL;
-
 	EmitCode::inv(SWITCH_BIP);
 	EmitCode::down();
 		EmitCode::val_symbol(K_value, task_s);

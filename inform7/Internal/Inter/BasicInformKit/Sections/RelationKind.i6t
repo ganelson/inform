@@ -153,7 +153,7 @@ At present, these permissions are not checked as rigorously as they should be
 (they're correctly set, but not much monitored).
 
 =
-[ RelationTest relation task X Y  handler rv;
+[ RelationTest relation task X Y  handler;
 	handler = RlnGetF(relation, RR_HANDLER);
 	return handler(relation, task, X, Y);
 ];
@@ -925,7 +925,7 @@ the existing pair $(X, Y)$.
 			if (fl & RRF_USED) {
 				sym = BlkValueRead(rel, tmp + 2);
 				if (fl & RRF_SINGLE) {
-					if (KOVIsBlockValue(ky)) {
+					if (KOVIsBlockValue(kx)) {
 						if (BlkValueCompare(X, sym) ~= 0) continue;
 					} else {
 						if (X ~= sym) continue;
