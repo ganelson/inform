@@ -113,7 +113,8 @@ extension |.i7x|. This was allowed in the early days of Inform 7, and early
 drafts of inblorb allowed it too, but this caused problems with emacs backup
 files (with filenames ending |~|) being picked up instead of the extension
 files they were backing up. So inblorb now recognises only |.i7x| files as
-extensions.
+extensions. Similarly, another bad emacs habit is to write hidden symlinks,
+with leafnames beginning |.|, so we reject those too.
 
 =
 void ExtensionManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
@@ -160,7 +161,8 @@ void ExtensionManager::search_nest_for_single_file(filename *F, inbuild_nest *N,
 	inbuild_requirement *req, linked_list *search_results) {
 	TEMPORARY_TEXT(fext)
 	Filenames::write_extension(fext, F);
-	if (Str::eq_insensitive(fext, I".i7x")) {
+	if ((Str::eq_insensitive(fext, I".i7x")) &&
+		(Str::get_first_char(Filenames::get_leafname(F)) != '.')) {
 		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
 		if ((C) && (Requirements::meets(C->edition, req))) {
 			Nests::add_search_result(search_results, N, C, req);
