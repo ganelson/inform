@@ -244,14 +244,6 @@ need bespoke handling:
 		"from here on.");
 	Problems::issue_problem_end();
 
-@<Issue a problem message for an unrecognised action@> =
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, Node::get_text(cs));
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-	Problems::issue_problem_segment(
-		"You wrote %1, but '%2'	isn't an action, so I can't see how to try it.");
-	Problems::issue_problem_end();
-
 @<Compile a named rulebook outline midriff@> =
 	current_sentence = to_compile;
 	named_rulebook_outcome *nrbo = <<rp>>;

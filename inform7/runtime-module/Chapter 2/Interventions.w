@@ -155,23 +155,6 @@ which can trigger an unwanted |(+|.
 	CSIInline::eval_bracket_plus_to_text(OUT, W);
 	DISCARD_TEXT(i7_exp)
 
-@ The command syntax here is now a relic: as of 2019, commands like this are
-no longer permitted inside of |(-| ... |-)| matter. We will parse it simply
-to reject it again with a problem message.
-
-@<Read rest of line as argument@> =
-	Str::clear(argument);
-	if (Characters::is_space_or_tab(cr) == FALSE) PUT_TO(argument, cr);
-	int at_start = TRUE;
-	while (TRUE) {
-		@<Read next character@>;
-		if ((cr == 10) || (cr == 13)) break;
-		if ((at_start) && (Characters::is_space_or_tab(cr))) continue;
-		PUT_TO(argument, cr); at_start = FALSE;
-	}
-	while (Characters::is_space_or_tab(Str::get_last_char(argument)))
-		Str::delete_last_character(argument);
-
 @<Read up to the next close brace as an I6T command and argument@> =
 	Str::clear(command);
 	Str::clear(argument);

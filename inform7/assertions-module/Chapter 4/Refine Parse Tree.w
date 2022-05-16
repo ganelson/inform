@@ -552,9 +552,6 @@ a noun instead of a condition testing the current action.
 		@<Check that this noun phrase is allowed a quantifier@>;
 	LOGIF(NOUN_RESOLUTION, "Noun phrase %W parsed as value: $P\n", Node::get_text(p), spec);
 
-@<Issue a problem for a variable described without a kind@> =
-	return;
-
 @<Check that this noun phrase is allowed a quantifier@> =
 	if (Quantifiers::can_be_used_in_assertions(Descriptions::get_quantifier(spec)) == FALSE) {
 		LOG("$T\nSo $D\n", current_sentence, Specifications::to_proposition(spec));
