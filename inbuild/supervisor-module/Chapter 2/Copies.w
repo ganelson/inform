@@ -108,10 +108,14 @@ int Copies::source_text_has_been_read(inbuild_copy *C) {
 wording Copies::get_source_text(inbuild_copy *C) {
 	if (C->source_text_read == FALSE) {
 		C->source_text_read = TRUE;
-		feed_t id = Feeds::begin();
-		VOID_METHOD_CALL(C->edition->work->genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, C);
-		wording W = Feeds::end(id);
-		if (Wordings::nonempty(W)) C->source_text = W;
+		if (LinkedLists::len(C->errors_reading_source_text) > 0) {
+			C->source_text = EMPTY_WORDING;
+		} else {
+			feed_t id = Feeds::begin();
+			VOID_METHOD_CALL(C->edition->work->genre, GENRE_READ_SOURCE_TEXT_FOR_MTID, C);
+			wording W = Feeds::end(id);
+			if (Wordings::nonempty(W)) C->source_text = W;
+		}
 	}
 	return C->source_text;
 }

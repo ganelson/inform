@@ -14,10 +14,16 @@ associated files for each example.w
 =
 void ExtensionPages::write_page(extension_census_datum *ecd,
 	inform_extension *E, int force_update, inform_project *proj) {
-	int c, eg_count;
-	eg_count = ExtensionPages::write_page_inner(ecd, E, -1, force_update, proj);
-	for (c=1; c<=eg_count; c++)
-		ExtensionPages::write_page_inner(ecd, E, c, force_update, proj);
+	if ((E) && (E->as_copy) &&
+		(LinkedLists::len(E->as_copy->errors_reading_source_text) > 0)) {
+		LOG("Not writing documentation on %f because errors occurred scanning it\n",
+			E->as_copy->location_if_file);
+	} else {
+		int c, eg_count;
+		eg_count = ExtensionPages::write_page_inner(ecd, E, -1, force_update, proj);
+		for (c=1; c<=eg_count; c++)
+			ExtensionPages::write_page_inner(ecd, E, c, force_update, proj);
+	}
 }
 
 @ Here then is the nub of it. An ECD is not really enough information to go on.
