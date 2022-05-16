@@ -590,6 +590,7 @@ Get the input, do OOPS and AGAIN.
     VM_Tokenise(buffer,parse);
 
     num_words = WordCount(); players_command = 100 + num_words; token_filter = 0;
+    allow_plurals = true; ResetDescriptors();
 
     k=0;
     #Ifdef DEBUG;

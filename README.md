@@ -250,6 +250,6 @@ be accepted. (Note that these are not git submodules.)
 
 ### Colophon
 
-This README.mk file was generated automatically by Inweb, and should not
+This README.md file was generated automatically by Inweb, and should not
 be edited. To make changes, edit inform.rmscript and re-generate.
 
