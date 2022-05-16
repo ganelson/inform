@@ -6,7 +6,7 @@ basic verbs and use options.
 
 @h Title.
 Every Inform 7 extension begins with a standard titling line and a
-rubric text, and this are no exception:
+rubric text, and this is no exception:
 
 =
 Version [[Version Number]] of Basic Inform by Graham Nelson begins here.

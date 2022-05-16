@@ -73,7 +73,7 @@ To say text of (R - response)
 
 @h Using the list-writer.
 One of the most powerful features of Inform 6 was its list-writer, a lengthy
-piece of I6 code wbich now lives on as Inter code, in the |srules| template:
+piece of I6 code which now lives on as Inter code, in the |srules| template:
 see "ListWriter.i6t". The following phrases control it:
 
 =
