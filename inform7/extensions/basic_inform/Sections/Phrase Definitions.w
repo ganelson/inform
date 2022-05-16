@@ -347,7 +347,7 @@ To say only -- ending say_first_time (documented at phs_firsttime):
 @ Now some visual effects, which may or may not be rendered the way the user
 hopes: that's partly up to the virtual machine, unfortunately.
 
-See test case |BIP-SayOneOf|, though since |intest| runs on plain text only,
+See test case |BIP-SayFonts|, though since |intest| runs on plain text only,
 you may need to run this in the Inform application to be convinced.
 
 =
@@ -947,7 +947,7 @@ To seed the random-number generator with (N - number)
 	(documented at ph_seed):
 	(- VM_Seed_RNG({N}); -).
 
-@ A novel feature of Inform is that there is a default value of any kind: fpr
+@ A novel feature of Inform is that there is a default value of any kind: for
 example, it is 0 for a number, or the empty text for text. When Inform compiles
 a value of a given kind but isn't told what value to compile, it always
 chooses the default, which is why the following definition works.

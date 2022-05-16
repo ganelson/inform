@@ -104,12 +104,12 @@ Definition: a scene is happening if I6 condition "scene_status-->(*1-1)==1"
 	says so (it is currently taking place).
 
 @h Kinds.
-Basic Imform provides the kind "object", but no specialisations of it. We
+Basic Inform provides the kind "object", but no specialisations of it. We
 will use objects to represent physical objects and locations, with the
 hierarchy given below. (The template code assumes these kinds will be
 declared in this order, so be careful rearranging them.)
 
-Note the two alterative plural definitions for the word "person", with
+Note the two alternative plural definitions for the word "person", with
 "people" being defined earlier to make it the default: "persons" is
 correct, but "people" is more idiomatically usual.
 
