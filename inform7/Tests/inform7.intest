@@ -11,6 +11,7 @@
 -if Windows -set CCOMPILER 'x86_64-w64-mingw32-clang -g -std=c11 -ferror-limit=10000 -Wno-unused-value -c'
 -if Windows -set CLINKER   'x86_64-w64-mingw32-clang -g -ferror-limit=10000'
 -if Windows -set EXESUFFIX '.exe'
+-if Windows -set MAKEFLAGS '-s --no-print-directory'
 -if linux -set CCOMPILER 'gcc -g -std=c11 -fmax-errors=10000 -c'
 -if linux -set CLINKER   'gcc -g'
 -if linux -set LINKFLAGS '-lm -pthread'
