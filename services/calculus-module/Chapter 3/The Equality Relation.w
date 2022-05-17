@@ -9,9 +9,11 @@ relations besides "has" in the spatial family.
 = (early code)
 bp_family *equality_bp_family = NULL;
 bp_family *spatial_bp_family = NULL;
+bp_family *empty_bp_family = NULL;
 
 binary_predicate *R_equality = NULL;
 binary_predicate *a_has_b_predicate = NULL;
+binary_predicate *R_empty = NULL;
 
 @h Family.
 This is a minimal representation only, for when the calculus module is used
@@ -33,6 +35,14 @@ void Calculus::Equality::start(void) {
 	METHOD_ADD(spatial_bp_family, STOCK_BPF_MTID,
 		Calculus::Equality::stock_spatial);
 	#endif
+
+	empty_bp_family = BinaryPredicateFamilies::new();
+	METHOD_ADD(empty_bp_family, STOCK_BPF_MTID,
+		Calculus::Equality::stock_empty);
+	METHOD_ADD(empty_bp_family, DESCRIBE_FOR_PROBLEMS_BPF_MTID,
+		Calculus::Equality::describe_empty_for_problems);
+	METHOD_ADD(empty_bp_family, DESCRIBE_FOR_INDEX_BPF_MTID,
+		Calculus::Equality::describe_empty_for_index);
 }
 
 @h Initial stock.
@@ -59,6 +69,14 @@ void Calculus::Equality::stock_spatial(bp_family *self, int n) {
 	}
 }
 
+void Calculus::Equality::stock_empty(bp_family *self, int n) {
+	if (n == 1) {
+		R_empty = BinaryPredicates::make_equality(empty_bp_family,
+			PreformUtilities::wording(<relation-names>, EMPTY_RELATION_NAME));
+		BinaryPredicates::set_index_details(R_equality, "value", "value");
+	}
+}
+
 @h Problem message text.
 
 =
@@ -69,4 +87,12 @@ int Calculus::Equality::describe_for_problems(bp_family *self, OUTPUT_STREAM,
 void Calculus::Equality::describe_for_index(bp_family *self, OUTPUT_STREAM,
 	binary_predicate *bp) {
 	WRITE("equality");
+}
+int Calculus::Equality::describe_empty_for_problems(bp_family *self, OUTPUT_STREAM,
+	binary_predicate *bp) {
+	return FALSE;
+}
+void Calculus::Equality::describe_empty_for_index(bp_family *self, OUTPUT_STREAM,
+	binary_predicate *bp) {
+	WRITE("never-holding");
 }

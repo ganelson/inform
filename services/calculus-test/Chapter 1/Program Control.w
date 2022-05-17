@@ -108,9 +108,11 @@ pcalc_prop *Main::to_proposition(parse_node *val) {
 @d EQUALITY_RELATION_NAME 0
 @d UNIVERSAL_RELATION_NAME 1
 @d POSSESSION_RELATION_NAME 2
+@d EMPTY_RELATION_NAME 3
 
 =
 <relation-names> ::=
 	equality |
 	universal |
-	possession
+	possession |
+	never-holding

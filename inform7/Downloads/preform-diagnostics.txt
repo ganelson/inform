@@ -5185,16 +5185,16 @@
         <np-nonrelative> 
           (hits 431/431) (matched long text) constraint (none) extremes [1, infinity)
 
-<np-with-or-having-tail> hits 0/10192 nti 30 constraint DS = {30} extremes [2, infinity)
+<np-with-or-having-tail> hits 0/10196 nti 30 constraint DS = {30} extremes [2, infinity)
     English:
         it with action {***} 
-          (hits 0/3874) constraint DS = {30} extremes [3, infinity)
+          (hits 0/3876) constraint DS = {30} extremes [3, infinity)
         {with/having} (/) {***} 
-          (hits 0/4067) constraint DS = {30} extremes [2, infinity)
+          (hits 0/4069) constraint DS = {30} extremes [2, infinity)
         {with/having} {...} ( <response-letter> ) 
-          (hits 0/3482) constraint DS = {30} extremes [5, infinity)
+          (hits 0/3484) constraint DS = {30} extremes [5, infinity)
         {with/having} <np-new-property-list> 
-          (hits 0/4067) constraint DS = {30} extremes [2, infinity)
+          (hits 0/4069) constraint DS = {30} extremes [2, infinity)
 
 <np-new-property-list> nti 19 constraint (none) extremes [1, infinity)
     English:
@@ -5267,10 +5267,10 @@
         {...} called {...} 
           constraint DS = {12} extremes [3, infinity)
 
-<np-x-of-y> hits 196/9056 nti 13 constraint DS = {13} extremes [2, infinity)
+<np-x-of-y> hits 194/9064 nti 13 constraint DS = {13} extremes [2, infinity)
     English:
         of {...} 
-          (hits 196/2552) (matched: 'of day -- documented at var_time --') constraint DS = {13} extremes [2, infinity)
+          (hits 194/2554) (matched: 'of day -- documented at var_time --') constraint DS = {13} extremes [2, infinity)
 
 <notable-linguistic-kinds> hits 5/60 nti 14 constraint CS = {14} extremes [2, 2]
     English:
@@ -5823,6 +5823,8 @@
           constraint CS = {20} extremes [1, 1]
         meaning 
           constraint CS = {20} extremes [1, 1]
+        never-holding 
+          constraint CS = {20} extremes [1, 1]
         provision 
           constraint CS = {20} extremes [1, 1]
         numerically-greater-than-or-equal-to 
@@ -5888,12 +5890,12 @@
         <negated-verb> {...} 
           constraint FS = {10} extremes [2, infinity)
 
-<allow-of-x> hits 104/392 nti 22 constraint (none) extremes [1, infinity)
+<allow-of-x> hits 104/388 nti 22 constraint (none) extremes [1, infinity)
     English:
         in the presence 
           constraint CS = {22} extremes [3, 3]
         <property-name-v> 
-          (hits 104/196) (matched: 'adaptive text viewpoint') constraint (none) extremes [1, infinity)
+          (hits 104/194) (matched: 'adaptive text viewpoint') constraint (none) extremes [1, infinity)
 
 <allow-of-y> hits 104/208 nti 23 constraint (none) extremes [1, infinity)
     English:
@@ -8477,7 +8479,7 @@
 
 <value-property-name> internal hits 127/2212 nti 30 constraint (none) extremes [1, infinity)
 
-<property-name-v> internal hits 104/392 nti 6 constraint (none) extremes [1, infinity)
+<property-name-v> internal hits 104/388 nti 6 constraint (none) extremes [1, infinity)
 
 <name-looking-like-property-test> hits 0/292 nti 12 constraint DS = {12} extremes [1, infinity)
     English:

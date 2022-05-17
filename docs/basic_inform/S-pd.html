@@ -427,7 +427,7 @@ uses, and compiles as a switch statement based on the current state.
 hopes: that's partly up to the virtual machine, unfortunately.
 </p>
 
-<p class="commentary">See test case <span class="extract"><span class="extract-syntax">BIP-SayOneOf</span></span>, though since <span class="extract"><span class="extract-syntax">intest</span></span> runs on plain text only,
+<p class="commentary">See test case <span class="extract"><span class="extract-syntax">BIP-SayFonts</span></span>, though since <span class="extract"><span class="extract-syntax">intest</span></span> runs on plain text only,
 you may need to run this in the Inform application to be convinced.
 </p>
 
@@ -1061,7 +1061,7 @@ given description ("a random closed door").
 <span class="plain-syntax">    (</span><span class="identifier-syntax">documented</span><span class="plain-syntax"> </span><span class="identifier-syntax">at</span><span class="plain-syntax"> </span><span class="identifier-syntax">ph_seed</span><span class="plain-syntax">):</span>
 <span class="plain-syntax">    (- </span><span class="identifier-syntax">VM_Seed_RNG</span><span class="plain-syntax">({</span><span class="identifier-syntax">N</span><span class="plain-syntax">}); -).</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>A novel feature of Inform is that there is a default value of any kind: fpr
+<p class="commentary firstcommentary"><a id="SP31" class="paragraph-anchor"></a><b>&#167;31.  </b>A novel feature of Inform is that there is a default value of any kind: for
 example, it is 0 for a number, or the empty text for text. When Inform compiles
 a value of a given kind but isn't told what value to compile, it always
 chooses the default, which is why the following definition works.

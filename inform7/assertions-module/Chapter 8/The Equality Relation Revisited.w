@@ -9,6 +9,10 @@ void EqualityDetails::start(void) {
 	METHOD_ADD(equality_bp_family, TYPECHECK_BPF_MTID, EqualityDetails::typecheck);
 	METHOD_ADD(equality_bp_family, ASSERT_BPF_MTID, EqualityDetails::assert);
 	METHOD_ADD(equality_bp_family, SCHEMA_BPF_MTID, EqualityDetails::schema);
+
+	METHOD_ADD(empty_bp_family, TYPECHECK_BPF_MTID, EqualityDetails::typecheck_empty);
+	METHOD_ADD(empty_bp_family, ASSERT_BPF_MTID, EqualityDetails::assert_empty);
+	METHOD_ADD(empty_bp_family, SCHEMA_BPF_MTID, EqualityDetails::schema_empty);
 }
 
 @h Typechecking.
@@ -28,7 +32,6 @@ int EqualityDetails::typecheck(bp_family *self, binary_predicate *bp,
 			"impossible to store this piece of text in that location.");
 		return NEVER_MATCH;
 	}
-
 
 	if (PluginCalls::typecheck_equality(kinds_of_terms[0], kinds_of_terms[1]))
 		return ALWAYS_MATCH;
@@ -94,6 +97,15 @@ int EqualityDetails::both_terms_of_same_construction(kind *k0, kind *k1, kind_co
 	return FALSE;
 }
 
+@ The never-holding relation is simpler: anything can be hypothetically related to
+anything else (except of course that it always is not).
+
+=
+int EqualityDetails::typecheck_empty(bp_family *self, binary_predicate *bp,
+		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
+	return ALWAYS_MATCH;
+}
+
 @h Assertion.
 In general values differ, and cannot be equated by fiat. But an exception is
 setting a global variable.
@@ -118,6 +130,15 @@ int EqualityDetails::assert(bp_family *self, binary_predicate *bp,
 			NonlocalVariables::to_subject(q), P_variable_initial_value, spec1);
 		return TRUE;
 	}
+	return FALSE;
+}
+
+@ The never-holding relation cannot be asserted true:
+
+=
+int EqualityDetails::assert_empty(bp_family *self, binary_predicate *bp,
+		inference_subject *infs0, parse_node *spec0,
+		inference_subject *infs1, parse_node *spec1) {
 	return FALSE;
 }
 
@@ -308,3 +329,11 @@ one that's more helpfully specific and return |TRUE|.
 		Calculus::Schemas::append(asch->schema, "%S", TEMP);
 		DISCARD_TEXT(TEMP)
 	}
+
+@ This never holds and there is nothing to compile:
+
+=
+int EqualityDetails::schema_empty(bp_family *self, int task, binary_predicate *bp,
+	annotated_i6_schema *asch) {
+	return FALSE;
+}

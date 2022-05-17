@@ -254,8 +254,10 @@ void RTVerbs::vc_compilation_agent(compilation_subtask *t) {
 	verb_meaning *vm =
 		(vi)?Verbs::first_unspecial_meaning_of_verb_form(Verbs::base_form(vi)):NULL;
 	binary_predicate *meaning = VerbMeanings::get_regular_meaning(vm);
-	inter_name *rel_iname = RTRelations::default_iname();
-	if (meaning) rel_iname = RTRelations::iname(meaning);
+	inter_name *rel_iname = Hierarchy::find(MEANINGLESS_RR_HL);
+	if ((copular_verb) && (vc == copular_verb->conjugation))
+		rel_iname = RTRelations::iname(R_equality);
+	else if (meaning) rel_iname = RTRelations::iname(meaning);
 
 			EmitCode::inv(CASE_BIP);
 			EmitCode::down();
@@ -477,9 +479,11 @@ void RTVerbs::vf_compilation_agent(compilation_subtask *t) {
 	EmitCode::up();
 
 	verb_meaning *vm = &(vf->list_of_senses->vm);
-	inter_name *rel_iname = RTRelations::default_iname();
+	inter_name *rel_iname = Hierarchy::find(MEANINGLESS_RR_HL);
 	binary_predicate *meaning = VerbMeanings::get_regular_meaning(vm);
-	if (meaning) rel_iname = RTRelations::iname(meaning);
+	if ((copular_verb) && (vc == copular_verb->conjugation))
+		rel_iname = RTRelations::iname(R_equality);
+	else if (meaning) rel_iname = RTRelations::iname(meaning);
 
 	EmitCode::inv(IF_BIP);
 	EmitCode::down();
