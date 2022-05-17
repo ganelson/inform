@@ -1373,6 +1373,34 @@ but the point is that locals of that kind are automatically set to their
 default values when created, so they are always typesafe anyway.
 </p>
 
+<p class="commentary">Note also that the Dash typechecker allows the creation of local variables
+whose kinds are subkinds of objects which may have no instances. For example,
+in this program:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    A cat is a kind of animal.</span>
+<span class="plain-syntax">    To discuss the felines:</span>
+<span class="plain-syntax">        let C be a cat;</span>
+<span class="plain-syntax">        ...</span>
+</pre>
+<p class="commentary">...it is legal to construct the variable <span class="extract"><span class="extract-syntax">C</span></span> with kind <span class="extract"><span class="extract-syntax">cat</span></span>, even though there
+are no cats in the world, so that a call to <span class="extract"><span class="extract-syntax">DefaultValues::val</span></span> would
+generate a problem message. But we call <span class="extract"><span class="extract-syntax">DefaultValues::val_allowing_nothing</span></span>
+instead, so that <span class="extract"><span class="extract-syntax">C</span></span> is created but with the value <span class="extract"><span class="extract-syntax">nothing</span></span>.
+</p>
+
+<p class="commentary">This would be easier to understand if Inform's kinds system supported "optionals".
+In the Swift language, for example, there would be a clear distinction between
+the types <span class="extract"><span class="extract-syntax">Cat</span></span> (runtime values must be instances of cat) and <span class="extract"><span class="extract-syntax">Cat?</span></span> (runtime
+values must be instances of cat or else <span class="extract"><span class="extract-syntax">nothing</span></span>). In Inform, cat-valued global
+variables and properties have the type <span class="extract"><span class="extract-syntax">Cat</span></span>, but cat-valued locals have the
+type <span class="extract"><span class="extract-syntax">Cat?</span></span>. We do this to make it more convenient to write functions about
+cats which will compile whether or not any cats exist; an extension might provide
+such functions, for example, providing functionality which is only used if cats
+do exist, but which should still compile without errors even if they do not.
+</p>
+
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Inline command "initialise"</span><span class="named-paragraph-number">6.5.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
@@ -1402,9 +1430,8 @@ default values when created, so they are always typesafe anyway.
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::down</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">inter_symbol</span><span class="plain-syntax"> *</span><span class="identifier-syntax">lvar_s</span><span class="plain-syntax"> = </span><a href="3-lv.html#SP1" class="function-link"><span class="function-syntax">LocalVariables::declare</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">lvar</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">EmitCode::ref_symbol</span><span class="plain-syntax">(</span><span class="identifier-syntax">K_value</span><span class="plain-syntax">, </span><span class="identifier-syntax">lvar_s</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DefaultValues::val</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">), </span><span class="string-syntax">"value"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DefaultValues::val_allowing_nothing</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">), </span><span class="string-syntax">"value"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">EmitCode::up</span><span class="plain-syntax">();</span>
-
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_kind</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
