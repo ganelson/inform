@@ -106,6 +106,7 @@ containment, i.e., "X is in Y". See the test cases |MetaRelations|,
 =
 kind *BinaryPredicates::kind(binary_predicate *bp) {
 	if (bp == R_equality) return Kinds::binary_con(CON_relation, K_value, K_value);
+	if (bp == R_empty) return Kinds::binary_con(CON_relation, K_value, K_value);
 	kind *K0 = BinaryPredicates::term_kind(bp, 0);
 	kind *K1 = BinaryPredicates::term_kind(bp, 1);
 	if (K0 == NULL) K0 = K_object;

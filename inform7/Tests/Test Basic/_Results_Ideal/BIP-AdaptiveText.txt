@@ -434,4 +434,4 @@
   future tense, second person plural: will not have.
   future tense, third person plural: will have.
   future tense, third person plural: will not have.
-  "meaning of the verb carry" = relation of objects: equality relation
+  "meaning of the verb carry" = relation of objects: never-holding relation

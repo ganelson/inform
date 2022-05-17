@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
-noun: 2381 items
+noun: 2382 items
 pronoun: 8 items
 preposition: 273 items
 determiner: 22 items
 verb: 108 items
 verb_form: 386 items
-total in all categories: 3317
+total in all categories: 3318
 
 adjective: 'even'
 adjective: 'odd'
@@ -203,6 +203,7 @@ noun: proper: 'concealment relation'
 noun: proper: 'enclosure relation'
 noun: proper: 'adjacency relation'
 noun: proper: 'regional-containment relation'
+noun: proper: 'never-holding relation'
 noun: proper: 'numerically-greater-than relation'
 noun: proper: 'numerically-less-than relation'
 noun: proper: 'numerically-greater-than-or-equal-to relation'
@@ -1020,8 +1021,8 @@ noun: proper: 'can't see it at the moment error'
 noun: proper: 'didn't understand the way that finished error'
 noun: proper: 'not enough of those available error'
 noun: proper: 'nothing to do error'
-noun: proper: 'noun did not make sense in that context error'
 noun: proper: 'referred to a determination of scope error'
+noun: proper: 'noun did not make sense in that context error'
 noun: proper: 'i beg your pardon error'
 noun: proper: 'can't again the addressee error'
 noun: proper: 'comma can't begin error'

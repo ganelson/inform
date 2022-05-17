@@ -94,23 +94,12 @@ void RTRelations::mark_as_needed(binary_predicate *bp) {
 	RTRelations::iname(bp);
 }
 
-@ The default relation is the first one made:
-
-=
-inter_name *default_rr = NULL;
-inter_name *RTRelations::default_iname(void) {
-	return default_rr;
-}
-
 inter_name *RTRelations::iname(binary_predicate *bp) {
 	bp->compilation_data.record_needed = TRUE;
-	if (bp->compilation_data.data_iname == NULL) {
+	if (bp->compilation_data.data_iname == NULL)
 		bp->compilation_data.data_iname =
 			Hierarchy::make_iname_in(RELATION_RECORD_HL,
 				RTRelations::package(bp));
-		if (default_rr == NULL)
-			default_rr = bp->compilation_data.data_iname;
-	}
 	return bp->compilation_data.data_iname;
 }
 
@@ -153,9 +142,9 @@ int RTRelations::minimal(binary_predicate *bp) {
 }
 
 void RTRelations::compile(void) {
-	if (RTRelations::default_iname()) {
+	if (R_empty) {
 		inter_name *iname = Hierarchy::find(MEANINGLESS_RR_HL);
-		Emit::iname_constant(iname, K_value, RTRelations::default_iname());
+		Emit::iname_constant(iname, K_value, RTRelations::iname(R_empty));
 		Hierarchy::make_available(iname);
 	}
 
