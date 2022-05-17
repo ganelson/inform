@@ -1274,7 +1274,7 @@ result would be the same without the optimisation.
 		EmitCode::inv(STORE_BIP);
 		EmitCode::down();
 			EmitCode::ref_iname(K_number, Hierarchy::find(SAY__N_HL));
-			CompileValues::to_code_val_of_kind(to_say, K);
+			CompileValues::to_code_val_of_kind(to_say, NULL);
 		EmitCode::up();
 	EmitCode::up();
 	return;
@@ -1289,7 +1289,7 @@ language.
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_iname(K_number, Hierarchy::find(UNICODE_TEMP_HL));
-		CompileValues::to_code_val_of_kind(to_say, K);
+		CompileValues::to_code_val_of_kind(to_say, NULL);
 	EmitCode::up();
 	if (TargetVMs::is_16_bit(Task::vm())) {
 		Produce::inv_assembly(Emit::tree(), I"@print_unicode");
