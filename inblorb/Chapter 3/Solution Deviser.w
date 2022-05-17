@@ -167,7 +167,7 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 =
 void Solution::find_node_ID_in_tag(OUTPUT_STREAM, text_stream *line, char *tag) {
 	TEMPORARY_TEXT(prototype)
-	WRITE_TO(prototype, "%c*?<%s nodeId=\"(%c*?)\"%c*", tag);
+	WRITE_TO(prototype, "%%c*?<%s nodeId=\"(%%c*?)\"%%c*", tag);
 	wchar_t prototype_Cs[128];
 	Str::copy_to_wide_string(prototype_Cs, prototype, 128);
 	match_results mr = Regexp::create_mr();
@@ -182,7 +182,7 @@ void Solution::find_node_ID_in_tag(OUTPUT_STREAM, text_stream *line, char *tag) 
 =
 int Solution::find_text_of_tag(OUTPUT_STREAM, text_stream *line, char *tag) {
 	TEMPORARY_TEXT(prototype)
-	WRITE_TO(prototype, "%c*?>(%c*?)</%s%c*", tag);
+	WRITE_TO(prototype, "%%c*?>(%%c*?)</%s%%c*", tag);
 	match_results mr = Regexp::create_mr();
 	wchar_t prototype_Cs[128];
 	Str::copy_to_wide_string(prototype_Cs, prototype, 128);
