@@ -82,6 +82,7 @@ Global params_wanted;               ! Number of parameters needed (which may cha
 
 Global inferfrom;                   ! The point from which the rest of the command must be inferred
 Global inferword;                   ! And the preposition inferred
+Global dont_infer_pronoun;          ! Do not infer an "it"
 Global dont_infer;                  ! Another dull flag
 
 Global cobj_flag = 0;
@@ -1663,7 +1664,7 @@ Begin parsing an object list.
     if (token == MULTI_TOKEN or MULTIHELD_TOKEN or MULTIEXCEPT_TOKEN or MULTIINSIDE_TOKEN)
         token_allows_multiple = true;
 
-    many_flag = false; and_parity = true; dont_infer = false;
+    many_flag = false; and_parity = true; dont_infer = false; dont_infer_pronoun = false;
 
 @h Parse Token Letter C.
 Parse descriptors (articles, pronouns, etc.) in the list.
@@ -1896,8 +1897,8 @@ Parse connectives (AND, BUT, etc.) and go back to (C).
             if (parser_trace >= 3) print "  [Making new list from ", (the) single_object, "]^";
             #Endif; ! DEBUG
         }
-        dont_infer = true; inferfrom=0;           ! Don't print (inferences)
-        jump ObjectList;                          ! And back around
+        dont_infer = true; dont_infer_pronoun = false; inferfrom=0; ! Don't print (inferences)
+        jump ObjectList; ! And back around
     }
 
     wn--;   ! Word marker back to first not-understood word
@@ -2206,8 +2207,9 @@ because we want to allow duplicates).
 		if (i) dont_infer = true;
         i = Adjudicate(context);
         if (i == -1) rfalse;
-        if (i == 1) rtrue;       !  Adjudicate has made a multiple
+        if (i == 1) rtrue;   !  Adjudicate has made a multiple
                              !  object, and we pass it on
+        dont_infer_pronoun = true; ! See bug I7-2115 for discussion of this
     }
 
     ! If i is non-zero here, one of two things is happening: either
@@ -2423,7 +2425,7 @@ because we want to allow duplicates).
 
             #Ifdef DEBUG;
             if (parser_trace >= 5)
-            	print "[Gluing in inference with pattern code ", pattern-->j, "]^";
+            	print "[Gluing in inference at ", j, " with pattern code ", pattern-->j, "]^";
             #Endif; ! DEBUG
 
             ! Conveniently, parse2-->1 is the first word in both ZCODE and GLULX.
@@ -2434,16 +2436,18 @@ because we want to allow duplicates).
             ! (This is imperfect, but it's very seldom needed anyway.)
 
             if (pattern-->j >= 2 && pattern-->j < REPARSE_CODE) {
-                PronounNotice(pattern-->j);
-                for (k=1 : k<=LanguagePronouns-->0 : k=k+3)
-                    if (pattern-->j == LanguagePronouns-->(k+2)) {
-                        parse2-->1 = LanguagePronouns-->k;
-                        #Ifdef DEBUG;
-                        if (parser_trace >= 5)
-                        	print "[Using pronoun '", (address) parse2-->1, "']^";
-                        #Endif; ! DEBUG
-                        break;
-                    }
+            	if (dont_infer_pronoun == false) {
+					PronounNotice(pattern-->j);
+					for (k=1 : k<=LanguagePronouns-->0 : k=k+3)
+						if (pattern-->j == LanguagePronouns-->(k+2)) {
+							parse2-->1 = LanguagePronouns-->k;
+							#Ifdef DEBUG;
+							if (parser_trace >= 5)
+								print "[Using pronoun '", (address) parse2-->1, "']^";
+							#Endif; ! DEBUG
+							break;
+						}
+				}
             }
             else {
                 ! An inferred preposition.
