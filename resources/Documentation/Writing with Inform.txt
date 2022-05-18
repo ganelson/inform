@@ -12051,7 +12051,9 @@ This might produce the list item "two utensils (fork and spoon)".
 ^^{listing rules: for grouping together}
 ^^{listing group size (— number)+glob+}
 
-<b>1. When it happens.</b> Only while listing contents, and only when a collection of items to be grouped together is reached. This in turn happens only if a "before listing contents" rule has chosen it (see previous section). The first item in the group is the one to which the activity formally applies. The variable "listing group size" gives the number of items grouped together in this way.
+<b>1. When it happens.</b> Only while listing contents, and only when a collection of items to be grouped together is reached. This in turn happens only if a "before listing contents" rule has chosen it (see previous section). The first item in the group is the one to which the activity formally applies.
+
+The variable "listing group size" usually gives the number of items grouped together in this way, but care is needed if the "something" covers multiple groups, because then this will all be working on a list of groups, not of items. For example, in a "grouping together things" rule, where "things" is such a broad description that it can apply to multiple kinds of thing all appearing in the list, the list-maker is likely to set "listing group size" to the number of groups. If the list contains five men and six women, for example, "listing group size" might be 2 rather than 11.
 
 <b>2. The default behaviour.</b> The items grouped together are printed in an English phrase, such as "egg, chicken and farmer". In particular, they are not split onto separate lines even if the rest of the list is. (See previous section.)
 
