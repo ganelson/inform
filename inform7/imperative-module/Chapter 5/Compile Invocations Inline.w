@@ -1011,6 +1011,30 @@ of block value, like "list of numbers", it does nothing. This may seem odd,
 but the point is that locals of that kind are automatically set to their
 default values when created, so they are always typesafe anyway.
 
+Note also that the Dash typechecker allows the creation of local variables
+whose kinds are subkinds of objects which may have no instances. For example,
+in this program:
+= (text)
+	A cat is a kind of animal.
+	To discuss the felines:
+		let C be a cat;
+		...
+=
+...it is legal to construct the variable |C| with kind |cat|, even though there
+are no cats in the world, so that a call to |DefaultValues::val| would
+generate a problem message. But we call |DefaultValues::val_allowing_nothing|
+instead, so that |C| is created but with the value |nothing|.
+
+This would be easier to understand if Inform's kinds system supported "optionals".
+In the Swift language, for example, there would be a clear distinction between
+the types |Cat| (runtime values must be instances of cat) and |Cat?| (runtime
+values must be instances of cat or else |nothing|). In Inform, cat-valued global
+variables and properties have the type |Cat|, but cat-valued locals have the
+type |Cat?|. We do this to make it more convenient to write functions about
+cats which will compile whether or not any cats exist; an extension might provide
+such functions, for example, providing functionality which is only used if cats
+do exist, but which should still compile without errors even if they do not.
+
 @<Inline command "initialise"@> =
 	parse_node *V = CSIInline::parse_bracing_operand_as_identifier(ist->operand,
 		idb, tokens, my_vars);
@@ -1037,9 +1061,8 @@ default values when created, so they are always typesafe anyway.
 		EmitCode::down();
 			inter_symbol *lvar_s = LocalVariables::declare(lvar);
 			EmitCode::ref_symbol(K_value, lvar_s);
-			rv = DefaultValues::val(K, Node::get_text(V), "value");
+			rv = DefaultValues::val_allowing_nothing(K, Node::get_text(V), "value");
 		EmitCode::up();
-
 		if (rv == FALSE) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_kind(2, K);

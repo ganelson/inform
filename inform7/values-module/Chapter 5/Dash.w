@@ -2181,9 +2181,10 @@ This doesn't give us an initial value as such, but it explicitly tells us the
 kind, which is good enough.
 
 Otherwise, we either know the kind already from polymorphism calculations, or
-we can work it out by seeing what the initial value evaluates to. As usual,
-we "round up to objects"; if the let-value is a kind of object, we make
-the variable have kind "object", rather than some subkind.
+we can work it out by seeing what the initial value evaluates to. Note that
+with values which are objects, we guess the kind as the broadest subkind of
+"object" to which the value belongs: in practice that means usually a thing,
+a room or a region.
 
 We make one exception to allow lines like --
 
@@ -2213,12 +2214,14 @@ of a relation.
 		@<Fail: the initial value of the local is the empty list@>;
 	if (Kinds::Behaviour::definite(seems_to_be) == FALSE)
 		@<Fail: the initial value can't be stored@>;
-	LOGIF(MATCHING, "(4A.c.1) Local variable seems to have kind: %u\n", seems_to_be);
+	LOGIF(MATCHING, "(4A.c.1) Local variable seems to have kind: %u (kind-like: %d)\n",
+		seems_to_be, Specifications::is_kind_like(initial_value));
 
 	K = seems_to_be;
-	if (Kinds::Behaviour::is_subkind_of_object(K))
-		while (Kinds::eq(Latticework::super(K), K_object) == FALSE)
-			K = Latticework::super(K);
+	if (Specifications::is_kind_like(initial_value) == FALSE)
+		if (Kinds::Behaviour::is_subkind_of_object(K))
+			while (Kinds::eq(Latticework::super(K), K_object) == FALSE)
+				K = Latticework::super(K);
 	LOGIF(MATCHING, "(4A.c.1) Local variable inferred to have kind: %u\n", K);
 
 @<Fail: the initial value of the local is unknown@> =

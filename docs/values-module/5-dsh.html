@@ -2744,9 +2744,10 @@ kind, which is good enough.
 </p>
 
 <p class="commentary">Otherwise, we either know the kind already from polymorphism calculations, or
-we can work it out by seeing what the initial value evaluates to. As usual,
-we "round up to objects"; if the let-value is a kind of object, we make
-the variable have kind "object", rather than some subkind.
+we can work it out by seeing what the initial value evaluates to. Note that
+with values which are objects, we guess the kind as the broadest subkind of
+"object" to which the value belongs: in practice that means usually a thing,
+a room or a region.
 </p>
 
 <p class="commentary">We make one exception to allow lines like &mdash;
@@ -2784,12 +2785,14 @@ of a relation.
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-dsh.html#SP13_1_1_2" class="named-paragraph-link"><span class="named-paragraph">Fail: the initial value of the local is the empty list</span><span class="named-paragraph-number">13.1.1.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::definite</span><span class="plain-syntax">(</span><span class="identifier-syntax">seems_to_be</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="5-dsh.html#SP13_1_1_3" class="named-paragraph-link"><span class="named-paragraph">Fail: the initial value can't be stored</span><span class="named-paragraph-number">13.1.1.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"(4A.c.1) Local variable seems to have kind: %u\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">seems_to_be</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"(4A.c.1) Local variable seems to have kind: %u (kind-like: %d)\n"</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">seems_to_be</span><span class="plain-syntax">, </span><a href="2-spc.html#SP2" class="function-link"><span class="function-syntax">Specifications::is_kind_like</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">initial_value</span><span class="plain-syntax">));</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">seems_to_be</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::is_subkind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Latticework::super</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Latticework::super</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-spc.html#SP2" class="function-link"><span class="function-syntax">Specifications::is_kind_like</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">initial_value</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::is_subkind_of_object</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Latticework::super</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_object</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Latticework::super</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">MATCHING</span><span class="plain-syntax">, </span><span class="string-syntax">"(4A.c.1) Local variable inferred to have kind: %u\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP13_1">&#167;13.1</a>.</li></ul>

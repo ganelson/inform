@@ -16,19 +16,25 @@ messages.
 =
 int DefaultValues::array_entry(kind *K, wording W, char *storage_name) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-	int rv = DefaultValues::to_holster(&VH, K, W, storage_name);
+	int rv = DefaultValues::to_holster(&VH, K, W, storage_name, FALSE);
 	inter_pair val = Holsters::unholster_to_pair(&VH);
 	EmitArrays::generic_entry(val);
 	return rv;
 }
 int DefaultValues::val(kind *K, wording W, char *storage_name) {
 	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
-	int rv = DefaultValues::to_holster(&VH, K, W, storage_name);
+	int rv = DefaultValues::to_holster(&VH, K, W, storage_name, FALSE);
+	Holsters::unholster_to_code_val(Emit::tree(), &VH);
+	return rv;
+}
+int DefaultValues::val_allowing_nothing(kind *K, wording W, char *storage_name) {
+	value_holster VH = Holsters::new(INTER_DATA_VHMODE);
+	int rv = DefaultValues::to_holster(&VH, K, W, storage_name, TRUE);
 	Holsters::unholster_to_code_val(Emit::tree(), &VH);
 	return rv;
 }
 int DefaultValues::to_holster(value_holster *VH, kind *K,
-	wording W, char *storage_name) {
+	wording W, char *storage_name, int allow_nothing_object_as_default) {
 	if (Kinds::eq(K, K_value))
 		@<"Value" is too vague to be the kind of a variable@>;
 	if (Kinds::Behaviour::definite(K) == FALSE)
@@ -47,7 +53,10 @@ int DefaultValues::to_holster(value_holster *VH, kind *K,
 }
 
 @<The kind must have no instances, or it would have worked@> =
-	if (Wordings::nonempty(W)) {
+	if (allow_nothing_object_as_default) {
+		Holsters::holster_pair(VH, DefaultValues::to_value_pair(K_object));
+		return TRUE;
+	} else if (Wordings::nonempty(W)) {
 		Problems::quote_wording_as_source(1, W);
 		Problems::quote_kind(2, K);
 		Problems::quote_text(3, storage_name);

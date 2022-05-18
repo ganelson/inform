@@ -431,7 +431,8 @@ void RTVariables::holster_initial_value(value_holster *VH, nonlocal_variable *nl
 }
 
 @<Initialise with the default value of its kind@> =
-	if (DefaultValues::to_holster(VH, nlv->nlv_kind, nlv->name, "variable") == FALSE) {
+	if (DefaultValues::to_holster(VH, nlv->nlv_kind, nlv->name, "variable", FALSE)
+		== FALSE) {
 		if (nlv->var_is_allowed_to_be_zero) {
 			Holsters::holster_pair(VH, InterValuePairs::number(0));
 		} else {
