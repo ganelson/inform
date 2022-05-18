@@ -1,0 +1,5 @@
+Foo is a room.
+Blob is a person in Foo.
+When play begins:
+	if every room encloses a person, say "hooray.";
+	if every room encloses two people, say "yowza.";

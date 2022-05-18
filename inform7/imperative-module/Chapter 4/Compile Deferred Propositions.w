@@ -410,6 +410,7 @@ typedef struct q_stack_data {
 	int parameter;             /* its parameter, e.g., 9 for "more than nine" */
 	int C_stack_level;         /* at the point this occurs */
 	int L_stack_level;
+	int existential;           /* just one solution is needed */
 } q_stack_data;
 
 typedef struct c_stack_data {
@@ -520,7 +521,10 @@ Inter code as we go, but preserving the Invariant.
 				if (R_stack[R_sp-1].parity == FALSE) negated_quantifier_found = TRUE;
 				quantifier *quant = pl->quant;
 				int param = Atoms::get_quantification_parameter(pl);
-				if (quant != exists_quantifier) @<Push the Q-stack@>;
+				if (quant == exists_quantifier)
+					@<Mark the Q-stack to show an inner existential quantifier is in play@>
+				else
+					@<Push the Q-stack@>;
 				@<Compile a loop through possible values of the variable quantified@>;
 				break;
 			case DOMAIN_OPEN_ATOM:
@@ -709,6 +713,7 @@ because the |DOMAIN_OPEN| atom does it.
 	Q_stack[Q_sp].parameter = param;
 	Q_stack[Q_sp].L_stack_level = L_sp;
 	Q_stack[Q_sp].C_stack_level = C_sp;
+	Q_stack[Q_sp].existential = FALSE;
 	EmitCode::inv(STORE_BIP);
 	EmitCode::down();
 		EmitCode::ref_symbol(K_value, qcy_s[Q_sp]);
@@ -721,6 +726,13 @@ because the |DOMAIN_OPEN| atom does it.
 	EmitCode::up();
 
 	Q_sp++;
+
+@ Existential quantifiers are not pushed to the Q-stack, because they are
+by definition about finding the first solution, not counting solutions. But
+we need to record their presence anyway:
+
+@<Mark the Q-stack to show an inner existential quantifier is in play@> =
+	if (Q_sp > 0) Q_stack[Q_sp-1].existential = TRUE;
 
 @ It is always true that $\not\exists x: \psi(x)$ is equivalent to $\forall x:
 \lnot(\phi(x))$, so the following seems pointless. We do this, in the case
@@ -773,10 +785,7 @@ thing works, or doesn't, and is more like testing a single |if|.
 @<Pop the Q-stack@> =
 	if (Q_sp <= 0) internal_error("Q stack underflow");
 	Q_sp--;
-	EmitCode::inv(POSTINCREMENT_BIP);
-	EmitCode::down();
-		EmitCode::ref_symbol(K_value, qcy_s[Q_sp]);
-	EmitCode::up();
+	@<Count this as a success@>;
 
 	while (C_sp > Q_stack[Q_sp].C_stack_level)
 		@<Pop the C-stack@>;
@@ -788,6 +797,19 @@ thing works, or doesn't, and is more like testing a single |if|.
 	EmitCode::down();
 	Quantifiers::emit_test(Q_stack[Q_sp].quant, Q_stack[Q_sp].parameter, qcy_s[Q_sp], qcn_s[Q_sp]);
 	@<Open a block in the Inter code compiled to perform the search, if variant@>;
+
+@ Note that if there is an existential quantifier inside the quantifier we
+are counting solutions for, then we halt the search as soon as a solution is found;
+we don't want to rack up |qcy_s[Q_sp]| to artificially high levels by finding
+multiple solutions. See test case |CountInnerExistential|.
+
+@<Count this as a success@> =
+	EmitCode::inv(POSTINCREMENT_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, qcy_s[Q_sp]);
+	EmitCode::up();
+	if (Q_stack[Q_sp].existential)
+		EmitCode::inv(BREAK_BIP);
 
 @h The C-stack.
 When a CALLED atom in the proposition gives a name to a variable, we have to
