@@ -944,12 +944,13 @@ The first handles, say, "a Queen listed in the Table of Monarchs".
 		EmitCode::up();
 	EmitCode::up();
 
-@ The first case here might handle the "anything" in "asking Fred about anything";
-second "asking Fred about "scooby snacks"".
+@ The first case here might handle the "anything" in "asking Fred about anything"
+or the it in "asking Fred about it"; the second, "asking Fred about "scooby snacks"".
 
 @<Handle a constant snippet ad-hoc@> =
-	if ((<understanding-action-irregular-operand>(Node::get_text(spec))) && (<<r>> == TRUE)) {
-		EmitCode::val_true();
+	if (<understanding-action-irregular-operand>(Node::get_text(spec))) {
+		if (<<r>> == TRUE) EmitCode::val_true();
+		if (<<r>> == FALSE) EmitCode::val_false();
 	} else {
 		EmitCode::inv(NE_BIP);
 		EmitCode::down();
