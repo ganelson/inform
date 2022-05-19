@@ -425,7 +425,7 @@ Check an actor inserting something into (this is the convert insert to drop wher
 Check an actor inserting something into (this is the can't insert what's already inserted rule):
 	if the noun is in the second noun:
 		if the actor is the player:
-			say "[The second noun] [are] already there." (A);
+			say "[The noun] [are] already there." (A);
 		stop the action.
 
 Check an actor inserting something into (this is the can't insert something into itself rule):
