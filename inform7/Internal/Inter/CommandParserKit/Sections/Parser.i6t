@@ -2911,8 +2911,7 @@ Constant PREFER_HELD;
         if (indef_type & THAT_BIT ~= 0 && its_owner == actors_location) met++;
         if (indef_type & LIT_BIT ~= 0 && obj has light) met++;
         if (indef_type & UNLIT_BIT ~= 0 && obj hasnt light) met++;
-        if (indef_owner ~= 0 && its_owner == indef_owner) met++;
-
+        if (indef_owner ~= 0 && ((its_owner == indef_owner) || (CoreOf(obj) == indef_owner))) met++;
         if (met < threshold) {
             #Ifdef DEBUG;
             if (parser_trace >= 4)
