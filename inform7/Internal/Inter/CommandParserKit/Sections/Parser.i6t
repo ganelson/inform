@@ -1295,7 +1295,7 @@ in extensions, wn is left pointing at the first word not parsed as a command.
             verb_wordnum = usual_grammar_after;
             jump AlmostReParse;
         }
-				m = wn; ! Save wn so extension authors can parse command errors if they want to
+        m = wn; ! Save wn so extension authors can parse command errors if they want to
         wn = 1;
         while ((wn <= num_words) && (NextWord() ~= comma_word)) ;
         parser_results-->ACTION_PRES = ##Answer;
@@ -1304,7 +1304,7 @@ in extensions, wn is left pointing at the first word not parsed as a command.
         parser_results-->INP2_PRES = 1; special_number1 = special_word;
         actor = player;
         consult_from = wn; consult_words = num_words-consult_from+1;
-				wn = m; ! Restore wn so extension authors can parse command errors if they want to
+        wn = m; ! Restore wn so extension authors can parse command errors if they want to
         rtrue;
     }
 
