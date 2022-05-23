@@ -115,7 +115,7 @@ states:
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">             </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">DQUOTED_TOKSTATE:</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'"'</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Absorb raw material, if any</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Absorb raw material, for sure</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_TOKSTATE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
@@ -123,7 +123,7 @@ states:
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">             </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SQUOTED_TOKSTATE:</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'\''</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Absorb raw material, if any</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Absorb raw material, for sure</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_TOKSTATE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
@@ -147,11 +147,11 @@ states:
 <span class="plain-syntax">                    </span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax"> = </span><span class="constant-syntax">SQUOTED_TOKSTATE</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                }</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'{'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">abbreviated</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_4" class="named-paragraph-link"><span class="named-paragraph">Look for a possible bracing</span><span class="named-paragraph-number">1.4</span></a></span>
+<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph">Look for a possible bracing</span><span class="named-paragraph-number">1.5</span></a></span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'*'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">abbreviated</span><span class="plain-syntax"> == </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_5" class="named-paragraph-link"><span class="named-paragraph">Look for a possible abbreviated command</span><span class="named-paragraph-number">1.5</span></a></span>
+<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_6" class="named-paragraph-link"><span class="named-paragraph">Look for a possible abbreviated command</span><span class="named-paragraph-number">1.6</span></a></span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c</span><span class="plain-syntax"> == </span><span class="character-syntax">'('</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">from</span><span class="plain-syntax">, </span><span class="identifier-syntax">pos</span><span class="plain-syntax">+1) == </span><span class="character-syntax">'+'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">abbreviated</span><span class="plain-syntax"> == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">))</span>
-<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Look for a possible Inform 7 fragment</span><span class="named-paragraph-number">1.3</span></a></span>
+<span class="plain-syntax">                    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_4" class="named-paragraph-link"><span class="named-paragraph">Look for a possible Inform 7 fragment</span><span class="named-paragraph-number">1.4</span></a></span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Absorb a raw character</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
@@ -166,39 +166,45 @@ states:
 <span class="plain-syntax">    </span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax"> = </span><span class="constant-syntax">TOK_TOKSTATE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PUT_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">c</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1">&#167;1</a>, <a href="2-tkn.html#SP1_3">&#167;1.3</a>, <a href="2-tkn.html#SP1_4">&#167;1.4</a>, <a href="2-tkn.html#SP1_5">&#167;1.5</a> (twice).</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1">&#167;1</a>, <a href="2-tkn.html#SP1_4">&#167;1.4</a>, <a href="2-tkn.html#SP1_5">&#167;1.5</a>, <a href="2-tkn.html#SP1_6">&#167;1.6</a> (twice).</li></ul>
 <p class="commentary firstcommentary"><a id="SP1_2" class="paragraph-anchor"></a><b>&#167;1.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Absorb raw material, if any</span><span class="named-paragraph-number">1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">WHITE_TOKSTATE:</span>
-<span class="plain-syntax">                </span><a href="2-is.html#SP14" class="function-link"><span class="function-syntax">InterSchemas::add_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                    </span><a href="2-is.html#SP10" class="function-link"><span class="function-syntax">InterSchemas::new_token</span></a><span class="plain-syntax">(</span><span class="constant-syntax">WHITE_SPACE_ISTT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">" "</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, -1));</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">DQUOTED_TOKSTATE:</span>
-<span class="plain-syntax">                </span><a href="2-tkn.html#SP2" class="function-link"><span class="function-syntax">Tokenisation::de_escape_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">                </span><a href="2-is.html#SP14" class="function-link"><span class="function-syntax">InterSchemas::add_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                    </span><a href="2-is.html#SP10" class="function-link"><span class="function-syntax">InterSchemas::new_token</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DQUOTED_ISTT</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, -1));</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SQUOTED_TOKSTATE:</span>
-<span class="plain-syntax">                </span><a href="2-is.html#SP14" class="function-link"><span class="function-syntax">InterSchemas::add_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                    </span><a href="2-is.html#SP10" class="function-link"><span class="function-syntax">InterSchemas::new_token</span></a><span class="plain-syntax">(</span><span class="constant-syntax">SQUOTED_ISTT</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, -1));</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">default:</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1" class="named-paragraph-link"><span class="named-paragraph">Look for individual tokens</span><span class="named-paragraph-number">1.2.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        }</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">Str::clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">)) </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3" class="named-paragraph-link"><span class="named-paragraph">Absorb raw material, for sure</span><span class="named-paragraph-number">1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_TOKSTATE</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1">&#167;1</a> (8 times), <a href="2-tkn.html#SP1_3">&#167;1.3</a>, <a href="2-tkn.html#SP1_4">&#167;1.4</a>, <a href="2-tkn.html#SP1_5">&#167;1.5</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3.  </b>Material in <span class="extract"><span class="extract-syntax">(+ ... +)</span></span> notation is an interpolation of I7 source text.
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1">&#167;1</a> (6 times), <a href="2-tkn.html#SP1_4">&#167;1.4</a>, <a href="2-tkn.html#SP1_5">&#167;1.5</a>, <a href="2-tkn.html#SP1_6">&#167;1.6</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3" class="paragraph-anchor"></a><b>&#167;1.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Absorb raw material, for sure</span><span class="named-paragraph-number">1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for a possible Inform 7 fragment</span><span class="named-paragraph-number">1.3</span></span><span class="comment-syntax"> =</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">WHITE_TOKSTATE:</span>
+<span class="plain-syntax">            </span><a href="2-is.html#SP14" class="function-link"><span class="function-syntax">InterSchemas::add_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><a href="2-is.html#SP10" class="function-link"><span class="function-syntax">InterSchemas::new_token</span></a><span class="plain-syntax">(</span><span class="constant-syntax">WHITE_SPACE_ISTT</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">" "</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, -1));</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">DQUOTED_TOKSTATE:</span>
+<span class="plain-syntax">            </span><a href="2-tkn.html#SP2" class="function-link"><span class="function-syntax">Tokenisation::de_escape_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="2-is.html#SP14" class="function-link"><span class="function-syntax">InterSchemas::add_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><a href="2-is.html#SP10" class="function-link"><span class="function-syntax">InterSchemas::new_token</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DQUOTED_ISTT</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, -1));</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">SQUOTED_TOKSTATE:</span>
+<span class="plain-syntax">            </span><a href="2-is.html#SP14" class="function-link"><span class="function-syntax">InterSchemas::add_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">                </span><a href="2-is.html#SP10" class="function-link"><span class="function-syntax">InterSchemas::new_token</span></a><span class="plain-syntax">(</span><span class="constant-syntax">SQUOTED_ISTT</span><span class="plain-syntax">, </span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, -1));</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">default:</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1" class="named-paragraph-link"><span class="named-paragraph">Look for individual tokens</span><span class="named-paragraph-number">1.3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Str::clear</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">tokeniser_state</span><span class="plain-syntax"> = </span><span class="constant-syntax">NO_TOKSTATE</span><span class="plain-syntax">;</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1">&#167;1</a> (twice), <a href="2-tkn.html#SP1_2">&#167;1.2</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_4" class="paragraph-anchor"></a><b>&#167;1.4.  </b>Material in <span class="extract"><span class="extract-syntax">(+ ... +)</span></span> notation is an interpolation of I7 source text.
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for a possible Inform 7 fragment</span><span class="named-paragraph-number">1.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -214,15 +220,15 @@ states:
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">accept</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Absorb raw material, if any</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1" class="named-paragraph-link"><span class="named-paragraph">Expand a fragment of Inform 7 text</span><span class="named-paragraph-number">1.3.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_4_1" class="named-paragraph-link"><span class="named-paragraph">Expand a fragment of Inform 7 text</span><span class="named-paragraph-number">1.4.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="character-syntax">'('</span><span class="plain-syntax">; </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Absorb a raw character</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">; </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">save_pos</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">source_text_fragment</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_3_1" class="paragraph-anchor"></a><b>&#167;1.3.1.  </b>Note that the empty I7 interpolation is legal, but produces no token.
+<p class="commentary firstcommentary"><a id="SP1_4_1" class="paragraph-anchor"></a><b>&#167;1.4.1.  </b>Note that the empty I7 interpolation is legal, but produces no token.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand a fragment of Inform 7 text</span><span class="named-paragraph-number">1.3.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Expand a fragment of Inform 7 text</span><span class="named-paragraph-number">1.4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -231,15 +237,15 @@ states:
 <span class="plain-syntax">            </span><a href="2-is.html#SP10" class="function-link"><span class="function-syntax">InterSchemas::new_token</span></a><span class="plain-syntax">(</span><span class="constant-syntax">I7_ISTT</span><span class="plain-syntax">, </span><span class="identifier-syntax">source_text_fragment</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, -1));</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_3">&#167;1.3</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_4" class="paragraph-anchor"></a><b>&#167;1.4.  </b>Material in braces sometimes indicates an inline command, but not always,
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_4">&#167;1.4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_5" class="paragraph-anchor"></a><b>&#167;1.5.  </b>Material in braces sometimes indicates an inline command, but not always,
 because braces often occur innocently in I6 code. So we require the first
 character after the open-brace not to be white-space, and also not to be
 a pipe (though I've forgotten why). The text inside the braces is called
 a "bracing".
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for a possible bracing</span><span class="named-paragraph-number">1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for a possible bracing</span><span class="named-paragraph-number">1.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -255,16 +261,16 @@ a "bracing".
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">first</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::get_first_char</span><span class="plain-syntax">(</span><span class="identifier-syntax">bracing</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">accept</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">first</span><span class="plain-syntax"> != </span><span class="character-syntax">' '</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">first</span><span class="plain-syntax"> != </span><span class="character-syntax">'\t'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">first</span><span class="plain-syntax"> != </span><span class="character-syntax">'\n'</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">first</span><span class="plain-syntax"> != </span><span class="character-syntax">'|'</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2" class="named-paragraph-link"><span class="named-paragraph">Absorb raw material, if any</span><span class="named-paragraph-number">1.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_4_1" class="named-paragraph-link"><span class="named-paragraph">Parse a bracing into an inline command</span><span class="named-paragraph-number">1.4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_5_1" class="named-paragraph-link"><span class="named-paragraph">Parse a bracing into an inline command</span><span class="named-paragraph-number">1.5.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> { </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="character-syntax">'{'</span><span class="plain-syntax">; </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_1" class="named-paragraph-link"><span class="named-paragraph">Absorb a raw character</span><span class="named-paragraph-number">1.1</span></a></span><span class="plain-syntax">; </span><span class="identifier-syntax">pos</span><span class="plain-syntax"> = </span><span class="identifier-syntax">save_pos</span><span class="plain-syntax">; }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">bracing</span><span class="plain-syntax">)</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_4_1" class="paragraph-anchor"></a><b>&#167;1.4.1.  </b>That's everything, then, except the one thing that counts: how to expand
+<p class="commentary firstcommentary"><a id="SP1_5_1" class="paragraph-anchor"></a><b>&#167;1.5.1.  </b>That's everything, then, except the one thing that counts: how to expand
 a bracing.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse a bracing into an inline command</span><span class="named-paragraph-number">1.4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse a bracing into an inline command</span><span class="named-paragraph-number">1.5.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -273,7 +279,7 @@ a bracing.
 <span class="plain-syntax">    </span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">operand2</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::new</span><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_4_1_1" class="named-paragraph-link"><span class="named-paragraph">Decompose the bracing</span><span class="named-paragraph-number">1.4.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_5_1_1" class="named-paragraph-link"><span class="named-paragraph">Decompose the bracing</span><span class="named-paragraph-number">1.5.1.1</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command</span><span class="plain-syntax">) &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="constant-syntax">unknown_ISINC</span><span class="plain-syntax">, </span><span class="identifier-syntax">sc</span><span class="plain-syntax"> = </span><span class="constant-syntax">no_ISINSC</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Str::eq_wide_string</span><span class="plain-syntax">(</span><span class="identifier-syntax">t</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">command</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"primitive-definition"</span><span class="plain-syntax">)) {</span>
@@ -402,8 +408,8 @@ a bracing.
 <span class="plain-syntax">    </span><a href="2-is.html#SP14" class="function-link"><span class="function-syntax">InterSchemas::add_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sch</span><span class="plain-syntax">, </span><span class="identifier-syntax">t</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">preceding_token</span><span class="plain-syntax"> = </span><span class="identifier-syntax">t</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_4">&#167;1.4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_4_1_1" class="paragraph-anchor"></a><b>&#167;1.4.1.1.  </b>A bracing can take any of the following forms:
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_5">&#167;1.5</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_5_1_1" class="paragraph-anchor"></a><b>&#167;1.5.1.1.  </b>A bracing can take any of the following forms:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -421,7 +427,7 @@ the direction of the <span class="extract"><span class="extract-syntax">&lt;</sp
 optional, operand in <span class="extract"><span class="extract-syntax">operand2</span></span>.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Decompose the bracing</span><span class="named-paragraph-number">1.4.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Decompose the bracing</span><span class="named-paragraph-number">1.5.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -463,8 +469,8 @@ optional, operand in <span class="extract"><span class="extract-syntax">operand2
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">pname</span><span class="plain-syntax">)</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_4_1">&#167;1.4.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_5" class="paragraph-anchor"></a><b>&#167;1.5.  </b>In abbreviated prototypes, <span class="extract"><span class="extract-syntax">*1</span></span> and <span class="extract"><span class="extract-syntax">*2</span></span> are placeholders, but a number
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_5_1">&#167;1.5.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_6" class="paragraph-anchor"></a><b>&#167;1.6.  </b>In abbreviated prototypes, <span class="extract"><span class="extract-syntax">*1</span></span> and <span class="extract"><span class="extract-syntax">*2</span></span> are placeholders, but a number
 of modifiers are allowed. See <a href="../calculus-module/3-cs.html" class="internal">Compilation Schemas (in calculus)</a>.
 </p>
 
@@ -477,7 +483,7 @@ of modifiers are allowed. See <a href="../calculus-module/3-cs.html" class="inte
 <span class="definition-keyword">define</span> <span class="constant-syntax">LVALUE_CONTEXT_ISSBM</span><span class="plain-syntax">                    </span><span class="constant-syntax">64</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">STORAGE_AS_FUNCTION_ISSBM</span><span class="plain-syntax">            </span><span class="constant-syntax">128</span>
 </pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for a possible abbreviated command</span><span class="named-paragraph-number">1.5</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for a possible abbreviated command</span><span class="named-paragraph-number">1.6</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -540,7 +546,7 @@ of modifiers are allowed. See <a href="../calculus-module/3-cs.html" class="inte
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1">&#167;1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_1" class="paragraph-anchor"></a><b>&#167;1.2.1.  </b>That leaves us with just the main case to handle: raw I6 code which is
+<p class="commentary firstcommentary"><a id="SP1_3_1" class="paragraph-anchor"></a><b>&#167;1.3.1.  </b>That leaves us with just the main case to handle: raw I6 code which is
 outside of quotation marks and commentary, and which doesn't include
 bracings or I7 interpolations. That might look like, for instance,
 </p>
@@ -566,7 +572,7 @@ matches parentheses); we must tokenise it into
 off what we scanned through since the last time.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for individual tokens</span><span class="named-paragraph-number">1.2.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Look for individual tokens</span><span class="named-paragraph-number">1.3.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -581,19 +587,19 @@ off what we scanned through since the last time.
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">c1</span><span class="plain-syntax"> == </span><span class="character-syntax">'$'</span><span class="plain-syntax">) &amp;&amp;</span>
 <span class="plain-syntax">                ((</span><span class="identifier-syntax">p</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">                    (</span><span class="identifier-syntax">Characters::isalpha</span><span class="plain-syntax">(</span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">p</span><span class="plain-syntax">-1)) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)))</span>
-<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_1" class="named-paragraph-link"><span class="named-paragraph">Break off here for real, binary or hexadecimal notation</span><span class="named-paragraph-number">1.2.1.1</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c1</span><span class="plain-syntax"> == </span><span class="character-syntax">'-'</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_2" class="named-paragraph-link"><span class="named-paragraph">Break off here for negative number</span><span class="named-paragraph-number">1.2.1.2</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_3" class="named-paragraph-link"><span class="named-paragraph">Break off here for operators</span><span class="named-paragraph-number">1.2.1.3</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_1" class="named-paragraph-link"><span class="named-paragraph">Break off here for real, binary or hexadecimal notation</span><span class="named-paragraph-number">1.3.1.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c1</span><span class="plain-syntax"> == </span><span class="character-syntax">'-'</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_2" class="named-paragraph-link"><span class="named-paragraph">Break off here for negative number</span><span class="named-paragraph-number">1.3.1.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_3" class="named-paragraph-link"><span class="named-paragraph">Break off here for operators</span><span class="named-paragraph-number">1.3.1.3</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c1</span><span class="plain-syntax"> == </span><span class="constant-syntax">0x00A7</span><span class="plain-syntax">) </span><span class="identifier-syntax">escaped</span><span class="plain-syntax"> = </span><span class="identifier-syntax">escaped</span><span class="plain-syntax">?</span><span class="identifier-syntax">FALSE:TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c_start</span><span class="plain-syntax"> &lt; </span><span class="identifier-syntax">L</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c_start</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">L</span><span class="plain-syntax">-1;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_2">&#167;1.2</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_1_1" class="paragraph-anchor"></a><b>&#167;1.2.1.1.  </b>Recall that in I6 notation, a dollar introduces a non-decimal number, and
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_3">&#167;1.3</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_1" class="paragraph-anchor"></a><b>&#167;1.3.1.1.  </b>Recall that in I6 notation, a dollar introduces a non-decimal number, and
 the character after the initial dollar determines which:
 </p>
 
@@ -602,12 +608,12 @@ the character after the initial dollar determines which:
 <span class="plain-syntax">    $$1001001</span>
 <span class="plain-syntax">    $1FE6</span>
 </pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off here for real, binary or hexadecimal notation</span><span class="named-paragraph-number">1.2.1.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off here for real, binary or hexadecimal notation</span><span class="named-paragraph-number">1.3.1.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c_start</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-1;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">c2</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'+'</span><span class="plain-syntax">: </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="character-syntax">'-'</span><span class="plain-syntax">:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1;</span>
@@ -616,7 +622,7 @@ the character after the initial dollar determines which:
 <span class="plain-syntax">                    (</span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax">+1) == </span><span class="character-syntax">'e'</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">                    (</span><span class="identifier-syntax">Characters::isdigit</span><span class="plain-syntax">(</span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax">+1))))</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">y</span><span class="plain-syntax">++;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">y</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">c_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
@@ -625,7 +631,7 @@ the character after the initial dollar determines which:
 <span class="plain-syntax">            </span><span class="reserved-syntax">while</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax">+1) == </span><span class="character-syntax">'0'</span><span class="plain-syntax">) ||</span>
 <span class="plain-syntax">                    (</span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax">+1) == </span><span class="character-syntax">'1'</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">y</span><span class="plain-syntax">++;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">y</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">c_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
@@ -633,14 +639,14 @@ the character after the initial dollar determines which:
 <span class="plain-syntax">            </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Characters::isalnum</span><span class="plain-syntax">(</span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax">+1)))</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">y</span><span class="plain-syntax">++;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">y</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">c_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_2_1">&#167;1.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_1_2" class="paragraph-anchor"></a><b>&#167;1.2.1.2.  </b>A token beginning with a minus sign and continuing with digits may still
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_3_1">&#167;1.3.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_2" class="paragraph-anchor"></a><b>&#167;1.3.1.2.  </b>A token beginning with a minus sign and continuing with digits may still
 not be a negative number: it may be the binary subtraction operator.
 For example, we need to tokenise <span class="extract"><span class="extract-syntax">x-1</span></span> as
 </p>
@@ -660,7 +666,7 @@ For example, we need to tokenise <span class="extract"><span class="extract-synt
 <p class="commentary">This requires context, that is, remembering what the previous token was.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off here for negative number</span><span class="named-paragraph-number">1.2.1.2</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off here for negative number</span><span class="named-paragraph-number">1.3.1.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -674,17 +680,17 @@ For example, we need to tokenise <span class="extract"><span class="extract-synt
 <span class="plain-syntax">        </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Characters::isdigit</span><span class="plain-syntax">(</span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">current_raw</span><span class="plain-syntax">, </span><span class="identifier-syntax">dc</span><span class="plain-syntax">))) </span><span class="identifier-syntax">dc</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">dc</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1) {</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c_start</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-1;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">dc</span><span class="plain-syntax"> - </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">p</span><span class="plain-syntax"> = </span><span class="identifier-syntax">y</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">c_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_2_1">&#167;1.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_1_3" class="paragraph-anchor"></a><b>&#167;1.2.1.3.  </b>In I6, operators made of non-alphanumeric characters can be up to three
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_3_1">&#167;1.3.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_3" class="paragraph-anchor"></a><b>&#167;1.3.1.3.  </b>In I6, operators made of non-alphanumeric characters can be up to three
 characters long, and we take the longest match: thus <span class="extract"><span class="extract-syntax">--&gt;</span></span> is a trigraph,
 not the monograph <span class="extract"><span class="extract-syntax">-</span></span> followed by the digraph <span class="extract"><span class="extract-syntax">-&gt;</span></span>.
 </p>
@@ -693,7 +699,7 @@ not the monograph <span class="extract"><span class="extract-syntax">-</span></s
 language opcodes such as <span class="extract"><span class="extract-syntax">@pull</span></span>.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off here for operators</span><span class="named-paragraph-number">1.2.1.3</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off here for operators</span><span class="named-paragraph-number">1.3.1.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -723,9 +729,9 @@ language opcodes such as <span class="extract"><span class="extract-syntax">@pul
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">trigraph</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c_start</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-1;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+2;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">p</span><span class="plain-syntax"> += </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">c_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
@@ -733,9 +739,9 @@ language opcodes such as <span class="extract"><span class="extract-syntax">@pul
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">digraph</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c_start</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-1;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">p</span><span class="plain-syntax">++;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">c_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
@@ -743,19 +749,19 @@ language opcodes such as <span class="extract"><span class="extract-syntax">@pul
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">monograph</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">c_start</span><span class="plain-syntax">, </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">-1;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">; </span><span class="identifier-syntax">y</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4" class="named-paragraph-link"><span class="named-paragraph">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">c_start</span><span class="plain-syntax"> = </span><span class="identifier-syntax">p</span><span class="plain-syntax">+1;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">continue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_2_1">&#167;1.2.1</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_1_4" class="paragraph-anchor"></a><b>&#167;1.2.1.4.  </b>In this code, the new token is between character positions <span class="extract"><span class="extract-syntax">x</span></span> and <span class="extract"><span class="extract-syntax">y</span></span>
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_3_1">&#167;1.3.1</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_4" class="paragraph-anchor"></a><b>&#167;1.3.1.4.  </b>In this code, the new token is between character positions <span class="extract"><span class="extract-syntax">x</span></span> and <span class="extract"><span class="extract-syntax">y</span></span>
 inclusive; we ignore an empty token.
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off a token</span><span class="named-paragraph-number">1.2.1.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Break off a token</span><span class="named-paragraph-number">1.3.1.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -766,7 +772,7 @@ inclusive; we ignore an empty token.
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">is</span><span class="plain-syntax"> = </span><span class="constant-syntax">RAW_ISTT</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">which</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">which_rw</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">which_number</span><span class="plain-syntax"> = -1, </span><span class="identifier-syntax">which_quote</span><span class="plain-syntax"> = -1;</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_2_1_4_1" class="named-paragraph-link"><span class="named-paragraph">Identify this new token</span><span class="named-paragraph-number">1.2.1.4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-tkn.html#SP1_3_1_4_1" class="named-paragraph-link"><span class="named-paragraph">Identify this new token</span><span class="named-paragraph-number">1.3.1.4.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">        </span><span class="reserved-syntax">inter_schema_token</span><span class="plain-syntax"> *</span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><a href="2-is.html#SP10" class="function-link"><span class="function-syntax">InterSchemas::new_token</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">is</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">which</span><span class="plain-syntax">, </span><span class="identifier-syntax">which_rw</span><span class="plain-syntax">, </span><span class="identifier-syntax">which_number</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
@@ -777,8 +783,8 @@ inclusive; we ignore an empty token.
 <span class="plain-syntax">        </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_2_1">&#167;1.2.1</a>, <a href="2-tkn.html#SP1_2_1_1">&#167;1.2.1.1</a> (four times), <a href="2-tkn.html#SP1_2_1_2">&#167;1.2.1.2</a> (twice), <a href="2-tkn.html#SP1_2_1_3">&#167;1.2.1.3</a> (6 times).</li></ul>
-<p class="commentary firstcommentary"><a id="SP1_2_1_4_1" class="paragraph-anchor"></a><b>&#167;1.2.1.4.1.  </b>Finally, we identify what sort of token we're looking at. It would be elegant
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_3_1">&#167;1.3.1</a>, <a href="2-tkn.html#SP1_3_1_1">&#167;1.3.1.1</a> (four times), <a href="2-tkn.html#SP1_3_1_2">&#167;1.3.1.2</a> (twice), <a href="2-tkn.html#SP1_3_1_3">&#167;1.3.1.3</a> (6 times).</li></ul>
+<p class="commentary firstcommentary"><a id="SP1_3_1_4_1" class="paragraph-anchor"></a><b>&#167;1.3.1.4.1.  </b>Finally, we identify what sort of token we're looking at. It would be elegant
 to reimplement this with a trie (e.g. using <a href="../../../inweb/foundation-module/4-taa.html" class="internal">Tries and Avinues (in foundation)</a>),
 but speed is not quite important enough to make it worthwhile.
 </p>
@@ -790,7 +796,7 @@ but speed is not quite important enough to make it worthwhile.
 <span class="definition-keyword">enum</span> <span class="constant-syntax">OWNERKIND_XBIP</span>
 <span class="definition-keyword">define</span> <span class="constant-syntax">HIGHEST_XBIP_VALUE</span><span class="plain-syntax"> </span><span class="constant-syntax">OWNERKIND_XBIP</span>
 </pre>
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Identify this new token</span><span class="named-paragraph-number">1.2.1.4.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Identify this new token</span><span class="named-paragraph-number">1.3.1.4.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -902,13 +908,13 @@ but speed is not quite important enough to make it worthwhile.
 <span class="plain-syntax">    </span><span class="identifier-syntax">inter_ti</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> = </span><a href="2-i6o.html#SP6" class="function-link"><span class="function-syntax">I6Operators::notation_to_BIP</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">x</span><span class="plain-syntax"> &gt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) { </span><span class="identifier-syntax">is</span><span class="plain-syntax"> = </span><span class="constant-syntax">OPERATOR_ISTT</span><span class="plain-syntax">; </span><span class="identifier-syntax">which</span><span class="plain-syntax"> = </span><span class="identifier-syntax">x</span><span class="plain-syntax">; }</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_2_1_4">&#167;1.2.1.4</a>.</li></ul>
+<ul class="endnotetexts"><li>This code is used in <a href="2-tkn.html#SP1_3_1_4">&#167;1.3.1.4</a>.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Anticlimactically: a function to deal with escape characters in Inform 6
 double-quoted text notation.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tokenisation::de_escape_text</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Tokenisation::de_escape_text</span></span>:<br/><a href="2-tkn.html#SP1_2">&#167;1.2</a><br/>Ramification - <a href="2-rmf.html#SP13_1_7">&#167;13.1.7</a>, <a href="2-rmf.html#SP13_4_2">&#167;13.4.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">m</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Tokenisation::de_escape_text</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Tokenisation::de_escape_text</span></span>:<br/><a href="2-tkn.html#SP1_3">&#167;1.3</a><br/>Ramification - <a href="2-rmf.html#SP13_1_7">&#167;13.1.7</a>, <a href="2-rmf.html#SP13_4_2">&#167;13.4.2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">m</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">run_start</span><span class="plain-syntax"> = -1, </span><span class="identifier-syntax">run_len</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">run_includes</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">i</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">Str::len</span><span class="plain-syntax">(</span><span class="identifier-syntax">m</span><span class="plain-syntax">); </span><span class="identifier-syntax">i</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">wchar_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">c</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::get_at</span><span class="plain-syntax">(</span><span class="identifier-syntax">m</span><span class="plain-syntax">, </span><span class="identifier-syntax">i</span><span class="plain-syntax">);</span>

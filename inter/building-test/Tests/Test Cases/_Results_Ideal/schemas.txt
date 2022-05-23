@@ -4147,3 +4147,10 @@ Test: parse schema from:
       * (expr)
         IDENTIFIER  temp
 =========
+Test: parse schema from:
+	print "";
+
+  * (statement) !print
+      * (expr)
+        DQUOTED     
+=========

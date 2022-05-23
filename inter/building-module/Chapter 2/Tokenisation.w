@@ -54,7 +54,7 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 		switch (tokeniser_state) {
 			 case DQUOTED_TOKSTATE:
 			 	if (c == '"') {
-			 		@<Absorb raw material, if any@>;
+			 		@<Absorb raw material, for sure@>;
 			 		tokeniser_state = NO_TOKSTATE;
 			 	} else {
 				 	PUT_TO(current_raw, c);
@@ -62,7 +62,7 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 			 	break;
 			 case SQUOTED_TOKSTATE:
 			 	if (c == '\'') {
-			 		@<Absorb raw material, if any@>;
+			 		@<Absorb raw material, for sure@>;
 			 		tokeniser_state = NO_TOKSTATE;
 			 	} else {
 				 	PUT_TO(current_raw, c);
@@ -103,27 +103,29 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 	PUT_TO(current_raw, c);
 
 @<Absorb raw material, if any@> =
-	if (Str::len(current_raw)) {
-		switch (tokeniser_state) {
-			case WHITE_TOKSTATE:
-				InterSchemas::add_token(sch,
-					InterSchemas::new_token(WHITE_SPACE_ISTT, I" ", 0, 0, -1));
-				break;
-			case DQUOTED_TOKSTATE:
-				Tokenisation::de_escape_text(current_raw);
-				InterSchemas::add_token(sch,
-					InterSchemas::new_token(DQUOTED_ISTT, current_raw, 0, 0, -1));
-				break;
-			case SQUOTED_TOKSTATE:
-				InterSchemas::add_token(sch,
-					InterSchemas::new_token(SQUOTED_ISTT, current_raw, 0, 0, -1));
-				break;
-			default:
-				@<Look for individual tokens@>;
-				break;
-		}
-		Str::clear(current_raw);
+	if (Str::len(current_raw)) @<Absorb raw material, for sure@>;
+	tokeniser_state = NO_TOKSTATE;
+
+@<Absorb raw material, for sure@> =
+	switch (tokeniser_state) {
+		case WHITE_TOKSTATE:
+			InterSchemas::add_token(sch,
+				InterSchemas::new_token(WHITE_SPACE_ISTT, I" ", 0, 0, -1));
+			break;
+		case DQUOTED_TOKSTATE:
+			Tokenisation::de_escape_text(current_raw);
+			InterSchemas::add_token(sch,
+				InterSchemas::new_token(DQUOTED_ISTT, current_raw, 0, 0, -1));
+			break;
+		case SQUOTED_TOKSTATE:
+			InterSchemas::add_token(sch,
+				InterSchemas::new_token(SQUOTED_ISTT, current_raw, 0, 0, -1));
+			break;
+		default:
+			@<Look for individual tokens@>;
+			break;
 	}
+	Str::clear(current_raw);
 	tokeniser_state = NO_TOKSTATE;
 
 @ Material in |(+ ... +)| notation is an interpolation of I7 source text.

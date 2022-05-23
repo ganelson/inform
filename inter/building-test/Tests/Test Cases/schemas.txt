@@ -1539,3 +1539,7 @@ schema
 	@log_shift xorshift_seed -3 -> temp;
 	@log_shift xorshift_seed (-3) -> temp;
 end
+
+schema
+	print "";
+end
