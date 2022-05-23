@@ -82,8 +82,7 @@ functionality, for reasons which are opaque, but no trouble is caused thereby.
 =
 [ QUIT_THE_GAME_R;
 	if (actor ~= player) rfalse;
-	if ((actor == player) && (untouchable_silence == false))
-		QUIT_THE_GAME_RM('A');
+	QUIT_THE_GAME_RM('A');
 	if (YesOrNo()~=0) quit;
 ];
 
