@@ -16556,9 +16556,9 @@ Cover art can not only be used to advertise a work of IF, it is also displayed t
 
 ///coverflow.png///
 
-Cover art for a work should be prepared in either JPEG (".jpg") or PNG (".png") format, and we recommend that it should be square, like a music album cover. Programs which notice the cover art for a work of IF are likely to scale this up or down as convenient for their own display purposes, but it would be helpful to provide the original art at 960 by 960 resolution. (Remember, it is intended for use on screen, so providing art at magazine full-page print quality will add nothing and will only make the resulting release an annoyingly large download: even as it is, 960x960 will print out as a pretty respectable CD insert sleeve.) The cover art must not be smaller than 120 pixels in either dimension.
+Cover art for a work should be prepared in either JPEG (".jpg") or PNG (".png") format, and we recommend that it should be square, like a music album cover. Programs which notice the cover art for a work of IF are likely to scale this up or down as convenient for their own display purposes, but it would be helpful to provide the original art at 960 by 960 resolution. The cover art must not be smaller than 120 pixels in either dimension.
 
-To provide cover art, we should create two files: Cover.jpg (or .png), and a reduction of the image to a smaller "thumbnail" version called Small Cover.jpg (or .png). These should be placed in the project's .materials folder. For instance, we might have:
+To provide cover art, we should create an image file called Cover.jpg, or else Cover.png, and place it in the project's .materials folder. For instance, we might have:
 
 	Works in Progress
 		Magician.inform
@@ -16566,9 +16566,8 @@ To provide cover art, we should create two files: Cover.jpg (or .png), and a red
 			Collegio.pdf
 			Cover.jpg
 			Mating Wyverns.mp3
-			Small Cover.jpg
 
-(supposing that, as in the previous examples, "Collegio.pdf" and "Mating Wyverns.mp3" are the filenames of two feelies that accompany the release). "Small Cover.jpg" should be a reduction of the main cover art image "Cover.jpg" to exactly 120 by 120 pixels.
+(supposing that, as in the previous examples, "Collegio.pdf" and "Mating Wyverns.mp3" are the filenames of two feelies that accompany the release).
 
 The text in brackets after the release instruction...
 
@@ -16627,7 +16626,8 @@ After a successful release now, then, we should see:
 				Magician.zblorb
 				Mating Wyverns.mp3
 				Small Cover.jpg
-			Small Cover.jpg
+
+("Release/Small Cover.jpg" is a form of the cover image intended for display at a smaller size. In earlier versions of Inform, the author had to provide this: there is now no need.)
 
 [x] A playable web page {release_interpreter}
 
@@ -16745,8 +16745,8 @@ When it turns the template into the final web page, what Inform does is to repla
 	[IFID] becomes the IFID
 	[STORYFILE] becomes the "leafname" of the story file, e.g., "Bronze.gblorb"
 	[TEMPLATE] becomes the name of the template used to make the page
-	[SMALLCOVER] becomes the filename of the small cover image
-	[BIGCOVER] becomes the filename of the large cover image
+	[SMALLCOVER] becomes the filename of the cover when used at a smaller size
+	[BIGCOVER] becomes the filename of the cover when used at full size
 	[TIMESTAMP] and [DATESTAMP] become the time and date of releasing
 
 Everything else is left alone. In source pages, five further placeholders are available:
