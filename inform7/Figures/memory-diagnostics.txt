@@ -1,6 +1,6 @@
-Total memory consumption was 129459K = 126 MB
+Total memory consumption was 129458K = 126 MB
 
- ---- was used for 2044965 objects, in 362888 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2044964 objects, in 362887 frames in 0 x 800K = 0K = 0 MB:
 
     31.5%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     19.5%  text_stream_array                        4605 x 100 = 460500 objects, 25935360 bytes
@@ -36,7 +36,7 @@ Total memory consumption was 129459K = 126 MB
      0.3%  local_variable_array                     47 x 100 = 4700 objects, 452704 bytes
      0.2%  verb_usage                               1128 objects, 388032 bytes
      0.2%  rule                                     470 objects, 368480 bytes
-     0.2%  dictionary                               7521 objects, 361008 bytes
+     0.2%  dictionary                               7520 objects, 360960 bytes
      0.2%  verb_form                                386 objects, 348944 bytes
      0.2%  noun                                     2382 objects, 285840 bytes
      0.2%  compilation_subtask                      3355 objects, 268400 bytes
@@ -237,8 +237,8 @@ Total memory consumption was 129459K = 126 MB
 
 100.0% was used for memory not allocated for objects:
 
-    59.7%  text stream storage                      79164692 bytes in 478474 claims
-     3.9%  dictionary storage                       5229056 bytes in 7521 claims
+    59.7%  text stream storage                      79163588 bytes in 478472 claims
+     3.9%  dictionary storage                       5228544 bytes in 7520 claims
      ----  sorting                                  1448 bytes in 149 claims
      5.4%  source text                              7200000 bytes in 3 claims
      8.1%  source text details                      10800000 bytes in 2 claims
@@ -255,5 +255,5 @@ Total memory consumption was 129459K = 126 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      0.2%  emitter array storage                    280288 bytes in 1999 claims
 
--139.-2% was overhead - -184656968 bytes = -180329K = -176 MB
+-139.-2% was overhead - -184656920 bytes = -180329K = -176 MB
 

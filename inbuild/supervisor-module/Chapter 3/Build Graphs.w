@@ -197,7 +197,6 @@ void Graphs::show_needs(OUTPUT_STREAM, build_vertex *V, int uses_only, int paths
 void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,
 	int depth, int true_depth, int uses_only, int paths, int scan_count) {
 	if (V->type == COPY_VERTEX) {
-		if (paths == FALSE) for (int i=0; i<depth; i++) WRITE("  ");
 		inbuild_copy *C = V->as_copy;
 		if (C->last_scanned != scan_count) {
 			C->last_scanned = scan_count;
@@ -207,6 +206,7 @@ void Graphs::show_needs_r(OUTPUT_STREAM, build_vertex *V,
 				else WRITE("?unlocated");
 				WRITE(" (%S)", C->edition->work->genre->genre_name);
 			} else {
+				for (int i=0; i<depth; i++) WRITE("  ");
 				WRITE("%S: ", C->edition->work->genre->genre_name);
 				Copies::write_copy(OUT, C);
 			}
