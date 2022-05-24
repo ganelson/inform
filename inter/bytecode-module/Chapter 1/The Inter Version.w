@@ -40,9 +40,17 @@ sense it cannot be bug-fixed, only changed.
 Modifiers of the |+| and |-| sort are also best avoided here, so we will deal only
 with SVNs in the traditional |x.y.z| format.
 
+@ 1.0.0 (28 April 2022) was the baseline Inter implementation used in the beta of
+Inform 10.1.0.
+
+2.0.0 (24 May 2022) introduced a new base type constructor for "activity on T".
+This renumbers the binary representation of types, so it is a major not minor bump.
+
+@ Anyway, the implementation, such as it is:
+
 =
 semantic_version_number InterVersion::current(void) {
-	semantic_version_number V = VersionNumbers::from_text(I"1.0.0");
+	semantic_version_number V = VersionNumbers::from_text(I"2.0.0");
 	if (VersionNumbers::is_null(V)) internal_error("malformed version number");
 	return V;
 }
