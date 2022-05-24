@@ -330,10 +330,10 @@ must be at least one of these, so |struct void| is not allowed.
 (*) |enum|, for which see below;
 
 (*) and then a raft of constructions convenient for Inform but which Inter
-really knows nothing about: |column of T|, |table of T|, |relation of T1 to T2|,
-|description of T|, |rulebook of T|, and |rule T1 -> T2|. Perhaps these ought
-to work via a general way for users to create new constructors, but for now
-they are hard-wired. They do nothing except to be distinct from each other,
+really knows nothing about: |activity on T|, |column of T|, |table of T|,
+|relation of T1 to T2|, |description of T|, |rulebook of T|, and |rule T1 -> T2|.
+Perhaps these ought to work via a general way for users to create new constructors,
+but for now they are hard-wired. They do nothing except to be distinct from each other,
 so that Inform can label its data.
 
 Inter applies the usual rules of covariance and contravariance when matching

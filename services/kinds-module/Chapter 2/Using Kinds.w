@@ -75,8 +75,8 @@ checks that we aren't doing that:
 int Kinds::Behaviour::definite(kind *K) {
 	if (K == NULL) return TRUE;
 	if (KindConstructors::is_definite(K->construct) == FALSE) return FALSE;
-	int i, arity = KindConstructors::arity(K->construct);
-	for (i=0; i<arity; i++)
+	int arity = KindConstructors::arity(K->construct);
+	for (int i=0; i<arity; i++)
 		if (Kinds::Behaviour::definite(K->kc_args[i]) == FALSE)
 			return FALSE;
 	return TRUE;
@@ -87,15 +87,15 @@ int Kinds::Behaviour::semidefinite(kind *K) {
 	if (K->construct == CON_KIND_VARIABLE) return TRUE;
 	if (K->construct == CON_NIL) return FALSE;
 	if (KindConstructors::is_definite(K->construct) == FALSE) return FALSE;
-	int i, arity = KindConstructors::arity(K->construct);
+	int arity = KindConstructors::arity(K->construct);
 	if ((K->construct == CON_TUPLE_ENTRY) && (Kinds::eq(K->kc_args[1], K_void))) arity = 1;
-	if (K->construct == CON_phrase) {
-		for (i=0; i<arity; i++)
+	if ((K->construct == CON_phrase) || (K->construct == CON_activity)) {
+		for (int i=0; i<arity; i++)
 			if ((Kinds::eq(K->kc_args[i], K_nil) == FALSE) &&
 				(Kinds::Behaviour::semidefinite(K->kc_args[i]) == FALSE))
 				return FALSE;
 	} else {
-		for (i=0; i<arity; i++)
+		for (int i=0; i<arity; i++)
 			if (Kinds::Behaviour::semidefinite(K->kc_args[i]) == FALSE)
 				return FALSE;
 	}

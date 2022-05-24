@@ -167,6 +167,7 @@ void RTKindDeclarations::declare_constructed_kind(cached_kind_declaration *dec) 
 	else if (Kinds::get_construct(K) == CON_rulebook)     @<Run out inter kind for rulebook@>
 	else if (Kinds::get_construct(K) == CON_table_column) @<Run out inter kind for column@>
 	else if (Kinds::get_construct(K) == CON_relation)     @<Run out inter kind for relation@>
+	else if (Kinds::get_construct(K) == CON_activity)     @<Run out inter kind for activity@>
 	else {
 		LOG("Unfortunate kind is: %u\n", K);
 		internal_error("unable to represent kind in inter");
@@ -194,6 +195,11 @@ void RTKindDeclarations::declare_constructed_kind(cached_kind_declaration *dec) 
 	arity = 2;
 	Kinds::binary_construction_material(K, &operands[0], &operands[1]);
 	icon = RELATION_ITCONC;
+
+@<Run out inter kind for activity@> =
+	arity = 1;
+	operands[0] = Kinds::unary_construction_material(K);
+	icon = ACTIVITY_ITCONC;
 
 @<Run out inter kind for phrase@> =
 	icon = FUNCTION_ITCONC;

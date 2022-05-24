@@ -24,6 +24,7 @@ invalidate existing Inter binary files, necessitating a bump of //The Inter Vers
 @e TEXT_ITCONC
 @e ENUM_ITCONC
 @e LIST_ITCONC
+@e ACTIVITY_ITCONC
 @e COLUMN_ITCONC
 @e TABLE_ITCONC
 @e FUNCTION_ITCONC
@@ -76,6 +77,7 @@ void InterTypes::initialise_constructors(void) {
 	InterTypes::init_con(TEXT_ITCONC,        I"text",        -2147483648, 2147483647, FALSE,  TRUE, 0);
 	InterTypes::init_con(ENUM_ITCONC,        I"enum",                  0, 2147483647,  TRUE,  TRUE, 0);
 	InterTypes::init_con(LIST_ITCONC,        I"list",        -2147483648, 2147483647, FALSE, FALSE, 1);
+	InterTypes::init_con(ACTIVITY_ITCONC,    I"activity",    -2147483648, 2147483647, FALSE, FALSE, 1);
 	InterTypes::init_con(COLUMN_ITCONC,      I"column",      -2147483648, 2147483647, FALSE, FALSE, 1);
 	InterTypes::init_con(TABLE_ITCONC,       I"table",       -2147483648, 2147483647, FALSE, FALSE, 1);
 	InterTypes::init_con(FUNCTION_ITCONC,    I"function",    -2147483648, 2147483647, FALSE, FALSE, 2);
@@ -376,6 +378,7 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 	
 	@<Parse rulebook syntax@>;
 	@<Parse list syntax@>;
+	@<Parse activity syntax@>;
 	@<Parse column syntax@>;
 	@<Parse table syntax@>;
 	@<Parse description syntax@>;
@@ -401,6 +404,15 @@ inter_error_message *InterTypes::parse_semisimple(text_stream *text, inter_symbo
 @<Parse list syntax@> =
 	if (Regexp::match(&mr, text, L"list of (%C+)")) {
 		results->constructor_code = LIST_ITCONC;
+		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
+		InterTypes::add_operand_to_isstd(results, T, conts_type);
+		Regexp::dispose_of(&mr);
+		return E;
+	}
+
+@<Parse activity syntax@> =
+	if (Regexp::match(&mr, text, L"activity on (%C+)")) {
+		results->constructor_code = ACTIVITY_ITCONC;
 		inter_type conts_type = InterTypes::parse_simple(T, eloc, mr.exp[0], &E);
 		InterTypes::add_operand_to_isstd(results, T, conts_type);
 		Regexp::dispose_of(&mr);
@@ -595,6 +607,10 @@ void InterTypes::write_type_longhand(OUTPUT_STREAM, inter_type type) {
 		case RULEBOOK_ITCONC:
 		case LIST_ITCONC:
 			WRITE(" of ");
+			InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
+			break;
+		case ACTIVITY_ITCONC:
+			WRITE(" on ");
 			InterTypes::write_type(OUT, InterTypes::type_operand(type, 0));
 			break;
 		case RELATION_ITCONC:

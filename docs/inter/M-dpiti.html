@@ -429,10 +429,10 @@ used, but <span class="extract"><span class="extract-syntax">void</span></span> 
 must be at least one of these, so <span class="extract"><span class="extract-syntax">struct void</span></span> is not allowed.
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">enum</span></span>, for which see below;
 </li><li>&#9679; and then a raft of constructions convenient for Inform but which Inter
-really knows nothing about: <span class="extract"><span class="extract-syntax">column of T</span></span>, <span class="extract"><span class="extract-syntax">table of T</span></span>, <span class="extract"><span class="extract-syntax">relation of T1 to T2</span></span>,
-<span class="extract"><span class="extract-syntax">description of T</span></span>, <span class="extract"><span class="extract-syntax">rulebook of T</span></span>, and <span class="extract"><span class="extract-syntax">rule T1 -&gt; T2</span></span>. Perhaps these ought
-to work via a general way for users to create new constructors, but for now
-they are hard-wired. They do nothing except to be distinct from each other,
+really knows nothing about: <span class="extract"><span class="extract-syntax">activity on T</span></span>, <span class="extract"><span class="extract-syntax">column of T</span></span>, <span class="extract"><span class="extract-syntax">table of T</span></span>,
+<span class="extract"><span class="extract-syntax">relation of T1 to T2</span></span>, <span class="extract"><span class="extract-syntax">description of T</span></span>, <span class="extract"><span class="extract-syntax">rulebook of T</span></span>, and <span class="extract"><span class="extract-syntax">rule T1 -&gt; T2</span></span>.
+Perhaps these ought to work via a general way for users to create new constructors,
+but for now they are hard-wired. They do nothing except to be distinct from each other,
 so that Inform can label its data.
 </li></ul>
 <p class="commentary">Inter applies the usual rules of covariance and contravariance when matching
