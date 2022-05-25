@@ -36,7 +36,7 @@ If a single command asks to do many things, some dull and some exciting, we may 
 			say "Best not." instead.
 
 	Carry out burning something with something:
-		remove the noun from play.
+		now the noun is nowhere.
 
 	Report burning something with something:
 		say "[burn description of the noun][line break]".
