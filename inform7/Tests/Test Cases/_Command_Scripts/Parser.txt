@@ -1,0 +1,5 @@
+s
+break bottle
+und
+undo
+examine bottle

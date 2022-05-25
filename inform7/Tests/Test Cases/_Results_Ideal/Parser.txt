@@ -1,0 +1,26 @@
+   Schloss Parserhof
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.1.0 / D
+  
+  Schloss Parserhof
+  Begun by Mad King Ludwig in 1878, this grand foyer was projected to be the antechamber to a long series of exotic chambers in which the Austrian monarch could have parser antics performed before his eyes. Build on a north-south spinal passage, it has been found monotonous by some architectural critics.
+  
+> >   Discard UNDO Testing Place
+  Discard UNDO Testing Place
+  You can see a bottle here.
+  
+> >   Discard UNDO Testing Place
+  Smash!
+  
+> >   Discard UNDO Testing Place
+  That's not a verb I recognise.
+  
+> >   Discard UNDO Testing Place
+  Discard UNDO Testing Place
+  [Previous turn undone.]
+  
+> >   Discard UNDO Testing Place
+  It's broken.
+  
+> >

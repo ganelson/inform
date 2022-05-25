@@ -1,0 +1,20 @@
+Schloss Parserhof is a room. "Begun by Mad King Ludwig in 1878, this grand foyer was
+projected to be the antechamber to a long series of exotic chambers in which the Austrian
+monarch could have parser antics performed before his eyes. Build on a north-south
+spinal passage, it has been found monotonous by some architectural critics."
+
+[Note that there is no Test me with... here; instead, a separate command script is
+provided for this test case, so that the UNDO command can be used in the course of
+tests. The intention is that each test or set of tests should be in its own room, each
+south of the previous one.]
+
+Section 1 - Discard UNDO Testing
+
+The Discard UNDO Testing Place is a room south of the Schloss.
+
+The bottle is here. The bottle can be broken or unbroken. 
+The description of the bottle is "It's [if the bottle is broken]broken[else]unbroken[end if]."
+
+Instead of attacking the unbroken bottle:
+	say "Smash!";
+	now the bottle is broken.
