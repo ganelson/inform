@@ -2,7 +2,7 @@ Introduction to Indoc.
 
 What Indoc is, and its limited but complicated uses.
 
-@ Intest is a command line tool for generating (mainly) HTML or EPUB format
+@ Indoc is a command line tool for generating (mainly) HTML or EPUB format
 documentation. A million of those have been written, and Indoc has no
 ambition to replace them. It is needed because Inform 7's documentation
 source consists of many small text files with idiosyncratic markup, while
