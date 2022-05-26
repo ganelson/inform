@@ -1,0 +1,13 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 21 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32162 words long.
+Problem__ PM_IndefiniteVariable2
+  >--> I am unable to create 'phrase in question', because the text was too
+    vague about what its kind should be - I can see it's a phrase, but not what
+    kind of phrase. (You may be able to fix this by declaring the kind directly
+    first. For example, rather than 'The magic word is initially my deluxe
+    phrase.', something like 'The magic word is a phrase nothing -> nothing
+    variable. The magic word is initially my deluxe phrase.')
+Inform 7 has finished.

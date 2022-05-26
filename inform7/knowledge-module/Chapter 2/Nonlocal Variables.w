@@ -101,8 +101,12 @@ nonlocal_variable *NonlocalVariables::get_latest(void) {
 
 nonlocal_variable *NonlocalVariables::new(wording W, kind *K, shared_variable *shv) {
 	if (K == NULL) internal_error("created variable without kind");
-	if (Kinds::Behaviour::definite(K) == FALSE)
-		@<Issue problem message for an indefinite variable@>;
+	if (Kinds::Behaviour::definite(K) == FALSE) {
+		if (Kinds::get_construct(K) == CON_phrase)
+			@<Issue problem message for a phrase used before its kind is known@>
+		else
+			@<Issue problem message for an indefinite variable@>;
+	}
 
 	nonlocal_variable *nlv = CREATE(nonlocal_variable);
 	latest_nonlocal_variable = nlv;
@@ -136,6 +140,27 @@ nonlocal_variable *NonlocalVariables::new(wording W, kind *K, shared_variable *s
 		"variable: for instance, it's not enough to say 'L is a list of values "
 		"that varies', because I don't know what the entries have to be - 'L "
 		"is a list of numbers that varies' would be better.");
+	Problems::issue_problem_end();
+
+@ This typically arises for timing reasons. At the time the variable has to be
+created, and given a kind, the kind of the initial value has not been fully
+determined. So |K| here will be something like |phrase value -> value|. If this
+case arose often enough it might be worth refactoring everything, but it's
+rarely occurring and has an easy workaround. So we will just give a fairly
+helpful problem message:
+
+@<Issue problem message for a phrase used before its kind is known@> =
+	LOG("W = %W, Domain = %u\n", W, K);
+	Problems::quote_wording(1, W);
+	StandardProblems::handmade_problem(Task::syntax_tree(),
+		_p_(PM_IndefiniteVariable2));
+	Problems::issue_problem_segment(
+		"I am unable to create '%1', because the text was too vague about what "
+		"its kind should be - I can see it's a phrase, but not what kind of phrase. "
+		"(You may be able to fix this by declaring the kind directly first. For "
+		"example, rather than 'The magic word is initially my deluxe phrase.', "
+		"something like 'The magic word is a phrase nothing -> nothing variable. "
+		"The magic word is initially my deluxe phrase.')");
 	Problems::issue_problem_end();
 
 @ Four oddball cases have special behaviour:

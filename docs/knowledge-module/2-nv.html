@@ -172,8 +172,12 @@ only match globals, since variables of lesser scope are not in the lexicon.
 
 <span class="reserved-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="function-syntax">NonlocalVariables::new</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">NonlocalVariables::new</span></span>:<br/><a href="2-nv.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">shared_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">shv</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"created variable without kind"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::definite</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="2-nv.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Issue problem message for an indefinite variable</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::Behaviour::definite</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::get_construct</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">CON_phrase</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-nv.html#SP4_2" class="named-paragraph-link"><span class="named-paragraph">Issue problem message for a phrase used before its kind is known</span><span class="named-paragraph-number">4.2</span></a></span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">else</span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="2-nv.html#SP4_1" class="named-paragraph-link"><span class="named-paragraph">Issue problem message for an indefinite variable</span><span class="named-paragraph-number">4.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    }</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">nlv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">nonlocal_variable</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">latest_nonlocal_variable</span><span class="plain-syntax"> = </span><span class="identifier-syntax">nlv</span><span class="plain-syntax">;</span>
@@ -189,7 +193,7 @@ only match globals, since variables of lesser scope are not in the lexicon.
 <span class="plain-syntax">    </span><span class="identifier-syntax">nlv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_subject</span><span class="plain-syntax"> = </span><a href="4-vs.html#SP1" class="function-link"><span class="function-syntax">VariableSubjects::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">nlv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">compilation_data</span><span class="plain-syntax"> = </span><span class="identifier-syntax">RTVariables::new_compilation_data</span><span class="plain-syntax">();</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-nv.html#SP4_4" class="named-paragraph-link"><span class="named-paragraph">Notice a few special variables</span><span class="named-paragraph-number">4.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="2-nv.html#SP4_5" class="named-paragraph-link"><span class="named-paragraph">Notice a few special variables</span><span class="named-paragraph-number">4.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::new_variable_notify</span><span class="plain-syntax">(</span><span class="identifier-syntax">nlv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">LOGIF</span><span class="plain-syntax">(</span><span class="identifier-syntax">VARIABLE_CREATIONS</span><span class="plain-syntax">, </span><span class="string-syntax">"Created nonlocal variable: $Z\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">nlv</span><span class="plain-syntax">);</span>
 
@@ -213,7 +217,33 @@ only match globals, since variables of lesser scope are not in the lexicon.
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-nv.html#SP4">&#167;4</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b>Four oddball cases have special behaviour:
+<p class="commentary firstcommentary"><a id="SP4_2" class="paragraph-anchor"></a><b>&#167;4.2.  </b>This typically arises for timing reasons. At the time the variable has to be
+created, and given a kind, the kind of the initial value has not been fully
+determined. So <span class="extract"><span class="extract-syntax">K</span></span> here will be something like <span class="extract"><span class="extract-syntax">phrase value -&gt; value</span></span>. If this
+case arose often enough it might be worth refactoring everything, but it's
+rarely occurring and has an easy workaround. So we will just give a fairly
+helpful problem message:
+</p>
+
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue problem message for a phrase used before its kind is known</span><span class="named-paragraph-number">4.2</span></span><span class="comment-syntax"> =</span>
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"W = %W, Domain = %u\n"</span><span class="plain-syntax">, </span><span class="identifier-syntax">W</span><span class="plain-syntax">, </span><span class="identifier-syntax">K</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">W</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_IndefiniteVariable2</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"I am unable to create '%1', because the text was too vague about what "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"its kind should be - I can see it's a phrase, but not what kind of phrase. "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"(You may be able to fix this by declaring the kind directly first. For "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"example, rather than 'The magic word is initially my deluxe phrase.', "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"something like 'The magic word is a phrase nothing -&gt; nothing variable. "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"The magic word is initially my deluxe phrase.')"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+</pre>
+<ul class="endnotetexts"><li>This code is used in <a href="2-nv.html#SP4">&#167;4</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b>Four oddball cases have special behaviour:
 </p>
 
 <ul class="items"><li>&#9679; <span class="extract"><span class="extract-syntax">Inter_nothing_VAR</span></span> is translated not to an Inter variable, but to the
@@ -234,7 +264,7 @@ the code in <a href="../CommandParserKit/index.html" class="internal">CommandPar
 <span class="reserved-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">command_prompt_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> the command prompt text</span>
 <span class="reserved-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">parameter_object_VAR</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_3" class="paragraph-anchor"></a><b>&#167;4.3.  </b></p>
+<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">nonlocal_variable</span><span class="plain-syntax"> *</span><span class="function-syntax">NonlocalVariables::nothing_pseudo_variable</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
@@ -250,7 +280,7 @@ the code in <a href="../CommandParserKit/index.html" class="internal">CommandPar
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">temporary_global_VAR</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP4_4" class="paragraph-anchor"></a><b>&#167;4.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Notice a few special variables</span><span class="named-paragraph-number">4.4</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP4_5" class="paragraph-anchor"></a><b>&#167;4.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Notice a few special variables</span><span class="named-paragraph-number">4.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
