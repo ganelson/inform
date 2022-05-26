@@ -9929,6 +9929,8 @@ As an example, here's the definition of arcsinh given in the Standard Rules:
 		let x be given by x = log(R + root(R^2 + 1)) where x is a real number;
 		decide on x.
 
+Something to be a little cautious of: brackets are used in equations to group terms together, and do not mean function application, as they would in a C-like programming language. For example, "sin(1+x)/2" takes the sine of "(1+x)/2": if we want to halve the sine of "1+x", we have to write "(sin(1+x))/2".
+
 [x] Arithmetic with units
 
 ^^{units of measure: arithmetic}
