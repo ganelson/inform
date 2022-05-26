@@ -245,7 +245,7 @@ $$ C = 100 + N $$
 	for (i=from: i<=to: i++) print (char) i->0;
 ];
 
-[ SpliceSnippet snip t i w1 w2 nextw at endsnippet newlen;
+[ SpliceSnippet snip t i w1 w2 nextw at endsnippet newlen saved;
 	w1 = snip/100; w2 = w1 + (snip%100) - 1;
 	if ((w2<w1) || (w1<1)) {
 		if ((w1 == 1) && (w2 == 0)) return;
@@ -255,6 +255,7 @@ $$ C = 100 + N $$
 	nextw = w2 + 1;
 	at = WordAddress(w1) - buffer;
 	if (nextw <= WordCount()) endsnippet = 100*nextw + (WordCount() - nextw + 1);
+	saved = buffer2-->0;
 	buffer2-->0 = 120;
 	newlen = VM_PrintToBuffer(buffer2, 120, SpliceSnippet__TextPrinter, t, endsnippet);
 	for (i=0: (i<newlen) && (at+i<120): i++) buffer->(at+i) = buffer2->(WORDSIZE+i);
@@ -262,6 +263,7 @@ $$ C = 100 + N $$
 	for (:at+i<120:i++) buffer->(at+i) = ' ';
 	VM_Tokenise(buffer, parse);
 	players_command = 100 + WordCount();
+	buffer2-->0 = saved;
 	@pull say__pc; @pull say__p;
 ];
 
