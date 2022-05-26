@@ -17444,7 +17444,7 @@ Extensions are plain text files, and can be created with any text editor. (It is
 
 Extensions look very much like passages of Inform source, because except for a special introductory and concluding sentence, and one convention, that is all they are:
 
-	{*}The Ducking Action by Graham Nelson begins here.
+	{*}The Ducking Action by Beatrix Potter begins here.
 
 	"An action for ducking one's head."
 
@@ -17464,7 +17464,7 @@ Providing a rubric is helpful, because it enables Inform to give a meaningful li
 
 A second double-quoted text can also, optionally, be added in yet a third special starting paragraph. This is to provide additional credits to people who have contributed to this or earlier versions. For instance:
 
-	The Ducking Action by Graham Nelson begins here.
+	The Ducking Action by Beatrix Potter begins here.
 
 	"An action for ducking one's head."
 
@@ -17483,30 +17483,48 @@ Note the typical style here: it's a phrase rather than a sentence, and neither s
 
 As we have seen, extensions are referred to by name and author, but they can also (optionally) be referred to by version. For instance:
 
-	Include version 2 of the Ducking Action by Graham Nelson.
+	Include version 2 of the Ducking Action by Beatrix Potter.
 
-	Version 1/040426 of the Ducking Action by Graham Nelson begins here.
+	Version 1.2.4 of the Ducking Action by Beatrix Potter begins here.
 
-A version number must be a whole number 1, 2, ..., 999 (version 0 is not allowed, and nor are decimal points), optionally followed by a slash '/' and then a six-figure date, in the form YYMMDD: so 040426 means 26 April 2004.
+Version numbers should consist of one to three whole numbers divided by dots, with no negative numbers allowed. Thus "5", "3.3" and "2.1.71652" are all valid as version numbers, but "-4" and "3.1.2.5" are not. Any numbers not specified are taken to be 0: thus "3.3" means the same as "3.3.0", and "5" means the same as "5.0.0".
 
-A request to include version 2 of something implicitly means "version 2 or later", and similarly "version 2/040426" means version 2 with a date of 26 April 2004 or later, or else any version higher than 2. If Inform loads the extension but finds that its version is not good enough, an error is issued.
+In versions of Inform before 2022, versions of extensions were also allowed to be written in the form "N/YYMMDD", as in this example:
 
-Where no version number is quoted, the rule is that an unspecified version predates any numbered version. This means that the line
+	Version 6/040426 of the Ducking Action by Beatrix Potter begins here.
 
-	Include the Ducking Action by Graham Nelson.
+The material after the slash '/' was expected to be a date, so that 040426 would mean 26 April 2004. In order to preserve compatibility with old extensions, Inform continues to allow this notation, but treats it as equivalent to writing "N.0.YYMMDD", though with any leading 0s trimmed. So the above sentence is equivalent to writing:
+
+	Version 6.0.40426 of the Ducking Action by Beatrix Potter begins here.
+
+Extensions are usually intended to be shared and passed around between Inform users, and good use of version numbering can be a huge help to those users; and it's helpful if we can agree as a community on what good version-numbering is. Because of that, the Inform project tries to use a widely-recognised Internet standard called "semantic version numbering".
+
+For full details see semver.org, but for Inform purposes the following fairly simple rules should be enough. "Semantic" just means that version number changes should communicate something meaningful. So, whenever an extension author puts out a new version of an extension, the extension number should change in a way that signals how drastic the change will be.
+
+In this system, the three possible numbers X.Y.Z are called the "major", "minor" and "patch" numbers. Every time an extension is changed and re-released, even just informally among friends but certainly if posted somewhere on the Internet, X, Y or Z should change. The rules are:
+
+(X) If the extension has changed so much that Inform projects using it will need to be changed in order to keep on working - for example, if a "To..." phrase has been taken out, or the name of a kind changed - then X should be increased. Y and Z then usually go back to 0. This is a "major version".
+
+(Y) If the extension provides new features but doesn't do anything to change the way its existing features are used, then X can stay the same but Y should increase, and Z then usually rolls around to 0. This is a "minor version".
+
+(Z) If the extension has changed only to fix bugs, or make its existing features work more efficiently, or provide better documentation or examples, then X and Y can stay the same but Z should increase. This is a "patch version".
+
+So, for example, a user who currently has version 3.2.7 can update to 3.2.8 without really investigating. That same user can update to 3.3, 3.4, ... without any trouble, choosing either to use or ignore whatever new features they are presenting. But the user knows that moving up to version 4 might well require some work - a project using version 3.Y.Z will likely need writing to adopt version 4.
+
+Now let's turn to "Include" sentences. A request like:
+
+	Include the Ducking Action by Beatrix Potter.
 
 will be happy with any version of the extension at all, whether numbered or not; but
 
-	Include version 2 of the Ducking Action by Graham Nelson.
+	Include version 2.4 of the Ducking Action by Beatrix Potter.
 
-will only accept the extension if it has a version number attached (and with that number being 2 or higher).
+will only accept the extension if its version number is "compatible" with 2.4, which means, if it is 2.4 or later, but still belongs to the same major version, "2". So if we write this inclusion sentence, but the version we have installed is version 3.1, Inform will give a problem message. The fix may well be as simple as changing the inclusion sentence to match - but it may not, because a change in major version number is a signal that things have changed a lot inside the extension (see above).
 
 During play of any story compiled by Inform 7, typing VERSION lists various serial numbers of the pieces of software used to make it. The list concludes with names, authors and version numbers of any extensions used. So every author whose work contributes to a story automatically gets a modest credit within it. The same list can be printed, at the discretion of the designer, using the textual substitution:
 
 {defn phs_extcredits}say "[the/-- list of extension credits]"
-This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Extensions whose authors have chosen the "use authorial modesty" option are missed out. Example:
-
-	Standard Rules version 2/090402 by Graham Nelson
+This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Extensions whose authors have chosen the "use authorial modesty" option are missed out.
 {end}
 
 If we want our extension to go uncredited - perhaps if it is a low-level enabling sort of thing, for instance - we can place the following sentence inside the definition of the extension:
@@ -17518,10 +17536,7 @@ The same sentence placed in the body of a source text causes all extensions by t
 A complete list, undiluted by modesty, can always be obtained using:
 
 {defn phs_compextcredits}say "[the/-- complete list of extension credits]"
-This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Every extension is included, even those whose authors have opted for "use authorial modesty". Example:
-
-	Standard Rules version 2/090402 by Graham Nelson
-	Locksmith version 9 by Emily Short
+This text substitution expands to one or more lines of text crediting each of the extensions used by the current source text, along with their version numbers and authors. Every extension is included, even those whose authors have opted for "use authorial modesty".
 {end}
 
 [x] Extensions and story file formats
@@ -17558,15 +17573,21 @@ would ensure that "reveal the explosion" works nicely whichever story file forma
 
 ^^{extensions: writing: including other extensions}
 
-As was mentioned earlier, the same extension is sometimes requested several times. For instance, suppose the main source text asks to include version 2 of extension X, and also to include extension Y. Suppose further that Y contains a request to include version 4 of X. We now have two different requests for X. Inform works out the minimum version number needed to satisfy these requests (in this case 4) and gives an error if the extension it actually loads turns out to be earlier.
+Extensions can themselves contain "Include..." sentences asking for other extensions to be included. An extension might, for example, start like this:
 
-This is true even of the Standard Rules. Suppose that the Standard Rules had recently been republished in version 37, making the previously existing version 36 out of date, and that an extension is written which capitalizes on a new feature in v37. It will therefore not work if people try to use it with v36. All the extension needs to do is to say:
+	Version 1 of Basic Help Menu by Emily Short begins here.
 
-	Include version 37 of the Standard Rules by Graham Nelson.
+	Include Menus by Emily Short.
+	
+	...
 
-to guarantee that v37 or later will be used.
+A project which asks to include "Basic Help Menu" will then also include "Menus", even though the author might never even realise that. Indeed, the author could also have asked to include "Menus", not realising that "Basic Help Menu" was going to ask for the same thing.
 
-If an extension does include other extensions, it should do so in a paragraph immediately following the introductory sentence, so that anyone looking at the file can see these mutual dependencies at a glance.
+So the same extension is often requested multiple times. This is fine if the version numbers in the requests are compatible, but they might not be. For instance, suppose the main source text asks to include version 2 of extension X, and also to include extension Y. Suppose further that Y contains a request to include version 4 of X. We now have two different requests for X, and they contradict each other - the major version of X cannot be both 2 and 4 at the same time. So Inform will produce a problem message in this case.
+
+But in cases where it is possible for everyone to be satisfied, Inform will try to find a solution. If one extension asks for version 2.3 of X, and another asks just for X, and a third asks for version 2.7.2 of X, then Inform will work out that any version number in the range 2.7.2 up to (but not including) 3 will be fine. If it can in fact find such an extension, it will then use it. So if the user has version 2.8.17 installed, everything is fine.
+
+If an extension does include other extensions, it is good style to place the "Include..." sentence(s) as early as possible after the introductory sentence, just so that human readers looking at the text of the extension can see these dependencies easily.
 
 [x] Extensions can interact with other extensions {PM_HeadingInPlaceOfUnincluded} {PM_HeadingInPlaceOfUnknown} {PM_UnequalHeadingInPlaceOf}
 
@@ -17610,11 +17631,7 @@ If the name of the heading to replace contains the word "in", it's a good idea t
 ^^{headings: in extensions}
 ^^{(unindexed), headings in extensions+sourcepart+}
 
-As soon as a project has successfully been translated, its Index is brought up to date: pages of the index record all the kinds and what they are for, all the phrases which can be used, and so on. Any kind or phrase created in an extension is automatically included. The extension's presence in the project is itself recorded - the Contents index for any project contains a brief list of all extensions used in that project, along with their authors and version numbers. For instance:
-
-	Standard Rules version 1/040731
-	Locksmith by Emily Short
-	Tupperware by Emily Short
+As soon as a project has successfully been translated, its Index is brought up to date: pages of the index record all the kinds and what they are for, all the phrases which can be used, and so on. Any kind or phrase created in an extension is automatically included. The extension's presence in the project is itself recorded - the Contents index for any project contains a brief list of all extensions used in that project, along with their authors and version numbers.
 
 The Kinds index aims to give the reader a brief note of what each kind is intended for. We can provide for this by writing a sentence like so:
 

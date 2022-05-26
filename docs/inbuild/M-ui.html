@@ -93,7 +93,7 @@ what is called an "edition", which in turn is a version of a "work".
 <p class="commentary">For example, perhaps the user has two copies of version 3 of the extension
 Locksmith by Emily Short, in different places in the file system, and also
 a further copy of version 4. These are three different "copies", but only two
-different "editions", and all are of the same "work". A work &mdash; in this case.
+different "editions", and all are of the same "work". A work &mdash; in this case,
 Locksmith by Emily Short &mdash; is identified by its title, author name and
 genre &mdash; in this case, an Inform extension.
 </p>
@@ -137,7 +137,7 @@ the software, but it's still helpful.
 <span class="ConsoleText-plain-syntax">    </span><span class="ConsoleText-element-syntax">$</span><span class="ConsoleText-plain-syntax"> </span><span class="ConsoleText-function-syntax">inbuild/Tangled/inbuild</span><span class="ConsoleText-identifier-syntax"> -graph</span><span class="ConsoleText-plain-syntax"> 'Basic Help Menu.i7x'</span>
 <span class="ConsoleText-plain-syntax">    [c0] Basic Help Menu by Emily Short</span>
 <span class="ConsoleText-plain-syntax">      --use---&gt; [c26] Menus by Emily Short v3</span>
-<span class="ConsoleText-plain-syntax">        --use---&gt; [c34] Basic Screen Effects by Emily Short v7.140425</span>
+<span class="ConsoleText-plain-syntax">        --use---&gt; [c34] Basic Screen Effects by Emily Short v8</span>
 </pre>
 <p class="commentary">The graph begins at the copy we asked for, and then continues through arrows
 to other copies. It gives a systematic answer to the question "how do I
@@ -176,7 +176,7 @@ resources.
 <span class="ConsoleText-plain-syntax">          --build-&gt; [c0] Menu Time.inform</span>
 <span class="ConsoleText-plain-syntax">            --build-&gt; [c53] Basic Help Menu by Emily Short</span>
 <span class="ConsoleText-plain-syntax">              --use---&gt; [c47] Menus by Emily Short v3</span>
-<span class="ConsoleText-plain-syntax">                --use---&gt; [c55] Basic Screen Effects by Emily Short v7.140425</span>
+<span class="ConsoleText-plain-syntax">                --use---&gt; [c55] Basic Screen Effects by Emily Short v8</span>
 <span class="ConsoleText-plain-syntax">            --build-&gt; [f1] Menu Time.inform/Source/story.ni</span>
 <span class="ConsoleText-plain-syntax">            --build-&gt; [c12] BasicInformKit</span>
 </pre>
@@ -220,7 +220,7 @@ want to know is: what do I need to use, or to build, something?
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
 <span class="ConsoleText-plain-syntax">    extension: Basic Help Menu by Emily Short</span>
 <span class="ConsoleText-plain-syntax">      extension: Menus by Emily Short v3</span>
-<span class="ConsoleText-plain-syntax">        extension: Basic Screen Effects by Emily Short v7.140425</span>
+<span class="ConsoleText-plain-syntax">        extension: Basic Screen Effects by Emily Short v8</span>
 </pre>
 <p class="commentary">and applied to our example story gives just:
 </p>
@@ -244,7 +244,7 @@ to build them. But <span class="extract"><span class="ConsoleText-extract-syntax
 <span class="ConsoleText-plain-syntax">    projectbundle: Menu Time.inform</span>
 <span class="ConsoleText-plain-syntax">      extension: Basic Help Menu by Emily Short</span>
 <span class="ConsoleText-plain-syntax">        extension: Menus by Emily Short v3</span>
-<span class="ConsoleText-plain-syntax">          extension: Basic Screen Effects by Emily Short v7.140425</span>
+<span class="ConsoleText-plain-syntax">          extension: Basic Screen Effects by Emily Short v8</span>
 <span class="ConsoleText-plain-syntax">      kit: BasicInformKit</span>
 <span class="ConsoleText-plain-syntax">        extension: Basic Inform by Graham Nelson v1</span>
 <span class="ConsoleText-plain-syntax">        extension: English Language by Graham Nelson v1</span>
@@ -438,8 +438,13 @@ Inbuild will act on every copy it can find which matches that. For example,
 <p class="commentary">lists all extensions by Eric Eve which Inbuild can see. The legal clauses to
 specify are <span class="extract"><span class="ConsoleText-extract-syntax">title</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">author</span></span>, <span class="extract"><span class="ConsoleText-extract-syntax">genre</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">version</span></span>. Note that <span class="extract"><span class="ConsoleText-extract-syntax">version=5.1.1</span></span>
 would match version numbers 5.1.1, 5.1.2, 5.2.0, etc., but not 6 or above:
-again, this is following semver conventions. To specify an explicit maximum
-and minimum version number, use <span class="extract"><span class="ConsoleText-extract-syntax">max</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">min</span></span>. For example:
+again, this is following semver conventions. (Extensions giving their version
+numbers in the old-fashioned format "N/YYMMDD" are read as if N.0.YYMMDD, with
+the release date being treated as a patch number: see the Inform language
+documentation for examples.)
+</p>
+
+<p class="commentary">To specify an explicit maximum and minimum version number, use <span class="extract"><span class="ConsoleText-extract-syntax">max</span></span> and <span class="extract"><span class="ConsoleText-extract-syntax">min</span></span>. For example:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">

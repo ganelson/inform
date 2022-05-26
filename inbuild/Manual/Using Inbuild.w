@@ -40,7 +40,7 @@ what is called an "edition", which in turn is a version of a "work".
 For example, perhaps the user has two copies of version 3 of the extension
 Locksmith by Emily Short, in different places in the file system, and also
 a further copy of version 4. These are three different "copies", but only two
-different "editions", and all are of the same "work". A work -- in this case.
+different "editions", and all are of the same "work". A work -- in this case,
 Locksmith by Emily Short -- is identified by its title, author name and
 genre -- in this case, an Inform extension.
 
@@ -75,7 +75,7 @@ More ambitiously, we can look at the "graph" of a copy.
 	$ inbuild/Tangled/inbuild -graph 'Basic Help Menu.i7x'
 	[c0] Basic Help Menu by Emily Short
 	  --use---> [c26] Menus by Emily Short v3
-	    --use---> [c34] Basic Screen Effects by Emily Short v7.140425
+	    --use---> [c34] Basic Screen Effects by Emily Short v8
 =
 The graph begins at the copy we asked for, and then continues through arrows
 to other copies. It gives a systematic answer to the question "how do I
@@ -107,7 +107,7 @@ resources.
 	      --build-> [c0] Menu Time.inform
 	        --build-> [c53] Basic Help Menu by Emily Short
 	          --use---> [c47] Menus by Emily Short v3
-	            --use---> [c55] Basic Screen Effects by Emily Short v7.140425
+	            --use---> [c55] Basic Screen Effects by Emily Short v8
 	        --build-> [f1] Menu Time.inform/Source/story.ni
 	        --build-> [c12] BasicInformKit
 =
@@ -145,7 +145,7 @@ The command |-use-needs| applied to our example extension gives:
 = (text as ConsoleText)
 	extension: Basic Help Menu by Emily Short
 	  extension: Menus by Emily Short v3
-	    extension: Basic Screen Effects by Emily Short v7.140425
+	    extension: Basic Screen Effects by Emily Short v8
 =
 and applied to our example story gives just:
 = (text as ConsoleText)
@@ -163,7 +163,7 @@ to build them. But |-build-needs| on our story produces:
 	projectbundle: Menu Time.inform
 	  extension: Basic Help Menu by Emily Short
 	    extension: Menus by Emily Short v3
-	      extension: Basic Screen Effects by Emily Short v7.140425
+	      extension: Basic Screen Effects by Emily Short v8
 	  kit: BasicInformKit
 	    extension: Basic Inform by Graham Nelson v1
 	    extension: English Language by Graham Nelson v1
@@ -320,8 +320,12 @@ lists all the kits which Inbuild can see; and
 lists all extensions by Eric Eve which Inbuild can see. The legal clauses to
 specify are |title|, |author|, |genre| and |version|. Note that |version=5.1.1|
 would match version numbers 5.1.1, 5.1.2, 5.2.0, etc., but not 6 or above:
-again, this is following semver conventions. To specify an explicit maximum
-and minimum version number, use |max| and |min|. For example:
+again, this is following semver conventions. (Extensions giving their version
+numbers in the old-fashioned format "N/YYMMDD" are read as if N.0.YYMMDD, with
+the release date being treated as a patch number: see the Inform language
+documentation for examples.)
+
+To specify an explicit maximum and minimum version number, use |max| and |min|. For example:
 = (text as ConsoleText)
 	-matching 'genre=extension,author=Emily Short,title=Locksmith,min=6.1-alpha.2,max=17.2'
 =
