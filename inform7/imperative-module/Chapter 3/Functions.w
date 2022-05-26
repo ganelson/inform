@@ -175,6 +175,7 @@ void Functions::end(packaging_state save) {
 	inter_name *kernel_name = NULL;
 	inter_name *public_name = current_function.currently_compiling_iname;
 	if ((Frames::uses_local_block_values(frame)) ||
+		(Kinds::Behaviour::uses_block_values(frame->kind_returned)) ||
 		(frame->no_formal_parameters_needed > 0))
 		kernel_name = Functions::function_kernel(Emit::tree(), public_name);
 	
