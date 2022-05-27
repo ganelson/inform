@@ -272,10 +272,10 @@ current room, or a named item.
 		}
 	}
 	print "^";
-	if (obj.component_child) c = c | ShowMeRecursively(obj.component_child, depth+2, f);
+        if (obj.component_child) c = c | ShowMeRecursively(obj.component_child, depth+2, f);
+	if (child(obj)) c = c | ShowMeRecursively(child(obj), depth+2, f);
 	if ((depth>0) && (obj.component_sibling))
 		c = c | ShowMeRecursively(obj.component_sibling, depth, f);
-	if (child(obj)) c = c | ShowMeRecursively(child(obj), depth+2, f);
 	if ((depth>0) && (sibling(obj))) c = c | ShowMeRecursively(sibling(obj), depth, f);
 	return c;
 ];
