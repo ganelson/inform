@@ -25,18 +25,10 @@
 
 ME = inform6
 INTEST = ../intest/Tangled/intest
-SANDBOX = $(ME)/Inform6
+SANDBOX = $(ME)/inform6
 INTERPRETERS = $(ME)/Tests/Assistants
 
 # Making the program:
-
-I6SOURCE = \
-	$(SANDBOX)/arrays.o $(SANDBOX)/asm.o $(SANDBOX)/bpatch.o $(SANDBOX)/chars.o \
-	$(SANDBOX)/directs.o $(SANDBOX)/errors.o $(SANDBOX)/expressc.o $(SANDBOX)/expressp.o \
-	$(SANDBOX)/files.o $(SANDBOX)/inform.o $(SANDBOX)/lexer.o $(SANDBOX)/linker.o \
-	$(SANDBOX)/memory.o $(SANDBOX)/objects.o $(SANDBOX)/states.o $(SANDBOX)/symbols.o \
-	$(SANDBOX)/syntax.o $(SANDBOX)/tables.o $(SANDBOX)/text.o $(SANDBOX)/veneer.o \
-	$(SANDBOX)/verbs.o
 
 $(ME)/Tangled/$(ME): $(SANDBOX)/*.c $(SANDBOX)/*.h
 	$(call make-me)
@@ -67,7 +59,8 @@ define make-me
 	{compile-indulgently from: $(SANDBOX)/text.c     to: $(SANDBOX)/text.o     options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/veneer.c   to: $(SANDBOX)/veneer.o   options: -D$(INFORM6OS)}
 	{compile-indulgently from: $(SANDBOX)/verbs.c    to: $(SANDBOX)/verbs.o    options: -D$(INFORM6OS)}
-	{link from: $(I6SOURCE) to: $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
+	{link from: $(SANDBOX)/*.o to: $(ME)/Tangled/$(ME)$(EXEEXTENSION)}
+	rm -f $(SANDBOX)/*.o
 endef
 
 # Testing the program:
@@ -123,6 +116,7 @@ $(INTERPRETERS)/dumb-frotz/dumb-frotz: \
 	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/profiling.c   to: $(INTERPRETERS)/dumb-frotz/profiling.o}
 	{compile-indulgently from: $(INTERPRETERS)/dumb-frotz/main.c        to: $(INTERPRETERS)/dumb-frotz/main.o}
 	{link from: $(INTERPRETERS)/dumb-frotz/*.o to: $(INTERPRETERS)/dumb-frotz/dumb-frotz$(EXEEXTENSION)}
+	rm -f $(INTERPRETERS)/dumb-frotz/*.o
 
 # "dumb-glulxe" is the analogous thing for Glulx-format story files.
 
