@@ -25,7 +25,7 @@
 
 ME = inform6
 INTEST = ../intest/Tangled/intest
-SANDBOX = $(ME)/inform6
+SANDBOX = $(ME)/Inform6
 INTERPRETERS = $(ME)/Tests/Assistants
 
 # Making the program:
