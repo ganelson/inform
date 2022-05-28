@@ -234,7 +234,7 @@ compared to the Z-machine's: hence the |+1|.
 
 =
 [ DESCEND_TO_SPECIFIC_ACTION_R;
-	indirect(#actions_table-->(action+1));
+	( #actions_table-->(action+1) )();
 	rtrue;
 ];
 

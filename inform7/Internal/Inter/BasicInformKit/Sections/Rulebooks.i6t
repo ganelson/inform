@@ -116,7 +116,7 @@ Global debugging_rules = false; ! Are we tracing rule invocations?
 		}
 	} else {
 		if (say__p) RulebookParBreak(no_paragraph_skips);
-		rv = indirect(rulebook);
+		rv = rulebook();
 		if (rv == 2) rv = reason_the_action_failed;
 		else if (rv) rv = rulebook;
 	}

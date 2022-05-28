@@ -1380,7 +1380,7 @@ Print best possible error message.
     if (etype == TOTALK_PE) { PARSER_ERROR_INTERNAL_RM('W'); new_line; }
     if (etype == ASKSCOPE_PE) {
         scope_stage = 3;
-        if (indirect(scope_error) == -1) {
+        if (scope_error() == -1) {
             best_etype = nextbest_etype;
             if (~~((etype ofclass Routine) || (etype ofclass String)))
             	EndActivity(PRINTING_A_PARSER_ERROR_ACT);
@@ -1623,7 +1623,7 @@ Analyse token; handle all not involving object lists, break down others.
         return -1;
 
       GPR_TT:
-        l = indirect(given_tdata);
+        l = given_tdata();
         #Ifdef DEBUG;
         if (parser_trace >= 3) print "  [Outside parsing routine returned ", l, "]^";
         #Endif; ! DEBUG
@@ -1635,7 +1635,7 @@ Analyse token; handle all not involving object lists, break down others.
         #Ifdef DEBUG;
         if (parser_trace >= 3) print "  [Scope routine called at stage 1]^";
         #Endif; ! DEBUG
-        l = indirect(scope_token);
+        l = scope_token();
         #Ifdef DEBUG;
         if (parser_trace >= 3) print "  [Scope routine returned multiple-flag of ", l, "]^";
         #Endif; ! DEBUG
@@ -2855,7 +2855,7 @@ or "panic".
     if (token_filter ofclass Routine) {
     	sn = noun;
 	    noun = obj;
-    	rv = indirect(token_filter);
+    	rv = token_filter();
     	noun = sn;
     	return rv;
     }
@@ -3358,7 +3358,7 @@ OPEN BOX only to be told that he can't see any such thing.)
         #Ifdef DEBUG;
         if (parser_trace >= 3) print "  [Scope routine called at stage 2]^";
         #Endif;
-        if (indirect(scope_token) ~= 0) rtrue;
+        if (scope_token() ~= 0) rtrue;
     }
 	! (b)
     BeginActivity(DECIDING_SCOPE_ACT, actor);
@@ -3495,7 +3495,7 @@ mechanism.
 
 	switch(scope_reason) {
 		TESTSCOPE_REASON: if (item == parser_one) parser_two = 1;
-		LOOPOVERSCOPE_REASON: if (parser_one ofclass Routine) indirect(parser_one, item);
+		LOOPOVERSCOPE_REASON: if (parser_one ofclass Routine) parser_one(item);
 		PARSING_REASON, TALKING_REASON: MatchTextAgainstObject(item);
     }
 
@@ -3658,7 +3658,7 @@ complex in languages other than English.
     k = wn; wn = wnum; wd = NextWordStopped(); wn = k;
 
     if (indirect_parser_inflection) {
-        k = indirect(parser_inflection, obj, wd);
+        k = parser_inflection(obj, wd);
         if (k >= 0) return k;
         m = -k;
     }
