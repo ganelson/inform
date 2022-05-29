@@ -93,7 +93,9 @@ text of three asterisks in a row.
 =
 <extension-example-header> ::=
 	example : <row-of-asterisks> ... - ... |  ==> { pass 1 }
+	example - <row-of-asterisks> ... - ... |  ==> { pass 1 }
 	example : ... - ...                       ==> { 0, - }
+	example - ... - ...                       ==> { 0, - }
 
 <row-of-asterisks> ::=
 	* |     ==> { 1, - }
@@ -104,17 +106,19 @@ text of three asterisks in a row.
 @ =
 int DocumentationRenderer::extension_documentation_example(wording W,
 	int *asterisks, wording *egn, wording *egr) {
-	if (Wordings::length(W) > 10) return FALSE; /* not enough space */
 	if (<extension-example-header>(W)) {
 		wording NW = GET_RW(<extension-example-header>, 1);
-		wording RW = Wordings::first_word(GET_RW(<extension-example-header>, 2));
-		int r2 = Wordings::first_wn(RW);
-		while ((r2 <= Wordings::last_wn(W)) &&
-			((Lexer::word(r2) == PARBREAK_V) == FALSE)) r2++;
-		if (r2 >= Wordings::last_wn(W)) return FALSE;
-		r2--;
+		wording RW = GET_RW(<extension-example-header>, 2);
+		int end = Wordings::first_wn(RW);
+		while ((end <= Wordings::last_wn(RW)) &&
+			((Lexer::word(end) == PARBREAK_V) == FALSE)) end++;
+		end--;
+		if (end > Wordings::last_wn(RW)) return FALSE;
+
 		/* a successful match has now been made */
-		*asterisks = <<r>>; *egn = NW; *egr = RW;
+		*asterisks = <<r>>;
+		*egn = NW;
+		*egr = Wordings::up_to(RW, end);
 		return TRUE;
 	}
 	return FALSE;
