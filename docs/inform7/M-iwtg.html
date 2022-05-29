@@ -51,7 +51,7 @@
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="index.html">inform7</a></li><li><a href="index.html#M">Manual</a></li><li><b>Interacting with the GUI</b></li></ul></div>
 <p class="purpose">A few notes on how the GUI apps should use the Inform command line.</p>
 
-<ul class="toc"><li><a href="M-iwtg.html#SP1">&#167;1. How the application should install extensions</a></li><li><a href="M-iwtg.html#SP2">&#167;2. The extension census</a></li><li><a href="M-iwtg.html#SP3">&#167;3. What happens in census mode</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="M-iwtg.html#SP1">&#167;1. How the application should install extensions</a></li><li><a href="M-iwtg.html#SP3">&#167;3. The extension census</a></li><li><a href="M-iwtg.html#SP4">&#167;4. What happens in census mode</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. How the application should install extensions. </b>When the Inform 7 application looks at a file chosen by the user to
 be installed, it should look at the first line. (Note that this might have
@@ -73,11 +73,15 @@ but definitely without line breaks before:
 </blockquote>
 
 <blockquote>
-    <p>Version 060430 of Locksmith Extra by Emily Short begins here.</p>
+    <p>Version 2.7 of Locksmith Extra by Emily Short begins here.</p>
 </blockquote>
 
 <blockquote>
-    <p>Version 2/060430 of Locksmith Extra by Emily Short begins here.</p>
+    <p>Version 2.1.32 of Locksmith Extra by Emily Short begins here.</p>
+</blockquote>
+
+<blockquote>
+    <p>Version 2/081121 of Locksmith Extra by Emily Short begins here.</p>
 </blockquote>
 
 <p class="commentary">If the name of the extension finishes with a bracketed clause, that
@@ -94,7 +98,12 @@ later, so let's reserve them now.
 purported extension file whose first line does not conform to the above.
 </p>
 
-<p class="commentary">Ignoring any version number given, the Inform application should then
+<p class="commentary">(Note that the inbuild command-line tool can be used to verify that an
+extension is properly formatted, and extract its identity and version. See
+the <a href="../inbuild/index.html" class="internal">inbuild</a> manual.)
+</p>
+
+<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Ignoring any version number given, the Inform application should then
 store the file in the external extensions area. For instance,
 </p>
 
@@ -117,7 +126,7 @@ application must not allow the user to uninstall any extension from
 the built-in area. We must assume that the latter could be on a read-only
 disc, or could be part of a cryptographically signed application bundle.
 </pre>
-<p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. The extension census. </b>The Inform application should run Inform in "census mode" in order to
+<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. The extension census. </b>The Inform application should run Inform in "census mode" in order to
 keep extension documentation up to date. Inform should be run in census mode
 on three occasions:
 </p>
@@ -133,7 +142,7 @@ census doesn't work for some file-system reason, never mind &mdash; it's not
 mission-critical.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. What happens in census mode. </b>The census has two purposes: first, to create provisional documentation
+<p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. What happens in census mode. </b>The census has two purposes: first, to create provisional documentation
 where needed for new and unused extensions; and second, to create the
 following index files in the external documentation area (not in
 the external extension area):

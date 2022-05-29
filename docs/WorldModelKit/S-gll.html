@@ -286,7 +286,7 @@ compared to the Z-machine's: hence the <span class="extract"><span class="extrac
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DESCEND_TO_SPECIFIC_ACTION_R</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">indirect</span><span class="plain-syntax">(#</span><span class="identifier-syntax">actions_table</span><span class="plain-syntax">--&gt;(</span><span class="identifier-syntax">action</span><span class="plain-syntax">+1));</span>
+<span class="plain-syntax">    ( #</span><span class="identifier-syntax">actions_table</span><span class="plain-syntax">--&gt;(</span><span class="identifier-syntax">action</span><span class="plain-syntax">+1) )();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
