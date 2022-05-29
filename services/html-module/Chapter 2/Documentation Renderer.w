@@ -59,10 +59,10 @@ matches successfully and sets the level to 2 and the name to the word range
 
 =
 <extension-documentation-heading> ::=
-	Chapter : ... |  ==> { 1, - }
-	Chapter - ... |  ==> { 1, - }
-	Section : ... |  ==> { 2, - }
-	Section - ... |  ==> { 2, - }
+	chapter : ... |  ==> { 1, - }
+	chapter - ... |  ==> { 1, - }
+	section : ... |  ==> { 2, - }
+	section - ... |  ==> { 2, - }
 
 @ =
 int DocumentationRenderer::extension_documentation_heading(wording W, int *level, wording *HW) {
