@@ -405,23 +405,31 @@ Again, the return value is the new first entry in the raw list.
 [ ObjectTreeCoalesce obj memb lt later;
 	#Ifdef DBLW; print "^^Sorting out: "; DiagnoseSortList(obj); #Endif;
 	.StartAgain;
-	for (memb=obj: memb~=nothing: memb=sibling(memb)) {
+	memb = obj;
+	while (memb ~= nothing) {
+		! Find the next object in a list_together run.
 		lt = memb.list_together;
-		if (LT_Compare(lt, EMPTY_TEXT_VALUE) ~= 0) {
-			! Find first object in list after contiguous run with this list_together value:
-			for (memb=sibling(memb):
-				(memb) && (LT_Compare(memb.list_together, lt) == 0): memb = sibling(memb)) ;
-			! If the contiguous run extends to end of list, the list is now perfect:
-			if (memb == 0) return obj;
-			! And otherwise we look to see if any future entries belong in the earlier run:
-			for (later=sibling(memb): later: later=sibling(later))
-				if (LT_Compare(later.list_together, lt) == 0) {
-					! Yes, they do: so we perform a regrouping of the list and start again:
-					obj = GroupChildren(parent(obj), lt);
-					#Ifdef DBLW; print "^^Sorted to: "; DiagnoseSortList(obj); #Endif;
-					jump StartAgain;
-				}
+		if (LT_Compare(lt, EMPTY_TEXT_VALUE) == 0) {
+			memb = sibling(memb);
+			continue;
 		}
+		! Find first object after the contiguous run with this list_together value:
+		for (memb=sibling(memb):
+		(memb) && (LT_Compare(memb.list_together, lt) == 0): memb = sibling(memb)) ;
+		! If the contiguous run extends to end of list, the list is now perfect:
+		if (memb == 0) {
+			return obj;
+		}
+		! And otherwise we look to see if any future entries belong in the run:
+		for (later=sibling(memb): later: later=sibling(later)) {
+			if (LT_Compare(later.list_together, lt) == 0) {
+				! Yes, they do: so we perform a regrouping of the list and start again:
+				obj = GroupChildren(parent(obj), lt);
+				#Ifdef DBLW; print "^^Sorted to: "; DiagnoseSortList(obj); #Endif;
+				jump StartAgain;
+			}
+		}
+		! No, that run is complete. Continue with the element that followed the run.
 	}
 	return obj;
 ];
