@@ -238,6 +238,7 @@ far as the user is concerned it opens the example and goes there.
 	HTML::begin_colour(OUT, I"000000");
 	HTML_OPEN_WITH("a", "%S", link);
 	PUT('A'+example_count-1); /* the letter A to Z */
+	WRITE(" &mdash; ");
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
 	HTML_CLOSE("a");
 	HTML::end_colour(OUT);
@@ -261,7 +262,6 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 	int mid_example = FALSE, skipping_text_of_an_example = FALSE,
 		start_table_next_line = FALSE, mid_I7_table = FALSE, row_of_table_is_empty = FALSE,
 		mid_displayed_source_text = FALSE, indentation = 0, close_I6_position = -1;
-	HTML_OPEN("p");
 	LOOP_THROUGH_WORDING(i, W) {
 		int edhl, asterisks;
 		wording NW = EMPTY_WORDING, RUBW = EMPTY_WORDING;
@@ -305,7 +305,6 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 	}
 	if (mid_example) @<Close the previous example's text@>;
 	if (example_which_is_open != EDOC_FRAGMENT_ONLY) @<Handle a paragraph break@>;
-	HTML_CLOSE("p");
 	return example_count;
 }
 
@@ -459,6 +458,7 @@ anchor |#docsecN|.
 	HTML_CLOSE("span");
 	HTML_CLOSE("b");
 	HTML::end_colour(OUT);
+	HTML_CLOSE("p");
 
 @ An example is set with a two-table header, and followed optionally by a
 table of its inset copy, shaded to distinguish it from the rest of the
@@ -468,14 +468,14 @@ in the next section.
 
 @<Typeset the heading of this example@> =
 	HTML_OPEN("hr"); /* rule a line before the example heading */
-	HTML_OPEN("p");
-	HTML_OPEN_WITH("a", "name=eg%d", example_count); /* provide the anchor point */
 	HTML::begin_plain_html_table(OUT);
 	HTML_OPEN("tr");
 
 	/* Left hand cell: the oval icon */
 	HTML_OPEN_WITH("td", "halign=\"left\" valign=\"top\" cellpadding=0 cellspacing=0 width=38px");
+	HTML_OPEN_WITH("span", "id=eg%d", example_count); /* provide the anchor point */
 	@<Typeset the lettered oval example icon@>;
+	HTML_CLOSE("span"); /* end the textual link */
 	HTML_CLOSE("td");
 
 	/* Right hand cell: the asterisks and title, with rubric underneath */
@@ -491,15 +491,14 @@ in the next section.
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
 	HTML::end_colour(OUT);
 	HTML_CLOSE("b");
-	HTML_CLOSE("a"); /* end the textual link */
 	HTML_TAG("br");
-	DocumentationRenderer::set_body_text(RUBW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
 	HTML_OPEN("p");
+	DocumentationRenderer::set_body_text(RUBW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
+	HTML_CLOSE("p");
 
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML::end_html_table(OUT);
-	HTML_OPEN("p");
 
 @ The little oval icon with its superimposed boldface letter is much harder to
 get right on all browsers than it looks, and the following is the result of
