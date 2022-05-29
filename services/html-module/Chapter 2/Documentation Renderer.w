@@ -72,6 +72,7 @@ int DocumentationRenderer::extension_documentation_heading(wording W, int *level
 		int end = Wordings::first_wn(W);
 		while ((end<=Wordings::last_wn(W)) && (Lexer::word(end) != PARBREAK_V)) end++;
 		end--;
+		if (end > Wordings::last_wn(W)) return FALSE;
 		*HW = Wordings::up_to(W, end);
 		return TRUE;
 	}
