@@ -59,13 +59,14 @@ matches successfully and sets the level to 2 and the name to the word range
 
 =
 <extension-documentation-heading> ::=
-	chapter : ... |  ==> { 1, - }
-	section : ...    ==> { 2, - }
+	Chapter : ... |  ==> { 1, - }
+	Chapter - ... |  ==> { 1, - }
+	Section : ... |  ==> { 2, - }
+	Section - ... |  ==> { 2, - }
 
 @ =
 int DocumentationRenderer::extension_documentation_heading(wording W, int *level, wording *HW) {
 	if (<extension-documentation-heading>(W)) {
-		if (Wordings::length(W) > 10) return FALSE; /* not enough space: this runs into the end-of-file padding */
 		*level = <<r>>;
 		W = Wordings::trim_first_word(Wordings::trim_first_word(W));
 		int end = Wordings::first_wn(W);
@@ -191,27 +192,27 @@ These are the destinations of links from heading lines in the TOC.
 @<Typeset the table of contents entry for this heading@> =
 	switch (edhl) {
 		case 1:
+			HTML::begin_colour(OUT, I"000000");
 			HTML_OPEN("b");
 			HTML_OPEN_WITH("a",
 				"style=\"text-decoration: none\" href=#docsec%d", heading_count);
-			HTML::begin_colour(OUT, I"000000");
 			WRITE("Chapter %d: ", chapter_count);
-			HTML::end_colour(OUT);
 			HTML_CLOSE("a");
 			HTML_CLOSE("b");
+			HTML::end_colour(OUT);
 			break;
 		case 2:
 			if (chapter_count > 0) /* if there are chapters as well as sections... */
 				WRITE("&nbsp;&nbsp;&nbsp;"); /* ...then set an indentation before entry */
-			HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=#docsec%d", heading_count);
 			HTML::begin_colour(OUT, I"000000");
+			HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=#docsec%d", heading_count);
 			WRITE("Section ");
 			if (chapter_count > 0) /* if there are chapters as well as sections... */
 				WRITE("%d.%d: ", chapter_count, section_count); /* quote in form S.C */
 			else
 				WRITE("%d: ", section_count); /* otherwise quote section number only */
-			HTML::end_colour(OUT);
 			HTML_CLOSE("a");
+			HTML::end_colour(OUT);
 			break;
 		default: internal_error("unable to set this heading level in extension TOC");
 	}
@@ -229,12 +230,12 @@ far as the user is concerned it opens the example and goes there.
 	WRITE_TO(link, "style=\"text-decoration: none\" href=\"");
 	DocumentationRenderer::href_of_example(link, base_leafname, example_count, example_count);
 	WRITE_TO(link, "\"");
-	HTML_OPEN_WITH("a", "%S", link);
 	HTML::begin_colour(OUT, I"000000");
+	HTML_OPEN_WITH("a", "%S", link);
 	PUT('A'+example_count-1); /* the letter A to Z */
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
-	HTML::end_colour(OUT);
 	HTML_CLOSE("a");
+	HTML::end_colour(OUT);
 	HTML_TAG("br");
 
 @
@@ -429,23 +430,30 @@ anchor |#docsecN|.
 
 @<Typeset the heading of this chapter or section@> =
 	HTML_OPEN("p");
-	HTML_TAG_WITH("a", "name=docsec%d", heading_count);
-	HTML_OPEN("b");
 	switch (edhl) {
 		case 1:
 			HTML::begin_colour(OUT, I"800000");
-			WRITE("Chapter %d: ", chapter_count);
 			break;
 		case 2:
 			HTML::begin_colour(OUT, I"000000");
+			break;
+	}
+	HTML_OPEN("b");
+	HTML_OPEN_WITH("span", "id=docsec%d", heading_count);
+	switch (edhl) {
+		case 1:
+			WRITE("Chapter %d: ", chapter_count);
+			break;
+		case 2:
 			WRITE("Section ");
 			if (chapter_count > 0) WRITE("%d.", chapter_count);
 			WRITE("%d: ", section_count);
 			break;
 	}
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
-	HTML::end_colour(OUT);
+	HTML_CLOSE("span");
 	HTML_CLOSE("b");
+	HTML::end_colour(OUT);
 
 @ An example is set with a two-table header, and followed optionally by a
 table of its inset copy, shaded to distinguish it from the rest of the
