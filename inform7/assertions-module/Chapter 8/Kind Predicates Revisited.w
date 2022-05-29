@@ -88,18 +88,21 @@ void KindPredicatesRevisited::get_schema(up_family *self, int task, unary_predic
 			else {
 				if ((Kinds::get_construct(up->assert_kind) == CON_list_of) &&
 					(problem_count == 0)) {
-					Problems::quote_source(1, current_sentence);
-					Problems::quote_kind(2, up->assert_kind);
-					StandardProblems::handmade_problem(Task::syntax_tree(),
-						_p_(PM_CantCheckListContents));
-					Problems::issue_problem_segment(
-						"In %1, you use a list which might or might not match a "
-						"definition requiring %2. But there's no efficient way to "
-						"tell during play whether the list actually contains that, "
-						"without laboriously checking every entry. Because "
-						"in general this would be a bad idea, this usage is "
-						"not allowed.");
-					Problems::issue_problem_end();
+					kind *EK = Kinds::unary_construction_material(up->assert_kind);
+					if (Kinds::Behaviour::is_subkind_of_object(EK)) {
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_kind(2, up->assert_kind);
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_CantCheckListContents));
+						Problems::issue_problem_segment(
+							"In %1, you use a list which might or might not match a "
+							"definition requiring %2. But there's no efficient way to "
+							"tell during play whether the list actually contains that, "
+							"without laboriously checking every entry. Because "
+							"in general this would be a bad idea, this usage is "
+							"not allowed.");
+						Problems::issue_problem_end();
+					}
 				}
 				Calculus::Schemas::modify(asch->schema, "true");
 			}

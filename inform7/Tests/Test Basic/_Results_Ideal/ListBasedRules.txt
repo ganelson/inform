@@ -1,0 +1,8 @@
+  I now apply blob to 1, 17 and 2.
+  It's a list, anyway.
+  I now apply blob to 2 and 4.
+  It's the magic one!
+  It's a list, anyway.
+  I now apply blob to .
+  It's empty!
+  It's a list, anyway.
