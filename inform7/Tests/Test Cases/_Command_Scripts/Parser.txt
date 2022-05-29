@@ -3,3 +3,7 @@ break bottle
 und
 undo
 examine bottle
+s
+take 5 pounds
+s
+take 17 cubes

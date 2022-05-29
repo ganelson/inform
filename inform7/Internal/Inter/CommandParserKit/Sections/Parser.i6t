@@ -923,7 +923,7 @@ Break down a syntax line into analysed tokens.
         nsns = 0; special_word = 0;
         multiple_object-->0 = 0;
         multi_context = 0;
-        etype = STUCK_PE;
+        etype = STUCK_PE; multi_had = 0;
 
         ! Put the word marker back to just after the verb
 
@@ -1056,7 +1056,7 @@ and similarly for |multiinside|.
         parameters = 0;
         nsns = 0; special_word = 0;
         multiple_object-->0 = 0;
-        etype = STUCK_PE;
+        etype = STUCK_PE; multi_had = 1;
         wn = verb_wordnum+1;
 
 @h Parser Letter G.
@@ -1199,6 +1199,11 @@ so that it may be reprinted by the parser later on.
                     best_etype = NOTHING_PE;
                     jump GiveError;
                 }
+
+				if (multi_had > 1) {
+                    best_etype = TOOFEW_PE;
+                    jump GiveError;
+				}
 
                 #Ifdef DEBUG;
                 if (parser_trace >= 1) print "[Line successfully parsed]^";
@@ -1926,8 +1931,10 @@ Return the conclusion of parsing an object list.
 		  	if (token == MULTIEXCEPT_TOKEN or MULTIINSIDE_TOKEN) multi_context = token;
             if (indef_wanted < INDEF_ALL_WANTED && indef_wanted > 1) {
                 multi_had = 1; multi_wanted = indef_wanted;
-                etype = TOOFEW_PE;
-                jump FailToken;
+				#Ifdef DEBUG;
+				if (parser_trace >= 4) print "Too few found at letter F^";
+				#Endif; ! DEBUG
+               jump FailToken;
             }
         }
     }
@@ -2680,10 +2687,11 @@ routines to clear up this mess, so we can't economise on working them out).
             }
         }
         if (i < indef_wanted && indef_wanted < INDEF_ALL_WANTED) {
-            etype = TOOFEW_PE; multi_wanted = indef_wanted;
-			 if (parser_trace >= 4) print "Too few found^";
-            multi_had=i;
-            return -1;
+			multi_wanted = indef_wanted;
+			#Ifdef DEBUG;
+            if (parser_trace >= 4) print "Too few found in Adjudicate^";
+            #Endif; ! DEBUG
+            multi_had=i; ! Allow to proceed for now
         }
         multiple_object-->0 = i+offset;
         multi_context = context;

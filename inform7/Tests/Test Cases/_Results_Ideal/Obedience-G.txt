@@ -1538,21 +1538,13 @@ You can't put something inside itself.
 
 >** put strap in bag
 [inserting the strap into the frilly bag]
-(first taking the strap)
-[(1) taking the strap - silently]
-That seems to be a part of the frilly bag.
-[(1) taking the strap - silently - failed the can't take component parts rule]
-
-[inserting the strap into the frilly bag - failed the can't insert what's not held rule]
+You can't put something inside itself.
+[inserting the strap into the frilly bag - failed the can't insert something into itself rule]
 
 >** put my hand in the bag
 [inserting your hand into the frilly bag]
-(first taking your hand)
-[(1) taking your hand - silently]
-That seems to be a part of yourself.
-[(1) taking your hand - silently - failed the can't take component parts rule]
-
-[inserting your hand into the frilly bag - failed the can't insert what's not held rule]
+You can't put something inside itself.
+[inserting your hand into the frilly bag - failed the can't insert something into itself rule]
 
 >** close bag
 [closing the frilly bag]
@@ -1659,12 +1651,8 @@ That seems to belong to Clark Gable.
 
 >** put scarf into briefcase
 [inserting the sparkly scarf into the briefcase]
-(first taking the sparkly scarf)
-[(1) taking the sparkly scarf - silently]
-That seems to belong to Clark Gable.
-[(1) taking the sparkly scarf - silently - failed the can't take people's possessions rule]
-
-[inserting the sparkly scarf into the briefcase - failed the can't insert what's not held rule]
+The sparkly scarf is already there.
+[inserting the sparkly scarf into the briefcase - failed the can't insert what's already inserted rule]
 
 >** undo
 Sound Stage

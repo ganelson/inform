@@ -18,3 +18,13 @@ The description of the bottle is "It's [if the bottle is broken]broken[else]unbr
 Instead of attacking the unbroken bottle:
 	say "Smash!";
 	now the bottle is broken.
+
+Section 2 - Too Few Error Testing
+
+A cube is a kind of thing.
+
+The Pea-green Boat is a room south of the Discard UNDO Testing Place.
+
+The owl and the pussycat are in the Pea-green Boat. 
+
+South of the Boat is the Shore. Six cubes are in the Shore.
