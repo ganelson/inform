@@ -1209,7 +1209,7 @@ Carry out examining (this is the examine supporters rule):
 			now examine text printed is true.
 
 Carry out examining (this is the examine devices rule):
-	if the noun is a device:
+	if the noun provides the property switched on:
 		say "[The noun] [are] [if story tense is present tense]currently [end if]switched
 			[if the noun is switched on]on[otherwise]off[end if]." (A);
 		now examine text printed is true.
