@@ -60,17 +60,19 @@ matches successfully and sets the level to 2 and the name to the word range
 =
 <extension-documentation-heading> ::=
 	chapter : ... |  ==> { 1, - }
-	section : ...    ==> { 2, - }
+	chapter - ... |  ==> { 1, - }
+	section : ... |  ==> { 2, - }
+	section - ...    ==> { 2, - }
 
 @ =
 int DocumentationRenderer::extension_documentation_heading(wording W, int *level, wording *HW) {
 	if (<extension-documentation-heading>(W)) {
-		if (Wordings::length(W) > 10) return FALSE; /* not enough space: this runs into the end-of-file padding */
 		*level = <<r>>;
 		W = Wordings::trim_first_word(Wordings::trim_first_word(W));
 		int end = Wordings::first_wn(W);
 		while ((end<=Wordings::last_wn(W)) && (Lexer::word(end) != PARBREAK_V)) end++;
 		end--;
+		if (end > Wordings::last_wn(W)) return FALSE;
 		*HW = Wordings::up_to(W, end);
 		return TRUE;
 	}
@@ -92,7 +94,9 @@ text of three asterisks in a row.
 =
 <extension-example-header> ::=
 	example : <row-of-asterisks> ... - ... |  ==> { pass 1 }
-	example : ... - ...                       ==> { 0, - }
+	example - <row-of-asterisks> ... - ... |  ==> { pass 1 }
+	example : ... - ...                    |  ==> { 0, - }
+	example - ... - ...                       ==> { 0, - }
 
 <row-of-asterisks> ::=
 	* |     ==> { 1, - }
@@ -103,17 +107,19 @@ text of three asterisks in a row.
 @ =
 int DocumentationRenderer::extension_documentation_example(wording W,
 	int *asterisks, wording *egn, wording *egr) {
-	if (Wordings::length(W) > 10) return FALSE; /* not enough space */
 	if (<extension-example-header>(W)) {
 		wording NW = GET_RW(<extension-example-header>, 1);
-		wording RW = Wordings::first_word(GET_RW(<extension-example-header>, 2));
-		int r2 = Wordings::first_wn(RW);
-		while ((r2 <= Wordings::last_wn(W)) &&
-			((Lexer::word(r2) == PARBREAK_V) == FALSE)) r2++;
-		if (r2 >= Wordings::last_wn(W)) return FALSE;
-		r2--;
+		wording RW = GET_RW(<extension-example-header>, 2);
+		int end = Wordings::first_wn(RW);
+		while ((end <= Wordings::last_wn(RW)) &&
+			((Lexer::word(end) == PARBREAK_V) == FALSE)) end++;
+		end--;
+		if (end > Wordings::last_wn(RW)) return FALSE;
+
 		/* a successful match has now been made */
-		*asterisks = <<r>>; *egn = NW; *egr = RW;
+		*asterisks = <<r>>;
+		*egn = NW;
+		*egr = Wordings::up_to(RW, end);
 		return TRUE;
 	}
 	return FALSE;
@@ -191,27 +197,27 @@ These are the destinations of links from heading lines in the TOC.
 @<Typeset the table of contents entry for this heading@> =
 	switch (edhl) {
 		case 1:
+			HTML::begin_colour(OUT, I"000000");
 			HTML_OPEN("b");
 			HTML_OPEN_WITH("a",
 				"style=\"text-decoration: none\" href=#docsec%d", heading_count);
-			HTML::begin_colour(OUT, I"000000");
 			WRITE("Chapter %d: ", chapter_count);
-			HTML::end_colour(OUT);
 			HTML_CLOSE("a");
 			HTML_CLOSE("b");
+			HTML::end_colour(OUT);
 			break;
 		case 2:
 			if (chapter_count > 0) /* if there are chapters as well as sections... */
 				WRITE("&nbsp;&nbsp;&nbsp;"); /* ...then set an indentation before entry */
-			HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=#docsec%d", heading_count);
 			HTML::begin_colour(OUT, I"000000");
+			HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=#docsec%d", heading_count);
 			WRITE("Section ");
 			if (chapter_count > 0) /* if there are chapters as well as sections... */
 				WRITE("%d.%d: ", chapter_count, section_count); /* quote in form S.C */
 			else
 				WRITE("%d: ", section_count); /* otherwise quote section number only */
-			HTML::end_colour(OUT);
 			HTML_CLOSE("a");
+			HTML::end_colour(OUT);
 			break;
 		default: internal_error("unable to set this heading level in extension TOC");
 	}
@@ -229,12 +235,13 @@ far as the user is concerned it opens the example and goes there.
 	WRITE_TO(link, "style=\"text-decoration: none\" href=\"");
 	DocumentationRenderer::href_of_example(link, base_leafname, example_count, example_count);
 	WRITE_TO(link, "\"");
-	HTML_OPEN_WITH("a", "%S", link);
 	HTML::begin_colour(OUT, I"000000");
+	HTML_OPEN_WITH("a", "%S", link);
 	PUT('A'+example_count-1); /* the letter A to Z */
+	WRITE(" &mdash; ");
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
-	HTML::end_colour(OUT);
 	HTML_CLOSE("a");
+	HTML::end_colour(OUT);
 	HTML_TAG("br");
 
 @
@@ -255,7 +262,6 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 	int mid_example = FALSE, skipping_text_of_an_example = FALSE,
 		start_table_next_line = FALSE, mid_I7_table = FALSE, row_of_table_is_empty = FALSE,
 		mid_displayed_source_text = FALSE, indentation = 0, close_I6_position = -1;
-	HTML_OPEN("p");
 	LOOP_THROUGH_WORDING(i, W) {
 		int edhl, asterisks;
 		wording NW = EMPTY_WORDING, RUBW = EMPTY_WORDING;
@@ -299,7 +305,6 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 	}
 	if (mid_example) @<Close the previous example's text@>;
 	if (example_which_is_open != EDOC_FRAGMENT_ONLY) @<Handle a paragraph break@>;
-	HTML_CLOSE("p");
 	return example_count;
 }
 
@@ -429,23 +434,31 @@ anchor |#docsecN|.
 
 @<Typeset the heading of this chapter or section@> =
 	HTML_OPEN("p");
-	HTML_TAG_WITH("a", "name=docsec%d", heading_count);
-	HTML_OPEN("b");
 	switch (edhl) {
 		case 1:
 			HTML::begin_colour(OUT, I"800000");
-			WRITE("Chapter %d: ", chapter_count);
 			break;
 		case 2:
 			HTML::begin_colour(OUT, I"000000");
+			break;
+	}
+	HTML_OPEN("b");
+	HTML_OPEN_WITH("span", "id=docsec%d", heading_count);
+	switch (edhl) {
+		case 1:
+			WRITE("Chapter %d: ", chapter_count);
+			break;
+		case 2:
 			WRITE("Section ");
 			if (chapter_count > 0) WRITE("%d.", chapter_count);
 			WRITE("%d: ", section_count);
 			break;
 	}
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
-	HTML::end_colour(OUT);
+	HTML_CLOSE("span");
 	HTML_CLOSE("b");
+	HTML::end_colour(OUT);
+	HTML_CLOSE("p");
 
 @ An example is set with a two-table header, and followed optionally by a
 table of its inset copy, shaded to distinguish it from the rest of the
@@ -455,14 +468,14 @@ in the next section.
 
 @<Typeset the heading of this example@> =
 	HTML_OPEN("hr"); /* rule a line before the example heading */
-	HTML_OPEN("p");
-	HTML_OPEN_WITH("a", "name=eg%d", example_count); /* provide the anchor point */
 	HTML::begin_plain_html_table(OUT);
 	HTML_OPEN("tr");
 
 	/* Left hand cell: the oval icon */
 	HTML_OPEN_WITH("td", "halign=\"left\" valign=\"top\" cellpadding=0 cellspacing=0 width=38px");
+	HTML_OPEN_WITH("span", "id=eg%d", example_count); /* provide the anchor point */
 	@<Typeset the lettered oval example icon@>;
+	HTML_CLOSE("span"); /* end the textual link */
 	HTML_CLOSE("td");
 
 	/* Right hand cell: the asterisks and title, with rubric underneath */
@@ -478,15 +491,14 @@ in the next section.
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
 	HTML::end_colour(OUT);
 	HTML_CLOSE("b");
-	HTML_CLOSE("a"); /* end the textual link */
 	HTML_TAG("br");
-	DocumentationRenderer::set_body_text(RUBW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
 	HTML_OPEN("p");
+	DocumentationRenderer::set_body_text(RUBW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
+	HTML_CLOSE("p");
 
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTML::end_html_table(OUT);
-	HTML_OPEN("p");
 
 @ The little oval icon with its superimposed boldface letter is much harder to
 get right on all browsers than it looks, and the following is the result of
