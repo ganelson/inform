@@ -1,20 +1,20 @@
 Total memory consumption was 123375K = 120 MB
 
- ---- was used for 2044964 objects, in 362887 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2044939 objects, in 362862 frames in 0 x 800K = 0K = 0 MB:
 
     33.0%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     20.5%  text_stream_array                        4605 x 100 = 460500 objects, 25935360 bytes
     19.2%  linked_list                              43461 objects, 24338160 bytes
     11.1%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes
     10.4%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes
-     8.2%  parse_node                               129722 objects, 10377760 bytes
+     8.2%  parse_node                               129706 objects, 10376480 bytes
      5.8%  verb_conjugation                         160 objects, 7425280 bytes
      4.3%  parse_node_annotation_array              346 x 500 = 173000 objects, 5547072 bytes
      2.6%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes
      2.5%  inter_name_array                         67 x 1000 = 67000 objects, 3218144 bytes
      2.0%  kind_array                               66 x 1000 = 66000 objects, 2642112 bytes
      1.6%  inter_name_generator_array               51 x 1000 = 51000 objects, 2041632 bytes
-     1.5%  inter_schema_token                       13969 objects, 2011536 bytes
+     1.5%  inter_schema_token                       13964 objects, 2010816 bytes
      1.4%  package_request                          21153 objects, 1861464 bytes
      1.4%  vocabulary_entry_array                   161 x 100 = 16100 objects, 1808352 bytes
      1.2%  dict_entry_array                         470 x 100 = 47000 objects, 1519040 bytes
@@ -31,7 +31,7 @@ Total memory consumption was 123375K = 120 MB
      0.6%  ptoken                                   8397 objects, 873288 bytes
      0.6%  grammatical_usage                        3613 objects, 867120 bytes
      0.6%  individual_form                          2563 objects, 861168 bytes
-     0.6%  inter_schema_node                        8920 objects, 856320 bytes
+     0.6%  inter_schema_node                        8917 objects, 856032 bytes
      0.5%  unary_predicate_array                    16 x 1000 = 16000 objects, 640512 bytes
      0.3%  local_variable_array                     47 x 100 = 4700 objects, 452704 bytes
      0.3%  verb_usage                               1128 objects, 388032 bytes
@@ -55,7 +55,7 @@ Total memory consumption was 123375K = 120 MB
      ----  noun_usage                               2404 objects, 96160 bytes
      ----  anl_entry_array                          2 x 1000 = 2000 objects, 96064 bytes
      ----  preposition                              273 objects, 87360 bytes
-     ----  inter_schema                             1512 objects, 84672 bytes
+     ----  inter_schema                             1511 objects, 84616 bytes
      ----  lexical_cluster                          2519 objects, 80608 bytes
      ----  pcalc_term_array                         2 x 1000 = 2000 objects, 80064 bytes
      ----  kind_variable_declaration                1655 objects, 79440 bytes
@@ -237,7 +237,7 @@ Total memory consumption was 123375K = 120 MB
 
 100.0% was used for memory not allocated for objects:
 
-    57.7%  text stream storage                      72934448 bytes in 478022 claims
+    57.7%  text stream storage                      72934556 bytes in 478018 claims
      4.1%  dictionary storage                       5228544 bytes in 7520 claims
      ----  sorting                                  1448 bytes in 149 claims
      5.6%  source text                              7200000 bytes in 3 claims
@@ -246,7 +246,7 @@ Total memory consumption was 123375K = 120 MB
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
      3.5%  inter symbols storage                    4520272 bytes in 27949 claims
-    13.2%  inter bytecode storage                   16767680 bytes in 14 claims
+    13.2%  inter bytecode storage                   16767568 bytes in 14 claims
      4.9%  inter links storage                      6222976 bytes in 11 claims
      0.1%  inter tree location list storage         191232 bytes in 32 claims
      1.3%  instance-of-kind counting                1700416 bytes in 1 claim
@@ -255,5 +255,5 @@ Total memory consumption was 123375K = 120 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      0.2%  emitter array storage                    280288 bytes in 1999 claims
 
--146.-1% was overhead - -184656920 bytes = -180329K = -176 MB
+-146.-1% was overhead - -184654576 bytes = -180326K = -176 MB
 
