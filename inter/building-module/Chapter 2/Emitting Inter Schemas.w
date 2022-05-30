@@ -421,7 +421,10 @@ changed back again very soon after.
 		at = at->next_node;
 	} else if (Str::eq(tok->material, I"indirect")) { 
 		at = at->next_node;
-	} else {
+	} else if (Str::eq(tok->material, I"glk")) {
+		InterSchemas::throw_error(node, I"the glk() function is now unsupported");
+		return;
+	} else {	
 		to_call = IdentifierFinders::find_token(I, tok, finder);
 		if (InterSymbol::is_local(to_call)) to_call = NULL;
 		if (to_call) {

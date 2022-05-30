@@ -37,14 +37,22 @@
     English:
         chapter : {...} 
           constraint DS = {17} extremes [3, infinity)
+        chapter - {...} 
+          constraint DS = {17} extremes [3, infinity)
         section : {...} 
+          constraint DS = {17} extremes [3, infinity)
+        section - {...} 
           constraint DS = {17} extremes [3, infinity)
 
 <extension-example-header> nti 19 constraint DS = {19} extremes [5, infinity)
     English:
         example : <row-of-asterisks> {...} - {...} 
           constraint DS = {18, 19} extremes [6, infinity)
+        example - <row-of-asterisks> {...} - {...} 
+          constraint DS = {18, 19} extremes [6, infinity)
         example : {...} - {...} 
+          constraint DS = {19} extremes [5, infinity)
+        example - {...} - {...} 
           constraint DS = {19} extremes [5, infinity)
 
 <row-of-asterisks> nti 18 constraint CS = {18} extremes [1, 1]
