@@ -1,6 +1,6 @@
-Total memory consumption was 123376K = 120 MB
+Total memory consumption was 123451K = 121 MB
 
- ---- was used for 2044960 objects, in 362883 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2044983 objects, in 362906 frames in 0 x 800K = 0K = 0 MB:
 
     33.0%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     20.5%  text_stream_array                        4605 x 100 = 460500 objects, 25935360 bytes
@@ -113,7 +113,7 @@ Total memory consumption was 123376K = 120 MB
      ----  booking_list                             407 objects, 13024 bytes
      ----  adjective_iname_holder                   320 objects, 12800 bytes
      ----  pathname                                 308 objects, 12320 bytes
-     ----  uniqueness_count                         454 objects, 10896 bytes
+     ----  uniqueness_count                         477 objects, 11448 bytes
      ----  inter_construct                          30 objects, 10320 bytes
      ----  filename                                 253 objects, 10120 bytes
      ----  stopwatch_timer                          113 objects, 9040 bytes
@@ -237,7 +237,7 @@ Total memory consumption was 123376K = 120 MB
 
 100.0% was used for memory not allocated for objects:
 
-    57.7%  text stream storage                      72935620 bytes in 478023 claims
+    57.7%  text stream storage                      72943316 bytes in 478057 claims
      4.1%  dictionary storage                       5228544 bytes in 7520 claims
      ----  sorting                                  1448 bytes in 149 claims
      5.6%  source text                              7200000 bytes in 3 claims
@@ -245,8 +245,8 @@ Total memory consumption was 123376K = 120 MB
      0.2%  documentation fragments                  262144 bytes in 1 claim
      ----  linguistic stock array                   81920 bytes in 2 claims
      ----  small word set array                     105600 bytes in 22 claims
-     3.5%  inter symbols storage                    4520272 bytes in 27949 claims
-    13.2%  inter bytecode storage                   16767568 bytes in 14 claims
+     3.5%  inter symbols storage                    4520768 bytes in 27950 claims
+    13.3%  inter bytecode storage                   16836156 bytes in 14 claims
      4.9%  inter links storage                      6222976 bytes in 11 claims
      0.1%  inter tree location list storage         191232 bytes in 32 claims
      1.3%  instance-of-kind counting                1700416 bytes in 1 claim
@@ -255,5 +255,5 @@ Total memory consumption was 123376K = 120 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      0.2%  emitter array storage                    280288 bytes in 1999 claims
 
--146.-1% was overhead - -184657272 bytes = -180329K = -176 MB
+-146.0% was overhead - -184657824 bytes = -180329K = -176 MB
 

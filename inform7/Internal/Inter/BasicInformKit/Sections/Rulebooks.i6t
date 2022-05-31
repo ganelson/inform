@@ -26,15 +26,15 @@ Constant RS_FAILS		= 2;
 
 Array latest_rule_result --> 3;
 
-[ RecordRuleOutcome usage rule1 rule2;
+[ RecordRuleOutcome usage strong_kind val;
 	if ((latest_rule_result-->0 == RS_SUCCEEDS or RS_FAILS) &&
 		(KOVIsBlockValue(latest_rule_result-->1)))
 		BlkValueFree(latest_rule_result-->2);
-	if ((usage == RS_SUCCEEDS or RS_FAILS) && (KOVIsBlockValue(rule1)))
-		rule2 = BlkValueCopy(BlkValueCreate(rule1), rule2);
+	if ((usage == RS_SUCCEEDS or RS_FAILS) && (KOVIsBlockValue(strong_kind)))
+		val = BlkValueCopy(BlkValueCreate(strong_kind), val);
 	latest_rule_result-->0 = usage;
-	latest_rule_result-->1 = rule1;
-	latest_rule_result-->2 = rule2;
+	latest_rule_result-->1 = strong_kind;
+	latest_rule_result-->2 = val;
 ];
 
 @h Following.
@@ -165,12 +165,12 @@ call it.)
 	RulebookFails();
 ];
 
-[ RulebookSucceeds weak_kind value;
-	RecordRuleOutcome(RS_SUCCEEDS, weak_kind, value);
+[ RulebookSucceeds strong_kind value;
+	RecordRuleOutcome(RS_SUCCEEDS, strong_kind, value);
 ];
 
-[ RulebookFails weak_kind value;
-	RecordRuleOutcome(RS_FAILS, weak_kind, value);
+[ RulebookFails strong_kind value;
+	RecordRuleOutcome(RS_FAILS, strong_kind, value);
 ];
 
 [ RuleHasNoOutcome;

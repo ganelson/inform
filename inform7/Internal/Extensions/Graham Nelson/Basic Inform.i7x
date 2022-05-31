@@ -1325,7 +1325,7 @@ To rule fails
 	(- RulebookFails(); rtrue; -) - in to only.
 To rule succeeds with result (val - a value)
 	(documented at ph_succeedswith):
-	(- RulebookSucceeds({-weak-kind:rule-return-kind},{-return-value-from-rule:val}); rtrue; -) - in to only.
+	(- RulebookSucceeds({-strong-kind:rule-return-kind},{-return-value-from-rule:val}); rtrue; -) - in to only.
 To decide if rule succeeded
 	(documented at ph_succeeded):
 	(- (RulebookSucceeded()) -).
