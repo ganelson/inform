@@ -140,7 +140,7 @@ smaller blocks are needed, and to rejoin from the back when blocks are
 freed and added to the free space object.
 
 =
-Array Flex_Heap -> (MEMORY_HEAP_SIZE + 16); ! Plus 16 to allow room for head-free-block
+Array Flex_Heap -> (MEMORY_HEAP_SIZE + BLK_DATA_MULTI_OFFSET); ! allow room for head-free-block
 
 @h Initialisation.
 To recap: the constant |MEMORY_HEAP_SIZE| has been predefined by the Inform compiler,
