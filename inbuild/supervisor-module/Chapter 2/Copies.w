@@ -19,6 +19,7 @@ typedef struct inbuild_copy {
 	struct filename *location_if_file;
 
 	general_pointer metadata; /* the type of which depends on the work's genre */
+	struct JSON_value *metadata_record; /* where read in from a JSON file */
 	struct build_vertex *vertex; /* head vertex of build graph for this copy */
 	int source_text_read; /* have we attempted to read Inform source text from this? */
 	struct wording source_text; /* the source text we read, if so */
@@ -38,6 +39,7 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 	copy->location_if_path = NULL;
 	copy->location_if_file = NULL;
 	copy->metadata = NULL_GENERAL_POINTER;
+	copy->metadata_record = NULL;
 	copy->vertex = Graphs::copy_vertex(copy);
 	copy->source_text_read = FALSE;
 	copy->source_text = EMPTY_WORDING;

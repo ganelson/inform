@@ -69,7 +69,7 @@ to specifying |-kit BasicInformKit|.
 
 @ Kits have the ability to specify that other kits are automatically added to
 the project in an ITTT, "if-this-then-that", way. As we shall see, every kit
-contains a file called |kit_metadata.txt| describing its needs. The metadata
+contains a file called |kit_metadata.json| describing its needs. The metadata
 for CommandParserKit includes:
 = (text)
 dependency: if CommandParserKit then WorldModelKit
@@ -84,7 +84,7 @@ It follows that if WorldModelKit is not present, then BasicInformExtrasKit is
 automatically added instead.
 
 @ Kits can also use their metadata to specify that associated extensions should
-automatically be loaded into the project.[1] For example, the |kit_metadata.txt|
+automatically be loaded into the project.[1] For example, the |kit_metadata.json|
 for BasicInformKit includes the lines:
 = (text)
 extension: Basic Inform by Graham Nelson
@@ -193,7 +193,7 @@ an example of the result.) It is simple because it provides only a |Contents.w|
 page and a |Sections| subdirectory -- it has no manual, chapters, figures,
 sounds or other paraphernalia.
 
-(*) A file called |kit_metadata.txt| describing the kit, its version and its
+(*) A file called |kit_metadata.json| describing the kit, its version and its
 dependencies.
 
 (*) Compiled binary Inter files -- but only once the kit has been built. These
@@ -245,7 +245,7 @@ very legible, and it is highly verbose.
 
 [2] At some point it may be developed out a little, but there's no great need.
 
-@ The metadata file at |BalloonKit/kit_metadata.txt| is going to be simple:
+@ The metadata file at |BalloonKit/kit_metadata.json| is going to be simple:
 = (text)
 extension: Party Balloons by Joseph-Michel Montgolfier
 =

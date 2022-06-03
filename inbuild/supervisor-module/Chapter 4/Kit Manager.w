@@ -5,7 +5,7 @@ Inter code.
 
 @h Genre definition.
 The |kit_genre| can be summarised as follows. Kits consist of directories,
-containing metadata in |D/kit_metadata.txt|, but which are also valid Inweb
+containing metadata in |D/kit_metadata.json|, but which are also valid Inweb
 webs of Inform 6 source text. They are recognised by having directory names
 ending in |Kit|, and by having a metadata file in place. They are stored in
 nests, in |N/Inter/Title-vVersion|. Their build graphs are quite extensive,
@@ -91,7 +91,7 @@ void KitManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 }
 
 inbuild_copy *KitManager::claim_folder_as_copy(pathname *P) {
-	filename *canary = Filenames::in(P, I"kit_metadata.txt");
+	filename *canary = Filenames::in(P, I"kit_metadata.json");
 	if (TextFiles::exists(canary))
 		return KitManager::new_copy(Pathnames::directory_name(P), P);
 	return NULL;
@@ -136,7 +136,7 @@ pathname *KitManager::pathname_in_nest(inbuild_nest *N, inbuild_edition *E) {
 void KitManager::copy_to_nest(inbuild_genre *gen, inbuild_copy *C, inbuild_nest *N,
 	int syncing, build_methodology *meth) {
 	pathname *dest_kit = KitManager::pathname_in_nest(N, C->edition);
-	filename *dest_kit_metadata = Filenames::in(dest_kit, I"kit_metadata.txt");
+	filename *dest_kit_metadata = Filenames::in(dest_kit, I"kit_metadata.json");
 	if (TextFiles::exists(dest_kit_metadata)) {
 		if (syncing == FALSE) { Copies::overwrite_error(C, N); return; }
 	} else {

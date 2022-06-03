@@ -1,0 +1,11 @@
+{
+	"is": {
+		"type": "kit",
+		"title": "CastrovalvaKit",
+		"version": "2.7.1"
+	},
+	"compatibility": "not for 32-bit",
+	"kit-details": {
+		"has-priority": 1
+	}
+}

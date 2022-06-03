@@ -1,0 +1,21 @@
+{
+	"is": {
+		"type": "kit",
+		"title": "WorldModelKit",
+		"version": "1"
+	},
+	"needs": [ {
+		"need": {
+			"type": "extension",
+			"title": "Standard Rules",
+			"author": "Graham Nelson"
+		}
+	} ],
+	"activates": [ "interactive fiction", "multimedia" ],
+	"kit-details": {
+		"has-priority": 2,
+		"defines-Main": true,
+		"provides-kinds": [ "Actions.neptune", "Times.neptune", "Scenes.neptune", "Figures.neptune", "Sounds.neptune" ],
+		"indexes-with-structure": "Standard.indext"
+	}
+}

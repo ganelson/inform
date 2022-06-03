@@ -479,9 +479,8 @@ just plain old files.
 
 =
 pathname *Supervisor::installed_files(void) {
-	inbuild_nest *I = Supervisor::internal();
-	if (I == NULL) Errors::fatal("Did not set -internal when calling");
-	return I->location;
+	if (shared_internal_nest) return shared_internal_nest->location;
+	return Pathnames::from_text(I"inform7/Internal");
 }
 
 @ As noted above, the transient area is used for ephemera such as dynamically

@@ -1,0 +1,35 @@
+<resource> ::= {
+	"type": ( "kit" | "extension" | "language" ),
+	"title": string,
+	?"author": string,
+	?"version": string,
+	?"version-range": string
+}
+
+<kit-metadata> ::= {
+	?"has-priority": number,
+	?"provides-kinds": [ string* ],
+	?"defines-Main": boolean,
+	?"indexes-with-structure": string
+}
+
+<extension-metadata> ::= {
+}
+
+<language-metadata> ::= {
+}
+
+<resource-metadata> ::= {
+	"is": <resource>,
+	?"compatibility": string,
+	?"activates": [ string* ],
+	?"deactivates": [ string* ],
+	?"needs": [ {
+		?"if": <resource>,
+		?"unless": <resource>,
+		"need": <resource>
+	}* ],
+	?"kit-details": <kit-metadata>,
+	?"extension-details": <extension-metadata>,
+	?"language-details": <language-metadata>
+}

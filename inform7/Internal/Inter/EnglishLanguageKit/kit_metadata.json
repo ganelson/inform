@@ -1,0 +1,17 @@
+{
+	"is": {
+		"type": "kit",
+		"title": "EnglishLanguageKit",
+		"version": "1"
+	},
+	"needs": [ {
+		"need": {
+			"type": "extension",
+			"title": "English Language",
+			"author": "Graham Nelson"
+		}
+	} ],
+	"kit-details": {
+		"has-priority": 1
+	}
+}

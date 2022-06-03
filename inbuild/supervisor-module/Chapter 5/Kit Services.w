@@ -70,61 +70,108 @@ void Kits::scan(inbuild_copy *C) {
 	K->defines_Main = FALSE;
 	K->supports_nl = FALSE;
 
-	filename *F = Filenames::in(C->location_if_path, I"kit_metadata.txt");
-	TextFiles::read(F, FALSE,
-		NULL, FALSE, Kits::read_metadata, NULL, (void *) C);
+	filename *F = Filenames::in(C->location_if_path, I"kit_metadata.json");
+	JSONMetadata::read_metadata_file(C, F);
+	
+	if (C->metadata_record) @<Extract what we need@>;
 }
 
-@ The following reads line by line through the |kit_metadata.txt| file:
-
-=
-void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state) {
-	inbuild_copy *C = (inbuild_copy *) state;
-	inform_kit *K = KitManager::from_copy(C);
-	match_results mr = Regexp::create_mr();
-	if ((Str::is_whitespace(text)) || (Regexp::match(&mr, text, L" *#%c*"))) {
-		;
-	} else if (Regexp::match(&mr, text, L"version: (%C+)"))
-		C->edition->version = VersionNumbers::from_text(mr.exp[0]);
-	else if (Regexp::match(&mr, text, L"compatibility: (%c+)")) @<Add compatibility@>
-	else if (Regexp::match(&mr, text, L"defines Main: yes")) K->defines_Main = TRUE;
-	else if (Regexp::match(&mr, text, L"defines Main: no")) K->defines_Main = FALSE;
-	else if (Regexp::match(&mr, text, L"natural language: yes")) K->supports_nl = TRUE;
-	else if (Regexp::match(&mr, text, L"natural language: no")) K->supports_nl = FALSE;
-	else if (Regexp::match(&mr, text, L"insert: (%c*)")) @<Add early source@>
-	else if (Regexp::match(&mr, text, L"priority: (%d*)"))
-		K->priority = Str::atoi(mr.exp[0], 0);
-	else if (Regexp::match(&mr, text, L"kinds: (%C+)"))
-		ADD_TO_LINKED_LIST(Str::duplicate(mr.exp[0]), text_stream, K->kind_definitions);
-	else if (Regexp::match(&mr, text, L"extension: version (%c+?) of (%c+) by (%c+)"))
-		@<Add versioned extension@>
-	else if (Regexp::match(&mr, text, L"extension: (%c+) by (%c+)"))
-		@<Add unversioned extension@>
-	else if (Regexp::match(&mr, text, L"activate: (%c+)"))
-		Kits::activation(K, mr.exp[0], TRUE);
-	else if (Regexp::match(&mr, text, L"deactivate: (%c+)"))
-		Kits::activation(K, mr.exp[0], FALSE);
-	else if (Regexp::match(&mr, text, L"dependency: if (%C+) then (%C+)"))
-		Kits::dependency(K, mr.exp[0], TRUE, mr.exp[1]);
-	else if (Regexp::match(&mr, text, L"dependency: if not (%C+) then (%C+)"))
-		Kits::dependency(K, mr.exp[0], FALSE, mr.exp[1]);
-	else if (Regexp::match(&mr, text, L"index from: (%c*)"))
-		K->index_structure = Str::duplicate(mr.exp[0]);
-	else {
-		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "unreadable instruction '%S'", text);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
-		DISCARD_TEXT(err)	
+@<Extract what we need@> =
+	JSON_value *compatibility = JSON::look_up_object(C->metadata_record, I"compatibility");
+	if (compatibility) @<Add compatibility@>;
+	JSON_value *activate = JSON::look_up_object(C->metadata_record, I"activates");
+	if (activate)  {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, activate->if_list)
+			Kits::activation(K, E->if_string, TRUE);
 	}
-	Regexp::dispose_of(&mr);
-}
+	JSON_value *deactivate = JSON::look_up_object(C->metadata_record, I"deactivates");
+	if (deactivate)  {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, deactivate->if_list)
+			Kits::activation(K, E->if_string, FALSE);
+	}
+	JSON_value *kit_details = JSON::look_up_object(C->metadata_record, I"kit-details");
+	if (kit_details) {
+		JSON_value *priority = JSON::look_up_object(kit_details, I"has-priority");
+		if (priority) K->priority = priority->if_integer;
+		JSON_value *defines_Main = JSON::look_up_object(kit_details, I"defines-Main");
+		if (defines_Main) K->defines_Main = defines_Main->if_boolean;
+		JSON_value *is_language_kit = JSON::look_up_object(kit_details, I"is-language-kit");
+		if (is_language_kit) K->supports_nl = is_language_kit->if_boolean;
+		JSON_value *index = JSON::look_up_object(kit_details, I"indexes-with-structure");
+		if (index) K->index_structure = index->if_string;
+		JSON_value *kinds = JSON::look_up_object(kit_details, I"provides-kinds");
+		if (kinds) {
+			JSON_value *E;
+			LOOP_OVER_LINKED_LIST(E, JSON_value, kinds->if_list)
+				ADD_TO_LINKED_LIST(E->if_string, text_stream, K->kind_definitions);
+		}
+	}
+	JSON_value *dependencies = JSON::look_up_object(C->metadata_record, I"needs");
+	if (dependencies)  {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, dependencies->if_list) {
+			int loaded = TRUE;
+			JSON_value *if_clause = JSON::look_up_object(E, I"if");
+			JSON_value *unless_clause = JSON::look_up_object(E, I"unless");
+			if ((if_clause) && (unless_clause)) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "cannot give both 'if' and 'unless' in same requirement");
+				Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
+			if (unless_clause) {
+				if_clause = unless_clause; loaded = FALSE;
+			}
+			JSON_value *then_clause = JSON::look_up_object(E, I"need");
+			if (then_clause) {
+				JSON_value *type = JSON::look_up_object(then_clause, I"type");
+				JSON_value *title = JSON::look_up_object(then_clause, I"title");
+				JSON_value *author = JSON::look_up_object(then_clause, I"author");
+				JSON_value *then_version = JSON::look_up_object(then_clause, I"version");
+				if (Str::eq(type->if_string, I"extension")) {
+					if (if_clause) {
+						TEMPORARY_TEXT(err)
+						WRITE_TO(err, "a kit can only have an extension as a dependency unconditionally");
+						Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+						DISCARD_TEXT(err)	
+					}
+					text_stream *extension_title = title->if_string;
+					text_stream *extension_author = author?(author->if_string):NULL;
+					if (then_version) @<Add versioned extension@>
+					else @<Add unversioned extension@>;
+				} else if (Str::eq(type->if_string, I"kit")) {
+					text_stream *if_kit = C->edition->work->title;
+					if (if_clause) {
+						JSON_value *if_type = JSON::look_up_object(if_clause, I"type");
+						if (Str::eq(if_type->if_string, I"kit") == FALSE) {
+							TEMPORARY_TEXT(err)
+							WRITE_TO(err, "a kit dependency can only be conditional on other kits");
+							Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+							DISCARD_TEXT(err)
+						} else {
+							JSON_value *if_title = JSON::look_up_object(if_clause, I"title");
+							if (if_title) if_kit = if_title->if_string; /* a line for IF fans */
+						}
+					}
+					Kits::dependency(K, if_kit, loaded, title->if_string);
+				} else {
+					TEMPORARY_TEXT(err)
+					WRITE_TO(err, "a kit can only have extensions and kits as dependencies");
+					Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+					DISCARD_TEXT(err)	
+				}
+			}
+		}
+	}
 
 @<Add compatibility@> =
-	compatibility_specification *CS = Compatibility::from_text(mr.exp[0]);
+	compatibility_specification *CS = Compatibility::from_text(compatibility->if_string);
 	if (CS) C->edition->compatibility = CS;
 	else {
 		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "cannot read compatibility '%S'", mr.exp[0]);
+		WRITE_TO(err, "cannot read compatibility '%S'", compatibility->if_string);
 		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
 		DISCARD_TEXT(err)
 	}
@@ -134,11 +181,11 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	WRITE_TO(K->early_source, "\n\n");
 
 @<Add versioned extension@> =
-	inbuild_work *work = Works::new(extension_genre, mr.exp[1], mr.exp[2]);
-	semantic_version_number V = VersionNumbers::from_text(mr.exp[0]);
+	inbuild_work *work = Works::new(extension_genre, extension_title, extension_author);
+	semantic_version_number V = VersionNumbers::from_text(then_version->if_string);
 	if (VersionNumbers::is_null(V)) {
 		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "cannot read version number '%S'", mr.exp[0]);
+		WRITE_TO(err, "cannot read version number '%S'", then_version->if_string);
 		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
 		DISCARD_TEXT(err)
 	} else {
@@ -148,7 +195,7 @@ void Kits::read_metadata(text_stream *text, text_file_position *tfp, void *state
 	}
 
 @<Add unversioned extension@> =
-	inbuild_work *work = Works::new(extension_genre, mr.exp[0], mr.exp[1]);
+	inbuild_work *work = Works::new(extension_genre, extension_title, extension_author);
 	inbuild_requirement *req = Requirements::any_version_of(work);
 	ADD_TO_LINKED_LIST(req, inbuild_requirement, K->extensions);
 
