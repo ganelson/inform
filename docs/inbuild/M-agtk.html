@@ -136,7 +136,7 @@ to specifying <span class="extract"><span class="extract-syntax">-kit BasicInfor
 <a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Kits have the ability to specify that other kits are automatically added to
 the project in an ITTT, "if-this-then-that", way. As we shall see, every kit
-contains a file called <span class="extract"><span class="extract-syntax">kit_metadata.txt</span></span> describing its needs. The metadata
+contains a file called <span class="extract"><span class="extract-syntax">kit_metadata.json</span></span> describing its needs. The metadata
 for CommandParserKit includes:
 </p>
 
@@ -156,7 +156,7 @@ automatically added instead.
 </p>
 
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Kits can also use their metadata to specify that associated extensions should
-automatically be loaded into the project.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For example, the <span class="extract"><span class="extract-syntax">kit_metadata.txt</span></span>
+automatically be loaded into the project.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For example, the <span class="extract"><span class="extract-syntax">kit_metadata.json</span></span>
 for BasicInformKit includes the lines:
 </p>
 
@@ -281,7 +281,7 @@ since it means it can be woven into website form. See <a href="../BasicInformKit
 an example of the result.) It is simple because it provides only a <span class="extract"><span class="ConsoleText-extract-syntax">Contents.w</span></span>
 page and a <span class="extract"><span class="ConsoleText-extract-syntax">Sections</span></span> subdirectory &mdash; it has no manual, chapters, figures,
 sounds or other paraphernalia.
-</li><li>&#9679; A file called <span class="extract"><span class="ConsoleText-extract-syntax">kit_metadata.txt</span></span> describing the kit, its version and its
+</li><li>&#9679; A file called <span class="extract"><span class="ConsoleText-extract-syntax">kit_metadata.json</span></span> describing the kit, its version and its
 dependencies.
 </li><li>&#9679; Compiled binary Inter files &mdash; but only once the kit has been built. These
 always have filenames in the shape <span class="extract"><span class="ConsoleText-extract-syntax">arch-A.interb</span></span>, where <span class="extract"><span class="ConsoleText-extract-syntax">A</span></span> is an architecture;
@@ -337,7 +337,7 @@ but the experience would have been painful. Even in its textual form, Inter is n
 very legible, and it is highly verbose.
 <a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> At some point it may be developed out a little, but there's no great need.
 <a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The metadata file at <span class="extract"><span class="extract-syntax">BalloonKit/kit_metadata.txt</span></span> is going to be simple:
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The metadata file at <span class="extract"><span class="extract-syntax">BalloonKit/kit_metadata.json</span></span> is going to be simple:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

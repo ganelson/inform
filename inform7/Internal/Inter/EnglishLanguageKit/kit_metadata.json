@@ -1,17 +1,17 @@
 {
-	"is": {
-		"type": "kit",
-		"title": "EnglishLanguageKit",
-		"version": "1"
-	},
-	"needs": [ {
-		"need": {
-			"type": "extension",
-			"title": "English Language",
-			"author": "Graham Nelson"
-		}
-	} ],
-	"kit-details": {
-		"has-priority": 1
-	}
+    "is": {
+        "type": "kit",
+        "title": "EnglishLanguageKit",
+        "version": "10.1.0-beta+6V20"
+    },
+    "needs": [ {
+        "need": {
+            "type": "extension",
+            "title": "English Language",
+            "author": "Graham Nelson"
+        }
+    } ],
+    "kit-details": {
+        "has-priority": 1
+    }
 }

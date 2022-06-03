@@ -369,6 +369,7 @@ check:
 .PHONY: commit
 commit:
 	$(INWEBX) -advance-build-file build.txt
+	$(INPOLICYX) -sync-kit-versions
 	{update-readme}
 	git commit -a
 

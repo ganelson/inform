@@ -1,36 +1,36 @@
 {
-	"is": {
-		"type": "kit",
-		"title": "BasicInformKit",
-		"version": "1"
-	},
-	"needs": [ {
-		"unless": {
-			"type": "kit",
-			"title": "WorldModelKit"
-		},
-		"need": {
-			"type": "kit",
-			"title": "BasicInformExtrasKit"
-		}
-	}, {
-		"need": {
-			"type": "extension",
-			"title": "Basic Inform",
-			"author": "Graham Nelson"
-		}
-	}, {
-		"need": {
-			"type": "extension",
-			"title": "English Language",
-			"author": "Graham Nelson"
-		}
-	} ],
-	"activates": [ "glulx external files" ],
-	"kit-details": {
-		"has-priority": 0,
-		"defines-Main": false,
-		"provides-kinds": [ "Macros.neptune", "Protocols.neptune", "Core.neptune", "Punctuation.neptune", "Files.neptune" ],
-		"indexes-with-structure": "Basic.indext"
-	}
+    "is": {
+        "type": "kit",
+        "title": "BasicInformKit",
+        "version": "10.1.0-beta+6V20"
+    },
+    "needs": [ {
+        "unless": {
+            "type": "kit",
+            "title": "WorldModelKit"
+        },
+        "need": {
+            "type": "kit",
+            "title": "BasicInformExtrasKit"
+        }
+    }, {
+        "need": {
+            "type": "extension",
+            "title": "Basic Inform",
+            "author": "Graham Nelson"
+        }
+    }, {
+        "need": {
+            "type": "extension",
+            "title": "English Language",
+            "author": "Graham Nelson"
+        }
+    } ],
+    "activates": [ "glulx external files" ],
+    "kit-details": {
+        "has-priority": 0,
+        "defines-Main": false,
+        "provides-kinds": [ "Macros.neptune", "Protocols.neptune", "Core.neptune", "Punctuation.neptune", "Files.neptune" ],
+        "indexes-with-structure": "Basic.indext"
+    }
 }
