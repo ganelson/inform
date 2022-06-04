@@ -144,14 +144,15 @@ extension, enabling them to be lettered as Example A to Example Z.)
 
 =
 void DocumentationRenderer::table_of_contents(wording W, OUTPUT_STREAM, text_stream *base_leafname) {
-	int heading_count = 0, chapter_count = 0, section_count = 0, example_count = 0;
+	int heading_count = 0, chapter_count = 0, section_count = 0, example_count = 0, indentation = 0;
 	LOOP_THROUGH_WORDING(i, W) {
 		int edhl, asterisks;
 		wording NW = EMPTY_WORDING, RUBW = EMPTY_WORDING;
 		if (Lexer::word(i) == PARBREAK_V) {
 			while (Lexer::word(i) == PARBREAK_V) i++;
 			if (i>Wordings::last_wn(W)) break;
-			if (DocumentationRenderer::extension_documentation_heading(
+			@<Determine indentation of new paragraph@>;
+			if (indentation == 0 && DocumentationRenderer::extension_documentation_heading(
 				Wordings::from(W, i), &edhl, &NW)) {
 				heading_count++;
 				if (heading_count == 1) {
@@ -270,7 +271,7 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 			while (Lexer::word(i) == PARBREAK_V) i++;
 			if (i>Wordings::last_wn(W)) break; /* treat multiple paragraph breaks as one */
 			@<Determine indentation of new paragraph@>;
-			if (DocumentationRenderer::extension_documentation_heading(Wordings::from(W, i), &edhl, &NW)) {
+			if (indentation == 0 && DocumentationRenderer::extension_documentation_heading(Wordings::from(W, i), &edhl, &NW)) {
 				heading_count++;
 				if (edhl == 1) {
 					chapter_count++; section_count = 0;
