@@ -276,7 +276,6 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 				if (edhl == 1) {
 					chapter_count++; section_count = 0;
 					if (chapter_count > 1) {
-						HTML_CLOSE("p");
 						HTML_TAG("hr"); /* rule a line between chapters */
 					}
 				}
@@ -584,4 +583,3 @@ cell. Here the inset table begins:
 	HTML_CLOSE("p");
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
-  HTML_OPEN("p");
