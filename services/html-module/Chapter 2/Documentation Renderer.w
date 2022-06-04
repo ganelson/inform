@@ -304,7 +304,9 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 		if (close_I6_position == i) WRITE(" -)");
 	}
 	if (mid_example) @<Close the previous example's text@>;
-	if (example_which_is_open != EDOC_FRAGMENT_ONLY) @<Handle a paragraph break@>;
+	if (example_which_is_open != EDOC_FRAGMENT_ONLY) {
+		@<Handle a paragraph break@>;
+	}
 	return example_count;
 }
 
