@@ -73,120 +73,113 @@ void Kits::scan(inbuild_copy *C) {
 	filename *F = Filenames::in(C->location_if_path, I"kit_metadata.json");
 	JSONMetadata::read_metadata_file(C, F);
 	
-	if (C->metadata_record) @<Extract what we need@>;
+	if (C->metadata_record) {
+		JSON_value *compatibility =
+			JSON::look_up_object(C->metadata_record, I"compatibility");
+		if (compatibility) @<Extract compatibility@>;
+		@<Extract activations@>;
+		JSON_value *kit_details =
+			JSON::look_up_object(C->metadata_record, I"kit-details");
+		if (kit_details) @<Extract the kit details@>;
+		JSON_value *needs = JSON::look_up_object(C->metadata_record, I"needs");
+		if (needs) {
+			JSON_value *E;
+			LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list)
+				@<Extract this possibly conditional requirement@>;
+		}
+	}
 }
 
-@<Extract what we need@> =
-	JSON_value *compatibility = JSON::look_up_object(C->metadata_record, I"compatibility");
-	if (compatibility) @<Add compatibility@>;
-	JSON_value *activate = JSON::look_up_object(C->metadata_record, I"activates");
-	if (activate)  {
-		JSON_value *E;
-		LOOP_OVER_LINKED_LIST(E, JSON_value, activate->if_list)
-			Kits::activation(K, E->if_string, TRUE);
-	}
-	JSON_value *deactivate = JSON::look_up_object(C->metadata_record, I"deactivates");
-	if (deactivate)  {
-		JSON_value *E;
-		LOOP_OVER_LINKED_LIST(E, JSON_value, deactivate->if_list)
-			Kits::activation(K, E->if_string, FALSE);
-	}
-	JSON_value *kit_details = JSON::look_up_object(C->metadata_record, I"kit-details");
-	if (kit_details) {
-		JSON_value *priority = JSON::look_up_object(kit_details, I"has-priority");
-		if (priority) K->priority = priority->if_integer;
-		JSON_value *defines_Main = JSON::look_up_object(kit_details, I"defines-Main");
-		if (defines_Main) K->defines_Main = defines_Main->if_boolean;
-		JSON_value *is_language_kit = JSON::look_up_object(kit_details, I"is-language-kit");
-		if (is_language_kit) K->supports_nl = is_language_kit->if_boolean;
-		JSON_value *index = JSON::look_up_object(kit_details, I"indexes-with-structure");
-		if (index) K->index_structure = index->if_string;
-		JSON_value *kinds = JSON::look_up_object(kit_details, I"provides-kinds");
-		if (kinds) {
-			JSON_value *E;
-			LOOP_OVER_LINKED_LIST(E, JSON_value, kinds->if_list)
-				ADD_TO_LINKED_LIST(E->if_string, text_stream, K->kind_definitions);
-		}
-	}
-	JSON_value *dependencies = JSON::look_up_object(C->metadata_record, I"needs");
-	if (dependencies)  {
-		JSON_value *E;
-		LOOP_OVER_LINKED_LIST(E, JSON_value, dependencies->if_list) {
-			int loaded = TRUE;
-			JSON_value *if_clause = JSON::look_up_object(E, I"if");
-			JSON_value *unless_clause = JSON::look_up_object(E, I"unless");
-			if ((if_clause) && (unless_clause)) {
-				TEMPORARY_TEXT(err)
-				WRITE_TO(err, "cannot give both 'if' and 'unless' in same requirement");
-				Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
-				DISCARD_TEXT(err)	
-			}
-			if (unless_clause) {
-				if_clause = unless_clause; loaded = FALSE;
-			}
-			JSON_value *then_clause = JSON::look_up_object(E, I"need");
-			if (then_clause) {
-				JSON_value *type = JSON::look_up_object(then_clause, I"type");
-				JSON_value *title = JSON::look_up_object(then_clause, I"title");
-				JSON_value *author = JSON::look_up_object(then_clause, I"author");
-				JSON_value *then_version = JSON::look_up_object(then_clause, I"version");
-				if (Str::eq(type->if_string, I"extension")) {
-					if (if_clause) {
-						TEMPORARY_TEXT(err)
-						WRITE_TO(err, "a kit can only have an extension as a dependency unconditionally");
-						Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
-						DISCARD_TEXT(err)	
-					}
-					text_stream *extension_title = title->if_string;
-					text_stream *extension_author = author?(author->if_string):NULL;
-					if (then_version) @<Add versioned extension@>
-					else @<Add unversioned extension@>;
-				} else if (Str::eq(type->if_string, I"kit")) {
-					text_stream *if_kit = C->edition->work->title;
-					if (if_clause) {
-						JSON_value *if_type = JSON::look_up_object(if_clause, I"type");
-						if (Str::eq(if_type->if_string, I"kit") == FALSE) {
-							TEMPORARY_TEXT(err)
-							WRITE_TO(err, "a kit dependency can only be conditional on other kits");
-							Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
-							DISCARD_TEXT(err)
-						} else {
-							JSON_value *if_title = JSON::look_up_object(if_clause, I"title");
-							if (if_title) if_kit = if_title->if_string; /* a line for IF fans */
-						}
-					}
-					Kits::dependency(K, if_kit, loaded, title->if_string);
-				} else {
-					TEMPORARY_TEXT(err)
-					WRITE_TO(err, "a kit can only have extensions and kits as dependencies");
-					Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
-					DISCARD_TEXT(err)	
-				}
-			}
-		}
-	}
-
-@<Add compatibility@> =
+@<Extract compatibility@> =
 	compatibility_specification *CS = Compatibility::from_text(compatibility->if_string);
 	if (CS) C->edition->compatibility = CS;
 	else {
 		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "cannot read compatibility '%S'", compatibility->if_string);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)
 	}
 
-@<Add early source@> =
-	K->early_source = Str::duplicate(mr.exp[0]);
-	WRITE_TO(K->early_source, "\n\n");
+@<Extract activations@> =
+	JSON_value *activates = JSON::look_up_object(C->metadata_record, I"activates");
+	if (activates) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, activates->if_list)
+			Kits::activation(K, E->if_string, TRUE);
+	}
+	JSON_value *deactivates = JSON::look_up_object(C->metadata_record, I"deactivates");
+	if (deactivates) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, deactivates->if_list)
+			Kits::activation(K, E->if_string, FALSE);
+	}
+
+@<Extract the kit details@> =
+	JSON_value *has_priority = JSON::look_up_object(kit_details, I"has-priority");
+	if (has_priority) K->priority = has_priority->if_integer;
+	JSON_value *defines_Main = JSON::look_up_object(kit_details, I"defines-Main");
+	if (defines_Main) K->defines_Main = defines_Main->if_boolean;
+	JSON_value *is_language_kit = JSON::look_up_object(kit_details, I"is-language-kit");
+	if (is_language_kit) K->supports_nl = is_language_kit->if_boolean;
+	JSON_value *indexes_with_structure =
+		JSON::look_up_object(kit_details, I"indexes-with-structure");
+	if (indexes_with_structure) K->index_structure = indexes_with_structure->if_string;
+	JSON_value *provides_kinds = JSON::look_up_object(kit_details, I"provides-kinds");
+	if (provides_kinds) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, provides_kinds->if_list)
+			ADD_TO_LINKED_LIST(E->if_string, text_stream, K->kind_definitions);
+	}
+	JSON_value *inserts_source_text = JSON::look_up_object(kit_details, I"inserts-source-text");
+	if (inserts_source_text) {
+		K->early_source = Str::duplicate(inserts_source_text->if_string);
+		WRITE_TO(K->early_source, "\n\n");
+	}
+
+@<Extract this possibly conditional requirement@> =
+	int parity = TRUE;
+	JSON_value *if_clause = JSON::look_up_object(E, I"if");
+	JSON_value *unless_clause = JSON::look_up_object(E, I"unless");
+	if (unless_clause) {
+		if_clause = unless_clause; parity = FALSE;
+	}
+	JSON_value *need_clause = JSON::look_up_object(E, I"need");
+	if (need_clause) {
+		JSON_value *need_type = JSON::look_up_object(need_clause, I"type");
+		JSON_value *need_title = JSON::look_up_object(need_clause, I"title");
+		JSON_value *need_author = JSON::look_up_object(need_clause, I"author");
+		JSON_value *need_version = JSON::look_up_object(need_clause, I"version");
+		if (Str::eq(need_type->if_string, I"extension"))
+			@<Deal with an extension dependency@>
+		else if (Str::eq(need_type->if_string, I"kit"))
+			@<Deal with a kit dependency@>
+		else {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "a kit can only have extensions and kits as dependencies");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
+		}
+	}
+
+@<Deal with an extension dependency@> =
+	if (if_clause) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "a kit can only have an extension as a dependency unconditionally");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)	
+	}
+	text_stream *extension_title = need_title->if_string;
+	text_stream *extension_author = need_author?(need_author->if_string):NULL;
+	inbuild_work *work = Works::new(extension_genre, extension_title, extension_author);
+	if (need_version) @<Add versioned extension@>
+	else @<Add unversioned extension@>;
 
 @<Add versioned extension@> =
-	inbuild_work *work = Works::new(extension_genre, extension_title, extension_author);
-	semantic_version_number V = VersionNumbers::from_text(then_version->if_string);
+	semantic_version_number V = VersionNumbers::from_text(need_version->if_string);
 	if (VersionNumbers::is_null(V)) {
 		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "cannot read version number '%S'", then_version->if_string);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+		WRITE_TO(err, "cannot read version number '%S'", need_version->if_string);
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)
 	} else {
 		inbuild_requirement *req = Requirements::new(work,
@@ -195,9 +188,24 @@ void Kits::scan(inbuild_copy *C) {
 	}
 
 @<Add unversioned extension@> =
-	inbuild_work *work = Works::new(extension_genre, extension_title, extension_author);
 	inbuild_requirement *req = Requirements::any_version_of(work);
 	ADD_TO_LINKED_LIST(req, inbuild_requirement, K->extensions);
+
+@<Deal with a kit dependency@> =
+	text_stream *if_kit = C->edition->work->title;
+	if (if_clause) {
+		JSON_value *if_type = JSON::look_up_object(if_clause, I"type");
+		if (Str::eq(if_type->if_string, I"kit") == FALSE) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "a kit dependency can only be conditional on other kits");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		} else {
+			JSON_value *if_title = JSON::look_up_object(if_clause, I"title");
+			if (if_title) if_kit = if_title->if_string; /* a line for IF fans */
+		}
+	}
+	Kits::dependency(K, if_kit, parity, need_title->if_string);
 
 @ We provide if this then that, where |inc| is true, and if this then not that,
 where it's false.

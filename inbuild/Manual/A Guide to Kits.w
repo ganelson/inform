@@ -72,24 +72,47 @@ the project in an ITTT, "if-this-then-that", way. As we shall see, every kit
 contains a file called |kit_metadata.json| describing its needs. The metadata
 for CommandParserKit includes:
 = (text)
-dependency: if CommandParserKit then WorldModelKit
+    {
+        "need": {
+            "type": "kit",
+            "title": "WorldModelKit"
+        }
+    }
 =
+Never mind the JSON syntax (all that punctuation) for now: what this is saying
+is that CommandParserKit always needs WorldModelKit in order to function.
 This means that any project depending on CommandParserKit automatically depends
 on WorldModelKit too. BasicInformKit uses this facility as well, but in a
-negative way. Its own metadata file says:
+conditional way. Its own metadata file includes:
 = (text)
-dependency: if not WorldModelKit then BasicInformExtrasKit
+	{
+        "unless": {
+            "type": "kit",
+            "title": "WorldModelKit"
+        },
+        "need": {
+            "type": "kit",
+            "title": "BasicInformExtrasKit"
+        }
+    }
 =
-It follows that if WorldModelKit is not present, then BasicInformExtrasKit is
-automatically added instead.
+Inbuild acts on this by checking to see if WorldModelKit is not present, and
+in that case BasicInformExtrasKit is automatically added instead. (Positive
+conditions can also be made, with "if" instead of "unless".)
 
 @ Kits can also use their metadata to specify that associated extensions should
 automatically be loaded into the project.[1] For example, the |kit_metadata.json|
 for BasicInformKit includes the lines:
 = (text)
-extension: Basic Inform by Graham Nelson
-extension: English Language by Graham Nelson
+	{
+        "need": {
+            "type": "extension",
+            "title": "Basic Inform",
+            "author": "Graham Nelson"
+        }
+    }
 =
+...and similarly for another extension called English Language.
 
 [1] This in fact is the mechanism by which Inform decides which extensions
 should be implicitly included in a project. Other extensions are included only
@@ -176,9 +199,6 @@ we next look at the build requirements for the project, we see:
 =
 So now BalloonKit is indeed a dependency.
 
-See //inbuild: Manual// for the full story on where the compiler expects to
-find kits, but basically, they're managed much the way extensions are.
-
 [1] Both, so that whether the executable looking at the project is inbuild or
 inform7, it will use the same set of kits. You want this.
 
@@ -245,13 +265,122 @@ very legible, and it is highly verbose.
 
 [2] At some point it may be developed out a little, but there's no great need.
 
-@ The metadata file at |BalloonKit/kit_metadata.json| is going to be simple:
+@ The metadata file at |BalloonKit/kit_metadata.json| is required to exist in
+order for Inbuild to recognise this as being a kit at all; even if it doesn't
+say very much, as in this example. This is (almost) minimal:
 = (text)
-extension: Party Balloons by Joseph-Michel Montgolfier
+{
+    "is": {
+        "type": "kit",
+        "title": "BalloonKit",
+        "author": "Jacques-Étienne Montgolfier"
+        "version": "3.2.7"
+    }
+}
 =
-In fact we don't really need this line at all (a kit does not need to have any
-associated extensions), but it makes for a more interesting demonstration. We
-can see an effect at once:
+This is a JSON-format file: JSON, standing for Javascript Object Notation, is
+now nothing really to do with the language Javascript and has instead become
+an Internet standard for small packets of descriptive data, like ours. Many
+full descriptions of JSON are available, but here are some brief notes:
+
+(*) This is a UTF-8 plain text file. The acute accent in "Jacques-Étienne Montgolfier"
+causes no problems, but quoted text is well advised to confine itself to the Unicode
+Basic Multilingual Plane characters (with code-points 0 to 65535). Inside
+quotation marks, |\n| and |\t| can be used for newlines and tabs, but a kit
+shouldn't ever need them. |\uDDDD| can be used to mean "the Unicode character
+whose code is |DDDD| in hexadecimal".
+
+(*) Braces |{| and |}| begin and end "objects". The whole set of metadata on
+the kit is such an object, so the file has to open and close with |{| and |}|.
+Inside such braces, we have a list of named values, divided by commas. Each
+entry takes the form |"name": value|. The name is in quotes, but the value
+will only be quoted if it happens to be a string.
+
+(*) Square brackets |[| and |]| begin and end lists, with the entries in the
+list divided by commas. For example, |[ 1, 2, 17 ]| is a valid list of three
+numbers.
+
+(*) Numbers are written in decimal, possibly with a minus sign: for example,
+|24| or |-120|. (JSON also allows floating-point numbers, which Inbuild does
+read, and stores to double precision, but kit metadata never needs these.)
+
+(*) The special notations |true| and |false| are used for so-called boolean
+values, i.e., those which are either true or false.
+
+(*) The special notation |null| is used to mean "I am not saying what this is",
+but kit metadata never needs this.
+
+(*) JSON files are forbidden to contain comments, and Inbuild is very strict
+about what hierarchies of objects it will read without errors.
+
+@ Looking again at the minimal example, what do we have?
+= (text)
+{
+    "is": {
+        "type": "kit",
+        "title": "BalloonKit",
+        "author": "Jacques-Étienne Montgolfier"
+        "version": "3.2.7"
+    }
+}
+=
+The metadata is one big object. That object has a single named value, |"is"|.
+
+The value of |"is"| is another object -- hence the second pair of |{| ... |}| after
+the colon. This second object gives the identity of the kit -- says what it is,
+in other words. That has four values:
+
+(1) |"type"|, which has to be |"kit"|;
+(2) |"title"|, which has to match the kit's name -- Inbuild will throw an error
+if BalloonKit's metadata file claims that its title is actually |"AerostatiqueKit"|;
+(3) |"author"|, which is optional, but which if given should follow the usual
+conventions for author names of Inform extensions; and
+(4) |"version"|, which is also optional, but whose use is strongly recommended.
+This has to be a semantic version number. This follows Inbuild's usual semantic
+version numbering conventions, so for example |"5"| and |"1.5.6-alpha.12"| would
+both be valid. Note that in JSON terms it's a string, despite the word "number"
+in the phrase "semantic version number", so it goes in double-quotes. This is
+the version number which Inbuild will use to resolve dependencies. If a project
+needs v1.7 or better, for example, Inbuild will not allow it to use
+version 1.5.6-alpha.12 of a kit.
+
+@ To make for a more interesting demonstration, now suppose that the kit
+wants to require the use of an associated extension. We extend the metadata file to:
+= (text)
+{
+    "is": {
+        "type": "kit",
+        "title": "BalloonKit",
+        "author": "Jacques-Étienne Montgolfier"
+        "version": "3.2.7"
+    },
+    "needs": [
+		{
+			"need": {
+				"type": "extension",
+				"title": "Party Balloons",
+				"author": "Joseph-Michel Montgolfier"
+			}
+		}
+    ]
+}
+=
+Now our metadata object has a second named value, |"needs"|. This has to be
+a list, which in JSON is written in square brackets |[ X, Y, Z, ... ]|. Here
+the list has just one entry, in fact. The entries in the list all have to be
+objects, which can have three possible values:
+
+(1) |"if"|, saying that the dependency is conditional on another kit being used --
+see above for examples;
+(2) |"unless"|, similarly but making the condition on another kit not being used;
+(3) |"need"|, which says what the dependency is on.
+
+The |"if"| and |"unless"| clauses are optional. (And only one can be given.)
+The |"need"| clause is compulsory. This can say that the kit needs another
+kit (there are examples above), but in this case it says the kit needs a
+particular extension to be present.
+
+We can see an effect at once:
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -project 'French Laundry.inform' -build-needs
 	projectbundle: French Laundry.inform
@@ -281,8 +410,11 @@ become a haunt of the pioneers of aeronautics."
 When play begins:
 	perform an inflation with 3 puffs.
 =
+Note that this text does not explicitly say "Include Party Balloons by Joseph-Michel
+Montgolfier" -- it doesn't need to: the extension is automatically included by
+the kit.
 
-Now Inbuild is happier:
+And now Inbuild is happier:
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -project 'French Laundry.inform' -build-needs
 	projectbundle: French Laundry.inform
@@ -315,122 +447,105 @@ And this incremental building is also what happens if the "French Laundry"
 project is compiled in the Inform apps, by clicking "Go" in the usual way. Any
 of its kits which need rebuilding are automatically rebuilt as part of the process.
 
-@h Full specification of the kit metadata file.
-This is a UTF-8 encoded Unicode text file, consisting of a sequence of commands
-in any order, one per line. No commands are compulsory. An empty file is legal.
+@h Other ingredients of the kit metadata file.
+As noted above, |kit_metadata.json| must be a valid JSON file which encodes a
+single object. The following are the legal member names; only |"is"| is mandatory,
+and the rest sensibly default if not given.
 
-Blank lines are ignored, as are lines whose first non-white-space character is |#|,
-which are considered comments.
+(*) |"is"|, an object identifying what kit this is. See above.
 
-@ |version: V| gives the kit's version number. This follows Inbuild's usual semantic
-version numbering conventions, so for example:
-= (text)
-	version: 5
-	version: 1.5.6-alpha.12
-=
-This is the version number which Inbuild will use to resolve dependencies. If a
-project needs v1.7 or better, for example, Inbuild will not allow it to use
-version 1.5.6-alpha.12 of a kit.
+(*) |"needs"|, a list of objects each of which specifies a possibly conditional
+dependency on other resources. See above.
 
-@ |compatibility: C| allows us to say which architectures or final targets
+(*) |"compatibility"|, a string which describes which architectures or final targets
 the kit is compatible with. By default, Inbuild assumes it will work with anything,
-equivalent to |compatibility: all|. But for example:
+equivalent to |"compatibility": "all"|. In general, it's best to stick to purely
+architectural constraints (i.e. 16 or 32 bit, with or without debugging support)
+and not to constrain the final target unless really necessary. But the following
+are all legal:
 = (text)
-	compatibility: for 16-bit with debugging only
-	compatibility: not for 32-bit
-	compatibility: for Inform6 version 8
-	compatibility: not for C
-=
-In general, it's best to stick to architectural constraints (i.e. 16 or 32 bit,
-with or without debugging support) and not to constrain the final target unless
-really necessary.
-
-@ |defines Main: yes| or |defines Main: no|. The default is |no|, so use this
-only to specify that the kit contains within it a definition of the |Main|
-function. But only the shipped-with-Inform kits should ever do this.
-
-@ |natural language: yes| or |natural language: no|. The default is |no|; use
-this only to say that the kit is a language support kit, like EnglishLanguageKit.
-
-@ |insert: X|. This sneakily allows a sentence of Inform 7 source text to be
-inserted into any project using the kit. For example:
-= (text)
-	insert: Use maximum inflation level of 20.
-=
-But in general it's better not to use this at all, and to put any such material
-in an associated extension which is automatically included.
-
-@ |kinds: F|, where |F| is the name of a Neptune file. Neptune is a mini-language
-for setting up kinds and kind constructors inside the compiler: see
-//kinds: A Brief Guide to Neptune// for much more on this. The file |F| should
-be placed as |BalloonKit/kinds/F|. For example:
-= (text)
-kinds: Protocols.neptune
-kinds: Core.neptune
+	"compatibility": "for 16-bit with debugging only"
+	"compatibility": "not for 32-bit"
+	"compatibility": "for Inform6 version 8"
+	"compatibility": "not for C"
 =
 
-@ |extension: E|, where |E| is the name of an extension. A version number
-can optionally be given, too. For example:
+(*) |"activates"| is a list of strings describing optional features of the Inform
+compiler to switch on if this kit is being used. The feature names are the names
+of plugins inside the compiler, and this is not the place to document that. See
+the implementation at //core: Plugins//. But in general, unless you are performing
+wild experiments with new language features inside the compiler, you will never
+need |"activates"|. It really exists for the benefit of the built-in kits. For
+example, WorldModelKit does the following:
 = (text)
-extension: Party Balloons by Joseph-Michel Montgolfier
-extension: version 2.1 of Party Balloons by Joseph-Michel Montgolfier
+	"activates": [ "interactive fiction", "multimedia" ]
 =
-Inbuild will now automatically include this extension if it can find it; if
-not, the build will halt. Compatibility with the version number is done by
-semantic version numbering rules, so v2.1.67 would be fine, but not v2.2, v1,
-v3, and so forth. Note that kits can mandate multiple extensions, not just one.
 
-@ |activate: F| and |deactivate: F|. This says that if the kit is present, then
-a given feature inside the compiler |F| should be switched on or off. For
-example, the metadata for CommandParserKit includes:
+(*) |"deactivates"| is a similar list describing what to turn off.
+
+(*) |"kit-details"| is a set of oddball settings which make sense only for kits.
+The reason these are hived off in their own sub-object is so that the same
+basic file format can be used for JSON describing other resources, too.
+|"kit-details"| can only legally be used if the |"type"| in the |"is"| object
+is set to |"kit"|.
+
+@ The |"kit-details"| object can contain the following, all of which are
+optional. Only the first is likely to be useful for a kit other than one of
+those built in to the Inform installation.
+
+(*) |"provides-kinds"| is a list of strings. These are the names of Neptune
+files to read in. Neptune is a mini-language for setting up kinds and kind
+constructors inside the Inform compiler: see //kinds: A Brief Guide to Neptune//
+for much more on this. Each named file |F| should be placed as |BalloonKit/kinds/F|.
+For example, WorldModelKit does this:
 = (text)
-activate: command
+"provides-kinds": [ "Actions.neptune", "Times.neptune", "Scenes.neptune", "Figures.neptune", "Sounds.neptune" ]
 =
-which enables command grammar to be part of the Inform language. WorldModelKit
-more ambitiously says:
-= (text)
-activate: interactive fiction
-activate: multimedia
-=
-It is these activation lines, in WorldModelKit and CommandParserKit, which cause
-the Inform language to have IF-specific features during a compilation. Without
-them, the language would just be Basic Inform.
 
-The feature names |F| are the names of plugins inside the compiler, and this is
-not the place to document that. See the implementation at //core: Plugins//.
-But in general, unless you are performing wild experiments with new language
-features inside the compiler, never use |activate| or |deactivate|.
-
-@ |dependency: if X then Y| and |dependency: if not X then Y|. This specifies
-dependencies between kits; often |X| or |Y| will be the kit you are currently
-defining, but not necessarily. Rules are considered for all kits currently loaded.
-For example, this is part of the metadata for CommandParserKit:
-= (text)
-dependency: if CommandParserKit then WorldModelKit
-=
-A few points to note:
-(*) Rules are considered only for kits which are loaded. There is no way to
-make BalloonKit parasitically attach to all projects by giving it the rule
-|if not BalloonKit then BalloonKit|, because this rule will only be looked at
-if BalloonKit has already loaded.
-(*) The outcome cannot be |... then not Y|; once loaded, a kit cannot be
-unloaded. So these dependency rules can only cause extra kits to be added.
-(*) Positive rules |if ...| are considered first, and only then negative ones
-|if not ...|. Within each category, kits have their rules looked at in order
-of their priority (see below).
-(*) Version number requirements cannot be specified for either |X| or |Y|
-at present.
-
-@ |priority: N|, where |N| is a number from 0 to 100. This is used only to
-decide whose wishes get priority when Inbuild is performing if-this-then-that
+(*) |"has-priority"| is a number, from 0 to 100. This is used only to decide
+whose wishes get priority when Inbuild is performing if-this-then-that
 decisions to sort out which kits are present in a project. The default is 10,
 and for almost all kits it should stay that way. Lower-numbered kits have
 "more important" wishes than higher-numbered ones.
 
-@ |index from: C| can change the structure of the Index for a project using
-this kit, but in practice this should be done only by BasicInformKit or by
-WorldModelKit. (There are two versions of the index, one for Basic Inform
-projects, the other for interactive-fiction ones.)
+(*) |"defines-Main"| is a boolean, so its value has to be |true| or |false|.
+If it isn't given, the value will be |false|. This is useful only for the
+built-in kits supplied with Inform, and indicates whether or not they define
+a |Main| function in Inter.
+
+(*) |"indexes-with-structure"| is a string. This is useful only for the
+built-in kits supplied with Inform, and indicates which structure file should
+be used to generate the Index of a project. (There are two versions of the
+index, one for Basic Inform projects, the other for interactive-fiction ones.)
+
+(*) |"inserts-source-text"| is a string. This sneakily allows a sentence of
+Inform 7 source text to be inserted into any project using the kit. Its use
+is very much a last resort: if at all possible, put such material in an
+associated extension, and then auto-include that extension using a |"needs"|
+dependency (see above). But, for example:
+= (text)
+	"inserts-source-text": "Use maximum inflation level of 20."
+=
+
+@ Here are a few footnotes on how Inbuild resolves the "needs" requirements
+of multiple kits, which may clarify what happens in apparently ambiguous
+situations.
+
+(*) Needs are considered only for kits which are loaded. There is no way to
+make BalloonKit parasitically attach to all projects by giving it a rule
+saying in effect "unless you have BalloonKit then you need BalloonKit",
+because although you could write such a rule, it would only be processed
+when BalloonKit had already loaded -- and would then have no effect.
+
+(*) A kit cannot be unloaded once loaded. So "needs" rules can only cause
+extra kits to be added. It follows that there can never be a loop caused
+by kits repeatedly loading and unloading each other through irresolvable
+constraints. But it also follows that the outcome in such a case can depend
+on the order in which rules are considered.
+
+(*) Positive needs using "if" (or unconditional needs) are considered first,
+and only then negative ones using "unless". Within each category, kits have
+their needs looked at in order of their priority numbers (see above).
 
 @h Future directions.
 It will be noted that a kit can include an extension automatically, but not

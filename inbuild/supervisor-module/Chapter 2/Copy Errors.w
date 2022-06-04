@@ -13,7 +13,7 @@ sentence is which is mis-punctuated, and such. In every case most of these
 fields are blank.
 
 @e OPEN_FAILED_CE from 1
-@e KIT_MISWORDED_CE
+@e METADATA_MALFORMED_CE
 @e EXT_MISWORDED_CE
 @e EXT_TITLE_TOO_LONG_CE
 @e EXT_AUTHOR_TOO_LONG_CE
@@ -127,7 +127,8 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 	switch (CE->error_category) {
 		case OPEN_FAILED_CE: WRITE("unable to open file %f", CE->details_file); break;
 		case EXT_MISWORDED_CE: WRITE("extension misworded: %S", CE->details); break;
-		case KIT_MISWORDED_CE: WRITE("kit has incorrect metadata: %S", CE->details); break;
+		case METADATA_MALFORMED_CE: WRITE("%S has incorrect metadata: %S",
+			CE->copy->edition->work->genre->genre_name, CE->details); break;
 		case EXT_TITLE_TOO_LONG_CE: WRITE("title too long: %d characters (max is %d)",
 			CE->details_N, MAX_EXTENSION_TITLE_LENGTH); break;
 		case EXT_AUTHOR_TOO_LONG_CE: WRITE("author name too long: %d characters (max is %d)",

@@ -17,16 +17,17 @@ void JSONMetadata::read_metadata_file(inbuild_copy *C, filename *F) {
 	TextFiles::read(F, FALSE, "unable to read file of JSON metadata", TRUE,
 		&JSONMetadata::read_metadata_file_helper, NULL, contents);
 	text_file_position tfp = TextFiles::at(F, 1);
-	JSON_value *value = JSON::decode(contents, &tfp);
-	if ((value) && (value->JSON_type == ERROR_JSONTYPE)) {
+	JSON_value *obj = JSON::decode(contents, &tfp);
+	if ((obj) && (obj->JSON_type == ERROR_JSONTYPE)) {
 		@<Report a syntax error in JSON@>;
 		return;
 	} else {
 		@<Validate the JSON read in@>;
 	}
 	DISCARD_TEXT(contents)
-	C->metadata_record = value;
+	C->metadata_record = obj;
 	@<Examine the "is" member of the metadata object@>;
+	@<Police the "needs"@>;
 }
 
 void JSONMetadata::read_metadata_file_helper(text_stream *text, text_file_position *tfp,
@@ -37,25 +38,25 @@ void JSONMetadata::read_metadata_file_helper(text_stream *text, text_file_positi
 
 @<Report a syntax error in JSON@> =
 	TEMPORARY_TEXT(err)
-	WRITE_TO(err, "the metadata contains a syntax error: '%S'", value->if_error);
-	Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+	WRITE_TO(err, "the metadata contains a syntax error: '%S'", obj->if_error);
+	Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 	DISCARD_TEXT(err)	
 
 @<Validate the JSON read in@> =
 	linked_list *validation_errors = NEW_LINKED_LIST(text_stream);
-	if (JSON::validate(value, req, validation_errors) == FALSE) {
+	if (JSON::validate(obj, req, validation_errors) == FALSE) {
 		text_stream *err;
 		LOOP_OVER_LINKED_LIST(err, text_stream, validation_errors) {
 			TEMPORARY_TEXT(msg)
 			WRITE_TO(msg, "the metadata did not validate: '%S'", err);
-			Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, msg));
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, msg));
 			DISCARD_TEXT(msg)
 		}
 		return;
 	}
 
 @<Examine the "is" member of the metadata object@> =
-	JSON_value *is = JSON::look_up_object(C->metadata_record, I"is");
+	JSON_value *is = JSON::look_up_object(obj, I"is");
 	JSON_value *type = JSON::look_up_object(is, I"type");
 	if (type) @<Make sure the type is correct@>;
 	JSON_value *title = JSON::look_up_object(is, I"title");
@@ -80,8 +81,22 @@ to say that |is.type| is |"kit"|.
 		TEMPORARY_TEXT(msg)
 		WRITE_TO(msg, "the metadata misidentifies the type as '%S', but it should be '%S'",
 			type_text, required_text);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, msg));
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, msg));
 		DISCARD_TEXT(msg)
+	}
+	JSON_value *kit_details = JSON::look_up_object(obj, I"kit-details");
+	if ((kit_details) && (Str::ne(type_text, I"kit"))) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "the metadata contains kit-details but is not for a kit");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)
+	}
+	JSON_value *extension_details = JSON::look_up_object(obj, I"extension-details");
+	if ((extension_details) && (Str::ne(type_text, I"extension"))) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "the metadata contains extension-details but is not for an extension");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)
 	}
 
 @<Make sure the title is correct@> =
@@ -89,7 +104,7 @@ to say that |is.type| is |"kit"|.
 		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "the metadata says the title is '%S' when it should be '%S'",
 			title->if_string, C->edition->work->title);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)	
 	}
 
@@ -98,7 +113,7 @@ to say that |is.type| is |"kit"|.
 		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "the metadata says the author is '%S' when it should be '%S'",
 			author->if_string, C->edition->work->author_name);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)	
 	}
 
@@ -110,7 +125,7 @@ a version number.
 	if (VersionNumbers::is_null(V)) {
 		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "cannot read version number '%S'", version->if_string);
-		Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)
 	} else {
 		C->edition->version = VersionNumbers::from_text(version->if_string);
@@ -119,8 +134,63 @@ a version number.
 @<Forbid the use of a version range@> =
 	TEMPORARY_TEXT(err)
 	WRITE_TO(err, "the metadata should specify an exact version, not a range");
-	Copies::attach_error(C, CopyErrors::new_T(KIT_MISWORDED_CE, -1, err));
+	Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 	DISCARD_TEXT(err)	
+
+@ It would have been possible to write the schema in a way which would exclude
+the possibilities blocked here, but only by making it cumbersome. Besides,
+checking here results in more explicit error messages.
+
+@<Police the "needs"@> =
+	JSON_value *needs = JSON::look_up_object(obj, I"needs");
+	if (needs) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list) {
+			JSON_value *if_clause = JSON::look_up_object(E, I"if");
+			JSON_value *unless_clause = JSON::look_up_object(E, I"unless");
+			JSON_value *needs_clause = JSON::look_up_object(E, I"needs");
+			if ((if_clause) && (unless_clause)) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "cannot give both 'if' and 'unless' in same requirement");
+				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
+			JSONMetadata::not_both(C, if_clause, I"'if' clause of a requirement");
+			JSONMetadata::not_both(C, unless_clause, I"'unless' clause of a requirement");
+			JSONMetadata::not_both(C, needs_clause, I"'needs' clause of a requirement");
+		}
+	}
+
+@ All very pedantic, but:
+
+=
+void JSONMetadata::not_both(inbuild_copy *C, JSON_value *clause, text_stream *where) {
+	if (clause) {
+		JSON_value *version = JSON::look_up_object(clause, I"version");
+		JSON_value *version_range = JSON::look_up_object(clause, I"version-range");
+		if ((version) && (version_range)) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "%S specifies both a version and a version-range", where);
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
+		}
+		if (version) {
+			semantic_version_number V = VersionNumbers::from_text(version->if_string);
+			if (VersionNumbers::is_null(V)) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "cannot read version '%S' in %S", version->if_string, where);
+				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)
+			}
+		}
+		if (version_range) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "'version-range' is not yet supported in %S", where);
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
+	}
+}
 
 @ The following returns the schema needed for (b); we will load it in from a file
 in the Inform/Inbuild installation, but will then cache the result so that it
