@@ -23,6 +23,8 @@ Writing and presenting Inform as a literate program was beyond the capabilities
 of existing LP software, so a new system for LP called Inweb
 has been spun off from Inform, and that has [its own repository](https://github.com/ganelson/inweb).
 
+For brief news items, see [Ongoing work](working_notes.md).
+
 ## Licence and copyright
 
 Except as noted, copyright in material in this repository (the "Package") is

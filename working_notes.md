@@ -17,7 +17,7 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 ### Kit metadata respecified as JSON (4 June 2022)
 
 Kits are new in 10.1, and are documented in the Inbuild manual, which has been
-rewritten today: see [A Guide to Kits](https://ganelson.github.io/inform/inbuild/M-agtk.html)
+rewritten today: see [A Guide to Kits](https://ganelson.github.io/inform/inbuild/M-agtk.html).
 
 The change today is that the "kit_metadata.txt" file has now changed format and
 name, to become "kit_metadata.json". This JSON format is a work in progress and
@@ -32,8 +32,8 @@ read, write and validate JSON files: see the new section [JSON](https://ganelson
 You'll therefore need to pull the latest Inweb in order to build the latest Inform.
 
 The current set of requirements for what Inbuild will read as resource metadata is
-at [inform7/Internal/Miscellany/metadata.jsonr]. There are also a few semantic
-constraints: see [JSON Metadata](https://ganelson.github.io/inform/supervisor-module/2-jm.html)
+at [inform7/Internal/Miscellany/metadata.jsonr](inform7/Internal/Miscellany/metadata.jsonr).
+There are also a few semantic constraints: see [JSON Metadata](https://ganelson.github.io/inform/supervisor-module/2-jm.html).
 
 ### Versioning policy for the built-in kits (4 June 2022)
 
@@ -58,8 +58,11 @@ As a policy decision, the version numbers of these five kits are therefore going
 to be the same as those of the main compiler. (Today, that's "10.1.0-beta+6V21".)
 
 This is enforced by changes to the makescript used when updating the main compiler's
-version number, which uses a new feature |-sync-kit-versions| of the Inpolicy tool.
-For its implementation, see: [[Kit Versioning](https://ganelson.github.io/inform/inpolicy/2-kv.html)
+version number, which uses a new feature of the Inpolicy tool:
+
+	inpolicy/Tangled/inpolicy -sync-kit-versions
+
+For its implementation, see: [Kit Versioning](https://ganelson.github.io/inform/inpolicy/2-kv.html).
 
 User-written kits not included in the Inform installation should not do this.
 They won't be tied to particular compiler releases, and should have their own
