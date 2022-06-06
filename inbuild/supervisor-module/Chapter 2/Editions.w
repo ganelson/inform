@@ -41,9 +41,16 @@ would go into |N/Extensions/Steve Hogarth/Marbles-v2_1.i7x|. The following
 contributes only the un-filename-extended leafname |Marbles-v2_1|.
 
 =
+int canonical_leaves_have_versions = TRUE;
+
+void Editions::set_canonical_leaves_have_versions(int which) {
+	canonical_leaves_have_versions = which;
+}
+
 void Editions::write_canonical_leaf(OUTPUT_STREAM, inbuild_edition *E) {
 	WRITE("%S", E->work->title);
-	if (VersionNumbers::is_null(E->version) == FALSE) {
+	if ((canonical_leaves_have_versions) &&
+		(VersionNumbers::is_null(E->version) == FALSE)) {
 		TEMPORARY_TEXT(vn)
 		WRITE_TO(vn, "-v%v", &(E->version));
 		LOOP_THROUGH_TEXT(pos, vn)

@@ -2,54 +2,55 @@ A simple build and package manager for the Inform tools.
 
 usage: inbuild [-TASK] TARGET1 TARGET2 ...
 
--archive             sync copies of all extensions, kits and so on needed for -project into Materials
--archive-to X        sync copies of all extensions, kits and so on needed into nest X
--build               incrementally build target(s)
--build-locate        show file paths of all the extensions, kits and so on needed to build
--build-missing       show the extensions, kits and so on which are needed to build but missing
--build-needs         show all the extensions, kits and so on needed to build
--build-trace         show verbose reasoning during -build (default is -no-build-trace)
--contents-of X       apply to all targets in the directory X
--copy-to X           copy target(s) to nest X
--dry                 make this a dry run (print but do not execute shell commands) (default is -no-dry)
--graph               show dependency graph of target(s) but take no action
--inspect             show target(s) but take no action
--matching X          apply to all works in nest(s) matching requirement X
--rebuild             completely rebuild target(s)
--sync-to X           forcibly copy target(s) to nest X, even if prior version already there
--tools X             make X the directory of intools executables, and exit developer mode
--use-locate          show file paths of all the extensions, kits and so on needed to use
--use-missing         show the extensions, kits and so on which are needed to use but missing
--use-needs           show all the extensions, kits and so on needed to use
+-archive                       sync copies of all extensions, kits and so on needed for -project into Materials
+-archive-to X                  sync copies of all extensions, kits and so on needed into nest X
+-build                         incrementally build target(s)
+-build-locate                  show file paths of all the extensions, kits and so on needed to build
+-build-missing                 show the extensions, kits and so on which are needed to build but missing
+-build-needs                   show all the extensions, kits and so on needed to build
+-build-trace                   show verbose reasoning during -build (default is -no-build-trace)
+-contents-of X                 apply to all targets in the directory X
+-copy-to X                     copy target(s) to nest X
+-dry                           make this a dry run (print but do not execute shell commands) (default is -no-dry)
+-graph                         show dependency graph of target(s) but take no action
+-inspect                       show target(s) but take no action
+-matching X                    apply to all works in nest(s) matching requirement X
+-rebuild                       completely rebuild target(s)
+-sync-to X                     forcibly copy target(s) to nest X, even if prior version already there
+-tools X                       make X the directory of intools executables, and exit developer mode
+-use-locate                    show file paths of all the extensions, kits and so on needed to use
+-use-missing                   show the extensions, kits and so on which are needed to use but missing
+-use-needs                     show all the extensions, kits and so on needed to use
+-no-versions-in-filenames      don't append _v number to destination filenames on -copy-to or -sync-to (default is -versions-in-filenames)
 
 for translating Inform source text to Inter:
-  -basic             use Basic Inform language (same as -kit BasicInformKit)
-  -case X            make any source links refer to the source in extension example X
-  -census            perform an extensions census (default is -no-census)
-  -debug             compile with debugging features even on a Release (default is -no-debug)
-  -format=X          compile to the format X (default is Inform6/32)
-  -o X               use file X as the compiled output (not for use with -project)
-  -project X         work within the Inform project X
-  -release           compile a version suitable for a Release build (default is -no-release)
-  -rng               fix the random number generator of the story file (for testing) (default is -no-rng)
-  -source X          use file X as the Inform source text
+  -basic                       use Basic Inform language (same as -kit BasicInformKit)
+  -case X                      make any source links refer to the source in extension example X
+  -census                      perform an extensions census (default is -no-census)
+  -debug                       compile with debugging features even on a Release (default is -no-debug)
+  -format=X                    compile to the format X (default is Inform6/32)
+  -o X                         use file X as the compiled output (not for use with -project)
+  -project X                   work within the Inform project X
+  -release                     compile a version suitable for a Release build (default is -no-release)
+  -rng                         fix the random number generator of the story file (for testing) (default is -no-rng)
+  -source X                    use file X as the Inform source text
 
 for locating resources in the file system:
-  -external X        use X as the user's home for installed material such as extensions
-  -internal X        use X as the location of built-in material such as the Standard Rules
-  -nest X            add the nest at pathname X to the search list
-  -transient X       use X for transient data such as the extensions census
+  -external X                  use X as the user's home for installed material such as extensions
+  -internal X                  use X as the location of built-in material such as the Standard Rules
+  -nest X                      add the nest at pathname X to the search list
+  -transient X                 use X for transient data such as the extensions census
 
 for tweaking code generation from Inter:
-  -kit X             include Inter code from the kit called X
-  -pipeline X        specify code-generation pipeline by name (default is "compile")
-  -pipeline-file X   specify code-generation pipeline as file X
-  -variable X        set pipeline variable X (in form name=value)
+  -kit X                       include Inter code from the kit called X
+  -pipeline X                  specify code-generation pipeline by name (default is "compile")
+  -pipeline-file X             specify code-generation pipeline as file X
+  -variable X                  set pipeline variable X (in form name=value)
 
--at X                specify that this tool is installed at X
--crash               intentionally crash on internal errors, for backtracing (default is -no-crash)
--fixtime             pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
--help                print this help information
--locale X            set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
--log X               write the debugging log to include diagnostics on X
--version             print out version number
+-at X                          specify that this tool is installed at X
+-crash                         intentionally crash on internal errors, for backtracing (default is -no-crash)
+-fixtime                       pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)
+-help                          print this help information
+-locale X                      set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1
+-log X                         write the debugging log to include diagnostics on X
+-version                       print out version number

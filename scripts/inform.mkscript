@@ -720,8 +720,8 @@ transferkits: forcetransferkits
 
 .PHONY: forcetransferkits
 forcetransferkits:
-	$(INBUILDX) -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Inter
-	$(INBUILDX) -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Pipelines
+	$(INBUILDX) -no-versions-in-filenames -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Inter
+	$(INBUILDX) -no-versions-in-filenames -sync-to $(INTERNAL) -contents-of $(INFORM7WEB)/Internal/Pipelines
 
 # -----------------------------------------------------------------------------
 # Copying extensions into the app

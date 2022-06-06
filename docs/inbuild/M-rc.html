@@ -61,57 +61,58 @@ and those not documented in this manual are covered in that one.
 
 <span class="plain-syntax">usage: inbuild [-TASK] TARGET1 TARGET2 ...</span>
 
-<span class="plain-syntax">-archive             sync copies of all extensions, kits and so on needed for -project into Materials</span>
-<span class="plain-syntax">-archive-to X        sync copies of all extensions, kits and so on needed into nest X</span>
-<span class="plain-syntax">-build               incrementally build target(s)</span>
-<span class="plain-syntax">-build-locate        show file paths of all the extensions, kits and so on needed to build</span>
-<span class="plain-syntax">-build-missing       show the extensions, kits and so on which are needed to build but missing</span>
-<span class="plain-syntax">-build-needs         show all the extensions, kits and so on needed to build</span>
-<span class="plain-syntax">-build-trace         show verbose reasoning during -build (default is -no-build-trace)</span>
-<span class="plain-syntax">-contents-of X       apply to all targets in the directory X</span>
-<span class="plain-syntax">-copy-to X           copy target(s) to nest X</span>
-<span class="plain-syntax">-dry                 make this a dry run (print but do not execute shell commands) (default is -no-dry)</span>
-<span class="plain-syntax">-graph               show dependency graph of target(s) but take no action</span>
-<span class="plain-syntax">-inspect             show target(s) but take no action</span>
-<span class="plain-syntax">-matching X          apply to all works in nest(s) matching requirement X</span>
-<span class="plain-syntax">-rebuild             completely rebuild target(s)</span>
-<span class="plain-syntax">-sync-to X           forcibly copy target(s) to nest X, even if prior version already there</span>
-<span class="plain-syntax">-tools X             make X the directory of intools executables, and exit developer mode</span>
-<span class="plain-syntax">-use-locate          show file paths of all the extensions, kits and so on needed to use</span>
-<span class="plain-syntax">-use-missing         show the extensions, kits and so on which are needed to use but missing</span>
-<span class="plain-syntax">-use-needs           show all the extensions, kits and so on needed to use</span>
+<span class="plain-syntax">-archive                       sync copies of all extensions, kits and so on needed for -project into Materials</span>
+<span class="plain-syntax">-archive-to X                  sync copies of all extensions, kits and so on needed into nest X</span>
+<span class="plain-syntax">-build                         incrementally build target(s)</span>
+<span class="plain-syntax">-build-locate                  show file paths of all the extensions, kits and so on needed to build</span>
+<span class="plain-syntax">-build-missing                 show the extensions, kits and so on which are needed to build but missing</span>
+<span class="plain-syntax">-build-needs                   show all the extensions, kits and so on needed to build</span>
+<span class="plain-syntax">-build-trace                   show verbose reasoning during -build (default is -no-build-trace)</span>
+<span class="plain-syntax">-contents-of X                 apply to all targets in the directory X</span>
+<span class="plain-syntax">-copy-to X                     copy target(s) to nest X</span>
+<span class="plain-syntax">-dry                           make this a dry run (print but do not execute shell commands) (default is -no-dry)</span>
+<span class="plain-syntax">-graph                         show dependency graph of target(s) but take no action</span>
+<span class="plain-syntax">-inspect                       show target(s) but take no action</span>
+<span class="plain-syntax">-matching X                    apply to all works in nest(s) matching requirement X</span>
+<span class="plain-syntax">-rebuild                       completely rebuild target(s)</span>
+<span class="plain-syntax">-sync-to X                     forcibly copy target(s) to nest X, even if prior version already there</span>
+<span class="plain-syntax">-tools X                       make X the directory of intools executables, and exit developer mode</span>
+<span class="plain-syntax">-use-locate                    show file paths of all the extensions, kits and so on needed to use</span>
+<span class="plain-syntax">-use-missing                   show the extensions, kits and so on which are needed to use but missing</span>
+<span class="plain-syntax">-use-needs                     show all the extensions, kits and so on needed to use</span>
+<span class="plain-syntax">-no-versions-in-filenames      don't append _v number to destination filenames on -copy-to or -sync-to (default is -versions-in-filenames)</span>
 
 <span class="plain-syntax">for translating Inform source text to Inter:</span>
-<span class="plain-syntax">  -basic             use Basic Inform language (same as -kit BasicInformKit)</span>
-<span class="plain-syntax">  -case X            make any source links refer to the source in extension example X</span>
-<span class="plain-syntax">  -census            perform an extensions census (default is -no-census)</span>
-<span class="plain-syntax">  -debug             compile with debugging features even on a Release (default is -no-debug)</span>
-<span class="plain-syntax">  -format=X          compile to the format X (default is Inform6/32)</span>
-<span class="plain-syntax">  -o X               use file X as the compiled output (not for use with -project)</span>
-<span class="plain-syntax">  -project X         work within the Inform project X</span>
-<span class="plain-syntax">  -release           compile a version suitable for a Release build (default is -no-release)</span>
-<span class="plain-syntax">  -rng               fix the random number generator of the story file (for testing) (default is -no-rng)</span>
-<span class="plain-syntax">  -source X          use file X as the Inform source text</span>
+<span class="plain-syntax">  -basic                       use Basic Inform language (same as -kit BasicInformKit)</span>
+<span class="plain-syntax">  -case X                      make any source links refer to the source in extension example X</span>
+<span class="plain-syntax">  -census                      perform an extensions census (default is -no-census)</span>
+<span class="plain-syntax">  -debug                       compile with debugging features even on a Release (default is -no-debug)</span>
+<span class="plain-syntax">  -format=X                    compile to the format X (default is Inform6/32)</span>
+<span class="plain-syntax">  -o X                         use file X as the compiled output (not for use with -project)</span>
+<span class="plain-syntax">  -project X                   work within the Inform project X</span>
+<span class="plain-syntax">  -release                     compile a version suitable for a Release build (default is -no-release)</span>
+<span class="plain-syntax">  -rng                         fix the random number generator of the story file (for testing) (default is -no-rng)</span>
+<span class="plain-syntax">  -source X                    use file X as the Inform source text</span>
 
 <span class="plain-syntax">for locating resources in the file system:</span>
-<span class="plain-syntax">  -external X        use X as the user's home for installed material such as extensions</span>
-<span class="plain-syntax">  -internal X        use X as the location of built-in material such as the Standard Rules</span>
-<span class="plain-syntax">  -nest X            add the nest at pathname X to the search list</span>
-<span class="plain-syntax">  -transient X       use X for transient data such as the extensions census</span>
+<span class="plain-syntax">  -external X                  use X as the user's home for installed material such as extensions</span>
+<span class="plain-syntax">  -internal X                  use X as the location of built-in material such as the Standard Rules</span>
+<span class="plain-syntax">  -nest X                      add the nest at pathname X to the search list</span>
+<span class="plain-syntax">  -transient X                 use X for transient data such as the extensions census</span>
 
 <span class="plain-syntax">for tweaking code generation from Inter:</span>
-<span class="plain-syntax">  -kit X             include Inter code from the kit called X</span>
-<span class="plain-syntax">  -pipeline X        specify code-generation pipeline by name (default is "compile")</span>
-<span class="plain-syntax">  -pipeline-file X   specify code-generation pipeline as file X</span>
-<span class="plain-syntax">  -variable X        set pipeline variable X (in form name=value)</span>
+<span class="plain-syntax">  -kit X                       include Inter code from the kit called X</span>
+<span class="plain-syntax">  -pipeline X                  specify code-generation pipeline by name (default is "compile")</span>
+<span class="plain-syntax">  -pipeline-file X             specify code-generation pipeline as file X</span>
+<span class="plain-syntax">  -variable X                  set pipeline variable X (in form name=value)</span>
 
-<span class="plain-syntax">-at X                specify that this tool is installed at X</span>
-<span class="plain-syntax">-crash               intentionally crash on internal errors, for backtracing (default is -no-crash)</span>
-<span class="plain-syntax">-fixtime             pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)</span>
-<span class="plain-syntax">-help                print this help information</span>
-<span class="plain-syntax">-locale X            set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1</span>
-<span class="plain-syntax">-log X               write the debugging log to include diagnostics on X</span>
-<span class="plain-syntax">-version             print out version number</span>
+<span class="plain-syntax">-at X                          specify that this tool is installed at X</span>
+<span class="plain-syntax">-crash                         intentionally crash on internal errors, for backtracing (default is -no-crash)</span>
+<span class="plain-syntax">-fixtime                       pretend the time is 11 a.m. on 28 March 2016 for testing (default is -no-fixtime)</span>
+<span class="plain-syntax">-help                          print this help information</span>
+<span class="plain-syntax">-locale X                      set locales as 'L=E', L being shell or console, E platform, utf-8 or iso-latin1</span>
+<span class="plain-syntax">-log X                         write the debugging log to include diagnostics on X</span>
+<span class="plain-syntax">-version                       print out version number</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="M-agtk.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresssection"><a href="M-agtk.html">agtk</a></li><li class="progresscurrent">rc</li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="1-mn.html">&#10095;</a></li></ul></div>

@@ -74,26 +74,48 @@ supplied at the command line; |ext| is a substring of it, and is its extension
 |directory_status| is true if we know for some reason that this is a directory
 not a file, false if we know the reverse, and otherwise not applicable.
 
-A kit needs to be a directory whose name ends in |Kit|, and which contains
-a valid metadata file.
+A kit needs to be a directory whose name ends in |Kit|, perhaps with a semver
+appended to it, and which contains a valid metadata file.
 
 =
 void KitManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	text_stream *arg, text_stream *ext, int directory_status) {
 	if (directory_status == FALSE) return;
-		int kitpos = Str::len(arg) - 3;
-	if ((kitpos >= 0) && (Str::get_at(arg, kitpos) == 'K') &&
-		(Str::get_at(arg, kitpos+1) == 'i') &&
-		(Str::get_at(arg, kitpos+2) == 't')) {
+	if (KitManager::name_len(arg) > 0) {
 		pathname *P = Pathnames::from_text(arg);
 		*C = KitManager::claim_folder_as_copy(P);
 	}
 }
 
+@ So, for example, given |BasicInformExtrasKit-v10_1_0-beta+6V20| this returns
+20, the length of the actual name part |BasicInformExtrasKit|.
+
+=
+int KitManager::name_len(text_stream *arg) {
+	for (int i=0; i<Str::len(arg); i++)
+		if ((Str::get_at(arg, i) == 'K') &&
+			(Str::get_at(arg, i+1) == 'i') &&
+			(Str::get_at(arg, i+2) == 't'))
+			if ((Str::get_at(arg, i+3) == 0) ||
+				((Str::get_at(arg, i+3) == '-') &&
+				(Str::get_at(arg, i+4) == 'v') &&
+				(Characters::isdigit(Str::get_at(arg, i+5)))))
+				return i+3;
+	return -1;
+}
+
+@ And so we truncate to that length when turning the directory name into the
+copy name.
+
+=
 inbuild_copy *KitManager::claim_folder_as_copy(pathname *P) {
 	filename *canary = Filenames::in(P, I"kit_metadata.json");
-	if (TextFiles::exists(canary))
-		return KitManager::new_copy(Pathnames::directory_name(P), P);
+	if (TextFiles::exists(canary)) {
+		text_stream *name = Str::duplicate(Pathnames::directory_name(P));
+		int L = KitManager::name_len(name);
+		if (L > 0) Str::truncate(name, L);
+		return KitManager::new_copy(name, P);
+	}
 	return NULL;
 }
 

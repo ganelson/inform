@@ -310,6 +310,7 @@ other options to the selection defined here.
 @e MATCHING_CLSW
 @e COPY_TO_CLSW
 @e SYNC_TO_CLSW
+@e VERSIONS_IN_FILENAMES_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -319,6 +320,8 @@ other options to the selection defined here.
 		L"copy target(s) to nest X");
 	CommandLine::declare_switch(SYNC_TO_CLSW, L"sync-to", 2,
 		L"forcibly copy target(s) to nest X, even if prior version already there");
+	CommandLine::declare_boolean_switch(VERSIONS_IN_FILENAMES_CLSW, L"versions-in-filenames", 1,
+		L"append _v number to destination filenames on -copy-to or -sync-to", TRUE);
 	CommandLine::declare_switch(BUILD_CLSW, L"build", 1,
 		L"incrementally build target(s)");
 	CommandLine::declare_switch(REBUILD_CLSW, L"rebuild", 1,
@@ -391,6 +394,8 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case SYNC_TO_CLSW: inbuild_task = SYNC_TO_TTASK;
 			destination_nest = Nests::new(Pathnames::from_text(arg));
 			break;
+		case VERSIONS_IN_FILENAMES_CLSW:
+			Editions::set_canonical_leaves_have_versions(val); break;
 	}
 	Supervisor::option(id, val, arg, state);
 }
