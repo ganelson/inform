@@ -276,7 +276,6 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 				if (edhl == 1) {
 					chapter_count++; section_count = 0;
 					if (chapter_count > 1) {
-						HTML_CLOSE("p");
 						HTML_TAG("hr"); /* rule a line between chapters */
 					}
 				}
@@ -305,7 +304,9 @@ int DocumentationRenderer::set_body_text(wording W, OUTPUT_STREAM,
 		if (close_I6_position == i) WRITE(" -)");
 	}
 	if (mid_example) @<Close the previous example's text@>;
-	if (example_which_is_open != EDOC_FRAGMENT_ONLY) @<Handle a paragraph break@>;
+	if (example_which_is_open != EDOC_FRAGMENT_ONLY) {
+		@<Handle a paragraph break@>;
+	}
 	return example_count;
 }
 
@@ -319,7 +320,7 @@ break, and a chance to restore our tired variables.
 		HTML::end_colour(OUT);
 		if (mid_I7_table) @<End I7 table in extension documentation@>;
 		HTML_CLOSE("blockquote");
-	} else {
+	}	else {
 		HTML_CLOSE("p");
 	}
 	WRITE("\n");
@@ -468,7 +469,7 @@ in the following section. The left-hand cell then contains a further table,
 in the next section.
 
 @<Typeset the heading of this example@> =
-	HTML_OPEN("hr"); /* rule a line before the example heading */
+	HTML_TAG("hr"); /* rule a line before the example heading */
 	HTML::begin_plain_html_table(OUT);
 	HTML_OPEN("tr");
 
@@ -492,6 +493,7 @@ in the next section.
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
 	HTML::end_colour(OUT);
 	HTML_CLOSE("b");
+	HTML_CLOSE("a"); /* Link does not cover body, only heading */
 	HTML_TAG("br");
 	HTML_OPEN("p");
 	DocumentationRenderer::set_body_text(RUBW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
@@ -580,6 +582,6 @@ cell. Here the inset table begins:
 @ And here the inset table ends:
 
 @<Close the previous example's text@> =
+	HTML_CLOSE("p");
 	HTML::end_html_row(OUT);
 	HTML::end_html_table(OUT);
-	HTML_OPEN("p");
