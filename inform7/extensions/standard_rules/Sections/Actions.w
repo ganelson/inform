@@ -3070,7 +3070,7 @@ The switch the story transcript on rule is listed in the carry out switching the
 	transcript on rulebook.
 The switch the story transcript on rule translates into Inter as "SWITCH_TRANSCRIPT_ON_R" with
     "Transcripting is already on." (A),
-    "Start of a transcript of" (B),
+    "Start of a transcript of:" (B),
     "Attempt to begin transcript failed." (C).
 
 Switching the story transcript off is an action out of world and applying to nothing.
