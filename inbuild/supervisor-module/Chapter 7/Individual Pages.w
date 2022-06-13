@@ -103,10 +103,10 @@ our E, and return 0 in response to the ECD call to prevent further ECD calls.
 	WRITE("</b>");
 	HTML_CLOSE("p");
 	HTML_OPEN("p");
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	@<Write up any restrictions on VM usage@>;
 	if (E) @<Write up the version number, if any, and location@>;
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 	if (E) {
 		filename *B = ExtensionWebsite::page_URL(work, -1);

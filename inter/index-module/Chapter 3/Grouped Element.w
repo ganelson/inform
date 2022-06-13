@@ -42,9 +42,9 @@ void GroupedElement::render(OUTPUT_STREAM, index_session *session) {
 		if (f == FALSE) HTML_OPEN("p");
 		if ((f) && (suppress_comma == FALSE)) WRITE(", ");
 		inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
-		if (oow) HTML::begin_colour(OUT, I"800000");
+		if (oow) HTML::begin_span(OUT, I"indexdullred");
 		WRITE("%S", Metadata::optional_textual(an_pack, I"^name"));
-		if (oow) HTML::end_colour(OUT);
+		if (oow) HTML::end_span(OUT);
 		IndexUtilities::link_package(OUT, an_pack);
 		IndexUtilities::detail_link(OUT, "A", (int) id, TRUE);
 		f = TRUE;
@@ -111,10 +111,10 @@ void GroupedElement::detail_pages(index_session *session) {
 	inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
 	inter_ti requires_light = Metadata::read_numeric(an_pack, I"^requires_light");
 	HTML_OPEN("p");
-	if (oow) HTML::begin_colour(OUT, I"800000");
+	if (oow) HTML::begin_span(OUT, I"indexdullred");
 	WRITE("<b>");
 	WRITE("%S", Metadata::optional_textual(an_pack, I"^display_name"));
-	if (oow) HTML::end_colour(OUT);
+	if (oow) HTML::end_span(OUT);
 	WRITE("</b>");
 	IndexUtilities::link_package(OUT, an_pack);
 	if (requires_light) {

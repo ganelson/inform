@@ -170,7 +170,7 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 
 @<Write in the use option subheading@> =
 	HTML::open_indented_p(OUT, 2, "tight");
-	HTML::begin_colour(OUT, I"808080");
+	HTML::begin_span(OUT, I"indexgrey");
 	switch (way) {
 		case MAIN_TEXT_UO_ORIGIN:
 			Localisation::roman(OUT, LD, I"Index.Elements.In.SetFromSource");
@@ -184,7 +184,7 @@ void InnardsElement::index_options_in_force_from(OUTPUT_STREAM, tree_inventory *
 			break;
 	}
 	WRITE(":");
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 
 @<Write in the index line for a use option taken@> =

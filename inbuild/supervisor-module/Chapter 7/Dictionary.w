@@ -437,13 +437,13 @@ to the word "frog", we would be in some trouble here. Let's take the risk.
 		next_ede = next_ede->next_in_sorted_dictionary;
 	}
 	HTML_OPEN_WITH("p", "style='margin:0px; padding:0px;'");
-	if (tint) HTML::begin_colour(OUT, I"FF8080");
+	if (tint) HTML::begin_span(OUT, I"extensionindexerror");
 	WRITE("%S", ede->entry_text);
-	if (tint) HTML::end_colour(OUT);
+	if (tint) HTML::end_span(OUT);
 	WRITE(" - <i>%S</i>&nbsp;&nbsp;&nbsp;", ede->type);
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	Works::write_link_to_HTML_file(OUT, ede->ede_work);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 
 @ So, then, "clashes". These occur if, say, two extensions define "chopper" as

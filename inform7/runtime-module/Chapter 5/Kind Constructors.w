@@ -839,20 +839,20 @@ void RTKindConstructors::index_name(OUTPUT_STREAM, kind *K, int plural) {
 	}
 	int from = 0, to = length-1;
 	if (last_stroke >= 0) from = last_stroke+1; else tinted = FALSE;
-	if (tinted) HTML::begin_colour(OUT, I"808080");
+	if (tinted) HTML::begin_span(OUT, I"indexgrey");
 	for (i=from; i<=to; i++) {
 		int j, untinted = FALSE;
 		for (j=0; j<first_stroke; j++)
 			if (Lexer::word(w1+j) == Lexer::word(w1+i))
 				untinted = TRUE;
-		if (untinted) HTML::end_colour(OUT);
+		if (untinted) HTML::end_span(OUT);
 		if (i>from) WRITE(" ");
 		if (Lexer::word(w1+i) == CAPITAL_K_V) WRITE("K");
 		else if (Lexer::word(w1+i) == CAPITAL_L_V) WRITE("L");
 		else WRITE("%V", Lexer::word(w1+i));
-		if (untinted) HTML::begin_colour(OUT, I"808080");
+		if (untinted) HTML::begin_span(OUT, I"indexgrey");
 	}
-	if (tinted) HTML::end_colour(OUT);
+	if (tinted) HTML::end_span(OUT);
 
 @
 

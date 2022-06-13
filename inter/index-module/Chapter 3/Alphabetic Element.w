@@ -44,9 +44,9 @@ void AlphabeticElement::render(OUTPUT_STREAM, index_session *session) {
 }
 
 @<Action column@> =
-	if (oow) HTML::begin_colour(OUT, I"800000");
+	if (oow) HTML::begin_span(OUT, I"indexdullred");
 	WRITE("%S", Metadata::optional_textual(an_pack, I"^name"));
-	if (oow) HTML::end_colour(OUT);
+	if (oow) HTML::end_span(OUT);
 	IndexUtilities::detail_link(OUT, "A", (int) id, TRUE);
 	if (requires_light) { WRITE(" "); AlphabeticElement::note(OUT, I"Light", LD); }
 

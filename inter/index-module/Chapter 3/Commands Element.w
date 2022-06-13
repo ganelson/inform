@@ -126,17 +126,17 @@ linked_list *CommandsElement::sort(linked_list *entries) {
 			CommandsElement::index_alias(OUT, I, cg_pack, cie->command_headword, LD);
 			break;
 		case OUT_OF_WORLD_COMMAND:
-			HTML::begin_colour(OUT, I"800000");
+			HTML::begin_span(OUT, I"indexdullred");
 			WRITE("&quot;%S&quot;, ", cie->command_headword);
 			Localisation::italic(OUT, LD, I"Index.Elements.Cm.Command");
-			HTML::end_colour(OUT);
+			HTML::end_span(OUT);
 			HTML_TAG("br");
 			break;
 		case TESTING_COMMAND:
-			HTML::begin_colour(OUT, I"800000");
+			HTML::begin_span(OUT, I"indexdullred");
 			WRITE("&quot;%S&quot;, ", cie->command_headword);
 			Localisation::italic(OUT, LD, I"Index.Elements.Cm.TestingCommand");
-			HTML::end_colour(OUT);
+			HTML::end_span(OUT);
 			HTML_TAG("br");
 			break;
 		case BARE_DIRECTION_COMMAND:
@@ -172,7 +172,7 @@ void CommandsElement::index_grammar_line(OUTPUT_STREAM, inter_package *cgl,
 	inter_package *an = InterPackage::container(an_s->definition);
 	int oow = (int) Metadata::read_optional_numeric(an, I"^out_of_world");
 	if (Str::len(headword) > 0) IndexUtilities::anchor(OUT, headword);
-	if (oow) HTML::begin_colour(OUT, I"800000");
+	if (oow) HTML::begin_span(OUT, I"indexdullred");
 	WRITE("&quot;");
 	TokensElement::verb_definition(OUT, Metadata::optional_textual(cgl, I"^text"),
 		headword, EMPTY_WORDING);
@@ -186,6 +186,6 @@ void CommandsElement::index_grammar_line(OUTPUT_STREAM, inter_package *cgl,
 		WRITE(" ");
 		Localisation::italic(OUT, LD, I"Index.Elements.Cm.Reversed");
 	}
-	if (oow) HTML::end_colour(OUT);
+	if (oow) HTML::end_span(OUT);
 	HTML_TAG("br");
 }

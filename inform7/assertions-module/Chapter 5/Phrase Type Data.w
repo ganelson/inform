@@ -772,9 +772,9 @@ void IDTypeData::write_HTML_representation(OUTPUT_STREAM,
 			HTML_TAG("br");
 			WRITE("&nbsp;&nbsp;&nbsp;");
 			HTML_OPEN("i");
-			HTML::begin_colour(OUT, I"ff4040");
+			HTML::begin_span(OUT, I"phrasetokenvaluetext");
 			WRITE("phrases");
-			HTML::end_colour(OUT);
+			HTML::end_span(OUT);
 			HTML_CLOSE("i");
 		}
 	}
@@ -799,11 +799,11 @@ void IDTypeData::write_HTML_representation(OUTPUT_STREAM,
 		if ((p[i] == '/') && (tinted == FALSE)) {
 			tinted = TRUE;
 			if (paste_format == PASTE_PHRASE_FORMAT) break;
-			HTML::begin_colour(OUT, I"808080");
+			HTML::begin_span(OUT, I"phraseword");
 		}
 		WRITE("%c", p[i]);
 	}
-	if ((paste_format != PASTE_PHRASE_FORMAT) && (tinted)) HTML::end_colour(OUT);
+	if ((paste_format != PASTE_PHRASE_FORMAT) && (tinted)) HTML::end_span(OUT);
 
 @<Describe a token in the word sequence@> =
 	switch (paste_format) {
@@ -811,11 +811,13 @@ void IDTypeData::write_HTML_representation(OUTPUT_STREAM,
 			if (writing_a_say == FALSE) WRITE("(");
 			if (inv) {
 				parse_node *found = Invocations::get_token_as_parsed(inv, ix);
-				text_stream *col = I"008000";
-				if (Node::is(found, UNKNOWN_NT)) col = I"800000";
-				HTML::begin_colour(OUT, col);
+				if (Node::is(found, UNKNOWN_NT)) {
+					HTML::begin_span(OUT, I"indexdullred");
+				} else {
+					HTML::begin_span(OUT, I"indexdullgreen");
+				}
 				WRITE("%W", Node::get_text(found));
-				HTML::end_colour(OUT);
+				HTML::end_span(OUT);
 				WRITE(" - ");
 				Dash::note_inv_token_text(found,
 					(idtd->token_sequence[ix].construct == NEW_LOCAL_IDTC)?TRUE:FALSE);
@@ -833,56 +835,56 @@ void IDTypeData::write_HTML_representation(OUTPUT_STREAM,
 		case STANDARD_IDTC: {
 			parse_node *spec = idtd->token_sequence[ix].to_match;
 			if (Specifications::is_kind_like(spec)) {
-				HTML::begin_colour(OUT, I"4040ff");
+				HTML::begin_span(OUT, I"phrasetokendesctext");
 				Kinds::Textual::write(OUT, Specifications::to_kind(spec));
-				HTML::end_colour(OUT);
+				HTML::end_span(OUT);
 			} else if ((Node::is(spec, CONSTANT_NT)) ||
 					(Specifications::is_description(spec))) {
-				HTML::begin_colour(OUT, I"4040ff");
+				HTML::begin_span(OUT, I"phrasetokendesctext");
 				WRITE("%W", Node::get_text(spec));
-				HTML::end_colour(OUT);
+				HTML::end_span(OUT);
 			} else {
 				HTML_OPEN("i");
-				HTML::begin_colour(OUT, I"ff4040");
+				HTML::begin_span(OUT, I"phrasetokenvaluetext");
 				Specifications::write_out_in_English(OUT, spec);
-				HTML::end_colour(OUT);
+				HTML::end_span(OUT);
 				HTML_CLOSE("i");
 			}
 			break;
 		}
 		case NEW_LOCAL_IDTC:
-			HTML::begin_colour(OUT, I"E00060");
+			HTML::begin_span(OUT, I"phrasetokentext");
 			WRITE("a new name");
-			HTML::end_colour(OUT); break;
+			HTML::end_span(OUT); break;
 		case OLD_LOCAL_IDTC:
-			HTML::begin_colour(OUT, I"E00060");
+			HTML::begin_span(OUT, I"phrasetokentext");
 			WRITE("a temporary named value");
 			if ((IDTypeData::token_kind(idtd, ix)) &&
 				(Kinds::eq(IDTypeData::token_kind(idtd, ix), K_value) == FALSE)) {
 				WRITE(" holding ");
 				Kinds::Textual::write_articled(OUT, IDTypeData::token_kind(idtd, ix));
 			}
-			HTML::end_colour(OUT); break;
+			HTML::end_span(OUT); break;
 		case CONDITION_IDTC:
-			HTML::begin_colour(OUT, I"E00060");
+			HTML::begin_span(OUT, I"phrasetokentext");
 			WRITE("a condition");
-			HTML::end_colour(OUT); break;
+			HTML::end_span(OUT); break;
 		case STORAGE_IDTC:
-			HTML::begin_colour(OUT, I"E00060");
+			HTML::begin_span(OUT, I"phrasetokentext");
 			WRITE("a stored value");
-			HTML::end_colour(OUT); break;
+			HTML::end_span(OUT); break;
 		case TABLE_REF_IDTC:
-			HTML::begin_colour(OUT, I"E00060");
+			HTML::begin_span(OUT, I"phrasetokentext");
 			WRITE("a table entry");
-			HTML::end_colour(OUT); break;
+			HTML::end_span(OUT); break;
 		case KIND_NAME_IDTC:
-			HTML::begin_colour(OUT, I"E00060");
+			HTML::begin_span(OUT, I"phrasetokentext");
 			WRITE("name of kind");
-			HTML::end_colour(OUT); break;
+			HTML::end_span(OUT); break;
 		case VOID_IDTC:
-			HTML::begin_colour(OUT, I"E00060");
+			HTML::begin_span(OUT, I"phrasetokentext");
 			WRITE("a phrase");
-			HTML::end_colour(OUT); break;
+			HTML::end_span(OUT); break;
 	}
 
 @h Problem messages.

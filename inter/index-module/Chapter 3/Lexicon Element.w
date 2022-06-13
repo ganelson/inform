@@ -7,9 +7,9 @@ void LexiconElement::render(OUTPUT_STREAM, index_session *session) {
 	localisation_dictionary *LD = Indexing::get_localisation(session);
 	IndexUtilities::anchor(OUT, I"LEXICON");
 	HTML_OPEN("p");
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	Localisation::roman(OUT, LD, I"Index.Elements.Lx.Explanation");
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 	IndexLexicon::listing(OUT, Indexing::get_lexicon(session), FALSE, LD);
 }

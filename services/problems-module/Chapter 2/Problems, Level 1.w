@@ -44,11 +44,12 @@ void ProblemBuffer::redirect_problem_sentence(parse_node *from,
 	redirected_sentence = from; redirected_to_A = A; redirected_to_B = B;
 }
 
-@ These two special character codes are used as a temporary measure to
-mask out angle brackets which we don't want to interpret as HTML:
+@ These three special character codes are used as a temporary measure to
+mask out angle brackets and quotation marks which we don't want to interpret as HTML:
 
 @d PROTECTED_LT_CHAR L'\x01'
 @d PROTECTED_GT_CHAR L'\x02'
+@d PROTECTED_QUOT_CHAR L'\x03'
 
 =
 void ProblemBuffer::copy_source_reference(wording W) {
@@ -277,6 +278,7 @@ and Windows caused by the slashes going the wrong way, and so on.
 		line_width++;
 		if (c == PROTECTED_LT_CHAR) PUT('<');
 		else if (c == PROTECTED_GT_CHAR) PUT('>');
+		else if (c == PROTECTED_QUOT_CHAR) PUT('"');
 		else if (html_flag) PROBLEMS_HTML_EMITTER(OUT, c);
 		else if ((c != SOURCE_REF_CHAR) && (c != FORCE_NEW_PARA_CHAR)) WRITE("%c", c);
 	}
