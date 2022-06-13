@@ -935,7 +935,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Aleph</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"Aleph"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"Aleph"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;northeast to Beth&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;southeast to Daleth&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Gimel&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -980,8 +980,8 @@
                         <td>
                             <p class="tightin1">thing &gt; person &gt; <b>yourself</b></p>
                             <p class="hangingin1">proper-named; undescribed</p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"yourself"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">description: <span style='color:#000080'>"As good-looking as ever."</span></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"yourself"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">description: <span class="indexdullblue">"As good-looking as ever."</span></p>
                             <p class="tightin1"></p>
 
                         </td>
@@ -1134,7 +1134,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Beth</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"Beth"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"Beth"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Daleth&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;southeast to Gimel&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;southwest to Aleph&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -1290,7 +1290,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Gimel</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"Gimel"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"Gimel"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;northwest to Beth&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;southwest to Daleth&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;west to Aleph&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -1446,7 +1446,7 @@
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Daleth</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
-                            <p class="hangingin1">printed name: <span style='color:#000080'>"Daleth"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
+                            <p class="hangingin1">printed name: <span class="indexdullblue">"Daleth"</span>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Beth&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;northeast to Gimel&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;northwest to Aleph&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>

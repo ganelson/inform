@@ -76,14 +76,14 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 	HTML_CLOSE("td");
 	HTML_OPEN_WITH("td", "colspan=\"%d\" style=\"width:100%%;\"", max_elements - 1);
 	HTML_OPEN_WITH("div", "class=\"headingpanellayoutdeeper headingpanel\"");
-	HTML_OPEN_WITH("span", "class=\"headingpaneltext\"");
+	HTML::begin_span(OUT, I"headingpaneltext");
 	WRITE("Welcome to the Index");
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
-	HTML_OPEN_WITH("span", "class=\"headingpanelrubric\"");
+	HTML::begin_span(OUT, I"headingpanelrubric");
 	WRITE("A guide which grows with your project");
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
@@ -115,19 +115,19 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 	HTML_OPEN_WITH("div", "id=\"box%d_%d\" class=\"elementbox\"",
 		ip->allocation_id+1, ie->atomic_number);
 	HTML_OPEN_WITH("a", "class=\"elementlink\" title=\"%S\" href=\"#\"", ie->element_name);
-	HTML_OPEN_WITH("span", "class=\"elementtext\"");
+	HTML::begin_span(OUT, I"elementtext");
 	WRITE("%S", ie->chemical_symbol);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("a"); WRITE("\n");
 	HTML_OPEN_WITH("div", "class=\"elementnumber\"");
-	HTML_OPEN_WITH("span", "class=\"elementnumbertext\"");
+	HTML::begin_span(OUT, I"elementnumbertext");
 	WRITE("%d", ie->atomic_number);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_OPEN_WITH("div", "class=\"elementtitle\"");
-	HTML_OPEN_WITH("span", "class=\"elementtitletext\"");
+	HTML::begin_span(OUT, I"elementtitletext");
 	WRITE("%S", ie->element_name);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
 	HTML_CLOSE("td");
@@ -149,14 +149,14 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 
 	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanel\"");
 	HTML_OPEN_WITH("div", "class=\"headingtext\"");
-	HTML_OPEN_WITH("span", "class=\"headingpaneltext\"");
+	HTML::begin_span(OUT, I"headingpaneltext");
 	WRITE("%S", ip->page_title);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
-	HTML_OPEN_WITH("span", "class=\"headingpanelrubric\"");
+	HTML::begin_span(OUT, I"headingpanelrubric");
 	WRITE("%S", ip->page_explanation);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
 

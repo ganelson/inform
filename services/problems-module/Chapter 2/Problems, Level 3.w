@@ -418,14 +418,14 @@ void StandardProblems::issue_problems_banner(OUTPUT_STREAM, char *verdict) {
 	if (CStrings::eq(verdict, "Succeeded")) styling = I"succeeded";
 	HTML_OPEN_WITH("div", "class=\"headingpanellayout headingpanel%S\"", styling);
 	HTML_OPEN_WITH("div", "class=\"headingtext\"");
-	HTML_OPEN_WITH("span", "class=\"headingpaneltext\"");
+	HTML::begin_span(OUT, I"headingpaneltext");
 	WRITE("Report on Translation: %s", verdict);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
-	HTML_OPEN_WITH("span", "class=\"headingpanelrubric\"");
+	HTML::begin_span(OUT, I"headingpanelrubric");
 	WRITE("Produced by %B (build %B)", FALSE, TRUE);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
 	HTML::comment(OUT, I"HEADING ENDS");

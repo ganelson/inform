@@ -100,6 +100,48 @@ documentation. */
 	color:white;
 }
 
+/* Styling used in the extension documentation indexes: */
+
+/* Used for extension names in the extensions pane of the app */
+
+span.extensioncensusentry {
+	color: #ffffff;
+}
+
+span.extensionindexentry {
+	color: #404040;
+}
+
+span.extensionindexerror {
+	color: #ff8080;
+}
+
+/* Seen in problem messages: */
+
+span.problemred {
+	color: #800000;
+}
+
+span.problemgreen {
+	color: #008000;
+}
+
+span.phraseword {
+	color: #808080;
+}
+
+span.phrasetokentext {
+	color: #e00060;
+}
+
+span.phrasetokendesctext {
+	color: #4040ff;
+}
+
+span.phrasetokenvaluetext {
+	color: #ff4040;
+}
+
 /* Now we move on to styling used in the Index pages only: */
 
 /* The periodic table display has "sidebars", usually grey and taller than they
@@ -134,6 +176,52 @@ span.elementtitletext {
 	color: #ffffff;
 	font-size: 0.6rem; /* 9/12 * 100/125 */
 	font-weight: bold;
+}
+
+/* The banner at the top of each element: */
+
+table.elementbanner {
+	background: #eeeeee;
+}
+
+/* For the typewriting on the Library Card: */
+
+span.librarycardtitle {
+	color: #803030;
+}
+
+span.librarycardother {
+	color: #303030;
+}
+
+/* For responses in index entries about rules: */
+
+span.indexresponseletter {
+	color: #ffffff;
+	font-family: 'Courier New', Courier, monospace;
+	background-color: #8080ff;
+}
+
+span.indexresponsetext {
+	color: #000066;
+}
+
+/* Used ubiquitously throughout the index for unemphasised text: */
+
+span.indexgrey {
+	color: #808080;
+}
+
+span.indexdullred {
+	color: #800000;
+}
+
+span.indexdullgreen {
+	color: #008000;
+}
+
+span.indexdullblue {
+	color: #000080;
 }
 
 /* To get the book-contents-page style leaders on the Contents element of

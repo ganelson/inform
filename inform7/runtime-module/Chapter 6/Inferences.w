@@ -105,9 +105,9 @@ void RTInferences::index_specific(package_request *pack, int hl, inference_subje
 					if ((S) && (Wordings::nonempty(Node::get_text(S)))) {
 						HTML::open_indented_p(OUT, 1, "hanging");
 						WRITE("%+W: ", prn->name);
-						HTML::begin_colour(OUT, I"000080");
+						HTML::begin_span(OUT, I"indexdullblue");
 						WRITE("%+W", Node::get_text(S));
-						HTML::end_colour(OUT);
+						HTML::end_span(OUT);
 						if (P) IndexUtilities::link(OUT, Wordings::first_wn(Node::get_text(P)));
 						HTML_CLOSE("p");
 					}

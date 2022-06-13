@@ -40,22 +40,28 @@ void CardElement::render(OUTPUT_STREAM, index_session *session) {
 =
 void CardElement::Library_Card_entry(OUTPUT_STREAM, char *field, inter_package *pack,
 	text_stream *key, text_stream *t) {
-	text_stream *col = I"303030";
-	if (Str::eq(key, I"^title")) col = I"803030";
 	HTML::first_html_column_nowrap(OUT, 0, NULL);
-	HTML::begin_colour(OUT, col);
-	HTML_OPEN_WITH("span", "class=\"typewritten\"");
+	if (Str::eq(key, I"^title")) {
+		HTML::begin_span(OUT, I"librarycardtitle");
+	} else {
+		HTML::begin_span(OUT, I"librarycardother");
+	}
+	HTML::begin_span(OUT, I"typewritten");
 	WRITE("%s", field);
-	HTML_CLOSE("span");
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
+	HTML::end_span(OUT);
 	HTML::next_html_column(OUT, 0);
-	HTML::begin_colour(OUT, col);
-	HTML_OPEN_WITH("span", "class=\"typewritten\"");
+	if (Str::eq(key, I"^title")) {
+		HTML::begin_span(OUT, I"librarycardtitle");
+	} else {
+		HTML::begin_span(OUT, I"librarycardother");
+	}
+	HTML::begin_span(OUT, I"typewritten");
 	HTML_OPEN("b");
 	CardElement::index_variable(OUT, pack, key, t);
 	HTML_CLOSE("b");
-	HTML_CLOSE("span");
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
+	HTML::end_span(OUT);
 	HTML::end_html_row(OUT);
 }
 

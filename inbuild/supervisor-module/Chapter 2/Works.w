@@ -126,9 +126,9 @@ void Works::write(OUTPUT_STREAM, inbuild_work *work) {
 
 void Works::write_to_HTML_file(OUTPUT_STREAM, inbuild_work *work, int fancy) {
 	WRITE("%S", work->raw_title);
-	if (fancy) HTML::begin_colour(OUT, I"404040");
+	if (fancy) HTML::begin_span(OUT, I"extensionindexentry");
 	WRITE(" by ");
-	if (fancy) HTML::end_colour(OUT);
+	if (fancy) HTML::end_span(OUT);
 	WRITE("%S", work->raw_author_name);
 }
 
@@ -139,10 +139,10 @@ generates its Extensions index entries.
 void Works::write_link_to_HTML_file(OUTPUT_STREAM, inbuild_work *work) {
 	HTML_OPEN_WITH("a", "href='Extensions/%S/%S.html' style=\"text-decoration: none\"",
 		work->author_name, work->title);
-	HTML::begin_colour(OUT, I"404040");
+	HTML::begin_span(OUT, I"extensionindexentry");
 	if (Works::is_standard_rules(work)) WRITE("%S", work->title);
 	else Works::write_to_HTML_file(OUT, work, FALSE);
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	HTML_CLOSE("a");
 }
 

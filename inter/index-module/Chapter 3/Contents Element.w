@@ -65,25 +65,25 @@ void ContentsElement::render(OUTPUT_STREAM, index_session *session) {
 	int ind_used = (int) Metadata::read_numeric(heading_pack, I"^indentation");
 	if (L == 0) ind_used = 1;
 	HTML_OPEN_WITH("li", "class=\"leaded indent%d\"", ind_used);
-	HTML_OPEN("span");
+	HTML::begin_span(OUT, NULL);
 	WRITE("%S", Metadata::required_textual(heading_pack, I"^text"));
-	HTML_CLOSE("span");
-	HTML_OPEN("span");
-	if (L > min_positive_level) HTML::begin_colour(OUT, I"808080");
+	HTML::end_span(OUT);
+	HTML::begin_span(OUT, NULL);
+	if (L > min_positive_level) HTML::begin_span(OUT, I"indexgrey");
 	ContentsElement::word_count(OUT, heading_pack, LD);
-	if (L > min_positive_level) HTML::end_colour(OUT);
+	if (L > min_positive_level) HTML::end_span(OUT);
 	/* place a link to the relevant line of the primary source text */
 	IndexUtilities::link_package(OUT, heading_pack);
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("li");
 	HTML_CLOSE("ul");
 	WRITE("\n");
 	text_stream *summary = Metadata::optional_textual(heading_pack, I"^summary");
 	if (Str::len(summary) > 0) {
 		HTML::open_indented_p(OUT, ind_used+1, "hanging");
-		HTML::begin_colour(OUT, I"808080");
+		HTML::begin_span(OUT, I"indexgrey");
 		WRITE("<i>%S</i>", summary);
-		HTML::end_colour(OUT);
+		HTML::end_span(OUT);
 		HTML_CLOSE("p");
 	}
 
@@ -116,7 +116,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 				continue;
 			if (show_head) {
 				HTML::open_indented_p(OUT, 2, "hanging");
-				HTML::begin_colour(OUT, I"808080");
+				HTML::begin_span(OUT, I"indexgrey");
 				if (auto_included == TRUE)
 					Localisation::roman(OUT, LD, I"Index.Elements.C.IncludedAutomatically");
 				else if (auto_included == FALSE)
@@ -126,7 +126,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 					Localisation::roman_t(OUT, LD, I"Index.Elements.C.IncludedBy",
 						Metadata::optional_textual(owner_pack, I"^title"));
 				}
-				HTML::end_colour(OUT);
+				HTML::end_span(OUT);
 				HTML_CLOSE("p");
 				show_head = FALSE;
 			}
@@ -139,7 +139,7 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 	inter_symbol *by_id = Metadata::optional_symbol(pack, I"^included_by");
 	HTML_OPEN_WITH("ul", "class=\"leaders\"");
 	HTML_OPEN_WITH("li", "class=\"leaded indent2\"");
-	HTML_OPEN("span");
+	HTML::begin_span(OUT, NULL);
 	WRITE("%S ", Metadata::required_textual(pack, I"^title"));
 	if (Metadata::read_optional_numeric(pack, I"^standard") == 0) {
 		IndexUtilities::link_package(OUT, pack); WRITE("&nbsp;&nbsp;");
@@ -148,25 +148,25 @@ void ContentsElement::index_extensions_included_by(OUTPUT_STREAM, tree_inventory
 	if (auto_included != TRUE) WRITE("by %S ", Metadata::required_textual(pack, I"^author"));
 	text_stream *v = Metadata::required_textual(pack, I"^version");
 	if (Str::len(v) > 0) {
-		HTML_OPEN_WITH("span", "class=\"smaller\"");
+		HTML::begin_span(OUT, I"smaller");
 		Localisation::roman_t(OUT, LD, I"Index.Elements.C.Version", v);
-		HTML_CLOSE("span");
+		HTML::end_span(OUT);
 		WRITE(" ");
 	}
 	text_stream *ec = Metadata::optional_textual(pack, I"^extra_credit");
 	if (Str::len(ec) > 0) {
-		HTML_OPEN_WITH("span", "class=\"smaller\"");
+		HTML::begin_span(OUT, I"smaller");
 		WRITE("(%S) ", ec);
-		HTML_CLOSE("span");
+		HTML::end_span(OUT);
 	}
-	HTML_CLOSE("span");
-	HTML_OPEN("span");
+	HTML::end_span(OUT);
+	HTML::begin_span(OUT, NULL);
 	ContentsElement::word_count(OUT, pack, LD);
 	if (by_id == NULL) {
 		int at = (int) Metadata::read_optional_numeric(pack, I"^included_at");
 		if (at > 0) IndexUtilities::link(OUT, at);
 	}
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	HTML_CLOSE("li");
 	HTML_CLOSE("ul");
 	WRITE("\n");

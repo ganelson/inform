@@ -2,82 +2,82 @@
 <p><a name=LCARD></a><table border="0" cellspacing="3" cellpadding="3"  style="background-image:url('inform:/bg_images/indexcard.png');">
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#803030'><span class="typewritten">Story title</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardtitle"><span class="typewritten">Story title</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#803030'><span class="typewritten"><b>Mansfield Perk</b></span></span>
+            <span class="librarycardtitle"><span class="typewritten"><b>Mansfield Perk</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#303030'><span class="typewritten">Story author</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardother"><span class="typewritten">Story author</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#303030'><span class="typewritten"><b>José Aüsten</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>José Aüsten</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#303030'><span class="typewritten">Story headline</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardother"><span class="typewritten">Story headline</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#303030'><span class="typewritten"><b>An Interactive Romance &amp; &lt;More&gt;</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>An Interactive Romance &amp; &lt;More&gt;</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#303030'><span class="typewritten">Story genre</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardother"><span class="typewritten">Story genre</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#303030'><span class="typewritten"><b>Romance</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>Romance</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#303030'><span class="typewritten">Episode</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardother"><span class="typewritten">Episode</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#303030'><span class="typewritten"><b>2 of Dukes and Dioramas</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>2 of Dukes and Dioramas</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#303030'><span class="typewritten">Release number</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardother"><span class="typewritten">Release number</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#303030'><span class="typewritten"><b>7</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>7</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#303030'><span class="typewritten">Story creation year</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardother"><span class="typewritten">Story creation year</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#303030'><span class="typewritten"><b>2005</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>2005</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#303030'><span class="typewritten">Language of play</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardother"><span class="typewritten">Language of play</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#303030'><span class="typewritten"><b>English</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>English</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#303030'><span class="typewritten">IFID number</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardother"><span class="typewritten">IFID number</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#303030'><span class="typewritten"><b>0B00B00D-3307-4688-B2D8-95DB962781B4</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>0B00B00D-3307-4688-B2D8-95DB962781B4</b></span></span>
         </td>
     </tr>
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
-            <span style='color:#303030'><span class="typewritten">Story description</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="librarycardother"><span class="typewritten">Story description</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span style='color:#303030'><span class="typewritten"><b>In Miss Austen's new interactive novella, Miss Henrietta Pollifax is adopted by the tempestuous landowner Sir Tankerley Mordant, and must make a new life for herself on the rugged moors.</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>In Miss Austen's new interactive novella, Miss Henrietta Pollifax is adopted by the tempestuous landowner Sir Tankerley Mordant, and must make a new life for herself on the rugged moors.</b></span></span>
         </td>
     </tr>
 </table>

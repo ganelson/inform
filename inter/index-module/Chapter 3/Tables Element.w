@@ -96,7 +96,7 @@ Rules, which of course are always present. So these are hidden by default.
 	text_stream *for_each = Metadata::optional_textual(table_pack, I"^blank_rows_for_each");
 
 	WRITE("<i>");
-	HTML_OPEN_WITH("span", "class=\"smaller\"");
+	HTML::begin_span(OUT, I"smaller");
 	if (defines) {
 		if (nr == 1) Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Definition", nr);
 		else Localisation::roman_i(OUT, LD, I"Index.Elements.Tb.Definitions", nr);
@@ -116,7 +116,7 @@ Rules, which of course are always present. So these are hidden by default.
 		}
 		WRITE(")");
 	}
-	HTML_CLOSE("span");
+	HTML::end_span(OUT);
 	WRITE("</i>");
 
 @<Produce a row for this table usage@> =
