@@ -1,0 +1,152 @@
+:root {
+    color-scheme: light dark;
+}
+
+/* The default font (family) and size */
+
+body, p, td {
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 12px;
+}
+
+/* For fixed-point material within text, such as the typing on the Library Card index page */
+
+span.typewritten {
+	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+	font-size: 13px;
+}
+
+/* For less important material: the small print */
+
+span.smaller {
+	font-size: 80%;
+}
+
+/* The "heading panel" is the coloured box, high up on the page. The colours
+vary depending on the page: for example, the style on a report of a translation
+with no problems is "headingpanelsucceeded", usually green, but if there were
+problems then "headingpanelfailed" is used, which is usually red. "headingpanel"
+itself is a more neutral grey by default. "headingpanelDark" is an alternative
+look to make the extensions index pages have some visual contrast with the others;
+by default they are a darker grey. */
+
+.headingpanel {
+	background: #eeeeee;
+}
+.headingpanelsucceeded {
+	background: #E6FFE6;
+}
+.headingpanelfailed {
+	background: #f69Ca6;
+}
+.headingpanelalt {
+	background: #808080;
+}
+
+/* Heading panels have two lines of text: an upper one in a larger size, and a
+lower one in a smaller. Again, the alt versions are meant to contrast.
+
+	Report on Translation: Succeeded                <-- headingpaneltext
+	Produced by Inform 10.1.0 (build 6U97)          <-- headingpanelrubric
+
+	Installed Extensions                            <-- headingpaneltextalt
+	Bundles of extra rules or phrases to...         <-- headingpanelrubricalt
+
+*/
+
+span.headingpaneltext {
+	color: #222222;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 20px;
+	font-weight: bold;
+}
+span.headingpaneltextalt {
+	color: #ffffff;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+span.headingpanelrubric {
+	color: #222222;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 11px;
+	font-weight: bold;
+}
+span.headingpanelrubricalt {
+	color: #ffffff;
+	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+	-webkit-font-smoothing: antialiased;
+	font-size: 11px;
+	font-weight: bold;
+}
+
+/* Horizontal rule styling */
+
+div.hr {
+	border: 0;
+	width: 100%;
+	color: #707070;
+	background-color: #707070;
+	height: 5px;
+}
+
+/* This styles the (usually white) text of the example numbers written inside
+oval blobs in the extension documentation, which mimic the look of the in-app
+documentation. */
+
+.oval, .oval td {
+	background-image:url('inform:/doc_images/ovoid.png');
+	color:white;
+}
+
+/* Now we move on to styling used in the Index pages only: */
+
+/* The periodic table display has "sidebars", usually grey and taller than they
+are wide; they contain no text. */
+
+div.periodictablesidebarcolour {
+	background: #888;
+}
+div.periodictablesidebar:hover {
+	background: #222;
+}
+
+/* The text of the element-abbreviation, such as "Lx" or "Ph", uses: */
+
+span.elementtext {
+	color: #ffffff;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+/* Similarly for the "atomic number" - a single digit - in the top left corner
+of these boxes: */
+
+span.elementnumbertext {
+	color: #ffffff;
+	font-size: 7pt;
+}
+
+/* For the text of the element title, to the right of the element box: */
+
+span.elementtitletext {
+	color: #ffffff;
+	font-size: 9px;
+	font-weight: bold;
+}
+
+/* To get the book-contents-page style leaders on the Contents element of
+   the index to work, these must use the background colour of the body of
+   the page, whatever that is: */
+
+ul.leaders li.leaded span:first-child {
+	background: white;
+}
+ul.leaders li.leaded span + span {
+	background: white;
+}
