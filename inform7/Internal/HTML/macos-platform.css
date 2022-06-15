@@ -1,26 +1,49 @@
 :root {
     color-scheme: light dark;
+    --element-banner-background-colour: #eeeeee;
+    --heading-panel-background-colour: #eeeeee;
+    --heading-panel-text-colour: #222222;
+    --index-dull-red-colour: #800000;
+    --periodic-table-sidebar-colour: #888;
+    --periodic-table-sidebar-hover-colour: #222;
+    --leaders-background-colour: white;
+    --library-card-title-colour: #803030;
+    --library-card-other-colour: #303030;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --element-banner-background-colour: #444444;
+    --heading-panel-background-colour: #444444;
+    --heading-panel-text-colour: #ffffff;
+    --index-dull-red-colour: #b00000;
+    --periodic-table-sidebar-colour: #555;
+    --periodic-table-sidebar-hover-colour: #222;
+    --leaders-background-colour: black;
+    --library-card-title-colour: #a05050;
+    --library-card-other-colour: #505050;
+  }
 }
 
 /* The default font (family) and size */
 
 body, p, td {
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	font-size: 12px;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 12px;
 }
 
 /* For fixed-point material within text, such as the typing on the Library Card index page */
 
 span.typewritten {
-	font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-	font-size: 13px;
+    font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+    font-size: 13px;
 }
 
 /* For less important material: the small print */
 
 span.smaller {
-	font-size: 80%;
+    font-size: 80%;
 }
 
 /* The "heading panel" is the coloured box, high up on the page. The colours
@@ -32,67 +55,67 @@ look to make the extensions index pages have some visual contrast with the other
 by default they are a darker grey. */
 
 .headingpanel {
-	background: #eeeeee;
+    background: var(--heading-panel-background-colour);
 }
 .headingpanelsucceeded {
-	background: #E6FFE6;
+    background: #E6FFE6;
 }
 .headingpanelfailed {
-	background: #f69Ca6;
+    background: #f69Ca6;
 }
 .headingpanelalt {
-	background: #808080;
+    background: #808080;
 }
 
 /* Heading panels have two lines of text: an upper one in a larger size, and a
 lower one in a smaller. Again, the alt versions are meant to contrast.
 
-	Report on Translation: Succeeded                <-- headingpaneltext
-	Produced by Inform 10.1.0 (build 6U97)          <-- headingpanelrubric
+    Report on Translation: Succeeded                <-- headingpaneltext
+    Produced by Inform 10.1.0 (build 6U97)          <-- headingpanelrubric
 
-	Installed Extensions                            <-- headingpaneltextalt
-	Bundles of extra rules or phrases to...         <-- headingpanelrubricalt
+    Installed Extensions                            <-- headingpaneltextalt
+    Bundles of extra rules or phrases to...         <-- headingpanelrubricalt
 
 */
 
 span.headingpaneltext {
-	color: #222222;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	font-size: 20px;
-	font-weight: bold;
+    color: var(--heading-panel-text-colour);
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 20px;
+    font-weight: bold;
 }
 span.headingpaneltextalt {
-	color: #ffffff;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	font-size: 20px;
-	font-weight: bold;
+    color: #ffffff;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 span.headingpanelrubric {
-	color: #222222;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	font-size: 11px;
-	font-weight: bold;
+    color: var(--heading-panel-text-colour);
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 11px;
+    font-weight: bold;
 }
 span.headingpanelrubricalt {
-	color: #ffffff;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-	-webkit-font-smoothing: antialiased;
-	font-size: 11px;
-	font-weight: bold;
+    color: #ffffff;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: 11px;
+    font-weight: bold;
 }
 
 /* Horizontal rule styling */
 
 div.hr {
-	border: 0;
-	width: 100%;
-	color: #707070;
-	background-color: #707070;
-	height: 5px;
+    border: 0;
+    width: 100%;
+    color: #707070;
+    background-color: #707070;
+    height: 5px;
 }
 
 /* This styles the (usually white) text of the example numbers written inside
@@ -100,8 +123,8 @@ oval blobs in the extension documentation, which mimic the look of the in-app
 documentation. */
 
 .oval, .oval td {
-	background-image:url('inform:/doc_images/ovoid.png');
-	color:white;
+    background-image:url('inform:/doc_images/ovoid.png');
+    color:white;
 }
 
 /* Styling used in the extension documentation indexes: */
@@ -109,41 +132,41 @@ documentation. */
 /* Used for extension names in the extensions pane of the app */
 
 span.extensioncensusentry {
-	color: #ffffff;
+    color: #ffffff;
 }
 
 span.extensionindexentry {
-	color: #404040;
+    color: #404040;
 }
 
 span.extensionindexerror {
-	color: #ff8080;
+    color: #ff8080;
 }
 
 /* Seen in problem messages: */
 
 span.problemred {
-	color: #800000;
+    color: #800000;
 }
 
 span.problemgreen {
-	color: #008000;
+    color: #008000;
 }
 
 span.phraseword {
-	color: #808080;
+    color: #808080;
 }
 
 span.phrasetokentext {
-	color: #e00060;
+    color: #e00060;
 }
 
 span.phrasetokendesctext {
-	color: #4040ff;
+    color: #4040ff;
 }
 
 span.phrasetokenvaluetext {
-	color: #ff4040;
+    color: #ff4040;
 }
 
 /* Now we move on to styling used in the Index pages only: */
@@ -152,80 +175,80 @@ span.phrasetokenvaluetext {
 are wide; they contain no text. */
 
 div.periodictablesidebarcolour {
-	background: #888;
+    background: var(--periodic-table-sidebar-colour);
 }
 div.periodictablesidebar:hover {
-	background: #222;
+    background: var(--periodic-table-sidebar-hover-colour);
 }
 
 /* The text of the element-abbreviation, such as "Lx" or "Ph", uses: */
 
 span.elementtext {
-	color: #ffffff;
-	font-size: 20px;
-	font-weight: bold;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 /* Similarly for the "atomic number" - a single digit - in the top left corner
 of these boxes: */
 
 span.elementnumbertext {
-	color: #ffffff;
-	font-size: 7pt;
+    color: #ffffff;
+    font-size: 7pt;
 }
 
 /* For the text of the element title, to the right of the element box: */
 
 span.elementtitletext {
-	color: #ffffff;
-	font-size: 9px;
-	font-weight: bold;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: bold;
 }
 
 /* The banner at the top of each element: */
 
 table.elementbanner {
-	background: #eeeeee;
+    background: var(--element-banner-background-colour);
 }
 
 /* For the typewriting on the Library Card: */
 
 span.librarycardtitle {
-	color: #803030;
+    color: var(--library-card-title-colour);
 }
 
 span.librarycardother {
-	color: #303030;
+    color: var(--library-card-other-colour);
 }
 
 /* For responses in index entries about rules: */
 
 span.indexresponseletter {
-	color: #ffffff;
-	font-family: 'Courier New', Courier, monospace;
-	background-color: #8080ff;
+    color: #ffffff;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #8080ff;
 }
 
 span.indexresponsetext {
-	color: #000066;
+    color: #000066;
 }
 
 /* Used ubiquitously throughout the index for unemphasised text: */
 
 span.indexgrey {
-	color: #808080;
+    color: #808080;
 }
 
 span.indexdullred {
-	color: #800000;
+    color: var(--index-dull-red-colour);
 }
 
 span.indexdullgreen {
-	color: #008000;
+    color: #008000;
 }
 
 span.indexdullblue {
-	color: #000080;
+    color: #000080;
 }
 
 /* To get the book-contents-page style leaders on the Contents element of
@@ -233,8 +256,8 @@ span.indexdullblue {
    the page, whatever that is: */
 
 ul.leaders li.leaded span:first-child {
-	background: white;
+    background: var(--leaders-background-colour);
 }
 ul.leaders li.leaded span + span {
-	background: white;
+    background: var(--leaders-background-colour);
 }
