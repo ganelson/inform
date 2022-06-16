@@ -1,5 +1,5 @@
 1. Cd
-<p><a name=LCARD></a><table border="0" cellspacing="3" cellpadding="3"  style="background-image:url('inform:/bg_images/indexcard.png');">
+<p><a name=LCARD></a><table border="0" cellspacing="3" cellpadding="3" background="inform:/bg_images/indexcard.png">
     <tr>
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="librarycardtitle"><span class="typewritten">Story title</span></span>&nbsp;&nbsp;&nbsp;&nbsp;

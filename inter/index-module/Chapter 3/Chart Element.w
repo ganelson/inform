@@ -59,7 +59,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 @ An atypical row:
 
 @<Add a titling row to the chart of kinds@> =
-	HTML::first_html_column_nowrap(OUT, 0, "#e0e0e0");
+	HTML::first_html_column_nowrap(OUT, 0, I"headingrow");
 	WRITE("<b>");
 	Localisation::roman(OUT, D, I"Index.Elements.Ch.BasicKinds");
 	WRITE("</b>");
@@ -72,7 +72,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 @ And another:
 
 @<Add a second titling row to the chart of kinds@> =
-	HTML::first_html_column_nowrap(OUT, 0, "#e0e0e0");
+	HTML::first_html_column_nowrap(OUT, 0, I"headingrow");
 	WRITE("<b>");
 	Localisation::roman(OUT, D, I"Index.Elements.Ch.NewKinds");
 	WRITE("</b>");
@@ -85,7 +85,7 @@ higher up, but kinds with priority 0 do not appear in the index at all.
 @ A dotty row:
 
 @<Add a dotty row to the chart of kinds@> =
-	HTML_OPEN_WITH("tr", "bgcolor=\"#888\"");
+	HTML_OPEN_WITH("tr", "class=\"tintedrow\"");
 	HTML_OPEN_WITH("td", "height=\"1\" colspan=\"5\" cellpadding=\"0\"");
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
@@ -231,8 +231,8 @@ is called --
 
 =
 void ChartElement::begin_chart_row(OUTPUT_STREAM, index_session *session) {
-	char *col = NULL;
-	if (IndexUtilities::stripe(session) == FALSE) col = "#f0f0ff";
+	text_stream *col = I"stripeone";
+	if (IndexUtilities::stripe(session) == FALSE) col = I"stripetwo";
 	HTML::first_html_column_nowrap(OUT, 0, col);
 }
 
@@ -383,9 +383,9 @@ void ChartElement::index_instances(OUTPUT_STREAM, tree_inventory *inv, inter_pac
 		IndexUtilities::kind_name(OUT, pack, TRUE, FALSE);
 		HTML::end_span(OUT);
 		HTML_CLOSE("p");
-		IndexUtilities::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
+		IndexUtilities::extra_div_open(OUT, xtra, depth+1, I"indexmorebox");
 		@<Itemise the instances@>;
-		IndexUtilities::extra_div_close(OUT, "e0e0e0");
+		IndexUtilities::extra_div_close(OUT, I"indexmorebox");
 	} else {
 		@<Itemise the instances@>;
 		HTML_CLOSE("p");

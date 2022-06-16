@@ -317,11 +317,8 @@ until they put matters right.
 @ Standard rows have black text on striped background colours, these being
 the usual ones seen in Mac OS X applications such as iTunes.
 
-@d FIRST_STRIPE_COLOUR "#ffffff"
-@d SECOND_STRIPE_COLOUR "#f3f6fa"
-
 @<Display the sorted version of the census@> =
-	HTML::begin_html_table(OUT, FIRST_STRIPE_COLOUR, TRUE, 0, 0, 2, 0, 0);
+	HTML::begin_html_table(OUT, I"stripeone", TRUE, 0, 0, 2, 0, 0);
 	@<Show a titling row explaining the census sorting, if necessary@>;
 	int stripe = 0;
 	TEMPORARY_TEXT(current_author_name)
@@ -331,9 +328,9 @@ the usual ones seen in Mac OS X applications such as iTunes.
 		@<Insert a subtitling row in the census sorting, if necessary@>;
 		stripe = 1 - stripe;
 		if (stripe == 0)
-			HTML::first_html_column_coloured(OUT, 0, SECOND_STRIPE_COLOUR, 0);
+			HTML::first_html_column_coloured(OUT, 0, I"stripetwo", 0);
 		else
-			HTML::first_html_column_coloured(OUT, 0, FIRST_STRIPE_COLOUR, 0);
+			HTML::first_html_column_coloured(OUT, 0, I"stripeone", 0);
 		@<Print the census line for this extension@>;
 		HTML::end_html_row(OUT);
 	}
@@ -387,12 +384,10 @@ the usual ones seen in Mac OS X applications such as iTunes.
 
 @ Usually white text on a grey background.
 
-@d CENSUS_TITLING_BG "#808080"
-
 @<Begin a tinted census line@> =
 	int span = 4;
 	if (d == SORT_CE_BY_TITLE) span = 3;
-	HTML::first_html_column_coloured(OUT, 0, CENSUS_TITLING_BG, span);
+	HTML::first_html_column_coloured(OUT, 0, I"tintedrow", span);
 	HTML::begin_span(OUT, I"extensioncensusentry");
 	WRITE("&nbsp;");
 

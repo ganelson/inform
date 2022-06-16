@@ -198,19 +198,19 @@ These are the destinations of links from heading lines in the TOC.
 @<Typeset the table of contents entry for this heading@> =
 	switch (edhl) {
 		case 1:
-			HTML::begin_colour(OUT, I"000000");
+			HTML::begin_span(OUT, I"indexblack");
 			HTML_OPEN("b");
 			HTML_OPEN_WITH("a",
 				"style=\"text-decoration: none\" href=#docsec%d", heading_count);
 			WRITE("Chapter %d: ", chapter_count);
 			HTML_CLOSE("a");
 			HTML_CLOSE("b");
-			HTML::end_colour(OUT);
+			HTML::end_span(OUT);
 			break;
 		case 2:
 			if (chapter_count > 0) /* if there are chapters as well as sections... */
 				WRITE("&nbsp;&nbsp;&nbsp;"); /* ...then set an indentation before entry */
-			HTML::begin_colour(OUT, I"000000");
+			HTML::begin_span(OUT, I"indexblack");
 			HTML_OPEN_WITH("a", "style=\"text-decoration: none\" href=#docsec%d", heading_count);
 			WRITE("Section ");
 			if (chapter_count > 0) /* if there are chapters as well as sections... */
@@ -218,7 +218,7 @@ These are the destinations of links from heading lines in the TOC.
 			else
 				WRITE("%d: ", section_count); /* otherwise quote section number only */
 			HTML_CLOSE("a");
-			HTML::end_colour(OUT);
+			HTML::end_span(OUT);
 			break;
 		default: internal_error("unable to set this heading level in extension TOC");
 	}
@@ -236,13 +236,13 @@ far as the user is concerned it opens the example and goes there.
 	WRITE_TO(link, "style=\"text-decoration: none\" href=\"");
 	DocumentationRenderer::href_of_example(link, base_leafname, example_count, example_count);
 	WRITE_TO(link, "\"");
-	HTML::begin_colour(OUT, I"000000");
+	HTML::begin_span(OUT, I"indexblack");
 	HTML_OPEN_WITH("a", "%S", link);
 	PUT('A'+example_count-1); /* the letter A to Z */
 	WRITE(" &mdash; ");
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
 	HTML_CLOSE("a");
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	HTML_TAG("br");
 
 @
@@ -317,7 +317,7 @@ break, and a chance to restore our tired variables.
 
 @<Handle a paragraph break@> =
 	if (mid_displayed_source_text)  {
-		HTML::end_colour(OUT);
+		HTML::end_span(OUT);
 		if (mid_I7_table) @<End I7 table in extension documentation@>;
 		HTML_CLOSE("blockquote");
 	}	else {
@@ -419,7 +419,7 @@ need to achieve with an HTML |<table>|.
 		if (mid_I7_table) row_of_table_is_empty = TRUE;
 	} else {
 		HTML_OPEN("blockquote");
-		HTML::begin_colour(OUT, I"000080");
+		HTML::begin_span(OUT, I"indexdullblue");
 		mid_displayed_source_text = TRUE;
 		if (<table-sentence>(Wordings::from(W, i)))
 			start_table_next_line = TRUE;
@@ -438,10 +438,10 @@ anchor |#docsecN|.
 	HTML_OPEN("p");
 	switch (edhl) {
 		case 1:
-			HTML::begin_colour(OUT, I"800000");
+			HTML::begin_span(OUT, I"indexdullred");
 			break;
 		case 2:
-			HTML::begin_colour(OUT, I"000000");
+			HTML::begin_span(OUT, I"indexblack");
 			break;
 	}
 	HTML_OPEN("b");
@@ -459,7 +459,7 @@ anchor |#docsecN|.
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, NULL);
 	HTML_CLOSE("span");
 	HTML_CLOSE("b");
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	HTML_CLOSE("p");
 
 @ An example is set with a two-table header, and followed optionally by a
@@ -486,12 +486,12 @@ in the next section.
 	while (asterisks-- > 0)
 		HTML_TAG_WITH("img", "border=\"0\" src='inform:/doc_images/asterisk.png'");
 	HTML_OPEN("b");
-	HTML::begin_colour(OUT, I"505050");
+	HTML::begin_span(OUT, I"indexdarkgrey");
 	WRITE("&nbsp;Example&nbsp;");
-	HTML::end_colour(OUT);
-	HTML::begin_colour(OUT, I"000000");
+	HTML::end_span(OUT);
+	HTML::begin_span(OUT, I"indexblack");
 	DocumentationRenderer::set_body_text(NW, OUT, EDOC_FRAGMENT_ONLY, base_leafname);
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	HTML_CLOSE("b");
 	HTML_CLOSE("a"); /* Link does not cover body, only heading */
 	HTML_TAG("br");
@@ -518,11 +518,10 @@ had its infamous PNG transparency bug.)
 	@<Incorporate link to the example opened up@>;
 	HTML_OPEN_WITH("div",
 		"class=\"paragraph Body\" style=\"line-height: 1px; margin-bottom: 0px; "
-		"margin-top: 0px; padding-bottom: 0pt; padding-top: 0px; text-align: center; "
-		"color: #202020; font-size: 14px; line-height: 1px;\"");
-	HTML_OPEN("b");
+		"margin-top: 0px; padding-bottom: 0pt; padding-top: 0px; text-align: center;\"");
+	HTML::begin_span(OUT, I"extensionexampleletter");
 	PUT('A' + example_count - 1);
-	HTML_CLOSE("b");
+	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_CLOSE("a");
 	HTML_CLOSE("td");
@@ -548,17 +547,17 @@ Unsurprisingly, I7 tables are set (after their titling lines) as HTML tables,
 and this is fiddly but elementary in the usual way of HTML tables:
 
 @<Begin I7 table in extension documentation@> =
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	HTML_TAG("br");
 	HTML::begin_plain_html_table(OUT);
 	HTML::first_html_column(OUT, 0);
 
 @<End table cell for I7 table in extension documentation@> =
-	HTML::end_colour(OUT);
+	HTML::end_span(OUT);
 	HTML::next_html_column(OUT, 0);
 
 @<Begin table cell for I7 table in extension documentation@> =
-	HTML::begin_colour(OUT, I"000080");
+	HTML::begin_span(OUT, I"indexdullblue");
 
 @<Begin new row of I7 table in extension documentation@> =
 	HTML::end_html_row(OUT);
@@ -575,7 +574,7 @@ a shaded HTML table, containing just one row, which contains just one
 cell. Here the inset table begins:
 
 @<Open the new example's text@> =
-	HTML::begin_html_table(OUT, "#f0f0f0", TRUE, 0, 0, 0, 0, 0);
+	HTML::begin_html_table(OUT, I"extensionexample", TRUE, 0, 0, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
 	HTML_OPEN("p");
 

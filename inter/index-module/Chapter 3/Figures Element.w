@@ -42,7 +42,7 @@ to match this width, preserving the aspect ratio.
 	inter_package *settings = InterPackage::from_URL(I, I"/main/completion/basics");
 	int MAX_INDEXED_FIGURES =
 		(int) Metadata::read_optional_numeric(settings, I"^max_indexed_figures");
-	HTML::begin_html_table(OUT, "#ffffff", TRUE, 0, 0, 0, 0, 0);
+	HTML::begin_html_table(OUT, NULL, TRUE, 0, 0, 0, 0, 0);
 	int count_of_displayed_figures = 0;
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->figure_nodes) {
@@ -107,7 +107,7 @@ to match this width, preserving the aspect ratio.
 		WRITE("&nbsp;");
 	} else {
 		HTML_OPEN_WITH("div",
-			"style=\"width:%dpx; height:%dpx; border:1px solid; background-color:#6495ed;\"",
+			"class=\"figureindexbox\" style=\"width:%dpx; height:%dpx; border:1px solid;\"",
 			THUMBNAIL_WIDTH, THUMBNAIL_WIDTH*height/width);
 		WRITE("&nbsp;");
 		HTML_CLOSE("div");
@@ -140,7 +140,7 @@ to match this width, preserving the aspect ratio.
 	}
 
 @<Tabulate the sounds@> =
-	HTML::begin_html_table(OUT, "#ffffff", TRUE, 0, 0, 0, 0, 0);
+	HTML::begin_html_table(OUT, NULL, TRUE, 0, 0, 0, 0, 0);
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->sound_nodes) {
 		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
@@ -286,7 +286,7 @@ This is more or less perfunctory, but still of some use, if only as a list.
 	}
 
 @<Tabulate the files@> =
-	HTML::begin_html_table(OUT, "#ffffff", TRUE, 0, 0, 0, 0, 0);
+	HTML::begin_html_table(OUT, NULL, TRUE, 0, 0, 0, 0, 0);
 	inter_package *pack;
 	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->file_nodes) {
 		HTML::first_html_column(OUT, THUMBNAIL_WIDTH+10);

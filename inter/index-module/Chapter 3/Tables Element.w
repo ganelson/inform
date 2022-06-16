@@ -49,7 +49,7 @@ Rules, which of course are always present. So these are hidden by default.
 			HTML_CLOSE("p");
 			first_ext = FALSE;
 		}
-		IndexUtilities::extra_div_open(OUT, 2, 1, "e0e0e0");		
+		IndexUtilities::extra_div_open(OUT, 2, 1, I"indexmorebox");		
 		HTML_OPEN("p");
 		WRITE("<i>%S</i>", Metadata::required_textual(mod, I"^title"));
 		HTML_CLOSE("p");
@@ -60,7 +60,7 @@ Rules, which of course are always present. So these are hidden by default.
 @<Close block of tables@> =
 	if (mc > 0) {
 		HTML::end_html_table(OUT);
-		if (open_cat > 1) IndexUtilities::extra_div_close(OUT, "e0e0e0");
+		if (open_cat > 1) IndexUtilities::extra_div_close(OUT, I"indexmorebox");
 	}
 
 @<Index this table@> =

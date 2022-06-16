@@ -121,11 +121,11 @@ void MapElement::index(OUTPUT_STREAM, faux_instance *I, int depth, int details,
 	@<End the object citation line@>;
 	if (details) @<Add a subsidiary paragraph of details about this object@>;
 	if (xtra >= 0) {
-		IndexUtilities::extra_div_open(OUT, xtra, depth+1, "e0e0e0");
+		IndexUtilities::extra_div_open(OUT, xtra, depth+1, I"indexmorebox");
 		@<Add the chain of kinds@>;
 		@<Add the catalogue of specific properties@>;
 		@<Add details depending on the kind@>;
-		IndexUtilities::extra_div_close(OUT, "e0e0e0");
+		IndexUtilities::extra_div_close(OUT, I"indexmorebox");
 	}
 	@<Recurse the index citation for the object as necessary@>;
 }

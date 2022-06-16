@@ -188,13 +188,13 @@ void IndexUtilities::noextra_link(OUTPUT_STREAM) {
 @ These open up divisions:
 
 =
-void IndexUtilities::extra_div_open(OUTPUT_STREAM, int id, int indent, char *colour) {
+void IndexUtilities::extra_div_open(OUTPUT_STREAM, int id, int indent, text_stream *colour) {
 	HTML_OPEN_WITH("div", "id=\"extra%d\" style=\"display: none;\"", id);
 	HTML::open_indented_p(OUT, indent, "");
 	HTML::open_coloured_box(OUT, colour, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 }
 
-void IndexUtilities::extra_div_close(OUTPUT_STREAM, char *colour) {
+void IndexUtilities::extra_div_close(OUTPUT_STREAM, text_stream *colour) {
 	HTML::close_coloured_box(OUT, colour, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 	HTML_CLOSE("p");
 	HTML_CLOSE("div");

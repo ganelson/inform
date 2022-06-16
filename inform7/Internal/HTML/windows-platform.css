@@ -116,6 +116,19 @@ span.extensionindexerror {
 	color: #ff8080;
 }
 
+/* This is used in extension documentation, where an example is presented
+in a slightly tinted box: */
+
+table.extensionexample {
+	background-color: #f0f0f0;
+}
+
+span.extensionexampleletter {
+	color: #202020;
+	font-size: 14px;
+	font-weight: bold;
+}
+
 /* Seen in problem messages: */
 
 span.problemred {
@@ -194,6 +207,18 @@ span.librarycardother {
 	color: #303030;
 }
 
+/* Generically used for "more details" boxes in the index: */
+
+table.indexmorebox {
+	background-color: #e0e0e0;
+}
+
+/* But not for activity contents: */
+
+table.indexactivitycontents {
+	background-color: #e8e0c0;
+}
+
 /* For responses in index entries about rules: */
 
 span.indexresponseletter {
@@ -206,10 +231,18 @@ span.indexresponsetext {
 	color: #000066;
 }
 
-/* Used ubiquitously throughout the index for unemphasised text: */
+/* Used ubiquitously throughout the index and extension documentation: */
+
+span.indexblack {
+	color: #000000;
+}
 
 span.indexgrey {
 	color: #808080;
+}
+
+span.indexdarkgrey {
+    color: #505050;
 }
 
 span.indexdullred {
@@ -222,6 +255,48 @@ span.indexdullgreen {
 
 span.indexdullblue {
 	color: #000080;
+}
+
+/* Used for the room squares in the World map in the Index (which is currently
+a table with one row of one column) */
+
+table.indexmaproom {
+	border-color: #000000;
+}
+
+/* Used in the numbering of levels of the World map in the Index */
+
+span.indexmaplevelnumbers {
+	color: #c0c0c0;
+}
+
+/* Used e.g. for title rows in the Chart of basic kinds in the Index */
+
+tr.headingrow {
+	background-color: #e0e0e0;
+}
+
+/* Standard rows have black text on striped background colours, these being
+the usual ones seen in Mac OS X applications such as iTunes. */
+
+tr.stripeone {
+	background-color: #ffffff;
+}
+
+tr.stripetwo {
+	background-color: #f3f6fa;
+}
+
+tr.tintedrow {
+	background-color: #808080;
+}
+
+/* In the Figures index, this is the background colour used behind images
+(though in fact it will only be visible if the image fails to load, or uses
+transparency): */
+
+div.figureindexbox {
+	background-color: #6495ed;
 }
 
 /* To get the book-contents-page style leaders on the Contents element of

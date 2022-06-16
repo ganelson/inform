@@ -13,7 +13,7 @@ void CardElement::render(OUTPUT_STREAM, index_session *session) {
 	
 	HTML_OPEN("p");
 	IndexUtilities::anchor(OUT, I"LCARD");
-	HTML::begin_html_table(OUT, "*bg_images/indexcard.png", FALSE, 0, 3, 3, 0, 0);
+	HTML::begin_html_table_bg(OUT, NULL, FALSE, 0, 3, 3, 0, 0, I"bg_images/indexcard.png");
 	CardElement::Library_Card_entry(OUT, "Story title", pack, I"^title", I"Untitled");
 	CardElement::Library_Card_entry(OUT, "Story author", pack, I"^author", I"Anonymous");
 	CardElement::Library_Card_entry(OUT, "Story headline", pack, I"^headline", I"An Interactive Fiction");

@@ -125,8 +125,6 @@ int IndexRules::no_rules(inter_package *rb_pack) {
 
 @h Rulebook boxes.
 
-@d RULEBOOK_BOX_COLOUR "e0e0e0"
-
 =
 void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 	text_stream *titling_key, text_stream *doc_link, inter_package *rb_pack,
@@ -151,14 +149,14 @@ void IndexRules::rulebook_box(OUTPUT_STREAM, tree_inventory *inv,
 		WRITE(" (%d rule%s)", n, (n==1)?"":"s");
 		if (n == 0) HTML::end_span(OUT);
 		HTML_CLOSE("p");
-		IndexUtilities::extra_div_open(OUT, expand_id, indent+1, RULEBOOK_BOX_COLOUR);
+		IndexUtilities::extra_div_open(OUT, expand_id, indent+1, I"indexmorebox");
 		@<Index the contents of the rulebook box@>;
-		IndexUtilities::extra_div_close(OUT, RULEBOOK_BOX_COLOUR);
+		IndexUtilities::extra_div_close(OUT, I"indexmorebox");
 	} else {
 		HTML::open_indented_p(OUT, indent, "");
-		HTML::open_coloured_box(OUT, RULEBOOK_BOX_COLOUR, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
+		HTML::open_coloured_box(OUT, I"indexmorebox", ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 		@<Index the contents of the rulebook box@>;
-		HTML::close_coloured_box(OUT, RULEBOOK_BOX_COLOUR, ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
+		HTML::close_coloured_box(OUT, I"indexmorebox", ROUND_BOX_TOP+ROUND_BOX_BOTTOM);
 		HTML_CLOSE("p");
 	}
 	DISCARD_TEXT(textual_name)
@@ -483,8 +481,6 @@ void IndexRules::rb_index_placements(OUTPUT_STREAM, inter_tree *I, inter_package
 This is all just meant to convey visually that the three constituent rulebooks
 of an activity are part of a single construct:
 
-@d ACTIVITY_BOX_COLOUR "e8e0c0"
-
 =
 void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pack,
 	int indent, index_session *session) {
@@ -519,7 +515,7 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 	if (n == 0) HTML::end_span(OUT);
 	HTML_CLOSE("p");
 
-	IndexUtilities::extra_div_open(OUT, expand_id, indent+1, ACTIVITY_BOX_COLOUR);
+	IndexUtilities::extra_div_open(OUT, expand_id, indent+1, I"indexactivitycontents");
 
 	HTML::begin_html_table(OUT, NULL, TRUE, 0, 4, 0, 0, 0);
 	HTML::first_html_column(OUT, 0);
@@ -568,7 +564,7 @@ void IndexRules::activity_box(OUTPUT_STREAM, inter_tree *I, inter_package *av_pa
 		HTML_CLOSE("p");
 	}
 
-	IndexUtilities::extra_div_close(OUT, ACTIVITY_BOX_COLOUR);
+	IndexUtilities::extra_div_close(OUT, I"indexactivitycontents");
 }
 
 @<Write the titling line of an activity rules box@> =
