@@ -7,16 +7,16 @@
     <table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
                     <td width="8">
-                        <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                     <td>
 
                     </td>
                     <td width="8">
-                        <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                 </tr>
                 <tr>
@@ -162,10 +162,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Beth">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Beth">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_14 style="text-decoration: none"><span style='color:#000000'>Bt</span></a></span>
+                                                <span class="indexblack"><a href=#wo_14 style="text-decoration: none"><span class="indexblack">Bt</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -348,10 +348,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Aleph">
+                                    <table border="2" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Aleph">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_13 style="text-decoration: none"><span style='color:#000000'><b>Al</b></span></a></span>
+                                                <span class="indexblack"><a href=#wo_13 style="text-decoration: none"><span class="indexblack"><b>Al</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -450,10 +450,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gimel">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gimel">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_15 style="text-decoration: none"><span style='color:#000000'>Gm</span></a></span>
+                                                <span class="indexblack"><a href=#wo_15 style="text-decoration: none"><span class="indexblack">Gm</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -636,10 +636,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Daleth">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Daleth">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_16 style="text-decoration: none"><span style='color:#000000'>Dl</span></a></span>
+                                                <span class="indexblack"><a href=#wo_16 style="text-decoration: none"><span class="indexblack">Dl</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -767,7 +767,7 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
                     <td width="8">
 
@@ -792,13 +792,13 @@
                 </tr>
                 <tr>
                     <td width="8">
-                        <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                     <td>
 
                     </td>
                     <td width="8">
-                        <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                 </tr>
             </table>
@@ -857,10 +857,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Aleph">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Aleph">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Al</span>
+                                                <span class="indexblack">Al</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -916,16 +916,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Aleph</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc135.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -948,29 +948,29 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;yourself - <i>person</i><div id="extra1" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -991,13 +991,13 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1056,10 +1056,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Beth">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Beth">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Bt</span>
+                                                <span class="indexblack">Bt</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1115,16 +1115,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;<b>Beth</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra2" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -1147,13 +1147,13 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1212,10 +1212,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gimel">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gimel">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Gm</span>
+                                                <span class="indexblack">Gm</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1271,16 +1271,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra3', 'plus3'); return false;"><img border=0 id="plus3" src=inform:/doc_images/extra.png></a>&nbsp;<b>Gimel</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra3" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -1303,13 +1303,13 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1368,10 +1368,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Daleth">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Daleth">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Dl</span>
+                                                <span class="indexblack">Dl</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1427,16 +1427,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra4', 'plus4'); return false;"><img border=0 id="plus4" src=inform:/doc_images/extra.png></a>&nbsp;<b>Daleth</b>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra4" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -1459,13 +1459,13 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>

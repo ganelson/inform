@@ -7,16 +7,16 @@
     <table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
                     <td width="8">
-                        <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                     <td>
 
                     </td>
                     <td width="8">
-                        <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                 </tr>
                 <tr>
@@ -115,10 +115,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="2" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alpha">
+                                    <table border="2" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Alpha">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_13 style="text-decoration: none"><span style='color:#000000'><b>Al</b></span></a></span>
+                                                <span class="indexblack"><a href=#wo_13 style="text-decoration: none"><span class="indexblack"><b>Al</b></span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -217,10 +217,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Beta">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Beta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_14 style="text-decoration: none"><span style='color:#000000'>Bt</span></a></span>
+                                                <span class="indexblack"><a href=#wo_14 style="text-decoration: none"><span class="indexblack">Bt</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -403,10 +403,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Epsilon">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Epsilon">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_17 style="text-decoration: none"><span style='color:#000000'>Ep</span></a></span>
+                                                <span class="indexblack"><a href=#wo_17 style="text-decoration: none"><span class="indexblack">Ep</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -589,10 +589,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gamma">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gamma">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_15 style="text-decoration: none"><span style='color:#000000'>Gm</span></a></span>
+                                                <span class="indexblack"><a href=#wo_15 style="text-decoration: none"><span class="indexblack">Gm</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -691,10 +691,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Delta">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Delta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'><a href=#wo_16 style="text-decoration: none"><span style='color:#000000'>Dl</span></a></span>
+                                                <span class="indexblack"><a href=#wo_16 style="text-decoration: none"><span class="indexblack">Dl</span></a></span>
                                             </td>
                                         </tr>
                                     </table>
@@ -775,7 +775,7 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
                     <td width="8">
 
@@ -800,13 +800,13 @@
                 </tr>
                 <tr>
                     <td width="8">
-                        <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                     <td>
 
                     </td>
                     <td width="8">
-                        <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                        <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                 </tr>
             </table>
@@ -865,10 +865,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Alpha">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Alpha">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Al</span>
+                                                <span class="indexblack">Al</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -924,16 +924,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Alpha</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc135.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -955,29 +955,29 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;yourself - <i>person</i><div id="extra1" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -998,13 +998,13 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1063,10 +1063,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Beta">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Beta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Bt</span>
+                                                <span class="indexblack">Bt</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1122,16 +1122,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;<b>Beta</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra2" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -1153,13 +1153,13 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1218,10 +1218,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Gamma">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Gamma">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Gm</span>
+                                                <span class="indexblack">Gm</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1277,16 +1277,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra3', 'plus3'); return false;"><img border=0 id="plus3" src=inform:/doc_images/extra.png></a>&nbsp;<b>Gamma</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra3" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -1308,13 +1308,13 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1373,10 +1373,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Delta">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Delta">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Dl</span>
+                                                <span class="indexblack">Dl</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1432,16 +1432,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra4', 'plus4'); return false;"><img border=0 id="plus4" src=inform:/doc_images/extra.png></a>&nbsp;<b>Delta</b>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra4" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -1464,13 +1464,13 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -1529,10 +1529,10 @@
 
                                 </td>
                                 <td>
-                                    <table border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" width="27" height="27" title="Epsilon">
+                                    <table border="1" cellpadding="0" cellspacing="0" class="indexmaproom" width="27" height="27" title="Epsilon">
                                         <tr>
                                             <td valign="middle" align="center" bgcolor="#D3D3D3">
-                                                <span style='color:#000000'>Ep</span>
+                                                <span class="indexblack">Ep</span>
                                             </td>
                                         </tr>
                                     </table>
@@ -1588,16 +1588,16 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra5', 'plus5'); return false;"><img border=0 id="plus5" src=inform:/doc_images/extra.png></a>&nbsp;<b>Epsilon</b>&nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra5" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                     <tr>
@@ -1618,13 +1618,13 @@
                     </tr>
                     <tr>
                         <td width="8">
-                            <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                         <td>
 
                         </td>
                         <td width="8">
-                            <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>

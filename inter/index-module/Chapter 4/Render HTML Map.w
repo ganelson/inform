@@ -349,7 +349,10 @@ void HTMLMap::begin_map_table(OUTPUT_STREAM, int width, int height) {
 void HTMLMap::begin_variable_width_table_with_background(OUTPUT_STREAM, char *bg_image) {
 	@<Include some indentation for a new map table@>;
 	map_tables_begun++;
-	HTML::begin_html_table_bg(OUT, NULL, FALSE, 0, 0, 0, 0, 0, bg_image);
+	TEMPORARY_TEXT(img)
+	WRITE_TO(img, "map_icons/%s", bg_image);
+	HTML::begin_html_table_bg(OUT, NULL, FALSE, 0, 0, 0, 0, 0, img);
+	DISCARD_TEXT(img)
 }
 
 @ Each table, however begun, concludes with:
@@ -465,9 +468,9 @@ void HTMLMap::render_map_as_HTML(OUTPUT_STREAM, index_session *session) {
 	HTML_OPEN("tr"); HTML_OPEN("td");
 	int rounding = 0;
 	if (z == session->calc.Universe.corner1.z) rounding = ROUND_BOX_TOP;
-	HTML::open_coloured_box(OUT, "e0e0e0", rounding);
+	HTML::open_coloured_box(OUT, I"indexmorebox", rounding);
 	WRITE("<i>%S</i>", level_rubric);
-	HTML::close_coloured_box(OUT, "e0e0e0", rounding);
+	HTML::close_coloured_box(OUT, I"indexmorebox", rounding);
 	HTML_CLOSE("td"); HTML_CLOSE("tr");
 	DISCARD_TEXT(level_rubric)
 
@@ -490,8 +493,8 @@ void HTMLMap::render_map_as_HTML(OUTPUT_STREAM, index_session *session) {
 
 @<Draw the baseline rubric row which concludes the map@> =
 	HTML_OPEN("tr"); HTML_OPEN("td");
-	HTML::open_coloured_box(OUT, "e0e0e0", ROUND_BOX_BOTTOM);
-	HTML::close_coloured_box(OUT, "e0e0e0", ROUND_BOX_BOTTOM);
+	HTML::open_coloured_box(OUT, I"indexmorebox", ROUND_BOX_BOTTOM);
+	HTML::close_coloured_box(OUT, I"indexmorebox", ROUND_BOX_BOTTOM);
 	HTML_CLOSE("td"); HTML_CLOSE("tr");
 
 @<Add a paragraph describing how non-standard directions are mapped@> =
@@ -830,13 +833,13 @@ and south ends.
 	HTMLMap::begin_map_table(OUT, MAP_CELL_SIZE, MAP_CELL_INNER_SIZE);
 	HTML_OPEN("tr");
 	HTML_OPEN("td");
-	HTML::begin_colour(OUT, I"c0c0c0");
 	HTML_OPEN("center");
 	HTML_OPEN("i");
+	HTML::begin_span(OUT, I"indexmaplevelnumbers");
 	WRITE("%d", y-session->calc.Universe.corner0.y+1);
+	HTML::end_span(OUT);
 	HTML_CLOSE("i");
 	HTML_CLOSE("center");
-	HTML::end_colour(OUT);
 	HTML_CLOSE("td");
 	HTML_CLOSE("tr");
 	HTMLMap::end_map_table(OUT);
@@ -934,8 +937,6 @@ which are bordered and coloured single-cell tables.
 
 @d ROOM_BORDER_SIZE 1
 @d B_ROOM_BORDER_SIZE 2
-@d ROOM_BORDER_COLOUR "000000"
-@d ROOM_TEXT_COLOUR "000000"
 
 =
 void HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass, index_session *session) {
@@ -944,25 +945,18 @@ void HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass, index
 		if ((I == FauxInstances::benchmark(session)) && (pass == 1)) b = B_ROOM_BORDER_SIZE;
 		HTML_OPEN_WITH("table",
 			"border=\"%d\" cellpadding=\"0\" cellspacing=\"0\" "
-			"bordercolor=\"#%s\" width=\"%d\" height=\"%d\" title=\"%S\"",
-			b, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE, MAP_CELL_INNER_SIZE,
-			FauxInstances::get_name(I));
+			"class=\"indexmaproom\" width=\"%d\" height=\"%d\" title=\"%S\"",
+			b, MAP_CELL_INNER_SIZE, MAP_CELL_INNER_SIZE, FauxInstances::get_name(I));
 		HTML_OPEN("tr");
 		HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%S\"",
 			I->fimd.colour);
-		TEMPORARY_TEXT(col)
-		if (I->fimd.text_colour)
-			WRITE_TO(col, "%S", I->fimd.text_colour);
-		else
-			WRITE_TO(col, "%s", ROOM_TEXT_COLOUR);
-		HTML::begin_colour(OUT, col);
+		@<Enter the text colour@>;
 		@<Write the text of the abbreviated name of the room@>;
-		HTML::end_colour(OUT);
+		@<Exit the text colour@>;
 		HTML_CLOSE("td");
 		HTML_CLOSE("tr");
 		HTML_CLOSE("table");
 		WRITE("\n");
-		DISCARD_TEXT(col)
 	}
 }
 
@@ -970,7 +964,7 @@ void HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass, index
 	if (pass == 1) {
 		HTML_OPEN_WITH("a", "href=#wo_%d style=\"text-decoration: none\"",
 			I->allocation_id);
-		HTML::begin_colour(OUT, col);
+		@<Enter the text colour@>;
 	}
 	if ((pass == 1) && (I == FauxInstances::benchmark(session))) HTML_OPEN("b");
 	TEMPORARY_TEXT(abbrev)
@@ -978,8 +972,20 @@ void HTMLMap::index_room_square(OUTPUT_STREAM, faux_instance *I, int pass, index
 	LOOP_THROUGH_TEXT(pos, abbrev)
 		HTML::put(OUT, Str::get(pos));
 	if ((pass == 1) && (I == FauxInstances::benchmark(session))) HTML_CLOSE("b");
-	if (pass == 1) { HTML::end_colour(OUT); HTML_CLOSE("a"); }
+	if (pass == 1) { @<Exit the text colour@>; HTML_CLOSE("a"); }
 	DISCARD_TEXT(abbrev)
+
+@<Enter the text colour@> =
+	if (Str::len(I->fimd.text_colour) > 0)
+		HTML::begin_colour(OUT, I->fimd.text_colour);
+	else
+		HTML::begin_span(OUT, I"indexblack");
+
+@<Exit the text colour@> =
+	if (Str::len(I->fimd.text_colour) > 0)
+		HTML::end_colour(OUT);
+	else
+		HTML::end_span(OUT);
 
 @h The colour chip.
 The first of two extras, which aren't strictly speaking part of the HTML map.
@@ -989,8 +995,8 @@ This is the chip shown on the "details" box for a room in the World Index.
 void HTMLMap::colour_chip(OUTPUT_STREAM, faux_instance *I, faux_instance *Reg, int at) {
 	HTML_OPEN_WITH("table",
 		"border=\"%d\" cellpadding=\"0\" cellspacing=\"0\" "
-		"bordercolor=\"#%s\" height=\"%d\"",
-		ROOM_BORDER_SIZE, ROOM_BORDER_COLOUR, MAP_CELL_INNER_SIZE);
+		"bordercolor=\"indexmaproom\" height=\"%d\"",
+		ROOM_BORDER_SIZE, MAP_CELL_INNER_SIZE);
 	HTML_OPEN("tr");
 	HTML_OPEN_WITH("td", "valign=\"middle\" align=\"center\" bgcolor=\"#%S\"",
 		Reg->fimd.colour);

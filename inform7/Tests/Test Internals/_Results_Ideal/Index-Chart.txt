@@ -1,11 +1,11 @@
 1. Ch
 <table border="0" cellspacing="0" cellpadding="0" width=100%>
-    <tr bgcolor="#888">
+    <tr class="tintedrow">
         <td height="1" colspan="5" cellpadding="0">
 
         </td>
     </tr>
-    <tr bgcolor="#e0e0e0">
+    <tr class="headingrow">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <b>basic kinds</b>&nbsp;
         </td>
@@ -22,7 +22,7 @@
             <i>under</i>&nbsp;<a href="#" onClick="showBasic('under');"><img border=0 src=inform:/doc_images/shelp.png></a>
         </td>
     </tr>
-    <tr bgcolor="#888">
+    <tr class="tintedrow">
         <td height="1" colspan="5" cellpadding="0">
 
         </td>
@@ -74,7 +74,7 @@
 
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             object [15]&nbsp;<a href=#A231><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -91,7 +91,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             room [1]&nbsp;<a href=inform:/doc27.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K1_room><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -108,7 +108,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             thing [2]&nbsp;<a href=#K2_thing><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -125,7 +125,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             door [1]&nbsp;<a href=inform:/doc37.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K4_door><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -142,7 +142,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             mystic portal [1]&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a>&nbsp;<a href=#K16_mystic_portal><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -159,7 +159,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">container</span>&nbsp;<a href=#K5_container><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -176,7 +176,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">vehicle</span>&nbsp;<a href=inform:/doc41.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K14_vehicle><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -193,7 +193,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">player's holdall</span>&nbsp;<a href=inform:/doc46.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K15_player_s_holdall><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -210,7 +210,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">supporter</span>&nbsp;<a href=#K6_supporter><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -227,7 +227,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">backdrop</span>&nbsp;<a href=inform:/doc34.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K7_backdrop><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -244,7 +244,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             person [1]&nbsp;<a href=inform:/doc42.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K8_person><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -261,7 +261,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">man</span>&nbsp;<a href=#K10_man><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -278,7 +278,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">woman</span>&nbsp;<a href=#K11_woman><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -295,7 +295,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">animal</span>&nbsp;<a href=#K12_animal><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -312,7 +312,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">device</span>&nbsp;<a href=inform:/doc39.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K13_device><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -329,7 +329,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             direction [12]&nbsp;<a href=inform:/doc51.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K3_direction><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -346,7 +346,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">region</span>&nbsp;<a href=inform:/doc29.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#K9_region><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -363,12 +363,12 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr bgcolor="#888">
+    <tr class="tintedrow">
         <td height="1" colspan="5" cellpadding="0">
 
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             number&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/doc227.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1359><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -385,7 +385,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             real number&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/doc227.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1360><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -402,7 +402,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             time&nbsp;<a href="Kinds.html?segment2"><img border=0 src=inform:/doc_images/calc1.png></a>&nbsp;<a href=inform:/doc140.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1375><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -419,7 +419,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             truth state&nbsp;<a href=inform:/doc163.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1361><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -436,7 +436,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             text&nbsp;<a href=#A1362><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -453,7 +453,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             snippet&nbsp;<a href=inform:/doc319.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1363><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -470,7 +470,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             unicode character&nbsp;<a href=#A1364><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -487,7 +487,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             action&nbsp;<a href=inform:/doc196.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1373><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -504,7 +504,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             scene&nbsp;<a href=inform:/doc150.html><img border=0 src=inform:/doc_images/help.png></a> [1]&nbsp;<a href=#A838><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -521,7 +521,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             command parser error [25]&nbsp;<a href=#A1402><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -538,7 +538,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             dynasty&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> [4]&nbsp;<a href=#A1404><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -555,7 +555,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             use option&nbsp;<a href=#A1365><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -572,7 +572,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             response&nbsp;<a href=#A1366><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -589,7 +589,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             verb&nbsp;<a href=inform:/doc222.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1367><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -606,7 +606,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             table name&nbsp;<a href=inform:/doc260.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1368><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -623,7 +623,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">equation name&nbsp;<a href=#A1369><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -640,7 +640,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/greycross.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             rulebook outcome&nbsp;<a href=#A1370><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -657,7 +657,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">external file&nbsp;<a href=inform:/doc384.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1371><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -674,7 +674,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             action name&nbsp;<a href=inform:/doc98.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1374><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -691,7 +691,7 @@
             <img border=0 alt="cross" src=inform:/doc_images/cross.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             figure name&nbsp;<a href=inform:/doc376.html><img border=0 src=inform:/doc_images/help.png></a> [1]&nbsp;<a href=#A1376><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -708,7 +708,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">sound name&nbsp;<a href=inform:/doc379.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1377><img border=0 src=inform:/doc_images/Below.png></a></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -725,12 +725,12 @@
             <img border=0 alt="tick" src=inform:/doc_images/greytick.png>
         </td>
     </tr>
-    <tr bgcolor="#888">
+    <tr class="tintedrow">
         <td height="1" colspan="5" cellpadding="0">
 
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             natural language [6]&nbsp;<a href=#A1380><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -747,7 +747,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             grammatical tense&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> [5]&nbsp;<a href=#A1382><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -764,7 +764,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             narrative viewpoint&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> [6]&nbsp;<a href=#A1383><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -781,7 +781,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             grammatical case&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> [2]&nbsp;<a href=#A1384><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -798,7 +798,7 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             grammatical gender&nbsp;<a href='inform://Extensions/Extensions/Graham%20Nelson/English%20Language.html' title="English Language by Graham Nelson" style="text-decoration: none"><img border=0 src=inform:/doc_images/Revealext.png></a> [3]&nbsp;<a href=#A1385><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -815,12 +815,12 @@
             <img border=0 alt="tick" src=inform:/doc_images/tick.png>
         </td>
     </tr>
-    <tr bgcolor="#888">
+    <tr class="tintedrow">
         <td height="1" colspan="5" cellpadding="0">
 
         </td>
     </tr>
-    <tr bgcolor="#e0e0e0">
+    <tr class="headingrow">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <b>making new kinds from old</b>&nbsp;
         </td>
@@ -837,12 +837,12 @@
             <i></i>&nbsp;
         </td>
     </tr>
-    <tr bgcolor="#888">
+    <tr class="tintedrow">
         <td height="1" colspan="5" cellpadding="0">
 
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             list of K&nbsp;<a href=inform:/doc352.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A1425><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -850,7 +850,7 @@
             { }
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             phrase K -> L&nbsp;<a href=#A2177><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -858,7 +858,7 @@
             <i>always the default value of L</i>
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey"></span>relation<span class="indexgrey"> of K</span>&nbsp;<a href=#A2182><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -866,7 +866,7 @@
             <i>a relation never holding</i>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">K based</span> rule<span class="indexgrey"> producing L</span>&nbsp;<a href=inform:/doc327.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2185><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -874,7 +874,7 @@
             the little-used do nothing rule
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">K based</span> rulebook<span class="indexgrey"> producing L</span>&nbsp;<a href=inform:/doc327.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2188><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -882,7 +882,7 @@
             the action-processing rules
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey"></span>activity<span class="indexgrey"> on K</span>&nbsp;<a href=inform:/doc287.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2191><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -890,7 +890,7 @@
             printing the name
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             description of K&nbsp;<a href=inform:/doc364.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href=#A2197><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -898,7 +898,7 @@
             <i>matching nothing</i>
         </td>
     </tr>
-    <tr>
+    <tr class="stripeone">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">K valued</span> property<span class="indexgrey"></span>&nbsp;<a href=#A2199><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -906,7 +906,7 @@
             --
         </td>
     </tr>
-    <tr bgcolor="#f0f0ff">
+    <tr class="stripetwo">
         <td style="white-space:nowrap;" align="left" valign="top" height="20">
             <span class="indexgrey">K valued</span> table<span class="indexgrey"></span> column<span class="indexgrey"></span>&nbsp;<a href=#A2201><img border=0 src=inform:/doc_images/Below.png></a>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -914,7 +914,7 @@
             --
         </td>
     </tr>
-    <tr bgcolor="#888">
+    <tr class="tintedrow">
         <td height="1" colspan="5" cellpadding="0">
 
         </td>
@@ -1052,16 +1052,16 @@ and southwest, for instance; down and up.<br>
 </p>
 <p class="tightin2"><a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<span class="indexgrey">12 directions</span></p>
 <div id="extra0" style="display: none;">
-    <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+    <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td width="8">
-                <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
             </td>
             <td>
 
             </td>
             <td width="8">
-                <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
             </td>
         </tr>
         <tr>
@@ -1077,13 +1077,13 @@ and southwest, for instance; down and up.<br>
         </tr>
         <tr>
             <td width="8">
-                <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
             </td>
             <td>
 
             </td>
             <td width="8">
-                <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
             </td>
         </tr>
     </table>
@@ -1143,16 +1143,16 @@ Like a scene in a play: a period of time which is usually tied to events in the 
 <p class="tightin1"><i>Matches:</i> value, sayable value, understandable value, enumerated value<br>
 <p class="tightin1"><a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;<span class="indexgrey">25 command parser errors</span></p>
 <div id="extra1" style="display: none;">
-    <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #e0e0e0">
+    <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
         <tr>
             <td width="8">
-                <img src="inform:/bg_images/tl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
             </td>
             <td>
 
             </td>
             <td width="8">
-                <img src="inform:/bg_images/tr_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
             </td>
         </tr>
         <tr>
@@ -1168,13 +1168,13 @@ Like a scene in a play: a period of time which is usually tied to events in the 
         </tr>
         <tr>
             <td width="8">
-                <img src="inform:/bg_images/bl_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
             </td>
             <td>
 
             </td>
             <td width="8">
-                <img src="inform:/bg_images/br_corner_e0e0e0.gif" width="8" height="8" border="0" alt="...">
+                <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
             </td>
         </tr>
     </table>
