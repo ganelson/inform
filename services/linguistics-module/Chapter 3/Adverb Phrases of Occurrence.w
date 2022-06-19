@@ -12,7 +12,7 @@ really only meaningful for turn-based simulations, as in: "for three turns".
 @d TIMES_UNIT 1 /* used for "for the third time" */
 @d TURNS_UNIT 2 /* used for "for three turns" */
 
-@ And the following the constants are used to record how to measure the
+@ And the following constants are used to record how to measure the
 threshold value -- "for more than three turns" would be |GT_REPM|, and so
 on. The default, |NO_REPM|, means that nothing is specified by way of
 comparison -- "four times" -- and the meaning of that may depend on

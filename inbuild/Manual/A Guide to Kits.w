@@ -162,7 +162,7 @@ specify non-standard kits. Since the user isn't using the command line, how can
 the user specify a |-kit|? However, a feature of Inform new in 2022 gets around
 this. Additional command-line switches for |inbuild| or for |inform7| can be
 placed in the Materials directory for an Inform project, in files called
-|inbuild-setting.txt| and |inform7-settings.txt|.
+|inbuild-settings.txt| and |inform7-settings.txt|.
 
 For example, suppose we set both[1] of these files to be:
 = (text)
