@@ -758,3 +758,14 @@ Test: parse schema from:
                       * (expr)
                         NUMBER      true
 =========
+Test: parse schema from:
+	print (char) 'a';
+	print (char) ''';
+
+  * (statement) !printchar
+      * (expr)
+        SQUOTED     a
+  * (statement) !printchar
+      * (expr)
+        SQUOTED     '
+=========

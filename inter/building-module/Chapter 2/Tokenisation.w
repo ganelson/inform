@@ -60,14 +60,21 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 				 	PUT_TO(current_raw, c);
 				}
 			 	break;
-			 case SQUOTED_TOKSTATE:
+			 case SQUOTED_TOKSTATE: {
+			 	int ends_here = FALSE;
 			 	if (c == '\'') {
+			 		ends_here = TRUE;
+			 		if ((Str::len(current_raw) == 0) && (Str::get_at(from, pos+1) == '\''))
+			 			ends_here = FALSE;
+			 	}
+			 	if (ends_here) {
 			 		@<Absorb raw material, for sure@>;
 			 		tokeniser_state = NO_TOKSTATE;
 			 	} else {
 				 	PUT_TO(current_raw, c);
 				}
 			 	break;
+			 }
 			 case COMMENT_TOKSTATE:
 			 	if (c == '\n') tokeniser_state = NO_TOKSTATE;
 			 	break;
