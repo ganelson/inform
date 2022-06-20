@@ -77,10 +77,12 @@ the Blorb-file's filename won't be too long for the file system.
 
 @<Tell Inblorb where the story file and iFiction files are@> =
 	WRITE("storyfile leafname \""); STREAM_COPY(OUT, TEMP); WRITE("\"\n");
-	if (Task::wraps_existing_storyfile())
+	if (Task::wraps_existing_storyfile()) {
 		WRITE("storyfile \"%f\" include\n", Task::existing_storyfile_file());
-	else
-		WRITE("storyfile \"%f\" include\n", Task::storyfile_file());
+	} else {
+		filename *SF = Task::storyfile_file();
+		if (SF) WRITE("storyfile \"%f\" include\n", SF);
+	}
 	WRITE("ifiction \"%f\" include\n", Task::ifiction_record_file());
 
 @ A controversial point here is that if the author supplies no cover art, we
@@ -222,8 +224,12 @@ file online.
 	WRITE("\"\n");
 	WRITE("interpreter \"%S\" \"%c\"\n", rel->interpreter_template_leafname,
 		Str::get_first_char(ext));
-	WRITE("base64 \"%f\" to \"%p%c",
-		Task::storyfile_file(), Task::released_interpreter_path(), FOLDER_SEPARATOR);
+
+	filename *SF = Task::storyfile_file();
+	if (SF) {
+		WRITE("base64 \"%f\" to \"%p%c", SF, Task::released_interpreter_path(),
+			FOLDER_SEPARATOR);
+	}
 	STREAM_COPY(OUT, TEMP);
 	WRITE(".js\"\n");
 

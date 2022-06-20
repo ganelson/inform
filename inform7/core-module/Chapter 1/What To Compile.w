@@ -301,13 +301,16 @@ filename *Task::parse_tree_file(void) {
 }
 
 @ The name of the unblorbed story file is chosen for us by Inbuild, so
-we have to extract it from the build graph:
+we have to extract it from the build graph.
+
+Note that this will return |NULL| if the current run of Inform is to
+produce, say, a C program rather than a Glulx or Z-machine story file.
 
 =
 filename *Task::storyfile_file(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	build_vertex *V = inform7_task->project->unblorbed_vertex;
-	if (V == NULL) internal_error("project graph not ready");
+	if (V == NULL) return NULL;
 	return V->as_file;
 }
 
