@@ -14,6 +14,19 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 
 ## News items
 
+### Change of testing UUID (22 June 2022)
+
+A change to the batch-testing tool Intest means that the UUID used for Inform
+projects being tested is now 00000000-0000-0000-0000-000000000000: this is meant
+to be a visibly bogus value, replacing 0B00B00D-3307-4688-B2D8-95DB962781B4.
+UUIDs are in theory unique per project, but Intest operates Inform projects with
+this single bogus UUID for every test case it runs.
+
+As a result, all six inblorb test cases and 9 of the inform7 tests will fail
+(1=Awkward 2=Audiovisual 3=Fancy-Z 4=Plain-Z 5=Plain 6=Ingredients 7=Fancy
+8=Index-Card 9=Index-Card2) by showing a discrepancy on the UUID somewhere
+unless you have pulled the latest Intest.
+
 ### Kit metadata respecified as JSON (4 June 2022)
 
 Kits are new in 10.1, and are documented in the Inbuild manual, which has been

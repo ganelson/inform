@@ -61,7 +61,7 @@
             <span class="librarycardother"><span class="typewritten">IFID number</span></span>&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
-            <span class="librarycardother"><span class="typewritten"><b>0B00B00D-3307-4688-B2D8-95DB962781B4</b></span></span>
+            <span class="librarycardother"><span class="typewritten"><b>00000000-0000-0000-0000-000000000000</b></span></span>
         </td>
     </tr>
     <tr>

@@ -1,3 +1,0 @@
-Prerelease: beta
-Build Date: 21 June 2022
-Build Number: 6V26

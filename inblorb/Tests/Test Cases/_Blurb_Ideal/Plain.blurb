@@ -18,7 +18,7 @@ picture 1 "inform7/Internal/Miscellany/DefaultCover.jpg"
 
 ! Placeholder variables
 
-placeholder [IFID] = "0B00B00D-3307-4688-B2D8-95DB962781B4"
+placeholder [IFID] = "00000000-0000-0000-0000-000000000000"
 placeholder [RELEASE] = "1"
 placeholder [YEAR] = "2016"
 placeholder [TITLE] = "Untitled"
