@@ -3,12 +3,21 @@
     --element-banner-background-colour: #eeeeee;
     --heading-panel-background-colour: #eeeeee;
     --heading-panel-text-colour: #222222;
+    --heading-panel-succeeded-background-colour: #E6FFE6;
+    --heading-panel-failed-background-colour: #f69Ca6;
+
+    --heading-row-background-colour: #e0e0e0;
+    --stripe-one-background-colour: #ffffff;
+    --stripe-two-background-colour: #f3f6fa;
+
     --index-dull-red-colour: #800000;
     --periodic-table-sidebar-colour: #888;
     --periodic-table-sidebar-hover-colour: #222;
     --leaders-background-colour: white;
     --library-card-title-colour: #803030;
     --library-card-other-colour: #303030;
+    --index-more-box-background-colour: #e0e0e0;
+    --index-activity-contents-background-colour: #e8e0c0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,13 +25,22 @@
     --element-banner-background-colour: #444444;
     --heading-panel-background-colour: #444444;
     --heading-panel-text-colour: #ffffff;
-    --index-dull-red-colour: #b00000;
+    --heading-panel-succeeded-background-colour: #738073;
+    --heading-panel-failed-background-colour: #7b4e53;
+
+    --heading-row-background-colour: #707070;
+    --stripe-one-background-colour: #7f7f7f;
+    --stripe-two-background-colour: #797b7d;
+
+    --index-dull-red-colour: #c00000;
     --periodic-table-sidebar-colour: #555;
     --periodic-table-sidebar-hover-colour: #222;
     --leaders-background-colour: black;
     --library-card-title-colour: #a05050;
     --library-card-other-colour: #505050;
-  }
+    --index-more-box-background-colour: #444444;
+    --index-activity-contents-background-colour: #727060;
+    }
 }
 
 /* The default font (family) and size */
@@ -58,10 +76,10 @@ by default they are a darker grey. */
     background: var(--heading-panel-background-colour);
 }
 .headingpanelsucceeded {
-    background: #E6FFE6;
+    background: var(--heading-panel-succeeded-background-colour);
 }
 .headingpanelfailed {
-    background: #f69Ca6;
+    background: var(--heading-panel-failed-background-colour);
 }
 .headingpanelalt {
     background: #808080;
@@ -237,13 +255,15 @@ span.librarycardother {
 /* Generically used for "more details" boxes in the index: */
 
 table.indexmorebox {
-	background-color: #e0e0e0;
+	background-color: var(--index-more-box-background-colour);
+    border-radius: 8px;
 }
 
 /* But not for activity contents: */
 
 table.indexactivitycontents {
-	background-color: #e8e0c0;
+	background-color: var(--index-activity-contents-background-colour);
+    border-radius: 8px;
 }
 
 /* For responses in index entries about rules: */
@@ -306,18 +326,18 @@ span.indexmaplevelnumbers {
 /* Used e.g. for title rows in the Chart of basic kinds in the Index */
 
 tr.headingrow {
-	background-color: #e0e0e0;
+	background-color: var(--heading-row-background-colour);
 }
 
 /* Standard rows have black text on striped background colours, these being
 the usual ones seen in Mac OS X applications such as iTunes. */
 
 tr.stripeone {
-	background-color: #ffffff;
+	background-color: var(--stripe-one-background-colour);
 }
 
 tr.stripetwo {
-	background-color: #f3f6fa;
+	background-color: var(--stripe-two-background-colour);
 }
 
 tr.tintedrow {
