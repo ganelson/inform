@@ -81,6 +81,7 @@ typedef struct compilation_settings {
 	int serial_comma;
 	int undo_prevention;
 	int use_exact_parsing_option;
+	int dict_word_size;
 } compilation_settings;
 
 compilation_settings global_compilation_settings;
@@ -105,6 +106,7 @@ void CompilationSettings::initialise_gcs(void) {
 	global_compilation_settings.serial_comma = FALSE;
 	global_compilation_settings.undo_prevention = FALSE;
 	global_compilation_settings.use_exact_parsing_option = FALSE;
+	global_compilation_settings.dict_word_size = -1;
 }
 
 @ And when (for example) a "Use..." sentence triggers one of these, the

@@ -192,6 +192,7 @@ here, which only happens when special runs are made for compiler testing.
 	Task::advance_stage_to(INTER1_CSEQ, I"Generating inter (1)",
 		4, debugging, sequence_timer);
 	BENCH(RTUseOptions::compile)
+	BENCH(RTCommandGrammars::compile_non_generic_constants)
 	BENCH(Interventions::make_all)
 	BENCH(RTKindConstructors::compile)
 	BENCH(RTLiteralPatterns::compile)

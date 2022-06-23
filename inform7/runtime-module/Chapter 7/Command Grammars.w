@@ -12,10 +12,8 @@ void RTCommandGrammars::compile_generic_constants(void) {
 	target_vm *VM = Task::vm();
 	if (TargetVMs::is_16_bit(VM)) {
 		RTCommandGrammars::grammar_constant(REPARSE_CODE_HL, 10000);
-		RTCommandGrammars::grammar_constant(DICT_WORD_SIZE_HL, 6);
 	} else {
 		RTCommandGrammars::grammar_constant(REPARSE_CODE_HL, 0x40000000);
-		RTCommandGrammars::grammar_constant(DICT_WORD_SIZE_HL, 9);
 	}
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_META_HL, 1);
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_NOUN_FILTER_HL, 1);
@@ -34,6 +32,20 @@ void RTCommandGrammars::compile_generic_constants(void) {
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_CREATURE_HL, 10);
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_TOPIC_HL, 11);
 	RTCommandGrammars::grammar_constant(VERB_DIRECTIVE_MULTIEXCEPT_HL, 12);
+}
+
+@ This one is compiled later, since it depends (potentially) on a use option:
+
+=
+void RTCommandGrammars::compile_non_generic_constants(void) {
+	target_vm *VM = Task::vm();
+	int N = global_compilation_settings.dict_word_size;
+	if (TargetVMs::is_16_bit(VM)) {
+		if (N <= 0) N = 6;
+	} else {
+		if (N <= 0) N = 9;
+	}
+	RTCommandGrammars::grammar_constant(DICT_WORD_SIZE_HL, N);
 }
 
 @
