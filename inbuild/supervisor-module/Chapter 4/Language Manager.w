@@ -94,6 +94,9 @@ inbuild_copy *LanguageManager::claim_folder_as_copy(pathname *P) {
 	filename *canary = Filenames::in(P, I"about.txt");
 	if (TextFiles::exists(canary))
 		return LanguageManager::new_copy(Pathnames::directory_name(P), P);
+	canary = Filenames::in(P, I"language_metadata.json");
+	if (TextFiles::exists(canary))
+		return LanguageManager::new_copy(Pathnames::directory_name(P), P);
 	return NULL;
 }
 

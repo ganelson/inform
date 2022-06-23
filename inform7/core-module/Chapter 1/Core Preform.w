@@ -6,11 +6,12 @@ To load, optimise and throw problem messages related to Preform syntax.
 At present we do this only when |L| is English, but the infrastructure is general.
 
 =
-void CorePreform::load(inform_language *L) {
+int CorePreform::load(inform_language *L) {
 	if (L == NULL) internal_error("can't load preform from null language");
 	filename *F = Filenames::in(Languages::path_to_bundle(L), I"Syntax.preform");
 	int nonterminals_declared = LoadPreform::load(F, L);
 	LOG("%d Preform nonterminals read from %f\n", nonterminals_declared, F);
+	return nonterminals_declared;
 }
 
 @h Converting Preform errors to problems.

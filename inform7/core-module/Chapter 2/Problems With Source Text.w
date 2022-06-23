@@ -261,10 +261,12 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"has an 'ends here' with nothing having begun");
 						break;
 					case BadTitleSentence_SYNERROR:
-						current_sentence = CE->details_node;
-						StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_BadTitleSentence),
-							"the initial bibliographic sentence can only be a title in double-quotes",
-							"possibly followed with 'by' and the name of the author.");
+						current_sentence = NULL;
+						StandardProblems::unlocated_problem(Task::syntax_tree(),
+							_p_(PM_BadTitleSentence),
+							"The opening bibliographic sentence can only be a title in "
+							"double-quotes, possibly followed with 'by' and the name of "
+							"the author.");
 						break;
 					case UnknownLanguageElement_SYNERROR:
 						current_sentence = CE->details_node;
@@ -403,6 +405,16 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"of source text from the extension '%2', but that extension does "
 							"not seem to have any heading called '%3'. (The version I loaded "
 							"was %4.)");
+						Problems::issue_problem_end();
+						break;
+					case UnavailableLOS_SYNERROR:
+						current_sentence = NULL;
+						Problems::quote_stream(1, CE->details);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"The project says that its syntax is written in a language "
+							"other than English (specifically, %1), but the language bundle "
+							"for that language does not provide a file of Preform definitions.");
 						Problems::issue_problem_end();
 						break;
 					default:

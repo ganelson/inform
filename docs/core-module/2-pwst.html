@@ -317,10 +317,12 @@ group.
 <span class="plain-syntax">                            </span><span class="string-syntax">"has an 'ends here' with nothing having begun"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">BadTitleSentence_SYNERROR:</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CE</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">details_node</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">                        </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadTitleSentence</span><span class="plain-syntax">),</span>
-<span class="plain-syntax">                            </span><span class="string-syntax">"the initial bibliographic sentence can only be a title in double-quotes"</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">                            </span><span class="string-syntax">"possibly followed with 'by' and the name of the author."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">StandardProblems::unlocated_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(),</span>
+<span class="plain-syntax">                            </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_BadTitleSentence</span><span class="plain-syntax">),</span>
+<span class="plain-syntax">                            </span><span class="string-syntax">"The opening bibliographic sentence can only be a title in "</span>
+<span class="plain-syntax">                            </span><span class="string-syntax">"double-quotes, possibly followed with 'by' and the name of "</span>
+<span class="plain-syntax">                            </span><span class="string-syntax">"the author."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">UnknownLanguageElement_SYNERROR:</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CE</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">details_node</span><span class="plain-syntax">;</span>
@@ -459,6 +461,16 @@ group.
 <span class="plain-syntax">                            </span><span class="string-syntax">"of source text from the extension '%2', but that extension does "</span>
 <span class="plain-syntax">                            </span><span class="string-syntax">"not seem to have any heading called '%3'. (The version I loaded "</span>
 <span class="plain-syntax">                            </span><span class="string-syntax">"was %4.)"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">                        </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                    </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">UnavailableLOS_SYNERROR:</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">Problems::quote_stream</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">CE</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">details</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><a href="1-wtc.html#SP6" class="function-link"><span class="function-syntax">Task::syntax_tree</span></a><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...));</span>
+<span class="plain-syntax">                        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">                            </span><span class="string-syntax">"The project says that its syntax is written in a language "</span>
+<span class="plain-syntax">                            </span><span class="string-syntax">"other than English (specifically, %1), but the language bundle "</span>
+<span class="plain-syntax">                            </span><span class="string-syntax">"for that language does not provide a file of Preform definitions."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">                        </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">                    </span><span class="identifier-syntax">default:</span>

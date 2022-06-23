@@ -28,6 +28,8 @@ void JSONMetadata::read_metadata_file(inbuild_copy *C, filename *F) {
 	C->metadata_record = obj;
 	@<Examine the "is" member of the metadata object@>;
 	@<Police the "needs"@>;
+	JSON_value *compatibility = JSON::look_up_object(obj, I"compatibility");
+	if (compatibility) @<Extract compatibility@>;
 }
 
 void JSONMetadata::read_metadata_file_helper(text_stream *text, text_file_position *tfp,
@@ -95,6 +97,13 @@ to say that |is.type| is |"kit"|.
 	if ((extension_details) && (Str::ne(type_text, I"extension"))) {
 		TEMPORARY_TEXT(err)
 		WRITE_TO(err, "the metadata contains extension-details but is not for an extension");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)
+	}
+	JSON_value *language_details = JSON::look_up_object(obj, I"language-details");
+	if ((language_details) && (Str::ne(type_text, I"language"))) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "the metadata contains language-details but is not for a language");
 		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)
 	}
@@ -191,6 +200,16 @@ void JSONMetadata::not_both(inbuild_copy *C, JSON_value *clause, text_stream *wh
 		}
 	}
 }
+
+@<Extract compatibility@> =
+	compatibility_specification *CS = Compatibility::from_text(compatibility->if_string);
+	if (CS) C->edition->compatibility = CS;
+	else {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "cannot read compatibility '%S'", compatibility->if_string);
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)
+	}
 
 @ The following returns the schema needed for (b); we will load it in from a file
 in the Inform/Inbuild installation, but will then cache the result so that it

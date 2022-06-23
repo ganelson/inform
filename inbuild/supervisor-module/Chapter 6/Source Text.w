@@ -148,6 +148,7 @@ add to those generated in //syntax//.
 @e ExtVersionMalformed_SYNERROR
 @e ExtInadequateVM_SYNERROR
 @e ExtMisidentifiedEnds_SYNERROR
+@e UnavailableLOS_SYNERROR
 
 @ The next tweak to //syntax// is to give it some node metadata. //syntax//
 itself places nodes of a small number of basic types into the syntax tree;

@@ -16,6 +16,7 @@ Import: supervisor
 Manual
 	Using Inbuild
 	A Guide to Kits
+	A Guide to Language Bundles
 	Reference Card
 
 Chapter 1: Outside of inform7

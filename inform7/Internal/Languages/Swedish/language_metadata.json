@@ -1,0 +1,17 @@
+{
+    "is": {
+        "type": "language",
+        "title": "Swedish"
+    },
+    "needs": [ {
+		"need": {
+			"type": "kit",
+			"title": "SwedishLanguageKit"
+		}
+	} ],
+    "language-details": {
+		"translated-name": "Svenska",
+		"iso-639-1-code": "sv",
+		"translated-syntax-cue": "på svenska"
+    }
+}

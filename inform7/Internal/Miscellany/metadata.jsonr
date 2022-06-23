@@ -18,6 +18,9 @@
 }
 
 <language-metadata> ::= {
+	"translated-name": string,
+	"iso-639-1-code": string,
+	?"translated-syntax-cue": string
 }
 
 <resource-metadata> ::= {

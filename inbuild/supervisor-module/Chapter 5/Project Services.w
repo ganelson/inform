@@ -17,7 +17,9 @@ typedef struct inform_project {
 	struct semantic_version_number version;
 	struct linked_list *source_vertices; /* of |build_vertex| */
 	struct linked_list *kits_to_include; /* of |kit_dependency| */
+	struct text_stream *name_of_language_of_play;
 	struct inform_language *language_of_play;
+	struct text_stream *clue_for_language_of_syntax;
 	struct inform_language *language_of_syntax;
 	struct inform_language *language_of_index;
 	struct build_vertex *unblorbed_vertex;
@@ -46,7 +48,9 @@ void Projects::scan(inbuild_copy *C) {
 	proj->version = VersionNumbers::null();
 	proj->source_vertices = NEW_LINKED_LIST(build_vertex);
 	proj->kits_to_include = NEW_LINKED_LIST(kit_dependency);
+	proj->name_of_language_of_play = I"English";
 	proj->language_of_play = NULL;
+	proj->clue_for_language_of_syntax = NULL;
 	proj->language_of_syntax = NULL;
 	proj->language_of_index = NULL;
 	proj->chosen_build_target = NULL;
@@ -67,6 +71,7 @@ void Projects::scan(inbuild_copy *C) {
 	proj->search_list = NEW_LINKED_LIST(inbuild_nest);
 	proj->primary_source = NULL;
 	proj->extensions_included = NEW_LINKED_LIST(inform_extension);
+	Projects::scan_bibliographic_data(proj);
 }
 
 @ The materials folder sits alongside the project and has the same name,
@@ -249,10 +254,6 @@ First, the "language of play" is the one in which dialogue is printed and parsed
 at run-time.
 
 =
-void Projects::set_language_of_play(inform_project *proj, inform_language *L) {
-	if (proj == NULL) internal_error("no project");
-	proj->language_of_play = L;
-}
 inform_language *Projects::get_language_of_play(inform_project *proj) {
 	if (proj == NULL) return NULL;
 	return proj->language_of_play;
@@ -275,26 +276,48 @@ inform_language *Projects::get_language_of_index(inform_project *proj) {
 project is written. For the Basic Inform extension, for example, it is English.
 
 =
-void Projects::set_language_of_syntax(inform_project *proj, inform_language *L) {
-	if (proj == NULL) internal_error("no project");
-	proj->language_of_syntax = L;
-}
 inform_language *Projects::get_language_of_syntax(inform_project *proj) {
 	if (proj == NULL) return NULL;
 	return proj->language_of_syntax;
 }
 
-@ And this is where these are decided.
+@ And this is where the languages of play and syntax are set, using metadata
+previously extracted by //Projects::scan_bibliographic_data//. Note that they
+are set only once, and can't be changed after that.
 
 =
 void Projects::set_languages(inform_project *proj) {
 	if (proj == NULL) internal_error("no project");
-	inform_language *E = Languages::find_for(I"English", Projects::nest_list(proj));
-	if (E) {
-		proj->language_of_play = E;
-		proj->language_of_syntax = E;
-		proj->language_of_index = E;
-	} else internal_error("built-in English language definition can't be found");
+	text_stream *S_name = I"English";
+	text_stream *S_clue = proj->clue_for_language_of_syntax;
+	if (Str::len(S_clue) > 0)
+		S_name = Languages::find_by_native_cue(S_clue, Projects::nest_list(proj));
+	if (Str::len(S_name) == 0) proj->language_of_syntax = NULL;
+	else proj->language_of_syntax = Languages::find_for(S_name, Projects::nest_list(proj));
+	if (proj->language_of_syntax == NULL) {
+		text_stream *bad_language = Str::duplicate(S_name);
+		if (Str::len(S_clue) > 0) {
+			Str::clear(bad_language);
+			WRITE_TO(bad_language, "language meant by '%S'", S_clue);
+		}
+		build_vertex *RV = Graphs::req_vertex(
+			Requirements::any_version_of(Works::new(language_genre, bad_language, I"")));
+		Graphs::need_this_to_build(proj->as_copy->vertex, RV);
+	}
+	if (Str::len(proj->name_of_language_of_play) == 0) {
+		proj->language_of_play = proj->language_of_syntax;
+	} else {
+		text_stream *name = proj->name_of_language_of_play;
+		inform_language *L = Languages::find_for(name, Projects::nest_list(proj));
+		if (L) {
+			proj->language_of_play = L;
+		} else {
+			build_vertex *RV = Graphs::req_vertex(
+				Requirements::any_version_of(Works::new(language_genre, name, I"")));
+			Graphs::need_this_to_build(proj->as_copy->vertex, RV);
+		}
+	}
+	proj->language_of_index = proj->language_of_syntax;
 }
 
 @h Miscellaneous metadata.
@@ -335,13 +358,21 @@ typedef struct kit_dependency {
 
 @ =
 void Projects::add_kit_dependency(inform_project *project, text_stream *kit_name,
-	inform_language *because_of_language, inform_kit *because_of_kit) {
+	inform_language *because_of_language, inform_kit *because_of_kit,
+	inbuild_requirement *req) {
 	if (Projects::uses_kit(project, kit_name)) return;
-	kit_dependency *kd = CREATE(kit_dependency);
-	kd->kit = Kits::find_by_name(kit_name, Projects::nest_list(project));
-	kd->because_of_language = because_of_language;
-	kd->because_of_kit = because_of_kit;
-	ADD_TO_LINKED_LIST(kd, kit_dependency, project->kits_to_include);
+	inform_kit *K = Kits::find_by_name(kit_name, Projects::nest_list(project), req);
+	if (K) {
+		kit_dependency *kd = CREATE(kit_dependency);
+		kd->kit = K;
+		kd->because_of_language = because_of_language;
+		kd->because_of_kit = because_of_kit;
+		ADD_TO_LINKED_LIST(kd, kit_dependency, project->kits_to_include);
+	} else {
+		build_vertex *RV = Graphs::req_vertex(
+			Requirements::any_version_of(Works::new_raw(kit_genre, kit_name, I"")));
+		Graphs::need_this_to_build(project->as_copy->vertex, RV);
+	}
 }
 
 @ This can also be used to test on the fly:
@@ -376,14 +407,12 @@ on //WorldModelKit//, through the if-this-then-that mechanism.
 @<Add dependencies for the standard kits@> =
 	int no_word_from_user = TRUE;
 	if (LinkedLists::len(project->kits_to_include) > 0) no_word_from_user = FALSE;
-	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL);
+	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL, NULL);
 	inform_language *L = project->language_of_play;
-	if (L) {
-		text_stream *kit_name = Languages::kit_name(L);
-		Projects::add_kit_dependency(project, kit_name, L, NULL);
-	}
+	if (L) Languages::add_kit_dependencies_to_project(L, project);
+	else internal_error("no language of play");
 	if (no_word_from_user)
-		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL);
+		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL);
 
 @ We perform this first with |parity| being |TRUE|, then |FALSE|.
 
@@ -743,7 +772,17 @@ For a real-world example of the result, see //inform7: Performance Metrics//.
 
 =
 void Projects::read_source_text_for(inform_project *proj) {
-	Languages::read_Preform_definition(proj->language_of_syntax, proj->search_list);
+	inform_language *E = Languages::find_for(I"English", Projects::nest_list(proj));
+	if (E == NULL) return;
+	Languages::read_Preform_definition(E, proj->search_list);
+	if ((proj->language_of_syntax) && (proj->language_of_syntax != E)) {
+		if (Languages::read_Preform_definition(
+			proj->language_of_syntax, proj->search_list) == FALSE) {
+			copy_error *CE = CopyErrors::new_T(SYNTAX_CE, UnavailableLOS_SYNERROR,
+				proj->language_of_syntax->as_copy->edition->work->title);
+			Copies::attach_error(proj->as_copy, CE);
+		}
+	}
 	Sentences::set_start_of_source(sfsm, -1);
 
 	parse_node *inclusions_heading, *implicit_heading;
@@ -838,3 +877,148 @@ place of... instructions after the sweep for inclusions.
 	#endif
 	Inclusions::traverse(proj->as_copy, proj->syntax_tree);
 	Headings::satisfy_dependencies(proj, proj->syntax_tree, proj->as_copy);
+
+@h The bibliographic sentence.
+It might seem sensible to parse the opening sentence of the source text,
+the bibliographic sentence giving title and author, by looking at the result
+of sentence-breaking: in other words, to wait until the syntax tree for a
+project has been read in.
+
+But this isn't fast enough, because the sentence also specifies the language
+of syntax, and we need to know of any non-English choice immediately. We
+don't even want to use Preform to parse the sentence, either, because we might
+want to load a different Preform file depending on that non-English choice.
+
+So the following rapid scan catches just the first sentence of the first
+source file of the project.
+
+@e BadTitleSentence_SYNERROR
+
+=
+void Projects::scan_bibliographic_data(inform_project *proj) {
+	linked_list *L = Projects::source(proj);
+	build_vertex *N;
+	LOOP_OVER_LINKED_LIST(N, build_vertex, L) {
+		filename *F = N->as_file;
+		FILE *SF = Filenames::fopen_caseless(F, "r");
+		if (SF == NULL) break; /* no source means no bibliographic data */
+		@<Read the opening sentence@>;
+		fclose(SF);
+		break; /* so that we look only at the first source file */
+	}
+}
+
+@<Read the opening sentence@> =
+	TEMPORARY_TEXT(bibliographic_sentence)
+	TEMPORARY_TEXT(bracketed)
+	@<Capture the opening sentence and its bracketed part@>;
+	if ((Str::len(bibliographic_sentence) > 0) &&
+		(Str::get_first_char(bibliographic_sentence) == '"'))
+		@<The opening sentence is bibliographic, so scan it@>;
+	DISCARD_TEXT(bibliographic_sentence)
+	DISCARD_TEXT(bracketed)
+
+@ A bibliographic sentence can optionally give a language, by use of "(in ...)":
+
+>> "Bonjour Albertine" by Marcel Proust (in French)
+
+If so, the following writes |"Bonjour Albertine" by Marcel Proust| to the
+text |bibliographic_sentence| and |in French| to the text |bracketed|. If not,
+the whole thing goes into |bibliographic_sentence| and |bracketed| is empty.
+
+@<Capture the opening sentence and its bracketed part@> =
+	int c, commented = FALSE, quoted = FALSE, rounded = FALSE, content_found = FALSE;
+	while ((c = TextFiles::utf8_fgetc(SF, NULL, FALSE, NULL)) != EOF) {
+		if (c == 0xFEFF) continue; /* skip the optional Unicode BOM pseudo-character */
+		if (commented) {
+			if (c == ']') commented = FALSE;
+		} else {
+			if (quoted) {
+				if (rounded) PUT_TO(bracketed, c);
+				else PUT_TO(bibliographic_sentence, c);
+				if (c == '"') quoted = FALSE;
+			} else {
+				if (c == '[') commented = TRUE;
+				else {
+					if (Characters::is_whitespace(c) == FALSE) content_found = TRUE;
+					if (rounded) {
+						if (c == '"') quoted = TRUE;
+						if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) c = ' ';
+						if (c == ')') rounded = FALSE;
+						else PUT_TO(bracketed, c);
+					} else {
+						if (c == '(') rounded = TRUE;
+						else {
+							if ((c == '\x0a') || (c == '\x0d') || (c == '\n')) {
+								if (content_found) break;
+								c = ' ';
+								PUT_TO(bibliographic_sentence, c);
+							} else {
+								PUT_TO(bibliographic_sentence, c);
+							}
+							if (c == '"') quoted = TRUE;
+						}
+					}
+				}
+			}
+		}
+	}
+	Str::trim_white_space(bibliographic_sentence);			
+	Str::trim_white_space(bracketed);			
+	if (Str::get_last_char(bibliographic_sentence) == '.')
+		Str::delete_last_character(bibliographic_sentence);
+
+@ The author is sometimes given outside of quotation marks:
+
+>> "The Large Scale Structure of Space-Time" by Lindsay Lohan
+
+But not always:
+
+>> "Greek Rural Postmen and Their Cancellation Numbers" by "will.i.am"
+
+@<The opening sentence is bibliographic, so scan it@> =
+	match_results mr = Regexp::create_mr();
+	if (Regexp::match(&mr, bibliographic_sentence, L"\"([^\"]+)\" by \"([^\"]+)\"")) {
+		text_stream *title = mr.exp[0];
+		text_stream *author = mr.exp[1];
+		@<Set title and author@>;
+	} else if (Regexp::match(&mr, bibliographic_sentence, L"\"([^\"]+)\" by ([^\"]+)")) {
+		text_stream *title = mr.exp[0];
+		text_stream *author = mr.exp[1];
+		@<Set title and author@>;
+	} else if (Regexp::match(&mr, bibliographic_sentence, L"\"([^\"]+)\"")) {
+		text_stream *title = mr.exp[0];
+		text_stream *author = NULL;
+		@<Set title and author@>;
+	} else {
+		@<Flag bad bibliographic sentence@>;
+	}
+	Regexp::dispose_of(&mr);
+	if (Str::len(bracketed) > 0) {	
+		match_results mr = Regexp::create_mr();
+		if (Regexp::match(&mr, bracketed, L"in (%c+)")) @<Set language of play@>
+		else proj->clue_for_language_of_syntax = Str::duplicate(bracketed);
+		Regexp::dispose_of(&mr);
+	}
+
+@<Set language of play@> =	
+	text_stream *language_name = mr.exp[0];
+	proj->name_of_language_of_play = Str::duplicate(language_name);
+
+@<Set title and author@> =
+	if (Str::len(title) > 0) {
+		text_stream *T = proj->as_copy->edition->work->title;
+		Str::clear(T);
+		WRITE_TO(T, "%S", title);
+	}
+	if (Str::len(author) > 0) {
+		if (proj->as_copy->edition->work->author_name == NULL)
+			proj->as_copy->edition->work->author_name = Str::new();
+		text_stream *A = proj->as_copy->edition->work->author_name;
+		Str::clear(A);
+		WRITE_TO(A, "%S", author);
+	}
+
+@<Flag bad bibliographic sentence@> =
+	copy_error *CE = CopyErrors::new(SYNTAX_CE, BadTitleSentence_SYNERROR);
+	Copies::attach_error(proj->as_copy, CE);

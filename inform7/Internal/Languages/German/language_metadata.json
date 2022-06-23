@@ -1,0 +1,17 @@
+{
+    "is": {
+        "type": "language",
+        "title": "German"
+    },
+    "needs": [ {
+		"need": {
+			"type": "kit",
+			"title": "GermanLanguageKit"
+		}
+	} ],
+    "language-details": {
+		"translated-name": "Deutsch",
+		"iso-639-1-code": "de",
+		"translated-syntax-cue": "Geschrieben auf Deutsch"
+    }
+}

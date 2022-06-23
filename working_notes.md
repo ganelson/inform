@@ -14,6 +14,21 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 
 ## News items
 
+### Language metadata respecified as JSON (23 June 2022)
+
+As has been noticed already (see e.g. Jira bug I7-2155), the new Inbuild has
+been fairly sketchy in its handling of language bundles, and of using Inform
+to make non-English IF. In particular, language kits such as FrenchLanguageKit
+(if provided) were not being loaded automatically and instead required -kit
+to be used at the command line, or with a settings file; and even then,
+EnglishLanguageKit was being loaded as well, causing definition clashes.
+
+This should all now be resolved.
+
+Language bundles have now been redesigned, and are documented in the Inbuild
+manual, which has been rewritten today: see [A Guide to Language Bundles](https://ganelson.github.io/inform/inbuild/M-agtlb.html).
+Like kits, language bundles are adopting the new JSON metadata format.
+
 ### Change of testing UUID (22 June 2022)
 
 A change to the batch-testing tool Intest means that the UUID used for Inform

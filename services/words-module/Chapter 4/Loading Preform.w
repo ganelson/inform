@@ -14,7 +14,9 @@ NATURAL_LANGUAGE_WORDS_TYPE *primary_Preform_language = NULL;
 
 int LoadPreform::load(filename *F, NATURAL_LANGUAGE_WORDS_TYPE *L) {
 	primary_Preform_language = L;
-	return LoadPreform::parse(LoadPreform::feed_from_Preform_file(F), L);
+	wording W = LoadPreform::feed_from_Preform_file(F);
+	if (Wordings::empty(W)) return 0;
+	return LoadPreform::parse(W, L);
 }
 
 @ We simply feed the lines one at a time. Preform is parsed with the same
@@ -28,7 +30,7 @@ wording LoadPreform::feed_from_Preform_file(filename *F) {
 	feed_t id = Feeds::begin();
 	if (TextFiles::read(F, FALSE,
 		NULL, FALSE, LoadPreform::load_helper, NULL, NULL) == FALSE)
-		internal_error("Unable to open Preform definition");
+		return EMPTY_WORDING;
 	return Feeds::end(id);
 }
 

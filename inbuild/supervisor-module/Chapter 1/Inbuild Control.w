@@ -291,10 +291,10 @@ When this call returns to the parent, |inbuild| is in the Targeted phase,
 which continues until the parent calls |Supervisor::go_operational| (see below).
 
 =
-void (*shared_preform_callback)(inform_language *);
+int (*shared_preform_callback)(inform_language *);
 
 void Supervisor::optioneering_complete(inbuild_copy *C, int compile_only,
-	void (*preform_callback)(inform_language *)) {
+	int (*preform_callback)(inform_language *)) {
 	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
 	inbuild_phase = PRETINKERING_INBUILD_PHASE;
 	shared_preform_callback = preform_callback;
@@ -601,6 +601,6 @@ void Supervisor::pass_kit_requests(inform_project *proj) {
 	if ((proj) && (kits_requested_at_command_line)) {
 		text_stream *kit_name;
 		LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line)
-			Projects::add_kit_dependency(proj, kit_name, NULL, NULL);
+			Projects::add_kit_dependency(proj, kit_name, NULL, NULL, NULL);
 	}
 }

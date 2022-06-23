@@ -1,0 +1,17 @@
+{
+    "is": {
+        "type": "language",
+        "title": "French"
+    },
+    "needs": [ {
+		"need": {
+			"type": "kit",
+			"title": "FrenchLanguageKit"
+		}
+	} ],
+    "language-details": {
+		"translated-name": "Français",
+		"iso-639-1-code": "fr",
+		"translated-syntax-cue": "en français"
+    }
+}

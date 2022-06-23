@@ -752,6 +752,7 @@ forcetransferextensions:
 {define: transfer-languages}
 	mkdir -p "$(INTERNAL)/Languages"
 	cp -R -f $(INFORM7WEB)/Internal/Languages $(INTERNAL)/Languages/..
+	rm -f $(INTERNAL)/Languages/*/about.txt
 {end-define}
 
 .PHONY: forcetransferlanguages
@@ -835,7 +836,7 @@ $(INTERNALEXEMPLUM): \
 		$(INFORM7WEB)/Internal/Extensions/Eric\ Eve/[A-Za-z]* \
 		$(INFORM7WEB)/Internal/Extensions/Emily\ Short/[A-Za-z]* \
 		$(INFORM7WEB)/Internal/Extensions/Graham\ Nelson/[A-Za-z]* \
-		$(INFORM7WEB)/Internal/Languages/*/about.txt \
+		$(INFORM7WEB)/Internal/Languages/*/*.* \
 		$(INFORM7WEB)/Internal/Templates/*/*.* \
 		$(INFORM7WEB)/Internal/HTML/[A-Za-z]*.* \
 		{repeat with: INTERPRETER in: {TEMPLATENAMES}}

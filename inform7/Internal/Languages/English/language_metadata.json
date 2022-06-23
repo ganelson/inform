@@ -1,0 +1,17 @@
+{
+    "is": {
+        "type": "language",
+        "title": "English"
+    },
+    "needs": [ {
+		"need": {
+			"type": "kit",
+			"title": "EnglishLanguageKit"
+		}
+	} ],
+    "language-details": {
+		"translated-name": "English",
+		"iso-639-1-code": "en",
+		"translated-syntax-cue": "in English"
+    }
+}

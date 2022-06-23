@@ -39,7 +39,7 @@ comprehensive list of what is there.)
 	@<Establish resources offered by WorldModelKit@>;
 	@<Establish resources offered by CommandParserKit@>;
 	@<Establish resources offered by either WorldModelKit or BasicInformExtrasKit@>;
-	@<Establish resources offered by either EnglishLanguageKit@>;
+	@<Establish resources offered by EnglishLanguageKit@>;
 
 @h Offered by BasicInformKit.
 
@@ -541,5 +541,5 @@ comprehensive list of what is there.)
 
 @e THEN1__WD_HL
 
-@<Establish resources offered by either EnglishLanguageKit@> =
+@<Establish resources offered by EnglishLanguageKit@> =
 	KIT_PROVIDED(THEN1__WD_HL,                        I"THEN1__WD")

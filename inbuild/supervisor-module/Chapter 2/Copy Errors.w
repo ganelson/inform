@@ -216,7 +216,9 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 		case HeadingInPlaceOfSubordinate_SYNERROR:
 			WRITE("heading is in place of another heading subordinate to itself"); break;
 		case HeadingInPlaceOfUnknown_SYNERROR:
-			WRITE("heading is in place of another heading which doesn't exist'"); break;
+			WRITE("heading is in place of another heading which doesn't exist"); break;
+		case UnavailableLOS_SYNERROR:
+			WRITE("this language bundle does not provide Preform syntax"); break;
 		default:
 			WRITE("syntax error"); break;
 	}

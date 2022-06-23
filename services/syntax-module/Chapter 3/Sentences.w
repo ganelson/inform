@@ -512,10 +512,6 @@ sentences and options-file sentences may have been read already.)
 			Node::set_type(new, sfsm->nt); return;
 		} else {
 			Node::set_type(new, sfsm->nt);
-			#ifdef SUPERVISOR_MODULE
-			if (sfsm->nt == BIBLIOGRAPHIC_NT)
-				BiblioSentence::notify(sfsm->project_ref, new);
-			#endif
 			return;
 		}
 	}

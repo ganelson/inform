@@ -74,9 +74,6 @@ void Kits::scan(inbuild_copy *C) {
 	JSONMetadata::read_metadata_file(C, F);
 	
 	if (C->metadata_record) {
-		JSON_value *compatibility =
-			JSON::look_up_object(C->metadata_record, I"compatibility");
-		if (compatibility) @<Extract compatibility@>;
 		@<Extract activations@>;
 		JSON_value *kit_details =
 			JSON::look_up_object(C->metadata_record, I"kit-details");
@@ -89,16 +86,6 @@ void Kits::scan(inbuild_copy *C) {
 		}
 	}
 }
-
-@<Extract compatibility@> =
-	compatibility_specification *CS = Compatibility::from_text(compatibility->if_string);
-	if (CS) C->edition->compatibility = CS;
-	else {
-		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "cannot read compatibility '%S'", compatibility->if_string);
-		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-		DISCARD_TEXT(err)
-	}
 
 @<Extract activations@> =
 	JSON_value *activates = JSON::look_up_object(C->metadata_record, I"activates");
@@ -235,11 +222,11 @@ A project can call this to obtain the |inform_kit| structure for the copy of
 a kit, going only on a name such as |BasicInformKit|:
 
 =
-inform_kit *Kits::find_by_name(text_stream *name, linked_list *nest_list) {
-	inbuild_requirement *req =
-		Requirements::any_version_of(Works::new(kit_genre, name, I""));
+inform_kit *Kits::find_by_name(text_stream *name, linked_list *nest_list,
+	inbuild_requirement *req) {
+	if (req == NULL) req = Requirements::any_version_of(Works::new(kit_genre, name, I""));
 	inbuild_search_result *R = Nests::search_for_best(req, nest_list);
-	if (R == NULL) Errors::fatal_with_text("cannot find kit '%S'", name);
+	if (R == NULL) return NULL;
 	inbuild_copy *C = R->copy;
 	return KitManager::from_copy(C);
 }
@@ -257,7 +244,7 @@ int Kits::perform_ittt(inform_kit *K, inform_project *project, int parity) {
 		if ((ITTT->if_included == parity) &&
 			(Projects::uses_kit(project, ITTT->then_name) == FALSE) &&
 			(Projects::uses_kit(project, ITTT->if_name) == ITTT->if_included)) {
-			Projects::add_kit_dependency(project, ITTT->then_name, NULL, K);
+			Projects::add_kit_dependency(project, ITTT->then_name, NULL, K, NULL);
 			changes_made = TRUE;
 		}
 	return changes_made;

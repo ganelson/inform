@@ -181,10 +181,10 @@ which we are installed) already. Once the following is run, Preform is ready
 for use.
 
 =
-void Main::load_preform(inform_language *L) {
+int Main::load_preform(inform_language *L) {
 	pathname *P = Pathnames::down(path_to_inbuild, I"Tangled");
 	filename *S = Filenames::in(P, I"Syntax.preform");
-	LoadPreform::load(S, NULL);
+	return LoadPreform::load(S, NULL);
 }
 
 @h Target list.
