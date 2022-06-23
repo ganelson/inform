@@ -7,38 +7,10 @@
     <table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-                        <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-                        <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
                         <i>First level up</i>
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
                     </td>
                 </tr>
             </table>
@@ -371,38 +343,10 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
                         <i>Starting level</i>
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
                     </td>
                 </tr>
             </table>
@@ -1381,38 +1325,10 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
                         <i>First level down</i>
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
                     </td>
                 </tr>
             </table>
@@ -1745,38 +1661,10 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
 
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-                        <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-                        <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                 </tr>
             </table>
@@ -1894,22 +1782,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Chateau Bibliotheque</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc135.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Chateau Bibliotheque</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line3"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -1921,41 +1795,13 @@
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('Up from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Chateau Bibliotheque is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;yourself - <i>person</i><div id="extra1" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; person &gt; <b>yourself</b></p>
                             <p class="hangingin1">proper-named; undescribed</p>
@@ -1963,20 +1809,6 @@
                             <p class="hangingin1">description: <span class="indexdullblue">"As good-looking as ever."</span></p>
                             <p class="tightin1"><i>initial location</i>: in Chateau Bibliotheque &nbsp;<a href="source:story.ni#line4"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -2094,22 +1926,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;<b>Deutsche Universitat Bucherei</b>&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra2" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Deutsche Universitat Bucherei</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line5"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -2117,20 +1935,6 @@
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;east to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('West from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Deutsche Universitat Bucherei is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -2248,22 +2052,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra3', 'plus3'); return false;"><img border=0 id="plus3" src=inform:/doc_images/extra.png></a>&nbsp;<b>Miscellany Manana</b>&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra3" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Miscellany Manana</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line6"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -2271,20 +2061,6 @@
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Miscellany Manana is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -2402,22 +2178,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra4', 'plus4'); return false;"><img border=0 id="plus4" src=inform:/doc_images/extra.png></a>&nbsp;<b>Isle</b>&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra4" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Isle</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line7"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -2425,20 +2187,6 @@
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;south to Chateau Bibliotheque&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Isle is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -2556,22 +2304,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra5', 'plus5'); return false;"><img border=0 id="plus5" src=inform:/doc_images/extra.png></a>&nbsp;<b>Alphabet Soup</b>&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra5" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Alphabet Soup</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line8"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -2582,20 +2316,6 @@
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;down to Danger Zone&nbsp;<a href="source:story.ni#line22"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('Southeast from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('Inside from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Alphabet Soup is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -2713,22 +2433,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra6', 'plus6'); return false;"><img border=0 id="plus6" src=inform:/doc_images/extra.png></a>&nbsp;<b>Gaming Lounge</b>&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra6" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Gaming Lounge</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line9"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -2736,20 +2442,6 @@
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;north to Alphabet Soup&nbsp;<a href="source:story.ni#line23"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('Northeast from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Down from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Gaming Lounge is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -2867,22 +2559,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra7', 'plus7'); return false;"><img border=0 id="plus7" src=inform:/doc_images/extra.png></a>&nbsp;<b>Astrological Observatory</b>&nbsp;<a href="source:story.ni#line10"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra7" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line10"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Astrological Observatory</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line10"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -2890,20 +2568,6 @@
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;down to Alphabet Soup&nbsp;<a href="source:story.ni#line24"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Up from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;up; <a href="javascript:pasteCode('Inside from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Astrological Observatory is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -3021,22 +2685,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra8', 'plus8'); return false;"><img border=0 id="plus8" src=inform:/doc_images/extra.png></a>&nbsp;<b>Danger Zone</b>&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra8" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Danger Zone</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line11"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -3044,20 +2694,6 @@
                             <p class="tightin1"><img border=0 src=inform:/map_icons/e_arrow.png>&nbsp;up to Alphabet Soup&nbsp;<a href="source:story.ni#line25"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1"><i>add:</i> <a href="javascript:pasteCode('North from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;north; <a href="javascript:pasteCode('Northeast from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northeast; <a href="javascript:pasteCode('Northwest from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;northwest; <a href="javascript:pasteCode('South from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;south; <a href="javascript:pasteCode('Southeast from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southeast; <a href="javascript:pasteCode('Southwest from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;southwest; <a href="javascript:pasteCode('East from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;east; <a href="javascript:pasteCode('West from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;west; <a href="javascript:pasteCode('Down from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;down; <a href="javascript:pasteCode('Inside from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;inside; <a href="javascript:pasteCode('Outside from Danger Zone is .[=0x000A=]')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;outside</p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>

@@ -115,22 +115,8 @@
 </table>
 <p><a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;Show tables inside extensions too</p>
 <div id="extra2" style="display: none;">
-    <p class="in1"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+    <p class="in1"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
         <tr>
-            <td width="8">
-                <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-            </td>
-            <td>
-
-            </td>
-            <td width="8">
-                <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-            </td>
-        </tr>
-        <tr>
-            <td width="8">
-
-            </td>
             <td>
                 <p><i>Standard Rules</i></p>
                 <table border="0" cellspacing="0" cellpadding="0">
@@ -208,20 +194,6 @@
                     </tr>
                 </table>
 
-            </td>
-            <td width="8">
-
-            </td>
-        </tr>
-        <tr>
-            <td width="8">
-                <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-            </td>
-            <td>
-
-            </td>
-            <td width="8">
-                <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
             </td>
         </tr>
     </table>

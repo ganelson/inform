@@ -7,38 +7,10 @@
     <table border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-                        <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-                        <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
                         <i>First level up</i>
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
                     </td>
                 </tr>
             </table>
@@ -2292,38 +2264,10 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
                         <i>Starting level</i>
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
                     </td>
                 </tr>
             </table>
@@ -5131,38 +5075,10 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
                         <i>First level down</i>
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
                     </td>
                 </tr>
             </table>
@@ -7376,38 +7292,10 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
                         <i>Second level down</i>
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
                     </td>
                 </tr>
             </table>
@@ -8489,38 +8377,10 @@
 
     <tr>
         <td>
-            <table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+            <table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                 <tr>
-                    <td width="8">
-
-                    </td>
                     <td>
 
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-
-                    </td>
-                </tr>
-                <tr>
-                    <td width="8">
-                        <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                    </td>
-                    <td>
-
-                    </td>
-                    <td width="8">
-                        <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                     </td>
                 </tr>
             </table>
@@ -8849,22 +8709,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra0', 'plus0'); return false;"><img border=0 id="plus0" src=inform:/doc_images/extra.png></a>&nbsp;<b>Drawbridge</b> - <i>room where play begins</i>&nbsp;<a href=inform:/doc135.html><img border=0 src=inform:/doc_images/help.png></a>&nbsp;<a href="source:story.ni#line24"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra0" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line24"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Drawbridge</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line24"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -8882,41 +8728,13 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra1', 'plus1'); return false;"><img border=0 id="plus1" src=inform:/doc_images/extra.png></a>&nbsp;iron-barred gate - <i>door to Entrance Hall</i>&nbsp;<a href="source:story.ni#line13"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra1" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line13"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>iron-barred gate</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line13"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -8924,41 +8742,13 @@
                             <p class="tightin1"></p>
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra2', 'plus2'); return false;"><img border=0 id="plus2" src=inform:/doc_images/extra.png></a>&nbsp;yourself - <i>person</i><div id="extra2" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; person &gt; <b>yourself</b></p>
                             <p class="hangingin1">proper-named; undescribed</p>
@@ -8966,20 +8756,6 @@
                             <p class="hangingin1">description: <span class="indexdullblue">"As good-looking as ever."</span></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -9097,22 +8873,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra3', 'plus3'); return false;"><img border=0 id="plus3" src=inform:/doc_images/extra.png></a>&nbsp;<b>Bear Corridor</b>&nbsp;<a href="source:story.ni#line38"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra3" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line38"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Bear Corridor</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line38"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -9130,20 +8892,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -9260,22 +9008,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra4', 'plus4'); return false;"><img border=0 id="plus4" src=inform:/doc_images/extra.png></a>&nbsp;<b>Zoo</b>&nbsp;<a href="source:story.ni#line40"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra4" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line40"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Zoo</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line40"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -9294,20 +9028,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -9424,22 +9144,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra5', 'plus5'); return false;"><img border=0 id="plus5" src=inform:/doc_images/extra.png></a>&nbsp;<b>Rocky Chamber</b>&nbsp;<a href="source:story.ni#line92"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra5" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line92"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Rocky Chamber</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line92"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -9457,20 +9163,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -9587,22 +9279,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra6', 'plus6'); return false;"><img border=0 id="plus6" src=inform:/doc_images/extra.png></a>&nbsp;<b>Tight Passage</b>&nbsp;<a href="source:story.ni#line98"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra6" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line98"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Tight Passage</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line98"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -9622,61 +9300,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra7', 'plus7'); return false;"><img border=0 id="plus7" src=inform:/doc_images/extra.png></a>&nbsp;sinister door - <i>door to Lucrezia's Study</i>&nbsp;<a href="source:story.ni#line20"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra7" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line20"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>sinister door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line20"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"sinister door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -9793,22 +9429,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra8', 'plus8'); return false;"><img border=0 id="plus8" src=inform:/doc_images/extra.png></a>&nbsp;<b>Lucrezia's Study</b>&nbsp;<a href="source:story.ni#line100"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra8" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line100"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Lucrezia's Study</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line100"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -9826,61 +9448,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra9', 'plus9'); return false;"><img border=0 id="plus9" src=inform:/doc_images/extra.png></a>&nbsp;sinister door - <i>door to Tight Passage</i>&nbsp;<a href="source:story.ni#line20"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra9" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line20"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>sinister door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line20"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"sinister door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -9997,22 +9577,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra10', 'plus10'); return false;"><img border=0 id="plus10" src=inform:/doc_images/extra.png></a>&nbsp;<b>Rooted Room</b>&nbsp;<a href="source:story.ni#line102"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra10" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line102"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Rooted Room</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line102"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -10031,20 +9597,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -10161,22 +9713,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra11', 'plus11'); return false;"><img border=0 id="plus11" src=inform:/doc_images/extra.png></a>&nbsp;<b>Bell Castings</b>&nbsp;<a href="source:story.ni#line104"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra11" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line104"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Bell Castings</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line104"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -10194,20 +9732,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -10324,22 +9848,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra12', 'plus12'); return false;"><img border=0 id="plus12" src=inform:/doc_images/extra.png></a>&nbsp;<b>Wax Supply</b>&nbsp;<a href="source:story.ni#line106"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra12" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line106"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Wax Supply</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line106"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -10357,20 +9867,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -10488,22 +9984,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra13', 'plus13'); return false;"><img border=0 id="plus13" src=inform:/doc_images/extra.png></a>&nbsp;<b>Central Crypt</b>&nbsp;<a href="source:story.ni#line82"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra13" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line82"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Central Crypt</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line82"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -10525,61 +10007,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra14', 'plus14'); return false;"><img border=0 id="plus14" src=inform:/doc_images/extra.png></a>&nbsp;hole - <i>door to Law Library</i>&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra14" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>hole</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"hole"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -10696,22 +10136,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra15', 'plus15'); return false;"><img border=0 id="plus15" src=inform:/doc_images/extra.png></a>&nbsp;<b>Virgin's End</b>&nbsp;<a href="source:story.ni#line84"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra15" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line84"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Virgin's End</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line84"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -10730,20 +10156,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -10860,22 +10272,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra16', 'plus16'); return false;"><img border=0 id="plus16" src=inform:/doc_images/extra.png></a>&nbsp;<b>Father's Regret</b>&nbsp;<a href="source:story.ni#line86"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra16" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line86"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Father's Regret</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line86"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -10896,20 +10294,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -11026,22 +10410,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra17', 'plus17'); return false;"><img border=0 id="plus17" src=inform:/doc_images/extra.png></a>&nbsp;<b>Debtor's Paradise</b>&nbsp;<a href="source:story.ni#line88"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra17" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line88"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Debtor's Paradise</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line88"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -11062,61 +10432,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra18', 'plus18'); return false;"><img border=0 id="plus18" src=inform:/doc_images/extra.png></a>&nbsp;trapdoor - <i>door to Dank Room</i>&nbsp;<a href="source:story.ni#line19"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra18" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line19"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>trapdoor</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line19"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"trapdoor"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -11233,22 +10561,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra19', 'plus19'); return false;"><img border=0 id="plus19" src=inform:/doc_images/extra.png></a>&nbsp;<b>Apprentice's Workshop</b>&nbsp;<a href="source:story.ni#line90"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra19" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line90"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Apprentice's Workshop</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line90"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -11269,61 +10583,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra20', 'plus20'); return false;"><img border=0 id="plus20" src=inform:/doc_images/extra.png></a>&nbsp;decaying ladder - <i>door to Servant Quarters</i>&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra20" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>decaying ladder</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"decaying ladder"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -11440,22 +10712,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra21', 'plus21'); return false;"><img border=0 id="plus21" src=inform:/doc_images/extra.png></a>&nbsp;<b>Dank Room</b>&nbsp;<a href="source:story.ni#line94"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra21" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line94"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Dank Room</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line94"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -11474,61 +10732,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra22', 'plus22'); return false;"><img border=0 id="plus22" src=inform:/doc_images/extra.png></a>&nbsp;trapdoor - <i>door to Debtor's Paradise</i>&nbsp;<a href="source:story.ni#line19"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra22" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line19"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>trapdoor</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line19"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"trapdoor"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -11645,22 +10861,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra23', 'plus23'); return false;"><img border=0 id="plus23" src=inform:/doc_images/extra.png></a>&nbsp;<b>Press Room</b>&nbsp;<a href="source:story.ni#line96"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra23" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line96"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Press Room</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line96"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -11677,20 +10879,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -11808,22 +10996,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra24', 'plus24'); return false;"><img border=0 id="plus24" src=inform:/doc_images/extra.png></a>&nbsp;<b>Lower Bulb</b>&nbsp;<a href="source:story.ni#line52"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra24" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line52"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Lower Bulb</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line52"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -11844,61 +11018,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra25', 'plus25'); return false;"><img border=0 id="plus25" src=inform:/doc_images/extra.png></a>&nbsp;wooden staircase - <i>door to Upper Bulb</i>&nbsp;<a href="source:story.ni#line15"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra25" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line15"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>wooden staircase</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line15"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"wooden staircase"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -12015,22 +11147,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra26', 'plus26'); return false;"><img border=0 id="plus26" src=inform:/doc_images/extra.png></a>&nbsp;<b>Upper Bulb</b>&nbsp;<a href="source:story.ni#line54"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra26" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line54"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Upper Bulb</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line54"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -12051,41 +11169,13 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra27', 'plus27'); return false;"><img border=0 id="plus27" src=inform:/doc_images/extra.png></a>&nbsp;wooden staircase - <i>door to Lower Bulb</i>&nbsp;<a href="source:story.ni#line15"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra27" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line15"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>wooden staircase</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line15"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -12093,61 +11183,19 @@
                             <p class="tightin1"></p>
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra28', 'plus28'); return false;"><img border=0 id="plus28" src=inform:/doc_images/extra.png></a>&nbsp;ivory door - <i>door to Smoke-Damaged Chamber</i>&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra28" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>ivory door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"ivory door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -12265,22 +11313,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra29', 'plus29'); return false;"><img border=0 id="plus29" src=inform:/doc_images/extra.png></a>&nbsp;<b>State Rotunda</b>&nbsp;<a href="source:story.ni#line48"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra29" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line48"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>State Rotunda</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line48"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -12300,20 +11334,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -12430,22 +11450,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra30', 'plus30'); return false;"><img border=0 id="plus30" src=inform:/doc_images/extra.png></a>&nbsp;<b>Law Library</b>&nbsp;<a href="source:story.ni#line50"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra30" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line50"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Law Library</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line50"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -12466,61 +11472,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra31', 'plus31'); return false;"><img border=0 id="plus31" src=inform:/doc_images/extra.png></a>&nbsp;hole - <i>door to Central Crypt</i>&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra31" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>hole</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line18"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"hole"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -12637,22 +11601,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra32', 'plus32'); return false;"><img border=0 id="plus32" src=inform:/doc_images/extra.png></a>&nbsp;<b>Smoke-Damaged Chamber</b>&nbsp;<a href="source:story.ni#line56"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra32" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line56"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Smoke-Damaged Chamber</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line56"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -12672,61 +11622,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra33', 'plus33'); return false;"><img border=0 id="plus33" src=inform:/doc_images/extra.png></a>&nbsp;ivory door - <i>door to Upper Bulb</i>&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra33" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>ivory door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line16"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"ivory door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -12843,22 +11751,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra34', 'plus34'); return false;"><img border=0 id="plus34" src=inform:/doc_images/extra.png></a>&nbsp;<b>Burnt Frame</b>&nbsp;<a href="source:story.ni#line58"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra34" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line58"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Burnt Frame</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line58"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -12876,20 +11770,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -13006,22 +11886,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra35', 'plus35'); return false;"><img border=0 id="plus35" src=inform:/doc_images/extra.png></a>&nbsp;<b>Records Room</b>&nbsp;<a href="source:story.ni#line60"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra35" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line60"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Records Room</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line60"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -13038,20 +11904,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -13168,22 +12020,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra36', 'plus36'); return false;"><img border=0 id="plus36" src=inform:/doc_images/extra.png></a>&nbsp;<b>Parliamentary Chambers</b>&nbsp;<a href="source:story.ni#line62"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra36" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line62"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Parliamentary Chambers</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line62"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -13201,20 +12039,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -13331,22 +12155,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra37', 'plus37'); return false;"><img border=0 id="plus37" src=inform:/doc_images/extra.png></a>&nbsp;<b>Translation Room</b>&nbsp;<a href="source:story.ni#line66"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra37" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line66"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Translation Room</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line66"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -13363,20 +12173,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -13493,22 +12289,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra38', 'plus38'); return false;"><img border=0 id="plus38" src=inform:/doc_images/extra.png></a>&nbsp;<b>Black Gallery</b>&nbsp;<a href="source:story.ni#line68"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra38" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line68"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Black Gallery</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line68"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -13527,20 +12309,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -13657,22 +12425,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra39', 'plus39'); return false;"><img border=0 id="plus39" src=inform:/doc_images/extra.png></a>&nbsp;<b>Armory</b>&nbsp;<a href="source:story.ni#line70"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra39" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line70"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Armory</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line70"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -13689,20 +12443,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -13819,22 +12559,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra40', 'plus40'); return false;"><img border=0 id="plus40" src=inform:/doc_images/extra.png></a>&nbsp;<b>Lie Library</b>&nbsp;<a href="source:story.ni#line72"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra40" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line72"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Lie Library</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line72"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -13852,20 +12578,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -13982,22 +12694,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra41', 'plus41'); return false;"><img border=0 id="plus41" src=inform:/doc_images/extra.png></a>&nbsp;<b>Gallery of Still Life</b>&nbsp;<a href="source:story.ni#line114"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra41" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line114"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Gallery of Still Life</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line114"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -14016,61 +12714,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra42', 'plus42'); return false;"><img border=0 id="plus42" src=inform:/doc_images/extra.png></a>&nbsp;thick door - <i>door to White Gallery</i>&nbsp;<a href="source:story.ni#line22"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra42" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line22"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>thick door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line22"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"thick door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -14188,22 +12844,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra43', 'plus43'); return false;"><img border=0 id="plus43" src=inform:/doc_images/extra.png></a>&nbsp;<b>Upstairs Helical Staircase</b>&nbsp;<a href="source:story.ni#line46"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra43" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line46"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Upstairs Helical Staircase</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line46"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -14222,61 +12864,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra44', 'plus44'); return false;"><img border=0 id="plus44" src=inform:/doc_images/extra.png></a>&nbsp;steps - <i>door to Ground Floor Helical Staircase</i>&nbsp;<a href="source:story.ni#line14"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra44" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line14"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>steps</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line14"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"steps"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -14393,22 +12993,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra45', 'plus45'); return false;"><img border=0 id="plus45" src=inform:/doc_images/extra.png></a>&nbsp;<b>Private Parlor</b>&nbsp;<a href="source:story.ni#line118"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra45" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line118"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Private Parlor</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line118"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -14431,61 +13017,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra46', 'plus46'); return false;"><img border=0 id="plus46" src=inform:/doc_images/extra.png></a>&nbsp;heavy door - <i>door to Bellroom</i>&nbsp;<a href="source:story.ni#line23"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra46" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line23"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>heavy door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line23"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"heavy door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -14602,22 +13146,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra47', 'plus47'); return false;"><img border=0 id="plus47" src=inform:/doc_images/extra.png></a>&nbsp;<b>Green Bedroom</b>&nbsp;<a href="source:story.ni#line120"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra47" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line120"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Green Bedroom</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line120"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -14634,20 +13164,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -14764,22 +13280,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra48', 'plus48'); return false;"><img border=0 id="plus48" src=inform:/doc_images/extra.png></a>&nbsp;<b>Guest Bedroom</b>&nbsp;<a href="source:story.ni#line122"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra48" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line122"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Guest Bedroom</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line122"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -14796,20 +13298,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -14926,22 +13414,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra49', 'plus49'); return false;"><img border=0 id="plus49" src=inform:/doc_images/extra.png></a>&nbsp;<b>Empty Bedroom</b>&nbsp;<a href="source:story.ni#line124"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra49" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line124"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Empty Bedroom</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line124"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -14958,20 +13432,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -15088,22 +13548,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra50', 'plus50'); return false;"><img border=0 id="plus50" src=inform:/doc_images/extra.png></a>&nbsp;<b>Crystal Bedroom</b>&nbsp;<a href="source:story.ni#line126"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra50" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line126"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Crystal Bedroom</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line126"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -15121,20 +13567,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -15251,22 +13683,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra51', 'plus51'); return false;"><img border=0 id="plus51" src=inform:/doc_images/extra.png></a>&nbsp;<b>Gilded Balcony</b>&nbsp;<a href="source:story.ni#line128"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra51" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line128"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Gilded Balcony</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line128"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -15283,20 +13701,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -15414,22 +13818,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra52', 'plus52'); return false;"><img border=0 id="plus52" src=inform:/doc_images/extra.png></a>&nbsp;<b>White Gallery</b>&nbsp;<a href="source:story.ni#line116"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra52" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line116"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>White Gallery</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line116"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -15448,61 +13838,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra53', 'plus53'); return false;"><img border=0 id="plus53" src=inform:/doc_images/extra.png></a>&nbsp;thick door - <i>door to Gallery of Still Life</i>&nbsp;<a href="source:story.ni#line22"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra53" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line22"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>thick door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line22"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"thick door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -15619,22 +13967,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra54', 'plus54'); return false;"><img border=0 id="plus54" src=inform:/doc_images/extra.png></a>&nbsp;<b>Bellroom</b>&nbsp;<a href="source:story.ni#line130"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra54" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line130"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Bellroom</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line130"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -15654,61 +13988,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra55', 'plus55'); return false;"><img border=0 id="plus55" src=inform:/doc_images/extra.png></a>&nbsp;heavy door - <i>door to Private Parlor</i>&nbsp;<a href="source:story.ni#line23"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra55" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line23"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>heavy door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line23"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"heavy door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -15825,22 +14117,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra56', 'plus56'); return false;"><img border=0 id="plus56" src=inform:/doc_images/extra.png></a>&nbsp;<b>Apothecary</b>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra56" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Apothecary</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -15857,20 +14135,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -15988,22 +14252,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra57', 'plus57'); return false;"><img border=0 id="plus57" src=inform:/doc_images/extra.png></a>&nbsp;<b>Scarlet Gallery</b>&nbsp;<a href="source:story.ni#line28"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra57" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line28"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Scarlet Gallery</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line28"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -16023,20 +14273,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -16153,22 +14389,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra58', 'plus58'); return false;"><img border=0 id="plus58" src=inform:/doc_images/extra.png></a>&nbsp;<b>Scarlet Tower</b>&nbsp;<a href="source:story.ni#line30"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra58" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line30"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Scarlet Tower</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line30"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -16185,20 +14407,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -16315,22 +14523,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra59', 'plus59'); return false;"><img border=0 id="plus59" src=inform:/doc_images/extra.png></a>&nbsp;<b>Gallery of Historical Paintings</b>&nbsp;<a href="source:story.ni#line32"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra59" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line32"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Gallery of Historical Paintings</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line32"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -16348,20 +14542,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -16478,22 +14658,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra60', 'plus60'); return false;"><img border=0 id="plus60" src=inform:/doc_images/extra.png></a>&nbsp;<b>Treasure Room</b>&nbsp;<a href="source:story.ni#line34"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra60" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line34"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Treasure Room</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line34"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -16512,61 +14678,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra61', 'plus61'); return false;"><img border=0 id="plus61" src=inform:/doc_images/extra.png></a>&nbsp;small door - <i>door to Scrying Room</i>&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra61" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>small door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"small door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -16683,22 +14807,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra62', 'plus62'); return false;"><img border=0 id="plus62" src=inform:/doc_images/extra.png></a>&nbsp;<b>Maze Room</b>&nbsp;<a href="source:story.ni#line36"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra62" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line36"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Maze Room</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line36"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -16716,20 +14826,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -16847,22 +14943,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra63', 'plus63'); return false;"><img border=0 id="plus63" src=inform:/doc_images/extra.png></a>&nbsp;<b>Cloister Walk</b>&nbsp;<a href="source:story.ni#line74"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra63" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line74"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Cloister Walk</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line74"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -16881,20 +14963,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -17011,22 +15079,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra64', 'plus64'); return false;"><img border=0 id="plus64" src=inform:/doc_images/extra.png></a>&nbsp;<b>Walk's End</b>&nbsp;<a href="source:story.ni#line76"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra64" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line76"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Walk's End</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line76"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -17045,20 +15099,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -17175,22 +15215,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra65', 'plus65'); return false;"><img border=0 id="plus65" src=inform:/doc_images/extra.png></a>&nbsp;<b>Rose Garden</b>&nbsp;<a href="source:story.ni#line78"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra65" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line78"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Rose Garden</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line78"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -17209,20 +15235,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -17339,22 +15351,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra66', 'plus66'); return false;"><img border=0 id="plus66" src=inform:/doc_images/extra.png></a>&nbsp;<b>Scrying Room</b>&nbsp;<a href="source:story.ni#line80"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra66" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line80"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Scrying Room</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line80"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -17373,61 +15371,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra67', 'plus67'); return false;"><img border=0 id="plus67" src=inform:/doc_images/extra.png></a>&nbsp;small door - <i>door to Treasure Room</i>&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra67" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>small door</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line17"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"small door"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -17545,22 +15501,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra68', 'plus68'); return false;"><img border=0 id="plus68" src=inform:/doc_images/extra.png></a>&nbsp;<b>Entrance Hall</b>&nbsp;<a href="source:story.ni#line26"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra68" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line26"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Entrance Hall</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line26"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -17582,61 +15524,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra69', 'plus69'); return false;"><img border=0 id="plus69" src=inform:/doc_images/extra.png></a>&nbsp;iron-barred gate - <i>door to Drawbridge</i>&nbsp;<a href="source:story.ni#line13"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra69" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line13"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>iron-barred gate</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line13"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"iron-barred gate"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -17753,22 +15653,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra70', 'plus70'); return false;"><img border=0 id="plus70" src=inform:/doc_images/extra.png></a>&nbsp;<b>Central Courtyard</b>&nbsp;<a href="source:story.ni#line42"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra70" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line42"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Central Courtyard</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line42"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -17787,20 +15673,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -17917,22 +15789,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra71', 'plus71'); return false;"><img border=0 id="plus71" src=inform:/doc_images/extra.png></a>&nbsp;<b>Ground Floor Helical Staircase</b>&nbsp;<a href="source:story.ni#line44"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra71" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line44"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Ground Floor Helical Staircase</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line44"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -17951,61 +15809,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra72', 'plus72'); return false;"><img border=0 id="plus72" src=inform:/doc_images/extra.png></a>&nbsp;steps - <i>door to Upstairs Helical Staircase</i>&nbsp;<a href="source:story.ni#line14"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra72" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line14"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>steps</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line14"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"steps"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -18122,22 +15938,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra73', 'plus73'); return false;"><img border=0 id="plus73" src=inform:/doc_images/extra.png></a>&nbsp;<b>Great Dining Hall</b>&nbsp;<a href="source:story.ni#line64"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra73" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line64"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Great Dining Hall</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line64"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -18156,20 +15958,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -18286,22 +16074,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra74', 'plus74'); return false;"><img border=0 id="plus74" src=inform:/doc_images/extra.png></a>&nbsp;<b>Enormous Kitchen</b>&nbsp;<a href="source:story.ni#line108"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra74" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line108"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Enormous Kitchen</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line108"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -18319,20 +16093,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -18449,22 +16209,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra75', 'plus75'); return false;"><img border=0 id="plus75" src=inform:/doc_images/extra.png></a>&nbsp;<b>Servant Quarters</b>&nbsp;<a href="source:story.ni#line110"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra75" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line110"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Servant Quarters</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line110"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -18483,61 +16229,19 @@
 
 
                         </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
                     </tr>
                 </table>
                 </p>
             </div>
             <a href="#" onclick="showExtra('extra76', 'plus76'); return false;"><img border=0 id="plus76" src=inform:/doc_images/extra.png></a>&nbsp;decaying ladder - <i>door to Apprentice's Workshop</i>&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra76" style="display: none;">
-                <p class="in3"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in3"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">thing &gt; door&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>decaying ladder</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line21"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="hangingin1">printed name: <span class="indexdullblue">"decaying ladder"</span>&nbsp;<a href="source:story.ni#line132"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
                             <p class="tightin1"></p>
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
@@ -18654,22 +16358,8 @@
         </td>
         <td align="left" valign="top">
             <a href="#" onclick="showExtra('extra77', 'plus77'); return false;"><img border=0 id="plus77" src=inform:/doc_images/extra.png></a>&nbsp;<b>Guard Tower</b>&nbsp;<a href="source:story.ni#line112"><img border=0 src=inform:/doc_images/Reveal.png></a><div id="extra77" style="display: none;">
-                <p class="in2"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="indexmorebox">
+                <p class="in2"><table width="100%" cellpadding="6" cellspacing="0" border="0" class="indexmorebox">
                     <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/tl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/tr_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-
-                        </td>
                         <td>
                             <p class="tightin1">room&nbsp;<a href="source:story.ni#line112"><img border=0 src=inform:/doc_images/Reveal.png></a> &gt; <b>Guard Tower</b></p>
                             <p class="hangingin1">proper-named&nbsp;<a href="source:story.ni#line112"><img border=0 src=inform:/doc_images/Reveal.png></a></p>
@@ -18686,20 +16376,6 @@
                             </table>
 
 
-                        </td>
-                        <td width="8">
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="8">
-                            <img src="inform:/bg_images/bl_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
-                        </td>
-                        <td>
-
-                        </td>
-                        <td width="8">
-                            <img src="inform:/bg_images/br_corner_indexmorebox.gif" width="8" height="8" border="0" alt="...">
                         </td>
                     </tr>
                 </table>
