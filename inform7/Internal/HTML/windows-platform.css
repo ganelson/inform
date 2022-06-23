@@ -211,12 +211,14 @@ span.librarycardother {
 
 table.indexmorebox {
 	background-color: #e0e0e0;
+    border-radius: 8px;
 }
 
 /* But not for activity contents: */
 
 table.indexactivitycontents {
 	background-color: #e8e0c0;
+    border-radius: 8px;
 }
 
 /* For responses in index entries about rules: */
