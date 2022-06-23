@@ -6,6 +6,11 @@ To write the Library Card element (Cd) in the index.
 natural way to present bibliographic data to the user. In effect, it's a
 simplified form of the iFiction record, without the XML overhead.
 
+Note that the full version number is only listed on the Card if it is more
+than just a major version number (i.e., a non-negative integer): if it is
+something like "6", then it must be exactly the same as the release number,
+and there is no need to list both.
+
 =
 void CardElement::render(OUTPUT_STREAM, index_session *session) {
 	inter_tree *I = Indexing::get_tree(session);
@@ -27,6 +32,16 @@ void CardElement::render(OUTPUT_STREAM, index_session *session) {
 		DISCARD_TEXT(episode_text)
 	}
 	CardElement::Library_Card_entry(OUT, "Release number", pack, I"^release", I"1");
+	text_stream *version_number = Metadata::optional_textual(pack, I"^version");
+	if (version_number) {
+		TEMPORARY_TEXT(version_text)
+		WRITE_TO(version_text, "%S", version_number);
+		if ((Str::includes_character(version_text, '.')) ||
+			(Str::includes_character(version_text, '+')) ||
+			(Str::includes_character(version_text, '-')))
+			CardElement::Library_Card_entry(OUT, "Full version number", pack, NULL, version_text);
+		DISCARD_TEXT(version_text)
+	}
 	CardElement::Library_Card_entry(OUT, "Story creation year", pack, I"^year", I"(This year)");
 	CardElement::Library_Card_entry(OUT, "Language of play", pack, I"^language", I"English");
 	CardElement::Library_Card_entry(OUT, "IFID number", pack, I"^IFID", NULL);

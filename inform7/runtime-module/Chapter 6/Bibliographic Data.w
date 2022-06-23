@@ -85,6 +85,14 @@ void RTBibliographicData::compile_constants(void) {
 	}
 	Emit::initial_value_as_constant(Hierarchy::find(RELEASE_MD_HL),
 		story_release_number_VAR);
+	semantic_version_number V = Projects::get_version(Task::project());
+	if (VersionNumbers::is_null(V) == FALSE) {
+		inter_name *iname = Hierarchy::find(STORY_VERSION_MD_HL);
+		TEMPORARY_TEXT(v)
+		WRITE_TO(v, "%v", &V);
+		Emit::text_constant(iname, v);
+		DISCARD_TEXT(v)
+	}
 
 @ This innocuous code -- if Inform runs on 25 June 2013, we compile the serial
 number "130625" -- is actually controversial: quite a few users feel they

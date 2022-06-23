@@ -34,14 +34,24 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 				Problems::issue_problem_end();
 				break;
 			case METADATA_MALFORMED_CE:
-				Problems::quote_work(1, CE->copy->found_by->work);
-				Problems::quote_stream(2, CE->details);
-				Problems::quote_stream(3, CE->copy->edition->work->genre->genre_name);
-				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
-				Problems::issue_problem_segment(
-					"The %3 %1, which your source text makes use of, seems to have "
-					"metadata problems. Specifically: %2.");
-				Problems::issue_problem_end();
+				if (CE->copy->found_by) {
+					Problems::quote_work(1, CE->copy->found_by->work);
+					Problems::quote_stream(2, CE->details);
+					Problems::quote_stream(3, CE->copy->edition->work->genre->genre_name);
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+					Problems::issue_problem_segment(
+						"The %3 %1, which your source text makes use of, seems to have "
+						"metadata problems. Specifically: %2.");
+					Problems::issue_problem_end();
+				} else {
+					Problems::quote_work(1, CE->copy->edition->work);
+					Problems::quote_stream(2, CE->details);
+					Problems::quote_stream(3, CE->copy->edition->work->genre->genre_name);
+					StandardProblems::handmade_problem(Task::syntax_tree(), _p_(Untestable));
+					Problems::issue_problem_segment(
+						"The %3 %1 seems to have metadata problems. Specifically: %2.");
+					Problems::issue_problem_end();
+				}
 				break;
 			case EXT_TITLE_TOO_LONG_CE: {
 				int max = MAX_EXTENSION_TITLE_LENGTH;

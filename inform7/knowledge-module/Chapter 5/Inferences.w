@@ -13,6 +13,7 @@ typedef struct inference {
 	int certainty; /* any |*_CE| value other than |UNKNOWN_CE| */
 	struct parse_node *inferred_from; /* from what sentence was this drawn? */
 	int drawn_during_stage; /* or was this drawn during the model completion stage? */
+	int drawn_from_metadata; /* or from the project's metadata file? */
 	CLASS_DEFINITION
 } inference;
 
@@ -32,6 +33,7 @@ inference *Inferences::create_inference(inference_family *f, general_pointer dat
 	new_i->certainty = certitude;
 	new_i->inferred_from = current_sentence;
 	new_i->drawn_during_stage = World::current_building_stage();
+	new_i->drawn_from_metadata = FALSE;
 	return new_i;
 }
 

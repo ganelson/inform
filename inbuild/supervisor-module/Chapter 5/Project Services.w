@@ -72,7 +72,75 @@ void Projects::scan(inbuild_copy *C) {
 	proj->primary_source = NULL;
 	proj->extensions_included = NEW_LINKED_LIST(inform_extension);
 	Projects::scan_bibliographic_data(proj);
+	filename *F = Filenames::in(M, I"project_metadata.json");
+	if (TextFiles::exists(F)) {
+		JSONMetadata::read_metadata_file(C, F);
+		if (C->metadata_record) {
+			JSON_value *is = JSON::look_up_object(C->metadata_record, I"is");
+			if (is) {
+				JSON_value *version = JSON::look_up_object(is, I"version");
+				if (version) {
+					proj->version = VersionNumbers::from_text(version->if_string);
+				}
+			}
+			JSON_value *project_details =
+				JSON::look_up_object(C->metadata_record, I"project-details");
+			if (project_details) {
+				@<Extract the project details@>
+			} else {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "'project_metadata.json' must contain a \"project-details\" field");
+				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
+			JSON_value *needs = JSON::look_up_object(C->metadata_record, I"needs");
+			if (needs) {
+				JSON_value *E;
+				LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list)
+					@<Extract this requirement@>;
+			} else {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "'project_metadata.json' must contain a \"needs\" field");
+				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
+		}
+	}
 }
+
+@<Extract the project details@> =
+	;
+
+@<Extract this requirement@> =
+	JSON_value *if_clause = JSON::look_up_object(E, I"if");
+	JSON_value *unless_clause = JSON::look_up_object(E, I"unless");
+	if ((if_clause) || (unless_clause)) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "a project's needs must be unconditional");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)	
+	}
+	JSON_value *need_clause = JSON::look_up_object(E, I"need");
+	if (need_clause) {
+		JSON_value *need_type = JSON::look_up_object(need_clause, I"type");
+//		JSON_value *need_title = JSON::look_up_object(need_clause, I"title");
+		JSON_value *need_version_range = JSON::look_up_object(need_clause, I"version-range");
+		if (Str::eq(need_type->if_string, I"kit")) {
+			if (need_version_range) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "version ranges on project dependencies are not yet implemented");
+				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)
+			}
+		} else if (Str::eq(need_type->if_string, I"extension")) {
+			;
+		} else {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "a project can only have kits or extensions as dependencies");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
+	}
 
 @ The materials folder sits alongside the project and has the same name,
 but ending |.materials| instead of |.inform|.
@@ -242,6 +310,14 @@ int Projects::draws_from_source_file(inform_project *proj, source_file *sf) {
 		if (sf == S->as_source_file)
 			return TRUE;
 	return FALSE;
+}
+
+@h Version.
+
+=
+semantic_version_number Projects::get_version(inform_project *proj) {
+	if (proj == NULL) return VersionNumbers::null();
+	return proj->version;
 }
 
 @h The project's languages.

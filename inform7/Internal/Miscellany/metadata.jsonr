@@ -1,5 +1,5 @@
 <resource> ::= {
-	"type": ( "kit" | "extension" | "language" ),
+	"type": ( "kit" | "extension" | "language" | "project" ),
 	"title": string,
 	?"author": string,
 	?"version": string,
@@ -15,6 +15,10 @@
 }
 
 <extension-metadata> ::= {
+}
+
+<project-metadata> ::= {
+	?"default-target": string
 }
 
 <language-metadata> ::= {
@@ -35,5 +39,6 @@
 	}* ],
 	?"kit-details": <kit-metadata>,
 	?"extension-details": <extension-metadata>,
-	?"language-details": <language-metadata>
+	?"language-details": <language-metadata>,
+	?"project-details": <project-metadata>
 }

@@ -47,6 +47,13 @@ void PropertyInferences::draw(inference_subject *subj, property *prn, parse_node
 	Inferences::join_inference(i, subj);
 }
 
+void PropertyInferences::draw_from_metadata(inference_subject *subj, property *prn,
+	parse_node *val) {
+	inference *i = PropertyInferences::new(subj, prn, val);
+	i->drawn_from_metadata = TRUE;
+	Inferences::join_inference(i, subj);
+}
+
 void PropertyInferences::draw_negated(inference_subject *subj, property *prn, parse_node *val) {
 	inference *i = PropertyInferences::new(subj, prn, val);
 	i->certainty = -i->certainty;
@@ -106,11 +113,19 @@ int PropertyInferences::explain_contradiction(inference_family *f, inference *A,
 	LOG("A = $I\nB = $I\n", A, B);
 	current_sentence = B->inferred_from;
 	if (B_data->inferred_property == P_variable_initial_value) {
-		StandardProblems::two_sentences_problem(_p_(PM_VariableContradiction),
-			A->inferred_from,
-			"this looks like a contradiction",
-			"because the initial value of this variable seems to be being set "
-			"in each of these sentences, but with a different outcome.");
+		if (A->drawn_from_metadata) {
+			current_sentence = B->inferred_from;
+			@<Issue a contradiction with metadata problem@>;
+		} else if (B->drawn_from_metadata) {
+			current_sentence = A->inferred_from;
+			@<Issue a contradiction with metadata problem@>;
+		} else {			
+			StandardProblems::two_sentences_problem(_p_(PM_VariableContradiction),
+				A->inferred_from,
+				"this looks like a contradiction",
+				"because the initial value of this variable seems to be being set "
+				"in each of these sentences, but with a different outcome.");
+		}
 	} else {
 		if (Properties::is_value_property(B_data->inferred_property)) {
 			binary_predicate *bp =
@@ -160,6 +175,12 @@ int PropertyInferences::explain_contradiction(inference_family *f, inference *A,
 	}
 	return TRUE;
 }
+
+@<Issue a contradiction with metadata problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
+		"this looks like a contradiction",
+		"because it contradicts a value set by the metadata file in the "
+		"materials folder for the project.");
 
 @ Access functions.
 

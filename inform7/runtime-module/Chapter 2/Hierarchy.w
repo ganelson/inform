@@ -535,6 +535,7 @@ void Hierarchy::establish(void) {
 @e GENRE_MD_HL
 @e AUTHOR_MD_HL
 @e RELEASE_MD_HL
+@e STORY_VERSION_MD_HL
 @e SERIAL_MD_HL
 @e LANGUAGE_MD_HL
 @e DESCRIPTION_MD_HL
@@ -558,6 +559,7 @@ void Hierarchy::establish(void) {
 		H_C_T(GENRE_MD_HL,                    I"^genre")
 		H_C_T(AUTHOR_MD_HL,                   I"^author")
 		H_C_T(RELEASE_MD_HL,                  I"^release")
+		H_C_T(STORY_VERSION_MD_HL,            I"^version")
 		H_C_T(SERIAL_MD_HL,                   I"^serial")
 		H_C_T(LANGUAGE_MD_HL,                 I"^language")
 		H_C_T(DESCRIPTION_MD_HL,              I"^description")

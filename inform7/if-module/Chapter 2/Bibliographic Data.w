@@ -159,7 +159,20 @@ int BibliographicData::bibliographic_new_variable_notify(nonlocal_variable *q) {
 			case STORY_GENRE_BIBV: story_genre_VAR = q; break;
 			case STORY_DESCRIPTION_BIBV: story_description_VAR = q; break;
 			case STORY_CREATION_YEAR_BIBV: story_creation_year_VAR = q; break;
-			case RELEASE_NUMBER_BIBV: story_release_number_VAR = q; break;
+			case RELEASE_NUMBER_BIBV:
+				story_release_number_VAR = q;
+				semantic_version_number V = Projects::get_version(Task::project());
+				if (VersionNumbers::is_null(V) == FALSE) {
+					if (P_variable_initial_value == NULL) internal_error("too soon");
+					int M = V.version_numbers[0];
+					parse_node *save = current_sentence;
+					current_sentence = NULL;
+					PropertyInferences::draw_from_metadata(
+						NonlocalVariables::to_subject(q), P_variable_initial_value,
+							Rvalues::from_int(M, EMPTY_WORDING));
+					current_sentence = save;
+				}
+				break;
 		}
 		NonlocalVariables::make_constant(q, TRUE);
 	}

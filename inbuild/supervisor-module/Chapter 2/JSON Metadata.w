@@ -79,6 +79,8 @@ to say that |is.type| is |"kit"|.
 	if (C->edition->work->genre == kit_genre) required_text = I"kit";
 	if (C->edition->work->genre == extension_genre) required_text = I"extension";
 	if (C->edition->work->genre == language_genre) required_text = I"language";
+	if (C->edition->work->genre == project_file_genre) required_text = I"project";
+	if (C->edition->work->genre == project_bundle_genre) required_text = I"project";
 	if (Str::ne(type_text, required_text)) {
 		TEMPORARY_TEXT(msg)
 		WRITE_TO(msg, "the metadata misidentifies the type as '%S', but it should be '%S'",
@@ -107,12 +109,23 @@ to say that |is.type| is |"kit"|.
 		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)
 	}
+	JSON_value *project_details = JSON::look_up_object(obj, I"project-details");
+	if ((project_details) && (Str::ne(type_text, I"project"))) {
+		TEMPORARY_TEXT(err)
+		WRITE_TO(err, "the metadata contains project-details but is not for a project");
+		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+		DISCARD_TEXT(err)
+	}
 
 @<Make sure the title is correct@> =
 	if (Str::ne(title->if_string, C->edition->work->title)) {
 		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "the metadata says the title is '%S' when it should be '%S'",
-			title->if_string, C->edition->work->title);
+		if (Str::len(C->edition->work->title) > 0)
+			WRITE_TO(err, "the metadata says the title is '%S' when it should be '%S'",
+				title->if_string, C->edition->work->title);
+		else
+			WRITE_TO(err, "the metadata says the title is '%S' but it is untitled",
+				title->if_string);
 		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)	
 	}
@@ -120,8 +133,12 @@ to say that |is.type| is |"kit"|.
 @<Make sure the author is correct@> =
 	if (Str::ne(author->if_string, C->edition->work->author_name)) {
 		TEMPORARY_TEXT(err)
-		WRITE_TO(err, "the metadata says the author is '%S' when it should be '%S'",
-			author->if_string, C->edition->work->author_name);
+		if (Str::len(C->edition->work->author_name) > 0)
+			WRITE_TO(err, "the metadata says the author is '%S' when it should be '%S'",
+				author->if_string, C->edition->work->author_name);
+		else
+			WRITE_TO(err, "the metadata says the author is '%S', but it has no author",
+				author->if_string);
 		Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
 		DISCARD_TEXT(err)	
 	}
