@@ -442,10 +442,10 @@ Again, this is part of a condition, and can't evaluate.
 =
 <s-table-reference> ::=
 	<s-table-column-name> entry |                                           ==> @<Table (a)@>
-	<s-table-column-name> in row <s-value-uncached> of <s-value-uncached> | ==> @<Table (b)@>
+	<s-table-column-name> in row <s-value-uncached> in/of/from <s-value-uncached> | ==> @<Table (b)@>
 	<s-table-column-name> listed in <s-value-uncached> |                    ==> @<Table (c)@>
-	<s-table-column-name> corresponding to <s-table-column-name> of <s-value-uncached> in <s-value-uncached> | ==> @<Table (d)@>
-	<s-table-column-name> of <s-value-uncached> in <s-value-uncached>		==> @<Table (e)@>
+	<s-table-column-name> corresponding to <s-table-column-name> of <s-value-uncached> in/from <s-value-uncached> | ==> @<Table (d)@>
+	<s-table-column-name> of <s-value-uncached> in/from <s-value-uncached>		==> @<Table (e)@>
 
 @<Table (a)@> =
 	parse_node *spec = Lvalues::new_TABLE_ENTRY(W);
