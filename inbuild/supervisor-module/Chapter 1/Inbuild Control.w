@@ -355,8 +355,7 @@ We do that copy by copy.
 void Supervisor::go_operational(void) {
 	RUN_ONLY_IN_PHASE(TARGETED_INBUILD_PHASE)
 	inbuild_phase = GRAPH_CONSTRUCTION_INBUILD_PHASE;
-	inbuild_copy *C;
-	LOOP_OVER(C, inbuild_copy) Copies::construct_graph(C);
+	Copies::graph_everything();
 	inbuild_phase = OPERATIONAL_INBUILD_PHASE;
 	if (census_mode) ExtensionWebsite::handle_census_mode();
 }

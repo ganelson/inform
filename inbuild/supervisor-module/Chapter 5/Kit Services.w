@@ -412,7 +412,7 @@ not ours.
 
 =
 void Kits::construct_graph(inform_kit *K) {
-	RUN_ONLY_IN_PHASE(GRAPH_CONSTRUCTION_INBUILD_PHASE)
+	RUN_ONLY_FROM_PHASE(GRAPH_CONSTRUCTION_INBUILD_PHASE)
 	if (K == NULL) return;
 	inbuild_copy *C = K->as_copy;
 	pathname *P = C->location_if_path;

@@ -14,6 +14,29 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 
 ## News items
 
+### Incremental building of kits enabled (26 June 2022)
+
+This is arguably a bug fix, but is not directly a fix of any currently open bug
+in Jira (but see closed I7-2155). It was always intended that inbuild and
+inform7 would incrementally build any kits they need in order to build Inform
+projects: that has worked up to now with the standard kits, but in many
+circumstances not with newly written kits, such as those intended to be used
+with language extensions. (It's complicated: some ways of using inbuild did
+in fact do this, but inform7 did not.)
+
+This is now enabled. On the console (or in the app's Console pane), you will
+now see lines like the following when a kit is being rebuilt by inform7 itself:
+
+	(Building FrenchLanguageKit for architecture 16)
+	(Building FrenchLanguageKit for architecture 16d)
+	(Building FrenchLanguageKit for architecture 32)
+	(Building FrenchLanguageKit for architecture 32d)
+
+A side-effect of all this is that the output of inbuild -graph for a project
+is now substantially longer. This is basically because a project does indeed
+depend on lots of source files, and the new larger graph is a truer picture
+than the old ones. But we may eventually work out more concise ways to print it.
+
 ### Language metadata respecified as JSON (23 June 2022)
 
 As has been noticed already (see e.g. Jira bug I7-2155), the new Inbuild has

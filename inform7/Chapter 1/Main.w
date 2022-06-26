@@ -175,6 +175,7 @@ compilation.
 @<Build the project@> =
 	Supervisor::go_operational();
 	if (proj) {
+		InterSkill::echo_kit_building();
 		Copies::build(STDOUT, proj->as_copy, BuildMethodology::stay_in_current_process());
 		Task::stop_timers();
 	}

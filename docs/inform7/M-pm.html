@@ -70,38 +70,37 @@ which take more than 1/1000th of the total running time.
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">100.0% in inform7 run</span>
-<span class="plain-syntax">     71.7% in compilation to Inter</span>
-<span class="plain-syntax">         51.2% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
+<span class="plain-syntax">     70.9% in compilation to Inter</span>
+<span class="plain-syntax">         50.5% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
 <span class="plain-syntax">          4.7% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
-<span class="plain-syntax">          3.3% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
-<span class="plain-syntax">          1.7% in </span><a href="../assertions-module/5-id.html#SP4" class="internal">ImperativeDefinitions::assess_all</a>
-<span class="plain-syntax">          1.7% in </span><a href="../runtime-module/6-pi.html#SP1" class="internal">RTPhrasebook::compile_entries</a>
-<span class="plain-syntax">          1.3% in </span><a href="../runtime-module/5-kc.html#SP10" class="internal">RTKindConstructors::compile</a>
-<span class="plain-syntax">          0.9% in </span><a href="../core-module/1-htc.html#SP12" class="internal">Sequence::lint_inter</a>
-<span class="plain-syntax">          0.5% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_2</a>
-<span class="plain-syntax">          0.5% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
-<span class="plain-syntax">          0.5% in </span><a href="../knowledge-module/5-tmw.html#SP5" class="internal">World::stage_V</a>
-<span class="plain-syntax">          0.3% in </span><a href="../assertions-module/5-id.html#SP5" class="internal">ImperativeDefinitions::compile_first_block</a>
-<span class="plain-syntax">          0.3% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
-<span class="plain-syntax">          0.1% in </span><a href="../runtime-module/3-cm.html#SP1" class="internal">CompletionModule::compile</a>
-<span class="plain-syntax">          0.1% in </span><a href="../knowledge-module/4-is.html#SP27" class="internal">InferenceSubjects::emit_all</a>
-<span class="plain-syntax">          0.1% in </span><a href="../runtime-module/5-kc.html#SP10_7" class="internal">RTKindConstructors::compile_permissions</a>
-<span class="plain-syntax">          0.1% in </span><a href="../core-module/1-wtc.html#SP9" class="internal">Task::make_built_in_kind_constructors</a>
-<span class="plain-syntax">          0.1% in </span><a href="../knowledge-module/5-tmw.html#SP3" class="internal">World::stages_II_and_III</a>
-<span class="plain-syntax">          2.8% not specifically accounted for</span>
-<span class="plain-syntax">     25.6% in running Inter pipeline</span>
+<span class="plain-syntax">          3.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
+<span class="plain-syntax">          1.9% in </span><a href="../assertions-module/5-id.html#SP4" class="internal">ImperativeDefinitions::assess_all</a>
+<span class="plain-syntax">          1.5% in </span><a href="../runtime-module/5-kc.html#SP10" class="internal">RTKindConstructors::compile</a>
+<span class="plain-syntax">          1.5% in </span><a href="../runtime-module/6-pi.html#SP1" class="internal">RTPhrasebook::compile_entries</a>
+<span class="plain-syntax">          1.0% in </span><a href="../core-module/1-htc.html#SP12" class="internal">Sequence::lint_inter</a>
+<span class="plain-syntax">          0.4% in </span><a href="../assertions-module/5-id.html#SP5" class="internal">ImperativeDefinitions::compile_first_block</a>
+<span class="plain-syntax">          0.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_2</a>
+<span class="plain-syntax">          0.4% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
+<span class="plain-syntax">          0.4% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
+<span class="plain-syntax">          0.4% in </span><a href="../knowledge-module/5-tmw.html#SP5" class="internal">World::stage_V</a>
+<span class="plain-syntax">          0.2% in </span><a href="../runtime-module/3-cm.html#SP1" class="internal">CompletionModule::compile</a>
+<span class="plain-syntax">          0.2% in </span><a href="../knowledge-module/4-is.html#SP27" class="internal">InferenceSubjects::emit_all</a>
+<span class="plain-syntax">          0.2% in </span><a href="../runtime-module/5-kc.html#SP10_7" class="internal">RTKindConstructors::compile_permissions</a>
+<span class="plain-syntax">          0.2% in </span><a href="../core-module/1-wtc.html#SP9" class="internal">Task::make_built_in_kind_constructors</a>
+<span class="plain-syntax">          3.2% not specifically accounted for</span>
+<span class="plain-syntax">     26.0% in running Inter pipeline</span>
 <span class="plain-syntax">         10.1% in step 14/15: generate inform6 -&gt; auto.inf</span>
-<span class="plain-syntax">          5.5% in step 5/15: load-binary-kits</span>
-<span class="plain-syntax">          5.3% in step 6/15: make-synoptic-module</span>
-<span class="plain-syntax">          1.3% in step 9/15: make-identifiers-unique</span>
-<span class="plain-syntax">          0.3% in step 12/15: eliminate-redundant-operations</span>
-<span class="plain-syntax">          0.3% in step 4/15: compile-splats</span>
-<span class="plain-syntax">          0.3% in step 7/15: shorten-wiring</span>
-<span class="plain-syntax">          0.3% in step 8/15: detect-indirect-calls</span>
-<span class="plain-syntax">          0.1% in step 11/15: eliminate-redundant-labels</span>
-<span class="plain-syntax">          1.4% not specifically accounted for</span>
-<span class="plain-syntax">      2.1% in supervisor</span>
-<span class="plain-syntax">      0.4% not specifically accounted for</span>
+<span class="plain-syntax">          5.8% in step 5/15: load-binary-kits</span>
+<span class="plain-syntax">          5.5% in step 6/15: make-synoptic-module</span>
+<span class="plain-syntax">          1.5% in step 9/15: make-identifiers-unique</span>
+<span class="plain-syntax">          0.4% in step 12/15: eliminate-redundant-operations</span>
+<span class="plain-syntax">          0.4% in step 4/15: compile-splats</span>
+<span class="plain-syntax">          0.4% in step 7/15: shorten-wiring</span>
+<span class="plain-syntax">          0.2% in step 11/15: eliminate-redundant-labels</span>
+<span class="plain-syntax">          0.2% in step 8/15: detect-indirect-calls</span>
+<span class="plain-syntax">          1.3% not specifically accounted for</span>
+<span class="plain-syntax">      2.5% in supervisor</span>
+<span class="plain-syntax">      0.5% not specifically accounted for</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Memory consumption. </b>The following gives some idea of which classes of object have the most
 instances, and also of how Inform's memory tends to be used in practice.
@@ -110,37 +109,37 @@ represent less than 1/1000th of the total.
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">Total memory consumption was 123376K = 120 MB</span>
+<span class="plain-syntax">Total memory consumption was 120981K = 118 MB</span>
 
-<span class="plain-syntax"> ---- was used for 2044960 objects, in 362883 frames in 0 x 800K = 0K = 0 MB:</span>
+<span class="plain-syntax"> ---- was used for 2048135 objects, in 364573 frames in 0 x 800K = 0K = 0 MB:</span>
 
-<span class="plain-syntax">    33.0%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes</span>
-<span class="plain-syntax">    20.5%  text_stream_array                        4605 x 100 = 460500 objects, 25935360 bytes</span>
-<span class="plain-syntax">    19.2%  linked_list                              43461 objects, 24338160 bytes</span>
-<span class="plain-syntax">    11.1%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes</span>
-<span class="plain-syntax">    10.4%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes</span>
-<span class="plain-syntax">     8.2%  parse_node                               129706 objects, 10376480 bytes</span>
-<span class="plain-syntax">     5.8%  verb_conjugation                         160 objects, 7425280 bytes</span>
-<span class="plain-syntax">     4.3%  parse_node_annotation_array              346 x 500 = 173000 objects, 5547072 bytes</span>
-<span class="plain-syntax">     2.6%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes</span>
+<span class="plain-syntax">    33.7%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes</span>
+<span class="plain-syntax">    21.0%  text_stream_array                        4620 x 100 = 462000 objects, 26019840 bytes</span>
+<span class="plain-syntax">    19.8%  linked_list                              43895 objects, 24581200 bytes</span>
+<span class="plain-syntax">    11.3%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes</span>
+<span class="plain-syntax">    10.6%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes</span>
+<span class="plain-syntax">     8.3%  parse_node                               129706 objects, 10376480 bytes</span>
+<span class="plain-syntax">     5.9%  verb_conjugation                         160 objects, 7425280 bytes</span>
+<span class="plain-syntax">     4.4%  parse_node_annotation_array              346 x 500 = 173000 objects, 5547072 bytes</span>
+<span class="plain-syntax">     2.7%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes</span>
 <span class="plain-syntax">     2.5%  inter_name_array                         67 x 1000 = 67000 objects, 3218144 bytes</span>
-<span class="plain-syntax">     2.0%  kind_array                               66 x 1000 = 66000 objects, 2642112 bytes</span>
+<span class="plain-syntax">     2.1%  kind_array                               66 x 1000 = 66000 objects, 2642112 bytes</span>
+<span class="plain-syntax">     1.7%  scan_directory                           522 objects, 2154816 bytes</span>
 <span class="plain-syntax">     1.6%  inter_name_generator_array               51 x 1000 = 51000 objects, 2041632 bytes</span>
-<span class="plain-syntax">     1.5%  inter_schema_token                       13964 objects, 2010816 bytes</span>
-<span class="plain-syntax">     1.4%  package_request                          21153 objects, 1861464 bytes</span>
+<span class="plain-syntax">     1.6%  inter_schema_token                       13964 objects, 2010816 bytes</span>
+<span class="plain-syntax">     1.5%  package_request                          21153 objects, 1861464 bytes</span>
 <span class="plain-syntax">     1.4%  vocabulary_entry_array                   161 x 100 = 16100 objects, 1808352 bytes</span>
 <span class="plain-syntax">     1.2%  dict_entry_array                         470 x 100 = 47000 objects, 1519040 bytes</span>
-<span class="plain-syntax">     1.1%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes</span>
-<span class="plain-syntax">     1.1%  inter_symbols_table                      26592 objects, 1489152 bytes</span>
-<span class="plain-syntax">     1.0%  i6_schema_array                          23 x 100 = 2300 objects, 1380736 bytes</span>
-<span class="plain-syntax">     1.0%  scan_directory                           314 objects, 1296192 bytes</span>
+<span class="plain-syntax">     1.2%  match_trie_array                         11 x 1000 = 11000 objects, 1496352 bytes</span>
+<span class="plain-syntax">     1.2%  inter_symbols_table                      26592 objects, 1489152 bytes</span>
+<span class="plain-syntax">     1.1%  i6_schema_array                          23 x 100 = 2300 objects, 1380736 bytes</span>
 <span class="plain-syntax">     1.0%  inter_package                            26592 objects, 1276416 bytes</span>
-<span class="plain-syntax">     0.8%  map_data                                 671 objects, 1127280 bytes</span>
+<span class="plain-syntax">     0.9%  map_data                                 671 objects, 1127280 bytes</span>
 <span class="plain-syntax">     0.8%  id_body                                  942 objects, 1077648 bytes</span>
-<span class="plain-syntax">     0.7%  adjective_meaning                        202 objects, 1000304 bytes</span>
+<span class="plain-syntax">     0.8%  adjective_meaning                        202 objects, 1000304 bytes</span>
 <span class="plain-syntax">     0.7%  excerpt_meaning                          3102 objects, 967824 bytes</span>
-<span class="plain-syntax">     0.7%  production                               3882 objects, 900624 bytes</span>
-<span class="plain-syntax">     0.6%  ptoken                                   8414 objects, 875056 bytes</span>
+<span class="plain-syntax">     0.7%  production                               3878 objects, 899696 bytes</span>
+<span class="plain-syntax">     0.7%  ptoken                                   8404 objects, 874016 bytes</span>
 <span class="plain-syntax">     0.6%  grammatical_usage                        3613 objects, 867120 bytes</span>
 <span class="plain-syntax">     0.6%  individual_form                          2563 objects, 861168 bytes</span>
 <span class="plain-syntax">     0.6%  inter_schema_node                        8917 objects, 856032 bytes</span>
@@ -148,7 +147,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     0.3%  local_variable_array                     47 x 100 = 4700 objects, 452704 bytes</span>
 <span class="plain-syntax">     0.3%  verb_usage                               1128 objects, 388032 bytes</span>
 <span class="plain-syntax">     0.2%  rule                                     470 objects, 368480 bytes</span>
-<span class="plain-syntax">     0.2%  dictionary                               7520 objects, 360960 bytes</span>
+<span class="plain-syntax">     0.2%  dictionary                               7588 objects, 364224 bytes</span>
 <span class="plain-syntax">     0.2%  verb_form                                386 objects, 348944 bytes</span>
 <span class="plain-syntax">     0.2%  noun                                     2382 objects, 285840 bytes</span>
 <span class="plain-syntax">     0.2%  compilation_subtask                      3355 objects, 268400 bytes</span>
@@ -156,13 +155,13 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     0.2%  inference_subject                        666 objects, 261072 bytes</span>
 <span class="plain-syntax">     0.1%  vanilla_function                         3683 objects, 235712 bytes</span>
 <span class="plain-syntax">     0.1%  binary_predicate                         322 objects, 170016 bytes</span>
-<span class="plain-syntax">     0.1%  hierarchy_location                       1122 objects, 161568 bytes</span>
+<span class="plain-syntax">     0.1%  hierarchy_location                       1123 objects, 161712 bytes</span>
 <span class="plain-syntax">     0.1%  linguistic_stock_item                    3318 objects, 159264 bytes</span>
 <span class="plain-syntax">     0.1%  rule_family_data                         401 objects, 147568 bytes</span>
-<span class="plain-syntax">     0.1%  nonterminal                              760 objects, 139840 bytes</span>
+<span class="plain-syntax">     0.1%  nonterminal                              758 objects, 139472 bytes</span>
 <span class="plain-syntax">     0.1%  nascent_array                            2127 objects, 136128 bytes</span>
+<span class="plain-syntax">     ----  inference                                1703 objects, 122616 bytes</span>
 <span class="plain-syntax">     ----  documentation_ref                        1273 objects, 112024 bytes</span>
-<span class="plain-syntax">     ----  inference                                1703 objects, 108992 bytes</span>
 <span class="plain-syntax">     ----  imperative_defn                          1379 objects, 99288 bytes</span>
 <span class="plain-syntax">     ----  noun_usage                               2404 objects, 96160 bytes</span>
 <span class="plain-syntax">     ----  anl_entry_array                          2 x 1000 = 2000 objects, 96064 bytes</span>
@@ -171,15 +170,15 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  lexical_cluster                          2519 objects, 80608 bytes</span>
 <span class="plain-syntax">     ----  pcalc_term_array                         2 x 1000 = 2000 objects, 80064 bytes</span>
 <span class="plain-syntax">     ----  kind_variable_declaration                1655 objects, 79440 bytes</span>
-<span class="plain-syntax">     ----  inter_tree                               6 objects, 79248 bytes</span>
+<span class="plain-syntax">     ----  inter_tree                               6 objects, 79296 bytes</span>
 <span class="plain-syntax">     ----  label_namespace                          1472 objects, 70656 bytes</span>
 <span class="plain-syntax">     ----  rulebook                                 407 objects, 68376 bytes</span>
 <span class="plain-syntax">     ----  spatial_data                             671 objects, 64416 bytes</span>
 <span class="plain-syntax">     ----  linked_list_item_array                   4 x 1000 = 4000 objects, 64128 bytes</span>
 <span class="plain-syntax">     ----  kind_macro_definition                    9 objects, 62280 bytes</span>
 <span class="plain-syntax">     ----  booking                                  861 objects, 61992 bytes</span>
-<span class="plain-syntax">     ----  scenes_rcd_data                          1884 objects, 60288 bytes</span>
 <span class="plain-syntax">     ----  actions_rcd_data                         1884 objects, 60288 bytes</span>
+<span class="plain-syntax">     ----  scenes_rcd_data                          1884 objects, 60288 bytes</span>
 <span class="plain-syntax">     ----  command_grammar                          130 objects, 58240 bytes</span>
 <span class="plain-syntax">     ----  kind_constructor                         77 objects, 57904 bytes</span>
 <span class="plain-syntax">     ----  table                                    7 objects, 56672 bytes</span>
@@ -191,13 +190,13 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  ap_clause_array                          2 x 400 = 800 objects, 51264 bytes</span>
 <span class="plain-syntax">     ----  HTML_tag_array                           1 x 1000 objects, 48032 bytes</span>
 <span class="plain-syntax">     ----  text_substitution                        437 objects, 41952 bytes</span>
-<span class="plain-syntax">     ----  anl_clause_array                         1 x 1000 objects, 40032 bytes</span>
 <span class="plain-syntax">     ----  activity_list_array                      1 x 1000 objects, 40032 bytes</span>
+<span class="plain-syntax">     ----  anl_clause_array                         1 x 1000 objects, 40032 bytes</span>
 <span class="plain-syntax">     ----  to_family_data                           497 objects, 39760 bytes</span>
 <span class="plain-syntax">     ----  shared_variable_access_list_array        12 x 100 = 1200 objects, 38784 bytes</span>
 <span class="plain-syntax">     ----  parsing_data                             671 objects, 37576 bytes</span>
 <span class="plain-syntax">     ----  heading                                  198 objects, 36432 bytes</span>
-<span class="plain-syntax">     ----  production_list                          617 objects, 34552 bytes</span>
+<span class="plain-syntax">     ----  production_list                          615 objects, 34440 bytes</span>
 <span class="plain-syntax">     ----  regions_data                             671 objects, 32208 bytes</span>
 <span class="plain-syntax">     ----  counting_data                            671 objects, 32208 bytes</span>
 <span class="plain-syntax">     ----  property_permission                      96 objects, 31488 bytes</span>
@@ -212,6 +211,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  nonlocal_variable                        93 objects, 20088 bytes</span>
 <span class="plain-syntax">     ----  property                                 146 objects, 19856 bytes</span>
 <span class="plain-syntax">     ----  timed_rules_rfd_data                     401 objects, 19248 bytes</span>
+<span class="plain-syntax">     ----  filename                                 477 objects, 19080 bytes</span>
 <span class="plain-syntax">     ----  method                                   380 objects, 18240 bytes</span>
 <span class="plain-syntax">     ----  pcalc_prop_deferral                      86 objects, 17888 bytes</span>
 <span class="plain-syntax">     ----  instance                                 167 objects, 17368 bytes</span>
@@ -220,30 +220,33 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  to_phrase_request                        59 objects, 16048 bytes</span>
 <span class="plain-syntax">     ----  match_avinue_array                       1 x 1000 objects, 16032 bytes</span>
 <span class="plain-syntax">     ----  action_name_list_array                   1 x 1000 objects, 16032 bytes</span>
+<span class="plain-syntax">     ----  JSON_value                               182 objects, 16016 bytes</span>
+<span class="plain-syntax">     ----  build_vertex                             130 objects, 15600 bytes</span>
 <span class="plain-syntax">     ----  adjective                                137 objects, 15344 bytes</span>
+<span class="plain-syntax">     ----  pathname                                 375 objects, 15000 bytes</span>
 <span class="plain-syntax">     ----  generated_segment                        14 objects, 14784 bytes</span>
 <span class="plain-syntax">     ----  booking_list                             407 objects, 13024 bytes</span>
 <span class="plain-syntax">     ----  adjective_iname_holder                   320 objects, 12800 bytes</span>
-<span class="plain-syntax">     ----  pathname                                 308 objects, 12320 bytes</span>
-<span class="plain-syntax">     ----  uniqueness_count                         454 objects, 10896 bytes</span>
+<span class="plain-syntax">     ----  uniqueness_count                         453 objects, 10872 bytes</span>
 <span class="plain-syntax">     ----  inter_construct                          30 objects, 10320 bytes</span>
-<span class="plain-syntax">     ----  filename                                 253 objects, 10120 bytes</span>
-<span class="plain-syntax">     ----  stopwatch_timer                          113 objects, 9040 bytes</span>
+<span class="plain-syntax">     ----  web_bibliographic_datum                  145 objects, 9280 bytes</span>
+<span class="plain-syntax">     ----  stopwatch_timer                          114 objects, 9120 bytes</span>
 <span class="plain-syntax">     ----  equation_node                            68 objects, 7616 bytes</span>
 <span class="plain-syntax">     ----  understanding_item_array                 3 x 100 = 300 objects, 7296 bytes</span>
 <span class="plain-syntax">     ----  shared_variable_array                    1 x 100 objects, 7232 bytes</span>
 <span class="plain-syntax">     ----  determiner                               22 objects, 7216 bytes</span>
-<span class="plain-syntax">     ----  build_vertex                             60 objects, 7200 bytes</span>
 <span class="plain-syntax">     ----  verb                                     108 objects, 6912 bytes</span>
 <span class="plain-syntax">     ----  hierarchy_attachment_point               77 objects, 6776 bytes</span>
+<span class="plain-syntax">     ----  inbuild_work                             103 objects, 6592 bytes</span>
 <span class="plain-syntax">     ----  text_literal_holder                      163 objects, 6520 bytes</span>
-<span class="plain-syntax">     ----  inbuild_work                             101 objects, 6464 bytes</span>
-<span class="plain-syntax">     ----  inbuild_copy                             55 objects, 5720 bytes</span>
+<span class="plain-syntax">     ----  inbuild_copy                             55 objects, 6160 bytes</span>
 <span class="plain-syntax">     ----  heading_tree                             20 objects, 5440 bytes</span>
 <span class="plain-syntax">     ----  inbuild_edition                          74 objects, 5328 bytes</span>
 <span class="plain-syntax">     ----  explicit_action_array                    1 x 100 objects, 4832 bytes</span>
 <span class="plain-syntax">     ----  value_property_data                      84 objects, 4704 bytes</span>
 <span class="plain-syntax">     ----  parsing_pp_data                          96 objects, 4608 bytes</span>
+<span class="plain-syntax">     ----  section_md                               45 objects, 4320 bytes</span>
+<span class="plain-syntax">     ----  build_script                             130 objects, 4160 bytes</span>
 <span class="plain-syntax">     ----  compatibility_specification              86 objects, 4128 bytes</span>
 <span class="plain-syntax">     ----  activity                                 35 objects, 3920 bytes</span>
 <span class="plain-syntax">     ----  command_line_switch                      49 objects, 3920 bytes</span>
@@ -252,9 +255,9 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  property_setting_bp_data                 84 objects, 3360 bytes</span>
 <span class="plain-syntax">     ----  method_set                               104 objects, 3328 bytes</span>
 <span class="plain-syntax">     ----  kind_constructor_comparison_schema_array 1 x 100 objects, 3232 bytes</span>
+<span class="plain-syntax">     ----  semver_range                             31 objects, 3224 bytes</span>
 <span class="plain-syntax">     ----  inform_extension                         19 objects, 3192 bytes</span>
 <span class="plain-syntax">     ----  definition                               44 objects, 3168 bytes</span>
-<span class="plain-syntax">     ----  semver_range                             29 objects, 3016 bytes</span>
 <span class="plain-syntax">     ----  either_or_property_data                  62 objects, 2976 bytes</span>
 <span class="plain-syntax">     ----  target_vm                                20 objects, 2880 bytes</span>
 <span class="plain-syntax">     ----  use_option                               29 objects, 2552 bytes</span>
@@ -263,8 +266,10 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  kind_constructor_instance_array          1 x 100 objects, 2432 bytes</span>
 <span class="plain-syntax">     ----  kind_constructor_casting_rule_array      1 x 100 objects, 2432 bytes</span>
 <span class="plain-syntax">     ----  equation_symbol                          30 objects, 2400 bytes</span>
+<span class="plain-syntax">     ----  JSON_type                                31 objects, 2232 bytes</span>
 <span class="plain-syntax">     ----  scene                                    1 object, 2096 bytes</span>
-<span class="plain-syntax">     ----  build_script                             60 objects, 1920 bytes</span>
+<span class="plain-syntax">     ----  JSON_single_requirement                  43 objects, 2064 bytes</span>
+<span class="plain-syntax">     ----  build_step                               24 objects, 1728 bytes</span>
 <span class="plain-syntax">     ----  pronoun_usage                            42 objects, 1680 bytes</span>
 <span class="plain-syntax">     ----  table_contribution_array                 1 x 100 objects, 1632 bytes</span>
 <span class="plain-syntax">     ----  plugin                                   25 objects, 1600 bytes</span>
@@ -276,19 +281,21 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  constant_phrase                          20 objects, 1280 bytes</span>
 <span class="plain-syntax">     ----  invocation_options_array                 1 x 100 objects, 1224 bytes</span>
 <span class="plain-syntax">     ----  direction_inference_data                 30 objects, 1200 bytes</span>
+<span class="plain-syntax">     ----  JSON_requirement                         36 objects, 1152 bytes</span>
 <span class="plain-syntax">     ----  tree_inventory_item                      28 objects, 1120 bytes</span>
+<span class="plain-syntax">     ----  inbuild_requirement                      27 objects, 1080 bytes</span>
 <span class="plain-syntax">     ----  runtime_kind_structure                   13 objects, 1040 bytes</span>
 <span class="plain-syntax">     ----  quantifier                               16 objects, 1024 bytes</span>
-<span class="plain-syntax">     ----  inbuild_requirement                      25 objects, 1000 bytes</span>
 <span class="plain-syntax">     ----  submodule_identity                       31 objects, 992 bytes</span>
 <span class="plain-syntax">     ----  named_rulebook_outcome                   15 objects, 960 bytes</span>
 <span class="plain-syntax">     ----  pipeline_stage                           20 objects, 960 bytes</span>
 <span class="plain-syntax">     ----  control_structure_phrase                 12 objects, 864 bytes</span>
 <span class="plain-syntax">     ----  cached_understanding                     21 objects, 840 bytes</span>
+<span class="plain-syntax">     ----  JSON_pair_requirement                    26 objects, 832 bytes</span>
 <span class="plain-syntax">     ----  phrase_option_array                      1 x 100 objects, 824 bytes</span>
-<span class="plain-syntax">     ----  inbuild_search_result                    18 objects, 720 bytes</span>
+<span class="plain-syntax">     ----  inbuild_search_result                    20 objects, 800 bytes</span>
+<span class="plain-syntax">     ----  web_md                                   5 objects, 720 bytes</span>
 <span class="plain-syntax">     ----  internal_test                            15 objects, 720 bytes</span>
-<span class="plain-syntax">     ----  inform_language                          6 objects, 672 bytes</span>
 <span class="plain-syntax">     ----  relation_guard                           5 objects, 640 bytes</span>
 <span class="plain-syntax">     ----  implication                              13 objects, 624 bytes</span>
 <span class="plain-syntax">     ----  code_generation                          1 object, 576 bytes</span>
@@ -297,39 +304,41 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  small_word_set                           11 objects, 528 bytes</span>
 <span class="plain-syntax">     ----  inform_kit                               5 objects, 520 bytes</span>
 <span class="plain-syntax">     ----  equation                                 4 objects, 480 bytes</span>
+<span class="plain-syntax">     ----  inform_language                          6 objects, 480 bytes</span>
 <span class="plain-syntax">     ----  i6_memory_setting                        14 objects, 448 bytes</span>
 <span class="plain-syntax">     ----  inference_family                         11 objects, 440 bytes</span>
+<span class="plain-syntax">     ----  chapter_md                               5 objects, 440 bytes</span>
 <span class="plain-syntax">     ----  bp_family                                13 objects, 416 bytes</span>
+<span class="plain-syntax">     ----  module                                   5 objects, 400 bytes</span>
 <span class="plain-syntax">     ----  inter_annotation_form                    10 objects, 400 bytes</span>
 <span class="plain-syntax">     ----  article_usage                            8 objects, 384 bytes</span>
 <span class="plain-syntax">     ----  source_file                              5 objects, 360 bytes</span>
 <span class="plain-syntax">     ----  inbuild_genre                            7 objects, 336 bytes</span>
-<span class="plain-syntax">     ----  pronoun                                  8 objects, 320 bytes</span>
 <span class="plain-syntax">     ----  grammatical_category                     8 objects, 320 bytes</span>
-<span class="plain-syntax">     ----  module_request                           8 objects, 320 bytes</span>
+<span class="plain-syntax">     ----  pronoun                                  8 objects, 320 bytes</span>
 <span class="plain-syntax">     ----  cached_kind_declaration                  8 objects, 320 bytes</span>
 <span class="plain-syntax">     ----  door_dir_notice                          5 objects, 320 bytes</span>
+<span class="plain-syntax">     ----  module_request                           8 objects, 320 bytes</span>
 <span class="plain-syntax">     ----  tree_inventory                           1 object, 312 bytes</span>
 <span class="plain-syntax">     ----  inter_pipeline                           1 object, 312 bytes</span>
-<span class="plain-syntax">     ----  build_step                               4 objects, 288 bytes</span>
 <span class="plain-syntax">     ----  up_family                                9 objects, 288 bytes</span>
+<span class="plain-syntax">     ----  compilation_unit                         5 objects, 280 bytes</span>
+<span class="plain-syntax">     ----  explicit_bp_data                         5 objects, 280 bytes</span>
 <span class="plain-syntax">     ----  contents_entry                           7 objects, 280 bytes</span>
 <span class="plain-syntax">     ----  door_to_notice                           5 objects, 280 bytes</span>
-<span class="plain-syntax">     ----  explicit_bp_data                         5 objects, 280 bytes</span>
-<span class="plain-syntax">     ----  compilation_unit                         5 objects, 280 bytes</span>
 <span class="plain-syntax">     ----  verb_usage_tier                          5 objects, 240 bytes</span>
 <span class="plain-syntax">     ----  adjective_meaning_family                 7 objects, 224 bytes</span>
 <span class="plain-syntax">     ----  test_scenario                            1 object, 216 bytes</span>
+<span class="plain-syntax">     ----  inform_project                           1 object, 208 bytes</span>
 <span class="plain-syntax">     ----  release_instructions                     1 object, 208 bytes</span>
 <span class="plain-syntax">     ----  build_skill                              5 objects, 200 bytes</span>
 <span class="plain-syntax">     ----  code_generator                           5 objects, 200 bytes</span>
-<span class="plain-syntax">     ----  plural_dictionary_entry                  4 objects, 192 bytes</span>
-<span class="plain-syntax">     ----  inform_project                           1 object, 192 bytes</span>
 <span class="plain-syntax">     ----  kit_dependency                           4 objects, 192 bytes</span>
-<span class="plain-syntax">     ----  imperative_defn_family                   4 objects, 160 bytes</span>
+<span class="plain-syntax">     ----  plural_dictionary_entry                  4 objects, 192 bytes</span>
 <span class="plain-syntax">     ----  inference_subject_family                 5 objects, 160 bytes</span>
-<span class="plain-syntax">     ----  attachment_instruction                   4 objects, 160 bytes</span>
 <span class="plain-syntax">     ----  inter_architecture                       4 objects, 160 bytes</span>
+<span class="plain-syntax">     ----  imperative_defn_family                   4 objects, 160 bytes</span>
+<span class="plain-syntax">     ----  attachment_instruction                   4 objects, 160 bytes</span>
 <span class="plain-syntax">     ----  element_activation                       4 objects, 128 bytes</span>
 <span class="plain-syntax">     ----  inbuild_nest                             3 objects, 120 bytes</span>
 <span class="plain-syntax">     ----  local_block_value                        2 objects, 112 bytes</span>
@@ -338,28 +347,28 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  compile_task_data                        1 object, 80 bytes</span>
 <span class="plain-syntax">     ----  article                                  2 objects, 80 bytes</span>
 <span class="plain-syntax">     ----  figures_data                             1 object, 56 bytes</span>
-<span class="plain-syntax">     ----  build_methodology                        1 object, 56 bytes</span>
 <span class="plain-syntax">     ----  inter_warehouse                          1 object, 56 bytes</span>
+<span class="plain-syntax">     ----  build_methodology                        1 object, 56 bytes</span>
 <span class="plain-syntax">     ----  star_invention                           1 object, 48 bytes</span>
 <span class="plain-syntax">     ----  HTML_file_state                          1 object, 48 bytes</span>
-<span class="plain-syntax">     ----  kind_template_definition                 1 object, 40 bytes</span>
-<span class="plain-syntax">     ----  by_function_bp_data                      1 object, 40 bytes</span>
 <span class="plain-syntax">     ----  loop_over_scope                          1 object, 40 bytes</span>
 <span class="plain-syntax">     ----  I6_generation_data                       1 object, 40 bytes</span>
+<span class="plain-syntax">     ----  by_function_bp_data                      1 object, 40 bytes</span>
+<span class="plain-syntax">     ----  kind_template_definition                 1 object, 40 bytes</span>
 
 <span class="plain-syntax">100.0% was used for memory not allocated for objects:</span>
 
-<span class="plain-syntax">    57.7%  text stream storage                      72935620 bytes in 478023 claims</span>
-<span class="plain-syntax">     4.1%  dictionary storage                       5228544 bytes in 7520 claims</span>
-<span class="plain-syntax">     ----  sorting                                  1448 bytes in 149 claims</span>
-<span class="plain-syntax">     5.6%  source text                              7200000 bytes in 3 claims</span>
-<span class="plain-syntax">     8.5%  source text details                      10800000 bytes in 2 claims</span>
+<span class="plain-syntax">    56.8%  text stream storage                      70447460 bytes in 479128 claims</span>
+<span class="plain-syntax">     4.2%  dictionary storage                       5263872 bytes in 7588 claims</span>
+<span class="plain-syntax">     ----  sorting                                  1520 bytes in 159 claims</span>
+<span class="plain-syntax">     5.8%  source text                              7200000 bytes in 3 claims</span>
+<span class="plain-syntax">     8.7%  source text details                      10800000 bytes in 2 claims</span>
 <span class="plain-syntax">     0.2%  documentation fragments                  262144 bytes in 1 claim</span>
 <span class="plain-syntax">     ----  linguistic stock array                   81920 bytes in 2 claims</span>
 <span class="plain-syntax">     ----  small word set array                     105600 bytes in 22 claims</span>
-<span class="plain-syntax">     3.5%  inter symbols storage                    4520272 bytes in 27949 claims</span>
-<span class="plain-syntax">    13.2%  inter bytecode storage                   16767568 bytes in 14 claims</span>
-<span class="plain-syntax">     4.9%  inter links storage                      6222976 bytes in 11 claims</span>
+<span class="plain-syntax">     3.6%  inter symbols storage                    4520768 bytes in 27950 claims</span>
+<span class="plain-syntax">    13.5%  inter bytecode storage                   16767568 bytes in 14 claims</span>
+<span class="plain-syntax">     5.0%  inter links storage                      6222976 bytes in 11 claims</span>
 <span class="plain-syntax">     0.1%  inter tree location list storage         191232 bytes in 32 claims</span>
 <span class="plain-syntax">     1.3%  instance-of-kind counting                1700416 bytes in 1 claim</span>
 <span class="plain-syntax">     ----  compilation workspace for objects        21896 bytes in 25 claims</span>
@@ -367,7 +376,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  code generation workspace for objects    1336 bytes in 4 claims</span>
 <span class="plain-syntax">     0.2%  emitter array storage                    280288 bytes in 1999 claims</span>
 
-<span class="plain-syntax">-146.-1% was overhead - -184657272 bytes = -180329K = -176 MB</span>
+<span class="plain-syntax">-150.0% was overhead - -185920040 bytes = -181562K = -177 MB</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Preform grammar. </b>The full annotated description of the Preform grammar (see <a href="../words-module/4-ap.html" class="internal">About Preform (in words)</a>),
 with optimisation details and hit/miss statistics added, is also long: it's
@@ -376,14 +385,14 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">&lt;s-literal&gt; hits 2100/23892 nti 23 constraint (none) extremes [1, infinity)</span>
+<span class="plain-syntax">&lt;s-literal&gt; hits 2100/23892 nti 21 constraint (none) extremes [1, infinity)</span>
 <span class="plain-syntax">    English:</span>
 <span class="plain-syntax">        (@1)&lt;cardinal-number&gt;=1 </span>
 <span class="plain-syntax">          (hits 171/171) (matched: '100') constraint CS = {r0} extremes [1, 1]</span>
 <span class="plain-syntax">        (@1)minus (@2)&lt;cardinal-number&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/1409) constraint DS = {23} extremes [2, 2]</span>
+<span class="plain-syntax">          (hits 0/1515) constraint DS = {21} extremes [2, 2]</span>
 <span class="plain-syntax">        (@1)&lt;quoted-text&gt;=1 (@2)( (@3)&lt;response-letter&gt;=2 (@4)) </span>
-<span class="plain-syntax">          (hits 274/733) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {23} extremes [4, 4]</span>
+<span class="plain-syntax">          (hits 274/765) (matched: '"[current item from the multiple object list]: [run paragraph on]" ( a )') constraint DS = {21} extremes [4, 4]</span>
 <span class="plain-syntax">        (@1)&lt;quoted-text&gt;=1 </span>
 <span class="plain-syntax">          (hits 1566/5560) (matched: 'Represents geographical locations, both indoor</span>
 <span class="plain-syntax">        and outdoor, which are not necessarily areas in a building. A player in one</span>
@@ -392,13 +401,13 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 <span class="plain-syntax">        &lt;s-literal-real-number&gt;=1 </span>
 <span class="plain-syntax">          (hits 11/9935) (matched: 'plus infinity') constraint (none) extremes [1, infinity)</span>
 <span class="plain-syntax">        (@1)&lt;s-literal-truth-state&gt;=1 </span>
-<span class="plain-syntax">          (hits 78/833) (matched: 'false') constraint CS = {17} extremes [1, 1]</span>
+<span class="plain-syntax">          (hits 78/1307) (matched: 'false') constraint CS = {15} extremes [1, 1]</span>
 <span class="plain-syntax">        &lt;s-literal-list&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/3263) constraint DS = {19} extremes [2, infinity)</span>
+<span class="plain-syntax">          (hits 0/3250) constraint DS = {17} extremes [2, infinity)</span>
 <span class="plain-syntax">        (@1)unicode &lt;s-unicode-character&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/3221) constraint DS = {23} extremes [2, infinity)</span>
+<span class="plain-syntax">          (hits 0/3387) constraint DS = {21} extremes [2, infinity)</span>
 <span class="plain-syntax">        &lt;s-literal-time&gt;=1 </span>
-<span class="plain-syntax">          (hits 0/3766) constraint DW = {20, 21, 22} extremes [2, 5]</span>
+<span class="plain-syntax">          (hits 0/3710) constraint DW = {18, 19, 20} extremes [2, 5]</span>
 <span class="plain-syntax">        &lt;s-literal-unit-notation&gt;=1 </span>
 <span class="plain-syntax">          (hits 0/9846) constraint (none) extremes [1, infinity)</span>
 </pre>
@@ -410,7 +419,7 @@ sample, showing the nonterminal used to parse literals in Inform 7 source text:
 		<a href="preform-diagnostics.txt" download>
 			<button class="download-button">
 				<img src="../docs-assets/download.png" alt="download icon" height=16 width=16>
-				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 391.9kB)
+				Download <b>preform-diagnostics.txt</b> (Preform diagnostics file, 391.5kB)
 			</button>
 		</a>
 	</p>
