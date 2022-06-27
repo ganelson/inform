@@ -25,10 +25,6 @@ int Inform7Skill::inform7_via_shell(build_skill *skill, build_step *S,
 
 	Shell::quote_file(command, BM->to_inform7);
 
-	kit_dependency *kd;
-	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
-		WRITE_TO(command, "-kit %S ", kd->kit->as_copy->edition->work->title);
-
 	WRITE_TO(command, "-format=%S ", TargetVMs::get_full_format_text(S->for_vm));
 
 	inbuild_nest *N;

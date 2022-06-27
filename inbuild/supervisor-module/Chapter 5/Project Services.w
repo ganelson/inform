@@ -16,6 +16,7 @@ typedef struct inform_project {
 	struct filename *primary_output;
 	struct semantic_version_number version;
 	struct linked_list *source_vertices; /* of |build_vertex| */
+	struct linked_list *kit_names_to_include; /* of |JSON_value| */
 	struct linked_list *kits_to_include; /* of |kit_dependency| */
 	struct text_stream *name_of_language_of_play;
 	struct inform_language *language_of_play;
@@ -47,6 +48,7 @@ void Projects::scan(inbuild_copy *C) {
 	proj->stand_alone = FALSE;
 	proj->version = VersionNumbers::null();
 	proj->source_vertices = NEW_LINKED_LIST(build_vertex);
+	proj->kit_names_to_include = NEW_LINKED_LIST(JSON_value);
 	proj->kits_to_include = NEW_LINKED_LIST(kit_dependency);
 	proj->name_of_language_of_play = I"English";
 	proj->language_of_play = NULL;
@@ -86,23 +88,13 @@ void Projects::scan(inbuild_copy *C) {
 			JSON_value *project_details =
 				JSON::look_up_object(C->metadata_record, I"project-details");
 			if (project_details) {
-				@<Extract the project details@>
-			} else {
-				TEMPORARY_TEXT(err)
-				WRITE_TO(err, "'project_metadata.json' must contain a \"project-details\" field");
-				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-				DISCARD_TEXT(err)	
+				@<Extract the project details@>;
 			}
 			JSON_value *needs = JSON::look_up_object(C->metadata_record, I"needs");
 			if (needs) {
 				JSON_value *E;
 				LOOP_OVER_LINKED_LIST(E, JSON_value, needs->if_list)
 					@<Extract this requirement@>;
-			} else {
-				TEMPORARY_TEXT(err)
-				WRITE_TO(err, "'project_metadata.json' must contain a \"needs\" field");
-				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-				DISCARD_TEXT(err)	
 			}
 		}
 	}
@@ -123,15 +115,15 @@ void Projects::scan(inbuild_copy *C) {
 	JSON_value *need_clause = JSON::look_up_object(E, I"need");
 	if (need_clause) {
 		JSON_value *need_type = JSON::look_up_object(need_clause, I"type");
-//		JSON_value *need_title = JSON::look_up_object(need_clause, I"title");
 		JSON_value *need_version_range = JSON::look_up_object(need_clause, I"version-range");
+		if (need_version_range) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "version ranges on project dependencies are not yet implemented");
+			Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
 		if (Str::eq(need_type->if_string, I"kit")) {
-			if (need_version_range) {
-				TEMPORARY_TEXT(err)
-				WRITE_TO(err, "version ranges on project dependencies are not yet implemented");
-				Copies::attach_error(C, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
-				DISCARD_TEXT(err)
-			}
+			ADD_TO_LINKED_LIST(need_clause, JSON_value, proj->kit_names_to_include);
 		} else if (Str::eq(need_type->if_string, I"extension")) {
 			;
 		} else {
@@ -411,7 +403,6 @@ void Projects::set_compilation_options(inform_project *proj, int r, int co, int 
 	proj->compile_only = co;
 	proj->fix_rng = rng;
 	Projects::set_languages(proj);
-	Supervisor::pass_kit_requests(proj);
 }
 
 int Projects::currently_releasing(inform_project *proj) {
@@ -465,29 +456,46 @@ int Projects::uses_kit(inform_project *project, text_stream *name) {
 @ Here's where we decide which kits are included.
 
 =
+int forcible_basic_mode = FALSE;
+
+void Projects::enter_forcible_basic_mode(void) {
+	forcible_basic_mode = TRUE;
+}
+
 void Projects::finalise_kit_dependencies(inform_project *project) {
 	@<Add dependencies for the standard kits@>;
 	int parity = TRUE; @<Perform if-this-then-that@>;
 	parity = FALSE; @<Perform if-this-then-that@>;
 	@<Sort the kit dependency list into priority order@>;
 	@<Log what the dependencies actually were@>;
+	@<Police forcible basic mode@>;
 }
 
-@ At this point //Inbuild Control// has called //Projects::add_kit_dependency//
-for any |-kit| options used at the command line, but otherwise no kits have been
-depended.
-
-Note that //CommandParserKit//, if depended, will cause a further dependency
+@ Note that //CommandParserKit//, if depended, will cause a further dependency
 on //WorldModelKit//, through the if-this-then-that mechanism.
 
 @<Add dependencies for the standard kits@> =
-	int no_word_from_user = TRUE;
-	if (LinkedLists::len(project->kits_to_include) > 0) no_word_from_user = FALSE;
+	int no_word_from_JSON = TRUE;
+	JSON_value *need;
+	LOOP_OVER_LINKED_LIST(need, JSON_value, project->kit_names_to_include) {
+		JSON_value *need_title = JSON::look_up_object(need, I"title");
+		inbuild_work *work = Works::new_raw(kit_genre, need_title->if_string, I"");
+		JSON_value *need_version = JSON::look_up_object(need, I"version");
+		inbuild_requirement *req;
+		if (need_version)
+			req = Requirements::new(work,
+				VersionNumberRanges::compatibility_range(
+					VersionNumbers::from_text(need_version->if_string)));
+		else
+			req = Requirements::any_version_of(work);
+		Projects::add_kit_dependency(project, need_title->if_string, NULL, NULL, req);
+	}
+	if (LinkedLists::len(project->kits_to_include) > 0) no_word_from_JSON = FALSE;
 	Projects::add_kit_dependency(project, I"BasicInformKit", NULL, NULL, NULL);
 	inform_language *L = project->language_of_play;
 	if (L) Languages::add_kit_dependencies_to_project(L, project);
 	else internal_error("no language of play");
-	if (no_word_from_user)
+	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE))
 		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL);
 
 @ We perform this first with |parity| being |TRUE|, then |FALSE|.
@@ -520,6 +528,24 @@ because of the following sort:
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
 		LOG("Using Inform kit '%S' (priority %d).\n",
 			kd->kit->as_copy->edition->work->title, kd->kit->priority);
+
+@<Police forcible basic mode@> =
+	if (forcible_basic_mode) {
+		int basic = TRUE;
+		kit_dependency *kd;
+		LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
+			if ((Str::eq(kd->kit->as_copy->edition->work->title, I"CommandParserKit")) ||
+				(Str::eq(kd->kit->as_copy->edition->work->title, I"WorldModelKit")))
+				basic = FALSE;
+		if (basic == FALSE) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err,
+				"the project_metadata.json file shows this cannot be built in basic mode");
+			Copies::attach_error(project->as_copy,
+				CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)
+		}
+	}
 
 @h Things to do with kits.
 First up: these internal configuration files set up what "text" and "real number"

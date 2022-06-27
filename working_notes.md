@@ -14,6 +14,34 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 
 ## News items
 
+### Withdrawal of -kit, but not of -basic (27 June 2022)
+
+Up to this point, the beta of inbuild (and hence also of inform7) had a
+command-line switch "-kit". This told Inbuild that the named kit should be
+included in any build of a project to be specified later on the command line.
+For example,
+
+	$ inbuild -kit BasicInformKit -kit MyMagicKit -build -project MyProject.inform
+
+The convention was that if no "-kit" was supplied, then the project would
+either include just BasicInformKit (if -basic was also given as an option)
+or else BasicInformKit and CommandParserKit. (These would then cause
+other kits to be included, such as WorldModelKit, and there would also be
+a kit to support the language of play, such as EnglishLanguageKit.)
+
+This worked, but was clumsy. Users of the Inform apps could only take advantage
+by writing these command-line settings into both an "inform7-settings.txt" and
+"inbuild-settings.txt" file, and even then this was finicky (see Jira bug I7-2161).
+The command line is anyway not a good place to specify metadata which properly
+belongs to a project, and also had no way to express version numbers for the
+kits desired.
+
+"-kit" has now been abolished. "-basic" remains, and works as before.
+
+So how do you specify that a project expects to see a kit? The answer is to
+place a suitable project_metadata.json file into the project's materials directory.
+See [A Guide to Project Metadata](https://ganelson.github.io/inform/inbuild/M-agtpm.html).
+
 ### Incremental building of kits enabled (26 June 2022)
 
 This is arguably a bug fix, but is not directly a fix of any currently open bug

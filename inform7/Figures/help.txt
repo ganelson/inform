@@ -3,7 +3,7 @@ inform7: a compiler from source text to Inter code
 Usage: inform7 [OPTIONS]
 
 for translating Inform source text to Inter:
-  -basic               use Basic Inform language (same as -kit BasicInformKit)
+  -basic               use Basic Inform language
   -case X              make any source links refer to the source in extension example X
   -census              perform an extensions census (default is -no-census)
   -debug               compile with debugging features even on a Release (default is -no-debug)

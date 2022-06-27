@@ -116,8 +116,8 @@ interactive fiction-related infrastructure: it converts Inform into a
 general-purpose programming language. For examples of Basic Inform programs,
 see the test cases in |inform7/Tests/Test Basic|.
 
-|-basic| is actually just an abbreviation for |-kit BasicInformKit|, and
-other kits can also be included. See //inbuild// for more on kits.
+Non-standard kits for an Inform 7 project can be specified using a metadata
+file: see the //inbuild// documentation for more.
 
 The three commands |-pipeline|, |-pipeline-file| and |-variable| control
 the way Inter performs code-generation on the output from |inform7|. Again,
@@ -250,11 +250,7 @@ A new feature of |inform7| in 2020 is that it looks in the Materials folder
 for an optional file called |inform7-settings.txt|. This is a sort of expert
 settings file, and consists of a list of additional command-line arguments
 (one per line): those are read exactly as if they had been passed on the
-command line. In particular, you could write:
-= (text)
-	-kit BasicInformKit
-=
-and then the project will be Basic Inform, not regular Inform.
+command line.
 
 @h Prehistory.
 Build 1A01 was the first rough draft of a completed compiler: but it did

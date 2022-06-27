@@ -108,10 +108,7 @@ Inbuild therefore makes every Inform project have BasicInformKit as a dependency
 </p>
 
 <p class="commentary">Inbuild also makes each project dependent on the language kit for whatever language
-bundle it is using. The name of the necessary kit can be specified in the language
-bundle's <span class="extract"><span class="extract-syntax">about.txt</span></span> file &mdash; see <a href="../supervisor-module/5-ls.html" class="internal">Language Services (in supervisor)</a> &mdash; or, if the
-<span class="extract"><span class="extract-syntax">about.txt</span></span> doesn't specify one, it's made by adding <span class="extract"><span class="extract-syntax">LanguageKit</span></span> to the language's
-name. So if the French language bundle is used, then the default configurations
+bundle it is using. So if French is the language of play, the default configurations
 become:
 </p>
 
@@ -119,21 +116,14 @@ become:
 <span class="plain-syntax">BasicInformKit + FrenchLanguageKit + WorldModelKit + CommandParserKit</span>
 <span class="plain-syntax">BasicInformKit + FrenchLanguageKit + BasicInformExtrasKit</span>
 </pre>
-<p class="commentary">Next, Inbuild adds a dependency on any kit which is named at the command line
-using the <span class="extract"><span class="extract-syntax">-kit</span></span> switch. Note that this exists as a command-line switch for
-both <span class="extract"><span class="extract-syntax">inbuild</span></span> and <span class="extract"><span class="extract-syntax">inform7</span></span>.
+<p class="commentary">Projects can specify their own unusual choices of kits using a project_metadata.json
+file: see <a href="M-agtpm.html" class="internal">A Guide to Project Metadata</a> for more on this. But assuming they
+don't do this, Inbuild will always go for one of these defaults. By default it
+assumes it is making an interactive fiction of some kind and therefore goes
+for the non-Basic default, unless explicitly told not to &mdash; by using <span class="extract"><span class="extract-syntax">-basic</span></span> on
+the command line, or by checking the "Basic Inform" checkbox in the apps.
 </p>
 
-<p class="commentary">Finally, Inbuild adds an automatic dependency on CommandParserKit if neither
-the <span class="extract"><span class="extract-syntax">-kit</span></span> nor <span class="extract"><span class="extract-syntax">-basic</span></span> switches have been used. The practical effect of that
-rule is that Inform by default assumes it is making an interactive fiction
-of some kind, unless explicitly told not to &mdash; by using <span class="extract"><span class="extract-syntax">-basic</span></span> or <span class="extract"><span class="extract-syntax">-kit</span></span>,
-or by checking the "Basic Inform" checkbox in the apps.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup>
-</p>
-
-<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> Checking this box equates to <span class="extract"><span class="extract-syntax">-basic</span></span>, which in turn is equivalent
-to specifying <span class="extract"><span class="extract-syntax">-kit BasicInformKit</span></span>.
-<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4.  </b>Kits have the ability to specify that other kits are automatically added to
 the project in an ITTT, "if-this-then-that", way. As we shall see, every kit
 contains a file called <span class="extract"><span class="extract-syntax">kit_metadata.json</span></span> describing its needs. The metadata
@@ -173,7 +163,7 @@ conditions can also be made, with "if" instead of "unless".)
 </p>
 
 <p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Kits can also use their metadata to specify that associated extensions should
-automatically be loaded into the project.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> For example, the <span class="extract"><span class="extract-syntax">kit_metadata.json</span></span>
+automatically be loaded into the project.<sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> For example, the <span class="extract"><span class="extract-syntax">kit_metadata.json</span></span>
 for BasicInformKit includes the lines:
 </p>
 
@@ -189,10 +179,10 @@ for BasicInformKit includes the lines:
 <p class="commentary">...and similarly for another extension called English Language.
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> This in fact is the mechanism by which Inform decides which extensions
+<ul class="footnotetexts"><li class="footnote" id="fn:1"><p class="inwebfootnote"><sup id="fnref:1"><a href="#fn:1" rel="footnote">1</a></sup> This in fact is the mechanism by which Inform decides which extensions
 should be implicitly included in a project. Other extensions are included only
 because of explicit "Include..." sentences in the source text.
-<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li></ul>
+<a href="#fnref:1" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>As an example, suppose we have a minimal Inform story called "French Laundry",
 whose source text reads just "The French Laundry is a room." Running Inbuild
 with the <span class="extract"><span class="extract-syntax">-build-needs</span></span> option shows what is needed to build this project:
@@ -223,51 +213,24 @@ Standard Rules.
 But it is only included once, of course.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>At the command line, either for Inbuild or Inform7, the <span class="extract"><span class="ConsoleText-extract-syntax">-kit</span></span> switch
-can specify alternative kit(s) to use. Note that if any use is made of <span class="extract"><span class="ConsoleText-extract-syntax">-kit</span></span>
-then CommandParserKit and (in consequence) WorldModelKit are no longer auto-included.
-For example, if <span class="extract"><span class="ConsoleText-extract-syntax">-kit BalloonKit</span></span> is specified, then we will end up with:
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b>Using project metadata (see <a href="M-agtpm.html" class="internal">A Guide to Project Metadata</a>) alternative
+or additional kits can be required. Note that if this is done then CommandParserKit
+and (in consequence) WorldModelKit are no longer auto-included.
+</p>
+
+<p class="commentary">For example, if BalloonKit is specified, then we will end up with:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">BasicInformKit + EnglishLanguageKit + BalloonKit + BasicInformExtrasKit</span>
 </pre>
-<p class="commentary">But if <span class="extract"><span class="extract-syntax">-kit CommandParserKit -kit BalloonKit</span></span> is specified, then:
+<p class="commentary">But if CommandParserKit and BalloonKit are both specified, then:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit + BalloonKit</span>
 </pre>
-<p class="commentary">It may seem that if Inform is being used inside the apps, then there is no way to
-specify non-standard kits. Since the user isn't using the command line, how can
-the user specify a <span class="extract"><span class="extract-syntax">-kit</span></span>? However, a feature of Inform new in 2022 gets around
-this. Additional command-line switches for <span class="extract"><span class="extract-syntax">inbuild</span></span> or for <span class="extract"><span class="extract-syntax">inform7</span></span> can be
-placed in the Materials directory for an Inform project, in files called
-<span class="extract"><span class="extract-syntax">inbuild-settings.txt</span></span> and <span class="extract"><span class="extract-syntax">inform7-settings.txt</span></span>.
-</p>
-
-<p class="commentary">For example, suppose we set both<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> of these files to be:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">-kit CommandParserKit</span>
-<span class="plain-syntax">-kit BalloonKit</span>
-</pre>
-<p class="commentary">And put the following into place:
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">Exotic.inform</span>
-<span class="plain-syntax">Exotic.materials</span>
-<span class="plain-syntax">    inbuild-settings.txt</span>
-<span class="plain-syntax">    inform7-settings.txt</span>
-<span class="plain-syntax">    Inter</span>
-<span class="plain-syntax">        BalloonKit</span>
-<span class="plain-syntax">            ...</span>
-<span class="plain-syntax">    ...</span>
-</pre>
-<p class="commentary">BalloonKit has to be a properly set up kit &mdash; see below; but if so, then when
-we next look at the build requirements for the project, we see:
+<p class="commentary">If so, then when we next look at the build requirements for the project, we see:
 </p>
 
 <pre class="ConsoleText-displayed-code all-displayed-code code-font">
@@ -288,9 +251,6 @@ we next look at the build requirements for the project, we see:
 <p class="commentary">So now BalloonKit is indeed a dependency.
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> Both, so that whether the executable looking at the project is inbuild or
-inform7, it will use the same set of kits. You want this.
-<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>So, then, what actually is a kit? It is stored as a directory whose name is
 the name of the kit: in the case of our example, that will be <span class="extract"><span class="ConsoleText-extract-syntax">BalloonKit</span></span>.
 This directory contains:
@@ -309,7 +269,7 @@ always have filenames in the shape <span class="extract"><span class="ConsoleTex
 in that way, a kit can contain binary Inter to suit several different architectures.
 For example, <span class="extract"><span class="ConsoleText-extract-syntax">arch-16d.interb</span></span> or <span class="extract"><span class="ConsoleText-extract-syntax">arch-32.interb</span></span>.
 </li></ul>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The source code is written in Inform 6 syntax.<sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> This means that to create or
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The source code is written in Inform 6 syntax.<sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> This means that to create or
 edit kits, you need to be able to write Inform 6 code, but it's a very simple
 language to learn if all you're doing is writing functions, variables and arrays.
 </p>
@@ -350,14 +310,14 @@ will read:
 <p class="commentary">Note the very simple Inweb-style markup here. We do not use any of the fancier
 features of literate programming (definitions, paragraph macros, and so on),
 because the kit assimilator can only perform very simple tangling, and is not
-nearly as strong as the full Inweb tangler.<sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup>
+nearly as strong as the full Inweb tangler.<sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup>
 </p>
 
-<ul class="footnotetexts"><li class="footnote" id="fn:4"><p class="inwebfootnote"><sup id="fnref:4"><a href="#fn:4" rel="footnote">4</a></sup> It would have been conceivable to write such code directly as textual Inter,
+<ul class="footnotetexts"><li class="footnote" id="fn:2"><p class="inwebfootnote"><sup id="fnref:2"><a href="#fn:2" rel="footnote">2</a></sup> It would have been conceivable to write such code directly as textual Inter,
 but the experience would have been painful. Even in its textual form, Inter is not
 very legible, and it is highly verbose.
-<a href="#fnref:4" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:5"><p class="inwebfootnote"><sup id="fnref:5"><a href="#fn:5" rel="footnote">5</a></sup> At some point it may be developed out a little, but there's no great need.
-<a href="#fnref:5" title="return to text"> &#x21A9;</a></p></li></ul>
+<a href="#fnref:2" title="return to text"> &#x21A9;</a></p></li><li class="footnote" id="fn:3"><p class="inwebfootnote"><sup id="fnref:3"><a href="#fn:3" rel="footnote">3</a></sup> At some point it may be developed out a little, but there's no great need.
+<a href="#fnref:3" title="return to text"> &#x21A9;</a></p></li></ul>
 <p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>The metadata file at <span class="extract"><span class="extract-syntax">BalloonKit/kit_metadata.json</span></span> is required to exist in
 order for Inbuild to recognise this as being a kit at all; even if it doesn't
 say very much, as in this example. This is (almost) minimal:
@@ -671,7 +631,7 @@ In the mean time, it seems premature to commit to any model.
 </p>
 
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="M-ui.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresscurrent">agtk</li><li class="progresssection"><a href="M-agtlb.html">agtlb</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-agtlb.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="M-ui.html">&#10094;</a></li><li class="progresscurrentchapter">M</li><li class="progresssection"><a href="M-ui.html">ui</a></li><li class="progresscurrent">agtk</li><li class="progresssection"><a href="M-agtlb.html">agtlb</a></li><li class="progresssection"><a href="M-agtpm.html">agtpm</a></li><li class="progresssection"><a href="M-rc.html">rc</a></li><li class="progresschapter"><a href="1-mn.html">1</a></li><li class="progressnext"><a href="M-agtlb.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

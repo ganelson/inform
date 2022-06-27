@@ -17,6 +17,7 @@ Manual
 	Using Inbuild
 	A Guide to Kits
 	A Guide to Language Bundles
+	A Guide to Project Metadata
 	Reference Card
 
 Chapter 1: Outside of inform7

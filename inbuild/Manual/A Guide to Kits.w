@@ -44,28 +44,18 @@ without it: it contains essential functions such as |BlkValueCreate| or |Integer
 Inbuild therefore makes every Inform project have BasicInformKit as a dependency.
 
 Inbuild also makes each project dependent on the language kit for whatever language
-bundle it is using. The name of the necessary kit can be specified in the language
-bundle's |about.txt| file -- see //supervisor: Language Services// -- or, if the
-|about.txt| doesn't specify one, it's made by adding |LanguageKit| to the language's
-name. So if the French language bundle is used, then the default configurations
+bundle it is using. So if French is the language of play, the default configurations
 become:
 = (text)
 BasicInformKit + FrenchLanguageKit + WorldModelKit + CommandParserKit
 BasicInformKit + FrenchLanguageKit + BasicInformExtrasKit
 =
-
-Next, Inbuild adds a dependency on any kit which is named at the command line
-using the |-kit| switch. Note that this exists as a command-line switch for
-both |inbuild| and |inform7|.
-
-Finally, Inbuild adds an automatic dependency on CommandParserKit if neither
-the |-kit| nor |-basic| switches have been used. The practical effect of that
-rule is that Inform by default assumes it is making an interactive fiction
-of some kind, unless explicitly told not to -- by using |-basic| or |-kit|,
-or by checking the "Basic Inform" checkbox in the apps.[1]
-
-[1] Checking this box equates to |-basic|, which in turn is equivalent
-to specifying |-kit BasicInformKit|.
+Projects can specify their own unusual choices of kits using a project_metadata.json
+file: see //A Guide to Project Metadata// for more on this. But assuming they
+don't do this, Inbuild will always go for one of these defaults. By default it
+assumes it is making an interactive fiction of some kind and therefore goes
+for the non-Basic default, unless explicitly told not to -- by using |-basic| on
+the command line, or by checking the "Basic Inform" checkbox in the apps.
 
 @ Kits have the ability to specify that other kits are automatically added to
 the project in an ITTT, "if-this-then-that", way. As we shall see, every kit
@@ -145,43 +135,19 @@ Standard Rules.
 As this shows, the same kit or extension may be needed for multiple reasons.
 But it is only included once, of course.
 
-@ At the command line, either for Inbuild or Inform7, the |-kit| switch
-can specify alternative kit(s) to use. Note that if any use is made of |-kit|
-then CommandParserKit and (in consequence) WorldModelKit are no longer auto-included.
-For example, if |-kit BalloonKit| is specified, then we will end up with:
+@ Using project metadata (see //A Guide to Project Metadata//) alternative
+or additional kits can be required. Note that if this is done then CommandParserKit
+and (in consequence) WorldModelKit are no longer auto-included.
+
+For example, if BalloonKit is specified, then we will end up with:
 = (text)
 BasicInformKit + EnglishLanguageKit + BalloonKit + BasicInformExtrasKit
 =
-But if |-kit CommandParserKit -kit BalloonKit| is specified, then:
+But if CommandParserKit and BalloonKit are both specified, then:
 = (text)
 BasicInformKit + EnglishLanguageKit + WorldModelKit + CommandParserKit + BalloonKit
 =
-
-It may seem that if Inform is being used inside the apps, then there is no way to
-specify non-standard kits. Since the user isn't using the command line, how can
-the user specify a |-kit|? However, a feature of Inform new in 2022 gets around
-this. Additional command-line switches for |inbuild| or for |inform7| can be
-placed in the Materials directory for an Inform project, in files called
-|inbuild-settings.txt| and |inform7-settings.txt|.
-
-For example, suppose we set both[1] of these files to be:
-= (text)
--kit CommandParserKit
--kit BalloonKit
-=
-And put the following into place:
-= (text)
-Exotic.inform
-Exotic.materials
-	inbuild-settings.txt
-	inform7-settings.txt
-	Inter
-		BalloonKit
-			...
-	...
-=
-BalloonKit has to be a properly set up kit -- see below; but if so, then when
-we next look at the build requirements for the project, we see:
+If so, then when we next look at the build requirements for the project, we see:
 = (text as ConsoleText)
 	$ inbuild/Tangled/inbuild -project 'French Laundry.inform' -build-needs
 	projectbundle: French Laundry.inform
@@ -198,9 +164,6 @@ we next look at the build requirements for the project, we see:
 		  extension: English Language by Graham Nelson v1
 =
 So now BalloonKit is indeed a dependency.
-
-[1] Both, so that whether the executable looking at the project is inbuild or
-inform7, it will use the same set of kits. You want this.
 
 @ So, then, what actually is a kit? It is stored as a directory whose name is
 the name of the kit: in the case of our example, that will be |BalloonKit|.

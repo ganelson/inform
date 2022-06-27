@@ -110,7 +110,7 @@ better way to choose a virtual machine to compile to.
 	CommandLine::declare_switch(PROJECT_CLSW, L"project", 2,
 		L"work within the Inform project X");
 	CommandLine::declare_switch(BASIC_CLSW, L"basic", 1,
-		L"use Basic Inform language (same as -kit BasicInformKit)");
+		L"use Basic Inform language");
 	CommandLine::declare_boolean_switch(DEBUG_CLSW, L"debug", 1,
 		L"compile with debugging features even on a Release", FALSE);
 	CommandLine::declare_boolean_switch(RELEASE_CLSW, L"release", 1,
@@ -227,8 +227,10 @@ void Supervisor::option(int id, int val, text_stream *arg, void *state) {
 			Supervisor::add_nest(Pathnames::from_text(arg), EXTERNAL_NEST_TAG); break;
 		case TRANSIENT_CLSW:
 			shared_transient_resources = Pathnames::from_text(arg); break;
-		case BASIC_CLSW: Supervisor::request_kit(I"BasicInformKit"); break;
-		case KIT_CLSW: Supervisor::request_kit(arg); break;
+		case BASIC_CLSW: Projects::enter_forcible_basic_mode(); break;
+		case KIT_CLSW:
+			Errors::fatal("the -kit option has been withdrawn");
+			break;
 		case PROJECT_CLSW: {
 			pathname *P = Pathnames::from_text(arg);
 			if (Supervisor::set_I7_bundle(P) == FALSE)
@@ -574,32 +576,5 @@ void Supervisor::make_project_from_command_line(inbuild_copy *C) {
 			Projects::set_primary_source(proj, F);
 			Projects::set_primary_output(proj, transpiled_output_file);
 		}
-	}
-}
-
-@h Kit requests.
-These are triggered by, for example, |-kit MyFancyKit| at the command line.
-For timing reasons, we store those up in the configuration phase and then
-add them as dependencies only when a project exists.
-
-=
-linked_list *kits_requested_at_command_line = NULL;
-void Supervisor::request_kit(text_stream *name) {
-	RUN_ONLY_IN_PHASE(CONFIGURATION_INBUILD_PHASE)
-	if (kits_requested_at_command_line == NULL)
-		kits_requested_at_command_line = NEW_LINKED_LIST(text_stream);
-	text_stream *kit_name;
-	LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line)
-		if (Str::eq(kit_name, name))
-			return;
-	ADD_TO_LINKED_LIST(Str::duplicate(name), text_stream, kits_requested_at_command_line);
-}
-
-void Supervisor::pass_kit_requests(inform_project *proj) {
-	RUN_ONLY_IN_PHASE(NESTED_INBUILD_PHASE)
-	if ((proj) && (kits_requested_at_command_line)) {
-		text_stream *kit_name;
-		LOOP_OVER_LINKED_LIST(kit_name, text_stream, kits_requested_at_command_line)
-			Projects::add_kit_dependency(proj, kit_name, NULL, NULL, NULL);
 	}
 }

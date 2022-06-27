@@ -24,7 +24,7 @@ usage: inbuild [-TASK] TARGET1 TARGET2 ...
 -no-versions-in-filenames      don't append _v number to destination filenames on -copy-to or -sync-to (default is -versions-in-filenames)
 
 for translating Inform source text to Inter:
-  -basic                       use Basic Inform language (same as -kit BasicInformKit)
+  -basic                       use Basic Inform language
   -case X                      make any source links refer to the source in extension example X
   -census                      perform an extensions census (default is -no-census)
   -debug                       compile with debugging features even on a Release (default is -no-debug)
