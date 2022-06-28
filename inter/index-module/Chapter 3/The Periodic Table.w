@@ -52,16 +52,18 @@ void Elements::periodic_table(OUTPUT_STREAM, index_page *current_page,
 	HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" width=\"100%%\"");
 	if (Str::eq_wide_string(index_leaf, L"Welcome.html"))
 		@<Write the heading row of the surround@>;
+	HTML_CLOSE("table");
 	LOOP_OVER_LINKED_LIST(ip, index_page, L)
 		if (((Str::eq_wide_string(index_leaf, L"Welcome.html")) || (ip == current_page)) &&
 			(Str::eq_wide_string(ip->page_leafname, L"Welcome") == FALSE)) {
+			HTML_OPEN_WITH("table", "cellspacing=\"3\" border=\"0\" width=\"100%%\"");
 			@<Start a row of the periodic table@>;
 			index_element *ie;
 			LOOP_OVER_LINKED_LIST(ie, index_element, ip->elements)
 				@<Write an element-box of the periodic table@>;
 			@<End a row of the periodic table@>;
+			HTML_CLOSE("table");
 		}
-	HTML_CLOSE("table");
 	HTML_CLOSE("div");
 	if (Str::eq_wide_string(index_leaf, L"Welcome.html") == FALSE)
 		@<Write the index elements@>;
