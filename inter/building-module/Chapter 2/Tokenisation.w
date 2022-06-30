@@ -1024,7 +1024,8 @@ in the DM4.
 German sharp s. Again, see the DM4 for the specification of these. A misprint
 in the DM4 means that one part of that manual says that |@cc| is the syntax
 for c-cedilla, and another says it is |@,c|. To be on the safe side, we
-recognise both.
+recognise both. For similar reasons, we recognise both |@/o| and |@\o| as
+a Scandinavian o-stroke.
 
 @<Expand TeX-style digraph@> =
 	wchar_t c = Str::get_at(token, 0);
@@ -1112,7 +1113,7 @@ recognise both.
 				default: @<Unknown string token@>; break;
 			}
 			break;
-		case '\\': /* the Scandinavian slash thing */
+		case '\\': case '/': /* the Scandinavian slash thing */
 			switch (d) {
 				case 'o': PUT_TO(text, 0xF8); break;
 				case 'O': PUT_TO(text, 0xD8); break;
