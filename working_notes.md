@@ -30,7 +30,7 @@ a thorough exercise of these escapes.
 For example, the following function included in I7 source text:
 
 	Include (-
-		[ JunkFn;
+		[ Hyperdiacritical;
 			print (char) '^', " might be a caret, who knows.^";
 			print (address) 'x^', " might be an x', who knows.^";
 			print (address) '^//', " might be a ', who knows.^";
@@ -64,6 +64,29 @@ prints, if executed (on Glulx - the Z-machine does not support four of these Uni
 	ãñõÃÑÕçÇøØæÆðÐþÎ£¡¿«»ßåÅœŒ
 	So © is a copyright sign, and Ф is a capital Cyrillic ef, and ▲ is a triangle
 	Backslash: \ At sign: @ Caret: ^ Tilde: ~
+
+The syntax recognised for character, dictionary and string literals now matches
+the syntax recognised by the main I6 compiler, except for one extension: the
+I6-to-Inter compiler also allows "[unicode N]", where N is a decimal number,
+to mean the character whose code point is N. The reason for this extension to
+the syntax is that it means that:
+
+	Include (-
+		[ Diacritical;
+			print "Ф is a capital Cyrillic ef, and ▲ is a triangle.^";
+		];
+	-).
+
+will work the same way when run through I7 as the definition:
+
+	[ Diacritical;
+		print "Ф is a capital Cyrillic ef, and ▲ is a triangle.^";
+	];
+
+would work if found in the source code for a kit -- in both cases, the ef
+and the triangle will be passed successfully through. Consistency between
+inform7 and inter seems more important on this than consistency between inter
+and inform6.
 
 ### Withdrawal of -kit, but not of -basic (27 June 2022)
 
