@@ -125,6 +125,7 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 				InterSchemas::new_token(DQUOTED_ISTT, current_raw, 0, 0, -1));
 			break;
 		case SQUOTED_TOKSTATE:
+			Tokenisation::de_escape_sq_text(current_raw);
 			InterSchemas::add_token(sch,
 				InterSchemas::new_token(SQUOTED_ISTT, current_raw, 0, 0, -1));
 			break;
@@ -134,6 +135,18 @@ void Tokenisation::go(inter_schema *sch, text_stream *from, int pos, int abbrevi
 	}
 	Str::clear(current_raw);
 	tokeniser_state = NO_TOKSTATE;
+
+@<Process any escape character notation in single quotes@> =
+	for (int i=0; i<Str::len(current_raw); i++) {
+		wchar_t c = Str::get_at(current_raw, i);
+		PUT_TO(unescaped, c);
+	}
+
+@<Process any escape character notation in double quotes@> =
+	for (int i=0; i<Str::len(current_raw); i++) {
+		wchar_t c = Str::get_at(current_raw, i);
+		PUT_TO(unescaped, c);
+	}
 
 @ Material in |(+ ... +)| notation is an interpolation of I7 source text.
 
@@ -774,14 +787,31 @@ but speed is not quite important enough to make it worthwhile.
 	inter_ti x = I6Operators::notation_to_BIP(T);
 	if (x > 0) { is = OPERATOR_ISTT; which = x; }
 
-@ Anticlimactically: a function to deal with escape characters in Inform 6
-double-quoted text notation.
+@ Inform 6 has a baroque set of not very self-consistent escape characters in
+its double-quoted text syntax: here we take a deep breath, and plunge in. The
+following converts |text| from I6 notation to a (composed) Unicode-encoded
+string, in which every character has its literal meaning.
+
+Note that the test case |schemas| of the //building-test// module exercises
+the following function.
 
 =
-void Tokenisation::de_escape_text(text_stream *m) {
+void Tokenisation::de_escape_text(text_stream *text) {
+	TEMPORARY_TEXT(raw)
+	WRITE_TO(raw, "%S", text);
+	Str::clear(text);
+	@<Normalise the white space@>;
+	@<De-escape raw into text@>;
+	DISCARD_TEXT(raw)
+}
+
+@ Where a newline occurs inside double-quoted text, all whitespace either side
+of it is deleted, and the newline replaced by a single space.
+
+@<Normalise the white space@> =
 	int run_start = -1, run_len = 0, run_includes = FALSE;
-	for (int i=0; i<Str::len(m); i++) {
-		wchar_t c = Str::get_at(m, i);
+	for (int i=0; i<Str::len(raw); i++) {
+		wchar_t c = Str::get_at(raw, i);
 		if ((c == ' ') || (c == '\t') || (c == '\n')) {
 			if (run_start == -1) {
 				run_start = i;
@@ -792,16 +822,459 @@ void Tokenisation::de_escape_text(text_stream *m) {
 			if (c == '\n') run_includes = TRUE;
 		} else {
 			if ((run_start >= 0) && (run_includes)) {
-				Str::put_at(m, run_start, ' ');
+				Str::put_at(raw, run_start, ' ');
 				for (int j=0; j<run_len-1; j++)
-					Str::delete_nth_character(m, run_start+1);
+					Str::delete_nth_character(raw, run_start+1);
 				i = run_start;
 			}
 			run_start = -1;
 		}
 	}
-	LOOP_THROUGH_TEXT(P, m) {
-		if (Str::get(P) == '^') Str::put(P, '\n');
-		if (Str::get(P) == '~') Str::put(P, '\"');
+
+@ I6 does not follow the C-like language convention of using backslash for
+string escapes. Instead |^| marks a forced newline and |~| marks a double-quotation
+mark. All other string escapes begin with |@|.
+
+@<De-escape raw into text@> =
+	for (int i=0; i<Str::len(raw); i++) {
+		@<De-escape the Inform 7 unicode escape@>;
+		wchar_t c = Str::get_at(raw, i);
+		switch (c) {
+			case '^': PUT_TO(text, '\n'); break;
+			case '~': PUT_TO(text, '\"'); break;
+			case '@': {
+				TEMPORARY_TEXT(token)
+				int skip = 1, decimal = FALSE, hexadecimal = FALSE;
+				@<Extract the escape token@>;
+				i += skip-1;
+				if (hexadecimal) @<Expand hexadecimal Unicode value@>
+				else if (decimal) @<Expand decimal ZSCII value@>
+				else @<Expand TeX-style digraph@>;
+				DISCARD_TEXT(token)
+				break;
+			}
+			default: PUT_TO(text, c); break;
+		}
 	}
+
+@ This is not an I6 notation at all. If a character outside the range allowed
+by I6 in string literals is present in an I7 source text file -- for example,
+a capital Cyrillic ef -- then it is converted internally by the compiler to
+something like |[unicode 1060]|, with 1060 here being the decimal code point
+for the character.
+
+We will recognise this notation and translate it back into Unicode. The reason
+for doing this, even though the stand-alone I6 compiler would not, is that
+it means I6 source fed into this tokeniser will be treated the same whether
+it comes from an Include directive in I7 source text, or whether it comes from
+a kit source file.
+
+@<De-escape the Inform 7 unicode escape@> =
+	if (Str::includes_at(raw, i, I"[unicode ")) {
+		int unicode_point = 0;
+		for (int j=i+9; j<Str::len(raw); j++) {
+			wchar_t c = Str::get_at(raw, j);
+			if (c == ']') {
+				unicode_point = Str::atoi(raw, i+9);
+				i = j;
+				break;
+			}
+			if (Characters::isdigit(c) == FALSE) break;
+		}
+		if (unicode_point > 0) {
+			PUT_TO(text, unicode_point);
+			continue;
+		}
+	}
+
+@ There are three different forms for an |@|-escape. First, |@{....}| with
+hexadecimal digits inside the braces; then |@@...| with decimal digits; and
+otherwise |@..| for any of the set of legal digraphs listed below. The
+content represented by dots in these syntaxes we will store in |token|,
+and |skip| will count the total length of the escape, in raw characters.
+Thus for |@{2af4}| the |skip| count would be 7.
+
+@<Extract the escape token@> =
+	wchar_t d = Str::get_at(raw, i+1);
+	if (d == '{') {
+		skip++;
+		while (Str::get_at(raw, i+skip)) {
+			wchar_t e = Str::get_at(raw, i+skip);
+			skip++;
+			if (e == '}') break;
+			PUT_TO(token, e);
+		}
+		hexadecimal = TRUE;
+	} else if (d == '@') {
+		skip++;
+		while (Characters::isdigit(Str::get_at(raw, i+skip))) {
+			wchar_t e = Str::get_at(raw, i+skip);
+			skip++;
+			PUT_TO(token, e);
+		}
+		decimal = TRUE;
+	} else {
+		PUT_TO(token, d);
+		PUT_TO(token, Str::get_at(raw, i+2));
+		skip += 2;
+	}
+
+@ The hex notation refers directly to Unicode code points, so all we need to
+do is convert the token from a string to hex and then put it as a character.
+
+@<Expand hexadecimal Unicode value@> =
+	int N = 0;
+	LOOP_THROUGH_TEXT(pos, token) {
+		wchar_t c = Str::get(pos);
+		int D = Tokenisation::hex_val(c);
+		if (D == -1) { N = -1; break; }
+		N = 16*N + D;
+	}
+	if (N == -1) WRITE_TO(text, "?ERROR<%S>", token);
+	else PUT_TO(text, N);
+
+@ Decimal notation is substantially more annoying, because it uses the ZSCII
+character set, not Unicode. ZSCII is (for our purposes at least) the same as
+ASCII in the range 0 to 127, but is then very unlike ISO Latin-1 (and thus
+Unicode) in the range 128 to 255. (Which is as far as it goes.) The following
+therefore converts ZSCII to Unicode code points. Note that ZSCII cannot be
+mapped faithfully into ISO Latin-1 alone: it contains the OE ligature, which
+is in a different Unicode page. See "Table 2B: Higher ZSCII Character Set"
+in the DM4.
+
+@<Expand decimal ZSCII value@> =
+	int N = Str::atoi(token, 0);
+	if (N<128) PUT_TO(text, N);
+	else {
+		switch (N) {
+			case 155: PUT_TO(text, 0xE4); break; /* a-diarhesis */
+			case 156: PUT_TO(text, 0xF6); break; /* o-diarhesis */
+			case 157: PUT_TO(text, 0xFC); break; /* u-diarhesis */
+			case 158: PUT_TO(text, 0xC4); break; /* A-diarhesis */
+			case 159: PUT_TO(text, 0xD6); break; /* O-diarhesis */
+			case 160: PUT_TO(text, 0xDC); break; /* U-diarhesis */
+			case 161: PUT_TO(text, 0xDF); break; /* sharp s */
+			case 162: PUT_TO(text, 0xBB); break; /* close double-angle quotation mark */
+			case 163: PUT_TO(text, 0xAB); break; /* open double-angle quotation mark */
+			case 164: PUT_TO(text, 0xEB); break; /* e-diarhesis */
+			case 165: PUT_TO(text, 0xEF); break; /* i-diarhesis */
+			case 166: PUT_TO(text, 0xFF); break; /* y-diarhesis */
+			case 167: PUT_TO(text, 0xCB); break; /* E-diarhesis */
+			case 168: PUT_TO(text, 0xCF); break; /* I-diarhesis */
+			case 169: PUT_TO(text, 0xE1); break; /* a-acute */
+			case 170: PUT_TO(text, 0xE9); break; /* e-acute */
+			case 171: PUT_TO(text, 0xED); break; /* i-acute */
+			case 172: PUT_TO(text, 0xF3); break; /* o-acute */
+			case 173: PUT_TO(text, 0xFA); break; /* u-acute */
+			case 174: PUT_TO(text, 0xFD); break; /* y-acute */
+			case 175: PUT_TO(text, 0xC1); break; /* A-acute */
+			case 176: PUT_TO(text, 0xC9); break; /* E-acute */
+			case 177: PUT_TO(text, 0xCD); break; /* I-acute */
+			case 178: PUT_TO(text, 0xD3); break; /* O-acute */
+			case 179: PUT_TO(text, 0xDA); break; /* U-acute */
+			case 180: PUT_TO(text, 0xDD); break; /* Y-acute */
+			case 181: PUT_TO(text, 0xE0); break; /* a-grave */
+			case 182: PUT_TO(text, 0xE8); break; /* e-grave */
+			case 183: PUT_TO(text, 0xEC); break; /* i-grave */
+			case 184: PUT_TO(text, 0xF2); break; /* o-grave */
+			case 185: PUT_TO(text, 0xF9); break; /* u-grave */
+			case 186: PUT_TO(text, 0xC0); break; /* A-grave */
+			case 187: PUT_TO(text, 0xC8); break; /* E-grave */
+			case 188: PUT_TO(text, 0xCC); break; /* I-grave */
+			case 189: PUT_TO(text, 0xD2); break; /* O-grave */
+			case 190: PUT_TO(text, 0xD9); break; /* U-grave */
+			case 191: PUT_TO(text, 0xE2); break; /* a-circumflex */
+			case 192: PUT_TO(text, 0xEA); break; /* e-circumflex */
+			case 193: PUT_TO(text, 0xEE); break; /* i-circumflex */
+			case 194: PUT_TO(text, 0xF4); break; /* o-circumflex */
+			case 195: PUT_TO(text, 0xFB); break; /* u-circumflex */
+			case 196: PUT_TO(text, 0xC2); break; /* A-circumflex */
+			case 197: PUT_TO(text, 0xCA); break; /* E-circumflex */
+			case 198: PUT_TO(text, 0xCE); break; /* I-circumflex */
+			case 199: PUT_TO(text, 0xD4); break; /* O-circumflex */
+			case 200: PUT_TO(text, 0xDB); break; /* U-circumflex */
+			case 201: PUT_TO(text, 0xE6); break; /* a-ring */
+			case 202: PUT_TO(text, 0xC6); break; /* A-ring */
+			case 203: PUT_TO(text, 0xF8); break; /* o-stroke */
+			case 204: PUT_TO(text, 0xD8); break; /* O-stroke */
+			case 205: PUT_TO(text, 0xE3); break; /* a-tilde */
+			case 206: PUT_TO(text, 0xF1); break; /* n-tilde */
+			case 207: PUT_TO(text, 0xF5); break; /* o-tilde */
+			case 208: PUT_TO(text, 0xC3); break; /* A-tilde */
+			case 209: PUT_TO(text, 0xD1); break; /* N-tilde */
+			case 210: PUT_TO(text, 0xD5); break; /* O-tilde */
+			case 211: PUT_TO(text, 0xE6); break; /* ae */
+			case 212: PUT_TO(text, 0xC6); break; /* AE */
+			case 213: PUT_TO(text, 0xE7); break; /* c-cedilla */
+			case 214: PUT_TO(text, 0xC7); break; /* C-cedilla */
+			case 215: PUT_TO(text, 0xFE); break; /* thorn */
+			case 216: PUT_TO(text, 0xF0); break; /* eth */
+			case 217: PUT_TO(text, 0xDE); break; /* Thorn */
+			case 218: PUT_TO(text, 0xD0); break; /* Eth */
+			case 219: PUT_TO(text, 0xA3); break; /* pound sterling sign */
+			case 220: PUT_TO(text, 0x153); break; /* oe */
+			case 221: PUT_TO(text, 0x152); break; /* OE */
+			case 222: PUT_TO(text, 0xA1); break; /* inverted ! */
+			case 223: PUT_TO(text, 0xBF); break; /* inverted ? */
+			default: @<Unknown string token@>; break;
+		}
+	}
+
+@ Now for the digraphs. For example, |@'a| is an a-acute, while |@ss| is a
+German sharp s. Again, see the DM4 for the specification of these. A misprint
+in the DM4 means that one part of that manual says that |@cc| is the syntax
+for c-cedilla, and another says it is |@,c|. To be on the safe side, we
+recognise both.
+
+@<Expand TeX-style digraph@> =
+	wchar_t c = Str::get_at(token, 0);
+	wchar_t d = Str::get_at(token, 1);
+	switch (c) {
+		case '\'': /* these are acute accents */
+			switch (d) {
+				case 'a': PUT_TO(text, 0xE1); break;
+				case 'e': PUT_TO(text, 0xE9); break;
+				case 'i': PUT_TO(text, 0xED); break;
+				case 'o': PUT_TO(text, 0xF3); break;
+				case 'u': PUT_TO(text, 0xFA); break;
+				case 'y': PUT_TO(text, 0xFD); break;
+				case 'A': PUT_TO(text, 0xC1); break;
+				case 'E': PUT_TO(text, 0xC9); break;
+				case 'I': PUT_TO(text, 0xCD); break;
+				case 'O': PUT_TO(text, 0xD3); break;
+				case 'U': PUT_TO(text, 0xDA); break;
+				case 'Y': PUT_TO(text, 0xDD); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case '`': /* these are grave accents */
+			switch (d) {
+				case 'a': PUT_TO(text, 0xE0); break;
+				case 'e': PUT_TO(text, 0xE8); break;
+				case 'i': PUT_TO(text, 0xEC); break;
+				case 'o': PUT_TO(text, 0xF2); break;
+				case 'u': PUT_TO(text, 0xF9); break;
+				case 'A': PUT_TO(text, 0xC0); break;
+				case 'E': PUT_TO(text, 0xC8); break;
+				case 'I': PUT_TO(text, 0xCC); break;
+				case 'O': PUT_TO(text, 0xD2); break;
+				case 'U': PUT_TO(text, 0xD9); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case '^': /* these are circumflex accents */
+			switch (d) {
+				case 'a': PUT_TO(text, 0xE2); break;
+				case 'e': PUT_TO(text, 0xEA); break;
+				case 'i': PUT_TO(text, 0xEE); break;
+				case 'o': PUT_TO(text, 0xF4); break;
+				case 'u': PUT_TO(text, 0xFB); break;
+				case 'A': PUT_TO(text, 0xC2); break;
+				case 'E': PUT_TO(text, 0xCA); break;
+				case 'I': PUT_TO(text, 0xCE); break;
+				case 'O': PUT_TO(text, 0xD4); break;
+				case 'U': PUT_TO(text, 0xDB); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case ':': /* these are diarhesis accents, that is, umlauts */
+			switch (d) {
+				case 'a': PUT_TO(text, 0xE4); break;
+				case 'e': PUT_TO(text, 0xEB); break;
+				case 'i': PUT_TO(text, 0xEF); break;
+				case 'o': PUT_TO(text, 0xF6); break;
+				case 'u': PUT_TO(text, 0xFC); break;
+				case 'y': PUT_TO(text, 0xFF); break;
+				case 'A': PUT_TO(text, 0xC4); break;
+				case 'E': PUT_TO(text, 0xCB); break;
+				case 'I': PUT_TO(text, 0xCF); break;
+				case 'O': PUT_TO(text, 0xD6); break;
+				case 'U': PUT_TO(text, 0xDC); break;
+				case 'Y': PUT_TO(text, 0x0178); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case '~': /* these are tilde accents */
+			switch (d) {
+				case 'a': PUT_TO(text, 0xE3); break;
+				case 'n': PUT_TO(text, 0xF1); break;
+				case 'o': PUT_TO(text, 0xF5); break;
+				case 'A': PUT_TO(text, 0xC3); break;
+				case 'N': PUT_TO(text, 0xD1); break;
+				case 'O': PUT_TO(text, 0xD5); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case ',': case 'c': /* cedilla (a misprint in the DM4 means both are said to work) */
+			switch (d) {
+				case 'c': PUT_TO(text, 0xE7); break;
+				case 'C': PUT_TO(text, 0xC7); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case '\\': /* the Scandinavian slash thing */
+			switch (d) {
+				case 'o': PUT_TO(text, 0xF8); break;
+				case 'O': PUT_TO(text, 0xD8); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case 'a': /* joined ae */
+			switch (d) {
+				case 'e': PUT_TO(text, 0xE6); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case 'A': /* joined AE */
+			switch (d) {
+				case 'E': PUT_TO(text, 0xC6); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case 'e': /* lower-case Icelandic eth */
+			switch (d) {
+				case 't': PUT_TO(text, 0xF0); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case 'E': /* capital Icelandic eth */
+			switch (d) {
+				case 't': PUT_TO(text, 0xD0); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case 't': /* lower-case thorn */
+			switch (d) {
+				case 'h': PUT_TO(text, 0xFE); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case 'T': /* capital thorn */
+			switch (d) {
+				case 'h': PUT_TO(text, 0xCE); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case 'L': /* pound sign */
+			switch (d) {
+				case 'L': PUT_TO(text, 0xA3); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case '!': /* inverted Spanish exclamation mark */
+			if (d == '!') PUT_TO(text, 0xA1);
+			else @<Unknown string token@>;
+			break;
+		case '?': /* inverted Spanish question mark */
+			if (d == '?') PUT_TO(text, 0xBF);
+			else @<Unknown string token@>;
+			break;
+		case '<': /* Double-angle open quotation mark */
+			if (d == '<') PUT_TO(text, 0xAB);
+			else @<Unknown string token@>;
+			break;
+		case '>': /* Double-angle close quotation mark */
+			if (d == '>') PUT_TO(text, 0xBB);
+			else @<Unknown string token@>;
+			break;
+		case 's': /* German sharp s */
+			if (d == 's') PUT_TO(text, 0xDF);
+			else @<Unknown string token@>;
+			break;
+		case 'o': /* joined oe and ring accent A */
+			switch (d) {
+				case 'a': PUT_TO(text, 0xE5); break;
+				case 'A': PUT_TO(text, 0xC5); break;
+				case 'e': PUT_TO(text, 0x153); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		case 'O': /* joined OE */
+			switch (d) {
+				case 'E': PUT_TO(text, 0x152); break;
+				default: @<Unknown string token@>; break;
+			}
+			break;
+		default:
+			WRITE_TO(text, "TOKEN<%S>", token);
+			break;
+	}
+
+@<Unknown string token@> =
+	WRITE_TO(text, "@%S", token);
+
+@
+
+=
+int Tokenisation::hex_val(wchar_t c) {
+	if ((c >= '0') && (c <= '9')) return c - '0';
+	if ((c >= 'a') && (c <= 'f')) return c - 'a' + 10;
+	if ((c >= 'A') && (c <= 'F')) return c - 'A' + 10;
+	return -1;
 }
+
+@ And similarly for single-quoted text notation, which shares some of the same
+conventions. In fact I6 for some reason does not support the |@@...| decimal
+notation within character or dictionary literals, throwing an error if it
+is used; but we'll recognise it anyway, for the sake of using the same code as
+is given above.
+
+The tricky thing here is that single-quoted literals are characters if they
+contain one character and do not have a |//| marker, but dictionary literals
+otherwise. We need to know which because |^| is an escape character for a
+single quotation mark in a dictionary literal, but not a character literal.
+
+=
+void Tokenisation::de_escape_sq_text(text_stream *text) {
+	TEMPORARY_TEXT(raw)
+	WRITE_TO(raw, "%S", text);
+	Str::clear(text);
+	int is_dictionary_word = FALSE;
+	@<Determine if this is a character or dictionary literal@>;
+	@<Expand the literal text@>;
+	DISCARD_TEXT(raw)
+}
+
+@<Determine if this is a character or dictionary literal@> =
+	int char_count = 0;
+	for (int i=0; i<Str::len(raw); i++) {
+		if ((Str::get_at(raw, i) == '/') && (Str::get_at(raw, i+1) == '/')) {
+			is_dictionary_word = TRUE; break;
+		}
+		char_count++;
+		if (Str::get_at(raw, i) == '@') {
+			TEMPORARY_TEXT(token)
+			int skip = 1, decimal = FALSE, hexadecimal = FALSE;
+			@<Extract the escape token@>;
+			i += skip-1;
+			DISCARD_TEXT(token)
+		}
+	}
+	if (char_count > 1) is_dictionary_word = TRUE;
+
+@<Expand the literal text@> =
+	for (int i=0; i<Str::len(raw); i++) {
+		wchar_t c = Str::get_at(raw, i);
+		if ((c == '/') && (Str::get_at(raw, i+1) == '/'))
+			@<Past this point escape characters do not apply@>;
+		if (c == '@') {
+			TEMPORARY_TEXT(token)
+			int skip = 1, decimal = FALSE, hexadecimal = FALSE;
+			@<Extract the escape token@>;
+			if (hexadecimal) @<Expand hexadecimal Unicode value@>
+			else if (decimal) @<Expand decimal ZSCII value@>
+			else @<Expand TeX-style digraph@>;
+			i += skip-1;
+			DISCARD_TEXT(token)
+		} else {
+			if ((c == '^') && (is_dictionary_word)) PUT_TO(text, '\'');
+			else PUT_TO(text, c);
+		}
+	}
+
+@<Past this point escape characters do not apply@> =
+	while (i < Str::len(raw)) {
+		PUT_TO(text, Str::get_at(raw, i));
+		i++;
+	}
+	break;

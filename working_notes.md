@@ -14,6 +14,57 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 
 ## News items
 
+### String escape notations in I6 syntax (30 June 2022)
+
+I6 inclusions in source text, and kit sources, are run through an I6-to-Inter
+compiler within the building module of inter, not through the regular I6 compiler.
+Up to this point in the beta, the I6-to-Inter compiler recognised only a few
+of the very basic string escapes, which led to Jira bug report I7-2156. This
+particularly affects non-English IF writers, and especially translators making
+language support kits.
+
+This should all now work: see the new inform7 test case I6StringEscapes-G (the
+2000th inform7 test case!) and the building-test module test case schemas for
+a thorough exercise of these escapes.
+
+For example, the following function included in I7 source text:
+
+	Include (-
+		[ JunkFn;
+			print (char) '^', " might be a caret, who knows.^";
+			print (address) 'x^', " might be an x', who knows.^";
+			print (address) '^//', " might be a ', who knows.^";
+			print (char) '@ss', " might be an @ss, who knows.^";
+			print (address) 'x@ss', " might be an x@ss, who knows.^";
+			print (char) '@{0041}', " might be an A, who knows.^";
+			print (address) 'x@{0041}', " might be an xA, who knows.^";
+			print "Les @oeuvres d'@AEsop en fran@,cais, mon @'el@`eve!^";
+			print "Na@:ive readers of the New Yorker re@:elected Mr Clinton.^";
+			print "Gau@ss first proved the Fundamental Theorem of Algebra.^";
+			print "@'a@'e@'i@'o@'u@'y@'A@'E@'I@'O@'U@'Y@`a@`e@`i@`o@`u@`A@`E@`I@`O@`U@^a@^e@^i@^o@^u@^A@^E@^I@^O@^U@:a@:e@:i@:o@:u@:y@:A@:E@:I@:O@:U@:Y^";
+			print "@~a@~n@~o@~A@~N@~O@,c@,C@\o@\O@ae@AE@et@Et@th@Th@LL@!!@??@<<@>>@ss@oa@oA@oe@OE^";
+			print "So @{a9} is a copyright sign, and @{424} is a capital Cyrillic ef, and @{25B2} is a triangle^";
+			print "Backslash: @@92 At sign: @@64 Caret: @@94 Tilde: @@126^";
+		];
+	-).
+
+prints, if executed (on Glulx - the Z-machine does not support four of these Unicode characters):
+
+	^ might be a caret, who knows.
+	x' might be an x', who knows.
+	' might be a ', who knows.
+	ß might be an ß, who knows.
+	xß might be an xß, who knows.
+	A might be an A, who knows.
+	xa might be an xA, who knows.
+	Les œuvres d'Æsop en français, mon élève!
+	Naïve readers of the New Yorker reëlected Mr Clinton.
+	Gauß first proved the Fundamental Theorem of Algebra.
+	áéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛäëïöüÿÄËÏÖÜŸ
+	ãñõÃÑÕçÇøØæÆðÐþÎ£¡¿«»ßåÅœŒ
+	So © is a copyright sign, and Ф is a capital Cyrillic ef, and ▲ is a triangle
+	Backslash: \ At sign: @ Caret: ^ Tilde: ~
+
 ### Withdrawal of -kit, but not of -basic (27 June 2022)
 
 Up to this point, the beta of inbuild (and hence also of inform7) had a

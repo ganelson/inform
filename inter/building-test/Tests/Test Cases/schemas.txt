@@ -1543,3 +1543,92 @@ end
 schema
 	print "";
 end
+
+schema
+	print '^';
+	print 'helen^s//';
+	print (char) '@ss', " might be an @ss, who knows.^";
+	print (address) 'x@ss', " might be an x@ss, who knows.^";
+	print (char) '@{0041}', " might be an A, who knows.^";
+	print (address) 'x@{0041}', " might be an xA, who knows.^";
+end
+
+schema
+	print "Les @oeuvres d'@AEsop en fran@,cais, mon @'el@`eve!";
+	print "Na@:ive readers of the New Yorker re@:elected Mr Clinton.";
+	print "Gau@ss first proved the Fundamental Theorem of Algebra.";
+	print "@'a@'e@'i@'o@'u@'y@'A@'E@'I@'O@'U@'Y@`a@`e@`i@`o@`u@`A@`E@`I@`O@`U@^a@^e@^i@^o@^u@^A@^E@^I@^O@^U@:a@:e@:i@:o@:u@:y@:A@:E@:I@:O@:U@:Y";
+	print "@~a@~n@~o@~A@~N@~O@,c@,C@\o@\O@ae@AE@et@Et@th@Th@LL@!!@??@<<@>>@ss@oa@oA@oe@OE";
+	print "So @{a9} is a copyright sign, and @{424} is a capital Cyrillic ef, and @{25B2} is a triangle";
+	print "Backslash: @@92 At sign: @@64 Caret: @@94 Tilde: @@126";
+	print "a-diarhesis: @@155.";
+	print "o-diarhesis: @@156.";
+	print "u-diarhesis: @@157.";
+	print "A-diarhesis: @@158.";
+	print "O-diarhesis: @@159.";
+	print "U-diarhesis: @@160.";
+	print "sharp s: @@161.";
+	print "close double-angle quotation mark: @@162.";
+	print "open double-angle quotation mark: @@163.";
+	print "e-diarhesis: @@164.";
+	print "i-diarhesis: @@165.";
+	print "y-diarhesis: @@166.";
+	print "E-diarhesis: @@167.";
+	print "I-diarhesis: @@168.";
+	print "a-acute: @@169.";
+	print "e-acute: @@170.";
+	print "i-acute: @@171.";
+	print "o-acute: @@172.";
+	print "u-acute: @@173.";
+	print "y-acute: @@174.";
+	print "A-acute: @@175.";
+	print "E-acute: @@176.";
+	print "I-acute: @@177.";
+	print "O-acute: @@178.";
+	print "U-acute: @@179.";
+	print "Y-acute: @@180.";
+	print "a-grave: @@181.";
+	print "e-grave: @@182.";
+	print "i-grave: @@183.";
+	print "o-grave: @@184.";
+	print "u-grave: @@185.";
+	print "A-grave: @@186.";
+	print "E-grave: @@187.";
+	print "I-grave: @@188.";
+	print "O-grave: @@189.";
+	print "U-grave: @@190.";
+	print "a-circumflex: @@191.";
+	print "e-circumflex: @@192.";
+	print "i-circumflex: @@193.";
+	print "o-circumflex: @@194.";
+	print "u-circumflex: @@195.";
+	print "A-circumflex: @@196.";
+	print "E-circumflex: @@197.";
+	print "I-circumflex: @@198.";
+	print "O-circumflex: @@199.";
+	print "U-circumflex: @@200.";
+	print "a-ring: @@201.";
+	print "A-ring: @@202.";
+	print "o-stroke: @@203.";
+	print "O-stroke: @@204.";
+	print "a-tilde: @@205.";
+	print "n-tilde: @@206.";
+	print "o-tilde: @@207.";
+	print "A-tilde: @@208.";
+	print "N-tilde: @@209.";
+	print "O-tilde: @@210.";
+	print "ae: @@211.";
+	print "AE: @@212.";
+	print "c-cedilla: @@213.";
+	print "C-cedilla: @@214.";
+	print "thorn: @@215.";
+	print "eth: @@216.";
+	print "Thorn: @@217.";
+	print "Eth: @@218.";
+	print "pound sterling sign: @@219.";
+	print "oe: @@220.";
+	print "OE: @@221.";
+	print "inverted !: @@222.";
+	print "inverted ?: @@223.";
+	print "[unicode 169] is a copyright sign. [unicode 1060] is a capital Cyrillic ef, and [unicode 9650] is a triangle.";
+end

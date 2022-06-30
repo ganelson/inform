@@ -4154,3 +4154,357 @@ Test: parse schema from:
       * (expr)
         DQUOTED     
 =========
+Test: parse schema from:
+	print '^';
+	print 'helen^s//';
+	print (char) '@ss', " might be an @ss, who knows.^";
+	print (address) 'x@ss', " might be an x@ss, who knows.^";
+	print (char) '@{0041}', " might be an A, who knows.^";
+	print (address) 'x@{0041}', " might be an xA, who knows.^";
+
+  * (statement) !printnumber
+      * (expr)
+        SQUOTED     ^
+  * (statement) !printnumber
+      * (expr)
+        SQUOTED     helen's//
+  * (statement) !printchar
+      * (expr)
+        SQUOTED     ß
+  * (statement) !print
+      * (expr)
+        DQUOTED      might be an ß, who knows.
+
+  * (statement) !printdword
+      * (expr)
+        SQUOTED     xß
+  * (statement) !print
+      * (expr)
+        DQUOTED      might be an xß, who knows.
+
+  * (statement) !printchar
+      * (expr)
+        SQUOTED     A
+  * (statement) !print
+      * (expr)
+        DQUOTED      might be an A, who knows.
+
+  * (statement) !printdword
+      * (expr)
+        SQUOTED     xA
+  * (statement) !print
+      * (expr)
+        DQUOTED      might be an xA, who knows.
+
+=========
+Test: parse schema from:
+	print "Les @oeuvres d'@AEsop en fran@,cais, mon @'el@`eve!";
+	print "Na@:ive readers of the New Yorker re@:elected Mr Clinton.";
+	print "Gau@ss first proved the Fundamental Theorem of Algebra.";
+	print "@'a@'e@'i@'o@'u@'y@'A@'E@'I@'O@'U@'Y@`a@`e@`i@`o@`u@`A@`E@`I@`O@`U@^a@^e@^i@^o@^u@^A@^E@^I@^O@^U@:a@:e@:i@:o@:u@:y@:A@:E@:I@:O@:U@:Y";
+	print "@~a@~n@~o@~A@~N@~O@,c@,C@\o@\O@ae@AE@et@Et@th@Th@LL@!!@??@<<@>>@ss@oa@oA@oe@OE";
+	print "So @{a9} is a copyright sign, and @{424} is a capital Cyrillic ef, and @{25B2} is a triangle";
+	print "Backslash: @@92 At sign: @@64 Caret: @@94 Tilde: @@126";
+	print "a-diarhesis: @@155.";
+	print "o-diarhesis: @@156.";
+	print "u-diarhesis: @@157.";
+	print "A-diarhesis: @@158.";
+	print "O-diarhesis: @@159.";
+	print "U-diarhesis: @@160.";
+	print "sharp s: @@161.";
+	print "close double-angle quotation mark: @@162.";
+	print "open double-angle quotation mark: @@163.";
+	print "e-diarhesis: @@164.";
+	print "i-diarhesis: @@165.";
+	print "y-diarhesis: @@166.";
+	print "E-diarhesis: @@167.";
+	print "I-diarhesis: @@168.";
+	print "a-acute: @@169.";
+	print "e-acute: @@170.";
+	print "i-acute: @@171.";
+	print "o-acute: @@172.";
+	print "u-acute: @@173.";
+	print "y-acute: @@174.";
+	print "A-acute: @@175.";
+	print "E-acute: @@176.";
+	print "I-acute: @@177.";
+	print "O-acute: @@178.";
+	print "U-acute: @@179.";
+	print "Y-acute: @@180.";
+	print "a-grave: @@181.";
+	print "e-grave: @@182.";
+	print "i-grave: @@183.";
+	print "o-grave: @@184.";
+	print "u-grave: @@185.";
+	print "A-grave: @@186.";
+	print "E-grave: @@187.";
+	print "I-grave: @@188.";
+	print "O-grave: @@189.";
+	print "U-grave: @@190.";
+	print "a-circumflex: @@191.";
+	print "e-circumflex: @@192.";
+	print "i-circumflex: @@193.";
+	print "o-circumflex: @@194.";
+	print "u-circumflex: @@195.";
+	print "A-circumflex: @@196.";
+	print "E-circumflex: @@197.";
+	print "I-circumflex: @@198.";
+	print "O-circumflex: @@199.";
+	print "U-circumflex: @@200.";
+	print "a-ring: @@201.";
+	print "A-ring: @@202.";
+	print "o-stroke: @@203.";
+	print "O-stroke: @@204.";
+	print "a-tilde: @@205.";
+	print "n-tilde: @@206.";
+	print "o-tilde: @@207.";
+	print "A-tilde: @@208.";
+	print "N-tilde: @@209.";
+	print "O-tilde: @@210.";
+	print "ae: @@211.";
+	print "AE: @@212.";
+	print "c-cedilla: @@213.";
+	print "C-cedilla: @@214.";
+	print "thorn: @@215.";
+	print "eth: @@216.";
+	print "Thorn: @@217.";
+	print "Eth: @@218.";
+	print "pound sterling sign: @@219.";
+	print "oe: @@220.";
+	print "OE: @@221.";
+	print "inverted !: @@222.";
+	print "inverted ?: @@223.";
+	print "[unicode 169] is a copyright sign. [unicode 1060] is a capital Cyrillic ef, and [unicode 9650] is a triangle.";
+
+  * (statement) !print
+      * (expr)
+        DQUOTED     Les œuvres d'Æsop en français, mon élève!
+  * (statement) !print
+      * (expr)
+        DQUOTED     Naïve readers of the New Yorker reëlected Mr Clinton.
+  * (statement) !print
+      * (expr)
+        DQUOTED     Gauß first proved the Fundamental Theorem of Algebra.
+  * (statement) !print
+      * (expr)
+        DQUOTED     áéíóúýÁÉÍÓÚÝàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛäëïöüÿÄËÏÖÜŸ
+  * (statement) !print
+      * (expr)
+        DQUOTED     ãñõÃÑÕçÇøØæÆðÐþÎ£¡¿«»ßåÅœŒ
+  * (statement) !print
+      * (expr)
+        DQUOTED     So © is a copyright sign, and Ф is a capital Cyrillic ef, and ▲ is a triangle
+  * (statement) !print
+      * (expr)
+        DQUOTED     Backslash: \ At sign: @ Caret: ^ Tilde: ~
+  * (statement) !print
+      * (expr)
+        DQUOTED     a-diarhesis: ä.
+  * (statement) !print
+      * (expr)
+        DQUOTED     o-diarhesis: ö.
+  * (statement) !print
+      * (expr)
+        DQUOTED     u-diarhesis: ü.
+  * (statement) !print
+      * (expr)
+        DQUOTED     A-diarhesis: Ä.
+  * (statement) !print
+      * (expr)
+        DQUOTED     O-diarhesis: Ö.
+  * (statement) !print
+      * (expr)
+        DQUOTED     U-diarhesis: Ü.
+  * (statement) !print
+      * (expr)
+        DQUOTED     sharp s: ß.
+  * (statement) !print
+      * (expr)
+        DQUOTED     close double-angle quotation mark: ».
+  * (statement) !print
+      * (expr)
+        DQUOTED     open double-angle quotation mark: «.
+  * (statement) !print
+      * (expr)
+        DQUOTED     e-diarhesis: ë.
+  * (statement) !print
+      * (expr)
+        DQUOTED     i-diarhesis: ï.
+  * (statement) !print
+      * (expr)
+        DQUOTED     y-diarhesis: ÿ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     E-diarhesis: Ë.
+  * (statement) !print
+      * (expr)
+        DQUOTED     I-diarhesis: Ï.
+  * (statement) !print
+      * (expr)
+        DQUOTED     a-acute: á.
+  * (statement) !print
+      * (expr)
+        DQUOTED     e-acute: é.
+  * (statement) !print
+      * (expr)
+        DQUOTED     i-acute: í.
+  * (statement) !print
+      * (expr)
+        DQUOTED     o-acute: ó.
+  * (statement) !print
+      * (expr)
+        DQUOTED     u-acute: ú.
+  * (statement) !print
+      * (expr)
+        DQUOTED     y-acute: ý.
+  * (statement) !print
+      * (expr)
+        DQUOTED     A-acute: Á.
+  * (statement) !print
+      * (expr)
+        DQUOTED     E-acute: É.
+  * (statement) !print
+      * (expr)
+        DQUOTED     I-acute: Í.
+  * (statement) !print
+      * (expr)
+        DQUOTED     O-acute: Ó.
+  * (statement) !print
+      * (expr)
+        DQUOTED     U-acute: Ú.
+  * (statement) !print
+      * (expr)
+        DQUOTED     Y-acute: Ý.
+  * (statement) !print
+      * (expr)
+        DQUOTED     a-grave: à.
+  * (statement) !print
+      * (expr)
+        DQUOTED     e-grave: è.
+  * (statement) !print
+      * (expr)
+        DQUOTED     i-grave: ì.
+  * (statement) !print
+      * (expr)
+        DQUOTED     o-grave: ò.
+  * (statement) !print
+      * (expr)
+        DQUOTED     u-grave: ù.
+  * (statement) !print
+      * (expr)
+        DQUOTED     A-grave: À.
+  * (statement) !print
+      * (expr)
+        DQUOTED     E-grave: È.
+  * (statement) !print
+      * (expr)
+        DQUOTED     I-grave: Ì.
+  * (statement) !print
+      * (expr)
+        DQUOTED     O-grave: Ò.
+  * (statement) !print
+      * (expr)
+        DQUOTED     U-grave: Ù.
+  * (statement) !print
+      * (expr)
+        DQUOTED     a-circumflex: â.
+  * (statement) !print
+      * (expr)
+        DQUOTED     e-circumflex: ê.
+  * (statement) !print
+      * (expr)
+        DQUOTED     i-circumflex: î.
+  * (statement) !print
+      * (expr)
+        DQUOTED     o-circumflex: ô.
+  * (statement) !print
+      * (expr)
+        DQUOTED     u-circumflex: û.
+  * (statement) !print
+      * (expr)
+        DQUOTED     A-circumflex: Â.
+  * (statement) !print
+      * (expr)
+        DQUOTED     E-circumflex: Ê.
+  * (statement) !print
+      * (expr)
+        DQUOTED     I-circumflex: Î.
+  * (statement) !print
+      * (expr)
+        DQUOTED     O-circumflex: Ô.
+  * (statement) !print
+      * (expr)
+        DQUOTED     U-circumflex: Û.
+  * (statement) !print
+      * (expr)
+        DQUOTED     a-ring: æ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     A-ring: Æ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     o-stroke: ø.
+  * (statement) !print
+      * (expr)
+        DQUOTED     O-stroke: Ø.
+  * (statement) !print
+      * (expr)
+        DQUOTED     a-tilde: ã.
+  * (statement) !print
+      * (expr)
+        DQUOTED     n-tilde: ñ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     o-tilde: õ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     A-tilde: Ã.
+  * (statement) !print
+      * (expr)
+        DQUOTED     N-tilde: Ñ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     O-tilde: Õ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     ae: æ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     AE: Æ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     c-cedilla: ç.
+  * (statement) !print
+      * (expr)
+        DQUOTED     C-cedilla: Ç.
+  * (statement) !print
+      * (expr)
+        DQUOTED     thorn: þ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     eth: ð.
+  * (statement) !print
+      * (expr)
+        DQUOTED     Thorn: Þ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     Eth: Ð.
+  * (statement) !print
+      * (expr)
+        DQUOTED     pound sterling sign: £.
+  * (statement) !print
+      * (expr)
+        DQUOTED     oe: œ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     OE: Œ.
+  * (statement) !print
+      * (expr)
+        DQUOTED     inverted !: ¡.
+  * (statement) !print
+      * (expr)
+        DQUOTED     inverted ?: ¿.
+  * (statement) !print
+      * (expr)
+        DQUOTED     © is a copyright sign. Ф is a capital Cyrillic ef, and ▲ is a triangle.
+=========
