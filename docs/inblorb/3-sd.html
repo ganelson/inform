@@ -210,6 +210,7 @@ We shall therefore make few assumptions about it.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">new_child</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">parent</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_skein_node</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">new_child</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sibling</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">current_skein_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">current_skein_node</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">child</span><span class="plain-syntax"> = </span><span class="identifier-syntax">new_child</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>

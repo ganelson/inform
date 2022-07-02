@@ -136,6 +136,7 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 
 @<Make the parent-child relationship@> =
 	new_child->parent = current_skein_node;
+	new_child->sibling = NULL;
 	if (current_skein_node->child == NULL) {
 		current_skein_node->child = new_child;
 	} else {
@@ -299,6 +300,7 @@ void Solution::prune_irrelevant_lines(void) {
 	}
 	skn->parent = NULL;
 	skn->sibling = NULL;
+
 
 @h Step 4: writing the solution file.
 

@@ -1,6 +1,6 @@
 # Inform 7
 
-v10.1.0-beta+6V32 'Krypton' (30 June 2022)
+v10.1.0-beta+6V33 'Krypton' (2 July 2022)
 
 ## About Inform 7
 
