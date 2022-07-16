@@ -10,7 +10,7 @@
 	mkdir: $PATH/_Results_Ideal
 	mkdir: $PATH/_Console
 
-	step: inter/building-test/Tangled/building-test -test $O >$A 2>&1
+	step: inter/building-test/Tangled/building-test -locale console=utf-8 -test $O >$A 2>&1
 	or: 'failed to produce output' $A
 
 	show: $A
