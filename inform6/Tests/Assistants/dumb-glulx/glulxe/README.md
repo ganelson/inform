@@ -1,6 +1,6 @@
 # Glulxe: the Glulx VM interpreter
 
-- Version 0.5.4
+- Version 0.6.0
 - Designed by Andrew Plotkin <erkyrath@eblong.com>
 - [Glulx home page][glulx]
 
@@ -37,7 +37,97 @@ If you define the VM_DEBUGGER symbol (uncomment the "#define VM_DEBUGGER"
 line in glulxe.h), you must include the libxml2 library. See the
 XMLLIB definition in the Makefile.
 
+## Autosave
+
+This interpreter supports autosave if the Glk library does. Currently
+only two do: RemGlk and IosGlk. (The latter is no longer supported on
+modern iOS, so RemGlk is your only real option.)
+
+The --autosave option tells the interpreter to write out autosave
+files at the end of each turn. The --autorestore tells it to load
+those files at startup time, thus starting the game where it was last
+autosaved. Note that --autosave will overwrite the autosave files if
+present, but you should not use --autorestore unless the files exist.
+
+There are two autosave files, by default kept in the current directory
+and named "autosave.json" and "autosave.glksave". You can change the
+directory with --autodir and the base filename with --autoname.
+
+In some contexts it is useful for every game to have a unique autosave
+location. You can do this by giving an --autoname value with a hash
+mark, e.g.:
+
+    ./glulxe --autosave --autoname auto-# filename.ulx
+
+The # character will be replaced with a (long) hex string that
+uniquely identifies the game file. (Pretty uniquely, at least. It's
+not a cryptographically strong hash.)
+
+Autosave covers two slightly different scenarios:
+
+### Hedging against the possibility of process termination
+
+This was how the iOS interpreters work (worked). The app would start
+and run normally, but it *could* be killed at any time (when in the
+background). Therefore, we autosave every turn. At startup time, if
+autosave files exist, we restore them and continue play.
+
+To operate in this mode in a Unix environment:
+
+    ./glulxe --autosave --autoskiparrange filename.ulx
+
+The --autosave argument causes an autosave every turn. The
+--autoskiparrange argument skips this on Arrange (window resize)
+events. (We may get several Arrange events in a row, and they don't
+represent progress that a player would care about losing.)
+
+When relaunching, if autosave files exist, do:
+
+    ./glulxe --autosave --autoskiparrange --autorestore -autometrics filename.ulx
+
+The --autorestore arguments loads the autosave. The -autometrics
+argument (a RemGlk argument, hence the single dash) tells RemGlk to
+skip the step of waiting for an Init event with metrics. (This is not
+needed because the game will already be in progress. But you can send
+a normal Arrange event if you think your window size might be
+different from the autosave state.)
+
+### Single-turn operation
+
+This mode allows you to play a game without keeping a long-term process
+active. On every player input, the interpreter will launch, autorestore,
+process the input, autosave, and exit.
+
+To operate in this mode in a Unix environment:
+
+    ./glulxe --autosave -singleturn filename.ulx
+
+The -singleturn argument (a RemGlk argument) tells the interpreter to
+exit as soon as an output stanza is generated. When you pass in the
+initial Init event, the interpreter will process the start-of-game
+activity, display the initial window state, and exit.
+
+When relaunching, if autosave files exist, do:
+
+    ./glulxe --autosave --autorestore -singleturn -autometrics filename.ulx
+
+You should only do this when the UI has a player input ready to process.
+Launch the game and pass in the input. The interpreter will process it,
+display the update, and then (without delay) exit.
+
 ## Version
+
+0.6.0 (Jun 25, 2022):
+- Added @hasundo and @discardundo opcodes. (Glulx spec 3.1.3.)
+- Added autosave support to the Unix startup code. (Previously the
+  autosave support only existed in the iOS startup code, which was
+  ObjC.) Autosave now works with the RemGlk library.
+- Added an --undo argument to set the number of undo states.
+- Fixed a bug where accelerated functions could write error messages
+  to Glk regardless of the current I/O system.
+- Added array bounds checking on stack access.
+- Added a guard against too-deep recursion when creating the string
+  cache.
 
 0.5.4 (Jan 23, 2017):
 

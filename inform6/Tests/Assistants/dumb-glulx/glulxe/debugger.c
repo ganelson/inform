@@ -168,7 +168,7 @@ static int xmlclosefunc(void *rock);
 static void xmlhandlenode(xmlTextReaderPtr reader, debuginfofile *context);
 static int finalize_debuginfo(debuginfofile *context);
 
-static debuginfofile *create_debuginfofile()
+static debuginfofile *create_debuginfofile(void)
 {
     debuginfofile *context = (debuginfofile *)malloc(sizeof(debuginfofile));
     context->str = NULL;
@@ -267,7 +267,7 @@ static void free_debuginfofile(debuginfofile *context)
     free(context);
 }
 
-static infoconstant *create_infoconstant()
+static infoconstant *create_infoconstant(void)
 {
     infoconstant *cons = (infoconstant *)malloc(sizeof(infoconstant));
     cons->identifier = NULL;
@@ -275,7 +275,7 @@ static infoconstant *create_infoconstant()
     return cons;
 }
 
-static infoobject *create_infoobject()
+static infoobject *create_infoobject(void)
 {
     infoobject *object = (infoobject *)malloc(sizeof(infoobject));
     object->identifier = NULL;
@@ -284,7 +284,7 @@ static infoobject *create_infoobject()
     return object;
 }
 
-static infoarray *create_infoarray()
+static infoarray *create_infoarray(void)
 {
     infoarray *arr = (infoarray *)malloc(sizeof(infoarray));
     arr->identifier = NULL;
@@ -297,7 +297,7 @@ static infoarray *create_infoarray()
     return arr;
 }
 
-static inforoutine *create_inforoutine()
+static inforoutine *create_inforoutine(void)
 {
     inforoutine *func = (inforoutine *)malloc(sizeof(inforoutine));
     func->identifier = NULL;
@@ -318,7 +318,7 @@ static breakpoint *create_breakpoint(glui32 addr)
     return bp;
 }
 
-static void add_object_to_table(void *obj, void *rock, xmlChar *name)
+static void add_object_to_table(void *obj, void *rock, const xmlChar *name)
 {
     debuginfofile *context = rock;
     infoobject *object = obj;
@@ -354,7 +354,7 @@ static int find_object_in_table(const void *keyptr, const void *obj)
     return 0;
 }
 
-static void add_array_to_table(void *obj, void *rock, xmlChar *name)
+static void add_array_to_table(void *obj, void *rock, const xmlChar *name)
 {
     debuginfofile *context = rock;
     infoarray *array = obj;
@@ -390,7 +390,7 @@ static int find_array_in_table(const void *keyptr, const void *obj)
     return 0;
 }
 
-static void add_routine_to_table(void *obj, void *rock, xmlChar *name)
+static void add_routine_to_table(void *obj, void *rock, const xmlChar *name)
 {
     debuginfofile *context = rock;
     inforoutine *routine = obj;
@@ -434,12 +434,12 @@ static int find_routine_in_table(const void *keyptr, const void *obj)
  */
 int debugger_load_info_stream(strid_t stream)
 {
+    xmlTextReaderPtr reader;
     debuginfofile *context = create_debuginfofile();
     context->str = stream;
     context->strread = 0; /* not used */
     context->strreadmax = 0; /* not used */
 
-    xmlTextReaderPtr reader;
     reader = xmlReaderForIO(xmlreadstreamfunc, xmlclosefunc, context, 
         NULL, NULL, 
         XML_PARSE_RECOVER|XML_PARSE_NOENT|XML_PARSE_NONET|XML_PARSE_NOCDATA|XML_PARSE_COMPACT);
@@ -483,6 +483,7 @@ int debugger_load_info_stream(strid_t stream)
  */
 int debugger_load_info_chunk(strid_t stream, glui32 pos, glui32 len)
 {
+    xmlTextReaderPtr reader;
     debuginfofile *context = create_debuginfofile();
     context->str = stream;
     context->strread = 0;
@@ -490,7 +491,6 @@ int debugger_load_info_chunk(strid_t stream, glui32 pos, glui32 len)
 
     glk_stream_set_position(stream, pos, seekmode_Start);
 
-    xmlTextReaderPtr reader;
     reader = xmlReaderForIO(xmlreadchunkfunc, xmlclosefunc, context, 
         NULL, NULL, 
         XML_PARSE_RECOVER|XML_PARSE_NOENT|XML_PARSE_NONET|XML_PARSE_NOCDATA|XML_PARSE_COMPACT);
@@ -539,13 +539,14 @@ static int xmlreadstreamfunc(void *rock, char *buffer, int len)
 /* xmlReader callback to read from a stream (until a given position). */
 static int xmlreadchunkfunc(void *rock, char *buffer, int len)
 {
+    int res;
     debuginfofile *context = rock;
     if (context->strread >= context->strreadmax)
         return 0;
 
     if (len > context->strreadmax - context->strread)
         len = context->strreadmax - context->strread;
-    int res = glk_get_buffer_stream(context->str, buffer, len);
+    res = glk_get_buffer_stream(context->str, buffer, len);
     if (res < 0)
         return -1;
     context->strread += res;
@@ -832,6 +833,7 @@ static void xmlhandlenode(xmlTextReaderPtr reader, debuginfofile *context)
             else if (!xmlStrcmp(name, BAD_CAST "local-variable")) {
                 xmlNodePtr nod = xmlTextReaderExpand(reader);
                 if (nod) {
+                    infoconstant *templocal;
                     if (!context->templocals) {
                         context->templocalssize = 8;
                         context->templocals = (infoconstant *)malloc(context->templocalssize * sizeof(infoconstant));
@@ -840,7 +842,7 @@ static void xmlhandlenode(xmlTextReaderPtr reader, debuginfofile *context)
                         context->templocalssize = 2*context->tempnumlocals + 4;
                         context->templocals = (infoconstant *)realloc(context->templocals, context->templocalssize * sizeof(infoconstant));
                     }
-                    infoconstant *templocal = &(context->templocals[context->tempnumlocals]);
+                    templocal = &(context->templocals[context->tempnumlocals]);
                     context->tempnumlocals += 1;
                     for (nod = nod->children; nod; nod=nod->next) {
                         if (nod->type == XML_ELEMENT_NODE) {
@@ -936,6 +938,12 @@ static int finalize_debuginfo(debuginfofile *context)
 */
 void debugger_check_story_file()
 {
+    const unsigned char *cx;
+    int pos = 0;
+    int count = 0;
+    uint32_t word = 0;
+    int fail = FALSE;
+
     if (!debuginfo || !debuginfo->storyfileprefix)
         return;
 
@@ -946,12 +954,6 @@ void debugger_check_story_file()
     }
 
     /* Decode the storyfileprefix, which is in base64. */
-
-    const unsigned char *cx;
-    int pos = 0;
-    int count = 0;
-    uint32_t word = 0;
-    int fail = FALSE;
 
     for (cx = debuginfo->storyfileprefix; *cx && *cx != '='; cx++) {
         unsigned int sixbit = 0;
@@ -1125,14 +1127,17 @@ static int parse_numeric_constant(char *arg, glui32 *res)
 
 static infoarray *find_array_for_address(glui32 addr)
 {
+    infoarray **res;
+    infoarray *arr;
+
     if (!debuginfo)
         return NULL;
 
-    infoarray **res = bsearch(&addr, debuginfo->arraylist, debuginfo->numarrays, sizeof(infoarray *), find_array_in_table);
+    res = bsearch(&addr, debuginfo->arraylist, debuginfo->numarrays, sizeof(infoarray *), find_array_in_table);
     if (!res)
         return NULL;
 
-    infoarray *arr = *res;
+    arr = *res;
     if (addr < arr->address || addr >= arr->address + arr->bytelength)
         return NULL;
 
@@ -1141,14 +1146,17 @@ static infoarray *find_array_for_address(glui32 addr)
 
 static infoobject *find_object_for_address(glui32 addr)
 {
+    infoobject **res;
+    infoobject *arr;
+
     if (!debuginfo)
         return NULL;
 
-    infoobject **res = bsearch(&addr, debuginfo->objectlist, debuginfo->numobjects, sizeof(infoobject *), find_object_in_table);
+    res = bsearch(&addr, debuginfo->objectlist, debuginfo->numobjects, sizeof(infoobject *), find_object_in_table);
     if (!res)
         return NULL;
 
-    infoobject *arr = *res;
+    arr = *res;
     if (addr != arr->address)
         return NULL;
 
@@ -1157,14 +1165,17 @@ static infoobject *find_object_for_address(glui32 addr)
 
 static inforoutine *find_routine_for_address(glui32 addr)
 {
+    inforoutine **res;
+    inforoutine *func;
+
     if (!debuginfo)
         return NULL;
 
-    inforoutine **res = bsearch(&addr, debuginfo->routinelist, debuginfo->numroutines, sizeof(inforoutine *), find_routine_in_table);
+    res = bsearch(&addr, debuginfo->routinelist, debuginfo->numroutines, sizeof(inforoutine *), find_routine_in_table);
     if (!res)
         return NULL;
 
-    inforoutine *func = *res;
+    func = *res;
     if (addr < func->address || addr >= func->address + func->length)
         return NULL;
 
@@ -1174,6 +1185,9 @@ static inforoutine *find_routine_for_address(glui32 addr)
 static void render_value_linebuf(glui32 val)
 {
     int tmplen;
+    inforoutine *func;
+    infoarray *arr;
+    infoobject *object;
 
     /* Special case for single-digit numbers: display the decimal
        digit and stop. */
@@ -1194,7 +1208,7 @@ static void render_value_linebuf(glui32 val)
 
     /* If the address of a function, display it. (But not addresses in
        the middle of a function.) */
-    inforoutine *func = find_routine_for_address(val);
+    func = find_routine_for_address(val);
     if (func) {
         if (val == func->address) {
             tmplen = strlen(linebuf);
@@ -1204,7 +1218,7 @@ static void render_value_linebuf(glui32 val)
     }
 
     /* If the address of an array, display it. */
-    infoarray *arr = find_array_for_address(val);
+    arr = find_array_for_address(val);
     if (arr) {
         if (val == arr->address) {
             tmplen = strlen(linebuf);
@@ -1214,7 +1228,7 @@ static void render_value_linebuf(glui32 val)
     }
 
     /* If the address of an object, display it. */
-    infoobject *object = find_object_for_address(val);
+    object = find_object_for_address(val);
     if (object) {
         if (val == object->address) {
             tmplen = strlen(linebuf);
@@ -1227,15 +1241,20 @@ static void render_value_linebuf(glui32 val)
 static void debugcmd_backtrace(int wholestack)
 {
     if (stack) {
-        ensure_line_buf(256);
         glui32 curpc = pc;
         glui32 curframeptr = frameptr;
         glui32 curstackptr = stackptr;
         glui32 curvalstackbase = valstackbase;
         glui32 curlocalsbase = localsbase;
-        glui32 locptr;
-        int locnum;
+
+        ensure_line_buf(256);
+
         while (1) {
+            glui32 locptr;
+            int locnum;
+            glui32 newframeptr;
+            glui32 newpc;
+
             inforoutine *routine = find_routine_for_address(curpc);
             if (!routine)
                 snprintf(linebuf, linebufsize, "- %s()  (pc=$%.2X)", "???", curpc);
@@ -1246,6 +1265,7 @@ static void debugcmd_backtrace(int wholestack)
             strcpy(linebuf, "   ");
             /* Again, this loop assumes that all locals are 4 bytes. */
             for (locptr = curlocalsbase, locnum = 0; locptr < curvalstackbase; locptr += 4, locnum++) {
+                glui32 val;
                 int tmplen = strlen(linebuf);
                 ensure_line_buf(tmplen+32);
                 if (!routine || !routine->locals || locnum >= routine->numlocals)
@@ -1253,7 +1273,7 @@ static void debugcmd_backtrace(int wholestack)
                 else
                     snprintf(linebuf+tmplen, linebufsize-tmplen, "%s%s=", (locnum?"; ":""), routine->locals[locnum].identifier);
                 
-                glui32 val = Stk4(locptr);
+                val = Stk4(locptr);
                 render_value_linebuf(val);
             }
             if (!locnum) {
@@ -1268,8 +1288,8 @@ static void debugcmd_backtrace(int wholestack)
             if (curstackptr < 16)
                 break;
             curstackptr -= 16;
-            glui32 newframeptr = Stk4(curstackptr+12);
-            glui32 newpc = Stk4(curstackptr+8);
+            newframeptr = Stk4(curstackptr+12);
+            newpc = Stk4(curstackptr+8);
             curframeptr = newframeptr;
             curpc = newpc;
             curvalstackbase = curframeptr + Stk4(curframeptr);
@@ -1280,6 +1300,10 @@ static void debugcmd_backtrace(int wholestack)
 
 static void debugcmd_set_breakpoint(char *arg)
 {
+    int found;
+    glui32 addr;
+    breakpoint *bp;
+
     while (*arg == ' ')
         arg++;
 
@@ -1288,8 +1312,8 @@ static void debugcmd_set_breakpoint(char *arg)
         return;
     }
 
-    int found = FALSE;
-    glui32 addr = 0;
+    found = FALSE;
+    addr = 0;
 
     if (!found) {
         int res = parse_numeric_constant(arg, &addr);
@@ -1312,11 +1336,12 @@ static void debugcmd_set_breakpoint(char *arg)
     }
 
     if (!found) {
+        inforoutine *routine;
         if (!debuginfo) {
             gidebug_output("No debug info; cannot look up functions by name");
             return;
         }
-        inforoutine *routine = xmlHashLookup(debuginfo->routines, BAD_CAST arg);
+        routine = xmlHashLookup(debuginfo->routines, BAD_CAST arg);
         if (!routine) {
             ensure_line_buf(128);
             snprintf(linebuf, linebufsize, "Not a function name: %s", arg);
@@ -1330,7 +1355,6 @@ static void debugcmd_set_breakpoint(char *arg)
     if (!found)
         return;
 
-    breakpoint *bp;
     for (bp = funcbreakpoints; bp; bp=bp->next) {
         if (bp->address == addr) {
             ensure_line_buf(128);
@@ -1353,6 +1377,10 @@ static void debugcmd_set_breakpoint(char *arg)
 
 static void debugcmd_clear_breakpoint(char *arg)
 {
+    int found;
+    glui32 addr;
+    breakpoint **bpp;
+
     while (*arg == ' ')
         arg++;
 
@@ -1361,8 +1389,8 @@ static void debugcmd_clear_breakpoint(char *arg)
         return;
     }
 
-    int found = FALSE;
-    glui32 addr = 0;
+    found = FALSE;
+    addr = 0;
 
     if (!found) {
         int res = parse_numeric_constant(arg, &addr);
@@ -1385,11 +1413,12 @@ static void debugcmd_clear_breakpoint(char *arg)
     }
 
     if (!found) {
+        inforoutine *routine;
         if (!debuginfo) {
             gidebug_output("No debug info; cannot look up functions by name");
             return;
         }
-        inforoutine *routine = xmlHashLookup(debuginfo->routines, BAD_CAST arg);
+        routine = xmlHashLookup(debuginfo->routines, BAD_CAST arg);
         if (!routine) {
             ensure_line_buf(128);
             snprintf(linebuf, linebufsize, "Not a function name: %s", arg);
@@ -1403,7 +1432,6 @@ static void debugcmd_clear_breakpoint(char *arg)
     if (!found)
         return;
 
-    breakpoint **bpp;
     for (bpp = &funcbreakpoints; *bpp; bpp=&((*bpp)->next)) {
         if ((*bpp)->address == addr) {
             breakpoint *bp = *bpp;
@@ -1565,11 +1593,14 @@ static void debugcmd_help(char *arg)
 */
 int debugger_cmd_handler(char *cmd)
 {
+    int len;
+    char *cx;
+
     /* Trim spaces from start */
     while (*cmd == ' ')
         cmd++;
     /* Trim spaces from end */
-    int len = strlen(cmd);
+    len = strlen(cmd);
     while (len > 0 && cmd[len-1] == ' ') {
         cmd[len-1] = '\0';
         len--;
@@ -1578,7 +1609,6 @@ int debugger_cmd_handler(char *cmd)
     if (*cmd == '\0')
         return 0; /* empty command */
 
-    char *cx;
     for (cx=cmd; *cx && *cx != ' '; cx++) { }
     len = (cx - cmd);
 
