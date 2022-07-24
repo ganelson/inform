@@ -7,7 +7,7 @@
   Reconstructed in three steps by:
   Donald Ekman, David M. Baggett (1993) and Graham Nelson (1994)
   [In memoriam Stephen Bishop (1820?-1857): GN]
-  Release 5 / Serial number 961209 / Inform v6.36 Library 6/11
+  Release 5 / Serial number 961209 / Inform v6.41 Library 6/11
   
   At End Of Road
   You are standing at the end of a road before a small brick building. Around you is a forest. A small stream flows out of the building and down a gully.

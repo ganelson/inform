@@ -111,6 +111,11 @@ See the Inform 6 Technical Manual for more on these oddities.
 	WRITE("Global debug_flag;\n");
 	WRITE("Global or_tmp_var;\n");
 	CodeGen::deselect(gen, saved);
+	saved = CodeGen::select(gen, ICL_directives_I7CGS);
+	OUT = CodeGen::current(gen);
+	WRITE("!%% $STRIP_UNREACHABLE_LABELS=0;\n");
+	WRITE("!%% $ZCODE_LESS_DICT_DATA=1;\n");
+	CodeGen::deselect(gen, saved);
 
 @ As noted above, I6 will add a veneer of code to what we compile. That veneer
 will contain a function called |OC__Cl| which implements "ofclass", the I6

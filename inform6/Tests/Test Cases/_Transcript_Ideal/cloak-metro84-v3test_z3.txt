@@ -4,7 +4,7 @@ Hurrying through the rainswept November night, you're glad to see the bright lig
 
 Cloak of Darkness
 A basic IF demonstration.
-Release 1 / Serial number 200212 / Inform v6.36R with Metrocenter84 v1.0
+Release 1 / Serial number 200212 / Inform v6.41R with Metrocenter84 v1.0
 Standard interpreter 1.0
 
 Opera House Foyer

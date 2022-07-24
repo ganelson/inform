@@ -1,5 +1,5 @@
   ForwardPropTest: Not a game.
-  Release 1 / Serial number 220306 / Inform v6.36, compiler options S
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options S
   
   blank.common1: 1
   blank.common2: 2

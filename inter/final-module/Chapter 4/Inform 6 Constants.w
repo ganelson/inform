@@ -88,6 +88,7 @@ for example.
 		(Str::eq(const_name, I"TARGET_ZCODE")) ||
 		(Str::eq(const_name, I"TARGET_GLULX")) ||
 		(Str::eq(const_name, I"DICT_WORD_SIZE")) ||
+		(Str::eq(const_name, I"DICT_ENTRY_BYTES")) ||
 		(Str::eq(const_name, I"DEBUG")) ||
 		(Str::eq(const_name, I"cap_short_name"))) {
 		ifndef_me = TRUE;

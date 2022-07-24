@@ -1,6 +1,6 @@
   
   Dict-Cutoff-V3 Test: Not a game.
-  Release 1 / Serial number 220306 / Inform v6.36, compiler options (none)
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options (none)
   
   1311 -_ != 1356 --
   1275 + != 1266 *

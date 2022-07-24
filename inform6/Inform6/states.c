@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "states" :  Statement translator                                        */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -725,56 +725,72 @@ static void parse_print_g(int finally_return)
     }
 }
 
+/* Parse any number of ".Label;" lines before a statement.
+   Returns whether a statement can in fact follow. */
+static int parse_named_label_statements()
+{
+    while ((token_type == SEP_TT) && (token_value == PROPERTY_SEP))
+    {   /*  That is, a full stop, signifying a label  */
+
+        get_next_token();
+        if (token_type != SYMBOL_TT)
+        {
+            ebf_error("label name", token_text);
+            return TRUE;
+        }
+
+        if (symbols[token_value].flags & UNKNOWN_SFLAG)
+        {   assign_symbol(token_value, next_label, LABEL_T);
+            symbols[token_value].flags |= USED_SFLAG;
+            assemble_label_no(next_label);
+            define_symbol_label(token_value);
+            next_label++;
+        }
+        else
+        {   if (symbols[token_value].type != LABEL_T) {
+                ebf_error("label name", token_text);
+                return TRUE;
+            }
+            if (symbols[token_value].flags & CHANGE_SFLAG)
+            {   symbols[token_value].flags &= (~(CHANGE_SFLAG));
+                assemble_label_no(symbols[token_value].value);
+                define_symbol_label(token_value);
+            }
+            else error_named("Duplicate definition of label:", token_text);
+        }
+
+        get_next_token();
+        if ((token_type != SEP_TT) || (token_value != SEMICOLON_SEP))
+        {   ebf_error("';'", token_text);
+            put_token_back(); return FALSE;
+        }
+
+        /*  Interesting point of Inform grammar: a statement can only
+            consist solely of a label when it is immediately followed
+            by a "}".                                                    */
+
+        get_next_token();
+        if ((token_type == SEP_TT) && (token_value == CLOSE_BRACE_SEP))
+        {   put_token_back(); return FALSE;
+        }
+        /* The following line prevents labels from influencing the positions
+           of sequence points. */
+        statement_debug_location = get_token_location();
+        
+        /* Another label might follow */
+    }
+
+    /* On with the statement */
+    return TRUE;
+}
+
 static void parse_statement_z(int break_label, int continue_label)
 {   int ln, ln2, ln3, ln4, flag;
+    int pre_unreach, labelexists;
     assembly_operand AO, AO2, AO3, AO4;
     debug_location spare_debug_location1, spare_debug_location2;
 
     ASSERT_ZCODE();
-
-    if ((token_type == SEP_TT) && (token_value == PROPERTY_SEP))
-    {   /*  That is, a full stop, signifying a label  */
-
-        get_next_token();
-        if (token_type == SYMBOL_TT)
-        {
-            if (symbols[token_value].flags & UNKNOWN_SFLAG)
-            {   assign_symbol(token_value, next_label, LABEL_T);
-                symbols[token_value].flags |= USED_SFLAG;
-                assemble_label_no(next_label);
-                define_symbol_label(token_value);
-                next_label++;
-            }
-            else
-            {   if (symbols[token_value].type != LABEL_T) goto LabelError;
-                if (symbols[token_value].flags & CHANGE_SFLAG)
-                {   symbols[token_value].flags &= (~(CHANGE_SFLAG));
-                    assemble_label_no(symbols[token_value].value);
-                    define_symbol_label(token_value);
-                }
-                else error_named("Duplicate definition of label:", token_text);
-            }
-
-            get_next_token();
-            if ((token_type != SEP_TT) || (token_value != SEMICOLON_SEP))
-            {   ebf_error("';'", token_text);
-                put_token_back(); return;
-            }
-
-            /*  Interesting point of Inform grammar: a statement can only
-                consist solely of a label when it is immediately followed
-                by a "}".                                                    */
-
-            get_next_token();
-            if ((token_type == SEP_TT) && (token_value == CLOSE_BRACE_SEP))
-            {   put_token_back(); return;
-            }
-            statement_debug_location = get_token_location();
-            parse_statement(break_label, continue_label);
-            return;
-        }
-        LabelError: ebf_error("label name", token_text);
-    }
 
     if ((token_type == SEP_TT) && (token_value == HASH_SEP))
     {   parse_directive(TRUE);
@@ -892,7 +908,7 @@ static void parse_statement_z(int break_label, int continue_label)
                  get_next_token();
                  if ((token_type == STATEMENT_TT)
                      && (token_value == UNTIL_CODE))
-                 {   assemble_label_no(ln2);
+                 {   assemble_forward_label_no(ln2);
                      match_open_bracket();
                      AO = parse_expression(CONDITION_CONTEXT);
                      match_close_bracket();
@@ -900,7 +916,7 @@ static void parse_statement_z(int break_label, int continue_label)
                  }
                  else error("'do' without matching 'until'");
 
-                 assemble_label_no(ln3);
+                 assemble_forward_label_no(ln3);
                  break;
 
     /*  -------------------------------------------------------------------- */
@@ -988,7 +1004,7 @@ static void parse_statement_z(int break_label, int continue_label)
                              sequence_point_follows = FALSE;
                              if (!execution_never_reaches_here)
                                  assemblez_jump(ln);
-                             assemble_label_no(ln2);
+                             assemble_forward_label_no(ln2);
                              return;
                          }
                          goto ParseUpdate;
@@ -1071,16 +1087,10 @@ static void parse_statement_z(int break_label, int continue_label)
                      statement_debug_location = spare_debug_location2;
                      if (flag > 0)
                      {   INITAOTV(&AO3, SHORT_CONSTANT_OT, flag);
-                         if (module_switch
-                             && (flag>=MAX_LOCAL_VARIABLES) && (flag<LOWEST_SYSTEM_VAR_NUMBER))
-                             AO3.marker = VARIABLE_MV;
                          assemblez_1(inc_zc, AO3);
                      }
                      else
                      {   INITAOTV(&AO3, SHORT_CONSTANT_OT, -flag);
-                         if ((module_switch) && (flag>=MAX_LOCAL_VARIABLES)
-                             && (flag<LOWEST_SYSTEM_VAR_NUMBER))
-                             AO3.marker = VARIABLE_MV;
                          assemblez_1(dec_zc, AO3);
                      }
                      assemblez_jump(ln);
@@ -1097,7 +1107,7 @@ static void parse_statement_z(int break_label, int continue_label)
                      }
                  }
 
-                 assemble_label_no(ln3);
+                 assemble_forward_label_no(ln3);
                  return;
 
     /*  -------------------------------------------------------------------- */
@@ -1148,8 +1158,9 @@ static void parse_statement_z(int break_label, int continue_label)
     /*  -------------------------------------------------------------------- */
 
         case IF_CODE:
-                 flag = FALSE;
+                 flag = FALSE; /* set if there's an "else" */
                  ln2 = 0;
+                 pre_unreach = execution_never_reaches_here;
 
                  match_open_bracket();
                  AO = parse_expression(CONDITION_CONTEXT);
@@ -1167,8 +1178,17 @@ static void parse_statement_z(int break_label, int continue_label)
                      ln = next_label++;
                  }
 
+                 /* The condition */
                  code_generate(AO, CONDITION_CONTEXT, ln);
 
+                 if (!pre_unreach && ln >= 0 && execution_never_reaches_here) {
+                     /* If the condition never falls through to here, then
+                        it was an "if (0)" test. Our convention is to skip
+                        the "not reached" warnings for this case. */
+                     execution_never_reaches_here |= EXECSTATE_NOWARN;
+                 }
+
+                 /* The "if" block */
                  if (ln >= 0) parse_code_block(break_label, continue_label, 0);
                  else
                  {   get_next_token();
@@ -1201,13 +1221,46 @@ static void parse_statement_z(int break_label, int continue_label)
                  }
                  else put_token_back();
 
-                 if (ln >= 0) assemble_label_no(ln);
+                 /* The "else" label (or end of statement, if there is no "else") */
+                 labelexists = FALSE;
+                 if (ln >= 0) labelexists = assemble_forward_label_no(ln);
 
                  if (flag)
-                 {   parse_code_block(break_label, continue_label, 0);
-                     if (ln >= 0) assemble_label_no(ln2);
-                 }
+                 {
+                     /* If labelexists is false, then we started with
+                        "if (1)". In this case, we don't want a "not
+                        reached" warning on the "else" block. We
+                        temporarily disable the NOWARN flag, and restore it
+                        afterwards. */
+                     int saved_unreach = 0;
+                     if (execution_never_reaches_here && !labelexists) {
+                         saved_unreach = execution_never_reaches_here;
+                         execution_never_reaches_here |= EXECSTATE_NOWARN;
+                     }
 
+                     /* The "else" block */
+                     parse_code_block(break_label, continue_label, 0);
+
+                     if (execution_never_reaches_here && !labelexists) {
+                         if (saved_unreach & EXECSTATE_NOWARN)
+                             execution_never_reaches_here |= EXECSTATE_NOWARN;
+                         else
+                             execution_never_reaches_here &= ~EXECSTATE_NOWARN;
+                     }
+
+                     /* The post-"else" label */
+                     if (ln >= 0) assemble_forward_label_no(ln2);
+                 }
+                 else
+                 {
+                     /* There was no "else". If we're unreachable, then the
+                        statement returned unconditionally, which means 
+                        "if (1) return". Skip warnings. */
+                     if (!pre_unreach && execution_never_reaches_here) {
+                         execution_never_reaches_here |= EXECSTATE_NOWARN;
+                     }
+                 }
+                         
                  return;
 
     /*  -------------------------------------------------------------------- */
@@ -1300,9 +1353,6 @@ static void parse_statement_z(int break_label, int continue_label)
                  {   ebf_error("'objectloop' variable", token_text);
                      panic_mode_error_recovery(); break;
                  }
-                 if ((module_switch) && (AO.value >= MAX_LOCAL_VARIABLES)
-                     && (AO.value < LOWEST_SYSTEM_VAR_NUMBER))
-                     AO.marker = VARIABLE_MV;
                  misc_keywords.enabled = TRUE;
                  get_next_token(); flag = TRUE;
                  misc_keywords.enabled = FALSE;
@@ -1663,7 +1713,7 @@ static void parse_statement_z(int break_label, int continue_label)
                  assemblez_store(AO2, AO);
 
                  parse_code_block(ln = next_label++, continue_label, 1);
-                 assemble_label_no(ln);
+                 assemble_forward_label_no(ln);
                  return;
 
     /*  -------------------------------------------------------------------- */
@@ -1681,7 +1731,7 @@ static void parse_statement_z(int break_label, int continue_label)
                  parse_code_block(ln2, ln, 0);
                  sequence_point_follows = FALSE;
                  assemblez_jump(ln);
-                 assemble_label_no(ln2);
+                 assemble_forward_label_no(ln2);
                  return;
 
     /*  -------------------------------------------------------------------- */
@@ -1706,56 +1756,11 @@ static void parse_statement_z(int break_label, int continue_label)
 
 static void parse_statement_g(int break_label, int continue_label)
 {   int ln, ln2, ln3, ln4, flag, onstack;
+    int pre_unreach, labelexists;
     assembly_operand AO, AO2, AO3, AO4;
     debug_location spare_debug_location1, spare_debug_location2;
 
     ASSERT_GLULX();
-
-    if ((token_type == SEP_TT) && (token_value == PROPERTY_SEP))
-    {   /*  That is, a full stop, signifying a label  */
-
-        get_next_token();
-        if (token_type == SYMBOL_TT)
-        {
-            if (symbols[token_value].flags & UNKNOWN_SFLAG)
-            {   assign_symbol(token_value, next_label, LABEL_T);
-                symbols[token_value].flags |= USED_SFLAG;
-                assemble_label_no(next_label);
-                define_symbol_label(token_value);
-                next_label++;
-            }
-            else
-            {   if (symbols[token_value].type != LABEL_T) goto LabelError;
-                if (symbols[token_value].flags & CHANGE_SFLAG)
-                {   symbols[token_value].flags &= (~(CHANGE_SFLAG));
-                    assemble_label_no(symbols[token_value].value);
-                    define_symbol_label(token_value);
-                }
-                else error_named("Duplicate definition of label:", token_text);
-            }
-
-            get_next_token();
-            if ((token_type != SEP_TT) || (token_value != SEMICOLON_SEP))
-            {   ebf_error("';'", token_text);
-                put_token_back(); return;
-            }
-
-            /*  Interesting point of Inform grammar: a statement can only
-                consist solely of a label when it is immediately followed
-                by a "}".                                                    */
-
-            get_next_token();
-            if ((token_type == SEP_TT) && (token_value == CLOSE_BRACE_SEP))
-            {   put_token_back(); return;
-            }
-            /* The following line prevents labels from influencing the positions
-               of sequence points. */
-            statement_debug_location = get_token_location();
-            parse_statement(break_label, continue_label);
-            return;
-        }
-        LabelError: ebf_error("label name", token_text);
-    }
 
     if ((token_type == SEP_TT) && (token_value == HASH_SEP))
     {   parse_directive(TRUE);
@@ -1870,7 +1875,7 @@ static void parse_statement_g(int break_label, int continue_label)
                  get_next_token();
                  if ((token_type == STATEMENT_TT)
                      && (token_value == UNTIL_CODE))
-                 {   assemble_label_no(ln2);
+                 {   assemble_forward_label_no(ln2);
                      match_open_bracket();
                      AO = parse_expression(CONDITION_CONTEXT);
                      match_close_bracket();
@@ -1878,7 +1883,7 @@ static void parse_statement_g(int break_label, int continue_label)
                  }
                  else error("'do' without matching 'until'");
 
-                 assemble_label_no(ln3);
+                 assemble_forward_label_no(ln3);
                  break;
 
     /*  -------------------------------------------------------------------- */
@@ -1948,7 +1953,7 @@ static void parse_statement_g(int break_label, int continue_label)
                              sequence_point_follows = FALSE;
                              if (!execution_never_reaches_here)
                                  assembleg_jump(ln);
-                             assemble_label_no(ln2);
+                             assemble_forward_label_no(ln2);
                              return;
                          }
                          goto ParseUpdate;
@@ -2061,7 +2066,7 @@ static void parse_statement_g(int break_label, int continue_label)
                      }
                  }
 
-                 assemble_label_no(ln3);
+                 assemble_forward_label_no(ln3);
                  return;
 
     /*  -------------------------------------------------------------------- */
@@ -2141,8 +2146,9 @@ static void parse_statement_g(int break_label, int continue_label)
     /*  -------------------------------------------------------------------- */
 
         case IF_CODE:
-                 flag = FALSE;
+                 flag = FALSE; /* set if there's an "else" */
                  ln2 = 0;
+                 pre_unreach = execution_never_reaches_here;
 
                  match_open_bracket();
                  AO = parse_expression(CONDITION_CONTEXT);
@@ -2160,8 +2166,17 @@ static void parse_statement_g(int break_label, int continue_label)
                      ln = next_label++;
                  }
 
+                 /* The condition */
                  code_generate(AO, CONDITION_CONTEXT, ln);
 
+                 if (!pre_unreach && ln >= 0 && execution_never_reaches_here) {
+                     /* If the condition never falls through to here, then
+                        it was an "if (0)" test. Our convention is to skip
+                        the "not reached" warnings for this case. */
+                     execution_never_reaches_here |= EXECSTATE_NOWARN;
+                 }
+
+                 /* The "if" block */
                  if (ln >= 0) parse_code_block(break_label, continue_label, 0);
                  else
                  {   get_next_token();
@@ -2194,11 +2209,44 @@ static void parse_statement_g(int break_label, int continue_label)
                  }
                  else put_token_back();
 
-                 if (ln >= 0) assemble_label_no(ln);
+                 /* The "else" label (or end of statement, if there is no "else") */
+                 labelexists = FALSE;
+                 if (ln >= 0) labelexists = assemble_forward_label_no(ln);
 
                  if (flag)
-                 {   parse_code_block(break_label, continue_label, 0);
-                     if (ln >= 0) assemble_label_no(ln2);
+                 {
+                     /* If labelexists is false, then we started with
+                        "if (1)". In this case, we don't want a "not
+                        reached" warning on the "else" block. We
+                        temporarily disable the NOWARN flag, and restore it
+                        afterwards. */
+                     int saved_unreach = 0;
+                     if (execution_never_reaches_here && !labelexists) {
+                         saved_unreach = execution_never_reaches_here;
+                         execution_never_reaches_here |= EXECSTATE_NOWARN;
+                     }
+
+                     /* The "else" block */
+                     parse_code_block(break_label, continue_label, 0);
+
+                     if (execution_never_reaches_here && !labelexists) {
+                         if (saved_unreach & EXECSTATE_NOWARN)
+                             execution_never_reaches_here |= EXECSTATE_NOWARN;
+                         else
+                             execution_never_reaches_here &= ~EXECSTATE_NOWARN;
+                     }
+
+                     /* The post-"else" label */
+                     if (ln >= 0) assemble_forward_label_no(ln2);
+                 }
+                 else
+                 {
+                     /* There was no "else". If we're unreachable, then the
+                        statement returned unconditionally, which means 
+                        "if (1) return". Skip warnings. */
+                     if (!pre_unreach && execution_never_reaches_here) {
+                         execution_never_reaches_here |= EXECSTATE_NOWARN;
+                     }
                  }
 
                  return;
@@ -2621,7 +2669,7 @@ static void parse_statement_g(int break_label, int continue_label)
                  assembleg_store(temp_var1, AO); 
 
                  parse_code_block(ln = next_label++, continue_label, 1);
-                 assemble_label_no(ln);
+                 assemble_forward_label_no(ln);
                  return;
 
     /*  -------------------------------------------------------------------- */
@@ -2639,7 +2687,7 @@ static void parse_statement_g(int break_label, int continue_label)
                  parse_code_block(ln2, ln, 0);
                  sequence_point_follows = FALSE;
                  assembleg_jump(ln);
-                 assemble_label_no(ln2);
+                 assemble_forward_label_no(ln2);
                  return;
 
     /*  -------------------------------------------------------------------- */
@@ -2673,10 +2721,26 @@ static void parse_statement_g(int break_label, int continue_label)
 
 extern void parse_statement(int break_label, int continue_label)
 {
-  if (!glulx_mode)
-    parse_statement_z(break_label, continue_label);
-  else
-    parse_statement_g(break_label, continue_label);
+    int res;
+    int saved_entire_flag;
+    
+    res = parse_named_label_statements();
+    if (!res)
+        return;
+
+    saved_entire_flag = (execution_never_reaches_here & EXECSTATE_ENTIRE);
+    if (execution_never_reaches_here)
+        execution_never_reaches_here |= EXECSTATE_ENTIRE;
+ 
+    if (!glulx_mode)
+        parse_statement_z(break_label, continue_label);
+    else
+        parse_statement_g(break_label, continue_label);
+
+    if (saved_entire_flag)
+        execution_never_reaches_here |= EXECSTATE_ENTIRE;
+    else
+        execution_never_reaches_here &= ~EXECSTATE_ENTIRE;
 }
 
 /* ========================================================================= */

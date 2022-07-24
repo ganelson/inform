@@ -3,7 +3,7 @@
 
 Test Case
 An Interactive Fiction by Andrew Plotkin
-Release 1 / Serial number 121004 / Inform 7 build 6G60 (I6/v6.36 lib 6/12N) S
+Release 1 / Serial number 121004 / Inform 7 build 6G60 (I6/v6.41 lib 6/12N) S
 
 Kitchen
 

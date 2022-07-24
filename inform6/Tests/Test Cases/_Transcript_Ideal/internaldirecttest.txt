@@ -1,5 +1,5 @@
   InternalDirectiveTest: Not a game.
-  Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options S
   
   testobj.color: 1311.
   testobj.size: 5.

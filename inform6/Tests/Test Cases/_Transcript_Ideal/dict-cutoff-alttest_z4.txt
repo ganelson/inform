@@ -1,6 +1,6 @@
   
   Dict-Cutoff-Alt Test: Not a game.
-  Release 1 / Serial number 220306 / Inform v6.36, compiler options (none)
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options (none)
   
   1380 < != 1407 >
   1371 % != 1416 ö

@@ -1,0 +1,18 @@
+  IndivPropTest: Not a game.
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options S
+  
+  obj1 provides common1: 1.
+  obj1 provides common2: 0.
+  obj1 provides indiv1: 1.
+  obj1 provides indivextra: 1.
+  obj1.common1: 11.
+  obj1.common2: 2.
+  obj1.indiv1: 111.
+  obj1.indivextra: 37.
+  obj2.indiv1: 112.
+  obj2.indiv2: 223.
+  obj2 provides indiv1: 1.
+  obj2 provides indiv2: 1.
+  obj2 provides indivextra: 0.
+  
+  All passed.

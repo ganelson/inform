@@ -1,5 +1,5 @@
   DictFlagTest: Not a game.
-  Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options S
   
   $DICT_WORD_SIZE=6, #dict_par1=6, #dict_par2=7, #dict_par3=8.
   

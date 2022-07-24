@@ -166,8 +166,8 @@ convert between record numbers and dictionary addresses.
 	rfalse;
 ];
 
-[ VM_DictionaryAddressToNumber w; return (w-(HDR_DICTIONARY-->0 + 7))/9; ];
-[ VM_NumberToDictionaryAddress n; return HDR_DICTIONARY-->0 + 7 + 9*n; ];
+[ VM_DictionaryAddressToNumber w; return (w-(HDR_DICTIONARY-->0 + 7))/DICT_ENTRY_BYTES; ];
+[ VM_NumberToDictionaryAddress n; return HDR_DICTIONARY-->0 + 7 + DICT_ENTRY_BYTES*n; ];
 
 @h Command Tables.
 The VM is also generated containing a data structure for the grammar
@@ -184,7 +184,7 @@ recognised by the parser.
 [ VM_PrintCommandWords i da j;
     da = HDR_DICTIONARY-->0;
     for (j=0 : j<(da+5)-->0 : j++)
-        if (da->(j*9 + 14) == $ff-i)
+        if (da->(j*DICT_ENTRY_BYTES + 14) == $ff-i)
         	print "'", (address) VM_NumberToDictionaryAddress(j), "' ";
 ];
 

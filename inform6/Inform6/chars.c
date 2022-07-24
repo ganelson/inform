@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "chars" : Character set mappings and the Z-machine alphabet table       */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */

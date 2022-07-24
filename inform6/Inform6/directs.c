@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "directs" : Directives (# commands)                                     */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -121,10 +121,10 @@ extern int parse_given_directive(int internal_flag)
         } while (TRUE);
 
     /* --------------------------------------------------------------------- */
-    /*   Array arrayname array...                                            */
+    /*   Array <arrayname> [static] <array specification>                    */
     /* --------------------------------------------------------------------- */
 
-    case ARRAY_CODE: make_global(TRUE, FALSE); break;      /* See "tables.c" */
+    case ARRAY_CODE: make_array(); break;                  /* See "arrays.c" */
 
     /* --------------------------------------------------------------------- */
     /*   Attribute newname [alias oldname]                                   */
@@ -235,11 +235,6 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     /* --------------------------------------------------------------------- */
 
     case DEFAULT_CODE:
-        if (module_switch)
-        {   error("'Default' cannot be used in -M (Module) mode");
-            panic_mode_error_recovery(); return FALSE;
-        }
-
         get_next_token();
         if (token_type != SYMBOL_TT)
             return ebf_error_recover("name", token_text);
@@ -365,10 +360,10 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         make_fake_action(); break;                          /* see "verbs.c" */
 
     /* --------------------------------------------------------------------- */
-    /*   Global variable [= value / array...]                                */
+    /*   Global <variablename> [ [=] <value> ]                               */
     /* --------------------------------------------------------------------- */
 
-    case GLOBAL_CODE: make_global(FALSE, FALSE); break;    /* See "tables.c" */
+    case GLOBAL_CODE: make_global(); break;                /* See "arrays.c" */
 
     /* --------------------------------------------------------------------- */
     /*   If...                                                               */
@@ -394,13 +389,24 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         if (token_type != SYMBOL_TT)
             return ebf_error_recover("symbol name", token_text);
 
+        /* Special case: a symbol of the form "VN_nnnn" is considered
+           defined if the compiler version number is at least nnnn.
+           Compiler version numbers look like "1640" for Inform 6.40;
+           see RELEASE_NUMBER.
+           ("VN_nnnn" isn't a real symbol and can't be used in other
+           contexts.) */
         if ((token_text[0] == 'V')
             && (token_text[1] == 'N')
             && (token_text[2] == '_')
             && (strlen(token_text)==7))
-        {   i = atoi(token_text+3);
-            if (VNUMBER < i) flag = (flag)?FALSE:TRUE;
-            goto HashIfCondition;
+        {
+            char *endstr;
+            i = strtol(token_text+3, &endstr, 10);
+            if (*endstr == '\0') {
+                /* All characters after the underscore were digits */
+                if (VNUMBER < i) flag = (flag)?FALSE:TRUE;
+                goto HashIfCondition;
+            }
         }
 
         if (symbols[token_value].flags & UNKNOWN_SFLAG) flag = (flag)?FALSE:TRUE;
@@ -535,26 +541,10 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
 
     /* --------------------------------------------------------------------- */
     /*   Import global <varname> [, ...]                                     */
-    /*                                                                       */
-    /* (Further imported goods may be allowed later.)                        */
     /* --------------------------------------------------------------------- */
 
     case IMPORT_CODE:
-        if (!module_switch)
-        {   error("'Import' can only be used in -M (Module) mode");
-            panic_mode_error_recovery(); return FALSE;
-        }
-        directives.enabled = TRUE;
-        do
-        {   get_next_token();
-            if ((token_type == DIRECTIVE_TT) && (token_value == GLOBAL_CODE))
-                 make_global(FALSE, TRUE);
-            else error_named("'Import' cannot import things of this type:",
-                 token_text);
-            get_next_token();
-        } while ((token_type == SEP_TT) && (token_value == COMMA_SEP));
-        put_token_back();
-        directives.enabled = FALSE;
+        error("The 'Import' directive is no longer supported.");
         break;
 
     /* --------------------------------------------------------------------- */
@@ -589,9 +579,7 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
 
     case LINK_CODE:
         get_next_token();
-        if (token_type != DQ_TT)
-            return ebf_error_recover("filename in double-quotes", token_text);
-        link_module(token_text);                           /* See "linker.c" */
+        error("The 'Link' directive is no longer supported.");
         break;
 
     /* --------------------------------------------------------------------- */
@@ -603,10 +591,6 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     /* --------------------------------------------------------------------- */
 
     case LOWSTRING_CODE:
-        if (module_switch)
-        {   error("'LowString' cannot be used in -M (Module) mode");
-            panic_mode_error_recovery(); return FALSE;
-        }
         if (glulx_mode) {
             error("The LowString directive has no meaning in Glulx.");
             panic_mode_error_recovery(); return FALSE;
@@ -860,9 +844,6 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
     /* --------------------------------------------------------------------- */
 
     case STATUSLINE_CODE:
-        if (module_switch)
-            warning("This does not set the final game's statusline");
-
         directive_keywords.enabled = TRUE;
         get_next_token();
         directive_keywords.enabled = FALSE;
@@ -946,9 +927,18 @@ Fake_Action directives to a point after the inclusion of \"Parser\".)");
         if (token_type != DQ_TT)
             return ebf_error_recover("string of switches", token_text);
         if (!ignore_switches_switch)
-        {   if (constant_made_yet)
-                error("A 'Switches' directive must must come before \
-the first constant definition");
+        {
+            if (constant_made_yet) {
+                error("A 'Switches' directive must must come before the first constant definition");
+                break;
+            }
+            if (no_routines > 1)
+            {
+                /* The built-in Main__ routine is number zero. */
+                error("A 'Switches' directive must come before the first routine definition.");
+                break;
+            }
+            obsolete_warning("the Switches directive is deprecated and may produce incorrect results. Use command-line arguments or header comments.");
             switches(token_text, 0);                       /* see "inform.c" */
         }
         break;
@@ -965,14 +955,19 @@ the first constant definition");
         declare_systemfile(); break;                        /* see "files.c" */
 
     /* --------------------------------------------------------------------- */
-    /*   Trace dictionary                                                    */
-    /*         objects                                                       */
-    /*         symbols                                                       */
-    /*         verbs                                                         */
-    /*                      [on/off]                                         */
-    /*         assembly     [on/off]                                         */
-    /*         expressions  [on/off]                                         */
-    /*         lines        [on/off]                                         */
+    /*   Trace dictionary   [on/NUM]                                         */
+    /*         objects      [on/NUM]                                         */
+    /*         symbols      [on/NUM]                                         */
+    /*         verbs        [on/NUM]                                         */
+    /*                      [on/off/NUM]      {same as "assembly"}           */
+    /*         assembly     [on/off/NUM]                                     */
+    /*         expressions  [on/off/NUM]                                     */
+    /*         lines        [on/off/NUM]      {not supported}                */
+    /*         tokens       [on/off/NUM]                                     */
+    /*         linker       [on/off/NUM]      {not supported}                */
+    /*                                                                       */
+    /* The first four trace commands immediately display a compiler table.   */
+    /* The rest set or clear an ongoing trace.                               */
     /* --------------------------------------------------------------------- */
 
     case TRACE_CODE:
@@ -981,62 +976,108 @@ the first constant definition");
         get_next_token();
         trace_keywords.enabled = FALSE;
         directives.enabled = TRUE;
-        if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))
-        {   asm_trace_level = 1; return FALSE; }
+        
+        if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP)) {
+            /* "Trace;" */
+            put_token_back();
+            i = ASSEMBLY_TK;
+            trace_level = &asm_trace_level;
+            j = 1;
+            goto HandleTraceKeyword;
+        }
+        if (token_type == NUMBER_TT) {
+            /* "Trace NUM;" */
+            i = ASSEMBLY_TK;
+            trace_level = &asm_trace_level;
+            j = token_value;
+            goto HandleTraceKeyword;
+        }
 
+        /* Anything else must be "Trace KEYWORD..." Remember that
+           'on' and 'off' are trace keywords. */
+        
         if (token_type != TRACE_KEYWORD_TT)
             return ebf_error_recover("debugging keyword", token_text);
 
         trace_keywords.enabled = TRUE;
 
-        i = token_value; j = 0;
-        switch(i)
-        {   case DICTIONARY_TK: break;
-            case OBJECTS_TK:    break;
-            case VERBS_TK:      break;
-            default:
-                switch(token_value)
-                {   case ASSEMBLY_TK:
-                        trace_level = &asm_trace_level;  break;
-                    case EXPRESSIONS_TK:
-                        trace_level = &expr_trace_level; break;
-                    case LINES_TK:
-                        trace_level = &line_trace_level; break;
-                    case TOKENS_TK:
-                        trace_level = &tokens_trace_level; break;
-                    case LINKER_TK:
-                        trace_level = &linker_trace_level; break;
-                    case SYMBOLS_TK:
-                        trace_level = NULL; break;
-                    default:
-                        put_token_back();
-                        trace_level = &asm_trace_level; break;
-                }
-                j = 1;
-                get_next_token();
-                if ((token_type == SEP_TT) &&
-                    (token_value == SEMICOLON_SEP))
-                {   put_token_back(); break;
-                }
-                if (token_type == NUMBER_TT)
-                {   j = token_value; break; }
-                if ((token_type == TRACE_KEYWORD_TT) && (token_value == ON_TK))
-                {   j = 1; break; }
-                if ((token_type == TRACE_KEYWORD_TT) && (token_value == OFF_TK))
-                {   j = 0; break; }
-                put_token_back(); break;
-        }
+        /* Note that "Trace verbs" doesn't affect list_verbs_setting.
+           It shows the grammar at this point in the code. Setting
+           list_verbs_setting shows the grammar at the end of 
+           compilation.
+           Same goes for "Trace dictionary" and list_dict_setting, etc. */
+        
+        i = token_value;
 
         switch(i)
-        {   case DICTIONARY_TK: show_dictionary();  break;
-            case OBJECTS_TK:    list_object_tree(); break;
+        {
+        case ASSEMBLY_TK:
+            trace_level = &asm_trace_level;  break;
+        case EXPRESSIONS_TK:
+            trace_level = &expr_trace_level; break;
+        case TOKENS_TK:
+            trace_level = &tokens_trace_level; break;
+        case DICTIONARY_TK:
+        case SYMBOLS_TK:
+        case OBJECTS_TK:
+        case VERBS_TK:
+            /* show a table rather than changing any trace level */
+            trace_level = NULL; break;
+        case LINES_TK:
+            /* never implememented */
+            trace_level = NULL; break;
+        case LINKER_TK:
+            /* no longer implememented */
+            trace_level = NULL; break;
+        default:
+            /* default to "Trace assembly" */
+            put_token_back();
+            trace_level = &asm_trace_level; break;
+        }
+        
+        j = 1;
+        get_next_token();
+        if ((token_type == SEP_TT) &&
+            (token_value == SEMICOLON_SEP))
+        {   put_token_back();
+        }
+        else if (token_type == NUMBER_TT)
+        {   j = token_value;
+        }
+        else if ((token_type == TRACE_KEYWORD_TT) && (token_value == ON_TK))
+        {   j = 1;
+        }
+        else if ((token_type == TRACE_KEYWORD_TT) && (token_value == OFF_TK))
+        {   j = 0;
+        }
+        else
+        {   put_token_back();
+        }
+
+        trace_keywords.enabled = FALSE;
+
+        HandleTraceKeyword:
+
+        if (i == LINES_TK || i == LINKER_TK) {
+            warning_named("Trace option is not supported:", trace_keywords.keywords[i]);
+            break;
+        }
+        
+        if (trace_level == NULL && j == 0) {
+            warning_named("Trace directive to display table at 'off' level has no effect: table", trace_keywords.keywords[i]);
+            break;
+        }
+        
+        switch(i)
+        {   case DICTIONARY_TK: show_dictionary(j);  break;
+            case OBJECTS_TK:    list_object_tree();  break;
             case SYMBOLS_TK:    list_symbols(j);     break;
-            case VERBS_TK:      list_verb_table();  break;
+            case VERBS_TK:      list_verb_table();   break;
             default:
-                *trace_level = j;
+                if (trace_level)
+                    *trace_level = j;
                 break;
         }
-        trace_keywords.enabled = FALSE;
         break;
 
     /* --------------------------------------------------------------------- */
@@ -1111,6 +1152,7 @@ the first constant definition");
                 {   error("The version number must be in the range 3 to 8");
                     break;
                 }
+                obsolete_warning("the Version directive is deprecated and may produce incorrect results. Use -vN instead, as either a command-line argument or a header comment.");
                 select_version(i);
                 /* We must now do a small dance to reset the DICT_ENTRY_BYTES
                    constant, which was defined at startup based on the Z-code

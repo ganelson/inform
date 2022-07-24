@@ -5,7 +5,7 @@ However, now that you are walking down the gloomy streets of the neighbourhood w
 
 The Library Of Horror
 A PunyInform demo game, by Pablo Martinez and Fredrik Ramsberg.
-Release 4 / Serial number 220306 / Inform v6.36 PunyInform v1.6
+Release 4 / Serial number 220724 / Inform v6.41 PunyInform v1.6
 
 Gloomy Street
 The houses in this area seem hastily abandoned as if a mysterious tragedy had sown panic among its former inhabitants. All you see are shattered windows and ripped doors. In front of you, to the south, is the strangely well preserved and beautiful library building where you have to work.

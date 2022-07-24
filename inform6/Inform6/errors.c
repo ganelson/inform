@@ -2,7 +2,7 @@
 /*   "errors" : Warnings, errors and fatal errors                            */
 /*              (with error throwback code for RISC OS machines)             */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -184,7 +184,6 @@ extern void fatalerror(char *s)
 #endif
 #ifdef MAC_FACE
     close_all_source();
-    if (temporary_files_switch) remove_temp_files();
     abort_transcript_file();
     free_arrays();
     longjmp(g_fallback, 1);
@@ -214,40 +213,37 @@ extern void memory_out_error(int32 size, int32 howmany, char *name)
 /*   Survivable diagnostics:                                                 */
 /*      compilation errors   style 1                                         */
 /*      warnings             style 2                                         */
-/*      linkage errors       style 3                                         */
+/*      linkage errors       style 3 (no longer used)                        */
 /*      compiler errors      style 4 (these should never happen and          */
 /*                                    indicate a bug in Inform)              */
 /* ------------------------------------------------------------------------- */
 
-int no_errors, no_warnings, no_suppressed_warnings, no_link_errors,
-    no_compiler_errors;
+int no_errors, no_warnings, no_suppressed_warnings, no_compiler_errors;
 
 char *forerrors_buff;
 int  forerrors_pointer;
 
 static void message(int style, char *s)
-{   int throw_style = style;
+{
     if (hash_printed_since_newline) printf("\n");
     hash_printed_since_newline = FALSE;
     print_preamble();
     switch(style)
     {   case 1: printf("Error: "); no_errors++; break;
         case 2: printf("Warning: "); no_warnings++; break;
-        case 3: printf("Error:  [linking '%s']  ", current_module_filename);
-                no_link_errors++; no_errors++; throw_style=1; break;
+        case 3: printf("Error:  [linking]  "); no_errors++; break;
         case 4: printf("*** Compiler error: ");
-                no_compiler_errors++; throw_style=1; break;
+                no_compiler_errors++; break;
     }
     printf(" %s\n", s);
 #ifdef ARC_THROWBACK
-    throwback(throw_style, s);
+    throwback(((style <= 2) ? style : 1), s);
 #endif
 #ifdef MAC_FACE
     ProcessEvents (&g_proc);
     if (g_proc != true)
     {   free_arrays();
         close_all_source ();
-        if (temporary_files_switch) remove_temp_files();
         abort_transcript_file();
         longjmp (g_fallback, 1);
     }
@@ -367,14 +363,14 @@ extern void unicode_char_error(char *s, int32 uni)
 
 extern void error_max_dynamic_strings(int index)
 {
-    if (index >= 100)
-        snprintf(error_message_buff, ERROR_BUFLEN, "Only dynamic strings @00 to @99 may be used in Inform");
-    else if (index >= 96 && !glulx_mode)
-        snprintf(error_message_buff, ERROR_BUFLEN, "Only dynamic strings @00 to @95 may be used in Z-code");
+    if (index >= 96 && !glulx_mode)
+        snprintf(error_message_buff, ERROR_BUFLEN, "Only dynamic strings @(00) to @(95) may be used in Z-code");
+    else if (MAX_DYNAMIC_STRINGS == 0)
+        snprintf(error_message_buff, ERROR_BUFLEN, "Dynamic strings may not be used, because $MAX_DYNAMIC_STRINGS has been set to 0. Increase MAX_DYNAMIC_STRINGS.");
     else if (MAX_DYNAMIC_STRINGS == 32 && !glulx_mode)
-        snprintf(error_message_buff, ERROR_BUFLEN, "Only dynamic strings @00 to @%02d may be used, because $MAX_DYNAMIC_STRINGS has its default value of %d. Increase MAX_DYNAMIC_STRINGS.", MAX_DYNAMIC_STRINGS-1, MAX_DYNAMIC_STRINGS);
+        snprintf(error_message_buff, ERROR_BUFLEN, "Only dynamic strings @(00) to @(%02d) may be used, because $MAX_DYNAMIC_STRINGS has its default value of %d. Increase MAX_DYNAMIC_STRINGS.", MAX_DYNAMIC_STRINGS-1, MAX_DYNAMIC_STRINGS);
     else
-        snprintf(error_message_buff, ERROR_BUFLEN, "Only dynamic strings @00 to @%02d may be used, because $MAX_DYNAMIC_STRINGS has been set to %d. Increase MAX_DYNAMIC_STRINGS.", MAX_DYNAMIC_STRINGS-1, MAX_DYNAMIC_STRINGS);
+        snprintf(error_message_buff, ERROR_BUFLEN, "Only dynamic strings @(00) to @(%02d) may be used, because $MAX_DYNAMIC_STRINGS has been set to %d. Increase MAX_DYNAMIC_STRINGS.", MAX_DYNAMIC_STRINGS-1, MAX_DYNAMIC_STRINGS);
 
     ellipsize_error_message_buff();
     error(error_message_buff);
@@ -416,7 +412,10 @@ extern void warning_named(char *s1, char *s2)
 extern void symtype_warning(char *context, char *name, char *type, char *wanttype)
 {
     if (nowarnings_switch) { no_suppressed_warnings++; return; }
-    snprintf(error_message_buff, ERROR_BUFLEN, "In %s, expected %s but found %s \"%s\"", context, wanttype, type, name);
+    if (name)
+        snprintf(error_message_buff, ERROR_BUFLEN, "In %s, expected %s but found %s \"%s\"", context, wanttype, type, name);
+    else
+        snprintf(error_message_buff, ERROR_BUFLEN, "In %s, expected %s but found %s", context, wanttype, type);
     ellipsize_error_message_buff();
     message(2,error_message_buff);
 }
@@ -464,21 +463,6 @@ extern void obsolete_warning(char *s1)
 }
 
 /* ------------------------------------------------------------------------- */
-/*   Style 3: Link error message routines                                    */
-/* ------------------------------------------------------------------------- */
-
-extern void link_error(char *s)
-{   if (no_errors==MAX_ERRORS) fatalerror("Too many errors: giving up");
-    message(3,s);
-}
-
-extern void link_error_named(char *s1, char *s2)
-{   snprintf(error_message_buff, ERROR_BUFLEN,"%s \"%s\"",s1,s2);
-    ellipsize_error_message_buff();
-    link_error(error_message_buff);
-}
-
-/* ------------------------------------------------------------------------- */
 /*   Style 4: Compiler error message routines                                */
 /* ------------------------------------------------------------------------- */
 
@@ -487,17 +471,18 @@ extern void print_sorry_message(void)
 "***********************************************************************\n\
 * 'Compiler errors' should never occur if Inform is working properly. *\n\
 * This is version %d.%02d of Inform, dated %20s: so      *\n\
-* if that was more than six months ago, there may be a more recent    *\n\
+* if that was more than a year ago, there may be a more recent        *\n\
 * version available, from which the problem may have been removed.    *\n\
-* If not, please report this fault to:   graham@gnelson.demon.co.uk   *\n\
-* and if at all possible, please include your source code, as faults  *\n\
-* such as these are rare and often difficult to reproduce.  Sorry.    *\n\
+* If not, please report this fault as an issue at                     *\n\
+* https://github.com/DavidKinder/Inform6/ and if at all possible,     *\n\
+* please include your source code, as faults such as these are rare   *\n\
+* and often difficult to reproduce.  Sorry.                           *\n\
 ***********************************************************************\n",
     (RELEASE_NUMBER/100)%10, RELEASE_NUMBER%100, RELEASE_DATE);
 }
 
 extern int compiler_error(char *s)
-{   if (no_link_errors > 0) return FALSE;
+{
     if (no_errors > 0) return FALSE;
     if (no_compiler_errors==MAX_ERRORS)
         fatalerror("Too many compiler errors: giving up");
@@ -506,7 +491,7 @@ extern int compiler_error(char *s)
 }
 
 extern int compiler_error_named(char *s1, char *s2)
-{   if (no_link_errors > 0) return FALSE;
+{
     if (no_errors > 0) return FALSE;
     snprintf(error_message_buff, ERROR_BUFLEN, "%s \"%s\"",s1,s2);
     ellipsize_error_message_buff();

@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------------- */
 /*   "symbols" :  The symbols table; creating stock of reserved words        */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -259,6 +259,9 @@ extern int symbol_index(char *p, int hashcode)
         this = symbols[this].next_entry;
     } while (this != -1);
 
+    if (symdef_trace_setting)
+        printf("Encountered symbol %d '%s'\n", no_symbols, p);
+    
     ensure_memory_list_available(&symbols_memlist, no_symbols+1);
     if (debugfile_switch)
         ensure_memory_list_available(&symbol_debug_info_memlist, no_symbols+1);
@@ -357,6 +360,10 @@ extern char *typename(int type)
         case OBJECT_T:              return("Object");
         case CLASS_T:               return("Class");
         case FAKE_ACTION_T:         return("Fake action");
+            
+        /*  These are not symbol types, but they get printed in errors. */
+        case STRING_REQ_T:          return("String");
+        case DICT_WORD_REQ_T:       return("Dictionary word");
 
         default:                   return("(Unknown type)");
     }
@@ -392,7 +399,7 @@ extern void describe_symbol(int k)
 extern void list_symbols(int level)
 {   int k;
     for (k=0; k<no_symbols; k++)
-    {   if ((level==2) ||
+    {   if ((level>=2) ||
             ((symbols[k].flags & (SYSTEM_SFLAG + UNKNOWN_SFLAG + INSF_SFLAG)) == 0))
         {   describe_symbol(k); printf("\n");
         }
@@ -408,8 +415,16 @@ extern void check_warn_symbol_type(const assembly_operand *AO, int wanttype, int
     
     if (AO->symindex < 0)
     {
-        /* This argument is not a symbol; it's a local variable, a literal, or a computed expression. We don't try to generate type warnings. */
-        /* (We could figure out some warnings for literals -- e.g., "give 0 attr" and "give 'word' attr" are errors. But we currently don't. */
+        /* This argument is not a symbol; it's a local variable, a literal, or a computed expression. */
+        /* We can recognize and type-check some literals. */
+        if (AO->marker == DWORD_MV) {
+            if (wanttype != DICT_WORD_REQ_T && wanttype2 != DICT_WORD_REQ_T)
+                symtype_warning(context, NULL, typename(DICT_WORD_REQ_T), typename(wanttype));
+        }
+        if (AO->marker == STRING_MV) {
+            if (wanttype != STRING_REQ_T && wanttype2 != STRING_REQ_T)
+                symtype_warning(context, NULL, typename(STRING_REQ_T), typename(wanttype));
+        }
         return;
     }
     
@@ -442,10 +457,56 @@ extern void check_warn_symbol_type(const assembly_operand *AO, int wanttype, int
     }
 }
 
+/* Similar, but we allow any type that has a metaclass: Object, Class, String, or Routine.
+   Generate a warning if no match. */
+extern void check_warn_symbol_has_metaclass(const assembly_operand *AO, char *context)
+{
+    symbolinfo *sym;
+    int symtype;
+    
+    if (AO->symindex < 0)
+    {
+        /* This argument is not a symbol; it's a local variable, a literal, or a computed expression. */
+        /* We can recognize and type-check some literals. */
+        if (AO->marker == DWORD_MV) {
+            symtype_warning(context, NULL, typename(DICT_WORD_REQ_T), "Object/Class/Routine/String");
+        }
+        if (AO->marker == STRING_MV) {
+            /* Strings are good here. */
+        }
+        return;
+    }
+    
+    sym = &symbols[AO->symindex];
+    symtype = sym->type;
+    
+    if (symtype == GLOBAL_VARIABLE_T)
+    {
+        /* A global variable could have any value. No way to generate a warning. */
+        return;
+    }
+    if (symtype == CONSTANT_T)
+    {
+        /* A constant could also have any value. This case also includes forward-declared constants (UNKNOWN_SFLAG). */
+        /* We try inferring its type by looking at the backpatch marker. Sadly, this only works for objects. (And not in Z-code, where object values are not backpatched.) */
+        if (sym->marker == OBJECT_MV) {
+            /* Continue with inferred type. */
+            symtype = OBJECT_T;
+        }
+        else {
+            /* Give up. */
+            return;
+        }
+    }
+
+    if (!(symtype == ROUTINE_T || symtype == CLASS_T || symtype == OBJECT_T))
+    {
+        symtype_warning(context, sym->name, typename(symtype), "Object/Class/Routine/String");
+    }
+}
+
 extern void issue_unused_warnings(void)
 {   int32 i;
-
-    if (module_switch) return;
 
     /*  Update any ad-hoc variables that might help the library  */
     if (glulx_mode)
@@ -477,8 +538,8 @@ extern void issue_debug_symbol_warnings(void)
 }
 
 /* ------------------------------------------------------------------------- */
-/*   These are arrays used only during story file (never module) creation,   */
-/*   and not allocated until then.                                           */
+/*   These are arrays used only during story file creation, and not          */
+/*   allocated until then.                                                   */
 
        int32 *individual_name_strings; /* Packed addresses of Z-encoded
                                           strings of the names of the
@@ -494,8 +555,6 @@ extern void write_the_identifier_names(void)
 
     for (i=0; i<no_individual_properties; i++)
         individual_name_strings[i] = 0;
-
-    if (module_switch) return;
 
     veneer_mode = TRUE;
 
@@ -636,12 +695,16 @@ extern void assign_symbol(int index, int32 value, int type)
 {
     assign_symbol_base(index, value, type);
     symbols[index].marker = 0;
+    if (symdef_trace_setting)
+        printf("Defined symbol %d '%s' as %d (%s)\n", index, symbols[index].name, value, typename(type));
 }
 
 extern void assign_marked_symbol(int index, int marker, int32 value, int type)
 {
     assign_symbol_base(index, value, type);
     symbols[index].marker = marker;
+    if (symdef_trace_setting)
+        printf("Defined symbol %d '%s' as %s %d (%s)\n", index, symbols[index].name, describe_mv(marker), value, typename(type));
 }
 
 static void emit_debug_information_for_predefined_symbol
@@ -741,17 +804,11 @@ static void stockup_symbols(void)
         create_rsymbol("Grammar__Version", 2, CONSTANT_T);
     grammar_version_symbol = symbol_index("Grammar__Version", -1);
 
-    if (module_switch)
-        create_rsymbol("MODULE_MODE",0, CONSTANT_T);
-
     if (runtime_error_checking_switch)
         create_rsymbol("STRICT_MODE",0, CONSTANT_T);
 
     if (define_DEBUG_switch)
         create_rsymbol("DEBUG",      0, CONSTANT_T);
-
-    if (define_USE_MODULES_switch)
-        create_rsymbol("USE_MODULES",0, CONSTANT_T);
 
     if (define_INFIX_switch)
     {   create_rsymbol("INFIX",      0, CONSTANT_T);
@@ -860,6 +917,14 @@ static void stockup_symbols(void)
         create_symbol("FLOAT_INFINITY",  0x7F800000, CONSTANT_T);
         create_symbol("FLOAT_NINFINITY", 0xFF800000, CONSTANT_T);
         create_symbol("FLOAT_NAN",       0x7FC00000, CONSTANT_T);
+        /* Same for double constants. Each of these has a high 32-bit
+           word and a low 32-bit word. */
+        create_symbol("DOUBLE_HI_INFINITY",  0x7FF00000, CONSTANT_T);
+        create_symbol("DOUBLE_LO_INFINITY",  0x00000000, CONSTANT_T);
+        create_symbol("DOUBLE_HI_NINFINITY", 0xFFF00000, CONSTANT_T);
+        create_symbol("DOUBLE_LO_NINFINITY", 0x00000000, CONSTANT_T);
+        create_symbol("DOUBLE_HI_NAN",       0x7FF80000, CONSTANT_T);
+        create_symbol("DOUBLE_LO_NAN",       0x00000001, CONSTANT_T);
     }
 
     if (symbol_definitions && symbol_definitions_count) {
@@ -1100,6 +1165,9 @@ extern void df_note_function_symbol(int symbol)
        create a global reference. (For example, when reading the name
        of a function being defined.) */
     if (df_dont_note_global_symbols)
+        return;
+    /* If we're compiling an unreachable statement, no reference. */
+    if (execution_never_reaches_here)
         return;
 
     /* We are only interested in functions, or forward-declared symbols

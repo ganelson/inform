@@ -1,5 +1,5 @@
   ClassCopyTest: Not a game.
-  Release 1 / Serial number 220305 / Inform v6.36, compiler options S
+  Release 1 / Serial number 220724 / Inform v6.41, compiler options S
   Game file format 5.
   
   obj1.indprop: 12

@@ -14,6 +14,11 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 
 ## News items
 
+### Memory saving under the Z-machine (17 July 2022)
+
+When compiling to the Z-machine, Inform now adopts the I6 configuration option
+$ZCODE_LESS_DICT_DATA=1, and consequently saves 1 byte per dictionary word.
+
 ### String escape notations in I6 syntax (30 June 2022)
 
 I6 inclusions in source text, and kit sources, are run through an I6-to-Inter

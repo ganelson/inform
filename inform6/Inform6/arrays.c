@@ -3,7 +3,7 @@
 /*               likewise global variables, which are in some ways a         */
 /*               simpler form of the same thing.                             */
 /*                                                                           */
-/*   Part of Inform 6.36                                                     */
+/*   Part of Inform 6.41                                                     */
 /*   copyright (c) Graham Nelson 1993 - 2022                                 */
 /*                                                                           */
 /* ------------------------------------------------------------------------- */
@@ -220,6 +220,8 @@ extern void array_entry(int32 i, int is_static, assembly_operand VAL)
             else {
                 /* We can't use backpatch_zmachine() because that only applies to RAM. Instead we add an entry to staticarray_backpatch_table.
                    A backpatch entry is five bytes: *_MV followed by the array offset (in static array area). */
+                if (bpatch_trace_setting >= 2)
+                    printf("BP added: MV %d staticarray %04x\n", VAL.marker, addr);
                 ensure_memory_list_available(&staticarray_backpatch_table_memlist, staticarray_backpatch_size+5);
                 staticarray_backpatch_table[staticarray_backpatch_size++] = VAL.marker;
                 staticarray_backpatch_table[staticarray_backpatch_size++] = ((addr >> 24) & 0xFF);
@@ -239,9 +241,7 @@ extern void array_entry(int32 i, int is_static, assembly_operand VAL)
 /* ------------------------------------------------------------------------- */
 /*   Global and Array directives.                                            */
 /*                                                                           */
-/*      Global <variablename> |                                              */
-/*                            | = <value>                                    */
-/*                            | <array specification>                        */
+/*      Global <variablename> [ [=] <value> ]                                */
 /*                                                                           */
 /*      Array <arrayname> [static] <array specification>                     */
 /*                                                                           */
@@ -259,8 +259,8 @@ extern void array_entry(int32 i, int is_static, assembly_operand VAL)
 
 extern void set_variable_value(int i, int32 v)
 {
-    /* This can be called during module-load to create a new global,
-       so we call ensure. */
+    /* This isn't currently called to create a new global, but it has
+       been used that way within living memory. So we call ensure. */
     ensure_memory_list_available(&global_initial_value_memlist, i+1);
     global_initial_value[i]=v;
 }
@@ -273,12 +273,153 @@ extern void set_variable_value(int i, int32 v)
 #define ASCII_AI        2
 #define BRACKET_AI      3
 
-extern void make_global(int array_flag, int name_only)
+extern void make_global()
 {
-    /*  array_flag is TRUE for an Array directive, FALSE for a Global;
-        name_only is only TRUE for parsing an imported variable name, so
-        array_flag is always FALSE in that case.                             */
+    int32 i;
+    int name_length;
+    assembly_operand AO;
 
+    int32 globalnum;
+    int32 global_symbol;
+    debug_location_beginning beginning_debug_location =
+        get_token_location_beginning();
+
+    directive_keywords.enabled = FALSE;
+    get_next_token();
+    i = token_value;
+    global_symbol = i;
+    
+    name_length = strlen(token_text) + 1;
+    ensure_memory_list_available(&current_array_name, name_length);
+    strncpy(current_array_name.data, token_text, name_length);
+
+    if (!glulx_mode) {
+        if ((token_type==SYMBOL_TT) && (symbols[i].type==GLOBAL_VARIABLE_T)
+            && (symbols[i].value >= LOWEST_SYSTEM_VAR_NUMBER)) {
+            globalnum = symbols[i].value - MAX_LOCAL_VARIABLES;
+            goto RedefinitionOfSystemVar;
+        }
+    }
+    else {
+        if ((token_type==SYMBOL_TT) && (symbols[i].type==GLOBAL_VARIABLE_T)) {
+            globalnum = symbols[i].value - MAX_LOCAL_VARIABLES;
+            goto RedefinitionOfSystemVar;
+        }
+    }
+
+    if (token_type != SYMBOL_TT)
+    {   discard_token_location(beginning_debug_location);
+        ebf_error("new global variable name", token_text);
+        panic_mode_error_recovery(); return;
+    }
+
+    if (!(symbols[i].flags & UNKNOWN_SFLAG))
+    {   discard_token_location(beginning_debug_location);
+        ebf_symbol_error("new global variable name", token_text, typename(symbols[i].type), symbols[i].line);
+        panic_mode_error_recovery(); return;
+    }
+
+    if (symbols[i].flags & USED_SFLAG)
+        error_named("Variable must be defined before use:", token_text);
+
+    directive_keywords.enabled = TRUE;
+    get_next_token();
+    directive_keywords.enabled = FALSE;
+    if ((token_type==DIR_KEYWORD_TT)&&(token_value==STATIC_DK)) {
+        error("Global variables cannot be static");
+    }
+    else {
+        put_token_back();
+    }
+    
+    if (!glulx_mode && no_globals==233)
+    {   discard_token_location(beginning_debug_location);
+        error("All 233 global variables already declared");
+        panic_mode_error_recovery();
+        return;
+    }
+
+    globalnum = no_globals;
+    
+    ensure_memory_list_available(&variables_memlist, MAX_LOCAL_VARIABLES+no_globals+1);
+    variables[MAX_LOCAL_VARIABLES+no_globals].token = i;
+    variables[MAX_LOCAL_VARIABLES+no_globals].usage = FALSE;
+    assign_symbol(i, MAX_LOCAL_VARIABLES+no_globals, GLOBAL_VARIABLE_T);
+
+    ensure_memory_list_available(&global_initial_value_memlist, no_globals+1);
+    global_initial_value[no_globals++]=0;
+
+    directive_keywords.enabled = TRUE;
+
+    RedefinitionOfSystemVar:
+
+    get_next_token();
+
+    if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))
+    {
+        /* No initial value. */
+        put_token_back();
+        if (debugfile_switch)
+        {
+            char *global_name = current_array_name.data;
+            debug_file_printf("<global-variable>");
+            debug_file_printf("<identifier>%s</identifier>", global_name);
+            debug_file_printf("<address>");
+            write_debug_global_backpatch(symbols[global_symbol].value);
+            debug_file_printf("</address>");
+            write_debug_locations
+                (get_token_location_end(beginning_debug_location));
+            debug_file_printf("</global-variable>");
+        }
+        return;
+    }
+
+    if (((token_type==SEP_TT)&&(token_value==ARROW_SEP))
+        || ((token_type==SEP_TT)&&(token_value==DARROW_SEP))
+        || ((token_type==DIR_KEYWORD_TT)&&(token_value==STRING_DK))
+        || ((token_type==DIR_KEYWORD_TT)&&(token_value==TABLE_DK))
+        || ((token_type==DIR_KEYWORD_TT)&&(token_value==BUFFER_DK)))
+    {
+        error("use 'Array' to define arrays, not 'Global'");
+        return;
+    }
+
+    /* Skip "=" if present. */
+    if (!((token_type == SEP_TT) && (token_value == SETEQUALS_SEP)))
+        put_token_back();
+
+    AO = parse_expression(CONSTANT_CONTEXT);
+    if (!glulx_mode) {
+        if (AO.marker != 0)
+            backpatch_zmachine(AO.marker, DYNAMIC_ARRAY_ZA,
+                2*globalnum);
+    }
+    else {
+        if (AO.marker != 0)
+            backpatch_zmachine(AO.marker, GLOBALVAR_ZA,
+                4*globalnum);
+    }
+    
+    if (globalnum < 0 || globalnum >= global_initial_value_memlist.count)
+        compiler_error("Globalnum out of range");
+    global_initial_value[globalnum] = AO.value;
+    
+    if (debugfile_switch)
+    {
+        char *global_name = current_array_name.data;
+        debug_file_printf("<global-variable>");
+        debug_file_printf("<identifier>%s</identifier>", global_name);
+        debug_file_printf("<address>");
+        write_debug_global_backpatch(symbols[global_symbol].value);
+        debug_file_printf("</address>");
+        write_debug_locations
+            (get_token_location_end(beginning_debug_location));
+        debug_file_printf("</global-variable>");
+    }
+}
+
+extern void make_array()
+{
     int32 i;
     int name_length;
     int array_type, data_type;
@@ -300,172 +441,57 @@ extern void make_global(int array_flag, int name_only)
     ensure_memory_list_available(&current_array_name, name_length);
     strncpy(current_array_name.data, token_text, name_length);
 
-    if (!glulx_mode) {
-        if ((token_type==SYMBOL_TT) && (symbols[i].type==GLOBAL_VARIABLE_T)
-            && (symbols[i].value >= LOWEST_SYSTEM_VAR_NUMBER))
-            goto RedefinitionOfSystemVar;
-    }
-    else {
-        if ((token_type==SYMBOL_TT) && (symbols[i].type==GLOBAL_VARIABLE_T))
-            goto RedefinitionOfSystemVar;
-    }
-
     if (token_type != SYMBOL_TT)
     {   discard_token_location(beginning_debug_location);
-        if (array_flag)
-            ebf_error("new array name", token_text);
-        else ebf_error("new global variable name", token_text);
+        ebf_error("new array name", token_text);
         panic_mode_error_recovery(); return;
     }
 
     if (!(symbols[i].flags & UNKNOWN_SFLAG))
     {   discard_token_location(beginning_debug_location);
-        if (array_flag)
-            ebf_symbol_error("new array name", token_text, typename(symbols[i].type), symbols[i].line);
-        else ebf_symbol_error("new global variable name", token_text, typename(symbols[i].type), symbols[i].line);
+        ebf_symbol_error("new array name", token_text, typename(symbols[i].type), symbols[i].line);
         panic_mode_error_recovery(); return;
     }
-
-    if ((!array_flag) && (symbols[i].flags & USED_SFLAG))
-        error_named("Variable must be defined before use:", token_text);
 
     directive_keywords.enabled = TRUE;
     get_next_token();
     directive_keywords.enabled = FALSE;
     if ((token_type==DIR_KEYWORD_TT)&&(token_value==STATIC_DK)) {
-        if (array_flag) {
-            is_static = TRUE;
-        }
-        else {
-            error("Global variables cannot be static");
-        }
+        is_static = TRUE;
     }
     else {
         put_token_back();
     }
     
-    if (array_flag)
-    {   if (!is_static) {
-            assign_symbol(i, dynamic_array_area_size, ARRAY_T);
-        }
-        else {
-            assign_symbol(i, static_array_area_size, STATIC_ARRAY_T);
-        }
-        ensure_memory_list_available(&arrays_memlist, no_arrays+1);
-        arrays[no_arrays].symbol = i;
+    if (!is_static) {
+        assign_symbol(i, dynamic_array_area_size, ARRAY_T);
     }
-    else
-    {   if (!glulx_mode && no_globals==233)
-        {   discard_token_location(beginning_debug_location);
-            error("All 233 global variables already declared");
-            panic_mode_error_recovery();
-            return;
-        }
-        
-        ensure_memory_list_available(&variables_memlist, MAX_LOCAL_VARIABLES+no_globals+1);
-        variables[MAX_LOCAL_VARIABLES+no_globals].token = i;
-        variables[MAX_LOCAL_VARIABLES+no_globals].usage = FALSE;
-        assign_symbol(i, MAX_LOCAL_VARIABLES+no_globals, GLOBAL_VARIABLE_T);
-
-        if (name_only) {
-            import_symbol(i);
-        }
-        else {
-            ensure_memory_list_available(&global_initial_value_memlist, no_globals+1);
-            global_initial_value[no_globals++]=0;
-        }
+    else {
+        assign_symbol(i, static_array_area_size, STATIC_ARRAY_T);
     }
+    ensure_memory_list_available(&arrays_memlist, no_arrays+1);
+    arrays[no_arrays].symbol = i;
 
     directive_keywords.enabled = TRUE;
-
-    RedefinitionOfSystemVar:
-
-    if (name_only)
-    {   discard_token_location(beginning_debug_location);
-        return;
-    }
 
     get_next_token();
 
     if ((token_type == SEP_TT) && (token_value == SEMICOLON_SEP))
-    {   if (array_flag)
-        {   discard_token_location(beginning_debug_location);
-            ebf_error("array definition", token_text);
-        }
-        put_token_back();
-        if (debugfile_switch && !array_flag)
-        {
-            char *global_name = current_array_name.data;
-            debug_file_printf("<global-variable>");
-            debug_file_printf("<identifier>%s</identifier>", global_name);
-            debug_file_printf("<address>");
-            write_debug_global_backpatch(symbols[global_symbol].value);
-            debug_file_printf("</address>");
-            write_debug_locations
-                (get_token_location_end(beginning_debug_location));
-            debug_file_printf("</global-variable>");
-        }
-        return;
-    }
-
-    if (!array_flag)
     {
-        /* is_static is always false in this case */
-        if ((token_type == SEP_TT) && (token_value == SETEQUALS_SEP))
-        {   AO = parse_expression(CONSTANT_CONTEXT);
-            if (!glulx_mode) {
-                if (AO.marker != 0)
-                    backpatch_zmachine(AO.marker, DYNAMIC_ARRAY_ZA,
-                        2*(no_globals-1));
-            }
-            else {
-            if (AO.marker != 0)
-                backpatch_zmachine(AO.marker, GLOBALVAR_ZA,
-                4*(no_globals-1));
-            }
-            global_initial_value[no_globals-1] = AO.value;
-            if (debugfile_switch)
-            {
-                char *global_name = current_array_name.data;
-                debug_file_printf("<global-variable>");
-                debug_file_printf("<identifier>%s</identifier>", global_name);
-                debug_file_printf("<address>");
-                write_debug_global_backpatch(symbols[global_symbol].value);
-                debug_file_printf("</address>");
-                write_debug_locations
-                    (get_token_location_end(beginning_debug_location));
-                debug_file_printf("</global-variable>");
-            }
-            return;
-        }
-
-        obsolete_warning("more modern to use 'Array', not 'Global'");
-
-        if (!glulx_mode) {
-            backpatch_zmachine(ARRAY_MV, DYNAMIC_ARRAY_ZA, 2*(no_globals-1));
-            global_initial_value[no_globals-1]
-                = dynamic_array_area_size+variables_offset;
-        }
-        else {
-            backpatch_zmachine(ARRAY_MV, GLOBALVAR_ZA, 4*(no_globals-1));
-            global_initial_value[no_globals-1]
-                = dynamic_array_area_size;
-        }
+        discard_token_location(beginning_debug_location);
+        ebf_error("array definition", token_text);
+        put_token_back();
+        return;
     }
 
     array_type = BYTE_ARRAY; data_type = UNSPECIFIED_AI;
 
-         if ((!array_flag) &&
-             ((token_type==DIR_KEYWORD_TT)&&(token_value==DATA_DK)))
-                 data_type=NULLS_AI;
-    else if ((!array_flag) &&
-             ((token_type==DIR_KEYWORD_TT)&&(token_value==INITIAL_DK)))
-                 data_type=DATA_AI;
-    else if ((!array_flag) &&
-             ((token_type==DIR_KEYWORD_TT)&&(token_value==INITSTR_DK)))
-                 data_type=ASCII_AI;
+    /* The keywords "data", "initial", and "initstr" used to be accepted
+       here -- but only in a Global directive, not Array. The Global directive
+       no longer calls here, so those keywords are now (more) obsolete.
+    */
 
-    else if ((token_type==SEP_TT)&&(token_value==ARROW_SEP))
+    if      ((token_type==SEP_TT)&&(token_value==ARROW_SEP))
              array_type = BYTE_ARRAY;
     else if ((token_type==SEP_TT)&&(token_value==DARROW_SEP))
              array_type = WORD_ARRAY;
@@ -477,12 +503,8 @@ extern void make_global(int array_flag, int name_only)
              array_type = BUFFER_ARRAY;
     else
     {   discard_token_location(beginning_debug_location);
-        if (array_flag)
-            ebf_error
-              ("'->', '-->', 'string', 'table' or 'buffer'", token_text);
-        else
-            ebf_error
-              ("'=', '->', '-->', 'string', 'table' or 'buffer'", token_text);
+        ebf_error
+            ("'->', '-->', 'string', 'table' or 'buffer'", token_text);
         panic_mode_error_recovery();
         return;
     }

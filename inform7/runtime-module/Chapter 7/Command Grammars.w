@@ -46,6 +46,8 @@ void RTCommandGrammars::compile_non_generic_constants(void) {
 		if (N <= 0) N = 9;
 	}
 	RTCommandGrammars::grammar_constant(DICT_WORD_SIZE_HL, N);
+	if (TargetVMs::is_16_bit(VM))
+		RTCommandGrammars::grammar_constant(DICT_ENTRY_BYTES_HL, 8);
 }
 
 @

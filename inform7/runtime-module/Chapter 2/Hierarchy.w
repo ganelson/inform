@@ -726,6 +726,7 @@ void Hierarchy::establish(void) {
 @e SLASH_FN_HL
 
 @e REPARSE_CODE_HL
+@e DICT_ENTRY_BYTES_HL
 @e DICT_WORD_SIZE_HL
 @e VERB_DIRECTIVE_META_HL
 @e VERB_DIRECTIVE_NOUN_FILTER_HL
@@ -782,6 +783,7 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(LocationRequirements::generic_submodule(I, grammar))
 		H_C_T(REPARSE_CODE_HL,                I"REPARSE_CODE")
+		H_C_T(DICT_ENTRY_BYTES_HL,            I"DICT_ENTRY_BYTES")
 		H_C_T(DICT_WORD_SIZE_HL,              I"DICT_WORD_SIZE")
 		H_C_T(VERB_DIRECTIVE_META_HL,         I"VERB_DIRECTIVE_META")
 		H_C_T(VERB_DIRECTIVE_NOUN_FILTER_HL,  I"VERB_DIRECTIVE_NOUN_FILTER")
