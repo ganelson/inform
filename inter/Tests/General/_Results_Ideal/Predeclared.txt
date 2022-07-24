@@ -1,4 +1,3 @@
-!% $STRIP_UNREACHABLE_LABELS=0;
 !% $ZCODE_LESS_DICT_DATA=1;
 Constant Grammar__Version 2;
 Global debug_flag;
