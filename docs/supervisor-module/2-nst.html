@@ -73,7 +73,7 @@ positions in the file system hierarchy which may or may not exist.
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">tag_value</span><span class="plain-syntax">; </span><span class="comment-syntax"> used to indicate whether internal, external, and such</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="function-syntax">Nests::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Nests::new</span></span>:<br/>Inbuild Control - <a href="1-ic.html#SP12">&#167;12</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="function-syntax">Nests::new</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Nests::new</span></span>:<br/>Inbuild Control - <a href="1-ic.html#SP12">&#167;12</a><br/>Registries - <a href="2-rgs.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">pathname</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">inbuild_nest</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">N</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">location</span><span class="plain-syntax"> = </span><span class="identifier-syntax">P</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">N</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">read_only</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -81,7 +81,7 @@ positions in the file system hierarchy which may or may not exist.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure inbuild_nest is accessed in 1/ic, 3/bg, 3/is2, 4/em, 4/km, 4/lm, 4/pm, 4/tm, 5/ps2 and here.</li></ul>
+<ul class="endnotetexts"><li>The structure inbuild_nest is accessed in 1/ic, 2/rgs, 3/bg, 3/is2, 4/em, 4/km, 4/lm, 4/pm, 4/tm, 5/ps2 and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Nests used by the Inform and Inbuild tools are tagged with the following
 constants. (There used to be quite a good joke here, but refactoring of the
 code removed its premise. Literate programming is like that sometimes.)
@@ -151,7 +151,7 @@ we create one of these for each hit:
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">inbuild_search_result</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>The structure inbuild_search_result is accessed in 2/ce, 3/is, 5/ks, 5/ls, 6/inc, 7/dct, 7/cns, 7/ip, 7/ip2 and here.</li></ul>
+<ul class="endnotetexts"><li>The structure inbuild_search_result is accessed in 2/ce, 2/rgs, 3/is, 5/ks, 5/ls, 6/inc, 7/dct, 7/cns, 7/ip, 7/ip2 and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>These can be created only as entries in a list:
 </p>
 
@@ -226,7 +226,7 @@ semantic version numbers.
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="2-rqr.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-gnr.html">gnr</a></li><li class="progresssection"><a href="2-wrk.html">wrk</a></li><li class="progresssection"><a href="2-edt.html">edt</a></li><li class="progresssection"><a href="2-cps.html">cps</a></li><li class="progresssection"><a href="2-ce.html">ce</a></li><li class="progresssection"><a href="2-rqr.html">rqr</a></li><li class="progresscurrent">nst</li><li class="progresssection"><a href="2-jm.html">jm</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresschapter"><a href="5-es.html">5</a></li><li class="progresschapter"><a href="6-st.html">6</a></li><li class="progresschapter"><a href="7-tm.html">7</a></li><li class="progressnext"><a href="2-jm.html">&#10095;</a></li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="2-rqr.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-sm.html">1</a></li><li class="progresscurrentchapter">2</li><li class="progresssection"><a href="2-gnr.html">gnr</a></li><li class="progresssection"><a href="2-wrk.html">wrk</a></li><li class="progresssection"><a href="2-edt.html">edt</a></li><li class="progresssection"><a href="2-cps.html">cps</a></li><li class="progresssection"><a href="2-ce.html">ce</a></li><li class="progresssection"><a href="2-rqr.html">rqr</a></li><li class="progresscurrent">nst</li><li class="progresssection"><a href="2-rgs.html">rgs</a></li><li class="progresssection"><a href="2-jm.html">jm</a></li><li class="progresschapter"><a href="3-bg.html">3</a></li><li class="progresschapter"><a href="4-em.html">4</a></li><li class="progresschapter"><a href="5-es.html">5</a></li><li class="progresschapter"><a href="6-st.html">6</a></li><li class="progresschapter"><a href="7-tm.html">7</a></li><li class="progressnext"><a href="2-rgs.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

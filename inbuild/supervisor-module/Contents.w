@@ -19,6 +19,7 @@ Chapter 2: Conceptual Framework
 	Copy Errors
 	Requirements
 	Nests
+	Registries
 	JSON Metadata
 
 Chapter 3: Incremental Builds

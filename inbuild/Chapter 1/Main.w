@@ -13,6 +13,7 @@ int inbuild_task = INSPECT_TTASK;
 pathname *path_to_tools = NULL;
 int dry_run_mode = FALSE, build_trace_mode = FALSE;
 inbuild_nest *destination_nest = NULL;
+inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
 
 @h Main routine.
@@ -311,6 +312,8 @@ other options to the selection defined here.
 @e COPY_TO_CLSW
 @e SYNC_TO_CLSW
 @e VERSIONS_IN_FILENAMES_CLSW
+@e VERIFY_REGISTRY_CLSW
+@e BUILD_REGISTRY_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -356,6 +359,10 @@ other options to the selection defined here.
 		L"apply to all works in nest(s) matching requirement X");
 	CommandLine::declare_switch(CONTENTS_OF_CLSW, L"contents-of", 2,
 		L"apply to all targets in the directory X");
+	CommandLine::declare_switch(VERIFY_REGISTRY_CLSW, L"verify-registry", 2,
+		L"verify roster.json metadata of registry in the directory X");
+	CommandLine::declare_switch(BUILD_REGISTRY_CLSW, L"build-registry", 2,
+		L"construct HTML menu pages for registry in the directory X");
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -396,6 +403,13 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			break;
 		case VERSIONS_IN_FILENAMES_CLSW:
 			Editions::set_canonical_leaves_have_versions(val); break;
+		case VERIFY_REGISTRY_CLSW:
+		case BUILD_REGISTRY_CLSW:
+			selected_registry = Registries::new(Pathnames::from_text(arg));
+			if (Registries::read_roster(selected_registry) == FALSE) exit(1);
+			if (id == BUILD_REGISTRY_CLSW)
+				Registries::build(selected_registry);
+			break;
 	}
 	Supervisor::option(id, val, arg, state);
 }

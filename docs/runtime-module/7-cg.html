@@ -106,6 +106,8 @@ fact rewritten it, so that the whole command must be re-parsed afresh.
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">N</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="constant-syntax">9</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><a href="7-cg.html#SP3" class="function-link"><span class="function-syntax">RTCommandGrammars::grammar_constant</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DICT_WORD_SIZE_HL</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">TargetVMs::is_16_bit</span><span class="plain-syntax">(</span><span class="identifier-syntax">VM</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><a href="7-cg.html#SP3" class="function-link"><span class="function-syntax">RTCommandGrammars::grammar_constant</span></a><span class="plain-syntax">(</span><span class="constant-syntax">DICT_ENTRY_BYTES_HL</span><span class="plain-syntax">, </span><span class="constant-syntax">8</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3.  </b></p>

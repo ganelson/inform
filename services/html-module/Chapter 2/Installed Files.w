@@ -21,7 +21,8 @@ but they're just plain old files, and are not managed by Inbuild as "copies".
 @e CSS_SET_BY_PLATFORM_IRES
 @e CSS_FOR_STANDARD_PAGES_IRES
 @e EXTENSION_DOCUMENTATION_MODEL_IRES
-@e JSON_REQUIREMENTS_IRES
+@e RESOURCE_JSON_REQS_IRES
+@e REGISTRY_JSON_REQS_IRES
 
 =
 filename *InstalledFiles::filename(int ires) {
@@ -39,8 +40,10 @@ filename *InstalledFiles::filename(int ires) {
 				return Filenames::in(misc, I"DefaultCover.jpg");
 		case SMALL_DEFAULT_COVER_ART_IRES: 
 				return Filenames::in(misc, I"Small Cover.jpg");
-		case JSON_REQUIREMENTS_IRES:
-				return Filenames::in(misc, I"metadata.jsonr");
+		case RESOURCE_JSON_REQS_IRES:
+				return Filenames::in(misc, I"resource.jsonr");
+		case REGISTRY_JSON_REQS_IRES:
+				return Filenames::in(misc, I"registry.jsonr");
 
 		case CBLORB_REPORT_MODEL_IRES: 
 				return InstalledFiles::varied_by_platform(models, I"CblorbModel.html");

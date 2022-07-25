@@ -237,7 +237,7 @@ dictionary *JSON_resource_metadata_requirements = NULL;
 
 JSON_requirement *JSONMetadata::requirements(void) {
 	if (JSON_resource_metadata_requirements == NULL) {
-		filename *F = InstalledFiles::filename(JSON_REQUIREMENTS_IRES);
+		filename *F = InstalledFiles::filename(RESOURCE_JSON_REQS_IRES);
 		JSON_resource_metadata_requirements = JSON::read_requirements_file(NULL, F);
 	}
 	JSON_requirement *req =
