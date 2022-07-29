@@ -124,7 +124,9 @@ $(INTERPRETERS)/dumb-glulx/glulxe/glulxe: \
 	$(INTERPRETERS)/dumb-glulx/cheapglk/*.h \
 	$(INTERPRETERS)/dumb-glulx/glulxe/*.c \
 	$(INTERPRETERS)/dumb-glulx/glulxe/*.h
+	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make clean
 	cd $(INTERPRETERS)/dumb-glulx/cheapglk; make
+	cd $(INTERPRETERS)/dumb-glulx/glulxe; make clean
 	cd $(INTERPRETERS)/dumb-glulx/glulxe; make
 
 # Cleaning up:
