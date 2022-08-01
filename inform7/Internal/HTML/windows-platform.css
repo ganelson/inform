@@ -311,3 +311,110 @@ ul.leaders li.leaded span:first-child {
 ul.leaders li.leaded span + span {
 	background: white;
 }
+
+/* On Registry index pages (such as the Public Library), these are used for
+download buttons and the like: */
+
+span.registrybuttontext {
+	font-size: 11px;
+	border-color: #000000;
+}
+
+span.registryminibuttontext {
+	font-size: 10px;
+	border-color: #000000;
+}
+
+span.registrybuttonuninstalled {
+	color: #000000;
+	background: #ffffdd;
+}
+
+span.registrybuttoninstalled {
+	color: #000000;
+	background: #ffffff;
+	pointer-events: none;
+}
+
+span.registrybuttonbuiltin {
+	color: #888888;
+	background: #ffffff;
+	pointer-events: none;
+}
+
+span.registrybuttonupdate {
+	color: #000000;
+	background: #aaddff;
+}
+
+span.registrybuttonrevert {
+	color: #000000;
+	background: #ddaaff;
+}
+
+span.registrybuttonrevealer {
+	color: #ffffff;
+	background: #444444;
+}
+
+/* Registry index section headings: */
+
+span.registrysectionname {
+	-webkit-font-smoothing: antialiased;
+	font-size: 16px;
+	line-height: 18px;
+}
+span.registrysubsectionname {
+	-webkit-font-smoothing: antialiased;
+	font-size: 14px;
+	line-height: 16px;
+}
+
+/* These are for the "mark" for a section, usually a section-symbol and number */
+
+span.registrysectionmark {
+	-webkit-font-smoothing: antialiased;
+	font-size: 16px;
+	line-height: 18px;
+	color: #666;
+}
+span.registrysubsectionmark {
+	-webkit-font-smoothing: antialiased;
+	font-size: 14px;
+	line-height: 16px;
+	color: #666;
+}
+
+/* Text of an item listed in a registry: */
+
+span.registryitemtext {
+	-webkit-font-smoothing: antialiased;
+	font-size: 12px;
+	line-height: 16px;
+}
+
+/* And how the links in a registry index page behave: */
+
+a.registrysilentlink {
+	text-decoration: none;
+	color: #000;
+}
+a.registrybuttonlink {
+	text-decoration: none;
+}
+a.registrycontentslink:link {
+	text-decoration: none;
+	color: #202020;
+}
+a.registrycontentslink:visited {
+	text-decoration: none;
+	color: #202020;
+}
+a.registrycontentslink:hover {
+	text-decoration: none;
+	color: #D00000;
+}
+a.registrycontentslink:active {
+	text-decoration: none;
+	color: #D00000;
+}

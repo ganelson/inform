@@ -115,6 +115,8 @@ void Registries::build(inbuild_registry *R) {
 @<Construct the list of custom macros for this sort of preprocessing@> =
 	Preprocessor::new_macro(ML, I"include", I"file: LEAFNAME",
 		Registries::include_expander, NULL);
+	Preprocessor::new_macro(ML, I"include-css", I"?platform: PLATFORM",
+		Registries::css_expander, NULL);
 	Preprocessor::new_macro(ML, I"process", I"file: LEAFNAME",
 		Registries::process_expander, NULL);
 	Preprocessor::do_not_suppress_whitespace(
@@ -191,6 +193,24 @@ void Registries::process_expander(preprocessor_macro *mm, preprocessor_state *PP
 	filename *prototype = Filenames::in(Pathnames::down(Pathnames::down(R->location, I"source"), I"include"), leafname);
 	TextFiles::read(prototype, FALSE, "can't open include file",
 		TRUE, Preprocessor::scan_line, NULL, PPS);
+}
+
+@ |{include-css platform:P}| splices in the Inform distribution's standard CSS
+files for the named platform. It's an |include|, not a |process|.
+
+=
+void Registries::css_expander(preprocessor_macro *mm, preprocessor_state *PPS,
+	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
+	text_stream *platform = parameter_values[0];
+	filename *prototype = InstalledFiles::filename_for_platform(CSS_SET_BY_PLATFORM_IRES, platform);
+	WRITE_TO(PPS->dest, "<style type=\"text/css\">\n");
+	WRITE_TO(PPS->dest, "<!--\n");
+	TextFiles::read(prototype, FALSE, "can't open include file",
+		TRUE, Registries::scan_line, NULL, PPS);
+	prototype = InstalledFiles::filename_for_platform(CSS_FOR_STANDARD_PAGES_IRES, platform);
+	TextFiles::read(prototype, FALSE, "can't open include file",
+		TRUE, Registries::scan_line, NULL, PPS);
+	WRITE_TO(PPS->dest, "--></style>\n");
 }
 
 @ |{sections}| ... |{end-sections}| is a loop construct, which loops over each

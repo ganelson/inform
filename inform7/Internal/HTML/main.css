@@ -343,3 +343,44 @@ li.indent9 span:first-child {
 li.unleaded:before {
 	content: "";
 }
+
+/* On Registry index pages (such as the Public Library), these are used for
+download buttons and the like: */
+
+span.registrybuttons {
+	height: 20px;
+	padding: 2px 8px 2px 8px;
+	margin: 2px;
+	border:1px solid;
+	border-radius: 5px;
+}
+
+span.registryminibuttons {
+	height: 14px;
+	padding: 2px 5px 2px 5px;
+	margin: 2px;
+	border:1px solid;
+	border-radius: 4px;
+}
+
+/* Used to hide or display sections in the Registry pages: */
+
+div.registrysectionitemsopen {
+	display: block;
+}
+
+div.registrysectionitemsclosed {
+	display: none;
+}
+
+/* Hanging indentation for Registry item paragraphs: */
+
+p.registryitem {
+	padding-left: 80px;
+	text-indent: -40px;
+}
+
+p.registryaddition {
+	padding-left: 40px;
+	text-indent: -40px;
+}

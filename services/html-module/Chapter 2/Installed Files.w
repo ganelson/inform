@@ -61,7 +61,7 @@ filename *InstalledFiles::filename(int ires) {
 				return InstalledFiles::varied_by_platform(models, I"main.css");
 		case EXTENSION_DOCUMENTATION_MODEL_IRES: 
 				return InstalledFiles::varied_by_platform(models, I"extensionfile.html");
-		}
+	}
 	internal_error("unknown installation resource file");
 	return NULL;
 }
@@ -74,6 +74,54 @@ filename *InstalledFiles::varied_by_platform(pathname *models, text_stream *leaf
 	filename *F = NULL;
 	TEMPORARY_TEXT(variation)
 	WRITE_TO(variation, "%s-%S", PLATFORM_STRING, leafname);
+	/* NB: PLATFORM_STRING is a C string, so that %s is correct */
+	F = Filenames::in(models, variation);
+	if (TextFiles::exists(F) == FALSE) F = Filenames::in(models, leafname);
+	DISCARD_TEXT(variation)
+	return F;
+}
+
+@ Or even for a different platform than the one we're running on:
+
+=
+filename *InstalledFiles::filename_for_platform(int ires, text_stream *platform) {
+	if (Str::len(platform) == 0) return InstalledFiles::filename(ires);
+	pathname *internal = INSTALLED_FILES_HTML_CALLBACK();
+	pathname *models = Pathnames::down(internal, I"HTML");
+	switch (ires) {
+		case CBLORB_REPORT_MODEL_IRES: 
+				return InstalledFiles::varied_by_named_platform(models,
+					I"CblorbModel.html", platform);
+		case DOCUMENTATION_XREFS_IRES: 
+				return InstalledFiles::varied_by_named_platform(models,
+					I"xrefs.txt", platform);
+		case JAVASCRIPT_FOR_STANDARD_PAGES_IRES: 
+				return InstalledFiles::varied_by_named_platform(models,
+					I"main.js", platform);
+		case JAVASCRIPT_FOR_EXTENSIONS_IRES: 
+				return InstalledFiles::varied_by_named_platform(models,
+					I"extensions.js", platform);
+		case JAVASCRIPT_FOR_ONE_EXTENSION_IRES: 
+				return InstalledFiles::varied_by_named_platform(models,
+					I"extensionfile.js", platform);
+		case CSS_SET_BY_PLATFORM_IRES: 
+				return InstalledFiles::varied_by_named_platform(models,
+					I"platform.css", platform);
+		case CSS_FOR_STANDARD_PAGES_IRES:
+				return InstalledFiles::varied_by_named_platform(models,
+					I"main.css", platform);
+		case EXTENSION_DOCUMENTATION_MODEL_IRES: 
+				return InstalledFiles::varied_by_named_platform(models,
+					I"extensionfile.html", platform);
+	}
+	return InstalledFiles::filename(ires);
+}
+
+filename *InstalledFiles::varied_by_named_platform(pathname *models, text_stream *leafname,
+	text_stream *platform) {
+	filename *F = NULL;
+	TEMPORARY_TEXT(variation)
+	WRITE_TO(variation, "%S-%S", platform, leafname);
 	/* NB: PLATFORM_STRING is a C string, so that %s is correct */
 	F = Filenames::in(models, variation);
 	if (TextFiles::exists(F) == FALSE) F = Filenames::in(models, leafname);
