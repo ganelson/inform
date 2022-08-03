@@ -18,6 +18,8 @@
     --library-card-other-colour: #303030;
     --index-more-box-background-colour: #e0e0e0;
     --index-activity-contents-background-colour: #e8e0c0;
+    --registry-contents-link-colour: #202020;
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -40,6 +42,7 @@
     --library-card-other-colour: #505050;
     --index-more-box-background-colour: #444444;
     --index-activity-contents-background-colour: #727060;
+    --registry-contents-link-colour: #ffffff;
     }
 }
 
@@ -460,11 +463,11 @@ a.registrybuttonlink {
 }
 a.registrycontentslink:link {
 	text-decoration: none;
-	color: #202020;
+	color: var(--registry-contents-link-colour);
 }
 a.registrycontentslink:visited {
 	text-decoration: none;
-	color: #202020;
+	color: var(--registry-contents-link-colour);
 }
 a.registrycontentslink:hover {
 	text-decoration: none;
