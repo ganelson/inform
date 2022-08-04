@@ -14,6 +14,12 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 
 ## News items
 
+### State of Inform talk (30 July 2022)
+
+[The text and slides](https://ganelson.github.io/inform-website/talks/2022/07/31/narrascope-iii.html)
+from a talk about Inform at the Narrascope III conference give an outline of
+expected future developments in the language.
+
 ### Memory saving under the Z-machine (17 July 2022)
 
 When compiling to the Z-machine, Inform now adopts the I6 configuration option
