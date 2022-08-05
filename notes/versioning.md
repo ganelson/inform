@@ -6,7 +6,7 @@ Inform is developed in public. Command-line users comfortable with git can alway
 
 "Release" versions have simple version numbers in the shape `X.Y.Z`: for example, `10.1.0`.
 
-"Unstable" versions are commits of the software between releases. These have much longer version numbers, containing an `-alpha` or `-beta` warning. For example, `10.2.0-beta+6V35`. (The `+6V35` is a daily build number, also only
+"Unstable" versions are commits of the software between releases. These have much longer version numbers, containing an `-alpha` or `-beta` warning. For example, `10.1.0-beta+6V35`. (The `+6V35` is a daily build number, also only
 present on version numbers of unstable versions.)
 
 Note that `inform7 -version` prints out the full version number of the core
@@ -47,6 +47,6 @@ are the `MAJOR`, `MINOR` and `POINT` versions, and:
 
 ![Branching diagram](branching.jpg)
 
-In the core Inform repository, active development is on the `main` branch, at least for now. That will always be a version which is unstable. All releases will be made from short branches off of `main`. For example, there will soon be a branch called `r10.1`. This will contain as few commits as possible, ideally just one, which would be the actual release version of 10.1.0. But if there are then point updates with bug fixes, say 10.1.1, 10.1.2, and so on, those would be further commits to the `r10.1` branch. Later, another short branch from master would be `r10.2`.
+In the core Inform repository, active development is on the `main` branch, at least for now. That will always be a version which is unstable. All releases will be made from short branches off of `main`. For example, there will soon be a branch called `r10.1`. This will contain as few commits as possible, ideally just one, which would be the actual release version of 10.1.0. But if there are then point updates with bug fixes, say 10.1.1, 10.1.2, and so on, those would be further commits to the `r10.1` branch. Later, another short branch from `main` would be `r10.2`.
 
 Releases will be tagged with their version numbers, so the commit representing 10.1.0 will be tagged `v10.1.0`. These will be presented under Releases in the usual Github way, from the column on the right-hand side of the home page. We expect to provide the app installers as associated binary files on those releases, though that won't be the only place they are available.
