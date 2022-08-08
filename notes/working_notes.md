@@ -14,6 +14,18 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 
 ## News items
 
+### Release notes (8 August 2022)
+
+Not a thrilling development, but we continue to get things organised ready for
+formal releases of Inform from this repository. As part of that, the entire
+[archive of release notes of past Inform releases](version_history.md) is now
+converted to Markdown and migrated here.
+
+In the past, changes to Inform were logged in a sort of ebook, and indeed this
+could even be downloaded in ePub format. That was before we had this repository,
+though, and the ebook is being discontinued. Release notes here are clearly
+easier to maintain, and to link to commits and issues.
+
 ### State of Inform talk (30 July 2022)
 
 [The text and slides](https://ganelson.github.io/inform-website/talks/2022/07/31/narrascope-iii.html)
