@@ -37,4 +37,4 @@ Hydrogen   | [8.1](release/8-1.md)       | 6E59  | June 2010      | Parchment su
 Iron       | [9.1](release/9-1.md)       | 6L02  | May 2014       | Language reforms, unifying text
 ...        | [9.2](release/9-2.md)       | 6L38  | August 2014    | Added Android platform
 ...        | [9.3](release/9-3.md)       | 6M62  | December 2015  | Extension projects, unifying actions
-Krypton    | [10.1.0](release/10-1.0.md) | ----  | August 2022    | Inter, open source
+Krypton    | [10.1.0](release/10-1-0.md) | ----  | August 2022    | Inter, open source
