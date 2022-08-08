@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.1.0-beta+6V37 'Krypton' (5 August 2022)
+[Version](notes/versioning.md): 10.1.0-beta+6V38 'Krypton' (8 August 2022)
 
 ## About Inform
 
@@ -20,12 +20,13 @@ code is continuously maintained alongside it: see &#9733; [Inform: The Program](
 Software in this repository is [copyright Graham Nelson 2006-2022](notes/copyright.md)
 except where otherwise stated, and available under the [Artistic License 2.0](https://opensource.org/licenses/Artistic-2.0).
 
-To consult...                   | Turn to...
-------------------------------- | -----------------------------------------
-Brief news about ongoing work   | [notes/working_notes.md](notes/working_notes.md)
-Licencing and copyright policy  | [notes/copyright.md](notes/copyright.md)
-Branching and versioning policy | [notes/versioning.md](notes/versioning.md)
-Language evolution policy       | [https://github.com/ganelson/inform-evolution](https://github.com/ganelson/inform-evolution)
+To consult...                     | Turn to...
+--------------------------------- | -----------------------------------------
+Brief news about ongoing work     | [notes/working_notes.md](notes/working_notes.md)
+Licencing and copyright policy    | [notes/copyright.md](notes/copyright.md)
+Branching and versioning policy   | [notes/versioning.md](notes/versioning.md)
+Language evolution policy         | [https://github.com/ganelson/inform-evolution](https://github.com/ganelson/inform-evolution)
+Version history and release notes | [notes/version_history.md](notes/version_history.md)
 
 ## Repositories
 
