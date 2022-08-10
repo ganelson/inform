@@ -1,5 +1,6 @@
 Constant Story "FwConstReleaseTest";
 Constant Headline "Not a game.^";
+Serial "220528";
 
 Release FORWARD_CONSTANT;
 

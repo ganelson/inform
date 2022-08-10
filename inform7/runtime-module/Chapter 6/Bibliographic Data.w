@@ -104,7 +104,7 @@ should be able to fake the date-stamp with dates of their own choosing.
 	int year_digits = (the_present->tm_year) % 100;
 	WRITE_TO(SN, "%02d%02d%02d",
 		year_digits, (the_present->tm_mon)+1, the_present->tm_mday);
-	Emit::text_constant(Hierarchy::find(SERIAL_MD_HL), BibliographicData::read_uuid());
+	Emit::text_constant(Hierarchy::find(SERIAL_MD_HL), SN);
 	Emit::serial_number(iname, SN);
 	DISCARD_TEXT(SN)
 	Hierarchy::make_available(iname);

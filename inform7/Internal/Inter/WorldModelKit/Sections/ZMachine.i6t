@@ -133,9 +133,11 @@ opcode, and so Glulx followed suit.
 	if (actor ~= player) rfalse;
 	Banner();
 	print "Inform 7 v", (PrintI6Text) I7_FULL_VERSION_NUMBER, "^";
-	print "Identification number: ";
-	for (ix=6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
-	print "^";
+	if (UUID_ARRAY->0 >= 6) {
+		print "Identification number: ";
+		for (ix=6: ix <= UUID_ARRAY->0: ix++) print (char) UUID_ARRAY->ix;
+		print "^";
+	}
 	ix = 0; ! shut up compiler warning
 	if (standard_interpreter > 0) {
 		print "Standard interpreter ",
