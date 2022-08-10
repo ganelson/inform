@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.1.0-beta+6V38 'Krypton' (8 August 2022)
+[Version](notes/versioning.md): 10.1.0-beta+6V39 'Krypton' (10 August 2022)
 
 ## About Inform
 
@@ -133,7 +133,6 @@ Other extensions shipped with Inform are not presented as webs, but as single fi
 * [Basic Help Menu by Emily Short](<inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x>) - __v1__
 * [Basic Screen Effects by Emily Short](<inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x>) - __v8__
 * [Complex Listing by Emily Short](<inform7/Internal/Extensions/Emily Short/Complex Listing.i7x>) - __v9__
-* [Glulx Entry Points by Emily Short](<inform7/Internal/Extensions/Emily Short/Glulx Entry Points.i7x>) - __v11__
 * [Glulx Image Centering by Emily Short](<inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x>) - __v4__
 * [Glulx Text Effects by Emily Short](<inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x>) - __v6__
 * [Inanimate Listeners by Emily Short](<inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x>) - __v1__
@@ -159,8 +158,8 @@ These are templates used by Inform to release story files within a website:
 These are Javascript interpreters used to release such websites in a form which can play the story files interactively online:
 
 * inform7/Internal/Templates - Template websites for Inform 7's 'release as a website' feature
-* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.6)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
-* inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.0)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
+* inform7/Internal/Templates/Parchment - Z-machine in Javascript - __Parchment for Inform 7 (2022.8)__ - from [https://github.com/curiousdannii/parchment], maintained by [Dannii Willis](https://github.com/curiousdannii)
+* inform7/Internal/Templates/Quixe - Glulx in Javascript - __Quixe for Inform 7 (v. 2.2.1)__ - from [https://github.com/erkyrath/quixe], maintained by [Andrew Plotkin](https://github.com/erkyrath)
 
 ### Documentation shipped with Inform
 
