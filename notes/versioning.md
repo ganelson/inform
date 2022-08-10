@@ -22,7 +22,7 @@ source it was compiled from. This one is clearly unstable:
 
 Altogether 30 release versions of Inform were issued in the period 2006-22,
 but that was before the software moved to Github, and so those are not available
-as Releases in this repository. See [notes/version_history.md](notes/version_history.md) for the full catalogue.
+as Releases in this repository. See [notes/version_history.md](version_history.md) for the full catalogue.
 
 So this repository currently contains only unstable versions. The first release
 version of the open-source age, `10.1.0`, will be made in early August 2022.
