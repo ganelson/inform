@@ -1008,7 +1008,7 @@ To add (new entry - K) to (L - list of values of kind K), if absent
 	(documented at ph_addtolist):
 	(- LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 0, 0, {phrase options}); -).
 
-To add (new entry - K) at entry (E - number) in (L - list of values of kind K), if absent
+To add (new entry - K) at entry (E - number) in/from (L - list of values of kind K), if absent
 	(documented at ph_addatentry):
 	(- LIST_OF_TY_InsertItem({-lvalue-by-reference:L}, {new entry}, 1, {E}, {phrase options}); -).
 
@@ -1016,23 +1016,23 @@ To add (LX - list of Ks) to (L - list of values of kind K), if absent
 	(documented at ph_addlisttolist):
 	(- LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 0, 0, {phrase options}); -).
 
-To add (LX - list of Ks) at entry (E - number) in (L - list of values of kind K)
+To add (LX - list of Ks) at entry (E - number) in/from (L - list of values of kind K)
 	(documented at ph_addlistatentry):
 	(- LIST_OF_TY_AppendList({-lvalue-by-reference:L}, {-by-reference:LX}, 1, {E}, 0); -).
 
-To remove (existing entry - K) from (L - list of values of kind K), if present
+To remove (existing entry - K) in/from (L - list of values of kind K), if present
 	(documented at ph_remfromlist):
 	(- LIST_OF_TY_RemoveValue({-lvalue-by-reference:L}, {existing entry}, {phrase options}); -).
 
-To remove (N - list of Ks) from (L - list of values of kind K), if present
+To remove (N - list of Ks) in/from (L - list of values of kind K), if present
 	(documented at ph_remlistfromlist):
 	(- LIST_OF_TY_Remove_List({-lvalue-by-reference:L}, {-by-reference:N}, {phrase options}); -).
 
-To remove entry (N - number) from (L - list of values), if present
+To remove entry (N - number) in/from (L - list of values), if present
 	(documented at ph_rementry):
 	(- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N}, {phrase options}); -).
 
-To remove entries (N - number) to (N2 - number) from (L - list of values), if present
+To remove entries (N - number) to (N2 - number) in/from (L - list of values), if present
 	(documented at ph_rementries):
 	(- LIST_OF_TY_RemoveItemRange({-lvalue-by-reference:L}, {N}, {N2}, {phrase options}); -).
 
@@ -1050,7 +1050,7 @@ To decide what list of Ks is the list of (D - description of values of kind K)
 
 Section 4 - Length of lists
 
-To decide what number is the number of entries in/of (L - a list of values)
+To decide what number is the number of entries in/of/from (L - a list of values)
 	(documented at ph_numberentries):
 	(- LIST_OF_TY_GetLength({-by-reference:L}) -).
 To truncate (L - a list of values) to (N - a number) entries/entry
