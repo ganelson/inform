@@ -4772,19 +4772,19 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<optional-article> hits 83034/166068 nti 13 constraint (none) extremes [1, infinity)
+<optional-article> hits 83045/166090 nti 13 constraint (none) extremes [1, infinity)
     English:
         <article> {...} 
-          (hits 16068/47443) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 16076/47454) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 66966/66966) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 66969/66969) (matched long text) constraint (none) extremes [1, infinity)
 
 <compulsory-article> nti 14 constraint (none) extremes [2, infinity)
     English:
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16522/98944 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16530/98966 nti r2 constraint (none) extremes [1, 1]
 
 <definite-article> internal hits 20373/236440 nti r2 constraint (none) extremes [1, 1]
 
@@ -7112,9 +7112,9 @@
 <rulebook-bud> hits 92/1500 nti 29 constraint DS = {29} extremes [1, infinity)
     English:
         of/for {...} 
-          (hits 48/252) (matched long text) constraint DS = {29} extremes [2, infinity)
+          (hits 48/258) (matched long text) constraint DS = {29} extremes [2, infinity)
         rule about/for/on {...} 
-          (hits 0/200) constraint DS = {29} extremes [3, infinity)
+          (hits 0/206) constraint DS = {29} extremes [3, infinity)
         rule 
           (hits 44/44) (matched: 'rule') constraint CS = {29} extremes [1, 1]
 
@@ -7779,7 +7779,7 @@
 
 <s-rule-name> internal nti 16 constraint (none) extremes [1, infinity)
 
-<s-table-column-name> internal hits 165/18632 nti 17 constraint (none) extremes [1, infinity)
+<s-table-column-name> internal hits 165/18654 nti 17 constraint (none) extremes [1, infinity)
 
 <property-name-as-noun-phrase> hits 36/1576 nti 18 constraint DS = {23} extremes [2, infinity)
     English:
@@ -8124,13 +8124,13 @@
     English:
         <s-table-column-name> entry 
           (hits 135/3831) (matched: 'the locale description priority entry') constraint DS = {29} extremes [2, infinity)
-        <s-table-column-name> in row <s-value-uncached> of <s-value-uncached> 
+        <s-table-column-name> in row <s-value-uncached> in/of/from <s-value-uncached> 
           (hits 0/416) constraint DS = {29} extremes [6, infinity)
         <s-table-column-name> listed in <s-value-uncached> 
           (hits 2/1437) (matched: 'a topic listed in source') constraint DS = {29} extremes [4, infinity)
-        <s-table-column-name> corresponding to <s-table-column-name> of <s-value-uncached> in <s-value-uncached> 
+        <s-table-column-name> corresponding to <s-table-column-name> of <s-value-uncached> in/from <s-value-uncached> 
           (hits 0/196) constraint DS = {29} extremes [8, infinity)
-        <s-table-column-name> of <s-value-uncached> in <s-value-uncached> 
+        <s-table-column-name> of <s-value-uncached> in/from <s-value-uncached> 
           (hits 2/682) (matched long text) constraint DS = {29} extremes [5, infinity)
 
 <s-sentence> hits 1080/2250 nti 28 constraint (none) extremes [3, infinity)

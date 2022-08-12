@@ -2,16 +2,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="indoc_WI.css" rel="stylesheet" type="text/css" />
+{include-css}
 <title>Testing</title>
 <script type='text/javascript'>
-    function showBlock(id) { if( document.getElementById(id) ) document.getElementById(id).style.display = 'block'; }
-    function hideBlock(id) { if( document.getElementById(id) ) document.getElementById(id).style.display = 'none'; }
+    function showBlock(id) \{ if( document.getElementById(id) ) document.getElementById(id).style.display = 'block'; \}
+    function hideBlock(id) \{ if( document.getElementById(id) ) document.getElementById(id).style.display = 'none'; \}
 </script>
 </head>
-<body class="paper papertint" onLoad="test();">
-<!-- START IGNORE -->
-
+<body onLoad="test();">
 <div id="welcome"><p>Welcome to the new Testing panel. This combines the old Skein and
 Transcript panels. Like them, it records every play through the story. It helps with testing
 because it compares the text this time with the &quot;blessed&quot; text on previous plays. The panel
@@ -65,7 +63,6 @@ downwards, so later turns are below earlier ones.</p></div>
 lets you save out the text from the currently selected thread of play. Play All
 systematically plays through every variation in the diagram, restarting the story
 as needed to do so, so that it tests every knot.</p></div>
-
-<!-- END IGNORE -->
+<hr style="margin-top: 18px;">
 </body>
 </html>

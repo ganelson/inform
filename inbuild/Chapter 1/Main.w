@@ -15,6 +15,7 @@ int dry_run_mode = FALSE, build_trace_mode = FALSE;
 inbuild_nest *destination_nest = NULL;
 inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
+pathname *preprocess_HTML_destination = NULL;
 
 @h Main routine.
 When Inbuild is called at the command line, it begins at |main|, like all C
@@ -314,6 +315,8 @@ other options to the selection defined here.
 @e VERSIONS_IN_FILENAMES_CLSW
 @e VERIFY_REGISTRY_CLSW
 @e BUILD_REGISTRY_CLSW
+@e PREPROCESS_HTML_CLSW
+@e PREPROCESS_HTML_TO_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -363,6 +366,10 @@ other options to the selection defined here.
 		L"verify roster.json metadata of registry in the directory X");
 	CommandLine::declare_switch(BUILD_REGISTRY_CLSW, L"build-registry", 2,
 		L"construct HTML menu pages for registry in the directory X");
+	CommandLine::declare_switch(PREPROCESS_HTML_CLSW, L"preprocess-html", 2,
+		L"construct HTML page based on X");
+	CommandLine::declare_switch(PREPROCESS_HTML_TO_CLSW, L"preprocess-html-to", 2,
+		L"set destination for -preprocess-html to be X");
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -409,6 +416,16 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 			if (Registries::read_roster(selected_registry) == FALSE) exit(1);
 			if (id == BUILD_REGISTRY_CLSW)
 				Registries::build(selected_registry);
+			break;
+		case PREPROCESS_HTML_TO_CLSW:
+			preprocess_HTML_destination = Pathnames::from_text(arg);
+			break;
+		case PREPROCESS_HTML_CLSW:
+			if (preprocess_HTML_destination == NULL)
+				Errors::fatal("must specify -preprocess-html-to P to give destination path P first");
+			filename *F = Filenames::from_text(arg);
+			filename *T = Filenames::in(preprocess_HTML_destination, Filenames::get_leafname(F));
+			Registries::preprocess_HTML(T, F);
 			break;
 	}
 	Supervisor::option(id, val, arg, state);

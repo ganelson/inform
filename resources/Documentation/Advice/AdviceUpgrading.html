@@ -2,22 +2,27 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="indoc_WI.css" rel="stylesheet" type="text/css" />
+{include-css}
 <title>Upgrading?</title>
 </head>
-<body class="paper papertint">
-<!-- START IGNORE -->
-<p class="sectionheading">Upgrading?</p>
-<p>Inform in 2015 includes several hundred bug fixes as compared with the 2014 releases. The language has only changed in minor ways, but the Inform app can now be used to make Extension projects as well as stories, and the old Skein and Transcript panels are merged into a new one called Testing. See the ebook &quot;Changes to Inform&quot;, which you can access from the Launcher.</p>
+<body>
+<p><span class="headingpaneltext">Upgrading?</span></p>
 
-<p>If you haven't used Inform since before 2014, though, there are big changes. The Mac OS X application was considerably enhanced, for one thing, but the changes go deeper than that. Here are just the headlines: for the full story, see the ebook &quot;Changes to Inform&quot;, which you can access from the Launcher.</p>
+<p>Between 2016 and 2022, Inform was rewritten from top to bottom, and prepared
+for open-sourcing: that is, for being published as free software which anybody
+can inspect, fix bugs in, or contribute to. The software changed enormously
+as a result, seen from the inside, but for users it remains almost the same
+(except for hundreds of bug fixes).</p>
 
-<p>Firstly: the old &quot;Materials&quot; folder has been renamed &quot;.materials&quot;. So if your project is called &quot;Dream.inform&quot; then it's accompanied by &quot;Dream.materials&quot;, not &quot;Dream Materials&quot; as before.</p>
+<p>There are exceptions to this, however, for users who mix their Inform source
+text with low-level I6 code using "Include (- ... -)". Very few users do this
+themselves, but it's more common to make use of extensions which do. Quite a
+few popular extensions have needed to be rewritten for the version 10 Inform,
+and you may therefore need to update your copies of them. The Public Library
+in this app may be a good place to start.</p>
 
-<p>Secondly: the language has much better handling of text, getting rid of &quot;indexed&quot; text entirely, and providing grammatical adaptation - the ability to turn &quot;You go out&quot; automatically into &quot;They went out&quot;, for example. There's also real number support with scientific functions (so you can perform physical calculations and have Inform check the dimensions, for example); there are named constants; there's a new ability for projects to have their own private Extensions; and so on.</p>
-
-<p>Thirdly: a whole pile of phrases which have been deprecated since before 2010 have finally been removed from the language. If you're still using any of those, you'll need to reword - there's advice on this in the Changes book.</p>
-
-<!-- END IGNORE -->
+<p>The archive of release notes for Inform, detailing essentially every change
+since 2006, can be found at <b>https://github.com/ganelson/inform</b>.<p>
+<hr style="margin-top: 18px;">
 </body>
 </html>

@@ -659,3 +659,22 @@ JSON_value *Registries::subsection_from_textual_id(inbuild_registry *R, text_str
 	WRITE_TO(STDERR, "error: no such subsection ID as '%S'\n", ssid);
 	return NULL;
 }
+
+@h Simpler preprocessing.
+A simpler version of the above preprocessor is convenient as a way of manufacting
+small HTML files needed in the Inform apps: for example, to display advice text
+on the launcher panels. There's nothing interesting about those files except that
+they may need platform-specific CSS in order to display properly in Dark Mode,
+use congenial fonts, and so on.
+
+We preprocess from |F| to |T|:
+
+=
+void Registries::preprocess_HTML(filename *T, filename *F) {
+	linked_list *ML = NEW_LINKED_LIST(preprocessor_macro);
+	Preprocessor::new_macro(ML, I"include-css", I"?platform: PLATFORM",
+		Registries::css_expander, NULL);
+	WRITE_TO(STDOUT, "%f -> %f\n", F, T);
+	Preprocessor::preprocess(F, T, NULL, ML,
+		NULL_GENERAL_POINTER, '#', UTF8_ENC);
+}
