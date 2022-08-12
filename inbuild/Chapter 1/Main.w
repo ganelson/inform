@@ -16,6 +16,7 @@ inbuild_nest *destination_nest = NULL;
 inbuild_registry *selected_registry = NULL;
 text_stream *filter_text = NULL;
 pathname *preprocess_HTML_destination = NULL;
+text_stream *preprocess_HTML_app = NULL;
 
 @h Main routine.
 When Inbuild is called at the command line, it begins at |main|, like all C
@@ -317,6 +318,7 @@ other options to the selection defined here.
 @e BUILD_REGISTRY_CLSW
 @e PREPROCESS_HTML_CLSW
 @e PREPROCESS_HTML_TO_CLSW
+@e PREPROCESS_APP_CLSW
 
 @<Read the command line@> =	
 	CommandLine::declare_heading(
@@ -370,6 +372,8 @@ other options to the selection defined here.
 		L"construct HTML page based on X");
 	CommandLine::declare_switch(PREPROCESS_HTML_TO_CLSW, L"preprocess-html-to", 2,
 		L"set destination for -preprocess-html to be X");
+	CommandLine::declare_switch(PREPROCESS_APP_CLSW, L"preprocess-app", 2,
+		L"use CSS suitable for app platform X (macos, windows, linux)");
 	Supervisor::declare_options();
 
 	CommandLine::read(argc, argv, NULL, &Main::option, &Main::bareword);
@@ -420,12 +424,15 @@ void Main::option(int id, int val, text_stream *arg, void *state) {
 		case PREPROCESS_HTML_TO_CLSW:
 			preprocess_HTML_destination = Pathnames::from_text(arg);
 			break;
+		case PREPROCESS_APP_CLSW:
+			preprocess_HTML_app = Str::duplicate(arg);
+			break;
 		case PREPROCESS_HTML_CLSW:
 			if (preprocess_HTML_destination == NULL)
 				Errors::fatal("must specify -preprocess-html-to P to give destination path P first");
 			filename *F = Filenames::from_text(arg);
 			filename *T = Filenames::in(preprocess_HTML_destination, Filenames::get_leafname(F));
-			Registries::preprocess_HTML(T, F);
+			Registries::preprocess_HTML(T, F, preprocess_HTML_app);
 			break;
 	}
 	Supervisor::option(id, val, arg, state);

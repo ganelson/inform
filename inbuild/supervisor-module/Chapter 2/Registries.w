@@ -670,11 +670,26 @@ use congenial fonts, and so on.
 We preprocess from |F| to |T|:
 
 =
-void Registries::preprocess_HTML(filename *T, filename *F) {
+void Registries::preprocess_HTML(filename *T, filename *F, text_stream *platform) {
 	linked_list *ML = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor::new_macro(ML, I"include-css", I"?platform: PLATFORM",
-		Registries::css_expander, NULL);
+		Registries::preprocess_css_expander, NULL);
 	WRITE_TO(STDOUT, "%f -> %f\n", F, T);
 	Preprocessor::preprocess(F, T, NULL, ML,
-		NULL_GENERAL_POINTER, '#', UTF8_ENC);
+		STORE_POINTER_text_stream(platform), '#', UTF8_ENC);
+}
+
+void Registries::preprocess_css_expander(preprocessor_macro *mm, preprocessor_state *PPS,
+	text_stream **parameter_values, preprocessor_loop *loop, text_file_position *tfp) {
+	text_stream *platform = parameter_values[0];
+	if (Str::len(platform) == 0) platform = RETRIEVE_POINTER_text_stream(PPS->specifics);
+	filename *prototype = InstalledFiles::filename_for_platform(CSS_SET_BY_PLATFORM_IRES, platform);
+	WRITE_TO(PPS->dest, "<style type=\"text/css\">\n");
+	WRITE_TO(PPS->dest, "<!--\n");
+	TextFiles::read(prototype, FALSE, "can't open include file",
+		TRUE, Registries::scan_line, NULL, PPS);
+	prototype = InstalledFiles::filename_for_platform(CSS_FOR_STANDARD_PAGES_IRES, platform);
+	TextFiles::read(prototype, FALSE, "can't open include file",
+		TRUE, Registries::scan_line, NULL, PPS);
+	WRITE_TO(PPS->dest, "--></style>\n");
 }

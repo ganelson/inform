@@ -864,15 +864,15 @@ $(INTERNALEXEMPLUM): \
 # agree with that.
 
 {define: compile-inapp-advice}
-	ifdef ADVICEHTML
+ifdef ADVICEHTML
 	mkdir -p $(ADVICEHTML)
-	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-html resources/Documentation/Advice/AdviceCredits.html
-	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-html resources/Documentation/Advice/AdviceKeyboardShortcuts.html
-	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-html resources/Documentation/Advice/AdviceMaterialsFolder.html
-	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-html resources/Documentation/Advice/AdviceNewToInform.html
-	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-html resources/Documentation/Advice/AdviceUpgrading.html
-	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-html resources/Documentation/Advice/TestingTemplate.html
-	endif
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceCredits.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceKeyboardShortcuts.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceMaterialsFolder.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceNewToInform.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceUpgrading.html
+	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/TestingTemplate.html
+endif
 {end-define}
 
 .PHONY: forcetransferadvice
