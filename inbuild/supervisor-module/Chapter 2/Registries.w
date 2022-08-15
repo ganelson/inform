@@ -667,13 +667,24 @@ on the launcher panels. There's nothing interesting about those files except tha
 they may need platform-specific CSS in order to display properly in Dark Mode,
 use congenial fonts, and so on.
 
-We preprocess from |F| to |T|:
+We preprocess from |F| to |T|, except that we look to see if there's a platform
+variant of the file |F| first: for example, if |F| is |Fruits/bananas.html|, and
+the platform is |wii|, then we look for |Fruits/bananas-wii.html| and use that
+instead. (If not, we just use |F|.) In practice, for example, this allows the
+file in the apps which lists keyboard shortcuts to vary with platform.
 
 =
 void Registries::preprocess_HTML(filename *T, filename *F, text_stream *platform) {
 	linked_list *ML = NEW_LINKED_LIST(preprocessor_macro);
 	Preprocessor::new_macro(ML, I"include-css", I"?platform: PLATFORM",
 		Registries::preprocess_css_expander, NULL);
+	TEMPORARY_TEXT(variant)
+	Filenames::write_unextended_leafname(variant, F);
+	WRITE_TO(variant, "-%S", platform);
+	Filenames::write_extension(variant, F);
+	filename *variant_F = Filenames::in(Filenames::up(F), variant);
+	if (TextFiles::exists(variant_F)) F = variant_F;
+	DISCARD_TEXT(variant)
 	WRITE_TO(STDOUT, "%f -> %f\n", F, T);
 	Preprocessor::preprocess(F, T, NULL, ML,
 		STORE_POINTER_text_stream(platform), '#', UTF8_ENC);
