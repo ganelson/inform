@@ -1,0 +1,16 @@
+Inform 7 v10.1.0 has started.
+I've now read your source text, which is 26 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32164 words long.
+Problem__ PM_TableCreatedMapClash
+  >--> You wrote 'Some lengths are defined by the Table of lengths' (source
+    text, line 3), and row 1 of the first column of that table is 'above' (source
+    text, line 7), which I ought to create as a new value of a length. But I
+    can't do that: it already has a meaning (it refers to a map direction).
+Problem__ PM_TableCreatedMapClash
+  >--> You wrote 'Some lengths are defined by the Table of lengths' (source
+    text, line 3), and row 2 of the first column of that table is 'below' (source
+    text, line 8), which I ought to create as a new value of a length. But I
+    can't do that: it already has a meaning (it refers to a map direction).
+Inform 7 has finished.

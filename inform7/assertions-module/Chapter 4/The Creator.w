@@ -352,7 +352,10 @@ from the tree.
 
 @<Perform creation on a CREATED node@> =
 	wording W = Node::get_text(p);
-	if (Wordings::empty(W)) internal_error("CREATED node without name");
+	if (Wordings::empty(W)) {
+		if (problem_count > 0) return; /* to recover from PM_TableDefiningNothing */
+		internal_error("CREATED node without name");
+	}
 	if (<grammatical-gender-marker>(W)) {
 		W = GET_RW(<grammatical-gender-marker>, 1);
 		Annotations::write_int(p, explicit_gender_marker_ANNOT, <<r>> + 1);
