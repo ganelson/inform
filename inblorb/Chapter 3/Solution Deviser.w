@@ -98,7 +98,8 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 			@<Look for an "annotation" tag and set the annotation text from it@>;
 		}
 	} else {
-		if (Str::len(node_id) > 0) current_skein_node = Solution::find_node_with_ID(node_id);
+		if (Str::len(node_id) > 0)
+			current_skein_node = Solution::find_node_with_ID(node_id);
 		if (current_skein_node) {
 			TEMPORARY_TEXT(child_node_id)
 			Solution::find_node_ID_in_tag(child_node_id, line, "child");
@@ -147,7 +148,7 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 
 @<Look for a "command" tag and set the command text from it@> =
 	text_stream *p = current_skein_node->command;
-	if (Solution::find_text_of_tag(p, line, "command")) {
+	if ((Str::len(p) == 0) && (Solution::find_text_of_tag(p, line, "command"))) {
 		if (verbose_mode) PRINT("Raw command '%S'\n", p);
 		Solution::undo_XML_escapes_in_string(p);
 		LOOP_THROUGH_TEXT(pos, p)
@@ -157,10 +158,11 @@ void Solution::read_skein_line(text_stream *line, int pass) {
 
 @<Look for an "annotation" tag and set the annotation text from it@> =
 	text_stream *p = current_skein_node->annotation;
-	if (Solution::find_text_of_tag(p, line, "annotation")) {
+	if ((Str::len(p) == 0) && (Solution::find_text_of_tag(p, line, "annotation"))) {
 		if (verbose_mode) PRINT("Raw annotation '%S'\n", p);
 		Solution::undo_XML_escapes_in_string(p);
-		if (verbose_mode) PRINT("Processed annotation '%S'\n", p);
+		if (verbose_mode) PRINT("Processed annotation of %S = '%S'\n",
+			current_skein_node->id, p);
 	}
 
 @ Try to find a node ID element attached to a particular tag on the line:
@@ -204,7 +206,7 @@ int Solution::find_text_of_tag(OUTPUT_STREAM, text_stream *line, char *tag) {
 skein_node *Solution::find_node_with_ID(text_stream *id) {
 	skein_node *skn;
 	LOOP_OVER(skn, skein_node)
-		if (Str::eq(id, skn->id) == 0)
+		if (Str::eq(id, skn->id))
 			return skn;
 	return NULL;
 }
@@ -252,7 +254,8 @@ void Solution::identify_relevant_lines(void) {
 	skein_node *skn;
 	LOOP_OVER(skn, skein_node) {
 		text_stream *p = skn->annotation;
-		if (verbose_mode) PRINT("Knot %S is annotated '%S'\n", skn->id, p);
+		if ((verbose_mode) && (Str::len(p) > 0))
+			PRINT("Knot %S is annotated '%S'\n", skn->id, p);
 		if ((Str::get_at(p, 0) == '*') && (Str::get_at(p, 1) == '*') && (Str::get_at(p, 2) == '*')) {
 			int i = 3, j; while (Str::get_at(p, i) == ' ') i++;
 			for (j=0; Str::get_at(p, i); i++) Str::put_at(p, j++, Str::get_at(p, i)); Str::put_at(p, j, 0);
@@ -322,6 +325,8 @@ relevant endings we can get to from there.
 
 =
 void Solution::recursively_solve(OUTPUT_STREAM, skein_node *skn, skein_node *last_branch) {
+	if (verbose_mode) PRINT("recursively_solve at node %S, last branch %S\n",
+		skn?(skn->id):I"NONE", (last_branch)?last_branch->id:I"NONE");
 	@<Follow the skein down until we reach a divergence, if we do@>;
 	@<Print the various alternatives from this knot where the threads diverge@>;
 	@<Show the solutions down each of these alternative lines in turn@>;
@@ -336,13 +341,11 @@ until we reach a choice. (If we never do reach a choice, we can return --
 there is nowhere else to reach.)
 
 @<Follow the skein down until we reach a divergence, if we do@> =
-	while ((skn->child == NULL) || (skn->child->sibling == NULL)) {
-		if (skn->child == NULL) return;
-		if (skn->child->sibling == NULL) {
-			skn = skn->child;
-			Solution::write_command(OUT, skn, NORMAL_COMMAND);
-		}
+	while ((skn->child) && (skn->child->sibling == NULL)) {
+		skn = skn->child;
+		Solution::write_command(OUT, skn, NORMAL_COMMAND);
 	}
+	if (skn->child == NULL) return;
 
 @ Thus we are here only when there are at least two alternative commands
 we might use from position |skn|.
@@ -378,6 +381,14 @@ we might use from position |skn|.
 
 =
 void Solution::write_command(OUTPUT_STREAM, skein_node *cmd_skn, int form) {
+	if (verbose_mode) {
+		switch (form) {	
+			case NORMAL_COMMAND: PRINT("NORMAL_COMMAND: "); break;
+			case BRANCH_TO_END_COMMAND: PRINT("BRANCH_TO_END_COMMAND: "); break;
+			case BRANCH_TO_LINE_COMMAND: PRINT("BRANCH_TO_LINE_COMMAND: "); break;
+		}
+		PRINT("%S\n", cmd_skn->command);
+	}
 	if (form != NORMAL_COMMAND) WRITE("  ");
 	WRITE("%S", cmd_skn->command);
 	if (form != NORMAL_COMMAND) {
