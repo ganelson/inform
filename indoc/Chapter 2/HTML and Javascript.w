@@ -39,7 +39,7 @@ Otherwise, of course, we need to make an images folder alongside the HTML
 we produce. It will be called |images|, so relative to the HTML, the URL
 would then be |images/orange.png|.
 
-However, it"s also possible that the book"s instructions tell us to use
+However, it's also possible that the book's instructions tell us to use
 images from an already-existing location instead.
 
 Note that each time the URL of an image is looked up, we make a note of it,

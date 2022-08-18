@@ -235,7 +235,7 @@ int PropertyInferences::either_or_state(inference_subject *subj, property *prn) 
 }
 
 @ And this is a variant which does not inherit: e.g. if the kind "bird" has
-the property "flightless" but Orville, an individual instance of"bird" has no
+the property "flightless" but Orville, an individual instance of "bird" has no
 inference about this property, then we would return |LIKELY_CE| if asked about
 "bird", but |UNKNOWN_CE| if asked Orville. The previous function would return
 |LIKELY_CE| to both because Orville ordinarily inherits from his kind.

@@ -290,7 +290,7 @@ means "always display three times its normal size", whereas
 = (text as Blurb)
 	picture "backdrop/png" scale min 1/10 max 8/1
 =
-means"you can display this anywhere between one tenth normal size and
+means "you can display this anywhere between one tenth normal size and
 eight times normal size, but if possible it ought to be just its normal
 size".
 

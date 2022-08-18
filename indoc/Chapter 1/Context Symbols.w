@@ -65,7 +65,7 @@ int Symbols::perform_ifdef(text_stream *cond) {
 }
 
 @ There is an expression grammar here, which we apply correctly if the
-condition is well-formed; if it"s a mess, we try to return 0, but don"t go
+condition is well-formed; if it's a mess, we try to return 0, but don't go
 to any trouble to report errors.
 
 Any condition can be bracketed; otherwise we have the unary operator |^|
