@@ -639,7 +639,7 @@ All software has bugs, and Inform is no exception. The most obvious bugs are the
 
 It is very helpful for users to report faults, so that the program can be improved for everyone else. To report a fault, please first check with the Inform home page to make sure that the version of Inform you have used to detect the fault is the latest version available. You can find the latest versions at
 
-	http://inform7.com/download/
+	http://inform7.com/downloads/
 
 If the bug is still present in the latest version, please report the bug using Inform's bug tracking database. Links for this can be found from the Inform source code page:
 
@@ -15675,7 +15675,7 @@ The sound files provided must have one of two formats: AIFF or Ogg Vorbis. <b>AI
 
 Except for very short sound effects, we recommend using <b>Ogg Vorbis</b> instead. This is a compressed format whose file sizes will typically be more like 1 MB per minute. Inform uses Ogg Vorbis as the only format safe from licencing and patent disputes. (We would very much have liked to provide MP3 support, but this is no longer legally possible for free software.)
 
-Support for Ogg Vorbis is not built in to either Windows or Mac OS X, and any sound recording you make will probably have to be made first to another format (perhaps AIFF or WAV), and then converted. See <b>www.vorbis.com</b> for encoding software which can convert from other sound formats to Vorbis.
+Support for Ogg Vorbis is not built in to either Windows or Mac OS X, and any sound recording you make will probably have to be made first to another format (perhaps AIFF or WAV), and then converted. See <b>xiph.org/vorbis</b> for encoding software which can convert from other sound formats to Vorbis.
 
 Lastly, it must be remembered that recording industry bodies are very hostile to established copyright law covering fair use, parody, quotation of insubstantial passages, etc., when it comes to mixing or using commercially released music. They are well-resourced and highly litigious. If you use sound effects not originated by yourself, you do so at your own risk, even if what you do is perfectly legal on any reading of the statutes.
 
@@ -16431,7 +16431,7 @@ Accompanying files are not the only things which can be included in a "release a
 
 	Release along with cover art ("A stone gargoyle"), a file of "Collegio magazine" called "Collegio.pdf" and a file of "The mating call of the green wyvern" called "Mating Wyverns.mp3".
 
-Cover art can not only be used to advertise a work of IF, it is also displayed to players by certain interpreters, such as Zoom or Spatterlight for OS X, or Windows Frotz for Windows. It is also used on the IFDB (ifdb.tads.org), and by browsing applications. If Zoom is installed, then on Mac OS X Leopard, the Finder shows cover art directly:
+Cover art can not only be used to advertise a work of IF, it is also displayed to players by certain interpreters, such as Zoom or Spatterlight for OS X, or Windows Frotz for Windows. It is also used on the IFDB (ifdb.org), and by browsing applications. If Zoom is installed, then on Mac OS X Leopard, the Finder shows cover art directly:
 
 ///coverflow.png///
 
@@ -16538,7 +16538,7 @@ Inform ships with the "Parchment" and "Quixe" interpreters built in. By default 
 
 Vorple has seen rapid development. In its early days it was included as part of the Inform app, but it has now evolved into a dynamic project which is better served by its own website than from here:
 
-	http://vorple-if.com
+	https://vorple-if.com
 
 [x] Website templates
 
@@ -17142,11 +17142,11 @@ The Archive is very much a library, for long-term archiving, rather than a book-
 
 Uploading a work to the IF Archive is not too difficult, and can be done in two ways. One way is to use the archive's web form at:
 
-	http://www.ifarchive.org/cgi-bin/upload.py 
+	https://upload.ifarchive.org/cgi-bin/upload.py
 
 The other is to create a new page at the Interactive Fiction Database, at:
 
-	http://ifdb.tads.org/
+	https://ifdb.org/
 
 It's then possible to upload the story file to the IF Archive from IFDB. This is easiest all round, since it allows both IFDB and IF Archive to be updated at once.
 
@@ -17165,7 +17165,7 @@ Committing a story to the Archive is meant to be permanent. While the maintainer
 
 Once the story file has a home online, and a URL (that is, a web address) at which it can be found, it needs to be registered with IFDB:
 
-	http://ifdb.tads.org/
+	https://ifdb.org/
 
 the Interactive Fiction Database. Just as the IF Archive is a repository for stories themselves, IFDB is a database containing information about them - titles, authors, locations, solutions, reviews, recommendation lists and more.
 
@@ -17194,7 +17194,7 @@ Some awards for interactive fiction, such as the annual XYZZY Awards, require a 
 
 One very common way to get players for IF is to enter the story into an IF competition. The annual IF Competition, often just called IFComp, is the most prestigious and has the widest field, but the Spring Thing, ParserComp, EctoComp, and other events also catch people's attention. Entering a competition is a path of least effort for authors promoting their new work, because the competition organizer usually takes care of hosting and archiving submitted stories, promoting the competition as a whole, collecting votes, and encouraging players to post reviews. Different contests have different arrangements. The <b>ifwiki</b> usually posts a list of current and upcoming competitions, as well as lists of results for those recently past, on the front page:
 
-	http://www.ifwiki.org
+	https://www.ifwiki.org
 
 Some competitions also have their own websites, at least at the relevant times of year.
 
