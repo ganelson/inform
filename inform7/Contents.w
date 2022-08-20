@@ -1,7 +1,7 @@
 Title: inform7
 Author: Graham Nelson
 Version Name: Krypton
-Version Number: 10.1.0
+Version Number: 10.2.0
 Purpose: The core compiler in a natural-language design system for interactive fiction.
 Language: InC
 Preform Language: English

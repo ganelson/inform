@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.1.0-beta+6V44 'Krypton' (20 August 2022)
+[Version](notes/versioning.md): 10.2.0-beta+6V44 'Krypton' (20 August 2022)
 
 ## About Inform
 
@@ -103,9 +103,9 @@ their human-readable forms.
 This most important contents of this repository are the source webs for the
 following command-line tools:
 
-* inbuild - __version 10.1.0__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inbuild/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inbuild/M-ui.html)<br>A simple build and package manager for the Inform tools.
-* inform7 - __version 10.1.0__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inform7/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inform7/M-cu.html)<br>The core compiler in a natural-language design system for interactive fiction.
-* inter - __version 10.1.0__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inter/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inter/M-ui.html)<br>For handling intermediate Inform code.
+* inbuild - __version 10.2.0__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inbuild/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inbuild/M-ui.html)<br>A simple build and package manager for the Inform tools.
+* inform7 - __version 10.2.0__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inform7/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inform7/M-cu.html)<br>The core compiler in a natural-language design system for interactive fiction.
+* inter - __version 10.2.0__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inter/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inter/M-ui.html)<br>For handling intermediate Inform code.
 * inblorb - __version 4__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inblorb/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inblorb/M-ui.html)<br>The packaging stage of the Inform 7 system, which releases a story file in the blorbed format.
 * indoc - __version 4__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/indoc/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/indoc/M-iti.html)<br>The documentation-formatter for the Inform 7 system.
 * inpolicy - __version 1__ - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/inpolicy/index.html) - [&#9654;&nbsp;Documentation](https://ganelson.github.io/inform/inpolicy/M-ui.html)<br>A lint-like tool to check up on various policies used in Inform source code.
