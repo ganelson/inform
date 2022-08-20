@@ -639,7 +639,7 @@ All software has bugs, and Inform is no exception. The most obvious bugs are the
 
 It is very helpful for users to report faults, so that the program can be improved for everyone else. To report a fault, please first check with the Inform home page to make sure that the version of Inform you have used to detect the fault is the latest version available. You can find the latest versions at
 
-	http://inform7.com/download/
+	http://inform7.com/downloads/
 
 If the bug is still present in the latest version, please report the bug using Inform's bug tracking database. Links for this can be found from the Inform source code page:
 
