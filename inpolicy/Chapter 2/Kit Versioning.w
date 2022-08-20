@@ -20,6 +20,7 @@ void KitVersioning::sync_versions(void) {
 	web_md *inform7_web =
 		WebMetadata::get_without_modules(Pathnames::from_text(I"inform7"), NULL);
 	semantic_version_number core_V = inform7_web->version_number;
+	PRINT("inform7 web has version %v\n", &core_V);
 	KitVersioning::iterate(core_V);
 }
 
@@ -77,11 +78,26 @@ semantic_version_number KitVersioning::read_version(pathname *kit, semantic_vers
 			return VersionNumbers::null();
 		}
 	}
-	if (VersionNumbers::is_null(set_to) == FALSE) 
-		if (VersionNumbers::ne(set_to, V))
-			@<Change the version to set_to@>;
+	if (VersionNumbers::is_null(set_to) == FALSE)
+		@<Decide whether to impose the new version@>;
 	return V;
 }
+
+@ The following test used to be just |VersionNumbers::ne(set_to, V)|, but this,
+because it properly followed the semver standard, regarded them as equal if they
+differed only in the build code -- so |10.1.0-beta+6V20| would not be updated to
+|10.1.0-beta+6V44|, for example. We now force a sync if there is any textual
+difference at all.
+
+@<Decide whether to impose the new version@> =
+	TEMPORARY_TEXT(a)
+	TEMPORARY_TEXT(b)
+	WRITE_TO(a, "%v", &set_to);
+	WRITE_TO(b, "%v", &V);
+	if (Str::ne(a, b))
+		@<Change the version to set_to@>;
+	DISCARD_TEXT(a)
+	DISCARD_TEXT(b)
 
 @ We change the JSON object for the kit's metadata (at object.is.version), and
 then encode the object out as a new version of the file:

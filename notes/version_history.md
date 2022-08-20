@@ -2,8 +2,8 @@
 
 See [versions](versions.md) for details of Inform's version numbering.
 
-The next version to be released will be 10.1.0, and its [draft release note is here](release/10-1-0.md).
-Links in the following table are to the archive of release notes past.
+Links in the following table are to the archive of release notes. This
+is in chronological order, with the current release at the bottom.
 
 Codename   | Version                     | Build | Date           | Highlights
 ---------- | --------------------------- | ----- | -------------- | ----------
