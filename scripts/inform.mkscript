@@ -882,6 +882,7 @@ forcetransferadvice:
 {define: compile-inapp-documentation}
 	mkdir -p $(BUILTINHTMLINNER)
 	$(INDOCX) -from resources/Documentation -xrefs '$(INFORM7WEB)/Internal/HTML/xrefs.txt' $(INDOCOPTS)
+	cp -f $(INFORM7WEB)/Internal/HTML/xrefs.txt "$(INTERNAL)/HTML"
 {end-define}
 
 .PHONY: transferdocumentation
