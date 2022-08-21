@@ -424,7 +424,7 @@ void StandardProblems::issue_problems_banner(OUTPUT_STREAM, char *verdict) {
 	HTML_CLOSE("div");
 	HTML_OPEN_WITH("div", "class=\"headingrubric\"");
 	HTML::begin_span(OUT, I"headingpanelrubric");
-	WRITE("Produced by %B (build %B)", FALSE, TRUE);
+	WRITE("Produced by %B", FALSE, TRUE);
 	HTML::end_span(OUT);
 	HTML_CLOSE("div");
 	HTML_CLOSE("div");
