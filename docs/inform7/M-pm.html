@@ -70,12 +70,12 @@ which take more than 1/1000th of the total running time.
 
 <pre class="undisplayed-code all-displayed-code code-font">
 <span class="plain-syntax">100.0% in inform7 run</span>
-<span class="plain-syntax">     71.2% in compilation to Inter</span>
-<span class="plain-syntax">         49.7% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
-<span class="plain-syntax">          4.8% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
-<span class="plain-syntax">          3.8% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
-<span class="plain-syntax">          2.0% in </span><a href="../assertions-module/5-id.html#SP4" class="internal">ImperativeDefinitions::assess_all</a>
+<span class="plain-syntax">     70.9% in compilation to Inter</span>
+<span class="plain-syntax">         50.2% in </span><a href="../core-module/1-htc.html#SP9" class="internal">Sequence::undertake_queued_tasks</a>
+<span class="plain-syntax">          4.7% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pre_pass</a>
+<span class="plain-syntax">          3.4% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_1</a>
 <span class="plain-syntax">          2.0% in </span><a href="../runtime-module/6-pi.html#SP1" class="internal">RTPhrasebook::compile_entries</a>
+<span class="plain-syntax">          1.8% in </span><a href="../assertions-module/5-id.html#SP4" class="internal">ImperativeDefinitions::assess_all</a>
 <span class="plain-syntax">          1.4% in </span><a href="../runtime-module/5-kc.html#SP10" class="internal">RTKindConstructors::compile</a>
 <span class="plain-syntax">          1.0% in </span><a href="../core-module/1-htc.html#SP12" class="internal">Sequence::lint_inter</a>
 <span class="plain-syntax">          0.6% in </span><a href="../assertions-module/2-ptmn.html#SP1" class="internal">MajorNodes::pass_2</a>
@@ -86,21 +86,20 @@ which take more than 1/1000th of the total running time.
 <span class="plain-syntax">          0.2% in </span><a href="../runtime-module/3-cm.html#SP1" class="internal">CompletionModule::compile</a>
 <span class="plain-syntax">          0.2% in </span><a href="../knowledge-module/4-is.html#SP27" class="internal">InferenceSubjects::emit_all</a>
 <span class="plain-syntax">          0.2% in </span><a href="../runtime-module/5-kc.html#SP10_7" class="internal">RTKindConstructors::compile_permissions</a>
-<span class="plain-syntax">          0.2% in </span><a href="../core-module/1-wtc.html#SP9" class="internal">Task::make_built_in_kind_constructors</a>
 <span class="plain-syntax">          0.2% in </span><a href="../knowledge-module/5-tmw.html#SP3" class="internal">World::stages_II_and_III</a>
 <span class="plain-syntax">          2.8% not specifically accounted for</span>
-<span class="plain-syntax">     25.7% in running Inter pipeline</span>
-<span class="plain-syntax">          9.9% in step 14/15: generate inform6 -&gt; auto.inf</span>
-<span class="plain-syntax">          5.6% in step 5/15: load-binary-kits</span>
-<span class="plain-syntax">          5.2% in step 6/15: make-synoptic-module</span>
+<span class="plain-syntax">     26.1% in running Inter pipeline</span>
+<span class="plain-syntax">         10.2% in step 14/15: generate inform6 -&gt; auto.inf</span>
+<span class="plain-syntax">          5.7% in step 5/15: load-binary-kits</span>
+<span class="plain-syntax">          5.3% in step 6/15: make-synoptic-module</span>
 <span class="plain-syntax">          1.4% in step 9/15: make-identifiers-unique</span>
 <span class="plain-syntax">          0.4% in step 12/15: eliminate-redundant-operations</span>
 <span class="plain-syntax">          0.4% in step 4/15: compile-splats</span>
 <span class="plain-syntax">          0.4% in step 7/15: shorten-wiring</span>
+<span class="plain-syntax">          0.4% in step 8/15: detect-indirect-calls</span>
 <span class="plain-syntax">          0.2% in step 11/15: eliminate-redundant-labels</span>
-<span class="plain-syntax">          0.2% in step 8/15: detect-indirect-calls</span>
-<span class="plain-syntax">          1.9% not specifically accounted for</span>
-<span class="plain-syntax">      2.6% in supervisor</span>
+<span class="plain-syntax">          1.5% not specifically accounted for</span>
+<span class="plain-syntax">      2.4% in supervisor</span>
 <span class="plain-syntax">      0.5% not specifically accounted for</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Memory consumption. </b>The following gives some idea of which classes of object have the most
@@ -110,13 +109,13 @@ represent less than 1/1000th of the total.
 </p>
 
 <pre class="undisplayed-code all-displayed-code code-font">
-<span class="plain-syntax">Total memory consumption was 123356K = 120 MB</span>
+<span class="plain-syntax">Total memory consumption was 123352K = 120 MB</span>
 
-<span class="plain-syntax"> ---- was used for 2049632 objects, in 364585 frames in 0 x 800K = 0K = 0 MB:</span>
+<span class="plain-syntax"> ---- was used for 2049517 objects, in 364569 frames in 0 x 800K = 0K = 0 MB:</span>
 
 <span class="plain-syntax">    33.1%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes</span>
-<span class="plain-syntax">    20.6%  text_stream_array                        4632 x 100 = 463200 objects, 26087424 bytes</span>
-<span class="plain-syntax">    19.4%  linked_list                              43887 objects, 24576720 bytes</span>
+<span class="plain-syntax">    20.6%  text_stream_array                        4631 x 100 = 463100 objects, 26081792 bytes</span>
+<span class="plain-syntax">    19.4%  linked_list                              43872 objects, 24568320 bytes</span>
 <span class="plain-syntax">    11.1%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes</span>
 <span class="plain-syntax">    10.4%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes</span>
 <span class="plain-syntax">     8.2%  parse_node                               129712 objects, 10376960 bytes</span>
@@ -359,10 +358,10 @@ represent less than 1/1000th of the total.
 
 <span class="plain-syntax">100.0% was used for memory not allocated for objects:</span>
 
-<span class="plain-syntax">    57.6%  text stream storage                      72814012 bytes in 480631 claims</span>
+<span class="plain-syntax">    57.6%  text stream storage                      72810132 bytes in 480591 claims</span>
 <span class="plain-syntax">     4.1%  dictionary storage                       5297152 bytes in 7590 claims</span>
 <span class="plain-syntax">     ----  sorting                                  1520 bytes in 159 claims</span>
-<span class="plain-syntax">     5.6%  source text                              7200000 bytes in 3 claims</span>
+<span class="plain-syntax">     5.7%  source text                              7200000 bytes in 3 claims</span>
 <span class="plain-syntax">     8.5%  source text details                      10800000 bytes in 2 claims</span>
 <span class="plain-syntax">     0.2%  documentation fragments                  262144 bytes in 1 claim</span>
 <span class="plain-syntax">     ----  linguistic stock array                   81920 bytes in 2 claims</span>
@@ -377,7 +376,7 @@ represent less than 1/1000th of the total.
 <span class="plain-syntax">     ----  code generation workspace for objects    1336 bytes in 4 claims</span>
 <span class="plain-syntax">     0.2%  emitter array storage                    280288 bytes in 1999 claims</span>
 
-<span class="plain-syntax">-147.-2% was overhead - -185990064 bytes = -181630K = -177 MB</span>
+<span class="plain-syntax">-147.-2% was overhead - -185976032 bytes = -181617K = -177 MB</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP4" class="paragraph-anchor"></a><b>&#167;4. Preform grammar. </b>The full annotated description of the Preform grammar (see <a href="../words-module/4-ap.html" class="internal">About Preform (in words)</a>),
 with optimisation details and hit/miss statistics added, is also long: it's

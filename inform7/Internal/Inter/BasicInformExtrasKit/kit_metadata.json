@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "BasicInformExtrasKit",
-        "version": "10.1.0"
+        "version": "10.1.1"
     },
     "kit-details": {
         "has-priority": 1

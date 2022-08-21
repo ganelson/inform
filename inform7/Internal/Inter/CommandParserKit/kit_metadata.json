@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "CommandParserKit",
-        "version": "10.1.0"
+        "version": "10.1.1"
     },
     "needs": [ {
         "need": {
