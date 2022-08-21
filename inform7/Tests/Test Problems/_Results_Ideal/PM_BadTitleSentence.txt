@@ -1,5 +1,5 @@
 Problem__ PM_BadTitleSentence
   >--> The opening bibliographic sentence can only be a title in double-quotes,
     possibly followed with 'by' and the name of the author.
-Inform 7 v10.1.0 has started.
+Inform 7 v10.2.0 has started.
 Inform 7 has finished.
