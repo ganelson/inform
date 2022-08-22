@@ -529,18 +529,10 @@ gnome_flatpak_app {
 	destination = /app/tmp/inform
 }
 
-website {
-	# HTML for the pre-2019 I7 website
-	destination = Website/content/learn/man/
-	images_copy = no
-	images_path = doc_images/
-	examples_mode = openable
-}
-
 newwebsite {
-	# HTML for the post-2019 I7 website
+	# HTML for the post-2022 I7 website
 	images_copy = no
-	images_path = /assets/images/doc_images/
+	images_path = /inform-website/assets/images/doc_images/
 	examples_mode = openable
 }
 
