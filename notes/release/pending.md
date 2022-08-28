@@ -16,3 +16,6 @@ These will be added to release notes when the release is made.
 	"Valued property with negative certainty causes internal error"
 	([commit 2173d4b](https://github.com/ganelson/inform/commit/2173d4b8630b5f3472fc173223d13f729d6e8799))
 
+- Fix for Jira bug [I7-2192](https://inform7.atlassian.net/browse/I7-2192)
+	"'Use memory economy' causes Inform 6 error"
+	([commit 52baf6c](https://github.com/ganelson/inform/commit/52baf6cfc18d053d8b49b9331d1aef72a8662db7))
