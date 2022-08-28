@@ -6,11 +6,9 @@ to people experimenting with unreleased builds of Inform.
 
 ## Current status
 
-The next formal release is v10.1.0. We are coming to the end of the beta period
-for that, and are concentrating on bug fixes, improvements to compatibility
-with old extensions, and making sure that concepts being introduced by 10.1
-are set up in a way we can live with. Work also continues on the GUI apps,
-notably the MacOS app, which is being modernised to support Dark Mode.
+Releases on the `10.1` branch are now available, and in principle we can begin
+work on new material for 10.2. Any urgent bug fixes will be made with point
+releases on 10.1: we're currently at 10.1.1.
 
 ## News items
 
