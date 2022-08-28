@@ -30,4 +30,8 @@ These will be added to release notes when the release is made.
 
 - Fix for Jira bug [I7-2194](https://inform7.atlassian.net/browse/I7-2194)
 	"An issue with kind checking for constant lists with more than one entry"
-	([commit fa1c1d3](https://github.com/ganelson/inform/commit/ed22438192693d76f5a67dd6a3a36fbf50647350))
+	([commit ed22438](https://github.com/ganelson/inform/commit/ed22438192693d76f5a67dd6a3a36fbf50647350))
+
+- Fix for Jira bug [I7-2189](https://inform7.atlassian.net/browse/I7-2189)
+	"Internal error when understanding something complicated as a numerical value"
+	([commit 3c1a607](https://github.com/ganelson/inform/commit/3c1a6071d16153316a1f4df172944ab11be9f79a))
