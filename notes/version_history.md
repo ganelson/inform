@@ -5,6 +5,9 @@ See [versions](versions.md) for details of Inform's version numbering.
 Links in the following table are to the archive of release notes. This
 is in chronological order, with the current release at the bottom.
 
+Pending changes made in this repository but not yet included in any release
+[can be found here](release/pending.md).
+
 Codename   | Version                     | Build | Date           | Highlights
 ---------- | --------------------------- | ----- | -------------- | ----------
 Aluminium  | [1.1](release/1-1.md)       | 3K27  | April 2006     | Public launch

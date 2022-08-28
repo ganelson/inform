@@ -31,6 +31,7 @@ Licencing and copyright policy    | [notes/copyright.md](notes/copyright.md)
 Branching and versioning policy   | [notes/versioning.md](notes/versioning.md)
 Language evolution policy         | [https://github.com/ganelson/inform-evolution](https://github.com/ganelson/inform-evolution)
 Version history and release notes | [notes/version_history.md](notes/version_history.md)
+Pending changes not yet released  | [notes/release/pending.md](notes/release/pending.md)
 
 ## Repositories
 
