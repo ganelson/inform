@@ -19,3 +19,7 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2192](https://inform7.atlassian.net/browse/I7-2192)
 	"'Use memory economy' causes Inform 6 error"
 	([commit 52baf6c](https://github.com/ganelson/inform/commit/52baf6cfc18d053d8b49b9331d1aef72a8662db7))
+
+- Fix for Jira bug [I7-2193](https://inform7.atlassian.net/browse/I7-2193)
+	"Internal error when using the call() syntax in an Inform 6 inclusion"
+	([commit c9e740b](https://github.com/ganelson/inform/commit/c9e740b086083581ac48d341cd2eb7bc5b0ae1a7))
