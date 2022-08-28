@@ -14,17 +14,26 @@ void KindGPRs::number(void) {
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_original_var(&kit);
 	command_grammar *cg = CommandGrammars::get_parsing_grammar(K_number);
-	if (cg) {
-		GPRs::add_standard_vars(&kit);
-		RTCommandGrammars::compile_for_value_GPR(&kit, cg);
-	}
+	if (cg) @<Return on any matches@>;
+	@<Give up@>;
+	Functions::end(save);
+	Hierarchy::make_available(iname);
+}
+
+@<Return on any matches@> =
+	GPRs::add_standard_vars(&kit);
+	EmitCode::inv(STORE_BIP);
+	EmitCode::down();
+		EmitCode::ref_symbol(K_value, kit.original_wn_s);
+		EmitCode::val_iname(K_value, Hierarchy::find(WN_HL));
+	EmitCode::up();
+	RTCommandGrammars::compile_for_value_GPR(&kit, cg);
+
+@<Give up@> =
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
 	EmitCode::up();
-	Functions::end(save);
-	Hierarchy::make_available(iname);
-}
 
 @ And similarly "[time]":
 
@@ -37,15 +46,9 @@ void KindGPRs::time(void) {
 	kind *K = TimesOfDay::kind();
 	if (K) {
 		command_grammar *cg = CommandGrammars::get_parsing_grammar(K);
-		if (cg) {
-			GPRs::add_standard_vars(&kit);
-			RTCommandGrammars::compile_for_value_GPR(&kit, cg);
-		}
+		if (cg) @<Return on any matches@>;
 	}
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
-	EmitCode::up();
+	@<Give up@>;
 	Functions::end(save);
 	Hierarchy::make_available(iname);
 }
@@ -59,14 +62,8 @@ void KindGPRs::truth_state(void) {
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_original_var(&kit);
 	command_grammar *cg = CommandGrammars::get_parsing_grammar(K_truth_state);
-	if (cg) {
-		GPRs::add_standard_vars(&kit);
-		RTCommandGrammars::compile_for_value_GPR(&kit, cg);
-	}
-	EmitCode::inv(RETURN_BIP);
-	EmitCode::down();
-		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
-	EmitCode::up();
+	if (cg) @<Return on any matches@>;
+	@<Give up@>;
 	Functions::end(save);
 	Hierarchy::make_available(iname);
 }
