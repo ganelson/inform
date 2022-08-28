@@ -1,6 +1,10 @@
 # Inform 7
 
+<<<<<<< HEAD
 [Version](notes/versioning.md): 10.1.1 'Krypton' (21 August 2022)
+=======
+[Version](notes/versioning.md): 10.2.0-beta+6V46 'Krypton' (28 August 2022)
+>>>>>>> 59a9f239d... Fix for Jira bug I7-2190
 
 ## About Inform
 
