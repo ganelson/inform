@@ -47,4 +47,4 @@ These will be added to release notes when the release is made.
 	grammar when it occurs next to digits. I decided that it should, but this
 	is technically a change in Inform's semantics. To mitigate that, the new
 	problem message `PM_SlashCutsDigits` is generated if the result would cut
-	off a word entirely consisting of digits, as in `Understand "x4/x5" as ...`.
+	off a word entirely consisting of digits, as in `Understand "x4/5" as ...`.
