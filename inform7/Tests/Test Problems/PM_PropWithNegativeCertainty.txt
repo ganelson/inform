@@ -1,0 +1,3 @@
+The lab is a room.
+
+The lab has a number called the bar. The bar of the lab is never 42.
