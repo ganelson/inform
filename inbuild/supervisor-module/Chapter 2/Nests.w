@@ -52,6 +52,11 @@ void Nests::protect(inbuild_nest *N) {
 	N->read_only = TRUE;
 }
 
+int Nests::is_protected(inbuild_nest *N) {
+	if (N == NULL) return FALSE;
+	return N->read_only;
+}
+
 @h Search list.
 When we search for copies, we do so by looking through nests in a list. The
 following builds such lists, removing duplicates -- where duplicates are

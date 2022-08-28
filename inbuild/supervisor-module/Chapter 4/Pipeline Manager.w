@@ -41,8 +41,9 @@ inform_pipeline *PipelineManager::from_copy(inbuild_copy *C) {
 	return NULL;
 }
 
-inbuild_copy *PipelineManager::new_copy(inbuild_edition *edition, filename *F) {
-	inbuild_copy *C = Copies::new_in_file(edition, F);
+inbuild_copy *PipelineManager::new_copy(inbuild_edition *edition, filename *F,
+	inbuild_nest *N) {
+	inbuild_copy *C = Copies::new_in_file(edition, F, NULL);
 	Pipelines::scan(C);
 	return C;
 }
@@ -62,17 +63,18 @@ void PipelineManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	if (directory_status == TRUE) return;
 	if (Str::eq_insensitive(ext, I"interpipeline")) {
 		filename *F = Filenames::from_text(arg);
-		*C = PipelineManager::claim_file_as_copy(F, NULL);
+		*C = PipelineManager::claim_file_as_copy(F, NULL, NULL);
 	}
 }
 
-inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *error_text) {
+inbuild_copy *PipelineManager::claim_file_as_copy(filename *F, text_stream *error_text,
+	inbuild_nest *N) {
 	if (TextFiles::exists(F) == FALSE) return NULL;
 	semantic_version_number V = VersionNumbers::null();
 	TEMPORARY_TEXT(unext)
 	Filenames::write_unextended_leafname(unext, F);
 	inbuild_copy *C = PipelineManager::new_copy(
-		Editions::new(Works::new_raw(pipeline_genre, unext, NULL), V), F);
+		Editions::new(Works::new_raw(pipeline_genre, unext, NULL), V), F, N);
 	DISCARD_TEXT(unext)
 	return C;
 }
@@ -91,7 +93,7 @@ void PipelineManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 	LOOP_OVER_LINKED_LIST(entry, text_stream, L) {
 		if (Platform::is_folder_separator(Str::get_last_char(entry)) == FALSE) {
 			filename *F = Filenames::in(P, entry);
-			inbuild_copy *C = PipelineManager::claim_file_as_copy(F, NULL);
+			inbuild_copy *C = PipelineManager::claim_file_as_copy(F, NULL, N);
 			if ((C) && (Requirements::meets(C->edition, req))) {
 				Nests::add_search_result(search_results, N, C, req);
 			}

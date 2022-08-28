@@ -42,10 +42,10 @@ inform_template *TemplateManager::from_copy(inbuild_copy *C) {
 	return NULL;
 }
 
-inbuild_copy *TemplateManager::new_copy(text_stream *name, pathname *P) {
+inbuild_copy *TemplateManager::new_copy(text_stream *name, pathname *P, inbuild_nest *N) {
 	inbuild_work *work = Works::new(template_genre, Str::duplicate(name), NULL);
 	inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
-	inbuild_copy *C = Copies::new_in_path(edition, P);
+	inbuild_copy *C = Copies::new_in_path(edition, P, N);
 	Templates::scan(C);
 	return C;
 }
@@ -65,14 +65,14 @@ void TemplateManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	text_stream *arg, text_stream *ext, int directory_status) {
 	if (directory_status == FALSE) return;
 	pathname *P = Pathnames::from_text(arg);
-	*C = TemplateManager::claim_folder_as_copy(P);
+	*C = TemplateManager::claim_folder_as_copy(P, NULL);
 }
 
-inbuild_copy *TemplateManager::claim_folder_as_copy(pathname *P) {
+inbuild_copy *TemplateManager::claim_folder_as_copy(pathname *P, inbuild_nest *N) {
 	filename *canary1 = Filenames::in(P, I"(manifest).txt");
 	filename *canary2 = Filenames::in(P, I"index.html");
 	if ((TextFiles::exists(canary1)) || (TextFiles::exists(canary2)))
-		return TemplateManager::new_copy(Pathnames::directory_name(P), P);
+		return TemplateManager::new_copy(Pathnames::directory_name(P), P, N);
 	return NULL;
 }
 
@@ -91,7 +91,7 @@ void TemplateManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
 			Str::delete_last_character(entry);
 			pathname *Q = Pathnames::down(P, entry);
-			inbuild_copy *C = TemplateManager::claim_folder_as_copy(Q);
+			inbuild_copy *C = TemplateManager::claim_folder_as_copy(Q, N);
 			if ((C) && (Requirements::meets(C->edition, req))) {
 				Nests::add_search_result(search_results, N, C, req);
 			}

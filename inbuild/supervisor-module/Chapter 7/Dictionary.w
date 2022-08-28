@@ -240,7 +240,7 @@ void ExtensionDictionary::load_helper(text_stream *line_entry,
 			category, author, title, headword);
 	} else {
 		filename *F = Filenames::from_text(at);
-		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
+		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F, NULL);
 		if (C) ExtensionDictionary::new_ede(ExtensionManager::from_copy(C),
 			category, author, title, headword);
 	}

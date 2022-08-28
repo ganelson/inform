@@ -205,8 +205,18 @@ building V is itself a use of W, and therefore of X. So we always enable the
 @<Build the node itself, if necessary@> =
 	int needs_building = FALSE;
 	if ((gb & IGNORE_TIMESTAMPS_GB) || (gb & FOR_ONE_GENERATION_IGNORE_TIMESTAMPS_GB) ||
-		(V->always_build_this)) needs_building = TRUE;
-	else @<Decide based on timestamps@>;
+		(V->always_build_this)) {
+		WRITE_TO(T, "Ignoring timestamps and simply building: ");
+		Graphs::describe(T, V, FALSE);
+		needs_building = TRUE;
+	} else {
+		if (V->never_build_this) {
+			WRITE_TO(T, "Ignoring timestamps and simply trusting: ");
+			Graphs::describe(T, V, FALSE);
+		} else {
+			@<Decide based on timestamps@>;
+		}
+	}
 
 	if (needs_building) {
 		if (T) { WRITE_TO(T, "Build: "); Graphs::describe(T, V, FALSE); }

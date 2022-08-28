@@ -432,10 +432,19 @@ void Kits::construct_graph(inform_kit *K) {
 		Kits::add_extension_dependency(KV, req);
 }
 
+@ The test for nest protection here ensures that a kit in an internal nest
+will never be incrementally rebuilt in a normal Inform build process, even if
+the timestamps on the files look as if it should be. This is important because
+of the way Linux apps are sandboxed, because a security feature on Linux means
+that timestamps are deliberately reported incorrectly. In any case, the
+internal nest shouldn't be written to even on other platforms.
+
 @<Add build edges to the binaries for each architecture@> =
 	inter_architecture *A;
 	LOOP_OVER(A, inter_architecture) {
 		build_vertex *BV = Graphs::file_vertex(Architectures::canonical_binary(P, A));
+		if ((C->nest_of_origin) && (Nests::is_protected(C->nest_of_origin)))
+			BV->never_build_this = TRUE;
 		Graphs::need_this_to_build(KV, BV);
 		BuildSteps::attach(BV, build_kit_using_inter_skill, FALSE, NULL, A, K->as_copy);
 		ADD_TO_LINKED_LIST(BV, build_vertex, BVL);

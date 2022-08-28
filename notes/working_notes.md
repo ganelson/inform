@@ -14,6 +14,27 @@ notably the MacOS app, which is being modernised to support Dark Mode.
 
 ## News items
 
+### Kit incremental rebuilding change (28 August 2022)
+
+A snag emerged when building the new release 10.1.1 for Linux. Inbuild, the
+build manager inside of Inform, automatically rebuilds kits from source if they
+need it, and uses timestamps of files to determine this. If timestamps are
+equal, Inbuild errs on the side of rebuilding, because timestamps are fairly
+low in fidelity: either file might actually be newer.
+
+Unfortunately, when Linux apps are sandboxed (i.e., are running in a sort of
+protective enclosure for security reasons), the inside of the app installation
+is reported to have timestamps which are all equal to each other. No doubt
+there are good reasons for this, but it means Inbuild tried to rebuild each
+kit inside of the app (so, `BasicInformKit` and so on). And this failed, because
+the sandboxed directories are read-only. Inform therefore halted because the build
+was thwarted.
+
+The new rule is that a kit which is discovered from an internal nest is never
+incrementally rebuilt, whatever timestamps might exist. There doesn't seem any
+reason to restrict this rule to Linux: the internal nest inside the apps should
+be read-only on all of them (and indeed the MacOS sandbox also enforces this).
+
 ### Release notes (8 August 2022)
 
 Not a thrilling development, but we continue to get things organised ready for

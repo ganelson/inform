@@ -127,8 +127,8 @@ Total memory consumption was 121172K = 118 MB
      ----  verb                                     108 objects, 6912 bytes
      ----  hierarchy_attachment_point               77 objects, 6776 bytes
      ----  text_literal_holder                      163 objects, 6520 bytes
+     ----  inbuild_copy                             54 objects, 6480 bytes
      ----  inbuild_work                             101 objects, 6464 bytes
-     ----  inbuild_copy                             54 objects, 6048 bytes
      ----  inbuild_edition                          72 objects, 5184 bytes
      ----  heading_tree                             19 objects, 5168 bytes
      ----  explicit_action_array                    1 x 100 objects, 4832 bytes
@@ -265,5 +265,9 @@ Total memory consumption was 121172K = 118 MB
      ----  code generation workspace for objects    1336 bytes in 4 claims
      0.2%  emitter array storage                    280288 bytes in 1999 claims
 
+<<<<<<< HEAD
 -149.-8% was overhead - -185976032 bytes = -181617K = -177 MB
+=======
+-149.-8% was overhead - -185990496 bytes = -181631K = -177 MB
+>>>>>>> d0f59caec... Kits in the internal nest are no longer incrementally rebuilt
 

@@ -17,6 +17,7 @@ typedef struct inbuild_copy {
 	struct inbuild_edition *edition; /* what is this a copy of? */
 	struct pathname *location_if_path; /* exactly one of these must be non-|NULL| */
 	struct filename *location_if_file;
+	struct inbuild_nest *nest_of_origin; /* note that copies do not always come from nests */
 
 	general_pointer metadata; /* the type of which depends on the work's genre */
 	struct JSON_value *metadata_record; /* where read in from a JSON file */
@@ -39,6 +40,7 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 	copy->edition = edition;
 	copy->location_if_path = NULL;
 	copy->location_if_file = NULL;
+	copy->nest_of_origin = NULL;
 	copy->metadata = NULL_GENERAL_POINTER;
 	copy->metadata_record = NULL;
 	copy->vertex = Graphs::copy_vertex(copy);
@@ -54,15 +56,17 @@ inbuild_copy *Copies::new_p(inbuild_edition *edition) {
 @ ...call one of these:
 
 =
-inbuild_copy *Copies::new_in_file(inbuild_edition *edition, filename *F) {
+inbuild_copy *Copies::new_in_file(inbuild_edition *edition, filename *F, inbuild_nest *N) {
 	inbuild_copy *copy = Copies::new_p(edition);
 	copy->location_if_file = F;
+	copy->nest_of_origin = N;
 	return copy;
 }
 
-inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P) {
+inbuild_copy *Copies::new_in_path(inbuild_edition *edition, pathname *P, inbuild_nest *N) {
 	inbuild_copy *copy = Copies::new_p(edition);
 	copy->location_if_path = P;
+	copy->nest_of_origin = N;
 	return copy;
 }
 
