@@ -35,3 +35,7 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2189](https://inform7.atlassian.net/browse/I7-2189)
 	"Internal error when understanding something complicated as a numerical value"
 	([commit 3c1a607](https://github.com/ganelson/inform/commit/3c1a6071d16153316a1f4df172944ab11be9f79a))
+
+- Fix for Jira bug [I7-2196](https://inform7.atlassian.net/browse/I7-2196)
+	"With multiple understand lines for numbers, times or truth states, only one of them works"
+	([commit 193cdb2](https://github.com/ganelson/inform/commit/193cdb2ac7aea3f928528b4f0df1eb4cbfc9a990))
