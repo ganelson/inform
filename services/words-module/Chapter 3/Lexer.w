@@ -367,6 +367,7 @@ wchar_t *lexer_punctuation_marks = L"";
 int lexer_divide_strings_at_text_substitutions; /* Break up text substitutions in quoted text */
 int lexer_allow_I6_escapes; /* Recognise |(-| and |-)| */
 int lexer_wait_for_dashes; /* Ignore all text until first |----| found */
+int lexer_break_at_slashes;
 
 @h Definition of punctuation.
 As we have seen, the question of whether something is a punctuation mark
@@ -543,6 +544,7 @@ void Lexer::reset_lexer(void) {
     lexer_punctuation_marks = STANDARD_PUNCTUATION_MARKS;
 	lexer_divide_strings_at_text_substitutions = FALSE;
 	lexer_allow_I6_escapes = TRUE;
+	lexer_break_at_slashes = FALSE;
 
     /* reset the internal states */
 	lxs_most_significant_space_char = '\n'; /* we imagine each lexer feed starting a new line */
@@ -683,8 +685,8 @@ void Lexer::feed_triplet(int last_cr, int cr, int next_cr) {
 	if (Lexer::is_punctuation(cr)) space = TRUE;
 	if ((space) && (lxs_literal_mode)) space = FALSE;
 	if ((space) && (cr != '[') && (cr != ']')) {
-		if ((space) && (next_cr == '/')) space = FALSE;
-		if (space) {
+		if (next_cr == '/') space = FALSE;
+		else {
 			int lc = 0, nc = 0;
 			if (Characters::isdigit((wchar_t) last_cr)) lc = 1;
 			if ((last_cr >= 'a') && (last_cr <= 'z')) lc = 2;
@@ -693,6 +695,7 @@ void Lexer::feed_triplet(int last_cr, int cr, int next_cr) {
 			if ((next_cr >= 'a') && (next_cr <= 'z')) nc = 2;
 			if ((lc == 1) && (nc == 1)) space = FALSE;
 			if ((cr == '.') && (lc > 0) && (nc > 0)) space = FALSE;
+			if ((lexer_break_at_slashes) && (cr == '/')) space = TRUE;
 		}
 	}
 	if (space) {

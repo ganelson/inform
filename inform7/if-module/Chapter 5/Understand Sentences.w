@@ -299,9 +299,8 @@ integer result is 0 if no problems were thrown, or -1 if they were.
 
 @<Make into a token@> =
 	ur_being_parsed.cg_result = CG_IS_TOKEN;
-	ur_being_parsed.token_text = Feeds::feed_C_string_full(
-		Lexer::word_text(Wordings::first_wn(ur_being_parsed.reference_text)),
-		TRUE, GRAMMAR_PUNCTUATION_MARKS);
+	ur_being_parsed.token_text = CGTokens::break(
+		Lexer::word_text(Wordings::first_wn(ur_being_parsed.reference_text)), TRUE);
 
 @<Reverse@> =
 	ur_being_parsed.reversed_reference = TRUE;

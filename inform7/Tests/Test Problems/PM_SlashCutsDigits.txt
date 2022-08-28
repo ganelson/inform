@@ -1,0 +1,5 @@
+Lab is a room.
+
+The camera is in the lab.
+
+Understand "new/-- br80/08/-- camera" as the camera.
