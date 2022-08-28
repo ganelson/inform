@@ -23,3 +23,7 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2193](https://inform7.atlassian.net/browse/I7-2193)
 	"Internal error when using the call() syntax in an Inform 6 inclusion"
 	([commit c9e740b](https://github.com/ganelson/inform/commit/c9e740b086083581ac48d341cd2eb7bc5b0ae1a7))
+
+- Fix for Jira bug [I7-2184](https://inform7.atlassian.net/browse/I7-2184)
+	"A malformed file in the Examples directory makes indoc segfault"
+	([commit fa1c1d3](https://github.com/ganelson/inform/commit/fa1c1d3c4da21d6f843ec836be40bb48d75e26f7))
