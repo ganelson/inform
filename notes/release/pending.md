@@ -27,3 +27,7 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2184](https://inform7.atlassian.net/browse/I7-2184)
 	"A malformed file in the Examples directory makes indoc segfault"
 	([commit fa1c1d3](https://github.com/ganelson/inform/commit/fa1c1d3c4da21d6f843ec836be40bb48d75e26f7))
+
+- Fix for Jira bug [I7-2194](https://inform7.atlassian.net/browse/I7-2194)
+	"An issue with kind checking for constant lists with more than one entry"
+	([commit fa1c1d3](https://github.com/ganelson/inform/commit/ed22438192693d76f5a67dd6a3a36fbf50647350))
