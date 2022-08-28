@@ -181,11 +181,12 @@ incomparable, and "thing" being the max of "person" and "door").
 @<Revise K in the light of E@> =
 	kind *previous_K = K;
 	K = Latticework::join(E, K);
-	if (Kinds::Behaviour::definite(K) == FALSE) {
-		if (issue_problems) @<Issue a list entry kind mismatch problem@>;
-		ll->kinds_known_to_be_inconsistent = TRUE;
-		break;
-	}
+	if (Kinds::get_construct(K) != CON_phrase)
+		if (Kinds::Behaviour::definite(K) == FALSE) {
+			if (issue_problems) @<Issue a list entry kind mismatch problem@>;
+			ll->kinds_known_to_be_inconsistent = TRUE;
+			break;
+		}
 
 @<Issue a bad list entry problem@> =
 	Problems::quote_source(1, current_sentence);
