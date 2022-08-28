@@ -98,12 +98,10 @@ Global debugging_rules = false; ! Are we tracing rule invocations?
 	spv = parameter_value; parameter_value = parameter;
 	! we won't need parameter again, so can reuse it
 	parameter = debugging_rules;
-	#ifndef MEMORY_ECONOMY;
 	if (debugging_rules) {
 		DebugRulebooks(rulebook, parameter);
 		process_rulebook_count = process_rulebook_count + debugging_rules;
 	}
-	#endif;
 	if ((rulebook >= 0) && (rulebook < NUMBER_RULEBOOKS_CREATED)) {
 		rv = rulebooks_array-->rulebook;
 		if (rv ~= EMPTY_RULEBOOK) {
@@ -121,7 +119,6 @@ Global debugging_rules = false; ! Are we tracing rule invocations?
 		else if (rv) rv = rulebook;
 	}
 	if (rv) {
-		#ifndef MEMORY_ECONOMY;
 		if (debugging_rules) {
 			process_rulebook_count = process_rulebook_count - debugging_rules;
 			if (process_rulebook_count < 0) process_rulebook_count = 0;
@@ -129,7 +126,6 @@ Global debugging_rules = false; ! Are we tracing rule invocations?
 	  	    if (latest_rule_result-->0 == RS_SUCCEEDS) print "[stopped: success]^";
 	  	    if (latest_rule_result-->0 == RS_FAILS) print "[stopped: fail]^";
 		}
-		#endif;
 	} else {
 		if (debugging_rules)
 			process_rulebook_count = process_rulebook_count - debugging_rules;

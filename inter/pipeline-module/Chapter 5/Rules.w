@@ -21,8 +21,12 @@ void SynopticRules::compile(inter_tree *I, pipeline_step *step, tree_inventory *
 	if (me_s) economy = InterSymbol::evaluate_to_int(me_s);
 	@<Define NUMBER_RULEBOOKS_CREATED@>;
 	@<Define RulebookNames array@>;
-	if (economy) @<Define SlowLookup function@>
-	else @<Define rulebook_var_creators array@>;
+	if (economy) {
+		@<Define SlowLookup function@>;
+	} else {
+		@<Define faster SlowLookup function@>;
+		@<Define rulebook_var_creators array@>;
+	}
 	@<Define rulebooks_array array@>;
 	@<Define RULEPRINTINGRULE function@>;
 }
@@ -82,6 +86,20 @@ so we change the values of these constants accordingly.
 	}
 	Synoptic::numeric_entry(0);
 	Synoptic::end_array(I);
+
+@<Define faster SlowLookup function@> =
+	inter_name *iname = HierarchyLocations::iname(I, SLOW_LOOKUP_HL);
+	Synoptic::begin_function(I, iname);
+	inter_symbol *rb_s = Synoptic::local(I, I"rb", NULL);
+	Produce::inv_primitive(I, RETURN_BIP);
+	Produce::down(I);
+		Produce::inv_primitive(I, LOOKUP_BIP);
+		Produce::down(I);
+			Produce::val_iname(I, K_value, HierarchyLocations::iname(I, RULEBOOK_VAR_CREATORS_HL));
+			Produce::val_symbol(I, K_value, rb_s);
+		Produce::up(I);
+	Produce::up(I);
+	Synoptic::end_function(I, step, iname);
 
 @<Define SlowLookup function@> =
 	inter_name *iname = HierarchyLocations::iname(I, SLOW_LOOKUP_HL);

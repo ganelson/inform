@@ -242,28 +242,17 @@ where it is to be written, of course: that would corrupt the sentinel.
 </pre>
 <p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8. Rulebook Variables. </b>Each rulebook has a slate of variables, usually empty, with ID number the
 same as the rulebook's own ID number. (Rulebook IDs number upwards from 0
-in order of creation in the source text.) The associated creator functions,
-usually null, are stored in an array if there is no problem about memory
-usage, but with a switch statement if <span class="extract"><span class="extract-syntax">MEMORY_ECONOMY</span></span> is in force; this
-costs a very small amount of time, but saves 1K of readable memory.
+in order of creation in the source text.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">MStack_CreateRBVars</span><span class="plain-syntax"> </span><span class="identifier-syntax">rb</span><span class="plain-syntax"> </span><span class="identifier-syntax">cr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">MEMORY_ECONOMY</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">MStack_GetRBVarCreator</span><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">cr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rulebook_var_creators</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">rb</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cr</span><span class="plain-syntax">) </span><span class="identifier-syntax">Mstack_Create_Frame</span><span class="plain-syntax">(</span><span class="identifier-syntax">cr</span><span class="plain-syntax">, </span><span class="identifier-syntax">rb</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 
 <span class="plain-syntax">[ </span><span class="identifier-syntax">MStack_DestroyRBVars</span><span class="plain-syntax"> </span><span class="identifier-syntax">rb</span><span class="plain-syntax"> </span><span class="identifier-syntax">cr</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">MEMORY_ECONOMY</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">cr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">MStack_GetRBVarCreator</span><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">ifnot</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">cr</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rulebook_var_creators</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">rb</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">cr</span><span class="plain-syntax">) </span><span class="identifier-syntax">Mstack_Destroy_Frame</span><span class="plain-syntax">(</span><span class="identifier-syntax">cr</span><span class="plain-syntax">, </span><span class="identifier-syntax">rb</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">];</span>
 </pre>
