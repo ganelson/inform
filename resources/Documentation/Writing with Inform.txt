@@ -17855,7 +17855,7 @@ Here "the tartan rucksack" is translated into "O18_tartan_rucksack", or somethin
 
 The material between "(+" and "+)" is generally treated as a value, and thus compiles to the I6 form of that value. But it could also be a property name, which compiles to the I6 form in question, or a defined adjective, which compiles to the name of the routine to call which tests whether that adjective is true.
 
-<b>Three warnings.</b> The material in "(-" and "-)" is called template code, and it is not quite treated as literal. That means certain characters cause Inform to react:
+<b>Three warnings.</b> The material in "(-" and "-)" is not quite treated as literal. Certain characters cause Inform to react:
 
 1. Beware of accidental "(+" usage - for instance,
 
@@ -17889,6 +17889,26 @@ looks as if it will work, but doesn't, for reference-counting reasons we needn't
 	-).
 
 But it's far better to avoid initialising text variables from I6 entirely. The same problems arise with constant lists.
+
+It should also be noted that the I6 syntax recognised inside "Include (- ... -)" is slightly restricted compared to the full range recognised by the stand-alone Inform 6 compiler. In particular:
+
+1. Only new-style "for" loops with colons in the header are allowed, so that "for (i=0: i<10: i++)" is okay but "for (i=0; i<10; i++)" is not. Moreover, "for" loops cannot contain empty clauses.
+
+2. Local variable names are not allowed to be the same as an I6 statement keyword: for example, "style" and "spaces" are not allowed.
+
+3. The (undocumented) Inform 6 function "indirect()" is not supported. But since "indirect(A)" is equivalent to "A()", which does work, this is no real loss. Similarly, the "glk()" function is not supported: function calls to BasicInformKit should be used instead.
+
+4. Conditional compilation cannot be placed around cases in a "switch" statement.
+
+5. Compile-time constant expression evaluation can be used with arithmetic operations, so "Constant FOO = BAR + 1;" is okay, but not with bitwise or logical operations, so "Constant FOO = (BAR | 1);" does not work.
+
+6. Calculated values cannot occur as assembly-language operands.
+
+7. Calculated values can be used for array extents, but need to be put in brackets. For example:
+
+	Include (-
+	Array unit_captured_text --> (UNIT_CAPTURE_BUFFER_LEN + 1);
+	-).
 
 [x] Primitive Inform 6 declarations of rules
 
