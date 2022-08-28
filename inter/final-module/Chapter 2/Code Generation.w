@@ -285,20 +285,40 @@ lower-numbered level.
 
 @e no_I7CGS from 0
 
-@d MAX_LAYERS_PER_SEGMENT 128
+@d INITIAL_LAYERS_PER_SEGMENT 16
 
 =
 typedef struct generated_segment {
 	int layers;
-	struct text_stream *generated_code[MAX_LAYERS_PER_SEGMENT];
+	struct text_stream **generated_code;
 	CLASS_DEFINITION
 } generated_segment;
 
 generated_segment *CodeGen::new_segment(void) {
 	generated_segment *seg = CREATE(generated_segment);
-	seg->layers = MAX_LAYERS_PER_SEGMENT;
+	seg->layers = INITIAL_LAYERS_PER_SEGMENT;
+	seg->generated_code = (text_stream **)
+		(Memory::calloc(INITIAL_LAYERS_PER_SEGMENT, sizeof(text_stream *), CODE_GENERATION_MREASON));
 	for (int i=0; i<seg->layers; i++) seg->generated_code[i] = Str::new();
 	return seg;
+}
+
+void CodeGen::ensure_layer(generated_segment *seg, int layer) {
+	if (seg == NULL) internal_error("no segment");
+	if (layer >= seg->layers) {
+		int new_layers = seg->layers;
+		while (layer >= new_layers) new_layers = new_layers*4;
+		text_stream **old_array = seg->generated_code;
+		seg->generated_code = (text_stream **)
+			(Memory::calloc(new_layers, sizeof(text_stream *), CODE_GENERATION_MREASON));
+		for (int i=0; i<new_layers; i++)
+			if (i<seg->layers)
+				seg->generated_code[i] = old_array[i];
+			else
+				seg->generated_code[i] = Str::new();
+		Memory::I7_free(old_array, CODE_GENERATION_MREASON, seg->layers*((int) sizeof(text_stream *)));
+		seg->layers = new_layers;
+	}
 }
 
 @ Each generation has its own copy of every possible numbered segment, though
@@ -368,9 +388,6 @@ being written. The generator should use //CodeGen::select// to switch to a given
 segment, which must be one of those it has created, and then use //CodeGen::deselect//
 to go back to where it was. These calls must be made in properly nested pairs.
 
-At some point we may want to make the cap on the number of layers flexible,
-but for now about 10 layers is plenty.
-
 =
 segmentation_pos CodeGen::select(code_generation *gen, int i) {
 	return CodeGen::select_layered(gen, i, 1);
@@ -382,8 +399,7 @@ segmentation_pos CodeGen::select_layered(code_generation *gen, int i, int layer)
 	if ((i < 0) || (i >= NO_DEFINED_I7CGS_VALUES)) internal_error("out of range");
 	if (gen->segmentation.segments[i] == NULL)
 		internal_error("generator does not use this segment ID");
-	if (layer >= gen->segmentation.segments[i]->layers)
-		internal_error("too many layers");
+	CodeGen::ensure_layer(gen->segmentation.segments[i], layer);
 	gen->segmentation.pos.current_segment = gen->segmentation.segments[i];
 	gen->segmentation.pos.current_layer = layer;
 	return previous_pos;
