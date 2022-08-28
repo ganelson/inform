@@ -48,7 +48,7 @@ inform_kit *KitManager::from_copy(inbuild_copy *C) {
 }
 
 dictionary *kit_copy_cache = NULL;
-inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
+inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P, inbuild_nest *N) {
 	if (kit_copy_cache == NULL) kit_copy_cache = Dictionaries::new(16, FALSE);
 	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "%p", P);
@@ -58,7 +58,7 @@ inbuild_copy *KitManager::new_copy(text_stream *name, pathname *P) {
 	if (C == NULL) {
 		inbuild_work *work = Works::new_raw(kit_genre, Str::duplicate(name), NULL);
 		inbuild_edition *edition = Editions::new(work, VersionNumbers::null());
-		C = Copies::new_in_path(edition, P);
+		C = Copies::new_in_path(edition, P, N);
 		Kits::scan(C);
 		Dictionaries::create(kit_copy_cache, key);
 		Dictionaries::write_value(kit_copy_cache, key, C);
@@ -83,7 +83,7 @@ void KitManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	if (directory_status == FALSE) return;
 	if (KitManager::name_len(arg) > 0) {
 		pathname *P = Pathnames::from_text(arg);
-		*C = KitManager::claim_folder_as_copy(P);
+		*C = KitManager::claim_folder_as_copy(P, NULL);
 	}
 }
 
@@ -108,13 +108,13 @@ int KitManager::name_len(text_stream *arg) {
 copy name.
 
 =
-inbuild_copy *KitManager::claim_folder_as_copy(pathname *P) {
+inbuild_copy *KitManager::claim_folder_as_copy(pathname *P, inbuild_nest *N) {
 	filename *canary = Filenames::in(P, I"kit_metadata.json");
 	if (TextFiles::exists(canary)) {
 		text_stream *name = Str::duplicate(Pathnames::directory_name(P));
 		int L = KitManager::name_len(name);
 		if (L > 0) Str::truncate(name, L);
-		return KitManager::new_copy(name, P);
+		return KitManager::new_copy(name, P, N);
 	}
 	return NULL;
 }
@@ -134,7 +134,7 @@ void KitManager::search_nest_for(inbuild_genre *gen, inbuild_nest *N,
 		if (Platform::is_folder_separator(Str::get_last_char(entry))) {
 			Str::delete_last_character(entry);
 			pathname *Q = Pathnames::down(P, entry);
-			inbuild_copy *C = KitManager::claim_folder_as_copy(Q);
+			inbuild_copy *C = KitManager::claim_folder_as_copy(Q, N);
 			if ((C) && (Requirements::meets(C->edition, req))) {
 				Nests::add_search_result(search_results, N, C, req);
 			}

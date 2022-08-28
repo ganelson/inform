@@ -45,6 +45,7 @@ typedef struct build_vertex {
 	int last_built_in_generation; /* ...in this build generation */
 	int always_build_this; /* i.e., don't look at timestamps hoping to skip it */
 	int always_build_dependencies; /* if you build this, first always build its dependencies */
+	int never_build_this; /* i.e., trust that it is correct regardless of timestamps */
 	struct build_script *script; /* how to build what this node represents */
 
 	CLASS_DEFINITION
@@ -73,6 +74,7 @@ build_vertex *Graphs::file_vertex(filename *F) {
 	V->last_built_in_generation = -1; /* never seen in any generation */
 	V->always_build_this = FALSE;
 	V->always_build_dependencies = FALSE;
+	V->never_build_this = FALSE;
 	V->script = BuildScripts::new();
 	return V;
 }

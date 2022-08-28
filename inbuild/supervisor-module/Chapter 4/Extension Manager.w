@@ -51,7 +51,7 @@ inform_extension *ExtensionManager::from_copy(inbuild_copy *C) {
 }
 
 dictionary *ext_copy_cache = NULL;
-inbuild_copy *ExtensionManager::new_copy(filename *F) {
+inbuild_copy *ExtensionManager::new_copy(filename *F, inbuild_nest *N) {
 	if (ext_copy_cache == NULL) ext_copy_cache = Dictionaries::new(16, FALSE);
 	TEMPORARY_TEXT(key)
 	WRITE_TO(key, "%f", F);
@@ -63,7 +63,7 @@ inbuild_copy *ExtensionManager::new_copy(filename *F) {
 				Editions::new(
 					Works::new(extension_genre, I"Untitled", I"Anonymous"),
 					VersionNumbers::null()),
-				F);
+				F, N);
 		Extensions::scan(C);
 		Dictionaries::create(ext_copy_cache, key);
 		Dictionaries::write_value(ext_copy_cache, key, C);
@@ -89,13 +89,13 @@ void ExtensionManager::claim_as_copy(inbuild_genre *gen, inbuild_copy **C,
 	if (directory_status == TRUE) return;
 	if (Str::eq_insensitive(ext, I"i7x")) {
 		filename *F = Filenames::from_text(arg);
-		*C = ExtensionManager::claim_file_as_copy(F);
+		*C = ExtensionManager::claim_file_as_copy(F, NULL);
 	}
 }
 
-inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F) {
+inbuild_copy *ExtensionManager::claim_file_as_copy(filename *F, inbuild_nest *N) {
 	if (TextFiles::exists(F) == FALSE) return NULL;
-	return ExtensionManager::new_copy(F);
+	return ExtensionManager::new_copy(F, N);
 }
 
 @h Searching.
@@ -163,7 +163,7 @@ void ExtensionManager::search_nest_for_single_file(filename *F, inbuild_nest *N,
 	Filenames::write_extension(fext, F);
 	if ((Str::eq_insensitive(fext, I".i7x")) &&
 		(Str::get_first_char(Filenames::get_leafname(F)) != '.')) {
-		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F);
+		inbuild_copy *C = ExtensionManager::claim_file_as_copy(F, N);
 		if ((C) && (Requirements::meets(C->edition, req))) {
 			Nests::add_search_result(search_results, N, C, req);
 		}
