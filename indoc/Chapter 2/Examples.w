@@ -268,13 +268,14 @@ inverse permutations.
 	example *E;
 	LOOP_OVER(E, example) {
 		V->examples_sequence[E->allocation_id] = E;
-		int last_resort = E->allocation_id;
-		if (V->allocation_id > 0) last_resort = E->example_position[0];
+		int key1 = 0;
+		if (E->example_belongs_to_section[V->allocation_id])
+			key1 = E->example_belongs_to_section[V->allocation_id]->allocation_id;
+		int key2 = E->ex_star_count;
+		int key3 = E->allocation_id;
+		if (V->allocation_id > 0) key3 = E->example_position[0];
 		E->ex_sort_key = Str::new();
-		WRITE_TO(E->ex_sort_key, "%08d-%08d-%08d",
-			E->example_belongs_to_section[V->allocation_id]->allocation_id,
-			E->ex_star_count,
-			last_resort);
+		WRITE_TO(E->ex_sort_key, "%08d-%08d-%08d", key1, key2, key3);
 	}
 
 	qsort(V->examples_sequence, (size_t) no_examples, sizeof(example *),
