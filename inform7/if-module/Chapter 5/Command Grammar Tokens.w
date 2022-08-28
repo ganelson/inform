@@ -55,36 +55,24 @@ mark: thus "get away/off/out" becomes
 @d GRAMMAR_PUNCTUATION_MARKS L".,:;?!(){}[]/" /* note the slash */
 
 =
-cg_token *CGTokens::tokenise(wording W) {
-	wchar_t *as_wide_string = Lexer::word_text(Wordings::first_wn(W));
+wording CGTokens::break(wchar_t *text, int expand) {
 	@<Reject this if it contains punctuation@>;
-	wording TW = Feeds::feed_C_string_full(as_wide_string, TRUE,
-		GRAMMAR_PUNCTUATION_MARKS);
+	wording TW = Feeds::feed_C_string_full(text, expand,
+		GRAMMAR_PUNCTUATION_MARKS, TRUE);
 	@<Reject this if it contains two consecutive commas@>;
-
-	cg_token *tokens = CGTokens::break_into_tokens(TW);
-	if (tokens == NULL) {
-		StandardProblems::sentence_problem(Task::syntax_tree(),
-			_p_(PM_UnderstandEmptyText),
-			"'understand' should be followed by text which contains at least "
-			"one word or square-bracketed token",
-			"so for instance 'understand \"take [something]\" as taking' is fine, "
-			"but 'understand \"\" as the fog' is not. The same applies to the contents "
-			"of 'topic' columns in tables, since those are also instructions for "
-			"understanding.");
-	}
-	return tokens;
+	@<Reject this if it slashes off a numerical word@>;
+	return TW;
 }
 
 @<Reject this if it contains punctuation@> =
 	int skip = FALSE, literal_punct = FALSE;
-	for (int i=0; as_wide_string[i]; i++) {
-		if (as_wide_string[i] == '[') skip = TRUE;
-		if (as_wide_string[i] == ']') skip = FALSE;
+	for (int i=0; text[i]; i++) {
+		if (text[i] == '[') skip = TRUE;
+		if (text[i] == ']') skip = FALSE;
 		if (skip) continue;
-		if ((as_wide_string[i] == '.') || (as_wide_string[i] == ',') ||
-			(as_wide_string[i] == '!') || (as_wide_string[i] == '?') ||
-			(as_wide_string[i] == ':') || (as_wide_string[i] == ';'))
+		if ((text[i] == '.') || (text[i] == ',') ||
+			(text[i] == '!') || (text[i] == '?') ||
+			(text[i] == ':') || (text[i] == ';'))
 			literal_punct = TRUE;
 	}
 	if (literal_punct) {
@@ -93,7 +81,7 @@ cg_token *CGTokens::tokenise(wording W) {
 			"or more specifically cannot contain any of these: . , ! ? : ; since they "
 			"are already used in various ways by the parser, and would not correctly "
 			"match here.");
-		return NULL;
+		return EMPTY_WORDING;
 	}
 
 @<Reject this if it contains two consecutive commas@> =
@@ -112,8 +100,52 @@ cg_token *CGTokens::tokenise(wording W) {
 					"brackets, this problem message is also sometimes seen "
 					"if empty square brackets are used, as in 'Understand "
 					"\"bless []\" as blessing.'");
-				return NULL;
+				return EMPTY_WORDING;
 			}
+
+@<Reject this if it slashes off a numerical word@> =
+	LOOP_THROUGH_WORDING(i, TW)
+		if (Lexer::word(i) == FORWARDSLASH_V)
+			if (((i < Wordings::last_wn(TW)) && (CGTokens::numerical(i+1))) ||
+				((i > Wordings::first_wn(TW)) && (CGTokens::numerical(i-1)))) {
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_SlashCutsDigits),
+					"'understand' uses a slash '/' here in a way which cuts off something "
+					"which contains only digits",
+					"and this will not do anything good. (Note that a slash in grammar "
+					"like this means an alternative choice of word.)");
+				return EMPTY_WORDING;
+			}
+
+@ =
+int CGTokens::numerical(int wn) {
+	wchar_t *text = Lexer::word_text(wn);
+	for (int i=0; i<Wide::len(text); i++)
+		if (Characters::isdigit(text[i]) == FALSE)
+			return FALSE;
+	return TRUE;
+}
+
+@ And here the result becomes a token list:
+
+=
+cg_token *CGTokens::tokenise(wording W) {
+	wchar_t *as_wide_string = Lexer::word_text(Wordings::first_wn(W));
+	wording TW = CGTokens::break(as_wide_string, TRUE);
+	cg_token *tokens = CGTokens::break_into_tokens(TW);
+	if (Wordings::empty(TW)) return NULL;
+	if (tokens == NULL) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_UnderstandEmptyText),
+			"'understand' should be followed by text which contains at least "
+			"one word or square-bracketed token",
+			"so for instance 'understand \"take [something]\" as taking' is fine, "
+			"but 'understand \"\" as the fog' is not. The same applies to the contents "
+			"of 'topic' columns in tables, since those are also instructions for "
+			"understanding.");
+	}
+	return tokens;
+}
 
 @ The following tiny Preform grammar is then used to break up the resulting
 text at commas:
@@ -143,8 +175,7 @@ cg_token *CGTokens::break_into_tokens_r(cg_token *list, wording W) {
 		case TRUE:
 			Word::dequote(Wordings::first_wn(W));
 			if (*(Lexer::word_text(Wordings::first_wn(W))) == 0) return list;
-			W = Feeds::feed_C_string_full(Lexer::word_text(Wordings::first_wn(W)),
-				FALSE, GRAMMAR_PUNCTUATION_MARKS);
+			W = CGTokens::break(Lexer::word_text(Wordings::first_wn(W)), FALSE);
 			LOOP_THROUGH_WORDING(i, W) {
 				cg_token *cgt = CGTokens::cgt_of(Wordings::one_word(i), TRUE);
 				list = CGTokens::add_to_list(cgt, list);

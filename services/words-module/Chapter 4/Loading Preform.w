@@ -510,7 +510,7 @@ So, for example, |AW| might then end up as |onions|, |/|, |shallots|.
 			if ((k > 0) && (p[k] == '/'))
 				breakme = TRUE;
 	}
-	if (breakme) AW = Feeds::feed_C_string_full(p, FALSE, L"/"); /* break only at slashes */
+	if (breakme) AW = Feeds::feed_C_string_full(p, FALSE, L"/", FALSE); /* break only at slashes */
 
 @ Intercept |/a/| to |/z/| and |/aa/| to |/zz/|, which don't make ptokens at
 all, but simply change the production's match number.

@@ -28,7 +28,7 @@ Some variations on a theme:
 
 =
 wording Feeds::feed_C_string(wchar_t *text) {
-	return Feeds::feed_C_string_full(text, FALSE, NULL);
+	return Feeds::feed_C_string_full(text, FALSE, NULL, FALSE);
 }
 
 wording Feeds::feed_text(text_stream *text) {
@@ -36,7 +36,7 @@ wording Feeds::feed_text(text_stream *text) {
 }
 
 wording Feeds::feed_C_string_expanding_strings(wchar_t *text) {
-	return Feeds::feed_C_string_full(text, TRUE, NULL);
+	return Feeds::feed_C_string_full(text, TRUE, NULL, FALSE);
 }
 
 wording Feeds::feed_text_expanding_strings(text_stream *text) {
@@ -52,8 +52,10 @@ wording Feeds::feed_text_punctuated(text_stream *text, wchar_t *pmarks) {
 function, written two ways:
 
 =
-wording Feeds::feed_C_string_full(wchar_t *text, int expand, wchar_t *nonstandard) {
+wording Feeds::feed_C_string_full(wchar_t *text, int expand, wchar_t *nonstandard,
+	int break_at_slashes) {
 	@<Set up the lexer@>;
+	lexer_break_at_slashes = break_at_slashes;
 	for (int i=0; text[i] != 0; i++) {
 		int last_cr, cr, next_cr;
 		if (i > 0) last_cr = text[i-1]; else last_cr = EOF;
