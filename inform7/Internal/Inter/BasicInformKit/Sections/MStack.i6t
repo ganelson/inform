@@ -176,27 +176,16 @@ where it is to be written, of course: that would corrupt the sentinel.
 @h Rulebook Variables.
 Each rulebook has a slate of variables, usually empty, with ID number the
 same as the rulebook's own ID number. (Rulebook IDs number upwards from 0
-in order of creation in the source text.) The associated creator functions,
-usually null, are stored in an array if there is no problem about memory
-usage, but with a switch statement if |MEMORY_ECONOMY| is in force; this
-costs a very small amount of time, but saves 1K of readable memory.
+in order of creation in the source text.)
 
 =
 [ MStack_CreateRBVars rb cr;
-	#ifdef MEMORY_ECONOMY;
 	cr = MStack_GetRBVarCreator(rb);
-	#ifnot;
-	cr = rulebook_var_creators-->rb;
-	#endif;
 	if (cr) Mstack_Create_Frame(cr, rb);
 ];
 
 [ MStack_DestroyRBVars rb cr;
-	#ifdef MEMORY_ECONOMY;
 	cr = MStack_GetRBVarCreator(rb);
-	#ifnot;
-	cr = rulebook_var_creators-->rb;
-	#endif;
 	if (cr) Mstack_Destroy_Frame(cr, rb);
 ];
 

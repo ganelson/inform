@@ -394,11 +394,9 @@ more discussion of this.
 		switch (rv) {
 			RS_SUCCEEDS: print "succeeded";
 			RS_FAILS: print "failed";
-				#IFNDEF MEMORY_ECONOMY;
 				if (reason_the_action_failed)
 					print " the ",
 						(RulePrintingRule) reason_the_action_failed;
-			    #ENDIF;
 			default: print "ended without result";
 		}
 		print "]^"; say__p = 1;
