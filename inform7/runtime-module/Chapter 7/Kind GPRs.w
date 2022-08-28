@@ -14,7 +14,10 @@ void KindGPRs::number(void) {
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_original_var(&kit);
 	command_grammar *cg = CommandGrammars::get_parsing_grammar(K_number);
-	if (cg) RTCommandGrammars::compile_for_value_GPR(&kit, cg);
+	if (cg) {
+		GPRs::add_standard_vars(&kit);
+		RTCommandGrammars::compile_for_value_GPR(&kit, cg);
+	}
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
@@ -34,7 +37,10 @@ void KindGPRs::time(void) {
 	kind *K = TimesOfDay::kind();
 	if (K) {
 		command_grammar *cg = CommandGrammars::get_parsing_grammar(K);
-		if (cg) RTCommandGrammars::compile_for_value_GPR(&kit, cg);
+		if (cg) {
+			GPRs::add_standard_vars(&kit);
+			RTCommandGrammars::compile_for_value_GPR(&kit, cg);
+		}
 	}
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
@@ -53,7 +59,10 @@ void KindGPRs::truth_state(void) {
 	gpr_kit kit = GPRs::new_kit();
 	GPRs::add_original_var(&kit);
 	command_grammar *cg = CommandGrammars::get_parsing_grammar(K_truth_state);
-	if (cg) RTCommandGrammars::compile_for_value_GPR(&kit, cg);
+	if (cg) {
+		GPRs::add_standard_vars(&kit);
+		RTCommandGrammars::compile_for_value_GPR(&kit, cg);
+	}
 	EmitCode::inv(RETURN_BIP);
 	EmitCode::down();
 		EmitCode::val_iname(K_value, Hierarchy::find(GPR_FAIL_HL));
