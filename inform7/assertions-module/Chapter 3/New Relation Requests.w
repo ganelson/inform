@@ -13,6 +13,10 @@ of subsequent sentences, which also happens in the pre-pass.
 The |:relations| set of test cases may be useful when tweaking the code below.
 
 =
+<new-relation-sentence-subject> ::=
+	<article> <np-unparsed> |       ==> { pass 2 }
+	<np-unparsed>                   ==> { pass 1 }
+
 <new-relation-sentence-object> ::=
 	<np-unparsed> to <np-unparsed>  ==> { TRUE, Node::compose(RP[1], RP[2]) }
 
@@ -24,7 +28,7 @@ int RelationRequests::new_relation_SMF(int task, parse_node *V, wording *NPs) {
 		case ACCEPT_SMFT:
 			if (<new-relation-sentence-object>(OW)) {
 				parse_node *O = <<rp>>;
-				<np-unparsed>(SW);
+				<new-relation-sentence-subject>(SW);
 				V->next = <<rp>>;
 				V->next->next = O;
 				wording RW = Node::get_text(V->next);
