@@ -42,3 +42,4 @@ Iron       | [9.1](release/9-1.md)       | 6L02  | May 2014       | Language ref
 ...        | [9.3](release/9-3.md)       | 6M62  | December 2015  | Extension projects, unifying actions
 Krypton    | [10.1.0](release/10-1-0.md) | ----  | August 2022    | Inter, open source
 ...        | [10.1.1](release/10-1-0.md) | ----  | August 2022    | Fixing minor build error in 10.1.0
+...        | [10.1.2](release/10-1-0.md) | ----  | August 2022    | Minor bug fixes

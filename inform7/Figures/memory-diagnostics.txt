@@ -1,62 +1,16 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-Total memory consumption was 121172K = 118 MB
+Total memory consumption was 120949K = 118 MB
 
- ---- was used for 2049517 objects, in 364569 frames in 0 x 800K = 0K = 0 MB:
-
-    33.6%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
-    21.0%  text_stream_array                        4631 x 100 = 463100 objects, 26081792 bytes
-    19.8%  linked_list                              43872 objects, 24568320 bytes
-=======
-Total memory consumption was 120953K = 118 MB
-
- ---- was used for 2048036 objects, in 364573 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2048021 objects, in 364558 frames in 0 x 800K = 0K = 0 MB:
 
     33.7%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     20.9%  text_stream_array                        4616 x 100 = 461600 objects, 25997312 bytes
-<<<<<<< HEAD
-    19.8%  linked_list                              43887 objects, 24576720 bytes
->>>>>>> 59a9f239d... Fix for Jira bug I7-2190
-=======
-    19.8%  linked_list                              43888 objects, 24577280 bytes
->>>>>>> 52baf6cfc... Fix for Jira bug I7-2192
+    19.8%  linked_list                              43873 objects, 24568880 bytes
     11.3%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes
     10.6%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes
      8.3%  parse_node                               129712 objects, 10376960 bytes
      5.9%  verb_conjugation                         160 objects, 7425280 bytes
      4.4%  parse_node_annotation_array              346 x 500 = 173000 objects, 5547072 bytes
      2.7%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes
-=======
-Total memory consumption was 123132K = 120 MB
-
- ---- was used for 2048036 objects, in 364573 frames in 0 x 800K = 0K = 0 MB:
-
-    33.1%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
-    20.6%  text_stream_array                        4616 x 100 = 461600 objects, 25997312 bytes
-    19.4%  linked_list                              43888 objects, 24577280 bytes
-    11.1%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes
-    10.5%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes
-     8.2%  parse_node                               129712 objects, 10376960 bytes
-     5.8%  verb_conjugation                         160 objects, 7425280 bytes
-     4.3%  parse_node_annotation_array              346 x 500 = 173000 objects, 5547072 bytes
-     2.6%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes
->>>>>>> fa1c1d3c4... Fix for Jira bug I7-2184
-=======
-Total memory consumption was 120953K = 118 MB
-
- ---- was used for 2048036 objects, in 364573 frames in 0 x 800K = 0K = 0 MB:
-
-    33.7%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
-    20.9%  text_stream_array                        4616 x 100 = 461600 objects, 25997312 bytes
-    19.8%  linked_list                              43888 objects, 24577280 bytes
-    11.3%  inter_symbol_array                       132 x 1024 = 135168 objects, 14061696 bytes
-    10.6%  inter_error_stash_array                  101 x 1024 = 103424 objects, 13241504 bytes
-     8.3%  parse_node                               129712 objects, 10376960 bytes
-     5.9%  verb_conjugation                         160 objects, 7425280 bytes
-     4.4%  parse_node_annotation_array              346 x 500 = 173000 objects, 5547072 bytes
-     2.7%  pcalc_prop_array                         25 x 1000 = 25000 objects, 3400800 bytes
->>>>>>> ed2243819... Fix for Jira bug I7-2194
      2.5%  inter_name_array                         67 x 1000 = 67000 objects, 3218144 bytes
      2.1%  kind_array                               66 x 1000 = 66000 objects, 2642112 bytes
      1.7%  scan_directory                           521 objects, 2150688 bytes
@@ -293,23 +247,7 @@ Total memory consumption was 120953K = 118 MB
 
 100.0% was used for memory not allocated for objects:
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    56.8%  text stream storage                      70578004 bytes in 480263 claims
-=======
-    56.8%  text stream storage                      70350844 bytes in 478783 claims
->>>>>>> 59a9f239d... Fix for Jira bug I7-2190
-=======
-    56.8%  text stream storage                      70350608 bytes in 478781 claims
->>>>>>> 52baf6cfc... Fix for Jira bug I7-2192
-=======
-    57.5%  text stream storage                      72582736 bytes in 479109 claims
->>>>>>> fa1c1d3c4... Fix for Jira bug I7-2184
-=======
-    56.8%  text stream storage                      70350608 bytes in 478781 claims
->>>>>>> ed2243819... Fix for Jira bug I7-2194
+    56.7%  text stream storage                      70346728 bytes in 478741 claims
      4.2%  dictionary storage                       5297152 bytes in 7590 claims
      ----  sorting                                  1520 bytes in 159 claims
      5.8%  source text                              7200000 bytes in 3 claims
@@ -327,25 +265,5 @@ Total memory consumption was 120953K = 118 MB
      ----  code generation workspace for objects    3480 bytes in 19 claims
      0.2%  emitter array storage                    280288 bytes in 1999 claims
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
--149.-8% was overhead - -185976032 bytes = -181617K = -177 MB
-=======
--149.-8% was overhead - -185990496 bytes = -181631K = -177 MB
->>>>>>> d0f59caec... Kits in the internal nest are no longer incrementally rebuilt
-=======
--150.0% was overhead - -185886160 bytes = -181529K = -177 MB
->>>>>>> 59a9f239d... Fix for Jira bug I7-2190
-=======
--150.0% was overhead - -185886888 bytes = -181530K = -177 MB
->>>>>>> 52baf6cfc... Fix for Jira bug I7-2192
-=======
--147.-4% was overhead - -185886888 bytes = -181530K = -177 MB
->>>>>>> fa1c1d3c4... Fix for Jira bug I7-2184
-=======
--150.0% was overhead - -185886888 bytes = -181530K = -177 MB
->>>>>>> ed2243819... Fix for Jira bug I7-2194
+-150.0% was overhead - -185878488 bytes = -181521K = -177 MB
 

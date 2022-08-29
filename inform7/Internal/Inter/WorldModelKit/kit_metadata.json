@@ -2,11 +2,7 @@
     "is": {
         "type": "kit",
         "title": "WorldModelKit",
-<<<<<<< HEAD
-        "version": "10.1.1"
-=======
-        "version": "10.2.0-beta+6V46"
->>>>>>> 59a9f239d... Fix for Jira bug I7-2190
+        "version": "10.1.2"
     },
     "needs": [ {
         "need": {
