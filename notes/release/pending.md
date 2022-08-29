@@ -48,3 +48,9 @@ These will be added to release notes when the release is made.
 	is technically a change in Inform's semantics. To mitigate that, the new
 	problem message `PM_SlashCutsDigits` is generated if the result would cut
 	off a word entirely consisting of digits, as in `Understand "x4/5" as ...`.
+
+- Fix for Jira bug [I7-2102](https://inform7.atlassian.net/browse/I7-2102)
+	"I6 that inform6 compiles but inform7 reports errors for"
+	([commit f9b55a9](https://github.com/ganelson/inform/commit/f9b55a9b54672d82db63d623287cef5812ff2e06)) -
+	though this bug report was really a catalogue of notes which needed to go
+	into the documentation sooner or later, and now they have done.
