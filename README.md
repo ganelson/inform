@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6V47 'Krypton' (29 August 2022)
+[Version](notes/versioning.md): 10.2.0-beta+6V48 'Krypton' (30 August 2022)
 
 ## About Inform
 
@@ -153,8 +153,8 @@ Other extensions shipped with Inform are not presented as webs, but as single fi
 
 These are templates used by Inform to release story files within a website:
 
-* [Classic](inform7/Internal/Templates/Classic.i7x) - An older, plainer website
-* [Standard](inform7/Internal/Templates/Standard.i7x) - The default, more modern look
+* [Classic](inform7/Internal/Templates/Classic) - An older, plainer website
+* [Standard](inform7/Internal/Templates/Standard) - The default, more modern look
 
 These are Javascript interpreters used to release such websites in a form which can play the story files interactively online:
 

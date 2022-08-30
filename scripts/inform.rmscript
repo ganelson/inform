@@ -173,7 +173,7 @@ Other extensions shipped with Inform are not presented as webs, but as single fi
 These are templates used by Inform to release story files within a website:
 
 {define: websitetemplate name: NAME purpose: PURPOSE}
-{set name: PATH value: inform7/Internal/Templates/{NAME}.i7x}
+{set name: PATH value: inform7/Internal/Templates/{NAME}}
 * [{NAME}]({PATH}) - {PURPOSE}
 {end-define}
 {websitetemplate name: Classic  purpose: An older, plainer website}
