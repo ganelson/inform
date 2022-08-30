@@ -16,7 +16,7 @@
 
 <any-integer> internal nti 19 constraint (none) extremes [1, 1]
 
-<quoted-text> internal hits 2901/25368 nti 20 constraint (none) extremes [1, 1]
+<quoted-text> internal hits 2901/25424 nti 20 constraint (none) extremes [1, 1]
 
 <quoted-text-with-subs> internal nti 21 constraint (none) extremes [1, 1]
 
@@ -4758,12 +4758,12 @@
 
 <adjective-name> internal hits 0/258 nti 14 constraint (none) extremes [1, infinity)
 
-<optional-definite-article> hits 36373/72746 nti 11 constraint (none) extremes [1, infinity)
+<optional-definite-article> hits 36382/72764 nti 11 constraint (none) extremes [1, infinity)
     English:
         <definite-article> {...} 
-          (hits 7878/36373) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 7877/36382) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 28495/28495) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 28505/28505) (matched long text) constraint (none) extremes [1, infinity)
 
 <optional-indefinite-article> nti 12 constraint (none) extremes [1, infinity)
     English:
@@ -4772,21 +4772,21 @@
         {...} 
           constraint (none) extremes [1, infinity)
 
-<optional-article> hits 83045/166090 nti 13 constraint (none) extremes [1, infinity)
+<optional-article> hits 83051/166102 nti 13 constraint (none) extremes [1, infinity)
     English:
         <article> {...} 
-          (hits 16076/47454) (matched long text) constraint (none) extremes [2, infinity)
+          (hits 16076/47460) (matched long text) constraint (none) extremes [2, infinity)
         {...} 
-          (hits 66969/66969) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 66975/66975) (matched long text) constraint (none) extremes [1, infinity)
 
 <compulsory-article> nti 14 constraint (none) extremes [2, infinity)
     English:
         <article> {...} 
           constraint (none) extremes [2, infinity)
 
-<article> internal hits 16530/98966 nti r2 constraint (none) extremes [1, 1]
+<article> internal hits 16530/98978 nti r2 constraint (none) extremes [1, 1]
 
-<definite-article> internal hits 20373/236440 nti r2 constraint (none) extremes [1, 1]
+<definite-article> internal hits 20372/236458 nti r2 constraint (none) extremes [1, 1]
 
 <indefinite-article> internal hits 2283/41534 nti r2 constraint (none) extremes [1, 1]
 
@@ -6759,14 +6759,14 @@
         {...} ( called {...} ) {***} 
           (hits 18/476) (matched long text) constraint DS = {27} extremes [5, infinity)
 
-<unsuitable-name> hits 0/2020 nti 28 constraint (none) extremes [1, infinity)
+<unsuitable-name> hits 0/2032 nti 28 constraint (none) extremes [1, infinity)
     English:
         <article> 
           (hits 0/156) constraint (none) extremes [1, 1]
         {***} (/)/{/}/,/./(- {***} 
           (hits 0/343) constraint DS = {28} extremes [1, infinity)
         {***} <quoted-text> {***} 
-          (hits 0/940) constraint (none) extremes [1, infinity)
+          (hits 0/946) constraint (none) extremes [1, infinity)
 
 <unsuitable-name-for-locals> hits 0/1614 nti 29 constraint (none) extremes [1, infinity)
     English:
@@ -6842,13 +6842,13 @@
         {to} 
           constraint CS = {13} extremes [1, 1]
         to {...} ( called {...} ) 
-          (hits 0/804) constraint DS = {13} extremes [6, infinity)
+          (hits 0/807) constraint DS = {13} extremes [6, infinity)
         {to ...} ( this is the {### function} inverse to {###} ) 
-          (hits 16/677) (matched long text) constraint DS = {13} extremes [12, infinity)
+          (hits 16/680) (matched long text) constraint DS = {13} extremes [12, infinity)
         {to ...} ( this is the {### function} ) 
-          (hits 4/719) (matched long text) constraint DS = {13} extremes [9, infinity)
+          (hits 4/722) (matched long text) constraint DS = {13} extremes [9, infinity)
         {to ...} ( this is {...} ) 
-          (hits 0/763) constraint DS = {13} extremes [7, infinity)
+          (hits 0/766) constraint DS = {13} extremes [7, infinity)
         {to ...} 
           (hits 477/862) (matched long text) constraint DS = {13} extremes [2, infinity)
 
@@ -7077,7 +7077,7 @@
         this is {...} rules 
           (hits 0/346) constraint DS = {25} extremes [4, infinity)
         {...} ( this is the {... rule} ) 
-          (hits 283/305) (matched long text) constraint DS = {25} extremes [8, infinity)
+          (hits 286/308) (matched long text) constraint DS = {25} extremes [8, infinity)
         {...} ( this is the rule ) 
           (hits 0/31) constraint DS = {25} extremes [7, infinity)
         {...} ( this is {...} rule ) 
@@ -7085,7 +7085,7 @@
         {...} ( this is {...} rules ) 
           (hits 0/31) constraint DS = {25} extremes [7, infinity)
         {...} 
-          (hits 89/89) (matched long text) constraint (none) extremes [1, infinity)
+          (hits 86/86) (matched long text) constraint (none) extremes [1, infinity)
 
 <rule-preamble-fine> hits 372/744 nti 28 constraint (none) extremes [1, infinity)
     English:
@@ -7232,10 +7232,10 @@
 
 <if-parsing-al-conditions> internal hits 76/152 nti 27 constraint (none) extremes [0, 0]
 
-<rule-name-formal> hits 1197/2394 nti 15 constraint DS = {15} extremes [2, infinity)
+<rule-name-formal> hits 1206/2412 nti 15 constraint DS = {15} extremes [2, infinity)
     English:
         {...} rule 
-          (hits 1197/1197) (matched long text) constraint DS = {15} extremes [2, infinity)
+          (hits 1206/1206) (matched long text) constraint DS = {15} extremes [2, infinity)
 
 <rule-name> internal hits 123/246 nti 28 constraint (none) extremes [1, infinity)
 

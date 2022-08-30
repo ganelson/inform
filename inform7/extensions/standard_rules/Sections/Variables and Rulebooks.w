@@ -618,8 +618,10 @@ the time of day, timed events, and so on -- except that no commands are
 read and no consequent actions generated.
 
 =
-A first turn sequence rule (this is the every turn stage rule): follow the every turn rules. [5th.]
-A first turn sequence rule: follow the scene changing rules. [4th.]
+A first turn sequence rule (this is the every turn stage rule):
+	follow the every turn rules. [5th.]
+A first turn sequence rule (this is the early scene changing stage rule):
+	follow the scene changing rules. [4th.]
 The generate action rule is listed first in the turn sequence rulebook. [3rd.]
 The declare everything initially unmentioned rule is listed first in the turn sequence rulebook. [2nd.]
 The parse command rule is listed first in the turn sequence rulebook. [1st.]
@@ -678,7 +680,8 @@ of an out-of-world action, it would be notified a turn late, but of course
 out-of-world actions are not supposed to do that sort of thing.)
 
 =
-A last turn sequence rule: follow the scene changing rules. [3rd from last.]
+A last turn sequence rule (this is the late scene changing stage rule):
+	follow the scene changing rules. [3rd from last.]
 The adjust light rule is listed last in the turn sequence rulebook. [2nd from last.]
 The note object acquisitions rule is listed last in the turn sequence rulebook. [Penultimate.]
 The notify score changes rule is listed last in the turn sequence rulebook. [Last.]
@@ -948,7 +951,8 @@ A specific action-processing rule (this is the report stage rule):
 	if within the player's sight is true and action keeping silent is false,
 		follow the specific report rulebook;
 
-The last specific action-processing rule: rule succeeds.
+The last specific action-processing rule (this is the default action success rule):
+	rule succeeds.
 
 @ The unusual use of "anonymously abide by" above is a form of "abide
 by" which may be worth explaining. Suppose rule $X$ consists of an

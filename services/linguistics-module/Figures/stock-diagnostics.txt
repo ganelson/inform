@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
-noun: 2382 items
+noun: 2385 items
 pronoun: 8 items
 preposition: 273 items
 determiner: 22 items
 verb: 108 items
 verb_form: 386 items
-total in all categories: 3318
+total in all categories: 3321
 
 adjective: 'even'
 adjective: 'odd'
@@ -282,6 +282,8 @@ noun: proper: 'fix baseline scoring rule'
 noun: proper: 'display banner rule'
 noun: proper: 'initial room description rule'
 noun: proper: 'every turn stage rule'
+noun: proper: 'early scene changing stage rule'
+noun: proper: 'late scene changing stage rule'
 noun: proper: 'notify score changes rule'
 noun: proper: 'when play ends stage rule'
 noun: proper: 'print player's obituary rule'
@@ -296,6 +298,7 @@ noun: proper: 'carry out stage rule'
 noun: proper: 'after stage rule'
 noun: proper: 'investigate player's awareness after action rule'
 noun: proper: 'report stage rule'
+noun: proper: 'default action success rule'
 noun: proper: 'player aware of his own actions rule'
 noun: proper: 'player aware of actions by visible actors rule'
 noun: proper: 'player aware of actions on visible nouns rule'
