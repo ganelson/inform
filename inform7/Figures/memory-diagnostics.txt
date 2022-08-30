@@ -1,6 +1,6 @@
 Total memory consumption was 120953K = 118 MB
 
- ---- was used for 2048036 objects, in 364573 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2048043 objects, in 364580 frames in 0 x 800K = 0K = 0 MB:
 
     33.7%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     20.9%  text_stream_array                        4616 x 100 = 461600 objects, 25997312 bytes
@@ -27,8 +27,8 @@ Total memory consumption was 120953K = 118 MB
      0.8%  id_body                                  942 objects, 1077648 bytes
      0.8%  adjective_meaning                        202 objects, 1000304 bytes
      0.7%  excerpt_meaning                          3109 objects, 970008 bytes
-     0.7%  production                               3878 objects, 899696 bytes
-     0.7%  ptoken                                   8408 objects, 874432 bytes
+     0.7%  production                               3880 objects, 900160 bytes
+     0.7%  ptoken                                   8411 objects, 874744 bytes
      0.7%  grammatical_usage                        3613 objects, 867120 bytes
      0.6%  individual_form                          2563 objects, 861168 bytes
      0.6%  inter_schema_node                        8917 objects, 856032 bytes
@@ -47,7 +47,7 @@ Total memory consumption was 120953K = 118 MB
      0.1%  hierarchy_location                       1124 objects, 161856 bytes
      0.1%  linguistic_stock_item                    3318 objects, 159264 bytes
      0.1%  rule_family_data                         401 objects, 147568 bytes
-     0.1%  nonterminal                              758 objects, 139472 bytes
+     0.1%  nonterminal                              759 objects, 139656 bytes
      0.1%  nascent_array                            2127 objects, 136128 bytes
      ----  inference                                1703 objects, 122616 bytes
      ----  documentation_ref                        1273 objects, 112024 bytes
@@ -85,7 +85,7 @@ Total memory consumption was 120953K = 118 MB
      ----  shared_variable_access_list_array        12 x 100 = 1200 objects, 38784 bytes
      ----  parsing_data                             671 objects, 37576 bytes
      ----  heading                                  198 objects, 36432 bytes
-     ----  production_list                          615 objects, 34440 bytes
+     ----  production_list                          616 objects, 34496 bytes
      ----  regions_data                             671 objects, 32208 bytes
      ----  counting_data                            671 objects, 32208 bytes
      ----  property_permission                      96 objects, 31488 bytes
@@ -265,5 +265,5 @@ Total memory consumption was 120953K = 118 MB
      ----  code generation workspace for objects    3480 bytes in 19 claims
      0.2%  emitter array storage                    280288 bytes in 1999 claims
 
--150.0% was overhead - -185886888 bytes = -181530K = -177 MB
+-150.0% was overhead - -185887904 bytes = -181531K = -177 MB
 
