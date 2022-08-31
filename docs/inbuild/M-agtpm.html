@@ -158,7 +158,22 @@ language of play is English, then EnglishLanguageKit is included). That too does
 not need to be specified.
 </p>
 
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Finally, note that the <span class="extract"><span class="extract-syntax">-basic</span></span> switch at the Inbuild or Inform command line,
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>Project metadata can also specify that given named compiler features should
+be active or inactive when compiling this project. For example, suppose the
+compiler has an experimental feature called <span class="extract"><span class="extract-syntax">fruit cultivation</span></span>, switched
+off by default, and a project needs to test this. It can do so by specifying:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="plain-syntax">    "activates": [ "fruit cultivation" ],</span>
+</pre>
+<p class="commentary">Similarly for <span class="extract"><span class="extract-syntax">"deactivates"</span></span>. Both clauses are optional and take a list of
+feature names: those features must all exist inside the compiler, or a
+problem will be thrown on compilation. (Note that the JSON here is identical
+to that which kits can also offer: kits can also turn features on or off.)
+</p>
+
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>Finally, note that the <span class="extract"><span class="extract-syntax">-basic</span></span> switch at the Inbuild or Inform command line,
 which signals that the project being compiled is for the Basic Inform language,
 is still legal to use if a project metadata file exists, but only so long as
 the metadata does not specify CommandParserKit or WorldModelKit: if it does,

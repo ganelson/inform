@@ -208,7 +208,7 @@ nothing.
 kind *Rules::to_kind(rule *R) {
 	kind *K = R->kind_of_rule;
 	if (K == NULL) {
-		if (PluginManager::active(actions_plugin))
+		if (FEATURE_ACTIVE(actions))
 			K = Kinds::binary_con(CON_rule, K_action_name, K_void);
 		else
 			K = Kinds::binary_con(CON_rule, K_void, K_void);

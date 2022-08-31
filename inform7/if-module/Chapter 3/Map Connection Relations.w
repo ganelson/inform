@@ -173,7 +173,7 @@ int MapRelations::typecheck(bp_family *self, binary_predicate *bp,
 @h Assertion.
 Note that the following will infer |IS_ROOM_INF| for any source of a map
 connection -- which will include doors. That doesn't matter, because the
-Spatial plugin uses these inferences only for objects whose kind is not
+Spatial feature uses these inferences only for objects whose kind is not
 explicitly given in the source text; and doors must always be specified as
 such.
 
@@ -219,7 +219,7 @@ instance *MapRelations::get_mapping_direction(binary_predicate *bp) {
 
 instance *MapRelations::get_mapping_relationship(parse_node *p) {
 	binary_predicate *bp = Node::get_relationship(p);
-	if ((bp) && (PluginManager::active(map_plugin))) {
+	if ((bp) && (FEATURE_ACTIVE(map))) {
 		instance *dir = MapRelations::get_mapping_direction(
 			BinaryPredicates::get_reversal(bp));
 		if (dir == NULL) dir = MapRelations::get_mapping_direction(bp);

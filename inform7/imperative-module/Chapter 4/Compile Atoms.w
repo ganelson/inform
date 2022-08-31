@@ -119,7 +119,7 @@ before we can proceed.
 	}
 	if (bp_to_assert == NULL) bp_to_assert = bp;
 
-@ The action variables will exist only if the actions plugin is active, and
+@ The action variables will exist only if the actions feature is active, and
 are just |actor|, |noun| and |second| at runtime:
 
 =

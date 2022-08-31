@@ -1,6 +1,6 @@
 [Map::] The Map.
 
-A plugin to provide a geographical model, linking rooms and doors
+A feature to provide a geographical model, linking rooms and doors
 together in oppositely-paired directions.
 
 @h Introduction.
@@ -14,18 +14,18 @@ quite specific problem messages.
 =
 void Map::start(void) {
 	Map::create_inference();
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Map::make_special_meanings);
-	PluginManager::plug(NEW_ASSERTION_NOTIFY_PLUG, Map::look_for_direction_creation);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Map::new_base_kind_notify);
-	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, Map::new_subject_notify);
-	PluginManager::plug(SET_KIND_NOTIFY_PLUG, Map::set_kind_notify);
-	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, Map::set_subkind_notify);
-	PluginManager::plug(ACT_ON_SPECIAL_NPS_PLUG, Map::act_on_special_NPs);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, Map::complete_model);
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Map::new_property_notify);
-	PluginManager::plug(INFERENCE_DRAWN_NOTIFY_PLUG, Map::inference_drawn);
-	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Map::intervene_in_assertion);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, Map::production_line);
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, Map::make_special_meanings);
+	PluginCalls::plug(NEW_ASSERTION_NOTIFY_PLUG, Map::look_for_direction_creation);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Map::new_base_kind_notify);
+	PluginCalls::plug(NEW_SUBJECT_NOTIFY_PLUG, Map::new_subject_notify);
+	PluginCalls::plug(SET_KIND_NOTIFY_PLUG, Map::set_kind_notify);
+	PluginCalls::plug(SET_SUBKIND_NOTIFY_PLUG, Map::set_subkind_notify);
+	PluginCalls::plug(ACT_ON_SPECIAL_NPS_PLUG, Map::act_on_special_NPs);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, Map::complete_model);
+	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Map::new_property_notify);
+	PluginCalls::plug(INFERENCE_DRAWN_NOTIFY_PLUG, Map::inference_drawn);
+	PluginCalls::plug(INTERVENE_IN_ASSERTION_PLUG, Map::intervene_in_assertion);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, Map::production_line);
 }
 
 int Map::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
@@ -228,12 +228,12 @@ int Map::set_subkind_notify(kind *sub, kind *super) {
 
 =
 int Map::subject_is_a_direction(inference_subject *infs) {
-	if (K_direction == NULL) return FALSE; /* in particular, if plugin inactive */
+	if (K_direction == NULL) return FALSE; /* in particular, if feature inactive */
 	return InferenceSubjects::is_within(infs, KindSubjects::from_kind(K_direction));
 }
 
 int Map::instance_is_a_direction(instance *I) {
-	if ((PluginManager::active(map_plugin)) && (K_direction) && (I) &&
+	if ((FEATURE_ACTIVE(map)) && (K_direction) && (I) &&
 		(Instances::of_kind(I, K_direction)))
 		return TRUE;
 	return FALSE;
@@ -246,7 +246,7 @@ int Map::subject_is_a_door(inference_subject *infs) {
 }
 
 int Map::instance_is_a_door(instance *I) {
-	if ((PluginManager::active(map_plugin)) && (K_door) && (I) &&
+	if ((FEATURE_ACTIVE(map)) && (K_door) && (I) &&
 		(Instances::of_kind(I, K_door)))
 		return TRUE;
 	return FALSE;
@@ -333,7 +333,7 @@ The following structure weighs several hundred bytes. If we expected very
 large numbers of instances then it might be worth economising here, but
 profiling suggests that it really isn't.
 
-@d MAP_DATA(I) PLUGIN_DATA_ON_INSTANCE(map, I)
+@d MAP_DATA(I) FEATURE_DATA_ON_INSTANCE(map, I)
 @d MAP_EXIT(X, Y) MAP_DATA(X)->exits[Y]
 
 =
@@ -371,7 +371,7 @@ int Map::new_subject_notify(inference_subject *subj) {
 		md->exits[i] = NULL;
 	}
 
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(map, subj, md);
+	ATTACH_FEATURE_DATA_TO_SUBJECT(map, subj, md);
 	return FALSE;
 }
 
@@ -409,9 +409,9 @@ int Map::new_property_notify(property *prn) {
 	return FALSE;
 }
 
-@ The following is used also by //Backdrops//, since both plugins use a
+@ The following is used also by //Backdrops//, since both features use a
 shared Inter-level property at run-time. But this function will work even if
-the map plugin is inactive; so you can still have backdrops without a map.
+the map feature is inactive; so you can still have backdrops without a map.
 
 =
 void Map::set_found_in(instance *I, parse_node *val) {

@@ -113,7 +113,7 @@ typedef struct inference_subject {
 
 	struct inference_subject_family *infs_family;
 	struct general_pointer represents; /* family-specific data */
-	void *additional_data_for_plugins[MAX_PLUGINS]; /* and managed by those plugins */
+	void *additional_data_for_features[MAX_COMPILER_FEATURES]; /* and managed by those features */
 
 	struct linked_list *inf_list; /* contingently true: each |inference| drawn about this */
 	struct linked_list *imp_list; /* necessarily true: each |implication| applying to this  */
@@ -160,7 +160,7 @@ void InferenceSubjects::infs_initialise(inference_subject *infs,
 	infs->infs_name_in_log = log_name;
 	infs->alias_variable = NULL;
 	Assertions::Assemblies::initialise_assemblies_data(&(infs->assemblies));
-	for (int i=0; i<MAX_PLUGINS; i++) infs->additional_data_for_plugins[i] = NULL;
+	for (int i=0; i<MAX_COMPILER_FEATURES; i++) infs->additional_data_for_features[i] = NULL;
 	PluginCalls::new_subject_notify(infs);
 }
 
@@ -526,25 +526,22 @@ void InferenceSubjects::emit_all(void) {
 	}
 }
 
-@h Plugin data.
-See //core: Plugins//, but to recap, plugins are inessential components
-of Inform which might or might not be in use for any given compilation run.
-
-If a plugin is in use, it may need to attach data of its own to a subject,
-and the following macro does that. |name| should be the name of the plugin,
+@h Feature data.
+If a feature is in use, it may need to attach data of its own to a subject,
+and the following macro does that. |name| should be the name of the feature,
 say |spatial|; |creator| a function to create and initialise the data structure,
 returning a pointer to it.
 
-@d ATTACH_PLUGIN_DATA_TO_SUBJECT(name, S, val)
-	(S)->additional_data_for_plugins[name##_plugin->allocation_id] = (void *) (val);
+@d ATTACH_FEATURE_DATA_TO_SUBJECT(name, S, val)
+	(S)->additional_data_for_features[name##_feature->allocation_id] = (void *) (val);
 
 @ Then, to access that same data, the following -- though in practice each
 plugin will define further macros to make more abbreviated forms. Many of
-the plugins from the //if// module are concerned only with instances -- rooms
+the features from the //if// module are concerned only with instances -- rooms
 and doors, say -- so |DATA_ON_INSTANCE|_PCALL pays its way.
 
-@d PLUGIN_DATA_ON_SUBJECT(name, S)
-	((name##_data *) (S)->additional_data_for_plugins[name##_plugin->allocation_id])
+@d FEATURE_DATA_ON_SUBJECT(name, S)
+	((name##_data *) (S)->additional_data_for_features[name##_feature->allocation_id])
 
-@d PLUGIN_DATA_ON_INSTANCE(name, I)
-	PLUGIN_DATA_ON_SUBJECT(name, Instances::as_subject(I))
+@d FEATURE_DATA_ON_INSTANCE(name, I)
+	FEATURE_DATA_ON_SUBJECT(name, Instances::as_subject(I))

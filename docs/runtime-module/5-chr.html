@@ -61,18 +61,18 @@ function togglePopup(material_id) {
 
 <ul class="toc"><li><a href="5-chr.html#SP1">&#167;1. Plugin</a></li><li><a href="5-chr.html#SP2">&#167;2. Past tense conditions</a></li><li><a href="5-chr.html#SP6">&#167;6. Action history conditions</a></li><li><a href="5-chr.html#SP9">&#167;9. Utility</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Plugin. </b>A little awkwardly, these two features make up the "chronology" plugin. There
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Plugin. </b>A little awkwardly, these two features make up the "chronology" feature. There
 are arguments for and against making these features doctrinally part of Basic
 Inform: or at least for making past tense conditions part of it. But Basic
 Inform has no concept of "turns", for example.
 </p>
 
-<p class="commentary">In any case, for now, these features are an optional plugin, but the activation
+<p class="commentary">In any case, for now, these features are an optional feature, but the activation
 function does nothing:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Chronology::start_plugin</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Chronology::start_feature</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Past tense conditions. </b>Each past tense condition, such as "if the green door has been open", causes

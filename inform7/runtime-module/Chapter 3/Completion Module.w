@@ -54,8 +54,8 @@ void CompletionModule::compile(void) {
 @<Plugin usage@> =
 	TEMPORARY_TEXT(inc)
 	TEMPORARY_TEXT(exc)
-	PluginManager::list_plugins(inc, TRUE);
-	PluginManager::list_plugins(exc, FALSE);
+	Features::list(inc, TRUE, experimental_feature);
+	Features::list(exc, FALSE, experimental_feature);
 	inter_name *iname = Hierarchy::find(LANGUAGE_ELEMENTS_USED_MD_HL);
 	Emit::text_constant(iname, inc);
 	if (Str::len(exc) > 0) {

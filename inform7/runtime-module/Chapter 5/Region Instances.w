@@ -3,7 +3,7 @@
 Some additions to an _instance package for instances of the kind "region".
 
 @h Compilation data.
-This additional data is present only if the "regions" plugin is active:
+This additional data is present only if the "regions" feature is active:
 
 =
 inter_name *RTRegionInstances::found_in_iname(instance *I) {

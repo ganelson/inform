@@ -194,7 +194,6 @@ DECLARE_CLASS(local_block_value)
 @e label_namespace_CLASS
 @e group_together_function_CLASS
 @e nascent_array_CLASS
-@e plugin_CLASS
 @e runtime_kind_structure_CLASS
 @e slash_gpr_CLASS
 @e test_scenario_CLASS
@@ -214,7 +213,6 @@ DECLARE_CLASS(cached_kind_declaration)
 DECLARE_CLASS(label_namespace)
 DECLARE_CLASS(group_together_function)
 DECLARE_CLASS(nascent_array)
-DECLARE_CLASS(plugin)
 DECLARE_CLASS(runtime_kind_structure)
 DECLARE_CLASS(slash_gpr)
 DECLARE_CLASS(test_scenario)

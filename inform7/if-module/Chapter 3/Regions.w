@@ -1,6 +1,6 @@
 [Regions::] Regions.
 
-A plugin providing support for grouping rooms together into named
+A feature providing support for grouping rooms together into named
 and nestable regions.
 
 @ "Region" is in fact one of the four top-level kinds in the standard I7
@@ -11,15 +11,15 @@ result, a new "regional containment" relation is needed.
 
 =
 void Regions::start(void) {
-	PluginManager::plug(CREATE_INFERENCE_SUBJECTS_PLUG, Regions::create_inference_subjects);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Regions::new_base_kind_notify);
-	PluginManager::plug(SET_SUBKIND_NOTIFY_PLUG, Regions::set_subkind_notify);
-	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, Regions::new_subject_notify);
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Regions::new_property_notify);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, Regions::complete_model);
-	PluginManager::plug(MORE_SPECIFIC_PLUG, Regions::more_specific);
-	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Regions::intervene_in_assertion);
-	PluginManager::plug(NAME_TO_EARLY_INFS_PLUG, Regions::name_to_early_infs);
+	PluginCalls::plug(CREATE_INFERENCE_SUBJECTS_PLUG, Regions::create_inference_subjects);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Regions::new_base_kind_notify);
+	PluginCalls::plug(SET_SUBKIND_NOTIFY_PLUG, Regions::set_subkind_notify);
+	PluginCalls::plug(NEW_SUBJECT_NOTIFY_PLUG, Regions::new_subject_notify);
+	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Regions::new_property_notify);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, Regions::complete_model);
+	PluginCalls::plug(MORE_SPECIFIC_PLUG, Regions::more_specific);
+	PluginCalls::plug(INTERVENE_IN_ASSERTION_PLUG, Regions::intervene_in_assertion);
+	PluginCalls::plug(NAME_TO_EARLY_INFS_PLUG, Regions::name_to_early_infs);
 }
 
 @ There is one kind of interest: "region", of course. It is recognised by the English
@@ -103,7 +103,7 @@ int Regions::more_specific(instance *I1, instance *I2) {
 	return 0;
 }
 
-@ Detecting regions is easy. Note that if this plugin is inactive then
+@ Detecting regions is easy. Note that if this feature is inactive then
 |K_region| will be null, and this will always return false.
 
 =
@@ -116,7 +116,7 @@ int Regions::object_is_a_region(instance *I) {
 following minimal structure, though it will only be relevant for instances of
 "region":
 
-@d REGIONS_DATA(I) PLUGIN_DATA_ON_INSTANCE(regions, I)
+@d REGIONS_DATA(I) FEATURE_DATA_ON_INSTANCE(regions, I)
 
 =
 typedef struct regions_data {
@@ -131,14 +131,14 @@ int Regions::new_subject_notify(inference_subject *subj) {
 	rd->in_region = NULL;
 	rd->in_region_set_at = NULL;
 	rd->in_region_iname = NULL;
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(regions, subj, rd);
+	ATTACH_FEATURE_DATA_TO_SUBJECT(regions, subj, rd);
 	return FALSE;
 }
 
 @ =
 parse_node *Regions::in_region_set_at(instance *I) {
 	if (I == NULL) return NULL;
-	if (PluginManager::active(regions_plugin) == FALSE) return NULL;
+	if (FEATURE_INACTIVE(regions)) return NULL;
 	return REGIONS_DATA(I)->in_region_set_at;
 }
 

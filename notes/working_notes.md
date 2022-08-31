@@ -8,9 +8,39 @@ to people experimenting with unreleased builds of Inform.
 
 Releases on the `10.1` branch are now available, and in principle we can begin
 work on new material for 10.2. Any urgent bug fixes will be made with point
-releases on 10.1: we're currently at 10.1.1.
+releases on 10.1: we're currently at 10.1.2.
 
 ## News items
+
+### Refactoring of "plugins" to "compiler features" (1 September 2022)
+
+Inform has for many years had internally named "plugins" providing optional
+compiler functionality, though only inside `inform7`, not `inter` or `inbuild`,
+and this meant some awkward conditional compilation in the `supervisor` module.
+This is now all refactored so that the named compiler features are managed
+by the shared services module `arch`: they are thus present across all three
+tools. The term "plugin" is now unhelpful, so the typedef name |plugin|
+has become |compiler_feature|.
+
+Kits already had the ability to force compiler features to be active or inactive
+by naming them in their metadata; projects have now been given the same ability.
+See the `inbuild` manual.
+
+The point of all of this is to pave the way for new features to be added in
+a tentative way, switched off by default, but available for projects to test.
+If a project includes this line in its JSON metadata file (which is optional,
+but we're imagining an expert user here):
+
+    "activates": [ "fruit cultivation" ],
+
+...then the compiler feature named `fruit cultivation` will be active during
+the compilation of the project.
+
+Of course, there is no such feature name at present, so this would in fact
+throw a problem message. But the idea is that the new features specified by
+proposals in the Inform evolution repository can be introduced, in some cases
+at least, as named features which are inactive by default until they seem to
+be working, and then activated by default when ready for public use.
 
 ### Kit incremental rebuilding change (28 August 2022)
 

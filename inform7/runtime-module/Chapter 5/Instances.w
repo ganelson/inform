@@ -200,7 +200,7 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_BACKDROP_MD_HL, 1);
 
 	RTInstances::xref_metadata(I, INSTANCE_REGION_ENCLOSING_MD_HL, Regions::enclosing(I));
-	if (PluginManager::active(spatial_plugin)) {
+	if (FEATURE_ACTIVE(spatial)) {
 		RTInstances::xref_metadata(I, INSTANCE_SIBLING_MD_HL, SPATIAL_DATA(I)->object_tree_sibling);
 		RTInstances::xref_metadata(I, INSTANCE_CHILD_MD_HL, SPATIAL_DATA(I)->object_tree_child);
 		RTInstances::xref_metadata(I, INSTANCE_PROGENITOR_MD_HL, Spatial::progenitor(I));
@@ -254,7 +254,7 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	}
 	RTInferences::index(pack, INSTANCE_BRIEF_INFERENCES_MD_HL, Instances::as_subject(I), TRUE);
 	RTInferences::index_specific(pack, INSTANCE_SPECIFIC_INFERENCES_MD_HL, Instances::as_subject(I));
-	if (PluginManager::active(spatial_plugin)) {
+	if (FEATURE_ACTIVE(spatial)) {
 		if (SPATIAL_DATA(I)->part_flag)
 			Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_A_PART_MD_HL, 1);
 	}

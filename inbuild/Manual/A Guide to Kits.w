@@ -435,9 +435,9 @@ are all legal:
 
 (*) |"activates"| is a list of strings describing optional features of the Inform
 compiler to switch on if this kit is being used. The feature names are the names
-of plugins inside the compiler, and this is not the place to document that. See
-the implementation at //core: Plugins//. But in general, unless you are performing
-wild experiments with new language features inside the compiler, you will never
+of features inside the compiler, and this is not the place to document that. See
+the implementation at //arch: Feature Manager//. But in general, unless you are
+performing wild experiments with new features inside the compiler, you will never
 need |"activates"|. It really exists for the benefit of the built-in kits. For
 example, WorldModelKit does the following:
 = (text)

@@ -30,5 +30,4 @@ Chapter 2: Problem Messages
 
 Chapter 3: Plugins
 "Extensions to the main compiler, which can be either active or inactive."
-	Plugin Manager
 	Plugin Calls

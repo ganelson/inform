@@ -68,7 +68,8 @@ int Task::carry_out(build_step *S) {
 
 	DocReferences::read_xrefs();
 	Task::issue_problems_arising(project->as_copy->vertex);
-	PluginManager::start_plugins();
+	Features::allow_activation_functions();
+	Features::run_activation_functions();
 
 	if (problem_count > 0) return FALSE;
 

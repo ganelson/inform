@@ -110,7 +110,7 @@ void StarTemplates::transcribe(parse_node_tree *T,
 		return;
 	}
 	#ifdef CORE_MODULE
-	if ((PluginManager::active(parsing_plugin) == FALSE) &&
+	if ((FEATURE_INACTIVE(parsing)) &&
 		(Str::eq(ttd->template_name, I"*UNDERSTOOD-VARIABLE")))
 		return;
 	#endif

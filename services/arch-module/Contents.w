@@ -15,3 +15,6 @@ Chapter 2: Architectures and VMs
 	Architectures
 	Target Virtual Machines
 	Compatibility
+
+Chapter 3: Features
+	Feature Manager

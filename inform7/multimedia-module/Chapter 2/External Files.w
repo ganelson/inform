@@ -3,16 +3,16 @@
 To register the names associated with external files, and build
 the small I6 arrays associated with each.
 
-@ The test group |:files| exercises the features in this plugin.
+@ The test group |:files| exercises the features in this feature.
 
-The following is called to activate the plugin:
+The following is called to activate the feature:
 
 =
 void ExternalFiles::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG, ExternalFiles::production_line);
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, ExternalFiles::make_special_meanings);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, ExternalFiles::files_new_base_kind_notify);
-	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, ExternalFiles::files_new_named_instance_notify);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, ExternalFiles::production_line);
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, ExternalFiles::make_special_meanings);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, ExternalFiles::files_new_base_kind_notify);
+	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, ExternalFiles::files_new_named_instance_notify);
 }
 
 int ExternalFiles::production_line(int stage, int debugging,
@@ -247,7 +247,7 @@ instance *ExternalFiles::files_create(wording W, int binary, int ownership,
 	Assert::true(Propositions::Abstract::to_create_something(K_external_file, W), CERTAIN_CE);
 	allow_exf_creations = FALSE;
 	instance *I = Instances::latest();
-	files_data *fd = PLUGIN_DATA_ON_INSTANCE(files, I);
+	files_data *fd = FEATURE_DATA_ON_INSTANCE(files, I);
 	fd->name = W;
 	fd->unextended_filename = Wordings::first_wn(FN);
 	fd->file_is_binary = binary;
@@ -268,7 +268,7 @@ int ExternalFiles::files_new_named_instance_notify(instance *I) {
 				"this is not the way to create a new external file",
 				"which should be done with a special 'The File ... is called ...' "
 				"sentence.");
-		ATTACH_PLUGIN_DATA_TO_SUBJECT(files, I->as_subject, CREATE(files_data));
+		ATTACH_FEATURE_DATA_TO_SUBJECT(files, I->as_subject, CREATE(files_data));
 		return TRUE;
 	}
 	return FALSE;

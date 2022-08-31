@@ -3,14 +3,14 @@
 To register the names associated with picture resource numbers, which are defined
 to allow the final story file to show illustrations.
 
-@ The following is called to activate the plugin:
+@ The following is called to activate the feature:
 
 =
 void Figures::start(void) {
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Figures::make_special_meanings);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Figures::figures_new_base_kind_notify);
-	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, Figures::figures_new_named_instance_notify);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, Figures::production_line);
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, Figures::make_special_meanings);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Figures::figures_new_base_kind_notify);
+	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, Figures::figures_new_named_instance_notify);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, Figures::production_line);
 }
 
 int Figures::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
@@ -171,7 +171,7 @@ instance *Figures::figures_create(wording W, int id, filename *figure_file, int 
 	Assert::true(Propositions::Abstract::to_create_something(K_figure_name, W), CERTAIN_CE);
 	allow_figure_creations = FALSE;
 	instance *I = Instances::latest();
-	figures_data *figd = PLUGIN_DATA_ON_INSTANCE(figures, I);
+	figures_data *figd = FEATURE_DATA_ON_INSTANCE(figures, I);
 	figd->filename_of_image_file = figure_file;
 	figd->name = W;
 	figd->figure_number = id;
@@ -190,7 +190,7 @@ int Figures::figures_new_named_instance_notify(instance *I) {
 				"this is not the way to create a new figure name",
 				"which should be done with a special 'Figure ... is the file ...' "
 				"sentence.");
-		ATTACH_PLUGIN_DATA_TO_SUBJECT(figures, I->as_subject, CREATE(figures_data));
+		ATTACH_FEATURE_DATA_TO_SUBJECT(figures, I->as_subject, CREATE(figures_data));
 		return TRUE;
 	}
 	return FALSE;
@@ -213,7 +213,7 @@ to the Materials folder for its project.
 =
 void Figures::write_picture_manifest(OUTPUT_STREAM, int include_cover,
 	char *cover_art_format) {
-	if (PluginManager::active(figures_plugin) == FALSE) return;
+	if (FEATURE_INACTIVE(figures)) return;
 	figures_data *figd;
 	WRITE("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 	WRITE("<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" "
@@ -251,7 +251,7 @@ the cover art, which is handled by Bibliographic Data.
 
 =
 void Figures::write_blurb_commands(OUTPUT_STREAM) {
-	if (PluginManager::active(figures_plugin) == FALSE) return;
+	if (FEATURE_INACTIVE(figures)) return;
 	figures_data *figd;
 	LOOP_OVER(figd, figures_data)
 		if (figd->figure_number > 1) {
@@ -271,7 +271,7 @@ void Figures::write_blurb_commands(OUTPUT_STREAM) {
 
 =
 void Figures::write_copy_commands(release_instructions *rel) {
-	if (PluginManager::active(figures_plugin) == FALSE) return;
+	if (FEATURE_INACTIVE(figures)) return;
 	figures_data *figd;
 	LOOP_OVER(figd, figures_data)
 		if (figd->figure_number > 1)

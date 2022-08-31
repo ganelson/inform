@@ -180,7 +180,7 @@ to typecheck each clause.
 			int rv = FALSE;
 			if (PluginCalls::validate_AP_clause(an, c, &rv)) {
 				if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA))
-					LOG("referred to plugin - ");
+					LOG("referred to feature - ");
 				if (rv == FALSE) {
 					if (Log::aspect_switched_on(ACTION_PATTERN_PARSING_DA)) {
 						LOG("failed badly with problem\n");

@@ -163,7 +163,7 @@ something.
 	if (<k-kind>(W))
 		ValueProperties::make_coincide_with_kind(prn, <<rp>>);
 
-@ A few properties have special significance to core Inform, though plugins
+@ A few properties have special significance to core Inform, though features
 are interested in many others:
 
 = (early code)

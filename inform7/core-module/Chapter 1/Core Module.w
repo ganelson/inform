@@ -8,21 +8,27 @@ Setting up the use of this module.
 
 @ Like all modules, this one must define a |start| and |end| function.
 
-Note that the "core" plugin itself does nothing except to be a parent to the
+Note that the "core" feature itself does nothing except to be a parent to the
 other two; it doesn't even have an activation function.
+
+The "experimental features" feature is similarly an umbrella for any features
+being used to test out half-implemented compiler functionality before it's ready
+to be part of a released version.
 
 @e TASK_QUEUE_DA
 @e INTER_DA
 @e INFORM_INTER_DA
 
 =
-plugin *core_plugin, *naming_plugin, *counting_plugin;
+compiler_feature *core_feature, *naming_feature, *counting_feature, *experimental_feature;
 
 void CoreModule::start(void) {
-	core_plugin = PluginManager::new(NULL, I"core", NULL);
-	PluginManager::make_permanently_active(core_plugin);
-	naming_plugin = PluginManager::new(&Naming::start, I"naming", core_plugin);
-	counting_plugin = PluginManager::new(&InstanceCounting::start, I"instance counting", core_plugin);
+	core_feature = Features::new(NULL, I"core", NULL);
+	Features::make_permanently_active(core_feature);
+	naming_feature = Features::new(&Naming::start, I"naming", core_feature);
+	counting_feature = Features::new(&InstanceCounting::start, I"instance counting", core_feature);
+
+	experimental_feature = Features::new(NULL, I"experimental features", NULL);
 
 	Log::declare_aspect(TASK_QUEUE_DA, L"task queue", FALSE, FALSE);
 	Log::declare_aspect(INTER_DA, L"inter", FALSE, FALSE);

@@ -17,7 +17,7 @@ typedef struct id_runtime_context_data {
 	struct wording activity_context; /* text used to parse... */
 	struct activity_list *avl; /* happens only while these activities go on */
 	struct action_pattern *ap; /* happens only if the action or parameter matches this */
-	void *plugin_rcd[MAX_PLUGINS]; /* storage for plugins to attach, if they want to */
+	void *feature_rcd[MAX_COMPILER_FEATURES]; /* storage for features to attach, if they want to */
 } id_runtime_context_data;
 
 id_runtime_context_data RuntimeContextData::new(void) {
@@ -25,7 +25,7 @@ id_runtime_context_data RuntimeContextData::new(void) {
 	phrcd.activity_context = EMPTY_WORDING;
 	phrcd.avl = NULL;
 	phrcd.ap = NULL;
-	for (int i=0; i<MAX_PLUGINS; i++) phrcd.plugin_rcd[i] = NULL;
+	for (int i=0; i<MAX_COMPILER_FEATURES; i++) phrcd.feature_rcd[i] = NULL;
 	PluginCalls::new_rcd_notify(&phrcd);
 	return phrcd;
 }
@@ -36,13 +36,13 @@ id_runtime_context_data *RuntimeContextData::of(imperative_defn *id) {
 }
 
 @ For the more interesting clauses, see //if: Scenes// and //if: Rules Predicated on Actions//,
-where the scenes and actions plugins make use of the following extensibility:
+where the scenes and actions features make use of the following extensibility:
 
-@d RCD_PLUGIN_DATA(id, rcd)
-	((id##_rcd_data *) rcd->plugin_rcd[id##_plugin->allocation_id])
+@d RCD_FEATURE_DATA(id, rcd)
+	((id##_rcd_data *) rcd->feature_rcd[id##_feature->allocation_id])
 
-@d CREATE_PLUGIN_RCD_DATA(id, rcd, creator)
-	(rcd)->plugin_rcd[id##_plugin->allocation_id] = (void *) (creator(rcd));
+@d CREATE_RCD_FEATURE_DATA(id, rcd, creator)
+	(rcd)->feature_rcd[id##_feature->allocation_id] = (void *) (creator(rcd));
 
 @h Specificity.
 The following is one of Inform's standardised comparison routines, which

@@ -33,8 +33,8 @@ up individual tasks; it provides general mechanisms for issuing problem messages
 and also a "plugin" architecture enabling language features to be added. Most
 Inform users think of rooms, map connections and so on as being built in to
 the language itself, but internally we take the view that there is a purist
-Basic Inform language dealing only in data, and then a set of plugins to add
-domain-specific gadgets to that language.
+Basic Inform language dealing only in data, and then a set of optional compiler
+features to add domain-specific gadgets to that language.
 
 (*) Contents page of web: //core//.
 
@@ -100,8 +100,8 @@ for the moment.[1]
 [1] If we ever do go down the road of a full-on linker, issues like this would
 be part of what is nowadays called "ABI stability".
 
-@ The //if// module consists of an extensive suite of plugins (see |core|
-above) to add interactive fiction features to the Basic Inform language.
+@ The //if// module consists of an extensive suite of features (see |core|
+above) to add interactive fiction support to the Basic Inform language.
 Support for scenes, a spatial map, a protagonist character, and so on are
 all to be found here.
 
@@ -109,7 +109,7 @@ all to be found here.
 
 (*) Detailed overview: //if: What This Module Does//.
 
-@ The //multimedia// module consists of a few plugins (see |core| above)
+@ The //multimedia// module consists of a few features (see |core| above)
 to add images, sound files and external file-handling to the Basic Inform
 language.
 

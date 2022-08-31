@@ -34,7 +34,7 @@ pathname *diagnostics_path = NULL;
 int Main::deputy(int argc, char *argv[]) {
 	@<Start up@>;
 	int proceed = Main::read_command_line(argc, argv);
-	PluginManager::start();
+	PluginCalls::start();
 	if (proceed) {
 		if (silence_is_golden == FALSE)
 			PRINT("Inform 7 v[[Version Number]] has started.\n", FALSE, TRUE);

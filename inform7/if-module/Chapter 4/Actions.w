@@ -97,7 +97,7 @@ rulebook *Actions::divert_to_another_actions_rulebook(action_name *new_an,
 	return old_rulebook;
 }
 
-@ And this is where the actions plugin moves rules from their normal rulebooks:
+@ And this is where the actions feature moves rules from their normal rulebooks:
 
 =
 int Actions::place_rule(rule *R, rulebook *original_owner, rulebook **new_owner) {
@@ -160,7 +160,7 @@ int Actions::place_rule(rule *R, rulebook *original_owner, rulebook **new_owner)
 	Problems::issue_problem_end();
 	return FALSE;
 
-@ And this is where the actions plugin reacts to any placement of a rule in a
+@ And this is where the actions feature reacts to any placement of a rule in a
 rulebook, automatic or not:
 
 =

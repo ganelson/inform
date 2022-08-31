@@ -1,6 +1,6 @@
 [Scenes::] Scenes.
 
-A plugin to support named periods of time during an interactive story.
+A feature to support named periods of time during an interactive story.
 
 @h Introduction.
 Scenes are periods of time during play: at any given moment, several may be
@@ -10,15 +10,15 @@ met, or by virtue of having been anchored together.
 =
 void Scenes::start(void) {
 	Scenes::declare_annotations();
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Scenes::new_property_notify);
-	PluginManager::plug(NEW_INSTANCE_NOTIFY_PLUG, Scenes::new_named_instance_notify);
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Scenes::new_base_kind_notify);
-	PluginManager::plug(COMPARE_CONSTANT_PLUG, Scenes::compare_CONSTANT);
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Scenes::make_special_meanings);
-	PluginManager::plug(NEW_RCD_NOTIFY_PLUG, Scenes::new_rcd);
+	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Scenes::new_property_notify);
+	PluginCalls::plug(NEW_INSTANCE_NOTIFY_PLUG, Scenes::new_named_instance_notify);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Scenes::new_base_kind_notify);
+	PluginCalls::plug(COMPARE_CONSTANT_PLUG, Scenes::compare_CONSTANT);
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, Scenes::make_special_meanings);
+	PluginCalls::plug(NEW_RCD_NOTIFY_PLUG, Scenes::new_rcd);
 }
 
-@ This plugin needs one extra syntax tree annotation:
+@ This feature needs one extra syntax tree annotation:
 
 @e constant_scene_ANNOT /* |scene|: for constant values */
 
@@ -145,12 +145,12 @@ wording Scenes::get_name(scene *sc) {
 	return Instances::get_name(sc->as_instance, FALSE);
 }
 
-@ A plugin called |xyzzy| generally has a hunk of subject data called |xyzzy_data|,
+@ A feature called |xyzzy| generally has a hunk of subject data called |xyzzy_data|,
 so we would normally have a structure called |scenes_data|, but in fact that
 structure is just going to be //scene//. So:
 
 @d scenes_data scene
-@d SCENES_DATA(subj) PLUGIN_DATA_ON_SUBJECT(scenes, subj)
+@d SCENES_DATA(subj) FEATURE_DATA_ON_SUBJECT(scenes, subj)
 
 @h Scene structures.
 As we've seen, the following is called whenever a new instance of "scene"
@@ -186,7 +186,7 @@ to translate this to other languages.)
 
 @<Connect the scene structure to the instance@> =
 	sc->as_instance = I;
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(scenes, I->as_subject, sc);
+	ATTACH_FEATURE_DATA_TO_SUBJECT(scenes, I->as_subject, sc);
 	wording W = Instances::get_name(I, FALSE);
 	if (<notable-scenes>(W)) SC_entire_game = sc;
 
@@ -196,7 +196,7 @@ to translate this to other languages.)
 scene *Scenes::from_named_constant(instance *I) {
 	if (K_scene == NULL) return NULL;
 	kind *K = Instances::to_kind(I);
-	if (Kinds::eq(K, K_scene)) return PLUGIN_DATA_ON_SUBJECT(scenes, I->as_subject);
+	if (Kinds::eq(K, K_scene)) return FEATURE_DATA_ON_SUBJECT(scenes, I->as_subject);
 	return NULL;
 }
 
@@ -602,7 +602,7 @@ collection of them:
 
 @h Rules predicated on scenes.
 Rules can be set to fire only during a certain scene, or a scene matching some
-description. This is stored in the following scenes-plugin corner of the
+description. This is stored in the following scenes-feature corner of the
 //assertions: Runtime Context Data// for the rule:
 
 =
@@ -618,19 +618,19 @@ scenes_rcd_data *Scenes::new_rcd_data(id_runtime_context_data *idrcd) {
 }
 
 int Scenes::new_rcd(id_runtime_context_data *idrcd) {
-	CREATE_PLUGIN_RCD_DATA(scenes, idrcd, Scenes::new_rcd_data)
+	CREATE_RCD_FEATURE_DATA(scenes, idrcd, Scenes::new_rcd_data)
 	return FALSE;
 }
 
 void Scenes::set_rcd_spec(id_runtime_context_data *idrcd, parse_node *to_match) {
-	scenes_rcd_data *srcd = RCD_PLUGIN_DATA(scenes, idrcd);
+	scenes_rcd_data *srcd = RCD_FEATURE_DATA(scenes, idrcd);
 	if (srcd) {
 		srcd->during_scene = to_match;
 	}
 }
 
 parse_node *Scenes::get_rcd_spec(id_runtime_context_data *idrcd) {
-	scenes_rcd_data *srcd = RCD_PLUGIN_DATA(scenes, idrcd);
+	scenes_rcd_data *srcd = RCD_FEATURE_DATA(scenes, idrcd);
 	if (srcd) return srcd->during_scene;
 	return NULL;
 }
@@ -643,7 +643,7 @@ extracts a single specified scene if there is one:
 =
 scene *Scenes::rcd_scene(id_runtime_context_data *idrcd) {
 	if (idrcd == NULL) return NULL;
-	scenes_rcd_data *srcd = RCD_PLUGIN_DATA(scenes, idrcd);
+	scenes_rcd_data *srcd = RCD_FEATURE_DATA(scenes, idrcd);
 	if (srcd) {
 		if (Rvalues::is_rvalue(srcd->during_scene)) {
 			instance *q = Rvalues::to_instance(srcd->during_scene);
@@ -658,7 +658,7 @@ scene *Scenes::rcd_scene(id_runtime_context_data *idrcd) {
 =
 wording Scenes::during_wording(id_runtime_context_data *idrcd) {
 	if (idrcd) {
-		scenes_rcd_data *srcd = RCD_PLUGIN_DATA(scenes, idrcd);
+		scenes_rcd_data *srcd = RCD_FEATURE_DATA(scenes, idrcd);
 		if (srcd) return Node::get_text(srcd->during_scene);
 	}
 	return EMPTY_WORDING;

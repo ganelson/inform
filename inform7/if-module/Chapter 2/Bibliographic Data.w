@@ -4,8 +4,8 @@ To manage the special variables providing bibliographic data on the
 work of IF being generated (title, author's name and so forth), and to write
 the Library Card in the index.
 
-@h Enter the plugin.
-This chapter defines the "bibliographic data" plugin, whose activation
+@h Enter the feature.
+This chapter defines the "bibliographic data" feature, whose activation
 function follows.
 
 Much of this chapter is best understood by reference to the Treaty of
@@ -15,11 +15,11 @@ fully with the Treaty and the code below should be maintained as such.
 
 =
 void BibliographicData::start(void) {
-	PluginManager::plug(PRODUCTION_LINE_PLUG,
+	PluginCalls::plug(PRODUCTION_LINE_PLUG,
 		BibliographicData::production_line);
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG,
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG,
 		BibliographicData::make_special_meanings);
-	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG,
+	PluginCalls::plug(NEW_VARIABLE_NOTIFY_PLUG,
 		BibliographicData::bibliographic_new_variable_notify);
 }
 

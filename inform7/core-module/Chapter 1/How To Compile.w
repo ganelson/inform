@@ -97,8 +97,8 @@ as possible.
 
 @ Here, then, are the steps in the production line, presented without
 commentary. For what they do, see the relevant sections. Note that at the
-end of each stage, plugins are allowed to add further steps; see
-//Task::advance_stage_to//.
+end of each stage, plugins made by compiler features are allowed to add
+further steps; see //Task::advance_stage_to//.
 
 Before anything else can be done, we must create an empty Inter hierarchy
 into which we will "emit" an Inter program. No actual code will be emitted for

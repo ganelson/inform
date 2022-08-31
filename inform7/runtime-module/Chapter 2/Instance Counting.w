@@ -1,17 +1,17 @@
 [InstanceCounting::] Instance Counting.
 
-Though a plugin, for convenience of implementation, this code is always active
+Though a feature, for convenience of implementation, this code is always active
 and provides for efficient loops through instances at runtime.
 
-@h Plugin startup.
-Being a plugin, this needs a startup function, and here it is. It is in fact
+@h Feature startup.
+Being a feature, this needs a startup function, and here it is. It is in fact
 called on every run: see //core: Core Module//.
 
 =
 void InstanceCounting::start(void) {
-	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, InstanceCounting::counting_new_subject_notify);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, InstanceCounting::counting_complete_model);
-	PluginManager::plug(PRODUCTION_LINE_PLUG, InstanceCounting::production_line);
+	PluginCalls::plug(NEW_SUBJECT_NOTIFY_PLUG, InstanceCounting::counting_new_subject_notify);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, InstanceCounting::counting_complete_model);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, InstanceCounting::production_line);
 }
 
 int InstanceCounting::production_line(int stage, int debugging, stopwatch_timer *sequence_timer) {
@@ -24,7 +24,7 @@ int InstanceCounting::production_line(int stage, int debugging, stopwatch_timer 
 @ Being a plugin, this code can provide extra data on inference subjects. It
 will in practice use that only for subjects representing kinds:
 
-@d COUNTING_DATA(subj) PLUGIN_DATA_ON_SUBJECT(counting, subj)
+@d COUNTING_DATA(subj) FEATURE_DATA_ON_SUBJECT(counting, subj)
 
 =
 typedef struct counting_data {
@@ -36,7 +36,7 @@ typedef struct counting_data {
 
 @ =
 int InstanceCounting::counting_new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(counting, subj, InstanceCounting::new_data(subj));
+	ATTACH_FEATURE_DATA_TO_SUBJECT(counting, subj, InstanceCounting::new_data(subj));
 	return FALSE;
 }
 
@@ -104,7 +104,7 @@ a problem in practice; the number seldom exceeds a few hundred.
 				INSTANCE_COUNT(I, K) = ix_count++;
 		}
 
-@ Instance counts are actually useful to several other plugins, so we provide
+@ Instance counts are actually useful to several other features, so we provide
 the following. Note that if I is not in fact an instance of K then its IK-count
 is by definition -1.
 
@@ -321,7 +321,7 @@ misleading to a human reader.
 
 =
 int InstanceCounting::optimise_loop(i6_schema *sch, kind *K) {
-	if (PluginManager::active(counting_plugin) == FALSE) return FALSE;
+	if (FEATURE_INACTIVE(counting)) return FALSE;
 	inference_subject *subj = KindSubjects::from_kind(K);
 	if (COUNTING_DATA(subj)->has_instances == FALSE) {
 		Calculus::Schemas::modify(sch,

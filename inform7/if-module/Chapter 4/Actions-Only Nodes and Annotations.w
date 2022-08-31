@@ -1,6 +1,6 @@
 [ActionsNodes::] Actions-Only Nodes and Annotations.
 
-Additional syntax tree node and annotation types used by the actions plugin.
+Additional syntax tree node and annotation types used by the actions feature.
 
 @ There is just one additional node type, but it can take four new annotations:
 

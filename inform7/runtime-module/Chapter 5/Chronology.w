@@ -4,16 +4,16 @@ To compile the chronology submodule for a compilation unit, which contains
 _past_condition and _action_history_condition packages.
 
 @h Plugin.
-A little awkwardly, these two features make up the "chronology" plugin. There
+A little awkwardly, these two features make up the "chronology" feature. There
 are arguments for and against making these features doctrinally part of Basic
 Inform: or at least for making past tense conditions part of it. But Basic
 Inform has no concept of "turns", for example.
 
-In any case, for now, these features are an optional plugin, but the activation
+In any case, for now, these features are an optional feature, but the activation
 function does nothing:
 
 =
-void Chronology::start_plugin(void) {
+void Chronology::start_feature(void) {
 }
 
 @h Past tense conditions.

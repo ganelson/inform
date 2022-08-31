@@ -349,24 +349,27 @@ Note that this function is meaningful only when this module is part of the
 features as |K| would like.
 
 =
-#ifdef CORE_MODULE
 void Kits::activate_elements(inform_kit *K) {
 	element_activation *EA;
 	LOOP_OVER_LINKED_LIST(EA, element_activation, K->activations) {
-		plugin *P = PluginManager::parse(EA->element_name);
+		compiler_feature *P = Features::from_name(EA->element_name);
 		if (P == NULL) {
-			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(Untestable),
-				"one of the Inform kits made reference to a language segment "
-				"which does not exist",
-				"which suggests that Inform is not properly installed, unless "
-				"you are experimenting with new kits.");
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "kit metadata refers to unknown compiler feature '%S'", EA->element_name);
+			Copies::attach_error(K->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
 		} else {
-			if (EA->activate) PluginManager::activate(P);
-			else PluginManager::deactivate(P);
+			if (EA->activate) Features::activate(P);
+			else if (Features::deactivate(P) == FALSE) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "kit metadata asks to deactivate mandatory compiler feature '%S'",
+					EA->element_name);
+				Copies::attach_error(K->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
 		}
 	}
 }
-#endif
 
 @h Early source.
 As we have seen, kits can ask for extensions to be included.

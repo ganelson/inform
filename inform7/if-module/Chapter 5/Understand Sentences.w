@@ -3,7 +3,7 @@
 Command parser grammar is laid out in special Understand... sentences.
 
 @h Traversing.
-When the "parser" plugin is active, any sentence in the form "Understand...
+When the "parser" feature is active, any sentence in the form "Understand...
 as..." is considered to be an instruction about the command grammar, which
 is a special data structure created by Inform for the use of the command
 parser at run-time.

@@ -28,6 +28,7 @@ typedef struct inform_project {
 	struct build_vertex *chosen_build_target;
 	struct parse_node_tree *syntax_tree;
 	struct linked_list *extensions_included; /* of |inform_extension| */
+	struct linked_list *activations; /* of |element_activation| */
 	int fix_rng;
 	int compile_for_release;
 	int compile_only;
@@ -73,6 +74,7 @@ void Projects::scan(inbuild_copy *C) {
 	proj->search_list = NEW_LINKED_LIST(inbuild_nest);
 	proj->primary_source = NULL;
 	proj->extensions_included = NEW_LINKED_LIST(inform_extension);
+	proj->activations = NEW_LINKED_LIST(element_activation);
 	Projects::scan_bibliographic_data(proj);
 	filename *F = Filenames::in(M, I"project_metadata.json");
 	if (TextFiles::exists(F)) {
@@ -85,6 +87,7 @@ void Projects::scan(inbuild_copy *C) {
 					proj->version = VersionNumbers::from_text(version->if_string);
 				}
 			}
+			@<Extract activations@>;
 			JSON_value *project_details =
 				JSON::look_up_object(C->metadata_record, I"project-details");
 			if (project_details) {
@@ -99,6 +102,20 @@ void Projects::scan(inbuild_copy *C) {
 		}
 	}
 }
+
+@<Extract activations@> =
+	JSON_value *activates = JSON::look_up_object(C->metadata_record, I"activates");
+	if (activates) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, activates->if_list)
+			Projects::activation(proj, E->if_string, TRUE);
+	}
+	JSON_value *deactivates = JSON::look_up_object(C->metadata_record, I"deactivates");
+	if (deactivates) {
+		JSON_value *E;
+		LOOP_OVER_LINKED_LIST(E, JSON_value, deactivates->if_list)
+			Projects::activation(proj, E->if_string, FALSE);
+	}
 
 @<Extract the project details@> =
 	;
@@ -133,6 +150,17 @@ void Projects::scan(inbuild_copy *C) {
 			DISCARD_TEXT(err)
 		}
 	}
+
+@ Language elements can similarly be activated or deactivated, though the
+latter may not be useful in practice:
+
+=
+void Projects::activation(inform_project *proj, text_stream *name, int act) {
+	element_activation *EA = CREATE(element_activation);
+	EA->element_name = Str::duplicate(name);
+	EA->activate = act;
+	ADD_TO_LINKED_LIST(EA, element_activation, proj->activations);
+}
 
 @ The materials folder sits alongside the project and has the same name,
 but ending |.materials| instead of |.inform|.
@@ -564,18 +592,35 @@ void Projects::load_built_in_kind_constructors(inform_project *project) {
 @ Next, language element activation: this too is decided by kits.
 
 =
-#ifdef CORE_MODULE
 void Projects::activate_elements(inform_project *project) {
-	PluginManager::activate_bare_minimum();
+	Features::activate_bare_minimum();
+	element_activation *EA;
+	LOOP_OVER_LINKED_LIST(EA, element_activation, project->activations) {
+		compiler_feature *P = Features::from_name(EA->element_name);
+		if (P == NULL) {
+			TEMPORARY_TEXT(err)
+			WRITE_TO(err, "project metadata refers to unknown compiler feature '%S'", EA->element_name);
+			Copies::attach_error(project->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+			DISCARD_TEXT(err)	
+		} else {
+			if (EA->activate) Features::activate(P);
+			else if (Features::deactivate(P) == FALSE) {
+				TEMPORARY_TEXT(err)
+				WRITE_TO(err, "project metadata asks to deactivate mandatory compiler feature '%S'",
+					EA->element_name);
+				Copies::attach_error(project->as_copy, CopyErrors::new_T(METADATA_MALFORMED_CE, -1, err));
+				DISCARD_TEXT(err)	
+			}
+		}
+	}
 	kit_dependency *kd;
 	LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
 		Kits::activate_elements(kd->kit);
-	LOG("Included: "); PluginManager::list_plugins(DL, TRUE);
+	LOG("Included: "); Features::list(DL, TRUE, NULL);
 	LOG("\n");
-	LOG("Excluded: "); PluginManager::list_plugins(DL, FALSE);
+	LOG("Excluded: "); Features::list(DL, FALSE, NULL);
 	LOG("\n");
 }
-#endif
 
 @ And so is the question of whether the compiler is expected to compile a
 |Main| function, or whether one has already been included in one of the kits.
@@ -974,9 +1019,7 @@ on that. We have to perform the tree surgery asked for by Include... in
 place of... instructions after the sweep for inclusions.
 
 @<Post-process the syntax tree@> =
-	#ifdef CORE_MODULE
 	Projects::activate_elements(proj);
-	#endif
 	Inclusions::traverse(proj->as_copy, proj->syntax_tree);
 	Headings::satisfy_dependencies(proj, proj->syntax_tree, proj->as_copy);
 

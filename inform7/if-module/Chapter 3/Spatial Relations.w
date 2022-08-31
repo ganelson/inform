@@ -184,7 +184,7 @@ int SpatialRelations::assert(bp_family *self, binary_predicate *bp,
 				"like saying 'the bottle is in the bottle'.");
 			return TRUE;
 		}
-		@<Offer our dependent plugins a chance to assert the relation instead@>;
+		@<Offer our dependent features a chance to assert the relation instead@>;
 
 		if (BinaryPredicates::can_be_made_true_at_runtime(bp) == FALSE)
 			@<Issue a problem message for an unassertable indirect spatial relation@>;
@@ -218,7 +218,7 @@ int SpatialRelations::assert(bp_family *self, binary_predicate *bp,
 putting a backdrop inside a region clearly has to be implemented in some
 way which isn't symmetrical between the two, and this way round is cleanest.
 
-@<Offer our dependent plugins a chance to assert the relation instead@> =
+@<Offer our dependent features a chance to assert the relation instead@> =
 	if (Backdrops::assert_relations(bp, I0, I1)) return TRUE;
 	if (Regions::assert_relations(bp, I0, I1)) return TRUE;
 
@@ -255,7 +255,7 @@ way which isn't symmetrical between the two, and this way round is cleanest.
 
 @ If something is being worn, it needs to have the I7 either/or property
 "wearable" and also the I6-only attribute |worn|. (Arguably Clothing ought
-to be a plugin of its own, but the compiler needs to do hardly anything
+to be a feature of its own, but the compiler needs to do hardly anything
 special to make it work, so this doesn't seem worth the trouble.)
 
 @<Assert the worn and wearable properties@> =

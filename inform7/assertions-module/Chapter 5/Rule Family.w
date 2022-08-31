@@ -59,7 +59,7 @@ typedef struct rule_family_data {
 	int owning_rulebook_placement; /* ...and with this placement value: see Rulebooks */
 	int permit_all_outcomes; /* waive the usual restrictions on rule outcomes */
 
-	void *plugin_rfd[MAX_PLUGINS]; /* storage for plugins to attach, if they want to */
+	void *feature_rfd[MAX_COMPILER_FEATURES]; /* storage for features to attach, if they want to */
 	CLASS_DEFINITION
 } rule_family_data;
 
@@ -77,17 +77,17 @@ rule_family_data *RuleFamily::new_data(void) {
 	rfd->owning_rulebook = NULL;
 	rfd->owning_rulebook_placement = MIDDLE_PLACEMENT;
 	rfd->permit_all_outcomes = FALSE;
-	for (int i=0; i<MAX_PLUGINS; i++) rfd->plugin_rfd[i] = NULL;
+	for (int i=0; i<MAX_COMPILER_FEATURES; i++) rfd->feature_rfd[i] = NULL;
 	return rfd;
 }
 
-@ These two macros provide access to plugin-specific rule family data:
+@ These two macros provide access to feature-specific rule family data:
 
-@d RFD_PLUGIN_DATA(id, rfd)
-	((id##_rfd_data *) rfd->plugin_rfd[id##_plugin->allocation_id])
+@d RFD_FEATURE_DATA(id, rfd)
+	((id##_rfd_data *) rfd->feature_rfd[id##_feature->allocation_id])
 
-@d CREATE_PLUGIN_RFD_DATA(id, rfd, creator)
-	(rfd)->plugin_rfd[id##_plugin->allocation_id] = (void *) (creator(rfd));
+@d CREATE_RFD_FEATURE_DATA(id, rfd, creator)
+	(rfd)->feature_rfd[id##_feature->allocation_id] = (void *) (creator(rfd));
 
 @h Identification.
 We are going to claim as our own any definition whose name matches the

@@ -60,18 +60,18 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">knowledge</a></li><li><a href="index.html#5">Chapter 5: Modelling</a></li><li><b>The Naming Thicket</b></li></ul></div>
 <p class="purpose">Inform has a thicket of properties to do with names: not just the name itself, but whether it is a plural, a proper name, and so on. Here we look after these properties, and give them their initial states.</p>
 
-<ul class="toc"><li><a href="5-tnt.html#SP1">&#167;1. As a plugin</a></li><li><a href="5-tnt.html#SP5">&#167;5. Proper named, plural named, definite article</a></li><li><a href="5-tnt.html#SP7">&#167;7. Transferring name details</a></li><li><a href="5-tnt.html#SP8">&#167;8. Private naming</a></li><li><a href="5-tnt.html#SP9">&#167;9. Model completion</a></li><li><a href="5-tnt.html#SP12">&#167;12. The adaptive person</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="5-tnt.html#SP1">&#167;1. As a feature</a></li><li><a href="5-tnt.html#SP5">&#167;5. Proper named, plural named, definite article</a></li><li><a href="5-tnt.html#SP7">&#167;7. Transferring name details</a></li><li><a href="5-tnt.html#SP8">&#167;8. Private naming</a></li><li><a href="5-tnt.html#SP9">&#167;9. Model completion</a></li><li><a href="5-tnt.html#SP12">&#167;12. The adaptive person</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. As a plugin. </b>This section of code is used even in Basic Inform, but it is structured
-as a plugin called "naming", even though it is permanently active, as a way
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. As a feature. </b>This section of code is used even in Basic Inform, but it is structured
+as a feature called "naming", even though it is permanently active, as a way
 to contain its complexity.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Naming::start</span><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRODUCTION_LINE_PLUG</span><span class="plain-syntax">, </span><a href="5-tnt.html#SP1" class="function-link"><span class="function-syntax">Naming::production_line</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_PROPERTY_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="5-tnt.html#SP4" class="function-link"><span class="function-syntax">Naming::naming_new_property_notify</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPLETE_MODEL_PLUG</span><span class="plain-syntax">, </span><a href="5-tnt.html#SP9" class="function-link"><span class="function-syntax">Naming::naming_complete_model</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRODUCTION_LINE_PLUG</span><span class="plain-syntax">, </span><a href="5-tnt.html#SP1" class="function-link"><span class="function-syntax">Naming::production_line</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_PROPERTY_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="5-tnt.html#SP4" class="function-link"><span class="function-syntax">Naming::naming_new_property_notify</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPLETE_MODEL_PLUG</span><span class="plain-syntax">, </span><a href="5-tnt.html#SP9" class="function-link"><span class="function-syntax">Naming::naming_complete_model</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Naming::production_line</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">stage</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">debugging</span><span class="plain-syntax">, </span><span class="identifier-syntax">stopwatch_timer</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sequence_timer</span><span class="plain-syntax">) {</span>
@@ -375,7 +375,7 @@ beebe"; but that we take care to reduce the case of "Your nose" (etc.)
 to "your nose", unless it occurs in the name of a room, like "Your Bedroom".
 </p>
 
-<p class="commentary">If the "spatial" plugin is inactive, <span class="extract"><span class="extract-syntax">this_is_a_room</span></span> is always <span class="extract"><span class="extract-syntax">FALSE</span></span>.
+<p class="commentary">If the "spatial" feature is inactive, <span class="extract"><span class="extract-syntax">this_is_a_room</span></span> is always <span class="extract"><span class="extract-syntax">FALSE</span></span>.
 </p>
 
 <p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compose the I6 short-name as a piece of text</span><span class="named-paragraph-number">9.1.2.1.1</span></span><span class="comment-syntax"> =</span>

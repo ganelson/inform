@@ -235,7 +235,7 @@ contexts by using a tilde: |~attr|.
 		}
 	}
 
-@ The actions plugin provides other kinds with idiosyncratic compilation needs,
+@ The actions feature provides other kinds with idiosyncratic compilation needs,
 if it is enabled.
 
 =

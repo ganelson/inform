@@ -1,27 +1,113 @@
 [PluginCalls::] Plugin Calls.
 
-The interface between the main compiler and its plugins.
+Giving compiler features the ability to install plugin functions.
 
-@ The following set of functions is an API for the main compiler to consult
-with the plugins; put another way, it is also an API for the plugins to
-influence the main compiler. They do so by adding plugs to the relevant rulebooks:
-see //PluginManager::plug//.
+@ The three Inform compiler tools //inform7//, //inbuild// and //inter//
+share a set of named compiler features, managed by //arch: Feature Manager//.
+At any given time these can be active or inactive.
 
-Nothing can prevent this from being a big old miscellany, so we take them by
+In //inform7//, features gain further abilities: they can attach storage to
+certain internal data structures, and they can provide plugin functions which
+interfere with the normal running of the compiler.
+
+The names of these features are hard-wired into the compiler rather than being
+stored in Preform grammar, and they therefore cannot be translated out of
+English. But this is intentional. Dependencies on compiler features are managed
+by name inside the //supervisor// module, and metadata for projects and kits
+refers to those names. So they have to be the same regardless of the language
+being used in the project. But it hardly matters, because these names are
+invisible to all but the most expert users.
+
+However, because it is possible to have headings in Inform source text which
+restrict material according to whether a feature is active, we do need a
+Preform nonterminal to parse those names. Here it is:
+
+=
+<language-element> internal {
+	TEMPORARY_TEXT(T)
+	WRITE_TO(T, "%W", W);
+	compiler_feature *F = Features::from_name(T);
+	DISCARD_TEXT(T)
+	if (F) {
+		if (F->active == FALSE) {
+			==> { FALSE, F };
+		} else {
+			==> { TRUE, F };
+		}
+		return TRUE;
+	}
+	==> { fail nonterminal };
+}
+
+@ As noted above, features can provide plugin functions, which go into what
+we will call "plugin rulebooks" -- there's a mixed metaphor here, but the idea
+is that they behave like Inform rulebooks. When a rulebook is called, the
+compiler works through each plug until one of them returns something other
+than |FALSE|.
+
+Features should add plugins in their activation functions, by calling
+//PluginCalls::plug//, which has an interestingly vague type. The next
+screenful of code looks like something of a workout for the C typechecker, but
+it compiles under |clang| without even the |-Wpedantic| warning, and honestly
+you're barely living as a C programmer if you never generate that one.
+
+=
+linked_list *plugin_rulebooks[NO_DEFINED_PLUG_VALUES+1]; /* of |void|, reprehensibly */
+
+void PluginCalls::start(void) {
+	for (int i=0; i<=NO_DEFINED_PLUG_VALUES; i++)
+		plugin_rulebooks[i] = NEW_LINKED_LIST(void);
+}
+
+void PluginCalls::plug(int code, int (*R)()) {
+	if (code > NO_DEFINED_PLUG_VALUES) internal_error("not a plugin call");
+	void *vR = (void *) R;
+	ADD_TO_LINKED_LIST(vR, void, plugin_rulebooks[code]);
+}
+
+@ The functions in //Plugin Calls// then make use of these macros, which are
+the easiest way to persuade the C typechecker to allow variable arguments to
+be passed in a portable way. Similarly, there are two macros not one because
+C does not allow a void variable argument list.
+
+We must take care that the variables introduced in the macro body do not mask
+existing variables used in the arguments; the only way to do this is to give
+them implausible names.
+
+@d PLUGINS_CALL(code, args...) {
+	void *R_plugin_pointer_XYZZY; /* no argument can have this name */
+	LOOP_OVER_LINKED_LIST(R_plugin_pointer_XYZZY, void, plugin_rulebooks[code]) {
+		int (*R_plugin_rule_ZOOGE)() = (int (*)()) R_plugin_pointer_XYZZY; /* or this one */
+		int Q_plugin_return_PLUGH = (*R_plugin_rule_ZOOGE)(args); /* or this */
+		if (Q_plugin_return_PLUGH) return Q_plugin_return_PLUGH;
+	}
+	return FALSE;
+}
+
+@d PLUGINS_CALLV(code) {
+	void *R_plugin_pointer_XYZZY;
+	LOOP_OVER_LINKED_LIST(R_plugin_pointer_XYZZY, void, plugin_rulebooks[code]) {
+		int (*R_plugin_rule_ZOOGE)() = (int (*)()) R_plugin_pointer_XYZZY;
+		int Q_plugin_return_PLUGH = (*R_plugin_rule_ZOOGE)();
+		if (Q_plugin_return_PLUGH) return Q_plugin_return_PLUGH;
+	}
+	return FALSE;
+}
+
+@ Nothing can prevent this from being a big old miscellany, so we take them by
 compiler module, and within each module in alphabetical order.
 
 @h Influencing core.
-Called from //Task::advance_stage_to//. This allows plugins to run additional
+Called from //Task::advance_stage_to//. This allows features to run additional
 production-line steps in compilation, and that is done mostly at the Inter
-generation stage, to add extra arrays or functions needed at run-time to
-support whatever feature the plugin implements. For example, the mapping plugin
-compiles an array to hold the map during stage |INTER1_CSEQ|.
+generation stage, to add extra arrays or functions needed at runtime.
+For example, the mapping feature compiles an array to hold the map during
+stage |INTER1_CSEQ|.
 
 Because the following is called at the end of every main stage of compilation
 except for |FINISHED_CSEQ|, it is called about 15 times in all, so it is
 essential to check |stage| and act only on the right occasion. |debugging| is
-|TRUE| if this is a debugging run, and allows a plugin to generate diagnostic
-features if so.
+|TRUE| if this is a debugging run.
 
 A function attached to this plug should then ideally divide its work up into
 major subtasks and call each one with the |BENCH| macro, so that the time it
@@ -39,7 +125,7 @@ int PluginCalls::production_line(int stage, int debugging, stopwatch_timer *time
 @h Influencing assertions.
 Called from //assertions: Refine Parse Tree// to ask if this node is a noun
 phrase with special significance: for example, "below" is significant to the
-mapping plugin. If so, the plugin should set the subject of the node to say
+mapping feature. If so, the plugin should set the subject of the node to say
 what it refers to, and return |TRUE|.
 
 @e ACT_ON_SPECIAL_NPS_PLUG
@@ -50,7 +136,7 @@ int PluginCalls::act_on_special_NPs(parse_node *p) {
 }
 
 @ Called from //assertions: Assemblies//. Body-snatching is used only by the
-"player" plugin, and is explained there; it handles the consequences of sentences
+"player" feature, and is explained there; it handles the consequences of sentences
 like "The player is Lord Collingwood".
 
 @e DETECT_BODYSNATCHING_PLUG
@@ -76,7 +162,7 @@ int PluginCalls::intervene_in_assertion(parse_node *px, parse_node *py) {
 }
 
 @ Called from //assertions: The Creator// when a copular sentence may be
-creating something. For example, the actions plugin needs this.
+creating something. For example, the actions feature needs this.
 
 @e CREATION_PLUG
 
@@ -86,7 +172,7 @@ int PluginCalls::creation(parse_node *px, parse_node *py) {
 }
 
 @ Called from //assertions: Assertions// when an unfamiliar node type appears
-where a property value might be expected. For example, the actions plugin
+where a property value might be expected. For example, the actions feature
 uses this to deal with setting a property to an |ACTION_NT| node. To
 intervene, set the node specification using //assertions: Refine Parse Tree//
 and return |TRUE|; or return |FALSE| to let nature take its course.
@@ -101,7 +187,7 @@ int PluginCalls::unusual_property_value(parse_node *py) {
 @ Called from //assertions: The Creator// when an instance is being made in
 an assembly, and its name may involve a genitive. For example, if the
 assembly says "every person has a nose", then normally this would be called
-something like "Mr Rogers's nose"; but the player plugin uses the following
+something like "Mr Rogers's nose"; but the player feature uses the following
 to have "your nose" in the case of the player instance.
 
 @e IRREGULAR_GENITIVE_IN_ASSEMBLY_PLUG
@@ -114,7 +200,7 @@ int PluginCalls::irregular_genitive(inference_subject *owner, text_stream *genit
 
 @ Called from //assertions: Booting Verbs// to give each plugin a chance to
 create any special sentence meanings it would like to. For example, the
-sounds plugin defines a special form of assertion sentence this way. The
+sounds feature defines a special form of assertion sentence this way. The
 plugin should always return |FALSE|, since otherwise it may gazump other
 plugins and cause them to stop working.
 
@@ -129,7 +215,7 @@ int PluginCalls::make_special_meanings(void) {
 to create a property of something with a sentence like "A container has a
 number called security rating." A plugin can intervene and act on that,
 returning |TRUE| to stop the usual machinery. For example, the actions
-plugin does this so that "The going action has a number called celerity"
+feature does this so that "The going action has a number called celerity"
 can be intercepted to create an action variable, not a property.
 
 @e OFFERED_PROPERTY_PLUG
@@ -151,7 +237,7 @@ int PluginCalls::offered_specification(parse_node *owner, wording W) {
 
 @ Called from //assertions: Refine Parse Tree// to ask plugins if a noun phrase
 has a noun implicit within it, even though none is explicitly given. For
-example, the player plugin uses this to say that "initially carried" means
+example, the player feature uses this to say that "initially carried" means
 "...by the player", and sets the subject of the node to be the player character
 instance.
 
@@ -163,7 +249,7 @@ int PluginCalls::refine_implicit_noun(parse_node *p) {
 }
 
 @ Called from //assertions: Classifying Sentences// to give plugins the chance
-of an early look at a newly-read assertion. For example, the map plugin uses
+of an early look at a newly-read assertion. For example, the map feature uses
 this to spot that a sentence will create a new direction.
 
 @e NEW_ASSERTION_NOTIFY_PLUG
@@ -219,7 +305,7 @@ int PluginCalls::new_rcd_notify(id_runtime_context_data *rcd) {
 @h Influencing values.
 Called from //values: Rvalues// to allow plugins to help decide whether values
 of the same kind would be equal if evaluated at runtime. For example, the
-"scenes" plugin uses this to determine if two |K_scene| constants are equal.
+scenes feature uses this to determine if two |K_scene| constants are equal.
 To make a decision, set |rv| to either |TRUE| or |FALSE| and return |TRUE|.
 To make no decision, return |FALSE|.
 
@@ -255,7 +341,7 @@ int PluginCalls::compile_condition(value_holster *VH, parse_node *spec) {
 
 @ Called from //values: Specifications// to ask if there is some reason why
 a rule about |I1| should be thought broader in scope than one about |I2|. This
-is used by the regions plugin when one is a sub-region of the other. This is
+is used by the regions feature when one is a sub-region of the other. This is
 expected to behave as a |strcmp|-like sorting function, with a positive
 return value saying |I1| is broader, negative |I2|, or zero that they are equal.
 
@@ -270,7 +356,7 @@ int PluginCalls::more_specific(instance *I1, instance *I2) {
 to parse text which might otherwise be meaningless (or mean something different)
 and make it a "composite noun-quantifier" such as "everywhere" or "nothing".
 The main compiler does not recognise "everywhere" because it has no concept
-of space, but the spatial plugin does, and this is how.
+of space, but the spatial feature does, and this is how.
 
 @e PARSE_COMPOSITE_NQS_PLUG
 
@@ -319,7 +405,7 @@ int PluginCalls::default_appearance(inference_subject *infs, parse_node *txt) {
 @ Called from //knowledge: Inferences// when an inference is drawn about
 something. This does not, of course, necessarily mean that this will actually
 be the property of something: the inference might turn out to be mistaken. The
-mapping plugin uses this to infer further that if something is said to be a
+mapping feature uses this to infer further that if something is said to be a
 map connection to somewhere else, then it is probably a room.
 
 @e INFERENCE_DRAWN_NOTIFY_PLUG
@@ -342,7 +428,7 @@ int PluginCalls::name_to_early_infs(wording W, inference_subject **infs) {
 
 @ Called from //knowledge: Kind Subjects// to warn plugins about a new kind,
 which in practice enables them to spot from the name that it is actually a kind
-they want to provide built-in support for: thus the actions plugin reacts to
+they want to provide built-in support for: thus the actions feature reacts to
 the name "stored action", for example. |K| is the newcomer, |super| its super-kind,
 if any; |d| and |W| are alternate forms of that name -- |d| will be useful if the
 kind was created by a kit (such as "number"), |W| if it came from Inform 7
@@ -356,7 +442,7 @@ int PluginCalls::new_base_kind_notify(kind *K, kind *super, text_stream *d, word
 }
 
 @ Called from //knowledge: Instances// to warn plugins that a new instance has
-been created. For example, the figures plugin needs to know this so that it
+been created. For example, the figures feature needs to know this so that it
 can see when a new illustration has been created.
 
 At the time this is called, the exact kind of an instance may not be known,
@@ -371,7 +457,7 @@ int PluginCalls::new_named_instance_notify(instance *nc) {
 }
 
 @ Called from //knowledge: Property Permissions// to warn plugins that a subject
-has been given permission to hold a property; the parsing plugin, for example,
+has been given permission to hold a property; the parsing feature, for example,
 uses this to attach a visibility flag.
 
 @e NEW_PERMISSION_NOTIFY_PLUG
@@ -442,9 +528,9 @@ int PluginCalls::set_subkind_notify(kind *sub, kind *super) {
 	PLUGINS_CALL(SET_SUBKIND_NOTIFY_PLUG, sub, super);
 }
 
-@h Influencing the imperative plugin.
+@h Influencing the imperative module.
 Called from //assertions: Rule Bookings// to give plugins a chance to move
-automatically placed rules from one rulebook to another. The actions plugin
+automatically placed rules from one rulebook to another. The actions feature
 uses this to break up what would otherwise be unwieldy before and after
 rulebooks into smaller ones for each action.
 
@@ -497,12 +583,12 @@ int PluginCalls::nonstandard_inline_annotation(int annot, parse_node *supplied) 
 	PLUGINS_CALL(INLINE_ANNOTATION_PLUG, annot, supplied);
 }
 
-@h Influencing the actions plugin.
-We now have a whole run of functions called only by the actions plugin, and
+@h Influencing the actions feature.
+We now have a whole run of functions called only by the actions feature, and
 therefore only when it is active.
 
 Called from //if: Actions Plugin// to signal that a new action has been
-created. For example, the going plugin uses this to spot the arrival of "going".
+created. For example, the going feature uses this to spot the arrival of "going".
 
 @e NEW_ACTION_NOTIFY_PLUG
 
@@ -578,7 +664,7 @@ int PluginCalls::new_action_variable_clause(action_pattern *ap, ap_clause *apoc)
 
 @ Called from //if: Parse Clauses// to give plugins a chance to intervene in
 the normal process of evaluating the meaning of text in an action pattern
-clause: for example, in parsing "going nowhere", the going plugin uses this
+clause: for example, in parsing "going nowhere", the going feature uses this
 to detect that the |NOUN_AP_CLAUSE|, with text "nowhere", should not be parsed
 normally. What it does it to set a bit in the bitmap |bits|, which it will pick
 up again and act upon when reacting to |ACT_ON_ANL_ENTRY_OPTIONS_PLUG|.

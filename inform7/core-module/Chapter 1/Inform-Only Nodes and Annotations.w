@@ -375,7 +375,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 @e lpe_options_ANNOT /* |int|: options set for a literal pattern part */
 @e multiplicity_ANNOT /* |int|: e.g., 5 for "five gold rings" */
 @e new_relation_here_ANNOT /* |binary_predicate|: new relation as subject of "relates" sentence */
-@e nowhere_ANNOT /* |int|: used by the spatial plugin to show this represents "nowhere" */
+@e nowhere_ANNOT /* |int|: used by the spatial feature to show this represents "nowhere" */
 @e predicate_ANNOT /* |unary_predicate|: which adjective is asserted */
 @e quant_ANNOT /* |quantifier|: for quantified excerpts like "three baskets" */
 @e quantification_parameter_ANNOT /* |int|: e.g., 3 for "three baskets" */

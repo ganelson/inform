@@ -1,6 +1,6 @@
 [Backdrops::] Backdrops.
 
-A plugin to provide support for backdrop objects, which are present
+A feature to provide support for backdrop objects, which are present
 as scenery in multiple rooms at once.
 
 @ While we normally assume that nothing can be in more than one place at
@@ -12,11 +12,11 @@ inferences to avoid piling up bogus inconsistencies.
 =
 void Backdrops::start(void) {
 	Backdrops::create_inference_families();
-	PluginManager::plug(NEW_BASE_KIND_NOTIFY_PLUG, Backdrops::new_base_kind_notify);
-	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, Backdrops::new_subject_notify);
-	PluginManager::plug(NEW_PROPERTY_NOTIFY_PLUG, Backdrops::new_property_notify);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, Backdrops::complete_model);
-	PluginManager::plug(INTERVENE_IN_ASSERTION_PLUG, Backdrops::intervene_in_assertion);
+	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Backdrops::new_base_kind_notify);
+	PluginCalls::plug(NEW_SUBJECT_NOTIFY_PLUG, Backdrops::new_subject_notify);
+	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Backdrops::new_property_notify);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, Backdrops::complete_model);
+	PluginCalls::plug(INTERVENE_IN_ASSERTION_PLUG, Backdrops::intervene_in_assertion);
 }
 
 @h Instances.
@@ -24,7 +24,7 @@ Every inference subject contains a pointer to its own unique copy of the
 following minimal structure, though it will only be relevant for instances of
 "backdrop":
 
-@d BACKDROPS_DATA(I) PLUGIN_DATA_ON_INSTANCE(backdrops, I)
+@d BACKDROPS_DATA(I) FEATURE_DATA_ON_INSTANCE(backdrops, I)
 
 =
 typedef struct backdrops_data {
@@ -37,7 +37,7 @@ int Backdrops::new_subject_notify(inference_subject *subj) {
 	backdrops_data *bd = CREATE(backdrops_data);
 	bd->found_in_fn_iname = NULL;
 	bd->many_places = FALSE;
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(backdrops, subj, bd);
+	ATTACH_FEATURE_DATA_TO_SUBJECT(backdrops, subj, bd);
 	return FALSE;
 }
 

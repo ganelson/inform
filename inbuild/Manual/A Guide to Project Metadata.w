@@ -93,6 +93,18 @@ The language of play can also include kits automatically (for example, if the
 language of play is English, then EnglishLanguageKit is included). That too does
 not need to be specified.
 
+@ Project metadata can also specify that given named compiler features should
+be active or inactive when compiling this project. For example, suppose the
+compiler has an experimental feature called |fruit cultivation|, switched
+off by default, and a project needs to test this. It can do so by specifying:
+= (text)
+    "activates": [ "fruit cultivation" ],
+=
+Similarly for |"deactivates"|. Both clauses are optional and take a list of
+feature names: those features must all exist inside the compiler, or a
+problem will be thrown on compilation. (Note that the JSON here is identical
+to that which kits can also offer: kits can also turn features on or off.)
+
 @ Finally, note that the |-basic| switch at the Inbuild or Inform command line,
 which signals that the project being compiled is for the Basic Inform language,
 is still legal to use if a project metadata file exists, but only so long as

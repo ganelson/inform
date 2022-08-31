@@ -1,22 +1,22 @@
 [ParsingPlugin::] Parsing Plugin.
 
-A plugin for command-parser support.
+A feature for command-parser support.
 
 @ Inform provides extensive support for a command parser at runtime, and all of
-that support is contained in the "parsing" plugin, which occupies this entire
+that support is contained in the "parsing" feature, which occupies this entire
 chapter.
 
 =
 void ParsingPlugin::start(void) {
 	ParsingPlugin::nodes_and_annotations();
 
-	PluginManager::plug(PRODUCTION_LINE_PLUG, ParsingPlugin::production_line);
-	PluginManager::plug(MAKE_SPECIAL_MEANINGS_PLUG, Understand::make_special_meanings);
-	PluginManager::plug(COMPARE_CONSTANT_PLUG, ParsingPlugin::compare_CONSTANT);
-	PluginManager::plug(NEW_VARIABLE_NOTIFY_PLUG, ParsingPlugin::new_variable_notify);
-	PluginManager::plug(NEW_SUBJECT_NOTIFY_PLUG, ParsingPlugin::new_subject_notify);
-	PluginManager::plug(NEW_PERMISSION_NOTIFY_PLUG, Visibility::new_permission_notify);
-	PluginManager::plug(COMPLETE_MODEL_PLUG, ParsingPlugin::complete_model);
+	PluginCalls::plug(PRODUCTION_LINE_PLUG, ParsingPlugin::production_line);
+	PluginCalls::plug(MAKE_SPECIAL_MEANINGS_PLUG, Understand::make_special_meanings);
+	PluginCalls::plug(COMPARE_CONSTANT_PLUG, ParsingPlugin::compare_CONSTANT);
+	PluginCalls::plug(NEW_VARIABLE_NOTIFY_PLUG, ParsingPlugin::new_variable_notify);
+	PluginCalls::plug(NEW_SUBJECT_NOTIFY_PLUG, ParsingPlugin::new_subject_notify);
+	PluginCalls::plug(NEW_PERMISSION_NOTIFY_PLUG, Visibility::new_permission_notify);
+	PluginCalls::plug(COMPLETE_MODEL_PLUG, ParsingPlugin::complete_model);
 	
 	RTLiteralPatterns::enable_parsing();
 }
@@ -47,11 +47,11 @@ int ParsingPlugin::production_line(int stage, int debugging,
 	return FALSE;
 }
 
-@ This plugin attaches a //parsing_data// object to every inference subject,
+@ This feature attaches a //parsing_data// object to every inference subject,
 and in particular, to every object instance and every kind of object.
 
-@d PARSING_DATA(I) PLUGIN_DATA_ON_INSTANCE(parsing, I)
-@d PARSING_DATA_FOR_SUBJ(S) PLUGIN_DATA_ON_SUBJECT(parsing, S)
+@d PARSING_DATA(I) FEATURE_DATA_ON_INSTANCE(parsing, I)
+@d PARSING_DATA_FOR_SUBJ(S) FEATURE_DATA_ON_SUBJECT(parsing, S)
 
 =
 typedef struct parsing_data {
@@ -68,11 +68,11 @@ parsing_data *ParsingPlugin::new_data(inference_subject *subj) {
 }
 
 int ParsingPlugin::new_subject_notify(inference_subject *subj) {
-	ATTACH_PLUGIN_DATA_TO_SUBJECT(parsing, subj, ParsingPlugin::new_data(subj));
+	ATTACH_FEATURE_DATA_TO_SUBJECT(parsing, subj, ParsingPlugin::new_data(subj));
 	return FALSE;
 }
 
-@ We make use of a new kind of rvalue in this plugin: |K_understanding|. This
+@ We make use of a new kind of rvalue in this feature: |K_understanding|. This
 is created in //kinds: Familiar Kinds//, not here, but we do have to provide
 the following functions to handle its constant rvalues. These correspond to
 //command_grammar// objects, so comparing them, and producing rvalues, is easy:
@@ -95,7 +95,7 @@ parse_node *ParsingPlugin::rvalue_from_command_grammar(command_grammar *val) {
 command_grammar *ParsingPlugin::rvalue_to_command_grammar(parse_node *spec) { 
 		CONV_TO(command_grammar) }
 
-@ A number of global variables are given special treatment by this plugin,
+@ A number of global variables are given special treatment by this feature,
 including a whole family with names like "the K understood", for different
 kinds K.[1]
 
@@ -212,7 +212,7 @@ where grammar has specified a need. (By default, this will not happen.)
 		ValueProperties::assert(P_parse_name, subj,
 			Rvalues::from_iname(S), CERTAIN_CE);
 
-@ Finally, this plugin needs just one new annotation for the parse tree:
+@ Finally, this feature needs just one new annotation for the parse tree:
 
 @e constant_command_grammar_ANNOT /* |command_grammar|: for constant values */
 

@@ -28,7 +28,7 @@ typedef struct property_permission {
 	struct parse_node *where_granted; /* sentence granting the permission */
 
 	struct general_pointer pp_storage_data; /* how we'll compile this at run-time */
-	void *plugin_pp[MAX_PLUGINS]; /* storage for plugins to attach, if they want to */
+	void *feature_pp[MAX_COMPILER_FEATURES]; /* storage for features to attach, if they want to */
 
 	struct property_permission_compilation_data compilation_data;
 	CLASS_DEFINITION
@@ -74,7 +74,7 @@ set to |FALSE|, and we call for the "carrying capacity" property of the
 player (say), then we may create a new permission even though the player's
 kind ("person") already has one. This is intentional.[1]
 
-[1] It means that plugins can specify different data about permissions when
+[1] It means that features can specify different data about permissions when
 applied to specific instances -- see the example of the jar below.
 
 =
@@ -107,23 +107,23 @@ property_permission *PropertyPermissions::grant(inference_subject *infs, propert
 	linked_list *L = Properties::get_permissions(prn);
 	ADD_TO_LINKED_LIST(new_pp, property_permission, L);
 
-@ Complicating matters, plugins have the ability to attach data of their
-own to a permission. For instance, the "parsing" plugin attaches the idea
+@ Complicating matters, features have the ability to attach data of their
+own to a permission. For instance, the "parsing" feature attaches the idea
 of a property being visible -- we might say that every thing has an
 interior colour, but that it is invisible in the case of a dog and visible
 in the case of a broken jar.
 
 @<Notify plugins that a new permission has been issued@> =
-	for (int i=0; i<MAX_PLUGINS; i++) new_pp->plugin_pp[i] = NULL;
+	for (int i=0; i<MAX_COMPILER_FEATURES; i++) new_pp->feature_pp[i] = NULL;
 	PluginCalls::new_permission_notify(new_pp);
 
-@ These two macros provide access to plugin-specific permission data:
+@ These two macros provide access to feature-specific permission data:
 
-@d PP_PLUGIN_DATA(id, pp)
-	((id##_pp_data *) pp->plugin_pp[id##_plugin->allocation_id])
+@d PP_FEATURE_DATA(id, pp)
+	((id##_pp_data *) pp->feature_pp[id##_feature->allocation_id])
 
-@d CREATE_PLUGIN_PP_DATA(id, pp, creator)
-	(pp)->plugin_pp[id##_plugin->allocation_id] = (void *) (creator(pp));
+@d CREATE_PP_FEATURE_DATA(id, pp, creator)
+	(pp)->feature_pp[id##_feature->allocation_id] = (void *) (creator(pp));
 
 @h Boring access functions.
 

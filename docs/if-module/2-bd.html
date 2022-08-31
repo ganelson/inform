@@ -60,9 +60,9 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">if</a></li><li><a href="index.html#2">Chapter 2: Bibliographic Data</a></li><li><b>Bibliographic Data</b></li></ul></div>
 <p class="purpose">To manage the special variables providing bibliographic data on the work of IF being generated (title, author's name and so forth), and to write the Library Card in the index.</p>
 
-<ul class="toc"><li><a href="2-bd.html#SP1">&#167;1. Enter the plugin</a></li><li><a href="2-bd.html#SP3">&#167;3. Episode sentences</a></li><li><a href="2-bd.html#SP5">&#167;5. Bibliographic variables</a></li><li><a href="2-bd.html#SP8">&#167;8. The opening sentence</a></li><li><a href="2-bd.html#SP10">&#167;10. The IFID</a></li><li><a href="2-bd.html#SP11">&#167;11. Bibliographic text</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-bd.html#SP1">&#167;1. Enter the feature</a></li><li><a href="2-bd.html#SP3">&#167;3. Episode sentences</a></li><li><a href="2-bd.html#SP5">&#167;5. Bibliographic variables</a></li><li><a href="2-bd.html#SP8">&#167;8. The opening sentence</a></li><li><a href="2-bd.html#SP10">&#167;10. The IFID</a></li><li><a href="2-bd.html#SP11">&#167;11. Bibliographic text</a></li></ul><hr class="tocbar">
 
-<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Enter the plugin. </b>This chapter defines the "bibliographic data" plugin, whose activation
+<p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Enter the feature. </b>This chapter defines the "bibliographic data" feature, whose activation
 function follows.
 </p>
 
@@ -74,11 +74,11 @@ fully with the Treaty and the code below should be maintained as such.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">BibliographicData::start</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">BibliographicData::start</span></span>:<br/>IF Module - <a href="1-im.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRODUCTION_LINE_PLUG</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">PRODUCTION_LINE_PLUG</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="2-bd.html#SP1" class="function-link"><span class="function-syntax">BibliographicData::production_line</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">MAKE_SPECIAL_MEANINGS_PLUG</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">MAKE_SPECIAL_MEANINGS_PLUG</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="2-bd.html#SP2" class="function-link"><span class="function-syntax">BibliographicData::make_special_meanings</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginManager::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_VARIABLE_NOTIFY_PLUG</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_VARIABLE_NOTIFY_PLUG</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="2-bd.html#SP7" class="function-link"><span class="function-syntax">BibliographicData::bibliographic_new_variable_notify</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 

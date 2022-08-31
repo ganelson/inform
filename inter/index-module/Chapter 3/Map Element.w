@@ -74,7 +74,7 @@ void MapElement::render(OUTPUT_STREAM, index_session *session, int test_only) {
 
 @ By this point we've accounted for rooms (and their contents and any parts
 thereof), directions (which we excluded), regions (ditto), and the player
-object (which the Player plugin put in the right place). The only remainder
+object (which the Player feature put in the right place). The only remainder
 will be things which are offstage (and their contents and any parts thereof):
 
 @<Give details of everything still unmentioned in the World index@> =

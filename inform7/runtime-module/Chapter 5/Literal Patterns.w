@@ -51,7 +51,7 @@ inter_name *RTLiteralPatterns::parse_fn_iname(literal_pattern *lp) {
 	return lp->compilation_data.parse_fn_iname;
 }
 
-@ Unless the parsing plugin is activated, this request is never made.
+@ Unless the parsing feature is activated, this request is never made.
 
 =
 int literal_pattern_parsing_enabled = FALSE;

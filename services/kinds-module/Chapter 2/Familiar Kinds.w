@@ -89,8 +89,8 @@ the letter |K|:
 kind_constructor *CON_KIND_VARIABLE = NULL;
 
 @ So much for the exotica: back onto familiar ground for anyone who uses
-Inform. Some standard kinds follow. Some belong only to plugins; if the
-plugin in question is inactive, they will remain |NULL| and do nothing.
+Inform. Some standard kinds follow. Some belong only to features; if the
+feature in question is inactive, they will remain |NULL| and do nothing.
 
 = (early code)
 kind *K_equation = NULL;

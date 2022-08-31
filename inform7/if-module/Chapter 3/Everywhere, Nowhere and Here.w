@@ -127,7 +127,7 @@ int WherePredicates::typecheck_here(up_family *self, unary_predicate *up,
 }
 
 @ "Everywhere" in an assertion would say that something is found in every room,
-and for that we have to ask the Backdrops plugin to handle it.
+and for that we have to ask the Backdrops feature to handle it.
 
 =
 void WherePredicates::assert_everywhere(up_family *self, unary_predicate *up,

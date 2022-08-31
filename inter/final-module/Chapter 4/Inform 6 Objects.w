@@ -335,10 +335,10 @@ void I6TargetObjects::end_instance(code_generator *gtr, code_generation *gen,
 
 @ For the I6 header syntax, see the DM4. Note that the "hardwired" short
 name is intentionally made blank: we always use I6's |short_name| property
-instead. I7's spatial plugin, if loaded (as it usually is), will have
+instead. I7's spatial feature, if loaded (as it usually is), will have
 annotated the Inter symbol for the object with an "arrow count", that is,
 a measure of its spatial depth. This we translate into I6 arrow notation.
-If the spatial plugin wasn't loaded then we have no notion of containment,
+If the spatial feature wasn't loaded then we have no notion of containment,
 all arrow counts are 0, and we define a flat sequence of free-standing objects.
 
 One last oddball thing is that direction objects have to be compiled in I6

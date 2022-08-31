@@ -663,7 +663,7 @@ further sub-cases later.
 		"and should be reserved for sentences like 'A coin is in every room'.");
 
 @h Case 17. In fact one sentence like this can make sense -- "The mist is
-everywhere", or similar -- but is handled by the spatial plugin, if active.
+everywhere", or similar -- but is handled by the spatial feature, if active.
 Even then, of course, "everywhere" implicitly means "in every room",
 not "every room".
 
@@ -1551,7 +1551,7 @@ There is also one case in which an object can be set equal to another object:
 
 >> East is the Pavilion.
 
-(Of course this will only be true if the map plugin is active.)
+(Of course this will only be true if the map feature is active.)
 
 @<Case 41 - PROPER NOUN on both sides@> =
 	@<Allow the case of a property name, implicitly a property, being assigned to@>;

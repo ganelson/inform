@@ -70,7 +70,7 @@ property *EitherOrProperties::obtain(wording W, inference_subject *subj) {
 
 @h Requesting new nameless properties.
 These are properties needed for implementation reasons by //runtime//, or by
-plugins in //if//, but which have no existence at the Inform 7 source text level --
+features in //if//, but which have no existence at the Inform 7 source text level --
 and hence have no names. An author cannot refer to them, knows nothing of them.
 
 Setting them up as adjectives may seem a little over the top, since they cannot
