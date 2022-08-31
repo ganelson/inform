@@ -190,9 +190,7 @@ Every one of the built-in phrases has a definition somewhere in this book. The f
 ^^{punctuation: apostrophe, meaning quotation mark <-- apostrophe} ^^{('), meaning (")+sourcepart+}
 ^^^{punctuation: quotation marks <-- quotation marks}
 ^^{punctuation: quotation marks: defining texts} ^^{`": defining texts}
-^^{punctuation: vertical stroke, for paragraph break <-- vertical stroke} ^^{(|), for paragraph break+sourcepart+}
 ^^{comments: in source text}
-^^{paragraph breaks: with vertical stroke}
 ^^{line breaks: produced by sentence-ending punctuation}
 
 An example rule from the previous section demonstrates one of Inform's conventions about punctuation, and is worth pausing to look at again.
@@ -250,7 +248,7 @@ would come out quite differently - this doesn't affect the appearance of the tex
 
 These three punctuation rules for texts feel very natural with practice, and Inform users sometimes don't realise the third rule is even there, because it just seems the right thing to happen. But occasionally the rules get in the way of what we want to do. (For instance, how do we get a literal [ or ]? What if we want a single quote mark where Inform thinks we want a double, or vice versa?) So we'll come back to these rules in more detail in the chapter on Text.
 
-Inform also reads other punctuation marks. Colon ":" and semicolon ";" turned up in the previous section, in the writing of rules. It also has the more exotic "|" (not a capital I, a vertical stroke) for paragraph breaks outside of quoted text, but people hardly ever need this.
+Inform also reads other punctuation marks. Colon ":" and semicolon ";" turned up in the previous section, in the writing of rules.
 
 As these examples begin to show, Inform source imitates the conventions of printed books and newspapers whenever there is a question of how to write something not easily fitting into words. The first example of this is how Inform handles headings, but to see why these are so useful we first look at Problems.
 
