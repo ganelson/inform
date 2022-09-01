@@ -1,6 +1,6 @@
 Seek verb in: there is a ming vase on the table called the table of having
     viability map of 'there is a ming vase on the table called the table of having':
-    -- is[1] -- -- -- -- -- -- -- -- -- of[1] -- 
+    -- is[1] -- -- -- -- -- -- called[1] -- -- -- -- 
     Found usage, pass 1 tier 2: (there) be(0) (a ming vase on the table called the table of having)
         Seek verb in: a ming vase on the table | called the table of having
             viability map of 'a ming vase on the table called the table of having':

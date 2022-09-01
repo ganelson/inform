@@ -223,6 +223,8 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 			WRITE("only 'Section' headings can be marked as '(dialogue)'"); break;
 		case UnexpectedDialogue_SYNERROR:
 			WRITE("something other than a cue or a line under a dialogue heading"); break;
+		case UnquotedDialogue_SYNERROR:
+			WRITE("speech in dialogue which is not just a single double-quoted text"); break;
 		default:
 			WRITE("syntax error"); break;
 	}

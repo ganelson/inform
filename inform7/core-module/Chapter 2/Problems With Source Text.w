@@ -446,6 +446,14 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"doesn't seem to be either of those.");
 						Problems::issue_problem_end();
 						break;
+					case UnquotedDialogue_SYNERROR:
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnquotedDialogue));
+						Problems::issue_problem_segment(
+							"The text %1 appears to be a line of dialogue, but after the "
+							"colon ':' there should only be a single double-quoted text.");
+						Problems::issue_problem_end();
+						break;
 					default:
 						internal_error("unknown syntax error");
 				}

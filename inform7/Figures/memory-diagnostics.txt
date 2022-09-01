@@ -1,6 +1,6 @@
-Total memory consumption was 120953K = 118 MB
+Total memory consumption was 120970K = 118 MB
 
- ---- was used for 2048081 objects, in 364618 frames in 0 x 800K = 0K = 0 MB:
+ ---- was used for 2048108 objects, in 364645 frames in 0 x 800K = 0K = 0 MB:
 
     33.7%  inter_tree_node_array                    58 x 8192 = 475136 objects, 41813824 bytes
     20.9%  text_stream_array                        4616 x 100 = 461600 objects, 25997312 bytes
@@ -27,8 +27,8 @@ Total memory consumption was 120953K = 118 MB
      0.8%  id_body                                  942 objects, 1077648 bytes
      0.8%  adjective_meaning                        202 objects, 1000304 bytes
      0.7%  excerpt_meaning                          3112 objects, 970944 bytes
-     0.7%  production                               3880 objects, 900160 bytes
-     0.7%  ptoken                                   8411 objects, 874744 bytes
+     0.7%  production                               3886 objects, 901552 bytes
+     0.7%  ptoken                                   8429 objects, 876616 bytes
      0.7%  grammatical_usage                        3616 objects, 867840 bytes
      0.6%  individual_form                          2566 objects, 862176 bytes
      0.6%  inter_schema_node                        8917 objects, 856032 bytes
@@ -47,7 +47,7 @@ Total memory consumption was 120953K = 118 MB
      0.1%  hierarchy_location                       1124 objects, 161856 bytes
      0.1%  linguistic_stock_item                    3321 objects, 159408 bytes
      0.1%  rule_family_data                         401 objects, 147568 bytes
-     0.1%  nonterminal                              759 objects, 139656 bytes
+     0.1%  nonterminal                              760 objects, 139840 bytes
      0.1%  nascent_array                            2127 objects, 136128 bytes
      ----  inference                                1703 objects, 122616 bytes
      ----  documentation_ref                        1273 objects, 112024 bytes
@@ -83,9 +83,9 @@ Total memory consumption was 120953K = 118 MB
      ----  anl_clause_array                         1 x 1000 objects, 40032 bytes
      ----  to_family_data                           497 objects, 39760 bytes
      ----  shared_variable_access_list_array        12 x 100 = 1200 objects, 38784 bytes
+     ----  heading                                  198 objects, 38016 bytes
      ----  parsing_data                             671 objects, 37576 bytes
-     ----  heading                                  198 objects, 36432 bytes
-     ----  production_list                          616 objects, 34496 bytes
+     ----  production_list                          617 objects, 34552 bytes
      ----  regions_data                             671 objects, 32208 bytes
      ----  counting_data                            671 objects, 32208 bytes
      ----  property_permission                      96 objects, 31488 bytes
@@ -128,8 +128,8 @@ Total memory consumption was 120953K = 118 MB
      ----  text_literal_holder                      163 objects, 6520 bytes
      ----  inbuild_copy                             54 objects, 6480 bytes
      ----  inbuild_work                             101 objects, 6464 bytes
+     ----  heading_tree                             19 objects, 5320 bytes
      ----  inbuild_edition                          72 objects, 5184 bytes
-     ----  heading_tree                             19 objects, 5168 bytes
      ----  explicit_action_array                    1 x 100 objects, 4832 bytes
      ----  value_property_data                      84 objects, 4704 bytes
      ----  parsing_pp_data                          96 objects, 4608 bytes
@@ -161,7 +161,7 @@ Total memory consumption was 120953K = 118 MB
      ----  pronoun_usage                            42 objects, 1680 bytes
      ----  table_contribution_array                 1 x 100 objects, 1632 bytes
      ----  inform_pipeline                          24 objects, 1536 bytes
-     ----  compiler_feature                         26 objects, 1456 bytes
+     ----  compiler_feature                         27 objects, 1512 bytes
      ----  noun_filter_token                        22 objects, 1408 bytes
      ----  inter_node_array                         34 objects, 1360 bytes
      ----  special_meaning_holder                   33 objects, 1320 bytes
@@ -247,7 +247,7 @@ Total memory consumption was 120953K = 118 MB
 
 100.0% was used for memory not allocated for objects:
 
-    56.8%  text stream storage                      70351240 bytes in 478774 claims
+    56.8%  text stream storage                      70368076 bytes in 478786 claims
      4.2%  dictionary storage                       5297152 bytes in 7590 claims
      ----  sorting                                  1520 bytes in 159 claims
      5.8%  source text                              7200000 bytes in 3 claims
@@ -265,5 +265,5 @@ Total memory consumption was 120953K = 118 MB
      ----  code generation workspace for objects    3480 bytes in 19 claims
      0.2%  emitter array storage                    280288 bytes in 1999 claims
 
--150.0% was overhead - -185895792 bytes = -181538K = -177 MB
+-150.0% was overhead - -185901088 bytes = -181544K = -177 MB
 

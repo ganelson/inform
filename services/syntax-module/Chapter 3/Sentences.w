@@ -93,6 +93,7 @@ void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
 @e HeadingOverLine_SYNERROR
 @e HeadingStopsBeforeEndOfLine_SYNERROR
 @e UnexpectedDialogue_SYNERROR
+@e UnquotedDialogue_SYNERROR
 
 @ Now for the function itself. We break into bite-sized chunks, each of which is
 despatched to the |Sentences::make_node| function with a note of the punctuation
@@ -555,11 +556,27 @@ sentences and options-file sentences may have been read already.)
 				Node::set_text(new, W);
 				SyntaxTree::graft_sentence(T, new);
 				return;
-			case 2:
-				new = Node::new(DIALOGUE_LINE_NT);
-				Node::set_text(new, W);
-				SyntaxTree::graft_sentence(T, new);
+			case 2: {
+				wording SW = GET_RW(<dialogue-piece>, 1);
+				wording TW = GET_RW(<dialogue-piece>, 2);
+				if (<quoted-text>(TW) == FALSE) {
+					Sentences::syntax_problem(UnquotedDialogue_SYNERROR, W, sfsm->ref, 0);
+					new = Node::new(UNKNOWN_NT);
+					Node::set_text(new, W);
+					SyntaxTree::graft_sentence(T, new);
+				} else {
+					new = Node::new(DIALOGUE_LINE_NT);
+					Node::set_text(new, W);
+					SyntaxTree::graft_sentence(T, new);
+					parse_node *speaker = Node::new(DIALOGUE_SPEAKER_NT);
+					Node::set_text(speaker, SW);
+					parse_node *speech = Node::new(DIALOGUE_SPEECH_NT);
+					Node::set_text(speech, TW);
+					SyntaxTree::graft(T, speaker, new);
+					SyntaxTree::graft(T, speech, new);
+				}
 				return;
+			}
 		}
 	} else {
 		Sentences::syntax_problem(UnexpectedDialogue_SYNERROR, W, sfsm->ref, 0);
