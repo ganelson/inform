@@ -995,6 +995,7 @@ it comes.
 	int l = SyntaxTree::push_bud(proj->syntax_tree, proj->syntax_tree->root_node);
 	Sentences::break_into_project_copy(
 		proj->syntax_tree, Wordings::new(wc, lexer_wordcount-1), proj->as_copy, proj);
+LOG("Heya!\n$T\n", proj->syntax_tree->root_node);
 	SyntaxTree::pop_bud(proj->syntax_tree, l);
 
 @ Inventions are when the //inform7// compiler makes up extra sentences, not

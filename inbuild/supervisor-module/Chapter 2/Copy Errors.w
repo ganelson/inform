@@ -219,6 +219,10 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 			WRITE("heading is in place of another heading which doesn't exist"); break;
 		case UnavailableLOS_SYNERROR:
 			WRITE("this language bundle does not provide Preform syntax"); break;
+		case DialogueOnSectionsOnly_SYNERROR:
+			WRITE("only 'Section' headings can be marked as '(dialogue)'"); break;
+		case UnexpectedDialogue_SYNERROR:
+			WRITE("something other than a cue or a line under a dialogue heading"); break;
 		default:
 			WRITE("syntax error"); break;
 	}

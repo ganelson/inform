@@ -48,6 +48,7 @@ typedef struct syntax_fsm_state {
 	node_type_t nt;
 	int inside_rule_mode;
 	int inside_table_mode;
+	int inside_dialogue_mode;
 	PROBLEM_REF_SYNTAX_TYPE *ref;
 	PROJECT_REF_SYNTAX_TYPE *project_ref;
 } syntax_fsm_state;
@@ -69,6 +70,8 @@ void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
 	PROBLEM_REF_SYNTAX_TYPE *ref, PROJECT_REF_SYNTAX_TYPE *project_ref) {
 	sfsm->sf = NULL;
 	sfsm->inside_rule_mode = FALSE;
+	sfsm->inside_table_mode = FALSE;
+	sfsm->inside_dialogue_mode = FALSE;
 	sfsm->skipping_material_at_level = -1;
 	sfsm->ref = ref;
 	sfsm->project_ref = project_ref;
@@ -89,6 +92,7 @@ void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
 @e ExtNoEndsHere_SYNERROR
 @e HeadingOverLine_SYNERROR
 @e HeadingStopsBeforeEndOfLine_SYNERROR
+@e UnexpectedDialogue_SYNERROR
 
 @ Now for the function itself. We break into bite-sized chunks, each of which is
 despatched to the |Sentences::make_node| function with a note of the punctuation
@@ -208,19 +212,22 @@ sentence divisions. The other cases are more complicated: see below.
 			if (stop_character == ':') @<Issue problem for colon at end of paragraph@>;
 			stop_character = '|'; stopped = TRUE;
 		}
-		if (Lexer::word(at) == FULLSTOP_V) {
-			if (stop_character == ':') @<Issue problem for colon at end of sentence@>;
-			if (stop_character == ';') @<Issue problem for semicolon at end of sentence@>;
-			stop_character = '.'; stopped = TRUE;
-		}
-		if (Lexer::word(at) == SEMICOLON_V) {
-			if (stop_character == ':') @<Issue problem for semicolon after colon@>;
-			if (stop_character == '.') @<Issue problem for semicolon after full stop@>;
-			stop_character = ';'; stopped = TRUE;
-		}
+		
+		if (sfsm->inside_dialogue_mode == FALSE) {
+			if (Lexer::word(at) == FULLSTOP_V) {
+				if (stop_character == ':') @<Issue problem for colon at end of sentence@>;
+				if (stop_character == ';') @<Issue problem for semicolon at end of sentence@>;
+				stop_character = '.'; stopped = TRUE;
+			}
+			if (Lexer::word(at) == SEMICOLON_V) {
+				if (stop_character == ':') @<Issue problem for semicolon after colon@>;
+				if (stop_character == '.') @<Issue problem for semicolon after full stop@>;
+				stop_character = ';'; stopped = TRUE;
+			}
 
-		@<Consider if a colon divides a sentence@>;
-		@<Consider if punctuation within a preceding quoted text divides a sentence, making an X break@>;
+			@<Consider if a colon divides a sentence@>;
+			@<Consider if punctuation within a preceding quoted text divides a sentence, making an X break@>;
+		}
 
 		if (stopped == FALSE) break;
 		no_stop_words++; at++;
@@ -325,7 +332,7 @@ or until reaching the end of the text: whichever comes first.
 
 =
 void Sentences::make_node(parse_node_tree *T, wording W, int stop_character) {
-	int heading_level = 0;
+	int heading_level = 0, entering_dialogue = FALSE;
 	int begins_or_ends = 0; /* 1 for "begins here", -1 for "ends here" */
 	parse_node *new;
 
@@ -343,6 +350,7 @@ void Sentences::make_node(parse_node_tree *T, wording W, int stop_character) {
 	if (sfsm->skipping_material_at_level >= 0) return;
 
 	if (heading_level > 0) {
+		sfsm->inside_dialogue_mode = entering_dialogue;
 		@<Issue a problem message if the heading incorporates a line break@>;
 		@<Issue a problem message if the heading does not end with a line break@>;
 		@<Make a new HEADING node, possibly beginning to skip material@>;
@@ -386,7 +394,15 @@ important), or |-1| to mean that the sentence begins an extension, or
 		switch (<<r>>) {
 			case -1: if (sfsm->ext_pos != NO_EXTENSION_POS) begins_or_ends = 1; break;
 			case -2: if (sfsm->ext_pos != NO_EXTENSION_POS) begins_or_ends = -1; break;
-			default: heading_level = <<r>>; break;
+			default:
+				if (<<r>> == 6) {
+					heading_level = 5;
+					entering_dialogue = TRUE;
+				} else {
+					heading_level = <<r>>;
+					entering_dialogue = FALSE;
+				}
+				break;
 		}
 	}
 
@@ -492,6 +508,7 @@ sentences and options-file sentences may have been read already.)
 }
 
 @<Accept the new sentence as one or more nodes in the parse tree@> =
+	if (sfsm->inside_dialogue_mode) @<Make a DIALOGUE node@>;
 	@<Convert comma-divided rule into two sentences, if this is allowed@>;
 	@<Otherwise, make a SENTENCE node@>;
 
@@ -522,6 +539,35 @@ sentences and options-file sentences may have been read already.)
 	#ifdef NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK
 	NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK(new);
 	#endif
+
+@
+
+=
+<dialogue-piece> ::=
+	( ... )  |       ==> { 1, - }
+	...... : ......  ==> { 2, - }
+
+@<Make a DIALOGUE node@> =
+	if (<dialogue-piece>(W)) {
+		switch (<<r>>) {
+			case 1:
+				new = Node::new(DIALOGUE_CUE_NT);
+				Node::set_text(new, W);
+				SyntaxTree::graft_sentence(T, new);
+				return;
+			case 2:
+				new = Node::new(DIALOGUE_LINE_NT);
+				Node::set_text(new, W);
+				SyntaxTree::graft_sentence(T, new);
+				return;
+		}
+	} else {
+		Sentences::syntax_problem(UnexpectedDialogue_SYNERROR, W, sfsm->ref, 0);
+		new = Node::new(UNKNOWN_NT);
+		Node::set_text(new, W);
+		SyntaxTree::graft_sentence(T, new);
+	}
+	return;
 
 @ We make an exception to the exception for the serial comma used in a list of
 alternatives: thus the comma in "Aeschylus, Sophocles, or Euripides" does

@@ -146,6 +146,7 @@ typedef struct heading {
 	int for_release; /* include this material in a release version? */
 	int omit_material; /* if set, simply ignore all of this */
 	int use_with_or_without; /* if TRUE, use with the extension; if FALSE, without */
+	int holds_dialogue; /* if TRUE, contains dialogue in a different format */
 	struct inbuild_work *for_use_with; /* e.g. "for use with ... by ..." */
 	struct wording in_place_of_text; /* e.g. "in place of ... in ... by ..." */
 	struct wording heading_text; /* once provisos have been stripped away */
@@ -175,6 +176,7 @@ heading *Headings::new(parse_node_tree *T, parse_node *pn, int level, source_loc
 	h->in_place_of_text = EMPTY_WORDING;
 	h->for_use_with = NULL;
 	h->sentence_declaring = pn;
+	h->holds_dialogue = FALSE;
 	h->start_location = sl;
 	h->level = level;
 	h->heading_text = EMPTY_WORDING;
@@ -262,6 +264,7 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
 @d USE_WITH_HQ 5
 @d USE_WITHOUT_HQ 6
 @d IN_PLACE_OF_HQ 7
+@d DIALOGUE_HQ 8
 
 @<Parse heading text for release or other stipulations@> =
 	current_sentence = pn;
@@ -275,6 +278,14 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
 			case UNINDEXED_HQ: h->index_definitions_made_under_this = FALSE; break;
 			case USE_WITH_HQ: h->use_with_or_without = TRUE; break;
 			case USE_WITHOUT_HQ: h->use_with_or_without = FALSE; break;
+			case DIALOGUE_HQ:
+				if (h->level != 5) {
+					copy_error *CE = CopyErrors::new(SYNTAX_CE, DialogueOnSectionsOnly_SYNERROR);
+					CopyErrors::supply_node(CE, current_sentence);
+					Copies::attach_error(sfsm->ref, CE);
+				}
+				h->holds_dialogue = TRUE;
+				break;
 			case IN_PLACE_OF_HQ:
 				h->use_with_or_without = TRUE;
 				h->in_place_of_text = GET_RW(<extension-qualifier>, 1);
@@ -296,6 +307,11 @@ would match twice, first registering the VM requirement, then the unindexedness.
 It's an unfortunate historical quirk that the unbracketed qualifiers are
 allowed; they should probably be withdrawn.
 
+Properly speaking the annotation "(dialogue)" should be recognised only if
+the dialogue feature is active, but there are timing reasons not to do this:
+headings are parsed before the set of active compiler features for a project
+is determined.
+
 =
 <heading-qualifier> ::=
 	... ( <bracketed-heading-qualifier> ) |  ==> { pass 1 }
@@ -307,6 +323,8 @@ allowed; they should probably be withdrawn.
 	not for release |                        ==> { NOT_FOR_RELEASE_HQ, - }
 	for release only |                       ==> { FOR_RELEASE_ONLY_HQ, - }
 	unindexed |                              ==> { UNINDEXED_HQ, - }
+	dialogue |                               ==> { DIALOGUE_HQ, - }
+	dialog |                                 ==> { DIALOGUE_HQ, - }
 	<platform-qualifier> |                   ==> { pass 1 }
 	<extension-qualifier>                    ==> { pass 1 }
 

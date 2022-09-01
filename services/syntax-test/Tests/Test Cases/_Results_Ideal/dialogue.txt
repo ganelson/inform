@@ -1,0 +1,9 @@
+Read 38 words
+ROOT_NT
+    HEADING_NT'elsinore is a room' {heading 0}
+        SENTENCE_NT'elsinore is a room'
+        HEADING_NT'section 1 - on the battlements ( dialogue )' {heading 5}
+            DIALOGUE_CUE_NT'( about the paranormal . )'
+            DIALOGUE_LINE_NT'marcellus : "What, has this thing appear'd again to-night?"'
+            DIALOGUE_LINE_NT'bernardo : "I have seen naught but [list of things in the Ba'
+            DIALOGUE_LINE_NT'marcellus : "Horatio says 'tis but our fantasy."'

@@ -427,6 +427,25 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"for that language does not provide a file of Preform definitions.");
 						Problems::issue_problem_end();
 						break;
+					case DialogueOnSectionsOnly_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_DialogueOnSectionsOnly));
+						Problems::issue_problem_segment(
+							"In the heading %1, you've marked for '(dialogue)', but only "
+							"Sections can be so marked - not Chapters, Books, and so on.");
+						Problems::issue_problem_end();
+						break;
+					case UnexpectedDialogue_SYNERROR:
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnexpectedDialogue));
+						Problems::issue_problem_segment(
+							"The text %1 appears under a section heading marked as dialogue, "
+							"so it needs to be either a cue in brackets '(like this.)', or "
+							"else a line of dialogue 'Speaker: \"Something to say!\"'. It "
+							"doesn't seem to be either of those.");
+						Problems::issue_problem_end();
+						break;
 					default:
 						internal_error("unknown syntax error");
 				}

@@ -149,6 +149,7 @@ add to those generated in //syntax//.
 @e ExtInadequateVM_SYNERROR
 @e ExtMisidentifiedEnds_SYNERROR
 @e UnavailableLOS_SYNERROR
+@e DialogueOnSectionsOnly_SYNERROR
 
 @ The next tweak to //syntax// is to give it some node metadata. //syntax//
 itself places nodes of a small number of basic types into the syntax tree;
@@ -210,6 +211,8 @@ and here goes:
 	book ... |                          ==> { 2, - }
 	part ... |                          ==> { 3, - }
 	chapter ... |                       ==> { 4, - }
+	section ... ( dialog ) |            ==> { 6, - }
+	section ... ( dialogue ) |          ==> { 6, - }
 	section ...                         ==> { 5, - }
 
 <extension-end-marker-sentence> ::=

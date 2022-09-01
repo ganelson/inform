@@ -132,6 +132,9 @@ organisation, and are not directly functional in themselves.
 			#endif
 			break;
 
+		case DIALOGUE_CUE_NT: break; /* not yet implemented */
+		case DIALOGUE_LINE_NT: break; /* not yet implemented */
+
 		case INVOCATION_LIST_NT:  break; /* for error recovery; shouldn't be here otherwise */
 		case UNKNOWN_NT: break; /* for error recovery; shouldn't be here otherwise */
 

@@ -20,15 +20,12 @@ to be part of a released version.
 @e INFORM_INTER_DA
 
 =
-compiler_feature *core_feature, *naming_feature, *counting_feature, *experimental_feature;
+compiler_feature *naming_feature, *counting_feature;
 
 void CoreModule::start(void) {
-	core_feature = Features::new(NULL, I"core", NULL);
-	Features::make_permanently_active(core_feature);
+	Features::activate_core();
 	naming_feature = Features::new(&Naming::start, I"naming", core_feature);
 	counting_feature = Features::new(&InstanceCounting::start, I"instance counting", core_feature);
-
-	experimental_feature = Features::new(NULL, I"experimental features", NULL);
 
 	Log::declare_aspect(TASK_QUEUE_DA, L"task queue", FALSE, FALSE);
 	Log::declare_aspect(INTER_DA, L"inter", FALSE, FALSE);

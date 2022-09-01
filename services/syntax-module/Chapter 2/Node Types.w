@@ -212,20 +212,24 @@ do this. All a bit clumsy, but it works.
 @e SENTENCE_NT      /* "The Garden is a room" */
 @e AMBIGUITY_NT     /* Marks an ambiguous set of readings in the tree */
 @e UNKNOWN_NT       /* "arfle barfle gloop" */
+@e DIALOGUE_CUE_NT  /* A dialogue cue under a dialogue Section heading */
+@e DIALOGUE_LINE_NT /* A line of dialogue under a dialogue Section heading */
 
 =
 void NodeType::metadata_setup(void) {
-	NodeType::new(INVALID_NT, I"(INVALID_NT)",    0, INFTY, INVALID_NCAT, 0);
+	NodeType::new(INVALID_NT, I"(INVALID_NT)",           0, INFTY, INVALID_NCAT, 0);
 
-	NodeType::new(ROOT_NT, I"ROOT_NT",            0, INFTY, L1_NCAT, DONT_VISIT_NFLAG);
-	NodeType::new(INCLUSION_NT, I"INCLUSION_NT",  0, INFTY, L1_NCAT, DONT_VISIT_NFLAG);
-	NodeType::new(HEADING_NT, I"HEADING_NT",      0, INFTY, L1_NCAT, 0);
-	NodeType::new(INCLUDE_NT, I"INCLUDE_NT",      0, 0,     L2_NCAT, 0);
-	NodeType::new(BEGINHERE_NT, I"BEGINHERE_NT",  0, 0,     L2_NCAT, 0);
-	NodeType::new(ENDHERE_NT, I"ENDHERE_NT",      0, 0,     L2_NCAT, 0);
-	NodeType::new(SENTENCE_NT, I"SENTENCE_NT",    0, INFTY, L2_NCAT, 0);
-	NodeType::new(AMBIGUITY_NT, I"AMBIGUITY_NT",  0, INFTY, L1_NCAT, 0);
-	NodeType::new(UNKNOWN_NT, I"UNKNOWN_NT",      0, INFTY, UNKNOWN_NCAT, 0);
+	NodeType::new(ROOT_NT, I"ROOT_NT",                   0, INFTY, L1_NCAT, DONT_VISIT_NFLAG);
+	NodeType::new(INCLUSION_NT, I"INCLUSION_NT",         0, INFTY, L1_NCAT, DONT_VISIT_NFLAG);
+	NodeType::new(HEADING_NT, I"HEADING_NT",             0, INFTY, L1_NCAT, 0);
+	NodeType::new(INCLUDE_NT, I"INCLUDE_NT",             0, 0,     L2_NCAT, 0);
+	NodeType::new(BEGINHERE_NT, I"BEGINHERE_NT",         0, 0,     L2_NCAT, 0);
+	NodeType::new(ENDHERE_NT, I"ENDHERE_NT",             0, 0,     L2_NCAT, 0);
+	NodeType::new(SENTENCE_NT, I"SENTENCE_NT",           0, INFTY, L2_NCAT, 0);
+	NodeType::new(AMBIGUITY_NT, I"AMBIGUITY_NT",         0, INFTY, L1_NCAT, 0);
+	NodeType::new(UNKNOWN_NT, I"UNKNOWN_NT",             0, INFTY, UNKNOWN_NCAT, 0);
+	NodeType::new(DIALOGUE_CUE_NT, I"DIALOGUE_CUE_NT",   0, INFTY, L2_NCAT, 0);
+	NodeType::new(DIALOGUE_LINE_NT, I"DIALOGUE_LINE_NT", 0, INFTY, L2_NCAT, 0);
 
 	#ifdef NODE_METADATA_SETUP_SYNTAX_CALLBACK
 	NODE_METADATA_SETUP_SYNTAX_CALLBACK();
