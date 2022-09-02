@@ -798,7 +798,8 @@ but it probably follows a sequence of one or more whitespace characters,
 and the code in the previous paragraph has been watching them for us.
 
 @<Look at recent whitespace to see what break it followed@> =
-    if ((lxs_most_significant_space_char == '\n') && (lxs_number_of_tab_stops >= 1))
+    if (((lxs_this_line_is_empty_so_far) || (lxs_most_significant_space_char == '\n'))
+    	&& (lxs_number_of_tab_stops >= 1))
     	lw_array[lexer_wordcount].lw_break =
     		Lexer::break_char_for_indents(lxs_number_of_tab_stops); /* newline followed by 1 or more tabs */
     else

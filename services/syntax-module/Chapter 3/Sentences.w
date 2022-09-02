@@ -94,6 +94,8 @@ void Sentences::reset(syntax_fsm_state *sfsm, int is_extension,
 @e HeadingStopsBeforeEndOfLine_SYNERROR
 @e UnexpectedDialogue_SYNERROR
 @e UnquotedDialogue_SYNERROR
+@e EmptyDialogueClause_SYNERROR
+@e MisbracketedDialogueClause_SYNERROR
 
 @ Now for the function itself. We break into bite-sized chunks, each of which is
 despatched to the |Sentences::make_node| function with a note of the punctuation
@@ -541,51 +543,6 @@ sentences and options-file sentences may have been read already.)
 	NEW_NONSTRUCTURAL_SENTENCE_SYNTAX_CALLBACK(new);
 	#endif
 
-@
-
-=
-<dialogue-piece> ::=
-	( ... )  |       ==> { 1, - }
-	...... : ......  ==> { 2, - }
-
-@<Make a DIALOGUE node@> =
-	if (<dialogue-piece>(W)) {
-		switch (<<r>>) {
-			case 1:
-				new = Node::new(DIALOGUE_CUE_NT);
-				Node::set_text(new, W);
-				SyntaxTree::graft_sentence(T, new);
-				return;
-			case 2: {
-				wording SW = GET_RW(<dialogue-piece>, 1);
-				wording TW = GET_RW(<dialogue-piece>, 2);
-				if (<quoted-text>(TW) == FALSE) {
-					Sentences::syntax_problem(UnquotedDialogue_SYNERROR, W, sfsm->ref, 0);
-					new = Node::new(UNKNOWN_NT);
-					Node::set_text(new, W);
-					SyntaxTree::graft_sentence(T, new);
-				} else {
-					new = Node::new(DIALOGUE_LINE_NT);
-					Node::set_text(new, W);
-					SyntaxTree::graft_sentence(T, new);
-					parse_node *speaker = Node::new(DIALOGUE_SPEAKER_NT);
-					Node::set_text(speaker, SW);
-					parse_node *speech = Node::new(DIALOGUE_SPEECH_NT);
-					Node::set_text(speech, TW);
-					SyntaxTree::graft(T, speaker, new);
-					SyntaxTree::graft(T, speech, new);
-				}
-				return;
-			}
-		}
-	} else {
-		Sentences::syntax_problem(UnexpectedDialogue_SYNERROR, W, sfsm->ref, 0);
-		new = Node::new(UNKNOWN_NT);
-		Node::set_text(new, W);
-		SyntaxTree::graft_sentence(T, new);
-	}
-	return;
-
 @ We make an exception to the exception for the serial comma used in a list of
 alternatives: thus the comma in "Aeschylus, Sophocles, or Euripides" does
 not trigger this rule. We need this exception because such lists of
@@ -743,6 +700,172 @@ it would be too late.
 	WRITE_TO(wd, "%+W", Wordings::one_word(Wordings::first_wn(W)));
 	LoadPreform::parse_text(wd);
 	DISCARD_TEXT(wd)
+
+@ Dialogue sections have their own syntactic conventions, which are enforced
+here. This hand-tooled parser is annoyingly long to write out, but only in
+order to catch improbable unmatched-bracket errors with tidy error messages.
+
+@<Make a DIALOGUE node@> =
+	if ((Lexer::word(Wordings::first_wn(W)) == OPENBRACKET_V) &&
+		(Lexer::word(Wordings::last_wn(W)) == CLOSEBRACKET_V))
+		@<This is a dialogue cue@>;
+	@<Otherwise this has to be a dialogue line@>;
+
+@ Here we are trying to match |(Cue notes.)|.
+
+@<This is a dialogue cue@> =
+	wording CW = Wordings::new(Wordings::first_wn(W)+1, Wordings::last_wn(W)-1);
+	new = Node::new(DIALOGUE_CUE_NT);
+	Node::set_text(new, W);
+	Annotations::write_int(new, dialogue_level_ANNOT,
+		Lexer::indentation_level(Wordings::first_wn(W)));
+	SyntaxTree::graft_sentence(T, new);
+	Sentences::add_dialogue_clauses(CW, T, new);
+	return;
+
+@ Here we are trying to match |Speaker (notes): "Speech."|.
+
+@<Otherwise this has to be a dialogue line@> =
+	int colon_at = -1;
+	@<Find the colon position@>;
+
+	int speaker_from = Wordings::first_wn(W), speaker_to = colon_at - 1;
+	int clauses_from = colon_at, clauses_to = colon_at - 1;
+	int speech_from = colon_at + 1, speech_to = Wordings::last_wn(W);
+	
+	@<Trim away bracketed clauses after the speaker name@>;
+
+	wording SW = Wordings::new(speaker_from, speaker_to);
+	wording CW = Wordings::new(clauses_from, clauses_to);
+	wording TW = Wordings::new(speech_from, speech_to);
+
+	if (<quoted-text>(TW) == FALSE) @<Dialogue speech not in double-quotes@>;
+
+	new = Node::new(DIALOGUE_LINE_NT);
+	Node::set_text(new, W);
+	Annotations::write_int(new, dialogue_level_ANNOT,
+		Lexer::indentation_level(Wordings::first_wn(W)));
+	SyntaxTree::graft_sentence(T, new);
+	parse_node *speaker = Node::new(DIALOGUE_SPEAKER_NT);
+	Node::set_text(speaker, SW);
+	parse_node *speech = Node::new(DIALOGUE_SPEECH_NT);
+	Node::set_text(speech, TW);
+	SyntaxTree::graft(T, speaker, new);
+	SyntaxTree::graft(T, speech, new);
+	if (Wordings::nonempty(CW))
+		Sentences::add_dialogue_clauses(CW, T, new);
+	return;
+
+@ The colon should always occur outside of parentheses, but if we can't find
+one in that happy condition, we just find the first one that's there (for the
+sake of issuing better problem messages: it won't lead to valid syntax).
+
+@<Find the colon position@> =
+	int bl = 0;
+	for (int i=Wordings::first_wn(W); i<=Wordings::last_wn(W); i++) {
+		if (Lexer::word(i) == OPENBRACKET_V) bl++;
+		if (Lexer::word(i) == CLOSEBRACKET_V) bl--;
+		if ((bl == 0) && (Lexer::word(i) == COLON_V)) colon_at = i;
+	}
+	if (colon_at == -1)
+		for (int i=Wordings::first_wn(W); i<=Wordings::last_wn(W); i++) {
+			if (Lexer::word(i) == COLON_V) { colon_at = i; break; }
+		}
+	if (colon_at == -1) @<Not a dialogue line after all@>;
+
+@ Similarly, we want to trim away bracketed clauses in a way which respects
+bracket nesting, and if we can't do that then the text is certainly erroneous:
+but we trim away the best we can for the sake of reporting a good problem.
+
+@<Trim away bracketed clauses after the speaker name@> =
+	while (Lexer::word(speaker_to) == CLOSEBRACKET_V) {
+		int bl = 0, cut = FALSE;
+		for (int i=speaker_to; i>=speaker_from; i--) {
+			if (Lexer::word(i) == OPENBRACKET_V) {
+				bl--;
+				if (bl == 0) { clauses_from = i; speaker_to = i-1; cut = TRUE; }
+			}
+			if (Lexer::word(i) == CLOSEBRACKET_V) bl++;
+		}
+		if (cut == FALSE) {
+			for (int i=speaker_to; i>=speaker_from; i--)
+				if (Lexer::word(i) == OPENBRACKET_V) {
+					clauses_from = i; speaker_to = i-1; cut = TRUE; break;
+				}
+		}
+		if (cut == FALSE) @<Not a dialogue line after all@>;
+	}
+	int bl = 0;
+	for (int i=speaker_from; i<=speaker_to; i++) {
+		if (Lexer::word(i) == OPENBRACKET_V) bl++;
+		if (Lexer::word(i) == CLOSEBRACKET_V) bl--;
+		if (bl < 0) break;
+	}
+	if (bl != 0) {
+		for (int i=speaker_from; i<=speaker_to; i++)
+			if (Lexer::word(i) == OPENBRACKET_V) {
+				clauses_from = i; speaker_to = i-1; break;
+			}
+	}
+
+@<Not a dialogue line after all@> =
+	Sentences::syntax_problem(UnexpectedDialogue_SYNERROR, W, sfsm->ref, 0);
+	new = Node::new(UNKNOWN_NT);
+	Node::set_text(new, W);
+	SyntaxTree::graft_sentence(T, new);
+	return;
+
+@<Dialogue speech not in double-quotes@> =
+	Sentences::syntax_problem(UnquotedDialogue_SYNERROR, W, sfsm->ref, 0);
+	new = Node::new(UNKNOWN_NT);
+	Node::set_text(new, W);
+	SyntaxTree::graft_sentence(T, new);
+	return;
+
+@ This is shared by both cues and lines, each of which can have multiple
+clauses in brackets. Punctuation divides these only outside of brackets, so
+|(hello, there), (and. here.)| divides only at the central comma, and results
+in two |DIALOGUE_CLAUSE_NT| nodes: one for |hello, there| and the other for
+|and. here|.
+
+=
+void Sentences::add_dialogue_clauses(wording CW, parse_node_tree *T, parse_node *new) {
+	int start = Wordings::first_wn(CW), bl = 0;
+	for (int i=Wordings::first_wn(CW); i<=Wordings::last_wn(CW); i++) {
+		if (Lexer::word(i) == OPENBRACKET_V) bl++;
+		if (Lexer::word(i) == CLOSEBRACKET_V) bl--;
+		if ((bl == 0) &&
+			((Lexer::word(i) == FULLSTOP_V) || (Lexer::word(i) == SEMICOLON_V) ||
+				(Lexer::word(i) == COMMA_V))) {
+			int a = start, b = i-1;
+			@<Add a clause@>;
+			start = i+1;
+		}
+		if (bl < 0) break;
+	}
+	if (bl != 0)
+		Sentences::syntax_problem(MisbracketedDialogueClause_SYNERROR, CW, sfsm->ref, 0);
+	else if (start <= Wordings::last_wn(CW)) {
+		int a = start, b = Wordings::last_wn(CW);
+		@<Add a clause@>;
+	}
+}
+
+@<Add a clause@> =
+	while ((a<b) &&
+		(Lexer::word(a) == OPENBRACKET_V) && (Lexer::word(b) == CLOSEBRACKET_V))
+		a++, b--;
+	if ((Lexer::word(b) == FULLSTOP_V) || (Lexer::word(b) == SEMICOLON_V) ||
+		(Lexer::word(b) == COMMA_V)) b--;
+	if (b < a) {
+		Sentences::syntax_problem(EmptyDialogueClause_SYNERROR, CW, sfsm->ref, 0);
+		return;
+	} else {
+		wording W = Wordings::new(a, b);
+		parse_node *clause = Node::new(DIALOGUE_CLAUSE_NT);
+		Node::set_text(clause, W);
+		SyntaxTree::graft(T, clause, new);
+	}
 
 @ Some tools using this module will want to push simple error messages out to
 the command line; others will want to translate them into elaborate problem

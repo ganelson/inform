@@ -225,6 +225,10 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 			WRITE("something other than a cue or a line under a dialogue heading"); break;
 		case UnquotedDialogue_SYNERROR:
 			WRITE("speech in dialogue which is not just a single double-quoted text"); break;
+		case EmptyDialogueClause_SYNERROR:
+			WRITE("empty clause in brackets in dialogue"); break;
+		case MisbracketedDialogueClause_SYNERROR:
+			WRITE("brackets '(' and ')' used in an unmatched way in dialogue"); break;
 		default:
 			WRITE("syntax error"); break;
 	}

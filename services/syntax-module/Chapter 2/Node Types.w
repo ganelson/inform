@@ -216,6 +216,7 @@ do this. All a bit clumsy, but it works.
 @e DIALOGUE_LINE_NT /* A line of dialogue under a dialogue Section heading */
 @e DIALOGUE_SPEAKER_NT /* "James" in "James: "Hello!"" */
 @e DIALOGUE_SPEECH_NT /* ""Hello!"" in "James: "Hello!"" */
+@e DIALOGUE_CLAUSE_NT /* A bracketed term used in a cue or line */
 
 =
 void NodeType::metadata_setup(void) {
@@ -235,6 +236,7 @@ void NodeType::metadata_setup(void) {
 	NodeType::new(DIALOGUE_LINE_NT, I"DIALOGUE_LINE_NT",       0, INFTY, L2_NCAT, 0);
 	NodeType::new(DIALOGUE_SPEAKER_NT, I"DIALOGUE_SPEAKER_NT", 0, INFTY, L2_NCAT, 0);
 	NodeType::new(DIALOGUE_SPEECH_NT, I"DIALOGUE_SPEECH_NT",   0, INFTY, L2_NCAT, 0);
+	NodeType::new(DIALOGUE_CLAUSE_NT, I"DIALOGUE_CLAUSE_NT",   0, INFTY, L2_NCAT, 0);
 
 	#ifdef NODE_METADATA_SETUP_SYNTAX_CALLBACK
 	NODE_METADATA_SETUP_SYNTAX_CALLBACK();
@@ -264,7 +266,10 @@ int NodeType::parentage_allowed(node_type_t t_parent, node_type_t t_child) {
 	if (parentage_allowed[cat_parent][cat_child]) return TRUE;
 	if ((t_parent == HEADING_NT) && (cat_child == L2_NCAT)) return TRUE;
 	if ((t_parent == DIALOGUE_LINE_NT) &&
-		((t_child == DIALOGUE_SPEAKER_NT) || (t_child == DIALOGUE_SPEECH_NT)))
+		((t_child == DIALOGUE_SPEAKER_NT) || (t_child == DIALOGUE_SPEECH_NT) ||
+			(t_child == DIALOGUE_CLAUSE_NT)))
+		return TRUE;
+	if ((t_parent == DIALOGUE_CUE_NT) && (t_child == DIALOGUE_CLAUSE_NT))
 		return TRUE;
 	#ifdef PARENTAGE_EXCEPTIONS_SYNTAX_CALLBACK
 	if (PARENTAGE_EXCEPTIONS_SYNTAX_CALLBACK(t_parent, cat_parent, t_child, cat_child))

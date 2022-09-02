@@ -430,7 +430,8 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 					case DialogueOnSectionsOnly_SYNERROR:
 						current_sentence = CE->details_node;
 						Problems::quote_source(1, current_sentence);
-						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_DialogueOnSectionsOnly));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_DialogueOnSectionsOnly));
 						Problems::issue_problem_segment(
 							"In the heading %1, you've marked for '(dialogue)', but only "
 							"Sections can be so marked - not Chapters, Books, and so on.");
@@ -438,7 +439,8 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case UnexpectedDialogue_SYNERROR:
 						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
-						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnexpectedDialogue));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_UnexpectedDialogue));
 						Problems::issue_problem_segment(
 							"The text %1 appears under a section heading marked as dialogue, "
 							"so it needs to be either a cue in brackets '(like this.)', or "
@@ -448,10 +450,33 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 						break;
 					case UnquotedDialogue_SYNERROR:
 						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
-						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnquotedDialogue));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							 _p_(PM_UnquotedDialogue));
 						Problems::issue_problem_segment(
 							"The text %1 appears to be a line of dialogue, but after the "
 							"colon ':' there should only be a single double-quoted text.");
+						Problems::issue_problem_end();
+						break;
+					case EmptyDialogueClause_SYNERROR:
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_EmptyDialogueClause));
+						Problems::issue_problem_segment(
+							"The text %1 appears to be a bracketed clause to do with "
+							"dialogue, but the punctuation looks wrong because it includes "
+							"an empty part.");
+						Problems::issue_problem_end();
+						break;
+					case MisbracketedDialogueClause_SYNERROR:
+						Problems::quote_source(1, Diagrams::new_UNPARSED_NOUN(CE->details_W));
+						StandardProblems::handmade_problem(Task::syntax_tree(),
+							_p_(PM_MisbracketedDialogueClause));
+						Problems::issue_problem_segment(
+							"The text %1 appears to be a bracketed clause to do with "
+							"dialogue, but the punctuation looks wrong because it uses "
+							"brackets '(' and ')' in a way which doesn't match. There "
+							"should be just one outer pair of brackets, and inside they "
+							"can only be used to clarify clauses, if necessary.");
 						Problems::issue_problem_end();
 						break;
 					default:
