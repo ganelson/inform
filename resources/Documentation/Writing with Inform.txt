@@ -8961,7 +8961,7 @@ doesn't throw a run-time problem the way that
 
 	showme 1 divided by 0;
 
-does. Instead, it produces "plus infinity". Infinity behaves roughly the way we might expect - for example, "2 divided by plus infinity" produces 0 - but once it comes into a calculation the result probably lies on some extreme and won't be very useful. Amusingly, the following is correct Inform syntax:
+does. Instead, it produces "plus infinity". Infinity behaves roughly the way we might expect - for example, "2 divided by plus infinity" produces 0.0 - but once it comes into a calculation the result probably lies on some extreme and won't be very useful. Amusingly, the following is correct Inform syntax:
 
 	plus infinity to the nearest whole number
 
