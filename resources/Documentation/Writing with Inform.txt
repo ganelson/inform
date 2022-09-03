@@ -1396,6 +1396,7 @@ Note that rooms and regions are not allowed to have parts. (Rooms are already pa
 Though realism can become tiresome in interactive fiction, there are times when we cannot go along with Inform's normal assumption that all of a person's possessions are visible to everybody else. People are not like containers, which either show all of their holdings or not, according to whether they are open or transparent. If a man is carrying a fishing rod and a wallet, one will be on open show, the other not. Some clothing is outwardly visible, but not all.
 
 Whether or not something is concealed is not like the either/or properties we have seen so far - such as being "open" or "closed" - because it is not really a property of the thing itself, but depends on the habitual behaviour of its current owner. To talk about behaviour we have to use sentences of a kind not seen so far, and which will not fully be explained for some chapters to come.
+
 But straightforward cases are easy to write, if only by imitating the following examples.
 
 Here we make the Cloaked Villain invariably conceal anything she is holding or wearing:
@@ -9106,8 +9107,7 @@ This phrase produces an approximate square root, to the nearest integer, of the 
 
 Trying to take the square root of a negative number will cause a run-time problem, because then we can't even nearly solve it. 
 
-(Warning: this is slow to compute if the Z-machine setting is used. For
-best performance, use Glulx.)
+(Warning: this is slow to compute if the Z-machine setting is used. For best performance, use Glulx.)
 {end}
 
 {defn ph_realsquareroot}real square root of (arithmetic value) ... value
@@ -9124,8 +9124,7 @@ This phrase produces an approximate cube root, to the nearest integer, of the gi
 	cube root of 27 = 3
 	cube root of -27 = -3
 
-(Warning: this is not very accurate if the Z-machine setting is used. For
-best performance, use Glulx.)
+(Warning: this is not very accurate if the Z-machine setting is used. For best performance, use Glulx.)
 {end}
 
 We can compare numbers using either the traditional computer-programming symbols, or using words:
@@ -15191,8 +15190,7 @@ But how are we to get at these values? The answer is that we need to give a phra
 	To decide what number is double (N - a number) (this is doubling):
 		decide on N plus N.
 
-This is the same syntax used to name rules, and the idea is the same. If we
-try "showme doubling", the result is
+This is the same syntax used to name rules, and the idea is the same. If we try "showme doubling", the result is
 
 	phrase number -> number: doubling
 
