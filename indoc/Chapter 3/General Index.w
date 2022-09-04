@@ -689,8 +689,8 @@ int Indexes::sort_comparison(const void *ent1, const void *ent2) {
 	if (Str::len(seelist) > 0) {
 		if (lc > 0) WRITE("; ");
 		HTML_OPEN_WITH("span", "class=\"indexsee\"");
-		WRITE("see");
-		if (lc > 0) WRITE(" also");
+		WRITE("see ");
+		if (lc > 0) WRITE("also ");
 		HTML_CLOSE("span");
 		match_results mr2 = Regexp::create_mr();
 		while (Regexp::match(&mr2, seelist, L"(%c*?) *<-- *(%c*)")) {
