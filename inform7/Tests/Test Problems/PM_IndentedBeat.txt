@@ -1,0 +1,11 @@
+Elsinore is a room.
+
+Section 1 - Meeting (dialogue)
+
+	(About the paranormal.)
+
+Marcellus: "What, has this thing appear'd again to-night?"
+
+Bernardo: "I have seen naught but [list of things in the Battlements]."
+
+	Marcellus: "Horatio says 'tis but our fantasy."

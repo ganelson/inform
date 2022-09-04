@@ -77,6 +77,7 @@ Chapter 7: Other Gadgets
 	Table Columns
 	Tables
 	Equations
+	Dialogue
 
 Chapter 8: Predicates
 "Unary and then binary predicates for the calculus module to conjure with."

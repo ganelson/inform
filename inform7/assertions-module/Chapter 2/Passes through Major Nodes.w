@@ -107,7 +107,11 @@ organisation, and are not directly functional in themselves.
 	switch (Node::get_type(p)) {
 		case ROOT_NT: break;
 
-		case HEADING_NT:   Anaphora::new_discussion(); break;
+		case HEADING_NT:   Anaphora::new_discussion();
+						   if (global_pass_state.pass == 0) 
+						       Dialogue::note_heading(Headings::from_node(p));
+						   break;
+		
 		case BEGINHERE_NT: Anaphora::new_discussion();
 			               global_pass_state.near_start_of_extension = 1; break;
 		case ENDHERE_NT:   Anaphora::new_discussion();
@@ -132,8 +136,12 @@ organisation, and are not directly functional in themselves.
 			#endif
 			break;
 
-		case DIALOGUE_CUE_NT: break; /* not yet implemented */
-		case DIALOGUE_LINE_NT: break; /* not yet implemented */
+		case DIALOGUE_CUE_NT: 
+			if (global_pass_state.pass == 0) Dialogue::create_cue(p);
+			break;
+		case DIALOGUE_LINE_NT:
+			if (global_pass_state.pass == 0) Dialogue::create_line(p);
+			break;
 
 		case INVOCATION_LIST_NT:  break; /* for error recovery; shouldn't be here otherwise */
 		case UNKNOWN_NT: break; /* for error recovery; shouldn't be here otherwise */

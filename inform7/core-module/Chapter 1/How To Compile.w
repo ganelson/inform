@@ -209,6 +209,7 @@ here, which only happens when special runs are made for compiler testing.
 	BENCH(RTTableColumns::compile)
 	BENCH(RTEquations::compile)
 	BENCH(ImperativeDefinitions::compile_first_block)
+	BENCH(RTDialogue::compile)
 	BENCH(RTRules::compile)
 	BENCH(RTRulebooks::compile)
 	BENCH(RTRulebooks::compile_nros)

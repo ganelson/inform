@@ -1,0 +1,12 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 39 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32187 words long.
+Problem__ PM_IndentedBeat
+In Section 1 - Meeting:
+  >--> You wrote '(About the paranormal .)' (source text, line 5): but this
+    dialogue beat seems to be indented, which in dialogue would mean that it is
+    part of something above it. But all beats (unlike lines) are free-standing,
+    and should not be indented.
+Inform 7 has finished.

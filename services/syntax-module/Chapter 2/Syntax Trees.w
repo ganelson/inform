@@ -193,11 +193,11 @@ void SyntaxTree::traverse(parse_node_tree *T, void (*visitor)(parse_node *)) {
 void SyntaxTree::traverse_from(parse_node *pn, void (*visitor)(parse_node *)) {
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
-		if (NodeType::is_top_level(pn->node_type)) SyntaxTree::traverse_from(pn->down, visitor);
 		if (SyntaxTree::visitable(pn->node_type)) {
 			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn);
 		}
+		if (NodeType::is_top_level(pn->node_type)) SyntaxTree::traverse_from(pn->down, visitor);
 	}
 	current_sentence = SCS;
 }
@@ -205,11 +205,11 @@ void SyntaxTree::traverse_run(parse_node *pn, void (*visitor)(parse_node *), nod
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
 		if (Node::get_type(pn) != X) break;
-		if (NodeType::is_top_level(pn->node_type)) SyntaxTree::traverse_from(pn->down, visitor);
 		if (SyntaxTree::visitable(pn->node_type)) {
 			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn);
 		}
+		if (NodeType::is_top_level(pn->node_type)) SyntaxTree::traverse_from(pn->down, visitor);
 	}
 	current_sentence = SCS;
 }
@@ -235,12 +235,12 @@ void SyntaxTree::traverse_text_from(text_stream *OUT, parse_node *pn,
 	void (*visitor)(text_stream *, parse_node *)) {
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
-		if (NodeType::is_top_level(pn->node_type))
-			SyntaxTree::traverse_text_from(OUT, pn->down, visitor);
 		if (SyntaxTree::visitable(pn->node_type)) {
 			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
 			(*visitor)(OUT, pn);
 		}
+		if (NodeType::is_top_level(pn->node_type))
+			SyntaxTree::traverse_text_from(OUT, pn->down, visitor);
 	}
 	current_sentence = SCS;
 }
@@ -257,12 +257,12 @@ void SyntaxTree::traverse_intp_from(parse_node *pn,
 	void (*visitor)(parse_node *, int *), int *X) {
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
-		if (NodeType::is_top_level(pn->node_type))
-			SyntaxTree::traverse_intp_from(pn->down, visitor, X);
 		if (SyntaxTree::visitable(pn->node_type)) {
 			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn, X);
 		}
+		if (NodeType::is_top_level(pn->node_type))
+			SyntaxTree::traverse_intp_from(pn->down, visitor, X);
 	}
 	current_sentence = SCS;
 }
@@ -279,12 +279,12 @@ void SyntaxTree::traverse_intp_intp_from(parse_node *pn,
 	void (*visitor)(parse_node *, int *, int *), int *X, int *Y) {
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
-		if (NodeType::is_top_level(pn->node_type))
-			SyntaxTree::traverse_intp_intp_from(pn->down, visitor, X, Y);
 		if (SyntaxTree::visitable(pn->node_type)) {
 			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn, X, Y);
 		}
+		if (NodeType::is_top_level(pn->node_type))
+			SyntaxTree::traverse_intp_intp_from(pn->down, visitor, X, Y);
 	}
 	current_sentence = SCS;
 }
@@ -300,12 +300,12 @@ void SyntaxTree::traverse_nodep_from(parse_node *pn,
 	void (*visitor)(parse_node *, parse_node **), parse_node **X) {
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
-		if (NodeType::is_top_level(pn->node_type))
-			SyntaxTree::traverse_nodep_from(pn->down, visitor, X);
 		if (SyntaxTree::visitable(pn->node_type)) {
 			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
 			(*visitor)(pn, X);
 		}
+		if (NodeType::is_top_level(pn->node_type))
+			SyntaxTree::traverse_nodep_from(pn->down, visitor, X);
 	}
 	current_sentence = SCS;
 }
@@ -325,16 +325,16 @@ void SyntaxTree::traverse_headingwise_from(parse_node_tree *T, parse_node *pn,
 	parse_node *last_h0, int *N) {
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
+		if (SyntaxTree::visitable(pn->node_type)) {
+			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
+			(*visitor)(T, pn, last_h0, N);
+		}
 		if (NodeType::is_top_level(pn->node_type)) {
 			parse_node *H0 = last_h0;
 			if ((Node::is(pn, HEADING_NT)) &&
 				(Annotations::read_int(pn, heading_level_ANNOT) == 0))
 				H0 = pn;
 			SyntaxTree::traverse_headingwise_from(T, pn->down, visitor, H0, N);
-		}
-		if (SyntaxTree::visitable(pn->node_type)) {
-			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
-			(*visitor)(T, pn, last_h0, N);
 		}
 	}
 	current_sentence = SCS;
@@ -387,52 +387,18 @@ int SyntaxTree::traverse_from_up_to_ip(parse_node *end, parse_node *pn,
 	parse_node *SCS = current_sentence;
 	for (; pn; pn = pn->next) {
 		if (pn == end) { current_sentence = SCS; return TRUE; }
+		if (SyntaxTree::visitable(pn->node_type)) {
+			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
+			(*visitor)(pn, X);
+		}
 		if (NodeType::is_top_level(pn->node_type)) {
 			if (SyntaxTree::traverse_from_up_to_ip(end, pn->down, visitor, X)) {
 				current_sentence = SCS; return TRUE;
 			}
 		}
-		if (SyntaxTree::visitable(pn->node_type)) {
-			if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
-			(*visitor)(pn, X);
-		}
 	}
 	current_sentence = SCS;
 	return FALSE;
-}
-
-@h Unconditional traverses.
-Finally, here are two traverses which visit every node, not just the "visitable"
-ones. Here is a depth-first version (like all of the functions above):
-
-=
-void SyntaxTree::traverse_dfirst(parse_node_tree *T, void (*visitor)(parse_node *)) {
-	SyntaxTree::traverse_dfirst_from(T->root_node, visitor);
-}
-void SyntaxTree::traverse_dfirst_from(parse_node *pn, void (*visitor)(parse_node *)) {
-	parse_node *SCS = current_sentence;
-	for (; pn; pn = pn->next) {
-		SyntaxTree::traverse_dfirst_from(pn->down, visitor);
-		if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
-		(*visitor)(pn);
-	}
-	current_sentence = SCS;
-}
-
-@ And this is a width-first variant (unlike all of the functions above).
-
-=
-void SyntaxTree::traverse_wfirst(parse_node_tree *T, void (*visitor)(parse_node *)) {
-	SyntaxTree::traverse_wfirst_from(T->root_node, visitor);
-}
-void SyntaxTree::traverse_wfirst_from(parse_node *pn, void (*visitor)(parse_node *)) {
-	parse_node *SCS = current_sentence;
-	for (; pn; pn = pn->next) {
-		if (NodeType::is_sentence(pn->node_type)) current_sentence = pn;
-		SyntaxTree::traverse_wfirst_from(pn->down, visitor);
-		(*visitor)(pn);
-	}
-	current_sentence = SCS;
 }
 
 @h Cautious traverses.

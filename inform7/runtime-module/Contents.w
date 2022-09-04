@@ -61,6 +61,7 @@ Chapter 5: Provision Submodules
 	Multimedia
 	Tables
 	Table Columns
+	Dialogue
 	Rules
 	Rulebooks
 	Variables
