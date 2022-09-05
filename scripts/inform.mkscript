@@ -801,6 +801,7 @@ forcetransferotherinternals:
 {define: transfer-images}
 	mkdir -p $(BUILTINHTML)
 	cp -f resources/Imagery/app_images/Welcome*Background.png $(BUILTINHTML)
+	cp -f resources/Imagery/app_images/Welcome*Banner.png $(BUILTINHTML)
 	{repeat with: SET in: {IMAGESETLIST}}
 	mkdir -p $(BUILTINHTML)/{SET}
 	rm -f $(BUILTINHTML)/{SET}/*
@@ -872,6 +873,7 @@ ifdef ADVICEHTML
 	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceNewToInform.html
 	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/AdviceUpgrading.html
 	$(INBUILDX) -preprocess-html-to $(ADVICEHTML) -preprocess-app $(HTMLPLATFORM) -preprocess-html resources/Documentation/Advice/TestingTemplate.html
+	cp -f 'resources/Documentation/Advice/MaterialsDiagram.png' $(ADVICEHTML)
 endif
 {end-define}
 
