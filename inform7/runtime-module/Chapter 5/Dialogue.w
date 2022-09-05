@@ -52,14 +52,15 @@ void RTDialogue::compile(void) {
 void RTDialogue::beat_compilation_agent(compilation_subtask *ct) {
 	dialogue_beat *db = RETRIEVE_POINTER_dialogue_beat(ct->data);
 	current_sentence = db->compilation_data.where_created;
-	LOG("Beat %d = %W\n", db->allocation_id, Node::get_text(current_sentence));
+	LOG("Beat %d = %W name '%W' scene '%W'\n",
+		db->allocation_id, Node::get_text(current_sentence), db->beat_name, db->scene_name);
 	RTDialogue::log_r(db->opening_line);
 }
 
 void RTDialogue::line_compilation_agent(compilation_subtask *ct) {
 	dialogue_line *dl = RETRIEVE_POINTER_dialogue_line(ct->data);
 	current_sentence = dl->compilation_data.where_created;
-	LOG("Line %d = %W\n", dl->allocation_id, Node::get_text(current_sentence));
+	LOG("Line %d = %W name '%W'\n", dl->allocation_id, Node::get_text(current_sentence), dl->line_name);
 }
 
 void RTDialogue::log_r(dialogue_line *dl) {

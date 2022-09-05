@@ -283,6 +283,8 @@ void CoreSyntax::grant_unit_permissions(void) {
 
 @e classified_ANNOT /* |int|: this sentence has been classified */
 @e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
+@e dialogue_beat_clause_ANNOT /* |int|: for clauses of dialogue cues introducing beats */
+@e dialogue_line_clause_ANNOT /* |int|: for clauses of dialogue lines */
 @e impdef_ANNOT /* |imperative_defn|: for blocks of imperative code */
 @e implicit_in_creation_of_ANNOT /* |inference_subject|: for assemblies */
 @e implicitness_count_ANNOT /* int: keeping track of recursive assemblies */
@@ -307,6 +309,10 @@ void CoreSyntax::declare_L2_annotations(void) {
 	Annotations::declare_type(
 		clears_pronouns_ANNOT, CoreSyntax::write_clears_pronouns_ANNOT);
 	Annotations::declare_type(
+		dialogue_beat_clause_ANNOT, CoreSyntax::write_dialogue_beat_clause_ANNOT);
+	Annotations::declare_type(
+		dialogue_line_clause_ANNOT, CoreSyntax::write_dialogue_line_clause_ANNOT);
+	Annotations::declare_type(
 		impdef_ANNOT, CoreSyntax::write_impdef_ANNOT);
 	Annotations::declare_type(
 		implicit_in_creation_of_ANNOT, CoreSyntax::write_implicit_in_creation_of_ANNOT);
@@ -326,6 +332,20 @@ void CoreSyntax::write_classified_ANNOT(text_stream *OUT, parse_node *p) {
 void CoreSyntax::write_clears_pronouns_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, clears_pronouns_ANNOT))
 		WRITE(" {clears pronouns}");
+}
+void CoreSyntax::write_dialogue_beat_clause_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, dialogue_beat_clause_ANNOT) > 0) {
+		WRITE(" {beat clause: ");
+		Dialogue::write_dbc(OUT, Annotations::read_int(p, dialogue_beat_clause_ANNOT));
+		WRITE("}");
+	}
+}
+void CoreSyntax::write_dialogue_line_clause_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, dialogue_line_clause_ANNOT) > 0) {
+		WRITE(" {line clause: ");
+		Dialogue::write_dlc(OUT, Annotations::read_int(p, dialogue_line_clause_ANNOT));
+		WRITE("}");
+	}
 }
 void CoreSyntax::write_impdef_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Node::get_impdef(p))
@@ -362,6 +382,8 @@ void CoreSyntax::grant_L2_permissions(void) {
 	Annotations::allow(SENTENCE_NT, implicitness_count_ANNOT);
 	Annotations::allow(SENTENCE_NT, you_can_ignore_ANNOT);
 	Annotations::allow(SENTENCE_NT, classified_ANNOT);
+	Annotations::allow(DIALOGUE_CLAUSE_NT, dialogue_beat_clause_ANNOT);
+	Annotations::allow(DIALOGUE_CLAUSE_NT, dialogue_line_clause_ANNOT);
 }
 
 @h Annotations of Level 3 nodes.

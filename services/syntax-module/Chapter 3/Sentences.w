@@ -736,7 +736,7 @@ order to catch improbable unmatched-bracket errors with tidy error messages.
 	@<Trim away bracketed clauses after the speaker name@>;
 
 	wording SW = Wordings::new(speaker_from, speaker_to);
-	wording CW = Wordings::new(clauses_from, clauses_to);
+	wording CW = Wordings::new(clauses_from+1, clauses_to-1);
 	wording TW = Wordings::new(speech_from, speech_to);
 
 	if (<quoted-text>(TW) == FALSE) @<Dialogue speech not in double-quotes@>;
