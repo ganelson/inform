@@ -1,0 +1,13 @@
+{
+    "is": {
+        "type": "kit",
+        "title": "DialogueKit",
+        "version": "10.2.0-beta+6V51"
+    },
+    "activates": [ "dialogue" ],
+    "kit-details": {
+        "has-priority": 3,
+        "defines-Main": false,
+        "provides-kinds": [ "Dialogue.neptune" ]
+    }
+}

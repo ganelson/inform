@@ -1,0 +1,10 @@
+Director Template.
+
+Run-time support for dialogue.
+
+@h Placeholder.
+
+=
+[ DirectorBegin;
+	rfalse;
+];

@@ -10,7 +10,13 @@ Problem__ PM_MisbracketedDialogueClause
     should be just one outer pair of brackets, and inside they can only be used
     to clarify clauses, if necessary.
 Problem__ PM_MisbracketedDialogueClause
-  >--> The text '(going (doolally)' (source text, line 9) appears to be a
+  >--> The text 'slowly, quickly) (erroneously' (source text, line 7) appears
+    to be a bracketed clause to do with dialogue, but the punctuation looks
+    wrong because it uses brackets '(' and ')' in a way which doesn't match.
+    There should be just one outer pair of brackets, and inside they can only
+    be used to clarify clauses, if necessary.
+Problem__ PM_MisbracketedDialogueClause
+  >--> The text 'going (doolally' (source text, line 9) appears to be a
     bracketed clause to do with dialogue, but the punctuation looks wrong
     because it uses brackets '(' and ')' in a way which doesn't match. There
     should be just one outer pair of brackets, and inside they can only be used

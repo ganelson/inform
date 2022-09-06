@@ -523,8 +523,11 @@ on //WorldModelKit//, through the if-this-then-that mechanism.
 	inform_language *L = project->language_of_play;
 	if (L) Languages::add_kit_dependencies_to_project(L, project);
 	else internal_error("no language of play");
-	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE))
+	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE)) {
 		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL);
+		if (project->syntax_tree->contains_dialogue)
+			Projects::add_kit_dependency(project, I"DialogueKit", NULL, NULL, NULL);
+	}
 
 @ We perform this first with |parity| being |TRUE|, then |FALSE|.
 

@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6V51 'Krypton' (5 September 2022)
+[Version](notes/versioning.md): 10.2.0-beta+6V52 'Krypton' (6 September 2022)
 
 ## About Inform
 
@@ -121,6 +121,7 @@ The following webs are the source for kits of Inter code shipped with Inform (at
 * EnglishLanguageKit - Support for English as the natural language used - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/EnglishLanguageKit/index.html)
 * CommandParserKit - Support for parsing turn-by-turn commands in interactive fiction - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/CommandParserKit/index.html)
 * BasicInformExtrasKit - Additional support needed only if the Standard Rules are not used - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/BasicInformExtrasKit/index.html)
+* DialogueKit - Additional support for dialogue (under construction) - [&#9733;&nbsp;Web](https://ganelson.github.io/inform/DialogueKit/index.html)
 
 ### Extensions shipped with Inform
 

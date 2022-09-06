@@ -89,6 +89,7 @@ it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_n
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">bud_parent_stack</span><span class="plain-syntax">[</span><span class="constant-syntax">MAX_BUD_STACK_SIZE</span><span class="plain-syntax">];</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">last_sentence</span><span class="plain-syntax">; </span><span class="comment-syntax"> cached position in tree</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">allow_last_sentence_cacheing</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">contains_dialogue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">trace_sentences</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">HEADING_TREE_SYNTAX_TYPE</span><span class="plain-syntax"> *</span><span class="identifier-syntax">headings</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
@@ -101,6 +102,7 @@ it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_n
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">last_sentence</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">allow_last_sentence_cacheing</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">trace_sentences</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">contains_dialogue</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><a href="2-st.html#SP3" class="function-link"><span class="function-syntax">SyntaxTree::push_bud</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">, </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">root_node</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEW_HEADING_TREE_SYNTAX_CALLBACK</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">T</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">headings</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NEW_HEADING_TREE_SYNTAX_CALLBACK</span><span class="plain-syntax">(</span><span class="identifier-syntax">T</span><span class="plain-syntax">);</span>
@@ -108,7 +110,7 @@ it includes, will form a single <a href="2-st.html#SP2" class="internal">parse_n
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">T</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<ul class="endnotetexts"><li>The structure parse_node_tree is accessed in 2/tv and here.</li></ul>
+<ul class="endnotetexts"><li>The structure parse_node_tree is accessed in 2/tv, 3/snt and here.</li></ul>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Buds and grafts. </b>"Buds" are positions in the tree to which new sentence subtrees can be grafted:
 </p>
 

@@ -30,6 +30,7 @@ typedef struct parse_node_tree {
 	struct parse_node *bud_parent_stack[MAX_BUD_STACK_SIZE];
 	struct parse_node *last_sentence; /* cached position in tree */
 	int allow_last_sentence_cacheing;
+	int contains_dialogue;
 	int trace_sentences;
 	HEADING_TREE_SYNTAX_TYPE *headings;
 	CLASS_DEFINITION
@@ -42,6 +43,7 @@ parse_node_tree *SyntaxTree::new(void) {
 	T->last_sentence = NULL;
 	T->allow_last_sentence_cacheing = FALSE;
 	T->trace_sentences = FALSE;
+	T->contains_dialogue = FALSE;
 	SyntaxTree::push_bud(T, T->root_node);
 	#ifdef NEW_HEADING_TREE_SYNTAX_CALLBACK
 	T->headings = NEW_HEADING_TREE_SYNTAX_CALLBACK(T);

@@ -850,6 +850,8 @@ void CoreSyntax::grant_code_permissions(void) {
 @e constant_activity_ANNOT /* |activity|: for constant values */
 @e constant_binary_predicate_ANNOT /* |binary_predicate|: for constant values */
 @e constant_constant_phrase_ANNOT /* |constant_phrase|: for constant values */
+@e constant_dialogue_beat_ANNOT /* |dialogue_beat|: for constant values */
+@e constant_dialogue_line_ANNOT /* |dialogue_line|: for constant values */
 @e constant_enumeration_ANNOT /* |int|: which one from an enumerated kind */
 @e constant_equation_ANNOT /* |equation|: for constant values */
 @e constant_instance_ANNOT /* |instance|: for constant values */
@@ -885,6 +887,8 @@ void CoreSyntax::grant_code_permissions(void) {
 DECLARE_ANNOTATION_FUNCTIONS(constant_activity, activity)
 DECLARE_ANNOTATION_FUNCTIONS(constant_binary_predicate, binary_predicate)
 DECLARE_ANNOTATION_FUNCTIONS(constant_constant_phrase, constant_phrase)
+DECLARE_ANNOTATION_FUNCTIONS(constant_dialogue_beat, dialogue_beat)
+DECLARE_ANNOTATION_FUNCTIONS(constant_dialogue_line, dialogue_line)
 DECLARE_ANNOTATION_FUNCTIONS(constant_equation, equation)
 DECLARE_ANNOTATION_FUNCTIONS(constant_instance, instance)
 DECLARE_ANNOTATION_FUNCTIONS(constant_local_variable, local_variable)
@@ -912,6 +916,8 @@ DECLARE_ANNOTATION_FUNCTIONS(tense_marker, grammatical_usage)
 MAKE_ANNOTATION_FUNCTIONS(constant_activity, activity)
 MAKE_ANNOTATION_FUNCTIONS(constant_binary_predicate, binary_predicate)
 MAKE_ANNOTATION_FUNCTIONS(constant_constant_phrase, constant_phrase)
+MAKE_ANNOTATION_FUNCTIONS(constant_dialogue_beat, dialogue_beat)
+MAKE_ANNOTATION_FUNCTIONS(constant_dialogue_line, dialogue_line)
 MAKE_ANNOTATION_FUNCTIONS(constant_equation, equation)
 MAKE_ANNOTATION_FUNCTIONS(constant_instance, instance)
 MAKE_ANNOTATION_FUNCTIONS(constant_local_variable, local_variable)
@@ -941,6 +947,10 @@ void CoreSyntax::declare_spec_annotations(void) {
 		constant_binary_predicate_ANNOT, CoreSyntax::write_constant_binary_predicate_ANNOT);
 	Annotations::declare_type(
 		constant_constant_phrase_ANNOT, CoreSyntax::write_constant_constant_phrase_ANNOT);
+	Annotations::declare_type(
+		constant_dialogue_beat_ANNOT, CoreSyntax::write_constant_dialogue_beat_ANNOT);
+	Annotations::declare_type(
+		constant_dialogue_line_ANNOT, CoreSyntax::write_constant_dialogue_line_ANNOT);
 	Annotations::declare_type(
 		constant_equation_ANNOT, CoreSyntax::write_constant_equation_ANNOT);
 	Annotations::declare_type(
@@ -1019,6 +1029,14 @@ void CoreSyntax::write_constant_constant_phrase_ANNOT(text_stream *OUT, parse_no
 		Nouns::write(OUT, cphr->name);
 		WRITE("}");
 	}
+}
+void CoreSyntax::write_constant_dialogue_beat_ANNOT(text_stream *OUT, parse_node *p) {
+	dialogue_beat *db = Node::get_constant_dialogue_beat(p);
+	if (db) WRITE(" {beat: %W}", db->beat_name);
+}
+void CoreSyntax::write_constant_dialogue_line_ANNOT(text_stream *OUT, parse_node *p) {
+	dialogue_line *dl = Node::get_constant_dialogue_line(p);
+	if (dl) WRITE(" {line: %W}", dl->line_name);
 }
 void CoreSyntax::write_constant_equation_ANNOT(text_stream *OUT, parse_node *p) {
 	equation *eqn = Node::get_constant_equation(p);
@@ -1184,6 +1202,8 @@ void CoreSyntax::grant_spec_permissions(void) {
 	Annotations::allow(CONSTANT_NT, constant_activity_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_binary_predicate_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_constant_phrase_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_dialogue_beat_ANNOT);
+	Annotations::allow(CONSTANT_NT, constant_dialogue_line_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_enumeration_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_equation_ANNOT);
 	Annotations::allow(CONSTANT_NT, constant_instance_ANNOT);

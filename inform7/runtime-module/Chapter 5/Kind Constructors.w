@@ -253,6 +253,16 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
 		return K->construct->compilation_data.pr_iname;
 	}
+	if (Kinds::eq(K, K_dialogue_beat))  {
+		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_DIALOGUE_BEAT_HL);
+		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
+		return K->construct->compilation_data.pr_iname;
+	}
+	if (Kinds::eq(K, K_dialogue_line))  {
+		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_DIALOGUE_LINE_HL);
+		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
+		return K->construct->compilation_data.pr_iname;
+	}
 
 	package_request *R = NULL;
 	int external = TRUE;

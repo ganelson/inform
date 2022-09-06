@@ -29,6 +29,7 @@ typedef struct dialogue_beat {
 	struct wording scene_name;
 	struct parse_node *cue_at;
 	struct heading *under_heading;
+	struct instance *as_instance;
 	
 	struct dialogue_beat *immediately_after;
 	struct linked_list *some_time_after; /* of |dialogue_beat| */
@@ -41,6 +42,7 @@ typedef struct dialogue_beat {
 
 typedef struct dialogue_line {
 	struct wording line_name;
+	struct instance *as_instance;
 	struct parse_node *line_at;
 	struct wording speaker_text;
 	struct wording speech_text;
@@ -117,6 +119,17 @@ dialogue_beat *Dialogue::create_cue(parse_node *PN) {
 			"which is not allowed. It can be anonymous, but otherwise can only have "
 			"one name (either as a beat or as a scene, and not both).");
 	}
+
+	wording W = db->beat_name;
+	if (Wordings::empty(W)) {
+		TEMPORARY_TEXT(faux_name)
+		WRITE_TO(faux_name, "beat-%d", db->allocation_id + 1);
+		W = Feeds::feed_text(faux_name);
+		DISCARD_TEXT(faux_name)
+	}
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_dialogue_beat, W);
+	Assert::true(prop, CERTAIN_CE);
+	db->as_instance = Instances::latest();
 	return db;
 }
 
@@ -261,6 +274,17 @@ dialogue_line *Dialogue::create_line(parse_node *PN) {
 
 	precursor_dialogue_lines[L] = dl;
 	for (int i=L+1; i<MAX_DIALOGUE_LINE_NESTING; i++) precursor_dialogue_lines[i] = NULL;
+
+	wording W = dl->line_name;
+	if (Wordings::empty(W)) {
+		TEMPORARY_TEXT(faux_name)
+		WRITE_TO(faux_name, "line-%d", dl->allocation_id + 1);
+		W = Feeds::feed_text(faux_name);
+		DISCARD_TEXT(faux_name)
+	}
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_dialogue_line, W);
+	Assert::true(prop, CERTAIN_CE);
+	dl->as_instance = Instances::latest();
 
 	return dl;
 }

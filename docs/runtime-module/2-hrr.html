@@ -2063,6 +2063,8 @@ and <a href="../pipeline-module/4-tsk.html" class="internal">The Standard Kits (
 <span class="definition-keyword">enum</span> <span class="constant-syntax">K_RULEBOOK_OUTCOME_XPACKAGE</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">K_RESPONSE_XPACKAGE</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">K_SCENE_XPACKAGE</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">K_DIALOGUE_BEAT_XPACKAGE</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">K_DIALOGUE_LINE_XPACKAGE</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">CAPSHORTNAME_HL</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">DECIMAL_TOKEN_INNER_HL</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">TIME_TOKEN_INNER_HL</span>
@@ -2072,6 +2074,8 @@ and <a href="../pipeline-module/4-tsk.html" class="internal">The Standard Kits (
 <span class="definition-keyword">enum</span> <span class="constant-syntax">PRINT_SOUND_NAME_HL</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">PRINT_EXTERNAL_FILE_NAME_HL</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">PRINT_SCENE_HL</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">PRINT_DIALOGUE_BEAT_HL</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">PRINT_DIALOGUE_LINE_HL</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP8_1_52" class="paragraph-anchor"></a><b>&#167;8.1.52.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">The rest</span><span class="named-paragraph-number">8.1.52</span></span><span class="comment-syntax"> =</span>
 </p>
@@ -2111,6 +2115,14 @@ and <a href="../pipeline-module/4-tsk.html" class="internal">The Standard Kits (
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">H_BEGIN</span><span class="plain-syntax">(</span><span class="identifier-syntax">LocationRequirements::this_exotic_package</span><span class="plain-syntax">(</span><span class="constant-syntax">K_SCENE_XPACKAGE</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">H_F_T</span><span class="plain-syntax">(</span><span class="constant-syntax">PRINT_SCENE_HL</span><span class="plain-syntax">,                 </span><span class="identifier-syntax">I</span><span class="string-syntax">"print_fn"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"PrintSceneName"</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">H_END</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">H_BEGIN</span><span class="plain-syntax">(</span><span class="identifier-syntax">LocationRequirements::this_exotic_package</span><span class="plain-syntax">(</span><span class="constant-syntax">K_DIALOGUE_BEAT_XPACKAGE</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">H_F_T</span><span class="plain-syntax">(</span><span class="constant-syntax">PRINT_DIALOGUE_BEAT_HL</span><span class="plain-syntax">,         </span><span class="identifier-syntax">I</span><span class="string-syntax">"print_fn"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"PrintDialogueBeatName"</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">    </span><span class="constant-syntax">H_END</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">H_BEGIN</span><span class="plain-syntax">(</span><span class="identifier-syntax">LocationRequirements::this_exotic_package</span><span class="plain-syntax">(</span><span class="constant-syntax">K_DIALOGUE_LINE_XPACKAGE</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">H_F_T</span><span class="plain-syntax">(</span><span class="constant-syntax">PRINT_DIALOGUE_LINE_HL</span><span class="plain-syntax">,         </span><span class="identifier-syntax">I</span><span class="string-syntax">"print_fn"</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"PrintDialogueLineName"</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">H_END</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="2-hrr.html#SP8_1">&#167;8.1</a>.</li></ul>
@@ -2228,6 +2240,8 @@ exotic, but which are locations not easily falling into patterns. Here they are:
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_RULEBOOK_OUTCOME_XPACKAGE:</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-kc.html#SP4" class="function-link"><span class="function-syntax">RTKindConstructors::kind_package</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K_rulebook_outcome</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_RESPONSE_XPACKAGE:</span><span class="plain-syntax">         </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-kc.html#SP4" class="function-link"><span class="function-syntax">RTKindConstructors::kind_package</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K_response</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_SCENE_XPACKAGE:</span><span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-kc.html#SP4" class="function-link"><span class="function-syntax">RTKindConstructors::kind_package</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K_scene</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_DIALOGUE_BEAT_XPACKAGE:</span><span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-kc.html#SP4" class="function-link"><span class="function-syntax">RTKindConstructors::kind_package</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K_dialogue_beat</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">K_DIALOGUE_LINE_XPACKAGE:</span><span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="5-kc.html#SP4" class="function-link"><span class="function-syntax">RTKindConstructors::kind_package</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K_dialogue_line</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"unknown exotic package"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>

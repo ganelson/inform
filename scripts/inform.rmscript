@@ -131,6 +131,7 @@ The following webs are the source for kits of Inter code shipped with Inform (at
 {kit name: EnglishLanguageKit   purpose: Support for English as the natural language used}
 {kit name: CommandParserKit     purpose: Support for parsing turn-by-turn commands in interactive fiction}
 {kit name: BasicInformExtrasKit purpose: Additional support needed only if the Standard Rules are not used}
+{kit name: DialogueKit          purpose: Additional support for dialogue (under construction)}
 
 ### Extensions shipped with Inform
 

@@ -706,6 +706,7 @@ here. This hand-tooled parser is annoyingly long to write out, but only in
 order to catch improbable unmatched-bracket errors with tidy error messages.
 
 @<Make a DIALOGUE node@> =
+	T->contains_dialogue = TRUE;
 	if ((Lexer::word(Wordings::first_wn(W)) == OPENBRACKET_V) &&
 		(Lexer::word(Wordings::last_wn(W)) == CLOSEBRACKET_V))
 		@<This is a dialogue cue@>;

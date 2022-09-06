@@ -35,6 +35,10 @@ parse_node *Rvalues::from_binary_predicate(binary_predicate *val) {
 		CONV_FROM(binary_predicate, Kinds::base_construction(CON_relation)) }
 parse_node *Rvalues::from_constant_phrase(constant_phrase *val) { 
 		CONV_FROM(constant_phrase, Kinds::base_construction(CON_phrase)) }
+parse_node *Rvalues::from_dialogue_beat(dialogue_beat *val) { 
+		CONV_FROM(dialogue_beat, K_dialogue_beat) }
+parse_node *Rvalues::from_dialogue_line(dialogue_line *val) { 
+		CONV_FROM(dialogue_line, K_dialogue_line) }
 parse_node *Rvalues::from_equation(equation *val) { 
 		CONV_FROM(equation, K_equation) }
 parse_node *Rvalues::from_named_rulebook_outcome(named_rulebook_outcome *val) { 

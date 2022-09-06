@@ -1895,6 +1895,8 @@ void Hierarchy::establish(void) {
 @e K_RULEBOOK_OUTCOME_XPACKAGE
 @e K_RESPONSE_XPACKAGE
 @e K_SCENE_XPACKAGE
+@e K_DIALOGUE_BEAT_XPACKAGE
+@e K_DIALOGUE_LINE_XPACKAGE
 
 @e CAPSHORTNAME_HL
 @e DECIMAL_TOKEN_INNER_HL
@@ -1906,6 +1908,8 @@ void Hierarchy::establish(void) {
 @e PRINT_SOUND_NAME_HL
 @e PRINT_EXTERNAL_FILE_NAME_HL
 @e PRINT_SCENE_HL
+@e PRINT_DIALOGUE_BEAT_HL
+@e PRINT_DIALOGUE_LINE_HL
 
 @<The rest@> =
 	H_BEGIN(LocationRequirements::this_exotic_package(K_OBJECT_XPACKAGE))
@@ -1942,6 +1946,14 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(LocationRequirements::this_exotic_package(K_SCENE_XPACKAGE))
 		H_F_T(PRINT_SCENE_HL,                 I"print_fn", I"PrintSceneName")
+	H_END
+
+	H_BEGIN(LocationRequirements::this_exotic_package(K_DIALOGUE_BEAT_XPACKAGE))
+		H_F_T(PRINT_DIALOGUE_BEAT_HL,         I"print_fn", I"PrintDialogueBeatName")
+	H_END
+
+	H_BEGIN(LocationRequirements::this_exotic_package(K_DIALOGUE_LINE_XPACKAGE))
+		H_F_T(PRINT_DIALOGUE_LINE_HL,         I"print_fn", I"PrintDialogueLineName")
 	H_END
 
 @h Architectural symbols.
@@ -2045,6 +2057,8 @@ package_request *Hierarchy::exotic_package(int x) {
 		case K_RULEBOOK_OUTCOME_XPACKAGE: return RTKindConstructors::kind_package(K_rulebook_outcome);
 		case K_RESPONSE_XPACKAGE:         return RTKindConstructors::kind_package(K_response);
 		case K_SCENE_XPACKAGE:            return RTKindConstructors::kind_package(K_scene);
+		case K_DIALOGUE_BEAT_XPACKAGE:    return RTKindConstructors::kind_package(K_dialogue_beat);
+		case K_DIALOGUE_LINE_XPACKAGE:    return RTKindConstructors::kind_package(K_dialogue_line);
 	}
 	internal_error("unknown exotic package");
 	return NULL;

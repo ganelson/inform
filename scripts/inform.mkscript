@@ -153,6 +153,7 @@ INFORM6WEB = inform6
 {component type: web symbol: COMMANDPARSERKIT     webname: CommandParserKit     path: inform7/Internal/Inter/CommandParserKit     set: kits}
 {component type: web symbol: BASICINFORMEXTRASKIT webname: BasicInformExtrasKit path: inform7/Internal/Inter/BasicInformExtrasKit set: kits}
 {component type: web symbol: ENGLISHLANGUAGEKIT   webname: EnglishLanguageKit   path: inform7/Internal/Inter/EnglishLanguageKit   set: kits}
+{component type: web symbol: DIALOGUEKIT          webname: DialogueKit          path: inform7/Internal/Inter/DialogueKit          set: kits}
 
 {component type: web symbol: STANDARDRULES        webname: standard_rules       path: inform7/extensions/standard_rules           set: extensions}
 {component type: web symbol: BASICINFORM          webname: basic_inform         path: inform7/extensions/basic_inform             set: extensions}

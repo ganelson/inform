@@ -7,8 +7,4 @@ Problem__ PM_EmptyDialogueClause
   >--> The text '.' (source text, line 5) appears to be a bracketed clause to
     do with dialogue, but the punctuation looks wrong because it includes an
     empty part.
-Problem__ PM_EmptyDialogueClause
-  >--> The text '()' (source text, line 7) appears to be a bracketed clause to
-    do with dialogue, but the punctuation looks wrong because it includes an
-    empty part.
 Inform 7 has finished.
