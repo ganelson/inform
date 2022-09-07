@@ -2,7 +2,7 @@
 
 To manage dialogue beats and lines.
 
-@
+@ See the test group |:dialogue|.
 
 @d MAX_DIALOGUE_LINE_NESTING 25
 
@@ -30,10 +30,12 @@ typedef struct dialogue_beat {
 	struct parse_node *cue_at;
 	struct heading *under_heading;
 	struct instance *as_instance;
+	struct scene *as_scene;
 	
-	struct dialogue_beat *immediately_after;
-	struct linked_list *some_time_after; /* of |dialogue_beat| */
-	struct linked_list *some_time_before; /* of |dialogue_beat| */
+	struct parse_node *immediately_after;
+	struct linked_list *some_time_after; /* of |parse_node| */
+	struct linked_list *some_time_before; /* of |parse_node| */
+	struct linked_list *about_list; /* of |parse_node| */
 
 	struct dialogue_line *opening_line;
 	struct dialogue_beat_compilation_data compilation_data;
@@ -72,10 +74,12 @@ dialogue_beat *Dialogue::create_cue(parse_node *PN) {
 	db->cue_at = PN;
 	db->under_heading = dialogue_section_being_scanned;
 	db->immediately_after = NULL;
-	db->some_time_after = NEW_LINKED_LIST(dialogue_beat);
-	db->some_time_before = NEW_LINKED_LIST(dialogue_beat);
+	db->some_time_after = NEW_LINKED_LIST(parse_node);
+	db->some_time_before = NEW_LINKED_LIST(parse_node);
+	db->about_list = NEW_LINKED_LIST(parse_node);
 	db->opening_line = NULL;
 	db->compilation_data = RTDialogue::new_beat(PN, db);
+	db->as_scene = NULL;
 	previous_dialogue_beat = current_dialogue_beat;
 	current_dialogue_beat = db;
 	for (int i=0; i<MAX_DIALOGUE_LINE_NESTING; i++)
@@ -188,9 +192,162 @@ void Dialogue::write_dbc(OUTPUT_STREAM, int c) {
 	... beat |
 	... scene
 
+@
 
-@<Add a scene name to the beat@> =
-	current_dialogue_beat->beat_name = WR[1];
+=
+void Dialogue::decide_cue_sequencing(void) {
+	dialogue_beat *db, *previous = NULL;
+	LOOP_OVER(db, dialogue_beat) {
+		current_sentence = db->cue_at;
+		int iac = 0;
+		for (parse_node *clause = db->cue_at->down; clause; clause = clause->next) {
+			wording CW = Node::get_text(clause);
+			switch (Annotations::read_int(clause, dialogue_beat_clause_ANNOT)) {
+				case NEXT_DBC:
+					if ((previous) && (previous->under_heading == db->under_heading)) {
+						iac++;
+						db->immediately_after = Rvalues::from_dialogue_beat(previous);
+					} else @<Issue PM_NoPreviousBeat problem@>;
+					break;
+				case IMMEDIATELY_AFTER_DBC: {
+					<dialogue-beat-clause>(CW);
+					wording B = GET_RW(<dialogue-beat-clause>, 1);
+					parse_node *desc = Dialogue::parse_beat_name(B);
+					if (desc) {
+						iac++;
+						db->immediately_after = desc;
+					}
+					break;
+				}
+				case LATER_DBC:
+					if ((previous) && (previous->under_heading == db->under_heading)) {
+						parse_node *desc = Rvalues::from_dialogue_beat(previous);
+						ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_after);
+					} else @<Issue PM_NoPreviousBeat problem@>;
+					break;
+				case AFTER_DBC: {
+					<dialogue-beat-clause>(CW);
+					wording B = GET_RW(<dialogue-beat-clause>, 1);
+					parse_node *desc = Dialogue::parse_beat_name(B);
+					if (desc) ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_after);
+					break;
+				}
+				case BEFORE_DBC: {
+					<dialogue-beat-clause>(CW);
+					wording B = GET_RW(<dialogue-beat-clause>, 1);
+					parse_node *desc = Dialogue::parse_beat_name(B);
+					if (desc) ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_before);
+					break;
+				}
+			}
+
+		}
+		if (Wordings::nonempty(db->scene_name)) {
+			pcalc_prop *prop = Propositions::Abstract::to_create_something(K_scene, db->scene_name);
+			Assert::true(prop, CERTAIN_CE);
+			db->as_scene = Scenes::from_named_constant(Instances::latest());
+		}
+		previous = db;
+		if (iac > 1) 
+			StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_DoubleImmediateBeat),
+				"this dialogue beat asks to be immediately after two or more other beats",
+				"either with 'next' or 'immediately after'. It can only give one.");
+	}
+}
+
+@<Issue PM_NoPreviousBeat problem@> =
+	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_NoPreviousBeat),
+		"this dialogue beat asks to be performed after the previous one",
+		"but in this dialogue section, there is no previous one.");
+
+@ =
+parse_node *Dialogue::parse_beat_name(wording CW) {
+	if (<s-type-expression-uncached>(CW)) {
+		parse_node *desc = <<rp>>;
+		kind *K = Specifications::to_kind(desc);
+		if (Kinds::ne(K, K_dialogue_beat)) {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, CW);
+			Problems::quote_kind(3, K);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NotABeat));
+			Problems::issue_problem_segment(
+				"The dialogue beat %1 refers to another beat with '%2', but that "
+				"seems to describe %3.");
+			Problems::issue_problem_end();
+			return NULL;
+		}
+		return desc;
+	} else {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, CW);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnrecognisedBeat));
+		Problems::issue_problem_segment(
+			"The dialogue beat %1 refers to another beat with '%2', but that "
+			"isn't something I recognise as a description.");
+		Problems::issue_problem_end();
+		return NULL;
+	}
+}
+
+@
+
+=
+void Dialogue::decide_cue_topics(void) {
+	dialogue_beat *db;
+	LOOP_OVER(db, dialogue_beat) {
+		current_sentence = db->cue_at;
+		for (parse_node *clause = db->cue_at->down; clause; clause = clause->next) {
+			wording CW = Node::get_text(clause);
+			switch (Annotations::read_int(clause, dialogue_beat_clause_ANNOT)) {
+				case ABOUT_DBC: {
+					<dialogue-beat-clause>(CW);
+					wording A = GET_RW(<dialogue-beat-clause>, 1);
+					<np-articled-list>(A);
+					parse_node *AL = <<rp>>;
+					Dialogue::parse_topic(db->about_list, AL);
+					break;
+				}
+			}
+		}
+	}
+}
+
+void Dialogue::parse_topic(linked_list *about_list, parse_node *AL) {
+	if (Node::is(AL, AND_NT)) {
+		Dialogue::parse_topic(about_list, AL->down);
+		Dialogue::parse_topic(about_list, AL->down->next);
+	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
+		wording A = Node::get_text(AL);
+		LOG("Text: %W\n", A);
+		if (<s-constant-value>(A)) {
+			parse_node *desc = <<rp>>;
+			kind *K = Specifications::to_kind(desc);
+			if (Kinds::Behaviour::is_subkind_of_object(K)) {
+				ADD_TO_LINKED_LIST(desc, parse_node, about_list);
+			} else {
+				Problems::quote_source(1, current_sentence);
+				Problems::quote_wording(2, A);
+				Problems::quote_kind(3, K);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NotAnAboutTopic));
+				Problems::issue_problem_segment(
+					"The dialogue beat %1 is apparently about '%2', but that "
+					"seems to be %3. (Dialogue can only be about objects: "
+					"people, things, rooms, that sort of stuff.)");
+				Problems::issue_problem_end();
+			}
+		} else {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, A);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnrecognisedAboutTopic));
+			Problems::issue_problem_segment(
+				"The dialogue beat %1 is apparently about '%2', but that "
+				"isn't something I recognise as an object. (Dialogue can "
+				"only be about objects: people, things, rooms, that sort of stuff.)");
+			Problems::issue_problem_end();
+		}
+	}
+}
+
 
 @
 

@@ -1,0 +1,15 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 33 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32187 words long.
+Problem__ PM_NoPreviousBeat
+In Section 1 - Meeting:
+  >--> You wrote '(Later .)' (source text, line 5): but this dialogue beat asks
+    to be performed after the previous one, but in this dialogue section, there
+    is no previous one.
+Problem__ PM_NoPreviousBeat
+ In Section 2 - Meeting Again:
+  >--> You wrote '(Next .)' (source text, line 11): again, this dialogue beat
+    asks to be performed after the previous one.
+Inform 7 has finished.

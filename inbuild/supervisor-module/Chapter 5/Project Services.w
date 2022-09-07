@@ -523,11 +523,8 @@ on //WorldModelKit//, through the if-this-then-that mechanism.
 	inform_language *L = project->language_of_play;
 	if (L) Languages::add_kit_dependencies_to_project(L, project);
 	else internal_error("no language of play");
-	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE)) {
+	if ((no_word_from_JSON) && (forcible_basic_mode == FALSE))
 		Projects::add_kit_dependency(project, I"CommandParserKit", NULL, NULL, NULL);
-		if (project->syntax_tree->contains_dialogue)
-			Projects::add_kit_dependency(project, I"DialogueKit", NULL, NULL, NULL);
-	}
 
 @ We perform this first with |parity| being |TRUE|, then |FALSE|.
 
@@ -712,6 +709,8 @@ void Projects::construct_graph(inform_project *proj) {
 	if (proj->chosen_build_target == NULL) {
 		Projects::finalise_kit_dependencies(proj);
 		Copies::get_source_text(proj->as_copy);
+		if (proj->syntax_tree->contains_dialogue)
+			Projects::add_kit_dependency(proj, I"DialogueKit", NULL, NULL, NULL);
 		build_vertex *V = proj->as_copy->vertex;
 		@<Construct the graph upstream of V@>;
 		@<Construct the graph downstream of V@>;

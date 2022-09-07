@@ -140,9 +140,11 @@ so on. Those absolute basics are made here.
 		2, debugging, sequence_timer);
 	BENCH(MajorNodes::pass_1)
 	BENCH(Tables::traverse_to_stock)
+	BENCH(Dialogue::decide_cue_sequencing)
 	Task::advance_stage_to(ASSERTIONS_PASS_2_CSEQ, I"Second pass through major nodes",
 		-1, debugging, sequence_timer);
 	BENCH(MajorNodes::pass_2)
+	BENCH(Dialogue::decide_cue_topics)
 
 @<Make the model world@> =
 	Task::advance_stage_to(MODEL_CSEQ, I"Making the model world",

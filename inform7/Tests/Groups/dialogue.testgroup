@@ -1,0 +1,17 @@
+PM_NotABeat
+PM_UnrecognisedBeat
+PM_DoubleImmediateBeat
+PM_NoPreviousBeat
+PM_LineNamedTwice
+PM_BeatNamedTwice
+PM_LineWithoutBeat
+PM_OrphanLine
+PM_OvernestedLine
+PM_IndentedBeat
+PM_MisbracketedDialogueClause
+PM_EmptyDialogueClause
+PM_UnquotedDialogue
+PM_UnexpectedDialogue
+PM_DialogueOnSectionsOnly
+PM_NotAnAboutTopic
+PM_UnrecognisedAboutTopic
