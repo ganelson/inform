@@ -836,8 +836,7 @@ void Sentences::add_dialogue_clauses(wording CW, parse_node_tree *T, parse_node 
 		if (Lexer::word(i) == OPENBRACKET_V) bl++;
 		if (Lexer::word(i) == CLOSEBRACKET_V) bl--;
 		if ((bl == 0) &&
-			((Lexer::word(i) == FULLSTOP_V) || (Lexer::word(i) == SEMICOLON_V) ||
-				(Lexer::word(i) == COMMA_V))) {
+			((Lexer::word(i) == FULLSTOP_V) || (Lexer::word(i) == SEMICOLON_V))) {
 			int a = start, b = i-1;
 			@<Add a clause@>;
 			start = i+1;
@@ -856,8 +855,7 @@ void Sentences::add_dialogue_clauses(wording CW, parse_node_tree *T, parse_node 
 	while ((a<b) &&
 		(Lexer::word(a) == OPENBRACKET_V) && (Lexer::word(b) == CLOSEBRACKET_V))
 		a++, b--;
-	if ((Lexer::word(b) == FULLSTOP_V) || (Lexer::word(b) == SEMICOLON_V) ||
-		(Lexer::word(b) == COMMA_V)) b--;
+	if ((Lexer::word(b) == FULLSTOP_V) || (Lexer::word(b) == SEMICOLON_V)) b--;
 	if (b < a) {
 		Sentences::syntax_problem(EmptyDialogueClause_SYNERROR, CW, sfsm->ref, 0);
 		return;

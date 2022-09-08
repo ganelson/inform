@@ -149,7 +149,7 @@ dialogue_beat *Dialogue::create_cue(parse_node *PN) {
 @e BEFORE_DBC
 @e LATER_DBC
 @e NEXT_DBC
-@e GENERIC_DBC
+@e PROPERTY_DBC
 
 =
 <dialogue-beat-clause> ::=
@@ -163,7 +163,7 @@ dialogue_beat *Dialogue::create_cue(parse_node *PN) {
 	before ... |                ==> { BEFORE_DBC, - }
 	later |                     ==> { LATER_DBC, - }
 	next |                      ==> { NEXT_DBC, - }
-	...                         ==> { GENERIC_DBC, - }
+	...                         ==> { PROPERTY_DBC, - }
 
 @
 
@@ -180,7 +180,7 @@ void Dialogue::write_dbc(OUTPUT_STREAM, int c) {
 		case BEFORE_DBC: WRITE("BEFORE"); break;
 		case LATER_DBC: WRITE("LATER"); break;
 		case NEXT_DBC: WRITE("NEXT"); break;
-		case GENERIC_DBC: WRITE("GENERIC"); break;
+		case PROPERTY_DBC: WRITE("PROPERTY"); break;
 		default: WRITE("?"); break;
 	}
 }
@@ -202,45 +202,35 @@ void Dialogue::decide_cue_sequencing(void) {
 		int iac = 0;
 		for (parse_node *clause = db->cue_at->down; clause; clause = clause->next) {
 			wording CW = Node::get_text(clause);
-			switch (Annotations::read_int(clause, dialogue_beat_clause_ANNOT)) {
+			int c = Annotations::read_int(clause, dialogue_beat_clause_ANNOT);
+			switch (c) {
 				case NEXT_DBC:
 					if ((previous) && (previous->under_heading == db->under_heading)) {
 						iac++;
 						db->immediately_after = Rvalues::from_dialogue_beat(previous);
-					} else @<Issue PM_NoPreviousBeat problem@>;
-					break;
-				case IMMEDIATELY_AFTER_DBC: {
-					<dialogue-beat-clause>(CW);
-					wording B = GET_RW(<dialogue-beat-clause>, 1);
-					parse_node *desc = Dialogue::parse_beat_name(B);
-					if (desc) {
-						iac++;
-						db->immediately_after = desc;
+					} else {
+						@<Issue PM_NoPreviousBeat problem@>;
 					}
 					break;
-				}
 				case LATER_DBC:
 					if ((previous) && (previous->under_heading == db->under_heading)) {
 						parse_node *desc = Rvalues::from_dialogue_beat(previous);
 						ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_after);
-					} else @<Issue PM_NoPreviousBeat problem@>;
+					} else {
+						@<Issue PM_NoPreviousBeat problem@>;
+					}
 					break;
-				case AFTER_DBC: {
-					<dialogue-beat-clause>(CW);
-					wording B = GET_RW(<dialogue-beat-clause>, 1);
-					parse_node *desc = Dialogue::parse_beat_name(B);
-					if (desc) ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_after);
-					break;
-				}
+				case IMMEDIATELY_AFTER_DBC:
+				case AFTER_DBC:
 				case BEFORE_DBC: {
 					<dialogue-beat-clause>(CW);
-					wording B = GET_RW(<dialogue-beat-clause>, 1);
-					parse_node *desc = Dialogue::parse_beat_name(B);
-					if (desc) ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_before);
+					wording A = GET_RW(<dialogue-beat-clause>, 1);
+					<np-articled-list>(A);
+					parse_node *AL = <<rp>>;
+					Dialogue::parse_beat_list(c, db, AL, &iac);
 					break;
 				}
 			}
-
 		}
 		if (Wordings::nonempty(db->scene_name)) {
 			pcalc_prop *prop = Propositions::Abstract::to_create_something(K_scene, db->scene_name);
@@ -261,6 +251,37 @@ void Dialogue::decide_cue_sequencing(void) {
 		"but in this dialogue section, there is no previous one.");
 
 @ =
+void Dialogue::parse_beat_list(int c, dialogue_beat *db, parse_node *AL, int *iac) {
+	if (Node::is(AL, AND_NT)) {
+		Dialogue::parse_beat_list(c, db, AL->down, iac);
+		Dialogue::parse_beat_list(c, db, AL->down->next, iac);
+	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
+		switch(c) {
+			case IMMEDIATELY_AFTER_DBC: {
+				wording B = GET_RW(<dialogue-beat-clause>, 1);
+				parse_node *desc = Dialogue::parse_beat_name(B);
+				if (desc) {
+					(*iac)++;
+					db->immediately_after = desc;
+				}
+				break;
+			}
+			case AFTER_DBC: {
+				wording B = GET_RW(<dialogue-beat-clause>, 1);
+				parse_node *desc = Dialogue::parse_beat_name(B);
+				if (desc) ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_after);
+				break;
+			}
+			case BEFORE_DBC: {
+				wording B = GET_RW(<dialogue-beat-clause>, 1);
+				parse_node *desc = Dialogue::parse_beat_name(B);
+				if (desc) ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_before);
+				break;
+			}
+		}
+	}
+}
+
 parse_node *Dialogue::parse_beat_name(wording CW) {
 	if (<s-type-expression-uncached>(CW)) {
 		parse_node *desc = <<rp>>;
@@ -307,6 +328,14 @@ void Dialogue::decide_cue_topics(void) {
 					Dialogue::parse_topic(db->about_list, AL);
 					break;
 				}
+				case PROPERTY_DBC: {
+					<dialogue-beat-clause>(CW);
+					wording A = GET_RW(<dialogue-beat-clause>, 1);
+					<np-articled-list>(A);
+					parse_node *AL = <<rp>>;
+					Dialogue::parse_property(db, AL);
+					break;
+				}
 			}
 		}
 	}
@@ -318,8 +347,7 @@ void Dialogue::parse_topic(linked_list *about_list, parse_node *AL) {
 		Dialogue::parse_topic(about_list, AL->down->next);
 	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
 		wording A = Node::get_text(AL);
-		LOG("Text: %W\n", A);
-		if (<s-constant-value>(A)) {
+		if (<s-type-expression-uncached>(A)) {
 			parse_node *desc = <<rp>>;
 			kind *K = Specifications::to_kind(desc);
 			if (Kinds::Behaviour::is_subkind_of_object(K)) {
@@ -348,6 +376,47 @@ void Dialogue::parse_topic(linked_list *about_list, parse_node *AL) {
 	}
 }
 
+void Dialogue::parse_property(dialogue_beat *db, parse_node *AL) {
+	if (Node::is(AL, AND_NT)) {
+		Dialogue::parse_property(db, AL->down);
+		Dialogue::parse_property(db, AL->down->next);
+	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
+		inference_subject *subj = Instances::as_subject(db->as_instance);
+		LOG("So K = %u\n", Instances::to_kind(db->as_instance));
+		wording A = Node::get_text(AL);
+		if (<s-value-uncached>(A)) {
+			parse_node *val = <<rp>>;
+			if (Rvalues::is_CONSTANT_construction(val, CON_property)) {
+				property *prn = Rvalues::to_property(val);
+				if (Properties::is_either_or(prn)) {
+					pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
+						EitherOrProperties::as_adjective(prn), FALSE);
+					prop = Propositions::concatenate(Propositions::Abstract::prop_to_set_kind(K_dialogue_beat), prop);
+					Assert::true_about(prop, subj, CERTAIN_CE);
+					return;
+				}
+			}
+			if ((Specifications::is_description(val)) || (Node::is(val, TEST_VALUE_NT))) {
+				pcalc_prop *prop = Descriptions::to_proposition(val);
+				if (prop) {
+					prop = Propositions::concatenate(Propositions::Abstract::prop_to_set_kind(K_dialogue_beat), prop);
+					Assert::true_about(prop, subj, CERTAIN_CE);
+					return;
+				}
+			}
+			LOG("Unexpected prop: $T\n", val);
+		} else {
+			LOG("Unrecognised prop: '%W'\n", A);
+		}
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, A);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_UnrecognisedBeatProperty));
+		Problems::issue_problem_segment(
+			"The dialogue beat %1 should apparently be '%2', but that "
+			"isn't something I recognise as a property which a beat can have.");
+		Problems::issue_problem_end();
+	}
+}
 
 @
 

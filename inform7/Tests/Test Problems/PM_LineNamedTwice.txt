@@ -2,6 +2,6 @@ Elsinore is a room.
 
 Section 1 - Meeting (dialogue)
 
-(About the paranormal. This is the quaintly done scene.)
+(This is the quaintly done scene.)
 
-Marcellus (this is the first named line, this is the second named line): "What, has this thing appear'd again to-night?"
+Marcellus (this is the first named line; this is the second named line): "What, has this thing appear'd again to-night?"
