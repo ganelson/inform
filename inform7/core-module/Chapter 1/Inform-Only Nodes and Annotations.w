@@ -336,14 +336,14 @@ void CoreSyntax::write_clears_pronouns_ANNOT(text_stream *OUT, parse_node *p) {
 void CoreSyntax::write_dialogue_beat_clause_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, dialogue_beat_clause_ANNOT) > 0) {
 		WRITE(" {beat clause: ");
-		Dialogue::write_dbc(OUT, Annotations::read_int(p, dialogue_beat_clause_ANNOT));
+		DialogueBeats::write_dbc(OUT, Annotations::read_int(p, dialogue_beat_clause_ANNOT));
 		WRITE("}");
 	}
 }
 void CoreSyntax::write_dialogue_line_clause_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, dialogue_line_clause_ANNOT) > 0) {
 		WRITE(" {line clause: ");
-		Dialogue::write_dlc(OUT, Annotations::read_int(p, dialogue_line_clause_ANNOT));
+		DialogueLines::write_dlc(OUT, Annotations::read_int(p, dialogue_line_clause_ANNOT));
 		WRITE("}");
 	}
 }

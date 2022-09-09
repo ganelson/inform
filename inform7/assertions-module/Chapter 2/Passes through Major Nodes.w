@@ -109,7 +109,7 @@ organisation, and are not directly functional in themselves.
 
 		case HEADING_NT:   Anaphora::new_discussion();
 						   if (global_pass_state.pass == 0) 
-						       Dialogue::note_heading(Headings::from_node(p));
+						       DialogueBeats::note_heading(Headings::from_node(p));
 						   break;
 		
 		case BEGINHERE_NT: Anaphora::new_discussion();
@@ -137,10 +137,10 @@ organisation, and are not directly functional in themselves.
 			break;
 
 		case DIALOGUE_CUE_NT: 
-			if (global_pass_state.pass == 0) Dialogue::create_cue(p);
+			if (global_pass_state.pass == 0) DialogueBeats::new(p);
 			break;
 		case DIALOGUE_LINE_NT:
-			if (global_pass_state.pass == 0) Dialogue::create_line(p);
+			if (global_pass_state.pass == 0) DialogueLines::new(p);
 			break;
 
 		case INVOCATION_LIST_NT:  break; /* for error recovery; shouldn't be here otherwise */

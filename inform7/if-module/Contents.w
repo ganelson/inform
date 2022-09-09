@@ -65,3 +65,7 @@ Chapter 5: Command Parser
 	Determination Types
 	Property Visibility
 	Test Scripts
+
+Chapter 6: Dialogue
+	Dialogue Beats
+	Dialogue Lines

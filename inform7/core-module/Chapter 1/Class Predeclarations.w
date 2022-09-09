@@ -30,8 +30,6 @@ DECLARE_CLASS(compile_task_data)
 @e booking_list_CLASS
 @e by_function_bp_data_CLASS
 @e constant_phrase_CLASS
-@e dialogue_beat_CLASS
-@e dialogue_line_CLASS
 @e equivalence_bp_data_CLASS
 @e explicit_bp_data_CLASS
 @e generalisation_CLASS
@@ -65,8 +63,6 @@ DECLARE_CLASS(booking_list)
 DECLARE_CLASS(booking)
 DECLARE_CLASS(by_function_bp_data)
 DECLARE_CLASS(constant_phrase)
-DECLARE_CLASS(dialogue_beat)
-DECLARE_CLASS(dialogue_line)
 DECLARE_CLASS(equivalence_bp_data)
 DECLARE_CLASS(explicit_bp_data)
 DECLARE_CLASS(generalisation)
@@ -235,6 +231,8 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
 @e actions_rcd_data_CLASS
 @e auxiliary_file_CLASS
 @e cached_understanding_CLASS
+@e dialogue_beat_CLASS
+@e dialogue_line_CLASS
 @e direction_inference_data_CLASS
 @e explicit_action_CLASS
 @e found_in_inference_data_CLASS
@@ -272,6 +270,8 @@ DECLARE_CLASS(action_name)
 DECLARE_CLASS(actions_rcd_data)
 DECLARE_CLASS(auxiliary_file)
 DECLARE_CLASS(cached_understanding)
+DECLARE_CLASS(dialogue_beat)
+DECLARE_CLASS(dialogue_line)
 DECLARE_CLASS(direction_inference_data)
 DECLARE_CLASS(found_in_inference_data)
 DECLARE_CLASS(cg_line)
