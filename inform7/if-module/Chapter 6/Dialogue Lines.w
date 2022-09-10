@@ -96,8 +96,12 @@ typedef struct dialogue_line {
 	struct wording line_name;
 	struct instance *as_instance;
 	struct parse_node *line_at;
+	int narration;
+	int without_speaking;
 	struct wording speaker_text;
 	struct wording speech_text;
+	struct linked_list *mentioning; /* of |parse_node| */
+	struct instance *interlocutor;
 	struct dialogue_beat *owning_beat;
 	struct dialogue_line *parent_line;
 	struct dialogue_line *child_line;
@@ -109,6 +113,8 @@ typedef struct dialogue_line {
 @<Initialise the line@> =
 	dl->line_name = EMPTY_WORDING;
 	dl->line_at = PN;
+	dl->narration = FALSE;
+	dl->without_speaking = FALSE;
 	dl->owning_beat = current_dialogue_beat;
 	dl->parent_line = NULL;
 	if (L > 0) dl->parent_line = precursor_dialogue_lines[L-1];
@@ -117,6 +123,8 @@ typedef struct dialogue_line {
 	dl->compilation_data = RTDialogue::new_line(PN, dl);
 	dl->speaker_text = EMPTY_WORDING;
 	dl->speech_text = EMPTY_WORDING;
+	dl->mentioning = NEW_LINKED_LIST(parse_node);
+	dl->interlocutor = NULL;
 
 @<Parse the clauses just enough to classify them@> =
 	for (parse_node *clause = PN->down; clause; clause = clause->next) {
@@ -125,17 +133,36 @@ typedef struct dialogue_line {
 			<dialogue-line-clause>(CW);
 			Annotations::write_int(clause, dialogue_line_clause_ANNOT, <<r>>);
 		} else if (Node::is(clause, DIALOGUE_SPEAKER_NT)) {
-			dl->speaker_text = CW;
+			if (<dialogue-is-narration>(CW))
+				dl->narration = TRUE;
+			else
+				dl->speaker_text = CW;
 		} else if (Node::is(clause, DIALOGUE_SPEECH_NT)) {
 			dl->speech_text = CW;
 		} else internal_error("damaged DIALOGUE_LINE_NT subtree");
 	}
 
+@ The special speaker "narration" marks out a line which isn't a speech at all:
+
+=
+<dialogue-is-narration> ::=
+	narration
+
 @ As with the analogous clauses for //Dialogue Beats//, each clause can be one
 of the following possibilities:
 
 @e LINE_NAME_DLC from 1
-@e GENERIC_DLC
+@e MENTIONING_DLC
+@e IF_DLC
+@e UNLESS_DLC
+@e BEFORE_DLC
+@e AFTER_DLC
+@e NOW_DLC
+@e TO_DLC
+@e WITHOUT_SPEAKING_DLC
+@e ENDING_DLC
+@e ENDING_IN_DLC
+@e STYLE_DLC
 
 @<Look for a line name@> =
 	int dialogue_line_name_count = 0;
@@ -160,14 +187,33 @@ of the following possibilities:
 =
 <dialogue-line-clause> ::=
 	this is the { ... line } |      ==> { LINE_NAME_DLC, - }
-	...                             ==> { GENERIC_DLC, - }
+	mentioning ... |                ==> { MENTIONING_DLC, - }
+	if ... |                        ==> { IF_DLC, - }
+	unless ... |                    ==> { UNLESS_DLC, - }
+	before ... |                    ==> { BEFORE_DLC, - }
+	after ... |                     ==> { AFTER_DLC, - }
+	to ... |                        ==> { TO_DLC, - }
+	now ... |                       ==> { NOW_DLC, - }
+	without speaking |              ==> { WITHOUT_SPEAKING_DLC, - }
+	ending the story |              ==> { ENDING_DLC, - }
+	ending the story in ... |       ==> { ENDING_IN_DLC, - }
+	...                             ==> { STYLE_DLC, - }
 
 @ =
 void DialogueLines::write_dlc(OUTPUT_STREAM, int c) {
 	switch(c) {
-		case LINE_NAME_DLC: WRITE("LINE_NAME"); break;
-		case GENERIC_DLC: WRITE("GENERIC"); break;
-		default: WRITE("?"); break;
+		case LINE_NAME_DLC:        WRITE("LINE_NAME"); break;
+		case IF_DLC:               WRITE("IF"); break;
+		case UNLESS_DLC:           WRITE("UNLESS"); break;
+		case BEFORE_DLC:           WRITE("BEFORE"); break;
+		case AFTER_DLC:            WRITE("AFTER"); break;
+		case NOW_DLC:              WRITE("NOW"); break;
+		case TO_DLC:               WRITE("TO"); break;
+		case WITHOUT_SPEAKING_DLC: WRITE("WITHOUT_SPEAKING"); break;
+		case ENDING_DLC:           WRITE("ENDING"); break;
+		case ENDING_IN_DLC:        WRITE("ENDING_IN"); break;
+		case STYLE_DLC:            WRITE("STYLE"); break;
+		default:                   WRITE("?"); break;
 	}
 }
 
@@ -200,3 +246,70 @@ given in its clauses if one was.
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_dialogue_line, W);
 	Assert::true(prop, CERTAIN_CE);
 	dl->as_instance = Instances::latest();
+
+@h Processing lines after pass 1.
+It's now a little later, and the following is called to look at each line and
+parse its clauses further.
+
+=
+void DialogueLines::decide_line_mentions(void) {
+	dialogue_line *dl;
+	LOOP_OVER(dl, dialogue_line) {
+		current_sentence = dl->line_at;
+		for (parse_node *clause = dl->line_at->down; clause; clause = clause->next) {
+			if (Node::is(clause, DIALOGUE_CLAUSE_NT)) {
+				wording CW = Node::get_text(clause);
+				int c = Annotations::read_int(clause, dialogue_beat_clause_ANNOT);
+				switch (c) {
+					case MENTIONING_DLC: {
+						<dialogue-line-clause>(CW);
+						wording A = GET_RW(<dialogue-line-clause>, 1);
+						<np-articled-list>(A);
+						parse_node *AL = <<rp>>;
+						DialogueBeats::parse_topic(dl->mentioning, AL, DIALOGUE_LINE_NT);
+						break;
+					}
+					case TO_DLC: {
+						<dialogue-line-clause>(CW);
+						wording A = GET_RW(<dialogue-line-clause>, 1);
+						dl->interlocutor = DialogueLines::parse_interlocutor(A);
+						break;
+					}
+					case WITHOUT_SPEAKING_DLC:
+						dl->without_speaking = TRUE;
+						break;
+				}
+			}
+		}
+	}
+}
+
+instance *DialogueLines::parse_interlocutor(wording CW) {
+	if (<s-type-expression-uncached>(CW)) {
+		parse_node *desc = <<rp>>;
+		kind *K = Specifications::to_kind(desc);
+		if (Kinds::Behaviour::is_subkind_of_object(K)) {
+			LOG("To $T\n", desc);
+			return NULL;
+		} else {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, CW);
+			Problems::quote_kind(3, K);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+			Problems::issue_problem_segment(
+				"The dialogue line %1 is apparently spoken to '%2', but that "
+				"seems to describe %3, not an object.");
+			Problems::issue_problem_end();
+			return NULL;
+		}
+	} else {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, CW);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+		Problems::issue_problem_segment(
+			"The dialogue line %1 is apparently spoken to '%2', but that "
+			"isn't something I recognise as the name of a thing or person.");
+		Problems::issue_problem_end();
+		return NULL;
+	}
+}

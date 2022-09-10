@@ -37,7 +37,7 @@ a whole paragraph, which might, for example, read:
 =
 |PN| is that text, but it has already been partially parsed:
 = (text)
-	DIALOGUE_BEAT_NT
+	DIALOGUE_CUE_NT
 		DIALOGUE_CLAUSE_NT "About the carriage clock"
 		DIALOGUE_CLAUSE_NT "this is the horological beat"
 =
@@ -60,7 +60,7 @@ dialogue_beat *DialogueBeats::new(parse_node *PN) {
 	return db;
 }
 
-@ Note that a |DIALOGUE_BEAT_NT| is only made under a section marked as containing
+@ Note that a |DIALOGUE_CUE_NT| is only made under a section marked as containing
 dialogue, so the internal error here should be impossible to hit.
 
 @<See if we are expecting a dialogue beat@> =
@@ -112,7 +112,7 @@ typedef struct dialogue_beat {
 wording tells us immediately which possibility it is, even early in the run.
 We annotate each clause with the answer. Thus we might have:
 = (text)
-	DIALOGUE_BEAT_NT
+	DIALOGUE_CUE_NT
 		DIALOGUE_CLAUSE_NT "About the carriage clock" {ABOUT_DBC}
 		DIALOGUE_CLAUSE_NT "this is the horological beat" {BEAT_NAME_DBC}
 =
@@ -399,7 +399,7 @@ void DialogueBeats::decide_cue_topics(void) {
 					wording A = GET_RW(<dialogue-beat-clause>, 1);
 					<np-articled-list>(A);
 					parse_node *AL = <<rp>>;
-					DialogueBeats::parse_topic(db->about_list, AL);
+					DialogueBeats::parse_topic(db->about_list, AL, DIALOGUE_CUE_NT);
 					break;
 				}
 				case PROPERTY_DBC: {
@@ -419,10 +419,10 @@ void DialogueBeats::decide_cue_topics(void) {
 in the |UNPARSED_NOUN_NT| node "carriage clock".
 
 =
-void DialogueBeats::parse_topic(linked_list *about_list, parse_node *AL) {
+void DialogueBeats::parse_topic(linked_list *about_list, parse_node *AL, unsigned int nt) {
 	if (Node::is(AL, AND_NT)) {
-		DialogueBeats::parse_topic(about_list, AL->down);
-		DialogueBeats::parse_topic(about_list, AL->down->next);
+		DialogueBeats::parse_topic(about_list, AL->down, nt);
+		DialogueBeats::parse_topic(about_list, AL->down->next, nt);
 	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
 		wording A = Node::get_text(AL);
 		if (<s-type-expression-uncached>(A)) {
@@ -434,10 +434,17 @@ void DialogueBeats::parse_topic(linked_list *about_list, parse_node *AL) {
 				Problems::quote_source(1, current_sentence);
 				Problems::quote_wording(2, A);
 				Problems::quote_kind(3, K);
+				if (nt == DIALOGUE_CUE_NT) {
+					Problems::quote_stream(4, I"beat");
+					Problems::quote_stream(5, I"about");
+				} else {
+					Problems::quote_stream(4, I"line");
+					Problems::quote_stream(5, I"to mention");
+				}
 				StandardProblems::handmade_problem(Task::syntax_tree(),
 					_p_(PM_NotAnAboutTopic));
 				Problems::issue_problem_segment(
-					"The dialogue beat %1 is apparently about '%2', but that "
+					"The dialogue %4 %1 is apparently %5 '%2', but that "
 					"seems to be %3. (Dialogue can only be about objects: "
 					"people, things, rooms, that sort of stuff.)");
 				Problems::issue_problem_end();
@@ -445,10 +452,17 @@ void DialogueBeats::parse_topic(linked_list *about_list, parse_node *AL) {
 		} else {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, A);
+			if (nt == DIALOGUE_CUE_NT) {
+				Problems::quote_stream(4, I"beat");
+				Problems::quote_stream(5, I"about");
+			} else {
+				Problems::quote_stream(4, I"line");
+				Problems::quote_stream(5, I"to mention");
+			}
 			StandardProblems::handmade_problem(Task::syntax_tree(),
 				_p_(PM_UnrecognisedAboutTopic));
 			Problems::issue_problem_segment(
-				"The dialogue beat %1 is apparently about '%2', but that "
+				"The dialogue %4 %1 is apparently %5 '%2', but that "
 				"isn't something I recognise as an object. (Dialogue can "
 				"only be about objects: people, things, rooms, that sort of stuff.)");
 			Problems::issue_problem_end();
