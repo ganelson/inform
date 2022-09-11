@@ -1,33 +1,41 @@
-builtin base DIALOGUE_BEAT_TY {
+new base DIALOGUE_BEAT_TY {
 	conforms-to: ENUMERATED_VALUE_TY
 	singular: dialogue beat
 	plural: dialogue beats
 
-	default-value: 0
-	loop-domain-schema: for (*1=1: *1<=NUMBER_DIALOGUE_BEATS_CREATED: *1++)
+	default-value: 1
+!	loop-domain-schema: for (*1=1: *1<=NUMBER_DIALOGUE_BEATS_CREATED: *1++)
 	constant-compilation-method: quantitative
 
 	printing-routine: PrintDialogueBeatName
 
-!	documentation-reference: kind_verb
-!	index-priority: 6
-!	index-default-value: verb be
 	specification-text: A beat of dialogue occurring in a section of dialogue.
 }
 
-builtin base DIALOGUE_LINE_TY {
+new base DIALOGUE_LINE_TY {
 	conforms-to: ENUMERATED_VALUE_TY
 	singular: dialogue line
 	plural: dialogue lines
 
-	default-value: 0
-	loop-domain-schema: for (*1=1: *1<=NUMBER_DIALOGUE_LINES_CREATED: *1++)
+	default-value: 1
+!	loop-domain-schema: for (*1=1: *1<=NUMBER_DIALOGUE_LINES_CREATED: *1++)
 	constant-compilation-method: quantitative
 
 	printing-routine: PrintDialogueLineName
 
-!	documentation-reference: kind_verb
-!	index-priority: 6
-!	index-default-value: verb be
 	specification-text: A line of dialogue occurring in a section of dialogue.
+}
+
+new base PERFORMANCE_STYLE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: performance style
+	plural: performance styles
+
+	default-value: 1
+!	loop-domain-schema: for (*1=1: *1<=NUMBER_PERFORMANCE_STYLES_CREATED: *1++)
+	constant-compilation-method: quantitative
+
+	printing-routine: PrintPerformanceStyleName
+
+	specification-text: A way to perform a given dialogue line.
 }

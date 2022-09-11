@@ -78,6 +78,7 @@ compiler_feature *actions_feature, *going_feature,
 	*devices_feature, *map_feature, *parsing_feature, *persons_feature, *player_feature,
 	*regions_feature, *scenes_feature, *scoring_feature, *showme_feature, *spatial_feature,
 	*timed_rules_feature, *times_feature;
+compiler_feature *performance_styles_feature = NULL;
 
 @ =
 void IFModule::create_features(void) {
@@ -104,4 +105,6 @@ void IFModule::create_features(void) {
 
 	parsing_feature = Features::new(&ParsingPlugin::start, I"command", ifp);
 	showme_feature = Features::new(&RTShowmeCommand::start, I"showme", parsing_feature);
+	performance_styles_feature = Features::new(&PerformanceStyles::start,
+		I"performance styles", dialogue_feature);
 }

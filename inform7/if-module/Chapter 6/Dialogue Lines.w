@@ -101,6 +101,7 @@ typedef struct dialogue_line {
 	struct wording speaker_text;
 	struct wording speech_text;
 	struct linked_list *mentioning; /* of |parse_node| */
+	struct performance_style *how_performed;
 	struct instance *interlocutor;
 	struct dialogue_beat *owning_beat;
 	struct dialogue_line *parent_line;
@@ -124,6 +125,7 @@ typedef struct dialogue_line {
 	dl->speaker_text = EMPTY_WORDING;
 	dl->speech_text = EMPTY_WORDING;
 	dl->mentioning = NEW_LINKED_LIST(parse_node);
+	dl->how_performed = PerformanceStyles::default();
 	dl->interlocutor = NULL;
 
 @<Parse the clauses just enough to classify them@> =
@@ -259,7 +261,7 @@ void DialogueLines::decide_line_mentions(void) {
 		for (parse_node *clause = dl->line_at->down; clause; clause = clause->next) {
 			if (Node::is(clause, DIALOGUE_CLAUSE_NT)) {
 				wording CW = Node::get_text(clause);
-				int c = Annotations::read_int(clause, dialogue_beat_clause_ANNOT);
+				int c = Annotations::read_int(clause, dialogue_line_clause_ANNOT);
 				switch (c) {
 					case MENTIONING_DLC: {
 						<dialogue-line-clause>(CW);
@@ -278,6 +280,12 @@ void DialogueLines::decide_line_mentions(void) {
 					case WITHOUT_SPEAKING_DLC:
 						dl->without_speaking = TRUE;
 						break;
+					case STYLE_DLC: {
+						<dialogue-line-clause>(CW);
+						wording A = GET_RW(<dialogue-line-clause>, 1);
+						dl->how_performed = PerformanceStyles::parse_style(A);
+						break;
+					}
 				}
 			}
 		}

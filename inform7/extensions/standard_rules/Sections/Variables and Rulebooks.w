@@ -1265,3 +1265,10 @@ The print protagonist internal rule translates into Inter as
 	"[We]" (A),
 	"[ourselves]" (B),
 	"[our] former self" (C).
+
+@h Dialogue support.
+
+=
+Section 10 - Performance Styles (for dialogue language element only)
+
+There is a performance style called spoken normally.

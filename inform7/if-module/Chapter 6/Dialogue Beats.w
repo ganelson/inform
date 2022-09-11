@@ -278,14 +278,14 @@ performed only after or before other beats.
 			case NEXT_DBC:
 				if ((previous) && (previous->under_heading == db->under_heading)) {
 					iac++;
-					db->immediately_after = Rvalues::from_dialogue_beat(previous);
+					db->immediately_after = Dialogue::rvalue_from_dialogue_beat(previous);
 				} else {
 					@<Issue PM_NoPreviousBeat problem@>;
 				}
 				break;
 			case LATER_DBC:
 				if ((previous) && (previous->under_heading == db->under_heading)) {
-					parse_node *desc = Rvalues::from_dialogue_beat(previous);
+					parse_node *desc = Dialogue::rvalue_from_dialogue_beat(previous);
 					ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_after);
 				} else {
 					@<Issue PM_NoPreviousBeat problem@>;
@@ -481,7 +481,6 @@ void DialogueBeats::parse_property(dialogue_beat *db, parse_node *AL) {
 		DialogueBeats::parse_property(db, AL->down->next);
 	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
 		inference_subject *subj = Instances::as_subject(db->as_instance);
-		LOG("So K = %u\n", Instances::to_kind(db->as_instance));
 		wording A = Node::get_text(AL);
 		if (<s-value-uncached>(A)) {
 			parse_node *val = <<rp>>;

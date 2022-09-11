@@ -174,5 +174,10 @@ void Features::activate_core(void) {
 	Features::make_permanently_active(core_feature);
 
 	experimental_feature = Features::new(NULL, I"experimental features", NULL);
+	#ifdef IF_MODULE
+	dialogue_feature = Features::new(&Dialogue::start, I"dialogue", experimental_feature);
+	#endif
+	#ifndef IF_MODULE
 	dialogue_feature = Features::new(NULL, I"dialogue", experimental_feature);
+	#endif
 }

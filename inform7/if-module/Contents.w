@@ -67,5 +67,7 @@ Chapter 5: Command Parser
 	Test Scripts
 
 Chapter 6: Dialogue
+	Dialogue
 	Dialogue Beats
 	Dialogue Lines
+	Performance Styles

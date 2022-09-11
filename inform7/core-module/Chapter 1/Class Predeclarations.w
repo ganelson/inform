@@ -249,6 +249,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
 @e parsing_data_CLASS
 @e parsing_pp_data_CLASS
 @e part_of_inference_data_CLASS
+@e performance_style_CLASS
 @e regions_data_CLASS
 @e release_instructions_CLASS
 @e scene_CLASS
@@ -287,6 +288,7 @@ DECLARE_CLASS(parentage_inference_data)
 DECLARE_CLASS(parsing_data)
 DECLARE_CLASS(parsing_pp_data)
 DECLARE_CLASS(part_of_inference_data)
+DECLARE_CLASS(performance_style)
 DECLARE_CLASS(regions_data)
 DECLARE_CLASS(release_instructions)
 DECLARE_CLASS(scene)

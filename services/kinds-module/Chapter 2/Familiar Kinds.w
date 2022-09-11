@@ -93,8 +93,6 @@ Inform. Some standard kinds follow. Some belong only to features; if the
 feature in question is inactive, they will remain |NULL| and do nothing.
 
 = (early code)
-kind *K_dialogue_beat = NULL;
-kind *K_dialogue_line = NULL;
 kind *K_equation = NULL;
 kind *K_grammatical_gender = NULL;
 kind *K_natural_language = NULL;
@@ -179,8 +177,6 @@ kind_constructor **FamiliarKinds::known_con(text_stream *sn) {
 
 kind **FamiliarKinds::known_kind(text_stream *sn) {
 	IDENTIFIERS_CORRESPOND("ARITHMETIC_VALUE_TY", &K_arithmetic_value);
-	IDENTIFIERS_CORRESPOND("DIALOGUE_BEAT_TY", &K_dialogue_beat);
-	IDENTIFIERS_CORRESPOND("DIALOGUE_LINE_TY", &K_dialogue_line);
 	IDENTIFIERS_CORRESPOND("ENUMERATED_VALUE_TY", &K_enumerated_value);
 	IDENTIFIERS_CORRESPOND("EQUATION_TY", &K_equation);
 	IDENTIFIERS_CORRESPOND("TEXT_TY", &K_text);

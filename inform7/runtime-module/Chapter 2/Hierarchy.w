@@ -1897,6 +1897,7 @@ void Hierarchy::establish(void) {
 @e K_SCENE_XPACKAGE
 @e K_DIALOGUE_BEAT_XPACKAGE
 @e K_DIALOGUE_LINE_XPACKAGE
+@e K_PERFORMANCE_STYLE_XPACKAGE
 
 @e CAPSHORTNAME_HL
 @e DECIMAL_TOKEN_INNER_HL
@@ -1910,6 +1911,7 @@ void Hierarchy::establish(void) {
 @e PRINT_SCENE_HL
 @e PRINT_DIALOGUE_BEAT_HL
 @e PRINT_DIALOGUE_LINE_HL
+@e PRINT_PERFORMANCE_STYLE_HL
 
 @<The rest@> =
 	H_BEGIN(LocationRequirements::this_exotic_package(K_OBJECT_XPACKAGE))
@@ -1954,6 +1956,10 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(LocationRequirements::this_exotic_package(K_DIALOGUE_LINE_XPACKAGE))
 		H_F_T(PRINT_DIALOGUE_LINE_HL,         I"print_fn", I"PrintDialogueLineName")
+	H_END
+
+	H_BEGIN(LocationRequirements::this_exotic_package(K_PERFORMANCE_STYLE_XPACKAGE))
+		H_F_T(PRINT_PERFORMANCE_STYLE_HL,     I"print_fn", I"PrintPerformanceStyleName")
 	H_END
 
 @h Architectural symbols.
@@ -2045,20 +2051,21 @@ exotic, but which are locations not easily falling into patterns. Here they are:
 =
 package_request *Hierarchy::exotic_package(int x) {
 	switch (x) {
-		case K_OBJECT_XPACKAGE:           return RTKindConstructors::kind_package(K_object);
-		case K_NUMBER_XPACKAGE:           return RTKindConstructors::kind_package(K_number);
-		case K_TIME_XPACKAGE:             return RTKindConstructors::kind_package(K_time);
-		case K_TRUTH_STATE_XPACKAGE:      return RTKindConstructors::kind_package(K_truth_state);
-		case K_TABLE_XPACKAGE:            return RTKindConstructors::kind_package(K_table);
-		case K_FIGURE_NAME_XPACKAGE:      return RTKindConstructors::kind_package(K_figure_name);
-		case K_SOUND_NAME_XPACKAGE:       return RTKindConstructors::kind_package(K_sound_name);
-		case K_USE_OPTION_XPACKAGE:       return RTKindConstructors::kind_package(K_use_option);
-		case K_EXTERNAL_FILE_XPACKAGE:    return RTKindConstructors::kind_package(K_external_file);
-		case K_RULEBOOK_OUTCOME_XPACKAGE: return RTKindConstructors::kind_package(K_rulebook_outcome);
-		case K_RESPONSE_XPACKAGE:         return RTKindConstructors::kind_package(K_response);
-		case K_SCENE_XPACKAGE:            return RTKindConstructors::kind_package(K_scene);
-		case K_DIALOGUE_BEAT_XPACKAGE:    return RTKindConstructors::kind_package(K_dialogue_beat);
-		case K_DIALOGUE_LINE_XPACKAGE:    return RTKindConstructors::kind_package(K_dialogue_line);
+		case K_OBJECT_XPACKAGE:            return RTKindConstructors::kind_package(K_object);
+		case K_NUMBER_XPACKAGE:            return RTKindConstructors::kind_package(K_number);
+		case K_TIME_XPACKAGE:              return RTKindConstructors::kind_package(K_time);
+		case K_TRUTH_STATE_XPACKAGE:       return RTKindConstructors::kind_package(K_truth_state);
+		case K_TABLE_XPACKAGE:             return RTKindConstructors::kind_package(K_table);
+		case K_FIGURE_NAME_XPACKAGE:       return RTKindConstructors::kind_package(K_figure_name);
+		case K_SOUND_NAME_XPACKAGE:        return RTKindConstructors::kind_package(K_sound_name);
+		case K_USE_OPTION_XPACKAGE:        return RTKindConstructors::kind_package(K_use_option);
+		case K_EXTERNAL_FILE_XPACKAGE:     return RTKindConstructors::kind_package(K_external_file);
+		case K_RULEBOOK_OUTCOME_XPACKAGE:  return RTKindConstructors::kind_package(K_rulebook_outcome);
+		case K_RESPONSE_XPACKAGE:          return RTKindConstructors::kind_package(K_response);
+		case K_SCENE_XPACKAGE:             return RTKindConstructors::kind_package(K_scene);
+		case K_DIALOGUE_BEAT_XPACKAGE:     return RTKindConstructors::kind_package(K_dialogue_beat);
+		case K_DIALOGUE_LINE_XPACKAGE:     return RTKindConstructors::kind_package(K_dialogue_line);
+		case K_PERFORMANCE_STYLE_XPACKAGE: return RTKindConstructors::kind_package(K_performance_style);
 	}
 	internal_error("unknown exotic package");
 	return NULL;
