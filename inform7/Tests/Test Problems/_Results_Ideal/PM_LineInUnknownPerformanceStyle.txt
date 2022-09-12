@@ -1,0 +1,11 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 37 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32205 words long.
+Problem__ PM_LineInUnknownPerformanceStyle
+In Section 1 - Meeting:
+  >--> The dialogue line 'Horatio (oddly): "'Tis but our fantasy."' (source
+    text, line 11) is apparently spoken in the style 'oddly', but that doesn't
+    seem to correspond to any style I know of.
+Inform 7 has finished.

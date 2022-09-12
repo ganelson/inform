@@ -38,6 +38,7 @@ int PerformanceStyles::new_named_instance_notify(instance *I) {
 	return FALSE;
 }
 
+@ =
 parse_node *PerformanceStyles::rvalue_from_performance_style(performance_style *val) { CONV_FROM(performance_style, K_performance_style) }
 performance_style *PerformanceStyles::rvalue_to_performance_style(parse_node *spec) { CONV_TO(performance_style) }
 
@@ -79,6 +80,7 @@ void PerformanceStyles::write_constant_performance_style_ANNOT(text_stream *OUT,
 =
 typedef struct performance_style {
 	struct instance *as_instance; /* the constant for the name of the style */
+	struct wording stem_of_name;
 	CLASS_DEFINITION
 } performance_style;
 
@@ -102,12 +104,40 @@ void PerformanceStyles::new(instance *I) {
 	performance_style *ps = CREATE(performance_style);
 	@<Connect the performance style structure to the instance@>;
 	@<Initialise the performance style structure@>;
+	wording N = Instances::get_name(I, FALSE);
+	if (<performance-style-name-convention>(N)) {
+		ps->stem_of_name = GET_RW(<performance-style-name-convention>, 1);
+		if ((<dialogue-line-clause>(ps->stem_of_name)) && (<<r>> != STYLE_DLC)) {
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, ps->stem_of_name);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AmbiguousPerformanceStyle));
+			Problems::issue_problem_segment(
+				"The sentence %1 creates a performance style which would have "
+				"to be used by marking a line as '(%2)', but that already has "
+				"a meaning as a line annotation, so this would be ambiguous. "
+				"Call it something else?");
+			Problems::issue_problem_end();
+		}
+	} else {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, N);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonspokenPerformanceStyle));
+		Problems::issue_problem_segment(
+			"The sentence %1 creates a performance style called '%2', "
+			"but all performance style names have to begin with 'spoken' "
+			"(for example, 'spoken quickly').");
+		Problems::issue_problem_end();
+	}
 }
 
-@ A performance style begins with two ends, 0 (beginning) and 1 (standard end).
+@ =
+<performance-style-name-convention> ::=
+	spoken ...
+
+@
 
 @<Initialise the performance style structure@> =
-	;
+	ps->stem_of_name = EMPTY_WORDING;
 
 @ This is a style name which Inform provides special support for; it recognises
 the English name, so there is no need to translate this to other languages.
@@ -149,9 +179,15 @@ performance_style *PerformanceStyles::parse_style(wording CW) {
 			}
 		}
 	}
+
+	performance_style *ps;
+	LOOP_OVER(ps, performance_style)
+		if (Wordings::match(CW, ps->stem_of_name))
+			return ps;
+
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, CW);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineInUnknownPerformanceStyle));
 	Problems::issue_problem_segment(
 		"The dialogue line %1 is apparently spoken in the style '%2', but that "
 		"doesn't seem to correspond to any style I know of.");

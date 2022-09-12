@@ -1,0 +1,10 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 35 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32205 words long.
+Problem__ PM_NonspokenPerformanceStyle
+  >--> The sentence 'Hastily is a performance style' (source text, line 5)
+    creates a performance style called 'Hastily', but all performance style
+    names have to begin with 'spoken' (for example, 'spoken quickly').
+Inform 7 has finished.

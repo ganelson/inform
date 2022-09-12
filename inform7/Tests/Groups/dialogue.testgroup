@@ -16,3 +16,8 @@ PM_DialogueOnSectionsOnly
 PM_NotAnAboutTopic
 PM_UnrecognisedAboutTopic
 PM_UnrecognisedBeatProperty
+PM_LineToUnknown
+PM_LineToNonObject
+PM_AmbiguousPerformanceStyle
+PM_NonspokenPerformanceStyle
+PM_LineInUnknownPerformanceStyle

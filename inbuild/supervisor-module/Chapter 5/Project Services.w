@@ -709,8 +709,10 @@ void Projects::construct_graph(inform_project *proj) {
 	if (proj->chosen_build_target == NULL) {
 		Projects::finalise_kit_dependencies(proj);
 		Copies::get_source_text(proj->as_copy);
-		if (proj->syntax_tree->contains_dialogue)
+		if (proj->syntax_tree->contains_dialogue) {
 			Projects::add_kit_dependency(proj, I"DialogueKit", NULL, NULL, NULL);
+			Projects::activate_elements(proj);
+		}
 		build_vertex *V = proj->as_copy->vertex;
 		@<Construct the graph upstream of V@>;
 		@<Construct the graph downstream of V@>;

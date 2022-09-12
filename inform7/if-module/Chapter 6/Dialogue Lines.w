@@ -163,7 +163,9 @@ of the following possibilities:
 @e TO_DLC
 @e WITHOUT_SPEAKING_DLC
 @e ENDING_DLC
-@e ENDING_IN_DLC
+@e ENDING_SAYING_DLC
+@e ENDING_FINALLY_DLC
+@e ENDING_FINALLY_SAYING_DLC
 @e STYLE_DLC
 
 @<Look for a line name@> =
@@ -188,34 +190,39 @@ of the following possibilities:
 
 =
 <dialogue-line-clause> ::=
-	this is the { ... line } |      ==> { LINE_NAME_DLC, - }
-	mentioning ... |                ==> { MENTIONING_DLC, - }
-	if ... |                        ==> { IF_DLC, - }
-	unless ... |                    ==> { UNLESS_DLC, - }
-	before ... |                    ==> { BEFORE_DLC, - }
-	after ... |                     ==> { AFTER_DLC, - }
-	to ... |                        ==> { TO_DLC, - }
-	now ... |                       ==> { NOW_DLC, - }
-	without speaking |              ==> { WITHOUT_SPEAKING_DLC, - }
-	ending the story |              ==> { ENDING_DLC, - }
-	ending the story in ... |       ==> { ENDING_IN_DLC, - }
-	...                             ==> { STYLE_DLC, - }
+	this is the { ... line } |                       ==> { LINE_NAME_DLC, - }
+	mentioning ... |                                 ==> { MENTIONING_DLC, - }
+	if ... |                                         ==> { IF_DLC, - }
+	unless ... |                                     ==> { UNLESS_DLC, - }
+	before ... |                                     ==> { BEFORE_DLC, - }
+	after ... |                                      ==> { AFTER_DLC, - }
+	to ... |                                         ==> { TO_DLC, - }
+	now ... |                                        ==> { NOW_DLC, - }
+	without speaking |                               ==> { WITHOUT_SPEAKING_DLC, - }
+	ending the story |                               ==> { ENDING_DLC, - }
+	ending the story finally |                       ==> { ENDING_FINALLY_DLC, - }
+	ending the story saying <quoted-text> |          ==> { ENDING_SAYING_DLC, - }
+	ending the story finally |                       ==> { ENDING_FINALLY_DLC, - }
+	ending the story finally saying <quoted-text> |  ==> { ENDING_FINALLY_SAYING_DLC, - }
+	...                                              ==> { STYLE_DLC, - }
 
 @ =
 void DialogueLines::write_dlc(OUTPUT_STREAM, int c) {
 	switch(c) {
-		case LINE_NAME_DLC:        WRITE("LINE_NAME"); break;
-		case IF_DLC:               WRITE("IF"); break;
-		case UNLESS_DLC:           WRITE("UNLESS"); break;
-		case BEFORE_DLC:           WRITE("BEFORE"); break;
-		case AFTER_DLC:            WRITE("AFTER"); break;
-		case NOW_DLC:              WRITE("NOW"); break;
-		case TO_DLC:               WRITE("TO"); break;
-		case WITHOUT_SPEAKING_DLC: WRITE("WITHOUT_SPEAKING"); break;
-		case ENDING_DLC:           WRITE("ENDING"); break;
-		case ENDING_IN_DLC:        WRITE("ENDING_IN"); break;
-		case STYLE_DLC:            WRITE("STYLE"); break;
-		default:                   WRITE("?"); break;
+		case LINE_NAME_DLC:             WRITE("LINE_NAME"); break;
+		case IF_DLC:                    WRITE("IF"); break;
+		case UNLESS_DLC:                WRITE("UNLESS"); break;
+		case BEFORE_DLC:                WRITE("BEFORE"); break;
+		case AFTER_DLC:                 WRITE("AFTER"); break;
+		case NOW_DLC:                   WRITE("NOW"); break;
+		case TO_DLC:                    WRITE("TO"); break;
+		case WITHOUT_SPEAKING_DLC:      WRITE("WITHOUT_SPEAKING"); break;
+		case ENDING_DLC:                WRITE("ENDING"); break;
+		case ENDING_SAYING_DLC:         WRITE("ENDING_SAYING"); break;
+		case ENDING_FINALLY_DLC:        WRITE("ENDING_FINALLY"); break;
+		case ENDING_FINALLY_SAYING_DLC: WRITE("ENDING_FINALLY_SAYING"); break;
+		case STYLE_DLC:                 WRITE("STYLE"); break;
+		default:                        WRITE("?"); break;
 	}
 }
 
@@ -295,25 +302,26 @@ void DialogueLines::decide_line_mentions(void) {
 instance *DialogueLines::parse_interlocutor(wording CW) {
 	if (<s-type-expression-uncached>(CW)) {
 		parse_node *desc = <<rp>>;
-		kind *K = Specifications::to_kind(desc);
-		if (Kinds::Behaviour::is_subkind_of_object(K)) {
-			LOG("To $T\n", desc);
-			return NULL;
-		} else {
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, CW);
-			Problems::quote_kind(3, K);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
-			Problems::issue_problem_segment(
-				"The dialogue line %1 is apparently spoken to '%2', but that "
-				"seems to describe %3, not an object.");
-			Problems::issue_problem_end();
-			return NULL;
+		instance *I = Rvalues::to_instance(desc);
+		if (I) {
+			kind *K = Instances::to_kind(I);
+			if (Kinds::Behaviour::is_object(K)) return I;
 		}
+		kind *K = Specifications::to_kind(desc);
+		LOG("Interlocutor parsed as $T\n", desc);
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, CW);
+		Problems::quote_kind(3, K);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineToNonObject));
+		Problems::issue_problem_segment(
+			"The dialogue line %1 is apparently spoken to '%2', but that "
+			"seems to describe %3, not an object.");
+		Problems::issue_problem_end();
+		return NULL;
 	} else {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, CW);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineToUnknown));
 		Problems::issue_problem_segment(
 			"The dialogue line %1 is apparently spoken to '%2', but that "
 			"isn't something I recognise as the name of a thing or person.");

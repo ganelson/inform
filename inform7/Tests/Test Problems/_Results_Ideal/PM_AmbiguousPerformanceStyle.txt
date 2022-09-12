@@ -1,0 +1,11 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 38 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32205 words long.
+Problem__ PM_AmbiguousPerformanceStyle
+  >--> The sentence 'Spoken after somebody else is a performance style' (source
+    text, line 5) creates a performance style which would have to be used by
+    marking a line as '(after somebody else)', but that already has a meaning
+    as a line annotation, so this would be ambiguous. Call it something else?
+Inform 7 has finished.
