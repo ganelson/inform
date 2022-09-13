@@ -1,0 +1,11 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 22 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32205 words long.
+Problem__ PM_LineSpeakerNonObject
+In Section 1 - Meeting:
+  >--> The dialogue line '75: "What am I doing here?"' (source text, line 7) is
+    apparently spoken by '75', but that seems to describe a number, not a
+    person or some other object.
+Inform 7 has finished.

@@ -39,8 +39,10 @@ int PerformanceStyles::new_named_instance_notify(instance *I) {
 }
 
 @ =
-parse_node *PerformanceStyles::rvalue_from_performance_style(performance_style *val) { CONV_FROM(performance_style, K_performance_style) }
-performance_style *PerformanceStyles::rvalue_to_performance_style(parse_node *spec) { CONV_TO(performance_style) }
+parse_node *PerformanceStyles::rvalue_from_performance_style(performance_style *val) {
+	CONV_FROM(performance_style, K_performance_style) }
+performance_style *PerformanceStyles::rvalue_to_performance_style(parse_node *spec) {
+	CONV_TO(performance_style) }
 
 int PerformanceStyles::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
 	kind *K = Node::get_kind_of_value(spec1);
@@ -75,7 +77,7 @@ void PerformanceStyles::write_constant_performance_style_ANNOT(text_stream *OUT,
 		WRITE(" {performance_style: %I}", Node::get_constant_performance_style(p)->as_instance);
 }
 
-@h Introduction.
+@ Internally, styles have the following additional data:
 
 =
 typedef struct performance_style {
@@ -84,10 +86,17 @@ typedef struct performance_style {
 	CLASS_DEFINITION
 } performance_style;
 
-performance_style *PS_spoken_normally = NULL;
-
 wording PerformanceStyles::get_name(performance_style *ps) {
 	return Instances::get_name(ps->as_instance, FALSE);
+}
+
+@ The default style, created by the Standard Rules, is here:
+
+=
+performance_style *PS_spoken_normally = NULL;
+
+performance_style *PerformanceStyles::default(void) {
+	return PS_spoken_normally;
 }
 
 @ A feature called |xyzzy| generally has a hunk of subject data called |xyzzy_data|,
@@ -110,7 +119,8 @@ void PerformanceStyles::new(instance *I) {
 		if ((<dialogue-line-clause>(ps->stem_of_name)) && (<<r>> != STYLE_DLC)) {
 			Problems::quote_source(1, current_sentence);
 			Problems::quote_wording(2, ps->stem_of_name);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_AmbiguousPerformanceStyle));
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_AmbiguousPerformanceStyle));
 			Problems::issue_problem_segment(
 				"The sentence %1 creates a performance style which would have "
 				"to be used by marking a line as '(%2)', but that already has "
@@ -121,7 +131,8 @@ void PerformanceStyles::new(instance *I) {
 	} else {
 		Problems::quote_source(1, current_sentence);
 		Problems::quote_wording(2, N);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NonspokenPerformanceStyle));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_NonspokenPerformanceStyle));
 		Problems::issue_problem_segment(
 			"The sentence %1 creates a performance style called '%2', "
 			"but all performance style names have to begin with 'spoken' "
@@ -164,9 +175,14 @@ performance_style *PerformanceStyles::from_named_constant(instance *I) {
 	return NULL;
 }
 
-performance_style *PerformanceStyles::default(void) {
-	return PS_spoken_normally;
-}
+@ We parse the name of a style first by the regular excerpt parser, which
+would pick up something like "spoken normally", and then by hand if that
+fails, looking for the abbreviated form "normally". Speed isn't very important
+here, since the only context in which the word "spoken" can be omitted is in
+the bracketed clauses of a line, so the total number of calls to this function
+will never be more than the number of dialogue lines in the story.
+
+=
 performance_style *PerformanceStyles::parse_style(wording CW) {
 	if (<s-type-expression-uncached>(CW)) {
 		parse_node *desc = <<rp>>;
@@ -187,7 +203,8 @@ performance_style *PerformanceStyles::parse_style(wording CW) {
 
 	Problems::quote_source(1, current_sentence);
 	Problems::quote_wording(2, CW);
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineInUnknownPerformanceStyle));
+	StandardProblems::handmade_problem(Task::syntax_tree(),
+		_p_(PM_LineInUnknownPerformanceStyle));
 	Problems::issue_problem_segment(
 		"The dialogue line %1 is apparently spoken in the style '%2', but that "
 		"doesn't seem to correspond to any style I know of.");

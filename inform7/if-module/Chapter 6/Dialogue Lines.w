@@ -100,6 +100,7 @@ typedef struct dialogue_line {
 	int without_speaking;
 	struct wording speaker_text;
 	struct wording speech_text;
+	struct parse_node *speaker_description;
 	struct linked_list *mentioning; /* of |parse_node| */
 	struct performance_style *how_performed;
 	struct instance *interlocutor;
@@ -115,6 +116,8 @@ typedef struct dialogue_line {
 	dl->line_name = EMPTY_WORDING;
 	dl->line_at = PN;
 	dl->narration = FALSE;
+	dl->speaker_text = EMPTY_WORDING;
+	dl->speaker_description = NULL;
 	dl->without_speaking = FALSE;
 	dl->owning_beat = current_dialogue_beat;
 	dl->parent_line = NULL;
@@ -122,7 +125,6 @@ typedef struct dialogue_line {
 	dl->child_line = NULL;
 	dl->next_line = NULL;
 	dl->compilation_data = RTDialogue::new_line(PN, dl);
-	dl->speaker_text = EMPTY_WORDING;
 	dl->speech_text = EMPTY_WORDING;
 	dl->mentioning = NEW_LINKED_LIST(parse_node);
 	dl->how_performed = PerformanceStyles::default();
@@ -258,7 +260,10 @@ given in its clauses if one was.
 
 @h Processing lines after pass 1.
 It's now a little later, and the following is called to look at each line and
-parse its clauses further.
+parse its clauses further. By this point, all instances have been created,
+and we can therefore parse the speaker name, "mentioning ..." clauses, "to ..."
+clauses, and so on. Instances of the "performance style" kind exist now, too,
+so we can also deal with style clauses.
 
 =
 void DialogueLines::decide_line_mentions(void) {
@@ -296,9 +301,42 @@ void DialogueLines::decide_line_mentions(void) {
 				}
 			}
 		}
+		if (dl->narration == FALSE) @<Parse the speaker description@>;
 	}
 }
 
+@<Parse the speaker description@> =
+	wording S = dl->speaker_text;
+	if (<s-type-expression-uncached>(S)) {
+		parse_node *desc = <<rp>>;
+		kind *K = Specifications::to_kind(desc);
+		if (Kinds::Behaviour::is_object(K)) {
+			dl->speaker_description = desc;
+		} else {
+			LOG("Speaker parsed as $T\n", desc);
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, S);
+			Problems::quote_kind(3, K);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineSpeakerNonObject));
+			Problems::issue_problem_segment(
+				"The dialogue line %1 is apparently spoken by '%2', but that "
+				"seems to describe %3, not a person or some other object.");
+			Problems::issue_problem_end();
+		}
+	} else {
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, S);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineSpeakerUnknown));
+		Problems::issue_problem_segment(
+			"The dialogue line %1 is apparently spoken by '%2', but that "
+			"isn't something I recognise as the name of a thing or person.");
+		Problems::issue_problem_end();
+	}
+
+@ Note that the interlocutor -- the person addressed "to", if any -- must be
+specified exactly, and not simply given a generic description like "somebody".
+
+=
 instance *DialogueLines::parse_interlocutor(wording CW) {
 	if (<s-type-expression-uncached>(CW)) {
 		parse_node *desc = <<rp>>;
@@ -329,3 +367,7 @@ instance *DialogueLines::parse_interlocutor(wording CW) {
 		return NULL;
 	}
 }
+
+@ So what remains to be done? The unparsed clauses remaining are |IF| and |UNLESS|,
+|BEFORE| and |AFTER|, |NOW|, and the various story-ending clauses: but all of those
+are essentially code rather than data, and we will parse those in //runtime: Dialogue//.

@@ -5,6 +5,9 @@ A nascent system for managing conversation.
 @ This feature, |dialogue|, is technically not part of |if|, but it clearly
 belongs in this module.
 
+Note that a child feature called |performance styles| -- see //Performance Styles// --
+handles that kind, so it won't be dealt with in the code for this feature.
+
 =
 void Dialogue::start(void) {
 	Dialogue::declare_annotations();
@@ -30,14 +33,22 @@ int Dialogue::new_base_kind_notify(kind *new_base, text_stream *name, wording W)
 	return FALSE;
 }
 
-@
+@ The rest of this section is to some extent boiler-plate code: it provides for
+specific beats and lines to be represented as rvalues, both inside the compiler
+(and when typechecking) and at runtime.
 
 =
-parse_node *Dialogue::rvalue_from_dialogue_beat(dialogue_beat *val) { CONV_FROM(dialogue_beat, K_dialogue_beat) }
+parse_node *Dialogue::rvalue_from_dialogue_beat(dialogue_beat *val) {
+	CONV_FROM(dialogue_beat, K_dialogue_beat) }
 dialogue_beat *Dialogue::rvalue_to_dialogue_beat(parse_node *spec) { CONV_TO(dialogue_beat) }
-parse_node *Dialogue::rvalue_from_dialogue_line(dialogue_line *val) { CONV_FROM(dialogue_line, K_dialogue_line) }
+parse_node *Dialogue::rvalue_from_dialogue_line(dialogue_line *val) {
+	CONV_FROM(dialogue_line, K_dialogue_line) }
 dialogue_line *Dialogue::rvalue_to_dialogue_line(parse_node *spec) { CONV_TO(dialogue_line) }
 
+@ These can be compared at compile time, which means that type-checking can be
+used to select phrases or rules depending on specific beats or lines.
+
+=
 int Dialogue::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
 	kind *K = Node::get_kind_of_value(spec1);
 	if (Kinds::eq(K, K_dialogue_beat)) {
@@ -59,7 +70,7 @@ int Dialogue::compare_CONSTANT(parse_node *spec1, parse_node *spec2, int *rv) {
 	return FALSE;
 }
 
-@ This feature needs one extra syntax tree annotation:
+@ The following syntax tree annotations are used for the constant rvalues:
 
 @e constant_dialogue_beat_ANNOT /* |dialogue_beat|: for constant values */
 @e constant_dialogue_line_ANNOT /* |dialogue_line|: for constant values */

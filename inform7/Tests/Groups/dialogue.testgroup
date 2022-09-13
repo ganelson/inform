@@ -21,3 +21,5 @@ PM_LineToNonObject
 PM_AmbiguousPerformanceStyle
 PM_NonspokenPerformanceStyle
 PM_LineInUnknownPerformanceStyle
+PM_LineSpeakerNonObject
+PM_LineSpeakerUnknown
