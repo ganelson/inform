@@ -139,6 +139,9 @@ organisation, and are not directly functional in themselves.
 		case DIALOGUE_CUE_NT: 
 			if (global_pass_state.pass == 0) DialogueBeats::new(p);
 			break;
+		case DIALOGUE_CHOICE_NT: 
+			if (global_pass_state.pass == 0) DialogueChoices::new(p);
+			break;
 		case DIALOGUE_LINE_NT:
 			if (global_pass_state.pass == 0) DialogueLines::new(p);
 			break;

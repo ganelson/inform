@@ -26,7 +26,7 @@ void DialogueBeats::note_heading(heading *h) {
 	else dialogue_section_being_scanned = NULL;
 	previous_dialogue_beat = NULL;
 	current_dialogue_beat = NULL;
-	DialogueLines::clear_precursors();
+	DialogueNodes::clear_precursors(0);
 }
 
 @h Beats.
@@ -52,7 +52,7 @@ dialogue_beat *DialogueBeats::new(parse_node *PN) {
 
 	previous_dialogue_beat = current_dialogue_beat;
 	current_dialogue_beat = db;
-	DialogueLines::clear_precursors();
+	DialogueNodes::clear_precursors(0);
 
 	@<Parse the clauses just enough to classify them@>;
 	@<Look through the clauses for a name@>;
@@ -89,7 +89,7 @@ typedef struct dialogue_beat {
 	struct linked_list *some_time_before; /* of |parse_node| */
 	struct linked_list *about_list; /* of |parse_node| */
 
-	struct dialogue_line *opening_line;
+	struct dialogue_node *root;
 	struct dialogue_beat_compilation_data compilation_data;
 	CLASS_DEFINITION
 } dialogue_beat;
@@ -105,7 +105,7 @@ typedef struct dialogue_beat {
 	db->some_time_after = NEW_LINKED_LIST(parse_node);
 	db->some_time_before = NEW_LINKED_LIST(parse_node);
 	db->about_list = NEW_LINKED_LIST(parse_node);
-	db->opening_line = NULL;
+	db->root = NULL;
 	db->compilation_data = RTDialogue::new_beat(PN, db);
 
 @ Each clause can be one of about 10 possibilities, as follows, and the

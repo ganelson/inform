@@ -284,6 +284,7 @@ void CoreSyntax::grant_unit_permissions(void) {
 @e classified_ANNOT /* |int|: this sentence has been classified */
 @e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
 @e dialogue_beat_clause_ANNOT /* |int|: for clauses of dialogue cues introducing beats */
+@e dialogue_choice_clause_ANNOT /* |int|: for clauses of dialogue choice points */
 @e dialogue_line_clause_ANNOT /* |int|: for clauses of dialogue lines */
 @e impdef_ANNOT /* |imperative_defn|: for blocks of imperative code */
 @e implicit_in_creation_of_ANNOT /* |inference_subject|: for assemblies */
@@ -312,6 +313,8 @@ void CoreSyntax::declare_L2_annotations(void) {
 		dialogue_beat_clause_ANNOT, CoreSyntax::write_dialogue_beat_clause_ANNOT);
 	Annotations::declare_type(
 		dialogue_line_clause_ANNOT, CoreSyntax::write_dialogue_line_clause_ANNOT);
+	Annotations::declare_type(
+		dialogue_choice_clause_ANNOT, CoreSyntax::write_dialogue_choice_clause_ANNOT);
 	Annotations::declare_type(
 		impdef_ANNOT, CoreSyntax::write_impdef_ANNOT);
 	Annotations::declare_type(
@@ -344,6 +347,13 @@ void CoreSyntax::write_dialogue_line_clause_ANNOT(text_stream *OUT, parse_node *
 	if (Annotations::read_int(p, dialogue_line_clause_ANNOT) > 0) {
 		WRITE(" {line clause: ");
 		DialogueLines::write_dlc(OUT, Annotations::read_int(p, dialogue_line_clause_ANNOT));
+		WRITE("}");
+	}
+}
+void CoreSyntax::write_dialogue_choice_clause_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Annotations::read_int(p, dialogue_choice_clause_ANNOT) > 0) {
+		WRITE(" {choice clause: ");
+		DialogueChoices::write_dcc(OUT, Annotations::read_int(p, dialogue_choice_clause_ANNOT));
 		WRITE("}");
 	}
 }
@@ -384,6 +394,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 	Annotations::allow(SENTENCE_NT, classified_ANNOT);
 	Annotations::allow(DIALOGUE_CLAUSE_NT, dialogue_beat_clause_ANNOT);
 	Annotations::allow(DIALOGUE_CLAUSE_NT, dialogue_line_clause_ANNOT);
+	Annotations::allow(DIALOGUE_CLAUSE_NT, dialogue_choice_clause_ANNOT);
 }
 
 @h Annotations of Level 3 nodes.

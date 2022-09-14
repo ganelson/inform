@@ -270,6 +270,7 @@ void Annotations::make_annotation_allowed_table(void) {
 	Annotations::allow(HEADING_NT, implied_heading_ANNOT);
 	Annotations::allow(SENTENCE_NT, language_element_ANNOT);
 	Annotations::allow(DIALOGUE_CUE_NT, dialogue_level_ANNOT);
+	Annotations::allow(DIALOGUE_CHOICE_NT, dialogue_level_ANNOT);
 	Annotations::allow(DIALOGUE_LINE_NT, dialogue_level_ANNOT);
 	#ifdef ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK
 	ANNOTATION_PERMISSIONS_SYNTAX_CALLBACK();

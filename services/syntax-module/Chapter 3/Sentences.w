@@ -710,6 +710,8 @@ order to catch improbable unmatched-bracket errors with tidy error messages.
 	if ((Lexer::word(Wordings::first_wn(W)) == OPENBRACKET_V) &&
 		(Lexer::word(Wordings::last_wn(W)) == CLOSEBRACKET_V))
 		@<This is a dialogue cue@>;
+	if (Lexer::word(Wordings::first_wn(W)) == DOUBLEDASH_V)
+		@<This is a dialogue choice@>;
 	@<Otherwise this has to be a dialogue line@>;
 
 @ Here we are trying to match |(Cue notes.)|.
@@ -722,6 +724,36 @@ order to catch improbable unmatched-bracket errors with tidy error messages.
 		Lexer::indentation_level(Wordings::first_wn(W)));
 	SyntaxTree::graft_sentence(T, new);
 	Sentences::add_dialogue_clauses(CW, T, new);
+	return;
+
+@<This is a dialogue choice@> =
+	int clauses_from = Wordings::first_wn(W) + 1, clauses_to = clauses_from - 1;
+	int speech_from = clauses_from, speech_to = Wordings::last_wn(W);
+	if (Lexer::word(speech_from) == OPENBRACKET_V) {
+		for (int bl = 0, i=Wordings::first_wn(W); i<=Wordings::last_wn(W); i++) {
+			if (Lexer::word(i) == OPENBRACKET_V) bl++;
+			if (Lexer::word(i) == CLOSEBRACKET_V) {
+				bl--;
+				if (bl == 0) { clauses_to = i; speech_from = i+1; break; }
+			}
+		}
+	}
+
+	wording CW = Wordings::new(clauses_from+1, clauses_to-1);
+	wording TW = Wordings::new(speech_from, speech_to);
+
+	new = Node::new(DIALOGUE_CHOICE_NT);
+	Node::set_text(new, W);
+	Annotations::write_int(new, dialogue_level_ANNOT,
+		Lexer::indentation_level(Wordings::first_wn(W)));
+	SyntaxTree::graft_sentence(T, new);
+	if (Wordings::nonempty(TW)) {
+		parse_node *selection = Node::new(DIALOGUE_SELECTION_NT);
+		Node::set_text(selection, TW);
+		SyntaxTree::graft(T, selection, new);
+	}
+	if (Wordings::nonempty(CW))
+		Sentences::add_dialogue_clauses(CW, T, new);
 	return;
 
 @ Here we are trying to match |Speaker (notes): "Speech."|.

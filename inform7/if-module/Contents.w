@@ -70,4 +70,6 @@ Chapter 6: Dialogue
 	Dialogue
 	Dialogue Beats
 	Dialogue Lines
+	Dialogue Choices
+	Dialogue Nodes
 	Performance Styles

@@ -1,4 +1,4 @@
-Read 79 words
+Read 111 words
 ROOT_NT
     HEADING_NT'elsinore is a room' {heading 0}
         SENTENCE_NT'elsinore is a room'
@@ -14,9 +14,19 @@ ROOT_NT
                 DIALOGUE_SPEAKER_NT'bernardo'
                 DIALOGUE_SPEECH_NT'"I have seen naught but [list of things in the Battlements].'
                 DIALOGUE_CLAUSE_NT'after looking'
+            DIALOGUE_CHOICE_NT'--' {level 0}
+            DIALOGUE_CHOICE_NT'-- ( one thing ; another thing )' {level 0}
+                DIALOGUE_CLAUSE_NT'one thing'
+                DIALOGUE_CLAUSE_NT'another thing'
+            DIALOGUE_CHOICE_NT'-- "Try this!"' {level 0}
+                DIALOGUE_SELECTION_NT'"Try this!"'
+            DIALOGUE_CHOICE_NT'-- instead of examining something' {level 0}
+                DIALOGUE_SELECTION_NT'instead of examining something'
+            DIALOGUE_CHOICE_NT'-- ( frank ) "Try something else!"' {level 0}
+                DIALOGUE_SELECTION_NT'"Try something else!"'
+                DIALOGUE_CLAUSE_NT'frank'
             DIALOGUE_CUE_NT'( about horatio , about battlements . ( about fantasy ) . ( ' {level 0}
-                DIALOGUE_CLAUSE_NT'about horatio'
-                DIALOGUE_CLAUSE_NT'about battlements'
+                DIALOGUE_CLAUSE_NT'about horatio , about battlements'
                 DIALOGUE_CLAUSE_NT'about fantasy'
                 DIALOGUE_CLAUSE_NT'about gravedigging'
             DIALOGUE_LINE_NT'marcellus : "Horatio says 'tis but our fantasy."' {level 0}
@@ -25,6 +35,10 @@ ROOT_NT
             DIALOGUE_LINE_NT'hamlet : "I'm here too!"' {level 1}
                 DIALOGUE_SPEAKER_NT'hamlet'
                 DIALOGUE_SPEECH_NT'"I'm here too!"'
+            DIALOGUE_CHOICE_NT'-- "Me too!"' {level 1}
+                DIALOGUE_SELECTION_NT'"Me too!"'
+            DIALOGUE_CHOICE_NT'-- "Not me."' {level 1}
+                DIALOGUE_SELECTION_NT'"Not me."'
             DIALOGUE_LINE_NT'horatio : "So you are."' {level 1}
                 DIALOGUE_SPEAKER_NT'horatio'
                 DIALOGUE_SPEECH_NT'"So you are."'

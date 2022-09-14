@@ -10,11 +10,25 @@ Marcellus: "What, has this thing appear'd again to-night?"
 
 Bernardo (after looking): "I have seen naught but [list of things in the Battlements]."
 
+--
+
+-- (one thing; another thing)
+
+-- "Try this!"
+
+-- instead of examining something
+
+-- (frank) "Try something else!"
+
 (About Horatio, about battlements. (About fantasy). (About gravedigging.))
 
 Marcellus: "Horatio says 'tis but our fantasy."
 
 	Hamlet: "I'm here too!"
+	
+	-- "Me too!"
+
+	-- "Not me."
 	
 	Horatio: "So you are."
 	

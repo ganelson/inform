@@ -60,17 +60,15 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">if</a></li><li><a href="index.html#6">Chapter 6: Dialogue</a></li><li><b>Performance Styles</b></li></ul></div>
 <p class="purpose">Manners of speaking, used in dialogue.</p>
 
-<ul class="toc"><li><a href="6-ps.html#SP7">&#167;7. Introduction</a></li></ul><hr class="tocbar">
-
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1.  </b>This feature, <span class="extract"><span class="extract-syntax">performance styles</span></span>, is technically part of <span class="extract"><span class="extract-syntax">dialogue</span></span>, not part of <span class="extract"><span class="extract-syntax">if</span></span>.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::start</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::start</span></span>:<br/>IF Module - <a href="1-im.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="6-ps.html#SP6" class="function-link"><span class="function-syntax">PerformanceStyles::declare_annotations</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="6-ps.html#SP7" class="function-link"><span class="function-syntax">PerformanceStyles::declare_annotations</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_INSTANCE_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="6-ps.html#SP4" class="function-link"><span class="function-syntax">PerformanceStyles::new_named_instance_notify</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_BASE_KIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="6-ps.html#SP3" class="function-link"><span class="function-syntax">PerformanceStyles::new_base_kind_notify</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPARE_CONSTANT_PLUG</span><span class="plain-syntax">, </span><a href="6-ps.html#SP4" class="function-link"><span class="function-syntax">PerformanceStyles::compare_CONSTANT</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPARE_CONSTANT_PLUG</span><span class="plain-syntax">, </span><a href="6-ps.html#SP5" class="function-link"><span class="function-syntax">PerformanceStyles::compare_CONSTANT</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>Performance styles are the instances of a built-in enumeration kind, created by a
@@ -96,20 +94,25 @@ identifier <span class="extract"><span class="extract-syntax">PERFORMANCE_STYLE_
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::new_named_instance_notify</span><button class="popup" onclick="togglePopup('usagePopup3')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup3">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::new_named_instance_notify</span></span>:<br/><a href="6-ps.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">K_scene</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">), </span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax">))) {</span>
-<span class="plain-syntax">        </span><a href="6-ps.html#SP9" class="function-link"><span class="function-syntax">PerformanceStyles::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="6-ps.html#SP11" class="function-link"><span class="function-syntax">PerformanceStyles::new</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b></p>
 
-<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::rvalue_from_performance_style</span><span class="plain-syntax">(</span><span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">) { </span><span class="identifier-syntax">CONV_FROM</span><span class="plain-syntax">(</span><span class="reserved-syntax">performance_style</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax">) }</span>
-<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::rvalue_to_performance_style</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) { </span><span class="identifier-syntax">CONV_TO</span><span class="plain-syntax">(</span><span class="reserved-syntax">performance_style</span><span class="plain-syntax">) }</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::rvalue_from_performance_style</span><span class="plain-syntax">(</span><span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">val</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CONV_FROM</span><span class="plain-syntax">(</span><span class="reserved-syntax">performance_style</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax">) }</span>
+<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::rvalue_to_performance_style</span><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CONV_TO</span><span class="plain-syntax">(</span><span class="reserved-syntax">performance_style</span><span class="plain-syntax">) }</span>
 
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::compare_CONSTANT</span><button class="popup" onclick="togglePopup('usagePopup4')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup4">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::compare_CONSTANT</span></span>:<br/><a href="6-ps.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec1</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spec2</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rv</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_kind_of_value</span><span class="plain-syntax">(</span><span class="identifier-syntax">spec1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax">)) {</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="6-ps.html#SP4" class="function-link"><span class="function-syntax">PerformanceStyles::rvalue_to_performance_style</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec1</span><span class="plain-syntax">) ==</span>
-<span class="plain-syntax">            </span><a href="6-ps.html#SP4" class="function-link"><span class="function-syntax">PerformanceStyles::rvalue_to_performance_style</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec2</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="6-ps.html#SP5" class="function-link"><span class="function-syntax">PerformanceStyles::rvalue_to_performance_style</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec1</span><span class="plain-syntax">) ==</span>
+<span class="plain-syntax">            </span><a href="6-ps.html#SP5" class="function-link"><span class="function-syntax">PerformanceStyles::rvalue_to_performance_style</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">spec2</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            *</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">        *</span><span class="identifier-syntax">rv</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
@@ -118,7 +121,7 @@ identifier <span class="extract"><span class="extract-syntax">PERFORMANCE_STYLE_
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP5" class="paragraph-anchor"></a><b>&#167;5.  </b>This feature needs one extra syntax tree annotation:
+<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b>This feature needs one extra syntax tree annotation:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">constant_performance_style_ANNOT</span><span class="plain-syntax"> </span><span class="comment-syntax"> </span><span class="extract"><span class="extract-syntax">performance_style</span></span><span class="comment-syntax">: for constant values</span>
@@ -126,14 +129,14 @@ identifier <span class="extract"><span class="extract-syntax">PERFORMANCE_STYLE_
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">constant_performance_style</span><span class="plain-syntax">, </span><span class="reserved-syntax">performance_style</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP6" class="paragraph-anchor"></a><b>&#167;6.  </b></p>
+<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7.  </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">constant_performance_style</span><span class="plain-syntax">, </span><span class="reserved-syntax">performance_style</span><span class="plain-syntax">)</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::declare_annotations</span><button class="popup" onclick="togglePopup('usagePopup5')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup5">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::declare_annotations</span></span>:<br/><a href="6-ps.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::declare_type</span><span class="plain-syntax">(</span><span class="constant-syntax">constant_performance_style_ANNOT</span><span class="plain-syntax">,</span>
-<span class="plain-syntax">        </span><a href="6-ps.html#SP6" class="function-link"><span class="function-syntax">PerformanceStyles::write_constant_performance_style_ANNOT</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="6-ps.html#SP7" class="function-link"><span class="function-syntax">PerformanceStyles::write_constant_performance_style_ANNOT</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Annotations::allow</span><span class="plain-syntax">(</span><span class="identifier-syntax">CONSTANT_NT</span><span class="plain-syntax">, </span><span class="constant-syntax">constant_performance_style_ANNOT</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::write_constant_performance_style_ANNOT</span><span class="plain-syntax">(</span><span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">OUT</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">) {</span>
@@ -141,50 +144,90 @@ identifier <span class="extract"><span class="extract-syntax">PERFORMANCE_STYLE_
 <span class="plain-syntax">        </span><span class="identifier-syntax">WRITE</span><span class="plain-syntax">(</span><span class="string-syntax">" {performance_style: %I}"</span><span class="plain-syntax">, </span><span class="identifier-syntax">Node::get_constant_performance_style</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">)-&gt;</span><span class="element-syntax">as_instance</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP7" class="paragraph-anchor"></a><b>&#167;7. Introduction. </b></p>
+<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>Internally, styles have the following additional data:
+</p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">performance_style</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_instance</span><span class="plain-syntax">; </span><span class="comment-syntax"> the constant for the name of the style</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">stem_of_name</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">CLASS_DEFINITION</span>
 <span class="plain-syntax">} </span><span class="reserved-syntax">performance_style</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">PS_spoken_normally</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::get_name</span><span class="plain-syntax">(</span><span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ps</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">ps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_instance</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure performance_style is accessed in 3/scn, 6/dlg, 6/db, 6/dl and here.</li></ul>
-<p class="commentary firstcommentary"><a id="SP8" class="paragraph-anchor"></a><b>&#167;8.  </b>A feature called <span class="extract"><span class="extract-syntax">xyzzy</span></span> generally has a hunk of subject data called <span class="extract"><span class="extract-syntax">xyzzy_data</span></span>,
+<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The default style, created by the Standard Rules, is here:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">PS_spoken_normally</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::default</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::default</span></span>:<br/>Dialogue Lines - <a href="6-dl.html#SP1_2">&#167;1.2</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">PS_spoken_normally</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>A feature called <span class="extract"><span class="extract-syntax">xyzzy</span></span> generally has a hunk of subject data called <span class="extract"><span class="extract-syntax">xyzzy_data</span></span>,
 so we would normally have a structure called <span class="extract"><span class="extract-syntax">performance_styles_data</span></span>, but in fact that
-structure is just going to be <a href="6-ps.html#SP7" class="internal">performance_style</a>. So:
+structure is just going to be <a href="6-ps.html#SP8" class="internal">performance_style</a>. So:
 </p>
 
 <pre class="definitions code-font"><span class="definition-keyword">define</span> <span class="constant-syntax">performance_styles_data</span><span class="plain-syntax"> </span><span class="reserved-syntax">performance_style</span>
 <span class="definition-keyword">define</span> <span class="identifier-syntax">PERFORMANCE_STYLES_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">subj</span><span class="plain-syntax">) </span><span class="identifier-syntax">FEATURE_DATA_ON_SUBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">performance_styles</span><span class="plain-syntax">, </span><span class="identifier-syntax">subj</span><span class="plain-syntax">)</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9" class="paragraph-anchor"></a><b>&#167;9.  </b>The following is called whenever a new instance of "performance style" is created:
+<p class="commentary firstcommentary"><a id="SP11" class="paragraph-anchor"></a><b>&#167;11.  </b>The following is called whenever a new instance of "performance style" is created:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::new</span><button class="popup" onclick="togglePopup('usagePopup6')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup6">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::new</span></span>:<br/><a href="6-ps.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">PerformanceStyles::new</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::new</span></span>:<br/><a href="6-ps.html#SP4">&#167;4</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ps</span><span class="plain-syntax"> = </span><span class="identifier-syntax">CREATE</span><span class="plain-syntax">(</span><span class="reserved-syntax">performance_style</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-ps.html#SP9_3" class="named-paragraph-link"><span class="named-paragraph">Connect the performance style structure to the instance</span><span class="named-paragraph-number">9.3</span></a></span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-ps.html#SP9_1" class="named-paragraph-link"><span class="named-paragraph">Initialise the performance style structure</span><span class="named-paragraph-number">9.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-ps.html#SP11_4" class="named-paragraph-link"><span class="named-paragraph">Connect the performance style structure to the instance</span><span class="named-paragraph-number">11.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="6-ps.html#SP11_2" class="named-paragraph-link"><span class="named-paragraph">Initialise the performance style structure</span><span class="named-paragraph-number">11.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;performance-style-name-convention&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">ps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stem_of_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">GET_RW</span><span class="plain-syntax">(</span><span class="function-syntax">&lt;performance-style-name-convention&gt;</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="function-syntax">&lt;dialogue-line-clause&gt;(ps-&gt;</span><span class="element-syntax">stem_of_name</span><span class="plain-syntax">)) &amp;&amp; (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax"> != </span><span class="constant-syntax">STYLE_DLC</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">ps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stem_of_name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_AmbiguousPerformanceStyle</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"The sentence %1 creates a performance style which would have "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"to be used by marking a line as '(%2)', but that already has "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"a meaning as a line annotation, so this would be ambiguous. "</span>
+<span class="plain-syntax">                </span><span class="string-syntax">"Call it something else?"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">N</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_NonspokenPerformanceStyle</span><span class="plain-syntax">));</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"The sentence %1 creates a performance style called '%2', "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"but all performance style names have to begin with 'spoken' "</span>
+<span class="plain-syntax">            </span><span class="string-syntax">"(for example, 'spoken quickly')."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
+<span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP9_1" class="paragraph-anchor"></a><b>&#167;9.1.  </b>A performance style begins with two ends, 0 (beginning) and 1 (standard end).
-</p>
+<p class="commentary firstcommentary"><a id="SP11_1" class="paragraph-anchor"></a><b>&#167;11.1.  </b></p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the performance style structure</span><span class="named-paragraph-number">9.1</span></span><span class="comment-syntax"> =</span>
+<pre class="Preform-displayed-code all-displayed-code code-font">
+<span class="Preform-function-syntax">&lt;performance-style-name-convention&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">spoken</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span>
+</pre>
+<ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_2" class="paragraph-anchor"></a><b>&#167;11.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Initialise the performance style structure</span><span class="named-paragraph-number">11.2</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    ;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">ps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stem_of_name</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="6-ps.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_2" class="paragraph-anchor"></a><b>&#167;9.2.  </b>This is a style name which Inform provides special support for; it recognises
+<ul class="endnotetexts"><li>This code is used in <a href="6-ps.html#SP11">&#167;11</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP11_3" class="paragraph-anchor"></a><b>&#167;11.3.  </b>This is a style name which Inform provides special support for; it recognises
 the English name, so there is no need to translate this to other languages.
 </p>
 
@@ -193,7 +236,7 @@ the English name, so there is no need to translate this to other languages.
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">spoken</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">normally</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP9_3" class="paragraph-anchor"></a><b>&#167;9.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Connect the performance style structure to the instance</span><span class="named-paragraph-number">9.3</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP11_4" class="paragraph-anchor"></a><b>&#167;11.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Connect the performance style structure to the instance</span><span class="named-paragraph-number">11.4</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -202,38 +245,51 @@ the English name, so there is no need to translate this to other languages.
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-performance-styles&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">)) </span><span class="identifier-syntax">PS_spoken_normally</span><span class="plain-syntax"> = </span><span class="identifier-syntax">ps</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="6-ps.html#SP9">&#167;9</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP10" class="paragraph-anchor"></a><b>&#167;10.  </b>So we sometimes want to be able to get from an instance to its performance style
+<ul class="endnotetexts"><li>This code is used in <a href="6-ps.html#SP11">&#167;11</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>So we sometimes want to be able to get from an instance to its performance style
 structure.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::from_named_constant</span><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::from_named_constant</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::from_named_constant</span></span>:<br/><a href="6-ps.html#SP13">&#167;13</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FEATURE_DATA_ON_SUBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">performance_styles</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">as_subject</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13.  </b>We parse the name of a style first by the regular excerpt parser, which
+would pick up something like "spoken normally", and then by hand if that
+fails, looking for the abbreviated form "normally". Speed isn't very important
+here, since the only context in which the word "spoken" can be omitted is in
+the bracketed clauses of a line, so the total number of calls to this function
+will never be more than the number of dialogue lines in the story.
+</p>
 
-<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::default</span><button class="popup" onclick="togglePopup('usagePopup7')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup7">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::default</span></span>:<br/>Dialogue Lines - <a href="6-dl.html#SP2_4">&#167;2.4</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">PS_spoken_normally</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">}</span>
-<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::parse_style</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::parse_style</span></span>:<br/>Dialogue Lines - <a href="6-dl.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CW</span><span class="plain-syntax">) {</span>
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="function-syntax">PerformanceStyles::parse_style</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">PerformanceStyles::parse_style</span></span>:<br/>Dialogue Lines - <a href="6-dl.html#SP2">&#167;2</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">CW</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;s-type-expression-uncached&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">CW</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">desc</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Specifications::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">desc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_performance_style</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rvalues::to_instance</span><span class="plain-syntax">(</span><span class="identifier-syntax">desc</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">                </span><span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ps</span><span class="plain-syntax"> = </span><a href="6-ps.html#SP10" class="function-link"><span class="function-syntax">PerformanceStyles::from_named_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">                </span><span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ps</span><span class="plain-syntax"> = </span><a href="6-ps.html#SP12" class="function-link"><span class="function-syntax">PerformanceStyles::from_named_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">                </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">ps</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ps</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
+
+<span class="plain-syntax">    </span><span class="reserved-syntax">performance_style</span><span class="plain-syntax"> *</span><span class="identifier-syntax">ps</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">LOOP_OVER</span><span class="plain-syntax">(</span><span class="identifier-syntax">ps</span><span class="plain-syntax">, </span><span class="reserved-syntax">performance_style</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::match</span><span class="plain-syntax">(</span><span class="identifier-syntax">CW</span><span class="plain-syntax">, </span><span class="identifier-syntax">ps</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">stem_of_name</span><span class="plain-syntax">))</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">ps</span><span class="plain-syntax">;</span>
+
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">CW</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(...));</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_LineInUnknownPerformanceStyle</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"The dialogue line %1 is apparently spoken in the style '%2', but that "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"doesn't seem to correspond to any style I know of."</span><span class="plain-syntax">);</span>
@@ -242,7 +298,7 @@ structure.
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="6-dl.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-bd.html">2</a></li><li class="progresschapter"><a href="3-sm.html">3</a></li><li class="progresschapter"><a href="4-ap.html">4</a></li><li class="progresschapter"><a href="5-pp.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresssection"><a href="6-dlg.html">dlg</a></li><li class="progresssection"><a href="6-db.html">db</a></li><li class="progresssection"><a href="6-dl.html">dl</a></li><li class="progresscurrent">ps</li><li class="progressnextoff">&#10095;</li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="6-dn.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-im.html">1</a></li><li class="progresschapter"><a href="2-bd.html">2</a></li><li class="progresschapter"><a href="3-sm.html">3</a></li><li class="progresschapter"><a href="4-ap.html">4</a></li><li class="progresschapter"><a href="5-pp.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresssection"><a href="6-dlg.html">dlg</a></li><li class="progresssection"><a href="6-db.html">db</a></li><li class="progresssection"><a href="6-dl.html">dl</a></li><li class="progresssection"><a href="6-dc.html">dc</a></li><li class="progresssection"><a href="6-dn.html">dn</a></li><li class="progresscurrent">ps</li><li class="progressnextoff">&#10095;</li></ul></div>
 </nav><!--End of weave-->
 
 		</main>

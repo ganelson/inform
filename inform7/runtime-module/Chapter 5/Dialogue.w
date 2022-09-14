@@ -31,6 +31,20 @@ dialogue_line_compilation_data RTDialogue::new_line(parse_node *PN, dialogue_lin
 	return dlcd;
 }
 
+@h Compilation data for dialogue choices.
+Each |dialogue_choice| object contains this data:
+
+=
+typedef struct dialogue_choice_compilation_data {
+	struct parse_node *where_created;
+} dialogue_choice_compilation_data;
+
+dialogue_choice_compilation_data RTDialogue::new_choice(parse_node *PN, dialogue_choice *dc) {
+	dialogue_choice_compilation_data dlcd;
+	dlcd.where_created = PN;
+	return dlcd;
+}
+
 @h Compilation of dialogue.
 
 =
@@ -54,7 +68,7 @@ void RTDialogue::beat_compilation_agent(compilation_subtask *ct) {
 	current_sentence = db->compilation_data.where_created;
 	LOG("Beat %d = %W name '%W' scene '%W'\n",
 		db->allocation_id, Node::get_text(current_sentence), db->beat_name, db->scene_name);
-	RTDialogue::log_r(db->opening_line);
+	RTDialogue::log_r(db->root);
 }
 
 void RTDialogue::line_compilation_agent(compilation_subtask *ct) {
@@ -63,16 +77,20 @@ void RTDialogue::line_compilation_agent(compilation_subtask *ct) {
 	LOG("Line %d = %W name '%W'\n", dl->allocation_id, Node::get_text(current_sentence), dl->line_name);
 }
 
-void RTDialogue::log_r(dialogue_line *dl) {
-	while (dl) {
-		LOG("Line %d = %W\n",
-			dl->allocation_id, Node::get_text(dl->compilation_data.where_created));
-		if (dl->child_line) {
-			if (dl->child_line->parent_line != dl) LOG("*** Broken parentage ***\n");
+void RTDialogue::log_r(dialogue_node *dn) {
+	while (dn) {
+		if (dn->if_line)
+			LOG("Line %d = %W\n",
+				dn->if_line->allocation_id, Node::get_text(dn->if_line->compilation_data.where_created));
+		if (dn->if_choice)
+			LOG("Choice %d = %W\n",
+				dn->if_choice->allocation_id, Node::get_text(dn->if_choice->compilation_data.where_created));
+		if (dn->child_node) {
+			if (dn->child_node->parent_node != dn) LOG("*** Broken parentage ***\n");
 			LOG_INDENT;
-			RTDialogue::log_r(dl->child_line);
+			RTDialogue::log_r(dn->child_node);
 			LOG_OUTDENT;
 		}
-		dl = dl->next_line;
+		dn = dn->next_node;
 	}
 }

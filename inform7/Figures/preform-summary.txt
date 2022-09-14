@@ -16,10 +16,10 @@
         (@1)<s-literal-truth-state>=1 
           (hits 78/1307) (matched: 'false') constraint CS = {15} extremes [1, 1]
         <s-literal-list>=1 
-          (hits 0/3275) constraint DS = {17} extremes [2, infinity)
+          (hits 0/3287) constraint DS = {17} extremes [2, infinity)
         (@1)unicode <s-unicode-character>=1 
           (hits 0/3387) constraint DS = {21} extremes [2, infinity)
         <s-literal-time>=1 
-          (hits 0/3846) constraint DW = {18, 19, 20} extremes [2, 5]
+          (hits 0/3868) constraint DW = {18, 19, 20} extremes [2, 5]
         <s-literal-unit-notation>=1 
           (hits 0/9846) constraint (none) extremes [1, infinity)
