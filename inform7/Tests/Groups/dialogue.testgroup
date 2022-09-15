@@ -23,3 +23,11 @@ PM_NonspokenPerformanceStyle
 PM_LineInUnknownPerformanceStyle
 PM_LineSpeakerNonObject
 PM_LineSpeakerUnknown
+PM_ChoiceBlankRedundant
+PM_ChoiceDividerDependent
+PM_ChoiceMarkupUnknown
+PM_ChoiceOtherwiseUnexpected
+PM_ChoicePerformsUnknown
+PM_ChoiceSelectionMissing
+PM_ChoiceSelectionUnknown
+PM_ChoicesMixed

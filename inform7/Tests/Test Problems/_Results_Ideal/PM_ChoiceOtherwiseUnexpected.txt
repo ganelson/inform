@@ -1,0 +1,14 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 24 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32205 words long.
+Problem__ PM_ChoiceOtherwiseUnexpected
+In Section 1 - Meeting:
+  >--> You wrote '-- otherwise' (source text, line 7): but this run of choices
+    uses 'otherwise' unexpectedly, since 'otherwise' can only be used as the
+    last option, and only where the options are written in terms of actions.
+Problem__ PM_ChoiceOtherwiseUnexpected
+  >--> You wrote '-- otherwise' (source text, line 13): again, this run of
+    choices uses 'otherwise' unexpectedly.
+Inform 7 has finished.

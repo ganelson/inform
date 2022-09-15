@@ -252,6 +252,7 @@ void DialogueBeats::decide_cue_sequencing(void) {
 		current_sentence = db->cue_at;
 		@<Create any scene instance needed@>;
 		@<Parse sequencing clauses@>;
+		DialogueNodes::find_decisions_in_beat(db);
 		previous = db;
 	}
 }

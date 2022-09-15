@@ -1,0 +1,11 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 19 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32205 words long.
+Problem__ PM_ChoiceSelectionUnknown
+In Section 1 - Meeting:
+  >--> The dialogue choice offered by '-- arfle barfle gloop' (source text, line 7)
+    is apparently 'arfle barfle gloop', but that isn't one of the possible ways
+    to write a choice.
+Inform 7 has finished.

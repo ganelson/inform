@@ -140,8 +140,7 @@ so on. Those absolute basics are made here.
 		2, debugging, sequence_timer);
 	BENCH(MajorNodes::pass_1)
 	BENCH(Tables::traverse_to_stock)
-	BENCH(DialogueBeats::decide_cue_sequencing)
-	BENCH(DialogueLines::decide_line_mentions)
+	BENCH(Dialogue::after_pass_1)
 	Task::advance_stage_to(ASSERTIONS_PASS_2_CSEQ, I"Second pass through major nodes",
 		-1, debugging, sequence_timer);
 	BENCH(MajorNodes::pass_2)

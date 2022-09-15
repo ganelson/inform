@@ -233,6 +233,7 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(activity_crossref, 100)
 @e cached_understanding_CLASS
 @e dialogue_beat_CLASS
 @e dialogue_choice_CLASS
+@e dialogue_decision_CLASS
 @e dialogue_line_CLASS
 @e dialogue_node_CLASS
 @e direction_inference_data_CLASS
@@ -275,6 +276,7 @@ DECLARE_CLASS(auxiliary_file)
 DECLARE_CLASS(cached_understanding)
 DECLARE_CLASS(dialogue_beat)
 DECLARE_CLASS(dialogue_choice)
+DECLARE_CLASS(dialogue_decision)
 DECLARE_CLASS(dialogue_line)
 DECLARE_CLASS(dialogue_node)
 DECLARE_CLASS(direction_inference_data)

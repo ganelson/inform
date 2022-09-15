@@ -1,0 +1,15 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 26 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32205 words long.
+Problem__ PM_ChoiceBlankRedundant
+In Section 1 - Meeting:
+  >--> You wrote '--' (source text, line 9): but this use of a bare '--'
+    divider looks redundant, occurring at the start or end of a run of choices.
+    '--' on its own should be used only where there's a need to mark a division
+    point between two sets of choices running on from one to the other.
+Problem__ PM_ChoiceBlankRedundant
+  >--> You wrote '--' (source text, line 13): again, this use of a bare '--'
+    divider looks redundant.
+Inform 7 has finished.
