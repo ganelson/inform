@@ -959,6 +959,7 @@ void Hierarchy::establish(void) {
 @e INLINE_PROPERTIES_HAP
 @e INLINE_PROPERTY_HL
 @e DIRECTION_HL
+@e BEAT_FILTER_FN_HL
 
 @<Establish instances@> =
 	submodule_identity *instances = LargeScale::register_submodule_identity(I"instances");
@@ -1051,6 +1052,7 @@ void Hierarchy::establish(void) {
 			H_F_G(REGION_FOUND_IN_FN_HL,                    I"region_found_in_fn", I"RFI_for_I")
 			H_F_G(TSD_DOOR_DIR_FN_HL,                       I"tsd_door_dir_fn", I"TSD_door_dir_value")
 			H_F_G(TSD_DOOR_TO_FN_HL,                        I"tsd_door_to_fn", I"TSD_door_to_value")
+			H_F_G(BEAT_FILTER_FN_HL,                        I"beat_filter_fn", I"DB_filter")
 			H_F_U(INST_SHOWME_FN_HL,                        I"showme_fn")
 			H_BEGIN_AP(INLINE_PROPERTIES_HAP,               I"inline_property", I"_inline_property")
 				H_C_U(INLINE_PROPERTY_HL,                   I"inline")
