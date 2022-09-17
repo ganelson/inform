@@ -8,7 +8,7 @@ Run-time support for dialogue.
 Global latest_performed_beat = 0;
 Array DialogueTopicPool --> 20;
 
-[ DirectorEmptyDialogueTopicPool;
+[ DirectorEmptyLiveSubjectList;
 	DialogueTopicPool-->0 = 0;
 ];
 
@@ -49,7 +49,7 @@ Array DialogueTopicPool --> 20;
 ];
 
 [ DirectorBegin;
-	DirectorEmptyDialogueTopicPool();
+	DirectorEmptyLiveSubjectList();
 	latest_performed_beat = 0;
 	rfalse;
 ];
@@ -109,4 +109,16 @@ Array DialogueTopicPool --> 20;
 			pc = pc + 2;
 		}		
 	}
+];
+
+[ DirectorLineAvailable dl tab i;
+	if ((dl == 0) || (dl > TableOfDialogueLines-->0)) rfalse;
+	tab = TableOfDialogueLines-->dl;
+!	print "(", dl, ": ", tab, ": ";
+!	for (i=0:i<7:i++) print tab-->i, ",";
+!	print ")";
+	if (tab-->0) {
+		return (tab-->0)();
+	}
+	rtrue;
 ];

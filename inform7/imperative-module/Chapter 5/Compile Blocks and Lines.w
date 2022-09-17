@@ -192,57 +192,7 @@ need bespoke handling:
 @<Compile a now midriff@> =
 	current_sentence = to_compile;
 	wording XW = Node::get_text(p->down);
-	parse_node *cs = NULL;
-	if (<s-condition>(XW)) cs = <<rp>>; else cs = Specifications::new_UNKNOWN(XW);
-	LOGIF(MATCHING, "Now cond is $T\n", cs);
-	int rv = Dash::check_condition(cs);
-	LOGIF(MATCHING, "After Dash, it's $T\n", cs);
-
-	if (Node::is(cs, TEST_PROPOSITION_NT)) {
-		if (rv != NEVER_MATCH) {
-			pcalc_prop *prop = Specifications::to_proposition(cs);
-			if (prop) CompilePropositions::to_make_true(prop);
-		}
-	} else if (Specifications::is_condition(cs))
-		@<Issue a problem message for the wrong sort of condition in a "now"@>
-	else if (rv != NEVER_MATCH) @<Issue a problem message for an unrecognised condition@>;
-
-@<Issue a problem message for the wrong sort of condition in a "now"@> =
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, Node::get_text(cs));
-	if (Node::is(cs, TEST_VALUE_NT)) {
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow1));
-		Problems::issue_problem_segment(
-			"You wrote %1, but although '%2' is a condition which it is legal to test "
-			"with 'if', 'when', and so forth, it is not something I can arrange to happen "
-			"on request. Whether it is true or not depends on current circumstances: so "
-			"to make it true, you will need to adjust those circumstances.");
-		Problems::issue_problem_end();
-	} else if (Node::is(cs, LOGICAL_AND_NT)) {
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow2));
-		Problems::issue_problem_segment(
-			"You wrote %1, but 'now' does not work with the condition '%2' because it can "
-			"only make one wish come true at a time: so it doesn't like the 'and'. Try "
-			"rewriting as two 'now's in a row?");
-		Problems::issue_problem_end();
-	} else {
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow3));
-		Problems::issue_problem_segment(
-			"You wrote %1, but '%2'	isn't the sort of condition which can be made to be "
-			"true, in the way that 'the ball is on the table' can be made true with a "
-			"straightforward movement of one object (the ball).");
-		Problems::issue_problem_end();
-	}
-
-@<Issue a problem message for an unrecognised condition@> =
-	LOG("$T\n", current_sentence);
-	Problems::quote_source(1, current_sentence);
-	Problems::quote_wording(2, Node::get_text(cs));
-	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
-	Problems::issue_problem_segment(
-		"You wrote %1, but '%2'	isn't a condition, so I can't see how to make it true "
-		"from here on.");
-	Problems::issue_problem_end();
+	CompileBlocksAndLines::compile_a_now(XW);
 
 @<Compile a named rulebook outline midriff@> =
 	current_sentence = to_compile;
@@ -599,6 +549,63 @@ inline definitions for "say if" and similar.
 		FALSE, allow_implied_newlines);
 	while (EmitCode::level() > L) EmitCode::up();
 	CodeBlocks::close_code_block();
+
+@h Nows.
+
+=
+void CompileBlocksAndLines::compile_a_now(wording XW) {
+	parse_node *cs = NULL;
+	if (<s-condition>(XW)) cs = <<rp>>; else cs = Specifications::new_UNKNOWN(XW);
+	LOGIF(MATCHING, "Now cond is $T\n", cs);
+	int rv = Dash::check_condition(cs);
+	LOGIF(MATCHING, "After Dash, it's $T\n", cs);
+
+	if (Node::is(cs, TEST_PROPOSITION_NT)) {
+		if (rv != NEVER_MATCH) {
+			pcalc_prop *prop = Specifications::to_proposition(cs);
+			if (prop) CompilePropositions::to_make_true(prop);
+		}
+	} else if (Specifications::is_condition(cs))
+		@<Issue a problem message for the wrong sort of condition in a "now"@>
+	else if (rv != NEVER_MATCH) @<Issue a problem message for an unrecognised condition@>;
+}
+
+@<Issue a problem message for the wrong sort of condition in a "now"@> =
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, Node::get_text(cs));
+	if (Node::is(cs, TEST_VALUE_NT)) {
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow1));
+		Problems::issue_problem_segment(
+			"You wrote %1, but although '%2' is a condition which it is legal to test "
+			"with 'if', 'when', and so forth, it is not something I can arrange to happen "
+			"on request. Whether it is true or not depends on current circumstances: so "
+			"to make it true, you will need to adjust those circumstances.");
+		Problems::issue_problem_end();
+	} else if (Node::is(cs, LOGICAL_AND_NT)) {
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow2));
+		Problems::issue_problem_segment(
+			"You wrote %1, but 'now' does not work with the condition '%2' because it can "
+			"only make one wish come true at a time: so it doesn't like the 'and'. Try "
+			"rewriting as two 'now's in a row?");
+		Problems::issue_problem_end();
+	} else {
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_BadNow3));
+		Problems::issue_problem_segment(
+			"You wrote %1, but '%2'	isn't the sort of condition which can be made to be "
+			"true, in the way that 'the ball is on the table' can be made true with a "
+			"straightforward movement of one object (the ball).");
+		Problems::issue_problem_end();
+	}
+
+@<Issue a problem message for an unrecognised condition@> =
+	LOG("$T\n", current_sentence);
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, Node::get_text(cs));
+	StandardProblems::handmade_problem(Task::syntax_tree(), _p_(BelievedImpossible));
+	Problems::issue_problem_segment(
+		"You wrote %1, but '%2'	isn't a condition, so I can't see how to make it true "
+		"from here on.");
+	Problems::issue_problem_end();
 
 @h The evaluator.
 This function takes the text of a line from a phrase definition, parses it,

@@ -968,6 +968,12 @@ void Hierarchy::establish(void) {
 @e BEAT_RELEVANT_FN_HL
 @e BEAT_STRUCTURE_MD_HL
 @e BEAT_STRUCTURE_HL
+@e LINE_ARRAY_MD_HL
+@e LINE_ARRAY_HL
+@e LINE_AVAILABLE_FN_HL
+@e LINE_SPEAKER_FN_HL
+@e LINE_MENTIONING_FN_HL
+@e LINE_ACTION_FN_HL
 
 @<Establish instances@> =
 	submodule_identity *instances = LargeScale::register_submodule_identity(I"instances");
@@ -1069,6 +1075,12 @@ void Hierarchy::establish(void) {
 			H_F_U(BEAT_RELEVANT_FN_HL,                      I"relevant_fn")
 			H_C_U(BEAT_STRUCTURE_MD_HL,                     I"^structure")
 			H_C_U(BEAT_STRUCTURE_HL,                        I"structure")
+			H_C_U(LINE_ARRAY_MD_HL,                         I"^line_data")
+			H_C_U(LINE_ARRAY_HL,                            I"line_data")
+			H_F_U(LINE_AVAILABLE_FN_HL,                     I"available_fn")
+			H_F_U(LINE_SPEAKER_FN_HL,                       I"speaker_fn")
+			H_F_U(LINE_MENTIONING_FN_HL,                    I"mentioning_fn")
+			H_F_U(LINE_ACTION_FN_HL,                        I"action_fn")
 			H_F_U(INST_SHOWME_FN_HL,                        I"showme_fn")
 			H_BEGIN_AP(INLINE_PROPERTIES_HAP,               I"inline_property", I"_inline_property")
 				H_C_U(INLINE_PROPERTY_HL,                   I"inline")

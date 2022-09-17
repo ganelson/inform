@@ -1282,7 +1282,8 @@ To make (T - an object) a live conversational subject:
 	(- DirectorAddLiveSubjectList({T}); -).
 To make (T - an object) a dead conversational subject:
 	(- DirectorRemoveLiveSubjectList({T}); -).
-
+To clear conversational subjects:
+	(- DirectorEmptyLiveSubjectList(); -).
 To decide what list of objects is the live conversational subject list:
 	(- DirectorLiveSubjectList({-new:list of objects}) -).
 To alter the live conversational subject list to (L - list of objects):
@@ -1302,3 +1303,6 @@ Definition: A dialogue beat is available rather than unavailable if Inter routin
 
 Definition: A dialogue beat is relevant rather than irrelevant if Inter routine
 	"DirectorBeatRelevant" says so (one of the topics it is about is currently live).
+
+Definition: A dialogue line is available rather than unavailable if Inter routine
+	"DirectorLineAvailable" says so (it meets all its if and unless conditions).

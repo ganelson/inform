@@ -40,6 +40,7 @@ comprehensive list of what is there.)
 	@<Establish resources offered by CommandParserKit@>;
 	@<Establish resources offered by either WorldModelKit or BasicInformExtrasKit@>;
 	@<Establish resources offered by EnglishLanguageKit@>;
+	@<Establish resources offered by DialogueKit@>;
 
 @h Offered by BasicInformKit.
 
@@ -54,6 +55,7 @@ comprehensive list of what is there.)
 @e BLKVALUEERROR_HL
 @e BLKVALUEFREE_HL
 @e BLKVALUEFREEONSTACK_HL
+@e BLKVALUEINCREFCOUNTPRIMITIVE_HL
 @e BLKVALUEWRITE_HL
 @e CHECKKINDRETURNED_HL
 @e CLEARPARAGRAPHING_HL
@@ -195,6 +197,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(BLKVALUEERROR_HL,                    I"BlkValueError")
 	KIT_PROVIDED(BLKVALUEFREE_HL,                     I"BlkValueFree")
 	KIT_PROVIDED(BLKVALUEFREEONSTACK_HL,              I"BlkValueFreeOnStack")
+	KIT_PROVIDED(BLKVALUEINCREFCOUNTPRIMITIVE_HL,     I"BlkValueIncRefCountPrimitive")
 	KIT_PROVIDED(BLKVALUEWRITE_HL,                    I"BlkValueWrite")
 	KIT_PROVIDED(CHECKKINDRETURNED_HL,                I"CheckKindReturned")
 	KIT_PROVIDED(CLEARPARAGRAPHING_HL,                I"ClearParagraphing")
@@ -419,6 +422,7 @@ comprehensive list of what is there.)
 @e SPECIAL_WORD_HL
 @e STORED_ACTION_TY_CURRENT_HL
 @e STORED_ACTION_TY_TRY_HL
+@e STORY_COMPLETE_HL
 @e STORY_TENSE_HL
 @e SUPPORTER_HL
 @e SUPPRESS_SCOPE_LOOPS_HL
@@ -508,6 +512,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(SPECIAL_WORD_HL,                     I"special_word")
 	KIT_PROVIDED(STORED_ACTION_TY_CURRENT_HL,         I"STORED_ACTION_TY_Current")
 	KIT_PROVIDED(STORED_ACTION_TY_TRY_HL,             I"STORED_ACTION_TY_Try")
+	KIT_PROVIDED(STORY_COMPLETE_HL,                   I"story_complete")
 	KIT_PROVIDED(STORY_TENSE_HL,                      I"story_tense")
 	KIT_PROVIDED(SUPPORTER_HL,                        I"supporter")
 	KIT_PROVIDED(SUPPRESS_SCOPE_LOOPS_HL,             I"suppress_scope_loops")
@@ -543,3 +548,10 @@ comprehensive list of what is there.)
 
 @<Establish resources offered by EnglishLanguageKit@> =
 	KIT_PROVIDED(THEN1__WD_HL,                        I"THEN1__WD")
+
+@
+
+@e DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL
+
+@<Establish resources offered by DialogueKit@> =
+	KIT_PROVIDED(DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL,   I"DirectorAddLiveSubjectList")

@@ -59,7 +59,7 @@ typedef struct dialogue_line {
 	dl->compilation_data = RTDialogueLines::new(PN, dl);
 	dl->speech_text = EMPTY_WORDING;
 	dl->mentioning = NEW_LINKED_LIST(parse_node);
-	dl->how_performed = PerformanceStyles::default();
+	dl->how_performed = NULL;
 	dl->interlocutor = NULL;
 
 @<Parse the clauses just enough to classify them@> =
@@ -124,21 +124,21 @@ of the following possibilities:
 
 =
 <dialogue-line-clause> ::=
-	this is the { ... line } |                       ==> { LINE_NAME_DLC, - }
-	mentioning ... |                                 ==> { MENTIONING_DLC, - }
-	if ... |                                         ==> { IF_DLC, - }
-	unless ... |                                     ==> { UNLESS_DLC, - }
-	before ... |                                     ==> { BEFORE_DLC, - }
-	after ... |                                      ==> { AFTER_DLC, - }
-	to ... |                                         ==> { TO_DLC, - }
-	now ... |                                        ==> { NOW_DLC, - }
-	without speaking |                               ==> { WITHOUT_SPEAKING_DLC, - }
-	ending the story |                               ==> { ENDING_DLC, - }
-	ending the story finally |                       ==> { ENDING_FINALLY_DLC, - }
-	ending the story saying <quoted-text> |          ==> { ENDING_SAYING_DLC, - }
-	ending the story finally |                       ==> { ENDING_FINALLY_DLC, - }
-	ending the story finally saying <quoted-text> |  ==> { ENDING_FINALLY_SAYING_DLC, - }
-	...                                              ==> { STYLE_DLC, - }
+	this is the { ... line } |                           ==> { LINE_NAME_DLC, - }
+	mentioning ... |                                     ==> { MENTIONING_DLC, - }
+	if ... |                                             ==> { IF_DLC, - }
+	unless ... |                                         ==> { UNLESS_DLC, - }
+	before ... |                                         ==> { BEFORE_DLC, - }
+	after ... |                                          ==> { AFTER_DLC, - }
+	to ... |                                             ==> { TO_DLC, - }
+	now ... |                                            ==> { NOW_DLC, - }
+	without speaking |                                   ==> { WITHOUT_SPEAKING_DLC, - }
+	ending the story |                                   ==> { ENDING_DLC, - }
+	ending the story finally |                           ==> { ENDING_FINALLY_DLC, - }
+	ending the story saying { <quoted-text> } |          ==> { ENDING_SAYING_DLC, - }
+	ending the story finally |                           ==> { ENDING_FINALLY_DLC, - }
+	ending the story finally saying { <quoted-text> } |  ==> { ENDING_FINALLY_SAYING_DLC, - }
+	...                                                  ==> { STYLE_DLC, - }
 
 @ =
 void DialogueLines::write_dlc(OUTPUT_STREAM, int c) {
@@ -220,6 +220,7 @@ void DialogueLines::decide_line_mentions(void) {
 			}
 		}
 		if (dl->narration == FALSE) @<Parse the speaker description@>;
+		if (dl->how_performed == NULL) dl->how_performed = PerformanceStyles::default();
 	}
 }
 

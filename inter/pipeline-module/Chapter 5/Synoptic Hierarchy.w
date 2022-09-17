@@ -122,10 +122,12 @@ The |/main/synoptic/conjugations| submodule.
 The |/main/synoptic/dialogue| submodule.
 
 @e DIALOGUEBEATS_HL
+@e DIALOGUELINES_HL
 
 @<Resources for dialogue@> =
 	SYN_SUBMD(I"dialogue")
 		SYN_CONST(DIALOGUEBEATS_HL,               I"TableOfDialogueBeats")
+		SYN_CONST(DIALOGUELINES_HL,               I"TableOfDialogueLines")
 
 @h Extensions.
 The |/main/synoptic/extensions| submodule.
