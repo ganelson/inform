@@ -50,7 +50,7 @@ typedef struct dialogue_choice {
 	dc->selection_parameter = EMPTY_WORDING;
 	dc->to_perform = NULL;
 	dc->selection_type = BLANK_DSEL;
-	dc->compilation_data = RTDialogue::new_choice(PN, dc);
+	dc->compilation_data = RTDialogueChoices::new(PN, dc);
 
 @ Each choice produces an instance of the kind |dialogue choice|, using the name
 given in its clauses if one was.

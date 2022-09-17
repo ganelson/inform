@@ -706,6 +706,11 @@ here. This hand-tooled parser is annoyingly long to write out, but only in
 order to catch improbable unmatched-bracket errors with tidy error messages.
 
 @<Make a DIALOGUE node@> =
+	#ifdef DIALOGUE_WARNING_SYNTAX_CALLBACK
+	if (T->contains_dialogue == FALSE) {
+		DIALOGUE_WARNING_SYNTAX_CALLBACK();
+	}
+	#endif
 	T->contains_dialogue = TRUE;
 	if ((Lexer::word(Wordings::first_wn(W)) == OPENBRACKET_V) &&
 		(Lexer::word(Wordings::last_wn(W)) == CLOSEBRACKET_V))

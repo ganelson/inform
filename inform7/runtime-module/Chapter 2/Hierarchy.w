@@ -959,7 +959,15 @@ void Hierarchy::establish(void) {
 @e INLINE_PROPERTIES_HAP
 @e INLINE_PROPERTY_HL
 @e DIRECTION_HL
-@e BEAT_FILTER_FN_HL
+@e INSTANCE_IS_DB_MD_HL
+@e INSTANCE_IS_DL_MD_HL
+@e INSTANCE_IS_DC_MD_HL
+@e BEAT_AVAILABLE_MD_HL
+@e BEAT_AVAILABLE_FN_HL
+@e BEAT_RELEVANT_MD_HL
+@e BEAT_RELEVANT_FN_HL
+@e BEAT_STRUCTURE_MD_HL
+@e BEAT_STRUCTURE_HL
 
 @<Establish instances@> =
 	submodule_identity *instances = LargeScale::register_submodule_identity(I"instances");
@@ -1052,7 +1060,15 @@ void Hierarchy::establish(void) {
 			H_F_G(REGION_FOUND_IN_FN_HL,                    I"region_found_in_fn", I"RFI_for_I")
 			H_F_G(TSD_DOOR_DIR_FN_HL,                       I"tsd_door_dir_fn", I"TSD_door_dir_value")
 			H_F_G(TSD_DOOR_TO_FN_HL,                        I"tsd_door_to_fn", I"TSD_door_to_value")
-			H_F_G(BEAT_FILTER_FN_HL,                        I"beat_filter_fn", I"DB_filter")
+			H_C_U(INSTANCE_IS_DB_MD_HL,                     I"^is_dialogue_beat")
+			H_C_U(INSTANCE_IS_DL_MD_HL,                     I"^is_dialogue_line")
+			H_C_U(INSTANCE_IS_DC_MD_HL,                     I"^is_dialogue_choice")
+			H_C_U(BEAT_AVAILABLE_MD_HL,                     I"^available")
+			H_F_U(BEAT_AVAILABLE_FN_HL,                     I"available_fn")
+			H_C_U(BEAT_RELEVANT_MD_HL,                      I"^relevant")
+			H_F_U(BEAT_RELEVANT_FN_HL,                      I"relevant_fn")
+			H_C_U(BEAT_STRUCTURE_MD_HL,                     I"^structure")
+			H_C_U(BEAT_STRUCTURE_HL,                        I"structure")
 			H_F_U(INST_SHOWME_FN_HL,                        I"showme_fn")
 			H_BEGIN_AP(INLINE_PROPERTIES_HAP,               I"inline_property", I"_inline_property")
 				H_C_U(INLINE_PROPERTY_HL,                   I"inline")

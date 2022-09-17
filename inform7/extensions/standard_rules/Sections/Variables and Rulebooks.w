@@ -1269,6 +1269,36 @@ The print protagonist internal rule translates into Inter as
 @h Dialogue support.
 
 =
-Section 10 - Performance Styles (for dialogue language element only)
+Section 10 - Dialogue (for dialogue language element only)
 
 There is a performance style called spoken normally.
+
+A dialogue beat can be performed or unperformed. A dialogue beat is usually
+unperformed.
+A dialogue beat can be recurring or non-recurring. A dialogue beat is usually
+non-recurring.
+
+To make (T - an object) a live conversational subject:
+	(- DirectorAddLiveSubjectList({T}); -).
+To make (T - an object) a dead conversational subject:
+	(- DirectorRemoveLiveSubjectList({T}); -).
+
+To decide what list of objects is the live conversational subject list:
+	(- DirectorLiveSubjectList({-new:list of objects}) -).
+To alter the live conversational subject list to (L - list of objects):
+	(- DirectorAlterLiveSubjectList({-by-reference:L}); -).
+
+To perform (B - a dialogue beat):
+	ask DialogueKit to perform B;
+	now B is performed.
+
+To ask DialogueKit to perform (B - a dialogue beat):
+	(- DirectorPerform({B}); -).
+
+To showme the beat structure of (B - dialogue beat): (- DirectorBeatPrintStructure({B}); -).
+
+Definition: A dialogue beat is available rather than unavailable if Inter routine
+	"DirectorBeatAvailable" says so (it meets all its after or before, if and unless conditions).
+
+Definition: A dialogue beat is relevant rather than irrelevant if Inter routine
+	"DirectorBeatRelevant" says so (one of the topics it is about is currently live).

@@ -21,6 +21,7 @@ void SynopticHierarchy::establish(inter_tree *I) {
 	@<Resources for activities@>;
 	@<Resources for chronology@>;
 	@<Resources for conjugations@>;
+	@<Resources for dialogue@>;
 	@<Resources for extensions@>;
 	@<Resources for instances@>;
 	@<Resources for kinds@>;
@@ -116,6 +117,15 @@ The |/main/synoptic/conjugations| submodule.
 @<Resources for conjugations@> =
 	SYN_SUBMD(I"conjugations")
 		SYN_CONST(TABLEOFVERBS_HL,                I"TableOfVerbs")
+
+@h Dialogue.
+The |/main/synoptic/dialogue| submodule.
+
+@e DIALOGUEBEATS_HL
+
+@<Resources for dialogue@> =
+	SYN_SUBMD(I"dialogue")
+		SYN_CONST(DIALOGUEBEATS_HL,               I"TableOfDialogueBeats")
 
 @h Extensions.
 The |/main/synoptic/extensions| submodule.

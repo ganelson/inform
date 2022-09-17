@@ -290,6 +290,11 @@ void SourceText::new_beginend(parse_node *pn, inbuild_copy *C) {
 	if (Node::get_type(pn) == ENDHERE_NT) Inclusions::check_ends_here(pn, E);
 }
 
+@ This callback is called by //syntax// when it first reaches a dialogue line
+or beat.
+
+@d DIALOGUE_WARNING_SYNTAX_CALLBACK Projects::dialogue_present
+
 @ Lastly, this callback is called by //syntax// when it hits a sentence like:
 
 >> Use interactive fiction language element.

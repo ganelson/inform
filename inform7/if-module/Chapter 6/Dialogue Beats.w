@@ -106,7 +106,7 @@ typedef struct dialogue_beat {
 	db->some_time_before = NEW_LINKED_LIST(parse_node);
 	db->about_list = NEW_LINKED_LIST(parse_node);
 	db->root = NULL;
-	db->compilation_data = RTDialogue::new_beat(PN, db);
+	db->compilation_data = RTDialogueBeats::new_beat(PN, db);
 
 @ Each clause can be one of about 10 possibilities, as follows, and the
 wording tells us immediately which possibility it is, even early in the run.

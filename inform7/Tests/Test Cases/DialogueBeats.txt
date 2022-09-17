@@ -1,0 +1,96 @@
+The Cricket History Museum is a room. The bat, the ball and the pads are here. Daphne is a woman in the Museum. The trophy case is in the Museum. The urn and the scoring pencil are in the case.
+
+Daphne can be honest or disingenuous.
+
+A dialogue beat can be dramatic, quiet or subdued.
+
+Spoken rapidly is a performance style.
+
+When play begins:
+	say "== The stock...";
+	showme the list of dialogue beats;
+	showme the list of dialogue lines;
+	showme the list of dialogue choices;
+	say "== Dual scene and beat naming...";
+	showme the alpha scene;
+	showme the alpha beat;
+	say "== Properties...";
+	showme the list of dramatic dialogue beats;
+	showme the list of subdued dialogue beats;
+	say "== Performance...";
+	showme the list of unperformed dialogue beats;
+	perform the alpha beat;
+	showme the list of unperformed dialogue beats;
+	say "== The live conversational subject list...";
+	showme the live conversational subject list;
+	make the bat a live conversational subject;
+	make the ball a live conversational subject;
+	showme the live conversational subject list;
+	make the bat a dead conversational subject;
+	showme the live conversational subject list;
+	make the ball a dead conversational subject;
+	showme the live conversational subject list;
+	make the ball a dead conversational subject;
+	showme the live conversational subject list;
+	alter the live conversational subject list to { Daphne, the pads };
+	showme the live conversational subject list;
+	say "== Relevance...";
+	alter the live conversational subject list to { the bat };
+	showme the live conversational subject list;
+	showme the list of relevant dialogue beats;
+	alter the live conversational subject list to { the ball };
+	showme the live conversational subject list;
+	showme the list of relevant dialogue beats;
+	alter the live conversational subject list to { the bat, the scoring pencil };
+	showme the live conversational subject list;
+	showme the list of relevant dialogue beats;
+	say "== Availability...";
+	now every dialogue beat is unperformed;
+	showme the list of available dialogue beats;
+	perform the gamma beat;
+	showme the list of available dialogue beats;
+	perform the nu beat;
+	showme the list of available dialogue beats;
+	now Daphne is honest;
+	showme the list of available dialogue beats;
+	say "== Structure...";
+	repeat with B running through dialogue beats:
+		showme the beat structure of B;
+
+Section 1 - Meeting (dialogue)
+
+(This is the alpha scene.)
+
+Daphne: "Welcome to the Museum of Cricket."
+
+(This is the beta beat. About the bat.)
+
+Daphne: "Made of willow, the cricket bat is sprung to provide a good drive."
+
+(This is the gamma beat. About the ball and everything in the case.)
+
+Daphne: "A cricket ball is made with a core of cork, which is layered with tightly wound string, and covered by a leather case with a slightly raised sewn seam."
+
+(This is the delta beat. Immediately after the gamma beat. Quiet.)
+
+Daphne: "I forgot to mention, British Standard BS 5993 specifies the construction details, dimensions, quality and performance of cricket balls."
+
+(This is the epsilon beat. After the gamma beat. Subdued.)
+
+Daphne: "Dukes balls have a prouder seam and will tend to swing more than Kookaburra balls."
+
+(This is the nu beat.)
+
+Daphne: "Cricket's kind of dull, when you think about it."
+
+	Ball (this is the disgruntled ball line): "I disagree!"
+	
+	Bat: "I especially enjoy it."
+
+(This is the mu beat. If Daphne is honest.)
+
+Daphne: "I prefer softball, honestly."
+
+(This is the eta beat. Before the nu beat.)
+
+Daphne: "This is the foremost museum in New South Wales."

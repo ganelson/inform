@@ -28,6 +28,7 @@ int MakeSynopticModuleStage::run(pipeline_step *step) {
 	SynopticChronology::compile(I, step, inv);
 	SynopticExtensions::compile(I, step, inv);
 	SynopticInstances::compile(I, step, inv);
+	SynopticDialogue::compile(I, step, inv);
 	SynopticKinds::compile(I, step, inv);
 	SynopticMultimedia::compile(I, step, inv);
 	SynopticProperties::compile(I, step, inv);

@@ -5,6 +5,108 @@ Run-time support for dialogue.
 @h Placeholder.
 
 =
+Global latest_performed_beat = 0;
+Array DialogueTopicPool --> 20;
+
+[ DirectorEmptyDialogueTopicPool;
+	DialogueTopicPool-->0 = 0;
+];
+
+[ DirectorAddLiveSubjectList obj i;
+	for (i=18:i>0:i--) DialogueTopicPool-->i = DialogueTopicPool-->(i-1);
+	DialogueTopicPool-->0 = obj;
+	DialogueTopicPool-->19 = 0;
+];
+
+[ DirectorRemoveLiveSubjectList obj i j;
+	for (i=0:i<20:i++) {
+		if (DialogueTopicPool-->i == 0) return;
+		if (DialogueTopicPool-->i == obj) {
+			for (j=i:j<19:j++) DialogueTopicPool-->j = DialogueTopicPool-->(j+1);
+		}
+	}
+	DialogueTopicPool-->19 = 0;
+];
+
+[ DirectorLiveSubjectList list len i;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	len = 0;
+	while (DialogueTopicPool-->len) len++;
+	LIST_OF_TY_SetLength(list, len);
+	for (i=0: i<len: i++)
+		LIST_OF_TY_PutItem(list, i+1, DialogueTopicPool-->i);
+	return list;
+];
+
+[ DirectorAlterLiveSubjectList list len i;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	len = BlkValueRead(list, LIST_LENGTH_F);
+	if (len > 19) len = 19;
+	for (i=0: i<len: i++)
+		DialogueTopicPool-->i = BlkValueRead(list, LIST_ITEM_BASE+i);
+	DialogueTopicPool-->len = 0;
+	DialogueTopicPool-->19 = 0;
+];
+
 [ DirectorBegin;
+	DirectorEmptyDialogueTopicPool();
+	latest_performed_beat = 0;
 	rfalse;
+];
+
+[ DirectorPerform db;
+	print "Performing beat ", (PrintDialogueBeatName) db, "^";
+	latest_performed_beat = db;
+];
+
+[ DirectorListLiveTopics i t;
+	for (i=0: i<20: i++) {
+		t = DialogueTopicPool-->i;
+		if (t == 0) return;
+		print (name) t, "^";
+	}
+];
+
+[ DirectorBeatAvailable db fn;
+	if ((db == 0) || (db > TableOfDialogueBeats-->0)) rfalse;
+	fn = TableOfDialogueBeats-->(3*db - 2);
+	if (fn) {
+		return (fn)(latest_performed_beat);
+	}
+	rtrue;
+];
+
+[ DirectorBeatRelevant db fn;
+	if ((db == 0) || (db > TableOfDialogueBeats-->0)) rfalse;
+	fn = TableOfDialogueBeats-->(3*db - 1);
+	if (fn) {
+		return (fn)(DialogueTopicPool);
+	}
+	rfalse;
+];
+
+[ DirectorBeatPrintStructure db tab pc which depth i;
+	if ((db == 0) || (db > TableOfDialogueBeats-->0)) return;
+	print (PrintDialogueBeatName) db;
+	print " (";
+	if (DirectorBeatAvailable(db)) print "available"; else print "unavailable";
+	print ", ";
+	if (DirectorBeatRelevant(db)) print "relevant"; else print "irrelevant";
+	print "):^";
+	tab = TableOfDialogueBeats-->(3*db);
+	if (tab) {
+		pc = 0;
+		while (tab-->pc) {
+			which = (tab-->pc)/100;
+			depth = (tab-->pc)%100;
+			for (i=0: i<depth: i++) print "  ";
+			switch (which) {
+				1: print "Line ", (PrintDialogueLineName) tab-->(pc+1), "^";
+				2: print "Choice ", (PrintDialogueChoiceName) tab-->(pc+1), "^";
+				3: print "Decision of type ", tab-->(pc+1), "^";
+				default: print "*** Unimplemented ***^";
+			}
+			pc = pc + 2;
+		}		
+	}
 ];

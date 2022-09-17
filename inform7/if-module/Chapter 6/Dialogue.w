@@ -11,6 +11,7 @@ handles that kind, so it won't be dealt with in the code for this feature.
 =
 void Dialogue::start(void) {
 	Dialogue::declare_annotations();
+	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Dialogue::new_property_notify);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Dialogue::new_base_kind_notify);
 	PluginCalls::plug(COMPARE_CONSTANT_PLUG, Dialogue::compare_CONSTANT);
 }
@@ -33,6 +34,27 @@ int Dialogue::new_base_kind_notify(kind *new_base, text_stream *name, wording W)
 	}
 	if (Str::eq_wide_string(name, L"DIALOGUE_CHOICE_TY")) {
 		K_dialogue_choice = new_base; return TRUE;
+	}
+	return FALSE;
+}
+
+@ The following either/or property needs some compiler support:
+
+= (early code)
+property *P_performed = NULL;
+
+@ We will need to compile code using this.
+
+=
+<notable-dialogue-properties> ::=
+	performed
+
+@ =
+int Dialogue::new_property_notify(property *prn) {
+	if (<notable-dialogue-properties>(prn->name)) {
+		switch (<<r>>) {
+			case 0: P_performed = prn; break;
+		}
 	}
 	return FALSE;
 }

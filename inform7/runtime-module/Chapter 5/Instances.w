@@ -157,6 +157,15 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	if ((K_sound_name) && (Kinds::eq(K, K_sound_name)))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_SOUND_MD_HL, 1);
+	if ((K_dialogue_beat) && (Kinds::eq(K, K_dialogue_beat)))
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_DB_MD_HL, 1);
+	if ((K_dialogue_line) && (Kinds::eq(K, K_dialogue_line)))
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_DL_MD_HL, 1);
+	if ((K_dialogue_choice) && (Kinds::eq(K, K_dialogue_choice)))
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_DC_MD_HL, 1);
 	if ((K_figure_name) && (Kinds::eq(K, K_figure_name)))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_FIGURE_MD_HL, 1);

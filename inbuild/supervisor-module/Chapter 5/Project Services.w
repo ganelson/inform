@@ -3,8 +3,7 @@
 Behaviour specific to copies of either the projectbundle or projectfile genres.
 
 @h Scanning metadata.
-Metadata for pipelines -- or rather, the complete lack of same -- is stored
-in the following structure.
+Metadata for projects is stored in the following structure.
 
 =
 typedef struct inform_project {
@@ -563,7 +562,8 @@ because of the following sort:
 		kit_dependency *kd;
 		LOOP_OVER_LINKED_LIST(kd, kit_dependency, project->kits_to_include)
 			if ((Str::eq(kd->kit->as_copy->edition->work->title, I"CommandParserKit")) ||
-				(Str::eq(kd->kit->as_copy->edition->work->title, I"WorldModelKit")))
+				(Str::eq(kd->kit->as_copy->edition->work->title, I"WorldModelKit")) ||
+				(Str::eq(kd->kit->as_copy->edition->work->title, I"DialogueKit")))
 				basic = FALSE;
 		if (basic == FALSE) {
 			TEMPORARY_TEXT(err)
@@ -699,6 +699,25 @@ filename *Projects::get_primary_output(inform_project *proj) {
 	}
 }
 
+@h Detecting dialogue.
+There's an awkward timing issue with detecting dialogue in the source text.
+The rule is that an Inform project should depend on DialogueKit if it contains
+content under a dialogue section, but not otherwise. That in turn activates
+the "dialogue" compiler feature. On the other hand, the source text also has
+material placed under headings which are for use with dialogue only. So we
+can't read the entire source text first and then decide: we have to switch
+on the dialogue feature the moment any dialogue matter is found. This is
+done by having the //syntax// module call the following:
+
+=
+inform_project *project_being_scanned = NULL;
+void Projects::dialogue_present(void) {
+	if (project_being_scanned) {
+		Projects::add_kit_dependency(project_being_scanned, I"DialogueKit", NULL, NULL, NULL);
+		Projects::activate_elements(project_being_scanned);
+	}
+}
+
 @h The full graph.
 This can be quite grandiose even though most of it will never come to anything,
 rather like a family tree for a minor European royal family.
@@ -708,11 +727,9 @@ void Projects::construct_graph(inform_project *proj) {
 	if (proj == NULL) return;
 	if (proj->chosen_build_target == NULL) {
 		Projects::finalise_kit_dependencies(proj);
+		project_being_scanned = proj;
 		Copies::get_source_text(proj->as_copy);
-		if (proj->syntax_tree->contains_dialogue) {
-			Projects::add_kit_dependency(proj, I"DialogueKit", NULL, NULL, NULL);
-			Projects::activate_elements(proj);
-		}
+		project_being_scanned = NULL;
 		build_vertex *V = proj->as_copy->vertex;
 		@<Construct the graph upstream of V@>;
 		@<Construct the graph downstream of V@>;

@@ -56,7 +56,7 @@ typedef struct dialogue_line {
 	dl->speaker_text = EMPTY_WORDING;
 	dl->speaker_description = NULL;
 	dl->without_speaking = FALSE;
-	dl->compilation_data = RTDialogue::new_line(PN, dl);
+	dl->compilation_data = RTDialogueLines::new(PN, dl);
 	dl->speech_text = EMPTY_WORDING;
 	dl->mentioning = NEW_LINKED_LIST(parse_node);
 	dl->how_performed = PerformanceStyles::default();

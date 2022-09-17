@@ -61,7 +61,9 @@ Chapter 5: Provision Submodules
 	Multimedia
 	Tables
 	Table Columns
-	Dialogue
+	Dialogue Beat Instances
+	Dialogue Line Instances
+	Dialogue Choice Instances
 	Rules
 	Rulebooks
 	Variables
