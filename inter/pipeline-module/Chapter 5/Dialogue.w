@@ -15,6 +15,7 @@ void SynopticDialogue::compile(inter_tree *I, pipeline_step *step, tree_inventor
 		InterNodeList::array_sort(inv->instance_nodes, MakeSynopticModuleStage::module_order);
 	@<Define DIALOGUEBEATS array@>;
 	@<Define DIALOGUELINES array@>;
+	@<Define DIALOGUECHOICES array@>;
 }
 
 @<Define DIALOGUEBEATS array@> =
@@ -63,6 +64,29 @@ void SynopticDialogue::compile(inter_tree *I, pipeline_step *step, tree_inventor
 			PackageInstruction::at_this_head(inv->instance_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_dialogue_line")) {
 			inter_symbol *filter = Metadata::optional_symbol(pack, I"^line_data");
+			if (filter) Synoptic::symbol_entry(filter);
+			else internal_error("no line data");
+		}
+	}
+	Synoptic::end_array(I);
+
+@<Define DIALOGUECHOICES array@> =
+	inter_ti count = 0;
+	for (int i=0; i<InterNodeList::array_len(inv->instance_nodes); i++) {
+		inter_package *pack =
+			PackageInstruction::at_this_head(inv->instance_nodes->list[i].node);
+		if (Metadata::read_optional_numeric(pack, I"^is_dialogue_choice")) count++;
+	}
+	
+	inter_name *iname = HierarchyLocations::iname(I, DIALOGUECHOICES_HL);
+	Synoptic::begin_array(I, step, iname);
+	Synoptic::numeric_entry(count);
+	if (count == 0) Synoptic::numeric_entry(0);
+	for (int i=0; i<InterNodeList::array_len(inv->instance_nodes); i++) {
+		inter_package *pack =
+			PackageInstruction::at_this_head(inv->instance_nodes->list[i].node);
+		if (Metadata::read_optional_numeric(pack, I"^is_dialogue_choice")) {
+			inter_symbol *filter = Metadata::optional_symbol(pack, I"^choice_data");
 			if (filter) Synoptic::symbol_entry(filter);
 			else internal_error("no line data");
 		}

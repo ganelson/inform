@@ -185,8 +185,7 @@ int DialogueNodes::is_divider(dialogue_node *dn) {
 		((dn->if_choice->selection_type == BLANK_DSEL) ||
 			(dn->if_choice->selection_type == AGAIN_DSEL) ||
 			(dn->if_choice->selection_type == STOP_DSEL) ||
-			(dn->if_choice->selection_type == PERFORM_DSEL) ||
-			(dn->if_choice->selection_type == PERFORM_CONTINUE_DSEL)))
+			(dn->if_choice->selection_type == PERFORM_DSEL)))
 		return TRUE;
 	return FALSE;
 }
@@ -272,7 +271,6 @@ int DialogueNodes::decision_type(dialogue_node *dn) {
 		case AFTER_DSEL: return PARSED_COMMAND_DDT;
 		case BEFORE_DSEL: return PARSED_COMMAND_DDT;
 		case PERFORM_DSEL: return CONTROL_DDT;
-		case PERFORM_CONTINUE_DSEL: return CONTROL_DDT;
 		default: internal_error("unimplemented DSEL");
 	}
 	return -1;

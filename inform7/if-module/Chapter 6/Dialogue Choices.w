@@ -95,7 +95,6 @@ given in its clauses if one was.
 					case INSTEAD_OF_DSEL:
 					case AFTER_DSEL:
 					case BEFORE_DSEL:
-					case PERFORM_CONTINUE_DSEL:
 					case PERFORM_DSEL:
 						dc->selection_parameter = GET_RW(<dialogue-selection>, 1);
 						break;					
@@ -158,7 +157,6 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 @e INSTEAD_OF_DSEL
 @e AFTER_DSEL
 @e BEFORE_DSEL
-@e PERFORM_CONTINUE_DSEL
 @e PERFORM_DSEL
 
 =
@@ -169,9 +167,7 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 	otherwise |                                    ==> { OTHERWISE_DSEL, - }
 	instead of ... |                               ==> { INSTEAD_OF_DSEL, - }
 	after ... |                                    ==> { AFTER_DSEL, - }
-	before ...                                     ==> { BEFORE_DSEL, - }
-	perform <definite-article> ... and continue |  ==> { PERFORM_CONTINUE_DSEL, - }
-	perform ... and continue |                     ==> { PERFORM_CONTINUE_DSEL, - }
+	before ... |                                   ==> { BEFORE_DSEL, - }
 	perform <definite-article> ... |               ==> { PERFORM_DSEL, - }
 	perform ...                                    ==> { PERFORM_DSEL, - }
 
@@ -185,8 +181,7 @@ void DialogueChoices::decide_choice_performs(void) {
 	dialogue_choice *dc;
 	LOOP_OVER(dc, dialogue_choice) {
 		current_sentence = dc->choice_at;
-		if ((dc->selection_type == PERFORM_DSEL) ||
-			(dc->selection_type == PERFORM_CONTINUE_DSEL)) {
+		if (dc->selection_type == PERFORM_DSEL) {
 			dialogue_beat *db;
 			LOOP_OVER(db, dialogue_beat)
 				if (Wordings::match(dc->selection_parameter, db->beat_name))

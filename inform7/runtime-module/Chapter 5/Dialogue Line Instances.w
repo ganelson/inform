@@ -208,11 +208,12 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 @<Write the action entry@> =
 	if ((LinkedLists::len(now_list) == 0) &&
 		(LinkedLists::len(before_list) == 0) &&
-		(LinkedLists::len(after_list) == 0)) {
-		EmitArrays::numeric_entry(0);
-	} else {
+		(LinkedLists::len(after_list) == 0))
 		make_action_function = TRUE;
+	if (make_action_function) {
 		EmitArrays::iname_entry(RTDialogueLines::action_fn_iname(dl));
+	} else {
+		EmitArrays::numeric_entry(0);
 	}
 
 @<Write the flags entry@> =
@@ -328,7 +329,6 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	inter_symbol *task_s = LocalVariables::declare(task);
 	local_variable *speaker = LocalVariables::new_internal_commented(I"speaker", I"who says this");
 	LocalVariables::set_kind(speaker, K_object);
-	inter_symbol *speaker_s = LocalVariables::declare(speaker);
 	EmitCode::inv(SWITCH_BIP);
 	EmitCode::down();
 		EmitCode::val_symbol(K_value, task_s);
@@ -389,27 +389,27 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	wording AW = GET_RW(<dialogue-line-clause>, 1);
 	if (<s-action-pattern-as-value>(AW)) {
 		parse_node *supplied = <<rp>>;
-		LOG("Act clause $T\n", supplied);
 		if (Dash::check_value(supplied, K_stored_action)) {
-			LOG("After dash $T\n", supplied);
+			if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
+				explicit_action *ea = Node::get_constant_explicit_action(supplied);
+				if (ea->actor == NULL) {
+					parse_node *actor = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, speaker);
+					Dash::check_value(actor, K_object);
+					ea->actor = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, speaker);
+				}
+				CompileRvalues::compile_explicit_action(ea, FALSE);
+			} else {
+				EmitCode::call(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
+				EmitCode::down();
+					CompileValues::to_code_val_of_kind(supplied, K_stored_action);
+				EmitCode::up();
+			}
 			EmitCode::inv(IF_BIP);
 			EmitCode::down();
-				EmitCode::inv(EQ_BIP);
+				EmitCode::inv(NE_BIP);
 				EmitCode::down();
-					if (Rvalues::is_CONSTANT_of_kind(supplied, K_stored_action)) {
-						explicit_action *ea = Node::get_constant_explicit_action(supplied);
-						if (ea->actor == NULL) {
-							parse_node *actor = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, speaker);
-							Dash::check_value(actor, K_object);
-							ea->actor = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, speaker);
-						}
-						CompileRvalues::compile_explicit_action(ea, FALSE);
-					} else {
-						EmitCode::call(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
-						EmitCode::down();
-							CompileValues::to_code_val_of_kind(supplied, K_stored_action);
-						EmitCode::up();
-					}
+					EmitCode::val_iname(K_value,
+						Hierarchy::find(REASON_THE_ACTION_FAILED_HL));
 					EmitCode::val_number(0);
 				EmitCode::up();
 				EmitCode::code();

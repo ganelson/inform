@@ -853,8 +853,12 @@ This is the announce items from multiple object lists rule:
 	if the current item from the multiple object list is not nothing,
 		say "[current item from the multiple object list]: [run paragraph on]" (A).
 
-This is the before stage rule: abide by the before rules.
-This is the instead stage rule: abide by the instead rules.
+This is the before stage rule:
+	abide by dialogue before action choices; 
+	abide by the before rules.
+This is the instead stage rule:
+	abide by dialogue instead action choices;
+	abide by the instead rules.
 
 @ The final rule in the rulebook always succeeds: this ensures that
 action-processing always makes a decision. (I7's doctrine is that an
@@ -939,7 +943,9 @@ A specific action-processing rule (this is the carry out stage rule):
 	follow the specific carry out rulebook.
 
 A specific action-processing rule (this is the after stage rule):
-	if action in world is true, abide by the after rules.
+	if action in world is true:
+		abide by dialogue after action choices;
+		abide by the after rules.
 
 A specific action-processing rule
 	(this is the investigate player's awareness after action rule):
@@ -1306,3 +1312,23 @@ Definition: A dialogue beat is relevant rather than irrelevant if Inter routine
 
 Definition: A dialogue line is available rather than unavailable if Inter routine
 	"DirectorLineAvailable" says so (it meets all its if and unless conditions).
+
+To abide by dialogue before action choices:
+	(- if (DirectorBeforeAction()) rtrue; -).
+
+To abide by dialogue instead action choices:
+	(- if (DirectorInsteadAction()) rtrue; -).
+
+To abide by dialogue after action choices:
+	(- if (DirectorAfterAction()) rtrue; -).
+
+Section 10 - Dialogue Fallback (not for dialogue language element)
+
+To abide by dialogue before action choices:
+	do nothing.
+
+To abide by dialogue instead action choices:
+	do nothing.
+
+To abide by dialogue after action choices:
+	do nothing.

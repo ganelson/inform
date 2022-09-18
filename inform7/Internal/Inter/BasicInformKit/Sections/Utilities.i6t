@@ -41,6 +41,7 @@ Global deadflag = 0;
 Global statuswin_cursize = 0;
 Global statuswin_size = 1;
 
+Global debug_dialogue = 0;
 Global debug_rules = 0;
 Global debug_rule_nesting;
 Global reason_the_action_failed; ! = I7 "reason the action failed"
