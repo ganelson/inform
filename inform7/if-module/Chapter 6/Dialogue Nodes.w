@@ -182,7 +182,7 @@ void DialogueNodes::find_decisions_in_beat_r(dialogue_beat *db, dialogue_node *d
 
 int DialogueNodes::is_divider(dialogue_node *dn) {
 	if ((dn) && (dn->if_choice) &&
-		((dn->if_choice->selection_type == BLANK_DSEL) ||
+		((dn->if_choice->selection_type == NEW_CHOICE_DSEL) ||
 			(dn->if_choice->selection_type == AGAIN_DSEL) ||
 			(dn->if_choice->selection_type == STOP_DSEL) ||
 			(dn->if_choice->selection_type == PERFORM_DSEL)))
@@ -222,17 +222,17 @@ void DialogueNodes::examine_decisions_in_beat_r(dialogue_beat *db, dialogue_node
 					"and should either all be action-dependent choices (perhaps "
 					"finishing with an 'otherwise'), or else all textual choices.");
 			}
-			if ((c->child_node) && (c->child_node->if_choice->selection_type == BLANK_DSEL)) {
+			if ((c->child_node) && (c->child_node->if_choice->selection_type == NEW_CHOICE_DSEL)) {
 				if ((prev == NULL) || (prev->if_line) ||
 					(c->next_node == NULL) || (c->next_node->if_line)) {
 					current_sentence = c->child_node->if_choice->choice_at;
 					StandardProblems::sentence_problem(Task::syntax_tree(),
 						_p_(PM_ChoiceBlankRedundant),
-						"this use of a bare '--' divider looks redundant",
-						"occurring at the start or end of a run of choices. "
-						"'--' on its own should be used only where there's "
+						"this use of '-> another choice' looks redundant",
+						"occurring at the start or end of a set of options. "
+						"'-> another choice' should be used only where there's "
 						"a need to mark a division point between two sets "
-						"of choices running on from one to the other.");
+						"of options running on from one to the other.");
 				}
 			}
 			c->if_decision->decision_type = t;
@@ -262,7 +262,7 @@ void DialogueNodes::log_node(dialogue_node *dn) {
 int DialogueNodes::decision_type(dialogue_node *dn) {
 	if ((dn == NULL) || (dn->if_choice == NULL)) return -1;
 	switch (dn->if_choice->selection_type) {
-		case BLANK_DSEL: return BLANK_DDT;
+		case NEW_CHOICE_DSEL: return PARSED_COMMAND_DDT;
 		case TEXTUAL_DSEL: return TEXTUAL_DDT;
 		case AGAIN_DSEL: return CONTROL_DDT;
 		case STOP_DSEL: return CONTROL_DDT;

@@ -52,11 +52,30 @@ inter_name *RTDialogueBeats::structure_fn_iname(dialogue_beat *db) {
 
 =
 void RTDialogueBeats::compile(void) {
+	int c = 0;
 	dialogue_beat *db;
 	LOOP_OVER(db, dialogue_beat) {
 		text_stream *desc = Str::new();
 		WRITE_TO(desc, "dialogue beat %d", db->allocation_id);
 		Sequence::queue(&RTDialogueBeats::beat_compilation_agent, STORE_POINTER_dialogue_beat(db), desc);
+		c++;
+	}
+	inter_name *iname = Hierarchy::find(AFTER_ACTION_HOOK_HL);
+	if (c > 0) {
+		Emit::iname_constant(iname, K_value, Hierarchy::find(DIRECTOR_AFTER_ACTION_HL));
+	} else {
+		Emit::iname_constant(iname, K_value, Hierarchy::find(DO_NOTHING_HL));
+	}
+	Hierarchy::make_available(iname);
+	if (P_performed) {
+		iname = Hierarchy::find(PERFORMED_HL);
+		Emit::iname_constant(iname, K_value, RTProperties::iname(P_performed));
+		Hierarchy::make_available(iname);
+	}
+	if (P_recurring) {
+		iname = Hierarchy::find(RECURRING_HL);
+		Emit::iname_constant(iname, K_value, RTProperties::iname(P_recurring));
+		Hierarchy::make_available(iname);
 	}
 }
 

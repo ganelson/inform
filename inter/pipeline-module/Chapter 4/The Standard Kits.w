@@ -68,6 +68,7 @@ comprehensive list of what is there.)
 @e DECIMALNUMBER_HL
 @e DIGITTOVALUE_HL
 @e DIVIDEPARAGRAPHPOINT_HL
+@e DO_NOTHING_HL
 @e DOUBLEHASHSETRELATIONHANDLER_HL
 @e EMPTY_RULEBOOK_INAME_HL
 @e EMPTY_TABLE_HL
@@ -210,6 +211,7 @@ comprehensive list of what is there.)
 	KIT_PROVIDED(DECIMALNUMBER_HL,                    I"DecimalNumber")
 	KIT_PROVIDED(DIGITTOVALUE_HL,                     I"DigitToValue")
 	KIT_PROVIDED(DIVIDEPARAGRAPHPOINT_HL,             I"DivideParagraphPoint")
+	KIT_PROVIDED(DO_NOTHING_HL,                       I"DoNothing")
 	KIT_PROVIDED(DOUBLEHASHSETRELATIONHANDLER_HL,     I"DoubleHashSetRelationHandler")
 	KIT_PROVIDED(EMPTY_RULEBOOK_INAME_HL,             I"EMPTY_RULEBOOK")
 	KIT_PROVIDED(EMPTY_TABLE_HL,                      I"TheEmptyTable")
@@ -552,6 +554,8 @@ comprehensive list of what is there.)
 @
 
 @e DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL
+@e DIRECTOR_AFTER_ACTION_HL
 
 @<Establish resources offered by DialogueKit@> =
 	KIT_PROVIDED(DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL,   I"DirectorAddLiveSubjectList")
+	KIT_PROVIDED(DIRECTOR_AFTER_ACTION_HL,            I"DirectorAfterAction")

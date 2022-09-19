@@ -4,12 +4,4 @@ Section 1 - Meeting (dialogue)
 
 (This is the quaintly done beat.)
 
--- otherwise
-
--> another choice
-
--- "No?"
-
--- otherwise
-
--- "Yes?"
+<- "I know a hawk from a handsaw."

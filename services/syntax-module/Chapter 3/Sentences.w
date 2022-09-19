@@ -712,10 +712,13 @@ order to catch improbable unmatched-bracket errors with tidy error messages.
 	}
 	#endif
 	T->contains_dialogue = TRUE;
-	if ((Lexer::word(Wordings::first_wn(W)) == OPENBRACKET_V) &&
+	vocabulary_entry *opening_word = Lexer::word(Wordings::first_wn(W));
+	if ((opening_word == OPENBRACKET_V) &&
 		(Lexer::word(Wordings::last_wn(W)) == CLOSEBRACKET_V))
 		@<This is a dialogue cue@>;
-	if (Lexer::word(Wordings::first_wn(W)) == DOUBLEDASH_V)
+	if ((opening_word == DOUBLEDASH_V) ||
+		(opening_word == LEFTARROW_V) ||
+		(opening_word == RIGHTARROW_V))
 		@<This is a dialogue choice@>;
 	@<Otherwise this has to be a dialogue line@>;
 

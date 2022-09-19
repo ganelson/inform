@@ -4,12 +4,12 @@ Section 1 - Meeting (dialogue)
 
 (This is the quaintly done beat.)
 
--- again
+<-
 
 	Marcellus: "This is weird."
 
---
+-> another choice
 
 	Marcellus: "Really weird."
 
--- again
+<-

@@ -1,0 +1,11 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 23 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32551 words long.
+Problem__ PM_ChoiceDashDashExpected
+In Section 1 - Meeting:
+  >--> The dialogue choice offered by '<- "I know a hawk from a handsaw."' (source
+    text, line 7) should open with '--', since it offers a choice, rather than
+    '->' or '<-' which relate to the flow of the script.
+Inform 7 has finished.

@@ -31,4 +31,8 @@ PM_ChoicePerformsUnknown
 PM_ChoiceSelectionMissing
 PM_ChoiceSelectionUnknown
 PM_ChoicesMixed
+PM_ChoiceDashDashExpected
+PM_ChoiceLeftArrowExpected
+PM_ChoiceRightArrowExpected
 DialogueBeats
+LBW

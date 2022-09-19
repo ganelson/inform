@@ -331,6 +331,7 @@ and then call |ActionPrimitive|.
 	@pull multiple_object_item; @pull self; @pull second; @pull noun; @pull action;
 
 	if (notrack == false) TrackActions(true, meta);
+	if ((AfterActionHook) && (meta == false) && (rv) && (indirect(AfterActionHook))) rtrue;
 	return rv;
 ];
 

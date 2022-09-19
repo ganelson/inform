@@ -49,7 +49,7 @@ typedef struct dialogue_choice {
 	dc->selection = NULL;
 	dc->selection_parameter = EMPTY_WORDING;
 	dc->to_perform = NULL;
-	dc->selection_type = BLANK_DSEL;
+	dc->selection_type = AGAIN_DSEL;
 	dc->compilation_data = RTDialogueChoices::new(PN, dc);
 
 @ Each choice produces an instance of the kind |dialogue choice|, using the name
@@ -69,6 +69,7 @@ given in its clauses if one was.
 	dc->as_instance = Instances::latest();
 
 @<Parse the clauses just enough to classify them@> =
+	int failed_already = FALSE;
 	for (parse_node *clause = PN->down; clause; clause = clause->next) {
 		wording CW = Node::get_text(clause);
 		if (Node::is(clause, DIALOGUE_CLAUSE_NT)) {
@@ -77,15 +78,6 @@ given in its clauses if one was.
 				if (<<r>> == CHOICE_NAME_DCC) {
 					dc->choice_name = GET_RW(<dialogue-choice-clause>, 1);
 				}
-			} else {
-				Problems::quote_source(1, current_sentence);
-				Problems::quote_wording(2, CW);
-				StandardProblems::handmade_problem(Task::syntax_tree(),
-					_p_(PM_ChoiceMarkupUnknown));
-				Problems::issue_problem_segment(
-					"The dialogue choice offered by %1 is marked as '%2', but that "
-					"isn't one of the possible ways to mark a choice.");
-				Problems::issue_problem_end();
 			}
 		} else if (Node::is(clause, DIALOGUE_SELECTION_NT)) {
 			dc->selection = clause;
@@ -108,17 +100,71 @@ given in its clauses if one was.
 					"The dialogue choice offered by %1 is apparently '%2', but that "
 					"isn't one of the possible ways to write a choice.");
 				Problems::issue_problem_end();
+				failed_already = TRUE;
 			}
 		} else internal_error("damaged DIALOGUE_CHOICE_NT subtree");
 	}
-	if ((dc->selection_type == BLANK_DSEL) && (PN->down) && (dc->selection == NULL)) {
-		current_sentence = dc->choice_at;
+	if (failed_already == FALSE) @<Check the flow notation@>;
+
+@<Check the flow notation@> =
+	int left_arrow = FALSE, right_arrow = FALSE, dash = FALSE;
+	switch (dc->selection_type) {
+		case INSTEAD_OF_DSEL:
+		case AFTER_DSEL:
+		case BEFORE_DSEL:
+		case OTHERWISE_DSEL:
+		case TEXTUAL_DSEL:
+			dash = TRUE;
+			break;					
+		case AGAIN_DSEL:
+			left_arrow = TRUE;
+			break;
+		case PERFORM_DSEL:
+		case STOP_DSEL:
+		case NEW_CHOICE_DSEL:
+			right_arrow = TRUE;
+			break;					
+	}
+	vocabulary_entry *symbol = Lexer::word(Wordings::first_wn(Node::get_text(PN)));
+	if ((dash) && (symbol != DOUBLEDASH_V)) {
 		Problems::quote_source(1, current_sentence);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ChoiceSelectionMissing));
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ChoiceDashDashExpected));
 		Problems::issue_problem_segment(
-			"The dialogue choice offered by %1 doesn't say what the option actually is, "
-			"which is allowed only if it is a simple '--' used as a divider. Here, it "
-			"seems to have some bracketed annotations as well. That must be wrong.");
+			"The dialogue choice offered by %1 should open with '--', "
+			"since it offers a choice, rather than '->' or '<-' which "
+			"relate to the flow of the script.");
+		Problems::issue_problem_end();
+	}
+	if ((left_arrow) && (symbol != LEFTARROW_V)) {
+		if ((symbol == DOUBLEDASH_V) && (PN->down) && (dc->selection == NULL)) {
+			current_sentence = dc->choice_at;
+			Problems::quote_source(1, current_sentence);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_ChoiceSelectionMissing));
+			Problems::issue_problem_segment(
+				"The dialogue choice offered by %1 doesn't say what the option actually is, "
+				"which is allowed only if it is a simple '--' used as a divider. Here, it "
+				"seems to have some bracketed annotations as well. That must be wrong.");
+			Problems::issue_problem_end();
+		} else {		
+			Problems::quote_source(1, current_sentence);
+			StandardProblems::handmade_problem(Task::syntax_tree(),
+				_p_(PM_ChoiceLeftArrowExpected));
+			Problems::issue_problem_segment(
+				"The dialogue choice offered by %1 should open with '<-', "
+				"since it relates to backwards flow within the current beat, "
+				"rather than '->' (forwards flow) or '--' (an option).");
+			Problems::issue_problem_end();
+		}
+	}
+	if ((right_arrow) && (symbol != RIGHTARROW_V)) {
+		Problems::quote_source(1, current_sentence);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ChoiceRightArrowExpected));
+		Problems::issue_problem_segment(
+			"The dialogue choice offered by %1 should open with '->', "
+			"since it relates to flow out of the current beat, "
+			"rather than '<-' (backwards flow) or '--' (an option).");
 		Problems::issue_problem_end();
 	}
 
@@ -128,6 +174,7 @@ of the following possibilities:
 @e CHOICE_NAME_DCC from 1
 @e IF_DCC
 @e UNLESS_DCC
+@e PROPERTY_DCC
 
 @ Using:
 
@@ -135,7 +182,8 @@ of the following possibilities:
 <dialogue-choice-clause> ::=
 	this is the { ... choice } |                     ==> { CHOICE_NAME_DCC, - }
 	if ... |                                         ==> { IF_DCC, - }
-	unless ...                                       ==> { UNLESS_DCC, - }
+	unless ... |                                     ==> { UNLESS_DCC, - }
+	...                                              ==> { PROPERTY_DCC, - }
 
 @ =
 void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
@@ -143,13 +191,14 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 		case CHOICE_NAME_DCC:           WRITE("CHOICE_NAME"); break;
 		case IF_DCC:                    WRITE("IF"); break;
 		case UNLESS_DCC:                WRITE("UNLESS"); break;
+		case PROPERTY_DCC:              WRITE("PROPERTY"); break;
 		default:                        WRITE("?"); break;
 	}
 }
 
 @
 
-@e BLANK_DSEL from 1
+@e NEW_CHOICE_DSEL from 1
 @e TEXTUAL_DSEL
 @e AGAIN_DSEL
 @e STOP_DSEL
@@ -162,7 +211,7 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 =
 <dialogue-selection> ::=
 	<quoted-text> |                                ==> { TEXTUAL_DSEL, - }
-	again |                                        ==> { AGAIN_DSEL, - }
+	another choice |                               ==> { NEW_CHOICE_DSEL, - }
 	stop |                                         ==> { STOP_DSEL, - }
 	otherwise |                                    ==> { OTHERWISE_DSEL, - }
 	instead of ... |                               ==> { INSTEAD_OF_DSEL, - }
@@ -181,6 +230,22 @@ void DialogueChoices::decide_choice_performs(void) {
 	dialogue_choice *dc;
 	LOOP_OVER(dc, dialogue_choice) {
 		current_sentence = dc->choice_at;
+		for (parse_node *clause = dc->choice_at->down; clause; clause = clause->next) {
+			if (Node::is(clause, DIALOGUE_CLAUSE_NT)) {
+				wording CW = Node::get_text(clause);
+				int c = Annotations::read_int(clause, dialogue_choice_clause_ANNOT);
+				switch (c) {
+					case PROPERTY_DCC: {
+						<dialogue-choice-clause>(CW);
+						wording A = GET_RW(<dialogue-choice-clause>, 1);
+						<np-articled-list>(A);
+						parse_node *AL = <<rp>>;
+						DialogueChoices::parse_property(dc, AL);
+						break;
+					}
+				}
+			}
+		}
 		if (dc->selection_type == PERFORM_DSEL) {
 			dialogue_beat *db;
 			LOOP_OVER(db, dialogue_beat)
@@ -201,6 +266,57 @@ void DialogueChoices::decide_choice_performs(void) {
 		}
 	}
 }
+
+void DialogueChoices::parse_property(dialogue_choice *dc, parse_node *AL) {
+	if (Node::is(AL, AND_NT)) {
+		DialogueChoices::parse_property(dc, AL->down);
+		DialogueChoices::parse_property(dc, AL->down->next);
+	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
+		inference_subject *subj = Instances::as_subject(dc->as_instance);
+		wording A = Node::get_text(AL);
+		if (<s-value-uncached>(A)) {
+			parse_node *val = <<rp>>;
+			if (Rvalues::is_CONSTANT_construction(val, CON_property)) {
+				property *prn = Rvalues::to_property(val);
+				if (Properties::is_either_or(prn)) {
+					@<Assert that the choice has this property@>;
+					return;
+				}
+			}
+			if ((Specifications::is_description(val)) || (Node::is(val, TEST_VALUE_NT))) {
+				@<Assert that the choice has this property value@>;
+				return;
+			}
+			LOG("Unexpected prop: $T\n", val);
+		} else {
+			LOG("Unrecognised prop: '%W'\n", A);
+		}
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, A);
+		StandardProblems::handmade_problem(Task::syntax_tree(),
+			_p_(PM_ChoiceMarkupUnknown));
+		Problems::issue_problem_segment(
+			"The dialogue choice %1 should apparently be '%2', but that "
+			"isn't something I recognise as a property which a choice can have.");
+		Problems::issue_problem_end();
+	}
+}
+
+@<Assert that the choice has this property@> =
+	pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
+		EitherOrProperties::as_adjective(prn), FALSE);
+	prop = Propositions::concatenate(
+		Propositions::Abstract::prop_to_set_kind(K_dialogue_choice), prop);
+	Assert::true_about(prop, subj, CERTAIN_CE);
+
+@<Assert that the choice has this property value@> =
+	pcalc_prop *prop = Descriptions::to_proposition(val);
+	if (prop) {
+		prop = Propositions::concatenate(
+			Propositions::Abstract::prop_to_set_kind(K_dialogue_choice), prop);
+		Assert::true_about(prop, subj, CERTAIN_CE);
+		return;
+	}
 
 @ So what remains to be done? Everything is done except for code to be compiled
 at runtime. See //runtime: Dialogue//.

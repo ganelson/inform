@@ -4,12 +4,6 @@ Section 1 - Meeting (dialogue)
 
 (This is the quaintly done beat.)
 
--- otherwise
+-- "Again?"
 
--> another choice
-
--- "No?"
-
--- otherwise
-
--- "Yes?"
+-- perform the quaintly done beat.

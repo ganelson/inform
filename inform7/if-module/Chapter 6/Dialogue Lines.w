@@ -213,6 +213,21 @@ void DialogueLines::decide_line_mentions(void) {
 					case STYLE_DLC: {
 						<dialogue-line-clause>(CW);
 						wording A = GET_RW(<dialogue-line-clause>, 1);
+						inference_subject *subj = Instances::as_subject(dl->as_instance);
+						if (<s-value-uncached>(A)) {
+							parse_node *val = <<rp>>;
+							if (Rvalues::is_CONSTANT_construction(val, CON_property)) {
+								property *prn = Rvalues::to_property(val);
+								if (Properties::is_either_or(prn)) {
+									@<Assert that the line has this property@>;
+									break;
+								}
+							}
+							if ((Specifications::is_description(val)) || (Node::is(val, TEST_VALUE_NT))) {
+								@<Assert that the line has this property value@>;
+								return;
+							}
+						}
 						dl->how_performed = PerformanceStyles::parse_style(A);
 						break;
 					}
@@ -223,6 +238,22 @@ void DialogueLines::decide_line_mentions(void) {
 		if (dl->how_performed == NULL) dl->how_performed = PerformanceStyles::default();
 	}
 }
+
+@<Assert that the line has this property@> =
+	pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
+		EitherOrProperties::as_adjective(prn), FALSE);
+	prop = Propositions::concatenate(
+		Propositions::Abstract::prop_to_set_kind(K_dialogue_line), prop);
+	Assert::true_about(prop, subj, CERTAIN_CE);
+
+@<Assert that the line has this property value@> =
+	pcalc_prop *prop = Descriptions::to_proposition(val);
+	if (prop) {
+		prop = Propositions::concatenate(
+			Propositions::Abstract::prop_to_set_kind(K_dialogue_line), prop);
+		Assert::true_about(prop, subj, CERTAIN_CE);
+		return;
+	}
 
 @<Parse the speaker description@> =
 	wording S = dl->speaker_text;

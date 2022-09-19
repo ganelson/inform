@@ -52,6 +52,8 @@ Array DialogueTopicPool --> 20;
 	DirectorEmptyLiveSubjectList();
 	latest_performed_beat = 0;
 	director_sp = 0;
+	DirectorStackChoices-->0 = BlkValueCreate(LIST_OF_TY);
+	BlkValueWrite(DirectorStackChoices-->0, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
 	rfalse;
 ];
 
@@ -70,7 +72,7 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	if (director_sp >= MAX_BEAT_PERFORMANCE_NESTING)
 		"*** Director stack overflow: too many open beats ***";
 	DirectorStackBeat-->director_sp = db;
-	DirectorStackAgain-->director_sp = 0;
+	DirectorStackAgain-->director_sp = -1;
 	DirectorStackLastPC-->director_sp = 0;
 	DirectorStackPC-->director_sp = pc;
 	DirectorStackMin-->director_sp = max;
@@ -95,6 +97,7 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	if (debug_dialogue) {
 		print "-- Performing ", (PrintDialogueBeatName) db, "^";
 	}
+	WriteGProperty(DIALOGUE_BEAT_TY, db, performed, 1);
 	latest_performed_beat = db;
 	DirectorPush(db, 0, 0);
 	DirectorStackStart-->(director_sp - 1) = 1;
@@ -120,7 +123,7 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 				structure = TableOfDialogueBeats-->(3*(DirectorStackBeat-->j));
 				instruction = (structure-->pc)/100;
 				depth = (structure-->pc)%100;
-				if (DirectorStackAgain-->j) print "[*", DirectorStackAgain-->j, "]";
+				if (DirectorStackAgain-->j >= 0) print "[*", DirectorStackAgain-->j, "]";
 				print "+", pc, " ", "L", depth, "/", DirectorStackMin-->j, " ";
 				switch (instruction) {
 					0: print "STOP";
@@ -150,6 +153,7 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 [ DirectorRun structure pc last_pc instruction depth next_instruction;
 	while (true) {
 		if (director_sp == 0) return;
+		if (deadflag) { director_sp = 0; return; }
 		if (LIST_OF_TY_GetLength(DirectorStackChoices-->(director_sp-1)) > 0) return;
 		structure = TableOfDialogueBeats-->(3*(DirectorStackBeat-->(director_sp-1)));
 		pc = DirectorStackPC-->(director_sp-1);
@@ -191,9 +195,13 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 
 [ DirectorPerformLine dl tab fn action_fn speaker interlocutor manner mentioning;
 	if (dl == 0) rfalse;
+	! Must either be unperformed or recurring
+	if ((GProperty(DIALOGUE_LINE_TY, dl, performed)) &&
+		(GProperty(DIALOGUE_LINE_TY, dl, recurring) == 0)) rfalse;
 	tab = TableOfDialogueLines-->dl;
 	! Must be available
 	fn = tab-->0; if ((fn) && (fn() == false)) rfalse;
+
 	! A speaker matching the description must be found, unless it's narration
 	speaker = tab-->1;
 	if (speaker) {
@@ -215,12 +223,19 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	! If the line is "after ..." some action, that action must succeed
 	if (action_fn) if (action_fn(3, speaker) == false) rfalse;
 
-	if (speaker) print (name) speaker, ": ~";
+	if (speaker) {
+		print (name) speaker;
+		if (manner ~= 1) print " (", (PrintPerformanceStyleName) manner, ")";
+		print ": ~";
+	}
 	TEXT_TY_Say(tab-->3);
 	if (speaker) print "~";
 	print "^";
 	say__p = 1;
 	DivideParagraphPoint();
+
+	WriteGProperty(DIALOGUE_LINE_TY, dl, performed, 1);
+
 	if (action_fn) {
 		action_fn(2, speaker);
 		action_fn(1, speaker);
@@ -231,7 +246,6 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 		Object: DirectorAddLiveSubjectList(mentioning);
 		Routine: mentioning();
 	}
-	
 	rtrue;
 ];
 
@@ -247,9 +261,12 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 		if ((structure-->pc)%100 == depth+1) {
 			dc = structure-->(pc+1);
 			tab = TableOfDialogueChoices-->dc;
-			! Must be available
-			fn = tab-->1;
-			if ((fn == 0) || (fn())) LIST_OF_TY_InsertItem(list, dc);
+			if ((GProperty(DIALOGUE_CHOICE_TY, dc, performed) == 0) ||
+				(GProperty(DIALOGUE_CHOICE_TY, dc, recurring))) {
+				! Must be available
+				fn = tab-->1;
+				if ((fn == 0) || (fn())) LIST_OF_TY_InsertItem(list, dc);
+			}
 		}
 		pc = pc + 2;
 	}
@@ -262,12 +279,11 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	if (debug_dialogue >= 2) {
 		if (count == 0) {
 			print "-- no available options^";
-			return;
-		}
-		if (decision == 2 or 3) {
+		} else if (decision == 2 or 3) {
 			print "-- available options: "; LIST_OF_TY_Say(list); print "^";
 		}
 	}
+	if (count == 0) return;
 	switch (decision) {
 		1: "*** blank dtd ***";
 		2: 	DivideParagraphPoint();
@@ -362,7 +378,13 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	rfalse;
 ];
 
+[ DirectorCurrentChoiceList i L;
+	if (director_sp == 0) return DirectorStackChoices-->0;
+	return DirectorStackChoices-->(director_sp-1);
+];
+
 [ DirectorExerciseChoice dc structure pc spc;
+	WriteGProperty(DIALOGUE_CHOICE_TY, dc, performed, 1);
 	structure = TableOfDialogueBeats-->(3*(DirectorStackBeat-->(director_sp-1)));
 	pc = DirectorStackLastPC-->(director_sp-1);
 	spc = pc + 2;
@@ -437,7 +459,7 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
     }
 ];
 
-Constant BLANK_DSEL = 1;
+Constant NEW_CHOICE_DSEL = 1;
 Constant TEXTUAL_DSEL = 2;
 Constant AGAIN_DSEL = 3;
 Constant STOP_DSEL = 4;
@@ -449,6 +471,7 @@ Constant PERFORM_DSEL = 9;
 
 [ DirectorPerformChoice dc tab fn pc enough;
 	if (dc == 0) rfalse;
+	WriteGProperty(DIALOGUE_CHOICE_TY, dc, performed, 1);
 	tab = TableOfDialogueChoices-->dc;
 	switch (tab-->0) {
 		AGAIN_DSEL:
@@ -456,7 +479,7 @@ Constant PERFORM_DSEL = 9;
 			while (director_sp > 0) {
 				if (debug_dialogue >= 2) { print "-- again at: "; DirectorTraceStack(); }
 				DirectorPop();
-				if (DirectorStackAgain-->(director_sp-1)) {
+				if (DirectorStackAgain-->(director_sp-1) >= 0) {
 					DirectorStackPC-->(director_sp-1) = DirectorStackAgain-->(director_sp-1);
 					break;
 				}

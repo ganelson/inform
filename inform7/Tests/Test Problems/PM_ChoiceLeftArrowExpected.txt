@@ -4,12 +4,8 @@ Section 1 - Meeting (dialogue)
 
 (This is the quaintly done beat.)
 
--- otherwise
+-- "Yes?"
 
--> another choice
+--
 
 -- "No?"
-
--- otherwise
-
--- "Yes?"

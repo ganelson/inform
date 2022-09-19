@@ -66,6 +66,7 @@ void VanillaCode::inv(code_generation *gen, inter_tree_node *P) {
 @<Invoke a function@> =
 	inter_symbol *function_s = InvInstruction::function(P);
 	if (function_s == NULL) internal_error("no function");
+LOG("Symbol = $3\n", function_s);
 	VanillaFunctions::invoke_function(gen, function_s, P, void_context);
 
 @<Invoke an assembly-language opcode@> =

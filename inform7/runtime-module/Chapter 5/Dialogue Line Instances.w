@@ -206,9 +206,9 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	}
 
 @<Write the action entry@> =
-	if ((LinkedLists::len(now_list) == 0) &&
-		(LinkedLists::len(before_list) == 0) &&
-		(LinkedLists::len(after_list) == 0))
+	if ((LinkedLists::len(now_list) > 0) ||
+		(LinkedLists::len(before_list) > 0) ||
+		(LinkedLists::len(after_list) > 0))
 		make_action_function = TRUE;
 	if (make_action_function) {
 		EmitArrays::iname_entry(RTDialogueLines::action_fn_iname(dl));

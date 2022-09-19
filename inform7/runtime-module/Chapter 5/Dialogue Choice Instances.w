@@ -85,7 +85,7 @@ void RTDialogueChoices::choice_compilation_agent(compilation_subtask *ct) {
 @<Scan the clauses further@> =
 	for (parse_node *clause = dc->choice_at->down; clause; clause = clause->next) {
 		if (Node::is(clause, DIALOGUE_CLAUSE_NT)) {
-			int c = Annotations::read_int(clause, dialogue_line_clause_ANNOT);
+			int c = Annotations::read_int(clause, dialogue_choice_clause_ANNOT);
 			switch (c) {
 				 case IF_DCC:
 				 case UNLESS_DCC:
@@ -144,7 +144,7 @@ void RTDialogueChoices::choice_compilation_agent(compilation_subtask *ct) {
 	current_sentence = dc->choice_at;
 	for (parse_node *clause = dc->choice_at->down; clause; clause = clause->next) {
 		wording CW = Node::get_text(clause);
-		int c = Annotations::read_int(clause, dialogue_line_clause_ANNOT);
+		int c = Annotations::read_int(clause, dialogue_choice_clause_ANNOT);
 		switch (c) {
 			case IF_DCC:
 			case UNLESS_DCC: {

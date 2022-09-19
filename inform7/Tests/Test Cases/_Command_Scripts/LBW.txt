@@ -1,0 +1,26 @@
+get bat
+x bat
+4
+1
+1
+x ball
+get bat
+kiss honey
+restart
+get bat
+x bat
+3
+2
+x ball
+get bat
+jump
+get ball
+restart
+get bat
+5
+1
+1
+2
+1
+quit
+y

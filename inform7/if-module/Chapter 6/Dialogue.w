@@ -38,7 +38,7 @@ int Dialogue::new_base_kind_notify(kind *new_base, text_stream *name, wording W)
 	return FALSE;
 }
 
-@ The following either/or property needs some compiler support:
+@ The following either/or properties need some compiler support:
 
 = (early code)
 property *P_performed = NULL;

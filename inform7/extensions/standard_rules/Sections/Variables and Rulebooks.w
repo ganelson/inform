@@ -857,7 +857,7 @@ This is the before stage rule:
 	abide by dialogue before action choices; 
 	abide by the before rules.
 This is the instead stage rule:
-	abide by dialogue instead action choices;
+	abide by dialogue instead action choices; 
 	abide by the instead rules.
 
 @ The final rule in the rulebook always succeeds: this ensures that
@@ -944,7 +944,6 @@ A specific action-processing rule (this is the carry out stage rule):
 
 A specific action-processing rule (this is the after stage rule):
 	if action in world is true:
-		abide by dialogue after action choices;
 		abide by the after rules.
 
 A specific action-processing rule
@@ -1284,6 +1283,16 @@ unperformed.
 A dialogue beat can be recurring or non-recurring. A dialogue beat is usually
 non-recurring.
 
+A dialogue line can be performed or unperformed. A dialogue line is usually
+unperformed.
+A dialogue line can be recurring or non-recurring. A dialogue line is usually
+non-recurring.
+
+A dialogue choice can be performed or unperformed. A dialogue choice is usually
+unperformed.
+A dialogue choice can be recurring or non-recurring. A dialogue choice is usually
+non-recurring.
+
 To make (T - an object) a live conversational subject:
 	(- DirectorAddLiveSubjectList({T}); -).
 To make (T - an object) a dead conversational subject:
@@ -1321,6 +1330,9 @@ To abide by dialogue instead action choices:
 
 To abide by dialogue after action choices:
 	(- if (DirectorAfterAction()) rtrue; -).
+
+To decide what list of dialogue choices is the current choice list:
+	(- DirectorCurrentChoiceList() -).
 
 Section 10 - Dialogue Fallback (not for dialogue language element)
 
