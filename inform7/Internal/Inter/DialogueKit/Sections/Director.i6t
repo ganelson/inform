@@ -217,6 +217,17 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	}
 	! This is optional
 	interlocutor = tab-->2;
+	if (interlocutor) {
+		if (metaclass(interlocutor) == Routine) {
+			fn = interlocutor;
+			objectloop (interlocutor ofclass K8_person)
+				if ((interlocutor ~= speaker) && (fn(interlocutor)))
+					break;
+			if (interlocutor == nothing) rfalse;
+		} else {
+			if (TestVisibility(speaker, interlocutor) == false) rfalse;
+		}
+	}
 	manner = tab-->4;
 	action_fn = tab-->6;
 
@@ -225,7 +236,15 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 
 	if (speaker) {
 		print (name) speaker;
-		if (manner ~= 1) print " (", (PrintPerformanceStyleName) manner, ")";
+		if ((manner ~= 1) || (interlocutor)) {
+			print " (";
+			if (manner ~= 1) {
+				print (PrintPerformanceStyleName) manner;
+				if (interlocutor) print " ";
+			}
+			if (interlocutor) print "to ", (name) interlocutor;
+			print ")";
+		}
 		print ": ~";
 	}
 	TEXT_TY_Say(tab-->3);

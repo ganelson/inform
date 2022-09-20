@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6V65 'Krypton' (19 September 2022)
+[Version](notes/versioning.md): 10.2.0-beta+6V66 'Krypton' (20 September 2022)
 
 ## About Inform
 
