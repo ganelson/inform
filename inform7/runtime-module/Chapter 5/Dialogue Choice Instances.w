@@ -179,9 +179,7 @@ void RTDialogueChoices::choice_compilation_agent(compilation_subtask *ct) {
 	packaging_state save = Functions::begin(RTDialogueChoices::action_match_fn_iname(dc));
 	if (<s-action-pattern-as-value>(APW)) {
 		parse_node *cond = <<rp>>;
-		LOG("Match clause $T\n", cond);
 		if (Dash::check_condition(cond)) {
-			LOG("After dash $T\n", cond);
 			EmitCode::inv(IF_BIP);
 			EmitCode::down();
 				CompileValues::to_code_val_of_kind(cond, K_truth_state);

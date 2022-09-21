@@ -68,6 +68,7 @@ relations besides "has" in the spatial family.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">bp_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">equality_bp_family</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">bp_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">spatial_bp_family</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="reserved-syntax">bp_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">dialogue_bp_family</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">bp_family</span><span class="plain-syntax"> *</span><span class="identifier-syntax">empty_bp_family</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="reserved-syntax">binary_predicate</span><span class="plain-syntax"> *</span><span class="identifier-syntax">R_equality</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -94,6 +95,8 @@ family to handle its typechecking in <a href="../assertions-module/8-terr.html" 
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">spatial_bp_family</span><span class="plain-syntax">, </span><span class="constant-syntax">STOCK_BPF_MTID</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><a href="3-ter.html#SP3" class="function-link"><span class="function-syntax">Calculus::Equality::stock_spatial</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
+
+<span class="plain-syntax">    </span><span class="identifier-syntax">dialogue_bp_family</span><span class="plain-syntax"> = </span><a href="3-bpf.html#SP1" class="function-link"><span class="function-syntax">BinaryPredicateFamilies::new</span></a><span class="plain-syntax">();</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">empty_bp_family</span><span class="plain-syntax"> = </span><a href="3-bpf.html#SP1" class="function-link"><span class="function-syntax">BinaryPredicateFamilies::new</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">METHOD_ADD</span><span class="plain-syntax">(</span><span class="identifier-syntax">empty_bp_family</span><span class="plain-syntax">, </span><span class="constant-syntax">STOCK_BPF_MTID</span><span class="plain-syntax">,</span>

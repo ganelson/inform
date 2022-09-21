@@ -699,19 +699,28 @@ pcalc_prop *Simplifications::region_containment(pcalc_prop *prop, int *changed) 
 			int j;
 			for (j=0; j<2; j++) {
 				int regionality = FALSE, backdropping = FALSE;
+				int beaten = FALSE, lined = FALSE;
 				if (pl->terms[j].constant) {
 					kind *KR = Specifications::to_kind(pl->terms[j].constant);
 					if (Kinds::Behaviour::is_object_of_kind(KR, K_region)) {
 						regionality = TRUE;
 					}
+					if ((K_dialogue_beat) && (Kinds::eq(KR, K_dialogue_beat)))
+						beaten = TRUE;
 				}
 				if (pl->terms[1-j].constant) {
 					kind *KB = Specifications::to_kind(pl->terms[1-j].constant);
 					if (Kinds::Behaviour::is_object_of_kind(KB, K_backdrop))
 						backdropping = TRUE;
+					if ((K_dialogue_beat) && (Kinds::eq(KB, K_dialogue_line)))
+						lined = TRUE;
 				}
 				if ((regionality) && (!backdropping)) {
 					pl->predicate = STORE_POINTER_binary_predicate(R_regional_containment);
+					PROPOSITION_EDITED(pl, prop);
+				}
+				if ((beaten) || (lined)) {
+					pl->predicate = STORE_POINTER_binary_predicate(R_dialogue_containment);
 					PROPOSITION_EDITED(pl, prop);
 				}
 			}

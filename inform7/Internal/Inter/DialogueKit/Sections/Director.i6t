@@ -587,11 +587,8 @@ Constant PERFORM_DSEL = 9;
 ];
 
 [ DirectorLineAvailable dl tab i;
-	if ((dl == 0) || (dl > TableOfDialogueLines-->0)) rfalse;
+	if ((dl == 0) || (dl > NO_DIALOGUE_LINES)) rfalse;
 	tab = TableOfDialogueLines-->dl;
-!	print "(", dl, ": ", tab, ": ";
-!	for (i=0:i<7:i++) print tab-->i, ",";
-!	print ")";
 	if (tab-->0) {
 		return (tab-->0)();
 	}
@@ -640,11 +637,28 @@ Global director_is_active = false;
 		for (db=1: db<=NO_DIALOGUE_BEATS: db++) {
 			if (GProperty(DIALOGUE_BEAT_TY, db, spontaneous)) {
 				if (DirectorBeatAvailableToPlayer(db)) {
+					DirectorEmptyLiveSubjectList();
 					DirectorPerform(db); break;
 				}
 			}
 		}
 	}
 	line_performance_count = 0;
+	rfalse;
+];
+
+[ DirectorTestLineContainment dl db tab structure pc instruction;
+!	print "I.e. whether ", (PrintDialogueLineName) dl, " is in ", (PrintDialogueBeatName) db, "^";
+	if ((db < 1) || (db > NO_DIALOGUE_BEATS)) rfalse;
+	if ((dl < 1) || (dl > NO_DIALOGUE_LINES)) rfalse;
+	tab = TableOfDialogueBeats-->db;
+	structure = tab-->2;
+	pc = 0;
+	instruction = (structure-->pc)/100;
+	while (instruction) {
+		if ((instruction == 1) && (structure-->(pc+1) == dl)) rtrue;
+		pc = pc + 2;
+		instruction = (structure-->pc)/100;
+	}
 	rfalse;
 ];

@@ -27,6 +27,7 @@ void IFModule::start(void) {
 	ReleaseInstructions::start();
 	WherePredicates::start();
 	SpatialRelations::start();
+	DialogueRelations::start();
 	MapRelations::start();
 }
 

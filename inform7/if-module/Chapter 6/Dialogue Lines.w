@@ -320,4 +320,4 @@ instance *DialogueLines::parse_interlocutor(wording CW) {
 
 @ So what remains to be done? The unparsed clauses remaining are |IF| and |UNLESS|,
 |BEFORE| and |AFTER|, |NOW|, and the various story-ending clauses: but all of those
-are essentially code rather than data, and we will parse those in //runtime: Dialogue//.
+are essentially code rather than data, and we will parse those in //runtime: Dialogue Line Instances//.

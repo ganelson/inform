@@ -9,6 +9,7 @@ relations besides "has" in the spatial family.
 = (early code)
 bp_family *equality_bp_family = NULL;
 bp_family *spatial_bp_family = NULL;
+bp_family *dialogue_bp_family = NULL;
 bp_family *empty_bp_family = NULL;
 
 binary_predicate *R_equality = NULL;
@@ -35,6 +36,8 @@ void Calculus::Equality::start(void) {
 	METHOD_ADD(spatial_bp_family, STOCK_BPF_MTID,
 		Calculus::Equality::stock_spatial);
 	#endif
+
+	dialogue_bp_family = BinaryPredicateFamilies::new();
 
 	empty_bp_family = BinaryPredicateFamilies::new();
 	METHOD_ADD(empty_bp_family, STOCK_BPF_MTID,

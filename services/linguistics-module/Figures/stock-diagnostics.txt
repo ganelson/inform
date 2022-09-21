@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
-noun: 2385 items
+noun: 2386 items
 pronoun: 8 items
 preposition: 273 items
 determiner: 22 items
 verb: 108 items
 verb_form: 386 items
-total in all categories: 3321
+total in all categories: 3322
 
 adjective: 'even'
 adjective: 'odd'
@@ -203,6 +203,7 @@ noun: proper: 'concealment relation'
 noun: proper: 'enclosure relation'
 noun: proper: 'adjacency relation'
 noun: proper: 'regional-containment relation'
+noun: proper: 'dialogue-containment relation'
 noun: proper: 'never-holding relation'
 noun: proper: 'numerically-greater-than relation'
 noun: proper: 'numerically-less-than relation'

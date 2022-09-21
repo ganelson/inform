@@ -135,8 +135,6 @@ typedef struct dialogue_decision {
 =
 void DialogueNodes::find_decisions_in_beat(dialogue_beat *db) {
 	DialogueNodes::find_decisions_in_beat_r(db, db->root, NULL);
-	LOG("Beat has tree:\n");
-	DialogueNodes::log_node_tree(db->root);
 	DialogueNodes::examine_decisions_in_beat_r(db, db->root, NULL);
 }
 void DialogueNodes::find_decisions_in_beat_r(dialogue_beat *db, dialogue_node *dn, dialogue_node *parent) {
@@ -193,11 +191,9 @@ int DialogueNodes::is_divider(dialogue_node *dn) {
 void DialogueNodes::examine_decisions_in_beat_r(dialogue_beat *db, dialogue_node *dn, dialogue_node *parent) {
 	for (dialogue_node *c = dn, *prev = NULL; c; prev = c, c = c->next_node) {
 		if (c->if_decision) {
-			LOG("Decision %d\n", c->if_decision->allocation_id);
 			int t = -1;
 			dialogue_node *bad_otherwise = NULL, *mixed_choices = NULL;
 			for (dialogue_node *d = c->child_node; d; d = d->next_node) {
-				LOG("Option is choice %d\n", (d->if_choice)?(d->if_choice->allocation_id):-1);
 				if (d->if_choice->selection_type == OTHERWISE_DSEL) {
 					if (t != PARSED_COMMAND_DDT) bad_otherwise = d;
 					if (d->next_node) bad_otherwise = d;

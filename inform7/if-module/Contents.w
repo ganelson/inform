@@ -72,4 +72,5 @@ Chapter 6: Dialogue
 	Dialogue Lines
 	Dialogue Choices
 	Dialogue Nodes
+	Dialogue Relations
 	Performance Styles

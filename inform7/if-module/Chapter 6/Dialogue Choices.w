@@ -319,4 +319,4 @@ void DialogueChoices::parse_property(dialogue_choice *dc, parse_node *AL) {
 	}
 
 @ So what remains to be done? Everything is done except for code to be compiled
-at runtime. See //runtime: Dialogue//.
+at runtime. See //runtime: Dialogue Choice Instances//.

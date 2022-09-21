@@ -537,4 +537,4 @@ sentences would do, and using all of the same machinery.
 
 @ So what remains to be done? Only the parsing of |IF| and |UNLESS| clauses,
 which take arbitrary conditions. There's no need to do that here: we can do
-that when compiling the runtime representation of a beat. See //runtime: Dialogue//.
+that when compiling the runtime representation of a beat. See //runtime: Dialogue Beat Instances//.
