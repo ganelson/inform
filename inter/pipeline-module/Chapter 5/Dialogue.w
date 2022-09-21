@@ -34,18 +34,15 @@ void SynopticDialogue::compile(inter_tree *I, pipeline_step *step, tree_inventor
 		inter_package *pack =
 			PackageInstruction::at_this_head(inv->instance_nodes->list[i].node);
 		if (Metadata::read_optional_numeric(pack, I"^is_dialogue_beat")) {
-			inter_symbol *filter = Metadata::optional_symbol(pack, I"^available");
+			inter_symbol *filter = Metadata::optional_symbol(pack, I"^beat_data");
 			if (filter) Synoptic::symbol_entry(filter);
-			else Synoptic::numeric_entry(0);
-			inter_symbol *rel = Metadata::optional_symbol(pack, I"^relevant");
-			if (rel) Synoptic::symbol_entry(rel);
-			else Synoptic::numeric_entry(0);
-			inter_symbol *str = Metadata::optional_symbol(pack, I"^structure");
-			if (str) Synoptic::symbol_entry(str);
-			else Synoptic::numeric_entry(0);
+			else internal_error("no beat data");
 		}
 	}
 	Synoptic::end_array(I);
+
+	Produce::numeric_constant(I, HierarchyLocations::iname(I, NO_DIALOGUE_BEATS_HL),
+		K_value, (inter_ti) count);
 
 @<Define DIALOGUELINES array@> =
 	inter_ti count = 0;
@@ -70,6 +67,9 @@ void SynopticDialogue::compile(inter_tree *I, pipeline_step *step, tree_inventor
 	}
 	Synoptic::end_array(I);
 
+	Produce::numeric_constant(I, HierarchyLocations::iname(I, NO_DIALOGUE_LINES_HL),
+		K_value, (inter_ti) count);
+
 @<Define DIALOGUECHOICES array@> =
 	inter_ti count = 0;
 	for (int i=0; i<InterNodeList::array_len(inv->instance_nodes); i++) {
@@ -92,3 +92,6 @@ void SynopticDialogue::compile(inter_tree *I, pipeline_step *step, tree_inventor
 		}
 	}
 	Synoptic::end_array(I);
+
+	Produce::numeric_constant(I, HierarchyLocations::iname(I, NO_DIALOGUE_CHOICES_HL),
+		K_value, (inter_ti) count);

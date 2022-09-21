@@ -124,12 +124,18 @@ The |/main/synoptic/dialogue| submodule.
 @e DIALOGUEBEATS_HL
 @e DIALOGUELINES_HL
 @e DIALOGUECHOICES_HL
+@e NO_DIALOGUE_BEATS_HL
+@e NO_DIALOGUE_LINES_HL
+@e NO_DIALOGUE_CHOICES_HL
 
 @<Resources for dialogue@> =
 	SYN_SUBMD(I"dialogue")
 		SYN_CONST(DIALOGUEBEATS_HL,               I"TableOfDialogueBeats")
 		SYN_CONST(DIALOGUELINES_HL,               I"TableOfDialogueLines")
 		SYN_CONST(DIALOGUECHOICES_HL,             I"TableOfDialogueChoices")
+		SYN_CONST(NO_DIALOGUE_BEATS_HL,           I"NO_DIALOGUE_BEATS")
+		SYN_CONST(NO_DIALOGUE_LINES_HL,           I"NO_DIALOGUE_LINES")
+		SYN_CONST(NO_DIALOGUE_CHOICES_HL,         I"NO_DIALOGUE_CHOICES")
 
 @h Extensions.
 The |/main/synoptic/extensions| submodule.

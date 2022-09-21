@@ -460,3 +460,12 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 			EmitCode::val_number(0);
 		}
 	EmitCode::up();
+
+@
+
+=
+instance *RTDialogueLines::speaker_instance(dialogue_line *dl) {
+	if ((dl) && (dl->speaker_description))
+		return Rvalues::to_instance(dl->speaker_description);
+	return NULL;
+}

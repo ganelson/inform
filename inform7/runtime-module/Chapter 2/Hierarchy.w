@@ -224,6 +224,7 @@ void Hierarchy::establish(void) {
 @e AFTER_ACTION_HOOK_HL
 @e PERFORMED_HL
 @e RECURRING_HL
+@e SPONTANEOUS_HL
 @e HEADINGS_HAP
 @e HEADING_INDEXABLE_MD_HL
 @e HEADING_TEXT_MD_HL
@@ -263,6 +264,7 @@ void Hierarchy::establish(void) {
 		H_C_T(AFTER_ACTION_HOOK_HL,           I"AfterActionHook")
 		H_C_T(PERFORMED_HL,                   I"performed")
 		H_C_T(RECURRING_HL,                   I"recurring")
+		H_C_T(SPONTANEOUS_HL,                 I"spontaneous")
 		H_BEGIN_AP(HEADINGS_HAP,              I"heading", I"_heading")
 			H_C_U(HEADING_INDEXABLE_MD_HL,    I"^indexable")
 			H_C_U(HEADING_TEXT_MD_HL,         I"^text")
@@ -968,12 +970,12 @@ void Hierarchy::establish(void) {
 @e INSTANCE_IS_DB_MD_HL
 @e INSTANCE_IS_DL_MD_HL
 @e INSTANCE_IS_DC_MD_HL
-@e BEAT_AVAILABLE_MD_HL
+@e BEAT_ARRAY_MD_HL
+@e BEAT_ARRAY_HL
 @e BEAT_AVAILABLE_FN_HL
-@e BEAT_RELEVANT_MD_HL
 @e BEAT_RELEVANT_FN_HL
-@e BEAT_STRUCTURE_MD_HL
 @e BEAT_STRUCTURE_HL
+@e BEAT_SPEAKERS_HL
 @e LINE_ARRAY_MD_HL
 @e LINE_ARRAY_HL
 @e LINE_AVAILABLE_FN_HL
@@ -1079,12 +1081,12 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_IS_DB_MD_HL,                     I"^is_dialogue_beat")
 			H_C_U(INSTANCE_IS_DL_MD_HL,                     I"^is_dialogue_line")
 			H_C_U(INSTANCE_IS_DC_MD_HL,                     I"^is_dialogue_choice")
-			H_C_U(BEAT_AVAILABLE_MD_HL,                     I"^available")
+			H_C_U(BEAT_ARRAY_MD_HL,                         I"^beat_data")
+			H_C_U(BEAT_ARRAY_HL,                            I"beat_data")
 			H_F_U(BEAT_AVAILABLE_FN_HL,                     I"available_fn")
-			H_C_U(BEAT_RELEVANT_MD_HL,                      I"^relevant")
 			H_F_U(BEAT_RELEVANT_FN_HL,                      I"relevant_fn")
-			H_C_U(BEAT_STRUCTURE_MD_HL,                     I"^structure")
 			H_C_U(BEAT_STRUCTURE_HL,                        I"structure")
+			H_C_U(BEAT_SPEAKERS_HL,                         I"speakers")
 			H_C_U(LINE_ARRAY_MD_HL,                         I"^line_data")
 			H_C_U(LINE_ARRAY_HL,                            I"line_data")
 			H_F_U(LINE_AVAILABLE_FN_HL,                     I"available_fn")

@@ -42,18 +42,21 @@ int Dialogue::new_base_kind_notify(kind *new_base, text_stream *name, wording W)
 
 = (early code)
 property *P_performed = NULL;
+property *P_spontaneous = NULL;
 
 @ We will need to compile code using this.
 
 =
 <notable-dialogue-properties> ::=
-	performed
+	performed |
+	spontaneous
 
 @ =
 int Dialogue::new_property_notify(property *prn) {
 	if (<notable-dialogue-properties>(prn->name)) {
 		switch (<<r>>) {
 			case 0: P_performed = prn; break;
+			case 1: P_spontaneous = prn; break;
 		}
 	}
 	return FALSE;

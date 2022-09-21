@@ -11,6 +11,7 @@ typedef struct dialogue_beat_compilation_data {
 	struct inter_name *available_function;
 	struct inter_name *relevant_function;
 	struct inter_name *structure_array;
+	struct inter_name *beat_array_iname;
 } dialogue_beat_compilation_data;
 
 dialogue_beat_compilation_data RTDialogueBeats::new_beat(parse_node *PN, dialogue_beat *db) {
@@ -19,6 +20,7 @@ dialogue_beat_compilation_data RTDialogueBeats::new_beat(parse_node *PN, dialogu
 	dbcd.available_function = NULL;
 	dbcd.relevant_function = NULL;
 	dbcd.structure_array = NULL;
+	dbcd.beat_array_iname = NULL;
 	return dbcd;
 }
 
@@ -41,11 +43,18 @@ inter_name *RTDialogueBeats::relevant_fn_iname(dialogue_beat *db) {
 	return db->compilation_data.relevant_function;
 }
 
-inter_name *RTDialogueBeats::structure_fn_iname(dialogue_beat *db) {
+inter_name *RTDialogueBeats::structure_array_iname(dialogue_beat *db) {
 	if (db->compilation_data.structure_array == NULL)
 		db->compilation_data.structure_array =
 			Hierarchy::make_iname_in(BEAT_STRUCTURE_HL, RTDialogueBeats::package(db));
 	return db->compilation_data.structure_array;
+}
+
+inter_name *RTDialogueBeats::beat_array_iname(dialogue_beat *db) {
+	if (db->compilation_data.beat_array_iname == NULL)
+		db->compilation_data.beat_array_iname =
+			Hierarchy::make_iname_in(BEAT_ARRAY_HL, RTDialogueBeats::package(db));
+	return db->compilation_data.beat_array_iname;
 }
 
 @h Compilation of dialogue.
@@ -72,6 +81,11 @@ void RTDialogueBeats::compile(void) {
 		Emit::iname_constant(iname, K_value, RTProperties::iname(P_performed));
 		Hierarchy::make_available(iname);
 	}
+	if (P_performed) {
+		iname = Hierarchy::find(SPONTANEOUS_HL);
+		Emit::iname_constant(iname, K_value, RTProperties::iname(P_spontaneous));
+		Hierarchy::make_available(iname);
+	}
 	if (P_recurring) {
 		iname = Hierarchy::find(RECURRING_HL);
 		Emit::iname_constant(iname, K_value, RTProperties::iname(P_recurring));
@@ -83,12 +97,23 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 	dialogue_beat *db = RETRIEVE_POINTER_dialogue_beat(ct->data);
 	current_sentence = db->compilation_data.where_created;
 	package_request *PR = RTDialogueBeats::package(db);
-	@<Deal with the availability of the beat@>;
-	@<Deal with the relevance of the beat@>;
+	inter_name *array_iname = RTDialogueBeats::beat_array_iname(db);
+	Hierarchy::apply_metadata_from_iname(PR, BEAT_ARRAY_MD_HL, array_iname);
+	int make_availability_function = FALSE, make_relevance_function = FALSE;
+
+	packaging_state save = EmitArrays::begin_word(array_iname, K_value);
+	@<Write the availability entry@>;
+	@<Write the relevance entry@>;
+	@<Write the structure entry@>;
+	@<Write the speaker list@>;
+	EmitArrays::end(save);
+
+	if (make_availability_function) @<Compile the available function@>;
+	if (make_relevance_function) @<Compile the relevant function@>;
 	@<Compile the structure array@>;
 }
 
-@<Deal with the availability of the beat@> =
+@<Write the availability entry@> =
 	int conditions = 0;
 	for (parse_node *clause = db->cue_at->down; clause; clause = clause->next) {
 		int c = Annotations::read_int(clause, dialogue_beat_clause_ANNOT);
@@ -98,10 +123,30 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 		(LinkedLists::len(db->some_time_after) > 0) ||
 		(LinkedLists::len(db->some_time_before) > 0) ||
 		(conditions > 0)) {
-		Hierarchy::apply_metadata_from_iname(PR,
-			BEAT_AVAILABLE_MD_HL, RTDialogueBeats::available_fn_iname(db));
-		@<Compile the available function@>;
+		make_availability_function = TRUE;
+		EmitArrays::iname_entry(RTDialogueBeats::available_fn_iname(db));
+	} else {
+		EmitArrays::numeric_entry(0);
 	}
+
+@<Write the relevance entry@> =
+	if (LinkedLists::len(db->about_list) > 0) {
+		make_relevance_function = TRUE;
+		EmitArrays::iname_entry(RTDialogueBeats::relevant_fn_iname(db));
+	} else {
+		EmitArrays::numeric_entry(0);
+	}
+
+@<Write the structure entry@> =
+	EmitArrays::iname_entry(RTDialogueBeats::structure_array_iname(db));
+
+@<Write the speaker list@> =
+	linked_list *L = NEW_LINKED_LIST(instance);
+	RTDialogueBeats::find_speakers_r(L, db->root);
+	instance *I;
+	LOOP_OVER_LINKED_LIST(I, instance, L)
+		EmitArrays::iname_entry(RTInstances::value_iname(I));
+	EmitArrays::numeric_entry(0);
 
 @<Compile the available function@> =
 	packaging_state save = Functions::begin(RTDialogueBeats::available_fn_iname(db));
@@ -229,13 +274,6 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 		}
 	}
 
-@<Deal with the relevance of the beat@> =
-	if (LinkedLists::len(db->about_list) > 0) {
-		Hierarchy::apply_metadata_from_iname(PR,
-			BEAT_RELEVANT_MD_HL, RTDialogueBeats::relevant_fn_iname(db));
-		@<Compile the relevant function@>;
-	}
-
 @<Compile the relevant function@> =
 	packaging_state save = Functions::begin(RTDialogueBeats::relevant_fn_iname(db));
 	local_variable *pool = LocalVariables::new_internal_commented(I"pool", I"pool of live topics");
@@ -312,10 +350,8 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 @ And this is always present.
 
 @<Compile the structure array@> =
-	Hierarchy::apply_metadata_from_iname(PR,
-		BEAT_STRUCTURE_MD_HL, RTDialogueBeats::structure_fn_iname(db));
 	packaging_state save =
-		EmitArrays::begin_word(RTDialogueBeats::structure_fn_iname(db), K_value);
+		EmitArrays::begin_word(RTDialogueBeats::structure_array_iname(db), K_value);
 	RTDialogueBeats::compile_structure_r(db->root, 1);
 	EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);
@@ -354,6 +390,29 @@ void RTDialogueBeats::log_r(dialogue_node *dn) {
 			RTDialogueBeats::log_r(dn->child_node);
 			LOG_OUTDENT;
 		}
+		dn = dn->next_node;
+	}
+}
+
+@ =
+void RTDialogueBeats::find_speakers_r(linked_list *L, dialogue_node *dn) {
+	while (dn) {
+		if (dn->if_line) {
+			instance *I = RTDialogueLines::speaker_instance(dn->if_line);
+			if (I) {
+				int already_have_this = FALSE;
+				instance *J;
+				LOOP_OVER_LINKED_LIST(J, instance, L)
+					if (I == J) {
+						already_have_this = TRUE;
+						break;
+					}
+				if (already_have_this == FALSE)
+					ADD_TO_LINKED_LIST(I, instance, L);
+			}
+		}
+		if (dn->child_node)
+			RTDialogueBeats::find_speakers_r(L, dn->child_node);
 		dn = dn->next_node;
 	}
 }

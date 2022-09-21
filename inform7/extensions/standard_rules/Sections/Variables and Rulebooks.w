@@ -1282,6 +1282,8 @@ A dialogue beat can be performed or unperformed. A dialogue beat is usually
 unperformed.
 A dialogue beat can be recurring or non-recurring. A dialogue beat is usually
 non-recurring.
+A dialogue beat can be spontaneous or unspontaneous. A dialogue beat is usually
+unspontaneous.
 
 A dialogue line can be performed or unperformed. A dialogue line is usually
 unperformed.
@@ -1333,6 +1335,15 @@ To abide by dialogue after action choices:
 
 To decide what list of dialogue choices is the current choice list:
 	(- DirectorCurrentChoiceList() -).
+
+To make the dialogue/dialog director active:
+	(- DirectorActivate(); -).
+
+To make the dialogue/dialog director passive/inactive:
+	(- DirectorDeactivate(); -).
+
+The dialogue direction rule is listed in the turn sequence rulebook.
+The dialogue direction rule translates into Inter as "DIALOGUE_DIRECTION_R".
 
 Section 10 - Dialogue Fallback (not for dialogue language element)
 
