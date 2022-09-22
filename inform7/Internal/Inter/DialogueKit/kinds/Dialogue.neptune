@@ -5,6 +5,7 @@ new base DIALOGUE_BEAT_TY {
 
 	default-value: 1
 	constant-compilation-method: quantitative
+	forbid-assertion-creation: yes
 
 	printing-routine: PrintDialogueBeatName
 
@@ -18,6 +19,7 @@ new base DIALOGUE_LINE_TY {
 
 	default-value: 1
 	constant-compilation-method: quantitative
+	forbid-assertion-creation: yes
 
 	printing-routine: PrintDialogueLineName
 
@@ -31,6 +33,7 @@ new base DIALOGUE_CHOICE_TY {
 
 	default-value: 1
 	constant-compilation-method: quantitative
+	forbid-assertion-creation: yes
 
 	printing-routine: PrintDialogueChoiceName
 

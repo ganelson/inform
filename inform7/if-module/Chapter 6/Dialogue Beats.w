@@ -185,7 +185,13 @@ but not of course both. If the latter, we construct the beat name itself as
 		switch (Annotations::read_int(clause, dialogue_beat_clause_ANNOT)) {
 			case BEAT_NAME_DBC:	
 				<dialogue-beat-clause>(CW);
-				current_dialogue_beat->beat_name = GET_RW(<dialogue-beat-clause>, 1);
+				wording NW = GET_RW(<dialogue-beat-clause>, 1);
+				if (<instance>(NW)) {
+					instance *I = <<rp>>;
+					DialogueBeats::non_unique_instance_problem(I, K_dialogue_beat);
+				} else {
+					current_dialogue_beat->beat_name = NW;
+				}
 				dialogue_beat_name_count++;
 				break;
 			case SCENE_NAME_DBC:	
@@ -240,6 +246,23 @@ here, it will be the first to be created, and will thus become the default.
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_dialogue_beat, W);
 	Assert::true(prop, CERTAIN_CE);
 	db->as_instance = Instances::latest();
+
+@ This is useful in other contexts, too.
+
+=
+void DialogueBeats::non_unique_instance_problem(instance *I, kind *K) {
+	Problems::quote_source(1, current_sentence);
+	Problems::quote_wording(2, Instances::get_name(I, FALSE));
+	Problems::quote_source(3, Instances::get_creating_sentence(I));
+	Problems::quote_kind(4, Instances::to_kind(I));
+	Problems::quote_kind(5, K);
+	StandardProblems::handmade_problem(Task::syntax_tree(),
+		_p_(PM_BeatNameNotUnique));
+	Problems::issue_problem_segment(
+		"%1 would like to make %5 called '%2', but there is %4 already called that "
+		"(created at %3).");
+	Problems::issue_problem_end();
+}
 
 @h Processing beats after pass 1.
 It's now a little later, and the following is called to look at each beat and

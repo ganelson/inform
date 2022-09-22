@@ -45,6 +45,7 @@ typedef struct kind_constructor {
 	struct table *named_values_created_with_table; /* alternatively... */
 	int next_free_value; /* to make distinguishable instances of this kind */
 	int constant_compilation_method; /* one of the |*_CCM| values */
+	int forbid_assertion_creation; /* an enumeration which cannot be explicitly created? */
 
 	/* E: knowledge about values of this kind */
 	struct inference_subject *base_as_infs; /* inferences about properties */
@@ -221,6 +222,7 @@ we apply any defaults set in Neptune files.
 	con->named_values_created_with_table = NULL;
 	con->next_free_value = 1;
 	con->constant_compilation_method = NONE_CCM;
+	con->forbid_assertion_creation = FALSE;
 
 	/* E: knowledge about values of this kind */
 	con->base_as_infs = NULL; /* but will be filled in imminently, in almost all cases */

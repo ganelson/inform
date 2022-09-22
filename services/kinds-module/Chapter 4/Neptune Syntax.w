@@ -38,6 +38,7 @@ typedef struct kind_command_definition {
 @e distinguishing_routine_KCC
 @e documentation_reference_KCC
 @e explicit_GPR_identifier_KCC
+@e forbid_assertion_creation_KCC
 @e heap_size_estimate_KCC
 @e printing_routine_for_debugging_KCC
 @e printing_routine_KCC
@@ -65,6 +66,7 @@ kind_command_definition table_of_kind_commands[] = {
 	{ "indexed-grey-if-empty",          indexed_grey_if_empty_KCC,          BOOLEAN_KCA },
 	{ "is-incompletely-defined",        is_incompletely_defined_KCC,        BOOLEAN_KCA },
 	{ "multiple-block",                 multiple_block_KCC,                 BOOLEAN_KCA },
+	{ "forbid-assertion-creation",      forbid_assertion_creation_KCC,      BOOLEAN_KCA },
 
 	{ "constant-compilation-method",    constant_compilation_method_KCC,    CCM_KCA },
 

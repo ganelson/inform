@@ -109,7 +109,13 @@ of the following possibilities:
 		switch (Annotations::read_int(clause, dialogue_line_clause_ANNOT)) {
 			case LINE_NAME_DLC:	
 				<dialogue-line-clause>(CW);
-				dl->line_name = GET_RW(<dialogue-line-clause>, 1);
+				wording NW = GET_RW(<dialogue-line-clause>, 1);
+				if (<instance>(NW)) {
+					instance *I = <<rp>>;
+					DialogueBeats::non_unique_instance_problem(I, K_dialogue_line);
+				} else {
+					dl->line_name = NW;
+				}
 				dialogue_line_name_count++;
 				break;
 		}

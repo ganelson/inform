@@ -1,0 +1,17 @@
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 45 words long.
+I've also read Basic Inform by Graham Nelson, which is 7691 words long.
+I've also read English Language by Graham Nelson, which is 2328 words long.
+I've also read Standard Rules by Graham Nelson, which is 32601 words long.
+Problem__ PM_InstancesExplicit
+  >--> You wrote 'The erroneous beat is a dialogue beat' (source text, line 4):
+    but this kind of value cannot be made with direct sentences like this,
+    because the instances of this kind are made by the compiler itself, using
+    other notation in the source text to deduce them.
+Problem__ PM_InstancesExplicit
+  >--> You wrote 'The erroneous line is a dialogue line' (source text, line 5):
+    again, this kind of value cannot be made with direct sentences like this.
+Problem__ PM_InstancesExplicit
+  >--> You wrote 'The erroneous choice is a dialogue choice' (source text, line 6):
+    again, this kind of value cannot be made with direct sentences like this.
+Inform 7 has finished.

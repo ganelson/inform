@@ -638,6 +638,8 @@ to abbreviated forms of object names are normally allowed.
 	val = Lvalues::new_actual_NONLOCAL_VARIABLE(NonlocalVariables::get_latest());
 
 @<Create an instance of an enumerated kind@> =
+	if (Kinds::Behaviour::forbid_assertion_creation(create_as))
+		@<Issue a problem for certain forbidden kinds@>;
 	pcalc_prop *prop = Propositions::Abstract::to_create_something(create_as, W);
 	pcalc_prop *such_that = Node::get_creation_proposition(governor);
 	if (such_that) prop = Propositions::concatenate(prop, such_that);
@@ -743,6 +745,12 @@ if nothing has already been said:
 			"number 8, it doesn't invent a new number.");
 		Problems::issue_problem_end();
 	}
+
+@<Issue a problem for certain forbidden kinds@> =
+	UsingProblems::assertion_problem(Task::syntax_tree(), _p_(PM_InstancesExplicit),
+		"this kind of value cannot be made with direct sentences like this",
+		"because the instances of this kind are made by the compiler itself, "
+		"using other notation in the source text to deduce them.");
 
 @ It turns out to be useful to have the same policing rules elsewhere:
 

@@ -76,7 +76,13 @@ given in its clauses if one was.
 			if (<dialogue-choice-clause>(CW)) {
 				Annotations::write_int(clause, dialogue_choice_clause_ANNOT, <<r>>);
 				if (<<r>> == CHOICE_NAME_DCC) {
-					dc->choice_name = GET_RW(<dialogue-choice-clause>, 1);
+					wording NW = GET_RW(<dialogue-choice-clause>, 1);
+					if (<instance>(NW)) {
+						instance *I = <<rp>>;
+						DialogueBeats::non_unique_instance_problem(I, K_dialogue_choice);
+					} else {
+						dc->choice_name = NW;
+					}
 				}
 			}
 		} else if (Node::is(clause, DIALOGUE_SELECTION_NT)) {
