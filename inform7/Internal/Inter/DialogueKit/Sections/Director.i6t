@@ -113,6 +113,12 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	}
 ];
 
+[ PERFORM_OPENING_BEAT_R db;
+	db = InitialSituation-->START_BEAT_INIS;
+	if (db) DirectorPerform(db);
+	rfalse;
+];
+
 [ DirectorTraceInst structure pc instruction depth;
 ];
 
@@ -609,7 +615,7 @@ Global director_is_active = false;
 	if ((GProperty(DIALOGUE_BEAT_TY, db, performed) == 0) ||
 		(GProperty(DIALOGUE_BEAT_TY, db, recurring))) {
 		tab = TableOfDialogueBeats-->db;
-		i = 3;
+		i = 4;
 		while (true) {
 			speaker = tab-->i;
 			if (speaker == nothing) rtrue;
@@ -618,6 +624,23 @@ Global director_is_active = false;
 		}
 	}
 	rfalse;
+];
+
+[ DirectorLiveRequiredList list db len i tab speaker;
+	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
+	len = 0;
+	tab = TableOfDialogueBeats-->db;
+	i = 4;
+	while (true) {
+		speaker = tab-->i;
+		if (speaker == nothing) break;
+		len++;
+		i++;
+	}
+	LIST_OF_TY_SetLength(list, len);
+	for (i=0: i<len: i++)
+		LIST_OF_TY_PutItem(list, i+1, tab-->(i+4));
+	return list;
 ];
 
 [ DIALOGUE_DIRECTION_R db i topic fn tab;

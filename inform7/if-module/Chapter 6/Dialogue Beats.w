@@ -83,7 +83,9 @@ typedef struct dialogue_beat {
 	struct heading *under_heading;
 	struct instance *as_instance;
 	struct scene *as_scene;
-	
+	struct linked_list *required; /* of |instance| */
+	int starting_beat;
+
 	struct parse_node *immediately_after;
 	struct linked_list *some_time_after; /* of |parse_node| */
 	struct linked_list *some_time_before; /* of |parse_node| */
@@ -101,6 +103,8 @@ typedef struct dialogue_beat {
 	db->under_heading = dialogue_section_being_scanned;
 	db->as_instance = NULL;
 	db->as_scene = NULL;
+	db->required = NEW_LINKED_LIST(instance);
+	db->starting_beat = FALSE;
 	db->immediately_after = NULL;
 	db->some_time_after = NEW_LINKED_LIST(parse_node);
 	db->some_time_before = NEW_LINKED_LIST(parse_node);
@@ -125,6 +129,7 @@ We annotate each clause with the answer. Thus we might have:
 @e AFTER_DBC
 @e IMMEDIATELY_AFTER_DBC
 @e BEFORE_DBC
+@e REQUIRING_DBC
 @e LATER_DBC
 @e NEXT_DBC
 @e PROPERTY_DBC
@@ -150,9 +155,13 @@ We annotate each clause with the answer. Thus we might have:
 	after ... |                 ==> { AFTER_DBC, - }
 	immediately after ... |     ==> { IMMEDIATELY_AFTER_DBC, - }
 	before ... |                ==> { BEFORE_DBC, - }
+	requiring ... |             ==> { REQUIRING_DBC, - }
 	later |                     ==> { LATER_DBC, - }
 	next |                      ==> { NEXT_DBC, - }
 	...                         ==> { PROPERTY_DBC, - }
+
+<dialogue-beat-starting-name> ::=
+	starting beat
 
 @ It's convenient to be able to read this back in the debugging log, so:
 
@@ -167,6 +176,7 @@ void DialogueBeats::write_dbc(OUTPUT_STREAM, int c) {
 		case AFTER_DBC: WRITE("AFTER"); break;
 		case IMMEDIATELY_AFTER_DBC: WRITE("IMMEDIATELY_AFTER"); break;
 		case BEFORE_DBC: WRITE("BEFORE"); break;
+		case REQUIRING_DBC: WRITE("REQUIRING"); break;
 		case LATER_DBC: WRITE("LATER"); break;
 		case NEXT_DBC: WRITE("NEXT"); break;
 		case PROPERTY_DBC: WRITE("PROPERTY"); break;
@@ -191,6 +201,8 @@ but not of course both. If the latter, we construct the beat name itself as
 					DialogueBeats::non_unique_instance_problem(I, K_dialogue_beat);
 				} else {
 					current_dialogue_beat->beat_name = NW;
+					if (<dialogue-beat-starting-name>(NW))
+						current_dialogue_beat->starting_beat = TRUE;
 				}
 				dialogue_beat_name_count++;
 				break;
@@ -325,6 +337,14 @@ performed only after or before other beats.
 				DialogueBeats::parse_beat_list(c, db, AL, &iac);
 				break;
 			}
+			case REQUIRING_DBC: {
+				<dialogue-beat-clause>(CW);
+				wording A = GET_RW(<dialogue-beat-clause>, 1);
+				<np-articled-list>(A);
+				parse_node *AL = <<rp>>;
+				DialogueBeats::parse_required_speaker_list(db, AL);
+				break;
+			}
 		}
 	}
 	if (iac > 1) 
@@ -353,7 +373,7 @@ void DialogueBeats::parse_beat_list(int c, dialogue_beat *db, parse_node *AL, in
 	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
 		switch(c) {
 			case IMMEDIATELY_AFTER_DBC: {
-				wording B = GET_RW(<dialogue-beat-clause>, 1);
+				wording B = Node::get_text(AL);
 				parse_node *desc = DialogueBeats::parse_beat_name(B);
 				if (desc) {
 					(*iac)++;
@@ -362,18 +382,46 @@ void DialogueBeats::parse_beat_list(int c, dialogue_beat *db, parse_node *AL, in
 				break;
 			}
 			case AFTER_DBC: {
-				wording B = GET_RW(<dialogue-beat-clause>, 1);
+				wording B = Node::get_text(AL);
 				parse_node *desc = DialogueBeats::parse_beat_name(B);
 				if (desc) ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_after);
 				break;
 			}
 			case BEFORE_DBC: {
-				wording B = GET_RW(<dialogue-beat-clause>, 1);
+				wording B = Node::get_text(AL);
 				parse_node *desc = DialogueBeats::parse_beat_name(B);
 				if (desc) ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_before);
 				break;
 			}
 		}
+	}
+}
+
+void DialogueBeats::parse_required_speaker_list(dialogue_beat *db, parse_node *AL) {
+	if (Node::is(AL, AND_NT)) {
+		DialogueBeats::parse_required_speaker_list(db, AL->down);
+		DialogueBeats::parse_required_speaker_list(db, AL->down->next);
+	} else if (Node::is(AL, UNPARSED_NOUN_NT)) {
+		wording B = Node::get_text(AL);
+		if (<s-type-expression-uncached>(B)) {
+			parse_node *desc = <<rp>>;
+			instance *I = Rvalues::to_instance(desc);
+			if (I) {
+				kind *K = Instances::to_kind(I);
+				if (Kinds::Behaviour::is_object(K)) {
+					ADD_TO_LINKED_LIST(I, instance, db->required);
+					return;
+				}
+			}
+		}
+		Problems::quote_source(1, current_sentence);
+		Problems::quote_wording(2, B);
+		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_NotASpeaker));
+		Problems::issue_problem_segment(
+			"The dialogue beat %1 apparently requires a speaker (other than the player) "
+			"called '%2' to be present in order for it to be performed, but there's "
+			"nobody of that name.");
+		Problems::issue_problem_end();
 	}
 }
 

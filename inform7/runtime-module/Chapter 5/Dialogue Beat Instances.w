@@ -93,6 +93,17 @@ void RTDialogueBeats::compile(void) {
 	}
 }
 
+void RTDialogueBeats::compile_starting_beat_entry(void) {
+	dialogue_beat *db, *starting_db = NULL;
+	LOOP_OVER(db, dialogue_beat) {
+		if (db->starting_beat) starting_db = db;
+	}
+	if (starting_db)
+		EmitArrays::iname_entry(RTInstances::value_iname(starting_db->as_instance));
+	else
+		EmitArrays::numeric_entry(0);
+}
+
 void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 	dialogue_beat *db = RETRIEVE_POINTER_dialogue_beat(ct->data);
 	current_sentence = db->compilation_data.where_created;
@@ -105,6 +116,7 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 	@<Write the availability entry@>;
 	@<Write the relevance entry@>;
 	@<Write the structure entry@>;
+	@<Write the scene entry@>;
 	@<Write the speaker list@>;
 	EmitArrays::end(save);
 
@@ -140,9 +152,18 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 @<Write the structure entry@> =
 	EmitArrays::iname_entry(RTDialogueBeats::structure_array_iname(db));
 
+@<Write the scene entry@> =
+	if (db->as_scene)
+		EmitArrays::iname_entry(RTInstances::value_iname(Scenes::get_instance(db->as_scene)));
+	else
+		EmitArrays::numeric_entry(0);
+
 @<Write the speaker list@> =
-	linked_list *L = NEW_LINKED_LIST(instance);
-	RTDialogueBeats::find_speakers_r(L, db->root);
+	linked_list *L = db->required;
+	if (LinkedLists::len(L) == 0) {
+		L = NEW_LINKED_LIST(instance);
+		RTDialogueBeats::find_speakers_r(L, db->root);
+	}
 	instance *I;
 	LOOP_OVER_LINKED_LIST(I, instance, L)
 		EmitArrays::iname_entry(RTInstances::value_iname(I));

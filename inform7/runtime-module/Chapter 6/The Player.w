@@ -8,7 +8,8 @@ void RTPlayer::compile_generic_constants(void) {
 	RTPlayer::InitialSituation_define(START_OBJECT_INIS_HL, 1);
 	RTPlayer::InitialSituation_define(START_ROOM_INIS_HL, 2);
 	RTPlayer::InitialSituation_define(START_TIME_INIS_HL, 3);
-	RTPlayer::InitialSituation_define(DONE_INIS_HL, 4);
+	RTPlayer::InitialSituation_define(START_BEAT_INIS_HL, 4);
+	RTPlayer::InitialSituation_define(DONE_INIS_HL, 5);
 }
 
 void RTPlayer::InitialSituation(void) {
@@ -20,6 +21,7 @@ void RTPlayer::InitialSituation(void) {
 	if (start_room == NULL) EmitArrays::numeric_entry(0);
 	else EmitArrays::iname_entry(RTInstances::value_iname(start_room));
 	RTVariables::initial_value_as_array_entry(time_of_day_VAR);
+	RTDialogueBeats::compile_starting_beat_entry();
 	EmitArrays::numeric_entry(0);
 	EmitArrays::end(save);
 	Hierarchy::make_available(iname);

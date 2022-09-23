@@ -145,6 +145,10 @@ wording Scenes::get_name(scene *sc) {
 	return Instances::get_name(sc->as_instance, FALSE);
 }
 
+instance *Scenes::get_instance(scene *sc) {
+	return sc->as_instance;
+}
+
 @ A feature called |xyzzy| generally has a hunk of subject data called |xyzzy_data|,
 so we would normally have a structure called |scenes_data|, but in fact that
 structure is just going to be //scene//. So:

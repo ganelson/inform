@@ -1111,6 +1111,7 @@ void Hierarchy::establish(void) {
 @e START_OBJECT_INIS_HL
 @e START_ROOM_INIS_HL
 @e START_TIME_INIS_HL
+@e START_BEAT_INIS_HL
 @e DONE_INIS_HL
 
 @e NO_DIRECTIONS_HL
@@ -1125,6 +1126,7 @@ void Hierarchy::establish(void) {
 		H_C_T(START_OBJECT_INIS_HL,           I"START_OBJECT_INIS")
 		H_C_T(START_ROOM_INIS_HL,             I"START_ROOM_INIS")
 		H_C_T(START_TIME_INIS_HL,             I"START_TIME_INIS")
+		H_C_T(START_BEAT_INIS_HL,             I"START_BEAT_INIS")
 		H_C_T(DONE_INIS_HL,                   I"DONE_INIS")
 	H_END
 
