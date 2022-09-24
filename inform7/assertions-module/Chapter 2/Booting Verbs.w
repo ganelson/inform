@@ -163,11 +163,12 @@ These have to be defined somewhere, and it may as well be here.
 @d WEARING_RELATION_NAME 16
 @d POSSESSION_RELATION_NAME 17
 @d VISIBILITY_RELATION_NAME 18
-@d TOUCHABILITY_RELATION_NAME 19
-@d CONCEALMENT_RELATION_NAME 20
-@d ENCLOSURE_RELATION_NAME 21
-@d ROOM_CONTAINMENT_RELATION_NAME 22
-@d DIALOGUE_CONTAINMENT_RELATION_NAME 23
+@d AUDIBILITY_RELATION_NAME 19
+@d TOUCHABILITY_RELATION_NAME 20
+@d CONCEALMENT_RELATION_NAME 21
+@d ENCLOSURE_RELATION_NAME 22
+@d ROOM_CONTAINMENT_RELATION_NAME 23
+@d DIALOGUE_CONTAINMENT_RELATION_NAME 24
 
 @ These are the English names of the built-in relations. The use of hyphenation
 here is a fossil from the times when Inform allowed only single-word relation
@@ -196,6 +197,7 @@ other languages may as well drop the hyphens.
 	wearing |
 	possession |
 	visibility |
+	audibility |
 	touchability |
 	concealment |
 	enclosure |

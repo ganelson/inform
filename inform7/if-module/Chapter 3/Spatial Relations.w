@@ -16,6 +16,7 @@ binary_predicate *room_containment_predicate = NULL;
 
 /* indirect spatial relationships */
 binary_predicate *R_visibility = NULL;
+binary_predicate *R_audibility = NULL;
 binary_predicate *R_touchability = NULL;
 binary_predicate *R_concealment = NULL;
 binary_predicate *R_enclosure = NULL;
@@ -136,6 +137,13 @@ can be tested at run-time, but which can't be asserted or made true or false.
 			I"can-see", I"can-be-seen-by",
 			NULL, Calculus::Schemas::new("TestVisibility(*1,*2)"),
 			PreformUtilities::wording(<relation-names>, VISIBILITY_RELATION_NAME));
+	R_audibility =
+		BinaryPredicates::make_pair(spatial_bp_family,
+			BPTerms::new(infs_thing),
+			BPTerms::new(infs_thing),
+			I"can-hear", I"can-be-heard-by",
+			NULL, Calculus::Schemas::new("TestAudibility(*1,*2)"),
+			PreformUtilities::wording(<relation-names>, AUDIBILITY_RELATION_NAME));
 	R_touchability =
 		BinaryPredicates::make_pair(spatial_bp_family,
 			BPTerms::new(infs_thing),

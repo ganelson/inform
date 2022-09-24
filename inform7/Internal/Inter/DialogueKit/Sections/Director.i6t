@@ -227,7 +227,7 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 					break;
 			if (speaker == nothing) rfalse;
 		} else {
-			if (TestVisibility(player, speaker) == false) rfalse;
+			if (TestAudibility(player, speaker) == false) rfalse;
 		}
 	}
 	! This is optional
@@ -240,7 +240,7 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 					break;
 			if (interlocutor == nothing) rfalse;
 		} else {
-			if (TestVisibility(speaker, interlocutor) == false) rfalse;
+			if (TestAudibility(speaker, interlocutor) == false) rfalse;
 		}
 	}
 	manner = tab-->4;
@@ -619,7 +619,7 @@ Global director_is_active = false;
 		while (true) {
 			speaker = tab-->i;
 			if (speaker == nothing) rtrue;
-			if (TestVisibility(player, speaker) == false) rfalse;
+			if (TestAudibility(player, speaker) == false) rfalse;
 			i++;
 		}
 	}

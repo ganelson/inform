@@ -64,6 +64,7 @@ no built-in verbs "to see" or "to touch".
 
 =
 The verb to be able to see means the visibility relation.
+The verb to be able to hear means the audibility relation.
 The verb to be able to touch means the touchability relation.
 
 @ The special status of the player as the sensory focus, so to speak, is

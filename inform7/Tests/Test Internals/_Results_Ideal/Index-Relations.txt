@@ -464,6 +464,20 @@
     </tr>
     <tr>
         <td align="left" valign="top">
+            dialogue-containment&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            --&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            dialogue line
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
             numerically-greater-than&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">

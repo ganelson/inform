@@ -758,6 +758,16 @@ it's a relation which cannot be asserted true or false.
 	return TestScope(B, A);
 ];
 
+@h Audibility Relation.
+For now, this is the same test as visibility except that it does not require
+light to see by.
+
+=
+[ TestAudibility A B;
+	if (suppress_scope_loops) rtrue;
+	return TestScope(B, A);
+];
+
 @h Touchability Relation.
 We use |ObjectIsUntouchable| to decide whether there is physical access from
 A to B; it's a relation which cannot be asserted true or false.
