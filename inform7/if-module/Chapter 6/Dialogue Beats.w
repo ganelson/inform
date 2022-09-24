@@ -300,6 +300,7 @@ sequencing.
 		pcalc_prop *prop = Propositions::Abstract::to_create_something(K_scene, db->scene_name);
 		Assert::true(prop, CERTAIN_CE);
 		db->as_scene = Scenes::from_named_constant(Instances::latest());
+		Scenes::set_beat(db->as_scene, db);
 	}
 
 @ But now we take care of another five clause types, all to do with the beat being

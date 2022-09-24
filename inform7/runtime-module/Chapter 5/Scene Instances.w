@@ -21,12 +21,19 @@ void RTScenes::compile_extra(instance *I) {
 		else if (sc->ends[0].anchor_condition)
 			Hierarchy::apply_metadata_from_number(pack,
 				INSTANCE_SCENE_STARTS_ON_CONDITION_MD_HL, 1);
+		if (sc->ends[0].as_beat)
+			Hierarchy::apply_metadata_from_iname(pack,
+				INSTANCE_SCENE_STARTS_ON_BEAT_MD_HL, RTDialogueBeats::iname(sc->ends[0].as_beat));
+		if (sc->ends[1].as_beat)
+			Hierarchy::apply_metadata_from_iname(pack,
+				INSTANCE_SCENE_ENDS_ON_BEAT_MD_HL, RTDialogueBeats::iname(sc->ends[1].as_beat));
 		inference_subject *subj = Instances::as_subject(sc->as_instance);
 		if (PropertyInferences::either_or_state(subj, P_recurring) > UNKNOWN_CE)
 			Hierarchy::apply_metadata_from_number(pack,
 				INSTANCE_SCENE_RECURS_MD_HL, 1);
 		int ways_to_end = 0;
 		for (int e=1; e<sc->no_ends; e++) {
+			if (sc->ends[e].as_beat) ways_to_end++;
 			if (sc->ends[e].anchor_connectors) ways_to_end++;
 			if (sc->ends[e].anchor_condition) ways_to_end++;
 		}
@@ -183,6 +190,10 @@ void RTScenes::test_scene_end(scene *sc, int end, inter_symbol *ch_s) {
 		@<Reparse the scene end condition in this new context@>;
 		@<Compile code to test the scene end condition@>;
 	}
+	dialogue_beat *db = sc->ends[end].as_beat;
+	if (db) {
+		@<Compile code to test the beat end condition@>;
+	}
 }
 
 @<Reparse the scene end condition in this new context@> =
@@ -211,6 +222,40 @@ instruction because we're not compiling a loop.)
 	EmitCode::down();
 		current_sentence = sc->ends[end].anchor_condition_set;
 		CompileValues::to_code_val_of_kind(S, K_truth_state);
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::inv(STORE_BIP);
+			EmitCode::down();
+				EmitCode::ref_symbol(K_value, ch_s);
+				EmitCode::val_number(1);
+			EmitCode::up();
+			RTScenes::compile_scene_end(sc, end);
+			EmitCode::rtrue();
+		EmitCode::up();
+	EmitCode::up();
+
+@ If the condition holds, we set the change flag |ch| and abort the search
+through scenes by jumping past the run of tests. (We can't compile a break
+instruction because we're not compiling a loop.)
+
+@<Compile code to test the beat end condition@> =
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		if (end == 0) {
+			EmitCode::call(Hierarchy::find(DIRECTOR_BEAT_BEING_PERFORMED_HL));
+			EmitCode::down();
+				EmitCode::val_iname(K_value, RTDialogueBeats::iname(sc->ends[end].as_beat));
+			EmitCode::up();
+		} else if (end == 1) {
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::call(Hierarchy::find(DIRECTOR_BEAT_BEING_PERFORMED_HL));
+				EmitCode::down();
+					EmitCode::val_iname(K_value, RTDialogueBeats::iname(sc->ends[end].as_beat));
+				EmitCode::up();
+				EmitCode::val_number(0);
+			EmitCode::up();
+		} else internal_error("only ends 0 and 1 can be tied to a beat");
 		EmitCode::code();
 		EmitCode::down();
 			EmitCode::inv(STORE_BIP);

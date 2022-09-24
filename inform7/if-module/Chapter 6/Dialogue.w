@@ -11,6 +11,7 @@ handles that kind, so it won't be dealt with in the code for this feature.
 =
 void Dialogue::start(void) {
 	Dialogue::declare_annotations();
+	PluginCalls::plug(NEW_ACTIVITY_NOTIFY_PLUG, Dialogue::new_activity_notify);
 	PluginCalls::plug(NEW_PROPERTY_NOTIFY_PLUG, Dialogue::new_property_notify);
 	PluginCalls::plug(NEW_BASE_KIND_NOTIFY_PLUG, Dialogue::new_base_kind_notify);
 	PluginCalls::plug(COMPARE_CONSTANT_PLUG, Dialogue::compare_CONSTANT);
@@ -38,18 +39,27 @@ int Dialogue::new_base_kind_notify(kind *new_base, text_stream *name, wording W)
 	return FALSE;
 }
 
-@ The following either/or properties need some compiler support:
+@ The following need some compiler support:
 
 = (early code)
 property *P_performed = NULL;
 property *P_spontaneous = NULL;
+property *P_elaborated = NULL;
+
+activity *AV_offering_a_dialogue_choice = NULL;
+activity *AV_performing_dialogue = NULL;
 
 @ We will need to compile code using this.
 
 =
 <notable-dialogue-properties> ::=
 	performed |
-	spontaneous
+	spontaneous |
+	elaborated
+
+<notable-dialogue-activities> ::=
+	offering |
+	performing
 
 @ =
 int Dialogue::new_property_notify(property *prn) {
@@ -57,6 +67,17 @@ int Dialogue::new_property_notify(property *prn) {
 		switch (<<r>>) {
 			case 0: P_performed = prn; break;
 			case 1: P_spontaneous = prn; break;
+			case 2: P_elaborated = prn; break;
+		}
+	}
+	return FALSE;
+}
+
+int Dialogue::new_activity_notify(activity *av) {
+	if (<notable-dialogue-activities>(av->name)) {
+		switch (<<r>>) {
+			case 0: AV_offering_a_dialogue_choice = av; break;
+			case 1: AV_performing_dialogue = av; break;
 		}
 	}
 	return FALSE;

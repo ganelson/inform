@@ -224,6 +224,8 @@ void Hierarchy::establish(void) {
 @e AFTER_ACTION_HOOK_HL
 @e PERFORMED_HL
 @e RECURRING_HL
+@e OFFERING_A_DIALOGUE_CHOICE_HL
+@e PERFORMING_DIALOGUE_HL
 @e SPONTANEOUS_HL
 @e HEADINGS_HAP
 @e HEADING_INDEXABLE_MD_HL
@@ -265,6 +267,8 @@ void Hierarchy::establish(void) {
 		H_C_T(PERFORMED_HL,                   I"performed")
 		H_C_T(RECURRING_HL,                   I"recurring")
 		H_C_T(SPONTANEOUS_HL,                 I"spontaneous")
+		H_C_T(OFFERING_A_DIALOGUE_CHOICE_HL,  I"OFFERING_A_DIALOGUE_CHOICE")
+		H_C_T(PERFORMING_DIALOGUE_HL,         I"PERFORMING_DIALOGUE")
 		H_BEGIN_AP(HEADINGS_HAP,              I"heading", I"_heading")
 			H_C_U(HEADING_INDEXABLE_MD_HL,    I"^indexable")
 			H_C_U(HEADING_TEXT_MD_HL,         I"^text")
@@ -897,6 +901,8 @@ void Hierarchy::establish(void) {
 @e INSTANCE_IS_ENTIRE_GAME_MD_HL
 @e INSTANCE_SCENE_STARTS_MD_HL
 @e INSTANCE_SCENE_STARTS_ON_CONDITION_MD_HL
+@e INSTANCE_SCENE_STARTS_ON_BEAT_MD_HL
+@e INSTANCE_SCENE_ENDS_ON_BEAT_MD_HL
 @e INSTANCE_SCENE_RECURS_MD_HL
 @e INSTANCE_SCENE_NEVER_ENDS_MD_HL
 @e INSTANCE_IS_EXF_MD_HL
@@ -980,6 +986,7 @@ void Hierarchy::establish(void) {
 @e LINE_ARRAY_HL
 @e LINE_AVAILABLE_FN_HL
 @e LINE_SPEAKER_FN_HL
+@e LINE_INTERLOCUTOR_FN_HL
 @e LINE_MENTIONING_FN_HL
 @e LINE_ACTION_FN_HL
 @e CHOICE_ARRAY_MD_HL
@@ -1016,6 +1023,8 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_IS_ENTIRE_GAME_MD_HL,            I"^is_entire_game")
 			H_C_U(INSTANCE_SCENE_STARTS_MD_HL,              I"^starts")
 			H_C_U(INSTANCE_SCENE_STARTS_ON_CONDITION_MD_HL, I"^starts_on_condition")
+			H_C_U(INSTANCE_SCENE_STARTS_ON_BEAT_MD_HL,      I"^starts_on_beat")
+			H_C_U(INSTANCE_SCENE_ENDS_ON_BEAT_MD_HL,        I"^ends_on_beat")
 			H_C_U(INSTANCE_SCENE_RECURS_MD_HL,              I"^recurs")
 			H_C_U(INSTANCE_SCENE_NEVER_ENDS_MD_HL,          I"^never_ends")
 			H_C_U(INSTANCE_SSF_MD_HL,                       I"^scene_status_fn")
@@ -1091,6 +1100,7 @@ void Hierarchy::establish(void) {
 			H_C_U(LINE_ARRAY_HL,                            I"line_data")
 			H_F_U(LINE_AVAILABLE_FN_HL,                     I"available_fn")
 			H_F_U(LINE_SPEAKER_FN_HL,                       I"speaker_fn")
+			H_F_U(LINE_INTERLOCUTOR_FN_HL,                  I"interlocutor_fn")
 			H_F_U(LINE_MENTIONING_FN_HL,                    I"mentioning_fn")
 			H_F_U(LINE_ACTION_FN_HL,                        I"action_fn")
 			H_C_U(CHOICE_ARRAY_MD_HL,                       I"^choice_data")

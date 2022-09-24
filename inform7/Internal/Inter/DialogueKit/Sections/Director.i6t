@@ -73,6 +73,8 @@ Array DirectorStackPC --> MAX_BEAT_PERFORMANCE_NESTING;
 Array DirectorStackChoices --> MAX_BEAT_PERFORMANCE_NESTING;
 Array DirectorStackMin --> MAX_BEAT_PERFORMANCE_NESTING;
 Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackLastSpeaker --> MAX_BEAT_PERFORMANCE_NESTING;
+Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
 
 [ DirectorPush db max pc;
 	if (director_sp >= MAX_BEAT_PERFORMANCE_NESTING)
@@ -83,6 +85,8 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	DirectorStackPC-->director_sp = pc;
 	DirectorStackMin-->director_sp = max;
 	DirectorStackStart-->director_sp = 0;
+	DirectorStackLastSpeaker-->director_sp = nothing;
+	DirectorStackLastInterlocutor-->director_sp = nothing;
 	if (DirectorStackChoices-->director_sp == 0) {
 		DirectorStackChoices-->director_sp = BlkValueCreate(LIST_OF_TY);
 		BlkValueWrite(DirectorStackChoices-->director_sp, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
@@ -98,7 +102,7 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	if (debug_dialogue >= 2) { print "-- Pop to: "; DirectorTraceStack(); }
 ];
 
-[ DirectorPerform db;
+[ DirectorPerform db tab;
 	if ((db == 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
 	if (debug_dialogue) {
 		print "-- Performing ", (PrintDialogueBeatName) db, "^";
@@ -107,10 +111,21 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	latest_performed_beat = db;
 	DirectorPush(db, 0, 0);
 	DirectorStackStart-->(director_sp - 1) = 1;
+	tab = TableOfDialogueBeats-->db;
+	if (tab-->3) DetectSceneChange();
 	DirectorRun(0);
+	if (tab-->3) DetectSceneChange();
 	if (debug_dialogue) {
 		print "-- Performance of ", (PrintDialogueBeatName) db, " ended^";
 	}
+];
+
+[ DirectorBeatBeingPerformed db x;
+	if ((db >= 1) && (db <= NO_DIALOGUE_BEATS))
+		for (x=0: x<director_sp: x++)
+			if (DirectorStackBeat-->x == db)
+				rtrue;
+	rfalse;
 ];
 
 [ PERFORM_OPENING_BEAT_R db;
@@ -169,6 +184,7 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 		if (deadflag) { director_sp = 0; return; }
 		if (LIST_OF_TY_GetLength(DirectorStackChoices-->(director_sp-1)) > 0) return;
 		tab = TableOfDialogueBeats-->(DirectorStackBeat-->(director_sp-1));
+		if ((tab-->3) && (scene_status-->(tab-->3 - 1) == 0)) { DirectorPop(); return; }
 		structure = tab-->2;
 		pc = DirectorStackPC-->(director_sp-1);
 		if (pc == -1) { DirectorPop(); return; }
@@ -207,6 +223,83 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	}
 ];
 
+Global director_current_speaker;
+Global director_current_interlocutor;
+Global director_current_style = 1;
+[ DirectorCurrentLineSpeaker;
+	return director_current_speaker;
+];
+[ DirectorCurrentLineInterlocutor;
+	return director_current_interlocutor;
+];
+[ DirectorCurrentLineStyle;
+	return director_current_style;
+];
+
+Global director_speaker_list;
+[ DirectorSelectConverser val select_speaker speaker len i best best_score this_score x best_count;
+	speaker = val;
+	if (metaclass(val) == Routine) {
+		if (director_speaker_list == 0) {
+			director_speaker_list = BlkValueCreate(LIST_OF_TY);
+			BlkValueWrite(director_speaker_list, LIST_ITEM_KOV_F, OBJECT_TY);
+		} else {
+			LIST_OF_TY_SetLength(director_speaker_list, 0);
+		}
+		objectloop (speaker ofclass K2_thing)
+			if ((speaker ~= player) && (val(speaker)))
+				LIST_OF_TY_InsertItem(director_speaker_list, speaker);
+		len = LIST_OF_TY_GetLength(director_speaker_list);
+		if (len == 0) return nothing;
+		best = -1;
+		best_score = -1;
+		best_count = 0;
+		for (i=1: i<=len: i++) {
+			speaker = LIST_OF_TY_GetItem(director_speaker_list, i);
+			this_score = DirectorScoreConverser(speaker, select_speaker);
+			if (this_score > best_score) {
+				best = speaker;
+				best_score = this_score;
+				best_count = 1;
+			} else if (this_score == best_score) {
+				best_count++;
+			}
+			! print (name) speaker, " scores ", this_score, "^";
+		}
+		if (best_count < 1) "*** impossibly low ***";
+		! print best_count, " option(s)^";
+		if (best_count == 1) return best;
+		x = random(best_count);
+		for (i=1: i<=len: i++) {
+			speaker = LIST_OF_TY_GetItem(director_speaker_list, i);
+			this_score = DirectorScoreConverser(speaker, select_speaker);
+			if (this_score == best_score) {
+				x--;
+				if (x == 0) return speaker;
+			}
+		}
+		return best;
+	}
+	return speaker;
+];
+
+[ DirectorScoreConverser speaker select_speaker this_score;
+	if (select_speaker) {
+		if (OnStage(speaker, -1)) this_score = this_score + 16;
+		if (TestAudibility(player, speaker)) this_score = this_score + 8;
+		if (speaker == DirectorStackLastInterlocutor-->(director_sp-1)) this_score = this_score + 4;
+		if (speaker ofclass K8_person) this_score = this_score + 2;
+		if (speaker ~= DirectorStackLastSpeaker-->(director_sp-1)) this_score = this_score + 1;
+	} else {
+		if (OnStage(speaker, -1)) this_score = this_score + 16;
+		if (TestAudibility(player, speaker)) this_score = this_score + 8;
+		if (speaker == DirectorStackLastSpeaker-->(director_sp-1)) this_score = this_score + 4;
+		if (speaker ofclass K8_person) this_score = this_score + 2;
+		if (speaker ~= DirectorStackLastInterlocutor-->(director_sp-1)) this_score = this_score + 1;
+	}
+	return this_score;
+];
+
 [ DirectorPerformLine dl tab fn action_fn speaker interlocutor manner mentioning;
 	if (dl == 0) rfalse;
 	line_performance_count++;
@@ -218,30 +311,13 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	fn = tab-->0; if ((fn) && (fn() == false)) rfalse;
 
 	! A speaker matching the description must be found, unless it's narration
-	speaker = tab-->1;
-	if (speaker) {
-		if (metaclass(speaker) == Routine) {
-			fn = speaker;
-			objectloop (speaker ofclass K8_person)
-				if ((speaker ~= player) && (fn(speaker)))
-					break;
-			if (speaker == nothing) rfalse;
-		} else {
-			if (TestAudibility(player, speaker) == false) rfalse;
-		}
+	if (tab-->1) {
+		speaker = DirectorSelectConverser(tab-->1, true);
+		if ((speaker == nothing) || (TestAudibility(player, speaker) == false)) rfalse;
 	}
-	! This is optional
-	interlocutor = tab-->2;
-	if (interlocutor) {
-		if (metaclass(interlocutor) == Routine) {
-			fn = interlocutor;
-			objectloop (interlocutor ofclass K8_person)
-				if ((interlocutor ~= speaker) && (fn(interlocutor)))
-					break;
-			if (interlocutor == nothing) rfalse;
-		} else {
-			if (TestAudibility(speaker, interlocutor) == false) rfalse;
-		}
+	if (tab-->2) {
+		interlocutor = DirectorSelectConverser(tab-->2, false);
+		if ((interlocutor == nothing) || (TestAudibility(speaker, interlocutor) == false)) rfalse;
 	}
 	manner = tab-->4;
 	action_fn = tab-->6;
@@ -249,23 +325,23 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	! If the line is "after ..." some action, that action must succeed
 	if (action_fn) if (action_fn(3, speaker) == false) rfalse;
 
-	if (speaker) {
-		print (name) speaker;
-		if ((manner ~= 1) || (interlocutor)) {
-			print " (";
-			if (manner ~= 1) {
-				print (PrintPerformanceStyleName) manner;
-				if (interlocutor) print " ";
-			}
-			if (interlocutor) print "to ", (name) interlocutor;
-			print ")";
-		}
-		print ": ~";
+	DirectorStackLastSpeaker-->(director_sp-1) = speaker;
+	DirectorStackLastInterlocutor-->(director_sp-1) = interlocutor;
+
+	DivideParagraphPoint();
+	director_current_speaker = speaker;
+	director_current_interlocutor = interlocutor;
+	director_current_style = manner;
+	if (PERFORMING_DIALOGUE == 0) "*** no activity ***";
+	else {
+		BeginActivity(PERFORMING_DIALOGUE, dl);
+		if ((ForActivity(PERFORMING_DIALOGUE, dl)) &&
+			(RulebookFailed())) rfalse;
+		EndActivity(PERFORMING_DIALOGUE, dl);
 	}
-	TEXT_TY_Say(tab-->3);
-	if (speaker) print "~";
-	print "^";
-	say__p = 1;
+	director_current_speaker = nothing;
+	director_current_interlocutor = nothing;
+	director_current_style = 1;
 	DivideParagraphPoint();
 
 	WriteGProperty(DIALOGUE_LINE_TY, dl, performed, 1);
@@ -322,14 +398,14 @@ Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
 	switch (decision) {
 		1: "*** blank dtd ***";
 		2: 	DivideParagraphPoint();
-			for (n = 1: n <= count: n++) {
-				print "(", n, ") ";
-				dc = LIST_OF_TY_GetItem(list, n);
-				tab = TableOfDialogueChoices-->dc;
-				TEXT_TY_Say(tab-->2);
-				print "^";
+			if (OFFERING_A_DIALOGUE_CHOICE == 0) "*** no activity ***";
+			else {
+				BeginActivity(OFFERING_A_DIALOGUE_CHOICE, list);
+				if ((ForActivity(OFFERING_A_DIALOGUE_CHOICE, list)) &&
+					(RulebookFailed())) rfalse;
+				EndActivity(OFFERING_A_DIALOGUE_CHOICE, list);
 			}
-			print "^";
+			DivideParagraphPoint();
 			n = DirectorPickANumber(count);
 			dc = LIST_OF_TY_GetItem(list, n);
 			LIST_OF_TY_SetLength(list, 0);
@@ -684,4 +760,18 @@ Global director_is_active = false;
 		instruction = (structure-->pc)/100;
 	}
 	rfalse;
+];
+
+[ DirectorLineContent dl text tab;
+	if ((dl == 0) || (dl > NO_DIALOGUE_LINES)) return text;
+	tab = TableOfDialogueLines-->dl;
+	BlkValueCopy(text, tab-->3);
+	return text;
+];
+
+[ DirectorChoiceContent dc text tab;
+	if ((dc == 0) || (dc > NO_DIALOGUE_CHOICES)) return text;
+	tab = TableOfDialogueChoices-->dc;
+	BlkValueCopy(text, tab-->2);
+	return text;
 ];

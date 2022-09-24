@@ -126,6 +126,7 @@ typedef struct scene {
 typedef struct scene_end {
 	struct wording end_names; /* for ends 2, 3, ...: e.g. "badly" */
 	struct rulebook *end_rulebook; /* rules to apply then */
+	struct dialogue_beat *as_beat; /* only for those scenes equated to beats */
 	struct parse_node *anchor_condition;
 	struct scene_connector *anchor_connectors; /* linked list */
 	struct parse_node *anchor_condition_set; /* where set */
@@ -176,6 +177,7 @@ void Scenes::new_scene(instance *I) {
 	sc->start_of_play = FALSE;
 	for (int end=0; end<sc->no_ends; end++) {
 		sc->ends[end].anchor_condition = NULL;
+		sc->ends[end].as_beat = NULL;
 		sc->ends[end].anchor_connectors = NULL;
 		Scenes::new_scene_rulebook(sc, end);
 	}
@@ -239,6 +241,14 @@ int Scenes::parse_scene_end_name(scene *sc, wording EW, int create) {
 		"project's Settings panel. Note that the ordinary 'begins' and 'ends' "
 		"count as two of those, so you can only name up to 13 or 29 more specific "
 		"ways for the scene to end.)");
+
+@h Tie the ends of a scene to a dialogue beat.
+
+=
+void Scenes::set_beat(scene *sc, dialogue_beat *db) {
+	sc->ends[0].as_beat = db;
+	sc->ends[1].as_beat = db;
+}
 
 @h Scene end rulebooks.
 

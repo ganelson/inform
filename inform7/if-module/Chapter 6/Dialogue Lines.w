@@ -25,6 +25,7 @@ dialogue_line *DialogueLines::new(parse_node *PN) {
 	dialogue_line *dl = CREATE(dialogue_line);
 	@<Initialise the line@>;
 	@<Parse the clauses just enough to classify them@>;
+	@<Decide if this is elaborated@>;
 	@<Look for a line name@>;
 	dl->as_node = DialogueNodes::add_to_current_beat(L, dl, NULL);
 	@<Add the line to the world model@>;
@@ -37,13 +38,15 @@ typedef struct dialogue_line {
 	struct instance *as_instance;
 	struct parse_node *line_at;
 	int narration;
+	int elaborated;
 	int without_speaking;
 	struct wording speaker_text;
 	struct wording speech_text;
 	struct parse_node *speaker_description;
+	struct wording interlocutor_text;
+	struct parse_node *interlocutor_description;
 	struct linked_list *mentioning; /* of |parse_node| */
 	struct performance_style *how_performed;
-	struct instance *interlocutor;
 	struct dialogue_node *as_node;
 	struct dialogue_line_compilation_data compilation_data;
 	CLASS_DEFINITION
@@ -53,14 +56,16 @@ typedef struct dialogue_line {
 	dl->line_name = EMPTY_WORDING;
 	dl->line_at = PN;
 	dl->narration = FALSE;
+	dl->elaborated = FALSE;
 	dl->speaker_text = EMPTY_WORDING;
+	dl->interlocutor_text = EMPTY_WORDING;
 	dl->speaker_description = NULL;
 	dl->without_speaking = FALSE;
 	dl->compilation_data = RTDialogueLines::new(PN, dl);
 	dl->speech_text = EMPTY_WORDING;
 	dl->mentioning = NEW_LINKED_LIST(parse_node);
 	dl->how_performed = NULL;
-	dl->interlocutor = NULL;
+	dl->interlocutor_description = NULL;
 
 @<Parse the clauses just enough to classify them@> =
 	for (parse_node *clause = PN->down; clause; clause = clause->next) {
@@ -68,6 +73,9 @@ typedef struct dialogue_line {
 		if (Node::is(clause, DIALOGUE_CLAUSE_NT)) {
 			<dialogue-line-clause>(CW);
 			Annotations::write_int(clause, dialogue_line_clause_ANNOT, <<r>>);
+			if (<<r>> == TO_DLC) {
+				dl->interlocutor_text = GET_RW(<dialogue-line-clause>, 1);
+			}
 		} else if (Node::is(clause, DIALOGUE_SPEAKER_NT)) {
 			if (<dialogue-is-narration>(CW))
 				dl->narration = TRUE;
@@ -77,6 +85,20 @@ typedef struct dialogue_line {
 			dl->speech_text = CW;
 		} else internal_error("damaged DIALOGUE_LINE_NT subtree");
 	}
+
+@<Decide if this is elaborated@> =
+	int wn = Wordings::first_wn(dl->speech_text);
+	if (wn >= 0) {
+		int quote_marks = 0;
+		wchar_t *p = Lexer::word_text(wn);
+		for (int i=0; p[i]; i++)
+			if ((p[i] == '\'') &&
+				((i<=1) || (p[i+1] == '\"') ||
+					(Characters::is_whitespace(p[i+1])) || (Characters::is_whitespace(p[i-1]))))
+				quote_marks++;
+		if (quote_marks >= 2) dl->elaborated = TRUE;
+	}
+	if (dl->narration) dl->elaborated = FALSE;
 
 @ The special speaker "narration" marks out a line which isn't a speech at all:
 
@@ -207,12 +229,6 @@ void DialogueLines::decide_line_mentions(void) {
 						DialogueBeats::parse_topic(dl->mentioning, AL, DIALOGUE_LINE_NT);
 						break;
 					}
-					case TO_DLC: {
-						<dialogue-line-clause>(CW);
-						wording A = GET_RW(<dialogue-line-clause>, 1);
-						dl->interlocutor = DialogueLines::parse_interlocutor(A);
-						break;
-					}
 					case WITHOUT_SPEAKING_DLC:
 						dl->without_speaking = TRUE;
 						break;
@@ -240,8 +256,19 @@ void DialogueLines::decide_line_mentions(void) {
 				}
 			}
 		}
-		if (dl->narration == FALSE) @<Parse the speaker description@>;
+		if (dl->narration == FALSE) {
+			@<Parse the speaker description@>;
+			if (Wordings::nonempty(dl->interlocutor_text)) @<Parse the interlocutor description@>;
+		}
 		if (dl->how_performed == NULL) dl->how_performed = PerformanceStyles::default();
+		if ((dl->elaborated) && (P_elaborated)) {
+			inference_subject *subj = Instances::as_subject(dl->as_instance);
+			pcalc_prop *prop = AdjectivalPredicates::new_atom_on_x(
+				EitherOrProperties::as_adjective(P_elaborated), FALSE);
+			prop = Propositions::concatenate(
+				Propositions::Abstract::prop_to_set_kind(K_dialogue_line), prop);
+			Assert::true_about(prop, subj, CERTAIN_CE);		
+		}
 	}
 }
 
@@ -289,40 +316,33 @@ void DialogueLines::decide_line_mentions(void) {
 		Problems::issue_problem_end();
 	}
 
-@ Note that the interlocutor -- the person addressed "to", if any -- must be
-specified exactly, and not simply given a generic description like "somebody".
-
-=
-instance *DialogueLines::parse_interlocutor(wording CW) {
-	if (<s-type-expression-uncached>(CW)) {
+@<Parse the interlocutor description@> =
+	wording S = dl->interlocutor_text;
+	if (<s-type-expression-uncached>(S)) {
 		parse_node *desc = <<rp>>;
-		instance *I = Rvalues::to_instance(desc);
-		if (I) {
-			kind *K = Instances::to_kind(I);
-			if (Kinds::Behaviour::is_object(K)) return I;
-		}
 		kind *K = Specifications::to_kind(desc);
-		LOG("Interlocutor parsed as $T\n", desc);
-		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, CW);
-		Problems::quote_kind(3, K);
-		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineToNonObject));
-		Problems::issue_problem_segment(
-			"The dialogue line %1 is apparently spoken to '%2', but that "
-			"seems to describe %3, not an object.");
-		Problems::issue_problem_end();
-		return NULL;
+		if (Kinds::Behaviour::is_object(K)) {
+			dl->interlocutor_description = desc;
+		} else {
+			LOG("interlocutor parsed as $T\n", desc);
+			Problems::quote_source(1, current_sentence);
+			Problems::quote_wording(2, S);
+			Problems::quote_kind(3, K);
+			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineToNonObject));
+			Problems::issue_problem_segment(
+				"The dialogue line %1 is apparently spoken by '%2', but that "
+				"seems to describe %3, not a person or some other object.");
+			Problems::issue_problem_end();
+		}
 	} else {
 		Problems::quote_source(1, current_sentence);
-		Problems::quote_wording(2, CW);
+		Problems::quote_wording(2, S);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineToUnknown));
 		Problems::issue_problem_segment(
-			"The dialogue line %1 is apparently spoken to '%2', but that "
+			"The dialogue line %1 is apparently spoken by '%2', but that "
 			"isn't something I recognise as the name of a thing or person.");
 		Problems::issue_problem_end();
-		return NULL;
 	}
-}
 
 @ So what remains to be done? The unparsed clauses remaining are |IF| and |UNLESS|,
 |BEFORE| and |AFTER|, |NOW|, and the various story-ending clauses: but all of those

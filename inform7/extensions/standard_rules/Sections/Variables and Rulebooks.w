@@ -1289,6 +1289,8 @@ A dialogue line can be performed or unperformed. A dialogue line is usually
 unperformed.
 A dialogue line can be recurring or non-recurring. A dialogue line is usually
 non-recurring.
+A dialogue line can be elaborated or unelaborated. A dialogue line is usually
+unelaborated.
 
 A dialogue choice can be performed or unperformed. A dialogue choice is usually
 unperformed.
@@ -1307,6 +1309,17 @@ To alter the live conversational subject list to (L - list of objects):
 	(- DirectorAlterLiveSubjectList({-by-reference:L}); -).
 To decide what list of objects is the list of speakers required by (B - dialogue beat):
 	(- DirectorLiveRequiredList({-new:list of objects}, {B}) -).
+To decide what text is the textual content of (L - dialogue line):
+	(- DirectorLineContent({L}, {-new:text}) -).
+To decide what text is the textual content of (C - dialogue choice):
+	(- DirectorChoiceContent({C}, {-new:text}) -).
+
+To decide what object is the current dialogue line speaker:
+	(- DirectorCurrentLineSpeaker() -).
+To decide what object is the current dialogue line interlocutor:
+	(- DirectorCurrentLineInterlocutor() -).
+To decide what performance style is the current dialogue line style:
+	(- DirectorCurrentLineStyle() -).
 
 To perform (B - a dialogue beat):
 	ask DialogueKit to perform B;
@@ -1325,6 +1338,9 @@ Definition: A dialogue beat is relevant rather than irrelevant if Inter routine
 
 Definition: A dialogue line is available rather than unavailable if Inter routine
 	"DirectorLineAvailable" says so (it meets all its if and unless conditions).
+
+Definition: A dialogue beat is being performed if Inter routine
+	"DirectorBeatBeingPerformed" says so (it is currently having its lines performed).
 
 To abide by dialogue before action choices:
 	(- if (DirectorBeforeAction()) rtrue; -).

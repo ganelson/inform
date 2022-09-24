@@ -471,6 +471,17 @@ int PluginCalls::new_permission_notify(property_permission *pp) {
 been created, which they can use to spot properties with special significance
 to them.
 
+@e NEW_ACTIVITY_NOTIFY_PLUG
+
+=
+int PluginCalls::new_activity_notify(activity *act) {
+	PLUGINS_CALL(NEW_ACTIVITY_NOTIFY_PLUG, act);
+}
+
+@ Called from //knowledge: Properties// to warn plugins that a property has
+been created, which they can use to spot properties with special significance
+to them.
+
 @e NEW_PROPERTY_NOTIFY_PLUG
 
 =

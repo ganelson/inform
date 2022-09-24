@@ -10,6 +10,7 @@ typedef struct dialogue_line_compilation_data {
 	struct parse_node *where_created;
 	struct inter_name *available_fn_iname;
 	struct inter_name *speaker_fn_iname;
+	struct inter_name *interlocutor_fn_iname;
 	struct inter_name *mentioning_fn_iname;
 	struct inter_name *action_fn_iname;
 	struct inter_name *line_array_iname;
@@ -20,6 +21,7 @@ dialogue_line_compilation_data RTDialogueLines::new(parse_node *PN, dialogue_lin
 	dlcd.where_created = PN;
 	dlcd.available_fn_iname = NULL;
 	dlcd.speaker_fn_iname = NULL;
+	dlcd.interlocutor_fn_iname = NULL;
 	dlcd.mentioning_fn_iname = NULL;
 	dlcd.action_fn_iname = NULL;
 	dlcd.line_array_iname = NULL;
@@ -50,6 +52,13 @@ inter_name *RTDialogueLines::speaker_fn_iname(dialogue_line *dl) {
 		dl->compilation_data.speaker_fn_iname =
 			Hierarchy::make_iname_in(LINE_SPEAKER_FN_HL, RTDialogueLines::package(dl));
 	return dl->compilation_data.speaker_fn_iname;
+}
+
+inter_name *RTDialogueLines::interlocutor_fn_iname(dialogue_line *dl) {
+	if (dl->compilation_data.interlocutor_fn_iname == NULL)
+		dl->compilation_data.interlocutor_fn_iname =
+			Hierarchy::make_iname_in(LINE_INTERLOCUTOR_FN_HL, RTDialogueLines::package(dl));
+	return dl->compilation_data.interlocutor_fn_iname;
 }
 
 inter_name *RTDialogueLines::mentioning_fn_iname(dialogue_line *dl) {
@@ -84,7 +93,9 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	current_sentence = dl->compilation_data.where_created;
 	package_request *PR = RTDialogueLines::package(dl);
 	inter_name *array_iname = RTDialogueLines::line_array_iname(dl);
-	int make_availability_function = FALSE, make_speaker_function = FALSE, make_mentioning_function = FALSE, make_action_function = FALSE;
+	int make_availability_function = FALSE, make_speaker_function = FALSE,
+		make_interlocutor_function = FALSE,
+		make_mentioning_function = FALSE, make_action_function = FALSE;
 	int ending = FALSE, ending_finally = FALSE;
 	wording EW = EMPTY_WORDING;
 	linked_list *now_list = NEW_LINKED_LIST(parse_node);
@@ -105,6 +116,7 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	EmitArrays::end(save);
 	if (make_availability_function) @<Compile the available function@>;
 	if (make_speaker_function) @<Compile the speaker function@>;
+	if (make_interlocutor_function) @<Compile the interlocutor function@>;
 	if (make_mentioning_function) @<Compile the mentioning function@>;
 	if (make_action_function) @<Compile the action function@>;
 }
@@ -176,18 +188,38 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	}
 
 @<Write the interlocutor entry@> =
-	if (dl->interlocutor) {
-		EmitArrays::iname_entry(RTInstances::value_iname(dl->interlocutor));
+	if (dl->interlocutor_description) {
+		instance *I = Rvalues::to_instance(dl->interlocutor_description);
+		if (I) {
+			EmitArrays::iname_entry(RTInstances::value_iname(I));
+		} else {
+			make_interlocutor_function = TRUE;
+			EmitArrays::iname_entry(RTDialogueLines::interlocutor_fn_iname(dl));
+		}
 	} else {
 		EmitArrays::numeric_entry(0);
 	}
 
 @<Write the speech entry@> =
-	if (<s-literal>(dl->speech_text)) {
-		parse_node *text = <<rp>>;
-		CompileValues::to_array_entry_of_kind(text, K_text);
+	if (<quoted-text-with-subs>(dl->speech_text)) {
+		stack_frame *frame = Frames::new_nonphrasal();
+		frame->shared_variables = SharedVariables::new_access_list();
+		if (AV_performing_dialogue)
+			SharedVariables::add_set_to_access_list(
+				Frames::get_shared_variable_access_list(),
+					AV_performing_dialogue->activity_variables);
+		text_substitution *ts =
+			TextSubstitutions::new_text_substitution(dl->speech_text, frame, NULL, -1);		
+		EmitArrays::iname_entry(TextSubstitutions::value_iname(ts));
+		Frames::remove_nonphrase_stack_frame();
 	} else {
-		internal_error("somehow not a literal text");
+		parse_node *text = NULL;
+		if (<s-literal>(dl->speech_text)) {
+			text = <<rp>>;
+		} else {
+			internal_error("somehow not a literal text");
+		}
+		CompileValues::to_array_entry_of_kind(text, K_text);
 	}
 
 @<Write the style entry@> =
@@ -285,6 +317,39 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 					TypecheckPropositions::tc_no_problem_reporting());
 				CompilePropositions::to_test_as_condition(
 					Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, speaker), prop);
+			} else {
+				internal_error("cannot test");
+			}
+		}	
+		EmitCode::code();
+		EmitCode::down();
+			EmitCode::rtrue();
+		EmitCode::up();
+	EmitCode::up();					
+	EmitCode::rfalse();
+	Functions::end(save);
+
+@<Compile the interlocutor function@> =
+	packaging_state save = Functions::begin(RTDialogueLines::interlocutor_fn_iname(dl));
+	local_variable *interlocutor = LocalVariables::new_internal_commented(I"interlocutor", I"potential interlocutor");
+	inter_symbol *interlocutor_s = LocalVariables::declare(interlocutor);
+	parse_node *desc = dl->interlocutor_description;
+	instance *I = Rvalues::to_instance(desc);
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		if (I) {
+			EmitCode::inv(EQ_BIP);
+			EmitCode::down();
+				EmitCode::val_symbol(K_value, interlocutor_s);
+				EmitCode::val_iname(K_value, RTInstances::value_iname(I));
+			EmitCode::up();		
+		} else {
+			pcalc_prop *prop = Descriptions::to_proposition(desc);
+			if (prop) {
+				TypecheckPropositions::type_check(prop,
+					TypecheckPropositions::tc_no_problem_reporting());
+				CompilePropositions::to_test_as_condition(
+					Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, interlocutor), prop);
 			} else {
 				internal_error("cannot test");
 			}

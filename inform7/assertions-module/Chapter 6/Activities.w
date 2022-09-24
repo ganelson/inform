@@ -90,6 +90,9 @@ activity *Activities::new(kind *K, wording W) {
 	av->after_rules = Activities::make_rulebook(av, 2, future_action_flag);
 
 	Activities::set_std(av);
+
+	PluginCalls::new_activity_notify(av);
+
 	return av;
 }
 

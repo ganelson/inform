@@ -712,3 +712,43 @@ For printing a locale paragraph about a thing (called the item)
 				concealed items, prefacing with is/are, listing marked items only;
 			say ".[paragraph break]";
 	continue the activity.
+
+@h Dialogue support.
+
+=
+Section 8 - Dialogue (for dialogue language element only)
+
+Offering something is an activity on lists of dialogue choices.
+
+For offering a list of dialogue choices (called L)
+	(this is the default offering dialogue choices rule):
+	let N be 1;
+	repeat with C running through L:
+		say "([N]) [textual content of C][line break]";
+		increase N by 1.
+
+Performing something is an activity on dialogue lines.
+
+The performing activity has an object called the speaker.
+
+The performing activity has an object called the interlocutor.
+
+The performing activity has a performance style called the style.
+
+Before performing a dialogue line:
+	now the speaker is the current dialogue line speaker;
+	now the interlocutor is the current dialogue line interlocutor;
+	now the style is the current dialogue line style.
+
+For performing a dialogue line (called L)
+	(this is the default dialogue performance rule):
+	if L is elaborated:
+		say "[textual content of L][line break]";
+	otherwise:
+		if the speaker is something:
+			say "[The speaker]";
+			if the interlocutor is something:
+				say " (to [the interlocutor])";
+			say ": '[textual content of L]'[line break]";
+		otherwise:
+			say "[textual content of L][line break]".
