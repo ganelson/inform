@@ -73,7 +73,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../services.html">Services</a></li><li><a href="index.html">kinds</a></li><li><a href="index.html#2">Chapter 2: Kinds</a></li><li><b>Using Kinds</b></li></ul></div>
 <p class="purpose">To determine the characteristics of different kinds, enabling them to be used in practice.</p>
 
-<ul class="toc"><li><a href="2-uk.html#SP1">&#167;1. Names of kinds</a></li><li><a href="2-uk.html#SP2">&#167;2. Being an object</a></li><li><a href="2-uk.html#SP3">&#167;3. Definiteness</a></li><li><a href="2-uk.html#SP5">&#167;5. (A) How this came into being</a></li><li><a href="2-uk.html#SP12">&#167;12. (B) Constructing kinds</a></li><li><a href="2-uk.html#SP13">&#167;13. (C) Compatibility with other kinds</a></li><li><a href="2-uk.html#SP14">&#167;14. (D) How constant values of this kind are expressed</a></li><li><a href="2-uk.html#SP16">&#167;16. (G) Performing arithmetic</a></li><li><a href="2-uk.html#SP19">&#167;19. (H) An identifier name</a></li><li><a href="2-uk.html#SP20">&#167;20. (I) Storing values at run-time</a></li><li><a href="2-uk.html#SP25">&#167;25. (K) Indexing and documentation</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="2-uk.html#SP1">&#167;1. Names of kinds</a></li><li><a href="2-uk.html#SP2">&#167;2. Being an object</a></li><li><a href="2-uk.html#SP3">&#167;3. Definiteness</a></li><li><a href="2-uk.html#SP5">&#167;5. (A) How this came into being</a></li><li><a href="2-uk.html#SP12">&#167;12. (B) Constructing kinds</a></li><li><a href="2-uk.html#SP13">&#167;13. (C) Compatibility with other kinds</a></li><li><a href="2-uk.html#SP14">&#167;14. (D) How constant values of this kind are expressed</a></li><li><a href="2-uk.html#SP17">&#167;17. (G) Performing arithmetic</a></li><li><a href="2-uk.html#SP20">&#167;20. (H) An identifier name</a></li><li><a href="2-uk.html#SP21">&#167;21. (I) Storing values at run-time</a></li><li><a href="2-uk.html#SP26">&#167;26. (K) Indexing and documentation</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Names of kinds. </b></p>
 
@@ -295,7 +295,17 @@ kilopascals" might be a notation for a kind where constants are not named.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>The following returns the compilation method (a constant in the form <span class="extract"><span class="extract-syntax">*_CCM</span></span>,
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15.  </b>And some kinds have values which are implicit in the source text, but never
+spelled out with direct assertions &mdash; dialogue beats, for example.
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Kinds::Behaviour::forbid_assertion_creation</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">forbid_assertion_creation</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16.  </b>The following returns the compilation method (a constant in the form <span class="extract"><span class="extract-syntax">*_CCM</span></span>,
 defined in "Data Types.w") used when compiling an actual constant value
 specification of this kind: in other words, when compiling an I6
 value for a constant of this kind.
@@ -307,7 +317,7 @@ value for a constant of this kind.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">constant_compilation_method</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. (G) Performing arithmetic. </b>Comparisons made by calling an I6 routine are slower in the VM than using the
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. (G) Performing arithmetic. </b>Comparisons made by calling an I6 routine are slower in the VM than using the
 standard <span class="extract"><span class="extract-syntax">&lt;</span></span> or <span class="extract"><span class="extract-syntax">&gt;</span></span> operators for signed comparison, so we use them only if
 we have to.
 </p>
@@ -323,7 +333,7 @@ we have to.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-kc2.html#SP17" class="function-link"><span class="function-syntax">KindConstructors::get_comparison_fn_identifier</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>See "Dimensions.w" for a full account of these ideas. In theory, our
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>See "Dimensions.w" for a full account of these ideas. In theory, our
 polymorphic system of arithmetic allows us to add or multiply any kinds
 according to rules provided in the source text. In practice we have to keep
 track of dimensions, and the following routines connect the code in the
@@ -338,7 +348,7 @@ track of dimensions, and the following routines connect the code in the
 
 <span class="reserved-syntax">unit_sequence</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_dimensional_form</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_dimensional_form</span></span>:<br/>Describing Kinds - <a href="2-dk.html#SP24_1">&#167;24.1</a><br/>Dimensions - <a href="3-dmn.html#SP23">&#167;23</a>, <a href="3-dmn.html#SP28_2">&#167;28.2</a>, <a href="3-dmn.html#SP28_3">&#167;28.3</a>, <a href="3-dmn.html#SP28_4">&#167;28.4</a>, <a href="3-dmn.html#SP29">&#167;29</a>, <a href="3-dmn.html#SP30">&#167;30</a>, <a href="3-dmn.html#SP31">&#167;31</a>, <a href="3-dmn.html#SP23_1">&#167;23.1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-uk.html#SP17" class="function-link"><span class="function-syntax">Kinds::Behaviour::is_quasinumerical</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="2-uk.html#SP18" class="function-link"><span class="function-syntax">Kinds::Behaviour::is_quasinumerical</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">) == </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">construct</span><span class="plain-syntax"> == </span><span class="identifier-syntax">CON_INTERMEDIATE</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">intermediate_result</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dimensional_form</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
@@ -364,7 +374,7 @@ track of dimensions, and the following routines connect the code in the
 <span class="plain-syntax">    #</span><span class="identifier-syntax">endif</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>The dimensional rules for K are the conventions on whether arithmetic
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>The dimensional rules for K are the conventions on whether arithmetic
 operations can be applied, and if so, what kind the result has.
 </p>
 
@@ -374,7 +384,7 @@ operations can be applied, and if so, what kind the result has.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> &amp;(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">dim_rules</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. (H) An identifier name. </b></p>
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. (H) An identifier name. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_identifier</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Kinds::Behaviour::get_identifier</span></span>:<br/>Kinds - <a href="2-knd.html#SP20">&#167;20</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -382,7 +392,7 @@ operations can be applied, and if so, what kind the result has.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">explicit_identifier</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. (I) Storing values at run-time. </b>Recall that values are stored at run-time either as "word values" &mdash; a
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. (I) Storing values at run-time. </b>Recall that values are stored at run-time either as "word values" &mdash; a
 single I6 word &mdash; or "pointer values" (sometimes "block values"), where
 the I6 word is a pointer to a block of data on the heap. Numbers and times
 are word values, texts and lists are pointer values. Which form a value
@@ -395,7 +405,7 @@ takes depends on its kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><a href="4-kc2.html#SP21" class="function-link"><span class="function-syntax">KindConstructors::uses_block_values</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Exactly how large the small block is:
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>Exactly how large the small block is:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -404,7 +414,7 @@ takes depends on its kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">small_block_size</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>A reasonable estimate of how large the (larger!) heap block needs to be,
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>A reasonable estimate of how large the (larger!) heap block needs to be,
 for a pointer-value kind, in bytes.
 </p>
 
@@ -414,7 +424,7 @@ for a pointer-value kind, in bytes.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">heap_size_estimate</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>And the following returns the name of an I6 routine to determine if two
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>And the following returns the name of an I6 routine to determine if two
 values of \(K\) are different from each other; or <span class="extract"><span class="extract-syntax">NULL</span></span> to say that it's
 sufficient to apply <span class="extract"><span class="extract-syntax">~=</span></span> to the values.
 </p>
@@ -425,7 +435,7 @@ sufficient to apply <span class="extract"><span class="extract-syntax">~=</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">distinguishing_routine</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Can values of this kind be serialised out to a file and read back in again
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>Can values of this kind be serialised out to a file and read back in again
 by some other Inform story file, or by this one running on a different day?
 </p>
 
@@ -435,7 +445,7 @@ by some other Inform story file, or by this one running on a different day?
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">can_exchange</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. (K) Indexing and documentation. </b></p>
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26. (K) Indexing and documentation. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="function-syntax">Kinds::Behaviour::get_documentation_reference</span><span class="plain-syntax">(</span><span class="reserved-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax">) {</span>
@@ -448,7 +458,7 @@ by some other Inform story file, or by this one running on a different day?
 <span class="plain-syntax">    </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">documentation_reference</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Str::duplicate</span><span class="plain-syntax">(</span><span class="identifier-syntax">dr</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>The following is used in the Kinds index, in the table showing the default
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>The following is used in the Kinds index, in the table showing the default
 values for each kind:
 </p>
 
@@ -478,7 +488,7 @@ values for each kind:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">K</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">construct</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">indexed_grey_if_empty</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>And every kind is allowed to have the specification pseudo-property &mdash; a little
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>And every kind is allowed to have the specification pseudo-property &mdash; a little
 text used only on the index pages, and not existing at run-time.
 </p>
 

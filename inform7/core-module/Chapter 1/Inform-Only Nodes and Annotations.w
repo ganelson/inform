@@ -281,6 +281,7 @@ void CoreSyntax::grant_unit_permissions(void) {
 
 @h Annotations of Level 2 nodes.
 
+@e beat_defined_here_ANNOT /* |dialogue_beat|: for nodes of beat cues */
 @e classified_ANNOT /* |int|: this sentence has been classified */
 @e clears_pronouns_ANNOT /* |int|: this sentence erases the current value of "it" */
 @e dialogue_beat_clause_ANNOT /* |int|: for clauses of dialogue cues introducing beats */
@@ -294,17 +295,21 @@ void CoreSyntax::grant_unit_permissions(void) {
 @e you_can_ignore_ANNOT /* |int|: for assertions now drained of meaning */
 
 = (early code)
+DECLARE_ANNOTATION_FUNCTIONS(beat_defined_here, dialogue_beat)
 DECLARE_ANNOTATION_FUNCTIONS(impdef, imperative_defn)
 DECLARE_ANNOTATION_FUNCTIONS(implicit_in_creation_of, inference_subject)
 DECLARE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
 
 @ =
+MAKE_ANNOTATION_FUNCTIONS(beat_defined_here, dialogue_beat)
 MAKE_ANNOTATION_FUNCTIONS(impdef, imperative_defn)
 MAKE_ANNOTATION_FUNCTIONS(implicit_in_creation_of, inference_subject)
 MAKE_ANNOTATION_FUNCTIONS(interpretation_of_subject, inference_subject)
 
 @ =
 void CoreSyntax::declare_L2_annotations(void) {
+	Annotations::declare_type(
+		beat_defined_here_ANNOT, CoreSyntax::write_beat_defined_here_ANNOT);
 	Annotations::declare_type(
 		classified_ANNOT, CoreSyntax::write_classified_ANNOT);
 	Annotations::declare_type(
@@ -327,6 +332,10 @@ void CoreSyntax::declare_L2_annotations(void) {
 		verb_problem_issued_ANNOT, CoreSyntax::write_verb_problem_issued_ANNOT);
 	Annotations::declare_type(
 		you_can_ignore_ANNOT, CoreSyntax::write_you_can_ignore_ANNOT);
+}
+void CoreSyntax::write_beat_defined_here_ANNOT(text_stream *OUT, parse_node *p) {
+	if (Node::get_beat_defined_here(p))
+		WRITE(" {defines beat: %d}", Node::get_beat_defined_here(p)->allocation_id);
 }
 void CoreSyntax::write_classified_ANNOT(text_stream *OUT, parse_node *p) {
 	if (Annotations::read_int(p, classified_ANNOT))
@@ -386,6 +395,7 @@ void CoreSyntax::grant_L2_permissions(void) {
 	Annotations::allow_for_category(L2_NCAT, clears_pronouns_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, interpretation_of_subject_ANNOT);
 	Annotations::allow_for_category(L2_NCAT, verb_problem_issued_ANNOT);
+	Annotations::allow(DIALOGUE_CUE_NT, beat_defined_here_ANNOT);
 	Annotations::allow(IMPERATIVE_NT, impdef_ANNOT);
 	Annotations::allow(IMPERATIVE_NT, indentation_level_ANNOT);
 	Annotations::allow(SENTENCE_NT, implicit_in_creation_of_ANNOT);

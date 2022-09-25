@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
-noun: 2386 items
+noun: 2387 items
 pronoun: 8 items
-preposition: 273 items
+preposition: 274 items
 determiner: 22 items
-verb: 108 items
-verb_form: 386 items
-total in all categories: 3322
+verb: 109 items
+verb_form: 388 items
+total in all categories: 3327
 
 adjective: 'even'
 adjective: 'odd'
@@ -198,6 +198,7 @@ noun: proper: 'wearing relation'
 noun: proper: 'possession relation'
 noun: proper: 'room-containment relation'
 noun: proper: 'visibility relation'
+noun: proper: 'audibility relation'
 noun: proper: 'touchability relation'
 noun: proper: 'concealment relation'
 noun: proper: 'enclosure relation'
@@ -2642,6 +2643,7 @@ preposition: holding
 preposition: worn by
 preposition: wearing
 preposition: being able to see
+preposition: being able to hear
 preposition: being able to touch
 preposition: concealed by
 preposition: concealing
@@ -2894,62 +2896,63 @@ verb: carry(48)
 verb: hold(49)
 verb: wear(50)
 verb: be able to see(51)
-verb: be able to touch(52)
-verb: conceal(53)
-verb: unlock(54)
-verb: achieve(55)
-verb: appreciate(56)
-verb: arrive(57)
-verb: care(58)
-verb: close(59)
-verb: die(60)
-verb: discover(61)
-verb: drop(62)
-verb: eat(63)
-verb: feel(64)
-verb: find(65)
-verb: get(66)
-verb: give(67)
-verb: go(68)
-verb: happen(69)
-verb: hear(70)
-verb: jump(71)
-verb: lack(72)
-verb: lead(73)
-verb: like(74)
-verb: listen(75)
-verb: lock(76)
-verb: look(77)
-verb: need(78)
-verb: open(79)
-verb: pass(80)
-verb: pick(81)
-verb: provoke(82)
-verb: pull(83)
-verb: push(84)
-verb: put(85)
-verb: rub(86)
-verb: say(87)
-verb: search(88)
-verb: see(89)
-verb: seem(90)
-verb: set(91)
-verb: smell(92)
-verb: sniff(93)
-verb: squeeze(94)
-verb: switch(95)
-verb: take(96)
-verb: talk(97)
-verb: taste(98)
-verb: touch(99)
-verb: turn(100)
-verb: wait(101)
-verb: wave(102)
-verb: win(103)
-verb: protect(104)
-verb: own(105)
-verb: fit(106)
-verb: unbolt(107)
+verb: be able to hear(52)
+verb: be able to touch(53)
+verb: conceal(54)
+verb: unlock(55)
+verb: achieve(56)
+verb: appreciate(57)
+verb: arrive(58)
+verb: care(59)
+verb: close(60)
+verb: die(61)
+verb: discover(62)
+verb: drop(63)
+verb: eat(64)
+verb: feel(65)
+verb: find(66)
+verb: get(67)
+verb: give(68)
+verb: go(69)
+verb: happen(70)
+verb: hear(71)
+verb: jump(72)
+verb: lack(73)
+verb: lead(74)
+verb: like(75)
+verb: listen(76)
+verb: lock(77)
+verb: look(78)
+verb: need(79)
+verb: open(80)
+verb: pass(81)
+verb: pick(82)
+verb: provoke(83)
+verb: pull(84)
+verb: push(85)
+verb: put(86)
+verb: rub(87)
+verb: say(88)
+verb: search(89)
+verb: see(90)
+verb: seem(91)
+verb: set(92)
+verb: smell(93)
+verb: sniff(94)
+verb: squeeze(95)
+verb: switch(96)
+verb: take(97)
+verb: talk(98)
+verb: taste(99)
+verb: touch(100)
+verb: turn(101)
+verb: wait(102)
+verb: wave(103)
+verb: win(104)
+verb: protect(105)
+verb: own(106)
+verb: fit(107)
+verb: unbolt(108)
 
 verb_form: be(0) + ___ + ___ SVO
 verb_form: mean(1) + ___ + ___ SVO
@@ -3105,9 +3108,11 @@ verb_form: be(0) + worn by + ___ SVO
 verb_form: be(0) + wearing + ___ SVO
 verb_form: be able to see(51) + ___ + ___ SVO
 verb_form: be(0) + being able to see + ___ SVO
-verb_form: be able to touch(52) + ___ + ___ SVO
+verb_form: be able to hear(52) + ___ + ___ SVO
+verb_form: be(0) + being able to hear + ___ SVO
+verb_form: be able to touch(53) + ___ + ___ SVO
 verb_form: be(0) + being able to touch + ___ SVO
-verb_form: conceal(53) + ___ + ___ SVO
+verb_form: conceal(54) + ___ + ___ SVO
 verb_form: be(0) + concealed by + ___ SVO
 verb_form: be(0) + concealing + ___ SVO
 verb_form: be(0) + adjacent to + ___ SVO
@@ -3153,166 +3158,166 @@ verb_form: be(0) + mapped above + ___ SVO
 verb_form: be(0) + below + ___ SVO
 verb_form: be(0) + mapped below + ___ SVO
 verb_form: be(0) + through + ___ SVO
-verb_form: unlock(54) + ___ + ___ SVO
+verb_form: unlock(55) + ___ + ___ SVO
 verb_form: be(0) + unlocked by + ___ SVO
 verb_form: be(0) + unlocking + ___ SVO
-verb_form: achieve(55) + ___ + ___ SVO
+verb_form: achieve(56) + ___ + ___ SVO
 verb_form: be(0) + achieved by + ___ SVO
 verb_form: be(0) + achieving + ___ SVO
-verb_form: appreciate(56) + ___ + ___ SVO
+verb_form: appreciate(57) + ___ + ___ SVO
 verb_form: be(0) + appreciated by + ___ SVO
 verb_form: be(0) + appreciating + ___ SVO
-verb_form: arrive(57) + ___ + ___ SVO
+verb_form: arrive(58) + ___ + ___ SVO
 verb_form: be(0) + arrived by + ___ SVO
 verb_form: be(0) + arriving + ___ SVO
-verb_form: care(58) + ___ + ___ SVO
+verb_form: care(59) + ___ + ___ SVO
 verb_form: be(0) + cared by + ___ SVO
 verb_form: be(0) + caring + ___ SVO
-verb_form: close(59) + ___ + ___ SVO
+verb_form: close(60) + ___ + ___ SVO
 verb_form: be(0) + closed by + ___ SVO
 verb_form: be(0) + closing + ___ SVO
-verb_form: die(60) + ___ + ___ SVO
+verb_form: die(61) + ___ + ___ SVO
 verb_form: be(0) + died by + ___ SVO
 verb_form: be(0) + dying + ___ SVO
-verb_form: discover(61) + ___ + ___ SVO
+verb_form: discover(62) + ___ + ___ SVO
 verb_form: be(0) + discovered by + ___ SVO
 verb_form: be(0) + discovering + ___ SVO
-verb_form: drop(62) + ___ + ___ SVO
+verb_form: drop(63) + ___ + ___ SVO
 verb_form: be(0) + dropped by + ___ SVO
 verb_form: be(0) + dropping + ___ SVO
-verb_form: eat(63) + ___ + ___ SVO
+verb_form: eat(64) + ___ + ___ SVO
 verb_form: be(0) + eaten by + ___ SVO
 verb_form: be(0) + eating + ___ SVO
-verb_form: feel(64) + ___ + ___ SVO
+verb_form: feel(65) + ___ + ___ SVO
 verb_form: be(0) + felt by + ___ SVO
 verb_form: be(0) + feeling + ___ SVO
-verb_form: find(65) + ___ + ___ SVO
+verb_form: find(66) + ___ + ___ SVO
 verb_form: be(0) + found by + ___ SVO
 verb_form: be(0) + finding + ___ SVO
-verb_form: get(66) + ___ + ___ SVO
+verb_form: get(67) + ___ + ___ SVO
 verb_form: be(0) + got by + ___ SVO
 verb_form: be(0) + getting + ___ SVO
-verb_form: give(67) + ___ + ___ SVO
+verb_form: give(68) + ___ + ___ SVO
 verb_form: be(0) + given by + ___ SVO
 verb_form: be(0) + giving + ___ SVO
-verb_form: go(68) + ___ + ___ SVO
+verb_form: go(69) + ___ + ___ SVO
 verb_form: be(0) + gone by + ___ SVO
 verb_form: be(0) + going + ___ SVO
-verb_form: happen(69) + ___ + ___ SVO
+verb_form: happen(70) + ___ + ___ SVO
 verb_form: be(0) + happened by + ___ SVO
 verb_form: be(0) + happening + ___ SVO
-verb_form: hear(70) + ___ + ___ SVO
+verb_form: hear(71) + ___ + ___ SVO
 verb_form: be(0) + heard by + ___ SVO
 verb_form: be(0) + hearing + ___ SVO
-verb_form: jump(71) + ___ + ___ SVO
+verb_form: jump(72) + ___ + ___ SVO
 verb_form: be(0) + jumped by + ___ SVO
 verb_form: be(0) + jumping + ___ SVO
-verb_form: lack(72) + ___ + ___ SVO
+verb_form: lack(73) + ___ + ___ SVO
 verb_form: be(0) + lacked by + ___ SVO
 verb_form: be(0) + lacking + ___ SVO
-verb_form: lead(73) + ___ + ___ SVO
+verb_form: lead(74) + ___ + ___ SVO
 verb_form: be(0) + led by + ___ SVO
 verb_form: be(0) + leading + ___ SVO
-verb_form: like(74) + ___ + ___ SVO
+verb_form: like(75) + ___ + ___ SVO
 verb_form: be(0) + liked by + ___ SVO
 verb_form: be(0) + liking + ___ SVO
-verb_form: listen(75) + ___ + ___ SVO
+verb_form: listen(76) + ___ + ___ SVO
 verb_form: be(0) + listened by + ___ SVO
 verb_form: be(0) + listening + ___ SVO
-verb_form: lock(76) + ___ + ___ SVO
+verb_form: lock(77) + ___ + ___ SVO
 verb_form: be(0) + locked by + ___ SVO
 verb_form: be(0) + locking + ___ SVO
-verb_form: look(77) + ___ + ___ SVO
+verb_form: look(78) + ___ + ___ SVO
 verb_form: be(0) + looked by + ___ SVO
 verb_form: be(0) + looking + ___ SVO
-verb_form: need(78) + ___ + ___ SVO
+verb_form: need(79) + ___ + ___ SVO
 verb_form: be(0) + needed by + ___ SVO
 verb_form: be(0) + needing + ___ SVO
-verb_form: open(79) + ___ + ___ SVO
+verb_form: open(80) + ___ + ___ SVO
 verb_form: be(0) + opened by + ___ SVO
 verb_form: be(0) + opening + ___ SVO
-verb_form: pass(80) + ___ + ___ SVO
+verb_form: pass(81) + ___ + ___ SVO
 verb_form: be(0) + passed by + ___ SVO
 verb_form: be(0) + passing + ___ SVO
-verb_form: pick(81) + ___ + ___ SVO
+verb_form: pick(82) + ___ + ___ SVO
 verb_form: be(0) + picked by + ___ SVO
 verb_form: be(0) + picking + ___ SVO
-verb_form: provoke(82) + ___ + ___ SVO
+verb_form: provoke(83) + ___ + ___ SVO
 verb_form: be(0) + provoked by + ___ SVO
 verb_form: be(0) + provoking + ___ SVO
-verb_form: pull(83) + ___ + ___ SVO
+verb_form: pull(84) + ___ + ___ SVO
 verb_form: be(0) + pulled by + ___ SVO
 verb_form: be(0) + pulling + ___ SVO
-verb_form: push(84) + ___ + ___ SVO
+verb_form: push(85) + ___ + ___ SVO
 verb_form: be(0) + pushed by + ___ SVO
 verb_form: be(0) + pushing + ___ SVO
-verb_form: put(85) + ___ + ___ SVO
+verb_form: put(86) + ___ + ___ SVO
 verb_form: be(0) + put by + ___ SVO
 verb_form: be(0) + putting + ___ SVO
-verb_form: rub(86) + ___ + ___ SVO
+verb_form: rub(87) + ___ + ___ SVO
 verb_form: be(0) + rubbed by + ___ SVO
 verb_form: be(0) + rubbing + ___ SVO
-verb_form: say(87) + ___ + ___ SVO
+verb_form: say(88) + ___ + ___ SVO
 verb_form: be(0) + said by + ___ SVO
 verb_form: be(0) + saying + ___ SVO
-verb_form: search(88) + ___ + ___ SVO
+verb_form: search(89) + ___ + ___ SVO
 verb_form: be(0) + searched by + ___ SVO
 verb_form: be(0) + searching + ___ SVO
-verb_form: see(89) + ___ + ___ SVO
+verb_form: see(90) + ___ + ___ SVO
 verb_form: be(0) + seen by + ___ SVO
 verb_form: be(0) + seeing + ___ SVO
-verb_form: seem(90) + ___ + ___ SVO
+verb_form: seem(91) + ___ + ___ SVO
 verb_form: be(0) + seemed by + ___ SVO
 verb_form: be(0) + seeming + ___ SVO
-verb_form: set(91) + ___ + ___ SVO
+verb_form: set(92) + ___ + ___ SVO
 verb_form: be(0) + set by + ___ SVO
 verb_form: be(0) + setting + ___ SVO
-verb_form: smell(92) + ___ + ___ SVO
+verb_form: smell(93) + ___ + ___ SVO
 verb_form: be(0) + smelled by + ___ SVO
 verb_form: be(0) + smelling + ___ SVO
-verb_form: sniff(93) + ___ + ___ SVO
+verb_form: sniff(94) + ___ + ___ SVO
 verb_form: be(0) + sniffed by + ___ SVO
 verb_form: be(0) + sniffing + ___ SVO
-verb_form: squeeze(94) + ___ + ___ SVO
+verb_form: squeeze(95) + ___ + ___ SVO
 verb_form: be(0) + squeezed by + ___ SVO
 verb_form: be(0) + squeezing + ___ SVO
-verb_form: switch(95) + ___ + ___ SVO
+verb_form: switch(96) + ___ + ___ SVO
 verb_form: be(0) + switched by + ___ SVO
 verb_form: be(0) + switching + ___ SVO
-verb_form: take(96) + ___ + ___ SVO
+verb_form: take(97) + ___ + ___ SVO
 verb_form: be(0) + taken by + ___ SVO
 verb_form: be(0) + taking + ___ SVO
-verb_form: talk(97) + ___ + ___ SVO
+verb_form: talk(98) + ___ + ___ SVO
 verb_form: be(0) + talked by + ___ SVO
 verb_form: be(0) + talking + ___ SVO
-verb_form: taste(98) + ___ + ___ SVO
+verb_form: taste(99) + ___ + ___ SVO
 verb_form: be(0) + tasted by + ___ SVO
 verb_form: be(0) + tasting + ___ SVO
-verb_form: touch(99) + ___ + ___ SVO
+verb_form: touch(100) + ___ + ___ SVO
 verb_form: be(0) + touched by + ___ SVO
 verb_form: be(0) + touching + ___ SVO
-verb_form: turn(100) + ___ + ___ SVO
+verb_form: turn(101) + ___ + ___ SVO
 verb_form: be(0) + turned by + ___ SVO
 verb_form: be(0) + turning + ___ SVO
-verb_form: wait(101) + ___ + ___ SVO
+verb_form: wait(102) + ___ + ___ SVO
 verb_form: be(0) + waited by + ___ SVO
 verb_form: be(0) + waiting + ___ SVO
-verb_form: wave(102) + ___ + ___ SVO
+verb_form: wave(103) + ___ + ___ SVO
 verb_form: be(0) + waved by + ___ SVO
 verb_form: be(0) + waving + ___ SVO
-verb_form: win(103) + ___ + ___ SVO
+verb_form: win(104) + ___ + ___ SVO
 verb_form: be(0) + won by + ___ SVO
 verb_form: be(0) + winning + ___ SVO
-verb_form: protect(104) + ___ + ___ SVO
+verb_form: protect(105) + ___ + ___ SVO
 verb_form: be(0) + protected by + ___ SVO
 verb_form: be(0) + protecting + ___ SVO
-verb_form: own(105) + ___ + ___ SVO
+verb_form: own(106) + ___ + ___ SVO
 verb_form: be(0) + owned by + ___ SVO
 verb_form: be(0) + owning + ___ SVO
-verb_form: fit(106) + ___ + ___ SVO
+verb_form: fit(107) + ___ + ___ SVO
 verb_form: be(0) + fitted by + ___ SVO
 verb_form: be(0) + fitting + ___ SVO
-verb_form: unbolt(107) + ___ + ___ SVO
+verb_form: unbolt(108) + ___ + ___ SVO
 verb_form: be(0) + unbolted by + ___ SVO
 verb_form: be(0) + unbolting + ___ SVO
 verb_form: be(0) + the same variable initial value as + ___ SVO

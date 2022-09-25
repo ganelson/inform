@@ -45,7 +45,7 @@
 > >   Cricket History Museum
   Listen politely.
   
-  Honey Maiden (Spoken rapidly): "The first ever cricket match is thought to have taken place in 18th-century Hampshire."
+  Honey Maiden: "The first ever cricket match is thought to have taken place in 18th-century Hampshire."
   
   Honey Maiden: "And now, Mr Bond, it is time for you to consider our exhibits!"
   
@@ -61,7 +61,7 @@
   ** kiss honey
   Honey Maiden: "Oh, James... Ever since we met eighty seconds ago I have wanted you..."
   
-  You took Sean Connery choice, choice-2, choice-3, choice-6, choice-7, choice-10, choice-11, choice-12, choice-14, choice-15 and choice-16, and heard line-1, line-2, line-3, line-4, line-7, line-11, line-12, line-14 and line-15 in the beats arrival beat and closer examination beat.
+  You took Sean Connery choice, flow-2, choice-3, choice-6, flow-7, flow-10, choice-11, flow-12, choice-14, flow-15 and choice-16, and heard line-1, line-2, line-3, line-4, line-7, line-11, line-12, line-14 and line-15 in the beats arrival beat and closer examination beat.
   
   
   
@@ -112,7 +112,7 @@
 > >   Cricket History Museum
   Listen politely.
   
-  Honey Maiden (Spoken rapidly): "The first ever cricket match is thought to have taken place in stone-age Dresden."
+  Honey Maiden: "The first ever cricket match is thought to have taken place in stone-age Dresden."
   
   Honey Maiden: "And now, Mr Bond, it is time for you to consider our exhibits!"
   
@@ -142,7 +142,7 @@
   
   Honey Maiden: "That concludes our tour. And frankly, Mr Bond, I expected a little more personal attention from Universal Export's most notorious womanizer."
   
-  You took choice-3, choice-4, choice-5, choice-10, choice-11, choice-12, choice-13, choice-14, choice-15, choice-19 and choice-20, and heard line-1, line-2, line-4, line-6, line-10, line-11, line-12, line-13, line-14, line-16, line-17 and line-18 in the beats arrival beat and closer examination beat.
+  You took choice-3, choice-4, flow-5, flow-10, choice-11, flow-12, choice-13, choice-14, flow-15, choice-19 and flow-20, and heard line-1, line-2, line-4, line-6, line-10, line-11, line-12, line-13, line-14, line-16, line-17 and line-18 in the beats arrival beat and closer examination beat.
   
   
   
@@ -174,7 +174,7 @@
 > >   Cricket History Museum
   Make feeble wordplay, light of it, and an escape.
   
-  yourself: "Sorry, Honey, it's time for a "run out"."
+  You: "Sorry, Honey, it's time for a "run out"."
   
   (1) Hurl myself at the window.
   (2) Use my rocket-pack.

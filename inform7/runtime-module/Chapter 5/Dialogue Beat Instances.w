@@ -320,9 +320,11 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 @<Compile the relevant function@> =
 	packaging_state save = Functions::begin(RTDialogueBeats::relevant_fn_iname(db));
 	local_variable *pool = LocalVariables::new_internal_commented(I"pool", I"pool of live topics");
+	local_variable *set = LocalVariables::new_internal_commented(I"set", I"if true, make these relevant");
 	local_variable *iv = LocalVariables::new_internal_commented(I"iv", I"index variable");
 	local_variable *topic = LocalVariables::new_internal_commented(I"topic", I"live topic");
 	inter_symbol *pool_s = LocalVariables::declare(pool);
+	inter_symbol *set_s = LocalVariables::declare(set);
 	inter_symbol *iv_s = LocalVariables::declare(iv);
 	inter_symbol *topic_s = LocalVariables::declare(topic);
 	@<Check the about list against the subject pool@>;
@@ -330,6 +332,25 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 	Functions::end(save);
 
 @<Check the about list against the subject pool@> =
+	EmitCode::inv(IF_BIP);
+	EmitCode::down();
+		EmitCode::val_symbol(K_value, set_s);
+		EmitCode::code();
+		EmitCode::down();
+			parse_node *desc;
+			LOOP_OVER_LINKED_LIST(desc, parse_node, db->about_list) {
+				instance *I = Rvalues::to_instance(desc);
+				if (I) {
+					EmitCode::call(Hierarchy::find(DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL));
+					EmitCode::down();
+						EmitCode::val_iname(K_value, RTInstances::value_iname(I));
+					EmitCode::up();
+				}
+			}
+			EmitCode::rtrue();
+		EmitCode::up();
+	EmitCode::up();
+	
 	inter_symbol *loop_label = EmitCode::reserve_label(I"about_loop");
 	EmitCode::place_label(loop_label);
 	EmitCode::inv(STORE_BIP);
@@ -350,7 +371,6 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 		EmitCode::up();		
 		EmitCode::code();
 		EmitCode::down();
-			parse_node *desc;
 			LOOP_OVER_LINKED_LIST(desc, parse_node, db->about_list) {
 				instance *I = Rvalues::to_instance(desc);
 				EmitCode::inv(IF_BIP);

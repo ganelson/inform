@@ -267,7 +267,7 @@ void DialogueLines::decide_line_mentions(void) {
 				EitherOrProperties::as_adjective(P_elaborated), FALSE);
 			prop = Propositions::concatenate(
 				Propositions::Abstract::prop_to_set_kind(K_dialogue_line), prop);
-			Assert::true_about(prop, subj, CERTAIN_CE);		
+			Assert::true_about(prop, subj, LIKELY_CE);		
 		}
 	}
 }
@@ -330,7 +330,7 @@ void DialogueLines::decide_line_mentions(void) {
 			Problems::quote_kind(3, K);
 			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineToNonObject));
 			Problems::issue_problem_segment(
-				"The dialogue line %1 is apparently spoken by '%2', but that "
+				"The dialogue line %1 is apparently spoken to '%2', but that "
 				"seems to describe %3, not a person or some other object.");
 			Problems::issue_problem_end();
 		}
@@ -339,7 +339,7 @@ void DialogueLines::decide_line_mentions(void) {
 		Problems::quote_wording(2, S);
 		StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineToUnknown));
 		Problems::issue_problem_segment(
-			"The dialogue line %1 is apparently spoken by '%2', but that "
+			"The dialogue line %1 is apparently spoken to '%2', but that "
 			"isn't something I recognise as the name of a thing or person.");
 		Problems::issue_problem_end();
 	}

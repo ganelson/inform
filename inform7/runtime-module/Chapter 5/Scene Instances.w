@@ -305,7 +305,7 @@ void RTScenes::compile_scene_end_r(scene *sc, int end) {
 	}
 	@<Compile code to print text in response to the SCENES command@>;
 	@<Compile code to update the scene status@>;
-	@<Compile code to run the scene end rulebooks@>
+	@<Compile code to run the scene end rulebooks@>;
 	@<Compile code to update the arrays recording most recent scene ending@>;
 	@<Compile code to cause consequent scene ends@>;
 
@@ -395,6 +395,12 @@ end actually occurred.)
 		EmitCode::down();
 			EmitCode::val_iname(K_value, Hierarchy::find(WHEN_SCENE_ENDS_HL));
 			EmitCode::val_number((inter_ti) (sc->allocation_id + 1));
+		EmitCode::up();
+	}
+	if ((end == 0) && (sc->ends[0].as_beat)) {
+		EmitCode::call(Hierarchy::find(DIRECTOR_PERFORM_TIED_BEAT_HL));
+		EmitCode::down();
+			EmitCode::val_iname(K_value, RTDialogueBeats::iname(sc->ends[0].as_beat));
 		EmitCode::up();
 	}
 

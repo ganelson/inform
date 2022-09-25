@@ -138,6 +138,7 @@ organisation, and are not directly functional in themselves.
 
 		case DIALOGUE_CUE_NT: 
 			if (global_pass_state.pass == 0) DialogueBeats::new(p);
+			if (global_pass_state.pass == 1) DialogueBeats::make_tied_scene(p);
 			break;
 		case DIALOGUE_CHOICE_NT: 
 			if (global_pass_state.pass == 0) DialogueChoices::new(p);

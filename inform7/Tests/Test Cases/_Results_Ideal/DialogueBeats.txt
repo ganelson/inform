@@ -11,6 +11,7 @@
   "list of subdued dialogue beats" = list of dialogue beats: {epsilon beat}
   == Performance...
   "list of unperformed dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, delta beat, epsilon beat, nu beat, mu beat, eta beat}
+  
   Daphne: "Welcome to the Museum of Cricket."
   
   "list of unperformed dialogue beats" = list of dialogue beats: {beta beat, gamma beat, delta beat, epsilon beat, nu beat, mu beat, eta beat}
@@ -30,14 +31,15 @@
   "list of relevant dialogue beats" = list of dialogue beats: {beta beat, gamma beat}
   == Availability...
   "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, nu beat, eta beat}
+  
   Daphne: "A cricket ball is made with a core of cork, which is layered with tightly wound string, and covered by a leather case with a slightly raised sewn seam."
   
   "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, epsilon beat, nu beat, eta beat}
   Daphne: "Cricket's kind of dull, when you think about it."
   
-  ball: "I disagree!"
+  The ball: "I disagree!"
   
-  bat: "I especially enjoy it."
+  The bat: "I especially enjoy it."
   
   "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, epsilon beat, nu beat}
   "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, epsilon beat, nu beat, mu beat}

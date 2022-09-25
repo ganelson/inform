@@ -276,6 +276,40 @@ the predictability of results.
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12.  </b>Logging lists of lists:
+</p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SharedVariables::log_access_list</span><span class="plain-syntax">(</span><span class="reserved-syntax">shared_variable_access_list</span><span class="plain-syntax"> *</span><span class="identifier-syntax">list</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">list</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"Shared access list %d = { "</span><span class="plain-syntax">, </span><span class="identifier-syntax">list</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">allocation_id</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">shared_variable_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">set</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">set</span><span class="plain-syntax">, </span><span class="reserved-syntax">shared_variable_set</span><span class="plain-syntax">, </span><span class="identifier-syntax">list</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">sets</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax">++ &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">", "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="6-sv.html#SP12" class="function-link"><span class="function-syntax">SharedVariables::log_set</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">set</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">" }\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"No access list\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">SharedVariables::log_set</span><span class="plain-syntax">(</span><span class="reserved-syntax">shared_variable_set</span><span class="plain-syntax"> *</span><span class="identifier-syntax">set</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">set</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"{ "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">shared_variable</span><span class="plain-syntax"> *</span><span class="identifier-syntax">shv</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOOP_OVER_LINKED_LIST</span><span class="plain-syntax">(</span><span class="identifier-syntax">shv</span><span class="plain-syntax">, </span><span class="reserved-syntax">shared_variable</span><span class="plain-syntax">, </span><span class="identifier-syntax">set</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">variables</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax">++ &gt; </span><span class="constant-syntax">1</span><span class="plain-syntax">) </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">", "</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"%W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">shv</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        }</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">" }"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">LOG</span><span class="plain-syntax">(</span><span class="string-syntax">"null"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">}</span>
+</pre>
 <nav role="progress"><div class="progresscontainer">
     <ul class="progressbar"><li class="progressprev"><a href="6-act.html">&#10094;</a></li><li class="progresschapter"><a href="P-wtmd.html">P</a></li><li class="progresschapter"><a href="1-am.html">1</a></li><li class="progresschapter"><a href="2-bv.html">2</a></li><li class="progresschapter"><a href="3-dlr.html">3</a></li><li class="progresschapter"><a href="4-nr.html">4</a></li><li class="progresschapter"><a href="5-id.html">5</a></li><li class="progresscurrentchapter">6</li><li class="progresssection"><a href="6-rls.html">rls</a></li><li class="progresssection"><a href="6-rb.html">rb</a></li><li class="progresssection"><a href="6-bl.html">bl</a></li><li class="progresssection"><a href="6-rlb.html">rlb</a></li><li class="progresssection"><a href="6-fao.html">fao</a></li><li class="progresssection"><a href="6-act.html">act</a></li><li class="progresscurrent">sv</li><li class="progresschapter"><a href="7-tc.html">7</a></li><li class="progresschapter"><a href="8-kpr.html">8</a></li><li class="progressnext"><a href="7-tc.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->

@@ -20,6 +20,7 @@ will have become:
 dialogue_choice *DialogueChoices::new(parse_node *PN) {
 	int L = Annotations::read_int(PN, dialogue_level_ANNOT);
 	if (L < 0) L = 0;
+	int flow_control = FALSE;
 	dialogue_choice *dc = CREATE(dialogue_choice);
 	@<Initialise the choice@>;
 	@<Parse the clauses just enough to classify them@>;
@@ -51,22 +52,6 @@ typedef struct dialogue_choice {
 	dc->to_perform = NULL;
 	dc->selection_type = AGAIN_DSEL;
 	dc->compilation_data = RTDialogueChoices::new(PN, dc);
-
-@ Each choice produces an instance of the kind |dialogue choice|, using the name
-given in its clauses if one was.
-
-@<Add the choice to the world model@> =
-	if (K_dialogue_choice == NULL) internal_error("DialogueKit has not created K_dialogue_choice");
-	wording W = dc->choice_name;
-	if (Wordings::empty(W)) {
-		TEMPORARY_TEXT(faux_name)
-		WRITE_TO(faux_name, "choice-%d", dc->allocation_id + 1);
-		W = Feeds::feed_text(faux_name);
-		DISCARD_TEXT(faux_name)
-	}
-	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_dialogue_choice, W);
-	Assert::true(prop, CERTAIN_CE);
-	dc->as_instance = Instances::latest();
 
 @<Parse the clauses just enough to classify them@> =
 	int failed_already = FALSE;
@@ -173,6 +158,7 @@ given in its clauses if one was.
 			"rather than '<-' (backwards flow) or '--' (an option).");
 		Problems::issue_problem_end();
 	}
+	if ((left_arrow) || (right_arrow)) flow_control = TRUE;
 
 @ As with the analogous clauses for //Dialogue Beats//, each clause can be one
 of the following possibilities:
@@ -225,6 +211,25 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 	before ... |                                   ==> { BEFORE_DSEL, - }
 	perform <definite-article> ... |               ==> { PERFORM_DSEL, - }
 	perform ...                                    ==> { PERFORM_DSEL, - }
+
+@ Each choice produces an instance of the kind |dialogue choice|, using the name
+given in its clauses if one was.
+
+@<Add the choice to the world model@> =
+	if (K_dialogue_choice == NULL) internal_error("DialogueKit has not created K_dialogue_choice");
+	wording W = dc->choice_name;
+	if (Wordings::empty(W)) {
+		TEMPORARY_TEXT(faux_name)
+		if (flow_control)
+			WRITE_TO(faux_name, "flow-%d", dc->allocation_id + 1);
+		else
+			WRITE_TO(faux_name, "choice-%d", dc->allocation_id + 1);
+		W = Feeds::feed_text(faux_name);
+		DISCARD_TEXT(faux_name)
+	}
+	pcalc_prop *prop = Propositions::Abstract::to_create_something(K_dialogue_choice, W);
+	Assert::true(prop, CERTAIN_CE);
+	dc->as_instance = Instances::latest();
 
 @h Processing choices after pass 1.
 It's now a little later, and the following is called to look at each choice.

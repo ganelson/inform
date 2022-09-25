@@ -1322,11 +1322,10 @@ To decide what performance style is the current dialogue line style:
 	(- DirectorCurrentLineStyle() -).
 
 To perform (B - a dialogue beat):
-	ask DialogueKit to perform B;
-	now B is performed.
-
-To ask DialogueKit to perform (B - a dialogue beat):
 	(- DirectorPerform({B}); -).
+
+To decide whether dialogue/dialog about (O - an object) intervenes:
+	(- DirectorIntervenes({O}) -).
 
 To showme the beat structure of (B - dialogue beat): (- DirectorBeatPrintStructure({B}); -).
 
@@ -1339,8 +1338,20 @@ Definition: A dialogue beat is relevant rather than irrelevant if Inter routine
 Definition: A dialogue line is available rather than unavailable if Inter routine
 	"DirectorLineAvailable" says so (it meets all its if and unless conditions).
 
+Definition: A dialogue line is narrated rather than unnarrated if Inter routine
+	"DirectorLineNarrated" says so (it is a Narration line rather than what somebody is saying).
+
+Definition: A dialogue line is non-verbal rather than verbal if Inter routine
+	"DirectorLineNonverbal" says so (it is a non-verbal communication, like a gesture).
+
+Definition: A dialogue line is story-ending if Inter routine
+	"DirectorLineStoryEnding" says so (it is a line which, when performed, ends the story).
+
 Definition: A dialogue beat is being performed if Inter routine
 	"DirectorBeatBeingPerformed" says so (it is currently having its lines performed).
+
+Definition: A dialogue choice is flowing rather than offered if Inter routine
+	"DirectorChoiceFlowing" says so (it is a flow-control point rather than an option).
 
 To abide by dialogue before action choices:
 	(- if (DirectorBeforeAction()) rtrue; -).

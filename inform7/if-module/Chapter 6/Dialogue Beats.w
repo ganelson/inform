@@ -48,6 +48,7 @@ each of which is a |DIALOGUE_CLAUSE_NT|.
 dialogue_beat *DialogueBeats::new(parse_node *PN) {
 	@<See if we are expecting a dialogue beat@>;
 	dialogue_beat *db = CREATE(dialogue_beat);
+	Node::set_beat_defined_here(PN, db);
 	@<Initialise the beat@>;
 
 	previous_dialogue_beat = current_dialogue_beat;
@@ -276,6 +277,21 @@ void DialogueBeats::non_unique_instance_problem(instance *I, kind *K) {
 	Problems::issue_problem_end();
 }
 
+@h During pass 1.
+This is unfinished business (see above):
+
+=
+void DialogueBeats::make_tied_scene(parse_node *p) {
+	dialogue_beat *db = Node::get_beat_defined_here(p);
+	if ((db) && (Wordings::nonempty(db->scene_name))) {
+		pcalc_prop *prop =
+			Propositions::Abstract::to_create_something(K_scene, db->scene_name);
+		Assert::true(prop, CERTAIN_CE);
+		db->as_scene = Scenes::from_named_constant(Instances::latest());
+		Scenes::set_beat(db->as_scene, db);
+	}
+}
+
 @h Processing beats after pass 1.
 It's now a little later, and the following is called to look at each beat and
 parse its clauses further.
@@ -285,23 +301,11 @@ void DialogueBeats::decide_cue_sequencing(void) {
 	dialogue_beat *db, *previous = NULL;
 	LOOP_OVER(db, dialogue_beat) {
 		current_sentence = db->cue_at;
-		@<Create any scene instance needed@>;
 		@<Parse sequencing clauses@>;
 		DialogueNodes::find_decisions_in_beat(db);
 		previous = db;
 	}
 }
-
-@ This is unfinished business (see above), and not in fact to with beat
-sequencing.
-
-@<Create any scene instance needed@> =
-	if (Wordings::nonempty(db->scene_name)) {
-		pcalc_prop *prop = Propositions::Abstract::to_create_something(K_scene, db->scene_name);
-		Assert::true(prop, CERTAIN_CE);
-		db->as_scene = Scenes::from_named_constant(Instances::latest());
-		Scenes::set_beat(db->as_scene, db);
-	}
 
 @ But now we take care of another five clause types, all to do with the beat being
 performed only after or before other beats.

@@ -102,7 +102,7 @@ Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
 	if (debug_dialogue >= 2) { print "-- Pop to: "; DirectorTraceStack(); }
 ];
 
-[ DirectorPerform db tab;
+[ DirectorPerform db without_detecting tab;
 	if ((db == 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
 	if (debug_dialogue) {
 		print "-- Performing ", (PrintDialogueBeatName) db, "^";
@@ -112,9 +112,10 @@ Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
 	DirectorPush(db, 0, 0);
 	DirectorStackStart-->(director_sp - 1) = 1;
 	tab = TableOfDialogueBeats-->db;
-	if (tab-->3) DetectSceneChange();
+	if ((tab-->3) && (without_detecting == false)) DetectSceneChange();
+	if (tab-->1) (tab-->1)(DialogueTopicPool, true);
 	DirectorRun(0);
-	if (tab-->3) DetectSceneChange();
+	if ((tab-->3) && (without_detecting == false)) DetectSceneChange();
 	if (debug_dialogue) {
 		print "-- Performance of ", (PrintDialogueBeatName) db, " ended^";
 	}
@@ -128,13 +129,16 @@ Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
 	rfalse;
 ];
 
+[ DirectorPerformTiedBeat db;
+	if (DirectorBeatBeingPerformed(db) == false) {
+		DirectorPerform(db, true);
+	}
+];
+
 [ PERFORM_OPENING_BEAT_R db;
 	db = InitialSituation-->START_BEAT_INIS;
 	if (db) DirectorPerform(db);
 	rfalse;
-];
-
-[ DirectorTraceInst structure pc instruction depth;
 ];
 
 [ DirectorTraceStack j structure pc instruction depth tab;
@@ -237,7 +241,7 @@ Global director_current_style = 1;
 ];
 
 Global director_speaker_list;
-[ DirectorSelectConverser val select_speaker speaker len i best best_score this_score x best_count;
+[ DirectorSelectConverser val select_speaker nonverbal speaker len i best best_score this_score x best_count;
 	speaker = val;
 	if (metaclass(val) == Routine) {
 		if (director_speaker_list == 0) {
@@ -255,8 +259,8 @@ Global director_speaker_list;
 		best_score = -1;
 		best_count = 0;
 		for (i=1: i<=len: i++) {
-			speaker = LIST_OF_TY_GetItem(director_speaker_list, i);
-			this_score = DirectorScoreConverser(speaker, select_speaker);
+			speaker = LIST_OF_TY_GetItem(director_speaker_list, i, nonverbal);
+			this_score = DirectorScoreConverser(speaker, select_speaker, nonverbal);
 			if (this_score > best_score) {
 				best = speaker;
 				best_score = this_score;
@@ -283,16 +287,16 @@ Global director_speaker_list;
 	return speaker;
 ];
 
-[ DirectorScoreConverser speaker select_speaker this_score;
+[ DirectorScoreConverser speaker select_speaker nonverbal this_score;
 	if (select_speaker) {
 		if (OnStage(speaker, -1)) this_score = this_score + 16;
-		if (TestAudibility(player, speaker)) this_score = this_score + 8;
+		if (DirectorTestAccessible(player, speaker, nonverbal)) this_score = this_score + 8;
 		if (speaker == DirectorStackLastInterlocutor-->(director_sp-1)) this_score = this_score + 4;
 		if (speaker ofclass K8_person) this_score = this_score + 2;
 		if (speaker ~= DirectorStackLastSpeaker-->(director_sp-1)) this_score = this_score + 1;
 	} else {
 		if (OnStage(speaker, -1)) this_score = this_score + 16;
-		if (TestAudibility(player, speaker)) this_score = this_score + 8;
+		if (DirectorTestAccessible(player, speaker, nonverbal)) this_score = this_score + 8;
 		if (speaker == DirectorStackLastSpeaker-->(director_sp-1)) this_score = this_score + 4;
 		if (speaker ofclass K8_person) this_score = this_score + 2;
 		if (speaker ~= DirectorStackLastInterlocutor-->(director_sp-1)) this_score = this_score + 1;
@@ -300,7 +304,7 @@ Global director_speaker_list;
 	return this_score;
 ];
 
-[ DirectorPerformLine dl tab fn action_fn speaker interlocutor manner mentioning;
+[ DirectorPerformLine dl tab fn action_fn speaker interlocutor manner mentioning nonverbal;
 	if (dl == 0) rfalse;
 	line_performance_count++;
 	! Must either be unperformed or recurring
@@ -309,15 +313,15 @@ Global director_speaker_list;
 	tab = TableOfDialogueLines-->dl;
 	! Must be available
 	fn = tab-->0; if ((fn) && (fn() == false)) rfalse;
-
+	if ((tab-->7) & 2) nonverbal = true;
 	! A speaker matching the description must be found, unless it's narration
 	if (tab-->1) {
-		speaker = DirectorSelectConverser(tab-->1, true);
-		if ((speaker == nothing) || (TestAudibility(player, speaker) == false)) rfalse;
+		speaker = DirectorSelectConverser(tab-->1, true, nonverbal);
+		if ((speaker == nothing) || (DirectorTestAccessible(player, speaker, nonverbal) == false)) rfalse;
 	}
 	if (tab-->2) {
-		interlocutor = DirectorSelectConverser(tab-->2, false);
-		if ((interlocutor == nothing) || (TestAudibility(speaker, interlocutor) == false)) rfalse;
+		interlocutor = DirectorSelectConverser(tab-->2, false, nonverbal);
+		if ((interlocutor == nothing) || (DirectorTestAccessible(speaker, interlocutor, nonverbal) == false)) rfalse;
 	}
 	manner = tab-->4;
 	action_fn = tab-->6;
@@ -687,6 +691,11 @@ Global director_is_active = false;
 	director_is_active = false;
 ];
 
+[ DirectorTestAccessible from to nonverbal;
+	if (nonverbal) return TestVisibility(from, to);
+	return TestAudibility(from, to);
+];
+
 [ DirectorBeatAvailableToPlayer db tab i speaker;
 	if ((GProperty(DIALOGUE_BEAT_TY, db, performed) == 0) ||
 		(GProperty(DIALOGUE_BEAT_TY, db, recurring))) {
@@ -729,7 +738,11 @@ Global director_is_active = false;
 				fn = tab-->0;
 				if ((fn == 0) || ((fn)(latest_performed_beat))) {
 					fn = tab-->1;
-					if ((fn) && (fn(DialogueTopicPool))) { DirectorPerform(db); break; }
+					if ((fn) && (fn(DialogueTopicPool))) {
+						DirectorPerform(db);
+						line_performance_count = 0;
+						rfalse;	
+					}
 				}
 			}
 		}
@@ -737,12 +750,28 @@ Global director_is_active = false;
 			if (GProperty(DIALOGUE_BEAT_TY, db, spontaneous)) {
 				if (DirectorBeatAvailableToPlayer(db)) {
 					DirectorEmptyLiveSubjectList();
-					DirectorPerform(db); break;
+					DirectorPerform(db);
+					line_performance_count = 0;
+					rfalse;
 				}
 			}
 		}
 	}
 	line_performance_count = 0;
+	rfalse;
+];
+
+[ DirectorIntervenes obj tab fn db;
+	for (db=1: db<=NO_DIALOGUE_BEATS: db++) {
+		if (DirectorBeatAvailableToPlayer(db)) {
+			tab = TableOfDialogueBeats-->db;
+			fn = tab-->0;
+			if ((fn == 0) || ((fn)(latest_performed_beat))) {
+				fn = tab-->1;
+				if ((fn) && (fn(DialogueTopicPool))) { DirectorPerform(db); rtrue; }
+			}
+		}
+	}
 	rfalse;
 ];
 
@@ -769,9 +798,39 @@ Global director_is_active = false;
 	return text;
 ];
 
+[ DirectorLineNarrated dl tab;
+	if ((dl == 0) || (dl > NO_DIALOGUE_LINES)) rfalse;
+	tab = TableOfDialogueLines-->dl;
+	if (tab-->1 == 0) rtrue;
+	rfalse;
+];
+
+[ DirectorLineNonverbal dl tab;
+	if ((dl == 0) || (dl > NO_DIALOGUE_LINES)) rfalse;
+	tab = TableOfDialogueLines-->dl;
+	if ((tab-->7) & 2) rtrue;
+	rfalse;
+];
+
+[ DirectorLineStoryEnding dl tab;
+	if ((dl == 0) || (dl > NO_DIALOGUE_LINES)) rfalse;
+	tab = TableOfDialogueLines-->dl;
+	if ((tab-->7) & 12) rtrue;
+	rfalse;
+];
+
 [ DirectorChoiceContent dc text tab;
 	if ((dc == 0) || (dc > NO_DIALOGUE_CHOICES)) return text;
 	tab = TableOfDialogueChoices-->dc;
 	BlkValueCopy(text, tab-->2);
 	return text;
+];
+
+[ DirectorChoiceFlowing dc tab type;
+	if ((dc == 0) || (dc > NO_DIALOGUE_CHOICES)) rfalse;
+	tab = TableOfDialogueChoices-->dc;
+	type = tab-->0;
+	if (type == NEW_CHOICE_DSEL or AGAIN_DSEL or STOP_DSEL or PERFORM_DSEL)
+		rtrue;
+	rfalse;
 ];

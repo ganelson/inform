@@ -448,10 +448,22 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	wording NW = GET_RW(<dialogue-line-clause>, 1);
 	CompileBlocksAndLines::compile_a_now(NW);
 
+@
+
+=
+<silently-modifier> ::=
+	silently ... |
+	... silently
+
 @<Take action on this action clause@> =
 	wording CW = Node::get_text(clause);
 	<dialogue-line-clause>(CW);
 	wording AW = GET_RW(<dialogue-line-clause>, 1);
+	int silently = FALSE;
+	if (<silently-modifier>(AW)) {
+		silently = TRUE;
+		AW = GET_RW(<silently-modifier>, 1);
+	}
 	if (<s-action-pattern-as-value>(AW)) {
 		parse_node *supplied = <<rp>>;
 		if (Dash::check_value(supplied, K_stored_action)) {
@@ -462,11 +474,12 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 					Dash::check_value(actor, K_object);
 					ea->actor = Lvalues::new_LOCAL_VARIABLE(EMPTY_WORDING, speaker);
 				}
-				CompileRvalues::compile_explicit_action(ea, FALSE);
+				CSIInline::compile_try_action(ea, silently);
 			} else {
 				EmitCode::call(Hierarchy::find(STORED_ACTION_TY_TRY_HL));
 				EmitCode::down();
 					CompileValues::to_code_val_of_kind(supplied, K_stored_action);
+					if (silently) EmitCode::val_true();
 				EmitCode::up();
 			}
 			EmitCode::inv(IF_BIP);

@@ -60,7 +60,7 @@ function togglePopup(material_id) {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../inform7n.html">Inform7</a></li><li><a href="index.html">if</a></li><li><a href="index.html#3">Chapter 3: Space and Time</a></li><li><b>Scenes</b></li></ul></div>
 <p class="purpose">A feature to support named periods of time during an interactive story.</p>
 
-<ul class="toc"><li><a href="3-scn.html#SP1">&#167;1. Introduction</a></li><li><a href="3-scn.html#SP10">&#167;10. Conceptual model of scenes</a></li><li><a href="3-scn.html#SP12">&#167;12. Scene structures</a></li><li><a href="3-scn.html#SP14">&#167;14. Creating and parsing ends</a></li><li><a href="3-scn.html#SP15">&#167;15. Scene end rulebooks</a></li><li><a href="3-scn.html#SP16">&#167;16. Anchors</a></li><li><a href="3-scn.html#SP27">&#167;27. Rules predicated on scenes</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="3-scn.html#SP1">&#167;1. Introduction</a></li><li><a href="3-scn.html#SP10">&#167;10. Conceptual model of scenes</a></li><li><a href="3-scn.html#SP12">&#167;12. Scene structures</a></li><li><a href="3-scn.html#SP14">&#167;14. Creating and parsing ends</a></li><li><a href="3-scn.html#SP15">&#167;15. Tie the ends of a scene to a dialogue beat</a></li><li><a href="3-scn.html#SP16">&#167;16. Scene end rulebooks</a></li><li><a href="3-scn.html#SP17">&#167;17. Anchors</a></li><li><a href="3-scn.html#SP28">&#167;28. Rules predicated on scenes</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Introduction. </b>Scenes are periods of time during play: at any given moment, several may be
 going on, or none. They are started and stopped when certain conditions are
@@ -74,8 +74,8 @@ met, or by virtue of having been anchored together.
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_INSTANCE_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-scn.html#SP6" class="function-link"><span class="function-syntax">Scenes::new_named_instance_notify</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_BASE_KIND_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-scn.html#SP5" class="function-link"><span class="function-syntax">Scenes::new_base_kind_notify</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">COMPARE_CONSTANT_PLUG</span><span class="plain-syntax">, </span><a href="3-scn.html#SP5" class="function-link"><span class="function-syntax">Scenes::compare_CONSTANT</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">MAKE_SPECIAL_MEANINGS_PLUG</span><span class="plain-syntax">, </span><a href="3-scn.html#SP16" class="function-link"><span class="function-syntax">Scenes::make_special_meanings</span></a><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_RCD_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-scn.html#SP27" class="function-link"><span class="function-syntax">Scenes::new_rcd</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">MAKE_SPECIAL_MEANINGS_PLUG</span><span class="plain-syntax">, </span><a href="3-scn.html#SP17" class="function-link"><span class="function-syntax">Scenes::make_special_meanings</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">PluginCalls::plug</span><span class="plain-syntax">(</span><span class="identifier-syntax">NEW_RCD_NOTIFY_PLUG</span><span class="plain-syntax">, </span><a href="3-scn.html#SP28" class="function-link"><span class="function-syntax">Scenes::new_rcd</span></a><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2.  </b>This feature needs one extra syntax tree annotation:
@@ -198,6 +198,7 @@ scenes &mdash; to express which, the <a href="3-scn.html#SP10" class="internal">
 <span class="reserved-syntax">typedef</span><span class="plain-syntax"> </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">scene_end</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">end_names</span><span class="plain-syntax">; </span><span class="comment-syntax"> for ends 2, 3, ...: e.g. "badly"</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">end_rulebook</span><span class="plain-syntax">; </span><span class="comment-syntax"> rules to apply then</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">dialogue_beat</span><span class="plain-syntax"> *</span><span class="identifier-syntax">as_beat</span><span class="plain-syntax">; </span><span class="comment-syntax"> only for those scenes equated to beats</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">anchor_condition</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="reserved-syntax">scene_connector</span><span class="plain-syntax"> *</span><span class="identifier-syntax">anchor_connectors</span><span class="plain-syntax">; </span><span class="comment-syntax"> linked list</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">struct</span><span class="plain-syntax"> </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">anchor_condition_set</span><span class="plain-syntax">; </span><span class="comment-syntax"> where set</span>
@@ -215,6 +216,10 @@ scenes &mdash; to express which, the <a href="3-scn.html#SP10" class="internal">
 
 <span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::get_name</span><span class="plain-syntax">(</span><span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sc</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">Instances::get_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_instance</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">}</span>
+
+<span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="function-syntax">Scenes::get_instance</span><span class="plain-syntax">(</span><span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sc</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">as_instance</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure scene is accessed in 6/dlg, 6/db, 6/dl, 6/dc, 6/ps and here.</li><li>The structure scene_end is private to this section.</li><li>The structure scene_connector is accessed in 2/ri, 3/tm, 3/ts, 3/mhr, 4/ap, 4/av, 4/apc, 5/us, 6/db, 6/dl, 6/dc and here.</li></ul>
@@ -250,8 +255,9 @@ is created:
 <span class="plain-syntax">    </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">start_of_play</span><span class="plain-syntax"> = </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax">=0; </span><span class="identifier-syntax">end</span><span class="function-syntax">&lt;sc-&gt;</span><span class="element-syntax">no_ends</span><span class="plain-syntax">; </span><span class="identifier-syntax">end</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">anchor_condition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">as_beat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">anchor_connectors</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><a href="3-scn.html#SP15" class="function-link"><span class="function-syntax">Scenes::new_scene_rulebook</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="identifier-syntax">end</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><a href="3-scn.html#SP16" class="function-link"><span class="function-syntax">Scenes::new_scene_rulebook</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="identifier-syntax">end</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP12">&#167;12</a>.</li></ul>
@@ -279,7 +285,7 @@ to translate this to other languages.)
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="function-syntax">Scenes::from_named_constant</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Scenes::from_named_constant</span></span>:<br/><a href="3-scn.html#SP23_1">&#167;23.1</a>, <a href="3-scn.html#SP28">&#167;28</a><br/>Dialogue Beats - <a href="6-db.html#SP4_1">&#167;4.1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="function-syntax">Scenes::from_named_constant</span><button class="popup" onclick="togglePopup('usagePopup8')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup8">Usage of <span class="code-font"><span class="function-syntax">Scenes::from_named_constant</span></span>:<br/><a href="3-scn.html#SP24_1">&#167;24.1</a>, <a href="3-scn.html#SP29">&#167;29</a><br/>Dialogue Beats - <a href="6-db.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">instance</span><span class="plain-syntax"> *</span><span class="identifier-syntax">I</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">K_scene</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">kind</span><span class="plain-syntax"> *</span><span class="identifier-syntax">K</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Instances::to_kind</span><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Kinds::eq</span><span class="plain-syntax">(</span><span class="identifier-syntax">K</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_scene</span><span class="plain-syntax">)) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FEATURE_DATA_ON_SUBJECT</span><span class="plain-syntax">(</span><span class="identifier-syntax">scenes</span><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">as_subject</span><span class="plain-syntax">);</span>
@@ -295,7 +301,7 @@ to translate this to other languages.)
 <p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Creating and parsing ends. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::parse_scene_end_name</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Scenes::parse_scene_end_name</span></span>:<br/><a href="3-scn.html#SP24">&#167;24</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">EW</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">create</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::parse_scene_end_name</span><button class="popup" onclick="togglePopup('usagePopup9')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup9">Usage of <span class="code-font"><span class="function-syntax">Scenes::parse_scene_end_name</span></span>:<br/><a href="3-scn.html#SP25">&#167;25</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">EW</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">create</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">=2; </span><span class="identifier-syntax">i</span><span class="function-syntax">&lt;sc-&gt;</span><span class="element-syntax">no_ends</span><span class="plain-syntax">; </span><span class="identifier-syntax">i</span><span class="plain-syntax">++)</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">Wordings::match</span><span class="plain-syntax">(</span><span class="identifier-syntax">EW</span><span class="plain-syntax">, </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">i</span><span class="plain-syntax">].</span><span class="element-syntax">end_names</span><span class="plain-syntax">))</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax">;</span>
@@ -306,7 +312,7 @@ to translate this to other languages.)
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">end</span><span class="plain-syntax"> &gt;= </span><span class="identifier-syntax">max</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP14_1" class="named-paragraph-link"><span class="named-paragraph">Issue a too-many-ends problem message</span><span class="named-paragraph-number">14.1</span></a></span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">end_names</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EW</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><a href="3-scn.html#SP15" class="function-link"><span class="function-syntax">Scenes::new_scene_rulebook</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="identifier-syntax">end</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="3-scn.html#SP16" class="function-link"><span class="function-syntax">Scenes::new_scene_rulebook</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="identifier-syntax">end</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
@@ -326,27 +332,35 @@ to translate this to other languages.)
 <span class="plain-syntax">        </span><span class="string-syntax">"ways for the scene to end.)"</span><span class="plain-syntax">);</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP14">&#167;14</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Scene end rulebooks. </b></p>
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Tie the ends of a scene to a dialogue beat. </b></p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::new_scene_rulebook</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Scenes::new_scene_rulebook</span></span>:<br/><a href="3-scn.html#SP12_1">&#167;12.1</a>, <a href="3-scn.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::set_beat</span><button class="popup" onclick="togglePopup('usagePopup10')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup10">Usage of <span class="code-font"><span class="function-syntax">Scenes::set_beat</span></span>:<br/>Dialogue Beats - <a href="6-db.html#SP5">&#167;5</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="reserved-syntax">dialogue_beat</span><span class="plain-syntax"> *</span><span class="identifier-syntax">db</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[0].</span><span class="element-syntax">as_beat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">db</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[1].</span><span class="element-syntax">as_beat</span><span class="plain-syntax"> = </span><span class="identifier-syntax">db</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">}</span>
+</pre>
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Scene end rulebooks. </b></p>
+
+<pre class="displayed-code all-displayed-code code-font">
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::new_scene_rulebook</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Scenes::new_scene_rulebook</span></span>:<br/><a href="3-scn.html#SP12_1">&#167;12.1</a>, <a href="3-scn.html#SP14">&#167;14</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sc</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">RW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">, </span><span class="identifier-syntax">AW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP15_1" class="named-paragraph-link"><span class="named-paragraph">Compose a name and alternate name for the new scene end rulebook</span><span class="named-paragraph-number">15.1</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP16_1" class="named-paragraph-link"><span class="named-paragraph">Compose a name and alternate name for the new scene end rulebook</span><span class="named-paragraph-number">16.1</span></a></span><span class="plain-syntax">;</span>
 
 <span class="plain-syntax">    </span><span class="identifier-syntax">rulebook</span><span class="plain-syntax"> *</span><span class="identifier-syntax">rb</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Rulebooks::new_automatic</span><span class="plain-syntax">(</span><span class="identifier-syntax">RW</span><span class="plain-syntax">, </span><span class="identifier-syntax">K_action_name</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">NO_OUTCOME</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Rulebooks::set_alt_name</span><span class="plain-syntax">(</span><span class="identifier-syntax">rb</span><span class="plain-syntax">, </span><span class="identifier-syntax">AW</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">end_rulebook</span><span class="plain-syntax"> = </span><span class="identifier-syntax">rb</span><span class="plain-syntax">;</span>
 
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">end</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP15_2" class="named-paragraph-link"><span class="named-paragraph">Define phrases detecting whether or not the scene has ended this way</span><span class="named-paragraph-number">15.2</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">end</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP16_2" class="named-paragraph-link"><span class="named-paragraph">Define phrases detecting whether or not the scene has ended this way</span><span class="named-paragraph-number">16.2</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15_1" class="paragraph-anchor"></a><b>&#167;15.1.  </b>For example, if a scene is called "Banquet Entertainment" and it ends
+<p class="commentary firstcommentary"><a id="SP16_1" class="paragraph-anchor"></a><b>&#167;16.1.  </b>For example, if a scene is called "Banquet Entertainment" and it ends
 "merrily", then the rulebook has two names: "when Banquet Entertainment
 ends merrily" and "when the Banquet Entertainment ends merrily".
 </p>
 
-<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compose a name and alternate name for the new scene end rulebook</span><span class="named-paragraph-number">15.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary"><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Compose a name and alternate name for the new scene end rulebook</span><span class="named-paragraph-number">16.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -367,8 +381,8 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">end</span><span class="plain-syntax"> &gt;= </span><span class="constant-syntax">2</span><span class="plain-syntax">) </span><span class="identifier-syntax">Feeds::feed_wording</span><span class="plain-syntax">(</span><span class="identifier-syntax">sc</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">end_names</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">AW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Feeds::end</span><span class="plain-syntax">(</span><span class="identifier-syntax">id</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP15_2" class="paragraph-anchor"></a><b>&#167;15.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Define phrases detecting whether or not the scene has ended this way</span><span class="named-paragraph-number">15.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP16">&#167;16</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP16_2" class="paragraph-anchor"></a><b>&#167;16.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Define phrases detecting whether or not the scene has ended this way</span><span class="named-paragraph-number">16.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -405,23 +419,23 @@ ends merrily" and "when the Banquet Entertainment ends merrily".
 <span class="plain-syntax">    </span><span class="identifier-syntax">ImperativeSubtrees::accept_all</span><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">DISCARD_TEXT</span><span class="plain-syntax">(</span><span class="identifier-syntax">i6_code</span><span class="plain-syntax">)</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP15">&#167;15</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Anchors. </b>These are joins between the endings of different scenes, and there are two
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP16">&#167;16</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Anchors. </b>These are joins between the endings of different scenes, and there are two
 assertion sentences to create them:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::make_special_meanings</span><button class="popup" onclick="togglePopup('usagePopup11')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup11">Usage of <span class="code-font"><span class="function-syntax">Scenes::make_special_meanings</span></span>:<br/><a href="3-scn.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-scn.html#SP17" class="function-link"><span class="function-syntax">Scenes::begins_when_SMF</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"scene-begins-when"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-scn.html#SP18" class="function-link"><span class="function-syntax">Scenes::ends_when_SMF</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"scene-ends-when"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::make_special_meanings</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Scenes::make_special_meanings</span></span>:<br/><a href="3-scn.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">void</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-scn.html#SP18" class="function-link"><span class="function-syntax">Scenes::begins_when_SMF</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"scene-begins-when"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">SpecialMeanings::declare</span><span class="plain-syntax">(</span><a href="3-scn.html#SP19" class="function-link"><span class="function-syntax">Scenes::ends_when_SMF</span></a><span class="plain-syntax">, </span><span class="identifier-syntax">I</span><span class="string-syntax">"scene-ends-when"</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17.  </b>This one handles the special meaning "X begins when...".
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>This one handles the special meaning "X begins when...".
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::begins_when_SMF</span><button class="popup" onclick="togglePopup('usagePopup12')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup12">Usage of <span class="code-font"><span class="function-syntax">Scenes::begins_when_SMF</span></span>:<br/><a href="3-scn.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::begins_when_SMF</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Scenes::begins_when_SMF</span></span>:<br/><a href="3-scn.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="identifier-syntax">task</span><span class="plain-syntax">) { </span><span class="comment-syntax"> "The Ballroom Scene begins when..."</span>
@@ -433,21 +447,21 @@ assertion sentences to create them:
 <span class="plain-syntax">            </span><span class="identifier-syntax">V</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">O</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PASS_1_SMFT:</span>
-<span class="plain-syntax">            </span><a href="3-scn.html#SP25" class="function-link"><span class="function-syntax">Scenes::new_scene_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="3-scn.html#SP26" class="function-link"><span class="function-syntax">Scenes::new_scene_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PASS_2_SMFT:</span>
-<span class="plain-syntax">            </span><a href="3-scn.html#SP25" class="function-link"><span class="function-syntax">Scenes::new_scene_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="3-scn.html#SP26" class="function-link"><span class="function-syntax">Scenes::new_scene_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18.  </b>This handles the special meaning "X ends when...", which sometimes takes
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>This handles the special meaning "X ends when...", which sometimes takes
 two noun phrases and sometimes three.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::ends_when_SMF</span><button class="popup" onclick="togglePopup('usagePopup13')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup13">Usage of <span class="code-font"><span class="function-syntax">Scenes::ends_when_SMF</span></span>:<br/><a href="3-scn.html#SP16">&#167;16</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::ends_when_SMF</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Scenes::ends_when_SMF</span></span>:<br/><a href="3-scn.html#SP17">&#167;17</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">task</span><span class="plain-syntax">, </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> *</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">SW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[0]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">OW</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[1]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">O2W</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">)?(</span><span class="identifier-syntax">NPs</span><span class="plain-syntax">[2]):</span><span class="identifier-syntax">EMPTY_WORDING</span><span class="plain-syntax">;</span>
@@ -466,23 +480,23 @@ two noun phrases and sometimes three.
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PASS_1_SMFT:</span>
-<span class="plain-syntax">            </span><a href="3-scn.html#SP25" class="function-link"><span class="function-syntax">Scenes::new_scene_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="3-scn.html#SP26" class="function-link"><span class="function-syntax">Scenes::new_scene_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">PASS_2_SMFT:</span>
-<span class="plain-syntax">            </span><a href="3-scn.html#SP25" class="function-link"><span class="function-syntax">Scenes::new_scene_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="3-scn.html#SP26" class="function-link"><span class="function-syntax">Scenes::new_scene_anchor</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">V</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">, </span><span class="constant-syntax">1</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19.  </b>This rather clumsy global variable is a convenience when parsing the
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>This rather clumsy global variable is a convenience when parsing the
 Preform grammar below.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="identifier-syntax">scene_end_of_which_parsed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20.  </b>Sentences giving scene boundaries have a simple form:
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>Sentences giving scene boundaries have a simple form:
 </p>
 
 <blockquote>
@@ -506,10 +520,10 @@ have to be worded as one.
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;scene-ends-sentence-subject&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;scene-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TRUE, RP[1] }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP20_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ScenesOnly problem</span><span class="named-paragraph-number">20.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax">             </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP21_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ScenesOnly problem</span><span class="named-paragraph-number">21.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP20_1" class="paragraph-anchor"></a><b>&#167;20.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ScenesOnly problem</span><span class="named-paragraph-number">20.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP21_1" class="paragraph-anchor"></a><b>&#167;21.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ScenesOnly problem</span><span class="named-paragraph-number">21.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -519,8 +533,8 @@ have to be worded as one.
 <span class="plain-syntax">        </span><span class="string-syntax">"confrontation is a scene.'"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax"> };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP20">&#167;20</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21.  </b>The adverb, if present, always matches, since the scene end is created
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP21">&#167;21</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>The adverb, if present, always matches, since the scene end is created
 if it doesn't already exist:
 </p>
 
@@ -529,24 +543,24 @@ if it doesn't already exist:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;scene-end-name-creating&gt;</span><span class="Preform-plain-syntax">               </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22.  </b>The following is elementary enough, but we want to be careful because
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>The following is elementary enough, but we want to be careful because
 there are possible ambiguities: the condition might contain the word "ends"
 in a different context, for instance, and could still be valid in that case.
 </p>
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;scene-ends-sentence-object&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;text-including-a-calling&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">          </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP22_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ScenesDisallowCalled problem</span><span class="named-paragraph-number">22.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;text-including-a-calling&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">          </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP23_1" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ScenesDisallowCalled problem</span><span class="named-paragraph-number">23.1</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">play</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">begins</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -1, - }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">play</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                           </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP22_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ScenesNotPlay problem</span><span class="named-paragraph-number">22.2</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">play</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                           </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP23_2" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ScenesNotPlay problem</span><span class="named-paragraph-number">23.2</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;scene-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">begins</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                 </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 0, -, &lt;&lt;scene:named&gt;&gt; = RP[1] }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;scene-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                   </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { 1, -, &lt;&lt;scene:named&gt;&gt; = RP[1] }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;scene-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-function-syntax">&lt;scene-end-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { R[2], -, &lt;&lt;scene:named&gt;&gt; = RP[1] }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;scene-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">               </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP22_3" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ScenesUnknownEnd problem</span><span class="named-paragraph-number">22.3</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;scene-name&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">ends</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">...</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">               </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP23_3" class="named-paragraph-link"><span class="named-paragraph">Issue PM_ScenesUnknownEnd problem</span><span class="named-paragraph-number">23.3</span></a></span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-condition&gt;</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { -2, -, &lt;&lt;parse_node:cond&gt;&gt; = RP[1] }</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_1" class="paragraph-anchor"></a><b>&#167;22.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ScenesDisallowCalled problem</span><span class="named-paragraph-number">22.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP23_1" class="paragraph-anchor"></a><b>&#167;23.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ScenesDisallowCalled problem</span><span class="named-paragraph-number">23.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -558,8 +572,8 @@ in a different context, for instance, and could still be valid in that case.
 <span class="plain-syntax">        </span><span class="string-syntax">"not allowed!"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { -1, - };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_2" class="paragraph-anchor"></a><b>&#167;22.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ScenesNotPlay problem</span><span class="named-paragraph-number">22.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP23">&#167;23</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP23_2" class="paragraph-anchor"></a><b>&#167;23.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ScenesNotPlay problem</span><span class="named-paragraph-number">23.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -570,8 +584,8 @@ in a different context, for instance, and could still be valid in that case.
 <span class="plain-syntax">        </span><span class="string-syntax">"all scenes end."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { -1, - };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP22_3" class="paragraph-anchor"></a><b>&#167;22.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ScenesUnknownEnd problem</span><span class="named-paragraph-number">22.3</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP23">&#167;23</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP23_3" class="paragraph-anchor"></a><b>&#167;23.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Issue PM_ScenesUnknownEnd problem</span><span class="named-paragraph-number">23.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -581,8 +595,8 @@ in a different context, for instance, and could still be valid in that case.
 <span class="plain-syntax">        </span><span class="string-syntax">"when...' or 'Confrontation ends tragically when...'."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { -1, - };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP22">&#167;22</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23.  </b>Where the following filters instance names to allow those of scenes only,
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP23">&#167;23</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Where the following filters instance names to allow those of scenes only,
 and also internally converts the result:
 </p>
 
@@ -592,10 +606,10 @@ and also internally converts the result:
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;scene-name-unarticled&gt;</span><span class="Preform-plain-syntax">                         </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { pass 1 }</span>
 
 <span class="Preform-function-syntax">&lt;scene-name-unarticled&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;instance-of-non-object&gt;</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP23_1" class="named-paragraph-link"><span class="named-paragraph">Convert instance result to scene result, if possible</span><span class="named-paragraph-number">23.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;instance-of-non-object&gt;</span><span class="Preform-plain-syntax">    </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP24_1" class="named-paragraph-link"><span class="named-paragraph">Convert instance result to scene result, if possible</span><span class="named-paragraph-number">24.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP23_1" class="paragraph-anchor"></a><b>&#167;23.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Convert instance result to scene result, if possible</span><span class="named-paragraph-number">23.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP24_1" class="paragraph-anchor"></a><b>&#167;24.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Convert instance result to scene result, if possible</span><span class="named-paragraph-number">24.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -604,8 +618,8 @@ and also internally converts the result:
 <span class="plain-syntax">    </span><span class="identifier-syntax">scene_end_of_which_parsed</span><span class="plain-syntax"> = </span><a href="3-scn.html#SP13" class="function-link"><span class="function-syntax">Scenes::from_named_constant</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">I</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    ==&gt; { -, </span><span class="identifier-syntax">scene_end_of_which_parsed</span><span class="plain-syntax"> };</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP23">&#167;23</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24.  </b>Lastly, scene end names are parsed by these internals. They are identical
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP24">&#167;24</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>Lastly, scene end names are parsed by these internals. They are identical
 except that the creating case will create a new end if need be so that it
 never fails.
 </p>
@@ -625,7 +639,7 @@ never fails.
 <span class="Preform-plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25.  </b>In a sentence like
+<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>In a sentence like
 </p>
 
 <blockquote>
@@ -637,7 +651,7 @@ ends" the other end.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::new_scene_anchor</span><button class="popup" onclick="togglePopup('usagePopup14')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup14">Usage of <span class="code-font"><span class="function-syntax">Scenes::new_scene_anchor</span></span>:<br/><a href="3-scn.html#SP17">&#167;17</a>, <a href="3-scn.html#SP18">&#167;18</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">phase</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">given_end</span><span class="plain-syntax">) {</span>
+<span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::new_scene_anchor</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Scenes::new_scene_anchor</span></span>:<br/><a href="3-scn.html#SP18">&#167;18</a>, <a href="3-scn.html#SP19">&#167;19</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">p</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">phase</span><span class="plain-syntax">, </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">given_end</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">scene</span><span class="plain-syntax"> *</span><span class="identifier-syntax">this_scene</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">; </span><span class="comment-syntax"> scene whose end is being caused: must be set</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax"> = -1; </span><span class="comment-syntax"> end which is being anchored: must be set</span>
 
@@ -656,11 +670,11 @@ ends" the other end.
 <span class="plain-syntax">        </span><span class="identifier-syntax">CW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Node::get_text</span><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">next</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 
-<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP25_4" class="named-paragraph-link"><span class="named-paragraph">Parse the scene and end to be anchored</span><span class="named-paragraph-number">25.4</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP26_4" class="named-paragraph-link"><span class="named-paragraph">Parse the scene and end to be anchored</span><span class="named-paragraph-number">26.4</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">this_scene</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">end</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">)) </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"scene misparsed"</span><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">phase</span><span class="plain-syntax"> == </span><span class="constant-syntax">2</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP25_5" class="named-paragraph-link"><span class="named-paragraph">Parse which form of anchor we have</span><span class="named-paragraph-number">25.5</span></a></span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP26_5" class="named-paragraph-link"><span class="named-paragraph">Parse which form of anchor we have</span><span class="named-paragraph-number">26.5</span></a></span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">this_scene</span><span class="plain-syntax"> == </span><span class="identifier-syntax">SC_entire_game</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">external_condition</span><span class="plain-syntax"> == </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">StandardProblems::sentence_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(),</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_EntireGameHardwired</span><span class="plain-syntax">),</span>
@@ -668,23 +682,23 @@ ends" the other end.
 <span class="plain-syntax">                </span><span class="string-syntax">"because it is a built-in scene designed to be going on whenever there "</span>
 <span class="plain-syntax">                </span><span class="string-syntax">"is play going on in the story."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">when_play_begins</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP25_1" class="named-paragraph-link"><span class="named-paragraph">Connect this end to the start of play</span><span class="named-paragraph-number">25.1</span></a></span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP26_1" class="named-paragraph-link"><span class="named-paragraph">Connect this end to the start of play</span><span class="named-paragraph-number">26.1</span></a></span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">other_scene</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP25_3" class="named-paragraph-link"><span class="named-paragraph">Connect this end to an end of another scene</span><span class="named-paragraph-number">25.3</span></a></span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP26_3" class="named-paragraph-link"><span class="named-paragraph">Connect this end to an end of another scene</span><span class="named-paragraph-number">26.3</span></a></span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">external_condition</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP25_2" class="named-paragraph-link"><span class="named-paragraph">Make this an external scene end condition</span><span class="named-paragraph-number">25.2</span></a></span>
+<span class="plain-syntax">            </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP26_2" class="named-paragraph-link"><span class="named-paragraph">Make this an external scene end condition</span><span class="named-paragraph-number">26.2</span></a></span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"failed to obtain an anchor condition"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25_1" class="paragraph-anchor"></a><b>&#167;25.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Connect this end to the start of play</span><span class="named-paragraph-number">25.1</span></span><span class="comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP26_1" class="paragraph-anchor"></a><b>&#167;26.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Connect this end to the start of play</span><span class="named-paragraph-number">26.1</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="identifier-syntax">this_scene</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">start_of_play</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_2" class="paragraph-anchor"></a><b>&#167;25.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make this an external scene end condition</span><span class="named-paragraph-number">25.2</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP26">&#167;26</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP26_2" class="paragraph-anchor"></a><b>&#167;26.2.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Make this an external scene end condition</span><span class="named-paragraph-number">26.2</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -700,8 +714,8 @@ ends" the other end.
 <span class="plain-syntax">    </span><span class="identifier-syntax">this_scene</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">anchor_condition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">external_condition</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">this_scene</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">anchor_condition_set</span><span class="plain-syntax"> = </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_3" class="paragraph-anchor"></a><b>&#167;25.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Connect this end to an end of another scene</span><span class="named-paragraph-number">25.3</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP26">&#167;26</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP26_3" class="paragraph-anchor"></a><b>&#167;26.3.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Connect this end to an end of another scene</span><span class="named-paragraph-number">26.3</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -712,8 +726,8 @@ ends" the other end.
 <span class="plain-syntax">    </span><span class="identifier-syntax">scon</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">next</span><span class="plain-syntax"> = </span><span class="identifier-syntax">this_scene</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">anchor_connectors</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">this_scene</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">ends</span><span class="plain-syntax">[</span><span class="identifier-syntax">end</span><span class="plain-syntax">].</span><span class="element-syntax">anchor_connectors</span><span class="plain-syntax"> = </span><span class="identifier-syntax">scon</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_4" class="paragraph-anchor"></a><b>&#167;25.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the scene and end to be anchored</span><span class="named-paragraph-number">25.4</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP26">&#167;26</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP26_4" class="paragraph-anchor"></a><b>&#167;26.4.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse the scene and end to be anchored</span><span class="named-paragraph-number">26.4</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -728,8 +742,8 @@ ends" the other end.
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">end</span><span class="plain-syntax"> = </span><span class="identifier-syntax">given_end</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">end</span><span class="plain-syntax"> &lt; </span><span class="constant-syntax">0</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax">; </span><span class="comment-syntax"> to recover from any parsing Problems</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP25_5" class="paragraph-anchor"></a><b>&#167;25.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse which form of anchor we have</span><span class="named-paragraph-number">25.5</span></span><span class="comment-syntax"> =</span>
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP26">&#167;26</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP26_5" class="paragraph-anchor"></a><b>&#167;26.5.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Parse which form of anchor we have</span><span class="named-paragraph-number">26.5</span></span><span class="comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -742,8 +756,8 @@ ends" the other end.
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="identifier-syntax">external_condition</span><span class="plain-syntax"> = </span><span class="identifier-syntax">Specifications::new_UNKNOWN</span><span class="plain-syntax">(</span><span class="identifier-syntax">CW</span><span class="plain-syntax">);</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP25">&#167;25</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26" class="paragraph-anchor"></a><b>&#167;26.  </b>One use of scenes is to kick off rulebooks when they begin or end. The other
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP26">&#167;26</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27.  </b>One use of scenes is to kick off rulebooks when they begin or end. The other
 use for them is to predicate rules on whether they are currently playing or
 not, using a "during" clause, and this is used when parsing those in rule
 headers. Note that a match here can name a specific scene, or describe a
@@ -752,10 +766,10 @@ collection of them:
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;s-scene-description&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-value&gt;</span><span class="Preform-plain-syntax">       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP26_1" class="named-paragraph-link"><span class="named-paragraph">Filter to force this to be a scene description</span><span class="named-paragraph-number">26.1</span></a></span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;s-value&gt;</span><span class="Preform-plain-syntax">       </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> </span><span class="named-paragraph-container code-font"><a href="3-scn.html#SP27_1" class="named-paragraph-link"><span class="named-paragraph">Filter to force this to be a scene description</span><span class="named-paragraph-number">27.1</span></a></span>
 </pre>
 <ul class="endnotetexts"><li>This is <a href="../words-module/4-ap.html" class="internal">Preform grammar</a>, not regular C code.</li></ul>
-<p class="commentary firstcommentary"><a id="SP26_1" class="paragraph-anchor"></a><b>&#167;26.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Filter to force this to be a scene description</span><span class="named-paragraph-number">26.1</span></span><span class="Preform-comment-syntax"> =</span>
+<p class="commentary firstcommentary"><a id="SP27_1" class="paragraph-anchor"></a><b>&#167;27.1.  </b><span class="named-paragraph-container code-font"><span class="named-paragraph-defn">Filter to force this to be a scene description</span><span class="named-paragraph-number">27.1</span></span><span class="Preform-comment-syntax"> =</span>
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -768,8 +782,8 @@ collection of them:
 <span class="plain-syntax">        ==&gt; { -, </span><span class="identifier-syntax">spec</span><span class="plain-syntax"> };</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 </pre>
-<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP26">&#167;26</a>.</li></ul>
-<p class="commentary firstcommentary"><a id="SP27" class="paragraph-anchor"></a><b>&#167;27. Rules predicated on scenes. </b>Rules can be set to fire only during a certain scene, or a scene matching some
+<ul class="endnotetexts"><li>This code is used in <a href="3-scn.html#SP27">&#167;27</a>.</li></ul>
+<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28. Rules predicated on scenes. </b>Rules can be set to fire only during a certain scene, or a scene matching some
 description. This is stored in the following scenes-feature corner of the
 <a href="../assertions-module/5-rcd.html" class="internal">Runtime Context Data (in assertions)</a> for the rule:
 </p>
@@ -786,8 +800,8 @@ description. This is stored in the following scenes-feature corner of the
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">srd</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
-<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::new_rcd</span><button class="popup" onclick="togglePopup('usagePopup15')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup15">Usage of <span class="code-font"><span class="function-syntax">Scenes::new_rcd</span></span>:<br/><a href="3-scn.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">id_runtime_context_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idrcd</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">CREATE_RCD_FEATURE_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">scenes</span><span class="plain-syntax">, </span><span class="identifier-syntax">idrcd</span><span class="plain-syntax">, </span><a href="3-scn.html#SP27" class="function-link"><span class="function-syntax">Scenes::new_rcd_data</span></a><span class="plain-syntax">)</span>
+<span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Scenes::new_rcd</span><button class="popup" onclick="togglePopup('usagePopup16')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup16">Usage of <span class="code-font"><span class="function-syntax">Scenes::new_rcd</span></span>:<br/><a href="3-scn.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">id_runtime_context_data</span><span class="plain-syntax"> *</span><span class="identifier-syntax">idrcd</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">CREATE_RCD_FEATURE_DATA</span><span class="plain-syntax">(</span><span class="identifier-syntax">scenes</span><span class="plain-syntax">, </span><span class="identifier-syntax">idrcd</span><span class="plain-syntax">, </span><a href="3-scn.html#SP28" class="function-link"><span class="function-syntax">Scenes::new_rcd_data</span></a><span class="plain-syntax">)</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -805,7 +819,7 @@ description. This is stored in the following scenes-feature corner of the
 <span class="plain-syntax">}</span>
 </pre>
 <ul class="endnotetexts"><li>The structure scenes_rcd_data is private to this section.</li></ul>
-<p class="commentary firstcommentary"><a id="SP28" class="paragraph-anchor"></a><b>&#167;28.  </b>The reason we store a whole specification, rather than a scene constant,
+<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>The reason we store a whole specification, rather than a scene constant,
 here is that we sometimes want rules which happen during "a recurring scene",
 or some other description of scenes in general. But the following function
 extracts a single specified scene if there is one:
@@ -824,7 +838,7 @@ extracts a single specified scene if there is one:
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP29" class="paragraph-anchor"></a><b>&#167;29.  </b>And this is used to make metadata for indexing.
+<p class="commentary firstcommentary"><a id="SP30" class="paragraph-anchor"></a><b>&#167;30.  </b>And this is used to make metadata for indexing.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">

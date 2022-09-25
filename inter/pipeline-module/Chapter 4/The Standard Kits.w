@@ -556,8 +556,10 @@ comprehensive list of what is there.)
 @e DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL
 @e DIRECTOR_AFTER_ACTION_HL
 @e DIRECTOR_BEAT_BEING_PERFORMED_HL
+@e DIRECTOR_PERFORM_TIED_BEAT_HL
 
 @<Establish resources offered by DialogueKit@> =
 	KIT_PROVIDED(DIRECTOR_ADD_LIVE_SUBJECT_LIST_HL,   I"DirectorAddLiveSubjectList")
 	KIT_PROVIDED(DIRECTOR_AFTER_ACTION_HL,            I"DirectorAfterAction")
 	KIT_PROVIDED(DIRECTOR_BEAT_BEING_PERFORMED_HL,    I"DirectorBeatBeingPerformed")
+	KIT_PROVIDED(DIRECTOR_PERFORM_TIED_BEAT_HL,       I"DirectorPerformTiedBeat")

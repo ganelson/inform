@@ -742,13 +742,10 @@ Before performing a dialogue line:
 
 For performing a dialogue line (called L)
 	(this is the default dialogue performance rule):
-	if L is elaborated:
+	if L is narrated or L is elaborated or L is non-verbal:
 		say "[textual content of L][line break]";
 	otherwise:
-		if the speaker is something:
-			say "[The speaker]";
-			if the interlocutor is something:
-				say " (to [the interlocutor])";
-			say ": '[textual content of L]'[line break]";
-		otherwise:
-			say "[textual content of L][line break]".
+		say "[The speaker]";
+		if the interlocutor is something:
+			say " (to [the interlocutor])";
+		say ": '[textual content of L]'[line break]".

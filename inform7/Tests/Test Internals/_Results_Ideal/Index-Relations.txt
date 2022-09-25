@@ -380,6 +380,20 @@
     </tr>
     <tr>
         <td align="left" valign="top">
+            audibility&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            spatial&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+        <td align="left" valign="top">
+            thing
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
             touchability&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
         <td align="left" valign="top">
