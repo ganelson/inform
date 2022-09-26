@@ -254,6 +254,7 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	if (dl->without_speaking) flags |= 2;
 	if (ending) flags |= 4;
 	if (ending_finally) flags |= 8;
+	EmitArrays::numeric_entry(flags);
 
 @<Compile the available function@> =
 	packaging_state save = Functions::begin(RTDialogueLines::available_fn_iname(dl));

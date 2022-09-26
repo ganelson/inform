@@ -763,9 +763,12 @@ For now, this is the same test as visibility except that it does not require
 light to see by.
 
 =
-[ TestAudibility A B;
+[ TestAudibility A B res saved;
 	if (suppress_scope_loops) rtrue;
-	return TestScope(B, A);
+	saved = location; if (location == thedark) location = real_location;
+	res = TestScope(B, A);
+	location = saved;
+	return res;
 ];
 
 @h Touchability Relation.

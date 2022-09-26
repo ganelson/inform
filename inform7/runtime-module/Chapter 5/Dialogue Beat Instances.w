@@ -182,7 +182,7 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 
 @<Write the speaker list@> =
 	linked_list *L = db->required;
-	if (LinkedLists::len(L) == 0) {
+	if ((LinkedLists::len(L) == 0) && (db->requiring_nothing == FALSE)) {
 		L = NEW_LINKED_LIST(instance);
 		RTDialogueBeats::find_speakers_r(L, db->root);
 	}

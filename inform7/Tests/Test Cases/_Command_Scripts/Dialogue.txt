@@ -1,0 +1,21 @@
+2
+1
+listen
+jump
+e
+listen
+jump
+w
+s
+examine ball
+z
+z
+z
+z
+e
+z
+z
+w
+n
+quit
+y

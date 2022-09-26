@@ -86,6 +86,7 @@ typedef struct dialogue_beat {
 	struct scene *as_scene;
 	struct linked_list *required; /* of |instance| */
 	int starting_beat;
+	int requiring_nothing;
 
 	struct parse_node *immediately_after;
 	struct linked_list *some_time_after; /* of |parse_node| */
@@ -106,6 +107,7 @@ typedef struct dialogue_beat {
 	db->as_scene = NULL;
 	db->required = NEW_LINKED_LIST(instance);
 	db->starting_beat = FALSE;
+	db->requiring_nothing = FALSE;
 	db->immediately_after = NULL;
 	db->some_time_after = NEW_LINKED_LIST(parse_node);
 	db->some_time_before = NEW_LINKED_LIST(parse_node);
@@ -130,6 +132,7 @@ We annotate each clause with the answer. Thus we might have:
 @e AFTER_DBC
 @e IMMEDIATELY_AFTER_DBC
 @e BEFORE_DBC
+@e REQUIRING_NOTHING_DBC
 @e REQUIRING_DBC
 @e LATER_DBC
 @e NEXT_DBC
@@ -156,6 +159,7 @@ We annotate each clause with the answer. Thus we might have:
 	after ... |                 ==> { AFTER_DBC, - }
 	immediately after ... |     ==> { IMMEDIATELY_AFTER_DBC, - }
 	before ... |                ==> { BEFORE_DBC, - }
+	requiring nothing |         ==> { REQUIRING_NOTHING_DBC, - }
 	requiring ... |             ==> { REQUIRING_DBC, - }
 	later |                     ==> { LATER_DBC, - }
 	next |                      ==> { NEXT_DBC, - }
@@ -178,6 +182,7 @@ void DialogueBeats::write_dbc(OUTPUT_STREAM, int c) {
 		case IMMEDIATELY_AFTER_DBC: WRITE("IMMEDIATELY_AFTER"); break;
 		case BEFORE_DBC: WRITE("BEFORE"); break;
 		case REQUIRING_DBC: WRITE("REQUIRING"); break;
+		case REQUIRING_NOTHING_DBC: WRITE("REQUIRING_NOTHING"); break;
 		case LATER_DBC: WRITE("LATER"); break;
 		case NEXT_DBC: WRITE("NEXT"); break;
 		case PROPERTY_DBC: WRITE("PROPERTY"); break;
@@ -350,6 +355,9 @@ performed only after or before other beats.
 				DialogueBeats::parse_required_speaker_list(db, AL);
 				break;
 			}
+			case REQUIRING_NOTHING_DBC:
+				db->requiring_nothing = TRUE;
+				break;
 		}
 	}
 	if (iac > 1) 
@@ -505,7 +513,7 @@ void DialogueBeats::parse_topic(linked_list *about_list, parse_node *AL, unsigne
 		if (<s-type-expression-uncached>(A)) {
 			parse_node *desc = <<rp>>;
 			kind *K = Specifications::to_kind(desc);
-			if (Kinds::Behaviour::is_subkind_of_object(K)) {
+			if ((Kinds::eq(K, K_object)) || (Kinds::Behaviour::is_subkind_of_object(K))) {
 				ADD_TO_LINKED_LIST(desc, parse_node, about_list);
 			} else {
 				Problems::quote_source(1, current_sentence);

@@ -23,9 +23,9 @@ void DialogueRelations::stock(bp_family *self, int n) {
 		R_dialogue_containment =
 			BinaryPredicates::make_pair(spatial_bp_family,
 				BPTerms::new(KindSubjects::from_kind(K_dialogue_beat)),
-				BPTerms::new(KindSubjects::from_kind(K_dialogue_line)),
+				BPTerms::new(KindSubjects::from_kind(K_value)),
 				I"dialogue-contains", I"in-dialogue",
-				NULL, Calculus::Schemas::new("DirectorTestLineContainment(*2,*1)"),
+				NULL, Calculus::Schemas::new("DirectorTestLineContainment(*2,*1,*#2,*#1)"),
 				PreformUtilities::wording(<relation-names>,
 					DIALOGUE_CONTAINMENT_RELATION_NAME));
 		BinaryPredicates::set_index_details(R_dialogue_containment, NULL, "dialogue line");
@@ -37,7 +37,22 @@ void DialogueRelations::stock(bp_family *self, int n) {
 =
 int DialogueRelations::typecheck(bp_family *self, binary_predicate *bp,
 		kind **kinds_of_terms, kind **kinds_required, tc_problem_kit *tck) {
-	return DECLINE_TO_MATCH;
+	if ((K_dialogue_beat) &&
+		(Kinds::compatible(kinds_of_terms[1], K_dialogue_beat) == NEVER_MATCH)) {
+		LOG("Term 0 is %u not %u\n", kinds_of_terms[1], K_dialogue_beat);
+		TypecheckPropositions::issue_bp_typecheck_error(bp,
+			kinds_of_terms[0], kinds_of_terms[1], tck);
+		return NEVER_MATCH;
+	}
+	if (((K_dialogue_line) || (K_dialogue_choice)) &&
+		(Kinds::compatible(kinds_of_terms[0], K_dialogue_line) == NEVER_MATCH) &&
+		(Kinds::compatible(kinds_of_terms[0], K_dialogue_choice) == NEVER_MATCH)) {
+		LOG("Term 0 is %u not %u\n", kinds_of_terms[0], kinds_required[0]);
+		TypecheckPropositions::issue_bp_typecheck_error(bp,
+			kinds_of_terms[0], kinds_of_terms[1], tck);
+		return NEVER_MATCH;
+	}
+	return ALWAYS_MATCH;
 }
 
 @ "In" requires delicate handling, because of the way that English uses it

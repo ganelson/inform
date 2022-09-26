@@ -714,6 +714,8 @@ pcalc_prop *Simplifications::region_containment(pcalc_prop *prop, int *changed) 
 						backdropping = TRUE;
 					if ((K_dialogue_beat) && (Kinds::eq(KB, K_dialogue_line)))
 						lined = TRUE;
+					if ((K_dialogue_choice) && (Kinds::eq(KB, K_dialogue_choice)))
+						lined = TRUE;
 				}
 				if ((regionality) && (!backdropping)) {
 					pl->predicate = STORE_POINTER_binary_predicate(R_regional_containment);

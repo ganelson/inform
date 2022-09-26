@@ -761,30 +761,45 @@ Global director_is_active = false;
 	rfalse;
 ];
 
-[ DirectorIntervenes obj tab fn db;
+Array DirectorMiniPool --> 0 0;
+
+[ DirectorIntervenes obj tab fn db saved;
+	saved = DirectorMiniPool-->0;
+	DirectorMiniPool-->0 = obj;
 	for (db=1: db<=NO_DIALOGUE_BEATS: db++) {
 		if (DirectorBeatAvailableToPlayer(db)) {
 			tab = TableOfDialogueBeats-->db;
 			fn = tab-->0;
 			if ((fn == 0) || ((fn)(latest_performed_beat))) {
 				fn = tab-->1;
-				if ((fn) && (fn(DialogueTopicPool))) { DirectorPerform(db); rtrue; }
+				if ((fn) && (fn(DirectorMiniPool))) {
+					DirectorMiniPool-->0 = saved; DirectorPerform(db); rtrue;
+				}
 			}
 		}
 	}
+	DirectorMiniPool-->0 = saved;
 	rfalse;
 ];
 
-[ DirectorTestLineContainment dl db tab structure pc instruction;
-!	print "I.e. whether ", (PrintDialogueLineName) dl, " is in ", (PrintDialogueBeatName) db, "^";
+[ DirectorTestLineContainment X db tX tb tab structure pc instruction wanted;
+!	print "I.e. whether ", (PrintDialogueLineName) X, " is in ", (PrintDialogueBeatName) db, "^";
+	if (tb ~= DIALOGUE_BEAT_TY) { print "*** Not a db ***"; rfalse; }
+	if (tX ~= DIALOGUE_LINE_TY or DIALOGUE_CHOICE_TY) { print "*** Not a dl/dc ***"; rfalse; }
 	if ((db < 1) || (db > NO_DIALOGUE_BEATS)) rfalse;
-	if ((dl < 1) || (dl > NO_DIALOGUE_LINES)) rfalse;
+	if (tX == DIALOGUE_LINE_TY) {
+		if ((X < 1) || (X > NO_DIALOGUE_LINES)) rfalse;
+		wanted = 1;
+	} else {
+		if ((X < 1) || (X > NO_DIALOGUE_CHOICES)) rfalse;
+		wanted = 2;
+	}
 	tab = TableOfDialogueBeats-->db;
 	structure = tab-->2;
 	pc = 0;
 	instruction = (structure-->pc)/100;
 	while (instruction) {
-		if ((instruction == 1) && (structure-->(pc+1) == dl)) rtrue;
+		if ((instruction == wanted) && (structure-->(pc+1) == X)) rtrue;
 		pc = pc + 2;
 		instruction = (structure-->pc)/100;
 	}

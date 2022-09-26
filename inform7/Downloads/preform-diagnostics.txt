@@ -5172,7 +5172,7 @@
         <np-operand> {called} <np-articled-bal> 
           (hits 57/393) (matched long text) constraint DS = {8} extremes [1, infinity)
         <np-operand> <np-with-or-having-tail> 
-          (hits 0/531) constraint DS = {30} extremes [2, infinity)
+          (hits 0/532) constraint DS = {30} extremes [2, infinity)
         <np-operand> <np-and-tail> 
           (hits 87/490) (matched long text) constraint DS = {6} extremes [1, infinity)
         <np-kind-phrase> 
@@ -5193,16 +5193,16 @@
         <np-nonrelative> 
           (hits 431/431) (matched long text) constraint (none) extremes [1, infinity)
 
-<np-with-or-having-tail> hits 0/10198 nti 30 constraint DS = {30} extremes [2, infinity)
+<np-with-or-having-tail> hits 0/10204 nti 30 constraint DS = {30} extremes [2, infinity)
     English:
         it with action {***} 
-          (hits 0/3883) constraint DS = {30} extremes [3, infinity)
+          (hits 0/3887) constraint DS = {30} extremes [3, infinity)
         {with/having} (/) {***} 
-          (hits 0/4091) constraint DS = {30} extremes [2, infinity)
+          (hits 0/4095) constraint DS = {30} extremes [2, infinity)
         {with/having} {...} ( <response-letter> ) 
-          (hits 0/3477) constraint DS = {30} extremes [5, infinity)
+          (hits 0/3479) constraint DS = {30} extremes [5, infinity)
         {with/having} <np-new-property-list> 
-          (hits 0/4091) constraint DS = {30} extremes [2, infinity)
+          (hits 0/4095) constraint DS = {30} extremes [2, infinity)
 
 <np-new-property-list> nti 29 constraint (none) extremes [1, infinity)
     English:
@@ -6303,7 +6303,7 @@
         <article> activity 
           (hits 34/42) (matched: 'an activity') constraint DS = {30} extremes [2, 2]
         activity 
-          constraint CS = {30} extremes [1, 1]
+          (hits 0/1) constraint CS = {30} extremes [1, 1]
 
 <specifies-sentence-subject> nti 8 constraint (none) extremes [1, infinity)
     English:
@@ -9828,6 +9828,8 @@
           constraint DS = {30} extremes [3, infinity)
         before {...} 
           constraint DS = {30} extremes [2, infinity)
+        requiring nothing 
+          constraint CS = {30} extremes [2, 2]
         requiring {...} 
           constraint DS = {30} extremes [2, infinity)
         later 

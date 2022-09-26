@@ -1,0 +1,134 @@
+  
+  relation of things: audibility relation
+  relation of things: visibility relation
+  "list of people who can see Alice" = list of people: {yourself, Alice, Belle, Camilla}
+  "list of people who can hear Alice" = list of people: {yourself, Alice, Belle, Camilla}
+  "list of people who can see Diego" = list of people: {}
+  "list of people who can hear Diego" = list of people: {Diego, Eric}
+  "list of dialogue choices in the nested decisions beat" = list of dialogue choices: {gouda choice, white seedless choice, red choice, camembert choice, white seeded choice, black choice}
+  "list of dialogue lines in the test only present speakers beat" = list of dialogue lines: {d1 line, a1 line, b1 line, d2 line, e1 line, a2 line, reporting narration line}
+  
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Laboratory
+  You can see Alice, Belle and Camilla here.
+  
+  Alice: "I am Alice."
+  
+  Belle: "I am Belle."
+  
+  Report on completion of test only present speakers beat.
+  d1 line is unperformed; non-recurring; unnarrated; unelaborated; available; verbal.
+  a1 line is performed; non-recurring; unnarrated; unelaborated; available; verbal.
+  b1 line is performed; recurring; unnarrated; unelaborated; available; verbal.
+  d2 line is unperformed; non-recurring; unnarrated; elaborated; unavailable; verbal.
+  e1 line is unperformed; non-recurring; unnarrated; unelaborated; available; non-verbal.
+  a2 line is unperformed; non-recurring; unnarrated; unelaborated; available; verbal; story-ending.
+  reporting narration line is unperformed; non-recurring; narrated; unelaborated; available; verbal.
+  
+  
+  Alice: "I tell you just once, I am Alice."
+  
+  Belle: "I tell you as often as necessary, I am Alice."
+  
+  Belle: "I tell you as often as necessary, I am Alice."
+  
+  (1) My favourite cheese is vintage gouda.
+  (2) My favourite cheese is camembert.
+  
+> >  
+  My favourite cheese is camembert.
+  
+  (1) My preferred grapes are white yet seeded.
+  (2) My preferred grapes are black.
+  
+> >   Laboratory
+  My preferred grapes are white yet seeded.
+  
+  You would appear to have selected: camembert choice and white seeded choice.
+  
+> >   Laboratory
+  "list of people who can hear the player" = list of people: {yourself, Alice, Belle, Camilla}
+  "list of people who can be heard by the player" = list of people: {yourself, Alice, Belle, Camilla}
+  
+> >   Laboratory
+  Alice: "I am self-explanatory."
+  
+> >   Darkness
+  Darkness
+  It is pitch dark, and you can't see a thing.
+  
+> >   Darkness
+  "list of people who can hear the player" = list of people: {yourself, Diego, Eric}
+  "list of people who can be heard by the player" = list of people: {yourself, Diego, Eric}
+  
+> >   Darkness
+  Diego: "Alice is kind of exhausting."
+  
+> >   Laboratory
+  Laboratory
+  You can see Alice, Belle and Camilla here.
+  
+> >   Garden
+  Bong! The director activity chime goes off.
+  
+  "live conversational subject list" = list of objects: {}
+> >   Garden
+  You see nothing special about ball.
+  
+  "live conversational subject list" = list of objects: {ball}
+  
+  Fiona: "The bat is willow and the ball is cork, I think."
+  
+> >   Garden
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {bat, ball}
+  
+  Fiona: "The idea's to use the bat to defend the stumps."
+  
+> >   Garden
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {stumps, bat, ball}
+  
+  Fiona: "There are three of them, for some reason."
+  
+> >   Garden
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {stumps, bat, ball}
+  
+> >   Garden
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {stumps, bat, ball}
+  
+> >   Lake
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+  The sea monster: "Blubbble."
+  
+> >   Lake
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+> >   Lake
+  Time passes.
+  
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+> >   Garden
+  Garden
+  You can see a stumps, bat, ball and Fiona here.
+  
+  "live conversational subject list" = list of objects: {sea monster, mermaid}
+  
+> >   Laboratory
+  Gnob! The director activity chime sounds in reverse.
+  
+> >   Laboratory
+> Are you sure you want to quit? 

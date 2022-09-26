@@ -1,0 +1,138 @@
+Laboratory is a room.
+
+Alice, Belle and Camilla are women in the Laboratory.
+
+East of the Laboratory is the Annexe. Diego and Eric are men in the Annexe. The Annexe is dark.
+
+South of the Laboratory is the Garden. The stumps, bat and ball are in the Garden.
+Fiona is a woman in the Garden.
+
+When play begins:
+	showme audibility relation;
+	showme visibility relation;
+	showme the list of people who can see Alice;
+	showme the list of people who can hear Alice;
+	showme the list of people who can see Diego;
+	showme the list of people who can hear Diego;
+	showme the list of dialogue choices in the nested decisions beat;
+	showme the list of dialogue lines in the test only present speakers beat.
+
+Instead of jumping:
+	if dialogue about Alice intervenes:
+		stop the action.
+
+Instead of listening:
+	showme the list of people who can hear the player;
+	showme the list of people who can be heard by the player;
+
+After going south to the Garden:
+	make the dialogue director active;
+	clear conversational subjects;
+	perform the going active beat.
+
+After going north from the Garden:
+	make the dialog director passive;
+	perform the going inactive beat.
+
+Before examining something (called the objet d'art) in the Garden:
+	make the objet d'art a live conversational subject.
+
+Every turn when the player is in the Garden or the player is in the Lake:
+	showme the live conversational subject list.
+
+The Lake is east of the Garden. The sea monster and the mermaid are in the Lake.
+
+After going to the Lake:
+	alter the live conversational subject list to { sea monster, mermaid }.
+
+To say report on (D - a dialogue beat):
+	say "Report on completion of [D].";
+	repeat with L running through dialogue lines in D:
+		say "[L] is [if L is unperformed]un[end if]performed; [if L is non-recurring]non-[end if]recurring; [if L is unnarrated]un[end if]narrated; [if L is unelaborated]un[end if]elaborated; [if L is unavailable]un[end if]available; [if L is non-verbal]non-[end if]verbal[if L is story-ending]; story-ending[end if].";
+
+Section A (dialog)
+
+(This is the starting beat.)
+
+-> perform the test only present speakers beat
+
+-> perform the test repeated speech beat
+
+-> perform the test repeated speech beat
+
+-> perform the nested decisions beat
+
+(This is the test only present speakers beat.)
+
+Diego (this is the d1 line): "I am Diego, though you'll never hear this."
+
+Alice (this is the a1 line): "I am Alice."
+
+	Belle (this is the b1 line; recurring): "I am Belle."
+	
+		Diego (this is the d2 line; if 1 is 2): "I am always 'Diego' you know."
+	
+	Eric (to Alice; without speaking; this is the e1 line): "Eric points insulting at Alice."
+
+		Alice (this is the a2 line; ending the story): "Still Alice."
+
+Narration (this is the reporting narration line): "[report on the test only present speakers beat]"
+
+Section B (dialogue)
+
+(This is the test repeated speech beat.)
+
+Alice: "I tell you just once, I am Alice."
+
+Belle (recurring): "I tell you as often as necessary, I am Alice."
+
+(This is the nested decisions beat.)
+
+-- (this is the gouda choice) "My favourite cheese is vintage gouda."
+
+	-- (this is the white seedless choice) "My preferred grapes are white seedless."
+
+	-- (this is the red choice) "My preferred grapes are red."
+
+-- (this is the camembert choice) "My favourite cheese is camembert."
+
+	-- (this is the white seeded choice) "My preferred grapes are white yet seeded."
+
+	-- (this is the black choice) "My preferred grapes are black."
+
+Narration: "You would appear to have selected: [list of performed dialogue choices in the nested decisions beat]."
+
+(This is the going active beat.)
+
+Narration: "Bong! The director activity chime goes off."
+
+(This is the going inactive beat.)
+
+Narration: "Gnob! The director activity chime sounds in reverse."
+
+Section C (dialogue)
+
+(About Alice; recurring; requiring nothing.)
+
+Alice: "I am self-explanatory."
+
+	-> stop
+
+Diego: "Alice is kind of exhausting."
+
+(About the bat and ball.)
+
+Fiona: "The bat is willow and the ball is cork, I think."
+
+(About the ball.)
+
+Fiona (mentioning the bat and the stumps):
+	"The idea's to use the bat to defend the stumps."
+
+(About the stumps.)
+
+Fiona: "There are three of them, for some reason."
+
+(About the mermaid.)
+
+Sea monster: "Blubbble."
