@@ -118,10 +118,6 @@ of the following possibilities:
 @e NOW_DLC
 @e TO_DLC
 @e WITHOUT_SPEAKING_DLC
-@e ENDING_DLC
-@e ENDING_SAYING_DLC
-@e ENDING_FINALLY_DLC
-@e ENDING_FINALLY_SAYING_DLC
 @e STYLE_DLC
 
 @<Look for a line name@> =
@@ -161,11 +157,6 @@ of the following possibilities:
 	to ... |                                             ==> { TO_DLC, - }
 	now ... |                                            ==> { NOW_DLC, - }
 	without speaking |                                   ==> { WITHOUT_SPEAKING_DLC, - }
-	ending the story |                                   ==> { ENDING_DLC, - }
-	ending the story finally |                           ==> { ENDING_FINALLY_DLC, - }
-	ending the story saying { <quoted-text> } |          ==> { ENDING_SAYING_DLC, - }
-	ending the story finally |                           ==> { ENDING_FINALLY_DLC, - }
-	ending the story finally saying { <quoted-text> } |  ==> { ENDING_FINALLY_SAYING_DLC, - }
 	...                                                  ==> { STYLE_DLC, - }
 
 @ =
@@ -179,10 +170,6 @@ void DialogueLines::write_dlc(OUTPUT_STREAM, int c) {
 		case NOW_DLC:                   WRITE("NOW"); break;
 		case TO_DLC:                    WRITE("TO"); break;
 		case WITHOUT_SPEAKING_DLC:      WRITE("WITHOUT_SPEAKING"); break;
-		case ENDING_DLC:                WRITE("ENDING"); break;
-		case ENDING_SAYING_DLC:         WRITE("ENDING_SAYING"); break;
-		case ENDING_FINALLY_DLC:        WRITE("ENDING_FINALLY"); break;
-		case ENDING_FINALLY_SAYING_DLC: WRITE("ENDING_FINALLY_SAYING"); break;
 		case STYLE_DLC:                 WRITE("STYLE"); break;
 		default:                        WRITE("?"); break;
 	}
@@ -345,5 +332,5 @@ void DialogueLines::decide_line_mentions(void) {
 	}
 
 @ So what remains to be done? The unparsed clauses remaining are |IF| and |UNLESS|,
-|BEFORE| and |AFTER|, |NOW|, and the various story-ending clauses: but all of those
-are essentially code rather than data, and we will parse those in //runtime: Dialogue Line Instances//.
+|BEFORE| and |AFTER|, and |NOW|: but all of those are essentially code rather
+than data, and we will parse those in //runtime: Dialogue Line Instances//.

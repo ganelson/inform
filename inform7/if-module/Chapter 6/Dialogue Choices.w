@@ -79,6 +79,10 @@ typedef struct dialogue_choice {
 					case AFTER_DSEL:
 					case BEFORE_DSEL:
 					case PERFORM_DSEL:
+					case ENDING_DSEL:
+					case ENDING_SAYING_DSEL:
+					case ENDING_FINALLY_DSEL:
+					case ENDING_FINALLY_SAYING_DSEL:
 						dc->selection_parameter = GET_RW(<dialogue-selection>, 1);
 						break;					
 				}
@@ -112,6 +116,10 @@ typedef struct dialogue_choice {
 			break;
 		case PERFORM_DSEL:
 		case STOP_DSEL:
+		case ENDING_DSEL:
+		case ENDING_SAYING_DSEL:
+		case ENDING_FINALLY_DSEL:
+		case ENDING_FINALLY_SAYING_DSEL:
 		case NEW_CHOICE_DSEL:
 			right_arrow = TRUE;
 			break;					
@@ -194,6 +202,10 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 @e TEXTUAL_DSEL
 @e AGAIN_DSEL
 @e STOP_DSEL
+@e ENDING_DSEL
+@e ENDING_SAYING_DSEL
+@e ENDING_FINALLY_DSEL
+@e ENDING_FINALLY_SAYING_DSEL
 @e OTHERWISE_DSEL
 @e INSTEAD_OF_DSEL
 @e AFTER_DSEL
@@ -202,15 +214,20 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 
 =
 <dialogue-selection> ::=
-	<quoted-text> |                                ==> { TEXTUAL_DSEL, - }
-	another choice |                               ==> { NEW_CHOICE_DSEL, - }
-	stop |                                         ==> { STOP_DSEL, - }
-	otherwise |                                    ==> { OTHERWISE_DSEL, - }
-	instead of ... |                               ==> { INSTEAD_OF_DSEL, - }
-	after ... |                                    ==> { AFTER_DSEL, - }
-	before ... |                                   ==> { BEFORE_DSEL, - }
-	perform <definite-article> ... |               ==> { PERFORM_DSEL, - }
-	perform ...                                    ==> { PERFORM_DSEL, - }
+	<quoted-text> |                                   ==> { TEXTUAL_DSEL, - }
+	another choice |                                  ==> { NEW_CHOICE_DSEL, - }
+	stop |                                            ==> { STOP_DSEL, - }
+	end the story |                                   ==> { ENDING_DSEL, - }
+	end the story finally |                           ==> { ENDING_FINALLY_DSEL, - }
+	end the story saying { <quoted-text> } |          ==> { ENDING_SAYING_DSEL, - }
+	end the story finally |                           ==> { ENDING_FINALLY_DSEL, - }
+	end the story finally saying { <quoted-text> } |  ==> { ENDING_FINALLY_SAYING_DSEL, - }
+	otherwise |                                       ==> { OTHERWISE_DSEL, - }
+	instead of ... |                                  ==> { INSTEAD_OF_DSEL, - }
+	after ... |                                       ==> { AFTER_DSEL, - }
+	before ... |                                      ==> { BEFORE_DSEL, - }
+	perform <definite-article> ... |                  ==> { PERFORM_DSEL, - }
+	perform ...                                       ==> { PERFORM_DSEL, - }
 
 @ Each choice produces an instance of the kind |dialogue choice|, using the name
 given in its clauses if one was.

@@ -96,13 +96,10 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	int make_availability_function = FALSE, make_speaker_function = FALSE,
 		make_interlocutor_function = FALSE,
 		make_mentioning_function = FALSE, make_action_function = FALSE;
-	int ending = FALSE, ending_finally = FALSE;
-	wording EW = EMPTY_WORDING;
 	linked_list *now_list = NEW_LINKED_LIST(parse_node);
 	linked_list *before_list = NEW_LINKED_LIST(parse_node);
 	linked_list *after_list = NEW_LINKED_LIST(parse_node);
 	@<Scan the clauses further@>;
-	if (ending) make_action_function = TRUE;
 	Hierarchy::apply_metadata_from_iname(PR, LINE_ARRAY_MD_HL, array_iname);
 	packaging_state save = EmitArrays::begin_word(array_iname, K_value);
 	@<Write the availability entry@>;
@@ -124,30 +121,8 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 @<Scan the clauses further@> =
 	for (parse_node *clause = dl->line_at->down; clause; clause = clause->next) {
 		if (Node::is(clause, DIALOGUE_CLAUSE_NT)) {
-			wording CW = Node::get_text(clause);
 			int c = Annotations::read_int(clause, dialogue_line_clause_ANNOT);
 			switch (c) {
-				case ENDING_DLC: {
-					ending = TRUE;
-					break;
-				}
-				case ENDING_SAYING_DLC: {
-					ending = TRUE;
-					<dialogue-line-clause>(CW);
-					EW = GET_RW(<dialogue-line-clause>, 1);
-					break;
-				}
-				case ENDING_FINALLY_DLC:
-					ending = TRUE;
-					ending_finally = TRUE;
-					break;
-				case ENDING_FINALLY_SAYING_DLC: {
-					ending = TRUE;
-					ending_finally = TRUE;
-					<dialogue-line-clause>(CW);
-					EW = GET_RW(<dialogue-line-clause>, 1);
-					break;
-				}
 				case NOW_DLC:
 					ADD_TO_LINKED_LIST(clause, parse_node, now_list);
 					break;
@@ -252,8 +227,6 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 	inter_ti flags = 0;
 	if (dl->narration) flags |= 1;
 	if (dl->without_speaking) flags |= 2;
-	if (ending) flags |= 4;
-	if (ending_finally) flags |= 8;
 	EmitArrays::numeric_entry(flags);
 
 @<Compile the available function@> =
@@ -400,7 +373,7 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 		EmitCode::val_symbol(K_value, task_s);
 		EmitCode::code();
 		EmitCode::down();
-			if ((LinkedLists::len(now_list) > 0) || (ending)) {
+			if (LinkedLists::len(now_list) > 0) {
 				EmitCode::inv(CASE_BIP);
 				EmitCode::down();
 					EmitCode::val_number(1);
@@ -409,8 +382,6 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 						parse_node *clause;
 						LOOP_OVER_LINKED_LIST(clause, parse_node, now_list)
 							@<Take action on this now clause@>;
-						if (ending)
-							@<Take action to end the story@>;
 					EmitCode::up();
 				EmitCode::up();
 			}
@@ -508,37 +479,6 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 			"but I can't make sense of that.");
 		Problems::issue_problem_end();
 	}
-
-@<Take action to end the story@> =
-	EmitCode::inv(STORE_BIP);
-	EmitCode::down();
-		EmitCode::ref_iname(K_value, Hierarchy::find(DEADFLAG_HL));
-		if (Wordings::nonempty(EW)) {
-			if (<s-literal>(EW)) {
-				parse_node *text = <<rp>>;
-				CompileValues::to_code_val_of_kind(text, K_text);
-			} else {
-				internal_error("somehow not a literal text");
-			}
-		} else {
-			EmitCode::val_number(3);
-		}
-	EmitCode::up();
-	if (Wordings::nonempty(EW)) {
-		EmitCode::call(Hierarchy::find(BLKVALUEINCREFCOUNTPRIMITIVE_HL));
-		EmitCode::down();
-			EmitCode::val_iname(K_value, Hierarchy::find(DEADFLAG_HL));
-		EmitCode::up();
-	}
-	EmitCode::inv(STORE_BIP);
-	EmitCode::down();
-		EmitCode::ref_iname(K_value, Hierarchy::find(STORY_COMPLETE_HL));
-		if (ending_finally) {
-			EmitCode::val_number(1);
-		} else {
-			EmitCode::val_number(0);
-		}
-	EmitCode::up();
 
 @
 

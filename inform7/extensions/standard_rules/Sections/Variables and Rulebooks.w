@@ -1344,8 +1344,8 @@ Definition: A dialogue line is narrated rather than unnarrated if Inter routine
 Definition: A dialogue line is non-verbal rather than verbal if Inter routine
 	"DirectorLineNonverbal" says so (it is a non-verbal communication, like a gesture).
 
-Definition: A dialogue line is story-ending if Inter routine
-	"DirectorLineStoryEnding" says so (it is a line which, when performed, ends the story).
+Definition: A dialogue choice is story-ending if Inter routine
+	"DirectorChoiceStoryEnding" says so (it is a flow marker to an end of the story).
 
 Definition: A dialogue beat is being performed if Inter routine
 	"DirectorBeatBeingPerformed" says so (it is currently having its lines performed).

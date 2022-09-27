@@ -5,7 +5,7 @@
   "list of people who can hear Alice" = list of people: {yourself, Alice, Belle, Camilla}
   "list of people who can see Diego" = list of people: {}
   "list of people who can hear Diego" = list of people: {Diego, Eric}
-  "list of dialogue choices in the nested decisions beat" = list of dialogue choices: {gouda choice, white seedless choice, red choice, camembert choice, white seeded choice, black choice}
+  "list of dialogue choices in the nested decisions beat" = list of dialogue choices: {gouda choice, white seedless choice, red choice, camembert choice, white seeded choice, black choice, poison choice, flow-12}
   "list of dialogue lines in the test only present speakers beat" = list of dialogue lines: {d1 line, a1 line, b1 line, d2 line, e1 line, a2 line, reporting narration line}
   
   Welcome
@@ -25,7 +25,7 @@
   b1 line is performed; recurring; unnarrated; unelaborated; available; verbal.
   d2 line is unperformed; non-recurring; unnarrated; elaborated; unavailable; verbal.
   e1 line is unperformed; non-recurring; unnarrated; unelaborated; available; non-verbal.
-  a2 line is unperformed; non-recurring; unnarrated; unelaborated; available; verbal; story-ending.
+  a2 line is unperformed; non-recurring; unnarrated; unelaborated; available; verbal.
   reporting narration line is unperformed; non-recurring; narrated; unelaborated; available; verbal.
   
   
@@ -43,11 +43,25 @@
   
   (1) My preferred grapes are white yet seeded.
   (2) My preferred grapes are black.
+  (3) My preferred grapes are arsenic-laced.
   
 > >   Laboratory
   My preferred grapes are white yet seeded.
   
   You would appear to have selected: camembert choice and white seeded choice.
+  
+  Report on completion of nested decisions beat.
+  line-10 is performed; non-recurring; narrated; unelaborated; available; verbal.
+  line-11 is unperformed; non-recurring; narrated; unelaborated; available; verbal.
+  gouda choice is unperformed; non-recurring; offered.
+  white seedless choice is unperformed; non-recurring; offered.
+  red choice is unperformed; non-recurring; offered.
+  camembert choice is performed; non-recurring; offered.
+  white seeded choice is performed; non-recurring; offered.
+  black choice is unperformed; non-recurring; offered.
+  poison choice is unperformed; non-recurring; offered.
+  flow-12 is unperformed; non-recurring; flowing; story-ending.
+  
   
 > >   Laboratory
   "list of people who can hear the player" = list of people: {yourself, Alice, Belle, Camilla}

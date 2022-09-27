@@ -183,6 +183,10 @@ int DialogueNodes::is_divider(dialogue_node *dn) {
 		((dn->if_choice->selection_type == NEW_CHOICE_DSEL) ||
 			(dn->if_choice->selection_type == AGAIN_DSEL) ||
 			(dn->if_choice->selection_type == STOP_DSEL) ||
+			(dn->if_choice->selection_type == ENDING_DSEL) ||
+			(dn->if_choice->selection_type == ENDING_SAYING_DSEL) ||
+			(dn->if_choice->selection_type == ENDING_FINALLY_DSEL) ||
+			(dn->if_choice->selection_type == ENDING_FINALLY_SAYING_DSEL) ||
 			(dn->if_choice->selection_type == PERFORM_DSEL)))
 		return TRUE;
 	return FALSE;
@@ -262,6 +266,10 @@ int DialogueNodes::decision_type(dialogue_node *dn) {
 		case TEXTUAL_DSEL: return TEXTUAL_DDT;
 		case AGAIN_DSEL: return CONTROL_DDT;
 		case STOP_DSEL: return CONTROL_DDT;
+		case ENDING_DSEL: return CONTROL_DDT;
+		case ENDING_SAYING_DSEL: return CONTROL_DDT;
+		case ENDING_FINALLY_DSEL: return CONTROL_DDT;
+		case ENDING_FINALLY_SAYING_DSEL: return CONTROL_DDT;
 		case OTHERWISE_DSEL: return CONTROL_DDT;
 		case INSTEAD_OF_DSEL: return PARSED_COMMAND_DDT;
 		case AFTER_DSEL: return PARSED_COMMAND_DDT;

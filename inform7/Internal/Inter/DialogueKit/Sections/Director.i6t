@@ -579,11 +579,15 @@ Constant NEW_CHOICE_DSEL = 1;
 Constant TEXTUAL_DSEL = 2;
 Constant AGAIN_DSEL = 3;
 Constant STOP_DSEL = 4;
-Constant OTHERWISE_DSEL = 5;
-Constant INSTEAD_OF_DSEL = 6;
-Constant AFTER_DSEL = 7;
-Constant BEFORE_DSEL = 8;
-Constant PERFORM_DSEL = 9;
+Constant ENDING_DSEL = 5;
+Constant ENDING_SAYING_DSEL = 6;
+Constant ENDING_FINALLY_DSEL = 7;
+Constant ENDING_FINALLY_SAYING_DSEL = 8;
+Constant OTHERWISE_DSEL = 9;
+Constant INSTEAD_OF_DSEL = 10;
+Constant AFTER_DSEL = 11;
+Constant BEFORE_DSEL = 12;
+Constant PERFORM_DSEL = 13;
 
 [ DirectorPerformChoice dc tab fn pc enough;
 	if (dc == 0) rfalse;
@@ -610,6 +614,12 @@ Constant PERFORM_DSEL = 9;
 				if (enough) break;
 			}
 			if (debug_dialogue >= 2) { print "-- after stop: "; DirectorTraceStack(); }
+			rtrue;
+		ENDING_DSEL, ENDING_SAYING_DSEL, ENDING_FINALLY_DSEL, ENDING_FINALLY_SAYING_DSEL:
+			if (debug_dialogue >= 2) { print "-- ending at: "; DirectorTraceStack(); }
+			deadflag = tab-->2;
+			if (tab-->0 == ENDING_FINALLY_DSEL or ENDING_FINALLY_SAYING_DSEL)
+				story_complete = true;
 			rtrue;
 		PERFORM_DSEL: DirectorPerform(tab-->2); rtrue;
 		default: print "*** Unimplemented choice ***^"; rfalse;
@@ -827,10 +837,11 @@ Array DirectorMiniPool --> 0 0;
 	rfalse;
 ];
 
-[ DirectorLineStoryEnding dl tab;
-	if ((dl == 0) || (dl > NO_DIALOGUE_LINES)) rfalse;
-	tab = TableOfDialogueLines-->dl;
-	if ((tab-->7) & 12) rtrue;
+[ DirectorChoiceStoryEnding dc tab;
+	if ((dc == 0) || (dc > NO_DIALOGUE_CHOICES)) rfalse;
+	tab = TableOfDialogueChoices-->dc;
+	if (tab-->0 == ENDING_DSEL or ENDING_SAYING_DSEL or ENDING_FINALLY_DSEL or ENDING_FINALLY_SAYING_DSEL)
+		rtrue;
 	rfalse;
 ];
 
@@ -845,7 +856,8 @@ Array DirectorMiniPool --> 0 0;
 	if ((dc == 0) || (dc > NO_DIALOGUE_CHOICES)) rfalse;
 	tab = TableOfDialogueChoices-->dc;
 	type = tab-->0;
-	if (type == NEW_CHOICE_DSEL or AGAIN_DSEL or STOP_DSEL or PERFORM_DSEL)
+	if (type == NEW_CHOICE_DSEL or AGAIN_DSEL or STOP_DSEL or PERFORM_DSEL
+		 or ENDING_DSEL or ENDING_SAYING_DSEL or ENDING_FINALLY_DSEL or ENDING_FINALLY_SAYING_DSEL)
 		rtrue;
 	rfalse;
 ];

@@ -4852,7 +4852,7 @@
 <negated-clause> hits 16/21866 nti 9 constraint DS = {9} extremes [2, infinity)
     English:
         not {...} 
-          (hits 16/6649) (matched long text) constraint DS = {9} extremes [2, infinity)
+          (hits 16/6355) (matched long text) constraint DS = {9} extremes [2, infinity)
 
 <determination-of> hits 79/158 nti 10 constraint (none) extremes [1, infinity)
     English:
@@ -4866,7 +4866,7 @@
 <excluded-from-determiners> hits 0/21580 nti 11 constraint DS = {11} extremes [2, infinity)
     English:
         no one {***} 
-          (hits 0/7186) constraint DS = {11} extremes [2, infinity)
+          (hits 0/7482) constraint DS = {11} extremes [2, infinity)
 
 <agent-pronoun> internal hits 92/1206 nti 27 constraint (none) extremes [1, 1]
 
@@ -4939,7 +4939,7 @@
 
 <negated-noncopular-verb-present> internal hits 1/7808 nti 8 constraint FS = {8} extremes [1, infinity)
 
-<universal-verb> internal hits 0/2398 nti 9 constraint FS = {9} extremes [1, infinity)
+<universal-verb> internal hits 0/2396 nti 9 constraint FS = {9} extremes [1, infinity)
 
 <negated-verb> internal nti 10 constraint FS = {10} extremes [1, infinity)
 
@@ -5260,15 +5260,15 @@
         <certainty> {...} 
           (hits 67/1086) (matched: 'usually table of general chitchat') constraint DS = {19} extremes [2, infinity)
 
-<rc-marker> hits 773/25850 nti 11 constraint CS = {11} extremes [1, 1]
+<rc-marker> hits 773/25854 nti 11 constraint CS = {11} extremes [1, 1]
     English:
         which/who/that 
-          (hits 773/6393) (matched: 'which') constraint CS = {11} extremes [1, 1]
+          (hits 773/6396) (matched: 'which') constraint CS = {11} extremes [1, 1]
 
 <pre-verb-rc-marker> hits 2/2746 nti 11 constraint DS = {11} extremes [2, infinity)
     English:
         {...} <rc-marker> 
-          (hits 2/773) (matched: 'answering it that') constraint DS = {11} extremes [2, infinity)
+          (hits 2/775) (matched: 'answering it that') constraint DS = {11} extremes [2, infinity)
 
 <phrase-with-calling> nti 12 constraint DS = {12} extremes [3, infinity)
     English:
@@ -7982,9 +7982,9 @@
 <s-type-expression-unarticled> hits 3129/7786 nti 9 constraint (none) extremes [1, infinity)
     English:
         <s-variable-scope> variable/variables 
-          (hits 2/467) (matched: 'text variables') constraint DS = {9} extremes [2, infinity)
+          (hits 2/455) (matched: 'text variables') constraint DS = {9} extremes [2, infinity)
         <s-variable-scope> that/which vary/varies 
-          (hits 59/377) (matched: 'action based rule producing nothing that varies') constraint DS = {9} extremes [3, infinity)
+          (hits 59/373) (matched: 'action based rule producing nothing that varies') constraint DS = {9} extremes [3, infinity)
         <k-kind> 
           (hits 2445/3832) (matched long text) constraint (none) extremes [1, infinity)
         <s-literal> 
@@ -8167,7 +8167,7 @@
 <s-general-verb-tail> hits 2161/6686 nti 18 constraint (none) extremes [2, infinity)
     English:
         <universal-verb> <s-universal-term> 
-          (hits 0/1028) constraint DS = {7} & FS = {9} extremes [4, infinity)
+          (hits 0/1027) constraint DS = {7} & FS = {9} extremes [4, infinity)
         <nonimperative-verb> <permitted-preposition> <s-noun-phrase> 
           (hits 226/1845) (matched long text) constraint DS = {14} & FS = {6} extremes [3, infinity)
         <nonimperative-verb> <s-noun-phrase> 
@@ -9876,16 +9876,6 @@
           constraint DS = {9} extremes [2, infinity)
         without speaking 
           constraint CS = {9} extremes [2, 2]
-        ending the story 
-          constraint CS = {9} extremes [3, 3]
-        ending the story finally 
-          constraint CS = {9} extremes [4, 4]
-        ending the story saying {<quoted-text>} 
-          constraint DS = {9} extremes [5, 5]
-        ending the story finally 
-          constraint CS = {9} extremes [4, 4]
-        ending the story finally saying {<quoted-text>} 
-          constraint DS = {9} extremes [6, 6]
         {...} 
           constraint (none) extremes [1, infinity)
 
@@ -9908,6 +9898,16 @@
           constraint CS = {11} extremes [2, 2]
         stop 
           constraint CS = {11} extremes [1, 1]
+        end the story 
+          constraint CS = {11} extremes [3, 3]
+        end the story finally 
+          constraint CS = {11} extremes [4, 4]
+        end the story saying {<quoted-text>} 
+          constraint DS = {11} extremes [5, 5]
+        end the story finally 
+          constraint CS = {11} extremes [4, 4]
+        end the story finally saying {<quoted-text>} 
+          constraint DS = {11} extremes [6, 6]
         otherwise 
           constraint CS = {11} extremes [1, 1]
         instead of {...} 

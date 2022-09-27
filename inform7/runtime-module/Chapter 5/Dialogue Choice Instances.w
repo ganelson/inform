@@ -129,6 +129,21 @@ void RTDialogueChoices::choice_compilation_agent(compilation_subtask *ct) {
 				internal_error("somehow didn't reparse");
 			}
 			break;		
+		case ENDING_DSEL:
+		case ENDING_FINALLY_DSEL:
+			EmitArrays::numeric_entry(3);
+			break;
+		case ENDING_SAYING_DSEL:
+		case ENDING_FINALLY_SAYING_DSEL: {
+			wording EW = dc->selection_parameter;
+			if (<s-literal>(EW)) {
+				parse_node *text = <<rp>>;
+				CompileValues::to_array_entry(text);
+			} else {
+				internal_error("somehow not a literal text");
+			}
+			break;
+		}
 		default:
 			EmitArrays::numeric_entry(0);
 			break;

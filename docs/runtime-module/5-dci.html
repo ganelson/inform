@@ -206,6 +206,21 @@ function togglePopup(material_id) {
 <span class="plain-syntax">                </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"somehow didn't reparse"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            }</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDING_DSEL:</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDING_FINALLY_DSEL:</span>
+<span class="plain-syntax">            </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::numeric_entry</span></a><span class="plain-syntax">(3);</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDING_SAYING_DSEL:</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDING_FINALLY_SAYING_DSEL:</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">EW</span><span class="plain-syntax"> = </span><span class="identifier-syntax">dc</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">selection_parameter</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;s-literal&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">EW</span><span class="plain-syntax">)) {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">parse_node</span><span class="plain-syntax"> *</span><span class="identifier-syntax">text</span><span class="plain-syntax"> = </span><span class="function-syntax">&lt;&lt;rp&gt;&gt;</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">CompileValues::to_array_entry</span><span class="plain-syntax">(</span><span class="identifier-syntax">text</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
+<span class="plain-syntax">                </span><span class="identifier-syntax">internal_error</span><span class="plain-syntax">(</span><span class="string-syntax">"somehow not a literal text"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            }</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        }</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">default:</span>
 <span class="plain-syntax">            </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::numeric_entry</span></a><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>

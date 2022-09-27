@@ -48,7 +48,9 @@ After going to the Lake:
 To say report on (D - a dialogue beat):
 	say "Report on completion of [D].";
 	repeat with L running through dialogue lines in D:
-		say "[L] is [if L is unperformed]un[end if]performed; [if L is non-recurring]non-[end if]recurring; [if L is unnarrated]un[end if]narrated; [if L is unelaborated]un[end if]elaborated; [if L is unavailable]un[end if]available; [if L is non-verbal]non-[end if]verbal[if L is story-ending]; story-ending[end if].";
+		say "[L] is [if L is unperformed]un[end if]performed; [if L is non-recurring]non-[end if]recurring; [if L is unnarrated]un[end if]narrated; [if L is unelaborated]un[end if]elaborated; [if L is unavailable]un[end if]available; [if L is non-verbal]non-[end if]verbal.";
+	repeat with C running through dialogue choices in D:
+		say "[C] is [if C is unperformed]un[end if]performed; [if C is non-recurring]non-[end if]recurring; [if C is flowing]flowing[otherwise]offered[end if][if C is story-ending]; story-ending[end if].";
 
 Section A (dialog)
 
@@ -74,7 +76,7 @@ Alice (this is the a1 line): "I am Alice."
 	
 	Eric (to Alice; without speaking; this is the e1 line): "Eric points insulting at Alice."
 
-		Alice (this is the a2 line; ending the story): "Still Alice."
+		Alice (this is the a2 line): "Still Alice."
 
 Narration (this is the reporting narration line): "[report on the test only present speakers beat]"
 
@@ -100,7 +102,13 @@ Belle (recurring): "I tell you as often as necessary, I am Alice."
 
 	-- (this is the black choice) "My preferred grapes are black."
 
+	-- (this is the poison choice) "My preferred grapes are arsenic-laced."
+	
+		-> end the story saying "Then you deserve all you get"
+
 Narration: "You would appear to have selected: [list of performed dialogue choices in the nested decisions beat]."
+
+Narration: "[report on the nested decisions beat]"
 
 (This is the going active beat.)
 
