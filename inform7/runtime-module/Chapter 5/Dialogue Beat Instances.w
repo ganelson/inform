@@ -213,7 +213,6 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 		EmitCode::code();
 		EmitCode::down();
 			@<Return false if latest does not match the immediately after description@>;
-			EmitCode::rfalse();
 		EmitCode::up();
 	EmitCode::up();
 

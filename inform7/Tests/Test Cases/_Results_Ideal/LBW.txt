@@ -61,7 +61,7 @@
   ** kiss honey
   Honey Maiden: "Oh, James... Ever since we met eighty seconds ago I have wanted you..."
   
-  You took Sean Connery choice, flow-2, choice-3, choice-6, flow-7, flow-10, choice-11, flow-12, choice-14, flow-15 and choice-16, and heard line-1, line-2, line-3, line-4, line-7, line-11, line-12, line-14 and line-15 in the beats arrival beat and closer examination beat.
+  You took Sean Connery choice, flow-2, choice-3, choice-6, flow-7, flow-10, choice-12, flow-13, choice-15, flow-16, choice-17 and flow-18, and heard line-1, line-2, line-3, line-4, line-7, line-11, line-12, line-14 and line-15 in the beats arrival beat and closer examination beat.
   
   
   
@@ -142,7 +142,7 @@
   
   Honey Maiden: "That concludes our tour. And frankly, Mr Bond, I expected a little more personal attention from Universal Export's most notorious womanizer."
   
-  You took choice-3, choice-4, flow-5, flow-10, choice-11, flow-12, choice-13, choice-14, flow-15, choice-19 and flow-20, and heard line-1, line-2, line-4, line-6, line-10, line-11, line-12, line-13, line-14, line-16, line-17 and line-18 in the beats arrival beat and closer examination beat.
+  You took choice-3, choice-4, flow-5, flow-10, flow-11, choice-12, flow-13, choice-14, choice-15, flow-16, choice-21 and flow-22, and heard line-1, line-2, line-4, line-6, line-10, line-11, line-12, line-13, line-14, line-16, line-17 and line-18 in the beats arrival beat and closer examination beat.
   
   
   

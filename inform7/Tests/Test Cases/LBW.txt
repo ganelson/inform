@@ -71,7 +71,9 @@ Honey: "So, Mr Bond, we meet at last. Welcome to the foremost sporting museum in
 
 Honey (if Honey is honest; this is the admission line): "Really, [the bat] is too heavy for me."
 
-Honey (ending the story saying "She flounced out!"): "That concludes our tour. And frankly, Mr Bond, I expected a little more personal attention from Universal Export's most notorious womanizer."
+Honey: "That concludes our tour. And frankly, Mr Bond, I expected a little more personal attention from Universal Export's most notorious womanizer."
+
+	-> end the story saying "She flounced out!"
 
 Section 2 - Closer Examination (dialogue)
 
@@ -97,7 +99,9 @@ Honey: "And now, Mr Bond, it is time for you to consider our exhibits!"
 
 -- instead of kissing Honey
 
-	Honey (ending the story saying "James Bond will Return"): "Oh, James... Ever since we met eighty seconds ago I have wanted you..."
+	Honey: "Oh, James... Ever since we met eighty seconds ago I have wanted you..."
+
+	-> end the story saying "James Bond will Return"
 
 -- after looking
 
@@ -129,7 +133,9 @@ Section 3 - Escape? (dialogue)
 	
 	-- "Yes."
 	
-		Honey (ending the story saying "Vrooom!"): "Spectre has a long memory, Mr Bond!"
+		Honey: "Spectre has a long memory, Mr Bond!"
+		
+		-> end the story saying "Vrooom!"
 
 	-- "No."
 	

@@ -324,14 +324,14 @@ performed only after or before other beats.
 			case NEXT_DBC:
 				if ((previous) && (previous->under_heading == db->under_heading)) {
 					iac++;
-					db->immediately_after = Dialogue::rvalue_from_dialogue_beat(previous);
+					db->immediately_after = Rvalues::from_instance(previous->as_instance);
 				} else {
 					@<Issue PM_NoPreviousBeat problem@>;
 				}
 				break;
 			case LATER_DBC:
 				if ((previous) && (previous->under_heading == db->under_heading)) {
-					parse_node *desc = Dialogue::rvalue_from_dialogue_beat(previous);
+					parse_node *desc = Rvalues::from_instance(previous->as_instance);
 					ADD_TO_LINKED_LIST(desc, parse_node, db->some_time_after);
 				} else {
 					@<Issue PM_NoPreviousBeat problem@>;

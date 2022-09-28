@@ -34,7 +34,7 @@
   
   Daphne: "A cricket ball is made with a core of cork, which is layered with tightly wound string, and covered by a leather case with a slightly raised sewn seam."
   
-  "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, epsilon beat, nu beat, eta beat}
+  "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, delta beat, epsilon beat, nu beat, eta beat}
   Daphne: "Cricket's kind of dull, when you think about it."
   
   The ball: "I disagree!"
