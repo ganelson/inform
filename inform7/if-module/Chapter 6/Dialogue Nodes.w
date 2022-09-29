@@ -180,7 +180,7 @@ void DialogueNodes::find_decisions_in_beat_r(dialogue_beat *db, dialogue_node *d
 
 int DialogueNodes::is_divider(dialogue_node *dn) {
 	if ((dn) && (dn->if_choice) &&
-		((dn->if_choice->selection_type == NEW_CHOICE_DSEL) ||
+		((dn->if_choice->selection_type == ANOTHER_CHOICE_DSEL) ||
 			(dn->if_choice->selection_type == AGAIN_DSEL) ||
 			(dn->if_choice->selection_type == STOP_DSEL) ||
 			(dn->if_choice->selection_type == ENDING_DSEL) ||
@@ -222,7 +222,7 @@ void DialogueNodes::examine_decisions_in_beat_r(dialogue_beat *db, dialogue_node
 					"and should either all be action-dependent choices (perhaps "
 					"finishing with an 'otherwise'), or else all textual choices.");
 			}
-			if ((c->child_node) && (c->child_node->if_choice->selection_type == NEW_CHOICE_DSEL)) {
+			if ((c->child_node) && (c->child_node->if_choice->selection_type == ANOTHER_CHOICE_DSEL)) {
 				if ((prev == NULL) || (prev->if_line) ||
 					(c->next_node == NULL) || (c->next_node->if_line)) {
 					current_sentence = c->child_node->if_choice->choice_at;
@@ -262,7 +262,7 @@ void DialogueNodes::log_node(dialogue_node *dn) {
 int DialogueNodes::decision_type(dialogue_node *dn) {
 	if ((dn == NULL) || (dn->if_choice == NULL)) return -1;
 	switch (dn->if_choice->selection_type) {
-		case NEW_CHOICE_DSEL: return PARSED_COMMAND_DDT;
+		case ANOTHER_CHOICE_DSEL: return PARSED_COMMAND_DDT;
 		case TEXTUAL_DSEL: return TEXTUAL_DDT;
 		case AGAIN_DSEL: return CONTROL_DDT;
 		case STOP_DSEL: return CONTROL_DDT;

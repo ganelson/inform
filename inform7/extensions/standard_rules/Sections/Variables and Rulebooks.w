@@ -1312,7 +1312,7 @@ To decide what list of objects is the list of speakers required by (B - dialogue
 To decide what text is the textual content of (L - dialogue line):
 	(- DirectorLineContent({L}, {-new:text}) -).
 To decide what text is the textual content of (C - dialogue choice):
-	(- DirectorChoiceContent({C}, {-new:text}) -).
+	(- DirectorChoiceTextContent({C}, {-new:text}) -).
 
 To decide what object is the current dialogue line speaker:
 	(- DirectorCurrentLineSpeaker() -).

@@ -196,7 +196,7 @@ function togglePopup(material_id) {
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDING_SAYING_DSEL:</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDING_FINALLY_DSEL:</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDING_FINALLY_SAYING_DSEL:</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">NEW_CHOICE_DSEL:</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="identifier-syntax">ANOTHER_CHOICE_DSEL:</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">right_arrow</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
@@ -280,24 +280,24 @@ of the following possibilities:
 </pre>
 <p class="commentary firstcommentary"><a id="SP2_7" class="paragraph-anchor"></a><b>&#167;2.7.  </b></p>
 
-<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">NEW_CHOICE_DSEL</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">TEXTUAL_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">AGAIN_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">STOP_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ENDING_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ENDING_SAYING_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ENDING_FINALLY_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">ENDING_FINALLY_SAYING_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">OTHERWISE_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">INSTEAD_OF_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">AFTER_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">BEFORE_DSEL</span>
-<span class="definition-keyword">enum</span> <span class="constant-syntax">PERFORM_DSEL</span>
+<pre class="definitions code-font"><span class="definition-keyword">enum</span> <span class="constant-syntax">AGAIN_DSEL</span><span class="plain-syntax"> </span><span class="identifier-syntax">from</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">                </span><span class="comment-syntax"> &lt;-</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ANOTHER_CHOICE_DSEL</span><span class="plain-syntax">              </span><span class="comment-syntax"> -&gt; another choice</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">PERFORM_DSEL</span><span class="plain-syntax">                     </span><span class="comment-syntax"> -&gt; perform the falling beat</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">STOP_DSEL</span><span class="plain-syntax">                        </span><span class="comment-syntax"> -&gt; stop</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ENDING_DSEL</span><span class="plain-syntax">                      </span><span class="comment-syntax"> -&gt; end the story</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ENDING_SAYING_DSEL</span><span class="plain-syntax">               </span><span class="comment-syntax"> -&gt; end the story saying "You have succeeded"</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ENDING_FINALLY_DSEL</span><span class="plain-syntax">              </span><span class="comment-syntax"> -&gt; end the story finally</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">ENDING_FINALLY_SAYING_DSEL</span><span class="plain-syntax">       </span><span class="comment-syntax"> -&gt; end the story finally saying "You have failed"</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">TEXTUAL_DSEL</span><span class="plain-syntax">                     </span><span class="comment-syntax"> &mdash; "Run out of the room screaming"</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">INSTEAD_OF_DSEL</span><span class="plain-syntax">                  </span><span class="comment-syntax"> &mdash; instead of taking something</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">AFTER_DSEL</span><span class="plain-syntax">                       </span><span class="comment-syntax"> &mdash; after examining the rabbit hole</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">BEFORE_DSEL</span><span class="plain-syntax">                      </span><span class="comment-syntax"> &mdash; before taking the pocket watch</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">OTHERWISE_DSEL</span><span class="plain-syntax">                   </span><span class="comment-syntax"> &mdash; otherwise</span>
 </pre>
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;dialogue-selection&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-function-syntax">&lt;quoted-text&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                                   </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { TEXTUAL_DSEL, - }</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">another</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">choice</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                                  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { NEW_CHOICE_DSEL, - }</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">another</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">choice</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                                  </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { ANOTHER_CHOICE_DSEL, - }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">stop</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                                            </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { STOP_DSEL, - }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">end</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">story</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                                   </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { ENDING_DSEL, - }</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">end</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">the</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">story</span><span class="Preform-plain-syntax"> </span><span class="Preform-constant-syntax">finally</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span><span class="Preform-plain-syntax">                           </span><span class="Preform-reserved-syntax">==&gt;</span><span class="Preform-plain-syntax"> { ENDING_FINALLY_DSEL, - }</span>

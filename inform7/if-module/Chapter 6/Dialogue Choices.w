@@ -120,7 +120,7 @@ typedef struct dialogue_choice {
 		case ENDING_SAYING_DSEL:
 		case ENDING_FINALLY_DSEL:
 		case ENDING_FINALLY_SAYING_DSEL:
-		case NEW_CHOICE_DSEL:
+		case ANOTHER_CHOICE_DSEL:
 			right_arrow = TRUE;
 			break;					
 	}
@@ -198,24 +198,24 @@ void DialogueChoices::write_dcc(OUTPUT_STREAM, int c) {
 
 @
 
-@e NEW_CHOICE_DSEL from 1
-@e TEXTUAL_DSEL
-@e AGAIN_DSEL
-@e STOP_DSEL
-@e ENDING_DSEL
-@e ENDING_SAYING_DSEL
-@e ENDING_FINALLY_DSEL
-@e ENDING_FINALLY_SAYING_DSEL
-@e OTHERWISE_DSEL
-@e INSTEAD_OF_DSEL
-@e AFTER_DSEL
-@e BEFORE_DSEL
-@e PERFORM_DSEL
+@e AGAIN_DSEL from 1                /* <- */
+@e ANOTHER_CHOICE_DSEL              /* -> another choice */
+@e PERFORM_DSEL                     /* -> perform the falling beat */
+@e STOP_DSEL                        /* -> stop */
+@e ENDING_DSEL                      /* -> end the story */
+@e ENDING_SAYING_DSEL               /* -> end the story saying "You have succeeded" */
+@e ENDING_FINALLY_DSEL              /* -> end the story finally */
+@e ENDING_FINALLY_SAYING_DSEL       /* -> end the story finally saying "You have failed" */
+@e TEXTUAL_DSEL                     /* -- "Run out of the room screaming" */
+@e INSTEAD_OF_DSEL                  /* -- instead of taking something */
+@e AFTER_DSEL                       /* -- after examining the rabbit hole */
+@e BEFORE_DSEL                      /* -- before taking the pocket watch */
+@e OTHERWISE_DSEL                   /* -- otherwise */
 
 =
 <dialogue-selection> ::=
 	<quoted-text> |                                   ==> { TEXTUAL_DSEL, - }
-	another choice |                                  ==> { NEW_CHOICE_DSEL, - }
+	another choice |                                  ==> { ANOTHER_CHOICE_DSEL, - }
 	stop |                                            ==> { STOP_DSEL, - }
 	end the story |                                   ==> { ENDING_DSEL, - }
 	end the story finally |                           ==> { ENDING_FINALLY_DSEL, - }

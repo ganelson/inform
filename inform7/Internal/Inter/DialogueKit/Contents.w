@@ -7,3 +7,5 @@ Web Syntax Version: 2
 
 Sections
 	Director
+	Lines
+	Choices
