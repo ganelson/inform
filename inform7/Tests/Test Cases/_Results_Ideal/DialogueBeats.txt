@@ -44,24 +44,24 @@
   "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, epsilon beat, nu beat}
   "list of available dialogue beats" = list of dialogue beats: {alpha beat, beta beat, gamma beat, epsilon beat, nu beat, mu beat}
   == Structure...
-  alpha beat (available, irrelevant):
-    Line line-1
-  beta beat (available, relevant):
-    Line line-2
-  gamma beat (available, relevant):
-    Line line-3
-  delta beat (unavailable, irrelevant):
-    Line line-4
-  epsilon beat (available, irrelevant):
-    Line line-5
-  nu beat (available, irrelevant):
-    Line line-6
-      Line disgruntled ball line
-      Line line-8
-  mu beat (available, irrelevant):
-    Line line-9
-  eta beat (unavailable, irrelevant):
-    Line line-10
+  alpha beat (available, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-1
+  beta beat (available, relevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-2
+  gamma beat (available, relevant, inaccessible, performed, non-recurring, unspontaneous):
+    LINE line-3
+  delta beat (unavailable, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-4
+  epsilon beat (available, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-5
+  nu beat (available, irrelevant, inaccessible, performed, non-recurring, unspontaneous):
+    LINE line-6
+      LINE disgruntled ball line
+      LINE line-8
+  mu beat (available, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-9
+  eta beat (unavailable, irrelevant, accessible, unperformed, non-recurring, unspontaneous):
+    LINE line-10
   
   Welcome
   An Interactive Fiction

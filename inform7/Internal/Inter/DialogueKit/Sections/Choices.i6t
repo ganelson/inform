@@ -133,7 +133,7 @@ Constant OTHERWISE_DSEL = 13;            ! -- otherwise
 			if (chdata-->TYPE_DCMETADATA == ENDING_FINALLY_DSEL or ENDING_FINALLY_SAYING_DSEL)
 				story_complete = true;
 			rtrue;
-		PERFORM_DSEL: DirectorPerform(chdata-->CONTENT_DCMETADATA); rtrue;
+		PERFORM_DSEL: DirectorPerformBeat(chdata-->CONTENT_DCMETADATA); rtrue;
 		default: print "*** Unimplemented choice ***^"; rfalse;
 	}
 	rtrue;

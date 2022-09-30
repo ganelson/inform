@@ -1308,7 +1308,7 @@ To decide what list of objects is the live conversational subject list:
 To alter the live conversational subject list to (L - list of objects):
 	(- DirectorAlterLiveSubjectList({-by-reference:L}); -).
 To decide what list of objects is the list of speakers required by (B - dialogue beat):
-	(- DirectorLiveRequiredList({-new:list of objects}, {B}) -).
+	(- DirectorBeatRequiredList({-new:list of objects}, {B}) -).
 To decide what text is the textual content of (L - dialogue line):
 	(- DirectorLineContent({L}, {-new:text}) -).
 To decide what text is the textual content of (C - dialogue choice):
@@ -1322,12 +1322,12 @@ To decide what performance style is the current dialogue line style:
 	(- DirectorCurrentLineStyle() -).
 
 To perform (B - a dialogue beat):
-	(- DirectorPerform({B}); -).
+	(- DirectorPerformBeat({B}); -).
 
 To decide whether dialogue/dialog about (O - an object) intervenes:
 	(- DirectorIntervenes({O}) -).
 
-To showme the beat structure of (B - dialogue beat): (- DirectorBeatPrintStructure({B}); -).
+To showme the beat structure of (B - dialogue beat): (- DirectorDisassemble({B}); -).
 
 Definition: A dialogue beat is available rather than unavailable if Inter routine
 	"DirectorBeatAvailable" says so (it meets all its after or before, if and unless conditions).

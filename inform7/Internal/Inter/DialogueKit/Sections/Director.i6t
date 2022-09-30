@@ -63,85 +63,7 @@ Array DialogueTopicPool --> 20;
 	rfalse;
 ];
 
-Constant MAX_BEAT_PERFORMANCE_NESTING = 20;
-
-Global director_sp = 0;
-Array DirectorStackBeat --> MAX_BEAT_PERFORMANCE_NESTING;
-Array DirectorStackAgain --> MAX_BEAT_PERFORMANCE_NESTING;
-Array DirectorStackLastPC --> MAX_BEAT_PERFORMANCE_NESTING;
-Array DirectorStackPC --> MAX_BEAT_PERFORMANCE_NESTING;
-Array DirectorStackChoices --> MAX_BEAT_PERFORMANCE_NESTING;
-Array DirectorStackMin --> MAX_BEAT_PERFORMANCE_NESTING;
-Array DirectorStackStart --> MAX_BEAT_PERFORMANCE_NESTING;
-Array DirectorStackLastSpeaker --> MAX_BEAT_PERFORMANCE_NESTING;
-Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
-
-[ DirectorPush db max pc;
-	if (director_sp >= MAX_BEAT_PERFORMANCE_NESTING)
-		"*** Director stack overflow: too many open beats ***";
-	DirectorStackBeat-->director_sp = db;
-	DirectorStackAgain-->director_sp = -1;
-	DirectorStackLastPC-->director_sp = 0;
-	DirectorStackPC-->director_sp = pc;
-	DirectorStackMin-->director_sp = max;
-	DirectorStackStart-->director_sp = 0;
-	DirectorStackLastSpeaker-->director_sp = nothing;
-	DirectorStackLastInterlocutor-->director_sp = nothing;
-	if (DirectorStackChoices-->director_sp == 0) {
-		DirectorStackChoices-->director_sp = BlkValueCreate(LIST_OF_TY);
-		BlkValueWrite(DirectorStackChoices-->director_sp, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
-	} else {
-		LIST_OF_TY_SetLength(DirectorStackChoices-->director_sp, 0);
-	}
-	director_sp++;
-	if (debug_dialogue >= 2) { print "-- Push to: "; DirectorTraceStack(); }
-];
-
-[ DirectorPop;
-	director_sp--;
-	if (debug_dialogue >= 2) { print "-- Pop to: "; DirectorTraceStack(); }
-];
-
-[ DirectorPerform db without_detecting tab;
-	if ((db == 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
-	if (debug_dialogue) {
-		print "-- Performing ", (PrintDialogueBeatName) db, "^";
-	}
-	WriteGProperty(DIALOGUE_BEAT_TY, db, performed, 1);
-	latest_performed_beat = db;
-	DirectorPush(db, 0, 0);
-	DirectorStackStart-->(director_sp - 1) = 1;
-	tab = TableOfDialogueBeats-->db;
-	if ((tab-->3) && (without_detecting == false)) DetectSceneChange();
-	if (tab-->1) (tab-->1)(DialogueTopicPool, true);
-	DirectorRun(0);
-	if ((tab-->3) && (without_detecting == false)) DetectSceneChange();
-	if (debug_dialogue) {
-		print "-- Performance of ", (PrintDialogueBeatName) db, " ended^";
-	}
-];
-
-[ DirectorBeatBeingPerformed db x;
-	if ((db >= 1) && (db <= NO_DIALOGUE_BEATS))
-		for (x=0: x<director_sp: x++)
-			if (DirectorStackBeat-->x == db)
-				rtrue;
-	rfalse;
-];
-
-[ DirectorPerformTiedBeat db;
-	if (DirectorBeatBeingPerformed(db) == false) {
-		DirectorPerform(db, true);
-	}
-];
-
-[ PERFORM_OPENING_BEAT_R db;
-	db = InitialSituation-->START_BEAT_INIS;
-	if (db) DirectorPerform(db);
-	rfalse;
-];
-
-[ DirectorTraceStack j structure pc instruction depth tab;
+[ DirectorTraceStack j program pc instruction depth;
 	if (director_sp > 0) {
 		print "[";
 		for (j=0: j<director_sp: j++) {
@@ -151,17 +73,16 @@ Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
 			pc = DirectorStackPC-->j;
 			if (pc == -1) print "+return";
 			else {
-				tab = TableOfDialogueBeats-->(DirectorStackBeat-->j);
-				structure = tab-->2;
-				instruction = (structure-->pc)/100;
-				depth = (structure-->pc)%100;
-				if (DirectorStackAgain-->j >= 0) print "[*", DirectorStackAgain-->j, "]";
+				program = DirectorBeatGetProgram(DirectorStackBeat-->j);
+				instruction = (program-->pc)/100;
+				depth = (program-->pc)%100;
+				if (DirectorStackDecisionPC-->j >= 0) print "[*", DirectorStackDecisionPC-->j, "]";
 				print "+", pc, " ", "L", depth, "/", DirectorStackMin-->j, " ";
 				switch (instruction) {
 					0: print "STOP";
-					1: print (PrintDialogueLineName) structure-->(pc+1);
-					2: print (PrintDialogueChoiceName) structure-->(pc+1);
-					3: switch (structure-->(pc+1)) {
+					1: print (PrintDialogueLineName) program-->(pc+1);
+					2: print (PrintDialogueChoiceName) program-->(pc+1);
+					3: switch (program-->(pc+1)) {
 							2: print "TEXT-D";
 							3: print "ACTION-D";
 							4: print "CONTROL-D";
@@ -182,66 +103,19 @@ Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
 	}
 ];
 
-[ DirectorRun structure pc last_pc instruction depth next_instruction tab;
-	while (true) {
-		if (director_sp == 0) return;
-		if (deadflag) { director_sp = 0; return; }
-		if (LIST_OF_TY_GetLength(DirectorStackChoices-->(director_sp-1)) > 0) return;
-		tab = TableOfDialogueBeats-->(DirectorStackBeat-->(director_sp-1));
-		if ((tab-->3) && (scene_status-->(tab-->3 - 1) == 0)) { DirectorPop(); return; }
-		structure = tab-->2;
-		pc = DirectorStackPC-->(director_sp-1);
-		if (pc == -1) { DirectorPop(); return; }
-		last_pc = pc;
-		DirectorStackLastPC-->(director_sp-1) = last_pc;
-		instruction = (structure-->pc)/100;
-		depth = (structure-->pc)%100;
-		if (instruction == 0) { DirectorPop(); return; }
-		if (depth < DirectorStackMin-->(director_sp-1)) { DirectorPop(); return; }
-		pc = pc + 2;
-		while ((structure-->pc)%100 > depth) pc = pc + 2;
-		if (structure-->pc == 0) pc = -1;
-		else if (((structure-->pc)%100) < DirectorStackMin-->(director_sp-1)) pc = -1;
-		if (debug_dialogue >= 2) {
-			print "-- Instruction (";
-			if (pc >= 0) print "next is ", pc; else print "last";
-			print "): "; DirectorTraceStack();
-		}
-		DirectorStackPC-->(director_sp-1) = pc;
-		switch (instruction) {
-			1:  ! Line
-				line_performance_count++;
-				if (DirectorPerformLine(structure-->(last_pc+1))) {
-					next_instruction = structure-->(last_pc+2);
-					if ((next_instruction) && (next_instruction % 100 == depth+1)) {
-						DirectorPush(DirectorStackBeat-->(director_sp-1), depth+1, last_pc+2);
-						DirectorRun();
-					}
-				}
-			2:  ! Choice
-				print "*** Encountered choice node ***^";
-			3:  ! Decision
-				DirectorStackAgain-->(director_sp-1) = last_pc;
-				DirectorPerformDecision(structure-->(last_pc+1));
-			default: "*** Bad node ***";
-		}
-	}
-];
-
 [ DirectorCurrentChoiceList i L;
 	if (director_sp == 0) return DirectorStackChoices-->0;
 	return DirectorStackChoices-->(director_sp-1);
 ];
 
-[ DirectorExerciseChoice dc structure pc spc tab;
+[ DirectorExerciseChoice dc program pc spc;
 	WriteGProperty(DIALOGUE_CHOICE_TY, dc, performed, 1);
-	tab = TableOfDialogueBeats-->(DirectorStackBeat-->(director_sp-1));
-	structure = tab-->2;
+	program = DirectorBeatGetProgram(DirectorStackBeat-->(director_sp-1));
 	pc = DirectorStackLastPC-->(director_sp-1);
 	spc = pc + 2;
-	while (((structure-->spc)/100 ~= 2) || (structure-->(spc+1) ~= dc)) spc = spc + 2;
+	while (((program-->spc)/100 ~= 2) || (program-->(spc+1) ~= dc)) spc = spc + 2;
 	spc = spc + 2;
-	DirectorPush(DirectorStackBeat-->(director_sp-1), (structure-->pc) % 100 + 2, spc);
+	DirectorPush(DirectorStackBeat-->(director_sp-1), (program-->pc) % 100 + 2, spc);
 	DirectorRun();
 ];
 
@@ -310,61 +184,6 @@ Array DirectorStackLastInterlocutor --> MAX_BEAT_PERFORMANCE_NESTING;
     }
 ];
 
-[ DirectorListLiveTopics i t;
-	for (i=0: i<20: i++) {
-		t = DialogueTopicPool-->i;
-		if (t == 0) return;
-		print (name) t, "^";
-	}
-];
-
-[ DirectorBeatAvailable db fn tab;
-	if ((db == 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
-	tab = TableOfDialogueBeats-->db;
-	fn = tab-->0;
-	if (fn) {
-		return (fn)(latest_performed_beat);
-	}
-	rtrue;
-];
-
-[ DirectorBeatRelevant db fn tab;
-	if ((db == 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
-	tab = TableOfDialogueBeats-->db;
-	fn = tab-->1;
-	if (fn) {
-		return (fn)(DialogueTopicPool);
-	}
-	rfalse;
-];
-
-[ DirectorBeatPrintStructure db tab pc which depth i;
-	if ((db == 0) || (db > NO_DIALOGUE_BEATS)) return;
-	print (PrintDialogueBeatName) db;
-	print " (";
-	if (DirectorBeatAvailable(db)) print "available"; else print "unavailable";
-	print ", ";
-	if (DirectorBeatRelevant(db)) print "relevant"; else print "irrelevant";
-	print "):^";
-	tab = TableOfDialogueBeats-->db;
-	tab = tab-->2;
-	if (tab) {
-		pc = 0;
-		while (tab-->pc) {
-			which = (tab-->pc)/100;
-			depth = (tab-->pc)%100;
-			for (i=0: i<depth: i++) print "  ";
-			switch (which) {
-				1: print "Line ", (PrintDialogueLineName) tab-->(pc+1), "^";
-				2: print "Choice ", (PrintDialogueChoiceName) tab-->(pc+1), "^";
-				3: print "Decision of type ", tab-->(pc+1), "^";
-				default: print "*** Unimplemented ***^";
-			}
-			pc = pc + 2;
-		}		
-	}
-];
-
 Global director_is_active = false;
 
 [ DirectorActivate;
@@ -375,65 +194,25 @@ Global director_is_active = false;
 	director_is_active = false;
 ];
 
-[ DirectorBeatAvailableToPlayer db tab i speaker;
-	if ((GProperty(DIALOGUE_BEAT_TY, db, performed) == 0) ||
-		(GProperty(DIALOGUE_BEAT_TY, db, recurring))) {
-		tab = TableOfDialogueBeats-->db;
-		i = 4;
-		while (true) {
-			speaker = tab-->i;
-			if (speaker == nothing) rtrue;
-			if (TestAudibility(player, speaker) == false) rfalse;
-			i++;
-		}
-	}
-	rfalse;
-];
-
-[ DirectorLiveRequiredList list db len i tab speaker;
-	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
-	len = 0;
-	tab = TableOfDialogueBeats-->db;
-	i = 4;
-	while (true) {
-		speaker = tab-->i;
-		if (speaker == nothing) break;
-		len++;
-		i++;
-	}
-	LIST_OF_TY_SetLength(list, len);
-	for (i=0: i<len: i++)
-		LIST_OF_TY_PutItem(list, i+1, tab-->(i+4));
-	return list;
-];
-
-[ DIALOGUE_DIRECTION_R db i topic fn tab;
-	if (director_is_active == false) rfalse;
-	! If nothing much has happened this turn...
-	if ((director_sp == 0) && (line_performance_count == 0)) {
-		for (db=1: db<=NO_DIALOGUE_BEATS: db++) {
-			if (DirectorBeatAvailableToPlayer(db)) {
-				tab = TableOfDialogueBeats-->db;
-				fn = tab-->0;
-				if ((fn == 0) || ((fn)(latest_performed_beat))) {
-					fn = tab-->1;
-					if ((fn) && (fn(DialogueTopicPool))) {
-						DirectorPerform(db);
-						line_performance_count = 0;
-						rfalse;	
-					}
-				}
-			}
-		}
-		for (db=1: db<=NO_DIALOGUE_BEATS: db++) {
-			if (GProperty(DIALOGUE_BEAT_TY, db, spontaneous)) {
-				if (DirectorBeatAvailableToPlayer(db)) {
-					DirectorEmptyLiveSubjectList();
-					DirectorPerform(db);
+[ DIALOGUE_DIRECTION_R db i topic fn;
+	if (director_is_active) {
+		if ((director_sp == 0) && (line_performance_count == 0)) {
+			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
+				if ((DirectorBeatAccessible(db, player)) &&
+					(DirectorBeatAvailable(db)) &&
+					(DirectorBeatRelevant(db))) {
+					DirectorPerformBeat(db);
 					line_performance_count = 0;
 					rfalse;
 				}
-			}
+			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
+				if ((GProperty(DIALOGUE_BEAT_TY, db, spontaneous)) &&
+					(DirectorBeatAccessible(db, player))) {
+					DirectorEmptyLiveSubjectList();
+					DirectorPerformBeat(db);
+					line_performance_count = 0;
+					rfalse;
+				}
 		}
 	}
 	line_performance_count = 0;
@@ -442,46 +221,19 @@ Global director_is_active = false;
 
 Array DirectorMiniPool --> 0 0;
 
-[ DirectorIntervenes obj tab fn db saved;
+[ DirectorIntervenes obj fn db saved;
 	saved = DirectorMiniPool-->0;
 	DirectorMiniPool-->0 = obj;
 	for (db=1: db<=NO_DIALOGUE_BEATS: db++) {
-		if (DirectorBeatAvailableToPlayer(db)) {
-			tab = TableOfDialogueBeats-->db;
-			fn = tab-->0;
-			if ((fn == 0) || ((fn)(latest_performed_beat))) {
-				fn = tab-->1;
-				if ((fn) && (fn(DirectorMiniPool))) {
-					DirectorMiniPool-->0 = saved; DirectorPerform(db); rtrue;
-				}
-			}
+		if ((DirectorBeatAccessible(db, player)) &&
+			(DirectorBeatAvailable(db)) &&
+			(DirectorBeatRelevantTo(db, DirectorMiniPool))) {
+			DirectorMiniPool-->0 = saved;
+			DirectorPerformBeat(db);
+			rtrue;
 		}
 	}
 	DirectorMiniPool-->0 = saved;
-	rfalse;
-];
-
-[ DirectorTestLineContainment X db tX tb tab structure pc instruction wanted;
-!	print "I.e. whether ", (PrintDialogueLineName) X, " is in ", (PrintDialogueBeatName) db, "^";
-	if (tb ~= DIALOGUE_BEAT_TY) { print "*** Not a db ***"; rfalse; }
-	if (tX ~= DIALOGUE_LINE_TY or DIALOGUE_CHOICE_TY) { print "*** Not a dl/dc ***"; rfalse; }
-	if ((db < 1) || (db > NO_DIALOGUE_BEATS)) rfalse;
-	if (tX == DIALOGUE_LINE_TY) {
-		if ((X < 1) || (X > NO_DIALOGUE_LINES)) rfalse;
-		wanted = 1;
-	} else {
-		if ((X < 1) || (X > NO_DIALOGUE_CHOICES)) rfalse;
-		wanted = 2;
-	}
-	tab = TableOfDialogueBeats-->db;
-	structure = tab-->2;
-	pc = 0;
-	instruction = (structure-->pc)/100;
-	while (instruction) {
-		if ((instruction == wanted) && (structure-->(pc+1) == X)) rtrue;
-		pc = pc + 2;
-		instruction = (structure-->pc)/100;
-	}
 	rfalse;
 ];
 
@@ -498,18 +250,17 @@ Array DirectorMiniPool --> 0 0;
 	return DirectorScreenActionChoices(AFTER_DSEL);
 ];
 
-[ DirectorGetChoice list structure instruction depth dc tab pc fn;
+[ DirectorGetChoice list program instruction depth dc pc fn;
 	LIST_OF_TY_SetLength(list, 0);
 	if (director_sp == 0) rfalse;
-	tab = TableOfDialogueBeats-->(DirectorStackBeat-->(director_sp-1));
-	structure = tab-->2;
+	program = DirectorBeatGetProgram(DirectorStackBeat-->(director_sp-1));
 	pc = DirectorStackLastPC-->(director_sp-1);
-	instruction = (structure-->pc)/100;
-	depth = (structure-->pc)%100;
+	instruction = (program-->pc)/100;
+	depth = (program-->pc)%100;
 	pc = pc + 2;
-	while ((structure-->pc)%100 > depth) {
-		if ((structure-->pc)%100 == depth+1) {
-			dc = structure-->(pc+1);
+	while ((program-->pc)%100 > depth) {
+		if ((program-->pc)%100 == depth+1) {
+			dc = program-->(pc+1);
 			if (((GProperty(DIALOGUE_CHOICE_TY, dc, performed) == 0) ||
 					(GProperty(DIALOGUE_CHOICE_TY, dc, recurring))) &&
 				(DirectorChoiceAvailable(dc)))
@@ -518,50 +269,6 @@ Array DirectorMiniPool --> 0 0;
 		pc = pc + 2;
 	}
 ];
-
-[ DirectorPerformDecision decision dc count n structure spc i list pc;
-	list = DirectorStackChoices-->(director_sp-1);
-	DirectorGetChoice(list);
-	count = LIST_OF_TY_GetLength(list);
-	if (debug_dialogue >= 2) {
-		if (count == 0) {
-			print "-- no available options^";
-		} else if (decision == 2 or 3) {
-			print "-- available options: "; LIST_OF_TY_Say(list); print "^";
-		}
-	}
-	if (count == 0) return;
-	switch (decision) {
-		1: "*** blank dtd ***";
-		2: 	DivideParagraphPoint();
-			if (OFFERING_A_DIALOGUE_CHOICE == 0) "*** no activity ***";
-			else {
-				BeginActivity(OFFERING_A_DIALOGUE_CHOICE, list);
-				if ((ForActivity(OFFERING_A_DIALOGUE_CHOICE, list)) &&
-					(RulebookFailed())) rfalse;
-				EndActivity(OFFERING_A_DIALOGUE_CHOICE, list);
-			}
-			DivideParagraphPoint();
-			n = DirectorPickANumber(count);
-			dc = LIST_OF_TY_GetItem(list, n);
-			LIST_OF_TY_SetLength(list, 0);
-			style bold;
-			TEXT_TY_Say(DirectorChoiceRawContent(dc));
-			style roman;
-			print "^";
-			say__p = 1;
-			DivideParagraphPoint();
-			DirectorExerciseChoice(dc);
-		3:  rfalse;
-		4:  dc = LIST_OF_TY_GetItem(list, 1);
-			LIST_OF_TY_SetLength(list, 0);
-			if (dc) DirectorFollowFlowMarker(dc);
-			else "*** c = 0 ***";
-		default: "*** unknown dtd ***";
-	}
-	rfalse;
-];
-
 [ DirectorScreenActionChoices wanted N list was dc i fn chose suppress_otherwise;
 	if (director_sp > 0) {
 		if (debug_dialogue >= 2) { print "-- found: "; DirectorTraceStack(); }
@@ -608,24 +315,4 @@ Array DirectorMiniPool --> 0 0;
 		}
 	}
 	rfalse;
-];
-
-[ DirectorAgain;
-	while (director_sp > 0) {
-		if (debug_dialogue >= 2) { print "-- again at: "; DirectorTraceStack(); }
-		DirectorPop();
-		if (DirectorStackAgain-->(director_sp-1) >= 0) {
-			DirectorStackPC-->(director_sp-1) = DirectorStackAgain-->(director_sp-1);
-			break;
-		}
-	}
-];
-
-[ DirectorStop enough;
-	while (director_sp > 0) {
-		enough = false;
-		if (DirectorStackStart-->(director_sp-1)) enough = true;
-		DirectorPop();
-		if (enough) break;
-	}
 ];

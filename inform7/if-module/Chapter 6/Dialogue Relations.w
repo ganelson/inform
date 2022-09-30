@@ -25,7 +25,7 @@ void DialogueRelations::stock(bp_family *self, int n) {
 				BPTerms::new(KindSubjects::from_kind(K_dialogue_beat)),
 				BPTerms::new(KindSubjects::from_kind(K_value)),
 				I"dialogue-contains", I"in-dialogue",
-				NULL, Calculus::Schemas::new("DirectorTestLineContainment(*2,*1,*#2,*#1)"),
+				NULL, Calculus::Schemas::new("DirectorTestContainment(*2,*1,*#2,*#1)"),
 				PreformUtilities::wording(<relation-names>,
 					DIALOGUE_CONTAINMENT_RELATION_NAME));
 		BinaryPredicates::set_index_details(R_dialogue_containment, NULL, "dialogue line");

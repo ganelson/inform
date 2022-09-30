@@ -7,5 +7,7 @@ Web Syntax Version: 2
 
 Sections
 	Director
+	Beats
 	Lines
 	Choices
+	Programs
