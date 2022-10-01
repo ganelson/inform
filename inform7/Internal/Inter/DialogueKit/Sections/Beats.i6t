@@ -34,7 +34,7 @@ meaningful return value. If |RELEVANCE_DBMETADATA| is 0, the beat has no explici
 about values, so the call (which of course cannot be made) would do nothing anyway.
 
 (*) |PROGRAM_DBMETADATA| points to the D-code program for the beat, which is
-too complex to explain here.
+too complex to explain here: see //Programs Template//.
 
 (*) |TIED_SCENE_DBMETADATA| is either 0 or a valid scene instance value. (Scenes
 are enumerated from 1, so 0 cannot be a scene.) This is the scene to which the
@@ -46,7 +46,7 @@ variable length, and from this point onwards, it is a null-terminated list of
 speakers who must be accessible for the beat to be performed. That list can
 of course be empty, in which case there will just be a 0 at this position.
 
-All of this must of course match what is compiled in //runtime: Dialogue Choice Beats//.
+All of this must of course match what is compiled in //runtime: Dialogue Beat Instances//.
 
 =
 Constant AVAILABILITY_DBMETADATA = 0;
@@ -115,6 +115,8 @@ sequencing conditions about other beats having been performed or not performed
 prior to now, are all met.
 
 =
+Global latest_performed_beat = 0;
+
 [ DirectorBeatAvailable db fn beatdata;
 	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) rfalse;
 	beatdata = TableOfDialogueBeats-->db;

@@ -1,39 +1,63 @@
 Director Template.
 
-Run-time support for dialogue.
+Top-level control for the Director, and how beats are selected for performance.
 
-@h Placeholder.
+@h Active versus inactive.
+The most important question about the director: is it currently running in
+active or inactive mode?
 
 =
-Global latest_performed_beat = 0;
+Global director_is_active = false;
 Global line_performance_count = 0;
-Array DialogueTopicPool --> 20;
+
+[ DirectorActivate;
+	director_is_active = true;
+	line_performance_count = 0;
+];
+[ DirectorDeactivate;
+	director_is_active = false;
+];
+
+@h The live subject list.
+This is stored as a null-terminated array, capped at |DIALOGUE_MAX_LIVE_SUBJECTS|
+items.
+
+=
+Constant DIALOGUE_MAX_LIVE_SUBJECTS = 19;
+Array DialogueTopicPool --> (DIALOGUE_MAX_LIVE_SUBJECTS+1);
 
 [ DirectorEmptyLiveSubjectList;
 	DialogueTopicPool-->0 = 0;
 ];
 
 [ DirectorAddLiveSubjectList obj i o2;
-	for (i=0:i<20:i++) {
+	for (i=0:i<DIALOGUE_MAX_LIVE_SUBJECTS:i++) {
 		o2 = DialogueTopicPool-->i;
 		if (o2 == obj) return;
 		if (o2 == 0) break;
 	}	
-	for (i=18:i>0:i--) DialogueTopicPool-->i = DialogueTopicPool-->(i-1);
+	for (i=DIALOGUE_MAX_LIVE_SUBJECTS-1:i>0:i--) DialogueTopicPool-->i = DialogueTopicPool-->(i-1);
 	DialogueTopicPool-->0 = obj;
-	DialogueTopicPool-->19 = 0;
+	DialogueTopicPool-->DIALOGUE_MAX_LIVE_SUBJECTS = 0;
 ];
 
 [ DirectorRemoveLiveSubjectList obj i j;
-	for (i=0:i<20:i++) {
+	for (i=0:i<=DIALOGUE_MAX_LIVE_SUBJECTS:i++) {
 		if (DialogueTopicPool-->i == 0) return;
-		if (DialogueTopicPool-->i == obj) {
-			for (j=i:j<19:j++) DialogueTopicPool-->j = DialogueTopicPool-->(j+1);
-		}
+		if (DialogueTopicPool-->i == obj)
+			for (j=i:j<DIALOGUE_MAX_LIVE_SUBJECTS:j++)
+				DialogueTopicPool-->j = DialogueTopicPool-->(j+1);
 	}
-	DialogueTopicPool-->19 = 0;
+	DialogueTopicPool-->DIALOGUE_MAX_LIVE_SUBJECTS = 0;
 ];
 
+@h Access as an Inform list.
+This copies our null-terminated array into, or out of, an Inform list.
+The reason we don't keep it in an Inform list all the time is that we get
+very slightly faster access by not doing so, and we don't need the main
+virtue of Inform lists, that is, their flexible size.
+
+=
 [ DirectorLiveSubjectList list len i;
 	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
 	len = 0;
@@ -47,154 +71,48 @@ Array DialogueTopicPool --> 20;
 [ DirectorAlterLiveSubjectList list len i;
 	if ((list==0) || (BlkValueWeakKind(list) ~= LIST_OF_TY)) return 0;
 	len = BlkValueRead(list, LIST_LENGTH_F);
-	if (len > 19) len = 19;
+	if (len > DIALOGUE_MAX_LIVE_SUBJECTS) len = DIALOGUE_MAX_LIVE_SUBJECTS;
 	for (i=0: i<len: i++)
 		DialogueTopicPool-->i = BlkValueRead(list, LIST_ITEM_BASE+i);
 	DialogueTopicPool-->len = 0;
-	DialogueTopicPool-->19 = 0;
+	DialogueTopicPool-->DIALOGUE_MAX_LIVE_SUBJECTS = 0;
 ];
 
-[ DirectorBegin;
-	DirectorEmptyLiveSubjectList();
-	latest_performed_beat = 0;
-	director_sp = 0;
-	DirectorStackChoices-->0 = BlkValueCreate(LIST_OF_TY);
-	BlkValueWrite(DirectorStackChoices-->0, LIST_ITEM_KOV_F, DIALOGUE_CHOICE_TY);
+@h Dialogue intervening.
+|DirectorIntervenes(subj)| tries to find a beat of dialogue we can perform
+which is relevant to the subject |subj|, and returns |true| if it did in fact
+perform something, or |false| if not (in which case it printed nothing).
+
+A two-word array is used as a sort of temporary live subject list in order
+to test relevance for these purposes.
+
+=
+Array DirectorMiniPool --> 0 0;
+
+[ DirectorIntervenes obj fn db saved;
+	saved = DirectorMiniPool-->0;
+	DirectorMiniPool-->0 = obj;
+	for (db=1: db<=NO_DIALOGUE_BEATS: db++) {
+		if ((DirectorBeatAccessible(db, player)) &&
+			(DirectorBeatAvailable(db)) &&
+			(DirectorBeatRelevantTo(db, DirectorMiniPool))) {
+			DirectorMiniPool-->0 = saved;
+			DirectorPerformBeat(db);
+			rtrue;
+		}
+	}
+	DirectorMiniPool-->0 = saved;
 	rfalse;
 ];
 
-[ DirectorTraceStack j program pc instruction depth;
-	if (director_sp > 0) {
-		print "[";
-		for (j=0: j<director_sp: j++) {
-			if (j > 0) print " --> ";
-			if (DirectorStackStart-->j) print "$";
-			print (PrintDialogueBeatName) DirectorStackBeat-->j;
-			pc = DirectorStackPC-->j;
-			if (pc == -1) print "+return";
-			else {
-				program = DirectorBeatGetProgram(DirectorStackBeat-->j);
-				instruction = (program-->pc)/100;
-				depth = (program-->pc)%100;
-				if (DirectorStackDecisionPC-->j >= 0) print "[*", DirectorStackDecisionPC-->j, "]";
-				print "+", pc, " ", "L", depth, "/", DirectorStackMin-->j, " ";
-				switch (instruction) {
-					0: print "STOP";
-					1: print (PrintDialogueLineName) program-->(pc+1);
-					2: print (PrintDialogueChoiceName) program-->(pc+1);
-					3: switch (program-->(pc+1)) {
-							2: print "TEXT-D";
-							3: print "ACTION-D";
-							4: print "CONTROL-D";
-							default: print "(*** unknown dtd ***)";
-						}
-					default: print "*** unknown instruction ***";
-				}
-			}
-			if (LIST_OF_TY_GetLength(DirectorStackChoices-->j) > 0) {
-				print " {";
-				LIST_OF_TY_Say(DirectorStackChoices-->j);
-				print "}";
-			}
-		}
-		print "]^";
-	} else {
-		print "[Director stack empty]^";
-	}
-];
+@h Active dialogue.
+In active mode only, the Director sometimes initiates conversation itself,
+and this is the rule doing that. In passive mode the rule does nothing.
+In stories with a lot of dialogue, this will be run quite slowly: on the
+other hand, it only has to run once in every turn, so that may not matter.
 
-[ DirectorCurrentChoiceList i L;
-	if (director_sp == 0) return DirectorStackChoices-->0;
-	return DirectorStackChoices-->(director_sp-1);
-];
-
-[ DirectorExerciseChoice dc program pc spc;
-	WriteGProperty(DIALOGUE_CHOICE_TY, dc, performed, 1);
-	program = DirectorBeatGetProgram(DirectorStackBeat-->(director_sp-1));
-	pc = DirectorStackLastPC-->(director_sp-1);
-	spc = pc + 2;
-	while (((program-->spc)/100 ~= 2) || (program-->(spc+1) ~= dc)) spc = spc + 2;
-	spc = spc + 2;
-	DirectorPush(DirectorStackBeat-->(director_sp-1), (program-->pc) % 100 + 2, spc);
-	DirectorRun();
-];
-
-[ DirectorPickANumber max i j wa wl sign base digit_count n digit;
-    for (::) {
-    	print ">";
-        #Ifdef TARGET_ZCODE;
-        if (location == nothing || parent(player) == nothing) read buffer2 parse2;
-        else read buffer2 parse2 DrawStatusLine;
-        j = parse2->1;
-		wa = buffer2 + parse2->5;
-		wl = parse2->4;
-        #Ifnot; ! TARGET_GLULX;
-        if (location ~= nothing && parent(player) ~= nothing) DrawStatusLine();
-        KeyboardPrimitive(buffer2, parse2);
-        j = parse2-->0;
- 		wa = buffer2 + parse2-->3;
-		wl = parse2-->2;
-        #Endif; ! TARGET_
-        if (j) { ! at least one word entered
-            sign = 1; base = 10; digit_count = 0;
-			if (wa->0 ~= '-' or '$' or '0' or '1' or '2' or '3' or '4'
-				or '5' or '6' or '7' or '8' or '9')
-				jump Retry;
-			if (wa->0 == '-') { sign = -1; wl--; wa++; }
-			if (wl == 0) jump Retry;
-			n = 0;
-			while (wl > 0) {
-				if (wa->0 >= 'a') digit = wa->0 - 'a' + 10;
-				else digit = wa->0 - '0';
-				digit_count++;
-				switch (base) {
-					2:  if (digit_count == 17) jump Retry;
-					10:
-						#Iftrue (WORDSIZE == 2);
-						if (digit_count == 6) jump Retry;
-						if (digit_count == 5) {
-							if (n > 3276) jump Retry;
-							if (n == 3276) {
-								if (sign == 1 && digit > 7) jump Retry;
-								if (sign == -1 && digit > 8) jump Retry;
-							}
-						}
-						#Ifnot; ! i.e., if (WORDSIZE == 4)
-						if (digit_count == 11) jump Retry;
-						if (digit_count == 10) {
-							if (n > 214748364) jump Retry;
-							if (n == 214748364) {
-								if (sign == 1 && digit > 7) jump Retry;
-								if (sign == -1 && digit > 8) jump Retry;
-							}
-						}
-						#Endif;
-					16: if (digit_count == 5) jump Retry;
-				}
-				if (digit >= 0 && digit < base) n = base*n + digit;
-				else jump Retry;
-				wl--; wa++;
-			}
-			n = n*sign;
-			if ((n < 1) || (n > max)) jump Retry;
-			return n;
-        }
-		.Retry;
-		print "(Please type an option in the range 1 to ", max, " and press return.)^^";
-    }
-];
-
-Global director_is_active = false;
-
-[ DirectorActivate;
-	director_is_active = true;
-	line_performance_count = 0;
-];
-[ DirectorDeactivate;
-	director_is_active = false;
-];
-
-[ DIALOGUE_DIRECTION_R db i topic fn;
+=
+[ DIALOGUE_DIRECTION_R db;
 	if (director_is_active) {
 		if ((director_sp == 0) && (line_performance_count == 0)) {
 			for (db=1: db<=NO_DIALOGUE_BEATS: db++)
@@ -216,103 +134,5 @@ Global director_is_active = false;
 		}
 	}
 	line_performance_count = 0;
-	rfalse;
-];
-
-Array DirectorMiniPool --> 0 0;
-
-[ DirectorIntervenes obj fn db saved;
-	saved = DirectorMiniPool-->0;
-	DirectorMiniPool-->0 = obj;
-	for (db=1: db<=NO_DIALOGUE_BEATS: db++) {
-		if ((DirectorBeatAccessible(db, player)) &&
-			(DirectorBeatAvailable(db)) &&
-			(DirectorBeatRelevantTo(db, DirectorMiniPool))) {
-			DirectorMiniPool-->0 = saved;
-			DirectorPerformBeat(db);
-			rtrue;
-		}
-	}
-	DirectorMiniPool-->0 = saved;
-	rfalse;
-];
-
-
-[ DirectorBeforeAction;
-	return DirectorScreenActionChoices(BEFORE_DSEL);
-];
-
-[ DirectorInsteadAction;
-	return DirectorScreenActionChoices(INSTEAD_OF_DSEL);
-];
-
-[ DirectorAfterAction;
-	return DirectorScreenActionChoices(AFTER_DSEL);
-];
-
-[ DirectorGetChoice list program instruction depth dc pc fn;
-	LIST_OF_TY_SetLength(list, 0);
-	if (director_sp == 0) rfalse;
-	program = DirectorBeatGetProgram(DirectorStackBeat-->(director_sp-1));
-	pc = DirectorStackLastPC-->(director_sp-1);
-	instruction = (program-->pc)/100;
-	depth = (program-->pc)%100;
-	pc = pc + 2;
-	while ((program-->pc)%100 > depth) {
-		if ((program-->pc)%100 == depth+1) {
-			dc = program-->(pc+1);
-			if (((GProperty(DIALOGUE_CHOICE_TY, dc, performed) == 0) ||
-					(GProperty(DIALOGUE_CHOICE_TY, dc, recurring))) &&
-				(DirectorChoiceAvailable(dc)))
-				LIST_OF_TY_InsertItem(list, dc);
-		}
-		pc = pc + 2;
-	}
-];
-[ DirectorScreenActionChoices wanted N list was dc i fn chose suppress_otherwise;
-	if (director_sp > 0) {
-		if (debug_dialogue >= 2) { print "-- found: "; DirectorTraceStack(); }
-		list = DirectorStackChoices-->(director_sp-1);
-		N = LIST_OF_TY_GetLength(list);
-		if (N > 0) {
-			for (i=1: i<=N: i++) {
-				dc = LIST_OF_TY_GetItem(list, i);
-				if ((DirectorChoiceType(dc) == OTHERWISE_DSEL) && (suppress_otherwise == false)) {
-					chose = dc; break;
-				} else {
-					fn = DirectorChoiceRawContent(dc);
-					if ((fn) && (fn())) {
-						if (DirectorChoiceType(dc) == wanted) {
-							chose = dc; break;	
-						} else {
-							suppress_otherwise = true;
-						}
-					}
-				}
-			}
-			if (debug_dialogue >= 2) {
-				if (chose) {
-					print "-- selected ", (PrintDialogueChoiceName) chose, " at stage ", wanted, "^";
-				} else {
-					print "-- no selection at stage ", wanted, "^";
-				}
-			}
-			if ((chose) || (wanted == -1)) {
-				LIST_OF_TY_SetLength(list, 0);
-				if (chose) DirectorExerciseChoice(chose);
-				while (director_sp > 0) {
-					was = director_sp;
-					if (debug_dialogue) { print "-- Resuming ", (PrintDialogueBeatName) DirectorStackBeat-->(director_sp-1), "^"; }
-					DirectorRun();
-					if (was == director_sp) break;
-				}
-				if (director_sp > 0) {
-					if (debug_dialogue) { print "-- Stack not empty: "; DirectorTraceStack(); }
-				}
-				rtrue;
-			}
-			if (debug_dialogue >= 2) { print "-- gave up: "; DirectorTraceStack(); }
-		}
-	}
 	rfalse;
 ];

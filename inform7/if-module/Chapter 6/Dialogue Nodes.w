@@ -121,7 +121,7 @@ impossible to hit.
 @e BLANK_DDT from 1
 @e TEXTUAL_DDT
 @e PARSED_COMMAND_DDT
-@e CONTROL_DDT
+@e FLOW_CONTROL_DDT
 
 =
 typedef struct dialogue_decision {
@@ -264,17 +264,17 @@ int DialogueNodes::decision_type(dialogue_node *dn) {
 	switch (dn->if_choice->selection_type) {
 		case ANOTHER_CHOICE_DSEL: return PARSED_COMMAND_DDT;
 		case TEXTUAL_DSEL: return TEXTUAL_DDT;
-		case AGAIN_DSEL: return CONTROL_DDT;
-		case STOP_DSEL: return CONTROL_DDT;
-		case ENDING_DSEL: return CONTROL_DDT;
-		case ENDING_SAYING_DSEL: return CONTROL_DDT;
-		case ENDING_FINALLY_DSEL: return CONTROL_DDT;
-		case ENDING_FINALLY_SAYING_DSEL: return CONTROL_DDT;
-		case OTHERWISE_DSEL: return CONTROL_DDT;
+		case AGAIN_DSEL: return FLOW_CONTROL_DDT;
+		case STOP_DSEL: return FLOW_CONTROL_DDT;
+		case ENDING_DSEL: return FLOW_CONTROL_DDT;
+		case ENDING_SAYING_DSEL: return FLOW_CONTROL_DDT;
+		case ENDING_FINALLY_DSEL: return FLOW_CONTROL_DDT;
+		case ENDING_FINALLY_SAYING_DSEL: return FLOW_CONTROL_DDT;
+		case OTHERWISE_DSEL: return FLOW_CONTROL_DDT;
 		case INSTEAD_OF_DSEL: return PARSED_COMMAND_DDT;
 		case AFTER_DSEL: return PARSED_COMMAND_DDT;
 		case BEFORE_DSEL: return PARSED_COMMAND_DDT;
-		case PERFORM_DSEL: return CONTROL_DDT;
+		case PERFORM_DSEL: return FLOW_CONTROL_DDT;
 		default: internal_error("unimplemented DSEL");
 	}
 	return -1;

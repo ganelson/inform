@@ -180,14 +180,14 @@ looks to see if the current action matches the given action pattern.
 <span class="plain-syntax">            </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">chdata</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">TYPE_DCMETADATA</span><span class="plain-syntax"> == </span><span class="identifier-syntax">ENDING_FINALLY_DSEL</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDING_FINALLY_SAYING_DSEL</span><span class="plain-syntax">)</span>
 <span class="plain-syntax">                </span><span class="identifier-syntax">story_complete</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="identifier-syntax">PERFORM_DSEL</span><span class="plain-syntax">: </span><span class="identifier-syntax">DirectorPerform</span><span class="plain-syntax">(</span><span class="identifier-syntax">chdata</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">CONTENT_DCMETADATA</span><span class="plain-syntax">); </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">PERFORM_DSEL</span><span class="plain-syntax">: </span><span class="identifier-syntax">DirectorPerformBeat</span><span class="plain-syntax">(</span><span class="identifier-syntax">chdata</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">CONTENT_DCMETADATA</span><span class="plain-syntax">); </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">default</span><span class="plain-syntax">: </span><span class="reserved-syntax">print</span><span class="plain-syntax"> </span><span class="string-syntax">"*** Unimplemented choice ***^"</span><span class="plain-syntax">; </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rtrue</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
-    <ul class="progressbar"><li class="progressprev"><a href="S-lns.html">&#10094;</a></li><li class="progresssection"><a href="S-drc.html">drc</a></li><li class="progresssection"><a href="S-lns.html">lns</a></li><li class="progresscurrent">chc</li><li class="progressnextoff">&#10095;</li></ul></div>
+    <ul class="progressbar"><li class="progressprev"><a href="S-lns.html">&#10094;</a></li><li class="progresssection"><a href="S-drc.html">drc</a></li><li class="progresssection"><a href="S-bts.html">bts</a></li><li class="progresssection"><a href="S-lns.html">lns</a></li><li class="progresscurrent">chc</li><li class="progresssection"><a href="S-prg.html">prg</a></li><li class="progressnext"><a href="S-prg.html">&#10095;</a></li></ul></div>
 </nav><!--End of weave-->
 
 		</main>
