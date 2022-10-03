@@ -167,7 +167,8 @@ void Features::run_activation_function(compiler_feature *F) {
 @ Basic features which are present in all three Inform compiler tools:
 
 =
-compiler_feature *core_feature = NULL, *experimental_feature = NULL, *dialogue_feature = NULL;
+compiler_feature *core_feature = NULL, *experimental_feature = NULL,
+	*dialogue_feature = NULL, *concepts_feature = NULL;
 
 void Features::activate_core(void) {
 	core_feature = Features::new(NULL, I"core", NULL);
@@ -180,4 +181,5 @@ void Features::activate_core(void) {
 	#ifndef IF_MODULE
 	dialogue_feature = Features::new(NULL, I"dialogue", experimental_feature);
 	#endif
+	concepts_feature = Features::new(NULL, I"concepts", dialogue_feature);
 }

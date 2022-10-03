@@ -804,6 +804,8 @@ Section 3 - Action conversion - Unindexed
 
 To convert to (AN - an action name) on (O - an object):
 	(- return GVS_Convert({AN},{O},0); -) - in to only.
+To convert to (AN - an action name) on (O - an object) with (T - a snippet):
+	(- return GVS_Convert({AN},{O},{T}); -) - in to only.
 To convert to request of (X - object) to perform (AN - action name) with
 	(Y - object) and (Z - object):
 	(- return ConvertToRequest({X}, {AN}, {Y}, {Z}); -).

@@ -160,6 +160,14 @@ Although further kinds will be created later ("vehicle", for instance),
 those are merely design choices, and Inform would not be troubled by their
 absence.
 
+@
+
+=
+Section 1a - Concepts (for concepts language element only)
+
+A concept is a kind.
+A concept can be privately-named or publicly-named. A concept is usually publicly-named.
+
 @h Rooms.
 We now detail each of the fundamental kinds in turn, in order of their
 declaration, and thus beginning with rooms.

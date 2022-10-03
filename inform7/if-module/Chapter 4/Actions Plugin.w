@@ -323,7 +323,7 @@ the initial text "applying to one thing" would be valid as it stands.
 @<Issue PM_ActionMisapplied problem@> =
 	StandardProblems::sentence_problem(Task::syntax_tree(),
 		_p_(PM_ActionMisapplied),
-		"an action can only apply to things or to kinds of value",
+		"an action cannot apply to specific kinds of things, only to 'things'",
 		"for instance: 'photographing is an action applying to "
 		"one visible thing'.");
 	==> { REQUIRES_ACCESS, K_thing };
@@ -333,7 +333,8 @@ the initial text "applying to one thing" would be valid as it stands.
 	if (Kinds::eq(K, K_thing)) {
 		if (A == UNRESTRICTED_ACCESS) A = REQUIRES_ACCESS;
 		==> { A, K_object };
-	} else if (Kinds::Behaviour::is_subkind_of_object(K)) {
+	} else if ((Kinds::Behaviour::is_subkind_of_object(K)) &&
+		 (Latticework::super(K) != K_object)) {
 		@<Issue PM_ActionMisapplied problem@>;
 	} else if (A != UNRESTRICTED_ACCESS) {
 		@<Issue PM_ActionMisapplied problem@>;

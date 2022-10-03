@@ -504,7 +504,10 @@ parse_node *CGTokens::determine(cg_token *cgt, int depth) {
 			break;
 		case STUFF_GTC:
 			@<Make sure the result is a description with one free variable@>;
-			cgt->noun_filter = NounFilterTokens::new(result, FALSE, FALSE);
+			int any = TRUE;
+			if (Kinds::Behaviour::is_object_of_kind(Specifications::to_kind(result), K_thing))
+				any = FALSE;
+			cgt->noun_filter = NounFilterTokens::new(result, any, FALSE);
 			break;
 		default:
 			Node::set_text(result, CGTokens::text(cgt));
