@@ -181,11 +181,13 @@ void RTDialogueBeats::beat_compilation_agent(compilation_subtask *ct) {
 		EmitArrays::numeric_entry(0);
 
 @<Write the speaker list@> =
+	int player_speaks = -1;
 	linked_list *L = db->required;
 	if ((LinkedLists::len(L) == 0) && (db->requiring_nothing == FALSE)) {
 		L = NEW_LINKED_LIST(instance);
-		RTDialogueBeats::find_speakers_r(L, db->root);
+		RTDialogueBeats::find_speakers_r(L, db->root, &player_speaks);
 	}
+	if (player_speaks == 0) EmitArrays::numeric_entry(1);
 	instance *I;
 	LOOP_OVER_LINKED_LIST(I, instance, L)
 		EmitArrays::iname_entry(RTInstances::value_iname(I));
@@ -457,24 +459,28 @@ void RTDialogueBeats::log_r(dialogue_node *dn) {
 }
 
 @ =
-void RTDialogueBeats::find_speakers_r(linked_list *L, dialogue_node *dn) {
+void RTDialogueBeats::find_speakers_r(linked_list *L, dialogue_node *dn, int *player_speaks) {
 	while (dn) {
 		if (dn->if_line) {
-			instance *I = RTDialogueLines::speaker_instance(dn->if_line);
-			if (I) {
-				int already_have_this = FALSE;
-				instance *J;
-				LOOP_OVER_LINKED_LIST(J, instance, L)
-					if (I == J) {
-						already_have_this = TRUE;
-						break;
-					}
-				if (already_have_this == FALSE)
-					ADD_TO_LINKED_LIST(I, instance, L);
+			if (dn->if_line->speaker_is_player) {
+				if (*player_speaks == -1) *player_speaks = LinkedLists::len(L);
+			} else {
+				instance *I = RTDialogueLines::speaker_instance(dn->if_line);
+				if (I) {
+					int already_have_this = FALSE;
+					instance *J;
+					LOOP_OVER_LINKED_LIST(J, instance, L)
+						if (I == J) {
+							already_have_this = TRUE;
+							break;
+						}
+					if (already_have_this == FALSE)
+						ADD_TO_LINKED_LIST(I, instance, L);
+				}
 			}
 		}
 		if (dn->child_node)
-			RTDialogueBeats::find_speakers_r(L, dn->child_node);
+			RTDialogueBeats::find_speakers_r(L, dn->child_node, player_speaks);
 		dn = dn->next_node;
 	}
 }

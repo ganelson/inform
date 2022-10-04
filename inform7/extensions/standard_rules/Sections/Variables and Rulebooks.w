@@ -1325,7 +1325,9 @@ To perform (B - a dialogue beat):
 	(- DirectorPerformBeat({B}); -).
 
 To decide whether dialogue/dialog about (O - an object) intervenes:
-	(- DirectorIntervenes({O}) -).
+	(- DirectorIntervenes({O}, nothing) -).
+To decide whether dialogue/dialog about (O - an object) led by (P - an object) intervenes:
+	(- DirectorIntervenes({O}, {P}) -).
 
 To showme the beat structure of (B - dialogue beat): (- DirectorDisassemble({B}); -).
 

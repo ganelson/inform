@@ -77,9 +77,12 @@ speaker, or has metaclass <span class="extract"><span class="extract-syntax">Obj
 object which speaks, or else has metaclass <span class="extract"><span class="extract-syntax">Routine</span></span>, and is in that case
 a function which tests whether a given object meets the requirements. For
 example, a line attributed only to <span class="extract"><span class="extract-syntax">A woman in the Ballroom</span></span> would result
-in a function here.
+in a function here. The special value <span class="extract"><span class="extract-syntax">PLAYER_CONVERSATIONALIST</span></span> can also
+be used to mean "the player, whoever that currently is".
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">INTERLOCUTOR_DLMETADATA</span></span> is similar, but for the interlocutor, and is
-more often 0 &mdash; many lines have no interlocutor.
+more often 0 &mdash; many lines have no interlocutor. The special value
+<span class="extract"><span class="extract-syntax">PLAYER_CONVERSATIONALIST</span></span> can also be used to mean "the player, whoever that
+currently is".
 </li><li>&#9679; <span class="extract"><span class="extract-syntax">SPEECH_DLMETADATA</span></span> is a <span class="extract"><span class="extract-syntax">text</span></span> value for the content (note: an Inform 7
 text value, not an I6 <span class="extract"><span class="extract-syntax">String</span></span> literal). This cannot be 0. The text may well
 include substitutions, and the compiled code for those substitutions may
@@ -118,6 +121,8 @@ field can just as easily reveal whether or not the line is narration.
 
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">NARRATION_FLAG_DLMETADATA</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">NONVERBAL_FLAG_DLMETADATA</span><span class="plain-syntax"> = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
+
+<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PLAYER_CONVERSATIONALIST</span><span class="plain-syntax"> = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP2" class="paragraph-anchor"></a><b>&#167;2. Extracting line data. </b></p>
 
@@ -172,7 +177,8 @@ to optimise this.
 <span class="plain-syntax">[ </span><span class="identifier-syntax">DirectorSelectConverser</span><span class="plain-syntax"> </span><span class="identifier-syntax">val</span><span class="plain-syntax"> </span><span class="identifier-syntax">select_speaker</span><span class="plain-syntax"> </span><span class="identifier-syntax">nonverbal</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">speaker</span><span class="plain-syntax"> </span><span class="identifier-syntax">len</span><span class="plain-syntax"> </span><span class="identifier-syntax">i</span><span class="plain-syntax"> </span><span class="identifier-syntax">best</span><span class="plain-syntax"> </span><span class="identifier-syntax">best_score</span><span class="plain-syntax"> </span><span class="identifier-syntax">this_score</span><span class="plain-syntax"> </span><span class="identifier-syntax">x</span><span class="plain-syntax"> </span><span class="identifier-syntax">best_count</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">speaker</span><span class="plain-syntax"> = </span><span class="identifier-syntax">val</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="reserved-syntax">metaclass</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">) == </span><span class="identifier-syntax">Routine</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">val</span><span class="plain-syntax"> == </span><span class="identifier-syntax">PLAYER_CONVERSATIONALIST</span><span class="plain-syntax">) </span><span class="identifier-syntax">speaker</span><span class="plain-syntax"> = </span><span class="identifier-syntax">player</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="reserved-syntax">metaclass</span><span class="plain-syntax">(</span><span class="identifier-syntax">val</span><span class="plain-syntax">) == </span><span class="identifier-syntax">Routine</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">director_speaker_list</span><span class="plain-syntax"> == </span><span class="constant-syntax">0</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">director_speaker_list</span><span class="plain-syntax"> = </span><span class="identifier-syntax">BlkValueCreate</span><span class="plain-syntax">(</span><span class="identifier-syntax">LIST_OF_TY</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">            </span><span class="identifier-syntax">BlkValueWrite</span><span class="plain-syntax">(</span><span class="identifier-syntax">director_speaker_list</span><span class="plain-syntax">, </span><span class="identifier-syntax">LIST_ITEM_KOV_F</span><span class="plain-syntax">, </span><span class="identifier-syntax">OBJECT_TY</span><span class="plain-syntax">);</span>

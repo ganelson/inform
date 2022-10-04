@@ -83,9 +83,19 @@ Constant REQUIRING_DBMETADATA = 4;
 		i++;
 	}
 	LIST_OF_TY_SetLength(list, len);
-	for (i=0: i<len: i++)
-		LIST_OF_TY_PutItem(list, i+1, beatdata-->(i+REQUIRING_DBMETADATA));
+	for (i=0: i<len: i++) {
+		speaker = beatdata-->(i+REQUIRING_DBMETADATA);
+		if (speaker == PLAYER_CONVERSATIONALIST) speaker = player;
+		LIST_OF_TY_PutItem(list, i+1, speaker);
+	}
 	return list;
+];
+
+[ DirectorBeatFirstSpeaker db speaker;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) return nothing;
+	speaker = (TableOfDialogueBeats-->db)-->REQUIRING_DBMETADATA;
+	if (speaker == PLAYER_CONVERSATIONALIST) return player;
+	return speaker;
 ];
 
 @h Accessibility.
@@ -101,6 +111,7 @@ and if that person can currently hear all the speakers on its requiring list.
 		i = REQUIRING_DBMETADATA;
 		while (true) {
 			speaker = beatdata-->i;
+			if (speaker == PLAYER_CONVERSATIONALIST) speaker = player;
 			if (speaker == nothing) rtrue;
 			if (TestAudibility(to_whom, speaker) == false) rfalse;
 			i++;

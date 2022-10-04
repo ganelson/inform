@@ -158,6 +158,8 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 			make_speaker_function = TRUE;
 			EmitArrays::iname_entry(RTDialogueLines::speaker_fn_iname(dl));
 		}
+	} else if (dl->speaker_is_player) {
+		EmitArrays::numeric_entry(1);
 	} else {
 		EmitArrays::numeric_entry(0);
 	}
@@ -171,6 +173,8 @@ void RTDialogueLines::line_compilation_agent(compilation_subtask *ct) {
 			make_interlocutor_function = TRUE;
 			EmitArrays::iname_entry(RTDialogueLines::interlocutor_fn_iname(dl));
 		}
+	} else if (dl->interlocutor_is_player) {
+		EmitArrays::numeric_entry(1);
 	} else {
 		EmitArrays::numeric_entry(0);
 	}

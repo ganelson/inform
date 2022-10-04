@@ -41,10 +41,12 @@ typedef struct dialogue_line {
 	int elaborated;
 	int without_speaking;
 	struct wording speaker_text;
-	struct wording speech_text;
+	int speaker_is_player;
 	struct parse_node *speaker_description;
 	struct wording interlocutor_text;
+	int interlocutor_is_player;
 	struct parse_node *interlocutor_description;
+	struct wording speech_text;
 	struct linked_list *mentioning; /* of |parse_node| */
 	struct performance_style *how_performed;
 	struct dialogue_node *as_node;
@@ -58,7 +60,9 @@ typedef struct dialogue_line {
 	dl->narration = FALSE;
 	dl->elaborated = FALSE;
 	dl->speaker_text = EMPTY_WORDING;
+	dl->speaker_is_player = FALSE;
 	dl->interlocutor_text = EMPTY_WORDING;
+	dl->interlocutor_is_player = FALSE;
 	dl->speaker_description = NULL;
 	dl->without_speaking = FALSE;
 	dl->compilation_data = RTDialogueLines::new(PN, dl);
@@ -275,23 +279,35 @@ void DialogueLines::decide_line_mentions(void) {
 		return;
 	}
 
+@
+
+=
+<speaker-description> ::=
+	<definite-article> player |     ==> { TRUE, NULL }
+	player |                        ==> { TRUE, NULL }
+	<s-type-expression>             ==> { FALSE, RP[1] }
+
 @<Parse the speaker description@> =
 	wording S = dl->speaker_text;
-	if (<s-type-expression-uncached>(S)) {
-		parse_node *desc = <<rp>>;
-		kind *K = Specifications::to_kind(desc);
-		if (Kinds::Behaviour::is_object(K)) {
-			dl->speaker_description = desc;
-		} else {
-			LOG("Speaker parsed as $T\n", desc);
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, S);
-			Problems::quote_kind(3, K);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineSpeakerNonObject));
-			Problems::issue_problem_segment(
-				"The dialogue line %1 is apparently spoken by '%2', but that "
-				"seems to describe %3, not a person or some other object.");
-			Problems::issue_problem_end();
+	if (<speaker-description>(S)) {
+		if (<<r>>) dl->speaker_is_player = TRUE;
+		else {
+			parse_node *desc = <<rp>>;
+			kind *K = Specifications::to_kind(desc);
+			if (Kinds::Behaviour::is_object(K)) {
+				dl->speaker_description = desc;
+			} else {
+				LOG("Speaker parsed as $T\n", desc);
+				Problems::quote_source(1, current_sentence);
+				Problems::quote_wording(2, S);
+				Problems::quote_kind(3, K);
+				StandardProblems::handmade_problem(Task::syntax_tree(),
+					_p_(PM_LineSpeakerNonObject));
+				Problems::issue_problem_segment(
+					"The dialogue line %1 is apparently spoken by '%2', but that "
+					"seems to describe %3, not a person or some other object.");
+				Problems::issue_problem_end();
+			}
 		}
 	} else {
 		Problems::quote_source(1, current_sentence);
@@ -305,21 +321,24 @@ void DialogueLines::decide_line_mentions(void) {
 
 @<Parse the interlocutor description@> =
 	wording S = dl->interlocutor_text;
-	if (<s-type-expression-uncached>(S)) {
-		parse_node *desc = <<rp>>;
-		kind *K = Specifications::to_kind(desc);
-		if (Kinds::Behaviour::is_object(K)) {
-			dl->interlocutor_description = desc;
-		} else {
-			LOG("interlocutor parsed as $T\n", desc);
-			Problems::quote_source(1, current_sentence);
-			Problems::quote_wording(2, S);
-			Problems::quote_kind(3, K);
-			StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineToNonObject));
-			Problems::issue_problem_segment(
-				"The dialogue line %1 is apparently spoken to '%2', but that "
-				"seems to describe %3, not a person or some other object.");
-			Problems::issue_problem_end();
+	if (<speaker-description>(S)) {
+		if (<<r>>) dl->interlocutor_is_player = TRUE;
+		else {
+			parse_node *desc = <<rp>>;
+			kind *K = Specifications::to_kind(desc);
+			if (Kinds::Behaviour::is_object(K)) {
+				dl->interlocutor_description = desc;
+			} else {
+				LOG("interlocutor parsed as $T\n", desc);
+				Problems::quote_source(1, current_sentence);
+				Problems::quote_wording(2, S);
+				Problems::quote_kind(3, K);
+				StandardProblems::handmade_problem(Task::syntax_tree(), _p_(PM_LineToNonObject));
+				Problems::issue_problem_segment(
+					"The dialogue line %1 is apparently spoken to '%2', but that "
+					"seems to describe %3, not a person or some other object.");
+				Problems::issue_problem_end();
+			}
 		}
 	} else {
 		Problems::quote_source(1, current_sentence);

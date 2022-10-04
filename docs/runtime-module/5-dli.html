@@ -232,6 +232,8 @@ function togglePopup(material_id) {
 <span class="plain-syntax">            </span><span class="identifier-syntax">make_speaker_function</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::iname_entry</span></a><span class="plain-syntax">(</span><a href="5-dli.html#SP1" class="function-link"><span class="function-syntax">RTDialogueLines::speaker_fn_iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">dl</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        }</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">dl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">speaker_is_player</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::numeric_entry</span></a><span class="plain-syntax">(1);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::numeric_entry</span></a><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">    }</span>
@@ -249,6 +251,8 @@ function togglePopup(material_id) {
 <span class="plain-syntax">            </span><span class="identifier-syntax">make_interlocutor_function</span><span class="plain-syntax"> = </span><span class="identifier-syntax">TRUE</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">            </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::iname_entry</span></a><span class="plain-syntax">(</span><a href="5-dli.html#SP1" class="function-link"><span class="function-syntax">RTDialogueLines::interlocutor_fn_iname</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">dl</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">        }</span>
+<span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">dl</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">interlocutor_is_player</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::numeric_entry</span></a><span class="plain-syntax">(1);</span>
 <span class="plain-syntax">    } </span><span class="reserved-syntax">else</span><span class="plain-syntax"> {</span>
 <span class="plain-syntax">        </span><a href="2-ea.html#SP4" class="function-link"><span class="function-syntax">EmitArrays::numeric_entry</span></a><span class="plain-syntax">(0);</span>
 <span class="plain-syntax">    }</span>

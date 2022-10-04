@@ -25,10 +25,13 @@ speaker, or has metaclass |Object|, and is therefore an specific person or
 object which speaks, or else has metaclass |Routine|, and is in that case
 a function which tests whether a given object meets the requirements. For
 example, a line attributed only to |A woman in the Ballroom| would result
-in a function here.
+in a function here. The special value |PLAYER_CONVERSATIONALIST| can also
+be used to mean "the player, whoever that currently is".
 
 (*) |INTERLOCUTOR_DLMETADATA| is similar, but for the interlocutor, and is
-more often 0 -- many lines have no interlocutor.
+more often 0 -- many lines have no interlocutor. The special value
+|PLAYER_CONVERSATIONALIST| can also be used to mean "the player, whoever that
+currently is".
 
 (*) |SPEECH_DLMETADATA| is a |text| value for the content (note: an Inform 7
 text value, not an I6 |String| literal). This cannot be 0. The text may well
@@ -71,6 +74,8 @@ Constant FLAGS_DLMETADATA        = 7;
 
 Constant NARRATION_FLAG_DLMETADATA = 1;
 Constant NONVERBAL_FLAG_DLMETADATA = 2;
+
+Constant PLAYER_CONVERSATIONALIST = 1;
 
 @h Extracting line data.
 
@@ -125,7 +130,8 @@ Global director_speaker_list;
 [ DirectorSelectConverser val select_speaker nonverbal
 	speaker len i best best_score this_score x best_count;
 	speaker = val;
-	if (metaclass(val) == Routine) {
+	if (val == PLAYER_CONVERSATIONALIST) speaker = player;
+	else if (metaclass(val) == Routine) {
 		if (director_speaker_list == 0) {
 			director_speaker_list = BlkValueCreate(LIST_OF_TY);
 			BlkValueWrite(director_speaker_list, LIST_ITEM_KOV_F, OBJECT_TY);
