@@ -234,3 +234,13 @@ fact used in the default grammar above, but is available for authors.
 
 =
 The understand token a time period translates into Inter as "RELATIVE_TIME_TOKEN".
+
+@
+
+=
+Section 2 - Dialogue-related grammar (for dialogue language element only)
+
+Understand "ask about [concept]" as talking about.
+Understand "ask about [visible thing]" as talking about.
+Understand "talk about [concept]" as talking about.
+Understand "talk about [visible thing]" as talking about.

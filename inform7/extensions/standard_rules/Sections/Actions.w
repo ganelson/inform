@@ -3209,3 +3209,39 @@ The announce the pronoun meanings rule translates into Inter as "ANNOUNCE_PRONOU
 	"means " (B),
 	"is unset" (C),
 	"no pronouns are known to the game." (D).
+
+@ The dialogue system offers an action "talking about", but not "talking to X about":
+this is a model of conversation which is aimed at simulating multi-person encounters,
+where lines are spoken more into the room than at any one person.
+
+=
+Section 10 - Dialogue-related actions (for dialogue language element only)
+
+Talking about is an action applying to one object.
+
+The talking about action has a list of dialogue beats called the leading beats.
+
+The talking about action has a list of dialogue beats called the other beats.
+
+Before an actor talking about an object (called T):
+	repeat with B running through available dialogue beats about T:
+		if B is performable to the actor:
+			if the first speaker of B is the actor:
+				add B to the leading beats;
+			otherwise:
+				add B to the other beats;
+
+Carry out an actor talking about an object (called T)
+	(this is the first-declared beat rule):
+	if the leading beats is not empty:
+		perform entry 1 of the leading beats;
+		continue the action;
+	if the other beats is not empty:
+		perform entry 1 of the other beats;
+		continue the action;
+	if the player is the actor:
+		say "There is no reply.";
+		stop the action;
+	otherwise:
+		say "[The actor] [talk] about [T].";
+		stop the action.

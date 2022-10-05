@@ -93,6 +93,19 @@ whether the choice |dc| occurs in the beat |db|, returning |true| or |false|.
 	rfalse;
 ];
 
+[ DirectorBeatOpeningLine db program pc instruction;
+	if ((db <= 0) || (db > NO_DIALOGUE_BEATS)) "*** no beat ***";
+	program = DirectorBeatGetProgram(db);
+	pc = 0;
+	instruction = (program-->pc)/100;
+	while (instruction) {
+		if (instruction == LINE_DCODEI) return program-->(pc+1);
+		pc = pc + 2;
+		instruction = (program-->pc)/100;
+	}
+	"*** no line ***";
+];
+
 @h Disassembly.
 Purely for debugging purposes:
 

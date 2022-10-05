@@ -1,0 +1,41 @@
+   Laboratory
+  Welcome
+  An Interactive Fiction
+  Release 1 / Serial number 160428 / Inform 7 v10.2.0 / D
+  
+  Laboratory
+  You can see Liza and a gong here.
+  
+> >   Laboratory
+  ** talk about philosophy
+  Choose...
+  
+  (1). I do wonder what it's all about.
+  (2). Any view on whether science is a social construct?
+  
+> >   Laboratory
+  You: "Any view on whether science is a social construct?"
+  
+  Liza: "Only that it's not a falsifiable hypothesis."
+  
+> >   Laboratory
+  ** talk about philosophy
+  You: "I do wonder what it's all about."
+  
+  Liza: "And therefore you are."
+  
+> >   Laboratory
+  ** hit gong
+  Bong! This seems to summon Liza's attention to the deep issues.
+  
+  Liza: "I favour Cartesian dualism. Well, half of me does."
+  
+> >   Laboratory
+  ** talk about cheese
+  That noun did not make sense in this context.
+  
+> >   Laboratory
+  ** talk about haute cuisine
+  There is no reply.
+  
+> >

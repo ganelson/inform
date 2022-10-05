@@ -85,22 +85,14 @@ perform something, or |false| if not (in which case it printed nothing).
 If |speaker| is not |nothing|, then prefer beats in which that person is the
 first to speak. (Note that |speaker| will often be the player.)
 
-A two-word array is used as a sort of temporary live subject list in order
-to test relevance for these purposes.
-
 =
-Array DirectorMiniPool --> 0 0;
-
-[ DirectorIntervenes obj speaker fn db saved;
-	saved = DirectorMiniPool-->0;
-	DirectorMiniPool-->0 = obj;
+[ DirectorIntervenes obj speaker fn db;
 	if (speaker ~= nothing) {
 		for (db=1: db<=NO_DIALOGUE_BEATS: db++)
 			if (DirectorBeatFirstSpeaker(db) == speaker)
 				if ((DirectorBeatAccessible(db, player)) &&
 					(DirectorBeatAvailable(db)) &&
-					(DirectorBeatRelevantTo(db, DirectorMiniPool))) {
-					DirectorMiniPool-->0 = saved;
+					(DirectorBeatAbout(db, obj))) {
 					DirectorPerformBeat(db);
 					rtrue;
 				}
@@ -108,8 +100,7 @@ Array DirectorMiniPool --> 0 0;
 			if (DirectorBeatFirstSpeaker(db) ~= speaker)
 				if ((DirectorBeatAccessible(db, player)) &&
 					(DirectorBeatAvailable(db)) &&
-					(DirectorBeatRelevantTo(db, DirectorMiniPool))) {
-					DirectorMiniPool-->0 = saved;
+					(DirectorBeatAbout(db, obj))) {
 					DirectorPerformBeat(db);
 					rtrue;
 				}
@@ -117,13 +108,11 @@ Array DirectorMiniPool --> 0 0;
 		for (db=1: db<=NO_DIALOGUE_BEATS: db++)
 			if ((DirectorBeatAccessible(db, player)) &&
 				(DirectorBeatAvailable(db)) &&
-				(DirectorBeatRelevantTo(db, DirectorMiniPool))) {
-				DirectorMiniPool-->0 = saved;
+				(DirectorBeatAbout(db, obj))) {
 				DirectorPerformBeat(db);
 				rtrue;
 			}
 	}
-	DirectorMiniPool-->0 = saved;
 	rfalse;
 ];
 

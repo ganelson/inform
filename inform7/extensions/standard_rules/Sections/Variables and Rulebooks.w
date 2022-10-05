@@ -1309,6 +1309,8 @@ To alter the live conversational subject list to (L - list of objects):
 	(- DirectorAlterLiveSubjectList({-by-reference:L}); -).
 To decide what list of objects is the list of speakers required by (B - dialogue beat):
 	(- DirectorBeatRequiredList({-new:list of objects}, {B}) -).
+To decide what dialogue line is the opening line of (B - dialogue beat):
+	(- DirectorBeatOpeningLine({B}) -).
 To decide what text is the textual content of (L - dialogue line):
 	(- DirectorLineContent({L}, {-new:text}) -).
 To decide what text is the textual content of (C - dialogue choice):
@@ -1321,8 +1323,28 @@ To decide what object is the current dialogue line interlocutor:
 To decide what performance style is the current dialogue line style:
 	(- DirectorCurrentLineStyle() -).
 
+To decide what number is the chosen dialogue number up to (N - number):
+	(- DirectorPickANumber({N}) -).
+
 To perform (B - a dialogue beat):
 	(- DirectorPerformBeat({B}); -).
+
+Topicality relates a dialogue beat (called B) to an object (called S) when about B matches S.
+
+Performability relates a dialogue beat (called B) to an object (called S) when S can have B performed.
+
+The verb to be about means the topicality relation.
+
+The verb to be performable to means the performability relation.
+
+To decide if about (B - dialogue beat) matches (S - object):
+	(- (DirectorBeatAbout({B}, {S})) -).
+
+To decide if (S - object) can have (B - dialogue beat) performed:
+	(- (DirectorBeatAccessible({B}, {S})) -).
+
+To decide which object is the first speaker of (B - dialogue beat):
+	(- (DirectorBeatFirstSpeaker({B})) -).
 
 To decide whether dialogue/dialog about (O - an object) intervenes:
 	(- DirectorIntervenes({O}, nothing) -).
