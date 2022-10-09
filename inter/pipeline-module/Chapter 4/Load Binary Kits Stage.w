@@ -91,19 +91,26 @@ regular users: it would be quite slow to read in.
 	}
 
 @<A clash of definitions seems to have occurred@> =
-	LOGIF(INTER_CONNECTORS, "Rival definitions of '%S':\nkit: $3\ntree: $3\n",
+	LOGIF(INTER_CONNECTORS, "Rival definitions of '%S':\ntree: $3\nkit: $3\n",
 		defn_name, rival_end, Wiring::cable_end(S));
-	int override = FALSE;
+	int override = NOT_APPLICABLE;
 	linked_list *L = step->pipeline->ephemera.replacements_list[step->tree_argument];
 	text_stream *N;
 	LOOP_OVER_LINKED_LIST(N, text_stream, L)
 		if (Str::eq(N, defn_name)) override = TRUE;
-	if (override == FALSE) {
+	int tree_replaces = LoadBinaryKitsStage::replaces(rival_end, Wiring::cable_end(S));
+	int kit_replaces = LoadBinaryKitsStage::replaces(Wiring::cable_end(S), rival_end);
+	if (tree_replaces) LOGIF(INTER_CONNECTORS, "$3 replaces $3\n", rival_end, Wiring::cable_end(S));
+	if (kit_replaces) LOGIF(INTER_CONNECTORS, "$3 replaces $3\n", Wiring::cable_end(S), rival_end);
+	if ((tree_replaces) && (kit_replaces == FALSE)) override = TRUE;
+	if ((tree_replaces == FALSE) && (kit_replaces == TRUE)) override = FALSE;
+	if (override == NOT_APPLICABLE) {
 		int r_val = ConstantInstruction::evaluate_to_int(rival_end);
 		int s_val = ConstantInstruction::evaluate_to_int(sidecar_end);
 		if ((r_val == s_val) && (r_val != -1)) override = TRUE;
 	}
-	if (override) @<Override the new definition with the existing one@>
+	if (override == TRUE) @<Override the new definition with the existing one@>
+	else if (override == FALSE) @<Override the existing definition with the new one@>
 	else @<Throw an error for the duplication@>;
 
 @ The following (unfortunately) has to do something subtle. We need the definition
@@ -136,6 +143,26 @@ the symbols table dictionary.
 	LOGIF(INTER_CONNECTORS, "Kit defn symbol $3 ~~> $3\n",
 		sidecar_end, Wiring::cable_end(sidecar_end));
 
+@<Override the existing definition with the new one@> =
+	inter_package *main_connectors =
+		LargeScale::connectors_package_if_it_exists(I);
+	if (main_connectors) {
+		inter_symbols_table *T = InterPackage::scope(main_connectors);
+		if (InterSymbolsTable::unname(T, defn_name) == FALSE)
+			internal_error("cannot strike socket name");
+	}
+	inter_symbol *plug = Wiring::plug(I, defn_name);
+	InterSymbol::strike_definition(rival_end);
+	Wiring::wire_to(rival_end, plug);
+	LOGIF(INTER_CONNECTORS, "S = $3\n", S);
+	LOGIF(INTER_CONNECTORS, "plug = $3\n", plug);
+	LOGIF(INTER_CONNECTORS, "rival_end = $3\n", rival_end);
+	Wiring::wire_to(plug, S);
+	LOGIF(INTER_CONNECTORS, "After overriding the tree definition, we have:\n");
+	LOGIF(INTER_CONNECTORS, "A new plug $3\n", plug);
+	LOGIF(INTER_CONNECTORS, "Tree defn symbol $3 ~~> $3\n",
+		rival_end, Wiring::cable_end(rival_end));
+
 @<Throw an error for the duplication@> =
 	TEMPORARY_TEXT(E)
 	WRITE_TO(E,
@@ -156,3 +183,17 @@ of the sidecar and put it into the main tree.
 		internal_error("unable to find attachment point package");
 	}
 	Transmigration::move(pack, LargeScale::main_package(I), FALSE);	
+
+@
+
+=
+int LoadBinaryKitsStage::replaces(inter_symbol *X, inter_symbol *Y) {
+	text_stream *X_rep = InterSymbol::get_replacement(X);
+	if (Str::eq(X_rep, I"_")) return TRUE;
+	inter_package *P = InterSymbolsTable::package(Y->owning_table);
+	while (P) {
+		if (Str::eq(X_rep, InterPackage::name(P))) return TRUE;
+		P = InterPackage::parent(P);
+	}
+	return FALSE;
+}

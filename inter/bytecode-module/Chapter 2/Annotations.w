@@ -64,6 +64,7 @@ The set of annotations used by the Inform tool suite is as follows.
 @e ASSIMILATED_IANN
 @e FAKE_ACTION_IANN
 @e OBJECT_IANN
+@e PRIVATE_IANN
 
 @e C_ARRAY_ADDRESS_IANN
 @e I6_GLOBAL_OFFSET_IANN
@@ -72,6 +73,7 @@ The set of annotations used by the Inform tool suite is as follows.
 @e APPEND_IANN
 @e INNER_PROPERTY_NAME_IANN
 @e TRANSLATION_IANN
+@e REPLACING_IANN
 
 @ The special annotation |__invalid|, with ID |INVALID_IANN|, is never given to
 any symbol: it's used to mean "do not make an annotation".
@@ -83,10 +85,12 @@ void SymbolAnnotation::declare_canonical_annotations(void) {
 	SymbolAnnotation::declare(ASSIMILATED_IANN,         I"__assimilated",         BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(FAKE_ACTION_IANN,         I"__fake_action",         BOOLEAN_IATYPE);
 	SymbolAnnotation::declare(OBJECT_IANN,              I"__object",              BOOLEAN_IATYPE);
+	SymbolAnnotation::declare(PRIVATE_IANN,             I"__private",              BOOLEAN_IATYPE);
 
 	SymbolAnnotation::declare(APPEND_IANN,              I"__append",              TEXTUAL_IATYPE);
 	SymbolAnnotation::declare(INNER_PROPERTY_NAME_IANN, I"__inner_property_name", TEXTUAL_IATYPE);
 	SymbolAnnotation::declare(TRANSLATION_IANN,         I"__translation",         TEXTUAL_IATYPE);
+	SymbolAnnotation::declare(REPLACING_IANN,           I"__replacing",           TEXTUAL_IATYPE);
 
 	SymbolAnnotation::declare(C_ARRAY_ADDRESS_IANN,     I"__array_address",       INTEGER_IATYPE);
 	SymbolAnnotation::declare(I6_GLOBAL_OFFSET_IANN,    I"__global_offset",       INTEGER_IATYPE);

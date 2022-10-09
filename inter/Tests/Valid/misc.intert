@@ -21,7 +21,7 @@ package main _plain
 	constant (K_number) gaius = dw"toads"
 	constant emptytext = ""
 	constant IMPROBABLE_VALUE = 0xdeadce11
-	splat "Sing a song of \"six splats\"...\nand don't wait up"
+	splat "" "Sing a song of \"six splats\"...\nand don't wait up"
 	typename K_colour = enum
 	instance (K_colour) I_green = 1
 	instance (K_colour) I_red = 17

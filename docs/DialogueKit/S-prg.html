@@ -152,6 +152,19 @@ whether the choice <span class="extract"><span class="extract-syntax">dc</span><
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">rfalse</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">];</span>
+
+<span class="plain-syntax">[ </span><span class="identifier-syntax">DirectorBeatOpeningLine</span><span class="plain-syntax"> </span><span class="identifier-syntax">db</span><span class="plain-syntax"> </span><span class="identifier-syntax">program</span><span class="plain-syntax"> </span><span class="identifier-syntax">pc</span><span class="plain-syntax"> </span><span class="identifier-syntax">instruction</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">db</span><span class="plain-syntax"> &lt;= </span><span class="constant-syntax">0</span><span class="plain-syntax">) || (</span><span class="identifier-syntax">db</span><span class="plain-syntax"> &gt; </span><span class="identifier-syntax">NO_DIALOGUE_BEATS</span><span class="plain-syntax">)) </span><span class="string-syntax">"*** no beat ***"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">program</span><span class="plain-syntax"> = </span><span class="identifier-syntax">DirectorBeatGetProgram</span><span class="plain-syntax">(</span><span class="identifier-syntax">db</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">pc</span><span class="plain-syntax"> = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">instruction</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">program</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">pc</span><span class="plain-syntax">)/100;</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">while</span><span class="plain-syntax"> (</span><span class="identifier-syntax">instruction</span><span class="plain-syntax">) {</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">instruction</span><span class="plain-syntax"> == </span><span class="identifier-syntax">LINE_DCODEI</span><span class="plain-syntax">) </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">program</span><span class="plain-syntax">--&gt;(</span><span class="identifier-syntax">pc</span><span class="plain-syntax">+1);</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">pc</span><span class="plain-syntax"> = </span><span class="identifier-syntax">pc</span><span class="plain-syntax"> + </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="identifier-syntax">instruction</span><span class="plain-syntax"> = (</span><span class="identifier-syntax">program</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">pc</span><span class="plain-syntax">)/100;</span>
+<span class="plain-syntax">    }</span>
+<span class="plain-syntax">    </span><span class="string-syntax">"*** no line ***"</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">];</span>
 </pre>
 <p class="commentary firstcommentary"><a id="SP3" class="paragraph-anchor"></a><b>&#167;3. Disassembly. </b>Purely for debugging purposes:
 </p>

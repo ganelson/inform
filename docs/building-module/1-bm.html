@@ -72,6 +72,8 @@
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inter_schema_node_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">inter_schema_token_CLASS</span>
 <span class="definition-keyword">enum</span> <span class="constant-syntax">schema_parsing_error_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">I6_annotation_CLASS</span>
+<span class="definition-keyword">enum</span> <span class="constant-syntax">I6_annotation_term_CLASS</span>
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="identifier-syntax">DECLARE_CLASS</span><span class="plain-syntax">(</span><span class="reserved-syntax">hierarchy_location</span><span class="plain-syntax">)</span>
@@ -87,6 +89,8 @@
 
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_name</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
 <span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">inter_name_generator</span><span class="plain-syntax">, </span><span class="constant-syntax">1000</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">I6_annotation</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
+<span class="identifier-syntax">DECLARE_CLASS_ALLOCATED_IN_ARRAYS</span><span class="plain-syntax">(</span><span class="reserved-syntax">I6_annotation_term</span><span class="plain-syntax">, </span><span class="constant-syntax">100</span><span class="plain-syntax">)</span>
 
 <span class="plain-syntax">#</span><span class="identifier-syntax">ifdef</span><span class="plain-syntax"> </span><span class="identifier-syntax">CORE_MODULE</span>
 <span class="identifier-syntax">MAKE_ANNOTATION_FUNCTIONS</span><span class="plain-syntax">(</span><span class="identifier-syntax">explicit_iname</span><span class="plain-syntax">, </span><span class="reserved-syntax">inter_name</span><span class="plain-syntax">)</span>

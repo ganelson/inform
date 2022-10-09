@@ -1,0 +1,45 @@
+annotation
+	junk
+end
+annotation
+	+simple
+end
+annotation
+	+simple+complex(3)
+end
+annotation
+	+simple  +  also Global fish = 1;
+end
+annotation
+	+simple [ Function x y z;
+end
+annotation
+	+  simple [ Function x y z;
+end
+annotation
+	+simple(with stuff, and other stuff)
+end
+annotation
+	+simple(with)
+end
+annotation
+	+simple(with(  x ))
+end
+annotation
+	+simple(a,b,c,d,e,f,g,h)
+end
+annotation
+	+simple(a,b,c,d,e,f,g,h,i)
+end
+annotation
+	+simple(with 'This text')
+end
+annotation
+	+simple(with 'This \'text\'')
+end
+annotation
+	+simple(with 'This text',also 67)
+end
+annotation
+	+simple()
+end

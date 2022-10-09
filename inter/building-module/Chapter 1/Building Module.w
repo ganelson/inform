@@ -21,6 +21,8 @@ We need to itemise the structures we'll want to allocate:
 @e inter_schema_node_CLASS
 @e inter_schema_token_CLASS
 @e schema_parsing_error_CLASS
+@e I6_annotation_CLASS
+@e I6_annotation_term_CLASS
 
 =
 DECLARE_CLASS(hierarchy_location)
@@ -36,6 +38,8 @@ DECLARE_CLASS(schema_parsing_error)
 
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_name, 1000)
 DECLARE_CLASS_ALLOCATED_IN_ARRAYS(inter_name_generator, 1000)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(I6_annotation, 100)
+DECLARE_CLASS_ALLOCATED_IN_ARRAYS(I6_annotation_term, 100)
 
 #ifdef CORE_MODULE
 MAKE_ANNOTATION_FUNCTIONS(explicit_iname, inter_name)

@@ -12,6 +12,63 @@ releases on 10.1: we're currently at 10.1.2.
 
 ## News items
 
+### First evolution proposals implemented (9 October 2022)
+
+Quite a few evolution proposals have now been stacked up, but the first few
+are beginning to be implemented. As this is done, so the proposals are also
+being slightly rewritten, because there's nothing like implementing a specification
+for finding out what's wrong with it.
+
+None of these are part of a release yet, so the only way to experiment with
+them is by pulling and building the `master` branch to make your own command-line
+tools.
+
+* [IE-0006 New annotations for I6 syntax](https://github.com/ganelson/inform-evolution/blob/main/proposals/0006-i6-syntax-annotations.md)
+has an unusual status, since it's really just a syntax for how to augment the I6
+language should any augmentations be wanted, rather than a proposal actually to
+do so. However, the syntax has been made more explicit now, and the `building`
+module of `inter` now implements reading these annotations.
+
+As a tentative test, the `+replacing` annotation for I6 functions has now been
+implemented. So for example, placing this function in (say) `ExampleKit`...
+
+	+replacing [ SquareRoot num;
+		"Nobody cares about square roots, son.";
+	];
+
+...causes it to replace the more arithmetical definition of a function with
+the same name in `BasicInformKit`. Equally, source text for a project could say:
+
+	Include (-
+		+replacing [ SquareRoot num;
+			"Nobody cares about square roots, son.";
+		];
+	-).	
+
+(Note that this use of `Include` does not end with `replacing "SquareRoot"`,
+the previous best way to do this.) Either way, given something like:
+
+	When play begins:
+		showme the square root of 100.
+
+the story should compile and say:
+
+	"square root of 100" = number: Nobody cares about square roots, son.
+	1
+
+rather than, as it otherwise would,
+
+	"square root of 100" = number: 10
+
+At present this works only for functions.
+
+* [IE-0009 Dialogue Sections](https://github.com/ganelson/inform-evolution/blob/main/proposals/0009-dialogue-sections.md)
+is almost completely implemented, but not yet documented (except that the proposal
+is now very detailed, and will likely become a new chapter of Writing with Inform).
+
+* [IE-0010 Concepts](https://github.com/ganelson/inform-evolution/blob/main/proposals/0010-concepts.md)
+is implemented too. IE-0009 requires IE-0010, but not vice versa.
+
 ### Refactoring of "plugins" to "compiler features" (1 September 2022)
 
 Inform has for many years had internally named "plugins" providing optional

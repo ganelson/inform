@@ -1,13 +1,13 @@
 package main _plain
 	typename K_colour = enum
 	instance (K_colour) I_green = 1
-	splat IFDEF "#ifdef DEBUG;\n"
+	splat IFDEF "" "#ifdef DEBUG;\n"
 	instance (K_colour) I_red = 17
-	splat IFNOT "#ifnot;\n"
+	splat IFNOT "" "#ifnot;\n"
 	instance (K_colour) I_turquoise = 17
-	splat ENDIF "#ENDIF;\n"
+	splat ENDIF "" "#ENDIF;\n"
 	instance (K_colour) I_maroon = 4002
 	constant (K_colour) wallpaper_shade = I_green
-	splat IFDEF "#ifdef wallpaper_shade;\n"
+	splat IFDEF "" "#ifdef wallpaper_shade;\n"
 	instance (K_colour) I_cerise = 28
-	splat ENDIF "  #ENDif ; \n"
+	splat ENDIF "" "  #ENDif ; \n"

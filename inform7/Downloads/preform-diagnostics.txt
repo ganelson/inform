@@ -1,6 +1,6 @@
 <preform-nonterminal> internal nti 28 constraint (none) extremes [1, 1]
 
-<if-start-of-paragraph> internal hits 1240/7964 nti 29 constraint (none) extremes [0, 0]
+<if-start-of-paragraph> internal hits 1255/8024 nti 29 constraint (none) extremes [0, 0]
 
 <if-not-cap> internal hits 3875/7966 nti 30 constraint (none) extremes [0, 0]
 
@@ -24,7 +24,7 @@
 
 <empty-text> internal nti 11 constraint (none) extremes [1, 1]
 
-<if-start-of-source-text> internal hits 2/13226 nti 12 constraint (none) extremes [0, 0]
+<if-start-of-source-text> internal hits 2/13312 nti 12 constraint (none) extremes [0, 0]
 
 <list-or-division> hits 0/18 nti 16 constraint DS = {16} extremes [3, infinity)
     English:
@@ -5496,59 +5496,59 @@
 
 <natural-language> internal nti 18 constraint (none) extremes [1, infinity)
 
-<dividing-sentence> hits 203/10452 nti 19 constraint DW = {18, 19} extremes [2, infinity)
+<dividing-sentence> hits 205/10538 nti 19 constraint DW = {18, 19} extremes [2, infinity)
     English:
         <if-start-of-paragraph> <heading> 
-          (hits 195/3968) (matched long text) constraint DS = {18} extremes [2, infinity)
+          (hits 197/3998) (matched long text) constraint DS = {18} extremes [2, infinity)
         <extension-end-marker-sentence> 
-          (hits 8/4022) (matched long text) constraint DS = {19} extremes [3, infinity)
+          (hits 8/4054) (matched long text) constraint DS = {19} extremes [3, infinity)
 
-<heading> hits 195/2452 nti 18 constraint DS = {18} extremes [2, infinity)
+<heading> hits 197/2482 nti 18 constraint DS = {18} extremes [2, infinity)
     English:
         volume {...} 
-          (hits 6/1226) (matched long text) constraint DS = {18} extremes [2, infinity)
+          (hits 6/1241) (matched long text) constraint DS = {18} extremes [2, infinity)
         book {...} 
-          (hits 0/1220) constraint DS = {18} extremes [2, infinity)
+          (hits 0/1235) constraint DS = {18} extremes [2, infinity)
         part {...} 
-          (hits 14/1220) (matched: 'part two - the physical world model') constraint DS = {18} extremes [2, infinity)
+          (hits 14/1235) (matched: 'part two - the physical world model') constraint DS = {18} extremes [2, infinity)
         chapter {...} 
-          (hits 20/1206) (matched long text) constraint DS = {18} extremes [2, infinity)
+          (hits 20/1221) (matched long text) constraint DS = {18} extremes [2, infinity)
         section {...} ( dialog ) 
-          (hits 0/1107) constraint DS = {18} extremes [5, infinity)
+          (hits 0/1122) constraint DS = {18} extremes [5, infinity)
         section {...} ( dialogue ) 
-          (hits 0/1107) constraint DS = {18} extremes [5, infinity)
+          (hits 0/1122) constraint DS = {18} extremes [5, infinity)
         section {...} 
-          (hits 155/1186) (matched long text) constraint DS = {18} extremes [2, infinity)
+          (hits 157/1201) (matched long text) constraint DS = {18} extremes [2, infinity)
 
-<extension-end-marker-sentence> hits 8/8044 nti 19 constraint DS = {19} extremes [3, infinity)
+<extension-end-marker-sentence> hits 8/8108 nti 19 constraint DS = {19} extremes [3, infinity)
     English:
         {...} begin/begins here 
-          (hits 4/4022) (matched long text) constraint DS = {19} extremes [3, infinity)
+          (hits 4/4054) (matched long text) constraint DS = {19} extremes [3, infinity)
         {...} end/ends here 
-          (hits 4/4018) (matched: 'the standard rules end here') constraint DS = {19} extremes [3, infinity)
+          (hits 4/4050) (matched: 'the standard rules end here') constraint DS = {19} extremes [3, infinity)
 
-<structural-sentence> hits 32/13226 nti 21 constraint (none) extremes [1, infinity)
+<structural-sentence> hits 32/13312 nti 21 constraint (none) extremes [1, infinity)
     English:
         <if-start-of-source-text> <quoted-text> 
           (hits 0/20) constraint (none) extremes [1, 1]
         <if-start-of-source-text> <quoted-text> {...} 
-          (hits 0/6593) constraint (none) extremes [2, infinity)
+          (hits 0/6636) constraint (none) extremes [2, infinity)
         <language-modifying-sentence> 
-          (hits 0/6456) constraint DS = {20} extremes [4, infinity)
+          (hits 0/6499) constraint DS = {20} extremes [4, infinity)
         * 
           constraint CS = {21} extremes [1, 1]
         * <quoted-text-without-subs> 
           constraint DS = {21} extremes [2, 2]
         <if-start-of-paragraph> table {...} 
-          (hits 14/6554) (matched long text) constraint DS = {21} extremes [2, infinity)
+          (hits 14/6597) (matched long text) constraint DS = {21} extremes [2, infinity)
         <if-start-of-paragraph> equation {...} 
-          (hits 0/6540) constraint DS = {21} extremes [2, infinity)
+          (hits 0/6583) constraint DS = {21} extremes [2, infinity)
         include the {...} by {...} 
-          (hits 0/6466) constraint DS = {21} extremes [5, infinity)
+          (hits 0/6509) constraint DS = {21} extremes [5, infinity)
         include {...} by {...} 
-          (hits 18/6540) (matched long text) constraint DS = {21} extremes [4, infinity)
+          (hits 18/6583) (matched long text) constraint DS = {21} extremes [4, infinity)
         include (- {...} 
-          (hits 0/6522) constraint DS = {21} extremes [3, infinity)
+          (hits 0/6565) constraint DS = {21} extremes [3, infinity)
 
 <comma-divisible-sentence> hits 9/2792 nti 22 constraint DS = {22} extremes [2, infinity)
     English:
@@ -5563,17 +5563,17 @@
         when {...} 
           (hits 4/981) (matched: 'when scene begins is a scene based rulebook') constraint DS = {22} extremes [2, infinity)
 
-<language-modifying-sentence> hits 0/12912 nti 20 constraint DS = {20} extremes [4, infinity)
+<language-modifying-sentence> hits 0/12998 nti 20 constraint DS = {20} extremes [4, infinity)
     English:
         include (- {###} in the preform grammar 
           (hits 0/132) constraint DS = {20} extremes [7, 7]
         use {...} language element/elements 
-          (hits 0/6456) constraint DS = {20} extremes [4, infinity)
+          (hits 0/6499) constraint DS = {20} extremes [4, infinity)
 
-<heading-qualifier> hits 34/458 nti 28 constraint DS = {28} extremes [2, infinity)
+<heading-qualifier> hits 36/466 nti 28 constraint DS = {28} extremes [2, infinity)
     English:
         {...} ( <bracketed-heading-qualifier> ) 
-          (hits 17/107) (matched long text) constraint DS = {28} extremes [4, infinity)
+          (hits 19/109) (matched long text) constraint DS = {28} extremes [4, infinity)
         {...} not for release 
           (hits 1/90) (matched long text) constraint DS = {28} extremes [4, infinity)
         {...} for release only 
@@ -5581,7 +5581,7 @@
         {...} unindexed 
           (hits 16/89) (matched long text) constraint DS = {28} extremes [2, infinity)
 
-<bracketed-heading-qualifier> hits 17/34 nti 27 constraint DW = {24, 26, 27} extremes [1, infinity)
+<bracketed-heading-qualifier> hits 19/38 nti 27 constraint DW = {24, 26, 27} extremes [1, infinity)
     English:
         not for release 
           constraint CS = {27} extremes [3, 3]
@@ -5594,21 +5594,21 @@
         dialog 
           constraint CS = {27} extremes [1, 1]
         <platform-qualifier> 
-          (hits 17/17) (matched: 'not for interactive fiction language element') constraint DS = {24} extremes [3, infinity)
+          (hits 19/19) (matched: 'not for interactive fiction language element') constraint DS = {24} extremes [3, infinity)
         <extension-qualifier> 
           constraint DS = {25, 26} extremes [6, infinity)
 
-<platform-qualifier> hits 17/34 nti 24 constraint DS = {24} extremes [3, infinity)
+<platform-qualifier> hits 19/38 nti 24 constraint DS = {24} extremes [3, infinity)
     English:
         for <platform-identifier> only 
-          (hits 8/17) (matched: 'for interactive fiction language element only') constraint DS = {24} extremes [3, infinity)
+          (hits 10/19) (matched: 'for interactive fiction language element only') constraint DS = {24} extremes [3, infinity)
         not for <platform-identifier> 
           (hits 9/9) (matched: 'not for interactive fiction language element') constraint DS = {24} extremes [3, infinity)
 
-<platform-identifier> hits 17/34 nti 23 constraint (none) extremes [1, infinity)
+<platform-identifier> hits 19/38 nti 23 constraint (none) extremes [1, infinity)
     English:
         <language-element> language element 
-          (hits 10/10) (matched: 'interactive fiction language element') constraint DS = {23} extremes [3, infinity)
+          (hits 12/12) (matched: 'interactive fiction language element') constraint DS = {23} extremes [3, infinity)
         {......} language element 
           constraint DS = {23} extremes [3, infinity)
         <current-virtual-machine> 
@@ -5808,7 +5808,7 @@
         superbrief room descriptions 
           (hits 1/1) (matched: 'superbrief room descriptions') constraint CS = {29} extremes [3, 3]
 
-<language-element> internal hits 10/20 nti 27 constraint (none) extremes [1, infinity)
+<language-element> internal hits 12/24 nti 27 constraint (none) extremes [1, infinity)
 
 <bootstrap-verb> nti 17 constraint CS = {17} extremes [1, 1]
     English:
@@ -8637,12 +8637,12 @@
         {<heading-name-hyphenated>} 
           (hits 79/79) (matched long text) constraint (none) extremes [1, infinity)
 
-<heading-name-hyphenated> hits 433/866 nti 22 constraint (none) extremes [1, infinity)
+<heading-name-hyphenated> hits 435/870 nti 22 constraint (none) extremes [1, infinity)
     English:
         {...} - {...} - {...} 
-          (hits 17/354) (matched long text) constraint DS = {22} extremes [5, infinity)
+          (hits 17/356) (matched long text) constraint DS = {22} extremes [5, infinity)
         {...} - {...} 
-          (hits 416/416) (matched long text) constraint DS = {22} extremes [3, infinity)
+          (hits 418/418) (matched long text) constraint DS = {22} extremes [3, infinity)
         {...} 
           constraint (none) extremes [1, infinity)
 

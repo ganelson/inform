@@ -271,17 +271,35 @@ Note that this function empties the splat buffer |R| before exiting.
 =
 void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 	if (Str::len(R) > 0) {
+		TEMPORARY_TEXT(A)
+		@<Find annotation, if any@>;
 		inter_ti I6_dir = 0;
+
 		@<Find directive@>;
 		if (I6_dir != WHITESPACE_PLM) {
 			inter_bookmark *IBM = (inter_bookmark *) docket->state;
 			PUT_TO(R, '\n');
-			Produce::guard(SplatInstruction::new(IBM, R, I6_dir,
+			Produce::guard(SplatInstruction::new(IBM, R, I6_dir, A,
 				(inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
+		} else if (A) {
+			(*(docket->error_callback))(
+				"this annotation seems not to apply to any directive: '%S'", A);
 		}
 		Str::clear(R);
+		DISCARD_TEXT(A)
 	}
 }
+
+@<Find annotation, if any@> =
+	int verdict = I6Annotations::check(R);
+	if (verdict == -1) {
+		(*(docket->error_callback))(
+			"this Inform 6 annotation is malformed: '%S'", R);
+	} else {
+		for (int i=0; i<verdict; i++) PUT_TO(A, Str::get_at(R, i));
+		Str::trim_white_space(A);
+		Str::delete_n_characters(R, verdict);
+	}
 
 @ A |SPLAT_IST| node should record which sort of Inform 6 directive it contains,
 assuming we know that. We will recognise only the following set, and use |MYSTERY_PLM|

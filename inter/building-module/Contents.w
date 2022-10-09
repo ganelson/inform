@@ -25,6 +25,7 @@ Chapter 2: Blueprints
 	Inform 6 Operators
 	Emitting Inter Schemas
 	Identifier Finders
+	Inform 6 Annotations
 
 Chapter 3: Masonry
 	Produce

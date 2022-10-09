@@ -724,6 +724,9 @@ These have package types |_function| and |_code| respectively.
 	if (Wiring::find_socket(InterBookmark::tree(IBM), identifier) == NULL)
 		Wiring::socket(InterBookmark::tree(IBM), identifier,
 			PackageInstruction::name_symbol(IP));
+	CompileSplatsStage::apply_annotations(
+		SplatInstruction::I6_annotation(P), PackageInstruction::name_symbol(IP));
+
 	inter_bookmark inner_save = InterBookmark::snapshot(IBM);
 	InterBookmark::move_into_package(IBM, IP);
 	inter_bookmark block_bookmark = InterBookmark::snapshot(IBM);
@@ -757,6 +760,38 @@ These have package types |_function| and |_code| respectively.
 	Str::truncate(body, L);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
 	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark, identifier);
+
+@h Inform 6 annotations.
+
+=
+void CompileSplatsStage::apply_annotations(text_stream *A, inter_symbol *S) {
+	if (Str::len(A) > 0) {
+		LOGIF(INTER_CONNECTORS, "Trying to apply '%S' to $3\n", A, S);
+		for (I6_annotation *IA = I6Annotations::parse(A); IA; IA = IA->next) {
+			if (Str::eq_insensitive(IA->identifier, I"private")) {
+				if ((IA->terms == NULL) || (LinkedLists::len(IA->terms) == 0))
+					SymbolAnnotation::set_b(S, PRIVATE_IANN, TRUE);
+				else
+					PipelineErrors::kit_error("the +private annotation does not take any terms", NULL);
+			} else if (Str::eq_insensitive(IA->identifier, I"replacing")) {
+				text_stream *from = I"_";
+				if (IA->terms) {
+					I6_annotation_term *term;
+					LOOP_OVER_LINKED_LIST(term, I6_annotation_term, IA->terms)
+						if (Str::eq_insensitive(term->key, I"from"))
+							from = term->value;
+						else
+							PipelineErrors::kit_error(
+								"the +replacing annotation does not take the term '%S'", term->key);
+				}
+				InterSymbol::set_replacement(S, from);
+			} else {
+				PipelineErrors::kit_error(
+					"annotation not recognised", IA->identifier);
+			}
+		}
+	}
+}
 
 @h Plumbing.
 Some convenient Inter utilities.
