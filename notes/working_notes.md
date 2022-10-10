@@ -79,7 +79,10 @@ rather than, as it otherwise would,
 
 	"square root of 100" = number: 10
 
-At present this works only for functions.
+This works for definitions other than functions, too. If your new kit doesn't
+want `INPUT_BUFFER_LEN` to have the conventional value 260, you could define:
+
+	+replacing(from BasicInformKit) Constant INPUT_BUFFER_LEN = 400;
 
 * [IE-0009 Dialogue Sections](https://github.com/ganelson/inform-evolution/blob/main/proposals/0009-dialogue-sections.md)
 is almost completely implemented, but not yet documented (except that the proposal
