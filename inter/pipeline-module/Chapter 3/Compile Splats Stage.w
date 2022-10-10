@@ -232,6 +232,7 @@ the result, declare a symbol for it, and then define that symbol.
 
 	inter_symbol *made_s;
 	@<Declare the Inter symbol for what we will shortly make@>;
+	CompileSplatsStage::apply_annotations(SplatInstruction::I6_annotation(P), made_s);
 	if ((directive == ATTRIBUTE_PLM) || (directive == PROPERTY_PLM))
 	    @<Declare a property ID symbol to go with it@>;
 	

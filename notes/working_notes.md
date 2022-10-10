@@ -37,7 +37,16 @@ implemented. So for example, placing this function in (say) `ExampleKit`...
 	];
 
 ...causes it to replace the more arithmetical definition of a function with
-the same name in `BasicInformKit`. Equally, source text for a project could say:
+the same name in `BasicInformKit`. More specifically:
+
+	+replacing(from BasicInformKit) [ SquareRoot num;
+		"Nobody cares about square roots, son.";
+	];
+
+replaces the definition if it occurs in `BasicInformKit` but not from anywhere
+else. This all gives kits an ability to make replacements which they didn't
+previously have. The same annotation can also be used in the source text for
+a project:
 
 	Include (-
 		+replacing [ SquareRoot num;
@@ -45,8 +54,18 @@ the same name in `BasicInformKit`. Equally, source text for a project could say:
 		];
 	-).	
 
-(Note that this use of `Include` does not end with `replacing "SquareRoot"`,
-the previous best way to do this.) Either way, given something like:
+This is, in a sense, not a new ability since it was already possible to write:
+
+	Include (-
+		[ SquareRoot num;
+			"Nobody cares about square roots, son.";
+		];
+	-) replacing "SquareRoot".
+
+But the new notation allows individual definitions to be marked as replacements
+and makes it much easier to make long runs of replacements.
+
+The effect of all of these alternatives is that given something like:
 
 	When play begins:
 		showme the square root of 100.
