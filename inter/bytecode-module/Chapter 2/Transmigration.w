@@ -171,7 +171,8 @@ to be socketed.
 		LOOP_OVER_SYMBOLS_TABLE(S, T) {
 			if (InterSymbol::is_socket(S)) {
 				inter_symbol *target = Wiring::cable_end(S);
-				if (InterSymbol::defined_inside(target, migrant))
+				if ((SymbolAnnotation::get_b(target, PRIVATE_IANN) == FALSE) &&
+					(InterSymbol::defined_inside(target, migrant)))
 					@<S is a socket wired to a definition in the migrant@>;
 			}
 		}

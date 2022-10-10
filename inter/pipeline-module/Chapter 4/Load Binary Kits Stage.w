@@ -83,7 +83,9 @@ regular users: it would be quite slow to read in.
 				if (rival) {
 					inter_symbol *sidecar_end = Wiring::cable_end(S);
 					inter_symbol *rival_end = Wiring::cable_end(rival);
-					if (InterSymbol::get_flag(rival_end, PERMIT_NAME_CLASH_ISYMF) == FALSE)
+					if ((InterSymbol::get_flag(rival_end, PERMIT_NAME_CLASH_ISYMF) == FALSE) &&
+						(SymbolAnnotation::get_b(rival_end, PRIVATE_IANN) == FALSE) &&
+						(SymbolAnnotation::get_b(sidecar_end, PRIVATE_IANN) == FALSE))
 						@<A clash of definitions seems to have occurred@>;
 				}
 			}
@@ -143,6 +145,8 @@ the symbols table dictionary.
 	LOGIF(INTER_CONNECTORS, "Kit defn symbol $3 ~~> $3\n",
 		sidecar_end, Wiring::cable_end(sidecar_end));
 
+@ And vice versa.
+
 @<Override the existing definition with the new one@> =
 	inter_package *main_connectors =
 		LargeScale::connectors_package_if_it_exists(I);
@@ -154,9 +158,6 @@ the symbols table dictionary.
 	inter_symbol *plug = Wiring::plug(I, defn_name);
 	InterSymbol::strike_definition(rival_end);
 	Wiring::wire_to(rival_end, plug);
-	LOGIF(INTER_CONNECTORS, "S = $3\n", S);
-	LOGIF(INTER_CONNECTORS, "plug = $3\n", plug);
-	LOGIF(INTER_CONNECTORS, "rival_end = $3\n", rival_end);
 	Wiring::wire_to(plug, S);
 	LOGIF(INTER_CONNECTORS, "After overriding the tree definition, we have:\n");
 	LOGIF(INTER_CONNECTORS, "A new plug $3\n", plug);

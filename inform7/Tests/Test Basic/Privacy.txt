@@ -1,0 +1,15 @@
+[This shows our private definition of "RunTimeProblem" existing independently
+of the public one in BasicInformKit, which is shown functioning when the
+division by 0 occurs.]
+
+To begin:
+	disclaim;
+	showme 1 divided by 0.
+
+Include (-
++private [ RunTimeProblem;
+	"Hey, there's no problem here.";
+];
+-).
+
+To disclaim: (- RunTimeProblem(); -).

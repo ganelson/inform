@@ -770,10 +770,11 @@ void CompileSplatsStage::apply_annotations(text_stream *A, inter_symbol *S) {
 		LOGIF(INTER_CONNECTORS, "Trying to apply '%S' to $3\n", A, S);
 		for (I6_annotation *IA = I6Annotations::parse(A); IA; IA = IA->next) {
 			if (Str::eq_insensitive(IA->identifier, I"private")) {
-				if ((IA->terms == NULL) || (LinkedLists::len(IA->terms) == 0))
+				if ((IA->terms == NULL) || (LinkedLists::len(IA->terms) == 0)) {
 					SymbolAnnotation::set_b(S, PRIVATE_IANN, TRUE);
-				else
+				} else {
 					PipelineErrors::kit_error("the +private annotation does not take any terms", NULL);
+				}
 			} else if (Str::eq_insensitive(IA->identifier, I"replacing")) {
 				text_stream *from = I"_";
 				if (IA->terms) {
