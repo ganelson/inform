@@ -452,6 +452,22 @@ text_stream *InterSymbol::get_replacement(inter_symbol *S) {
 		InterPackage::tree(InterSymbol::package(S)), REPLACING_IANN);
 }
 
+@h Namespace.
+
+=
+void InterSymbol::set_namespace(inter_symbol *S, text_stream *from) {
+	if (S == NULL) internal_error("no symbol");
+	if (InterSymbol::is_metadata_key(S) == FALSE)
+		SymbolAnnotation::set_t(InterPackage::tree(InterSymbol::package(S)),
+			InterSymbol::package(S), S, NAMESPACE_IANN, from);
+}
+
+text_stream *InterSymbol::get_namespace(inter_symbol *S) {
+	if (S == NULL) internal_error("no symbol");
+	return SymbolAnnotation::get_t(S,
+		InterPackage::tree(InterSymbol::package(S)), NAMESPACE_IANN);
+}
+
 @h Logging.
 
 =

@@ -135,13 +135,18 @@ void CompileSplatsStage::visitor3(inter_tree *I, inter_tree_node *P, void *state
 
 @<Assimilate definition@> =
 	match_results mr = Regexp::create_mr();
-	text_stream *identifier = NULL, *value = NULL;
+	text_stream *raw_identifier = NULL, *value = NULL;
 	int proceed = TRUE;
 	@<Parse text of splat for identifier and value@>;
 	if (proceed) {
 		@<Insert sharps in front of fake action identifiers@>;
+		TEMPORARY_TEXT(identifier)
+		text_stream *NS = SplatInstruction::namespace(P);
+		if (Str::len(NS) > 0) WRITE_TO(identifier, "%S`", NS);
+		WRITE_TO(identifier, "%S", raw_identifier);
 		@<Perhaps compile something from this splat@>;
 		NodePlacement::remove(P);
+		DISCARD_TEXT(identifier)
 	}
 	Regexp::dispose_of(&mr);
 
@@ -161,27 +166,27 @@ meaningfully have a value, even though a third token is present.
 	text_stream *S = SplatInstruction::splatter(P);
 	if (directive == VERB_PLM) {
 		if (Regexp::match(&mr, S, L" *%C+ (%c*?) *;%c*")) {
-			identifier = I"assim_gv"; value = mr.exp[0];
+			raw_identifier = I"assim_gv"; value = mr.exp[0];
 		} else {
 			LOG("Unable to parse start of VERB_PLM: '%S'\n", S); proceed = FALSE;
 		}
 	} else {
 		if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(--> *%c*?) *;%c*")) {
-			identifier = mr.exp[0]; value = mr.exp[1];
+			raw_identifier = mr.exp[0]; value = mr.exp[1];
 		} else if (Regexp::match(&mr, S, L" *%C+ *(%C+?)(-> *%c*?) *;%c*")) {
-			identifier = mr.exp[0]; value = mr.exp[1];
+			raw_identifier = mr.exp[0]; value = mr.exp[1];
 		} else if (Regexp::match(&mr, S, L" *%C+ (%C*?) *;%c*")) {
-			identifier = mr.exp[0];
+			raw_identifier = mr.exp[0];
 		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) *= *(%c*?) *;%c*")) {
-			identifier = mr.exp[0]; value = mr.exp[1];
+			raw_identifier = mr.exp[0]; value = mr.exp[1];
 		} else if (Regexp::match(&mr, S, L" *%C+ (%C*) (%c*?) *;%c*")) {
-			identifier = mr.exp[0]; value = mr.exp[1];
+			raw_identifier = mr.exp[0]; value = mr.exp[1];
 		} else {
 			LOG("Unable to parse start of constant: '%S'\n", S); proceed = FALSE;
 		}
 		if (directive == OBJECT_PLM) value = NULL;
 	}
-	Str::trim_all_white_space_at_end(identifier);
+	Str::trim_all_white_space_at_end(raw_identifier);
 
 @ An eccentricity of Inform 6 syntax is that fake action names ought to be given
 in the form |Fake_Action ##Bake|, but are not. The constant created by |Fake_Action Bake|
@@ -189,9 +194,9 @@ is nevertheless |##Bake|, so we take care of that here.
 
 @<Insert sharps in front of fake action identifiers@> =
 	if (directive == FAKEACTION_PLM) {
-		text_stream *old = identifier;
-		identifier = Str::new();
-		WRITE_TO(identifier, "##%S", old);
+		text_stream *old = raw_identifier;
+		raw_identifier = Str::new();
+		WRITE_TO(raw_identifier, "##%S", old);
 	}
 
 @ The Inform 6 directive
@@ -232,7 +237,8 @@ the result, declare a symbol for it, and then define that symbol.
 
 	inter_symbol *made_s;
 	@<Declare the Inter symbol for what we will shortly make@>;
-	CompileSplatsStage::apply_annotations(SplatInstruction::I6_annotation(P), made_s);
+	CompileSplatsStage::apply_annotations(SplatInstruction::I6_annotation(P),
+		SplatInstruction::namespace(P), made_s);
 	if ((directive == ATTRIBUTE_PLM) || (directive == PROPERTY_PLM))
 	    @<Declare a property ID symbol to go with it@>;
 	
@@ -641,21 +647,26 @@ We are concerned more with the surround than with the contents of the function
 in this section.
 
 @<Assimilate routine@> =
-	text_stream *identifier = NULL, *local_var_names = NULL, *body = NULL;
+	text_stream *raw_identifier = NULL, *local_var_names = NULL, *body = NULL;
 	match_results mr = Regexp::create_mr();
 	if (SplatInstruction::plm(P) == ROUTINE_PLM) @<Parse the routine header@>;
 	if (SplatInstruction::plm(P) == STUB_PLM) @<Parse the stub directive@>;
-	if (identifier) {
+	if (raw_identifier) {
+		TEMPORARY_TEXT(identifier)
+		text_stream *NS = SplatInstruction::namespace(P);
+		if (Str::len(NS) > 0) WRITE_TO(identifier, "%S`", NS);
+		WRITE_TO(identifier, "%S", raw_identifier);
 		@<Turn this into a function package@>;
 		NodePlacement::remove(P);
+		DISCARD_TEXT(identifier)
 	}
 
 @<Parse the routine header@> =
 	text_stream *S = SplatInstruction::splatter(P);
-	if (Regexp::match(&mr, S, L" *%[ *(%i+) *; *(%c*)")) {
-		identifier = mr.exp[0]; body = mr.exp[1];
-	} else if (Regexp::match(&mr, S, L" *%[ *(%i+) *(%c*?); *(%c*)")) {
-		identifier = mr.exp[0]; local_var_names = mr.exp[1]; body = mr.exp[2];
+	if (Regexp::match(&mr, S, L" *%[ *([A-Za-z0-9_`]+) *; *(%c*)")) {
+		raw_identifier = mr.exp[0]; body = mr.exp[1];
+	} else if (Regexp::match(&mr, S, L" *%[ *([A-Za-z0-9_`]+) *(%c*?); *(%c*)")) {
+		raw_identifier = mr.exp[0]; local_var_names = mr.exp[1]; body = mr.exp[2];
 	} else {
 		PipelineErrors::kit_error("invalid Inform 6 routine declaration", NULL);
 	}
@@ -681,8 +692,8 @@ supported only to avoid throwing errors.
 
 @<Parse the stub directive@> =
 	text_stream *S = SplatInstruction::splatter(P);
-	if (Regexp::match(&mr, S, L" *%C+ *(%i+) (%d+);%c*")) {
-		identifier = mr.exp[0];
+	if (Regexp::match(&mr, S, L" *%C+ *([A-Za-z0-9_`]+) (%d+);%c*")) {
+		raw_identifier = mr.exp[0];
 		local_var_names = Str::new();
 		int N = Str::atoi(mr.exp[1], 0);
 		if ((N<0) || (N>15)) N = 1;
@@ -725,8 +736,8 @@ These have package types |_function| and |_code| respectively.
 	if (Wiring::find_socket(InterBookmark::tree(IBM), identifier) == NULL)
 		Wiring::socket(InterBookmark::tree(IBM), identifier,
 			PackageInstruction::name_symbol(IP));
-	CompileSplatsStage::apply_annotations(
-		SplatInstruction::I6_annotation(P), PackageInstruction::name_symbol(IP));
+	CompileSplatsStage::apply_annotations(SplatInstruction::I6_annotation(P),
+		SplatInstruction::namespace(P), PackageInstruction::name_symbol(IP));
 
 	inter_bookmark inner_save = InterBookmark::snapshot(IBM);
 	InterBookmark::move_into_package(IBM, IP);
@@ -760,12 +771,17 @@ These have package types |_function| and |_code| respectively.
 	while ((L>0) && (Characters::is_whitespace(Str::get_at(body, L-1)))) L--;
 	Str::truncate(body, L);
 	inter_ti B = (inter_ti) InterBookmark::baseline(IBM) + 1;
-	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark, identifier);
+	CompileSplatsStage::function_body(css, IBM, IP, B, body, block_bookmark, identifier,
+		SplatInstruction::namespace(P));
 
 @h Inform 6 annotations.
 
 =
-void CompileSplatsStage::apply_annotations(text_stream *A, inter_symbol *S) {
+void CompileSplatsStage::apply_annotations(text_stream *A, text_stream *NS, inter_symbol *S) {
+	if (Str::len(NS) > 0) {
+		LOGIF(INTER_CONNECTORS, "Assign namespace '%S' to $3\n", NS, S);
+		InterSymbol::set_namespace(S, NS);
+	}
 	if (Str::len(A) > 0) {
 		LOGIF(INTER_CONNECTORS, "Trying to apply '%S' to $3\n", A, S);
 		for (I6_annotation *IA = I6Annotations::parse(A); IA; IA = IA->next) {
@@ -789,7 +805,7 @@ void CompileSplatsStage::apply_annotations(text_stream *A, inter_symbol *S) {
 				InterSymbol::set_replacement(S, from);
 			} else {
 				PipelineErrors::kit_error(
-					"annotation not recognised", IA->identifier);
+					"annotation '%S' not recognised", IA->identifier);
 			}
 		}
 	}
@@ -1011,7 +1027,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 		return InterValuePairs::symbolic(IBM, RunningPipelines::ensure_symbol(step,
 			verb_directive_multiexcept_RPSYM, I"VERB_DIRECTIVE_MULTIEXCEPT"));
 	match_results mr = Regexp::create_mr();
-	if (Regexp::match(&mr, S, L"scope=(%i+)")) {
+	if (Regexp::match(&mr, S, L"scope=([A-Za-z0-9_`]+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
 			if (marker) *marker = FALSE;
@@ -1021,7 +1037,7 @@ inter_pair CompileSplatsStage::value(pipeline_step *step, inter_bookmark *IBM,
 			return InterValuePairs::number(1);
 		}
 	}
-	if (Regexp::match(&mr, S, L"noun=(%i+)")) {
+	if (Regexp::match(&mr, S, L"noun=([A-Za-z0-9_`]+)")) {
 		inter_symbol *symb = Wiring::cable_end(Wiring::find_socket(I, mr.exp[0]));
 		if (symb) {
 			if (marker) *marker = TRUE;
@@ -1229,12 +1245,13 @@ typedef struct function_body_request {
 	int pass2_offset;
 	struct text_stream *body;
 	struct text_stream *identifier;
+	struct text_stream *namespace;
 	CLASS_DEFINITION
 } function_body_request;
 
 int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark *IBM,
 	inter_package *block_package, inter_ti offset, text_stream *body, inter_bookmark bb,
-	text_stream *identifier) {
+	text_stream *identifier, text_stream *namespace) {
 	if (Str::is_whitespace(body)) return FALSE;
 	function_body_request *req = CREATE(function_body_request);
 	req->block_bookmark = bb;
@@ -1244,6 +1261,7 @@ int CompileSplatsStage::function_body(compile_splats_state *css, inter_bookmark 
 	req->pass2_offset = (int) offset - 2;
 	req->body = Str::duplicate(body);
 	req->identifier = Str::duplicate(identifier);
+	req->namespace = Str::duplicate(namespace);
 	ADD_TO_LINKED_LIST(req, function_body_request, css->function_bodies_to_compile);
 	return TRUE;
 }
@@ -1286,6 +1304,7 @@ int CompileSplatsStage::function_bodies(pipeline_step *step, compile_splats_stat
 	identifier_finder finder = IdentifierFinders::common_names_only();
 	IdentifierFinders::next_priority(&finder, scope1);
 	IdentifierFinders::next_priority(&finder, scope2);
+	IdentifierFinders::set_namespace(&finder, req->namespace);
 	EmitInterSchemas::emit(I, &VH, sch, finder, NULL, NULL, NULL);
 	CompileSplatsStage::report_kit_errors(sch, req);
 	Produce::pop_code_position(I);

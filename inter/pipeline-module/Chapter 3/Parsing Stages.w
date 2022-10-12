@@ -32,9 +32,11 @@ int ParsingStages::run_load_kit_source(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
 	inter_package *main_package = LargeScale::main_package(I);
 	@<Create a module to hold the Inter read in from this kit@>;
+	TEMPORARY_TEXT(namespacename)
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
 	SimpleTangler::tangle_web(&docket);
+	DISCARD_TEXT(namespacename)
 	return TRUE;
 }
 
@@ -74,12 +76,14 @@ typedef struct rpi_state {
 
 int ParsingStages::run_parse_insertions(pipeline_step *step) {
 	inter_tree *I = step->ephemera.tree;
+	TEMPORARY_TEXT(namespacename)
 	simple_tangle_docket docket;
 	@<Make a suitable simple tangler docket@>;
 	rpi_state rpis;
 	rpis.docket = &docket;
 	rpis.step = step;
 	InterTree::traverse(I, ParsingStages::visit_insertions, &rpis, NULL, INSERT_IST);
+	DISCARD_TEXT(namespacename)
 	return TRUE;
 }
 
@@ -88,7 +92,8 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	rpi_state *rpis = (rpi_state *) state;
 	simple_tangle_docket *docket = rpis->docket;
 	inter_bookmark here = InterBookmark::after_this_node(P);
-	docket->state = (void *) &here;
+	rpi_docket_state *docket_state = (rpi_docket_state *) docket->state;
+	docket_state->assimilation_point = &here;
 	SimpleTangler::tangle_text(docket, insertion);
 	text_stream *replacing = InsertInstruction::replacing(P);
 	if (Str::len(replacing) > 0) {
@@ -97,7 +102,7 @@ void ParsingStages::visit_insertions(inter_tree *I, inter_tree_node *P, void *st
 	}
 }
 
-@ So, then, both of those stages rely on making something called an simple
+@ So, then, both of those stages rely on making something called a simple
 tangler docket, which is really just a collection of settings for the
 simple tangler. That comes down to:
 
@@ -110,18 +115,27 @@ than raw text in memory.
 For (c), note that if a kit is in directory |K| then its source files are
 in |K/Sections|.
 
+@ =
+typedef struct rpi_docket_state {
+	struct inter_bookmark *assimilation_point;
+	struct text_stream *namespace;
+} rpi_docket_state;
+
 @<Make a suitable simple tangler docket@> =
 	inter_package *assimilation_package =
 		step->pipeline->ephemera.assimilation_modules[step->tree_argument];
 	if (assimilation_package == NULL) assimilation_package = LargeScale::main_package(I);
 	inter_bookmark assimilation_point =
 		InterBookmark::at_end_of_this_package(assimilation_package);
+	rpi_docket_state state;
+	state.assimilation_point = &assimilation_point;
+	state.namespace = namespacename;
 	docket = SimpleTangler::new_docket(
 		&(ParsingStages::receive_raw),
 		&(ParsingStages::receive_command),
 		&(ParsingStages::receive_bplus),
 		&(PipelineErrors::kit_error),
-		step->ephemera.the_kit, &assimilation_point);
+		step->ephemera.the_kit, &state);
 
 @ Once the I6T reader has unpacked the literate-programming notation, it will
 reduce the I6T code to pure Inform 6 source together with (perhaps) a handful of
@@ -277,13 +291,28 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 
 		@<Find directive@>;
 		if (I6_dir != WHITESPACE_PLM) {
-			inter_bookmark *IBM = (inter_bookmark *) docket->state;
+			rpi_docket_state *state = (rpi_docket_state *) docket->state;
+			inter_bookmark *IBM = state->assimilation_point;
 			PUT_TO(R, '\n');
-			Produce::guard(SplatInstruction::new(IBM, R, I6_dir, A,
+			Produce::guard(SplatInstruction::new(IBM, R, I6_dir, A, state->namespace,
 				(inter_ti) (InterBookmark::baseline(IBM) + 1), NULL));
 		} else if (A) {
-			(*(docket->error_callback))(
-				"this annotation seems not to apply to any directive: '%S'", A);
+			I6_annotation *IA = I6Annotations::parse(A);
+			if ((IA) && (Str::eq_insensitive(IA->identifier, I"namespace"))) {
+				rpi_docket_state *state = (rpi_docket_state *) docket->state;
+				Str::clear(state->namespace);
+				I6_annotation_term *term;
+				LOOP_OVER_LINKED_LIST(term, I6_annotation_term, IA->terms)
+					if (Str::eq_insensitive(term->key, I"_")) {
+						WRITE_TO(state->namespace, "%S", term->value);
+					} else {
+						PipelineErrors::kit_error(
+							"the +replacing annotation does not take the term '%S'", term->key);
+					}
+			} else {
+				(*(docket->error_callback))(
+					"this annotation seems not to apply to any directive: '%S'", A);
+			}
 		}
 		Str::clear(R);
 		DISCARD_TEXT(A)
@@ -331,7 +360,8 @@ the directive type as 0.
 	} else {
 		I6_dir = WHITESPACE_PLM;
 		LOOP_THROUGH_TEXT(pos, R)
-			if (Characters::is_whitespace(Str::get(pos)) == FALSE)
+			if ((Characters::is_whitespace(Str::get(pos)) == FALSE) &&
+				(Str::get(pos) != ';'))
 				I6_dir = MYSTERY_PLM;
 	}
 	if (I6_dir == MYSTERY_PLM)

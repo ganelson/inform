@@ -539,7 +539,7 @@ the character after the initial dollar determines which:
 			continue;
 		default:
 			x = p; y = p;
-			while (Characters::isalnum(Str::get_at(current_raw, y+1)))
+			while (Tokenisation::identchar(Str::get_at(current_raw, y+1)))
 				y++;
 			@<Break off a token@>;
 			p = y;
@@ -591,7 +591,7 @@ language opcodes such as |@pull|.
 
 @<Break off here for operators@> =
 	int monograph = TRUE, digraph = FALSE, trigraph = FALSE;
-	if ((Characters::isalnum(c1)) || (c1 == '_') || (c1 == '$')) monograph = FALSE;
+	if ((Tokenisation::identchar(c1)) || (c1 == '_') || (c1 == '$')) monograph = FALSE;
 	if (c1 == 0x00A7) monograph = FALSE;
 	if ((c1 == '#') && (Characters::isalpha(c2))) monograph = FALSE;
 	if ((c1 == '_') && (Characters::isalpha(c2))) monograph = FALSE;
@@ -687,7 +687,7 @@ but speed is not quite important enough to make it worthwhile.
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
 			wchar_t c = Str::get(P);
-			if ((c != '_') && (c != '#') && (!Characters::isalnum(c)))
+			if ((c != '_') && (c != '#') && (!Tokenisation::identchar(c)))
 				is = RAW_ISTT;
 		}
 	}
@@ -695,7 +695,7 @@ but speed is not quite important enough to make it worthwhile.
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
 			wchar_t c = Str::get(P);
-			if ((c != '_') && (c != '#') && (c != '$') && (!Characters::isalnum(c)))
+			if ((c != '_') && (c != '#') && (c != '$') && (!Tokenisation::identchar(c)))
 				is = RAW_ISTT;
 		}
 	}
@@ -703,7 +703,7 @@ but speed is not quite important enough to make it worthwhile.
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
 			wchar_t c = Str::get(P);
-			if ((c != '_') && (c != '#') && (!Characters::isalnum(c)))
+			if ((c != '_') && (c != '#') && (!Tokenisation::identchar(c)))
 				is = RAW_ISTT;
 		}
 	}
@@ -711,7 +711,7 @@ but speed is not quite important enough to make it worthwhile.
 		is = IDENTIFIER_ISTT;
 		LOOP_THROUGH_TEXT(P, T) {
 			wchar_t c = Str::get(P);
-			if ((c != '_') && (!Characters::isalnum(c)))
+			if ((c != '_') && (!Tokenisation::identchar(c)))
 				is = RAW_ISTT;
 		}
 		if (Str::begins_with_wide_string(T, L"QUOTED_INAME_0_")) which_quote = 0;
@@ -1279,3 +1279,11 @@ void Tokenisation::de_escape_sq_text(text_stream *text) {
 		i++;
 	}
 	break;
+
+@ Lastly, this defines valid identifier characters:
+
+=
+int Tokenisation::identchar(wchar_t c) {
+	if ((Characters::isalnum(c)) || (c == '`')) return TRUE;
+	return FALSE;
+}

@@ -4508,3 +4508,17 @@ Test: parse schema from:
       * (expr)
         DQUOTED     © is a copyright sign. Ф is a capital Cyrillic ef, and ▲ is a triangle.
 =========
+Test: parse schema from:
+	print BasicInformKit`stuff();
+	DialogueKit`temp = 1;
+
+  * (statement) !printnumber
+      * (call)
+          * (expr)
+            IDENTIFIER  BasicInformKit`stuff
+  * (operation) !store
+      * (expr)
+        IDENTIFIER  DialogueKit`temp
+      * (expr)
+        NUMBER      1
+=========

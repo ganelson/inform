@@ -408,9 +408,27 @@ void Wiring::connect_plugs_to_sockets(inter_tree *I) {
  		inter_symbols_table *ST = InterPackage::scope(connectors);
  		LOOP_OVER_SYMBOLS_TABLE(S, ST) {
 			if (Wiring::is_loose_plug(S)) {
-				inter_symbol *socket =
-					Wiring::find_socket(I, Wiring::name_sought_by_loose_plug(S));
+				text_stream *name = Wiring::name_sought_by_loose_plug(S);
+				inter_symbol *socket = Wiring::find_socket(I, name);
 				if (socket) Wiring::wire_plug(S, socket);
+				else {
+					int last_tick = -1;
+					for (int i=0; i<Str::len(name); i++)
+						if (Str::get_at(name, i) == '`') {
+							last_tick = i;
+						}
+					if (last_tick >= 0) {
+						TEMPORARY_TEXT(N)
+						for (int i=last_tick+1; i<Str::len(name); i++)
+							PUT_TO(N, Str::get_at(name, i));
+						socket = Wiring::find_socket(I, N);
+						if (socket) {
+							LOGIF(INTER_CONNECTORS, "Wiring plug to socket with global name: $3\n", S);
+							Wiring::wire_plug(S, socket);
+						}
+						DISCARD_TEXT(N)
+					}
+				}
 			}
 		}
 	}

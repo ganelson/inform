@@ -13,6 +13,7 @@ does this name correspond to?".
 typedef struct identifier_finder {
 	int no_priorities;
 	struct inter_symbols_table *priorities[MAX_IDENTIFIER_PRIORITIES];
+	struct text_stream *from_namespace;
 } identifier_finder;
 
 @ The most basic set of conventions only allows us to see names visible
@@ -22,6 +23,7 @@ everywhere:
 identifier_finder IdentifierFinders::common_names_only(void) {
 	identifier_finder finder;
 	finder.no_priorities = 0;
+	finder.from_namespace = NULL;
 	return finder;
 }
 
@@ -34,6 +36,17 @@ void IdentifierFinders::next_priority(identifier_finder *finder,
 	if (finder->no_priorities >= MAX_IDENTIFIER_PRIORITIES)
 		internal_error("too many identifier finder priorities");
 	finder->priorities[finder->no_priorities++] = where;
+}
+
+@ And we can similarly specify the namespace we're coming from:
+
+=
+void IdentifierFinders::set_namespace(identifier_finder *finder,
+	text_stream *namespace) {
+	if (Str::len(namespace) > 0) {
+		if (Str::len(finder->from_namespace) > 0) internal_error("namespace twice");
+		finder->from_namespace = Str::duplicate(namespace);
+	}
 }
 
 @ And here goes.
@@ -69,18 +82,33 @@ force it to exist by creating a plug with this name, and then returning that.
 So the above internal error cannot occur.
 
 @<Interpret this as an identifier@> =
-	for (int i = 0; i < finder.no_priorities; i++) {
-		inter_symbol *S = InterSymbolsTable::symbol_from_name(finder.priorities[i], name);
-		if (S) return S;
+	text_stream *seek = name;
+	TEMPORARY_TEXT(N)
+	if (Str::len(finder.from_namespace) > 0) {
+		int add_namespace = TRUE;
+		for (int i=0; i<Str::len(name); i++)
+			if (Str::get_at(name, i) == '`')
+				add_namespace = FALSE;
+		if (add_namespace) {
+			WRITE_TO(N, "%S`%S", finder.from_namespace, name);
+			seek = N;
+		}
 	}
-	inter_symbol *S = LargeScale::find_architectural_symbol(I, name);
-	if (S) return S;
-	S = InterSymbolsTable::symbol_from_name(LargeScale::connectors_scope(I), name);
-	if (S) return S;
+	inter_symbol *S = NULL;
+	for (int i = 0; i < finder.no_priorities; i++) {
+		S = InterSymbolsTable::symbol_from_name(finder.priorities[i], seek);
+		if (S) goto Exit;
+	}
+	S = LargeScale::find_architectural_symbol(I, name);
+	if (S) goto Exit;
+	S = InterSymbolsTable::symbol_from_name(LargeScale::connectors_scope(I), seek);
+	if (S) goto Exit;
 	S = InterSymbolsTable::symbol_from_name(LargeScale::main_scope(I), name);
-	if (S) return S;
-	S = InterNames::to_symbol(HierarchyLocations::find_by_name(I, name));
-	if (S) return S;
+	if (S) goto Exit;
+	S = InterNames::to_symbol(HierarchyLocations::find_by_name(I, seek));
+	Exit: ;
+	DISCARD_TEXT(N)
+	return S;
 
 @ A small variation. Note that a token can be marked explicitly with an iname
 to which it corresponds; if it has been, then this overrides the finding process,
@@ -94,5 +122,7 @@ inter_symbol *IdentifierFinders::find_token(inter_tree *I, inter_schema_token *t
 	local_variable *lvar = LocalVariables::by_identifier(t->material);
 	if (lvar) return LocalVariables::declare(lvar);
 	#endif
+	LOGIF(INTER_CONNECTORS, "Finding token %S from namespace '%S'\n",
+		t->material, finder.from_namespace);
 	return IdentifierFinders::find(I, t->material, finder);
 }

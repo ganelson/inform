@@ -8,8 +8,8 @@ For what this does and why it is used, see //inter: Textual Inter//.
 =
 void SplatInstruction::define_construct(void) {
 	inter_construct *IC = InterInstruction::create_construct(SPLAT_IST, I"splat");
-	InterInstruction::specify_syntax(IC, I"splat OPTIONALIDENTIFIER TEXT TEXT");
-	InterInstruction::data_extent_always(IC, 3);
+	InterInstruction::specify_syntax(IC, I"splat OPTIONALIDENTIFIER TEXT TEXT TEXT");
+	InterInstruction::data_extent_always(IC, 4);
 	InterInstruction::allow_in_depth_range(IC, 0, INFINITELY_DEEP);
 	InterInstruction::permit(IC, OUTSIDE_OF_PACKAGES_ICUP);
 	InterInstruction::permit(IC, INSIDE_PLAIN_PACKAGE_ICUP);
@@ -27,15 +27,19 @@ compulsory words -- see //Inter Nodes// -- followed by:
 @d MATTER_SPLAT_IFLD       (DATA_IFLD + 0)
 @d PLM_SPLAT_IFLD          (DATA_IFLD + 1)
 @d I6ANNOTATION_SPLAT_IFLD (DATA_IFLD + 2)
+@d NAMESPACE_SPLAT_IFLD    (DATA_IFLD + 3)
 
 =
 inter_error_message *SplatInstruction::new(inter_bookmark *IBM, text_stream *splatter,
-	inter_ti plm, text_stream *annotation, inter_ti level, inter_error_location *eloc) {
-	inter_tree_node *P = Inode::new_with_3_data_fields(IBM, SPLAT_IST,
+	inter_ti plm, text_stream *annotation, text_stream *namespace, inter_ti level,
+	inter_error_location *eloc) {
+	inter_tree_node *P = Inode::new_with_4_data_fields(IBM, SPLAT_IST,
 		/* MATTER_SPLAT_IFLD: */       InterWarehouse::create_text_at(IBM, splatter),
 		/* PLM_SPLAT_IFLD: */          plm,
 		/* I6ANNOTATION_SPLAT_IFLD: */
 			(Str::len(annotation) > 0)?(InterWarehouse::create_text_at(IBM, annotation)):0,
+		/* NAMESPACE_SPLAT_IFLD: */
+			(Str::len(namespace) > 0)?(InterWarehouse::create_text_at(IBM, namespace)):0,
 		eloc, level);
 	inter_error_message *E = VerifyingInter::instruction(InterBookmark::package(IBM), P);
 	if (E) return E;
@@ -72,7 +76,8 @@ void SplatInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	inter_line_parse *ilp, inter_error_location *eloc, inter_error_message **E) {
 	text_stream *plm_text = ilp->mr.exp[0];
 	text_stream *annot_text = ilp->mr.exp[1];
-	text_stream *splatter_text = ilp->mr.exp[2];
+	text_stream *namespace_text = ilp->mr.exp[2];
+	text_stream *splatter_text = ilp->mr.exp[3];
 
 	inter_ti plm = SplatInstruction::parse_plm(plm_text);
 	if (SplatInstruction::plm_valid(plm) == FALSE) {
@@ -81,14 +86,20 @@ void SplatInstruction::read(inter_construct *IC, inter_bookmark *IBM,
 	}
 	TEMPORARY_TEXT(raw)
 	TEMPORARY_TEXT(raw_annot)
+	TEMPORARY_TEXT(raw_ns)
 	*E = TextualInter::parse_literal_text(raw, splatter_text, 0, Str::len(splatter_text), eloc);
 	if (*E == NULL) {
 		*E = TextualInter::parse_literal_text(raw_annot, annot_text, 0, Str::len(annot_text), eloc);
 		if (*E == NULL) {
-			*E = SplatInstruction::new(IBM, raw, plm, raw_annot, (inter_ti) ilp->indent_level, eloc);
+			*E = TextualInter::parse_literal_text(raw_ns, namespace_text, 0, Str::len(annot_text), eloc);
+			if (*E == NULL) {
+				*E = SplatInstruction::new(IBM, raw, plm, raw_annot, raw_ns, (inter_ti) ilp->indent_level, eloc);
+			}
 		}
 	}
 	DISCARD_TEXT(raw)
+	DISCARD_TEXT(raw_annot)
+	DISCARD_TEXT(raw_ns)
 }
 
 @h Writing to textual Inter syntax.
@@ -121,6 +132,12 @@ text_stream *SplatInstruction::I6_annotation(inter_tree_node *P) {
 	if (P == NULL) return NULL;
 	if (Inode::isnt(P, SPLAT_IST)) return NULL;
 	return Inode::ID_to_text(P, P->W.instruction[I6ANNOTATION_SPLAT_IFLD]);
+}
+
+text_stream *SplatInstruction::namespace(inter_tree_node *P) {
+	if (P == NULL) return NULL;
+	if (Inode::isnt(P, SPLAT_IST)) return NULL;
+	return Inode::ID_to_text(P, P->W.instruction[NAMESPACE_SPLAT_IFLD]);
 }
 
 @h PLMs.

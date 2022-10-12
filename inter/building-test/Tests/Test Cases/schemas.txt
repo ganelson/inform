@@ -1632,3 +1632,8 @@ schema
 	print "inverted ?: @@223.";
 	print "[unicode 169] is a copyright sign. [unicode 1060] is a capital Cyrillic ef, and [unicode 9650] is a triangle.";
 end
+
+schema
+	print BasicInformKit`stuff();
+	DialogueKit`temp = 1;
+end
