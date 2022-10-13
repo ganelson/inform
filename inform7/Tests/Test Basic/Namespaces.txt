@@ -1,0 +1,47 @@
+Include (-
+
++namespace(Alpha);
+
+	Constant EXAMPLE = 20;
+
+	[ greet;
+		summon();
+		print "greet in Alpha^";
+		dismiss();
+		Beta`dismiss();
+	];
+
+	[ dismiss;
+		print "dismiss in Alpha, where EXAMPLE = ", EXAMPLE, "^";
+	];
+
++namespace(Beta);
+
+	[ dismiss;
+		print "dismiss in Beta^";
+	];
+
++namespace();
+
+	Constant EXAMPLE = 10;
+
+	[ summon;
+		print "summon outside of namespace where Alpha`EXAMPLE = ", Alpha`EXAMPLE, "^";
+	];
+	[ dismiss;
+		print "dismiss outside of namespace^";
+	];
+
+-).
+
+To run the test: (-
+	Alpha`greet();
+	print "Here are the dismiss functions:^";
+	Alpha`dismiss();
+	Beta`dismiss();
+	dismiss();
+	print "The value of EXAMPLE here is ", EXAMPLE, "^";
+-).
+
+To begin:
+	run the test;

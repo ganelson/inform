@@ -1,0 +1,9 @@
+  summon outside of namespace where Alpha`EXAMPLE = 20
+  greet in Alpha
+  dismiss in Alpha, where EXAMPLE = 20
+  dismiss in Beta
+  Here are the dismiss functions:
+  dismiss in Alpha, where EXAMPLE = 20
+  dismiss in Beta
+  dismiss outside of namespace
+  The value of EXAMPLE here is 10
