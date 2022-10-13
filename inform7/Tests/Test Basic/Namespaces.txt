@@ -7,6 +7,8 @@ Include (-
 	[ greet;
 		summon();
 		print "greet in Alpha^";
+		ponder();
+		main`ponder();
 		dismiss();
 		Beta`dismiss();
 	];
@@ -15,21 +17,30 @@ Include (-
 		print "dismiss in Alpha, where EXAMPLE = ", EXAMPLE, "^";
 	];
 
+	[ ponder;
+		print "ponder in Alpha^";
+	];
+
 +namespace(Beta);
 
 	[ dismiss;
 		print "dismiss in Beta^";
 	];
 
-+namespace();
++namespace(main);
 
 	Constant EXAMPLE = 10;
 
 	[ summon;
-		print "summon outside of namespace where Alpha`EXAMPLE = ", Alpha`EXAMPLE, "^";
+		print "summon in main where Alpha`EXAMPLE = ", Alpha`EXAMPLE, "^";
 	];
+
 	[ dismiss;
-		print "dismiss outside of namespace^";
+		print "dismiss in main^";
+	];
+
+	[ ponder;
+		print "ponder in main^";
 	];
 
 -).

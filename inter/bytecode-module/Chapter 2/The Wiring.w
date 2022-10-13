@@ -418,15 +418,24 @@ void Wiring::connect_plugs_to_sockets(inter_tree *I) {
 							last_tick = i;
 						}
 					if (last_tick >= 0) {
-						TEMPORARY_TEXT(N)
-						for (int i=last_tick+1; i<Str::len(name); i++)
-							PUT_TO(N, Str::get_at(name, i));
-						socket = Wiring::find_socket(I, N);
-						if (socket) {
-							LOGIF(INTER_CONNECTORS, "Wiring plug to socket with global name: $3\n", S);
-							Wiring::wire_plug(S, socket);
+						if ((Str::prefix_eq(name, I"implied`", 8)) ||
+							(Str::prefix_eq(name, I"main`", 5))) {
+							TEMPORARY_TEXT(N)
+							TEMPORARY_TEXT(NS)
+							for (int i=8; i<last_tick; i++)
+								PUT_TO(NS, Str::get_at(name, i));
+							if (Str::eq(NS, I"main")) Str::clear(NS);
+							for (int i=last_tick+1; i<Str::len(name); i++)
+								PUT_TO(N, Str::get_at(name, i));
+							socket = Wiring::find_socket(I, N);
+							if (socket) {
+								LOGIF(INTER_CONNECTORS, "Wire implied plug '%S' to socket with global name: $3\n", 
+									name, S);
+								Wiring::wire_plug(S, socket);
+							}
+							DISCARD_TEXT(N)
+							DISCARD_TEXT(NS)
 						}
-						DISCARD_TEXT(N)
 					}
 				}
 			}

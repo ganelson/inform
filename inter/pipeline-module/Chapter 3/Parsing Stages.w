@@ -301,14 +301,40 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 			if ((IA) && (Str::eq_insensitive(IA->identifier, I"namespace"))) {
 				rpi_docket_state *state = (rpi_docket_state *) docket->state;
 				Str::clear(state->namespace);
+				int private = NOT_APPLICABLE;
 				I6_annotation_term *term;
-				LOOP_OVER_LINKED_LIST(term, I6_annotation_term, IA->terms)
+				LOOP_OVER_LINKED_LIST(term, I6_annotation_term, IA->terms) {
 					if (Str::eq_insensitive(term->key, I"_")) {
 						WRITE_TO(state->namespace, "%S", term->value);
+					} else if (Str::eq_insensitive(term->key, I"access")) {
+						if (Str::eq_insensitive(term->value, I"private")) private = TRUE;
+						else if (Str::eq_insensitive(term->value, I"public")) private = FALSE;
+						else PipelineErrors::kit_error(
+							"the 'access' must be 'private' or 'public', not '%S'", term->value);
 					} else {
 						PipelineErrors::kit_error(
-							"the +replacing annotation does not take the term '%S'", term->key);
+							"the +namespace annotation does not take the term '%S'", term->key);
 					}
+				}
+				int bad_name = FALSE;
+				for (int i=0; i<Str::len(state->namespace); i++) {
+					wchar_t c = Str::get_at(state->namespace, i);
+					if (i == 0) {
+						if (Characters::isalpha(c) == FALSE) bad_name = TRUE;
+					} else {
+						if ((Characters::isalnum(c) == FALSE) && (c != '_')) bad_name = TRUE;
+					}
+				}
+				if (bad_name)
+					 PipelineErrors::kit_error(
+						"a namespace name should begin with a letter and contain "
+						"only alphanumeric characters or '_'", NULL);
+				if (Str::len(state->namespace) == 0)
+					 PipelineErrors::kit_error(
+						"use '+namespace(main);' to return to the global namespace", NULL);
+				if (Str::eq(state->namespace, I"main")) Str::clear(state->namespace);
+				if (private == TRUE) PUT_TO(state->namespace, '-');
+				if (private == FALSE) PUT_TO(state->namespace, '+');
 			} else {
 				(*(docket->error_callback))(
 					"this annotation seems not to apply to any directive: '%S'", A);

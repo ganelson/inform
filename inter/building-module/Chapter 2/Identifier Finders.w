@@ -84,8 +84,9 @@ So the above internal error cannot occur.
 @<Interpret this as an identifier@> =
 	text_stream *seek = name;
 	TEMPORARY_TEXT(N)
+	int add_namespace = FALSE;
 	if (Str::len(finder.from_namespace) > 0) {
-		int add_namespace = TRUE;
+		add_namespace = TRUE;
 		for (int i=0; i<Str::len(name); i++)
 			if (Str::get_at(name, i) == '`')
 				add_namespace = FALSE;
@@ -105,7 +106,10 @@ So the above internal error cannot occur.
 	if (S) goto Exit;
 	S = InterSymbolsTable::symbol_from_name(LargeScale::main_scope(I), name);
 	if (S) goto Exit;
-	S = InterNames::to_symbol(HierarchyLocations::find_by_name(I, seek));
+	if (add_namespace)
+		S = InterNames::to_symbol(HierarchyLocations::find_by_implied_name(I, name, finder.from_namespace));
+	else
+		S = InterNames::to_symbol(HierarchyLocations::find_by_name(I, seek));
 	Exit: ;
 	DISCARD_TEXT(N)
 	return S;

@@ -778,18 +778,35 @@ These have package types |_function| and |_code| respectively.
 
 =
 void CompileSplatsStage::apply_annotations(text_stream *A, text_stream *NS, inter_symbol *S) {
-	if (Str::len(NS) > 0) {
-		LOGIF(INTER_CONNECTORS, "Assign namespace '%S' to $3\n", NS, S);
-		InterSymbol::set_namespace(S, NS);
+	int apply_private = NOT_APPLICABLE, L = Str::len(NS);
+	if (Str::get_last_char(NS) == '+') apply_private = FALSE;
+	if (Str::get_last_char(NS) == '-') apply_private = TRUE;
+	if (apply_private != NOT_APPLICABLE) L--;
+	if (L > 0) {
+		TEMPORARY_TEXT(N)
+		for (int i=0; i<L; i++) PUT_TO(N, Str::get_at(NS, i));
+		LOGIF(INTER_CONNECTORS, "Assign namespace '%S' to $3\n", N, S);
+		InterSymbol::set_namespace(S, N);
+		DISCARD_TEXT(N)
 	}
 	if (Str::len(A) > 0) {
 		LOGIF(INTER_CONNECTORS, "Trying to apply '%S' to $3\n", A, S);
 		for (I6_annotation *IA = I6Annotations::parse(A); IA; IA = IA->next) {
 			if (Str::eq_insensitive(IA->identifier, I"private")) {
 				if ((IA->terms == NULL) || (LinkedLists::len(IA->terms) == 0)) {
-					SymbolAnnotation::set_b(S, PRIVATE_IANN, TRUE);
+					if (apply_private == TRUE) 
+						PipelineErrors::kit_error("the +private annotation is redundant here", NULL);
+					apply_private = TRUE;
 				} else {
 					PipelineErrors::kit_error("the +private annotation does not take any terms", NULL);
+				}
+			} else if (Str::eq_insensitive(IA->identifier, I"public")) {
+				if ((IA->terms == NULL) || (LinkedLists::len(IA->terms) == 0)) {
+					if (apply_private == FALSE) 
+						PipelineErrors::kit_error("the +public annotation is redundant here", NULL);
+					apply_private = FALSE;
+				} else {
+					PipelineErrors::kit_error("the +public annotation does not take any terms", NULL);
 				}
 			} else if (Str::eq_insensitive(IA->identifier, I"replacing")) {
 				text_stream *from = I"_";
@@ -809,6 +826,7 @@ void CompileSplatsStage::apply_annotations(text_stream *A, text_stream *NS, inte
 			}
 		}
 	}
+	if (apply_private == TRUE) SymbolAnnotation::set_b(S, PRIVATE_IANN, TRUE);
 }
 
 @h Plumbing.
