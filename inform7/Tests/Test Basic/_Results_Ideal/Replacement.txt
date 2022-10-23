@@ -1,0 +1,5 @@
+  QUARTER_HOUR = 30
+  replaced`QUARTER_HOUR = 15
+  "square root of 16" = number: 4
+  "square root of 17" = number: 5
+  "square root of 25" = number: 5

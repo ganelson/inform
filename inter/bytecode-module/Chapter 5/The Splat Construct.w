@@ -110,6 +110,8 @@ void SplatInstruction::write(inter_construct *IC, OUTPUT_STREAM, inter_tree_node
 	SplatInstruction::write_plm(OUT, SplatInstruction::plm(P));
 	TextualInter::write_text(OUT, SplatInstruction::I6_annotation(P));
 	WRITE(" ");
+	TextualInter::write_text(OUT, SplatInstruction::namespace(P));
+	WRITE(" ");
 	TextualInter::write_text(OUT, SplatInstruction::splatter(P));
 }
 

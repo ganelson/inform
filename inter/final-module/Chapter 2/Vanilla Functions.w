@@ -132,6 +132,7 @@ void VanillaFunctions::seek_locals(code_generation *gen, inter_tree_node *P,
 
 =
 void VanillaFunctions::declare_function(code_generation *gen, inter_symbol *fn_s) {
+LOG("DECLARE $3\n", fn_s);
 	vanilla_function *vf = RETRIEVE_POINTER_vanilla_function(fn_s->translation_data);
 	Generators::declare_function(gen, vf);
 }
@@ -148,6 +149,7 @@ void VanillaFunctions::invoke_function(code_generation *gen, inter_symbol *fn_s,
 			if (S) fn_s = S;
 		}
 	}
+LOG("INVOKE $3\n", fn_s);
 	vanilla_function *vf = RETRIEVE_POINTER_vanilla_function(fn_s->translation_data);
 	if (vf == NULL) internal_error("no translation data");
 	Generators::invoke_function(gen, P, vf, void_context);

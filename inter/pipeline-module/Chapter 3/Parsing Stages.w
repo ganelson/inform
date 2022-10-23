@@ -333,6 +333,11 @@ void ParsingStages::splat(text_stream *R, simple_tangle_docket *docket) {
 					 PipelineErrors::kit_error(
 						"use '+namespace(main);' to return to the global namespace", NULL);
 				if (Str::eq(state->namespace, I"main")) Str::clear(state->namespace);
+				if (Str::eq(state->namespace, I"replaced")) {
+					 PipelineErrors::kit_error(
+						"the namespace 'replaced' is reserved, and cannot be used directly", NULL);
+					Str::clear(state->namespace);
+				}
 				if (private == TRUE) PUT_TO(state->namespace, '-');
 				if (private == FALSE) PUT_TO(state->namespace, '+');
 			} else {

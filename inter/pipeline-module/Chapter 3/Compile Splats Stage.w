@@ -809,17 +809,23 @@ void CompileSplatsStage::apply_annotations(text_stream *A, text_stream *NS, inte
 					PipelineErrors::kit_error("the +public annotation does not take any terms", NULL);
 				}
 			} else if (Str::eq_insensitive(IA->identifier, I"replacing")) {
-				text_stream *from = I"_";
+				text_stream *from = I"_"; int keeping = FALSE;
 				if (IA->terms) {
 					I6_annotation_term *term;
 					LOOP_OVER_LINKED_LIST(term, I6_annotation_term, IA->terms)
-						if (Str::eq_insensitive(term->key, I"from"))
+						if (Str::eq_insensitive(term->key, I"from")) {
 							from = term->value;
-						else
+						} else if (Str::eq_insensitive(term->key, I"_")) {
+							if (Str::eq(term->value, I"keeping")) keeping = TRUE;
+							else {
+								PipelineErrors::kit_error("expected 'from K' or 'keeping', not '%S'", term->value);
+							}
+						} else
 							PipelineErrors::kit_error(
 								"the +replacing annotation does not take the term '%S'", term->key);
 				}
 				InterSymbol::set_replacement(S, from);
+				if (keeping) SymbolAnnotation::set_b(S, KEEPING_IANN, TRUE);
 			} else {
 				PipelineErrors::kit_error(
 					"annotation '%S' not recognised", IA->identifier);

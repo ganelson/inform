@@ -137,7 +137,9 @@ the symbols table dictionary.
 	if (InterSymbolsTable::unname(T, defn_name) == FALSE)
 		internal_error("cannot strike socket name");
 	inter_symbol *plug = Wiring::plug(sidecar, defn_name);
-	InterSymbol::strike_definition(sidecar_end);
+	LoadBinaryKitsStage::deal_with_original(step,
+		SymbolAnnotation::get_b(rival_end, KEEPING_IANN), sidecar_end, sidecar, defn_name);
+	InterSymbol::undefine(sidecar_end);
 	Wiring::wire_to(sidecar_end, plug);
 	LOGIF(INTER_CONNECTORS, "After overriding the kit definition, we have:\n");
 	LOGIF(INTER_CONNECTORS, "Socket renamed as $3 ~~> $3\n", S, Wiring::cable_end(S));
@@ -156,7 +158,8 @@ the symbols table dictionary.
 			internal_error("cannot strike socket name");
 	}
 	inter_symbol *plug = Wiring::plug(I, defn_name);
-	InterSymbol::strike_definition(rival_end);
+	LoadBinaryKitsStage::deal_with_original(step,
+		SymbolAnnotation::get_b(sidecar_end, KEEPING_IANN), rival_end, I, defn_name);
 	Wiring::wire_to(rival_end, plug);
 	Wiring::wire_to(plug, S);
 	LOGIF(INTER_CONNECTORS, "After overriding the tree definition, we have:\n");
@@ -186,6 +189,50 @@ of the sidecar and put it into the main tree.
 	Transmigration::move(pack, LargeScale::main_package(I), FALSE);	
 
 @
+
+=
+void LoadBinaryKitsStage::deal_with_original(pipeline_step *step, int keeping,
+	inter_symbol *S, inter_tree *sidecar, text_stream *defn_name) {
+	if (keeping)
+		@<Keep the original definition@>
+	else
+		@<Destroy the original definition@>;
+}
+
+@<Keep the original definition@> =
+	LOGIF(INTER_CONNECTORS, "Keeping original definition of $3\n", S);
+	TEMPORARY_TEXT(rname)
+	WRITE_TO(rname, "replaced`%S", defn_name);
+	inter_symbol *replaced =
+		InterSymbolsTable::symbol_from_name_creating(S->owning_table, rname);
+	inter_tree_node *D = InterSymbol::definition(S);
+	InterSymbol::define(replaced, D);
+	if (Inode::is(D, CONSTANT_IST)) {
+		D->W.instruction[DEFN_CONST_IFLD] = replaced->symbol_ID;
+	} else if (Inode::is(D, PACKAGE_IST)) {
+		D->W.instruction[DEFN_PACKAGE_IFLD] = replaced->symbol_ID;
+	} else if (Inode::is(D, VARIABLE_IST)) {
+		D->W.instruction[DEFN_VAR_IFLD] = replaced->symbol_ID;
+	} else {
+		LOG("\n***** Unable to keep this:\n");
+		InterInstruction::write_construct_text_allowing_nop(DL, D);
+		LOG("*****\n");
+		PipelineErrors::error_with(step,
+			"'keeping' is only for routines, global variables and constants, which '%S' is not",
+			defn_name);
+	}
+	Wiring::socket_one_per_name_only(sidecar, rname, replaced);
+	DISCARD_TEXT(rname)
+
+@<Destroy the original definition@> =
+	LOGIF(INTER_CONNECTORS, "Destroying original definition of $3\n", S);
+	InterSymbol::strike_definition(S);
+
+@ This function determines whether a replacement should take place: if the
+symbol has been marked simple |+replacing| then the original location is set
+to the special value |_| meaning "from anywhere", whereas otherwise it must
+be a package name such as |BasicInformKit|, arising from an annotation like
+|+replacing(from BasicInformKit)|.
 
 =
 int LoadBinaryKitsStage::replaces(inter_symbol *X, inter_symbol *Y) {
