@@ -226,15 +226,19 @@ int Translations::translates_into_Inter_as_SMF(int task, parse_node *V, wording 
 @d PROPERTY_I6TR 0      /* "The open property translates into I6 as "open"." */
 @d NOUN_I6TR 1          /* "The north object translates into I6 as "n_obj"." */
 @d RULE_I6TR 2          /* "The baffling rule translates into I6 as "BAFFLING_R"." */
-@d VARIABLE_I6TR 3      /* "The sludge count variable translates into I6 as "sldgc". */
-@d ACTION_I6TR 4        /* "The taking action translates into I6 as "Take". */
-@d GRAMMAR_TOKEN_I6TR 5 /* "The grammar token "[whatever]" translates into I6 as "WHATEVER". */
+@d RULEBOOK_I6TR 3      /* "The high security rules translates into I6 as "SECURITY_RULEBOOK". */
+@d ACTIVITY_I6TR 4      /* "The draining something activity translates into I6 as "DRAINING_ACTIVITY". */
+@d VARIABLE_I6TR 5      /* "The sludge count variable translates into I6 as "sldgc". */
+@d ACTION_I6TR 6        /* "The taking action translates into I6 as "Take". */
+@d GRAMMAR_TOKEN_I6TR 7 /* "The grammar token "[whatever]" translates into I6 as "WHATEVER". */
 
 =
 <translates-into-i6-sentence-subject> ::=
 	... property |          ==> { PROPERTY_I6TR, - }
 	... object/kind |       ==> { NOUN_I6TR, - }
 	{... rule} |            ==> { RULE_I6TR, - }
+	{... rules/rulebook} |  ==> { RULEBOOK_I6TR, - }
+	{... activity} |        ==> { ACTIVITY_I6TR, - }
 	... variable |          ==> { VARIABLE_I6TR, - }
 	... action |            ==> { ACTION_I6TR, - }
 	understand token ... |  ==> { GRAMMAR_TOKEN_I6TR, - }
@@ -316,6 +320,12 @@ will be required to pass |<extra-response>|.
 				Rules::declare_Inter_rule(W, Node::get_text(p2));
 			if ((global_pass_state.pass == 2) && (p2->down) && (<rule-name>(W)))
 				Translations::plus_responses(p2->down, <<rp>>);
+			break;
+		case RULEBOOK_I6TR:
+			if (global_pass_state.pass == 2) Rulebooks::translates(W, p2);
+			break;
+		case ACTIVITY_I6TR:
+			if (global_pass_state.pass == 2) Activities::translates(W, p2);
 			break;
 		case VARIABLE_I6TR:
 			if (global_pass_state.pass == 2) NonlocalVariables::translates(W, p2);

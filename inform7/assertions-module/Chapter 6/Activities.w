@@ -182,6 +182,23 @@ rulebook *Activities::make_rulebook(activity *av, int N, int future_action_flag)
 	==> { fail nonterminal }
 }
 
+@ The author can demand with a "translates as" sentence that a given
+rulebook should have an identifier given to it which is accessible to Inter:
+
+=
+void Activities::translates(wording W, parse_node *p2) {
+	if (<activity-name>(W)) {
+		activity *av = (activity *) <<rp>>;
+		RTActivities::translate(av, Node::get_text(p2));
+	} else {
+		LOG("Tried %W\n", W);
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesNonActivity),
+			"this is not the name of an activity",
+			"so cannot be translated.");
+	}
+}
+
 @h Activity variables.
 Any new activity variable name is vetted by being run through this:
 

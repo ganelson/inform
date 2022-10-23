@@ -1604,6 +1604,7 @@ void Hierarchy::establish(void) {
 @e RULEBOOK_INDEX_ID_MD_HL
 @e RULEBOOK_RUN_FN_MD_HL
 @e RULEBOOK_ID_HL
+@e RULEBOOK_TRANS_ID_HL
 @e RULEBOOK_FOCUS_MD_HL
 @e RUN_FN_HL
 @e RULEBOOK_STV_CREATOR_FN_HL
@@ -1655,6 +1656,7 @@ void Hierarchy::establish(void) {
 			H_C_U(RULEBOOK_INDEX_ID_MD_HL,             I"^index_id")
 			H_C_U(RULEBOOK_FOCUS_MD_HL,                I"^focus")
 			H_C_U(RULEBOOK_ID_HL,                      I"rulebook_id")
+			H_C_U(RULEBOOK_TRANS_ID_HL,                I"translated_rulebook_id")
 			H_F_U(RUN_FN_HL,                           I"run_fn")
 			H_F_U(RULEBOOK_STV_CREATOR_FN_HL,          I"stv_creator_fn")
 			H_BEGIN_AP(RULEBOOK_ENTRIES_HAP,           I"entry", I"_rulebook_entry")

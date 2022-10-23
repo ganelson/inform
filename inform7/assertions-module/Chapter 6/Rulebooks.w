@@ -251,6 +251,23 @@ rulebook *Rulebooks::new_automatic(wording W, kind *basis,
 	return B;
 }
 
+@ The author can demand with a "translates as" sentence that a given
+rulebook should have an identifier given to it which is accessible to Inter:
+
+=
+void Rulebooks::translates(wording W, parse_node *p2) {
+	if (<rulebook-name>(W)) {
+		rulebook *B = (rulebook *) <<rp>>;
+		RTRulebooks::translate(B, Node::get_text(p2));
+	} else {
+		LOG("Tried %W\n", W);
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesNonRulebook),
+			"this is not the name of a rulebook",
+			"so cannot be translated.");
+	}
+}
+
 @h Access.
 
 =
@@ -327,6 +344,14 @@ This function is called in response to a sentence like "The consideration rulebo
 has a D called W":
 
 =
+shared_variable_set *Rulebooks::variables(rulebook *B) {
+	return B->my_variables;
+}
+
+shared_variable_access_list *Rulebooks::accessible_variables(rulebook *B) {
+	return B->accessible_variables;
+}
+
 void Rulebooks::add_variable(rulebook *B, parse_node *cnode) {
 	@<The variable has to have a name@>;
 	wording D = Node::get_text(cnode->down);
@@ -345,10 +370,11 @@ void Rulebooks::add_variable(rulebook *B, parse_node *cnode) {
 	@<And a definite one at that@>;
 
 	int is_actor = FALSE;
+	shared_variable_set *vars = Rulebooks::variables(B);
 	if ((B->allocation_id == ACTION_PROCESSING_RB) &&
-		(SharedVariables::set_empty(B->my_variables)))
+		(SharedVariables::set_empty(vars)))
 		is_actor = TRUE;
-	SharedVariables::new(B->my_variables, W, K, is_actor);
+	SharedVariables::new(vars, W, K, is_actor);
 }
 
 @<The variable has to have a name@> =
@@ -446,7 +472,7 @@ go into |B->my_variables|.
 
 =
 void Rulebooks::grant_access_to_variables(rulebook *B, shared_variable_set *set) {
-	SharedVariables::add_set_to_access_list(B->accessible_variables, set);
+	SharedVariables::add_set_to_access_list(Rulebooks::accessible_variables(B), set);
 }
 
 @h Attaching and detaching rules.
@@ -481,11 +507,11 @@ void Rulebooks::attach_rule(rulebook *B, booking *br,
 
 	PluginCalls::rule_placement_notify(R, B, side, ref_rule);
 
-	Rules::put_variables_in_scope(R, B->accessible_variables);
+	Rules::put_variables_in_scope(R, Rulebooks::accessible_variables(B));
 	if (side == INSTEAD_SIDE) {
 		LOGIF(RULE_ATTACHMENTS,
 			"Copying former rulebook's variable permissions to displaced rule\n");
-		Rules::put_variables_in_scope(ref_rule, B->accessible_variables);
+		Rules::put_variables_in_scope(ref_rule, Rulebooks::accessible_variables(B));
 	}
 
 	RuntimeContextData::ensure_avl(R);

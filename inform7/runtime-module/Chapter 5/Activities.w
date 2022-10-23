@@ -8,8 +8,11 @@ Each |activity| object contains this data:
 
 =
 typedef struct activity_compilation_data {
+	int translated;
+	struct text_stream *translated_name;
 	struct package_request *av_package; /* its |_activity| package */
 	struct inter_name *value_iname;     /* an identifier for a constant identifying this */
+	struct inter_name *translated_iname; /* an alias useful for linking purposes */
 	struct inter_name *variables_id;    /* ID for the shared variables set, if any */
 	struct wording av_documentation_symbol; /* cross-reference to HTML documentation, if any */
 	struct activity_crossref *cross_references;
@@ -25,8 +28,11 @@ typedef struct activity_crossref {
 =
 activity_compilation_data RTActivities::new_compilation_data(activity *av, wording doc) {
 	activity_compilation_data acd;
+	acd.translated = FALSE;
+	acd.translated_name = NULL;
 	acd.av_package = Hierarchy::local_package(ACTIVITIES_HAP);
 	acd.value_iname = Hierarchy::make_iname_with_memo(ACTIVITY_VALUE_HL, acd.av_package, av->name);
+	acd.translated_iname = NULL;
 	acd.variables_id = Hierarchy::make_iname_in(ACTIVITY_SHV_ID_HL, acd.av_package);
 	acd.av_documentation_symbol = doc;
 	acd.cross_references = NULL;
@@ -38,6 +44,16 @@ activity_compilation_data RTActivities::new_compilation_data(activity *av, wordi
 =
 inter_name *RTActivities::iname(activity *av) {
 	return av->compilation_data.value_iname;
+}
+
+inter_name *RTActivities::id_translated(activity *av) {
+	if (Str::len(av->compilation_data.translated_name) == 0) return NULL;
+	if (av->compilation_data.translated_iname == NULL) {
+		av->compilation_data.translated_iname = InterNames::explicitly_named(
+			av->compilation_data.translated_name, av->compilation_data.av_package);
+		Hierarchy::make_available(av->compilation_data.translated_iname);
+	}
+	return av->compilation_data.translated_iname;
 }
 
 @ Three subpackages contain its three rulebooks, requested here:
@@ -66,6 +82,20 @@ void RTActivities::annotate_list_for_cross_references(activity_list *avl, id_bod
 		}
 }
 
+@ =
+void RTActivities::translate(activity *av, wording W) {
+	if (av->compilation_data.translated) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesActivityAlready),
+			"this activity has already been translated",
+			"so there must be some duplication somewhere.");
+		return;
+	}
+	av->compilation_data.translated = TRUE;
+	av->compilation_data.translated_name = Str::new();
+	WRITE_TO(av->compilation_data.translated_name, "%N", Wordings::first_wn(W));
+}
+
 @h Compilation.
 
 =
@@ -91,6 +121,8 @@ void RTActivities::compilation_agent(compilation_subtask *t) {
 	package_request *pack = av->compilation_data.av_package;
 	inter_name *iname = Hierarchy::make_iname_in(ACTIVITY_ID_HL, pack);
 	Emit::numeric_constant(iname, 0); /* a placeholder: see above */
+	inter_name *translated = RTActivities::id_translated(av);
+	if (translated) Emit::iname_constant(translated, K_value, iname);
 
 	Emit::iname_constant(av->compilation_data.value_iname, K_value, iname);
 

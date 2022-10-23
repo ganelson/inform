@@ -6054,6 +6054,10 @@
           (hits 6/370) (matched: 'inside object') constraint DS = {10} extremes [2, infinity)
         {... rule} 
           (hits 138/364) (matched: 'standard report preferring sometimes abbreviated room descriptions rule') constraint DS = {10} extremes [2, infinity)
+        {... rules/rulebook} 
+          (hits 0/226) constraint DS = {10} extremes [2, infinity)
+        {... activity} 
+          (hits 0/226) constraint DS = {10} extremes [2, infinity)
         {...} variable 
           (hits 70/226) (matched: 'current item from the multiple object list variable') constraint DS = {10} extremes [2, infinity)
         {...} action 

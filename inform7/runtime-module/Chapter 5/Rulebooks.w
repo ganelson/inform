@@ -8,8 +8,11 @@ Each |rulebook| object contains this data:
 
 =
 typedef struct rulebook_compilation_data {
+	int translated;
+	struct text_stream *translated_name;
 	struct package_request *rb_package;
 	struct inter_name *rb_id_iname;
+	struct inter_name *rb_translated_iname;
 	struct inter_name *vars_creator_fn_iname;
 	struct linked_list *placement_list; /* of |parse_node| */
 	struct parse_node *where_declared;
@@ -22,9 +25,12 @@ packages, so they are not always in the rulebooks submodule.
 rulebook_compilation_data RTRulebooks::new_compilation_data(rulebook *B,
 	package_request *P) {
 	rulebook_compilation_data rcd;
+	rcd.translated = FALSE;
+	rcd.translated_name = NULL;
 	rcd.rb_package = P;
 	rcd.vars_creator_fn_iname = NULL;
 	rcd.rb_id_iname = NULL;
+	rcd.rb_translated_iname = NULL;
 	rcd.placement_list = NEW_LINKED_LIST(parse_node);
 	rcd.where_declared = current_sentence;
 	return rcd;
@@ -48,6 +54,16 @@ inter_name *RTRulebooks::id_iname(rulebook *B) {
 	return B->compilation_data.rb_id_iname;
 }
 
+inter_name *RTRulebooks::id_translated(rulebook *B) {
+	if (Str::len(B->compilation_data.translated_name) == 0) return NULL;
+	if (B->compilation_data.rb_translated_iname == NULL) {
+		B->compilation_data.rb_translated_iname = InterNames::explicitly_named(
+			B->compilation_data.translated_name, RTRulebooks::package(B));
+		Hierarchy::make_available(B->compilation_data.rb_translated_iname);
+	}
+	return B->compilation_data.rb_translated_iname;
+}
+
 @ The following function creates and initialises any shared variables for the
 rulebook:
 
@@ -62,6 +78,20 @@ inter_name *RTRulebooks::get_vars_creator_iname(rulebook *B) {
 @ =
 void RTRulebooks::affected_by_placement(rulebook *rb, parse_node *where) {
 	ADD_TO_LINKED_LIST(where, parse_node, rb->compilation_data.placement_list);
+}
+
+@ =
+void RTRulebooks::translate(rulebook *rb, wording W) {
+	if (rb->compilation_data.translated) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesRulebookAlready),
+			"this rulebook has already been translated",
+			"so there must be some duplication somewhere.");
+		return;
+	}
+	rb->compilation_data.translated = TRUE;
+	rb->compilation_data.translated_name = Str::new();
+	WRITE_TO(rb->compilation_data.translated_name, "%N", Wordings::first_wn(W));
 }
 
 @h Compilation.
@@ -85,7 +115,7 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 	
 	inter_name *run_fn_iname = Hierarchy::make_iname_in(RUN_FN_HL, P);
 	inter_name *vars_creator_iname = NULL;
-	if (SharedVariables::set_empty(B->my_variables) == FALSE)
+	if (SharedVariables::set_empty(Rulebooks::variables(B)) == FALSE)
 		vars_creator_iname = RTRulebooks::get_vars_creator_iname(B);
 	@<Compile rulebook metadata@>;
 	@<Compile rulebook ID constant@>;
@@ -231,13 +261,13 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 			Hierarchy::apply_metadata_from_number(P, RULEBOOK_DEFAULT_FAILS_MD_HL, 1);
 	}
 
-
-
 @<Compile rulebook ID constant@> =
 	Emit::numeric_constant(RTRulebooks::id_iname(B), 0); /* placeholder */
+	inter_name *translated = RTRulebooks::id_translated(B);
+	if (translated) Emit::iname_constant(translated, K_value, RTRulebooks::id_iname(B));
 
 @<Compile shared variables creator function@> =
-	RTSharedVariables::compile_creator_fn(B->my_variables, vars_creator_iname);
+	RTSharedVariables::compile_creator_fn(Rulebooks::variables(B), vars_creator_iname);
 
 @<Compile run function@> =
 	int action_based = FALSE;

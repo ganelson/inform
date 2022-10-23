@@ -252,7 +252,7 @@ shared_variable_access_list *Rules::all_action_processing_variables(void) {
 	if (all_action_processing_vars == NULL) {
 		all_action_processing_vars = SharedVariables::new_access_list();
 		rulebook *B = Rulebooks::std(ACTION_PROCESSING_RB);
-		if (B) SharedVariables::add_set_to_access_list(all_action_processing_vars, B->my_variables);
+		if (B) SharedVariables::add_set_to_access_list(all_action_processing_vars, Rulebooks::variables(B));
 	}
 	return all_action_processing_vars;
 }
