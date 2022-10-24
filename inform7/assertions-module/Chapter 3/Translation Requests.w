@@ -169,7 +169,12 @@ generated anyway; Inform authors never type them.
 		Diagrams::new_PROPER_NOUN(OP), Task::language_of_syntax());
 
 @h Translation into Inter.
-The sentence "X translates into Y as Z" has this sense provided Y matches the
+
+@d TRANSLATION_DEPRECATED_FORM 1
+@d TRANSLATION_DEFINED_BY_FORM 2
+@d TRANSLATION_ACCESSIBLE_TO_FORM 3
+
+@ The sentence "X translates into Y as Z" has this sense provided Y matches the
 following. Before the coming of Inter code, the only conceivable compilation
 target was Inform 6, but these now set Inter identifiers, so really the first
 wording is to be preferred.
@@ -196,12 +201,83 @@ void Translations::visit_to_name(parse_node *p) {
 
 @ =
 int Translations::translates_into_Inter_as_SMF(int task, parse_node *V, wording *NPs) {
+	int translates_into_verb = TRANSLATION_DEPRECATED_FORM;
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
 	wording O2W = (NPs)?(NPs[2]):EMPTY_WORDING;
 	switch (task) { /* "The taking inventory action translates into Inter as "Inv"" */
 		case ACCEPT_SMFT:
 			if (<translation-target-i6>(O2W)) {
+				<np-articled>(SW);
+				V->next = <<rp>>;
+				<np-articled>(OW);
+				V->next->next = <<rp>>;
+				return TRUE;
+			}
+			break;
+		case PASS_1_SMFT:
+		case PASS_2_SMFT:
+			@<Act on the Inter translation@>;
+			break;
+		case INTER_NAMING_SMFT:
+			@<Act on late naming@>;
+			break;
+	}
+	return FALSE;
+}
+
+@
+
+=
+<defined-by-inter-sentence-object> ::=
+	defined by inter as ...
+
+@
+
+=
+int Translations::defined_by_Inter_as_SMF(int task, parse_node *V, wording *NPs) {
+	int translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
+	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
+	switch (task) { /* The seed random number generator rule is defined by Inter as "SEED_RANDOM_NUMBER_GENERATOR_R". */
+		case ACCEPT_SMFT:
+			if (<defined-by-inter-sentence-object>(OW)) {
+				OW = GET_RW(<defined-by-inter-sentence-object>, 1);
+				<np-articled>(SW);
+				V->next = <<rp>>;
+				<np-articled>(OW);
+				V->next->next = <<rp>>;
+				return TRUE;
+			}
+			break;
+		case PASS_1_SMFT:
+		case PASS_2_SMFT:
+			@<Act on the Inter translation@>;
+			break;
+		case INTER_NAMING_SMFT:
+			@<Act on late naming@>;
+			break;
+	}
+	return FALSE;
+}
+
+@
+
+=
+<accessible-to-inter-sentence-object> ::=
+	accessible to inter as ...
+
+@
+
+=
+int Translations::accessible_to_Inter_as_SMF(int task, parse_node *V, wording *NPs) {
+	int translates_into_verb = TRANSLATION_ACCESSIBLE_TO_FORM;
+	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
+	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
+	switch (task) { /* The time advancing rule is accessible to Inter as "TIME_ADV_RULE". */
+		case ACCEPT_SMFT:
+			if (<accessible-to-inter-sentence-object>(OW)) {
+				OW = GET_RW(<accessible-to-inter-sentence-object>, 1);
 				<np-articled>(SW);
 				V->next = <<rp>>;
 				<np-articled>(OW);
@@ -322,22 +398,32 @@ will be required to pass |<extra-response>|.
 				Translations::plus_responses(p2->down, <<rp>>);
 			break;
 		case RULEBOOK_I6TR:
+			@<Require the accessible-to form@>;
 			if (global_pass_state.pass == 2) Rulebooks::translates(W, p2);
 			break;
 		case ACTIVITY_I6TR:
+			@<Require the accessible-to form@>;
 			if (global_pass_state.pass == 2) Activities::translates(W, p2);
 			break;
 		case VARIABLE_I6TR:
 			if (global_pass_state.pass == 2) NonlocalVariables::translates(W, p2);
 			break;
-		#ifdef IF_MODULE
 		case ACTION_I6TR:
 			if (global_pass_state.pass == 2) Actions::translates(W, p2);
 			break;
 		case GRAMMAR_TOKEN_I6TR:
 			if (global_pass_state.pass == 2) CommandGrammars::new_translated_token(W, p2);
 			break;
-		#endif
+	}
+
+@<Require the accessible-to form@> =
+	if (translates_into_verb != TRANSLATION_ACCESSIBLE_TO_FORM) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(...),
+			"this is a language construct which cannot be defined in Inter code",
+			"so although you can say 'X is accessible to Inter as Y' to give it "
+			"an Inter identifier, you cannot say 'X translates into Inter as Y' or "
+			"'X is defined by Inter as Y'.");
 	}
 
 @ Extra responses look just as they would in running code.
@@ -394,3 +480,4 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 			break;
 		}
 	}
+

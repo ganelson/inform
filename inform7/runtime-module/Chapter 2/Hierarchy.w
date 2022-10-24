@@ -224,8 +224,6 @@ void Hierarchy::establish(void) {
 @e AFTER_ACTION_HOOK_HL
 @e PERFORMED_HL
 @e RECURRING_HL
-@e OFFERING_A_DIALOGUE_CHOICE_HL
-@e PERFORMING_DIALOGUE_HL
 @e SPONTANEOUS_HL
 @e HEADINGS_HAP
 @e HEADING_INDEXABLE_MD_HL
@@ -267,8 +265,6 @@ void Hierarchy::establish(void) {
 		H_C_T(PERFORMED_HL,                   I"performed")
 		H_C_T(RECURRING_HL,                   I"recurring")
 		H_C_T(SPONTANEOUS_HL,                 I"spontaneous")
-		H_C_T(OFFERING_A_DIALOGUE_CHOICE_HL,  I"OFFERING_A_DIALOGUE_CHOICE")
-		H_C_T(PERFORMING_DIALOGUE_HL,         I"PERFORMING_DIALOGUE")
 		H_BEGIN_AP(HEADINGS_HAP,              I"heading", I"_heading")
 			H_C_U(HEADING_INDEXABLE_MD_HL,    I"^indexable")
 			H_C_U(HEADING_TEXT_MD_HL,         I"^text")

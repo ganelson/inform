@@ -95,24 +95,6 @@ void RTDialogueBeats::compile(void) {
 		Emit::iname_constant(iname, K_value, RTProperties::iname(P_recurring));
 		Hierarchy::make_available(iname);
 	}
-	if (AV_offering_a_dialogue_choice) {
-		iname = Hierarchy::find(OFFERING_A_DIALOGUE_CHOICE_HL);
-		Emit::iname_constant(iname, K_value, RTActivities::iname(AV_offering_a_dialogue_choice));
-		Hierarchy::make_available(iname);
-	} else {
-		iname = Hierarchy::find(OFFERING_A_DIALOGUE_CHOICE_HL);
-		Emit::numeric_constant(iname, 0);
-		Hierarchy::make_available(iname);
-	}
-	if (AV_performing_dialogue) {
-		iname = Hierarchy::find(PERFORMING_DIALOGUE_HL);
-		Emit::iname_constant(iname, K_value, RTActivities::iname(AV_performing_dialogue));
-		Hierarchy::make_available(iname);
-	} else {
-		iname = Hierarchy::find(PERFORMING_DIALOGUE_HL);
-		Emit::numeric_constant(iname, 0);
-		Hierarchy::make_available(iname);
-	}
 }
 
 void RTDialogueBeats::compile_starting_beat_entry(void) {

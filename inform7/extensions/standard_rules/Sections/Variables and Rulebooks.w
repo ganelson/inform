@@ -1396,10 +1396,10 @@ To make the dialogue/dialog director passive/inactive:
 	(- DirectorDeactivate(); -).
 
 The dialogue direction rule is listed in the turn sequence rulebook.
-The dialogue direction rule translates into Inter as "DIALOGUE_DIRECTION_R".
+The dialogue direction rule is defined by Inter as "DIALOGUE_DIRECTION_R".
 
 The performing opening dialogue beat rule is listed in the startup rulebook.
-The performing opening dialogue beat rule translates into Inter as "PERFORM_OPENING_BEAT_R".
+The performing opening dialogue beat rule is defined by Inter as "PERFORM_OPENING_BEAT_R".
 
 Section 10 - Dialogue Fallback (not for dialogue language element)
 

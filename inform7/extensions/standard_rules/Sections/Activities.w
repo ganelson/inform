@@ -720,6 +720,8 @@ Section 8 - Dialogue (for dialogue language element only)
 
 Offering something is an activity on lists of dialogue choices.
 
+The offering activity is accessible to Inter as "OFFERING_A_DIALOGUE_CHOICE".
+
 For offering a list of dialogue choices (called L)
 	(this is the default offering dialogue choices rule):
 	let N be 1;
@@ -728,6 +730,8 @@ For offering a list of dialogue choices (called L)
 		increase N by 1.
 
 Performing something is an activity on dialogue lines.
+
+The performing activity is accessible to Inter as "PERFORMING_DIALOGUE".
 
 The performing activity has an object called the speaker.
 

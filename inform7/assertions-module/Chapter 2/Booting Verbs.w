@@ -81,6 +81,10 @@ be a single word, and are hyphenated.
 		I"translates-into-unicode", 1);
 	SpecialMeanings::declare(Translations::translates_into_Inter_as_SMF,
 		I"translates-into-i6", 1);
+	SpecialMeanings::declare(Translations::defined_by_Inter_as_SMF,
+		I"defined-by-inter", 1);
+	SpecialMeanings::declare(Translations::accessible_to_Inter_as_SMF,
+		I"accessible-to-inter", 1);
 	SpecialMeanings::declare(Translations::translates_into_language_as_SMF,
 		I"translates-into-language", 1);
 
