@@ -1126,7 +1126,7 @@ By default, examining an object shows its description, and - for devices - tells
 
 This kind of additional information is not always what we want, so if we have a device whose on/off status we want to conceal, we may write
 
-	The examine described devices rule is not listed in any rulebook.
+	The examine devices rule is not listed in any rulebook.
 
 On the other hand, there are times when we may want to add a similar line or two to the descriptions of other kinds of objects. <b>Crusoe</b> allows us to append an "It is charred." sentence to the end of descriptions of things we have burned in the fire. Since it works by introducing a "printing the description" activity, Crusoe is also a good example to start from if we want to introduce more complex, flexible descriptions of items throughout our story.
 
