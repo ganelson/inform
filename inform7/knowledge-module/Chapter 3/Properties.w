@@ -410,7 +410,8 @@ void Properties::translates(wording W, parse_node *p2) {
 	if (<property-name>(W)) prn = <<rp>>;
 	wchar_t *text = Lexer::word_text(Wordings::first_wn(Node::get_text(p2)));
 
-	@<Make sure this is a genuine and previously untranslated property@>;
+	@<Make sure this is a genuine property@>;
+	@<Make sure this is a previously untranslated property@>;
 
 	Properties::set_translation(prn, text);
 	LOGIF(PROPERTY_TRANSLATIONS, "Property <$Y> translates as <%w>\n", prn, text);
@@ -419,7 +420,7 @@ void Properties::translates(wording W, parse_node *p2) {
 		@<Check to see if a sense reversal has taken place in translation@>;
 }
 
-@<Make sure this is a genuine and previously untranslated property@> =
+@<Make sure this is a genuine property@> =
 	if (prn == NULL)  {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
 			_p_(PM_NonPropertyTranslated),
@@ -427,6 +428,8 @@ void Properties::translates(wording W, parse_node *p2) {
 			"so cannot be translated.");
 		return;
 	}
+
+@<Make sure this is a previously untranslated property@> =
 	if ((RTProperties::has_been_translated(prn)) &&
 		(Str::eq_wide_string(RTProperties::current_translation(prn), text) == FALSE)) {
 		StandardProblems::sentence_problem(Task::syntax_tree(),
@@ -459,6 +462,18 @@ to their analogous Inform 6 ones.
 		RTProperties::store_in_negation(neg);
 		LOGIF(PROPERTY_TRANSLATIONS, "Storing this way round: $Y\n", prn);
 	}
+
+@ The much simpler affordance for making a named Inter value equal to a
+property defined in source text:
+
+=
+void Properties::accessible_as(wording W, parse_node *p2) {
+	property *prn = NULL;
+	if (<property-name>(W)) prn = <<rp>>;
+	@<Make sure this is a genuine property@>;
+	RTProperties::set_accessible(prn, Node::get_text(p2));
+	LOGIF(PROPERTY_TRANSLATIONS, "Property <$Y> accessible as <%W>\n", prn, Node::get_text(p2));
+}
 
 @h Compiling property values.
 Small as it may be, this function contains two important principles: one, that

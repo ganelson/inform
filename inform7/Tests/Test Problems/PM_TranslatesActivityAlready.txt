@@ -2,6 +2,6 @@ Laboratory is a room.
 
 Grimly testing something is an activity.
 
-The grimly testing activity translates into Inter as "GRIM_ACT".
+The grimly testing activity is accessible to Inter as "GRIM_ACT".
 
-The grimly testing activity translates into Inter as "XGRIM_ACT".
+The grimly testing activity is accessible to Inter as "XGRIM_ACT".

@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6V85 'Krypton' (24 October 2022)
+[Version](notes/versioning.md): 10.2.0-beta+6V86 'Krypton' (27 October 2022)
 
 ## About Inform
 
@@ -133,7 +133,7 @@ The following webs are the source for the two most important extensions shipped 
 Other extensions shipped with Inform are not presented as webs, but as single files:
 
 * [Basic Help Menu by Emily Short](<inform7/Internal/Extensions/Emily Short/Basic Help Menu.i7x>) - __v1__
-* [Basic Screen Effects by Emily Short](<inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x>) - __v8__
+* [Basic Screen Effects by Emily Short](<inform7/Internal/Extensions/Emily Short/Basic Screen Effects.i7x>) - __v9__
 * [Complex Listing by Emily Short](<inform7/Internal/Extensions/Emily Short/Complex Listing.i7x>) - __v9__
 * [Glulx Image Centering by Emily Short](<inform7/Internal/Extensions/Emily Short/Glulx Image Centering.i7x>) - __v4__
 * [Glulx Text Effects by Emily Short](<inform7/Internal/Extensions/Emily Short/Glulx Text Effects.i7x>) - __v6__

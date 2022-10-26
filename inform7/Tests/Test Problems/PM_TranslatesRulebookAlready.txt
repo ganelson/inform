@@ -2,6 +2,6 @@ Laboratory is a room.
 
 The banana rules is a rulebook.
 
-The banana rules translates into Inter as "BANANA_RULES".
+The banana rules is accessible to Inter as "BANANA_RULES".
 
-The banana rules translates into Inter as "PEACH_RULES".
+The banana rules is accessible to Inter as "PEACH_RULES".

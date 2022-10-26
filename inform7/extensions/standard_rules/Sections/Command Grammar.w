@@ -233,7 +233,7 @@ Understand "notify off" as switching score notification off.
 fact used in the default grammar above, but is available for authors.
 
 =
-The understand token a time period translates into Inter as "RELATIVE_TIME_TOKEN".
+The understand token a time period is defined by Inter as "RELATIVE_TIME_TOKEN".
 
 @
 

@@ -13,6 +13,8 @@ typedef struct property_compilation_data {
 	struct package_request *prop_package; /* where to find: */
 	struct inter_name *prop_iname; /* the identifier we would like to use at run-time for this property */
 	struct text_stream *translation; /* for the iname */
+	struct text_stream *accessed; /* for the accessible-to text */
+	struct inter_name *accessibility_iname; /* for the corresponding iname */
 	int do_not_compile; /* for e.g. the "specification" pseudo-property */
 	int translated; /* has this been given an explicit translation? */
 	int implemented_as_attribute; /* is this an Inter attribute at run-time? */
@@ -28,6 +30,8 @@ void RTProperties::initialise_pcd(property *prn, package_request *pkg, inter_nam
 	prn->compilation_data.prop_package = pkg;
 	prn->compilation_data.prop_iname = iname;
 	prn->compilation_data.translation = Str::duplicate(translation);
+	prn->compilation_data.accessed = NULL;
+	prn->compilation_data.accessibility_iname = NULL;
 	prn->compilation_data.do_not_compile = FALSE;
 	prn->compilation_data.translated = FALSE;
 	prn->compilation_data.store_in_negation = FALSE;
@@ -151,6 +155,31 @@ text_stream *RTProperties::current_translation(property *prn) {
 	return InterNames::get_translation(RTProperties::iname(prn));
 }
 
+@ A simpler accessible-as name:
+
+=
+void RTProperties::set_accessible(property *prn, wording W) {
+	if (Str::len(prn->compilation_data.accessed) > 0) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(PM_TranslatesPropertyAlready),
+			"this property has already been translated",
+			"so there must be some duplication somewhere.");
+		return;
+	}
+	prn->compilation_data.accessed = Str::new();
+	WRITE_TO(prn->compilation_data.accessed, "%N", Wordings::first_wn(W));
+}
+
+inter_name *RTProperties::accessibility_iname(property *prn) {
+	if (Str::len(prn->compilation_data.accessed) == 0) return NULL;
+	if (prn->compilation_data.accessibility_iname == NULL) {
+		prn->compilation_data.accessibility_iname = InterNames::explicitly_named(
+			prn->compilation_data.accessed, RTProperties::package(prn));
+		Hierarchy::make_available(prn->compilation_data.accessibility_iname);
+	}
+	return prn->compilation_data.accessibility_iname;
+}
+
 @ A property might be missed out of the Index pages for clarity's sake:
 
 =
@@ -199,6 +228,8 @@ void RTProperties::compile(void) {
 	InterSymbol::set_flag(InterNames::to_symbol(iname), PERMIT_NAME_CLASH_ISYMF);
 	Hierarchy::apply_metadata_from_number(pack, PROPERTY_ORDER_MD_HL,
 		(inter_ti) prn->allocation_id);
+	inter_name *accessible = RTProperties::accessibility_iname(prn);
+	if (accessible) Emit::iname_constant(accessible, K_value, iname);
 
 @ A unique set of values is imposed here during linking.
 

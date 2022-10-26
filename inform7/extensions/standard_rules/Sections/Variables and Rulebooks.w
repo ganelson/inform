@@ -12,10 +12,6 @@ whose name is "player", this is a variable, and it is possible to change
 perspective during play and become somebody else -- at which point the
 "player" variable will point to a different object.
 
-Note that "player" is a name given to a variable explicitly defined in
-the |srules| template with a given name (in this case |player|), so it
-has a "translates into Inter" sentence.
-
 =
 
 Part Three - Variables and Rulebooks
@@ -25,7 +21,7 @@ Chapter 1 - Variables
 Section 1 - Situation
 
 The player is a person that varies.
-The player variable translates into Inter as "player".
+The player variable is defined by Inter as "player".
 
 @ The I7 variable "location" corresponds to I6's |real_location|, not
 |location|. Its value is never equal to a pseudo-room representing darkness:
@@ -43,12 +39,12 @@ The turn count is a number that varies.
 The time of day -- documented at var_time -- is a time that varies.
 The darkness witnessed is a truth state that varies.
 
-The location variable translates into Inter as "real_location".
-The score variable translates into Inter as "score".
-The last notified score variable translates into Inter as "last_score".
-The maximum score variable translates into Inter as "MAX_SCORE".
-The turn count variable translates into Inter as "turns".
-The time of day variable translates into Inter as "the_time".
+The location variable is defined by Inter as "real_location".
+The score variable is defined by Inter as "score".
+The last notified score variable is defined by Inter as "last_score".
+The maximum score variable is defined by Inter as "MAX_SCORE".
+The turn count variable is defined by Inter as "turns".
+The time of day variable is defined by Inter as "the_time".
 
 @ It is arguable that "noun", "second noun" and "person asked" ought
 to be rulebook variables belonging to the action-processing rules, so that
@@ -76,11 +72,11 @@ The reason the action failed -- documented at var_reason -- is an action
 based rule producing nothing that varies.
 The item described is an object that varies.
 
-The noun variable translates into Inter as "noun".
-The second noun variable translates into Inter as "second".
-The person asked variable translates into Inter as "actor".
-The reason the action failed variable translates into Inter as "reason_the_action_failed".
-The item described variable translates into Inter as "self".
+The noun variable is defined by Inter as "noun".
+The second noun variable is defined by Inter as "second".
+The person asked variable is defined by Inter as "actor".
+The reason the action failed variable is defined by Inter as "reason_the_action_failed".
+The item described variable is defined by Inter as "self".
 
 @ "Person reaching" turns out to have exactly the same meaning as "person
 asked" -- they are both the |actor|, in Inter terms, but are used in different
@@ -94,10 +90,10 @@ The container in question is an object that varies.
 The supporter in question is an object that varies.
 The particular possession -- documented at var_particular -- is a thing that varies.
 
-The person reaching variable translates into Inter as "actor".
-The container in question variable translates into Inter as "parameter_object".
-The supporter in question variable translates into Inter as "parameter_object".
-The particular possession variable translates into Inter as "particular_possession".
+The person reaching variable is defined by Inter as "actor".
+The container in question variable is defined by Inter as "parameter_object".
+The supporter in question variable is defined by Inter as "parameter_object".
+The particular possession variable is defined by Inter as "particular_possession".
 
 @ Parsing variables follow. The I6 parser tends to put any data read as part
 of a command into the variable |parsed_number|, but then, Inter is typeless:
@@ -118,10 +114,10 @@ The matched text is a snippet that varies.
 The topic understood is a snippet that varies.
 The current item from the multiple object list is an object that varies.
 
-The player's command variable translates into Inter as "players_command".
-The matched text variable translates into Inter as "matched_text".
-The topic understood variable translates into Inter as "parsed_number".
-The current item from the multiple object list variable translates into Inter as
+The player's command variable is defined by Inter as "players_command".
+The matched text variable is defined by Inter as "matched_text".
+The topic understood variable is defined by Inter as "parsed_number".
+The current item from the multiple object list variable is defined by Inter as
 	"multiple_object_item".
 
 @ =
@@ -133,11 +129,11 @@ The command prompt is ">".
 The left hand status line -- documented at var_sl -- is a text that varies.
 The right hand status line is a text that varies.
 
-The left hand status line variable translates into Inter as "left_hand_status_line".
-The right hand status line variable translates into Inter as "right_hand_status_line".
+The left hand status line variable is defined by Inter as "left_hand_status_line".
+The right hand status line variable is defined by Inter as "right_hand_status_line".
 
 The listing group size is a number that varies.
-The listing group size variable translates into Inter as "listing_size".
+The listing group size variable is defined by Inter as "listing_size".
 
 @ Now some linguistic variables:
 
@@ -145,7 +141,7 @@ The listing group size variable translates into Inter as "listing_size".
 Section 6 - Language generation
 
 The prior named object is an object that varies.
-The prior named object variable translates into Inter as "prior_named_noun".
+The prior named object variable is defined by Inter as "prior_named_noun".
 An object has a text called list grouping key.
 
 @ ...but they are not the last global variables created by the Standard Rules.
@@ -181,7 +177,7 @@ The release number is usually 1.
 The story headline is usually "An Interactive Fiction".
 The story genre is usually "Fiction".
 
-The story title variable translates into Inter as "Story".
+The story title variable is defined by Inter as "Story".
 
 Section SR2/6b - Unindexed Standard Rules variables - Unindexed (for figures language element only)
 
@@ -229,10 +225,10 @@ run-time for what is in the end only a label.)
 Section 8 - Unindexed Standard Rules variables - Unindexed
 
 The I6-nothing-constant is an object that varies.
-The I6-nothing-constant variable translates into Inter as "nothing".
+The I6-nothing-constant variable is defined by Inter as "nothing".
 
 The I6-varying-global is an object that varies.
-The I6-varying-global variable translates into Inter as "nothing".
+The I6-varying-global variable is defined by Inter as "nothing".
 
 @ The remaining secret variables are:
 
@@ -252,13 +248,13 @@ preambles to rules in object-based rulebooks.
 
 =
 The item-pushed-between-rooms is an object that varies.
-The item-pushed-between-rooms variable translates into Inter as "move_pushing".
+The item-pushed-between-rooms variable is defined by Inter as "move_pushing".
 
 The actor-location is an object that varies. [*]
-The actor-location variable translates into Inter as "actor_location".
+The actor-location variable is defined by Inter as "actor_location".
 
 The scene being changed is a scene that varies. [*]
-The scene being changed variable translates into Inter as "parameter_value".
+The scene being changed variable is defined by Inter as "parameter_value".
 
 @h Rulebooks.
 Whereas Basic Inform equips the language with only a handful of rulebooks
@@ -468,7 +464,7 @@ automatically to a safely neutral default value. It makes no decision.
 =
 Section 2 - The Standard Rules
 
-The little-used do nothing rule translates into Inter as "LITTLE_USED_DO_NOTHING_R".
+The little-used do nothing rule is defined by Inter as "LITTLE_USED_DO_NOTHING_R".
 
 @h Startup.
 Every rulebook contains a (possibly empty) run of "first" rules, then
@@ -534,11 +530,11 @@ The seed random number generator rule is listed first in the startup rulebook. [
 The virtual machine startup rule is listed first in the startup rulebook. [2nd.]
 The initialise memory rule is listed first in the startup rulebook. [1st.]
 
-The virtual machine startup rule translates into Inter as "VIRTUAL_MACHINE_STARTUP_R".
-The initialise memory rule translates into Inter as "INITIALISE_MEMORY_R".
-The seed random number generator rule translates into Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
-The update chronological records rule translates into Inter as "UPDATE_CHRONOLOGICAL_RECORDS_R".
-The position player in model world rule translates into Inter as "POSITION_PLAYER_IN_MODEL_R".
+The virtual machine startup rule is defined by Inter as "VIRTUAL_MACHINE_STARTUP_R".
+The initialise memory rule is defined by Inter as "INITIALISE_MEMORY_R".
+The seed random number generator rule is defined by Inter as "SEED_RANDOM_NUMBER_GENERATOR_R".
+The update chronological records rule is defined by Inter as "UPDATE_CHRONOLOGICAL_RECORDS_R".
+The position player in model world rule is defined by Inter as "POSITION_PLAYER_IN_MODEL_R".
 
 This is the start in the correct scenes rule: follow the scene changing rules.
 
@@ -695,17 +691,17 @@ This is the notify score changes rule:
 I6 primitives in the template layer.
 
 =
-The adjust light rule translates into Inter as "ADJUST_LIGHT_R" with
+The adjust light rule is defined by Inter as "ADJUST_LIGHT_R" with
 	"[It] [are] [if story tense is present tense]now [end if]pitch dark in
 	[if story tense is present tense]here[else]there[end if]!" (A).
-The advance time rule translates into Inter as "ADVANCE_TIME_R".
-The generate action rule translates into Inter as "GENERATE_ACTION_R" with
+The advance time rule is defined by Inter as "ADVANCE_TIME_R".
+The generate action rule is defined by Inter as "GENERATE_ACTION_R" with
 	"(considering the first sixteen objects only)[command clarification break]" (A),
 	"Nothing to do!" (B).
 
-The note object acquisitions rule translates into Inter as "NOTE_OBJECT_ACQUISITIONS_R".
-The parse command rule translates into Inter as "PARSE_COMMAND_R".
-The timed events rule translates into Inter as "TIMED_EVENTS_R".
+The note object acquisitions rule is defined by Inter as "NOTE_OBJECT_ACQUISITIONS_R".
+The parse command rule is defined by Inter as "PARSE_COMMAND_R".
+The timed events rule is defined by Inter as "TIMED_EVENTS_R".
 
 @h Shutdown.
 Goodbye is not the hardest word to say, but it does involve a little bit of
@@ -740,8 +736,8 @@ This is the when play ends stage rule: follow the when play ends rulebook.
 This is the print player's obituary rule:
 	carry out the printing the player's obituary activity.
 
-The resurrect player if asked rule translates into Inter as "RESURRECT_PLAYER_IF_ASKED_R".
-The ask the final question rule translates into Inter as "ASK_FINAL_QUESTION_R".
+The resurrect player if asked rule is defined by Inter as "RESURRECT_PLAYER_IF_ASKED_R".
+The ask the final question rule is defined by Inter as "ASK_FINAL_QUESTION_R".
 
 @h Scene changing.
 Scene changing is handled by a routine called |DetectSceneChange| which is
@@ -754,7 +750,7 @@ use of this opportunity.
 =
 The scene change machinery rule is listed last in the scene changing rulebook.
 
-The scene change machinery rule translates into Inter as "SCENE_CHANGE_MACHINERY_R".
+The scene change machinery rule is defined by Inter as "SCENE_CHANGE_MACHINERY_R".
 
 @ We couldn't do this earlier (because creating a scene automatically generates
 two rulebooks, and that would have thrown the rulebook numbering), so let's
@@ -909,18 +905,18 @@ instance, "check taking" is the specific check rulebook for the
 the names aren't so visible).
 
 =
-The basic accessibility rule translates into Inter as "BASIC_ACCESSIBILITY_R" with
+The basic accessibility rule is defined by Inter as "BASIC_ACCESSIBILITY_R" with
 	"You must name something more substantial." (A).
-The basic visibility rule translates into Inter as "BASIC_VISIBILITY_R" with
+The basic visibility rule is defined by Inter as "BASIC_VISIBILITY_R" with
 	"[It] [are] pitch dark, and [we] [can't see] a thing." (A).
-The carrying requirements rule translates into Inter as "CARRYING_REQUIREMENTS_R".
-The requested actions require persuasion rule translates into Inter as
+The carrying requirements rule is defined by Inter as "CARRYING_REQUIREMENTS_R".
+The requested actions require persuasion rule is defined by Inter as
 	"REQUESTED_ACTIONS_REQUIRE_R" with
 	 "[The noun] [have] better things to do." (A).
-The carry out requested actions rule translates into Inter as
+The carry out requested actions rule is defined by Inter as
 	"CARRY_OUT_REQUESTED_ACTIONS_R" with
 	"[The noun] [are] unable to do that." (A).
-The descend to specific action-processing rule translates into Inter as
+The descend to specific action-processing rule is defined by Inter as
 "DESCEND_TO_SPECIFIC_ACTION_R".
 
 @h Specific action-processing.
@@ -985,7 +981,7 @@ they record the action's specific check, carry out and report rulebooks,
 and whether or not it is in world.
 
 =
-The work out details of specific action rule translates into Inter as
+The work out details of specific action rule is defined by Inter as
 "WORK_OUT_DETAILS_OF_SPECIFIC_R".
 
 @h Player's action awareness.
@@ -1026,7 +1022,7 @@ Section 5 - Accessibility
 
 The access through barriers rule is listed last in the accessibility rules.
 
-The access through barriers rule translates into Inter as
+The access through barriers rule is defined by Inter as
 	"ACCESS_THROUGH_BARRIERS_R" with
 	"[regarding the noun][Those] [aren't] available." (A).
 
@@ -1042,10 +1038,10 @@ The can't reach inside rooms rule is listed last in the reaching inside rules. [
 The can't reach inside closed containers rule is listed last in the reaching
 inside rules. [Last.]
 
-The can't reach inside closed containers rule translates into Inter as
+The can't reach inside closed containers rule is defined by Inter as
 	"CANT_REACH_INSIDE_CLOSED_R" with
 	"[The noun] [aren't] open." (A).
-The can't reach inside rooms rule translates into Inter as
+The can't reach inside rooms rule is defined by Inter as
 	"CANT_REACH_INSIDE_ROOMS_R" with
 	"[We] [can't] reach into [the noun]." (A).
 
@@ -1056,7 +1052,7 @@ reaching on both the inbound and outbound directions,
 =
 The can't reach outside closed containers rule is listed last in the reaching outside rules.
 
-The can't reach outside closed containers rule translates into Inter as
+The can't reach outside closed containers rule is defined by Inter as
 	"CANT_REACH_OUTSIDE_CLOSED_R" with
 	"[The noun] [aren't] open." (A).
 
@@ -1146,7 +1142,7 @@ A command parser error is a kind of value. The command parser errors are
 	didn't understand addressee's last name error.
 
 The latest parser error is a command parser error that varies.
-The latest parser error variable translates into Inter as "etype".
+The latest parser error variable is defined by Inter as "etype".
 
 @h Internal rules.
 These rules do nothing in themselves, and are really just hooks on which
@@ -1155,7 +1151,7 @@ some response texts can be hung.
 =
 Section 9 - Responses for internal rules
 
-The list writer internal rule translates into Inter as
+The list writer internal rule is defined by Inter as
 	"LIST_WRITER_INTERNAL_R" with
 	" (" (A),
 	")" (B),
@@ -1183,7 +1179,7 @@ The list writer internal rule translates into Inter as
 	"Nothing" (X),
 	"nothing" (Y).
 
-The action processing internal rule translates into Inter as
+The action processing internal rule is defined by Inter as
 	"ACTION_PROCESSING_INTERNAL_R" with
 	"[bracket]That command asks to do something outside of play, so it can
     only make sense from you to me. [The noun] cannot be asked to do this.[close
@@ -1200,7 +1196,7 @@ The action processing internal rule translates into Inter as
 	cut short.)" (J),
 	"I didn't understand that instruction." (K).
 
-The parser error internal rule translates into Inter as
+The parser error internal rule is defined by Inter as
 	"PARSER_ERROR_INTERNAL_R" with
 	"I didn't understand that sentence." (A),
 	"I only understood you as far as wanting to " (B),
@@ -1229,7 +1225,7 @@ The parser error internal rule translates into Inter as
 	"To talk to someone, try 'someone, hello' or some such." (W),
 	"I beg your pardon?" (X).
 
-The parser nothing error internal rule translates into Inter as
+The parser nothing error internal rule is defined by Inter as
 	"PARSER_N_ERROR_INTERNAL_R" with
 	"Nothing to do!" (A),
 	"[There] [adapt the verb are from the third person plural] none at all available!" (B),
@@ -1238,17 +1234,17 @@ The parser nothing error internal rule translates into Inter as
 	"[The noun] [aren't] open." (E),
 	"[The noun] [are] empty." (F).
 
-The darkness name internal rule translates into Inter as "DARKNESS_NAME_INTERNAL_R" with
+The darkness name internal rule is defined by Inter as "DARKNESS_NAME_INTERNAL_R" with
 	"Darkness" (A).
 
-The parser command internal rule translates into Inter as
+The parser command internal rule is defined by Inter as
 	"PARSER_COMMAND_INTERNAL_R" with
 	"Sorry, that can't be corrected." (A),
 	"Think nothing of it." (B),
 	"'Oops' can only correct a single word." (C),
 	"You can hardly repeat that." (D).
 
-The parser clarification internal rule translates into Inter as
+The parser clarification internal rule is defined by Inter as
 	"PARSER_CLARIF_INTERNAL_R" with
 	"Who do you mean, " (A),
 	"Which do you mean, " (B),
@@ -1261,11 +1257,11 @@ The parser clarification internal rule translates into Inter as
 	"that" (G),
 	" or " (H).
 
-The yes or no question internal rule translates into Inter as
+The yes or no question internal rule is defined by Inter as
 	"YES_OR_NO_QUESTION_INTERNAL_R" with
 	"Please answer yes or no." (A).
 
-The print protagonist internal rule translates into Inter as
+The print protagonist internal rule is defined by Inter as
 	"PRINT_PROTAGONIST_INTERNAL_R" with
 	"[We]" (A),
 	"[ourselves]" (B),
@@ -1296,6 +1292,10 @@ A dialogue choice can be performed or unperformed. A dialogue choice is usually
 unperformed.
 A dialogue choice can be recurring or non-recurring. A dialogue choice is usually
 non-recurring.
+
+The performed property is accessible to Inter as "performed".
+The spontaneous property is accessible to Inter as "spontaneous".
+The recurring property is accessible to Inter as "recurring".
 
 To make (T - an object) a live conversational subject:
 	(- DirectorAddLiveSubjectList({T}); -).

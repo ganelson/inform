@@ -720,7 +720,7 @@ To say pronoun dictionary word:
 To say recap of command:
 	(- PrintCommand(); -).
 The pronoun reference object is an object that varies.
-The pronoun reference object variable translates into Inter as "pronoun_obj".
+The pronoun reference object variable is defined by Inter as "pronoun_obj".
 
 To say pronoun i6 dictionary word:
 	(- print (address) pronoun_word; -).

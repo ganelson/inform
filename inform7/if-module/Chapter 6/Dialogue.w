@@ -42,9 +42,8 @@ int Dialogue::new_base_kind_notify(kind *new_base, text_stream *name, wording W)
 @ The following need some compiler support:
 
 = (early code)
-property *P_performed = NULL;
-property *P_spontaneous = NULL;
 property *P_elaborated = NULL;
+property *P_performed = NULL;
 
 activity *AV_offering_a_dialogue_choice = NULL;
 activity *AV_performing_dialogue = NULL;
@@ -53,9 +52,8 @@ activity *AV_performing_dialogue = NULL;
 
 =
 <notable-dialogue-properties> ::=
-	performed |
-	spontaneous |
-	elaborated
+	elaborated |
+	performed
 
 <notable-dialogue-activities> ::=
 	offering |
@@ -65,9 +63,8 @@ activity *AV_performing_dialogue = NULL;
 int Dialogue::new_property_notify(property *prn) {
 	if (<notable-dialogue-properties>(prn->name)) {
 		switch (<<r>>) {
-			case 0: P_performed = prn; break;
-			case 1: P_spontaneous = prn; break;
-			case 2: P_elaborated = prn; break;
+			case 0: P_elaborated = prn; break;
+			case 1: P_performed = prn; break;
 		}
 	}
 	return FALSE;

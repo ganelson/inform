@@ -222,9 +222,6 @@ void Hierarchy::establish(void) {
 @e MAX_FRAME_SIZE_NEEDED_HL
 @e SUBMAIN_HL
 @e AFTER_ACTION_HOOK_HL
-@e PERFORMED_HL
-@e RECURRING_HL
-@e SPONTANEOUS_HL
 @e HEADINGS_HAP
 @e HEADING_INDEXABLE_MD_HL
 @e HEADING_TEXT_MD_HL
@@ -262,9 +259,6 @@ void Hierarchy::establish(void) {
 		H_C_T(MAX_FRAME_SIZE_NEEDED_HL,       I"MAX_FRAME_SIZE_NEEDED")
 		H_F_T(SUBMAIN_HL,                     I"Submain_fn", I"Submain")
 		H_C_T(AFTER_ACTION_HOOK_HL,           I"AfterActionHook")
-		H_C_T(PERFORMED_HL,                   I"performed")
-		H_C_T(RECURRING_HL,                   I"recurring")
-		H_C_T(SPONTANEOUS_HL,                 I"spontaneous")
 		H_BEGIN_AP(HEADINGS_HAP,              I"heading", I"_heading")
 			H_C_U(HEADING_INDEXABLE_MD_HL,    I"^indexable")
 			H_C_U(HEADING_TEXT_MD_HL,         I"^text")

@@ -1,5 +1,5 @@
 Xanadu is a room.
 
-The Understand token squiggle translates into I6 as "SQUIGGLE_TOKEN".
+The Understand token squiggle is defined by Inter as "SQUIGGLE_TOKEN".
 
-The Understand token squiggle translates into I6 as "SQUAGGLE_TOKEN".
+The Understand token squiggle is defined by Inter as "SQUAGGLE_TOKEN".

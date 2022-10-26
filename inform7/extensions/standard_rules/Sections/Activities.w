@@ -31,7 +31,7 @@ activity on responses.
 The standard issuing the response text rule is listed last in for issuing the
 response text.
 
-The standard issuing the response text rule translates into Inter as
+The standard issuing the response text rule is defined by Inter as
 "STANDARD_RESPONSE_ISSUING_R".
 
 @h Naming and listing.
@@ -70,7 +70,7 @@ grouped together:
 =
 Listing contents of something (documented at act_lc) is an activity.
 The standard contents listing rule is listed last in the for listing contents rulebook.
-The standard contents listing rule translates into Inter as "STANDARD_CONTENTS_LISTING_R".
+The standard contents listing rule is defined by Inter as "STANDARD_CONTENTS_LISTING_R".
 Grouping together something (documented at act_gt) is an activity.
 
 @ And such lists of names are formed up in turn into room descriptions.
@@ -195,7 +195,7 @@ Rule for supplying a missing noun while an actor going (this is the block vaguel
 =
 The standard implicit taking rule is listed last in for implicitly taking.
 
-The standard implicit taking rule translates into Inter as "STANDARD_IMPLICIT_TAKING_R" with
+The standard implicit taking rule is defined by Inter as "STANDARD_IMPLICIT_TAKING_R" with
 	"(first taking [the noun])[command clarification break]" (A),
 	"([the second noun] first taking [the noun])[command clarification break]" (B).
 
@@ -215,12 +215,12 @@ The print obituary headline rule is listed last in for printing the player's obi
 The print final score rule is listed last in for printing the player's obituary.
 The display final status line rule is listed last in for printing the player's obituary.
 
-The print obituary headline rule translates into Inter as "PRINT_OBITUARY_HEADLINE_R"
+The print obituary headline rule is defined by Inter as "PRINT_OBITUARY_HEADLINE_R"
 	with " You have died " (A),
 		" You have won " (B),
 		" The End " (C).
-The print final score rule translates into Inter as "PRINT_FINAL_SCORE_R".
-The display final status line rule translates into Inter as "DISPLAY_FINAL_STATUS_LINE_R".
+The print final score rule is defined by Inter as "PRINT_FINAL_SCORE_R".
+The display final status line rule is defined by Inter as "DISPLAY_FINAL_STATUS_LINE_R".
 
 @ There is one last question: the one which usually reads "Would you like to
 RESTART, RESTORE a saved game, or QUIT?", but which sometimes provides other
@@ -238,10 +238,10 @@ who wants to call them. (In the default implementation below, we put
 references to them into a table.)
 
 =
-The immediately restart the VM rule translates into Inter as "IMMEDIATELY_RESTART_VM_R".
-The immediately restore saved game rule translates into Inter as "IMMEDIATELY_RESTORE_SAVED_R".
-The immediately quit rule translates into Inter as "IMMEDIATELY_QUIT_R".
-The immediately undo rule translates into Inter as "IMMEDIATELY_UNDO_R" with
+The immediately restart the VM rule is defined by Inter as "IMMEDIATELY_RESTART_VM_R".
+The immediately restore saved game rule is defined by Inter as "IMMEDIATELY_RESTORE_SAVED_R".
+The immediately quit rule is defined by Inter as "IMMEDIATELY_QUIT_R".
+The immediately undo rule is defined by Inter as "IMMEDIATELY_UNDO_R" with
 	"The use of 'undo' is forbidden in this story." (A),
 	"You can't 'undo' what hasn't been done!" (B),
 	"Your interpreter does not provide 'undo'. Sorry!" (C),
@@ -264,7 +264,7 @@ The standard respond to final question rule is listed last in for handling the f
 
 This is the print the final prompt rule: say "> [run paragraph on]" (A).
 
-The read the final answer rule translates into Inter as "READ_FINAL_ANSWER_R".
+The read the final answer rule is defined by Inter as "READ_FINAL_ANSWER_R".
 
 @ That clears away the underbrush and reduces us to two matching tasks: (i)
 to print the question, (ii) to parse the answer, given that we want to be

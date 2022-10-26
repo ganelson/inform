@@ -80,21 +80,6 @@ void RTDialogueBeats::compile(void) {
 		Emit::iname_constant(iname, K_value, Hierarchy::find(DO_NOTHING_HL));
 	}
 	Hierarchy::make_available(iname);
-	if (P_performed) {
-		iname = Hierarchy::find(PERFORMED_HL);
-		Emit::iname_constant(iname, K_value, RTProperties::iname(P_performed));
-		Hierarchy::make_available(iname);
-	}
-	if (P_performed) {
-		iname = Hierarchy::find(SPONTANEOUS_HL);
-		Emit::iname_constant(iname, K_value, RTProperties::iname(P_spontaneous));
-		Hierarchy::make_available(iname);
-	}
-	if (P_recurring) {
-		iname = Hierarchy::find(RECURRING_HL);
-		Emit::iname_constant(iname, K_value, RTProperties::iname(P_recurring));
-		Hierarchy::make_available(iname);
-	}
 }
 
 void RTDialogueBeats::compile_starting_beat_entry(void) {

@@ -169,6 +169,8 @@ generated anyway; Inform authors never type them.
 		Diagrams::new_PROPER_NOUN(OP), Task::language_of_syntax());
 
 @h Translation into Inter.
+There are three sentences here, but the first is now deprecated: it has split
+off into two different meanings, each with its own wording for clarity.
 
 @d TRANSLATION_DEPRECATED_FORM 1
 @d TRANSLATION_DEFINED_BY_FORM 2
@@ -387,11 +389,21 @@ will be required to pass |<extra-response>|.
 @<Take action in pass 1 or 2 where possible@> =
 	switch(category) {
 		case PROPERTY_I6TR:
-			Properties::translates(W, p2);
-			Annotations::write_int(V, category_of_I6_translation_ANNOT, INVALID_I6TR);
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+			@<Do not use the translates-into form@>;
+			if (translates_into_verb == TRANSLATION_ACCESSIBLE_TO_FORM) {
+				if (global_pass_state.pass == 2) Properties::accessible_as(W, p2);
+			} else {
+				Properties::translates(W, p2);
+				Annotations::write_int(V, category_of_I6_translation_ANNOT, INVALID_I6TR);
+			}
 			break;
 		case NOUN_I6TR: break;
 		case RULE_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+			@<Require the defined-by form@>;
 			if (global_pass_state.pass == 1)
 				Rules::declare_Inter_rule(W, Node::get_text(p2));
 			if ((global_pass_state.pass == 2) && (p2->down) && (<rule-name>(W)))
@@ -406,12 +418,21 @@ will be required to pass |<extra-response>|.
 			if (global_pass_state.pass == 2) Activities::translates(W, p2);
 			break;
 		case VARIABLE_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+			@<Require the defined-by form@>;
 			if (global_pass_state.pass == 2) NonlocalVariables::translates(W, p2);
 			break;
 		case ACTION_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_ACCESSIBLE_TO_FORM;
+			@<Require the accessible-to form@>;
 			if (global_pass_state.pass == 2) Actions::translates(W, p2);
 			break;
 		case GRAMMAR_TOKEN_I6TR:
+			if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+				translates_into_verb = TRANSLATION_DEFINED_BY_FORM;
+			@<Require the defined-by form@>;
 			if (global_pass_state.pass == 2) CommandGrammars::new_translated_token(W, p2);
 			break;
 	}
@@ -424,6 +445,29 @@ will be required to pass |<extra-response>|.
 			"so although you can say 'X is accessible to Inter as Y' to give it "
 			"an Inter identifier, you cannot say 'X translates into Inter as Y' or "
 			"'X is defined by Inter as Y'.");
+	}
+
+@<Require the defined-by form@> =
+	if (translates_into_verb != TRANSLATION_DEFINED_BY_FORM) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(...),
+			"this is a language construct which cannot be given an Inter name "
+			"except by defining it from Inter",
+			"so although you can say 'X is defined by Inter as Y' to make "
+			"this available to source text, you cannot say 'X translates into "
+			"Inter as Y' or 'X is accessible to Inter as Y'.");
+	}
+
+@<Do not use the translates-into form@> =
+	if (translates_into_verb == TRANSLATION_DEPRECATED_FORM) {
+		StandardProblems::sentence_problem(Task::syntax_tree(),
+			_p_(...),
+			"the verb 'X translates into Inter as Y' (or '... into I6...') "
+			"has been removed from Inform",
+			"and should either be 'X is defined by Inter as Y' if Y is something "
+			"whose definition is given in Inter - for example, for a rule defined in "
+			"a kit - or else 'X is accessible to Inter as Y', if you just want a "
+			"a name you can use from Inter code to refer to an X created by Inform.");
 	}
 
 @ Extra responses look just as they would in running code.
@@ -462,6 +506,9 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 			wording W = Wordings::trim_last_word(SP);
 			parse_node *res = Lexicon::retrieve(NOUN_MC, W);
 			if (res) {
+				if (translates_into_verb == TRANSLATION_DEPRECATED_FORM)
+					translates_into_verb = TRANSLATION_ACCESSIBLE_TO_FORM;
+				@<Require the accessible-to form@>;
 				noun_usage *nu = Nouns::disambiguate(res, FALSE);
 				noun *nt = (nu)?(nu->noun_used):NULL;
 				if (nt) {
@@ -480,4 +527,3 @@ void Translations::plus_responses(parse_node *p, rule *R) {
 			break;
 		}
 	}
-

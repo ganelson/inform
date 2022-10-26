@@ -1,3 +1,3 @@
 Xanadu is a room.
 
-The applause variable translates into I6 as "clapping".
+The applause variable is defined by Inter as "clapping".
