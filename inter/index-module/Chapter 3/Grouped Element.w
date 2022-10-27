@@ -164,15 +164,15 @@ void GroupedElement::detail_pages(index_session *session) {
 	inter_ti oow = Metadata::read_optional_numeric(an_pack, I"^out_of_world");
 	if (oow == FALSE) {
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"persuasion", I"persuasion", session);
+			I"PERSUADE_RB", I"persuasion", session);
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"unsuccessful_attempt_by", I"unsuccessful attempt", session);
+			I"UNSUCCESSFUL_ATTEMPT_RB", I"unsuccessful attempt", session);
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"setting_action_variables", I"set action variables for", session);
+			I"SETTING_ACTION_VARIABLES_RB", I"set action variables for", session);
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"before", I"before", session);
+			I"BEFORE_RB", I"before", session);
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
-			I"instead", I"instead of", session);
+			I"INSTEAD_RB", I"instead of", session);
 	}
 	inter_symbol *check_s = Metadata::required_symbol(an_pack, I"^check_rulebook");
 	inter_symbol *carry_out_s = Metadata::required_symbol(an_pack, I"^carry_out_rulebook");
@@ -182,14 +182,14 @@ void GroupedElement::detail_pages(index_session *session) {
 	inter_package *report_pack = InterPackage::container(report_s->definition);
 
 	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, check_pack,
-		I"check", I"check", session);
+		I"CHECK_RB", I"check", session);
 	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, carry_out_pack,
-		I"carry_out", I"carry out", session);
+		I"CARRY_OUT_RB", I"carry out", session);
 	if (oow == FALSE)
 		resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, NULL,
 			I"after", I"after", session);
 	resp_count += IndexRules::index_action_rules(OUT, inv, an_pack, report_pack,
-		I"report", I"report", session);
+		I"REPORT_RB", I"report", session);
 	if (resp_count > 1) {
 		Localisation::roman(OUT, LD, I"Index.Elements.A1.ResponseIcons");
 		WRITE(":&nbsp;");

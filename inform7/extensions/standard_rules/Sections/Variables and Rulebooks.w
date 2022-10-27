@@ -260,18 +260,7 @@ The scene being changed variable is defined by Inter as "parameter_value".
 Whereas Basic Inform equips the language with only a handful of rulebooks
 to start out, the Standard Rules are replete with them.
 
-Note, however, that many of these have explicit support in the |basicinform|
-template and in the compiler itself, and that they must be created exactly
-in the order below, unless matching changes are made to both other places.
-In particular, these need to stay in sync:
-
-(a) The sequence of declaration of these rulebooks here, in the Standard Rules.
-(b) The inweb |@d| definitions in the form |TURN_SEQUENCE_RB| in the section
-Rulebooks of the Inform source code.
-(c) The I6 |Constant| definitions in the form |TURN_SEQUENCE_RB| in the file
-|Definitions.i6t| of the |basicinform| template.
-
-@ When an interactive fiction project using the Standard Rules starts up,
+When an interactive fiction project using the Standard Rules starts up,
 it does the following:
 
 (1) Consider the startup rules.
@@ -293,16 +282,23 @@ Chapter 2 - Rulebooks
 Section 1 - The Standard Rulebooks
 
 Turn sequence rules is a rulebook.
+The turn sequence rulebook is accessible to Inter as "TURN_SEQUENCE_RB".
 
 @ Now a set of rulebooks to do with the passage of time.
 
 =
 Scene changing rules is a rulebook.
+The scene changing rulebook is accessible to Inter as "SCENE_CHANGING_RB".
 When play begins is a rulebook.
+The when play begins rulebook is accessible to Inter as "WHEN_PLAY_BEGINS_RB".
 When play ends is a rulebook.
+The when play ends rulebook is accessible to Inter as "WHEN_PLAY_ENDS_RB".
 When scene begins is a scene based rulebook.
+The when scene begins rulebook is accessible to Inter as "WHEN_SCENE_BEGINS_RB".
 When scene ends is a scene based rulebook.
+The when scene ends rulebook is accessible to Inter as "WHEN_SCENE_ENDS_RB".
 Every turn rules is a rulebook.
+The every turn rulebook is accessible to Inter as "EVERY_TURN_RB".
 
 @ The action machinery requires some 16 rulebooks to work, though that is
 the result of gradual simplification -- in 2006 it required 25, for instance.
@@ -322,9 +318,12 @@ what rulebooks we consult next depends on what the action is (hence "specific")
 
 =
 Action-processing rules is a rulebook.
+The action-processing rulebook is accessible to Inter as "ACTION_PROCESSING_RB".
 The action-processing rulebook has a person called the actor.
 Setting action variables is a rulebook.
+The setting action variables rulebook is accessible to Inter as "SETTING_ACTION_VARIABLES_RB".
 The specific action-processing rules is a rulebook.
+The specific action-processing rulebook is accessible to Inter as "SPECIFIC_ACTION_PROCESSING_RB".
 The specific action-processing rulebook has a truth state called action in world.
 The specific action-processing rulebook has a truth state called action keeping silent.
 The specific action-processing rulebook has a rulebook called specific check rulebook.
@@ -332,17 +331,22 @@ The specific action-processing rulebook has a rulebook called specific carry out
 The specific action-processing rulebook has a rulebook called specific report rulebook.
 The specific action-processing rulebook has a truth state called within the player's sight.
 The player's action awareness rules is a rulebook.
+The player's action awareness rulebook is accessible to Inter as "PLAYERS_ACTION_AWARENESS_RB".
 
 @ The rules on accessibility and visibility, which control whether an action
 is physically possible, have named outcomes as a taste of syntactic sugar.
 
 =
 Accessibility rules is a rulebook.
+The accessibility rulebook is accessible to Inter as "ACCESSIBILITY_RB".
 Reaching inside rules is an object-based rulebook.
+The reaching inside rulebook is accessible to Inter as "REACHING_INSIDE_RB".
 Reaching inside rules have outcomes allow access (success) and deny access (failure).
 Reaching outside rules is an object-based rulebook.
+The reaching outside rulebook is accessible to Inter as "REACHING_OUTSIDE_RB".
 Reaching outside rules have outcomes allow access (success) and deny access (failure).
 Visibility rules is a rulebook.
+The visibility rulebook is accessible to Inter as "VISIBLE_RB".
 Visibility rules have outcomes there is sufficient light (failure) and there is
 insufficient light (success).
 
@@ -350,8 +354,10 @@ insufficient light (success).
 
 =
 Persuasion rules is a rulebook.
+The persuasion rulebook is accessible to Inter as "PERSUADE_RB".
 Persuasion rules have outcomes persuasion succeeds (success) and persuasion fails (failure).
 Unsuccessful attempt by is a rulebook.
+The unsuccessful attempt by rulebook is accessible to Inter as "UNSUCCESSFUL_ATTEMPT_RB".
 
 @ Next, the six classic rulebooks best known to users of Inform. It's
 perhaps an unfortunate point of the design that there are so many as six:
@@ -408,11 +414,17 @@ have to be forbidden.
 
 =
 Before rules is a rulebook.
+The before rulebook is accessible to Inter as "BEFORE_RB".
 Instead rules is a rulebook.
+The instead rulebook is accessible to Inter as "INSTEAD_RB".
 Check rules is a rulebook.
+The check rulebook is accessible to Inter as "CHECK_RB".
 Carry out rules is a rulebook.
+The carry out rulebook is accessible to Inter as "CARRY_OUT_RB".
 After rules is a rulebook.
+The after rulebook is accessible to Inter as "AFTER_RB".
 Report rules is a rulebook.
+The report rulebook is accessible to Inter as "REPORT_RB".
 
 @ The next rulebook in this roundup is one used for parsing ambiguous
 commands during play. This looks like the job of an activity rather than a
@@ -430,6 +442,7 @@ change the names of these outcomes.
 
 =
 The does the player mean rules is a rulebook.
+The does the player mean rulebook is accessible to Inter as "DOES_THE_PLAYER_MEAN_RB".
 The does the player mean rules have outcomes it is very likely, it is likely, it is possible,
 it is unlikely and it is very unlikely.
 
@@ -439,6 +452,7 @@ something similar.
 
 =
 The multiple action processing rules is a rulebook.
+The multiple action processing rulebook is accessible to Inter as "MULTIPLE_ACTION_PROCESSING_RB".
 
 @ And that's it: all of the named rulebooks now exist. There will, of
 course, be hundreds more rulebooks soon, created automatically as activities

@@ -40,8 +40,8 @@
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
+<li><a href="../../../inweb/index.html">inweb</a></li>
+<li><a href="../../../intest/index.html">intest</a></li>
 
 </ul>
 		</nav>
@@ -79,10 +79,8 @@ changes and ensures that <span class="extract"><span class="extract-syntax">inhi
 <span class="plain-syntax">[ </span><span class="identifier-syntax">FixInhibitFlag</span><span class="plain-syntax"> </span><span class="identifier-syntax">n</span><span class="plain-syntax"> </span><span class="identifier-syntax">act</span><span class="plain-syntax"> </span><span class="identifier-syntax">inhibit_rule_debugging</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">for</span><span class="plain-syntax"> (</span><span class="identifier-syntax">n</span><span class="plain-syntax">=0:</span><span class="identifier-syntax">n</span><span class="plain-syntax">&lt;</span><span class="identifier-syntax">activities_sp</span><span class="plain-syntax">:</span><span class="identifier-syntax">n</span><span class="plain-syntax">++) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">act</span><span class="plain-syntax"> = </span><span class="identifier-syntax">activities_stack</span><span class="plain-syntax">--&gt;</span><span class="identifier-syntax">n</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">act</span><span class="plain-syntax"> == </span><span class="identifier-syntax">PRINTING_THE_NAME_ACT</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_THE_PLURAL_NAME_ACT</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">PRINTING_ROOM_DESC_DETAILS_ACT</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_INVENTORY_DETAILS_ACT</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span>
-<span class="plain-syntax">            </span><span class="identifier-syntax">LISTING_CONTENTS_ACT</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">GROUPING_TOGETHER_ACT</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_RESPONSE_ACT</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">                </span><span class="identifier-syntax">inhibit_rule_debugging</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="identifier-syntax">act</span><span class="plain-syntax"> == </span><span class="identifier-syntax">PRINTING_THE_NAME_ACT</span><span class="plain-syntax"> </span><span class="reserved-syntax">or</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_THE_PLURAL_NAME_ACT</span><span class="plain-syntax">)</span>
+<span class="plain-syntax">            </span><span class="identifier-syntax">inhibit_rule_debugging</span><span class="plain-syntax"> = </span><span class="reserved-syntax">true</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> ((</span><span class="identifier-syntax">inhibit_flag</span><span class="plain-syntax"> == </span><span class="reserved-syntax">false</span><span class="plain-syntax">) &amp;&amp; (</span><span class="identifier-syntax">inhibit_rule_debugging</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">saved_debug_rules</span><span class="plain-syntax"> = </span><span class="identifier-syntax">debug_rules</span><span class="plain-syntax">;</span>

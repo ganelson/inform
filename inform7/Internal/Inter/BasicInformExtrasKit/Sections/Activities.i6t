@@ -28,10 +28,8 @@ Global saved_debug_rules = 0;
 [ FixInhibitFlag n act inhibit_rule_debugging;
 	for (n=0:n<activities_sp:n++) {
 		act = activities_stack-->n;
-		if (act == PRINTING_THE_NAME_ACT or PRINTING_THE_PLURAL_NAME_ACT or
-			PRINTING_ROOM_DESC_DETAILS_ACT or PRINTING_INVENTORY_DETAILS_ACT or
-			LISTING_CONTENTS_ACT or GROUPING_TOGETHER_ACT or PRINTING_RESPONSE_ACT)
-				inhibit_rule_debugging = true;
+		if (act == PRINTING_THE_NAME_ACT or PRINTING_THE_PLURAL_NAME_ACT)
+			inhibit_rule_debugging = true;
 	}
 	if ((inhibit_flag == false) && (inhibit_rule_debugging)) {
 		saved_debug_rules = debug_rules;

@@ -106,9 +106,8 @@ and are recognised by their Inter identifiers:
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_performed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
-<span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_spontaneous</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_elaborated</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
+<span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">P_performed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 
 <span class="identifier-syntax">activity</span><span class="plain-syntax"> *</span><span class="identifier-syntax">AV_offering_a_dialogue_choice</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">activity</span><span class="plain-syntax"> *</span><span class="identifier-syntax">AV_performing_dialogue</span><span class="plain-syntax"> = </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">;</span>
@@ -118,9 +117,8 @@ and are recognised by their Inter identifiers:
 
 <pre class="Preform-displayed-code all-displayed-code code-font">
 <span class="Preform-function-syntax">&lt;notable-dialogue-properties&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">performed</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">spontaneous</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
-<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">elaborated</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">elaborated</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
+<span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">performed</span>
 
 <span class="Preform-function-syntax">&lt;notable-dialogue-activities&gt;</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">::=</span>
 <span class="Preform-plain-syntax">    </span><span class="Preform-constant-syntax">offering</span><span class="Preform-plain-syntax"> </span><span class="Preform-reserved-syntax">|</span>
@@ -133,9 +131,8 @@ and are recognised by their Inter identifiers:
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">Dialogue::new_property_notify</span><button class="popup" onclick="togglePopup('usagePopup2')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup2">Usage of <span class="code-font"><span class="function-syntax">Dialogue::new_property_notify</span></span>:<br/><a href="6-dlg.html#SP1">&#167;1</a></span></button><span class="plain-syntax">(</span><span class="identifier-syntax">property</span><span class="plain-syntax"> *</span><span class="identifier-syntax">prn</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;notable-dialogue-properties&gt;(prn-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">)) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">switch</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;&lt;r&gt;&gt;</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">P_performed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prn</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">P_spontaneous</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prn</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
-<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">2</span><span class="plain-syntax">: </span><span class="identifier-syntax">P_elaborated</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prn</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">: </span><span class="identifier-syntax">P_elaborated</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prn</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
+<span class="plain-syntax">            </span><span class="reserved-syntax">case</span><span class="plain-syntax"> </span><span class="constant-syntax">1</span><span class="plain-syntax">: </span><span class="identifier-syntax">P_performed</span><span class="plain-syntax"> = </span><span class="identifier-syntax">prn</span><span class="plain-syntax">; </span><span class="reserved-syntax">break</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">        }</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="identifier-syntax">FALSE</span><span class="plain-syntax">;</span>

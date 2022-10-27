@@ -133,19 +133,24 @@ The parameter-object is an object that varies.
 The parameter-object variable is defined by Inter as "parameter_value".
 
 Startup rules is a rulebook.
+The startup rulebook is accessible to Inter as "STARTUP_RB".
 Startup rules have outcomes allow startup (success) and deny startup (failure).
 Shutdown rules is a rulebook.
+The shutdown rulebook is accessible to Inter as "SHUTDOWN_RB".
 
 Starting the virtual machine (documented at act_startvm) is an activity.
+The starting the virtual machine activity is accessible to Inter as "STARTING_VIRTUAL_MACHINE_ACT".
 The final code startup rule is listed first in for starting the virtual machine.
 The final code startup rule is defined by Inter as "FINAL_CODE_STARTUP_R".
 
 Printing the name of something (documented at act_pn) is an activity.
+The printing the name activity is accessible to Inter as "PRINTING_THE_NAME_ACT".
 
 The standard name printing rule is listed last in the for printing the name rulebook.
 The standard name printing rule is defined by Inter as "STANDARD_NAME_PRINTING_R".
 
 Printing the plural name of something (documented at act_ppn) is an activity.
+The printing the plural name activity is accessible to Inter as "PRINTING_THE_PLURAL_NAME_ACT".
 
 The standard printing the plural name rule is listed last in the for printing the
 plural name rulebook.

@@ -89,8 +89,6 @@ activity *Activities::new(kind *K, wording W) {
 	av->for_rules = Activities::make_rulebook(av, 1, future_action_flag);
 	av->after_rules = Activities::make_rulebook(av, 2, future_action_flag);
 
-	Activities::set_std(av);
-
 	PluginCalls::new_activity_notify(av);
 
 	return av;
@@ -292,77 +290,3 @@ void Activities::add_variable(activity *av, parse_node *cnode) {
 		Problems::issue_problem_end();
 		return;
 	}
-
-@h Standard activities.
-As with rulebooks -- see the similar discussion at //Rulebooks::std// -- a few
-activities are special to the compiler, though in fact purely for indexing purposes.
-
-These are recognised by the order in which they are declared, which makes it
-crucial not to change that order in //basic_inform: Miscellaneous Definitions//
-and //standard_rules: Physical World Model// without making matching changes
-both here and in //BasicInformKit// and //WorldModelKit//. So: don't casually
-change the following numbers.
-
-Note that in the world of Basic Inform only, none of these will exist except
-for the first five.
-
-@d STARTING_VIRTUAL_MACHINE_ACT    0
-@d PRINTING_THE_NAME_ACT           1
-@d PRINTING_THE_PLURAL_NAME_ACT    2
-@d PRINTING_RESPONSE_ACT           3
-@d PRINTING_A_NUMBER_OF_ACT        4
-@d PRINTING_ROOM_DESC_DETAILS_ACT  5
-@d PRINTING_INVENTORY_DETAILS_ACT  6
-@d LISTING_CONTENTS_ACT            7
-@d GROUPING_TOGETHER_ACT           8
-@d WRITING_A_PARAGRAPH_ABOUT_ACT   9
-@d LISTING_NONDESCRIPT_ITEMS_ACT   10
-@d PRINTING_NAME_OF_DARK_ROOM_ACT  11
-@d PRINTING_DESC_OF_DARK_ROOM_ACT  12
-@d PRINTING_NEWS_OF_DARKNESS_ACT   13
-@d PRINTING_NEWS_OF_LIGHT_ACT      14
-@d REFUSAL_TO_ACT_IN_DARK_ACT      15
-@d CONSTRUCTING_STATUS_LINE_ACT    16
-@d PRINTING_BANNER_TEXT_ACT        17
-@d READING_A_COMMAND_ACT           18
-@d DECIDING_SCOPE_ACT              19
-@d DECIDING_CONCEALED_POSSESS_ACT  20
-@d DECIDING_WHETHER_ALL_INC_ACT    21
-@d CLARIFYING_PARSERS_CHOICE_ACT   22
-@d ASKING_WHICH_DO_YOU_MEAN_ACT    23
-@d PRINTING_A_PARSER_ERROR_ACT     24
-@d SUPPLYING_A_MISSING_NOUN_ACT    25
-@d SUPPLYING_A_MISSING_SECOND_ACT  26
-@d IMPLICITLY_TAKING_ACT           27
-@d AMUSING_A_VICTORIOUS_PLAYER_ACT 28
-@d PRINTING_PLAYERS_OBITUARY_ACT   29
-@d DEALING_WITH_FINAL_QUESTION_ACT 30
-@d PRINTING_LOCALE_DESCRIPTION_ACT 31
-@d CHOOSING_NOTABLE_LOCALE_OBJ_ACT 32
-@d PRINTING_LOCALE_PARAGRAPH_ACT   33
-
-@ The rest of the compiler should call |Activities::std(N)| to obtain activity |N|.
-
-@d MAX_BUILT_IN_ACTIVITIES 64
-
-=
-int built_in_activities_initialised = FALSE;
-activity *built_in_activities[MAX_BUILT_IN_ACTIVITIES];
-
-activity *Activities::std(int N) {
-	if ((N < 0) || (N >= MAX_BUILT_IN_ACTIVITIES)) internal_error("N out of range");
-	if (built_in_activities_initialised == FALSE) {
-		built_in_activities_initialised = TRUE;
-		for (int i=0; i<MAX_BUILT_IN_ACTIVITIES; i++) built_in_activities[i] = NULL;
-	}
-	return built_in_activities[N];
-}
-
-void Activities::set_std(activity *Av) {
-	if (built_in_activities_initialised == FALSE) {
-		built_in_activities_initialised = TRUE;
-		for (int i=0; i<MAX_BUILT_IN_ACTIVITIES; i++) built_in_activities[i] = NULL;
-	}
-	if (Av->allocation_id < MAX_BUILT_IN_ACTIVITIES)
-		built_in_activities[Av->allocation_id] = Av;
-}

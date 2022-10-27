@@ -78,9 +78,9 @@ a given action:
 
 =
 rulebook *Actions::fragment_rulebook(action_name *an, rulebook *rb) {
-	if (rb == Rulebooks::std(CHECK_RB))     return an->check_rules;
-	if (rb == Rulebooks::std(CARRY_OUT_RB)) return an->carry_out_rules;
-	if (rb == Rulebooks::std(REPORT_RB))    return an->report_rules;
+	if (rb == RB_check)     return an->check_rules;
+	if (rb == RB_carry_out) return an->carry_out_rules;
+	if (rb == RB_report)    return an->report_rules;
 	internal_error("asked for peculiar fragmented rulebook"); return NULL;
 }
 
@@ -121,21 +121,21 @@ int Actions::place_rule(rule *R, rulebook *original_owner, rulebook **new_owner)
 			Rules::set_marked_for_anyone(R, anyone);
 		} else {
 			waiver = TRUE;
-			if (original_owner == Rulebooks::std(CHECK_RB))     waiver = FALSE;
-			if (original_owner == Rulebooks::std(CARRY_OUT_RB)) waiver = FALSE;
-			if (original_owner == Rulebooks::std(REPORT_RB))    waiver = FALSE;
+			if (original_owner == RB_check)     waiver = FALSE;
+			if (original_owner == RB_carry_out) waiver = FALSE;
+			if (original_owner == RB_report)    waiver = FALSE;
 		}
 		if ((an == NULL) && (waiver == FALSE))
 			an = ActionNameNames::longest_nounless(PW, IS_TENSE, NULL);
 		if ((an == NULL) && (waiver == FALSE)) @<Issue PM_MultipleCCR@>;
-		if (original_owner == Rulebooks::std(CHECK_RB)) {
-			*new_owner = Actions::fragment_rulebook(an, Rulebooks::std(CHECK_RB));
+		if (original_owner == RB_check) {
+			*new_owner = Actions::fragment_rulebook(an, RB_check);
 			return TRUE;
-		} else if (original_owner == Rulebooks::std(CARRY_OUT_RB)) {
-			*new_owner = Actions::fragment_rulebook(an, Rulebooks::std(CARRY_OUT_RB));
+		} else if (original_owner == RB_carry_out) {
+			*new_owner = Actions::fragment_rulebook(an, RB_carry_out);
 			return TRUE;
-		} else if (original_owner == Rulebooks::std(REPORT_RB)) {
-			*new_owner = Actions::fragment_rulebook(an, Rulebooks::std(REPORT_RB));
+		} else if (original_owner == RB_report) {
+			*new_owner = Actions::fragment_rulebook(an, RB_report);
 			return TRUE;
 		} else {
 			*new_owner = Actions::divert_to_another_actions_rulebook(an, original_owner);
@@ -165,9 +165,9 @@ rulebook, automatic or not:
 
 =
 int Actions::rule_placement_notify(rule *R, rulebook *B, int side, rule *ref_rule) {
-	if ((B == Rulebooks::std(BEFORE_RB)) ||
-		(B == Rulebooks::std(AFTER_RB)) ||
-		(B == Rulebooks::std(INSTEAD_RB))) {
+	if ((B == RB_before) ||
+		(B == RB_after) ||
+		(B == RB_instead)) {
 		imperative_defn *id = Rules::get_imperative_definition(R);
 		if (id) {
 			id_body *idb = id->body_of_defn;
@@ -180,7 +180,7 @@ int Actions::rule_placement_notify(rule *R, rulebook *B, int side, rule *ref_rul
 					"but 'Before', 'Instead' and 'After' have no effect on them.)");
 		}
 	}
-	if (B == Rulebooks::std(SETTING_ACTION_VARIABLES_RB)) {
+	if (B == RB_setting_action_variables) {
 		Rules::set_never_test_actor(R);
 	} else {
 		Rulebooks::modify_rule_to_suit_focus(B, R);

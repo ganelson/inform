@@ -65,7 +65,7 @@ MathJax = {
     <ul class="crumbs"><li><a href="../index.html">Home</a></li><li><a href="../extensions.html">Kits</a></li><li><a href="index.html">BasicInformKit</a></li><li><b>Definitions Template</b></li></ul></div>
 <p class="purpose">Miscellaneous constant definitions, usually providing symbolic names for otherwise inscrutable numbers, which are used throughout the template layer.</p>
 
-<ul class="toc"><li><a href="S-dfn.html#SP1">&#167;1. Identification</a></li><li><a href="S-dfn.html#SP2">&#167;2. Z-Machine Definitions</a></li><li><a href="S-dfn.html#SP3">&#167;3. Glulx Definitions</a></li><li><a href="S-dfn.html#SP4">&#167;4. Nothing</a></li><li><a href="S-dfn.html#SP5">&#167;5. Powers of Two</a></li><li><a href="S-dfn.html#SP6">&#167;6. Text Styles</a></li><li><a href="S-dfn.html#SP7">&#167;7. Colour Numbers</a></li><li><a href="S-dfn.html#SP8">&#167;8. Window Numbers</a></li><li><a href="S-dfn.html#SP9">&#167;9. Paragraphing Flags</a></li><li><a href="S-dfn.html#SP10">&#167;10. Descriptors in the Language of Play</a></li><li><a href="S-dfn.html#SP11">&#167;11. Run-Time Problem Numbers</a></li><li><a href="S-dfn.html#SP12">&#167;12. Template Activities</a></li><li><a href="S-dfn.html#SP13">&#167;13. Template Rulebooks</a></li><li><a href="S-dfn.html#SP14">&#167;14. Scope Searching Reasons</a></li><li><a href="S-dfn.html#SP15">&#167;15. Token Types</a></li><li><a href="S-dfn.html#SP16">&#167;16. GPR Return Values</a></li><li><a href="S-dfn.html#SP17">&#167;17. List Styles</a></li><li><a href="S-dfn.html#SP18">&#167;18. Lengths Of Time</a></li><li><a href="S-dfn.html#SP19">&#167;19. Empty Text</a></li><li><a href="S-dfn.html#SP20">&#167;20. Empty Table</a></li><li><a href="S-dfn.html#SP21">&#167;21. Empty Set</a></li><li><a href="S-dfn.html#SP22">&#167;22. Template Attributes</a></li><li><a href="S-dfn.html#SP23">&#167;23. Template Properties</a></li><li><a href="S-dfn.html#SP24">&#167;24. Formal Parameters</a></li><li><a href="S-dfn.html#SP25">&#167;25. Template Configuration</a></li></ul><hr class="tocbar">
+<ul class="toc"><li><a href="S-dfn.html#SP1">&#167;1. Identification</a></li><li><a href="S-dfn.html#SP2">&#167;2. Z-Machine Definitions</a></li><li><a href="S-dfn.html#SP3">&#167;3. Glulx Definitions</a></li><li><a href="S-dfn.html#SP4">&#167;4. Nothing</a></li><li><a href="S-dfn.html#SP5">&#167;5. Powers of Two</a></li><li><a href="S-dfn.html#SP6">&#167;6. Text Styles</a></li><li><a href="S-dfn.html#SP7">&#167;7. Colour Numbers</a></li><li><a href="S-dfn.html#SP8">&#167;8. Window Numbers</a></li><li><a href="S-dfn.html#SP9">&#167;9. Paragraphing Flags</a></li><li><a href="S-dfn.html#SP10">&#167;10. Descriptors in the Language of Play</a></li><li><a href="S-dfn.html#SP11">&#167;11. Run-Time Problem Numbers</a></li><li><a href="S-dfn.html#SP12">&#167;12. Scope Searching Reasons</a></li><li><a href="S-dfn.html#SP13">&#167;13. Token Types</a></li><li><a href="S-dfn.html#SP14">&#167;14. GPR Return Values</a></li><li><a href="S-dfn.html#SP15">&#167;15. List Styles</a></li><li><a href="S-dfn.html#SP16">&#167;16. Lengths Of Time</a></li><li><a href="S-dfn.html#SP17">&#167;17. Empty Text</a></li><li><a href="S-dfn.html#SP18">&#167;18. Empty Table</a></li><li><a href="S-dfn.html#SP19">&#167;19. Empty Set</a></li><li><a href="S-dfn.html#SP20">&#167;20. Template Attributes</a></li><li><a href="S-dfn.html#SP21">&#167;21. Template Properties</a></li><li><a href="S-dfn.html#SP22">&#167;22. Formal Parameters</a></li><li><a href="S-dfn.html#SP23">&#167;23. Template Configuration</a></li></ul><hr class="tocbar">
 
 <p class="commentary firstcommentary"><a id="SP1" class="paragraph-anchor"></a><b>&#167;1. Identification. </b></p>
 
@@ -355,104 +355,7 @@ to I7.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RTP_LISTSIZENEGATIVE</span><span class="plain-syntax">        = </span><span class="constant-syntax">68</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">RTP_REGIONSNOTADJACENT</span><span class="plain-syntax">      = </span><span class="constant-syntax">69</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Template Activities. </b>These are the activities defined in the Standard Rules. Most, though not
-all, are carried out by explicit function calls in the template layer,
-which is why we need their ID numbers: note that Inform assigns each activity a
-unique ID number on creation, counting upwards from 0, and that it
-processes the Standard Rules before any other source text. (These numbers
-must correspond {\it both} to those in the source of Inform, {\it and} to the
-creation sequence in the Standard Rules.)
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">STARTING_VIRTUAL_MACHINE_ACT</span><span class="plain-syntax">    = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_THE_NAME_ACT</span><span class="plain-syntax">           = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_THE_PLURAL_NAME_ACT</span><span class="plain-syntax">    = </span><span class="constant-syntax">2</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_RESPONSE_ACT</span><span class="plain-syntax">           = </span><span class="constant-syntax">3</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_A_NUMBER_OF_ACT</span><span class="plain-syntax">        = </span><span class="constant-syntax">4</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_ROOM_DESC_DETAILS_ACT</span><span class="plain-syntax">  = </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_INVENTORY_DETAILS_ACT</span><span class="plain-syntax">  = </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LISTING_CONTENTS_ACT</span><span class="plain-syntax">            = </span><span class="constant-syntax">7</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GROUPING_TOGETHER_ACT</span><span class="plain-syntax">           = </span><span class="constant-syntax">8</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WRITING_A_PARAGRAPH_ABOUT_ACT</span><span class="plain-syntax">   = </span><span class="constant-syntax">9</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LISTING_NONDESCRIPT_ITEMS_ACT</span><span class="plain-syntax">   = </span><span class="constant-syntax">10</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_NAME_OF_DARK_ROOM_ACT</span><span class="plain-syntax">  = </span><span class="constant-syntax">11</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_DESC_OF_DARK_ROOM_ACT</span><span class="plain-syntax">  = </span><span class="constant-syntax">12</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_NEWS_OF_DARKNESS_ACT</span><span class="plain-syntax">   = </span><span class="constant-syntax">13</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_NEWS_OF_LIGHT_ACT</span><span class="plain-syntax">      = </span><span class="constant-syntax">14</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">REFUSAL_TO_ACT_IN_DARK_ACT</span><span class="plain-syntax">      = </span><span class="constant-syntax">15</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CONSTRUCTING_STATUS_LINE_ACT</span><span class="plain-syntax">    = </span><span class="constant-syntax">16</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_BANNER_TEXT_ACT</span><span class="plain-syntax">        = </span><span class="constant-syntax">17</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">READING_A_COMMAND_ACT</span><span class="plain-syntax">           = </span><span class="constant-syntax">18</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DECIDING_SCOPE_ACT</span><span class="plain-syntax">              = </span><span class="constant-syntax">19</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DECIDING_CONCEALED_POSSESS_ACT</span><span class="plain-syntax">  = </span><span class="constant-syntax">20</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DECIDING_WHETHER_ALL_INC_ACT</span><span class="plain-syntax">    = </span><span class="constant-syntax">21</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CLARIFYING_PARSERS_CHOICE_ACT</span><span class="plain-syntax">   = </span><span class="constant-syntax">22</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ASKING_WHICH_DO_YOU_MEAN_ACT</span><span class="plain-syntax">    = </span><span class="constant-syntax">23</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_A_PARSER_ERROR_ACT</span><span class="plain-syntax">     = </span><span class="constant-syntax">24</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SUPPLYING_A_MISSING_NOUN_ACT</span><span class="plain-syntax">    = </span><span class="constant-syntax">25</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SUPPLYING_A_MISSING_SECOND_ACT</span><span class="plain-syntax">  = </span><span class="constant-syntax">26</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">IMPLICITLY_TAKING_ACT</span><span class="plain-syntax">           = </span><span class="constant-syntax">27</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AMUSING_A_VICTORIOUS_PLAYER_ACT</span><span class="plain-syntax"> = </span><span class="constant-syntax">28</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_PLAYERS_OBITUARY_ACT</span><span class="plain-syntax">   = </span><span class="constant-syntax">29</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DEALING_WITH_FINAL_QUESTION_ACT</span><span class="plain-syntax"> = </span><span class="constant-syntax">30</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_LOCALE_DESCRIPTION_ACT</span><span class="plain-syntax"> = </span><span class="constant-syntax">31</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CHOOSING_NOTABLE_LOCALE_OBJ_ACT</span><span class="plain-syntax"> = </span><span class="constant-syntax">32</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PRINTING_LOCALE_PARAGRAPH_ACT</span><span class="plain-syntax">   = </span><span class="constant-syntax">33</span><span class="plain-syntax">;</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Template Rulebooks. </b>Rulebooks are created in a similar way, and again are numbered upwards from
-0 in order of creation. These are the ones used in the template layer.
-(These numbers must correspond {\it both} to those in the source of Inform,
-{\it and} to the creation sequence in the Standard Rules.)
-</p>
-
-<pre class="displayed-code all-displayed-code code-font">
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">STARTUP_RB</span><span class="plain-syntax">                      = </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SHUTDOWN_RB</span><span class="plain-syntax">                     = </span><span class="constant-syntax">1</span><span class="plain-syntax">;</span>
-
-<span class="comment-syntax">2, 3, 4 are used by the "Printing the name of something" activity</span>
-<span class="comment-syntax">5, 6, 7 are used by the "Printing the plural name of something" activity</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TURN_SEQUENCE_RB</span><span class="plain-syntax">                = </span><span class="constant-syntax">11</span><span class="plain-syntax">;</span>
-
-<span class="comment-syntax">9 is the Scene changing rules</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WHEN_PLAY_BEGINS_RB</span><span class="plain-syntax">             = </span><span class="constant-syntax">13</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WHEN_PLAY_ENDS_RB</span><span class="plain-syntax">               = </span><span class="constant-syntax">14</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WHEN_SCENE_BEGINS_RB</span><span class="plain-syntax">            = </span><span class="constant-syntax">15</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">WHEN_SCENE_ENDS_RB</span><span class="plain-syntax">              = </span><span class="constant-syntax">16</span><span class="plain-syntax">;</span>
-
-<span class="comment-syntax">14 is Every turn</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACTION_PROCESSING_RB</span><span class="plain-syntax">            = </span><span class="constant-syntax">18</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SETTING_ACTION_VARIABLES_RB</span><span class="plain-syntax">     = </span><span class="constant-syntax">19</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">SPECIFIC_ACTION_PROCESSING_RB</span><span class="plain-syntax">   = </span><span class="constant-syntax">20</span><span class="plain-syntax">;</span>
-
-<span class="comment-syntax">18 is player's action awareness rules</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ACCESSIBILITY_RB</span><span class="plain-syntax">                = </span><span class="constant-syntax">22</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">REACHING_INSIDE_RB</span><span class="plain-syntax">              = </span><span class="constant-syntax">23</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">REACHING_OUTSIDE_RB</span><span class="plain-syntax">             = </span><span class="constant-syntax">24</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">VISIBLE_RB</span><span class="plain-syntax">                      = </span><span class="constant-syntax">25</span><span class="plain-syntax">;</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">PERSUADE_RB</span><span class="plain-syntax">                     = </span><span class="constant-syntax">26</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">UNSUCCESSFUL_ATTEMPT_RB</span><span class="plain-syntax">         = </span><span class="constant-syntax">27</span><span class="plain-syntax">;</span>
-
-<span class="comment-syntax">25 is before, 26 is instead, 27 is check, 28 is carry out</span>
-
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">AFTER_RB</span><span class="plain-syntax">                        = </span><span class="constant-syntax">32</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">REPORT_RB</span><span class="plain-syntax">                       = </span><span class="constant-syntax">33</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">DOES_THE_PLAYER_MEAN_RB</span><span class="plain-syntax">         = </span><span class="constant-syntax">34</span><span class="plain-syntax">;</span>
-<span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">MULTIPLE_ACTION_PROCESSING_RB</span><span class="plain-syntax">   = </span><span class="constant-syntax">35</span><span class="plain-syntax">;</span>
-</pre>
-<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. Scope Searching Reasons. </b>The parser makes use of a mechanism for searching through the objects currently
+<p class="commentary firstcommentary"><a id="SP12" class="paragraph-anchor"></a><b>&#167;12. Scope Searching Reasons. </b>The parser makes use of a mechanism for searching through the objects currently
 "in scope", which basically means visible to the actor who would perform the
 action envisaged by the command being parsed. It is sometimes useful to
 behave differently depending on why this scope searching is being done, so
@@ -471,7 +374,7 @@ in numbering.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">LOOPOVERSCOPE_REASON</span><span class="plain-syntax"> = </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TESTSCOPE_REASON</span><span class="plain-syntax">     = </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. Token Types. </b>Tokens are the indecomposable pieces of a grammar line making up a possible
+<p class="commentary firstcommentary"><a id="SP13" class="paragraph-anchor"></a><b>&#167;13. Token Types. </b>Tokens are the indecomposable pieces of a grammar line making up a possible
 reading of a command; some are literal words, others stand for "any named
 object in scope", and so on. The following codes identify the possibilities.
 The <span class="extract"><span class="extract-syntax">*_TOKEN</span></span> constants must not be altered without modifying the I6 compiler
@@ -499,7 +402,7 @@ to match (so, basically, they must not be altered at all).
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TOPIC_TOKEN</span><span class="plain-syntax">        = </span><span class="constant-syntax">9</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">ENDIT_TOKEN</span><span class="plain-syntax">        = </span><span class="constant-syntax">15</span><span class="plain-syntax">;   </span><span class="comment-syntax">Value used to mean "end of grammar line"</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. GPR Return Values. </b>GRP stands for "General Parsing Routine", an I6 routine which acts as a
+<p class="commentary firstcommentary"><a id="SP14" class="paragraph-anchor"></a><b>&#167;14. GPR Return Values. </b>GRP stands for "General Parsing Routine", an I6 routine which acts as a
 grammar token: again, see the {\it Inform Designer's Manual}, 4th edition,
 for details.
 </p>
@@ -527,7 +430,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_MULTIINSIDE</span><span class="plain-syntax">    = </span><span class="identifier-syntax">GPR_NOUN</span><span class="plain-syntax"> + </span><span class="constant-syntax">5</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">GPR_CREATURE</span><span class="plain-syntax">       = </span><span class="identifier-syntax">GPR_NOUN</span><span class="plain-syntax"> + </span><span class="constant-syntax">6</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. List Styles. </b>These constants make up bitmaps of the options in use when listing objects.
+<p class="commentary firstcommentary"><a id="SP15" class="paragraph-anchor"></a><b>&#167;15. List Styles. </b>These constants make up bitmaps of the options in use when listing objects.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -550,7 +453,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">EXTRAINDENT_BIT</span><span class="plain-syntax">    = </span><span class="constant-syntax">$$0010000000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">New in I7: extra indentation of 1 level</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">CFIRSTART_BIT</span><span class="plain-syntax">      = </span><span class="constant-syntax">$$0100000000000000</span><span class="plain-syntax">; </span><span class="comment-syntax">Capitalise first article in list</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Lengths Of Time. </b>Inform measures time in minutes.
+<p class="commentary firstcommentary"><a id="SP16" class="paragraph-anchor"></a><b>&#167;16. Lengths Of Time. </b>Inform measures time in minutes.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -560,7 +463,7 @@ here regardless.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TWELVE_HOURS</span><span class="plain-syntax"> = </span><span class="constant-syntax">720</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">TWENTY_FOUR_HOURS</span><span class="plain-syntax"> = </span><span class="constant-syntax">1440</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Empty Text. </b>The I6 compiler does not optimise string compilation: if it needs to compile
+<p class="commentary firstcommentary"><a id="SP17" class="paragraph-anchor"></a><b>&#167;17. Empty Text. </b>The I6 compiler does not optimise string compilation: if it needs to compile
 the (packed, read-only) string <span class="extract"><span class="extract-syntax">"exemplum"</span></span> twice, it will compile two copies.
 This is slightly wasteful on memory, though in practice the loss is not
 enough for us to care. But we do want to avoid this in I7 because, to make
@@ -576,21 +479,21 @@ and properties: we give it a name as follows.
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax"> </span><span class="string-syntax">""</span><span class="plain-syntax">;</span>
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_VALUE</span><span class="plain-syntax"> --&gt; </span><span class="identifier-syntax">CONSTANT_PACKED_TEXT_STORAGE</span><span class="plain-syntax"> </span><span class="identifier-syntax">EMPTY_TEXT_PACKED</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Empty Table. </b>Similarly: the default value for the "table" kind of value, a Table
+<p class="commentary firstcommentary"><a id="SP18" class="paragraph-anchor"></a><b>&#167;18. Empty Table. </b>Similarly: the default value for the "table" kind of value, a Table
 containing no rows and no columns.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">Array</span><span class="plain-syntax"> </span><span class="identifier-syntax">TheEmptyTable</span><span class="plain-syntax"> --&gt; </span><span class="constant-syntax">0</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Empty Set. </b>The falsity proposition describes the empty set of objects, and is the
+<p class="commentary firstcommentary"><a id="SP19" class="paragraph-anchor"></a><b>&#167;19. Empty Set. </b>The falsity proposition describes the empty set of objects, and is the
 zero value for the "description" kind of value.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">[ </span><span class="identifier-syntax">Prop_Falsity</span><span class="plain-syntax"> </span><span class="identifier-syntax">reason</span><span class="plain-syntax"> </span><span class="identifier-syntax">obj</span><span class="plain-syntax">; </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; ];</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Template Attributes. </b>An I6 attribute is equivalent to an I7 "either/or property", though the
+<p class="commentary firstcommentary"><a id="SP20" class="paragraph-anchor"></a><b>&#167;20. Template Attributes. </b>An I6 attribute is equivalent to an I7 "either/or property", though the
 latter are not always translated into I6 attributes because the Z-machine
 has only a limited number of attributes to use. Here, we define attributes
 used by the template.
@@ -653,7 +556,7 @@ are not visible to I7 source text as storage.
 <span class="identifier-syntax">Attribute</span><span class="plain-syntax"> </span><span class="identifier-syntax">workflag2</span><span class="plain-syntax">; </span><span class="comment-syntax">new in I7 and also temporary workspace</span>
 <span class="reserved-syntax">Constant</span><span class="plain-syntax"> </span><span class="identifier-syntax">list_filter_permits</span><span class="plain-syntax"> = </span><span class="identifier-syntax">privately_named</span><span class="plain-syntax">; </span><span class="comment-syntax">another I7 listwriter convenience</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Template Properties. </b>As remarked above, these more often correspond to value properties in I7.
+<p class="commentary firstcommentary"><a id="SP21" class="paragraph-anchor"></a><b>&#167;21. Template Properties. </b>As remarked above, these more often correspond to value properties in I7.
 To an experienced I6 user, though, the death toll of abolished I6
 properties in I7 is breathtaking: in alphabetical order, <span class="extract"><span class="extract-syntax">after</span></span>,
 <span class="extract"><span class="extract-syntax">cant_go</span></span>, <span class="extract"><span class="extract-syntax">daemon</span></span>, <span class="extract"><span class="extract-syntax">each_turn</span></span>, <span class="extract"><span class="extract-syntax">invent</span></span>, <span class="extract"><span class="extract-syntax">life</span></span>, <span class="extract"><span class="extract-syntax">number</span></span>, <span class="extract"><span class="extract-syntax">orders</span></span>,
@@ -712,7 +615,7 @@ future use.
 <span class="identifier-syntax">Property</span><span class="plain-syntax"> </span><span class="identifier-syntax">inside_description</span><span class="plain-syntax">; </span><span class="comment-syntax">not used by I7, but an interesting hook in the locale code</span>
 <span class="identifier-syntax">Property</span><span class="plain-syntax"> </span><span class="identifier-syntax">short_name_indef</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">; </span><span class="comment-syntax">not used by I7, but an interesting hook in the listmaker</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP24" class="paragraph-anchor"></a><b>&#167;24. Formal Parameters. </b>These are needed for efficient run-time ambiguity resolution.
+<p class="commentary firstcommentary"><a id="SP22" class="paragraph-anchor"></a><b>&#167;22. Formal Parameters. </b>These are needed for efficient run-time ambiguity resolution.
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
@@ -727,7 +630,7 @@ future use.
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">formal_par7</span><span class="plain-syntax">;</span>
 <span class="identifier-syntax">Global</span><span class="plain-syntax"> </span><span class="identifier-syntax">unicode_temp</span><span class="plain-syntax">;</span>
 </pre>
-<p class="commentary firstcommentary"><a id="SP25" class="paragraph-anchor"></a><b>&#167;25. Template Configuration. </b>To minimise the need for conditional compilation in the template, the
+<p class="commentary firstcommentary"><a id="SP23" class="paragraph-anchor"></a><b>&#167;23. Template Configuration. </b>To minimise the need for conditional compilation in the template, the
 constant <span class="extract"><span class="extract-syntax">KIT_CONFIGURATION_BITMAP</span></span> must be generated by the user
 (i.e., by I7). It's made up of these bits:
 </p>

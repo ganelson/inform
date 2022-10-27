@@ -132,33 +132,8 @@ void RTRulebooks::compilation_agent(compilation_subtask *t) {
 	Hierarchy::apply_metadata_from_iname(P, RULEBOOK_RUN_FN_MD_HL, run_fn_iname);
 	if (vars_creator_iname)
 		Hierarchy::apply_metadata_from_iname(P, RULEBOOK_VARC_MD_HL, vars_creator_iname);
-	text_stream *marker = NULL;
-	if (B == Rulebooks::std(SCENE_CHANGING_RB)) marker = I"scene_changing";
-	if (B == Rulebooks::std(WHEN_SCENE_BEGINS_RB)) marker = I"when_scene_begins";
-	if (B == Rulebooks::std(WHEN_SCENE_ENDS_RB)) marker = I"when_scene_ends";
-	if (B == Rulebooks::std(STARTUP_RB)) marker = I"startup";
-	if (B == Rulebooks::std(TURN_SEQUENCE_RB)) marker = I"turn_sequence";
-	if (B == Rulebooks::std(SHUTDOWN_RB)) marker = I"shutdown";
-	if (B == Rulebooks::std(WHEN_PLAY_BEGINS_RB)) marker = I"when_play_begins";
-	if (B == Rulebooks::std(EVERY_TURN_RB)) marker = I"every_turn";
-	if (B == Rulebooks::std(WHEN_PLAY_ENDS_RB)) marker = I"when_play_ends";
-	if (B == Rulebooks::std(DOES_THE_PLAYER_MEAN_RB)) marker = I"does_the_player_mean";
-	if (B == Rulebooks::std(PERSUASION_RB)) marker = I"persuasion";
-	if (B == Rulebooks::std(UNSUCCESSFUL_ATTEMPT_BY_RB)) marker = I"unsuccessful_attempt_by";
-	if (B == Rulebooks::std(SETTING_ACTION_VARIABLES_RB)) marker = I"setting_action_variables";
-	if (B == Rulebooks::std(BEFORE_RB)) marker = I"before";
-	if (B == Rulebooks::std(INSTEAD_RB)) marker = I"instead";
-	if (B == Rulebooks::std(AFTER_RB)) marker = I"after";
-	if (B == Rulebooks::std(CHECK_RB)) marker = I"check";
-	if (B == Rulebooks::std(CARRY_OUT_RB)) marker = I"carry_out";
-	if (B == Rulebooks::std(REPORT_RB)) marker = I"report";
-	if (B == Rulebooks::std(ACTION_PROCESSING_RB)) marker = I"action_processing";
-	if (B == Rulebooks::std(SPECIFIC_ACTION_PROCESSING_RB)) marker = I"specific_action_processing";
-	if (B == Rulebooks::std(PLAYERS_ACTION_AWARENESS_RB)) marker = I"players_action_awareness";
-	if (B == Rulebooks::std(REACHING_INSIDE_RB)) marker = I"reaching_inside";
-	if (B == Rulebooks::std(REACHING_OUTSIDE_RB)) marker = I"reaching_outside";
-	if (B == Rulebooks::std(VISIBILITY_RB)) marker = I"visibility";
-	if (marker) Hierarchy::apply_metadata(P, RULEBOOK_INDEX_ID_MD_HL, marker);
+	text_stream *marker = B->compilation_data.translated_name;
+	if (Str::len(marker) > 0) Hierarchy::apply_metadata(P, RULEBOOK_INDEX_ID_MD_HL, marker);
 	TEMPORARY_TEXT(FOCUS)
 	if ((Rulebooks::get_focus_kind(B)) &&
 		(Kinds::eq(Rulebooks::get_focus_kind(B), K_action_name) == FALSE)) {
