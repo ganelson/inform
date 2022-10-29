@@ -1,9 +1,11 @@
-Inform 7 build 6L26 has started.
-I've now read your source text, which is 9 words long.
-I've also read Standard Rules by Graham Nelson, which is 42597 words long.
-I've also read English Language by Graham Nelson, which is 2288 words long.
+Inform 7 v10.2.0 has started.
+I've now read your source text, which is 12 words long.
+I've also read Basic Inform by Graham Nelson, which is 7772 words long.
+I've also read English Language by Graham Nelson, which is 2330 words long.
+I've also read Standard Rules by Graham Nelson, which is 34310 words long.
 Problem__ PM_UnicodeOutOfRange
-  >--> You wrote 'Roman Dimidia Sextula Sign translates into Unicode as 65940' (source
-    text, line 1): but Inform can only handle Unicode characters in the 16-bit
-    range, from 0 to 65535.
-Inform 7 has finished: 17 centiseconds used.
+  >--> You wrote '"A sign shows: [unicode Roman Dimidia Sextula Sign]."' (source
+    text, line 1): but this character value is beyond the range which the
+    current story could handle, which is from 0 to (hexadecimal) FFFF for
+    stories compiled to the Z-machine, and otherwise 0 to 1FFFF.
+Inform 7 has finished.

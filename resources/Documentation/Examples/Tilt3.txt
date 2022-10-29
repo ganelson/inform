@@ -12,9 +12,7 @@ The trick here is that colored output is done in different ways by the Z-Machine
 	
 For the suit symbols, we'll want the Unicode extension included with Inform:
 
-	{**}Include Unicode Character Names by Graham Nelson.
-
-	Rule for printing the name of a card (called target) while grouping together:
+	{**}Rule for printing the name of a card (called target) while grouping together:
 		say "[rank of the target as abbreviated value][suit of the target as symbol]".
 
 	To say (current suit - a suit) as symbol:

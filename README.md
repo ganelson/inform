@@ -1,6 +1,6 @@
 # Inform 7
 
-[Version](notes/versioning.md): 10.2.0-beta+6V87 'Krypton' (28 October 2022)
+[Version](notes/versioning.md): 10.2.0-beta+6V88 'Krypton' (29 October 2022)
 
 ## About Inform
 
@@ -147,8 +147,6 @@ Other extensions shipped with Inform are not presented as webs, but as single fi
 * [English Language by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/English Language.i7x>) - __v1__
 * [Metric Units by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/Metric Units.i7x>) - __v2__
 * [Rideable Vehicles by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/Rideable Vehicles.i7x>) - __v3__
-* [Unicode Character Names by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/Unicode Character Names.i7x>) - __v1__
-* [Unicode Full Character Names by Graham Nelson](<inform7/Internal/Extensions/Graham Nelson/Unicode Full Character Names.i7x>) - __v1__
 
 ### Website templates and interpreters shipped with Inform
 

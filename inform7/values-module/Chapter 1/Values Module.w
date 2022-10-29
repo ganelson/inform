@@ -16,6 +16,7 @@ which use this module:
 @e TEXT_SUBSTITUTIONS_DA
 @e VARIABLE_CREATIONS_DA
 @e TABLES_DA
+@e UNICODE_DATA_MREASON
 
 =
 COMPILE_WRITER(instance *, Instances::log)
@@ -31,6 +32,7 @@ void ValuesModule::start(void) {
 	Log::declare_aspect(TEXT_SUBSTITUTIONS_DA, L"text substitutions", FALSE, FALSE);
 	Log::declare_aspect(VARIABLE_CREATIONS_DA, L"variable creations", FALSE, FALSE);
 	Log::declare_aspect(TABLES_DA, L"table construction", FALSE, FALSE);
+	Memory::reason_name(UNICODE_DATA_MREASON, "Unicode data");
 	REGISTER_WRITER('O', Instances::log);
 	REGISTER_WRITER('q', Equations::log);
 	REGISTER_WRITER('Z', NonlocalVariables::log);

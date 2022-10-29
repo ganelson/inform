@@ -166,8 +166,6 @@ Other extensions shipped with Inform are not presented as webs, but as single fi
 {extension author: Graham Nelson title: English Language}
 {extension author: Graham Nelson title: Metric Units}
 {extension author: Graham Nelson title: Rideable Vehicles}
-{extension author: Graham Nelson title: Unicode Character Names}
-{extension author: Graham Nelson title: Unicode Full Character Names}
 
 ### Website templates and interpreters shipped with Inform
 

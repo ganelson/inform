@@ -2868,10 +2868,8 @@ Moreover, the player is not allowed to type these characters in commands during 
 
 (d) <b>Characters which might work in quoted text, or might not</b>. The Arabic and Hebrew alphabets are fairly likely to be available; miscellaneous symbols are sometimes legible to the player, sometimes not. Other alphabets are chancier still. (If a work of IF depends on these being visible, it may be necessary to instruct players to use specific interpreters, or to provide a way for the player to test that all will be well.)
 
-[x] Unicode characters {PM_SayUnicode} {PM_MidTextUnicode}
+[x] Unicode characters {PM_SayUnicode} {PM_MidTextUnicode} {PM_UnicodeOutOfRange}
 
-^^{Unicode Character Names / Full Character Names+ext+} ^^{extensions: specific extensions: Unicode Character Names}
-^^{extensions: specific extensions: Unicode Full Character Names}
 ^^{characters (letters): Unicode (arbitrary symbols)}
 ^^{characters (letters) <-- Unicode}
 ^^^{+tosay+"[(unicode character)]" --> unicode character}
@@ -2882,30 +2880,35 @@ Unicode characters can be named (or numbered) directly in text. For example:
 
 	"[unicode 321]odz Churchyard"
 
-produces a Polish slashed L. If the Unicode Character Names or Unicode Full Character Names extensions are included, characters can also be named as well as numbered:
+produces a Polish slashed L. Characters can also be named as well as numbered:
 
 	"[unicode Latin capital letter L with stroke]odz Churchyard"
 
-The Unicode standard assigns character numbers to essentially every marking used in text from any human language: its full range is enormous. (Note that Inform writes these numbers in decimal: many reference charts show them in hexadecimal, or base 16, which can cause confusion.) Inform can only handle codes [unicode 32] up to [unicode 65535], so it is not quite so catholic, but the range is still enormous enough that code numbers are unfamiliar to the eye. Inform therefore allows us to use the official Unicode 4.1 names for characters, instead of their decimal numbers, <i>provided</i> we have Included the necessary extension like so:
+The Unicode standard assigns character numbers to essentially every marking used in text from any human language: its full range is enormous. (Note that Inform writes these numbers in decimal: many reference charts show them in hexadecimal, or base 16, which can cause confusion.)
 
-	{*}Include Unicode Character Names by Graham Nelson.
-
-This extension provides names for some 2900 of the most commonly used characters. It means, for instance, that we can write text such as:
+This means, for instance, that we can write text such as:
 
 	"Dr Zarkov unveils the new [unicode Hebrew letter alef] Nought drive."
 	"Omar plays 4[unicode black spade suit] with an air of triumph."
 
-Admittedly, these can get a little verbose:
+Admittedly, character names can get a little verbose:
 
 	"[unicode Greek small letter omega with psili and perispomeni and ypogegrammeni]"
 
+Inform can "only" handle codes [unicode 32] up to [unicode 131071], and note that if the story settings are to compile to the Z-machine, this range stops at 65535: thus many emoji characters - say, [unicode fish cake with swirl design] - can only be used if the story will compile to Glulx or another modern target. But by default, stories are compiled the modern way, so this should not be a problem in practice.
+
+There are far too many possible names to list here: formally, any character name in the Basic Multilingual Plane or the Supplementary Multilingual Plane of version 15.0.0 of the Unicode standard can be used. See:
+
+	https://en.wikipedia.org/wiki/Plane_(Unicode)
+
 But before getting carried away, we should remember the hazards: Inform allows us to type, say, "[unicode Saturn]" (an astrological sign) but it appears only as a black square if the resulting story is played by an interpreter using a font which lacks the relevant sign. For instance, Zoom for OS X uses the Lucida Grande and Apple Symbol fonts by default, and this combination does contain the Saturn sign: but Windows Frotz tends to use the Tahoma font by default, which does not. (Another issue is that the fixed letter spacing font, such as used in the status line, may not contain all the characters that the font of the main text contains.) To write something with truly outré characters is therefore a little chancy: users would have to be told quite carefully what interpreter and font to use to play it.
 
-The "Unicode Character Names" extension, which is pre-installed in the standard distribution of Inform, defines names for the Latin, Greek, Cyrillic, Hebrew and Braille alphabets, together with currency and miscellaneous other symbols, including some for drawing boxes and arrows. It is only optionally installed because even this is quite large: but in case it should still prove inadequate, an alternative can be used:
+At one time, Inform could only use named Unicode values in a story which had first included an extension:
 
-	{*}Include Unicode Full Character Names by Graham Nelson.
+	Include Unicode Character Names by Graham Nelson.
+	Include Unicode Full Character Names by Graham Nelson.
 
-This includes all 12,997 named characters in the 16-bit range of the Unicode 4.1 standard: it is the size of a small novel and its inclusion will slow Inform down. But if you want to experiment with Arabic, ecclesiastical Georgian, Cherokee, Tibetan, Syriac, the International Phonetic Alphabet, hexagrams or the unified Canadian aboriginal syllabics, "Unicode Full Character Names" (again built into Inform) is the extension for you.
+This is no longer the case: no such inclusion need now be made, and indeed, those extensions have been removed from Inform as redundant.
 
 [x] Displaying quotations
 
@@ -18058,20 +18061,20 @@ A third way to define an adjective, which should be used only if speed is except
 
 The escape "*1" is expanded to the value on which the adjective is being tested. (This is usually faster than calling a routine, but in case of side-effects, the "*1" should occur only once in the condition, just as with a C macro.) To repeat: if in doubt, use the I6 routine method above.
 
-[x] Naming Unicode characters {PM_UnicodeAlready} {PM_UnicodeNonLiteral} {PM_UnicodeOutOfRange}
+[x] Naming Unicode characters
 
 ^^{characters (letters): Unicode (arbitrary symbols): defining new names for}
 ^^{translates as...+assert+: Unicode characters}
 ^^{Unicode Character Names / Full Character Names+ext+} ^^{extensions: specific extensions: Unicode Character Names}
 ^^{extensions: specific extensions: Unicode Full Character Names}
 
-Inform allows the Unicode characters to be identified either with a decimal number or by name, but it has none of the character names built-in, and for efficiency reasons it only learns them when necessary.
-
-Users normally teach these names to Inform by including one of the extensions "Unicode Character Names" or "Unicode Full Character Names", which consist of many hundreds of sentences like so:
+At one time Inform allowed names to be given to Unicode character values with
+sentences like so:
 
 	anticlockwise open circle arrow translates into Unicode as 8634.
 
-Nothing restricts this usage to those extensions.
+These sentences now throw problem messages, and instead Inform allows exactly
+those names in the Unicode standard.
 
 [x] Overriding definitions in kits {PM_BadI6Inclusion} {PM_BeforeTheLibrary} {PM_WhenDefiningUnknown} {PM_IncludeInsteadOf}
 

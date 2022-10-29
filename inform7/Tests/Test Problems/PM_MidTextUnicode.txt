@@ -1,5 +1,3 @@
-Include Unicode Character Names by Graham Nelson.
-
 [The problem here arises from the Greek letter lambda actually being
 known to Unicode as lamda.]
 

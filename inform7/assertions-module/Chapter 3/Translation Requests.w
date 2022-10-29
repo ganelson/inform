@@ -88,14 +88,12 @@ sense once kinds and instances exist.
 	}
 
 @h Translation into Unicode.
-The following handles sentences like:
+The following sentence form is now deprecated:
 
 >> leftwards harpoon with barb upwards translates into Unicode as 8636.
 
-The subject "leftwards harpoon with barb upwards" is parsed against the
-Unicode character names known already to make sure that this new translation
-doesn't disagree with an existing one (that is, doesn't translate to a
-different code number).
+Until Inform 10.1, this equated a Unicode name to its code point value; see
+IE-0005 and //values: Unicode Literals// for what now happens instead.
 
 The sentence "X translates into Y as Z" has this sense provided Y matches:
 
@@ -104,6 +102,7 @@ The sentence "X translates into Y as Z" has this sense provided Y matches:
 	unicode
 
 @ =
+int PM_UnicodeDeprecated_thrown = FALSE;
 int Translations::translates_into_unicode_as_SMF(int task, parse_node *V, wording *NPs) {
 	wording SW = (NPs)?(NPs[0]):EMPTY_WORDING;
 	wording OW = (NPs)?(NPs[1]):EMPTY_WORDING;
@@ -119,54 +118,21 @@ int Translations::translates_into_unicode_as_SMF(int task, parse_node *V, wordin
 			}
 			break;
 		case PASS_2_SMFT:
-			@<Create the Unicode character name@>;
+			if (PM_UnicodeDeprecated_thrown == FALSE) {
+				PM_UnicodeDeprecated_thrown = TRUE;
+				StandardProblems::sentence_problem(Task::syntax_tree(),
+					_p_(PM_UnicodeDeprecated),
+					"the sentence 'X translates into Unicode as Y' has been removed "
+					"from the Inform language",
+					"because it is now redundant. Inform already knows all the names "
+					"in the Unicode standard. If you're getting this problem message "
+					"because you included the extension 'Unicode Full Character Names' "
+					"or 'Unicode Character Names', all you need do is to not include it.");
+			}
 			break;
 	}
 	return FALSE;
 }
-
-@ And this parses the noun phrases of such sentences. Note that the numeric
-values has to be given in decimal -- I was tempted to allow hexadecimal here,
-but life's too short. Unicode translation sentences are really only
-technicalities needed by the built-in extensions, and those are mechanically
-generated anyway; Inform authors never type them.
-
-=
-<translates-into-unicode-sentence-subject> ::=
-	( ... ) |
-	...
-
-<translates-into-unicode-sentence-object> ::=
-	<cardinal-number-unlimited> |  ==> { UnicodeLiterals::max(R[1]), - }
-	...                            ==> @<Issue PM_UnicodeNonLiteral problem@>
-
-@<Issue PM_UnicodeNonLiteral problem@> =
-	StandardProblems::sentence_problem(Task::syntax_tree(), _p_(PM_UnicodeNonLiteral),
-		"a Unicode character name must be translated into a literal decimal "
-		"number written out in digits",
-		"which this seems not to be.");
-	return FALSE;
-
-@ And here the name is created as a miscellaneous excerpt meaning.
-
-@<Create the Unicode character name@> =
-	wording SP = Node::get_text(V->next);
-	wording OP = Node::get_text(V->next->next);
-	if (<translates-into-unicode-sentence-object>(OP) == FALSE) return FALSE;
-	int cc = <<r>>;
-
-	<translates-into-unicode-sentence-subject>(SP);
-	wording CN = GET_RW(<translates-into-unicode-sentence-subject>, 1);
-	if ((<unicode-character-name>(CN)) && (<<r>> != cc)) {
-		StandardProblems::sentence_problem(Task::syntax_tree(),
-			_p_(PM_UnicodeAlready),
-			"this Unicode character name has already been translated",
-			"so there must be some duplication somewhere.");
-		return FALSE;
-	}
-
-	Nouns::new_proper_noun(CN, NEUTER_GENDER, ADD_TO_LEXICON_NTOPT, MISCELLANEOUS_MC,
-		Diagrams::new_PROPER_NOUN(OP), Task::language_of_syntax());
 
 @h Translation into Inter.
 There are three sentences here, but the first is now deprecated: it has split

@@ -2817,11 +2817,8 @@ common misunderstanding.
 		"%PMaybe you intended this to produce a Unicode character? "
 		"Unicode characters can be written either using their decimal "
 		"numbers - for instance, 'Unicode 2041' - or with their standard "
-		"names - 'Unicode Latin small ligature oe'. For efficiency reasons "
-		"these names are only available if you ask for them; to make them "
-		"available, you need to 'Include Unicode Character Names by Graham "
-		"Nelson' or, if you really need more, 'Include Unicode Full "
-		"Character Names by Graham Nelson'.");
+		"names - 'Unicode Latin small ligature oe'. For the full list of "
+		"those names, see the Unicode standard version 15.0.0.");
 	Problems::issue_problem_end();
 
 @<Issue PM_UnknownCondition problem@> =
