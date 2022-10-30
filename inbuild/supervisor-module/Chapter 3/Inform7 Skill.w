@@ -58,6 +58,7 @@ int Inform7Skill::inform7_internally(build_skill *skill, build_step *S,
 	inform_project *project = ProjectBundleManager::from_copy(S->associated_copy);
 	if (project == NULL) project = ProjectFileManager::from_copy(S->associated_copy);
 	if (project == NULL) internal_error("no project");
+
 	if (S->associated_copy->edition->work->genre == project_bundle_genre)
 		Pathnames::create_in_file_system(Projects::materials_path(project));
 	#ifdef CORE_MODULE

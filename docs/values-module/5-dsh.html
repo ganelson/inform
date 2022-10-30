@@ -2524,7 +2524,7 @@ a property when recovering from other problems.
 <pre class="displayed-code all-displayed-code code-font">
 <span class="plain-syntax">    </span><span class="constant-syntax">THIS_IS_A_GROSSER_THAN_GROSS_PROBLEM</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_source</span><span class="plain-syntax">(1, </span><span class="identifier-syntax">current_sentence</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="identifier-syntax">name</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_wording</span><span class="plain-syntax">(2, </span><span class="identifier-syntax">prn</span><span class="plain-syntax">-&gt;</span><span class="element-syntax">name</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::quote_subject</span><span class="plain-syntax">(3, </span><span class="identifier-syntax">owning_subject</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">StandardProblems::handmade_problem</span><span class="plain-syntax">(</span><span class="identifier-syntax">Task::syntax_tree</span><span class="plain-syntax">(), </span><span class="identifier-syntax">_p_</span><span class="plain-syntax">(</span><span class="identifier-syntax">PM_LookedUpForbiddenProperty</span><span class="plain-syntax">));</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_segment</span><span class="plain-syntax">(</span>
@@ -3518,11 +3518,8 @@ common misunderstanding.
 <span class="plain-syntax">        </span><span class="string-syntax">"%PMaybe you intended this to produce a Unicode character? "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"Unicode characters can be written either using their decimal "</span>
 <span class="plain-syntax">        </span><span class="string-syntax">"numbers - for instance, 'Unicode 2041' - or with their standard "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"names - 'Unicode Latin small ligature oe'. For efficiency reasons "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"these names are only available if you ask for them; to make them "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"available, you need to 'Include Unicode Character Names by Graham "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"Nelson' or, if you really need more, 'Include Unicode Full "</span>
-<span class="plain-syntax">        </span><span class="string-syntax">"Character Names by Graham Nelson'."</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"names - 'Unicode Latin small ligature oe'. For the full list of "</span>
+<span class="plain-syntax">        </span><span class="string-syntax">"those names, see the Unicode standard version 15.0.0."</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">Problems::issue_problem_end</span><span class="plain-syntax">();</span>
 </pre>
 <ul class="endnotetexts"><li>This code is used in <a href="5-dsh.html#SP20">&#167;20</a>.</li></ul>

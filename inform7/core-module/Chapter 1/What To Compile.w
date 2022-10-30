@@ -88,6 +88,7 @@ int Task::carry_out(build_step *S) {
 	inform7_task->next_resource_number = 3;
 	
 	DefaultLanguage::set(Projects::get_language_of_syntax(project));
+	Gitignoring::automatic(project);
 
 	int rv = Sequence::carry_out(TargetVMs::debug_enabled(inform7_task->task->for_vm));
 	return rv;
