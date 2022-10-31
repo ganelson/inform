@@ -479,6 +479,45 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"can only be used to clarify clauses, if necessary.");
 						Problems::issue_problem_end();
 						break;
+					case MissingSourceFile_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_stream(2, CE->details);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"I can't find the source file holding the content of the heading %1 - "
+							"it should be '%2' in the 'Source' subdirectory of the materials "
+							"for this project.");
+						Problems::issue_problem_end();
+						break;
+					case HeadingWithFileNonempty_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_stream(2, CE->details);
+						Problems::quote_source(3, current_sentence->down);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"The heading %1 should refer only to the contents of the file "
+							"'%2' (in the 'Source' subdirectory of the materials for this "
+							"project) but in fact goes on to contain other material too. "
+							"That other material (see %3) needs to be put under a new "
+							"heading of equal or greater priority (or else moved to the file).");
+						Problems::issue_problem_end();
+						break;
+					case MisheadedSourceFile_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						Problems::quote_stream(2, CE->details);
+						heading *h = Node::get_embodying_heading(current_sentence);
+						if (h) Problems::quote_wording(3, h->heading_text);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"The heading %1 says that its contents are in the file "
+							"'%2' (in the 'Source' subdirectory of the materials for this "
+							"project). If so, then that file needs to start with a matching "
+							"opening line, giving the same heading name '%3'; and it doesn't.");
+						Problems::issue_problem_end();
+						break;
 					default:
 						internal_error("unknown syntax error");
 				}

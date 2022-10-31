@@ -40,11 +40,62 @@ build_vertex *Inclusions::spawned_from_vertex(parse_node *H0) {
 	return inclusions_errors_to->vertex;
 }
 
+@
+
+@e MissingSourceFile_SYNERROR
+@e HeadingWithFileNonempty_SYNERROR
+@e MisheadedSourceFile_SYNERROR
+
+=
 void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0,
 	int *includes_cleared) {
 	if (Node::get_type(pn) == INCLUDE_NT) {
 		@<Replace INCLUDE node with sentence nodes for any extensions required@>;
 		*includes_cleared = FALSE;
+	}
+	if (Node::get_type(pn) == HEADING_NT) {
+		heading *h = Node::get_embodying_heading(pn);
+		if ((h) && (Wordings::nonempty(h->external_file)) && (h->external_file_loaded == FALSE)) {
+			inform_project *proj = ProjectBundleManager::from_copy(inclusions_errors_to);
+			if ((proj) && (proj->as_copy->location_if_path)) {
+				pathname *P = Pathnames::down(Projects::materials_path(proj), I"Source");
+				text_stream *leaf = Str::new();
+				WRITE_TO(leaf, "%W", h->external_file);
+				h->external_file_loaded = TRUE;
+				if (pn->down) {
+					copy_error *CE = CopyErrors::new_T(SYNTAX_CE, HeadingWithFileNonempty_SYNERROR, leaf);
+					CopyErrors::supply_node(CE, pn);
+					Copies::attach_error(inclusions_errors_to, CE);
+				} else {
+					filename *F = Filenames::in(P, leaf);
+					if (TextFiles::exists(F) == FALSE) {
+						copy_error *CE = CopyErrors::new_T(SYNTAX_CE, MissingSourceFile_SYNERROR, leaf);
+						CopyErrors::supply_node(CE, pn);
+						Copies::attach_error(inclusions_errors_to, CE);					
+					} else {
+						int l = SyntaxTree::push_bud(T, pn);
+						source_file *S = SourceText::read_file(inclusions_errors_to, F, leaf, FALSE, FALSE);
+						if (S) {
+							h->external_file_read = S;
+							wording SW = S->text_read;
+							int N = Wordings::length(h->heading_text);
+							wording TOPW = Wordings::up_to(SW, Wordings::first_wn(SW) + N - 1);
+							wording RESTW = Wordings::from(SW, Wordings::first_wn(SW) + N);
+							if ((Wordings::match(h->heading_text, TOPW) == FALSE) ||
+								(compare_word(Wordings::first_wn(RESTW), OPENBRACKET_V))) {
+								copy_error *CE = CopyErrors::new_T(SYNTAX_CE, MisheadedSourceFile_SYNERROR, leaf);
+								CopyErrors::supply_node(CE, pn);
+								Copies::attach_error(inclusions_errors_to, CE);					
+							} else if (Wordings::nonempty(RESTW))
+								Sentences::break_into_project_copy(T,
+									RESTW, inclusions_errors_to, proj);
+						}
+						SyntaxTree::pop_bud(T, l);
+						*includes_cleared = FALSE;
+					}
+				}
+			}
+		}
 	}
 }
 

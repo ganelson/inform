@@ -150,6 +150,9 @@ typedef struct heading {
 	struct inbuild_work *for_use_with; /* e.g. "for use with ... by ..." */
 	struct wording in_place_of_text; /* e.g. "in place of ... in ... by ..." */
 	struct wording heading_text; /* once provisos have been stripped away */
+	struct wording external_file; /* e.g. "see ..." */
+	struct source_file *external_file_read;
+	int external_file_loaded;
 	struct noun *list_of_contents; /* tagged names defined under this */
 	struct noun *last_in_list_of_contents;
 	struct heading *parent_heading;
@@ -174,6 +177,9 @@ heading *Headings::new(parse_node_tree *T, parse_node *pn, int level, source_loc
 	h->index_definitions_made_under_this = TRUE;
 	h->use_with_or_without = NOT_APPLICABLE;
 	h->in_place_of_text = EMPTY_WORDING;
+	h->external_file = EMPTY_WORDING;
+	h->external_file_read = NULL;
+	h->external_file_loaded = FALSE;
 	h->for_use_with = NULL;
 	h->sentence_declaring = pn;
 	h->holds_dialogue = FALSE;
@@ -265,6 +271,7 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
 @d USE_WITHOUT_HQ 6
 @d IN_PLACE_OF_HQ 7
 @d DIALOGUE_HQ 8
+@d EXTERNAL_HQ 9
 
 @<Parse heading text for release or other stipulations@> =
 	current_sentence = pn;
@@ -289,6 +296,10 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn) {
 			case IN_PLACE_OF_HQ:
 				h->use_with_or_without = TRUE;
 				h->in_place_of_text = GET_RW(<extension-qualifier>, 1);
+				break;
+			case EXTERNAL_HQ:
+				h->external_file = GET_RW(<bracketed-heading-qualifier>, 1);
+				Word::dequote(Wordings::first_wn(h->external_file));
 				break;
 		}
 		W = GET_RW(<heading-qualifier>, 1);
@@ -325,6 +336,7 @@ is determined.
 	unindexed |                              ==> { UNINDEXED_HQ, - }
 	dialogue |                               ==> { DIALOGUE_HQ, - }
 	dialog |                                 ==> { DIALOGUE_HQ, - }
+	see { <quoted-text> } |                  ==> { EXTERNAL_HQ, - }
 	<platform-qualifier> |                   ==> { pass 1 }
 	<extension-qualifier>                    ==> { pass 1 }
 
@@ -396,6 +408,7 @@ void Headings::assemble_tree(parse_node_tree *T) {
 	heading *h;
 	@<Disassemble the whole heading tree to a pile of twigs@>;
 	LOOP_OVER_LINKED_LIST(h, heading, T->headings->subordinates) {
+// LOG("H = %W, level %d\n", h->heading_text, h->level);
 		@<If h is outside the tree, make it a child of the pseudo-heading@>;
 		@<Run through subsequent equal or subordinate headings to move them downward@>;
 	}

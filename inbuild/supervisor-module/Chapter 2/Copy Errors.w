@@ -229,6 +229,14 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 			WRITE("empty clause in brackets in dialogue"); break;
 		case MisbracketedDialogueClause_SYNERROR:
 			WRITE("brackets '(' and ')' used in an unmatched way in dialogue"); break;
+		case MissingSourceFile_SYNERROR:
+			WRITE("cannot find source file: '%S'", CE->details); break;
+		case HeadingWithFileNonempty_SYNERROR:
+			WRITE("heading should refer only to source file '%S' but also contains material",
+				CE->details); break;
+		case MisheadedSourceFile_SYNERROR:
+			WRITE("source file '%S' does not begin with a heading matching 'see ...' line",
+				CE->details); break;
 		default:
 			WRITE("syntax error"); break;
 	}
