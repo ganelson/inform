@@ -162,7 +162,7 @@ and has no "level" or "indentation" as such.
 
 =
 void NameResolution::make_the_tree(void) {
-	Headings::assemble_tree(Task::syntax_tree());
+	Headings::assemble_tree(Task::syntax_tree(), Task::project()->as_copy);
 }
 
 heading *NameResolution::pseudo_heading(void) {

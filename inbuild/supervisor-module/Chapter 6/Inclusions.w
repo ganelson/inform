@@ -57,44 +57,8 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0,
 		heading *h = Node::get_embodying_heading(pn);
 		if ((h) && (Wordings::nonempty(h->external_file)) && (h->external_file_loaded == FALSE)) {
 			inform_project *proj = ProjectBundleManager::from_copy(inclusions_errors_to);
-			if ((proj) && (proj->as_copy->location_if_path)) {
-				pathname *P = Pathnames::down(Projects::materials_path(proj), I"Source");
-				text_stream *leaf = Str::new();
-				WRITE_TO(leaf, "%W", h->external_file);
-				h->external_file_loaded = TRUE;
-				if (pn->down) {
-					copy_error *CE = CopyErrors::new_T(SYNTAX_CE, HeadingWithFileNonempty_SYNERROR, leaf);
-					CopyErrors::supply_node(CE, pn);
-					Copies::attach_error(inclusions_errors_to, CE);
-				} else {
-					filename *F = Filenames::in(P, leaf);
-					if (TextFiles::exists(F) == FALSE) {
-						copy_error *CE = CopyErrors::new_T(SYNTAX_CE, MissingSourceFile_SYNERROR, leaf);
-						CopyErrors::supply_node(CE, pn);
-						Copies::attach_error(inclusions_errors_to, CE);					
-					} else {
-						int l = SyntaxTree::push_bud(T, pn);
-						source_file *S = SourceText::read_file(inclusions_errors_to, F, leaf, FALSE, FALSE);
-						if (S) {
-							h->external_file_read = S;
-							wording SW = S->text_read;
-							int N = Wordings::length(h->heading_text);
-							wording TOPW = Wordings::up_to(SW, Wordings::first_wn(SW) + N - 1);
-							wording RESTW = Wordings::from(SW, Wordings::first_wn(SW) + N);
-							if ((Wordings::match(h->heading_text, TOPW) == FALSE) ||
-								(compare_word(Wordings::first_wn(RESTW), OPENBRACKET_V))) {
-								copy_error *CE = CopyErrors::new_T(SYNTAX_CE, MisheadedSourceFile_SYNERROR, leaf);
-								CopyErrors::supply_node(CE, pn);
-								Copies::attach_error(inclusions_errors_to, CE);					
-							} else if (Wordings::nonempty(RESTW))
-								Sentences::break_into_project_copy(T,
-									RESTW, inclusions_errors_to, proj);
-						}
-						SyntaxTree::pop_bud(T, l);
-						*includes_cleared = FALSE;
-					}
-				}
-			}
+			if ((proj) && (proj->as_copy->location_if_path))
+				@<Include the contents of the external file under the heading@>;
 		}
 	}
 }
@@ -124,6 +88,57 @@ void Inclusions::visit(parse_node_tree *T, parse_node *pn, parse_node *last_H0,
 			else
 				Graphs::need_this_to_build(V, EV);
 		}
+	}
+
+@ Here we're at a HEADING node which is annotated |(see "source-file")|, and
+we need to read that file in: it will be considered as the contents of the
+HEADING.
+
+@<Include the contents of the external file under the heading@> =
+	pathname *P = Pathnames::down(Projects::materials_path(proj), I"Source");
+	text_stream *leaf = Str::new();
+	WRITE_TO(leaf, "%W", h->external_file);
+	h->external_file_loaded = TRUE;
+	if (pn->down) {
+		copy_error *CE = CopyErrors::new_T(SYNTAX_CE, HeadingWithFileNonempty_SYNERROR, leaf);
+		CopyErrors::supply_node(CE, pn);
+		Copies::attach_error(inclusions_errors_to, CE);
+	} else {
+		filename *F = Filenames::in(P, leaf);
+		if (TextFiles::exists(F) == FALSE) {
+			copy_error *CE = CopyErrors::new_T(SYNTAX_CE, MissingSourceFile_SYNERROR, leaf);
+			CopyErrors::supply_node(CE, pn);
+			Copies::attach_error(inclusions_errors_to, CE);					
+		} else {
+			int l = SyntaxTree::push_bud(T, pn);
+			source_file *S = SourceText::read_file(inclusions_errors_to, F, leaf, FALSE, FALSE);
+			if (S) @<Sentence-break the contents of S under the heading node@>;
+			SyntaxTree::pop_bud(T, l);
+			*includes_cleared = FALSE;
+		}
+	}
+
+@ Note that the opening words of the external file, here |TOPW|, must match
+exactly the heading which called for the file, except for the annotation in
+brackets. (It's to prevent that that we look for a round bracket at the
+start of |RESTW| as a sign that the user has accidentally included this.)
+
+Provided a match is made, the |TOPW| words are then thrown away. Their purpose
+was just to identify the file sensibly.
+
+@<Sentence-break the contents of S under the heading node@> =
+	h->external_file_read = S;
+	wording SW = S->text_read;
+	int N = Wordings::length(h->heading_text);
+	wording TOPW = Wordings::up_to(SW, Wordings::first_wn(SW) + N - 1);
+	wording RESTW = Wordings::from(SW, Wordings::first_wn(SW) + N);
+	if ((Wordings::match(h->heading_text, TOPW) == FALSE) ||
+		(compare_word(Wordings::first_wn(RESTW), OPENBRACKET_V))) {
+		copy_error *CE = CopyErrors::new_T(SYNTAX_CE, MisheadedSourceFile_SYNERROR, leaf);
+		CopyErrors::supply_node(CE, pn);
+		Copies::attach_error(inclusions_errors_to, CE);					
+	} else if (Wordings::nonempty(RESTW)) {
+		Sentences::break_into_project_copy(T, RESTW, inclusions_errors_to, proj);
 	}
 
 @ Here we parse the content of an Include sentence: i.e., what comes after the

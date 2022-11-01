@@ -974,7 +974,7 @@ like Basic Inform or Standard Rules; and also any sentences in the
 	Node::set_text(inclusions_heading,
 		Feeds::feed_C_string_expanding_strings(L"Implied inclusions"));
 	SyntaxTree::graft_sentence(proj->syntax_tree, inclusions_heading);
-	Headings::place_implied_level_0(proj->syntax_tree, inclusions_heading);
+	Headings::place_implied_level_0(proj->syntax_tree, inclusions_heading, proj->as_copy);
 
 	int wc = lexer_wordcount;
 	TEMPORARY_TEXT(early)
@@ -1029,7 +1029,7 @@ ready for those inventions (if in fact there are any).
 	Node::set_text(implicit_heading,
 		Feeds::feed_C_string_expanding_strings(L"Invented sentences"));
 	SyntaxTree::graft_sentence(proj->syntax_tree, implicit_heading);
-	Headings::place_implied_level_0(proj->syntax_tree, implicit_heading);
+	Headings::place_implied_level_0(proj->syntax_tree, implicit_heading, proj->as_copy);
 	SyntaxTree::pop_bud(proj->syntax_tree, l);
 	SyntaxTree::push_bud(proj->syntax_tree, implicit_heading); /* never popped */
 

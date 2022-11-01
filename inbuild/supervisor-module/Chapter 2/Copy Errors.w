@@ -237,6 +237,8 @@ void CopyErrors::write(OUTPUT_STREAM, copy_error *CE) {
 		case MisheadedSourceFile_SYNERROR:
 			WRITE("source file '%S' does not begin with a heading matching 'see ...' line",
 				CE->details); break;
+		case HeadingTooGreat_SYNERROR:
+			WRITE("source file contains a heading of too high a level"); break;
 		default:
 			WRITE("syntax error"); break;
 	}

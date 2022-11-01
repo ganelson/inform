@@ -5593,6 +5593,8 @@
           constraint CS = {27} extremes [1, 1]
         dialog 
           constraint CS = {27} extremes [1, 1]
+        see {<quoted-text>} 
+          constraint DS = {27} extremes [2, 2]
         <platform-qualifier> 
           (hits 19/19) (matched: 'not for interactive fiction language element') constraint DS = {24} extremes [3, infinity)
         <extension-qualifier> 
@@ -7842,7 +7844,7 @@
 <s-adjective-list> hits 1442/27604 nti 27 constraint (none) extremes [1, infinity)
     English:
         not <indefinite-article> <s-adjective-list-unarticled> 
-          (hits 0/2987) constraint DS = {27} extremes [3, infinity)
+          (hits 0/2988) constraint DS = {27} extremes [3, infinity)
         <indefinite-article> <s-adjective-list-unarticled> 
           (hits 0/6955) constraint (none) extremes [2, infinity)
         <s-adjective-list-unarticled> 

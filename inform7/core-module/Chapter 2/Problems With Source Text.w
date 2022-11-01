@@ -518,6 +518,17 @@ void SourceProblems::issue_problems_arising(inbuild_copy *C) {
 							"opening line, giving the same heading name '%3'; and it doesn't.");
 						Problems::issue_problem_end();
 						break;
+					case HeadingTooGreat_SYNERROR:
+						current_sentence = CE->details_node;
+						Problems::quote_source(1, current_sentence);
+						StandardProblems::handmade_problem(Task::syntax_tree(), _p_(...));
+						Problems::issue_problem_segment(
+							"The heading %1 is too high a level to appear in this source "
+							"file. For example, if a source file contains the contents of "
+							"a Chapter, then it cannot contain a Book heading - "
+							"a Chapter can be part of a Book, but not vice versa.");
+						Problems::issue_problem_end();
+						break;
 					default:
 						internal_error("unknown syntax error");
 				}
