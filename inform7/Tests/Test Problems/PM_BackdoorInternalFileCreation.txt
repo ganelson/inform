@@ -1,0 +1,8 @@
+Home is a room.
+
+A tag is a kind of value.
+
+Tagging relates various tags to various internal files. The verb to tag (he tags, they tag) implies the 
+tagging relation.
+
+Outdoors is a tag. Outdoors tags internal data file of Glaciers.

@@ -14,3 +14,18 @@ new base EXTERNAL_FILE_TY {
 	indexed-grey-if-empty: yes
 	specification-text: When made with the Glulx setting, an Inform project can make limited use of files stored on the computer which is operating the story at run-time. An external-file is just the name of one of these files (not the filename in the usual sense, but a name given to it in the Inform source text).
 }
+new base INTERNAL_FILE_TY {
+	conforms-to: ENUMERATED_VALUE_TY
+	singular: internal file
+	plural: internal files
+
+	default-value: 0
+	constant-compilation-method: quantitative
+
+	printing-routine: PrintInternalFileName
+
+	index-priority: 6
+	index-default-value: <i>a non-file</i>
+	indexed-grey-if-empty: yes
+	specification-text: When made with the Glulx setting, an Inform project can make limited use of files held internally within the 'blorb' which makes up the story.
+}

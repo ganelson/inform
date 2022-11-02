@@ -1,12 +1,12 @@
 adjective: 137 items
 article: 2 items
-noun: 2387 items
+noun: 2389 items
 pronoun: 8 items
 preposition: 274 items
 determiner: 22 items
 verb: 109 items
 verb_form: 388 items
-total in all categories: 3327
+total in all categories: 3329
 
 adjective: 'even'
 adjective: 'odd'
@@ -180,6 +180,7 @@ noun: common: 'property | k valued property'
 noun: common: 'table column | k valued table column'
 noun: common: 'combination | combination k | combination k and l'
 noun: common: 'external file'
+noun: common: 'internal file'
 noun: common: 'described action'
 noun: common: 'action'
 noun: common: 'action name'
@@ -2488,6 +2489,7 @@ noun: proper: 'number understood'
 noun: proper: 'real number understood'
 noun: proper: 'truth state understood'
 noun: proper: 'external file understood'
+noun: proper: 'internal file understood'
 noun: proper: 'time understood'
 noun: proper: 'scene understood'
 noun: proper: 'figure name understood'

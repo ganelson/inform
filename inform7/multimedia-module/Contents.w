@@ -14,3 +14,4 @@ Chapter 2: Multimedia Features
 	Figures
 	Sound Effects
 	External Files
+	Internal Files

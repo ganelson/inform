@@ -16,6 +16,16 @@ void RTMultimedia::compile_files(void) {
 	}
 }
 
+void RTMultimedia::compile_internal_files(void) {
+	internal_files_data *inf;
+	LOOP_OVER(inf, internal_files_data) {
+		text_stream *desc = Str::new();
+		WRITE_TO(desc, "internal file '%W'", inf->name);
+		Sequence::queue(&RTMultimedia::internal_compilation_agent,
+			STORE_POINTER_internal_files_data(inf), desc);
+	}
+}
+
 void RTMultimedia::compile_figures(void) {
 	figures_data *bf;
 	LOOP_OVER(bf, figures_data) {
@@ -104,3 +114,22 @@ void RTMultimedia::compilation_agent(compilation_subtask *t) {
 			Hierarchy::apply_metadata(pack, INSTANCE_FILE_OWNER_MD_HL, exf->IFID_of_owner);
 			break;
 	}
+
+@ Internal files are simpler:
+
+=
+void RTMultimedia::internal_compilation_agent(compilation_subtask *t) {
+	internal_files_data *inf = RETRIEVE_POINTER_internal_files_data(t->data);
+	wording W = inf->name;
+	package_request *P = Hierarchy::local_package_to(INTERNAL_FILES_HAP, inf->where_created);
+	inter_name *inf_iname = Hierarchy::make_iname_with_memo(INTERNAL_FILE_HL, P, W);
+	@<Make the internal value metadata@>;
+}
+
+@<Make the internal value metadata@> =
+	package_request *pack = RTInstances::package(inf->as_instance);
+	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_FILE_VALUE_MD_HL, inf_iname);
+	Hierarchy::apply_metadata_from_raw_wording(pack, INSTANCE_LEAFNAME_MD_HL,
+		Wordings::one_word(inf->unextended_filename));
+	Hierarchy::apply_metadata_from_number(pack, INSTANCE_INTERNAL_FILE_FORMAT_MD_HL,
+		(inter_ti) inf->file_format);

@@ -248,6 +248,11 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
 		return K->construct->compilation_data.pr_iname;
 	}
+	if (Kinds::eq(K, K_internal_file))  {
+		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_INTERNAL_FILE_NAME_HL);
+		Hierarchy::make_available(K->construct->compilation_data.pr_iname);
+		return K->construct->compilation_data.pr_iname;
+	}
 	if (Kinds::eq(K, K_scene))  {
 		K->construct->compilation_data.pr_iname = Hierarchy::find(PRINT_SCENE_HL);
 		Hierarchy::make_available(K->construct->compilation_data.pr_iname);

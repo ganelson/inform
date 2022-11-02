@@ -184,6 +184,7 @@ void Hierarchy::establish(void) {
 	@<Establish grammar@>;
 	@<Establish instances@>;
 	@<Establish int-fiction@>;
+	@<Establish internal files@>;
 	@<Establish kinds@>;
 	@<Establish literal patterns@>;
 	@<Establish mapping hints@>;
@@ -897,6 +898,7 @@ void Hierarchy::establish(void) {
 @e INSTANCE_SCENE_NEVER_ENDS_MD_HL
 @e INSTANCE_IS_EXF_MD_HL
 @e INSTANCE_FILE_VALUE_MD_HL
+@e INSTANCE_INTERNAL_FILE_FORMAT_MD_HL
 @e INSTANCE_FILE_IS_BINARY_MD_HL
 @e INSTANCE_FILE_OWNED_MD_HL
 @e INSTANCE_FILE_OWNED_BY_OTHER_MD_HL
@@ -1035,6 +1037,7 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_FILE_OWNED_MD_HL,                I"^file_owned")
 			H_C_U(INSTANCE_FILE_OWNED_BY_OTHER_MD_HL,       I"^file_owned_by_other")
 			H_C_U(INSTANCE_FILE_OWNER_MD_HL,                I"^file_owner")
+			H_C_U(INSTANCE_INTERNAL_FILE_FORMAT_MD_HL,      I"^internal_file_format")
 			H_C_U(INSTANCE_FILE_IS_BINARY_MD_HL,            I"^is_binary")
 			H_C_U(INSTANCE_LEAFNAME_MD_HL,                  I"^leafname")
 			H_C_U(INSTANCE_IS_FIGURE_MD_HL,                 I"^is_figure")
@@ -1134,6 +1137,20 @@ void Hierarchy::establish(void) {
 		H_C_T(NO_DIRECTIONS_HL,               I"No_Directions")
 		H_C_T(MAP_STORAGE_HL,                 I"Map_Storage")
 		H_C_T(INITIALSITUATION_HL,            I"InitialSituation")
+	H_END
+
+@h Internal files.
+
+@e INTERNAL_FILES_HAP
+@e INTERNAL_FILE_HL
+
+@<Establish internal files@> =
+	submodule_identity *internal_files = LargeScale::register_submodule_identity(I"internal_files");
+
+	H_BEGIN(LocationRequirements::local_submodule(internal_files))
+		H_BEGIN_AP(INTERNAL_FILES_HAP,        I"internal_file", I"_internal_file")
+			H_C_U(INTERNAL_FILE_HL,           I"file")
+		H_END
 	H_END
 
 @h Kinds.
@@ -1942,6 +1959,7 @@ void Hierarchy::establish(void) {
 @e K_SOUND_NAME_XPACKAGE
 @e K_USE_OPTION_XPACKAGE
 @e K_EXTERNAL_FILE_XPACKAGE
+@e K_INTERNAL_FILE_XPACKAGE
 @e K_RULEBOOK_OUTCOME_XPACKAGE
 @e K_RESPONSE_XPACKAGE
 @e K_SCENE_XPACKAGE
@@ -1959,6 +1977,7 @@ void Hierarchy::establish(void) {
 @e PRINT_FIGURE_NAME_HL
 @e PRINT_SOUND_NAME_HL
 @e PRINT_EXTERNAL_FILE_NAME_HL
+@e PRINT_INTERNAL_FILE_NAME_HL
 @e PRINT_SCENE_HL
 @e PRINT_DIALOGUE_BEAT_HL
 @e PRINT_DIALOGUE_LINE_HL
@@ -1992,6 +2011,10 @@ void Hierarchy::establish(void) {
 
 	H_BEGIN(LocationRequirements::this_exotic_package(K_EXTERNAL_FILE_XPACKAGE))
 		H_F_T(PRINT_EXTERNAL_FILE_NAME_HL,    I"print_fn", I"PrintExternalFileName")
+	H_END
+
+	H_BEGIN(LocationRequirements::this_exotic_package(K_INTERNAL_FILE_XPACKAGE))
+		H_F_T(PRINT_INTERNAL_FILE_NAME_HL,    I"print_fn", I"PrintInternalFileName")
 	H_END
 
 	H_BEGIN(LocationRequirements::this_exotic_package(K_RULEBOOK_OUTCOME_XPACKAGE))
@@ -2116,6 +2139,7 @@ package_request *Hierarchy::exotic_package(int x) {
 		case K_SOUND_NAME_XPACKAGE:        return RTKindConstructors::kind_package(K_sound_name);
 		case K_USE_OPTION_XPACKAGE:        return RTKindConstructors::kind_package(K_use_option);
 		case K_EXTERNAL_FILE_XPACKAGE:     return RTKindConstructors::kind_package(K_external_file);
+		case K_INTERNAL_FILE_XPACKAGE:     return RTKindConstructors::kind_package(K_internal_file);
 		case K_RULEBOOK_OUTCOME_XPACKAGE:  return RTKindConstructors::kind_package(K_rulebook_outcome);
 		case K_RESPONSE_XPACKAGE:          return RTKindConstructors::kind_package(K_response);
 		case K_SCENE_XPACKAGE:             return RTKindConstructors::kind_package(K_scene);

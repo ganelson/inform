@@ -317,8 +317,10 @@ DECLARE_CLASS_ALLOCATED_IN_ARRAYS(understanding_reference, 100)
 @e figures_data_CLASS
 @e sounds_data_CLASS
 @e files_data_CLASS
+@e internal_files_data_CLASS
 
 =
 DECLARE_CLASS(figures_data)
 DECLARE_CLASS(sounds_data)
 DECLARE_CLASS(files_data)
+DECLARE_CLASS(internal_files_data)

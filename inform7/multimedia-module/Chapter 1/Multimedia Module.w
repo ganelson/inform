@@ -16,7 +16,8 @@ to the other three; it doesn't even have an activation function.
 @e MULTIMEDIA_CREATIONS_DA
 
 =
-compiler_feature *multimedia_feature, *figures_feature, *sounds_feature, *files_feature;
+compiler_feature *multimedia_feature, *figures_feature, *sounds_feature,
+	*files_feature, *internal_files_feature;
 
 void MultimediaModule::start(void) {
 	multimedia_feature = Features::new(NULL, I"multimedia", NULL);
@@ -25,6 +26,8 @@ void MultimediaModule::start(void) {
 	sounds_feature = Features::new(&Sounds::start, I"sounds",
 		multimedia_feature);
 	files_feature = Features::new(&ExternalFiles::start, I"glulx external files",
+		multimedia_feature);
+	internal_files_feature = Features::new(&InternalFiles::start, I"glulx internal files",
 		multimedia_feature);
 
 	Log::declare_aspect(MULTIMEDIA_CREATIONS_DA, L"figure creations", FALSE, FALSE);
