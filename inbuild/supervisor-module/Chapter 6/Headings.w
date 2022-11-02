@@ -208,7 +208,7 @@ included if the target virtual machine on this run of Inform is the Z-machine.)
 
 =
 int Headings::place(parse_node_tree *T, parse_node *pn, inform_project *proj) {
-	heading *h = Headings::attach(T, pn, proj->as_copy);
+	heading *h = Headings::attach(T, pn, (proj)?(proj->as_copy):NULL);
 	int are_we_releasing = Projects::currently_releasing(proj);
 	if ((h->for_release == TRUE) && (are_we_releasing == FALSE)) return FALSE;
 	if ((h->for_release == FALSE) && (are_we_releasing == TRUE)) return FALSE;
@@ -302,6 +302,13 @@ heading *Headings::attach(parse_node_tree *T, parse_node *pn, inbuild_copy *for_
 			case EXTERNAL_HQ:
 				h->external_file = GET_RW(<bracketed-heading-qualifier>, 1);
 				Word::dequote(Wordings::first_wn(h->external_file));
+				inform_project *proj = ProjectBundleManager::from_copy(for_copy);
+				if (proj) {
+					TEMPORARY_TEXT(leaf)
+					WRITE_TO(leaf, "%W", h->external_file);
+					Projects::add_heading_source(proj, leaf);
+					DISCARD_TEXT(leaf)
+				}
 				break;
 		}
 		W = GET_RW(<heading-qualifier>, 1);
@@ -521,7 +528,6 @@ to the tree as a child of a given parent:
 
 =
 void Headings::move_below(heading *ch, heading *pa) {
-LOG("Move %W below %W\n", ch->heading_text, pa->heading_text);
 	heading *former_pa = ch->parent_heading;
 	if (former_pa == pa) return;
 	@<Detach ch from the heading tree if it is already there@>;

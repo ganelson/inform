@@ -261,38 +261,10 @@ the outcome.
 linked_list *Projects::source(inform_project *proj) {
 	if (proj == NULL) return NULL;
 	if (LinkedLists::len(proj->source_vertices) == 0)
-		@<Try a set of source files from the Source subdirectory of Materials@>;
-	if (LinkedLists::len(proj->source_vertices) == 0)
 		@<Try the source file set at the command line, if any was@>;
 	if (LinkedLists::len(proj->source_vertices) == 0)
 		@<Fall back on the traditional choice@>;
 	return proj->source_vertices;
-}
-
-@<Try a set of source files from the Source subdirectory of Materials@> =
-	pathname *P = NULL;
-	if (proj->as_copy->location_if_path)
-		P = Pathnames::down(Projects::materials_path(proj), I"Source");
-	if (P) {
-		filename *manifest = Filenames::in(P, I"Contents.txt");
-		linked_list *L = NEW_LINKED_LIST(text_stream);
-		TextFiles::read(manifest, FALSE,
-			NULL, FALSE, Projects::manifest_helper, NULL, (void *) L);
-		text_stream *leafname;
-		LOOP_OVER_LINKED_LIST(leafname, text_stream, L) {
-			build_vertex *S = Graphs::file_vertex(Filenames::in(P, leafname));
-			S->source_source = leafname;
-			ADD_TO_LINKED_LIST(S, build_vertex, proj->source_vertices);
-		}
-	}
-
-@ =
-void Projects::manifest_helper(text_stream *text, text_file_position *tfp, void *state) {
-	linked_list *L = (linked_list *) state;
-	Str::trim_white_space(text);
-	wchar_t c = Str::get_first_char(text);
-	if ((c == 0) || (c == '#')) return;
-	ADD_TO_LINKED_LIST(Str::duplicate(text), text_stream, L);
 }
 
 @<Try the source file set at the command line, if any was@> =
@@ -315,6 +287,24 @@ void Projects::manifest_helper(text_stream *text, text_file_position *tfp, void 
 	build_vertex *S = Graphs::file_vertex(F);
 	S->source_source = I"your source text";
 	ADD_TO_LINKED_LIST(S, build_vertex, proj->source_vertices);
+
+@ Further source files may become apparent when headings are read in the
+source text we already have, and which refer to specific files in the |Source|
+subdirectory of the materials directory; so those are added here. (This happens
+safely before the full graph for the project is made, so they do appear in
+that dependency graph.)
+
+=
+void Projects::add_heading_source(inform_project *proj, text_stream *path) {
+	pathname *P = NULL;
+	if (proj->as_copy->location_if_path)
+		P = Pathnames::down(Projects::materials_path(proj), I"Source");
+	if (P) {
+		build_vertex *S = Graphs::file_vertex(Filenames::in(P, path));
+		S->source_source = Str::duplicate(path);
+		ADD_TO_LINKED_LIST(S, build_vertex, proj->source_vertices);
+	}
+}
 
 @ The //inform7// compiler sometimes wants to know whether a particular
 source file belongs to the project or not, so:
