@@ -897,6 +897,7 @@ void Hierarchy::establish(void) {
 @e INSTANCE_SCENE_RECURS_MD_HL
 @e INSTANCE_SCENE_NEVER_ENDS_MD_HL
 @e INSTANCE_IS_EXF_MD_HL
+@e INSTANCE_IS_INF_MD_HL
 @e INSTANCE_FILE_VALUE_MD_HL
 @e INSTANCE_INTERNAL_FILE_FORMAT_MD_HL
 @e INSTANCE_FILE_IS_BINARY_MD_HL
@@ -1033,6 +1034,7 @@ void Hierarchy::establish(void) {
 				H_END
 			H_END
 			H_C_U(INSTANCE_IS_EXF_MD_HL,                    I"^is_file")
+			H_C_U(INSTANCE_IS_INF_MD_HL,                    I"^is_internal_file")
 			H_C_U(INSTANCE_FILE_VALUE_MD_HL,                I"^file_value")
 			H_C_U(INSTANCE_FILE_OWNED_MD_HL,                I"^file_owned")
 			H_C_U(INSTANCE_FILE_OWNED_BY_OTHER_MD_HL,       I"^file_owned_by_other")

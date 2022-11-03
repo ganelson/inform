@@ -242,6 +242,7 @@ void Figures::write_picture_manifest(OUTPUT_STREAM, int include_cover,
 		}
 	OUTDENT; WRITE("</dict>\n");
 	Sounds::write_sounds_manifest(OUT);
+	InternalFiles::write_files_manifest(OUT);
 	OUTDENT; WRITE("</dict>\n");
 	OUTDENT; WRITE("</plist>\n");
 }

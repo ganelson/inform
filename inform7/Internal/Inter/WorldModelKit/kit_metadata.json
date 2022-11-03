@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "WorldModelKit",
-        "version": "10.2.0-beta+6V92"
+        "version": "10.2.0-beta+6V93"
     },
     "needs": [ {
         "need": {

@@ -405,6 +405,10 @@ pathname *Task::sounds_path(void) {
 	if (inform7_task == NULL) internal_error("there is no current task");
 	return Pathnames::down(inform7_task->materials, I"Sounds");
 }
+pathname *Task::data_path(void) {
+	if (inform7_task == NULL) internal_error("there is no current task");
+	return Pathnames::down(inform7_task->materials, I"Data");
+}
 
 @ On a release run, Inblorb will populate the Release subfolder of Materials;
 figures and sounds will be copied into the relevant subfolders. The principle

@@ -57,6 +57,7 @@ the Blorb-file's filename won't be too long for the file system.
 	@<Give instructions about the cover image@>;
 	Figures::write_blurb_commands(OUT);
 	Sounds::write_blurb_commands(OUT);
+	InternalFiles::write_blurb_commands(OUT);
 	WRITE("\n! Placeholder variables\n\n");
 	@<Write numerous placeholder variables@>;
 	WRITE("\n! Other material to release\n\n");

@@ -172,6 +172,9 @@ void RTInstances::compilation_agent(compilation_subtask *t) {
 	if ((K_external_file) && (Kinds::eq(K, K_external_file)))
 		Hierarchy::apply_metadata_from_number(pack,
 			INSTANCE_IS_EXF_MD_HL, 1);
+	if ((K_internal_file) && (Kinds::eq(K, K_internal_file)))
+		Hierarchy::apply_metadata_from_number(pack,
+			INSTANCE_IS_INF_MD_HL, 1);
 	if (Instances::of_kind(I, K_thing))
 		Hierarchy::apply_metadata_from_number(pack, INSTANCE_IS_THING_MD_HL, 1);
 	if (Instances::of_kind(I, K_supporter))

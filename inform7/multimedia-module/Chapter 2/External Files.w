@@ -56,11 +56,11 @@ int ExternalFiles::new_file_SMF(int task, parse_node *V, wording *NPs) {
 
 @ And this is the Preform grammar needed for the subject phrase:
 
-@d EXTERNAL_TEXT_FILE_NFSMF 1
-@d EXTERNAL_BINARY_FILE_NFSMF 2
-@d INTERNAL_TEXT_FILE_NFSMF 3
-@d INTERNAL_BINARY_FILE_NFSMF 4
-@d INTERNAL_FORM_FILE_NFSMF 5
+@d EXTERNAL_TEXT_FILE_NFSMF 0
+@d EXTERNAL_BINARY_FILE_NFSMF 1
+@d INTERNAL_TEXT_FILE_NFSMF 2
+@d INTERNAL_BINARY_FILE_NFSMF 3
+@d INTERNAL_FORM_FILE_NFSMF 4
 
 =
 <external-file-sentence-subject> ::=
@@ -149,7 +149,7 @@ void ExternalFiles::register_file(wording W, wording FN) {
 		case INTERNAL_TEXT_FILE_NFSMF:
 		case INTERNAL_BINARY_FILE_NFSMF:
 		case INTERNAL_FORM_FILE_NFSMF:
-			InternalFiles::files_create(<<r>>, W, FN);
+			InternalFiles::files_create(<<r>>, NW, FN);
 			LOGIF(MULTIMEDIA_CREATIONS, "Created internal file <%W> = filename '%N'\n", NW, FN);
 			break;
 	}

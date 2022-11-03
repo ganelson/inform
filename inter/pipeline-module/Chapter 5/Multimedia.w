@@ -17,10 +17,14 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 		InterNodeList::array_sort(inv->sound_nodes, MakeSynopticModuleStage::module_order);
 	if (InterNodeList::array_len(inv->file_nodes) > 0)
 		InterNodeList::array_sort(inv->file_nodes, MakeSynopticModuleStage::module_order);
+	if (InterNodeList::array_len(inv->internal_file_nodes) > 0)
+		InterNodeList::array_sort(inv->internal_file_nodes, MakeSynopticModuleStage::module_order);
 	@<Define RESOURCEIDSOFFIGURES array@>;
 	@<Define RESOURCEIDSOFSOUNDS array@>;
 	@<Define NO_EXTERNAL_FILES@>;
 	@<Define TABLEOFEXTERNALFILES array@>;
+	@<Define NO_INTERNAL_FILES@>;
+	@<Define TABLEOFINTERNALFILES array@>;
 }
 
 @<Define RESOURCEIDSOFFIGURES array@> =
@@ -60,6 +64,23 @@ void SynopticMultimedia::compile(inter_tree *I, pipeline_step *step, tree_invent
 	Synoptic::numeric_entry(0);
 	for (int i=0; i<InterNodeList::array_len(inv->file_nodes); i++) {
 		inter_package *pack = PackageInstruction::at_this_head(inv->file_nodes->list[i].node);
+		inter_symbol *vc_s = Metadata::required_symbol(pack, I"^file_value");
+		Synoptic::symbol_entry(vc_s);
+	}
+	Synoptic::numeric_entry(0);
+	Synoptic::end_array(I);
+
+@<Define NO_INTERNAL_FILES@> =
+	inter_name *iname = HierarchyLocations::iname(I, NO_INTERNAL_FILES_HL);
+	Produce::numeric_constant(I, iname, K_value, (inter_ti) InterNodeList::array_len(inv->internal_file_nodes));
+
+@<Define TABLEOFINTERNALFILES array@> =
+	inter_name *iname =
+		HierarchyLocations::iname(I, TABLEOFINTERNALFILES_HL);
+	Synoptic::begin_array(I, step, iname);
+	Synoptic::numeric_entry(0);
+	for (int i=0; i<InterNodeList::array_len(inv->internal_file_nodes); i++) {
+		inter_package *pack = PackageInstruction::at_this_head(inv->internal_file_nodes->list[i].node);
 		inter_symbol *vc_s = Metadata::required_symbol(pack, I"^file_value");
 		Synoptic::symbol_entry(vc_s);
 	}

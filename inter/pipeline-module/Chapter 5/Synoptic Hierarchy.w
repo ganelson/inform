@@ -196,14 +196,18 @@ The |/main/synoptic/multimedia| submodule.
 @e RESOURCEIDSOFFIGURES_HL
 @e RESOURCEIDSOFSOUNDS_HL
 @e NO_EXTERNAL_FILES_HL
+@e NO_INTERNAL_FILES_HL
 @e TABLEOFEXTERNALFILES_HL
+@e TABLEOFINTERNALFILES_HL
 
 @<Resources for multimedia@> =
 	SYN_SUBMD(I"multimedia")
 		SYN_CONST(RESOURCEIDSOFFIGURES_HL,        I"ResourceIDsOfFigures")
 		SYN_CONST(RESOURCEIDSOFSOUNDS_HL,         I"ResourceIDsOfSounds")
 		SYN_CONST(NO_EXTERNAL_FILES_HL,           I"NO_EXTERNAL_FILES")
+		SYN_CONST(NO_INTERNAL_FILES_HL,           I"NO_INTERNAL_FILES")
 		SYN_CONST(TABLEOFEXTERNALFILES_HL,        I"TableOfExternalFiles")
+		SYN_CONST(TABLEOFINTERNALFILES_HL,        I"TableOfInternalFiles")
 
 @h Properties.
 The |/main/synoptic/properties| submodule.

@@ -40,10 +40,12 @@ This structure of additional data is attached to each figure instance.
 typedef struct internal_files_data {
 	struct wording name; /* text of name */
 	int unextended_filename; /* word number of text like |"ice extents.usgs"| */
+	struct filename *local_filename; /* of where this file is, in Materials directory */
 	struct text_stream *inf_identifier; /* an Inter identifier */
 	int file_format; /* |INTERNAL_TEXT_FILE_NFSMF|, |INTERNAL_BINARY_FILE_NFSMF| or |INTERNAL_FORM_FILE_NFSMF| */
 	struct instance *as_instance;
 	struct parse_node *where_created;
+	int resource_id;
 	CLASS_DEFINITION
 } internal_files_data;
 
@@ -65,6 +67,12 @@ instance *InternalFiles::files_create(int format, wording W, wording FN) {
 	ifd->file_format = format;
 	ifd->where_created = current_sentence;
 	ifd->as_instance = I;
+	ifd->resource_id = Task::get_next_free_blorb_resource_ID();
+	TEMPORARY_TEXT(leaf)
+	Word::dequote(Wordings::first_wn(FN));
+	WRITE_TO(leaf, "%N", Wordings::first_wn(FN));
+	ifd->local_filename = Filenames::in(Task::data_path(), leaf);
+	DISCARD_TEXT(leaf)
 	return I;
 }
 
@@ -83,3 +91,45 @@ int InternalFiles::files_new_named_instance_notify(instance *I) {
 	}
 	return FALSE;
 }
+
+@h Blurb and manifest.
+The i-files manifest is used by the implementation of Glulx within the Inform
+application to connect file ID numbers with filenames relative to the
+|.materials| folder for its project. (It's part of the XML manifest file
+created from |Figures.w|.)
+
+=
+void InternalFiles::write_files_manifest(OUTPUT_STREAM) {
+	if (K_internal_file == NULL) return;
+	internal_files_data *ifd;
+	if (NUMBER_CREATED(internal_files_data) == 0) return;
+	WRITE("<key>Data</key>\n");
+	WRITE("<dict>\n"); INDENT;
+	LOOP_OVER(ifd, internal_files_data) {
+		WRITE("<key>%d</key>\n", ifd->resource_id);
+		TEMPORARY_TEXT(rel)
+		Filenames::to_text_relative(rel, ifd->local_filename,
+			Projects::materials_path(Task::project()));
+		WRITE("<string>%S</string>\n", rel);
+		DISCARD_TEXT(rel)
+	}
+	OUTDENT; WRITE("</dict>\n");
+}
+
+@ The following writes Blurb commands for all of the internal files.
+
+=
+void InternalFiles::write_blurb_commands(OUTPUT_STREAM) {
+	if (K_internal_file == NULL) return;
+	internal_files_data *ifd;
+	LOOP_OVER(ifd, internal_files_data) {
+		WRITE("data %d \"%f\" type ", ifd->resource_id, ifd->local_filename);
+		switch (ifd->file_format) {
+			case INTERNAL_TEXT_FILE_NFSMF:   WRITE("TEXT"); break;
+			case INTERNAL_BINARY_FILE_NFSMF: WRITE("BINA"); break;
+			case INTERNAL_FORM_FILE_NFSMF:   WRITE("FORM"); break;
+		}
+		WRITE("\n");
+	}
+}
+

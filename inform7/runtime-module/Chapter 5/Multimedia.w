@@ -77,8 +77,8 @@ void RTMultimedia::compilation_agent(compilation_subtask *t) {
 	packaging_state save = EmitArrays::begin_word(exf_iname, K_value);
 	EmitArrays::iname_entry(Hierarchy::find(AUXF_MAGIC_VALUE_HL));
 	EmitArrays::iname_entry(Hierarchy::find(AUXF_STATUS_IS_CLOSED_HL));
-	if (exf->file_is_binary) EmitArrays::numeric_entry(1);
-	else EmitArrays::numeric_entry(0);
+	if (exf->file_is_binary) EmitArrays::numeric_entry(EXTERNAL_BINARY_FILE_NFSMF);
+	else EmitArrays::numeric_entry(EXTERNAL_TEXT_FILE_NFSMF);
 	EmitArrays::numeric_entry(0);
 	TEMPORARY_TEXT(WW)
 	WRITE_TO(WW, "%w", Lexer::word_raw_text(exf->unextended_filename));
@@ -124,6 +124,7 @@ void RTMultimedia::internal_compilation_agent(compilation_subtask *t) {
 	package_request *P = Hierarchy::local_package_to(INTERNAL_FILES_HAP, inf->where_created);
 	inter_name *inf_iname = Hierarchy::make_iname_with_memo(INTERNAL_FILE_HL, P, W);
 	@<Make the internal value metadata@>;
+	@<Make the internal file metadata array@>;
 }
 
 @<Make the internal value metadata@> =
@@ -133,3 +134,13 @@ void RTMultimedia::internal_compilation_agent(compilation_subtask *t) {
 		Wordings::one_word(inf->unextended_filename));
 	Hierarchy::apply_metadata_from_number(pack, INSTANCE_INTERNAL_FILE_FORMAT_MD_HL,
 		(inter_ti) inf->file_format);
+
+@<Make the internal file metadata array@> =
+	packaging_state save = EmitArrays::begin_word(inf_iname, K_value);
+	EmitArrays::iname_entry(Hierarchy::find(AUXF_MAGIC_VALUE_HL));
+	EmitArrays::iname_entry(Hierarchy::find(AUXF_STATUS_IS_CLOSED_HL));
+	EmitArrays::numeric_entry((inter_ti) inf->file_format);
+	EmitArrays::numeric_entry(0);
+	EmitArrays::numeric_entry((inter_ti) inf->resource_id);
+	EmitArrays::iname_entry(RTBibliographicData::IFID_iname());
+	EmitArrays::end(save);
