@@ -14,6 +14,7 @@ void FiguresElement::render(OUTPUT_STREAM, index_session *session) {
 	InterNodeList::array_sort(inv->file_nodes, MakeSynopticModuleStage::module_order);
 	@<Index the figures@>;
 	@<Index the sounds@>;
+	@<Index the internal files@>;
 	@<Index the files@>;
 }
 
@@ -128,10 +129,10 @@ to match this width, preserving the aspect ratio.
 @h Sounds.
 
 @<Index the sounds@> =
+	HTML_OPEN("p");
+	Localisation::bold(OUT, LD, I"Index.Elements.Fi.ListOfSounds");
+	HTML_CLOSE("p");
 	if (InterNodeList::array_len(inv->sound_nodes) == 0) {
-		HTML_OPEN("p");
-		Localisation::bold(OUT, LD, I"Index.Elements.Fi.ListOfSounds");
-		HTML_CLOSE("p");
 		HTML_OPEN("p");
 		Localisation::roman(OUT, LD, I"Index.Elements.Fi.NoSounds");
 		HTML_CLOSE("p");
@@ -270,18 +271,148 @@ to match this width, preserving the aspect ratio.
 		Filenames::get_leafname(F), (int) id);
 	HTML::end_html_row(OUT);
 
+@h Internal files.
+
+@d EXTERNAL_TEXT_FILE_NFSMF 0
+@d EXTERNAL_BINARY_FILE_NFSMF 1
+@d INTERNAL_TEXT_FILE_NFSMF 2
+@d INTERNAL_BINARY_FILE_NFSMF 3
+@d INTERNAL_FORM_FILE_NFSMF 4
+
+@<Index the internal files@> =
+	HTML_OPEN("p");
+	Localisation::bold(OUT, LD, I"Index.Elements.Fi.ListOfInternalFiles");
+	HTML_CLOSE("p");
+	if (InterNodeList::array_len(inv->internal_file_nodes) == 0) {
+		HTML_OPEN("p");
+		Localisation::roman(OUT, LD, I"Index.Elements.Fi.NoInternalFiles");
+		HTML_CLOSE("p");
+	} else {
+		@<Tabulate the internal files@>;
+	}
+
+@<Tabulate the internal files@> =
+	HTML::begin_html_table(OUT, NULL, TRUE, 0, 0, 0, 0, 0);
+	inter_package *pack;
+	LOOP_OVER_INVENTORY_PACKAGES(pack, i, inv->internal_file_nodes) {
+		inter_ti id = Metadata::read_numeric(pack, I"^resource_id");
+		text_stream *filename_as_text = Metadata::required_textual(pack, I"^filename");
+		filename *F = Filenames::from_text(filename_as_text);
+		inter_ti format = Metadata::read_numeric(pack, I"^internal_file_format");
+		TEMPORARY_TEXT(description)
+		TEMPORARY_TEXT(preview)
+		@<Find internal file preview@>;
+		@<Render a table row for the internal file@>;
+		DISCARD_TEXT(description)
+		DISCARD_TEXT(preview)
+	}
+	HTML::end_html_table(OUT);
+
+@<Find internal file preview@> =
+	FILE *INTERNAL_FILE = Filenames::fopen(F, "rb");
+	if (INTERNAL_FILE) {
+		switch (format) {
+			case INTERNAL_TEXT_FILE_NFSMF:
+				WRITE_TO(description, "%S", filename_as_text);
+				@<Offer a textual preview@>;
+				break;
+			case INTERNAL_BINARY_FILE_NFSMF:
+				WRITE_TO(description, "%S", filename_as_text);
+				@<Offer a binary preview@>;
+				break;
+			case INTERNAL_FORM_FILE_NFSMF:
+				WRITE_TO(description, "%S", filename_as_text);
+				@<Offer a binary preview@>;
+				break;
+		}
+	} else {
+		Localisation::italic(description, LD, I"Index.Elements.Fi.MissingInternalFile");
+	}
+
+@<Offer a textual preview@> =
+	for (int row = 0; row < 6; ) {
+		int col = 0;
+		unsigned int B, line_ended = FALSE;
+		while (BinaryFiles::read_int8(INTERNAL_FILE, &B)) {
+			if ((B == 10) || (B == 13)) { line_ended = TRUE; break; }
+			if (col++ >= 80) { WRITE_TO(preview, "[...]"); line_ended = TRUE; break; }
+			if ((B >= 0x20) && (B <= 0x7E)) WRITE_TO(preview, "%c", B);
+			else WRITE_TO(preview, "?");
+		}
+		if (line_ended == FALSE) break;
+		if (col > 0) row++;
+		WRITE_TO(preview, "\n");
+	}
+
+@<Offer a binary preview@> =
+	for (int row = 0; row < 6; row++) {
+		unsigned int bytes[16];
+		for (int col = 0; col < 16; col++) {
+			if (!BinaryFiles::read_int8(INTERNAL_FILE, &(bytes[col]))) {
+				for (; col < 16; col++) bytes[col] = 256;
+				row = 6; break;
+			}
+		}
+		for (int col = 0; col < 16; col++) {
+			if (bytes[col] < 256) WRITE_TO(preview, "%02x ", bytes[col]);
+			else WRITE_TO(preview, ".. ");
+		}
+		for (int col = 0; col < 16; col++) {
+			if ((bytes[col] >= 0x20) && (bytes[col] <= 0x7E)) WRITE_TO(preview, "%c", bytes[col]);
+			else WRITE_TO(preview, ".");
+		}
+		WRITE_TO(preview, "\n");
+	}
+
+@<Render a table row for the internal file@> =
+	HTML::first_html_column(OUT, THUMBNAIL_WIDTH+10);
+	if (Str::len(description) == 0) {
+		HTML_TAG_WITH("img", "border=\"0\" src=\"inform:/doc_images/image_problem.png\"");
+	} else {
+		HTML_TAG_WITH("img", "border=\"0\" src=\"inform:/doc_images/data.png\"");
+	}
+	WRITE("&nbsp;");
+	HTML::next_html_column(OUT, 0);
+	HTML_OPEN_WITH("p", "class=\"hang\"");
+	switch (format) {
+		case INTERNAL_TEXT_FILE_NFSMF:   WRITE("(text) "); break;
+		case INTERNAL_BINARY_FILE_NFSMF: WRITE("(binary) "); break;
+		case INTERNAL_FORM_FILE_NFSMF:   WRITE("(form) "); break;
+	}
+	WRITE("%S", Metadata::required_textual(pack, I"^name"));
+	IndexUtilities::link_package(OUT, pack);
+	if (Str::len(description) > 0) {
+		HTML_TAG("br");
+		WRITE("%S", description);
+	}
+	HTML_CLOSE("p");
+	if (Str::len(preview) > 0) {
+		HTML_OPEN("pre");
+		int N = Streams::get_indentation(OUT);
+		Streams::set_indentation(OUT, 0);
+		WRITE("\n%S", preview);
+		Streams::set_indentation(OUT, N);
+		HTML_CLOSE("pre");
+		WRITE("\n");
+	}
+	HTML_OPEN("p");
+	Localisation::roman_ti(description, LD, I"Index.Elements.Fi.Resource",
+		Filenames::get_leafname(F), (int) id);
+	HTML_CLOSE("p");
+	HTML::end_html_row(OUT);
+
 @h Files.
 This is more or less perfunctory, but still of some use, if only as a list.
 
 @<Index the files@> =
+	HTML_OPEN("p");
+	Localisation::bold(OUT, LD, I"Index.Elements.Fi.ListOfFiles");
+	HTML_CLOSE("p");
 	if (InterNodeList::array_len(inv->file_nodes) == 0) {
 		HTML_OPEN("p");
 		Localisation::roman(OUT, LD, I"Index.Elements.Fi.NoFiles");
 		HTML_CLOSE("p");
 	} else {
-		HTML_OPEN("p");
-		Localisation::bold(OUT, LD, I"Index.Elements.Fi.ListOfFiles");
-		HTML_CLOSE("p");
 		@<Tabulate the files@>;
 	}
 

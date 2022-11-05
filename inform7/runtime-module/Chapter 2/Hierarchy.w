@@ -900,6 +900,7 @@ void Hierarchy::establish(void) {
 @e INSTANCE_IS_INF_MD_HL
 @e INSTANCE_FILE_VALUE_MD_HL
 @e INSTANCE_INTERNAL_FILE_FORMAT_MD_HL
+@e INSTANCE_INTERNAL_FILE_ID_MD_HL
 @e INSTANCE_FILE_IS_BINARY_MD_HL
 @e INSTANCE_FILE_OWNED_MD_HL
 @e INSTANCE_FILE_OWNED_BY_OTHER_MD_HL
@@ -1040,8 +1041,9 @@ void Hierarchy::establish(void) {
 			H_C_U(INSTANCE_FILE_OWNED_BY_OTHER_MD_HL,       I"^file_owned_by_other")
 			H_C_U(INSTANCE_FILE_OWNER_MD_HL,                I"^file_owner")
 			H_C_U(INSTANCE_INTERNAL_FILE_FORMAT_MD_HL,      I"^internal_file_format")
+			H_C_U(INSTANCE_INTERNAL_FILE_ID_MD_HL,          I"^resource_id")
 			H_C_U(INSTANCE_FILE_IS_BINARY_MD_HL,            I"^is_binary")
-			H_C_U(INSTANCE_LEAFNAME_MD_HL,                  I"^leafname")
+			H_C_U(INSTANCE_LEAFNAME_MD_HL,                  I"^filename")
 			H_C_U(INSTANCE_IS_FIGURE_MD_HL,                 I"^is_figure")
 			H_C_U(INSTANCE_FIGURE_FILENAME_MD_HL,           I"^filename")
 			H_C_U(INSTANCE_FIGURE_ID_MD_HL,                 I"^resource_id")

@@ -56,12 +56,6 @@ int ExternalFiles::new_file_SMF(int task, parse_node *V, wording *NPs) {
 
 @ And this is the Preform grammar needed for the subject phrase:
 
-@d EXTERNAL_TEXT_FILE_NFSMF 0
-@d EXTERNAL_BINARY_FILE_NFSMF 1
-@d INTERNAL_TEXT_FILE_NFSMF 2
-@d INTERNAL_BINARY_FILE_NFSMF 3
-@d INTERNAL_FORM_FILE_NFSMF 4
-
 =
 <external-file-sentence-subject> ::=
 	<definite-article> <external-file-sentence-subject> |  ==> { pass 2 }

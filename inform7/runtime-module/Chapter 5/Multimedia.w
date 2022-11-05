@@ -130,10 +130,12 @@ void RTMultimedia::internal_compilation_agent(compilation_subtask *t) {
 @<Make the internal value metadata@> =
 	package_request *pack = RTInstances::package(inf->as_instance);
 	Hierarchy::apply_metadata_from_iname(pack, INSTANCE_FILE_VALUE_MD_HL, inf_iname);
-	Hierarchy::apply_metadata_from_raw_wording(pack, INSTANCE_LEAFNAME_MD_HL,
-		Wordings::one_word(inf->unextended_filename));
+	Hierarchy::apply_metadata_from_filename(pack, INSTANCE_LEAFNAME_MD_HL,
+		inf->local_filename);
 	Hierarchy::apply_metadata_from_number(pack, INSTANCE_INTERNAL_FILE_FORMAT_MD_HL,
 		(inter_ti) inf->file_format);
+	Hierarchy::apply_metadata_from_number(pack, INSTANCE_INTERNAL_FILE_ID_MD_HL,
+		(inter_ti) inf->resource_id);
 
 @<Make the internal file metadata array@> =
 	packaging_state save = EmitArrays::begin_word(inf_iname, K_value);

@@ -47,8 +47,10 @@
 %Index.Elements.Fi.NoFigures = There are no figures, or illustrations, in this project.
 %Index.Elements.Fi.NoSounds = There are no sound effects in this project.
 %Index.Elements.Fi.NoFiles = This project doesn't read or write external files.
+%Index.Elements.Fi.NoInternalFiles = This project doesn't read internal files.
 %Index.Elements.Fi.ListOfFigures = List of Figures
 %Index.Elements.Fi.ListOfSounds = List of Sounds
+%Index.Elements.Fi.ListOfInternalFiles = List of Internal Files
 %Index.Elements.Fi.ListOfFiles = List of External Files
 
 %Index.Elements.Fi.Format = Format *1
@@ -70,6 +72,8 @@
 %Index.Elements.Fi.Mono = Mono
 %Index.Elements.Fi.Stereo = Stereo
 %Index.Elements.Fi.BitRate = *1 kilobits/sec
+
+%Index.Elements.Fi.MissingInternalFile = Missing from the Data folder
 
 %Index.Elements.Fi.BinaryFile = Binary file "*1"
 %Index.Elements.Fi.TextFile = File "*1"
