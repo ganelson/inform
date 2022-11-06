@@ -58,6 +58,7 @@ typedef struct resource_number {
 
 linked_list *sound_resource = NULL; /* of |resource_number| */
 linked_list *pict_resource = NULL; /* of |resource_number| */
+linked_list *data_resource = NULL; /* of |resource_number| */
 
 @ And this is used to record alt-descriptions of resources, for the benefit
 of partially sighted or deaf users:
@@ -194,12 +195,13 @@ char *legal_Blorb_chunk_types[] = {
 	"AUTH", "(c) ", "Fspc", "RelN", "IFmd", /* miscellaneous identifying data */
 	"JPEG", "PNG ", /* images in different formats */
 	"AIFF", "OGGV", "MIDI", "MOD ", /* sound effects in different formats */
+	"TEXT", "BINA", "FORM", /* data files in different formats */
 	"ZCOD", "GLUL", /* story files in different formats */
 	"RDes", /* resource descriptions (added to the standard in March 2014) */
 	NULL };
 
 char *legal_Blorb_index_entries[] = {
-	"Pict", "Snd ", "Exec", NULL };
+	"Pict", "Snd ", "Exec", "Data", NULL };
 
 @ Because we are wisely paranoid:
 
@@ -374,6 +376,38 @@ void Writer::sound_chunk_text(text_stream *name, filename *F) {
 	}
 	sound_resource_num++;
 	Writer::sound_chunk(sound_resource_num, F, I"");
+}
+
+@ Data files are essentially the same, but have no alt-texts, and use their
+own index and format types:
+
+=
+void Writer::data_chunk(int n, filename *fn, text_stream *format) {
+	char *type = "BINA";
+	if (Str::eq_insensitive(format, I"BINA")) type = "BINA";
+	else if (Str::eq_insensitive(format, I"TEXT")) type = "TEXT";
+	else if (Str::eq_insensitive(format, I"FORM")) type = "FORM";
+	else BlorbErrors::fatal("Invalid data file format: not BINA, TEXT or FORM");
+
+	if (n < 1) BlorbErrors::fatal("Data resource number is less than 1");
+	if (data_resource == NULL) data_resource = NEW_LINKED_LIST(resource_number);
+	if (Writer::resource_seen(data_resource, n)) BlorbErrors::fatal("Duplicate Data resource number");
+
+    Writer::add_chunk_to_blorb(type, n, fn, "Data", NULL, 0);
+	no_data_files_included++;
+}
+
+@ And again, by name:
+
+=
+void Writer::data_chunk_text(text_stream *name, filename *F, text_stream *format) {
+	if (Str::len(name) == 0) {
+		PRINT("! Null data file ID, using %d\n", data_file_resource_num);
+	} else {
+		PRINT("Constant DATA_%S = %d;\n", name, data_file_resource_num);
+	}
+	data_file_resource_num++;
+	Writer::data_chunk(data_file_resource_num, F, format);
 }
 
 @ |"RDes"|: the resource description, a repository for alt-texts describing

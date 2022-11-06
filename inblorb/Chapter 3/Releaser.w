@@ -457,11 +457,11 @@ void Requests::report_requested_material(text_stream *ph) {
 }
 
 @<Itemise the blorb file, possibly mentioning pictures and sounds@> =
-	if ((no_pictures_included > 1) || (no_sounds_included > 0))
+	if ((no_pictures_included > 1) || (no_sounds_included > 0) || (no_data_files_included > 0))
 		Placeholders::append_to(ph,
 			Str::literal(L"<li>The blorb file <b>[STORYFILE]</b> ([BLORBFILESIZE]K in size, "
-				L"including [BLORBFILEPICTURES] figures(s) and [BLORBFILESOUNDS] "
-				L"sound(s))</li>"));
+				L"including [BLORBFILEPICTURES] figures(s), [BLORBFILESOUNDS] "
+				L"sound(s) and [BLORBFILEDATAFILES] data files(s))</li>"));
 	else
 		Placeholders::append_to(ph, I"<li>The blorb file <b>[STORYFILE]</b> ([BLORBFILESIZE]K in size)</li>");
 

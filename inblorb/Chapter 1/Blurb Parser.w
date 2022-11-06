@@ -20,6 +20,8 @@ indexes into the syntaxes table below.
 @e copyright_COMMAND
 @e cover_COMMAND
 @e css_COMMAND
+@e data_COMMAND
+@e data_text_COMMAND
 @e ifiction_COMMAND
 @e ifiction_public_COMMAND
 @e ifiction_file_COMMAND
@@ -110,6 +112,8 @@ blurb_command syntaxes[] = {
 	{ "copyright \"message\"", L"copyright \"(%q*)\"", T_OPS, FALSE },
 	{ "cover \"filename\"", L"cover \"(%q*)\"", T_OPS, FALSE },
 	{ "css", L"css", VOID_OPS, FALSE },
+	{ "data N \"filename\" type TYPE", L"data (%d+) \"(%q*)\" type (%i+)", NTT_OPS, FALSE },
+	{ "data ID \"filename\" type TYPE", L"data (%i+) \"(%q*)\" type (%i+)", TTT_OPS, FALSE },
 	{ "ifiction", L"ifiction", VOID_OPS, FALSE },
 	{ "ifiction public", L"ifiction public", VOID_OPS, FALSE },
 	{ "ifiction \"filename\" include", L"ifiction \"(%q*)\" include", T_OPS, FALSE },
@@ -266,6 +270,8 @@ copied in |text1|, |num1|, ..., accordingly.
 		case copyright_COMMAND: Writer::copyright_chunk(text1); break;
 		case cover_COMMAND: @<Declare which file is the cover art@>; break;
 		case css_COMMAND: use_css_code_styles = TRUE; break;
+		case data_COMMAND: Writer::data_chunk(num1, Filenames::from_text(text1), text2); break;
+		case data_text_COMMAND: Writer::data_chunk_text(text1, Filenames::from_text(text2), text3); break;
 		case ifiction_file_COMMAND: Writer::metadata_chunk(Filenames::from_text(text1)); break;
 		case ifiction_COMMAND: Requests::request_1(IFICTION_REQ, I"", TRUE); break;
 		case ifiction_public_COMMAND: Requests::request_1(IFICTION_REQ, I"", FALSE); break;

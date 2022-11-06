@@ -25,10 +25,12 @@ int current_year_AD = 0; /* e.g., 2008 */
 int blorb_file_size = 0; /* size in bytes of the blorb file written */
 int no_pictures_included = 0; /* number of picture resources included in the blorb */
 int no_sounds_included = 0; /* number of sound resources included in the blorb */
+int no_data_files_included = 0; /* number of data resources included in the blorb */
 int HTML_pages_created = 0; /* number of pages created in the website, if any */
 int source_HTML_pages_created = 0; /* number of those holding source */
 int sound_resource_num = 3; /* current sound resource number we're working on */
 int picture_resource_num = 1; /* current picture resource number we're working on */
+int data_file_resource_num = 1; /* current data resource number we're working on */
 
 int use_css_code_styles = FALSE; /* use |<span class="X">| markings when setting code */
 pathname *project_folder = NULL; /* pathname of I7 project folder, if any */
@@ -255,11 +257,14 @@ that's where they're used.
 		Placeholders::set_to_number(I"BLORBFILESIZE", blorb_file_size/1024);
 		Placeholders::set_to_number(I"BLORBFILEPICTURES", no_pictures_included);
 		Placeholders::set_to_number(I"BLORBFILESOUNDS", no_sounds_included);
+		Placeholders::set_to_number(I"BLORBFILEDATAFILES", no_data_files_included);
 		PRINT("! Completed: wrote blorb file with ");
-		PRINT("%d picture(s), %d sound(s)\n", no_pictures_included, no_sounds_included);
+		PRINT("%d picture(s), %d sound(s), %d data file(s)\n",
+			no_pictures_included, no_sounds_included, no_data_files_included);
 	} else {
 		Placeholders::set_to_number(I"BLORBFILESIZE", 0);
 		Placeholders::set_to_number(I"BLORBFILEPICTURES", 0);
 		Placeholders::set_to_number(I"BLORBFILESOUNDS", 0);
+		Placeholders::set_to_number(I"BLORBFILEDATAFILES", 0);
 		PRINT("! Completed: no blorb output requested\n");
 	}
