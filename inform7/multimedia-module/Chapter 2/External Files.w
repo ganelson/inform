@@ -61,7 +61,6 @@ int ExternalFiles::new_file_SMF(int task, parse_node *V, wording *NPs) {
 	<definite-article> <external-file-sentence-subject> |  ==> { pass 2 }
 	internal data/binary <external-file-name> |            ==> { INTERNAL_BINARY_FILE_NFSMF, -, <<ownership>> = R[1] }
 	internal text <external-file-name> |                   ==> { INTERNAL_TEXT_FILE_NFSMF, -, <<ownership>> = R[1] }
-	internal form <external-file-name> |                   ==> { INTERNAL_FORM_FILE_NFSMF, -, <<ownership>> = R[1] }
 	text <external-file-name> |                            ==> { EXTERNAL_TEXT_FILE_NFSMF, -, <<ownership>> = R[1] }
 	binary <external-file-name> |                          ==> { EXTERNAL_BINARY_FILE_NFSMF, -, <<ownership>> = R[1] }
 	<external-file-name>                                   ==> { EXTERNAL_TEXT_FILE_NFSMF, -, <<ownership>> = R[1] }
@@ -142,7 +141,6 @@ void ExternalFiles::register_file(wording W, wording FN) {
 		}
 		case INTERNAL_TEXT_FILE_NFSMF:
 		case INTERNAL_BINARY_FILE_NFSMF:
-		case INTERNAL_FORM_FILE_NFSMF:
 			InternalFiles::files_create(<<r>>, NW, FN);
 			LOGIF(MULTIMEDIA_CREATIONS, "Created internal file <%W> = filename '%N'\n", NW, FN);
 			break;
@@ -162,8 +160,7 @@ void ExternalFiles::register_file(wording W, wording FN) {
 		if (i>24) bad_filename = TRUE;
 		if ((isalpha(p[i])) || (Characters::isdigit(p[i]))) continue;
 		if ((format == INTERNAL_TEXT_FILE_NFSMF) ||
-			(format == INTERNAL_BINARY_FILE_NFSMF) ||
-			(format == INTERNAL_FORM_FILE_NFSMF))
+			(format == INTERNAL_BINARY_FILE_NFSMF))
 			if ((p[i] == '.') || (p[i] == '_') || (p[i] == ' ')) continue;
 		LOG("Objected to character %c\n", p[i]);
 		bad_filename = TRUE;

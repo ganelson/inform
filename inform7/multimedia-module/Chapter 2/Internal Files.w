@@ -42,7 +42,7 @@ typedef struct internal_files_data {
 	int unextended_filename; /* word number of text like |"ice extents.usgs"| */
 	struct filename *local_filename; /* of where this file is, in Materials directory */
 	struct text_stream *inf_identifier; /* an Inter identifier */
-	int file_format; /* |INTERNAL_TEXT_FILE_NFSMF|, |INTERNAL_BINARY_FILE_NFSMF| or |INTERNAL_FORM_FILE_NFSMF| */
+	int file_format; /* |INTERNAL_TEXT_FILE_NFSMF| or |INTERNAL_BINARY_FILE_NFSMF| */
 	struct instance *as_instance;
 	struct parse_node *where_created;
 	int resource_id;
@@ -127,7 +127,6 @@ void InternalFiles::write_blurb_commands(OUTPUT_STREAM) {
 		switch (ifd->file_format) {
 			case INTERNAL_TEXT_FILE_NFSMF:   WRITE("TEXT"); break;
 			case INTERNAL_BINARY_FILE_NFSMF: WRITE("BINA"); break;
-			case INTERNAL_FORM_FILE_NFSMF:   WRITE("FORM"); break;
 		}
 		WRITE("\n");
 	}

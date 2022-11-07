@@ -7844,7 +7844,7 @@
 <s-adjective-list> hits 1442/27608 nti 27 constraint (none) extremes [1, infinity)
     English:
         not <indefinite-article> <s-adjective-list-unarticled> 
-          (hits 0/2994) constraint DS = {27} extremes [3, infinity)
+          (hits 0/2990) constraint DS = {27} extremes [3, infinity)
         <indefinite-article> <s-adjective-list-unarticled> 
           (hits 0/6957) constraint (none) extremes [2, infinity)
         <s-adjective-list-unarticled> 
@@ -10041,8 +10041,6 @@
         internal data/binary <external-file-name> 
           (hits 0/239) constraint DS = {26, 27} extremes [4, infinity)
         internal text <external-file-name> 
-          (hits 0/239) constraint DS = {26, 27} extremes [4, infinity)
-        internal form <external-file-name> 
           (hits 0/239) constraint DS = {26, 27} extremes [4, infinity)
         text <external-file-name> 
           (hits 0/304) constraint DS = {26, 27} extremes [3, infinity)

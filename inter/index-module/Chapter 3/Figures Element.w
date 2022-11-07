@@ -277,7 +277,6 @@ to match this width, preserving the aspect ratio.
 @d EXTERNAL_BINARY_FILE_NFSMF 1
 @d INTERNAL_TEXT_FILE_NFSMF 2
 @d INTERNAL_BINARY_FILE_NFSMF 3
-@d INTERNAL_FORM_FILE_NFSMF 4
 
 @<Index the internal files@> =
 	HTML_OPEN("p");
@@ -317,10 +316,6 @@ to match this width, preserving the aspect ratio.
 				@<Offer a textual preview@>;
 				break;
 			case INTERNAL_BINARY_FILE_NFSMF:
-				WRITE_TO(description, "%S", filename_as_text);
-				@<Offer a binary preview@>;
-				break;
-			case INTERNAL_FORM_FILE_NFSMF:
 				WRITE_TO(description, "%S", filename_as_text);
 				@<Offer a binary preview@>;
 				break;
@@ -377,7 +372,6 @@ to match this width, preserving the aspect ratio.
 	switch (format) {
 		case INTERNAL_TEXT_FILE_NFSMF:   WRITE("(text) "); break;
 		case INTERNAL_BINARY_FILE_NFSMF: WRITE("(binary) "); break;
-		case INTERNAL_FORM_FILE_NFSMF:   WRITE("(form) "); break;
 	}
 	WRITE("%S", Metadata::required_textual(pack, I"^name"));
 	IndexUtilities::link_package(OUT, pack);

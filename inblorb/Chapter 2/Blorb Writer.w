@@ -195,7 +195,7 @@ char *legal_Blorb_chunk_types[] = {
 	"AUTH", "(c) ", "Fspc", "RelN", "IFmd", /* miscellaneous identifying data */
 	"JPEG", "PNG ", /* images in different formats */
 	"AIFF", "OGGV", "MIDI", "MOD ", /* sound effects in different formats */
-	"TEXT", "BINA", "FORM", /* data files in different formats */
+	"TEXT", "BINA", /* data files in different formats */
 	"ZCOD", "GLUL", /* story files in different formats */
 	"RDes", /* resource descriptions (added to the standard in March 2014) */
 	NULL };
@@ -386,8 +386,7 @@ void Writer::data_chunk(int n, filename *fn, text_stream *format) {
 	char *type = "BINA";
 	if (Str::eq_insensitive(format, I"BINA")) type = "BINA";
 	else if (Str::eq_insensitive(format, I"TEXT")) type = "TEXT";
-	else if (Str::eq_insensitive(format, I"FORM")) type = "FORM";
-	else BlorbErrors::fatal("Invalid data file format: not BINA, TEXT or FORM");
+	else BlorbErrors::fatal("Invalid data file format: not BINA or TEXT");
 
 	if (n < 1) BlorbErrors::fatal("Data resource number is less than 1");
 	if (data_resource == NULL) data_resource = NEW_LINKED_LIST(resource_number);
