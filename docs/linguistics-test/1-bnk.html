@@ -49,8 +49,8 @@ function togglePopup(material_id) {
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
+<li><a href="../../../inweb/index.html">inweb</a></li>
+<li><a href="../../../intest/index.html">intest</a></li>
 
 </ul>
 		</nav>
@@ -90,7 +90,7 @@ sentence.
 
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Banking::load_from_file</span><button class="popup" onclick="togglePopup('usagePopup1')"><span class="comment-syntax">?</span><span class="popuptext" id="usagePopup1">Usage of <span class="code-font"><span class="function-syntax">Banking::load_from_file</span></span>:<br/>Program Control - <a href="1-pc.html#SP3">&#167;3</a></span></button><span class="plain-syntax">(</span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">filename</span><span class="plain-syntax"> *</span><span class="identifier-syntax">F</span><span class="plain-syntax"> = </span><a href="../../../inweb/foundation-module/3-fln.html#SP3" class="function-link"><span class="function-syntax">Filenames::from_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">arg</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="constant-syntax">feed_t</span><span class="plain-syntax"> </span><span class="identifier-syntax">FD</span><span class="plain-syntax"> = </span><a href="../words-module/3-fds.html#SP2" class="function-link"><span class="function-syntax">Feeds::begin</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">source_file</span><span class="plain-syntax"> *</span><span class="identifier-syntax">sf</span><span class="plain-syntax"> = </span><a href="../words-module/3-tff.html#SP3" class="function-link"><span class="function-syntax">TextFromFiles::feed_into_lexer</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">F</span><span class="plain-syntax">, </span><span class="constant-syntax">NULL_GENERAL_POINTER</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="../words-module/3-fds.html#SP2" class="function-link"><span class="function-syntax">Feeds::end</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">FD</span><span class="plain-syntax">);</span>
@@ -104,7 +104,7 @@ sentence.
 <span class="plain-syntax">    </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><a href="../syntax-module/2-pn.html#SP5" class="function-link"><span class="function-syntax">Node::get_type</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">) == </span><span class="constant-syntax">SENTENCE_NT</span><span class="plain-syntax">) {</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">wording</span><span class="plain-syntax"> </span><span class="identifier-syntax">W</span><span class="plain-syntax"> = </span><a href="../syntax-module/2-pn.html#SP4" class="function-link"><span class="function-syntax">Node::get_text</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">p</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">        </span><span class="reserved-syntax">if</span><span class="plain-syntax"> (</span><span class="function-syntax">&lt;vocabulary-line&gt;</span><span class="plain-syntax">(</span><span class="identifier-syntax">W</span><span class="plain-syntax">) == </span><span class="constant-syntax">FALSE</span><span class="plain-syntax">)</span>
-<span class="plain-syntax">            </span><a href="../../../inweb/docs/foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::nowhere</span></a><span class="plain-syntax">(</span><span class="string-syntax">"vocabulary line not understood"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">            </span><a href="../../../inweb/foundation-module/3-em.html#SP5" class="function-link"><span class="function-syntax">Errors::nowhere</span></a><span class="plain-syntax">(</span><span class="string-syntax">"vocabulary line not understood"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    }</span>
 <span class="plain-syntax">}</span>
 </pre>
@@ -187,7 +187,7 @@ with the facilities offered by the <a href="../syntax-module/index.html" class="
 </p>
 
 <pre class="displayed-code all-displayed-code code-font">
-<span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="../../../inweb/docs/foundation-module/4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">N</span><span class="plain-syntax"> = </span><a href="../../../inweb/foundation-module/4-sm.html#SP2" class="function-link"><span class="function-syntax">Str::new</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="identifier-syntax">WRITE_TO</span><span class="plain-syntax">(</span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="string-syntax">"%W"</span><span class="plain-syntax">, </span><span class="identifier-syntax">FW</span><span class="plain-syntax">[1]);</span>
 <span class="plain-syntax">    </span><a href="../linguistics-module/3-sm.html#SP5" class="function-link"><span class="function-syntax">SpecialMeanings::declare</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, </span><span class="identifier-syntax">N</span><span class="plain-syntax">, </span><span class="constant-syntax">0</span><span class="plain-syntax">);</span>
 </pre>

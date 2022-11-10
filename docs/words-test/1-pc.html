@@ -40,8 +40,8 @@
 </ul><h2>Repository</h2><ul>
 <li><a href="https://github.com/ganelson/inform"><img src="../docs-assets/github.png" height=18> github</a></li>
 </ul><h2>Related Projects</h2><ul>
-<li><a href="../../../inweb/docs/index.html">inweb</a></li>
-<li><a href="../../../intest/docs/index.html">intest</a></li>
+<li><a href="../../../inweb/index.html">inweb</a></li>
+<li><a href="../../../intest/index.html">intest</a></li>
 
 </ul>
 		</nav>
@@ -61,20 +61,20 @@
 </pre>
 <pre class="displayed-code all-displayed-code code-font">
 <span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="function-syntax">main</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="reserved-syntax">char</span><span class="plain-syntax"> **</span><span class="identifier-syntax">argv</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/1-fm.html#SP8" class="function-link"><span class="function-syntax">Foundation::start</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/1-fm.html#SP8" class="function-link"><span class="function-syntax">Foundation::start</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">    </span><a href="../words-module/1-wm.html#SP3" class="function-link"><span class="function-syntax">WordsModule::start</span></a><span class="plain-syntax">();</span>
 
-<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/3-cla.html#SP14" class="function-link"><span class="function-syntax">CommandLine::declare_heading</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="string-syntax">"inexample: a tool for testing foundation facilities\n"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP14" class="function-link"><span class="function-syntax">CommandLine::declare_heading</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">L</span><span class="string-syntax">"inexample: a tool for testing foundation facilities\n"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_LEXER_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-lexer"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_LEXER_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-lexer"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test lexing of natural language text from file X"</span><span class="plain-syntax">);</span>
-<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_PREFORM_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-preform"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP5" class="function-link"><span class="function-syntax">CommandLine::declare_switch</span></a><span class="plain-syntax">(</span><span class="constant-syntax">TEST_PREFORM_CLSW</span><span class="plain-syntax">, </span><span class="identifier-syntax">L</span><span class="string-syntax">"test-preform"</span><span class="plain-syntax">, </span><span class="constant-syntax">2</span><span class="plain-syntax">,</span>
 <span class="plain-syntax">        </span><span class="identifier-syntax">L</span><span class="string-syntax">"test Preform parsing a sample grammar against the text in file X"</span><span class="plain-syntax">);</span>
 
-<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/3-cla.html#SP8" class="function-link"><span class="function-syntax">CommandLine::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, &amp;</span><a href="1-pc.html#SP1" class="function-link"><span class="function-syntax">Main::respond</span></a><span class="plain-syntax">, &amp;</span><a href="1-pc.html#SP1" class="function-link"><span class="function-syntax">Main::ignore</span></a><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-cla.html#SP8" class="function-link"><span class="function-syntax">CommandLine::read</span></a><span class="plain-syntax">(</span><span class="identifier-syntax">argc</span><span class="plain-syntax">, </span><span class="identifier-syntax">argv</span><span class="plain-syntax">, </span><span class="identifier-syntax">NULL</span><span class="plain-syntax">, &amp;</span><a href="1-pc.html#SP1" class="function-link"><span class="function-syntax">Main::respond</span></a><span class="plain-syntax">, &amp;</span><a href="1-pc.html#SP1" class="function-link"><span class="function-syntax">Main::ignore</span></a><span class="plain-syntax">);</span>
 
 <span class="plain-syntax">    </span><a href="../words-module/1-wm.html#SP3" class="function-link"><span class="function-syntax">WordsModule::end</span></a><span class="plain-syntax">();</span>
-<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/1-fm.html#SP9" class="function-link"><span class="function-syntax">Foundation::end</span></a><span class="plain-syntax">();</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/1-fm.html#SP9" class="function-link"><span class="function-syntax">Foundation::end</span></a><span class="plain-syntax">();</span>
 <span class="plain-syntax">    </span><span class="reserved-syntax">return</span><span class="plain-syntax"> </span><span class="constant-syntax">0</span><span class="plain-syntax">;</span>
 <span class="plain-syntax">}</span>
 
@@ -86,7 +86,7 @@
 <span class="plain-syntax">}</span>
 
 <span class="reserved-syntax">void</span><span class="plain-syntax"> </span><span class="function-syntax">Main::ignore</span><span class="plain-syntax">(</span><span class="reserved-syntax">int</span><span class="plain-syntax"> </span><span class="identifier-syntax">id</span><span class="plain-syntax">, </span><span class="reserved-syntax">text_stream</span><span class="plain-syntax"> *</span><span class="identifier-syntax">arg</span><span class="plain-syntax">, </span><span class="reserved-syntax">void</span><span class="plain-syntax"> *</span><span class="identifier-syntax">state</span><span class="plain-syntax">) {</span>
-<span class="plain-syntax">    </span><a href="../../../inweb/docs/foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal</span></a><span class="plain-syntax">(</span><span class="string-syntax">"only switches may be used at the command line"</span><span class="plain-syntax">);</span>
+<span class="plain-syntax">    </span><a href="../../../inweb/foundation-module/3-em.html#SP2" class="function-link"><span class="function-syntax">Errors::fatal</span></a><span class="plain-syntax">(</span><span class="string-syntax">"only switches may be used at the command line"</span><span class="plain-syntax">);</span>
 <span class="plain-syntax">}</span>
 </pre>
 <nav role="progress"><div class="progresscontainer">
