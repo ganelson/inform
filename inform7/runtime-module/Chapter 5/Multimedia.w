@@ -143,6 +143,7 @@ void RTMultimedia::internal_compilation_agent(compilation_subtask *t) {
 	EmitArrays::iname_entry(Hierarchy::find(AUXF_STATUS_IS_CLOSED_HL));
 	EmitArrays::numeric_entry((inter_ti) inf->file_format);
 	EmitArrays::numeric_entry(0);
-	EmitArrays::numeric_entry((inter_ti) inf->resource_id);
+	EmitArrays::text_entry(Filenames::get_leafname(inf->local_filename));
 	EmitArrays::iname_entry(RTBibliographicData::IFID_iname());
+	EmitArrays::numeric_entry(inf->resource_id);
 	EmitArrays::end(save);
