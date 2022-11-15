@@ -427,7 +427,6 @@ InternalFileBinaryRead(F, N) reads the data at position N in file F.
 			struc-->AUXF_STREAM = stream_id;
 			struc-->AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_READ;
 			glk_stream_set_position(stream_id, 0, seekmode_End);
-			print "End pos is ", glk_stream_get_position(stream_id), "^";
 			glk_stream_set_position(stream_id, 0, seekmode_Start);
 		} else {
 			InternalFileIO_Error(file_id, "unable to open for reading");
@@ -438,8 +437,27 @@ InternalFileBinaryRead(F, N) reads the data at position N in file F.
 		return -1;
 	}
 	stream_id = struc-->AUXF_STREAM;
-	glk_stream_set_position(stream_id, at, seekmode_Start);
+	if (at >= 0) glk_stream_set_position(stream_id, at, seekmode_Start);
 	return glk_get_char_stream_uni(stream_id);
+];
+
+[ InternalFileIO_Line txt file_id file_id pos tsize c;
+	TEXT_TY_Transmute(txt);
+	TEXT_TY_Empty(txt);
+	tsize = BlkValueLBCapacity(txt);
+	while (true) {
+		c = InternalFileBinaryRead(file_id, -1);
+		if (c == 10) { BlkValueWrite(txt, pos, 0); rtrue; }
+		if (c == -1) break;
+		if (pos+1 >= tsize) {
+			if (BlkValueSetLBCapacity(txt, 2*pos) == false) rfalse;
+			tsize = BlkValueLBCapacity(txt);
+		}
+		BlkValueWrite(txt, pos++, c);
+	}
+	BlkValueWrite(txt, pos, 0);
+	if (pos > 0) rtrue;
+	rfalse;
 ];
 
 @h Z-Machine Stubs.

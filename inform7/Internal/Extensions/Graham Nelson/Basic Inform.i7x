@@ -696,6 +696,14 @@ To repeat through (T - table name) in reverse (TC - table column) order begin --
 		@pull {-my:ct_1}; @pull {-my:ct_0};
 	-).
 
+To repeat with (loopvar - nonexisting text variable)
+	running through (F - internal file) begin -- end loop:
+	(-
+		for ({-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}): {-my:1}:
+			{-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}))
+			{-block}
+	-).
+
 Section 4 - Loop Flow
 
 To break -- in loop

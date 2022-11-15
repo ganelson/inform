@@ -875,6 +875,17 @@ To repeat through (T - table name) in reverse (TC - table column) order begin --
 		@pull {-my:ct_1}; @pull {-my:ct_0};
 	-).
 
+@ And this loops through the lines of a text file stored internally.
+
+=
+To repeat with (loopvar - nonexisting text variable)
+	running through (F - internal file) begin -- end loop:
+	(-
+		for ({-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}): {-my:1}:
+			{-my:1} = InternalFileIO_Line({-by-reference:loopvar}, {F}))
+			{-block}
+	-).
+
 @ The equivalent of |break| or |continue| in C or I6, or of |last| or |next|
 in Perl. Here "in loop" means "in any of the forms of while or repeat".
 
