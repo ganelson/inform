@@ -17,7 +17,7 @@
             <td>
                 <p><a name=CONFIG></a></p>
                 <p>Inform language definition:</p>
-                <p>Included: core, naming, instance counting, interactive fiction, spatial model, backdrops, bibliographic data, chronology, devices, mapping, persons, player, regions, scenes, scoring, timed rules, times of day, actions, going, command, showme, multimedia, figures, sounds, glulx external files</p>
+                <p>Included: core, naming, instance counting, interactive fiction, spatial model, backdrops, bibliographic data, chronology, devices, mapping, persons, player, regions, scenes, scoring, timed rules, times of day, actions, going, command, showme, multimedia, figures, sounds, glulx external files, glulx internal files</p>
                 <p>Debugging log:</p>
                 <p><a href="javascript:pasteCode('Include debugging log inclusions in the debugging log.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;Include debugging log inclusions in the debugging log.&nbsp;<img border=0 src=inform:/doc_images/tick.png><br>
                 <a href="javascript:pasteCode('Include shell usage in the debugging log.')"><img border=0 src=inform:/doc_images/paste.png></a>&nbsp;Include shell usage in the debugging log.&nbsp;<img border=0 src=inform:/doc_images/cross.png><br>

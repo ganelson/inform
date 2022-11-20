@@ -2,7 +2,7 @@
     "is": {
         "type": "kit",
         "title": "BasicInformKit",
-        "version": "10.2.0-beta+6V98"
+        "version": "10.2.0-beta+6V99"
     },
     "needs": [ {
         "unless": {
@@ -26,7 +26,7 @@
             "author": "Graham Nelson"
         }
     } ],
-    "activates": [ "glulx external files" ],
+    "activates": [ "glulx external files", "glulx internal files" ],
     "kit-details": {
         "has-priority": 0,
         "defines-Main": false,

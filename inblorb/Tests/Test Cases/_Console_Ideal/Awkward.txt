@@ -2,4 +2,4 @@
 ! The blorb spell (safely protect a small object as though in a strong box).
 ! Release folder: </Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release>
 Copy blorb to: [[/Users/gnelson/Natural Inform/intest/Workspace/T0/Example.materials/Release/It Is An Awkward & <Difficult> .gblorb]]
-! Completed: wrote blorb file with 1 picture(s), 0 sound(s)
+! Completed: wrote blorb file with 1 picture(s), 0 sound(s), 0 data file(s)

@@ -300,7 +300,10 @@ inter_name *RTKindConstructors::get_iname(kind *K) {
 			K->construct->compilation_data.pr_iname = Hierarchy::make_iname_in(PRINT_FN_HL, R);
 			inter_name *actual_iname = HierarchyLocations::find_by_name(Emit::tree(), X);
 			Emit::iname_constant(K->construct->compilation_data.pr_iname, K_value, actual_iname);
-		} else internal_error("internal but unknown kind printing routine");
+		} else {
+			WRITE_TO(STDERR, "identifier: '%S'\n", X);
+			internal_error("internal but unknown kind printing routine");
+		}
 	} else {
 		if (external) K->construct->compilation_data.pr_iname = HierarchyLocations::find_by_name(Emit::tree(), X);
 		else internal_error("internal but unpackaged kind printing routine");
