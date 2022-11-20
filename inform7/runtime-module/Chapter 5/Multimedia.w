@@ -145,5 +145,5 @@ void RTMultimedia::internal_compilation_agent(compilation_subtask *t) {
 	EmitArrays::numeric_entry(0);
 	EmitArrays::text_entry(Filenames::get_leafname(inf->local_filename));
 	EmitArrays::iname_entry(RTBibliographicData::IFID_iname());
-	EmitArrays::numeric_entry(inf->resource_id);
+	EmitArrays::numeric_entry((inter_ti) inf->resource_id);
 	EmitArrays::end(save);
