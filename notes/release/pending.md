@@ -21,3 +21,6 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2139](https://inform7.atlassian.net/browse/I7-2139)
 	"Articles become part of relation name"
 	([commit 85110a9](https://github.com/ganelson/inform/commit/85110a981a3d2419b3778eb383408de122c301a8))
+- Fix for Jira bug [I7-2234](https://inform7.atlassian.net/browse/I7-2234)
+	"Non-heading @ sections not supported in template files"
+	(Inweb: [commit f2aaa32](https://github.com/ganelson/inweb/commit/f2aaa32479e14187679828e3e5696f5951b43b38))
