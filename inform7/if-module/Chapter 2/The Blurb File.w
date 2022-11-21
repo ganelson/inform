@@ -228,7 +228,8 @@ file online.
 
 	filename *SF = Task::storyfile_file();
 	if (SF) {
-		WRITE("base64 \"%f\" to \"%p%c", SF, Task::released_interpreter_path(),
+		WRITE("base64 \"%p%c%S\" to \"%p%c", Task::release_path(),
+			FOLDER_SEPARATOR, TEMP, Task::released_interpreter_path(),
 			FOLDER_SEPARATOR);
 	}
 	STREAM_COPY(OUT, TEMP);

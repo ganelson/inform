@@ -24,3 +24,6 @@ These will be added to release notes when the release is made.
 - Fix for Jira bug [I7-2234](https://inform7.atlassian.net/browse/I7-2234)
 	"Non-heading @ sections not supported in template files"
 	(Inweb: [commit f2aaa32](https://github.com/ganelson/inweb/commit/f2aaa32479e14187679828e3e5696f5951b43b38))
+- Fix for a "very old quirk of I7 where it generates a `story.gblorb.js` file for
+	the interpreter website, but the filename is a lie. It's the base64-encoding
+	of the `story.ulx` file, not the `story.gblorb`." (Andrew Plotkin, not from Jira)
