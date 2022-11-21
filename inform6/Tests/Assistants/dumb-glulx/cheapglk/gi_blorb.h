@@ -2,7 +2,7 @@
 #define _GI_BLORB_H
 
 /* gi_blorb.h: Blorb library layer for Glk API.
-    gi_blorb version 1.6.0.
+    gi_blorb version 1.6.1.
     Designed by Andrew Plotkin <erkyrath@eblong.com>
     http://eblong.com/zarf/glk/
 

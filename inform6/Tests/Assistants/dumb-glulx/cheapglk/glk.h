@@ -29,7 +29,7 @@ typedef int32_t glsi32;
 #define GLK_MODULE_SOUND
 #define GLK_MODULE_SOUND2
 #define GLK_MODULE_HYPERLINKS
-#define GLK_MODULE_DATETIME
+/* #define GLK_MODULE_DATETIME */
 #define GLK_MODULE_RESOURCE_STREAM
 
 /* Define a macro for a function attribute that indicates a function that

@@ -118,7 +118,9 @@ display the update, and then (without delay) exit.
 ## Version
 
 0.6.0 (Jun 25, 2022):
+
 - Added @hasundo and @discardundo opcodes. (Glulx spec 3.1.3.)
+- Added the double-precision opcodes. (Glulx spec 3.1.3.)
 - Added autosave support to the Unix startup code. (Previously the
   autosave support only existed in the iOS startup code, which was
   ObjC.) Autosave now works with the RemGlk library.

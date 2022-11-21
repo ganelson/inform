@@ -23,6 +23,7 @@
 -cases			[Basic] 'inform7/Tests/Test Basic'
 -cases			[Internal] 'inform7/Tests/Test Internals'
 -cases			[Make] 'inform7/Tests/Test Makes'
+-cases			[Filing] 'inform7/Tests/Test Filings'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Complex Listing.i7x'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Inanimate Listeners.i7x'
 -extension		[Main] 'inform7/Internal/Extensions/Emily Short/Locksmith.i7x'
@@ -363,6 +364,124 @@
 			match frotz transcript: $A $I
 			or: 'played incorrectly'
 		endif
+
+		pass: 'passed'
+	endif
+
+-end
+
+-recipe [Filing]
+	set: $I6 = inform6/Tangled/inform6
+	set: $I7 = inform7/Tangled/inform7
+	set: $INTERNAL = inform7/Internal
+	set: $WORKSPACE = intest/Workspace
+	set: $GINT = inform6/Tests/Assistants/dumb-glulx/glulxe/glulxe
+	set: $TOC = NO
+
+	set: $VM = G
+	if: $CASE %c*-C
+		set: $TOC = YES
+	endif
+	set: $FORMAT 		= Inform6/32
+	set: $EXT           = ulx
+	set: $I6OPTIONS		= -E2SDwGx
+	set: $INT			= $GINT
+	set: $INTNAME		= dumb-glulxe
+	set: $INTOPTIONS	= -u -q
+	set: $SETTINGS      = $PATH/_Settings/$CASE.txt
+	if exists: $SETTINGS
+		set: $INTOPTIONS = -u -q `$[`$SETTINGS$]
+	endif
+
+	! Now we extract the source text from whatever file originated the test
+	! case: this is a non-trivial operation when the file is an Extension or
+	! an example, but is a simple copy operation otherwise.
+
+	extract: $WORK/Example.inform/Source/story.ni $VM
+
+	! Test cases from map indexing problem messages require ni to get as far as
+	! indexing, so the -no-index option mustn't be used in this case.
+
+	mkdir: $WORK/Transient
+	step: find $WORK/Transient -mindepth 1 -delete
+
+	mkdir: $PATH/_Results_Actual
+	mkdir: $PATH/_Results_Ideal
+
+	set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+
+	set: $PIPELINE = 
+
+	if: $TOC YES
+		mkdir: $PATH/_Textual
+		mkdir: $PATH/_C
+
+		set: $I7OPTIONS = -basic -format=$FORMAT -no-progress -fixtime -rng -sigils -log nothing -external inform7/Tests -transient $WORK/Transient -no-index -internal $INTERNAL
+		set: $I7CLIB = inform7/Internal/Miscellany
+	
+		set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
+		set: $TOUT = $PATH/_Textual/$CASE.intert
+		set: $COUT = $PATH/_C/$CASE.c
+		set: $OFILE = $WORK/Example.inform/Build/$CASE.o
+		step: $I7 -fixtime -rng -sigils -basic -format=C $WORK/Example.inform/Source/story.ni -variable *tout=$TOUT -o $COUT `$PIPELINE >$I7CONSOLE 2>&1
+		or: 'failed with Problem message(s)' $I7CONSOLE
+
+		set: $CCCONSOLE = $WORK/Example.inform/Build/cc_output.txt
+		set: $LINKCONSOLE = $WORK/Example.inform/Build/link_output.txt
+		set: $STORYFILE = $WORK/Example.inform/Build/final$$EXESUFFIX
+
+		step: `$$CCOMPILER -o $OFILE $COUT -I $I7CLIB >$CCCONSOLE 2>&1
+		or: 'failed to compile C' $CCCONSOLE
+
+		step: `$$CLINKER -o $STORYFILE $OFILE `$$LINKFLAGS >$LINKCONSOLE 2>&1
+		or: 'failed to link C' $LINKCONSOLE
+	
+		set: $A = $PATH/_Results_Actual/$CASE.txt
+		set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+		step: $STORYFILE >$A 2>&1
+		or: 'failed to run C program' $A
+
+		show: $A
+
+		match text: $A $I
+		or: 'C program misbehaved'
+
+		pass: 'passed'
+	else
+		! And then the general case.
+
+		set: $I7CONSOLE = $WORK/Example.inform/Build/i7_output.txt
+		debugger: lldb -f $I7 -- `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE -crash-all
+		step: $I7 `$I7OPTIONS -format=$FORMAT -project $WORK/Example.inform $PIPELINE >$I7CONSOLE 2>&1
+		or: 'failed with Problem message(s)' $I7CONSOLE
+		show: $I7CONSOLE
+
+		set: $I6SOURCE = $WORK/Example.inform/Build/auto.inf
+
+		hash: $I6SOURCE $WORK/Example.inform/Build/checksum.txt
+		or: 'passed (matching cached I6 known to work)'
+
+		set: $I6CONSOLE = $WORK/Example.inform/Build/i6_output.txt
+		set: $STORYFILE = $WORK/Example.inform/Build/output.$EXT
+
+		step: $I6 `$I6OPTIONS $I6SOURCE $STORYFILE >$I6CONSOLE 2>&1
+		or: 'failed to pass through Inform 6' $I6CONSOLE
+		show i6: $I6CONSOLE
+
+		set: $A = $PATH/_Results_Actual/$CASE.txt
+		set: $I = $PATH/_Results_Ideal/$CASE.txt
+
+		step: $INT `$INTOPTIONS $STORYFILE >$A 2>&1
+		or: 'unable to run $INTNAME (do you need to make interpreters?)'
+
+		show transcript: $A
+
+		exists: $I
+		or: 'translated successfully but no ideal transcript existed'
+
+		match glulxe transcript: $A $I
+		or: 'played incorrectly'
 
 		pass: 'passed'
 	endif

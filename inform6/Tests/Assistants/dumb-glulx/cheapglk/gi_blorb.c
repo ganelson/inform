@@ -1,5 +1,5 @@
 /* gi_blorb.c: Blorb library layer for Glk API.
-    gi_blorb version 1.6.0.
+    gi_blorb version 1.6.1.
     Designed by Andrew Plotkin <erkyrath@eblong.com>
     http://eblong.com/zarf/glk/
 
@@ -262,6 +262,9 @@ static giblorb_err_t giblorb_initialize_map(giblorb_map_t *map)
                 ptr = chunkres.data.ptr;
                 len = chunkres.length;
                 numres = giblorb_native4(ptr+0);
+
+                if (numres & 0xF0000000)
+                    return giblorb_err_Format; /* that can't be right */
 
                 if (numres) {
                     int ix2;
@@ -547,6 +550,9 @@ giblorb_err_t giblorb_load_image_info(giblorb_map_t *map,
 {
     giblorb_resdesc_t sample;
     giblorb_resdesc_t *found;
+    glui32 chunknum;
+    giblorb_chunkdesc_t *chu;
+    giblorb_auxpict_t *auxpict;
     
     sample.usage = giblorb_ID_Pict;
     sample.resnum = resnum;
@@ -556,15 +562,15 @@ giblorb_err_t giblorb_load_image_info(giblorb_map_t *map,
     if (!found)
         return giblorb_err_NotFound;
     
-    glui32 chunknum = found->chunknum;
+    chunknum = found->chunknum;
     if (chunknum >= map->numchunks)
         return giblorb_err_NotFound;
 
-    giblorb_chunkdesc_t *chu = &(map->chunks[chunknum]);
+    chu = &(map->chunks[chunknum]);
     if (chu->auxdatnum < 0)
         return giblorb_err_NotFound;
 
-    giblorb_auxpict_t *auxpict = &(map->auxpict[chu->auxdatnum]);
+    auxpict = &(map->auxpict[chu->auxdatnum]);
     if (!auxpict->loaded) {
         giblorb_result_t res;
         giblorb_err_t err = giblorb_load_chunk_by_number(map, giblorb_method_Memory, &res, chunknum);
@@ -597,19 +603,21 @@ static giblorb_err_t giblorb_image_get_size_jpeg(unsigned char *arr, glui32 leng
 {
     int pos = 0;
     while (pos < length) {
+        unsigned char marker;
+        int chunklen;
         if (arr[pos] != 0xFF) {
             /* error: find_dimensions_jpeg: marker is not 0xFF */
             return giblorb_err_Format;
         }
         while (arr[pos] == 0xFF) 
             pos += 1;
-        unsigned char marker = arr[pos];
+        marker = arr[pos];
         pos += 1;
         if (marker == 0x01 || (marker >= 0xD0 && marker <= 0xD9)) {
             /* marker type has no data */
             continue;
         }
-        int chunklen = (arr[pos+0] << 8) | (arr[pos+1]);
+        chunklen = (arr[pos+0] << 8) | (arr[pos+1]);
         if (marker >= 0xC0 && marker <= 0xCF && marker != 0xC8) {
             if (chunklen < 7) {
                 /* error: find_dimensions_jpeg: SOF block is too small */
@@ -638,8 +646,9 @@ static giblorb_err_t giblorb_image_get_size_png(unsigned char *arr, glui32 lengt
     pos += 8;
     while (pos < length) {
         glui32 chunklen = giblorb_native4(arr+pos);
+        glui32 chunktype;
         pos += 4;
-        glui32 chunktype = giblorb_native4(arr+pos);
+        chunktype = giblorb_native4(arr+pos);
         pos += 4;
         if (chunktype == giblorb_make_id('I', 'H', 'D', 'R')) {
             auxpict->width = giblorb_native4(arr+pos);

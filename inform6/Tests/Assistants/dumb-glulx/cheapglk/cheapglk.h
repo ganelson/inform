@@ -48,6 +48,11 @@ extern int gli_debugger;
 #define gli_debugger (0)
 #endif /* GIDEBUG_LIBRARY_SUPPORT */
 
+/* Get the pathname for data chunk num (as specified in command-line arguments,
+   if any).
+*/
+extern int gli_get_dataresource_info(int num, void **ptr, glui32 *len, int *isbinary);
+
 /* Callbacks necessary for the dispatch layer. */
 extern gidispatch_rock_t (*gli_register_obj)(void *obj, glui32 objclass);
 extern void (*gli_unregister_obj)(void *obj, glui32 objclass, 

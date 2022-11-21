@@ -1,0 +1,8 @@
+The internal text file of Tall Nettles is called "Nettles.txt".
+
+To begin:
+	showme the file of Tall Nettles;
+	let the line count be 1;
+	repeat with T running through the file of Tall Nettles:
+		say "[line count]  [T][line break]";
+		increase the line count by 1.

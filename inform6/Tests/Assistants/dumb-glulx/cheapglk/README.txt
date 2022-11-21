@@ -170,6 +170,15 @@ key as meta key" preference.)
 
 * Version History
 
+1.0.###:
+    Opening a nonexistent file for reading now silently returns null;
+    is no error or warning. Entering the name of a nonexistent file at
+    a open-for-reading prompt also returns null, rather than an invalid
+    fileref. This brings the library more or less in line with the spec.
+    See discussion: https://github.com/erkyrath/glk-dev/issues/6
+    Replaced deprecated mktemp() call with mkstemp().
+    Added the -dataresource[text,bin] arguments.
+
 1.0.6:
     Declared support for Glk spec 0.7.5.
     Added support for a "debug console". If the -D option is given, lines

@@ -14,6 +14,16 @@ int gli_utf8input = FALSE;
 int gli_debugger = FALSE;
 #endif /* GIDEBUG_LIBRARY_SUPPORT */
 
+typedef struct dataresource_struct {
+    int num;
+    int isbinary;
+    char *pathname;
+    int len;
+    void *ptr;
+} dataresource_t;
+static dataresource_t *dataresources = NULL;
+static int numdataresources = 0, dataresource_size = 0;
+
 static int inittime = FALSE;
 
 int main(int argc, char *argv[])
@@ -119,6 +129,41 @@ int main(int argc, char *argv[])
             continue;
             
         if (argv[ix][0] == '-') {
+            if (!strcmp(argv[ix]+1, "dataresource")
+                || !strcmp(argv[ix]+1, "dataresourcebin")
+                || !strcmp(argv[ix]+1, "dataresourcetext")) {
+                int isbinary = strcmp(argv[ix]+1, "dataresourcetext") != 0;
+                ix++;
+                if (ix >= argc) {
+                    printf("%s: -dataresource option requires NUM:PATHNAME\n\n", argv[0]);
+                    errflag = TRUE;
+                    continue;
+                }
+                char *sep = strchr(argv[ix], ':');
+                if (!sep || sep == argv[ix] || *(sep+1) == '\0') {
+                    printf("%s: -dataresource option requires NUM:PATHNAME\n\n", argv[0]);
+                    errflag = TRUE;
+                    continue;
+                }
+                *sep = '\0';
+                sep++;
+                val = atoi(argv[ix]);
+                if (!dataresources || dataresource_size == 0) {
+                    dataresource_size = 4;
+                    dataresources = (dataresource_t *)malloc(dataresource_size * sizeof(dataresource_t));
+                }
+                else if (numdataresources >= dataresource_size) {
+                    dataresource_size *= 2;
+                    dataresources = (dataresource_t *)realloc(dataresources, dataresource_size * sizeof(dataresource_t));
+                }
+                dataresources[numdataresources].num = val;
+                dataresources[numdataresources].isbinary = isbinary;
+                dataresources[numdataresources].pathname = strdup(sep);
+                dataresources[numdataresources].ptr = NULL;
+                dataresources[numdataresources].len = 0;
+                numdataresources++;
+                continue;
+            }
             switch (argv[ix][1]) {
                 case 'w':
                     val = 0;
@@ -203,6 +248,17 @@ int main(int argc, char *argv[])
                     printf("  %s: %s\n", argform->name, argform->desc);
             }
         }
+        printf("library options:\n");
+        printf("  -w NUM, -h NUM: pretend to be running in a terminal window of this size (default 80x24)\n");
+        printf("  -u: assume input and output are UTF-8 encoded (default: Latin-1)\n");
+        printf("  -ui, -uo: set UTF-8 mode for input and output separately\n");
+        printf("  -dataresource NUM:PATHNAME, -dataresourcebin NUM:PATHNAME, -dataresourcetext NUM:PATHNAME: tell where the data resource file with the given number can be read (default: search blorb if available)\n");
+        printf("     (file is considered binary by default, or text if -dataresourcetext is used)\n");
+        printf("  -q: don't display the \"Welcome to the Cheap Glk Implementation\" header line\n");
+#if GIDEBUG_LIBRARY_SUPPORT
+        printf("  -D: turn on debug console\n");
+#endif /* GIDEBUG_LIBRARY_SUPPORT */
+        printf("  -help: display this list\n");
         return 1;
     }
     
@@ -234,6 +290,55 @@ int main(int argc, char *argv[])
     /* glk_exit() doesn't return, but the compiler may kvetch if main()
         doesn't seem to return a value. */
     return 0;
+}
+
+/* Get the data for data chunk num (as specified in command-line arguments,
+   if any).
+   The data is read from the given pathname and stashed in memory.
+   This is memory-hoggish, but so is the rest of glk_stream_open_resource();
+   see comments there.
+   (You might wonder why we don't call gli_stream_open_pathname() and
+   handle the file as a file-based stream. Turns out that doesn't work;
+   the handling of unicode streams is subtly different for resource
+   streams and the file-based code won't work. Oh well.)
+*/
+int gli_get_dataresource_info(int num, void **ptr, glui32 *len, int *isbinary)
+{
+    int ix;
+    /* The dataresources array isn't sorted (or even checked for duplicates),
+       so we search it linearly. There probably aren't a lot of entries. */
+    for (ix=0; ix<numdataresources; ix++) {
+        if (dataresources[ix].num == num) {
+            *isbinary = dataresources[ix].isbinary;
+            *ptr = NULL;
+            *len = 0;
+            if (dataresources[ix].ptr) {
+                /* Already loaded. */
+            }
+            else {
+                FILE *fl = fopen(dataresources[ix].pathname, "rb");
+                if (!fl) {
+                    gli_strict_warning("stream_open_resource: unable to read given pathname.");
+                    return FALSE;
+                }
+                fseek(fl, 0, SEEK_END);
+                dataresources[ix].len = ftell(fl);
+                dataresources[ix].ptr = malloc(dataresources[ix].len+1);
+                fseek(fl, 0, SEEK_SET);
+                int got = fread(dataresources[ix].ptr, 1, dataresources[ix].len, fl);
+                fclose(fl);
+                if (got != dataresources[ix].len) {
+                    gli_strict_warning("stream_open_resource: unable to read all resource data.");
+                    return FALSE;
+                }
+            }
+            *ptr = dataresources[ix].ptr;
+            *len = dataresources[ix].len;
+            return TRUE;
+        }
+    }
+
+    return FALSE;
 }
 
 /* This opens a file for reading or writing. (You cannot open a file
