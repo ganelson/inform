@@ -397,7 +397,7 @@ internal file is laid out very similarly to an external one, except that it
 has an additional field AUXF_RESOURCE_ID holding the blorb resource ID for
 the file; files are opened using resource IDs rather than filenames.
 
-InternalFileBinaryRead(F, N) reads the data at position N in file F.
+InternalFileReadChar(F, N) reads the data at position N in file F.
 
 =
 [ InternalFileIO_Error file_id err_text  struc;
@@ -414,7 +414,7 @@ InternalFileBinaryRead(F, N) reads the data at position N in file F.
 	return 0;
 ];
 
-[ InternalFileBinaryRead file_id at resource_id stream_id struc now_at;
+[ InternalFileReadChar file_id at resource_id stream_id struc now_at;
 	if ((file_id < 1) || (file_id > NO_INTERNAL_FILES)) {
 		InternalFileIO_Error(file_id, "file ID out of range");
 		return -1;
@@ -426,8 +426,6 @@ InternalFileBinaryRead(F, N) reads the data at position N in file F.
 		if (stream_id) {
 			struc-->AUXF_STREAM = stream_id;
 			struc-->AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_READ;
-			glk_stream_set_position(stream_id, 0, seekmode_End);
-			glk_stream_set_position(stream_id, 0, seekmode_Start);
 		} else {
 			InternalFileIO_Error(file_id, "unable to open for reading");
 			return -1;
@@ -446,7 +444,7 @@ InternalFileBinaryRead(F, N) reads the data at position N in file F.
 	TEXT_TY_Empty(txt);
 	tsize = BlkValueLBCapacity(txt);
 	while (true) {
-		c = InternalFileBinaryRead(file_id, -1);
+		c = InternalFileReadChar(file_id, -1);
 		if (c == 10) { BlkValueWrite(txt, pos, 0); rtrue; }
 		if (c == -1) break;
 		if (pos+1 >= tsize) {
@@ -457,6 +455,32 @@ InternalFileBinaryRead(F, N) reads the data at position N in file F.
 	}
 	BlkValueWrite(txt, pos, 0);
 	if (pos > 0) rtrue;
+	rfalse;
+];
+
+[ InternalFileReadWords file_id at len buffer resource_id stream_id struc now_at x;
+	if ((file_id < 1) || (file_id > NO_INTERNAL_FILES)) {
+		InternalFileIO_Error(file_id, "file ID out of range");
+		return -1;
+	}
+	struc = TableOfInternalFiles-->file_id;
+	if (struc-->AUXF_STATUS == AUXF_STATUS_IS_CLOSED) {
+		resource_id = struc-->AUXF_RESOURCE_ID;
+		stream_id = glk_stream_open_resource_uni(resource_id, 0);
+		if (stream_id) {
+			struc-->AUXF_STREAM = stream_id;
+			struc-->AUXF_STATUS = AUXF_STATUS_IS_OPEN_FOR_READ;
+		} else {
+			InternalFileIO_Error(file_id, "unable to open for reading");
+			return -1;
+		}
+	}
+	if (struc-->AUXF_STATUS == AUXF_STATUS_IS_ERRONEOUS) {
+		return -1;
+	}
+	stream_id = struc-->AUXF_STREAM;
+	if (at >= 0) glk_stream_set_position(stream_id, at, seekmode_Start);
+	if (glk_get_buffer_stream_uni(stream_id, buffer, len) == len) rtrue;
 	rfalse;
 ];
 
